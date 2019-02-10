@@ -1,11 +1,10 @@
-// @flow
-import React, { Fragment } from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
 import { toggleTimetableOrientation, toggleTitleDisplay } from 'actions/theme';
-import type { Semester } from 'types/modules';
-import type { SemTimetableConfig } from 'types/timetables';
+import { Semester } from 'types/modules';
+import { SemTimetableConfig } from 'types/timetables';
 
 import { Sidebar, Type, Grid, Calendar } from 'views/components/icons';
 import elements from 'views/elements';
@@ -15,17 +14,17 @@ import ExportMenu from './ExportMenu';
 import styles from './TimetableActions.scss';
 
 type Props = {
-  semester: Semester,
-  timetable: SemTimetableConfig,
+  semester: Semester;
+  timetable: SemTimetableConfig;
 
-  isVerticalOrientation: boolean,
-  toggleTimetableOrientation: Function,
+  isVerticalOrientation: boolean;
+  toggleTimetableOrientation: Function;
 
-  showTitle: boolean,
-  toggleTitleDisplay: Function,
+  showTitle: boolean;
+  toggleTitleDisplay: Function;
 
-  showExamCalendar: boolean,
-  toggleExamCalendar: Function,
+  showExamCalendar: boolean;
+  toggleExamCalendar: Function;
 };
 
 function TimetableActions(props: Props) {
@@ -70,13 +69,13 @@ function TimetableActions(props: Props) {
           onClick={props.toggleExamCalendar}
         >
           {props.showExamCalendar ? (
-            <Fragment>
+            <>
               <Grid className="svg svg-small" /> Timetable
-            </Fragment>
+            </>
           ) : (
-            <Fragment>
+            <>
               <Calendar className="svg svg-small" /> Exam Calendar
-            </Fragment>
+            </>
           )}
         </button>
       </div>

@@ -1,9 +1,7 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import type { Module, ModuleCode } from 'types/modules';
+import { Module, ModuleCode } from 'types/modules';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 
 import cs1010s from '__mocks__/modules/CS1010S.json';
@@ -13,7 +11,11 @@ import { ModuleExamClashComponent } from './ModuleExamClash';
 describe(ModuleExamClashComponent, () => {
   const MODULES = [cs1010s, cs3216];
 
-  function make(moduleCode: ModuleCode, examDate: ?string, modules: Module[] = MODULES) {
+  function make(
+    moduleCode: ModuleCode,
+    examDate: string | null | undefined,
+    modules: Module[] = MODULES,
+  ) {
     return shallow(
       <ModuleExamClashComponent
         moduleCode={moduleCode}

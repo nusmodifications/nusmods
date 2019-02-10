@@ -1,5 +1,3 @@
-// @flow
-
 import util from 'util';
 
 export const nextTick = util.promisify(process.nextTick);

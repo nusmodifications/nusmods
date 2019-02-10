@@ -1,11 +1,10 @@
-// @flow
 import {
   REMOVE_LRU_MODULE,
   removeLRUModule,
   UPDATE_MODULE_TIMESTAMP,
   updateModuleTimestamp,
 } from 'actions/moduleBank';
-import type { ModuleBank } from './moduleBank';
+import { ModuleBank } from './moduleBank';
 import reducer from './moduleBank';
 
 const defaultModuleBankState: ModuleBank = {

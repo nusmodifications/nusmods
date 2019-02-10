@@ -1,6 +1,4 @@
-// @flow
-
-import type { ContextRouter, LocationShape } from 'react-router-dom';
+import { RouteComponentProps, LocationShape } from 'react-router-dom';
 import _ from 'lodash';
 
 // react-router-dom internal dependency, used here to construct the history
@@ -9,8 +7,8 @@ import _ from 'lodash';
 import createMemoryHistory from 'history/createMemoryHistory'; // eslint-disable-line import/no-extraneous-dependencies
 
 type MatchShape = {
-  params?: { [string]: ?string },
-  isExact?: boolean,
+  params?: { [key: string]: string | null | undefined };
+  isExact?: boolean;
 };
 
 type HistoryEntry = string | LocationShape;
@@ -18,7 +16,7 @@ type HistoryEntry = string | LocationShape;
 export default function createHistory(
   initialEntries: HistoryEntry | $ReadOnlyArray<HistoryEntry> = '/',
   matchParams: MatchShape = {},
-): ContextRouter {
+): RouteComponentProps {
   const entries = _.castArray(initialEntries);
   const history = createMemoryHistory({ initialEntries: entries });
   const { params = {}, isExact = true } = matchParams;

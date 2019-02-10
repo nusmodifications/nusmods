@@ -1,21 +1,20 @@
-// @flow
-import React, { PureComponent, type ComponentType } from 'react';
+import * as React from 'react';
 import { sample } from 'lodash';
 import { SpeechBubble, Mug, Browser, Ghost } from 'react-kawaii';
 
 type Props = {
-  size?: number,
-  mood?: ?string,
-  color?: string,
-  title?: string,
-  'aria-label'?: string,
+  size?: number;
+  mood?: string | null | undefined;
+  color?: string;
+  title?: string;
+  'aria-label'?: string;
 };
 
 const icons = [SpeechBubble, Mug, Browser, Ghost];
 const defaultMoods = ['ko', 'sad', 'shocked'];
 
-class RandomKawaii extends PureComponent<Props> {
-  kawaii: ComponentType;
+class RandomKawaii extends React.PureComponent<Props> {
+  kawaii: React.ComponentType;
   defaultMood: string;
 
   static defaultProps = {

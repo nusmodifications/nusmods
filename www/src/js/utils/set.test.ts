@@ -1,4 +1,3 @@
-// @flow
 import { intersection, intersectionCount, union } from './set';
 
 function s<T>(...args: T[]): Set<T> {

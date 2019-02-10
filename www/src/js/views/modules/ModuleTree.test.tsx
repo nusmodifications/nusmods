@@ -1,6 +1,4 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import { render } from 'enzyme';
 
 import ModuleTree, { incrementLayer } from './ModuleTree';
@@ -28,7 +26,6 @@ describe('<ModuleTree>', () => {
         'FIN4115',
       ],
     };
-    // $FlowFixMe just the two is enough
     const component = render(<ModuleTree module={mod} />);
     expect(component).toMatchSnapshot('ACC1002');
   });
@@ -91,7 +88,6 @@ describe('<ModuleTree>', () => {
       },
       LockedModules: ['CS5242', 'CS5339', 'CS6281'],
     };
-    // $FlowFixMe just the two is enough
     const component = render(<ModuleTree module={mod} />);
     expect(component).toMatchSnapshot('CS3244');
   });

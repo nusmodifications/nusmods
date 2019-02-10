@@ -1,18 +1,17 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import { groupBy, toPairs, sortBy } from 'lodash';
 import { Link } from 'react-router-dom';
 
-import type { Venue } from 'types/venues';
+import { Venue } from 'types/venues';
 import { venuePage } from 'views/routes/paths';
 
 import styles from './VenueList.scss';
 
 type Props = {
-  venues: Venue[],
-  selectedVenue?: ?Venue,
-  linkProps?: { [string]: any },
+  venues: Venue[];
+  selectedVenue?: Venue | null | undefined;
+  linkProps?: { [key: string]: any };
 };
 
 export default function VenueList(props: Props) {

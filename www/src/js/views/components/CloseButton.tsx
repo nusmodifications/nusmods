@@ -1,15 +1,13 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import { Close } from 'views/components/icons';
 
 import styles from './CloseButton.scss';
 
 type Props = {
-  onClick: Function,
-  className?: string,
-  absolutePositioned?: boolean, // For use in modals where we don't want the CloseButton to affect the layout of other elements.
+  onClick: Function;
+  className?: string;
+  absolutePositioned?: boolean; // For use in modals where we don't want the CloseButton to affect the layout of other elements.
 };
 
 function RawCloseButton({ onClick, className }: Props) {

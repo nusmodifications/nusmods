@@ -1,15 +1,14 @@
-// @flow
-import React, { Component, Fragment } from 'react';
+import * as React from 'react';
 import { stubString, omit } from 'lodash';
-import type { ChildrenFunction, DownshiftState, StateChangeOptions } from 'downshift';
+import { ChildrenFunction, DownshiftState, StateChangeOptions } from 'downshift';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 
 import { highlight } from 'utils/react';
 import { ChevronRight, Help, Search } from 'views/components/icons';
-import type { ModuleCondensed } from 'types/modules';
-import type { Venue } from 'types/venues';
-import type { ResultType, SearchItem, SearchResult } from 'types/views';
+import { ModuleCondensed } from 'types/modules';
+import { Venue } from 'types/venues';
+import { ResultType, SearchItem, SearchResult } from 'types/views';
 
 import ComponentMap from 'utils/ComponentMap';
 import SemesterBadge from 'views/components/SemesterBadge';
@@ -17,22 +16,22 @@ import { MODULE_RESULT, SEARCH_RESULT, VENUE_RESULT } from 'types/views';
 import styles from './GlobalSearch.scss';
 
 type Props = {
-  getResults: (?string) => ?SearchResult,
+  getResults: (string: string | null | undefined) => SearchResult | null | undefined;
 
-  onSelectVenue: (Venue) => void,
-  onSelectModule: (ModuleCondensed) => void,
-  onSearch: (ResultType, string) => void,
+  onSelectVenue: (venue: Venue) => void;
+  onSelectModule: (moduleCondensed: ModuleCondensed) => void;
+  onSearch: (resultType: ResultType, str: string) => void;
 };
 
 type State = {
-  isOpen: boolean,
-  inputValue: string,
+  isOpen: boolean;
+  inputValue: string;
 };
 
 const PLACEHOLDER = 'Search modules & venues. Try "GER" or "LT".';
 
-class GlobalSearch extends Component<Props, State> {
-  input: ?HTMLInputElement;
+class GlobalSearch extends React.Component<Props, State> {
+  input: HTMLInputElement | null | undefined;
 
   state = {
     isOpen: false,
@@ -115,7 +114,7 @@ class GlobalSearch extends Component<Props, State> {
     // key to ensure the input element does not change during rerender, which would cause
     // selection to be lost
     const searchForm = (
-      <Fragment key="search">
+      <React.Fragment key="search">
         <Search className={classnames(styles.icon, { [styles.iconOpen]: isOpen })} />
         <label className="sr-only" {...getLabelProps()}>
           {PLACEHOLDER}
@@ -129,7 +128,7 @@ class GlobalSearch extends Component<Props, State> {
           {...getInputProps({ placeholder: PLACEHOLDER })}
           onFocus={this.onOpen}
         />
-      </Fragment>
+      </React.Fragment>
     );
 
     const searchResults = this.props.getResults(inputValue);
@@ -206,7 +205,7 @@ class GlobalSearch extends Component<Props, State> {
         <div className={styles.selectListContainer}>
           <div className={styles.selectList} {...getMenuProps()}>
             {hasModules && (
-              <Fragment>
+              <>
                 <div
                   {...getItemProps({
                     item: { type: SEARCH_RESULT, result: MODULE_RESULT, term: inputValue },
@@ -236,11 +235,11 @@ class GlobalSearch extends Component<Props, State> {
                     <SemesterBadge className={styles.semesters} semesters={module.Semesters} />
                   </div>
                 ))}
-              </Fragment>
+              </>
             )}
 
             {hasVenues && (
-              <Fragment>
+              <>
                 <div
                   {...getItemProps({
                     item: { type: SEARCH_RESULT, result: VENUE_RESULT, term: inputValue },
@@ -268,7 +267,7 @@ class GlobalSearch extends Component<Props, State> {
                     <span>{highlight(venue, tokens)}</span>
                   </div>
                 ))}
-              </Fragment>
+              </>
             )}
           </div>
         </div>

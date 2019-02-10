@@ -1,12 +1,8 @@
-// @flow
 import _ from 'lodash';
-import type { EventOption } from 'ical-generator';
+import { EventOption } from 'ical-generator';
 
-import type { Module, ModuleCode, RawLesson, Semester } from 'types/modules';
-import type {
-  ModuleLessonConfigWithLessons,
-  SemTimetableConfigWithLessons,
-} from 'types/timetables';
+import { Module, ModuleCode, RawLesson, Semester } from 'types/modules';
+import { ModuleLessonConfigWithLessons, SemTimetableConfigWithLessons } from 'types/timetables';
 
 import config from 'config';
 import academicCalendar from 'data/academic-calendar.json';
@@ -48,7 +44,10 @@ export function hoursAfter(date: Date, sgHour: number): Date {
   return d;
 }
 
-export function iCalEventForExam(module: Module, semester: Semester): ?EventOption {
+export function iCalEventForExam(
+  module: Module,
+  semester: Semester,
+): EventOption | null | undefined {
   const examDate = new Date(getExamDate(module, semester));
   if (Number.isNaN(examDate.getTime())) return null;
 
@@ -167,7 +166,7 @@ export function iCalEventForLesson(
 export default function iCalForTimetable(
   semester: Semester,
   timetable: SemTimetableConfigWithLessons,
-  moduleData: { [ModuleCode]: Module },
+  moduleData: { [moduleCode: string]: Module },
   academicYear: string = config.academicYear,
 ): EventOption[] {
   const [year, month, day] = academicCalendar[academicYear][semester].start;

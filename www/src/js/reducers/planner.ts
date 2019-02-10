@@ -1,8 +1,7 @@
-// @flow
 import produce from 'immer';
 import { pull, max, min } from 'lodash';
-import type { PlannerState } from 'types/reducers';
-import type { FSA } from 'types/redux';
+import { PlannerState } from 'types/reducers';
+import { FSA } from 'types/redux';
 import {
   ADD_PLANNER_MODULE,
   MOVE_PLANNER_MODULE,
@@ -83,7 +82,6 @@ export default function planner(
       }
 
       return produce(state, (draft: $Shape<PlannerState>) => {
-        // $FlowFixMe states are mutable in immer
         draft.modules[moduleCode] = [year, semester, index];
 
         newModuleOrder.forEach((newModuleCode, order) => {

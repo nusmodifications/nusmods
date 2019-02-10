@@ -1,10 +1,9 @@
-// @flow
-import React, { Component } from 'react';
+import * as React from 'react';
 import Waypoint from 'react-waypoint';
 import _ from 'lodash';
 
-import type { Module } from 'types/modules';
-import type { PageRange, PageRangeDiff, OnPageChange } from 'types/views';
+import { Module } from 'types/modules';
+import { PageRange, PageRangeDiff, OnPageChange } from 'types/views';
 
 import Warning from 'views/errors/Warning';
 import ModuleFinderPage from './ModuleFinderPage';
@@ -12,9 +11,9 @@ import ModuleFinderPage from './ModuleFinderPage';
 const MODULES_PER_PAGE = 5;
 
 type Props = {
-  page: PageRange,
-  modules: Module[],
-  onPageChange: OnPageChange,
+  page: PageRange;
+  modules: Module[];
+  onPageChange: OnPageChange;
 };
 
 function getPageKey(modules: Module[]): string {
@@ -22,7 +21,7 @@ function getPageKey(modules: Module[]): string {
   return `${getId(_.head(modules))}-${getId(_.last(modules))}`;
 }
 
-export default class ModuleFinderList extends Component<Props> {
+export default class ModuleFinderList extends React.Component<Props> {
   onEnterPage(fromStart: number) {
     const { start, loaded } = this.props.page;
 

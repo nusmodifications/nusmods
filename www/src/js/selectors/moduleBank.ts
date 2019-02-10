@@ -1,16 +1,14 @@
-// @flow
-
-import type { ModuleCode, ModuleCondensed, Semester } from 'types/modules';
-import type { ModuleBank } from 'reducers/moduleBank';
-import type { State } from 'reducers';
-import type { SemTimetableConfig } from 'types/timetables';
-import type { ModuleSelectListItem } from 'types/reducers';
+import { ModuleCode, ModuleCondensed, Semester } from 'types/modules';
+import { ModuleBank } from 'reducers/moduleBank';
+import { State } from 'reducers';
+import { SemTimetableConfig } from 'types/timetables';
+import { ModuleSelectListItem } from 'types/reducers';
 import { getRequestModuleCode } from 'actions/moduleBank';
 import { isOngoing } from './requests';
 
 export function getModuleCondensed(
   moduleBank: ModuleBank,
-): (moduleCode: ModuleCode) => ?ModuleCondensed {
+): (moduleCode: ModuleCode) => ModuleCondensed | null | undefined {
   return (moduleCode) => moduleBank.moduleCodes[moduleCode];
 }
 

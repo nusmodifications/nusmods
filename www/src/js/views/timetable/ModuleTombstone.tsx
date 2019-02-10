@@ -1,15 +1,14 @@
-// @flow
-import type { Module } from 'types/modules';
-import React from 'react';
+import { Module } from 'types/modules';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import { undo } from 'actions/undoHistory';
 import classnames from 'classnames';
 import styles from './TimetableModulesTable.scss';
 
 type Props = {
-  module: Module,
-  undo: () => void,
-  resetTombstone: () => void,
+  module: Module;
+  undo: () => void;
+  resetTombstone: () => void;
 };
 
 function ModuleTombstone(props: Props) {

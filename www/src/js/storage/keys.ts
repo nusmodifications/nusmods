@@ -1,4 +1,3 @@
-// @flow
 /**
  * Keys used for localStorage - kept here in a constants file to ensure they don't collide
  */
@@ -9,7 +8,7 @@ export const HACKTOBERFEST = 'hacktoberfest-2018';
 
 // Used by announcements
 const ANNOUNCEMENT_PREFIX = 'announcements.';
-export function announcementKey(key: ?string) {
+export function announcementKey(key: string | null | undefined) {
   if (!key) return null;
   return `${ANNOUNCEMENT_PREFIX}${key}`;
 }

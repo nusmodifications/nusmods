@@ -1,12 +1,10 @@
-// @flow
-
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { get } from 'lodash';
 
-import type { State } from 'reducers';
-import type { Module, Semester, ModuleCode } from 'types/modules';
+import { State } from 'reducers';
+import { Module, Semester, ModuleCode } from 'types/modules';
 
 import { AlertTriangle } from 'views/components/icons';
 import { getModuleSemesterData } from 'utils/modules';
@@ -17,17 +15,17 @@ import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import styles from './ModuleExamClash.scss';
 
 type Props = {
-  moduleCode: ModuleCode,
-  semester: Semester,
-  examDate: ?string,
-  modules: Module[],
+  moduleCode: ModuleCode;
+  semester: Semester;
+  examDate: string | null | undefined;
+  modules: Module[];
 };
 
 /**
  * Shows a warning if the provided examDate clashes with the exam of any modules
  * that are already taken
  */
-export class ModuleExamClashComponent extends PureComponent<Props> {
+export class ModuleExamClashComponent extends React.PureComponent<Props> {
   render() {
     const { modules, moduleCode, semester, examDate } = this.props;
 

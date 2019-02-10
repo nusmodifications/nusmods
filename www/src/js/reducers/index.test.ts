@@ -1,5 +1,4 @@
-// @flow
-import type { ExportData } from 'types/export';
+import { ExportData } from 'types/export';
 import { VERTICAL } from 'types/reducers';
 import reducers from 'reducers';
 import { setExportedData } from 'actions/export';
@@ -42,7 +41,7 @@ const exportData: ExportData = {
 jest.mock('storage/persistReducer', () => (key, reducer) => reducer);
 
 test('reducers should set export data state', () => {
-  const state = reducers(({}: any), setExportedData(modules, exportData));
+  const state = reducers({} as any, setExportedData(modules, exportData));
 
   expect(state.timetables).toEqual({
     lessons: {

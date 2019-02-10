@@ -1,10 +1,9 @@
-// @flow
 import { sortBy } from 'lodash';
 import FilterGroup from 'utils/filters/FilterGroup';
 import ModuleFilter from 'utils/filters/ModuleFilter';
-import type { ModuleCode, ModuleTitle, SearchableModule } from 'types/modules';
+import { ModuleCode, ModuleTitle, SearchableModule } from 'types/modules';
 
-// The query string key used for the search term eg. ?q=Search+Term
+// The query string key used for the search term eg. q | null | undefined=Search+Term
 export const SEARCH_QUERY_KEY = 'q';
 
 export function tokenize(str: string): string[] {
@@ -17,7 +16,9 @@ export function regexify(str: string): RegExp {
   return RegExp(`\\b${terms}`, 'i');
 }
 
-export function createSearchPredicate(searchTerm: string): (SearchableModule) => boolean {
+export function createSearchPredicate(
+  searchTerm: string,
+): (searchableModule: SearchableModule) => boolean {
   const searchRegexes = tokenize(searchTerm).map(regexify);
 
   return function predicate(module: SearchableModule): boolean {
@@ -45,10 +46,9 @@ export function createSearchFilter(searchTerm: string): FilterGroup<ModuleFilter
   return new FilterGroup(SEARCH_QUERY_KEY, 'Search', [filter]).toggle(filter, !!searchTerm);
 }
 
-export function sortModules<T: { +ModuleCode: ModuleCode, +ModuleTitle: ModuleTitle }>(
-  searchTerm: string,
-  modules: T[],
-): T[] {
+export function sortModules<
+  T extends { readonly ModuleCode: ModuleCode; readonly ModuleTitle: ModuleTitle }
+>(searchTerm: string, modules: T[]): T[] {
   const searchRegexes = tokenize(searchTerm).map(regexify);
 
   return sortBy(modules, (module) => {

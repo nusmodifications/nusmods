@@ -1,13 +1,12 @@
-// @flow
-import React, { type Node, PureComponent } from 'react';
-import { withRouter, type ContextRouter } from 'react-router-dom';
-import type { Dispatch } from 'redux';
+import * as React from 'react';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import Mousetrap from 'mousetrap';
 import { groupBy, map } from 'lodash';
 
 import { DARK_MODE } from 'types/settings';
-import type { Mode, ThemeId } from 'types/settings';
+import { Mode, ThemeId } from 'types/settings';
 import themes from 'data/themes.json';
 import { cycleTheme, toggleTimetableOrientation } from 'actions/theme';
 import { openNotification } from 'actions/app';
@@ -17,14 +16,14 @@ import ComponentMap from 'utils/ComponentMap';
 import Modal from './Modal';
 import styles from './KeyboardShortcuts.scss';
 
-type Props = ContextRouter & {
-  dispatch: Dispatch<*>,
-  theme: ThemeId,
-  mode: Mode,
+type Props = RouteComponentProps & {
+  dispatch: Dispatch<any>;
+  theme: ThemeId;
+  mode: Mode;
 };
 
 type State = {
-  helpShown: boolean,
+  helpShown: boolean;
 };
 
 type Section = 'Appearance' | 'Navigation' | 'Timetable';
@@ -34,14 +33,14 @@ const TIMETABLE: Section = 'Timetable';
 
 type Shortcut = string | string[];
 type KeyBinding = {
-  key: Shortcut,
-  section: Section,
-  description: string,
+  key: Shortcut;
+  section: Section;
+  description: string;
 };
 
 const THEME_NOTIFICATION_TIMEOUT = 1000;
 
-export class KeyboardShortcutsComponent extends PureComponent<Props, State> {
+export class KeyboardShortcutsComponent extends React.PureComponent<Props, State> {
   state = {
     helpShown: false,
   };

@@ -1,5 +1,3 @@
-// @flow
-
 import * as Sentry from '@sentry/browser';
 
 // Configure Raven - the client for Sentry, which we use to handle errors

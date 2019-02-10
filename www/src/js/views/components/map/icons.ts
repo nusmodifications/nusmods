@@ -1,5 +1,3 @@
-// @flow
-
 import { Icon } from 'leaflet';
 // eslint-disable-next-line import/extensions
 import marker from 'img/marker.svg?url';

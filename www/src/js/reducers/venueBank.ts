@@ -1,12 +1,11 @@
-// @flow
-import type { FSA } from 'types/redux';
-import type { VenueList } from 'types/venues';
+import { FSA } from 'types/redux';
+import { VenueList } from 'types/venues';
 
 import { FETCH_VENUE_LIST } from 'actions/venueBank';
 import { SUCCESS } from 'types/reducers';
 
 export type VenueBank = {
-  +venueList: VenueList,
+  readonly venueList: VenueList;
 };
 
 const defaultModuleBankState: VenueBank = {

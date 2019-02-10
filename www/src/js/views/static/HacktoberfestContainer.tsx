@@ -1,6 +1,4 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import StaticPage from 'views/static/StaticPage';
 import styles from 'views/static/HacktoberfestContainer.scss';
 import ExternalLink from 'views/components/ExternalLink';

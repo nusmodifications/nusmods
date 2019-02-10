@@ -1,6 +1,5 @@
-// @flow
-import type { State } from 'reducers';
-import type { Semester } from 'types/modules';
+import { State } from 'reducers';
+import { Semester } from 'types/modules';
 import { extractStateForExport, serializeExportState } from 'utils/export';
 
 const baseUrl = '/export';

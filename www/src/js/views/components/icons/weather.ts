@@ -1,4 +1,3 @@
-// @flow
 import { captureException } from 'utils/error';
 
 // Weather icons from https://github.com/erikflowers/weather-icons

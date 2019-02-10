@@ -1,5 +1,3 @@
-// @flow
-
 import { flatMap } from 'lodash';
 
 /**
@@ -13,7 +11,7 @@ export function intersperse<T, U>(array: T[], delimiter: U): Array<T | U> {
   return flatMap(array, (item): Array<T | U> => [item, delimiter]).slice(0, -1);
 }
 
-export function takeUntil<T>(array: T[], max: number, predicate: (T) => boolean): T[] {
+export function takeUntil<T>(array: T[], max: number, predicate: (t: T) => boolean): T[] {
   const filtered = [];
 
   for (let i = 0; i < array.length && filtered.length < max; i++) {
@@ -23,7 +21,9 @@ export function takeUntil<T>(array: T[], max: number, predicate: (T) => boolean)
   return filtered;
 }
 
-export function firstNonNull<T>(producers: Array<() => ?T>): ?T {
+export function firstNonNull<T>(
+  producers: Array<() => T> | null | undefined,
+): T | null | undefined {
   for (let i = 0; i < producers.length; i++) {
     const result = producers[i]();
     if (result != null) return result;

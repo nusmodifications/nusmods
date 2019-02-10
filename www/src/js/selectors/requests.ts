@@ -1,5 +1,4 @@
-// @flow
-import type { State } from 'reducers';
+import { State } from 'reducers';
 import { SUCCESS, FAILURE, REQUEST } from 'types/reducers';
 
 export function isOngoing(state: State, key: string) {

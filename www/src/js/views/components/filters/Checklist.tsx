@@ -1,16 +1,14 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import ModuleFilter from 'utils/filters/ModuleFilter';
 import styles from './styles.scss';
 
 type Props = {
   // Needed to generate unique ID and labels for checkbox and radio inputs
-  groupId: string,
-  filters: ModuleFilter[],
-  onChange: (ModuleFilter) => void,
-  getCount: (ModuleFilter) => number,
+  groupId: string;
+  filters: ModuleFilter[];
+  onChange: (moduleFilter: ModuleFilter) => void;
+  getCount: (moduleFilter: ModuleFilter) => number;
 };
 
 export default function Checklist({ groupId, filters, onChange, getCount }: Props) {

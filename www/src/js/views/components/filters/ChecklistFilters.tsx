@@ -1,17 +1,16 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 import { values } from 'lodash';
 
-import type { OnFilterChange } from 'types/views';
+import { OnFilterChange } from 'types/views';
 
 import FilterGroup from 'utils/filters/FilterGroup';
 import styles from './styles.scss';
 import Checklist from './Checklist';
 
 type Props = {
-  onFilterChange: OnFilterChange,
-  groups: FilterGroup<any>[],
-  group: FilterGroup<*>,
+  onFilterChange: OnFilterChange;
+  groups: FilterGroup<any>[];
+  group: FilterGroup<any>;
 };
 
 export default function ChecklistFilters(props: Props) {

@@ -1,8 +1,6 @@
-// @flow
-
-import type { Module, Semester } from 'types/modules';
-import type { ExportData } from 'types/export';
-import type { FSA, GetState } from 'types/redux';
+import { Module, Semester } from 'types/modules';
+import { ExportData } from 'types/export';
+import { FSA, GetState } from 'types/redux';
 import { hydrateSemTimetableWithLessons } from 'utils/timetables';
 import { captureException, retryImport } from 'utils/error';
 import { getSemesterTimetable } from 'reducers/timetables';

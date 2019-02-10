@@ -1,15 +1,13 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 
 import GameOverlay from './GameOverlay';
 import styles from './overlay.scss';
 
-type Props = {|
-  +score: number,
-  +resumeGame: () => void,
-|};
+type Props = {
+  readonly score: number;
+  readonly resumeGame: () => void;
+};
 
 export default function GamePaused(props: Props) {
   return (

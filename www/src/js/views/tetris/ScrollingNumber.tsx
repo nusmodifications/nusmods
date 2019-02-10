@@ -1,25 +1,23 @@
-// @flow
-
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 
 type Props = {
-  children: number,
-  tagName: string,
-  className?: string,
+  children: number;
+  tagName: string;
+  className?: string;
 
   // Additional props
-  [string]: any,
+  [key: string]: any;
 };
 
-type State = {|
-  currentValue: number,
-|};
+type State = {
+  currentValue: number;
+};
 
 /**
  * Animates a number such that it increments or decrements (spins) towards
  * the actual value provided as the children
  */
-export default class ScrollingNumber extends PureComponent<Props, State> {
+export default class ScrollingNumber extends React.PureComponent<Props, State> {
   static defaultProps = {
     tagName: 'span',
   };

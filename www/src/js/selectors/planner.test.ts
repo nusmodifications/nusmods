@@ -1,10 +1,8 @@
-// @flow
-
 import { clone } from 'lodash';
 import { getAcadYearModules, getPrereqModuleCode } from 'selectors/planner';
-import type { PlannerState } from 'types/reducers';
-import type { State } from 'reducers';
-import type { ModuleCode } from 'types/modules';
+import { PlannerState } from 'types/reducers';
+import { State } from 'reducers';
+import { ModuleCode } from 'types/modules';
 
 /** @var Module */
 import CS3216 from '__mocks__/modules/CS3216.json';
@@ -40,7 +38,7 @@ describe(getAcadYearModules, () => {
         modules: {},
         moduleCodes: {},
       },
-    }: any);
+    } as any);
 
   const expectModuleCodes = (modules: ModuleCode[]) =>
     modules.map((moduleCode) =>

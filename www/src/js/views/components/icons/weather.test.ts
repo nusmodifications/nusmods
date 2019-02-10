@@ -1,5 +1,3 @@
-// @flow
-
 import Cloudy from 'img/weather/cloudy.svg';
 import Rain from 'img/weather/rain.svg';
 import Showers from 'img/weather/showers.svg';

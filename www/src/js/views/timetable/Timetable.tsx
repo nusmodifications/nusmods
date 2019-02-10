@@ -1,10 +1,9 @@
-// @flow
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import { values, flattenDeep, noop } from 'lodash';
 import classnames from 'classnames';
 
-import type { Lesson } from 'types/modules';
-import type { HoverLesson, TimetableArrangement } from 'types/timetables';
+import { Lesson } from 'types/modules';
+import { HoverLesson, TimetableArrangement } from 'types/timetables';
 
 import {
   SCHOOLDAYS,
@@ -21,18 +20,18 @@ import TimetableTimings from './TimetableTimings';
 import TimetableDay from './TimetableDay';
 
 type Props = {
-  lessons: TimetableArrangement,
-  isVerticalOrientation: boolean,
-  isScrolledHorizontally: boolean,
-  showTitle: boolean,
-  onModifyCell: Function,
+  lessons: TimetableArrangement;
+  isVerticalOrientation: boolean;
+  isScrolledHorizontally: boolean;
+  showTitle: boolean;
+  onModifyCell: Function;
 };
 
 type State = {
-  hoverLesson: ?HoverLesson,
+  hoverLesson: HoverLesson | null | undefined;
 };
 
-class Timetable extends PureComponent<Props, State> {
+class Timetable extends React.PureComponent<Props, State> {
   static defaultProps = {
     isVerticalOrientation: false,
     isScrolledHorizontally: false,
@@ -44,7 +43,7 @@ class Timetable extends PureComponent<Props, State> {
     hoverLesson: null,
   };
 
-  onCellHover = (hoverLesson: ?HoverLesson) => {
+  onCellHover = (hoverLesson: HoverLesson | null | undefined) => {
     this.setState({ hoverLesson });
   };
 

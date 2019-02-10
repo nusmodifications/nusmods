@@ -1,5 +1,3 @@
-// @flow
-
 /**
  * Handles high scores for ModTris
  */
@@ -9,9 +7,9 @@ import getLocalStorage from 'storage/localStorage';
 import { MODTRIS_SCORES } from 'storage/keys';
 
 export type ScoreEntry = {
-  name: string,
-  score: number,
-  time: number,
+  name: string;
+  score: number;
+  time: number;
 };
 
 export type ScoreData = ScoreEntry[];

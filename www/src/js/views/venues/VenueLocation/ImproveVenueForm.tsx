@@ -1,13 +1,12 @@
-// @flow
-import type { LatLng } from 'leaflet';
-import type { Viewport } from 'react-leaflet';
-import React, { PureComponent } from 'react';
+import { LatLng } from 'leaflet';
+import { Viewport } from 'react-leaflet';
+import * as React from 'react';
 import { Map, Marker, TileLayer } from 'react-leaflet';
 import classnames from 'classnames';
 import axios from 'axios';
 import bowser from 'bowser';
 
-import type { LatLngTuple, Venue, VenueLocation } from 'types/venues';
+import { LatLngTuple, Venue, VenueLocation } from 'types/venues';
 import config from 'config';
 import { MapPin, ThumbsUp } from 'views/components/icons';
 import LoadingSpinner from 'views/components/LoadingSpinner';
@@ -18,28 +17,28 @@ import mapStyles from 'views/components/map/LocationMap.scss';
 import styles from './ImproveVenueForm.scss';
 
 type Props = {
-  venue: Venue,
-  existingLocation?: ?VenueLocation,
-  onBack?: () => void,
+  venue: Venue;
+  existingLocation?: VenueLocation | null | undefined;
+  onBack?: () => void;
 };
 
 type State = {
   // Form data
-  reporterEmail: string,
-  roomName: string,
-  floor: number,
-  location: LatLngTuple,
+  reporterEmail: string;
+  roomName: string;
+  floor: number;
+  location: LatLngTuple;
 
   // Form state
-  latlngUpdated: boolean,
-  submitting: boolean,
-  submitted: boolean,
-  isMapExpanded: boolean,
-  promptUpdateMap: boolean,
+  latlngUpdated: boolean;
+  submitting: boolean;
+  submitted: boolean;
+  isMapExpanded: boolean;
+  promptUpdateMap: boolean;
   // viewport is stored as a separate state because viewport may be animated separately
   // from location
-  viewport: Viewport,
-  error?: any,
+  viewport: Viewport;
+  error?: any;
 };
 
 const wellKnownLocations = {
@@ -52,7 +51,7 @@ const wellKnownLocations = {
   'Bukit Timah Campus': [1.3189664358274156, 103.81760090589525],
 };
 
-export default class ImproveVenueForm extends PureComponent<Props, State> {
+export default class ImproveVenueForm extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -93,7 +92,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
     };
   }
 
-  onSubmit = (evt: SyntheticEvent<HTMLFormElement>) => {
+  onSubmit = (evt: React.SyntheticEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
     // Don't allow the user to submit without changing the latlng on the map
@@ -122,7 +121,7 @@ export default class ImproveVenueForm extends PureComponent<Props, State> {
       .then(() => this.setState({ submitting: false }));
   };
 
-  onMapJump = (evt: SyntheticEvent<HTMLSelectElement>) => {
+  onMapJump = (evt: React.SyntheticEvent<HTMLSelectElement>) => {
     if (!(evt.target instanceof HTMLSelectElement)) return;
 
     const location = wellKnownLocations[evt.target.value];

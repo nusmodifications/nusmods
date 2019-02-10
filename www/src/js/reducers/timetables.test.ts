@@ -1,5 +1,3 @@
-// @flow
-
 import reducer, { defaultTimetableState, persistConfig } from 'reducers/timetables';
 import {
   ADD_MODULE,
@@ -9,7 +7,7 @@ import {
   showLessonInTimetable,
   setLessonConfig,
 } from 'actions/timetables';
-import type { TimetablesState } from 'types/reducers';
+import { TimetablesState } from 'types/reducers';
 import config from 'config';
 
 const initialState = defaultTimetableState;

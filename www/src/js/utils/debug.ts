@@ -1,4 +1,3 @@
-// @flow
 import qs from 'query-string';
 import { setTime } from 'utils/timify';
 

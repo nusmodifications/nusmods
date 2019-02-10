@@ -1,22 +1,23 @@
-// @flow
-
-import type { Reducer } from 'redux';
-import type { PersistConfig, Persistor } from 'redux-persist/lib/types';
+import { Reducer } from 'redux';
+import { PersistConfig, Persistor } from 'redux-persist/lib/types';
 import { persistReducer as basePersistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 // Re-export type for easier consumption in other parts of the project
-export type { PersistConfig, Persistor };
+export { PersistConfig, Persistor };
 
 /**
  * Wrapper function around persistReducer from Redux Persist.
  */
 export default function persistReducer(
   key: string,
-  reducer: Reducer<*, *>,
-  options: $Diff<PersistConfig, { key: string, storage: Object }> = {},
+  reducer: Reducer<any, any>,
+  options: Pick<
+    PersistConfig,
+    Exclude<keyof PersistConfig, keyof { key: string; storage: Object }>
+  > = {},
 ) {
-  return basePersistReducer<*, *>(
+  return basePersistReducer<any, any>(
     {
       key,
       storage,

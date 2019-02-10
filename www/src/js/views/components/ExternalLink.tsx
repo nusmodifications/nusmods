@@ -1,11 +1,6 @@
-// @flow
-import React, { type Node } from 'react';
+import * as React from 'react';
 
-type Props = {
-  ...HTMLAnchorElement,
-  href: string,
-  children: Node,
-};
+type Props = HTMLAnchorElement & { href: string; children: Node };
 
 // Renders an anchor tag that safely opens href in a new tab or window.
 // See https://mathiasbynens.github.io/rel-noopener/

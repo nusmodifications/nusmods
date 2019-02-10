@@ -1,12 +1,11 @@
-// @flow
-import React, { Component } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import classnames from 'classnames';
 
-import type { Faculty } from 'types/modules';
-import type { Mode } from 'types/settings';
-import type { State as StoreState } from 'reducers';
+import { Faculty } from 'types/modules';
+import { Mode } from 'types/settings';
+import { State as StoreState } from 'reducers';
 
 import availableThemes from 'data/themes.json';
 import { selectTheme } from 'actions/theme';
@@ -26,21 +25,21 @@ import BetaToggle from './BetaToggle';
 import RefreshPrompt from './RefreshPrompt';
 
 type Props = {
-  newStudent: boolean,
-  faculty: Faculty,
-  currentThemeId: string,
-  mode: Mode,
-  betaTester: boolean,
+  newStudent: boolean;
+  faculty: Faculty;
+  currentThemeId: string;
+  mode: Mode;
+  betaTester: boolean;
 
-  selectTheme: Function,
-  selectNewStudent: Function,
-  selectFaculty: Function,
-  selectMode: Function,
+  selectTheme: Function;
+  selectNewStudent: Function;
+  selectFaculty: Function;
+  selectMode: Function;
 
-  toggleBetaTesting: () => void,
+  toggleBetaTesting: () => void;
 };
 
-class SettingsContainer extends Component<Props> {
+class SettingsContainer extends React.Component<Props> {
   renderNightModeOption() {
     return (
       <div>

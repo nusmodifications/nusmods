@@ -1,5 +1,4 @@
-// @flow
-import type { EventOption } from 'ical-generator';
+import { EventOption } from 'ical-generator';
 import config from 'config';
 import iCalForTimetable, {
   RECESS_WEEK,
@@ -96,7 +95,7 @@ test('hoursAfter should return a date incremented by the given number of hours',
 });
 
 test('iCalEventForExam should generate event', () => {
-  const actual: ?EventOption = iCalEventForExam(cs1010s, 1);
+  const actual: EventOption | null | undefined = iCalEventForExam(cs1010s, 1);
   const expected: EventOption = {
     start: new Date('2017-11-29T17:00+0800'),
     end: new Date('2017-11-29T19:00+0800'),

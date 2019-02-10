@@ -1,6 +1,4 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 
 import ExternalLink from 'views/components/ExternalLink';
 import Tooltip from 'views/components/Tooltip';
@@ -11,17 +9,17 @@ import styles from './TeamContainer.scss';
 
 type Props = {
   member: {
-    name: string,
-    description: string,
-    active?: boolean,
-    link: string,
-    gravatar: string,
-    gravatarAlt: string,
-    facebook?: string,
-    twitter?: string,
-    github?: string,
-    linkedin?: string,
-  },
+    name: string;
+    description: string;
+    active?: boolean;
+    link: string;
+    gravatar: string;
+    gravatarAlt: string;
+    facebook?: string;
+    twitter?: string;
+    github?: string;
+    linkedin?: string;
+  };
 };
 
 const title = 'Team';

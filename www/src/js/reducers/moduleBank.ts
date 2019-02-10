@@ -1,7 +1,6 @@
-// @flow
-import type { FSA } from 'types/redux';
-import type { Module, ModuleCode } from 'types/modules';
-import type { ModuleCodeMap, ModuleList } from 'types/reducers';
+import { FSA } from 'types/redux';
+import { Module, ModuleCode } from 'types/modules';
+import { ModuleCodeMap, ModuleList } from 'types/reducers';
 import { SUCCESS } from 'types/reducers';
 
 import update from 'immutability-helper';
@@ -18,22 +17,22 @@ import {
 import { SET_EXPORTED_DATA } from 'actions/export';
 
 export type ModulesMap = {
-  [ModuleCode]: Module,
+  [moduleCode: string]: Module;
 };
 
 export type ModuleArchive = {
-  [ModuleCode]: {
+  [moduleCode: string]: {
     // Mapping acad year to module info
-    [string]: Module,
-  },
+    [key: string]: Module;
+  };
 };
 
 export type ModuleBank = {
-  moduleList: ModuleList,
-  modules: ModulesMap,
-  moduleCodes: ModuleCodeMap,
-  moduleArchive: ModuleArchive,
-  apiLastUpdatedTimestamp: ?string,
+  moduleList: ModuleList;
+  modules: ModulesMap;
+  moduleCodes: ModuleCodeMap;
+  moduleArchive: ModuleArchive;
+  apiLastUpdatedTimestamp: string | null | undefined;
 };
 
 const defaultModuleBankState: ModuleBank = {

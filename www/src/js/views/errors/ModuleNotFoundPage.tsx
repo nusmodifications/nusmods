@@ -1,11 +1,10 @@
-// @flow
-import React, { PureComponent, Fragment } from 'react';
+import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import * as Sentry from '@sentry/browser';
 
-import type { ModuleCode } from 'types/modules';
+import { ModuleCode } from 'types/modules';
 import RandomKawaii from 'views/components/RandomKawaii';
 import Title from 'views/components/Title';
 import { fetchAllModuleArchive } from 'actions/moduleBank';
@@ -16,14 +15,14 @@ import { moduleArchive } from 'views/routes/paths';
 import styles from './ErrorPage.scss';
 
 type Props = {
-  moduleCode: ModuleCode,
+  moduleCode: ModuleCode;
 
-  isLoading: boolean,
-  availableArchive: string[],
-  fetchModuleArchive: (string) => Promise<*>,
+  isLoading: boolean;
+  availableArchive: string[];
+  fetchModuleArchive: (str: string) => Promise<any>;
 };
 
-export class ModuleNotFoundPageComponent extends PureComponent<Props> {
+export class ModuleNotFoundPageComponent extends React.PureComponent<Props> {
   componentDidMount() {
     Sentry.withScope(() => {
       Sentry.captureMessage('404 - Module Not Found');
@@ -47,7 +46,7 @@ export class ModuleNotFoundPageComponent extends PureComponent<Props> {
         <Title>Module Not Found</Title>
 
         {this.props.availableArchive.length ? (
-          <Fragment>
+          <>
             <div className={styles.header}>
               <RandomKawaii size={100} />
             </div>
@@ -76,9 +75,9 @@ export class ModuleNotFoundPageComponent extends PureComponent<Props> {
               <Link to="/">go back to nusmods.com</Link> or{' '}
               <Link to="/modules">try the module finder</Link>.
             </p>
-          </Fragment>
+          </>
         ) : (
-          <Fragment>
+          <>
             <h1 className={styles.heading}>
               <span className={styles.bigCharacter}>4</span>
               <RandomKawaii aria-label="0" title="0" size={100} />
@@ -100,7 +99,7 @@ export class ModuleNotFoundPageComponent extends PureComponent<Props> {
                 Bring me home
               </Link>
             </div>
-          </Fragment>
+          </>
         )}
       </div>
     );

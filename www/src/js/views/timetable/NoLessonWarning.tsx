@@ -1,6 +1,4 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import styles from './NoLessonWarning.scss';
 
 export default function NoLessonWarning() {

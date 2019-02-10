@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import config from 'config';
 
 /* eslint-disable */
@@ -31,7 +31,7 @@ export const matchEgg = (query) => {
 };
 
 type Props = {
-  query: string,
+  query: string;
 };
 
 export default function Omelette(props: Props) {

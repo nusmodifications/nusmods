@@ -1,12 +1,11 @@
-// @flow
 import { findLastIndex, min, range, zip } from 'lodash';
 import produce from 'immer';
 
-import type { ColorIndex } from 'types/reducers';
-import type { ColoredLesson } from 'types/modules';
+import { ColorIndex } from 'types/reducers';
+import { ColoredLesson } from 'types/modules';
 import { DaysOfWeek } from 'types/modules';
 import { convertIndexToTime } from 'utils/timify';
-import type { TimetableArrangement, TimetableDayArrangement } from 'types/timetables';
+import { TimetableArrangement, TimetableDayArrangement } from 'types/timetables';
 
 export const ROWS = 20;
 export const COLUMNS = 9;
@@ -20,19 +19,19 @@ export const COLUMNS = 9;
 // The first timetable row index to be used
 export const INITIAL_ROW_INDEX = 16; // 8am
 
-export type Square = {|
-  color: ColorIndex,
-|};
+export type Square = {
+  color: ColorIndex;
+};
 
 // A 2D array of squares representing the Tetris board in column major order.
 // The top right corner is (0, 0)
-export type Board = Array<Array<?Square>>;
+export type Board = Array<Array<Square | null | undefined>>;
 
-export type Piece = {|
-  x: number,
-  y: number,
-  tiles: Board,
-|};
+export type Piece = {
+  x: number;
+  y: number;
+  tiles: Board;
+};
 
 export const defaultBoard: Board = range(COLUMNS).map(() => range(ROWS).map(() => null));
 
@@ -49,7 +48,6 @@ export function makePiece(shape: string[], color: ColorIndex): Piece {
   // Map 1s to filled squares and 0s to to empty squares (null)
   const rows = shape.map((row) => row.split('').map((tile) => (tile === '1' ? { color } : null)));
 
-  // $FlowFixMe lodash has incorrect zip libdefs
   const tiles: Board = zip(...rows);
 
   return {
@@ -116,7 +114,7 @@ export const PIECES = [
  */
 function iterateBoard(
   board: Board,
-  iterator: (tile: Square, col: number, row: number) => ?boolean,
+  iterator: (tile: Square, col: number, row: number) => boolean | null | undefined,
 ) {
   let continueIterating = true;
 
@@ -138,7 +136,7 @@ function iterateBoard(
 
 function iteratePiece(
   piece: Piece,
-  iterator: (tile: Square, col: number, row: number) => ?boolean,
+  iterator: (tile: Square, col: number, row: number) => boolean | null | undefined,
 ) {
   return iterateBoard(piece.tiles, (tile, col, row) =>
     iterator(tile, col + piece.x, row + piece.y),

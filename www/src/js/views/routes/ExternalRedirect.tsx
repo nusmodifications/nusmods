@@ -1,11 +1,10 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 import { Route } from 'react-router-dom';
 
 type Props = {
-  to: string,
-  path: string,
-  appendPath?: boolean,
+  to: string;
+  path: string;
+  appendPath?: boolean;
 };
 
 export default function ExternalRedirect({ to, appendPath, path, ...props }: Props) {

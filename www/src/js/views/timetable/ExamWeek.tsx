@@ -1,11 +1,9 @@
-// @flow
-
 import { range } from 'lodash';
-import React, { Fragment } from 'react';
+import * as React from 'react';
 import { Link } from 'react-router-dom';
 
-import type { ModuleWithColor } from 'types/modules';
-import type { ModuleWithExamTime } from 'types/views';
+import { ModuleWithColor } from 'types/modules';
+import { ModuleWithExamTime } from 'types/views';
 import { TIME_SEGMENTS } from 'types/views';
 import { formatExamDate } from 'utils/modules';
 import { daysAfter } from 'utils/timify';
@@ -15,10 +13,10 @@ import styles from 'views/timetable/ExamCalendar.scss';
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 type Props = {
-  modules: { [string]: ModuleWithExamTime[] },
-  weekNumber: number,
-  firstDayOfExams: Date,
-  days: number,
+  modules: { [key: string]: ModuleWithExamTime[] };
+  weekNumber: number;
+  firstDayOfExams: Date;
+  days: number;
 };
 
 function getExamDate(date: Date): string {
@@ -82,12 +80,12 @@ export default function ExamWeek(props: Props) {
         return (
           <td className={styles.day} key={date.getTime()}>
             {!!modulesAtThisTime.length && (
-              <Fragment>
+              <>
                 <h4>{modulesAtThisTime[0].time}</h4>
                 {modulesAtThisTime.map(({ module }) => (
                   <ExamModule key={module.ModuleCode} module={module} />
                 ))}
-              </Fragment>
+              </>
             )}
           </td>
         );
@@ -96,9 +94,9 @@ export default function ExamWeek(props: Props) {
   ));
 
   return (
-    <Fragment>
+    <>
       {headerRow}
       {moduleRows}
-    </Fragment>
+    </>
   );
 }

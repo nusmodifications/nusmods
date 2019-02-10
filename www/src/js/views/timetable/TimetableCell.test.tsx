@@ -1,8 +1,7 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import type { HoverLesson } from 'types/timetables';
+import { HoverLesson } from 'types/timetables';
 import TimetableCell from './TimetableCell';
 
 const DEFAULT_LESSON = {
@@ -19,10 +18,10 @@ const DEFAULT_LESSON = {
 };
 
 type Props = {
-  onClick?: Function,
-  showTitle?: boolean,
-  onHover?: ?(?HoverLesson) => void,
-  hoverLesson?: ?HoverLesson,
+  onClick?: Function;
+  showTitle?: boolean;
+  onHover: (hoverLesson?: HoverLesson) => void;
+  hoverLesson?: HoverLesson | null | undefined;
 };
 
 describe(TimetableCell, () => {
@@ -30,7 +29,7 @@ describe(TimetableCell, () => {
     const props = {
       onHover: jest.fn(),
       showTitle: false,
-      hoverLesson: (null: ?HoverLesson),
+      hoverLesson: null,
       ...additionalProps,
     };
 

@@ -1,5 +1,4 @@
-// @flow
-import type { DayText, Lesson, LessonTime } from 'types/modules';
+import { DayText, Lesson, LessonTime } from 'types/modules';
 import {
   getISODay,
   format,
@@ -83,7 +82,7 @@ export const DEFAULT_LATEST_TIME: LessonTime = '1800';
 // This bounds will then be used to decide the starting and ending hours of the timetable.
 export function calculateBorderTimings(
   lessons: Array<Lesson>,
-): { startingIndex: number, endingIndex: number } {
+): { startingIndex: number; endingIndex: number } {
   let earliestTime: number = convertTimeToIndex(DEFAULT_EARLIEST_TIME);
   let latestTime: number = convertTimeToIndex(DEFAULT_LATEST_TIME);
   lessons.forEach((lesson) => {

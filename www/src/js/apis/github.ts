@@ -1,7 +1,6 @@
-// @flow
 import axios from 'axios';
 import qs from 'query-string';
-import type { Contributor } from 'types/contributor';
+import { Contributor } from 'types/contributor';
 
 // We proxy https://api.github.com/repos/nusmodifications/nusmods -> https://github.nusmods.com/repo
 // This allows us to cache the response to stop 403 rate limit error caused by the

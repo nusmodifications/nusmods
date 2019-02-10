@@ -1,10 +1,9 @@
-// @flow
 import { uniq, without } from 'lodash';
 import update from 'immutability-helper';
 import { REHYDRATE } from 'redux-persist';
 
-import type { FSA } from 'types/redux';
-import type { SettingsState } from 'types/reducers';
+import { FSA } from 'types/redux';
+import { SettingsState } from 'types/reducers';
 
 import {
   SELECT_NEW_STUDENT,
@@ -71,14 +70,14 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
     case DISMISS_CORS_NOTIFICATION:
       return update(state, {
         corsNotification: {
-          dismissed: (rounds) => uniq([...rounds, action.payload.round]),
+          dismissed: (rounds: rounds) => uniq([...rounds, action.payload.round]),
         },
       });
 
     case ENABLE_CORS_NOTIFICATION:
       return update(state, {
         corsNotification: {
-          dismissed: (rounds) => without(rounds, action.payload.round),
+          dismissed: (rounds: rounds) => without(rounds, action.payload.round),
         },
       });
 

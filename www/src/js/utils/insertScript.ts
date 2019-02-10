@@ -1,12 +1,10 @@
-// @flow
-
 type ScriptOptions = {
-  id?: string,
-  async?: boolean,
-  defer?: boolean,
+  id?: string;
+  async?: boolean;
+  defer?: boolean;
 };
 
-export default function insertScript(src: string, options: ScriptOptions = {}): Promise<*> {
+export default function insertScript(src: string, options: ScriptOptions = {}): Promise<any> {
   return new Promise((resolve, reject) => {
     const script = window.document.createElement('script');
     script.src = src;

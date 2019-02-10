@@ -1,5 +1,4 @@
-// @flow
-import type { Module } from 'types/modules';
+import { Module } from 'types/modules';
 
 import { createModule } from 'test-utils/filterHelpers';
 import Group from './FilterGroup';
@@ -10,11 +9,11 @@ const cs3216 = createModule('CS3216');
 const pc1222 = createModule('PC1222');
 
 // Call toggle on multiple filters together
-function enable(group: Group<*>, ids: string[]): Group<*> {
+function enable(group: Group<any>, ids: string[]): Group<any> {
   return ids.reduce((g, id) => g.toggle(id), group);
 }
 
-function initModules(groups: Group<*>[], modules: Module[]) {
+function initModules(groups: Group<any>[], modules: Module[]) {
   groups.forEach((group) => group.initFilters(modules));
 }
 
@@ -126,7 +125,7 @@ describe('#toQueryString()', () => {
 });
 
 describe('#fromQueryString()', () => {
-  function filterIds(group: Group<*>): string[] {
+  function filterIds(group: Group<any>): string[] {
     return group.activeFilters.map((filter) => filter.id);
   }
 

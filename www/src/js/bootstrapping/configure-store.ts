@@ -1,21 +1,11 @@
-// @flow
-import { createStore, applyMiddleware, compose, type Store } from 'redux';
+import { createStore, applyMiddleware, compose, Store } from 'redux';
 import { persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
 import update, { extend } from 'immutability-helper';
-import rootReducer, { type State } from 'reducers';
+import rootReducer, { State } from 'reducers';
 import requestsMiddleware from 'middlewares/requests-middleware';
 import ravenMiddleware from 'middlewares/raven-middleware';
 import { setAutoFreeze } from 'immer';
-
-// Typedef for Webpack-augmented global module variable.
-// Docs: https://webpack.js.org/api/hot-module-replacement/
-// Source: https://github.com/flowtype/flow-typed/issues/165#issuecomment-246002816
-declare var module: {
-  hot: {
-    accept(path: string | string[], callback: () => void): void,
-  },
-};
 
 // Extend immutability-helper with autovivification commands. This allows immutability-helper
 // to automatically create objects if it doesn't exist before
@@ -44,7 +34,7 @@ export default function configureStore(defaultState?: State) {
       duration: true,
       diff: true,
       // Avoid diffing actions that insert a lot of stuff into the state to prevent console from lagging
-      diffPredicate: (getState, action) =>
+      diffPredicate: (getState: getState, action: action) =>
         !action.type.startsWith('FETCH_MODULE_LIST') && !action.type.startsWith('persist/'),
     });
     middlewares.push(logger);
@@ -52,7 +42,7 @@ export default function configureStore(defaultState?: State) {
 
   const storeEnhancer = applyMiddleware(...middlewares);
 
-  const store: Store<State, *, *> = createStore(
+  const store: Store<State, any, any> = createStore(
     rootReducer,
     defaultState,
     composeEnhancers(storeEnhancer),

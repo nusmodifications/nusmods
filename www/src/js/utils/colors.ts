@@ -1,9 +1,8 @@
-// @flow
 import { range, without, sample } from 'lodash';
 
-import type { SemTimetableConfig } from 'types/timetables';
-import type { ColorIndex, ColorMapping } from 'types/reducers';
-import type { Lesson, ColoredLesson } from 'types/modules';
+import { SemTimetableConfig } from 'types/timetables';
+import { ColorIndex, ColorMapping } from 'types/reducers';
+import { Lesson, ColoredLesson } from 'types/modules';
 
 export const NUM_DIFFERENT_COLORS: number = 8;
 
@@ -34,7 +33,7 @@ export function getNewColor(
 
 // Color lessons by a certain property of every lesson
 // e.g. clbk([...], 'LessonType') colors lessons by their type
-export function colorLessonsByKey(lessons: Lesson[], key: $Keys<Lesson>): ColoredLesson[] {
+export function colorLessonsByKey(lessons: Lesson[], key: keyof Lesson): ColoredLesson[] {
   const colorMap = new Map();
   return lessons.map((lesson) => {
     let colorIndex = colorMap.get(lesson[key]);

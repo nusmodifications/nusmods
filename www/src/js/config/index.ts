@@ -1,5 +1,4 @@
-// @flow
-import type { Semester, AcadYear } from 'types/modules';
+import { Semester, AcadYear } from 'types/modules';
 
 import holidays from 'data/holidays.json';
 import corsData from 'data/cors-schedule-ay1819-sem2.json';
@@ -8,58 +7,58 @@ import appConfig from './app-config.json';
 export type CorsPeriodType = 'open' | 'closed';
 
 export type CorsPeriod = {
-  type: CorsPeriodType,
-  start: string,
-  startDate: Date,
-  end: string,
-  endDate: Date,
+  type: CorsPeriodType;
+  start: string;
+  startDate: Date;
+  end: string;
+  endDate: Date;
 };
 
 export type CorsRound = {
-  round: string,
-  periods: CorsPeriod[],
+  round: string;
+  periods: CorsPeriod[];
 };
 
 export type Config = {
-  brandName: string,
-  academicYear: AcadYear,
-  semester: Semester,
-  getSemesterKey: () => string,
+  brandName: string;
+  academicYear: AcadYear;
+  semester: Semester;
+  getSemesterKey: () => string;
 
-  apiBaseUrl: string,
-  corsUrl: string,
-  ivleUrl: string,
+  apiBaseUrl: string;
+  corsUrl: string;
+  ivleUrl: string;
 
-  disqusShortname: string,
-  googleAnalyticsId: string,
-  venueFeedbackApi: string,
+  disqusShortname: string;
+  googleAnalyticsId: string;
+  venueFeedbackApi: string;
 
-  semesterNames: { [Semester]: string },
-  shortSemesterNames: { [Semester]: string },
-  timetableAvailable: Semester[],
-  archiveYears: string[],
+  semesterNames: { [semester: string]: string };
+  shortSemesterNames: { [semester: string]: string };
+  timetableAvailable: Semester[];
+  archiveYears: string[];
 
   defaultPreferences: {
-    theme: string,
-    mode: string,
-    faculty: string,
-    student: string,
-    account: string,
-  },
+    theme: string;
+    mode: string;
+    faculty: string;
+    student: string;
+    account: string;
+  };
 
   contact: {
-    blog: string,
-    email: string,
-    facebook: string,
-    githubOrg: string,
-    githubRepo: string,
-    messenger: string,
-    twitter: string,
-  },
+    blog: string;
+    email: string;
+    facebook: string;
+    githubOrg: string;
+    githubRepo: string;
+    messenger: string;
+    twitter: string;
+  };
 
-  holidays: Date[],
+  holidays: Date[];
 
-  corsSchedule: CorsRound[],
+  corsSchedule: CorsRound[];
 };
 
 function convertCorsDate(roundData: Object): CorsRound {

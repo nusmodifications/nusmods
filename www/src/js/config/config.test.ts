@@ -1,11 +1,10 @@
-// @flow
 import _ from 'lodash';
 import { roundEnd } from 'utils/cors';
 import academicCalendar from 'data/academic-calendar.json';
 import config from './index';
 import { Semesters } from '../types/modules';
 
-function isSorted(arr: Array<*>) {
+function isSorted(arr: Array<any>) {
   return arr.slice(1).every((item, index) => item >= arr[index]);
 }
 

@@ -1,15 +1,14 @@
-// @flow
 import config from 'config';
 import { getModuleSemesterData, getTimeslot } from 'utils/modules';
 import ModuleFilter from 'utils/filters/ModuleFilter';
-import type { Semester, Time, Day } from 'types/modules';
+import { Semester, Time, Day } from 'types/modules';
 
 export type TimeslotType = 'Lecture' | 'Tutorial';
 export const TimeslotTypes = ['Lecture', 'Tutorial'];
 
 // Map TimeslotTypes to the property on SemesterData that contains the lecture or tutorial
 // timeslot info
-const timeslotProperties: { [TimeslotType]: string } = {
+const timeslotProperties: { [timeslotType: string]: string } = {
   Lecture: 'LecturePeriods',
   Tutorial: 'TutorialPeriods',
 };

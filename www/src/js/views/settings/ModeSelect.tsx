@@ -1,15 +1,14 @@
-// @flow
-import type { Mode } from 'types/settings';
+import { Mode } from 'types/settings';
 
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import { LIGHT_MODE, DARK_MODE } from 'types/settings';
 
 type Props = {
-  mode: Mode,
-  onSelectMode: Function,
+  mode: Mode;
+  onSelectMode: Function;
 };
-type ModeOption = { value: Mode, label: string };
+type ModeOption = { value: Mode; label: string };
 
 const MODES: Array<ModeOption> = [
   {

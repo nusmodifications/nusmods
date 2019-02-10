@@ -1,6 +1,5 @@
-// @flow
-import type { ModuleCode, Semester, Lesson } from 'types/modules';
-import type { SemTimetableConfig } from 'types/timetables';
+import { ModuleCode, Semester, Lesson } from 'types/modules';
+import { SemTimetableConfig } from 'types/timetables';
 
 import lessons from '__mocks__/lessons-array.json';
 

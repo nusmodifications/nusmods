@@ -1,12 +1,10 @@
-// @flow
-
-import React, { PureComponent, Fragment } from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import qs from 'query-string';
 import axios from 'axios';
 
-import type { SemTimetableConfig } from 'types/timetables';
-import type { Semester } from 'types/modules';
+import { SemTimetableConfig } from 'types/timetables';
+import { Semester } from 'types/modules';
 
 import config from 'config';
 import { absolutePath, timetableShare } from 'views/routes/paths';
@@ -24,14 +22,14 @@ const COPY_SUCCESS: CopyState = 'COPY_SUCCESS';
 const COPY_FAIL: CopyState = 'COPY_FAIL';
 
 type Props = {
-  semester: Semester,
-  timetable: SemTimetableConfig,
+  semester: Semester;
+  timetable: SemTimetableConfig;
 };
 
 type State = {
-  isOpen: boolean,
-  urlCopied: CopyState,
-  shortUrl: ?string,
+  isOpen: boolean;
+  urlCopied: CopyState;
+  shortUrl: string | null | undefined;
 };
 
 function shareUrl(semester: Semester, timetable: SemTimetableConfig): string {
@@ -41,12 +39,12 @@ function shareUrl(semester: Semester, timetable: SemTimetableConfig): string {
 // So that I don't keep typing 'shortUrl' instead
 export const SHORT_URL_KEY = 'shorturl';
 
-export default class ShareTimetable extends PureComponent<Props, State> {
+export default class ShareTimetable extends React.PureComponent<Props, State> {
   // Save a copy of the current URL to detect when URL changes
-  url: ?string;
+  url: string | null | undefined;
 
   // React QR component is lazy loaded for performance
-  static QRCode: ?ComponentType<any>;
+  static QRCode: React | null | undefined.React.ComponentType<any>;
 
   state: State = {
     isOpen: false,
@@ -208,7 +206,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
     const { isOpen, shortUrl } = this.state;
 
     return (
-      <Fragment>
+      <>
         <button
           type="button"
           className="btn btn-outline-primary btn-svg"
@@ -234,7 +232,7 @@ export default class ShareTimetable extends PureComponent<Props, State> {
 
           {shortUrl ? this.renderSharing(shortUrl) : <LoadingSpinner />}
         </Modal>
-      </Fragment>
+      </>
     );
   }
 }

@@ -1,10 +1,9 @@
-// @flow
-import React, { Component, Fragment } from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import ScrollSpy from 'react-scrollspy';
 import { kebabCase, map, mapValues, values } from 'lodash';
 
-import type { Module } from 'types/modules';
+import { Module } from 'types/modules';
 
 import config from 'config';
 import { formatExamDate, getSemestersOffered } from 'utils/modules';
@@ -32,12 +31,12 @@ import ExternalLink from 'views/components/ExternalLink';
 import styles from './ModulePageContent.scss';
 
 export type Props = {
-  module: Module,
-  archiveYear?: string,
+  module: Module;
+  archiveYear?: string;
 };
 
 type State = {
-  isMenuOpen: boolean,
+  isMenuOpen: boolean;
 };
 
 export const SIDE_MENU_LABELS = {
@@ -49,7 +48,7 @@ export const SIDE_MENU_LABELS = {
 
 export const SIDE_MENU_ITEMS = mapValues(SIDE_MENU_LABELS, kebabCase);
 
-export default class ModulePageContent extends Component<Props, State> {
+export default class ModulePageContent extends React.Component<Props, State> {
   state: State = {
     isMenuOpen: false,
   };
@@ -126,40 +125,40 @@ export default class ModulePageContent extends Component<Props, State> {
 
                   <dl>
                     {module.Prerequisite && (
-                      <Fragment>
+                      <>
                         <dt>Prerequisite</dt>
                         <dd>
                           <LinkModuleCodes>{module.Prerequisite}</LinkModuleCodes>
                         </dd>
-                      </Fragment>
+                      </>
                     )}
 
                     {module.Corequisite && (
-                      <Fragment>
+                      <>
                         <dt>Corequisite</dt>
                         <dd>
                           <LinkModuleCodes>{module.Corequisite}</LinkModuleCodes>
                         </dd>
-                      </Fragment>
+                      </>
                     )}
 
                     {module.Preclusion && (
-                      <Fragment>
+                      <>
                         <dt>Preclusion</dt>
                         <dd>
                           <LinkModuleCodes>{module.Preclusion}</LinkModuleCodes>
                         </dd>
-                      </Fragment>
+                      </>
                     )}
                   </dl>
 
                   {module.Workload ? (
                     <ModuleWorkload workload={module.Workload} />
                   ) : (
-                    <Fragment>
+                    <>
                       <h4>Workload</h4>
                       <p>Workload not available</p>
-                    </Fragment>
+                    </>
                   )}
                 </div>
 

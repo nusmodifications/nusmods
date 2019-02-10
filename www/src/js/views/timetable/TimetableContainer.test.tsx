@@ -1,10 +1,8 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import { Redirect } from 'react-router-dom';
-import { shallow, type ShallowWrapper } from 'enzyme';
-import type { SemTimetableConfig } from 'types/timetables';
-import type { ModulesMap } from 'reducers/moduleBank';
+import { shallow, ShallowWrapper } from 'enzyme';
+import { SemTimetableConfig } from 'types/timetables';
+import { ModulesMap } from 'reducers/moduleBank';
 
 import createHistory from 'test-utils/createHistory';
 
@@ -22,7 +20,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 describe(TimetableContainerComponent, () => {
   function create(
     path: string,
-    params: { [string]: ?string } = {},
+    params: { [key: string]: string | null | undefined } = {},
     timetable: SemTimetableConfig = {},
     modules: ModulesMap = { CS1010S, CS3216 },
   ) {

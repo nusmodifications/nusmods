@@ -1,10 +1,9 @@
-// @flow
-import type { Node } from 'react';
+import * as React from 'react';
 
 import React, { Component } from 'react';
 import _ from 'lodash';
 
-import type { ModuleCode, Semester, SemesterData } from 'types/modules';
+import { ModuleCode, Semester, SemesterData } from 'types/modules';
 
 import { getFirstAvailableSemester, formatExamDate } from 'utils/modules';
 import SemesterPicker from './SemesterPicker';
@@ -12,12 +11,12 @@ import TimeslotTable from './TimeslotTable';
 import ModuleExamClash from './ModuleExamClash';
 
 type Props = {
-  moduleCode: ModuleCode,
-  semesters: SemesterData[],
+  moduleCode: ModuleCode;
+  semesters: SemesterData[];
 };
 
 type State = {
-  selected: Semester,
+  selected: Semester;
 };
 
 // Using a bitmask to indicate what the timeslot contains - lecture, tutorial, or both
@@ -48,20 +47,20 @@ function getTimeslotContent(timeslot: string, flags: TimeslotFlag) {
   }
 }
 
-export default class ModuleSemesterInfo extends Component<Props, State> {
+export default class ModuleSemesterInfo extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
     this.state = { selected: getFirstAvailableSemester(this.props.semesters) };
   }
 
-  onSelectSemester = (selected: ?Semester) => {
+  onSelectSemester = (selected: Semester | null | undefined) => {
     if (selected) {
       this.setState({ selected });
     }
   };
 
-  selectedSemester(): ?SemesterData {
+  selectedSemester(): SemesterData | null | undefined {
     return this.props.semesters.find((data) => data.Semester === this.state.selected);
   }
 

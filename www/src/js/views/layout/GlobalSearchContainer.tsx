@@ -1,13 +1,12 @@
-// @flow
-import type { State } from 'reducers';
-import type { ModuleCondensed } from 'types/modules';
-import type { Venue, VenueList } from 'types/venues';
-import type { ModuleList } from 'types/reducers';
-import { type ResultType, type SearchResult, VENUE_RESULT } from 'types/views';
+import { State } from 'reducers';
+import { ModuleCondensed } from 'types/modules';
+import { Venue, VenueList } from 'types/venues';
+import { ModuleList } from 'types/reducers';
+import { ResultType, SearchResult, VENUE_RESULT } from 'types/views';
 
-import React, { Component } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
-import { type ContextRouter, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import GlobalSearch from 'views/layout/GlobalSearch';
 import { modulePage, venuePage } from 'views/routes/paths';
 
@@ -17,21 +16,19 @@ import { breakpointUp } from 'utils/css';
 import { takeUntil } from 'utils/array';
 import makeResponsive from 'views/hocs/makeResponsive';
 
-type Props = {
-  ...ContextRouter,
+type Props = RouteComponentProps & {
+  moduleList: ModuleList;
+  venueList: VenueList;
+  matchBreakpoint: boolean;
 
-  moduleList: ModuleList,
-  venueList: VenueList,
-  matchBreakpoint: boolean,
-
-  fetchVenueList: () => void,
+  fetchVenueList: () => void;
 };
 
 const RESULTS_LIMIT = 10;
 const LONG_LIST_LIMIT = 70;
 const MIN_INPUT_LENGTH = 2;
 
-export class SearchContainerComponent extends Component<Props> {
+export class SearchContainerComponent extends React.Component<Props> {
   componentDidMount() {
     this.props.fetchVenueList();
   }
@@ -58,7 +55,7 @@ export class SearchContainerComponent extends Component<Props> {
     this.props.history.push(`${path}?q=${encodeURIComponent(query)}`);
   };
 
-  getResults = (inputValue: ?string): ?SearchResult => {
+  getResults = (inputValue: string | null | undefined): SearchResult | null | undefined => {
     if (!inputValue || inputValue.length < MIN_INPUT_LENGTH) {
       return null;
     }

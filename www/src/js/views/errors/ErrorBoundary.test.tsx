@@ -1,6 +1,4 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 import { captureException } from 'utils/error';
 import ErrorBoundary from './ErrorBoundary';
@@ -24,7 +22,6 @@ describe('ErrorBoundary', () => {
   let consoleError;
 
   beforeEach(() => {
-    // $FlowFixMe
     captureException.mockReset();
 
     // Silence console errors

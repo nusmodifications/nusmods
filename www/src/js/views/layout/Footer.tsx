@@ -1,7 +1,6 @@
-// @flow
-import type { State } from 'reducers';
+import { State } from 'reducers';
 
-import React from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -11,8 +10,8 @@ import { toggleFeedback } from 'actions/app';
 import styles from './Footer.scss';
 
 type Props = {
-  lastUpdatedDate: ?Date,
-  toggleFeedback: Function,
+  lastUpdatedDate: Date | null | undefined;
+  toggleFeedback: Function;
 };
 
 export function FooterComponent(props: Props) {

@@ -1,5 +1,3 @@
-// @flow
-
 import cs1010s from '__mocks__/modules/CS1010S.json';
 import cs3216 from '__mocks__/modules/CS3216.json';
 import LevelFilter from './LevelFilter';

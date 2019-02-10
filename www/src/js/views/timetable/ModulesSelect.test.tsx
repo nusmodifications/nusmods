@@ -1,6 +1,4 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 import Downshift from 'downshift';
 import Modal from 'views/components/Modal';

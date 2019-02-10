@@ -1,5 +1,4 @@
-// @flow
-import type { TimetableArrangement } from 'types/timetables';
+import { TimetableArrangement } from 'types/timetables';
 
 // A sample timetable used to preview themes on the settings page
 const previewArrangement: TimetableArrangement = {

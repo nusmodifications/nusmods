@@ -1,25 +1,23 @@
-// @flow
-
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
-import type { Semester } from 'types/modules';
+import { Semester } from 'types/modules';
 import { Plus, Close } from 'views/components/icons';
 import styles from './AddModule.scss';
 
-type Props = {|
-  +year: string,
-  +semester: Semester,
+type Props = {
+  readonly year: string;
+  readonly semester: Semester;
 
-  +className?: string,
-  +onAddModule: (input: string) => void,
-|};
+  readonly className?: string;
+  readonly onAddModule: (input: string) => void;
+};
 
-type State = {|
-  +isOpen: boolean,
-  +value: string,
-|};
+type State = {
+  readonly isOpen: boolean;
+  readonly value: string;
+};
 
-export default class AddModule extends PureComponent<Props, State> {
+export default class AddModule extends React.PureComponent<Props, State> {
   state = {
     isOpen: false,
     value: '',

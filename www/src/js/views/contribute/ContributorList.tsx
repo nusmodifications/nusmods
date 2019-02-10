@@ -1,10 +1,8 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
-import Loadable, { type LoadingProps } from 'react-loadable';
+import Loadable, { LoadingProps } from 'react-loadable';
 
-import type { Contributor } from 'types/contributor';
+import { Contributor } from 'types/contributor';
 import { getContributors } from 'apis/github';
 import ExternalLink from 'views/components/ExternalLink';
 import ApiError from 'views/errors/ApiError';
@@ -42,10 +40,10 @@ export function ContributorListComponent(props: { contributors: Contributor[] })
 
 // Wrapper around ContributorList that loads contributor data
 type Props = {
-  size?: number,
+  size?: number;
 };
 
-const ContributorList = Loadable.Map<Props, *>({
+const ContributorList = Loadable.Map<Props, any>({
   loader: {
     contributors: () => getContributors(),
   },

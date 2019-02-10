@@ -1,5 +1,4 @@
-// @flow
-import type { LocationShape, RouterHistory } from 'react-router-dom';
+import { LocationShape, RouterHistory } from 'react-router-dom';
 import { createPath } from 'history'; // eslint-disable-line import/no-extraneous-dependencies
 
 /**

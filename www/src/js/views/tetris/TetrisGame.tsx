@@ -1,17 +1,15 @@
-// @flow
-
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import Mousetrap from 'mousetrap';
 import { debounce, noop, shuffle } from 'lodash';
 import classnames from 'classnames';
 import produce from 'immer';
 
-import type { ColorIndex } from 'types/reducers';
+import { ColorIndex } from 'types/reducers';
 import Timetable from 'views/timetable/Timetable';
 import TimetableDay from 'views/timetable/TimetableDay';
 import Title from 'views/components/Title';
 
-import type { Board, Piece } from './board';
+import { Board, Piece } from './board';
 import {
   INITIAL_ROW_INDEX,
   PIECES,
@@ -54,28 +52,28 @@ const TARGET_HEIGHT = 940; // In px, the height of the game for resizing on smal
 
 const PREVIEW_COLOR: ColorIndex = 11;
 
-type Props = {|
-  +resetGame: () => void,
-|};
+type Props = {
+  readonly resetGame: () => void;
+};
 
-type State = {|
-  board: Board,
-  score: number,
-  linesCleared: number,
+type State = {
+  board: Board;
+  score: number;
+  linesCleared: number;
 
-  status: GameStatus,
-  canHold: boolean,
+  status: GameStatus;
+  canHold: boolean;
 
-  currentPiece: Piece,
-  holdPiece: ?Piece,
-  nextPieces: Piece[],
-|};
+  currentPiece: Piece;
+  holdPiece: Piece | null | undefined;
+  nextPieces: Piece[];
+};
 
 // Scores taken from https://tetris.com/play-tetris
 const SCORING = {
-  softDrop: (distance) => distance,
-  hardDrop: (distance) => distance * 2,
-  lineClear: (lines) => {
+  softDrop: (distance: distance) => distance,
+  hardDrop: (distance: distance) => distance * 2,
+  lineClear: (lines: lines) => {
     if (lines === 0) return 0;
     if (lines === 1) return 100;
     if (lines === 2) return 300;
@@ -106,7 +104,7 @@ function renderPiece(tiles: Board) {
   );
 }
 
-export default class TetrisGame extends PureComponent<Props, State> {
+export default class TetrisGame extends React.PureComponent<Props, State> {
   intervalId: IntervalID;
 
   constructor(props: Props) {

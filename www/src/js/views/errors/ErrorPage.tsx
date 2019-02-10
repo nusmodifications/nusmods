@@ -1,5 +1,4 @@
-// @flow
-import type { Node } from 'react';
+import * as React from 'react';
 
 import React, { PureComponent } from 'react';
 import * as Sentry from '@sentry/browser';
@@ -11,13 +10,13 @@ import Online from 'views/components/Online';
 import styles from './ErrorPage.scss';
 
 type Props = {
-  children?: Node,
-  error?: string,
-  showReportDialog?: ?boolean,
-  showRefresh: boolean,
+  children?: Node;
+  error?: string;
+  showReportDialog?: boolean | null | undefined;
+  showRefresh: boolean;
 };
 
-export default class ErrorPage extends PureComponent<Props> {
+export default class ErrorPage extends React.PureComponent<Props> {
   static defaultProps = {
     showRefresh: true,
   };

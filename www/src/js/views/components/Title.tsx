@@ -1,12 +1,10 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import Helmet from 'react-helmet';
 import config from 'config';
 
 type Props = {
-  children: string,
-  description: string,
+  children: string;
+  description: string;
 };
 
 function Title(props: Props) {

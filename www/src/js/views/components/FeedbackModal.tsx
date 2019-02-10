@@ -1,9 +1,7 @@
-// @flow
-
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 
-import type { State } from 'reducers';
+import { State } from 'reducers';
 
 import config from 'config';
 import { toggleFeedback } from 'actions/app';
@@ -14,8 +12,8 @@ import Modal from './Modal';
 import styles from './FeedbackModal.scss';
 
 type Props = {
-  isOpen: boolean,
-  toggleFeedback: Function,
+  isOpen: boolean;
+  toggleFeedback: Function;
 };
 
 export function FeedbackButtons() {
@@ -37,7 +35,7 @@ export function FeedbackButtons() {
   );
 }
 
-export class FeedbackModalComponent extends PureComponent<Props> {
+export class FeedbackModalComponent extends React.PureComponent<Props> {
   render() {
     return (
       <Modal

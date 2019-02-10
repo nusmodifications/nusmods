@@ -1,4 +1,3 @@
-// @flow
 import { retry } from './promise';
 
 describe('#retry()', () => {

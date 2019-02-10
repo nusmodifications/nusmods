@@ -1,12 +1,11 @@
-// @flow
 import { undo, redo } from 'actions/undoHistory';
 import update from 'immutability-helper';
 import { pick } from 'lodash';
 import undoHistory, {
   computeUndoStacks,
   mergePresent,
-  type UndoHistoryState,
-  type UndoHistoryConfig,
+  UndoHistoryState,
+  UndoHistoryConfig,
 } from 'reducers/undoHistory';
 
 const WATCHED_ACTION = 'WATCHED_ACTION';
@@ -19,13 +18,13 @@ const emptyUndoHistory = { past: [], present: undefined, future: [] };
 type TestState = {
   data: {
     toMutate: {
-      numbers: number[],
-      string: string,
-    },
-    notToTouch: number[],
-  },
-  untouchable: { payload: string },
-  undoHistoryState: UndoHistoryState,
+      numbers: number[];
+      string: string;
+    };
+    notToTouch: number[];
+  };
+  untouchable: { payload: string };
+  undoHistoryState: UndoHistoryState;
 };
 
 const state: TestState = {

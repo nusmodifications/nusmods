@@ -1,15 +1,14 @@
-// @flow
-import type { ContextRouter, Match } from 'react-router-dom';
-import type { $AxiosError } from 'axios';
+import { RouteComponentProps, Match } from 'react-router-dom';
+import { $AxiosError } from 'axios';
 
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import { get } from 'lodash';
 
-import type { Module, ModuleCode } from 'types/modules';
-import type { State as StoreState } from 'reducers';
+import { Module, ModuleCode } from 'types/modules';
+import { State as StoreState } from 'reducers';
 
 import { fetchArchiveRequest, fetchModule, fetchModuleArchive } from 'actions/moduleBank';
 import { captureException, retryImport } from 'utils/error';
@@ -19,21 +18,19 @@ import LoadingSpinner from 'views/components/LoadingSpinner';
 import { moduleArchive, modulePage } from 'views/routes/paths';
 import { isFailure } from 'selectors/requests';
 
-import type { Props as ModulePageContentProp } from './ModulePageContent';
+import { Props as ModulePageContentProp } from './ModulePageContent';
 
-type Props = {
-  ...ContextRouter,
-
-  archiveYear: ?string,
-  moduleExists: boolean,
-  moduleCode: ModuleCode,
-  module: ?Module,
-  fetchModule: () => Promise<*>,
+type Props = RouteComponentProps & {
+  archiveYear: string | null | undefined;
+  moduleExists: boolean;
+  moduleCode: ModuleCode;
+  module: Module | null | undefined;
+  fetchModule: () => Promise<any>;
 };
 
 type State = {
-  ModulePageContent: ?ComponentType<ModulePageContentProp>,
-  error?: any,
+  ModulePageContent: React | null | undefined.React.ComponentType<ModulePageContentProp>;
+  error?: any;
 };
 
 /**
@@ -51,7 +48,7 @@ type State = {
  * - Loading: Either requests are pending
  * - Loaded: Both requests are successfully loaded
  */
-export class ModulePageContainerComponent extends PureComponent<Props, State> {
+export class ModulePageContainerComponent extends React.PureComponent<Props, State> {
   state: State = {
     ModulePageContent: null,
   };
@@ -81,7 +78,7 @@ export class ModulePageContainerComponent extends PureComponent<Props, State> {
       .catch(this.handleFetchError);
   }
 
-  handleFetchError = (error: $AxiosError<*>) => {
+  handleFetchError = (error: $AxiosError<any>) => {
     this.setState({ error });
     captureException(error);
   };

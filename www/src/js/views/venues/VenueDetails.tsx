@@ -1,11 +1,10 @@
-// @flow
-import React, { Fragment, PureComponent } from 'react';
-import { Link, withRouter, type ContextRouter } from 'react-router-dom';
+import * as React from 'react';
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import classnames from 'classnames';
 import { flatMap } from 'lodash';
 
-import type { DayAvailability, Venue, VenueLesson } from 'types/venues';
-import type { Lesson } from 'types/modules';
+import { DayAvailability, Venue, VenueLesson } from 'types/venues';
+import { Lesson } from 'types/modules';
 
 import { colorLessonsByKey } from 'utils/colors';
 import { arrangeLessonsForWeek } from 'utils/timetables';
@@ -20,18 +19,16 @@ import VenueLocation from './VenueLocation';
 
 import styles from './VenueDetails.scss';
 
-type Props = {|
-  ...ContextRouter,
+type Props = RouteComponentProps & {
+  readonly venue: Venue;
+  readonly previous?: Venue | null | undefined;
+  readonly next?: Venue | null | undefined;
+  readonly availability: DayAvailability[];
 
-  +venue: Venue,
-  +previous?: ?Venue,
-  +next?: ?Venue,
-  +availability: DayAvailability[],
+  readonly matchBreakpoint: boolean;
+};
 
-  +matchBreakpoint: boolean,
-|};
-
-export class VenueDetailsComponent extends PureComponent<Props> {
+export class VenueDetailsComponent extends React.PureComponent<Props> {
   arrangedLessons() {
     const lessons = flatMap(
       this.props.availability,
@@ -46,7 +43,7 @@ export class VenueDetailsComponent extends PureComponent<Props> {
     const { venue, previous, next, matchBreakpoint, history } = this.props;
 
     return (
-      <Fragment>
+      <>
         <Title description={`NUS classroom timetable for ${venue}`}>{`${venue} - Venues`}</Title>
 
         <header className={styles.header}>
@@ -88,7 +85,7 @@ export class VenueDetailsComponent extends PureComponent<Props> {
             }}
           />
         </div>
-      </Fragment>
+      </>
     );
   }
 }

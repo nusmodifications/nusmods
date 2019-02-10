@@ -1,4 +1,3 @@
-// @flow
 import { isString } from 'lodash';
 import { captureException } from 'utils/error';
 import getLocalStorage from './localStorage';

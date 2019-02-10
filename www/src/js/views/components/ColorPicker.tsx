@@ -1,19 +1,18 @@
-// @flow
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
-import Downshift, { type ChildrenFunction } from 'downshift';
+import Downshift, { ChildrenFunction } from 'downshift';
 import _ from 'lodash';
 
-import type { ColorIndex } from 'types/reducers';
+import { ColorIndex } from 'types/reducers';
 
 import { NUM_DIFFERENT_COLORS } from 'utils/colors';
 import styles from './ColorPicker.scss';
 
 type Props = {
-  label: string,
-  color: ColorIndex,
-  isHidden: boolean,
-  onChooseColor: (ColorIndex) => void,
+  label: string;
+  color: ColorIndex;
+  isHidden: boolean;
+  onChooseColor: (colorIndex: ColorIndex) => void;
 };
 
 /**
@@ -21,7 +20,7 @@ type Props = {
  *
  * For use in places like changing module colors
  */
-class ColorPicker extends PureComponent<Props> {
+class ColorPicker extends React.PureComponent<Props> {
   renderColorPicker: ChildrenFunction<ColorIndex> = ({
     getToggleButtonProps,
     getItemProps,

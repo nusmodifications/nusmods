@@ -1,9 +1,8 @@
-// @flow
 import { keyBy, values } from 'lodash';
 import update from 'immutability-helper';
 
-import type { Module, ModuleCode } from 'types/modules';
-import type { FilterGroupId } from 'types/views';
+import { Module, ModuleCode } from 'types/modules';
+import { FilterGroupId } from 'types/views';
 
 import { intersection, union } from 'utils/set';
 import ModuleFilter from './ModuleFilter';
@@ -32,10 +31,10 @@ export const ID_DELIMITER = ',';
  * Every filter group is serializable to and from query string value. This allows the page
  * URL to be updated when filters are turned on and off.
  */
-export default class FilterGroup<Filter: ModuleFilter> {
+export default class FilterGroup<Filter extends ModuleFilter> {
   id: FilterGroupId;
   label: string;
-  filters: { [string]: Filter };
+  filters: { [key: string]: Filter };
 
   // Memoized array of filters that are enabled
   activeFilters: Filter[];
@@ -62,7 +61,7 @@ export default class FilterGroup<Filter: ModuleFilter> {
     return union(...this.activeFilters.map((filter) => filter.filteredModules));
   }
 
-  toggle(idOrFilter: string | Filter, value: ?boolean): FilterGroup<Filter> {
+  toggle(idOrFilter: string | Filter, value: boolean | null | undefined): FilterGroup<Filter> {
     const id = idOrFilter instanceof ModuleFilter ? idOrFilter.id : idOrFilter;
     if (!this.filters[id]) return this;
 
@@ -109,7 +108,10 @@ export default class FilterGroup<Filter: ModuleFilter> {
    *   module count for a given filter
    * @returns {?Set<ModuleCode>}
    */
-  static union(filterGroups: FilterGroup<any>[], exclude?: FilterGroup<any>): ?Set<ModuleCode> {
+  static union(
+    filterGroups: FilterGroup<any>[],
+    exclude?: FilterGroup<any>,
+  ): Set<ModuleCode> | null | undefined {
     const excludedId = exclude ? exclude.id : null;
     const modules = filterGroups.filter((group) => group.isActive() && group.id !== excludedId);
 

@@ -1,6 +1,4 @@
-// @flow
-
-import type { ModuleLevel } from 'types/modules';
+import { ModuleLevel } from 'types/modules';
 import ModuleFilter from './ModuleFilter';
 
 export default class LevelFilter extends ModuleFilter {

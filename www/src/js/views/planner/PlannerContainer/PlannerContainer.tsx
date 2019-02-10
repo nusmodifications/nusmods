@@ -1,13 +1,11 @@
-// @flow
-
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import { flatMap, flatten, sortBy, toPairs, values } from 'lodash';
-import { DragDropContext, Droppable, type OnDragEndResponder } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 import classnames from 'classnames';
-import type { Module, ModuleCode, Semester } from 'types/modules';
-import type { PlannerModuleInfo, PlannerModulesWithInfo } from 'types/views';
-import type { State as StoreState } from 'reducers';
+import { Module, ModuleCode, Semester } from 'types/modules';
+import { PlannerModuleInfo, PlannerModulesWithInfo } from 'types/views';
+import { State as StoreState } from 'reducers';
 
 import { MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
 import {
@@ -34,32 +32,37 @@ import CustomModuleForm from '../CustomModuleForm';
 
 import styles from './PlannerContainer.scss';
 
-export type Props = {|
-  +modules: PlannerModulesWithInfo,
-  +exemptions: PlannerModuleInfo[],
-  +planToTake: PlannerModuleInfo[],
-  +iblocsModules: PlannerModuleInfo[],
-  +iblocs: boolean,
+export type Props = {
+  readonly modules: PlannerModulesWithInfo;
+  readonly exemptions: PlannerModuleInfo[];
+  readonly planToTake: PlannerModuleInfo[];
+  readonly iblocsModules: PlannerModuleInfo[];
+  readonly iblocs: boolean;
 
   // Actions
-  +fetchModule: (ModuleCode) => Promise<Module>,
-  +toggleFeedback: () => void,
+  readonly fetchModule: (moduleCode: ModuleCode) => Promise<Module>;
+  readonly toggleFeedback: () => void;
 
-  +addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void,
-  +moveModule: (moduleCode: ModuleCode, year: string, semester: Semester, index: number) => void,
-  +removeModule: (moduleCode: ModuleCode) => void,
-|};
+  readonly addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void;
+  readonly moveModule: (
+    moduleCode: ModuleCode,
+    year: string,
+    semester: Semester,
+    index: number,
+  ) => void;
+  readonly removeModule: (moduleCode: ModuleCode) => void;
+};
 
-type State = {|
-  +loading: boolean,
-  +showSettings: boolean,
+type State = {
+  readonly loading: boolean;
+  readonly showSettings: boolean;
   // Module code is the module being edited. null means the modal is not open
-  +showCustomModule: ?ModuleCode,
-|};
+  readonly showCustomModule: ModuleCode | null | undefined;
+};
 
 const TRASH_ID = 'trash';
 
-export class PlannerContainerComponent extends PureComponent<Props, State> {
+export class PlannerContainerComponent extends React.PureComponent<Props, State> {
   state = {
     loading: true,
     showSettings: false,
@@ -162,7 +165,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
     const { modules, exemptions, planToTake, iblocs, iblocsModules } = this.props;
 
     // Sort acad years since acad years may not be inserted in display order
-    const sortedModules: Array<[string, { [Semester]: PlannerModuleInfo[] }]> = sortBy(
+    const sortedModules: Array<[string, { [semester: string]: PlannerModuleInfo[] }]> = sortBy(
       toPairs(modules),
       (pairs) => pairs[0],
     );

@@ -1,14 +1,12 @@
-// @flow
-
-import type { ComponentType } from 'react';
+import * as React from 'react';
 import React from 'react';
-import Loadable, { type LoadingProps } from 'react-loadable';
+import Loadable, { LoadingProps } from 'react-loadable';
 
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import ApiError from 'views/errors/ApiError';
-import type { Props } from './PlannerContainer';
+import { Props } from './PlannerContainer';
 
-const AsyncTodayContainer: ComponentType<Props> = Loadable({
+const AsyncTodayContainer: React.React.ComponentType<Props> = Loadable({
   loader: () => import(/* webpackChunkName: "planner" */ './PlannerContainer'),
   loading: (props: LoadingProps) => {
     if (props.error) {

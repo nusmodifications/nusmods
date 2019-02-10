@@ -1,7 +1,5 @@
-// @flow
-
-import type { ModuleCode } from 'types/modules';
-import type { VenueInfo, VenueSearchOptions, VenueDetailList, VenueLesson } from 'types/venues';
+import { ModuleCode } from 'types/modules';
+import { VenueInfo, VenueSearchOptions, VenueDetailList, VenueLesson } from 'types/venues';
 import { OCCUPIED } from 'types/venues';
 import { range, entries, padStart, groupBy, values } from 'lodash';
 import { ZWSP } from 'utils/react';
@@ -18,9 +16,8 @@ const hourDifference = range(48).map((i) => Math.floor(i / 2) * 100 + (i % 2) * 
 const stringCompare =
   // Feature detect Intl API
   window.Intl && typeof window.Intl === 'object'
-    ? // $FlowFixMe: Flow doesn't have Intl typedefs https://github.com/facebook/flow/issues/1270
-      new Intl.Collator('en', { sensitivity: 'base', numeric: true }).compare
-    : (a, b) => a.localeCompare(b);
+    ? new Intl.Collator('en', { sensitivity: 'base', numeric: true }).compare
+    : (a: a, b: b) => a.localeCompare(b);
 
 export function sortVenues(venues: VenueInfo): VenueDetailList {
   return entries(venues).sort(([a], [b]) => stringCompare(a, b));

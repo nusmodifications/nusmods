@@ -1,15 +1,13 @@
-// @flow
+import * as React from 'react';
 
-import React, { PureComponent } from 'react';
-
-import type { Module } from 'types/modules';
+import { Module } from 'types/modules';
 import ModuleFinderItem from 'views/components/ModuleFinderItem';
 
 type Props = {
-  page: Module[],
+  page: Module[];
 };
 
-export default class ModuleFinderPage extends PureComponent<Props> {
+export default class ModuleFinderPage extends React.PureComponent<Props> {
   render() {
     const { page } = this.props;
 

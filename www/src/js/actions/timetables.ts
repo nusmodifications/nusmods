@@ -1,10 +1,9 @@
-// @flow
 import { each, flatMap } from 'lodash';
 
-import type { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
-import type { FSA, GetState } from 'types/redux';
-import type { ColorIndex, ColorMapping } from 'types/reducers';
-import type { ClassNo, Lesson, LessonType, Module, ModuleCode, Semester } from 'types/modules';
+import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
+import { FSA, GetState } from 'types/redux';
+import { ColorIndex, ColorMapping } from 'types/reducers';
+import { ClassNo, Lesson, LessonType, Module, ModuleCode, Semester } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
 import { openNotification } from 'actions/app';

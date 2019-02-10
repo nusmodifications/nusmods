@@ -1,23 +1,21 @@
-// @flow
-
-import React, { Fragment, Component } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 
-import type { State as StoreState } from 'reducers';
-import type { NotificationData } from 'types/reducers';
+import { State as StoreState } from 'reducers';
+import { NotificationData } from 'types/reducers';
 import { popNotification } from 'actions/app';
 import styles from './Notification.scss';
 
 type Props = {
-  notifications: NotificationData[],
-  popNotification: () => void,
+  notifications: NotificationData[];
+  popNotification: () => void;
 };
 
 type State = {
-  isOpen: boolean,
-  shownNotification: ?NotificationData,
-  actionClicked: boolean,
+  isOpen: boolean;
+  shownNotification: NotificationData | null | undefined;
+  actionClicked: boolean;
 };
 
 const ACTIVE_CLASSNAME = 'mdc-snackbar--active';
@@ -48,7 +46,7 @@ const TRANSITION_DURATION = 250;
  * because we want the animation to play out to draw the user's attention to
  * the new notification.
  */
-export class NotificationComponent extends Component<Props, State> {
+export class NotificationComponent extends React.Component<Props, State> {
   openTimeoutId: TimeoutID;
   closeTimeoutId: TimeoutID;
 
@@ -148,7 +146,7 @@ export class NotificationComponent extends Component<Props, State> {
         ref={this.element}
       >
         {!!shownNotification && (
-          <Fragment>
+          <>
             <div className="mdc-snackbar__text">{shownNotification.message}</div>
             {shownNotification.action && (
               <div className="mdc-snackbar__action-wrapper">
@@ -167,7 +165,7 @@ export class NotificationComponent extends Component<Props, State> {
                 </button>
               </div>
             )}
-          </Fragment>
+          </>
         )}
       </div>
     );

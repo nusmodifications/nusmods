@@ -1,11 +1,9 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import { mount } from 'enzyme';
 import _ from 'lodash';
 import { Link, MemoryRouter } from 'react-router-dom';
 
-import type { ModuleWithColor, Semester } from 'types/modules';
+import { ModuleWithColor, Semester } from 'types/modules';
 import mockModules from '__mocks__/modules';
 
 /** @vars {Module} */

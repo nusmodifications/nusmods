@@ -1,6 +1,4 @@
-// @flow
-
-import React, { PureComponent, type Node, Fragment } from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 
 import { Menu, Close } from 'views/components/icons';
@@ -12,18 +10,18 @@ import Fab from './Fab';
 import styles from './SideMenu.scss';
 
 type Props = {
-  children: Node,
-  openIcon: Node,
-  closeIcon: Node,
-  isOpen: boolean,
-  matchBreakpoint: boolean,
-  toggleMenu: (boolean) => void,
+  children: Node;
+  openIcon: Node;
+  closeIcon: Node;
+  isOpen: boolean;
+  matchBreakpoint: boolean;
+  toggleMenu: (boolean: boolean) => void;
 };
 
 export const OPEN_MENU_LABEL = 'Open menu';
 export const CLOSE_MENU_LABEL = 'Close menu';
 
-export class SideMenuComponent extends PureComponent<Props> {
+export class SideMenuComponent extends React.PureComponent<Props> {
   static defaultProps = {
     openIcon: <Menu aria-label={OPEN_MENU_LABEL} />,
     closeIcon: <Close aria-label={CLOSE_MENU_LABEL} />,
@@ -51,7 +49,7 @@ export class SideMenuComponent extends PureComponent<Props> {
     const { isOpen, toggleMenu, children, openIcon, closeIcon } = this.props;
 
     return (
-      <Fragment>
+      <>
         <Fab className={styles.fab} onClick={() => toggleMenu(!isOpen)}>
           {isOpen ? closeIcon : openIcon}
         </Fab>
@@ -63,7 +61,7 @@ export class SideMenuComponent extends PureComponent<Props> {
         )}
 
         <div className={classnames(styles.sideMenu, { [styles.isOpen]: isOpen })}>{children}</div>
-      </Fragment>
+      </>
     );
   }
 }

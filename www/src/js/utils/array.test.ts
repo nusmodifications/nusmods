@@ -1,4 +1,3 @@
-// @flow
 import { range, stubTrue, stubFalse } from 'lodash';
 import { firstNonNull, intersperse, takeUntil } from './array';
 

@@ -1,10 +1,9 @@
-// @flow
 import { map, mapValues, each, isEmpty, groupBy, kebabCase } from 'lodash';
 import update from 'immutability-helper';
 import qs from 'query-string';
 
-import type { FilterGroups, DepartmentFaculty } from 'types/views';
-import type { Module, Faculty, Department } from 'types/modules';
+import { FilterGroups, DepartmentFaculty } from 'types/views';
+import { Module, Faculty, Department } from 'types/modules';
 
 import { Timeslots } from 'types/modules';
 import config from 'config';
@@ -25,9 +24,11 @@ export const DEPARTMENT = 'department';
 export const EXAMS = 'exam';
 
 /**
- * Invert the { [Faculty]: Departments[] } mapping to { [Department]: Faculty }
+ * Invert the { [faculty: string]: Departments[] } mapping to { [department: string]: Faculty }
  */
-export function invertFacultyDepartments(mapping: { [Faculty]: Department[] }): DepartmentFaculty {
+export function invertFacultyDepartments(mapping: {
+  [faculty: string]: Department[];
+}): DepartmentFaculty {
   const departmentFaculty = {};
   each(mapping, (departments, faculty) => {
     departments.forEach((department) => {
@@ -70,7 +71,7 @@ export function serializeGroups(groups: FilterGroups): string {
 }
 
 function makeFacultyFilter(faculties: DepartmentFaculty) {
-  const facultyDepartments: { [Faculty]: Set<Department> } = mapValues(
+  const facultyDepartments: { [faculty: string]: Set<Department> } = mapValues(
     groupBy(Object.keys(faculties), (department) => faculties[department]),
     (departments) => new Set(departments),
   );

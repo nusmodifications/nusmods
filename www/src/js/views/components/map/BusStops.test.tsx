@@ -1,5 +1,3 @@
-// @flow
-
 import { extractRoute } from 'views/components/map/BusStops';
 
 describe(extractRoute, () => {

@@ -1,12 +1,11 @@
-// @flow
-import React, { Component } from 'react';
+import * as React from 'react';
 import { omit } from 'lodash';
-import type { ChildrenFunction, DownshiftState, StateChangeOptions } from 'downshift';
+import { ChildrenFunction, DownshiftState, StateChangeOptions } from 'downshift';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 
-import type { ModuleSelectList } from 'types/reducers';
-import type { ModuleCode } from 'types/modules';
+import { ModuleSelectList } from 'types/reducers';
+import { ModuleCode } from 'types/modules';
 
 import { breakpointUp } from 'utils/css';
 import makeResponsive from 'views/hocs/makeResponsive';
@@ -17,21 +16,21 @@ import elements from 'views/elements';
 import styles from './ModulesSelect.scss';
 
 type Props = {
-  moduleCount: number,
-  placeholder: string,
-  matchBreakpoint: boolean,
-  disabled?: boolean,
+  moduleCount: number;
+  placeholder: string;
+  matchBreakpoint: boolean;
+  disabled?: boolean;
 
-  getFilteredModules: (?string) => ModuleSelectList,
-  onChange: (ModuleCode) => void,
+  getFilteredModules: (string: string | null | undefined) => ModuleSelectList;
+  onChange: (moduleCode: ModuleCode) => void;
 };
 
 type State = {
-  isOpen: boolean,
-  inputValue: string,
+  isOpen: boolean;
+  inputValue: string;
 };
 
-export class ModulesSelectComponent extends Component<Props, State> {
+export class ModulesSelectComponent extends React.Component<Props, State> {
   state = {
     isOpen: false,
     inputValue: '',
@@ -202,7 +201,7 @@ export class ModulesSelectComponent extends Component<Props, State> {
     }
 
     return (
-      <React.Fragment>
+      <>
         <button
           className={classnames(styles.input, elements.addModuleInput)}
           onClick={this.openSelect}
@@ -219,7 +218,7 @@ export class ModulesSelectComponent extends Component<Props, State> {
         >
           {downshiftComponent}
         </Modal>
-      </React.Fragment>
+      </>
     );
   }
 }

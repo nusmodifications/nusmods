@@ -1,5 +1,4 @@
-// @flow
-import React, { Component, PureComponent } from 'react';
+import * as React from 'react';
 import { render } from 'enzyme';
 import { highlight, wrapComponentName, Counter } from './react';
 
@@ -37,9 +36,9 @@ describe('highlight()', () => {
 
 describe('wrapComponentName()', () => {
   /* eslint-disable react/prefer-stateless-function, react/no-multi-comp */
-  class TestComponent extends Component<{}> {}
-  class TestPureComponent extends PureComponent<{}> {}
-  class TestComponentWithDisplayName extends Component<{}> {
+  class TestComponent extends React.Component<{}> {}
+  class TestPureComponent extends React.PureComponent<{}> {}
+  class TestComponentWithDisplayName extends React.Component<{}> {
     static displayName = 'TestComponentName';
   }
   function FunctionalComponent() {}

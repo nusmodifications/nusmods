@@ -1,14 +1,12 @@
-// @flow
-
-import React, { Fragment, PureComponent } from 'react';
+import * as React from 'react';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
 
-import type { Module, ModuleCode, Semester } from 'types/modules';
-import type { TimetableConfig } from 'types/timetables';
-import type { State as StoreState } from 'reducers';
+import { Module, ModuleCode, Semester } from 'types/modules';
+import { TimetableConfig } from 'types/timetables';
+import { State as StoreState } from 'reducers';
 
 import { addModule, removeModule } from 'actions/timetables';
 import { getFirstAvailableSemester, getSemestersOffered } from 'utils/modules';
@@ -17,17 +15,17 @@ import config from 'config';
 import styles from './AddModuleDropdown.scss';
 
 type Props = {
-  module: Module,
-  timetables: TimetableConfig,
-  className?: string,
-  block?: boolean,
+  module: Module;
+  timetables: TimetableConfig;
+  className?: string;
+  block?: boolean;
 
-  addModule: (Semester, ModuleCode) => void,
-  removeModule: (Semester, ModuleCode) => void,
+  addModule: (semester: Semester, moduleCode: ModuleCode) => void;
+  removeModule: (semester: Semester, moduleCode: ModuleCode) => void;
 };
 
 type State = {
-  loading: ?Semester,
+  loading: Semester | null | undefined;
 };
 
 function isModuleOnTimetable(
@@ -38,7 +36,7 @@ function isModuleOnTimetable(
   return !!get(timetables, [String(semester), module.ModuleCode]);
 }
 
-export class AddModuleDropdownComponent extends PureComponent<Props, State> {
+export class AddModuleDropdownComponent extends React.PureComponent<Props, State> {
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
     const { timetables, module } = nextProps;
     const { loading } = prevState;
@@ -72,15 +70,15 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
 
     const hasModule = isModuleOnTimetable(semester, this.props.timetables, this.props.module);
     return hasModule ? (
-      <Fragment>
+      <>
         Remove from <br />
         <strong>{config.semesterNames[semester]}</strong>
-      </Fragment>
+      </>
     ) : (
-      <Fragment>
+      <>
         Add to <br />
         <strong>{config.semesterNames[semester]}</strong>
-      </Fragment>
+      </>
     );
   }
 

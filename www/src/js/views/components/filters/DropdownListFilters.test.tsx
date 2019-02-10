@@ -1,6 +1,4 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import { mount } from 'enzyme';
 
 import FilterGroup from 'utils/filters/FilterGroup';
@@ -12,7 +10,7 @@ describe(DropdownListFiltersComponent, () => {
   const modules = [createModule('CS1010S'), createModule('CS3216')];
 
   function make(
-    filterGroup: FilterGroup<*>,
+    filterGroup: FilterGroup<any>,
     groups: FilterGroup<any>[] = [filterGroup],
     matchBreakpoint: boolean = false,
   ) {

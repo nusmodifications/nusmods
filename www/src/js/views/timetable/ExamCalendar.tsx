@@ -1,11 +1,10 @@
-// @flow
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import NUSModerator from 'nusmoderator';
 import { groupBy, range } from 'lodash';
 import classnames from 'classnames';
 
-import type { ModuleWithColor, Semester } from 'types/modules';
-import type { ModuleWithExamTime, TimeSegment } from 'types/views';
+import { ModuleWithColor, Semester } from 'types/modules';
+import { ModuleWithExamTime, TimeSegment } from 'types/views';
 import { WorkingDaysOfWeek } from 'types/modules';
 import config from 'config';
 import { examDateToDate, formatExamDate, getModuleExamDate } from 'utils/modules';
@@ -14,10 +13,10 @@ import elements from 'views/elements';
 import ExamWeek from './ExamWeek';
 import styles from './ExamCalendar.scss';
 
-type Props = {|
-  +semester: Semester,
-  +modules: ModuleWithColor[],
-|};
+type Props = {
+  readonly semester: Semester;
+  readonly modules: ModuleWithColor[];
+};
 
 // NUS exams are grouped into morning, afternoon and evening exams. Afternoon exams happen at 2.30PM
 // on Fridays only. We don't want to create two different groups for 1pm and 2.30pm exams, so we
@@ -31,7 +30,7 @@ export function getTimeSegment(time: string): TimeSegment {
   return hour === 12 || hour < 5 ? 'Afternoon' : 'Evening';
 }
 
-export default class ExamCalendar extends PureComponent<Props> {
+export default class ExamCalendar extends React.PureComponent<Props> {
   getVisibleModules(): ModuleWithColor[] {
     return this.props.modules.filter((module) => !module.hiddenInTimetable);
   }

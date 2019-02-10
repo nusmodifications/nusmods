@@ -1,13 +1,12 @@
-// @flow
-import React, { Component, Fragment, type Node } from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import _, { isEmpty } from 'lodash';
 
-import type { ModulesMap } from 'reducers/moduleBank';
-import type { ColorMapping, TimetableOrientation } from 'types/reducers';
+import { ModulesMap } from 'reducers/moduleBank';
+import { ColorMapping, TimetableOrientation } from 'types/reducers';
 import { HORIZONTAL } from 'types/reducers';
-import type {
+import {
   Lesson,
   ColoredLesson,
   Module,
@@ -15,7 +14,7 @@ import type {
   Semester,
   ModuleWithColor,
 } from 'types/modules';
-import type {
+import {
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
   TimetableArrangement,
@@ -58,38 +57,38 @@ import styles from './TimetableContent.scss';
 
 type Props = {
   // Own props
-  readOnly: boolean,
-  header: Node,
-  semester: Semester,
-  timetable: SemTimetableConfig,
-  colors: ColorMapping,
+  readOnly: boolean;
+  header: Node;
+  semester: Semester;
+  timetable: SemTimetableConfig;
+  colors: ColorMapping;
 
   // From Redux
-  timetableWithLessons: SemTimetableConfigWithLessons,
-  modules: ModulesMap,
-  activeLesson: ?Lesson,
-  timetableOrientation: TimetableOrientation,
-  showTitle: boolean,
-  hiddenInTimetable: ModuleCode[],
+  timetableWithLessons: SemTimetableConfigWithLessons;
+  modules: ModulesMap;
+  activeLesson: Lesson | null | undefined;
+  timetableOrientation: TimetableOrientation;
+  showTitle: boolean;
+  hiddenInTimetable: ModuleCode[];
 
   // Actions
-  addModule: (Semester, ModuleCode) => void,
-  removeModule: (Semester, ModuleCode) => void,
-  modifyLesson: Function,
-  changeLesson: Function,
-  cancelModifyLesson: Function,
-  toggleTimetableOrientation: Function,
-  toggleTitleDisplay: Function,
-  undo: () => void,
+  addModule: (semester: Semester, moduleCode: ModuleCode) => void;
+  removeModule: (semester: Semester, moduleCode: ModuleCode) => void;
+  modifyLesson: Function;
+  changeLesson: Function;
+  cancelModifyLesson: Function;
+  toggleTimetableOrientation: Function;
+  toggleTitleDisplay: Function;
+  undo: () => void;
 };
 
 type State = {
-  isScrolledHorizontally: boolean,
-  showExamCalendar: boolean,
-  tombstone: ?ModuleWithColor,
+  isScrolledHorizontally: boolean;
+  showExamCalendar: boolean;
+  tombstone: ModuleWithColor | null | undefined;
 };
 
-class TimetableContent extends Component<Props, State> {
+class TimetableContent extends React.Component<Props, State> {
   state: State = {
     isScrolledHorizontally: false,
     showExamCalendar: false,
@@ -121,7 +120,6 @@ class TimetableContent extends Component<Props, State> {
     this.props.hiddenInTimetable.includes(moduleCode);
 
   modifyCell = (lesson: Lesson) => {
-    // $FlowFixMe When object spread type actually works
     if (lesson.isAvailable) {
       this.props.changeLesson(this.props.semester, lesson);
     } else if (lesson.isActive) {
@@ -186,9 +184,9 @@ class TimetableContent extends Component<Props, State> {
     }
 
     return (
-      <Fragment>
+      <>
         {!_.isEmpty(clashes) && (
-          <Fragment>
+          <>
             <div className="alert alert-danger">
               Warning! There are clashes in your exam timetable.
             </div>
@@ -203,10 +201,10 @@ class TimetableContent extends Component<Props, State> {
                 </div>
               ))}
             <hr />
-          </Fragment>
+          </>
         )}
         {this.renderModuleTable(nonClashingMods, horizontalOrientation, tombstone)}
-      </Fragment>
+      </>
     );
   }
 

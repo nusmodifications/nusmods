@@ -1,16 +1,14 @@
-// @flow
-
-import type { ComponentType } from 'react';
+import * as React from 'react';
 import React from 'react';
-import Loadable, { type LoadingProps } from 'react-loadable';
+import Loadable, { LoadingProps } from 'react-loadable';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import ApiError from 'views/errors/ApiError';
 import { retryImport } from 'utils/error';
-import type { Props } from './TodayContainer';
+import { Props } from './TodayContainer';
 import EventMapInline from '../EventMapInline';
 import EventMap from '../EventMap';
 
-const AsyncTodayContainer: ComponentType<Props> = Loadable({
+const AsyncTodayContainer: React.React.ComponentType<Props> = Loadable({
   loader: () => retryImport(() => import(/* webpackChunkName: "today" */ './TodayContainer')),
   loading: (props: LoadingProps) => {
     if (props.error) {

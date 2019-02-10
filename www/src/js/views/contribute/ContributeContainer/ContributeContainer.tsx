@@ -1,11 +1,10 @@
-// @flow
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { flatMap } from 'lodash';
 
-import type { ModuleCondensed } from 'types/modules';
+import { ModuleCondensed } from 'types/modules';
 
 import { toggleFeedback } from 'actions/app';
 import { toggleBetaTesting } from 'actions/settings';
@@ -32,14 +31,14 @@ import ContributorList from '../ContributorList';
 import styles from './ContributeContainer.scss';
 
 type Props = {
-  modules: ModuleCondensed[],
-  beta: boolean,
+  modules: ModuleCondensed[];
+  beta: boolean;
 
-  toggleFeedback: () => void,
-  toggleBetaTesting: () => void,
+  toggleFeedback: () => void;
+  toggleBetaTesting: () => void;
 };
 
-class ContributeContainer extends PureComponent<Props> {
+class ContributeContainer extends React.PureComponent<Props> {
   render() {
     return (
       <div className={styles.pageContainer}>

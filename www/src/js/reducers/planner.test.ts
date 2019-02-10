@@ -1,5 +1,3 @@
-// @flow
-
 import {
   ADD_PLANNER_MODULE,
   MOVE_PLANNER_MODULE,
@@ -14,7 +12,7 @@ import {
   setPlannerMaxYear,
   setPlannerIBLOCs,
 } from 'actions/planner';
-import type { PlannerState } from 'types/reducers';
+import { PlannerState } from 'types/reducers';
 import reducer from './planner';
 
 const defaultState: PlannerState = {

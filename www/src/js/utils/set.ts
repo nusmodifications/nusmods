@@ -1,5 +1,3 @@
-// @flow
-
 import { flatten } from 'lodash';
 
 export function union<T>(...sets: Set<T>[]): Set<T> {

@@ -1,7 +1,5 @@
-// @flow
-
-import React from 'react';
-import type { EmptyGroupType } from 'types/views';
+import * as React from 'react';
+import { EmptyGroupType } from 'types/views';
 
 import BeachIcon from 'img/icons/beach.svg';
 import BooksIcon from 'img/icons/books.svg';
@@ -13,7 +11,7 @@ import WinterIcon from 'img/icons/winter.svg';
 import styles from './EmptyLessonGroup.scss';
 
 type Props = {
-  type: EmptyGroupType,
+  type: EmptyGroupType;
 };
 
 function renderType(type: EmptyGroupType) {

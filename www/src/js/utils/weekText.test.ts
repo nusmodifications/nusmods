@@ -1,4 +1,3 @@
-// @flow
 import { noBreak } from 'utils/react';
 import { getWeekText } from './weekText';
 

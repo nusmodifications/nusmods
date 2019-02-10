@@ -1,5 +1,3 @@
-// @flow
-
 export default function mockDom() {
   // Mock some of the DOM environment functions that are missing from JSDom
   window.scrollTo = jest.fn();
@@ -10,7 +8,6 @@ export default function mockDom() {
   if (!Element.prototype.scrollIntoView) {
     // Flow doesn't think this property is writable, which is true,
     // but we need this to stub this method
-    // $FlowFixMe
     Element.prototype.scrollIntoView = jest.fn();
   }
 }

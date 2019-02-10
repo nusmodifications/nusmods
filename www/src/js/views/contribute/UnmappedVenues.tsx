@@ -1,9 +1,8 @@
-// @flow
-import type { VenueList as Venues, VenueLocationMap } from 'types/venues';
-import type { State as StoreState } from 'reducers';
+import { VenueList as Venues, VenueLocationMap } from 'types/venues';
+import { State as StoreState } from 'reducers';
 
-import React, { PureComponent } from 'react';
-import Loadable, { type LoadingProps } from 'react-loadable';
+import * as React from 'react';
+import Loadable, { LoadingProps } from 'react-loadable';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { partition } from 'lodash';
@@ -14,15 +13,15 @@ import ApiError from 'views/errors/ApiError';
 import styles from './UnmappedVenues.scss';
 
 type Props = {
-  venueList: Venues,
-  venueLocations: VenueLocationMap,
+  venueList: Venues;
+  venueLocations: VenueLocationMap;
 };
 
-type State = {|
-  +expanded: boolean,
-|};
+type State = {
+  readonly expanded: boolean;
+};
 
-class UnmappedVenues extends PureComponent<Props, State> {
+class UnmappedVenues extends React.PureComponent<Props, State> {
   state = {
     expanded: false,
   };
@@ -97,7 +96,7 @@ const ConnectedUnmappedVenue = connect((state: StoreState) => ({
   venueList: state.venueBank.venueList,
 }))(UnmappedVenues);
 
-export const AsyncUnmappedVenues = Loadable.Map<{}, *>({
+export const AsyncUnmappedVenues = Loadable.Map<{}, any>({
   loader: {
     venueLocations: () => import(/* webpackChunkName: "venue" */ 'data/venues.json'),
   },

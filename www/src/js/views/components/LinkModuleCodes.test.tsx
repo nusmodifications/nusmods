@@ -1,10 +1,9 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { mount } from 'enzyme';
 import { entries } from 'lodash';
 
-import type { ModuleCodeMap } from 'types/reducers';
+import { ModuleCodeMap } from 'types/reducers';
 import { getModuleCondensed } from 'selectors/moduleBank';
 
 import { LinkModuleCodesComponent } from './LinkModuleCodes';
@@ -44,11 +43,9 @@ describe(LinkModuleCodesComponent, () => {
   };
 
   function create(content: string, moduleCodes: ModuleCodeMap = {}) {
-    const getModule = getModuleCondensed(
-      ({
-        moduleCodes,
-      }: any),
-    );
+    const getModule = getModuleCondensed({
+      moduleCodes,
+    } as any);
 
     return mount(
       <MemoryRouter>

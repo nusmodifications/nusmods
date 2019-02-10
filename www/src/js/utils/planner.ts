@@ -1,7 +1,6 @@
-// @flow
 import { castArray, flatten, sum } from 'lodash';
-import type { ModuleCode, Semester, TreeFragment } from 'types/modules';
-import type { PlannerModuleInfo } from 'types/views';
+import { ModuleCode, Semester, Tree } from 'types/modules';
+import { PlannerModuleInfo } from 'types/views';
 import config from 'config';
 
 // "Exemption" and "plan to take" modules are special columns used to hold modules
@@ -32,9 +31,9 @@ export function getSemesterName(semester: Semester) {
  * been taken. If the requirements are met, null is returned, otherwise an
  * array of unfulfilled requirements is returned.
  */
-export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: TreeFragment) {
-  function walkTree(fragment: TreeFragment): ?Array<TreeFragment> {
-    // TreeFragment appears to be incorrectly typed. Sometimes for no apparent
+export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: Tree) {
+  function walkTree(fragment: Tree): Array<Tree> | null | undefined {
+    // Tree appears to be incorrectly typed. Sometimes for no apparent
     // reason the fragment is double wrapped in an array
     // eslint-disable-next-line no-param-reassign
     if (Array.isArray(fragment)) fragment = fragment[0];
@@ -61,8 +60,8 @@ export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: TreeFragment
 /**
  * Converts conflicts into human readable text form
  */
-export function conflictToText(conflict: TreeFragment) {
-  // TreeFragment appears to be incorrectly typed. Sometimes for no apparent
+export function conflictToText(conflict: Tree) {
+  // Tree appears to be incorrectly typed. Sometimes for no apparent
   // reason the fragment is double wrapped in an array
   // eslint-disable-next-line no-param-reassign
   if (Array.isArray(conflict)) conflict = conflict[0];
@@ -102,18 +101,18 @@ export function acadYearLabel(year: string) {
  * Get a planner module's title, preferring customInfo over moduleInfo.
  * This allows the user to override our data in case there are mistakes.
  */
-export function getModuleTitle(module: PlannerModuleInfo): ?string {
+export function getModuleTitle(module: PlannerModuleInfo): string | null | undefined {
   const { moduleInfo, customInfo } = module;
   // customInfo.title is nullable, and there's no point in displaying an
   // empty string, so we can use || here
-  return customInfo?.title || moduleInfo?.ModuleTitle || null;
+  return (customInfo && customInfo.title) || (moduleInfo && moduleInfo.ModuleTitle) || null;
 }
 
 /**
  * Get a planner module's credits, preferring customInfo over moduleInfo.
  * This allows the user to override our data in case there are mistakes.
  */
-export function getModuleCredit(module: PlannerModuleInfo): ?number {
+export function getModuleCredit(module: PlannerModuleInfo): number | null | undefined {
   const { moduleInfo, customInfo } = module;
 
   // Or operator (||) is not used because moduleCredit can be 0, which is

@@ -1,16 +1,15 @@
-// @flow
-import type { ContextRouter } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 
-import React, { Component } from 'react';
+import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import update from 'immutability-helper';
 import { each, mapValues, values } from 'lodash';
 
-import type { Module } from 'types/modules';
-import type { PageRange, PageRangeDiff, FilterGroupId } from 'types/views';
-import type { State as StoreState } from 'reducers';
+import { Module } from 'types/modules';
+import { PageRange, PageRangeDiff, FilterGroupId } from 'types/views';
+import { State as StoreState } from 'reducers';
 
 import { Semesters } from 'types/modules';
 import ModuleFinderList from 'views/modules/ModuleFinderList';
@@ -50,18 +49,17 @@ import { captureException } from 'utils/error';
 import styles from './ModuleFinderContainer.scss';
 
 type Props = {
-  searchTerm: string,
-  resetModuleFinder: () => any,
-  ...ContextRouter,
-};
+  searchTerm: string;
+  resetModuleFinder: () => any;
+} & RouteComponentProps;
 
 type State = {
-  loading: boolean,
-  page: PageRange,
-  modules: Module[],
-  filterGroups: { [FilterGroupId]: FilterGroup<any> },
-  isMenuOpen: boolean,
-  error?: any,
+  loading: boolean;
+  page: PageRange;
+  modules: Module[];
+  filterGroups: { [filterGroupId: string]: FilterGroup<any> };
+  isMenuOpen: boolean;
+  error?: any;
 };
 
 // Threshold to enable instant search based on the amount of time it takes to
@@ -90,7 +88,7 @@ export function mergePageRange(prev: PageRange, diff: PageRangeDiff): PageRange 
   return next;
 }
 
-export class ModuleFinderContainerComponent extends Component<Props, State> {
+export class ModuleFinderContainerComponent extends React.Component<Props, State> {
   history: HistoryDebouncer;
   unlisten: () => void;
 
@@ -137,7 +135,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
     }
   }
 
-  onFilterChange = (newGroup: FilterGroup<*>, resetScroll: boolean = true) => {
+  onFilterChange = (newGroup: FilterGroup<any>, resetScroll: boolean = true) => {
     this.setState(
       (state) =>
         update(state, {
@@ -165,7 +163,7 @@ export class ModuleFinderContainerComponent extends Component<Props, State> {
   };
 
   onClearFilter = () => {
-    const filterGroups = mapValues(this.state.filterGroups, (group: FilterGroup<*>) => {
+    const filterGroups = mapValues(this.state.filterGroups, (group: FilterGroup<any>) => {
       // Don't clear search query
       if (group.id === SEARCH_QUERY_KEY) return group;
       return group.reset();

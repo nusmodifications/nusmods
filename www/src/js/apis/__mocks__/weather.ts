@@ -1,5 +1,4 @@
-// @flow
-import type { Forecast } from 'apis/weather';
+import { Forecast } from 'apis/weather';
 
 const twoHour: JestMockFn<[], Promise<string>> = jest
   .fn()

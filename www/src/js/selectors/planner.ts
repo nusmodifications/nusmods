@@ -1,10 +1,9 @@
-// @flow
 import { flatMap, sortBy, values } from 'lodash';
-import type { ModuleCode, Semester } from 'types/modules';
+import { ModuleCode, Semester } from 'types/modules';
 import { Semesters } from 'types/modules';
-import type { Conflict, ExamClashes, PlannerModuleInfo, PlannerModulesWithInfo } from 'types/views';
-import type { CustomModuleData, ModuleCodeMap, ModuleTime } from 'types/reducers';
-import type { State } from 'reducers';
+import { Conflict, ExamClashes, PlannerModuleInfo, PlannerModulesWithInfo } from 'types/views';
+import { CustomModuleData, ModuleCodeMap, ModuleTime } from 'types/reducers';
+import { State } from 'reducers';
 import config from 'config';
 import { getYearsBetween, subtractAcadYear } from 'utils/modules';
 import {
@@ -15,7 +14,7 @@ import {
   PLAN_TO_TAKE_SEMESTER,
   PLAN_TO_TAKE_YEAR,
 } from 'utils/planner';
-import type { ModulesMap } from 'reducers/moduleBank';
+import { ModulesMap } from 'reducers/moduleBank';
 import { findExamClashes } from 'utils/timetables';
 
 /* eslint-disable no-useless-computed-key */
@@ -25,7 +24,7 @@ import { findExamClashes } from 'utils/timetables';
  * in the order specified by the index
  */
 export function filterModuleForSemester(
-  modules: { +[ModuleCode]: ModuleTime },
+  modules: { readonly [moduleCode: string]: ModuleTime },
   year: string,
   semester: Semester,
 ) {
@@ -42,7 +41,7 @@ export function filterModuleForSemester(
  * the yellow triangle in the UI.
  *
  * All conflict checks below are higher order functions returning
- * a (ModuleCode) => ?Conflict which can be passed into the last parameter
+ * a (ModuleCode) => Conflict | null | undefined which can be passed into the last parameter
  * of mapModuleInfo
  */
 
@@ -51,7 +50,7 @@ export function filterModuleForSemester(
  */
 const prereqConflict = (modulesMap: ModulesMap, modulesTaken: Set<ModuleCode>) => (
   moduleCode: ModuleCode,
-): ?Conflict => {
+): Conflict | null | undefined => {
   const moduleInfo = modulesMap[moduleCode];
   if (!moduleInfo) return null;
 
@@ -66,14 +65,15 @@ const prereqConflict = (modulesMap: ModulesMap, modulesTaken: Set<ModuleCode>) =
  */
 const noInfoConflict = (moduleCodeMap: ModuleCodeMap, customData: CustomModuleData) => (
   moduleCode: ModuleCode,
-): ?Conflict => (moduleCodeMap[moduleCode] || customData[moduleCode] ? null : { type: 'noInfo' });
+): Conflict | null | undefined =>
+  moduleCodeMap[moduleCode] || customData[moduleCode] ? null : { type: 'noInfo' };
 
 /**
  * Checks if modules are added to semesters in which they are not available
  */
 const semesterConflict = (moduleCodeMap: ModuleCodeMap, semester: Semester) => (
   moduleCode: ModuleCode,
-): ?Conflict => {
+): Conflict | null | undefined => {
   const moduleCondensed = moduleCodeMap[moduleCode];
   if (!moduleCondensed) return null;
   if (!moduleCondensed.Semesters.includes(semester)) {
@@ -88,7 +88,9 @@ const semesterConflict = (moduleCodeMap: ModuleCodeMap, semester: Semester) => (
  * calculates clashes for all modules in one semester, so it would be wasteful to rerun the exam
  * clash function for every call to this function.
  */
-const examConflict = (clashes: ExamClashes) => (moduleCode: ModuleCode): ?Conflict => {
+const examConflict = (clashes: ExamClashes) => (
+  moduleCode: ModuleCode,
+): Conflict | null | undefined => {
   const clash = values(clashes).find((modules) =>
     modules.find((module) => module.ModuleCode === moduleCode),
   );
@@ -104,7 +106,7 @@ function mapModuleToInfo(
   moduleCode: ModuleCode,
   modulesMap: ModulesMap,
   customModules: CustomModuleData,
-  conflictChecks: Array<(moduleCode: ModuleCode) => ?Conflict>,
+  conflictChecks: Array<(moduleCode: ModuleCode) => Conflict> | null | undefined,
 ): PlannerModuleInfo {
   // Only continue checking until the first conflict is found
   let conflict = null;

@@ -1,17 +1,15 @@
-// @flow
-
-import { Component, type Node } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
-import type { State } from 'reducers';
+import { State } from 'reducers';
 
 type Props = {
-  children: Node | ((boolean) => Node),
+  children: Node | ((boolean) => Node);
 
-  isOnline: boolean,
-  isLive: boolean,
+  isOnline: boolean;
+  isLive: boolean;
 };
 
-export class OnlineComponent extends Component<Props> {
+export class OnlineComponent extends React.Component<Props> {
   static defaultProps = {
     isLive: true,
   };

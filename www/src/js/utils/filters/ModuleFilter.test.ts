@@ -1,5 +1,3 @@
-// @flow
-
 import { createModule } from 'test-utils/filterHelpers';
 
 import Filter from './ModuleFilter';

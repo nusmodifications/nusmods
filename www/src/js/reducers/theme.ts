@@ -1,7 +1,6 @@
-// @flow
-import type { FSA } from 'types/redux';
-import type { ColorMapping, ThemeState } from 'types/reducers';
-import type { Theme } from 'types/settings';
+import { FSA } from 'types/redux';
+import { ColorMapping, ThemeState } from 'types/reducers';
+import { Theme } from 'types/settings';
 
 import { SET_EXPORTED_DATA } from 'actions/export';
 import {

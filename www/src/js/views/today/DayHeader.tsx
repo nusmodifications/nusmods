@@ -1,6 +1,4 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import { castArray, last } from 'lodash';
 import { format } from 'date-fns';
 
@@ -8,13 +6,19 @@ import getWeatherIcon from 'views/components/icons/weather';
 import Tooltip from 'views/components/Tooltip';
 import styles from './DayHeader.scss';
 
-type Props = {|
-  +date: Date | Date[],
-  +forecast?: ?string,
-  +offset: number, // number of days from today
-|};
+type Props = {
+  readonly date: Date | Date[];
+  readonly forecast?: string | null | undefined;
+  readonly offset: number; // number of days from today
+};
 
-export function HeaderDate({ children, offset }: {| +children: Date, +offset: number |}) {
+export function HeaderDate({
+  children,
+  offset,
+}: {
+  readonly children: Date;
+  readonly offset: number;
+}) {
   let title;
   let subtitle;
 

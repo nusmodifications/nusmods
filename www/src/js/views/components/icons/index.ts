@@ -1,4 +1,3 @@
-// @flow
 // Refer to https://feathericons.com/ for full list.
 import AlertTriangle from 'react-feather/dist/icons/alert-triangle';
 import Archive from 'react-feather/dist/icons/archive';

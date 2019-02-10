@@ -1,6 +1,4 @@
-// @flow
-
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import { updateServiceWorker } from 'bootstrapping/service-worker';
 import classnames from 'classnames';
 import { Refresh } from 'views/components/icons';
@@ -10,10 +8,10 @@ import styles from './NavRefreshPrompt.scss';
 type Props = {};
 
 type State = {
-  isReloading: boolean,
+  isReloading: boolean;
 };
 
-export default class NavRefreshPrompt extends PureComponent<Props, State> {
+export default class NavRefreshPrompt extends React.PureComponent<Props, State> {
   state = {
     isReloading: false,
   };

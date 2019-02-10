@@ -1,6 +1,5 @@
-// @flow
-import type { FSA } from 'types/redux';
-import type {
+import { FSA } from 'types/redux';
+import {
   AppState,
   ModuleFinderState,
   PlannerState,
@@ -8,9 +7,9 @@ import type {
   SettingsState,
   TimetablesState,
 } from 'types/reducers';
-import type { ModuleBank } from 'reducers/moduleBank';
-import type { VenueBank } from 'reducers/venueBank';
-import type { UndoHistoryState } from 'reducers/undoHistory';
+import { ModuleBank } from 'reducers/moduleBank';
+import { VenueBank } from 'reducers/venueBank';
+import { UndoHistoryState } from 'reducers/undoHistory';
 
 import { REMOVE_MODULE, SET_TIMETABLE } from 'actions/timetables';
 
@@ -31,16 +30,16 @@ import settingsReducer from './settings';
 import plannerReducer from './planner';
 
 export type State = {
-  moduleBank: ModuleBank,
-  venueBank: VenueBank,
-  requests: Requests,
-  timetables: TimetablesState,
-  app: AppState,
-  theme: Object,
-  settings: SettingsState,
-  moduleFinder: ModuleFinderState,
-  planner: PlannerState,
-  undoHistory: UndoHistoryState,
+  moduleBank: ModuleBank;
+  venueBank: VenueBank;
+  requests: Requests;
+  timetables: TimetablesState;
+  app: AppState;
+  theme: Object;
+  settings: SettingsState;
+  moduleFinder: ModuleFinderState;
+  planner: PlannerState;
+  undoHistory: UndoHistoryState;
 };
 
 // Persist reducers

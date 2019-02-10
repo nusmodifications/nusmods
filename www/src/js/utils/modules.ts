@@ -1,5 +1,4 @@
-// @flow
-import type {
+import {
   Day,
   Lesson,
   Module,
@@ -22,7 +21,10 @@ import { NBSP } from 'utils/react';
 export const MODULE_CODE_REGEX = /\b(\w{2,3}\s*\d{4}\w{0,3})\b/g;
 
 // Returns semester specific details such as exam date and timetable.
-export function getModuleSemesterData(module: Module, semester: Semester): ?SemesterData {
+export function getModuleSemesterData(
+  module: Module,
+  semester: Semester,
+): SemesterData | null | undefined {
   return module.History.find((semData: SemesterData) => semData.Semester === semester);
 }
 
@@ -59,7 +61,7 @@ export function examDateToDate(examDate: string): Date {
  * that they will correspond to Singapore time regardless of the local time
  * zone.
  */
-export function formatExamDate(examDate: ?string): string {
+export function formatExamDate(examDate: string | null | undefined): string {
   if (!examDate) return 'No Exam';
 
   const date = examDateToDate(examDate);
@@ -105,7 +107,7 @@ export const WORKLOAD_COMPONENTS: WorkloadComponent[] = [
   'Project',
   'Preparation',
 ];
-export type Workload = { [WorkloadComponent]: number } | string;
+export type Workload = { [workloadComponent: string]: number } | string;
 
 // Parse the workload string into a mapping of individual components to their hours.
 // If the string is unparsable, it is returned without any modification.

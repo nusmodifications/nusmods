@@ -1,23 +1,21 @@
-// @flow
-
-import React, { type ComponentType, PureComponent } from 'react';
-import Loadable, { type LoadingProps } from 'react-loadable';
+import * as React from 'react';
+import Loadable, { LoadingProps } from 'react-loadable';
 import ApiError from 'views/errors/ApiError';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 
-type Props = {|
-  +TetrisGame: ComponentType,
-|};
+type Props = {
+  readonly TetrisGame: React.ComponentType;
+};
 
-type State = {|
-  +game: number,
-|};
+type State = {
+  readonly game: number;
+};
 
 /**
  * Wrapper around TetrisGame which resets the game's internal state and components
  * by forcing a remount after each game via the key prop
  */
-class TetrisContainer extends PureComponent<Props, State> {
+class TetrisContainer extends React.PureComponent<Props, State> {
   state = {
     game: 0,
   };
@@ -36,7 +34,7 @@ class TetrisContainer extends PureComponent<Props, State> {
 /**
  * Lazy load the TetrisGame component and pass it down to TetrisContainer
  */
-export default Loadable.Map<{}, *>({
+export default Loadable.Map<{}, any>({
   loader: {
     TetrisGame: () => import(/* webpackChunkName: "tetris" */ './TetrisGame'),
   },

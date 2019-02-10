@@ -1,5 +1,3 @@
-// @flow
-
 import noScrollNpm from 'no-scroll';
 import disableScrolling from './disableScrolling';
 

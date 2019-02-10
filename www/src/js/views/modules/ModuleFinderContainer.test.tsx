@@ -1,13 +1,12 @@
-// @flow
-import type { RouterHistory } from 'react-router-dom';
+import { RouterHistory } from 'react-router-dom';
 
-import React from 'react';
+import * as React from 'react';
 import axios from 'axios';
-import { type ShallowWrapper, shallow } from 'enzyme';
+import { ShallowWrapper, shallow } from 'enzyme';
 import _ from 'lodash';
 import qs from 'query-string';
 
-import type { FilterGroupId, PageRange } from 'types/views';
+import { FilterGroupId, PageRange } from 'types/views';
 
 import mockDom from 'test-utils/mockDom';
 import createHistory from 'test-utils/createHistory';
@@ -15,8 +14,8 @@ import { nextTick, waitFor } from 'test-utils/async';
 import FilterGroup from 'utils/filters/FilterGroup';
 import { ModuleFinderContainerComponent, mergePageRange } from './ModuleFinderContainer';
 
-type ActiveFilters = { [FilterGroupId]: string[] };
-type Container = { component: ShallowWrapper, history: RouterHistory };
+type ActiveFilters = { [filterGroupId: string]: string[] };
+type Container = { component: ShallowWrapper; history: RouterHistory };
 
 describe(ModuleFinderContainerComponent, () => {
   beforeEach(() => {
@@ -68,7 +67,7 @@ describe(ModuleFinderContainerComponent, () => {
     // data structure to assert against
     const active = {};
 
-    _.values(component.state().filterGroups).forEach((group: FilterGroup<*>) => {
+    _.values(component.state().filterGroups).forEach((group: FilterGroup<any>) => {
       const filters = group.activeFilters.map((filter) => filter.id);
       if (filters.length) active[group.id] = filters;
     });

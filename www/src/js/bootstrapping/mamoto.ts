@@ -1,6 +1,5 @@
-// @flow
-import type { RouterHistory } from 'react-router-dom';
-import type { Tracker } from 'types/views';
+import { RouterHistory } from 'react-router-dom';
+import { Tracker } from 'types/views';
 import { each } from 'lodash';
 import insertScript from 'utils/insertScript';
 import { getScriptErrorHandler } from 'utils/error';
@@ -14,7 +13,7 @@ export const DIMENSIONS = {
 };
 
 const queuedTasks = [];
-let mamoto: ?Tracker;
+let mamoto: Tracker | null | undefined;
 let initialDimensions = false;
 let initialViewTracked = false;
 
@@ -46,7 +45,7 @@ export function initializeMamoto() {
     .catch(getScriptErrorHandler('Mamoto'));
 }
 
-export function withTracker(action: (Tracker) => void) {
+export function withTracker(action: (tracker: Tracker) => void) {
   if (mamoto) {
     action(mamoto);
   } else {

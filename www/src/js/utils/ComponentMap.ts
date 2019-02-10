@@ -1,5 +1,4 @@
-// @flow
-import type { ComponentMap as ComponentMapType } from 'types/views';
+import { ComponentMap as ComponentMapType } from 'types/views';
 
 // Singleton containing references to HTML elements from various parts of
 // the app. This is used by KeyboardShortcuts to focus or activate DOM elements

@@ -1,11 +1,9 @@
-// @flow
-
-import React, { type Node } from 'react';
+import * as React from 'react';
 import styles from './overlay.scss';
 
-type Props = {|
-  +children: Node,
-|};
+type Props = {
+  readonly children: Node;
+};
 
 export default function GameOverlay(props: Props) {
   return (

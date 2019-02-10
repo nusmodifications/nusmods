@@ -1,9 +1,8 @@
-// @flow
-import { createContext } from 'react';
+import * as React from 'react';
 
-type VenueContextValue = {|
-  +toggleDetailScrollable: (boolean) => void,
-|};
+type VenueContextValue = {
+  readonly toggleDetailScrollable: (boolean: boolean) => void;
+};
 
 const defaultValue: VenueContextValue = {
   // Sets scrollable-y on the .venueDetail container. Setting this to false

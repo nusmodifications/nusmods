@@ -1,5 +1,4 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 import config from 'config';
 import ExternalLink from 'views/components/ExternalLink';
 import StaticPage from './StaticPage';

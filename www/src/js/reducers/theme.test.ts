@@ -1,6 +1,5 @@
-// @flow
-import type { FSA } from 'types/redux';
-import type { ThemeState } from 'types/reducers';
+import { FSA } from 'types/redux';
+import { ThemeState } from 'types/reducers';
 
 import * as actions from 'actions/theme';
 import reducer, { defaultThemeState, themeIds } from 'reducers/theme';

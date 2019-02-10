@@ -1,13 +1,11 @@
-// @flow
-
-import React, { PureComponent } from 'react';
-import Downshift, { type ChildrenFunction } from 'downshift';
+import * as React from 'react';
+import Downshift, { ChildrenFunction } from 'downshift';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
-import type { State as StoreState } from 'reducers';
-import type { Semester } from 'types/modules';
+import { State as StoreState } from 'reducers';
+import { Semester } from 'types/modules';
 
 import exportApi from 'apis/export';
 import { downloadAsIcal, SUPPORTS_DOWNLOAD } from 'actions/export';
@@ -32,16 +30,16 @@ const IMAGE: ExportAction = 'IMAGE';
 const PDF: ExportAction = 'PDF';
 
 type Props = {
-  state: StoreState,
-  semester: Semester,
-  downloadAsIcal: (Semester) => void,
+  state: StoreState;
+  semester: Semester;
+  downloadAsIcal: (semester: Semester) => void;
 };
 
 type State = {
-  isMacWarningOpen: boolean,
+  isMacWarningOpen: boolean;
 };
 
-export class ExportMenuComponent extends PureComponent<Props, State> {
+export class ExportMenuComponent extends React.PureComponent<Props, State> {
   state: State = {
     isMacWarningOpen: false,
   };

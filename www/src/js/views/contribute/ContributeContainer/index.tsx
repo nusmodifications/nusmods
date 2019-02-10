@@ -1,14 +1,12 @@
-// @flow
-
-import type { ComponentType } from 'react';
+import * as React from 'react';
 import React from 'react';
-import Loadable, { type LoadingProps } from 'react-loadable';
+import Loadable, { LoadingProps } from 'react-loadable';
 
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import ApiError from 'views/errors/ApiError';
 import { retryImport } from 'utils/error';
 
-const AsyncContributeContainer: ComponentType<{}> = Loadable({
+const AsyncContributeContainer: React.React.ComponentType<{}> = Loadable({
   loader: () =>
     retryImport(() => import(/* webpackChunkName: "contribute" */ './ContributeContainer')),
   loading: (props: LoadingProps) => {

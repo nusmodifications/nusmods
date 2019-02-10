@@ -1,6 +1,4 @@
-// @flow
-
-import type { Module, ModuleCode } from 'types/modules';
+import { Module, ModuleCode } from 'types/modules';
 import { intersectionCount } from 'utils/set';
 
 export default class ModuleFilter {
@@ -8,12 +6,12 @@ export default class ModuleFilter {
 
   id: string;
   label: string;
-  test: (Module) => boolean;
+  test: (module: Module) => boolean;
 
   // ModuleCode of modules that this filter matches
   filteredModules: Set<ModuleCode>;
 
-  constructor(id: string, label: string, test: (Module) => boolean) {
+  constructor(id: string, label: string, test: (module: Module) => boolean) {
     this.id = id;
     this.label = label;
     this.test = test;
@@ -34,7 +32,7 @@ export default class ModuleFilter {
    * @param {?Set<ModuleCode>} modules - if null, returns all modules that passes this filter
    * @returns {number}
    */
-  count(modules: ?Set<ModuleCode>) {
+  count(modules: Set<ModuleCode> | null | undefined) {
     if (!this.filteredModules) {
       throw new Error(
         `count() method called before initCount() on filter ${this.label} (${this.id})`,

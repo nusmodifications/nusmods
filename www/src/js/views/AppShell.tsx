@@ -1,14 +1,13 @@
-// @flow
-import type { Node } from 'react';
-import type { TimetableConfig, SemTimetableConfig } from 'types/timetables';
-import type { ModuleList, NotificationOptions } from 'types/reducers';
-import type { Semester } from 'types/modules';
-import type { Mode } from 'types/settings';
-import type { State as StoreState } from 'reducers';
+import * as React from 'react';
+import { TimetableConfig, SemTimetableConfig } from 'types/timetables';
+import { ModuleList, NotificationOptions } from 'types/reducers';
+import { Semester } from 'types/modules';
+import { Mode } from 'types/settings';
+import { State as StoreState } from 'reducers';
 
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import { NavLink, withRouter, type ContextRouter } from 'react-router-dom';
+import { NavLink, withRouter, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { each } from 'lodash';
@@ -34,31 +33,32 @@ import FeedbackModal from './components/FeedbackModal';
 import KeyboardShortcuts from './components/KeyboardShortcuts';
 import styles from './AppShell.scss';
 
-type Props = {
-  ...ContextRouter,
-
-  children: Node,
+type Props = RouteComponentProps & {
+  children: Node;
 
   // From Redux state
-  moduleList: ModuleList,
-  timetables: TimetableConfig,
-  theme: string,
-  mode: Mode,
-  activeSemester: Semester,
+  moduleList: ModuleList;
+  timetables: TimetableConfig;
+  theme: string;
+  mode: Mode;
+  activeSemester: Semester;
 
   // From Redux actions
-  fetchModuleList: () => Promise<*>,
-  fetchTimetableModules: (SemTimetableConfig[]) => Promise<*>,
-  setTimetable: (Semester, SemTimetableConfig) => void,
-  validateTimetable: (Semester) => void,
-  openNotification: (string, ?NotificationOptions) => void,
+  fetchModuleList: () => Promise<any>;
+  fetchTimetableModules: (semTimetableConfig: SemTimetableConfig[]) => Promise<any>;
+  setTimetable: (semester: Semester, semTimetableConfig: SemTimetableConfig) => void;
+  validateTimetable: (semester: Semester) => void;
+  openNotification: (
+    str: string,
+    notificationOptions: NotificationOptions | null | undefined,
+  ) => void;
 };
 
 type State = {
-  moduleListError?: any,
+  moduleListError?: any;
 };
 
-export class AppShellComponent extends Component<Props, State> {
+export class AppShellComponent extends React.Component<Props, State> {
   state = {};
 
   componentDidMount() {

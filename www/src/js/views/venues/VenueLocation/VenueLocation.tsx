@@ -1,9 +1,8 @@
-// @flow
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import LocationMap from 'views/components/map/LocationMap';
 
 import classnames from 'classnames';
-import type { VenueLocation as VenueLocationItem } from 'types/venues';
+import { VenueLocation as VenueLocationItem } from 'types/venues';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import { floorName } from 'utils/venues';
@@ -15,21 +14,20 @@ import FeedbackModal from './FeedbackModal';
 import ImproveVenueForm from './ImproveVenueForm';
 import styles from './VenueLocation.scss';
 
-export type OwnProps = {|
-  +venue: string,
-|};
+export type OwnProps = {
+  readonly venue: string;
+};
 
-type Props = {|
-  ...OwnProps,
+type Props = OwnProps & {
   // Provided by VenueContext
-  +toggleScrollable: (boolean) => void,
-|};
+  readonly toggleScrollable: (boolean: boolean) => void;
+};
 
-type State = {|
-  +isFeedbackModalOpen: boolean,
-|};
+type State = {
+  readonly isFeedbackModalOpen: boolean;
+};
 
-class VenueLocation extends PureComponent<Props, State> {
+class VenueLocation extends React.PureComponent<Props, State> {
   state: State = {
     isFeedbackModalOpen: false,
   };
@@ -37,7 +35,7 @@ class VenueLocation extends PureComponent<Props, State> {
   openModal = () => this.setState({ isFeedbackModalOpen: true });
   closeModal = () => this.setState({ isFeedbackModalOpen: false });
 
-  renderFeedbackMenu(existingLocation: ?VenueLocationItem = null) {
+  renderFeedbackMenu(existingLocation: VenueLocationItem | null | undefined = null) {
     const { venue } = this.props;
     const { isFeedbackModalOpen } = this.state;
 
@@ -63,7 +61,7 @@ class VenueLocation extends PureComponent<Props, State> {
 
   render() {
     const { venue } = this.props;
-    const location: ?VenueLocationItem = venueLocations[venue];
+    const location: VenueLocationItem | null | undefined = venueLocations[venue];
 
     if (!location) {
       return (
@@ -120,7 +118,7 @@ class VenueLocation extends PureComponent<Props, State> {
   }
 }
 
-export default function(props: $Diff<Props, { toggleScrollable?: (boolean) => void }>) {
+export default function(props: $Diff<Props, { toggleScrollable?: (boolean: boolean) => void }>) {
   return (
     <VenueContext.Consumer>
       {({ toggleDetailScrollable }) => (

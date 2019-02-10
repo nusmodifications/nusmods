@@ -1,5 +1,3 @@
-// @flow
-
 import insertScript from './insertScript';
 
 describe(insertScript, () => {

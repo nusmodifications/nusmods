@@ -1,10 +1,9 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import styles from './CurrentTimeIndicator.scss';
 
 type Props = {
-  style: Object,
+  style: Object;
 };
 
 function CurrentTimeIndicator(props: Props) {

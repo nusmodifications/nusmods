@@ -1,19 +1,17 @@
-// @flow
-
-import React, { PureComponent } from 'react';
-import { withLeaflet, type LeafletContext } from 'react-leaflet';
+import * as React from 'react';
+import { withLeaflet, LeafletContext } from 'react-leaflet';
 import Control from 'react-leaflet-control';
 import { Maximize, Minimize } from 'views/components/icons';
 import Tooltip from 'views/components/Tooltip';
 
-type Props = {|
-  +leaflet: LeafletContext,
+type Props = {
+  readonly leaflet: LeafletContext;
 
-  +isExpanded: boolean,
-  +onToggleExpand: (boolean) => void,
-|};
+  readonly isExpanded: boolean;
+  readonly onToggleExpand: (boolean: boolean) => void;
+};
 
-class ExpandMap extends PureComponent<Props> {
+class ExpandMap extends React.PureComponent<Props> {
   componentDidMount() {
     // Workaround for https://github.com/LiveBy/react-leaflet-control/issues/27
     this.forceUpdate();

@@ -1,6 +1,4 @@
-// @flow
-
-import React, { type Node, Component } from 'react';
+import * as React from 'react';
 import ReactModal from 'react-modal';
 import classnames from 'classnames';
 
@@ -8,15 +6,15 @@ import disableScrolling from 'utils/disableScrolling';
 import styles from './Modal.scss';
 
 type Props = {
-  isOpen: boolean,
-  overlayClassName?: string,
-  className?: string,
-  children: ?Node,
-  fullscreen: boolean,
-  animate?: boolean,
+  isOpen: boolean;
+  overlayClassName?: string;
+  className?: string;
+  children: Node | null | undefined;
+  fullscreen: boolean;
+  animate?: boolean;
 };
 
-export default class Modal extends Component<Props> {
+export default class Modal extends React.Component<Props> {
   static defaultProps = {
     fullscreen: false,
   };

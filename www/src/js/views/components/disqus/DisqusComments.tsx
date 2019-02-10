@@ -1,26 +1,23 @@
-// @flow
-
-import type { DisqusConfig } from 'types/views';
-import React, { PureComponent } from 'react';
+import { DisqusConfig } from 'types/views';
+import * as React from 'react';
 import { connect } from 'react-redux';
 
-import type { Mode } from 'types/settings';
-import type { State } from 'reducers';
+import { Mode } from 'types/settings';
+import { State } from 'reducers';
 import config from 'config';
 import insertScript from 'utils/insertScript';
 import { getScriptErrorHandler } from 'utils/error';
 
-type Props = {|
-  ...DisqusConfig,
+type Props = DisqusConfig & {
   // Disqus autodetects page background color so that its own font color has
   // enough contrast to be read, but only when the widget is loaded, so we use
   // this to force the widget after night mode is activated or deactivated
-  mode: Mode,
-|};
+  mode: Mode;
+};
 
 const SCRIPT_ID = 'dsq-embed-scr';
 
-class DisqusComments extends PureComponent<Props> {
+class DisqusComments extends React.PureComponent<Props> {
   componentDidMount() {
     this.loadInstance();
   }

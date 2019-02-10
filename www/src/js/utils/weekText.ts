@@ -1,5 +1,4 @@
-// @flow
-import NUSModerator, { type AcadWeekInfo } from 'nusmoderator';
+import NUSModerator, { AcadWeekInfo } from 'nusmoderator';
 import { noBreak } from 'utils/react';
 
 export const getWeekText = (acadWeekInfo: AcadWeekInfo) => {

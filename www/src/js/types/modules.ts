@@ -1,7 +1,6 @@
-// @flow
-import type { ColorIndex } from 'types/reducers';
+import { ColorIndex } from 'types/reducers';
 import { flatMap } from 'lodash';
-import type { Venue } from './venues';
+import { Venue } from './venues';
 
 // Components within a module:
 export type AcadYear = string; // E.g. "2016/2017"
@@ -53,87 +52,87 @@ export type WorkloadComponent = 'Lecture' | 'Tutorial' | 'Laboratory' | 'Project
 // RawLesson is a lesson time slot obtained from the API.
 // Usually ModuleCode and ModuleTitle has to be injected in before using in the timetable.
 export type RawLesson = {
-  ClassNo: ClassNo,
-  DayText: DayText,
-  EndTime: EndTime,
-  LessonType: LessonType,
-  StartTime: StartTime,
-  Venue: Venue,
-  WeekText: WeekText,
+  ClassNo: ClassNo;
+  DayText: DayText;
+  EndTime: EndTime;
+  LessonType: LessonType;
+  StartTime: StartTime;
+  Venue: Venue;
+  WeekText: WeekText;
 };
 
 // Semester-specific information of a module.
-export type SemesterData = {|
-  +ExamDate?: string,
-  +LecturePeriods: Array<string>,
-  +Semester: Semester,
-  +Timetable: Array<RawLesson>,
-  +TutorialPeriods?: Array<string>,
-|};
+export type SemesterData = {
+  readonly ExamDate?: string;
+  readonly LecturePeriods: Array<string>;
+  readonly Semester: Semester;
+  readonly Timetable: Array<RawLesson>;
+  readonly TutorialPeriods?: Array<string>;
+};
 
 // Recursive definition for walking a module tree
-export type TreeFragment = {|
-  +name: string,
-  // TreeFragment[] will result in infinite loop
-  +children: Array<TreeFragment>,
-|};
+export type Tree = {
+  readonly name: string;
+  // Tree[] will result in infinite loop
+  readonly children: Array<Tree>;
+};
 
 // Information for a module for a particular academic year.
 // This is probably the only model you need to be concerned with.
 // For some reason es6 object literal property value shorthand is not recognized >_<
 export type Module = {
-  AcadYear: AcadYear,
-  Corequisite?: string,
-  Department: Department,
-  History: Array<SemesterData>,
-  ModuleCode: ModuleCode,
-  ModuleCredit: string,
-  ModuleDescription?: string,
-  ModuleTitle: ModuleTitle,
-  Preclusion?: string,
-  Prerequisite?: string,
-  Types: Array<string>,
-  Workload?: string,
-  ModmavenTree: TreeFragment,
-  LockedModules?: Array<ModuleCode>,
+  AcadYear: AcadYear;
+  Corequisite?: string;
+  Department: Department;
+  History: Array<SemesterData>;
+  ModuleCode: ModuleCode;
+  ModuleCredit: string;
+  ModuleDescription?: string;
+  ModuleTitle: ModuleTitle;
+  Preclusion?: string;
+  Prerequisite?: string;
+  Types: Array<string>;
+  Workload?: string;
+  ModmavenTree: Tree;
+  LockedModules?: Array<ModuleCode>;
 };
 
 export type ModuleWithColor = Module & {
-  colorIndex: ColorIndex,
-  hiddenInTimetable: boolean,
+  colorIndex: ColorIndex;
+  hiddenInTimetable: boolean;
 };
 
 // This format is returned from the module list endpoint.
-export type ModuleCondensed = {|
-  +ModuleCode: ModuleCode,
-  +ModuleTitle: ModuleTitle,
-  +Semesters: number[],
-|};
+export type ModuleCondensed = {
+  readonly ModuleCode: ModuleCode;
+  readonly ModuleTitle: ModuleTitle;
+  readonly Semesters: number[];
+};
 
 // Subset of Module object that contains the properties that are
 // needed for module search
 export type SearchableModule = {
-  ModuleCode: ModuleCode,
-  ModuleTitle: ModuleTitle,
-  ModuleDescription?: string,
+  ModuleCode: ModuleCode;
+  ModuleTitle: ModuleTitle;
+  ModuleDescription?: string;
 };
 
 // RawLessons obtained from API does not include ModuleCode and ModuleTitle by default.
 // They have to be injected in before using in the timetable.
 export type Lesson = RawLesson & {
-  ModuleCode: ModuleCode,
-  ModuleTitle: ModuleTitle,
+  ModuleCode: ModuleCode;
+  ModuleTitle: ModuleTitle;
 };
 
 export type ColoredLesson = Lesson & {
-  colorIndex: number,
+  colorIndex: number;
 };
 
 type Modifiable = {
-  isModifiable?: boolean,
-  isAvailable?: boolean,
-  isActive?: boolean,
-  colorIndex: number,
+  isModifiable?: boolean;
+  isAvailable?: boolean;
+  isActive?: boolean;
+  colorIndex: number;
 };
 
 // Lessons do not implement a modifiable interface.

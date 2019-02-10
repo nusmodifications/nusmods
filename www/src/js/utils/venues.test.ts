@@ -1,7 +1,6 @@
-// @flow
 import venueInfo from '__mocks__/venueInformation.json';
 
-import type { WeekText, ModuleCode, StartTime } from 'types/modules';
+import { WeekText, ModuleCode, StartTime } from 'types/modules';
 import { ZWSP } from 'utils/react';
 import {
   searchVenue,
@@ -17,7 +16,7 @@ const getVenues = (...names) => venues.filter(([name]) => names.includes(name));
 
 const makeVenueLesson = (
   moduleCode: ModuleCode,
-  props: { WeekText?: WeekText, StartTime?: StartTime } = {},
+  props: { WeekText?: WeekText; StartTime?: StartTime } = {},
 ) => ({
   ClassNo: '1',
   DayText: 'Monday',

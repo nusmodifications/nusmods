@@ -1,9 +1,8 @@
-// @flow
-import type { Store } from 'redux';
-import type { State } from 'reducers';
-import type { Persistor } from 'storage/persistReducer';
+import { Store } from 'redux';
+import { State } from 'reducers';
+import { Persistor } from 'storage/persistReducer';
 
-import React from 'react';
+import * as React from 'react';
 import { AppContainer } from 'react-hot-loader'; // eslint-disable-line import/no-extraneous-dependencies
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -14,8 +13,8 @@ import Routes from 'views/routes/Routes';
 import { DIMENSIONS, setCustomDimensions } from 'bootstrapping/mamoto';
 
 type Props = {
-  store: Store<State, *, *>,
-  persistor: Persistor,
+  store: Store<State, any, any>;
+  persistor: Persistor;
 };
 
 export default function App({ store, persistor }: Props) {

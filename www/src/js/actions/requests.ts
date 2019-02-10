@@ -1,22 +1,14 @@
-// @flow
-
-import type { AxiosXHRConfig } from 'axios';
-import type { RequestKey } from 'types/reducers';
+import { AxiosRequestConfig } from 'axios';
+import { RequestKey } from 'types/reducers';
 
 export const API_REQUEST = 'API_REQUEST';
 
-export type RequestAction = {|
-  type: string,
-  payload: AxiosXHRConfig<*>,
+export type RequestAction = {
+  type: string;
+  payload: AxiosRequestConfig;
   meta: {
-    [typeof API_REQUEST]: string,
-  },
-|};
-
-/* eslint-disable import/prefer-default-export, no-param-reassign */
-type RequestActionCreator = {
-  (key: RequestKey, options: AxiosXHRConfig<*>): RequestAction,
-  (key: RequestKey, type: string, options: AxiosXHRConfig<*>): RequestAction,
+    [key: string]: string;
+  };
 };
 
 /**
@@ -32,8 +24,18 @@ type RequestActionCreator = {
  * Options is passed directly into axios config, so minimally url should be
  * provided.
  */
-export const requestAction: RequestActionCreator = (key, type, options) => {
-  let payload: AxiosXHRConfig<*>;
+export function requestAction(key: RequestKey, options: AxiosRequestConfig): RequestAction;
+export function requestAction(
+  key: RequestKey,
+  type: string,
+  options: AxiosRequestConfig,
+): RequestAction;
+export function requestAction(
+  key: RequestKey,
+  type: string | AxiosRequestConfig,
+  options?: AxiosRequestConfig,
+): RequestAction {
+  let payload: AxiosRequestConfig;
 
   if (typeof type !== 'string') {
     payload = type;
@@ -52,4 +54,4 @@ export const requestAction: RequestActionCreator = (key, type, options) => {
       [API_REQUEST]: key,
     },
   };
-};
+}

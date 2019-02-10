@@ -1,7 +1,5 @@
-// @flow
-
-import type { VenueLocation } from 'types/venues';
-import React, { PureComponent } from 'react';
+import { VenueLocation } from 'types/venues';
+import * as React from 'react';
 import classnames from 'classnames';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
@@ -12,18 +10,18 @@ import styles from './VenueLocation.scss';
 
 type Page = 'menu' | 'form';
 
-type Props = {|
-  +venue: string,
-  +isOpen: boolean,
-  +onRequestClose: () => void,
-  +existingLocation: ?VenueLocation,
-|};
+type Props = {
+  readonly venue: string;
+  readonly isOpen: boolean;
+  readonly onRequestClose: () => void;
+  readonly existingLocation: VenueLocation | null | undefined;
+};
 
-type State = {|
-  +page: Page,
-|};
+type State = {
+  readonly page: Page;
+};
 
-export default class FeedbackModal extends PureComponent<Props, State> {
+export default class FeedbackModal extends React.PureComponent<Props, State> {
   state: State = {
     page: 'menu',
   };

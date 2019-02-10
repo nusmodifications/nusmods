@@ -1,5 +1,4 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import TimetableContainer from 'views/timetable/TimetableContainer';

@@ -1,20 +1,19 @@
-// @flow
-import type { FSA } from 'types/redux';
+import { FSA } from 'types/redux';
 
 import { pick, takeRight, set, get, last } from 'lodash';
 import { UNDO, REDO } from 'actions/undoHistory';
 
 export type UndoHistoryConfig = {
-  reducerName: string,
-  limit?: number,
-  actionsToWatch: string[],
-  whitelist: string[],
+  reducerName: string;
+  limit?: number;
+  actionsToWatch: string[];
+  whitelist: string[];
 };
 
 export type UndoHistoryState = {
-  past: Object[],
-  present: ?Object,
-  future: Object[],
+  past: Object[];
+  present: Object | null | undefined;
+  future: Object[];
 };
 
 // Call the reducer with empty action to populate the initial state
@@ -28,7 +27,7 @@ const initialState: UndoHistoryState = {
 // Basically a reducer but not really, as it needs to know the previous state.
 // Passing state in even though state === presentAppState[config.reducerName] as the "reducer"
 // doesn't need to know that.
-export function computeUndoStacks<T: Object>(
+export function computeUndoStacks<T extends Object>(
   state: UndoHistoryState = initialState,
   action: FSA,
   previousAppState: T,
@@ -81,7 +80,7 @@ export function computeUndoStacks<T: Object>(
 }
 
 // Copy all keyPaths in present into a new copy of state
-export function mergePresent<T: Object>(state: T, present: Object, keyPaths: string[]): T {
+export function mergePresent<T extends Object>(state: T, present: Object, keyPaths: string[]): T {
   const newState = { ...state };
   keyPaths.forEach((path) => {
     const presentValue = get(present, path);
@@ -93,7 +92,7 @@ export function mergePresent<T: Object>(state: T, present: Object, keyPaths: str
 // Given a config object, returns function which compute new state after
 // undoing/redoing/storing present as required by action.
 export default function createUndoReducer(config: UndoHistoryConfig) {
-  return <T: Object>(previousState: T, presentState: T, action: FSA) => {
+  return <T extends Object>(previousState: T, presentState: T, action: FSA) => {
     // Calculate un/redone history
     const undoHistoryState = presentState[config.reducerName];
     const updatedHistory = computeUndoStacks(

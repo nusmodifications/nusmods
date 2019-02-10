@@ -1,25 +1,24 @@
-// @flow
-import type { Node } from 'react';
+import * as React from 'react';
 
 import React, { Component } from 'react';
 import classnames from 'classnames';
 
-import type { Day, Time } from 'types/modules';
+import { Day, Time } from 'types/modules';
 
 import { WorkingDaysOfWeek, TimesOfDay } from 'types/modules';
 import { getTimeslot } from 'utils/modules';
 import styles from './TimeslotTable.scss';
 
 type Props = {
-  children: Map<string, Node>,
-  className?: string,
+  children: Map<string, Node>;
+  className?: string;
 };
 
 type State = {
   hover: {
-    day: ?Day,
-    time: ?Time,
-  },
+    day: Day | null | undefined;
+    time: Time | null | undefined;
+  };
 };
 
 // Null object for when no cell is being hovered over
@@ -28,7 +27,7 @@ const EMPTY_HOVER = {
   time: null,
 };
 
-const timeLabels: { [Time]: string } = {
+const timeLabels: { [time: string]: string } = {
   Morning: 'A.M.',
   Afternoon: 'P.M.',
   Evening: 'Night',
@@ -37,7 +36,7 @@ const timeLabels: { [Time]: string } = {
 const withoutSaturday = WorkingDaysOfWeek.slice(0, -1);
 const withoutEvening = TimesOfDay.slice(0, -1);
 
-export default class TimeslotTable extends Component<Props, State> {
+export default class TimeslotTable extends React.Component<Props, State> {
   state: State = { hover: EMPTY_HOVER };
 
   onHoverEnter = (day: Day, time: Time) => {

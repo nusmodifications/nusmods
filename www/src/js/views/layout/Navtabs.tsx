@@ -1,8 +1,7 @@
-// @flow
-import type { State } from 'reducers';
-import type { Semester } from 'types/modules';
+import { State } from 'reducers';
+import { Semester } from 'types/modules';
 
-import React from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
@@ -30,9 +29,9 @@ import styles from './Navtabs.scss';
 export const NAVTAB_HEIGHT = 48;
 
 type Props = {
-  activeSemester: Semester,
-  beta: boolean,
-  promptRefresh: boolean,
+  activeSemester: Semester;
+  beta: boolean;
+  promptRefresh: boolean;
 };
 
 export function NavtabsComponent(props: Props) {

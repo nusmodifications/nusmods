@@ -1,13 +1,11 @@
-// @flow
-
-import React, { type ComponentType } from 'react';
+import * as React from 'react';
 import { retryImport } from 'utils/error';
-import type { Props } from './Tooltip';
+import { Props } from './Tooltip';
 
 // Can't use react-loadable for this since children and other props
 // are not passed down - https://github.com/jamiebuilds/react-loadable/pull/161
 export default class AsyncTooltip extends React.PureComponent<Props> {
-  static Tooltip: ?ComponentType<Props>;
+  static Tooltip: React | null | undefined.React.ComponentType<Props>;
 
   componentDidMount() {
     if (!AsyncTooltip.Tooltip) {

@@ -1,28 +1,27 @@
-// @flow
 import { last, sortBy } from 'lodash';
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 
 import { addScoreData, getScoreData, HIGH_SCORE_COUNT } from './score';
 import HighScoreTable from './HighScoreTable';
 import styles from './HighScoreForm.scss';
 
-type Props = {|
-  +score: number,
-|};
-
-type State = {
-  name: string,
-  submitted: boolean,
+type Props = {
+  readonly score: number;
 };
 
-export default class HighScoreForm extends PureComponent<Props, State> {
+type State = {
+  name: string;
+  submitted: boolean;
+};
+
+export default class HighScoreForm extends React.PureComponent<Props, State> {
   state = {
     name: '',
     submitted: false,
   };
 
-  onSubmit = (evt: SyntheticEvent<HTMLFormElement>) => {
+  onSubmit = (evt: React.SyntheticEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
     addScoreData({

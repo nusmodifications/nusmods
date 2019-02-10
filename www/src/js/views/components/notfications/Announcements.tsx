@@ -1,6 +1,4 @@
-// @flow
-
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
@@ -12,11 +10,11 @@ import CloseButton from 'views/components/CloseButton';
 import styles from './Announcements.scss';
 
 type Props = {
-  toggleFeedback: Function,
+  toggleFeedback: Function;
 };
 
 type State = {
-  isOpen: boolean,
+  isOpen: boolean;
 };
 
 /**
@@ -30,7 +28,7 @@ type State = {
  */
 const key = announcementKey('ay201819-s2-new-data');
 
-class Announcements extends PureComponent<Props, State> {
+class Announcements extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 

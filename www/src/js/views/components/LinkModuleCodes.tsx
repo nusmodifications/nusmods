@@ -1,10 +1,9 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import type { State } from 'reducers';
-import type { ModuleCode, ModuleCondensed } from 'types/modules';
+import { State } from 'reducers';
+import { ModuleCode, ModuleCondensed } from 'types/modules';
 
 import { modulePage } from 'views/routes/paths';
 import Tooltip from 'views/components/Tooltip';
@@ -15,9 +14,9 @@ import { MODULE_CODE_REGEX } from 'utils/modules';
 import styles from './LinkModuleCodes.scss';
 
 type Props = {
-  children: string,
-  getModuleCondensed: (ModuleCode) => ?ModuleCondensed,
-  className?: string,
+  children: string;
+  getModuleCondensed: (moduleCode: ModuleCode) => ModuleCondensed | null | undefined;
+  className?: string;
 };
 
 export function LinkModuleCodesComponent(props: Props) {

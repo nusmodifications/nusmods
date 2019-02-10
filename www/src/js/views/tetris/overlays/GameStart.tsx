@@ -1,6 +1,4 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 
 import instructionImage from 'img/instructions.png';
@@ -10,9 +8,9 @@ import GameOverlay from './GameOverlay';
 
 import styles from './overlay.scss';
 
-type Props = {|
-  +startGame: () => void,
-|};
+type Props = {
+  readonly startGame: () => void;
+};
 
 export default function GameStart(props: Props) {
   return (

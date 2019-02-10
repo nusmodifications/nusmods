@@ -1,5 +1,4 @@
-// @flow
-import type { ModuleCode } from 'types/modules';
+import { ModuleCode } from 'types/modules';
 import moduleList from '__mocks__/modules';
 
 import { createSearchFilter, sortModules } from './moduleSearch';

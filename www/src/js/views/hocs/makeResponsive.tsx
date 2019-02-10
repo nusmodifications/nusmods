@@ -1,22 +1,21 @@
-// @flow
-import React, { Component } from 'react';
+import * as React from 'react';
 import json2mq from 'json2mq';
 
-import type { QueryObject } from 'utils/css';
+import { QueryObject } from 'utils/css';
 import { wrapComponentName } from 'utils/react';
 
 type State = {
-  matchBreakpoint: boolean,
+  matchBreakpoint: boolean;
 };
 
-function makeResponsive<Props: {}>(
-  WrappedComponent: ComponentType<Props>,
+function makeResponsive<Props>(
+  WrappedComponent: React.React.ComponentType<Props>,
   mediaQuery: string | QueryObject,
-): ComponentType<$Diff<Props, State>> {
+): React.React.ComponentType<Pick<Props, Exclude<keyof Props, keyof State>>> {
   const media = typeof mediaQuery === 'string' ? mediaQuery : json2mq(mediaQuery);
 
-  return class extends Component<Props, State> {
-    mql: ?MediaQueryList;
+  return class extends React.Component<Props, State> {
+    mql: MediaQueryList | null | undefined;
 
     static displayName = wrapComponentName(WrappedComponent, makeResponsive.name);
 

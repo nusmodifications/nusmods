@@ -1,20 +1,18 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 /** @var { VenueLocationMap } */
 import venueLocations from 'data/venues.json';
-import type { Venue, VenueLocation } from 'types/venues';
+import { Venue, VenueLocation } from 'types/venues';
 import LocationMap from 'views/components/map/LocationMap';
 import styles from './EventMapInline.scss';
 
-export type Props = {|
-  +isOpen: boolean,
-  +className?: string,
-  +venue: Venue,
+export type Props = {
+  readonly isOpen: boolean;
+  readonly className?: string;
+  readonly venue: Venue;
 
-  +toggleOpen: () => void,
-|};
+  readonly toggleOpen: () => void;
+};
 
 export default function(props: Props) {
   const venueLocation: VenueLocation = venueLocations[props.venue];

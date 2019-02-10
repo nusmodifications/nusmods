@@ -1,6 +1,4 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import { shallow } from 'enzyme';
 
 import { FooterComponent } from 'views/layout/Footer';

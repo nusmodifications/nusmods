@@ -1,5 +1,3 @@
-// @flow
-
 import { getModuleCondensed } from 'selectors/moduleBank';
 
 describe(getModuleCondensed, () => {

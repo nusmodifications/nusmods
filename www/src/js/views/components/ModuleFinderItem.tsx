@@ -1,11 +1,10 @@
-// @flow
-import React, { Fragment, PureComponent } from 'react';
+import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import type { Module } from 'types/modules';
-import type { ModuleSearch } from 'types/reducers';
-import type { State } from 'reducers';
+import { Module } from 'types/modules';
+import { ModuleSearch } from 'types/reducers';
+import { State } from 'reducers';
 
 import { modulePage } from 'views/routes/paths';
 import { BULLET, highlight } from 'utils/react';
@@ -15,11 +14,11 @@ import ModuleWorkload from './module-info/ModuleWorkload';
 import LinkModuleCodes from './LinkModuleCodes';
 
 type Props = {
-  module: Module,
-  search: ModuleSearch,
+  module: Module;
+  search: ModuleSearch;
 };
 
-export class ModuleFinderItemComponent extends PureComponent<Props> {
+export class ModuleFinderItemComponent extends React.PureComponent<Props> {
   highlight(content: string) {
     if (!this.props.search.term) return content;
     return highlight(content, this.props.search.tokens);
@@ -51,30 +50,30 @@ export class ModuleFinderItemComponent extends PureComponent<Props> {
             {module.ModuleDescription && <p>{this.highlight(module.ModuleDescription)}</p>}
             <dl>
               {module.Preclusion && (
-                <Fragment>
+                <>
                   <dt>Preclusions</dt>
                   <dd>
                     <LinkModuleCodes>{module.Preclusion}</LinkModuleCodes>
                   </dd>
-                </Fragment>
+                </>
               )}
 
               {module.Prerequisite && (
-                <Fragment>
+                <>
                   <dt>Prerequisite</dt>
                   <dd>
                     <LinkModuleCodes>{module.Prerequisite}</LinkModuleCodes>
                   </dd>
-                </Fragment>
+                </>
               )}
 
               {module.Corequisite && (
-                <Fragment>
+                <>
                   <dt>Corequisite</dt>
                   <dd>
                     <LinkModuleCodes>{module.Corequisite}</LinkModuleCodes>
                   </dd>
-                </Fragment>
+                </>
               )}
             </dl>
           </div>

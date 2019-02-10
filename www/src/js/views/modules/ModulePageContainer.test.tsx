@@ -1,11 +1,9 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import { shallow } from 'enzyme';
 import { Redirect } from 'react-router-dom';
 
 import createHistory from 'test-utils/createHistory';
-import type { Module, ModuleCode } from 'types/modules';
+import { Module, ModuleCode } from 'types/modules';
 
 /* @var {Module} */
 import cs1010s from '__mocks__/modules/CS1010S.json';
@@ -20,10 +18,10 @@ jest.mock('utils/error');
 const CANONICAL = '/modules/CS1010S/programming-methodology';
 
 type MakeContainerOptions = {
-  module: ?Module,
-  fetchModule: () => Promise<*>,
-  archiveYear: ?string,
-  moduleExists: boolean,
+  module: Module | null | undefined;
+  fetchModule: () => Promise<any>;
+  archiveYear: string | null | undefined;
+  moduleExists: boolean;
 };
 
 function make(moduleCode: ModuleCode, url: string, options: $Shape<MakeContainerOptions>) {

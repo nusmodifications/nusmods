@@ -1,5 +1,4 @@
-// @flow
-import type { Node } from 'react';
+import * as React from 'react';
 
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
@@ -9,12 +8,12 @@ import Title from 'views/components/Title';
 import styles from './ErrorPage.scss';
 
 type Props = {
-  children?: Node,
-  retry?: () => void,
-  dataName?: string,
+  children?: Node;
+  retry?: () => void;
+  dataName?: string;
 };
 
-export default class ApiError extends PureComponent<Props> {
+export default class ApiError extends React.PureComponent<Props> {
   componentDidMount() {
     if (!navigator.onLine) {
       window.addEventListener('online', this.onlineListener);

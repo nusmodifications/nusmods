@@ -1,16 +1,14 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 /** @var { VenueLocationMap } */
 import venueLocations from 'data/venues.json';
-import type { Venue, VenueLocation } from 'types/venues';
+import { Venue, VenueLocation } from 'types/venues';
 import LocationMap from 'views/components/map/LocationMap';
 import { Map } from 'views/components/icons';
 import styles from './EventMap.scss';
 
-export type Props = {|
-  +venue: ?Venue,
-|};
+export type Props = {
+  readonly venue: Venue | null | undefined;
+};
 
 export default function(props: Props) {
   if (!props.venue) {

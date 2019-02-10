@@ -1,10 +1,8 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import { shallow } from 'enzyme';
 import _ from 'lodash';
 
-import type { ModuleCondensed } from 'types/modules';
+import { ModuleCondensed } from 'types/modules';
 import { SearchContainerComponent } from 'views/layout/GlobalSearchContainer';
 import createHistory from 'test-utils/createHistory';
 

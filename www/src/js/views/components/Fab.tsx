@@ -1,13 +1,11 @@
-// @flow
-
-import React, { type Node } from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 
 import styles from './Fab.scss';
 
 type Props = {
-  children: Node,
-  className?: string,
+  children: Node;
+  className?: string;
 };
 
 function Fab({ children, className, ...otherProps }: Props) {

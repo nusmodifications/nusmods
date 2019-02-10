@@ -1,8 +1,7 @@
-// @flow
-import type { Store } from 'redux';
+import { Store } from 'redux';
 import { setOnlineStatus } from 'actions/app';
 
-export default function subscribeOnlineEvents(store: Store<*, *, *>) {
+export default function subscribeOnlineEvents(store: Store<any, any, any>) {
   const updateOnlineStatus = () => {
     store.dispatch(setOnlineStatus(navigator.onLine));
   };

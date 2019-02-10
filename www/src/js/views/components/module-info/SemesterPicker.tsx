@@ -1,24 +1,22 @@
-// @flow
-
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import { each } from 'lodash';
 
-import type { Semester } from 'types/modules';
+import { Semester } from 'types/modules';
 
 import config from 'config';
 import ButtonGroupSelector from 'views/components/ButtonGroupSelector';
 
 type Props = {
-  semesters: Semester[],
-  showDisabled?: boolean,
-  useShortNames?: boolean,
-  size?: string,
+  semesters: Semester[];
+  showDisabled?: boolean;
+  useShortNames?: boolean;
+  size?: string;
 
-  selectedSemester: ?Semester,
-  onSelectSemester: (semester: Semester) => void,
+  selectedSemester: Semester | null | undefined;
+  onSelectSemester: (semester: Semester) => void;
 };
 
-export default class SemesterPicker extends PureComponent<Props> {
+export default class SemesterPicker extends React.PureComponent<Props> {
   static defaultProps = {
     showDisabled: false,
     useShortNames: false,
@@ -36,7 +34,7 @@ export default class SemesterPicker extends PureComponent<Props> {
    * Map button labels (semester names) to semesters
    * @returns {{}}
    */
-  semesterMap(): { [string]: ?Semester } {
+  semesterMap(): { [key: string]: Semester | null | undefined } {
     const map = {};
     const { semesters, showDisabled } = this.props;
 

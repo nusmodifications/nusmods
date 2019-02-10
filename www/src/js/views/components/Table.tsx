@@ -1,11 +1,10 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 
 type Props = {
-  title: string | void,
-  data: Array<Array<any>>,
-  headers: string[],
-  noDataText: string,
+  title: string | void;
+  data: Array<Array<any>>;
+  headers: string[];
+  noDataText: string;
 };
 
 export default function Table(props: Props) {

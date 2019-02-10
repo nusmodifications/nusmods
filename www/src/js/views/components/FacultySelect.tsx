@@ -1,13 +1,12 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 
-import type { Faculty } from 'types/modules';
+import { Faculty } from 'types/modules';
 
 import facultyList from 'data/faculty-list.json';
 
 type Props = {
-  faculty: Faculty | void,
-  onChange: Function, // will be called with the selected faculty when option changes
+  faculty: Faculty | void;
+  onChange: Function; // will be called with the selected faculty when option changes
 };
 
 export default function FacultySelect(props: Props) {

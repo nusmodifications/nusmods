@@ -1,10 +1,8 @@
-// @flow
-
-import type { ModuleCode } from 'types/modules';
+import { ModuleCode } from 'types/modules';
 import config from 'config';
 import { isOngoing, isSuccess } from 'selectors/requests';
 import { fetchArchiveRequest } from 'actions/moduleBank';
-import type { State } from '../reducers';
+import { State } from '../reducers';
 
 export function isArchiveLoading(state: State, moduleCode: ModuleCode) {
   return config.archiveYears.some((year) =>

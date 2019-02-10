@@ -1,6 +1,4 @@
-// @flow
-
-import type { Node, ComponentType } from 'react';
+import * as React from 'react';
 import React from 'react';
 import { escapeRegExp, castArray } from 'lodash';
 
@@ -67,7 +65,7 @@ export function defer(task: () => any) {
   });
 }
 
-export function wrapComponentName(Component: ComponentType, wrapper: string): string {
+export function wrapComponentName(Component: React.ComponentType, wrapper: string): string {
   return `${wrapper}(${Component.displayName || Component.name || 'Component'})`;
 }
 
@@ -101,7 +99,7 @@ export class Counter {
     return this.count;
   }
 
-  matches(index: ?number) {
+  matches(index: number | null | undefined) {
     this.count += 1;
     return this.count === index;
   }

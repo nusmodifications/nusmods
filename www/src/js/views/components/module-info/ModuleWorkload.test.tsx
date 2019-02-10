@@ -1,15 +1,14 @@
-// @flow
-import type { ShallowWrapper } from 'enzyme';
-import React from 'react';
+import { ShallowWrapper } from 'enzyme';
+import * as React from 'react';
 import { shallow } from 'enzyme';
 import _ from 'lodash';
 
-import type { WorkloadComponent } from 'types/modules';
+import { WorkloadComponent } from 'types/modules';
 
 import { WORKLOAD_COMPONENTS } from 'utils/modules';
 import ModuleWorkload from './ModuleWorkload';
 
-function make(workload: { [WorkloadComponent]: number }) {
+function make(workload: { [workloadComponent: string]: number }) {
   const workloadString = WORKLOAD_COMPONENTS.map((component) => workload[component] || 0).join('-');
   return shallow(<ModuleWorkload workload={workloadString} />);
 }

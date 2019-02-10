@@ -2,7 +2,7 @@ const url = require('url');
 const config = require('../config');
 
 module.exports = {
-  'Load homepage': (client) => {
+  'Load homepage': (client: client) => {
     const home = client.page.timetable();
 
     home
@@ -13,7 +13,7 @@ module.exports = {
       .assert.elementPresent('a[href="/"]');
   },
 
-  'Add module': (client) => {
+  'Add module': (client: client) => {
     const home = client.page.timetable();
 
     home
@@ -30,7 +30,7 @@ module.exports = {
       .assert.containsText('@moduleTable', 'CS1010S');
   },
 
-  'Exam calendar': (client) => {
+  'Exam calendar': (client: client) => {
     const home = client.page.timetable();
 
     home
@@ -41,14 +41,14 @@ module.exports = {
     client.end();
   },
 
-  'Load module page': (client) => {
+  'Load module page': (client: client) => {
     client
       .url(url.resolve(client.launch_url, '/modules/CS1010S'))
       .waitForElementVisible('.page-container h1', config.timeout)
       .assert.containsText('.page-container h1', 'Programming Methodology');
   },
 
-  'Load venue page': (client) => {
+  'Load venue page': (client: client) => {
     client
       .url(url.resolve(client.launch_url, '/venues/COM1-0120'))
       .waitForElementVisible('.page-container', config.timeout)

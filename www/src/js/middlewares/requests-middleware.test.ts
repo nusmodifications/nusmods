@@ -1,5 +1,3 @@
-// @flow
-
 import axios from 'axios';
 import configureStore from 'redux-mock-store';
 import { FAILURE, REQUEST, SUCCESS } from 'types/reducers';
@@ -27,12 +25,10 @@ describe(requestMiddleware, () => {
   beforeEach(() => {
     store = mockStore();
 
-    // $FlowFixMe
     axios.mockClear();
   });
 
   it('should make async calls and dispatch actions on success', async () => {
-    // $FlowFixMe
     axios.mockReturnValue(
       Promise.resolve({
         data: {
@@ -72,7 +68,6 @@ describe(requestMiddleware, () => {
 
   it('should dispatch error on failure', async () => {
     const error = new Error('The server is on fire');
-    // $FlowFixMe
     axios.mockReturnValue(Promise.reject(error));
 
     const p = store.dispatch(requestAction);

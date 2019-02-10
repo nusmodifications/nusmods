@@ -1,4 +1,3 @@
-// @flow
 import _ from 'lodash';
 
 import FilterGroup, { ID_DELIMITER } from 'utils/filters/FilterGroup';
@@ -6,7 +5,7 @@ import { defaultGroups, DEPARTMENT, FACULTY } from './moduleFilters';
 import ModuleFilter from './filters/ModuleFilter';
 
 describe('defaultGroups()', () => {
-  const groups: FilterGroup<*>[] = _.values(
+  const groups: FilterGroup<any>[] = _.values(
     defaultGroups({
       Biology: 'Science',
       Physics: 'Science',
@@ -20,7 +19,7 @@ describe('defaultGroups()', () => {
     expect(Array.from(new Set(arr))).toEqual(arr);
   }
 
-  function testGroups(testFn: (group: FilterGroup<*>) => void) {
+  function testGroups(testFn: (group: FilterGroup<any>) => void) {
     // Runs a test against each group wrapped in a test block with the group's
     // label. This let us see which specific filter group is failing the test
     groups.forEach((group) => {
@@ -29,8 +28,8 @@ describe('defaultGroups()', () => {
   }
 
   test('groups should have unique id and label', () => {
-    expectUnique(groups.map((group: FilterGroup<*>) => group.id));
-    expectUnique(groups.map((group: FilterGroup<*>) => group.label));
+    expectUnique(groups.map((group: FilterGroup<any>) => group.id));
+    expectUnique(groups.map((group: FilterGroup<any>) => group.label));
   });
 
   describe('filters should have unique id', () => {

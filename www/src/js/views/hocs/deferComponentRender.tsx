@@ -1,9 +1,8 @@
-// @flow
-import React, { Component } from 'react';
+import * as React from 'react';
 import { defer, wrapComponentName } from 'utils/react';
 
 type State = {
-  shouldRender: boolean,
+  shouldRender: boolean;
 };
 
 /**
@@ -12,10 +11,10 @@ type State = {
  * Referenced from
  * https://medium.com/@paularmstrong/twitter-lite-and-high-performance-react-progressive-web-apps-at-scale-d28a00e780a3
  */
-function deferComponentRender<Props: {}>(
-  WrappedComponent: ComponentType<Props>,
-): ComponentType<$Diff<Props, State>> {
-  return class extends Component<Props, State> {
+function deferComponentRender<Props>(
+  WrappedComponent: React.React.ComponentType<Props>,
+): React.React.ComponentType<Pick<Props, Exclude<keyof Props, keyof State>>> {
+  return class extends React.Component<Props, State> {
     static displayName = wrapComponentName(WrappedComponent, deferComponentRender.name);
 
     state = {

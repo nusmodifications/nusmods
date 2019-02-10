@@ -1,6 +1,4 @@
-// @flow
-
-import type { FSA } from 'types/redux';
+import { FSA } from 'types/redux';
 
 export default async function runThunk(
   action: FSA | Function,

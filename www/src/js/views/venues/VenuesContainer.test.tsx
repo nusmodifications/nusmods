@@ -1,9 +1,8 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 import { shallow } from 'enzyme';
 import qs from 'query-string';
 
-import type { Venue, VenueDetailList } from 'types/venues';
+import { Venue, VenueDetailList } from 'types/venues';
 import venueInfo from '__mocks__/venueInformation.json';
 import createHistory from 'test-utils/createHistory';
 import { sortVenues } from 'utils/venues';
@@ -13,7 +12,7 @@ import { VenuesContainerComponent } from './VenuesContainer';
 
 const venues = sortVenues(venueInfo);
 
-function createComponent(selectedVenue: ?Venue, search?: string) {
+function createComponent(selectedVenue: Venue | null | undefined, search?: string) {
   const location = {
     search,
     pathname: venuePage(selectedVenue),
@@ -111,7 +110,10 @@ describe(VenuesContainerComponent, () => {
   });
 
   describe('#renderSelectedVenue', () => {
-    const getVenueDetail = (selectedVenue: ?Venue, matched: VenueDetailList = venues) => {
+    const getVenueDetail = (
+      selectedVenue: Venue | null | undefined,
+      matched: VenueDetailList = venues,
+    ) => {
       const instance = createComponent(selectedVenue).wrapper.instance();
 
       return shallow(<div>{instance.renderSelectedVenue(matched)}</div>).find(VenueDetails);

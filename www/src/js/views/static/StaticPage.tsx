@@ -1,6 +1,4 @@
-// @flow
-
-import type { Node } from 'react';
+import * as React from 'react';
 import React from 'react';
 import classnames from 'classnames';
 
@@ -8,9 +6,9 @@ import ScrollToTop from 'views/components/ScrollToTop';
 import Title from 'views/components/Title';
 
 type Props = {
-  title: string,
-  children: Node,
-  className?: string,
+  title: string;
+  children: Node;
+  className?: string;
 };
 
 function StaticPage(props: Props) {

@@ -1,4 +1,3 @@
-// @flow
 import { requestAction } from 'actions/requests';
 import NUSModsApi from 'apis/nusmods';
 import config from 'config';

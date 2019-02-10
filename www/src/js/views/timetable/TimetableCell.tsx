@@ -1,10 +1,9 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import { isEqual } from 'lodash';
 
-import type { Lesson } from 'types/modules';
-import type { HoverLesson } from 'types/timetables';
+import { Lesson } from 'types/modules';
+import { HoverLesson } from 'types/timetables';
 
 import { formatWeekNumber, getHoverLesson, LESSON_TYPE_ABBREV } from 'utils/timetables';
 import elements from 'views/elements';
@@ -12,12 +11,12 @@ import elements from 'views/elements';
 import styles from './TimetableCell.scss';
 
 type Props = {
-  showTitle: boolean,
-  lesson: Lesson,
-  style?: Object,
-  onClick?: Function,
-  onHover: ?(?HoverLesson) => void,
-  hoverLesson: ?HoverLesson,
+  showTitle: boolean;
+  lesson: Lesson;
+  style?: Object;
+  onClick?: Function;
+  onHover?: (hoverLesson?: HoverLesson) => void;
+  hoverLesson: HoverLesson | null | undefined;
 };
 
 /**
@@ -36,13 +35,11 @@ function TimetableCell(props: Props) {
 
   /* eslint-disable */
   return (
-    <Cell // $FlowFixMe
+    <Cell
       className={classnames(styles.cell, elements.lessons, `color-${lesson.colorIndex}`, {
         hoverable: !!props.onClick,
         [styles.clickable]: !!onClick,
-        // $FlowFixMe
         [styles.available]: lesson.isAvailable,
-        // $FlowFixMe
         [styles.active]: lesson.isActive,
         // Local hover style for the timetable planner timetable,
         [styles.hover]: hover,
@@ -50,10 +47,10 @@ function TimetableCell(props: Props) {
         hover,
       })}
       style={props.style}
-      onMouseEnter={() => onHover?.(getHoverLesson(lesson))}
-      onTouchStart={() => onHover?.(getHoverLesson(lesson))}
-      onMouseLeave={() => onHover?.(null)}
-      onTouchEnd={() => onHover?.(null)}
+      onMouseEnter={() => onHover && onHover(getHoverLesson(lesson))}
+      onTouchStart={() => onHover && onHover(getHoverLesson(lesson))}
+      onMouseLeave={() => onHover && onHover(null)}
+      onTouchEnd={() => onHover && onHover(null)}
       {...conditionalProps}
     >
       <div className={styles.cellContainer}>

@@ -1,17 +1,15 @@
-// @flow
-import type { Node } from 'react';
-import React, { Fragment, PureComponent } from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import _ from 'lodash';
 
-import type { WorkloadComponent } from 'types/modules';
+import { WorkloadComponent } from 'types/modules';
 
 import { parseWorkload } from 'utils/modules';
 import Tooltip from 'views/components/Tooltip';
 
 const ROW_MAX = 10;
 
-const shortComponentNames: { [WorkloadComponent]: string } = {
+const shortComponentNames: { [workloadComponent: string]: string } = {
   Lecture: 'Lec',
   Tutorial: 'Tut',
   Laboratory: 'Lab',
@@ -31,9 +29,9 @@ function workloadLabel(component: WorkloadComponent, hours: number): Node {
   // For components with lots of hours, we show a count to make it more glanceable
   if (Math.ceil(hours) >= 5) {
     return (
-      <Fragment>
+      <>
         <span>{component}</span> <span>{hours} hrs</span>
-      </Fragment>
+      </>
     );
   }
 
@@ -60,20 +58,19 @@ function workloadBlocks(component: WorkloadComponent, hours: number): Node {
 }
 
 function sortWorkload(workload: {
-  [WorkloadComponent]: number,
+  [workloadComponent: string]: number;
 }): Array<[WorkloadComponent, number]> {
   // Push longer components (those that take up more than one row) down
-  // $FlowFixMe: lodash libdef incorrectly marks the return type of _.entries as any[][]
   const components: Array<[WorkloadComponent, number]> = _.entries(workload);
   const [long, short] = _.partition(components, ([, hours]) => Math.ceil(hours) >= ROW_MAX);
   return short.concat(long);
 }
 
 type Props = {
-  workload: string,
+  workload: string;
 };
 
-export default class ModuleWorkload extends PureComponent<Props> {
+export default class ModuleWorkload extends React.PureComponent<Props> {
   renderFallback(): Node {
     // Workload cannot be parsed - so we just display it without any visualization
     return (

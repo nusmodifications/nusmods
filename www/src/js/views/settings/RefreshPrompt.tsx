@@ -1,24 +1,23 @@
-// @flow
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
-import type { State as StoreState } from 'reducers';
+import { State as StoreState } from 'reducers';
 import { updateServiceWorker } from 'bootstrapping/service-worker';
 import { Refresh } from 'views/components/icons';
 import styles from 'views/components/notfications/Announcements.scss';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 
 type Props = {
-  showPrompt: boolean,
+  showPrompt: boolean;
 };
 
 type State = {
-  isReloading: boolean,
+  isReloading: boolean;
 };
 
-class RefreshPrompt extends PureComponent<Props, State> {
-  buttonWidth: ?number;
+class RefreshPrompt extends React.PureComponent<Props, State> {
+  buttonWidth: number | null | undefined;
 
   state = {
     isReloading: false,

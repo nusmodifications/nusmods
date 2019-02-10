@@ -1,5 +1,3 @@
-// @flow
-
 import axios from 'axios';
 import { nextBus } from 'apis/nextbus';
 import arrival from './__mocks__/arrival.json';
@@ -8,7 +6,6 @@ jest.mock('axios');
 
 describe(nextBus, () => {
   beforeEach(() => {
-    // $FlowFixMe
     axios.get = jest.fn().mockResolvedValue({
       data: arrival,
     });

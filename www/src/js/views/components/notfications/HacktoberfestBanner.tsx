@@ -1,6 +1,4 @@
-// @flow
-
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
@@ -12,12 +10,12 @@ import styles from './Announcements.scss';
 
 type Props = {};
 type State = {
-  isOpen: boolean,
+  isOpen: boolean;
 };
 
 const today = new Date();
 
-export default class HacktoberfestBanner extends PureComponent<Props, State> {
+export default class HacktoberfestBanner extends React.PureComponent<Props, State> {
   state: State = {
     isOpen: !storage.getItem(HACKTOBERFEST) && (today.getMonth() === 9 || today.getMonth() === 10),
   };

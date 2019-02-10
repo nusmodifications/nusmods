@@ -1,6 +1,4 @@
-// @flow
-
-import React, { Component } from 'react';
+import * as React from 'react';
 import axios from 'axios';
 
 import Loader from 'views/components/LoadingSpinner';
@@ -12,26 +10,26 @@ import styles from './AppsContainer.scss';
 const APPS_URL = 'https://nusmodifications.github.io/nusmods-apps/apps.json';
 
 type AppInfo = {
-  name: string,
-  description: string,
-  author: string,
-  url: string,
-  repository_url?: string,
-  icon_url: string,
-  tags: Array<string>,
+  name: string;
+  description: string;
+  author: string;
+  url: string;
+  repository_url?: string;
+  icon_url: string;
+  tags: Array<string>;
 };
 
 type AppEntryProps = {
-  app: AppInfo,
+  app: AppInfo;
 };
 
 type Props = {};
 
 type State = {
-  appsData: ?[AppInfo],
-  isLoading: boolean,
-  isError: boolean,
-  errorMessage: string,
+  appsData: AppInfo | null | undefined;
+  isLoading: boolean;
+  isError: boolean;
+  errorMessage: string;
 };
 
 function AppEntry({ app }: AppEntryProps) {
@@ -63,7 +61,7 @@ function AppEntry({ app }: AppEntryProps) {
 
 const title = 'Apps';
 
-class AppsContainer extends Component<Props, State> {
+class AppsContainer extends React.Component<Props, State> {
   state: State = {
     appsData: null,
     isLoading: true,

@@ -1,22 +1,21 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 
-import type { ColoredLesson } from 'types/modules';
-import type { HoverLesson } from 'types/timetables';
+import { ColoredLesson } from 'types/modules';
+import { HoverLesson } from 'types/timetables';
 
 import { convertTimeToIndex } from 'utils/timify';
 import styles from './TimetableRow.scss';
 import TimetableCell from './TimetableCell';
 
 type Props = {
-  verticalMode: boolean,
-  showTitle: boolean,
-  hoverLesson: ?HoverLesson,
-  onCellHover: ?(?HoverLesson) => void,
-  startingIndex: number,
-  endingIndex: number,
-  lessons: ColoredLesson[],
-  onModifyCell: Function,
+  verticalMode: boolean;
+  showTitle: boolean;
+  hoverLesson: HoverLesson | null | undefined;
+  onCellHover: (hoverLesson?: HoverLesson) => void;
+  startingIndex: number;
+  endingIndex: number;
+  lessons: ColoredLesson[];
+  onModifyCell: Function;
 };
 
 /**
@@ -53,7 +52,6 @@ function TimetableRow(props: Props) {
           [dirStyle]: `calc(${(dirValue / totalCols) * 100}% + 1px)`,
           [sizeStyle]: `calc(${(size / totalCols) * 100}% - 1px)`,
         };
-        // $FlowFixMe
         const conditionalProps = lesson.isModifiable
           ? {
               onClick: (e: Event) => {

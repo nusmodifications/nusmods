@@ -1,7 +1,5 @@
-// @flow
-
-import type { FSA } from 'types/redux';
-import type { NotificationOptions } from 'types/reducers';
+import { FSA } from 'types/redux';
+import { NotificationOptions } from 'types/reducers';
 
 export const SET_ONLINE_STATUS = 'SET_ONLINE_STATUS';
 export function setOnlineStatus(isOnline: boolean): FSA {

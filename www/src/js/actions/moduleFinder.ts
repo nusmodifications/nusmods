@@ -1,6 +1,4 @@
-// @flow
-
-import type { FSA } from 'types/redux';
+import { FSA } from 'types/redux';
 
 export const SEARCH_MODULES = 'SEARCH_MODULES';
 export function searchModules(searchTerm: string): FSA {

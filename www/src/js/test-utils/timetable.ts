@@ -1,13 +1,4 @@
-// @flow
-
-import type {
-  ClassNo,
-  ColoredLesson,
-  DayText,
-  Lesson,
-  LessonTime,
-  LessonType,
-} from 'types/modules';
+import { ClassNo, ColoredLesson, DayText, Lesson, LessonTime, LessonType } from 'types/modules';
 
 // A generic lesson with some default.
 export function createGenericLesson(

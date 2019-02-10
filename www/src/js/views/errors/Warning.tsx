@@ -1,10 +1,9 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 import { AlertTriangle } from 'views/components/icons';
 import styles from './Warning.scss';
 
 type Props = {
-  message: string,
+  message: string;
 };
 
 export default function Warning(props: Props) {

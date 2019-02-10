@@ -1,8 +1,6 @@
-// @flow
-
-import type { ModuleTableOrder } from 'types/views';
-import type { ModuleWithColor, Semester } from 'types/modules';
-import React from 'react';
+import { ModuleTableOrder } from 'types/views';
+import { ModuleWithColor, Semester } from 'types/modules';
+import * as React from 'react';
 import classnames from 'classnames';
 import { map, sumBy } from 'lodash';
 import { connect } from 'react-redux';
@@ -12,22 +10,25 @@ import { getModuleExamDate, renderMCs } from 'utils/modules';
 import styles from './TimetableModulesTable.scss';
 
 type ModuleOrder = {
-  label: string,
-  orderBy: (ModuleWithColor, Semester) => string | number,
+  label: string;
+  orderBy: (moduleWithColor: ModuleWithColor, semester: Semester) => string | number;
 };
 
-export const moduleOrders: { [ModuleTableOrder]: ModuleOrder } = {
-  exam: { label: 'Exam Date', orderBy: (module, semester) => getModuleExamDate(module, semester) },
-  mc: { label: 'Module Credits', orderBy: (module) => module.ModuleCredit },
-  code: { label: 'Module Code', orderBy: (module) => module.ModuleCode },
+export const moduleOrders: { [moduleTableOrder: string]: ModuleOrder } = {
+  exam: {
+    label: 'Exam Date',
+    orderBy: (module: module, semester: semester) => getModuleExamDate(module, semester),
+  },
+  mc: { label: 'Module Credits', orderBy: (module: module) => module.ModuleCredit },
+  code: { label: 'Module Code', orderBy: (module: module) => module.ModuleCode },
 };
 
-type Props = {|
-  moduleTableOrder: ModuleTableOrder,
-  modules: ModuleWithColor[],
+type Props = {
+  moduleTableOrder: ModuleTableOrder;
+  modules: ModuleWithColor[];
 
-  setModuleTableOrder: (ModuleTableOrder) => void,
-|};
+  setModuleTableOrder: (moduleTableOrder: ModuleTableOrder) => void;
+};
 
 function ModulesTableFooter(props: Props) {
   const totalMCs = sumBy(props.modules, (module) => parseInt(module.ModuleCredit, 10));

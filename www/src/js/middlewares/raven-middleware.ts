@@ -1,8 +1,6 @@
-// @flow
-
-import type { Middleware } from 'redux';
+import { Middleware } from 'redux';
 import * as Sentry from '@sentry/browser';
-import type { State } from 'reducers/index';
+import { State } from 'reducers/index';
 import update from 'immutability-helper';
 
 const stateTransformer = (state: State): any => ({
@@ -11,7 +9,7 @@ const stateTransformer = (state: State): any => ({
   venueBank: `${state.venueBank.venueList.length} venues`,
 });
 
-const ravenMiddleware: Middleware<State, *, *> = (store) => {
+const ravenMiddleware: Middleware<State, any, any> = (store) => {
   Sentry.configureScope((scope) => {
     scope.addEventProcessor((event) => {
       const state = store.getState();

@@ -1,27 +1,26 @@
-// @flow
-import type { Store } from 'redux';
-import React, { Component } from 'react';
+import { Store } from 'redux';
+import * as React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
-import type { State as StoreState } from 'reducers';
-import type { Semester } from 'types/modules';
-import type { SemTimetableConfig } from 'types/timetables';
+import { State as StoreState } from 'reducers';
+import { Semester } from 'types/modules';
+import { SemTimetableConfig } from 'types/timetables';
 import { fillColorMapping } from 'utils/colors';
 import TimetableContent from 'views/timetable/TimetableContent';
-import type { ColorMapping } from 'types/reducers';
+import { ColorMapping } from 'types/reducers';
 
 type Props = {
-  store: Store<StoreState, *, *>,
+  store: Store<StoreState, any, any>;
 };
 
 type State = {
-  semester: Semester,
-  timetable: SemTimetableConfig,
-  colors: ColorMapping,
+  semester: Semester;
+  timetable: SemTimetableConfig;
+  colors: ColorMapping;
 };
 
-export default class TimetableOnly extends Component<Props, State> {
+export default class TimetableOnly extends React.Component<Props, State> {
   state = {
     semester: 1,
     timetable: {},

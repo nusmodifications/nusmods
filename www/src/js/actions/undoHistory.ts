@@ -1,5 +1,4 @@
-// @flow
-import type { FSA } from 'types/redux';
+import { FSA } from 'types/redux';
 
 export const UNDO = 'UNDO';
 export function undo(): FSA {

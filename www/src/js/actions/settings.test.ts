@@ -1,5 +1,4 @@
-// @flow
-import type { Faculty, Semester } from 'types/modules';
+import { Faculty, Semester } from 'types/modules';
 
 import * as actions from 'actions/settings';
 

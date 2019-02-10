@@ -1,25 +1,24 @@
-// @flow
-import React, { Fragment } from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import _ from 'lodash';
 
 import { NUM_DIFFERENT_COLORS } from 'utils/colors';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 
-import type { Module } from 'types/modules';
+import { Module } from 'types/modules';
 
 import styles from './ModuleTree.scss';
 
 type Props = {
-  module: Module,
+  module: Module;
 };
 
 type TreeDisplay = {
-  layer: number,
-  name: string,
-  isPrereq?: boolean,
+  layer: number;
+  name: string;
+  isPrereq?: boolean;
   // TreeDisplay[] will result in infinite loop
-  branches: ?Array<TreeDisplay>,
+  branches: Array<TreeDisplay> | null | undefined;
 };
 
 function isConditionalNode(name) {
@@ -32,7 +31,7 @@ function incrementLayer(layer: number, name: string) {
   return isConditionalNode(name) ? layer : (layer + 1) % NUM_DIFFERENT_COLORS;
 }
 
-function Branch({ layer, branches }: { layer: number, branches: TreeDisplay[] }) {
+function Branch({ layer, branches }: { layer: number; branches: TreeDisplay[] }) {
   return (
     <ul className={styles.tree}>
       {branches.map((child) =>
@@ -84,14 +83,14 @@ function ModuleTree(props: Props) {
   return (
     <div className={styles.container}>
       {LockedModules && LockedModules.length > 0 && (
-        <Fragment>
+        <>
           <ul className={styles.prereqTree}>
             {LockedModules.map((name) => (
               <Tree key={name} layer={0} name={name} branches={null} isPrereq />
             ))}
           </ul>
           <div className={classnames(styles.node, styles.conditional)}>needs</div>
-        </Fragment>
+        </>
       )}
       <ul className={classnames(styles.tree, styles.root)}>
         <Tree layer={1} name={ModmavenTree.name} branches={_.castArray(ModmavenTree.children)} />

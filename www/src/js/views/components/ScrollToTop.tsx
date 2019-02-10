@@ -1,24 +1,20 @@
-// @flow
+import { RouteComponentProps } from 'react-router-dom';
 
-import type { ContextRouter } from 'react-router-dom';
-
-import { Component } from 'react';
+import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import { scrollToHash } from 'utils/react';
 
-export type Props = {
-  ...ContextRouter,
-  onComponentDidMount: boolean,
-  onPathChange: boolean,
-  scrollToHash: boolean,
+export type Props = RouteComponentProps & {
+  onComponentDidMount: boolean;
+  onPathChange: boolean;
+  scrollToHash: boolean;
 };
 
 function scrollToTop() {
   window.scrollTo(0, 0);
 }
 
-// $FlowFixMe - https://github.com/flowtype/flow-typed/issues/1179
-export class ScrollToTopComponent extends Component<Props> {
+export class ScrollToTopComponent extends React.Component<Props> {
   static defaultProps = {
     onComponentDidMount: false,
     onPathChange: false,

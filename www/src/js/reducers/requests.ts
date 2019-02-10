@@ -1,6 +1,5 @@
-// @flow
-import type { FSA } from 'types/redux';
-import type { Requests } from 'types/reducers';
+import { FSA } from 'types/redux';
+import { Requests } from 'types/reducers';
 
 import { API_REQUEST } from 'actions/requests';
 import { FAILURE, REQUEST, SUCCESS } from 'types/reducers';

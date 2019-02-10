@@ -1,5 +1,4 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { toggleFeedback } from 'actions/app';
@@ -12,7 +11,7 @@ import StaticPage from './StaticPage';
 import styles from './AboutContainer.scss';
 
 type Props = {
-  toggleFeedback: Function,
+  toggleFeedback: Function;
 };
 
 function AboutContainer(props: Props) {

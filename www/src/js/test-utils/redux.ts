@@ -1,6 +1,5 @@
-// @flow
 import { REHYDRATE } from 'redux-persist';
-import type { FSA } from 'types/redux';
+import { FSA } from 'types/redux';
 
 // eslint-disable-next-line import/prefer-default-export
 export function initAction(): FSA {

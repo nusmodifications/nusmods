@@ -1,6 +1,5 @@
-// @flow
-import type { Middleware } from 'redux';
-import type { State } from 'reducers';
+import { Middleware } from 'redux';
+import { State } from 'reducers';
 import axios from 'axios';
 import { FAILURE, REQUEST, SUCCESS } from 'types/reducers';
 import { API_REQUEST } from 'actions/requests';
@@ -14,7 +13,7 @@ function makeRequest(request) {
   });
 }
 
-const requestMiddleware: Middleware<State, *, *> = () => (next) => (action) => {
+const requestMiddleware: Middleware<State, any, any> = () => (next) => (action) => {
   if (!action.meta || !action.meta[API_REQUEST]) {
     // Non-api request action
     return next(action);

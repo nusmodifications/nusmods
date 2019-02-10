@@ -1,5 +1,3 @@
-// @flow
-
 // This script checks for browser compatibility and is executed outside React's scope. If a browser
 // is incompatible or not optimal for using the app, a pop-up dialog is appended into the DOM body.
 // This is so that in cases where the React app completely fails to render anything at all, the

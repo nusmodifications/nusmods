@@ -1,8 +1,6 @@
-// @flow
-
 import axios from 'axios';
 
-import type { NextBus, NextBusTime, NextBusTimings } from 'types/venues';
+import { NextBus, NextBusTime, NextBusTimings } from 'types/venues';
 
 const baseUrl = 'https://nextbus.nusmods.com';
 

@@ -1,16 +1,15 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 
 type ButtonChoice = string;
 type Props = {
-  choices: ButtonChoice[],
-  attrs?: { [ButtonChoice]: Object },
-  classNames?: { [ButtonChoice]: string[] },
-  size?: string,
-  selectedChoice: ?ButtonChoice,
-  onChoiceSelect: (string) => void,
-  ariaLabel?: string,
+  choices: ButtonChoice[];
+  attrs?: { [buttonChoice: string]: Object };
+  classNames?: { [buttonChoice: string]: string[] };
+  size?: string;
+  selectedChoice: ButtonChoice | null | undefined;
+  onChoiceSelect: (str: string) => void;
+  ariaLabel?: string;
 };
 
 export default function ButtonGroupSelector(props: Props) {

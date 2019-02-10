@@ -1,13 +1,11 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import { flatten } from 'lodash';
 import { shallow } from 'enzyme';
 
 import * as weather from 'apis/weather';
 import { waitFor } from 'test-utils/async';
 import { captureException } from 'utils/error';
-import { type Props, DaySection, TodayContainerComponent, mapStateToProps } from './TodayContainer';
+import { Props, DaySection, TodayContainerComponent, mapStateToProps } from './TodayContainer';
 import DayEvents from '../DayEvents';
 import styles from '../DayEvents.scss';
 
@@ -205,7 +203,6 @@ describe(TodayContainerComponent, () => {
   });
 
   test('should capture exception when weather API fails to load', async () => {
-    // $FlowFixMe
     weather.fourDay.mockRejectedValueOnce(new Error('Cannot load weather'));
 
     const now = new Date('2016-08-22T00:00:00.000Z');
@@ -215,7 +212,6 @@ describe(TodayContainerComponent, () => {
     expect(weather.tomorrow).toBeCalled();
     expect(weather.fourDay).toBeCalled();
 
-    // $FlowFixMe
     await waitFor(() => captureException.mock.calls.length > 0);
 
     expect(captureException).toBeCalled();

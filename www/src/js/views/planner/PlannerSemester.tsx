@@ -1,11 +1,9 @@
-// @flow
-
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 
-import type { ModuleCode, Semester } from 'types/modules';
-import type { PlannerModuleInfo } from 'types/views';
+import { ModuleCode, Semester } from 'types/modules';
+import { PlannerModuleInfo } from 'types/views';
 import config from 'config';
 import { getModuleExamDate, renderMCs } from 'utils/modules';
 import {
@@ -19,18 +17,18 @@ import PlannerModule from './PlannerModule';
 import AddModule from './AddModule';
 import styles from './PlannerSemester.scss';
 
-type Props = {|
-  +year: string,
-  +semester: Semester,
-  +modules: PlannerModuleInfo[],
+type Props = {
+  readonly year: string;
+  readonly semester: Semester;
+  readonly modules: PlannerModuleInfo[];
 
-  +showModuleMeta: boolean,
-  +className?: string,
+  readonly showModuleMeta: boolean;
+  readonly className?: string;
 
-  +addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void,
-  +removeModule: (moduleCode: ModuleCode) => void,
-  +addCustomData: (moduleCode: ModuleCode) => void,
-|};
+  readonly addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void;
+  readonly removeModule: (moduleCode: ModuleCode) => void;
+  readonly addCustomData: (moduleCode: ModuleCode) => void;
+};
 
 function renderSemesterMeta(plannerModules: PlannerModuleInfo[]) {
   const moduleCredits = getTotalMC(plannerModules);
@@ -48,7 +46,7 @@ function renderSemesterMeta(plannerModules: PlannerModuleInfo[]) {
 /**
  * Component for a single column of modules for a single semester
  */
-export default class PlannerSemester extends PureComponent<Props> {
+export default class PlannerSemester extends React.PureComponent<Props> {
   static defaultProps = {
     showModuleMeta: true,
   };

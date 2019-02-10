@@ -1,14 +1,12 @@
-// @flow
-
 import { get, omit, values } from 'lodash';
 import update from 'immutability-helper';
 import { createMigrate } from 'redux-persist';
 
-import type { PersistConfig } from 'storage/persistReducer';
-import type { FSA } from 'types/redux';
-import type { Semester } from 'types/modules';
-import type { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
-import type { ColorMapping, TimetablesState } from 'types/reducers';
+import { PersistConfig } from 'storage/persistReducer';
+import { FSA } from 'types/redux';
+import { Semester } from 'types/modules';
+import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
+import { ColorMapping, TimetablesState } from 'types/reducers';
 
 import config from 'config';
 import {
@@ -237,7 +235,7 @@ export default timetables;
 export function getSemesterTimetable(
   semester: Semester,
   state: TimetablesState,
-): { timetable: SemTimetableConfig, colors: ColorMapping } {
+): { timetable: SemTimetableConfig; colors: ColorMapping } {
   return {
     timetable: state.lessons[semester] || EMPTY_OBJECT,
     colors: state.colors[semester] || EMPTY_OBJECT,

@@ -1,9 +1,8 @@
-// @flow
-import type { AcadWeekInfo } from 'nusmoderator';
+import { AcadWeekInfo } from 'nusmoderator';
 import _ from 'lodash';
 import qs from 'query-string';
 
-import type {
+import {
   ClassNo,
   ColoredLesson,
   Lesson,
@@ -14,7 +13,7 @@ import type {
   Semester,
   WeekText,
 } from 'types/modules';
-import type {
+import {
   HoverLesson,
   ModuleLessonConfig,
   SemTimetableConfig,
@@ -23,14 +22,14 @@ import type {
   TimetableDayArrangement,
   TimetableDayFormat,
 } from 'types/timetables';
-import type { ModulesMap } from 'reducers/moduleBank';
-import type { ModuleCodeMap } from 'types/reducers';
+import { ModulesMap } from 'reducers/moduleBank';
+import { ModuleCodeMap } from 'types/reducers';
 
 import { getModuleSemesterData, getModuleTimetable } from 'utils/modules';
 import { getTimeAsDate } from 'utils/timify';
-import type { ExamClashes } from 'types/views';
+import { ExamClashes } from 'types/views';
 
-type LessonTypeAbbrev = { [LessonType]: string };
+type LessonTypeAbbrev = { [lessonType: string]: string };
 export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
   'Design Lecture': 'DLEC',
   Laboratory: 'LAB',
@@ -47,7 +46,7 @@ export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
 };
 
 // Reverse lookup map of LESSON_TYPE_ABBREV
-export const LESSON_ABBREV_TYPE: { [string]: LessonType } = _.invert(LESSON_TYPE_ABBREV);
+export const LESSON_ABBREV_TYPE: { [key: string]: LessonType } = _.invert(LESSON_TYPE_ABBREV);
 
 // Used for module config serialization - these must be query string safe
 // See: https://stackoverflow.com/a/31300627
@@ -64,23 +63,23 @@ export function isValidSemester(semester: Semester): boolean {
 //  Used when a module is first added.
 //  TODO: Suggest a configuration that does not clash with itself.
 //  {
-//    [LessonType]: ClassNo,
+//    [lessonType: string]: ClassNo,
 //  }
 export function randomModuleLessonConfig(lessons: Array<RawLesson>): ModuleLessonConfig {
-  const lessonByGroups: { [LessonType]: Array<RawLesson> } = _.groupBy(
+  const lessonByGroups: { [lessonType: string]: Array<RawLesson> } = _.groupBy(
     lessons,
     (lesson) => lesson.LessonType,
   );
 
-  const lessonByGroupsByClassNo: { [LessonType]: { [ClassNo]: Array<RawLesson> } } = _.mapValues(
-    lessonByGroups,
-    (lessonsOfSameLessonType: Array<RawLesson>) =>
-      _.groupBy(lessonsOfSameLessonType, (lesson) => lesson.ClassNo),
+  const lessonByGroupsByClassNo: {
+    [lessonType: string]: { [classNo: string]: Array<RawLesson> };
+  } = _.mapValues(lessonByGroups, (lessonsOfSameLessonType: Array<RawLesson>) =>
+    _.groupBy(lessonsOfSameLessonType, (lesson) => lesson.ClassNo),
   );
 
   return _.mapValues(
     lessonByGroupsByClassNo,
-    (group: { [ClassNo]: Array<RawLesson> }) => _.sample(group)[0].ClassNo,
+    (group: { [classNo: string]: Array<RawLesson> }) => _.sample(group)[0].ClassNo,
   );
 }
 
@@ -126,9 +125,9 @@ export function lessonsForLessonType(
 
 //  Converts from timetable config format to flat array of lessons.
 //  {
-//    [ModuleCode]: {
-//      [LessonType]: [Lesson, Lesson, ...],
-//      [LessonType]: [Lesson, ...],
+//    [moduleCode: string]: {
+//      [lessonType: string]: [Lesson, Lesson, ...],
+//      [lessonType: string]: [Lesson, ...],
 //    }
 //  }
 export function timetableLessonsArray(timetable: SemTimetableConfigWithLessons): Array<Lesson> {
@@ -340,7 +339,7 @@ export function validateModuleLessons(
 
 // Get information for all modules present in a semester timetable config
 export function getSemesterModules(
-  timetable: { [ModuleCode]: any },
+  timetable: { [moduleCode: string]: any },
   modules: ModulesMap,
 ): Module[] {
   return _.values(_.pick(modules, Object.keys(timetable)));
@@ -353,7 +352,7 @@ function serializeModuleConfig(config: ModuleLessonConfig): string {
   ).join(LESSON_SEP);
 }
 
-function parseModuleConfig(serialized: ?string): ModuleLessonConfig {
+function parseModuleConfig(serialized: string | null | undefined): ModuleLessonConfig {
   const config = {};
   if (!serialized) return config;
 

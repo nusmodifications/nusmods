@@ -1,16 +1,15 @@
-// @flow
 import { kebabCase, each } from 'lodash';
-import type { ModuleCode, ModuleTitle, Semester } from 'types/modules';
-import type { Venue } from 'types/venues';
-import type { SemTimetableConfig } from 'types/timetables';
+import { ModuleCode, ModuleTitle, Semester } from 'types/modules';
+import { Venue } from 'types/venues';
+import { SemTimetableConfig } from 'types/timetables';
 import { serializeTimetable } from 'utils/timetables';
 import config from 'config';
 
 // IMPORTANT: Remember to update any route changes on the sitemap
 
 // Cache semester -> path and path -> semester mappings
-export const fromSemester: { [Semester]: string } = {};
-const toSemester: { [string]: Semester } = {};
+export const fromSemester: { [semester: string]: string } = {};
+const toSemester: { [key: string]: Semester } = {};
 each(config.shortSemesterNames, (name, semester) => {
   const path = kebabCase(name);
   fromSemester[semester] = path;
@@ -28,13 +27,18 @@ export function timetableShare(semester: Semester, timetable: SemTimetableConfig
 }
 
 // Timetable path -> Semester
-export function semesterForTimetablePage(semStr: ?string): ?Semester {
+export function semesterForTimetablePage(
+  semStr: string | null | undefined,
+): Semester | null | undefined {
   if (!semStr) return null;
   return toSemester[semStr];
 }
 
 // Module Code, Module Title -> Module page path
-export function modulePage(moduleCode: ModuleCode, moduleTitle: ?ModuleTitle): string {
+export function modulePage(
+  moduleCode: ModuleCode,
+  moduleTitle: ModuleTitle | null | undefined,
+): string {
   return `/modules/${moduleCode}/${kebabCase(moduleTitle)}`;
 }
 
@@ -47,7 +51,7 @@ export function moduleArchive(
 }
 
 // Venue -> Venue page path
-export function venuePage(venue?: ?Venue): string {
+export function venuePage(venue?: Venue | null | undefined): string {
   if (!venue) return '/venues';
   return `/venues/${encodeURIComponent(venue)}`;
 }

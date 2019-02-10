@@ -1,5 +1,3 @@
-// @flow
-
 import { getYearLabels } from 'views/planner/PlannerSettings';
 
 describe(getYearLabels, () => {

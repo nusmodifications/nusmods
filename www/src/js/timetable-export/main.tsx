@@ -1,9 +1,8 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 
-import type { Module } from 'types/modules';
-import type { ExportData } from 'types/export';
+import { Module } from 'types/modules';
+import { ExportData } from 'types/export';
 
 import configureStore from 'bootstrapping/configure-store';
 import { setExportedData } from 'actions/export';

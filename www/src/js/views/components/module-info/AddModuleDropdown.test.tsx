@@ -1,10 +1,8 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import { mount } from 'enzyme';
 
-import type { TimetableConfig } from 'types/timetables';
-import type { Module } from 'types/modules';
+import { TimetableConfig } from 'types/timetables';
+import { Module } from 'types/modules';
 
 /** @var {Module} */
 import CS3216 from '__mocks__/modules/CS3216.json';

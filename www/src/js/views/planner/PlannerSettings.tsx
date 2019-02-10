@@ -1,6 +1,4 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 
@@ -12,16 +10,16 @@ import ExternalLink from 'views/components/ExternalLink';
 import Toggle from 'views/components/Toggle';
 import styles from './PlannerSettings.scss';
 
-type Props = {|
-  +minYear: string,
-  +maxYear: string,
-  +iblocs: boolean,
+type Props = {
+  readonly minYear: string;
+  readonly maxYear: string;
+  readonly iblocs: boolean;
 
   // Actions
-  +setMinYear: (string) => void,
-  +setMaxYear: (string) => void,
-  +setIBLOCs: (boolean) => void,
-|};
+  readonly setMinYear: (str: string) => void;
+  readonly setMaxYear: (str: string) => void;
+  readonly setIBLOCs: (boolean: boolean) => void;
+};
 
 const MIN_YEARS = -5; // Studying year 6
 const MAX_YEARS = 1; // One year before matriculation

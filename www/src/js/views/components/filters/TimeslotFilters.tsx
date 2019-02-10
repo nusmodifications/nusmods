@@ -1,9 +1,7 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 
-import type { OnFilterChange } from 'types/views';
+import { OnFilterChange } from 'types/views';
 
 import TimeslotTable from 'views/components/module-info/TimeslotTable';
 import TimeslotFilter from 'utils/filters/TimeslotFilter';
@@ -13,9 +11,9 @@ import { Timeslots } from 'types/modules';
 import styles from './styles.scss';
 
 type Props = {
-  onFilterChange: OnFilterChange,
-  group: FilterGroup<TimeslotFilter>,
-  groups: FilterGroup<any>[],
+  onFilterChange: OnFilterChange;
+  group: FilterGroup<TimeslotFilter>;
+  groups: FilterGroup<any>[];
 };
 
 export default function TimeslotFilters(props: Props) {

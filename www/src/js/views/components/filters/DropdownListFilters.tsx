@@ -1,12 +1,10 @@
-// @flow
-
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 import { each, values, uniq, omit } from 'lodash';
 
-import type { OnFilterChange } from 'types/views';
-import type { DownshiftState, StateChangeOptions } from 'downshift';
+import { OnFilterChange } from 'types/views';
+import { DownshiftState, StateChangeOptions } from 'downshift';
 
 import { Search, ChevronDown } from 'views/components/icons';
 import makeResponsive from 'views/hocs/makeResponsive';
@@ -18,19 +16,19 @@ import styles from './styles.scss';
 import Checklist from './Checklist';
 
 type Props = {
-  onFilterChange: OnFilterChange,
-  groups: FilterGroup<any>[],
-  group: FilterGroup<*>,
-  matchBreakpoint: boolean,
+  onFilterChange: OnFilterChange;
+  groups: FilterGroup<any>[];
+  group: FilterGroup<any>;
+  matchBreakpoint: boolean;
 };
 
 type State = {
-  isFocused: boolean,
-  inputValue: string,
-  searchedFilters: string[],
+  isFocused: boolean;
+  inputValue: string;
+  searchedFilters: string[];
 };
 
-export class DropdownListFiltersComponent extends PureComponent<Props, State> {
+export class DropdownListFiltersComponent extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 

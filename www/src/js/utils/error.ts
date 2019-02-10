@@ -1,4 +1,3 @@
-// @flow
 import * as Sentry from '@sentry/browser';
 import { each, size } from 'lodash';
 import { retry } from 'utils/promise';
@@ -36,7 +35,7 @@ export function getScriptErrorHandler(scriptName: string) {
  * Wrap an async import() so that it automatically retries in case of a chunk
  * load error and when the user is online
  */
-export function retryImport(importFactory: () => Promise<*>, retries: number = 3) {
+export function retryImport(importFactory: () => Promise<any>, retries: number = 3) {
   return retry(
     retries,
     importFactory,

@@ -1,10 +1,9 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 
 type Props = {
-  newStudent: boolean,
-  onSelectNewStudent: Function, // will be called with the selected faculty when option changes
+  newStudent: boolean;
+  onSelectNewStudent: Function; // will be called with the selected faculty when option changes
 };
 
 export default function NewStudentSelect(props: Props) {

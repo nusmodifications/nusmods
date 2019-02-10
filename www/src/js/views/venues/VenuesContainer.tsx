@@ -1,14 +1,13 @@
-// @flow
-import React, { Component, Fragment } from 'react';
+import * as React from 'react';
 import { withRouter } from 'react-router-dom';
-import Loadable, { type LoadingProps } from 'react-loadable';
+import Loadable, { LoadingProps } from 'react-loadable';
 import classnames from 'classnames';
 import axios from 'axios';
 import qs from 'query-string';
 import { pick, mapValues, size, isEqual, get } from 'lodash';
 
-import type { ContextRouter } from 'react-router-dom';
-import type { Venue, VenueDetailList, VenueSearchOptions } from 'types/venues';
+import { RouteComponentProps } from 'react-router-dom';
+import { Venue, VenueDetailList, VenueSearchOptions } from 'types/venues';
 
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import ApiError from 'views/errors/ApiError';
@@ -38,26 +37,22 @@ import styles from './VenuesContainer.scss';
 
 /* eslint-disable react/prop-types */
 
-type Props = {
-  ...ContextRouter,
-  matchBreakpoint: boolean,
-  venues: VenueDetailList,
-};
+type Props = RouteComponentProps & { matchBreakpoint: boolean; venues: VenueDetailList };
 
-type State = {|
+type State = {
   // View state
-  isDetailScrollable: boolean,
+  isDetailScrollable: boolean;
 
   // Search state
-  searchTerm: string,
-  isAvailabilityEnabled: boolean,
-  searchOptions: VenueSearchOptions,
-  pristineSearchOptions: boolean,
-|};
+  searchTerm: string;
+  isAvailabilityEnabled: boolean;
+  searchOptions: VenueSearchOptions;
+  pristineSearchOptions: boolean;
+};
 
 const pageHead = <Title>Venues</Title>;
 
-export class VenuesContainerComponent extends Component<Props, State> {
+export class VenuesContainerComponent extends React.Component<Props, State> {
   history: HistoryDebouncer;
 
   constructor(props: Props) {
@@ -153,7 +148,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
     });
   };
 
-  selectedVenue(): ?Venue {
+  selectedVenue(): Venue | null | undefined {
     const { venue } = this.props.match.params;
     if (!venue) return null;
     return decodeURIComponent(venue);
@@ -203,7 +198,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
     const { isAvailabilityEnabled } = this.state;
 
     return (
-      <Fragment>
+      <>
         <Warning message="No matching venues found" />
         {!!unfilteredCount && isAvailabilityEnabled && (
           <p className="text-center text-muted">
@@ -220,7 +215,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
             </button>
           </p>
         )}
-      </Fragment>
+      </>
     );
   }
 
@@ -301,7 +296,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
               {this.renderSelectedVenue(matchedVenues)}
             </Modal>
           ) : (
-            <Fragment>
+            <>
               <div
                 className={classnames(styles.venueDetail, { 'scrollable-y': isDetailScrollable })}
               >
@@ -315,7 +310,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
                 )}
               </div>
               <NoFooter />
-            </Fragment>
+            </>
           )}
         </VenueContext.Provider>
       </div>

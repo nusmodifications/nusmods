@@ -1,14 +1,12 @@
-// @flow
-
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import Downshift from 'downshift';
 import { Draggable } from 'react-beautiful-dnd';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import classnames from 'classnames';
 
-import type { ModuleCode, ModuleTitle } from 'types/modules';
-import type { Conflict } from 'types/views';
+import { ModuleCode, ModuleTitle } from 'types/modules';
+import { Conflict } from 'types/views';
 import config from 'config';
 import { examDateToDate, renderMCs } from 'utils/modules';
 import { conflictToText } from 'utils/planner';
@@ -17,32 +15,32 @@ import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import { modulePage } from 'views/routes/paths';
 import styles from './PlannerModule.scss';
 
-type Props = {|
+type Props = {
   // Module information
-  +moduleCode: ModuleCode,
-  +moduleTitle: ?ModuleTitle,
-  +moduleCredit: ?number,
-  +examDate: ?string,
-  +conflict: ?Conflict,
+  readonly moduleCode: ModuleCode;
+  readonly moduleTitle: ModuleTitle | null | undefined;
+  readonly moduleCredit: number | null | undefined;
+  readonly examDate: string | null | undefined;
+  readonly conflict: Conflict | null | undefined;
 
   // For draggable
-  +index: number,
+  readonly index: number;
 
   // Actions
-  +removeModule: (ModuleCode) => void,
-  +addCustomData: (ModuleCode) => void,
-|};
+  readonly removeModule: (moduleCode: ModuleCode) => void;
+  readonly addCustomData: (moduleCode: ModuleCode) => void;
+};
 
-type MenuProps = {|
-  +removeModule: () => void,
-  +editCustomData: () => void,
-|};
+type MenuProps = {
+  readonly removeModule: () => void;
+  readonly editCustomData: () => void;
+};
 
-type MenuItem = {|
-  label: string,
-  action: () => void,
-  className?: string,
-|};
+type MenuItem = {
+  label: string;
+  action: () => void;
+  className?: string;
+};
 
 const ModuleMenu = React.memo((props: MenuProps) => {
   const menuItems: MenuItem[] = [
@@ -97,7 +95,7 @@ const ModuleMenu = React.memo((props: MenuProps) => {
 /**
  * Component for a single module on the planner
  */
-export default class PlannerModule extends PureComponent<Props> {
+export default class PlannerModule extends React.PureComponent<Props> {
   renderConflict(conflict: Conflict) {
     switch (conflict.type) {
       case 'noInfo':

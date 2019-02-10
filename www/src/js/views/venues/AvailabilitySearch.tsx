@@ -1,18 +1,16 @@
-// @flow
-
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import { range } from 'lodash';
 
-import type { VenueSearchOptions } from 'types/venues';
+import { VenueSearchOptions } from 'types/venues';
 import { SCHOOLDAYS, formatHour, getDayIndex, getCurrentHours } from 'utils/timify';
 import styles from './AvailabilitySearch.scss';
 
 type Props = {
-  className?: string,
-  isEnabled: boolean,
-  searchOptions: VenueSearchOptions,
-  onUpdate: (VenueSearchOptions) => void,
+  className?: string;
+  isEnabled: boolean;
+  searchOptions: VenueSearchOptions;
+  onUpdate: (venueSearchOptions: VenueSearchOptions) => void;
 };
 
 // The first and last starting time of lessons
@@ -37,8 +35,8 @@ export function defaultSearchOptions(
   };
 }
 
-export default class AvailabilitySearch extends PureComponent<Props> {
-  onUpdate = (event: SyntheticEvent<HTMLSelectElement>, key: $Keys<VenueSearchOptions>) => {
+export default class AvailabilitySearch extends React.PureComponent<Props> {
+  onUpdate = (event: React.SyntheticEvent<HTMLSelectElement>, key: keyof VenueSearchOptions) => {
     if (typeof event.currentTarget.value !== 'undefined') {
       const { searchOptions, onUpdate } = this.props;
       onUpdate({

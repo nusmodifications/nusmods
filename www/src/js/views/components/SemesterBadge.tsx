@@ -1,9 +1,7 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import config from 'config';
-import type { Semester } from 'types/modules';
+import { Semester } from 'types/modules';
 import styles from './SemesterBadge.scss';
 
 /* eslint-disable no-useless-computed-key */
@@ -16,8 +14,8 @@ const BADGE_COLOR = {
 /* eslint-enable */
 
 type Props = {
-  className?: string,
-  semesters: Semester[],
+  className?: string;
+  semesters: Semester[];
 };
 
 export default function(props: Props) {

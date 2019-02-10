@@ -1,28 +1,26 @@
-// @flow
-
-import type { AcadWeekInfo } from 'nusmoderator';
+import { AcadWeekInfo } from 'nusmoderator';
 import { isSameDay } from 'date-fns';
-import React, { PureComponent, type Node } from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
-import type { ColoredLesson, Lesson } from 'types/modules';
-import type { SelectedLesson } from 'types/views';
+import { ColoredLesson, Lesson } from 'types/modules';
+import { SelectedLesson } from 'types/views';
 import { MapPin } from 'views/components/icons';
 import { formatTime } from 'utils/timify';
 import { isLessonAvailable, isSameLesson } from 'utils/timetables';
 import EventMapInline from './EventMapInline';
 import styles from './DayEvents.scss';
 
-type Props = {|
-  +lessons: ColoredLesson[],
-  +date: Date,
-  +dayInfo: AcadWeekInfo,
-  +openLesson: ?SelectedLesson,
-  +marker: Node,
+type Props = {
+  readonly lessons: ColoredLesson[];
+  readonly date: Date;
+  readonly dayInfo: AcadWeekInfo;
+  readonly openLesson: SelectedLesson | null | undefined;
+  readonly marker: Node;
 
-  +onOpenLesson: (date: Date, lesson: Lesson) => void,
-|};
+  readonly onOpenLesson: (date: Date, lesson: Lesson) => void;
+};
 
-export default class DayEvents extends PureComponent<Props> {
+export default class DayEvents extends React.PureComponent<Props> {
   renderLesson = (lesson: ColoredLesson, i: number) => {
     const { openLesson, onOpenLesson, marker, date } = this.props;
 

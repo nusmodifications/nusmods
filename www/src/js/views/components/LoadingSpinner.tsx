@@ -1,10 +1,9 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import styles from './LoadingSpinner.scss';
 
 type Props = {
-  small?: boolean,
+  small?: boolean;
 };
 
 export default function LoadingSpinner(props: Props) {

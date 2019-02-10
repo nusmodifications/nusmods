@@ -1,5 +1,4 @@
-// @flow
-import type { Store } from 'redux';
+import { Store } from 'redux';
 import { promptRefresh } from 'actions/app';
 import { captureException } from 'utils/error';
 
@@ -30,7 +29,6 @@ function onNewServiceWorker(registration: ServiceWorkerRegistration, callback: (
     }
 
     registration.installing.addEventListener('statechange', (event) => {
-      // $FlowFixMe - Flow doesn't recognize the event's target as being a ServiceWorker object
       if (event.target.state === 'installed') {
         // A new service worker is available, inform the user
         callback();
@@ -47,7 +45,7 @@ function onNewServiceWorker(registration: ServiceWorkerRegistration, callback: (
   }
 }
 
-export default function initializeServiceWorker(store: Store<*, *, *>) {
+export default function initializeServiceWorker(store: Store<any, any, any>) {
   const { serviceWorker } = navigator;
   if (!serviceWorker) {
     return;

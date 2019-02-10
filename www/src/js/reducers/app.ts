@@ -1,6 +1,5 @@
-// @flow
-import type { FSA } from 'types/redux';
-import type { AppState } from 'types/reducers';
+import { FSA } from 'types/redux';
+import { AppState } from 'types/reducers';
 import config from 'config';
 
 import { forceRefreshPrompt } from 'utils/debug';

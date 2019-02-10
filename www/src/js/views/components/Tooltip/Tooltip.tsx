@@ -1,13 +1,9 @@
-// @flow
-
-import React from 'react';
-import Tippy, { type TippyProps } from '@tippy.js/react';
+import * as React from 'react';
+import Tippy, { TippyProps } from '@tippy.js/react';
 import bowser from 'bowser';
 import 'styles/tippy/tippy.css';
 
-export type Props = {|
-  ...TippyProps,
-|};
+export type Props = TippyProps & {};
 
 function Tooltip(props: Props) {
   const tippyProps = props;

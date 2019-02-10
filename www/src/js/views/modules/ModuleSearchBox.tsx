@@ -1,6 +1,5 @@
-// @flow
-import type { ContextRouter } from 'react-router-dom';
-import React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import qs from 'query-string';
@@ -11,13 +10,12 @@ import SearchBox from 'views/components/SearchBox';
 import { searchModules } from 'actions/moduleFinder';
 import { SEARCH_QUERY_KEY } from 'utils/moduleSearch';
 
-type Props = {
-  ...ContextRouter,
-  throttle: number,
-  useInstantSearch: boolean,
-  initialSearchTerm: ?string,
+type Props = RouteComponentProps & {
+  throttle: number;
+  useInstantSearch: boolean;
+  initialSearchTerm: string | null | undefined;
 
-  searchModules: (string) => void,
+  searchModules: (str: string) => void;
 };
 
 export function ModuleSearchBoxComponent(props: Props) {

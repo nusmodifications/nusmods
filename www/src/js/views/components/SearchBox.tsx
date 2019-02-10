@@ -1,5 +1,4 @@
-// @flow
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import { debounce } from 'lodash';
 
@@ -7,21 +6,21 @@ import { Search } from 'views/components/icons';
 import styles from './SearchBox.scss';
 
 type Props = {
-  className?: string,
-  throttle: number,
-  useInstantSearch: boolean,
-  initialSearchTerm: ?string,
-  placeholder: string,
-  onSearch: (string) => void,
+  className?: string;
+  throttle: number;
+  useInstantSearch: boolean;
+  initialSearchTerm: string | null | undefined;
+  placeholder: string;
+  onSearch: (str: string) => void;
 };
 
 type State = {
-  searchTerm: string,
-  isFocused: boolean,
-  hasChanges: boolean,
+  searchTerm: string;
+  isFocused: boolean;
+  hasChanges: boolean;
 };
 
-export default class SearchBox extends PureComponent<Props, State> {
+export default class SearchBox extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -63,7 +62,7 @@ export default class SearchBox extends PureComponent<Props, State> {
     this.props.onSearch(input.trim());
   };
 
-  debouncedSearch: (string) => void = debounce(this.search, this.props.throttle, {
+  debouncedSearch: (str: string) => void = debounce(this.search, this.props.throttle, {
     leading: false,
   });
 

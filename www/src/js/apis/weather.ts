@@ -1,26 +1,25 @@
-// @flow
 import axios from 'axios';
 import { isSameDay, addDays } from 'date-fns';
 
 export type Forecast = {
   temperature: {
-    low: number,
-    high: number,
-  },
-  date: string,
-  forecast: string,
+    low: number;
+    high: number;
+  };
+  date: string;
+  forecast: string;
   relative_humidity: {
-    low: number,
-    high: number,
-  },
+    low: number;
+    high: number;
+  };
   wind: {
     speed: {
-      low: number,
-      high: number,
-    },
-    direction: string,
-  },
-  timestamp: string,
+      low: number;
+      high: number;
+    };
+    direction: string;
+  };
+  timestamp: string;
 };
 
 const API_PREFIX = 'https://api.data.gov.sg/v1/environment';

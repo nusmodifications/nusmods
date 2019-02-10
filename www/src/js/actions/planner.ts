@@ -1,8 +1,6 @@
-// @flow
-
-import type { ModuleCode, Semester } from 'types/modules';
-import type { FSA } from 'types/redux';
-import type { CustomModule } from 'types/reducers';
+import { ModuleCode, Semester } from 'types/modules';
+import { FSA } from 'types/redux';
+import { CustomModule } from 'types/reducers';
 
 export const SET_PLANNER_MIN_YEAR = 'SET_PLANNER_MIN_YEAR';
 export function setPlannerMinYear(year: string) {
@@ -33,7 +31,7 @@ export function addPlannerModule(
   moduleCode: ModuleCode,
   year: string,
   semester: Semester,
-  index: ?number = null,
+  index: number | null | undefined = null,
 ): FSA {
   return {
     type: ADD_PLANNER_MODULE,
@@ -51,7 +49,7 @@ export function movePlannerModule(
   moduleCode: ModuleCode,
   year: string,
   semester: Semester,
-  index: ?number = null,
+  index: number | null | undefined = null,
 ): FSA {
   return {
     type: MOVE_PLANNER_MODULE,

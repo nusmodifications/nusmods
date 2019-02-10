@@ -1,5 +1,4 @@
-// @flow
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import { Map as LeafletMap } from 'leaflet';
 import { Map, Marker, TileLayer } from 'react-leaflet';
 import { GestureHandling } from 'leaflet-gesture-handling';
@@ -11,20 +10,20 @@ import ExpandMap from './ExpandMap';
 import BusStops from './BusStops';
 import styles from './LocationMap.scss';
 
-export type Props = {|
-  +position: [number, number],
-  +toggleScrollable?: (boolean) => void,
-  +className?: string,
-  +height?: string,
-|};
+export type Props = {
+  readonly position: [number, number];
+  readonly toggleScrollable?: (boolean: boolean) => void;
+  readonly className?: string;
+  readonly height?: string;
+};
 
-type State = {|
-  +isExpanded: boolean,
-|};
+type State = {
+  readonly isExpanded: boolean;
+};
 
 LeafletMap.addInitHook('addHandler', 'gestureHandling', GestureHandling);
 
-export default class LocationMap extends PureComponent<Props, State> {
+export default class LocationMap extends React.PureComponent<Props, State> {
   state: State = {
     isExpanded: false,
   };

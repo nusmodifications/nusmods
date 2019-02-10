@@ -1,4 +1,3 @@
-// @flow
 import { createGenericLesson } from 'test-utils/timetable';
 
 import {

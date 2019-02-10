@@ -1,6 +1,5 @@
-// @flow
-import type { DisqusConfig } from 'types/views';
-import React, { PureComponent } from 'react';
+import { DisqusConfig } from 'types/views';
+import * as React from 'react';
 import config from 'config';
 import insertScript from 'utils/insertScript';
 import { getScriptErrorHandler } from 'utils/error';
@@ -11,7 +10,7 @@ type Props = DisqusConfig;
 
 const SCRIPT_ID = 'dsq-count-scr';
 
-export default class CommentCount extends PureComponent<Props> {
+export default class CommentCount extends React.PureComponent<Props> {
   static loadInstance() {
     if (window.document.getElementById(SCRIPT_ID)) {
       if (window.DISQUSWIDGETS) {

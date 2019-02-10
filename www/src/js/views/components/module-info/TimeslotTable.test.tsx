@@ -1,10 +1,9 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 import { shallow } from 'enzyme';
 import { cartesianProduct } from 'js-combinatorics';
 
-import type { Node } from 'react';
-import type { Day, Time } from 'types/modules';
+import { Node } from 'react';
+import { Day, Time } from 'types/modules';
 
 import { WorkingDaysOfWeek, TimesOfDay } from 'types/modules';
 import { getTimeslot } from 'utils/modules';

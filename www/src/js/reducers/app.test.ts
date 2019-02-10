@@ -1,14 +1,12 @@
-// @flow
-
 import { modifyLesson, changeLesson, cancelModifyLesson } from 'actions/timetables';
 import { openNotification, popNotification, setOnlineStatus } from 'actions/app';
 import { selectSemester } from 'actions/settings';
 
 import reducer from 'reducers/app';
 
-import type { Lesson, Semester } from 'types/modules';
-import type { FSA } from 'types/redux';
-import type { AppState } from 'types/reducers';
+import { Lesson, Semester } from 'types/modules';
+import { FSA } from 'types/redux';
+import { AppState } from 'types/reducers';
 import { initAction } from 'test-utils/redux';
 import lessons from '__mocks__/lessons-array.json';
 

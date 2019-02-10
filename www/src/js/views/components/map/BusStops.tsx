@@ -1,13 +1,11 @@
-// @flow
-
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import { Marker, Popup } from 'react-leaflet';
 import classnames from 'classnames';
 import produce from 'immer';
 import { entries, sortBy } from 'lodash';
 
-import type { BusStop, NextBus, NextBusTime } from 'types/venues';
-import type { BusTiming } from 'types/views';
+import { BusStop, NextBus, NextBusTime } from 'types/venues';
+import { BusTiming } from 'types/views';
 
 import busStops from 'data/bus-stops.json';
 import { allowBusStopEditing } from 'utils/debug';
@@ -18,22 +16,20 @@ import styles from './BusStops.scss';
 
 type Props = {};
 
-type State = {|
+type State = {
   // Bus stop data is stored in state to allow for editing
-  busStops: BusStop[],
+  busStops: BusStop[];
 
   // Each stop has their own substate. This allows multiple timings to be
   // displayed at once.
-  busTimings: { [code: string]: BusTiming },
-|};
+  busTimings: { [code: string]: BusTiming };
+};
 
-type ArrivalTimesProps = {|
-  ...BusTiming,
-
-  name: string,
-  code: string,
-  reload: (code: string) => void,
-|};
+type ArrivalTimesProps = BusTiming & {
+  name: string;
+  code: string;
+  reload: (code: string) => void;
+};
 
 /**
  * Extract the route name from the start of a string
@@ -143,7 +139,7 @@ export const ArrivalTimes = React.memo<ArrivalTimesProps>((props) => {
 /**
  * Displays bus stop routes as markers, and timings in a popup when they are clicked
  */
-export default class BusStops extends PureComponent<Props, State> {
+export default class BusStops extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 

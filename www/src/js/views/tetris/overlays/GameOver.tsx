@@ -1,16 +1,14 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 
 import HighScoreForm from './HighScoreForm';
 import GameOverlay from './GameOverlay';
 import styles from './overlay.scss';
 
-type Props = {|
-  +score: number,
-  +resetGame: () => void,
-|};
+type Props = {
+  readonly score: number;
+  readonly resetGame: () => void;
+};
 
 export default function GameOver(props: Props) {
   return (

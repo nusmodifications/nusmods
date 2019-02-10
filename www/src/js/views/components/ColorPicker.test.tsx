@@ -1,9 +1,7 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import { mount } from 'enzyme';
 import ColorPicker from 'views/components/ColorPicker';
-import type { ColorIndex } from 'types/reducers';
+import { ColorIndex } from 'types/reducers';
 import { expectColor } from 'test-utils/theme';
 
 import styles from './ColorPicker.scss';

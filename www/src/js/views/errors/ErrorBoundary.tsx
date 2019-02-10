@@ -1,18 +1,17 @@
-// @flow
-import { type Node, Component } from 'react';
+import * as React from 'react';
 import { captureException } from 'utils/error';
 
 type Props = {
-  children: Node,
-  captureError: boolean,
-  errorPage: (error: Error) => Node,
+  children: Node;
+  captureError: boolean;
+  errorPage: (error: Error) => Node;
 };
 
 type State = {
-  error: ?Error,
+  error: Error | null | undefined;
 };
 
-export default class ErrorBoundary extends Component<Props, State> {
+export default class ErrorBoundary extends React.Component<Props, State> {
   static defaultProps = {
     captureError: true,
     errorPage: () => null,

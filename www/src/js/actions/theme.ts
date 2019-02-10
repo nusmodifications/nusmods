@@ -1,5 +1,4 @@
-// @flow
-import type { FSA } from 'types/redux';
+import { FSA } from 'types/redux';
 
 export const SELECT_THEME: string = 'SELECT_THEME';
 export function selectTheme(theme: string): FSA {

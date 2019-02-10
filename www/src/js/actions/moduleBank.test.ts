@@ -1,8 +1,6 @@
-// @flow
-
 import _ from 'lodash';
 
-import type { TimetableConfig } from 'types/timetables';
+import { TimetableConfig } from 'types/timetables';
 import * as actions from 'actions/moduleBank';
 import NUSModsApi from 'apis/nusmods';
 
@@ -25,11 +23,9 @@ describe(actions.fetchModule, () => {
     expect(thunk).toBeInstanceOf(Function);
 
     const dispatch = jest.fn().mockResolvedValue();
-    const getState = jest.fn().mockReturnValue(
-      ({
-        moduleBank: { modules: { CS1010S: {} } },
-      }: any),
-    );
+    const getState = jest.fn().mockReturnValue({
+      moduleBank: { modules: { CS1010S: {} } },
+    } as any);
 
     await thunk(dispatch, getState);
 
@@ -45,12 +41,10 @@ describe(actions.fetchModule, () => {
     });
 
     const dispatch = jest.fn().mockResolvedValue();
-    const getState = jest.fn().mockReturnValue(
-      ({
-        moduleBank: { modules },
-        timetables: {},
-      }: any),
-    );
+    const getState = jest.fn().mockReturnValue({
+      moduleBank: { modules },
+      timetables: {},
+    } as any);
 
     await thunk(dispatch, getState);
 
@@ -62,11 +56,9 @@ describe(actions.fetchModule, () => {
 
     const error = new Error('Error loading module');
     const dispatch = jest.fn().mockRejectedValue(error);
-    const getState = jest.fn().mockReturnValue(
-      ({
-        moduleBank: { modules: { CS1010S: {} } },
-      }: any),
-    );
+    const getState = jest.fn().mockReturnValue({
+      moduleBank: { modules: { CS1010S: {} } },
+    } as any);
 
     await expect(thunk(dispatch, getState)).rejects.toThrowError(error);
   });
@@ -76,7 +68,7 @@ test('getLRUModule should return the LRU and non-timetable module', () => {
   /* eslint-disable no-useless-computed-key */
   const timetableConfig: TimetableConfig = {
     [1]: {
-      ACC1001: ({}: any),
+      ACC1001: {} as any,
     },
   };
   /* eslint-enable */

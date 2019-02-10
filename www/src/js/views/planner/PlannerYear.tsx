@@ -1,11 +1,9 @@
-// @flow
-
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import { size, sortBy, toPairs, flatMap, values } from 'lodash';
 
-import type { ModuleCode, Semester } from 'types/modules';
-import type { PlannerModuleInfo } from 'types/views';
+import { ModuleCode, Semester } from 'types/modules';
+import { PlannerModuleInfo } from 'types/views';
 import config from 'config';
 import { getTotalMC, getSemesterName } from 'utils/planner';
 import { Minus, Plus } from 'views/components/icons';
@@ -13,21 +11,21 @@ import { renderMCs } from 'utils/modules';
 import PlannerSemester from './PlannerSemester';
 import styles from './PlannerYear.scss';
 
-type Props = {|
-  +name: string, // eg. iBLOCs, Year 1, etc.
-  +year: string, // Actual academic year
-  +semesters: { [Semester]: PlannerModuleInfo[] },
+type Props = {
+  readonly name: string; // eg. iBLOCs, Year 1, etc.
+  readonly year: string; // Actual academic year
+  readonly semesters: { [semester: string]: PlannerModuleInfo[] };
 
-  +addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void,
-  +removeModule: (moduleCode: ModuleCode) => void,
-  +addCustomData: (moduleCode: ModuleCode) => void,
-|};
+  readonly addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void;
+  readonly removeModule: (moduleCode: ModuleCode) => void;
+  readonly addCustomData: (moduleCode: ModuleCode) => void;
+};
 
-type State = {|
-  +showSpecialSem: boolean,
-|};
+type State = {
+  readonly showSpecialSem: boolean;
+};
 
-export default class PlannerYear extends PureComponent<Props, State> {
+export default class PlannerYear extends React.PureComponent<Props, State> {
   state = {
     // Always display Special Terms I and II if either one has modules
     showSpecialSem: this.hasSpecialTermModules(),

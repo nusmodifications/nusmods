@@ -1,14 +1,12 @@
-// @flow
-
-import React, { PureComponent, type Node, Fragment } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
-import { withRouter, type ContextRouter } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { capitalize } from 'lodash';
 
-import type { State } from 'reducers';
-import type { NotificationOptions } from 'types/reducers';
+import { State } from 'reducers';
+import { NotificationOptions } from 'types/reducers';
 
-import config, { type CorsRound } from 'config';
+import config, { CorsRound } from 'config';
 import { dismissCorsNotification } from 'actions/settings';
 import { openNotification } from 'actions/app';
 import { roundStart, currentPeriod, currentRound } from 'utils/cors';
@@ -21,21 +19,19 @@ import styles from './CorsNotification.scss';
 type Props = {
   // True only in the preview in the settings page since we don't want
   // users accidentally dismissing that
-  hideCloseButton?: boolean,
-  enabled: boolean,
-  dismissedRounds: string[],
+  hideCloseButton?: boolean;
+  enabled: boolean;
+  dismissedRounds: string[];
 
-  dismissCorsNotification: (string) => void,
-  openNotification: (string, NotificationOptions) => void,
-
-  ...ContextRouter,
-};
+  dismissCorsNotification: (str: string) => void;
+  openNotification: (str: string, notificationOptions: NotificationOptions) => void;
+} & RouteComponentProps;
 
 const NOW = new Date();
 
 export function corsNotificationText(
   useLineBreaks: boolean,
-  round: ?CorsRound = currentRound(),
+  round: CorsRound | null | undefined = currentRound(),
   now: Date = new Date(),
 ): Node {
   if (!round) return null;
@@ -44,21 +40,21 @@ export function corsNotificationText(
   const isRoundOpen = now >= period.startDate;
 
   return (
-    <Fragment>
+    <>
       {isRoundOpen ? 'Current' : 'Next'} CORS round:{' '}
       <strong>
         {round.round} ({capitalize(period.type)})
       </strong>
       {isRoundOpen ? ' till' : ' at'} {useLineBreaks && <br />}
       <strong>{isRoundOpen ? period.end : period.start}</strong>
-    </Fragment>
+    </>
   );
 }
 
 function currentTime() {
   const debugRound = forceCorsRound();
 
-  // For manual testing - add ?round=1A (or other round names) to trigger the notification
+  // For manual testing - add round | null | undefined=1A (or other round names) to trigger the notification
   if (debugRound) {
     const round = config.corsSchedule.find((r) => r.round === debugRound);
     if (round) return roundStart(round);
@@ -67,7 +63,7 @@ function currentTime() {
   return NOW;
 }
 
-export class CorsNotificationComponent extends PureComponent<Props> {
+export class CorsNotificationComponent extends React.PureComponent<Props> {
   dismiss = (round: string) => {
     this.props.dismissCorsNotification(round);
     this.props.openNotification('Reminder snoozed until start of next round', {

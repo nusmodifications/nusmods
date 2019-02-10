@@ -1,13 +1,12 @@
-// @flow
-import React from 'react';
+import * as React from 'react';
 import _ from 'lodash';
 
 import { convertIndexToTime } from 'utils/timify';
 import styles from './TimetableTimings.scss';
 
 type Props = {
-  startingIndex: number,
-  endingIndex: number,
+  startingIndex: number;
+  endingIndex: number;
 };
 
 function TimetableTimings(props: Props) {

@@ -1,14 +1,12 @@
-// @flow
-
-import React, { Fragment, PureComponent } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { sortBy } from 'lodash';
 
-import type { ModuleCode, ModuleWithColor, Semester } from 'types/modules';
-import type { ColorIndex } from 'types/reducers';
-import type { ModuleTableOrder } from 'types/views';
+import { ModuleCode, ModuleWithColor, Semester } from 'types/modules';
+import { ColorIndex } from 'types/reducers';
+import { ModuleTableOrder } from 'types/views';
 
 import ColorPicker from 'views/components/ColorPicker';
 import { Eye, EyeOff, Trash } from 'views/components/icons/index';
@@ -27,22 +25,22 @@ import ModuleTombstone from './ModuleTombstone';
 import { moduleOrders } from './ModulesTableFooter';
 
 type Props = {
-  semester: Semester,
-  readOnly: boolean,
-  horizontalOrientation: boolean,
-  moduleTableOrder: ModuleTableOrder,
-  modules: ModuleWithColor[],
-  tombstone: ?ModuleWithColor, // Placeholder for a deleted module
+  semester: Semester;
+  readOnly: boolean;
+  horizontalOrientation: boolean;
+  moduleTableOrder: ModuleTableOrder;
+  modules: ModuleWithColor[];
+  tombstone: ModuleWithColor | null | undefined; // Placeholder for a deleted module
 
   // Actions
-  selectModuleColor: Function,
-  hideLessonInTimetable: (Semester, ModuleCode) => void,
-  showLessonInTimetable: (Semester, ModuleCode) => void,
-  onRemoveModule: (ModuleWithColor) => void,
-  resetTombstone: () => void,
+  selectModuleColor: Function;
+  hideLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
+  showLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
+  onRemoveModule: (moduleWithColor: ModuleWithColor) => void;
+  resetTombstone: () => void;
 };
 
-class TimetableModulesTable extends PureComponent<Props> {
+class TimetableModulesTable extends React.PureComponent<Props> {
   renderModuleActions(module) {
     const hideBtnLabel = `${module.hiddenInTimetable ? 'Show' : 'Hide'} ${module.ModuleCode}`;
     const removeBtnLabel = `Remove ${module.ModuleCode} from timetable`;
@@ -94,7 +92,7 @@ class TimetableModulesTable extends PureComponent<Props> {
     }
 
     return (
-      <Fragment>
+      <>
         <div className={styles.moduleColor}>
           <ColorPicker
             label={`Change ${module.ModuleCode} timetable color`}
@@ -118,7 +116,7 @@ class TimetableModulesTable extends PureComponent<Props> {
             {renderMCs(module.ModuleCredit)}
           </div>
         </div>
-      </Fragment>
+      </>
     );
   };
 

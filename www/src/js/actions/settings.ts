@@ -1,8 +1,7 @@
-// @flow
-import type { FSA } from 'types/redux';
-import type { Faculty, Semester } from 'types/modules';
-import type { Mode } from 'types/settings';
-import type { ModuleTableOrder } from 'types/views';
+import { FSA } from 'types/redux';
+import { Faculty, Semester } from 'types/modules';
+import { Mode } from 'types/settings';
+import { ModuleTableOrder } from 'types/views';
 
 export const SELECT_SEMESTER: string = 'SELECT_SEMESTER';
 export function selectSemester(semester: Semester): FSA {

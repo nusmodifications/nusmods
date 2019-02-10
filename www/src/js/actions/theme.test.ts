@@ -1,4 +1,3 @@
-// @flow
 import * as actions from 'actions/theme';
 
 describe('theme', () => {

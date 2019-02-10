@@ -1,6 +1,5 @@
-// @flow
-import type { AcadWeekInfo } from 'nusmoderator';
-import type {
+import { AcadWeekInfo } from 'nusmoderator';
+import {
   ModuleLessonConfig,
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
@@ -8,15 +7,8 @@ import type {
   TimetableDayArrangement,
   TimetableDayFormat,
 } from 'types/timetables';
-import type {
-  ClassNo,
-  ColoredLesson,
-  LessonType,
-  ModuleCode,
-  RawLesson,
-  Semester,
-} from 'types/modules';
-import type { ModulesMap } from 'reducers/moduleBank';
+import { ClassNo, ColoredLesson, LessonType, ModuleCode, RawLesson, Semester } from 'types/modules';
+import { ModulesMap } from 'reducers/moduleBank';
 
 import _ from 'lodash';
 

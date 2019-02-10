@@ -1,10 +1,9 @@
-// @flow
-import type { Node } from 'react';
+import * as React from 'react';
 
-import React, { PureComponent, Fragment } from 'react';
-import { withRouter, type ContextRouter } from 'react-router-dom';
+import React, { PureComponent } from 'react';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
-import type { Lesson, Semester, SemesterData } from 'types/modules';
+import { Lesson, Semester, SemesterData } from 'types/modules';
 
 import Timetable from 'views/timetable/Timetable';
 import SemesterPicker from 'views/components/module-info/SemesterPicker';
@@ -14,16 +13,13 @@ import { getFirstAvailableSemester } from 'utils/modules';
 import { venuePage } from 'views/routes/paths';
 import styles from './LessonTimetable.scss';
 
-type Props = {
-  ...ContextRouter,
-  semesterData: SemesterData[],
-};
+type Props = RouteComponentProps & { semesterData: SemesterData[] };
 
 type State = {
-  selectedSem: Semester,
+  selectedSem: Semester;
 };
 
-export class LessonTimetableComponent extends PureComponent<Props, State> {
+export class LessonTimetableComponent extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -31,7 +27,7 @@ export class LessonTimetableComponent extends PureComponent<Props, State> {
     };
   }
 
-  onSelectSemester = (selectedSem: ?Semester) => {
+  onSelectSemester = (selectedSem: Semester | null | undefined) => {
     if (selectedSem) {
       this.setState({ selectedSem });
     }
@@ -68,14 +64,14 @@ export class LessonTimetableComponent extends PureComponent<Props, State> {
     const semesters = this.props.semesterData.map((data) => data.Semester);
 
     return (
-      <Fragment>
+      <>
         <SemesterPicker
           semesters={semesters}
           selectedSemester={this.state.selectedSem}
           onSelectSemester={this.onSelectSemester}
         />
         <div className={styles.lessonTimetable}>{this.renderTimetable()}</div>
-      </Fragment>
+      </>
     );
   }
 }

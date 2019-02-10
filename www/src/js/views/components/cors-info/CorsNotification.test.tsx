@@ -1,9 +1,8 @@
-// @flow
-import React from 'react';
-import { mount, type ReactWrapper } from 'enzyme';
+import * as React from 'react';
+import { mount, ReactWrapper } from 'enzyme';
 import moment from 'moment';
 
-import config, { type CorsRound, type CorsPeriod, type CorsPeriodType } from 'config';
+import config, { CorsRound, CorsPeriod, CorsPeriodType } from 'config';
 import createHistory from 'test-utils/createHistory';
 import { CorsNotificationComponent } from './CorsNotification';
 

@@ -1,17 +1,15 @@
-// @flow
-
-import React, { Fragment, PureComponent, type Node } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import { minBy, range, get } from 'lodash';
-import NUSModerator, { type AcadWeekInfo } from 'nusmoderator';
+import NUSModerator, { AcadWeekInfo } from 'nusmoderator';
 import { addDays, differenceInCalendarDays, isSameDay, isWeekend, parseISO } from 'date-fns';
 
-import type { ColoredLesson, Lesson } from 'types/modules';
+import { ColoredLesson, Lesson } from 'types/modules';
 import { DaysOfWeek } from 'types/modules';
-import type { SemTimetableConfigWithLessons } from 'types/timetables';
-import type { ColorMapping } from 'types/reducers';
-import type { EmptyGroupType, SelectedLesson } from 'types/views';
-import type { State as StoreState } from 'reducers';
+import { SemTimetableConfigWithLessons } from 'types/timetables';
+import { ColorMapping } from 'types/reducers';
+import { EmptyGroupType, SelectedLesson } from 'types/views';
+import { State as StoreState } from 'reducers';
 
 import {
   groupLessonsByDay,
@@ -27,7 +25,7 @@ import { getSemesterTimetable } from 'reducers/timetables';
 import ExternalLink from 'views/components/ExternalLink';
 import * as weatherAPI from 'apis/weather';
 import config from 'config';
-import withTimer, { type TimerData } from 'views/hocs/withTimer';
+import withTimer, { TimerData } from 'views/hocs/withTimer';
 import makeResponsive from 'views/hocs/makeResponsive';
 import NoFooter from 'views/layout/NoFooter';
 import { formatTime, getCurrentHours, getCurrentMinutes, getDayIndex } from 'utils/timify';
@@ -50,22 +48,20 @@ const semesterNameMap = {
 
 export type OwnProps = TimerData;
 
-export type Props = {|
-  ...OwnProps,
+export type Props = OwnProps & {
+  readonly timetableWithLessons: SemTimetableConfigWithLessons;
+  readonly colors: ColorMapping;
+  readonly matchBreakpoint: boolean;
+};
 
-  +timetableWithLessons: SemTimetableConfigWithLessons,
-  +colors: ColorMapping,
-  +matchBreakpoint: boolean,
-|};
-
-type State = {|
+type State = {
   // Mapping of number of days from today to the weather forecast for that day
   // with zero being today
-  +weather: { [string]: string },
+  readonly weather: { [key: string]: string };
 
   // Which lesson has an open venue map
-  +openLesson: ?SelectedLesson,
-|};
+  readonly openLesson: SelectedLesson | null | undefined;
+};
 
 const EMPTY_ARRAY = [];
 
@@ -91,12 +87,12 @@ function getDayType(date: Date, weekInfo: AcadWeekInfo): EmptyGroupType {
   }
 }
 
-export function DaySection(props: {|
-  +children: Node,
-  +date: Date | Date[],
-  +offset: number,
-  +forecast?: string,
-|}) {
+export function DaySection(props: {
+  readonly children: Node;
+  readonly date: Date | Date[];
+  readonly offset: number;
+  readonly forecast?: string;
+}) {
   return (
     <section className={styles.day}>
       <DayHeader date={props.date} offset={props.offset} forecast={props.forecast} />
@@ -105,7 +101,7 @@ export function DaySection(props: {|
   );
 }
 
-export class TodayContainerComponent extends PureComponent<Props, State> {
+export class TodayContainerComponent extends React.PureComponent<Props, State> {
   state: State = {
     weather: {},
     openLesson: null,
@@ -272,7 +268,7 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
     }
 
     return (
-      <Fragment>
+      <>
         {beforeFirstLessonCard}
         <DayEvents
           lessons={lessons}
@@ -282,7 +278,7 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
           openLesson={openLesson}
           onOpenLesson={this.onOpenLesson}
         />
-      </Fragment>
+      </>
     );
   }
 
@@ -305,7 +301,7 @@ export class TodayContainerComponent extends PureComponent<Props, State> {
           <>
             <NoFooter />
             <div className={styles.mapContainer}>
-              <EventMap venue={this.state.openLesson?.lesson.Venue} />
+              <EventMap venue={this.state.openLesson && this.state.openLesson.lesson.Venue} />
             </div>
           </>
         )}

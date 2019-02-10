@@ -1,6 +1,4 @@
-// @flow
-
-import React, { Fragment, PureComponent } from 'react';
+import * as React from 'react';
 import Toggle from 'views/components/Toggle';
 import ExternalLink from 'views/components/ExternalLink';
 import config from 'config';
@@ -12,11 +10,11 @@ export const currentTests = [
 ];
 
 type Props = {
-  betaTester: boolean,
-  toggleStates: () => void,
+  betaTester: boolean;
+  toggleStates: () => void;
 };
 
-export default class BetaToggle extends PureComponent<Props> {
+export default class BetaToggle extends React.PureComponent<Props> {
   render() {
     const { betaTester, toggleStates } = this.props;
     const hasTests = currentTests.length > 0;
@@ -28,14 +26,14 @@ export default class BetaToggle extends PureComponent<Props> {
     }
 
     const testDescriptions = hasTests ? (
-      <Fragment>
+      <>
         <h5>Current tests</h5>
         <ul>
           {currentTests.map((test) => (
             <li key={test}>{test}</li>
           ))}
         </ul>
-      </Fragment>
+      </>
     ) : (
       <p>There are currently no tests</p>
     );

@@ -1,14 +1,12 @@
-// @flow
-
 // Define media breakpoints
 import json2mq from 'json2mq';
 import { entries } from 'lodash';
 import bowser from 'bowser';
 
 export type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-export type QueryObject = { [string]: string | number | boolean } | QueryObject[];
+export type QueryObject = { [key: string]: string | number | boolean } | QueryObject[];
 
-const breakpoints: { [Breakpoint]: number } = {
+const breakpoints: { [breakpoint: string]: number } = {
   xs: 0,
   sm: 576,
   md: 768,
@@ -16,7 +14,7 @@ const breakpoints: { [Breakpoint]: number } = {
   xl: 1200,
 };
 
-function nextBreakpoint(size: Breakpoint): ?number {
+function nextBreakpoint(size: Breakpoint): number | null | undefined {
   const breakpointEntries = entries(breakpoints);
   const nextBreakpointIndex =
     breakpointEntries.findIndex(([breakpoint]) => breakpoint === size) + 1;

@@ -1,15 +1,13 @@
-// @flow
-
-import React from 'react';
+import * as React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { mount, type ReactWrapper } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import mockDom from 'test-utils/mockDom';
 
-import ScrollToTop, { ScrollToTopComponent, type Props as ScrollToTopProps } from './ScrollToTop';
+import ScrollToTop, { ScrollToTopComponent, Props as ScrollToTopProps } from './ScrollToTop';
 
 type Props = {
-  onComponentDidMount?: boolean,
-  onPathChange?: boolean,
+  onComponentDidMount?: boolean;
+  onPathChange?: boolean;
 };
 
 describe('ScrollToTopComponent', () => {

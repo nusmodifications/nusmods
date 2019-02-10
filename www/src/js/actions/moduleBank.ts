@@ -1,9 +1,8 @@
-// @flow
-import type { AcadYear, Module, ModuleCode } from 'types/modules';
-import type { TimetableConfig } from 'types/timetables';
+import { AcadYear, Module, ModuleCode } from 'types/modules';
+import { TimetableConfig } from 'types/timetables';
 
-import type { GetState } from 'types/redux';
-import type { ModulesMap } from 'reducers/moduleBank';
+import { GetState } from 'types/redux';
+import { ModulesMap } from 'reducers/moduleBank';
 import { size, get, flatMap, sortBy, zip } from 'lodash';
 import { requestAction } from 'actions/requests';
 import NUSModsApi from 'apis/nusmods';
@@ -24,7 +23,7 @@ export function fetchModuleRequest(moduleCode: ModuleCode) {
   return `${FETCH_MODULE}/${moduleCode}`;
 }
 
-export function getRequestModuleCode(key: string): ?ModuleCode {
+export function getRequestModuleCode(key: string): ModuleCode | null | undefined {
   const parts = key.split('/');
   if (parts.length === 2 && parts[0] === FETCH_MODULE) return parts[1];
   return null;

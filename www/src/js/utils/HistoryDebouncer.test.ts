@@ -1,5 +1,3 @@
-// @flow
-
 import createHistory from 'test-utils/createHistory';
 import HistoryDebouncer from './HistoryDebouncer';
 

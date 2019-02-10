@@ -1,8 +1,7 @@
-// @flow
 import { range, without, uniq } from 'lodash';
 
-import type { ColorIndex } from 'types/reducers';
-import type { Lesson } from 'types/modules';
+import { ColorIndex } from 'types/reducers';
+import { Lesson } from 'types/modules';
 
 import { NUM_DIFFERENT_COLORS, getNewColor, colorLessonsByKey, fillColorMapping } from './colors';
 
@@ -123,13 +122,7 @@ describe('fillColorMapping', () => {
     expect(uniqueColors(FILLED_TIMETABLE, {})).toHaveLength(8);
     expect(uniqueColors(FILLED_TIMETABLE, { CS3216: 1, CS1101S: 0 })).toHaveLength(8);
     expect(
-      uniqueColors(
-        {
-          ...FILLED_TIMETABLE,
-          CS1231: {},
-        },
-        { CS3216: 2, CS1231: 2, CS1101S: 2 },
-      ),
+      uniqueColors(FILLED_TIMETABLE & { CS1231: {} }, { CS3216: 2, CS1231: 2, CS1101S: 2 }),
     ).toHaveLength(7);
   });
 });

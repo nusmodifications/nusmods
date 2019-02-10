@@ -1,15 +1,13 @@
-// @flow
-
-import React, { Fragment, PureComponent } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
-import { withRouter, Redirect, type ContextRouter } from 'react-router-dom';
+import { withRouter, Redirect, RouteComponentProps } from 'react-router-dom';
 import classnames from 'classnames';
 
-import type { State as StoreState } from 'reducers';
-import type { ModuleCode, Semester } from 'types/modules';
-import type { SemTimetableConfig } from 'types/timetables';
-import type { ColorMapping, NotificationOptions } from 'types/reducers';
-import type { ModulesMap } from 'reducers/moduleBank';
+import { State as StoreState } from 'reducers';
+import { ModuleCode, Semester } from 'types/modules';
+import { SemTimetableConfig } from 'types/timetables';
+import { ColorMapping, NotificationOptions } from 'types/reducers';
+import { ModulesMap } from 'reducers/moduleBank';
 
 import { selectSemester } from 'actions/settings';
 import { getSemesterTimetable } from 'reducers/timetables';
@@ -29,25 +27,27 @@ import TimetableContent from './TimetableContent';
 
 import styles from './TimetableContainer.scss';
 
-type Props = {
-  ...ContextRouter,
+type Props = RouteComponentProps & {
+  modules: ModulesMap;
+  semester: Semester | null | undefined;
+  activeSemester: Semester;
+  timetable: SemTimetableConfig;
+  colors: ColorMapping;
 
-  modules: ModulesMap,
-  semester: ?Semester,
-  activeSemester: Semester,
-  timetable: SemTimetableConfig,
-  colors: ColorMapping,
-
-  isValidModule: (ModuleCode) => boolean,
-  selectSemester: (Semester) => void,
-  setTimetable: (Semester, SemTimetableConfig, ColorMapping) => void,
-  fetchTimetableModules: (SemTimetableConfig[]) => void,
-  openNotification: (string, NotificationOptions) => void,
-  undo: () => void,
+  isValidModule: (moduleCode: ModuleCode) => boolean;
+  selectSemester: (semester: Semester) => void;
+  setTimetable: (
+    semester: Semester,
+    semTimetableConfig: SemTimetableConfig,
+    colorMapping: ColorMapping,
+  ) => void;
+  fetchTimetableModules: (semTimetableConfig: SemTimetableConfig[]) => void;
+  openNotification: (str: string, notificationOptions: NotificationOptions) => void;
+  undo: () => void;
 };
 
 type State = {
-  importedTimetable: ?SemTimetableConfig,
+  importedTimetable: SemTimetableConfig | null | undefined;
 };
 
 /**
@@ -56,7 +56,7 @@ type State = {
  * - Import timetable data from query string if action is defined
  * - Create the UI for the user to confirm their actions
  */
-export class TimetableContainerComponent extends PureComponent<Props, State> {
+export class TimetableContainerComponent extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -191,10 +191,10 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
     // 4. If there is an imported timetable, we show the sharing header which
     //    asks the user if they want to import the shared timetable
     const header = importedTimetable ? (
-      <Fragment>
+      <>
         {this.sharingHeader(semester, importedTimetable)}
         {this.timetableHeader(semester, true)}
-      </Fragment>
+      </>
     ) : (
       this.timetableHeader(semester)
     );

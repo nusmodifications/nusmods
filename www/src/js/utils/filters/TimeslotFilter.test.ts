@@ -1,5 +1,3 @@
-// @flow
-
 /** @var {Module} */
 import cs1010s from '__mocks__/modules/CS1010S.json';
 /** @var {Module} */

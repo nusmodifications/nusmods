@@ -1,11 +1,9 @@
-// @flow
-
-import type { Node } from 'react';
-import React, { Fragment } from 'react';
+import * as React from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
-import type { Lesson } from 'types/modules';
+import { Lesson } from 'types/modules';
 import { getStartTimeAsDate } from 'utils/timetables';
 import { differenceInHours, formatDistanceStrict } from 'date-fns';
 import { venuePage } from 'views/routes/paths';
@@ -13,16 +11,16 @@ import styles from './BeforeLessonCard.scss';
 import cardStyles from './DayEvents.scss';
 
 type Props = {
-  currentTime: Date,
-  nextLesson: Lesson,
-  marker: Node,
+  currentTime: Date;
+  nextLesson: Lesson;
+  marker: Node;
 };
 
 const freeRoomMessage = (
-  <Fragment>
+  <>
     Need help finding a free classroom to study in? Check out our{' '}
     <Link to={venuePage()}>free room finder</Link>.
-  </Fragment>
+  </>
 );
 
 export default function BeforeLessonCard(props: Props) {

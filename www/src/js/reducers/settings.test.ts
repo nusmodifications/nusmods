@@ -1,6 +1,5 @@
-// @flow
-import type { FSA } from 'types/redux';
-import type { SettingsState } from 'types/reducers';
+import { FSA } from 'types/redux';
+import { SettingsState } from 'types/reducers';
 
 import * as actions from 'actions/settings';
 import reducer from 'reducers/settings';
@@ -128,7 +127,6 @@ describe('corsNotification settings', () => {
 describe('beta testing state', () => {
   test('toggle should enable when beta prop does not exist', () => {
     const { beta, ...initialWithoutBeta } = initialState;
-    // $FlowFixMe Flow doesn't think this is sound, for some reason
     const state = reducer(initialWithoutBeta, actions.toggleBetaTesting());
     expect(state.beta).toEqual(true);
   });

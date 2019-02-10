@@ -1,22 +1,21 @@
-// @flow
-import React, { Component } from 'react';
+import * as React from 'react';
 import { differenceInMilliseconds } from 'date-fns';
 import { wrapComponentName } from 'utils/react';
 import { forceTimer } from 'utils/debug';
 
-export type TimerData = {|
-  currentTime: Date,
-|};
+export type TimerData = {
+  currentTime: Date;
+};
 
 function getCurrentTime() {
   return forceTimer() || new Date();
 }
 
-function withTimer<Props: {}>(
-  WrappedComponent: ComponentType<Props>,
+function withTimer<Props>(
+  WrappedComponent: React.React.ComponentType<Props>,
   intervalInMs: number = 60 * 1000,
-): ComponentType<$Diff<Props, TimerData>> {
-  return class extends Component<Props, TimerData> {
+): React.React.ComponentType<Pick<Props, Exclude<keyof Props, keyof TimerData>>> {
+  return class extends React.Component<Props, TimerData> {
     intervalId: IntervalID;
 
     static displayName = wrapComponentName(WrappedComponent, withTimer.name);

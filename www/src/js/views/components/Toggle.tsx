@@ -1,17 +1,15 @@
-// @flow
-
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 
 type Props = {
-  labels: [string, string],
-  isOn: ?boolean,
-  className?: string,
+  labels: [string, string];
+  isOn: boolean | null | undefined;
+  className?: string;
 
-  onChange: (boolean) => void,
+  onChange: (boolean: boolean) => void;
 };
 
-export default class Toggle extends PureComponent<Props> {
+export default class Toggle extends React.PureComponent<Props> {
   static defaultProps = {
     labels: ['On', 'Off'],
   };

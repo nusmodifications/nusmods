@@ -1,36 +1,34 @@
-// @flow
-
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 
-import type { State as StoreState } from 'reducers';
-import type { CustomModule } from 'types/reducers';
-import type { Module, ModuleCode } from 'types/modules';
+import { State as StoreState } from 'reducers';
+import { CustomModule } from 'types/reducers';
+import { Module, ModuleCode } from 'types/modules';
 
 import Tooltip from 'views/components/Tooltip/Tooltip';
 import { addCustomModule } from 'actions/planner';
 import { getModuleCredit, getModuleTitle } from 'utils/planner';
 import styles from './CustomModuleForm.scss';
 
-type OwnProps = {|
-  +moduleCode: ModuleCode,
-  +onFinishEditing: () => void,
-|};
+type OwnProps = {
+  readonly moduleCode: ModuleCode;
+  readonly onFinishEditing: () => void;
+};
 
-type Props = {|
-  ...OwnProps,
+type Props = OwnProps & {
+  readonly customInfo: CustomModule | null | undefined;
+  readonly moduleInfo: Module | null | undefined;
+  readonly addCustomModule: (moduleCode: ModuleCode, data: CustomModule) => void;
+};
 
-  +customInfo: ?CustomModule,
-  +moduleInfo: ?Module,
-  +addCustomModule: (moduleCode: ModuleCode, data: CustomModule) => void,
-|};
-
-export class CustomModuleFormComponent extends PureComponent<Props> {
+export class CustomModuleFormComponent extends React.PureComponent<Props> {
   onSubmit = (evt: SyntheticUIEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    const moduleCredit = this.inputModuleCredit.current?.value;
-    const title = this.inputTitle.current?.value;
+    const inputModuleCredit = this.inputModuleCredit.current;
+    const moduleCredit = inputModuleCredit && inputModuleCredit.value;
+    const inputTitle = this.inputTitle.current;
+    const title = inputTitle && inputTitle.value;
 
     // Module credit is required
     if (moduleCredit == null) return;
