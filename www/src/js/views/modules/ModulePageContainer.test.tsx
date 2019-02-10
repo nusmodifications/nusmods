@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from "enzyme";
 import { Redirect } from 'react-router-dom';
 
 import createHistory from 'test-utils/createHistory';
@@ -24,7 +24,7 @@ type MakeContainerOptions = {
   moduleExists: boolean;
 };
 
-function make(moduleCode: ModuleCode, url: string, options: $Shape<MakeContainerOptions>) {
+function make(moduleCode: ModuleCode, url: string, options: Partial<MakeContainerOptions>) {
   const props: MakeContainerOptions = Object.assign(
     {}, // See https://github.com/facebook/flow/issues/6092
     {
@@ -41,7 +41,7 @@ function make(moduleCode: ModuleCode, url: string, options: $Shape<MakeContainer
   );
 }
 
-function assertRedirect(component, redirectTo = CANONICAL) {
+function assertRedirect(component: ShallowWrapper, redirectTo = CANONICAL) {
   expect(component.type()).toEqual(Redirect);
   expect(component.props()).toMatchObject({ to: { pathname: redirectTo } });
 }
