@@ -39,7 +39,7 @@ import EventMap from '../EventMap';
 import styles from './TodayContainer.scss';
 
 // Map the semester property from AcadWeekInfo to semester number
-const semesterNameMap = {
+const semesterNameMap: Record<string, number> = {
   'Semester 1': 1,
   'Semester 2': 2,
   'Special Sem 1': 3,
@@ -63,7 +63,13 @@ type State = {
   readonly openLesson: SelectedLesson | null | undefined;
 };
 
-const EMPTY_ARRAY = [];
+type DayGroup = {
+  offset: number,
+  type: EmptyGroupType,
+  dates: Date[]
+}
+
+const EMPTY_ARRAY: any[] = [];
 
 // Number of days to display
 const DAYS = 7;
@@ -155,8 +161,8 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
     const groupedLessons = groupLessonsByDay(coloredTimetableLessons);
 
     // Group empty days / non-instructional dates together
-    const days = [];
-    let currentGroup = null;
+    const days: React.ReactNode[] = [];
+    let currentGroup: DayGroup | null = null;
 
     const pushCurrentGroup = () => {
       if (!currentGroup) return;
