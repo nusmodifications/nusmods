@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
-import Loadable, { LoadingProps } from 'react-loadable';
+import Loadable, { LoadingComponentProps } from 'react-loadable';
 import classnames from 'classnames';
 import axios from 'axios';
 import qs from 'query-string';
@@ -37,7 +37,12 @@ import styles from './VenuesContainer.scss';
 
 /* eslint-disable react/prop-types */
 
-type Props = RouteComponentProps & { matchBreakpoint: boolean; venues: VenueDetailList };
+type Params = {
+  q: string;
+  venue: string;
+};
+
+type Props = RouteComponentProps<Params> & { matchBreakpoint: boolean; venues: VenueDetailList };
 
 type State = {
   // View state
@@ -64,7 +69,9 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
     // Extract searchOptions from the query string if they are present
     const isAvailabilityEnabled = !!(params.time && params.day && params.duration);
     const searchOptions = isAvailabilityEnabled
-      ? mapValues(pick(params, ['time', 'day', 'duration']), (i) => parseInt(i, 10))
+      ? (mapValues(pick(params, ['time', 'day', 'duration']), (i) =>
+          parseInt(i, 10),
+        ) as VenueSearchOptions)
       : defaultSearchOptions();
 
     this.history = new HistoryDebouncer(history);
@@ -94,7 +101,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
 
   onFindFreeRoomsClicked = () => {
     const { pristineSearchOptions, isAvailabilityEnabled } = this.state;
-    const stateUpdate: $Shape<State> = { isAvailabilityEnabled: !isAvailabilityEnabled };
+    const stateUpdate = { isAvailabilityEnabled: !isAvailabilityEnabled };
 
     // Only reset search options if the user has never changed it, and if the
     // search box is being opened. By resetting the option when the box is opened,
@@ -134,7 +141,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
 
   updateURL = (debounce: boolean = true) => {
     const { searchTerm, isAvailabilityEnabled, searchOptions } = this.state;
-    let query = {};
+    let query: Partial<Params> = {};
 
     if (searchTerm) query.q = searchTerm;
     if (isAvailabilityEnabled) query = { ...query, ...searchOptions };
@@ -325,7 +332,7 @@ const AsyncVenuesContainer = Loadable.Map({
   loader: {
     venues: () => axios.get(nusmods.venuesUrl(config.semester)),
   },
-  loading: (props: LoadingProps) => {
+  loading: (props: LoadingComponentProps) => {
     if (props.error) {
       return <ApiError dataName="venue information" retry={props.retry} />;
     } else if (props.pastDelay) {
