@@ -1,6 +1,7 @@
 import venueInfo from '__mocks__/venueInformation.json';
 
 import { WeekText, ModuleCode, StartTime } from 'types/modules';
+import { VenueInfo } from "types/venues";
 import { ZWSP } from 'utils/react';
 import {
   searchVenue,
@@ -11,8 +12,9 @@ import {
   floorName,
 } from './venues';
 
-const venues = sortVenues(venueInfo);
-const getVenues = (...names) => venues.filter(([name]) => names.includes(name));
+const venues = sortVenues(venueInfo as VenueInfo);
+const getVenues = (...names: string[]) =>
+  venues.filter(([name]) => names.includes(name));
 
 const makeVenueLesson = (
   moduleCode: ModuleCode,
@@ -29,7 +31,7 @@ const makeVenueLesson = (
   ...props,
 });
 
-describe('sortVenues', () => {
+describe(sortVenues, () => {
   test('handle empty venue object', () => {
     expect(sortVenues({})).toEqual([]);
   });
@@ -45,8 +47,8 @@ describe('sortVenues', () => {
     ).toEqual([['A1', []], ['a2', []], ['b1', []], ['B2', []]]);
   });
 
-  test('sort venues using natrual sorting', () => {
-    expect(sortVenues(venueInfo).map(([venue]) => venue)).toEqual([
+  test('sort venues using natual sorting', () => {
+    expect(venues.map(([venue]) => venue)).toEqual([
       'CQT/SR0622',
       'LT1',
       'lt2',
@@ -85,7 +87,7 @@ describe('searchVenue()', () => {
   });
 });
 
-describe('filterAvailability()', () => {
+describe(filterAvailability, () => {
   test('should find venues based on search options', () => {
     expect(
       filterAvailability(venues, {
