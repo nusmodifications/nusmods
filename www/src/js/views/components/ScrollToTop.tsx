@@ -1,13 +1,11 @@
-import { RouteComponentProps } from 'react-router-dom';
-
 import * as React from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { scrollToHash } from 'utils/react';
 
 export type Props = RouteComponentProps & {
-  onComponentDidMount: boolean;
-  onPathChange: boolean;
-  scrollToHash: boolean;
+  onComponentDidMount?: boolean;
+  onPathChange?: boolean;
+  scrollToHash?: boolean;
 };
 
 function scrollToTop() {

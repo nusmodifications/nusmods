@@ -1,5 +1,4 @@
 import * as React from 'react';
-import React from 'react';
 import { escapeRegExp, castArray } from 'lodash';
 
 // Define some useful Unicode characters as constants
@@ -22,8 +21,8 @@ export const BULLET = ' • ';
 export function replaceWithNode(
   str: string,
   regex: RegExp,
-  replacement: (match: string, index: number) => Node,
-): Node {
+  replacement: (match: string, index: number) => React.ReactNode,
+): React.ReactNode {
   const parts = str.split(regex);
 
   // We want to ensure the resulting array always have the matches at even position
@@ -39,10 +38,11 @@ export function replaceWithNode(
   });
 }
 
-export function highlight(str: string, search: string | string[], Tag: string = 'mark'): Node {
+export function highlight(str: string, search: string | string[], Tag: string = 'mark'): React.ReactNode {
   const terms = castArray(search).filter(Boolean);
   if (!terms.length) return str;
   const regex = new RegExp(`(${terms.map(escapeRegExp).join('|')})`, 'ig');
+  // @ts-ignore
   return replaceWithNode(str, regex, (match, i) => <Tag key={i}>{match}</Tag>);
 }
 
