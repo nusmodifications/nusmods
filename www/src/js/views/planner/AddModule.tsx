@@ -23,7 +23,7 @@ export default class AddModule extends React.PureComponent<Props, State> {
     value: '',
   };
 
-  onSubmit = (evt: SyntheticUIEvent<HTMLFormElement>) => {
+  onSubmit = (evt: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLTextAreaElement>) => {
     evt.preventDefault();
     this.props.onAddModule(this.state.value.trim());
     this.setState({ value: '' });
