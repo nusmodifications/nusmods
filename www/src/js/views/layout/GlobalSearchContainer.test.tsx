@@ -53,10 +53,10 @@ test('shows no choices when search is too short', () => {
 
 test('passes down search tokens', () => {
   const instance = make().instance() as SearchContainerComponent;
-  expect(instance.getResults('ab').tokens).toEqual(['ab']);
-  expect(instance.getResults('a b').tokens).toEqual(['a', 'b']);
-  expect(instance.getResults('a, b').tokens).toEqual(['a', 'b']);
-  expect(instance.getResults(' a, b ').tokens).toEqual(['a', 'b']);
+  expect(instance.getResults('ab')!.tokens).toEqual(['ab']);
+  expect(instance.getResults('a b')!.tokens).toEqual(['a', 'b']);
+  expect(instance.getResults('a, b')!.tokens).toEqual(['a', 'b']);
+  expect(instance.getResults(' a, b ')!.tokens).toEqual(['a', 'b']);
 });
 
 test('shows at most 10 choices when there are many venues and modules', () => {

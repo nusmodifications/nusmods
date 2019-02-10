@@ -2,7 +2,7 @@ import { VenueList as Venues, VenueLocationMap } from 'types/venues';
 import { State as StoreState } from 'reducers';
 
 import * as React from 'react';
-import Loadable, { LoadingProps } from 'react-loadable';
+import Loadable, { LoadingComponentProps } from 'react-loadable';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { partition } from 'lodash';
@@ -34,7 +34,7 @@ class UnmappedVenues extends React.PureComponent<Props, State> {
       venueList,
       (venue) => venueLocations[venue] && venueLocations[venue].location,
     );
-    const percentageMapped = ((mappedVenues.length / venueList.length) * 100).toFixed();
+    const percentageMapped = (mappedVenues.length / venueList.length) * 100;
 
     return (
       <div>
@@ -45,10 +45,10 @@ class UnmappedVenues extends React.PureComponent<Props, State> {
                 <div
                   className={classnames('progress-bar progress-bar-striped bg-success')}
                   role="progressbar"
-                  style={{ width: `${percentageMapped}%` }}
+                  style={{ width: `${percentageMapped.toFixed()}%` }}
                   aria-valuenow={percentageMapped}
-                  aria-valuemin="0"
-                  aria-valuemax="100"
+                  aria-valuemin={0}
+                  aria-valuemax={100}
                 >
                   {percentageMapped}%
                 </div>
@@ -96,11 +96,11 @@ const ConnectedUnmappedVenue = connect((state: StoreState) => ({
   venueList: state.venueBank.venueList,
 }))(UnmappedVenues);
 
-export const AsyncUnmappedVenues = Loadable.Map<{}, any>({
+export const AsyncUnmappedVenues = Loadable.Map({
   loader: {
     venueLocations: () => import(/* webpackChunkName: "venue" */ 'data/venues.json'),
   },
-  loading: (props: LoadingProps) => {
+  loading: (props: LoadingComponentProps) => {
     if (props.error) {
       return <ApiError dataName="venue locations" retry={props.retry} />;
     } else if (props.pastDelay) {

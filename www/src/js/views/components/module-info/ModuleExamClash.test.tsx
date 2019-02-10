@@ -11,7 +11,7 @@ import { ModuleExamClashComponent } from './ModuleExamClash';
 describe(ModuleExamClashComponent, () => {
   const MODULES = [cs1010s, cs3216];
 
-  function make(moduleCode: ModuleCode, examDate: string | null, modules: Module[] = MODULES) {
+  function make(moduleCode: ModuleCode, examDate?: string, modules: Module[] = MODULES) {
     return shallow(
       <ModuleExamClashComponent
         moduleCode={moduleCode}
@@ -28,7 +28,7 @@ describe(ModuleExamClashComponent, () => {
   });
 
   test('should return nothing if the current module has no exams', () => {
-    const component = make('CS3217', null);
+    const component = make('CS3217');
     expect(component.isEmptyRender()).toBe(true);
   });
 

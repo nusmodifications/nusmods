@@ -8,21 +8,11 @@ module.exports = {
   },
 
   root: true,
-  extends: [
-    'airbnb',
-    'prettier',
-    'prettier/react',
-  ],
+  extends: ['airbnb', 'prettier', 'prettier/react'],
   env: {
     browser: true,
   },
-  plugins: [
-    '@typescript-eslint',
-    'prettier',
-    'import',
-    'jsx-a11y',
-    'react',
-  ],
+  plugins: ['@typescript-eslint', 'prettier', 'import', 'jsx-a11y', 'react'],
 
   settings: {
     'import/resolver': {
@@ -43,6 +33,8 @@ module.exports = {
 
         // any is needed for mocking, amongst other things
         '@typescript-eslint/no-explicit-any': 'off',
+
+        '@typescript-eslint/no-non-null-assertion': 'off',
       },
     },
   ],
@@ -89,7 +81,7 @@ module.exports = {
       },
     ],
     'react/require-default-props': 'off',
-    'react/jsx-filename-extension': ['error', { "extensions": [".tsx", ".jsx"] }],
+    'react/jsx-filename-extension': ['error', { extensions: ['.tsx', '.jsx'] }],
     'react/default-props-match-prop-types': ['error', { allowRequiredDefaults: true }],
     'react/destructuring-assignment': 'off',
     // TODO: Replace divs with buttons, but remove all button styling.

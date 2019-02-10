@@ -44,11 +44,8 @@ export function LinkModuleCodesComponent(props: Props) {
   });
 }
 
-// Type annotation is workaround for https://github.com/flowtype/flow-typed/issues/1269
-// Exclude dispatch from props
-export default connect(
-  (state: State) => ({
-    getModuleCondensed: getModuleCondensed(state.moduleBank),
-  }),
-  null,
-)(LinkModuleCodesComponent);
+const mapStateToProps = connect((state: State) => ({
+  getModuleCondensed: getModuleCondensed(state.moduleBank),
+}));
+
+export default mapStateToProps(LinkModuleCodesComponent);

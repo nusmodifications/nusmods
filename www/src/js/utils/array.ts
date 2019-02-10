@@ -7,8 +7,8 @@ import { flatMap } from 'lodash';
  * @param {U} delimiter
  * @returns {Array<T|U>}
  */
-export function intersperse<T, U>(array: T[], delimiter: U): Array<T | U> {
-  return flatMap(array, (item): Array<T | U> => [item, delimiter]).slice(0, -1);
+export function intersperse<T, U>(array: T[], delimiter: U): (T | U)[] {
+  return flatMap(array, (item): (T | U)[] => [item, delimiter]).slice(0, -1);
 }
 
 export function takeUntil<T>(array: T[], max: number, predicate: (t: T) => boolean): T[] {
@@ -21,9 +21,7 @@ export function takeUntil<T>(array: T[], max: number, predicate: (t: T) => boole
   return filtered;
 }
 
-export function firstNonNull<T>(
-  producers: Array<() => T> | null | undefined,
-): T | null | undefined {
+export function firstNonNull<T>(producers: (() => T | null)[]): T | null {
   for (let i = 0; i < producers.length; i++) {
     const result = producers[i]();
     if (result != null) return result;

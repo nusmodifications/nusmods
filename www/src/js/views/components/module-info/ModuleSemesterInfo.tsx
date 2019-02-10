@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import _ from 'lodash';
 
 import { ModuleCode, Semester, SemesterData } from 'types/modules';
@@ -52,13 +52,13 @@ export default class ModuleSemesterInfo extends React.Component<Props, State> {
     this.state = { selected: getFirstAvailableSemester(this.props.semesters) };
   }
 
-  onSelectSemester = (selected: Semester | null | undefined) => {
+  onSelectSemester = (selected: Semester | null) => {
     if (selected) {
       this.setState({ selected });
     }
   };
 
-  selectedSemester(): SemesterData | null | undefined {
+  selectedSemester(): SemesterData | undefined {
     return this.props.semesters.find((data) => data.Semester === this.state.selected);
   }
 
@@ -68,7 +68,7 @@ export default class ModuleSemesterInfo extends React.Component<Props, State> {
 
     // Create a mapping of timeslot to flags
     const timeslots: Map<string, TimeslotFlag> = new Map();
-    const setTimeslot = (timeslot, flag) =>
+    const setTimeslot = (timeslot: string, flag: number) =>
       timeslots.set(timeslot, (timeslots.get(timeslot) || 0) | flag);
     lectures.forEach((timeslot) => setTimeslot(timeslot, HAS_LECTURE));
     tutorials.forEach((timeslot) => setTimeslot(timeslot, HAS_TUTORIAL));

@@ -16,6 +16,7 @@ import Title from 'views/components/Title';
 import { FeedbackButtons } from 'views/components/FeedbackModal';
 import { getModuleCondensed } from 'selectors/moduleBank';
 import { currentTests } from 'views/settings/BetaToggle';
+import { State as StoreState } from 'reducers';
 
 import ReviewIcon from 'img/icons/review.svg';
 import WrenchIcon from 'img/icons/wrench.svg';
@@ -29,6 +30,7 @@ import VenueIcon from 'img/icons/compass.svg';
 import UnmappedVenues from '../UnmappedVenues';
 import ContributorList from '../ContributorList';
 import styles from './ContributeContainer.scss';
+import { notNull } from '../../../types/utils';
 
 type Props = {
   modules: ModuleCondensed[];
@@ -128,6 +130,7 @@ class ContributeContainer extends React.PureComponent<Props> {
                 <p>You are already in the beta program.</p>
                 <p className="text-center">
                   <button
+                    type="button"
                     className="btn btn-lg btn-outline-primary"
                     onClick={this.props.toggleFeedback}
                   >
@@ -142,6 +145,7 @@ class ContributeContainer extends React.PureComponent<Props> {
             ) : (
               <p className="text-center">
                 <button
+                  type="button"
                   className={classnames(styles.betaButton, 'btn btn-lg btn-outline-primary')}
                   onClick={this.props.toggleBetaTesting}
                 >
@@ -301,13 +305,15 @@ class ContributeContainer extends React.PureComponent<Props> {
 }
 
 const ConnectedContributeContainer = connect(
-  (state) => {
+  (state: StoreState) => {
     const getModule = getModuleCondensed(state.moduleBank);
-    const modules = flatMap(state.timetables.lessons, Object.keys).map(getModule);
+    const modules: ModuleCondensed[] = flatMap(state.timetables.lessons, Object.keys)
+      .map(getModule)
+      .filter(notNull);
 
     return {
       modules,
-      beta: state.settings.beta,
+      beta: !!state.settings.beta,
     };
   },
   { toggleFeedback, toggleBetaTesting },

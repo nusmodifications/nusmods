@@ -1,7 +1,6 @@
 import { first, last } from 'lodash';
 
-import { CorsRound, CorsPeriod } from 'config';
-import config from 'config';
+import config, { CorsRound, CorsPeriod } from 'config';
 
 export function roundStart(round: CorsRound): Date {
   return first(round.periods)!.startDate;

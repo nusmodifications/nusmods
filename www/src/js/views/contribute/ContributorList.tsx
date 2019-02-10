@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import Loadable, { LoadingProps } from 'react-loadable';
+import Loadable, { LoadingComponentProps } from 'react-loadable';
 
 import { Contributor } from 'types/contributor';
 import { getContributors } from 'apis/github';
@@ -47,7 +47,7 @@ const ContributorList = Loadable.Map<Props, any>({
   loader: {
     contributors: () => getContributors(),
   },
-  loading: (props: LoadingProps) => {
+  loading: (props: LoadingComponentProps) => {
     if (props.error) {
       return <ApiError dataName="venue locations" retry={props.retry} />;
     } else if (props.pastDelay) {

@@ -55,7 +55,7 @@ export class SearchContainerComponent extends React.Component<Props> {
     this.props.history.push(`${path}?q=${encodeURIComponent(query)}`);
   };
 
-  getResults = (inputValue: string | null | undefined): SearchResult | null | undefined => {
+  getResults = (inputValue: string | null): SearchResult | null => {
     if (!inputValue || inputValue.length < MIN_INPUT_LENGTH) {
       return null;
     }

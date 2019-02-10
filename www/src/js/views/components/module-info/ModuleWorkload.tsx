@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import { WorkloadComponent } from 'types/modules';
 
-import { parseWorkload } from 'utils/modules';
+import { parseWorkload, Workload } from 'utils/modules';
 import Tooltip from 'views/components/Tooltip';
 
 const ROW_MAX = 10;
@@ -57,11 +57,9 @@ function workloadBlocks(component: WorkloadComponent, hours: number): React.Reac
   return blocks;
 }
 
-function sortWorkload(workload: {
-  [workloadComponent: string]: number;
-}): Array<[WorkloadComponent, number]> {
+function sortWorkload(workload: Workload): [WorkloadComponent, number][] {
   // Push longer components (those that take up more than one row) down
-  const components: Array<[WorkloadComponent, number]> = _.entries(workload);
+  const components = _.entries(workload) as [WorkloadComponent, number][];
   const [long, short] = _.partition(components, ([, hours]) => Math.ceil(hours) >= ROW_MAX);
   return short.concat(long);
 }

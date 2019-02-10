@@ -14,7 +14,7 @@ type Props = {
 
 type State = {
   isOpen: boolean;
-  shownNotification: NotificationData | null | undefined;
+  shownNotification: NotificationData | undefined;
   actionClicked: boolean;
 };
 
@@ -129,7 +129,7 @@ export class NotificationComponent extends React.Component<Props, State> {
     // turn false and notifications to stop showing up, so we set a timer
     // and turn transitioning false when the timer is up
     clearTimeout(this.closeTimeoutId); // Defensive
-    this.closeTimeoutId = setTimeout(() => this.clearTransition(), TRANSITION_DURATION);
+    this.closeTimeoutId = window.setTimeout(() => this.clearTransition(), TRANSITION_DURATION);
   };
 
   render() {

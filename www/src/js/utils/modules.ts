@@ -129,8 +129,12 @@ export function parseWorkload(workloadString: string): Workload {
   // https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp?acad_y=2017/2018&sem_c=1&mod_c=CS2105
   const hours = workloadString.split('-');
 
-  const workload = {};
+  const workload: Workload = {};
   _.zip(WORKLOAD_COMPONENTS, hours).forEach(([component, hourString]) => {
+    if (!component || typeof hourString === 'undefined') {
+      throw new Error('Invalid number of workload components');
+    }
+
     const hour = parseFloat(hourString);
     if (!hour) return;
     workload[component] = hour;
