@@ -182,11 +182,11 @@ export type Conflict = PrereqConflict | ExamConflict | SemesterConflict | NoInfo
 
 export type PlannerModuleInfo = {
   moduleCode: ModuleCode;
-  moduleInfo?: Module | null | undefined;
+  moduleInfo?: Module | null;
   // Custom info added by the student to override our data or to fill in the blanks
   // This is a separate field for easier typing
-  customInfo?: CustomModule | null | undefined;
-  conflict?: Conflict | null | undefined;
+  customInfo?: CustomModule | null;
+  conflict?: Conflict | null;
 };
 
 export type PlannerModulesWithInfo = {
@@ -201,6 +201,6 @@ export type BusTiming = {
   // Loading uses a boolean instead of making timings null so that
   // the old timing can be seen while it is refreshed
   isLoading: boolean;
-  timings: NextBusTimings | null | undefined;
-  error: Error | null | undefined;
+  timings?: NextBusTimings | null;
+  error?: Error | null;
 };

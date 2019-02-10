@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 
 import config from 'config';
+import { State } from '../../reducers';
 import { getYearsBetween, offsetAcadYear } from 'utils/modules';
 import { acadYearLabel } from 'utils/planner';
 import { setPlannerIBLOCs, setPlannerMaxYear, setPlannerMinYear } from 'actions/planner';
@@ -26,7 +27,7 @@ const MAX_YEARS = 1; // One year before matriculation
 const GRADUATE_IN = 6; // Graduating a max of 6 years from now
 
 // Extracted to a constant to reduce re-renders
-const TOGGLE_LABELS = ['Yes', 'No'];
+const TOGGLE_LABELS: [string, string] = ['Yes', 'No'];
 
 export function getYearLabels(minOffset: number, maxOffset: number) {
   return getYearsBetween(
@@ -124,7 +125,7 @@ export function PlannerSettingsComponent(props: Props) {
 }
 
 const PlannerSettings = connect(
-  (state) => ({
+  (state: State) => ({
     minYear: state.planner.minYear,
     maxYear: state.planner.maxYear,
     iblocs: state.planner.iblocs,

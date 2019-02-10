@@ -5,7 +5,7 @@ import { Props } from './Tooltip';
 // Can't use react-loadable for this since children and other props
 // are not passed down - https://github.com/jamiebuilds/react-loadable/pull/161
 export default class AsyncTooltip extends React.PureComponent<Props> {
-  static Tooltip: React | null | undefined.React.ComponentType<Props>;
+  static Tooltip: React.ComponentType<Props> | null;
 
   componentDidMount() {
     if (!AsyncTooltip.Tooltip) {

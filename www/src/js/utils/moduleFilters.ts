@@ -1,9 +1,9 @@
 import { map, mapValues, each, isEmpty, groupBy, kebabCase } from 'lodash';
-import update from 'immutability-helper';
+import update, { Spec } from "immutability-helper";
 import qs from 'query-string';
 
 import { FilterGroups, DepartmentFaculty } from 'types/views';
-import { Module, Faculty, Department } from 'types/modules';
+import { Module, Faculty, Department, ModuleLevel } from 'types/modules';
 
 import { Timeslots } from 'types/modules';
 import config from 'config';
@@ -23,13 +23,15 @@ export const FACULTY = 'faculty';
 export const DEPARTMENT = 'department';
 export const EXAMS = 'exam';
 
+const moduleLevels: ModuleLevel[] = [1, 2, 3, 4, 5, 6, 8];
+
 /**
  * Invert the { [faculty: string]: Departments[] } mapping to { [department: string]: Faculty }
  */
 export function invertFacultyDepartments(mapping: {
   [faculty: string]: Department[];
 }): DepartmentFaculty {
-  const departmentFaculty = {};
+  const departmentFaculty: Record<string, string> = {};
   each(mapping, (departments, faculty) => {
     departments.forEach((department) => {
       departmentFaculty[department] = faculty;
@@ -43,7 +45,7 @@ export function invertFacultyDepartments(mapping: {
  */
 export function updateGroups(groups: FilterGroups, query: string): FilterGroups {
   const params = qs.parse(query);
-  const updater = {};
+  const updater: Spec<FilterGroup<any>> = {};
 
   each(groups, (group) => {
     const currentQuery = group.toQueryString();
@@ -59,7 +61,7 @@ export function updateGroups(groups: FilterGroups, query: string): FilterGroups 
  * Serialize the provided FilterGroups into query string
  */
 export function serializeGroups(groups: FilterGroups): string {
-  const query = {};
+  const query: Record<string, string> = {};
 
   each(groups, (group) => {
     const value = group.toQueryString();
@@ -126,7 +128,7 @@ export function defaultGroups(faculties: DepartmentFaculty, query: string = ''):
     [LEVELS]: new FilterGroup(
       LEVELS,
       'Levels',
-      [1, 2, 3, 4, 5, 6, 8].map((level) => new LevelFilter(level)),
+      moduleLevels.map((level) => new LevelFilter(level)),
     ),
 
     [LECTURE_TIMESLOTS]: new FilterGroup(

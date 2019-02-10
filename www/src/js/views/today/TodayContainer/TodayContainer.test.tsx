@@ -150,11 +150,12 @@ describe(TodayContainerComponent, () => {
     return flatten(titles);
   };
 
-  const make = (props: $Shape<Props> = {}) => {
+  const make = (props: Partial<Props> & { currentTime: Date }) => {
     const componentProps: Props = {
       colors: COLORS,
       matchBreakpoint: false,
       timetableWithLessons: LESSONS,
+
       ...props,
     };
 

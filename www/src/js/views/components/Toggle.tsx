@@ -3,7 +3,7 @@ import classnames from 'classnames';
 
 type Props = {
   labels: [string, string];
-  isOn: boolean | null | undefined;
+  isOn?: boolean | null;
   className?: string;
 
   onChange: (boolean: boolean) => void;

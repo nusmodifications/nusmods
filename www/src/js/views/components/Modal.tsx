@@ -1,11 +1,11 @@
-
-import ReactModal from 'react-modal';
+import * as React from 'react';
+import ReactModal, { Props as ModalProps } from 'react-modal';
 import classnames from 'classnames';
 
 import disableScrolling from 'utils/disableScrolling';
 import styles from './Modal.scss';
 
-type Props = {
+type Props = ModalProps & {
   isOpen: boolean;
   overlayClassName?: string;
   className?: string;
