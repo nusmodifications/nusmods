@@ -56,7 +56,7 @@ const cacheExpiry = 7 * 24 * 60;
 
 /**
  * Map timetable lessons to venues to create a map of when each venue is being
- * used
+ * used, as well as help identify dual-coded modules
  *
  * Output:
  * - <semester>/venues.json

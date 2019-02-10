@@ -3,6 +3,7 @@ import GEK2041 from './fixtures/timetable/GEK2041.json';
 import PX2108 from './fixtures/timetable/PX2108.json';
 
 import CollateVenues, { extractVenueAvailability } from './CollateVenues';
+import { EVERY_WEEK } from '../utils/test-utils';
 
 describe(extractVenueAvailability, () => {
   test('should map lessons to venues', () => {
@@ -13,7 +14,7 @@ describe(extractVenueAvailability, () => {
           ClassNo: '1',
           StartTime: '1830',
           EndTime: '2030',
-          Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          Weeks: EVERY_WEEK,
           Venue: 'COM1-VCRM',
           DayText: 'Monday',
           LessonType: 'Lecture',
@@ -29,7 +30,7 @@ describe(extractVenueAvailability, () => {
               ClassNo: '1',
               StartTime: '1830',
               EndTime: '2030',
-              Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+              Weeks: EVERY_WEEK,
               DayText: 'Monday',
               LessonType: 'Lecture',
             },
@@ -85,7 +86,7 @@ describe(extractVenueAvailability, () => {
           ClassNo: '1',
           StartTime: '1830',
           EndTime: '2030',
-          Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          Weeks: EVERY_WEEK,
           Venue: '',
           DayText: 'Monday',
           LessonType: 'Lecture',

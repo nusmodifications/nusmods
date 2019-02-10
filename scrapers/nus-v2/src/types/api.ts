@@ -6,33 +6,33 @@
 
 // AcademicGrp and AcademicOrg use abbreviation to avoid clashing with the
 // name of the field when destructuring
-export type AcademicGrp = {
+export type AcademicGrp = Readonly<{
   EffectiveStatus: string;
   AcademicGroup: string;
   DescriptionShort: string;
   Description: string;
   EffectiveDate: string;
-};
+}>;
 
-export type AcademicOrg = {
+export type AcademicOrg = Readonly<{
   EffectiveStatus: string;
   DescriptionShort: string;
   Description: string;
   EffectiveDate: string;
   AcademicOrganisation: string;
-};
+}>;
 
-export type ModuleAcademicOrganisation = {
+export type ModuleAcademicOrganisation = Readonly<{
   Code: string;
   Description: string;
-};
+}>;
 
-export type ModuleAcademicGroup = {
+export type ModuleAcademicGroup = Readonly<{
   Code: string;
   Description: string;
-};
+}>;
 
-export type ModuleInfo = {
+export type ModuleInfo = Readonly<{
   Term: string;
   AcademicOrganisation: ModuleAcademicOrganisation;
   AcademicGroup: ModuleAcademicGroup;
@@ -43,8 +43,7 @@ export type ModuleInfo = {
   Preclusion: string;
 
   // Some system uses PrintCatalog, others use CatalogPrint
-  PrintCatalog?: string;
-  CatalogPrint?: string;
+  PrintCatalog: string;
 
   CourseTitle: string;
   YearLong: string;
@@ -58,9 +57,9 @@ export type ModuleInfo = {
   // I'm not sure what this is used for
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ModuleAttributes: any;
-};
+}>;
 
-export type TimetableLesson = {
+export type TimetableLesson = Readonly<{
   term: string;
   room: string | null;
   numweeks: number;
@@ -74,9 +73,9 @@ export type TimetableLesson = {
   modgrp: string;
   deptfac: string;
   day: string;
-};
+}>;
 
-export type ModuleExam = {
+export type ModuleExam = Readonly<{
   term: string;
   start_time: string;
   acad_org: string;
@@ -84,4 +83,4 @@ export type ModuleExam = {
   end_time: string;
   duration: number;
   exam_date: string;
-};
+}>;

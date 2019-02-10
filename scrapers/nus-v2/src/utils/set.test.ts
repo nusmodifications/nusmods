@@ -1,8 +1,5 @@
 import { difference, intersection, union } from './set';
-
-function s<T>(...args: T[]): Set<T> {
-  return new Set(args);
-}
+import { s } from './test-utils';
 
 describe(union, () => {
   test('should return a read-only union of the provided sets', () => {

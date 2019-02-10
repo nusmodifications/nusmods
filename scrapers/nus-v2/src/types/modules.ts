@@ -49,7 +49,7 @@ export type WorkloadComponent = 'Lecture' | 'Tutorial' | 'Laboratory' | 'Project
 
 // RawLesson is a lesson time slot obtained from the API.
 // Usually ModuleCode and ModuleTitle has to be injected in before using in the timetable.
-export type RawLesson = {
+export type RawLesson = Readonly<{
   ClassNo: ClassNo;
   DayText: DayText;
   EndTime: EndTime;
@@ -57,7 +57,7 @@ export type RawLesson = {
   StartTime: StartTime;
   Venue: Venue;
   Weeks: LessonWeek[];
-};
+}>;
 
 // Semester-specific information of a module.
 export type SemesterData = {
@@ -106,21 +106,21 @@ export type Module = {
 };
 
 // This format is returned from the module list endpoint.
-export type ModuleCondensed = {
+export type ModuleCondensed = Readonly<{
   ModuleCode: ModuleCode;
   ModuleTitle: ModuleTitle;
   Semesters: number[];
-};
+}>;
 
 // This format is returned from the module information endpoint
-export type SemesterDataCondensed = {
+export type SemesterDataCondensed = Readonly<{
   Semester: Semester;
   ExamDate?: string;
   ExamDuration?: number;
   // The full timetable is not provided to reduce space
-};
+}>;
 
-export type ModuleInformation = {
+export type ModuleInformation = Readonly<{
   // Basic info
   ModuleCode: ModuleCode;
   ModuleTitle: ModuleTitle;
@@ -141,7 +141,7 @@ export type ModuleInformation = {
   History: SemesterDataCondensed[];
 
   // Requisite tree is not returned to save space
-};
+}>;
 
 export type Aliases = {
   [moduleCode: string]: ModuleCode[];

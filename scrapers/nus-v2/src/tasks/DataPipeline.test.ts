@@ -137,7 +137,6 @@ describe(DataPipeline, () => {
       const [, semester] = fromTermCode(term);
       const lessons = moduleTimetableData[semester] || [];
       lessons.forEach((lesson) => consumer(lesson));
-      return Promise.resolve();
     });
 
     mockApi.getTermExams.mockImplementation(async (term) => {

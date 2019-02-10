@@ -21,14 +21,14 @@ export type VenueLesson = Omit<RawLesson, 'Venue'> & {
 
 // A venue's availability info for one day
 // E.g. { "Day": "Monday", "Classes": [...], "Availability": {...} }
-export type DayAvailability = {
+export type DayAvailability = Readonly<{
   Day: DayText;
   Classes: VenueLesson[];
   Availability: Availability;
-};
+}>;
 
 // Describes venueInformation.json
 // E.g. { "LT16": [DayAvailability1, DayAvailability2, ...], "LT17": [...], ... }
-export type VenueInfo = {
+export type VenueInfo = Readonly<{
   [venue: string]: DayAvailability[];
-};
+}>;

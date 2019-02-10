@@ -4,7 +4,7 @@ import CS2100Timetable from './fixtures/timetable/CS2100_2.json';
 import CN4205ETimetable from './fixtures/timetable/CN4205E.json';
 
 import GetSemesterTimetable from './GetSemesterTimetable';
-import { expectLessonsEqual } from '../utils/test-utils';
+import { EVERY_WEEK, expectLessonsEqual } from '../utils/test-utils';
 import { TimetableLesson } from '../types/api';
 
 describe(GetSemesterTimetable, () => {
@@ -94,7 +94,7 @@ Array [
       {
         ClassNo: '1',
         LessonType: 'Laboratory',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Monday',
         StartTime: '2030',
         EndTime: '2130',
@@ -103,7 +103,7 @@ Array [
       {
         ClassNo: '2',
         LessonType: 'Laboratory',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Tuesday',
         StartTime: '2030',
         EndTime: '2130',
@@ -112,7 +112,7 @@ Array [
       {
         ClassNo: '1',
         LessonType: 'Lecture',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Monday',
         StartTime: '1830',
         EndTime: '2030',
@@ -121,7 +121,7 @@ Array [
       {
         ClassNo: '2',
         LessonType: 'Lecture',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Tuesday',
         StartTime: '1830',
         EndTime: '2030',
@@ -174,7 +174,7 @@ Array [
       {
         ClassNo: '1',
         LessonType: 'Lecture',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Monday',
         StartTime: '0800',
         EndTime: '1000',
@@ -183,7 +183,7 @@ Array [
       {
         ClassNo: '1',
         LessonType: 'Lecture',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Wednesday',
         StartTime: '1000',
         EndTime: '1200',
@@ -237,7 +237,7 @@ Array [
       {
         ClassNo: '01',
         LessonType: 'Laboratory',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Monday',
         StartTime: '0800',
         EndTime: '0900',
@@ -246,7 +246,7 @@ Array [
       {
         ClassNo: '02',
         LessonType: 'Laboratory',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Monday',
         StartTime: '0900',
         EndTime: '1000',
@@ -255,7 +255,7 @@ Array [
       {
         ClassNo: '03',
         LessonType: 'Laboratory',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Monday',
         StartTime: '1000',
         EndTime: '1100',
@@ -264,7 +264,7 @@ Array [
       {
         ClassNo: '04',
         LessonType: 'Laboratory',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Monday',
         StartTime: '1100',
         EndTime: '1200',
@@ -273,7 +273,7 @@ Array [
       {
         ClassNo: '05',
         LessonType: 'Laboratory',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Monday',
         StartTime: '1200',
         EndTime: '1300',
@@ -282,7 +282,7 @@ Array [
       {
         ClassNo: '06',
         LessonType: 'Laboratory',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Monday',
         StartTime: '1300',
         EndTime: '1400',
@@ -291,7 +291,7 @@ Array [
       {
         ClassNo: '07',
         LessonType: 'Laboratory',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Monday',
         StartTime: '1400',
         EndTime: '1500',
@@ -300,7 +300,7 @@ Array [
       {
         ClassNo: '08',
         LessonType: 'Laboratory',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Monday',
         StartTime: '1500',
         EndTime: '1600',
@@ -309,7 +309,7 @@ Array [
       {
         ClassNo: '09',
         LessonType: 'Laboratory',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Monday',
         StartTime: '1600',
         EndTime: '1700',
@@ -318,7 +318,7 @@ Array [
       {
         ClassNo: '10',
         LessonType: 'Laboratory',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Monday',
         StartTime: '1700',
         EndTime: '1800',
@@ -327,7 +327,7 @@ Array [
       {
         ClassNo: '11',
         LessonType: 'Laboratory',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Thursday',
         StartTime: '0800',
         EndTime: '0900',
@@ -336,7 +336,7 @@ Array [
       {
         ClassNo: '12',
         LessonType: 'Laboratory',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Thursday',
         StartTime: '0900',
         EndTime: '1000',
@@ -345,7 +345,7 @@ Array [
       {
         ClassNo: '13',
         LessonType: 'Laboratory',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Thursday',
         StartTime: '1000',
         EndTime: '1100',
@@ -354,7 +354,7 @@ Array [
       {
         ClassNo: '14',
         LessonType: 'Laboratory',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Thursday',
         StartTime: '1100',
         EndTime: '1200',
@@ -363,7 +363,7 @@ Array [
       {
         ClassNo: '15',
         LessonType: 'Laboratory',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Thursday',
         StartTime: '1200',
         EndTime: '1300',
@@ -372,7 +372,7 @@ Array [
       {
         ClassNo: '16',
         LessonType: 'Laboratory',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Thursday',
         StartTime: '1300',
         EndTime: '1400',
@@ -381,7 +381,7 @@ Array [
       {
         ClassNo: '17',
         LessonType: 'Laboratory',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Thursday',
         StartTime: '1400',
         EndTime: '1500',
@@ -390,7 +390,7 @@ Array [
       {
         ClassNo: '18',
         LessonType: 'Laboratory',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Thursday',
         StartTime: '1500',
         EndTime: '1600',
@@ -399,7 +399,7 @@ Array [
       {
         ClassNo: '19',
         LessonType: 'Laboratory',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Thursday',
         StartTime: '1600',
         EndTime: '1700',
@@ -408,7 +408,7 @@ Array [
       {
         ClassNo: '20',
         LessonType: 'Laboratory',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Thursday',
         StartTime: '1700',
         EndTime: '1800',
@@ -417,7 +417,7 @@ Array [
       {
         ClassNo: '1',
         LessonType: 'Lecture',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Tuesday',
         StartTime: '1600',
         EndTime: '1800',
@@ -426,7 +426,7 @@ Array [
       {
         ClassNo: '1',
         LessonType: 'Lecture',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Wednesday',
         StartTime: '1400',
         EndTime: '1500',
@@ -435,7 +435,7 @@ Array [
       {
         ClassNo: '2',
         LessonType: 'Lecture',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Monday',
         StartTime: '1000',
         EndTime: '1200',
@@ -444,7 +444,7 @@ Array [
       {
         ClassNo: '2',
         LessonType: 'Lecture',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Wednesday',
         StartTime: '1500',
         EndTime: '1600',
@@ -453,7 +453,7 @@ Array [
       {
         ClassNo: '01',
         LessonType: 'Tutorial',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Wednesday',
         StartTime: '1100',
         EndTime: '1200',
@@ -462,7 +462,7 @@ Array [
       {
         ClassNo: '02',
         LessonType: 'Tutorial',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Friday',
         StartTime: '0900',
         EndTime: '1000',
@@ -471,7 +471,7 @@ Array [
       {
         ClassNo: '03',
         LessonType: 'Tutorial',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Tuesday',
         StartTime: '1000',
         EndTime: '1100',
@@ -480,7 +480,7 @@ Array [
       {
         ClassNo: '04',
         LessonType: 'Tutorial',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Wednesday',
         StartTime: '1100',
         EndTime: '1200',
@@ -489,7 +489,7 @@ Array [
       {
         ClassNo: '05',
         LessonType: 'Tutorial',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Friday',
         StartTime: '1100',
         EndTime: '1200',
@@ -498,7 +498,7 @@ Array [
       {
         ClassNo: '06',
         LessonType: 'Tutorial',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Friday',
         StartTime: '1200',
         EndTime: '1300',
@@ -507,7 +507,7 @@ Array [
       {
         ClassNo: '07',
         LessonType: 'Tutorial',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Tuesday',
         StartTime: '1300',
         EndTime: '1400',
@@ -516,7 +516,7 @@ Array [
       {
         ClassNo: '08',
         LessonType: 'Tutorial',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Monday',
         StartTime: '1200',
         EndTime: '1300',
@@ -525,7 +525,7 @@ Array [
       {
         ClassNo: '09',
         LessonType: 'Tutorial',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Monday',
         StartTime: '1600',
         EndTime: '1700',
@@ -534,7 +534,7 @@ Array [
       {
         ClassNo: '10',
         LessonType: 'Tutorial',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Tuesday',
         StartTime: '0900',
         EndTime: '1000',
@@ -543,7 +543,7 @@ Array [
       {
         ClassNo: '11',
         LessonType: 'Tutorial',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Monday',
         StartTime: '1500',
         EndTime: '1600',
@@ -552,7 +552,7 @@ Array [
       {
         ClassNo: '12',
         LessonType: 'Tutorial',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Thursday',
         StartTime: '1700',
         EndTime: '1800',
@@ -561,7 +561,7 @@ Array [
       {
         ClassNo: '13',
         LessonType: 'Tutorial',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Wednesday',
         StartTime: '1000',
         EndTime: '1100',
@@ -570,7 +570,7 @@ Array [
       {
         ClassNo: '14',
         LessonType: 'Tutorial',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Tuesday',
         StartTime: '1100',
         EndTime: '1200',
@@ -579,7 +579,7 @@ Array [
       {
         ClassNo: '15',
         LessonType: 'Tutorial',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Friday',
         StartTime: '0800',
         EndTime: '0900',
@@ -588,7 +588,7 @@ Array [
       {
         ClassNo: '16',
         LessonType: 'Tutorial',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Wednesday',
         StartTime: '1200',
         EndTime: '1300',
@@ -597,7 +597,7 @@ Array [
       {
         ClassNo: '17',
         LessonType: 'Tutorial',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Wednesday',
         StartTime: '1300',
         EndTime: '1400',
@@ -606,7 +606,7 @@ Array [
       {
         ClassNo: '18',
         LessonType: 'Tutorial',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Friday',
         StartTime: '1300',
         EndTime: '1400',
@@ -615,7 +615,7 @@ Array [
       {
         ClassNo: '19',
         LessonType: 'Tutorial',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Friday',
         StartTime: '1400',
         EndTime: '1500',
@@ -624,7 +624,7 @@ Array [
       {
         ClassNo: '20',
         LessonType: 'Tutorial',
-        Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        Weeks: EVERY_WEEK,
         DayText: 'Friday',
         StartTime: '1500',
         EndTime: '1600',

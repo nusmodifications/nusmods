@@ -21,7 +21,11 @@ module.exports = {
     node: true,
   },
 
-  plugins: ['@typescript-eslint', 'prettier', 'import'],
+  plugins: [
+    '@typescript-eslint',
+    'prettier',
+    'import',
+  ],
 
   overrides: [
     {
@@ -37,7 +41,7 @@ module.exports = {
   ],
 
   rules: {
-    'prettier/prettier': 'warn',
+    'prettier/prettier': WARN_IN_DEV,
 
     // Enable i++ in for loops
     'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],

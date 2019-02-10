@@ -1,5 +1,4 @@
 import { range } from 'lodash';
-import { Dictionary } from 'ramda';
 
 /**
  * Utility function for dealing with time, specifically for the timetable
@@ -12,11 +11,10 @@ import { Dictionary } from 'ramda';
  * @example 0000 -> 0, 0030 -> 1, 0100 -> 2, ...
  * @returns {number} index - integer representing array index
  */
-const timeIndexMap: Dictionary<number> = { '00': 0, '30': 1, '59': 2 };
+const timeIndexMap: Record<string, number> = { '00': 0, '30': 1, '59': 2 };
 export function convertTimeToIndex(time: string) {
   const hour = parseInt(time.substring(0, 2), 10);
   const minute = time.substring(2);
-  /* eslint-disable quote-props */
   return hour * 2 + timeIndexMap[minute];
 }
 

@@ -17,9 +17,9 @@ import { AcademicGrp, AcademicOrg, ModuleExam, ModuleInfo, TimetableLesson } fro
 import config from '../config';
 import { AuthError, NotFoundError, UnknownApiError } from '../utils/errors';
 
-interface ApiParams {
+type ApiParams = {
   [key: string]: string;
-}
+};
 
 // Error codes
 type STATUS_CODE = string;

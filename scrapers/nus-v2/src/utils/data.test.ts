@@ -1,5 +1,7 @@
 import { LessonWeek, ModuleCode } from '../types/modules';
 import { VenueLesson } from '../types/venues';
+import { EVERY_WEEK } from './test-utils';
+
 import {
   compareWeeks,
   getDuplicateModules,
@@ -141,7 +143,7 @@ const makeVenueLesson = (
   LessonType: 'Lecture',
   EndTime: '1000',
   StartTime: '0900',
-  Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+  Weeks: EVERY_WEEK,
   ModuleCode: moduleCode,
   ...props,
 });
