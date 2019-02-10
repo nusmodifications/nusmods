@@ -90,7 +90,7 @@ export type CorsNotificationSettings = {
 
 export type SettingsState = {
   readonly newStudent: boolean;
-  readonly faculty: Faculty | null | undefined;
+  readonly faculty: Faculty | null;
   readonly mode: Mode;
   readonly hiddenInTimetable: ModuleCode[];
   readonly corsNotification: CorsNotificationSettings;

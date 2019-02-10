@@ -15,7 +15,7 @@ export function createLocalStorageShim() {
       const storedValue = storage.privData[String(key)];
       return storedValue && JSON.parse(storedValue);
     },
-    removeItem: (key: key) => delete storage.privData[String(key)],
+    removeItem: (key: string) => delete storage.privData[String(key)],
   };
   return storage;
 }
@@ -33,7 +33,7 @@ export function canUseBrowserLocalStorage() {
     // Ensure that if setItem throws, it's not because of private browsing
     // If storage is empty AND setItem throws, we're probably in iOS <=10 private browsing
     if (storage.length === 0) {
-      storage.setItem('____writetest', 1);
+      storage.setItem('____writetest', '1');
       storage.removeItem('____writetest');
     }
 

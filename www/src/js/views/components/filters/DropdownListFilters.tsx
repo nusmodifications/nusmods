@@ -1,10 +1,9 @@
 import * as React from 'react';
-import Downshift from 'downshift';
+import Downshift, { DownshiftState, StateChangeOptions } from 'downshift';
 import classnames from 'classnames';
 import { each, values, uniq, omit } from 'lodash';
 
 import { OnFilterChange } from 'types/views';
-import { DownshiftState, StateChangeOptions } from 'downshift';
 
 import { Search, ChevronDown } from 'views/components/icons';
 import makeResponsive from 'views/hocs/makeResponsive';

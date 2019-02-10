@@ -14,10 +14,13 @@ import LinkModuleCodes from 'views/components/LinkModuleCodes';
 
 import styles from './ModuleExamClash.scss';
 
-type Props = {
+type OwnProps = {
   moduleCode: ModuleCode;
   semester: Semester;
-  examDate: string | null | undefined;
+  examDate?: string;
+};
+
+type Props = OwnProps & {
   modules: Module[];
 };
 
@@ -55,7 +58,7 @@ export class ModuleExamClashComponent extends React.PureComponent<Props> {
   }
 }
 
-export default connect((state: State, ownProps) => {
+export default connect((state: State, ownProps: OwnProps) => {
   const { timetable } = getSemesterTimetable(ownProps.semester, state.timetables);
   const modulesMap = state.moduleBank.modules;
   return { modules: getSemesterModules(timetable, modulesMap) };

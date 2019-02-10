@@ -36,7 +36,7 @@ export function convertTimeToIndex(time: LessonTime): number {
 // Reverse of convertTimeToIndex.
 // 0 -> 0000, 1 -> 0030, 2 -> 0100, ...
 export function convertIndexToTime(index: number): LessonTime {
-  const hour: number = parseInt(index / 2, 10);
+  const hour: number = Math.floor(index / 2);
   const minute: string = index % 2 === 0 ? '00' : '30';
   return (hour < 10 ? `0${hour}` : hour.toString()) + minute;
 }
@@ -49,12 +49,12 @@ export function formatHour(hour: number): string {
 }
 
 export function getTimeAsDate(time: string | number, date: Date = new Date()): Date {
-  const dateNumber = parseInt(time, 10);
+  const dateNumber = typeof time === 'string' ? parseInt(time, 10) : time;
   return setHours(setMinutes(startOfDay(date), dateNumber % 100), Math.floor(dateNumber / 100));
 }
 
 export function formatTime(time: string | number): string {
-  const timeNumber = parseInt(time, 10);
+  const timeNumber = typeof time === 'string' ? parseInt(time, 10) : time;
 
   if (timeNumber === 0) return '12 midnight';
   if (timeNumber === 1200) return '12 noon';
@@ -67,7 +67,7 @@ export function setTime(date: Date, time: Date): Date {
   return setHours(setMinutes(setSeconds(date, getSeconds(time)), getMinutes(time)), getHours(time));
 }
 
-export const SCHOOLDAYS: Array<DayText> = [
+export const SCHOOLDAYS: DayText[] = [
   'Monday',
   'Tuesday',
   'Wednesday',
@@ -81,7 +81,7 @@ export const DEFAULT_LATEST_TIME: LessonTime = '1800';
 // Given an array of lessons, we calculate the earliest and latest timings based on the lesson timings.
 // This bounds will then be used to decide the starting and ending hours of the timetable.
 export function calculateBorderTimings(
-  lessons: Array<Lesson>,
+  lessons: Lesson[],
 ): { startingIndex: number; endingIndex: number } {
   let earliestTime: number = convertTimeToIndex(DEFAULT_EARLIEST_TIME);
   let latestTime: number = convertTimeToIndex(DEFAULT_LATEST_TIME);

@@ -1,6 +1,4 @@
 import * as React from 'react';
-
-import React, { PureComponent } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { Lesson, Semester, SemesterData } from 'types/modules';

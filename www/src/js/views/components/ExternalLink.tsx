@@ -1,5 +1,4 @@
 import React, { ReactNode } from 'react';
-import { Omit } from 'types/utils';
 
 type Props = React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string; children: ReactNode };
 

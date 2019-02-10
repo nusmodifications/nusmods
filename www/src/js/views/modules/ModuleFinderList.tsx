@@ -39,7 +39,6 @@ export default class ModuleFinderList extends React.Component<Props> {
   onShowPreviousPage = () => {
     this.props.onPageChange({
       start: -1,
-      pages: 1,
     });
   };
 
@@ -67,7 +66,11 @@ export default class ModuleFinderList extends React.Component<Props> {
     return (
       <div>
         {start !== 0 && (
-          <button onClick={this.onShowPreviousPage} className="btn btn-outline-primary btn-block">
+          <button
+            onClick={this.onShowPreviousPage}
+            type="button"
+            className="btn btn-outline-primary btn-block"
+          >
             Show previous page
           </button>
         )}

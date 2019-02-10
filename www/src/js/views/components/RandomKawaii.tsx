@@ -14,7 +14,9 @@ const icons = [SpeechBubble, Mug, Browser, Ghost];
 const defaultMoods = ['ko', 'sad', 'shocked'];
 
 class RandomKawaii extends React.PureComponent<Props> {
-  kawaii: React.ComponentType;
+  // TODO: Tighten this, possibly by creating a libdef for react-kawaii
+  kawaii: React.ComponentType<any>;
+
   defaultMood: string;
 
   static defaultProps = {
@@ -22,8 +24,8 @@ class RandomKawaii extends React.PureComponent<Props> {
     color: '#FF715D',
   };
 
-  constructor() {
-    super();
+  constructor(props: Props) {
+    super(props);
 
     this.kawaii = sample(icons);
     this.defaultMood = sample(defaultMoods);

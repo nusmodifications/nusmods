@@ -5,9 +5,8 @@ import { connect } from 'react-redux';
 import Mousetrap from 'mousetrap';
 import { groupBy, map } from 'lodash';
 
-import { State as StoreState } from "reducers";
-import { DARK_MODE } from 'types/settings';
-import { Mode, ThemeId } from 'types/settings';
+import { State as StoreState } from 'reducers';
+import { Mode, ThemeId, DARK_MODE } from 'types/settings';
 import themes from 'data/themes.json';
 import { cycleTheme, toggleTimetableOrientation } from 'actions/theme';
 import { openNotification } from 'actions/app';
@@ -18,7 +17,7 @@ import Modal from './Modal';
 import styles from './KeyboardShortcuts.scss';
 
 type Props = RouteComponentProps & {
-  dispatch: Dispatch<any>;
+  dispatch: Dispatch<any, StoreState>;
   theme: ThemeId;
   mode: Mode;
 };

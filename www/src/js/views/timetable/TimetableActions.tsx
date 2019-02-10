@@ -18,13 +18,13 @@ type Props = {
   timetable: SemTimetableConfig;
 
   isVerticalOrientation: boolean;
-  toggleTimetableOrientation: Function;
+  toggleTimetableOrientation: () => void;
 
   showTitle: boolean;
-  toggleTitleDisplay: Function;
+  toggleTitleDisplay: () => void;
 
   showExamCalendar: boolean;
-  toggleExamCalendar: Function;
+  toggleExamCalendar: () => void;
 };
 
 function TimetableActions(props: Props) {

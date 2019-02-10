@@ -1,5 +1,5 @@
-import { DayText, LessonTime, ModuleCode, RawLesson } from 'types/modules';
-import { Omit } from "./utils";
+import { DayText, ModuleCode, RawLesson } from 'types/modules';
+import { Omit } from './utils';
 
 export type Venue = string;
 export type VenueList = Venue[];
@@ -39,7 +39,7 @@ export type VenueDetailList = [Venue, DayAvailability[]][];
 
 export type VenueLocation = {
   readonly roomName: string;
-  readonly floor: number | string | null | undefined;
+  readonly floor?: number | string | null;
   readonly location?: { x: number; y: number };
 };
 

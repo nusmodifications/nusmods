@@ -154,7 +154,7 @@ export default class BusStops extends React.PureComponent<Props, State> {
   }
 
   state = {
-    busStops,
+    busStops: busStops as BusStop[],
     busTimings: defaultBusTimings,
   };
 
@@ -183,8 +183,8 @@ export default class BusStops extends React.PureComponent<Props, State> {
    * Reload the bus arrival timing data for the given bus stop
    */
   refreshBusTiming = (code: string) => {
-    this.setState(
-      produce(this.state, (draft) => {
+    this.setState((state) =>
+      produce(state, (draft) => {
         draft.busTimings[code].isLoading = true;
         // Reset error when reloading so the error message will disappear
         draft.busTimings[code].error = null;
@@ -193,16 +193,16 @@ export default class BusStops extends React.PureComponent<Props, State> {
 
     nextBus(code)
       .then((timings) =>
-        this.setState(
-          produce(this.state, (draft) => {
+        this.setState((state) =>
+          produce(state, (draft) => {
             draft.busTimings[code].timings = timings;
             draft.busTimings[code].isLoading = false;
           }),
         ),
       )
       .catch((error) =>
-        this.setState(
-          produce(this.state, (draft) => {
+        this.setState((state) =>
+          produce(state, (draft) => {
             draft.busTimings[code].error = error;
             draft.busTimings[code].isLoading = false;
           }),

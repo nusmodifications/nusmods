@@ -15,7 +15,7 @@ import styles from './LinkModuleCodes.scss';
 
 type Props = {
   children: string;
-  getModuleCondensed: (moduleCode: ModuleCode) => ModuleCondensed | null | undefined;
+  getModuleCondensed: (moduleCode: ModuleCode) => ModuleCondensed | undefined;
   className?: string;
 };
 

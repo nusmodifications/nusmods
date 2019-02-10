@@ -1,9 +1,7 @@
-import { RouteComponentProps, Match } from 'react-router-dom';
-import { AxiosError } from 'axios';
-
 import * as React from 'react';
+import { AxiosError } from 'axios';
 import { connect } from 'react-redux';
-import { Redirect, withRouter } from 'react-router-dom';
+import { Redirect, withRouter, RouteComponentProps, match as Match } from 'react-router-dom';
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import { get } from 'lodash';
 
@@ -20,11 +18,16 @@ import { isFailure } from 'selectors/requests';
 
 import { Props as ModulePageContentProp } from './ModulePageContent';
 
-type Props = RouteComponentProps & {
-  archiveYear: string | null | undefined;
+type Params = {
+  year: string;
+  moduleCode: string;
+};
+
+type Props = RouteComponentProps<Params> & {
+  archiveYear: string | null;
+  module: Module | null;
   moduleExists: boolean;
   moduleCode: ModuleCode;
-  module: Module | null | undefined;
   fetchModule: () => Promise<any>;
 };
 
@@ -127,7 +130,6 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
       return (
         <ModulePageContent
           key={moduleCode}
-          moduleCode={moduleCode}
           archiveYear={archiveYear}
           module={module}
         />
@@ -138,7 +140,7 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
   }
 }
 
-const getPropsFromMatch = (match: Match) => {
+const getPropsFromMatch = (match: Match<Params>) => {
   const year = match.params.year;
 
   return {

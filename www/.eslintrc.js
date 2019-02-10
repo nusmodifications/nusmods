@@ -10,12 +10,8 @@ module.exports = {
   root: true,
   extends: [
     'airbnb',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:import/typescript',
     'prettier',
     'prettier/react',
-    'prettier/@typescript-eslint',
-    'plugin:import/typescript',
   ],
   env: {
     browser: true,
@@ -93,7 +89,7 @@ module.exports = {
     'react/require-default-props': 'off',
     'react/jsx-filename-extension': ['error', { "extensions": [".tsx", ".jsx"] }],
     'react/default-props-match-prop-types': ['error', { allowRequiredDefaults: true }],
-    'react/destructuring-assignment': 'warn',
+    'react/destructuring-assignment': 'off',
     // TODO: Replace divs with buttons, but remove all button styling.
     'jsx-a11y/no-static-element-interactions': 'off',
     // The default option requires BOTH id and nesting, which is excessive,
@@ -121,30 +117,5 @@ module.exports = {
     ],
     // Let git handle the linebreaks instead.
     'linebreak-style': 'off',
-
-
-    // Rule is buggy when used with TypeScript
-    // TODO: Remove this when https://github.com/benmosher/eslint-plugin-import/issues/1282 is resolved
-    'import/named': 'off',
-
-    // Makes the code unnecessarily verbose
-    '@typescript-eslint/explicit-member-accessibility': 'off',
-
-    // Makes the code unnecessarily verbose
-    '@typescript-eslint/explicit-function-return-type': 'off',
-
-
-    '@typescript-eslint/no-unused-vars': [
-      'warn',
-      {
-        ignoreRestSiblings: true,
-      },
-    ],
-
-
-    // We use type aliases for data types
-    '@typescript-eslint/prefer-interface': 'off',
-
-    '@typescript-eslint/no-explicit-any': 'warn',
   },
 };

@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import Loadable, { LoadingComponentProps } from 'react-loadable';
 import classnames from 'classnames';
 import axios from 'axios';
 import qs from 'query-string';
 import { pick, mapValues, size, isEqual, get } from 'lodash';
 
-import { RouteComponentProps } from 'react-router-dom';
 import { Venue, VenueDetailList, VenueSearchOptions } from 'types/venues';
 
 import deferComponentRender from 'views/hocs/deferComponentRender';
@@ -184,6 +183,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
             isAvailabilityEnabled ? 'btn-primary' : 'btn-outline-primary',
           )}
           onClick={this.onFindFreeRoomsClicked}
+          type="button"
         >
           <Clock className="svg" /> Find free rooms
         </button>
@@ -335,7 +335,9 @@ const AsyncVenuesContainer = Loadable.Map({
   loading: (props: LoadingComponentProps) => {
     if (props.error) {
       return <ApiError dataName="venue information" retry={props.retry} />;
-    } else if (props.pastDelay) {
+    }
+
+    if (props.pastDelay) {
       return <LoadingSpinner />;
     }
 

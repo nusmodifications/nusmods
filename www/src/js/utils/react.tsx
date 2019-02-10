@@ -38,7 +38,11 @@ export function replaceWithNode(
   });
 }
 
-export function highlight(str: string, search: string | string[], Tag: string = 'mark'): React.ReactNode {
+export function highlight(
+  str: string,
+  search: string | string[],
+  Tag: string = 'mark',
+): React.ReactNode {
   const terms = castArray(search).filter(Boolean);
   if (!terms.length) return str;
   const regex = new RegExp(`(${terms.map(escapeRegExp).join('|')})`, 'ig');

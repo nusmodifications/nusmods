@@ -33,6 +33,8 @@ class DisqusComments extends React.PureComponent<Props> {
     }
   }
 
+  /* eslint-disable @typescript-eslint/camelcase */
+
   loadInstance = () => {
     if (window.DISQUS) {
       // See https://help.disqus.com/customer/portal/articles/472107
@@ -52,6 +54,8 @@ class DisqusComments extends React.PureComponent<Props> {
       }).catch(getScriptErrorHandler('Disqus comments'));
     }
   };
+
+  /* eslint-enable */
 
   getDisqusConfig() {
     // Disqus is configured using a function that modifies 'this', so we cannot use

@@ -1,6 +1,4 @@
 import * as React from 'react';
-
-import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 
 import RandomKawaii from 'views/components/RandomKawaii';
@@ -51,7 +49,7 @@ export default class ApiError extends React.PureComponent<Props> {
 
           {retry && (
             <div>
-              <button className="btn btn-primary btn-lg" onClick={retry}>
+              <button type="button" className="btn btn-primary btn-lg" onClick={retry}>
                 Click to try again
               </button>
             </div>

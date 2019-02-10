@@ -11,7 +11,7 @@ import StaticPage from './StaticPage';
 import styles from './AboutContainer.scss';
 
 type Props = {
-  toggleFeedback: Function;
+  toggleFeedback: () => void;
 };
 
 function AboutContainer(props: Props) {
