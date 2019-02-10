@@ -112,7 +112,7 @@ exports.lintJavaScript = ({ include, exclude, options }) =>
         module: {
           rules: [
             {
-              test: /\.(js|jsx)$/,
+              test: /\.[j|t]sx?$/,
               include,
               exclude,
               enforce: 'pre',
@@ -149,7 +149,7 @@ exports.transpileJavascript = ({ include, exclude, options }) => ({
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.[j|t]sx?$/,
         include,
         exclude,
 

@@ -5,7 +5,7 @@ module.exports = (api) => {
   const IS_DEV = api.env('development');
   const IS_TEST = api.env('test');
 
-  const presets = [
+  const commonPreset = [
     [
       '@babel/preset-env',
       {
@@ -18,8 +18,9 @@ module.exports = (api) => {
       },
     ],
     ['@babel/preset-react', { development: !IS_PROD }],
-    '@babel/preset-flow',
   ];
+
+  const presets = [...commonPreset, '@babel/preset-flow'];
 
   const plugins = [
     'babel-plugin-lodash',
@@ -49,8 +50,16 @@ module.exports = (api) => {
     plugins.push('babel-plugin-dynamic-import-node');
   }
 
+  const overrides = [
+    {
+      test: ['src/**/*.{ts,tsx}'],
+      presets: ['@babel/preset-typescript', ...commonPreset],
+    },
+  ];
+
   return {
     presets,
     plugins,
+    overrides,
   };
 };

@@ -30,7 +30,7 @@ const commonConfig = merge([
         __mocks__: parts.PATHS.fixtures,
       },
       // Importing modules from these files will not require the extension.
-      extensions: ['.js', '.jsx', '.json'],
+      extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
       // We don't use symlinks, so disable for performance
       symlinks: false,
     },
