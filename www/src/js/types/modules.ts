@@ -41,7 +41,7 @@ export const TimesOfDay: Time[] = ['Morning', 'Afternoon', 'Evening'];
 
 export const Timeslots: [Day, Time][] = flatMap(
   WorkingDaysOfWeek,
-  (day): [Day, Time][] => TimesOfDay.map((time) => [day, time]),
+  (day): [Day, Time][] => TimesOfDay.map((time): [Day, Time] => [day, time]),
 );
 
 export type ModuleLevel = 1 | 2 | 3 | 4 | 5 | 6 | 8;

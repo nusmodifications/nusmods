@@ -22,7 +22,7 @@ export function intersectionCount<T>(a: Set<T>, b: Set<T>): number {
   const [smaller, bigger] = a.size > b.size ? [b, a] : [a, b];
   let count = 0;
   smaller.forEach((v) => {
-    count += bigger.has(v);
+    count += +bigger.has(v);
   });
 
   return count;

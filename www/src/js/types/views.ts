@@ -57,7 +57,7 @@ export type PageRangeDiff = {
   current?: number;
 };
 
-export type OnPageChange = (PageRangeDiff) => void;
+export type OnPageChange = (pageRangeDiff: PageRangeDiff) => void;
 
 export type DisqusConfig = {
   readonly identifier: string;

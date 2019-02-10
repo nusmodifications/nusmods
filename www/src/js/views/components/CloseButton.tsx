@@ -5,7 +5,7 @@ import { Close } from 'views/components/icons';
 import styles from './CloseButton.scss';
 
 type Props = {
-  onClick: Function;
+  onClick: () => void;
   className?: string;
   absolutePositioned?: boolean; // For use in modals where we don't want the CloseButton to affect the layout of other elements.
 };
