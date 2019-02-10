@@ -33,7 +33,7 @@ export type NotificationOptions = {
 
   readonly action?: {
     readonly text: string;
-    readonly handler: () => boolean | null | undefined; // Return false to disable notification auto-close
+    readonly handler: () => boolean | null | void; // Return false to disable notification auto-close
   };
 
   // This function will be called when the notification is about to be closed,

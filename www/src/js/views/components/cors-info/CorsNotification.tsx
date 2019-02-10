@@ -31,9 +31,9 @@ const NOW = new Date();
 
 export function corsNotificationText(
   useLineBreaks: boolean,
-  round: CorsRound | null | undefined = currentRound(),
+  round: CorsRound | null = currentRound(),
   now: Date = new Date(),
-): Node {
+): React.ReactNode {
   if (!round) return null;
   const period = currentPeriod(round, now);
   if (!period) return null;
@@ -67,8 +67,8 @@ export class CorsNotificationComponent extends React.PureComponent<Props> {
   dismiss = (round: string) => {
     this.props.dismissCorsNotification(round);
     this.props.openNotification('Reminder snoozed until start of next round', {
+      timeout: 12000,
       action: {
-        timeout: 12000,
         text: 'Settings',
         handler: () => {
           this.props.history.push('/settings#cors');
