@@ -9,7 +9,7 @@ import CS2100Expected from './fixtures/expected/CS2100.json';
 
 import { fromTermCode } from '../utils/api';
 import { expectModulesEqual } from '../utils/test-utils';
-import { ModuleExam, ModuleInfo, TimetableLesson } from "../types/api";
+import { ModuleExam, ModuleInfo, TimetableLesson } from '../types/api';
 
 jest.mock('../services/nus-api');
 const mockApi: jest.Mocked<NusApi> = api as any;

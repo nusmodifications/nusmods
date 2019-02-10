@@ -56,6 +56,7 @@ export type ModuleInfo = {
   Subject: string;
 
   // I'm not sure what this is used for
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ModuleAttributes: any;
 };
 

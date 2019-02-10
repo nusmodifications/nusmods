@@ -16,7 +16,9 @@ import { flattenTree } from './tree';
  * PrereqTree: different format of ParsedPrerequisite
  */
 
-interface TreeMap { [moduleCode: string]: PrereqTree }
+interface TreeMap {
+  [moduleCode: string]: PrereqTree;
+}
 
 const logger = rootLogger.child({
   service: 'requisite-tree',

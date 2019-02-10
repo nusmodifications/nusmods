@@ -4,6 +4,8 @@ import { lightFormat } from 'date-fns';
 import getSentryStream from './SentryStream';
 import { errorSerializer } from './serializer';
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 type LoggingFunction = {
   (error: Error, message?: string, ...params: any[]): void;
   (message: string, ...params: any[]): void;
@@ -20,6 +22,8 @@ export interface Logger {
 
   child(options: Record<string, any>): Logger;
 }
+
+/* eslint-enable */
 
 const logRoot = path.join(__dirname, '../../../logs');
 
