@@ -46,7 +46,7 @@ export default class SearchBox extends React.PureComponent<Props, State> {
     }
   };
 
-  onInput = (evt: Event) => {
+  onInput = (evt: React.ChangeEvent<HTMLInputElement>) => {
     if (evt.target instanceof HTMLInputElement) {
       const searchTerm = evt.target.value;
       this.setState({ searchTerm, hasChanges: true });
@@ -62,7 +62,7 @@ export default class SearchBox extends React.PureComponent<Props, State> {
     this.props.onSearch(input.trim());
   };
 
-  debouncedSearch: (str: string) => void = debounce(this.search, this.props.throttle, {
+  debouncedSearch = debounce(this.search, this.props.throttle, {
     leading: false,
   });
 
