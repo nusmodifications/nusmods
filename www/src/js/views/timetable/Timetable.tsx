@@ -2,7 +2,7 @@ import * as React from 'react';
 import { values, flattenDeep, noop } from 'lodash';
 import classnames from 'classnames';
 
-import { Lesson } from 'types/modules';
+import { ColoredLesson, Lesson } from "types/modules";
 import { HoverLesson, TimetableArrangement } from 'types/timetables';
 
 import {
@@ -52,7 +52,7 @@ class Timetable extends React.PureComponent<Props, State> {
       (day) => day !== 'Saturday' || this.props.lessons.Saturday,
     );
 
-    const lessons: Array<Lesson> = flattenDeep(values(this.props.lessons));
+    const lessons = flattenDeep<ColoredLesson>(values(this.props.lessons));
     const { startingIndex, endingIndex } = calculateBorderTimings(lessons);
     const currentDayIndex = getDayIndex(); // Monday = 0, Friday = 4
 

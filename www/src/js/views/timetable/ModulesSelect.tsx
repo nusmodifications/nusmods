@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { omit } from 'lodash';
-import { ChildrenFunction, DownshiftState, StateChangeOptions } from 'downshift';
-import Downshift from 'downshift';
+import Downshift, { ChildrenFunction, DownshiftState, StateChangeOptions } from 'downshift';
 import classnames from 'classnames';
 
 import { ModuleSelectList } from 'types/reducers';

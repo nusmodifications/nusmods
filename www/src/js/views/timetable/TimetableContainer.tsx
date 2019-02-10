@@ -27,7 +27,11 @@ import TimetableContent from './TimetableContent';
 
 import styles from './TimetableContainer.scss';
 
-type Props = RouteComponentProps & {
+type QueryParam = {
+  action: string;
+};
+
+type Props = RouteComponentProps<QueryParam> & {
   modules: ModulesMap;
   semester: Semester | null | undefined;
   activeSemester: Semester;
@@ -220,12 +224,13 @@ const mapStateToProps = (state: StoreState, ownProps) => {
   const { timetable, colors } = semester
     ? getSemesterTimetable(semester, state.timetables)
     : { timetable: {}, colors: {} };
+  const getModule = getModuleCondensed(state.moduleBank);
 
   return {
     semester,
     timetable,
     colors,
-    isValidModule: getModuleCondensed(state.moduleBank),
+    isValidModule: (moduleCode) => !!getModule(moduleCode),
     modules: state.moduleBank.modules,
     activeSemester: state.app.activeSemester,
   };

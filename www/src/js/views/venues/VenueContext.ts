@@ -10,6 +10,6 @@ const defaultValue: VenueContextValue = {
   toggleDetailScrollable: () => {},
 };
 
-const VenueContext = createContext<VenueContextValue>(defaultValue);
+const VenueContext = React.createContext<VenueContextValue>(defaultValue);
 
 export default VenueContext;

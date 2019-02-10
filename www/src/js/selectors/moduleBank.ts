@@ -8,7 +8,7 @@ import { isOngoing } from './requests';
 
 export function getModuleCondensed(
   moduleBank: ModuleBank,
-): (moduleCode: ModuleCode) => ModuleCondensed | null | undefined {
+): (moduleCode: ModuleCode) => ModuleCondensed | undefined {
   return (moduleCode) => moduleBank.moduleCodes[moduleCode];
 }
 

@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import {
   Day,
   Lesson,
@@ -9,7 +11,6 @@ import {
   WorkloadComponent,
 } from 'types/modules';
 
-import _ from 'lodash';
 import config from 'config';
 import { NBSP } from 'utils/react';
 
@@ -143,7 +144,7 @@ export function getTimeslot(day: Day, time: Time): string {
 }
 
 export function renderMCs(moduleCredits: number | string) {
-  const credit = parseInt(moduleCredits, 10);
+  const credit = typeof moduleCredits === 'string' ? parseInt(moduleCredits, 10) : moduleCredits;
   return `${credit}${NBSP}${credit === 1 ? 'MC' : 'MCs'}`;
 }
 

@@ -1,7 +1,6 @@
-import { LatLng } from 'leaflet';
-import { Viewport } from 'react-leaflet';
 import * as React from 'react';
-import { Map, Marker, TileLayer } from 'react-leaflet';
+import { LatLng } from 'leaflet';
+import { Map, Marker, TileLayer, Viewport } from 'react-leaflet';
 import classnames from 'classnames';
 import axios from 'axios';
 import bowser from 'bowser';
@@ -41,7 +40,7 @@ type State = {
   error?: any;
 };
 
-const wellKnownLocations = {
+const wellKnownLocations: Record<string, LatLngTuple> = {
   'Central Library': [1.2966113099432135, 103.77322643995288],
   UTown: [1.304448761575499, 103.77278119325639],
   Science: [1.2964893900409042, 103.78065884113312],

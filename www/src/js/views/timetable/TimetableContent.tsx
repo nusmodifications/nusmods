@@ -13,6 +13,7 @@ import {
   ModuleCode,
   Semester,
   ModuleWithColor,
+  ModifiableLesson,
 } from 'types/modules';
 import {
   SemTimetableConfig,
@@ -99,7 +100,7 @@ class TimetableContent extends React.Component<Props, State> {
     this.cancelModifyLesson();
   }
 
-  onScroll = (e: Event) => {
+  onScroll: React.UIEventHandler = (e) => {
     // Only trigger when there is an active lesson
     const isScrolledHorizontally =
       !!this.props.activeLesson &&
@@ -119,7 +120,7 @@ class TimetableContent extends React.Component<Props, State> {
   isHiddenInTimetable = (moduleCode: ModuleCode) =>
     this.props.hiddenInTimetable.includes(moduleCode);
 
-  modifyCell = (lesson: Lesson) => {
+  modifyCell = (lesson: ModifiableLesson) => {
     if (lesson.isAvailable) {
       this.props.changeLesson(this.props.semester, lesson);
     } else if (lesson.isActive) {
@@ -149,7 +150,7 @@ class TimetableContent extends React.Component<Props, State> {
     return _.sortBy(modules, (module: Module) => getModuleExamDate(module, this.props.semester));
   }
 
-  renderModuleTable = (modules, horizontalOrientation, tombstone) => (
+  renderModuleTable = (modules, horizontalOrientation, tombstone?) => (
     <TimetableModulesTable
       modules={modules.map((module) => ({
         ...module,
@@ -235,7 +236,7 @@ class TimetableContent extends React.Component<Props, State> {
       const module = modules[moduleCode];
       const moduleTimetable = getModuleTimetable(module, semester);
       lessonsForLessonType(moduleTimetable, activeLesson.LessonType).forEach((lesson) => {
-        const modifiableLesson: Object = {
+        const modifiableLesson: Lesson & { isActive?: boolean; isAvailable?: boolean } = {
           ...lesson,
           // Inject module code in
           ModuleCode: moduleCode,

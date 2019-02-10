@@ -1,16 +1,20 @@
-import { RouteComponentProps } from 'react-router-dom';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import qs from 'query-string';
 import classnames from 'classnames';
 
+import { State } from 'reducers';
 import elements from 'views/elements';
 import SearchBox from 'views/components/SearchBox';
 import { searchModules } from 'actions/moduleFinder';
 import { SEARCH_QUERY_KEY } from 'utils/moduleSearch';
 
-type Props = RouteComponentProps & {
+type OwnProps = RouteComponentProps & {
+
+}
+
+type Props = OwnProps & {
   throttle: number;
   useInstantSearch: boolean;
   initialSearchTerm: string | null | undefined;
@@ -38,8 +42,7 @@ ModuleSearchBoxComponent.defaultProps = {
 
 export default withRouter(
   connect(
-    (state, ownProps) => ({
-      searchDescription: state.moduleFinder.search.searchDescription,
+    (state: State, ownProps: OwnProps) => ({
       initialSearchTerm: qs.parse(ownProps.location.search)[SEARCH_QUERY_KEY],
     }),
     { searchModules },

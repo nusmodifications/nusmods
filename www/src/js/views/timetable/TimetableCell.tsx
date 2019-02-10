@@ -2,7 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { isEqual } from 'lodash';
 
-import { Lesson } from 'types/modules';
+import { ModifiableLesson } from 'types/modules';
 import { HoverLesson } from 'types/timetables';
 
 import { formatWeekNumber, getHoverLesson, LESSON_TYPE_ABBREV } from 'utils/timetables';
@@ -12,11 +12,11 @@ import styles from './TimetableCell.scss';
 
 type Props = {
   showTitle: boolean;
-  lesson: Lesson;
+  lesson: ModifiableLesson;
   style?: Object;
-  onClick?: Function;
+  onClick?: () => void;
   onHover?: (hoverLesson?: HoverLesson) => void;
-  hoverLesson: HoverLesson | null | undefined;
+  hoverLesson?: HoverLesson | null;
 };
 
 /**
@@ -28,10 +28,17 @@ function TimetableCell(props: Props) {
   const { lesson, showTitle, onClick, onHover, hoverLesson } = props;
 
   const moduleName = showTitle ? `${lesson.ModuleCode} ${lesson.ModuleTitle}` : lesson.ModuleCode;
-  const conditionalProps = { onClick };
-
   const Cell = props.onClick ? 'button' : 'div';
   const hover = isEqual(getHoverLesson(lesson), hoverLesson);
+
+  const hoverProps = onHover
+    ? {
+        onMouseEnter: () => onHover(getHoverLesson(lesson)),
+        onTouchStart: () => onHover(getHoverLesson(lesson)),
+        onMouseLeave: () => onHover(null),
+        onTouchEnd: () => onHover(null),
+      }
+    : {};
 
   /* eslint-disable */
   return (
@@ -47,11 +54,11 @@ function TimetableCell(props: Props) {
         hover,
       })}
       style={props.style}
-      onMouseEnter={() => onHover && onHover(getHoverLesson(lesson))}
-      onTouchStart={() => onHover && onHover(getHoverLesson(lesson))}
-      onMouseLeave={() => onHover && onHover(null)}
-      onTouchEnd={() => onHover && onHover(null)}
-      {...conditionalProps}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick();
+      }}
+      {...hoverProps}
     >
       <div className={styles.cellContainer}>
         <div className={styles.moduleName}>{moduleName}</div>

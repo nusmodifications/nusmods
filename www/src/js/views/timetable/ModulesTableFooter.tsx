@@ -1,10 +1,11 @@
-import { ModuleTableOrder } from 'types/views';
-import { ModuleWithColor, Semester } from 'types/modules';
 import * as React from 'react';
 import classnames from 'classnames';
 import { map, sumBy } from 'lodash';
 import { connect } from 'react-redux';
 
+import { State } from 'reducers';
+import { ModuleTableOrder } from 'types/views';
+import { Module, ModuleWithColor, Semester } from 'types/modules';
 import { setModuleTableOrder } from 'actions/settings';
 import { getModuleExamDate, renderMCs } from 'utils/modules';
 import styles from './TimetableModulesTable.scss';
@@ -17,10 +18,10 @@ type ModuleOrder = {
 export const moduleOrders: { [moduleTableOrder: string]: ModuleOrder } = {
   exam: {
     label: 'Exam Date',
-    orderBy: (module: module, semester: semester) => getModuleExamDate(module, semester),
+    orderBy: (module: Module, semester: Semester) => getModuleExamDate(module, semester),
   },
-  mc: { label: 'Module Credits', orderBy: (module: module) => module.ModuleCredit },
-  code: { label: 'Module Code', orderBy: (module: module) => module.ModuleCode },
+  mc: { label: 'Module Credits', orderBy: (module: Module) => module.ModuleCredit },
+  code: { label: 'Module Code', orderBy: (module: Module) => module.ModuleCode },
 };
 
 type Props = {
@@ -44,7 +45,7 @@ function ModulesTableFooter(props: Props) {
       <div className={classnames(styles.moduleOrder, 'col no-export')}>
         <label htmlFor="moduleOrder">Order</label>
         <select
-          onChange={(evt) => props.setModuleTableOrder(evt.target.value)}
+          onChange={(evt) => props.setModuleTableOrder(evt.target.value as ModuleTableOrder)}
           className={classnames(styles.moduleOrder, 'form-control form-control-sm')}
           value={props.moduleTableOrder}
           id="moduleOrder"
@@ -61,7 +62,7 @@ function ModulesTableFooter(props: Props) {
 }
 
 export default connect(
-  (state) => ({ moduleTableOrder: state.settings.moduleTableOrder }),
+  (state: State) => ({ moduleTableOrder: state.settings.moduleTableOrder }),
   {
     setModuleTableOrder,
   },

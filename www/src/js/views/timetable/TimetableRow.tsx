@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ColoredLesson } from 'types/modules';
+import { ModifiableLesson } from 'types/modules';
 import { HoverLesson } from 'types/timetables';
 
 import { convertTimeToIndex } from 'utils/timify';
@@ -10,12 +10,12 @@ import TimetableCell from './TimetableCell';
 type Props = {
   verticalMode: boolean;
   showTitle: boolean;
-  hoverLesson: HoverLesson | null | undefined;
+  hoverLesson?: HoverLesson | null;
   onCellHover: (hoverLesson?: HoverLesson) => void;
   startingIndex: number;
   endingIndex: number;
-  lessons: ColoredLesson[];
-  onModifyCell: Function;
+  lessons: ModifiableLesson[];
+  onModifyCell: (lesson: ModifiableLesson) => boolean | void;
 };
 
 /**
@@ -54,9 +54,8 @@ function TimetableRow(props: Props) {
         };
         const conditionalProps = lesson.isModifiable
           ? {
-              onClick: (e: Event) => {
-                e.stopPropagation();
-                return onModifyCell(lesson);
+              onClick: () => {
+                onModifyCell(lesson);
               },
             }
           : {};
