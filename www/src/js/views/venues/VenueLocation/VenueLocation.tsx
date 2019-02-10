@@ -1,15 +1,16 @@
 import * as React from 'react';
-import LocationMap from 'views/components/map/LocationMap';
-
 import classnames from 'classnames';
-import { VenueLocation as VenueLocationItem } from 'types/venues';
+
+import { LatLngTuple, VenueLocation as VenueLocationItem } from 'types/venues';
+import { Omit } from 'types/utils';
 import Modal from 'views/components/Modal';
+import LocationMap from 'views/components/map/LocationMap';
 import CloseButton from 'views/components/CloseButton';
 import { floorName } from 'utils/venues';
 /** @var { VenueLocationMap } */
 import venueLocations from 'data/venues.json';
-import VenueContext from '../VenueContext';
 
+import VenueContext from '../VenueContext';
 import FeedbackModal from './FeedbackModal';
 import ImproveVenueForm from './ImproveVenueForm';
 import styles from './VenueLocation.scss';
@@ -78,7 +79,9 @@ class VenueLocation extends React.PureComponent<Props, State> {
       );
     }
 
-    const position = location.location ? [location.location.y, location.location.x] : null;
+    const position: LatLngTuple = location.location
+      ? [location.location.y, location.location.x]
+      : null;
 
     return (
       <div>
@@ -118,7 +121,7 @@ class VenueLocation extends React.PureComponent<Props, State> {
   }
 }
 
-export default function(props: $Diff<Props, { toggleScrollable?: (boolean: boolean) => void }>) {
+export default function(props: Omit<Props, 'toggleScrollable'>) {
   return (
     <VenueContext.Consumer>
       {({ toggleDetailScrollable }) => (

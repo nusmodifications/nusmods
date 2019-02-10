@@ -11,6 +11,8 @@ import styles from '../DayEvents.scss';
 
 /* eslint-disable no-useless-computed-key */
 
+const mockWeather = weather as jest.Mocked<typeof weather>;
+
 const COLORS = {
   CS3216: 1,
   CS1010S: 2,
@@ -204,14 +206,14 @@ describe(TodayContainerComponent, () => {
   });
 
   test('should capture exception when weather API fails to load', async () => {
-    weather.fourDay.mockRejectedValueOnce(new Error('Cannot load weather'));
+    mockWeather.fourDay.mockRejectedValueOnce(new Error('Cannot load weather'));
 
     const now = new Date('2016-08-22T00:00:00.000Z');
     make({ currentTime: now });
 
-    expect(weather.twoHour).toBeCalled();
-    expect(weather.tomorrow).toBeCalled();
-    expect(weather.fourDay).toBeCalled();
+    expect(mockWeather.twoHour).toBeCalled();
+    expect(mockWeather.tomorrow).toBeCalled();
+    expect(mockWeather.fourDay).toBeCalled();
 
     await waitFor(() => captureException.mock.calls.length > 0);
 

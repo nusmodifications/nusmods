@@ -233,7 +233,7 @@ export function findExamClashes(modules: Array<Module>, semester: Semester): Exa
   return _.omitBy(groupedModules, (mods) => mods.length === 1); // Remove non-clashing mods
 }
 
-export function isLessonAvailable(lesson: Lesson, weekInfo: $ReadOnly<AcadWeekInfo>): boolean {
+export function isLessonAvailable(lesson: Lesson, weekInfo: Readonly<AcadWeekInfo>): boolean {
   if (!weekInfo.num) {
     return false;
   }

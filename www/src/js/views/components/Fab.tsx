@@ -3,7 +3,7 @@ import classnames from 'classnames';
 
 import styles from './Fab.scss';
 
-type Props = {
+type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode;
   className?: string;
 };

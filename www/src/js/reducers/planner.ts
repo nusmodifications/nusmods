@@ -81,7 +81,7 @@ export default function planner(
         }
       }
 
-      return produce(state, (draft: $Shape<PlannerState>) => {
+      return produce(state, (draft) => {
         draft.modules[moduleCode] = [year, semester, index];
 
         newModuleOrder.forEach((newModuleCode, order) => {

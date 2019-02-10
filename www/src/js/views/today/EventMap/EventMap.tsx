@@ -25,6 +25,6 @@ export default function(props: Props) {
     return <p>We don&apos;t have information about this venue :(</p>;
   }
 
-  const position = [venueLocation.location.y, venueLocation.location.x];
+  const position: [number, number] = [venueLocation.location.y, venueLocation.location.x];
   return <LocationMap height="100%" position={position} />;
 }

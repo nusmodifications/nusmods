@@ -1,14 +1,12 @@
-import { RouteComponentProps } from 'react-router-dom';
-
 import * as React from 'react';
-import { withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import update from 'immutability-helper';
 import { each, mapValues, values } from 'lodash';
 
 import { Module } from 'types/modules';
-import { PageRange, PageRangeDiff, FilterGroupId } from 'types/views';
+import { PageRange, PageRangeDiff } from 'types/views';
 import { State as StoreState } from 'reducers';
 
 import { Semesters } from 'types/modules';

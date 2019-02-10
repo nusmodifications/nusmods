@@ -101,7 +101,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
 
   onFindFreeRoomsClicked = () => {
     const { pristineSearchOptions, isAvailabilityEnabled } = this.state;
-    const stateUpdate = { isAvailabilityEnabled: !isAvailabilityEnabled };
+    const stateUpdate: Partial<State> = { isAvailabilityEnabled: !isAvailabilityEnabled };
 
     // Only reset search options if the user has never changed it, and if the
     // search box is being opened. By resetting the option when the box is opened,

@@ -33,8 +33,9 @@ export function getNewColor(
 
 // Color lessons by a certain property of every lesson
 // e.g. clbk([...], 'LessonType') colors lessons by their type
-export function colorLessonsByKey(lessons: Lesson[], key: keyof Lesson): ColoredLesson[] {
+export function colorLessonsByKey<T>(lessons: T[], key: keyof T): (T & { colorIndex: ColorIndex })[] {
   const colorMap = new Map();
+
   return lessons.map((lesson) => {
     let colorIndex = colorMap.get(lesson[key]);
     if (!colorMap.has(lesson[key])) {
