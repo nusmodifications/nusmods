@@ -1,11 +1,7 @@
 import * as React from 'react';
-
-import React, { Component } from 'react';
 import classnames from 'classnames';
 
-import { Day, Time } from 'types/modules';
-
-import { WorkingDaysOfWeek, TimesOfDay } from 'types/modules';
+import { Day, Time, WorkingDaysOfWeek, TimesOfDay } from 'types/modules';
 import { getTimeslot } from 'utils/modules';
 import styles from './TimeslotTable.scss';
 
@@ -16,8 +12,8 @@ type Props = {
 
 type State = {
   hover: {
-    day: Day | null | undefined;
-    time: Time | null | undefined;
+    day?: Day | null;
+    time?: Time | null;
   };
 };
 
@@ -51,7 +47,7 @@ export default class TimeslotTable extends React.Component<Props, State> {
     const { children, className } = this.props;
     const { hover } = this.state;
 
-    const hasChildren = (day, time) => {
+    const hasChildren = (day: Day, time: Time) => {
       const timeslot = getTimeslot(day, time);
       return React.Children.count(children.get(timeslot)) > 0;
     };
