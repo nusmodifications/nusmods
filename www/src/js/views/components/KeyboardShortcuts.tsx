@@ -75,7 +75,7 @@ export class KeyboardShortcutsComponent extends React.PureComponent<Props, State
     });
 
     this.bind('?', NAVIGATION, 'Show this help', () =>
-      this.setState({ helpShown: !this.state.helpShown }),
+      this.setState((state) => ({ helpShown: !state.helpShown })),
     );
 
     // Timetable shortcuts

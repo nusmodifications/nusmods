@@ -2,10 +2,9 @@ import * as React from 'react';
 import { TimetableConfig, SemTimetableConfig } from 'types/timetables';
 import { ModuleList, NotificationOptions } from 'types/reducers';
 import { Semester } from 'types/modules';
-import { Mode } from 'types/settings';
+import { Mode, DARK_MODE } from 'types/settings';
 import { State as StoreState } from 'reducers';
 
-import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { NavLink, withRouter, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -25,8 +24,7 @@ import Notification from 'views/components/notfications/Notification';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ErrorPage from 'views/errors/ErrorPage';
 import ApiError from 'views/errors/ApiError';
-import { trackPageView } from 'bootstrapping/mamoto';
-import { DARK_MODE } from 'types/settings';
+import { trackPageView } from 'bootstrapping/matomo';
 import Logo from 'img/nusmods-logo.svg';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
@@ -59,7 +57,7 @@ type State = {
 };
 
 export class AppShellComponent extends React.Component<Props, State> {
-  state = {};
+  state: State = {};
 
   componentDidMount() {
     const { timetables } = this.props;

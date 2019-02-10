@@ -2,7 +2,7 @@ import { last, sortBy } from 'lodash';
 import * as React from 'react';
 import classnames from 'classnames';
 
-import { addScoreData, getScoreData, HIGH_SCORE_COUNT } from './score';
+import { addScoreData, getScoreData, HIGH_SCORE_COUNT, ScoreEntry } from './score';
 import HighScoreTable from './HighScoreTable';
 import styles from './HighScoreForm.scss';
 
@@ -74,10 +74,11 @@ export default class HighScoreForm extends React.PureComponent<Props, State> {
     }
 
     // Add the new score into the list and sort
-    const sortedEntries = sortBy(
-      [...entries.map((entry) => [entry.score, entry]), [score, null]],
-      ([entryScore]) => entryScore,
-    ).reverse();
+    const entriesWithNewScore: [number, ScoreEntry | null][] = [
+      ...entries.map((entry): [number, ScoreEntry] => [entry.score, entry]),
+      [score, null],
+    ];
+    const sortedEntries = sortBy(entriesWithNewScore, ([entryScore]) => entryScore).reverse();
 
     // If your score comes in later than the other high scores, then sorry!
     if (sortedEntries.length > HIGH_SCORE_COUNT && !last(sortedEntries)[1]) {

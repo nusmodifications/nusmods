@@ -1,22 +1,27 @@
 import * as React from 'react';
 import { stubString, omit } from 'lodash';
-import { ChildrenFunction, DownshiftState, StateChangeOptions } from 'downshift';
-import Downshift from 'downshift';
+import Downshift, { ChildrenFunction, DownshiftState, StateChangeOptions } from 'downshift';
 import classnames from 'classnames';
 
 import { highlight } from 'utils/react';
 import { ChevronRight, Help, Search } from 'views/components/icons';
 import { ModuleCondensed } from 'types/modules';
 import { Venue } from 'types/venues';
-import { ResultType, SearchItem, SearchResult } from 'types/views';
+import {
+  ResultType,
+  SearchItem,
+  SearchResult,
+  MODULE_RESULT,
+  SEARCH_RESULT,
+  VENUE_RESULT,
+} from 'types/views';
 
 import ComponentMap from 'utils/ComponentMap';
 import SemesterBadge from 'views/components/SemesterBadge';
-import { MODULE_RESULT, SEARCH_RESULT, VENUE_RESULT } from 'types/views';
 import styles from './GlobalSearch.scss';
 
 type Props = {
-  getResults: (string: string | null | undefined) => SearchResult | null | undefined;
+  getResults: (string: string | null) => SearchResult | null;
 
   onSelectVenue: (venue: Venue) => void;
   onSelectModule: (moduleCondensed: ModuleCondensed) => void;
@@ -31,7 +36,7 @@ type State = {
 const PLACEHOLDER = 'Search modules & venues. Try "GER" or "LT".';
 
 class GlobalSearch extends React.Component<Props, State> {
-  input: HTMLInputElement | null | undefined;
+  input: HTMLInputElement | null;
 
   state = {
     isOpen: false,
@@ -83,9 +88,6 @@ class GlobalSearch extends React.Component<Props, State> {
       case SEARCH_RESULT:
         onSearch(item.type, item.term);
         break;
-
-      default:
-        throw new Error(`Unexpected result type ${item.type}`);
     }
 
     this.onClose();

@@ -9,8 +9,9 @@ import Timetable from 'views/timetable/Timetable';
 import TimetableDay from 'views/timetable/TimetableDay';
 import Title from 'views/components/Title';
 
-import { Board, Piece } from './board';
 import {
+  Board,
+  Piece,
   INITIAL_ROW_INDEX,
   PIECES,
   boardToTimetableArrangement,
@@ -52,7 +53,7 @@ const TARGET_HEIGHT = 940; // In px, the height of the game for resizing on smal
 
 const PREVIEW_COLOR: ColorIndex = 11;
 
-type Props = {
+export type Props = {
   readonly resetGame: () => void;
 };
 
@@ -71,9 +72,9 @@ type State = {
 
 // Scores taken from https://tetris.com/play-tetris
 const SCORING = {
-  softDrop: (distance: distance) => distance,
-  hardDrop: (distance: distance) => distance * 2,
-  lineClear: (lines: lines) => {
+  softDrop: (distance: number) => distance,
+  hardDrop: (distance: number) => distance * 2,
+  lineClear: (lines: number) => {
     if (lines === 0) return 0;
     if (lines === 1) return 100;
     if (lines === 2) return 300;
@@ -105,7 +106,7 @@ function renderPiece(tiles: Board) {
 }
 
 export default class TetrisGame extends React.PureComponent<Props, State> {
-  intervalId: IntervalID;
+  intervalId: number;
 
   constructor(props: Props) {
     super(props);
@@ -160,8 +161,8 @@ export default class TetrisGame extends React.PureComponent<Props, State> {
 
     this.ticks += 1;
 
-    this.setState(
-      produce(this.state, (draft) => {
+    this.setState((state) =>
+      produce(state, (draft) => {
         // Move current piece down
         if (this.ticks % this.gameSpeed() === 0) {
           this.movePieceDown(draft);
@@ -171,10 +172,12 @@ export default class TetrisGame extends React.PureComponent<Props, State> {
   };
 
   gameWrapper = React.createRef<HTMLDivElement>();
+
   // Ticks are not stored as state because it only affects game logic
   // and not rendering
   ticks = 0;
-  keybindings = [
+
+  keybindings: [string | string[], () => any][] = [
     [['left', 'a'], () => this.movePieceHorizontal(-1)],
     [['right', 'd'], () => this.movePieceHorizontal(1)],
     [['down', 's'], () => this.moveDown()],
@@ -210,7 +213,7 @@ export default class TetrisGame extends React.PureComponent<Props, State> {
     });
 
     // Start game ticking
-    this.intervalId = setInterval(this.onTick, GAME_TICK_INTERVAL);
+    this.intervalId = window.setInterval(this.onTick, GAME_TICK_INTERVAL);
 
     this.setState({ status: PLAYING });
   };
@@ -290,7 +293,7 @@ export default class TetrisGame extends React.PureComponent<Props, State> {
     draft.canHold = true;
 
     // If a piece has reached the top row, trigger game over
-    if (draft.board.some((column) => column[0])) {
+    if (draft.board.some((column) => Boolean(column[0]))) {
       draft.status = GAME_OVER;
     }
 
@@ -306,8 +309,8 @@ export default class TetrisGame extends React.PureComponent<Props, State> {
   hardDrop = () => {
     if (!this.isPlaying()) return;
 
-    this.setState(
-      produce(this.state, (draft) => {
+    this.setState((state) =>
+      produce(state, (draft) => {
         let distance = 0;
         while (this.movePieceDown(draft)) {
           distance += 1;
@@ -321,8 +324,8 @@ export default class TetrisGame extends React.PureComponent<Props, State> {
   holdPiece = () => {
     if (!this.isPlaying() || !this.state.canHold) return;
 
-    this.setState(
-      produce(this.state, (draft) => {
+    this.setState((state) =>
+      produce(state, (draft) => {
         const holdPiece = draft.holdPiece;
 
         // Reset the position of the current piece when it is held

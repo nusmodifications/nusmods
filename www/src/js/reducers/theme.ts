@@ -11,7 +11,7 @@ import {
 } from 'actions/theme';
 import themes from 'data/themes.json';
 import { VERTICAL, HORIZONTAL } from 'types/reducers';
-import { DIMENSIONS, withTracker } from 'bootstrapping/mamoto';
+import { DIMENSIONS, withTracker } from 'bootstrapping/matomo';
 
 const defaultColorsState: ColorMapping = {};
 export const defaultThemeState: ThemeState = {

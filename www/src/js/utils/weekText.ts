@@ -2,7 +2,7 @@ import NUSModerator, { AcadWeekInfo } from 'nusmoderator';
 import { noBreak } from 'utils/react';
 
 export const getWeekText = (acadWeekInfo: AcadWeekInfo) => {
-  const parts: Array<string> = [`AY20${acadWeekInfo.year}`];
+  const parts: string[] = [`AY20${acadWeekInfo.year}`];
 
   // Check for null value (ie. during vacation)
   if (acadWeekInfo.sem) {

@@ -2,14 +2,12 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { cartesianProduct } from 'js-combinatorics';
 
-import { Node } from 'react';
-import { Day, Time } from 'types/modules';
+import { Day, Time, WorkingDaysOfWeek, TimesOfDay } from 'types/modules';
 
-import { WorkingDaysOfWeek, TimesOfDay } from 'types/modules';
 import { getTimeslot } from 'utils/modules';
 import TimeslotTable from './TimeslotTable';
 
-function buildChildren(mapper: (day: Day, time: Time) => Node) {
+function buildChildren(mapper: (day: Day, time: Time) => React.ReactNode) {
   const children = new Map();
   cartesianProduct(WorkingDaysOfWeek, TimesOfDay).forEach(([day, time]) => {
     children.set(getTimeslot(day, time), mapper(day, time));

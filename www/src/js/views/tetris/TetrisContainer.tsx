@@ -1,10 +1,11 @@
 import * as React from 'react';
-import Loadable, { LoadingProps } from 'react-loadable';
+import Loadable, { LoadingComponentProps } from 'react-loadable';
 import ApiError from 'views/errors/ApiError';
 import LoadingSpinner from 'views/components/LoadingSpinner';
+import { Props as TetrisGameProps } from './TetrisGame';
 
 type Props = {
-  readonly TetrisGame: React.ComponentType;
+  readonly TetrisGame: React.ComponentType<TetrisGameProps>;
 };
 
 type State = {
@@ -21,7 +22,7 @@ class TetrisContainer extends React.PureComponent<Props, State> {
   };
 
   onResetGame = () => {
-    this.setState({ game: this.state.game + 1 });
+    this.setState((state) => ({ game: state.game + 1 }));
   };
 
   render() {
@@ -38,10 +39,12 @@ export default Loadable.Map<{}, any>({
   loader: {
     TetrisGame: () => import(/* webpackChunkName: "tetris" */ './TetrisGame'),
   },
-  loading: (props: LoadingProps) => {
+  loading: (props: LoadingComponentProps) => {
     if (props.error) {
       return <ApiError dataName="the page" retry={props.retry} />;
-    } else if (props.pastDelay) {
+    }
+
+    if (props.pastDelay) {
       return <LoadingSpinner />;
     }
 

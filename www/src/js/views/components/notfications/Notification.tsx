@@ -47,8 +47,9 @@ const TRANSITION_DURATION = 250;
  * the new notification.
  */
 export class NotificationComponent extends React.Component<Props, State> {
-  openTimeoutId: TimeoutID;
-  closeTimeoutId: TimeoutID;
+  openTimeoutId: number;
+
+  closeTimeoutId: number;
 
   constructor(props: Props) {
     super(props);

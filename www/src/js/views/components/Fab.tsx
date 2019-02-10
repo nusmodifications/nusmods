@@ -11,7 +11,7 @@ type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 function Fab({ children, className, ...otherProps }: Props) {
   return (
     <div className={classnames(className, styles.fab)}>
-      <button className="mdc-fab material-icons" {...otherProps}>
+      <button type="button" className="mdc-fab material-icons" {...otherProps}>
         {children}
       </button>
     </div>

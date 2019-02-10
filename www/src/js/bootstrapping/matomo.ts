@@ -1,4 +1,5 @@
-import { RouterHistory } from 'react-router-dom';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { History } from 'history';
 import { Tracker } from 'types/views';
 import { each } from 'lodash';
 import insertScript from 'utils/insertScript';
@@ -13,7 +14,7 @@ export const DIMENSIONS = {
 };
 
 const queuedTasks = [];
-let mamoto: Tracker | null | undefined;
+let matomo: Tracker | null | undefined;
 let initialDimensions = false;
 let initialViewTracked = false;
 
@@ -21,7 +22,7 @@ let initialViewTracked = false;
 // so that the initial page view is only tracked if both the tracker and the
 // store is ready
 function trackInitialPageView() {
-  const tracker = mamoto;
+  const tracker = matomo;
   if (initialViewTracked || !initialDimensions || !tracker) return;
 
   // Run all queued tasks then track initial page view
@@ -39,21 +40,21 @@ export function initializeMamoto() {
 
   insertScript(scriptSrc, { defer: true, async: true })
     .then(() => {
-      mamoto = window.Piwik.getTracker(`${host}/piwik.php`, siteId);
+      matomo = window.Piwik.getTracker(`${host}/piwik.php`, siteId);
       trackInitialPageView();
     })
     .catch(getScriptErrorHandler('Mamoto'));
 }
 
 export function withTracker(action: (tracker: Tracker) => void) {
-  if (mamoto) {
-    action(mamoto);
+  if (matomo) {
+    action(matomo);
   } else {
     queuedTasks.push(action);
   }
 }
 
-export function setCustomDimensions(dimensions: { [number]: string }) {
+export function setCustomDimensions(dimensions: { [id: number]: string }) {
   // Set custom dimensions
   each(dimensions, (value, id) => {
     withTracker((tracker) => tracker.setCustomDimension(+id, value));
@@ -63,7 +64,7 @@ export function setCustomDimensions(dimensions: { [number]: string }) {
   trackInitialPageView();
 }
 
-export function trackPageView(history: RouterHistory) {
+export function trackPageView(history: History) {
   history.listen((location, action) => {
     if (action === 'PUSH') {
       // Wait a bit for the page title to update

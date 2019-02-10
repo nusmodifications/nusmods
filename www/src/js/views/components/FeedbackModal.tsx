@@ -13,7 +13,7 @@ import styles from './FeedbackModal.scss';
 
 type Props = {
   isOpen: boolean;
-  toggleFeedback: Function;
+  toggleFeedback: () => void;
 };
 
 export function FeedbackButtons() {

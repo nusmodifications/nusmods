@@ -4,11 +4,11 @@ import { captureException } from 'utils/error';
 type Props = {
   children: React.ReactNode;
   captureError: boolean;
-  errorPage: (error: Error) => Node;
+  errorPage: (error: Error) => React.ReactNode;
 };
 
 type State = {
-  error: Error | null | undefined;
+  error: Error | null;
 };
 
 export default class ErrorBoundary extends React.Component<Props, State> {

@@ -6,6 +6,7 @@ import rootReducer, { State } from 'reducers';
 import requestsMiddleware from 'middlewares/requests-middleware';
 import ravenMiddleware from 'middlewares/raven-middleware';
 import { setAutoFreeze } from 'immer';
+import { FSA, GetState } from '../types/redux';
 
 // Extend immutability-helper with autovivification commands. This allows immutability-helper
 // to automatically create objects if it doesn't exist before
@@ -34,7 +35,7 @@ export default function configureStore(defaultState?: State) {
       duration: true,
       diff: true,
       // Avoid diffing actions that insert a lot of stuff into the state to prevent console from lagging
-      diffPredicate: (getState: getState, action: action) =>
+      diffPredicate: (getState: GetState, action: FSA) =>
         !action.type.startsWith('FETCH_MODULE_LIST') && !action.type.startsWith('persist/'),
     });
     middlewares.push(logger);
@@ -42,7 +43,7 @@ export default function configureStore(defaultState?: State) {
 
   const storeEnhancer = applyMiddleware(...middlewares);
 
-  const store: Store<State, any, any> = createStore(
+  const store: Store<State, any> = createStore(
     rootReducer,
     defaultState,
     composeEnhancers(storeEnhancer),

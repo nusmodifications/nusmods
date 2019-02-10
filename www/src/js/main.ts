@@ -11,7 +11,7 @@ import App from 'App';
 
 import configureStore from 'bootstrapping/configure-store';
 import subscribeOnlineEvents from 'bootstrapping/subscribeOnlineEvents';
-import { initializeMamoto } from 'bootstrapping/mamoto';
+import { initializeMamoto } from 'bootstrapping/matomo';
 import initializeServiceWorker from 'bootstrapping/service-worker';
 
 import '../styles/main.scss';

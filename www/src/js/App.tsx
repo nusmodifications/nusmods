@@ -10,7 +10,7 @@ import { PersistGate } from 'redux-persist/lib/integration/react';
 
 import AppShell from 'views/AppShell';
 import Routes from 'views/routes/Routes';
-import { DIMENSIONS, setCustomDimensions } from 'bootstrapping/mamoto';
+import { DIMENSIONS, setCustomDimensions } from 'bootstrapping/matomo';
 
 type Props = {
   store: Store<State, any, any>;
