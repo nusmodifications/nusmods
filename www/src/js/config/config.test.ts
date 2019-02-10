@@ -4,11 +4,12 @@ import academicCalendar from 'data/academic-calendar.json';
 import config from './index';
 import { Semesters } from '../types/modules';
 
-function isSorted(arr: Array<any>) {
+function isSorted(arr: any[]) {
   return arr.slice(1).every((item, index) => item >= arr[index]);
 }
 
 test('Academic calendar should have start dates for the current academic year', () => {
+  // @ts-ignore
   expect(academicCalendar[config.academicYear]).toBeDefined();
 });
 

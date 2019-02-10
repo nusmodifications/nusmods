@@ -30,7 +30,6 @@ export type Config = {
   ivleUrl: string;
 
   disqusShortname: string;
-  googleAnalyticsId: string;
   venueFeedbackApi: string;
 
   semesterNames: { [semester: string]: string };
@@ -61,11 +60,13 @@ export type Config = {
   corsSchedule: CorsRound[];
 };
 
-function convertCorsDate(roundData: Object): CorsRound {
+function convertCorsDate(roundData: typeof corsData[0]): CorsRound {
   return {
     ...roundData,
     periods: roundData.periods.map((period) => ({
       ...period,
+      // To make TypeScript happy
+      type: period.type as CorsPeriodType,
       // Convert timestamps to date objects
       startDate: new Date(period.startTs),
       endDate: new Date(period.endTs),
@@ -77,7 +78,7 @@ const augmentedConfig: Config = {
   ...appConfig,
   corsUrl: appConfig.corsUrl
     .replace('<AcademicYear>', appConfig.academicYear)
-    .replace('<Semester>', appConfig.semester),
+    .replace('<Semester>', String(appConfig.semester)),
 
   holidays: holidays.map((date) => new Date(date)),
 
