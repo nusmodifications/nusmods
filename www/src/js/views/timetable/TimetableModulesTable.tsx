@@ -23,6 +23,7 @@ import Tooltip from 'views/components/Tooltip';
 import styles from './TimetableModulesTable.scss';
 import ModuleTombstone from './ModuleTombstone';
 import { moduleOrders } from './ModulesTableFooter';
+import { State } from 'reducers';
 
 type Props = {
   semester: Semester;
@@ -30,7 +31,7 @@ type Props = {
   horizontalOrientation: boolean;
   moduleTableOrder: ModuleTableOrder;
   modules: ModuleWithColor[];
-  tombstone: ModuleWithColor | null | undefined; // Placeholder for a deleted module
+  tombstone: ModuleWithColor | null; // Placeholder for a deleted module
 
   // Actions
   selectModuleColor: Function;
@@ -84,7 +85,7 @@ class TimetableModulesTable extends React.PureComponent<Props> {
     );
   }
 
-  renderModule = (module) => {
+  renderModule = (module: ModuleWithColor) => {
     const { semester, readOnly, tombstone, resetTombstone } = this.props;
 
     if (tombstone && tombstone.ModuleCode === module.ModuleCode) {
@@ -150,7 +151,7 @@ class TimetableModulesTable extends React.PureComponent<Props> {
 }
 
 export default connect(
-  (state) => ({ moduleTableOrder: state.settings.moduleTableOrder }),
+  (state: State) => ({ moduleTableOrder: state.settings.moduleTableOrder }),
   {
     selectModuleColor,
     hideLessonInTimetable,

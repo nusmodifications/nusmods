@@ -230,7 +230,7 @@ const mapStateToProps = (state: StoreState, ownProps) => {
     semester,
     timetable,
     colors,
-    isValidModule: (moduleCode) => !!getModule(moduleCode),
+    isValidModule: (moduleCode: ModuleCode) => !!getModule(moduleCode),
     modules: state.moduleBank.modules,
     activeSemester: state.app.activeSemester,
   };

@@ -35,8 +35,8 @@ function TimetableCell(props: Props) {
     ? {
         onMouseEnter: () => onHover(getHoverLesson(lesson)),
         onTouchStart: () => onHover(getHoverLesson(lesson)),
-        onMouseLeave: () => onHover(null),
-        onTouchEnd: () => onHover(null),
+        onMouseLeave: () => onHover(),
+        onTouchEnd: () => onHover(),
       }
     : {};
 
@@ -54,7 +54,7 @@ function TimetableCell(props: Props) {
         hover,
       })}
       style={props.style}
-      onClick={(e) => {
+      onClick={(e: React.MouseEvent) => {
         e.preventDefault();
         onClick();
       }}

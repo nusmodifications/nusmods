@@ -86,7 +86,7 @@ type Props = {
 type State = {
   isScrolledHorizontally: boolean;
   showExamCalendar: boolean;
-  tombstone: ModuleWithColor | null | undefined;
+  tombstone: ModuleWithColor | null;
 };
 
 class TimetableContent extends React.Component<Props, State> {
@@ -150,7 +150,11 @@ class TimetableContent extends React.Component<Props, State> {
     return _.sortBy(modules, (module: Module) => getModuleExamDate(module, this.props.semester));
   }
 
-  renderModuleTable = (modules, horizontalOrientation, tombstone?) => (
+  renderModuleTable = (
+    modules: Module[],
+    horizontalOrientation: boolean,
+    tombstone?: ModuleWithColor | null,
+  ) => (
     <TimetableModulesTable
       modules={modules.map((module) => ({
         ...module,
@@ -167,7 +171,7 @@ class TimetableContent extends React.Component<Props, State> {
   );
 
   // Returns component with table(s) of modules
-  renderModuleSections(modules, horizontalOrientation) {
+  renderModuleSections(modules: Module[], horizontalOrientation: boolean) {
     const { tombstone } = this.state;
 
     // Separate added modules into sections of clashing modules

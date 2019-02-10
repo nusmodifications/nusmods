@@ -45,6 +45,7 @@
     "@types/react-beautiful-dnd": "10.0.1",
     "@types/react-dom": "16.8.0",
     "@types/react-helmet": "5.0.8",
+    "@types/react-leaflet": "^1.1.6",
     "@types/react-loadable": "5.5.0",
     "@types/react-modal": "3.8.0",
     "@types/react-redux": "7.0.1",

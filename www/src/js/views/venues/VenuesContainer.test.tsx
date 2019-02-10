@@ -9,6 +9,7 @@ import { sortVenues } from 'utils/venues';
 import { venuePage } from 'views/routes/paths';
 import VenueDetails from 'views/venues/VenueDetails';
 import { Params, VenuesContainerComponent } from './VenuesContainer';
+import { History } from 'history';
 
 const venues = sortVenues(venueInfo as VenueInfo);
 
@@ -65,7 +66,7 @@ describe(VenuesContainerComponent, () => {
   });
 
   describe('#updateURL()', () => {
-    const getQueryParams = (history) => qs.parse(history.location.search);
+    const getQueryParams = (history: History) => qs.parse(history.location.search);
 
     test('it should update search query', () => {
       const { wrapper, history } = createComponent();

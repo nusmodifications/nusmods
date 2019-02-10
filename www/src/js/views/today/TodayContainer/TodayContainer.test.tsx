@@ -130,7 +130,19 @@ jest.mock('utils/error');
 // E1 21 22 23 24 25 26 |
 // E2 28 29 30          |
 describe(TodayContainerComponent, () => {
-  const getLessons = (wrapper) => {
+  const make = (props: Partial<Props> & { currentTime: Date }) => {
+    const componentProps: Props = {
+      colors: COLORS,
+      matchBreakpoint: false,
+      timetableWithLessons: LESSONS,
+
+      ...props,
+    };
+
+    return shallow(<TodayContainerComponent {...componentProps} />);
+  };
+
+  const getLessons = (wrapper: ReturnType<typeof make>) => {
     const days = wrapper.find(DaySection).find(DayEvents);
     const cards = days.map((w) => w.shallow().find(`.${styles.card}`));
     const titles = cards.map((c) =>
@@ -150,18 +162,6 @@ describe(TodayContainerComponent, () => {
     );
 
     return flatten(titles);
-  };
-
-  const make = (props: Partial<Props> & { currentTime: Date }) => {
-    const componentProps: Props = {
-      colors: COLORS,
-      matchBreakpoint: false,
-      timetableWithLessons: LESSONS,
-
-      ...props,
-    };
-
-    return shallow(<TodayContainerComponent {...componentProps} />);
   };
 
   test('should render', () => {
