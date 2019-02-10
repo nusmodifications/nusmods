@@ -8,7 +8,7 @@ import Title from 'views/components/Title';
 import styles from './ErrorPage.scss';
 
 type Props = {
-  children?: Node;
+  children?: React.ReactNode;
   retry?: () => void;
   dataName?: string;
 };

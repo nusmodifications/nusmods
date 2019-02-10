@@ -44,7 +44,7 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
   url: string | null | undefined;
 
   // React QR component is lazy loaded for performance
-  static QRCode: React | null | undefined.React.ComponentType<any>;
+  static QRCode: React.ComponentType<any> | null;
 
   state: State = {
     isOpen: false,

@@ -15,7 +15,7 @@ type Props = {
   readonly date: Date;
   readonly dayInfo: AcadWeekInfo;
   readonly openLesson: SelectedLesson | null | undefined;
-  readonly marker: Node;
+  readonly marker: React.ReactNode;
 
   readonly onOpenLesson: (date: Date, lesson: Lesson) => void;
 };

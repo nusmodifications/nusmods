@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import styles from './Fab.scss';
 
 type Props = {
-  children: Node;
+  children: React.ReactNode;
   className?: string;
 };
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import React from 'react';
+
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
@@ -13,7 +13,7 @@ import cardStyles from './DayEvents.scss';
 type Props = {
   currentTime: Date;
   nextLesson: Lesson;
-  marker: Node;
+  marker: React.ReactNode;
 };
 
 const freeRoomMessage = (

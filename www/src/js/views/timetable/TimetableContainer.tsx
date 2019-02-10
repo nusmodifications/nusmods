@@ -242,5 +242,6 @@ const connectedTimetableContainer = connect(
     undo,
   },
 )(TimetableContainerComponent);
+
 const routedTimetableContainer = withRouter(connectedTimetableContainer);
 export default deferComponentRender(routedTimetableContainer);

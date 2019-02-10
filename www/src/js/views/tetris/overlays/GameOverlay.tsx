@@ -2,7 +2,7 @@ import * as React from 'react';
 import styles from './overlay.scss';
 
 type Props = {
-  readonly children: Node;
+  readonly children: React.ReactNode;
 };
 
 export default function GameOverlay(props: Props) {

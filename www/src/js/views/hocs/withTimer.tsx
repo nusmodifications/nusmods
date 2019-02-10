@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { differenceInMilliseconds } from 'date-fns';
 import { wrapComponentName } from 'utils/react';
 import { forceTimer } from 'utils/debug';

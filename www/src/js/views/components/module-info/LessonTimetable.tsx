@@ -33,7 +33,7 @@ export class LessonTimetableComponent extends React.PureComponent<Props, State> 
     }
   };
 
-  renderTimetable(): Node {
+  renderTimetable(): React.ReactNode {
     const semester = this.props.semesterData.find(
       (data) => data.Semester === this.state.selectedSem,
     );

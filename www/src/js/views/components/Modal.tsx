@@ -1,4 +1,4 @@
-import * as React from 'react';
+
 import ReactModal from 'react-modal';
 import classnames from 'classnames';
 
@@ -9,7 +9,7 @@ type Props = {
   isOpen: boolean;
   overlayClassName?: string;
   className?: string;
-  children: Node | null | undefined;
+  children?: React.ReactNode;
   fullscreen: boolean;
   animate?: boolean;
 };

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { State } from 'reducers';
 
 type Props = {
-  children: Node | ((boolean) => Node);
+  children: React.ReactNode | ((isOnline: boolean) => Node);
 
   isOnline: boolean;
   isLive: boolean;

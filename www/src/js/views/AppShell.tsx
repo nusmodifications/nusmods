@@ -34,7 +34,7 @@ import KeyboardShortcuts from './components/KeyboardShortcuts';
 import styles from './AppShell.scss';
 
 type Props = RouteComponentProps & {
-  children: Node;
+  children: React.ReactNode;
 
   // From Redux state
   moduleList: ModuleList;

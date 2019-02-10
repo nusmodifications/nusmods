@@ -58,7 +58,7 @@ import styles from './TimetableContent.scss';
 type Props = {
   // Own props
   readOnly: boolean;
-  header: Node;
+  header: React.ReactNode;
   semester: Semester;
   timetable: SemTimetableConfig;
   colors: ColorMapping;
@@ -129,12 +129,12 @@ class TimetableContent extends React.Component<Props, State> {
     }
   };
 
-  addModule = (semester, moduleCode) => {
+  addModule = (semester: Semester, moduleCode: ModuleCode) => {
     this.props.addModule(semester, moduleCode);
     this.resetTombstone();
   };
 
-  removeModule = (module) => {
+  removeModule = (module: ModuleWithColor) => {
     this.props.removeModule(this.props.semester, module.ModuleCode);
 
     // A tombstone is displayed in place of a deleted module

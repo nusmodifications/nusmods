@@ -1,4 +1,5 @@
 import { DayText, LessonTime, ModuleCode, RawLesson } from 'types/modules';
+import { Omit } from "./utils";
 
 export type Venue = string;
 export type VenueList = Venue[];
@@ -10,7 +11,7 @@ export const OCCUPIED: VenueOccupiedState = 'occupied';
 export type Availability = { [lessonTime: string]: VenueOccupiedState }; // E.g. { "1000": "vacant", "1030": "occupied", ... }
 
 // Raw lessons obtained from venue info API includes ModuleCode by default
-export type VenueLesson = RawLesson & {
+export type VenueLesson = Omit<RawLesson, 'Venue'> & {
   ModuleCode: ModuleCode;
 };
 

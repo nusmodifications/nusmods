@@ -5,6 +5,7 @@ import {
   PlannerState,
   Requests,
   SettingsState,
+  ThemeState,
   TimetablesState,
 } from 'types/reducers';
 import { ModuleBank } from 'reducers/moduleBank';
@@ -35,7 +36,7 @@ export type State = {
   requests: Requests;
   timetables: TimetablesState;
   app: AppState;
-  theme: Object;
+  theme: ThemeState;
   settings: SettingsState;
   moduleFinder: ModuleFinderState;
   planner: PlannerState;
@@ -50,7 +51,7 @@ const theme = persistReducer('theme', themeReducer);
 const settings = persistReducer('settings', settingsReducer);
 const planner = persistReducer('planner', plannerReducer);
 
-// $FlowFixMe: State default is delegated to its child reducers.
+// @ts-ignore: State default is delegated to its child reducers.
 const defaultState: State = {};
 const undoReducer = createUndoReducer({
   limit: 1,

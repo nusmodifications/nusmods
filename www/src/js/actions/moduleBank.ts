@@ -57,12 +57,12 @@ export function getLRUModules(
 
   // Remove the module which is least recently used and which is not in timetable
   // and not the currently loaded one
-  const canRemove = Object.keys(modules).filter(
+  const canRemove: ModuleCode[] = Object.keys(modules).filter(
     (moduleCode) => moduleCode !== currentModule && !timetableModules.has(moduleCode),
   );
 
   // Sort them based on the timestamp alone
-  const sortedModules = sortBy(canRemove, (moduleCode) =>
+  const sortedModules = sortBy<ModuleCode>(canRemove, (moduleCode) =>
     get(modules[moduleCode], ['timestamp'], 0),
   );
 
@@ -102,11 +102,11 @@ export function fetchModule(moduleCode: ModuleCode) {
         url: NUSModsApi.moduleDetailsUrl(moduleCode),
       }),
     ).then(
-      (result) => {
+      (result: any) => {
         onFinally();
         return result;
       },
-      (error) => {
+      (error: any) => {
         onFinally();
         throw error;
       },

@@ -1,6 +1,6 @@
 import { Middleware } from 'redux';
 import * as Sentry from '@sentry/browser';
-import { State } from 'reducers/index';
+import { State } from 'reducers';
 import update from 'immutability-helper';
 
 const stateTransformer = (state: State): any => ({

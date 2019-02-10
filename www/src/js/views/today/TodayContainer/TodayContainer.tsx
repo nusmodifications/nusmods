@@ -88,7 +88,7 @@ function getDayType(date: Date, weekInfo: AcadWeekInfo): EmptyGroupType {
 }
 
 export function DaySection(props: {
-  readonly children: Node;
+  readonly children: React.ReactNode;
   readonly date: Date | Date[];
   readonly offset: number;
   readonly forecast?: string;

@@ -74,11 +74,12 @@ export type TimetableOrientation = 'HORIZONTAL' | 'VERTICAL';
 export const VERTICAL: TimetableOrientation = 'VERTICAL';
 export const HORIZONTAL: TimetableOrientation = 'HORIZONTAL';
 
-export type ThemeState = {
-  readonly id: string;
-  readonly timetableOrientation: TimetableOrientation;
-  readonly showTitle: boolean;
-};
+export type ThemeState = Readonly<{
+  id: string;
+  timetableOrientation: TimetableOrientation;
+  showTitle: boolean;
+  colors: ColorMapping;
+}>;
 
 /* settings */
 export type CorsNotificationSettings = {

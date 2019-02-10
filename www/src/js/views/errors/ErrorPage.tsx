@@ -10,7 +10,7 @@ import Online from 'views/components/Online';
 import styles from './ErrorPage.scss';
 
 type Props = {
-  children?: Node;
+  children?: React.ReactNode;
   error?: string;
   showReportDialog?: boolean | null | undefined;
   showRefresh: boolean;

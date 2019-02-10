@@ -25,7 +25,7 @@ export type Square = {
 
 // A 2D array of squares representing the Tetris board in column major order.
 // The top right corner is (0, 0)
-export type Board = Array<Array<Square | null | undefined>>;
+export type Board = Array<Array<Square | null>>;
 
 export type Piece = {
   x: number;
@@ -114,7 +114,7 @@ export const PIECES = [
  */
 function iterateBoard(
   board: Board,
-  iterator: (tile: Square, col: number, row: number) => boolean | null | undefined,
+  iterator: (tile: Square, col: number, row: number) => boolean | null | void,
 ) {
   let continueIterating = true;
 
@@ -136,7 +136,7 @@ function iterateBoard(
 
 function iteratePiece(
   piece: Piece,
-  iterator: (tile: Square, col: number, row: number) => boolean | null | undefined,
+  iterator: (tile: Square, col: number, row: number) => boolean | null | void,
 ) {
   return iterateBoard(piece.tiles, (tile, col, row) =>
     iterator(tile, col + piece.x, row + piece.y),
@@ -196,7 +196,7 @@ export function rotatePieceLeft(piece: Piece): Piece {
 export function placePieceOnBoard(board: Board, ...pieces: Piece[]): Board {
   return produce(board, (draft) => {
     pieces.forEach((piece) => {
-      iteratePiece(piece, (tile, col, row) => {
+      iteratePiece(piece, (tile: Square, col: number, row: number) => {
         draft[col][row] = tile;
       });
     });
@@ -301,7 +301,7 @@ const BORDER_COLOR = 10;
 export function boardToTimetableArrangement(board: Board): TimetableArrangement {
   // Assume column count is divisible by 3
   const days = DaysOfWeek.slice(0, 5);
-  const timetable = {};
+  const timetable: TimetableArrangement = {};
 
   days.forEach((day) => {
     if (day === DaysOfWeek[0] || day === DaysOfWeek[4]) {

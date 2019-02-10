@@ -2,7 +2,7 @@ import * as React from 'react';
 import { captureException } from 'utils/error';
 
 type Props = {
-  children: Node;
+  children: React.ReactNode;
   captureError: boolean;
   errorPage: (error: Error) => Node;
 };

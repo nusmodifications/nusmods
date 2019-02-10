@@ -25,7 +25,7 @@ function textClass(component: WorkloadComponent): string {
   return `workload-${component.toLowerCase()}-text`;
 }
 
-function workloadLabel(component: WorkloadComponent, hours: number): Node {
+function workloadLabel(component: WorkloadComponent, hours: number): React.ReactNode {
   // For components with lots of hours, we show a count to make it more glanceable
   if (Math.ceil(hours) >= 5) {
     return (
@@ -44,8 +44,8 @@ function workloadLabel(component: WorkloadComponent, hours: number): Node {
   return <abbr title={component}>{shortComponentNames[component]}</abbr>;
 }
 
-function workloadBlocks(component: WorkloadComponent, hours: number): Node {
-  const blocks: Node[] = _.range(Math.floor(hours)).map((hour) => (
+function workloadBlocks(component: WorkloadComponent, hours: number): React.ReactNode {
+  const blocks: React.ReactNode[] = _.range(Math.floor(hours)).map((hour) => (
     <div key={hour} className={bgClass(component)} />
   ));
 
@@ -71,7 +71,7 @@ type Props = {
 };
 
 export default class ModuleWorkload extends React.PureComponent<Props> {
-  renderFallback(): Node {
+  renderFallback(): React.ReactNode {
     // Workload cannot be parsed - so we just display it without any visualization
     return (
       <div className="module-workload-container">

@@ -12,7 +12,6 @@ export function createModule(code: ModuleCode): Module {
     Department: 'Test Department',
     ModuleCredit: '4',
     AcadYear: '16/17',
-    CorsBiddingStats: [],
     ModmavenTree: { name: 'Test Module', children: [] },
   };
 }

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Mousetrap from 'mousetrap';
 import { groupBy, map } from 'lodash';
 
+import { State as StoreState } from "reducers";
 import { DARK_MODE } from 'types/settings';
 import { Mode, ThemeId } from 'types/settings';
 import themes from 'data/themes.json';
@@ -143,7 +144,7 @@ export class KeyboardShortcutsComponent extends React.PureComponent<Props, State
     }
   }
 
-  renderShortcut = (shortcut: Shortcut): Node => {
+  renderShortcut = (shortcut: Shortcut): React.ReactNode => {
     if (typeof shortcut === 'string') {
       const capitalized = shortcut.replace(/\b([a-z])/, (c) => c.toUpperCase());
       return <kbd key={shortcut}>{capitalized}</kbd>;
@@ -186,7 +187,7 @@ export class KeyboardShortcutsComponent extends React.PureComponent<Props, State
   }
 }
 
-const KeyboardShortcutsConnected = connect((state) => ({
+const KeyboardShortcutsConnected = connect((state: StoreState) => ({
   mode: state.settings.mode,
   theme: state.theme.id,
 }))(KeyboardShortcutsComponent);
