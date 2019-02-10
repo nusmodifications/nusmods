@@ -93,6 +93,8 @@ module.exports = {
     ],
 
     // We use type aliases for data types
-    '@typescript-eslint/prefer-interface': 'off'
+    '@typescript-eslint/prefer-interface': 'off',
+
+    '@typescript-eslint/no-explicit-any': WARN_IN_DEV,
   },
 };

@@ -21,13 +21,15 @@ function handleFatalError(e: Error): void {
   process.exitCode = 1;
 }
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 function run(fn: (...args: any[]) => Promise<any>) {
   return (...args: any[]) => fn(...args).catch(handleFatalError);
 }
+/* eslint-enable */
 
-const parameters = {
+const parameters: Record<string, yargs.Options> = {
   sem: {
-    choices: Semesters,
+    choices: Semesters.map(String),
   },
   year: {
     type: 'string',
@@ -43,14 +45,14 @@ const parameters = {
 
 /* eslint-disable no-await-in-loop */
 
-const commands = [
-  {
+// eslint-disable-next-line no-unused-expressions
+yargs
+  .command({
     command: 'test',
     describe: 'run some simple tests against the API to ensure things are set up correctly',
     handler: run(new TestApi(config.academicYear).run),
-  },
-
-  {
+  })
+  .command({
     command: 'departments [year]',
     aliases: ['department', 'faculty', 'faculties'],
     describe: 'download data for all active departments and faculties',
@@ -58,9 +60,8 @@ const commands = [
       year: parameters.year,
     },
     handler: run(({ year }) => new GetFacultyDepartment(year).run()),
-  },
-
-  {
+  })
+  .command({
     command: 'semester [year] <sem>',
     describe: 'download all data for the given semester',
     builder: {
@@ -72,9 +73,8 @@ const commands = [
       const modules = await new GetSemesterData(sem).run(organizations);
       logger.info(`Collected data for ${modules.length} modules`);
     }),
-  },
-
-  {
+  })
+  .command({
     command: 'venue [year] <sem>',
     aliases: ['venues'],
     describe: 'collate venue for given semester',
@@ -87,9 +87,8 @@ const commands = [
       const { venues } = await new CollateVenues(sem, year).run(modules);
       logger.info(`Collated ${size(venues)} venues`);
     }),
-  },
-
-  {
+  })
+  .command({
     command: 'combine [year]',
     describe: 'combine semester data for modules',
     builder: {
@@ -117,20 +116,12 @@ const commands = [
 
       await new CollateModules().run({ semesterData, aliases });
     }),
-  },
-
-  {
+  })
+  .command({
     command: 'all',
     describe: 'run all tasks in a single pipeline',
     handler: run(({ year }) => new DataPipeline(year).run()),
-  },
-];
-
-// @ts-ignore TODO: Fix this
-commands.forEach((command) => yargs.command(command));
-
-// eslint-disable-next-line no-unused-expressions
-yargs
+  })
   .demandCommand()
   .strict()
   .help().argv;

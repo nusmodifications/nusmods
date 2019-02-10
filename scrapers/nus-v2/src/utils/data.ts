@@ -62,16 +62,17 @@ export function removeEmptyValues<T>(object: T, keys: (keyof T)[]) {
  * Trim given values if they are strings
  * Mutates the input object
  */
-export function trimValues<T extends { [key: string]: any }>(object: T, keys: (keyof T)[]): T {
-  /* eslint-disable no-param-reassign */
+// Can't properly type this in TS without the use of any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function trimValues<T extends Record<string, any>>(object: T, keys: (keyof T)[]): T {
   for (const key of keys) {
     const value = object[key];
 
     if (typeof value === 'string') {
+      // eslint-disable-next-line no-param-reassign
       object[key] = value.trim();
     }
   }
-  /* eslint-enable */
 
   return object;
 }
