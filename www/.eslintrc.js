@@ -15,6 +15,7 @@ module.exports = {
     'prettier',
     'prettier/react',
     'prettier/@typescript-eslint',
+    'plugin:import/typescript',
   ],
   env: {
     browser: true,
@@ -30,7 +31,7 @@ module.exports = {
   settings: {
     'import/resolver': {
       webpack: {
-        config: 'webpack/webpack.config.js.common.js',
+        config: 'webpack/webpack.config.common.js',
       },
     },
   },
@@ -90,7 +91,9 @@ module.exports = {
       },
     ],
     'react/require-default-props': 'off',
+    'react/jsx-filename-extension': ['error', { "extensions": [".tsx", ".jsx"] }],
     'react/default-props-match-prop-types': ['error', { allowRequiredDefaults: true }],
+    'react/destructuring-assignment': 'warn',
     // TODO: Replace divs with buttons, but remove all button styling.
     'jsx-a11y/no-static-element-interactions': 'off',
     // The default option requires BOTH id and nesting, which is excessive,

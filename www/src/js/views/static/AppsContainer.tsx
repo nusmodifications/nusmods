@@ -16,7 +16,7 @@ type AppInfo = {
   url: string;
   repository_url?: string;
   icon_url: string;
-  tags: Array<string>;
+  tags: string[];
 };
 
 type AppEntryProps = {
@@ -26,7 +26,7 @@ type AppEntryProps = {
 type Props = {};
 
 type State = {
-  appsData: AppInfo | null | undefined;
+  appsData: AppInfo[] | null;
   isLoading: boolean;
   isError: boolean;
   errorMessage: string;
