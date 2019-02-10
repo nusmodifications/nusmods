@@ -12,7 +12,7 @@ import { VenuesContainerComponent } from './VenuesContainer';
 
 const venues = sortVenues(venueInfo);
 
-function createComponent(selectedVenue: Venue | null | undefined, search?: string) {
+function createComponent(selectedVenue?: Venue | null, search?: string) {
   const location = {
     search,
     pathname: venuePage(selectedVenue),

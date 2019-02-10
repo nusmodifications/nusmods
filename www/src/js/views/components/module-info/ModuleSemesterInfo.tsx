@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import React, { Component } from 'react';
 import _ from 'lodash';
 
@@ -65,7 +63,7 @@ export default class ModuleSemesterInfo extends React.Component<Props, State> {
   }
 
   timeslotChildren(): Map<string, Node> {
-    const semester = this.selectedSemester() || {};
+    const semester: Partial<SemesterData> = this.selectedSemester() || {};
     const { LecturePeriods: lectures = [], TutorialPeriods: tutorials = [] } = semester;
 
     // Create a mapping of timeslot to flags

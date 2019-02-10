@@ -6,7 +6,7 @@ import LoadingSpinner from 'views/components/LoadingSpinner';
 import ApiError from 'views/errors/ApiError';
 import { retryImport } from 'utils/error';
 
-const AsyncContributeContainer: React.React.ComponentType<{}> = Loadable({
+const AsyncContributeContainer: React.ComponentType<{}> = Loadable({
   loader: () =>
     retryImport(() => import(/* webpackChunkName: "contribute" */ './ContributeContainer')),
   loading: (props: LoadingProps) => {

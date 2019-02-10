@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import json2mq from 'json2mq';
 
 import { QueryObject } from 'utils/css';
@@ -9,9 +9,9 @@ type State = {
 };
 
 function makeResponsive<Props>(
-  WrappedComponent: React.React.ComponentType<Props>,
+  WrappedComponent: React.ComponentType<Props>,
   mediaQuery: string | QueryObject,
-): React.React.ComponentType<Pick<Props, Exclude<keyof Props, keyof State>>> {
+): React.ComponentType<Pick<Props, Exclude<keyof Props, keyof State>>> {
   const media = typeof mediaQuery === 'string' ? mediaQuery : json2mq(mediaQuery);
 
   return class extends React.Component<Props, State> {

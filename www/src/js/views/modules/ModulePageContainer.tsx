@@ -1,5 +1,5 @@
 import { RouteComponentProps, Match } from 'react-router-dom';
-import { $AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 
 import * as React from 'react';
 import { connect } from 'react-redux';
@@ -29,7 +29,7 @@ type Props = RouteComponentProps & {
 };
 
 type State = {
-  ModulePageContent: React | null | undefined.React.ComponentType<ModulePageContentProp>;
+  ModulePageContent: React.ComponentType<ModulePageContentProp> | null;
   error?: any;
 };
 
@@ -78,7 +78,7 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
       .catch(this.handleFetchError);
   }
 
-  handleFetchError = (error: $AxiosError<any>) => {
+  handleFetchError = (error: AxiosError) => {
     this.setState({ error });
     captureException(error);
   };

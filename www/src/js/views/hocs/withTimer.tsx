@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { differenceInMilliseconds } from 'date-fns';
 import { wrapComponentName } from 'utils/react';
 import { forceTimer } from 'utils/debug';
@@ -12,11 +12,11 @@ function getCurrentTime() {
 }
 
 function withTimer<Props>(
-  WrappedComponent: React.React.ComponentType<Props>,
+  WrappedComponent: React.ComponentType<Props>,
   intervalInMs: number = 60 * 1000,
-): React.React.ComponentType<Pick<Props, Exclude<keyof Props, keyof TimerData>>> {
+): React.ComponentType<Pick<Props, Exclude<keyof Props, keyof TimerData>>> {
   return class extends React.Component<Props, TimerData> {
-    intervalId: IntervalID;
+    intervalId: number;
 
     static displayName = wrapComponentName(WrappedComponent, withTimer.name);
 

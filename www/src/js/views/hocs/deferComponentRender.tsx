@@ -12,8 +12,8 @@ type State = {
  * https://medium.com/@paularmstrong/twitter-lite-and-high-performance-react-progressive-web-apps-at-scale-d28a00e780a3
  */
 function deferComponentRender<Props>(
-  WrappedComponent: React.React.ComponentType<Props>,
-): React.React.ComponentType<Pick<Props, Exclude<keyof Props, keyof State>>> {
+  WrappedComponent: React.ComponentType<Props>,
+): React.ComponentType<Pick<Props, Exclude<keyof Props, keyof State>>> {
   return class extends React.Component<Props, State> {
     static displayName = wrapComponentName(WrappedComponent, deferComponentRender.name);
 
