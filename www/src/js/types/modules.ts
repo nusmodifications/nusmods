@@ -64,17 +64,17 @@ export type RawLesson = {
 // Semester-specific information of a module.
 export type SemesterData = {
   readonly ExamDate?: string;
-  readonly LecturePeriods: Array<string>;
+  readonly LecturePeriods: string[];
   readonly Semester: Semester;
-  readonly Timetable: Array<RawLesson>;
-  readonly TutorialPeriods?: Array<string>;
+  readonly Timetable: RawLesson[];
+  readonly TutorialPeriods?: string[];
 };
 
 // Recursive definition for walking a module tree
 export type Tree = {
   readonly name: string;
   // Tree[] will result in infinite loop
-  readonly children: Array<Tree>;
+  readonly children: Tree[];
 };
 
 // Information for a module for a particular academic year.
@@ -84,17 +84,17 @@ export type Module = {
   AcadYear: AcadYear;
   Corequisite?: string;
   Department: Department;
-  History: Array<SemesterData>;
+  History: SemesterData[];
   ModuleCode: ModuleCode;
   ModuleCredit: string;
   ModuleDescription?: string;
   ModuleTitle: ModuleTitle;
   Preclusion?: string;
   Prerequisite?: string;
-  Types: Array<string>;
+  Types: string[];
   Workload?: string;
   ModmavenTree: Tree;
-  LockedModules?: Array<ModuleCode>;
+  LockedModules?: ModuleCode[];
 };
 
 export type ModuleWithColor = Module & {

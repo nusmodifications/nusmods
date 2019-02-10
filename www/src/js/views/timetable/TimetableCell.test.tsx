@@ -25,7 +25,7 @@ type Props = {
 };
 
 describe(TimetableCell, () => {
-  function make(additionalProps: Props = {}) {
+  function make(additionalProps: Partial<Props> = {}) {
     const props = {
       onHover: jest.fn(),
       showTitle: false,

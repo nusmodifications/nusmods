@@ -46,12 +46,12 @@ import { breakpointUp, queryMatch } from 'utils/css';
 import { captureException } from 'utils/error';
 import styles from './ModuleFinderContainer.scss';
 
-type Props = {
+export type Props = {
   searchTerm: string;
   resetModuleFinder: () => any;
 } & RouteComponentProps;
 
-type State = {
+export type State = {
   loading: boolean;
   page: PageRange;
   modules: Module[];
@@ -88,7 +88,10 @@ export function mergePageRange(prev: PageRange, diff: PageRangeDiff): PageRange 
 
 export class ModuleFinderContainerComponent extends React.Component<Props, State> {
   history: HistoryDebouncer;
+
   unlisten: () => void;
+
+  state: State;
 
   constructor(props: Props) {
     super(props);

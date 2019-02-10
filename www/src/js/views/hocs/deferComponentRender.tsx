@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { defer, wrapComponentName } from 'utils/react';
+import { Omit } from 'types/utils';
 
 type State = {
   shouldRender: boolean;
@@ -13,7 +14,7 @@ type State = {
  */
 function deferComponentRender<Props>(
   WrappedComponent: React.ComponentType<Props>,
-): React.ComponentType<Pick<Props, Exclude<keyof Props, keyof State>>> {
+): React.ComponentType<Omit<Props, keyof State>> {
   return class extends React.Component<Props, State> {
     static displayName = wrapComponentName(WrappedComponent, deferComponentRender.name);
 

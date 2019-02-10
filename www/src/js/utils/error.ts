@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/browser';
 import { each, size } from 'lodash';
 import { retry } from 'utils/promise';
 
-export function captureException(error: any, extra: Object = {}) {
+export function captureException(error: any, extra: any = {}) {
   Sentry.withScope((scope) => {
     each(extra, (data, key) => {
       scope.setExtra(key, extra[key]);

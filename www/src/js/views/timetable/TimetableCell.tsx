@@ -13,7 +13,7 @@ import styles from './TimetableCell.scss';
 type Props = {
   showTitle: boolean;
   lesson: ModifiableLesson;
-  style?: Object;
+  style?: React.CSSProperties;
   onClick?: () => void;
   onHover?: (hoverLesson?: HoverLesson) => void;
   hoverLesson?: HoverLesson | null;

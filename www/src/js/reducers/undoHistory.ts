@@ -12,7 +12,7 @@ export type UndoHistoryConfig = {
 
 export type UndoHistoryState = {
   past: Object[];
-  present: Object | null | undefined;
+  present: Object | null;
   future: Object[];
 };
 

@@ -1,6 +1,4 @@
 import * as React from 'react';
-
-import React, { PureComponent } from 'react';
 import * as Sentry from '@sentry/browser';
 import classnames from 'classnames';
 
@@ -60,7 +58,11 @@ export default class ErrorPage extends React.PureComponent<Props> {
 
         {showRefresh && (
           <Online>
-            <button className="btn btn-primary" onClick={() => window.location.reload(true)}>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => window.location.reload(true)}
+            >
               Refresh
             </button>
           </Online>

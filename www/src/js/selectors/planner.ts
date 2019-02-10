@@ -1,6 +1,5 @@
 import { flatMap, sortBy, values } from 'lodash';
-import { ModuleCode, Semester } from 'types/modules';
-import { Semesters } from 'types/modules';
+import { ModuleCode, Semesters, Semester } from 'types/modules';
 import { Conflict, ExamClashes, PlannerModuleInfo, PlannerModulesWithInfo } from 'types/views';
 import { CustomModuleData, ModuleCodeMap, ModuleTime } from 'types/reducers';
 import { State } from 'reducers';
@@ -41,7 +40,7 @@ export function filterModuleForSemester(
  * the yellow triangle in the UI.
  *
  * All conflict checks below are higher order functions returning
- * a (ModuleCode) => Conflict | null | undefined which can be passed into the last parameter
+ * a (ModuleCode) => Conflict | null which can be passed into the last parameter
  * of mapModuleInfo
  */
 
@@ -50,7 +49,7 @@ export function filterModuleForSemester(
  */
 const prereqConflict = (modulesMap: ModulesMap, modulesTaken: Set<ModuleCode>) => (
   moduleCode: ModuleCode,
-): Conflict | null | undefined => {
+): Conflict | null => {
   const moduleInfo = modulesMap[moduleCode];
   if (!moduleInfo) return null;
 
@@ -88,11 +87,9 @@ const semesterConflict = (moduleCodeMap: ModuleCodeMap, semester: Semester) => (
  * calculates clashes for all modules in one semester, so it would be wasteful to rerun the exam
  * clash function for every call to this function.
  */
-const examConflict = (clashes: ExamClashes) => (
-  moduleCode: ModuleCode,
-): Conflict | null | undefined => {
+const examConflict = (clashes: ExamClashes) => (moduleCode: ModuleCode): Conflict | null => {
   const clash = values(clashes).find((modules) =>
-    modules.find((module) => module.ModuleCode === moduleCode),
+    Boolean(modules.find((module) => module.ModuleCode === moduleCode)),
   );
 
   if (clash) {
@@ -106,7 +103,7 @@ function mapModuleToInfo(
   moduleCode: ModuleCode,
   modulesMap: ModulesMap,
   customModules: CustomModuleData,
-  conflictChecks: Array<(moduleCode: ModuleCode) => Conflict> | null | undefined,
+  conflictChecks: ((moduleCode: ModuleCode) => Conflict | null)[],
 ): PlannerModuleInfo {
   // Only continue checking until the first conflict is found
   let conflict = null;

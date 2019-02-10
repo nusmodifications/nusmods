@@ -1,4 +1,5 @@
-import { RouterHistory } from 'react-router-dom';
+/* eslint-disable import/no-extraneous-dependencies */
+import { History } from 'history';
 
 import * as React from 'react';
 import axios from 'axios';
@@ -6,16 +7,21 @@ import { ShallowWrapper, shallow } from 'enzyme';
 import _ from 'lodash';
 import qs from 'query-string';
 
-import { FilterGroupId, PageRange } from 'types/views';
+import { PageRange } from 'types/views';
 
 import mockDom from 'test-utils/mockDom';
 import createHistory from 'test-utils/createHistory';
 import { nextTick, waitFor } from 'test-utils/async';
 import FilterGroup from 'utils/filters/FilterGroup';
-import { ModuleFinderContainerComponent, mergePageRange } from './ModuleFinderContainer';
+import {
+  ModuleFinderContainerComponent,
+  mergePageRange,
+  Props,
+  State,
+} from './ModuleFinderContainer';
 
 type ActiveFilters = { [filterGroupId: string]: string[] };
-type Container = { component: ShallowWrapper; history: RouterHistory };
+type Container = { component: ShallowWrapper<Props, State>; history: History };
 
 describe(ModuleFinderContainerComponent, () => {
   beforeEach(() => {
@@ -29,8 +35,8 @@ describe(ModuleFinderContainerComponent, () => {
       .spyOn(axios, 'get')
       .mockImplementation((url) =>
         url.includes('facultyDepartments')
-          ? Promise.resolve({ data: {} })
-          : Promise.resolve({ data: [] }),
+          ? Promise.resolve({ data: {} } as any)
+          : Promise.resolve({ data: [] } as any),
       );
   });
 
@@ -50,7 +56,8 @@ describe(ModuleFinderContainerComponent, () => {
     };
 
     await nextTick();
-    return container;
+
+    return container as Container;
   }
 
   function extractQueryString(location: { search: string } | string): string {
@@ -75,7 +82,7 @@ describe(ModuleFinderContainerComponent, () => {
     return active;
   }
 
-  function interceptRouteChanges(history: RouterHistory): string[] {
+  function interceptRouteChanges(history: History): string[] {
     const calls = [];
     jest.spyOn(history, 'push').mockImplementation((location) => calls.push(location));
     jest.spyOn(history, 'replace').mockImplementation((location) => calls.push(location));
@@ -162,7 +169,7 @@ describe(ModuleFinderContainerComponent, () => {
     test('should clear query when clicked', async () => {
       const container = await createContainer();
 
-      const instance = container.component.instance();
+      const instance = container.component.instance() as ModuleFinderContainerComponent;
       instance.onFilterChange(instance.state.filterGroups.level.toggle('1'));
       instance.onFilterChange(instance.state.filterGroups.mc.toggle('0'));
 

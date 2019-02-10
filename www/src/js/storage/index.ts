@@ -9,7 +9,7 @@ function setItem(key: string, value: any) {
   } catch (e) {
     // Calculate used size and attach it to the error report. This is diagnostics
     // for https://sentry.io/nusmods/v3/issues/432778991/
-    const usedSpace: Object = {};
+    const usedSpace: Record<string, number> = {};
     try {
       for (let i = 0; i < localStorage.length; i++) {
         const k = localStorage.key(i);

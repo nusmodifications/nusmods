@@ -31,6 +31,7 @@ function make(props = {}) {
     ...createHistory(),
     ...props,
   };
+
   return shallow(<SearchContainerComponent {...allProps} />);
 }
 
@@ -46,12 +47,12 @@ test('fetches venue list', () => {
 });
 
 test('shows no choices when search is too short', () => {
-  const instance = make().instance();
+  const instance = make().instance() as SearchContainerComponent;
   expect(instance.getResults('1')).toBeNull();
 });
 
 test('passes down search tokens', () => {
-  const instance = make().instance();
+  const instance = make().instance() as SearchContainerComponent;
   expect(instance.getResults('ab').tokens).toEqual(['ab']);
   expect(instance.getResults('a b').tokens).toEqual(['a', 'b']);
   expect(instance.getResults('a, b').tokens).toEqual(['a', 'b']);
@@ -59,7 +60,7 @@ test('passes down search tokens', () => {
 });
 
 test('shows at most 10 choices when there are many venues and modules', () => {
-  const instance = make().instance();
+  const instance = make().instance() as SearchContainerComponent;
   const { modules, venues } = instance.getResults('1 ');
   expect(modules).toHaveLength(6);
   expect(venues).toHaveLength(4);
@@ -69,21 +70,21 @@ test('shows at most 10 choices when there are many venues', () => {
   const instance = make({
     moduleList: MODULES.slice(0, 10),
     venueList: VENUES.slice(0, 4),
-  }).instance();
+  }).instance() as SearchContainerComponent;
   const { modules, venues } = instance.getResults('1 ');
   expect(modules).toHaveLength(6);
   expect(venues).toHaveLength(4);
 });
 
 test('shows at most 10 choices when there are many modules', () => {
-  const instance = make({ venueList: VENUES.slice(0, 2) }).instance();
+  const instance = make({ venueList: VENUES.slice(0, 2) }).instance() as SearchContainerComponent;
   const { modules, venues } = instance.getResults('1 ');
   expect(modules).toHaveLength(8);
   expect(venues).toHaveLength(2);
 });
 
 test('shows all results when there are few', () => {
-  const instance = make().instance();
+  const instance = make().instance() as SearchContainerComponent;
   const { modules, venues } = instance.getResults('AA');
   expect(modules).toHaveLength(1);
   expect(venues).toHaveLength(1);
@@ -92,7 +93,7 @@ test('shows all results when there are few', () => {
 test('show many results if the search only returns results of one type', () => {
   const instance = make({
     venueList: _.range(100).map((n) => `Venue ${n}`),
-  }).instance();
+  }).instance() as SearchContainerComponent;
 
   let { modules, venues } = instance.getResults('1010');
   expect(modules).toHaveLength(70);

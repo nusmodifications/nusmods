@@ -3,6 +3,7 @@ import json2mq from 'json2mq';
 
 import { QueryObject } from 'utils/css';
 import { wrapComponentName } from 'utils/react';
+import { Omit } from 'types/utils';
 
 type State = {
   matchBreakpoint: boolean;
@@ -11,7 +12,7 @@ type State = {
 function makeResponsive<Props>(
   WrappedComponent: React.ComponentType<Props>,
   mediaQuery: string | QueryObject,
-): React.ComponentType<Pick<Props, Exclude<keyof Props, keyof State>>> {
+): React.ComponentType<Omit<Props, keyof State>> {
   const media = typeof mediaQuery === 'string' ? mediaQuery : json2mq(mediaQuery);
 
   return class extends React.Component<Props, State> {

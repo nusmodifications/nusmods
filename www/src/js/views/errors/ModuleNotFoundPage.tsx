@@ -13,10 +13,13 @@ import LoadingSpinner from 'views/components/LoadingSpinner';
 import { availableArchive, isArchiveLoading } from 'selectors/timetables';
 import { moduleArchive } from 'views/routes/paths';
 import styles from './ErrorPage.scss';
+import { State } from '../../reducers';
 
-type Props = {
+type OwnProps = {
   moduleCode: ModuleCode;
+};
 
+type Props = OwnProps & {
   isLoading: boolean;
   availableArchive: string[];
   fetchModuleArchive: (str: string) => Promise<any>;
@@ -92,7 +95,11 @@ export class ModuleNotFoundPageComponent extends React.PureComponent<Props> {
             </p>
 
             <div className={styles.buttons}>
-              <button className="btn btn-outline-primary" onClick={() => Sentry.showReportDialog()}>
+              <button
+                type="button"
+                className="btn btn-outline-primary"
+                onClick={() => Sentry.showReportDialog()}
+              >
                 {moduleCode} should be here
               </button>
               <Link className="btn btn-primary" to="/">
@@ -107,7 +114,7 @@ export class ModuleNotFoundPageComponent extends React.PureComponent<Props> {
 }
 
 export default connect(
-  (state, ownProps) => ({
+  (state: State, ownProps: OwnProps) => ({
     isLoading: isArchiveLoading(state, ownProps.moduleCode),
     availableArchive: availableArchive(state, ownProps.moduleCode),
   }),

@@ -1,7 +1,8 @@
-
+import * as React from 'react';
 import { differenceInMilliseconds } from 'date-fns';
 import { wrapComponentName } from 'utils/react';
 import { forceTimer } from 'utils/debug';
+import { Omit } from 'types/utils';
 
 export type TimerData = {
   currentTime: Date;
@@ -14,7 +15,7 @@ function getCurrentTime() {
 function withTimer<Props>(
   WrappedComponent: React.ComponentType<Props>,
   intervalInMs: number = 60 * 1000,
-): React.ComponentType<Pick<Props, Exclude<keyof Props, keyof TimerData>>> {
+): React.ComponentType<Omit<Props, keyof TimerData>> {
   return class extends React.Component<Props, TimerData> {
     intervalId: number;
 
@@ -25,7 +26,7 @@ function withTimer<Props>(
     };
 
     componentDidMount() {
-      this.intervalId = setInterval(
+      this.intervalId = window.setInterval(
         () => this.setState({ currentTime: getCurrentTime() }),
         intervalInMs,
       );

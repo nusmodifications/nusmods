@@ -190,16 +190,14 @@ describe('stateReconciler', () => {
     lessons: oldLessons,
     colors: {
       [1]: {
-        CS1010S: '1',
+        CS1010S: 1,
       },
       [2]: {
-        CS3217: '2',
+        CS3217: 2,
       },
     },
     hidden: {
-      [1]: {
-        CS1010S: '1',
-      },
+      [1]: ['CS1010S'],
     },
     academicYear: config.academicYear,
     archive: oldArchive,
