@@ -1,7 +1,7 @@
 import bunyan from 'bunyan';
 import { ApiError } from '../../utils/errors';
 
-/* eslint-disable import/prefer-default-export */
+/* eslint-disable import/prefer-default-export, @typescript-eslint/no-explicit-any */
 
 const defaultErrorSerializer = bunyan.stdSerializers.err;
 

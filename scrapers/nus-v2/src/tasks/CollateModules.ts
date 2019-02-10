@@ -23,7 +23,7 @@ export function mergeAliases(aliases: ModuleAliases[]): { [moduleCode: string]: 
   // Returning undefined causes mergeWith to use the original merge
 
   /* eslint-disable consistent-return */
-  // @ts-ignore
+  // @ts-ignore mergeWith allows multiple objects to be merged, but the libdef doesn't
   const merged: ModuleAliases = mergeWith(...aliases, (src, dest) => {
     if (src && dest) return union(src, dest);
   });

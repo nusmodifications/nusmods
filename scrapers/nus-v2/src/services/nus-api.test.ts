@@ -16,7 +16,6 @@ afterEach(() => {
 describe(callApi, () => {
   test('should return data if everything is okay', async () => {
     mockedAxios.post.mockResolvedValue(
-      // @ts-ignore
       mockResponse({ code: '00000', msg: '', data: 'Turn down for whaaaaat?' }),
     );
 
@@ -26,7 +25,6 @@ describe(callApi, () => {
 
   test('should throw auth error', async () => {
     mockedAxios.post.mockResolvedValue(
-      // @ts-ignore
       mockResponse({ code: '10000', msg: 'Incorrect user key', data: [] }),
     );
 

@@ -21,11 +21,11 @@ export type ModuleInfoMapped = ModuleInfo & {
  */
 export type SemesterModule = Omit<Module, 'SemesterData' | 'PrereqTree' | 'FulfillRequirements'>;
 
-export interface SemesterModuleData {
+export type SemesterModuleData = {
   ModuleCode: ModuleCode;
   Module: SemesterModule;
   SemesterData: SemesterData;
-}
+};
 
 export type ModuleWithoutTree = Omit<Module, 'PrereqTree'>;
 
@@ -34,28 +34,28 @@ export type LessonWithModuleCode = RawLesson & {
   ModuleCode: ModuleCode;
 };
 
-export interface ModuleAliases {
+export type ModuleAliases = {
   [moduleCode: string]: Set<ModuleCode>;
-}
+};
 
 /**
  * The exam info part of semester data
  */
-export interface ExamInfo {
+export type ExamInfo = {
   ExamDate: string;
   ExamDuration: number;
-}
+};
 
-export interface ExamInfoMap {
+export type ExamInfoMap = {
   [moduleCode: string]: ExamInfo;
-}
+};
 
 /**
  * Used to map faculty and department names to their codes returned by the API
  */
-export interface FacultyCodeMap {
+export type FacultyCodeMap = {
   [code: string]: string;
-}
-export interface DepartmentCodeMap {
+};
+export type DepartmentCodeMap = {
   [code: string]: string;
-}
+};

@@ -1,7 +1,7 @@
 import path from 'path';
 import * as fs from 'fs-extra';
 
-export interface Config {
+export type Config = {
   appKey: string;
   studentKey: string;
 
@@ -17,7 +17,7 @@ export interface Config {
 
   // Root folder for data
   dataPath: string;
-}
+};
 
 const env = fs.readJSONSync(path.join(__dirname, '../env.json'));
 

@@ -7,13 +7,15 @@ import * as Sentry from '@sentry/node';
 import { each, pick } from 'lodash';
 import { Stream } from 'bunyan';
 
-interface BunyanRecord {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+type BunyanRecord = {
   msg: string;
   level: number;
   err?: Error;
   code?: string;
   signal?: number;
-}
+};
 
 /**
  * Convert Bunyan level number to Sentry level label.
@@ -52,13 +54,13 @@ function deserializeError(data: any) {
   return error;
 }
 
-interface StreamConfig {
+type StreamConfig = {
   /** Array of properties to turn into tags */
   tags?: string[];
 
   /** Array of properties to turn into extra data */
   extra?: string[];
-}
+};
 
 export default function getSentryStream(config: StreamConfig = {}): Stream {
   const tagProps = config.tags || [];

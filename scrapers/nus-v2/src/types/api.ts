@@ -6,33 +6,33 @@
 
 // AcademicGrp and AcademicOrg use abbreviation to avoid clashing with the
 // name of the field when destructuring
-export interface AcademicGrp {
+export type AcademicGrp = {
   EffectiveStatus: string;
   AcademicGroup: string;
   DescriptionShort: string;
   Description: string;
   EffectiveDate: string;
-}
+};
 
-export interface AcademicOrg {
+export type AcademicOrg = {
   EffectiveStatus: string;
   DescriptionShort: string;
   Description: string;
   EffectiveDate: string;
   AcademicOrganisation: string;
-}
+};
 
-export interface ModuleAcademicOrganisation {
+export type ModuleAcademicOrganisation = {
   Code: string;
   Description: string;
-}
+};
 
-export interface ModuleAcademicGroup {
+export type ModuleAcademicGroup = {
   Code: string;
   Description: string;
-}
+};
 
-export interface ModuleInfo {
+export type ModuleInfo = {
   Term: string;
   AcademicOrganisation: ModuleAcademicOrganisation;
   AcademicGroup: ModuleAcademicGroup;
@@ -57,9 +57,9 @@ export interface ModuleInfo {
 
   // I'm not sure what this is used for
   ModuleAttributes: any;
-}
+};
 
-export interface TimetableLesson {
+export type TimetableLesson = {
   term: string;
   room: string | null;
   numweeks: number;
@@ -73,9 +73,9 @@ export interface TimetableLesson {
   modgrp: string;
   deptfac: string;
   day: string;
-}
+};
 
-export interface ModuleExam {
+export type ModuleExam = {
   term: string;
   start_time: string;
   acad_org: string;
@@ -83,4 +83,4 @@ export interface ModuleExam {
   end_time: string;
   duration: number;
   exam_date: string;
-}
+};

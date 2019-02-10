@@ -8,8 +8,7 @@ export function flattenTree(tree: PrereqTree | PrereqTree[]): string[] {
     return [tree];
   }
 
-  // @ts-ignore
   return Array.isArray(tree)
     ? flatMap(tree, flattenTree)
-    : flatMap(Object.values(tree), flattenTree);
+    : flatMap(Object.values(tree), (t) => flattenTree(t as PrereqTree));
 }
