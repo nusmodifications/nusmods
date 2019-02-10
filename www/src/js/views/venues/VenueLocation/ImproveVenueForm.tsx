@@ -129,10 +129,7 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
 
   geolocate = () => {
     navigator.geolocation.getCurrentPosition((position) =>
-      this.updateLocation({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      }),
+      this.updateLocation([position.coords.latitude, position.coords.longitude]),
     );
   };
 

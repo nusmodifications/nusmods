@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import styles from './CurrentTimeIndicator.scss';
 
 type Props = {
-  style: Object;
+  style: React.CSSProperties;
 };
 
 function CurrentTimeIndicator(props: Props) {

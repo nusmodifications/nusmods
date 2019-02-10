@@ -218,7 +218,7 @@ export default class ModulePageContent extends React.Component<Props, State> {
 
             <section className={styles.section} id="timetable">
               <h2 className={styles.sectionHeading}>Timetable</h2>
-              <LessonTimetable semestersOffered={semesters} semesterData={module.History} />
+              <LessonTimetable semesterData={module.History} />
             </section>
 
             <section className={styles.section} id={SIDE_MENU_ITEMS.reviews}>

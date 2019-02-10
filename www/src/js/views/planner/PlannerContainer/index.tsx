@@ -1,11 +1,10 @@
-
+import * as React from 'react';
 import Loadable, { LoadingComponentProps } from 'react-loadable';
 
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import ApiError from 'views/errors/ApiError';
-import { Props } from './PlannerContainer';
 
-const AsyncTodayContainer = Loadable<Props>({
+const AsyncTodayContainer = Loadable({
   loader: () => import(/* webpackChunkName: "planner" */ './PlannerContainer'),
   loading: (props: LoadingComponentProps) => {
     if (props.error) {

@@ -37,7 +37,7 @@ export function HeaderDate({
   );
 }
 
-export default function(props: Props) {
+export default function DayHeader(props: Props) {
   const Icon = props.forecast ? getWeatherIcon(props.forecast) : null;
 
   const dates = castArray(props.date);

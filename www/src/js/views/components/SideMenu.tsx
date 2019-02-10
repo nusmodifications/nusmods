@@ -11,8 +11,8 @@ import styles from './SideMenu.scss';
 
 type Props = {
   children: React.ReactNode;
-  openIcon: React.ReactNode;
-  closeIcon: React.ReactNode;
+  openIcon?: React.ReactNode;
+  closeIcon?: React.ReactNode;
   isOpen: boolean;
   matchBreakpoint: boolean;
   toggleMenu: (boolean: boolean) => void;

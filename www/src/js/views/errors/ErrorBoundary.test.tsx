@@ -14,7 +14,7 @@ jest.mock(
 
 const error = new Error('Test error'); // To be used to compare with error caught by ErrorBoundary
 // Stateless React component which throws error
-function ThrowsError() {
+function ThrowsError(prop: any): null {
   throw error;
 }
 

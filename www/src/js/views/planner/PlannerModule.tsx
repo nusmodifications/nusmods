@@ -63,7 +63,7 @@ const ModuleMenu = React.memo((props: MenuProps) => {
           <button
             className={classnames('btn close')}
             type="button"
-            onClick={toggleMenu}
+            onClick={() => toggleMenu()}
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded={isOpen}

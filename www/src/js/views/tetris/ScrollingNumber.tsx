@@ -61,7 +61,6 @@ export default class ScrollingNumber extends React.PureComponent<Props, State> {
   render() {
     // Children is ignored since that represents the actual value
     const { children, tagName, ...otherProps } = this.props;
-    const Tag = tagName;
-    return <Tag {...otherProps}>{this.state.currentValue}</Tag>;
+    return React.createElement(tagName, otherProps, children);
   }
 }

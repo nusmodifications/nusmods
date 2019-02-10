@@ -47,9 +47,9 @@ const TRANSITION_DURATION = 250;
  * the new notification.
  */
 export class NotificationComponent extends React.Component<Props, State> {
-  openTimeoutId: number;
+  openTimeoutId: NodeJS.Timer;
 
-  closeTimeoutId: number;
+  closeTimeoutId: NodeJS.Timer;
 
   constructor(props: Props) {
     super(props);
@@ -86,7 +86,7 @@ export class NotificationComponent extends React.Component<Props, State> {
     }
   }
 
-  onTransitionEnd = (evt: TransitionEvent) => {
+  onTransitionEnd = (evt: React.TransitionEvent<HTMLDivElement>) => {
     if (evt.target !== this.element.current) return;
 
     // the event ran, so the failsafe can be cancelled
@@ -156,7 +156,7 @@ export class NotificationComponent extends React.Component<Props, State> {
                   className="mdc-snackbar__action-button"
                   onClick={() => {
                     this.setState({ actionClicked: true });
-                    const { handler } = shownNotification.action || {};
+                    const handler = shownNotification.action.handler;
                     // Don't auto-close if handler returns false
                     if (handler && handler() === false) return;
                     this.props.popNotification();

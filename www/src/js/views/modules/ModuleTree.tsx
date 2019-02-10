@@ -13,13 +13,13 @@ type Props = {
   module: Module;
 };
 
-type TreeDisplay = {
+interface TreeDisplay {
   layer: number;
   name: string;
   isPrereq?: boolean;
   // TreeDisplay[] will result in infinite loop
-  branches: Array<TreeDisplay> | null | undefined;
-};
+  branches?: Array<TreeDisplay>;
+}
 
 function isConditionalNode(name) {
   return name === 'or' || name === 'and';

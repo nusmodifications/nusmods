@@ -48,7 +48,6 @@ describe(TimetableContainerComponent, () => {
           timetable={timetable}
           colors={{}}
           modules={modules}
-          isV2TimetableMigrated
           selectSemester={selectSemester}
           setTimetable={setTimetable}
           fetchTimetableModules={fetchTimetableModules}

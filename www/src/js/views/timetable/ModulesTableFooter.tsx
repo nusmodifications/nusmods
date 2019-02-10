@@ -5,14 +5,14 @@ import { connect } from 'react-redux';
 
 import { State } from 'reducers';
 import { ModuleTableOrder } from 'types/views';
-import { Module, ModuleWithColor, Semester } from 'types/modules';
+import { Module, Semester } from 'types/modules';
 import { setModuleTableOrder } from 'actions/settings';
 import { getModuleExamDate, renderMCs } from 'utils/modules';
 import styles from './TimetableModulesTable.scss';
 
 type ModuleOrder = {
   label: string;
-  orderBy: (moduleWithColor: ModuleWithColor, semester: Semester) => string | number;
+  orderBy: (module: Module, semester: Semester) => string | number;
 };
 
 export const moduleOrders: { [moduleTableOrder: string]: ModuleOrder } = {
@@ -26,7 +26,7 @@ export const moduleOrders: { [moduleTableOrder: string]: ModuleOrder } = {
 
 type Props = {
   moduleTableOrder: ModuleTableOrder;
-  modules: ModuleWithColor[];
+  modules: Module[];
 
   setModuleTableOrder: (moduleTableOrder: ModuleTableOrder) => void;
 };

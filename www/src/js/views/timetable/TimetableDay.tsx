@@ -29,7 +29,7 @@ function TimetableDay(props: Props) {
   const columns = props.endingIndex - props.startingIndex;
   const size = 100 / (columns / 4);
 
-  const rowStyle: Object = {
+  const rowStyle: React.CSSProperties = {
     // Firefox defaults the second value (width) to auto if not specified
     backgroundSize: `${size}% ${size}%`,
   };

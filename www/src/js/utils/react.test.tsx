@@ -42,8 +42,8 @@ describe('wrapComponentName()', () => {
   class TestComponentWithDisplayName extends React.Component<{}> {
     static displayName = 'TestComponentName';
   }
-  function FunctionalComponent() {}
-  function FunctionalComponentWithDisplayName() {}
+  const FunctionalComponent = () => null;
+  const FunctionalComponentWithDisplayName = () => null;
   FunctionalComponentWithDisplayName.displayName = 'FunctionalComponentDisplayName';
 
   test('should infer component name from provided component', () => {

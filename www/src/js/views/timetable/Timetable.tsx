@@ -2,7 +2,7 @@ import * as React from 'react';
 import { values, flattenDeep, noop } from 'lodash';
 import classnames from 'classnames';
 
-import { ColoredLesson } from "types/modules";
+import { ColoredLesson } from 'types/modules';
 import { HoverLesson, TimetableArrangement } from 'types/timetables';
 
 import {
@@ -21,10 +21,10 @@ import TimetableDay from './TimetableDay';
 
 type Props = {
   lessons: TimetableArrangement;
-  isVerticalOrientation: boolean;
-  isScrolledHorizontally: boolean;
-  showTitle: boolean;
-  onModifyCell: (Lesson) => void;
+  isVerticalOrientation?: boolean;
+  isScrolledHorizontally?: boolean;
+  showTitle?: boolean;
+  onModifyCell?: (Lesson) => void;
 };
 
 type State = {

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import ScrollSpy from 'react-scrollspy';
 import { shallow } from 'enzyme';
-import { noop } from 'lodash';
 
 import { Module } from 'types/modules';
 import { TimetableConfig } from 'types/timetables';
@@ -15,9 +14,6 @@ describe(ModulePageContent, () => {
     return shallow(
       <ModulePageContent
         module={module}
-        timetables={timetables}
-        addModule={noop}
-        removeModule={noop}
       />,
     );
   }
