@@ -1,28 +1,53 @@
 const warnInDevelopment = process.env.NODE_ENV === 'production' ? 'error' : 'warn';
 
 module.exports = {
-  parser: 'babel-eslint',
+  parser: '@typescript-eslint/parser',
+
+  parserOptions: {
+    project: './tsconfig.json',
+  },
+
   root: true,
-  extends: ['airbnb', 'prettier', 'prettier/react'],
+  extends: [
+    'airbnb',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:import/typescript',
+    'prettier',
+    'prettier/react',
+    'prettier/@typescript-eslint',
+  ],
   env: {
     browser: true,
   },
-  plugins: ['prettier', 'import', 'jsx-a11y', 'react'],
+  plugins: [
+    '@typescript-eslint',
+    'prettier',
+    'import',
+    'jsx-a11y',
+    'react',
+  ],
+
   settings: {
     'import/resolver': {
       webpack: {
-        config: 'webpack/webpack.config.common.js',
+        config: 'webpack/webpack.config.js.common.js',
       },
     },
   },
+
   overrides: [
     {
       files: ['**/*.test.{js,ts,js,tsx}', '**/__mocks__/**/*.{js,ts,js,tsx}'],
       env: {
         jest: true,
       },
+      rules: {
+        // any is needed for mocking, amongst other things
+        '@typescript-eslint/no-explicit-any': 'off',
+      },
     },
   ],
+
   rules: {
     'prettier/prettier': warnInDevelopment,
 
@@ -93,5 +118,30 @@ module.exports = {
     ],
     // Let git handle the linebreaks instead.
     'linebreak-style': 'off',
+
+
+    // Rule is buggy when used with TypeScript
+    // TODO: Remove this when https://github.com/benmosher/eslint-plugin-import/issues/1282 is resolved
+    'import/named': 'off',
+
+    // Makes the code unnecessarily verbose
+    '@typescript-eslint/explicit-member-accessibility': 'off',
+
+    // Makes the code unnecessarily verbose
+    '@typescript-eslint/explicit-function-return-type': 'off',
+
+
+    '@typescript-eslint/no-unused-vars': [
+      'warn',
+      {
+        ignoreRestSiblings: true,
+      },
+    ],
+
+
+    // We use type aliases for data types
+    '@typescript-eslint/prefer-interface': 'off',
+
+    '@typescript-eslint/no-explicit-any': 'warn',
   },
 };

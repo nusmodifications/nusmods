@@ -6,8 +6,9 @@ import { LIGHT_MODE, DARK_MODE } from 'types/settings';
 
 type Props = {
   mode: Mode;
-  onSelectMode: Function;
+  onSelectMode: (mode: Mode) => void;
 };
+
 type ModeOption = { value: Mode; label: string };
 
 const MODES: Array<ModeOption> = [

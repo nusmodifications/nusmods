@@ -1,28 +1,28 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import deferComponentRender from 'views/hocs/deferComponentRender';
 import classnames from 'classnames';
 
 import { Faculty } from 'types/modules';
-import { Mode } from 'types/settings';
+import { Mode, ThemeId } from 'types/settings';
 import { State as StoreState } from 'reducers';
 
 import availableThemes from 'data/themes.json';
 import { selectTheme } from 'actions/theme';
-import { selectNewStudent, selectFaculty, selectMode, toggleBetaTesting } from 'actions/settings';
+import { selectFaculty, selectMode, toggleBetaTesting } from 'actions/settings';
 import ScrollToTop from 'views/components/ScrollToTop';
 import Timetable from 'views/timetable/Timetable';
 import Title from 'views/components/Title';
+import deferComponentRender from 'views/hocs/deferComponentRender';
 
 import Online from 'views/components/Online';
 import { supportsCSSVariables } from 'utils/css';
 
 import ThemeOption from './ThemeOption';
 import ModeSelect from './ModeSelect';
-import styles from './SettingsContainer.scss';
 import previewTimetable from './previewTimetable';
 import BetaToggle from './BetaToggle';
 import RefreshPrompt from './RefreshPrompt';
+import styles from './SettingsContainer.scss';
 
 type Props = {
   newStudent: boolean;
@@ -31,10 +31,8 @@ type Props = {
   mode: Mode;
   betaTester: boolean;
 
-  selectTheme: Function;
-  selectNewStudent: Function;
-  selectFaculty: Function;
-  selectMode: Function;
+  selectTheme: (theme: ThemeId) => void;
+  selectMode: (mode: Mode) => void;
 
   toggleBetaTesting: () => void;
 };
@@ -127,7 +125,6 @@ const connectedSettings = connect(
   mapStateToProps,
   {
     selectTheme,
-    selectNewStudent,
     selectFaculty,
     selectMode,
     toggleBetaTesting,
