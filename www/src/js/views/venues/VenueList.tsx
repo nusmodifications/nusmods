@@ -10,7 +10,7 @@ import styles from './VenueList.scss';
 
 type Props = {
   venues: Venue[];
-  selectedVenue?: Venue | null | undefined;
+  selectedVenue?: Venue | null;
   linkProps?: { [key: string]: any };
 };
 

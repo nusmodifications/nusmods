@@ -30,7 +30,7 @@ export function getModuleSemesterData(
 }
 
 // Returns a flat array of lessons of a module for the corresponding semester.
-export function getModuleTimetable(module: Module, semester: Semester): Array<RawLesson> {
+export function getModuleTimetable(module: Module, semester: Semester): RawLesson[] {
   return _.get(getModuleSemesterData(module, semester), 'Timetable', []);
 }
 

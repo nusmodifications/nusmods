@@ -36,7 +36,7 @@ import styles from './VenuesContainer.scss';
 
 /* eslint-disable react/prop-types */
 
-type Params = {
+export type Params = {
   q: string;
   venue: string;
 };

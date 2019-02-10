@@ -1,4 +1,6 @@
-import { RouteComponentProps, LocationShape } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Location } from 'history';
 import _ from 'lodash';
 
 // react-router-dom internal dependency, used here to construct the history
@@ -11,14 +13,14 @@ type MatchShape = {
   isExact?: boolean;
 };
 
-type HistoryEntry = string | LocationShape;
+type HistoryEntry = string | Partial<Location>;
 
-export default function createHistory(
-  initialEntries: HistoryEntry | $ReadOnlyArray<HistoryEntry> = '/',
+export default function createHistory<T>(
+  initialEntries: HistoryEntry | Readonly<HistoryEntry[]> = '/',
   matchParams: MatchShape = {},
-): RouteComponentProps {
+): RouteComponentProps<T> {
   const entries = _.castArray(initialEntries);
-  const history = createMemoryHistory({ initialEntries: entries });
+  const history = createMemoryHistory({ initialEntries: entries as any });
   const { params = {}, isExact = true } = matchParams;
 
   const match = {
@@ -26,7 +28,7 @@ export default function createHistory(
     isExact,
     path: entries[0],
     url: entries[0],
-  };
+  } as any;
 
   return {
     history,

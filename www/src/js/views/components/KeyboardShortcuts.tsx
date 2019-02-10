@@ -173,7 +173,7 @@ export class KeyboardShortcutsComponent extends React.PureComponent<Props, State
               </tr>
 
               {shortcuts.map((shortcut) => (
-                <tr key={shortcut.key}>
+                <tr key={shortcut.description}>
                   <td className={styles.key}>{this.renderShortcut(shortcut.key)}</td>
                   <td>{shortcut.description}</td>
                 </tr>

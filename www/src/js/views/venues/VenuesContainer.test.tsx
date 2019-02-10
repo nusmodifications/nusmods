@@ -2,15 +2,15 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import qs from 'query-string';
 
-import { Venue, VenueDetailList } from 'types/venues';
+import { Venue, VenueDetailList, VenueInfo } from 'types/venues';
 import venueInfo from '__mocks__/venueInformation.json';
 import createHistory from 'test-utils/createHistory';
 import { sortVenues } from 'utils/venues';
 import { venuePage } from 'views/routes/paths';
 import VenueDetails from 'views/venues/VenueDetails';
-import { VenuesContainerComponent } from './VenuesContainer';
+import { Params, VenuesContainerComponent } from './VenuesContainer';
 
-const venues = sortVenues(venueInfo);
+const venues = sortVenues(venueInfo as VenueInfo);
 
 function createComponent(selectedVenue?: Venue | null, search?: string) {
   const location = {
@@ -18,7 +18,7 @@ function createComponent(selectedVenue?: Venue | null, search?: string) {
     pathname: venuePage(selectedVenue),
   };
   const match = { params: { venue: selectedVenue } };
-  const router = createHistory(location, match);
+  const router = createHistory<Params>(location, match);
 
   return {
     history: router.history,
@@ -110,11 +110,10 @@ describe(VenuesContainerComponent, () => {
   });
 
   describe('#renderSelectedVenue', () => {
-    const getVenueDetail = (
-      selectedVenue: Venue | null | undefined,
-      matched: VenueDetailList = venues,
-    ) => {
-      const instance = createComponent(selectedVenue).wrapper.instance();
+    const getVenueDetail = (selectedVenue: Venue | null, matched: VenueDetailList = venues) => {
+      const instance = createComponent(
+        selectedVenue,
+      ).wrapper.instance() as VenuesContainerComponent;
 
       return shallow(<div>{instance.renderSelectedVenue(matched)}</div>).find(VenueDetails);
     };

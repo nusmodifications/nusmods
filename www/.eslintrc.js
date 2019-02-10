@@ -39,6 +39,8 @@ module.exports = {
         jest: true,
       },
       rules: {
+        'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+
         // any is needed for mocking, amongst other things
         '@typescript-eslint/no-explicit-any': 'off',
       },

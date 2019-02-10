@@ -32,10 +32,10 @@
   "ParsedPrerequisite": "CS2103",
   "ModmavenTree": {
     "name": "CS3216",
-    "children": {
+    "children": [{
       "name": "CS2103",
       "children": []
-    }
+    }]
   },
   "LockedModules": []
 }

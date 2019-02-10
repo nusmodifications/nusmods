@@ -19,7 +19,8 @@ export const IBLOCS_SEMESTER = 3;
 export function getSemesterName(semester: Semester) {
   if (semester === EXEMPTION_SEMESTER) {
     return 'Exemptions';
-  } else if (semester === PLAN_TO_TAKE_SEMESTER) {
+  }
+  if (semester === PLAN_TO_TAKE_SEMESTER) {
     return 'Plan to Take';
   }
 
@@ -32,18 +33,19 @@ export function getSemesterName(semester: Semester) {
  * array of unfulfilled requirements is returned.
  */
 export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: Tree) {
-  function walkTree(fragment: Tree): Array<Tree> | null | undefined {
+  function walkTree(fragment: Tree): Tree[] | null {
     // Tree appears to be incorrectly typed. Sometimes for no apparent
     // reason the fragment is double wrapped in an array
     // eslint-disable-next-line no-param-reassign
     if (Array.isArray(fragment)) fragment = fragment[0];
 
     if (fragment.name === 'or') {
-      return fragment.children.every(walkTree)
+      return fragment.children.every((child) => !!walkTree(child))
         ? // All return non-null = all unfulfilled
           [fragment]
         : null;
-    } else if (fragment.name === 'and') {
+    }
+    if (fragment.name === 'and') {
       const notFulfilled = fragment.children.map(walkTree).filter(Boolean);
       return notFulfilled.length === 0 ? null : flatten(notFulfilled);
     }
@@ -68,7 +70,8 @@ export function conflictToText(conflict: Tree) {
 
   if (conflict.name === 'or') {
     return conflict.children.map(conflictToText).join(' or ');
-  } else if (conflict.name === 'and') {
+  }
+  if (conflict.name === 'and') {
     return conflict.children.map(conflictToText).join(' and ');
   }
 
@@ -101,7 +104,7 @@ export function acadYearLabel(year: string) {
  * Get a planner module's title, preferring customInfo over moduleInfo.
  * This allows the user to override our data in case there are mistakes.
  */
-export function getModuleTitle(module: PlannerModuleInfo): string | null | undefined {
+export function getModuleTitle(module: PlannerModuleInfo): string | null {
   const { moduleInfo, customInfo } = module;
   // customInfo.title is nullable, and there's no point in displaying an
   // empty string, so we can use || here
@@ -112,7 +115,7 @@ export function getModuleTitle(module: PlannerModuleInfo): string | null | undef
  * Get a planner module's credits, preferring customInfo over moduleInfo.
  * This allows the user to override our data in case there are mistakes.
  */
-export function getModuleCredit(module: PlannerModuleInfo): number | null | undefined {
+export function getModuleCredit(module: PlannerModuleInfo): number | null {
   const { moduleInfo, customInfo } = module;
 
   // Or operator (||) is not used because moduleCredit can be 0, which is

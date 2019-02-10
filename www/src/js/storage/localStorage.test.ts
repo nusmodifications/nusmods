@@ -3,16 +3,16 @@ import getLocalStorage, { createLocalStorageShim, canUseBrowserLocalStorage } fr
 describe('#createLocalStorageShim', () => {
   test('should store and return data', () => {
     const shim = createLocalStorageShim();
-    const toStore = { key: 'value', key2: 2 };
+    const toStore = JSON.stringify({ key: 'value', key2: 2 });
     shim.setItem('key', toStore);
     expect(shim.getItem('key')).toEqual(toStore);
   });
 
   test('should remove keys and clear', () => {
     const shim = createLocalStorageShim();
-    shim.setItem('key1', 1);
-    shim.setItem('key2', 1);
-    shim.setItem('key3', 3.14159);
+    shim.setItem('key1', '1');
+    shim.setItem('key2', '1');
+    shim.setItem('key3', '3.14159');
     expect(Object.keys(shim.privData)).toHaveLength(3);
 
     // Expect removeItem to remove item
@@ -45,11 +45,13 @@ describe('#createLocalStorageShim', () => {
 
 describe('#canUseBrowserLocalStorage', () => {
   test('should return false if localStorage is undefined', () => {
+    // @ts-ignore
     delete window.localStorage;
     expect(canUseBrowserLocalStorage()).toEqual(false);
   });
 
   test('should return false if localStorage throws when writing on iOS <=10 on private browsing', () => {
+    // @ts-ignore
     window.localStorage = {
       ...createLocalStorageShim(),
       // the length is set here because canUseBrowserLocalStorage uses a hack to detect private browsing
@@ -62,6 +64,7 @@ describe('#canUseBrowserLocalStorage', () => {
   });
 
   test('should return true if localStorage is localStorage-like object', () => {
+    // @ts-ignore
     window.localStorage = createLocalStorageShim();
     expect(canUseBrowserLocalStorage()).toEqual(true);
   });
@@ -74,6 +77,7 @@ describe('#getLocalStorage', () => {
   });
 
   test('should return a shim if browser cannot use localStorage', () => {
+    // @ts-ignore
     delete window.localStorage;
     expect(canUseBrowserLocalStorage()).toEqual(false);
     expect(getLocalStorage()).toMatchObject(

@@ -70,10 +70,10 @@ describe('HistoryDebouncer', () => {
     expect(mock.replace).not.toHaveBeenCalled();
 
     history.push('/new');
-    history.push({ path: '/new' });
+    history.push({ pathname: '/new' });
     expect(mock.replace).toHaveBeenCalledTimes(1);
 
-    history.push({ path: '/new', search: 'test=1' });
+    history.push({ pathname: '/new', search: 'test=1' });
     history.push('/new?test=1');
     expect(mock.replace).toHaveBeenCalledTimes(2);
   });

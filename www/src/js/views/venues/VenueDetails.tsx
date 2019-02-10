@@ -21,8 +21,8 @@ import styles from './VenueDetails.scss';
 
 type Props = RouteComponentProps & {
   readonly venue: Venue;
-  readonly previous?: Venue | null | undefined;
-  readonly next?: Venue | null | undefined;
+  readonly previous?: Venue | null;
+  readonly next?: Venue | null;
   readonly availability: DayAvailability[];
 
   readonly matchBreakpoint: boolean;

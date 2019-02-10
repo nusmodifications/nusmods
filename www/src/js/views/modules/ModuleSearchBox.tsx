@@ -11,15 +11,13 @@ import { searchModules } from 'actions/moduleFinder';
 import { SEARCH_QUERY_KEY } from 'utils/moduleSearch';
 
 type OwnProps = RouteComponentProps & {
-
-}
-
-type Props = OwnProps & {
   throttle: number;
   useInstantSearch: boolean;
-  initialSearchTerm: string | null | undefined;
-
   searchModules: (str: string) => void;
+};
+
+type Props = OwnProps & {
+  initialSearchTerm: string | undefined;
 };
 
 export function ModuleSearchBoxComponent(props: Props) {

@@ -11,11 +11,7 @@ import { ModuleExamClashComponent } from './ModuleExamClash';
 describe(ModuleExamClashComponent, () => {
   const MODULES = [cs1010s, cs3216];
 
-  function make(
-    moduleCode: ModuleCode,
-    examDate: string | null | undefined,
-    modules: Module[] = MODULES,
-  ) {
+  function make(moduleCode: ModuleCode, examDate: string | null, modules: Module[] = MODULES) {
     return shallow(
       <ModuleExamClashComponent
         moduleCode={moduleCode}

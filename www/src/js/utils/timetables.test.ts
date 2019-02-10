@@ -7,7 +7,15 @@ import {
   TimetableDayArrangement,
   TimetableDayFormat,
 } from 'types/timetables';
-import { ClassNo, ColoredLesson, LessonType, ModuleCode, RawLesson, Semester } from 'types/modules';
+import {
+  ClassNo,
+  ColoredLesson,
+  LessonType,
+  Module,
+  ModuleCode,
+  RawLesson,
+  Semester,
+} from 'types/modules';
 import { ModulesMap } from 'reducers/moduleBank';
 
 import _ from 'lodash';
@@ -22,7 +30,7 @@ import pc1222 from '__mocks__/modules/PC1222.json';
 /** @var {Module} */
 import cs4243 from '__mocks__/modules/CS4243.json';
 
-import modulesList from '__mocks__/module-list.json';
+import modulesListJSON from '__mocks__/module-list.json';
 
 import timetable from '__mocks__/sem-timetable.json';
 import lessonsArray from '__mocks__/lessons-array.json';
@@ -52,6 +60,8 @@ import {
   validateTimetableModules,
 } from './timetables';
 
+const modulesList = modulesListJSON as { [moduleCode: string]: string };
+
 describe('isValidSemester', () => {
   test('semesters 1-4 are valid', () => {
     expect(isValidSemester(1)).toBe(true);
@@ -68,7 +78,7 @@ describe('isValidSemester', () => {
 
 test('randomModuleLessonConfig should return a random lesson config', () => {
   const sem: Semester = 1;
-  const rawLessons: Array<RawLesson> = getModuleTimetable(cs1010s, sem);
+  const rawLessons: RawLesson[] = getModuleTimetable(cs1010s, sem);
   const lessonConfig: ModuleLessonConfig = randomModuleLessonConfig(rawLessons);
   Object.keys(lessonConfig).forEach((lessonType: LessonType) => {
     expect(lessonConfig[lessonType]).toBeTruthy();
@@ -103,9 +113,9 @@ test('hydrateSemTimetableWithLessons should replace ClassNo with lessons', () =>
 
 test('lessonsForLessonType should return all lessons belonging to a particular LessonType', () => {
   const sem: Semester = 1;
-  const moduleTimetable: Array<RawLesson> = getModuleTimetable(cs1010s, sem);
+  const moduleTimetable: RawLesson[] = getModuleTimetable(cs1010s, sem);
   const lessonType: LessonType = 'Tutorial';
-  const lessons: Array<RawLesson> = lessonsForLessonType(moduleTimetable, lessonType);
+  const lessons: RawLesson[] = lessonsForLessonType(moduleTimetable, lessonType);
   expect(lessons.length > 0).toBe(true);
   lessons.forEach((lesson: RawLesson) => {
     expect(lesson.LessonType).toBe(lessonType);
@@ -114,9 +124,9 @@ test('lessonsForLessonType should return all lessons belonging to a particular L
 
 test('lessonsForLessonType should return empty array if no such LessonType is present', () => {
   const sem: Semester = 1;
-  const moduleTimetable: Array<RawLesson> = getModuleTimetable(cs1010s, sem);
+  const moduleTimetable: RawLesson[] = getModuleTimetable(cs1010s, sem);
   const lessonType: LessonType = 'Dota Session';
-  const lessons: Array<RawLesson> = lessonsForLessonType(moduleTimetable, lessonType);
+  const lessons: RawLesson[] = lessonsForLessonType(moduleTimetable, lessonType);
   expect(lessons.length).toBe(0);
   expect(lessons).toEqual([]);
 });
@@ -340,7 +350,7 @@ test('arrangeLessonsForWeek', () => {
 
 test('areOtherClassesAvailable', () => {
   // Lessons belong to different ClassNo.
-  const lessons1: Array<RawLesson> = _.shuffle([
+  const lessons1: RawLesson[] = _.shuffle([
     createGenericLesson('Monday', '1000', '1200', 'Lecture', '1'),
     createGenericLesson('Monday', '1600', '1800', 'Lecture', '2'),
     createGenericLesson('Monday', '1400', '1500', 'Lecture', '3'),
@@ -349,7 +359,7 @@ test('areOtherClassesAvailable', () => {
   expect(areOtherClassesAvailable(lessons1, 'Tutorial')).toBe(false);
 
   // Lessons belong to the same ClassNo.
-  const lessons2: Array<RawLesson> = _.shuffle([
+  const lessons2: RawLesson[] = _.shuffle([
     createGenericLesson('Monday', '1000', '1200', 'Lecture', '1'),
     createGenericLesson('Monday', '1600', '1800', 'Lecture', '1'),
     createGenericLesson('Monday', '1400', '1500', 'Lecture', '1'),
@@ -357,7 +367,7 @@ test('areOtherClassesAvailable', () => {
   expect(areOtherClassesAvailable(lessons2, 'Lecture')).toBe(false);
 
   // Lessons belong to different LessonType.
-  const lessons3: Array<RawLesson> = _.shuffle([
+  const lessons3: RawLesson[] = _.shuffle([
     createGenericLesson('Monday', '1000', '1200', 'Lecture', '1'),
     createGenericLesson('Monday', '1600', '1800', 'Lecture', '1'),
     createGenericLesson('Monday', '1400', '1500', 'Tutorial', '1'),
@@ -369,7 +379,7 @@ test('areOtherClassesAvailable', () => {
 
 test('findExamClashes should return non-empty object if exams clash', () => {
   const sem: Semester = 1;
-  const examClashes = findExamClashes([cs1010s, cs4243, cs3216], sem);
+  const examClashes = findExamClashes([cs1010s, cs4243 as any, cs3216], sem);
   const examDate = _.get(getModuleSemesterData(cs1010s, sem), 'ExamDate');
   expect(examClashes).toEqual({ [examDate]: [cs1010s, cs4243] });
 });
@@ -469,7 +479,7 @@ test('isSameTimetableConfig', () => {
   ).toBe(false);
 });
 
-describe('validateTimetableModules', () => {
+describe(validateTimetableModules, () => {
   test('should leave valid modules untouched', () => {
     expect(validateTimetableModules({}, modulesList)).toEqual([{}, []]);
     expect(

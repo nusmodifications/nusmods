@@ -20,7 +20,7 @@ export default function ExternalRedirect({ to, appendPath, path, ...props }: Pro
       {...props}
       path={path}
       render={() => {
-        window.location = newLocation;
+        window.location.href = newLocation;
         return null;
       }}
     />

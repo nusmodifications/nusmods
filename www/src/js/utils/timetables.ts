@@ -65,21 +65,21 @@ export function isValidSemester(semester: Semester): boolean {
 //  {
 //    [lessonType: string]: ClassNo,
 //  }
-export function randomModuleLessonConfig(lessons: Array<RawLesson>): ModuleLessonConfig {
-  const lessonByGroups: { [lessonType: string]: Array<RawLesson> } = _.groupBy(
+export function randomModuleLessonConfig(lessons: RawLesson[]): ModuleLessonConfig {
+  const lessonByGroups: { [lessonType: string]: RawLesson[] } = _.groupBy(
     lessons,
     (lesson) => lesson.LessonType,
   );
 
   const lessonByGroupsByClassNo: {
-    [lessonType: string]: { [classNo: string]: Array<RawLesson> };
-  } = _.mapValues(lessonByGroups, (lessonsOfSameLessonType: Array<RawLesson>) =>
+    [lessonType: string]: { [classNo: string]: RawLesson[] };
+  } = _.mapValues(lessonByGroups, (lessonsOfSameLessonType: RawLesson[]) =>
     _.groupBy(lessonsOfSameLessonType, (lesson) => lesson.ClassNo),
   );
 
   return _.mapValues(
     lessonByGroupsByClassNo,
-    (group: { [classNo: string]: Array<RawLesson> }) => _.sample(group)[0].ClassNo,
+    (group: { [classNo: string]: RawLesson[] }) => _.sample(group)[0].ClassNo,
   );
 }
 
@@ -97,12 +97,12 @@ export function hydrateSemTimetableWithLessons(
 
       // TODO: Split this part into a smaller function: hydrateModuleConfigWithLessons.
       return _.mapValues(moduleLessonConfig, (classNo: ClassNo, lessonType: LessonType) => {
-        const lessons: Array<RawLesson> = getModuleTimetable(module, semester);
-        const newLessons: Array<RawLesson> = lessons.filter(
+        const lessons: RawLesson[] = getModuleTimetable(module, semester);
+        const newLessons: RawLesson[] = lessons.filter(
           (lesson: RawLesson): boolean =>
             lesson.LessonType === lessonType && lesson.ClassNo === classNo,
         );
-        const timetableLessons: Array<Lesson> = newLessons.map(
+        const timetableLessons: Lesson[] = newLessons.map(
           (lesson: RawLesson): Lesson => ({
             ...lesson,
             ModuleCode: moduleCode,
@@ -117,9 +117,9 @@ export function hydrateSemTimetableWithLessons(
 
 //  Filters a flat array of lessons and returns the lessons corresponding to lessonType.
 export function lessonsForLessonType(
-  lessons: Array<RawLesson | Lesson>,
+  lessons: (RawLesson | Lesson)[],
   lessonType: LessonType,
-): Array<RawLesson | Lesson> {
+): (RawLesson | Lesson)[] {
   return _.filter(lessons, (lesson) => lesson.LessonType === lessonType);
 }
 
@@ -130,7 +130,7 @@ export function lessonsForLessonType(
 //      [lessonType: string]: [Lesson, ...],
 //    }
 //  }
-export function timetableLessonsArray(timetable: SemTimetableConfigWithLessons): Array<Lesson> {
+export function timetableLessonsArray(timetable: SemTimetableConfigWithLessons): Lesson[] {
   return _.flatMapDeep(timetable, _.values);
 }
 
@@ -209,11 +209,8 @@ export function arrangeLessonsForWeek(lessons: ColoredLesson[]): TimetableArrang
 
 //  Determines if a Lesson on the timetable can be modifiable / dragged around.
 //  Condition: There are multiple ClassNo for all the Array<Lesson> in a LessonType.
-export function areOtherClassesAvailable(
-  lessons: Array<RawLesson>,
-  lessonType: LessonType,
-): boolean {
-  const lessonTypeGroups: Object = _.groupBy(lessons, (lesson) => lesson.LessonType);
+export function areOtherClassesAvailable(lessons: RawLesson[], lessonType: LessonType): boolean {
+  const lessonTypeGroups: Record<string, any> = _.groupBy(lessons, (lesson) => lesson.LessonType);
   if (!lessonTypeGroups[lessonType]) {
     // No such LessonType.
     return false;
@@ -225,7 +222,7 @@ export function areOtherClassesAvailable(
 
 // Find all exam clashes between modules in semester
 // Returns object associating exam dates with the modules clashing on those dates
-export function findExamClashes(modules: Array<Module>, semester: Semester): ExamClashes {
+export function findExamClashes(modules: Module[], semester: Semester): ExamClashes {
   const groupedModules = _.groupBy(modules, (module) =>
     _.get(getModuleSemesterData(module, semester), 'ExamDate'),
   );
@@ -352,7 +349,7 @@ function serializeModuleConfig(config: ModuleLessonConfig): string {
   ).join(LESSON_SEP);
 }
 
-function parseModuleConfig(serialized: string | null | undefined): ModuleLessonConfig {
+function parseModuleConfig(serialized: string | null): ModuleLessonConfig {
   const config = {};
   if (!serialized) return config;
 

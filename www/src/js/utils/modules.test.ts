@@ -22,7 +22,7 @@ import cs1010s from '__mocks__/modules/CS1010S.json';
 /** @var {Module} */
 import cs3216 from '__mocks__/modules/CS3216.json';
 
-const mockLesson: Lesson = _.cloneDeep(cs1010s.History[0].Timetable[0]);
+const mockLesson = _.cloneDeep(cs1010s.History[0].Timetable[0]) as Lesson;
 mockLesson.ModuleCode = 'CS1010S';
 mockLesson.ModuleTitle = 'Programming Methodology';
 
@@ -49,13 +49,17 @@ test('getModuleSemesterData should return semester data if semester is present',
 
 test('getModuleSemesterData should return undefined if semester is absent', () => {
   const sem: Semester = 2;
-  const actual: SemesterData | null | undefined = getModuleSemesterData(cs3216, sem);
+  const actual = getModuleSemesterData(cs3216, sem);
   expect(actual).toBe(undefined);
 });
 
-function lessonWithDifferentProperty(lesson: Lesson, property: string, newValue: any): Lesson {
+function lessonWithDifferentProperty(
+  lesson: Lesson,
+  property: string,
+  newValue: any = 'TEST',
+): Lesson {
   const anotherLesson: Lesson = _.cloneDeep(lesson);
-  anotherLesson[property] = newValue || 'TEST';
+  anotherLesson[property] = newValue;
   return anotherLesson;
 }
 

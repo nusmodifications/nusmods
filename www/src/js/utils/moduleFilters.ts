@@ -1,11 +1,10 @@
 import { map, mapValues, each, isEmpty, groupBy, kebabCase } from 'lodash';
-import update, { Spec } from "immutability-helper";
+import update, { Spec } from 'immutability-helper';
 import qs from 'query-string';
 
 import { FilterGroups, DepartmentFaculty } from 'types/views';
-import { Module, Faculty, Department, ModuleLevel } from 'types/modules';
+import { Module, Faculty, Department, ModuleLevel, Timeslots } from 'types/modules';
 
-import { Timeslots } from 'types/modules';
 import config from 'config';
 import LevelFilter from 'utils/filters/LevelFilter';
 import TimeslotFilter from 'utils/filters/TimeslotFilter';

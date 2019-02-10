@@ -1,22 +1,37 @@
+import { size } from 'lodash';
+
 let usableLocalStorage;
 
 // Adapted from https://gist.github.com/juliocesar/926500
 // Exported for unit tests
-export function createLocalStorageShim() {
+export function createLocalStorageShim(): Storage {
   const storage = {
     privData: {},
+
+    get length() {
+      return size(storage.privData);
+    },
+
+    key(index: number) {
+      return Object.keys(storage.privData)[index];
+    },
+
     clear() {
       storage.privData = {};
     },
+
     setItem(key, val) {
       storage.privData[String(key)] = JSON.stringify(val);
     },
+
     getItem(key) {
       const storedValue = storage.privData[String(key)];
       return storedValue && JSON.parse(storedValue);
     },
+
     removeItem: (key: string) => delete storage.privData[String(key)],
   };
+
   return storage;
 }
 
