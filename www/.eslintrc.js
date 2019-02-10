@@ -3,17 +3,11 @@ const warnInDevelopment = process.env.NODE_ENV === 'production' ? 'error' : 'war
 module.exports = {
   parser: 'babel-eslint',
   root: true,
-  extends: [
-    'airbnb',
-    'plugin:flowtype/recommended',
-    'prettier',
-    'prettier/flowtype',
-    'prettier/react',
-  ],
+  extends: ['airbnb', 'prettier', 'prettier/react'],
   env: {
     browser: true,
   },
-  plugins: ['flowtype', 'prettier', 'import', 'jsx-a11y', 'react'],
+  plugins: ['prettier', 'import', 'jsx-a11y', 'react'],
   settings: {
     'import/resolver': {
       webpack: {
@@ -23,7 +17,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['**/*.test.{js,jsx}', '**/__mocks__/**/*.{js,jsx}'],
+      files: ['**/*.test.{js,ts,js,tsx}', '**/__mocks__/**/*.{js,ts,js,tsx}'],
       env: {
         jest: true,
       },
