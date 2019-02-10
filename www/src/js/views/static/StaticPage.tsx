@@ -1,5 +1,4 @@
 import * as React from 'react';
-import React from 'react';
 import classnames from 'classnames';
 
 import ScrollToTop from 'views/components/ScrollToTop';
@@ -7,7 +6,7 @@ import Title from 'views/components/Title';
 
 type Props = {
   title: string;
-  children: Node;
+  children: React.ReactNode;
   className?: string;
 };
 
