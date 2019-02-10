@@ -9,7 +9,7 @@ import CS2100Expected from './fixtures/expected/CS2100.json';
 
 import { fromTermCode } from '../utils/api';
 import { expectModulesEqual } from '../utils/test-utils';
-import { ModuleExam } from '../types/api';
+import { ModuleExam, ModuleInfo, TimetableLesson } from "../types/api";
 
 jest.mock('../services/nus-api');
 const mockApi: jest.Mocked<NusApi> = api as any;
@@ -21,7 +21,7 @@ const mockApi: jest.Mocked<NusApi> = api as any;
 /* eslint-disable @typescript-eslint/camelcase */
 
 // Mock data for the module info API endpoint
-const moduleInfoData = {
+const moduleInfoData: { [semester: string]: ModuleInfo[] } = {
   '1': [
     {
       Term: '1810',
@@ -117,7 +117,7 @@ const moduleExamData: Record<string, ModuleExam[]> = {
   ],
 };
 
-const moduleTimetableData = {
+const moduleTimetableData: { [semester: string]: TimetableLesson[] } = {
   '1': CS2100Timeable1,
   '2': CS2100Timeable2,
 };

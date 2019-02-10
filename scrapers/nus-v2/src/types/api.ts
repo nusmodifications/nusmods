@@ -54,6 +54,9 @@ export interface ModuleInfo {
   ModularCredit: string;
   PreRequisite: string;
   Subject: string;
+
+  // I'm not sure what this is used for
+  ModuleAttributes: any;
 }
 
 export interface TimetableLesson {

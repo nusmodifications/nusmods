@@ -1,3 +1,5 @@
+const WARN_IN_DEV = process.env === 'production' ? 'error' : 'warn';
+
 module.exports = {
   parser: '@typescript-eslint/parser',
 
@@ -12,18 +14,14 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:import/typescript',
     'prettier',
-    'prettier/@typescript-eslint'
+    'prettier/@typescript-eslint',
   ],
 
   env: {
     node: true,
   },
 
-  plugins: [
-    '@typescript-eslint',
-    'prettier',
-    'import',
-  ],
+  plugins: ['@typescript-eslint', 'prettier', 'import'],
 
   overrides: [
     {
@@ -33,8 +31,8 @@ module.exports = {
       },
       rules: {
         // any is needed for mocking, amongst other things
-        '@typescript-eslint/no-explicit-any': 'off'
-      }
+        '@typescript-eslint/no-explicit-any': 'off',
+      },
     },
   ],
 
@@ -71,7 +69,7 @@ module.exports = {
       },
     ],
 
-    'import/no-extraneous-dependencies': ['error', { devDependencies: ['**/*.test.ts', 'src/utils/test-utils.ts'] },],
+    'import/no-extraneous-dependencies': ['error', { devDependencies: ['**/*.test.ts', 'src/utils/test-utils.ts'] }],
 
     // Rule is buggy when used with TypeScript
     // TODO: Remove this when https://github.com/benmosher/eslint-plugin-import/issues/1282 is resolved
@@ -80,7 +78,17 @@ module.exports = {
     // Makes the code unnecessarily verbose
     '@typescript-eslint/explicit-member-accessibility': 'off',
 
-    // Reduce to warning for now. This may be too verbose
-    '@typescript-eslint/explicit-function-return-type': 'warn',
+    // Makes the code unnecessarily verbose
+    '@typescript-eslint/explicit-function-return-type': 'off',
+
+    '@typescript-eslint/no-unused-vars': [
+      WARN_IN_DEV,
+      {
+        ignoreRestSiblings: true,
+      },
+    ],
+
+    // We use type aliases for data types
+    '@typescript-eslint/prefer-interface': 'off'
   },
 };

@@ -259,7 +259,7 @@ export class NusApi {
             resolve();
           } else {
             const error = mapErrorCode(code, msg);
-            error.requestConfig = { url, body };
+            error.requestConfig = { url, data: body };
             reject(error);
           }
         })

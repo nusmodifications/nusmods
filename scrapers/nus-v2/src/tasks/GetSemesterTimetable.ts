@@ -2,7 +2,7 @@ import { strict as assert } from 'assert';
 import { has, map, mapValues, values, trimStart } from 'lodash';
 import NUSModerator from 'nusmoderator';
 
-import { LessonWeek, ModuleCode, RawLesson, Semester } from '../types/modules';
+import { LessonWeek, RawLesson, Semester } from '../types/modules';
 import { Task } from '../types/tasks';
 import { TimetableLesson } from '../types/api';
 import { Cache } from '../services/io';
@@ -46,7 +46,8 @@ export function getWeek(date: string): LessonWeek {
     assert(
       weekInfo.type === 'Orientation' || weekInfo.type === 'Reading' || weekInfo.type === 'Recess',
     );
-    return weekInfo.type;
+
+    return weekInfo.type as LessonWeek;
   }
 
   return weekInfo.num;

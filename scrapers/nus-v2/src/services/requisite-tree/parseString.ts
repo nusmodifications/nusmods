@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { createToken, Lexer, Parser, IToken } from 'chevrotain';
+import { createToken, Lexer, Parser, IToken, TokenType } from 'chevrotain';
 
 import { PrereqTree } from '../../types/modules';
 import { Logger } from '../logger';
@@ -80,12 +80,12 @@ class ReqTreeParser extends Parser {
   constructor() {
     super(allTokens, { recoveryEnabled: true, outputCst: false });
 
-    this.RULE('parse', () => this.SUBRULE(this.andExpression));
+    this.parse = this.RULE('parse', () => this.SUBRULE(this.andExpression));
 
     // And has the lowest precedence thus it is first in the rule chain (think +- in math)
     // The precedence of binary expressions is determined by
     // how far down the Parse Tree the binary expression appears.
-    this.RULE('andExpression', () => {
+    this.andExpression = this.RULE('andExpression', () => {
       const value = [];
 
       value.push(this.SUBRULE(this.orExpression));
@@ -100,7 +100,7 @@ class ReqTreeParser extends Parser {
     });
 
     // Or has the higher precedence (think */ in math)
-    this.RULE('orExpression', () => {
+    this.orExpression = this.RULE('orExpression', () => {
       const value = [];
 
       value.push(this.SUBRULE(this.atomicExpression));
@@ -113,20 +113,19 @@ class ReqTreeParser extends Parser {
       return value.length === 1 ? value[0] : generateOrBranch(value);
     });
 
-    this.RULE('atomicExpression', () =>
-      // @ts-ignore
-      this.OR(
-        [
+    this.atomicExpression = this.RULE('atomicExpression', () =>
+      this.OR({
+        DEF: [
           { ALT: () => this.SUBRULE(this.parenthesisExpression) },
           { ALT: () => this.CONSUME(Module).image },
         ],
-        'a module or parenthesis expression',
-      ),
+        ERR_MSG: 'a module or parenthesis expression',
+      }),
     );
 
     // parenthesisExpression has the highest precedence and thus it appears
     // in the "lowest" leaf in the expression ParseTree.
-    this.RULE('parenthesisExpression', () => {
+    this.parenthesisExpression = this.RULE('parenthesisExpression', () => {
       this.CONSUME(LeftBracket);
       const expValue = this.SUBRULE(this.parse);
       this.CONSUME(RightBracket);
@@ -141,7 +140,7 @@ class ReqTreeParser extends Parser {
 
   // avoids inserting module literals as these can have multiple(and infinite) semantic values
   // eslint-disable-next-line class-methods-use-this
-  canTokenTypeBeInsertedInRecovery(tokClass) {
+  canTokenTypeBeInsertedInRecovery(tokClass: TokenType) {
     return tokClass !== Module;
   }
 }
@@ -170,9 +169,8 @@ export function cleanOperators(tokens: IToken[]) {
         // recursive clean within parenthesis, unnests one layer
         const cleaned = cleanOperators(temp.slice(1, -1));
         if (cleaned.length) {
-          output.push(R.head(temp));
-          output.push(...cleaned);
-          output.push(R.last(temp));
+          // @ts-ignore Length check already done above
+          output.push(R.head(temp), ...cleaned, R.last(temp));
         }
         temp = [];
       }
@@ -199,14 +197,17 @@ export function cleanOperators(tokens: IToken[]) {
   const moduleTokens = [];
   // Falsy value if array does not contain unique conjunction
   // Need token to inject later on when it is missing between two modules
-  const singularConjunction = removedDuplicates.reduce((acc, token) => {
-    const { image } = token;
-    if (image === 'and' || image === 'or') {
-      if (acc === null) return token;
-      if (acc.image !== image) return false;
-    }
-    return acc;
-  }, null);
+  const singularConjunction = removedDuplicates.reduce(
+    (acc: IToken | null | false, token: IToken) => {
+      const { image } = token;
+      if (image === 'and' || image === 'or') {
+        if (!acc) return token;
+        if (acc.image !== image) return false;
+      }
+      return acc;
+    },
+    null,
+  );
 
   // Fill in missing values with conjunction found
   for (let i = 0; i < removedDuplicates.length; i++) {
@@ -227,8 +228,6 @@ export function cleanOperators(tokens: IToken[]) {
 /**
  * Parses the prerequisite string to produce the tokenized form.
  * @see __tests__/genReqTree.test.js
- * @param {String} prerequisite The prerequisite string
- * @param {bunyan} logger Bunyan logger
  */
 export default function parseString(prerequisite: string, logger: Logger): PrereqTree | null {
   const findModules = R.match(new RegExp(MODULE_REGEX, 'g'));

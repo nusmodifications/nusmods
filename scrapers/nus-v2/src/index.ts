@@ -2,7 +2,7 @@
 import './utils/sentry';
 
 import * as yargs from 'yargs';
-import { size } from 'lodash';
+import { size, mapValues } from 'lodash';
 
 import logger from './services/logger';
 import { Semesters } from './types/modules';
@@ -106,7 +106,7 @@ const commands = [
             logger.warn(e, `No module alias info available for ${semester}`);
             return [];
           });
-        aliases.push(semesterAliases);
+        aliases.push(mapValues(semesterAliases, (moduleCodes) => new Set(moduleCodes)));
 
         const modules = await new GetSemesterData(semester, year).outputCache.read().catch((e) => {
           logger.warn(e, `No semester data available for ${semester}`);

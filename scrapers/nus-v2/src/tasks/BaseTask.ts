@@ -28,5 +28,5 @@ export default class BaseTask {
 
   protected rootLogger = logger;
 
-  logger: Logger;
+  logger: Logger = logger;
 }

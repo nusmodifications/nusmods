@@ -4,6 +4,23 @@ import { lightFormat } from 'date-fns';
 import getSentryStream from './SentryStream';
 import { errorSerializer } from './serializer';
 
+type LoggingFunction = {
+  (error: Error, message?: string, ...params: any[]): void;
+  (message: string, ...params: any[]): void;
+  (data: Record<string, any>, message: string, ...params: any[]): void;
+};
+
+export interface Logger {
+  trace: LoggingFunction;
+  debug: LoggingFunction;
+  info: LoggingFunction;
+  warn: LoggingFunction;
+  error: LoggingFunction;
+  fatal: LoggingFunction;
+
+  child(options: Record<string, any>): Logger;
+}
+
 const logRoot = path.join(__dirname, '../../../logs');
 
 // In production, create a new log for each run
@@ -56,6 +73,4 @@ const rootLogger = bunyan.createLogger({
   streams,
 });
 
-// Reexport Logger class to allow for easier refactoring in the future
-export { bunyan as Logger };
 export default rootLogger;

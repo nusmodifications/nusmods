@@ -1,6 +1,6 @@
 import { entries, uniq } from 'lodash';
 
-import { Module, PrereqTree } from '../../types/modules';
+import { Module, ModuleCode, PrereqTree } from '../../types/modules';
 import { ModuleWithoutTree } from '../../types/mapper';
 import rootLogger, { Logger } from '../logger';
 
@@ -15,6 +15,8 @@ import { flattenTree } from './tree';
  * FulfillRequirements: modules that cannot be taken until this module is fulfilled
  * PrereqTree: different format of ParsedPrerequisite
  */
+
+interface TreeMap { [moduleCode: string]: PrereqTree }
 
 const logger = rootLogger.child({
   service: 'requisite-tree',
@@ -47,8 +49,8 @@ const RESTRICTED_KEYWORDS = [
   '4 of the 5',
 ];
 
-function parse(data: ModuleWithoutTree[], subLogger: Logger): { [moduleCode: string]: PrereqTree } {
-  const results = {};
+function parse(data: ModuleWithoutTree[], subLogger: Logger): TreeMap {
+  const results: TreeMap = {};
 
   for (const module of data) {
     const moduleCode = module.ModuleCode;
@@ -78,9 +80,9 @@ function parse(data: ModuleWithoutTree[], subLogger: Logger): { [moduleCode: str
   return results;
 }
 
-function generateRequirements(allModules, prerequisites): Module[] {
+function generateRequirements(allModules: Module[], prerequisites: TreeMap): Module[] {
   // Find modules which this module fulfill the requirements for
-  const fulfillModules = {};
+  const fulfillModules: { [moduleCode: string]: Set<ModuleCode> } = {};
   allModules.forEach((module) => {
     fulfillModules[module.ModuleCode] = new Set();
   });

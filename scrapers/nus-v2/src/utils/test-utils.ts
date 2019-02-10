@@ -9,19 +9,21 @@ import { Logger } from '../services/logger';
 /* eslint-disable import/prefer-default-export */
 
 export function mockCache<T>(fileContent: T): jest.Mocked<Cache<T>> {
-  const cache: any = {
+  // Annotating this as Cache<T> lets us make sure this function implements the interface
+  const cache: Cache<T> = {
     path: './fake',
     write: jest.fn().mockResolvedValue(undefined),
     read: jest.fn().mockResolvedValue(fileContent),
   };
 
-  return cache;
+  // Returning this as jest.Mocked<Cache<T>> allows us to access .mock* functions
+  return cache as any;
 }
 
 export function mockLogger(): Logger {
-  const logger: any = {
+  return {
     // Mock all logged functions
-    critical: jest.fn(),
+    fatal: jest.fn(),
     error: jest.fn(),
     warn: jest.fn(),
     info: jest.fn(),
@@ -31,8 +33,6 @@ export function mockLogger(): Logger {
     // Calling child simply creates another mock logger
     child: mockLogger,
   };
-
-  return logger;
 }
 
 /**
@@ -67,6 +67,8 @@ function expectHistoryEqual(actual: SemesterData[], expected: SemesterData[]) {
     sortBy(actual, (semester) => semester.Semester),
     sortBy(expected, (semester) => semester.Semester),
   ).forEach(([actualSemester, expectedSemester]) => {
+    if (!actualSemester || !expectedSemester) throw new Error('Length of semesters not equal');
+
     expect(omit(actualSemester, 'Timetable')).toEqual(omit(expectedSemester, 'Timetable'));
 
     expectLessonsEqual(actualSemester.Timetable, expectedSemester.Timetable);
@@ -96,15 +98,15 @@ export function mockResponse<T>(
   } = {},
 ): AxiosResponse<T> {
   const { headers, config, request, status, statusText } = additionalFields;
-  const response: any = {
+
+  return {
     data,
     // The server almost always returns 200, even if there is an application error
     status: status || 200,
+    // @ts-ignore TS won't recognize this as valid because httpStatus is defined as a dictionary of static values
     statusText: statusText || httpStatus[status] || 'OK',
     headers: headers || {},
     config: config || {},
     request: request || {},
   };
-
-  return response;
 }
