@@ -22,7 +22,7 @@ type Props = OwnProps & {
 };
 
 export class CustomModuleFormComponent extends React.PureComponent<Props> {
-  onSubmit = (evt: SyntheticUIEvent<HTMLFormElement>) => {
+  onSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
     const inputModuleCredit = this.inputModuleCredit.current;
@@ -80,7 +80,7 @@ export class CustomModuleFormComponent extends React.PureComponent<Props> {
               id="input-mc"
               type="number"
               className="form-control"
-              defaultValue={moduleCredit}
+              defaultValue={moduleCredit ? String(moduleCredit) : ''}
               required
             />
           </div>
@@ -91,7 +91,7 @@ export class CustomModuleFormComponent extends React.PureComponent<Props> {
               id="input-title"
               type="text"
               className="form-control"
-              defaultValue={title}
+              defaultValue={title || ''}
             />
           </div>
         </div>
