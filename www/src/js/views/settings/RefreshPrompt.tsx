@@ -17,7 +17,7 @@ type State = {
 };
 
 class RefreshPrompt extends React.PureComponent<Props, State> {
-  buttonWidth: number | null | undefined;
+  buttonWidth?: number;
 
   state = {
     isReloading: false,
