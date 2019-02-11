@@ -1,10 +1,10 @@
 import { Middleware } from 'redux';
 import { State } from 'reducers';
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { FAILURE, REQUEST, SUCCESS } from 'types/reducers';
 import { API_REQUEST } from 'actions/requests';
 
-function makeRequest(request) {
+function makeRequest(request: AxiosRequestConfig) {
   return axios({
     ...request,
     headers: {
