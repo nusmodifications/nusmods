@@ -2,9 +2,13 @@ import { State } from 'reducers';
 import { Semester } from 'types/modules';
 import { extractStateForExport, serializeExportState } from 'utils/export';
 
+export type ExportOptions = {
+  pixelRatio?: number;
+};
+
 const baseUrl = '/export';
 
-function serializeState(semester: Semester, state: State, options: Object = {}) {
+function serializeState(semester: Semester, state: State, options: ExportOptions = {}) {
   return serializeExportState(extractStateForExport(semester, state), options);
 }
 

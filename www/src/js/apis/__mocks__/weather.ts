@@ -1,14 +1,10 @@
-import { Forecast } from 'apis/weather';
+/* eslint-disable @typescript-eslint/camelcase */
 
-const twoHour: JestMockFn<[], Promise<string>> = jest
-  .fn()
-  .mockResolvedValue('Partially Cloudy (Day)');
+const twoHour = jest.fn().mockResolvedValue('Partially Cloudy (Day)');
 
-const tomorrow: JestMockFn<[], Promise<string>> = jest
-  .fn()
-  .mockResolvedValue('Morning thundery showers.');
+const tomorrow = jest.fn().mockResolvedValue('Morning thundery showers.');
 
-const fourDay: JestMockFn<[], Promise<Forecast>> = jest.fn().mockResolvedValue({
+const fourDay = jest.fn().mockResolvedValue({
   temperature: { low: 23, high: 32 },
   date: '2016-10-27',
   forecast: 'Afternoon thundery showers.',

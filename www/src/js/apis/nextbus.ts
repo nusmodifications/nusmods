@@ -4,6 +4,20 @@ import { NextBus, NextBusTime, NextBusTimings } from 'types/venues';
 
 const baseUrl = 'https://nextbus.nusmods.com';
 
+interface ShuttleServiceResult {
+  caption: string;
+  name: string;
+  shuttles: Shuttle[];
+}
+
+interface Shuttle {
+  arrivalTime: string;
+  name: string;
+  nextArrivalTime: string;
+  nextPassengers: string;
+  passengers: string;
+}
+
 function convertArrivalTime(arrivalTime: string): NextBusTime {
   const numericTime = +arrivalTime;
   if (!Number.isNaN(numericTime)) return numericTime;
@@ -14,18 +28,22 @@ function convertArrivalTime(arrivalTime: string): NextBusTime {
 // eslint-disable-next-line import/prefer-default-export
 export function nextBus(code: string): Promise<NextBusTimings> {
   const url = `${baseUrl}/arrival`;
-  return axios.get(url, { params: { busstopname: code } }).then((response) => {
-    const shuttles: NextBusTimings = {};
+  return axios
+    .get<{
+      ShuttleServiceResult: ShuttleServiceResult;
+    }>(url, { params: { busstopname: code } })
+    .then((response) => {
+      const shuttles: NextBusTimings = {};
 
-    response.data.ShuttleServiceResult.shuttles.forEach((arrival) => {
-      const timing: NextBus = {
-        arrivalTime: convertArrivalTime(arrival.arrivalTime),
-        nextArrivalTime: convertArrivalTime(arrival.nextArrivalTime),
-      };
+      response.data.ShuttleServiceResult.shuttles.forEach((arrival: Shuttle) => {
+        const timing: NextBus = {
+          arrivalTime: convertArrivalTime(arrival.arrivalTime),
+          nextArrivalTime: convertArrivalTime(arrival.nextArrivalTime),
+        };
 
-      shuttles[arrival.name] = timing;
+        shuttles[arrival.name] = timing;
+      });
+
+      return shuttles;
     });
-
-    return shuttles;
-  });
 }
