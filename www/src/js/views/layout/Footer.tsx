@@ -10,8 +10,8 @@ import { toggleFeedback } from 'actions/app';
 import styles from './Footer.scss';
 
 type Props = {
-  lastUpdatedDate: Date | null | undefined;
-  toggleFeedback: Function;
+  lastUpdatedDate: Date | null;
+  toggleFeedback: () => void;
 };
 
 export function FooterComponent(props: Props) {
@@ -109,7 +109,7 @@ export default connect(
   (state: State) => {
     const lastUpdatedString = state.moduleBank.apiLastUpdatedTimestamp;
     return {
-      lastUpdatedDate: lastUpdatedString && new Date(lastUpdatedString),
+      lastUpdatedDate: lastUpdatedString ? new Date(lastUpdatedString) : null,
     };
   },
   { toggleFeedback },

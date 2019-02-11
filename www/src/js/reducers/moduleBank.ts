@@ -1,7 +1,6 @@
 import { FSA } from 'types/redux';
-import { Module, ModuleCode } from 'types/modules';
-import { ModuleCodeMap, ModuleList } from 'types/reducers';
-import { SUCCESS } from 'types/reducers';
+import { Module } from 'types/modules';
+import { ModuleCodeMap, ModuleList, SUCCESS } from 'types/reducers';
 
 import update from 'immutability-helper';
 import { REHYDRATE } from 'redux-persist';
@@ -32,7 +31,7 @@ export type ModuleBank = {
   modules: ModulesMap;
   moduleCodes: ModuleCodeMap;
   moduleArchive: ModuleArchive;
-  apiLastUpdatedTimestamp: string | null | undefined;
+  apiLastUpdatedTimestamp: string | null;
 };
 
 const defaultModuleBankState: ModuleBank = {
@@ -40,7 +39,7 @@ const defaultModuleBankState: ModuleBank = {
   modules: {}, // Object of Module code -> Module details
   moduleCodes: {},
   moduleArchive: {},
-  apiLastUpdatedTimestamp: undefined,
+  apiLastUpdatedTimestamp: null,
 };
 
 function precomputeFromModuleList(moduleList: ModuleList) {
