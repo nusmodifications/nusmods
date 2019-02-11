@@ -1,10 +1,9 @@
-import { range } from 'lodash';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { range } from 'lodash';
 
 import { ModuleWithColor } from 'types/modules';
-import { ModuleWithExamTime } from 'types/views';
-import { TIME_SEGMENTS } from 'types/views';
+import { ModuleWithExamTime, TIME_SEGMENTS } from 'types/views';
 import { formatExamDate } from 'utils/modules';
 import { daysAfter } from 'utils/timify';
 import { modulePage } from 'views/routes/paths';

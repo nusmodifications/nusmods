@@ -29,11 +29,14 @@ import styles from './TimetableContainer.scss';
 
 type QueryParam = {
   action: string;
+  semester: string;
 };
 
-type Props = RouteComponentProps<QueryParam> & {
+type OwnProps = RouteComponentProps<QueryParam> & {};
+
+type Props = OwnProps & {
   modules: ModulesMap;
-  semester: Semester | null | undefined;
+  semester: Semester | null;
   activeSemester: Semester;
   timetable: SemTimetableConfig;
   colors: ColorMapping;
@@ -51,7 +54,7 @@ type Props = RouteComponentProps<QueryParam> & {
 };
 
 type State = {
-  importedTimetable: SemTimetableConfig | null | undefined;
+  importedTimetable: SemTimetableConfig | null;
 };
 
 /**
@@ -219,7 +222,7 @@ export class TimetableContainerComponent extends React.PureComponent<Props, Stat
   }
 }
 
-const mapStateToProps = (state: StoreState, ownProps) => {
+const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
   const semester = semesterForTimetablePage(ownProps.match.params.semester);
   const { timetable, colors } = semester
     ? getSemesterTimetable(semester, state.timetables)

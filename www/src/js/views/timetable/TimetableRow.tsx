@@ -11,7 +11,7 @@ type Props = {
   verticalMode: boolean;
   showTitle: boolean;
   hoverLesson?: HoverLesson | null;
-  onCellHover: (hoverLesson?: HoverLesson) => void;
+  onCellHover: (hoverLesson: HoverLesson | null) => void;
   startingIndex: number;
   endingIndex: number;
   lessons: ModifiableLesson[];

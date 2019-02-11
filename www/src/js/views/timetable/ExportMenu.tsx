@@ -78,7 +78,7 @@ export class ExportMenuComponent extends React.PureComponent<Props, State> {
           }}
           className={classnames(styles.toggle, 'btn btn-outline-primary btn-svg')}
           type="button"
-          onClick={toggleMenu}
+          onClick={() => toggleMenu()}
         >
           <Download className="svg svg-small" />
           Download
@@ -140,7 +140,7 @@ export class ExportMenuComponent extends React.PureComponent<Props, State> {
             <Link to="/faq#mac-calendar" className="btn btn-outline-primary">
               Find out more
             </Link>
-            <button className="btn btn-primary" onClick={this.closeMacOSWarningModal}>
+            <button type="button" className="btn btn-primary" onClick={this.closeMacOSWarningModal}>
               Gotcha
             </button>
           </div>

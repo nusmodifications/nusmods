@@ -4,16 +4,17 @@ import { shallow, mount } from 'enzyme';
 /* @var {Module} */
 import CS1010S from '__mocks__/modules/CS1010S.json';
 
-import { DisconnectedModuleTombstone } from './ModuleTombstone';
+import { Module } from 'types/modules';
+import { DisconnectedModuleTombstone, Props } from './ModuleTombstone';
 
 describe(DisconnectedModuleTombstone, () => {
-  let mockProps;
+  let mockProps: Props;
 
   beforeEach(() => {
     mockProps = {
-      module: CS1010S,
-      horizontalOrientation: false,
+      module: CS1010S as Module,
       resetTombstone: jest.fn(),
+      undo: jest.fn(),
     };
   });
 
@@ -30,7 +31,9 @@ describe(DisconnectedModuleTombstone, () => {
 
   it('should call resetTombstone when Dismiss is clicked', () => {
     const wrapper = mount(<DisconnectedModuleTombstone {...mockProps} />);
-    const dismissBtn = wrapper.find('button').filterWhere((e) => e.text().match(/dismiss/i));
+    const dismissBtn = wrapper
+      .find('button')
+      .filterWhere((e) => Boolean(e.text().match(/dismiss/i)));
     dismissBtn.simulate('click');
     expect(mockProps.resetTombstone.mock.calls.length).toEqual(1);
   });

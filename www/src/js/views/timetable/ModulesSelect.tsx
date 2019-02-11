@@ -20,7 +20,7 @@ type Props = {
   matchBreakpoint: boolean;
   disabled?: boolean;
 
-  getFilteredModules: (string: string | null | undefined) => ModuleSelectList;
+  getFilteredModules: (string: string | null) => ModuleSelectList;
   onChange: (moduleCode: ModuleCode) => void;
 };
 

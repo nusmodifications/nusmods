@@ -14,8 +14,8 @@ type Props = {
   showTitle: boolean;
   lesson: ModifiableLesson;
   style?: React.CSSProperties;
-  onClick?: () => void;
-  onHover?: (hoverLesson?: HoverLesson) => void;
+  onClick: () => void;
+  onHover?: (hoverLesson: HoverLesson | null) => void;
   hoverLesson?: HoverLesson | null;
 };
 
@@ -35,8 +35,8 @@ function TimetableCell(props: Props) {
     ? {
         onMouseEnter: () => onHover(getHoverLesson(lesson)),
         onTouchStart: () => onHover(getHoverLesson(lesson)),
-        onMouseLeave: () => onHover(),
-        onTouchEnd: () => onHover(),
+        onMouseLeave: () => onHover(null),
+        onTouchEnd: () => onHover(null),
       }
     : {};
 

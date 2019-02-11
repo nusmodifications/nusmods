@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import _, { isEmpty } from 'lodash';
 
 import { ModulesMap } from 'reducers/moduleBank';
-import { ColorMapping, TimetableOrientation } from 'types/reducers';
-import { HORIZONTAL } from 'types/reducers';
+import { HORIZONTAL, ColorMapping, TimetableOrientation } from 'types/reducers';
 import {
   Lesson,
   ColoredLesson,
@@ -44,6 +43,7 @@ import {
   findExamClashes,
   getSemesterModules,
 } from 'utils/timetables';
+import { State as StoreState } from 'reducers';
 import config from 'config';
 import ModulesSelectContainer from 'views/timetable/ModulesSelectContainer';
 import Announcements from 'views/components/notfications/Announcements';
@@ -56,18 +56,20 @@ import ExamCalendar from './ExamCalendar';
 import ModulesTableFooter from './ModulesTableFooter';
 import styles from './TimetableContent.scss';
 
-type Props = {
+type OwnProps = {
   // Own props
   readOnly: boolean;
   header: React.ReactNode;
   semester: Semester;
   timetable: SemTimetableConfig;
   colors: ColorMapping;
+};
 
+type Props = OwnProps & {
   // From Redux
   timetableWithLessons: SemTimetableConfigWithLessons;
   modules: ModulesMap;
-  activeLesson: Lesson | null | undefined;
+  activeLesson: Lesson | null;
   timetableOrientation: TimetableOrientation;
   showTitle: boolean;
   hiddenInTimetable: ModuleCode[];
@@ -176,7 +178,7 @@ class TimetableContent extends React.Component<Props, State> {
 
     // Separate added modules into sections of clashing modules
     const clashes = findExamClashes(modules, this.props.semester);
-    const nonClashingMods: Array<Module> = _.difference(modules, _.flatten(_.values(clashes)));
+    const nonClashingMods: Module[] = _.difference(modules, _.flatten(_.values(clashes)));
 
     if (_.isEmpty(clashes) && _.isEmpty(nonClashingMods) && !tombstone) {
       return (
@@ -373,7 +375,7 @@ class TimetableContent extends React.Component<Props, State> {
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state: StoreState, ownProps: OwnProps) {
   const { semester, timetable } = ownProps;
   const modules = state.moduleBank.modules;
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);

@@ -7,9 +7,10 @@ import { sortBy } from 'lodash';
 import { ModuleCode, ModuleWithColor, Semester } from 'types/modules';
 import { ColorIndex } from 'types/reducers';
 import { ModuleTableOrder } from 'types/views';
+import { State as StoreState } from 'reducers';
 
 import ColorPicker from 'views/components/ColorPicker';
-import { Eye, EyeOff, Trash } from 'views/components/icons/index';
+import { Eye, EyeOff, Trash } from 'views/components/icons';
 import {
   hideLessonInTimetable,
   selectModuleColor,
@@ -23,7 +24,6 @@ import Tooltip from 'views/components/Tooltip';
 import styles from './TimetableModulesTable.scss';
 import ModuleTombstone from './ModuleTombstone';
 import { moduleOrders } from './ModulesTableFooter';
-import { State } from 'reducers';
 
 type Props = {
   semester: Semester;
@@ -42,7 +42,7 @@ type Props = {
 };
 
 class TimetableModulesTable extends React.PureComponent<Props> {
-  renderModuleActions(module) {
+  renderModuleActions(module: ModuleWithColor) {
     const hideBtnLabel = `${module.hiddenInTimetable ? 'Show' : 'Hide'} ${module.ModuleCode}`;
     const removeBtnLabel = `Remove ${module.ModuleCode} from timetable`;
     const { semester } = this.props;
@@ -151,7 +151,7 @@ class TimetableModulesTable extends React.PureComponent<Props> {
 }
 
 export default connect(
-  (state: State) => ({ moduleTableOrder: state.settings.moduleTableOrder }),
+  (state: StoreState) => ({ moduleTableOrder: state.settings.moduleTableOrder }),
   {
     selectModuleColor,
     hideLessonInTimetable,

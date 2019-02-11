@@ -21,14 +21,18 @@ import TimetableDay from './TimetableDay';
 
 type Props = {
   lessons: TimetableArrangement;
-  isVerticalOrientation?: boolean;
-  isScrolledHorizontally?: boolean;
-  showTitle?: boolean;
+  isVerticalOrientation: boolean;
+  isScrolledHorizontally: boolean;
+  showTitle: boolean;
   onModifyCell?: (lesson: Lesson) => void;
 };
 
 type State = {
-  hoverLesson: HoverLesson | null | undefined;
+  hoverLesson: HoverLesson | null;
+};
+
+const nullCurrentTimeIndicatorStyle: React.CSSProperties = {
+  opacity: 0,
 };
 
 class Timetable extends React.PureComponent<Props, State> {
@@ -43,7 +47,7 @@ class Timetable extends React.PureComponent<Props, State> {
     hoverLesson: null,
   };
 
-  onCellHover = (hoverLesson: HoverLesson | null | undefined) => {
+  onCellHover = (hoverLesson: HoverLesson | null) => {
     this.setState({ hoverLesson });
   };
 
@@ -65,11 +69,8 @@ class Timetable extends React.PureComponent<Props, State> {
     const currentTimeIndicatorVisible =
       currentHours * 2 >= startingIndex && currentHours * 2 < endingIndex;
     const dirStyle = this.props.isVerticalOrientation ? 'top' : 'marginLeft';
-    const currentTimeIndicatorStyle: Object = {
+    const currentTimeIndicatorStyle: React.CSSProperties = {
       [dirStyle]: `${hoursMarginOffset + minutesMarginOffset}%`,
-    };
-    const nullCurrentTimeIndicatorStyle: Object = {
-      opacity: 0,
     };
 
     return (

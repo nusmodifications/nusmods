@@ -17,9 +17,9 @@ type Props = {
   endingIndex: number;
   onModifyCell: Function;
   isCurrentDay: boolean;
-  currentTimeIndicatorStyle: Object;
-  hoverLesson: HoverLesson | null | undefined;
-  onCellHover: (hoverLesson?: HoverLesson) => void;
+  currentTimeIndicatorStyle: React.CSSProperties;
+  hoverLesson: HoverLesson | null;
+  onCellHover: (hoverLesson: HoverLesson | null) => void;
 };
 
 // Height of timetable per hour in vertical mode

@@ -5,7 +5,7 @@ import { undo } from 'actions/undoHistory';
 import classnames from 'classnames';
 import styles from './TimetableModulesTable.scss';
 
-type Props = {
+export type Props = {
   module: Module;
   undo: () => void;
   resetTombstone: () => void;

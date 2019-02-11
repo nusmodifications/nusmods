@@ -1,5 +1,5 @@
 import * as React from 'react';
-import _ from 'lodash';
+import { range } from 'lodash';
 
 import { convertIndexToTime } from 'utils/timify';
 import styles from './TimetableTimings.scss';
@@ -10,20 +10,21 @@ type Props = {
 };
 
 function TimetableTimings(props: Props) {
-  const range = _.range(props.startingIndex, props.endingIndex);
+  const indices = range(props.startingIndex, props.endingIndex);
 
   return (
     <div className={styles.timings}>
-      {range.map((i) => {
+      {indices.map((i) => {
         const time = convertIndexToTime(i);
-        if (i % 2 === 0) {
-          return (
-            <time key={time} className={styles.time}>
-              {time}
-            </time>
-          );
-        }
-        return null;
+
+        // Only mark even ticks
+        if (i % 2 === 1) return null;
+
+        return (
+          <time key={time} className={styles.time}>
+            {time}
+          </time>
+        );
       })}
       <span />
     </div>
