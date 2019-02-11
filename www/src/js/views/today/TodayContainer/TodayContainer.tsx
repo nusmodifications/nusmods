@@ -4,8 +4,7 @@ import { minBy, range, get } from 'lodash';
 import NUSModerator, { AcadWeekInfo } from 'nusmoderator';
 import { addDays, differenceInCalendarDays, isSameDay, isWeekend, parseISO } from 'date-fns';
 
-import { ColoredLesson, Lesson } from 'types/modules';
-import { DaysOfWeek } from 'types/modules';
+import { DaysOfWeek, ColoredLesson, Lesson } from 'types/modules';
 import { SemTimetableConfigWithLessons } from 'types/timetables';
 import { ColorMapping } from 'types/reducers';
 import { EmptyGroupType, SelectedLesson } from 'types/views';
@@ -60,14 +59,14 @@ type State = {
   readonly weather: { [key: string]: string };
 
   // Which lesson has an open venue map
-  readonly openLesson: SelectedLesson | null | undefined;
+  readonly openLesson: SelectedLesson | null;
 };
 
 type DayGroup = {
-  offset: number,
-  type: EmptyGroupType,
-  dates: Date[]
-}
+  offset: number;
+  type: EmptyGroupType;
+  dates: Date[];
+};
 
 const EMPTY_ARRAY: any[] = [];
 

@@ -8,7 +8,7 @@ import styles from './DayHeader.scss';
 
 type Props = {
   readonly date: Date | Date[];
-  readonly forecast?: string | null | undefined;
+  readonly forecast?: string | null;
   readonly offset: number; // number of days from today
 };
 
@@ -38,9 +38,11 @@ export function HeaderDate({
 }
 
 export default function DayHeader(props: Props) {
-  const Icon = props.forecast ? getWeatherIcon(props.forecast) : null;
+  const { forecast } = props;
+  const Icon = forecast ? getWeatherIcon(forecast) : null;
 
   const dates = castArray(props.date);
+  const lastDate = last(dates);
 
   return (
     <header className={styles.header}>
@@ -48,19 +50,19 @@ export default function DayHeader(props: Props) {
         <div>
           <HeaderDate offset={props.offset}>{dates[0]}</HeaderDate>
         </div>
-        {dates.length > 1 && (
+        {dates.length > 1 && lastDate && (
           <>
             <div className={styles.to}> to </div>
             <div>
-              <HeaderDate offset={props.offset + dates.length - 1}>{last(dates)}</HeaderDate>
+              <HeaderDate offset={props.offset + dates.length - 1}>{lastDate}</HeaderDate>
             </div>
           </>
         )}
       </h2>
 
-      {Icon && (
-        <Tooltip content={props.forecast} placement="bottom" offset={0}>
-          <div className={styles.weather} aria-label={props.forecast}>
+      {Icon && forecast && (
+        <Tooltip content={forecast} placement="bottom" offset={0}>
+          <div className={styles.weather} aria-label={forecast}>
             <Icon />
           </div>
         </Tooltip>

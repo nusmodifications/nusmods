@@ -12,6 +12,7 @@ import styles from '../DayEvents.scss';
 /* eslint-disable no-useless-computed-key */
 
 const mockWeather = weather as jest.Mocked<typeof weather>;
+const mockCaptureException = captureException as jest.Mock;
 
 const COLORS = {
   CS3216: 1,
@@ -215,9 +216,9 @@ describe(TodayContainerComponent, () => {
     expect(mockWeather.tomorrow).toBeCalled();
     expect(mockWeather.fourDay).toBeCalled();
 
-    await waitFor(() => captureException.mock.calls.length > 0);
+    await waitFor(() => mockCaptureException.mock.calls.length > 0);
 
-    expect(captureException).toBeCalled();
+    expect(mockCaptureException).toBeCalled();
   });
 });
 
