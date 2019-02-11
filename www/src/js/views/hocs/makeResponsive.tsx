@@ -8,7 +8,7 @@ export interface WithBreakpoint {
   matchBreakpoint: boolean;
 }
 
-function makeResponsive<Props>(
+function makeResponsive<Props extends WithBreakpoint>(
   WrappedComponent: React.ComponentType<Props>,
   mediaQuery: string | QueryObject | QueryObject[],
 ): React.ComponentType<Omit<Props, keyof WithBreakpoint>> {
@@ -43,8 +43,11 @@ function makeResponsive<Props>(
     };
 
     render() {
-      // @ts-ignore TODO: Figure out what's wrong here
-      return <WrappedComponent matchBreakpoint={this.state.matchBreakpoint} {...this.props} />;
+      return (
+        // TODO: remove as Props hack as defined in:
+        // https://github.com/Microsoft/TypeScript/issues/28938#issuecomment-450636046
+        <WrappedComponent {...this.props as Props} matchBreakpoint={this.state.matchBreakpoint} />
+      );
     }
   };
 }
