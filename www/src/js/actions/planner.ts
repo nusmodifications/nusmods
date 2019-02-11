@@ -31,7 +31,7 @@ export function addPlannerModule(
   moduleCode: ModuleCode,
   year: string,
   semester: Semester,
-  index: number | null | undefined = null,
+  index: number | null = null,
 ): FSA {
   return {
     type: ADD_PLANNER_MODULE,
@@ -49,7 +49,7 @@ export function movePlannerModule(
   moduleCode: ModuleCode,
   year: string,
   semester: Semester,
-  index: number | null | undefined = null,
+  index: number | null = null,
 ): FSA {
   return {
     type: MOVE_PLANNER_MODULE,

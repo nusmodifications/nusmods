@@ -2,8 +2,7 @@ import { findLastIndex, min, range, zip } from 'lodash';
 import produce from 'immer';
 
 import { ColorIndex } from 'types/reducers';
-import { ColoredLesson } from 'types/modules';
-import { DaysOfWeek } from 'types/modules';
+import { ColoredLesson, DaysOfWeek } from 'types/modules';
 import { convertIndexToTime } from 'utils/timify';
 import { TimetableArrangement, TimetableDayArrangement } from 'types/timetables';
 
@@ -25,7 +24,7 @@ export type Square = {
 
 // A 2D array of squares representing the Tetris board in column major order.
 // The top right corner is (0, 0)
-export type Board = Array<Array<Square | null>>;
+export type Board = (Square | null)[][];
 
 export type Piece = {
   x: number;
@@ -114,7 +113,7 @@ export const PIECES = [
  */
 function iterateBoard(
   board: Board,
-  iterator: (tile: Square, col: number, row: number) => boolean | null | void,
+  iterator: (tile: Square, col: number, row: number) => boolean | void,
 ) {
   let continueIterating = true;
 
@@ -136,7 +135,7 @@ function iterateBoard(
 
 function iteratePiece(
   piece: Piece,
-  iterator: (tile: Square, col: number, row: number) => boolean | null | void,
+  iterator: (tile: Square, col: number, row: number) => boolean | void,
 ) {
   return iterateBoard(piece.tiles, (tile, col, row) =>
     iterator(tile, col + piece.x, row + piece.y),
@@ -262,7 +261,7 @@ export function removeCompleteRows(board: Board) {
     // TODO: Optimize based on where the piece has landed
     let row = ROWS - 1;
     while (row >= 0) {
-      if (draft.every((column) => column[row])) {
+      if (draft.every((column) => column[row] != null)) {
         draft.forEach((column) => {
           column.splice(row, 1);
           column.unshift(null);

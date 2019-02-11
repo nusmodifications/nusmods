@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { flatMap, flatten, sortBy, toPairs, values } from 'lodash';
 import { DragDropContext, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 import classnames from 'classnames';
+
 import { Module, ModuleCode, Semester } from 'types/modules';
 import { PlannerModuleInfo, PlannerModulesWithInfo } from 'types/views';
 import { State as StoreState } from 'reducers';
-
 import { MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
 import {
   EXEMPTION_SEMESTER,

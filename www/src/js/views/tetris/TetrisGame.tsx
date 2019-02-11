@@ -106,7 +106,7 @@ function renderPiece(tiles: Board) {
 }
 
 export default class TetrisGame extends React.PureComponent<Props, State> {
-  intervalId: number;
+  intervalId: number | undefined;
 
   constructor(props: Props) {
     super(props);
@@ -240,8 +240,8 @@ export default class TetrisGame extends React.PureComponent<Props, State> {
   moveDown = () => {
     if (!this.isPlaying()) return;
 
-    this.setState(
-      produce(this.state, (draft) => {
+    this.setState((state) =>
+      produce(state, (draft) => {
         this.movePieceDown(draft);
         draft.score += SCORING.softDrop(1);
       }),
