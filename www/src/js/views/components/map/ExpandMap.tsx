@@ -1,12 +1,10 @@
 import * as React from 'react';
-import { withLeaflet, LeafletContext } from 'react-leaflet';
+import { withLeaflet, LeafletProps } from 'react-leaflet';
 import Control from 'react-leaflet-control';
 import { Maximize, Minimize } from 'views/components/icons';
 import Tooltip from 'views/components/Tooltip';
 
-type Props = {
-  readonly leaflet: LeafletContext;
-
+type Props = LeafletProps & {
   readonly isExpanded: boolean;
   readonly onToggleExpand: (boolean: boolean) => void;
 };
