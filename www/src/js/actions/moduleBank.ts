@@ -8,9 +8,9 @@ import { requestAction } from 'actions/requests';
 import NUSModsApi from 'apis/nusmods';
 import config from 'config';
 
-const MAX_MODULE_LIMIT: number = 100;
+const MAX_MODULE_LIMIT = 100;
 
-export const FETCH_MODULE_LIST: string = 'FETCH_MODULE_LIST';
+export const FETCH_MODULE_LIST = 'FETCH_MODULE_LIST';
 export function fetchModuleList() {
   return requestAction(FETCH_MODULE_LIST, FETCH_MODULE_LIST, {
     url: NUSModsApi.moduleListUrl(),
@@ -18,7 +18,7 @@ export function fetchModuleList() {
 }
 
 // Action to fetch modules
-export const FETCH_MODULE: string = 'FETCH_MODULE';
+export const FETCH_MODULE = 'FETCH_MODULE';
 export function fetchModuleRequest(moduleCode: ModuleCode) {
   return `${FETCH_MODULE}/${moduleCode}`;
 }
@@ -115,7 +115,7 @@ export function fetchModule(moduleCode: ModuleCode) {
 }
 
 // Action to fetch module from previous years
-export const FETCH_ARCHIVE_MODULE: string = 'FETCH_ARCHIVE_MODULE';
+export const FETCH_ARCHIVE_MODULE = 'FETCH_ARCHIVE_MODULE';
 export function fetchArchiveRequest(moduleCode: ModuleCode, year: string) {
   return `${FETCH_ARCHIVE_MODULE}_${moduleCode}_${year}`;
 }
@@ -138,5 +138,5 @@ export function fetchAllModuleArchive(moduleCode: ModuleCode) {
       config.archiveYears.map((year) =>
         dispatch(fetchModuleArchive(moduleCode, year)).catch(() => null),
       ),
-    ).then((modules) => zip<AcadYear, Array<Module>>(config.archiveYears, modules));
+    ).then((modules) => zip<AcadYear, Module[]>(config.archiveYears, modules));
 }

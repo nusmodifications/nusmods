@@ -3,7 +3,7 @@ import { Faculty, Semester } from 'types/modules';
 import { Mode } from 'types/settings';
 import { ModuleTableOrder } from 'types/views';
 
-export const SELECT_SEMESTER: string = 'SELECT_SEMESTER';
+export const SELECT_SEMESTER = 'SELECT_SEMESTER';
 export function selectSemester(semester: Semester): FSA {
   return {
     type: SELECT_SEMESTER,
@@ -11,7 +11,7 @@ export function selectSemester(semester: Semester): FSA {
   };
 }
 
-export const SELECT_NEW_STUDENT: string = 'SELECT_NEW_STUDENT';
+export const SELECT_NEW_STUDENT = 'SELECT_NEW_STUDENT';
 export function selectNewStudent(newStudent: boolean): FSA {
   return {
     type: SELECT_NEW_STUDENT,
@@ -19,7 +19,7 @@ export function selectNewStudent(newStudent: boolean): FSA {
   };
 }
 
-export const SELECT_FACULTY: string = 'SELECT_FACULTY';
+export const SELECT_FACULTY = 'SELECT_FACULTY';
 export function selectFaculty(faculty: Faculty): FSA {
   return {
     type: SELECT_FACULTY,
@@ -27,7 +27,7 @@ export function selectFaculty(faculty: Faculty): FSA {
   };
 }
 
-export const SELECT_MODE: string = 'SELECT_MODE';
+export const SELECT_MODE = 'SELECT_MODE';
 export function selectMode(mode: Mode): FSA {
   return {
     type: SELECT_MODE,
@@ -35,7 +35,7 @@ export function selectMode(mode: Mode): FSA {
   };
 }
 
-export const TOGGLE_MODE: string = 'TOGGLE_MODE';
+export const TOGGLE_MODE = 'TOGGLE_MODE';
 export function toggleMode(): FSA {
   return {
     type: TOGGLE_MODE,

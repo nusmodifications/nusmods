@@ -2,7 +2,7 @@ import * as actions from 'actions/theme';
 
 describe('theme', () => {
   test('should dispatch a select of theme', () => {
-    const theme: string = 'test';
+    const theme = 'test';
     expect(actions.selectTheme(theme)).toMatchSnapshot();
   });
 

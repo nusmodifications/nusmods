@@ -144,7 +144,7 @@ describe(actions.fetchTimetableModules, () => {
     },
   };
 
-  const dispatch = jest.fn().mockResolvedValue();
+  const dispatch = jest.fn().mockResolvedValue(undefined);
   const getState = jest.fn().mockReturnValue(state);
 
   beforeEach(() => {

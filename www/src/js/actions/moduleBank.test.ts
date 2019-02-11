@@ -7,8 +7,9 @@ import NUSModsApi from 'apis/nusmods';
 // Mock NUSModsApi as its URLs contain the current AY, breaking the snapshot tests
 // every AY.
 jest.mock('apis/nusmods');
-NUSModsApi.moduleListUrl.mockReturnValue('test://MOCK_MOD_LIST_URL');
-NUSModsApi.moduleDetailsUrl.mockImplementation(
+const mockApi: jest.Mocked<typeof NUSModsApi> = NUSModsApi as any;
+mockApi.moduleListUrl.mockReturnValue('test://MOCK_MOD_LIST_URL');
+mockApi.moduleDetailsUrl.mockImplementation(
   (...args) => `test://MOCK_MOD_DETAILS_URL/${args.join('/')}`,
 );
 
@@ -22,7 +23,7 @@ describe(actions.fetchModule, () => {
     const thunk = actions.fetchModule('CS1010S');
     expect(thunk).toBeInstanceOf(Function);
 
-    const dispatch = jest.fn().mockResolvedValue();
+    const dispatch = jest.fn().mockResolvedValue(undefined);
     const getState = jest.fn().mockReturnValue({
       moduleBank: { modules: { CS1010S: {} } },
     } as any);
@@ -35,12 +36,12 @@ describe(actions.fetchModule, () => {
   test('should remove LRU modules above limit', async () => {
     const thunk = actions.fetchModule('CS1010S');
 
-    const modules = {};
+    const modules: any = {};
     _.range(105).forEach((i) => {
       modules[`CS${i}`] = { timestamp: i };
     });
 
-    const dispatch = jest.fn().mockResolvedValue();
+    const dispatch = jest.fn().mockResolvedValue(undefined);
     const getState = jest.fn().mockReturnValue({
       moduleBank: { modules },
       timetables: {},
