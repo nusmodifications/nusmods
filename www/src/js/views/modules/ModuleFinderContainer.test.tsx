@@ -41,7 +41,9 @@ describe(ModuleFinderContainerComponent, () => {
   });
 
   afterEach(() => {
+    // @ts-ignore
     axios.get.mockRestore();
+    // @ts-ignore
     console.info.mockRestore(); // eslint-disable-line no-console
   });
 
@@ -72,7 +74,7 @@ describe(ModuleFinderContainerComponent, () => {
   function activeFilters({ component }: Container): ActiveFilters {
     // Helper function to extract a mapping of ID of active filters, which is an easier
     // data structure to assert against
-    const active = {};
+    const active: ActiveFilters = {};
 
     _.values(component.state().filterGroups).forEach((group: FilterGroup<any>) => {
       const filters = group.activeFilters.map((filter) => filter.id);
@@ -83,7 +85,7 @@ describe(ModuleFinderContainerComponent, () => {
   }
 
   function interceptRouteChanges(history: History): string[] {
-    const calls = [];
+    const calls: string[] = [];
     jest.spyOn(history, 'push').mockImplementation((location) => calls.push(location));
     jest.spyOn(history, 'replace').mockImplementation((location) => calls.push(location));
     return calls;

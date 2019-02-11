@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { omit } from 'lodash';
-import Downshift, { ChildrenFunction, DownshiftState, StateChangeOptions } from 'downshift';
+import Downshift, {
+  ChildrenFunction,
+  ControllerStateAndHelpers,
+  DownshiftState,
+  StateChangeOptions,
+} from 'downshift';
 import classnames from 'classnames';
 
 import { ModuleSelectList } from 'types/reducers';
@@ -42,7 +47,10 @@ export class ModulesSelectComponent extends React.Component<Props, State> {
     });
   };
 
-  onInputValueChange = (inputValue: string, stateAndHelpers: ChildrenFunction<ModuleCode>) => {
+  onInputValueChange = (
+    inputValue: string,
+    stateAndHelpers: ControllerStateAndHelpers<ModuleCode>,
+  ) => {
     // Don't clear input on item select
     if (stateAndHelpers.selectedItem) return;
 
@@ -79,7 +87,8 @@ export class ModulesSelectComponent extends React.Component<Props, State> {
         return omit(changes, ['isOpen', 'inputValue', 'highlightedIndex']);
 
       case Downshift.stateChangeTypes.mouseUp:
-      case Downshift.stateChangeTypes.touchEnd:
+        // TODO: Uncomment when we upgrade to Downshift v3
+        // case Downshift.stateChangeTypes.touchEnd:
         // Retain input on blur
         return omit(changes, 'inputValue');
 
@@ -202,6 +211,7 @@ export class ModulesSelectComponent extends React.Component<Props, State> {
     return (
       <>
         <button
+          type="button"
           className={classnames(styles.input, elements.addModuleInput)}
           onClick={this.openSelect}
           disabled={disabled}

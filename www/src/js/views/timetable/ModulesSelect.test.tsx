@@ -110,7 +110,8 @@ describe(ModulesSelectComponent, () => {
     it('should toggle menu depending on focus', () => {
       const wrapper = shallow(<ModulesSelectComponent {...commonProps} matchBreakpoint />);
       const downshift = wrapper.find(Downshift).shallow();
-      downshift.find('input').prop('onFocus')();
+      // TODO: Check if this is correct
+      downshift.find('input').prop('onFocus')!({} as any);
       expect(wrapper.state('isOpen')).toBe(true);
       wrapper.prop('onOuterClick')();
       expect(wrapper.state('isOpen')).toBe(false);

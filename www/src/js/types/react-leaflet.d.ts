@@ -40,7 +40,9 @@ declare module 'react-leaflet' {
     zoom: number | null;
   }
 
-  export interface MapInitHook {}
+  export interface MapInitHook {
+    gestureHandling: Leaflet.Handler
+  }
 
   export interface MapEvents {
     onclick?(event: Leaflet.LeafletMouseEvent): void;
@@ -181,8 +183,7 @@ declare module 'react-leaflet' {
   }
 
   export class Map<P extends MapProps = MapProps, E extends Leaflet.Map = Leaflet.Map>
-    extends MapComponent<P, E>
-    implements MapInitHook {
+    extends MapComponent<P, E> implements MapInitHook {
     className?: string;
     container: HTMLDivElement;
     getChildContext(): { layerContainer: E; map: E };

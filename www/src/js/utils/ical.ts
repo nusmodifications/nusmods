@@ -1,11 +1,12 @@
 import _ from 'lodash';
+// @ts-ignore
 import { EventOption } from 'ical-generator';
 
 import { Module, ModuleCode, RawLesson, Semester } from 'types/modules';
 import { ModuleLessonConfigWithLessons, SemTimetableConfigWithLessons } from 'types/timetables';
 
 import config from 'config';
-import academicCalendar from 'data/academic-calendar.json';
+import academicCalendar from 'data/academic-calendar';
 import { getModuleSemesterData } from 'utils/modules';
 import { daysAfter } from 'utils/timify';
 
@@ -31,10 +32,6 @@ export function getTimeHour(time: string) {
 }
 
 // needed cos the utils method formats the date for display
-function getExamDate(module: Module, semester: Semester): string {
-  return _.get(getModuleSemesterData(module, semester), 'ExamDate');
-}
-
 /**
  * Return a copy of the original Date incremented by the given number of hours
  */
@@ -44,11 +41,10 @@ export function hoursAfter(date: Date, sgHour: number): Date {
   return d;
 }
 
-export function iCalEventForExam(
-  module: Module,
-  semester: Semester,
-): EventOption | null | undefined {
-  const examDate = new Date(getExamDate(module, semester));
+export function iCalEventForExam(module: Module, semester: Semester): EventOption | null {
+  const examDateString = _.get(getModuleSemesterData(module, semester), 'ExamDate');
+  if (!examDateString) return null;
+  const examDate = new Date(examDateString);
   if (Number.isNaN(examDate.getTime())) return null;
 
   return {

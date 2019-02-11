@@ -22,9 +22,11 @@ import TimetableDay from './TimetableDay';
 
 type Props = TimerData & {
   lessons: TimetableArrangement;
-  isVerticalOrientation: boolean;
-  isScrolledHorizontally: boolean;
-  showTitle: boolean;
+  // These should be non-optional, but because HOCs currently strip defaultProps
+  // for the sake of our sanity we type these as optional to reduce errors at call sites
+  isVerticalOrientation?: boolean;
+  isScrolledHorizontally?: boolean;
+  showTitle?: boolean;
   onModifyCell?: OnModifyCell;
 };
 
@@ -90,10 +92,10 @@ class Timetable extends React.PureComponent<Props, State> {
                 onModifyCell={this.props.onModifyCell}
                 hoverLesson={this.state.hoverLesson}
                 onCellHover={this.onCellHover}
-                verticalMode={this.props.isVerticalOrientation}
-                showTitle={this.props.showTitle}
+                verticalMode={this.props.isVerticalOrientation || false}
+                showTitle={this.props.showTitle || false}
+                isScrolledHorizontally={this.props.isScrolledHorizontally || false}
                 dayLessonRows={this.props.lessons[day] || EMPTY_ROW_LESSONS}
-                isScrolledHorizontally={this.props.isScrolledHorizontally}
                 isCurrentDay={index === currentDayIndex}
                 currentTimeIndicatorStyle={
                   index === currentDayIndex && currentTimeIndicatorVisible

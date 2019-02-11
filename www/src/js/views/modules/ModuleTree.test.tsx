@@ -26,6 +26,7 @@ describe('<ModuleTree>', () => {
         'FIN4115',
       ],
     };
+    // @ts-ignore TODO: Fix this when we move to scraper v2
     const component = render(<ModuleTree module={mod} />);
     expect(component).toMatchSnapshot('ACC1002');
   });
@@ -88,6 +89,7 @@ describe('<ModuleTree>', () => {
       },
       LockedModules: ['CS5242', 'CS5339', 'CS6281'],
     };
+    // @ts-ignore TODO: Fix this when we move to scraper v2
     const component = render(<ModuleTree module={mod} />);
     expect(component).toMatchSnapshot('CS3244');
   });
