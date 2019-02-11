@@ -53,6 +53,7 @@ function withTimer<Props extends TimerData>(
     };
 
     render() {
+      // @ts-ignore TODO: Figure out what's wrong here
       return <WrappedComponent {...this.state} {...this.props} />;
     }
   };

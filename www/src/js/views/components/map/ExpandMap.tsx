@@ -29,8 +29,10 @@ class ExpandMap extends React.PureComponent<Props> {
       // component from inside it. Also the gestureHandling prop cannot be added to the
       // outer Map component, otherwise the disable() below won't work
       if (this.props.isExpanded) {
+        // @ts-ignore TODO: Find a way to patch this type in
         map.gestureHandling.disable();
       } else {
+        // @ts-ignore TODO: Find a way to patch this type in
         map.gestureHandling.enable();
       }
     }

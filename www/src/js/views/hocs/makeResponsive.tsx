@@ -43,6 +43,7 @@ function makeResponsive<Props>(
     };
 
     render() {
+      // @ts-ignore TODO: Figure out what's wrong here
       return <WrappedComponent matchBreakpoint={this.state.matchBreakpoint} {...this.props} />;
     }
   };

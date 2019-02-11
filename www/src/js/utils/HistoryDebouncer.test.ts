@@ -3,7 +3,7 @@ import { History } from 'history';
 import createHistory from 'test-utils/createHistory';
 import HistoryDebouncer from './HistoryDebouncer';
 
-describe('HistoryDebouncer', () => {
+describe(HistoryDebouncer, () => {
   let mockNow: jest.MockInstance<typeof Date.now>;
 
   function createHistoryMock(initialEntries = ['/']): jest.Mocked<History> {
@@ -76,10 +76,10 @@ describe('HistoryDebouncer', () => {
 
     history.push('/new');
     history.push({ pathname: '/new' });
-    expect(mock.replace).toHaveBeenCalledTimes(1);
+    expect(mock.push).toHaveBeenCalledTimes(1);
 
     history.push({ pathname: '/new', search: 'test=1' });
     history.push('/new?test=1');
-    expect(mock.replace).toHaveBeenCalledTimes(2);
+    expect(mock.replace).toHaveBeenCalledTimes(1);
   });
 });

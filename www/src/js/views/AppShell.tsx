@@ -186,6 +186,7 @@ const connectedAppShell = connect(
     validateTimetable,
     openNotification,
   },
+  // @ts-ignore TODO: Patch types for Redux for request-middleware
 )(AppShellComponent);
 
 // withRouter here is used to ensure re-render when routes change, since

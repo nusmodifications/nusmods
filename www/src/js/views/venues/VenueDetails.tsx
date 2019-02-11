@@ -36,6 +36,7 @@ export class VenueDetailsComponent extends React.PureComponent<Props> {
     ).map((venueLesson) => ({ ...venueLesson, ModuleTitle: '', isModifiable: true }));
 
     const coloredLessons = colorLessonsByKey(lessons, 'ModuleCode');
+    // @ts-ignore TODO: Fix this typing
     return arrangeLessonsForWeek(coloredLessons);
   }
 

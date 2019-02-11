@@ -32,7 +32,6 @@ const exportData: ExportData = {
     id: 'google',
     timetableOrientation: VERTICAL,
     showTitle: true,
-    colors: {},
   },
   settings: {
     mode: 'DARK',

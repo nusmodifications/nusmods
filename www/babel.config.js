@@ -20,7 +20,7 @@ module.exports = (api) => {
     ['@babel/preset-react', { development: !IS_PROD }],
   ];
 
-  const presets = [...commonPreset, '@babel/preset-flow'];
+  const presets = ['@babel/preset-typescript', ...commonPreset];
 
   const plugins = [
     'babel-plugin-lodash',
@@ -50,16 +50,16 @@ module.exports = (api) => {
     plugins.push('babel-plugin-dynamic-import-node');
   }
 
-  const overrides = [
-    {
-      test: ['src/**/*.{ts,tsx}'],
-      presets: ['@babel/preset-typescript', ...commonPreset],
-    },
-  ];
+  // const overrides = [
+  //   {
+  //     test: ['src/**/*.{ts,tsx}'],
+  //     presets: ['@babel/preset-typescript', ...commonPreset],
+  //   },
+  // ];
 
   return {
     presets,
     plugins,
-    overrides,
+    // overrides,
   };
 };

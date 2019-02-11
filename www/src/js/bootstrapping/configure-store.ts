@@ -47,6 +47,7 @@ export default function configureStore(defaultState?: State) {
 
   const store: Store<State, any> = createStore(
     rootReducer,
+    // @ts-ignore TODO: Figure out why undefined isn't accepted
     defaultState,
     composeEnhancers(storeEnhancer),
   );

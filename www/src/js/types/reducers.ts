@@ -78,7 +78,6 @@ export type ThemeState = Readonly<{
   id: string;
   timetableOrientation: TimetableOrientation;
   showTitle: boolean;
-  colors: ColorMapping;
 }>;
 
 /* settings */

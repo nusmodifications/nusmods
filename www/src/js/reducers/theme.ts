@@ -12,11 +12,9 @@ import {
 import themes from 'data/themes.json';
 import { DIMENSIONS, withTracker } from 'bootstrapping/matomo';
 
-const defaultColorsState: ColorMapping = {};
 export const defaultThemeState: ThemeState = {
   // Available themes are defined in `themes.scss`
   id: 'eighties',
-  colors: defaultColorsState,
   timetableOrientation: HORIZONTAL,
   showTitle: false,
 };
