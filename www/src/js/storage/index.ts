@@ -13,9 +13,10 @@ function setItem(key: string, value: any) {
     try {
       for (let i = 0; i < localStorage.length; i++) {
         const k = localStorage.key(i);
-        let item;
-        if (typeof k === 'string') item = localStorage.getItem(k);
-        if (item) usedSpace[k] = Math.round(item.length / 1024);
+        if (typeof k === 'string') {
+          const item = localStorage.getItem(k);
+          if (item) usedSpace[k] = Math.round(item.length / 1024);
+        }
       }
     } catch (error) {
       // Ignore error
