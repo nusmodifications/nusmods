@@ -1,3 +1,4 @@
+// @ts-ignore
 import { EventOption } from 'ical-generator';
 import config from 'config';
 import iCalForTimetable, {
@@ -11,12 +12,14 @@ import iCalForTimetable, {
   hoursAfter,
 } from 'utils/ical';
 
-import bfs1001 from '__mocks__/modules/BFS1001.json';
-import cs1010s from '__mocks__/modules/CS1010S.json';
-import cs3216 from '__mocks__/modules/CS3216.json';
+import { LessonType, Module, RawLesson } from 'types/modules';
+
+import BFS1001 from '__mocks__/modules/BFS1001.json';
+import CS1010S from '__mocks__/modules/CS1010S.json';
+import CS3216 from '__mocks__/modules/CS3216.json';
 import mockTimetable from '__mocks__/sem-timetable.json';
 
-const rawLesson = (override) => ({
+const rawLesson = (override: Partial<RawLesson> = {}) => ({
   ClassNo: 'A1',
   DayText: 'Monday',
   EndTime: '1700',
@@ -28,7 +31,7 @@ const rawLesson = (override) => ({
 });
 
 /* Build a RawLesson of a given type */
-const rawLessonOfType = (lessonType) => ({
+const rawLessonOfType = (lessonType: LessonType) => ({
   ClassNo: '1',
   DayText: 'Monday',
   EndTime: '1600',
@@ -38,7 +41,7 @@ const rawLessonOfType = (lessonType) => ({
   WeekText: 'Every Week',
 });
 
-let originalHolidays;
+let originalHolidays: typeof config.holidays;
 beforeAll(() => {
   originalHolidays = config.holidays;
   config.holidays = [new Date('2016-01-01')];
@@ -95,7 +98,7 @@ test('hoursAfter should return a date incremented by the given number of hours',
 });
 
 test('iCalEventForExam should generate event', () => {
-  const actual: EventOption | null | undefined = iCalEventForExam(cs1010s, 1);
+  const actual: EventOption | null | undefined = iCalEventForExam(CS1010S, 1);
   const expected: EventOption = {
     start: new Date('2017-11-29T17:00+0800'),
     end: new Date('2017-11-29T19:00+0800'),
@@ -208,7 +211,7 @@ test('iCalEventForLesson generates correct output', () => {
       Venue: 'BIZ1-0303',
       WeekText: '1,2,3,4,5,6',
     },
-    bfs1001,
+    BFS1001 as Module,
     1,
     new Date('2016-08-08T00:00+0800'),
   );
@@ -244,7 +247,7 @@ test('work for half hour lesson offsets', () => {
       Venue: 'BIZ1-0303',
       WeekText: 'Every Week',
     },
-    bfs1001,
+    BFS1001 as Module,
     1,
     new Date('2016-08-08T00:00+0800'),
   );
@@ -269,12 +272,14 @@ test('work for half hour lesson offsets', () => {
   expect(actual).toEqual(expected);
 });
 
-test('iCalForTimetable', () => {
-  const moduleData = {
-    CS1010S: cs1010s,
-    CS3216: cs3216,
-  };
-  const actual = iCalForTimetable(1, mockTimetable, moduleData);
-  // 5 lesson types for cs1010s, 1 for cs3216, 1 exam for cs1010s
-  expect(actual.length === 7).toBe(true);
+describe(iCalForTimetable, () => {
+  test('should produce the correct number of lesson', () => {
+    const moduleData = {
+      CS1010S,
+      CS3216,
+    };
+    const actual = iCalForTimetable(1, mockTimetable, moduleData);
+    // 5 lesson types for cs1010s, 1 for cs3216, 1 exam for cs1010s
+    expect(actual.length === 7).toBe(true);
+  });
 });
