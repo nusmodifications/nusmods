@@ -26,11 +26,11 @@ type Params = {
 type OwnProps = RouteComponentProps<Params>;
 
 type Props = OwnProps & {
-  archiveYear: string | undefined;
   module: Module | null;
   moduleExists: boolean;
   moduleCode: ModuleCode;
   fetchModule: () => Promise<Module>;
+  archiveYear?: string;
 };
 
 type State = {

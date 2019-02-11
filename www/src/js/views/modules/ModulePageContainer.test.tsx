@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { shallow, ShallowWrapper } from "enzyme";
+import { shallow, ShallowWrapper } from 'enzyme';
 import { Redirect } from 'react-router-dom';
 
 import createHistory from 'test-utils/createHistory';
@@ -18,23 +18,19 @@ jest.mock('utils/error');
 const CANONICAL = '/modules/CS1010S/programming-methodology';
 
 type MakeContainerOptions = {
-  module: Module | null | undefined;
+  module: Module | null;
   fetchModule: () => Promise<any>;
-  archiveYear: string | null | undefined;
   moduleExists: boolean;
+  archiveYear?: string;
 };
 
 function make(moduleCode: ModuleCode, url: string, options: Partial<MakeContainerOptions>) {
-  const props: MakeContainerOptions = Object.assign(
-    {}, // See https://github.com/facebook/flow/issues/6092
-    {
-      module: null,
-      fetchModule: () => Promise.resolve(),
-      archiveYear: null,
-      moduleExists: true,
-    },
-    options,
-  );
+  const props: MakeContainerOptions = {
+    module: null,
+    fetchModule: () => Promise.resolve(),
+    moduleExists: true,
+    ...options,
+  };
 
   return shallow(
     <ModulePageContainerComponent moduleCode={moduleCode} {...props} {...createHistory()} />,
