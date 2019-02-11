@@ -1,23 +1,23 @@
 import * as React from 'react';
 import { sample } from 'lodash';
-import { SpeechBubble, Mug, Browser, Ghost } from 'react-kawaii';
+import { SpeechBubble, Mug, Browser, Ghost, KawaiiMood, KawaiiProps } from 'react-kawaii';
 
 type Props = {
   size?: number;
-  mood?: string | null | undefined;
+  mood?: KawaiiMood;
   color?: string;
   title?: string;
   'aria-label'?: string;
 };
 
 const icons = [SpeechBubble, Mug, Browser, Ghost];
-const defaultMoods = ['ko', 'sad', 'shocked'];
+const defaultMoods: KawaiiMood[] = ['ko', 'sad', 'shocked'];
 
 class RandomKawaii extends React.PureComponent<Props> {
   // TODO: Tighten this, possibly by creating a libdef for react-kawaii
-  kawaii: React.ComponentType<any>;
+  kawaii: React.ComponentType<KawaiiProps>;
 
-  defaultMood: string;
+  defaultMood: KawaiiMood;
 
   static defaultProps = {
     mood: null,
@@ -27,8 +27,8 @@ class RandomKawaii extends React.PureComponent<Props> {
   constructor(props: Props) {
     super(props);
 
-    this.kawaii = sample(icons);
-    this.defaultMood = sample(defaultMoods);
+    this.kawaii = sample(icons)!;
+    this.defaultMood = sample(defaultMoods)!;
   }
 
   render() {
