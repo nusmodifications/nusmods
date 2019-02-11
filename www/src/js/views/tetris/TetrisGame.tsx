@@ -106,7 +106,7 @@ function renderPiece(tiles: Board) {
 }
 
 export default class TetrisGame extends React.PureComponent<Props, State> {
-  intervalId: number | undefined;
+  intervalId?: number;
 
   constructor(props: Props) {
     super(props);
@@ -346,7 +346,7 @@ export default class TetrisGame extends React.PureComponent<Props, State> {
   };
 
   popNextPiece = (draft: State) => {
-    draft.currentPiece = draft.nextPieces.shift();
+    draft.currentPiece = draft.nextPieces.shift()!;
     if (draft.nextPieces.length === 0) {
       draft.nextPieces = shuffle(PIECES);
     }
