@@ -3,6 +3,7 @@ import { ModuleBank } from 'reducers/moduleBank';
 import { State } from 'reducers';
 import { SemTimetableConfig } from 'types/timetables';
 import { ModuleSelectListItem } from 'types/reducers';
+import { notNull } from 'types/utils';
 import { getRequestModuleCode } from 'actions/moduleBank';
 import { isOngoing } from './requests';
 
@@ -16,7 +17,7 @@ export function getAllPendingModules(state: State): ModuleCode[] {
   return Object.keys(state.requests)
     .filter((key) => isOngoing(state, key))
     .map(getRequestModuleCode)
-    .filter(Boolean);
+    .filter(notNull);
 }
 
 export function getSemModuleSelectList(

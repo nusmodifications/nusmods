@@ -64,7 +64,7 @@ const prereqConflict = (modulesMap: ModulesMap, modulesTaken: Set<ModuleCode>) =
  */
 const noInfoConflict = (moduleCodeMap: ModuleCodeMap, customData: CustomModuleData) => (
   moduleCode: ModuleCode,
-): Conflict | null | undefined =>
+): Conflict | null =>
   moduleCodeMap[moduleCode] || customData[moduleCode] ? null : { type: 'noInfo' };
 
 /**
@@ -72,7 +72,7 @@ const noInfoConflict = (moduleCodeMap: ModuleCodeMap, customData: CustomModuleDa
  */
 const semesterConflict = (moduleCodeMap: ModuleCodeMap, semester: Semester) => (
   moduleCode: ModuleCode,
-): Conflict | null | undefined => {
+): Conflict | null => {
   const moduleCondensed = moduleCodeMap[moduleCode];
   if (!moduleCondensed) return null;
   if (!moduleCondensed.Semesters.includes(semester)) {
@@ -178,7 +178,8 @@ export function getAcadYearModules(state: State): PlannerModulesWithInfo {
     flatMap(exemptions, (module) => getPrereqModuleCode(module.moduleCode)),
   );
 
-  const modules = {};
+  // Same type as PlannerModulesWithInfo, but writable so we can build it here
+  const modules: { [year: string]: { [semester: string]: PlannerModuleInfo[] } } = {};
   years.forEach((year) => {
     modules[year] = {};
 
