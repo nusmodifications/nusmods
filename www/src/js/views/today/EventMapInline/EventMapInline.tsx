@@ -1,10 +1,12 @@
 import * as React from 'react';
 import classnames from 'classnames';
 /** @var { VenueLocationMap } */
-import venueLocations from 'data/venues.json';
-import { LatLngTuple, Venue, VenueLocation } from 'types/venues';
+import venueLocationJSON from 'data/venues.json';
+import { LatLngTuple, Venue, VenueLocation, VenueLocationMap } from 'types/venues';
 import LocationMap from 'views/components/map/LocationMap';
 import styles from './EventMapInline.scss';
+
+const venueLocations = venueLocationJSON as VenueLocationMap;
 
 export type Props = {
   readonly isOpen: boolean;
@@ -23,7 +25,7 @@ export default function({ venue, isOpen, className, toggleOpen }: Props) {
   if (!isOpen) {
     return (
       <div className={className}>
-        <button onClick={toggleOpen} className={classnames(styles.openMap)}>
+        <button type="button" onClick={toggleOpen} className={classnames(styles.openMap)}>
           Open Map
         </button>
       </div>
