@@ -96,11 +96,11 @@ function renderPiece(tiles: Board) {
       isScrolledHorizontally={false}
       startingIndex={INITIAL_ROW_INDEX}
       endingIndex={INITIAL_ROW_INDEX + tiles[0].length}
-      onModifyCell={noop}
       isCurrentDay={false}
       currentTimeIndicatorStyle={DISPLAY_NONE}
       hoverLesson={null}
-      onCellHover={null}
+      onModifyCell={noop}
+      onCellHover={noop}
     />
   );
 }

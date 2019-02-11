@@ -79,7 +79,7 @@ export function randomModuleLessonConfig(lessons: RawLesson[]): ModuleLessonConf
 
   return _.mapValues(
     lessonByGroupsByClassNo,
-    (group: { [classNo: string]: RawLesson[] }) => _.sample(group)[0].ClassNo,
+    (group: { [classNo: string]: RawLesson[] }) => _.sample(group)![0].ClassNo,
   );
 }
 
@@ -386,8 +386,8 @@ export function formatWeekNumber(weekText: WeekText) {
   }
 
   // Find consecutive week numbers
-  const processed: number[] = [];
-  let start = weeks.shift();
+  const processed: (number | string)[] = [];
+  let start = weeks.shift()!;
   let last = start;
 
   const mergeConsecutive = () => {
@@ -399,7 +399,7 @@ export function formatWeekNumber(weekText: WeekText) {
   };
 
   while (weeks.length) {
-    const next = weeks.shift();
+    const next = weeks.shift()!;
     if (next - last === 1) {
       // Consecutive week number - keep going
       last = next;
@@ -429,7 +429,8 @@ export function serializeTimetable(timetable: SemTimetableConfig): string {
 }
 
 export function deserializeTimetable(serialized: string): SemTimetableConfig {
-  return _.mapValues<ModuleLessonConfig>(qs.parse(serialized), parseModuleConfig);
+  const params: Record<string, string> = qs.parse(serialized);
+  return _.mapValues(params, parseModuleConfig);
 }
 
 export function isSameTimetableConfig(t1: SemTimetableConfig, t2: SemTimetableConfig): boolean {

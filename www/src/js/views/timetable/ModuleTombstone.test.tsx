@@ -8,14 +8,14 @@ import { Module } from 'types/modules';
 import { DisconnectedModuleTombstone, Props } from './ModuleTombstone';
 
 describe(DisconnectedModuleTombstone, () => {
-  let mockProps: Props;
+  let mockProps: jest.Mocked<Props>;
 
   beforeEach(() => {
     mockProps = {
       module: CS1010S as Module,
       resetTombstone: jest.fn(),
       undo: jest.fn(),
-    };
+    } as any;
   });
 
   it('renders', () => {

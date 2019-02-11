@@ -9,7 +9,7 @@ import _ from 'lodash';
 import createMemoryHistory from 'history/createMemoryHistory'; // eslint-disable-line import/no-extraneous-dependencies
 
 type MatchShape = {
-  params?: { [key: string]: string | null };
+  params?: { [key: string]: string | null | undefined };
   isExact?: boolean;
 };
 

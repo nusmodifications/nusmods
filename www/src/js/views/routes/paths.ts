@@ -27,7 +27,7 @@ export function timetableShare(semester: Semester, timetable: SemTimetableConfig
 }
 
 // Timetable path -> Semester
-export function semesterForTimetablePage(semStr: string | null): Semester | null {
+export function semesterForTimetablePage(semStr: string | null | undefined): Semester | null {
   if (!semStr) return null;
   return toSemester[semStr] || null;
 }

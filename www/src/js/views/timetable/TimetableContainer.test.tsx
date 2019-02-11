@@ -24,9 +24,7 @@ describe(TimetableContainerComponent, () => {
     timetable: SemTimetableConfig = {},
     modules: ModulesMap = { CS1010S, CS3216 },
   ) {
-    const router = createHistory<QueryParam>(path, {
-      params,
-    });
+    const router = createHistory<QueryParam>(path, { params });
 
     const selectSemester = jest.fn();
     const setTimetable = jest.fn();

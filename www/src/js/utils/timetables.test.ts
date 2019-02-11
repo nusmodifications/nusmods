@@ -7,15 +7,7 @@ import {
   TimetableDayArrangement,
   TimetableDayFormat,
 } from 'types/timetables';
-import {
-  ClassNo,
-  ColoredLesson,
-  LessonType,
-  Module,
-  ModuleCode,
-  RawLesson,
-  Semester,
-} from 'types/modules';
+import { ClassNo, ColoredLesson, LessonType, ModuleCode, RawLesson, Semester } from 'types/modules';
 import { ModulesMap } from 'reducers/moduleBank';
 
 import _ from 'lodash';
@@ -60,9 +52,10 @@ import {
   validateTimetableModules,
 } from './timetables';
 
-const modulesList = modulesListJSON as { [moduleCode: string]: string };
+// TODO: Fix this later
+const modulesList = modulesListJSON as any;
 
-describe('isValidSemester', () => {
+describe(isValidSemester, () => {
   test('semesters 1-4 are valid', () => {
     expect(isValidSemester(1)).toBe(true);
     expect(isValidSemester(2)).toBe(true);
@@ -381,6 +374,7 @@ test('findExamClashes should return non-empty object if exams clash', () => {
   const sem: Semester = 1;
   const examClashes = findExamClashes([cs1010s, cs4243 as any, cs3216], sem);
   const examDate = _.get(getModuleSemesterData(cs1010s, sem), 'ExamDate');
+  if (!examDate) throw new Error('Cannot find ExamDate');
   expect(examClashes).toEqual({ [examDate]: [cs1010s, cs4243] });
 });
 
