@@ -1,3 +1,4 @@
+import { get } from 'lodash';
 import * as Sentry from '@sentry/browser';
 
 // Configure Raven - the client for Sentry, which we use to handle errors
@@ -9,7 +10,7 @@ if (loadRaven) {
     release: process.env.versionStr || 'UNKNOWN_RELEASE',
 
     beforeSend(event, hint) {
-      const { message } = hint.originalException;
+      const message = get(hint, ['originalException', 'message']);
       if (message && message.match(/top\.globals|canvas\.contentDocument/i)) {
         return null;
       }
