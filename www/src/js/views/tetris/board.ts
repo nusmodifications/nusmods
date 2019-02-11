@@ -3,6 +3,7 @@ import produce from 'immer';
 
 import { ColorIndex } from 'types/reducers';
 import { ColoredLesson, DaysOfWeek } from 'types/modules';
+import { notNull } from 'types/utils';
 import { convertIndexToTime } from 'utils/timify';
 import { TimetableArrangement, TimetableDayArrangement } from 'types/timetables';
 
@@ -39,7 +40,7 @@ export function originalPosition(tiles: Board) {
     // Center the piece
     x: Math.floor(COLUMNS / 2 - tiles.length / 2),
     // Find the number of tiles needed to move the entire piece above the start line
-    y: min(tiles.map((column) => -findLastIndex(column, (tile) => tile))) - 1,
+    y: min(tiles.map((column) => -findLastIndex(column, notNull)))! - 1,
   };
 }
 
@@ -47,7 +48,7 @@ export function makePiece(shape: string[], color: ColorIndex): Piece {
   // Map 1s to filled squares and 0s to to empty squares (null)
   const rows = shape.map((row) => row.split('').map((tile) => (tile === '1' ? { color } : null)));
 
-  const tiles: Board = zip(...rows);
+  const tiles = zip(...rows) as Board;
 
   return {
     tiles,
@@ -327,6 +328,6 @@ export function pieceToTimetableDayArrangement(board: Board): TimetableDayArrang
   return board.map((column) =>
     column
       .map((tile, index) => (!tile ? null : createLessonSquare(tile.color, index)))
-      .filter(Boolean),
+      .filter(notNull),
   );
 }
