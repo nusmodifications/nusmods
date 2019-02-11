@@ -32,13 +32,14 @@ const exportData: ExportData = {
     id: 'google',
     timetableOrientation: VERTICAL,
     showTitle: true,
+    colors: {},
   },
   settings: {
     mode: 'DARK',
   },
 };
 
-jest.mock('storage/persistReducer', () => (key, reducer) => reducer);
+jest.mock('storage/persistReducer', <T>() => (key: string, reducer: T) => reducer);
 
 test('reducers should set export data state', () => {
   const state = reducers({} as any, setExportedData(modules, exportData));
