@@ -21,7 +21,7 @@ type Props = Readonly<{
   moduleTitle: ModuleTitle | null;
   moduleCredit: number | null;
   examDate: string | null;
-  conflict: Conflict | null;
+  conflict?: Conflict | null;
 
   // For draggable
   index: number;

@@ -81,7 +81,7 @@ export default class HighScoreForm extends React.PureComponent<Props, State> {
     const sortedEntries = sortBy(entriesWithNewScore, ([entryScore]) => entryScore).reverse();
 
     // If your score comes in later than the other high scores, then sorry!
-    if (sortedEntries.length > HIGH_SCORE_COUNT && !last(sortedEntries)[1]) {
+    if (sortedEntries.length > HIGH_SCORE_COUNT && !last(sortedEntries)![1]) {
       return null;
     }
 
