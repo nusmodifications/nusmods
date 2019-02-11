@@ -3,8 +3,10 @@ import { each } from 'lodash';
 
 import { Semester } from 'types/modules';
 
+import ButtonGroupSelector, {
+  Props as ButtonGroupProps,
+} from 'views/components/ButtonGroupSelector';
 import config from 'config';
-import ButtonGroupSelector from 'views/components/ButtonGroupSelector';
 
 type Props = {
   semesters: Semester[];
@@ -12,7 +14,7 @@ type Props = {
   useShortNames?: boolean;
   size?: string;
 
-  selectedSemester: Semester | null | undefined;
+  selectedSemester: Semester | null;
   onSelectSemester: (semester: Semester) => void;
 };
 
@@ -32,15 +34,14 @@ export default class SemesterPicker extends React.PureComponent<Props> {
 
   /**
    * Map button labels (semester names) to semesters
-   * @returns {{}}
    */
-  semesterMap(): { [key: string]: Semester | null | undefined } {
-    const map = {};
+  semesterMap(): { [key: string]: Semester | null } {
+    const map: { [key: string]: Semester | null } = {};
     const { semesters, showDisabled } = this.props;
 
     each(this.semesterNames(), (name: string, key: string) => {
       const semester = semesters.find((sem) => String(sem) === key);
-      if (semester || showDisabled) map[name] = semester;
+      if (semester || showDisabled) map[name] = semester || null;
     });
 
     return map;
@@ -49,7 +50,7 @@ export default class SemesterPicker extends React.PureComponent<Props> {
   // Disable and add title for buttons representing semesters that are not available
   buttonAttrs() {
     const semesterMap = this.semesterMap();
-    const attrs = {};
+    const attrs: ButtonGroupProps['attrs'] = {};
 
     each(this.semesterNames(), (name: string) => {
       if (!semesterMap[name]) {

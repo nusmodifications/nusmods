@@ -25,7 +25,7 @@ type Props = {
 };
 
 type State = {
-  loading: Semester | null | undefined;
+  loading: Semester | null;
 };
 
 function isModuleOnTimetable(
@@ -124,7 +124,7 @@ export class AddModuleDropdownComponent extends React.PureComponent<Props, State
                   id={id}
                   type="button"
                   className="btn btn-outline-primary dropdown-toggle dropdown-toggle-split"
-                  onClick={toggleMenu}
+                  onClick={() => toggleMenu()}
                   data-toggle="dropdown"
                   aria-haspopup="true"
                   aria-expanded={isOpen}
@@ -137,6 +137,7 @@ export class AddModuleDropdownComponent extends React.PureComponent<Props, State
                 {otherSemesters.map((semester, index) => (
                   <button
                     {...getItemProps({ item: semester })}
+                    type="button"
                     key={semester}
                     className={classnames('dropdown-item', styles.dropdownItem, {
                       'dropdown-selected': index === highlightedIndex,

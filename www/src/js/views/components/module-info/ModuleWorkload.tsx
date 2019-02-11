@@ -59,6 +59,7 @@ function workloadBlocks(component: WorkloadComponent, hours: number): React.Reac
 
 function sortWorkload(workload: Workload): [WorkloadComponent, number][] {
   // Push longer components (those that take up more than one row) down
+  // @ts-ignore TODO: Figure out how to type this better
   const components = _.entries(workload) as [WorkloadComponent, number][];
   const [long, short] = _.partition(components, ([, hours]) => Math.ceil(hours) >= ROW_MAX);
   return short.concat(long);

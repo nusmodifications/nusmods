@@ -2,7 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 
 type ButtonChoice = string;
-type Props = {
+export type Props = {
   choices: ButtonChoice[];
   attrs?: { [choice: string]: React.ButtonHTMLAttributes<HTMLButtonElement> };
   classNames?: { [buttonChoice: string]: string[] };
