@@ -63,7 +63,7 @@ class DisqusComments extends React.PureComponent<Props> {
     // this if we need to use them inside the function
     const { identifier, url, title } = this.props;
 
-    return function configDisqus() {
+    return function configDisqus(this: any) {
       this.page.identifier = identifier;
       this.page.url = url;
       this.page.title = title;
