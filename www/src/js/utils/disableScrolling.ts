@@ -1,4 +1,4 @@
-import noScrollNpm from 'no-scroll';
+import noScroll from 'no-scroll';
 
 let isOn = false;
 
@@ -11,7 +11,7 @@ export default function disableScrolling(active: boolean) {
   const { body } = document;
   if (!body || active === isOn) return;
 
-  noScrollNpm.toggle();
+  noScroll.toggle();
   body.classList.toggle('no-scroll');
   isOn = !isOn;
 }
