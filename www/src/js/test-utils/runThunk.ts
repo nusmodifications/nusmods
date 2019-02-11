@@ -6,7 +6,7 @@ export default async function runThunk(
   getState: Function = () => {},
 ) {
   if (typeof action === 'function') {
-    const p = action((nextAction) => runThunk(nextAction, dispatch, getState), getState);
+    const p = action((nextAction: FSA | Function) => runThunk(nextAction, dispatch, getState), getState);
 
     if (p instanceof Promise) {
       await p;
