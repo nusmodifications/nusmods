@@ -1,7 +1,7 @@
 import venueInfo from '__mocks__/venueInformation.json';
 
 import { WeekText, ModuleCode, StartTime } from 'types/modules';
-import { VenueInfo } from "types/venues";
+import { VenueInfo } from 'types/venues';
 import { ZWSP } from 'utils/react';
 import {
   searchVenue,
@@ -13,8 +13,7 @@ import {
 } from './venues';
 
 const venues = sortVenues(venueInfo as VenueInfo);
-const getVenues = (...names: string[]) =>
-  venues.filter(([name]) => names.includes(name));
+const getVenues = (...names: string[]) => venues.filter(([name]) => names.includes(name));
 
 const makeVenueLesson = (
   moduleCode: ModuleCode,

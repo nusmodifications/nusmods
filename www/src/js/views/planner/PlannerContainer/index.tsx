@@ -9,7 +9,8 @@ const AsyncTodayContainer = Loadable({
   loading: (props: LoadingComponentProps) => {
     if (props.error) {
       return <ApiError dataName="page" retry={props.retry} />;
-    } else if (props.pastDelay) {
+    }
+    if (props.pastDelay) {
       return <LoadingSpinner />;
     }
 

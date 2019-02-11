@@ -10,7 +10,8 @@ export default Loadable<Props, any>({
   loading: (props: LoadingComponentProps) => {
     if (props.error) {
       return <ApiError dataName="page" retry={props.retry} />;
-    } else if (props.pastDelay) {
+    }
+    if (props.pastDelay) {
       return <LoadingSpinner />;
     }
 

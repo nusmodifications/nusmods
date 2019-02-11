@@ -103,7 +103,8 @@ export const AsyncUnmappedVenues = Loadable.Map({
   loading: (props: LoadingComponentProps) => {
     if (props.error) {
       return <ApiError dataName="venue locations" retry={props.retry} />;
-    } else if (props.pastDelay) {
+    }
+    if (props.pastDelay) {
       return <LoadingSpinner />;
     }
 

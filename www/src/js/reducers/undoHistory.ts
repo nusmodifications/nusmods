@@ -11,9 +11,9 @@ export type UndoHistoryConfig = {
 };
 
 export type UndoHistoryState = {
-  past: Object[];
-  present: Object | null;
-  future: Object[];
+  past: Record<string, any>[];
+  present: Record<string, any> | null;
+  future: Record<string, any>[];
 };
 
 // Call the reducer with empty action to populate the initial state
@@ -27,7 +27,7 @@ const initialState: UndoHistoryState = {
 // Basically a reducer but not really, as it needs to know the previous state.
 // Passing state in even though state === presentAppState[config.reducerName] as the "reducer"
 // doesn't need to know that.
-export function computeUndoStacks<T extends Object>(
+export function computeUndoStacks<T extends Record<string, any>>(
   state: UndoHistoryState = initialState,
   action: FSA,
   previousAppState: T,
@@ -80,7 +80,11 @@ export function computeUndoStacks<T extends Object>(
 }
 
 // Copy all keyPaths in present into a new copy of state
-export function mergePresent<T extends Object>(state: T, present: Object, keyPaths: string[]): T {
+export function mergePresent<T extends Record<string, any>>(
+  state: T,
+  present: Record<string, any>,
+  keyPaths: string[],
+): T {
   const newState = { ...state };
   keyPaths.forEach((path) => {
     const presentValue = get(present, path);
@@ -92,7 +96,7 @@ export function mergePresent<T extends Object>(state: T, present: Object, keyPat
 // Given a config object, returns function which compute new state after
 // undoing/redoing/storing present as required by action.
 export default function createUndoReducer(config: UndoHistoryConfig) {
-  return <T extends Object>(previousState: T, presentState: T, action: FSA) => {
+  return <T extends Record<string, any>>(previousState: T, presentState: T, action: FSA) => {
     // Calculate un/redone history
     const undoHistoryState = presentState[config.reducerName];
     const updatedHistory = computeUndoStacks(

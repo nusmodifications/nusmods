@@ -11,7 +11,7 @@ import undoHistory, {
 const WATCHED_ACTION = 'WATCHED_ACTION';
 const IGNORED_ACTION = 'IGNORED_ACTION';
 
-const newFSA = (type: string, payload: Object = {}) => ({ type, payload });
+const newFSA = (type: string, payload: Record<string, any> = {}) => ({ type, payload });
 
 const emptyUndoHistory = { past: [], present: undefined, future: [] };
 

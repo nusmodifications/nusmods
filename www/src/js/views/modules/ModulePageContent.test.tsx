@@ -11,11 +11,7 @@ import ModulePageContent from './ModulePageContent';
 
 describe(ModulePageContent, () => {
   function make(module: Module = CS1010S, timetables: TimetableConfig = {}) {
-    return shallow(
-      <ModulePageContent
-        module={module}
-      />,
-    );
+    return shallow(<ModulePageContent module={module} />);
   }
 
   test('side menu items should appear in the same order in the document', () => {
