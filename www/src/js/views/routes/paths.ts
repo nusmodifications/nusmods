@@ -27,18 +27,13 @@ export function timetableShare(semester: Semester, timetable: SemTimetableConfig
 }
 
 // Timetable path -> Semester
-export function semesterForTimetablePage(
-  semStr: string | null | undefined,
-): Semester | null | undefined {
+export function semesterForTimetablePage(semStr: string | null): Semester | null {
   if (!semStr) return null;
-  return toSemester[semStr];
+  return toSemester[semStr] || null;
 }
 
 // Module Code, Module Title -> Module page path
-export function modulePage(
-  moduleCode: ModuleCode,
-  moduleTitle: ModuleTitle | null | undefined,
-): string {
+export function modulePage(moduleCode: ModuleCode, moduleTitle?: ModuleTitle): string {
   return `/modules/${moduleCode}/${kebabCase(moduleTitle)}`;
 }
 

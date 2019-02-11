@@ -10,7 +10,7 @@ test('timetablePage <-> semesterForTimetablePage', () => {
   const semesters = [1, 2, 3, 4];
   semesters.forEach((semester) => {
     const path = timetablePage(semester);
-    const param = path.match(/timetable\/(.*)/)[1];
+    const param = path.match(/timetable\/(.*)/)![1];
     expect(semesterForTimetablePage(param)).toBe(semester);
   });
 });
