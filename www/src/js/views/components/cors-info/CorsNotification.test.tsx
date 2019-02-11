@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 
 import config, { CorsRound, CorsPeriod, CorsPeriodType } from 'config';
 import createHistory from 'test-utils/createHistory';
@@ -8,7 +8,7 @@ import { CorsNotificationComponent } from './CorsNotification';
 
 describe(CorsNotificationComponent, () => {
   // Save the original CORS schedule for this test and restore it afterwards
-  let originalSchedule;
+  let originalSchedule: typeof config.corsSchedule;
   beforeAll(() => {
     originalSchedule = config.corsSchedule;
   });
@@ -18,7 +18,7 @@ describe(CorsNotificationComponent, () => {
   });
 
   function corsPeriod(
-    start: moment,
+    start: Moment,
     durationInHours: number = 1,
     type: CorsPeriodType = 'open',
   ): CorsPeriod {
