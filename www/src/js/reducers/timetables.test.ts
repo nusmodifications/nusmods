@@ -1,14 +1,15 @@
 import reducer, { defaultTimetableState, persistConfig } from 'reducers/timetables';
 import {
   ADD_MODULE,
-  SET_TIMETABLE,
   hideLessonInTimetable,
   removeModule,
-  showLessonInTimetable,
+  SET_TIMETABLE,
   setLessonConfig,
+  showLessonInTimetable,
 } from 'actions/timetables';
 import { TimetablesState } from 'types/reducers';
 import config from 'config';
+import { PersistConfig } from 'redux-persist/es/types';
 
 const initialState = defaultTimetableState;
 
@@ -17,18 +18,25 @@ jest.mock('config');
 /* eslint-disable no-useless-computed-key */
 describe('color reducers', () => {
   test('should add colors when modules are added', () => {
-    function addModule(semester, moduleCode) {
-      return {
+    expect(
+      reducer(initialState, {
         type: ADD_MODULE,
         payload: {
-          semester,
-          moduleCode,
+          semester: 1,
+          moduleCode: 'CS1010S',
         },
-      };
-    }
+      }).colors,
+    ).toHaveProperty('1.CS1010S');
 
-    expect(reducer(initialState, addModule(1, 'CS1010S')).colors).toHaveProperty('1.CS1010S');
-    expect(reducer(initialState, addModule(2, 'CS3216')).colors).toHaveProperty('2.CS3216');
+    expect(
+      reducer(initialState, {
+        type: ADD_MODULE,
+        payload: {
+          semester: 2,
+          moduleCode: 'CS3216',
+        },
+      }).colors,
+    ).toHaveProperty('2.CS3216');
   });
 
   test('should remove colors when modules are removed', () => {
@@ -52,15 +60,11 @@ describe('color reducers', () => {
   });
 
   test('should set colors when timetable is set', () => {
-    function setTimetable(semester, timetable, colors) {
-      return {
-        type: SET_TIMETABLE,
-        payload: { semester, timetable, colors },
-      };
-    }
-
     expect(
-      reducer(initialState, setTimetable(1, { CS1010S: {} }, { CS1010S: 0 })).colors[1],
+      reducer(initialState, {
+        type: SET_TIMETABLE,
+        payload: { semester: 1, timetable: { CS1010S: {} }, colors: { CS1010S: 0 } },
+      }).colors[1],
     ).toEqual({
       CS1010S: 0,
     });
@@ -208,8 +212,12 @@ describe('stateReconciler', () => {
     throw new Error('No stateReconciler');
   }
 
+  const reconcilerPersistConfig = { debug: false } as PersistConfig;
+
   test('should return inbound state when academic year is the same', () => {
-    expect(stateReconciler(inbound, initialState, initialState, { debug: false })).toEqual(inbound);
+    expect(stateReconciler(inbound, initialState, initialState, reconcilerPersistConfig)).toEqual(
+      inbound,
+    );
   });
 
   test('should archive old timetables and clear state when academic year is different', () => {
@@ -219,9 +227,7 @@ describe('stateReconciler', () => {
     };
 
     expect(
-      stateReconciler(oldInbound, initialState, initialState, {
-        debug: false,
-      }),
+      stateReconciler(oldInbound, initialState, initialState, reconcilerPersistConfig),
     ).toEqual({
       ...initialState,
       archive: {

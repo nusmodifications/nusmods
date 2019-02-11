@@ -1,5 +1,5 @@
 import { FSA } from 'types/redux';
-import { ColorMapping, ThemeState } from 'types/reducers';
+import { ColorMapping, ThemeState, VERTICAL, HORIZONTAL } from 'types/reducers';
 import { Theme } from 'types/settings';
 
 import { SET_EXPORTED_DATA } from 'actions/export';
@@ -10,7 +10,6 @@ import {
   TOGGLE_TITLE_DISPLAY,
 } from 'actions/theme';
 import themes from 'data/themes.json';
-import { VERTICAL, HORIZONTAL } from 'types/reducers';
 import { DIMENSIONS, withTracker } from 'bootstrapping/matomo';
 
 const defaultColorsState: ColorMapping = {};

@@ -4,7 +4,7 @@ import { createMigrate } from 'redux-persist';
 
 import { PersistConfig } from 'storage/persistReducer';
 import { FSA } from 'types/redux';
-import { Semester } from 'types/modules';
+import { ModuleCode, Semester } from 'types/modules';
 import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import { ColorMapping, TimetablesState } from 'types/reducers';
 
@@ -27,7 +27,7 @@ const EMPTY_OBJECT = {};
 export const persistConfig = {
   /* eslint-disable no-useless-computed-key */
   migrate: createMigrate({
-    [1]: (state: TimetablesState) => ({
+    [1]: (state) => ({
       ...state,
       archive: {},
     }),
@@ -146,7 +146,7 @@ function semColors(state: ColorMapping = defaultSemColorMap, action: FSA): Color
 }
 
 // Map of semester to list of hidden modules
-const defaultHiddenState = [];
+const defaultHiddenState: ModuleCode[] = [];
 function semHiddenModules(state = defaultHiddenState, action: FSA) {
   if (!action.payload) {
     return state;

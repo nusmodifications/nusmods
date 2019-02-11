@@ -1,9 +1,8 @@
 import { FSA } from 'types/redux';
-import { ThemeState } from 'types/reducers';
+import { ThemeState, VERTICAL } from 'types/reducers';
 
 import * as actions from 'actions/theme';
 import reducer, { defaultThemeState, themeIds } from 'reducers/theme';
-import { VERTICAL } from 'types/reducers';
 
 const themeInitialState: ThemeState = defaultThemeState;
 const googleTheme = 'google';
