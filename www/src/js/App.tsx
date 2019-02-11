@@ -6,14 +6,14 @@ import * as React from 'react';
 import { AppContainer } from 'react-hot-loader'; // eslint-disable-line import/no-extraneous-dependencies
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/lib/integration/react';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import AppShell from 'views/AppShell';
 import Routes from 'views/routes/Routes';
 import { DIMENSIONS, setCustomDimensions } from 'bootstrapping/matomo';
 
 type Props = {
-  store: Store<State, any, any>;
+  store: Store<State, any>;
   persistor: Persistor;
 };
 
@@ -23,7 +23,7 @@ export default function App({ store, persistor }: Props) {
 
     setCustomDimensions({
       [DIMENSIONS.theme]: theme.id,
-      [DIMENSIONS.beta]: !!settings.beta,
+      [DIMENSIONS.beta]: String(!!settings.beta),
     });
   };
 

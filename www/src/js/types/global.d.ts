@@ -4,7 +4,11 @@ declare module '*.scss' {
 }
 
 declare module '*.svg' {
-  const content: React.ComponentType<React.SVGAttributes<SVGElement>>;
+  const content: React.ComponentType<React.SVGAttributes<SVGElement>> & {
+    // Added by SVGR
+    title?: string;
+  };
+
   export = content;
 }
 

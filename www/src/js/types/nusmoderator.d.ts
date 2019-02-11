@@ -1,5 +1,5 @@
 declare module 'nusmoderator' {
-  type WeekType =
+  export type WeekType =
     | 'Instructional'
     | 'Reading'
     | 'Examination'
@@ -8,21 +8,21 @@ declare module 'nusmoderator' {
     | 'Orientation';
   type Semester = 'Semester 1' | 'Semester 2' | 'Special Sem 1' | 'Special Sem 2';
 
-  interface AcadYear {
+  export interface AcadYear {
     year: string;
     startDate: Date;
   }
 
-  interface AcadWeek {
+  export interface AcadWeek {
     weekType: WeekType;
     weekNumber: number | null;
   }
 
-  interface AcadWeekInfo {
+  export interface AcadWeekInfo {
     year: string;
     sem: Semester;
     type: WeekType;
-    num: number;
+    num?: number;
   }
 
   /* eslint-disable lines-between-class-members */
@@ -35,9 +35,7 @@ declare module 'nusmoderator' {
   }
   /* eslint-enable */
 
-  class NUSModerator {
+  export default class NUSModerator {
     static academicCalendar: AcademicCalendar;
   }
-
-  export = NUSModerator;
 }
