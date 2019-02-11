@@ -44,7 +44,7 @@ export function invertFacultyDepartments(mapping: {
  */
 export function updateGroups(groups: FilterGroups, query: string): FilterGroups {
   const params = qs.parse(query);
-  const updater: Spec<FilterGroup<any>> = {};
+  const updater: Spec<FilterGroups> = {};
 
   each(groups, (group) => {
     const currentQuery = group.toQueryString();

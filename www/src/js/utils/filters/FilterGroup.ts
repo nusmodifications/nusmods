@@ -70,6 +70,7 @@ export default class FilterGroup<Filter extends ModuleFilter> {
 
     const newValue = typeof value === 'boolean' ? value : !this.filters[id].enabled;
     const updated = update(this, {
+      // @ts-ignore
       filters: { [id]: { enabled: { $set: newValue } } },
     });
     updated.updateActiveFilters();
@@ -78,7 +79,7 @@ export default class FilterGroup<Filter extends ModuleFilter> {
   }
 
   reset(): FilterGroup<Filter> {
-    let group = this;
+    let group: FilterGroup<Filter> = this;
     this.activeFilters.forEach((filter) => {
       group = group.toggle(filter);
     });
@@ -99,7 +100,7 @@ export default class FilterGroup<Filter extends ModuleFilter> {
     const enabled = new Set(filterIds.split(ID_DELIMITER));
     return values(this.filters)
       .map((filter: Filter) => filter.id)
-      .reduce((group, id) => group.toggle(id, enabled.has(id)), this);
+      .reduce<FilterGroup<Filter>>((group, id) => group.toggle(id, enabled.has(id)), this);
   }
 
   /**
