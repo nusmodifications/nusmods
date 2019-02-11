@@ -3,9 +3,8 @@ import NUSModerator from 'nusmoderator';
 import { groupBy, range } from 'lodash';
 import classnames from 'classnames';
 
-import { ModuleWithColor, Semester } from 'types/modules';
+import { ModuleWithColor, Semester, WorkingDaysOfWeek } from 'types/modules';
 import { ModuleWithExamTime, TimeSegment } from 'types/views';
-import { WorkingDaysOfWeek } from 'types/modules';
 import config from 'config';
 import { examDateToDate, formatExamDate, getModuleExamDate } from 'utils/modules';
 import { daysAfter } from 'utils/timify';
@@ -40,7 +39,9 @@ export default class ExamCalendar extends React.PureComponent<Props> {
     const { semester } = this.props;
     const year = `${config.academicYear.slice(2, 4)}/${config.academicYear.slice(-2)}`;
     let firstDayOfExams = NUSModerator.academicCalendar.getExamWeek(year, semester);
-    firstDayOfExams = new Date(firstDayOfExams - firstDayOfExams.getTimezoneOffset() * 60 * 1000);
+    firstDayOfExams = new Date(
+      firstDayOfExams.getTime() - firstDayOfExams.getTimezoneOffset() * 60 * 1000,
+    );
 
     let weekCount = 0;
     let lastDayOfExams = daysAfter(firstDayOfExams, 0);
