@@ -20,6 +20,7 @@ describe(UPDATE_MODULE_TIMESTAMP, () => {
   });
 
   afterEach(() => {
+    // @ts-ignore
     Date.now.mockRestore();
   });
 
