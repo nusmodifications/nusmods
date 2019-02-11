@@ -30,8 +30,10 @@ export default class ErrorBoundary extends React.Component<Props, State> {
   }
 
   render() {
-    if (this.state.error) {
-      return this.props.errorPage(this.state.error);
+    const { error } = this.state;
+
+    if (error) {
+      return this.props.errorPage(error);
     }
 
     return this.props.children;

@@ -3,6 +3,8 @@ import { shallow, mount } from 'enzyme';
 import { captureException } from 'utils/error';
 import ErrorBoundary from './ErrorBoundary';
 
+const mockCaptureException = captureException as jest.Mock;
+
 jest.mock('utils/error');
 jest.mock(
   'views/errors/ErrorPage',
@@ -19,10 +21,10 @@ function ThrowsError(prop: any): null {
 }
 
 describe('ErrorBoundary', () => {
-  let consoleError;
+  let consoleError: typeof console.error;
 
   beforeEach(() => {
-    captureException.mockReset();
+    mockCaptureException.mockReset();
 
     // Silence console errors
     consoleError = global.console.error;
@@ -51,7 +53,7 @@ describe('ErrorBoundary', () => {
     );
 
     expect(wrapper.isEmptyRender()).toBe(true);
-    expect(captureException).toHaveBeenCalledWith(error, expect.any(Object));
+    expect(mockCaptureException).toHaveBeenCalledWith(error, expect.any(Object));
   });
 
   test('should show custom error page if provided', () => {
@@ -74,6 +76,6 @@ describe('ErrorBoundary', () => {
       </ErrorBoundary>,
     );
 
-    expect(captureException).not.toHaveBeenCalled();
+    expect(mockCaptureException).not.toHaveBeenCalled();
   });
 });

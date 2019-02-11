@@ -46,6 +46,7 @@ export default class ErrorPage extends React.PureComponent<Props> {
               An error report has been made and we will look into this. We would really appreciate
               it if you could{' '}
               <button
+                type="button"
                 className={classnames('btn btn-link', styles.link)}
                 onClick={() => Sentry.showReportDialog()}
               >
