@@ -1,7 +1,7 @@
 import { Theme, ThemeId } from 'types/settings';
 
 import * as React from 'react';
-import _ from 'lodash';
+import { range } from 'lodash';
 import classnames from 'classnames';
 
 import { NUM_DIFFERENT_COLORS } from 'utils/colors';
@@ -19,6 +19,7 @@ export default function ThemeOption(props: Props) {
 
   return (
     <button
+      type="button"
       className={classnames(className, styles.option, `theme-${theme.id}`, {
         [styles.isSelected]: isSelected,
       })}
@@ -28,7 +29,7 @@ export default function ThemeOption(props: Props) {
         <small>{theme.name}</small>
       </div>
       <ul className={classnames('list-unstyled', styles.colorList)}>
-        {_.range(NUM_DIFFERENT_COLORS).map((index) => (
+        {range(NUM_DIFFERENT_COLORS).map((index) => (
           <li key={index} className={classnames(styles.colorItem, `hoverable color-${index}`)} />
         ))}
       </ul>

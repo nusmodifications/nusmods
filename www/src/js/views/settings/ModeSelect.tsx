@@ -1,8 +1,6 @@
-import { Mode } from 'types/settings';
-
 import * as React from 'react';
 import classnames from 'classnames';
-import { LIGHT_MODE, DARK_MODE } from 'types/settings';
+import { Mode, LIGHT_MODE, DARK_MODE } from 'types/settings';
 
 type Props = {
   mode: Mode;
@@ -11,7 +9,7 @@ type Props = {
 
 type ModeOption = { value: Mode; label: string };
 
-const MODES: Array<ModeOption> = [
+const MODES: ModeOption[] = [
   {
     label: 'On',
     value: DARK_MODE,

@@ -2,7 +2,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 
-import { Faculty } from 'types/modules';
 import { Mode, ThemeId } from 'types/settings';
 import { State as StoreState } from 'reducers';
 
@@ -25,8 +24,6 @@ import RefreshPrompt from './RefreshPrompt';
 import styles from './SettingsContainer.scss';
 
 type Props = {
-  newStudent: boolean;
-  faculty: Faculty;
   currentThemeId: string;
   mode: Mode;
   betaTester: boolean;
@@ -113,10 +110,7 @@ class SettingsContainer extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: StoreState) => ({
-  newStudent: state.settings.newStudent,
-  faculty: state.settings.faculty,
   mode: state.settings.mode,
-  corsNotification: state.settings.corsNotification,
   currentThemeId: state.theme.id,
   betaTester: state.settings.beta || false,
 });
@@ -130,4 +124,5 @@ const connectedSettings = connect(
     toggleBetaTesting,
   },
 )(SettingsContainer);
+
 export default deferComponentRender(connectedSettings);
