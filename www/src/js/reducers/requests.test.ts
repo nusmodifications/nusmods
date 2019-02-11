@@ -11,6 +11,7 @@ describe(requests, () => {
       [API_REQUEST]: 'TEST_ACTION',
       requestStatus: REQUEST,
     },
+    payload: 'Something',
   };
 
   const successAction = {
@@ -22,6 +23,7 @@ describe(requests, () => {
       },
       requestStatus: SUCCESS,
     },
+    payload: 'Something',
   };
 
   const failureError = new Error('Test error');

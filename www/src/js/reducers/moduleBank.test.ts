@@ -4,15 +4,14 @@ import {
   UPDATE_MODULE_TIMESTAMP,
   updateModuleTimestamp,
 } from 'actions/moduleBank';
-import { ModuleBank } from './moduleBank';
-import reducer from './moduleBank';
+import reducer, { ModuleBank } from './moduleBank';
 
 const defaultModuleBankState: ModuleBank = {
   moduleList: [], // List of modules
   modules: {}, // Object of ModuleCode -> ModuleDetails
   moduleCodes: {},
   moduleArchive: {},
-  apiLastUpdatedTimestamp: undefined,
+  apiLastUpdatedTimestamp: null,
 };
 
 describe(UPDATE_MODULE_TIMESTAMP, () => {

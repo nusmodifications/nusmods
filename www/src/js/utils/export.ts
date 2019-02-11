@@ -20,7 +20,7 @@ export function extractStateForExport(semester: Semester, state: State): ExportD
   };
 }
 
-export function serializeExportState(data: ExportData, options: Object = {}): string {
+export function serializeExportState(data: ExportData, options: any): string {
   return qs.stringify({
     data: JSON.stringify(data),
     ...options,
