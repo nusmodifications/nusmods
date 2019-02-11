@@ -304,8 +304,8 @@ export function validateModuleLessons(
   lessonConfig: ModuleLessonConfig,
   module: Module,
 ): [ModuleLessonConfig, LessonType[]] {
-  const validatedLessonConfig = {};
-  const updatedLessonTypes = [];
+  const validatedLessonConfig: ModuleLessonConfig = {};
+  const updatedLessonTypes: string[] = [];
 
   const validLessons = getModuleTimetable(module, semester);
   const lessonsByType = _.groupBy(validLessons, (lesson) => lesson.LessonType);
@@ -350,7 +350,7 @@ function serializeModuleConfig(config: ModuleLessonConfig): string {
 }
 
 function parseModuleConfig(serialized: string | null): ModuleLessonConfig {
-  const config = {};
+  const config: ModuleLessonConfig = {};
   if (!serialized) return config;
 
   _.castArray(serialized).forEach((serializedModule) => {
@@ -386,7 +386,7 @@ export function formatWeekNumber(weekText: WeekText) {
   }
 
   // Find consecutive week numbers
-  const processed = [];
+  const processed: number[] = [];
   let start = weeks.shift();
   let last = start;
 
@@ -429,7 +429,7 @@ export function serializeTimetable(timetable: SemTimetableConfig): string {
 }
 
 export function deserializeTimetable(serialized: string): SemTimetableConfig {
-  return _.mapValues(qs.parse(serialized), parseModuleConfig);
+  return _.mapValues<ModuleLessonConfig>(qs.parse(serialized), parseModuleConfig);
 }
 
 export function isSameTimetableConfig(t1: SemTimetableConfig, t2: SemTimetableConfig): boolean {

@@ -62,7 +62,7 @@ export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: Tree) {
 /**
  * Converts conflicts into human readable text form
  */
-export function conflictToText(conflict: Tree) {
+export function conflictToText(conflict: Tree): string {
   // Tree appears to be incorrectly typed. Sometimes for no apparent
   // reason the fragment is double wrapped in an array
   // eslint-disable-next-line no-param-reassign

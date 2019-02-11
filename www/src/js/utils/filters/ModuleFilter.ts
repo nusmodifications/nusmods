@@ -5,11 +5,13 @@ export default class ModuleFilter {
   enabled = false;
 
   id: string;
+
   label: string;
+
   test: (module: Module) => boolean;
 
   // ModuleCode of modules that this filter matches
-  filteredModules: Set<ModuleCode>;
+  filteredModules?: Set<ModuleCode>;
 
   constructor(id: string, label: string, test: (module: Module) => boolean) {
     this.id = id;
@@ -18,11 +20,13 @@ export default class ModuleFilter {
   }
 
   initCount(modules: Module[]) {
-    this.filteredModules = new Set();
+    const filteredModules = new Set();
 
     modules
       .filter((module) => this.test(module))
-      .forEach((module) => this.filteredModules.add(module.ModuleCode));
+      .forEach((module) => filteredModules.add(module.ModuleCode));
+
+    this.filteredModules = filteredModules;
   }
 
   /**
@@ -32,7 +36,7 @@ export default class ModuleFilter {
    * @param {?Set<ModuleCode>} modules - if null, returns all modules that passes this filter
    * @returns {number}
    */
-  count(modules: Set<ModuleCode> | null | undefined) {
+  count(modules: Set<ModuleCode> | undefined) {
     if (!this.filteredModules) {
       throw new Error(
         `count() method called before initCount() on filter ${this.label} (${this.id})`,

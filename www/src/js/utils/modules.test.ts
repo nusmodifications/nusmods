@@ -55,7 +55,7 @@ test('getModuleSemesterData should return undefined if semester is absent', () =
 
 function lessonWithDifferentProperty(
   lesson: Lesson,
-  property: string,
+  property: keyof Lesson,
   newValue: any = 'TEST',
 ): Lesson {
   const anotherLesson: Lesson = _.cloneDeep(lesson);

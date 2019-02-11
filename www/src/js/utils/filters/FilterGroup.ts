@@ -33,11 +33,13 @@ export const ID_DELIMITER = ',';
  */
 export default class FilterGroup<Filter extends ModuleFilter> {
   id: FilterGroupId;
+
   label: string;
+
   filters: { [key: string]: Filter };
 
   // Memoized array of filters that are enabled
-  activeFilters: Filter[];
+  activeFilters: Filter[] = [];
 
   constructor(id: FilterGroupId, label: string, filters: Filter[]) {
     this.filters = keyBy(filters, (filter) => filter.id);
@@ -111,7 +113,7 @@ export default class FilterGroup<Filter extends ModuleFilter> {
   static union(
     filterGroups: FilterGroup<any>[],
     exclude?: FilterGroup<any>,
-  ): Set<ModuleCode> | null | undefined {
+  ): Set<ModuleCode> | null {
     const excludedId = exclude ? exclude.id : null;
     const modules = filterGroups.filter((group) => group.isActive() && group.id !== excludedId);
 

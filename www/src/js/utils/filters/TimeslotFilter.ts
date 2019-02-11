@@ -1,22 +1,25 @@
 import config from 'config';
 import { getModuleSemesterData, getTimeslot } from 'utils/modules';
 import ModuleFilter from 'utils/filters/ModuleFilter';
-import { Semester, Time, Day } from 'types/modules';
+import { Semester, Time, Day, SemesterData } from 'types/modules';
 
 export type TimeslotType = 'Lecture' | 'Tutorial';
 export const TimeslotTypes = ['Lecture', 'Tutorial'];
 
 // Map TimeslotTypes to the property on SemesterData that contains the lecture or tutorial
 // timeslot info
-const timeslotProperties: { [timeslotType: string]: string } = {
+const timeslotProperties: { [timeslotType in TimeslotType]: keyof SemesterData } = {
   Lecture: 'LecturePeriods',
   Tutorial: 'TutorialPeriods',
 };
 
 export default class TimeslotFilter extends ModuleFilter {
   semester: Semester;
+
   type: TimeslotType;
+
   day: Day;
+
   time: Time;
 
   constructor(day: Day, time: Time, type: TimeslotType, semester: Semester = config.semester) {
@@ -27,7 +30,8 @@ export default class TimeslotFilter extends ModuleFilter {
     super(id, timeslot, (module) => {
       const lesson = getModuleSemesterData(module, semester);
       if (!lesson) return false;
-      const timeslots = lesson[timeslotProperty];
+
+      const timeslots = lesson[timeslotProperty] as string[];
       return timeslots ? timeslots.includes(timeslot) : false;
     });
 

@@ -78,7 +78,7 @@ export function formatExamDate(examDate: string | null | undefined): string {
 }
 
 export function getModuleExamDate(module: Module, semester: Semester): string {
-  return _.get(getModuleSemesterData(module, semester), 'ExamDate');
+  return _.get(getModuleSemesterData(module, semester), 'ExamDate')!;
 }
 
 export function getFormattedModuleExamDate(module: Module, semester: Semester): string {
@@ -93,7 +93,7 @@ export function getFirstAvailableSemester(
   current: Semester = config.semester, // For testing only
 ): Semester {
   const availableSemesters = semesters.map((semesterData) => semesterData.Semester);
-  return availableSemesters.includes(current) ? current : _.min(availableSemesters);
+  return availableSemesters.includes(current) ? current : _.min(availableSemesters)!;
 }
 
 export function getSemestersOffered(module: Module): Semester[] {
