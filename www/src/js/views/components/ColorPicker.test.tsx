@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import ColorPicker from 'views/components/ColorPicker';
 import { ColorIndex } from 'types/reducers';
 import { expectColor } from 'test-utils/theme';
@@ -16,7 +16,7 @@ function makeColorPicker(color: ColorIndex = 0) {
   };
 }
 
-function findPopup(wrapper) {
+function findPopup(wrapper: ReactWrapper<ColorPicker>) {
   return wrapper.find(`.${styles.palette}`);
 }
 

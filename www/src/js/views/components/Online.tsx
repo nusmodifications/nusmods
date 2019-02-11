@@ -23,7 +23,10 @@ export class OnlineComponent extends React.Component<Props> {
   render() {
     const { children, isOnline } = this.props;
 
-    if (typeof children === 'function') return children(isOnline);
+    if (typeof children === 'function') {
+      // @ts-ignore Not technically safe, since some ReactNodes are also functions, but this is safe enough
+      return children(isOnline);
+    }
     if (isOnline) return children;
     return null;
   }

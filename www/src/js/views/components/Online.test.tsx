@@ -3,7 +3,6 @@ import { shallow } from 'enzyme';
 import { OnlineComponent } from './Online';
 
 describe(OnlineComponent, () => {
-  // React 15.6 doesn't allow raw string as content
   const testContent = <span>Test</span>;
 
   test('should return nothing if the app is offline', () => {

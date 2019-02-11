@@ -5,7 +5,7 @@ import { Semester } from 'types/modules';
 import styles from './SemesterBadge.scss';
 
 /* eslint-disable no-useless-computed-key */
-const BADGE_COLOR = {
+const BADGE_COLOR: { [semester: number]: string } = {
   [1]: styles.sem1,
   [2]: styles.sem2,
   [3]: styles.sem3,

@@ -19,7 +19,10 @@ type Props = {
   className?: string;
 };
 
-export function LinkModuleCodesComponent(props: Props) {
+// @ts-ignore TODO: Figure out why TypeScript does not accept (props) => React.ReactNode as functional component
+export const LinkModuleCodesComponent: React.FunctionComponent<Props> = (
+  props: Props,
+): React.ReactNode => {
   const { children, className } = props;
 
   return replaceWithNode(children, MODULE_CODE_REGEX, (part, i) => {
@@ -42,7 +45,7 @@ export function LinkModuleCodesComponent(props: Props) {
       </Tooltip>
     );
   });
-}
+};
 
 const mapStateToProps = connect((state: State) => ({
   getModuleCondensed: getModuleCondensed(state.moduleBank),

@@ -32,6 +32,7 @@ class ColorPicker extends React.PureComponent<Props> {
     return (
       <div className={styles.container}>
         <button
+          type="button"
           {...getToggleButtonProps({
             title: label,
           })}
@@ -42,6 +43,7 @@ class ColorPicker extends React.PureComponent<Props> {
         <div className={classnames(styles.palette, { hidden: !isOpen })} {...getMenuProps()}>
           {_.range(NUM_DIFFERENT_COLORS).map((index: ColorIndex) => (
             <button
+              type="button"
               {...getItemProps({ item: index })}
               key={index}
               className={classnames(styles.option, `color-${index}`, {

@@ -3,7 +3,7 @@ import config from 'config';
 
 /* eslint-disable */
 
-const eggs = {
+const eggs: Record<string, string> = {
   'JXg8I04=': 'JiEnPRxeXGE0PSQCAQcmMD4oHEoeITB8OwYAFiF6OCIBSRYqZH4jDAYXf2VrfUETFiw4',
   'LDQ4KAILHSEyMjkOFho=':
     'JiEnPRxeXGE0PSQCAQcmMD4oHEoeITB8OwYAFiF6ESwEAR4hOzwqDhASPDx+Aj9QXTkwMSA=',
@@ -14,15 +14,16 @@ const eggs = {
 const k = config.brandName;
 
 const fryingPans = [
-  (c) => c.charCodeAt(0),
-  (c, i) => c ^ k.charCodeAt(i % k.length),
+  (c: string) => c.charCodeAt(0),
+  (c: number, i: number) => c ^ k.charCodeAt(i % k.length),
   String.fromCharCode,
-  (c) => c.charAt(0),
+  (c: string) => c.charAt(0),
 ];
 
-const cook = (query) => fryingPans.reduce((a, b) => a.map(b), Array.from(query)).join('');
+// @ts-ignore
+const cook = (query: string) => fryingPans.reduce((a, b) => a.map(b), Array.from(query)).join('');
 
-export const matchEgg = (query) => {
+export const matchEgg = (query: string) => {
   try {
     return eggs[btoa(cook(query.toLowerCase()))];
   } catch (e) {

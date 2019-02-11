@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { mount, ReactWrapper } from 'enzyme';
 import mockDom from 'test-utils/mockDom';
 
-import ScrollToTop, { ScrollToTopComponent, Props as ScrollToTopProps } from './ScrollToTop';
+import ScrollToTop, { ScrollToTopComponent } from './ScrollToTop';
 
 type Props = {
   onComponentDidMount?: boolean;
@@ -17,20 +17,12 @@ describe('ScrollToTopComponent', () => {
 
   // Construct a testable ScrollToTop component
   function make(props: Props = {}) {
-    // This function exists to avoid triggering Flow errors on undefined props
-    function getDefinedProp(name: keyof (Props & ScrollToTopProps)) {
-      // Try to return prop if it exists in props
-      if (props[name] !== undefined) return props[name];
-      // Else return component's default value
-      return ScrollToTopComponent.defaultProps[name];
-    }
-
     return mount(
       <MemoryRouter>
         {}
         <ScrollToTop
-          onComponentDidMount={getDefinedProp('onComponentDidMount')}
-          onPathChange={getDefinedProp('onPathChange')}
+          onComponentDidMount={props.onComponentDidMount}
+          onPathChange={props.onPathChange}
         />
       </MemoryRouter>,
     );

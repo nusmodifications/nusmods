@@ -4,7 +4,7 @@ import classnames from 'classnames';
 type ButtonChoice = string;
 type Props = {
   choices: ButtonChoice[];
-  attrs?: { [buttonChoice: string]: Object };
+  attrs?: { [choice: string]: React.ButtonHTMLAttributes<HTMLButtonElement> };
   classNames?: { [buttonChoice: string]: string[] };
   size?: string;
   selectedChoice: ButtonChoice | null | undefined;
@@ -31,7 +31,6 @@ export default function ButtonGroupSelector(props: Props) {
 
     return (
       <button
-        {...attr}
         key={choice}
         onClick={() => onChoiceSelect(choice)}
         type="button"
@@ -39,6 +38,7 @@ export default function ButtonGroupSelector(props: Props) {
           'btn-primary': selectedChoice === choice,
           'btn-outline-primary': selectedChoice !== choice,
         })}
+        {...attr}
       >
         {choice}
       </button>

@@ -9,7 +9,7 @@ type Props = {
   className?: string;
   throttle: number;
   useInstantSearch: boolean;
-  initialSearchTerm: string | null | undefined;
+  initialSearchTerm: string | null;
   placeholder: string;
   onSearch: (str: string) => void;
 };
