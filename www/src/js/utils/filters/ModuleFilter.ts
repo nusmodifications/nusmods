@@ -36,7 +36,7 @@ export default class ModuleFilter {
    * @param {?Set<ModuleCode>} modules - if null, returns all modules that passes this filter
    * @returns {number}
    */
-  count(modules: Set<ModuleCode> | undefined) {
+  count(modules: Set<ModuleCode> | null) {
     if (!this.filteredModules) {
       throw new Error(
         `count() method called before initCount() on filter ${this.label} (${this.id})`,

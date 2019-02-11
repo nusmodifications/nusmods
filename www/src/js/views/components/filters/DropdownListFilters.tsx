@@ -71,7 +71,7 @@ export class DropdownListFiltersComponent extends React.PureComponent<Props, Sta
     }
   };
 
-  displayedFilters(inputValue?: string): [ModuleFilter, number][] {
+  displayedFilters(inputValue?: string | null): [ModuleFilter, number][] {
     const { group, groups } = this.props;
     const moduleCodes = FilterGroup.union(groups, group);
 
@@ -89,7 +89,7 @@ export class DropdownListFiltersComponent extends React.PureComponent<Props, Sta
     // Sort by name in alphabetical order and return together with count
     return Array.from(filterCount.entries())
       .sort(([a], [b]) => a.localeCompare(b))
-      .map(([id, count]) => [group.filters[id], count]);
+      .map(([id, count]): [ModuleFilter, number] => [group.filters[id], count]);
   }
 
   render() {
@@ -168,7 +168,7 @@ export class DropdownListFiltersComponent extends React.PureComponent<Props, Sta
                       id: htmlId,
                     })}
                   />
-                  <ChevronDown className={styles.openIcon} onClick={openMenu} />
+                  <ChevronDown className={styles.openIcon} onClick={() => openMenu()} />
                 </div>
 
                 {isOpen && (
@@ -196,7 +196,7 @@ export class DropdownListFiltersComponent extends React.PureComponent<Props, Sta
                             htmlFor={id}
                             className={classnames('form-check-label', styles.label)}
                           >
-                            {highlight(filter.label, inputValue)}
+                            {highlight(filter.label, inputValue || '')}
                             &nbsp;
                             <span className="text-muted">({count})</span>
                           </label>
