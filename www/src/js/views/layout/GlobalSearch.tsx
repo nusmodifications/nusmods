@@ -36,7 +36,7 @@ type State = {
 const PLACEHOLDER = 'Search modules & venues. Try "GER" or "LT".';
 
 class GlobalSearch extends React.Component<Props, State> {
-  input: HTMLInputElement | null;
+  input: HTMLInputElement | null = null;
 
   state = {
     isOpen: false,

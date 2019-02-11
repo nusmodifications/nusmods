@@ -1,11 +1,10 @@
-import { State } from 'reducers';
-import { Semester } from 'types/modules';
-
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { NavLink, withRouter } from 'react-router-dom';
+import { RouteComponentProps, NavLink, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 
+import { State } from 'reducers';
+import { Semester } from 'types/modules';
 import {
   BookOpen,
   Calendar,
@@ -28,7 +27,7 @@ import styles from './Navtabs.scss';
 
 export const NAVTAB_HEIGHT = 48;
 
-type Props = {
+type Props = RouteComponentProps & {
   activeSemester: Semester;
   beta: boolean;
   promptRefresh: boolean;
@@ -112,7 +111,7 @@ export function NavtabsComponent(props: Props) {
 
 const connectedNavtabs = connect((state: State) => ({
   activeSemester: state.app.activeSemester,
-  beta: state.settings.beta,
+  beta: !!state.settings.beta,
   promptRefresh: state.app.promptRefresh,
 }))(NavtabsComponent);
 
