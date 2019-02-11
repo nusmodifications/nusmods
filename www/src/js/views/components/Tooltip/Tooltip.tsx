@@ -17,10 +17,8 @@ function Tooltip(props: Props) {
   return <Tippy {...tippyProps} />;
 }
 
-/* eslint-disable react/default-props-match-prop-types */
 Tooltip.defaultProps = {
   performance: true,
 };
-/* eslint-enable */
 
 export default Tooltip;

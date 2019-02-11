@@ -1,13 +1,12 @@
 import * as React from 'react';
 import classnames from 'classnames';
 
-type ButtonChoice = string;
 export type Props = {
-  choices: ButtonChoice[];
+  choices: string[];
   attrs?: { [choice: string]: React.ButtonHTMLAttributes<HTMLButtonElement> };
-  classNames?: { [buttonChoice: string]: string[] };
+  classNames?: { [choice: string]: string[] };
   size?: string;
-  selectedChoice: ButtonChoice | null | undefined;
+  selectedChoice: string | null;
   onChoiceSelect: (str: string) => void;
   ariaLabel?: string;
 };

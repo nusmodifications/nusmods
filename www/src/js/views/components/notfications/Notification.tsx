@@ -47,9 +47,9 @@ const TRANSITION_DURATION = 250;
  * the new notification.
  */
 export class NotificationComponent extends React.Component<Props, State> {
-  openTimeoutId: NodeJS.Timer;
+  openTimeoutId?: number;
 
-  closeTimeoutId: NodeJS.Timer;
+  closeTimeoutId?: number;
 
   constructor(props: Props) {
     super(props);
@@ -75,7 +75,7 @@ export class NotificationComponent extends React.Component<Props, State> {
     if (notifications[0] !== shownNotification) {
       // Active notification has changed
       if (isOpen) {
-        const discarded = !notifications.includes(shownNotification);
+        const discarded = !notifications.includes(shownNotification!);
         if (shownNotification && shownNotification.willClose) {
           shownNotification.willClose(discarded, actionClicked);
         }
@@ -99,7 +99,7 @@ export class NotificationComponent extends React.Component<Props, State> {
       // close the notification when the timer is up
       const timeout = this.state.shownNotification.timeout || DEFAULT_TIMEOUT;
       clearTimeout(this.openTimeoutId); // Defensive
-      this.openTimeoutId = setTimeout(() => this.props.popNotification(), timeout);
+      this.openTimeoutId = window.setTimeout(() => this.props.popNotification(), timeout);
     } else if (this.props.notifications.length) {
       // End of closing transition - if there are more notifications, let's show them
       this.openSnackbar();
@@ -107,6 +107,7 @@ export class NotificationComponent extends React.Component<Props, State> {
   };
 
   element = React.createRef<HTMLDivElement>();
+
   transitioning: boolean = false;
 
   openSnackbar = () => {
@@ -156,7 +157,7 @@ export class NotificationComponent extends React.Component<Props, State> {
                   className="mdc-snackbar__action-button"
                   onClick={() => {
                     this.setState({ actionClicked: true });
-                    const handler = shownNotification.action.handler;
+                    const handler = shownNotification.action!.handler;
                     // Don't auto-close if handler returns false
                     if (handler && handler() === false) return;
                     this.props.popNotification();
