@@ -1,4 +1,4 @@
-import { extractRoute } from 'views/components/map/BusStops';
+import { extractRoute } from './ArrivalTimes';
 
 describe(extractRoute, () => {
   test('should find route code', () => {
