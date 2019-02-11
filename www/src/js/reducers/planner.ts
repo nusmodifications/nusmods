@@ -1,7 +1,9 @@
 import produce from 'immer';
 import { pull, max, min } from 'lodash';
+
 import { PlannerState } from 'types/reducers';
 import { FSA } from 'types/redux';
+import { ModuleCode } from 'types/modules';
 import {
   ADD_PLANNER_MODULE,
   MOVE_PLANNER_MODULE,
@@ -11,8 +13,8 @@ import {
   SET_PLANNER_MIN_YEAR,
   ADD_CUSTOM_PLANNER_DATA,
 } from 'actions/planner';
-import config from 'config';
 import { filterModuleForSemester } from 'selectors/planner';
+import config from 'config';
 
 const defaultPlannerState: PlannerState = {
   minYear: config.academicYear,
@@ -70,7 +72,7 @@ export default function planner(
 
       // If the module is moved from another year / semester, then we also need
       // to update the index of the old module list
-      let oldModuleOrder = [];
+      let oldModuleOrder: ModuleCode[] = [];
       if (state.modules[moduleCode]) {
         const [oldYear, oldSemester] = state.modules[moduleCode];
         if (oldYear !== year || oldSemester !== semester) {
