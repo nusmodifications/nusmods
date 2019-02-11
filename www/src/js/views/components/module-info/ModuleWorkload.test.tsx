@@ -1,9 +1,6 @@
-import { ShallowWrapper } from 'enzyme';
 import * as React from 'react';
-import { shallow } from 'enzyme';
+import { ShallowWrapper, shallow } from 'enzyme';
 import _ from 'lodash';
-
-import { WorkloadComponent } from 'types/modules';
 
 import { WORKLOAD_COMPONENTS } from 'utils/modules';
 import ModuleWorkload from './ModuleWorkload';

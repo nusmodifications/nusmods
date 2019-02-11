@@ -1,6 +1,11 @@
 import { ModuleCode } from 'types/modules';
-import { VenueInfo, VenueSearchOptions, VenueDetailList, VenueLesson } from 'types/venues';
-import { OCCUPIED } from 'types/venues';
+import {
+  VenueInfo,
+  VenueSearchOptions,
+  VenueDetailList,
+  VenueLesson,
+  OCCUPIED,
+} from 'types/venues';
 import { range, entries, padStart, groupBy, values } from 'lodash';
 import { ZWSP } from 'utils/react';
 

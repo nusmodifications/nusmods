@@ -1,11 +1,12 @@
 import { range, without, uniq } from 'lodash';
 
-import { ColorIndex } from 'types/reducers';
+import { ColorIndex, ColorMapping } from 'types/reducers';
 import { Lesson } from 'types/modules';
 
 import { NUM_DIFFERENT_COLORS, getNewColor, colorLessonsByKey, fillColorMapping } from './colors';
+import { SemTimetableConfig } from '../types/timetables';
 
-describe('#getNewColor()', () => {
+describe(getNewColor, () => {
   test('it should get color without randomization', () => {
     // When there are no current colors
     expect(getNewColor([], false)).toBe(0);
@@ -40,7 +41,7 @@ describe('#getNewColor()', () => {
   });
 });
 
-describe('#colorLessonsByKey()', () => {
+describe(colorLessonsByKey, () => {
   const bareLesson = {
     ClassNo: '',
     DayText: '',
@@ -73,7 +74,7 @@ describe('#colorLessonsByKey()', () => {
   });
 });
 
-describe('fillColorMapping', () => {
+describe(fillColorMapping, () => {
   test('should return color map with colors for all modules', () => {
     expect(Object.keys(fillColorMapping({ CS1010S: {}, CS3216: {} }, {}))).toEqual([
       'CS1010S',
@@ -113,13 +114,13 @@ describe('fillColorMapping', () => {
       CS4257: {},
     };
 
-    const uniqueColors = (timetable, colors) =>
+    const uniqueColors = (timetable: SemTimetableConfig, colors: ColorMapping) =>
       uniq(Object.values(fillColorMapping(timetable, colors)));
 
     expect(uniqueColors(FILLED_TIMETABLE, {})).toHaveLength(8);
     expect(uniqueColors(FILLED_TIMETABLE, { CS3216: 1, CS1101S: 0 })).toHaveLength(8);
     expect(
-      uniqueColors(FILLED_TIMETABLE & { CS1231: {} }, { CS3216: 2, CS1231: 2, CS1101S: 2 }),
+      uniqueColors({ ...FILLED_TIMETABLE, CS1231: {} }, { CS3216: 2, CS1231: 2, CS1101S: 2 }),
     ).toHaveLength(7);
   });
 });

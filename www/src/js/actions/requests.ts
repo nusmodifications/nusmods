@@ -24,21 +24,21 @@ export type RequestAction = {
  * Options is passed directly into axios config, so minimally url should be
  * provided.
  */
-export function requestAction(key: RequestKey, options: AxiosRequestConfig): RequestAction;
-export function requestAction(
-  key: RequestKey,
-  type: string,
-  options: AxiosRequestConfig,
-): RequestAction;
-export function requestAction(
+type RequestActionCreator = {
+  (key: RequestKey, options: AxiosRequestConfig): RequestAction;
+  (key: RequestKey, type: string, options: AxiosRequestConfig): RequestAction;
+};
+
+export const requestAction: RequestActionCreator = (
   key: RequestKey,
   type: string | AxiosRequestConfig,
   options?: AxiosRequestConfig,
-): RequestAction {
+): RequestAction => {
   let payload: AxiosRequestConfig;
 
   if (typeof type !== 'string') {
     payload = type;
+    // eslint-disable-next-line no-param-reassign
     type = key;
   } else if (options) {
     payload = options;
@@ -54,4 +54,4 @@ export function requestAction(
       [API_REQUEST]: key,
     },
   };
-}
+};

@@ -50,6 +50,7 @@ export default class AddModule extends React.PureComponent<Props, State> {
       return (
         <div className={this.props.className}>
           <button
+            type="button"
             className={classnames(styles.toggle, 'btn btn-sm btn-link btn-block')}
             onClick={() => this.setState({ isOpen: true })}
           >

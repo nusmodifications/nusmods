@@ -1,8 +1,6 @@
 import { FSA } from 'types/redux';
-import { Requests } from 'types/reducers';
-
+import { Requests, FAILURE, REQUEST, SUCCESS } from 'types/reducers';
 import { API_REQUEST } from 'actions/requests';
-import { FAILURE, REQUEST, SUCCESS } from 'types/reducers';
 
 export default function requests(state: Requests = {}, action: FSA): Requests {
   const { meta } = action;

@@ -8,9 +8,6 @@ import {
   ThemeState,
   TimetablesState,
 } from 'types/reducers';
-import { ModuleBank } from 'reducers/moduleBank';
-import { VenueBank } from 'reducers/venueBank';
-import { UndoHistoryState } from 'reducers/undoHistory';
 
 import { REMOVE_MODULE, SET_TIMETABLE } from 'actions/timetables';
 
@@ -20,11 +17,14 @@ import persistReducer from 'storage/persistReducer';
 import requests from './requests';
 import app from './app';
 import moduleFinder from './moduleFinder';
-import createUndoReducer from './undoHistory';
+import createUndoReducer, { UndoHistoryState } from './undoHistory';
 
 // Persisted reducers
-import moduleBankReducer, { persistConfig as moduleBankPersistConfig } from './moduleBank';
-import venueBankReducer, { persistConfig as venueBankPersistConfig } from './venueBank';
+import moduleBankReducer, {
+  ModuleBank,
+  persistConfig as moduleBankPersistConfig,
+} from './moduleBank';
+import venueBankReducer, { VenueBank, persistConfig as venueBankPersistConfig } from './venueBank';
 import timetablesReducer, { persistConfig as timetablesPersistConfig } from './timetables';
 import themeReducer from './theme';
 import settingsReducer from './settings';

@@ -6,6 +6,7 @@ type Props = {
   className?: string;
 
   // Additional props
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 };
 

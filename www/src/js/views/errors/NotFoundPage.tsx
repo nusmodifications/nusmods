@@ -25,7 +25,11 @@ export default function NotFoundPage() {
       <p>Are you sure you are at the right page?</p>
 
       <div className={styles.buttons}>
-        <button className="btn btn-outline-primary" onClick={() => Sentry.showReportDialog()}>
+        <button
+          type="button"
+          className="btn btn-outline-primary"
+          onClick={() => Sentry.showReportDialog()}
+        >
           Something should be here
         </button>
         <Link className="btn btn-primary" to="/">

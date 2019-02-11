@@ -173,6 +173,7 @@ class GlobalSearch extends React.Component<Props, State> {
                     className={classnames('btn btn-inline', {
                       [styles.selected]: highlightedIndex === 0,
                     })}
+                    type="button"
                   >
                     modules
                   </button>{' '}
@@ -184,6 +185,7 @@ class GlobalSearch extends React.Component<Props, State> {
                     className={classnames('btn btn-inline', {
                       [styles.selected]: highlightedIndex === 1,
                     })}
+                    type="button"
                   >
                     venues
                   </button>

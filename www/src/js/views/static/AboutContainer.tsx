@@ -48,7 +48,11 @@ function AboutContainer(props: Props) {
 
       <div className={classnames('row no-gutters', styles.actionContainer)}>
         <div className={classnames('col-lg', styles.btnContainer)}>
-          <button onClick={props.toggleFeedback} className="btn btn-primary btn-svg btn-block">
+          <button
+            type="button"
+            onClick={props.toggleFeedback}
+            className="btn btn-primary btn-svg btn-block"
+          >
             <Mail className="svg" />
             We need feedback!
           </button>

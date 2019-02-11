@@ -22,25 +22,6 @@ module.exports = {
     },
   },
 
-  overrides: [
-    {
-      files: ['**/*.test.{js,ts,js,tsx}', '**/__mocks__/**/*.{js,ts,js,tsx}'],
-      env: {
-        jest: true,
-      },
-      rules: {
-        'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
-
-        // any is needed for mocking, amongst other things
-        '@typescript-eslint/no-explicit-any': 'off',
-
-        '@typescript-eslint/no-non-null-assertion': 'off',
-
-        '@typescript-eslint/no-object-literal-type-assertion': 'off',
-      },
-    },
-  ],
-
   rules: {
     'prettier/prettier': warnInDevelopment,
 
@@ -50,6 +31,9 @@ module.exports = {
 
     'no-alert': 'off',
     'prefer-destructuring': 'off',
+
+    // TODO: Fix this
+    'import/no-cycle': 'warn',
 
     'import/extensions': [
       warnInDevelopment,
@@ -85,7 +69,10 @@ module.exports = {
     'react/require-default-props': 'off',
     'react/jsx-filename-extension': ['error', { extensions: ['.tsx', '.jsx'] }],
     'react/default-props-match-prop-types': ['error', { allowRequiredDefaults: true }],
+    // Too verbose, creates too many variables
     'react/destructuring-assignment': 'off',
+    // TODO: Fix this
+    'react/no-access-state-in-setstate': 'warn',
     // TODO: Replace divs with buttons, but remove all button styling.
     'jsx-a11y/no-static-element-interactions': 'off',
     // The default option requires BOTH id and nesting, which is excessive,
@@ -106,6 +93,9 @@ module.exports = {
         specialLink: ['to'],
       },
     ],
+    // Rule appear to be buggy when used with @typescript-eslint/parser
+    'jsx-a11y/label-has-associated-control': 'off',
+
     // For use with immer
     'no-param-reassign': [
       'error',
