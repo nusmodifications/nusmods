@@ -40,9 +40,6 @@ function shareUrl(semester: Semester, timetable: SemTimetableConfig): string {
 export const SHORT_URL_KEY = 'shorturl';
 
 export default class ShareTimetable extends React.PureComponent<Props, State> {
-  // Save a copy of the current URL to detect when URL changes
-  url: string | null = null;
-
   // React QR component is lazy loaded for performance
   static QRCode: React.ComponentType<any> | null;
 
@@ -60,6 +57,9 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
       });
     }
   }
+
+  // Save a copy of the current URL to detect when URL changes
+  url: string | null = null;
 
   urlInput = React.createRef<HTMLInputElement>();
 

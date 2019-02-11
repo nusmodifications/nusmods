@@ -1,16 +1,18 @@
 import * as React from 'react';
 import axios from 'axios';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 
 import { waitFor } from 'test-utils/async';
 import Modal from 'views/components/Modal';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import ShareTimetable, { SHORT_URL_KEY } from './ShareTimetable';
 
+const mockAxios = axios as jest.Mocked<typeof axios>;
+
 describe('ShareTimetable', () => {
   const MOCK_SHORTURL = 'http://mod.us/short';
 
-  // Mock axios to stop it from firing API requests
+  // Mock Axios to stop it from firing API requests
   beforeEach(() => {
     jest
       .spyOn(axios, 'get')
@@ -18,7 +20,7 @@ describe('ShareTimetable', () => {
   });
 
   afterEach(() => {
-    axios.get.mockRestore();
+    mockAxios.get.mockRestore();
   });
 
   const timetable = {
@@ -27,15 +29,14 @@ describe('ShareTimetable', () => {
     },
   };
 
-  const openModal = (wrapper) => wrapper.find('button').simulate('click');
-  const closeModal = (wrapper) =>
+  const openModal = (wrapper: ShallowWrapper) => wrapper.find('button').simulate('click');
+  const closeModal = (wrapper: ShallowWrapper) =>
     wrapper
       .find(Modal)
       .first()
-      .props()
-      .onRequestClose();
+      .props().onRequestClose!({} as any);
 
-  const openAndWait = async (wrapper) => {
+  const openAndWait = async (wrapper: ShallowWrapper) => {
     openModal(wrapper);
 
     await waitFor(() => {
@@ -46,11 +47,11 @@ describe('ShareTimetable', () => {
 
   test('should load short URL when the modal is opened', () => {
     const wrapper = shallow(<ShareTimetable semester={1} timetable={timetable} />);
-    expect(axios.get).not.toHaveBeenCalled();
+    expect(mockAxios.get).not.toHaveBeenCalled();
 
     openModal(wrapper);
     expect(wrapper.find(Modal).exists()).toBe(true);
-    expect(axios.get).toHaveBeenCalledTimes(1);
+    expect(mockAxios.get).toHaveBeenCalledTimes(1);
   });
 
   test('should cache short URL from the API', () => {
@@ -62,21 +63,21 @@ describe('ShareTimetable', () => {
     openModal(wrapper);
 
     // The second open should not cause a second call
-    expect(axios.get).toHaveBeenCalledTimes(1);
+    expect(mockAxios.get).toHaveBeenCalledTimes(1);
     closeModal(wrapper);
 
     // Changing the timetable should cause opening the modal to trigger another API call
     wrapper.setProps({ timetable: { CS3216: { Lecture: '1' } } });
-    expect(axios.get).toHaveBeenCalledTimes(1);
+    expect(mockAxios.get).toHaveBeenCalledTimes(1);
     openModal(wrapper);
-    expect(axios.get).toHaveBeenCalledTimes(2);
+    expect(mockAxios.get).toHaveBeenCalledTimes(2);
     closeModal(wrapper);
 
     // Changing the semester should also trigger another API call
     wrapper.setProps({ semester: 2 });
-    expect(axios.get).toHaveBeenCalledTimes(2);
+    expect(mockAxios.get).toHaveBeenCalledTimes(2);
     openModal(wrapper);
-    expect(axios.get).toHaveBeenCalledTimes(3);
+    expect(mockAxios.get).toHaveBeenCalledTimes(3);
   });
 
   test('should show spinner when loading', () => {
@@ -95,7 +96,7 @@ describe('ShareTimetable', () => {
   });
 
   test('should display long URL if data is corrupted', async () => {
-    axios.get.mockReturnValue(Promise.resolve({})); // No short URL
+    mockAxios.get.mockReturnValue(Promise.resolve({})); // No short URL
     const wrapper = shallow(<ShareTimetable semester={1} timetable={timetable} />);
 
     await openAndWait(wrapper);
@@ -104,7 +105,7 @@ describe('ShareTimetable', () => {
   });
 
   test('should display long URL if the endpoint returns an error', async () => {
-    axios.get.mockReturnValue(Promise.reject());
+    mockAxios.get.mockReturnValue(Promise.reject());
     const wrapper = shallow(<ShareTimetable semester={1} timetable={timetable} />);
 
     await openAndWait(wrapper);
