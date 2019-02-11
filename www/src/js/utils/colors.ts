@@ -26,8 +26,9 @@ export function getNewColor(
   });
 
   if (randomize) {
-    return sample(availableColorIndices);
+    return sample(availableColorIndices)!;
   }
+
   return availableColorIndices[0];
 }
 
