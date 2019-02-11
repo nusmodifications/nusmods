@@ -14,13 +14,13 @@ import {
   getCurrentMinutes,
 } from 'utils/timify';
 import elements from 'views/elements';
-import withTimer from 'views/hocs/withTimer';
+import withTimer, { TimerData } from 'views/hocs/withTimer';
 
 import styles from './Timetable.scss';
 import TimetableTimings from './TimetableTimings';
 import TimetableDay from './TimetableDay';
 
-type Props = {
+type Props = TimerData & {
   lessons: TimetableArrangement;
   isVerticalOrientation: boolean;
   isScrolledHorizontally: boolean;

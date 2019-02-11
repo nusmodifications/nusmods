@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { chunk } from 'lodash';
-import withTimer from 'views/hocs/withTimer';
+import withTimer, { TimerData } from 'views/hocs/withTimer';
 import styles from './TetrisLogo.scss';
 
-type Props = { readonly currentTime: Date };
+type Props = TimerData & {};
 
 const FPS = 5;
 const interval = 1000 / FPS;

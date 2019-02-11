@@ -1,22 +1,21 @@
 import * as React from 'react';
-import json2mq from 'json2mq';
+import json2mq, { QueryObject } from 'json2mq';
 
-import { QueryObject } from 'utils/css';
 import { wrapComponentName } from 'utils/react';
 import { Omit } from 'types/utils';
 
-type State = {
+export interface WithBreakpoint {
   matchBreakpoint: boolean;
-};
+}
 
 function makeResponsive<Props>(
   WrappedComponent: React.ComponentType<Props>,
-  mediaQuery: string | QueryObject,
-): React.ComponentType<Omit<Props, keyof State>> {
+  mediaQuery: string | QueryObject | QueryObject[],
+): React.ComponentType<Omit<Props, keyof WithBreakpoint>> {
   const media = typeof mediaQuery === 'string' ? mediaQuery : json2mq(mediaQuery);
 
-  return class extends React.Component<Props, State> {
-    mql: MediaQueryList | null | undefined;
+  return class extends React.Component<Omit<Props, keyof WithBreakpoint>, WithBreakpoint> {
+    mql: MediaQueryList | null = null;
 
     static displayName = wrapComponentName(WrappedComponent, makeResponsive.name);
 

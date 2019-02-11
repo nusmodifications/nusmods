@@ -4,24 +4,24 @@ import { wrapComponentName } from 'utils/react';
 import { forceTimer } from 'utils/debug';
 import { Omit } from 'types/utils';
 
-export type TimerData = {
-  currentTime: Date;
-};
+export interface TimerData {
+  readonly currentTime: Date;
+}
 
 function getCurrentTime() {
   return forceTimer() || new Date();
 }
 
-function withTimer<Props>(
+function withTimer<Props extends TimerData>(
   WrappedComponent: React.ComponentType<Props>,
   intervalInMs: number = 60 * 1000,
 ): React.ComponentType<Omit<Props, keyof TimerData>> {
-  return class extends React.Component<Props, TimerData> {
-    intervalId: number;
+  return class extends React.Component<Omit<Props, keyof TimerData>, TimerData> {
+    intervalId?: number;
 
     static displayName = wrapComponentName(WrappedComponent, withTimer.name);
 
-    state = {
+    state: TimerData = {
       currentTime: getCurrentTime(),
     };
 

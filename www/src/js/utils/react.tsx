@@ -69,7 +69,7 @@ export function defer(task: () => any) {
   });
 }
 
-export function wrapComponentName(Component: React.ComponentType, wrapper: string): string {
+export function wrapComponentName(Component: React.ComponentType<any>, wrapper: string): string {
   return `${wrapper}(${Component.displayName || Component.name || 'Component'})`;
 }
 
