@@ -11,7 +11,7 @@ import TimetableContent from 'views/timetable/TimetableContent';
 import { ColorMapping } from 'types/reducers';
 
 type Props = {
-  store: Store<StoreState, any, any>;
+  store: Store<StoreState, any>;
 };
 
 type State = {
