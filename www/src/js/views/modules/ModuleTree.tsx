@@ -17,14 +17,13 @@ interface TreeDisplay {
   layer: number;
   name: string;
   isPrereq?: boolean;
-  // TreeDisplay[] will result in infinite loop
-  branches?: Array<TreeDisplay>;
+  branches?: TreeDisplay[];
 }
 
-function isConditionalNode(name) {
+function isConditionalNode(name: string) {
   return name === 'or' || name === 'and';
 }
-function formatConditional(name) {
+function formatConditional(name: string) {
   return name === 'or' ? 'one of' : 'all of';
 }
 function incrementLayer(layer: number, name: string) {
@@ -40,6 +39,7 @@ function Branch({ layer, branches }: { layer: number; branches: TreeDisplay[] })
             key={subchild.name}
             layer={incrementLayer(layer, subchild.name)}
             name={subchild.name}
+            // @ts-ignore TODO: Rewrite this component for scraper v2
             branches={subchild.children}
           />
         )),
@@ -86,6 +86,7 @@ function ModuleTree(props: Props) {
         <>
           <ul className={styles.prereqTree}>
             {LockedModules.map((name) => (
+              // @ts-ignore TODO: Rewrite this component for scraper v2
               <Tree key={name} layer={0} name={name} branches={null} isPrereq />
             ))}
           </ul>
@@ -93,7 +94,12 @@ function ModuleTree(props: Props) {
         </>
       )}
       <ul className={classnames(styles.tree, styles.root)}>
-        <Tree layer={1} name={ModmavenTree.name} branches={_.castArray(ModmavenTree.children)} />
+        <Tree
+          layer={1}
+          name={ModmavenTree.name}
+          // @ts-ignore TODO: Rewrite this component for scraper v2
+          branches={_.castArray(ModmavenTree.children)}
+        />
       </ul>
     </div>
   );

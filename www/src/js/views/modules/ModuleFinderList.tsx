@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Waypoint from 'react-waypoint';
-import _ from 'lodash';
+import { head, last, chunk, get } from 'lodash';
 
 import { Module } from 'types/modules';
 import { PageRange, PageRangeDiff, OnPageChange } from 'types/views';
@@ -17,8 +17,8 @@ type Props = {
 };
 
 function getPageKey(modules: Module[]): string {
-  const getId = (module) => _.get(module, 'ModuleCode', '');
-  return `${getId(_.head(modules))}-${getId(_.last(modules))}`;
+  const getId = (module: Module | undefined) => get(module, 'ModuleCode', '');
+  return `${getId(head(modules))}-${getId(last(modules))}`;
 }
 
 export default class ModuleFinderList extends React.Component<Props> {
@@ -43,7 +43,7 @@ export default class ModuleFinderList extends React.Component<Props> {
   };
 
   pages(): Module[][] {
-    return _.chunk(this.props.modules, MODULES_PER_PAGE);
+    return chunk(this.props.modules, MODULES_PER_PAGE);
   }
 
   start(page: number) {

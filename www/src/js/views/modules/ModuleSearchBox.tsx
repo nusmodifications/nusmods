@@ -11,38 +11,32 @@ import { searchModules } from 'actions/moduleFinder';
 import { SEARCH_QUERY_KEY } from 'utils/moduleSearch';
 
 type OwnProps = RouteComponentProps & {
-  throttle: number;
   useInstantSearch: boolean;
-  searchModules: (str: string) => void;
 };
 
 type Props = OwnProps & {
-  initialSearchTerm: string | undefined;
+  searchModules: (str: string) => void;
+  initialSearchTerm?: string;
 };
 
-export function ModuleSearchBoxComponent(props: Props) {
+export const ModuleSearchBoxComponent: React.FunctionComponent<Props> = (props: Props) => {
   return (
     <SearchBox
       className={classnames(elements.moduleFinderSearchBox, 'search-panel')}
-      throttle={props.throttle}
+      throttle={300}
       useInstantSearch={props.useInstantSearch}
-      initialSearchTerm={props.initialSearchTerm}
+      initialSearchTerm={props.initialSearchTerm || null}
       placeholder="Module code, names and descriptions"
       onSearch={props.searchModules}
     />
   );
-}
-
-ModuleSearchBoxComponent.defaultProps = {
-  useInstantSearch: false,
-  throttle: 300,
 };
 
-export default withRouter(
-  connect(
-    (state: State, ownProps: OwnProps) => ({
-      initialSearchTerm: qs.parse(ownProps.location.search)[SEARCH_QUERY_KEY],
-    }),
-    { searchModules },
-  )(ModuleSearchBoxComponent),
-);
+const ConnectedModuleSearchBox = connect(
+  (state: State, ownProps: OwnProps) => ({
+    initialSearchTerm: qs.parse(ownProps.location.search)[SEARCH_QUERY_KEY],
+  }),
+  { searchModules },
+)(ModuleSearchBoxComponent);
+
+export default withRouter(ConnectedModuleSearchBox);

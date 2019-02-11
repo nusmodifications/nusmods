@@ -5,11 +5,10 @@ import axios from 'axios';
 import update from 'immutability-helper';
 import { each, mapValues, values } from 'lodash';
 
-import { Module } from 'types/modules';
+import { Module, Semester, Semesters } from 'types/modules';
 import { PageRange, PageRangeDiff } from 'types/views';
 import { State as StoreState } from 'reducers';
 
-import { Semesters } from 'types/modules';
 import ModuleFinderList from 'views/modules/ModuleFinderList';
 import ModuleSearchBox from 'views/modules/ModuleSearchBox';
 import ChecklistFilters from 'views/components/filters/ChecklistFilters';
@@ -77,11 +76,8 @@ export function mergePageRange(prev: PageRange, diff: PageRangeDiff): PageRange 
   }
 
   // Start and pages are ADDED from the diff object
-  ['start', 'loaded'].forEach((key) => {
-    if (diff[key] != null) {
-      next[key] += diff[key];
-    }
-  });
+  if (diff.start != null) next.start += diff.start;
+  if (diff.loaded != null) next.loaded += diff.loaded;
 
   return next;
 }
@@ -191,7 +187,7 @@ export class ModuleFinderContainerComponent extends React.Component<Props, State
     const modulesRequest = axios.get(nusmods.modulesUrl()).then(({ data }) => data);
 
     // Load faculty-department mapping
-    const makeFacultyRequest = (semester) =>
+    const makeFacultyRequest = (semester: Semester) =>
       axios
         .get(nusmods.facultyDepartmentsUrl(semester))
         .then(({ data }) => invertFacultyDepartments(data));

@@ -4,21 +4,22 @@ import { noop, last } from 'lodash';
 
 import cs1010s from '__mocks__/modules/CS1010S.json';
 
+import { Module } from 'types/modules';
 import ModuleFinderList from './ModuleFinderList';
 
 function makeInstance(
-  modules = [],
+  modules: Module[] = [],
   pages = { current: 0, start: 0, loaded: 5 },
   onPageChange = noop,
 ): ModuleFinderList {
-  const wrapper = shallow(
+  const wrapper = shallow<ModuleFinderList>(
     <ModuleFinderList modules={modules} page={pages} onPageChange={onPageChange} />,
   );
   return wrapper.instance();
 }
 
-function lastCall(fn) {
-  return last(fn.mock.calls)[0];
+function lastCall(fn: jest.Mock) {
+  return last(fn.mock.calls)![0];
 }
 
 test('start() should start at 1', () => {
@@ -27,7 +28,7 @@ test('start() should start at 1', () => {
 });
 
 test('end() should equal to total number of modules for the last page', () => {
-  const instance = makeInstance([cs1010s, cs1010s]);
+  const instance = makeInstance([cs1010s as Module, cs1010s as Module]);
   expect(instance.end(0)).toBe(2);
 });
 

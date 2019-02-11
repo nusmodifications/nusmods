@@ -23,12 +23,14 @@ type Params = {
   moduleCode: string;
 };
 
-type Props = RouteComponentProps<Params> & {
-  archiveYear: string | null;
+type OwnProps = RouteComponentProps<Params>;
+
+type Props = OwnProps & {
+  archiveYear: string | undefined;
   module: Module | null;
   moduleExists: boolean;
   moduleCode: ModuleCode;
-  fetchModule: () => Promise<any>;
+  fetchModule: () => Promise<Module>;
 };
 
 type State = {
@@ -127,13 +129,7 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
       // Unique key forces component to remount whenever the user moves to
       // a new module. This allows the internal state (eg. currently selected
       // timetable semester) of <ModulePageContent> to be consistent
-      return (
-        <ModulePageContent
-          key={moduleCode}
-          archiveYear={archiveYear}
-          module={module}
-        />
-      );
+      return <ModulePageContent key={moduleCode} archiveYear={archiveYear} module={module} />;
     }
 
     return <LoadingSpinner />;
@@ -145,11 +141,11 @@ const getPropsFromMatch = (match: Match<Params>) => {
 
   return {
     moduleCode: (match.params.moduleCode || '').toUpperCase(),
-    year: year ? year.replace('-', '/') : null,
+    year: year && year.replace('-', '/'),
   };
 };
 
-const mapStateToProps = (state: StoreState, ownProps) => {
+const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
   const { moduleCode, year } = getPropsFromMatch(ownProps.match);
   const { moduleBank } = state;
 
@@ -172,7 +168,7 @@ const mapStateToProps = (state: StoreState, ownProps) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Function, ownProps) => {
+const mapDispatchToProps = (dispatch: Function, ownProps: OwnProps) => {
   const { moduleCode, year } = getPropsFromMatch(ownProps.match);
 
   return {
