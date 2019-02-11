@@ -1,14 +1,14 @@
 import * as React from 'react';
 import classnames from 'classnames';
 
-import { LatLngTuple, VenueLocation as VenueLocationItem } from 'types/venues';
+import { LatLngTuple, VenueLocation as VenueLocationItem, VenueLocationMap } from 'types/venues';
 import { Omit } from 'types/utils';
 import Modal from 'views/components/Modal';
 import LocationMap from 'views/components/map/LocationMap';
 import CloseButton from 'views/components/CloseButton';
 import { floorName } from 'utils/venues';
 /** @var { VenueLocationMap } */
-import venueLocations from 'data/venues.json';
+import venueLocationJSON from 'data/venues.json';
 
 import VenueContext from '../VenueContext';
 import FeedbackModal from './FeedbackModal';
@@ -28,15 +28,19 @@ type State = {
   readonly isFeedbackModalOpen: boolean;
 };
 
+// Typecast to make TypeScript happy
+const venueLocations = venueLocationJSON as VenueLocationMap;
+
 class VenueLocation extends React.PureComponent<Props, State> {
   state: State = {
     isFeedbackModalOpen: false,
   };
 
   openModal = () => this.setState({ isFeedbackModalOpen: true });
+
   closeModal = () => this.setState({ isFeedbackModalOpen: false });
 
-  renderFeedbackMenu(existingLocation: VenueLocationItem | null | undefined = null) {
+  renderFeedbackMenu(existingLocation: VenueLocationItem | null = null) {
     const { venue } = this.props;
     const { isFeedbackModalOpen } = this.state;
 
@@ -62,14 +66,14 @@ class VenueLocation extends React.PureComponent<Props, State> {
 
   render() {
     const { venue } = this.props;
-    const location: VenueLocationItem | null | undefined = venueLocations[venue];
+    const location: VenueLocationItem | null = venueLocations[venue];
 
     if (!location) {
       return (
         <>
           <div className={styles.noLocation}>
             <p>We don&apos;t have data for this venue.</p>
-            <button className="btn btn-outline-primary" onClick={this.openModal}>
+            <button type="button" className="btn btn-outline-primary" onClick={this.openModal}>
               Help us map this venue
             </button>
           </div>
@@ -79,7 +83,7 @@ class VenueLocation extends React.PureComponent<Props, State> {
       );
     }
 
-    const position: LatLngTuple = location.location
+    const position: LatLngTuple | null = location.location
       ? [location.location.y, location.location.x]
       : null;
 
@@ -101,7 +105,11 @@ class VenueLocation extends React.PureComponent<Props, State> {
             <LocationMap position={position} toggleScrollable={this.props.toggleScrollable} />
             <p className={styles.feedbackBtn}>
               See a problem?{' '}
-              <button className={classnames('btn btn-outline-primary')} onClick={this.openModal}>
+              <button
+                type="button"
+                className={classnames('btn btn-outline-primary')}
+                onClick={this.openModal}
+              >
                 Help us improve this map
               </button>
             </p>
@@ -109,7 +117,7 @@ class VenueLocation extends React.PureComponent<Props, State> {
         ) : (
           <>
             <p>We don&apos;t have the location of this venue, sorry :(</p>
-            <button className="btn btn-outline-primary" onClick={this.openModal}>
+            <button type="button" className="btn btn-outline-primary" onClick={this.openModal}>
               Help us map this venue
             </button>
           </>

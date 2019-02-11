@@ -4,6 +4,7 @@ import { Map, Marker, TileLayer, Viewport } from 'react-leaflet';
 import classnames from 'classnames';
 import axios from 'axios';
 import bowser from 'bowser';
+import produce from 'immer';
 
 import { LatLngTuple, Venue, VenueLocation } from 'types/venues';
 import config from 'config';
@@ -17,7 +18,7 @@ import styles from './ImproveVenueForm.scss';
 
 type Props = {
   venue: Venue;
-  existingLocation?: VenueLocation | null | undefined;
+  existingLocation?: VenueLocation | null;
   onBack?: () => void;
 };
 
@@ -134,20 +135,16 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
   };
 
   updateLocation = (latlng: LatLng | LatLngTuple, updateViewport: boolean = true) => {
-    const location: LatLngTuple = Array.isArray(latlng) ? latlng : [latlng.lat, latlng.lng];
-    const update: Partial<State> = {
-      location,
-      latlngUpdated: true,
-    };
+    this.setState((state) =>
+      produce(state, (draft) => {
+        draft.location = Array.isArray(latlng) ? latlng : [latlng.lat, latlng.lng];
+        draft.latlngUpdated = true;
 
-    if (updateViewport) {
-      update.viewport = {
-        ...this.state.viewport,
-        center: latlng,
-      };
-    }
-
-    this.setState(update);
+        if (updateViewport) {
+          draft.viewport.center = latlng;
+        }
+      }),
+    );
   };
 
   render() {
@@ -308,7 +305,7 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
 
         <div className={classnames(styles.actions, 'col-sm-12')}>
           {this.props.onBack && (
-            <button className="btn btn-lg btn-secondary" onClick={this.props.onBack}>
+            <button type="button" className="btn btn-lg btn-secondary" onClick={this.props.onBack}>
               Back
             </button>
           )}

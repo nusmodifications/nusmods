@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import qs from 'query-string';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { History } from 'history';
 
 import { Venue, VenueDetailList, VenueInfo } from 'types/venues';
 import venueInfo from '__mocks__/venueInformation.json';
@@ -9,11 +11,10 @@ import { sortVenues } from 'utils/venues';
 import { venuePage } from 'views/routes/paths';
 import VenueDetails from 'views/venues/VenueDetails';
 import { Params, VenuesContainerComponent } from './VenuesContainer';
-import { History } from 'history';
 
 const venues = sortVenues(venueInfo as VenueInfo);
 
-function createComponent(selectedVenue?: Venue | null, search?: string) {
+function createComponent(selectedVenue: Venue | null = null, search?: string) {
   const location = {
     search,
     pathname: venuePage(selectedVenue),

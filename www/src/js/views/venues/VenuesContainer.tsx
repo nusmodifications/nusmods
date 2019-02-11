@@ -3,6 +3,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import Loadable, { LoadingComponentProps } from 'react-loadable';
 import classnames from 'classnames';
 import axios from 'axios';
+import produce from 'immer';
 import qs from 'query-string';
 import { pick, mapValues, size, isEqual, get } from 'lodash';
 
@@ -79,6 +80,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
       isAvailabilityEnabled,
       isDetailScrollable: true,
       searchTerm: params.q || '',
+      // eslint-disable-next-line react/no-unused-state
       pristineSearchOptions: !isAvailabilityEnabled,
     };
   }
@@ -99,18 +101,20 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
   }
 
   onFindFreeRoomsClicked = () => {
-    const { pristineSearchOptions, isAvailabilityEnabled } = this.state;
-    const stateUpdate: Partial<State> = { isAvailabilityEnabled: !isAvailabilityEnabled };
+    this.setState((state) =>
+      produce(state, (draft) => {
+        const { pristineSearchOptions, isAvailabilityEnabled } = draft;
+        draft.isAvailabilityEnabled = !isAvailabilityEnabled;
 
-    // Only reset search options if the user has never changed it, and if the
-    // search box is being opened. By resetting the option when the box is opened,
-    // the time when the box is opened will be used, instead of the time when the
-    // page is loaded
-    if (pristineSearchOptions && !isAvailabilityEnabled) {
-      stateUpdate.searchOptions = defaultSearchOptions();
-    }
-
-    this.setState(stateUpdate);
+        // Only reset search options if the user has never changed it, and if the
+        // search box is being opened. By resetting the option when the box is opened,
+        // the time when the box is opened will be used, instead of the time when the
+        // page is loaded
+        if (pristineSearchOptions && !isAvailabilityEnabled) {
+          draft.searchOptions = defaultSearchOptions();
+        }
+      }),
+    );
   };
 
   onClearVenueSelect = () =>
@@ -129,6 +133,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
     if (!isEqual(searchOptions, this.state.searchOptions)) {
       this.setState({
         searchOptions,
+        // eslint-disable-next-line react/no-unused-state
         pristineSearchOptions: false, // user changed searchOptions
       });
     }
@@ -295,6 +300,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
               fullscreen
             >
               <button
+                type="button"
                 className={classnames('btn btn-outline-primary btn-block', styles.closeButton)}
                 onClick={this.onClearVenueSelect}
               >

@@ -14,7 +14,7 @@ type Props = {
   readonly venue: string;
   readonly isOpen: boolean;
   readonly onRequestClose: () => void;
-  readonly existingLocation: VenueLocation | null | undefined;
+  readonly existingLocation: VenueLocation | null;
 };
 
 type State = {
@@ -49,6 +49,7 @@ export default class FeedbackModal extends React.PureComponent<Props, State> {
 
             <div className="col-sm-6">
               <button
+                type="button"
                 className="btn btn-outline-secondary"
                 onClick={() => this.setState({ page: 'form' })}
               >
