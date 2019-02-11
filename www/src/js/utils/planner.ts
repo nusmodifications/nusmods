@@ -47,6 +47,7 @@ export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: Tree) {
     }
     if (fragment.name === 'and') {
       const notFulfilled = fragment.children.map(walkTree).filter(Boolean);
+      // @ts-ignore TODO: Fix this when we transition to v2 data type
       return notFulfilled.length === 0 ? null : flatten(notFulfilled);
     }
 

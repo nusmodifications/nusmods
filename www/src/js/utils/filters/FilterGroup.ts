@@ -6,6 +6,7 @@ import { FilterGroupId } from 'types/views';
 
 import { intersection, union } from 'utils/set';
 import ModuleFilter from './ModuleFilter';
+import { notNull } from '../../types/utils';
 
 export const ID_DELIMITER = ',';
 
@@ -60,7 +61,7 @@ export default class FilterGroup<Filter extends ModuleFilter> {
 
   filteredModules(): Set<ModuleCode> {
     // Within each FilterGroup, we take the union of the results from all active filters
-    return union(...this.activeFilters.map((filter) => filter.filteredModules));
+    return union(...this.activeFilters.map((filter) => filter.filteredModules).filter(notNull));
   }
 
   toggle(idOrFilter: string | Filter, value?: boolean | null): FilterGroup<Filter> {
