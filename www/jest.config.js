@@ -18,7 +18,7 @@ module.exports = {
   // Allow us to directly use enzyme wrappers for snapshotting
   // Usage: expect(enzyme.shallow(<div/>)).toMatchSnapshot();
   snapshotSerializers: ['<rootDir>/node_modules/enzyme-to-json/serializer'],
-  collectCoverageFrom: ['**/*.{js,jsx,ts,tsx}'],
+  collectCoverageFrom: ['**/!(*.d).{js,jsx,ts,tsx}'],
   coveragePathIgnorePatterns: ['/node_modules/', '<rootDir>/src/js/(?:test-utils|e2e)'],
   // Only write lcov files in CIs
   coverageReporters: ['text'].concat(process.env.CI ? 'lcov' : []),
