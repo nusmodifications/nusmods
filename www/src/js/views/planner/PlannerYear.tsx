@@ -98,6 +98,7 @@ export default class PlannerYear extends React.PureComponent<Props, State> {
         {showSpecialSemToggle && (
           <div className={styles.specialSemToggle}>
             <button
+              type="button"
               className="btn btn-sm btn-outline-primary"
               onClick={() => this.setState({ showSpecialSem: !showSpecialSem })}
             >

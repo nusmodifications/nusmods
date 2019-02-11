@@ -10,16 +10,17 @@ import { addCustomModule } from 'actions/planner';
 import { getModuleCredit, getModuleTitle } from 'utils/planner';
 import styles from './CustomModuleForm.scss';
 
-type OwnProps = {
-  readonly moduleCode: ModuleCode;
-  readonly onFinishEditing: () => void;
-};
+type OwnProps = Readonly<{
+  moduleCode: ModuleCode;
+  onFinishEditing: () => void;
+}>;
 
-type Props = OwnProps & {
-  readonly customInfo: CustomModule | null | undefined;
-  readonly moduleInfo: Module | null | undefined;
-  readonly addCustomModule: (moduleCode: ModuleCode, data: CustomModule) => void;
-};
+type Props = OwnProps &
+  Readonly<{
+    customInfo: CustomModule | null;
+    moduleInfo: Module | null;
+    addCustomModule: (moduleCode: ModuleCode, data: CustomModule) => void;
+  }>;
 
 export class CustomModuleFormComponent extends React.PureComponent<Props> {
   onSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
@@ -44,6 +45,7 @@ export class CustomModuleFormComponent extends React.PureComponent<Props> {
   // We use an uncontrolled form here because we don't want to update the
   // module title and MCs live
   inputModuleCredit = React.createRef<HTMLInputElement>();
+
   inputTitle = React.createRef<HTMLInputElement>();
 
   resetCustomInfo = () => {

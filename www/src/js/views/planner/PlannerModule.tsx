@@ -15,21 +15,21 @@ import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import { modulePage } from 'views/routes/paths';
 import styles from './PlannerModule.scss';
 
-type Props = {
+type Props = Readonly<{
   // Module information
-  readonly moduleCode: ModuleCode;
-  readonly moduleTitle: ModuleTitle | null | undefined;
-  readonly moduleCredit: number | null | undefined;
-  readonly examDate: string | null | undefined;
-  readonly conflict: Conflict | null | undefined;
+  moduleCode: ModuleCode;
+  moduleTitle: ModuleTitle | null;
+  moduleCredit: number | null;
+  examDate: string | null;
+  conflict: Conflict | null;
 
   // For draggable
-  readonly index: number;
+  index: number;
 
   // Actions
-  readonly removeModule: (moduleCode: ModuleCode) => void;
-  readonly addCustomData: (moduleCode: ModuleCode) => void;
-};
+  removeModule: (moduleCode: ModuleCode) => void;
+  addCustomData: (moduleCode: ModuleCode) => void;
+}>;
 
 type MenuProps = {
   readonly removeModule: () => void;
@@ -76,6 +76,7 @@ const ModuleMenu = React.memo((props: MenuProps) => {
           >
             {menuItems.map(({ label, className }, itemIndex) => (
               <button
+                type="button"
                 key={label}
                 className={classnames('dropdown-item', className, {
                   'dropdown-selected': highlightedIndex === itemIndex,
@@ -104,7 +105,11 @@ export default class PlannerModule extends React.PureComponent<Props> {
             <AlertTriangle className={styles.warningIcon} />
             <p>
               No data on this module.{' '}
-              <button className="btn btn-link btn-inline" onClick={this.editCustomData}>
+              <button
+                type="button"
+                className="btn btn-link btn-inline"
+                onClick={this.editCustomData}
+              >
                 Add data
               </button>
             </p>
@@ -168,6 +173,7 @@ export default class PlannerModule extends React.PureComponent<Props> {
   }
 
   removeModule = () => this.props.removeModule(this.props.moduleCode);
+
   editCustomData = () => this.props.addCustomData(this.props.moduleCode);
 
   render() {

@@ -53,17 +53,19 @@ export type Props = {
   readonly removeModule: (moduleCode: ModuleCode) => void;
 };
 
+type SemesterModules = { [semester: string]: PlannerModuleInfo[] };
+
 type State = {
   readonly loading: boolean;
   readonly showSettings: boolean;
   // Module code is the module being edited. null means the modal is not open
-  readonly showCustomModule: ModuleCode | null | undefined;
+  readonly showCustomModule: ModuleCode | null;
 };
 
 const TRASH_ID = 'trash';
 
 export class PlannerContainerComponent extends React.PureComponent<Props, State> {
-  state = {
+  state: State = {
     loading: true,
     showSettings: false,
     showCustomModule: null,
@@ -165,8 +167,8 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
     const { modules, exemptions, planToTake, iblocs, iblocsModules } = this.props;
 
     // Sort acad years since acad years may not be inserted in display order
-    const sortedModules: Array<[string, { [semester: string]: PlannerModuleInfo[] }]> = sortBy(
-      toPairs(modules),
+    const sortedModules: [string, SemesterModules][] = sortBy(
+      toPairs<SemesterModules>(modules),
       (pairs) => pairs[0],
     );
 

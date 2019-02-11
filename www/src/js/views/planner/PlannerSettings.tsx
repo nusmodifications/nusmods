@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 
 import config from 'config';
-import { State } from '../../reducers';
+import { State } from 'reducers';
 import { getYearsBetween, offsetAcadYear } from 'utils/modules';
 import { acadYearLabel } from 'utils/planner';
 import { setPlannerIBLOCs, setPlannerMaxYear, setPlannerMinYear } from 'actions/planner';
@@ -69,6 +69,7 @@ export function PlannerSettingsComponent(props: Props) {
             return (
               <li key={year}>
                 <button
+                  type="button"
                   onClick={() => props.setMinYear(year)}
                   {...buttonProps(props.minYear === year, year > props.maxYear)}
                 >
@@ -93,6 +94,7 @@ export function PlannerSettingsComponent(props: Props) {
           {graduationLabels.map((year, offset) => (
             <li key={year}>
               <button
+                type="button"
                 onClick={() => props.setMaxYear(year)}
                 {...buttonProps(props.maxYear === year, year < props.minYear)}
               >

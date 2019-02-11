@@ -17,18 +17,18 @@ import PlannerModule from './PlannerModule';
 import AddModule from './AddModule';
 import styles from './PlannerSemester.scss';
 
-type Props = {
-  readonly year: string;
-  readonly semester: Semester;
-  readonly modules: PlannerModuleInfo[];
+type Props = Readonly<{
+  year: string;
+  semester: Semester;
+  modules: PlannerModuleInfo[];
 
-  readonly showModuleMeta: boolean;
-  readonly className?: string;
+  showModuleMeta: boolean;
+  className?: string;
 
-  readonly addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void;
-  readonly removeModule: (moduleCode: ModuleCode) => void;
-  readonly addCustomData: (moduleCode: ModuleCode) => void;
-};
+  addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void;
+  removeModule: (moduleCode: ModuleCode) => void;
+  addCustomData: (moduleCode: ModuleCode) => void;
+}>;
 
 function renderSemesterMeta(plannerModules: PlannerModuleInfo[]) {
   const moduleCredits = getTotalMC(plannerModules);

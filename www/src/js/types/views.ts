@@ -1,6 +1,5 @@
 import FilterGroup from 'utils/filters/FilterGroup';
 import {
-  Department,
   Faculty,
   Lesson,
   Module,
@@ -14,8 +13,8 @@ import { CustomModule, ModuleList } from './reducers';
 import { NextBusTimings, Venue, VenueList } from './venues';
 
 export type ComponentMap = {
-  globalSearchInput: HTMLInputElement | null | undefined;
-  downloadButton: HTMLButtonElement | null | undefined;
+  globalSearchInput: HTMLInputElement | null;
+  downloadButton: HTMLButtonElement | null;
 };
 
 /* layout/GlobalSearch */
@@ -161,7 +160,7 @@ export type EmptyGroupType =
 /* views/planner */
 export type PrereqConflict = {
   type: 'prereq';
-  unfulfilledPrereqs: Array<Tree>;
+  unfulfilledPrereqs: Tree[];
 };
 
 export type ExamConflict = {
@@ -192,8 +191,8 @@ export type PlannerModuleInfo = {
 export type PlannerModulesWithInfo = {
   // Mapping acad years to a map of semester to module information object
   // This is the form used by the UI
-  readonly [key: string]: {
-    readonly [semester: string]: PlannerModuleInfo;
+  readonly [year: string]: {
+    readonly [semester: string]: PlannerModuleInfo[];
   };
 };
 
