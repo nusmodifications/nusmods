@@ -1,10 +1,9 @@
 // Define media breakpoints
-import json2mq from 'json2mq';
+import json2mq, { QueryObject } from 'json2mq';
 import { entries } from 'lodash';
 import bowser from 'bowser';
 
 export type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-export type QueryObject = { [key: string]: string | number | boolean } | QueryObject[];
 
 const breakpoints: { [breakpoint: string]: number } = {
   xs: 0,
