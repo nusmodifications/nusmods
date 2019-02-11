@@ -2,8 +2,9 @@ import * as React from 'react';
 import { values, flattenDeep, noop } from 'lodash';
 import classnames from 'classnames';
 
-import { Lesson, ColoredLesson } from 'types/modules';
+import { ColoredLesson } from 'types/modules';
 import { HoverLesson, TimetableArrangement } from 'types/timetables';
+import { OnModifyCell } from 'types/views';
 
 import {
   SCHOOLDAYS,
@@ -24,7 +25,7 @@ type Props = {
   isVerticalOrientation: boolean;
   isScrolledHorizontally: boolean;
   showTitle: boolean;
-  onModifyCell?: (lesson: Lesson) => void;
+  onModifyCell?: OnModifyCell;
 };
 
 type State = {
@@ -34,6 +35,8 @@ type State = {
 const nullCurrentTimeIndicatorStyle: React.CSSProperties = {
   opacity: 0,
 };
+
+const EMPTY_ROW_LESSONS = [[]];
 
 class Timetable extends React.PureComponent<Props, State> {
   static defaultProps = {
@@ -89,7 +92,7 @@ class Timetable extends React.PureComponent<Props, State> {
                 onCellHover={this.onCellHover}
                 verticalMode={this.props.isVerticalOrientation}
                 showTitle={this.props.showTitle}
-                dayLessonRows={this.props.lessons[day] || [[]]}
+                dayLessonRows={this.props.lessons[day] || EMPTY_ROW_LESSONS}
                 isScrolledHorizontally={this.props.isScrolledHorizontally}
                 isCurrentDay={index === currentDayIndex}
                 currentTimeIndicatorStyle={

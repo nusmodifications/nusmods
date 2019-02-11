@@ -27,7 +27,7 @@ import TimetableContent from './TimetableContent';
 
 import styles from './TimetableContainer.scss';
 
-type QueryParam = {
+export type QueryParam = {
   action: string;
   semester: string;
 };

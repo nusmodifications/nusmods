@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { ModifiableLesson } from 'types/modules';
 import { HoverLesson } from 'types/timetables';
+import { OnHoverCell, OnModifyCell } from 'types/views';
 
 import { convertTimeToIndex } from 'utils/timify';
 import styles from './TimetableRow.scss';
@@ -10,12 +11,12 @@ import TimetableCell from './TimetableCell';
 type Props = {
   verticalMode: boolean;
   showTitle: boolean;
-  hoverLesson?: HoverLesson | null;
-  onCellHover: (hoverLesson: HoverLesson | null) => void;
   startingIndex: number;
   endingIndex: number;
   lessons: ModifiableLesson[];
-  onModifyCell: (lesson: ModifiableLesson) => boolean | void;
+  hoverLesson?: HoverLesson | null;
+  onCellHover: OnHoverCell;
+  onModifyCell?: OnModifyCell;
 };
 
 /**
@@ -27,9 +28,6 @@ type Props = {
  *
  * Reasoning for doing so is that we need rows to resize according to their
  * children's height, in which absolute positioning would not allow.
- *
- * @param {Props} props
- * @returns
  */
 function TimetableRow(props: Props) {
   const { startingIndex, endingIndex, lessons, onModifyCell, verticalMode } = props;
@@ -52,13 +50,14 @@ function TimetableRow(props: Props) {
           [dirStyle]: `calc(${(dirValue / totalCols) * 100}% + 1px)`,
           [sizeStyle]: `calc(${(size / totalCols) * 100}% - 1px)`,
         };
-        const conditionalProps = lesson.isModifiable
-          ? {
-              onClick: () => {
-                onModifyCell(lesson);
-              },
-            }
-          : {};
+        const conditionalProps =
+          lesson.isModifiable && onModifyCell
+            ? {
+                onClick: () => {
+                  onModifyCell(lesson);
+                },
+              }
+            : {};
 
         return (
           <TimetableCell

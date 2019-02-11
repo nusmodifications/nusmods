@@ -18,10 +18,10 @@ const DEFAULT_LESSON = {
 };
 
 type Props = {
-  onClick?: Function;
+  onClick?: () => void;
   showTitle?: boolean;
-  onHover: (hoverLesson?: HoverLesson) => void;
-  hoverLesson?: HoverLesson | null | undefined;
+  onHover: (hoverLesson?: HoverLesson | null) => void;
+  hoverLesson?: HoverLesson | null;
 };
 
 describe(TimetableCell, () => {
@@ -42,7 +42,7 @@ describe(TimetableCell, () => {
     };
   }
 
-  describe('when onClick is passed', () => {
+  test('when onClick is passed', () => {
     it('simulates click events and renders a button', () => {
       const { onClick, wrapper } = make();
 
@@ -59,7 +59,7 @@ describe(TimetableCell, () => {
     });
   });
 
-  describe('hoverLesson', () => {
+  test('hoverLesson', () => {
     it('should highlight lesson when module code, classNo and lessonType matches', () => {
       const { wrapper } = make({
         hoverLesson: {

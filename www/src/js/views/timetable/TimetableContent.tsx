@@ -77,11 +77,9 @@ type Props = OwnProps & {
   // Actions
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
   removeModule: (semester: Semester, moduleCode: ModuleCode) => void;
-  modifyLesson: Function;
-  changeLesson: Function;
-  cancelModifyLesson: Function;
-  toggleTimetableOrientation: Function;
-  toggleTitleDisplay: Function;
+  modifyLesson: (lesson: Lesson) => void;
+  changeLesson: (semester: Semester, lesson: Lesson) => void;
+  cancelModifyLesson: () => void;
   undo: () => void;
 };
 
@@ -155,7 +153,7 @@ class TimetableContent extends React.Component<Props, State> {
   renderModuleTable = (
     modules: Module[],
     horizontalOrientation: boolean,
-    tombstone?: ModuleWithColor | null,
+    tombstone: ModuleWithColor | null = null,
   ) => (
     <TimetableModulesTable
       modules={modules.map((module) => ({

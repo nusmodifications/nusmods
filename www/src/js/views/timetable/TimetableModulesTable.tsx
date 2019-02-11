@@ -34,7 +34,7 @@ type Props = {
   tombstone: ModuleWithColor | null; // Placeholder for a deleted module
 
   // Actions
-  selectModuleColor: Function;
+  selectModuleColor: (semester: Semester, moduleCode: ModuleCode, colorIndex: ColorIndex) => void;
   hideLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   showLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   onRemoveModule: (moduleWithColor: ModuleWithColor) => void;

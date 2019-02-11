@@ -13,19 +13,20 @@ import CS1010S from '__mocks__/modules/CS1010S.json';
 /** @var {Module} */
 import CS3216 from '__mocks__/modules/CS3216.json';
 
-import { TimetableContainerComponent } from './TimetableContainer';
+import { QueryParam, TimetableContainerComponent } from './TimetableContainer';
 import TimetableContent from './TimetableContent';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 describe(TimetableContainerComponent, () => {
   function create(
     path: string,
-    params: { [key: string]: string | null | undefined } = {},
+    params: Partial<QueryParam> = {},
     timetable: SemTimetableConfig = {},
     modules: ModulesMap = { CS1010S, CS3216 },
   ) {
-    const router = createHistory(path);
-    router.match.params = params;
+    const router = createHistory<QueryParam>(path, {
+      params,
+    });
 
     const selectSemester = jest.fn();
     const setTimetable = jest.fn();

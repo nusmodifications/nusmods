@@ -1,4 +1,11 @@
-import { ClassNo, Lesson, ColoredLesson, LessonType, ModuleCode } from 'types/modules';
+import {
+  ClassNo,
+  Lesson,
+  ColoredLesson,
+  LessonType,
+  ModuleCode,
+  ModifiableLesson,
+} from 'types/modules';
 
 //  ModuleLessonConfig is a mapping of LessonType to ClassNo for a module.
 export type ModuleLessonConfig = {
@@ -32,7 +39,7 @@ export type TimetableDayFormat = {
 };
 
 // TimetableDayArrangement is the arrangement of lessons on the timetable within a day.
-export type TimetableDayArrangement = ColoredLesson[][];
+export type TimetableDayArrangement = ModifiableLesson[][];
 
 // TimetableArrangement is the arrangement of lessons on the timetable for a week.
 export type TimetableArrangement = {

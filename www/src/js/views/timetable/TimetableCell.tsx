@@ -4,6 +4,7 @@ import { isEqual } from 'lodash';
 
 import { ModifiableLesson } from 'types/modules';
 import { HoverLesson } from 'types/timetables';
+import { OnHoverCell } from 'types/views';
 
 import { formatWeekNumber, getHoverLesson, LESSON_TYPE_ABBREV } from 'utils/timetables';
 import elements from 'views/elements';
@@ -13,9 +14,9 @@ import styles from './TimetableCell.scss';
 type Props = {
   showTitle: boolean;
   lesson: ModifiableLesson;
+  onHover: OnHoverCell;
   style?: React.CSSProperties;
-  onClick: () => void;
-  onHover?: (hoverLesson: HoverLesson | null) => void;
+  onClick?: () => void;
   hoverLesson?: HoverLesson | null;
 };
 
@@ -31,12 +32,12 @@ function TimetableCell(props: Props) {
   const Cell = props.onClick ? 'button' : 'div';
   const hover = isEqual(getHoverLesson(lesson), hoverLesson);
 
-  const hoverProps = onHover
+  const conditionalProps = onClick
     ? {
-        onMouseEnter: () => onHover(getHoverLesson(lesson)),
-        onTouchStart: () => onHover(getHoverLesson(lesson)),
-        onMouseLeave: () => onHover(null),
-        onTouchEnd: () => onHover(null),
+        onClick: (e: React.MouseEvent) => {
+          e.preventDefault();
+          onClick();
+        },
       }
     : {};
 
@@ -54,11 +55,11 @@ function TimetableCell(props: Props) {
         hover,
       })}
       style={props.style}
-      onClick={(e: React.MouseEvent) => {
-        e.preventDefault();
-        onClick();
-      }}
-      {...hoverProps}
+      onMouseEnter={() => onHover(getHoverLesson(lesson))}
+      onTouchStart={() => onHover(getHoverLesson(lesson))}
+      onMouseLeave={() => onHover(null)}
+      onTouchEnd={() => onHover(null)}
+      {...conditionalProps}
     >
       <div className={styles.cellContainer}>
         <div className={styles.moduleName}>{moduleName}</div>

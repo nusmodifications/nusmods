@@ -2,6 +2,7 @@ import FilterGroup from 'utils/filters/FilterGroup';
 import {
   Faculty,
   Lesson,
+  ModifiableLesson,
   Module,
   ModuleCode,
   ModuleCondensed,
@@ -11,6 +12,7 @@ import {
 } from './modules';
 import { CustomModule, ModuleList } from './reducers';
 import { NextBusTimings, Venue, VenueList } from './venues';
+import { HoverLesson } from './timetables';
 
 export type ComponentMap = {
   globalSearchInput: HTMLInputElement | null;
@@ -69,6 +71,10 @@ export type ModuleTableOrder = 'exam' | 'mc' | 'code';
 export type SelectedLesson = { date: Date; lesson: Lesson };
 
 export type ExamClashes = { [key: string]: Module[] };
+
+// Timetable event handlers
+export type OnModifyCell = (lesson: ModifiableLesson) => void;
+export type OnHoverCell = (hoverLesson: HoverLesson | null) => void;
 
 // Incomplete typing of Mamoto's API. If you need something not here, feel free
 // to declare the typing here.
