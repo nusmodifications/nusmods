@@ -61,7 +61,7 @@ test('passes down search tokens', () => {
 
 test('shows at most 10 choices when there are many venues and modules', () => {
   const instance = make().instance() as SearchContainerComponent;
-  const { modules, venues } = instance.getResults('1 ');
+  const { modules, venues } = instance.getResults('1 ')!;
   expect(modules).toHaveLength(6);
   expect(venues).toHaveLength(4);
 });
@@ -71,21 +71,21 @@ test('shows at most 10 choices when there are many venues', () => {
     moduleList: MODULES.slice(0, 10),
     venueList: VENUES.slice(0, 4),
   }).instance() as SearchContainerComponent;
-  const { modules, venues } = instance.getResults('1 ');
+  const { modules, venues } = instance.getResults('1 ')!;
   expect(modules).toHaveLength(6);
   expect(venues).toHaveLength(4);
 });
 
 test('shows at most 10 choices when there are many modules', () => {
   const instance = make({ venueList: VENUES.slice(0, 2) }).instance() as SearchContainerComponent;
-  const { modules, venues } = instance.getResults('1 ');
+  const { modules, venues } = instance.getResults('1 ')!;
   expect(modules).toHaveLength(8);
   expect(venues).toHaveLength(2);
 });
 
 test('shows all results when there are few', () => {
   const instance = make().instance() as SearchContainerComponent;
-  const { modules, venues } = instance.getResults('AA');
+  const { modules, venues } = instance.getResults('AA')!;
   expect(modules).toHaveLength(1);
   expect(venues).toHaveLength(1);
 });
@@ -95,11 +95,11 @@ test('show many results if the search only returns results of one type', () => {
     venueList: _.range(100).map((n) => `Venue ${n}`),
   }).instance() as SearchContainerComponent;
 
-  let { modules, venues } = instance.getResults('1010');
+  let { modules, venues } = instance.getResults('1010')!;
   expect(modules).toHaveLength(70);
   expect(venues).toHaveLength(0);
 
-  ({ modules, venues } = instance.getResults('venue'));
+  ({ modules, venues } = instance.getResults('venue')!);
   expect(modules).toHaveLength(0);
   expect(venues).toHaveLength(70);
 });
