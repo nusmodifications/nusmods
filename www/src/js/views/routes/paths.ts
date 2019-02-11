@@ -33,8 +33,8 @@ export function semesterForTimetablePage(semStr: string | null): Semester | null
 }
 
 // Module Code, Module Title -> Module page path
-export function modulePage(moduleCode: ModuleCode, moduleTitle?: ModuleTitle): string {
-  return `/modules/${moduleCode}/${kebabCase(moduleTitle)}`;
+export function modulePage(moduleCode: ModuleCode, moduleTitle?: ModuleTitle | null): string {
+  return `/modules/${moduleCode}/${kebabCase(moduleTitle || '')}`;
 }
 
 export function moduleArchive(
