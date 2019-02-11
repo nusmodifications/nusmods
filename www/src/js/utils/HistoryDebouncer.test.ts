@@ -1,21 +1,26 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { History } from 'history';
 import createHistory from 'test-utils/createHistory';
 import HistoryDebouncer from './HistoryDebouncer';
 
 describe('HistoryDebouncer', () => {
-  function createHistoryMock(initialEntries = ['/']) {
+  let mockNow: jest.MockInstance<typeof Date.now>;
+
+  function createHistoryMock(initialEntries = ['/']): jest.Mocked<History> {
     const { history } = createHistory(initialEntries);
     jest.spyOn(history, 'push');
     jest.spyOn(history, 'replace');
 
-    return history;
+    return history as any;
   }
 
   beforeEach(() => {
     jest.spyOn(Date, 'now').mockReturnValue(0);
+    mockNow = Date.now as any;
   });
 
   afterEach(() => {
-    Date.now.mockRestore();
+    mockNow.mockRestore();
   });
 
   test('should call history.push() at the leading edge', () => {
@@ -23,7 +28,7 @@ describe('HistoryDebouncer', () => {
     const history = new HistoryDebouncer(mock);
 
     history.push('test-1');
-    Date.now.mockReturnValue(30.1 * 1000);
+    mockNow.mockReturnValue(30.1 * 1000);
     history.push('test-2', { test: 'state' });
 
     expect(mock.push.mock.calls).toEqual([['test-1', undefined], ['test-2', { test: 'state' }]]);
@@ -36,13 +41,13 @@ describe('HistoryDebouncer', () => {
 
     history.push('test-1');
 
-    Date.now.mockReturnValue(2 * 1000);
+    mockNow.mockReturnValue(2 * 1000);
     history.push('test-2', { test: 'state' });
 
-    Date.now.mockReturnValue(30.1 * 1000);
+    mockNow.mockReturnValue(30.1 * 1000);
     history.push('test-3');
 
-    Date.now.mockReturnValue(62.2 * 1000);
+    mockNow.mockReturnValue(62.2 * 1000);
     history.push('test-4');
 
     expect(mock.push.mock.calls).toEqual([['test-1', undefined], ['test-4', undefined]]);
@@ -55,7 +60,7 @@ describe('HistoryDebouncer', () => {
     const history = new HistoryDebouncer(mock, 10 * 1000);
 
     history.push('test-1');
-    Date.now.mockReturnValue(10.1 * 1000);
+    mockNow.mockReturnValue(10.1 * 1000);
     history.push('test-2');
 
     expect(mock.push.mock.calls).toEqual([['test-1', undefined], ['test-2', undefined]]);
