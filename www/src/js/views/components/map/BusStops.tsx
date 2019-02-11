@@ -2,17 +2,18 @@ import * as React from 'react';
 import { Marker, Popup } from 'react-leaflet';
 import classnames from 'classnames';
 import produce from 'immer';
-import { entries, sortBy } from 'lodash';
 
-import { BusStop, NextBus, NextBusTime } from 'types/venues';
+import { BusStop } from 'types/venues';
 import { BusTiming } from 'types/views';
 
-import busStops from 'data/bus-stops.json';
+import busStopJSON from 'data/bus-stops.json';
 import { allowBusStopEditing } from 'utils/debug';
 import { DivIcon } from 'leaflet';
 import { nextBus } from 'apis/nextbus';
-import { Refresh } from 'views/components/icons';
 import styles from './BusStops.scss';
+import { ArrivalTimes } from './ArrivalTimes';
+
+const busStops = busStopJSON as BusStop[];
 
 type Props = {};
 
@@ -25,115 +26,14 @@ type State = {
   busTimings: { [code: string]: BusTiming };
 };
 
-type ArrivalTimesProps = BusTiming & {
-  name: string;
-  code: string;
-  reload: (code: string) => void;
-};
-
-/**
- * Extract the route name from the start of a string
- */
-const routes = ['A1', 'A2', 'B1', 'B2', 'C', 'D1', 'D2', 'BTC1', 'BTC2'];
-export function extractRoute(route: string) {
-  for (let i = 0; i < routes.length; i++) {
-    if (route.startsWith(routes[i])) return routes[i];
-  }
-  return null;
-}
-
-/**
- * Adds 'min' to numeric timings and highlight any buses that are arriving
- * soon with a <strong> tag
- */
-function renderTiming(time: NextBusTime) {
-  if (typeof time === 'number') {
-    if (time <= 3) return <strong>{time} min</strong>;
-    return `${time} min`;
-  }
-
-  if (time === 'Arr') return <strong>{time}</strong>;
-  return time;
-}
-
-/**
- * Route names with parenthesis in them don't have a space in front of the
- * opening bracket, causing the text to wrap weirdly. This forces the opening
- * paren to always have a space in front of it.
- */
-function fixRouteName(name: string) {
-  return name.replace(/\s?\(/, ' (');
-}
-
 // By default set all timings to null
-const defaultBusTimings = {};
+const defaultBusTimings: { [code: string]: BusTiming } = {};
 busStops.forEach((stop: BusStop) => {
-  const timing: BusTiming = {
+  defaultBusTimings[stop.code] = {
     isLoading: false,
     timings: null,
     error: null,
   };
-
-  defaultBusTimings[stop.code] = timing;
-});
-
-export const ArrivalTimes = React.memo<ArrivalTimesProps>((props) => {
-  if (props.error) {
-    return (
-      <>
-        <h3 className={styles.heading}>{props.name}</h3>
-        <p>Error loading arrival times</p>
-        <button
-          type="button"
-          className="btn btn-sm btn-primary"
-          onClick={() => props.reload(props.code)}
-        >
-          Retry
-        </button>
-      </>
-    );
-  }
-
-  // Make sure the routes are sorted
-  const timings = sortBy(entries(props.timings), ([route]) => route);
-
-  return (
-    <>
-      <h3 className={styles.heading}>{props.name}</h3>
-      {props.timings && (
-        <table className={classnames(styles.timings, 'table table-sm')}>
-          <tbody>
-            {timings.map(([routeName, timing]: [string, NextBus]) => {
-              const route = extractRoute(routeName);
-              const className = route
-                ? classnames(styles.routeHeading, styles[`route${route}`])
-                : '';
-
-              return (
-                <tr key={routeName}>
-                  <th className={className}>{fixRouteName(routeName)}</th>
-                  <td>{renderTiming(timing.arrivalTime)}</td>
-                  <td>{renderTiming(timing.nextArrivalTime)}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      )}
-
-      <button
-        type="button"
-        className={classnames('btn btn-sm btn-link btn-svg', styles.refreshBtn, {
-          [styles.isLoading]: props.isLoading,
-        })}
-        disabled={props.isLoading}
-        onClick={() => props.reload(props.code)}
-      >
-        <Refresh size={14} className={styles.refreshIcon} />
-        {props.isLoading ? 'Loading...' : 'Refresh'}
-      </button>
-    </>
-  );
 });
 
 /**
@@ -144,6 +44,7 @@ export default class BusStops extends React.PureComponent<Props, State> {
     super(props);
 
     if (allowBusStopEditing()) {
+      // @ts-ignore
       window.getState = () => this.state;
 
       // eslint-disable-next-line no-console
@@ -154,7 +55,7 @@ export default class BusStops extends React.PureComponent<Props, State> {
   }
 
   state = {
-    busStops: busStops as BusStop[],
+    busStops,
     busTimings: defaultBusTimings,
   };
 
@@ -167,8 +68,8 @@ export default class BusStops extends React.PureComponent<Props, State> {
     const code = target.getElement().children[0].dataset.code;
     const { lat, lng } = target.getLatLng();
 
-    this.setState(
-      produce(this.state, (draft) => {
+    this.setState((state) =>
+      produce(state, (draft) => {
         const busStop = draft.busStops.find((stop) => stop.code === code);
         if (!busStop) {
           throw new Error(`Unrecognized bus stop ${code}`);
