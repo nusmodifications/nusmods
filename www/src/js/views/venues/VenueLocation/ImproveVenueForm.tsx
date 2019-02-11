@@ -137,11 +137,14 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
   updateLocation = (latlng: LatLng | LatLngTuple, updateViewport: boolean = true) => {
     this.setState((state) =>
       produce(state, (draft) => {
-        draft.location = Array.isArray(latlng) ? latlng : [latlng.lat, latlng.lng];
+        const latlngTuple: [number, number] = Array.isArray(latlng)
+          ? latlng
+          : [latlng.lat, latlng.lng];
+        draft.location = latlngTuple;
         draft.latlngUpdated = true;
 
         if (updateViewport) {
-          draft.viewport.center = latlng;
+          draft.viewport.center = latlngTuple;
         }
       }),
     );
@@ -240,14 +243,16 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
             maxZoom={19}
             // Don't update viewport because this is also called when viewport is animated
             // and updating viewport will cause the
-            onViewportChange={(viewport) => this.updateLocation(viewport.center, false)}
-            onViewportChanged={(viewport) => this.setState({ viewport })}
-            onClick={(evt) => this.updateLocation(evt.latlng)}
+            onviewportchange={(viewport) =>
+              viewport.center && this.updateLocation(viewport.center, false)
+            }
+            onviewportchanged={(viewport) => this.setState({ viewport })}
+            onclick={(evt) => this.updateLocation(evt.latlng)}
           >
             <Marker
               position={location}
               icon={markerIcon}
-              onDragEnd={(evt) => this.updateLocation(evt.target.getLatLng())}
+              ondragend={(evt) => this.updateLocation(evt.target.getLatLng())}
               draggable
               autoPan
             />
