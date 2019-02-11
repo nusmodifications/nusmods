@@ -4,10 +4,12 @@ declare module '*.scss' {
 }
 
 declare module '*.svg' {
-  const content: React.ComponentType<React.SVGAttributes<SVGElement>> & {
+  type SVGProps = React.SVGAttributes<SVGElement> & {
     // Added by SVGR
     title?: string;
   };
+
+  const content: React.ComponentType<SVGProps>;
 
   export = content;
 }
