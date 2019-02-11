@@ -29,7 +29,8 @@ function onNewServiceWorker(registration: ServiceWorkerRegistration, callback: (
     }
 
     registration.installing.addEventListener('statechange', (event) => {
-      if (event.target.state === 'installed') {
+      // @ts-ignore Not sure how we can get this event to be typed correctly
+      if (event.target && event.target.state === 'installed') {
         // A new service worker is available, inform the user
         callback();
       }
@@ -45,7 +46,7 @@ function onNewServiceWorker(registration: ServiceWorkerRegistration, callback: (
   }
 }
 
-export default function initializeServiceWorker(store: Store<any, any, any>) {
+export default function initializeServiceWorker(store: Store<any, any>) {
   const { serviceWorker } = navigator;
   if (!serviceWorker) {
     return;
@@ -70,7 +71,7 @@ export default function initializeServiceWorker(store: Store<any, any, any>) {
       }, 60 * 60 * 1000);
 
       // When the user asks to refresh the UI, we'll need to reload the window
-      let preventDevToolsReloadLoop;
+      let preventDevToolsReloadLoop: boolean;
       serviceWorker.addEventListener('controllerchange', () => {
         // Ensure refresh is only called once - This works around a bug in "force update on reload".
         if (preventDevToolsReloadLoop) return;

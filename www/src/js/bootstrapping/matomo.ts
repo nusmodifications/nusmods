@@ -13,8 +13,10 @@ export const DIMENSIONS = {
   beta: 2,
 };
 
-const queuedTasks = [];
-let matomo: Tracker | null | undefined;
+type TrackerAction = (tracker: Tracker) => void;
+
+const queuedTasks: TrackerAction[] = [];
+let matomo: Tracker | undefined;
 let initialDimensions = false;
 let initialViewTracked = false;
 
@@ -46,7 +48,7 @@ export function initializeMamoto() {
     .catch(getScriptErrorHandler('Mamoto'));
 }
 
-export function withTracker(action: (tracker: Tracker) => void) {
+export function withTracker(action: TrackerAction) {
   if (matomo) {
     action(matomo);
   } else {

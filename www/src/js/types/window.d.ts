@@ -10,7 +10,7 @@ declare global {
     disqus_shortname?: string;
 
     // Injected by Matomo
-    Piwik: { getTracker(): Tracker };
+    Piwik: { getTracker(url: string, id: string): Tracker };
 
     // For the Redux developer extension
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any;

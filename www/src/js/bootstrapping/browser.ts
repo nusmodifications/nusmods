@@ -6,11 +6,12 @@
 import bowser from 'bowser';
 import * as Sentry from '@sentry/browser';
 
+import { parseFloat } from 'types/utils';
 import { canUseBrowserLocalStorage } from 'storage/localStorage';
 import { BROWSER_WARNING_KEY } from 'storage/keys';
 import styles from './browser.scss';
 
-const composeAnchorText = (innerHTML, href) =>
+const composeAnchorText = (innerHTML: string, href: string) =>
   `<a href=${href} target="_blank" rel="noopener noreferrer">${innerHTML}</a>`;
 const linkForChrome = composeAnchorText('Google Chrome', 'https://www.google.com/chrome/');
 const linkForFirefox = composeAnchorText('Mozilla Firefox', 'https://www.mozilla.org/en-US/');
@@ -30,11 +31,11 @@ const isBrowserSupported =
     },
     true,
   ) ||
-  (bowser.ios && parseFloat(bowser.osversion) >= 10);
+  (bowser.ios && parseFloat(bowser.osversion));
 
 // Add unsupported tag so that we can filter out reports from those users
 Sentry.configureScope((scope) => {
-  scope.setTag('unsupported', !isBrowserSupported);
+  scope.setTag('unsupported', String(!isBrowserSupported));
 });
 
 if (!isBrowserSupported) {
