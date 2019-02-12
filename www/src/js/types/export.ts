@@ -1,0 +1,17 @@
+import { SemTimetableConfig } from 'types/timetables';
+import { ModuleCode, Semester } from 'types/modules';
+import { Mode } from 'types/settings';
+import { ColorMapping, ThemeState } from 'types/reducers';
+
+/* eslint-disable import/prefer-default-export */
+
+export type ExportData = {
+  readonly semester: Semester;
+  readonly timetable: SemTimetableConfig;
+  readonly colors: ColorMapping;
+  readonly hidden: ModuleCode[];
+  readonly theme: ThemeState;
+  readonly settings: {
+    mode: Mode;
+  };
+};

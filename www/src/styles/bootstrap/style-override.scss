@@ -39,6 +39,15 @@ mark {
     background: theme-color();
   }
 
+  &.dropdown-item-danger {
+    color: lighten(theme-color('danger'), 10);
+
+    &:hover,
+    &.dropdown-selected {
+      background: rgba(theme-color('danger'), 0.2);
+    }
+  }
+
   @include touchscreen-only {
     $touch-horizontal-padding: 0.5rem;
 
