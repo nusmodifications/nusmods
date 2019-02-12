@@ -20,6 +20,9 @@ module.exports = {
         config: 'webpack/webpack.config.common.js',
       },
     },
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
   },
 
   rules: {
