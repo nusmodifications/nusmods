@@ -199,7 +199,6 @@ export function arrangeLessonsWithinDay(lessons: ColoredLesson[]): TimetableDayA
 //    ],
 //    ...
 //  }
-// $FlowFixMe - Flow refuses to accept 'extra' properties on Lesson object
 export function arrangeLessonsForWeek(lessons: ColoredLesson[]): TimetableArrangement {
   const dayLessons = groupLessonsByDay(lessons);
   return _.mapValues(dayLessons, (dayLesson: ColoredLesson[]) =>

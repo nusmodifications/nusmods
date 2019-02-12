@@ -9,7 +9,7 @@ const publicPath = process.env.PUBLIC_PATH || '/';
 const commonConfig = merge([
   {
     // This tells Webpack where to look for modules. Remember to update the
-    // corresponding entry in .flowconfig if you're updating these
+    // corresponding entry in tsconfig.json if you're updating these
     resolve: {
       // Specify a few root paths when importing our own modules,
       // so that we can use absolute paths in our imports.

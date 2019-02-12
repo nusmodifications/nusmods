@@ -128,7 +128,7 @@ const productionConfig = merge([
       name: 'img/[name].[hash].[ext]',
     },
   }),
-  // Lint and Flow type check are not enabled for production because CI has
+  // Lint and Typescript type check are not enabled for production because CI has
   // explicit lint stages
 ]);
 

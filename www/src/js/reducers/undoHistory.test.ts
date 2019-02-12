@@ -137,7 +137,7 @@ describe('#computeUndoStacks()', () => {
 
   test('should enforce limit if present', () => {
     // Config without limit already tested in other cases
-    // Do not test null/undefined limit since Flow should already catch that case
+    // Do not test null/undefined limit since Typescript should already catch that case
     const limit1 = { ...config, limit: 1 };
     const limit0 = { ...config, limit: 0 }; // Edge case
     const limitN = { ...config, limit: -1 }; // Edge case
