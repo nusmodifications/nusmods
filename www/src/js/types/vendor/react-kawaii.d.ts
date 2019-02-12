@@ -10,11 +10,11 @@ declare module 'react-kawaii' {
     | 'excited'
     | 'ko';
 
-  export type KawaiiProps = {
+  export interface KawaiiProps {
     size?: number;
     color?: string;
     mood?: KawaiiMood;
-  };
+  }
 
   export const SpeechBubble: React.ComponentType<KawaiiProps>;
   export const Mug: React.ComponentType<KawaiiProps>;
