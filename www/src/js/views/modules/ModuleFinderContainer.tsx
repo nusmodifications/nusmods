@@ -5,7 +5,7 @@ import axios from 'axios';
 import update from 'immutability-helper';
 import { each, mapValues, values } from 'lodash';
 
-import { Module, Semester, Semesters } from 'types/modules';
+import { Module } from 'types/modules';
 import { PageRange, PageRangeDiff } from 'types/views';
 import { State as StoreState } from 'reducers';
 
@@ -187,14 +187,9 @@ export class ModuleFinderContainerComponent extends React.Component<Props, State
     const modulesRequest = axios.get(nusmods.modulesUrl()).then(({ data }) => data);
 
     // Load faculty-department mapping
-    const makeFacultyRequest = (semester: Semester) =>
-      axios
-        .get(nusmods.facultyDepartmentsUrl(semester))
-        .then(({ data }) => invertFacultyDepartments(data));
-
-    const facultiesRequest = Promise.all(Semesters.map(makeFacultyRequest))
-      // Then merge all of the mappings together
-      .then((mappings) => Object.assign({}, ...mappings));
+    const facultiesRequest = axios
+      .get(nusmods.facultyDepartmentsUrl())
+      .then(({ data }) => invertFacultyDepartments(data));
 
     // Finally initialize everything
     Promise.all([modulesRequest, facultiesRequest])
