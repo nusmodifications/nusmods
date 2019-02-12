@@ -3,10 +3,12 @@ import { first, last } from 'lodash';
 import config, { CorsRound, CorsPeriod } from 'config';
 
 export function roundStart(round: CorsRound): Date {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return first(round.periods)!.startDate;
 }
 
 export function roundEnd(round: CorsRound): Date {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return last(round.periods)!.endDate;
 }
 

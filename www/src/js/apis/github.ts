@@ -2,8 +2,6 @@ import axios from 'axios';
 import qs from 'query-string';
 import { Contributor } from 'types/contributor';
 
-/* eslint-disable @typescript-eslint/camelcase */
-
 // We proxy https://api.github.com/repos/nusmodifications/nusmods -> https://github.nusmods.com/repo
 // This allows us to cache the response to stop 403 rate limit error caused by the
 // school sharing a single IP address
@@ -15,7 +13,6 @@ const contributorBlacklist = new Set([
   25180681,
 ]);
 
-// eslint-disable-next-line import/prefer-default-export
 export function getContributors(): Promise<Contributor[]> {
   const query = qs.stringify({
     per_page: 100,

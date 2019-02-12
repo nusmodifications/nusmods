@@ -25,7 +25,6 @@ function convertArrivalTime(arrivalTime: string): NextBusTime {
   throw new Error(`Unknown arrival time ${arrivalTime}`);
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export function nextBus(code: string): Promise<NextBusTimings> {
   const url = `${baseUrl}/arrival`;
   return axios

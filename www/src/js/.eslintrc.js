@@ -8,7 +8,11 @@ module.exports = {
 
   overrides: [
     {
-      files: ['**/*.test.{js,ts,js,tsx}', '**/__mocks__/**/*.{js,ts,js,tsx}'],
+      files: [
+        '**/*.test.{js,ts,jsx,tsx}',
+        '**/__mocks__/**/*.{js,ts,jsx,tsx}',
+        'test-utils/**/*.{js,ts,jsx,tsx}',
+      ],
       env: {
         jest: true,
       },
@@ -18,7 +22,8 @@ module.exports = {
         // any is needed for mocking, amongst other things
         '@typescript-eslint/no-explicit-any': 'off',
 
-        // Generally safe to allow non-null assertions in unit tests
+        // Generally safe to allow non-null assertions in unit tests since
+        // they will trigger runtime crashes that can be caught by the test
         '@typescript-eslint/no-non-null-assertion': 'off',
 
         // Can be cleaner to directly assert types in tests
@@ -29,18 +34,34 @@ module.exports = {
     {
       files: ['**/*.{js,jsx}'],
       rules: {
-        // Don't force import for .js files
+        // Don't force import over require in .js files
         '@typescript-eslint/no-var-requires': 'off',
       },
     },
 
     {
-      files: ['api/**/*.ts', 'bootstrapping/**/*.ts'],
+      files: ['{api,bootstrapping}/**/*.ts', '**/*.d.ts'],
       rules: {
         // Easier to write interfaces with external libraries and APIs with any
         '@typescript-eslint/no-explicit-any': 'off',
-      }
-    }
+      },
+    },
+
+    {
+      files: ['{apis,test-utils,types,utils}/**/*.{js,ts,jsx,tsx}'],
+      rules: {
+        // Util files don't necessarily need a default export
+        'import/prefer-default-export': 'off',
+      },
+    },
+
+    {
+      files: ['{apis,types}/**/*.{ts,tsx}'],
+      rules: {
+        // External types may not be camelcase
+        '@typescript-eslint/camelcase': 'off',
+      },
+    },
   ],
 
   rules: {
@@ -64,7 +85,7 @@ module.exports = {
       },
     ],
 
-    // We use type aliases for data types
+    // We use type aliases for data types, ie. things that are not new-able
     '@typescript-eslint/prefer-interface': 'off',
 
     '@typescript-eslint/no-explicit-any': 'warn',

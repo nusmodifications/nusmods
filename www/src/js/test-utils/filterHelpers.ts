@@ -2,7 +2,6 @@ import { Module, ModuleCode } from 'types/modules';
 import FilterGroup from 'utils/filters/FilterGroup';
 import Filter from 'utils/filters/ModuleFilter';
 
-// eslint-disable-next-line import/prefer-default-export
 export function createModule(code: ModuleCode): Module {
   return {
     ModuleCode: code,

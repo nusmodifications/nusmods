@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
-
 const twoHour = jest.fn().mockResolvedValue('Partially Cloudy (Day)');
 
 const tomorrow = jest.fn().mockResolvedValue('Morning thundery showers.');

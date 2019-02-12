@@ -12,8 +12,6 @@ import { ZWSP } from 'utils/react';
 import { tokenize } from './moduleSearch';
 import { SCHOOLDAYS } from './timify';
 
-/* eslint-disable import/prefer-default-export */
-
 // Array of [0, 30, 100, 130, 200, 230, ...], used to create time strings at half hour intervals
 // eg. 900 + hourDifference[2] // (9am + 2 * 30 minutes = 10am)
 const hourDifference = range(48).map((i) => Math.floor(i / 2) * 100 + (i % 2) * 30);

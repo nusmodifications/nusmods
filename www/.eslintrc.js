@@ -55,8 +55,10 @@ module.exports = {
     'no-bitwise': 'off',
 
     'react/no-array-index-key': 'off',
+
     // SEE: https://github.com/yannickcr/eslint-plugin-react/issues
     'react/no-unused-prop-types': 'off',
+
     // Enables typing to be placed above lifecycle
     'react/sort-comp': [
       warnInDevelopment,
@@ -72,15 +74,20 @@ module.exports = {
         ],
       },
     ],
+
     'react/require-default-props': 'off',
     'react/jsx-filename-extension': ['error', { extensions: ['.tsx', '.jsx'] }],
     'react/default-props-match-prop-types': ['error', { allowRequiredDefaults: true }],
+
     // Too verbose, creates too many variables
     'react/destructuring-assignment': 'off',
+
     // TODO: Fix this
     'react/no-access-state-in-setstate': 'warn',
+
     // TODO: Replace divs with buttons, but remove all button styling.
     'jsx-a11y/no-static-element-interactions': 'off',
+
     // The default option requires BOTH id and nesting, which is excessive,
     // especially with checkboxes and radiobuttons. This changes it to EITHER
     'jsx-a11y/label-has-for': [
@@ -91,6 +98,7 @@ module.exports = {
         },
       },
     ],
+
     // Link fails this rule as it has no "href" prop.
     'jsx-a11y/anchor-is-valid': [
       'error',
@@ -99,6 +107,7 @@ module.exports = {
         specialLink: ['to'],
       },
     ],
+
     // Rule appear to be buggy when used with @typescript-eslint/parser
     'jsx-a11y/label-has-associated-control': 'off',
 
@@ -107,6 +116,7 @@ module.exports = {
       'error',
       { props: true, ignorePropertyModificationsFor: ['draft', 'draftState'] },
     ],
+
     // Let git handle the linebreaks instead.
     'linebreak-style': 'off',
   },

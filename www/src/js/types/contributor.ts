@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 export type Contributor = Readonly<{
   avatar_url: string;
   contributions: number;

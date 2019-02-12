@@ -3,14 +3,13 @@ import ScrollSpy from 'react-scrollspy';
 import { shallow } from 'enzyme';
 
 import { Module } from 'types/modules';
-import { TimetableConfig } from 'types/timetables';
 /** @var {Module} */
 import CS1010S from '__mocks__/modules/CS1010S.json';
 
 import ModulePageContent from './ModulePageContent';
 
 describe(ModulePageContent, () => {
-  function make(module: Module = CS1010S, timetables: TimetableConfig = {}) {
+  function make(module: Module = CS1010S) {
     return shallow(<ModulePageContent module={module} />);
   }
 
