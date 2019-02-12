@@ -89,6 +89,7 @@ class DisqusComments extends React.PureComponent<Props, State> {
       return (
         <div className="text-center">
           <button
+            type="button"
             onClick={() => this.setState({ allowDisqus: true })}
             className={classnames(styles.loadDisqusBtn, 'btn btn-lg btn-outline-primary')}
           >

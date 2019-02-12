@@ -1,15 +1,17 @@
 import { DisqusConfig } from 'types/views';
 import * as React from 'react';
 import { connect } from 'react-redux';
+
+import { State as StoreState } from 'reducers';
 import config from 'config';
 import insertScript from 'utils/insertScript';
 import { getScriptErrorHandler } from 'utils/error';
 import { MessageSquare } from 'views/components/icons';
+
 import styles from './CommentCount.scss';
 
-type Props = {
-  ...DisqusConfig,
-  loadDisqusManually: boolean,
+type Props = DisqusConfig & {
+  loadDisqusManually: boolean;
 };
 
 const SCRIPT_ID = 'dsq-count-scr';
@@ -59,7 +61,7 @@ export class CommentCountComponent extends React.PureComponent<Props> {
   }
 }
 
-const CommentCount = connect((state) => ({
+const CommentCount = connect((state: StoreState) => ({
   loadDisqusManually: state.settings.loadDisqusManually,
 }))(CommentCountComponent);
 
