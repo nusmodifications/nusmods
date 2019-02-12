@@ -1,0 +1,70 @@
+{
+  "CS1010S": {
+    "Lecture": [{
+      "ClassNo": "1",
+      "LessonType": "Lecture",
+      "WeekText": "Every Week",
+      "DayText": "Wednesday",
+      "StartTime": "1000",
+      "EndTime": "1200",
+      "Venue": "LT26",
+      "ModuleCode": "CS1010S",
+      "ModuleTitle": "Programming Methodology"
+    }],
+    "Recitation": [{
+      "ClassNo": "1",
+      "LessonType": "Recitation",
+      "WeekText": "Every Week",
+      "DayText": "Thursday",
+      "StartTime": "1000",
+      "EndTime": "1100",
+      "Venue": "VCRm",
+      "ModuleCode": "CS1010S",
+      "ModuleTitle": "Programming Methodology"
+    }, {
+      "ClassNo": "1",
+      "LessonType": "Recitation",
+      "WeekText": "Every Week",
+      "DayText": "Thursday",
+      "StartTime": "1200",
+      "EndTime": "1300",
+      "Venue": "VCRm",
+      "ModuleCode": "CS1010S",
+      "ModuleTitle": "Programming Methodology"
+    }],
+    "Tutorial": [{
+      "ClassNo": "2",
+      "LessonType": "Tutorial",
+      "WeekText": "Every Week",
+      "DayText": "Monday",
+      "StartTime": "0900",
+      "EndTime": "1000",
+      "Venue": "COM1-0203",
+      "ModuleCode": "CS1010S",
+      "ModuleTitle": "Programming Methodology"
+    }, {
+      "ClassNo": "2",
+      "LessonType": "Tutorial",
+      "WeekText": "Every Week",
+      "DayText": "Tuesday",
+      "StartTime": "0900",
+      "EndTime": "1000",
+      "Venue": "COM1-0216",
+      "ModuleCode": "CS1010S",
+      "ModuleTitle": "Programming Methodology"
+    }]
+  },
+  "CS3216": {
+    "Lecture": [{
+      "ClassNo": "1",
+      "LessonType": "Lecture",
+      "WeekText": "Every Week",
+      "DayText": "Monday",
+      "StartTime": "1830",
+      "EndTime": "2030",
+      "Venue": "VCRm",
+      "ModuleCode": "CS3216",
+      "ModuleTitle": "Application Development on Evolving Platforms"
+    }]
+  }
+}

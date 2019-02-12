@@ -7,13 +7,14 @@
   header {
     text-align: center;
 
-    img {
+    svg {
       display: inline-block;
       max-width: 6rem;
       margin: 0 0.5rem 1rem;
 
       &.topImage {
-        max-width: 12rem;
+        max-width: 14rem;
+        margin-bottom: 0;
       }
     }
 

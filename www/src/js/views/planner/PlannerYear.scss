@@ -30,10 +30,17 @@
   h2 {
     font-weight: bold;
     font-size: 1.2rem;
+
+    .acadYear {
+      display: block;
+      margin-top: 0.1rem;
+      font-size: 0.9rem;
+    }
   }
 
-  p {
+  .yearMeta {
     font-size: 0.9rem;
+    text-align: right;
   }
 }
 

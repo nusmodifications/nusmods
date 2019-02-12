@@ -1,38 +1,36 @@
-@import "~styles/utils/modules-entry.scss";
+@import '~styles/utils/modules-entry.scss';
+
+$vert-padding: 0.5rem;
+$logo-vert-padding: 0.85rem;
 
 .navbar {
-  $vert-padding: 0.5rem;
-
   position: fixed;
   top: 0;
   right: 0;
   left: 0;
   z-index: $navbar-z-index;
   display: flex;
-  flex-direction: row;
-  align-items: center;
   justify-content: space-between;
   height: $navbar-height;
-  padding: $vert-padding $grid-gutter-width/2;
   background: var(--gray-lightest);
-
-  @include media-breakpoint-up(xl) {
-    padding: $vert-padding $grid-gutter-width/2 $vert-padding 2rem;
-  }
 }
 
 .brand {
-  $image-height: 130;
-  $image-width: 789;
-  $unit: 0.01rem;
+  // Explicit width so the logo will not expand to occupy the entire
+  // navbar
+  width: 10.5rem;
+  padding: $logo-vert-padding 0 $logo-vert-padding $grid-gutter-width/2;
 
-  width: $image-width * $unit;
-  height: $image-height * $unit;
-  margin-right: 1rem;
-  background-image: url('img/nusmods-logo.png');
-  background-position: center center;
-  background-size: contain;
-  background-repeat: no-repeat;
+  svg {
+    display: block;
+    height: 100%;
+  }
+}
+
+.navRight {
+  display: flex;
+  align-items: center;
+  padding: $vert-padding $grid-gutter-width/2;
 }
 
 .weekText {
@@ -42,8 +40,38 @@
   text-align: right;
 }
 
+@include media-breakpoint-up(xl) {
+  .brand {
+    // Padding to match navtab left padding
+    width: 12rem;
+    padding-left: 2rem;
+  }
+
+  .navRight {
+    padding: $vert-padding $grid-gutter-width/2 $vert-padding 2rem;
+  }
+}
+
 @include media-breakpoint-down(xs) {
-  .weekText {
+  .navRight {
     display: none;
+  }
+
+  // Remove padding from navbar so the logo link can occupy
+  // the entire navbar as a tappable area
+  .navbar {
+    padding: 0;
+  }
+
+  .brand {
+    width: 100%;
+    height: 100%;
+    padding: $logo-vert-padding 0;
+    margin: 0;
+
+    // Center logo on mobile
+    svg {
+      margin: 0 auto;
+    }
   }
 }

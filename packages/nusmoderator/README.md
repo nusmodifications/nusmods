@@ -17,10 +17,17 @@ yarn add nusmoderator
 #### Table of Contents
 
 -   [getAcadYear](#getacadyear)
+    -   [Parameters](#parameters)
 -   [getAcadSem](#getacadsem)
+    -   [Parameters](#parameters-1)
+    -   [Examples](#examples)
 -   [getAcadWeekName](#getacadweekname)
+    -   [Parameters](#parameters-2)
+    -   [Examples](#examples-1)
 -   [getAcadWeekInfo](#getacadweekinfo)
+    -   [Parameters](#parameters-3)
 -   [getExamWeek](#getexamweek)
+    -   [Parameters](#parameters-4)
 
 ### getAcadYear
 
@@ -29,7 +36,7 @@ If the date is too far into the future (not within supported range),
 the last-supported academic year is returned.
 If the date is too early (not within supported range), null is returned.
 
-**Parameters**
+#### Parameters
 
 -   `date` **[Date](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)** 
 
@@ -40,11 +47,11 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 Computes the current academic semester.
 Expects a week number of a year.
 
-**Parameters**
+#### Parameters
 
 -   `acadWeekNumber` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
-**Examples**
+#### Examples
 
 ```javascript
 acadWeekNumber(3)
@@ -57,11 +64,11 @@ Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 Computes the current academic week of the semester
 Expects a week number of a semester.
 
-**Parameters**
+#### Parameters
 
 -   `acadWeekNumber` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
-**Examples**
+#### Examples
 
 ```javascript
 acadWeekNumber(3)
@@ -73,7 +80,7 @@ Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 Computes the current academic week and return in an object of acad date components
 
-**Parameters**
+#### Parameters
 
 -   `date` **[Date](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)** 
 
@@ -88,7 +95,7 @@ num: <weekNum>
 
 Get the first day of the exam week for the given semester
 
-**Parameters**
+#### Parameters
 
 -   `year` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
 -   `semester` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
