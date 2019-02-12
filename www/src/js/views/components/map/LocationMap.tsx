@@ -12,7 +12,7 @@ import styles from './LocationMap.scss';
 
 export type Props = {
   readonly position: [number, number];
-  readonly toggleScrollable?: (boolean: boolean) => void;
+  readonly toggleExpanded?: (boolean: boolean) => void;
   readonly className?: string;
   readonly height?: string;
 };
@@ -29,12 +29,14 @@ export default class LocationMap extends React.PureComponent<Props, State> {
   };
 
   toggleMapExpand = () => {
-    const isExpanded = !this.state.isExpanded;
-
-    this.setState({ isExpanded });
-    if (this.props.toggleScrollable) {
-      this.props.toggleScrollable(!isExpanded);
-    }
+    this.setState(
+      (state) => ({ isExpanded: !state.isExpanded }),
+      () => {
+        if (this.props.toggleExpanded) {
+          this.props.toggleExpanded(this.state.isExpanded);
+        }
+      },
+    );
   };
 
   render() {

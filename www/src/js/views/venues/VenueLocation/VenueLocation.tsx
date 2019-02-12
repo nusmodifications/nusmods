@@ -21,7 +21,7 @@ export type OwnProps = {
 
 type Props = OwnProps & {
   // Provided by VenueContext
-  readonly toggleScrollable: (boolean: boolean) => void;
+  readonly toggleExpanded: (boolean: boolean) => void;
 };
 
 type State = {
@@ -102,7 +102,7 @@ class VenueLocation extends React.PureComponent<Props, State> {
 
         {position ? (
           <>
-            <LocationMap position={position} toggleScrollable={this.props.toggleScrollable} />
+            <LocationMap position={position} toggleExpanded={this.props.toggleExpanded} />
             <p className={styles.feedbackBtn}>
               See a problem?{' '}
               <button
@@ -129,12 +129,12 @@ class VenueLocation extends React.PureComponent<Props, State> {
   }
 }
 
-export default function(props: Omit<Props, 'toggleScrollable'>) {
+export default function(props: Omit<Props, 'toggleExpanded'>) {
   return (
     <VenueContext.Consumer>
-      {({ toggleDetailScrollable }) => (
+      {({ toggleMapExpanded }) => (
         <>
-          <VenueLocation toggleScrollable={toggleDetailScrollable} {...props} />
+          <VenueLocation toggleExpanded={toggleMapExpanded} {...props} />
           <hr />
         </>
       )}

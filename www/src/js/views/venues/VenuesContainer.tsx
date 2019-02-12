@@ -46,7 +46,7 @@ type Props = RouteComponentProps<Params> & { matchBreakpoint: boolean; venues: V
 
 type State = {
   // View state
-  isDetailScrollable: boolean;
+  isMapExpanded: boolean;
 
   // Search state
   searchTerm: string;
@@ -78,7 +78,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
     this.state = {
       searchOptions,
       isAvailabilityEnabled,
-      isDetailScrollable: true,
+      isMapExpanded: false,
       searchTerm: params.q || '',
       // eslint-disable-next-line react/no-unused-state
       pristineSearchOptions: !isAvailabilityEnabled,
@@ -139,8 +139,8 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
     }
   };
 
-  onToggleDetailScrollable = (isDetailScrollable: boolean) => {
-    this.setState({ isDetailScrollable });
+  onToggleMapExpanded = (isMapExpanded: boolean) => {
+    this.setState({ isMapExpanded });
   };
 
   updateURL = (debounce: boolean = true) => {
@@ -264,7 +264,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
 
   render() {
     const selectedVenue = this.selectedVenue();
-    const { searchTerm, isAvailabilityEnabled, isDetailScrollable, searchOptions } = this.state;
+    const { searchTerm, isAvailabilityEnabled, isMapExpanded, searchOptions } = this.state;
     const { venues } = this.props;
 
     let matchedVenues = searchVenue(venues, searchTerm);
@@ -291,7 +291,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
           )}
         </div>
 
-        <VenueContext.Provider value={{ toggleDetailScrollable: this.onToggleDetailScrollable }}>
+        <VenueContext.Provider value={{ toggleMapExpanded: this.onToggleMapExpanded }}>
           {this.props.matchBreakpoint ? (
             <Modal
               isOpen={selectedVenue != null}
@@ -311,7 +311,9 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
           ) : (
             <>
               <div
-                className={classnames(styles.venueDetail, { 'scrollable-y': isDetailScrollable })}
+                className={classnames(styles.venueDetail, {
+                  [styles.mapExpanded]: isMapExpanded,
+                })}
               >
                 {selectedVenue == null ? (
                   <div className={styles.noVenueSelected}>
