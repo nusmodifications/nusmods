@@ -65,7 +65,7 @@ jobs:
       - attach_workspace:
           at: ~/nusmods
       - restore_cache: *restore_node_deps
-      - run: yarn --frozen-lockfile
+      - run: yarn --frozen-lockfile --non-interactive
       - save_cache: *save_node_deps
       - run: yarn lint
       - run: yarn test --runInBand
