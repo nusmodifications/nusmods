@@ -16,14 +16,14 @@ declare module 'react-kawaii' {
     mood?: KawaiiMood;
   };
 
-  export const SpeechBubble: React.FunctionComponent<KawaiiProps>;
-  export const Mug: React.FunctionComponent<KawaiiProps>;
-  export const Browser: React.FunctionComponent<KawaiiProps>;
-  export const Ghost: React.FunctionComponent<KawaiiProps>;
-  export const Cat: React.FunctionComponent<KawaiiProps>;
-  export const IceCream: React.FunctionComponent<KawaiiProps>;
-  export const CreditCard: React.FunctionComponent<KawaiiProps>;
-  export const File: React.FunctionComponent<KawaiiProps>;
-  export const Backback: React.FunctionComponent<KawaiiProps>;
-  export const Planet: React.FunctionComponent<KawaiiProps>;
+  export const SpeechBubble: React.ComponentType<KawaiiProps>;
+  export const Mug: React.ComponentType<KawaiiProps>;
+  export const Browser: React.ComponentType<KawaiiProps>;
+  export const Ghost: React.ComponentType<KawaiiProps>;
+  export const Cat: React.ComponentType<KawaiiProps>;
+  export const IceCream: React.ComponentType<KawaiiProps>;
+  export const CreditCard: React.ComponentType<KawaiiProps>;
+  export const File: React.ComponentType<KawaiiProps>;
+  export const Backback: React.ComponentType<KawaiiProps>;
+  export const Planet: React.ComponentType<KawaiiProps>;
 }
