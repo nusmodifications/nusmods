@@ -6,6 +6,6 @@ const academicCalendar: {
   [year: string]: {
     [semester: string]: { start: DateTuple };
   };
-} = academicCalendarJSON as any;
+} = academicCalendarJSON as any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 export default academicCalendar;

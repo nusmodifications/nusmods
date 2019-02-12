@@ -1,4 +1,4 @@
-import { Tracker } from './views';
+import { Tracker } from 'types/views';
 
 declare global {
   interface Window {

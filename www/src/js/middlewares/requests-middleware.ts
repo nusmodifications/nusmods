@@ -13,7 +13,8 @@ function makeRequest(request: AxiosRequestConfig) {
   });
 }
 
-const requestMiddleware: Middleware<State, any, any> = () => (next) => (action) => {
+// TODO: Figure out how to type Dispatch correctly
+const requestMiddleware: Middleware<any, State, any> = () => (next) => (action) => {
   if (!action.meta || !action.meta[API_REQUEST]) {
     // Non-api request action
     return next(action);
