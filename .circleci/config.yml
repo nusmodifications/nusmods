@@ -112,6 +112,9 @@ jobs:
           name: Lint code
           command: yarn lint:code --format junit -o reports/junit/js-lint-results.xml
       - run:
+          name: Typecheck Code
+          command: yarn typecheck
+      - run:
           name: Test code
           environment:
             NODE_ENV: test
