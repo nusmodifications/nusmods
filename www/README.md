@@ -22,7 +22,7 @@ Mobile browsers:
 - iOS 10 and above
 - Chrome Mobile last two versions
 
-We try not to break iOS 9 (ie. display white screen of death or use unsupported APIs), but we don't guarantee the page will be appear exactly the same as in more modern browsers.
+We try not to break iOS 10 (ie. display white screen of death or use unsupported APIs), but we don't guarantee the page will be appear exactly the same as in more modern browsers.
 
 ## Contributing
 
@@ -30,7 +30,7 @@ Don't know where to start? First, read our repository [contribution guide](../CO
 
 ## Getting Started
 
-Install [Node 8+](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/en/docs/install) then run the following command:
+Install [Node 10+](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/en/docs/install) then run the following command:
 
 ```sh
 $ yarn
@@ -82,8 +82,8 @@ import "~styles/utils/modules-entry"; // Import variables, mixins
 }
 ```
 
-```js
-// MyComponent.jsx
+```ts
+// MyComponent.tsx
 import styles from './MyComponent.scss';
 
 // To use styles from MyComponent.scss:
@@ -277,7 +277,7 @@ NUSMods tries to be as lean as possible. Adding external dependencies should be 
 
 #### TypeScript libdef
 
-When adding a JavaScript package, Flow requires a library definition, or libdef. To try to install one from the [community repository][definitely-typed], install `@types/<package name>`. Make sure the installed libdef's version matches that of the package.
+When adding packages, TypeScript requires a library definition, or libdef. To try to install one from the [community repository][definitely-typed], install `@types/<package name>`. Make sure the installed libdef's version matches that of the package.
 
 If a community libdef is not available, you can try writing your own and placing it in `js/types/vendor`.
 
