@@ -3322,15 +3322,20 @@ copy-webpack-plugin@4.5.4:
     p-limit "^1.0.0"
     serialize-javascript "^1.4.0"
 
-core-js@2.6.3, core-js@^2.4.0:
-  version "2.6.3"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.3.tgz#4b70938bdffdaf64931e66e2db158f0892289c49"
-  integrity sha512-l00tmFFZOBHtYhN4Cz7k32VM7vTn3rE2ANjQDxdEN6zmXZ/xq1jQuutnmHvMG1ZJ7xd72+TA5YpUK8wz3rWsfQ==
+core-js@2.6.4:
+  version "2.6.4"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.4.tgz#b8897c062c4d769dd30a0ac5c73976c47f92ea0d"
+  integrity sha512-05qQ5hXShcqGkPZpXEFLIpxayZscVD2kuMBZewxiIPPEagukO4mqgPA9CWhUvFBJfy3ODdK2p9xyHh7FTU9/7A==
 
 core-js@^1.0.0:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"
   integrity sha1-ZSKUwUZR2yj6k70tX/KYOk8IxjY=
+
+core-js@^2.4.0:
+  version "2.6.3"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.3.tgz#4b70938bdffdaf64931e66e2db158f0892289c49"
+  integrity sha512-l00tmFFZOBHtYhN4Cz7k32VM7vTn3rE2ANjQDxdEN6zmXZ/xq1jQuutnmHvMG1ZJ7xd72+TA5YpUK8wz3rWsfQ==
 
 core-js@^2.5.7:
   version "2.5.7"
@@ -10589,10 +10594,10 @@ react-modal@3.8.1:
     react-lifecycles-compat "^3.0.0"
     warning "^3.0.0"
 
-react-qr-svg@2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/react-qr-svg/-/react-qr-svg-2.1.0.tgz#fceaf0e8bd367f714d89ae46e46b87c5201a99e9"
-  integrity sha512-TJILjRxt62d/TWI8vovGRtJUkoS/4MdH0Miy/uCS++AXE6M8/F0nqdp9QMMvgOLM25QX538oed42mHzrKhDwUQ==
+react-qr-svg@2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/react-qr-svg/-/react-qr-svg-2.2.1.tgz#f6f25820fdb2c39ad0d66a14a758e2f575717c68"
+  integrity sha512-rLDCZI9pIqD5lbBIatrqUMhP1gqQ7glqubXO/m/X87ikEPhXuY0hMLhYMuKoH4834G36ap8Az0HI4bXEJUN//w==
   dependencies:
     prop-types "^15.5.8"
     qr.js "0.0.0"
