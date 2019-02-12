@@ -1,10 +1,6 @@
 /* eslint-disable global-require, import/no-extraneous-dependencies */
 const config = {
-  plugins: [
-    require('autoprefixer'),
-    // Custom plugin used to remove extra ':root' rules
-    require('./scripts/postcss-single-root'),
-  ],
+  plugins: [require('autoprefixer')],
 };
 
 // Use CSSNano in production to minify CSS

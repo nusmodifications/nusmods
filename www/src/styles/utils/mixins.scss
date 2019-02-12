@@ -56,8 +56,7 @@
     @media (max-width: $max), (pointer: coarse) {
       @content;
     }
-  }
-  @else {
+  } @else {
     @media (pointer: coarse) {
       @content;
     }
@@ -66,7 +65,7 @@
 
 @mixin night-mode {
   @at-root {
-    :global(.mode-dark) & {
+    .mode-dark & {
       @content;
     }
   }
@@ -74,7 +73,7 @@
 
 @mixin vertical-mode {
   @at-root {
-    :global(.verticalMode) & {
+    .verticalMode & {
       @content;
     }
   }
