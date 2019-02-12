@@ -134,7 +134,7 @@
     "bootstrap": "4.2.1",
     "bowser": "1.9.4",
     "classnames": "2.2.6",
-    "core-js": "2.6.3",
+    "core-js": "2.6.4",
     "date-fns": "2.0.0-alpha.27",
     "downshift": "2.2.3",
     "ical-generator": "https://github.com/ZhangYiJiang/ical-generator.git#ed6928fe",
