@@ -1,6 +1,6 @@
 {
   "name": "nusmoderator",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "A lightweight library with helpful functions for NUS-related matters",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
