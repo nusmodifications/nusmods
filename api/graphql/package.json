@@ -1,0 +1,29 @@
+{
+  "name": "nusmods-graphql-server",
+  "version": "1.0.0",
+  "description": "University data GraphQL API server",
+  "private": true,
+  "dependencies": {
+    "prisma-client-lib": "1.26.4"
+  },
+  "devDependencies": {
+    "prisma": "1.26.4",
+    "ts-node": "8.0.2",
+    "typescript": "3.3.3"
+  },
+  "homepage": "https://api.nusmods.com",
+  "author": {
+    "name": "NUSModifications",
+    "email": "mods@nusmods.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nusmodifications/nusmods.git"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/nusmodifications/nusmods/blob/master/LICENSE"
+    }
+  ]
+}
