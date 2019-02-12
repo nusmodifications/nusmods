@@ -2625,7 +2625,7 @@ prepend-http@^1.0.1:
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-1.0.4.tgz#d4f4562b0ce3696e41ac52d0e002e57a635dc6dc"
   integrity sha1-1PRWKwzjaW5BrFLQ4ALlemNdxtw=
 
-prettier@^1.14.3:
+prettier@^1.14.3, prettier@^1.16.4:
   version "1.16.4"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.16.4.tgz#73e37e73e018ad2db9c76742e2647e21790c9717"
   integrity sha512-ZzWuos7TI5CKUeQAtFd6Zhm2s6EpAD/ZLApIhsF9pRvRtM1RFo61dM/4MSRUA0SuLugA/zgrZD8m0BaY46Og7g==
@@ -2720,7 +2720,7 @@ prisma-cli-engine@1.26.4:
     treeify "^1.0.1"
     update-notifier "^2.3.0"
 
-prisma-client-lib@1.26.4, prisma-client-lib@^1.26.4:
+prisma-client-lib@1.26.4:
   version "1.26.4"
   resolved "https://registry.yarnpkg.com/prisma-client-lib/-/prisma-client-lib-1.26.4.tgz#26f8b509beb02d52f7a9591e64245c0a751f54eb"
   integrity sha512-z26+6pQkxA3hLzA2tdMCcotwp3UGuTPq345z0kIimg/jyg0mokOC+Go6J/qeo2qeKfQ7CR+WZZh2oAGBjnSggg==
@@ -2829,7 +2829,7 @@ prisma-yml@1.26.4:
     scuid "^1.0.2"
     yaml-ast-parser "^0.0.40"
 
-prisma@^1.26.4:
+prisma@1.26.4:
   version "1.26.4"
   resolved "https://registry.yarnpkg.com/prisma/-/prisma-1.26.4.tgz#0faf68753e2cfb92cafb3b583558fc40e703a1fb"
   integrity sha512-Ksz4uMyjStHi2WvL8ycdbzmwaqBSWtKCVIEoB705f5TjThGC4QxtpFLwD+NjfJ7vW504tpb6S+piyDthp/eC6Q==
@@ -3566,7 +3566,7 @@ treeify@^1.0.1:
   resolved "https://registry.yarnpkg.com/treeify/-/treeify-1.1.0.tgz#4e31c6a463accd0943879f30667c4fdaff411bb8"
   integrity sha512-1m4RA7xVAJrSGrrXGs0L3YTwyvBs2S8PbRHaLZAkFw7JR8oIFwYtysxlBZhYIa7xSyiYJKZ3iGrrk55cGA3i9A==
 
-ts-node@^8.0.2:
+ts-node@8.0.2:
   version "8.0.2"
   resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-8.0.2.tgz#9ecdf8d782a0ca4c80d1d641cbb236af4ac1b756"
   integrity sha512-MosTrinKmaAcWgO8tqMjMJB22h+sp3Rd1i4fdoWY4mhBDekOwIAKI/bzmRi7IcbCmjquccYg2gcF6NBkLgr0Tw==
@@ -3607,7 +3607,7 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@^3.3.3:
+typescript@3.3.3:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.3.3.tgz#f1657fc7daa27e1a8930758ace9ae8da31403221"
   integrity sha512-Y21Xqe54TBVp+VDSNbuDYdGw0BpoR/Q6wo/+35M8PAU0vipahnyduJWirxxdxjsAkS7hue53x2zp8gz7F05u0A==

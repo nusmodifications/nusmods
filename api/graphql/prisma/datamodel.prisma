@@ -1,0 +1,53 @@
+# type User {
+#   id: ID! @unique
+#   email: String @unique
+#   createdAt: DateTime!
+#   updatedAt: DateTime!
+# }
+
+type School {
+  id: ID! @unique
+  longName: String! @unique
+  shortName: String
+  terms: [Term!]! @relation(name: "SchoolTerms", onDelete: CASCADE)
+  departments: [Department!]! @relation(name: "SchoolDepartments", onDelete: CASCADE)
+}
+
+type Term {
+  id: ID! @unique
+  name: String!
+  startsAt: DateTime!
+  endsAt: DateTime!
+  school: School! @relation(name: "SchoolTerm", onDelete: SET_NULL)
+  venues: [Venue!]! @relation(name: "VenueHost", onDelete: SET_NULL)
+}
+
+type Department {
+  id: ID! @unique
+  name: String!
+  school: School! @relation(name: "SchoolDepartment", onDelete: SET_NULL)
+  courses: [Course!]! @relation(name: "DepartmentCourses", onDelete: CASCADE)
+}
+
+type Venue {
+  id: ID! @unique
+  code: String!
+  name: String!
+  floor: String
+  lat: Float
+  lng: Float
+  altitude: Int
+  terms: [Term!]! @relation(name: "HostTerms", onDelete: SET_NULL)
+}
+
+type Course {
+  id: ID! @unique
+  code: String!
+  title: String!
+  description: String! @default(value: "")
+  lat: Float
+  lng: Float
+  altitude: Int
+  terms: [Term!]! @relation(name: "CourseTerms", onDelete: SET_NULL)
+  terms: [Term!]! @relation(name: "CourseDepartments", onDelete: SET_NULL)
+}

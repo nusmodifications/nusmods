@@ -3,10 +3,15 @@
   "version": "1.0.0",
   "description": "University data GraphQL API server",
   "private": true,
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "fmt": "yarn prettier --write **/*.{ts,graphql}"
+  },
   "dependencies": {
     "prisma-client-lib": "1.26.4"
   },
   "devDependencies": {
+    "prettier": "^1.16.4",
     "prisma": "1.26.4",
     "ts-node": "8.0.2",
     "typescript": "3.3.3"
