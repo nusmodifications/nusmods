@@ -55,12 +55,14 @@ describe(actions.fetchModule, () => {
   test('should rethrow errors', async () => {
     const thunk = actions.fetchModule('CS1010S');
 
-    const error = new Error('Error loading module');
+    const error = new Error('ModuleBank Test: Error loading module');
     const dispatch = jest.fn().mockRejectedValue(error);
     const getState = jest.fn().mockReturnValue({
       moduleBank: { modules: { CS1010S: {} } },
     } as any);
 
+    // This line causes an uncaught promise exception, even though it should
+    // be caught. Not sure why.
     await expect(thunk(dispatch, getState)).rejects.toThrowError(error);
   });
 });

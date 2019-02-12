@@ -35,7 +35,7 @@ class ModulesSelectContainer extends React.Component<Props> {
     this.props.addModule(this.props.semester, moduleCode);
   };
 
-  getFilteredModules = (inputValue: string | null | undefined) => {
+  getFilteredModules = (inputValue: string | null) => {
     if (!inputValue) return [];
     const predicate = createSearchPredicate(inputValue);
     const results = this.props.moduleList.filter(predicate);

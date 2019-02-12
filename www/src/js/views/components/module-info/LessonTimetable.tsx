@@ -25,10 +25,8 @@ export class LessonTimetableComponent extends React.PureComponent<Props, State> 
     };
   }
 
-  onSelectSemester = (selectedSem: Semester | null | undefined) => {
-    if (selectedSem) {
-      this.setState({ selectedSem });
-    }
+  onSelectSemester = (selectedSem: Semester) => {
+    this.setState({ selectedSem });
   };
 
   renderTimetable(): React.ReactNode {

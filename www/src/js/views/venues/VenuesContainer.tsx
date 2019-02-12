@@ -159,7 +159,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
     });
   };
 
-  selectedVenue(): Venue | null | undefined {
+  selectedVenue(): Venue | null {
     const { venue } = this.props.match.params;
     if (!venue) return null;
     return decodeURIComponent(venue);

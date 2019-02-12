@@ -25,7 +25,7 @@ export const MODULE_CODE_REGEX = /\b(\w{2,3}\s*\d{4}\w{0,3})\b/g;
 export function getModuleSemesterData(
   module: Module,
   semester: Semester,
-): SemesterData | null | undefined {
+): SemesterData | undefined {
   return module.History.find((semData: SemesterData) => semData.Semester === semester);
 }
 

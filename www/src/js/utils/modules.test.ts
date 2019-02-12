@@ -28,7 +28,7 @@ mockLesson.ModuleTitle = 'Programming Methodology';
 
 test('getModuleSemesterData should return semester data if semester is present', () => {
   const sem: Semester = 1;
-  const actual: SemesterData | null | undefined = getModuleSemesterData(cs3216, sem);
+  const actual = getModuleSemesterData(cs3216, sem);
   const expected = {
     Semester: 1,
     Timetable: [

@@ -64,7 +64,7 @@ export default class FilterGroup<Filter extends ModuleFilter> {
     return union(...this.activeFilters.map((filter) => filter.filteredModules).filter(notNull));
   }
 
-  toggle(idOrFilter: string | Filter, value?: boolean | null): FilterGroup<Filter> {
+  toggle(idOrFilter: string | Filter, value?: boolean): FilterGroup<Filter> {
     const id = idOrFilter instanceof ModuleFilter ? idOrFilter.id : idOrFilter;
     if (!this.filters[id]) return this;
 

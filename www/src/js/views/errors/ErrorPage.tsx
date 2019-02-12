@@ -10,7 +10,7 @@ import styles from './ErrorPage.scss';
 type Props = {
   children?: React.ReactNode;
   error?: string;
-  showReportDialog?: boolean | null | undefined;
+  showReportDialog?: boolean;
   showRefresh: boolean;
 };
 

@@ -28,7 +28,8 @@ export default class HistoryDebouncer {
     if (nextPath === createPath(this.history.location)) return;
 
     if (Date.now() - this.lastPush > this.wait) {
-      // @ts-ignore
+      // @ts-ignore TypeScript doesn't recognize our push as a proxy for History.push's
+      // overloaded signature, and it's really hard to fix this properly
       this.history.push(path, state);
     } else {
       try {

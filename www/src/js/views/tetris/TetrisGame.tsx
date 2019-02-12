@@ -66,7 +66,7 @@ type State = {
   canHold: boolean;
 
   currentPiece: Piece;
-  holdPiece: Piece | null | undefined;
+  holdPiece: Piece | null;
   nextPieces: Piece[];
 };
 

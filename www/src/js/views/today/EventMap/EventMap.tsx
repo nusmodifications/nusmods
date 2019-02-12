@@ -9,7 +9,7 @@ import styles from './EventMap.scss';
 const venueLocations = venueLocationJSON as VenueLocationMap;
 
 export type Props = {
-  readonly venue: Venue | null | undefined;
+  readonly venue: Venue | null;
 };
 
 export default function(props: Props) {
@@ -17,7 +17,7 @@ export default function(props: Props) {
     return (
       <div className={styles.noLessonSelected}>
         <Map />
-        <p>Select a lesson on the left to see its timetable</p>
+        <p>Select a lesson on the left to see its location</p>
       </div>
     );
   }

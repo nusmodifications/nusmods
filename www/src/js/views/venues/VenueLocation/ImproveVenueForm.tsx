@@ -38,6 +38,8 @@ type State = {
   // viewport is stored as a separate state because viewport may be animated separately
   // from location
   viewport: Viewport;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error?: any;
 };
 

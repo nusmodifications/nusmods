@@ -1,9 +1,14 @@
+/**
+ * These declarations lets us use Webpack loaders to load non-JS files
+ */
+
 declare module '*.scss' {
   const content: { [className: string]: string };
   export = content;
 }
 
 declare module '*.svg' {
+  // SVG files are loaded as React components
   type SVGProps = React.SVGAttributes<SVGElement> & {
     // Added by SVGR
     title?: string;
