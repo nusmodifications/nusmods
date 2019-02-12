@@ -24,20 +24,9 @@ describe('#createLocalStorageShim', () => {
     expect(shim.privData).toEqual({});
   });
 
-  test('should not throw when setting null/undefined', () => {
-    const shim = createLocalStorageShim();
-    // @ts-ignore
-    expect(() => shim.setItem('key', null)).not.toThrow();
-    // @ts-ignore
-    expect(() => shim.setItem('key', undefined)).not.toThrow();
-  });
-
   test('should return undefined when getting nonexistent data', () => {
     const shim = createLocalStorageShim();
-    expect(shim.getItem('key')).toBeUndefined();
-    // @ts-ignore
-    shim.setItem('key', undefined);
-    expect(shim.getItem('key')).toBeUndefined();
+    expect(shim.getItem('key')).toBeNull();
   });
 
   test('should not throw when removing nonexistent key', () => {

@@ -23,15 +23,14 @@ export function createLocalStorageShim(): Storage {
     },
 
     setItem(key: string, val: string) {
-      storage.privData[String(key)] = JSON.stringify(val);
+      storage.privData[key] = val;
     },
 
     getItem(key: string) {
-      const storedValue = storage.privData[String(key)];
-      return storedValue && JSON.parse(storedValue);
+      return storage.privData[key] || null;
     },
 
-    removeItem: (key: string) => delete storage.privData[String(key)],
+    removeItem: (key: string) => delete storage.privData[key],
   };
 
   return storage;
