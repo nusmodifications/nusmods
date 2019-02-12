@@ -1,0 +1,36 @@
+{
+  "ShuttleServiceResult": {
+    "caption": "Opp University Health Centre",
+    "name": "STAFFCLUB-OPP",
+    "shuttles": [
+      {
+        "arrivalTime": "Arr",
+        "name": "A1",
+        "nextArrivalTime": "19",
+        "nextPassengers": "-",
+        "passengers": "-"
+      },
+      {
+        "arrivalTime": "2",
+        "name": "D2",
+        "nextArrivalTime": "17",
+        "nextPassengers": "-",
+        "passengers": "-"
+      },
+      {
+        "arrivalTime": "1",
+        "name": "A1E",
+        "nextArrivalTime": "-",
+        "nextPassengers": "-",
+        "passengers": "-"
+      },
+      {
+        "arrivalTime": "11",
+        "name": "C",
+        "nextArrivalTime": "25",
+        "nextPassengers": "-",
+        "passengers": "-"
+      }
+    ]
+  }
+}

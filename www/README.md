@@ -46,10 +46,10 @@ To run the development build, simply run:
 $ yarn start
 ```
 
-This will start webpack dev server, which will automatically rebuild and reload any code and components that you have changed. If your editor or IDE has built in support for Flow/ESLint/StyleLint, you can disable them to speed up the build process.
+This will start Webpack dev server, which will automatically rebuild and reload any code and components that you have changed. If your editor or IDE has built in support for ESLint/StyleLint, you can disable them to speed up the build process.
 
 ```sh
-$ DISABLE_ESLINT=1 DISABLE_FLOW=1 DISABLE_STYLELINT=1 yarn start
+$ DISABLE_ESLINT=1 DISABLE_STYLELINT=1 yarn start
 ```
 
 We recommend the following development tools to help speed up your work
@@ -98,6 +98,37 @@ Both SCSS and CSS variables (aka. custom properties) are used. In most cases, **
 
 Currently CSS variables are used only for colors that change under night mode.
 
+### Importing images
+
+Prefer SVG when possible. SVG images are usually smaller and more flexible. `.svg` files are loaded using [SVGR][svgr] as React components - this means you can add classnames, inline styles and other SVG attributes to the component loaded. SVGR also automatically optimizes the image.
+
+```js
+import CloudyIcon from 'img/weather/cloudy.svg';
+
+const cloud = <CloudyIcon className={styles.myIcon} />;
+```
+
+PNG, JPEG and GIF files will be loaded using `url-loader` and can be imported as a string representing the URL of the asset after bundling. In production files smaller than 15kb will be converted into data URL
+
+```js
+import partyParrot from 'img/gif/partyparrot.gif';
+
+const danceParty = <img src={partyParrot} alt=":partyparrot:" />;
+```
+
+To load SVG as files using `url-loader` instead, add the `?url` resource query to the end of the path.
+
+```js
+import { Icon } from 'leaflet';
+// eslint-disable-next-line import/extensions
+import marker from 'img/marker.svg?url';
+
+// Leaflet expects iconUrl to be a URL string, not a React component
+new Icon({
+  iconUrl: marker,
+});
+```
+
 ### Fetching data
 
 We use Redux actions to make REST requests. This allows us to store request status in the Redux store, making it available to any component that needs it, and also allows the Redux store to cache the results from requests to make it offline if necessary. Broadly, our strategy corresponds to
@@ -137,11 +168,15 @@ type Props = {
 }
 
 type State = {
-  data: ?MyData,
+  data: MyData | null,
   error?: any,
 }
 
-class MyComponent extends Component<Props> {
+class MyComponent extends React.Component<Props, State> {
+  state: State = {
+    data: null,
+  };
+
   componentDidMount() {
     this.props.fetchData()
       .then(data => this.setState({ data }))
@@ -155,7 +190,7 @@ class MyComponent extends Component<Props> {
       return <ErrorPage />;
     }
 
-    if (!data) {
+    if (data == null) {
       return <LoadingSpinner />;
     }
 
@@ -176,7 +211,7 @@ This is the [cache-then-network strategy described in the Offline Cookbook][offl
 
 **Reducer example**
 
-```js
+```ts
 import { SUCCESS } from 'types/reducers';
 import { FETCH_DATA } from 'actions/example';
 
@@ -194,9 +229,9 @@ export function exampleBank(state: ExampleBank, action: FSA): ExampleBank {
 
 **Component example**
 
-```js
+```ts
 type Props = {
-  myData: ?MyData,
+  myData: MyData | null,
   fetchData: () => Promise<MyData>,
 }
 
@@ -204,7 +239,7 @@ type State = {
   error?: any,
 }
 
-class MyComponent extends Component<Props> {
+class MyComponent extends React.Component<Props, State> {
   componentDidMount() {
     this.props.fetchData()
       .catch(error => this.setState({ error });
@@ -219,7 +254,7 @@ class MyComponent extends Component<Props> {
       return <ErrorPage />;
     }
 
-    if (!data) {
+    if (data == null) {
       return <LoadingSpinner />;
     }
 
@@ -240,21 +275,16 @@ If you need to access the status of a request from outside the component which i
 
 NUSMods tries to be as lean as possible. Adding external dependencies should be done with care to avoid bloating our bundle. Use [Bundlephobia][bundlephobia] to ensure the new dependency is reasonably sized, or if the dependency is limited to one specific page/component, use code splitting to ensure the main bundle's size is not affected.
 
-#### Flow libdef
+#### TypeScript libdef
 
-When adding a JavaScript package, Flow requires a library definition, or libdef. To try to install one from the [community repository][flow-typed], use the `flow-typed` command. If a community libdef is not available, the same command can also be used to create a stub libdef which you can use immediately in a pinch, or edit to fill in the correct definitions.
+When adding a JavaScript package, Flow requires a library definition, or libdef. To try to install one from the [community repository][definitely-typed], install `@types/<package name>`. Make sure the installed libdef's version matches that of the package.
 
-```sh
-# Use ./node_modules/.bin/flow-typed if you don't want to use npx
-npx flow-typed install my-dep@1.0
+If a community libdef is not available, you can try writing your own and placing it in `js/types/vendor`.
 
-# Use create-stub for packages without community libdef
-npx flow-typed create-stub my-dep
-```
 
 ### Testing and Linting
 
-We use [Jest][jest] with [Enzyme][enzyme] to test our code and React components, [Flow][flow] for typechecking, [Stylelint][stylelint] and [ESLint][eslint] using [Airbnb config][eslint-airbnb] and [Prettier][prettier] for linting and formatting.
+We use [Jest][jest] with [Enzyme][enzyme] to test our code and React components, [TypeScript][ts] for typechecking, [Stylelint][stylelint] and [ESLint][eslint] using [Airbnb config][eslint-airbnb] and [Prettier][prettier] for linting and formatting.
 
 ```sh
 # Run all tests once with code coverage
@@ -274,8 +304,8 @@ $ yarn lint:code
 # p.s. Use yarn lint:styles --fix with care (it's experimental),
 #      remember to reset changes for themes.scss.
 
-# Run Flow type checking
-$ yarn flow
+# Run TypeScript type checking
+$ yarn typecheck
 ```
 
 #### End to End testing
@@ -335,7 +365,8 @@ $ yarn promote-staging  # Promote ./dist to production
 │   │   ├── test-utils       - Utilities for testing - this directory is not counted
 │   │   │                      for test coverage
 │   │   ├── timetable-export - Entry point for timetable only build for exports
-│   │   ├── types            - Flow type definitions
+│   │   ├── types            - Type definitions
+│   │       └── vendor       - Types for third party libaries
 │   │   ├── utils            - Utility functions and classes
 │   │   └── views
 │   │       ├── components   - Reusable components
@@ -380,8 +411,9 @@ Components should keep their styles and tests in the same directory with the sam
 [bootstrap]: https://getbootstrap.com/
 [jest]: https://facebook.github.io/jest/
 [enzyme]: http://airbnb.io/enzyme/
-[flow]: https://flow.org/
+[ts]: https://www.typescriptlang.org/
 [eslint]: https://eslint.org/
+[svgr]: https://github.com/smooth-code/svgr
 [eslint-airbnb]: https://www.npmjs.com/package/eslint-config-airbnb
 [prettier]: https://prettier.io/docs/en/
 [stylelint]: https://stylelint.io/
@@ -389,5 +421,5 @@ Components should keep their styles and tests in the same directory with the sam
 [css-modules]: https://github.com/css-modules/css-modules
 [offline-cookbook]: https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#cache-then-network
 [axios-config]: https://github.com/axios/axios#request-config
-[flow-typed]: https://github.com/flow-typed/flow-typed
+[definitely-typed]: https://github.com/DefinitelyTyped/DefinitelyTyped/
 [bundlephobia]: https://bundlephobia.com/

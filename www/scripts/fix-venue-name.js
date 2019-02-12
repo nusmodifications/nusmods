@@ -27,6 +27,7 @@ const specialNames = {
   i3: 'i3',
   ell: 'ELL',
   it: 'IT',
+  Eh: 'EH',
 };
 
 const additionalWords = [
@@ -37,6 +38,8 @@ const additionalWords = [
   'LIM',
   'TAY',
   'BOH',
+  'MULTIDISCIPLINARY',
+  'GEOTHERMAL',
   'THEATRETTE',
   'DEPT',
   'CENDANA',
