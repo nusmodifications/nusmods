@@ -1,17 +1,23 @@
+import { createSelector } from 'reselect';
+
 import { ModuleCode, ModuleCondensed, Semester } from 'types/modules';
 import { ModuleBank } from 'reducers/moduleBank';
 import { State } from 'reducers';
 import { SemTimetableConfig } from 'types/timetables';
-import { ModuleSelectListItem } from 'types/reducers';
+import { ModuleCodeMap, ModuleSelectListItem } from 'types/reducers';
 import { notNull } from 'types/utils';
 import { getRequestModuleCode } from 'actions/moduleBank';
 import { isOngoing } from './requests';
 
-export function getModuleCondensed(
-  moduleBank: ModuleBank,
-): (moduleCode: ModuleCode) => ModuleCondensed | undefined {
-  return (moduleCode) => moduleBank.moduleCodes[moduleCode];
-}
+const moduleCodesSelector = (state: ModuleBank) => state.moduleCodes;
+
+// Returns a getter that returns module condensed given a module code
+export type ModuleCondensedGetter = (moduleCode: ModuleCode) => ModuleCondensed | undefined;
+export const getModuleCondensed = createSelector(
+  moduleCodesSelector,
+  (moduleCodes: ModuleCodeMap): ModuleCondensedGetter => (moduleCode: ModuleCode) =>
+    moduleCodes[moduleCode],
+);
 
 export function getAllPendingModules(state: State): ModuleCode[] {
   return Object.keys(state.requests)
