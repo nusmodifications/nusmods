@@ -11,7 +11,7 @@
   "scripts": {
     "clean": "rimraf dist coverage",
     "ci": "npm run lint && npm run test",
-    "lint": "eslint src __tests__",
+    "lint": "documentation lint src && eslint src",
     "docs": "documentation readme src --section=API",
     "build": "microbundle",
     "test": "jest --coverage",
@@ -41,17 +41,21 @@
   "homepage": "https://github.com/nusmodifications/nusmods/tree/master/packages/nusmoderator",
   "npmName": "nusmoderator",
   "devDependencies": {
-    "babel-core": "6.26.0",
-    "babel-eslint": "8.2.2",
-    "babel-jest": "22.4.1",
-    "babel-preset-env": "1.7.0",
-    "documentation": "6.3.3",
-    "eslint": "4.19.1",
-    "eslint-config-airbnb-base": "12.1.0",
-    "eslint-plugin-flowtype": "2.46.1",
-    "eslint-plugin-import": "2.9.0",
-    "jest": "22.4.2",
+    "@babel/core": "7.2.2",
+    "@babel/preset-env": "7.3.1",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "10.0.1",
+    "babel-jest": "24.0.0",
+    "documentation": "9.1.1",
+    "eslint": "5.13.0",
+    "eslint-config-airbnb-base": "13.1.0",
+    "eslint-config-prettier": "4.0.0",
+    "eslint-plugin-flowtype": "3.2.1",
+    "eslint-plugin-import": "2.16.0",
+    "eslint-plugin-prettier": "3.0.1",
+    "jest": "24.0.0",
     "microbundle": "0.9.0",
-    "rimraf": "2.6.2"
+    "prettier": "1.16.4",
+    "rimraf": "2.6.3"
   }
 }

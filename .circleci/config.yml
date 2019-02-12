@@ -2,7 +2,7 @@ version: 2
 
 defaults: &defaults
   docker:
-    - image: circleci/node:8
+    - image: circleci/node:10
 
 restore_cache: &restore_node_deps
   name: Restore node_modules cache
@@ -58,6 +58,23 @@ jobs:
             NODE_ENV: production
           command: yarn build:scraper
 
+  nus-scrapers-v2:
+    <<: *defaults
+    working_directory: ~/nusmods/scrapers/nus-v2
+    steps:
+      - attach_workspace:
+          at: ~/nusmods
+      - restore_cache: *restore_node_deps
+      - run: yarn
+      - save_cache: *save_node_deps
+      - run: yarn lint
+      - run: yarn test --runInBand
+      - run:
+          name: Build scraper
+          environment:
+            NODE_ENV: production
+          command: yarn build
+
   nusmoderator:
     <<: *defaults
     working_directory: ~/nusmods/packages/nusmoderator
@@ -92,11 +109,11 @@ jobs:
           command: yarn
       - save_cache: *save_node_deps
       - run:
-          name: Type check code
-          command: yarn flow
-      - run:
           name: Lint code
           command: yarn lint:code --format junit -o reports/junit/js-lint-results.xml
+      - run:
+          name: Typecheck Code
+          command: yarn typecheck
       - run:
           name: Test code
           environment:
@@ -129,6 +146,9 @@ workflows:
           requires:
             - checkout
       - nus-scrapers:
+          requires:
+            - checkout
+      - nus-scrapers-v2:
           requires:
             - checkout
       - nusmoderator:

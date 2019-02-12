@@ -1,0 +1,41 @@
+{
+  "ModuleCode": "CS3216",
+  "ModuleTitle": "Software Product Engineering for Digital Markets",
+  "AcadYear": "2017/2018",
+  "Department": "Computer Science",
+  "ModuleDescription": "In this module, students will practice software product engineering by working in small teams to develop well-tested, user-friendly, production-quality software for the real world. To support this goal, students work closely with users to understand their problems, gather their requirements, and obtain their feedback through a rapid, iterative, application design and development process. Students will also be exposed to practical issues for digital markets such as growing the user base of their application, deployment of the application on the Web or in the cloud system, and validating the UI design and UX of the application.",
+  "ModuleCredit": "5",
+  "Workload": "2-1-0-8-2",
+  "Types": [
+    "Module"
+  ],
+  "Prerequisite": "CS2103 or its equivalent or with special approval from instructor. Students will submit personal statements to apply for a place in the course instead of bidding through the CORS system.",
+  "History": [
+    {
+      "Semester": 1,
+      "Timetable": [
+        {
+          "ClassNo": "1",
+          "LessonType": "Lecture",
+          "WeekText": "Every Week",
+          "DayText": "Monday",
+          "StartTime": "1830",
+          "EndTime": "2030",
+          "Venue": "VCRm"
+        }
+      ],
+      "LecturePeriods": [
+        "Monday Evening"
+      ]
+    }
+  ],
+  "ParsedPrerequisite": "CS2103",
+  "ModmavenTree": {
+    "name": "CS3216",
+    "children": [{
+      "name": "CS2103",
+      "children": []
+    }]
+  },
+  "LockedModules": []
+}

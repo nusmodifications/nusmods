@@ -13,13 +13,13 @@
     "deploy": "rsync -avu --delete-after . ../../nusmods-export"
   },
   "dependencies": {
-    "@sentry/node": "4.4.2",
+    "@sentry/node": "4.5.3",
     "axios": "0.18.0",
     "bunyan": "1.8.12",
     "forever": "0.15.3",
     "fs-extra": "7.0.1",
-    "http-graceful-shutdown": "2.2.2",
-    "koa": "2.6.2",
+    "http-graceful-shutdown": "2.2.3",
+    "koa": "2.7.0",
     "koa-router": "7.4.0",
     "koa-views": "6.1.5",
     "lodash": "4.17.11",

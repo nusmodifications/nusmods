@@ -1,4 +1,3 @@
-// @flow
 // This file uses comment type because we want to import it in Webpack configs
 /* eslint-disable spaced-comment */
 

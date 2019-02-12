@@ -2,9 +2,11 @@
 
 NUSMods R is built using [React][react], [Redux][redux] and [Bootstrap][bootstrap], and is designed to be **fast, modern and responsive**.
 
-* Production deployment: https://nusmods.com/
-* Latest build: https://latest.nusmods.com/
-* Issues: https://github.com/nusmodifications/nusmods/issues?q=is%3Aissue+is%3Aopen
+- Production: https://nusmods.com/
+- Latest build: https://latest.nusmods.com/
+- Issues: https://github.com/nusmodifications/nusmods/issues?q=is%3Aissue+is%3Aopen
+- Analytics: https://analytics.nusmods.com/
+- Deployment dashboard: https://launch.nusmods.com/
 
 To install NUSMods V2 (the previous version of NUSMods), refer [here](../provisioning/README.md).
 
@@ -12,13 +14,15 @@ To install NUSMods V2 (the previous version of NUSMods), refer [here](../provisi
 
 Desktop browsers:
 
-* Last two versions of all evergreen desktop browsers (Chrome, Firefox, Edge, Safari)
-* IE is completely **unsupported**
+- Last two versions of all evergreen desktop browsers (Chrome, Firefox, Edge, Safari)
+- IE is completely **unsupported**
 
 Mobile browsers:
 
-* iOS 9 and above
-* Chrome Mobile last two versions
+- iOS 10 and above
+- Chrome Mobile last two versions
+
+We try not to break iOS 9 (ie. display white screen of death or use unsupported APIs), but we don't guarantee the page will be appear exactly the same as in more modern browsers.
 
 ## Contributing
 
@@ -42,23 +46,23 @@ To run the development build, simply run:
 $ yarn start
 ```
 
-This will start webpack dev server, which will automatically rebuild and reload any code and components that you have changed. If your editor or IDE has built in support for Flow/ESLint/StyleLint, you can disable them to speed up the build process.
+This will start Webpack dev server, which will automatically rebuild and reload any code and components that you have changed. If your editor or IDE has built in support for ESLint/StyleLint, you can disable them to speed up the build process.
 
 ```sh
-$ DISABLE_ESLINT=1 DISABLE_FLOW=1 DISABLE_STYLELINT=1 yarn start
+$ DISABLE_ESLINT=1 DISABLE_STYLELINT=1 yarn start
 ```
 
 We recommend the following development tools to help speed up your work
 
-* React Developer Tools ([Chrome](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi), [Firefox](https://addons.mozilla.org/firefox/addon/react-devtools/))
-* [Redux DevTools](http://extension.remotedev.io/#installation)
-* [Firefox Developer Edition](https://www.mozilla.org/en-US/firefox/developer/)
+- React Developer Tools ([Chrome](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi), [Firefox](https://addons.mozilla.org/firefox/addon/react-devtools/))
+- [Redux DevTools](http://extension.remotedev.io/#installation)
+- [Firefox Developer Edition](https://www.mozilla.org/en-US/firefox/developer/)
 
 ### Writing styles
 
 We uses [CSS Modules][css-modules] to structure styles. This means that with the exception of a few global styles, styles for each component lives beside their source files (see [colocation](#colocation)). This allows us to write short, semantic names for styles without worrying about collision.
 
-``` scss
+```scss
 // MyComponent.scss
 import "~styles/utils/modules-entry"; // Import variables, mixins
 
@@ -78,7 +82,7 @@ import "~styles/utils/modules-entry"; // Import variables, mixins
 }
 ```
 
-``` js
+```js
 // MyComponent.jsx
 import styles from './MyComponent.scss';
 
@@ -93,6 +97,37 @@ Note that specificity still matters. This is important if you are trying to over
 Both SCSS and CSS variables (aka. custom properties) are used. In most cases, **prefer SCSS variables** as they can be used with SCSS mixins and functions, and integrate with Bootstrap. CSS variable generates more code (since we need to include a fallback for browsers that don't support it), and doesn't play well with SCSS.
 
 Currently CSS variables are used only for colors that change under night mode.
+
+### Importing images
+
+Prefer SVG when possible. SVG images are usually smaller and more flexible. `.svg` files are loaded using [SVGR][svgr] as React components - this means you can add classnames, inline styles and other SVG attributes to the component loaded. SVGR also automatically optimizes the image.
+
+```js
+import CloudyIcon from 'img/weather/cloudy.svg';
+
+const cloud = <CloudyIcon className={styles.myIcon} />;
+```
+
+PNG, JPEG and GIF files will be loaded using `url-loader` and can be imported as a string representing the URL of the asset after bundling. In production files smaller than 15kb will be converted into data URL
+
+```js
+import partyParrot from 'img/gif/partyparrot.gif';
+
+const danceParty = <img src={partyParrot} alt=":partyparrot:" />;
+```
+
+To load SVG as files using `url-loader` instead, add the `?url` resource query to the end of the path.
+
+```js
+import { Icon } from 'leaflet';
+// eslint-disable-next-line import/extensions
+import marker from 'img/marker.svg?url';
+
+// Leaflet expects iconUrl to be a URL string, not a React component
+new Icon({
+  iconUrl: marker,
+});
+```
 
 ### Fetching data
 
@@ -114,7 +149,7 @@ import { requestAction } from 'actions/requests';
 export const FETCH_DATA = 'FETCH_DATA';
 export function fetchData() {
   return requestAction(FETCH_DATA, {
-    url: 'http://example.com/api/my-data'
+    url: 'http://example.com/api/my-data',
   });
 }
 ```
@@ -133,11 +168,15 @@ type Props = {
 }
 
 type State = {
-  data: ?MyData,
+  data: MyData | null,
   error?: any,
 }
 
-class MyComponent extends Component<Props> {
+class MyComponent extends React.Component<Props, State> {
+  state: State = {
+    data: null,
+  };
+
   componentDidMount() {
     this.props.fetchData()
       .then(data => this.setState({ data }))
@@ -151,7 +190,7 @@ class MyComponent extends Component<Props> {
       return <ErrorPage />;
     }
 
-    if (!data) {
+    if (data == null) {
       return <LoadingSpinner />;
     }
 
@@ -172,12 +211,12 @@ This is the [cache-then-network strategy described in the Offline Cookbook][offl
 
 **Reducer example**
 
-```js
+```ts
 import { SUCCESS } from 'types/reducers';
 import { FETCH_DATA } from 'actions/example';
 
 export function exampleBank(state: ExampleBank, action: FSA): ExampleBank {
-  switch(action.type) {
+  switch (action.type) {
     case FETCH_DATA + SUCCESS:
       return action.payload;
 
@@ -190,9 +229,9 @@ export function exampleBank(state: ExampleBank, action: FSA): ExampleBank {
 
 **Component example**
 
-```js
+```ts
 type Props = {
-  myData: ?MyData,
+  myData: MyData | null,
   fetchData: () => Promise<MyData>,
 }
 
@@ -200,7 +239,7 @@ type State = {
   error?: any,
 }
 
-class MyComponent extends Component<Props> {
+class MyComponent extends React.Component<Props, State> {
   componentDidMount() {
     this.props.fetchData()
       .catch(error => this.setState({ error });
@@ -215,7 +254,7 @@ class MyComponent extends Component<Props> {
       return <ErrorPage />;
     }
 
-    if (!data) {
+    if (data == null) {
       return <LoadingSpinner />;
     }
 
@@ -234,23 +273,18 @@ If you need to access the status of a request from outside the component which i
 
 ### Adding dependencies
 
-NUSMods tries to be as lean as possible. Adding external dependencies should be done with care to avoid bloating our bundle. Use [Bundlephobia][bundlephobia] to ensure the new dependency is reasonably sized.
+NUSMods tries to be as lean as possible. Adding external dependencies should be done with care to avoid bloating our bundle. Use [Bundlephobia][bundlephobia] to ensure the new dependency is reasonably sized, or if the dependency is limited to one specific page/component, use code splitting to ensure the main bundle's size is not affected.
 
-#### Flow libdef
+#### TypeScript libdef
 
-When adding a JavaScript package, Flow requires a library definition, or libdef. To try to install one from the [community repository][flow-typed], use the `flow-typed` command. If a community libdef is not available, the same command can also be used to create a stub libdef which you can use immediately in a pinch, or edit to fill in the correct definitions.
+When adding a JavaScript package, Flow requires a library definition, or libdef. To try to install one from the [community repository][definitely-typed], install `@types/<package name>`. Make sure the installed libdef's version matches that of the package.
 
-```sh
-# Use ./node_modules/.bin/flow-typed if you don't want to use npx
-npx flow-typed install my-dep@1.0
+If a community libdef is not available, you can try writing your own and placing it in `js/types/vendor`.
 
-# Use create-stub for packages without community libdef
-npx flow-typed create-stub my-dep
-```
 
 ### Testing and Linting
 
-We use [Jest][jest] with [Enzyme][enzyme] to test our code and React components, [Flow][flow] for typechecking, [Stylelint][stylelint] and [ESLint][eslint] using [Airbnb config][eslint-airbnb] and [Prettier][prettier] for linting and formatting.
+We use [Jest][jest] with [Enzyme][enzyme] to test our code and React components, [TypeScript][ts] for typechecking, [Stylelint][stylelint] and [ESLint][eslint] using [Airbnb config][eslint-airbnb] and [Prettier][prettier] for linting and formatting.
 
 ```sh
 # Run all tests once with code coverage
@@ -270,8 +304,8 @@ $ yarn lint:code
 # p.s. Use yarn lint:styles --fix with care (it's experimental),
 #      remember to reset changes for themes.scss.
 
-# Run Flow type checking
-$ yarn flow
+# Run TypeScript type checking
+$ yarn typecheck
 ```
 
 #### End to End testing
@@ -307,9 +341,9 @@ $ yarn build            # Build to staging ./dist directory
 $ yarn promote-staging  # Promote ./dist to production
 ```
 
-* `yarn build` packages and optimizes the app for deployment. The files will be placed in the `./dist` directory.
-* `yarn promote-staging` deploys `./dist` to the production folder, currently `../../beta.nusmods.com`. It is designed to be safe, executing a dry run and asking for confirmation before deployment.
-* `yarn rsync <dest-dir>` syncs `./dist` to the specified destination folder `<dest-dir>`. It is mainly used by `yarn promote-staging` but could be used to sync `./dist` to any folder.
+- `yarn build` packages and optimizes the app for deployment. The files will be placed in the `./dist` directory.
+- `yarn promote-staging` deploys `./dist` to the production folder, currently `../../beta.nusmods.com`. It is designed to be safe, executing a dry run and asking for confirmation before deployment.
+- `yarn rsync <dest-dir>` syncs `./dist` to the specified destination folder `<dest-dir>`. It is mainly used by `yarn promote-staging` but could be used to sync `./dist` to any folder.
 
 ## Project Structure
 
@@ -331,27 +365,31 @@ $ yarn promote-staging  # Promote ./dist to production
 │   │   ├── test-utils       - Utilities for testing - this directory is not counted
 │   │   │                      for test coverage
 │   │   ├── timetable-export - Entry point for timetable only build for exports
-│   │   ├── types            - Flow type definitions
+│   │   ├── types            - Type definitions
+│   │       └── vendor       - Types for third party libaries
 │   │   ├── utils            - Utility functions and classes
 │   │   └── views
-│   │       ├── browse       - Module info and module finder related components
 │   │       ├── components   - Reusable components
+│   │       ├── contribute   - Contribute page components
 │   │       ├── errors       - Error pages
 │   │       ├── hocs         - Higher order components
 │   │       ├── layout       - Global layout components
 │   │       ├── modules      - Module finder and module info components
+│   │       ├── planner      - Module planner related components
 │   │       ├── routes       - Routing related components
 │   │       ├── settings     - Settings page component
 │   │       ├── static       - Static pages like /team and /developers
 │   │       ├── timetable    - Timetable builder related components
+│   │       ├── today        - Today schedule page related components
 │   │       └── venues       - Venues page related components
 │   └── styles
 │       ├── bootstrap        - Bootstrapping, uh, Bootstrap
-│       ├── material         - Material components
 │       ├── components       - Legacy component styles
 │       │                      (new components should colocate their styles)
 │       ├── layout           - Site-wide layout styles
+│       ├── material         - Material components
 │       ├── pages            - Page specific styles
+│       ├── tippy            - Styles for tippy.js tooltips
 │       └── utils            - Utility classes, mixins, functions
 ├── static                   - Static assets, eg. favicons
 │                              These will be copied directly into /dist
@@ -373,8 +411,9 @@ Components should keep their styles and tests in the same directory with the sam
 [bootstrap]: https://getbootstrap.com/
 [jest]: https://facebook.github.io/jest/
 [enzyme]: http://airbnb.io/enzyme/
-[flow]: https://flow.org/
+[ts]: https://www.typescriptlang.org/
 [eslint]: https://eslint.org/
+[svgr]: https://github.com/smooth-code/svgr
 [eslint-airbnb]: https://www.npmjs.com/package/eslint-config-airbnb
 [prettier]: https://prettier.io/docs/en/
 [stylelint]: https://stylelint.io/
@@ -382,5 +421,5 @@ Components should keep their styles and tests in the same directory with the sam
 [css-modules]: https://github.com/css-modules/css-modules
 [offline-cookbook]: https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#cache-then-network
 [axios-config]: https://github.com/axios/axios#request-config
-[flow-typed]: https://github.com/flow-typed/flow-typed
+[definitely-typed]: https://github.com/DefinitelyTyped/DefinitelyTyped/
 [bundlephobia]: https://bundlephobia.com/

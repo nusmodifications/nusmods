@@ -1,4 +1,6 @@
-# ![](docs/nusmods-logo.png)
+<h1>
+  <img src="docs/nusmods-logo.svg" alt="NUSMods" width="400" />
+</h1>
 
 [![Backers on Open Collective](https://opencollective.com/nusmods/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/nusmods/sponsors/badge.svg)](#sponsors) [![Coverage Status](https://coveralls.io/repos/github/nusmodifications/nusmods/badge.svg?branch=master)](https://coveralls.io/github/nusmodifications/nusmods?branch=master) [![CircleCI Build Status](https://circleci.com/gh/nusmodifications/nusmods.svg?style=shield)](https://circleci.com/gh/nusmodifications/nusmods)
 
@@ -20,9 +22,9 @@ We can be reached via the following methods, in order of preference.
 
 - Telegram: https://telegram.me/nusmods
 - Messenger: https://www.m.me/nusmods
+- Email: nusmods@googlegroups.com (for security related issues please email mods@nusmods.com instead)
 - Facebook: https://www.facebook.com/nusmods
 - Twitter: https://twitter.com/nusmods
-- Email: nusmods@googlegroups.com
 
 ## Contributing
 

@@ -39,7 +39,7 @@
     "fs-extra": "^4.0.0",
     "got": "^8.0.2",
     "gulp": "^4.0.0",
-    "gulp-cli": "^2.0.0",
+    "gulp-cli": "^2.0.1",
     "is-binary-path": "^2.0.0",
     "moment": "^2.17.1",
     "nusmoderator": "^2.1.0",
@@ -53,7 +53,7 @@
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.2",
-    "babel-jest": "^22.4.1",
+    "babel-jest": "^23.6.0",
     "babel-loader": "^7.1.4",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-bluebird": "^1.0.1",
@@ -65,11 +65,11 @@
     "eslint-import-resolver-node": "^0.3.2",
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-prettier": "^2.6.0",
-    "jest": "^22.4.2",
+    "jest": "^23.6.0",
     "mock-fs": "^4.2.0",
     "prettier": "^1.11.1",
-    "webpack": "^4.1.1",
-    "webpack-cli": "^2.0.10",
-    "webpack-node-externals": "^1.6.0"
+    "webpack": "^4.29.1",
+    "webpack-cli": "^3.2.3",
+    "webpack-node-externals": "^1.7.2"
   }
 }

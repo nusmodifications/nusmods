@@ -3378,5 +3378,261 @@
       "x": 103.77038061618806,
       "y": 1.2999068986213047
     }
+  },
+  "E4-04-02": {
+    "roomName": "E4-04-02",
+    "floor": 4,
+    "location": {
+      "x": 103.77181637117397,
+      "y": 1.2987141586739923
+    }
+  },
+  "AS3-0610": {
+    "roomName": "Tutorial Room 1",
+    "floor": 6,
+    "location": {
+      "x": 103.77154469490053,
+      "y": 1.2948066448369964
+    }
+  },
+  "AS3-0611": {
+    "roomName": "Tutorial Room 2",
+    "floor": 6,
+    "location": {
+      "x": 103.77155005931856,
+      "y": 1.2947422882567174
+    }
+  },
+  "CELC-SR1B": {
+    "roomName": "SR1B",
+    "floor": 2,
+    "location": {
+      "x": 103.77143193267294,
+      "y": 1.2970703865407238
+    }
+  },
+  "AS1-0201": {
+    "roomName": "AS1-0201",
+    "floor": 2,
+    "location": {
+      "x": 103.77213443414018,
+      "y": 1.2951454107251619
+    }
+  },
+  "EW1-01-01": {
+    "roomName": "Concrete Technology Lab",
+    "floor": 1,
+    "location": {
+      "x": 103.77059982927568,
+      "y": 1.2988274380292781
+    }
+  },
+  "EW1-03-02": {
+    "roomName": "GEOTECHNICAL Engineering Lab",
+    "floor": 3,
+    "location": {
+      "x": 103.7708524696206,
+      "y": 1.2985588481386496
+    }
+  },
+  "MD9-01-02": {
+    "roomName": "Physiology Lab",
+    "floor": 1,
+    "location": {
+      "x": 103.78134551280169,
+      "y": 1.2966962086013787
+    }
+  },
+  "MD10-02-01": {
+    "roomName": "Anatomy Teaching Museum",
+    "floor": 2,
+    "location": {
+      "x": 103.78172415012327,
+      "y": 1.296514508777875
+    }
+  },
+  "E1-02-03": {
+    "roomName": "Dynamics Lab 2",
+    "floor": 2,
+    "location": {
+      "x": 103.77103038230325,
+      "y": 1.298702438473506
+    }
+  },
+  "E1-03-01": {
+    "roomName": "ESP Multidisciplinary Lab",
+    "floor": 3,
+    "location": {
+      "x": 103.77108113816666,
+      "y": 1.29860013623642
+    }
+  },
+  "E3A-05-04": {
+    "roomName": "Heat Treatment",
+    "floor": 5,
+    "location": {
+      "x": 103.77121465020501,
+      "y": 1.3004357792527184
+    }
+  },
+  "E4-07-08": {
+    "roomName": "Staff ROOM1",
+    "floor": 7,
+    "location": {
+      "x": 103.77179762078876,
+      "y": 1.298644862043683
+    }
+  },
+  "MD1-05-03K": {
+    "roomName": "Seminar Room 4",
+    "floor": 5,
+    "location": {
+      "x": 103.78048012617927,
+      "y": 1.2952805409717725
+    }
+  },
+  "MD1-08-01A": {
+    "roomName": "Computer Lab 1",
+    "floor": 8,
+    "location": {
+      "x": 103.78055915336888,
+      "y": 1.2954814634702438
+    }
+  },
+  "MD1-10-01A": {
+    "roomName": "Conference Room 2",
+    "floor": 10,
+    "location": {
+      "x": 103.78041258914575,
+      "y": 1.2955764204697735
+    }
+  },
+  "BIZ2-0422": {
+    "roomName": "Seminar Room 4-22",
+    "floor": 4,
+    "location": {
+      "x": 103.77486423822306,
+      "y": 1.2934012209405132
+    }
+  },
+  "AS4-0519": {
+    "roomName": "Dept Meeting Room",
+    "floor": 5,
+    "location": {
+      "x": 103.77214966390184,
+      "y": 1.2946837531651085
+    }
+  },
+  "S16-0302": {
+    "roomName": "Reading Hall",
+    "floor": 3,
+    "location": {
+      "x": 103.78062566185325,
+      "y": 1.2967792133731033
+    }
+  },
+  "RVR-SRM01": {
+    "roomName": "Seminar room 1",
+    "floor": 1,
+    "location": {
+      "x": 103.77682412831622,
+      "y": 1.29736535383388
+    }
+  },
+  "AS6-0212": {
+    "roomName": "Seminar Room",
+    "floor": 2,
+    "location": {
+      "x": 103.77316343106568,
+      "y": 1.2955665885672616
+    }
+  },
+  "MD4_LAB9": {
+    "roomName": "MD4 LS LAB9",
+    "floor": 4,
+    "location": {
+      "x": 103.78087073564531,
+      "y": 1.2957451781135965
+    }
+  },
+  "CAPT-SR5": {
+    "roomName": "Seminar Room 5",
+    "floor": 1,
+    "location": {
+      "x": 103.77318935135669,
+      "y": 1.30782701977229
+    }
+  },
+  "CAPT-SR4": {
+    "roomName": "Seminar Room 4",
+    "floor": 1,
+    "location": {
+      "x": 103.77346605635373,
+      "y": 1.307735312249234
+    }
+  },
+  "CAPT-SR3": {
+    "roomName": "Seminar Room 3",
+    "floor": 1,
+    "location": {
+      "x": 103.77344694870638,
+      "y": 1.3077358486658872
+    }
+  },
+  "CAPT-SR1-2": {
+    "roomName": "Seminar Room 1 & 2",
+    "floor": 1,
+    "location": {
+      "x": 103.77290429366835,
+      "y": 1.3073191457445208
+    }
+  },
+  "TC-SR3": {
+    "roomName": "Seminar Room 3",
+    "floor": 1,
+    "location": {
+      "x": 103.7735061935529,
+      "y": 1.3058646900451434
+    }
+  },
+  "RVR-SRM03": {
+    "roomName": "Seminar Room 3",
+    "floor": 1,
+    "location": {
+      "x": 103.77678093383261,
+      "y": 1.2974598197265705
+    }
+  },
+  "YSTCM-ER3": {
+    "roomName": "Ensemble Room 3",
+    "floor": 3,
+    "location": {
+      "x": 103.7721522152424,
+      "y": 1.3023290630565256
+    }
+  },
+  "YSTCM-ER2": {
+    "roomName": "Ensemble Room 2",
+    "floor": 3,
+    "location": {
+      "x": 103.77247569384055,
+      "y": 1.3024826427002318
+    }
+  },
+  "TC-SR5": {
+    "roomName": "Seminar Room 5",
+    "floor": 1,
+    "location": {
+      "x": 103.77340611266035,
+      "y": 1.3058455617651048
+    }
+  },
+  "TC-SR6": {
+    "roomName": "Seminar Room 6",
+    "floor": 1,
+    "location": {
+      "x": 103.77349088189862,
+      "y": 1.3058723772982943
+    }
   }
 }
