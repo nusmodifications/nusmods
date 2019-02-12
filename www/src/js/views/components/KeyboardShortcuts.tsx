@@ -7,6 +7,7 @@ import { groupBy, map } from 'lodash';
 
 import { State as StoreState } from 'reducers';
 import { Mode, ThemeId, DARK_MODE } from 'types/settings';
+import { FSA } from 'types/redux';
 import themes from 'data/themes.json';
 import { cycleTheme, toggleTimetableOrientation } from 'actions/theme';
 import { openNotification } from 'actions/app';
@@ -17,7 +18,7 @@ import Modal from './Modal';
 import styles from './KeyboardShortcuts.scss';
 
 type Props = RouteComponentProps & {
-  dispatch: Dispatch<any, StoreState>;
+  dispatch: Dispatch<FSA, StoreState>;
   theme: ThemeId;
   mode: Mode;
 };
@@ -44,6 +45,8 @@ export class KeyboardShortcutsComponent extends React.PureComponent<Props, State
   state = {
     helpShown: false,
   };
+
+  shortcuts: KeyBinding[] = [];
 
   componentDidMount() {
     const { dispatch, history } = this.props;
@@ -118,8 +121,6 @@ export class KeyboardShortcutsComponent extends React.PureComponent<Props, State
       history.push('/tetris');
     });
   }
-
-  shortcuts: KeyBinding[] = [];
 
   closeModal = () => this.setState({ helpShown: false });
 

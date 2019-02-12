@@ -2,6 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import qs from 'query-string';
 import axios from 'axios';
+import { QRCodeProps } from 'react-qr-svg';
 
 import { SemTimetableConfig } from 'types/timetables';
 import { Semester } from 'types/modules';
@@ -41,7 +42,12 @@ export const SHORT_URL_KEY = 'shorturl';
 
 export default class ShareTimetable extends React.PureComponent<Props, State> {
   // React QR component is lazy loaded for performance
-  static QRCode: React.ComponentType<any> | null;
+  static QRCode: React.ComponentType<QRCodeProps> | null;
+
+  // Save a copy of the current URL to detect when URL changes
+  url: string | null = null;
+
+  urlInput = React.createRef<HTMLInputElement>();
 
   state: State = {
     isOpen: false,
@@ -57,11 +63,6 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
       });
     }
   }
-
-  // Save a copy of the current URL to detect when URL changes
-  url: string | null = null;
-
-  urlInput = React.createRef<HTMLInputElement>();
 
   loadShortUrl = () => {
     const { semester, timetable } = this.props;

@@ -47,7 +47,7 @@ import styles from './ModuleFinderContainer.scss';
 
 export type Props = {
   searchTerm: string;
-  resetModuleFinder: () => any;
+  resetModuleFinder: () => unknown;
 } & RouteComponentProps;
 
 export type State = {
@@ -88,6 +88,8 @@ export class ModuleFinderContainerComponent extends React.Component<Props, State
   unlisten: () => void;
 
   state: State;
+
+  useInstantSearch = false;
 
   constructor(props: Props) {
     super(props);
@@ -177,8 +179,6 @@ export class ModuleFinderContainerComponent extends React.Component<Props, State
       this.toggleMenu(false);
     });
   }
-
-  useInstantSearch = false;
 
   loadPageData = () => {
     this.setState({ error: null });

@@ -108,6 +108,25 @@ function renderPiece(tiles: Board) {
 export default class TetrisGame extends React.PureComponent<Props, State> {
   intervalId?: number;
 
+  gameWrapper = React.createRef<HTMLDivElement>();
+
+  // Ticks are not stored as state because it only affects game logic
+  // and not rendering
+  ticks = 0;
+
+  keybindings: [string | string[], () => unknown][] = [
+    [['left', 'a'], () => this.movePieceHorizontal(-1)],
+    [['right', 'd'], () => this.movePieceHorizontal(1)],
+    [['down', 's'], () => this.moveDown()],
+
+    ['q', () => this.rotatePiece(LEFT)],
+    [['up', 'e'], () => this.rotatePiece(RIGHT)],
+
+    [['space', 'w'], () => this.hardDrop()],
+    [['f', 'h'], () => this.holdPiece()],
+    [['p', 'esc'], () => this.togglePause()],
+  ];
+
   constructor(props: Props) {
     super(props);
 
@@ -170,25 +189,6 @@ export default class TetrisGame extends React.PureComponent<Props, State> {
       }),
     );
   };
-
-  gameWrapper = React.createRef<HTMLDivElement>();
-
-  // Ticks are not stored as state because it only affects game logic
-  // and not rendering
-  ticks = 0;
-
-  keybindings: [string | string[], () => any][] = [
-    [['left', 'a'], () => this.movePieceHorizontal(-1)],
-    [['right', 'd'], () => this.movePieceHorizontal(1)],
-    [['down', 's'], () => this.moveDown()],
-
-    ['q', () => this.rotatePiece(LEFT)],
-    [['up', 'e'], () => this.rotatePiece(RIGHT)],
-
-    [['space', 'w'], () => this.hardDrop()],
-    [['f', 'h'], () => this.holdPiece()],
-    [['p', 'esc'], () => this.togglePause()],
-  ];
 
   gameSpeed() {
     // Increase game speed every eight lines cleared until it reaches max speed
@@ -346,9 +346,13 @@ export default class TetrisGame extends React.PureComponent<Props, State> {
   };
 
   popNextPiece = (draft: State) => {
-    draft.currentPiece = draft.nextPieces.shift()!;
-    if (draft.nextPieces.length === 0) {
-      draft.nextPieces = shuffle(PIECES);
+    const nextPiece = draft.nextPieces.shift();
+    if (nextPiece) {
+      draft.currentPiece = nextPiece;
+    } else {
+      // Queue is empty, we reshuffle and add the pieces to create a grab
+      // bag system that is guaranteed to play forever
+      [draft.currentPiece, ...draft.nextPieces] = shuffle(PIECES);
     }
   };
 

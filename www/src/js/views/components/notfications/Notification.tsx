@@ -48,8 +48,11 @@ const TRANSITION_DURATION = 250;
  */
 export class NotificationComponent extends React.Component<Props, State> {
   openTimeoutId?: number;
-
   closeTimeoutId?: number;
+
+  element = React.createRef<HTMLDivElement>();
+
+  transitioning: boolean = false;
 
   constructor(props: Props) {
     super(props);
@@ -105,10 +108,6 @@ export class NotificationComponent extends React.Component<Props, State> {
       this.openSnackbar();
     }
   };
-
-  element = React.createRef<HTMLDivElement>();
-
-  transitioning: boolean = false;
 
   openSnackbar = () => {
     this.transitioning = true;

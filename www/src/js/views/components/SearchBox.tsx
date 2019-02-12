@@ -21,6 +21,8 @@ type State = {
 };
 
 export default class SearchBox extends React.PureComponent<Props, State> {
+  searchElement = React.createRef<HTMLInputElement>();
+
   constructor(props: Props) {
     super(props);
 
@@ -55,14 +57,13 @@ export default class SearchBox extends React.PureComponent<Props, State> {
     }
   };
 
-  searchElement = React.createRef<HTMLInputElement>();
-
-  search = (input: string) => {
+  private search = (input: string) => {
     this.setState({ hasChanges: false });
     this.props.onSearch(input.trim());
   };
 
-  debouncedSearch = debounce(this.search, this.props.throttle, {
+  // eslint-disable-next-line react/sort-comp
+  private debouncedSearch = debounce(this.search, this.props.throttle, {
     leading: false,
   });
 

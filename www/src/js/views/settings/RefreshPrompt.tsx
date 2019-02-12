@@ -19,6 +19,8 @@ type State = {
 class RefreshPrompt extends React.PureComponent<Props, State> {
   buttonWidth?: number;
 
+  buttonRef = React.createRef<HTMLButtonElement>();
+
   state = {
     isReloading: false,
   };
@@ -34,8 +36,6 @@ class RefreshPrompt extends React.PureComponent<Props, State> {
     this.setState({ isReloading: true });
     updateServiceWorker();
   };
-
-  buttonRef = React.createRef<HTMLButtonElement>();
 
   render() {
     if (!this.props.showPrompt) {

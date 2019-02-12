@@ -42,14 +42,11 @@ type Props = RouteComponentProps & {
   activeSemester: Semester;
 
   // From Redux actions
-  fetchModuleList: () => Promise<any>;
-  fetchTimetableModules: (semTimetableConfig: SemTimetableConfig[]) => Promise<any>;
+  fetchModuleList: () => Promise<unknown>; // Typed as unknown because we don't actually need the output
+  fetchTimetableModules: (semTimetableConfig: SemTimetableConfig[]) => Promise<unknown>;
   setTimetable: (semester: Semester, semTimetableConfig: SemTimetableConfig) => void;
   validateTimetable: (semester: Semester) => void;
-  openNotification: (
-    str: string,
-    notificationOptions: NotificationOptions | null | undefined,
-  ) => void;
+  openNotification: (str: string, notificationOptions?: NotificationOptions) => void;
 };
 
 type State = {
@@ -58,6 +55,8 @@ type State = {
 
 export class AppShellComponent extends React.Component<Props, State> {
   state: State = {};
+
+  isMobileIos = isMobileIos();
 
   componentDidMount() {
     const { timetables } = this.props;
@@ -72,11 +71,9 @@ export class AppShellComponent extends React.Component<Props, State> {
       this.fetchTimetableModules(timetable, semester);
     });
 
-    // Enable Mamoto analytics
+    // Enable Matomo analytics
     trackPageView(this.props.history);
   }
-
-  isMobileIos = isMobileIos();
 
   fetchModuleList = () => {
     // TODO: This always re-fetch the entire modules list. Consider a better strategy for this

@@ -23,6 +23,8 @@ export default class AddModule extends React.PureComponent<Props, State> {
     value: '',
   };
 
+  textareaRef = React.createRef<HTMLTextAreaElement>();
+
   onSubmit = (evt: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLTextAreaElement>) => {
     evt.preventDefault();
     this.props.onAddModule(this.state.value.trim());
@@ -42,8 +44,6 @@ export default class AddModule extends React.PureComponent<Props, State> {
   onCancel = () => {
     this.setState({ value: '', isOpen: false });
   };
-
-  textareaRef = React.createRef<HTMLTextAreaElement>();
 
   render() {
     if (!this.state.isOpen) {

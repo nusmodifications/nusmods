@@ -19,12 +19,14 @@ type State = {
  * the actual value provided as the children
  */
 export default class ScrollingNumber extends React.PureComponent<Props, State> {
-  static defaultProps = {
-    tagName: 'span',
-  };
+  isAnimating = false;
 
   state = {
     currentValue: this.props.children,
+  };
+
+  static defaultProps = {
+    tagName: 'span',
   };
 
   componentDidUpdate(prevProps: Props) {
@@ -56,8 +58,6 @@ export default class ScrollingNumber extends React.PureComponent<Props, State> {
     this.setState({ currentValue: currentValue + delta });
     window.requestAnimationFrame(this.onNextFrame);
   };
-
-  isAnimating = false;
 
   render() {
     // Children is ignored since that represents the actual value

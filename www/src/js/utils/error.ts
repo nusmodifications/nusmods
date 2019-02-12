@@ -2,6 +2,8 @@ import * as Sentry from '@sentry/browser';
 import { each, size } from 'lodash';
 import { retry } from 'utils/promise';
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export function captureException(error: any, extra: any = {}) {
   Sentry.withScope((scope) => {
     each(extra, (data, key) => {

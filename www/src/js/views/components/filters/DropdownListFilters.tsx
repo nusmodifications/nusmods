@@ -28,6 +28,8 @@ type State = {
 };
 
 export class DropdownListFiltersComponent extends React.PureComponent<Props, State> {
+  searchInput = React.createRef<HTMLInputElement>();
+
   constructor(props: Props) {
     super(props);
 
@@ -59,8 +61,6 @@ export class DropdownListFiltersComponent extends React.PureComponent<Props, Sta
   focusInput = () => {
     if (this.searchInput.current) this.searchInput.current.focus();
   };
-
-  searchInput = React.createRef<HTMLInputElement>();
 
   stateReducer = (state: DownshiftState<string>, changes: StateChangeOptions<string>) => {
     switch (changes.type) {

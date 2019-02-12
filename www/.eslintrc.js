@@ -32,8 +32,8 @@ module.exports = {
     'no-alert': 'off',
     'prefer-destructuring': 'off',
 
-    // TODO: Fix this
-    'import/no-cycle': 'warn',
+    // TODO: Should fix this - we don't want to accidentally create unresolvable dep chains
+    'import/no-cycle': 'off',
 
     'import/extensions': [
       warnInDevelopment,
@@ -45,6 +45,11 @@ module.exports = {
         tsx: 'never',
       },
     ],
+
+    // Allow properties that are logically grouped together to be written
+    // without line breaks
+    'lines-between-class-members': 'off',
+
     // Enable i++ in for loops
     'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
     'no-bitwise': 'off',
@@ -58,6 +63,7 @@ module.exports = {
       {
         order: [
           'type-annotations',
+          'instance-variables',
           'static-methods',
           'lifecycle',
           '/^on.+$/',

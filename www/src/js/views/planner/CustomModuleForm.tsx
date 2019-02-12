@@ -23,6 +23,11 @@ type Props = OwnProps &
   }>;
 
 export class CustomModuleFormComponent extends React.PureComponent<Props> {
+  // We use an uncontrolled form here because we don't want to update the
+  // module title and MCs live
+  inputModuleCredit = React.createRef<HTMLInputElement>();
+  inputTitle = React.createRef<HTMLInputElement>();
+
   onSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
@@ -41,12 +46,6 @@ export class CustomModuleFormComponent extends React.PureComponent<Props> {
 
     this.props.onFinishEditing();
   };
-
-  // We use an uncontrolled form here because we don't want to update the
-  // module title and MCs live
-  inputModuleCredit = React.createRef<HTMLInputElement>();
-
-  inputTitle = React.createRef<HTMLInputElement>();
 
   resetCustomInfo = () => {
     const { moduleInfo } = this.props;
