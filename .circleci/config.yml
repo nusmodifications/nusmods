@@ -107,11 +107,11 @@ jobs:
           command: yarn --frozen-lockfile --non-interactive --production=false
       - save_cache: *save_node_deps
       - run:
-          name: Type check code
-          command: yarn flow
-      - run:
           name: Lint code
           command: yarn lint:code --format junit -o reports/junit/js-lint-results.xml
+      - run:
+          name: Typecheck Code
+          command: yarn typecheck
       - run:
           name: Test code
           environment:

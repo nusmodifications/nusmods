@@ -69,7 +69,6 @@ const developmentConfig = merge([
       localIdentName: '[name]-[local]_[hash:base64:4]',
     },
   }),
-  parts.flow({ failOnError: false }),
 ]);
 
 module.exports = developmentConfig;

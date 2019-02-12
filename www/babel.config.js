@@ -6,6 +6,7 @@ module.exports = (api) => {
   const IS_TEST = api.env('test');
 
   const presets = [
+    '@babel/preset-typescript',
     [
       '@babel/preset-env',
       {
@@ -18,7 +19,6 @@ module.exports = (api) => {
       },
     ],
     ['@babel/preset-react', { development: !IS_PROD }],
-    '@babel/preset-flow',
   ];
 
   const plugins = [
@@ -33,9 +33,11 @@ module.exports = (api) => {
   if (IS_DEV || IS_PROD) {
     plugins.push(['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }]);
   }
+
   if (IS_DEV) {
     plugins.push('react-hot-loader/babel');
   }
+
   if (IS_PROD) {
     // React Optimize plugins
     plugins.push(
@@ -45,6 +47,7 @@ module.exports = (api) => {
       'babel-plugin-transform-react-class-to-function',
     );
   }
+
   if (IS_TEST) {
     plugins.push('babel-plugin-dynamic-import-node');
   }
