@@ -78,7 +78,28 @@ export function getCacheFactory(academicYear: string) {
 export function getDataWriter(academicYear: string) {
   const yearRoot = getFileRoot(academicYear);
 
+  // Directory structure
+  // -- /2018-2019 (year)
+  //  |--- facultyDepartments.json
+  //  |--- aliases.json
+  //  |--- moduleList.json
+  //  |--- moduleInformation.json
+  //  |--- /modules
+  //  |    |--- CS1010.json
+  //  |    |--- ...
+  //  |
+  //  |--- /semesters
+  //       |--- /1 (semester)
+  //            |--- venues.json
+  //            |--- venueInformation.json
+  //            |--- /modules
+  //                 |--- /CS1010 (module)
+  //                 |    |--- timetable.json
+  //                 |    |--- semesterData.json
+  //                 |--- /...
   return {
+    // Per year information
+
     // List of ModuleCondensed for searching
     moduleList: (data: ModuleCondensed[]) =>
       fs.outputJSON(path.join(yearRoot, 'moduleList.json'), data, writeOptions),
@@ -86,18 +107,6 @@ export function getDataWriter(academicYear: string) {
     // List of partial module info for module finder
     moduleInformation: (data: ModuleInformation[]) =>
       fs.outputJSON(path.join(yearRoot, 'moduleInformation.json'), data, writeOptions),
-
-    // List of venue codes used for searching
-    venueList: (semester: Semester, data: Venue[]) =>
-      fs.outputJSON(path.join(yearRoot, String(semester), 'venues.json'), data, writeOptions),
-
-    // List of venues mapped to their availability
-    venueInformation: (semester: Semester, data: VenueInfo) =>
-      fs.outputJSON(
-        path.join(yearRoot, String(semester), 'venueInformation.json'),
-        data,
-        writeOptions,
-      ),
 
     // Mapping modules to other dual coded modules
     moduleAliases: (data: Aliases) =>
@@ -107,20 +116,40 @@ export function getDataWriter(academicYear: string) {
     facultyDepartments: (data: { [faculty: string]: string[] }) =>
       fs.outputJSON(path.join(yearRoot, 'facultyDepartments.json'), data, writeOptions),
 
+    // Per module information
+
     // Output for a specific module's data
     module: (moduleCode: ModuleCode, data: Module) =>
       fs.outputJSON(path.join(yearRoot, 'modules', `${moduleCode}.json`), data, writeOptions),
 
+    // Per semester information
+
+    // List of venue codes used for searching
+    venueList: (semester: Semester, data: Venue[]) =>
+      fs.outputJSON(
+        path.join(yearRoot, 'semesters', String(semester), 'venues.json'),
+        data,
+        writeOptions,
+      ),
+
+    // List of venues mapped to their availability
+    venueInformation: (semester: Semester, data: VenueInfo) =>
+      fs.outputJSON(
+        path.join(yearRoot, 'semesters', String(semester), 'venueInformation.json'),
+        data,
+        writeOptions,
+      ),
+
     timetable: (semester: Semester, moduleCode: ModuleCode, data: RawLesson[]) =>
       fs.outputJSON(
-        path.join(yearRoot, String(semester), moduleCode, 'timetable.json'),
+        path.join(yearRoot, 'semesters', String(semester), moduleCode, 'timetable.json'),
         data,
         writeOptions,
       ),
 
     semesterData: (semester: Semester, moduleCode: ModuleCode, data: SemesterData) =>
       fs.outputJSON(
-        path.join(yearRoot, String(semester), moduleCode, 'semesterData.json'),
+        path.join(yearRoot, 'semesters', String(semester), moduleCode, 'semesterData.json'),
         data,
         writeOptions,
       ),
