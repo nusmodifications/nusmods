@@ -18,7 +18,7 @@
     "test:watch": "jest --watch",
     "e2e": "nightwatch -e default,safariMobile,safariDesktop,edge",
     "cors": "node scripts/cors-crawler",
-    "ci": "cross-env NODE_ENV=production npm run lint && npm test && npm rebuild node-sass && npm run build"
+    "ci": "cross-env NODE_ENV=production npm run lint && npm run typecheck && npm test && npm rebuild node-sass && npm run build"
   },
   "author": "NUSModifications",
   "license": "MIT",
@@ -26,7 +26,7 @@
     "@babel/cli": "7.2.3",
     "@babel/core": "7.2.2",
     "@babel/plugin-proposal-class-properties": "7.3.0",
-    "@babel/plugin-proposal-object-rest-spread": "7.3.1",
+    "@babel/plugin-proposal-object-rest-spread": "7.3.2",
     "@babel/plugin-proposal-optional-chaining": "7.2.0",
     "@babel/plugin-syntax-dynamic-import": "7.2.0",
     "@babel/plugin-transform-react-constant-elements": "7.2.0",
@@ -135,7 +135,7 @@
     "bootstrap": "4.2.1",
     "bowser": "1.9.4",
     "classnames": "2.2.6",
-    "core-js": "2.6.3",
+    "core-js": "2.6.4",
     "date-fns": "2.0.0-alpha.27",
     "downshift": "2.2.3",
     "ical-generator": "https://github.com/ZhangYiJiang/ical-generator.git#ed6928fe",
