@@ -2,7 +2,6 @@
 const config = {
   plugins: [
     require('autoprefixer'),
-    require('postcss-custom-properties'),
     // Custom plugin used to remove extra ':root' rules
     require('./scripts/postcss-single-root'),
   ],
