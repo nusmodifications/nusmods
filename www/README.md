@@ -22,7 +22,7 @@ Mobile browsers:
 - iOS 10 and above
 - Chrome Mobile last two versions
 
-We try not to break iOS 10 (ie. display white screen of death or use unsupported APIs), but we don't guarantee the page will be appear exactly the same as in more modern browsers.
+We try not to break iOS 9 (ie. display white screen of death or use unsupported APIs), but we don't guarantee the page will be appear exactly the same as in more modern browsers.
 
 ## Contributing
 
