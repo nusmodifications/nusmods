@@ -1,6 +1,6 @@
 import getLocalStorage, { createLocalStorageShim, canUseBrowserLocalStorage } from './localStorage';
 
-describe('#createLocalStorageShim', () => {
+describe(createLocalStorageShim, () => {
   test('should store and return data', () => {
     const shim = createLocalStorageShim();
     const toStore = JSON.stringify({ key: 'value', key2: 2 });
@@ -24,7 +24,7 @@ describe('#createLocalStorageShim', () => {
     expect(shim.privData).toEqual({});
   });
 
-  test('should return undefined when getting nonexistent data', () => {
+  test('should return null when getting nonexistent data', () => {
     const shim = createLocalStorageShim();
     expect(shim.getItem('key')).toBeNull();
   });
@@ -58,11 +58,12 @@ describe('#canUseBrowserLocalStorage', () => {
   test('should return true if localStorage is localStorage-like object', () => {
     // @ts-ignore
     window.localStorage = createLocalStorageShim();
+
     expect(canUseBrowserLocalStorage()).toEqual(true);
   });
 });
 
-describe('#getLocalStorage', () => {
+describe(getLocalStorage, () => {
   test("should return the actual browser's localStorage if the browser can use localStorage", () => {
     expect(canUseBrowserLocalStorage()).toEqual(true);
     expect(getLocalStorage()).toBe(window.localStorage);
@@ -71,6 +72,7 @@ describe('#getLocalStorage', () => {
   test('should return a shim if browser cannot use localStorage', () => {
     // @ts-ignore
     delete window.localStorage;
+
     expect(canUseBrowserLocalStorage()).toEqual(false);
     expect(getLocalStorage()).toMatchObject(
       expect.objectContaining({
