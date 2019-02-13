@@ -344,7 +344,7 @@ function serializeModuleConfig(config: ModuleLessonConfig): string {
   ).join(LESSON_SEP);
 }
 
-function parseModuleConfig(serialized: string | null): ModuleLessonConfig {
+function parseModuleConfig(serialized: string | string[] | null): ModuleLessonConfig {
   const config: ModuleLessonConfig = {};
   if (!serialized) return config;
 
@@ -369,11 +369,14 @@ function parseModuleConfig(serialized: string | null): ModuleLessonConfig {
  * - 1,2,3       => Weeks 1-3
  * - 1,2,3,5,6,7 => Weeks 1-3, 5-7
  */
-export function formatWeeks(weeks: LessonWeek[]) {
+export function formatWeeks(weeks: LessonWeek[]): string | null {
   // TODO: How to handle non-numeric weeks?
   const numericWeeks: number[] = weeks.filter((week): week is number => typeof week === 'number');
 
-  // TODO: Fix this?
+  // All weeks - don't show anything
+  if (numericWeeks.length === 13) return null;
+
+  // TODO: All non-numeric week text / no lessons? Fix this?
   if (numericWeeks.length === 0) {
     return numericWeeks.join(', ');
   }

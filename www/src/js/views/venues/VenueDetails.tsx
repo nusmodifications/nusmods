@@ -29,13 +29,11 @@ type Props = RouteComponentProps & {
 
 export class VenueDetailsComponent extends React.PureComponent<Props> {
   arrangedLessons() {
-    const lessons = flatMap(this.props.availability, (day) => day.Classes).map(
-      (venueLesson) => ({
-        ...venueLesson,
-        ModuleTitle: '',
-        isModifiable: true,
-      }),
-    );
+    const lessons = flatMap(this.props.availability, (day) => day.Classes).map((venueLesson) => ({
+      ...venueLesson,
+      ModuleTitle: '',
+      isModifiable: true,
+    }));
 
     const coloredLessons = colorLessonsByKey(lessons, 'ModuleCode');
     // @ts-ignore TODO: Fix this typing

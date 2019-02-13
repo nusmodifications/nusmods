@@ -193,7 +193,13 @@ export default class ModulePageContent extends React.Component<Props, State> {
 
             <section className={styles.section} id={SIDE_MENU_ITEMS.prerequisites}>
               <h2 className={styles.sectionHeading}>Prerequisite Tree</h2>
-              <ErrorBoundary>{null /* <ModuleTree module={module} /> */}</ErrorBoundary>
+              <ErrorBoundary>
+                <ModuleTree
+                  moduleCode={ModuleCode}
+                  prereqTree={module.PrereqTree}
+                  fulfillRequirements={module.FulfillRequirements}
+                />
+              </ErrorBoundary>
             </section>
 
             <section className={styles.section} id="timetable">

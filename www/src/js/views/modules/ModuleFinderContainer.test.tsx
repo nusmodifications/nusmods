@@ -31,13 +31,16 @@ describe(ModuleFinderContainerComponent, () => {
     jest.spyOn(console, 'info').mockImplementation(_.noop);
 
     // Mock axios to stop it from firing API requests
-    jest
-      .spyOn(axios, 'get')
-      .mockImplementation((url) =>
-        url.includes('facultyDepartments')
-          ? Promise.resolve({ data: {} } as any)
-          : Promise.resolve({ data: [] } as any),
-      );
+    jest.spyOn(axios, 'get').mockImplementation((url) =>
+      url.includes('facultyDepartments')
+        ? Promise.resolve({
+            data: {
+              'School of Computing': ['Computer Science'],
+              'Faculty of Science': ['Mathematics'],
+            },
+          } as any)
+        : Promise.resolve({ data: [] } as any),
+    );
   });
 
   afterEach(() => {
@@ -98,14 +101,14 @@ describe(ModuleFinderContainerComponent, () => {
       level: ['2'],
     });
 
-    expect(activeFilters(await createContainer(['?faculty=computing']))).toEqual({
-      faculty: ['computing'],
+    expect(activeFilters(await createContainer(['?faculty=school-of-computing']))).toEqual({
+      faculty: ['school-of-computing'],
     });
 
     expect(
-      activeFilters(await createContainer(['?department=computer science,mathematics&mc=0'])),
+      activeFilters(await createContainer(['?department=computer-science,mathematics&mc=0'])),
     ).toEqual({
-      department: ['computer science', 'mathematics'],
+      department: ['computer-science', 'mathematics'],
       mc: ['0'],
     });
   });
@@ -114,15 +117,15 @@ describe(ModuleFinderContainerComponent, () => {
     // Simulate the URL changing to check that the filter state changes with it
     const container = await createContainer();
 
-    container.history.push('?faculty=computing');
+    container.history.push('?faculty=school-of-computing');
     expect(activeFilters(container)).toEqual({
-      faculty: ['computing'],
+      faculty: ['school-of-computing'],
     });
 
     container.history.push('?mc=0&department=computer-science');
     expect(activeFilters(container)).toEqual({
       mc: ['0'],
-      department: ['computer science'],
+      department: ['computer-science'],
     });
 
     container.history.replace('?mc=0');

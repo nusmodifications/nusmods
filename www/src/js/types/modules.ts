@@ -14,7 +14,7 @@ export type ModuleCode = string; // E.g. "CS3216"
 export type ModuleTitle = string;
 export type Semester = number; // E.g. 1/2/3/4. 3 and 4 means special sem i and ii.
 export type LessonWeek = number | 'Reading' | 'Recess' | 'Orientation';
-export type Workload = string | number[];
+export type Workload = string | [number, number, number, number, number];
 export type Venue = string;
 
 // Recursive tree of module codes and boolean operators for the prereq tree

@@ -41,6 +41,8 @@ function TimetableCell(props: Props) {
       }
     : {};
 
+  const weekText = formatWeeks(lesson.Weeks);
+
   /* eslint-disable */
   return (
     <Cell
@@ -67,7 +69,7 @@ function TimetableCell(props: Props) {
           {LESSON_TYPE_ABBREV[lesson.LessonType]} [{lesson.ClassNo}]
         </div>
         <div>{lesson.Venue}</div>
-        <div>{formatWeeks(lesson.Weeks)}</div>
+        {weekText && <div>{weekText}</div>}
       </div>
     </Cell>
   );

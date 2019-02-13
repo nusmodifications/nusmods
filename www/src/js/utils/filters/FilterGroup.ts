@@ -1,7 +1,7 @@
 import { keyBy, values } from 'lodash';
 import update from 'immutability-helper';
 
-import { Module, ModuleCode, ModuleInformation } from "types/modules";
+import { Module, ModuleCode, ModuleInformation } from 'types/modules';
 import { FilterGroupId } from 'types/views';
 
 import { intersection, union } from 'utils/set';
@@ -131,7 +131,10 @@ export default class FilterGroup<Filter extends ModuleFilter> {
    * @param {FilterGroup<any>[]} filterGroups
    * @returns {Module[]}
    */
-  static apply(modules: ModuleInformation[], filterGroups: FilterGroup<any>[]): ModuleInformation[] {
+  static apply(
+    modules: ModuleInformation[],
+    filterGroups: FilterGroup<any>[],
+  ): ModuleInformation[] {
     const filteredModuleCodes = FilterGroup.union(filterGroups);
     if (!filteredModuleCodes) return modules;
     return modules.filter((module) => filteredModuleCodes.has(module.ModuleCode));

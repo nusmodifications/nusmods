@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { sum, entries, partition, zipObject, range } from 'lodash';
+import { sum, partition, zip, range } from 'lodash';
 
 import { Workload, WORKLOAD_COMPONENTS, WorkloadComponent } from 'types/modules';
 import Tooltip from 'views/components/Tooltip';
@@ -55,12 +55,16 @@ function workloadBlocks(component: WorkloadComponent, hours: number): React.Reac
   return blocks;
 }
 
-type WorkloadMap = { [workload in WorkloadComponent]: number };
+type WorkloadTuple = [WorkloadComponent, number];
 
-function sortWorkload(workload: WorkloadMap): [WorkloadComponent, number][] {
+function sortWorkload(workload: [number, number, number, number, number]): WorkloadTuple[] {
+  const components = zip(WORKLOAD_COMPONENTS, workload) as WorkloadTuple[];
+
+  // Only show non-empty components
+  const nonEmptyComponents = components.filter(([, hours]) => hours > 0);
+
   // Push longer components (those that take up more than one row) down
-  const components = entries(workload) as [WorkloadComponent, number][];
-  const [long, short] = partition(components, ([, hours]) => Math.ceil(hours) >= ROW_MAX);
+  const [long, short] = partition(nonEmptyComponents, ([, hours]) => Math.ceil(hours) >= ROW_MAX);
   return short.concat(long);
 }
 
@@ -83,15 +87,13 @@ export default class ModuleWorkload extends React.PureComponent<Props> {
     const { workload } = this.props;
     if (typeof workload === 'string') return this.renderFallback();
 
-    // Pair the workload with their numbers
-    const workloadMap = zipObject(WORKLOAD_COMPONENTS, workload) as WorkloadMap;
     const total = sum(workload);
 
     return (
       <div className="module-workload-container">
         <h4>Workload - {total} hrs</h4>
         <div className="module-workload">
-          {sortWorkload(workloadMap).map(([component, hours]) => (
+          {sortWorkload(workload).map(([component, hours]) => (
             <Tooltip content={`${hours} hours of ${component}`} key={component}>
               <div
                 className="module-workload-component"
