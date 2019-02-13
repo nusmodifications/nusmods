@@ -3,744 +3,12 @@
   "ModuleTitle": "Programming Methodology",
   "AcadYear": "2017/2018",
   "Department": "Computer Science",
+  "Faculty": "Computing",
   "ModuleDescription": "This module introduces the fundamental concepts of problem solving by computing and programming using an imperative programming language. It is the first and foremost introductory course to computing and is equivalent to CS1010 and CS1010E Programming Methodology. Topics covered include problem solving by computing, writing pseudo-codes, basic problem formulation and problem solving, program development, coding, testing and debugging, fundamental programming constructs (variables, types, expressions, assignments, functions, control structures, etc.), fundamental data structures: arrays, strings and structures, simple file processing, and basic recursion. This module is appropriate for FoS students.",
   "ModuleCredit": "4",
-  "Workload": "2-1-1-3-3",
-  "Types": [
-    "UEM"
-  ],
+  "Workload": [2, 1, 1, 3, 3],
   "Preclusion": "CG1101, CS1010, CS1010E, CS1010FC, CS1101, CS1101C, CS1101S",
-  "CorsBiddingStats": [
-    {
-      "AcadYear": "2013/2014",
-      "Semester": "1",
-      "Round": "1A",
-      "Group": "Lecture 1",
-      "Quota": "30",
-      "Bidders": "41",
-      "LowestBid": "50",
-      "LowestSuccessfulBid": "268",
-      "HighestBid": "2000",
-      "Faculty": "Science",
-      "StudentAcctType": "Returning Students [P]"
-    },
-    {
-      "AcadYear": "2013/2014",
-      "Semester": "1",
-      "Round": "1C",
-      "Group": "Lecture 1",
-      "Quota": "150",
-      "Bidders": "126",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "1",
-      "HighestBid": "460",
-      "Faculty": "Science",
-      "StudentAcctType": "New Students [P]"
-    },
-    {
-      "AcadYear": "2013/2014",
-      "Semester": "1",
-      "Round": "2A",
-      "Group": "Lecture 1",
-      "Quota": "24",
-      "Bidders": "7",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "1",
-      "HighestBid": "594",
-      "Faculty": "Science",
-      "StudentAcctType": "New Students [P]"
-    },
-    {
-      "AcadYear": "2013/2014",
-      "Semester": "1",
-      "Round": "2B",
-      "Group": "Lecture 1",
-      "Quota": "19",
-      "Bidders": "1",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "1",
-      "HighestBid": "1",
-      "Faculty": "Science",
-      "StudentAcctType": "New Students [P]"
-    },
-    {
-      "AcadYear": "2013/2014",
-      "Semester": "1",
-      "Round": "3A",
-      "Group": "Lecture 1",
-      "Quota": "18",
-      "Bidders": "26",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "902",
-      "HighestBid": "2598",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "NUS Students [P]"
-    },
-    {
-      "AcadYear": "2013/2014",
-      "Semester": "1",
-      "Round": "3B",
-      "Group": "Lecture 1",
-      "Quota": "2",
-      "Bidders": "5",
-      "LowestBid": "2",
-      "LowestSuccessfulBid": "1313",
-      "HighestBid": "1492",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "NUS Students [P]"
-    },
-    {
-      "AcadYear": "2013/2014",
-      "Semester": "2",
-      "Round": "1A",
-      "Group": "Lecture 1",
-      "Quota": "40",
-      "Bidders": "13",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "1",
-      "HighestBid": "400",
-      "Faculty": "Science",
-      "StudentAcctType": "Returning Students [P]"
-    },
-    {
-      "AcadYear": "2013/2014",
-      "Semester": "2",
-      "Round": "1A",
-      "Group": "Lecture 1",
-      "Quota": "114",
-      "Bidders": "144",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "88",
-      "HighestBid": "900",
-      "Faculty": "Science",
-      "StudentAcctType": "New Students [P]"
-    },
-    {
-      "AcadYear": "2013/2014",
-      "Semester": "2",
-      "Round": "1B",
-      "Group": "Lecture 1",
-      "Quota": "27",
-      "Bidders": "4",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "1",
-      "HighestBid": "357",
-      "Faculty": "Science",
-      "StudentAcctType": "Returning Students [P]"
-    },
-    {
-      "AcadYear": "2013/2014",
-      "Semester": "2",
-      "Round": "2A",
-      "Group": "Lecture 1",
-      "Quota": "23",
-      "Bidders": "36",
-      "LowestBid": "151",
-      "LowestSuccessfulBid": "291",
-      "HighestBid": "1189",
-      "Faculty": "Science",
-      "StudentAcctType": "Returning Students and New Students [P]"
-    },
-    {
-      "AcadYear": "2013/2014",
-      "Semester": "2",
-      "Round": "2B",
-      "Group": "Lecture 1",
-      "Quota": "1",
-      "Bidders": "5",
-      "LowestBid": "12",
-      "LowestSuccessfulBid": "2900",
-      "HighestBid": "2900",
-      "Faculty": "Science",
-      "StudentAcctType": "Returning Students and New Students [P]"
-    },
-    {
-      "AcadYear": "2013/2014",
-      "Semester": "2",
-      "Round": "3B",
-      "Group": "Lecture 1",
-      "Quota": "3",
-      "Bidders": "9",
-      "LowestBid": "59",
-      "LowestSuccessfulBid": "2331",
-      "HighestBid": "3543",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "NUS Students [P]"
-    },
-    {
-      "AcadYear": "2014/2015",
-      "Semester": "1",
-      "Round": "1A",
-      "Group": "Lecture 1",
-      "Quota": "30",
-      "Bidders": "21",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "1",
-      "HighestBid": "812",
-      "Faculty": "Science",
-      "StudentAcctType": "Returning Students [P]"
-    },
-    {
-      "AcadYear": "2014/2015",
-      "Semester": "1",
-      "Round": "1B",
-      "Group": "Lecture 1",
-      "Quota": "9",
-      "Bidders": "2",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "1",
-      "HighestBid": "200",
-      "Faculty": "Science",
-      "StudentAcctType": "Returning Students [P]"
-    },
-    {
-      "AcadYear": "2014/2015",
-      "Semester": "1",
-      "Round": "1C",
-      "Group": "Lecture 1",
-      "Quota": "7",
-      "Bidders": "13",
-      "LowestBid": "200",
-      "LowestSuccessfulBid": "1512",
-      "HighestBid": "4006",
-      "Faculty": "Science",
-      "StudentAcctType": "Returning Students [P]"
-    },
-    {
-      "AcadYear": "2014/2015",
-      "Semester": "1",
-      "Round": "1C",
-      "Group": "Lecture 1",
-      "Quota": "150",
-      "Bidders": "217",
-      "LowestBid": "2",
-      "LowestSuccessfulBid": "183",
-      "HighestBid": "596",
-      "Faculty": "Science",
-      "StudentAcctType": "New Students [P]"
-    },
-    {
-      "AcadYear": "2014/2015",
-      "Semester": "1",
-      "Round": "2A",
-      "Group": "Lecture 1",
-      "Quota": "1",
-      "Bidders": "4",
-      "LowestBid": "2900",
-      "LowestSuccessfulBid": "4000",
-      "HighestBid": "4000",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "Returning Students [P]"
-    },
-    {
-      "AcadYear": "2014/2015",
-      "Semester": "2",
-      "Round": "1A",
-      "Group": "Lecture 1",
-      "Quota": "40",
-      "Bidders": "17",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "1",
-      "HighestBid": "888",
-      "Faculty": "Science",
-      "StudentAcctType": "Returning Students [P]"
-    },
-    {
-      "AcadYear": "2014/2015",
-      "Semester": "2",
-      "Round": "1A",
-      "Group": "Lecture 1",
-      "Quota": "2",
-      "Bidders": "0",
-      "LowestBid": "0",
-      "LowestSuccessfulBid": "0",
-      "HighestBid": "0",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "Returning Students [P]"
-    },
-    {
-      "AcadYear": "2014/2015",
-      "Semester": "2",
-      "Round": "1A",
-      "Group": "Lecture 1",
-      "Quota": "114",
-      "Bidders": "172",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "223",
-      "HighestBid": "900",
-      "Faculty": "Science",
-      "StudentAcctType": "New Students [P]"
-    },
-    {
-      "AcadYear": "2014/2015",
-      "Semester": "2",
-      "Round": "1A",
-      "Group": "Lecture 1",
-      "Quota": "5",
-      "Bidders": "0",
-      "LowestBid": "0",
-      "LowestSuccessfulBid": "0",
-      "HighestBid": "0",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "New Students [P]"
-    },
-    {
-      "AcadYear": "2014/2015",
-      "Semester": "2",
-      "Round": "1B",
-      "Group": "Lecture 1",
-      "Quota": "23",
-      "Bidders": "0",
-      "LowestBid": "0",
-      "LowestSuccessfulBid": "0",
-      "HighestBid": "0",
-      "Faculty": "Science",
-      "StudentAcctType": "Returning Students [P]"
-    },
-    {
-      "AcadYear": "2014/2015",
-      "Semester": "2",
-      "Round": "1B",
-      "Group": "Lecture 1",
-      "Quota": "2",
-      "Bidders": "0",
-      "LowestBid": "0",
-      "LowestSuccessfulBid": "0",
-      "HighestBid": "0",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "Returning Students [P]"
-    },
-    {
-      "AcadYear": "2014/2015",
-      "Semester": "2",
-      "Round": "1B",
-      "Group": "Lecture 1",
-      "Quota": "5",
-      "Bidders": "0",
-      "LowestBid": "0",
-      "LowestSuccessfulBid": "0",
-      "HighestBid": "0",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "New Students [P]"
-    },
-    {
-      "AcadYear": "2014/2015",
-      "Semester": "2",
-      "Round": "2A",
-      "Group": "Lecture 1",
-      "Quota": "23",
-      "Bidders": "38",
-      "LowestBid": "400",
-      "LowestSuccessfulBid": "700",
-      "HighestBid": "1243",
-      "Faculty": "Science",
-      "StudentAcctType": "Returning Students and New Students [P]"
-    },
-    {
-      "AcadYear": "2014/2015",
-      "Semester": "2",
-      "Round": "2A",
-      "Group": "Lecture 1",
-      "Quota": "7",
-      "Bidders": "0",
-      "LowestBid": "0",
-      "LowestSuccessfulBid": "0",
-      "HighestBid": "0",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "Returning Students and New Students [P]"
-    },
-    {
-      "AcadYear": "2014/2015",
-      "Semester": "2",
-      "Round": "2B",
-      "Group": "Lecture 1",
-      "Quota": "7",
-      "Bidders": "0",
-      "LowestBid": "0",
-      "LowestSuccessfulBid": "0",
-      "HighestBid": "0",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "Returning Students and New Students [P]"
-    },
-    {
-      "AcadYear": "2014/2015",
-      "Semester": "2",
-      "Round": "3A",
-      "Group": "Lecture 1",
-      "Quota": "7",
-      "Bidders": "20",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "2000",
-      "HighestBid": "3500",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "NUS Students [P]"
-    },
-    {
-      "AcadYear": "2014/2015",
-      "Semester": "2",
-      "Round": "3B",
-      "Group": "Lecture 1",
-      "Quota": "2",
-      "Bidders": "18",
-      "LowestBid": "218",
-      "LowestSuccessfulBid": "1524",
-      "HighestBid": "1680",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "NUS Students [P]"
-    },
-    {
-      "AcadYear": "2015/2016",
-      "Semester": "1",
-      "Round": "1A",
-      "Group": "Lecture 1",
-      "Quota": "15",
-      "Bidders": "35",
-      "LowestBid": "2",
-      "LowestSuccessfulBid": "1217",
-      "HighestBid": "1808",
-      "Faculty": "Science",
-      "StudentAcctType": "Returning Students [P]"
-    },
-    {
-      "AcadYear": "2015/2016",
-      "Semester": "1",
-      "Round": "1C",
-      "Group": "Lecture 1",
-      "Quota": "75",
-      "Bidders": "168",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "557",
-      "HighestBid": "1217",
-      "Faculty": "Science",
-      "StudentAcctType": "New Students [P]"
-    },
-    {
-      "AcadYear": "2015/2016",
-      "Semester": "1",
-      "Round": "1C",
-      "Group": "Lecture 1",
-      "Quota": "30",
-      "Bidders": "0",
-      "LowestBid": "0",
-      "LowestSuccessfulBid": "0",
-      "HighestBid": "0",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "NUS Students [G]"
-    },
-    {
-      "AcadYear": "2015/2016",
-      "Semester": "1",
-      "Round": "2A",
-      "Group": "Lecture 1",
-      "Quota": "30",
-      "Bidders": "54",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "1238",
-      "HighestBid": "3206",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "Returning Students [P] and NUS Students [G]"
-    },
-    {
-      "AcadYear": "2015/2016",
-      "Semester": "2",
-      "Round": "1A",
-      "Group": "Lecture 1",
-      "Quota": "5",
-      "Bidders": "17",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "1471",
-      "HighestBid": "2667",
-      "Faculty": "Science",
-      "StudentAcctType": "Returning Students [P]"
-    },
-    {
-      "AcadYear": "2015/2016",
-      "Semester": "2",
-      "Round": "1A",
-      "Group": "Lecture 1",
-      "Quota": "95",
-      "Bidders": "151",
-      "LowestBid": "5",
-      "LowestSuccessfulBid": "711",
-      "HighestBid": "1289",
-      "Faculty": "Science",
-      "StudentAcctType": "New Students [P]"
-    },
-    {
-      "AcadYear": "2015/2016",
-      "Semester": "2",
-      "Round": "1A",
-      "Group": "Lecture 1",
-      "Quota": "10",
-      "Bidders": "2",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "1",
-      "HighestBid": "1",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "New Students [P]"
-    },
-    {
-      "AcadYear": "2015/2016",
-      "Semester": "2",
-      "Round": "1B",
-      "Group": "Lecture 1",
-      "Quota": "8",
-      "Bidders": "0",
-      "LowestBid": "0",
-      "LowestSuccessfulBid": "0",
-      "HighestBid": "0",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "New Students [P]"
-    },
-    {
-      "AcadYear": "2015/2016",
-      "Semester": "2",
-      "Round": "2A",
-      "Group": "Lecture 1",
-      "Quota": "8",
-      "Bidders": "2",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "1",
-      "HighestBid": "2",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "Returning Students and New Students [P]"
-    },
-    {
-      "AcadYear": "2015/2016",
-      "Semester": "2",
-      "Round": "2A",
-      "Group": "Lecture 1",
-      "Quota": "40",
-      "Bidders": "1",
-      "LowestBid": "27",
-      "LowestSuccessfulBid": "1",
-      "HighestBid": "27",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "NUS Students [G]"
-    },
-    {
-      "AcadYear": "2015/2016",
-      "Semester": "2",
-      "Round": "2B",
-      "Group": "Lecture 1",
-      "Quota": "6",
-      "Bidders": "0",
-      "LowestBid": "0",
-      "LowestSuccessfulBid": "0",
-      "HighestBid": "0",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "Returning Students and New Students [P]"
-    },
-    {
-      "AcadYear": "2015/2016",
-      "Semester": "2",
-      "Round": "2B",
-      "Group": "Lecture 1",
-      "Quota": "39",
-      "Bidders": "61",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "696",
-      "HighestBid": "2569",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "NUS Students [G]"
-    },
-    {
-      "AcadYear": "2015/2016",
-      "Semester": "2",
-      "Round": "3A",
-      "Group": "Lecture 1",
-      "Quota": "6",
-      "Bidders": "31",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "2616",
-      "HighestBid": "4135",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "NUS Students [P, G]"
-    },
-    {
-      "Quota": "30",
-      "Bidders": "45",
-      "LowestBid": "3",
-      "LowestSuccessfulBid": "797",
-      "HighestBid": "1908",
-      "Faculty": "Science",
-      "StudentAcctType": "Returning Students [P]",
-      "AcadYear": "2016/2017",
-      "Semester": "1",
-      "Round": "1A",
-      "Group": "Lecture 1"
-    },
-    {
-      "Quota": "105",
-      "Bidders": "155",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "593",
-      "HighestBid": "599",
-      "Faculty": "Science",
-      "StudentAcctType": "New Students [P]",
-      "AcadYear": "2016/2017",
-      "Semester": "1",
-      "Round": "1C",
-      "Group": "Lecture 1"
-    },
-    {
-      "Quota": "10",
-      "Bidders": "1",
-      "LowestBid": "100",
-      "LowestSuccessfulBid": "1",
-      "HighestBid": "100",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "NUS Students [G]",
-      "AcadYear": "2016/2017",
-      "Semester": "1",
-      "Round": "1C",
-      "Group": "Lecture 1"
-    },
-    {
-      "Quota": "9",
-      "Bidders": "29",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "3127",
-      "HighestBid": "4400",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "Returning Students [P] and NUS Students [G]",
-      "AcadYear": "2016/2017",
-      "Semester": "1",
-      "Round": "2A",
-      "Group": "Lecture 1"
-    },
-    {
-      "Quota": "30",
-      "Bidders": "37",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "805",
-      "HighestBid": "3000",
-      "Faculty": "Science",
-      "StudentAcctType": "Returning Students [P]",
-      "AcadYear": "2016/2017",
-      "Semester": "2",
-      "Round": "1A",
-      "Group": "Lecture 1"
-    },
-    {
-      "Quota": "100",
-      "Bidders": "124",
-      "LowestBid": "2",
-      "LowestSuccessfulBid": "300",
-      "HighestBid": "1269",
-      "Faculty": "Science",
-      "StudentAcctType": "New Students [P]",
-      "AcadYear": "2016/2017",
-      "Semester": "2",
-      "Round": "1A",
-      "Group": "Lecture 1"
-    },
-    {
-      "Quota": "50",
-      "Bidders": "2",
-      "LowestBid": "31",
-      "LowestSuccessfulBid": "1",
-      "HighestBid": "33",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "NUS Students [G]",
-      "AcadYear": "2016/2017",
-      "Semester": "2",
-      "Round": "2A",
-      "Group": "Lecture 1"
-    },
-    {
-      "Quota": "48",
-      "Bidders": "77",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "1103",
-      "HighestBid": "3000",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "NUS Students [G]",
-      "AcadYear": "2016/2017",
-      "Semester": "2",
-      "Round": "2B",
-      "Group": "Lecture 1"
-    },
-    {
-      "Quota": "30",
-      "Bidders": "65",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "1255",
-      "HighestBid": "3756",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "NUS Students [P, G]",
-      "AcadYear": "2016/2017",
-      "Semester": "2",
-      "Round": "3B",
-      "Group": "Lecture 1"
-    },
-    {
-      "Quota": "30",
-      "Bidders": "29",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "1",
-      "HighestBid": "2901",
-      "Faculty": "Science",
-      "StudentAcctType": "Returning Students [P]",
-      "AcadYear": "2017/2018",
-      "Semester": "1",
-      "Round": "1A",
-      "Group": "Lecture 1"
-    },
-    {
-      "Quota": "1",
-      "Bidders": "0",
-      "LowestBid": "0",
-      "LowestSuccessfulBid": "0",
-      "HighestBid": "0",
-      "Faculty": "Science",
-      "StudentAcctType": "Returning Students [P]",
-      "AcadYear": "2017/2018",
-      "Semester": "1",
-      "Round": "1B",
-      "Group": "Lecture 1"
-    },
-    {
-      "Quota": "1",
-      "Bidders": "36",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "4400",
-      "HighestBid": "4400",
-      "Faculty": "Science",
-      "StudentAcctType": "Returning Students [P]",
-      "AcadYear": "2017/2018",
-      "Semester": "1",
-      "Round": "1C",
-      "Group": "Lecture 1"
-    },
-    {
-      "Quota": "109",
-      "Bidders": "140",
-      "LowestBid": "12",
-      "LowestSuccessfulBid": "317",
-      "HighestBid": "703",
-      "Faculty": "Science",
-      "StudentAcctType": "New Students [P]",
-      "AcadYear": "2017/2018",
-      "Semester": "1",
-      "Round": "1C",
-      "Group": "Lecture 1"
-    },
-    {
-      "Quota": "31",
-      "Bidders": "69",
-      "LowestBid": "1",
-      "LowestSuccessfulBid": "2011",
-      "HighestBid": "5433",
-      "Faculty": "School Of Computing",
-      "StudentAcctType": "NUS Students [P, G]",
-      "AcadYear": "2017/2018",
-      "Semester": "1",
-      "Round": "3A",
-      "Group": "Lecture 1"
-    }
-  ],
-  "History": [
+  "SemesterData": [
     {
       "Semester": 2,
       "ExamDate": "2018-05-07T17:00+0800",
@@ -748,7 +16,7 @@
         {
           "ClassNo": "1",
           "LessonType": "Lecture",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Wednesday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -757,7 +25,7 @@
         {
           "ClassNo": "1",
           "LessonType": "Recitation",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1600",
           "EndTime": "1700",
@@ -766,7 +34,7 @@
         {
           "ClassNo": "10",
           "LessonType": "Recitation",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Friday",
           "StartTime": "1300",
           "EndTime": "1400",
@@ -775,7 +43,7 @@
         {
           "ClassNo": "2",
           "LessonType": "Recitation",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1700",
           "EndTime": "1800",
@@ -784,7 +52,7 @@
         {
           "ClassNo": "3",
           "LessonType": "Recitation",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Friday",
           "StartTime": "0900",
           "EndTime": "1000",
@@ -793,7 +61,7 @@
         {
           "ClassNo": "4",
           "LessonType": "Recitation",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Friday",
           "StartTime": "0900",
           "EndTime": "1000",
@@ -802,7 +70,7 @@
         {
           "ClassNo": "5",
           "LessonType": "Recitation",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1100",
           "EndTime": "1200",
@@ -811,7 +79,7 @@
         {
           "ClassNo": "6",
           "LessonType": "Recitation",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1200",
           "EndTime": "1300",
@@ -820,7 +88,7 @@
         {
           "ClassNo": "7",
           "LessonType": "Recitation",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Friday",
           "StartTime": "1400",
           "EndTime": "1500",
@@ -829,7 +97,7 @@
         {
           "ClassNo": "8",
           "LessonType": "Recitation",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Friday",
           "StartTime": "1500",
           "EndTime": "1600",
@@ -838,7 +106,7 @@
         {
           "ClassNo": "9",
           "LessonType": "Recitation",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Friday",
           "StartTime": "1200",
           "EndTime": "1300",
@@ -847,7 +115,7 @@
         {
           "ClassNo": "1",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "0900",
           "EndTime": "1000",
@@ -856,7 +124,7 @@
         {
           "ClassNo": "10",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "0900",
           "EndTime": "1000",
@@ -865,7 +133,7 @@
         {
           "ClassNo": "11",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1000",
           "EndTime": "1100",
@@ -874,7 +142,7 @@
         {
           "ClassNo": "12",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1100",
           "EndTime": "1200",
@@ -883,7 +151,7 @@
         {
           "ClassNo": "13",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1200",
           "EndTime": "1300",
@@ -892,7 +160,7 @@
         {
           "ClassNo": "14",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1300",
           "EndTime": "1400",
@@ -901,7 +169,7 @@
         {
           "ClassNo": "15",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1400",
           "EndTime": "1500",
@@ -910,7 +178,7 @@
         {
           "ClassNo": "16",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1500",
           "EndTime": "1600",
@@ -919,7 +187,7 @@
         {
           "ClassNo": "17",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1600",
           "EndTime": "1700",
@@ -928,7 +196,7 @@
         {
           "ClassNo": "18",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1700",
           "EndTime": "1800",
@@ -937,7 +205,7 @@
         {
           "ClassNo": "19",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1100",
           "EndTime": "1200",
@@ -946,7 +214,7 @@
         {
           "ClassNo": "2",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1000",
           "EndTime": "1100",
@@ -955,7 +223,7 @@
         {
           "ClassNo": "20",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1200",
           "EndTime": "1300",
@@ -964,7 +232,7 @@
         {
           "ClassNo": "21",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1300",
           "EndTime": "1400",
@@ -973,7 +241,7 @@
         {
           "ClassNo": "22",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1400",
           "EndTime": "1500",
@@ -982,7 +250,7 @@
         {
           "ClassNo": "23",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1700",
           "EndTime": "1800",
@@ -991,7 +259,7 @@
         {
           "ClassNo": "24",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "0900",
           "EndTime": "1000",
@@ -1000,7 +268,7 @@
         {
           "ClassNo": "25",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1000",
           "EndTime": "1100",
@@ -1009,7 +277,7 @@
         {
           "ClassNo": "26",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1100",
           "EndTime": "1200",
@@ -1018,7 +286,7 @@
         {
           "ClassNo": "27",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1200",
           "EndTime": "1300",
@@ -1027,7 +295,7 @@
         {
           "ClassNo": "28",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1300",
           "EndTime": "1400",
@@ -1036,7 +304,7 @@
         {
           "ClassNo": "29",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1400",
           "EndTime": "1500",
@@ -1045,7 +313,7 @@
         {
           "ClassNo": "3",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1100",
           "EndTime": "1200",
@@ -1054,7 +322,7 @@
         {
           "ClassNo": "30",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1500",
           "EndTime": "1600",
@@ -1063,7 +331,7 @@
         {
           "ClassNo": "31",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1600",
           "EndTime": "1700",
@@ -1072,7 +340,7 @@
         {
           "ClassNo": "32",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1700",
           "EndTime": "1800",
@@ -1081,7 +349,7 @@
         {
           "ClassNo": "4",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1200",
           "EndTime": "1300",
@@ -1090,7 +358,7 @@
         {
           "ClassNo": "5",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1300",
           "EndTime": "1400",
@@ -1099,7 +367,7 @@
         {
           "ClassNo": "6",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1400",
           "EndTime": "1500",
@@ -1108,7 +376,7 @@
         {
           "ClassNo": "7",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1500",
           "EndTime": "1600",
@@ -1117,7 +385,7 @@
         {
           "ClassNo": "8",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1600",
           "EndTime": "1700",
@@ -1126,25 +394,12 @@
         {
           "ClassNo": "9",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1700",
           "EndTime": "1800",
           "Venue": "AS6-0208"
         }
-      ],
-      "LecturePeriods": [
-        "Wednesday Afternoon"
-      ],
-      "TutorialPeriods": [
-        "Thursday Afternoon",
-        "Friday Afternoon",
-        "Friday Morning",
-        "Thursday Morning",
-        "Monday Morning",
-        "Tuesday Morning",
-        "Tuesday Afternoon",
-        "Monday Afternoon"
       ]
     },
     {
@@ -1154,7 +409,7 @@
         {
           "ClassNo": "1",
           "LessonType": "Lecture",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Wednesday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -1163,7 +418,7 @@
         {
           "ClassNo": "1",
           "LessonType": "Recitation",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1200",
           "EndTime": "1300",
@@ -1172,7 +427,7 @@
         {
           "ClassNo": "10",
           "LessonType": "Recitation",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1200",
           "EndTime": "1300",
@@ -1181,7 +436,7 @@
         {
           "ClassNo": "2",
           "LessonType": "Recitation",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1300",
           "EndTime": "1400",
@@ -1190,7 +445,7 @@
         {
           "ClassNo": "3",
           "LessonType": "Recitation",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1600",
           "EndTime": "1700",
@@ -1199,7 +454,7 @@
         {
           "ClassNo": "4",
           "LessonType": "Recitation",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1700",
           "EndTime": "1800",
@@ -1208,7 +463,7 @@
         {
           "ClassNo": "5",
           "LessonType": "Recitation",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Friday",
           "StartTime": "1200",
           "EndTime": "1300",
@@ -1217,7 +472,7 @@
         {
           "ClassNo": "6",
           "LessonType": "Recitation",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Friday",
           "StartTime": "1300",
           "EndTime": "1400",
@@ -1226,7 +481,7 @@
         {
           "ClassNo": "7",
           "LessonType": "Recitation",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Friday",
           "StartTime": "1000",
           "EndTime": "1100",
@@ -1235,7 +490,7 @@
         {
           "ClassNo": "8",
           "LessonType": "Recitation",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Friday",
           "StartTime": "0900",
           "EndTime": "1000",
@@ -1244,7 +499,7 @@
         {
           "ClassNo": "9",
           "LessonType": "Recitation",
-          "WeekText": "Every Week",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1100",
           "EndTime": "1200",
@@ -1253,7 +508,7 @@
         {
           "ClassNo": "1",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "0900",
           "EndTime": "1000",
@@ -1262,7 +517,7 @@
         {
           "ClassNo": "10",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "0900",
           "EndTime": "1000",
@@ -1271,7 +526,7 @@
         {
           "ClassNo": "11",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1000",
           "EndTime": "1100",
@@ -1280,7 +535,7 @@
         {
           "ClassNo": "12",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1100",
           "EndTime": "1200",
@@ -1289,7 +544,7 @@
         {
           "ClassNo": "13",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1200",
           "EndTime": "1300",
@@ -1298,7 +553,7 @@
         {
           "ClassNo": "14",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1300",
           "EndTime": "1400",
@@ -1307,7 +562,7 @@
         {
           "ClassNo": "15",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1400",
           "EndTime": "1500",
@@ -1316,7 +571,7 @@
         {
           "ClassNo": "16",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1500",
           "EndTime": "1600",
@@ -1325,7 +580,7 @@
         {
           "ClassNo": "17",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1600",
           "EndTime": "1700",
@@ -1334,7 +589,7 @@
         {
           "ClassNo": "18",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1700",
           "EndTime": "1800",
@@ -1343,7 +598,7 @@
         {
           "ClassNo": "2",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1000",
           "EndTime": "1100",
@@ -1352,7 +607,7 @@
         {
           "ClassNo": "22",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1600",
           "EndTime": "1700",
@@ -1361,7 +616,7 @@
         {
           "ClassNo": "23",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1700",
           "EndTime": "1800",
@@ -1370,7 +625,7 @@
         {
           "ClassNo": "24",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1000",
           "EndTime": "1100",
@@ -1379,7 +634,7 @@
         {
           "ClassNo": "25",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1100",
           "EndTime": "1200",
@@ -1388,7 +643,7 @@
         {
           "ClassNo": "26",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1200",
           "EndTime": "1300",
@@ -1397,7 +652,7 @@
         {
           "ClassNo": "27",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1300",
           "EndTime": "1400",
@@ -1406,7 +661,7 @@
         {
           "ClassNo": "28",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1500",
           "EndTime": "1600",
@@ -1415,7 +670,7 @@
         {
           "ClassNo": "29",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1600",
           "EndTime": "1700",
@@ -1424,7 +679,7 @@
         {
           "ClassNo": "3",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1100",
           "EndTime": "1200",
@@ -1433,7 +688,7 @@
         {
           "ClassNo": "30",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1700",
           "EndTime": "1800",
@@ -1442,7 +697,7 @@
         {
           "ClassNo": "31",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "0900",
           "EndTime": "1000",
@@ -1451,7 +706,7 @@
         {
           "ClassNo": "32",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1000",
           "EndTime": "1100",
@@ -1460,7 +715,7 @@
         {
           "ClassNo": "33",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1100",
           "EndTime": "1200",
@@ -1469,7 +724,7 @@
         {
           "ClassNo": "36",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1400",
           "EndTime": "1500",
@@ -1478,7 +733,7 @@
         {
           "ClassNo": "37",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1600",
           "EndTime": "1700",
@@ -1487,7 +742,7 @@
         {
           "ClassNo": "38",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1700",
           "EndTime": "1800",
@@ -1496,7 +751,7 @@
         {
           "ClassNo": "4",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1200",
           "EndTime": "1300",
@@ -1505,7 +760,7 @@
         {
           "ClassNo": "5",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1300",
           "EndTime": "1400",
@@ -1514,7 +769,7 @@
         {
           "ClassNo": "6",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1400",
           "EndTime": "1500",
@@ -1523,7 +778,7 @@
         {
           "ClassNo": "7",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1500",
           "EndTime": "1600",
@@ -1532,7 +787,7 @@
         {
           "ClassNo": "8",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1600",
           "EndTime": "1700",
@@ -1541,43 +796,18 @@
         {
           "ClassNo": "9",
           "LessonType": "Tutorial",
-          "WeekText": "Every Week",
+          "Weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1700",
           "EndTime": "1800",
           "Venue": "AS6-0208"
         }
-      ],
-      "LecturePeriods": [
-        "Wednesday Morning"
-      ],
-      "TutorialPeriods": [
-        "Thursday Afternoon",
-        "Friday Afternoon",
-        "Friday Morning",
-        "Thursday Morning",
-        "Monday Morning",
-        "Tuesday Morning",
-        "Tuesday Afternoon",
-        "Monday Afternoon"
       ]
     }
   ],
-  "ParsedPreclusion": {
-    "or": [
-      "CG1101",
-      "CS1010F",
-      "CS1101",
-      "CS1101C",
-      "CS1101S"
-    ]
-  },
-  "ModmavenTree": {
+  "PrereqTree": {
     "name": "CS1010S",
     "children": []
   },
-  "LockedModules": [
-    "ST3247",
-    "MA3269"
-  ]
+  "FulfillRequirements": ["ST3247", "MA3269"]
 }

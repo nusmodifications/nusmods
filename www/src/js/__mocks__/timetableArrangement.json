@@ -4,7 +4,7 @@
       {
         "ClassNo": "2",
         "LessonType": "Tutorial",
-        "WeekText": "Every Week",
+        "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
         "DayText": "Tuesday",
         "StartTime": "1100",
         "EndTime": "1200",
@@ -16,7 +16,7 @@
       {
         "ClassNo": "1",
         "LessonType": "Lecture",
-        "WeekText": "Every Week",
+        "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
         "DayText": "Tuesday",
         "StartTime": "1400",
         "EndTime": "1600",
@@ -32,7 +32,7 @@
       {
         "ClassNo": "2",
         "LessonType": "Tutorial",
-        "WeekText": "Every Week",
+        "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
         "DayText": "Friday",
         "StartTime": "1000",
         "EndTime": "1100",
@@ -48,7 +48,7 @@
       {
         "ClassNo": "A19",
         "LessonType": "Tutorial",
-        "WeekText": "Odd Week",
+        "Weeks": [3, 5, 7, 9, 11],
         "DayText": "Wednesday",
         "StartTime": "1000",
         "EndTime": "1200",
@@ -60,7 +60,7 @@
       {
         "ClassNo": "1",
         "LessonType": "Lecture",
-        "WeekText": "Every Week",
+        "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
         "DayText": "Wednesday",
         "StartTime": "1200",
         "EndTime": "1400",
@@ -76,7 +76,7 @@
       {
         "ClassNo": "J1",
         "LessonType": "Sectional Teaching",
-        "WeekText": "Every Week",
+        "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
         "DayText": "Monday",
         "StartTime": "1000",
         "EndTime": "1300",
@@ -88,7 +88,7 @@
       {
         "ClassNo": "1",
         "LessonType": "Lecture",
-        "WeekText": "Every Week",
+        "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
         "DayText": "Monday",
         "StartTime": "1400",
         "EndTime": "1600",
@@ -104,7 +104,7 @@
       {
         "ClassNo": "1",
         "LessonType": "Lecture",
-        "WeekText": "Every Week",
+        "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
         "DayText": "Thursday",
         "StartTime": "1300",
         "EndTime": "1400",

@@ -10,7 +10,7 @@
     "Module"
   ],
   "Corequisite": "",
-  "History": [
+  "SemesterData": [
     {
       "Semester": 1,
       "ExamDate": "2017-11-25T13:00+0800",
@@ -18,7 +18,7 @@
         {
           "ClassNo": "A01",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -27,7 +27,7 @@
         {
           "ClassNo": "A02",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -36,7 +36,7 @@
         {
           "ClassNo": "A03",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -45,7 +45,7 @@
         {
           "ClassNo": "A04",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -54,7 +54,7 @@
         {
           "ClassNo": "A07",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Monday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -63,7 +63,7 @@
         {
           "ClassNo": "A08",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Monday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -72,7 +72,7 @@
         {
           "ClassNo": "A09",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1900",
           "EndTime": "2100",
@@ -81,7 +81,7 @@
         {
           "ClassNo": "A10",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1900",
           "EndTime": "2100",
@@ -90,7 +90,7 @@
         {
           "ClassNo": "A11",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Thursday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -99,7 +99,7 @@
         {
           "ClassNo": "A12",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -108,7 +108,7 @@
         {
           "ClassNo": "A13",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Thursday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -117,7 +117,7 @@
         {
           "ClassNo": "A14",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -126,7 +126,7 @@
         {
           "ClassNo": "A15",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Friday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -135,7 +135,7 @@
         {
           "ClassNo": "B01",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Monday",
           "StartTime": "0800",
           "EndTime": "1000",
@@ -144,7 +144,7 @@
         {
           "ClassNo": "B02",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Monday",
           "StartTime": "0800",
           "EndTime": "1000",
@@ -153,7 +153,7 @@
         {
           "ClassNo": "B03",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -162,7 +162,7 @@
         {
           "ClassNo": "B04",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -171,7 +171,7 @@
         {
           "ClassNo": "B05",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -180,7 +180,7 @@
         {
           "ClassNo": "B06",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -189,7 +189,7 @@
         {
           "ClassNo": "B07",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -198,7 +198,7 @@
         {
           "ClassNo": "B08",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Friday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -207,7 +207,7 @@
         {
           "ClassNo": "C01",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -216,7 +216,7 @@
         {
           "ClassNo": "C02",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -225,7 +225,7 @@
         {
           "ClassNo": "C03",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Thursday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -234,7 +234,7 @@
         {
           "ClassNo": "C04",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -243,7 +243,7 @@
         {
           "ClassNo": "D01",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Monday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -252,7 +252,7 @@
         {
           "ClassNo": "D02",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Monday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -261,7 +261,7 @@
         {
           "ClassNo": "D03",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Thursday",
           "StartTime": "0900",
           "EndTime": "1100",
@@ -270,7 +270,7 @@
         {
           "ClassNo": "D04",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "0900",
           "EndTime": "1100",
@@ -279,7 +279,7 @@
         {
           "ClassNo": "D05",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Thursday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -288,7 +288,7 @@
         {
           "ClassNo": "D06",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -297,7 +297,7 @@
         {
           "ClassNo": "D07",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Thursday",
           "StartTime": "1100",
           "EndTime": "1300",
@@ -306,7 +306,7 @@
         {
           "ClassNo": "D08",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "1100",
           "EndTime": "1300",
@@ -315,7 +315,7 @@
         {
           "ClassNo": "E03",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Monday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -324,7 +324,7 @@
         {
           "ClassNo": "E04",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Monday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -333,7 +333,7 @@
         {
           "ClassNo": "E05",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Monday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -342,7 +342,7 @@
         {
           "ClassNo": "E06",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Monday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -351,7 +351,7 @@
         {
           "ClassNo": "E07",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "0800",
           "EndTime": "1000",
@@ -360,7 +360,7 @@
         {
           "ClassNo": "E08",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -369,7 +369,7 @@
         {
           "ClassNo": "E09",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -378,7 +378,7 @@
         {
           "ClassNo": "E10",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -387,7 +387,7 @@
         {
           "ClassNo": "E11",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Thursday",
           "StartTime": "0800",
           "EndTime": "1000",
@@ -396,7 +396,7 @@
         {
           "ClassNo": "E13",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Thursday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -405,7 +405,7 @@
         {
           "ClassNo": "E14",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -414,7 +414,7 @@
         {
           "ClassNo": "S01",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Monday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -423,7 +423,7 @@
         {
           "ClassNo": "S02",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Monday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -432,7 +432,7 @@
         {
           "ClassNo": "S03",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "0800",
           "EndTime": "1000",
@@ -441,7 +441,7 @@
         {
           "ClassNo": "S04",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "0800",
           "EndTime": "1000",
@@ -450,7 +450,7 @@
         {
           "ClassNo": "S05",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -459,7 +459,7 @@
         {
           "ClassNo": "S06",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -468,7 +468,7 @@
         {
           "ClassNo": "S08",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -477,7 +477,7 @@
         {
           "ClassNo": "S09",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Friday",
           "StartTime": "0800",
           "EndTime": "1000",
@@ -486,7 +486,7 @@
         {
           "ClassNo": "S10",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1900",
           "EndTime": "2100",
@@ -495,7 +495,7 @@
         {
           "ClassNo": "S11",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1900",
           "EndTime": "2100",
@@ -504,7 +504,7 @@
         {
           "ClassNo": "U01",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Monday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -513,7 +513,7 @@
         {
           "ClassNo": "U02",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Monday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -522,7 +522,7 @@
         {
           "ClassNo": "U03",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Monday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -531,7 +531,7 @@
         {
           "ClassNo": "U04",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Monday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -540,7 +540,7 @@
         {
           "ClassNo": "U05",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -549,7 +549,7 @@
         {
           "ClassNo": "U06",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -558,7 +558,7 @@
         {
           "ClassNo": "U07",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1100",
           "EndTime": "1300",
@@ -567,7 +567,7 @@
         {
           "ClassNo": "U08",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1300",
           "EndTime": "1500",
@@ -576,7 +576,7 @@
         {
           "ClassNo": "U09",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Thursday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -585,7 +585,7 @@
         {
           "ClassNo": "U10",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -594,7 +594,7 @@
         {
           "ClassNo": "U11",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Friday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -603,7 +603,7 @@
         {
           "ClassNo": "U12",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Friday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -612,7 +612,7 @@
         {
           "ClassNo": "U13",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -621,7 +621,7 @@
         {
           "ClassNo": "U14",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Friday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -649,7 +649,7 @@
         {
           "ClassNo": "A01",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Monday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -658,7 +658,7 @@
         {
           "ClassNo": "A02",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Monday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -667,7 +667,7 @@
         {
           "ClassNo": "A03",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Monday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -676,7 +676,7 @@
         {
           "ClassNo": "A04",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Monday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -685,7 +685,7 @@
         {
           "ClassNo": "A05",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Monday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -694,7 +694,7 @@
         {
           "ClassNo": "A06",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Monday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -703,7 +703,7 @@
         {
           "ClassNo": "A07",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -712,7 +712,7 @@
         {
           "ClassNo": "A08",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -721,7 +721,7 @@
         {
           "ClassNo": "A09",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -730,7 +730,7 @@
         {
           "ClassNo": "A10",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -739,7 +739,7 @@
         {
           "ClassNo": "A11",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -748,7 +748,7 @@
         {
           "ClassNo": "A12",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -757,7 +757,7 @@
         {
           "ClassNo": "A13",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -766,7 +766,7 @@
         {
           "ClassNo": "A14",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -775,7 +775,7 @@
         {
           "ClassNo": "A17",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Wednesday",
           "StartTime": "0800",
           "EndTime": "1000",
@@ -784,7 +784,7 @@
         {
           "ClassNo": "A18",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "0800",
           "EndTime": "1000",
@@ -793,7 +793,7 @@
         {
           "ClassNo": "A19",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Wednesday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -802,7 +802,7 @@
         {
           "ClassNo": "A20",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -811,7 +811,7 @@
         {
           "ClassNo": "A21",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Wednesday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -820,7 +820,7 @@
         {
           "ClassNo": "A22",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -829,7 +829,7 @@
         {
           "ClassNo": "A23",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Wednesday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -838,7 +838,7 @@
         {
           "ClassNo": "A24",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -847,7 +847,7 @@
         {
           "ClassNo": "A25",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Wednesday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -856,7 +856,7 @@
         {
           "ClassNo": "A26",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -865,7 +865,7 @@
         {
           "ClassNo": "A27",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -874,7 +874,7 @@
         {
           "ClassNo": "A28",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -883,7 +883,7 @@
         {
           "ClassNo": "A29",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -892,7 +892,7 @@
         {
           "ClassNo": "A30",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -901,7 +901,7 @@
         {
           "ClassNo": "B01",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Monday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -910,7 +910,7 @@
         {
           "ClassNo": "B02",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Monday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -919,7 +919,7 @@
         {
           "ClassNo": "B03",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -928,7 +928,7 @@
         {
           "ClassNo": "B04",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -937,7 +937,7 @@
         {
           "ClassNo": "B05",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Wednesday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -946,7 +946,7 @@
         {
           "ClassNo": "B06",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -955,7 +955,7 @@
         {
           "ClassNo": "B07",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Wednesday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -964,7 +964,7 @@
         {
           "ClassNo": "B08",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -973,7 +973,7 @@
         {
           "ClassNo": "B09",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -982,7 +982,7 @@
         {
           "ClassNo": "B10",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -991,7 +991,7 @@
         {
           "ClassNo": "B11",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Wednesday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -1000,7 +1000,7 @@
         {
           "ClassNo": "B12",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -1009,7 +1009,7 @@
         {
           "ClassNo": "B13",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "0800",
           "EndTime": "1000",
@@ -1018,7 +1018,7 @@
         {
           "ClassNo": "B14",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -1027,7 +1027,7 @@
         {
           "ClassNo": "B15",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -1036,7 +1036,7 @@
         {
           "ClassNo": "B16",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -1045,7 +1045,7 @@
         {
           "ClassNo": "B17",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -1054,7 +1054,7 @@
         {
           "ClassNo": "C01",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Monday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -1063,7 +1063,7 @@
         {
           "ClassNo": "C02",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Monday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -1072,7 +1072,7 @@
         {
           "ClassNo": "C03",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -1081,7 +1081,7 @@
         {
           "ClassNo": "C04",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -1090,7 +1090,7 @@
         {
           "ClassNo": "C05",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -1099,7 +1099,7 @@
         {
           "ClassNo": "C06",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -1108,7 +1108,7 @@
         {
           "ClassNo": "D01",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Monday",
           "StartTime": "1100",
           "EndTime": "1300",
@@ -1117,7 +1117,7 @@
         {
           "ClassNo": "D02",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Monday",
           "StartTime": "1100",
           "EndTime": "1300",
@@ -1126,7 +1126,7 @@
         {
           "ClassNo": "D03",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Monday",
           "StartTime": "1300",
           "EndTime": "1500",
@@ -1135,7 +1135,7 @@
         {
           "ClassNo": "D04",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Monday",
           "StartTime": "1300",
           "EndTime": "1500",
@@ -1144,7 +1144,7 @@
         {
           "ClassNo": "D05",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "0900",
           "EndTime": "1100",
@@ -1153,7 +1153,7 @@
         {
           "ClassNo": "D06",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "0900",
           "EndTime": "1100",
@@ -1162,7 +1162,7 @@
         {
           "ClassNo": "D07",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "0900",
           "EndTime": "1100",
@@ -1171,7 +1171,7 @@
         {
           "ClassNo": "D08",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "0900",
           "EndTime": "1100",
@@ -1180,7 +1180,7 @@
         {
           "ClassNo": "D09",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "1100",
           "EndTime": "1300",
@@ -1189,7 +1189,7 @@
         {
           "ClassNo": "E01",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Monday",
           "StartTime": "0800",
           "EndTime": "1000",
@@ -1198,7 +1198,7 @@
         {
           "ClassNo": "E02",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Monday",
           "StartTime": "0800",
           "EndTime": "1000",
@@ -1207,7 +1207,7 @@
         {
           "ClassNo": "E03",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Monday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -1216,7 +1216,7 @@
         {
           "ClassNo": "E04",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Monday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -1225,7 +1225,7 @@
         {
           "ClassNo": "E05",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Monday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -1234,7 +1234,7 @@
         {
           "ClassNo": "E06",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Monday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -1243,7 +1243,7 @@
         {
           "ClassNo": "E07",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Monday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -1252,7 +1252,7 @@
         {
           "ClassNo": "E08",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Monday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -1261,7 +1261,7 @@
         {
           "ClassNo": "E09",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "0800",
           "EndTime": "1000",
@@ -1270,7 +1270,7 @@
         {
           "ClassNo": "E10",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "0800",
           "EndTime": "1000",
@@ -1279,7 +1279,7 @@
         {
           "ClassNo": "E11",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -1288,7 +1288,7 @@
         {
           "ClassNo": "E12",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -1297,7 +1297,7 @@
         {
           "ClassNo": "E13",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -1306,7 +1306,7 @@
         {
           "ClassNo": "E14",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -1315,7 +1315,7 @@
         {
           "ClassNo": "E15",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -1324,7 +1324,7 @@
         {
           "ClassNo": "E16",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -1333,7 +1333,7 @@
         {
           "ClassNo": "E17",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -1342,7 +1342,7 @@
         {
           "ClassNo": "E18",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -1351,7 +1351,7 @@
         {
           "ClassNo": "E19",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Wednesday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -1360,7 +1360,7 @@
         {
           "ClassNo": "E20",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -1369,7 +1369,7 @@
         {
           "ClassNo": "E21",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Wednesday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -1378,7 +1378,7 @@
         {
           "ClassNo": "E22",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -1387,7 +1387,7 @@
         {
           "ClassNo": "E23",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -1396,7 +1396,7 @@
         {
           "ClassNo": "E24",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -1405,7 +1405,7 @@
         {
           "ClassNo": "S01",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Monday",
           "StartTime": "0800",
           "EndTime": "1000",
@@ -1414,7 +1414,7 @@
         {
           "ClassNo": "S02",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Monday",
           "StartTime": "0800",
           "EndTime": "1000",
@@ -1423,7 +1423,7 @@
         {
           "ClassNo": "S03",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Monday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -1432,7 +1432,7 @@
         {
           "ClassNo": "S04",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Monday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -1441,7 +1441,7 @@
         {
           "ClassNo": "S05",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Monday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -1450,7 +1450,7 @@
         {
           "ClassNo": "S06",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Monday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -1459,7 +1459,7 @@
         {
           "ClassNo": "S07",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "0800",
           "EndTime": "1000",
@@ -1468,7 +1468,7 @@
         {
           "ClassNo": "S08",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "0800",
           "EndTime": "1000",
@@ -1477,7 +1477,7 @@
         {
           "ClassNo": "S09",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -1486,7 +1486,7 @@
         {
           "ClassNo": "S10",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -1495,7 +1495,7 @@
         {
           "ClassNo": "S11",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -1504,7 +1504,7 @@
         {
           "ClassNo": "S12",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -1513,7 +1513,7 @@
         {
           "ClassNo": "S13",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -1522,7 +1522,7 @@
         {
           "ClassNo": "S14",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -1531,7 +1531,7 @@
         {
           "ClassNo": "S15",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Wednesday",
           "StartTime": "0800",
           "EndTime": "1000",
@@ -1540,7 +1540,7 @@
         {
           "ClassNo": "S16",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "0800",
           "EndTime": "1000",
@@ -1549,7 +1549,7 @@
         {
           "ClassNo": "S17",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Wednesday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -1558,7 +1558,7 @@
         {
           "ClassNo": "S18",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -1567,7 +1567,7 @@
         {
           "ClassNo": "S19",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Wednesday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -1576,7 +1576,7 @@
         {
           "ClassNo": "S20",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -1585,7 +1585,7 @@
         {
           "ClassNo": "S21",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Wednesday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -1594,7 +1594,7 @@
         {
           "ClassNo": "S22",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -1603,7 +1603,7 @@
         {
           "ClassNo": "S23",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Wednesday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -1612,7 +1612,7 @@
         {
           "ClassNo": "S24",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -1621,7 +1621,7 @@
         {
           "ClassNo": "S25",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "0800",
           "EndTime": "1000",
@@ -1630,7 +1630,7 @@
         {
           "ClassNo": "S26",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -1639,7 +1639,7 @@
         {
           "ClassNo": "S27",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -1648,7 +1648,7 @@
         {
           "ClassNo": "S28",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -1657,7 +1657,7 @@
         {
           "ClassNo": "S29",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Monday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -1666,7 +1666,7 @@
         {
           "ClassNo": "S30",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Monday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -1675,7 +1675,7 @@
         {
           "ClassNo": "U01",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Monday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -1684,7 +1684,7 @@
         {
           "ClassNo": "U02",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Monday",
           "StartTime": "1400",
           "EndTime": "1600",
@@ -1693,7 +1693,7 @@
         {
           "ClassNo": "U03",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -1702,7 +1702,7 @@
         {
           "ClassNo": "U04",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -1711,7 +1711,7 @@
         {
           "ClassNo": "U05",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Wednesday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -1720,7 +1720,7 @@
         {
           "ClassNo": "U06",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -1729,7 +1729,7 @@
         {
           "ClassNo": "U07",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Wednesday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -1738,7 +1738,7 @@
         {
           "ClassNo": "U08",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1200",
           "EndTime": "1400",
@@ -1747,7 +1747,7 @@
         {
           "ClassNo": "U09",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "0800",
           "EndTime": "1000",
@@ -1756,7 +1756,7 @@
         {
           "ClassNo": "U10",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Thursday",
           "StartTime": "1000",
           "EndTime": "1200",
@@ -1765,7 +1765,7 @@
         {
           "ClassNo": "U11",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Tuesday",
           "StartTime": "1900",
           "EndTime": "2100",
@@ -1774,7 +1774,7 @@
         {
           "ClassNo": "U12",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Tuesday",
           "StartTime": "1900",
           "EndTime": "2100",
@@ -1783,7 +1783,7 @@
         {
           "ClassNo": "U13",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Wednesday",
           "StartTime": "1900",
           "EndTime": "2100",
@@ -1792,7 +1792,7 @@
         {
           "ClassNo": "U14",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1900",
           "EndTime": "2100",
@@ -1801,7 +1801,7 @@
         {
           "ClassNo": "U15",
           "LessonType": "Tutorial",
-          "WeekText": "Odd Week",
+          "Weeks": [3, 5, 7, 9, 11],
           "DayText": "Wednesday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -1810,7 +1810,7 @@
         {
           "ClassNo": "U16",
           "LessonType": "Tutorial",
-          "WeekText": "Even Week",
+          "Weeks": [4, 6, 8, 10, 12],
           "DayText": "Wednesday",
           "StartTime": "1600",
           "EndTime": "1800",
@@ -1831,7 +1831,7 @@
       ]
     }
   ],
-  "ModmavenTree": {
+  "PrereqTree": {
     "name": "GER1000",
     "children": []
   },

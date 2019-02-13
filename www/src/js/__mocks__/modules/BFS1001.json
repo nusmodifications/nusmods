@@ -2,20 +2,18 @@
   "ModuleCode": "BFS1001",
   "ModuleTitle": "Personal Development & Career Management",
   "Department": "Dean's Office (Biz)",
+  "Faculty": "Business",
   "ModuleDescription": "This module is the School’s flagship program that looks into the personal and professional development of students, and prepares them to be work-world ready. Over 6 weeks, students will understand their own strengths and motivations, explore activities to enrich their student life, and acquire essential career skills including resume writing, interviewing and networking techniques. Upon completion, students will be more equipped to put into practice what they have learnt in their internship and subsequently job application. Completion of an internship is not a requirement for this module.",
   "ModuleCredit": "0",
-  "Types": [
-    "Module"
-  ],
   "AcadYear": "2016/2017",
-  "History": [
+  "SemesterData": [
     {
       "Semester": 1,
       "Timetable": [
         {
           "ClassNo": "A1",
           "LessonType": "Sectional Teaching",
-          "WeekText": "1,2,3,4,5,6",
+          "Weeks": [1, 2, 3, 4, 5, 6],
           "DayText": "Monday",
           "StartTime": "1400",
           "EndTime": "1700",
@@ -24,7 +22,7 @@
         {
           "ClassNo": "A2",
           "LessonType": "Sectional Teaching",
-          "WeekText": "1,2,3,4,5,6",
+          "Weeks": [1, 2, 3, 4, 5, 6],
           "DayText": "Wednesday",
           "StartTime": "1100",
           "EndTime": "1400",
@@ -33,7 +31,7 @@
         {
           "ClassNo": "A3",
           "LessonType": "Sectional Teaching",
-          "WeekText": "1,2,3,4,5,6",
+          "Weeks": [1, 2, 3, 4, 5, 6],
           "DayText": "Thursday",
           "StartTime": "1100",
           "EndTime": "1400",
@@ -42,7 +40,7 @@
         {
           "ClassNo": "A4",
           "LessonType": "Sectional Teaching",
-          "WeekText": "7,8,9,10,11,12,13",
+          "Weeks": [7, 8, 9, 10, 11, 12, 13],
           "DayText": "Monday",
           "StartTime": "1400",
           "EndTime": "1700",
@@ -51,7 +49,7 @@
         {
           "ClassNo": "A5",
           "LessonType": "Sectional Teaching",
-          "WeekText": "7,8,9,10,11,12,13",
+          "Weeks": [7, 8, 9, 10, 11, 12, 13],
           "DayText": "Wednesday",
           "StartTime": "1100",
           "EndTime": "1400",
@@ -60,18 +58,14 @@
         {
           "ClassNo": "A6",
           "LessonType": "Sectional Teaching",
-          "WeekText": "7,8,9,10,11,12,13",
+          "Weeks": [7, 8, 9, 10, 11, 12, 13],
           "DayText": "Thursday",
           "StartTime": "1100",
           "EndTime": "1400",
           "Venue": "BIZ1-0203"
         }
       ],
-      "LecturePeriods": [
-        "Monday Afternoon",
-        "Wednesday Morning",
-        "Thursday Morning"
-      ]
+      "LecturePeriods": ["Monday Afternoon", "Wednesday Morning", "Thursday Morning"]
     },
     {
       "Semester": 2,
@@ -79,7 +73,7 @@
         {
           "ClassNo": "A1",
           "LessonType": "Sectional Teaching",
-          "WeekText": "1,2,3,4,5,6",
+          "Weeks": [1, 2, 3, 4, 5, 6],
           "DayText": "Tuesday",
           "StartTime": "1100",
           "EndTime": "1400",
@@ -88,7 +82,7 @@
         {
           "ClassNo": "A2",
           "LessonType": "Sectional Teaching",
-          "WeekText": "1,2,3,4,5,6",
+          "Weeks": [1, 2, 3, 4, 5, 6],
           "DayText": "Wednesday",
           "StartTime": "0900",
           "EndTime": "1200",
@@ -97,7 +91,7 @@
         {
           "ClassNo": "A3",
           "LessonType": "Sectional Teaching",
-          "WeekText": "1,2,3,4,5,6",
+          "Weeks": [1, 2, 3, 4, 5, 6],
           "DayText": "Wednesday",
           "StartTime": "1200",
           "EndTime": "1500",
@@ -106,7 +100,7 @@
         {
           "ClassNo": "A4",
           "LessonType": "Sectional Teaching",
-          "WeekText": "7,8,9,10,11,12,13",
+          "Weeks": [7, 8, 9, 10, 11, 12, 13],
           "DayText": "Tuesday",
           "StartTime": "1100",
           "EndTime": "1400",
@@ -115,7 +109,7 @@
         {
           "ClassNo": "A5",
           "LessonType": "Sectional Teaching",
-          "WeekText": "7,8,9,10,11,12,13",
+          "Weeks": [7, 8, 9, 10, 11, 12, 13],
           "DayText": "Wednesday",
           "StartTime": "0900",
           "EndTime": "1200",
@@ -124,17 +118,12 @@
         {
           "ClassNo": "A6",
           "LessonType": "Sectional Teaching",
-          "WeekText": "7,8,9,10,11,12,13",
+          "Weeks": [7, 8, 9, 10, 11, 12, 13],
           "DayText": "Wednesday",
           "StartTime": "1200",
           "EndTime": "1500",
           "Venue": "BIZ1-0203"
         }
-      ],
-      "LecturePeriods": [
-        "Tuesday Morning",
-        "Wednesday Morning",
-        "Wednesday Afternoon"
       ]
     }
   ]

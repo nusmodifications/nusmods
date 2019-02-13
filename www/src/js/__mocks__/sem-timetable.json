@@ -3,7 +3,7 @@
     "Lecture": [{
       "ClassNo": "1",
       "LessonType": "Lecture",
-      "WeekText": "Every Week",
+      "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
       "DayText": "Wednesday",
       "StartTime": "1000",
       "EndTime": "1200",
@@ -14,7 +14,7 @@
     "Recitation": [{
       "ClassNo": "1",
       "LessonType": "Recitation",
-      "WeekText": "Every Week",
+      "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
       "DayText": "Thursday",
       "StartTime": "1000",
       "EndTime": "1100",
@@ -24,7 +24,7 @@
     }, {
       "ClassNo": "1",
       "LessonType": "Recitation",
-      "WeekText": "Every Week",
+      "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
       "DayText": "Thursday",
       "StartTime": "1200",
       "EndTime": "1300",
@@ -35,7 +35,7 @@
     "Tutorial": [{
       "ClassNo": "2",
       "LessonType": "Tutorial",
-      "WeekText": "Every Week",
+      "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
       "DayText": "Monday",
       "StartTime": "0900",
       "EndTime": "1000",
@@ -45,7 +45,7 @@
     }, {
       "ClassNo": "2",
       "LessonType": "Tutorial",
-      "WeekText": "Every Week",
+      "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
       "DayText": "Tuesday",
       "StartTime": "0900",
       "EndTime": "1000",
@@ -58,7 +58,7 @@
     "Lecture": [{
       "ClassNo": "1",
       "LessonType": "Lecture",
-      "WeekText": "Every Week",
+      "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
       "DayText": "Monday",
       "StartTime": "1830",
       "EndTime": "2030",

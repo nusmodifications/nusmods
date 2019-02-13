@@ -1,1867 +1,918 @@
 {
-    "LT17": [
+  "LT17": [
+    {
+      "Day": "Monday",
+      "Classes": [
         {
-            "Day": "Monday",
-            "Classes": [
-                {
-                    "ClassNo": "A1",
-                    "LessonType": "Lecture",
-                    "WeekText": "1,2,3,4,5,6",
-                    "DayText": "Monday",
-                    "StartTime": "1400",
-                    "EndTime": "1600",
-                    "ModuleCode": "DSC2008"
-                },
-                {
-                    "ClassNo": "A1",
-                    "LessonType": "Lecture",
-                    "WeekText": "7,8,9,10,11,12,13",
-                    "DayText": "Monday",
-                    "StartTime": "1400",
-                    "EndTime": "1600",
-                    "ModuleCode": "DSC2008"
-                },
-                {
-                    "ClassNo": "A2",
-                    "LessonType": "Lecture",
-                    "WeekText": "1,2,3,4,5,6",
-                    "DayText": "Monday",
-                    "StartTime": "1600",
-                    "EndTime": "1800",
-                    "ModuleCode": "DSC2008"
-                },
-                {
-                    "ClassNo": "A2",
-                    "LessonType": "Lecture",
-                    "WeekText": "7,8,9,10,11,12,13",
-                    "DayText": "Monday",
-                    "StartTime": "1600",
-                    "EndTime": "1800",
-                    "ModuleCode": "DSC2008"
-                },
-                {
-                    "ClassNo": "W1",
-                    "LessonType": "Lecture",
-                    "WeekText": "Every Week",
-                    "DayText": "Monday",
-                    "StartTime": "1000",
-                    "EndTime": "1200",
-                    "ModuleCode": "MKT1003X"
-                },
-                {
-                    "ClassNo": "W2",
-                    "LessonType": "Lecture",
-                    "WeekText": "Every Week",
-                    "DayText": "Monday",
-                    "StartTime": "1200",
-                    "EndTime": "1400",
-                    "ModuleCode": "MKT1003X"
-                },
-                {
-                    "ClassNo": "W1",
-                    "LessonType": "Lecture",
-                    "WeekText": "Every Week",
-                    "DayText": "Monday",
-                    "StartTime": "1000",
-                    "EndTime": "1200",
-                    "ModuleCode": "MKT1705X"
-                },
-                {
-                    "ClassNo": "W2",
-                    "LessonType": "Lecture",
-                    "WeekText": "Every Week",
-                    "DayText": "Monday",
-                    "StartTime": "1200",
-                    "EndTime": "1400",
-                    "ModuleCode": "MKT1705X"
-                }
-            ],
-            "Availability": {
-                "1000": "occupied",
-                "1030": "occupied",
-                "1100": "occupied",
-                "1130": "occupied",
-                "1200": "occupied",
-                "1230": "occupied",
-                "1300": "occupied",
-                "1330": "occupied",
-                "1400": "occupied",
-                "1430": "occupied",
-                "1500": "occupied",
-                "1530": "occupied",
-                "1600": "occupied",
-                "1630": "occupied",
-                "1700": "occupied",
-                "1730": "occupied",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "vacant",
-                "0930": "vacant"
-            }
+          "ClassNo": "A1",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6],
+          "DayText": "Monday",
+          "StartTime": "1400",
+          "EndTime": "1600",
+          "ModuleCode": "DSC2008"
         },
         {
-            "Day": "Tuesday",
-            "Classes": [
-                {
-                    "ClassNo": "X1",
-                    "LessonType": "Lecture",
-                    "WeekText": "Every Week",
-                    "DayText": "Tuesday",
-                    "StartTime": "1000",
-                    "EndTime": "1200",
-                    "ModuleCode": "BSP2001"
-                },
-                {
-                    "ClassNo": "A1",
-                    "LessonType": "Lecture",
-                    "WeekText": "Every Week",
-                    "DayText": "Tuesday",
-                    "StartTime": "0900",
-                    "EndTime": "1000",
-                    "ModuleCode": "HR2002"
-                },
-                {
-                    "ClassNo": "A2",
-                    "LessonType": "Lecture",
-                    "WeekText": "Every Week",
-                    "DayText": "Tuesday",
-                    "StartTime": "1300",
-                    "EndTime": "1400",
-                    "ModuleCode": "HR2002"
-                }
-            ],
-            "Availability": {
-                "1000": "occupied",
-                "1030": "occupied",
-                "1100": "occupied",
-                "1130": "occupied",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "occupied",
-                "1330": "occupied",
-                "1400": "vacant",
-                "1430": "vacant",
-                "1500": "vacant",
-                "1530": "vacant",
-                "1600": "vacant",
-                "1630": "vacant",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "occupied",
-                "0930": "occupied"
-            }
+          "ClassNo": "A1",
+          "LessonType": "Lecture",
+          "Weeks": [7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1400",
+          "EndTime": "1600",
+          "ModuleCode": "DSC2008"
         },
         {
-            "Day": "Wednesday",
-            "Classes": [
-                {
-                    "ClassNo": "V2",
-                    "LessonType": "Lecture",
-                    "WeekText": "Every Week",
-                    "DayText": "Wednesday",
-                    "StartTime": "0900",
-                    "EndTime": "1100",
-                    "ModuleCode": "ACC1002"
-                },
-                {
-                    "ClassNo": "V3",
-                    "LessonType": "Lecture",
-                    "WeekText": "Every Week",
-                    "DayText": "Wednesday",
-                    "StartTime": "1200",
-                    "EndTime": "1400",
-                    "ModuleCode": "ACC1002"
-                },
-                {
-                    "ClassNo": "X2",
-                    "LessonType": "Lecture",
-                    "WeekText": "Every Week",
-                    "DayText": "Wednesday",
-                    "StartTime": "0900",
-                    "EndTime": "1100",
-                    "ModuleCode": "ACC1002X"
-                },
-                {
-                    "ClassNo": "X3",
-                    "LessonType": "Lecture",
-                    "WeekText": "Every Week",
-                    "DayText": "Wednesday",
-                    "StartTime": "1200",
-                    "EndTime": "1400",
-                    "ModuleCode": "ACC1002X"
-                },
-                {
-                    "ClassNo": "V2",
-                    "LessonType": "Lecture",
-                    "WeekText": "Every Week",
-                    "DayText": "Wednesday",
-                    "StartTime": "0900",
-                    "EndTime": "1100",
-                    "ModuleCode": "ACC1701"
-                },
-                {
-                    "ClassNo": "V3",
-                    "LessonType": "Lecture",
-                    "WeekText": "Every Week",
-                    "DayText": "Wednesday",
-                    "StartTime": "1200",
-                    "EndTime": "1400",
-                    "ModuleCode": "ACC1701"
-                },
-                {
-                    "ClassNo": "X2",
-                    "LessonType": "Lecture",
-                    "WeekText": "Every Week",
-                    "DayText": "Wednesday",
-                    "StartTime": "0900",
-                    "EndTime": "1100",
-                    "ModuleCode": "ACC1701X"
-                },
-                {
-                    "ClassNo": "X3",
-                    "LessonType": "Lecture",
-                    "WeekText": "Every Week",
-                    "DayText": "Wednesday",
-                    "StartTime": "1200",
-                    "EndTime": "1400",
-                    "ModuleCode": "ACC1701X"
-                }
-            ],
-            "Availability": {
-                "1000": "occupied",
-                "1030": "occupied",
-                "1100": "vacant",
-                "1130": "vacant",
-                "1200": "occupied",
-                "1230": "occupied",
-                "1300": "occupied",
-                "1330": "occupied",
-                "1400": "vacant",
-                "1430": "vacant",
-                "1500": "vacant",
-                "1530": "vacant",
-                "1600": "vacant",
-                "1630": "vacant",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "occupied",
-                "0930": "occupied"
-            }
+          "ClassNo": "A2",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6],
+          "DayText": "Monday",
+          "StartTime": "1600",
+          "EndTime": "1800",
+          "ModuleCode": "DSC2008"
         },
         {
-            "Day": "Thursday",
-            "Classes": [
-                {
-                    "ClassNo": "V1",
-                    "LessonType": "Lecture",
-                    "WeekText": "Every Week",
-                    "DayText": "Thursday",
-                    "StartTime": "0900",
-                    "EndTime": "1100",
-                    "ModuleCode": "ACC1002"
-                },
-                {
-                    "ClassNo": "X1",
-                    "LessonType": "Lecture",
-                    "WeekText": "Every Week",
-                    "DayText": "Thursday",
-                    "StartTime": "0900",
-                    "EndTime": "1100",
-                    "ModuleCode": "ACC1002X"
-                },
-                {
-                    "ClassNo": "V1",
-                    "LessonType": "Lecture",
-                    "WeekText": "Every Week",
-                    "DayText": "Thursday",
-                    "StartTime": "0900",
-                    "EndTime": "1100",
-                    "ModuleCode": "ACC1701"
-                },
-                {
-                    "ClassNo": "X1",
-                    "LessonType": "Lecture",
-                    "WeekText": "Every Week",
-                    "DayText": "Thursday",
-                    "StartTime": "0900",
-                    "EndTime": "1100",
-                    "ModuleCode": "ACC1701X"
-                }
-            ],
-            "Availability": {
-                "1000": "occupied",
-                "1030": "occupied",
-                "1100": "vacant",
-                "1130": "vacant",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "vacant",
-                "1400": "vacant",
-                "1430": "vacant",
-                "1500": "vacant",
-                "1530": "vacant",
-                "1600": "vacant",
-                "1630": "vacant",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "occupied",
-                "0930": "occupied"
-            }
+          "ClassNo": "A2",
+          "LessonType": "Lecture",
+          "Weeks": [7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1600",
+          "EndTime": "1800",
+          "ModuleCode": "DSC2008"
         },
         {
-            "Day": "Friday",
-            "Classes": [],
-            "Availability": {
-                "1000": "vacant",
-                "1030": "vacant",
-                "1100": "vacant",
-                "1130": "vacant",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "vacant",
-                "1400": "vacant",
-                "1430": "vacant",
-                "1500": "vacant",
-                "1530": "vacant",
-                "1600": "vacant",
-                "1630": "vacant",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "vacant",
-                "0930": "vacant"
-            }
+          "ClassNo": "W1",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1000",
+          "EndTime": "1200",
+          "ModuleCode": "MKT1003X"
         },
         {
-            "Day": "Saturday",
-            "Classes": [],
-            "Availability": {
-                "1000": "vacant",
-                "1030": "vacant",
-                "1100": "vacant",
-                "1130": "vacant",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "vacant",
-                "1400": "vacant",
-                "1430": "vacant",
-                "1500": "vacant",
-                "1530": "vacant",
-                "1600": "vacant",
-                "1630": "vacant",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "vacant",
-                "0930": "vacant"
-            }
+          "ClassNo": "W2",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1200",
+          "EndTime": "1400",
+          "ModuleCode": "MKT1003X"
+        },
+        {
+          "ClassNo": "W1",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1000",
+          "EndTime": "1200",
+          "ModuleCode": "MKT1705X"
+        },
+        {
+          "ClassNo": "W2",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1200",
+          "EndTime": "1400",
+          "ModuleCode": "MKT1705X"
         }
-    ],
-    "lt2": [
+      ],
+      "Availability": {
+        "1000": "occupied",
+        "1030": "occupied",
+        "1100": "occupied",
+        "1130": "occupied",
+        "1200": "occupied",
+        "1230": "occupied",
+        "1300": "occupied",
+        "1330": "occupied",
+        "1400": "occupied",
+        "1430": "occupied",
+        "1500": "occupied",
+        "1530": "occupied",
+        "1600": "occupied",
+        "1630": "occupied",
+        "1700": "occupied",
+        "1730": "occupied"
+      }
+    },
+    {
+      "Day": "Tuesday",
+      "Classes": [
         {
-            "Day": "Monday",
-            "Classes": [
-                {
-                    "LessonType": "Lecture",
-                    "ClassNo": "1",
-                    "DayText": "Monday",
-                    "StartTime": "1000",
-                    "EndTime": "1200",
-                    "WeekText": "Every Week",
-                    "ModuleCode": "QT5101"
-                },
-                {
-                    "LessonType": "Lecture",
-                    "ClassNo": "1",
-                    "DayText": "Monday",
-                    "StartTime": "1330",
-                    "EndTime": "1630",
-                    "WeekText": "Every Week",
-                    "ModuleCode": "QT5201P"
-                }
-            ],
-            "Availability": {
-                "1000": "occupied",
-                "1030": "occupied",
-                "1100": "occupied",
-                "1130": "occupied",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "occupied",
-                "1400": "occupied",
-                "1430": "occupied",
-                "1500": "occupied",
-                "1530": "occupied",
-                "1600": "occupied",
-                "1630": "vacant",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "vacant",
-                "0930": "vacant"
-            }
+          "ClassNo": "X1",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Tuesday",
+          "StartTime": "1000",
+          "EndTime": "1200",
+          "ModuleCode": "BSP2001"
         },
         {
-            "Day": "Tuesday",
-            "Classes": [],
-            "Availability": {
-                "1000": "vacant",
-                "1030": "vacant",
-                "1100": "vacant",
-                "1130": "vacant",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "vacant",
-                "1400": "vacant",
-                "1430": "vacant",
-                "1500": "vacant",
-                "1530": "vacant",
-                "1600": "vacant",
-                "1630": "vacant",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "vacant",
-                "0930": "vacant"
-            }
+          "ClassNo": "A1",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Tuesday",
+          "StartTime": "0900",
+          "EndTime": "1000",
+          "ModuleCode": "HR2002"
         },
         {
-            "Day": "Wednesday",
-            "Classes": [
-                {
-                    "ClassNo": "T11",
-                    "LessonType": "Tutorial",
-                    "WeekText": "Every Week",
-                    "DayText": "Wednesday",
-                    "StartTime": "0900",
-                    "EndTime": "1000",
-                    "ModuleCode": "PC1222"
-                },
-                {
-                    "LessonType": "Lecture",
-                    "ClassNo": "1",
-                    "DayText": "Wednesday",
-                    "StartTime": "1000",
-                    "EndTime": "1200",
-                    "WeekText": "Every Week",
-                    "ModuleCode": "QT5201N"
-                }
-            ],
-            "Availability": {
-                "1000": "occupied",
-                "1030": "occupied",
-                "1100": "occupied",
-                "1130": "occupied",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "vacant",
-                "1400": "vacant",
-                "1430": "vacant",
-                "1500": "vacant",
-                "1530": "vacant",
-                "1600": "vacant",
-                "1630": "vacant",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "occupied",
-                "0930": "occupied"
-            }
-        },
-        {
-            "Day": "Thursday",
-            "Classes": [
-                {
-                    "LessonType": "Lecture",
-                    "ClassNo": "1",
-                    "DayText": "Thursday",
-                    "StartTime": "1000",
-                    "EndTime": "1200",
-                    "WeekText": "Every Week",
-                    "ModuleCode": "QT5101"
-                }
-            ],
-            "Availability": {
-                "1000": "occupied",
-                "1030": "occupied",
-                "1100": "occupied",
-                "1130": "occupied",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "vacant",
-                "1400": "vacant",
-                "1430": "vacant",
-                "1500": "vacant",
-                "1530": "vacant",
-                "1600": "vacant",
-                "1630": "vacant",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "vacant",
-                "0930": "vacant"
-            }
-        },
-        {
-            "Day": "Friday",
-            "Classes": [
-                {
-                    "LessonType": "Lecture",
-                    "ClassNo": "1",
-                    "DayText": "Friday",
-                    "StartTime": "1300",
-                    "EndTime": "1500",
-                    "WeekText": "Every Week",
-                    "ModuleCode": "QT5201N"
-                }
-            ],
-            "Availability": {
-                "1000": "vacant",
-                "1030": "vacant",
-                "1100": "vacant",
-                "1130": "vacant",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "occupied",
-                "1330": "occupied",
-                "1400": "occupied",
-                "1430": "occupied",
-                "1500": "vacant",
-                "1530": "vacant",
-                "1600": "vacant",
-                "1630": "vacant",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "vacant",
-                "0930": "vacant"
-            }
-        },
-        {
-            "Day": "Saturday",
-            "Classes": [],
-            "Availability": {
-                "1000": "vacant",
-                "1030": "vacant",
-                "1100": "vacant",
-                "1130": "vacant",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "vacant",
-                "1400": "vacant",
-                "1430": "vacant",
-                "1500": "vacant",
-                "1530": "vacant",
-                "1600": "vacant",
-                "1630": "vacant",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "vacant",
-                "0930": "vacant"
-            }
+          "ClassNo": "A2",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Tuesday",
+          "StartTime": "1300",
+          "EndTime": "1400",
+          "ModuleCode": "HR2002"
         }
-    ],
-    "S11-0302": [
+      ],
+      "Availability": {
+        "1000": "occupied",
+        "1030": "occupied",
+        "1100": "occupied",
+        "1130": "occupied",
+        "1300": "occupied",
+        "1330": "occupied",
+        "0900": "occupied",
+        "0930": "occupied"
+      }
+    },
+    {
+      "Day": "Wednesday",
+      "Classes": [
         {
-            "Day": "Monday",
-            "Classes": [
-                {
-                    "ClassNo": "A08",
-                    "LessonType": "Laboratory",
-                    "WeekText": "7,10",
-                    "DayText": "Monday",
-                    "StartTime": "1400",
-                    "EndTime": "1700",
-                    "ModuleCode": "PC1431"
-                },
-                {
-                    "ClassNo": "A11",
-                    "LessonType": "Laboratory",
-                    "WeekText": "3,11",
-                    "DayText": "Monday",
-                    "StartTime": "0900",
-                    "EndTime": "1200",
-                    "ModuleCode": "PC1431"
-                },
-                {
-                    "ClassNo": "D07",
-                    "LessonType": "Laboratory",
-                    "WeekText": "4,11",
-                    "DayText": "Monday",
-                    "StartTime": "1400",
-                    "EndTime": "1700",
-                    "ModuleCode": "PC1431"
-                },
-                {
-                    "ClassNo": "D12",
-                    "LessonType": "Laboratory",
-                    "WeekText": "3,12",
-                    "DayText": "Monday",
-                    "StartTime": "1400",
-                    "EndTime": "1700",
-                    "ModuleCode": "PC1431"
-                }
-            ],
-            "Availability": {
-                "1000": "occupied",
-                "1030": "occupied",
-                "1100": "occupied",
-                "1130": "occupied",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "vacant",
-                "1400": "occupied",
-                "1430": "occupied",
-                "1500": "occupied",
-                "1530": "occupied",
-                "1600": "occupied",
-                "1630": "occupied",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "occupied",
-                "0930": "occupied"
-            }
+          "ClassNo": "V2",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Wednesday",
+          "StartTime": "0900",
+          "EndTime": "1100",
+          "ModuleCode": "ACC1002"
         },
         {
-            "Day": "Tuesday",
-            "Classes": [
-                {
-                    "ClassNo": "A05",
-                    "LessonType": "Laboratory",
-                    "WeekText": "7,13",
-                    "DayText": "Tuesday",
-                    "StartTime": "0900",
-                    "EndTime": "1200",
-                    "ModuleCode": "PC1431"
-                },
-                {
-                    "ClassNo": "A06",
-                    "LessonType": "Laboratory",
-                    "WeekText": "3,8",
-                    "DayText": "Tuesday",
-                    "StartTime": "0900",
-                    "EndTime": "1200",
-                    "ModuleCode": "PC1431"
-                },
-                {
-                    "ClassNo": "D08",
-                    "LessonType": "Laboratory",
-                    "WeekText": "4,9",
-                    "DayText": "Tuesday",
-                    "StartTime": "0900",
-                    "EndTime": "1200",
-                    "ModuleCode": "PC1431"
-                },
-                {
-                    "ClassNo": "D09",
-                    "LessonType": "Laboratory",
-                    "WeekText": "10,12",
-                    "DayText": "Tuesday",
-                    "StartTime": "0900",
-                    "EndTime": "1200",
-                    "ModuleCode": "PC1431"
-                },
-                {
-                    "ClassNo": "D10",
-                    "LessonType": "Laboratory",
-                    "WeekText": "6,11",
-                    "DayText": "Tuesday",
-                    "StartTime": "0900",
-                    "EndTime": "1200",
-                    "ModuleCode": "PC1431"
-                }
-            ],
-            "Availability": {
-                "1000": "occupied",
-                "1030": "occupied",
-                "1100": "occupied",
-                "1130": "occupied",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "vacant",
-                "1400": "vacant",
-                "1430": "vacant",
-                "1500": "vacant",
-                "1530": "vacant",
-                "1600": "vacant",
-                "1630": "vacant",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "occupied",
-                "0930": "occupied"
-            }
+          "ClassNo": "V3",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Wednesday",
+          "StartTime": "1200",
+          "EndTime": "1400",
+          "ModuleCode": "ACC1002"
         },
         {
-            "Day": "Wednesday",
-            "Classes": [
-                {
-                    "ClassNo": "A07",
-                    "LessonType": "Laboratory",
-                    "WeekText": "Every Week",
-                    "DayText": "Wednesday",
-                    "StartTime": "1400",
-                    "EndTime": "1700",
-                    "ModuleCode": "PC1431"
-                },
-                {
-                    "ClassNo": "A09",
-                    "LessonType": "Laboratory",
-                    "WeekText": "7,11",
-                    "DayText": "Wednesday",
-                    "StartTime": "0900",
-                    "EndTime": "1200",
-                    "ModuleCode": "PC1431"
-                },
-                {
-                    "ClassNo": "A10",
-                    "LessonType": "Laboratory",
-                    "WeekText": "4,8",
-                    "DayText": "Wednesday",
-                    "StartTime": "1400",
-                    "EndTime": "1700",
-                    "ModuleCode": "PC1431"
-                },
-                {
-                    "ClassNo": "A12",
-                    "LessonType": "Laboratory",
-                    "WeekText": "4,12",
-                    "DayText": "Wednesday",
-                    "StartTime": "0900",
-                    "EndTime": "1200",
-                    "ModuleCode": "PC1431"
-                },
-                {
-                    "ClassNo": "A13",
-                    "LessonType": "Laboratory",
-                    "WeekText": "3,8",
-                    "DayText": "Wednesday",
-                    "StartTime": "0900",
-                    "EndTime": "1200",
-                    "ModuleCode": "PC1431"
-                },
-                {
-                    "ClassNo": "A14",
-                    "LessonType": "Laboratory",
-                    "WeekText": "7,11",
-                    "DayText": "Wednesday",
-                    "StartTime": "1400",
-                    "EndTime": "1700",
-                    "ModuleCode": "PC1431"
-                },
-                {
-                    "ClassNo": "D13",
-                    "LessonType": "Laboratory",
-                    "WeekText": "5,12",
-                    "DayText": "Wednesday",
-                    "StartTime": "1400",
-                    "EndTime": "1700",
-                    "ModuleCode": "PC1431"
-                },
-                {
-                    "ClassNo": "D14",
-                    "LessonType": "Laboratory",
-                    "WeekText": "10,13",
-                    "DayText": "Wednesday",
-                    "StartTime": "1400",
-                    "EndTime": "1700",
-                    "ModuleCode": "PC1431"
-                },
-                {
-                    "ClassNo": "U14",
-                    "LessonType": "Laboratory",
-                    "WeekText": "5,10",
-                    "DayText": "Wednesday",
-                    "StartTime": "0900",
-                    "EndTime": "1200",
-                    "ModuleCode": "PC1431"
-                }
-            ],
-            "Availability": {
-                "1000": "occupied",
-                "1030": "occupied",
-                "1100": "occupied",
-                "1130": "occupied",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "vacant",
-                "1400": "occupied",
-                "1430": "occupied",
-                "1500": "occupied",
-                "1530": "occupied",
-                "1600": "occupied",
-                "1630": "occupied",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "occupied",
-                "0930": "occupied"
-            }
+          "ClassNo": "X2",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Wednesday",
+          "StartTime": "0900",
+          "EndTime": "1100",
+          "ModuleCode": "ACC1002X"
         },
         {
-            "Day": "Thursday",
-            "Classes": [
-                {
-                    "ClassNo": "A04",
-                    "LessonType": "Laboratory",
-                    "WeekText": "6,12",
-                    "DayText": "Thursday",
-                    "StartTime": "0900",
-                    "EndTime": "1200",
-                    "ModuleCode": "PC1431"
-                },
-                {
-                    "ClassNo": "D11",
-                    "LessonType": "Laboratory",
-                    "WeekText": "4,8",
-                    "DayText": "Thursday",
-                    "StartTime": "1400",
-                    "EndTime": "1700",
-                    "ModuleCode": "PC1431"
-                },
-                {
-                    "ClassNo": "D17",
-                    "LessonType": "Laboratory",
-                    "WeekText": "5,9",
-                    "DayText": "Thursday",
-                    "StartTime": "1400",
-                    "EndTime": "1700",
-                    "ModuleCode": "PC1431"
-                },
-                {
-                    "ClassNo": "D18",
-                    "LessonType": "Laboratory",
-                    "WeekText": "6,10",
-                    "DayText": "Thursday",
-                    "StartTime": "1400",
-                    "EndTime": "1700",
-                    "ModuleCode": "PC1431"
-                },
-                {
-                    "ClassNo": "D19",
-                    "LessonType": "Laboratory",
-                    "WeekText": "8,11",
-                    "DayText": "Thursday",
-                    "StartTime": "0900",
-                    "EndTime": "1200",
-                    "ModuleCode": "PC1431"
-                }
-            ],
-            "Availability": {
-                "1000": "occupied",
-                "1030": "occupied",
-                "1100": "occupied",
-                "1130": "occupied",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "vacant",
-                "1400": "occupied",
-                "1430": "occupied",
-                "1500": "occupied",
-                "1530": "occupied",
-                "1600": "occupied",
-                "1630": "occupied",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "occupied",
-                "0930": "occupied"
-            }
+          "ClassNo": "X3",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Wednesday",
+          "StartTime": "1200",
+          "EndTime": "1400",
+          "ModuleCode": "ACC1002X"
         },
         {
-            "Day": "Friday",
-            "Classes": [
-                {
-                    "ClassNo": "A15",
-                    "LessonType": "Laboratory",
-                    "WeekText": "6,12",
-                    "DayText": "Friday",
-                    "StartTime": "1400",
-                    "EndTime": "1700",
-                    "ModuleCode": "PC1431"
-                },
-                {
-                    "ClassNo": "A16",
-                    "LessonType": "Laboratory",
-                    "WeekText": "4,10",
-                    "DayText": "Friday",
-                    "StartTime": "1400",
-                    "EndTime": "1700",
-                    "ModuleCode": "PC1431"
-                }
-            ],
-            "Availability": {
-                "1000": "vacant",
-                "1030": "vacant",
-                "1100": "vacant",
-                "1130": "vacant",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "vacant",
-                "1400": "occupied",
-                "1430": "occupied",
-                "1500": "occupied",
-                "1530": "occupied",
-                "1600": "occupied",
-                "1630": "occupied",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "vacant",
-                "0930": "vacant"
-            }
+          "ClassNo": "V2",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Wednesday",
+          "StartTime": "0900",
+          "EndTime": "1100",
+          "ModuleCode": "ACC1701"
         },
         {
-            "Day": "Saturday",
-            "Classes": [],
-            "Availability": {
-                "1000": "vacant",
-                "1030": "vacant",
-                "1100": "vacant",
-                "1130": "vacant",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "vacant",
-                "1400": "vacant",
-                "1430": "vacant",
-                "1500": "vacant",
-                "1530": "vacant",
-                "1600": "vacant",
-                "1630": "vacant",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "vacant",
-                "0930": "vacant"
-            }
+          "ClassNo": "V3",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Wednesday",
+          "StartTime": "1200",
+          "EndTime": "1400",
+          "ModuleCode": "ACC1701"
+        },
+        {
+          "ClassNo": "X2",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Wednesday",
+          "StartTime": "0900",
+          "EndTime": "1100",
+          "ModuleCode": "ACC1701X"
+        },
+        {
+          "ClassNo": "X3",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Wednesday",
+          "StartTime": "1200",
+          "EndTime": "1400",
+          "ModuleCode": "ACC1701X"
         }
-    ],
-    "LT1": [
+      ],
+      "Availability": {
+        "1000": "occupied",
+        "1030": "occupied",
+        "1200": "occupied",
+        "1230": "occupied",
+        "1300": "occupied",
+        "1330": "occupied",
+        "0900": "occupied",
+        "0930": "occupied"
+      }
+    },
+    {
+      "Day": "Thursday",
+      "Classes": [
         {
-            "Day": "Monday",
-            "Classes": [
-                {
-                    "ClassNo": "U01",
-                    "LessonType": "Laboratory",
-                    "WeekText": "9,13",
-                    "DayText": "Monday",
-                    "StartTime": "1400",
-                    "EndTime": "1700",
-                    "ModuleCode": "PC1432"
-                }
-            ],
-            "Availability": {
-                "1000": "vacant",
-                "1030": "vacant",
-                "1100": "vacant",
-                "1130": "vacant",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "vacant",
-                "1400": "occupied",
-                "1430": "occupied",
-                "1500": "occupied",
-                "1530": "occupied",
-                "1600": "occupied",
-                "1630": "occupied",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "vacant",
-                "0930": "vacant"
-            }
+          "ClassNo": "V1",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "0900",
+          "EndTime": "1100",
+          "ModuleCode": "ACC1002"
         },
         {
-            "Day": "Tuesday",
-            "Classes": [
-                {
-                    "ClassNo": "U02",
-                    "LessonType": "Laboratory",
-                    "WeekText": "5,9",
-                    "DayText": "Tuesday",
-                    "StartTime": "0900",
-                    "EndTime": "1200",
-                    "ModuleCode": "PC1432"
-                },
-                {
-                    "ClassNo": "SB1",
-                    "LessonType": "Laboratory",
-                    "WeekText": "Every Week",
-                    "DayText": "Tuesday",
-                    "StartTime": "1400",
-                    "EndTime": "1600",
-                    "ModuleCode": "PC2193"
-                }
-            ],
-            "Availability": {
-                "1000": "occupied",
-                "1030": "occupied",
-                "1100": "occupied",
-                "1130": "occupied",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "vacant",
-                "1400": "occupied",
-                "1430": "occupied",
-                "1500": "occupied",
-                "1530": "occupied",
-                "1600": "vacant",
-                "1630": "vacant",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "occupied",
-                "0930": "occupied"
-            }
+          "ClassNo": "X1",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "0900",
+          "EndTime": "1100",
+          "ModuleCode": "ACC1002X"
         },
         {
-            "Day": "Wednesday",
-            "Classes": [
-                {
-                    "ClassNo": "SB2",
-                    "LessonType": "Laboratory",
-                    "WeekText": "Every Week",
-                    "DayText": "Wednesday",
-                    "StartTime": "1400",
-                    "EndTime": "1600",
-                    "ModuleCode": "PC2193"
-                }
-            ],
-            "Availability": {
-                "1000": "vacant",
-                "1030": "vacant",
-                "1100": "vacant",
-                "1130": "vacant",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "vacant",
-                "1400": "occupied",
-                "1430": "occupied",
-                "1500": "occupied",
-                "1530": "occupied",
-                "1600": "vacant",
-                "1630": "vacant",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "vacant",
-                "0930": "vacant"
-            }
+          "ClassNo": "V1",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "0900",
+          "EndTime": "1100",
+          "ModuleCode": "ACC1701"
         },
         {
-            "Day": "Thursday",
-            "Classes": [],
-            "Availability": {
-                "1000": "vacant",
-                "1030": "vacant",
-                "1100": "vacant",
-                "1130": "vacant",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "vacant",
-                "1400": "vacant",
-                "1430": "vacant",
-                "1500": "vacant",
-                "1530": "vacant",
-                "1600": "vacant",
-                "1630": "vacant",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "vacant",
-                "0930": "vacant"
-            }
-        },
-        {
-            "Day": "Friday",
-            "Classes": [
-                {
-                    "ClassNo": "SB3",
-                    "LessonType": "Laboratory",
-                    "WeekText": "Every Week",
-                    "DayText": "Friday",
-                    "StartTime": "1400",
-                    "EndTime": "1600",
-                    "ModuleCode": "PC2193"
-                }
-            ],
-            "Availability": {
-                "1000": "vacant",
-                "1030": "vacant",
-                "1100": "vacant",
-                "1130": "vacant",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "vacant",
-                "1400": "occupied",
-                "1430": "occupied",
-                "1500": "occupied",
-                "1530": "occupied",
-                "1600": "vacant",
-                "1630": "vacant",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "vacant",
-                "0930": "vacant"
-            }
-        },
-        {
-            "Day": "Saturday",
-            "Classes": [],
-            "Availability": {
-                "1000": "vacant",
-                "1030": "vacant",
-                "1100": "vacant",
-                "1130": "vacant",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "vacant",
-                "1400": "vacant",
-                "1430": "vacant",
-                "1500": "vacant",
-                "1530": "vacant",
-                "1600": "vacant",
-                "1630": "vacant",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "vacant",
-                "0930": "vacant"
-            }
+          "ClassNo": "X1",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "0900",
+          "EndTime": "1100",
+          "ModuleCode": "ACC1701X"
         }
-    ],
-    "CQT/SR0622": [
+      ],
+      "Availability": {
+        "1000": "occupied",
+        "1030": "occupied",
+        "0900": "occupied",
+        "0930": "occupied"
+      }
+    },
+    {
+      "Day": "Friday",
+      "Classes": [],
+      "Availability": {}
+    },
+    {
+      "Day": "Saturday",
+      "Classes": [],
+      "Availability": {}
+    }
+  ],
+  "lt2": [
+    {
+      "Day": "Monday",
+      "Classes": [
         {
-            "Day": "Monday",
-            "Classes": [],
-            "Availability": {
-                "1000": "vacant",
-                "1030": "vacant",
-                "1100": "vacant",
-                "1130": "vacant",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "vacant",
-                "1400": "vacant",
-                "1430": "vacant",
-                "1500": "vacant",
-                "1530": "vacant",
-                "1600": "vacant",
-                "1630": "vacant",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "vacant",
-                "0930": "vacant"
-            }
+          "LessonType": "Lecture",
+          "ClassNo": "1",
+          "DayText": "Monday",
+          "StartTime": "1000",
+          "EndTime": "1200",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "ModuleCode": "QT5101"
         },
         {
-            "Day": "Tuesday",
-            "Classes": [],
-            "Availability": {
-                "1000": "vacant",
-                "1030": "vacant",
-                "1100": "vacant",
-                "1130": "vacant",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "vacant",
-                "1400": "vacant",
-                "1430": "vacant",
-                "1500": "vacant",
-                "1530": "vacant",
-                "1600": "vacant",
-                "1630": "vacant",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "vacant",
-                "0930": "vacant"
-            }
-        },
-        {
-            "Day": "Wednesday",
-            "Classes": [
-                {
-                    "ClassNo": "ST2",
-                    "LessonType": "Tutorial",
-                    "WeekText": "Every Week",
-                    "DayText": "Wednesday",
-                    "StartTime": "1300",
-                    "EndTime": "1400",
-                    "ModuleCode": "PC2132"
-                },
-                {
-                    "ClassNo": "ST1",
-                    "LessonType": "Tutorial",
-                    "WeekText": "Every Week",
-                    "DayText": "Wednesday",
-                    "StartTime": "1000",
-                    "EndTime": "1100",
-                    "ModuleCode": "PC4241"
-                },
-                {
-                    "ClassNo": "ST3",
-                    "LessonType": "Tutorial",
-                    "WeekText": "Every Week",
-                    "DayText": "Wednesday",
-                    "StartTime": "1600",
-                    "EndTime": "1700",
-                    "ModuleCode": "PC4241"
-                }
-            ],
-            "Availability": {
-                "1000": "occupied",
-                "1030": "occupied",
-                "1100": "vacant",
-                "1130": "vacant",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "occupied",
-                "1330": "occupied",
-                "1400": "vacant",
-                "1430": "vacant",
-                "1500": "vacant",
-                "1530": "vacant",
-                "1600": "occupied",
-                "1630": "occupied",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "vacant",
-                "0930": "vacant"
-            }
-        },
-        {
-            "Day": "Thursday",
-            "Classes": [
-                {
-                    "ClassNo": "ST4",
-                    "LessonType": "Tutorial",
-                    "WeekText": "Every Week",
-                    "DayText": "Thursday",
-                    "StartTime": "1400",
-                    "EndTime": "1500",
-                    "ModuleCode": "PC2132"
-                },
-                {
-                    "ClassNo": "ST5",
-                    "LessonType": "Tutorial",
-                    "WeekText": "Every Week",
-                    "DayText": "Thursday",
-                    "StartTime": "1500",
-                    "EndTime": "1600",
-                    "ModuleCode": "PC2132"
-                }
-            ],
-            "Availability": {
-                "1000": "vacant",
-                "1030": "vacant",
-                "1100": "vacant",
-                "1130": "vacant",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "vacant",
-                "1400": "occupied",
-                "1430": "occupied",
-                "1500": "occupied",
-                "1530": "occupied",
-                "1600": "vacant",
-                "1630": "vacant",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "vacant",
-                "0930": "vacant"
-            }
-        },
-        {
-            "Day": "Friday",
-            "Classes": [],
-            "Availability": {
-                "1000": "vacant",
-                "1030": "vacant",
-                "1100": "vacant",
-                "1130": "vacant",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "vacant",
-                "1400": "vacant",
-                "1430": "vacant",
-                "1500": "vacant",
-                "1530": "vacant",
-                "1600": "vacant",
-                "1630": "vacant",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "vacant",
-                "0930": "vacant"
-            }
-        },
-        {
-            "Day": "Saturday",
-            "Classes": [],
-            "Availability": {
-                "1000": "vacant",
-                "1030": "vacant",
-                "1100": "vacant",
-                "1130": "vacant",
-                "1200": "vacant",
-                "1230": "vacant",
-                "1300": "vacant",
-                "1330": "vacant",
-                "1400": "vacant",
-                "1430": "vacant",
-                "1500": "vacant",
-                "1530": "vacant",
-                "1600": "vacant",
-                "1630": "vacant",
-                "1700": "vacant",
-                "1730": "vacant",
-                "1800": "vacant",
-                "1830": "vacant",
-                "1900": "vacant",
-                "1930": "vacant",
-                "2000": "vacant",
-                "2030": "vacant",
-                "2100": "vacant",
-                "2130": "vacant",
-                "2200": "vacant",
-                "2230": "vacant",
-                "2300": "vacant",
-                "2330": "vacant",
-                "0600": "vacant",
-                "0630": "vacant",
-                "0700": "vacant",
-                "0730": "vacant",
-                "0800": "vacant",
-                "0830": "vacant",
-                "0900": "vacant",
-                "0930": "vacant"
-            }
+          "LessonType": "Lecture",
+          "ClassNo": "1",
+          "DayText": "Monday",
+          "StartTime": "1330",
+          "EndTime": "1630",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "ModuleCode": "QT5201P"
         }
-    ]
+      ],
+      "Availability": {
+        "1000": "occupied",
+        "1030": "occupied",
+        "1100": "occupied",
+        "1130": "occupied",
+        "1330": "occupied",
+        "1400": "occupied",
+        "1430": "occupied",
+        "1500": "occupied",
+        "1530": "occupied",
+        "1600": "occupied"
+      }
+    },
+    {
+      "Day": "Tuesday",
+      "Classes": [],
+      "Availability": {}
+    },
+    {
+      "Day": "Wednesday",
+      "Classes": [
+        {
+          "ClassNo": "T11",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Wednesday",
+          "StartTime": "0900",
+          "EndTime": "1000",
+          "ModuleCode": "PC1222"
+        },
+        {
+          "LessonType": "Lecture",
+          "ClassNo": "1",
+          "DayText": "Wednesday",
+          "StartTime": "1000",
+          "EndTime": "1200",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "ModuleCode": "QT5201N"
+        }
+      ],
+      "Availability": {
+        "1000": "occupied",
+        "1030": "occupied",
+        "1100": "occupied",
+        "1130": "occupied",
+        "0900": "occupied",
+        "0930": "occupied"
+      }
+    },
+    {
+      "Day": "Thursday",
+      "Classes": [
+        {
+          "LessonType": "Lecture",
+          "ClassNo": "1",
+          "DayText": "Thursday",
+          "StartTime": "1000",
+          "EndTime": "1200",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "ModuleCode": "QT5101"
+        }
+      ],
+      "Availability": {
+        "1000": "occupied",
+        "1030": "occupied",
+        "1100": "occupied",
+        "1130": "occupied"
+      }
+    },
+    {
+      "Day": "Friday",
+      "Classes": [
+        {
+          "LessonType": "Lecture",
+          "ClassNo": "1",
+          "DayText": "Friday",
+          "StartTime": "1300",
+          "EndTime": "1500",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "ModuleCode": "QT5201N"
+        }
+      ],
+      "Availability": {
+        "1300": "occupied",
+        "1330": "occupied",
+        "1400": "occupied",
+        "1430": "occupied"
+      }
+    },
+    {
+      "Day": "Saturday",
+      "Classes": [],
+      "Availability": {}
+    }
+  ],
+  "S11-0302": [
+    {
+      "Day": "Monday",
+      "Classes": [
+        {
+          "ClassNo": "A08",
+          "LessonType": "Laboratory",
+          "Weeks": [7, 10],
+          "DayText": "Monday",
+          "StartTime": "1400",
+          "EndTime": "1700",
+          "ModuleCode": "PC1431"
+        },
+        {
+          "ClassNo": "A11",
+          "LessonType": "Laboratory",
+          "Weeks": [3, 11],
+          "DayText": "Monday",
+          "StartTime": "0900",
+          "EndTime": "1200",
+          "ModuleCode": "PC1431"
+        },
+        {
+          "ClassNo": "D07",
+          "LessonType": "Laboratory",
+          "Weeks": [4, 11],
+          "DayText": "Monday",
+          "StartTime": "1400",
+          "EndTime": "1700",
+          "ModuleCode": "PC1431"
+        },
+        {
+          "ClassNo": "D12",
+          "LessonType": "Laboratory",
+          "Weeks": [3, 12],
+          "DayText": "Monday",
+          "StartTime": "1400",
+          "EndTime": "1700",
+          "ModuleCode": "PC1431"
+        }
+      ],
+      "Availability": {
+        "1000": "occupied",
+        "1030": "occupied",
+        "1100": "occupied",
+        "1130": "occupied",
+        "1400": "occupied",
+        "1430": "occupied",
+        "1500": "occupied",
+        "1530": "occupied",
+        "1600": "occupied",
+        "1630": "occupied",
+        "0900": "occupied",
+        "0930": "occupied"
+      }
+    },
+    {
+      "Day": "Tuesday",
+      "Classes": [
+        {
+          "ClassNo": "A05",
+          "LessonType": "Laboratory",
+          "Weeks": [7, 13],
+          "DayText": "Tuesday",
+          "StartTime": "0900",
+          "EndTime": "1200",
+          "ModuleCode": "PC1431"
+        },
+        {
+          "ClassNo": "A06",
+          "LessonType": "Laboratory",
+          "Weeks": [3, 8],
+          "DayText": "Tuesday",
+          "StartTime": "0900",
+          "EndTime": "1200",
+          "ModuleCode": "PC1431"
+        },
+        {
+          "ClassNo": "D08",
+          "LessonType": "Laboratory",
+          "Weeks": [4, 9],
+          "DayText": "Tuesday",
+          "StartTime": "0900",
+          "EndTime": "1200",
+          "ModuleCode": "PC1431"
+        },
+        {
+          "ClassNo": "D09",
+          "LessonType": "Laboratory",
+          "Weeks": [10, 12],
+          "DayText": "Tuesday",
+          "StartTime": "0900",
+          "EndTime": "1200",
+          "ModuleCode": "PC1431"
+        },
+        {
+          "ClassNo": "D10",
+          "LessonType": "Laboratory",
+          "Weeks": [6, 11],
+          "DayText": "Tuesday",
+          "StartTime": "0900",
+          "EndTime": "1200",
+          "ModuleCode": "PC1431"
+        }
+      ],
+      "Availability": {
+        "1000": "occupied",
+        "1030": "occupied",
+        "1100": "occupied",
+        "1130": "occupied",
+        "0900": "occupied",
+        "0930": "occupied"
+      }
+    },
+    {
+      "Day": "Wednesday",
+      "Classes": [
+        {
+          "ClassNo": "A07",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Wednesday",
+          "StartTime": "1400",
+          "EndTime": "1700",
+          "ModuleCode": "PC1431"
+        },
+        {
+          "ClassNo": "A09",
+          "LessonType": "Laboratory",
+          "Weeks": [7, 11],
+          "DayText": "Wednesday",
+          "StartTime": "0900",
+          "EndTime": "1200",
+          "ModuleCode": "PC1431"
+        },
+        {
+          "ClassNo": "A10",
+          "LessonType": "Laboratory",
+          "Weeks": [4, 8],
+          "DayText": "Wednesday",
+          "StartTime": "1400",
+          "EndTime": "1700",
+          "ModuleCode": "PC1431"
+        },
+        {
+          "ClassNo": "A12",
+          "LessonType": "Laboratory",
+          "Weeks": [4, 12],
+          "DayText": "Wednesday",
+          "StartTime": "0900",
+          "EndTime": "1200",
+          "ModuleCode": "PC1431"
+        },
+        {
+          "ClassNo": "A13",
+          "LessonType": "Laboratory",
+          "Weeks": [3, 8],
+          "DayText": "Wednesday",
+          "StartTime": "0900",
+          "EndTime": "1200",
+          "ModuleCode": "PC1431"
+        },
+        {
+          "ClassNo": "A14",
+          "LessonType": "Laboratory",
+          "Weeks": [7, 11],
+          "DayText": "Wednesday",
+          "StartTime": "1400",
+          "EndTime": "1700",
+          "ModuleCode": "PC1431"
+        },
+        {
+          "ClassNo": "D13",
+          "LessonType": "Laboratory",
+          "Weeks": [5, 12],
+          "DayText": "Wednesday",
+          "StartTime": "1400",
+          "EndTime": "1700",
+          "ModuleCode": "PC1431"
+        },
+        {
+          "ClassNo": "D14",
+          "LessonType": "Laboratory",
+          "Weeks": [10, 13],
+          "DayText": "Wednesday",
+          "StartTime": "1400",
+          "EndTime": "1700",
+          "ModuleCode": "PC1431"
+        },
+        {
+          "ClassNo": "U14",
+          "LessonType": "Laboratory",
+          "Weeks": [5, 10],
+          "DayText": "Wednesday",
+          "StartTime": "0900",
+          "EndTime": "1200",
+          "ModuleCode": "PC1431"
+        }
+      ],
+      "Availability": {
+        "1000": "occupied",
+        "1030": "occupied",
+        "1100": "occupied",
+        "1130": "occupied",
+        "1400": "occupied",
+        "1430": "occupied",
+        "1500": "occupied",
+        "1530": "occupied",
+        "1600": "occupied",
+        "1630": "occupied",
+        "0900": "occupied",
+        "0930": "occupied"
+      }
+    },
+    {
+      "Day": "Thursday",
+      "Classes": [
+        {
+          "ClassNo": "A04",
+          "LessonType": "Laboratory",
+          "Weeks": [6, 12],
+          "DayText": "Thursday",
+          "StartTime": "0900",
+          "EndTime": "1200",
+          "ModuleCode": "PC1431"
+        },
+        {
+          "ClassNo": "D11",
+          "LessonType": "Laboratory",
+          "Weeks": [4, 8],
+          "DayText": "Thursday",
+          "StartTime": "1400",
+          "EndTime": "1700",
+          "ModuleCode": "PC1431"
+        },
+        {
+          "ClassNo": "D17",
+          "LessonType": "Laboratory",
+          "Weeks": [5, 9],
+          "DayText": "Thursday",
+          "StartTime": "1400",
+          "EndTime": "1700",
+          "ModuleCode": "PC1431"
+        },
+        {
+          "ClassNo": "D18",
+          "LessonType": "Laboratory",
+          "Weeks": [6, 10],
+          "DayText": "Thursday",
+          "StartTime": "1400",
+          "EndTime": "1700",
+          "ModuleCode": "PC1431"
+        },
+        {
+          "ClassNo": "D19",
+          "LessonType": "Laboratory",
+          "Weeks": [8, 11],
+          "DayText": "Thursday",
+          "StartTime": "0900",
+          "EndTime": "1200",
+          "ModuleCode": "PC1431"
+        }
+      ],
+      "Availability": {
+        "1000": "occupied",
+        "1030": "occupied",
+        "1100": "occupied",
+        "1130": "occupied",
+        "1400": "occupied",
+        "1430": "occupied",
+        "1500": "occupied",
+        "1530": "occupied",
+        "1600": "occupied",
+        "1630": "occupied",
+        "0900": "occupied",
+        "0930": "occupied"
+      }
+    },
+    {
+      "Day": "Friday",
+      "Classes": [
+        {
+          "ClassNo": "A15",
+          "LessonType": "Laboratory",
+          "Weeks": [6, 12],
+          "DayText": "Friday",
+          "StartTime": "1400",
+          "EndTime": "1700",
+          "ModuleCode": "PC1431"
+        },
+        {
+          "ClassNo": "A16",
+          "LessonType": "Laboratory",
+          "Weeks": [4, 10],
+          "DayText": "Friday",
+          "StartTime": "1400",
+          "EndTime": "1700",
+          "ModuleCode": "PC1431"
+        }
+      ],
+      "Availability": {
+        "1400": "occupied",
+        "1430": "occupied",
+        "1500": "occupied",
+        "1530": "occupied",
+        "1600": "occupied",
+        "1630": "occupied"
+      }
+    },
+    {
+      "Day": "Saturday",
+      "Classes": [],
+      "Availability": {}
+    }
+  ],
+  "LT1": [
+    {
+      "Day": "Monday",
+      "Classes": [
+        {
+          "ClassNo": "U01",
+          "LessonType": "Laboratory",
+          "Weeks": [9, 13],
+          "DayText": "Monday",
+          "StartTime": "1400",
+          "EndTime": "1700",
+          "ModuleCode": "PC1432"
+        }
+      ],
+      "Availability": {
+        "1400": "occupied",
+        "1430": "occupied",
+        "1500": "occupied",
+        "1530": "occupied",
+        "1600": "occupied",
+        "1630": "occupied"
+      }
+    },
+    {
+      "Day": "Tuesday",
+      "Classes": [
+        {
+          "ClassNo": "U02",
+          "LessonType": "Laboratory",
+          "Weeks": [5, 9],
+          "DayText": "Tuesday",
+          "StartTime": "0900",
+          "EndTime": "1200",
+          "ModuleCode": "PC1432"
+        },
+        {
+          "ClassNo": "SB1",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Tuesday",
+          "StartTime": "1400",
+          "EndTime": "1600",
+          "ModuleCode": "PC2193"
+        }
+      ],
+      "Availability": {
+        "1000": "occupied",
+        "1030": "occupied",
+        "1100": "occupied",
+        "1130": "occupied",
+        "1400": "occupied",
+        "1430": "occupied",
+        "1500": "occupied",
+        "1530": "occupied",
+        "0900": "occupied",
+        "0930": "occupied"
+      }
+    },
+    {
+      "Day": "Wednesday",
+      "Classes": [
+        {
+          "ClassNo": "SB2",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Wednesday",
+          "StartTime": "1400",
+          "EndTime": "1600",
+          "ModuleCode": "PC2193"
+        }
+      ],
+      "Availability": {
+        "1400": "occupied",
+        "1430": "occupied",
+        "1500": "occupied",
+        "1530": "occupied"
+      }
+    },
+    {
+      "Day": "Thursday",
+      "Classes": [],
+      "Availability": {}
+    },
+    {
+      "Day": "Friday",
+      "Classes": [
+        {
+          "ClassNo": "SB3",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Friday",
+          "StartTime": "1400",
+          "EndTime": "1600",
+          "ModuleCode": "PC2193"
+        }
+      ],
+      "Availability": {
+        "1400": "occupied",
+        "1430": "occupied",
+        "1500": "occupied",
+        "1530": "occupied"
+      }
+    },
+    {
+      "Day": "Saturday",
+      "Classes": [],
+      "Availability": {}
+    }
+  ],
+  "CQT/SR0622": [
+    {
+      "Day": "Monday",
+      "Classes": [],
+      "Availability": {}
+    },
+    {
+      "Day": "Tuesday",
+      "Classes": [],
+      "Availability": {}
+    },
+    {
+      "Day": "Wednesday",
+      "Classes": [
+        {
+          "ClassNo": "ST2",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Wednesday",
+          "StartTime": "1300",
+          "EndTime": "1400",
+          "ModuleCode": "PC2132"
+        },
+        {
+          "ClassNo": "ST1",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Wednesday",
+          "StartTime": "1000",
+          "EndTime": "1100",
+          "ModuleCode": "PC4241"
+        },
+        {
+          "ClassNo": "ST3",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Wednesday",
+          "StartTime": "1600",
+          "EndTime": "1700",
+          "ModuleCode": "PC4241"
+        }
+      ],
+      "Availability": {
+        "1000": "occupied",
+        "1030": "occupied",
+        "1300": "occupied",
+        "1330": "occupied",
+        "1600": "occupied",
+        "1630": "occupied"
+      }
+    },
+    {
+      "Day": "Thursday",
+      "Classes": [
+        {
+          "ClassNo": "ST4",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "1400",
+          "EndTime": "1500",
+          "ModuleCode": "PC2132"
+        },
+        {
+          "ClassNo": "ST5",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "1500",
+          "EndTime": "1600",
+          "ModuleCode": "PC2132"
+        }
+      ],
+      "Availability": {
+        "1400": "occupied",
+        "1430": "occupied",
+        "1500": "occupied",
+        "1530": "occupied"
+      }
+    },
+    {
+      "Day": "Friday",
+      "Classes": [],
+      "Availability": {}
+    },
+    {
+      "Day": "Saturday",
+      "Classes": [],
+      "Availability": {}
+    }
+  ]
 }
