@@ -805,9 +805,5 @@
       ]
     }
   ],
-  "PrereqTree": {
-    "name": "CS1010S",
-    "children": []
-  },
   "FulfillRequirements": ["ST3247", "MA3269"]
 }

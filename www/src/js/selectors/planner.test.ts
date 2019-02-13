@@ -4,10 +4,7 @@ import { PlannerState } from 'types/reducers';
 import { State } from 'reducers';
 import { ModuleCode } from 'types/modules';
 
-/** @var Module */
-import CS3216 from '__mocks__/modules/CS3216.json';
-/** @var Module */
-import CS1010S from '__mocks__/modules/CS1010S.json';
+import { CS3216, CS1010S } from '__mocks__/modules';
 
 // Stupid trick to get two modules with the same exam dates
 const CS1010X = clone(CS1010S);
