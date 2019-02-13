@@ -16,15 +16,16 @@ $logo-vert-padding: 0.85rem;
 }
 
 .brand {
-  // Explicit width so the logo will not expand to occupy the entire
-  // navbar
-  width: 10.5rem;
-  padding: $logo-vert-padding 0 $logo-vert-padding $grid-gutter-width/2;
+  display: flex;
+  // Explicit width so the logo will not expand
+  // to occupy the entire navbar
+  width: 12rem;
+  padding: $logo-vert-padding $grid-gutter-width;
+}
 
-  svg {
-    display: block;
-    height: 100%;
-  }
+.brandLogo {
+  width: 100%;
+  height: 100%;
 }
 
 .navRight {
@@ -43,7 +44,6 @@ $logo-vert-padding: 0.85rem;
 @include media-breakpoint-up(xl) {
   .brand {
     // Padding to match navtab left padding
-    width: 12rem;
     padding-left: 2rem;
   }
 
@@ -57,21 +57,8 @@ $logo-vert-padding: 0.85rem;
     display: none;
   }
 
-  // Remove padding from navbar so the logo link can occupy
-  // the entire navbar as a tappable area
-  .navbar {
-    padding: 0;
-  }
-
   .brand {
-    width: 100%;
-    height: 100%;
+    flex: 1;
     padding: $logo-vert-padding 0;
-    margin: 0;
-
-    // Center logo on mobile
-    svg {
-      margin: 0 auto;
-    }
   }
 }
