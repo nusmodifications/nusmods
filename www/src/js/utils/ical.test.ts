@@ -81,7 +81,6 @@ test('iCalEventForExam should generate event', () => {
     end: new Date('2017-11-29T19:00+0800'),
     summary: 'CS1010S Exam',
     description: 'Programming Methodology',
-    url: 'http://www.nus.edu.sg/registrar/event/examschedule-sem1.html',
   };
   expect(actual).toEqual(expected);
 });
@@ -199,9 +198,6 @@ test('iCalEventForLesson generates correct output', () => {
     summary: 'BFS1001 Sectional Teaching',
     description: 'Personal Development & Career Management\nSectional Teaching Group A1',
     location: 'BIZ1-0303',
-    url:
-      'https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp?' +
-      'acad_y=2016/2017&sem_c=1&mod_c=BFS1001',
     repeating: {
       freq: 'WEEKLY',
       count: 14,
@@ -235,9 +231,6 @@ test('work for half hour lesson offsets', () => {
     summary: 'BFS1001 Sectional Teaching',
     description: 'Personal Development & Career Management\nSectional Teaching Group A1',
     location: 'BIZ1-0303',
-    url:
-      'https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp?' +
-      'acad_y=2016/2017&sem_c=1&mod_c=BFS1001',
     repeating: {
       freq: 'WEEKLY',
       count: 14,

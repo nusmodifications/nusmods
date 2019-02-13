@@ -49,7 +49,6 @@ export function iCalEventForExam(module: Module, semester: Semester): EventOptio
     end: new Date(examDate.valueOf() + EXAM_DURATION_MS),
     summary: `${module.ModuleCode} Exam`,
     description: module.ModuleTitle,
-    url: `http://www.nus.edu.sg/registrar/event/examschedule-sem${semester}.html`,
   };
 }
 

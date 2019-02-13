@@ -370,46 +370,47 @@ function parseModuleConfig(serialized: string | null): ModuleLessonConfig {
  * - 1,2,3,5,6,7 => Weeks 1-3, 5-7
  */
 export function formatWeeks(weeks: LessonWeek[]) {
-  return ''
   // TODO: How to handle non-numeric weeks?
-  // const numericWeeks: number[] = weeks.filter((week): week is number => typeof week === 'number');
-  //
-  // // TODO: Fix this?
-  // if (weeks.length === 0) return '';
-  //
-  // if (weeks.length === 1) {
-  //   return `Week ${weeks[0]}`;
-  // }
-  //
-  // // Find consecutive week numbers
-  // const processed: (number | string)[] = [];
-  // let start = numericWeeks.shift()!;
-  // let end = start;
-  //
-  // const mergeConsecutive = () => {
-  //   if (end - start > 2) {
-  //     processed.push(`${start}-${end}`);
-  //   } else {
-  //     processed.push(...range(start, end + 1));
-  //   }
-  // };
-  //
-  // while (weeks.length) {
-  //   const next = numericWeeks.shift()!;
-  //   if (next - end === 1) {
-  //     // Consecutive week number - keep going
-  //     end = next;
-  //   } else {
-  //     // Break = push the current chunk into processed
-  //     mergeConsecutive();
-  //     start = next;
-  //     end = start;
-  //   }
-  // }
-  //
-  // mergeConsecutive();
-  //
-  // return `Weeks ${processed.join(', ')}`;
+  const numericWeeks: number[] = weeks.filter((week): week is number => typeof week === 'number');
+
+  // TODO: Fix this?
+  if (numericWeeks.length === 0) {
+    return numericWeeks.join(', ');
+  }
+
+  if (numericWeeks.length === 1) {
+    return `Week ${weeks[0]}`;
+  }
+
+  // Find consecutive week numbers
+  const processed: (number | string)[] = [];
+  let start = numericWeeks.shift()!;
+  let end = start;
+
+  const mergeConsecutive = () => {
+    if (end - start > 2) {
+      processed.push(`${start}-${end}`);
+    } else {
+      processed.push(...range(start, end + 1));
+    }
+  };
+
+  while (numericWeeks.length) {
+    const next = numericWeeks.shift()!;
+    if (next - end === 1) {
+      // Consecutive week number - keep going
+      end = next;
+    } else {
+      // Break = push the current chunk into processed
+      mergeConsecutive();
+      start = next;
+      end = start;
+    }
+  }
+
+  mergeConsecutive();
+
+  return `Weeks ${processed.join(', ')}`;
 }
 
 // Converts a timetable config to query string

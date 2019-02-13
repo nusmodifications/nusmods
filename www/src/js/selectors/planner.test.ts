@@ -176,7 +176,7 @@ describe(getAcadYearModules, () => {
       moduleInfo: CS3216,
       conflict: {
         type: 'prereq',
-        unfulfilledPrereqs: [{ name: 'CS2103', children: [] }],
+        unfulfilledPrereqs: ['CS2103'],
       },
     });
   });

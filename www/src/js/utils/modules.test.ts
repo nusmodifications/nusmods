@@ -16,6 +16,7 @@ import {
 } from 'utils/modules';
 import { noBreak } from 'utils/react';
 
+import { EVERY_WEEK } from 'test-utils/timetable';
 import { CS1010S, CS3216 } from '__mocks__/modules';
 
 const mockLesson = _.cloneDeep(CS1010S.SemesterData[0].Timetable[0]) as Lesson;
@@ -31,14 +32,13 @@ test('getModuleSemesterData should return semester data if semester is present',
       {
         ClassNo: '1',
         LessonType: 'Lecture',
-        WeekText: 'Every Week',
+        Weeks: EVERY_WEEK,
         DayText: 'Monday',
         StartTime: '1830',
         EndTime: '2030',
         Venue: 'VCRm',
       },
     ],
-    LecturePeriods: ['Monday Evening'],
   };
   expect(actual).toEqual(expected);
 });

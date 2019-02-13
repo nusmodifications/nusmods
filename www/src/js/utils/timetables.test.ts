@@ -570,23 +570,6 @@ describe(isLessonAvailable, () => {
     num: 5,
   };
 
-  test('should return false if the lesson is a tutorial and it is week 1 and 2', () => {
-    const lesson = createGenericLesson('Monday', '0800', '1000', 'Tutorial');
-    expect(
-      isLessonAvailable(lesson, {
-        ...weekInfo,
-        num: 1,
-      }),
-    ).toBe(false);
-
-    expect(
-      isLessonAvailable(lesson, {
-        ...weekInfo,
-        num: 3,
-      }),
-    ).toBe(true);
-  });
-
   test("should return false if the lesson's Weeks does not match the week number", () => {
     expect(
       isLessonAvailable(

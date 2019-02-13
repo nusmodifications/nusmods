@@ -2,11 +2,7 @@ import { ModuleCode, Semester, Lesson } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
 
 import lessons from '__mocks__/lessons-array.json';
-
-/** @var {Module} */
-import CS1010S from '__mocks__/modules/CS1010S.json';
-/** @var {Module} */
-import CS3216 from '__mocks__/modules/CS3216.json';
+import { CS1010S, CS3216 } from '__mocks__/modules';
 
 import * as actions from './timetables';
 

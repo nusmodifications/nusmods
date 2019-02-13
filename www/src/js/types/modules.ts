@@ -49,6 +49,15 @@ export const Semesters = [1, 2, 3, 4];
 
 export type WorkloadComponent = 'Lecture' | 'Tutorial' | 'Laboratory' | 'Project' | 'Preparation';
 
+// Workload components as defined by CORS, in their correct positions (see below).
+export const WORKLOAD_COMPONENTS: WorkloadComponent[] = [
+  'Lecture',
+  'Tutorial',
+  'Laboratory',
+  'Project',
+  'Preparation',
+];
+
 // RawLesson is a lesson time slot obtained from the API.
 // Usually ModuleCode and ModuleTitle has to be injected in before using in the timetable.
 export type RawLesson = Readonly<{

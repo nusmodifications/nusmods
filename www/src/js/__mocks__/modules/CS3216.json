@@ -24,6 +24,6 @@
       ]
     }
   ],
-  "PrereqTree": ["CS2103"],
+  "PrereqTree": "CS2103",
   "LockedModules": []
 }

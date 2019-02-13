@@ -1,8 +1,8 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import _ from 'lodash';
+import { sum, entries, partition, zipObject, range } from 'lodash';
 
-import { Workload, WorkloadComponent } from 'types/modules';
+import { Workload, WORKLOAD_COMPONENTS, WorkloadComponent } from 'types/modules';
 import Tooltip from 'views/components/Tooltip';
 
 const ROW_MAX = 10;
@@ -43,7 +43,7 @@ function workloadLabel(component: WorkloadComponent, hours: number): React.React
 }
 
 function workloadBlocks(component: WorkloadComponent, hours: number): React.ReactNode {
-  const blocks: React.ReactNode[] = _.range(Math.floor(hours)).map((hour) => (
+  const blocks: React.ReactNode[] = range(Math.floor(hours)).map((hour) => (
     <div key={hour} className={bgClass(component)} />
   ));
 
@@ -55,11 +55,12 @@ function workloadBlocks(component: WorkloadComponent, hours: number): React.Reac
   return blocks;
 }
 
-function sortWorkload(workload: Workload): [WorkloadComponent, number][] {
+type WorkloadMap = { [workload in WorkloadComponent]: number };
+
+function sortWorkload(workload: WorkloadMap): [WorkloadComponent, number][] {
   // Push longer components (those that take up more than one row) down
-  // @ts-ignore TODO: Figure out how to type this better
-  const components = _.entries(workload) as [WorkloadComponent, number][];
-  const [long, short] = _.partition(components, ([, hours]) => Math.ceil(hours) >= ROW_MAX);
+  const components = entries(workload) as [WorkloadComponent, number][];
+  const [long, short] = partition(components, ([, hours]) => Math.ceil(hours) >= ROW_MAX);
   return short.concat(long);
 }
 
@@ -82,14 +83,15 @@ export default class ModuleWorkload extends React.PureComponent<Props> {
     const { workload } = this.props;
     if (typeof workload === 'string') return this.renderFallback();
 
-    const total = _.sum(_.values(workload));
+    // Pair the workload with their numbers
+    const workloadMap = zipObject(WORKLOAD_COMPONENTS, workload) as WorkloadMap;
+    const total = sum(workload);
 
-    // TODO: Fix this
     return (
       <div className="module-workload-container">
         <h4>Workload - {total} hrs</h4>
         <div className="module-workload">
-          {sortWorkload(workload).map(([component, hours]) => (
+          {sortWorkload(workloadMap).map(([component, hours]) => (
             <Tooltip content={`${hours} hours of ${component}`} key={component}>
               <div
                 className="module-workload-component"

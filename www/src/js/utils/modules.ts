@@ -9,7 +9,6 @@ import {
   SemesterData,
   SemesterDataCondensed,
   Time,
-  WorkloadComponent,
 } from 'types/modules';
 
 import config from 'config';
@@ -99,50 +98,6 @@ export function getFirstAvailableSemester(
 
 export function getSemestersOffered(module: Module): Semester[] {
   return module.SemesterData.map((semesterData) => semesterData.Semester).sort();
-}
-
-// Workload components as defined by CORS, in their correct positions (see below).
-export const WORKLOAD_COMPONENTS: WorkloadComponent[] = [
-  'Lecture',
-  'Tutorial',
-  'Laboratory',
-  'Project',
-  'Preparation',
-];
-// TODO: Remove this
-export type Workload = { [workloadComponent: string]: number } | string;
-
-// Parse the workload string into a mapping of individual components to their hours.
-// If the string is unparsable, it is returned without any modification.
-export function parseWorkload(workloadString: string): Workload {
-  const cleanedWorkloadString = workloadString
-    .replace(/\(.*?\)/g, '') // Remove stuff in parenthesis
-    .replace(/NA/g, '0') // Replace 'NA' with 0
-    .replace(/\s+/g, ''); // Remove whitespace
-
-  if (!/^((^|-)([\d.]+)){5}$/.test(cleanedWorkloadString)) return workloadString;
-  // Workload string is formatted as A-B-C-D-E where
-  // A: no. of lecture hours per week
-  // B: no. of tutorial hours per week
-  // C: no. of laboratory hours per week
-  // D: no. of hours for projects, assignments, fieldwork etc per week
-  // E: no. of hours for preparatory work by a student per week
-  // Taken from CORS:
-  // https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp?acad_y=2017/2018&sem_c=1&mod_c=CS2105
-  const hours = workloadString.split('-');
-
-  const workload: Workload = {};
-  _.zip(WORKLOAD_COMPONENTS, hours).forEach(([component, hourString]) => {
-    if (!component || typeof hourString === 'undefined') {
-      throw new Error('Invalid number of workload components');
-    }
-
-    const hour = parseFloat(hourString);
-    if (!hour) return;
-    workload[component] = hour;
-  });
-
-  return workload;
 }
 
 export function getTimeslot(day: Day, time: Time): string {
