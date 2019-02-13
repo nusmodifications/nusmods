@@ -66,7 +66,7 @@
 
 @mixin night-mode {
   @at-root {
-    .mode-dark & {
+    :global(.mode-dark) & {
       @content;
     }
   }
@@ -74,7 +74,7 @@
 
 @mixin vertical-mode {
   @at-root {
-    .verticalMode & {
+    :global(.verticalMode) & {
       @content;
     }
   }
