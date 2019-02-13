@@ -44,8 +44,17 @@
   }
 }
 
+.writeReviews {
+  h4 {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+}
+
 .reviewWrapper {
   display: grid;
+  margin-bottom: 1.5rem;
   grid-gap: 0.5rem;
   grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
 

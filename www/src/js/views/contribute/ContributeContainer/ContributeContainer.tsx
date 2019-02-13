@@ -2,10 +2,11 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
-import { flatMap } from 'lodash';
+import { map, flatMap, mapValues, values, flatten } from 'lodash';
 
-import { ModuleCondensed } from 'types/modules';
+import { ModuleCondensed, Semester } from 'types/modules';
 
+import { notNull } from 'types/utils';
 import { toggleFeedback } from 'actions/app';
 import { toggleBetaTesting } from 'actions/settings';
 import { modulePage } from 'views/routes/paths';
@@ -17,6 +18,7 @@ import { FeedbackButtons } from 'views/components/FeedbackModal';
 import { getModuleCondensed } from 'selectors/moduleBank';
 import { currentTests } from 'views/settings/BetaToggle';
 import { State as StoreState } from 'reducers';
+import config from 'config';
 
 import ReviewIcon from 'img/icons/review.svg';
 import WrenchIcon from 'img/icons/wrench.svg';
@@ -30,10 +32,11 @@ import VenueIcon from 'img/icons/compass.svg';
 import UnmappedVenues from '../UnmappedVenues';
 import ContributorList from '../ContributorList';
 import styles from './ContributeContainer.scss';
-import { notNull } from '../../../types/utils';
+
+type SemesterModules = { [semester: number]: ModuleCondensed[] };
 
 type Props = {
-  modules: ModuleCondensed[];
+  modules: SemesterModules;
   beta: boolean;
 
   toggleFeedback: () => void;
@@ -42,6 +45,8 @@ type Props = {
 
 class ContributeContainer extends React.PureComponent<Props> {
   render() {
+    const { modules, beta } = this.props;
+
     return (
       <div className={styles.pageContainer}>
         <ScrollToTop onComponentDidMount />
@@ -63,7 +68,7 @@ class ContributeContainer extends React.PureComponent<Props> {
           <h2>For Everyone</h2>
         </header>
 
-        {this.props.modules.length > 0 && (
+        {flatten(values(modules)).length > 0 && (
           <section>
             <header>
               <ReviewIcon />
@@ -76,16 +81,24 @@ class ContributeContainer extends React.PureComponent<Props> {
               have taken this year:
             </p>
 
-            <div className={styles.reviewWrapper}>
-              {this.props.modules.map(({ ModuleCode, ModuleTitle }) => (
-                <Link
-                  key={ModuleCode}
-                  className={classnames(styles.reviewButton, 'btn btn-outline-primary')}
-                  to={`${modulePage(ModuleCode, ModuleTitle)}#reviews`}
-                  target="_blank"
-                >
-                  Review <span className={styles.reviewModuleCode}>{ModuleCode}</span> {ModuleTitle}
-                </Link>
+            <div className={styles.writeReviews}>
+              {map(modules, (moduleCondensed, semester) => (
+                <React.Fragment key={semester}>
+                  <h4>{config.semesterNames[semester]}</h4>
+                  <div className={styles.reviewWrapper}>
+                    {moduleCondensed.map(({ ModuleCode, ModuleTitle }) => (
+                      <Link
+                        key={ModuleCode}
+                        className={classnames(styles.reviewButton, 'btn btn-outline-primary')}
+                        to={`${modulePage(ModuleCode, ModuleTitle)}#reviews`}
+                        target="_blank"
+                      >
+                        Review <span className={styles.reviewModuleCode}>{ModuleCode}</span>{' '}
+                        {ModuleTitle}
+                      </Link>
+                    ))}
+                  </div>
+                </React.Fragment>
               ))}
             </div>
           </section>
@@ -307,9 +320,13 @@ class ContributeContainer extends React.PureComponent<Props> {
 const ConnectedContributeContainer = connect(
   (state: StoreState) => {
     const getModule = getModuleCondensed(state.moduleBank);
-    const modules: ModuleCondensed[] = flatMap(state.timetables.lessons, Object.keys)
-      .map(getModule)
-      .filter(notNull);
+    const modules: SemesterModules = mapValues(
+      state.timetables.lessons,
+      (timetable): ModuleCondensed[] =>
+        Object.keys(timetable)
+          .map(getModule)
+          .filter(notNull),
+    );
 
     return {
       modules,
