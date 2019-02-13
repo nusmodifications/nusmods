@@ -56,7 +56,8 @@
     @media (max-width: $max), (pointer: coarse) {
       @content;
     }
-  } @else {
+  }
+  @else {
     @media (pointer: coarse) {
       @content;
     }
