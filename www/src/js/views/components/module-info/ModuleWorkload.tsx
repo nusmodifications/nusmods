@@ -57,7 +57,7 @@ function workloadBlocks(component: WorkloadComponent, hours: number): React.Reac
 
 type WorkloadTuple = [WorkloadComponent, number];
 
-function sortWorkload(workload: [number, number, number, number, number]): WorkloadTuple[] {
+function sortWorkload(workload: number[]): WorkloadTuple[] {
   const components = zip(WORKLOAD_COMPONENTS, workload) as WorkloadTuple[];
 
   // Only show non-empty components
