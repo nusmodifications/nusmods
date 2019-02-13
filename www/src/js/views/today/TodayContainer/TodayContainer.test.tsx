@@ -4,7 +4,9 @@ import { shallow } from 'enzyme';
 
 import * as weather from 'apis/weather';
 import { waitFor } from 'test-utils/async';
+import { EVEN_WEEK, EVERY_WEEK } from 'test-utils/timetable';
 import { captureException } from 'utils/error';
+
 import { Props, DaySection, TodayContainerComponent, mapStateToProps } from './TodayContainer';
 import DayEvents from '../DayEvents';
 import styles from '../DayEvents.scss';
@@ -27,7 +29,7 @@ const CS3216_LESSONS = {
       ModuleTitle: 'Software Product Engineering for Digital Markets',
       ClassNo: '1',
       LessonType: 'Lecture',
-      WeekText: 'Every Week',
+      Weeks: EVERY_WEEK,
       DayText: 'Monday',
       StartTime: '1830',
       EndTime: '2030',
@@ -43,7 +45,7 @@ const CS1010S_LESSONS = {
       ModuleTitle: 'Programming Methodology',
       ClassNo: '9',
       LessonType: 'Recitation',
-      WeekText: 'Every Week',
+      Weeks: EVERY_WEEK,
       DayText: 'Thursday',
       StartTime: '1100',
       EndTime: '1200',
@@ -59,7 +61,7 @@ const PC1222_LESSONS = {
       ModuleTitle: 'Fundamentals of Physics II',
       ClassNo: 'U02',
       LessonType: 'Laboratory',
-      WeekText: 'Even Week',
+      Weeks: EVEN_WEEK,
       DayText: 'Tuesday',
       StartTime: '1400',
       EndTime: '1700',
@@ -72,7 +74,7 @@ const PC1222_LESSONS = {
       ModuleTitle: 'Fundamentals of Physics II',
       ClassNo: 'T11',
       LessonType: 'Tutorial',
-      WeekText: 'Every Week',
+      Weeks: EVERY_WEEK,
       DayText: 'Wednesday',
       StartTime: '0900',
       EndTime: '1000',
@@ -85,7 +87,7 @@ const PC1222_LESSONS = {
       ModuleTitle: 'Fundamentals of Physics II',
       ClassNo: 'SL1',
       LessonType: 'Lecture',
-      WeekText: 'Every Week',
+      Weeks: EVERY_WEEK,
       DayText: 'Tuesday',
       StartTime: '1200',
       EndTime: '1400',
@@ -96,7 +98,7 @@ const PC1222_LESSONS = {
       ModuleTitle: 'Fundamentals of Physics II',
       ClassNo: 'SL1',
       LessonType: 'Lecture',
-      WeekText: 'Every Week',
+      Weeks: EVERY_WEEK,
       DayText: 'Friday',
       StartTime: '1200',
       EndTime: '1400',

@@ -91,7 +91,7 @@ export class AddModuleDropdownComponent extends React.PureComponent<Props, State
   render() {
     const { block, className, module } = this.props;
 
-    const defaultSemester = getFirstAvailableSemester(module.History);
+    const defaultSemester = getFirstAvailableSemester(module.SemesterData);
     const otherSemesters = this.otherSemesters(defaultSemester);
     const id = `add-to-timetable-${module.ModuleCode}`;
 

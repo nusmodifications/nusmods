@@ -59,53 +59,6 @@ export function filterAvailability(
   });
 }
 
-export function getDuplicateModules(classes: VenueLesson[]): ModuleCode[] {
-  const lessonsByTime = values(
-    groupBy(classes, (lesson) => [
-      lesson.StartTime,
-      lesson.EndTime,
-      lesson.WeekText,
-      lesson.DayText,
-    ]),
-  );
-  for (let i = 0; i < lessonsByTime.length; i++) {
-    const lessons = lessonsByTime[i];
-    if (lessons.length > 1 && lessons.every((lesson) => lesson.WeekText === lessons[0].WeekText)) {
-      return lessons.map((lesson) => lesson.ModuleCode);
-    }
-  }
-
-  return [];
-}
-
-export function mergeModules(classes: VenueLesson[], modules: ModuleCode[]): VenueLesson[] {
-  const mergedModuleCode = modules.join(`/${ZWSP}`);
-  const removeModuleCodes = new Set(modules.slice(1));
-
-  return classes
-    .filter((lesson) => !removeModuleCodes.has(lesson.ModuleCode))
-    .map((lesson) =>
-      lesson.ModuleCode === modules[0]
-        ? {
-            ...lesson,
-            ModuleCode: mergedModuleCode,
-          }
-        : lesson,
-    );
-}
-
-export function mergeDualCodedModules(classes: VenueLesson[]): VenueLesson[] {
-  let mergedModules = classes;
-  let duplicateModules = getDuplicateModules(mergedModules);
-
-  while (duplicateModules.length) {
-    mergedModules = mergeModules(mergedModules, duplicateModules);
-    duplicateModules = getDuplicateModules(mergedModules);
-  }
-
-  return mergedModules;
-}
-
 export function floorName(floor: number | string): string {
   if (typeof floor === 'string') {
     return `${floor.toLowerCase()} floor`;

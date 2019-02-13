@@ -163,62 +163,42 @@ export default class ModulePageContent extends React.Component<Props, State> {
                 </div>
 
                 <div className="col-sm-4">
-                  {module.History.sort((a, b) => a.Semester - b.Semester).map((semesterData) => (
-                    <div key={semesterData.Semester} className={styles.exam}>
-                      <h3 className={styles.descriptionHeading}>
-                        {module.History.length > 1 && config.semesterNames[semesterData.Semester]}{' '}
-                        Exam
-                      </h3>
-                      <p>{formatExamDate(semesterData.ExamDate)}</p>
+                  {module.SemesterData.sort((a, b) => a.Semester - b.Semester).map(
+                    (semesterData) => (
+                      <div key={semesterData.Semester} className={styles.exam}>
+                        <h3 className={styles.descriptionHeading}>
+                          {module.SemesterData.length > 1 &&
+                            config.semesterNames[semesterData.Semester]}{' '}
+                          Exam
+                        </h3>
+                        <p>{formatExamDate(semesterData.ExamDate)}</p>
 
-                      <ModuleExamClash
-                        semester={semesterData.Semester}
-                        examDate={semesterData.ExamDate}
-                        moduleCode={ModuleCode}
-                      />
-                    </div>
-                  ))}
+                        <ModuleExamClash
+                          semester={semesterData.Semester}
+                          examDate={semesterData.ExamDate}
+                          moduleCode={ModuleCode}
+                        />
+                      </div>
+                    ),
+                  )}
 
                   {!isArchive && (
                     <div className={styles.addToTimetable}>
                       <AddModuleDropdown module={module} className="btn-group-sm" block />
                     </div>
                   )}
-
-                  <div>
-                    <h3 className={styles.descriptionHeading}>Official Links</h3>
-                    {intersperse(
-                      [
-                        <ExternalLink
-                          key="ivle"
-                          href={config.ivleUrl.replace('<ModuleCode>', ModuleCode)}
-                        >
-                          IVLE
-                        </ExternalLink>,
-                        <ExternalLink
-                          key="cors"
-                          href={config.corsUrl.replace('<ModuleCode>', ModuleCode)}
-                        >
-                          CORS
-                        </ExternalLink>,
-                      ],
-                      BULLET,
-                    )}
-                  </div>
                 </div>
               </section>
             </div>
 
             <section className={styles.section} id={SIDE_MENU_ITEMS.prerequisites}>
               <h2 className={styles.sectionHeading}>Prerequisite Tree</h2>
-              <ErrorBoundary>
-                <ModuleTree module={module} />
-              </ErrorBoundary>
+              <ErrorBoundary>{null /* <ModuleTree module={module} /> */}</ErrorBoundary>
             </section>
 
             <section className={styles.section} id="timetable">
               <h2 className={styles.sectionHeading}>Timetable</h2>
-              <LessonTimetable semesterData={module.History} />
+              <LessonTimetable semesterData={module.SemesterData} />
             </section>
 
             <section className={styles.section} id={SIDE_MENU_ITEMS.reviews}>

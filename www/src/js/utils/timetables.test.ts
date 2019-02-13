@@ -13,19 +13,12 @@ import { ModulesMap } from 'reducers/moduleBank';
 import _ from 'lodash';
 
 import { getModuleSemesterData, getModuleTimetable } from 'utils/modules';
-/** @var {Module} */
-import cs1010s from '__mocks__/modules/CS1010S.json';
-/** @var {Module} */
-import cs3216 from '__mocks__/modules/CS3216.json';
-/** @var {Module} */
-import pc1222 from '__mocks__/modules/PC1222.json';
-/** @var {Module} */
-import cs4243 from '__mocks__/modules/CS4243.json';
 
+import { CS1010S, CS3216, PC1222, CS4243 } from '__mocks__/modules';
 import modulesListJSON from '__mocks__/module-list.json';
-
 import timetable from '__mocks__/sem-timetable.json';
 import lessonsArray from '__mocks__/lessons-array.json';
+
 import { createGenericColoredLesson, createGenericLesson } from 'test-utils/timetable';
 
 import {
@@ -35,7 +28,7 @@ import {
   deserializeTimetable,
   doLessonsOverlap,
   findExamClashes,
-  formatWeekNumber,
+  formatWeeks,
   getEndTimeAsDate,
   getStartTimeAsDate,
   groupLessonsByDay,
@@ -71,7 +64,7 @@ describe(isValidSemester, () => {
 
 test('randomModuleLessonConfig should return a random lesson config', () => {
   const sem: Semester = 1;
-  const rawLessons: RawLesson[] = getModuleTimetable(cs1010s, sem);
+  const rawLessons: RawLesson[] = getModuleTimetable(CS1010S, sem);
   const lessonConfig: ModuleLessonConfig = randomModuleLessonConfig(rawLessons);
   Object.keys(lessonConfig).forEach((lessonType: LessonType) => {
     expect(lessonConfig[lessonType]).toBeTruthy();
@@ -82,7 +75,7 @@ test('hydrateSemTimetableWithLessons should replace ClassNo with lessons', () =>
   const sem: Semester = 1;
   const moduleCode: ModuleCode = 'CS1010S';
   const modules: ModulesMap = {
-    [moduleCode]: cs1010s,
+    [moduleCode]: CS1010S,
   };
   const tutorialClassNo: ClassNo = '8';
   const recitationClassNo: ClassNo = '4';
@@ -106,7 +99,7 @@ test('hydrateSemTimetableWithLessons should replace ClassNo with lessons', () =>
 
 test('lessonsForLessonType should return all lessons belonging to a particular LessonType', () => {
   const sem: Semester = 1;
-  const moduleTimetable: RawLesson[] = getModuleTimetable(cs1010s, sem);
+  const moduleTimetable: RawLesson[] = getModuleTimetable(CS1010S, sem);
   const lessonType: LessonType = 'Tutorial';
   const lessons: RawLesson[] = lessonsForLessonType(moduleTimetable, lessonType);
   expect(lessons.length > 0).toBe(true);
@@ -117,7 +110,7 @@ test('lessonsForLessonType should return all lessons belonging to a particular L
 
 test('lessonsForLessonType should return empty array if no such LessonType is present', () => {
   const sem: Semester = 1;
-  const moduleTimetable: RawLesson[] = getModuleTimetable(cs1010s, sem);
+  const moduleTimetable: RawLesson[] = getModuleTimetable(CS1010S, sem);
   const lessonType: LessonType = 'Dota Session';
   const lessons: RawLesson[] = lessonsForLessonType(moduleTimetable, lessonType);
   expect(lessons.length).toBe(0);
@@ -372,15 +365,15 @@ test('areOtherClassesAvailable', () => {
 
 test('findExamClashes should return non-empty object if exams clash', () => {
   const sem: Semester = 1;
-  const examClashes = findExamClashes([cs1010s, cs4243 as any, cs3216], sem);
-  const examDate = _.get(getModuleSemesterData(cs1010s, sem), 'ExamDate');
+  const examClashes = findExamClashes([CS1010S, CS4243 as any, CS3216], sem);
+  const examDate = _.get(getModuleSemesterData(CS1010S, sem), 'ExamDate');
   if (!examDate) throw new Error('Cannot find ExamDate');
-  expect(examClashes).toEqual({ [examDate]: [cs1010s, cs4243] });
+  expect(examClashes).toEqual({ [examDate]: [CS1010S, CS4243] });
 });
 
 test('findExamClashes should return empty object if exams do not clash', () => {
   const sem: Semester = 2;
-  const examClashes = findExamClashes([cs1010s, pc1222, cs3216], sem);
+  const examClashes = findExamClashes([CS1010S, PC1222, CS3216], sem);
   expect(examClashes).toEqual({});
 });
 
@@ -509,7 +502,7 @@ describe('validateModuleLessons', () => {
   };
 
   test('should leave valid lessons untouched', () => {
-    expect(validateModuleLessons(semester, lessons, cs1010s)).toEqual([lessons, []]);
+    expect(validateModuleLessons(semester, lessons, CS1010S)).toEqual([lessons, []]);
   });
 
   test('should remove lesson types which do not exist', () => {
@@ -520,7 +513,7 @@ describe('validateModuleLessons', () => {
           ...lessons,
           Laboratory: '2', // CS1010S has no lab
         },
-        cs1010s,
+        CS1010S,
       ),
     ).toEqual([lessons, ['Laboratory']]);
   });
@@ -533,7 +526,7 @@ describe('validateModuleLessons', () => {
           ...lessons,
           Lecture: '2', // CS1010S has no Lecture 2
         },
-        cs1010s,
+        CS1010S,
       ),
     ).toEqual([lessons, ['Lecture']]);
   });
@@ -545,7 +538,7 @@ describe('validateModuleLessons', () => {
         {
           Tutorial: '10',
         },
-        cs1010s,
+        CS1010S,
       ),
     ).toEqual([
       {
@@ -558,20 +551,14 @@ describe('validateModuleLessons', () => {
   });
 });
 
-describe(formatWeekNumber, () => {
-  it('should not change non-numeric week text', () => {
-    expect(formatWeekNumber('Every Week')).toEqual('Every Week');
-    expect(formatWeekNumber('Odd Weeks')).toEqual('Odd Weeks');
-    expect(formatWeekNumber('Even Weeks')).toEqual('Even Weeks');
-  });
-
+describe(formatWeeks, () => {
   it('should abbreviate consecutive week numbers', () => {
-    expect(formatWeekNumber('1')).toEqual('Week 1');
-    expect(formatWeekNumber('1,2,3,4')).toEqual('Weeks 1-4');
-    expect(formatWeekNumber('1,2,3,4,6,7,8,9')).toEqual('Weeks 1-4, 6-9');
-    expect(formatWeekNumber('1,3,5')).toEqual('Weeks 1, 3, 5');
-    expect(formatWeekNumber('1,2,4,5,6,7')).toEqual('Weeks 1, 2, 4-7');
-    expect(formatWeekNumber('1,2,4,5')).toEqual('Weeks 1, 2, 4, 5');
+    expect(formatWeeks([1])).toEqual('Week 1');
+    expect(formatWeeks([1, 2, 3, 4])).toEqual('Weeks 1-4');
+    expect(formatWeeks([1, 2, 3, 4, 6, 7, 8, 9])).toEqual('Weeks 1-4, 6-9');
+    expect(formatWeeks([1, 3, 5])).toEqual('Weeks 1, 3, 5');
+    expect(formatWeeks([1, 2, 4, 5, 6, 7])).toEqual('Weeks 1, 2, 4-7');
+    expect(formatWeeks([1, 2, 4, 5])).toEqual('Weeks 1, 2, 4, 5');
   });
 });
 
@@ -600,10 +587,10 @@ describe(isLessonAvailable, () => {
     ).toBe(true);
   });
 
-  test("should return false if the lesson's weekText does not match the week number", () => {
+  test("should return false if the lesson's Weeks does not match the week number", () => {
     expect(
       isLessonAvailable(
-        { ...createGenericLesson(), WeekText: 'Odd Week' },
+        { ...createGenericLesson(), Weeks: [1, 3, 5, 7, 9, 11] },
         {
           ...weekInfo,
           num: 4,
@@ -613,7 +600,7 @@ describe(isLessonAvailable, () => {
 
     expect(
       isLessonAvailable(
-        { ...createGenericLesson(), WeekText: '1, 2, 3' },
+        { ...createGenericLesson(), Weeks: [1, 2, 3] },
         {
           ...weekInfo,
           num: 4,
@@ -623,7 +610,7 @@ describe(isLessonAvailable, () => {
 
     expect(
       isLessonAvailable(
-        { ...createGenericLesson(), WeekText: 'Odd Week' },
+        { ...createGenericLesson(), Weeks: [1, 3, 5, 7, 9, 11] },
         {
           ...weekInfo,
           num: 5,

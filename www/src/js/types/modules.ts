@@ -1,8 +1,6 @@
-import { ColorIndex } from 'types/reducers';
-import { flatMap } from 'lodash';
-import { Venue } from './venues';
-
 // Components within a module:
+import { ColorIndex } from './reducers';
+
 export type AcadYear = string; // E.g. "2016/2017"
 export type ClassNo = string; // E.g. "1", "A"
 export type DayText = string; // E.g. "Monday", "Tuesday"
@@ -15,7 +13,12 @@ export type LessonTime = StartTime | EndTime;
 export type ModuleCode = string; // E.g. "CS3216"
 export type ModuleTitle = string;
 export type Semester = number; // E.g. 1/2/3/4. 3 and 4 means special sem i and ii.
-export type WeekText = string; // E.g. "Every Week", "Odd Week"
+export type LessonWeek = number | 'Reading' | 'Recess' | 'Orientation';
+export type Workload = string | number[];
+export type Venue = string;
+
+// Recursive tree of module codes and boolean operators for the prereq tree
+export type PrereqTree = string | { and?: PrereqTree[]; or?: PrereqTree[] };
 
 // Auxiliary data types
 export type Day =
@@ -26,6 +29,7 @@ export type Day =
   | 'Friday'
   | 'Saturday'
   | 'Sunday';
+
 export const WorkingDaysOfWeek: Day[] = [
   'Monday',
   'Tuesday',
@@ -34,15 +38,11 @@ export const WorkingDaysOfWeek: Day[] = [
   'Friday',
   'Saturday',
 ];
+
 export const DaysOfWeek: Day[] = [...WorkingDaysOfWeek, 'Sunday'];
 
 export type Time = 'Morning' | 'Afternoon' | 'Evening';
 export const TimesOfDay: Time[] = ['Morning', 'Afternoon', 'Evening'];
-
-export const Timeslots: [Day, Time][] = flatMap(
-  WorkingDaysOfWeek,
-  (day): [Day, Time][] => TimesOfDay.map((time): [Day, Time] => [day, time]),
-);
 
 export type ModuleLevel = 1 | 2 | 3 | 4 | 5 | 6 | 8;
 export const Semesters = [1, 2, 3, 4];
@@ -51,50 +51,57 @@ export type WorkloadComponent = 'Lecture' | 'Tutorial' | 'Laboratory' | 'Project
 
 // RawLesson is a lesson time slot obtained from the API.
 // Usually ModuleCode and ModuleTitle has to be injected in before using in the timetable.
-export type RawLesson = {
+export type RawLesson = Readonly<{
   ClassNo: ClassNo;
   DayText: DayText;
   EndTime: EndTime;
   LessonType: LessonType;
   StartTime: StartTime;
   Venue: Venue;
-  WeekText: WeekText;
-};
+  Weeks: LessonWeek[];
+}>;
 
 // Semester-specific information of a module.
 export type SemesterData = {
-  readonly ExamDate?: string;
-  readonly LecturePeriods: string[];
-  readonly Semester: Semester;
-  readonly Timetable: RawLesson[];
-  readonly TutorialPeriods?: string[];
-};
+  Semester: Semester;
+  Timetable: RawLesson[];
 
-// Recursive definition for walking a module tree
-export type Tree = {
-  readonly name: string;
-  // Tree[] will result in infinite loop
-  readonly children: Tree[];
+  // Exam
+  ExamDate?: string;
+  ExamDuration?: number;
+
+  // Deprecated
+  LecturePeriods?: string[];
+  TutorialPeriods?: string[];
 };
 
 // Information for a module for a particular academic year.
-// This is probably the only model you need to be concerned with.
-// For some reason es6 object literal property value shorthand is not recognized >_<
 export type Module = {
   AcadYear: AcadYear;
-  Corequisite?: string;
-  Department: Department;
-  History: SemesterData[];
+
+  // Basic info
   ModuleCode: ModuleCode;
-  ModuleCredit: string;
-  ModuleDescription?: string;
   ModuleTitle: ModuleTitle;
-  Preclusion?: string;
+
+  // Additional info
+  ModuleDescription?: string;
+  ModuleCredit: string;
+  Department: Department;
+  Faculty: Faculty;
+  Workload?: Workload;
+  Aliases?: ModuleCode[];
+
+  // Requsites
   Prerequisite?: string;
-  Types: string[];
-  Workload?: string;
-  ModmavenTree: Tree;
-  LockedModules?: ModuleCode[];
+  Corequisite?: string;
+  Preclusion?: string;
+
+  // Semester data
+  SemesterData: SemesterData[];
+
+  // Requisites
+  PrereqTree?: PrereqTree;
+  FulfillRequirements?: ModuleCode[];
 };
 
 export type ModuleWithColor = Module & {
@@ -103,11 +110,19 @@ export type ModuleWithColor = Module & {
 };
 
 // This format is returned from the module list endpoint.
-export type ModuleCondensed = {
-  readonly ModuleCode: ModuleCode;
-  readonly ModuleTitle: ModuleTitle;
-  readonly Semesters: number[];
-};
+export type ModuleCondensed = Readonly<{
+  ModuleCode: ModuleCode;
+  ModuleTitle: ModuleTitle;
+  Semesters: number[];
+}>;
+
+// This format is returned from the module information endpoint
+export type SemesterDataCondensed = Readonly<{
+  Semester: Semester;
+  ExamDate?: string;
+  ExamDuration?: number;
+  // The full timetable is not provided to reduce space
+}>;
 
 // Subset of Module object that contains the properties that are
 // needed for module search
@@ -115,6 +130,33 @@ export type SearchableModule = {
   ModuleCode: ModuleCode;
   ModuleTitle: ModuleTitle;
   ModuleDescription?: string;
+};
+
+export type ModuleInformation = Readonly<{
+  // Basic info
+  ModuleCode: ModuleCode;
+  ModuleTitle: ModuleTitle;
+
+  // Additional info
+  ModuleDescription?: string;
+  ModuleCredit: string;
+  Department: Department;
+  Faculty: Faculty;
+  Workload?: Workload;
+
+  // Requsites
+  Prerequisite?: string;
+  Corequisite?: string;
+  Preclusion?: string;
+
+  // Condensed semester info
+  SemesterData: SemesterDataCondensed[];
+
+  // Requisite tree is not returned to save space
+}>;
+
+export type Aliases = {
+  [moduleCode: string]: ModuleCode[];
 };
 
 // RawLessons obtained from API does not include ModuleCode and ModuleTitle by default.

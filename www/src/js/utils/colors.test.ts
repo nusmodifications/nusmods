@@ -48,7 +48,7 @@ describe(colorLessonsByKey, () => {
     EndTime: '',
     LessonType: '',
     StartTime: '',
-    WeekText: '',
+    Weeks: [],
     ModuleCode: '',
     ModuleTitle: '',
   };

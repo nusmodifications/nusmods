@@ -16,9 +16,7 @@ const NUM_WEEKS_IN_A_SEM = 14; // including reading week
 const ODD_WEEKS = [1, 3, 5, 7, 9, 11, 13];
 const EVEN_WEEKS = [2, 4, 6, 8, 10, 12];
 const ALL_WEEKS = [...ODD_WEEKS, ...EVEN_WEEKS];
-const WEEKS_WITHOUT_TUTORIALS = [1, 2];
 const EXAM_DURATION_MS = 2 * 60 * 60 * 1000; // 2 hours
-const tutorialLessonTypes = ['Design Lecture', 'Laboratory', 'Recitation'];
 
 function dayIndex(weekday: string) {
   return ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'].indexOf(weekday.toLowerCase());
@@ -31,7 +29,6 @@ export function getTimeHour(time: string) {
   return parseInt(time.slice(0, 2), 10) + parseInt(time.slice(2), 10) / 60;
 }
 
-// needed cos the utils method formats the date for display
 /**
  * Return a copy of the original Date incremented by the given number of hours
  */
@@ -54,13 +51,6 @@ export function iCalEventForExam(module: Module, semester: Semester): EventOptio
     description: module.ModuleTitle,
     url: `http://www.nus.edu.sg/registrar/event/examschedule-sem${semester}.html`,
   };
-}
-
-export function isTutorial(lesson: RawLesson): boolean {
-  return (
-    tutorialLessonTypes.includes(lesson.LessonType) ||
-    lesson.LessonType.toLowerCase().includes('tutorial')
-  );
 }
 
 export function holidaysForYear(hourOffset: number = 0): Date[] {
@@ -89,37 +79,14 @@ export function datesForAcademicWeeks(start: Date, week: number): Date {
  * excluded weeks by simply offsetting the first lesson's date by seven days per week
  */
 export function calculateExclusion(lesson: RawLesson, firstLesson: Date) {
-  // 1. Always exclude recess week
-  let excludedWeeks = [RECESS_WEEK];
-
-  // 2. Exclude weeks 1 and 2 if this is a tutorial
-  if (isTutorial(lesson)) {
-    excludedWeeks = excludedWeeks.concat(WEEKS_WITHOUT_TUTORIALS);
-  }
-
-  switch (lesson.WeekText) {
-    // 3. Exclude odd/even weeks for even/odd week lessons
-    case 'Odd Week':
-      excludedWeeks = _.union(excludedWeeks, EVEN_WEEKS);
-      break;
-    case 'Even Week':
-      excludedWeeks = _.union(excludedWeeks, ODD_WEEKS);
-      break;
-    case 'Every Week':
-      break;
-
-    // 4. If WeekText is not any of the above, then assume it consists of a list of weeks
-    //    with lessons, so we exclude weeks without lessons
-    default: {
-      const weeksWithClasses = lesson.WeekText.split(',').map((w) => parseInt(w, 10));
-      excludedWeeks = _.union(excludedWeeks, _.difference(ALL_WEEKS, weeksWithClasses));
-    }
-  }
+  // TODO: Make this work with new format
+  const excludedWeeks: number[] = _.difference(
+    [RECESS_WEEK, ...ALL_WEEKS],
+    lesson.Weeks.filter(_.isNumber),
+  );
 
   return [
-    // 5. Convert the academic weeks into dates
     ...excludedWeeks.map((week) => datesForAcademicWeeks(firstLesson, week)),
-    // 6. Exclude holidays
     ...holidaysForYear(getTimeHour(lesson.StartTime)),
   ];
 }
@@ -147,9 +114,6 @@ export function iCalEventForLesson(
     summary: `${module.ModuleCode} ${lesson.LessonType}`,
     description: `${module.ModuleTitle}\n${lesson.LessonType} Group ${lesson.ClassNo}`,
     location: lesson.Venue,
-    url:
-      'https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp?' +
-      `acad_y=${module.AcadYear}&sem_c=${semester}&mod_c=${module.ModuleCode}`,
     repeating: {
       freq: 'WEEKLY',
       count: NUM_WEEKS_IN_A_SEM,

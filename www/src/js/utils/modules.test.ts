@@ -8,7 +8,6 @@ import {
   getModuleExamDate,
   getFormattedModuleExamDate,
   getFirstAvailableSemester,
-  parseWorkload,
   renderMCs,
   subtractAcadYear,
   addAcadYear,
@@ -17,18 +16,15 @@ import {
 } from 'utils/modules';
 import { noBreak } from 'utils/react';
 
-/** @var {Module} */
-import cs1010s from '__mocks__/modules/CS1010S.json';
-/** @var {Module} */
-import cs3216 from '__mocks__/modules/CS3216.json';
+import { CS1010S, CS3216 } from '__mocks__/modules';
 
-const mockLesson = _.cloneDeep(cs1010s.History[0].Timetable[0]) as Lesson;
+const mockLesson = _.cloneDeep(CS1010S.SemesterData[0].Timetable[0]) as Lesson;
 mockLesson.ModuleCode = 'CS1010S';
 mockLesson.ModuleTitle = 'Programming Methodology';
 
 test('getModuleSemesterData should return semester data if semester is present', () => {
   const sem: Semester = 1;
-  const actual = getModuleSemesterData(cs3216, sem);
+  const actual = getModuleSemesterData(CS3216, sem);
   const expected = {
     Semester: 1,
     Timetable: [
@@ -49,7 +45,7 @@ test('getModuleSemesterData should return semester data if semester is present',
 
 test('getModuleSemesterData should return undefined if semester is absent', () => {
   const sem: Semester = 2;
-  const actual = getModuleSemesterData(cs3216, sem);
+  const actual = getModuleSemesterData(CS3216, sem);
   expect(actual).toBe(undefined);
 });
 
@@ -59,8 +55,7 @@ function lessonWithDifferentProperty(
   newValue: any = 'TEST',
 ): Lesson {
   const anotherLesson: Lesson = _.cloneDeep(lesson);
-  anotherLesson[property] = newValue;
-  return anotherLesson;
+  return { ...anotherLesson, [property]: newValue };
 }
 
 test('areLessonsSameClass should identify identity lessons as same class', () => {
@@ -104,19 +99,19 @@ test('formatExamDate should format an exam date string correctly', () => {
 });
 
 test('getModuleExamDate should return the correct exam date if it exists', () => {
-  expect(getModuleExamDate(cs1010s, 1)).toBe('2017-11-29T17:00+0800');
-  expect(getModuleExamDate(cs3216, 2)).toBeFalsy();
+  expect(getModuleExamDate(CS1010S, 1)).toBe('2017-11-29T17:00+0800');
+  expect(getModuleExamDate(CS3216, 2)).toBeFalsy();
 });
 
 test('getFormattedModuleExamDate should return the correctly formatted exam timing if it exists', () => {
   const sem: Semester = 1;
-  const examTime: string = getFormattedModuleExamDate(cs1010s, sem);
+  const examTime: string = getFormattedModuleExamDate(CS1010S, sem);
   expect(examTime).toBe('29-11-2017 5:00 PM');
 });
 
 test('getModuleSemExamDate should return "No Exam" if it does not exist', () => {
   const sem1: Semester = 1;
-  expect(getFormattedModuleExamDate(cs3216, sem1)).toBe('No Exam');
+  expect(getFormattedModuleExamDate(CS3216, sem1)).toBe('No Exam');
 });
 
 describe('getFirstAvailableSemester', () => {
@@ -148,82 +143,6 @@ describe('getFirstAvailableSemester', () => {
     expect(getFirstAvailableSemester([sem1Data], 3)).toEqual(1);
     expect(getFirstAvailableSemester([sem2Data], 3)).toEqual(2);
     expect(getFirstAvailableSemester([sem2Data, sem1Data], 3)).toEqual(1);
-  });
-});
-
-test('parseWorkload should break workload down to components', () => {
-  expect(parseWorkload(cs3216.Workload)).toEqual({
-    Lecture: 2,
-    Tutorial: 1,
-    Project: 8,
-    Preparation: 2,
-  });
-
-  expect(parseWorkload(cs1010s.Workload)).toEqual({
-    Lecture: 2,
-    Tutorial: 1,
-    Laboratory: 1,
-    Project: 3,
-    Preparation: 3,
-  });
-});
-
-test('parseWorkload should parse decimal workloads', () => {
-  expect(parseWorkload('2.5-0.5-0-3-4')).toEqual({
-    Lecture: 2.5,
-    Tutorial: 0.5,
-    Project: 3,
-    Preparation: 4,
-  });
-
-  expect(parseWorkload('0-1-0-0-0.25')).toEqual({
-    Tutorial: 1,
-    Preparation: 0.25,
-  });
-
-  expect(parseWorkload('0.0-0.0-0.0-20.0-0.0')).toEqual({
-    Project: 20,
-  });
-});
-
-test('parseWorkload should handle unusual workload strings', () => {
-  // Extract all workload strings using jq
-  // cat moduleInformation.json | jq '.[] | [.ModuleCode, .Workload] | join(": ")'
-
-  // HY5660 / HY6660
-  expect(parseWorkload('NA-NA-NA-NA-10')).toEqual({
-    Preparation: 10,
-  });
-
-  // MKT3402A/B
-  expect(parseWorkload('3-0-0-5-3 (tentative)')).toEqual({
-    Lecture: 3,
-    Project: 5,
-    Preparation: 3,
-  });
-
-  expect(parseWorkload('3(sectional)-0-0-4-3')).toEqual({
-    Lecture: 3,
-    Project: 4,
-    Preparation: 3,
-  });
-});
-
-test('parseWorkload should return input string as is if it cannot be parsed', () => {
-  const invalidInputs = [
-    '',
-    '\n',
-    '2-2-2-2-3-4', // CE1101 (six components)
-    '2-4-5-4', // CE1102 (four components)
-    'approximately 120 hours of independent study and research and consultation with a NUS lecturer.',
-    'Varies depending on individual student with their supervisor',
-    '16 weeks of industrial attachment',
-    'See remarks',
-    'Lectures: 450 hours, Clinics: 3150 hours, Seminars/Tutorial: 450 hours,Technique/Practical: 450 hou',
-  ];
-
-  invalidInputs.forEach((input) => {
-    expect(parseWorkload(input)).toEqual(input);
   });
 });
 

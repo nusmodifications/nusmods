@@ -5,14 +5,13 @@ import axios from 'axios';
 import update from 'immutability-helper';
 import { each, mapValues, values } from 'lodash';
 
-import { Module } from 'types/modules';
+import { ModuleInformation } from 'types/modules';
 import { PageRange, PageRangeDiff } from 'types/views';
 import { State as StoreState } from 'reducers';
 
 import ModuleFinderList from 'views/modules/ModuleFinderList';
 import ModuleSearchBox from 'views/modules/ModuleSearchBox';
 import ChecklistFilters from 'views/components/filters/ChecklistFilters';
-import TimeslotFilters from 'views/components/filters/TimeslotFilters';
 import DropdownListFilters from 'views/components/filters/DropdownListFilters';
 import ApiError from 'views/errors/ApiError';
 import LoadingSpinner from 'views/components/LoadingSpinner';
@@ -53,7 +52,7 @@ export type Props = {
 export type State = {
   loading: boolean;
   page: PageRange;
-  modules: Module[];
+  modules: ModuleInformation[];
   filterGroups: { [filterGroupId: string]: FilterGroup<any> };
   isMenuOpen: boolean;
   error?: any;
@@ -184,7 +183,9 @@ export class ModuleFinderContainerComponent extends React.Component<Props, State
     this.setState({ error: null });
 
     // Load module data
-    const modulesRequest = axios.get(nusmods.modulesUrl()).then(({ data }) => data);
+    const modulesRequest = axios
+      .get<ModuleInformation[]>(nusmods.modulesUrl())
+      .then(({ data }) => data);
 
     // Load faculty-department mapping
     const facultiesRequest = axios
@@ -352,10 +353,6 @@ export class ModuleFinderContainerComponent extends React.Component<Props, State
                 <DropdownListFilters group={groups[FACULTY]} {...filterProps} />
 
                 <DropdownListFilters group={groups[DEPARTMENT]} {...filterProps} />
-
-                <TimeslotFilters group={groups[LECTURE_TIMESLOTS]} {...filterProps} />
-
-                <TimeslotFilters group={groups[TUTORIAL_TIMESLOTS]} {...filterProps} />
               </div>
             </SideMenu>
           </div>

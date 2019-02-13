@@ -6,39 +6,26 @@ import iCalForTimetable, {
   iCalEventForLesson,
   datesForAcademicWeeks,
   iCalEventForExam,
-  isTutorial,
   calculateExclusion,
   getTimeHour,
   hoursAfter,
 } from 'utils/ical';
 
 import { LessonType, Module, RawLesson } from 'types/modules';
+import { EVEN_WEEK, EVERY_WEEK, ODD_WEEK } from 'test-utils/timetable';
 
-import BFS1001 from '__mocks__/modules/BFS1001.json';
-import CS1010S from '__mocks__/modules/CS1010S.json';
-import CS3216 from '__mocks__/modules/CS3216.json';
+import { BFS1001, CS1010S, CS3216 } from '__mocks__/modules';
 import mockTimetable from '__mocks__/sem-timetable.json';
 
-const rawLesson = (override: Partial<RawLesson> = {}) => ({
+const rawLesson = (override: Partial<RawLesson> = {}): RawLesson => ({
   ClassNo: 'A1',
   DayText: 'Monday',
   EndTime: '1700',
   LessonType: 'Sectional Teaching',
   StartTime: '1400',
   Venue: 'BIZ1-0303',
-  WeekText: '1,2,3,4,5,6',
+  Weeks: [1, 2, 3, 4, 5, 6],
   ...override,
-});
-
-/* Build a RawLesson of a given type */
-const rawLessonOfType = (lessonType: LessonType) => ({
-  ClassNo: '1',
-  DayText: 'Monday',
-  EndTime: '1600',
-  LessonType: lessonType,
-  StartTime: '1400',
-  Venue: 'SR1',
-  WeekText: 'Every Week',
 });
 
 let originalHolidays: typeof config.holidays;
@@ -49,16 +36,6 @@ beforeAll(() => {
 
 afterAll(() => {
   config.holidays = originalHolidays;
-});
-
-test('isTutorial should return true for tutorials', () => {
-  expect(isTutorial(rawLessonOfType('Design Lecture'))).toBe(true);
-  expect(isTutorial(rawLessonOfType('Laboratory'))).toBe(true);
-  expect(isTutorial(rawLessonOfType('Recitation'))).toBe(true);
-  expect(isTutorial(rawLessonOfType('Tutorial'))).toBe(true);
-  expect(isTutorial(rawLessonOfType('Tutorial Type 2'))).toBe(true);
-  expect(isTutorial(rawLessonOfType('Tutorial Type 3'))).toBe(true);
-  expect(isTutorial(rawLessonOfType('Lecture'))).toBe(false);
 });
 
 test('datesForAcademicWeeks should return correct dates', () => {
@@ -146,7 +123,7 @@ test('calculateExclusion generates exclusion for comma separated weeks', () => {
 test('calculateExclusion generates exclusion for even weeks', () => {
   const actual: EventOption = calculateExclusion(
     rawLesson({
-      WeekText: 'Even Week',
+      Weeks: EVEN_WEEK,
     }),
     new Date('2016-08-08T14:00+0800'),
   );
@@ -169,7 +146,7 @@ test('calculateExclusion generates exclusion for even weeks', () => {
 test('calculateExclusion generates exclusion for odd weeks', () => {
   const actual: EventOption = calculateExclusion(
     rawLesson({
-      WeekText: 'Odd Week',
+      Weeks: ODD_WEEK,
     }),
     new Date('2016-08-08T14:00+0800'),
   );
@@ -191,7 +168,7 @@ test('calculateExclusion generates exclusion for odd weeks', () => {
 test('calculateExclusion generates exclusions for holidays', () => {
   const actual: EventOption = calculateExclusion(
     rawLesson({
-      WeekText: 'Every Week',
+      Weeks: EVERY_WEEK,
     }),
     new Date('2016-08-08T14:00+0800'),
   );
@@ -209,7 +186,7 @@ test('iCalEventForLesson generates correct output', () => {
       LessonType: 'Sectional Teaching',
       StartTime: '1400',
       Venue: 'BIZ1-0303',
-      WeekText: '1,2,3,4,5,6',
+      Weeks: [1, 2, 3, 4, 5, 6],
     },
     BFS1001 as Module,
     1,
@@ -245,7 +222,7 @@ test('work for half hour lesson offsets', () => {
       LessonType: 'Sectional Teaching',
       StartTime: '1830',
       Venue: 'BIZ1-0303',
-      WeekText: 'Every Week',
+      Weeks: EVERY_WEEK,
     },
     BFS1001 as Module,
     1,

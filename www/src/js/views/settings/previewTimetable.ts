@@ -1,13 +1,14 @@
 import { TimetableArrangement } from 'types/timetables';
 
 // A sample timetable used to preview themes on the settings page
+const EVERY_WEEK = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 const previewArrangement: TimetableArrangement = {
   Tuesday: [
     [
       {
         ClassNo: '2',
         LessonType: 'Tutorial',
-        WeekText: 'Every Week',
+        Weeks: EVERY_WEEK,
         DayText: 'Friday',
         StartTime: '1000',
         EndTime: '1100',
@@ -19,7 +20,7 @@ const previewArrangement: TimetableArrangement = {
       {
         ClassNo: '2',
         LessonType: 'Tutorial',
-        WeekText: 'Every Week',
+        Weeks: EVERY_WEEK,
         DayText: 'Tuesday',
         StartTime: '1100',
         EndTime: '1200',
@@ -31,7 +32,7 @@ const previewArrangement: TimetableArrangement = {
       {
         ClassNo: '1',
         LessonType: 'Lecture',
-        WeekText: 'Every Week',
+        Weeks: EVERY_WEEK,
         DayText: 'Tuesday',
         StartTime: '1400',
         EndTime: '1600',
@@ -47,7 +48,7 @@ const previewArrangement: TimetableArrangement = {
       {
         ClassNo: 'A19',
         LessonType: 'Tutorial',
-        WeekText: 'Odd Week',
+        Weeks: [3, 5, 7, 9, 11],
         DayText: 'Wednesday',
         StartTime: '1000',
         EndTime: '1200',
@@ -59,7 +60,7 @@ const previewArrangement: TimetableArrangement = {
       {
         ClassNo: '1',
         LessonType: 'Lecture',
-        WeekText: 'Every Week',
+        Weeks: EVERY_WEEK,
         DayText: 'Wednesday',
         StartTime: '1200',
         EndTime: '1400',
@@ -75,7 +76,7 @@ const previewArrangement: TimetableArrangement = {
       {
         ClassNo: 'J1',
         LessonType: 'Sectional Teaching',
-        WeekText: 'Every Week',
+        Weeks: EVERY_WEEK,
         DayText: 'Monday',
         StartTime: '1000',
         EndTime: '1300',
@@ -87,7 +88,7 @@ const previewArrangement: TimetableArrangement = {
       {
         ClassNo: '1',
         LessonType: 'Lecture',
-        WeekText: 'Every Week',
+        Weeks: EVERY_WEEK,
         DayText: 'Monday',
         StartTime: '1400',
         EndTime: '1600',

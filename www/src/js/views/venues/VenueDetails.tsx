@@ -13,7 +13,6 @@ import Timetable from 'views/timetable/Timetable';
 import makeResponsive from 'views/hocs/makeResponsive';
 import { modulePage, venuePage } from 'views/routes/paths';
 import Title from 'views/components/Title';
-import { mergeDualCodedModules } from 'utils/venues';
 import { breakpointDown } from 'utils/css';
 import VenueLocation from './VenueLocation';
 
@@ -30,10 +29,13 @@ type Props = RouteComponentProps & {
 
 export class VenueDetailsComponent extends React.PureComponent<Props> {
   arrangedLessons() {
-    const lessons = flatMap(
-      this.props.availability,
-      (day): VenueLesson[] => mergeDualCodedModules(day.Classes),
-    ).map((venueLesson) => ({ ...venueLesson, ModuleTitle: '', isModifiable: true }));
+    const lessons = flatMap(this.props.availability, (day) => day.Classes).map(
+      (venueLesson) => ({
+        ...venueLesson,
+        ModuleTitle: '',
+        isModifiable: true,
+      }),
+    );
 
     const coloredLessons = colorLessonsByKey(lessons, 'ModuleCode');
     // @ts-ignore TODO: Fix this typing

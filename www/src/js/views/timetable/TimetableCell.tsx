@@ -6,7 +6,7 @@ import { ModifiableLesson } from 'types/modules';
 import { HoverLesson } from 'types/timetables';
 import { OnHoverCell } from 'types/views';
 
-import { formatWeekNumber, getHoverLesson, LESSON_TYPE_ABBREV } from 'utils/timetables';
+import { formatWeeks, getHoverLesson, LESSON_TYPE_ABBREV } from 'utils/timetables';
 import elements from 'views/elements';
 
 import styles from './TimetableCell.scss';
@@ -67,7 +67,7 @@ function TimetableCell(props: Props) {
           {LESSON_TYPE_ABBREV[lesson.LessonType]} [{lesson.ClassNo}]
         </div>
         <div>{lesson.Venue}</div>
-        {lesson.WeekText !== 'Every Week' && <div>{formatWeekNumber(lesson.WeekText)}</div>}
+        <div>{formatWeeks(lesson.Weeks)}</div>
       </div>
     </Cell>
   );

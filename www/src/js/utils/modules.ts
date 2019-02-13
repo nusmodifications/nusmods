@@ -7,6 +7,7 @@ import {
   RawLesson,
   Semester,
   SemesterData,
+  SemesterDataCondensed,
   Time,
   WorkloadComponent,
 } from 'types/modules';
@@ -26,7 +27,7 @@ export function getModuleSemesterData(
   module: Module,
   semester: Semester,
 ): SemesterData | undefined {
-  return module.History.find((semData: SemesterData) => semData.Semester === semester);
+  return module.SemesterData.find((semData: SemesterData) => semData.Semester === semester);
 }
 
 // Returns a flat array of lessons of a module for the corresponding semester.
@@ -89,7 +90,7 @@ export function getFormattedModuleExamDate(module: Module, semester: Semester): 
 // Returns the current semester if it is found in semesters, or the first semester
 // where it is available
 export function getFirstAvailableSemester(
-  semesters: SemesterData[],
+  semesters: SemesterDataCondensed[],
   current: Semester = config.semester, // For testing only
 ): Semester {
   const availableSemesters = semesters.map((semesterData) => semesterData.Semester);
@@ -97,7 +98,7 @@ export function getFirstAvailableSemester(
 }
 
 export function getSemestersOffered(module: Module): Semester[] {
-  return module.History.map((semesterData) => semesterData.Semester).sort();
+  return module.SemesterData.map((semesterData) => semesterData.Semester).sort();
 }
 
 // Workload components as defined by CORS, in their correct positions (see below).
@@ -108,6 +109,7 @@ export const WORKLOAD_COMPONENTS: WorkloadComponent[] = [
   'Project',
   'Preparation',
 ];
+// TODO: Remove this
 export type Workload = { [workloadComponent: string]: number } | string;
 
 // Parse the workload string into a mapping of individual components to their hours.

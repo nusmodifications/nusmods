@@ -10,7 +10,7 @@ export const OCCUPIED: VenueOccupiedState = 'occupied';
 
 export type Availability = { [lessonTime: string]: VenueOccupiedState }; // E.g. { "1000": "vacant", "1030": "occupied", ... }
 
-// Raw lessons obtained from venue info API includes ModuleCode by default
+// Raw lessons obtained from venue info API includes ModuleCode and without Venue
 export type VenueLesson = Omit<RawLesson, 'Venue'> & {
   ModuleCode: ModuleCode;
 };

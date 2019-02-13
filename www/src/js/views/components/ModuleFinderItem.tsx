@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { Module } from 'types/modules';
+import { Module, ModuleInformation } from 'types/modules';
 import { ModuleSearch } from 'types/reducers';
 import { State } from 'reducers';
 
@@ -14,7 +14,7 @@ import ModuleWorkload from './module-info/ModuleWorkload';
 import LinkModuleCodes from './LinkModuleCodes';
 
 type Props = {
-  module: Module;
+  module: ModuleInformation;
   search: ModuleSearch;
 };
 
@@ -78,7 +78,7 @@ export class ModuleFinderItemComponent extends React.PureComponent<Props> {
             </dl>
           </div>
           <div className="col-lg-4 col-md-12 col-sm-4">
-            <ModuleSemesterInfo semesters={module.History} moduleCode={module.ModuleCode} />
+            <ModuleSemesterInfo semesters={module.SemesterData} moduleCode={module.ModuleCode} />
             {module.Workload && <ModuleWorkload workload={module.Workload} />}
           </div>
         </div>

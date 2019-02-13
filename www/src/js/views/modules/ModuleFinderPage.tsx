@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import { Module } from 'types/modules';
+import { ModuleInformation } from 'types/modules';
 import ModuleFinderItem from 'views/components/ModuleFinderItem';
 
 type Props = {
-  page: Module[];
+  page: ModuleInformation[];
 };
 
 export default class ModuleFinderPage extends React.PureComponent<Props> {

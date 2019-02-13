@@ -2,7 +2,7 @@ import * as React from 'react';
 import Waypoint from 'react-waypoint';
 import { head, last, chunk, get } from 'lodash';
 
-import { Module } from 'types/modules';
+import { Module, ModuleInformation } from "types/modules";
 import { PageRange, PageRangeDiff, OnPageChange } from 'types/views';
 
 import Warning from 'views/errors/Warning';
@@ -12,12 +12,12 @@ const MODULES_PER_PAGE = 5;
 
 type Props = {
   page: PageRange;
-  modules: Module[];
+  modules: ModuleInformation[];
   onPageChange: OnPageChange;
 };
 
-function getPageKey(modules: Module[]): string {
-  const getId = (module: Module | undefined) => get(module, 'ModuleCode', '');
+function getPageKey(modules: ModuleInformation[]): string {
+  const getId = (module: ModuleInformation | undefined) => get(module, 'ModuleCode', '');
   return `${getId(head(modules))}-${getId(last(modules))}`;
 }
 
@@ -42,7 +42,7 @@ export default class ModuleFinderList extends React.Component<Props> {
     });
   };
 
-  pages(): Module[][] {
+  pages(): ModuleInformation[][] {
     return chunk(this.props.modules, MODULES_PER_PAGE);
   }
 

@@ -1,16 +1,14 @@
 import * as React from 'react';
-import _ from 'lodash';
 
-import { ModuleCode, Semester, SemesterData } from 'types/modules';
+import { ModuleCode, Semester, SemesterData, SemesterDataCondensed } from 'types/modules';
 
 import { getFirstAvailableSemester, formatExamDate } from 'utils/modules';
 import SemesterPicker from './SemesterPicker';
-import TimeslotTable from './TimeslotTable';
 import ModuleExamClash from './ModuleExamClash';
 
 type Props = {
   moduleCode: ModuleCode;
-  semesters: SemesterData[];
+  semesters: SemesterDataCondensed[];
 };
 
 type State = {
@@ -58,7 +56,7 @@ export default class ModuleSemesterInfo extends React.Component<Props, State> {
     }
   };
 
-  selectedSemester(): SemesterData | undefined {
+  selectedSemester(): SemesterDataCondensed | undefined {
     return this.props.semesters.find((data) => data.Semester === this.state.selected);
   }
 
@@ -79,12 +77,6 @@ export default class ModuleSemesterInfo extends React.Component<Props, State> {
       nodes.set(timeslot, getTimeslotContent(timeslot, flags)),
     );
     return nodes;
-  }
-
-  showTimeslots() {
-    const semester = this.selectedSemester();
-    if (!semester) return false;
-    return !_.isEmpty(semester.LecturePeriods) || !_.isEmpty(semester.TutorialPeriods);
   }
 
   render() {
@@ -114,13 +106,6 @@ export default class ModuleSemesterInfo extends React.Component<Props, State> {
                 moduleCode={this.props.moduleCode}
               />
             </section>
-
-            {this.showTimeslots() && (
-              <section className="module-timeslots">
-                <h4>Timetable</h4>
-                <TimeslotTable>{this.timeslotChildren()}</TimeslotTable>
-              </section>
-            )}
           </div>
         )}
       </div>

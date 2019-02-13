@@ -5,9 +5,7 @@ import { TimetableConfig } from 'types/timetables';
 import { Module } from 'types/modules';
 
 /** @var {Module} */
-import CS3216 from '__mocks__/modules/CS3216.json';
-/** @var {Module} */
-import CS1010S from '__mocks__/modules/CS1010S.json';
+import { CS3216, CS1010S } from '__mocks__/modules';
 
 import { AddModuleDropdownComponent } from './AddModuleDropdown';
 

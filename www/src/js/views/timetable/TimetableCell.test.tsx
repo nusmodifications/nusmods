@@ -2,6 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 
 import { HoverLesson } from 'types/timetables';
+import { EVERY_WEEK } from 'test-utils/timetable';
 import TimetableCell from './TimetableCell';
 
 const DEFAULT_LESSON = {
@@ -9,7 +10,7 @@ const DEFAULT_LESSON = {
   ModuleTitle: 'Intro',
   ClassNo: '1',
   LessonType: 'Lecture',
-  WeekText: 'Every Week',
+  Weeks: EVERY_WEEK,
   DayText: 'Wednesday',
   StartTime: '1000',
   EndTime: '1200',

@@ -8,7 +8,7 @@ import {
   ModuleCondensed,
   ModuleWithColor,
   Semester,
-  Tree,
+  PrereqTree,
 } from './modules';
 import { CustomModule, ModuleList } from './reducers';
 import { NextBusTimings, Venue, VenueList } from './venues';
@@ -166,7 +166,7 @@ export type EmptyGroupType =
 /* views/planner */
 export type PrereqConflict = {
   type: 'prereq';
-  unfulfilledPrereqs: Tree[];
+  unfulfilledPrereqs: PrereqTree[];
 };
 
 export type ExamConflict = {

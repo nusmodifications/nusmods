@@ -2,9 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import _ from 'lodash';
 
-import { WorkloadComponent } from 'types/modules';
-
-import { parseWorkload, Workload } from 'utils/modules';
+import { Workload, WorkloadComponent } from 'types/modules';
 import Tooltip from 'views/components/Tooltip';
 
 const ROW_MAX = 10;
@@ -66,7 +64,7 @@ function sortWorkload(workload: Workload): [WorkloadComponent, number][] {
 }
 
 type Props = {
-  workload: string;
+  workload: Workload;
 };
 
 export default class ModuleWorkload extends React.PureComponent<Props> {
@@ -81,11 +79,12 @@ export default class ModuleWorkload extends React.PureComponent<Props> {
   }
 
   render() {
-    const workload = parseWorkload(this.props.workload);
+    const { workload } = this.props;
     if (typeof workload === 'string') return this.renderFallback();
 
     const total = _.sum(_.values(workload));
 
+    // TODO: Fix this
     return (
       <div className="module-workload-container">
         <h4>Workload - {total} hrs</h4>

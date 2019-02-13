@@ -3,14 +3,12 @@ import update, { Spec } from 'immutability-helper';
 import qs from 'query-string';
 
 import { FilterGroups, DepartmentFaculty } from 'types/views';
-import { Module, Faculty, Department, ModuleLevel, Timeslots } from 'types/modules';
+import { Faculty, Department, ModuleLevel, ModuleInformation } from 'types/modules';
 
 import config from 'config';
 import LevelFilter from 'utils/filters/LevelFilter';
-import TimeslotFilter from 'utils/filters/TimeslotFilter';
 import Filter from 'utils/filters/ModuleFilter';
 import FilterGroup from 'utils/filters/FilterGroup';
-import { getModuleSemesterData } from 'utils/modules';
 import { createSearchFilter, SEARCH_QUERY_KEY } from './moduleSearch';
 
 export const LEVELS = 'level';
@@ -80,7 +78,7 @@ function makeFacultyFilter(faculties: DepartmentFaculty) {
   const filters = map(
     facultyDepartments,
     (departments: Set<Department>, faculty: Faculty) =>
-      new Filter(kebabCase(faculty), faculty, (module: Module) =>
+      new Filter(kebabCase(faculty), faculty, (module: ModuleInformation) =>
         departments.has(module.Department),
       ),
   );
@@ -97,7 +95,7 @@ function makeDepartmentFilter(faculties: DepartmentFaculty) {
         new Filter(
           kebabCase(department),
           department,
-          (module: Module) => module.Department === department,
+          (module: ModuleInformation) => module.Department === department,
         ),
     ),
   );
@@ -105,8 +103,8 @@ function makeDepartmentFilter(faculties: DepartmentFaculty) {
 
 function makeExamFilter() {
   return new FilterGroup(EXAMS, 'Exams', [
-    new Filter('no-exam', 'No Exams', (module: Module) =>
-      module.History.every((semesterData) => !semesterData.ExamDate),
+    new Filter('no-exam', 'No Exams', (module: ModuleInformation) =>
+      module.SemesterData.every((semesterData) => !semesterData.ExamDate),
     ),
   ]);
 }
@@ -120,7 +118,11 @@ export function defaultGroups(faculties: DepartmentFaculty, query: string = ''):
       'Available In',
       map(config.semesterNames, (name, semesterStr) => {
         const semester = parseInt(semesterStr, 10);
-        return new Filter(semesterStr, name, (module) => !!getModuleSemesterData(module, semester));
+        return new Filter(
+          semesterStr,
+          name,
+          (module) => !!module.SemesterData.find((semData) => semData.Semester === semester),
+        );
       }),
     ),
 
@@ -128,18 +130,6 @@ export function defaultGroups(faculties: DepartmentFaculty, query: string = ''):
       LEVELS,
       'Levels',
       moduleLevels.map((level) => new LevelFilter(level)),
-    ),
-
-    [LECTURE_TIMESLOTS]: new FilterGroup(
-      LECTURE_TIMESLOTS,
-      'With Lectures At',
-      Timeslots.map(([day, time]) => new TimeslotFilter(day, time, 'Lecture')),
-    ),
-
-    [TUTORIAL_TIMESLOTS]: new FilterGroup(
-      TUTORIAL_TIMESLOTS,
-      'With Tutorials At',
-      Timeslots.map(([day, time]) => new TimeslotFilter(day, time, 'Tutorial')),
     ),
 
     [MODULE_CREDITS]: new FilterGroup(MODULE_CREDITS, 'Module Credit', [

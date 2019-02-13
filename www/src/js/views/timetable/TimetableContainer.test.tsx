@@ -8,10 +8,7 @@ import createHistory from 'test-utils/createHistory';
 
 import { timetablePage, semesterForTimetablePage, timetableShare } from 'views/routes/paths';
 
-/** @var {Module} */
-import CS1010S from '__mocks__/modules/CS1010S.json';
-/** @var {Module} */
-import CS3216 from '__mocks__/modules/CS3216.json';
+import { CS1010S, CS3216 } from '__mocks__/modules';
 
 import { QueryParam, TimetableContainerComponent } from './TimetableContainer';
 import TimetableContent from './TimetableContent';

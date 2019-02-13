@@ -6,12 +6,11 @@ export function createModule(code: ModuleCode): Module {
   return {
     ModuleCode: code,
     ModuleTitle: 'Test Module',
-    History: [],
-    Types: [],
+    SemesterData: [],
     Department: 'Test Department',
+    Faculty: 'Test',
     ModuleCredit: '4',
     AcadYear: '16/17',
-    ModmavenTree: { name: 'Test Module', children: [] },
   };
 }
 

@@ -77,32 +77,34 @@ function Tree({ layer, name, branches, isPrereq = false }: TreeDisplay) {
 }
 
 function ModuleTree(props: Props) {
-  const { ModmavenTree, LockedModules } = props.module;
-  if (!ModmavenTree) return null;
+  const { FulfillRequirements, PrereqTree } = props.module;
+  if (!PrereqTree) return null;
 
-  return (
-    <div className={styles.container}>
-      {LockedModules && LockedModules.length > 0 && (
-        <>
-          <ul className={styles.prereqTree}>
-            {LockedModules.map((name) => (
-              // @ts-ignore TODO: Rewrite this component for scraper v2
-              <Tree key={name} layer={0} name={name} branches={null} isPrereq />
-            ))}
-          </ul>
-          <div className={classnames(styles.node, styles.conditional)}>needs</div>
-        </>
-      )}
-      <ul className={classnames(styles.tree, styles.root)}>
-        <Tree
-          layer={1}
-          name={ModmavenTree.name}
-          // @ts-ignore TODO: Rewrite this component for scraper v2
-          branches={_.castArray(ModmavenTree.children)}
-        />
-      </ul>
-    </div>
-  );
+  return null;
+
+  // return (
+  //   <div className={styles.container}>
+  //     {LockedModules && LockedModules.length > 0 && (
+  //       <>
+  //         <ul className={styles.prereqTree}>
+  //           {LockedModules.map((name) => (
+  //             // @ts-ignore TODO: Rewrite this component for scraper v2
+  //             <Tree key={name} layer={0} name={name} branches={null} isPrereq />
+  //           ))}
+  //         </ul>
+  //         <div className={classnames(styles.node, styles.conditional)}>needs</div>
+  //       </>
+  //     )}
+  //     <ul className={classnames(styles.tree, styles.root)}>
+  //       <Tree
+  //         layer={1}
+  //         name={ModmavenTree.name}
+  //         // @ts-ignore TODO: Rewrite this component for scraper v2
+  //         branches={_.castArray(ModmavenTree.children)}
+  //       />
+  //     </ul>
+  //   </div>
+  // );
 }
 
 export default ModuleTree;

@@ -146,39 +146,3 @@ $h-padding: $grid-gutter-width / 2;
     }
   }
 }
-
-.timeslot {
-  margin-bottom: 1rem;
-
-  .label {
-    display: block;
-    padding: 0.2rem 0;
-    margin: 0;
-    text-align: center;
-    border: 1px solid transparent;
-
-    &.enabled {
-      color: #fff;
-      background: theme-color();
-    }
-
-    &:hover {
-      border-color: theme-color();
-    }
-  }
-
-  @include touchscreen-only {
-    .heading {
-      border-bottom: 0;
-    }
-
-    th {
-      font-size: $font-size-sm;
-      color: var(--gray-light);
-    }
-
-    .label {
-      padding: $v-padding 0;
-    }
-  }
-}

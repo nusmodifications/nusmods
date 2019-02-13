@@ -284,7 +284,7 @@ function createLessonSquare(color: ColorIndex, row: number): ColoredLesson {
     // TODO: Use existing modules?
     ClassNo: '',
     DayText: '',
-    WeekText: 'Every Week',
+    Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
     LessonType: '',
     ModuleCode: '',
     ModuleTitle: '',
