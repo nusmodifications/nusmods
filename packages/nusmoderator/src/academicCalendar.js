@@ -1,46 +1,29 @@
-
-//const startOfMonth = require('date-fns/startOfMonth');
-const getDay = require('date-fns/getDay');
 const addDays = require('date-fns/addDays');
+const startOfWeek = require('date-fns/startOfWeek');
 const isBefore = require('date-fns/isBefore');
 const getYear = require('date-fns/getYear');
 
-//import {startOfMonth, getDay, addDays} from 'date-fns';
-
 /* eslint-disable no-fallthrough, no-console */
-/// TODO: OLD STUFF
-export const acadYearStartDates = {
-  '19/20': new Date('August 5, 2019'),
-  '18/19': new Date('August 6, 2018'),
-  '17/18': new Date('August 7, 2017'),
-  '16/17': new Date('August 1, 2016'),
-  '15/16': new Date('August 3, 2015'),
-  '14/15': new Date('August 4, 2014'),
-};
 
 /**
  * Returns a Date object of the first weekday of Week 0 of that academic year.
  * Assumes Week 0 begins on the first Monday of August.
- * @param {String} acadYear the academic year. E.g. "18/19"
+ * @param acadYear the academic year. E.g. "18/19"
  * @return {Date} Start date of the academic year
  */
-export function getAcadYearStartDate(acadYear){
+export function getAcadYearStartDate(acadYear) {
   const DAY_MONDAY = 1;
-  const MONTH_AUGUST = "7";
-  const lastTwoDigits = acadYear.split("/")[0];
-  const targetYear = parseInt(20 + lastTwoDigits);
+  const MONTH_AUGUST = '7';
+  const lastTwoDigits = acadYear.split('/')[0];
+  const targetYear = 2000 + parseInt(lastTwoDigits, 10);
   const firstDateOfMonth = new Date(targetYear, MONTH_AUGUST, 1, 0, 0, 0);
-  const firstDay = getDay(firstDateOfMonth);
-  if (firstDay === DAY_MONDAY){
-    return firstDateOfMonth;
-  } else{
-    // Finds the next nearest Monday.
-    // % 7 is because if Sunday (0), will return +8
-    const daysDifference = (7 - firstDay + DAY_MONDAY) % 7;
-    const firstMonday = addDays(firstDateOfMonth, daysDifference);
-    //console.log("firstAddMonday " + firstMonday.toString());
+  const nearestMonday = startOfWeek(firstDateOfMonth, { weekStartsOn: DAY_MONDAY });
+  if (isBefore(nearestMonday, firstDateOfMonth)) {
+    const firstMonday = addDays(nearestMonday, 7);
     return firstMonday;
-  };
+  }
+  // 1st Aug is already a Monday
+  return nearestMonday;
 }
 
 // Constant variables.
@@ -57,19 +40,18 @@ const special2 = 'Special Term II';
  */
 export function getAcadYear(date) {
   const dateYear = getYear(date);
-  const firstTwoDigits = dateYear%100;
-  const lastTwoDigits = firstTwoDigits + 1;
-  const potentialAcadYear = firstTwoDigits+'/'+lastTwoDigits;
+  const firstTwoDigits = dateYear % 100;
+  const potentialAcadYear = `${firstTwoDigits}/${firstTwoDigits + 1}`;
   const potentialStartDate = getAcadYearStartDate(potentialAcadYear);
 
-  let year
+  let year;
   // check if date is before the start of that year's AY start date
   // Small HACK to workaround isBefore() because it returns true for same day
-  if(isBefore(date, potentialStartDate)){
-    //Before
-    year = (firstTwoDigits - 1)+'/'+(lastTwoDigits - 1);
-  }else{
-    //After
+  if (isBefore(date, potentialStartDate)) {
+    // Before
+    year = `${firstTwoDigits - 1}/${firstTwoDigits}`;
+  } else {
+    // After
     year = potentialAcadYear;
   }
 

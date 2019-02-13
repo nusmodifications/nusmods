@@ -10,8 +10,8 @@ import {
 /* eslint-disable no-console */
 console.warn = jest.fn();
 
-describe('getAcadYearStartDate', ()=>{
-  it('gets the starting date of an academic year', ()=>{
+describe('getAcadYearStartDate', () => {
+  it('gets the starting date of an academic year', () => {
     expect(getAcadYearStartDate('14/15')).toEqual(new Date('August 4, 2014'));
     expect(getAcadYearStartDate('15/16')).toEqual(new Date('August 3, 2015'));
     expect(getAcadYearStartDate('16/17')).toEqual(new Date('August 1, 2016'));
@@ -67,7 +67,7 @@ describe('getAcadWeekName', () => {
     expect(getAcadWeekName(16)).toEqual({ weekType: 'Examination', weekNumber: 1 });
     expect(getAcadWeekName(17)).toEqual({ weekType: 'Examination', weekNumber: 2 });
   });
-  
+
   it('gives null for unsupported weeks', () => {
     expect(getAcadWeekName(-1)).toBe(null);
     expect(getAcadWeekName(0)).toBe(null);

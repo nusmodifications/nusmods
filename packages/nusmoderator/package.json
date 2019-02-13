@@ -7,7 +7,8 @@
   "jsnext:main": "dist/index.es.js",
   "types": "./index.d.ts",
   "files": [
-    "dist", "index.d.ts"
+    "dist",
+    "index.d.ts"
   ],
   "scripts": {
     "clean": "rimraf dist coverage",
@@ -60,7 +61,6 @@
     "rimraf": "2.6.3"
   },
   "dependencies": {
-    "date-fns": "^2.0.0-alpha.27",
-    "nusmoderator": "^2.1.1"
+    "date-fns": "^2.0.0-alpha.27"
   }
 }
