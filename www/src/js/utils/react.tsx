@@ -63,13 +63,17 @@ export function noBreak(text: string): string {
   return text.replace(/ /g, NBSP);
 }
 
-export function defer(task: () => any) {
+export function defer(task: () => unknown) {
   window.requestAnimationFrame(() => {
     window.requestAnimationFrame(task);
   });
 }
 
-export function wrapComponentName(Component: React.ComponentType<any>, wrapper: string): string {
+// We really don't care about the props here
+export function wrapComponentName<T extends {}>(
+  Component: React.ComponentType<T>,
+  wrapper: string,
+): string {
   return `${wrapper}(${Component.displayName || Component.name || 'Component'})`;
 }
 

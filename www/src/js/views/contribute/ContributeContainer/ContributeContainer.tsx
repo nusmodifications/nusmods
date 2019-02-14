@@ -17,6 +17,7 @@ import { FeedbackButtons } from 'views/components/FeedbackModal';
 import { getModuleCondensed } from 'selectors/moduleBank';
 import { currentTests } from 'views/settings/BetaToggle';
 import { State as StoreState } from 'reducers';
+import { notNull } from 'types/utils';
 
 import ReviewIcon from 'img/icons/review.svg';
 import WrenchIcon from 'img/icons/wrench.svg';
@@ -30,7 +31,6 @@ import VenueIcon from 'img/icons/compass.svg';
 import UnmappedVenues from '../UnmappedVenues';
 import ContributorList from '../ContributorList';
 import styles from './ContributeContainer.scss';
-import { notNull } from '../../../types/utils';
 
 type Props = {
   modules: ModuleCondensed[];

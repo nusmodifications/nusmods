@@ -1,14 +1,13 @@
 import * as React from 'react';
 import classnames from 'classnames';
 
-import { LatLngTuple, VenueLocation as VenueLocationItem, VenueLocationMap } from 'types/venues';
+import { LatLngTuple, VenueLocation as VenueLocationItem } from 'types/venues';
 import { Omit } from 'types/utils';
 import Modal from 'views/components/Modal';
 import LocationMap from 'views/components/map/LocationMap';
 import CloseButton from 'views/components/CloseButton';
 import { floorName } from 'utils/venues';
-/** @var { VenueLocationMap } */
-import venueLocationJSON from 'data/venues.json';
+import venueLocations from 'data/venues';
 
 import VenueContext from '../VenueContext';
 import FeedbackModal from './FeedbackModal';
@@ -27,9 +26,6 @@ type Props = OwnProps & {
 type State = {
   readonly isFeedbackModalOpen: boolean;
 };
-
-// Typecast to make TypeScript happy
-const venueLocations = venueLocationJSON as VenueLocationMap;
 
 class VenueLocation extends React.PureComponent<Props, State> {
   state: State = {

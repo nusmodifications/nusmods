@@ -35,7 +35,8 @@ class TetrisContainer extends React.PureComponent<Props, State> {
 /**
  * Lazy load the TetrisGame component and pass it down to TetrisContainer
  */
-export default Loadable.Map<{}, any>({
+type Export = { TetrisGame: { default: React.ComponentType<TetrisGameProps> } };
+export default Loadable.Map<{}, Export>({
   loader: {
     TetrisGame: () => import(/* webpackChunkName: "tetris" */ './TetrisGame'),
   },
