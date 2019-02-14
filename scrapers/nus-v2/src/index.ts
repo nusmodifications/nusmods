@@ -50,7 +50,7 @@ yargs
   .command({
     command: 'test',
     describe: 'run some simple tests against the API to ensure things are set up correctly',
-    handler: run(new TestApi(config.academicYear).run),
+    handler: run(() => new TestApi(config.academicYear).run()),
   })
   .command({
     command: 'departments [year]',

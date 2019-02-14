@@ -179,9 +179,13 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
 
     this.logger.info(`Getting semester data for ${academicYear} semester ${semester}`);
 
+    // Do this before the other tasks so that it won't timeout because the API
+    // server can't handle the load created by trying to fetch all modules in
+    // parallel
+    const timetables = await new GetSemesterTimetable(semester, academicYear).run();
+
     // Get exams and module info in parallel
-    const [timetables, exams, modules] = await Promise.all([
-      new GetSemesterTimetable(semester, academicYear).run(),
+    const [exams, modules] = await Promise.all([
       new GetSemesterExams(semester, academicYear).run(),
       new GetSemesterModules(semester, academicYear).run(input),
     ]);
