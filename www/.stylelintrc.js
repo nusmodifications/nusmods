@@ -1,11 +1,8 @@
 module.exports = {
-  extends: 'stylelint-config-standard',
+  extends: ['stylelint-config-standard', 'stylelint-config-prettier'],
   plugins: ['stylelint-order'],
   defaultSeverity: process.env.NODE_ENV === 'production' ? 'error' : 'warning',
   rules: {
-    // Prettier is used for SCSS styling now, so these are unnecessary
-    'declaration-colon-newline-after': null,
-    'at-rule-empty-line-before': null,
     'at-rule-no-unknown': null,
     'block-closing-brace-newline-after': null,
     // Disabled as it's returning many false positives.
