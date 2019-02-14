@@ -7,16 +7,12 @@ type Props = {
   page: ModuleInformation[];
 };
 
-export default class ModuleFinderPage extends React.PureComponent<Props> {
-  render() {
-    const { page } = this.props;
+const ModuleFinderPage = React.memo(({ page }: Props) => (
+  <ul className="modules-list">
+    {page.map((module) => (
+      <ModuleFinderItem key={module.ModuleCode} module={module} />
+    ))}
+  </ul>
+));
 
-    return (
-      <ul className="modules-list">
-        {page.map((module) => (
-          <ModuleFinderItem key={module.ModuleCode} module={module} />
-        ))}
-      </ul>
-    );
-  }
-}
+export default ModuleFinderPage;

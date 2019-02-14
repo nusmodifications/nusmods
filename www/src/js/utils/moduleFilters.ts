@@ -1,4 +1,4 @@
-import { map, mapValues, each, isEmpty, groupBy, kebabCase } from 'lodash';
+import { map, each, isEmpty, kebabCase, values, flatten } from 'lodash';
 import update, { Spec } from 'immutability-helper';
 import qs from 'query-string';
 
@@ -12,8 +12,6 @@ import FilterGroup from 'utils/filters/FilterGroup';
 import { createSearchFilter, SEARCH_QUERY_KEY } from './moduleSearch';
 
 export const LEVELS = 'level';
-export const LECTURE_TIMESLOTS = 'lecture';
-export const TUTORIAL_TIMESLOTS = 'tutorial';
 export const MODULE_CREDITS = 'mc';
 export const SEMESTER = 'sem';
 export const FACULTY = 'faculty';
@@ -69,36 +67,24 @@ export function serializeGroups(groups: FilterGroups): string {
   return qs.stringify(query, { encode: false });
 }
 
-function makeFacultyFilter(faculties: DepartmentFaculty) {
-  const facultyDepartments: { [faculty: string]: Set<Department> } = mapValues(
-    groupBy(Object.keys(faculties), (department) => faculties[department]),
-    (departments) => new Set(departments),
+const makeFacultyFilter = (faculty: Faculty) =>
+  new Filter(
+    kebabCase(faculty),
+    faculty,
+    (module: ModuleInformation) => module.Faculty === faculty,
   );
-
-  const filters = map(
-    facultyDepartments,
-    (departments: Set<Department>, faculty: Faculty) =>
-      new Filter(kebabCase(faculty), faculty, (module: ModuleInformation) =>
-        departments.has(module.Department),
-      ),
-  );
-
-  return new FilterGroup(FACULTY, 'Faculties', filters);
+function makeFacultyFilterGroup(faculties: Faculty[]) {
+  return new FilterGroup(FACULTY, 'Faculties', faculties.map(makeFacultyFilter));
 }
 
-function makeDepartmentFilter(faculties: DepartmentFaculty) {
-  return new FilterGroup(
-    DEPARTMENT,
-    'Departments',
-    Object.keys(faculties).map(
-      (department: Department) =>
-        new Filter(
-          kebabCase(department),
-          department,
-          (module: ModuleInformation) => module.Department === department,
-        ),
-    ),
+const makeDepartmentFilter = (department: Department) =>
+  new Filter(
+    kebabCase(department),
+    department,
+    (module: ModuleInformation) => module.Department === department,
   );
+function makeDepartmentFilterGroup(departments: Department[]) {
+  return new FilterGroup(DEPARTMENT, 'Departments', departments.map(makeDepartmentFilter));
 }
 
 function makeExamFilter() {
@@ -109,8 +95,11 @@ function makeExamFilter() {
   ]);
 }
 
-export function defaultGroups(faculties: DepartmentFaculty, query: string = ''): FilterGroups {
+export function defaultGroups(facultyMap: DepartmentFaculty, query: string = ''): FilterGroups {
   const params = qs.parse(query);
+
+  const faculties = Object.keys(facultyMap);
+  const departments = flatten(values(facultyMap));
 
   const groups: FilterGroups = {
     [SEMESTER]: new FilterGroup(
@@ -142,9 +131,9 @@ export function defaultGroups(faculties: DepartmentFaculty, query: string = ''):
       new Filter('8', 'More than 8 MC', (module) => parseInt(module.ModuleCredit, 10) > 8),
     ]),
 
-    [DEPARTMENT]: makeDepartmentFilter(faculties),
+    [DEPARTMENT]: makeDepartmentFilterGroup(departments),
 
-    [FACULTY]: makeFacultyFilter(faculties),
+    [FACULTY]: makeFacultyFilterGroup(faculties),
 
     [EXAMS]: makeExamFilter(),
   };
