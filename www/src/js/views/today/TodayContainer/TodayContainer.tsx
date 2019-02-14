@@ -29,6 +29,7 @@ import makeResponsive from 'views/hocs/makeResponsive';
 import NoFooter from 'views/layout/NoFooter';
 import { formatTime, getCurrentHours, getCurrentMinutes, getDayIndex } from 'utils/timify';
 import { breakpointUp } from 'utils/css';
+import { EMPTY_ARRAY } from 'types/utils';
 
 import DayEvents from '../DayEvents';
 import DayHeader from '../DayHeader';
@@ -67,8 +68,6 @@ type DayGroup = {
   type: EmptyGroupType;
   dates: Date[];
 };
-
-const EMPTY_ARRAY: any[] = [];
 
 // Number of days to display
 const DAYS = 7;

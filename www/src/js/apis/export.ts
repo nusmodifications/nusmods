@@ -1,6 +1,8 @@
+import qs from 'query-string';
+
 import { State } from 'reducers';
 import { Semester } from 'types/modules';
-import { extractStateForExport, serializeExportState } from 'utils/export';
+import { extractStateForExport } from 'utils/export';
 
 export type ExportOptions = {
   pixelRatio?: number;
@@ -9,7 +11,10 @@ export type ExportOptions = {
 const baseUrl = '/export';
 
 function serializeState(semester: Semester, state: State, options: ExportOptions = {}) {
-  return serializeExportState(extractStateForExport(semester, state), options);
+  return qs.stringify({
+    data: JSON.stringify(extractStateForExport(semester, state)),
+    ...options,
+  });
 }
 
 export default {

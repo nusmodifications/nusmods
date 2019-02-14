@@ -1,8 +1,8 @@
 import _ from 'lodash';
+import { Semesters } from 'types/modules';
 import { roundEnd } from 'utils/cors';
 import academicCalendar from 'data/academic-calendar.json';
 import config from './index';
-import { Semesters } from '../types/modules';
 
 function isSorted(arr: any[]) {
   return arr.slice(1).every((item, index) => item >= arr[index]);

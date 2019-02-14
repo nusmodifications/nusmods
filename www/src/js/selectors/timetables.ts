@@ -1,8 +1,8 @@
 import { ModuleCode } from 'types/modules';
 import config from 'config';
+import { State } from 'reducers';
 import { isOngoing, isSuccess } from 'selectors/requests';
 import { fetchArchiveRequest } from 'actions/moduleBank';
-import { State } from '../reducers';
 
 export function isArchiveLoading(state: State, moduleCode: ModuleCode) {
   return config.archiveYears.some((year) =>

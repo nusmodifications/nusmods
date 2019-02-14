@@ -1,10 +1,12 @@
-import { VenueLocation } from 'types/venues';
 import * as React from 'react';
 import classnames from 'classnames';
+
+import { VenueLocation } from 'types/venues';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import ExternalLink from 'views/components/ExternalLink';
 import { MapPin, Map as MapIcon } from 'views/components/icons';
+
 import ImproveVenueForm from './ImproveVenueForm';
 import styles from './VenueLocation.scss';
 

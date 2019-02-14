@@ -3,10 +3,10 @@ import update from 'immutability-helper';
 
 import { Module, ModuleCode, ModuleInformation } from 'types/modules';
 import { FilterGroupId } from 'types/views';
+import { notNull } from 'types/utils';
 
 import { intersection, union } from 'utils/set';
 import ModuleFilter from './ModuleFilter';
-import { notNull } from '../../types/utils';
 
 export const ID_DELIMITER = ',';
 
