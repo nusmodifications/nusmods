@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import * as Sentry from '@sentry/browser';
 
+import { State } from 'reducers';
 import { ModuleCode } from 'types/modules';
 import RandomKawaii from 'views/components/RandomKawaii';
 import Title from 'views/components/Title';
@@ -13,7 +14,6 @@ import LoadingSpinner from 'views/components/LoadingSpinner';
 import { availableArchive, isArchiveLoading } from 'selectors/timetables';
 import { moduleArchive } from 'views/routes/paths';
 import styles from './ErrorPage.scss';
-import { State } from '../../reducers';
 
 type OwnProps = {
   moduleCode: ModuleCode;

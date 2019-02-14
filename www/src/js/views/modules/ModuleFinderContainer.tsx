@@ -56,7 +56,7 @@ export type State = {
   modules: Module[];
   filterGroups: { [filterGroupId: string]: FilterGroup<any> };
   isMenuOpen: boolean;
-  error?: any;
+  error: Error | null;
 };
 
 // Threshold to enable instant search based on the amount of time it takes to
@@ -104,6 +104,7 @@ export class ModuleFinderContainerComponent extends React.Component<Props, State
       loading: true,
       modules: [],
       isMenuOpen: false,
+      error: null,
     };
   }
 
