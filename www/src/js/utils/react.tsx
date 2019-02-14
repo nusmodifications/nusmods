@@ -63,13 +63,13 @@ export function noBreak(text: string): string {
   return text.replace(/ /g, NBSP);
 }
 
-export function defer(task: () => any) {
+export function defer(task: () => unknown) {
   window.requestAnimationFrame(() => {
     window.requestAnimationFrame(task);
   });
 }
 
-export function wrapComponentName(Component: React.ComponentType<any>, wrapper: string): string {
+export function wrapComponentName(Component: React.ComponentType, wrapper: string): string {
   return `${wrapper}(${Component.displayName || Component.name || 'Component'})`;
 }
 

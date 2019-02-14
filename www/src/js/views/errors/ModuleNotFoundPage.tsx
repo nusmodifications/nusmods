@@ -22,7 +22,7 @@ type OwnProps = {
 type Props = OwnProps & {
   isLoading: boolean;
   availableArchive: string[];
-  fetchModuleArchive: (str: string) => Promise<any>;
+  fetchModuleArchive: (str: string) => Promise<unknown>;
 };
 
 export class ModuleNotFoundPageComponent extends React.PureComponent<Props> {

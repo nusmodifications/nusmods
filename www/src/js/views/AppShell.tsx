@@ -50,7 +50,7 @@ type Props = RouteComponentProps & {
 };
 
 type State = {
-  moduleListError?: any;
+  moduleListError?: Error;
 };
 
 export class AppShellComponent extends React.Component<Props, State> {

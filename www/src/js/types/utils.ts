@@ -1,3 +1,8 @@
+/**
+ * Various utility types and type utilities for making working with TypeScript
+ * easier
+ */
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 export type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;

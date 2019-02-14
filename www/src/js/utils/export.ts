@@ -1,4 +1,3 @@
-import qs from 'query-string';
 import { Semester } from 'types/modules';
 import { State } from 'reducers';
 import { ExportData } from 'types/export';
@@ -18,11 +17,4 @@ export function extractStateForExport(semester: Semester, state: State): ExportD
       mode: state.settings.mode,
     },
   };
-}
-
-export function serializeExportState(data: ExportData, options: any): string {
-  return qs.stringify({
-    data: JSON.stringify(data),
-    ...options,
-  });
 }
