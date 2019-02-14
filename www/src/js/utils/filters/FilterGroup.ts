@@ -1,7 +1,7 @@
 import { keyBy, values } from 'lodash';
 import update from 'immutability-helper';
 
-import { Module, ModuleCode, ModuleInformation } from 'types/modules';
+import { ModuleCode, ModuleInformation } from 'types/modules';
 import { FilterGroupId } from 'types/views';
 import { notNull } from 'types/utils';
 

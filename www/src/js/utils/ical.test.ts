@@ -11,7 +11,7 @@ import iCalForTimetable, {
   hoursAfter,
 } from 'utils/ical';
 
-import { LessonType, Module, RawLesson } from 'types/modules';
+import { Module, RawLesson } from 'types/modules';
 import { EVEN_WEEK, EVERY_WEEK, ODD_WEEK } from 'test-utils/timetable';
 
 import { BFS1001, CS1010S, CS3216 } from '__mocks__/modules';

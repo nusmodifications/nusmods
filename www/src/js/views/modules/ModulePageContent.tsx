@@ -26,7 +26,6 @@ import Title from 'views/components/Title';
 import ScrollToTop from 'views/components/ScrollToTop';
 import { Archive } from 'views/components/icons';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
-import ExternalLink from 'views/components/ExternalLink';
 
 import styles from './ModulePageContent.scss';
 

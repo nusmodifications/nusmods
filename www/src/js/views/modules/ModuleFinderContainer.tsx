@@ -29,10 +29,8 @@ import {
   EXAMS,
   FACULTY,
   LEVELS,
-  LECTURE_TIMESLOTS,
   MODULE_CREDITS,
   SEMESTER,
-  TUTORIAL_TIMESLOTS,
 } from 'utils/moduleFilters';
 import { createSearchFilter, SEARCH_QUERY_KEY, sortModules } from 'utils/moduleSearch';
 import nusmods from 'apis/nusmods';

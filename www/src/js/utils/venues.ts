@@ -1,13 +1,5 @@
-import { ModuleCode } from 'types/modules';
-import {
-  VenueInfo,
-  VenueSearchOptions,
-  VenueDetailList,
-  VenueLesson,
-  OCCUPIED,
-} from 'types/venues';
-import { range, entries, padStart, groupBy, values } from 'lodash';
-import { ZWSP } from 'utils/react';
+import { VenueInfo, VenueSearchOptions, VenueDetailList, OCCUPIED } from 'types/venues';
+import { range, entries, padStart } from 'lodash';
 
 import { tokenize } from './moduleSearch';
 import { SCHOOLDAYS } from './timify';

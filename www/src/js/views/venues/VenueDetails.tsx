@@ -3,7 +3,7 @@ import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import classnames from 'classnames';
 import { flatMap } from 'lodash';
 
-import { DayAvailability, Venue, VenueLesson } from 'types/venues';
+import { DayAvailability, Venue } from 'types/venues';
 import { Lesson } from 'types/modules';
 
 import { colorLessonsByKey } from 'utils/colors';
