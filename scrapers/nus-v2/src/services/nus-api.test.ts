@@ -114,11 +114,12 @@ describe(NusApi, () => {
     await p2;
 
     expect(mockedAxios.post).toBeCalledTimes(4);
-    expect(api.queue.getPendingLength()).toEqual(2);
+    expect(api.queue.getPendingLength()).toEqual(0);
+    expect(api.queue.getQueueLength()).toEqual(0);
 
     await p3;
     await p4;
 
-    expect(api.queue.getPendingLength()).toEqual(0);
+    expect(api.queue.getQueueLength()).toEqual(0);
   });
 });
