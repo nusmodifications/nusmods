@@ -3,7 +3,7 @@ import romanify from 'romanify';
 
 import { ModuleCode } from '../../types/modules';
 
-import { OPERATORS, MODULE_REGEX, AND_OR_REGEX, OPERATORS_REGEX } from './constants';
+import { AND_OR_REGEX, MODULE_REGEX, OPERATORS, OPERATORS_REGEX } from './constants';
 
 /**
  * Normalizes different formats with same semantic meanings.
@@ -106,23 +106,23 @@ function removeModuleTitles(string: string): string {
   return result;
 }
 
-// @ts-ignore Trust us this works
+const replaceBrackets = (str: string) => str.replace(/[{[<]/g, '(').replace(/[}\]>]/g, ')');
+const replaceOperators = (str: string) =>
+  str
+    .replace(/[|/]/g, OPERATORS.or)
+    .replace(/[;&]/g, OPERATORS.and)
+    .replace(/ plus /g, OPERATORS.and)
+    .replace(OPERATORS_REGEX, R.toLower);
+
 export const normalize = R.pipe(
   removeSpaceFromModule,
   fixOperatorTypos,
   insertPostFixAsStandalone,
   convertCommas,
-  R.replace(/[{[<]/g, '('),
-  R.replace(/[}\]>]/g, ')'),
   R.curry(convertToNumerals)(1),
+  replaceBrackets,
   fixBrackets,
-  R.replace(/\|/g, OPERATORS.or),
-  R.replace(/\//g, OPERATORS.or),
-  R.replace(/;/g, OPERATORS.and),
-  R.replace(/&/g, OPERATORS.and),
-  R.replace(/ plus /g, OPERATORS.and),
-  // @ts-ignore Ramda uses String.prototype.replace and allows a replacer function but the types doesn't have this
-  R.replace(OPERATORS_REGEX, R.toLower),
+  replaceOperators,
   removeModuleTitles,
 );
 

@@ -169,8 +169,9 @@ export function cleanOperators(tokens: IToken[]) {
         // recursive clean within parenthesis, unnests one layer
         const cleaned = cleanOperators(temp.slice(1, -1));
         if (cleaned.length) {
-          // @ts-ignore Length check already done above
-          output.push(R.head(temp), ...cleaned, R.last(temp));
+          // Length check means this is fine
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          output.push(R.head(temp)!, ...cleaned, R.last(temp)!);
         }
         temp = [];
       }
