@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { DivIcon, DragEndEvent } from 'leaflet';
 import { Marker, Popup } from 'react-leaflet';
 import classnames from 'classnames';
 import produce from 'immer';
@@ -8,7 +9,6 @@ import { BusTiming } from 'types/views';
 
 import busStopJSON from 'data/bus-stops.json';
 import { allowBusStopEditing } from 'utils/debug';
-import { DivIcon } from 'leaflet';
 import { nextBus } from 'apis/nextbus';
 import styles from './BusStops.scss';
 import { ArrivalTimes } from './ArrivalTimes';
@@ -61,7 +61,7 @@ export default class BusStops extends React.PureComponent<Props, State> {
 
   // Only used for map editing
   // TODO: Find out how to properly type Leaflet events
-  onDragEnd = (evt: any) => {
+  onDragEnd = (evt: DragEndEvent) => {
     if (!allowBusStopEditing()) return;
 
     const { target } = evt;

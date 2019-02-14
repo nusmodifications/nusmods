@@ -1,5 +1,5 @@
 import { FSA } from 'types/redux';
-import { ColorMapping, ThemeState, VERTICAL, HORIZONTAL } from 'types/reducers';
+import { ThemeState, VERTICAL, HORIZONTAL } from 'types/reducers';
 import { Theme } from 'types/settings';
 
 import { SET_EXPORTED_DATA } from 'actions/export';
