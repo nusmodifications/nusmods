@@ -70,8 +70,10 @@ export function defer(task: () => unknown) {
 }
 
 // We really don't care about the props here
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function wrapComponentName(Component: React.ComponentType<any>, wrapper: string): string {
+export function wrapComponentName<T extends {}>(
+  Component: React.ComponentType<T>,
+  wrapper: string,
+): string {
   return `${wrapper}(${Component.displayName || Component.name || 'Component'})`;
 }
 
