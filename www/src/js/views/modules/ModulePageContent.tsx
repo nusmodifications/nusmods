@@ -68,6 +68,9 @@ export default class ModulePageContent extends React.Component<Props, State> {
       title: pageTitle,
     };
 
+    const moduleCodes = [ModuleCode];
+    if (module.Aliases) moduleCodes.push(...module.Aliases);
+
     return (
       <div className={classnames('page-container', styles.moduleInfoPage)}>
         <Title description={module.ModuleDescription}>{pageTitle}</Title>
@@ -94,7 +97,7 @@ export default class ModulePageContent extends React.Component<Props, State> {
             >
               <header className={styles.header}>
                 <h1 className={styles.pageTitle}>
-                  <span className={styles.moduleCodeTitle}>{ModuleCode}</span>
+                  <span className={styles.moduleCodeTitle}>{moduleCodes.join('/')}</span>
                   {ModuleTitle}
                 </h1>
 
@@ -102,6 +105,7 @@ export default class ModulePageContent extends React.Component<Props, State> {
                   {intersperse(
                     [
                       <span key="department">{module.Department}</span>,
+                      <span key="faculty">{module.Faculty}</span>,
                       <span key="mc">{module.ModuleCredit} MCs</span>,
                     ],
                     BULLET,
