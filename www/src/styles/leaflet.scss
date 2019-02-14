@@ -24,8 +24,8 @@
 .leaflet-tile,
 .leaflet-marker-icon,
 .leaflet-marker-shadow {
-  -webkit-user-drag: none;
   user-select: none;
+  -webkit-user-drag: none;
 }
 
 /* Safari renders non-retina tile on retina better with this, but Chrome is worse */
@@ -287,8 +287,8 @@
 /* visual tweaks */
 
 .leaflet-container {
-  background: #ddd;
   outline: 0;
+  background: #ddd;
 }
 
 .leaflet-container a {
@@ -322,11 +322,11 @@ $button-bg: theme-color(secondary);
   display: block;
   width: 26px;
   height: 26px;
+  border-bottom: 1px solid #ccc;
   line-height: 26px;
   text-align: center;
   text-decoration: none;
   color: #fff;
-  border-bottom: 1px solid #ccc;
   background-color: $button-bg;
 }
 
@@ -348,8 +348,8 @@ $button-bg: theme-color(secondary);
 
 .leaflet-bar a:last-child {
   border-bottom: none;
-  border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 .leaflet-bar a.leaflet-disabled {
@@ -369,8 +369,8 @@ $button-bg: theme-color(secondary);
 }
 
 .leaflet-touch .leaflet-bar a:last-child {
-  border-bottom-right-radius: 2px;
   border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
 }
 
 /* zoom control */
@@ -480,13 +480,13 @@ $button-bg: theme-color(secondary);
 
 .leaflet-control-scale-line {
   box-sizing: border-box;
-  padding: 2px 5px 1px;
   overflow: hidden;
+  padding: 2px 5px 1px;
+  border: 2px solid #777;
+  border-top: none;
   font-size: 11px;
   line-height: 1.1;
   white-space: nowrap;
-  border: 2px solid #777;
-  border-top: none;
   background: #fff;
   background: rgba(255, 255, 255, 0.5);
 }
@@ -521,8 +521,8 @@ $button-bg: theme-color(secondary);
 
 .leaflet-popup-content-wrapper {
   padding: 1px;
-  text-align: left;
   border-radius: 4px;
+  text-align: left;
 }
 
 .leaflet-popup-content {
@@ -537,10 +537,10 @@ $button-bg: theme-color(secondary);
 .leaflet-popup-tip-container {
   position: absolute;
   left: 50%;
+  overflow: hidden;
   width: 40px;
   height: 20px;
   margin-left: -20px;
-  overflow: hidden;
   pointer-events: none;
 }
 
@@ -566,12 +566,12 @@ $button-bg: theme-color(secondary);
   width: 18px;
   height: 14px;
   padding: 4px 4px 0 0;
+  border: none;
   font: 16px/14px Tahoma, Verdana, sans-serif;
   font-weight: bold;
   text-align: center;
   text-decoration: none;
   color: #c3c3c3;
-  border: none;
   background: transparent;
 }
 
