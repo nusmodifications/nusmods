@@ -105,12 +105,14 @@ describe(CollateVenues, () => {
         SemesterData: {
           Timetable: GET1025,
         },
+        Module: { ModuleTitle: 'Science Fiction and Philosophy' },
       },
       {
         ModuleCode: 'GEK2041',
         SemesterData: {
           Timetable: GEK2041,
         },
+        Module: { ModuleTitle: 'Science Fiction and Philosophy' },
       },
     ];
 
@@ -335,6 +337,7 @@ Object {
     const input: any = {
       ModuleCode: 'PX2108',
       SemesterData: { Timetable: PX2108 },
+      Module: { ModuleTitle: 'Basic Human Pathology' },
     };
     const { aliases, venues } = await task.run([input]);
 
@@ -532,6 +535,92 @@ Object {
   ],
 }
 `);
+    expect(aliases).toEqual({});
+  });
+
+  test('should not alias module with different names', async () => {
+    const task = new CollateVenues(1, '2018/2019');
+    const input: any = [
+      {
+        ModuleCode: 'EL5251',
+        SemesterData: {
+          Timetable: [
+            {
+              ClassNo: '1',
+              StartTime: '1800',
+              EndTime: '2100',
+              Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+              Venue: 'AS3-0306',
+              DayText: 'Friday',
+              LessonType: 'Seminar-Style Module Class',
+            },
+          ],
+        },
+        Module: { ModuleTitle: 'Approaches to Discourse' },
+      },
+      {
+        ModuleCode: 'EL6884',
+        SemesterData: {
+          Timetable: [
+            {
+              ClassNo: '1',
+              StartTime: '1800',
+              EndTime: '2100',
+              Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+              Venue: 'AS3-0306',
+              DayText: 'Friday',
+              LessonType: 'Seminar-Style Module Class',
+            },
+          ],
+        },
+        Module: { ModuleTitle: 'Topics in Applied Linguistics' },
+      },
+    ];
+
+    const { aliases, venues } = await task.run(input);
+    expect(venues).toMatchInlineSnapshot(`
+Object {
+  "AS3-0306": Array [
+    Object {
+      "Availability": Object {
+        "1800": "occupied",
+        "1830": "occupied",
+        "1900": "occupied",
+        "1930": "occupied",
+        "2000": "occupied",
+        "2030": "occupied",
+      },
+      "Classes": Array [
+        Object {
+          "ClassNo": "1",
+          "DayText": "Friday",
+          "EndTime": "2100",
+          "LessonType": "Seminar-Style Module Class",
+          "ModuleCode": "EL5251/​EL6884",
+          "StartTime": "1800",
+          "Weeks": Array [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+          ],
+        },
+      ],
+      "Day": "Friday",
+    },
+  ],
+}
+`);
+
     expect(aliases).toEqual({});
   });
 });

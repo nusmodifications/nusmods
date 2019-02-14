@@ -10,10 +10,17 @@ import { ModuleAliases } from '../types/mapper';
 export const ZWSP = '\u200b';
 
 /**
+ * Converts a word to a word-regex pair. The regex matches whole words.
+ * This creates the regex beforehand so they are not created repeatedly in the
+ * loop in titleize.
+ */
+const getWordRegex = (word: string): [string, RegExp] => [word, new RegExp(`\\b${word}\\b`, 'gi')];
+
+/**
  * NUS specific title case function that accounts for school names, etc.
  */
-const minorWords = ['and', 'or', 'the', 'a', 'an', 'to', 'of', 'in'];
-const abbreviations = ['NUS', 'MIT', 'IP', 'NA'];
+const minorWords = ['and', 'or', 'the', 'a', 'an', 'to', 'of', 'in'].map(getWordRegex);
+const abbreviations = ['NUS', 'MIT', 'IP', 'NA'].map(getWordRegex);
 export function titleize(string: string) {
   let capitalized = string
     .toLowerCase()
@@ -21,17 +28,13 @@ export function titleize(string: string) {
     .replace(/(?:^|\s\(?|-|\/)\S/g, (char) => char.toUpperCase());
 
   // Minor words are lowercase unless they are the first word of the title
-  minorWords.forEach((properCasing) => {
-    const regex = new RegExp(`\\b${properCasing}\\b`, 'gi');
-    capitalized = capitalized.replace(regex, (match, index) =>
-      index === 0 ? match : properCasing,
-    );
+  minorWords.forEach(([word, regex]) => {
+    capitalized = capitalized.replace(regex, (match, index) => (index === 0 ? match : word));
   });
 
   // Abbreviations are uppercase regardless of where they are
-  abbreviations.forEach((abbreviation) => {
-    const regex = new RegExp(`\\b${abbreviation}\\b`, 'gi');
-    capitalized = capitalized.replace(regex, abbreviation);
+  abbreviations.forEach(([abbr, regex]) => {
+    capitalized = capitalized.replace(regex, abbr);
   });
 
   return capitalized;
@@ -102,23 +105,25 @@ export function getDuplicateModules(classes: VenueLesson[]): ModuleCode[] {
  */
 export function mergeModules(classes: VenueLesson[], modules: ModuleCode[]): VenueLesson[] {
   const mergedModuleCode = modules.join(`/${ZWSP}`);
-  const removeModuleCodes = new Set(modules.slice(1));
 
+  // We only want to keep lessons from modules not in the list (index = -1) and
+  // lessons from the first module (index = 0) since the rest are duplicates
   return classes
-    .filter((lesson) => !removeModuleCodes.has(lesson.ModuleCode))
-    .map((lesson) =>
-      lesson.ModuleCode === modules[0]
-        ? {
-            ...lesson,
-            ModuleCode: mergedModuleCode,
-          }
-        : lesson,
-    );
+    .filter((lesson) => modules.indexOf(lesson.ModuleCode) < 1)
+    .map((lesson) => {
+      if (lesson.ModuleCode !== modules[0]) return lesson;
+
+      return {
+        ...lesson,
+        ModuleCode: mergedModuleCode,
+      };
+    });
 }
 
 export function mergeDualCodedModules(
   classes: VenueLesson[],
 ): { lessons: VenueLesson[]; aliases: ModuleAliases } {
+  // Repeatedly merge lessons that occupy the same space in the timetable
   let mergedModules = classes;
   let duplicateModules = getDuplicateModules(mergedModules);
   const aliases: ModuleAliases = {};

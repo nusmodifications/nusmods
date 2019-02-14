@@ -1,7 +1,7 @@
 import { map, entries, flatMap, groupBy, mapValues, values } from 'lodash';
 
 import { Task } from '../types/tasks';
-import { Aliases, RawLesson, Semester } from '../types/modules';
+import { Aliases, ModuleTitle, RawLesson, Semester } from '../types/modules';
 import { LessonWithModuleCode, ModuleAliases, SemesterModuleData } from '../types/mapper';
 import { Availability, VenueInfo, VenueLesson, OCCUPIED } from '../types/venues';
 import { Cache } from '../services/io';
@@ -101,6 +101,12 @@ export default class CollateVenues extends BaseTask implements Task<Input, Outpu
 
     const venues = extractVenueAvailability(venueLessons);
 
+    // Get a mapping of module code to module title to help with module aliasing
+    const moduleCodeToTitle: { [moduleCode: string]: ModuleTitle } = {};
+    input.forEach((module) => {
+      moduleCodeToTitle[module.ModuleCode] = module.Module.ModuleTitle;
+    });
+
     // Merge dual-coded modules and extract the aliases generated for use later
     const allAliases: ModuleAliases = {};
     for (const venue of values(venues)) {
@@ -110,7 +116,18 @@ export default class CollateVenues extends BaseTask implements Task<Input, Outpu
 
         // Merge the alias mappings
         for (const [moduleCode, alias] of entries(aliases)) {
-          allAliases[moduleCode] = union(allAliases[moduleCode] || new Set(), alias);
+          // Only add the modules as alias if they have the same title
+          const title = moduleCodeToTitle[moduleCode];
+          const filteredAliases = Array.from(alias).filter(
+            (module) => title === moduleCodeToTitle[module],
+          );
+
+          if (filteredAliases.length) {
+            allAliases[moduleCode] = union(
+              allAliases[moduleCode] || new Set(),
+              new Set(filteredAliases),
+            );
+          }
         }
       }
     }
