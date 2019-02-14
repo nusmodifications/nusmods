@@ -115,7 +115,7 @@ const getModuleInformation = ({
   Workload,
   Prerequisite,
   Preclusion,
-  History: SemesterData.map(({ Semester, ExamDate, ExamDuration }) => ({
+  SemesterData: SemesterData.map(({ Semester, ExamDate, ExamDuration }) => ({
     Semester,
     ExamDate,
     ExamDuration,

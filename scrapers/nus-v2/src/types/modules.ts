@@ -138,7 +138,7 @@ export type ModuleInformation = Readonly<{
   Preclusion?: string;
 
   // Condensed semester info
-  History: SemesterDataCondensed[];
+  SemesterData: SemesterDataCondensed[];
 
   // Requisite tree is not returned to save space
 }>;
