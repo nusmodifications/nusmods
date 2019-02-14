@@ -1,6 +1,5 @@
 import FilterGroup from 'utils/filters/FilterGroup';
 import {
-  Faculty,
   Lesson,
   ModifiableLesson,
   Module,
@@ -9,6 +8,7 @@ import {
   ModuleWithColor,
   Semester,
   PrereqTree,
+  Department,
 } from './modules';
 import { CustomModule, ModuleList } from './reducers';
 import { NextBusTimings, Venue, VenueList } from './venues';
@@ -43,7 +43,7 @@ export type AnyGroup = FilterGroup<any>;
 
 export type OnFilterChange = (filterGroup: AnyGroup) => unknown;
 export type FilterGroups = { [filterGroupId: string]: AnyGroup };
-export type DepartmentFaculty = { [department: string]: Faculty };
+export type FacultyDepartments = { [faculty: string]: Department[] };
 
 export type PageRange = {
   readonly current: number;

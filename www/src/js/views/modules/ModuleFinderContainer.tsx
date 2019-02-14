@@ -6,7 +6,7 @@ import update from 'immutability-helper';
 import { each, mapValues, values } from 'lodash';
 
 import { ModuleInformation } from 'types/modules';
-import { AnyGroup, FilterGroups, PageRange, PageRangeDiff } from 'types/views';
+import { AnyGroup, FacultyDepartments, FilterGroups, PageRange, PageRangeDiff } from 'types/views';
 import { State as StoreState } from 'reducers';
 
 import ModuleFinderList from 'views/modules/ModuleFinderList';
@@ -24,7 +24,6 @@ import {
   defaultGroups,
   updateGroups,
   serializeGroups,
-  invertFacultyDepartments,
   DEPARTMENT,
   EXAMS,
   FACULTY,
@@ -188,8 +187,8 @@ export class ModuleFinderContainerComponent extends React.Component<Props, State
 
     // Load faculty-department mapping
     const facultiesRequest = axios
-      .get(nusmods.facultyDepartmentsUrl())
-      .then(({ data }) => invertFacultyDepartments(data));
+      .get<FacultyDepartments>(nusmods.facultyDepartmentsUrl())
+      .then(({ data }) => data);
 
     // Finally initialize everything
     Promise.all([modulesRequest, facultiesRequest])

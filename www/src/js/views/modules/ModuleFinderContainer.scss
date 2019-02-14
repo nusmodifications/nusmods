@@ -1,6 +1,8 @@
 @import "~styles/utils/modules-entry.scss";
 
 .moduleFilters {
+  height: 100%;
+
   .filterHeader {
     display: flex;
     margin-bottom: 1rem;

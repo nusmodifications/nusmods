@@ -2,7 +2,7 @@ import { map, each, isEmpty, kebabCase, values, flatten } from 'lodash';
 import update, { Spec } from 'immutability-helper';
 import qs from 'query-string';
 
-import { FilterGroups, DepartmentFaculty } from 'types/views';
+import { FilterGroups, FacultyDepartments } from 'types/views';
 import { Faculty, Department, ModuleLevel, ModuleInformation } from 'types/modules';
 
 import config from 'config';
@@ -19,21 +19,6 @@ export const DEPARTMENT = 'department';
 export const EXAMS = 'exam';
 
 const moduleLevels: ModuleLevel[] = [1, 2, 3, 4, 5, 6, 8];
-
-/**
- * Invert the { [faculty: string]: Departments[] } mapping to { [department: string]: Faculty }
- */
-export function invertFacultyDepartments(mapping: {
-  [faculty: string]: Department[];
-}): DepartmentFaculty {
-  const departmentFaculty: Record<string, string> = {};
-  each(mapping, (departments, faculty) => {
-    departments.forEach((department) => {
-      departmentFaculty[department] = faculty;
-    });
-  });
-  return departmentFaculty;
-}
 
 /**
  * Update the provided filter groups to the state in the query string immutably
@@ -95,7 +80,7 @@ function makeExamFilter() {
   ]);
 }
 
-export function defaultGroups(facultyMap: DepartmentFaculty, query: string = ''): FilterGroups {
+export function defaultGroups(facultyMap: FacultyDepartments, query: string = ''): FilterGroups {
   const params = qs.parse(query);
 
   const faculties = Object.keys(facultyMap);
