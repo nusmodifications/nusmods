@@ -123,3 +123,9 @@ export function daysAfter(startDate: Date, days: number): Date {
   d.setUTCDate(d.getUTCDate() + days);
   return d;
 }
+
+const SGT_OFFSET = 8 * 60;
+export function toSingaporeTime(date: string | number | Date): Date {
+  const localDate = new Date(date);
+  return new Date(localDate.getTime() - (localDate.getTimezoneOffset() + SGT_OFFSET) * 60 * 1000);
+}

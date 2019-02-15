@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { ModuleWithColor, Semester, WorkingDaysOfWeek } from 'types/modules';
 import { ModuleWithExamTime, TimeSegment } from 'types/views';
 import config from 'config';
-import { examDateToDate, formatExamDate, getModuleExamDate } from 'utils/modules';
+import { examDateToDate, formatExamDate, getExamDate } from 'utils/modules';
 import { daysAfter } from 'utils/timify';
 import elements from 'views/elements';
 import ExamWeek from './ExamWeek';
@@ -49,7 +49,7 @@ export default class ExamCalendar extends React.PureComponent<Props> {
     // Check modules for outliers, eg. GER1000 that has exams on the Saturday before the exam week
     // and expand the range accordingly
     this.getVisibleModules().forEach((module) => {
-      const dateString = getModuleExamDate(module, semester);
+      const dateString = getExamDate(module, semester);
       if (!dateString) return;
 
       const date = examDateToDate(dateString);
@@ -74,7 +74,7 @@ export default class ExamCalendar extends React.PureComponent<Props> {
     // every time we need them
     const modulesWithExams: ModuleWithExamTime[] = [];
     this.getVisibleModules().forEach((module) => {
-      const dateTime = getModuleExamDate(module, semester);
+      const dateTime = getExamDate(module, semester);
       if (!dateTime) return;
 
       const [date, ...timeParts] = formatExamDate(dateTime).split(' ');

@@ -16,7 +16,7 @@ import {
   selectModuleColor,
   showLessonInTimetable,
 } from 'actions/timetables';
-import { getFormattedModuleExamDate, getModuleExamDate, renderMCs } from 'utils/modules';
+import { getFormattedExamDate, getExamDate, renderMCs } from 'utils/modules';
 import { modulePage } from 'views/routes/paths';
 import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip';
@@ -110,8 +110,8 @@ class TimetableModulesTable extends React.PureComponent<Props> {
             {module.ModuleCode} {module.ModuleTitle}
           </Link>
           <div className={styles.moduleExam}>
-            {getModuleExamDate(module, semester)
-              ? `Exam: ${getFormattedModuleExamDate(module, semester)}`
+            {getExamDate(module, semester)
+              ? `Exam: ${getFormattedExamDate(module, semester)}`
               : 'No Exam'}
             &nbsp;&middot;&nbsp;
             {renderMCs(module.ModuleCredit)}

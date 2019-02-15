@@ -1,5 +1,4 @@
 import _ from 'lodash';
-
 import {
   Day,
   Lesson,
@@ -13,6 +12,8 @@ import {
 
 import config from 'config';
 import { NBSP } from 'utils/react';
+import { format } from 'date-fns';
+import { toSingaporeTime } from './timify';
 
 // Look for strings that look like module codes - eg.
 // ACC1010  - 3 chars, 4 digits, no suffix
@@ -65,24 +66,16 @@ export function examDateToDate(examDate: string): Date {
 export function formatExamDate(examDate: string | null | undefined): string {
   if (!examDate) return 'No Exam';
 
-  const date = examDateToDate(examDate);
-  const hours: number = date.getUTCHours();
-
-  const day: string = _.padStart(`${date.getUTCDate().toString()}`, 2, '0');
-  const month: string = _.padStart(`${date.getUTCMonth() + 1}`, 2, '0');
-  const year: number = date.getUTCFullYear();
-  const hour: number = hours % 12 || 12;
-  const minute: string = _.padStart(`${date.getUTCMinutes()}`, 2, '0');
-  const amPm: string = hours < 12 ? 'AM' : 'PM';
-  return `${day}-${month}-${year} ${hour}:${minute} ${amPm}`;
+  const localDate = toSingaporeTime(examDate);
+  return format(localDate, 'dd-MM-yyyy p');
 }
 
-export function getModuleExamDate(module: Module, semester: Semester): string {
-  return _.get(getModuleSemesterData(module, semester), 'ExamDate')!;
+export function getExamDate(module: Module, semester: Semester): string | null {
+  return _.get(getModuleSemesterData(module, semester), 'ExamDate') || null;
 }
 
-export function getFormattedModuleExamDate(module: Module, semester: Semester): string {
-  const examDate = getModuleExamDate(module, semester);
+export function getFormattedExamDate(module: Module, semester: Semester): string {
+  const examDate = getExamDate(module, semester);
   return formatExamDate(examDate);
 }
 

@@ -32,7 +32,7 @@ import {
   getModuleTimetable,
   areLessonsSameClass,
   formatExamDate,
-  getModuleExamDate,
+  getExamDate,
 } from 'utils/modules';
 import {
   timetableLessonsArray,
@@ -147,7 +147,7 @@ class TimetableContent extends React.Component<Props, State> {
   // Returns modules currently in the timetable
   addedModules(): Module[] {
     const modules = getSemesterModules(this.props.timetableWithLessons, this.props.modules);
-    return _.sortBy(modules, (module: Module) => getModuleExamDate(module, this.props.semester));
+    return _.sortBy(modules, (module: Module) => getExamDate(module, this.props.semester));
   }
 
   renderModuleTable = (
