@@ -10,8 +10,8 @@ $h-padding: $grid-gutter-width / 2;
 
   @include touchscreen-or-breakpoint-down {
     padding: $v-padding $h-padding;
-    font-size: $font-size-sm;
     border-bottom: 1px solid var(--gray-lighter);
+    font-size: $font-size-sm;
   }
 }
 
@@ -154,8 +154,8 @@ $h-padding: $grid-gutter-width / 2;
     display: block;
     padding: 0.2rem 0;
     margin: 0;
-    text-align: center;
     border: 1px solid transparent;
+    text-align: center;
 
     &.enabled {
       color: #fff;

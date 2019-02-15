@@ -24,12 +24,12 @@
   $v-padding: 0.6rem;
   $h-padding: 1rem;
 
+  overflow: hidden;
   flex: 1 0;
   padding: $v-padding $h-padding;
-  overflow: hidden;
-  font-size: 0.9rem;
   border-bottom: 0.3rem solid;
   border-radius: 0.8rem;
+  font-size: 0.9rem;
 
   h4 {
     margin-bottom: 0.2rem;
