@@ -76,17 +76,23 @@ Error handling is done through Sentry.
 - `ModmavenTree` is renamed to `PrereqTree`, is now optional, and is represented by a recursive tree of `type PrereqTree = string | { ['and' | 'or']: PrereqTree[] }`
 - `LockedModules` is renamed to `FulfillRequirements`
 - `History` has been renamed `SemesterData`
+- `Aliases` is a new optional field that contains module codes for dual-coded modules
 
 ### Semester data
 
 - `LecturePeriods` and `TutorialPeriods` are removed - these are not provided by the API, and it is a lot of work and space for not a lot of information
-- `ExamDate` is now a proper ISO8601 date, formatted including timezone (UTC+8)
-- `ExamDuration` is a new nullable field providing the duration of the exam in minutes
+- `ExamDate` is now a proper ISO8601 date string
+- `ExamDuration` is a new nullable number field providing the duration of the exam in minutes
 - `FacultyDepartment` will now be published under yearly data, not semester
 
 ### Lesson data
 
-- `WeekText` is now just `Weeks` and is an array of numbers representing the weeks on which the lesson will be held instead of a string. Weeks start from 1 representing the first week of the semester, and each normal term semester has 13 weeks.
+- `WeekText` is now just `Weeks` and is a sorted array of number or string representing the weeks on which the lesson will be held on. Valid week values, in order, are 
+    - Orientation
+    - 1 - 6
+    - Recess
+    - 7 - 13
+    - Reading
 
 ### Venue data
 
