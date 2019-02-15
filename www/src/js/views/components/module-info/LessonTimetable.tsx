@@ -11,7 +11,7 @@ import { getFirstAvailableSemester } from 'utils/modules';
 import { venuePage } from 'views/routes/paths';
 import styles from './LessonTimetable.scss';
 
-type Props = RouteComponentProps & { semesterData: SemesterData[] };
+type Props = RouteComponentProps & { semesterData: ReadonlyArray<SemesterData> };
 
 type State = {
   selectedSem: Semester;

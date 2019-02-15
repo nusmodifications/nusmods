@@ -118,7 +118,6 @@ describe(getFirstAvailableSemester, () => {
   function createSemesterData(semester: Semester): SemesterData {
     return {
       Semester: semester,
-      LecturePeriods: [],
       Timetable: [],
     };
   }

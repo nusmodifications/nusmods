@@ -14,7 +14,7 @@ import _ from 'lodash';
 
 import { getModuleSemesterData, getModuleTimetable } from 'utils/modules';
 
-import { CS1010S, CS3216, PC1222, CS4243 } from '__mocks__/modules';
+import { CS1010S, CS3216, CS4243, PC1222 } from '__mocks__/modules';
 import modulesListJSON from '__mocks__/module-list.json';
 import timetable from '__mocks__/sem-timetable.json';
 import lessonsArray from '__mocks__/lessons-array.json';
@@ -64,7 +64,7 @@ describe(isValidSemester, () => {
 
 test('randomModuleLessonConfig should return a random lesson config', () => {
   const sem: Semester = 1;
-  const rawLessons: RawLesson[] = getModuleTimetable(CS1010S, sem);
+  const rawLessons = getModuleTimetable(CS1010S, sem);
   const lessonConfig: ModuleLessonConfig = randomModuleLessonConfig(rawLessons);
   Object.keys(lessonConfig).forEach((lessonType: LessonType) => {
     expect(lessonConfig[lessonType]).toBeTruthy();
@@ -99,9 +99,9 @@ test('hydrateSemTimetableWithLessons should replace ClassNo with lessons', () =>
 
 test('lessonsForLessonType should return all lessons belonging to a particular LessonType', () => {
   const sem: Semester = 1;
-  const moduleTimetable: RawLesson[] = getModuleTimetable(CS1010S, sem);
-  const lessonType: LessonType = 'Tutorial';
-  const lessons: RawLesson[] = lessonsForLessonType(moduleTimetable, lessonType);
+  const moduleTimetable = getModuleTimetable(CS1010S, sem);
+  const lessonType = 'Tutorial';
+  const lessons = lessonsForLessonType(moduleTimetable, lessonType);
   expect(lessons.length > 0).toBe(true);
   lessons.forEach((lesson: RawLesson) => {
     expect(lesson.LessonType).toBe(lessonType);
@@ -110,9 +110,8 @@ test('lessonsForLessonType should return all lessons belonging to a particular L
 
 test('lessonsForLessonType should return empty array if no such LessonType is present', () => {
   const sem: Semester = 1;
-  const moduleTimetable: RawLesson[] = getModuleTimetable(CS1010S, sem);
-  const lessonType: LessonType = 'Dota Session';
-  const lessons: RawLesson[] = lessonsForLessonType(moduleTimetable, lessonType);
+  const moduleTimetable = getModuleTimetable(CS1010S, sem);
+  const lessons = lessonsForLessonType(moduleTimetable, 'Dota Session');
   expect(lessons.length).toBe(0);
   expect(lessons).toEqual([]);
 });

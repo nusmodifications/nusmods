@@ -84,21 +84,21 @@ export function isValidSemester(semester: Semester): boolean {
 //  {
 //    [lessonType: string]: ClassNo,
 //  }
-export function randomModuleLessonConfig(lessons: RawLesson[]): ModuleLessonConfig {
-  const lessonByGroups: { [lessonType: string]: RawLesson[] } = groupBy(
+export function randomModuleLessonConfig(lessons: ReadonlyArray<RawLesson>): ModuleLessonConfig {
+  const lessonByGroups: { [lessonType: string]: ReadonlyArray<RawLesson> } = groupBy(
     lessons,
     (lesson) => lesson.LessonType,
   );
 
   const lessonByGroupsByClassNo: {
-    [lessonType: string]: { [classNo: string]: RawLesson[] };
-  } = mapValues(lessonByGroups, (lessonsOfSameLessonType: RawLesson[]) =>
+    [lessonType: string]: { [classNo: string]: ReadonlyArray<RawLesson> };
+  } = mapValues(lessonByGroups, (lessonsOfSameLessonType: ReadonlyArray<RawLesson>) =>
     groupBy(lessonsOfSameLessonType, (lesson) => lesson.ClassNo),
   );
 
   return mapValues(
     lessonByGroupsByClassNo,
-    (group: { [classNo: string]: RawLesson[] }) => sample(group)![0].ClassNo,
+    (group: { [classNo: string]: ReadonlyArray<RawLesson> }) => sample(group)![0].ClassNo,
   );
 }
 
@@ -116,11 +116,12 @@ export function hydrateSemTimetableWithLessons(
 
       // TODO: Split this part into a smaller function: hydrateModuleConfigWithLessons.
       return mapValues(moduleLessonConfig, (classNo: ClassNo, lessonType: LessonType) => {
-        const lessons: RawLesson[] = getModuleTimetable(module, semester);
-        const newLessons: RawLesson[] = lessons.filter(
+        const lessons = getModuleTimetable(module, semester);
+        const newLessons = lessons.filter(
           (lesson: RawLesson): boolean =>
             lesson.LessonType === lessonType && lesson.ClassNo === classNo,
         );
+
         const timetableLessons: Lesson[] = newLessons.map(
           (lesson: RawLesson): Lesson => ({
             ...lesson,
@@ -136,9 +137,9 @@ export function hydrateSemTimetableWithLessons(
 
 //  Filters a flat array of lessons and returns the lessons corresponding to lessonType.
 export function lessonsForLessonType<T extends RawLesson>(
-  lessons: T[],
+  lessons: ReadonlyArray<T>,
   lessonType: LessonType,
-): T[] {
+): ReadonlyArray<T> {
   return lessons.filter((lesson) => lesson.LessonType === lessonType);
 }
 
@@ -223,10 +224,13 @@ export function arrangeLessonsForWeek(lessons: ColoredLesson[]): TimetableArrang
   return mapValues(dayLessons, (dayLesson: ColoredLesson[]) => arrangeLessonsWithinDay(dayLesson));
 }
 
-//  Determines if a Lesson on the timetable can be modifiable / dragged around.
-//  Condition: There are multiple ClassNo for all the Array<Lesson> in a LessonType.
-export function areOtherClassesAvailable(lessons: RawLesson[], lessonType: LessonType): boolean {
-  const lessonTypeGroups: Record<string, any> = groupBy(lessons, (lesson) => lesson.LessonType);
+// Determines if a Lesson on the timetable can be modifiable / dragged around.
+// Condition: There are multiple ClassNo for all the Array<Lesson> in a LessonType.
+export function areOtherClassesAvailable(
+  lessons: ReadonlyArray<RawLesson>,
+  lessonType: LessonType,
+): boolean {
+  const lessonTypeGroups = groupBy<RawLesson>(lessons, (lesson) => lesson.LessonType);
   if (!lessonTypeGroups[lessonType]) {
     // No such LessonType.
     return false;
@@ -369,7 +373,7 @@ function parseModuleConfig(serialized: string | string[] | null): ModuleLessonCo
  * - 1,2,3       => Weeks 1-3
  * - 1,2,3,5,6,7 => Weeks 1-3, 5-7
  */
-export function formatWeeks(weeks: LessonWeek[]): string | null {
+export function formatWeeks(weeks: ReadonlyArray<LessonWeek>): string | null {
   // TODO: How to handle non-numeric weeks?
   const numericWeeks: number[] = weeks.filter((week): week is number => typeof week === 'number');
 

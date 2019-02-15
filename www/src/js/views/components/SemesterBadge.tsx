@@ -15,13 +15,13 @@ const BADGE_COLOR: { [semester: number]: string } = {
 
 type Props = {
   className?: string;
-  semesters: Semester[];
+  semesters: ReadonlyArray<Semester>;
 };
 
 export default function(props: Props) {
   return (
     <span className={classnames(props.className, styles.semesters)}>
-      {props.semesters.sort().map((semester) => (
+      {props.semesters.map((semester) => (
         <span
           key={semester}
           className={classnames('badge', BADGE_COLOR[semester])}

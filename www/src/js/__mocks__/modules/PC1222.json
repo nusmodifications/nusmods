@@ -3,6 +3,7 @@
   "ModuleTitle": "Fundamentals of Physics II",
   "AcadYear": "2017/2018",
   "Department": "Physics",
+  "Faculty": "Science",
   "ModuleDescription": "The module aims to bridge the gap between O level Physics and first year university physics level. The module covers the fundamentals of three branches of physics: electricity &amp; magnetism, optics and modern physics. Topics included in the part on electricity &amp; magnetism are Coulombs law, electric field and potential, capacitance, current and resistance, DC circuits, magnetic fields, magnetic effects on current, electromagnetic induction, AC circuits and electromagnetic waves. The part on optics encompasses topics such as reflection and refraction, systems of lenses, optical instruments, interference, diffraction, grating and polarization. Topics covered in the part on modern physics are blackbody radiation, photoelectric effect, atomic transitions and spectra, the uncertainty principle, wave-particle duality, radioactivity and decay processes, binding energy and fusion energy and fusion &amp; fission.",
   "ModuleCredit": "4",
   "Workload": [3, 1, 1, 2, 3],

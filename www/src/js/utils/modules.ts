@@ -1,13 +1,11 @@
 import _ from 'lodash';
 import {
-  Day,
   Lesson,
   Module,
   RawLesson,
   Semester,
   SemesterData,
   SemesterDataCondensed,
-  Time,
 } from 'types/modules';
 
 import config from 'config';
@@ -31,7 +29,7 @@ export function getModuleSemesterData(
 }
 
 // Returns a flat array of lessons of a module for the corresponding semester.
-export function getModuleTimetable(module: Module, semester: Semester): RawLesson[] {
+export function getModuleTimetable(module: Module, semester: Semester): ReadonlyArray<RawLesson> {
   return _.get(getModuleSemesterData(module, semester), 'Timetable', []);
 }
 
@@ -66,7 +64,7 @@ export function getFormattedExamDate(module: Module, semester: Semester): string
 // Returns the current semester if it is found in semesters, or the first semester
 // where it is available
 export function getFirstAvailableSemester(
-  semesters: SemesterDataCondensed[],
+  semesters: ReadonlyArray<SemesterDataCondensed>,
   current: Semester = config.semester, // For testing only
 ): Semester {
   const availableSemesters = semesters.map((semesterData) => semesterData.Semester);
@@ -75,10 +73,6 @@ export function getFirstAvailableSemester(
 
 export function getSemestersOffered(module: Module): Semester[] {
   return module.SemesterData.map((semesterData) => semesterData.Semester).sort();
-}
-
-export function getTimeslot(day: Day, time: Time): string {
-  return `${day} ${time}`;
 }
 
 export function renderMCs(moduleCredits: number | string) {

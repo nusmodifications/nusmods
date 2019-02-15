@@ -10,7 +10,7 @@ import { notNull } from '../../types/utils';
 
 type Props = {
   moduleCode: ModuleCode;
-  fulfillRequirements?: ModuleCode[];
+  fulfillRequirements?: ReadonlyArray<ModuleCode>;
   prereqTree?: PrereqTree;
 };
 

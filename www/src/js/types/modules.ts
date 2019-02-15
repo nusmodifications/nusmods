@@ -14,7 +14,7 @@ export type ModuleCode = string; // E.g. "CS3216"
 export type ModuleTitle = string;
 export type Semester = number; // E.g. 1/2/3/4. 3 and 4 means special sem i and ii.
 export type LessonWeek = number | 'Reading' | 'Recess' | 'Orientation';
-export type Workload = string | number[];
+export type Workload = string | ReadonlyArray<number>;
 export type Venue = string;
 
 // Recursive tree of module codes and boolean operators for the prereq tree
@@ -30,7 +30,7 @@ export type Day =
   | 'Saturday'
   | 'Sunday';
 
-export const WorkingDaysOfWeek: Day[] = [
+export const WorkingDays: ReadonlyArray<Day> = [
   'Monday',
   'Tuesday',
   'Wednesday',
@@ -39,13 +39,10 @@ export const WorkingDaysOfWeek: Day[] = [
   'Saturday',
 ];
 
-export const DaysOfWeek: Day[] = [...WorkingDaysOfWeek, 'Sunday'];
-
-export type Time = 'Morning' | 'Afternoon' | 'Evening';
-export const TimesOfDay: Time[] = ['Morning', 'Afternoon', 'Evening'];
+export const DaysOfWeek: ReadonlyArray<Day> = [...WorkingDays, 'Sunday'];
 
 export type ModuleLevel = 1 | 2 | 3 | 4 | 5 | 6 | 8;
-export const Semesters = [1, 2, 3, 4];
+export const Semesters: ReadonlyArray<Semester> = [1, 2, 3, 4];
 
 export type WorkloadComponent = 'Lecture' | 'Tutorial' | 'Laboratory' | 'Project' | 'Preparation';
 
@@ -67,21 +64,17 @@ export type RawLesson = Readonly<{
   LessonType: LessonType;
   StartTime: StartTime;
   Venue: Venue;
-  Weeks: LessonWeek[];
+  Weeks: ReadonlyArray<LessonWeek>;
 }>;
 
 // Semester-specific information of a module.
 export type SemesterData = {
   Semester: Semester;
-  Timetable: RawLesson[];
+  Timetable: ReadonlyArray<RawLesson>;
 
   // Exam
   ExamDate?: string;
   ExamDuration?: number;
-
-  // Deprecated
-  LecturePeriods?: string[];
-  TutorialPeriods?: string[];
 };
 
 // Information for a module for a particular academic year.
@@ -106,11 +99,11 @@ export type Module = {
   Preclusion?: string;
 
   // Semester data
-  SemesterData: SemesterData[];
+  SemesterData: ReadonlyArray<SemesterData>;
 
   // Requisites
   PrereqTree?: PrereqTree;
-  FulfillRequirements?: ModuleCode[];
+  FulfillRequirements?: ReadonlyArray<ModuleCode>;
 };
 
 export type ModuleWithColor = Module & {
@@ -122,7 +115,7 @@ export type ModuleWithColor = Module & {
 export type ModuleCondensed = Readonly<{
   ModuleCode: ModuleCode;
   ModuleTitle: ModuleTitle;
-  Semesters: number[];
+  Semesters: ReadonlyArray<number>;
 }>;
 
 // This format is returned from the module information endpoint
@@ -159,14 +152,10 @@ export type ModuleInformation = Readonly<{
   Preclusion?: string;
 
   // Condensed semester info
-  SemesterData: SemesterDataCondensed[];
+  SemesterData: ReadonlyArray<SemesterDataCondensed>;
 
   // Requisite tree is not returned to save space
 }>;
-
-export type Aliases = {
-  [moduleCode: string]: ModuleCode[];
-};
 
 // RawLessons obtained from API does not include ModuleCode and ModuleTitle by default.
 // They have to be injected in before using in the timetable.

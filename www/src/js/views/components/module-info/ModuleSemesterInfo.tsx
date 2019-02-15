@@ -8,7 +8,7 @@ import ModuleExamClash from './ModuleExamClash';
 
 type Props = {
   moduleCode: ModuleCode;
-  semesters: SemesterDataCondensed[];
+  semesters: ReadonlyArray<SemesterDataCondensed>;
 };
 
 type State = {

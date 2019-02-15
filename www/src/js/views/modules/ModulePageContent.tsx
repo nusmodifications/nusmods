@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import ScrollSpy from 'react-scrollspy';
-import { kebabCase, map, mapValues, values } from 'lodash';
+import { kebabCase, map, mapValues, values, sortBy } from 'lodash';
 
 import { Module } from 'types/modules';
 
@@ -166,7 +166,7 @@ export default class ModulePageContent extends React.Component<Props, State> {
                 </div>
 
                 <div className="col-sm-4">
-                  {module.SemesterData.sort((a, b) => a.Semester - b.Semester).map((semester) => (
+                  {sortBy(module.SemesterData, (semester) => semester.Semester).map((semester) => (
                     <div key={semester.Semester} className={styles.exam}>
                       <h3 className={styles.descriptionHeading}>
                         {module.SemesterData.length > 1 && config.semesterNames[semester.Semester]}{' '}

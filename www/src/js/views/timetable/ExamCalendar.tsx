@@ -4,7 +4,7 @@ import { groupBy, range } from 'lodash';
 import classnames from 'classnames';
 import { addDays } from 'date-fns';
 
-import { ModuleWithColor, Semester, WorkingDaysOfWeek } from 'types/modules';
+import { ModuleWithColor, Semester, WorkingDays } from 'types/modules';
 import { ModuleWithExamTime, TimeSegment } from 'types/views';
 import config from 'config';
 import { formatExamDate, getExamDate } from 'utils/modules';
@@ -132,7 +132,7 @@ export default class ExamCalendar extends React.PureComponent<Props> {
             <tr>
               {range(daysWithExams).map((day) => (
                 <th key={day} className={styles.dayName}>
-                  {WorkingDaysOfWeek[day].slice(0, 3)}
+                  {WorkingDays[day].slice(0, 3)}
                 </th>
               ))}
             </tr>
