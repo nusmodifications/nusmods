@@ -166,24 +166,24 @@ export default class ModulePageContent extends React.Component<Props, State> {
                 </div>
 
                 <div className="col-sm-4">
-                  {module.SemesterData.sort((a, b) => a.Semester - b.Semester).map(
-                    (semesterData) => (
-                      <div key={semesterData.Semester} className={styles.exam}>
-                        <h3 className={styles.descriptionHeading}>
-                          {module.SemesterData.length > 1 &&
-                            config.semesterNames[semesterData.Semester]}{' '}
-                          Exam
-                        </h3>
-                        <p>{formatExamDate(semesterData.ExamDate)}</p>
+                  {module.SemesterData.sort((a, b) => a.Semester - b.Semester).map((semester) => (
+                    <div key={semester.Semester} className={styles.exam}>
+                      <h3 className={styles.descriptionHeading}>
+                        {module.SemesterData.length > 1 && config.semesterNames[semester.Semester]}{' '}
+                        Exam
+                      </h3>
+                      <p>
+                        {formatExamDate(semester.ExamDate)}{' '}
+                        {semester.ExamDuration && `/ ${semester.ExamDuration / 60} hrs`}
+                      </p>
 
-                        <ModuleExamClash
-                          semester={semesterData.Semester}
-                          examDate={semesterData.ExamDate}
-                          moduleCode={ModuleCode}
-                        />
-                      </div>
-                    ),
-                  )}
+                      <ModuleExamClash
+                        semester={semester.Semester}
+                        examDate={semester.ExamDate}
+                        moduleCode={ModuleCode}
+                      />
+                    </div>
+                  ))}
 
                   {!isArchive && (
                     <div className={styles.addToTimetable}>

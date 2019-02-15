@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ModuleCode, Semester, SemesterData, SemesterDataCondensed } from 'types/modules';
+import { ModuleCode, Semester, SemesterDataCondensed } from 'types/modules';
 
 import { getFirstAvailableSemester, formatExamDate } from 'utils/modules';
 import SemesterPicker from './SemesterPicker';
@@ -14,34 +14,6 @@ type Props = {
 type State = {
   selected: Semester;
 };
-
-// Using a bitmask to indicate what the timeslot contains - lecture, tutorial, or both
-type TimeslotFlag = number;
-const HAS_LECTURE: TimeslotFlag = 1 << 0;
-const HAS_TUTORIAL: TimeslotFlag = 1 << 1;
-
-function getTimeslotContent(timeslot: string, flags: TimeslotFlag) {
-  switch (flags) {
-    case HAS_LECTURE:
-      return (
-        <div title={`This module has lectures on ${timeslot}`} className="workload-lecture-bg" />
-      );
-
-    case HAS_TUTORIAL:
-      return (
-        <div title={`This module has tutorials on ${timeslot}`} className="workload-tutorial-bg" />
-      );
-
-    case HAS_TUTORIAL | HAS_LECTURE:
-    default:
-      return (
-        <div title={`This module has lectures and tutorials on ${timeslot}`}>
-          <div className="workload-lecture-bg" />
-          <div className="workload-tutorial-bg" />
-        </div>
-      );
-  }
-}
 
 export default class ModuleSemesterInfo extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -58,25 +30,6 @@ export default class ModuleSemesterInfo extends React.Component<Props, State> {
 
   selectedSemester(): SemesterDataCondensed | undefined {
     return this.props.semesters.find((data) => data.Semester === this.state.selected);
-  }
-
-  timeslotChildren(): Map<string, Node> {
-    const semester: Partial<SemesterData> = this.selectedSemester() || {};
-    const { LecturePeriods: lectures = [], TutorialPeriods: tutorials = [] } = semester;
-
-    // Create a mapping of timeslot to flags
-    const timeslots: Map<string, TimeslotFlag> = new Map();
-    const setTimeslot = (timeslot: string, flag: number) =>
-      timeslots.set(timeslot, (timeslots.get(timeslot) || 0) | flag);
-    lectures.forEach((timeslot) => setTimeslot(timeslot, HAS_LECTURE));
-    tutorials.forEach((timeslot) => setTimeslot(timeslot, HAS_TUTORIAL));
-
-    // Then convert the flags to content
-    const nodes = new Map();
-    timeslots.forEach((flags, timeslot) =>
-      nodes.set(timeslot, getTimeslotContent(timeslot, flags)),
-    );
-    return nodes;
   }
 
   render() {
@@ -98,7 +51,10 @@ export default class ModuleSemesterInfo extends React.Component<Props, State> {
           <div className="module-semester-info">
             <section className="module-exam">
               <h4>Exam</h4>
-              <p>{formatExamDate(semester.ExamDate)}</p>
+              <p>
+                {formatExamDate(semester.ExamDate)}{' '}
+                {semester.ExamDuration && `/ ${semester.ExamDuration / 60} hrs`}
+              </p>
 
               <ModuleExamClash
                 semester={semester.Semester}
