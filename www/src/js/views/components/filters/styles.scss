@@ -10,8 +10,8 @@ $h-padding: $grid-gutter-width / 2;
 
   @include touchscreen-or-breakpoint-down {
     padding: $v-padding $h-padding;
-    font-size: $font-size-sm;
     border-bottom: 1px solid var(--gray-lighter);
+    font-size: $font-size-sm;
   }
 }
 

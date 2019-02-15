@@ -20,9 +20,9 @@
 .years {
   composes: list-unstyled from global;
   display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
   grid-auto-rows: 1fr;
   grid-gap: 0.5rem;
-  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
 
   button {
     height: 100%;

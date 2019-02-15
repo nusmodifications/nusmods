@@ -38,13 +38,13 @@
   z-index: $timetable-day-z-index;
   display: flex;
   flex: 0 0 $timetable-day-h-size;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  border: $timetable-border;
+  border-width: 0 1px;
   font-weight: 600;
   font-size: $font-size-s;
   text-transform: uppercase;
-  border: $timetable-border;
-  border-width: 0 1px;
   background: var(--body-bg);
 
   &.dayNameScrolled {
@@ -52,8 +52,8 @@
   }
 
   @include media-breakpoint-down(sm) {
-    flex: 0 0 $timetable-day-h-size-sm;
     overflow: hidden;
+    flex: 0 0 $timetable-day-h-size-sm;
 
     .dayNameText {
       // On small screens, display the day names vertically

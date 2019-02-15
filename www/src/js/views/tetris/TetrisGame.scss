@@ -10,15 +10,15 @@
 
   // HACK: Make the border lessons actually look like a border
   :global(.color-10) {
-    color: transparent;
     border: 0;
     border-radius: 0;
+    color: transparent;
     background: var(--gray-light);
   }
 
   :global(.color-11) {
-    color: transparent;
     border: 3px dotted var(--gray) !important;
+    color: transparent;
   }
 
   // HACK: Hide module text content

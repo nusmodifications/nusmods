@@ -12,8 +12,8 @@
   z-index: $navtabs-z-index;
   // See site.scss for width on md and lg sizes
   display: flex;
-  align-items: stretch;
   justify-content: space-around;
+  align-items: stretch;
   height: $navtab-height;
 
   @include media-breakpoint-up(md) {
@@ -72,8 +72,8 @@
 
   @include media-breakpoint-down(sm) {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
 
     svg {
       margin-bottom: 0.1rem;
@@ -134,9 +134,9 @@
   height: 0.5rem;
   padding: 0;
   margin-left: 1rem;
+  border-radius: 50%;
   font-size: $font-size-xs;
   line-height: 1.2;
-  border-radius: 50%;
   background: theme-color(success);
 
   :global {

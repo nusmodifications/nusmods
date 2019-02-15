@@ -12,8 +12,8 @@ $dropdown-height: 40rem;
   height: 100%;
   padding-right: $container-padding;
   margin-left: auto;
-  font-size: 0.9rem;
   border-right: 1px solid var(--gray-lighter);
+  font-size: 0.9rem;
 
   &:hover .icon {
     color: theme-color();
@@ -50,18 +50,18 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
   width: $input-width;
   height: 100%;
   padding-left: $input-width;
+  border: 0;
   font-size: $font-size-s;
   color: var(--body-color);
-  border: 0;
   background: transparent;
-  transform: translate($input-width-open);
   cursor: pointer;
+  transform: translate($input-width-open);
   transition: transform $desktop-entering-duration $material-deceleration-curve,
     opacity $desktop-entering-duration $material-deceleration-curve 75ms;
 
   &:focus {
-    background: transparent;
     outline: none;
+    background: transparent;
     box-shadow: none;
   }
 }
@@ -78,8 +78,8 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
   composes: openWidth;
   right: 0;
   opacity: 1;
-  transform: translate(0);
   cursor: auto;
+  transform: translate(0);
 }
 
 .selectListContainer {
@@ -87,10 +87,10 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
   top: $navbar-height - 0.5rem;
   right: 0;
   z-index: $module-select-z-index;
-  color: var(--body-color);
   border: $input-btn-border-width solid $input-border-color;
   border-width: 0 $input-btn-border-width $input-btn-border-width;
   border-radius: 0 0 $btn-border-radius $btn-border-radius;
+  color: var(--body-color);
   background: var(--body-bg);
 }
 
@@ -113,8 +113,8 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
 .selectHeader {
   composes: item;
   justify-content: space-between;
-  font-size: 0.95rem;
   border-bottom: 1px solid var(--gray-lighter);
+  font-size: 0.95rem;
 
   &.selected {
     > :global(.btn-svg) {

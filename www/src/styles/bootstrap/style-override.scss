@@ -64,8 +64,8 @@ mark {
 // Alerts
 @mixin alert-colors($name) {
   .alert-#{$name} {
-    color: var(--alert-#{$name}-color);
     border-color: var(--alert-#{$name}-border);
+    color: var(--alert-#{$name}-color);
     background: var(--alert-#{$name}-background);
   }
 }

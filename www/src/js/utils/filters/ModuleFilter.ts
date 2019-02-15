@@ -1,4 +1,4 @@
-import { Module, ModuleCode, ModuleInformation } from 'types/modules';
+import { ModuleCode, ModuleInformation } from 'types/modules';
 import { intersectionCount } from 'utils/set';
 
 export default class ModuleFilter {
