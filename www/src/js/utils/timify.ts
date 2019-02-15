@@ -11,6 +11,8 @@ import {
   startOfDay,
 } from 'date-fns';
 
+const SGT_OFFSET = -8 * 60;
+
 // Converts a 24-hour format time string to an index.
 // Each index corresponds to one cell of each timetable row.
 // Each row may not start from index 0, it depends on the config's starting time.
@@ -95,15 +97,22 @@ export function calculateBorderTimings(
   };
 }
 
-// Gets the current time in hours, 0915 -> 9, 1315 -> 13
+/**
+ * Gets the current time in hours, 0915 -> 9, 1315 -> 13
+ * @deprecated Use date injected by withTimer instead
+ */
 export function getCurrentHours(
   now: Date = new Date(), // Used for tests only
 ): number {
   return now.getHours();
 }
 
-// Gets the current time in hours, 0915 -> 15, 1345 -> 45
-// Current time to always match Singapore's
+/**
+ * Gets the current time in hours, 0915 -> 15, 1345 -> 45
+ * Current time to always match Singapore's
+ *
+ * @deprecated Use date injected by withTimer instead
+ */
 export function getCurrentMinutes(
   now: Date = new Date(), // Used for tests only
 ): number {
@@ -124,8 +133,19 @@ export function daysAfter(startDate: Date, days: number): Date {
   return d;
 }
 
-const SGT_OFFSET = -8 * 60;
+/**
+ * Converts a Date object representing an event happening in Singapore time
+ * and outputs a new Date object with the local time in SGT. This is useful
+ * in conjunction with format from date-fns since it always use local time when
+ * formatting output.
+ *
+ * @example
+ *     // Exam is at 9AM 23rd of October 2016
+ *     const examDate = new Date('2016-11-23T01:00:00.000Z');
+ *     format(examDate, 'dd-MM-yyyy p');
+ *     // => "23-11-2016 9:00 AM", no matter where the user machine's TZ is
+ */
 export function toSingaporeTime(date: string | number | Date): Date {
   const localDate = new Date(date);
-  return new Date(localDate.getTime() - (localDate.getTimezoneOffset() + SGT_OFFSET) * 60 * 1000);
+  return new Date(localDate.getTime() + (localDate.getTimezoneOffset() - SGT_OFFSET) * 60 * 1000);
 }

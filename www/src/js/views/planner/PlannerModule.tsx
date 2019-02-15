@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import { ModuleCode, ModuleTitle } from 'types/modules';
 import { Conflict } from 'types/views';
 import config from 'config';
-import { examDateToDate, renderMCs } from 'utils/modules';
+import { renderMCs } from 'utils/modules';
 import { conflictToText } from 'utils/planner';
 import { AlertTriangle } from 'views/components/icons';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
@@ -15,6 +15,7 @@ import { modulePage } from 'views/routes/paths';
 
 import ModuleMenu from './ModuleMenu';
 import styles from './PlannerModule.scss';
+import { toSingaporeTime } from '../../utils/timify';
 
 type Props = Readonly<{
   // Module information
@@ -106,7 +107,7 @@ export default class PlannerModule extends React.PureComponent<Props> {
     return (
       <div className={styles.moduleMeta}>
         {moduleCredit && <div>{renderMCs(moduleCredit)}</div>}
-        {examDate && <div>{format(examDateToDate(examDate), 'MMM d, h:mm a')}</div>}
+        {examDate && <div>{format(toSingaporeTime(examDate), 'MMM d, h:mm a')}</div>}
       </div>
     );
   }

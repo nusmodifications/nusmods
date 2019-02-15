@@ -45,23 +45,7 @@ export function areLessonsSameClass(lesson1: Lesson, lesson2: Lesson): boolean {
 }
 
 /**
- * Convert examDate to JS Date object. Unfortunately just doing
- * new Date(examDate) won't work on Safari, since the timestamp is almost but not
- * quite ISO8601 standard
- *
- * The API returns examDate with hhmm as the TZ specifier, but we want
- * this to work on machines in all timezones, so instead we lop it off and
- * pretend it is in UTC time
- */
-export function examDateToDate(examDate: string): Date {
-  return new Date(`${examDate.slice(0, 16)}Z`);
-}
-
-/**
- * Convert exam in ISO format to 12-hour date/time format. We slice off the
- * SGT time zone and interpret as UTC time, then use the getUTC* methods so
- * that they will correspond to Singapore time regardless of the local time
- * zone.
+ * Convert exam in ISO format to 12-hour date/time format.
  */
 export function formatExamDate(examDate: string | null | undefined): string {
   if (!examDate) return 'No Exam';
