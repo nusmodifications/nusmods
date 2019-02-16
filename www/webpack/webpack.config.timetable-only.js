@@ -19,7 +19,7 @@ const productionConfig = merge([
   commonConfig,
   {
     // Override common's entry point
-    entry: source('main.jsx'),
+    entry: source('main.tsx'),
     // Don't attempt to continue if there are any errors.
     bail: true,
     mode: 'production',

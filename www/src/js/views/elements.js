@@ -1,4 +1,3 @@
-// @flow
 // Used to share classnames with e2e tests. This allows the e2e tests to select
 // and assert against elements, which would be difficult to do otherwise because
 // we use CSS modules, which mangles the classnames.

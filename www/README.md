@@ -30,7 +30,7 @@ Don't know where to start? First, read our repository [contribution guide](../CO
 
 ## Getting Started
 
-Install [Node 8+](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/en/docs/install) then run the following command:
+Install [Node 10+](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/en/docs/install) then run the following command:
 
 ```sh
 $ yarn
@@ -46,10 +46,10 @@ To run the development build, simply run:
 $ yarn start
 ```
 
-This will start webpack dev server, which will automatically rebuild and reload any code and components that you have changed. If your editor or IDE has built in support for Flow/ESLint/StyleLint, you can disable them to speed up the build process.
+This will start Webpack dev server, which will automatically rebuild and reload any code and components that you have changed. If your editor or IDE has built in support for ESLint/StyleLint, you can disable them to speed up the build process.
 
 ```sh
-$ DISABLE_ESLINT=1 DISABLE_FLOW=1 DISABLE_STYLELINT=1 yarn start
+$ DISABLE_ESLINT=1 DISABLE_STYLELINT=1 yarn start
 ```
 
 We recommend the following development tools to help speed up your work
@@ -82,8 +82,8 @@ import "~styles/utils/modules-entry"; // Import variables, mixins
 }
 ```
 
-```js
-// MyComponent.jsx
+```ts
+// MyComponent.tsx
 import styles from './MyComponent.scss';
 
 // To use styles from MyComponent.scss:
@@ -168,11 +168,15 @@ type Props = {
 }
 
 type State = {
-  data: ?MyData,
+  data: MyData | null,
   error?: any,
 }
 
-class MyComponent extends Component<Props> {
+class MyComponent extends React.Component<Props, State> {
+  state: State = {
+    data: null,
+  };
+
   componentDidMount() {
     this.props.fetchData()
       .then(data => this.setState({ data }))
@@ -186,7 +190,7 @@ class MyComponent extends Component<Props> {
       return <ErrorPage />;
     }
 
-    if (!data) {
+    if (data == null) {
       return <LoadingSpinner />;
     }
 
@@ -207,7 +211,7 @@ This is the [cache-then-network strategy described in the Offline Cookbook][offl
 
 **Reducer example**
 
-```js
+```ts
 import { SUCCESS } from 'types/reducers';
 import { FETCH_DATA } from 'actions/example';
 
@@ -225,9 +229,9 @@ export function exampleBank(state: ExampleBank, action: FSA): ExampleBank {
 
 **Component example**
 
-```js
+```ts
 type Props = {
-  myData: ?MyData,
+  myData: MyData | null,
   fetchData: () => Promise<MyData>,
 }
 
@@ -235,7 +239,7 @@ type State = {
   error?: any,
 }
 
-class MyComponent extends Component<Props> {
+class MyComponent extends React.Component<Props, State> {
   componentDidMount() {
     this.props.fetchData()
       .catch(error => this.setState({ error });
@@ -250,7 +254,7 @@ class MyComponent extends Component<Props> {
       return <ErrorPage />;
     }
 
-    if (!data) {
+    if (data == null) {
       return <LoadingSpinner />;
     }
 
@@ -271,21 +275,16 @@ If you need to access the status of a request from outside the component which i
 
 NUSMods tries to be as lean as possible. Adding external dependencies should be done with care to avoid bloating our bundle. Use [Bundlephobia][bundlephobia] to ensure the new dependency is reasonably sized, or if the dependency is limited to one specific page/component, use code splitting to ensure the main bundle's size is not affected.
 
-#### Flow libdef
+#### TypeScript libdef
 
-When adding a JavaScript package, Flow requires a library definition, or libdef. To try to install one from the [community repository][flow-typed], use the `flow-typed` command. If a community libdef is not available, the same command can also be used to create a stub libdef which you can use immediately in a pinch, or edit to fill in the correct definitions.
+When adding packages, TypeScript requires a library definition, or libdef. To try to install one from the [community repository][definitely-typed], install `@types/<package name>`. Make sure the installed libdef's version matches that of the package.
 
-```sh
-# Use ./node_modules/.bin/flow-typed if you don't want to use npx
-npx flow-typed install my-dep@1.0
+If a community libdef is not available, you can try writing your own and placing it in `js/types/vendor`.
 
-# Use create-stub for packages without community libdef
-npx flow-typed create-stub my-dep
-```
 
 ### Testing and Linting
 
-We use [Jest][jest] with [Enzyme][enzyme] to test our code and React components, [Flow][flow] for typechecking, [Stylelint][stylelint] and [ESLint][eslint] using [Airbnb config][eslint-airbnb] and [Prettier][prettier] for linting and formatting.
+We use [Jest][jest] with [Enzyme][enzyme] to test our code and React components, [TypeScript][ts] for typechecking, [Stylelint][stylelint] and [ESLint][eslint] using [Airbnb config][eslint-airbnb] and [Prettier][prettier] for linting and formatting.
 
 ```sh
 # Run all tests once with code coverage
@@ -305,8 +304,8 @@ $ yarn lint:code
 # p.s. Use yarn lint:styles --fix with care (it's experimental),
 #      remember to reset changes for themes.scss.
 
-# Run Flow type checking
-$ yarn flow
+# Run TypeScript type checking
+$ yarn typecheck
 ```
 
 #### End to End testing
@@ -366,7 +365,8 @@ $ yarn promote-staging  # Promote ./dist to production
 │   │   ├── test-utils       - Utilities for testing - this directory is not counted
 │   │   │                      for test coverage
 │   │   ├── timetable-export - Entry point for timetable only build for exports
-│   │   ├── types            - Flow type definitions
+│   │   ├── types            - Type definitions
+│   │       └── vendor       - Types for third party libaries
 │   │   ├── utils            - Utility functions and classes
 │   │   └── views
 │   │       ├── components   - Reusable components
@@ -411,7 +411,7 @@ Components should keep their styles and tests in the same directory with the sam
 [bootstrap]: https://getbootstrap.com/
 [jest]: https://facebook.github.io/jest/
 [enzyme]: http://airbnb.io/enzyme/
-[flow]: https://flow.org/
+[ts]: https://www.typescriptlang.org/
 [eslint]: https://eslint.org/
 [svgr]: https://github.com/smooth-code/svgr
 [eslint-airbnb]: https://www.npmjs.com/package/eslint-config-airbnb
@@ -421,5 +421,5 @@ Components should keep their styles and tests in the same directory with the sam
 [css-modules]: https://github.com/css-modules/css-modules
 [offline-cookbook]: https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#cache-then-network
 [axios-config]: https://github.com/axios/axios#request-config
-[flow-typed]: https://github.com/flow-typed/flow-typed
+[definitely-typed]: https://github.com/DefinitelyTyped/DefinitelyTyped/
 [bundlephobia]: https://bundlephobia.com/

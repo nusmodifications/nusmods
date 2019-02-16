@@ -1,41 +1,25 @@
 module.exports = {
-  roots: [
-    '<rootDir>/src',
-  ],
-  moduleDirectories: [
-    'node_modules',
-    'src/js',
-  ],
-  modulePaths: [
-    '<rootDir>',
-  ],
-  testPathIgnorePatterns: [
-    '<rootDir>/.eslintrc.js',
-  ],
-  collectCoverageFrom: [
-    'src/**/*.{js|jsx}',
-  ],
-  coveragePathIgnorePatterns: [
-    'src/js/test_utils',
-    'src/js/e2e',
-    // Code in this file triggers this bug - https://github.com/istanbuljs/babel-plugin-istanbul/issues/116
-    'src/js/views/modules/ModulePageContent.jsx',
-  ],
+  roots: ['<rootDir>/src/js'],
+  moduleDirectories: ['node_modules', '<rootDir>/src/js'],
+  moduleFileExtensions: ['jsx', 'js', 'ts', 'tsx'],
+  testPathIgnorePatterns: [],
+  testRegex: 'src/js/.+\\.test\\.[jt]sx?$',
   setupFiles: ['<rootDir>/scripts/test.js'],
   moduleNameMapper: {
     // Mock non JS files as strings
-    '\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/__mocks__/fileMock.js',
+    '\\.(?:jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
+      '<rootDir>/src/js/__mocks__/fileMock.ts',
     // Mock SVG as React component
-    '\\.svg\\?url': '<rootDir>/__mocks__/fileMock.js',
-    '\\.svg': '<rootDir>/__mocks__/svgMock.jsx',
+    '\\.svg\\?url$': '<rootDir>/src/js/__mocks__/fileMock.ts',
+    '\\.svg$': '<rootDir>/src/js/__mocks__/svgMock.tsx',
     // Mock SCSS and CSS modules as objects
-    '\\.(css|scss)$': 'identity-obj-proxy',
+    '\\.(?:css|scss)$': 'identity-obj-proxy',
   },
   // Allow us to directly use enzyme wrappers for snapshotting
   // Usage: expect(enzyme.shallow(<div/>)).toMatchSnapshot();
-  snapshotSerializers: [
-    '<rootDir>/node_modules/enzyme-to-json/serializer',
-  ],
+  snapshotSerializers: ['<rootDir>/node_modules/enzyme-to-json/serializer'],
+  collectCoverageFrom: ['**/!(*.d).{js,jsx,ts,tsx}'],
+  coveragePathIgnorePatterns: ['/node_modules/', '<rootDir>/src/js/(?:test-utils|e2e)'],
   // Only write lcov files in CIs
   coverageReporters: ['text'].concat(process.env.CI ? 'lcov' : []),
 };

@@ -1,6 +1,6 @@
 @mixin color($color) {
-  color: darken($color, 40%);
   border-color: darken($color, 20%);
+  color: darken($color, 40%);
   background-color: $color;
 
   &.hoverable:hover,

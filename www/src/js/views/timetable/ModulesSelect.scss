@@ -93,8 +93,8 @@ $module-list-height: 13.5rem;
 .option {
   composes: item;
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   cursor: pointer;
   touch-action: manipulation;
 }

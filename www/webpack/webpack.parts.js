@@ -4,7 +4,6 @@ const _ = require('lodash');
 
 const { GenerateSW } = require('workbox-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const FlowStatusWebpackPlugin = require('flow-status-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const childProcess = require('child_process');
 const moment = require('moment');
@@ -30,7 +29,7 @@ const PATHS = {
   images: path.join(ROOT, SRC, 'img'),
   build: path.join(ROOT, 'dist'),
   buildTimetable: path.join(ROOT, 'dist-timetable'),
-  fixtures: path.join(ROOT, '__mocks__'),
+  fixtures: path.join(ROOT, SRC, 'js', '__mocks__'),
 };
 
 // These dependencies will be extracted out into `vendor.js` in production build.
@@ -112,7 +111,7 @@ exports.lintJavaScript = ({ include, exclude, options }) =>
         module: {
           rules: [
             {
-              test: /\.(js|jsx)$/,
+              test: /\.[j|t]sx?$/,
               include,
               exclude,
               enforce: 'pre',
@@ -149,7 +148,7 @@ exports.transpileJavascript = ({ include, exclude, options }) => ({
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.[j|t]sx?$/,
         include,
         exclude,
 
@@ -248,26 +247,6 @@ exports.loadImages = ({ include, exclude, options } = {}) => ({
     ],
   },
 });
-
-/**
- * Use {@link https://flow.org/ Flow} to lint our javscript.
- *
- * @see https://survivejs.com/webpack/loading/javascript/#setting-up-flow
- */
-exports.flow = ({ failOnError, flowArgs }) =>
-  process.env.DISABLE_FLOW
-    ? {}
-    : {
-        // TODO: Check out https://codemix.github.io/flow-runtime/#/
-        plugins: [
-          new FlowStatusWebpackPlugin({
-            // No reason to restart flow server if there's already one running.
-            restartFlow: false,
-            failOnError,
-            flowArgs,
-          }),
-        ],
-      };
 
 /**
  * Use Workbox to enable offline support with service worker
