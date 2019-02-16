@@ -42,9 +42,8 @@ import {
   lessonsForLessonType,
   findExamClashes,
   getSemesterModules,
-  resetScrollPosition,
-  maintainLessonPosition,
 } from 'utils/timetables';
+import { resetScrollPosition, maintainLessonPosition } from 'utils/react';
 import { State as StoreState } from 'reducers';
 import config from 'config';
 import ModulesSelectContainer from 'views/timetable/ModulesSelectContainer';

@@ -112,3 +112,61 @@ export class Counter {
     return this.count === index;
   }
 }
+
+/**
+ * Resets the scroll position to (0,0)
+ */
+export function resetScrollPosition() {
+  window.scrollTo(0, 0);
+}
+
+/**
+ * Maintain a lesson's position when the viewport size changes
+ * Prevents disorientation while nagivating a module with lots of options (e.g. GER1000)
+ * @param {string} cellID
+ * @param {boolean} isScrolledHorizontally
+ */
+export function maintainLessonPosition(cellID: string, isScrolledHorizontally: boolean): void {
+  let cell;
+
+  // 1. Store timetable's position
+  const timetable = document.querySelector('.scrollable');
+  let timetablePos;
+  if (timetable) {
+    timetablePos = timetable.getBoundingClientRect();
+  }
+
+  // 2. Store lesson's original position
+  cell = document.getElementById(cellID);
+  let oPos;
+  if (cell) {
+    oPos = cell.getBoundingClientRect();
+  }
+
+  // 3. Add subsequent processing to the end of the event loop,
+  //    allowing for a re-render before the new position is queried
+  setTimeout(() => {
+    // 4. Query for maximum dimensions and lesson's new position
+    const maxH = window.innerHeight;
+    const maxW = timetablePos.right;
+
+    cell = document.getElementById(cellID);
+    let nPos;
+    if (cell) {
+      nPos = cell.getBoundingClientRect();
+    }
+
+    // 5. Perform scroll if new position is beyond limits
+    if (oPos && nPos && (nPos.bottom > maxH || nPos.right > maxW)) {
+      const x = nPos.left - oPos.left + window.scrollX;
+      const y = nPos.top - oPos.top + window.scrollY;
+
+      window.scroll({ top: y, left: 0, behavior: 'smooth' });
+
+      if (!isScrolledHorizontally) {
+        // $FlowFixMe: Remove when typedefs are updated for Element.scroll
+        timetable.scroll({ top: 0, left: x, behavior: 'smooth' });
+      }
+    }
+  }, 0);
+}
