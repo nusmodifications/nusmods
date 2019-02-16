@@ -4,10 +4,10 @@ $connector-size: 0.75rem;
 
 .container {
   display: flex;
+  overflow-y: auto;
   align-items: center;
   // Leave some space for the tooltip
   padding: 3rem 0;
-  overflow-y: auto;
 
   @include media-breakpoint-up(sm) {
     justify-content: center;
@@ -29,18 +29,18 @@ $connector-size: 0.75rem;
 .tree,
 .prereqTree {
   position: relative;
+  list-style: none;
   padding: 0;
   margin: 0.125rem 0;
   text-align: center;
-  list-style: none;
 }
 
 .node {
   position: relative;
   display: flex;
   flex: 0 1 5rem;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   padding: 0.125rem 0.25rem;
   margin: 0 0 1px $connector-size;
   border-radius: $btn-border-radius;

@@ -5,7 +5,7 @@ import { retryImport } from 'utils/error';
 import ApiError from 'views/errors/ApiError';
 import { OwnProps } from './VenueLocation';
 
-const AsyncVenueLocation = Loadable<OwnProps, any>({
+const AsyncVenueLocation = Loadable<OwnProps, {}>({
   loader: () => retryImport(() => import(/* webpackChunkName: "venue" */ './VenueLocation')),
   loading: (props: LoadingComponentProps) => {
     if (props.error) {

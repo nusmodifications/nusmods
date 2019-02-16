@@ -2,11 +2,10 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
-import { map, flatMap, mapValues, values, flatten } from 'lodash';
+import { map, mapValues, values, flatten } from 'lodash';
 
-import { ModuleCondensed, Semester } from 'types/modules';
+import { ModuleCondensed } from 'types/modules';
 
-import { notNull } from 'types/utils';
 import { toggleFeedback } from 'actions/app';
 import { toggleBetaTesting } from 'actions/settings';
 import { modulePage } from 'views/routes/paths';
@@ -18,6 +17,7 @@ import { FeedbackButtons } from 'views/components/FeedbackModal';
 import { getModuleCondensed } from 'selectors/moduleBank';
 import { currentTests } from 'views/settings/BetaToggle';
 import { State as StoreState } from 'reducers';
+import { notNull } from 'types/utils';
 import config from 'config';
 
 import ReviewIcon from 'img/icons/review.svg';
@@ -138,7 +138,7 @@ class ContributeContainer extends React.PureComponent<Props> {
               ))}
             </ul>
 
-            {this.props.beta ? (
+            {beta ? (
               <>
                 <p>You are already in the beta program.</p>
                 <p className="text-center">

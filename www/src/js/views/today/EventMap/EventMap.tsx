@@ -1,12 +1,10 @@
 import * as React from 'react';
-/** @var { VenueLocationMap } */
-import venueLocationJSON from 'data/venues.json';
-import { Venue, VenueLocation, VenueLocationMap } from 'types/venues';
+import venueLocations from 'data/venues';
+
+import { Venue, VenueLocation } from 'types/venues';
 import LocationMap from 'views/components/map/LocationMap';
 import { Map } from 'views/components/icons';
 import styles from './EventMap.scss';
-
-const venueLocations = venueLocationJSON as VenueLocationMap;
 
 export type Props = {
   readonly venue: Venue | null;
