@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { escapeRegExp, castArray } from 'lodash';
-import bowser from 'bowser';
 
 // Define some useful Unicode characters as constants
 export const NBSP = '\u00a0';
@@ -150,7 +149,7 @@ export function maintainScrollPosition(
 
     window.scroll(0, y);
 
-    if (verticalMode && !bowser.msedge) {
+    if (verticalMode && 'scroll' in timetableScrollContainer) {
       timetableScrollContainer.scroll(x, 0);
     }
   }
