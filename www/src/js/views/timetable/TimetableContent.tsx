@@ -43,7 +43,7 @@ import {
   findExamClashes,
   getSemesterModules,
 } from 'utils/timetables';
-import { resetScrollPosition, maintainLessonPosition } from 'utils/react';
+import { resetScrollPosition } from 'utils/react';
 import { State as StoreState } from 'reducers';
 import config from 'config';
 import ModulesSelectContainer from 'views/timetable/ModulesSelectContainer';
@@ -97,6 +97,8 @@ class TimetableContent extends React.Component<Props, State> {
     tombstone: null,
   };
 
+  timetableScrollContainerRef = React.createRef<HTMLDivElement>();
+
   componentWillUnmount() {
     this.cancelModifyLesson();
   }
@@ -115,6 +117,7 @@ class TimetableContent extends React.Component<Props, State> {
   cancelModifyLesson = () => {
     if (this.props.activeLesson) {
       this.props.cancelModifyLesson();
+
       resetScrollPosition();
     }
   };
@@ -122,16 +125,17 @@ class TimetableContent extends React.Component<Props, State> {
   isHiddenInTimetable = (moduleCode: ModuleCode) =>
     this.props.hiddenInTimetable.includes(moduleCode);
 
-  modifyCell = (e: React.MouseEvent, lesson: ModifiableLesson) => {
+  modifyCell = (lesson: ModifiableLesson) => {
     if (lesson.isAvailable) {
       this.props.changeLesson(this.props.semester, lesson);
+
       resetScrollPosition();
     } else if (lesson.isActive) {
       this.props.cancelModifyLesson();
+
       resetScrollPosition();
     } else {
       this.props.modifyLesson(lesson);
-      maintainLessonPosition(e.currentTarget.id, this.props.timetableOrientation === HORIZONTAL);
     }
   };
 
@@ -324,13 +328,18 @@ class TimetableContent extends React.Component<Props, State> {
                 }))}
               />
             ) : (
-              <div className={styles.timetableWrapper} onScroll={this.onScroll}>
+              <div
+                className={styles.timetableWrapper}
+                onScroll={this.onScroll}
+                ref={this.timetableScrollContainerRef}
+              >
                 <Timetable
                   lessons={arrangedLessonsWithModifiableFlag}
                   isVerticalOrientation={isVerticalOrientation}
                   isScrolledHorizontally={this.state.isScrolledHorizontally}
                   showTitle={isShowingTitle}
                   onModifyCell={this.modifyCell}
+                  timetableScrollContainerRef={this.timetableScrollContainerRef}
                 />
                 {showNoLessonWarning && <NoLessonWarning />}
               </div>

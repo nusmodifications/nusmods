@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { escapeRegExp, castArray } from 'lodash';
+import bowser from 'bowser';
 
 // Define some useful Unicode characters as constants
 export const NBSP = '\u00a0';
@@ -114,59 +115,43 @@ export class Counter {
 }
 
 /**
- * Resets the scroll position to (0,0)
+ * Reset scroll position to (0, 0)
  */
 export function resetScrollPosition() {
   window.scrollTo(0, 0);
 }
 
 /**
- * Maintain a lesson's position when the viewport size changes
- * Prevents disorientation while nagivating a module with lots of options (e.g. GER1000)
- * @param {string} cellID
- * @param {boolean} isScrolledHorizontally
+ * Maintain a lesson's scroll position relative to the viewport
+ * when the viewport size changes. Applicable to modules with lots
+ * of options, such as GER1000.
+ *
+ * @param {DOMRect} positionBeforeUpdate
+ * @param {DOMRect} positionAfterUpdate
+ * @param {HTMLDivElement} timetableScrollContainer
+ * @param {boolean} verticalMode
  */
-export function maintainLessonPosition(cellID: string, isScrolledHorizontally: boolean): void {
-  let cell;
+export function maintainScrollPosition(
+  positionBeforeUpdate: DOMRect,
+  positionAfterUpdate: DOMRect,
+  timetableScrollContainer: HTMLDivElement,
+  verticalMode?: boolean,
+) {
+  // Get timetable container position
+  const timetablePosition = timetableScrollContainer.getBoundingClientRect();
 
-  // 1. Store timetable's position
-  const timetable = document.querySelector('.scrollable');
-  let timetablePos;
-  if (timetable) {
-    timetablePos = timetable.getBoundingClientRect();
-  }
+  // Get max height and width
+  const maxH = window.innerHeight;
+  const maxW = timetablePosition.right;
 
-  // 2. Store lesson's original position
-  cell = document.getElementById(cellID);
-  let oPos;
-  if (cell) {
-    oPos = cell.getBoundingClientRect();
-  }
+  if (positionAfterUpdate.bottom > maxH || positionAfterUpdate.right > maxW) {
+    const x = positionAfterUpdate.left - positionBeforeUpdate.left + window.scrollX;
+    const y = positionAfterUpdate.top - positionBeforeUpdate.top + window.scrollY;
 
-  // 3. Add subsequent processing to the end of the event loop,
-  //    allowing for a re-render before the new position is queried
-  setTimeout(() => {
-    // 4. Query for maximum dimensions and lesson's new position
-    const maxH = window.innerHeight;
-    const maxW = timetablePos.right;
+    window.scroll(0, y);
 
-    cell = document.getElementById(cellID);
-    let nPos;
-    if (cell) {
-      nPos = cell.getBoundingClientRect();
+    if (verticalMode && !bowser.msedge) {
+      timetableScrollContainer.scroll(x, 0);
     }
-
-    // 5. Perform scroll if new position is beyond limits
-    if (oPos && nPos && (nPos.bottom > maxH || nPos.right > maxW)) {
-      const x = nPos.left - oPos.left + window.scrollX;
-      const y = nPos.top - oPos.top + window.scrollY;
-
-      window.scroll({ top: y, left: 0, behavior: 'smooth' });
-
-      if (!isScrolledHorizontally) {
-        // $FlowFixMe: Remove when typedefs are updated for Element.scroll
-        timetable.scroll({ top: 0, left: x, behavior: 'smooth' });
-      }
-    }
-  }, 0);
+  }
 }

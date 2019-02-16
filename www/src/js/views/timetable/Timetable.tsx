@@ -28,6 +28,7 @@ type Props = TimerData & {
   isScrolledHorizontally?: boolean;
   showTitle?: boolean;
   onModifyCell?: OnModifyCell;
+  timetableScrollContainerRef?: React.RefObject<HTMLDivElement>;
 };
 
 type State = {
@@ -102,6 +103,7 @@ class Timetable extends React.PureComponent<Props, State> {
                     ? currentTimeIndicatorStyle
                     : nullCurrentTimeIndicatorStyle
                 }
+                timetableScrollContainerRef={this.props.timetableScrollContainerRef}
               />
             ))}
           </ol>

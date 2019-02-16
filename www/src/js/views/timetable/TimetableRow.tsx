@@ -17,6 +17,7 @@ type Props = {
   hoverLesson?: HoverLesson | null;
   onCellHover: OnHoverCell;
   onModifyCell?: OnModifyCell;
+  timetableScrollContainerRef?: React.RefObject<HTMLDivElement>;
 };
 
 /**
@@ -53,8 +54,8 @@ function TimetableRow(props: Props) {
         const conditionalProps =
           lesson.isModifiable && onModifyCell
             ? {
-                onClick: (e: React.MouseEvent) => {
-                  onModifyCell(e, lesson);
+                onClick: () => {
+                  onModifyCell(lesson);
                 },
               }
             : {};
@@ -67,6 +68,8 @@ function TimetableRow(props: Props) {
             showTitle={props.showTitle}
             hoverLesson={props.hoverLesson}
             onHover={props.onCellHover}
+            verticalMode={props.verticalMode}
+            timetableScrollContainerRef={props.timetableScrollContainerRef}
             {...conditionalProps}
           />
         );

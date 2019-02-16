@@ -21,6 +21,7 @@ type Props = {
   hoverLesson: HoverLesson | null;
   onCellHover: OnHoverCell;
   onModifyCell?: OnModifyCell;
+  timetableScrollContainerRef?: React.RefObject<HTMLDivElement>;
 };
 
 // Height of timetable per hour in vertical mode
@@ -60,6 +61,7 @@ function TimetableDay(props: Props) {
             onModifyCell={props.onModifyCell}
             hoverLesson={props.hoverLesson}
             onCellHover={props.onCellHover}
+            timetableScrollContainerRef={props.timetableScrollContainerRef}
           />
         ))}
       </div>
