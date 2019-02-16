@@ -47,6 +47,7 @@ import { ModuleCodeMap } from 'types/reducers';
 import { getModuleSemesterData, getModuleTimetable } from 'utils/modules';
 import { getTimeAsDate } from 'utils/timify';
 import { ExamClashes } from 'types/views';
+import { deltas } from './array';
 
 type LessonTypeAbbrev = { [lessonType: string]: string };
 export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
@@ -365,6 +366,16 @@ function parseModuleConfig(serialized: string | string[] | null): ModuleLessonCo
   return config;
 }
 
+function addNamedWeeks(
+  numericWeeks: (number | string)[],
+  namedWeeks: string,
+  plural: boolean = true,
+): string | null {
+  const prefix = plural ? 'Weeks' : 'Week';
+  const numericWeekText = `${prefix} ${numericWeeks.join(', ')}`;
+  return namedWeeks ? `${numericWeekText}, ${namedWeeks}` : numericWeekText;
+}
+
 /**
  * Formats numeric week number string into something human readable
  *
@@ -374,24 +385,27 @@ function parseModuleConfig(serialized: string | string[] | null): ModuleLessonCo
  * - 1,2,3,5,6,7 => Weeks 1-3, 5-7
  */
 export function formatWeeks(weeks: ReadonlyArray<LessonWeek>): string | null {
-  // TODO: How to handle non-numeric weeks?
-  const numericWeeks: number[] = weeks.filter((week): week is number => typeof week === 'number');
+  const numericWeeks = weeks.filter((week): week is number => typeof week === 'number');
+  const namedWeeks = weeks
+    .filter((week): week is 'Reading' | 'Recess' | 'Orientation' => typeof week === 'string')
+    .join(', ');
 
-  // All weeks - don't show anything
-  if (numericWeeks.length === 13) return null;
+  // All weeks - only show text if there are named weeks
+  if (numericWeeks.length === 13) return namedWeeks ? `Every Week, ${namedWeeks}` : null;
 
-  // TODO: All non-numeric week text / no lessons? Fix this?
-  if (numericWeeks.length === 0) {
-    return numericWeeks.join(', ');
+  // No numeric week, so only show named weeks
+  if (numericWeeks.length === 0) return namedWeeks;
+  if (numericWeeks.length === 1) return addNamedWeeks(numericWeeks, namedWeeks, false);
+
+  // Check for odd / even weeks
+  if (numericWeeks.length === 6 && deltas(numericWeeks).every((d) => d === 2)) {
+    const weekType = numericWeeks[0] === 1 ? 'Odd Weeks' : 'Even Weeks';
+    return namedWeeks ? `${weekType}, ${namedWeeks}` : weekType;
   }
 
-  if (numericWeeks.length === 1) {
-    return `Week ${weeks[0]}`;
-  }
-
-  // Find consecutive week numbers
+  // Merge consecutive
   const processed: (number | string)[] = [];
-  let start = numericWeeks.shift()!;
+  let start = numericWeeks.shift()!; // eslint-disable-line @typescript-eslint/no-non-null-assertion
   let end = start;
 
   const mergeConsecutive = () => {
@@ -403,7 +417,7 @@ export function formatWeeks(weeks: ReadonlyArray<LessonWeek>): string | null {
   };
 
   while (numericWeeks.length) {
-    const next = numericWeeks.shift()!;
+    const next = numericWeeks.shift()!; // eslint-disable-line @typescript-eslint/no-non-null-assertion
     if (next - end === 1) {
       // Consecutive week number - keep going
       end = next;
@@ -417,7 +431,7 @@ export function formatWeeks(weeks: ReadonlyArray<LessonWeek>): string | null {
 
   mergeConsecutive();
 
-  return `Weeks ${processed.join(', ')}`;
+  return addNamedWeeks(processed, namedWeeks);
 }
 
 // Converts a timetable config to query string

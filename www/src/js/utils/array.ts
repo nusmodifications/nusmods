@@ -1,4 +1,4 @@
-import { flatMap } from 'lodash';
+import { flatMap, head } from 'lodash';
 
 /**
  * Mixes the delimiter into the array between each element
@@ -28,4 +28,18 @@ export function firstNonNull<T>(producers: (() => T | null)[]): T | null {
   }
 
   return null;
+}
+
+export function deltas(numbers: ReadonlyArray<number>): number[] {
+  const result: number[] = [];
+  let previous = head(numbers);
+  if (typeof previous !== 'number') return result;
+
+  numbers.slice(1).forEach((element) => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    result.push(element - previous!);
+    previous = element;
+  });
+
+  return result;
 }

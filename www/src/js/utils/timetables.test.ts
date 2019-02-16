@@ -19,7 +19,13 @@ import modulesListJSON from '__mocks__/module-list.json';
 import timetable from '__mocks__/sem-timetable.json';
 import lessonsArray from '__mocks__/lessons-array.json';
 
-import { createGenericColoredLesson, createGenericLesson } from 'test-utils/timetable';
+import {
+  createGenericColoredLesson,
+  createGenericLesson,
+  EVEN_WEEK,
+  EVERY_WEEK,
+  ODD_WEEK,
+} from 'test-utils/timetable';
 
 import {
   areOtherClassesAvailable,
@@ -551,6 +557,15 @@ describe('validateModuleLessons', () => {
 });
 
 describe(formatWeeks, () => {
+  it('should return null if every week is given', () => {
+    expect(formatWeeks(EVERY_WEEK)).toBeNull();
+  });
+
+  it('should return even/odd weeks', () => {
+    expect(formatWeeks(ODD_WEEK)).toEqual('Odd Weeks');
+    expect(formatWeeks(EVEN_WEEK)).toEqual('Even Weeks');
+  });
+
   it('should abbreviate consecutive week numbers', () => {
     expect(formatWeeks([1])).toEqual('Week 1');
     expect(formatWeeks([1, 2, 3, 4])).toEqual('Weeks 1-4');
@@ -558,6 +573,20 @@ describe(formatWeeks, () => {
     expect(formatWeeks([1, 3, 5])).toEqual('Weeks 1, 3, 5');
     expect(formatWeeks([1, 2, 4, 5, 6, 7])).toEqual('Weeks 1, 2, 4-7');
     expect(formatWeeks([1, 2, 4, 5])).toEqual('Weeks 1, 2, 4, 5');
+  });
+
+  it('should display text lesson weeks', () => {
+    expect(formatWeeks(['Orientation'])).toEqual('Orientation');
+    expect(formatWeeks(['Orientation', 'Recess'])).toEqual('Orientation, Recess');
+    expect(formatWeeks([1, 2, 3, 4, 5, 6, 'Recess', 7, 'Reading'])).toEqual(
+      'Weeks 1-7, Recess, Reading',
+    );
+    expect(formatWeeks([1, 3, 5, 'Recess', 7, 9, 11, 'Reading'])).toEqual(
+      'Odd Weeks, Recess, Reading',
+    );
+    expect(
+      formatWeeks(['Orientation', 1, 2, 3, 4, 5, 6, 'Recess', 7, 8, 9, 10, 11, 12, 13, 'Reading']),
+    ).toEqual('Every Week, Orientation, Recess, Reading');
   });
 });
 
