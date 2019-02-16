@@ -12,7 +12,7 @@ async function fetchModule(moduleCode) {
   }
 
   // For development only
-  const req = await axios.get(`http://api.nusmods.com/${config.academicYear}/modules/${fileName}`);
+  const req = await axios.get(`http://api.nusmods.com/v2/${config.academicYear}/modules/${fileName}`);
   return req.data;
 }
 
