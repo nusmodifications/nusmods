@@ -16,11 +16,6 @@ save_cache: &save_node_deps
   key: v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
   paths:
     - node_modules
-    - www/node_modules
-    - export/node_modules
-    - api/data/node_modules
-    - scrapers/nus/node_modules
-    - packages/nusmoderator/node_modules
 
 jobs:
   checkout:
@@ -43,9 +38,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/nusmods
-      - restore_cache: *restore_node_deps
-      - run: yarn --frozen-lockfile --non-interactive
-      - save_cache: *save_node_deps
       - run: yarn lint
       - run: yarn test --runInBand
 
@@ -55,9 +47,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/nusmods
-      - restore_cache: *restore_node_deps
-      - run: yarn --frozen-lockfile --non-interactive
-      - save_cache: *save_node_deps
       - run: yarn lint
       - run: yarn test --runInBand
       - run:
@@ -72,9 +61,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/nusmods
-      - restore_cache: *restore_node_deps
-      - run: yarn --frozen-lockfile --non-interactive
-      - save_cache: *save_node_deps
       - run: yarn lint
       - run: yarn test --runInBand
       - run:
@@ -89,9 +75,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/nusmods
-      - restore_cache: *restore_node_deps
-      - run: yarn --frozen-lockfile --non-interactive
-      - save_cache: *save_node_deps
       - run: yarn lint
       - run: yarn test --runInBand
       - run: yarn build
@@ -155,7 +138,7 @@ workflows:
       - data-server:
           requires:
             - checkout
-      - nusmoderator:
+      - nus-scrapers:
           requires:
             - checkout
       - nus-scrapers-v2:
@@ -164,7 +147,6 @@ workflows:
       - nusmoderator:
           requires:
             - checkout
-            - nusmoderator
       - www:
           requires:
             - checkout
