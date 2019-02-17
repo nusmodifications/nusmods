@@ -7,14 +7,15 @@ defaults: &defaults
 restore_cache: &restore_node_deps
   name: Restore node_modules cache
   keys:
-    - v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
-    - v1-node-{{ arch }}-{{ .Branch }}-
-    - v1-node-{{ arch }}-
+    - v2-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
+    - v2-node-{{ arch }}-{{ .Branch }}-
+    - v2-node-{{ arch }}-
 
 save_cache: &save_node_deps
   name: Save node_modules cache
-  key: v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
+  key: v2-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
   paths:
+    - ~/.cache/yarn
     - node_modules
 
 jobs:
@@ -108,7 +109,11 @@ jobs:
       - save_cache: *save_node_deps
       - run:
           name: Lint code
-          command: yarn lint:code --format junit -o reports/junit/js-lint-results.xml
+          command: yarn lint:code --cache --cache-location 'node_modules/.eslintcache/'
+            --format junit -o reports/junit/js-lint-results.xml
+      - run:
+          name: Lint styles
+          command: yarn lint:styles
       - run:
           name: Typecheck Code
           command: yarn typecheck
@@ -121,9 +126,6 @@ jobs:
             set -e
             yarn test --runInBand --reporters=default --reporters=jest-junit
             cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
-      - run:
-          name: Lint styles
-          command: yarn lint:styles
       - run:
           name: Build web page
           command: yarn build
