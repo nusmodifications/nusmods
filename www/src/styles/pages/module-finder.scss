@@ -5,9 +5,9 @@
 }
 
 .modules-list {
+  list-style: none;
   padding: 0;
   margin: 0;
-  list-style: none;
 
   .modules-item {
     margin-bottom: 3rem;
@@ -26,10 +26,10 @@
 .module-page-divider {
   padding: 0.6rem;
   margin: 1rem 0;
+  border-bottom: 1px solid var(--gray-lighter);
   font-size: $font-size-sm;
   text-align: right;
   color: var(--gray);
-  border-bottom: 1px solid var(--gray-lighter);
 }
 
 // Semester Info
@@ -49,17 +49,17 @@
       flex: 1 auto;
       padding: 0.4rem 0 0.3rem;
       margin-right: 3px;
-      font-size: $font-size-xs;
       border-width: 0 0 0.1rem;
       border-radius: 0;
+      font-size: $font-size-xs;
 
       &:last-child {
         margin-right: 0;
       }
 
       &:disabled {
-        color: var(--gray);
         border-color: var(--gray-light);
+        color: var(--gray);
         cursor: not-allowed;
       }
     }

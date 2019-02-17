@@ -54,9 +54,9 @@ $sticky-top: $navbar-height;
 .sectionHeading {
   padding: 0.6rem 0;
   margin: 0 0 0.6rem;
+  border-bottom: 1px solid var(--gray-lighter);
   font-weight: $font-weight-bold;
   font-size: $font-size-lg;
-  border-bottom: 1px solid var(--gray-lighter);
 }
 
 .descriptionHeading {
@@ -135,22 +135,22 @@ $sticky-top: $navbar-height;
 
 .sideMenu {
   ul {
+    list-style: none;
     padding: 0;
     margin: 0;
-    list-style: none;
   }
 
   a {
     display: block;
     padding: 0.4rem 0 0.4rem 1rem;
-    color: var(--gray-light);
     border-left: 0.3rem solid var(--gray-lighter);
+    color: var(--gray-light);
   }
 
   .activeMenuItem a {
+    border-color: theme-color();
     font-weight: bold;
     color: theme-color();
-    border-color: theme-color();
   }
 
   @include media-breakpoint-down(sm) {

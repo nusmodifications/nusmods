@@ -4,16 +4,16 @@
 .module {
   padding: $module-padding-v $module-padding-h;
   margin-bottom: 0.4rem;
+  border-bottom: 0.15rem solid darken(theme-color('success'), 10);
+  border-radius: 0.35rem;
   font-size: 0.9rem;
   line-height: 1.3;
   color: darken(theme-color('success'), 30);
-  border-bottom: 0.15rem solid darken(theme-color('success'), 10);
-  border-radius: 0.35rem;
   background: lighten(theme-color('success'), 3);
 
   &.warning {
-    color: darken(theme-color('warning'), 40);
     border-color: darken(theme-color('warning'), 10);
+    color: darken(theme-color('warning'), 40);
     background: theme-color('warning');
 
     .menuBtn :global(.close) {
@@ -69,9 +69,9 @@
 .conflicts {
   padding-top: 0.4rem;
   margin-top: 0.4rem;
+  border-top: 1px solid darken(theme-color('warning'), 10);
   font-size: $font-size-s;
   line-height: 1.25;
-  border-top: 1px solid darken(theme-color('warning'), 10);
 }
 
 .warningIcon {

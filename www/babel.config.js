@@ -27,7 +27,6 @@ module.exports = (api) => {
     // Deviate from spec, but Object.defineProperty is expensive
     // See https://github.com/facebook/create-react-app/issues/4263
     ['@babel/plugin-proposal-class-properties', { loose: true }],
-    ['@babel/plugin-proposal-optional-chaining', { loose: true }],
   ];
 
   if (IS_DEV || IS_PROD) {

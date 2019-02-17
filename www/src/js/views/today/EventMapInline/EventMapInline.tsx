@@ -1,12 +1,10 @@
 import * as React from 'react';
 import classnames from 'classnames';
-/** @var { VenueLocationMap } */
-import venueLocationJSON from 'data/venues.json';
-import { LatLngTuple, Venue, VenueLocation, VenueLocationMap } from 'types/venues';
+import venueLocations from 'data/venues';
+
+import { LatLngTuple, Venue, VenueLocation } from 'types/venues';
 import LocationMap from 'views/components/map/LocationMap';
 import styles from './EventMapInline.scss';
-
-const venueLocations = venueLocationJSON as VenueLocationMap;
 
 export type Props = {
   readonly isOpen: boolean;

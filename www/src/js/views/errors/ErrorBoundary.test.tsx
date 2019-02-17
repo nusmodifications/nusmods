@@ -14,9 +14,12 @@ jest.mock(
     },
 );
 
-const error = new Error('Test error'); // To be used to compare with error caught by ErrorBoundary
+// To be used to compare with error caught by ErrorBoundary
+const error = new Error('Test error');
+
 // Stateless React component which throws error
-function ThrowsError(prop: any): null {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function ThrowsError(props: any): null {
   throw error;
 }
 
