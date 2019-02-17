@@ -33,7 +33,12 @@ const config: Configuration = {
   },
   plugins: [new EnvironmentPlugin(['NODE_ENV'])],
   target: 'node',
-  externals: [nodeExternals()],
+  externals: [
+    nodeExternals(),
+    nodeExternals({
+      modulesDir: path.resolve(__dirname, '../../node_modules'),
+    }),
+  ],
 };
 
 export default config;

@@ -1,0 +1,4 @@
+{
+  "private": true,
+  "workspaces": ["www", "export", "api/*", "scrapers/*", "packages/*"]
+}

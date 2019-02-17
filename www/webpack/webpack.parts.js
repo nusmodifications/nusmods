@@ -23,6 +23,7 @@ const PATHS = {
   // Using an absolute path will cause transient dependencies to be resolved to OUR
   // version of the same module, so this is kept relative
   node: 'node_modules',
+  nodeHoisted: path.join(ROOT, '..', 'node_modules'),
   app: path.join(ROOT, SRC),
   scripts: path.join(ROOT, SRC, 'js'),
   styles: path.join(ROOT, SRC, 'styles'),
@@ -173,7 +174,7 @@ exports.getCSSConfig = ({ options } = {}) => [
     options: {
       // @material packages uses '@material' directly as part of their import paths.
       // Without this those imports will not resolve properly
-      includePaths: [PATHS.node],
+      includePaths: [PATHS.node, PATHS.nodeHoisted],
     },
   },
 ];

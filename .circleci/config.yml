@@ -25,6 +25,9 @@ jobs:
     steps:
       - checkout
       - run: echo $CIRCLE_COMPARE_URL | cut -d/ -f7
+      - restore_cache: *restore_node_deps
+      - run: yarn
+      - save_cache: *save_node_deps
       - persist_to_workspace:
           root: .
           paths:
@@ -36,9 +39,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/nusmods
-      - restore_cache: *restore_node_deps
-      - run: yarn --frozen-lockfile --non-interactive
-      - save_cache: *save_node_deps
       - run: yarn lint
       - run: yarn test --runInBand
 
@@ -48,9 +48,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/nusmods
-      - restore_cache: *restore_node_deps
-      - run: yarn --frozen-lockfile --non-interactive
-      - save_cache: *save_node_deps
       - run: yarn lint
       - run: yarn test --runInBand
       - run:
@@ -65,9 +62,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/nusmods
-      - restore_cache: *restore_node_deps
-      - run: yarn --frozen-lockfile --non-interactive
-      - save_cache: *save_node_deps
       - run: yarn lint
       - run: yarn test --runInBand
       - run:
@@ -82,14 +76,15 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/nusmods
-      - restore_cache: *restore_node_deps
-      - run: yarn --frozen-lockfile --non-interactive
-      - save_cache: *save_node_deps
       - run: yarn lint
       - run: yarn test --runInBand
       - run: yarn build
       - store_artifacts:
           path: dist
+      - persist_to_workspace:
+          root: ~/nusmods
+          paths:
+            - packages/nusmoderator/dist
       - run: yarn docs
       - store_artifacts:
           path: README.md
@@ -157,3 +152,4 @@ workflows:
       - www:
           requires:
             - checkout
+            - nusmoderator
