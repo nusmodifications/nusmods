@@ -18,7 +18,7 @@ import { breakpointDown } from 'utils/css';
 import VenueLocation from './VenueLocation';
 
 import styles from './VenueDetails.scss';
-import { convertIndexToTime, SCHOOLDAYS } from "../../utils/timify";
+import { convertIndexToTime, SCHOOLDAYS } from '../../utils/timify';
 
 type Props = RouteComponentProps & {
   readonly venue: Venue;
@@ -47,11 +47,12 @@ export class VenueDetailsComponent extends React.PureComponent<Props> {
 
   makeSearchedPeriodLesson() {
     const day = SCHOOLDAYS[this.props.searchedPeriod.day];
-    console.log(this.props.searchedPeriod.time + this.props.searchedPeriod.duration);
     const startTime = convertIndexToTime(this.props.searchedPeriod.time * 2);
-    const endTime = convertIndexToTime(2 * (this.props.searchedPeriod.time + this.props.searchedPeriod.duration));
+    const endTime = convertIndexToTime(
+      2 * (this.props.searchedPeriod.time + this.props.searchedPeriod.duration),
+    );
 
-    let freeTimePeriod: VenueLesson = {
+    const freeTimePeriod: VenueLesson = {
       ClassNo: 'SEARCHED TIME PERIOD',
       DayText: day,
       EndTime: endTime,
@@ -60,8 +61,13 @@ export class VenueDetailsComponent extends React.PureComponent<Props> {
       StartTime: startTime,
       WeekText: '',
     };
-    let freeTimePeriodLesson = { ...freeTimePeriod, ModuleTitle: '', isModifiable: false, colorIndex: 3 };
-    console.log(freeTimePeriodLesson);
+    // Lesson representing the searched free time period
+    const freeTimePeriodLesson = {
+      ...freeTimePeriod,
+      ModuleTitle: '',
+      isModifiable: false,
+      colorIndex: 3,
+    };
     return freeTimePeriodLesson;
   }
 
