@@ -251,14 +251,15 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
       const venueDetail = venues.find(([venue]) => venue.toLowerCase() === lowercaseSelectedVenue);
       if (!venueDetail) return null;
       const [venue, availability] = venueDetail;
-      return <VenueDetails venue={venue} availability={availability} />;
+      return <VenueDetails venue={venue} availability={availability} searchedPeriod={this.state.searchOptions} />;
     }
 
     const [venue, availability] = matchedVenues[venueIndex];
     const [previous] = get(matchedVenues, String(venueIndex - 1), []);
     const [next] = get(matchedVenues, String(venueIndex + 1), []);
     return (
-      <VenueDetails venue={venue} availability={availability} next={next} previous={previous} />
+      <VenueDetails venue={venue} availability={availability} next={next} previous={previous}
+                    searchedPeriod={this.state.searchOptions} />
     );
   }
 
