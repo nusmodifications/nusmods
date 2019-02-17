@@ -2,32 +2,25 @@ import * as React from 'react';
 import classnames from 'classnames';
 
 import { LatLngTuple, VenueLocation as VenueLocationItem } from 'types/venues';
-import { Omit } from 'types/utils';
 import Modal from 'views/components/Modal';
 import LocationMap from 'views/components/map/LocationMap';
 import CloseButton from 'views/components/CloseButton';
 import { floorName } from 'utils/venues';
 import venueLocations from 'data/venues';
 
-import VenueContext from '../VenueContext';
 import FeedbackModal from './FeedbackModal';
 import ImproveVenueForm from './ImproveVenueForm';
 import styles from './VenueLocation.scss';
 
-export type OwnProps = {
+export type Props = {
   readonly venue: string;
-};
-
-type Props = OwnProps & {
-  // Provided by VenueContext
-  readonly toggleExpanded: (boolean: boolean) => void;
 };
 
 type State = {
   readonly isFeedbackModalOpen: boolean;
 };
 
-class VenueLocation extends React.PureComponent<Props, State> {
+export default class VenueLocation extends React.PureComponent<Props, State> {
   state: State = {
     isFeedbackModalOpen: false,
   };
@@ -98,7 +91,8 @@ class VenueLocation extends React.PureComponent<Props, State> {
 
         {position ? (
           <>
-            <LocationMap position={position} toggleExpanded={this.props.toggleExpanded} />
+            <LocationMap position={position} />
+
             <p className={styles.feedbackBtn}>
               See a problem?{' '}
               <button
@@ -120,20 +114,9 @@ class VenueLocation extends React.PureComponent<Props, State> {
         )}
 
         {this.renderFeedbackMenu(location)}
+
+        <hr />
       </div>
     );
   }
-}
-
-export default function(props: Omit<Props, 'toggleExpanded'>) {
-  return (
-    <VenueContext.Consumer>
-      {({ toggleMapExpanded }) => (
-        <>
-          <VenueLocation toggleExpanded={toggleMapExpanded} {...props} />
-          <hr />
-        </>
-      )}
-    </VenueContext.Consumer>
-  );
 }

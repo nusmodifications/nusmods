@@ -27,12 +27,12 @@ import makeResponsive from 'views/hocs/makeResponsive';
 import Modal from 'views/components/Modal';
 import Title from 'views/components/Title';
 import NoFooter from 'views/layout/NoFooter';
+import MapContext from 'views/components/map/MapContext';
 
 import AvailabilitySearch, { defaultSearchOptions } from './AvailabilitySearch';
 import VenueList from './VenueList';
 import VenueDetails from './VenueDetails';
 import VenueLocation from './VenueLocation';
-import VenueContext from './VenueContext';
 import styles from './VenuesContainer.scss';
 
 /* eslint-disable react/prop-types */
@@ -291,7 +291,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
           )}
         </div>
 
-        <VenueContext.Provider value={{ toggleMapExpanded: this.onToggleMapExpanded }}>
+        <MapContext.Provider value={{ toggleMapExpanded: this.onToggleMapExpanded }}>
           {this.props.matchBreakpoint ? (
             <Modal
               isOpen={selectedVenue != null}
@@ -327,7 +327,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
               <NoFooter />
             </>
           )}
-        </VenueContext.Provider>
+        </MapContext.Provider>
       </div>
     );
   }

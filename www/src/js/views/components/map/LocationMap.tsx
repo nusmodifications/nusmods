@@ -9,12 +9,16 @@ import { markerIcon } from './icons';
 import ExpandMap from './ExpandMap';
 import BusStops from './BusStops';
 import styles from './LocationMap.scss';
+import MapContext from './MapContext';
 
-export type Props = {
+type OwnProps = {
   readonly position: [number, number];
-  readonly toggleExpanded?: (boolean: boolean) => void;
   readonly className?: string;
   readonly height?: string;
+};
+
+type Props = OwnProps & {
+  readonly toggleExpanded?: (boolean: boolean) => void;
 };
 
 type State = {
@@ -23,7 +27,7 @@ type State = {
 
 LeafletMap.addInitHook('addHandler', 'gestureHandling', GestureHandling);
 
-export default class LocationMap extends React.PureComponent<Props, State> {
+export class LocationMapComponent extends React.PureComponent<Props, State> {
   state: State = {
     isExpanded: false,
   };
@@ -66,11 +70,24 @@ export default class LocationMap extends React.PureComponent<Props, State> {
             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
+
           <BusStops />
+
           <Marker position={position} icon={markerIcon} />
+
           <ExpandMap isExpanded={isExpanded} onToggleExpand={this.toggleMapExpand} />
         </Map>
       </div>
     );
   }
+}
+
+export default function LocationMap(props: OwnProps) {
+  return (
+    <MapContext.Consumer>
+      {({ toggleMapExpanded }) => (
+        <LocationMapComponent toggleExpanded={toggleMapExpanded} {...props} />
+      )}
+    </MapContext.Consumer>
+  );
 }
