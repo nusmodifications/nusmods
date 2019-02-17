@@ -43,7 +43,7 @@ import {
   findExamClashes,
   getSemesterModules,
 } from 'utils/timetables';
-import { resetScrollPosition } from 'utils/react';
+import { resetScrollPosition, maintainScrollPosition } from 'utils/react';
 import { State as StoreState } from 'reducers';
 import config from 'config';
 import ModulesSelectContainer from 'views/timetable/ModulesSelectContainer';
@@ -152,6 +152,28 @@ class TimetableContent extends React.Component<Props, State> {
   };
 
   resetTombstone = () => this.setState({ tombstone: null });
+
+  maintainScrollPosition = (positionBeforeUpdate: DOMRect, lessonID: string) => {
+    // Get elements
+    const lessonElement = document.getElementById(lessonID);
+    const timetableScrollContainer = this.timetableScrollContainerRef.current;
+    if (!lessonElement || !timetableScrollContainer) return;
+
+    // Get position after update
+    const positionAfterUpdate = lessonElement.getBoundingClientRect() as DOMRect;
+    if (!positionAfterUpdate) return;
+
+    // Get timetable orientation
+    const verticalMode = this.props.timetableOrientation !== HORIZONTAL;
+
+    // Call for scroll
+    maintainScrollPosition(
+      positionBeforeUpdate,
+      positionAfterUpdate,
+      timetableScrollContainer,
+      verticalMode,
+    );
+  };
 
   // Returns modules currently in the timetable
   addedModules(): Module[] {
@@ -339,7 +361,7 @@ class TimetableContent extends React.Component<Props, State> {
                   isScrolledHorizontally={this.state.isScrolledHorizontally}
                   showTitle={isShowingTitle}
                   onModifyCell={this.modifyCell}
-                  timetableScrollContainerRef={this.timetableScrollContainerRef}
+                  maintainScrollPosition={this.maintainScrollPosition}
                 />
                 {showNoLessonWarning && <NoLessonWarning />}
               </div>

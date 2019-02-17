@@ -134,7 +134,7 @@ export function maintainScrollPosition(
   positionBeforeUpdate: DOMRect,
   positionAfterUpdate: DOMRect,
   timetableScrollContainer: HTMLDivElement,
-  verticalMode?: boolean,
+  verticalMode: boolean,
 ) {
   // Get timetable container position
   const timetablePosition = timetableScrollContainer.getBoundingClientRect();

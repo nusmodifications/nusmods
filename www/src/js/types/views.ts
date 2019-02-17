@@ -77,6 +77,7 @@ export type ExamClashes = { [key: string]: Module[] };
 // Timetable event handlers
 export type OnModifyCell = (lesson: ModifiableLesson) => void;
 export type OnHoverCell = (hoverLesson: HoverLesson | null) => void;
+export type MaintainScrollPosition = (positionBeforeUpdate: DOMRect, lessonID: string) => void;
 
 // Incomplete typing of Mamoto's API. If you need something not here, feel free
 // to declare the typing here.

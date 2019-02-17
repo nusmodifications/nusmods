@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 import { ColoredLesson } from 'types/modules';
 import { HoverLesson, TimetableArrangement } from 'types/timetables';
-import { OnModifyCell } from 'types/views';
+import { OnModifyCell, MaintainScrollPosition } from 'types/views';
 
 import {
   SCHOOLDAYS,
@@ -28,7 +28,7 @@ type Props = TimerData & {
   isScrolledHorizontally?: boolean;
   showTitle?: boolean;
   onModifyCell?: OnModifyCell;
-  timetableScrollContainerRef?: React.RefObject<HTMLDivElement>;
+  maintainScrollPosition?: MaintainScrollPosition;
 };
 
 type State = {
@@ -103,7 +103,7 @@ class Timetable extends React.PureComponent<Props, State> {
                     ? currentTimeIndicatorStyle
                     : nullCurrentTimeIndicatorStyle
                 }
-                timetableScrollContainerRef={this.props.timetableScrollContainerRef}
+                maintainScrollPosition={this.props.maintainScrollPosition}
               />
             ))}
           </ol>

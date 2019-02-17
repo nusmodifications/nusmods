@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { ModifiableLesson } from 'types/modules';
 import { HoverLesson } from 'types/timetables';
-import { OnHoverCell, OnModifyCell } from 'types/views';
+import { OnHoverCell, OnModifyCell, MaintainScrollPosition } from 'types/views';
 
 import { convertTimeToIndex } from 'utils/timify';
 import styles from './TimetableRow.scss';
@@ -17,7 +17,7 @@ type Props = {
   hoverLesson?: HoverLesson | null;
   onCellHover: OnHoverCell;
   onModifyCell?: OnModifyCell;
-  timetableScrollContainerRef?: React.RefObject<HTMLDivElement>;
+  maintainScrollPosition?: MaintainScrollPosition;
 };
 
 /**
@@ -68,8 +68,7 @@ function TimetableRow(props: Props) {
             showTitle={props.showTitle}
             hoverLesson={props.hoverLesson}
             onHover={props.onCellHover}
-            verticalMode={props.verticalMode}
-            timetableScrollContainerRef={props.timetableScrollContainerRef}
+            maintainScrollPosition={props.maintainScrollPosition}
             {...conditionalProps}
           />
         );

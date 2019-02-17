@@ -4,10 +4,9 @@ import { isEqual } from 'lodash';
 
 import { ModifiableLesson } from 'types/modules';
 import { HoverLesson } from 'types/timetables';
-import { OnHoverCell } from 'types/views';
+import { OnHoverCell, MaintainScrollPosition } from 'types/views';
 
 import { formatWeekNumber, getHoverLesson, LESSON_TYPE_ABBREV } from 'utils/timetables';
-import { maintainScrollPosition } from 'utils/react';
 import elements from 'views/elements';
 
 import styles from './TimetableCell.scss';
@@ -19,8 +18,7 @@ type Props = {
   style?: React.CSSProperties;
   onClick?: () => void;
   hoverLesson?: HoverLesson | null;
-  verticalMode?: boolean;
-  timetableScrollContainerRef?: React.RefObject<HTMLDivElement>;
+  maintainScrollPosition?: MaintainScrollPosition;
 };
 
 type State = {
@@ -40,40 +38,19 @@ class TimetableCell extends React.Component<Props, State> {
   };
 
   componentDidUpdate() {
-    if (this.state.positionBeforeUpdate) {
-      this.maintainScrollPosition();
+    if (
+      this.state.positionBeforeUpdate &&
+      this.state.lessonID &&
+      this.props.maintainScrollPosition
+    ) {
+      this.props.maintainScrollPosition(this.state.positionBeforeUpdate, this.state.lessonID);
+
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        positionBeforeUpdate: null,
+        lessonID: null,
+      });
     }
-  }
-
-  maintainScrollPosition() {
-    // Destructure vars
-    const { positionBeforeUpdate, lessonID } = this.state;
-    const { verticalMode, timetableScrollContainerRef } = this.props;
-
-    if (!positionBeforeUpdate || !lessonID || !timetableScrollContainerRef) return;
-
-    // Get elements
-    const lessonElement = document.getElementById(lessonID);
-    const timetableScrollContainer = timetableScrollContainerRef.current;
-
-    if (!lessonElement || !timetableScrollContainer) return;
-
-    // Get position after update
-    const positionAfterUpdate = lessonElement.getBoundingClientRect() as DOMRect;
-
-    // Call for scroll
-    maintainScrollPosition(
-      positionBeforeUpdate,
-      positionAfterUpdate,
-      timetableScrollContainer,
-      verticalMode,
-    );
-
-    // Unset saved attributes
-    this.setState({
-      positionBeforeUpdate: null,
-      lessonID: null,
-    });
   }
 
   handleClick = (e: React.MouseEvent) => {

@@ -2,7 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 
 import { TimetableDayArrangement, HoverLesson } from 'types/timetables';
-import { OnHoverCell, OnModifyCell } from 'types/views';
+import { OnHoverCell, OnModifyCell, MaintainScrollPosition } from 'types/views';
 
 import styles from './TimetableDay.scss';
 import TimetableRow from './TimetableRow';
@@ -21,7 +21,7 @@ type Props = {
   hoverLesson: HoverLesson | null;
   onCellHover: OnHoverCell;
   onModifyCell?: OnModifyCell;
-  timetableScrollContainerRef?: React.RefObject<HTMLDivElement>;
+  maintainScrollPosition?: MaintainScrollPosition;
 };
 
 // Height of timetable per hour in vertical mode
@@ -61,7 +61,7 @@ function TimetableDay(props: Props) {
             onModifyCell={props.onModifyCell}
             hoverLesson={props.hoverLesson}
             onCellHover={props.onCellHover}
-            timetableScrollContainerRef={props.timetableScrollContainerRef}
+            maintainScrollPosition={props.maintainScrollPosition}
           />
         ))}
       </div>
