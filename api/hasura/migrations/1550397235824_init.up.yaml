@@ -1,0 +1,136 @@
+- type: replace_metadata
+  args:
+    functions: []
+    query_templates: []
+    remote_schemas: []
+    tables:
+      - array_relationships:
+          - comment: null
+            name: lessonsByVenueId
+            using:
+              foreign_key_constraint_on:
+                column: venue_id
+                table: lesson
+        delete_permissions: []
+        event_triggers: []
+        insert_permissions: []
+        object_relationships: []
+        select_permissions: []
+        table: venue
+        update_permissions: []
+      - array_relationships:
+          - comment: null
+            name: lessonsByCourseId
+            using:
+              foreign_key_constraint_on:
+                column: course_id
+                table: lesson
+        delete_permissions: []
+        event_triggers: []
+        insert_permissions: []
+        object_relationships: []
+        select_permissions: []
+        table: course
+        update_permissions: []
+      - array_relationships:
+          - comment: null
+            name: coursesByTermId
+            using:
+              foreign_key_constraint_on:
+                column: term_id
+                table: course
+          - comment: null
+            name: departmentsByTermId
+            using:
+              foreign_key_constraint_on:
+                column: term_id
+                table: department
+          - comment: null
+            name: venuesByTermId
+            using:
+              foreign_key_constraint_on:
+                column: term_id
+                table: venue
+        delete_permissions: []
+        event_triggers: []
+        insert_permissions: []
+        object_relationships: []
+        select_permissions: []
+        table: term
+        update_permissions: []
+      - array_relationships: []
+        delete_permissions: []
+        event_triggers: []
+        insert_permissions: []
+        object_relationships: []
+        select_permissions: []
+        table: url
+        update_permissions: []
+      - array_relationships:
+          - comment: null
+            name: termsBySchoolId
+            using:
+              foreign_key_constraint_on:
+                column: school_id
+                table: term
+          - comment: null
+            name: departmentsBySchoolId
+            using:
+              foreign_key_constraint_on:
+                column: school_id
+                table: department
+          - comment: null
+            name: venuesBySchoolId
+            using:
+              foreign_key_constraint_on:
+                column: school_id
+                table: venue
+        delete_permissions: []
+        event_triggers: []
+        insert_permissions: []
+        object_relationships: []
+        select_permissions: []
+        table: school
+        update_permissions: []
+      - array_relationships: []
+        delete_permissions: []
+        event_triggers: []
+        insert_permissions: []
+        object_relationships: []
+        select_permissions: []
+        table: account
+        update_permissions: []
+      - array_relationships: []
+        delete_permissions: []
+        event_triggers: []
+        insert_permissions: []
+        object_relationships:
+          - comment: null
+            name: venueByVenueId
+            using:
+              foreign_key_constraint_on: venue_id
+        select_permissions: []
+        table: lesson
+        update_permissions: []
+      - array_relationships:
+          - comment: null
+            name: venuesByDepartmentId
+            using:
+              foreign_key_constraint_on:
+                column: department_id
+                table: venue
+        delete_permissions: []
+        event_triggers: []
+        insert_permissions: []
+        object_relationships: []
+        select_permissions: []
+        table: department
+        update_permissions: []
+      - array_relationships: []
+        delete_permissions: []
+        event_triggers: []
+        insert_permissions: []
+        object_relationships: []
+        select_permissions: []
+        table: days_of_week
+        update_permissions: []

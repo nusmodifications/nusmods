@@ -25,7 +25,6 @@ cache/
 *.dbf
 *.mdb
 *.pdb
-*.sql
 *.sqlite3
 
 ### Emacs ###
