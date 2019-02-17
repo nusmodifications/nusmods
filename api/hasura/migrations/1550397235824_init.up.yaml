@@ -11,13 +11,87 @@
               foreign_key_constraint_on:
                 column: venue_id
                 table: lesson
-        delete_permissions: []
+        delete_permissions:
+          - comment: null
+            permission:
+              filter: {}
+            role: collaborator
         event_triggers: []
-        insert_permissions: []
+        insert_permissions:
+          - comment: null
+            permission:
+              check: {}
+              columns:
+                - alttitude
+                - code
+                - department_id
+                - floor
+                - latitude
+                - longitude
+                - name
+                - school_id
+                - term_id
+                - venue_id
+              set: {}
+            role: collaborator
         object_relationships: []
-        select_permissions: []
+        select_permissions:
+          - comment: null
+            permission:
+              allow_aggregations: true
+              columns:
+                - venue_id
+                - created_at
+                - updated_at
+                - code
+                - name
+                - latitude
+                - longitude
+                - alttitude
+                - floor
+                - term_id
+                - department_id
+                - school_id
+              filter: {}
+              limit: 1000
+            role: public
+          - comment: null
+            permission:
+              allow_aggregations: true
+              columns:
+                - venue_id
+                - created_at
+                - updated_at
+                - code
+                - name
+                - latitude
+                - longitude
+                - alttitude
+                - floor
+                - term_id
+                - department_id
+                - school_id
+              filter: {}
+            role: collaborator
         table: venue
-        update_permissions: []
+        update_permissions:
+          - comment: null
+            permission:
+              columns:
+                - alttitude
+                - code
+                - department_id
+                - floor
+                - latitude
+                - longitude
+                - name
+                - school_id
+                - term_id
+                - updated_at
+                - venue_id
+              filter: {}
+              set: {}
+            role: collaborator
       - array_relationships:
           - comment: null
             name: lessonsByCourseId
@@ -25,13 +99,83 @@
               foreign_key_constraint_on:
                 column: course_id
                 table: lesson
-        delete_permissions: []
+        delete_permissions:
+          - comment: null
+            permission:
+              filter: {}
+            role: collaborator
         event_triggers: []
-        insert_permissions: []
+        insert_permissions:
+          - comment: null
+            permission:
+              check: {}
+              columns:
+                - code
+                - corequisite_text
+                - course_id
+                - description
+                - preclusion_text
+                - prerequisite_text
+                - term_id
+                - title
+                - value
+              set: {}
+            role: collaborator
         object_relationships: []
-        select_permissions: []
+        select_permissions:
+          - comment: null
+            permission:
+              allow_aggregations: false
+              columns:
+                - code
+                - corequisite_text
+                - course_id
+                - created_at
+                - description
+                - preclusion_text
+                - prerequisite_text
+                - term_id
+                - title
+                - updated_at
+                - value
+              filter: {}
+            role: collaborator
+          - comment: null
+            permission:
+              allow_aggregations: true
+              columns:
+                - code
+                - corequisite_text
+                - course_id
+                - created_at
+                - description
+                - preclusion_text
+                - prerequisite_text
+                - term_id
+                - title
+                - updated_at
+                - value
+              filter: {}
+              limit: 1000
+            role: public
         table: course
-        update_permissions: []
+        update_permissions:
+          - comment: null
+            permission:
+              columns:
+                - code
+                - corequisite_text
+                - course_id
+                - description
+                - preclusion_text
+                - prerequisite_text
+                - term_id
+                - title
+                - updated_at
+                - value
+              filter: {}
+              set: {}
+            role: collaborator
       - array_relationships:
           - comment: null
             name: coursesByTermId
@@ -51,19 +195,97 @@
               foreign_key_constraint_on:
                 column: term_id
                 table: venue
-        delete_permissions: []
+        delete_permissions:
+          - comment: null
+            permission:
+              filter: {}
+            role: collaborator
         event_triggers: []
-        insert_permissions: []
+        insert_permissions:
+          - comment: null
+            permission:
+              check: {}
+              columns:
+                - ends_at
+                - name
+                - school_id
+                - starts_at
+                - term_id
+              set: {}
+            role: collaborator
         object_relationships: []
-        select_permissions: []
+        select_permissions:
+          - comment: null
+            permission:
+              allow_aggregations: true
+              columns:
+                - term_id
+                - created_at
+                - updated_at
+                - starts_at
+                - ends_at
+                - name
+                - school_id
+              filter: {}
+              limit: 1000
+            role: public
+          - comment: null
+            permission:
+              allow_aggregations: true
+              columns:
+                - term_id
+                - created_at
+                - updated_at
+                - starts_at
+                - ends_at
+                - name
+                - school_id
+              filter: {}
+            role: collaborator
         table: term
-        update_permissions: []
+        update_permissions:
+          - comment: null
+            permission:
+              columns:
+                - ends_at
+                - name
+                - school_id
+                - starts_at
+                - term_id
+                - updated_at
+              filter: {}
+              set: {}
+            role: collaborator
       - array_relationships: []
         delete_permissions: []
         event_triggers: []
-        insert_permissions: []
+        insert_permissions:
+          - comment: null
+            permission:
+              check: {}
+              columns:
+                - long_url
+                - short_url
+              set: {}
+            role: collaborator
         object_relationships: []
-        select_permissions: []
+        select_permissions:
+          - comment: null
+            permission:
+              allow_aggregations: false
+              columns:
+                - long_url
+                - short_url
+              filter: {}
+            role: public
+          - comment: null
+            permission:
+              allow_aggregations: false
+              columns:
+                - long_url
+                - short_url
+              filter: {}
+            role: collaborator
         table: url
         update_permissions: []
       - array_relationships:
@@ -87,31 +309,181 @@
                 table: venue
         delete_permissions: []
         event_triggers: []
-        insert_permissions: []
+        insert_permissions:
+          - comment: null
+            permission:
+              check: {}
+              columns:
+                - long_name
+                - school_id
+                - short_name
+              set: {}
+            role: collaborator
         object_relationships: []
-        select_permissions: []
+        select_permissions:
+          - comment: null
+            permission:
+              allow_aggregations: true
+              columns:
+                - school_id
+                - created_at
+                - updated_at
+                - long_name
+                - short_name
+              filter: {}
+              limit: 1000
+            role: public
+          - comment: null
+            permission:
+              allow_aggregations: true
+              columns:
+                - school_id
+                - created_at
+                - updated_at
+                - long_name
+                - short_name
+              filter: {}
+              limit: 0
+            role: collaborator
         table: school
-        update_permissions: []
+        update_permissions:
+          - comment: null
+            permission:
+              columns:
+                - long_name
+                - school_id
+                - short_name
+                - updated_at
+              filter: {}
+              set: {}
+            role: collaborator
       - array_relationships: []
-        delete_permissions: []
+        delete_permissions:
+          - comment: null
+            permission:
+              filter:
+                account_id:
+                  _eq: X-Hasura-User-Id
+            role: user
         event_triggers: []
-        insert_permissions: []
+        insert_permissions:
+          - comment: null
+            permission:
+              check:
+                account_id:
+                  _eq: X-Hasura-User-Id
+              columns:
+                - account_id
+                - updated_at
+              set:
+                account_id: x-hasura-User-Id
+            role: user
         object_relationships: []
-        select_permissions: []
+        select_permissions:
+          - comment: null
+            permission:
+              allow_aggregations: false
+              columns:
+                - account_id
+                - created_at
+                - updated_at
+              filter:
+                account_id:
+                  _eq: X-Hasura-User-Id
+            role: user
         table: account
-        update_permissions: []
+        update_permissions:
+          - comment: null
+            permission:
+              columns:
+                - updated_at
+              filter:
+                account_id:
+                  _eq: X-Hasura-User-Id
+              set: {}
+            role: user
       - array_relationships: []
-        delete_permissions: []
+        delete_permissions:
+          - comment: null
+            permission:
+              filter: {}
+            role: collaborator
         event_triggers: []
-        insert_permissions: []
+        insert_permissions:
+          - comment: null
+            permission:
+              check: {}
+              columns:
+                - code
+                - course_id
+                - day
+                - end_at
+                - lesson_id
+                - starts_at
+                - type
+                - venue_id
+                - week
+              set: {}
+            role: collaborator
         object_relationships:
           - comment: null
             name: venueByVenueId
             using:
               foreign_key_constraint_on: venue_id
-        select_permissions: []
+        select_permissions:
+          - comment: null
+            permission:
+              allow_aggregations: true
+              columns:
+                - lesson_id
+                - created_at
+                - updated_at
+                - starts_at
+                - end_at
+                - type
+                - day
+                - week
+                - code
+                - course_id
+                - venue_id
+              filter: {}
+              limit: 1000
+            role: public
+          - comment: null
+            permission:
+              allow_aggregations: true
+              columns:
+                - lesson_id
+                - created_at
+                - updated_at
+                - starts_at
+                - end_at
+                - type
+                - day
+                - week
+                - code
+                - course_id
+                - venue_id
+              filter: {}
+            role: collaborator
         table: lesson
-        update_permissions: []
+        update_permissions:
+          - comment: null
+            permission:
+              columns:
+                - code
+                - course_id
+                - day
+                - end_at
+                - lesson_id
+                - starts_at
+                - type
+                - updated_at
+                - venue_id
+                - week
+              filter: {}
+              set: {}
+            role: collaborator
       - array_relationships:
           - comment: null
             name: venuesByDepartmentId
@@ -119,13 +491,63 @@
               foreign_key_constraint_on:
                 column: department_id
                 table: venue
-        delete_permissions: []
+        delete_permissions:
+          - comment: null
+            permission:
+              filter: {}
+            role: collaborator
         event_triggers: []
-        insert_permissions: []
+        insert_permissions:
+          - comment: null
+            permission:
+              check: {}
+              columns:
+                - department_id
+                - name
+                - school_id
+                - term_id
+              set: {}
+            role: collaborator
         object_relationships: []
-        select_permissions: []
+        select_permissions:
+          - comment: null
+            permission:
+              allow_aggregations: true
+              columns:
+                - department_id
+                - created_at
+                - updated_at
+                - name
+                - term_id
+                - school_id
+              filter: {}
+              limit: 1000
+            role: public
+          - comment: null
+            permission:
+              allow_aggregations: true
+              columns:
+                - created_at
+                - department_id
+                - name
+                - school_id
+                - term_id
+                - updated_at
+              filter: {}
+            role: collaborator
         table: department
-        update_permissions: []
+        update_permissions:
+          - comment: null
+            permission:
+              columns:
+                - department_id
+                - name
+                - school_id
+                - term_id
+                - updated_at
+              filter: {}
+              set: {}
+            role: collaborator
       - array_relationships: []
         delete_permissions: []
         event_triggers: []
