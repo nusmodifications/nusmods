@@ -4,6 +4,7 @@ services:
     image: postgres:11.1-alpine
     volumes:
       - db_data:/var/lib/postgresql/data
+
   graphql-engine:
     image: hasura/graphql-engine:v1.0.0-alpha38.cli-migrations
     volumes:
@@ -13,9 +14,25 @@ services:
     depends_on:
       - 'postgres'
     environment:
-      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:@postgres:5432/postgres
+      HASURA_GRAPHQL_DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
       HASURA_GRAPHQL_ENABLE_CONSOLE: 'true' # set to "false" to disable console
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: 'public'
-      HASURA_GRAPHQL_ADMIN_SECRET: development
+      HASURA_GRAPHQL_ADMIN_SECRET: 'development'
+      HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256", "key": "do not use in production do not use in production do not use in production"}'
+
+  auth-server:
+    build: .
+    volumes:
+      - ~/.cache/yarn:/home/node/.cache/yarn
+      - .:/home/node/app
+    ports:
+      - '8081:8081'
+    user: ${CURRENT_UID:-1000:1000}
+    environment:
+      NODE_ENV: 'development'
+      HOST: '0.0.0.0'
+      PORT: 8081
+      JWT_SECRET: '{"type":"HS256", "key": "do not use in production do not use in production do not use in production"}'
+
 volumes:
   db_data:
