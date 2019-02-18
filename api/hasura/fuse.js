@@ -1,6 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies */
 // Set cache folder to node_modules subpath
 process.env.FUSEBOX_TEMP_FOLDER = 'node_modules/.fusebox';
+// Set node env to development mode
+process.env.NODE_ENV = 'development';
 
 const { FuseBox } = require('fuse-box');
 

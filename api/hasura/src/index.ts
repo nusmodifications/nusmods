@@ -1,8 +1,11 @@
-import http from 'http';
+import express from 'express';
+import expressPlayground from 'graphql-playground-middleware-express';
 
-const server = http.createServer((req, res) => {
-  res.write("hello");
-  res.end();
-});
+const IS_DEV = process.env.NODE_ENV === 'development';
+const HASURA_ENDPOINT = IS_DEV ? 'http://localhost:8080/v1alpha1/graphql' : 'TODO';
 
-export default server.listen(8000);
+const app = express();
+
+app.get('/playground', expressPlayground({ endpoint: HASURA_ENDPOINT }));
+
+export default app.listen(8000);

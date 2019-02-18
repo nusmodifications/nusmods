@@ -23,7 +23,9 @@
   ],
   "private": true,
   "dependencies": {
-    "fuse-box": "^3.7.1"
+    "express": "^4.16.4",
+    "fuse-box": "^3.7.1",
+    "graphql-playground-middleware-express": "^1.7.11"
   },
   "devDependencies": {
     "typescript": "^3.3.3"
