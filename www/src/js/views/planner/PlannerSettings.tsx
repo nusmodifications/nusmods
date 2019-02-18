@@ -6,7 +6,7 @@ import config from 'config';
 import { State } from 'reducers';
 import { getYearsBetween, offsetAcadYear } from 'utils/modules';
 import { acadYearLabel } from 'utils/planner';
-import { setPlannerIBLOCs, setPlannerMaxYear, setPlannerMinYear } from 'actions/planner';
+import { setIBLOCs, setMaxYear, setMinYear } from 'actions/planner';
 import ExternalLink from 'views/components/ExternalLink';
 import Toggle from 'views/components/Toggle';
 import styles from './PlannerSettings.scss';
@@ -133,9 +133,9 @@ const PlannerSettings = connect(
     iblocs: state.planner.iblocs,
   }),
   {
-    setMaxYear: setPlannerMaxYear,
-    setMinYear: setPlannerMinYear,
-    setIBLOCs: setPlannerIBLOCs,
+    setMaxYear,
+    setMinYear,
+    setIBLOCs,
   },
 )(PlannerSettingsComponent);
 

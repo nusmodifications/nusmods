@@ -17,7 +17,14 @@ import {
   fromDroppableId,
   getTotalMC,
 } from 'utils/planner';
-import { addPlannerModule, movePlannerModule, removePlannerModule } from 'actions/planner';
+import {
+  addModule,
+  AddModulePayload,
+  moveModule,
+  MoveModulePayload,
+  removeModule,
+  RemoveModulePayload,
+} from 'actions/planner';
 import { toggleFeedback } from 'actions/app';
 import { fetchModule } from 'actions/moduleBank';
 import { getAcadYearModules, getExemptions, getIBLOCs, getPlanToTake } from 'selectors/planner';
@@ -43,14 +50,9 @@ export type Props = {
   readonly fetchModule: (moduleCode: ModuleCode) => Promise<Module>;
   readonly toggleFeedback: () => void;
 
-  readonly addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void;
-  readonly moveModule: (
-    moduleCode: ModuleCode,
-    year: string,
-    semester: Semester,
-    index: number,
-  ) => void;
-  readonly removeModule: (moduleCode: ModuleCode) => void;
+  readonly addModule: (payload: AddModulePayload) => void;
+  readonly moveModule: (payload: MoveModulePayload) => void;
+  readonly removeModule: (payload: RemoveModulePayload) => void;
 };
 
 type SemesterModules = { [semester: string]: PlannerModuleInfo[] };
@@ -95,11 +97,15 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
 
     if (moduleCodes) {
       moduleCodes.forEach((moduleCode) => {
-        this.props.addModule(moduleCode, year, semester);
+        this.props.addModule({ moduleCode, year, semester });
         // TODO: Handle error
         this.props.fetchModule(moduleCode);
       });
     }
+  };
+
+  onRemoveModule = (moduleCode: ModuleCode) => {
+    this.props.removeModule({ moduleCode });
   };
 
   onDropEnd: OnDragEndResponder = (evt) => {
@@ -109,10 +115,15 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
     if (!destination) return;
 
     if (destination.droppableId === TRASH_ID) {
-      this.props.removeModule(draggableId);
+      this.props.removeModule({ moduleCode: draggableId });
     } else {
       const [year, semester] = fromDroppableId(destination.droppableId);
-      this.props.moveModule(draggableId, year, +semester, destination.index);
+      this.props.moveModule({
+        year,
+        semester,
+        moduleCode: draggableId,
+        index: destination.index,
+      });
     }
   };
 
@@ -188,7 +199,7 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
                   semester={IBLOCS_SEMESTER}
                   modules={iblocsModules}
                   addModule={this.onAddModule}
-                  removeModule={this.props.removeModule}
+                  removeModule={this.onRemoveModule}
                   addCustomData={this.onAddCustomData}
                 />
               </section>
@@ -201,7 +212,7 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
                 year={year}
                 semesters={semesters}
                 addModule={this.onAddModule}
-                removeModule={this.props.removeModule}
+                removeModule={this.onRemoveModule}
                 addCustomData={this.onAddCustomData}
               />
             ))}
@@ -215,7 +226,7 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
                 semester={EXEMPTION_SEMESTER}
                 modules={exemptions}
                 addModule={this.onAddModule}
-                removeModule={this.props.removeModule}
+                removeModule={this.onRemoveModule}
                 showModuleMeta={false}
                 addCustomData={this.onAddCustomData}
               />
@@ -228,7 +239,7 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
                 semester={PLAN_TO_TAKE_SEMESTER}
                 modules={planToTake}
                 addModule={this.onAddModule}
-                removeModule={this.props.removeModule}
+                removeModule={this.onRemoveModule}
                 addCustomData={this.onAddCustomData}
               />
             </section>
@@ -292,9 +303,9 @@ const PlannerContainer = connect(
   {
     fetchModule,
     toggleFeedback,
-    addModule: addPlannerModule,
-    moveModule: movePlannerModule,
-    removeModule: removePlannerModule,
+    addModule,
+    moveModule,
+    removeModule,
   },
 )(PlannerContainerComponent);
 
