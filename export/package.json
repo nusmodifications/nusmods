@@ -13,7 +13,7 @@
     "deploy": "rsync -avu --delete-after . ../../nusmods-export"
   },
   "dependencies": {
-    "@sentry/node": "4.5.3",
+    "@sentry/node": "4.6.1",
     "axios": "0.18.0",
     "bunyan": "1.8.12",
     "forever": "0.15.3",
@@ -23,7 +23,7 @@
     "koa-router": "7.4.0",
     "koa-views": "6.1.5",
     "lodash": "4.17.11",
-    "nodemon": "1.18.9",
+    "nodemon": "1.18.10",
     "pug": "2.0.3",
     "puppeteer": "1.11.0"
   }
