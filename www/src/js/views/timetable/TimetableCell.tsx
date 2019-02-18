@@ -1,12 +1,17 @@
-import * as React from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import { isEqual } from 'lodash';
 
 import { ModifiableLesson } from 'types/modules';
 import { HoverLesson } from 'types/timetables';
-import { OnHoverCell, MaintainScrollPosition } from 'types/views';
+import { OnHoverCell } from 'types/views';
 
-import { formatWeekNumber, getHoverLesson, LESSON_TYPE_ABBREV } from 'utils/timetables';
+import {
+  formatWeekNumber,
+  getHoverLesson,
+  getLessonIdentifier,
+  LESSON_TYPE_ABBREV,
+} from 'utils/timetables';
 import elements from 'views/elements';
 
 import styles from './TimetableCell.scss';
@@ -16,14 +21,8 @@ type Props = {
   lesson: ModifiableLesson;
   onHover: OnHoverCell;
   style?: React.CSSProperties;
-  onClick?: () => void;
+  onClick?: (position: ClientRect) => void;
   hoverLesson?: HoverLesson | null;
-  maintainScrollPosition?: MaintainScrollPosition;
-};
-
-type State = {
-  positionBeforeUpdate: DOMRect | null;
-  lessonID: string | null;
 };
 
 /**
@@ -31,85 +30,57 @@ type State = {
  * Representing a lesson in this case. In future we
  * might explore other representations e.g. grouped lessons
  */
-class TimetableCell extends React.Component<Props, State> {
-  state: State = {
-    positionBeforeUpdate: null,
-    lessonID: null,
-  };
+function TimetableCell(props: Props) {
+  const { lesson, showTitle, onClick, onHover, hoverLesson } = props;
 
-  componentDidUpdate() {
-    if (
-      this.state.positionBeforeUpdate &&
-      this.state.lessonID &&
-      this.props.maintainScrollPosition
-    ) {
-      this.props.maintainScrollPosition(this.state.positionBeforeUpdate, this.state.lessonID);
+  const moduleName = showTitle ? `${lesson.ModuleCode} ${lesson.ModuleTitle}` : lesson.ModuleCode;
+  const Cell = props.onClick ? 'button' : 'div';
+  const isHoveredOver = isEqual(getHoverLesson(lesson), hoverLesson);
 
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({
-        positionBeforeUpdate: null,
-        lessonID: null,
-      });
-    }
-  }
+  const conditionalProps = onClick
+    ? {
+        onClick: (e: React.MouseEvent) => {
+          e.preventDefault();
+          onClick(e.currentTarget.getBoundingClientRect());
+        },
+      }
+    : {};
 
-  handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-
-    // Save attributes before update
-    if (e.currentTarget) {
-      this.setState({
-        positionBeforeUpdate: e.currentTarget.getBoundingClientRect() as DOMRect,
-        lessonID: e.currentTarget.id,
-      });
-    }
-
-    if (this.props.onClick) {
-      this.props.onClick();
-    }
-  };
-
-  render() {
-    const { lesson, showTitle, onClick, onHover, hoverLesson } = this.props;
-
-    const moduleName = showTitle ? `${lesson.ModuleCode} ${lesson.ModuleTitle}` : lesson.ModuleCode;
-    const Cell = this.props.onClick ? 'button' : 'div';
-    const hover = isEqual(getHoverLesson(lesson), hoverLesson);
-
-    const conditionalProps = onClick ? { onClick: this.handleClick } : {};
-
-    /* eslint-disable */
-    return (
-      <Cell
-        className={classnames(styles.cell, elements.lessons, `color-${lesson.colorIndex}`, {
-          hoverable: !!this.props.onClick,
+  return (
+    <Cell
+      className={classnames(
+        styles.cell,
+        getLessonIdentifier(lesson),
+        elements.lessons,
+        `color-${lesson.colorIndex}`,
+        {
+          hoverable: !!onClick,
           [styles.clickable]: !!onClick,
           [styles.available]: lesson.isAvailable,
           [styles.active]: lesson.isActive,
           // Local hover style for the timetable planner timetable,
-          [styles.hover]: hover,
+          [styles.hover]: isHoveredOver,
           // Global hover style for module page timetable
-          hover,
-        })}
-        style={this.props.style}
-        id={`${lesson.ModuleCode}-${LESSON_TYPE_ABBREV[lesson.LessonType]}-${lesson.ClassNo}`}
-        onMouseEnter={() => onHover(getHoverLesson(lesson))}
-        onTouchStart={() => onHover(getHoverLesson(lesson))}
-        onMouseLeave={() => onHover(null)}
-        onTouchEnd={() => onHover(null)}
-        {...conditionalProps}
-      >
-        <div className={styles.cellContainer}>
-          <div className={styles.moduleName}>{moduleName}</div>
-          <div>
-            {LESSON_TYPE_ABBREV[lesson.LessonType]} [{lesson.ClassNo}]
-          </div>
-          <div>{lesson.Venue}</div>
-          {lesson.WeekText !== 'Every Week' && <div>{formatWeekNumber(lesson.WeekText)}</div>}
+          hover: isHoveredOver,
+        },
+      )}
+      style={props.style}
+      onMouseEnter={() => onHover(getHoverLesson(lesson))}
+      onTouchStart={() => onHover(getHoverLesson(lesson))}
+      onMouseLeave={() => onHover(null)}
+      onTouchEnd={() => onHover(null)}
+      {...conditionalProps}
+    >
+      <div className={styles.cellContainer}>
+        <div className={styles.moduleName}>{moduleName}</div>
+        <div>
+          {LESSON_TYPE_ABBREV[lesson.LessonType]} [{lesson.ClassNo}]
         </div>
-      </Cell>
-    );
-  }
+        <div>{lesson.Venue}</div>
+        {lesson.WeekText !== 'Every Week' && <div>{formatWeekNumber(lesson.WeekText)}</div>}
+      </div>
+    </Cell>
+  );
 }
 
 export default TimetableCell;

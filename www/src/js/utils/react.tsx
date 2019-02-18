@@ -119,38 +119,3 @@ export class Counter {
 export function resetScrollPosition() {
   window.scrollTo(0, 0);
 }
-
-/**
- * Maintain a lesson's scroll position relative to the viewport
- * when the viewport size changes. Applicable to modules with lots
- * of options, such as GER1000.
- *
- * @param {DOMRect} positionBeforeUpdate
- * @param {DOMRect} positionAfterUpdate
- * @param {HTMLDivElement} timetableScrollContainer
- * @param {boolean} verticalMode
- */
-export function maintainScrollPosition(
-  positionBeforeUpdate: DOMRect,
-  positionAfterUpdate: DOMRect,
-  timetableScrollContainer: HTMLDivElement,
-  verticalMode: boolean,
-) {
-  // Get timetable container position
-  const timetablePosition = timetableScrollContainer.getBoundingClientRect();
-
-  // Get max height and width
-  const maxH = window.innerHeight;
-  const maxW = timetablePosition.right;
-
-  if (positionAfterUpdate.bottom > maxH || positionAfterUpdate.right > maxW) {
-    const x = positionAfterUpdate.left - positionBeforeUpdate.left + window.scrollX;
-    const y = positionAfterUpdate.top - positionBeforeUpdate.top + window.scrollY;
-
-    window.scroll(0, y);
-
-    if (verticalMode && 'scroll' in timetableScrollContainer) {
-      timetableScrollContainer.scroll(x, 0);
-    }
-  }
-}
