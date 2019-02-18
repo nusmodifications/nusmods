@@ -164,7 +164,9 @@
     "redux": "4.0.1",
     "redux-persist": "5.9.1",
     "redux-thunk": "2.2.0",
-    "reselect": "4.0.0"
+    "reselect": "4.0.0",
+    "typescript-fsa": "3.0.0-beta-2",
+    "typescript-fsa-redux-thunk": "^1.0.1"
   },
   "browserslist": [
     "last 2 versions",
