@@ -1283,10 +1283,10 @@
   resolved "https://registry.yarnpkg.com/@types/js-combinatorics/-/js-combinatorics-0.5.31.tgz#a61a3f625009e2e693492c158ac8afb243efecad"
   integrity sha512-0JGeWYJdHIpX2gttyxqnzpKwK3KmyFZysWI8+fnXdiOo/kEFxDMdo/pwhrtBrHvYgRAsDNJCSQzgA+m8vbHvFw==
 
-"@types/leaflet@1.4.1":
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/@types/leaflet/-/leaflet-1.4.1.tgz#5807f53b06d13dd2755426b7b4d48000e7c36a91"
-  integrity sha512-2Z4AM/kf8Yif7i0YazjG/ures+0zIarc4BDP8QqvcCIiI8GWbCxkfJLf7DWMtMPRZv0bh+a1ZSJRTuSwOtPzzQ==
+"@types/leaflet@1.4.2":
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/@types/leaflet/-/leaflet-1.4.2.tgz#28a95f45e71d8f3e44b1d95f64deb5f05e739e04"
+  integrity sha512-iRyUFh6m5OSbhekHxlZb5SkdfUVpaXhk+e8fgQviZL6iZ1chV3Q030/+M6jO2A6VM235A1hYuUmBMVsrLAvKEA==
   dependencies:
     "@types/geojson" "*"
 
