@@ -2,40 +2,40 @@
 # yarn lockfile v1
 
 
-"@sentry/core@4.5.3":
-  version "4.5.3"
-  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-4.5.3.tgz#e55a42c694deec903aec2479e4a282d5a7a43878"
+"@sentry/core@4.6.1":
+  version "4.6.1"
+  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-4.6.1.tgz#0d73bb191a9c2c845391bb57383d37826c9fc904"
   dependencies:
-    "@sentry/hub" "4.5.3"
-    "@sentry/minimal" "4.5.3"
+    "@sentry/hub" "4.6.1"
+    "@sentry/minimal" "4.6.1"
     "@sentry/types" "4.5.3"
-    "@sentry/utils" "4.5.3"
+    "@sentry/utils" "4.6.1"
     tslib "^1.9.3"
 
-"@sentry/hub@4.5.3":
-  version "4.5.3"
-  resolved "https://registry.yarnpkg.com/@sentry/hub/-/hub-4.5.3.tgz#54ce5988ac6dedbe9bba99e2c00f8f26eb677dfe"
+"@sentry/hub@4.6.1":
+  version "4.6.1"
+  resolved "https://registry.yarnpkg.com/@sentry/hub/-/hub-4.6.1.tgz#fc1e4a4b9a50d5e774799a270e69a1e6f485fc1f"
   dependencies:
     "@sentry/types" "4.5.3"
-    "@sentry/utils" "4.5.3"
+    "@sentry/utils" "4.6.1"
     tslib "^1.9.3"
 
-"@sentry/minimal@4.5.3":
-  version "4.5.3"
-  resolved "https://registry.yarnpkg.com/@sentry/minimal/-/minimal-4.5.3.tgz#7b69481df2d61e4b935d067be62a52824190f616"
+"@sentry/minimal@4.6.1":
+  version "4.6.1"
+  resolved "https://registry.yarnpkg.com/@sentry/minimal/-/minimal-4.6.1.tgz#5bc7166c65df8aa6f5ee25256481f41c417952c6"
   dependencies:
-    "@sentry/hub" "4.5.3"
+    "@sentry/hub" "4.6.1"
     "@sentry/types" "4.5.3"
     tslib "^1.9.3"
 
-"@sentry/node@4.5.3":
-  version "4.5.3"
-  resolved "https://registry.yarnpkg.com/@sentry/node/-/node-4.5.3.tgz#f6b57747991c300d4f5f70add673ea3d1e78c873"
+"@sentry/node@4.6.1":
+  version "4.6.1"
+  resolved "https://registry.yarnpkg.com/@sentry/node/-/node-4.6.1.tgz#cd5de5f02dc560cb79f697da66c99b54e8ddcac6"
   dependencies:
-    "@sentry/core" "4.5.3"
-    "@sentry/hub" "4.5.3"
+    "@sentry/core" "4.6.1"
+    "@sentry/hub" "4.6.1"
     "@sentry/types" "4.5.3"
-    "@sentry/utils" "4.5.3"
+    "@sentry/utils" "4.6.1"
     "@types/stack-trace" "0.0.29"
     cookie "0.3.1"
     https-proxy-agent "2.2.1"
@@ -48,9 +48,9 @@
   version "4.5.3"
   resolved "https://registry.yarnpkg.com/@sentry/types/-/types-4.5.3.tgz#3350dce2b7f9b936a8c327891c12e3aef7bd8852"
 
-"@sentry/utils@4.5.3":
-  version "4.5.3"
-  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-4.5.3.tgz#6893fca9fde230b230360779362752e9b5570852"
+"@sentry/utils@4.6.1":
+  version "4.6.1"
+  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-4.6.1.tgz#3c71d9c2fcf326ed1b2980af0a6ac156ce4db315"
   dependencies:
     "@sentry/types" "4.5.3"
     tslib "^1.9.3"
