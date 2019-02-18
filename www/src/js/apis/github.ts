@@ -6,7 +6,7 @@ import { VenueLocationMap } from 'types/venues';
 // We proxy https://api.github.com/repos/nusmodifications/nusmods -> https://github.nusmods.com/repo
 // This allows us to cache the response to stop 403 rate limit error caused by the
 // school sharing a single IP address
-const baseUrl = 'https://github.nusmods.com/';
+const baseUrl = 'https://github.nusmods.com';
 
 const contributorBlacklist = new Set([
   // Renovate used to report outdated dependencies as a user via the GitHub API,
