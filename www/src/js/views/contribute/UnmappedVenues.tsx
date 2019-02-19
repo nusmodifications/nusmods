@@ -1,11 +1,11 @@
-import { VenueList as Venues, VenueLocationMap } from 'types/venues';
-import { State as StoreState } from 'reducers';
-
 import * as React from 'react';
 import Loadable, { LoadingComponentProps } from 'react-loadable';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { partition } from 'lodash';
+
+import { VenueList as Venues, VenueLocationMap } from 'types/venues';
+import { State as StoreState } from 'reducers';
 
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import VenueList from 'views/venues/VenueList';
@@ -21,7 +21,7 @@ type State = {
   readonly expanded: boolean;
 };
 
-class UnmappedVenues extends React.PureComponent<Props, State> {
+export class UnmappedVenuesComponent extends React.PureComponent<Props, State> {
   state = {
     expanded: false,
   };
@@ -34,7 +34,8 @@ class UnmappedVenues extends React.PureComponent<Props, State> {
       venueList,
       (venue) => venueLocations[venue] && venueLocations[venue].location,
     );
-    const percentageMapped = (mappedVenues.length / venueList.length) * 100;
+    const percentMapped = (mappedVenues.length / venueList.length) * 100;
+    const percentText = `${percentMapped.toFixed(1)}%`;
 
     return (
       <div>
@@ -45,17 +46,17 @@ class UnmappedVenues extends React.PureComponent<Props, State> {
                 <div
                   className={classnames('progress-bar progress-bar-striped bg-success')}
                   role="progressbar"
-                  style={{ width: `${percentageMapped.toFixed()}%` }}
-                  aria-valuenow={percentageMapped}
+                  style={{ width: `${percentMapped}%` }}
+                  aria-valuenow={percentMapped}
                   aria-valuemin={0}
                   aria-valuemax={100}
                 >
-                  {percentageMapped}%
+                  {percentText}
                 </div>
               </div>
               <p>
                 <strong>
-                  {percentageMapped}% ({mappedVenues.length}/{venueList.length})
+                  {percentText} ({mappedVenues.length}/{venueList.length})
                 </strong>{' '}
                 of all class venues are mapped!
               </p>
@@ -94,7 +95,7 @@ class UnmappedVenues extends React.PureComponent<Props, State> {
 
 const ConnectedUnmappedVenue = connect((state: StoreState) => ({
   venueList: state.venueBank.venueList,
-}))(UnmappedVenues);
+}))(UnmappedVenuesComponent);
 
 export const AsyncUnmappedVenues = Loadable.Map({
   loader: {
@@ -104,6 +105,7 @@ export const AsyncUnmappedVenues = Loadable.Map({
     if (props.error) {
       return <ApiError dataName="venue locations" retry={props.retry} />;
     }
+
     if (props.pastDelay) {
       return <LoadingSpinner />;
     }

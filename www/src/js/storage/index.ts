@@ -2,6 +2,8 @@ import { isString } from 'lodash';
 import { captureException } from 'utils/error';
 import getLocalStorage from './localStorage';
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 // Simple wrapper around localStorage to automagically parse and stringify payloads.
 function setItem(key: string, value: any) {
   try {
@@ -22,9 +24,7 @@ function setItem(key: string, value: any) {
       // Ignore error
     }
 
-    captureException(e, {
-      usedSpace,
-    });
+    captureException(e, { usedSpace });
   }
 }
 

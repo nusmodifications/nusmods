@@ -6,30 +6,29 @@ import { ModuleCode } from 'types/modules';
 
 export const NUM_DIFFERENT_COLORS = 8;
 
+function generateInitialColors(): ColorIndex[] {
+  return range(NUM_DIFFERENT_COLORS);
+}
+
 // Returns a new index that is not present in the current color index.
 // If there are more than NUM_DIFFERENT_COLORS modules already present,
 // will try to balance the color distribution if randomize === true.
-export function getNewColor(
-  currentColorIndices: ColorIndex[],
-  randomize: boolean = true,
-): ColorIndex {
-  function generateInitialIndices(): ColorIndex[] {
-    return range(NUM_DIFFERENT_COLORS);
-  }
-
-  let availableColorIndices = generateInitialIndices();
-  currentColorIndices.forEach((index: ColorIndex) => {
-    availableColorIndices = without(availableColorIndices, index);
-    if (availableColorIndices.length === 0) {
-      availableColorIndices = generateInitialIndices();
+export function getNewColor(currentColors: ColorIndex[], randomize: boolean = true): ColorIndex {
+  let availableColors = generateInitialColors();
+  currentColors.forEach((index: ColorIndex) => {
+    availableColors = without(availableColors, index);
+    if (availableColors.length === 0) {
+      availableColors = generateInitialColors();
     }
   });
 
   if (randomize) {
-    return sample(availableColorIndices)!;
+    // Safe to assert non null because the previous step ensures availableColorIndices is never empty
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return sample(availableColors)!;
   }
 
-  return availableColorIndices[0];
+  return availableColors[0];
 }
 
 // Color lessons by a certain property of every lesson

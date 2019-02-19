@@ -11,11 +11,11 @@ $cell-border-radius: 6px;
   display: flex;
   flex-direction: column;
   padding: $cell-padding;
+  border-width: 0 0 0.2rem;
+  border-style: solid;
   font-size: $font-size-xxs;
   line-height: 0.85rem;
   text-align: left;
-  border-width: 0 0 0.2rem;
-  border-style: solid;
   transition: background-color $desktop-entering-duration $material-deceleration-curve;
   animation-duration: $desktop-entering-duration;
 

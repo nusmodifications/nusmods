@@ -2,6 +2,10 @@ import { Tracker } from 'types/views';
 
 declare global {
   interface Window {
+    // Add global objects to window namespace
+    // See https://github.com/Microsoft/TypeScript/issues/19816
+    Intl: Intl;
+
     // Injected by Disqus
     DISQUS?: any;
     DISQUSWIDGETS?: any;

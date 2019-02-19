@@ -1,6 +1,6 @@
 import getLocalStorage, { createLocalStorageShim, canUseBrowserLocalStorage } from './localStorage';
 
-describe('#createLocalStorageShim', () => {
+describe(createLocalStorageShim, () => {
   test('should store and return data', () => {
     const shim = createLocalStorageShim();
     const toStore = JSON.stringify({ key: 'value', key2: 2 });
@@ -24,20 +24,9 @@ describe('#createLocalStorageShim', () => {
     expect(shim.privData).toEqual({});
   });
 
-  test('should not throw when setting null/undefined', () => {
+  test('should return null when getting nonexistent data', () => {
     const shim = createLocalStorageShim();
-    // @ts-ignore
-    expect(() => shim.setItem('key', null)).not.toThrow();
-    // @ts-ignore
-    expect(() => shim.setItem('key', undefined)).not.toThrow();
-  });
-
-  test('should return undefined when getting nonexistent data', () => {
-    const shim = createLocalStorageShim();
-    expect(shim.getItem('key')).toBeUndefined();
-    // @ts-ignore
-    shim.setItem('key', undefined);
-    expect(shim.getItem('key')).toBeUndefined();
+    expect(shim.getItem('key')).toBeNull();
   });
 
   test('should not throw when removing nonexistent key', () => {
@@ -69,11 +58,12 @@ describe('#canUseBrowserLocalStorage', () => {
   test('should return true if localStorage is localStorage-like object', () => {
     // @ts-ignore
     window.localStorage = createLocalStorageShim();
+
     expect(canUseBrowserLocalStorage()).toEqual(true);
   });
 });
 
-describe('#getLocalStorage', () => {
+describe(getLocalStorage, () => {
   test("should return the actual browser's localStorage if the browser can use localStorage", () => {
     expect(canUseBrowserLocalStorage()).toEqual(true);
     expect(getLocalStorage()).toBe(window.localStorage);
@@ -82,6 +72,7 @@ describe('#getLocalStorage', () => {
   test('should return a shim if browser cannot use localStorage', () => {
     // @ts-ignore
     delete window.localStorage;
+
     expect(canUseBrowserLocalStorage()).toEqual(false);
     expect(getLocalStorage()).toMatchObject(
       expect.objectContaining({

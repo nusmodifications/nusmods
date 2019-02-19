@@ -22,9 +22,9 @@ $gutter: 0.75rem;
     position: fixed;
     left: $side-nav-width-md + $gutter;
     z-index: 1;
+    overflow: auto;
     width: $schedule-width;
     padding: 1rem $gutter 0 0;
-    overflow: auto;
     border-right: 1px solid var(--gray-lighter);
 
     @include scrollable-y;
@@ -34,7 +34,10 @@ $gutter: 0.75rem;
     position: fixed;
     right: 0;
     left: $side-nav-width-md + $schedule-width + $gutter;
-    z-index: $venue-map-z-index;
+
+    &.expanded {
+      z-index: $venue-detail-expanded-z-index;
+    }
   }
 }
 

@@ -1,37 +1,26 @@
 import * as React from 'react';
 import classnames from 'classnames';
 
-import { LatLngTuple, VenueLocation as VenueLocationItem, VenueLocationMap } from 'types/venues';
-import { Omit } from 'types/utils';
+import { LatLngTuple, VenueLocation as VenueLocationItem } from 'types/venues';
 import Modal from 'views/components/Modal';
 import LocationMap from 'views/components/map/LocationMap';
 import CloseButton from 'views/components/CloseButton';
 import { floorName } from 'utils/venues';
-/** @var { VenueLocationMap } */
-import venueLocationJSON from 'data/venues.json';
+import venueLocations from 'data/venues';
 
-import VenueContext from '../VenueContext';
 import FeedbackModal from './FeedbackModal';
 import ImproveVenueForm from './ImproveVenueForm';
 import styles from './VenueLocation.scss';
 
-export type OwnProps = {
+export type Props = {
   readonly venue: string;
-};
-
-type Props = OwnProps & {
-  // Provided by VenueContext
-  readonly toggleScrollable: (boolean: boolean) => void;
 };
 
 type State = {
   readonly isFeedbackModalOpen: boolean;
 };
 
-// Typecast to make TypeScript happy
-const venueLocations = venueLocationJSON as VenueLocationMap;
-
-class VenueLocation extends React.PureComponent<Props, State> {
+export default class VenueLocation extends React.PureComponent<Props, State> {
   state: State = {
     isFeedbackModalOpen: false,
   };
@@ -102,7 +91,8 @@ class VenueLocation extends React.PureComponent<Props, State> {
 
         {position ? (
           <>
-            <LocationMap position={position} toggleScrollable={this.props.toggleScrollable} />
+            <LocationMap position={position} />
+
             <p className={styles.feedbackBtn}>
               See a problem?{' '}
               <button
@@ -124,20 +114,9 @@ class VenueLocation extends React.PureComponent<Props, State> {
         )}
 
         {this.renderFeedbackMenu(location)}
+
+        <hr />
       </div>
     );
   }
-}
-
-export default function(props: Omit<Props, 'toggleScrollable'>) {
-  return (
-    <VenueContext.Consumer>
-      {({ toggleDetailScrollable }) => (
-        <>
-          <VenueLocation toggleScrollable={toggleDetailScrollable} {...props} />
-          <hr />
-        </>
-      )}
-    </VenueContext.Consumer>
-  );
 }
