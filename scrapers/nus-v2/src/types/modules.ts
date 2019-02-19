@@ -11,9 +11,20 @@ export type LessonTime = StartTime | EndTime;
 export type ModuleCode = string; // E.g. "CS3216"
 export type ModuleTitle = string;
 export type Semester = number; // E.g. 1/2/3/4. 3 and 4 means special sem i and ii.
-export type LessonWeek = number | 'Reading' | 'Recess' | 'Orientation';
 export type Workload = string | number[];
 export type Venue = string;
+
+export type WeekRange = {
+  // The start and end dates
+  range: { start: string; end: string };
+  // Number of weeks between each lesson. If not specified one week is assumed
+  // ie. there are lessons every week
+  weekInterval?: number;
+  // Week intervals for modules with uneven spacing between lessons
+  intervals?: number[];
+};
+
+export type Weeks = number[] | WeekRange;
 
 // Recursive tree of module codes and boolean operators for the prereq tree
 export type PrereqTree = string | { and?: PrereqTree[]; or?: PrereqTree[] };
@@ -56,7 +67,7 @@ export type RawLesson = Readonly<{
   LessonType: LessonType;
   StartTime: StartTime;
   Venue: Venue;
-  Weeks: LessonWeek[];
+  Weeks: Weeks;
 }>;
 
 // Semester-specific information of a module.

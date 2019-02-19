@@ -4,7 +4,7 @@
 
 import { uniq, trim, groupBy, values } from 'lodash';
 import { VenueLesson } from '../types/venues';
-import { DayText, LessonType, LessonWeek, ModuleCode } from '../types/modules';
+import { DayText, LessonType, ModuleCode } from '../types/modules';
 import { ModuleAliases } from '../types/mapper';
 
 export const ZWSP = '\u200b';
@@ -145,28 +145,28 @@ export function mergeDualCodedModules(
   return { lessons: mergedModules, aliases };
 }
 
-const weekOrder: { [week in LessonWeek]: number } = {
-  Orientation: 0,
-  '1': 1,
-  '2': 2,
-  '3': 3,
-  '4': 4,
-  '5': 5,
-  '6': 6,
-  Recess: 6.5,
-  '7': 7,
-  '8': 8,
-  '9': 9,
-  '10': 10,
-  '11': 11,
-  '12': 12,
-  '13': 13,
-  Reading: 14,
-};
-
-export function compareWeeks(a: LessonWeek, b: LessonWeek) {
-  return weekOrder[a] - weekOrder[b];
-}
+// const weekOrder: { [week in LessonWeek]: number } = {
+//   Orientation: 0,
+//   '1': 1,
+//   '2': 2,
+//   '3': 3,
+//   '4': 4,
+//   '5': 5,
+//   '6': 6,
+//   Recess: 6.5,
+//   '7': 7,
+//   '8': 8,
+//   '9': 9,
+//   '10': 10,
+//   '11': 11,
+//   '12': 12,
+//   '13': 13,
+//   Reading: 14,
+// };
+//
+// export function compareWeeks(a: LessonWeek, b: LessonWeek) {
+//   return weekOrder[a] - weekOrder[b];
+// }
 
 export const dayTextMap: Record<string, DayText> = {
   '1': 'Monday',

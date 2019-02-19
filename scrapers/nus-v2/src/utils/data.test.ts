@@ -1,9 +1,9 @@
-import { LessonWeek, ModuleCode } from '../types/modules';
+import { ModuleCode } from '../types/modules';
 import { VenueLesson } from '../types/venues';
 import { EVERY_WEEK } from './test-utils';
 
 import {
-  compareWeeks,
+  // compareWeeks,
   getDuplicateModules,
   mergeDualCodedModules,
   removeEmptyValues,
@@ -228,9 +228,9 @@ describe(mergeDualCodedModules, () => {
   });
 });
 
-describe(compareWeeks, () => {
-  test('it should allow weeks to be sorted', () => {
-    const weeks: LessonWeek[] = ['Reading', 1, 2, 7, 6, 'Orientation', 10, 'Recess'];
-    expect(weeks.sort(compareWeeks)).toEqual(['Orientation', 1, 2, 6, 'Recess', 7, 10, 'Reading']);
-  });
-});
+// describe(compareWeeks, () => {
+//   test('it should allow weeks to be sorted', () => {
+//     const weeks: LessonWeek[] = ['Reading', 1, 2, 7, 6, 'Orientation', 10, 'Recess'];
+//     expect(weeks.sort(compareWeeks)).toEqual(['Orientation', 1, 2, 6, 'Recess', 7, 10, 'Reading']);
+//   });
+// });

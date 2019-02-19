@@ -1,8 +1,9 @@
 import { strict as assert } from 'assert';
-import { has, map, mapValues, values, trimStart } from 'lodash';
-import NUSModerator from 'nusmoderator';
+import { has, last, map, mapValues, trimStart, values } from 'lodash';
+import NUSModerator, { Semester as SemesterName } from 'nusmoderator';
+import { compareAsc, differenceInDays } from 'date-fns';
 
-import { LessonWeek, RawLesson, Semester } from '../types/modules';
+import { RawLesson, Semester, WeekRange, Weeks } from '../types/modules';
 import { Task } from '../types/tasks';
 import { TimetableLesson } from '../types/api';
 import { Cache } from '../services/io';
@@ -12,14 +13,23 @@ import BaseTask from './BaseTask';
 import config from '../config';
 import { getTermCode, retry } from '../utils/api';
 import { validateLesson, validateSemester } from '../services/validation';
-import {
-  activityLessonType,
-  compareWeeks,
-  dayTextMap,
-  unrecognizedLessonTypes,
-} from '../utils/data';
+import { activityLessonType, dayTextMap, unrecognizedLessonTypes } from '../utils/data';
+import { allEqual, deltas } from '../utils/arrays';
+import { Omit } from '../types/utils';
 
 /* eslint-disable @typescript-eslint/camelcase */
+
+const SEMESTER_NAMES: Record<number, SemesterName> = {
+  1: 'Semester 1',
+  2: 'Semester 2',
+  3: 'Special Sem 1',
+  4: 'Special Sem 2',
+};
+
+// Intermediate shape with Weeks typed as string[]
+type TempRawLesson = Omit<RawLesson, 'Weeks'> & {
+  Weeks: string[];
+};
 
 /**
  * For deduplicating timetable lessons - we need a unique string identifier
@@ -38,22 +48,47 @@ const getLessonKey = (lesson: TimetableLesson) =>
     // organically in the data
   ].join('|');
 
-export function getWeek(date: string): LessonWeek {
-  const weekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(new Date(date));
+/**
+ * Map date of lessons to either an array of numbers or an object representing
+ * the range of date and the intervals between lessons
+ */
+export function mapLessonWeeks(weeks: string[], semester: number, logger: Logger): Weeks {
+  const semesterName = SEMESTER_NAMES[semester];
+  const lessonDates = weeks.map((week) => new Date(week)).sort(compareAsc);
+  const weekInfo = lessonDates.map(NUSModerator.academicCalendar.getAcadWeekInfo);
 
-  // Some classes have lessons on orientation, reading or recess week
-  if (weekInfo.num == null) {
-    assert(
-      weekInfo.type === 'Orientation' || weekInfo.type === 'Reading' || weekInfo.type === 'Recess',
-    );
-
-    return weekInfo.type as LessonWeek;
+  // Normal instructional week - return an array of weeks
+  if (weekInfo.every((week) => typeof week.num === 'number' && week.sem === semesterName)) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return weekInfo.map((week) => week.num!);
   }
 
-  return weekInfo.num;
+  const firstDay = lessonDates[0];
+  const intervals = deltas(lessonDates.map((date) => differenceInDays(date, firstDay) / 7));
+
+  const weekRange: WeekRange = {
+    range: {
+      start: lessonDates[0].toISOString(),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      end: last(lessonDates)!.toISOString(),
+    },
+  };
+
+  if (allEqual(intervals)) {
+    const weekInterval = intervals[0];
+    if (weekInterval !== 1) weekRange.weekInterval = weekInterval;
+  } else {
+    weekRange.intervals = intervals;
+  }
+
+  if (intervals.some((interval) => interval % 1 !== 0)) {
+    logger.error({ intervals, lessonDates }, 'Uneven week intervals');
+  }
+
+  return weekRange;
 }
 
-export function mapTimetableLesson(lesson: TimetableLesson, logger: Logger): RawLesson {
+export function mapTimetableLesson(lesson: TimetableLesson, logger: Logger): TempRawLesson {
   const { room, start_time, end_time, day, modgrp, activity, eventdate } = lesson;
 
   if (has(unrecognizedLessonTypes, activity)) {
@@ -68,7 +103,7 @@ export function mapTimetableLesson(lesson: TimetableLesson, logger: Logger): Raw
     StartTime: start_time.replace(':', ''),
     EndTime: end_time.replace(':', ''),
     // For a single event, Weeks will always be one element
-    Weeks: [getWeek(eventdate)],
+    Weeks: [eventdate],
     // Room can be null
     Venue: room || '',
     DayText: dayTextMap[day],
@@ -118,7 +153,7 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
 
   getTimetable = async () => {
     const term = getTermCode(this.semester, this.academicYear);
-    const timetables: { [moduleCode: string]: { [key: string]: RawLesson } } = {};
+    const timetables: { [moduleCode: string]: { [key: string]: TempRawLesson } } = {};
 
     let valid = 0;
     let invalid = 0;
@@ -149,7 +184,7 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
       //    Otherwise, insert the lesson as a new item in the timetable
       const rawLesson = timetable[key];
       if (rawLesson) {
-        rawLesson.Weeks.push(getWeek(lesson.eventdate));
+        rawLesson.Weeks.push(lesson.eventdate);
       } else {
         timetable[key] = mapTimetableLesson(lesson, this.logger);
       }
@@ -157,12 +192,13 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
 
     this.logger.info({ valid, invalid }, 'Processed and removed invalid lessons');
 
-    return mapValues(timetables, (timetableObject) => {
-      // 5. Remove the lesson key inserted in (2) and sort the week counts
-      const timetable = values(timetableObject);
-      timetable.forEach((lesson) => lesson.Weeks.sort(compareWeeks));
-      return timetable;
-    });
+    return mapValues(timetables, (timetableObject, moduleCode) =>
+      // 5. Remove the lesson key inserted in (2) and remap the weeks to their correct shape
+      values(timetableObject).map((lesson) => ({
+        ...lesson,
+        Weeks: mapLessonWeeks(lesson.Weeks, this.semester, this.logger.child({ moduleCode })),
+      })),
+    );
   };
 
   async run() {

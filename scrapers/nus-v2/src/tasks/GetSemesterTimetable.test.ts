@@ -2,14 +2,16 @@ import CS4238Timetable from './fixtures/timetable/CS4238.json';
 import MA2213Timetable from './fixtures/timetable/MA2213.json';
 import CS2100Timetable from './fixtures/timetable/CS2100_2.json';
 import CN4205ETimetable from './fixtures/timetable/CN4205E.json';
+import CS1010XTimetable from './fixtures/timetable/CS1010X.json';
 
 import GetSemesterTimetable from './GetSemesterTimetable';
 import { EVERY_WEEK, expectLessonsEqual } from '../utils/test-utils';
 import { TimetableLesson } from '../types/api';
+import { Semester } from '../types/modules';
 
 describe(GetSemesterTimetable, () => {
-  function createTask(lessons: TimetableLesson[]) {
-    const task = new GetSemesterTimetable(1, '2018/2019');
+  function createTask(lessons: TimetableLesson[], semester: Semester = 1) {
+    const task = new GetSemesterTimetable(semester, '2018/2019');
 
     task.api.getSemesterTimetables = jest.fn((term, consumer) => {
       lessons.forEach((lesson) => consumer(lesson));
@@ -38,23 +40,12 @@ Array [
     "LessonType": "Lecture",
     "StartTime": "1800",
     "Venue": "E5-03-23",
-    "Weeks": Array [
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      "Recess",
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      "Reading",
-    ],
+    "Weeks": Object {
+      "range": Object {
+        "end": "2018-11-21T00:00:00.000Z",
+        "start": "2018-08-15T00:00:00.000Z",
+      },
+    },
   },
   Object {
     "ClassNo": "1",
@@ -63,23 +54,12 @@ Array [
     "LessonType": "Tutorial",
     "StartTime": "2030",
     "Venue": "E5-03-23",
-    "Weeks": Array [
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      "Recess",
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      "Reading",
-    ],
+    "Weeks": Object {
+      "range": Object {
+        "end": "2018-11-21T00:00:00.000Z",
+        "start": "2018-08-15T00:00:00.000Z",
+      },
+    },
   },
 ]
 `);
@@ -230,7 +210,7 @@ Array [
 
   // CS2100 has a lot of lessons, and two joined lecture groups
   test('should map CS2100 timetable lessons correctly', async () => {
-    const task = createTask(CS2100Timetable);
+    const task = createTask(CS2100Timetable, 2);
     const timetable = await task.run();
 
     expectLessonsEqual(timetable.CS2100, [
@@ -631,5 +611,101 @@ Array [
         Venue: 'COM1-0209',
       },
     ]);
+  });
+
+  test('should map CS1010X timetable lessons correctly', async () => {
+    const task = createTask(CS1010XTimetable as TimetableLesson[]);
+    const output = await task.run();
+
+    expect(output).toMatchInlineSnapshot(`
+Object {
+  "CS1010X": Array [
+    Object {
+      "ClassNo": "1",
+      "DayText": "Thursday",
+      "EndTime": "1000",
+      "LessonType": "Recitation",
+      "StartTime": "0900",
+      "Venue": "SR_LT19",
+      "Weeks": Object {
+        "range": Object {
+          "end": "2019-06-20T00:00:00.000Z",
+          "start": "2019-01-17T00:00:00.000Z",
+        },
+      },
+    },
+    Object {
+      "ClassNo": "2",
+      "DayText": "Thursday",
+      "EndTime": "1300",
+      "LessonType": "Recitation",
+      "StartTime": "1200",
+      "Venue": "SR_LT19",
+      "Weeks": Object {
+        "range": Object {
+          "end": "2019-06-20T00:00:00.000Z",
+          "start": "2019-01-17T00:00:00.000Z",
+        },
+      },
+    },
+    Object {
+      "ClassNo": "01",
+      "DayText": "Thursday",
+      "EndTime": "1100",
+      "LessonType": "Tutorial",
+      "StartTime": "1000",
+      "Venue": "SR_LT19",
+      "Weeks": Object {
+        "range": Object {
+          "end": "2019-06-20T00:00:00.000Z",
+          "start": "2019-01-17T00:00:00.000Z",
+        },
+      },
+    },
+    Object {
+      "ClassNo": "02",
+      "DayText": "Thursday",
+      "EndTime": "1200",
+      "LessonType": "Tutorial",
+      "StartTime": "1100",
+      "Venue": "SR_LT19",
+      "Weeks": Object {
+        "range": Object {
+          "end": "2019-06-20T00:00:00.000Z",
+          "start": "2019-01-17T00:00:00.000Z",
+        },
+      },
+    },
+    Object {
+      "ClassNo": "03",
+      "DayText": "Thursday",
+      "EndTime": "1400",
+      "LessonType": "Tutorial",
+      "StartTime": "1300",
+      "Venue": "SR_LT19",
+      "Weeks": Object {
+        "range": Object {
+          "end": "2019-06-20T00:00:00.000Z",
+          "start": "2019-01-17T00:00:00.000Z",
+        },
+      },
+    },
+    Object {
+      "ClassNo": "04",
+      "DayText": "Thursday",
+      "EndTime": "1500",
+      "LessonType": "Tutorial",
+      "StartTime": "1400",
+      "Venue": "SR_LT19",
+      "Weeks": Object {
+        "range": Object {
+          "end": "2019-06-20T00:00:00.000Z",
+          "start": "2019-01-17T00:00:00.000Z",
+        },
+      },
+    },
+  ],
+}
+`);
   });
 });

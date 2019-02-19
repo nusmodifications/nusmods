@@ -3,12 +3,12 @@ import { omit, sortBy, zip } from 'lodash';
 import httpStatus from 'http-status';
 
 import { Cache } from '../services/io';
-import { LessonWeek, Module, RawLesson, SemesterData } from '../types/modules';
+import { Weeks, Module, RawLesson, SemesterData } from '../types/modules';
 import { Logger } from '../services/logger';
 
 /* eslint-disable import/prefer-default-export */
 
-export const EVERY_WEEK: LessonWeek[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+export const EVERY_WEEK: Weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
 export function mockCache<T>(fileContent: T): jest.Mocked<Cache<T>> {
   // Annotating this as Cache<T> lets us make sure this function implements the interface
@@ -49,7 +49,7 @@ export function serializeLesson(lesson: RawLesson) {
     lesson.LessonType,
     lesson.ClassNo,
     lesson.StartTime,
-    lesson.Weeks.join('/'),
+    lesson.Weeks,
     lesson.DayText,
     lesson.Venue,
   ].join('|');
