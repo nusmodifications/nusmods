@@ -16,9 +16,9 @@ import { flattenTree } from './tree';
  * PrereqTree: different format of ParsedPrerequisite
  */
 
-interface TreeMap {
+export type TreeMap = {
   [moduleCode: string]: PrereqTree;
-}
+};
 
 const logger = rootLogger.child({
   service: 'requisite-tree',
@@ -82,12 +82,12 @@ function parse(data: ModuleWithoutTree[], subLogger: Logger): TreeMap {
   return results;
 }
 
-function generateRequirements(allModules: Module[], prerequisites: TreeMap): Module[] {
+export function insertRequisiteTree(modules: Module[], prerequisites: TreeMap): Module[] {
   // Find modules which this module fulfill the requirements for
   const fulfillModules: { [moduleCode: string]: Set<ModuleCode> } = {};
-  allModules.forEach((module) => {
+  for (const module of modules) {
     fulfillModules[module.ModuleCode] = new Set();
-  });
+  }
 
   for (const [moduleCode, prereqs] of entries(prerequisites)) {
     for (const fulfillsModule of flattenTree(prereqs)) {
@@ -99,15 +99,19 @@ function generateRequirements(allModules: Module[], prerequisites: TreeMap): Mod
     }
   }
 
-  return allModules.map((module) => {
+  for (const module of modules) {
     const moduleCode = module.ModuleCode;
 
-    return {
-      ...module,
-      PrereqTree: prerequisites[moduleCode],
-      FulfillRequirements: Array.from(fulfillModules[moduleCode]),
-    };
-  });
+    if (prerequisites[moduleCode]) {
+      module.PrereqTree = prerequisites[moduleCode];
+    }
+
+    if (fulfillModules[moduleCode].size > 0) {
+      module.FulfillRequirements = Array.from(fulfillModules[moduleCode]);
+    }
+  }
+
+  return modules;
 }
 
 export default async function generatePrereqTree(
@@ -129,7 +133,7 @@ export default async function generatePrereqTree(
   });
 
   const prerequisites = parse(allModules, logger);
-  const modules = generateRequirements(allModules, prerequisites);
+  const modules = insertRequisiteTree(allModules, prerequisites);
 
   return modules;
 }
