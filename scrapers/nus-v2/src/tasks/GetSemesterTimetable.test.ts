@@ -3,6 +3,7 @@ import MA2213Timetable from './fixtures/timetable/MA2213.json';
 import CS2100Timetable from './fixtures/timetable/CS2100_2.json';
 import CN4205ETimetable from './fixtures/timetable/CN4205E.json';
 import CS1010XTimetable from './fixtures/timetable/CS1010X.json';
+import RE5001Timetable from './fixtures/timetable/RE5001.json';
 
 import GetSemesterTimetable from './GetSemesterTimetable';
 import { EVERY_WEEK, expectLessonsEqual } from '../utils/test-utils';
@@ -41,10 +42,8 @@ Array [
     "StartTime": "1800",
     "Venue": "E5-03-23",
     "Weeks": Object {
-      "range": Object {
-        "end": "2018-11-21",
-        "start": "2018-08-15",
-      },
+      "end": "2018-11-21",
+      "start": "2018-08-15",
     },
   },
   Object {
@@ -55,10 +54,8 @@ Array [
     "StartTime": "2030",
     "Venue": "E5-03-23",
     "Weeks": Object {
-      "range": Object {
-        "end": "2018-11-21",
-        "start": "2018-08-15",
-      },
+      "end": "2018-11-21",
+      "start": "2018-08-15",
     },
   },
 ]
@@ -613,6 +610,7 @@ Array [
     ]);
   });
 
+  // CS1010X has lessons extending outside the normal semester week range
   test('should map CS1010X timetable lessons correctly', async () => {
     const task = createTask(CS1010XTimetable as TimetableLesson[]);
     const output = await task.run();
@@ -628,10 +626,8 @@ Object {
       "StartTime": "0900",
       "Venue": "SR_LT19",
       "Weeks": Object {
-        "range": Object {
-          "end": "2019-06-20",
-          "start": "2019-01-17",
-        },
+        "end": "2019-06-20",
+        "start": "2019-01-17",
       },
     },
     Object {
@@ -642,10 +638,8 @@ Object {
       "StartTime": "1200",
       "Venue": "SR_LT19",
       "Weeks": Object {
-        "range": Object {
-          "end": "2019-06-20",
-          "start": "2019-01-17",
-        },
+        "end": "2019-06-20",
+        "start": "2019-01-17",
       },
     },
     Object {
@@ -656,10 +650,8 @@ Object {
       "StartTime": "1000",
       "Venue": "SR_LT19",
       "Weeks": Object {
-        "range": Object {
-          "end": "2019-06-20",
-          "start": "2019-01-17",
-        },
+        "end": "2019-06-20",
+        "start": "2019-01-17",
       },
     },
     Object {
@@ -670,10 +662,8 @@ Object {
       "StartTime": "1100",
       "Venue": "SR_LT19",
       "Weeks": Object {
-        "range": Object {
-          "end": "2019-06-20",
-          "start": "2019-01-17",
-        },
+        "end": "2019-06-20",
+        "start": "2019-01-17",
       },
     },
     Object {
@@ -684,10 +674,8 @@ Object {
       "StartTime": "1300",
       "Venue": "SR_LT19",
       "Weeks": Object {
-        "range": Object {
-          "end": "2019-06-20",
-          "start": "2019-01-17",
-        },
+        "end": "2019-06-20",
+        "start": "2019-01-17",
       },
     },
     Object {
@@ -698,10 +686,82 @@ Object {
       "StartTime": "1400",
       "Venue": "SR_LT19",
       "Weeks": Object {
-        "range": Object {
-          "end": "2019-06-20",
-          "start": "2019-01-17",
-        },
+        "end": "2019-06-20",
+        "start": "2019-01-17",
+      },
+    },
+  ],
+}
+`);
+  });
+
+  // RE5001 has lessons with only one session outside of the normal semester weeks
+  // Tests for accidentally introducing infinity when calculating weekInterval
+  test('should map RE5001 timetable lessons correctly', async () => {
+    const task = createTask(RE5001Timetable);
+    const output = await task.run();
+
+    expect(output).toMatchInlineSnapshot(`
+Object {
+  "RE5001": Array [
+    Object {
+      "ClassNo": "1",
+      "DayText": "Tuesday",
+      "EndTime": "1800",
+      "LessonType": "Lecture",
+      "StartTime": "0900",
+      "Venue": "SDE-423",
+      "Weeks": Object {
+        "end": "2018-08-07",
+        "start": "2018-08-07",
+      },
+    },
+    Object {
+      "ClassNo": "1",
+      "DayText": "Wednesday",
+      "EndTime": "1800",
+      "LessonType": "Lecture",
+      "StartTime": "0900",
+      "Venue": "SDE-423",
+      "Weeks": Object {
+        "end": "2018-08-08",
+        "start": "2018-08-08",
+      },
+    },
+    Object {
+      "ClassNo": "1",
+      "DayText": "Monday",
+      "EndTime": "1800",
+      "LessonType": "Lecture",
+      "StartTime": "0900",
+      "Venue": "SDE-423",
+      "Weeks": Object {
+        "end": "2018-08-06",
+        "start": "2018-08-06",
+      },
+    },
+    Object {
+      "ClassNo": "1",
+      "DayText": "Friday",
+      "EndTime": "1800",
+      "LessonType": "Lecture",
+      "StartTime": "0900",
+      "Venue": "SDE-423",
+      "Weeks": Object {
+        "end": "2018-08-10",
+        "start": "2018-08-10",
+      },
+    },
+    Object {
+      "ClassNo": "1",
+      "DayText": "Saturday",
+      "EndTime": "1300",
+      "LessonType": "Lecture",
+      "StartTime": "0900",
+      "Venue": "SDE-423",
+      "Weeks": Object {
+        "end": "2018-08-11",
+        "start": "2018-08-11",
       },
     },
   ],

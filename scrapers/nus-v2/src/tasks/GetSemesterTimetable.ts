@@ -59,7 +59,7 @@ export function mapLessonWeeks(dates: string[], semester: number, logger: Logger
   const weekInfo = lessonDates.map(NUSModerator.academicCalendar.getAcadWeekInfo);
 
   // Normal instructional week - return an array of weeks
-  if (weekInfo.every((week) => typeof week.num === 'number' && week.sem === semesterName)) {
+  if (weekInfo.every((week) => week.type === 'Instructional' && week.sem === semesterName)) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return weekInfo.map((week) => week.num!);
   }
@@ -70,16 +70,15 @@ export function mapLessonWeeks(dates: string[], semester: number, logger: Logger
 
   // WeekRange always includes the start and end dates
   const weekRange: WeekRange = {
-    range: {
-      start: format(lessonDates[0], ISO8601_DATE_FORMAT),
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      end: format(last(lessonDates)!, ISO8601_DATE_FORMAT),
-    },
+    start: format(lessonDates[0], ISO8601_DATE_FORMAT),
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    end: format(last(lessonDates)!, ISO8601_DATE_FORMAT),
   };
 
-  // Include interval if it is not 1
+  // Include interval only if there are more than one lessons
+  // (otherwise weekInterval is Infinity), and the interval it is not 1
   const weekInterval = Math.min(...intervals);
-  if (weekInterval !== 1) weekRange.weekInterval = weekInterval;
+  if (intervals.length > 0 && weekInterval !== 1) weekRange.weekInterval = weekInterval;
 
   // Include all week numbers if the interval is uneven
   if (!allEqual(intervals)) weekRange.weeks = weeks;
