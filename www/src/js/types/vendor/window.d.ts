@@ -6,6 +6,8 @@ declare global {
     // See https://github.com/Microsoft/TypeScript/issues/19816
     Intl: Intl;
 
+    parseFloat: typeof parseFloat;
+
     // Injected by Disqus
     DISQUS?: any;
     DISQUSWIDGETS?: any;
