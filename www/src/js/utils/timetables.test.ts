@@ -35,6 +35,7 @@ import {
   ODD_WEEK,
 } from 'test-utils/timetable';
 
+import { parseISO } from 'date-fns';
 import {
   areOtherClassesAvailable,
   arrangeLessonsForWeek,
@@ -42,7 +43,7 @@ import {
   deserializeTimetable,
   doLessonsOverlap,
   findExamClashes,
-  formatWeeks,
+  formatNumericWeeks,
   getEndTimeAsDate,
   getStartTimeAsDate,
   groupLessonsByDay,
@@ -58,7 +59,6 @@ import {
   validateModuleLessons,
   validateTimetableModules,
 } from './timetables';
-import { parseISO } from 'date-fns';
 
 // TODO: Fix this later
 const modulesList = modulesListJSON as any;
@@ -565,23 +565,23 @@ describe('validateModuleLessons', () => {
   });
 });
 
-describe(formatWeeks, () => {
+describe(formatNumericWeeks, () => {
   it('should return null if every week is given', () => {
-    expect(formatWeeks(EVERY_WEEK)).toBeNull();
+    expect(formatNumericWeeks(EVERY_WEEK)).toBeNull();
   });
 
   it('should return even/odd weeks', () => {
-    expect(formatWeeks(ODD_WEEK)).toEqual('Odd Weeks');
-    expect(formatWeeks(EVEN_WEEK)).toEqual('Even Weeks');
+    expect(formatNumericWeeks(ODD_WEEK)).toEqual('Odd Weeks');
+    expect(formatNumericWeeks(EVEN_WEEK)).toEqual('Even Weeks');
   });
 
   it('should abbreviate consecutive week numbers', () => {
-    expect(formatWeeks([1])).toEqual('Week 1');
-    expect(formatWeeks([1, 2, 3, 4])).toEqual('Weeks 1-4');
-    expect(formatWeeks([1, 2, 3, 4, 6, 7, 8, 9])).toEqual('Weeks 1-4, 6-9');
-    expect(formatWeeks([1, 3, 5])).toEqual('Weeks 1, 3, 5');
-    expect(formatWeeks([1, 2, 4, 5, 6, 7])).toEqual('Weeks 1, 2, 4-7');
-    expect(formatWeeks([1, 2, 4, 5])).toEqual('Weeks 1, 2, 4, 5');
+    expect(formatNumericWeeks([1])).toEqual('Week 1');
+    expect(formatNumericWeeks([1, 2, 3, 4])).toEqual('Weeks 1-4');
+    expect(formatNumericWeeks([1, 2, 3, 4, 6, 7, 8, 9])).toEqual('Weeks 1-4, 6-9');
+    expect(formatNumericWeeks([1, 3, 5])).toEqual('Weeks 1, 3, 5');
+    expect(formatNumericWeeks([1, 2, 4, 5, 6, 7])).toEqual('Weeks 1, 2, 4-7');
+    expect(formatNumericWeeks([1, 2, 4, 5])).toEqual('Weeks 1, 2, 4, 5');
   });
 });
 

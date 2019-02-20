@@ -7,7 +7,7 @@ import { consumeWeeks, ModifiableLesson } from 'types/modules';
 import { HoverLesson } from 'types/timetables';
 import { OnHoverCell } from 'types/views';
 
-import { formatWeeks, getHoverLesson, LESSON_TYPE_ABBREV } from 'utils/timetables';
+import { formatNumericWeeks, getHoverLesson, LESSON_TYPE_ABBREV } from 'utils/timetables';
 import elements from 'views/elements';
 
 import styles from './TimetableCell.scss';
@@ -21,8 +21,9 @@ type Props = {
   hoverLesson?: HoverLesson | null;
 };
 
-function formatWeekDate(date: string) {
-  return format(parseISO(date), 'MMM dd');
+function formatWeekRange(start: string, end: string) {
+  if (start === end) return format(parseISO(start), 'MMM dd');
+  return `${format(parseISO(start), 'MMM dd')}–${format(parseISO(end), 'MMM dd')}`;
 }
 
 /**
@@ -46,11 +47,8 @@ function TimetableCell(props: Props) {
       }
     : {};
 
-  const weekText = consumeWeeks(
-    lesson.Weeks,
-    formatWeeks,
-    (weekRange) =>
-      `${formatWeekDate(weekRange.range.start)}–${formatWeekDate(weekRange.range.end)}`,
+  const weekText = consumeWeeks(lesson.Weeks, formatNumericWeeks, (weekRange) =>
+    formatWeekRange(weekRange.range.start, weekRange.range.end),
   );
 
   /* eslint-disable */

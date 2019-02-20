@@ -392,7 +392,7 @@ function parseModuleConfig(serialized: string | string[] | null): ModuleLessonCo
  * - 1,2,3       => Weeks 1-3
  * - 1,2,3,5,6,7 => Weeks 1-3, 5-7
  */
-export function formatWeeks(weeks: number[]): string | null {
+export function formatNumericWeeks(weeks: number[]): string | null {
   if (weeks.length === 13) return null;
   if (weeks.length === 1) return `Week ${weeks[0]}`;
 
