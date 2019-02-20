@@ -20,8 +20,9 @@ export type WeekRange = {
   // Number of weeks between each lesson. If not specified one week is assumed
   // ie. there are lessons every week
   weekInterval?: number;
-  // Week intervals for modules with uneven spacing between lessons
-  intervals?: number[];
+  // Week numbers for modules with uneven spacing between lessons. The first
+  // occurrence is on week 1
+  weeks?: number[];
 };
 
 export type Weeks = number[] | WeekRange;

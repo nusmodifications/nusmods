@@ -1,7 +1,7 @@
 import { strict as assert } from 'assert';
 import { has, last, map, mapValues, trimStart, values } from 'lodash';
 import NUSModerator, { Semester as SemesterName } from 'nusmoderator';
-import { compareAsc, differenceInDays } from 'date-fns';
+import { compareAsc, differenceInDays, format, parseISO } from 'date-fns';
 
 import { RawLesson, Semester, WeekRange, Weeks } from '../types/modules';
 import { Task } from '../types/tasks';
@@ -16,6 +16,7 @@ import { validateLesson, validateSemester } from '../services/validation';
 import { activityLessonType, dayTextMap, unrecognizedLessonTypes } from '../utils/data';
 import { allEqual, deltas } from '../utils/arrays';
 import { Omit } from '../types/utils';
+import { ISO8601_DATE_FORMAT } from '../utils/time';
 
 /* eslint-disable @typescript-eslint/camelcase */
 
@@ -52,9 +53,9 @@ const getLessonKey = (lesson: TimetableLesson) =>
  * Map date of lessons to either an array of numbers or an object representing
  * the range of date and the intervals between lessons
  */
-export function mapLessonWeeks(weeks: string[], semester: number, logger: Logger): Weeks {
+export function mapLessonWeeks(dates: string[], semester: number, logger: Logger): Weeks {
   const semesterName = SEMESTER_NAMES[semester];
-  const lessonDates = weeks.map((week) => new Date(week)).sort(compareAsc);
+  const lessonDates = dates.map((date) => parseISO(date)).sort(compareAsc);
   const weekInfo = lessonDates.map(NUSModerator.academicCalendar.getAcadWeekInfo);
 
   // Normal instructional week - return an array of weeks
@@ -64,23 +65,26 @@ export function mapLessonWeeks(weeks: string[], semester: number, logger: Logger
   }
 
   const firstDay = lessonDates[0];
-  const intervals = deltas(lessonDates.map((date) => differenceInDays(date, firstDay) / 7));
+  const weeks = lessonDates.map((date) => differenceInDays(date, firstDay) / 7 + 1);
+  const intervals = deltas(weeks);
 
+  // WeekRange always includes the start and end dates
   const weekRange: WeekRange = {
     range: {
-      start: lessonDates[0].toISOString(),
+      start: format(lessonDates[0], ISO8601_DATE_FORMAT),
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      end: last(lessonDates)!.toISOString(),
+      end: format(last(lessonDates)!, ISO8601_DATE_FORMAT),
     },
   };
 
-  if (allEqual(intervals)) {
-    const weekInterval = intervals[0];
-    if (weekInterval !== 1) weekRange.weekInterval = weekInterval;
-  } else {
-    weekRange.intervals = intervals;
-  }
+  // Include interval if it is not 1
+  const weekInterval = Math.min(...intervals);
+  if (weekInterval !== 1) weekRange.weekInterval = weekInterval;
 
+  // Include all week numbers if the interval is uneven
+  if (!allEqual(intervals)) weekRange.weeks = weeks;
+
+  // Sanity check for lessons which do not occur on the same day each week
   if (intervals.some((interval) => interval % 1 !== 0)) {
     logger.error({ intervals, lessonDates }, 'Uneven week intervals');
   }

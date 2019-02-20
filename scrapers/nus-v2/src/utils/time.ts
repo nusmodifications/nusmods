@@ -5,6 +5,10 @@ import { range } from 'lodash';
  * where we divide classes up into chunks of 30 minute blocks
  */
 
+export const SGT_OFFSET = -8 * 60;
+
+export const ISO8601_DATE_FORMAT = 'yyyy-MM-dd';
+
 /**
  * Converts a 24-hour format time string to an index.
  * @param {string} time - 24-hour format time to convert to index
@@ -40,4 +44,21 @@ export function convertIndexToTime(index: number) {
 export function getTimeRange(startTime: string, endTime: string): string[] {
   const timeRange = range(convertTimeToIndex(startTime), convertTimeToIndex(endTime));
   return timeRange.map(convertIndexToTime);
+}
+
+/**
+ * Converts a Date object representing an event happening in Singapore time
+ * and outputs a new Date object with the local time in SGT. This is useful
+ * in conjunction with format from date-fns since it always use local time when
+ * formatting output.
+ *
+ * @example
+ *     // Exam is at 9AM 23rd of October 2016
+ *     const examDate = new Date('2016-11-23T01:00:00.000Z');
+ *     format(examDate, 'dd-MM-yyyy p');
+ *     // => "23-11-2016 9:00 AM", no matter where the user machine's TZ is
+ */
+export function toSingaporeTime(date: string | number | Date): Date {
+  const localDate = new Date(date);
+  return new Date(localDate.getTime() + (localDate.getTimezoneOffset() - SGT_OFFSET) * 60 * 1000);
 }
