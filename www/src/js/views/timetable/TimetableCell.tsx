@@ -1,8 +1,9 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { isEqual } from 'lodash';
+import { format, parseISO } from 'date-fns';
 
-import { ModifiableLesson } from 'types/modules';
+import { consumeWeeks, ModifiableLesson } from 'types/modules';
 import { HoverLesson } from 'types/timetables';
 import { OnHoverCell } from 'types/views';
 
@@ -19,6 +20,10 @@ type Props = {
   onClick?: () => void;
   hoverLesson?: HoverLesson | null;
 };
+
+function formatWeekDate(date: string) {
+  return format(parseISO(date), 'MMM dd');
+}
 
 /**
  * Smallest unit in timetable.
@@ -41,7 +46,12 @@ function TimetableCell(props: Props) {
       }
     : {};
 
-  const weekText = formatWeeks(lesson.Weeks);
+  const weekText = consumeWeeks(
+    lesson.Weeks,
+    formatWeeks,
+    (weekRange) =>
+      `${formatWeekDate(weekRange.range.start)}–${formatWeekDate(weekRange.range.end)}`,
+  );
 
   /* eslint-disable */
   return (

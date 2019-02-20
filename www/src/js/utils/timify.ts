@@ -126,6 +126,8 @@ export function getDayIndex(date: Date = new Date()): number {
 
 /**
  * Return a copy of the original Date incremented by the given number of days
+ *
+ * @deprecated Use addDays from date-fns
  */
 export function daysAfter(startDate: Date, days: number): Date {
   const d = new Date(startDate.valueOf());

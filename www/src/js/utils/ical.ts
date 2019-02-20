@@ -2,13 +2,22 @@ import _ from 'lodash';
 // @ts-ignore
 import { EventOption } from 'ical-generator';
 
-import { Module, ModuleCode, RawLesson, Semester } from 'types/modules';
-import { ModuleLessonConfigWithLessons, SemTimetableConfigWithLessons } from 'types/timetables';
+import {
+  consumeWeeks,
+  EndTime,
+  Module,
+  RawLesson,
+  Semester,
+  StartTime,
+  WeekRange,
+} from 'types/modules';
+import { SemTimetableConfigWithLessons } from 'types/timetables';
 
 import config from 'config';
 import academicCalendar from 'data/academic-calendar';
 import { getModuleSemesterData } from 'utils/modules';
 import { daysAfter } from 'utils/timify';
+import { addDays, parseISO } from 'date-fns';
 
 const SG_UTC_TIME_DIFF_MS = 8 * 60 * 60 * 1000;
 export const RECESS_WEEK = -1;
@@ -68,26 +77,71 @@ export function datesForAcademicWeeks(start: Date, week: number): Date {
   return daysAfter(start, (week <= 6 ? week - 1 : week) * 7);
 }
 
-/**
- * Calculates the dates that should be excluded for lesson
- *
- * - Exclude entire weeks that do not apply for the lesson
- * - Exclude all holidays
- *
- * Exclusions are represented by datetime when the event will start, so we calculate
- * excluded weeks by simply offsetting the first lesson's date by seven days per week
- */
-export function calculateExclusion(lesson: RawLesson, firstLesson: Date) {
-  // TODO: Make this work with new format
-  const excludedWeeks: number[] = _.difference(
-    [RECESS_WEEK, ...ALL_WEEKS],
-    lesson.Weeks.filter(_.isNumber),
-  );
+function calculateStartEnd(date: Date, startTime: StartTime, endTime: EndTime) {
+  const start = hoursAfter(date, getTimeHour(startTime));
+  const end = hoursAfter(date, getTimeHour(endTime));
 
-  return [
-    ...excludedWeeks.map((week) => datesForAcademicWeeks(firstLesson, week)),
-    ...holidaysForYear(getTimeHour(lesson.StartTime)),
-  ];
+  return { start, end };
+}
+
+export function calculateNumericWeek(
+  lesson: RawLesson,
+  semester: Semester,
+  weeks: number[],
+  firstDayOfSchool: Date,
+): EventOption {
+  const lessonDay = daysAfter(firstDayOfSchool, dayIndex(lesson.DayText));
+  const { start, end } = calculateStartEnd(lessonDay, lesson.StartTime, lesson.EndTime);
+  const excludedWeeks = _.difference([RECESS_WEEK, ...ALL_WEEKS], weeks);
+
+  return {
+    start,
+    end,
+    repeating: {
+      freq: 'WEEKLY',
+      count: NUM_WEEKS_IN_A_SEM,
+      byDay: [lesson.DayText.slice(0, 2)],
+      exclude: [
+        ...excludedWeeks.map((week) => datesForAcademicWeeks(start, week)),
+        ...holidaysForYear(getTimeHour(lesson.StartTime)),
+      ],
+    },
+  };
+}
+
+export function calculateWeekRange(
+  lesson: RawLesson,
+  semester: Semester,
+  weekRange: WeekRange,
+): EventOption {
+  const lessonDay = parseISO(weekRange.range.start);
+  const { start, end } = calculateStartEnd(lessonDay, lesson.StartTime, lesson.EndTime);
+
+  const interval = weekRange.weekInterval || 1;
+  const exclusions = [];
+
+  if (weekRange.weeks) {
+    for (
+      let current = start, weekNumber = 1;
+      current <= end;
+      current = addDays(current, interval * 7), weekNumber += 1
+    ) {
+      if (!weekRange.weeks.includes(weekNumber)) {
+        exclusions.push(current);
+      }
+    }
+  }
+
+  return {
+    start,
+    end,
+    repeating: {
+      interval,
+      until: end,
+      byDay: [lesson.DayText.slice(0, 2)],
+      exclude: [...exclusions, ...holidaysForYear(getTimeHour(lesson.StartTime))],
+    },
+  };
 }
 
 /**
@@ -100,25 +154,17 @@ export function iCalEventForLesson(
   semester: Semester,
   firstDayOfSchool: Date,
 ): EventOption {
-  // set start date and time, end date and time
-  const lessonDayMidnight = daysAfter(firstDayOfSchool, dayIndex(lesson.DayText));
-  const start = hoursAfter(lessonDayMidnight, getTimeHour(lesson.StartTime));
-  const end = hoursAfter(lessonDayMidnight, getTimeHour(lesson.EndTime));
-
-  const exclude = calculateExclusion(lesson, start);
+  const event = consumeWeeks(
+    lesson.Weeks,
+    (weeks) => calculateNumericWeek(lesson, semester, weeks, firstDayOfSchool),
+    (weeks) => calculateWeekRange(lesson, semester, weeks),
+  );
 
   return {
-    start,
-    end,
+    ...event,
     summary: `${module.ModuleCode} ${lesson.LessonType}`,
     description: `${module.ModuleTitle}\n${lesson.LessonType} Group ${lesson.ClassNo}`,
     location: lesson.Venue,
-    repeating: {
-      freq: 'WEEKLY',
-      count: NUM_WEEKS_IN_A_SEM,
-      byDay: [lesson.DayText.slice(0, 2)],
-      exclude,
-    },
   };
 }
 
@@ -131,17 +177,18 @@ export default function iCalForTimetable(
   const [year, month, day] = academicCalendar[academicYear][semester].start;
   // 'month - 1' because JS months are zero indexed
   const firstDayOfSchool = new Date(Date.UTC(year, month - 1, day) - SG_UTC_TIME_DIFF_MS);
-  const events = _.flatMap(
-    timetable,
-    (lessonConfig: ModuleLessonConfigWithLessons, moduleCode: ModuleCode) =>
-      _.concat(
-        _.flatMap(lessonConfig, (lessons) =>
-          lessons.map((lesson) =>
-            iCalEventForLesson(lesson, moduleData[moduleCode], semester, firstDayOfSchool),
-          ),
-        ),
-        iCalEventForExam(moduleData[moduleCode], semester) || [],
-      ),
-  );
+  const events: EventOption[] = [];
+
+  _.each(timetable, (lessonConfig, moduleCode) => {
+    _.each(lessonConfig, (lessons) => {
+      lessons.forEach((lesson) => {
+        events.push(iCalEventForLesson(lesson, moduleData[moduleCode], semester, firstDayOfSchool));
+      });
+    });
+
+    const examEvent = iCalEventForExam(moduleData[moduleCode], semester);
+    if (examEvent) events.push(examEvent);
+  });
+
   return events;
 }

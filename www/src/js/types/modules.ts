@@ -13,9 +13,34 @@ export type LessonTime = StartTime | EndTime;
 export type ModuleCode = string; // E.g. "CS3216"
 export type ModuleTitle = string;
 export type Semester = number; // E.g. 1/2/3/4. 3 and 4 means special sem i and ii.
-export type LessonWeek = number | 'Reading' | 'Recess' | 'Orientation';
 export type Workload = string | ReadonlyArray<number>;
 export type Venue = string;
+
+export type WeekRange = {
+  // The start and end dates
+  range: { start: string; end: string };
+  // Number of weeks between each lesson. If not specified one week is assumed
+  // ie. there are lessons every week
+  weekInterval?: number;
+  // Week intervals for modules with uneven spacing between lessons
+  weeks?: number[];
+};
+
+export type Weeks = ReadonlyArray<number> | WeekRange;
+
+/**
+ * Typesafe helper functions for consuming Weeks
+ */
+export const isWeekRange = (week: Weeks): week is WeekRange => !Array.isArray(week);
+
+export const consumeWeeks = <T = void>(
+  weeks: Weeks,
+  consumeNumericWeeks: (weeks: number[]) => T,
+  consumeWeekRange: (weekRange: WeekRange) => T,
+): T => {
+  if (Array.isArray(weeks)) return consumeNumericWeeks(weeks);
+  return consumeWeekRange(weeks as WeekRange);
+};
 
 // Recursive tree of module codes and boolean operators for the prereq tree
 export type PrereqTree = string | { and?: PrereqTree[]; or?: PrereqTree[] };
@@ -64,7 +89,7 @@ export type RawLesson = Readonly<{
   LessonType: LessonType;
   StartTime: StartTime;
   Venue: Venue;
-  Weeks: ReadonlyArray<LessonWeek>;
+  Weeks: Weeks;
 }>;
 
 // Semester-specific information of a module.

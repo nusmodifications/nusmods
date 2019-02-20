@@ -60,10 +60,10 @@ export default class DayEvents extends React.PureComponent<Props> {
   };
 
   render() {
-    const { lessons, dayInfo } = this.props;
+    const { lessons, date, dayInfo } = this.props;
 
     const sortedLessons = lessons
-      .filter((lesson) => isLessonAvailable(lesson, dayInfo))
+      .filter((lesson) => isLessonAvailable(lesson, date, dayInfo))
       .sort((a, b) => {
         const timeDiff = a.StartTime.localeCompare(b.StartTime);
         return timeDiff !== 0 ? timeDiff : a.ClassNo.localeCompare(b.ClassNo);

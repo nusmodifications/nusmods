@@ -19,19 +19,21 @@ import {
   get,
   sample,
 } from 'lodash';
+import { addDays, min as minDate, parseISO } from 'date-fns';
 import qs from 'query-string';
 
 import {
   ClassNo,
   ColoredLesson,
+  consumeWeeks,
   Lesson,
   LessonType,
-  LessonWeek,
   Module,
   ModuleCode,
   RawLesson,
   Semester,
 } from 'types/modules';
+
 import {
   HoverLesson,
   ModuleLessonConfig,
@@ -41,12 +43,13 @@ import {
   TimetableDayArrangement,
   TimetableDayFormat,
 } from 'types/timetables';
+
 import { ModulesMap } from 'reducers/moduleBank';
 import { ModuleCodeMap } from 'types/reducers';
-
-import { getModuleSemesterData, getModuleTimetable } from 'utils/modules';
-import { getTimeAsDate } from 'utils/timify';
 import { ExamClashes } from 'types/views';
+
+import { getTimeAsDate } from './timify';
+import { getModuleSemesterData, getModuleTimetable } from './modules';
 import { deltas } from './array';
 
 type LessonTypeAbbrev = { [lessonType: string]: string };
@@ -249,12 +252,27 @@ export function findExamClashes(modules: Module[], semester: Semester): ExamClas
   return omitBy(groupedModules, (mods) => mods.length === 1); // Remove non-clashing mods
 }
 
-export function isLessonAvailable(lesson: Lesson, weekInfo: Readonly<AcadWeekInfo>): boolean {
-  if (!weekInfo.num) {
-    return lesson.Weeks.includes(weekInfo.type as LessonWeek);
-  }
+export function isLessonAvailable(
+  lesson: Lesson,
+  date: Date,
+  weekInfo: Readonly<AcadWeekInfo>,
+): boolean {
+  return consumeWeeks(
+    lesson.Weeks,
+    (weeks) => weeks.includes(weekInfo.num!),
+    (weekRange) => {
+      const end = minDate([parseISO(weekRange.range.end), date]);
+      for (
+        let current = parseISO(weekRange.range.start);
+        current <= end;
+        current = addDays(current, 7)
+      ) {
+        if (isEqual(current, date)) return true;
+      }
 
-  return lesson.Weeks.includes(weekInfo.num);
+      return false;
+    },
+  );
 }
 
 export function isLessonOngoing(lesson: Lesson, currentTime: number): boolean {
@@ -366,46 +384,26 @@ function parseModuleConfig(serialized: string | string[] | null): ModuleLessonCo
   return config;
 }
 
-function addNamedWeeks(
-  numericWeeks: (number | string)[],
-  namedWeeks: string,
-  plural: boolean = true,
-): string | null {
-  const prefix = plural ? 'Weeks' : 'Week';
-  const numericWeekText = `${prefix} ${numericWeeks.join(', ')}`;
-  return namedWeeks ? `${numericWeekText}, ${namedWeeks}` : numericWeekText;
-}
-
 /**
- * Formats numeric week number string into something human readable
+ * Formats numeric week number array into something human readable
  *
  * - 1           => Week 1
  * - 1,2         => Weeks 1,2
  * - 1,2,3       => Weeks 1-3
  * - 1,2,3,5,6,7 => Weeks 1-3, 5-7
  */
-export function formatWeeks(weeks: ReadonlyArray<LessonWeek>): string | null {
-  const numericWeeks = weeks.filter((week): week is number => typeof week === 'number');
-  const namedWeeks = weeks
-    .filter((week): week is 'Reading' | 'Recess' | 'Orientation' => typeof week === 'string')
-    .join(', ');
-
-  // All weeks - only show text if there are named weeks
-  if (numericWeeks.length === 13) return namedWeeks ? `Every Week, ${namedWeeks}` : null;
-
-  // No numeric week, so only show named weeks
-  if (numericWeeks.length === 0) return namedWeeks;
-  if (numericWeeks.length === 1) return addNamedWeeks(numericWeeks, namedWeeks, false);
+export function formatWeeks(weeks: number[]): string | null {
+  if (weeks.length === 13) return null;
+  if (weeks.length === 1) return `Week ${weeks[0]}`;
 
   // Check for odd / even weeks
-  if (numericWeeks.length === 6 && deltas(numericWeeks).every((d) => d === 2)) {
-    const weekType = numericWeeks[0] === 1 ? 'Odd Weeks' : 'Even Weeks';
-    return namedWeeks ? `${weekType}, ${namedWeeks}` : weekType;
+  if (weeks.length >= 6 && deltas(weeks).every((d) => d === 2)) {
+    return weeks[0] === 1 ? 'Odd Weeks' : 'Even Weeks';
   }
 
   // Merge consecutive
   const processed: (number | string)[] = [];
-  let start = numericWeeks.shift()!; // eslint-disable-line @typescript-eslint/no-non-null-assertion
+  let start = weeks[0];
   let end = start;
 
   const mergeConsecutive = () => {
@@ -416,8 +414,7 @@ export function formatWeeks(weeks: ReadonlyArray<LessonWeek>): string | null {
     }
   };
 
-  while (numericWeeks.length) {
-    const next = numericWeeks.shift()!; // eslint-disable-line @typescript-eslint/no-non-null-assertion
+  weeks.slice(1).forEach((next) => {
     if (next - end === 1) {
       // Consecutive week number - keep going
       end = next;
@@ -427,11 +424,11 @@ export function formatWeeks(weeks: ReadonlyArray<LessonWeek>): string | null {
       start = next;
       end = start;
     }
-  }
+  });
 
   mergeConsecutive();
 
-  return addNamedWeeks(processed, namedWeeks);
+  return `Weeks ${processed.join(', ')}`;
 }
 
 // Converts a timetable config to query string

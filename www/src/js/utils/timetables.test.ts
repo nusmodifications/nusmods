@@ -1,4 +1,4 @@
-import { AcadWeekInfo } from 'nusmoderator';
+import NUSModerator from 'nusmoderator';
 import {
   ModuleLessonConfig,
   SemTimetableConfig,
@@ -7,7 +7,15 @@ import {
   TimetableDayArrangement,
   TimetableDayFormat,
 } from 'types/timetables';
-import { ClassNo, ColoredLesson, LessonType, ModuleCode, RawLesson, Semester } from 'types/modules';
+import {
+  ClassNo,
+  ColoredLesson,
+  LessonType,
+  ModuleCode,
+  RawLesson,
+  Semester,
+  Weeks,
+} from 'types/modules';
 import { ModulesMap } from 'reducers/moduleBank';
 
 import _ from 'lodash';
@@ -50,6 +58,7 @@ import {
   validateModuleLessons,
   validateTimetableModules,
 } from './timetables';
+import { parseISO } from 'date-fns';
 
 // TODO: Fix this later
 const modulesList = modulesListJSON as any;
@@ -574,58 +583,49 @@ describe(formatWeeks, () => {
     expect(formatWeeks([1, 2, 4, 5, 6, 7])).toEqual('Weeks 1, 2, 4-7');
     expect(formatWeeks([1, 2, 4, 5])).toEqual('Weeks 1, 2, 4, 5');
   });
-
-  it('should display text lesson weeks', () => {
-    expect(formatWeeks(['Orientation'])).toEqual('Orientation');
-    expect(formatWeeks(['Orientation', 'Recess'])).toEqual('Orientation, Recess');
-    expect(formatWeeks([1, 2, 3, 4, 5, 6, 'Recess', 7, 'Reading'])).toEqual(
-      'Weeks 1-7, Recess, Reading',
-    );
-    expect(formatWeeks([1, 3, 5, 'Recess', 7, 9, 11, 'Reading'])).toEqual(
-      'Odd Weeks, Recess, Reading',
-    );
-    expect(
-      formatWeeks(['Orientation', 1, 2, 3, 4, 5, 6, 'Recess', 7, 8, 9, 10, 11, 12, 13, 'Reading']),
-    ).toEqual('Every Week, Orientation, Recess, Reading');
-  });
 });
 
 describe(isLessonAvailable, () => {
-  const weekInfo: AcadWeekInfo = {
-    year: '2017-2018',
-    sem: 'Semester 1',
-    type: 'Instructional',
-    num: 5,
-  };
+  function testLessonAvailable(weeks: Weeks, date: Date) {
+    return isLessonAvailable(
+      { ...createGenericLesson(), Weeks: weeks },
+      date,
+      NUSModerator.academicCalendar.getAcadWeekInfo(date),
+    );
+  }
 
   test("should return false if the lesson's Weeks does not match the week number", () => {
     expect(
-      isLessonAvailable(
-        { ...createGenericLesson(), Weeks: [1, 3, 5, 7, 9, 11] },
-        {
-          ...weekInfo,
-          num: 4,
-        },
+      testLessonAvailable(
+        [1, 3, 5, 7, 9, 11],
+        // Week 5
+        parseISO('2017-09-11'),
+      ),
+    ).toBe(true);
+
+    expect(
+      testLessonAvailable(
+        [1, 2, 3],
+        // Week 4
+        parseISO('2017-09-04'),
       ),
     ).toBe(false);
 
     expect(
-      isLessonAvailable(
-        { ...createGenericLesson(), Weeks: [1, 2, 3] },
-        {
-          ...weekInfo,
-          num: 4,
-        },
+      testLessonAvailable(
+        [1, 3, 5, 7, 9, 11],
+        // Week 5
+        parseISO('2017-09-11'),
       ),
-    ).toBe(false);
+    ).toBe(true);
+  });
 
+  test('should return false if the date falls outside the week range', () => {
     expect(
-      isLessonAvailable(
-        { ...createGenericLesson(), Weeks: [1, 3, 5, 7, 9, 11] },
-        {
-          ...weekInfo,
-          num: 5,
-        },
+      testLessonAvailable(
+        { range: { start: '2017-08-07', end: '2017-10-17' } },
+        // Week 5
+        parseISO('2017-09-11'),
       ),
     ).toBe(true);
   });
