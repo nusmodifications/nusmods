@@ -41,7 +41,7 @@ export class LessonTimetableComponent extends React.PureComponent<Props, State> 
       ...lesson,
       ModuleCode: '',
       ModuleTitle: '',
-      isModifiable: true,
+      isModifiable: !!lesson.Venue,
     }));
     const coloredLessons = colorLessonsByKey(lessons, 'LessonType');
     const arrangedLessons = arrangeLessonsForWeek(coloredLessons);
