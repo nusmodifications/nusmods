@@ -18,7 +18,8 @@ export type Venue = string;
 
 export type WeekRange = {
   // The start and end dates
-  range: { start: string; end: string };
+  start: string;
+  end: string;
   // Number of weeks between each lesson. If not specified one week is assumed
   // ie. there are lessons every week
   weekInterval?: number;

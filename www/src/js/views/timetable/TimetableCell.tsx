@@ -48,7 +48,7 @@ function TimetableCell(props: Props) {
     : {};
 
   const weekText = consumeWeeks(lesson.Weeks, formatNumericWeeks, (weekRange) =>
-    formatWeekRange(weekRange.range.start, weekRange.range.end),
+    formatWeekRange(weekRange.start, weekRange.end),
   );
 
   /* eslint-disable */

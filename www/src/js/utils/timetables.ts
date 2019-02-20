@@ -261,9 +261,9 @@ export function isLessonAvailable(
     lesson.Weeks,
     (weeks) => weeks.includes(weekInfo.num!),
     (weekRange) => {
-      const end = minDate([parseISO(weekRange.range.end), date]);
+      const end = minDate([parseISO(weekRange.end), date]);
       for (
-        let current = parseISO(weekRange.range.start);
+        let current = parseISO(weekRange.start);
         current <= end;
         current = addDays(current, 7)
       ) {

@@ -623,7 +623,7 @@ describe(isLessonAvailable, () => {
   test('should return false if the date falls outside the week range', () => {
     expect(
       testLessonAvailable(
-        { range: { start: '2017-08-07', end: '2017-10-17' } },
+        { start: '2017-08-07', end: '2017-10-17' },
         // Week 5
         parseISO('2017-09-11'),
       ),

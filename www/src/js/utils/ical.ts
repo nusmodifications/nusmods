@@ -114,7 +114,7 @@ export function calculateWeekRange(
   semester: Semester,
   weekRange: WeekRange,
 ): EventOption {
-  const lessonDay = parseISO(weekRange.range.start);
+  const lessonDay = parseISO(weekRange.start);
   const { start, end } = calculateStartEnd(lessonDay, lesson.StartTime, lesson.EndTime);
 
   const interval = weekRange.weekInterval || 1;
