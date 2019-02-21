@@ -4,15 +4,15 @@ import { connect } from 'react-redux';
 import _, { isEmpty } from 'lodash';
 
 import { ModulesMap } from 'reducers/moduleBank';
-import { HORIZONTAL, ColorMapping, TimetableOrientation } from 'types/reducers';
+import { ColorMapping, HORIZONTAL, TimetableOrientation } from 'types/reducers';
 import {
-  Lesson,
   ColoredLesson,
+  Lesson,
+  ModifiableLesson,
   Module,
   ModuleCode,
-  Semester,
   ModuleWithColor,
-  ModifiableLesson,
+  Semester,
 } from 'types/modules';
 import {
   SemTimetableConfig,
@@ -29,20 +29,22 @@ import {
 } from 'actions/timetables';
 import { undo } from 'actions/undoHistory';
 import {
-  getModuleTimetable,
   areLessonsSameClass,
   formatExamDate,
   getExamDate,
+  getModuleTimetable,
 } from 'utils/modules';
 import {
-  timetableLessonsArray,
-  hydrateSemTimetableWithLessons,
-  arrangeLessonsForWeek,
   areOtherClassesAvailable,
-  lessonsForLessonType,
+  arrangeLessonsForWeek,
   findExamClashes,
+  getLessonIdentifier,
   getSemesterModules,
+  hydrateSemTimetableWithLessons,
+  lessonsForLessonType,
+  timetableLessonsArray,
 } from 'utils/timetables';
+import { resetScrollPosition } from 'utils/react';
 import { State as StoreState } from 'reducers';
 import config from 'config';
 import ModulesSelectContainer from 'views/timetable/ModulesSelectContainer';
@@ -55,6 +57,11 @@ import TimetableModulesTable from './TimetableModulesTable';
 import ExamCalendar from './ExamCalendar';
 import ModulesTableFooter from './ModulesTableFooter';
 import styles from './TimetableContent.scss';
+
+type ModifiedCell = {
+  className: string;
+  position: ClientRect;
+};
 
 type OwnProps = {
   // Own props
@@ -89,12 +96,48 @@ type State = {
   tombstone: ModuleWithColor | null;
 };
 
+/**
+ * When a module is modified, we want to ensure the selected timetable cell
+ * is in approximately the same location when all of the new options are rendered.
+ * This is important for modules with a lot of options which can push the selected
+ * option off screen and disorientate the user.
+ */
+function maintainScrollPosition(container: HTMLElement, modifiedCell: ModifiedCell) {
+  const newCell = container.getElementsByClassName(modifiedCell.className)[0];
+  if (!newCell) return;
+
+  const previousPosition = modifiedCell.position;
+  const currentPosition = newCell.getBoundingClientRect();
+
+  // We try to ensure the cell is in the same position on screen, so we calculate
+  // the new position by taking the difference between the two positions and
+  // adding it to the scroll position of the scroll container, which is the
+  // window for the y axis and the timetable container for the x axis
+  const x = currentPosition.left - previousPosition.left + window.scrollX;
+  const y = currentPosition.top - previousPosition.top + window.scrollY;
+
+  window.scroll(0, y);
+  container.scrollLeft = x; // eslint-disable-line no-param-reassign
+}
+
 class TimetableContent extends React.Component<Props, State> {
   state: State = {
     isScrolledHorizontally: false,
     showExamCalendar: false,
     tombstone: null,
   };
+
+  timetableRef = React.createRef<HTMLDivElement>();
+
+  modifiedCell: ModifiedCell | null = null;
+
+  componentDidUpdate() {
+    if (this.modifiedCell && this.timetableRef.current) {
+      maintainScrollPosition(this.timetableRef.current, this.modifiedCell);
+
+      this.modifiedCell = null;
+    }
+  }
 
   componentWillUnmount() {
     this.cancelModifyLesson();
@@ -103,9 +146,7 @@ class TimetableContent extends React.Component<Props, State> {
   onScroll: React.UIEventHandler = (e) => {
     // Only trigger when there is an active lesson
     const isScrolledHorizontally =
-      !!this.props.activeLesson &&
-      e.currentTarget instanceof HTMLElement &&
-      e.currentTarget.scrollLeft > 0;
+      !!this.props.activeLesson && e.currentTarget && e.currentTarget.scrollLeft > 0;
     if (this.state.isScrolledHorizontally !== isScrolledHorizontally) {
       this.setState({ isScrolledHorizontally });
     }
@@ -114,19 +155,30 @@ class TimetableContent extends React.Component<Props, State> {
   cancelModifyLesson = () => {
     if (this.props.activeLesson) {
       this.props.cancelModifyLesson();
+
+      resetScrollPosition();
     }
   };
 
   isHiddenInTimetable = (moduleCode: ModuleCode) =>
     this.props.hiddenInTimetable.includes(moduleCode);
 
-  modifyCell = (lesson: ModifiableLesson) => {
+  modifyCell = (lesson: ModifiableLesson, position: ClientRect) => {
     if (lesson.isAvailable) {
       this.props.changeLesson(this.props.semester, lesson);
+
+      resetScrollPosition();
     } else if (lesson.isActive) {
       this.props.cancelModifyLesson();
+
+      resetScrollPosition();
     } else {
       this.props.modifyLesson(lesson);
+
+      this.modifiedCell = {
+        position,
+        className: getLessonIdentifier(lesson),
+      };
     }
   };
 
@@ -319,7 +371,11 @@ class TimetableContent extends React.Component<Props, State> {
                 }))}
               />
             ) : (
-              <div className={styles.timetableWrapper} onScroll={this.onScroll}>
+              <div
+                className={styles.timetableWrapper}
+                onScroll={this.onScroll}
+                ref={this.timetableRef}
+              >
                 <Timetable
                   lessons={arrangedLessonsWithModifiableFlag}
                   isVerticalOrientation={isVerticalOrientation}

@@ -471,3 +471,10 @@ export function getHoverLesson(lesson: Lesson): HoverLesson {
     lessonType: lesson.LessonType,
   };
 }
+
+/**
+ * Obtain a semi-unique key for a lesson
+ */
+export function getLessonIdentifier(lesson: Lesson): string {
+  return `${lesson.ModuleCode}-${LESSON_TYPE_ABBREV[lesson.LessonType]}-${lesson.ClassNo}`;
+}

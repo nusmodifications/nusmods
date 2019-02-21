@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import { isEqual } from 'lodash';
 import { format, parseISO } from 'date-fns';
@@ -7,7 +7,12 @@ import { consumeWeeks, ModifiableLesson } from 'types/modules';
 import { HoverLesson } from 'types/timetables';
 import { OnHoverCell } from 'types/views';
 
-import { formatNumericWeeks, getHoverLesson, LESSON_TYPE_ABBREV } from 'utils/timetables';
+import {
+  formatNumericWeeks,
+  getHoverLesson,
+  getLessonIdentifier,
+  LESSON_TYPE_ABBREV,
+} from 'utils/timetables';
 import elements from 'views/elements';
 
 import styles from './TimetableCell.scss';
@@ -17,7 +22,7 @@ type Props = {
   lesson: ModifiableLesson;
   onHover: OnHoverCell;
   style?: React.CSSProperties;
-  onClick?: () => void;
+  onClick?: (position: ClientRect) => void;
   hoverLesson?: HoverLesson | null;
 };
 
@@ -36,13 +41,13 @@ function TimetableCell(props: Props) {
 
   const moduleName = showTitle ? `${lesson.ModuleCode} ${lesson.ModuleTitle}` : lesson.ModuleCode;
   const Cell = props.onClick ? 'button' : 'div';
-  const hover = isEqual(getHoverLesson(lesson), hoverLesson);
+  const isHoveredOver = isEqual(getHoverLesson(lesson), hoverLesson);
 
   const conditionalProps = onClick
     ? {
         onClick: (e: React.MouseEvent) => {
           e.preventDefault();
-          onClick();
+          onClick(e.currentTarget.getBoundingClientRect());
         },
       }
     : {};
@@ -51,19 +56,24 @@ function TimetableCell(props: Props) {
     formatWeekRange(weekRange.start, weekRange.end),
   );
 
-  /* eslint-disable */
   return (
     <Cell
-      className={classnames(styles.cell, elements.lessons, `color-${lesson.colorIndex}`, {
-        hoverable: !!props.onClick,
-        [styles.clickable]: !!onClick,
-        [styles.available]: lesson.isAvailable,
-        [styles.active]: lesson.isActive,
-        // Local hover style for the timetable planner timetable,
-        [styles.hover]: hover,
-        // Global hover style for module page timetable
-        hover,
-      })}
+      className={classnames(
+        styles.cell,
+        getLessonIdentifier(lesson),
+        elements.lessons,
+        `color-${lesson.colorIndex}`,
+        {
+          hoverable: !!onClick,
+          [styles.clickable]: !!onClick,
+          [styles.available]: lesson.isAvailable,
+          [styles.active]: lesson.isActive,
+          // Local hover style for the timetable planner timetable,
+          [styles.hover]: isHoveredOver,
+          // Global hover style for module page timetable
+          hover: isHoveredOver,
+        },
+      )}
       style={props.style}
       onMouseEnter={() => onHover(getHoverLesson(lesson))}
       onTouchStart={() => onHover(getHoverLesson(lesson))}

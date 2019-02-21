@@ -34,7 +34,10 @@ $gutter: 0.75rem;
     position: fixed;
     right: 0;
     left: $side-nav-width-md + $schedule-width + $gutter;
-    z-index: $venue-map-z-index;
+
+    &.expanded {
+      z-index: $venue-detail-expanded-z-index;
+    }
   }
 }
 

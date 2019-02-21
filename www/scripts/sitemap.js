@@ -21,6 +21,7 @@ const relativeUrls = [
   'faq',
   'contact',
   'team',
+  'contribute',
   'contributors',
   'apps',
 ];

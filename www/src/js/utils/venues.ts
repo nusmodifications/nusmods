@@ -10,8 +10,8 @@ const hourDifference = range(48).map((i) => Math.floor(i / 2) * 100 + (i % 2) * 
 
 const stringCompare =
   // Feature detect Intl API
-  Intl && typeof Intl === 'object'
-    ? new Intl.Collator('en', { sensitivity: 'base', numeric: true }).compare
+  window.Intl && typeof window.Intl === 'object'
+    ? new window.Intl.Collator('en', { sensitivity: 'base', numeric: true }).compare
     : (a: string, b: string) => a.localeCompare(b);
 
 export function sortVenues(venues: VenueInfo): VenueDetailList {

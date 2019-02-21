@@ -47,7 +47,10 @@ describe(TimetableCell, () => {
     const { onClick, wrapper } = make();
 
     const buttons = wrapper.find('button');
-    buttons.at(0).simulate('click', { preventDefault() {} });
+    buttons.at(0).simulate('click', {
+      preventDefault() {},
+      currentTarget: document.createElement('button'),
+    });
     expect(onClick).toBeCalled();
   });
 
