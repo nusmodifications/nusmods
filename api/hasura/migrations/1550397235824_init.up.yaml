@@ -378,6 +378,13 @@
               set:
                 account_id: x-hasura-User-Id
             role: user
+          - comment: null
+            permission:
+              check: {}
+              columns:
+                - email
+              set: {}
+            role: auth-server
         object_relationships: []
         select_permissions:
           - comment: null
@@ -391,6 +398,15 @@
                 account_id:
                   _eq: X-Hasura-User-Id
             role: user
+          - comment: null
+            permission:
+              allow_aggregations: false
+              columns:
+                - account_id
+                - email
+              filter: {}
+              limit: 1
+            role: auth-server
         table: account
         update_permissions:
           - comment: null
