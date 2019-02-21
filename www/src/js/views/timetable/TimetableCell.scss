@@ -68,3 +68,36 @@ $cell-border-radius: 6px;
   font-weight: 600;
   font-size: $font-size-xs;
 }
+
+.weeksSpecial {
+  border-bottom: 1px dotted;
+
+  &::after {
+    content: '*';
+  }
+}
+
+.classes {
+  font-size: 0.75rem;
+
+  h5 {
+    margin: 0 0 0.1rem;
+    font-weight: bold;
+    font-size: 0.85rem;
+  }
+
+  ol {
+    padding: 0;
+    margin: 0 0 0 1.5rem;
+    text-align: left;
+
+    &.twoColumn {
+      column-count: 2;
+      column-gap: 2rem;
+    }
+  }
+
+  .weekInfo {
+    opacity: 0.6;
+  }
+}

@@ -262,11 +262,7 @@ export function isLessonAvailable(
     (weeks) => weeks.includes(weekInfo.num!),
     (weekRange) => {
       const end = minDate([parseISO(weekRange.end), date]);
-      for (
-        let current = parseISO(weekRange.start);
-        current <= end;
-        current = addDays(current, 7)
-      ) {
+      for (let current = parseISO(weekRange.start); current <= end; current = addDays(current, 7)) {
         if (isEqual(current, date)) return true;
       }
 
