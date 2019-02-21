@@ -26,7 +26,8 @@ SET default_with_oids = false;
 CREATE TABLE public.account (
     account_id uuid DEFAULT public.gen_random_uuid() PRIMARY KEY,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    email text NOT NULL UNIQUE
 );
 
 
