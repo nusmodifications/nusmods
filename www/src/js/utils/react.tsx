@@ -112,3 +112,10 @@ export class Counter {
     return this.count === index;
   }
 }
+
+/**
+ * Reset scroll position to (0, 0)
+ */
+export function resetScrollPosition() {
+  window.scrollTo(0, 0);
+}
