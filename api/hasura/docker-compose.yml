@@ -13,12 +13,12 @@ services:
       - '8080:8080'
     depends_on:
       - 'postgres'
+    env_file:
+      - ./.env
     environment:
       HASURA_GRAPHQL_DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
       HASURA_GRAPHQL_ENABLE_CONSOLE: 'true' # set to "false" to disable console
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: 'public'
-      HASURA_GRAPHQL_ADMIN_SECRET: 'development'
-      HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256", "key": "do not use in production do not use in production do not use in production"}'
 
   auth-server:
     build: .
@@ -27,12 +27,14 @@ services:
       - .:/home/node/app
     ports:
       - '8081:8081'
-    user: ${CURRENT_UID:-1000:1000}
+    env_file:
+      - ./.env
     environment:
+      DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
+      HASURA_URL: 'http://graphql-engine:8080/v1alpha1/graphql'
       NODE_ENV: 'development'
-      HOST: '0.0.0.0'
       PORT: 8081
-      JWT_SECRET: '{"type":"HS256", "key": "do not use in production do not use in production do not use in production"}'
+    user: ${CURRENT_UID:-1000:1000}
 
 volumes:
   db_data:
