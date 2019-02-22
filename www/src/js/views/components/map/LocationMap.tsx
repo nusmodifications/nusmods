@@ -1,10 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import { Map as LeafletMap } from 'leaflet';
 import { Map, Marker, TileLayer } from 'react-leaflet';
 import { GestureHandling } from 'leaflet-gesture-handling';
 import classnames from 'classnames';
 import ExternalLink from 'views/components/ExternalLink';
 
+import { LatLngTuple } from 'types/venues';
 import { markerIcon } from './icons';
 import ExpandMap from './ExpandMap';
 import BusStops from './BusStops';
@@ -25,9 +26,15 @@ type State = {
   readonly isExpanded: boolean;
 };
 
+export const defaultLocation: LatLngTuple = [1.2966113, 103.7732264];
+
 LeafletMap.addInitHook('addHandler', 'gestureHandling', GestureHandling);
 
 export class LocationMapComponent extends React.PureComponent<Props, State> {
+  static defaultProps = {
+    position: defaultLocation,
+  };
+
   state: State = {
     isExpanded: false,
   };

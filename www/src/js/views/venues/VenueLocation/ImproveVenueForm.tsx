@@ -10,10 +10,13 @@ import { LatLngTuple, Venue, VenueLocation } from 'types/venues';
 import config from 'config';
 import { MapPin, ThumbsUp } from 'views/components/icons';
 import LoadingSpinner from 'views/components/LoadingSpinner';
-import { markerIcon } from 'views/components/map/icons';
-import ExpandMap from 'views/components/map/ExpandMap';
 
+import ExpandMap from 'views/components/map/ExpandMap';
+import LocationSelect from 'views/components/map/LocationSelect';
+import { markerIcon } from 'views/components/map/icons';
+import { defaultLocation } from 'views/components/map/LocationMap';
 import mapStyles from 'views/components/map/LocationMap.scss';
+
 import styles from './ImproveVenueForm.scss';
 
 type Props = {
@@ -35,22 +38,13 @@ type State = {
   submitted: boolean;
   isMapExpanded: boolean;
   promptUpdateMap: boolean;
+
   // viewport is stored as a separate state because viewport may be animated separately
   // from location
   viewport: Viewport;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error?: any;
-};
-
-const wellKnownLocations: Record<string, LatLngTuple> = {
-  'Central Library': [1.2966113099432135, 103.77322643995288],
-  UTown: [1.304448761575499, 103.77278119325639],
-  Science: [1.2964893900409042, 103.78065884113312],
-  Engineering: [1.3002873614041492, 103.77067700028421],
-  Computing: [1.2935772164129489, 103.7741592837536],
-  "Prince George's Park": [1.2909124430918655, 103.78115504980089],
-  'Bukit Timah Campus': [1.3189664358274156, 103.81760090589525],
 };
 
 export default class ImproveVenueForm extends React.PureComponent<Props, State> {
@@ -61,7 +55,7 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
     const locationInfo = {
       roomName: '',
       floor: 1,
-      location: wellKnownLocations['Central Library'],
+      location: defaultLocation,
     };
 
     // Make sure we copy only non-null values into the new location
@@ -123,12 +117,7 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
       .then(() => this.setState({ submitting: false }));
   };
 
-  onMapJump = (evt: React.SyntheticEvent<HTMLSelectElement>) => {
-    if (!(evt.target instanceof HTMLSelectElement)) return;
-
-    const location = wellKnownLocations[evt.target.value];
-    if (location) this.updateLocation(location);
-  };
+  onMapJump = (location: string, latlng: LatLngTuple) => this.updateLocation(latlng);
 
   geolocate = () => {
     navigator.geolocation.getCurrentPosition((position) =>
@@ -270,17 +259,7 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
             )}
           </Map>
 
-          <select
-            className={classnames('form-control', styles.jumpSelect)}
-            onChange={this.onMapJump}
-          >
-            <option>Jump to...</option>
-            {Object.keys(wellKnownLocations).map((name) => (
-              <option key={name} value={name}>
-                {name}
-              </option>
-            ))}
-          </select>
+          <LocationSelect onLocationChange={this.onMapJump} />
 
           <small
             className={classnames(styles.instructions, {
