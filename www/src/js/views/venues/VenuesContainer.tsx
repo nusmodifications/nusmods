@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import Loadable, { LoadingComponentProps } from 'react-loadable';
 import classnames from 'classnames';
@@ -16,6 +16,11 @@ import LoadingSpinner from 'views/components/LoadingSpinner';
 import SearchBox from 'views/components/SearchBox';
 import { Clock } from 'views/components/icons';
 import { venuePage } from 'views/routes/paths';
+import makeResponsive from 'views/hocs/makeResponsive';
+import Modal from 'views/components/Modal';
+import Title from 'views/components/Title';
+import NoFooter from 'views/layout/NoFooter';
+import MapContext from 'views/components/map/MapContext';
 
 import config from 'config';
 import nusmods from 'apis/nusmods';
@@ -23,11 +28,6 @@ import HistoryDebouncer from 'utils/HistoryDebouncer';
 import { searchVenue, filterAvailability, sortVenues } from 'utils/venues';
 import { breakpointDown } from 'utils/css';
 import { defer } from 'utils/react';
-import makeResponsive from 'views/hocs/makeResponsive';
-import Modal from 'views/components/Modal';
-import Title from 'views/components/Title';
-import NoFooter from 'views/layout/NoFooter';
-import MapContext from 'views/components/map/MapContext';
 
 import AvailabilitySearch, { defaultSearchOptions } from './AvailabilitySearch';
 import VenueList from './VenueList';

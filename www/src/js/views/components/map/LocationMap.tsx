@@ -1,15 +1,16 @@
 import React from 'react';
 import { Map, Marker, TileLayer } from 'react-leaflet';
 import classnames from 'classnames';
-import ExternalLink from 'views/components/ExternalLink';
 
 import { LatLngTuple } from 'types/venues';
+import ExternalLink from 'views/components/ExternalLink';
+
 import { markerIcon } from './icons';
 import ExpandMap from './ExpandMap';
 import BusStops from './BusStops';
-import styles from './LocationMap.scss';
 import MapContext from './MapContext';
 import GestureHandling from './GestureHandling';
+import styles from './LocationMap.scss';
 
 type OwnProps = Readonly<{
   gestureHandling?: boolean;

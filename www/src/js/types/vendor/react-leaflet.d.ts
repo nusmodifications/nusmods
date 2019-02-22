@@ -81,6 +81,7 @@ declare module 'react-leaflet' {
     onpopupclose?(event: Leaflet.PopupEvent): void;
     onviewportchange?(viewport: Viewport): void;
     onviewportchanged?(viewport: Viewport): void;
+    whenReady?(): void;
   }
 
   export interface MarkerEvents {
