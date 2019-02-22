@@ -4,90 +4,63 @@ exports[`NavtabsComponent renders into nav element 1`] = `
 <nav
   className="nav"
 >
-  <NavLink
+  <NavtabLink
     activeClassName="linkActive"
-    aria-current="page"
     className="link"
+    label="Timetable"
     to="/timetable/sem-1"
   >
     <Calendar
       color="currentColor"
       size="24"
     />
-    <span
-      className="title"
-    >
-      Timetable
-    </span>
-  </NavLink>
-  <NavLink
+  </NavtabLink>
+  <NavtabLink
     activeClassName="linkActive"
-    aria-current="page"
     className="link"
+    label="Modules"
     to="/modules"
   >
     <BookOpen
       color="currentColor"
       size="24"
     />
-    <span
-      className="title"
-    >
-      Modules
-    </span>
-  </NavLink>
-  <NavLink
+  </NavtabLink>
+  <NavtabLink
     activeClassName="linkActive"
-    aria-current="page"
     className="link"
-    onFocus={[Function]}
-    onMouseOver={[Function]}
+    label="Venues"
+    onHover={[Function]}
     to="/venues"
   >
     <Map
       color="currentColor"
       size="24"
     />
-    <span
-      className="title"
-    >
-      Venues
-    </span>
-  </NavLink>
-  <NavLink
+  </NavtabLink>
+  <NavtabLink
     activeClassName="linkActive"
-    aria-current="page"
     className="link"
+    label="Settings"
     to="/settings"
   >
     <Settings
       color="currentColor"
       size="24"
     />
-    <span
-      className="title"
-    >
-      Settings
-    </span>
-  </NavLink>
-  <NavLink
+  </NavtabLink>
+  <NavtabLink
     activeClassName="linkActive"
-    aria-current="page"
-    className="link hiddenOnMobile"
-    onFocus={[Function]}
-    onMouseOver={[Function]}
+    className="link"
+    label="Contribute"
+    onHover={[Function]}
     to="/contribute"
   >
     <Star
       color="currentColor"
       size="24"
     />
-    <span
-      className="title"
-    >
-      Contribute
-    </span>
-  </NavLink>
+  </NavtabLink>
   <div
     className="divider"
   />

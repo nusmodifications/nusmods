@@ -1,10 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { RouteComponentProps, NavLink, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 
 import { State } from 'reducers';
 import { Semester } from 'types/modules';
+import { breakpointDown } from 'utils/css';
 import {
   BookOpen,
   Calendar,
@@ -15,63 +16,64 @@ import {
   Settings,
   Star,
 } from 'views/components/icons';
+import makeResponsive, { WithBreakpoint } from 'views/hocs/makeResponsive';
 import ExternalLink from 'views/components/ExternalLink';
 import Online from 'views/components/Online';
+
 import { timetablePage } from 'views/routes/paths';
 import { preload as preloadToday } from 'views/today/TodayContainer';
 import { preload as preloadVenues } from 'views/venues/VenuesContainer';
 import { preload as preloadContribute } from 'views/contribute/ContributeContainer';
+
 import NavRefreshPrompt from './NavRefreshPrompt';
 
+import NavtabLink from './NavtabLink';
 import styles from './Navtabs.scss';
 
 export const NAVTAB_HEIGHT = 48;
 
-type Props = RouteComponentProps & {
-  activeSemester: Semester;
-  beta: boolean;
-  promptRefresh: boolean;
-};
+type Props = RouteComponentProps &
+  WithBreakpoint & {
+    activeSemester: Semester;
+    beta: boolean;
+    promptRefresh: boolean;
+  };
 
 export function NavtabsComponent(props: Props) {
   const tabProps = {
     className: styles.link,
     activeClassName: styles.linkActive,
+    hideLabel: props.matchBreakpoint,
   };
 
   return (
     <nav className={styles.nav}>
       {props.beta && (
-        <NavLink {...tabProps} to="/today" onMouseOver={preloadToday} onFocus={preloadToday}>
+        <NavtabLink {...tabProps} to="/today" onHover={preloadToday} label="Today">
           <Clock />
-          <span className={styles.title}>Today</span>
-        </NavLink>
+        </NavtabLink>
       )}
-      <NavLink {...tabProps} to={timetablePage(props.activeSemester)}>
+
+      <NavtabLink {...tabProps} to={timetablePage(props.activeSemester)} label="Timetable">
         <Calendar />
-        <span className={styles.title}>Timetable</span>
-      </NavLink>
-      <NavLink {...tabProps} to="/modules">
+      </NavtabLink>
+
+      <NavtabLink {...tabProps} to="/modules" label="Modules">
         <BookOpen />
-        <span className={styles.title}>Modules</span>
-      </NavLink>
-      <NavLink {...tabProps} to="/venues" onMouseOver={preloadVenues} onFocus={preloadVenues}>
+      </NavtabLink>
+
+      <NavtabLink {...tabProps} to="/venues" label="Venues" onHover={preloadVenues}>
         <Map />
-        <span className={styles.title}>Venues</span>
-      </NavLink>
-      {props.beta && (
-        <NavLink
-          {...tabProps}
-          className={classnames(tabProps.className, styles.hiddenOnMobile)}
-          to="/planner"
-        >
+      </NavtabLink>
+
+      {props.beta && !props.matchBreakpoint && (
+        <NavtabLink {...tabProps} to="/planner" label="Planner">
           <Trello />
-          <span className={styles.title}>Planner</span>
-        </NavLink>
+        </NavtabLink>
       )}
-      <NavLink {...tabProps} to="/settings">
+
+      <NavtabLink {...tabProps} to="/settings" label="Settings">
         <Settings />
-        <span className={styles.title}>Settings</span>
         {props.promptRefresh && (
           <Online>
             <div
@@ -81,25 +83,26 @@ export function NavtabsComponent(props: Props) {
             />
           </Online>
         )}
-      </NavLink>
-      <NavLink
-        {...tabProps}
-        className={classnames(tabProps.className, styles.hiddenOnMobile)}
-        onMouseOver={preloadContribute}
-        onFocus={preloadContribute}
-        to="/contribute"
-      >
-        <Star />
-        <span className={styles.title}>Contribute</span>
-      </NavLink>
+      </NavtabLink>
+
+      {!props.matchBreakpoint && (
+        <NavtabLink {...tabProps} to="/contribute" label="Contribute" onHover={preloadContribute}>
+          <Star />
+        </NavtabLink>
+      )}
+
       <div className={styles.divider} />
-      <ExternalLink
-        className={classnames(tabProps.className, styles.hiddenOnMobile)}
-        href="https://nuswhispers.com"
-      >
-        <Heart />
-        <span className={styles.title}>Whispers</span>
-      </ExternalLink>
+
+      {!props.matchBreakpoint && (
+        <ExternalLink
+          className={classnames(tabProps.className, styles.hiddenOnMobile)}
+          href="https://nuswhispers.com"
+        >
+          <Heart />
+          <span className={styles.title}>Whispers</span>
+        </ExternalLink>
+      )}
+
       {props.promptRefresh && (
         <Online>
           <NavRefreshPrompt />
@@ -109,10 +112,14 @@ export function NavtabsComponent(props: Props) {
   );
 }
 
-const connectedNavtabs = connect((state: State) => ({
+const MemoizedNavtabs = React.memo(NavtabsComponent);
+
+const NavtabsWithBreakpoint = makeResponsive(MemoizedNavtabs, breakpointDown('sm'));
+
+const ConnectedNavtabs = connect((state: State) => ({
   activeSemester: state.app.activeSemester,
   beta: !!state.settings.beta,
   promptRefresh: state.app.promptRefresh,
-}))(NavtabsComponent);
+}))(NavtabsWithBreakpoint);
 
-export default withRouter(connectedNavtabs);
+export default withRouter(ConnectedNavtabs);

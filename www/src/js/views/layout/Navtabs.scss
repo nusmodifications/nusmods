@@ -93,12 +93,7 @@
 }
 
 .title {
-  display: none;
   font-size: 0.7rem;
-
-  @include media-breakpoint-up(md) {
-    display: block;
-  }
 
   @include media-breakpoint-up(xl) {
     margin-left: 0.4rem;
@@ -106,21 +101,18 @@
   }
 }
 
-.hiddenOnMobile {
-  @include media-breakpoint-down(sm) {
-    display: none;
-  }
-}
-
 .divider {
   $size: 70%;
   $margin: 0.3rem;
 
-  composes: hiddenOnMobile;
   opacity: 0.6;
   flex: 0 0 1px;
   margin: $margin ((100% - $size) / 2) 0;
   background: var(--gray-lighter);
+
+  @include media-breakpoint-down(sm) {
+    display: none;
+  }
 
   @include media-breakpoint-up(xl) {
     margin: $margin 1rem $margin 1.4rem;
