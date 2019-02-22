@@ -1,7 +1,8 @@
+import React from 'react';
 import { AcadWeekInfo } from 'nusmoderator';
 import { isSameDay } from 'date-fns';
-import * as React from 'react';
 import classnames from 'classnames';
+
 import { ColoredLesson, Lesson } from 'types/modules';
 import { SelectedLesson } from 'types/views';
 import { MapPin } from 'views/components/icons';

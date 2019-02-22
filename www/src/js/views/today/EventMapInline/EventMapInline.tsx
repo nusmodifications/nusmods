@@ -17,6 +17,12 @@ export type Props = OwnProps & {
   readonly venueLocations: VenueLocationMap;
 };
 
+/**
+ * Displays a button to open a <LocationMap> inline, or the map if isOpen is true.
+ *
+ * On larger screens isOpen is never true because we use <EventMap> to display
+ * the location instead of displaying it inline.
+ */
 const EventMapInline: ComponentType<Props> = ({
   venue,
   isOpen,
