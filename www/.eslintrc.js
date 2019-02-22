@@ -12,7 +12,14 @@ module.exports = {
   env: {
     browser: true,
   },
-  plugins: ['@typescript-eslint', 'prettier', 'import', 'jsx-a11y', 'react'],
+  plugins: [
+    '@typescript-eslint',
+    'prettier',
+    'import',
+    'jsx-a11y',
+    'react',
+    'react-hooks',
+  ],
 
   settings: {
     'import/resolver': {
@@ -27,6 +34,8 @@ module.exports = {
 
   rules: {
     'prettier/prettier': warnInDevelopment,
+
+    'react-hooks/rules-of-hooks': 'error',
 
     // Allow debugger and console statement in development
     'no-debugger': warnInDevelopment,
