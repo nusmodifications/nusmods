@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Venue, VenueLocationMap } from 'types/venues';
+import { LatLngTuple, Venue, VenueLocationMap } from 'types/venues';
 import LocationMap from 'views/components/map/LocationMap';
 
 export type OwnProps = {
@@ -15,7 +15,7 @@ export type Props = OwnProps &
 export default function EventMap(props: Props) {
   // No venue selected - show the whole map
   if (!props.venue) {
-    return <LocationMap height="100%" />;
+    return <LocationMap height="100%" gestureHandling={false} />;
   }
 
   // Venue selected but we don't have data
@@ -26,6 +26,6 @@ export default function EventMap(props: Props) {
   }
 
   // Venue selected and we have data
-  const position: [number, number] = [venueLocation.location.y, venueLocation.location.x];
-  return <LocationMap height="100%" position={position} />;
+  const position: LatLngTuple = [venueLocation.location.y, venueLocation.location.x];
+  return <LocationMap height="100%" gestureHandling={false} position={position} />;
 }

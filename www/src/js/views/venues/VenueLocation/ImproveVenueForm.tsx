@@ -15,6 +15,7 @@ import ExpandMap from 'views/components/map/ExpandMap';
 import LocationSelect from 'views/components/map/LocationSelect';
 import { markerIcon } from 'views/components/map/icons';
 import { defaultLocation } from 'views/components/map/LocationMap';
+import GestureHandling from 'views/components/map/GestureHandling';
 import mapStyles from 'views/components/map/LocationMap.scss';
 
 import styles from './ImproveVenueForm.scss';
@@ -254,12 +255,19 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
             {showExpandMapBtn && (
               <ExpandMap
                 isExpanded={isMapExpanded}
-                onToggleExpand={() => this.setState({ isMapExpanded: !isMapExpanded })}
+                onToggleExpand={() =>
+                  this.setState((state) => ({
+                    isMapExpanded: !state.isMapExpanded,
+                  }))
+                }
               />
             )}
           </Map>
 
-          <LocationSelect onLocationChange={this.onMapJump} />
+          <LocationSelect
+            className={classnames('form-control', styles.jumpSelect)}
+            onLocationChange={this.onMapJump}
+          />
 
           <small
             className={classnames(styles.instructions, {
@@ -269,6 +277,8 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
           >
             Move marker or map so that marker is pointing to {this.props.venue}
           </small>
+
+          <GestureHandling isOn={!isMapExpanded} />
 
           {'geolocation' in navigator && (
             <button

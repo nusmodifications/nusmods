@@ -14,7 +14,7 @@ import ApiError from 'views/errors/ApiError';
 import Warning from 'views/errors/Warning';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import SearchBox from 'views/components/SearchBox';
-import { Clock, Map } from 'views/components/icons';
+import { Clock } from 'views/components/icons';
 import { venuePage } from 'views/routes/paths';
 
 import config from 'config';
@@ -33,9 +33,8 @@ import AvailabilitySearch, { defaultSearchOptions } from './AvailabilitySearch';
 import VenueList from './VenueList';
 import VenueDetails from './VenueDetails';
 import VenueLocation from './VenueLocation';
+import VenueMap from './VenueMap';
 import styles from './VenuesContainer.scss';
-
-/* eslint-disable react/prop-types */
 
 export type Params = {
   q: string;
@@ -175,10 +174,10 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
         <SearchBox
           className={styles.searchBox}
           throttle={0}
-          useInstantSearch
           initialSearchTerm={searchTerm}
           placeholder="e.g. LT27"
           onSearch={this.onSearch}
+          useInstantSearch
         />
 
         <button
@@ -212,6 +211,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
     return (
       <>
         <Warning message="No matching venues found" />
+
         {!!unfilteredCount && isAvailabilityEnabled && (
           <p className="text-center text-muted">
             {unfilteredCount === 1
@@ -309,25 +309,17 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
               {this.renderSelectedVenue(matchedVenues)}
             </Modal>
           ) : (
-            <>
-              <div
-                className={classnames(styles.venueDetail, {
-                  [styles.mapExpanded]: isMapExpanded,
-                })}
-              >
-                {selectedVenue == null ? (
-                  <div className={styles.noVenueSelected}>
-                    <Map />
-                    <p>Select a venue on the left to see its timetable</p>
-                  </div>
-                ) : (
-                  this.renderSelectedVenue(matchedVenues)
-                )}
-              </div>
-              <NoFooter />
-            </>
+            <div
+              className={classnames(styles.venueDetail, {
+                [styles.mapExpanded]: isMapExpanded,
+              })}
+            >
+              {selectedVenue ? this.renderSelectedVenue(matchedVenues) : <VenueMap />}
+            </div>
           )}
         </MapContext.Provider>
+
+        {!this.props.matchBreakpoint && <NoFooter />}
       </div>
     );
   }
