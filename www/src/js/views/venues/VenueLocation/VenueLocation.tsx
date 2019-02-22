@@ -1,18 +1,18 @@
-import * as React from 'react';
+import React from 'react';
 import classnames from 'classnames';
 
-import { LatLngTuple, VenueLocation as VenueLocationItem } from 'types/venues';
+import { LatLngTuple, VenueLocation as VenueLocationItem, VenueLocationMap } from 'types/venues';
 import Modal from 'views/components/Modal';
 import LocationMap from 'views/components/map/LocationMap';
 import CloseButton from 'views/components/CloseButton';
 import { floorName } from 'utils/venues';
-import venueLocations from 'data/venues';
 
 import FeedbackModal from './FeedbackModal';
 import ImproveVenueForm from './ImproveVenueForm';
 import styles from './VenueLocation.scss';
 
 export type Props = {
+  readonly venueLocations: VenueLocationMap;
   readonly venue: string;
 };
 
@@ -54,8 +54,8 @@ export default class VenueLocation extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { venue } = this.props;
-    const location: VenueLocationItem | null = venueLocations[venue];
+    const { venue, venueLocations } = this.props;
+    const location = venueLocations[venue];
 
     if (!location) {
       return (
