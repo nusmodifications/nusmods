@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Loadable, { LoadingComponentProps } from 'react-loadable';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { partition } from 'lodash';
@@ -9,8 +8,8 @@ import { State as StoreState } from 'reducers';
 
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import VenueList from 'views/venues/VenueList';
-import ApiError from 'views/errors/ApiError';
 import styles from './UnmappedVenues.scss';
+import withVenueLocations from '../components/map/withVenueLocations';
 
 type Props = {
   venueList: Venues;
@@ -97,24 +96,8 @@ const ConnectedUnmappedVenue = connect((state: StoreState) => ({
   venueList: state.venueBank.venueList,
 }))(UnmappedVenuesComponent);
 
-export const AsyncUnmappedVenues = Loadable.Map({
-  loader: {
-    venueLocations: () => import(/* webpackChunkName: "venue" */ 'data/venues.json'),
-  },
-  loading: (props: LoadingComponentProps) => {
-    if (props.error) {
-      return <ApiError dataName="venue locations" retry={props.retry} />;
-    }
-
-    if (props.pastDelay) {
-      return <LoadingSpinner />;
-    }
-
-    return null;
-  },
-  render(loaded, props) {
-    return <ConnectedUnmappedVenue venueLocations={loaded.venueLocations.default} {...props} />;
-  },
-});
-
-export default AsyncUnmappedVenues;
+/**
+ * Use Loadable.map to load the venue location data
+ */
+const UnmappedVenues = withVenueLocations(() => Promise.resolve(ConnectedUnmappedVenue));
+export default UnmappedVenues;
