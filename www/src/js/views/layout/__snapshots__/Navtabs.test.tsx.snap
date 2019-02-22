@@ -7,6 +7,7 @@ exports[`NavtabsComponent renders into nav element 1`] = `
   <NavtabLink
     activeClassName="linkActive"
     className="link"
+    hideLabel={false}
     label="Timetable"
     to="/timetable/sem-1"
   >
@@ -18,6 +19,7 @@ exports[`NavtabsComponent renders into nav element 1`] = `
   <NavtabLink
     activeClassName="linkActive"
     className="link"
+    hideLabel={false}
     label="Modules"
     to="/modules"
   >
@@ -29,6 +31,7 @@ exports[`NavtabsComponent renders into nav element 1`] = `
   <NavtabLink
     activeClassName="linkActive"
     className="link"
+    hideLabel={false}
     label="Venues"
     onHover={[Function]}
     to="/venues"
@@ -41,6 +44,7 @@ exports[`NavtabsComponent renders into nav element 1`] = `
   <NavtabLink
     activeClassName="linkActive"
     className="link"
+    hideLabel={false}
     label="Settings"
     to="/settings"
   >
@@ -52,6 +56,7 @@ exports[`NavtabsComponent renders into nav element 1`] = `
   <NavtabLink
     activeClassName="linkActive"
     className="link"
+    hideLabel={false}
     label="Contribute"
     onHover={[Function]}
     to="/contribute"

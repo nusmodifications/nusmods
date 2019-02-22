@@ -11,6 +11,7 @@ describe(NavtabsComponent, () => {
         activeSemester={1}
         beta={false}
         promptRefresh={false}
+        matchBreakpoint={false}
         {...createHistory()}
       />,
     );
