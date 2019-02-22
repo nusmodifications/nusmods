@@ -1,7 +1,5 @@
 import React from 'react';
-import { Map as LeafletMap } from 'leaflet';
 import { Map, Marker, TileLayer } from 'react-leaflet';
-import { GestureHandling } from 'leaflet-gesture-handling';
 import classnames from 'classnames';
 import ExternalLink from 'views/components/ExternalLink';
 
@@ -11,8 +9,10 @@ import ExpandMap from './ExpandMap';
 import BusStops from './BusStops';
 import styles from './LocationMap.scss';
 import MapContext from './MapContext';
+import GestureHandling from './GestureHandling';
 
 type OwnProps = Readonly<{
+  gestureHandling?: boolean;
   position?: [number, number];
   className?: string;
   height?: string;
@@ -28,11 +28,10 @@ type State = {
 
 export const defaultLocation: LatLngTuple = [1.2966113, 103.7732264];
 
-LeafletMap.addInitHook('addHandler', 'gestureHandling', GestureHandling);
-
 export class LocationMapComponent extends React.PureComponent<Props, State> {
   static defaultProps = {
     position: defaultLocation,
+    gestureHandling: true,
   };
 
   state: State = {
@@ -43,39 +42,40 @@ export class LocationMapComponent extends React.PureComponent<Props, State> {
     this.setState(
       (state) => ({ isExpanded: !state.isExpanded }),
       () => {
-        if (this.props.toggleExpanded) {
-          this.props.toggleExpanded(this.state.isExpanded);
-        }
+        // Use MapContext to propagate map expanded state upwards
+        const { toggleExpanded } = this.props;
+        if (toggleExpanded) toggleExpanded(this.state.isExpanded);
       },
     );
   };
 
   render() {
-    const { position, className, height } = this.props;
-
+    const { position, className, height, children, gestureHandling } = this.props;
     const { isExpanded } = this.state;
 
     // The map uses position: fixed when expanded so we don't need inline height
     const style = isExpanded ? {} : { height };
+
+    // Always disable gesture handling when the map is expanded
+    const enableGestureHandling = isExpanded ? false : gestureHandling;
 
     return (
       <div
         style={style}
         className={classnames(styles.mapWrapper, className, { [styles.expanded]: isExpanded })}
       >
-        {position && (
-          <ExternalLink
-            // Query param for https://developers.google.com/maps/documentation/urls/guide#search-action
-            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-              position.join(','),
-            )}`}
-            className={classnames('btn btn-sm btn-primary', styles.gmapBtn)}
-          >
-            Open in Google Maps
-          </ExternalLink>
-        )}
+        <ExternalLink
+          // Query param for https://developers.google.com/maps/documentation/urls/guide#search-action
+          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            position!.join(','),
+          )}`}
+          className={classnames('btn btn-sm btn-primary', styles.gmapBtn)}
+        >
+          Open in Google Maps
+        </ExternalLink>
 
-        {this.props.children}
+        {children}
 
         <Map center={position} zoom={18} maxZoom={19} className={styles.map}>
           <TileLayer
@@ -88,6 +88,13 @@ export class LocationMapComponent extends React.PureComponent<Props, State> {
           {position && <Marker position={position} icon={markerIcon} />}
 
           <ExpandMap isExpanded={isExpanded} onToggleExpand={this.toggleMapExpand} />
+
+          <GestureHandling
+            isOn={
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              enableGestureHandling!
+            }
+          />
         </Map>
       </div>
     );
