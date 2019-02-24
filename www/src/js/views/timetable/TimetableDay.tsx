@@ -7,7 +7,6 @@ import { ColoredTimePeriod, createGenericColoredTimePeriod } from 'types/timePer
 import { convertTimeToIndex } from '../../utils/timify';
 
 import styles from './TimetableDay.scss';
-import TimetableHighlight from './TimetableHighlight';
 import TimetableRow from './TimetableRow';
 import CurrentTimeIndicator from './CurrentTimeIndicator';
 
@@ -45,32 +44,6 @@ function TimetableDay(props: Props) {
 
   if (props.verticalMode) rowStyle.height = `${VERTICAL_HEIGHT * columns}rem`;
 
-  function getHighlightPeriod(): ColoredTimePeriod {
-    if (props.highlightPeriod !== undefined) {
-      return props.highlightPeriod;
-    }
-
-    return createGenericColoredTimePeriod();
-  }
-  const period = getHighlightPeriod();
-
-  let lastStartIndex = startingIndex;
-  const lessonStartIndex: number = convertTimeToIndex(period.StartTime);
-  const lessonEndIndex: number = convertTimeToIndex(period.EndTime);
-  const size: number = lessonEndIndex - lessonStartIndex;
-
-  const dirValue: number = lessonStartIndex - (verticalMode ? startingIndex : lastStartIndex);
-  lastStartIndex = lessonEndIndex;
-  const highlightStyle = {
-    // calc() adds a 1px gap between cells
-    [dirStyle]: `calc(${(dirValue / totalCols) * 100}% + 1px)`,
-    [sizeStyle]: `calc(${(size / totalCols) * 100}% - 1px)`,
-  };
-
-  const highlightPeriodElement: JSX.Element = (
-    <TimetableHighlight key="highlightPeriod" highlightPeriod={period} style={highlightStyle} />
-  );
-
   return (
     <li className={styles.day}>
       <div
@@ -83,31 +56,20 @@ function TimetableDay(props: Props) {
       <div className={styles.dayRows} style={rowStyle}>
         <CurrentTimeIndicator style={props.currentTimeIndicatorStyle} />
 
-        {props.dayLessonRows.map((dayLessonRow, i) => {
-          const contents = [];
-
-          const timetableRowElement: JSX.Element = (
-            <TimetableRow
-              key={i}
-              startingIndex={props.startingIndex}
-              endingIndex={props.endingIndex}
-              verticalMode={props.verticalMode}
-              showTitle={props.showTitle}
-              lessons={dayLessonRow}
-              onModifyCell={props.onModifyCell}
-              hoverLesson={props.hoverLesson}
-              onCellHover={props.onCellHover}
-            />
-          );
-
-          // Add components to render
-          if (props.highlightPeriod !== undefined && props.highlightPeriod.Day === i) {
-            contents.push(highlightPeriodElement);
-          }
-          contents.push(timetableRowElement);
-
-          return <div key={`day-${i}`}>{contents}</div>;
-        })}
+        {props.dayLessonRows.map((dayLessonRow, i) => (
+          <TimetableRow
+            key={i}
+            startingIndex={props.startingIndex}
+            endingIndex={props.endingIndex}
+            verticalMode={props.verticalMode}
+            showTitle={props.showTitle}
+            lessons={dayLessonRow}
+            onModifyCell={props.onModifyCell}
+            hoverLesson={props.hoverLesson}
+            onCellHover={props.onCellHover}
+            highlightPeriod={props.highlightPeriod}
+          />
+        ))}
       </div>
       {props.isCurrentDay && <div className={classnames('no-export', styles.currentDay)} />}
     </li>

@@ -5,6 +5,8 @@ import { HoverLesson } from 'types/timetables';
 import { OnHoverCell, OnModifyCell } from 'types/views';
 
 import { convertTimeToIndex } from 'utils/timify';
+import { ColoredTimePeriod, createGenericColoredTimePeriod } from '../../types/timePeriod';
+import TimetableHighlight from './TimetableHighlight';
 import styles from './TimetableRow.scss';
 import TimetableCell from './TimetableCell';
 
@@ -17,7 +19,16 @@ type Props = {
   hoverLesson?: HoverLesson | null;
   onCellHover: OnHoverCell;
   onModifyCell?: OnModifyCell;
+  highlightPeriod?: ColoredTimePeriod;
 };
+
+function getHighlightPeriod(period?: ColoredTimePeriod): ColoredTimePeriod {
+  if (period !== undefined) {
+    return period;
+  }
+
+  return createGenericColoredTimePeriod();
+}
 
 /**
  * Position the lessons properly on the row.
@@ -36,8 +47,27 @@ function TimetableRow(props: Props) {
   const sizeStyle = verticalMode ? 'height' : 'width';
 
   let lastStartIndex = startingIndex;
+
+  function getHighlightStyle(period: ColoredTimePeriod) {
+    const periodStartIndex: number = convertTimeToIndex(period.StartTime);
+    const periodEndIndex: number = convertTimeToIndex(period.EndTime);
+    const periodSize: number = periodEndIndex - periodStartIndex;
+    const periodDirValue: number = periodStartIndex - (verticalMode ? startingIndex : lastStartIndex);
+    return {
+      // calc() adds a 1px gap between cells
+      [dirStyle]: `calc(${(periodDirValue / totalCols) * 100}% + 1px)`,
+      [sizeStyle]: `calc(${(periodSize / totalCols) * 100}% - 1px)`,
+    };
+  }
+  
+  const period = getHighlightPeriod(props.highlightPeriod);
+  const highlightStyle = getHighlightStyle(period);
+
   return (
     <div className={styles.timetableRow}>
+      {props.highlightPeriod !== undefined
+        ? <TimetableHighlight key="highlightPeriod" highlightPeriod={props.highlightPeriod} style={highlightStyle} />
+        : null}
       {lessons.map((lesson) => {
         const lessonStartIndex: number = convertTimeToIndex(lesson.StartTime);
         const lessonEndIndex: number = convertTimeToIndex(lesson.EndTime);
