@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import { ColoredLesson } from 'types/modules';
 import { HoverLesson, TimetableArrangement } from 'types/timetables';
 import { OnModifyCell } from 'types/views';
+import { ColoredTimePeriod } from 'types/timePeriod';
 
 import {
   SCHOOLDAYS,
@@ -28,6 +29,7 @@ type Props = TimerData & {
   isScrolledHorizontally?: boolean;
   showTitle?: boolean;
   onModifyCell?: OnModifyCell;
+  highlightPeriod?: ColoredTimePeriod;
 };
 
 type State = {
@@ -101,6 +103,11 @@ class Timetable extends React.PureComponent<Props, State> {
                   index === currentDayIndex && currentTimeIndicatorVisible
                     ? currentTimeIndicatorStyle
                     : nullCurrentTimeIndicatorStyle
+                }
+                highlightPeriod={
+                  this.props.highlightPeriod !== undefined && index === this.props.highlightPeriod.Day
+                    ? this.props.highlightPeriod
+                    : undefined
                 }
               />
             ))}

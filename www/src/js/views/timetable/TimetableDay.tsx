@@ -3,8 +3,10 @@ import classnames from 'classnames';
 
 import { TimetableDayArrangement, HoverLesson } from 'types/timetables';
 import { OnHoverCell, OnModifyCell } from 'types/views';
+import { ColoredTimePeriod } from 'types/timePeriod';
 
 import styles from './TimetableDay.scss';
+import TimetableHighlight from './TimetableHighlight';
 import TimetableRow from './TimetableRow';
 import CurrentTimeIndicator from './CurrentTimeIndicator';
 
@@ -21,6 +23,7 @@ type Props = {
   hoverLesson: HoverLesson | null;
   onCellHover: OnHoverCell;
   onModifyCell?: OnModifyCell;
+  highlightPeriod?: ColoredTimePeriod;
 };
 
 // Height of timetable per hour in vertical mode
