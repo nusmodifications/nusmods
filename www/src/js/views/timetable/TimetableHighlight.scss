@@ -1,0 +1,17 @@
+@import './_variables.scss';
+
+.row {
+  position: relative;
+  z-index: 0;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: $timetable-row-height;
+  background: rgba(255, 255, 0, 0.7);
+
+  @include vertical-mode {
+    flex-direction: row;
+    padding: 0 0 0 1px;
+    background: green;
+  }
+}
