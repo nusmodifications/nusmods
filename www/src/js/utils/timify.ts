@@ -35,10 +35,11 @@ export function convertTimeToIndex(time: LessonTime): number {
 }
 
 // Reverse of convertTimeToIndex.
-// 0 -> 0000, 1 -> 0030, 2 -> 0100, ...
+// 0 -> 0000, 1 -> 0030, 2 -> 0100, ... , 48 -> 2400
 export function convertIndexToTime(index: number): LessonTime {
-  const hour: number = Math.floor(index / 2);
-  const minute: string = index % 2 === 0 ? '00' : '30';
+  const timeIndex = Math.min(index, 48);
+  const hour: number = Math.floor(timeIndex / 2);
+  const minute: string = timeIndex % 2 === 0 ? '00' : '30';
   return (hour < 10 ? `0${hour}` : hour.toString()) + minute;
 }
 
