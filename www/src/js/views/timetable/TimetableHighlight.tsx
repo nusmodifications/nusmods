@@ -14,9 +14,7 @@ type Props = {
  */
 function TimetableHighlight(props: Props) {
   return (
-    <div
-      className={classnames(styles.row)}
-      style={props.style} />
+    <div className={classnames(styles.row)} style={props.style} />
   )
 }
 

@@ -29,16 +29,12 @@ type Props = {
 const VERTICAL_HEIGHT = 2.4;
 
 function TimetableDay(props: Props) {
-  const { startingIndex, endingIndex, verticalMode } = props;
-  const totalCols = endingIndex - startingIndex;
-  const dirStyle = verticalMode ? 'top' : 'marginLeft';
-  const sizeStyle = verticalMode ? 'height' : 'width';
-  
-  const columns = endingIndex - startingIndex;
-  const bgSize = 100 / (columns / 4);
+  const columns = props.endingIndex - props.startingIndex;
+  const size = 100 / (columns / 4);
+
   const rowStyle: React.CSSProperties = {
     // Firefox defaults the second value (width) to auto if not specified
-    backgroundSize: `${bgSize}% ${bgSize}%`,
+    backgroundSize: `${size}% ${size}%`,
   };
 
   if (props.verticalMode) rowStyle.height = `${VERTICAL_HEIGHT * columns}rem`;
