@@ -10,6 +10,7 @@ import {
   setSeconds,
   startOfDay,
 } from 'date-fns';
+import { TimePeriod } from '../types/timePeriod';
 
 // Converts a 24-hour format time string to an index.
 // Each index corresponds to one cell of each timetable row.
@@ -82,6 +83,7 @@ export const DEFAULT_LATEST_TIME: LessonTime = '1800';
 // This bounds will then be used to decide the starting and ending hours of the timetable.
 export function calculateBorderTimings(
   lessons: Lesson[],
+  period?: TimePeriod
 ): { startingIndex: number; endingIndex: number } {
   let earliestTime: number = convertTimeToIndex(DEFAULT_EARLIEST_TIME);
   let latestTime: number = convertTimeToIndex(DEFAULT_LATEST_TIME);
@@ -89,6 +91,13 @@ export function calculateBorderTimings(
     earliestTime = Math.min(earliestTime, convertTimeToIndex(lesson.StartTime));
     latestTime = Math.max(latestTime, convertTimeToIndex(lesson.EndTime));
   });
+
+  // Consider time range of period, if applicable
+  if (period !== undefined) {
+    earliestTime = Math.min(earliestTime, convertTimeToIndex(period.StartTime));
+    latestTime = Math.max(latestTime, convertTimeToIndex(period.EndTime));
+  }
+
   return {
     startingIndex: earliestTime % 2 === 0 ? earliestTime : earliestTime - 1, // floor to earliest hour.
     endingIndex: latestTime % 2 === 0 ? latestTime : latestTime + 1, // ceil to latest hour.
