@@ -68,7 +68,7 @@ function TimetableDay(props: Props) {
   };
 
   const highlightPeriodElement: JSX.Element = (
-    <TimetableHighlight key="highlightPeriod" highlightPeriod={period} size={size} style={highlightStyle} />
+    <TimetableHighlight key="highlightPeriod" highlightPeriod={period} style={highlightStyle} />
   );
 
   return (

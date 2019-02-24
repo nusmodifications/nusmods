@@ -11,7 +11,6 @@ import styles from './TimetableHighlight.scss';
 
 type Props = {
   highlightPeriod: ColoredTimePeriod;
-  size: number;
   style?: React.CSSProperties;
   // hoverLesson?: HoverLesson | null;
 };
@@ -20,16 +19,10 @@ type Props = {
  * A highlighted time period in the timetable.
  */
 function TimetableHighlight(props: Props) {
-  const rowStyle: React.CSSProperties = {
-    // Firefox defaults the second value (width) to auto if not specified
-    backgroundSize: `${props.size}% ${props.size}%`,
-  };
-
   return (
     <div
       // className={classnames(styles.row, `highlightPeriod color-${props.highlightPeriod.colorIndex}`)}
       className={classnames(styles.row, `highlightPeriod`)}
-      // style={rowStyle}
       style={props.style} />
   )
 }
