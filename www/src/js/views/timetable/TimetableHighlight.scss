@@ -1,8 +1,7 @@
 @import './_variables.scss';
 
 .row {
-  position: relative;
-  z-index: 0;
+  position: absolute;
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
@@ -12,6 +11,6 @@
   @include vertical-mode {
     flex-direction: row;
     padding: 0 0 0 1px;
-    background: green;
+    background: rgba(255, 255, 0, 0.7);
   }
 }
