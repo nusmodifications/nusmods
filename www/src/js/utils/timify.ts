@@ -10,7 +10,7 @@ import {
   setSeconds,
   startOfDay,
 } from 'date-fns';
-import { TimePeriod } from '../types/timePeriod';
+import { TimePeriod } from 'types/timePeriod';
 
 // Converts a 24-hour format time string to an index.
 // Each index corresponds to one cell of each timetable row.

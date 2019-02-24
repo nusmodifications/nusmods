@@ -5,7 +5,7 @@ import { HoverLesson } from 'types/timetables';
 import { OnHoverCell, OnModifyCell } from 'types/views';
 
 import { convertTimeToIndex } from 'utils/timify';
-import { ColoredTimePeriod, createGenericColoredTimePeriod } from '../../types/timePeriod';
+import { ColoredTimePeriod, createGenericColoredTimePeriod } from 'types/timePeriod';
 import TimetableHighlight from './TimetableHighlight';
 import styles from './TimetableRow.scss';
 import TimetableCell from './TimetableCell';

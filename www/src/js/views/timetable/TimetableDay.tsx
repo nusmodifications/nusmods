@@ -3,8 +3,7 @@ import classnames from 'classnames';
 
 import { TimetableDayArrangement, HoverLesson } from 'types/timetables';
 import { OnHoverCell, OnModifyCell } from 'types/views';
-import { ColoredTimePeriod, createGenericColoredTimePeriod } from 'types/timePeriod';
-import { convertTimeToIndex } from '../../utils/timify';
+import { ColoredTimePeriod } from 'types/timePeriod';
 
 import styles from './TimetableDay.scss';
 import TimetableRow from './TimetableRow';
