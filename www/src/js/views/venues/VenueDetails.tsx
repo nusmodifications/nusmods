@@ -51,7 +51,7 @@ export class VenueDetailsComponent extends React.PureComponent<Props> {
     const startTime = convertIndexToTime(this.props.searchedPeriod.time * 2);
     const endTime = convertIndexToTime(
       2 * (this.props.searchedPeriod.time + this.props.searchedPeriod.duration),
-      );
+    );
     return createGenericColoredTimePeriod(day, startTime, endTime, 0);
   }
 
