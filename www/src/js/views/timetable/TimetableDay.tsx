@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { TimetableDayArrangement, HoverLesson } from 'types/timetables';
 import { OnHoverCell, OnModifyCell } from 'types/views';
 import { ColoredTimePeriod, createGenericColoredTimePeriod } from 'types/timePeriod';
+import { convertTimeToIndex } from '../../utils/timify';
 
 import styles from './TimetableDay.scss';
 import TimetableHighlight from './TimetableHighlight';
@@ -30,12 +31,16 @@ type Props = {
 const VERTICAL_HEIGHT = 2.4;
 
 function TimetableDay(props: Props) {
-  const columns = props.endingIndex - props.startingIndex;
-  const size = 100 / (columns / 4);
-
+  const { startingIndex, endingIndex, verticalMode } = props;
+  const totalCols = endingIndex - startingIndex;
+  const dirStyle = verticalMode ? 'top' : 'marginLeft';
+  const sizeStyle = verticalMode ? 'height' : 'width';
+  
+  const columns = endingIndex - startingIndex;
+  const bgSize = 100 / (columns / 4);
   const rowStyle: React.CSSProperties = {
     // Firefox defaults the second value (width) to auto if not specified
-    backgroundSize: `${size}% ${size}%`,
+    backgroundSize: `${bgSize}% ${bgSize}%`,
   };
 
   if (props.verticalMode) rowStyle.height = `${VERTICAL_HEIGHT * columns}rem`;
@@ -47,9 +52,23 @@ function TimetableDay(props: Props) {
 
     return createGenericColoredTimePeriod();
   }
+  const period = getHighlightPeriod();
+
+  let lastStartIndex = startingIndex;
+  const lessonStartIndex: number = convertTimeToIndex(period.StartTime);
+  const lessonEndIndex: number = convertTimeToIndex(period.EndTime);
+  const size: number = lessonEndIndex - lessonStartIndex;
+
+  const dirValue: number = lessonStartIndex - (verticalMode ? startingIndex : lastStartIndex);
+  lastStartIndex = lessonEndIndex;
+  const highlightStyle = {
+    // calc() adds a 1px gap between cells
+    [dirStyle]: `calc(${(dirValue / totalCols) * 100}% + 1px)`,
+    [sizeStyle]: `calc(${(size / totalCols) * 100}% - 1px)`,
+  };
 
   const highlightPeriodElement: JSX.Element = (
-    <TimetableHighlight key="highlightPeriod" highlightPeriod={getHighlightPeriod()} size={size} />
+    <TimetableHighlight key="highlightPeriod" highlightPeriod={period} size={size} style={highlightStyle} />
   );
 
   return (
