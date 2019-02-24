@@ -22,14 +22,6 @@ type Props = {
   highlightPeriod?: ColoredTimePeriod;
 };
 
-function getHighlightPeriod(period?: ColoredTimePeriod): ColoredTimePeriod {
-  if (period !== undefined) {
-    return period;
-  }
-
-  return createGenericColoredTimePeriod();
-}
-
 /**
  * Position the lessons properly on the row.
  * In horizontal mode, we use margin to insert space for elements,
@@ -48,20 +40,22 @@ function TimetableRow(props: Props) {
 
   let lastStartIndex = startingIndex;
 
-  function getHighlightStyle(period: ColoredTimePeriod) {
-    const periodStartIndex: number = convertTimeToIndex(period.StartTime);
-    const periodEndIndex: number = convertTimeToIndex(period.EndTime);
-    const periodSize: number = periodEndIndex - periodStartIndex;
-    const periodDirValue: number = periodStartIndex - (verticalMode ? startingIndex : lastStartIndex);
-    return {
-      // calc() adds a 1px gap between cells
-      [dirStyle]: `calc(${(periodDirValue / totalCols) * 100}% + 1px)`,
-      [sizeStyle]: `calc(${(periodSize / totalCols) * 100}% - 1px)`,
-    };
+  function getHighlightStyle(period?: ColoredTimePeriod) {
+    if (period !== undefined) {
+      const periodStartIndex: number = convertTimeToIndex(period.StartTime);
+      const periodEndIndex: number = convertTimeToIndex(period.EndTime);
+      const periodSize: number = periodEndIndex - periodStartIndex;
+      const periodDirValue: number = periodStartIndex - (verticalMode ? startingIndex : lastStartIndex);
+      return {
+        // calc() adds a 1px gap between cells
+        [dirStyle]: `calc(${(periodDirValue / totalCols) * 100}% + 1px)`,
+        [sizeStyle]: `calc(${(periodSize / totalCols) * 100}% - 1px)`,
+      };
+    }
+    return undefined;
   }
   
-  const period = getHighlightPeriod(props.highlightPeriod);
-  const highlightStyle = getHighlightStyle(period);
+  const highlightStyle = getHighlightStyle(props.highlightPeriod);
 
   return (
     <div className={styles.timetableRow}>
