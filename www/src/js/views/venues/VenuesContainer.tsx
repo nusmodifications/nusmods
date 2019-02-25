@@ -253,11 +253,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
       if (!venueDetail) return null;
       const [venue, availability] = venueDetail;
       return (
-        <VenueDetails
-          venue={venue}
-          availability={availability}
-          searchedPeriod={searchOptions}
-        />
+        <VenueDetails venue={venue} availability={availability} searchedPeriod={searchOptions} />
       );
     }
 
