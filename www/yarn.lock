@@ -1352,10 +1352,10 @@
     "@types/react" "*"
     "@types/webpack" "*"
 
-"@types/react-modal@3.8.0":
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/@types/react-modal/-/react-modal-3.8.0.tgz#f51371e69e8f2c07454127901ac26ca0ec7f4162"
-  integrity sha512-E2Vl5qjALYxvB1oqJMqd6zcRTBw1eXRuJglKe5opTW2/TIxhH4X/YIeUpUT91jAIgxrKZzIfnn5ts7EAba7TXQ==
+"@types/react-modal@3.8.1":
+  version "3.8.1"
+  resolved "https://registry.yarnpkg.com/@types/react-modal/-/react-modal-3.8.1.tgz#232a8fb99103e13f35bb1604a67ab32e9d938d98"
+  integrity sha512-uX6R/34N7R/9BIAlP9MdSDnEGmzfsfcaZfvilNgw/r7lXcp7Hs2J5+AYpVrxk+hDMqCGQMZjMRVeRTmN8/4Bxg==
   dependencies:
     "@types/react" "*"
 
