@@ -82,9 +82,7 @@ function TimetableRow(props: Props) {
         const conditionalProps =
           lesson.isModifiable && onModifyCell
             ? {
-                onClick: () => {
-                  onModifyCell(lesson);
-                },
+                onClick: (position: ClientRect) => onModifyCell(lesson, position),
               }
             : {};
 
