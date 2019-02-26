@@ -5,7 +5,7 @@ import { flatMap } from 'lodash';
 
 import { DayAvailability, Venue, VenueLesson, VenueSearchOptions } from 'types/venues';
 import { Lesson } from 'types/modules';
-import { createGenericColoredTimePeriod } from 'types/timePeriod';
+import { createTimePeriod } from 'types/timePeriod';
 
 import { colorLessonsByKey } from 'utils/colors';
 import { arrangeLessonsForWeek } from 'utils/timetables';
@@ -43,7 +43,7 @@ export class VenueDetailsComponent extends React.PureComponent<Props> {
     return arrangeLessonsForWeek(coloredLessons);
   }
 
-  /** Returns a colored time period representing the search period */
+  /** Returns a time period representing the search period */
   getHighlightPeriod() {
     const { searchedPeriod } = this.props;
 
@@ -52,7 +52,7 @@ export class VenueDetailsComponent extends React.PureComponent<Props> {
     const endTime = convertIndexToTime(
       2 * (this.props.searchedPeriod.time + this.props.searchedPeriod.duration),
     );
-    return createGenericColoredTimePeriod(day, startTime, endTime, 0);
+    return createTimePeriod(day, startTime, endTime);
   }
 
   render() {

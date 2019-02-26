@@ -30,7 +30,7 @@
   }
 
   @include media-breakpoint-up(md) {
-    .row {
+    .highlight {
       justify-content: space-between;
       align-items: center;
     }

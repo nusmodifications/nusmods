@@ -35,7 +35,7 @@ type State = {
 function AppEntry({ app }: AppEntryProps) {
   return (
     <section className={styles.appEntry}>
-      <div className="row">
+      <div className="highlight">
         <div className="col-lg-2 col-sm-3 text-center-md">
           <ExternalLink href={app.url} className={styles.appIcon}>
             <img

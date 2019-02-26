@@ -232,7 +232,7 @@ class TimetableContent extends React.Component<Props, State> {
 
     if (_.isEmpty(clashes) && _.isEmpty(nonClashingMods) && !tombstone) {
       return (
-        <div className="row">
+        <div className="highlight">
           <div className="col-sm-12">
             <p className="text-sm-center">No modules added.</p>
           </div>
@@ -354,7 +354,7 @@ class TimetableContent extends React.Component<Props, State> {
 
         <div>{this.props.header}</div>
 
-        <div className="row">
+        <div className="highlight">
           <div
             className={classnames({
               'col-md-12': !isVerticalOrientation,
@@ -393,7 +393,7 @@ class TimetableContent extends React.Component<Props, State> {
               'col-md-4': isVerticalOrientation,
             })}
           >
-            <div className="row">
+            <div className="highlight">
               <div className="col-12 no-export">
                 <TimetableActions
                   isVerticalOrientation={isVerticalOrientation}

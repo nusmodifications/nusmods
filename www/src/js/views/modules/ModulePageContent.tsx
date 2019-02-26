@@ -87,7 +87,7 @@ export default class ModulePageContent extends React.Component<Props, State> {
           </div>
         )}
 
-        <div className="row">
+        <div className="highlight">
           <div className="col-md-9">
             <div
               id={SIDE_MENU_ITEMS.details}
@@ -226,7 +226,7 @@ export default class ModulePageContent extends React.Component<Props, State> {
               <Online isLive={false}>
                 {(isOnline) =>
                   isOnline ? (
-                    <div className="row">
+                    <div className="highlight">
                       <div className="col-xl-4">
                         <div className={classnames('alert alert-warning', styles.reviewsBanner)}>
                           <h3>Hi There!</h3>

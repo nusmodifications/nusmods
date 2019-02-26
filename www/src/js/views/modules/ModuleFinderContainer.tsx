@@ -310,7 +310,7 @@ export class ModuleFinderContainerComponent extends React.Component<Props, State
       <div className="modules-page-container page-container">
         {pageHead}
 
-        <div className="row">
+        <div className="highlight">
           <div className="col">
             <h1 className="sr-only">Module Finder</h1>
 
