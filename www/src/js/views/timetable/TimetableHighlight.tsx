@@ -1,11 +1,9 @@
 import classnames from 'classnames';
 import * as React from 'react';
 
-import { TimePeriod } from 'types/timePeriod';
 import styles from './TimetableHighlight.scss';
 
 type Props = {
-  highlightPeriod: TimePeriod;
   style?: React.CSSProperties;
 };
 
