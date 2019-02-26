@@ -15,7 +15,7 @@ function StaticPage(props: Props) {
     <div className={classnames('page-container', props.className)}>
       <ScrollToTop onComponentDidMount />
       <Title>{props.title}</Title>
-      <div className="highlight">
+      <div className="row">
         <div className="col-md-8 offset-md-1">{props.children}</div>
       </div>
     </div>

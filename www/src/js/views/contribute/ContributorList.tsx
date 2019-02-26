@@ -11,7 +11,7 @@ import styles from './ContributorList.scss';
 
 export function ContributorListComponent(props: { contributors: Contributor[] }) {
   return (
-    <div className="highlight">
+    <div className="row">
       {props.contributors.map((contributor) => (
         <div className="col-md-3 col-6 text-center" key={contributor.id}>
           <ExternalLink href={contributor.html_url}>

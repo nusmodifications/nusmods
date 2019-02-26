@@ -27,7 +27,7 @@ const title = 'Team';
 function TeamMember({ member }: Props) {
   return (
     <section className={styles.teamMember} key={member.name}>
-      <div className="highlight">
+      <div className="row">
         <div className="col-lg-2 col-sm-3 text-center-md">
           <ExternalLink href={member.link} className={styles.portrait}>
             <img
@@ -40,7 +40,7 @@ function TeamMember({ member }: Props) {
         <div className="col-lg-10 col-sm-9">
           <h4>{member.name}</h4>
           <p>{member.description}</p>
-          <div className="highlight">
+          <div className="row">
             {member.facebook && (
               <div className="col-sm-1 col">
                 <Tooltip content="Facebook profile" touchHold>

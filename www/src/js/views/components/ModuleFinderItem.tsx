@@ -29,7 +29,7 @@ export class ModuleFinderItemComponent extends React.PureComponent<Props> {
 
     return (
       <li className="modules-item">
-        <div className="highlight">
+        <div className="row">
           <div className="col-lg-8 col-md-12 col-sm-8">
             <header>
               <h2 className="modules-title">

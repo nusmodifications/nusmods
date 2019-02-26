@@ -153,7 +153,7 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
           )}
         </div>
 
-        <div className="highlight">
+        <div className="row">
           <div className="col-sm-4">
             <h3 className={styles.shareHeading}>QR Code</h3>
             <div className={styles.qrCode}>
