@@ -1,22 +1,29 @@
-import * as React from 'react';
+import React, { ComponentType } from 'react';
 import classnames from 'classnames';
-/** @var { VenueLocationMap } */
-import venueLocationJSON from 'data/venues.json';
+
 import { LatLngTuple, Venue, VenueLocation, VenueLocationMap } from 'types/venues';
 import LocationMap from 'views/components/map/LocationMap';
 import styles from './EventMapInline.scss';
 
-const venueLocations = venueLocationJSON as VenueLocationMap;
+export type OwnProps = Readonly<{
+  isOpen: boolean;
+  className?: string;
+  venue: Venue;
 
-export type Props = {
-  readonly isOpen: boolean;
-  readonly className?: string;
-  readonly venue: Venue;
+  toggleOpen: () => void;
+}>;
 
-  readonly toggleOpen: () => void;
+export type Props = OwnProps & {
+  readonly venueLocations: VenueLocationMap;
 };
 
-export default function({ venue, isOpen, className, toggleOpen }: Props) {
+const EventMapInline: ComponentType<Props> = ({
+  venue,
+  isOpen,
+  className,
+  toggleOpen,
+  venueLocations,
+}: Props) => {
   const venueLocation: VenueLocation = venueLocations[venue];
   if (!venueLocation || !venueLocation.location) {
     return null;
@@ -38,4 +45,6 @@ export default function({ venue, isOpen, className, toggleOpen }: Props) {
       <LocationMap position={position} />
     </div>
   );
-}
+};
+
+export default EventMapInline;

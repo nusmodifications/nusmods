@@ -7,7 +7,8 @@ import rootReducer, { State } from 'reducers';
 import requestsMiddleware from 'middlewares/requests-middleware';
 import ravenMiddleware from 'middlewares/raven-middleware';
 import { setAutoFreeze } from 'immer';
-import { FSA, GetState } from '../types/redux';
+
+import { FSA, GetState } from 'types/redux';
 
 // Extend immutability-helper with autovivification commands. This allows immutability-helper
 // to automatically create objects if it doesn't exist before

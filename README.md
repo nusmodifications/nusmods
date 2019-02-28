@@ -1,5 +1,5 @@
 <h1>
-  <img src="docs/nusmods-logo.svg" alt="NUSMods" width="400" />
+  <img src="misc/nusmods-logo.svg" alt="NUSMods" width="400" />
 </h1>
 
 [![Backers on Open Collective](https://opencollective.com/nusmods/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/nusmods/sponsors/badge.svg)](#sponsors) [![Coverage Status](https://coveralls.io/repos/github/nusmodifications/nusmods/badge.svg?branch=master)](https://coveralls.io/github/nusmodifications/nusmods?branch=master) [![CircleCI Build Status](https://circleci.com/gh/nusmodifications/nusmods.svg?style=shield)](https://circleci.com/gh/nusmodifications/nusmods)
@@ -74,11 +74,11 @@ All projects and packages in this repository are [MIT licensed](LICENSE).
 
 [BrowserStack][browserstack] lets us ensure NUSMods functions across all browsers and devices by allowing us to test NUSMods on real devices, including Safari on older iPhones and previous versions of browsers.
 
-[![](docs/browserstack-logo.png)][browserstack]
+[![](misc/browserstack-logo.png)][browserstack]
 
 [Zoho][zoho] has kindly given us individual email accounts. Zoho Mail is a secure and reliable email solution, tailor-made for an organization's communication needs. With enhanced collaboration features, it's not just an inbox… [it's more](https://www.zoho.com/workplace/).
 
-[![](docs/zoho-logo.png)][zoho]
+[![](misc/zoho-logo.png)][zoho]
 
 [browserstack]: https://www.browserstack.com/
 [zoho]: https://www.zoho.com/

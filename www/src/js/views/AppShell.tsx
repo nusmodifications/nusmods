@@ -50,7 +50,7 @@ type Props = RouteComponentProps & {
 };
 
 type State = {
-  moduleListError?: any;
+  moduleListError?: Error;
 };
 
 export class AppShellComponent extends React.Component<Props, State> {
@@ -120,7 +120,7 @@ export class AppShellComponent extends React.Component<Props, State> {
 
         <nav className={styles.navbar}>
           <NavLink className={styles.brand} to="/" title="Home">
-            <Logo title="NUSMods" />
+            <Logo className={styles.brandLogo} title="NUSMods" />
           </NavLink>
 
           <div className={styles.navRight}>

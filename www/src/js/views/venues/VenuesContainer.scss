@@ -15,6 +15,20 @@ $venue-list-width: 16rem;
   }
 }
 
+.venueDetail {
+  &.mapExpanded {
+    // Venue detail need to appear above everything else, including
+    // page navigation when the map is expanded
+    z-index: $venue-detail-expanded-z-index;
+  }
+
+  &:not(.mapExpanded) {
+    // Only include the scrollable mixin when the map is not expanded
+    // to prevent the map from being clipped in Safari Mobile
+    @include scrollable-y;
+  }
+}
+
 @include media-breakpoint-up(md) {
   .venuesList,
   .venueDetail {

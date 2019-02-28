@@ -2,9 +2,9 @@ import { range, without, uniq } from 'lodash';
 
 import { ColorIndex, ColorMapping } from 'types/reducers';
 import { Lesson } from 'types/modules';
+import { SemTimetableConfig } from 'types/timetables';
 
 import { NUM_DIFFERENT_COLORS, getNewColor, colorLessonsByKey, fillColorMapping } from './colors';
-import { SemTimetableConfig } from '../types/timetables';
 
 describe(getNewColor, () => {
   test('it should get color without randomization', () => {
