@@ -8,6 +8,7 @@ import qs from 'query-string';
 import { pick, mapValues, size, isEqual, get } from 'lodash';
 
 import { Venue, VenueDetailList, VenueSearchOptions } from 'types/venues';
+import { TimePeriod } from 'types/views';
 
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import ApiError from 'views/errors/ApiError';
@@ -16,6 +17,11 @@ import LoadingSpinner from 'views/components/LoadingSpinner';
 import SearchBox from 'views/components/SearchBox';
 import { Clock, Map } from 'views/components/icons';
 import { venuePage } from 'views/routes/paths';
+import Modal from 'views/components/Modal';
+import Title from 'views/components/Title';
+import NoFooter from 'views/layout/NoFooter';
+import MapContext from 'views/components/map/MapContext';
+import makeResponsive from 'views/hocs/makeResponsive';
 
 import config from 'config';
 import nusmods from 'apis/nusmods';
@@ -23,11 +29,7 @@ import HistoryDebouncer from 'utils/HistoryDebouncer';
 import { searchVenue, filterAvailability, sortVenues } from 'utils/venues';
 import { breakpointDown } from 'utils/css';
 import { defer } from 'utils/react';
-import makeResponsive from 'views/hocs/makeResponsive';
-import Modal from 'views/components/Modal';
-import Title from 'views/components/Title';
-import NoFooter from 'views/layout/NoFooter';
-import MapContext from 'views/components/map/MapContext';
+import { convertIndexToTime } from 'utils/timify';
 
 import AvailabilitySearch, { defaultSearchOptions } from './AvailabilitySearch';
 import VenueList from './VenueList';
@@ -159,6 +161,22 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
     });
   };
 
+  getHighlightPeriod(): TimePeriod | undefined {
+    const { isAvailabilityEnabled, searchOptions } = this.state;
+
+    if (!isAvailabilityEnabled) return undefined;
+
+    const day = searchOptions.day;
+    const startTime = convertIndexToTime(searchOptions.time * 2);
+    const endTime = convertIndexToTime(2 * (searchOptions.time + searchOptions.duration));
+
+    return {
+      day,
+      startTime,
+      endTime,
+    };
+  }
+
   selectedVenue(): Venue | null {
     const { venue } = this.props.match.params;
     if (!venue) return null;
@@ -234,7 +252,6 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
   renderSelectedVenue(matchedVenues: VenueDetailList) {
     const selectedVenue = this.selectedVenue();
     const { venues } = this.props;
-    const { searchOptions } = this.state;
 
     if (!venues || !selectedVenue) return null;
 
@@ -253,7 +270,11 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
       if (!venueDetail) return null;
       const [venue, availability] = venueDetail;
       return (
-        <VenueDetails venue={venue} availability={availability} searchedPeriod={searchOptions} />
+        <VenueDetails
+          venue={venue}
+          availability={availability}
+          highlightPeriod={this.getHighlightPeriod()}
+        />
       );
     }
 
@@ -266,7 +287,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
         availability={availability}
         next={next}
         previous={previous}
-        searchedPeriod={searchOptions}
+        highlightPeriod={this.getHighlightPeriod()}
       />
     );
   }
