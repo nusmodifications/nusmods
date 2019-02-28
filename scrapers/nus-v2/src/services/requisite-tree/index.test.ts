@@ -1,4 +1,4 @@
-import { insertRequisiteTree, TreeMap } from './index';
+import { insertRequisiteTree, PrereqTreeMap } from './index';
 import { Module, ModuleCode } from '../../types/modules';
 
 describe(insertRequisiteTree, () => {
@@ -11,7 +11,7 @@ describe(insertRequisiteTree, () => {
     );
 
   test('should insert prereq tree and fulfilled requirements', () => {
-    const prereqs: TreeMap = {
+    const prereqs: PrereqTreeMap = {
       CS3216: 'CS2103',
       CS2103: 'CS1010',
     };
@@ -30,7 +30,7 @@ describe(insertRequisiteTree, () => {
   });
 
   test('should fulfill prereqs for modules with complex trees', () => {
-    const prereqs: TreeMap = {
+    const prereqs: PrereqTreeMap = {
       CS3235: {
         and: [
           'CS2105',

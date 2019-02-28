@@ -16,7 +16,7 @@ import DataPipeline from './tasks/DataPipeline';
 
 import config from './config';
 
-function handleFatalError(e: Error): never {
+function handleFatalError(e: Error): void {
   logger.fatal(e, 'Fatal error');
   process.exitCode = 1;
 }

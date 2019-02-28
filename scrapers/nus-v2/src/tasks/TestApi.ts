@@ -28,7 +28,7 @@ export default class TestApi extends BaseTask implements Task {
       if (e instanceof AuthError) {
         this.logger.error(
           e,
-          'Got an auth error when connecting to the API. Check your env.json file credentials.',
+          'Got an auth error when connecting to the API. Check your env.json file credentials (occasionally the API may also throw this even when the credentials are correct)',
         );
       } else if (e instanceof assert.AssertionError) {
         this.logger.error(

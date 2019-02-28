@@ -3,9 +3,6 @@
  *
  * The default export is a singleton instance of the API class. This allows us
  * to enforce global concurrency limit on the number of requests made.
- *
- * The API class and base callApi functions are exported for testing and
- * should not be used directly.
  */
 
 import axios from 'axios';
@@ -21,7 +18,8 @@ type ApiParams = {
   [key: string]: string;
 };
 
-// Error codes
+// Error codes specified by the API. Note that these, like many other things
+// in the API, are not to be relied upon completely
 type STATUS_CODE = string;
 const OKAY: STATUS_CODE = '00000';
 const AUTH_ERROR: STATUS_CODE = '10000';
@@ -57,21 +55,19 @@ function mapErrorCode(code: string, msg: string) {
 /* eslint-disable @typescript-eslint/camelcase */
 
 /**
- * Base API call function. Do not call this directly, instead use one of the provided
- * methods.
- *
- * This function wraps around axios to provide basic configuration such as authentication
- * which all API calls should have, as well as error handling.
+ * Base API call function. This function wraps around axios to provide basic
+ * configuration such as authentication which all API calls should have,
+ * as well as error handling.
  */
-export async function callApi<Data>(endpoint: string, params: ApiParams): Promise<Data> {
+async function callApi<Data>(endpoint: string, params: ApiParams): Promise<Data> {
   // 1. Construct request URL
-  const url = `${config.baseUrl}/${endpoint}`;
+  const url = new URL(endpoint, config.baseUrl);
   let response;
 
   try {
     // 2. All API requests use POST HTTP method with params encoded in JSON
     //    in the body
-    response = await axios.post(url, params, {
+    response = await axios.post(url.href, params, {
       transformRequest: [(data) => JSON.stringify(data)],
       // 3. Apply authentication using header
       headers,
@@ -111,8 +107,8 @@ export async function callApi<Data>(endpoint: string, params: ApiParams): Promis
   return data;
 }
 
-// Export for testing. Do not instantiate directly, use the singleton instance instead
-export class NusApi {
+// Do not instantiate directly, use the singleton instance instead
+class NusApi {
   queue: Queue;
 
   constructor(concurrency: number) {
@@ -229,7 +225,7 @@ export class NusApi {
    * Loads an entire semester's timetable from the API. Because the JSON returned
    * is very large, instead of waiting for the entire JSON to be loaded into memory
    * we pass the individual lessons to a consumer function instead as they are
-   * streamed
+   * streamed, then immediately discard them to limit memory usage.
    */
   getSemesterTimetables = async (
     term: string,
@@ -237,17 +233,17 @@ export class NusApi {
   ): Promise<void> =>
     new Promise((resolve, reject) => {
       const endpoint = 'classtt/withdate';
-      const url = `${config.baseUrl}/${endpoint}`;
+      const url = new URL(endpoint, config.baseUrl);
       const body = JSON.stringify({ term });
 
       oboe({
-        url,
+        url: url.href,
         headers,
         body,
         method: 'POST',
       })
         .node('data[*]', (lesson: TimetableLesson) => {
-          // Consume and drop each lesson
+          // Consume and discard each lesson
           lessonConsumer(lesson);
           return oboe.drop;
         })
@@ -259,7 +255,7 @@ export class NusApi {
             resolve();
           } else {
             const error = mapErrorCode(code, msg);
-            error.requestConfig = { url, data: body };
+            error.requestConfig = { url: url.href, data: body };
             reject(error);
           }
         })
@@ -298,3 +294,6 @@ export class NusApi {
 // Export as default a singleton instance to be used globally
 const singletonInstance = new NusApi(config.apiConcurrency);
 export default singletonInstance;
+
+// Exported for testing
+export { callApi, NusApi };

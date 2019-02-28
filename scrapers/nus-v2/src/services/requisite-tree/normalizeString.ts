@@ -67,9 +67,9 @@ function convertToNumerals(number: number, string: string): string {
 
   // Detect roman numeral or alphabet in brackets
   // not case sensitive as '(Communications and Networks I)' and `(M&A)` would be false positives
-  const romanNumberalRegex = new RegExp(`\\(?(?:${roman}|${alphabet})\\)`);
-  if (romanNumberalRegex.test(string)) {
-    const replaced = string.replace(romanNumberalRegex, `(${number})`);
+  const romanNumeralRegex = new RegExp(`\\(?(${roman}|${alphabet})\\)`);
+  if (romanNumeralRegex.test(string)) {
+    const replaced = string.replace(romanNumeralRegex, `(${number})`);
     // recursively replace the next numeral
     return convertToNumerals(number + 1, replaced);
   }

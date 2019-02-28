@@ -16,7 +16,7 @@ import { flattenTree } from './tree';
  * PrereqTree: different format of ParsedPrerequisite
  */
 
-export type TreeMap = {
+export type PrereqTreeMap = {
   [moduleCode: string]: PrereqTree;
 };
 
@@ -51,8 +51,8 @@ const RESTRICTED_KEYWORDS = [
   '4 of the 5',
 ];
 
-function parse(data: ModuleWithoutTree[], subLogger: Logger): TreeMap {
-  const results: TreeMap = {};
+function parse(data: ModuleWithoutTree[], subLogger: Logger): PrereqTreeMap {
+  const results: PrereqTreeMap = {};
 
   for (const module of data) {
     const moduleCode = module.ModuleCode;
@@ -82,19 +82,22 @@ function parse(data: ModuleWithoutTree[], subLogger: Logger): TreeMap {
   return results;
 }
 
-export function insertRequisiteTree(modules: Module[], prerequisites: TreeMap): Module[] {
+/**
+ * Insert the PrereqTree and FulfillRequirements properties to Module objects
+ */
+export function insertRequisiteTree(modules: Module[], prerequisites: PrereqTreeMap): Module[] {
   // Find modules which this module fulfill the requirements for
-  const fulfillModules: { [moduleCode: string]: Set<ModuleCode> } = {};
+  const fulfillModulesMap: { [moduleCode: string]: Set<ModuleCode> } = {};
   for (const module of modules) {
-    fulfillModules[module.ModuleCode] = new Set();
+    fulfillModulesMap[module.ModuleCode] = new Set();
   }
 
   for (const [moduleCode, prereqs] of entries(prerequisites)) {
     for (const fulfillsModule of flattenTree(prereqs)) {
-      if (fulfillModules[fulfillsModule]) {
+      if (fulfillModulesMap[fulfillsModule]) {
         // Since module requires fulfillsModule, that means fulfillsModule
         // fulfills the requirements for module
-        fulfillModules[fulfillsModule].add(moduleCode);
+        fulfillModulesMap[fulfillsModule].add(moduleCode);
       }
     }
   }
@@ -106,8 +109,8 @@ export function insertRequisiteTree(modules: Module[], prerequisites: TreeMap): 
       module.PrereqTree = prerequisites[moduleCode];
     }
 
-    if (fulfillModules[moduleCode].size > 0) {
-      module.FulfillRequirements = Array.from(fulfillModules[moduleCode]);
+    if (fulfillModulesMap[moduleCode].size > 0) {
+      module.FulfillRequirements = Array.from(fulfillModulesMap[moduleCode]);
     }
   }
 

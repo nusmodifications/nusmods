@@ -6,7 +6,7 @@ import { getDataWriter, getCacheFactory, Cache } from '../services/io';
  * Base task class. Dependencies and components are instance properties
  * which can be overridden in tests with mocks.
  */
-export default class BaseTask {
+export default abstract class BaseTask {
   protected academicYear: string;
 
   // For storing data to the file system

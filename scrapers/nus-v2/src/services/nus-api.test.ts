@@ -19,8 +19,8 @@ describe(callApi, () => {
       mockResponse({ code: '00000', msg: '', data: 'Turn down for whaaaaat?' }),
     );
 
-    const result = await callApi('test', {});
-    expect(result).toEqual('Turn down for whaaaaat?');
+    const result = callApi('test', {});
+    await expect(result).resolves.toEqual('Turn down for whaaaaat?');
   });
 
   test('should throw auth error', async () => {
@@ -96,6 +96,8 @@ describe(callApi, () => {
 
 describe(NusApi, () => {
   test('should enforce maximum concurrency', async () => {
+    expect.assertions(6);
+
     mockedAxios.post.mockResolvedValue(
       mockResponse({ code: '00000', msg: '', data: 'Turn down for whaaaaat?' }),
     );
