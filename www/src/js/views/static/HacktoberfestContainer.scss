@@ -6,8 +6,8 @@
 
   h2 {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     margin: 2rem 0;
 
     .logo {
@@ -46,9 +46,9 @@
   }
 
   .steps {
+    list-style: none;
     margin: 3rem 0;
     font-size: 1.4rem;
-    list-style: none;
 
     a {
       font-weight: bold;
@@ -65,10 +65,10 @@
         width: 2.2rem;
         height: 2.2rem;
         margin: 0 0.6rem 0 -2.8rem;
+        border: 1px solid theme-color();
         font-weight: bold;
         line-height: 2rem;
         text-align: center;
-        border: 1px solid theme-color();
       }
     }
   }

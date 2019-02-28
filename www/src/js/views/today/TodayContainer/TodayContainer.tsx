@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { minBy, range, get } from 'lodash';
 import NUSModerator, { AcadWeekInfo } from 'nusmoderator';
+import classnames from 'classnames';
 import { addDays, differenceInCalendarDays, isSameDay, isWeekend, parseISO } from 'date-fns';
 
 import { DaysOfWeek, ColoredLesson, Lesson } from 'types/modules';
@@ -27,8 +28,10 @@ import config from 'config';
 import withTimer, { TimerData } from 'views/hocs/withTimer';
 import makeResponsive from 'views/hocs/makeResponsive';
 import NoFooter from 'views/layout/NoFooter';
+import MapContext from 'views/components/map/MapContext';
 import { formatTime, getCurrentHours, getCurrentMinutes, getDayIndex } from 'utils/timify';
 import { breakpointUp } from 'utils/css';
+import { EMPTY_ARRAY } from 'types/utils';
 
 import DayEvents from '../DayEvents';
 import DayHeader from '../DayHeader';
@@ -47,28 +50,29 @@ const semesterNameMap: Record<string, number> = {
 
 export type OwnProps = TimerData;
 
-export type Props = OwnProps & {
-  readonly timetableWithLessons: SemTimetableConfigWithLessons;
-  readonly colors: ColorMapping;
-  readonly matchBreakpoint: boolean;
-};
+export type Props = OwnProps &
+  Readonly<{
+    timetableWithLessons: SemTimetableConfigWithLessons;
+    colors: ColorMapping;
+    matchBreakpoint: boolean;
+  }>;
 
-type State = {
+type State = Readonly<{
   // Mapping of number of days from today to the weather forecast for that day
   // with zero being today
-  readonly weather: { [key: string]: string };
+  weather: { [key: string]: string };
 
   // Which lesson has an open venue map
-  readonly openLesson: SelectedLesson | null;
-};
+  openLesson: SelectedLesson | null;
+
+  isMapExpanded: boolean;
+}>;
 
 type DayGroup = {
   offset: number;
   type: EmptyGroupType;
   dates: Date[];
 };
-
-const EMPTY_ARRAY: any[] = [];
 
 // Number of days to display
 const DAYS = 7;
@@ -92,12 +96,14 @@ function getDayType(date: Date, weekInfo: AcadWeekInfo): EmptyGroupType {
   }
 }
 
-export function DaySection(props: {
-  readonly children: React.ReactNode;
-  readonly date: Date | Date[];
-  readonly offset: number;
-  readonly forecast?: string;
-}) {
+export function DaySection(
+  props: Readonly<{
+    children: React.ReactNode;
+    date: Date | Date[];
+    offset: number;
+    forecast?: string;
+  }>,
+) {
   return (
     <section className={styles.day}>
       <DayHeader date={props.date} offset={props.offset} forecast={props.forecast} />
@@ -110,6 +116,7 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
   state: State = {
     weather: {},
     openLesson: null,
+    isMapExpanded: false,
   };
 
   componentDidMount() {
@@ -139,6 +146,10 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
       })
       .catch(captureException);
   }
+
+  onToggleMapExpanded = (isMapExpanded: boolean) => {
+    this.setState({ isMapExpanded });
+  };
 
   onOpenLesson = (date: Date, lesson: Lesson) => {
     this.setState({ openLesson: { date, lesson } });
@@ -305,9 +316,15 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
         {this.props.matchBreakpoint && (
           <>
             <NoFooter />
-            <div className={styles.mapContainer}>
-              <EventMap venue={this.state.openLesson && this.state.openLesson.lesson.Venue} />
-            </div>
+            <MapContext.Provider value={{ toggleMapExpanded: this.onToggleMapExpanded }}>
+              <div
+                className={classnames(styles.mapContainer, {
+                  [styles.expanded]: this.state.isMapExpanded,
+                })}
+              >
+                <EventMap venue={this.state.openLesson && this.state.openLesson.lesson.Venue} />
+              </div>
+            </MapContext.Provider>
           </>
         )}
       </div>

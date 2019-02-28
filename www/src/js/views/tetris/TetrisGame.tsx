@@ -57,7 +57,7 @@ export type Props = {
   readonly resetGame: () => void;
 };
 
-type State = {
+export type State = {
   board: Board;
   score: number;
   linesCleared: number;
@@ -347,12 +347,16 @@ export default class TetrisGame extends React.PureComponent<Props, State> {
 
   popNextPiece = (draft: State) => {
     const nextPiece = draft.nextPieces.shift();
-    if (nextPiece) {
-      draft.currentPiece = nextPiece;
-    } else {
-      // Queue is empty, we reshuffle and add the pieces to create a grab
-      // bag system that is guaranteed to play forever
-      [draft.currentPiece, ...draft.nextPieces] = shuffle(PIECES);
+    if (!nextPiece) {
+      throw new Error('nextPieces is empty');
+    }
+
+    draft.currentPiece = nextPiece;
+
+    // Queue is empty, we reshuffle and add the pieces to create a grab
+    // bag system that is guaranteed to play forever
+    if (draft.nextPieces.length === 0) {
+      draft.nextPieces = shuffle(PIECES);
     }
   };
 

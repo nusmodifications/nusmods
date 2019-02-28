@@ -2,14 +2,14 @@
 
 .openMap {
   composes: btn btn-link btn-block from global;
-  color: inherit;
   border-top: 1px solid;
   border-radius: 0;
+  color: inherit;
 
   &:hover,
   &:active,
   &:focus {
-    color: inherit;
     border-top: 1px solid;
+    color: inherit;
   }
 }

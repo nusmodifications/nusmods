@@ -1,6 +1,6 @@
 import * as React from 'react';
-
 import Loadable, { LoadingComponentProps } from 'react-loadable';
+
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import ApiError from 'views/errors/ApiError';
 import { retryImport } from 'utils/error';

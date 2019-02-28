@@ -77,6 +77,8 @@ class DisqusComments extends React.PureComponent<Props, State> {
     // this if we need to use them inside the function
     const { identifier, url, title } = this.props;
 
+    // Can't be arsed to type this bullshit
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return function configDisqus(this: any) {
       this.page.identifier = identifier;
       this.page.url = url;

@@ -39,8 +39,10 @@ export type SearchItem =
 /* browse/ModuleFinderContainer */
 export type FilterGroupId = string;
 
-export type OnFilterChange = (filterGroup: FilterGroup<any>) => any;
-export type FilterGroups = { [filterGroupId: string]: FilterGroup<any> };
+export type AnyGroup = FilterGroup<any>;
+
+export type OnFilterChange = (filterGroup: AnyGroup) => unknown;
+export type FilterGroups = { [filterGroupId: string]: AnyGroup };
 export type DepartmentFaculty = { [department: string]: Faculty };
 
 export type PageRange = {
@@ -73,7 +75,7 @@ export type SelectedLesson = { date: Date; lesson: Lesson };
 export type ExamClashes = { [key: string]: Module[] };
 
 // Timetable event handlers
-export type OnModifyCell = (lesson: ModifiableLesson) => void;
+export type OnModifyCell = (lesson: ModifiableLesson, position: ClientRect) => void;
 export type OnHoverCell = (hoverLesson: HoverLesson | null) => void;
 
 // Incomplete typing of Mamoto's API. If you need something not here, feel free

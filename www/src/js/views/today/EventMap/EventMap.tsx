@@ -1,18 +1,20 @@
 import * as React from 'react';
-/** @var { VenueLocationMap } */
-import venueLocationJSON from 'data/venues.json';
-import { Venue, VenueLocation, VenueLocationMap } from 'types/venues';
+
+import { Venue, VenueLocationMap } from 'types/venues';
 import LocationMap from 'views/components/map/LocationMap';
 import { Map } from 'views/components/icons';
 import styles from './EventMap.scss';
 
-const venueLocations = venueLocationJSON as VenueLocationMap;
-
-export type Props = {
+export type OwnProps = {
   readonly venue: Venue | null;
 };
 
-export default function(props: Props) {
+export type Props = OwnProps &
+  Readonly<{
+    venueLocations: VenueLocationMap;
+  }>;
+
+export default function EventMap(props: Props) {
   if (!props.venue) {
     return (
       <div className={styles.noLessonSelected}>
@@ -22,7 +24,7 @@ export default function(props: Props) {
     );
   }
 
-  const venueLocation: VenueLocation = venueLocations[props.venue];
+  const venueLocation = props.venueLocations[props.venue];
   if (!venueLocation || !venueLocation.location) {
     return <p>We don&apos;t have information about this venue :(</p>;
   }

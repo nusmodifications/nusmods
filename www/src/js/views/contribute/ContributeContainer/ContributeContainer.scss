@@ -44,10 +44,19 @@
   }
 }
 
+.writeReviews {
+  h4 {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+}
+
 .reviewWrapper {
   display: grid;
-  grid-gap: 0.5rem;
   grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  grid-gap: 0.5rem;
+  margin-bottom: 1.5rem;
 
   .reviewButton {
     line-height: 1.25;
@@ -62,8 +71,8 @@
 }
 
 .backerAvatars {
-  margin-bottom: 1.5rem;
   overflow: auto;
+  margin-bottom: 1.5rem;
 
   img {
     display: block;
@@ -73,9 +82,9 @@
 .githubLinks,
 .contributeLinks {
   display: grid;
-  margin-bottom: 2rem;
-  grid-gap: 1rem;
   grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  grid-gap: 1rem;
+  margin-bottom: 2rem;
 
   :global(.btn) {
     white-space: normal;

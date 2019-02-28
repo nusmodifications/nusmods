@@ -47,9 +47,9 @@
 .preview {
   position: relative;
   clear: both;
+  overflow-y: hidden;
   height: 13.8rem;
   margin: 1rem 0 2rem;
-  overflow-y: hidden;
 }
 
 .themeOption {

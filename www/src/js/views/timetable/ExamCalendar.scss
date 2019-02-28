@@ -14,9 +14,9 @@
 .dayDate {
   width: 16.6666%;
   padding: 0 0.25rem;
-  vertical-align: top;
   border: 1px solid var(--gray-lighter);
   border-width: 0 1px 0 0;
+  vertical-align: top;
 
   &:last-child {
     border-right: 0;
@@ -34,8 +34,8 @@
 .dayDate {
   padding-top: 0;
   padding-bottom: 0;
-  font-weight: normal;
   border-top-width: 1px;
+  font-weight: normal;
 
   tr:first-child & {
     border-top: 0;
@@ -52,12 +52,12 @@
 
   a {
     display: block;
+    overflow: hidden;
     padding: 0.3rem 0.3rem 0.5rem 0.3rem;
     margin-bottom: 0.5rem;
-    overflow: hidden;
-    font-size: $font-size-sm;
     border-bottom-width: 0.3rem;
     border-bottom-style: solid;
+    font-size: $font-size-sm;
   }
 
   .moduleCode {

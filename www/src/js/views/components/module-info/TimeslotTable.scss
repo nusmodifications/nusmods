@@ -1,11 +1,11 @@
 @import "~styles/utils/modules-entry";
 
 .table {
+  table-layout: fixed;
   // HACK: -1px is for Blink (Chrome/Chromium), which incorrectly calculates width
   // by including the border-right width on the th below, causing the table to have
   // a width of 100% + 1px and thus overflowing
   width: calc(100% - 1px);
-  table-layout: fixed;
 
   th {
     font-weight: normal;
@@ -35,8 +35,8 @@
 
   td {
     position: relative;
-    padding: 0;
     overflow: hidden;
+    padding: 0;
     border: 1px solid var(--body-bg);
   }
 }
