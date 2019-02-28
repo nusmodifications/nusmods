@@ -1,13 +1,14 @@
 import * as React from 'react';
 import classnames from 'classnames';
 
-import { TimetableDayArrangement, HoverLesson } from 'types/timetables';
-import { OnHoverCell, OnModifyCell } from 'types/views';
-import { TimePeriod } from 'types/timePeriod';
+import { HoverLesson, TimetableDayArrangement } from 'types/timetables';
+import { OnHoverCell, OnModifyCell, TimePeriod } from 'types/views';
+import { convertTimeToIndex } from 'utils/timify';
 
 import styles from './TimetableDay.scss';
 import TimetableRow from './TimetableRow';
 import CurrentTimeIndicator from './CurrentTimeIndicator';
+import TimetableHighlight from './TimetableHighlight';
 
 type Props = {
   day: string;
@@ -28,8 +29,31 @@ type Props = {
 // Height of timetable per hour in vertical mode
 const VERTICAL_HEIGHT = 2.4;
 
+function calculateLessonStyle(
+  period: TimePeriod,
+  startingIndex: number,
+  endingIndex: number,
+  verticalMode: boolean,
+): React.CSSProperties {
+  const totalCols = endingIndex - startingIndex;
+
+  const startIndex = convertTimeToIndex(period.startTime);
+  const endIndex = convertTimeToIndex(period.endTime);
+  const size = endIndex - startIndex;
+
+  const dirStyle = verticalMode ? 'top' : 'left';
+  const sizeStyle = verticalMode ? 'height' : 'width';
+
+  return {
+    [dirStyle]: `calc(${((startIndex - startingIndex) / totalCols) * 100}% + 1px)`,
+    [sizeStyle]: `calc(${(size / totalCols) * 100}% - 1px)`,
+  };
+}
+
 function TimetableDay(props: Props) {
-  const columns = props.endingIndex - props.startingIndex;
+  const { startingIndex, endingIndex, verticalMode, highlightPeriod } = props;
+
+  const columns = endingIndex - startingIndex;
   const size = 100 / (columns / 4);
 
   const rowStyle: React.CSSProperties = {
@@ -37,7 +61,7 @@ function TimetableDay(props: Props) {
     backgroundSize: `${size}% ${size}%`,
   };
 
-  if (props.verticalMode) rowStyle.height = `${VERTICAL_HEIGHT * columns}rem`;
+  if (verticalMode) rowStyle.height = `${VERTICAL_HEIGHT * columns}rem`;
 
   return (
     <li className={styles.day}>
@@ -54,18 +78,24 @@ function TimetableDay(props: Props) {
         {props.dayLessonRows.map((dayLessonRow, i) => (
           <TimetableRow
             key={i}
-            startingIndex={props.startingIndex}
-            endingIndex={props.endingIndex}
-            verticalMode={props.verticalMode}
+            startingIndex={startingIndex}
+            endingIndex={endingIndex}
+            verticalMode={verticalMode}
             showTitle={props.showTitle}
             lessons={dayLessonRow}
             onModifyCell={props.onModifyCell}
             hoverLesson={props.hoverLesson}
             onCellHover={props.onCellHover}
-            highlightPeriod={props.highlightPeriod}
           />
         ))}
+
+        {highlightPeriod && (
+          <TimetableHighlight
+            style={calculateLessonStyle(highlightPeriod, startingIndex, endingIndex, verticalMode)}
+          />
+        )}
       </div>
+
       {props.isCurrentDay && <div className={classnames('no-export', styles.currentDay)} />}
     </li>
   );

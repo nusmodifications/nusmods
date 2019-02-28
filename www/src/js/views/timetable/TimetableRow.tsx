@@ -1,12 +1,10 @@
 import * as React from 'react';
 
-import { EndTime, ModifiableLesson, StartTime } from 'types/modules';
+import { ModifiableLesson } from 'types/modules';
 import { HoverLesson } from 'types/timetables';
 import { OnHoverCell, OnModifyCell } from 'types/views';
 
 import { convertTimeToIndex } from 'utils/timify';
-import { TimePeriod } from 'types/timePeriod';
-import TimetableHighlight from './TimetableHighlight';
 import styles from './TimetableRow.scss';
 import TimetableCell from './TimetableCell';
 
@@ -19,7 +17,6 @@ type Props = {
   hoverLesson?: HoverLesson | null;
   onCellHover: OnHoverCell;
   onModifyCell?: OnModifyCell;
-  highlightPeriod?: TimePeriod;
 };
 
 /**
@@ -35,48 +32,26 @@ type Props = {
 function TimetableRow(props: Props) {
   const { startingIndex, endingIndex, lessons, onModifyCell, verticalMode } = props;
   const totalCols = endingIndex - startingIndex;
-  const dirStyle = verticalMode ? 'top' : 'marginLeft';
-  const sizeStyle = verticalMode ? 'height' : 'width';
 
   let lastStartIndex = startingIndex;
 
-  /**
-   * Return direction and size style for the TimetableCell or TimetableHighlight to be displayed.
-   *
-   * @param startTime Start time of the lesson/highlight period
-   * @param endTime End time of the lesson/highlight period
-   */
-  function getElementStyle(startTime: StartTime, endTime: EndTime) {
-    const startIndex: number = convertTimeToIndex(startTime);
-    const endIndex: number = convertTimeToIndex(endTime);
-    const size: number = endIndex - startIndex;
-
-    const dirValue: number = startIndex - (verticalMode ? startingIndex : lastStartIndex);
-    const style = {
-      // calc() adds a 1px gap between cells
-      [dirStyle]: `calc(${(dirValue / totalCols) * 100}% + 1px)`,
-      [sizeStyle]: `calc(${(size / totalCols) * 100}% - 1px)`,
-    };
-
-    return style;
-  }
-
-  function getHighlightStyle(period?: TimePeriod) {
-    if (period !== undefined) {
-      return getElementStyle(period.StartTime, period.EndTime);
-    }
-    return undefined;
-  }
-
-  const highlightStyle = getHighlightStyle(props.highlightPeriod);
-
   return (
     <div className={styles.timetableRow}>
-      {props.highlightPeriod !== undefined ? (
-        <TimetableHighlight key="highlightPeriod" style={highlightStyle} />
-      ) : null}
       {lessons.map((lesson) => {
-        const style = getElementStyle(lesson.StartTime, lesson.EndTime);
+        const startIndex = convertTimeToIndex(lesson.StartTime);
+        const endIndex = convertTimeToIndex(lesson.EndTime);
+        const size = endIndex - startIndex;
+
+        const dirStyle = verticalMode ? 'top' : 'marginLeft';
+        const sizeStyle = verticalMode ? 'height' : 'width';
+
+        const dirValue = startIndex - (verticalMode ? startingIndex : lastStartIndex);
+        const style = {
+          // calc() adds a 1px gap between cells
+          [dirStyle]: `calc(${(dirValue / totalCols) * 100}% + 1px)`,
+          [sizeStyle]: `calc(${(size / totalCols) * 100}% - 1px)`,
+        };
+
         lastStartIndex = convertTimeToIndex(lesson.EndTime);
 
         const conditionalProps =

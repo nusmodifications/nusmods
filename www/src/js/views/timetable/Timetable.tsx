@@ -1,18 +1,17 @@
 import * as React from 'react';
-import { values, flattenDeep, noop } from 'lodash';
+import { flattenDeep, noop, values } from 'lodash';
 import classnames from 'classnames';
 
 import { ColoredLesson } from 'types/modules';
 import { HoverLesson, TimetableArrangement } from 'types/timetables';
-import { OnModifyCell } from 'types/views';
-import { TimePeriod } from 'types/timePeriod';
+import { OnModifyCell, TimePeriod } from 'types/views';
 
 import {
-  SCHOOLDAYS,
   calculateBorderTimings,
-  getDayIndex,
   getCurrentHours,
   getCurrentMinutes,
+  getDayIndex,
+  SCHOOLDAYS,
 } from 'utils/timify';
 import elements from 'views/elements';
 import withTimer, { TimerData } from 'views/hocs/withTimer';

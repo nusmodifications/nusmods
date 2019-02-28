@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import { flatMap } from 'lodash';
 
 import { DayAvailability, Venue, VenueLesson, VenueSearchOptions } from 'types/venues';
 import { Lesson } from 'types/modules';
-import { createTimePeriod } from 'types/timePeriod';
+import { TimePeriod } from 'types/views';
 
 import { colorLessonsByKey } from 'utils/colors';
 import { arrangeLessonsForWeek } from 'utils/timetables';
@@ -44,7 +44,7 @@ export class VenueDetailsComponent extends React.PureComponent<Props> {
   }
 
   /** Returns a time period representing the search period */
-  getHighlightPeriod() {
+  getHighlightPeriod(): TimePeriod {
     const { searchedPeriod } = this.props;
 
     const day = searchedPeriod.day;
@@ -52,7 +52,12 @@ export class VenueDetailsComponent extends React.PureComponent<Props> {
     const endTime = convertIndexToTime(
       2 * (this.props.searchedPeriod.time + this.props.searchedPeriod.duration),
     );
-    return createTimePeriod(day, startTime, endTime);
+
+    return {
+      day,
+      startTime,
+      endTime,
+    };
   }
 
   render() {

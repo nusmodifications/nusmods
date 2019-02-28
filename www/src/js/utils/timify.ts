@@ -1,8 +1,8 @@
 import { DayText, Lesson, LessonTime } from 'types/modules';
 import {
-  getISODay,
   format,
   getHours,
+  getISODay,
   getMinutes,
   getSeconds,
   setHours,
@@ -10,7 +10,7 @@ import {
   setSeconds,
   startOfDay,
 } from 'date-fns';
-import { TimePeriod } from 'types/timePeriod';
+import { TimePeriod } from 'types/views';
 
 // Converts a 24-hour format time string to an index.
 // Each index corresponds to one cell of each timetable row.
@@ -95,8 +95,8 @@ export function calculateBorderTimings(
 
   // Consider time range of period, if applicable
   if (period !== undefined) {
-    earliestTime = Math.min(earliestTime, convertTimeToIndex(period.StartTime));
-    latestTime = Math.max(latestTime, convertTimeToIndex(period.EndTime));
+    earliestTime = Math.min(earliestTime, convertTimeToIndex(period.startTime));
+    latestTime = Math.max(latestTime, convertTimeToIndex(period.endTime));
   }
 
   return {
