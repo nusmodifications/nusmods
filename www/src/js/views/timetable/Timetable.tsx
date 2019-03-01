@@ -65,10 +65,7 @@ class Timetable extends React.PureComponent<Props, State> {
     );
 
     const lessons = flattenDeep<ColoredLesson>(values(this.props.lessons));
-    const { startingIndex, endingIndex } = calculateBorderTimings(
-      lessons,
-      highlightPeriod,
-    );
+    const { startingIndex, endingIndex } = calculateBorderTimings(lessons, highlightPeriod);
     const currentDayIndex = getDayIndex(); // Monday = 0, Friday = 4
 
     // Calculate the margin offset for the CurrentTimeIndicator
@@ -109,9 +106,7 @@ class Timetable extends React.PureComponent<Props, State> {
                     : nullCurrentTimeIndicatorStyle
                 }
                 highlightPeriod={
-                  highlightPeriod && index === highlightPeriod.day
-                    ? highlightPeriod
-                    : undefined
+                  highlightPeriod && index === highlightPeriod.day ? highlightPeriod : undefined
                 }
               />
             ))}
