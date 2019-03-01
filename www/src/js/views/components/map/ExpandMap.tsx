@@ -1,24 +1,19 @@
 import React from 'react';
-import { withLeaflet, LeafletProps } from 'react-leaflet';
+import { withLeaflet, ContextProps } from 'react-leaflet';
 import Control from 'react-leaflet-control';
 import { Maximize, Minimize } from 'views/components/icons';
 import Tooltip from 'views/components/Tooltip';
 
-type Props = LeafletProps & {
+type Props = ContextProps & {
   readonly isExpanded: boolean;
   readonly onToggleExpand: (boolean: boolean) => void;
 };
 
 class ExpandMap extends React.PureComponent<Props> {
-  componentDidMount() {
-    // Workaround for https://github.com/LiveBy/react-leaflet-control/issues/27
-    this.forceUpdate();
-  }
-
   componentDidUpdate() {
-    const { map } = this.props.leaflet;
+    if (this.props.leaflet && this.props.leaflet.map) {
+      const { map } = this.props.leaflet;
 
-    if (map) {
       // Leaflet maps need to have their cached size invalidated when their parent
       // element resizes
       map.invalidateSize();

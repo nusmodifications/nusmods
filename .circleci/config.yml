@@ -99,6 +99,7 @@ jobs:
     working_directory: ~/nusmods/www
     environment:
       NODE_ENV: production
+      TZ: Asia/Singapore
     steps:
       - attach_workspace:
           at: ~/nusmods
