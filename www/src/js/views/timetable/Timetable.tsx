@@ -58,6 +58,8 @@ class Timetable extends React.PureComponent<Props, State> {
   };
 
   render() {
+    const { highlightPeriod } = this.props;
+
     const schoolDays = SCHOOLDAYS.filter(
       (day) => day !== 'Saturday' || this.props.lessons.Saturday,
     );
@@ -65,7 +67,7 @@ class Timetable extends React.PureComponent<Props, State> {
     const lessons = flattenDeep<ColoredLesson>(values(this.props.lessons));
     const { startingIndex, endingIndex } = calculateBorderTimings(
       lessons,
-      this.props.highlightPeriod,
+      highlightPeriod,
     );
     const currentDayIndex = getDayIndex(); // Monday = 0, Friday = 4
 
@@ -107,9 +109,8 @@ class Timetable extends React.PureComponent<Props, State> {
                     : nullCurrentTimeIndicatorStyle
                 }
                 highlightPeriod={
-                  this.props.highlightPeriod !== undefined &&
-                  index === this.props.highlightPeriod.day
-                    ? this.props.highlightPeriod
+                  highlightPeriod && index === highlightPeriod.day
+                    ? highlightPeriod
                     : undefined
                 }
               />

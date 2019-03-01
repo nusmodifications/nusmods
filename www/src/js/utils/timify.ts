@@ -94,7 +94,7 @@ export function calculateBorderTimings(
   });
 
   // Consider time range of period, if applicable
-  if (period !== undefined) {
+  if (period != null) {
     earliestTime = Math.min(earliestTime, convertTimeToIndex(period.startTime));
     latestTime = Math.max(latestTime, convertTimeToIndex(period.endTime));
   }
