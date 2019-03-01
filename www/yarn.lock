@@ -1117,7 +1117,12 @@
   resolved "https://registry.yarnpkg.com/@types/js-combinatorics/-/js-combinatorics-0.5.31.tgz#a61a3f625009e2e693492c158ac8afb243efecad"
   integrity sha512-0JGeWYJdHIpX2gttyxqnzpKwK3KmyFZysWI8+fnXdiOo/kEFxDMdo/pwhrtBrHvYgRAsDNJCSQzgA+m8vbHvFw==
 
-"@types/leaflet@1.4.3":
+"@types/json2mq@0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@types/json2mq/-/json2mq-0.2.0.tgz#6fd48dd2761250ecf28da0628e9830a13121828e"
+  integrity sha512-E7R0ye2fY4HGbBDwopzJzMrwPY3gFxy2dCrE1uVnyS7UEjLggfSilM3lPWYTbqf0nqJbHE87K9pIvP+V3flslA==
+
+"@types/leaflet@*", "@types/leaflet@1.4.3":
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/@types/leaflet/-/leaflet-1.4.3.tgz#62638cb73770eeaed40222042afbcc7b495f0cc4"
   integrity sha512-jFRBSsPHi1EwQSwrN0cOJLdPhwOZsRl4IMxvm/2ShLh0YM5GfCtQXCzsrv8RE7DWL+AykXdYSAd9bFLWbZT4CQ==
@@ -1133,6 +1138,11 @@
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/@types/mousetrap/-/mousetrap-1.6.1.tgz#2016a2e68a12e5a8d693715c28d5dc26f2f7e00b"
   integrity sha512-OB0WDTEzIi2sXIySkGEEFvYnH9et3hXXJnn74lKO0xZgGFdCNxQqVRbwcYHc9Q07h9yqFLJFEA5zvdAd7nf8Vg==
+
+"@types/no-scroll@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@types/no-scroll/-/no-scroll-2.1.0.tgz#d50280440fe1bc85c7481f40e35dc51be7b54bb8"
+  integrity sha512-67oe0I3SZeEsCIcf5MT4yKrcJOIZn5g+ytPEn+JQQnM4IprztFAWg9T3ngVGbxkceJlLYBsqIfvHl9xEGTuPyA==
 
 "@types/node@*":
   version "11.9.5"
@@ -1188,6 +1198,21 @@
     "@types/node" "*"
     "@types/react" "*"
 
+"@types/react-kawaii@0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@types/react-kawaii/-/react-kawaii-0.11.0.tgz#99e8454c006f9e163f2910d44d15c0f3908ffcaf"
+  integrity sha512-SgasNJZL2DaHt//sxWWDHv1j4HAznkUpHfYh9BGOsDku/DDu6dDATUQSkTYan6883YYSEP+nJM8F0FGxhrCUSg==
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-leaflet@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@types/react-leaflet/-/react-leaflet-2.2.0.tgz#474078bce5e3e8ef463d806d7323072a82d4d1da"
+  integrity sha512-Fe8To4p+kU8ZvSl7qfU83TKdi96uy65PpAOH3WC2UH3x2DiMoFsNpRnEbtZd1OUedlSbtlu3u823KSlWZoVa1A==
+  dependencies:
+    "@types/leaflet" "*"
+    "@types/react" "*"
+
 "@types/react-loadable@5.5.0":
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/@types/react-loadable/-/react-loadable-5.5.0.tgz#7a878408ad940250aeb91d77d2b54a18f3c7c946"
@@ -1228,6 +1253,13 @@
     "@types/history" "*"
     "@types/react" "*"
 
+"@types/react-scrollspy@3.3.0":
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/@types/react-scrollspy/-/react-scrollspy-3.3.0.tgz#efb076b9f835cfce52b41db6d314df83ba366b8f"
+  integrity sha512-wtymEh10vRndaWn/bwytp5Wnh9npaNWCXg68Ax+WTEZxAa8SZvcWL2sJOSQjmfH7uHi9SfSzkZeJ3VOIh56lyQ==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*":
   version "16.8.5"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.5.tgz#03b9a6597bc20f6eaaed43f377a160f7e41c2b90"
@@ -1236,10 +1268,10 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
-"@types/react@16.8.2":
-  version "16.8.2"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.2.tgz#3b7a7f7ea89d1c7d68b00849fb5de839011c077b"
-  integrity sha512-6mcKsqlqkN9xADrwiUz2gm9Wg4iGnlVGciwBRYFQSMWG6MQjhOZ/AVnxn+6v8nslFgfYTV8fNdE6XwKu6va5PA==
+"@types/react@16.8.6":
+  version "16.8.6"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.6.tgz#fa1de3fe56cc9b6afeddc73d093d7f30fd5e31cc"
+  integrity sha512-bN9qDjEMltmHrl0PZRI4IF2AbB7V5UlRfG+OOduckVnRQ4VzXVSzy/1eLAh778IEqhTnW0mmgL9yShfinNverA==
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
@@ -7893,10 +7925,10 @@ number-is-nan@^1.0.0:
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
   integrity sha1-CXtgK1NCKlIsGvuHkDGDNpQaAR0=
 
-nusmoderator@2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/nusmoderator/-/nusmoderator-2.1.1.tgz#4d41b577ed5884843b7ae06d30e055c8ff1b2c26"
-  integrity sha512-uTkwv+QelYQQIfU1EYxqZZ7BtLa47K3kA++M3oA3lV23ewZKqqkjvo1TAgnXgKImLJy7B8HzRBNNSY+rAtoRjA==
+nusmoderator@2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/nusmoderator/-/nusmoderator-2.2.0.tgz#ebefb120ed50cd1b91279e05d977eab3802675d4"
+  integrity sha512-+dKie1QFAqDPxXqyJZTcmS0crxoeJpLNIpa/vbmQo8b+yON6NpztSfG4fXflZxOwucqKu8uDhazucILrvc1Z/w==
 
 nwsapi@^2.0.7:
   version "2.1.1"
@@ -9337,10 +9369,10 @@ react-kawaii@0.11.0:
   dependencies:
     prop-types "^15.6.2"
 
-react-leaflet-control@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/react-leaflet-control/-/react-leaflet-control-2.0.0.tgz#3d9ac4c67e86032520bf581b7a1a0dc7b450f682"
-  integrity sha512-pUJsOJPfAvsI0PV9cjSV7Sj4DNKgaCmpBem9oC2qqyhH54d5HaQR90O45y1gGCX9ps8P1r4yR66TdDhWOlNDnw==
+react-leaflet-control@2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/react-leaflet-control/-/react-leaflet-control-2.1.1.tgz#ed90006c9d285872a2788fe15c11fc30ad14cdb0"
+  integrity sha512-3fx4uSRFtDaFNa1yq62DCxdc9kR3Lk4V7R0lHqbKfPTEIOvPR7VFvk3xzcSnSB/0LAYO8R96Pwcs1c6knyL/Hw==
 
 react-leaflet@2.2.0:
   version "2.2.0"
