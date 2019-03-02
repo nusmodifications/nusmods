@@ -15,7 +15,6 @@
     "@sentry/node": "4.6.3",
     "axios": "0.18.0",
     "bunyan": "1.8.12",
-    "forever": "0.15.3",
     "fs-extra": "7.0.1",
     "http-graceful-shutdown": "2.2.3",
     "koa": "2.7.0",
