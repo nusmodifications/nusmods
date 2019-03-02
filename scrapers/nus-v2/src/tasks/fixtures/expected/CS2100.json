@@ -1,0 +1,660 @@
+{
+  "ModuleCode": "CS2100",
+  "ModuleTitle": "Computer Organisation",
+  "AcadYear": "2018/2019",
+  "Department": "Computer Science",
+  "Faculty": "Computing",
+  "ModuleDescription": "The objective of this module is to familiarise students with the fundamentals of computing devices. Through this module students will understand the basics of data representation, and how the various parts of a computer work, separately and with each other. This allows students to understand the issues in computing devices, and how these issues affect the implementation of solutions. Topics covered include data representation systems, combinational and sequential circuit design techniques, assembly language, processor execution cycles, pipelining, memory hierarchy and input/output systems.",
+  "ModuleCredit": "4",
+  "Workload": [3, 1, 1, 3, 2],
+  "Prerequisite": "CS1010 or its equivalent",
+  "Preclusion": "CS1104 or Students from Department of ECE",
+  "SemesterData": [
+    {
+      "Semester": 1,
+      "ExamDate": "2018-11-27T09:00:00.000Z",
+      "ExamDuration": 120,
+      "Timetable": [
+        {
+          "ClassNo": "01",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1300",
+          "EndTime": "1400",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "02",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1400",
+          "EndTime": "1500",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "03",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1500",
+          "EndTime": "1600",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "04",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1600",
+          "EndTime": "1700",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "05",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1700",
+          "EndTime": "1800",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "06",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "1100",
+          "EndTime": "1200",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "07",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "1200",
+          "EndTime": "1300",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "08",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "1300",
+          "EndTime": "1400",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "09",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "1400",
+          "EndTime": "1500",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "10",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "1500",
+          "EndTime": "1600",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "11",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "1600",
+          "EndTime": "1700",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "12",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "1700",
+          "EndTime": "1800",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "1",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Tuesday",
+          "StartTime": "1600",
+          "EndTime": "1800",
+          "Venue": "LT19"
+        },
+        {
+          "ClassNo": "1",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Wednesday",
+          "StartTime": "1200",
+          "EndTime": "1300",
+          "Venue": "LT19"
+        },
+        {
+          "ClassNo": "01",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Friday",
+          "StartTime": "1300",
+          "EndTime": "1400",
+          "Venue": "COM1-0208"
+        },
+        {
+          "ClassNo": "02",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Tuesday",
+          "StartTime": "0800",
+          "EndTime": "0900",
+          "Venue": "COM1-0209"
+        },
+        {
+          "ClassNo": "03",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Wednesday",
+          "StartTime": "0900",
+          "EndTime": "1000",
+          "Venue": "COM2-0108"
+        },
+        {
+          "ClassNo": "04",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1600",
+          "EndTime": "1700",
+          "Venue": "COM1-0208"
+        },
+        {
+          "ClassNo": "05",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1700",
+          "EndTime": "1800",
+          "Venue": "COM1-0208"
+        },
+        {
+          "ClassNo": "06",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "0900",
+          "EndTime": "1000",
+          "Venue": "COM1-0208"
+        },
+        {
+          "ClassNo": "07",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Wednesday",
+          "StartTime": "1000",
+          "EndTime": "1100",
+          "Venue": "COM2-0108"
+        },
+        {
+          "ClassNo": "08",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Friday",
+          "StartTime": "1100",
+          "EndTime": "1200",
+          "Venue": "COM1-0208"
+        },
+        {
+          "ClassNo": "09",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "1600",
+          "EndTime": "1700",
+          "Venue": "COM1-0209"
+        },
+        {
+          "ClassNo": "10",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Friday",
+          "StartTime": "1500",
+          "EndTime": "1600",
+          "Venue": "COM1-0208"
+        },
+        {
+          "ClassNo": "11",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Friday",
+          "StartTime": "1300",
+          "EndTime": "1400",
+          "Venue": "COM1-0203"
+        },
+        {
+          "ClassNo": "12",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "0900",
+          "EndTime": "1000",
+          "Venue": "COM1-0207"
+        }
+      ]
+    },
+    {
+      "Semester": 2,
+      "ExamDate": "2019-05-02T09:00:00.000Z",
+      "ExamDuration": 120,
+      "Timetable": [
+        {
+          "ClassNo": "01",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "0800",
+          "EndTime": "0900",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "02",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "0900",
+          "EndTime": "1000",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "03",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1000",
+          "EndTime": "1100",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "04",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1100",
+          "EndTime": "1200",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "05",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1200",
+          "EndTime": "1300",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "06",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1300",
+          "EndTime": "1400",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "07",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1400",
+          "EndTime": "1500",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "08",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1500",
+          "EndTime": "1600",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "09",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1600",
+          "EndTime": "1700",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "10",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1700",
+          "EndTime": "1800",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "11",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "0800",
+          "EndTime": "0900",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "12",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "0900",
+          "EndTime": "1000",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "13",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "1000",
+          "EndTime": "1100",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "14",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "1100",
+          "EndTime": "1200",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "15",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "1200",
+          "EndTime": "1300",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "16",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "1300",
+          "EndTime": "1400",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "17",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "1400",
+          "EndTime": "1500",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "18",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "1500",
+          "EndTime": "1600",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "19",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "1600",
+          "EndTime": "1700",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "20",
+          "LessonType": "Laboratory",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "1700",
+          "EndTime": "1800",
+          "Venue": "COM1-0113"
+        },
+        {
+          "ClassNo": "1",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Tuesday",
+          "StartTime": "1600",
+          "EndTime": "1800",
+          "Venue": "I3-AUD"
+        },
+        {
+          "ClassNo": "1",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Wednesday",
+          "StartTime": "1400",
+          "EndTime": "1500",
+          "Venue": "I3-AUD"
+        },
+        {
+          "ClassNo": "2",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1000",
+          "EndTime": "1200",
+          "Venue": "I3-AUD"
+        },
+        {
+          "ClassNo": "2",
+          "LessonType": "Lecture",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Wednesday",
+          "StartTime": "1500",
+          "EndTime": "1600",
+          "Venue": "I3-AUD"
+        },
+        {
+          "ClassNo": "01",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Wednesday",
+          "StartTime": "1100",
+          "EndTime": "1200",
+          "Venue": "COM1-0207"
+        },
+        {
+          "ClassNo": "02",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Friday",
+          "StartTime": "0900",
+          "EndTime": "1000",
+          "Venue": "COM1-0209"
+        },
+        {
+          "ClassNo": "03",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Tuesday",
+          "StartTime": "1000",
+          "EndTime": "1100",
+          "Venue": "COM1-0207"
+        },
+        {
+          "ClassNo": "04",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Wednesday",
+          "StartTime": "1100",
+          "EndTime": "1200",
+          "Venue": "COM1-0201"
+        },
+        {
+          "ClassNo": "05",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Friday",
+          "StartTime": "1100",
+          "EndTime": "1200",
+          "Venue": "COM1-0209"
+        },
+        {
+          "ClassNo": "06",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Friday",
+          "StartTime": "1200",
+          "EndTime": "1300",
+          "Venue": "COM1-0209"
+        },
+        {
+          "ClassNo": "07",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Tuesday",
+          "StartTime": "1300",
+          "EndTime": "1400",
+          "Venue": "COM1-0209"
+        },
+        {
+          "ClassNo": "08",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1200",
+          "EndTime": "1300",
+          "Venue": "COM1-0207"
+        },
+        {
+          "ClassNo": "09",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1600",
+          "EndTime": "1700",
+          "Venue": "COM1-0203"
+        },
+        {
+          "ClassNo": "10",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Tuesday",
+          "StartTime": "0900",
+          "EndTime": "1000",
+          "Venue": "COM1-0201"
+        },
+        {
+          "ClassNo": "11",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Monday",
+          "StartTime": "1500",
+          "EndTime": "1600",
+          "Venue": "COM1-0203"
+        },
+        {
+          "ClassNo": "12",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Thursday",
+          "StartTime": "1700",
+          "EndTime": "1800",
+          "Venue": "COM1-0207"
+        },
+        {
+          "ClassNo": "13",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Wednesday",
+          "StartTime": "1000",
+          "EndTime": "1100",
+          "Venue": "COM1-0207"
+        },
+        {
+          "ClassNo": "14",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Tuesday",
+          "StartTime": "1100",
+          "EndTime": "1200",
+          "Venue": "COM1-0209"
+        },
+        {
+          "ClassNo": "15",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Friday",
+          "StartTime": "0800",
+          "EndTime": "0900",
+          "Venue": "COM1-0209"
+        },
+        {
+          "ClassNo": "16",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Wednesday",
+          "StartTime": "1200",
+          "EndTime": "1300",
+          "Venue": "COM1-0209"
+        },
+        {
+          "ClassNo": "17",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Wednesday",
+          "StartTime": "1300",
+          "EndTime": "1400",
+          "Venue": "COM1-0209"
+        },
+        {
+          "ClassNo": "18",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Friday",
+          "StartTime": "1300",
+          "EndTime": "1400",
+          "Venue": "COM1-0209"
+        },
+        {
+          "ClassNo": "19",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Friday",
+          "StartTime": "1400",
+          "EndTime": "1500",
+          "Venue": "COM1-0209"
+        },
+        {
+          "ClassNo": "20",
+          "LessonType": "Tutorial",
+          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "DayText": "Friday",
+          "StartTime": "1500",
+          "EndTime": "1600",
+          "Venue": "COM1-0209"
+        }
+      ]
+    }
+  ],
+  "PrereqTree": "CS1010",
+  "FulfillRequirements": ["CS2106", "CS3210"]
+}
