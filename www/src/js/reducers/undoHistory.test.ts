@@ -1,5 +1,5 @@
 import { undo, redo } from 'actions/undoHistory';
-import update from 'immutability-helper';
+import produce from 'immer';
 import { pick } from 'lodash';
 import undoHistory, {
   computeUndoStacks,
@@ -39,11 +39,9 @@ const state: TestState = {
   undoHistoryState: emptyUndoHistory,
 };
 
-const mutatedState = update(state, {
-  data: {
-    toMutate: { string: { $set: 'yo' } },
-    notToTouch: { $push: [1] },
-  },
+const mutatedState = produce(state, (draft) => {
+  draft.data.toMutate.string = 'yo';
+  draft.data.notToTouch.push(1);
 });
 
 const config: UndoHistoryConfig = {
@@ -60,7 +58,9 @@ describe('#computeUndoStacks()', () => {
   });
 
   test('should store data when relevant actions dispatched', () => {
-    const hist0 = update(state.undoHistoryState, { future: { $push: [state] } });
+    const hist0 = produce(state.undoHistoryState, (draft) => {
+      draft.future.push(draft);
+    });
     const hist1 = computeUndoStacks(hist0, newFSA(WATCHED_ACTION), state, mutatedState, config);
     const hist2 = computeUndoStacks(hist1, newFSA(WATCHED_ACTION), mutatedState, state, config);
 
@@ -106,7 +106,9 @@ describe('#computeUndoStacks()', () => {
     expect(hist3).toEqual(hist2);
 
     // If present doesn't exist, do nothing - edge case which should not be encountered
-    const hist4 = update(hist1, { present: { $set: undefined } }); // Past but no present
+    const hist4 = produce(hist1, (draft) => {
+      draft.present = undefined; // Past but no present
+    });
     const hist5 = computeUndoStacks(hist4, undo(), mutatedState, mutatedState, config); // Undo
     expect(hist5).toEqual(hist4);
   });
@@ -130,7 +132,9 @@ describe('#computeUndoStacks()', () => {
     expect(hist4).toEqual(hist3);
 
     // If present doesn't exist, do nothing - edge case which should not be encountered
-    const noPresent = update(hist2, { present: { $set: undefined } }); // Future but no present
+    const noPresent = produce(hist2, (draft) => {
+      draft.present = undefined; // Future but no present
+    });
     const redoneNoPresent = computeUndoStacks(noPresent, redo(), state, state, config); // Redo
     expect(redoneNoPresent).toEqual(noPresent);
   });
