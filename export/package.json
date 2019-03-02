@@ -7,7 +7,6 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "forever start --spinSleepTime 2000 --killSignal=SIGTERM -c 'nodemon --exitcrash' ./app.js",
     "dev": "nodemon ./app.js",
     "devtools": "DEVTOOLS=1 nodemon ./app.js",
     "deploy": "rsync -avu --delete-after . ../../nusmods-export"
