@@ -34,7 +34,11 @@ type TempRawLesson = Omit<RawLesson, 'Weeks'> & {
 
 /**
  * For deduplicating timetable lessons - we need a unique string identifier
- * for each lesson, so we leave out props that changes every lesson like eventdate
+ * for each lesson, so we leave out props that changes every lesson like eventdate.
+ *
+ * Session is not viable for differentiating lessons because things like having
+ * different lecturers may also cause lessons to be marked as having different
+ * sessions.
  */
 const getLessonKey = (lesson: TimetableLesson) =>
   [
@@ -43,7 +47,6 @@ const getLessonKey = (lesson: TimetableLesson) =>
     lesson.day,
     lesson.start_time,
     lesson.end_time,
-    lesson.session,
     lesson.room,
     // '|' is used as a delimiter because it is unlikely to appear
     // organically in the data
