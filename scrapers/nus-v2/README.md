@@ -2,7 +2,7 @@
 
 Node 8.13 or above is required, though Node 10 is preferred.
 
-Use `yarn` to install dependencies, then set up `env.json` with all the necessary keys, then run the test script to check the setup is okay.
+Use `yarn` to install dependencies, then set up `env.json` with all the necessary keys and API base URL, then run the test script to check the setup is okay.
 
 ```
 yarn
@@ -23,16 +23,15 @@ yarn dev test | yarn bunyan
 
 ### For development
 
-- `dev` - run the scraper through `babel-node`, which transpiles the source on the on the fly without having to rebuild the code every time. See CLI commands below for a list of commands.
-
-  Do not use this in production because `babel-node` has poor performance.
-
+- `scrape` - run the scraper (see below for CLI commands). Note that the scraper has to be compiled through the `build` command first
+- `dev` - compile and run the scraper. This is the same as running `build` and `scrape`
+- `build` - compile the scraper using the TypeScript compiler
 - `bunyan` - pipe output from the scraper through this so they can be read on the CLI. This is an alias of `bunyan -L -o short --color` - use local timestamp, short output format and color formatting. Run `yarn bunyan --help` to see all options.
 - `test` - run all unit and integration tests
   - `test:watch` - run tests in watch mode, which runs only when code is changed
 - `lint` - run both linter and type checker
-  = `lint:code` - lint the code through ESLint
-  - `flow` - run Flow type checker
+  - `lint:code` - lint the code through ESLint
+
 
 ## CLI commands
 
@@ -87,12 +86,21 @@ Error handling is done through Sentry.
 
 ### Lesson data
 
-- `WeekText` is now just `Weeks` and is a sorted array of number or string representing the weeks on which the lesson will be held on. Valid week values, in order, are 
-    - Orientation
-    - 1 - 6
-    - Recess
-    - 7 - 13
-    - Reading
+- `WeekText` is now just `Weeks` and is a either a sorted array of numbers representing academic week numbers, or a `WeekRange` object representing lessons that take place outside the normal academic weeks, such as during holidays or recess weeks. This is the structure:
+
+  ```ts
+  type WeekRange = {
+    // The start and end dates
+    start: string;
+    end: string;
+    // Number of weeks between each lesson. If not specified one week is assumed
+    // ie. there are lessons every week
+    weekInterval?: number;
+    // Week numbers for modules with uneven spacing between lessons. The first
+    // occurrence is on week 1
+    weeks?: number[];
+  };
+  ```
 
 ### Venue data
 

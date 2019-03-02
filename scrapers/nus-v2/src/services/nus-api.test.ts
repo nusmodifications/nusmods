@@ -6,7 +6,7 @@ import { mockResponse } from '../utils/test-utils';
 const mockedAxios: jest.Mocked<typeof axios> = axios as any;
 
 beforeEach(() => {
-  mockedAxios.post = jest.fn();
+  jest.spyOn(axios, 'post');
 });
 
 afterEach(() => {

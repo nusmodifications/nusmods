@@ -18,6 +18,8 @@ import config from './config';
 
 function handleFatalError(e: Error): void {
   logger.fatal(e, 'Fatal error');
+  // Do not use process.exit because that will quit without waiting for the
+  // event loop to empty, which may cut off logs or IO operations
   process.exitCode = 1;
 }
 
