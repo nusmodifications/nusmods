@@ -82,3 +82,11 @@ export function toggleBetaTesting(): FSA {
     payload: null,
   };
 }
+
+export const SET_LOAD_DISQUS_MANUALLY = 'SET_DISQUS_MANUAL_LOAD';
+export function setLoadDisqusManually(status: boolean): FSA {
+  return {
+    type: SET_LOAD_DISQUS_MANUALLY,
+    payload: status,
+  };
+}
