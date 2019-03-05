@@ -1,17 +1,17 @@
 import * as React from 'react';
-import { values, flattenDeep, noop } from 'lodash';
+import { flattenDeep, noop, values } from 'lodash';
 import classnames from 'classnames';
 
 import { ColoredLesson } from 'types/modules';
 import { HoverLesson, TimetableArrangement } from 'types/timetables';
-import { OnModifyCell } from 'types/views';
+import { OnModifyCell, TimePeriod } from 'types/views';
 
 import {
-  SCHOOLDAYS,
   calculateBorderTimings,
-  getDayIndex,
   getCurrentHours,
   getCurrentMinutes,
+  getDayIndex,
+  SCHOOLDAYS,
 } from 'utils/timify';
 import elements from 'views/elements';
 import withTimer, { TimerData } from 'views/hocs/withTimer';
@@ -28,6 +28,7 @@ type Props = TimerData & {
   isScrolledHorizontally?: boolean;
   showTitle?: boolean;
   onModifyCell?: OnModifyCell;
+  highlightPeriod?: TimePeriod;
 };
 
 type State = {
@@ -57,12 +58,14 @@ class Timetable extends React.PureComponent<Props, State> {
   };
 
   render() {
+    const { highlightPeriod } = this.props;
+
     const schoolDays = SCHOOLDAYS.filter(
       (day) => day !== 'Saturday' || this.props.lessons.Saturday,
     );
 
     const lessons = flattenDeep<ColoredLesson>(values(this.props.lessons));
-    const { startingIndex, endingIndex } = calculateBorderTimings(lessons);
+    const { startingIndex, endingIndex } = calculateBorderTimings(lessons, highlightPeriod);
     const currentDayIndex = getDayIndex(); // Monday = 0, Friday = 4
 
     // Calculate the margin offset for the CurrentTimeIndicator
@@ -101,6 +104,9 @@ class Timetable extends React.PureComponent<Props, State> {
                   index === currentDayIndex && currentTimeIndicatorVisible
                     ? currentTimeIndicatorStyle
                     : nullCurrentTimeIndicatorStyle
+                }
+                highlightPeriod={
+                  highlightPeriod && index === highlightPeriod.day ? highlightPeriod : undefined
                 }
               />
             ))}
