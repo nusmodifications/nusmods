@@ -1,8 +1,8 @@
 import { DayText, Lesson, LessonTime } from 'types/modules';
 import {
-  getISODay,
   format,
   getHours,
+  getISODay,
   getMinutes,
   getSeconds,
   setHours,
@@ -10,6 +10,7 @@ import {
   setSeconds,
   startOfDay,
 } from 'date-fns';
+import { TimePeriod } from 'types/views';
 
 const SGT_OFFSET = -8 * 60;
 
@@ -36,10 +37,11 @@ export function convertTimeToIndex(time: LessonTime): number {
 }
 
 // Reverse of convertTimeToIndex.
-// 0 -> 0000, 1 -> 0030, 2 -> 0100, ...
+// 0 -> 0000, 1 -> 0030, 2 -> 0100, ... , 48 -> 2400
 export function convertIndexToTime(index: number): LessonTime {
-  const hour: number = Math.floor(index / 2);
-  const minute: string = index % 2 === 0 ? '00' : '30';
+  const timeIndex = Math.min(index, 48);
+  const hour: number = Math.floor(timeIndex / 2);
+  const minute: string = timeIndex % 2 === 0 ? '00' : '30';
   return (hour < 10 ? `0${hour}` : hour.toString()) + minute;
 }
 
@@ -84,6 +86,7 @@ export const DEFAULT_LATEST_TIME: LessonTime = '1800';
 // This bounds will then be used to decide the starting and ending hours of the timetable.
 export function calculateBorderTimings(
   lessons: Lesson[],
+  period?: TimePeriod,
 ): { startingIndex: number; endingIndex: number } {
   let earliestTime: number = convertTimeToIndex(DEFAULT_EARLIEST_TIME);
   let latestTime: number = convertTimeToIndex(DEFAULT_LATEST_TIME);
@@ -91,6 +94,13 @@ export function calculateBorderTimings(
     earliestTime = Math.min(earliestTime, convertTimeToIndex(lesson.StartTime));
     latestTime = Math.max(latestTime, convertTimeToIndex(lesson.EndTime));
   });
+
+  // Consider time range of period, if applicable
+  if (period != null) {
+    earliestTime = Math.min(earliestTime, convertTimeToIndex(period.startTime));
+    latestTime = Math.max(latestTime, convertTimeToIndex(period.endTime));
+  }
+
   return {
     startingIndex: earliestTime % 2 === 0 ? earliestTime : earliestTime - 1, // floor to earliest hour.
     endingIndex: latestTime % 2 === 0 ? latestTime : latestTime + 1, // ceil to latest hour.

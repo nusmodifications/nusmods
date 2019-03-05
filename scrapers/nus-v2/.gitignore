@@ -1,3 +1,6 @@
 /env.json
+/*.env.json
 /build/
 /coverage/
+/data/
+*.log

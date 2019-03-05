@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { flatten } from 'lodash';
+import { flatten, size } from 'lodash';
 import { shallow } from 'enzyme';
 
 import * as weather from 'apis/weather';
@@ -8,6 +8,7 @@ import { EVEN_WEEK, EVERY_WEEK } from 'test-utils/timetable';
 import { captureException } from 'utils/error';
 
 import { Props, DaySection, TodayContainerComponent, mapStateToProps } from './TodayContainer';
+import forecasts from './__mocks__/forecasts.json';
 import DayEvents from '../DayEvents';
 import styles from '../DayEvents.scss';
 
@@ -168,8 +169,8 @@ describe(TodayContainerComponent, () => {
   };
 
   test('should render', () => {
-    // Monday, 8th August 2016, 0800 - week 4
-    const now = new Date('2016-08-08T00:00:00.000Z');
+    // Monday, 8th August 2016, 0800 - week 1
+    const now = new Date('2016-08-08T08:00:00+08:00');
 
     const wrapper = make({
       currentTime: now,
@@ -181,7 +182,7 @@ describe(TodayContainerComponent, () => {
 
   test('should render lessons on a normal week', () => {
     // Monday, 29th August 2016, 0800 - week 4
-    const now = new Date('2016-08-29T00:00:00.000Z');
+    const now = new Date('2016-08-29T08:00:00+08:00');
     const wrapper = make({ currentTime: now });
 
     expect(getLessons(wrapper)).toEqual([
@@ -196,7 +197,7 @@ describe(TodayContainerComponent, () => {
 
   test('should not render even week lessons on odd weeks', () => {
     // Monday, 22th August 2016, 0800 - week 3
-    const now = new Date('2016-08-22T00:00:00.000Z');
+    const now = new Date('2016-08-22T08:00:00+08:00');
     const wrapper = make({ currentTime: now });
 
     expect(getLessons(wrapper)).toEqual([
@@ -211,7 +212,7 @@ describe(TodayContainerComponent, () => {
   test('should capture exception when weather API fails to load', async () => {
     mockWeather.fourDay.mockRejectedValueOnce(new Error('Cannot load weather'));
 
-    const now = new Date('2016-08-22T00:00:00.000Z');
+    const now = new Date('2016-08-22T18:00:00+08:00');
     make({ currentTime: now });
 
     expect(mockWeather.twoHour).toBeCalled();
@@ -221,6 +222,40 @@ describe(TodayContainerComponent, () => {
     await waitFor(() => mockCaptureException.mock.calls.length > 0);
 
     expect(mockCaptureException).toBeCalled();
+  });
+
+  test('should show icons for the next four days', async () => {
+    mockWeather.twoHour.mockResolvedValue('Cloudy');
+    mockWeather.tomorrow.mockResolvedValue('Fair (Day)');
+    mockWeather.fourDay.mockResolvedValue(forecasts);
+
+    const now = new Date('2019-02-07T08:00:00+08:00');
+    const wrapper = make({ currentTime: now });
+
+    await waitFor(() => size(wrapper.state('weather')) > 3);
+    expect(wrapper.state('weather')).toEqual({
+      '0': 'Cloudy',
+      '1': 'Fair (Day)',
+      '2': 'Afternoon thundery showers.',
+      '3': 'Fair.',
+    });
+  });
+
+  test('should work when tomorrow return null', async () => {
+    mockWeather.twoHour.mockResolvedValue('Cloudy');
+    mockWeather.tomorrow.mockResolvedValue(null);
+    mockWeather.fourDay.mockResolvedValue(forecasts);
+
+    const now = new Date('2019-02-07T08:00:00+08:00');
+    const wrapper = make({ currentTime: now });
+
+    await waitFor(() => size(wrapper.state('weather')) > 3);
+    expect(wrapper.state('weather')).toEqual({
+      '0': 'Cloudy',
+      '1': 'Late afternoon thundery showers.',
+      '2': 'Afternoon thundery showers.',
+      '3': 'Fair.',
+    });
   });
 });
 

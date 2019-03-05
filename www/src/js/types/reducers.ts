@@ -95,6 +95,7 @@ export type SettingsState = {
   readonly corsNotification: CorsNotificationSettings;
   readonly moduleTableOrder: ModuleTableOrder;
   readonly beta?: boolean;
+  readonly loadDisqusManually: boolean;
 };
 
 /* timetables.js */

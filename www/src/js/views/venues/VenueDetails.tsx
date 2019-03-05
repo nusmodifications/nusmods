@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import { flatMap } from 'lodash';
 
 import { DayAvailability, Venue } from 'types/venues';
 import { Lesson } from 'types/modules';
+import { TimePeriod } from 'types/views';
 
 import { colorLessonsByKey } from 'utils/colors';
 import { arrangeLessonsForWeek } from 'utils/timetables';
@@ -23,6 +24,7 @@ type Props = RouteComponentProps & {
   readonly previous?: Venue | null;
   readonly next?: Venue | null;
   readonly availability: DayAvailability[];
+  readonly highlightPeriod?: TimePeriod;
 
   readonly matchBreakpoint: boolean;
 };
@@ -80,6 +82,7 @@ export class VenueDetailsComponent extends React.PureComponent<Props> {
         <div className={classnames(styles.timetable, { verticalMode: matchBreakpoint })}>
           <Timetable
             lessons={this.arrangedLessons()}
+            highlightPeriod={this.props.highlightPeriod}
             isVerticalOrientation={matchBreakpoint}
             onModifyCell={(lesson: Lesson) => {
               history.push(modulePage(lesson.ModuleCode, lesson.ModuleTitle));

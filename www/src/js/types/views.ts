@@ -1,5 +1,7 @@
 import FilterGroup from 'utils/filters/FilterGroup';
 import {
+  StartTime,
+  EndTime,
   Lesson,
   ModifiableLesson,
   Module,
@@ -142,6 +144,14 @@ export type Tracker = {
   // Removes a user's consent, both if the consent was one-time only and if the consent was
   // remembered. After calling this method, the user will have to consent again in order to be tracked.
   forgetConsentGiven: () => void;
+
+  // Opt user out of tracker using cookie
+  optUserOut: () => void;
+
+  forgetUserOptOut: () => void;
+
+  // Check for user opt out status
+  isUserOptedOut: () => boolean;
 };
 
 export type TimeSegment = 'Morning' | 'Afternoon' | 'Evening';
@@ -210,4 +220,13 @@ export type BusTiming = {
   isLoading: boolean;
   timings?: NextBusTimings | null;
   error?: Error | null;
+};
+
+/**
+ * Represents a time period in the timetable.
+ */
+export type TimePeriod = {
+  day: number; // Day of week (ie. 0 = Monday, 1 = Tuesday etc.)
+  startTime: StartTime;
+  endTime: EndTime;
 };
