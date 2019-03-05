@@ -1,0 +1,16 @@
+@import './_variables.scss';
+
+$color: theme-color('success');
+
+.highlight {
+  position: absolute;
+  height: 100%;
+  border: 1px solid $color;
+  background: rgba($color, 0.4);
+
+  @include vertical-mode {
+    right: 0;
+    left: 0;
+    height: auto;
+  }
+}

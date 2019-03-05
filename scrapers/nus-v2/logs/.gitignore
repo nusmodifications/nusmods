@@ -1,0 +1,3 @@
+# This file exists so this directory is preserved by git
+!.gitignore
+*

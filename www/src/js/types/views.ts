@@ -1,5 +1,6 @@
 import FilterGroup from 'utils/filters/FilterGroup';
 import {
+  EndTime,
   Faculty,
   Lesson,
   ModifiableLesson,
@@ -8,6 +9,7 @@ import {
   ModuleCondensed,
   ModuleWithColor,
   Semester,
+  StartTime,
   Tree,
 } from './modules';
 import { CustomModule, ModuleList } from './reducers';
@@ -218,4 +220,13 @@ export type BusTiming = {
   isLoading: boolean;
   timings?: NextBusTimings | null;
   error?: Error | null;
+};
+
+/**
+ * Represents a time period in the timetable.
+ */
+export type TimePeriod = {
+  day: number; // Day of week (ie. 0 = Monday, 1 = Tuesday etc.)
+  startTime: StartTime;
+  endTime: EndTime;
 };
