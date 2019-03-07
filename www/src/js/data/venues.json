@@ -2729,7 +2729,11 @@
   },
   "TC-SR4": {
     "roomName": "Tembusu Seminar Room 4",
-    "floor": 1
+    "floor": 1,
+    "location": {
+      "x": 103.77345002721997,
+      "y": 1.3058887418233325
+    }
   },
   "TP-SR9": {
     "roomName": "Town Plaza Seminar Room 9",
@@ -3641,6 +3645,14 @@
     "location": {
       "x": 103.78117382526399,
       "y": 1.296064279348453
+    }
+  },
+  "ERC-SR5": {
+    "roomName": "Seminar Room 5",
+    "floor": 2,
+    "location": {
+      "x": 103.77291262149812,
+      "y": 1.3062781790917393
     }
   }
 }
