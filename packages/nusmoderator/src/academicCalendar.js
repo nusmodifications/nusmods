@@ -61,21 +61,21 @@ export function getAcadYear(date) {
  */
 export function getAcadSem(acadWeekNumber) {
   const earliestSupportedWeek = 1;
-  const lastWeekofSem1 = 23;
-  const lastWeekofSem2 = 40;
-  const lastWeekofSpecialSem1 = 46;
-  const lastWeekofSpecialSem2 = 52;
+  const lastWeekOfSem1 = 23;
+  const lastWeekOfSem2 = 40;
+  const lastWeekOfSpecialSem1 = 46;
+  const lastWeekOfSpecialSem2 = 52;
 
-  if (acadWeekNumber >= earliestSupportedWeek && acadWeekNumber <= lastWeekofSem1) {
+  if (acadWeekNumber >= earliestSupportedWeek && acadWeekNumber <= lastWeekOfSem1) {
     return sem1;
   }
-  if (acadWeekNumber > lastWeekofSem1 && acadWeekNumber <= lastWeekofSem2) {
+  if (acadWeekNumber <= lastWeekOfSem2) {
     return sem2;
   }
-  if (acadWeekNumber > lastWeekofSem2 && acadWeekNumber <= lastWeekofSpecialSem1) {
+  if (acadWeekNumber <= lastWeekOfSpecialSem1) {
     return special1;
   }
-  if (acadWeekNumber > lastWeekofSpecialSem1 && acadWeekNumber <= lastWeekofSpecialSem2) {
+  if (acadWeekNumber <= lastWeekOfSpecialSem2) {
     return special2;
   }
 
