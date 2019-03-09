@@ -25,8 +25,8 @@ const OKAY: STATUS_CODE = '00000';
 const AUTH_ERROR: STATUS_CODE = '10000';
 const RECORD_NOT_FOUND: STATUS_CODE = '10001';
 
+// Authentication via tokens sent through headers
 const headers = {
-  // Authentication via tokens sent through headers
   'X-APP-API': config.appKey,
   'X-STUDENT-API': config.studentKey,
   'Content-Type': 'application/json',
@@ -118,13 +118,13 @@ class NusApi {
   /**
    * Wrapper around base callApi method that pushes the call into a queue
    */
-  callApi = async <T>(endpoint: string, params: ApiParams) =>
+  private callApi = async <T>(endpoint: string, params: ApiParams) =>
     this.queue.add(() => callApi<T>(endpoint, params));
 
   /**
    * Calls the modules endpoint
    */
-  callModulesEndpoint = async (term: string, params: ApiParams) => {
+  private callModulesEndpoint = async (term: string, params: ApiParams) => {
     try {
       // DO NOT remove this await - the promise must settle so the catch
       // can handle the NotFoundError from the API
@@ -207,7 +207,7 @@ class NusApi {
    * array
    */
   getModuleTimetable = async (term: string, module: ModuleCode): Promise<TimetableLesson[]> =>
-    this.callApi('classtt/withdate', {
+    this.callApi('classtt/withdate/published', {
       term,
       module,
     });
@@ -216,7 +216,7 @@ class NusApi {
     term: string,
     departmentCode: string,
   ): Promise<TimetableLesson[]> =>
-    this.callApi('classtt/withdate', {
+    this.callApi('classtt/withdate/published', {
       term,
       deptfac: departmentCode,
     });
@@ -232,7 +232,7 @@ class NusApi {
     lessonConsumer: (lesson: TimetableLesson) => void,
   ): Promise<void> =>
     new Promise((resolve, reject) => {
-      const endpoint = 'classtt/withdate';
+      const endpoint = 'classtt/withdate/published';
       const url = new URL(endpoint, config.baseUrl);
       const body = JSON.stringify({ term });
 
@@ -275,7 +275,7 @@ class NusApi {
    *    is not available yet - the API makes no distinction)
    */
   getModuleExam = async (term: string, module: ModuleCode): Promise<ModuleExam> => {
-    const exams = await this.callApi<ModuleExam[]>('examtt', {
+    const exams = await this.callApi<ModuleExam[]>('examtt/published', {
       term,
       module,
     });
@@ -288,7 +288,7 @@ class NusApi {
   /**
    * Get exam info on all modules in a semester
    */
-  getTermExams = async (term: string): Promise<ModuleExam[]> => this.callApi('examtt', { term });
+  getTermExams = async (term: string): Promise<ModuleExam[]> => this.callApi('examtt/published', { term });
 }
 
 // Export as default a singleton instance to be used globally
