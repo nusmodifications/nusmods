@@ -1,7 +1,4 @@
-const addDays = require('date-fns/addDays');
-const startOfWeek = require('date-fns/startOfWeek');
-const isBefore = require('date-fns/isBefore');
-const getYear = require('date-fns/getYear');
+import { addWeeks, startOfWeek, isBefore, getYear } from 'date-fns';
 
 /* eslint-disable no-fallthrough, no-console */
 
@@ -12,14 +9,13 @@ const getYear = require('date-fns/getYear');
  * @return {Date} Start date of the academic year
  */
 export function getAcadYearStartDate(acadYear) {
-  const DAY_MONDAY = 1;
-  const MONTH_AUGUST = '7';
-  const lastTwoDigits = acadYear.split('/')[0];
-  const targetYear = 2000 + parseInt(lastTwoDigits, 10);
-  const firstDateOfMonth = new Date(targetYear, MONTH_AUGUST, 1, 0, 0, 0);
-  const nearestMonday = startOfWeek(firstDateOfMonth, { weekStartsOn: DAY_MONDAY });
+  const shortYear = acadYear.split('/')[0];
+  const targetYear = 2000 + parseInt(shortYear, 10);
+  const firstDateOfMonth = new Date(targetYear, 7, 1, 0, 0, 0);
+  const nearestMonday = startOfWeek(firstDateOfMonth, { weekStartsOn: 1 });
+
   if (isBefore(nearestMonday, firstDateOfMonth)) {
-    const firstMonday = addDays(nearestMonday, 7);
+    const firstMonday = addWeeks(nearestMonday, 1);
     return firstMonday;
   }
   // 1st Aug is already a Monday
@@ -39,21 +35,16 @@ const special2 = 'Special Term II';
  * @return {Object} acadYearObject - { year: "15/16", startDate: Date }
  */
 export function getAcadYear(date) {
-  const dateYear = getYear(date);
-  const firstTwoDigits = dateYear % 100;
-  const potentialAcadYear = `${firstTwoDigits}/${firstTwoDigits + 1}`;
+  const shortYear = getYear(date) % 100;
+
+  // A date like 8th August 2015 can either be in AY15/16 or AY16/17. We check
+  // the date against the start of AY15/16 and return the correct one.
+  const potentialAcadYear = `${shortYear}/${shortYear + 1}`;
   const potentialStartDate = getAcadYearStartDate(potentialAcadYear);
 
-  let year;
-  // check if date is before the start of that year's AY start date
-  // Small HACK to workaround isBefore() because it returns true for same day
-  if (isBefore(date, potentialStartDate)) {
-    // Before
-    year = `${firstTwoDigits - 1}/${firstTwoDigits}`;
-  } else {
-    // After
-    year = potentialAcadYear;
-  }
+  const year = isBefore(date, potentialStartDate)
+    ? `${shortYear - 1}/${shortYear}`
+    : potentialAcadYear;
 
   return {
     year,
