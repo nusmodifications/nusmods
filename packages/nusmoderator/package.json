@@ -61,6 +61,6 @@
     "rimraf": "2.6.3"
   },
   "dependencies": {
-    "date-fns": "^2.0.0-alpha.27"
+    "date-fns": "2.0.0-alpha.27"
   }
 }
