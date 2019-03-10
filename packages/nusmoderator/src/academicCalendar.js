@@ -66,20 +66,17 @@ export function getAcadSem(acadWeekNumber) {
   const lastWeekOfSpecialSem1 = 46;
   const lastWeekOfSpecialSem2 = 52;
 
-  if (acadWeekNumber >= earliestSupportedWeek && acadWeekNumber <= lastWeekOfSem1) {
-    return sem1;
-  }
-  if (acadWeekNumber <= lastWeekOfSem2) {
-    return sem2;
-  }
-  if (acadWeekNumber <= lastWeekOfSpecialSem1) {
-    return special1;
-  }
-  if (acadWeekNumber <= lastWeekOfSpecialSem2) {
-    return special2;
+  if (acadWeekNumber < earliestSupportedWeek) {
+    console.warn(`[nusmoderator] Unsupported acadWeekNumber: ${acadWeekNumber}`);
+    return null;
   }
 
-  console.warn(`[nusmoderator] Unsupported acadWeekNumber as parameter: ${acadWeekNumber}`);
+  if (acadWeekNumber <= lastWeekOfSem1) return sem1;
+  if (acadWeekNumber <= lastWeekOfSem2) return sem2;
+  if (acadWeekNumber <= lastWeekOfSpecialSem1) return special1;
+  if (acadWeekNumber <= lastWeekOfSpecialSem2) return special2;
+
+  console.warn(`[nusmoderator] Unsupported acadWeekNumber: ${acadWeekNumber}`);
   return null;
 }
 
