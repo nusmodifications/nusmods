@@ -118,13 +118,13 @@ class NusApi {
   /**
    * Wrapper around base callApi method that pushes the call into a queue
    */
-  private callApi = async <T>(endpoint: string, params: ApiParams) =>
+  callApi = async <T>(endpoint: string, params: ApiParams) =>
     this.queue.add(() => callApi<T>(endpoint, params));
 
   /**
    * Calls the modules endpoint
    */
-  private callModulesEndpoint = async (term: string, params: ApiParams) => {
+  callModulesEndpoint = async (term: string, params: ApiParams) => {
     try {
       // DO NOT remove this await - the promise must settle so the catch
       // can handle the NotFoundError from the API
