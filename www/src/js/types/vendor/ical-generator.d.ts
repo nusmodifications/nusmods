@@ -25,4 +25,7 @@ declare module 'ical-generator' {
     timezone?: string;
     floating?: boolean;
   };
+
+  const generator: Function;
+  export = generator;
 }
