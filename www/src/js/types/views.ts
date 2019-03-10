@@ -1,5 +1,6 @@
 import FilterGroup from 'utils/filters/FilterGroup';
 import {
+  EndTime,
   Faculty,
   Lesson,
   ModifiableLesson,
@@ -8,6 +9,7 @@ import {
   ModuleCondensed,
   ModuleWithColor,
   Semester,
+  StartTime,
   Tree,
 } from './modules';
 import { CustomModule, ModuleList } from './reducers';
@@ -39,8 +41,10 @@ export type SearchItem =
 /* browse/ModuleFinderContainer */
 export type FilterGroupId = string;
 
-export type OnFilterChange = (filterGroup: FilterGroup<any>) => any;
-export type FilterGroups = { [filterGroupId: string]: FilterGroup<any> };
+export type AnyGroup = FilterGroup<any>;
+
+export type OnFilterChange = (filterGroup: AnyGroup) => unknown;
+export type FilterGroups = { [filterGroupId: string]: AnyGroup };
 export type DepartmentFaculty = { [department: string]: Faculty };
 
 export type PageRange = {
@@ -73,7 +77,7 @@ export type SelectedLesson = { date: Date; lesson: Lesson };
 export type ExamClashes = { [key: string]: Module[] };
 
 // Timetable event handlers
-export type OnModifyCell = (lesson: ModifiableLesson) => void;
+export type OnModifyCell = (lesson: ModifiableLesson, position: ClientRect) => void;
 export type OnHoverCell = (hoverLesson: HoverLesson | null) => void;
 
 // Incomplete typing of Mamoto's API. If you need something not here, feel free
@@ -140,6 +144,14 @@ export type Tracker = {
   // Removes a user's consent, both if the consent was one-time only and if the consent was
   // remembered. After calling this method, the user will have to consent again in order to be tracked.
   forgetConsentGiven: () => void;
+
+  // Opt user out of tracker using cookie
+  optUserOut: () => void;
+
+  forgetUserOptOut: () => void;
+
+  // Check for user opt out status
+  isUserOptedOut: () => boolean;
 };
 
 export type TimeSegment = 'Morning' | 'Afternoon' | 'Evening';
@@ -208,4 +220,13 @@ export type BusTiming = {
   isLoading: boolean;
   timings?: NextBusTimings | null;
   error?: Error | null;
+};
+
+/**
+ * Represents a time period in the timetable.
+ */
+export type TimePeriod = {
+  day: number; // Day of week (ie. 0 = Monday, 1 = Tuesday etc.)
+  startTime: StartTime;
+  endTime: EndTime;
 };

@@ -245,10 +245,14 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
             maxZoom={19}
             // Don't update viewport because this is also called when viewport is animated
             // and updating viewport will cause the
-            onviewportchange={(viewport) =>
-              viewport.center && this.updateLocation(viewport.center, false)
-            }
-            onviewportchanged={(viewport) => this.setState({ viewport })}
+            onviewportchange={(viewport) => {
+              if (viewport && viewport.center) {
+                this.updateLocation(viewport.center, false);
+              }
+            }}
+            onviewportchanged={(viewport) => {
+              if (viewport) this.setState({ viewport });
+            }}
             onclick={(evt) => this.updateLocation(evt.latlng)}
           >
             <Marker

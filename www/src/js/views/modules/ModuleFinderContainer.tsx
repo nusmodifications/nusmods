@@ -6,7 +6,7 @@ import update from 'immutability-helper';
 import { each, mapValues, values } from 'lodash';
 
 import { Module, Semester, Semesters } from 'types/modules';
-import { PageRange, PageRangeDiff } from 'types/views';
+import { AnyGroup, FilterGroups, PageRange, PageRangeDiff } from 'types/views';
 import { State as StoreState } from 'reducers';
 
 import ModuleFinderList from 'views/modules/ModuleFinderList';
@@ -54,9 +54,9 @@ export type State = {
   loading: boolean;
   page: PageRange;
   modules: Module[];
-  filterGroups: { [filterGroupId: string]: FilterGroup<any> };
+  filterGroups: FilterGroups;
   isMenuOpen: boolean;
-  error?: any;
+  error: Error | null;
 };
 
 // Threshold to enable instant search based on the amount of time it takes to
@@ -104,6 +104,7 @@ export class ModuleFinderContainerComponent extends React.Component<Props, State
       loading: true,
       modules: [],
       isMenuOpen: false,
+      error: null,
     };
   }
 
@@ -134,7 +135,7 @@ export class ModuleFinderContainerComponent extends React.Component<Props, State
     }
   }
 
-  onFilterChange = (newGroup: FilterGroup<any>, resetScroll: boolean = true) => {
+  onFilterChange = (newGroup: AnyGroup, resetScroll: boolean = true) => {
     this.setState(
       (state) =>
         update(state, {
@@ -257,7 +258,7 @@ export class ModuleFinderContainerComponent extends React.Component<Props, State
 
   toggleMenu = (isMenuOpen: boolean) => this.setState({ isMenuOpen });
 
-  filterGroups(): FilterGroup<any>[] {
+  filterGroups(): AnyGroup[] {
     return values(this.state.filterGroups);
   }
 

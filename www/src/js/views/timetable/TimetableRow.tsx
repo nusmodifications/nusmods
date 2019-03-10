@@ -32,30 +32,32 @@ type Props = {
 function TimetableRow(props: Props) {
   const { startingIndex, endingIndex, lessons, onModifyCell, verticalMode } = props;
   const totalCols = endingIndex - startingIndex;
-  const dirStyle = verticalMode ? 'top' : 'marginLeft';
-  const sizeStyle = verticalMode ? 'height' : 'width';
 
   let lastStartIndex = startingIndex;
+
   return (
     <div className={styles.timetableRow}>
       {lessons.map((lesson) => {
-        const lessonStartIndex: number = convertTimeToIndex(lesson.StartTime);
-        const lessonEndIndex: number = convertTimeToIndex(lesson.EndTime);
-        const size: number = lessonEndIndex - lessonStartIndex;
+        const startIndex = convertTimeToIndex(lesson.StartTime);
+        const endIndex = convertTimeToIndex(lesson.EndTime);
+        const size = endIndex - startIndex;
 
-        const dirValue: number = lessonStartIndex - (verticalMode ? startingIndex : lastStartIndex);
-        lastStartIndex = lessonEndIndex;
+        const dirStyle = verticalMode ? 'top' : 'marginLeft';
+        const sizeStyle = verticalMode ? 'height' : 'width';
+
+        const dirValue = startIndex - (verticalMode ? startingIndex : lastStartIndex);
         const style = {
           // calc() adds a 1px gap between cells
           [dirStyle]: `calc(${(dirValue / totalCols) * 100}% + 1px)`,
           [sizeStyle]: `calc(${(size / totalCols) * 100}% - 1px)`,
         };
+
+        lastStartIndex = convertTimeToIndex(lesson.EndTime);
+
         const conditionalProps =
           lesson.isModifiable && onModifyCell
             ? {
-                onClick: () => {
-                  onModifyCell(lesson);
-                },
+                onClick: (position: ClientRect) => onModifyCell(lesson, position),
               }
             : {};
 

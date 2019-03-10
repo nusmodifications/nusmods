@@ -12,8 +12,8 @@
 
 .header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
 
   h1 {
     display: flex;
@@ -62,10 +62,10 @@
 .trash {
   opacity: 0.6;
   width: $semester-width;
-  text-align: center;
-  color: theme-color('danger');
   border: 1px dashed;
   border-radius: 0.4rem;
+  text-align: center;
+  color: theme-color('danger');
   background: rgba(theme-color('danger'), 0.1);
 
   &.isDraggingOver {

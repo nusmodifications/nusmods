@@ -2,7 +2,17 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { minBy, range, get } from 'lodash';
 import NUSModerator, { AcadWeekInfo } from 'nusmoderator';
-import { addDays, differenceInCalendarDays, isSameDay, isWeekend, parseISO } from 'date-fns';
+import classnames from 'classnames';
+import {
+  addDays,
+  differenceInCalendarDays,
+  isSameDay,
+  isWeekend,
+  parseISO,
+  getHours,
+  getMinutes,
+} from 'date-fns';
+import produce from 'immer';
 
 import { DaysOfWeek, ColoredLesson, Lesson } from 'types/modules';
 import { SemTimetableConfigWithLessons } from 'types/timetables';
@@ -27,8 +37,10 @@ import config from 'config';
 import withTimer, { TimerData } from 'views/hocs/withTimer';
 import makeResponsive from 'views/hocs/makeResponsive';
 import NoFooter from 'views/layout/NoFooter';
-import { formatTime, getCurrentHours, getCurrentMinutes, getDayIndex } from 'utils/timify';
+import MapContext from 'views/components/map/MapContext';
+import { formatTime, getDayIndex } from 'utils/timify';
 import { breakpointUp } from 'utils/css';
+import { EMPTY_ARRAY } from 'types/utils';
 
 import DayEvents from '../DayEvents';
 import DayHeader from '../DayHeader';
@@ -47,28 +59,29 @@ const semesterNameMap: Record<string, number> = {
 
 export type OwnProps = TimerData;
 
-export type Props = OwnProps & {
-  readonly timetableWithLessons: SemTimetableConfigWithLessons;
-  readonly colors: ColorMapping;
-  readonly matchBreakpoint: boolean;
-};
+export type Props = OwnProps &
+  Readonly<{
+    timetableWithLessons: SemTimetableConfigWithLessons;
+    colors: ColorMapping;
+    matchBreakpoint: boolean;
+  }>;
 
-type State = {
+type State = Readonly<{
   // Mapping of number of days from today to the weather forecast for that day
   // with zero being today
-  readonly weather: { [key: string]: string };
+  weather: { [key: string]: string };
 
   // Which lesson has an open venue map
-  readonly openLesson: SelectedLesson | null;
-};
+  openLesson: SelectedLesson | null;
+
+  isMapExpanded: boolean;
+}>;
 
 type DayGroup = {
   offset: number;
   type: EmptyGroupType;
   dates: Date[];
 };
-
-const EMPTY_ARRAY: any[] = [];
 
 // Number of days to display
 const DAYS = 7;
@@ -92,12 +105,14 @@ function getDayType(date: Date, weekInfo: AcadWeekInfo): EmptyGroupType {
   }
 }
 
-export function DaySection(props: {
-  readonly children: React.ReactNode;
-  readonly date: Date | Date[];
-  readonly offset: number;
-  readonly forecast?: string;
-}) {
+export function DaySection(
+  props: Readonly<{
+    children: React.ReactNode;
+    date: Date | Date[];
+    offset: number;
+    forecast?: string;
+  }>,
+) {
   return (
     <section className={styles.day}>
       <DayHeader date={props.date} offset={props.offset} forecast={props.forecast} />
@@ -110,6 +125,7 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
   state: State = {
     weather: {},
     openLesson: null,
+    isMapExpanded: false,
   };
 
   componentDidMount() {
@@ -120,25 +136,37 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
 
     weatherAPI
       .tomorrow()
-      .then((weather) => this.setState({ weather: { ...this.state.weather, '1': weather } }))
+      .then((weather) => {
+        if (!weather) return;
+        this.setState({ weather: { ...this.state.weather, '1': weather } });
+      })
       .catch(captureException);
 
     weatherAPI
       .fourDay()
       .then((forecasts) => {
-        forecasts.forEach((forecast) => {
-          const days = differenceInCalendarDays(
-            parseISO(forecast.timestamp),
-            this.props.currentTime,
-          );
+        this.setState(
+          produce(this.state, (draft) => {
+            forecasts.forEach((forecast) => {
+              const days = differenceInCalendarDays(
+                parseISO(forecast.timestamp),
+                this.props.currentTime,
+              );
 
-          if (!this.state.weather[String(days)]) {
-            this.setState({ weather: { ...this.state.weather, [days]: forecast.forecast } });
-          }
-        });
+              const key = String(days);
+              if (!draft.weather[key]) {
+                draft.weather[key] = forecast.forecast;
+              }
+            });
+          }),
+        );
       })
       .catch(captureException);
   }
+
+  onToggleMapExpanded = (isMapExpanded: boolean) => {
+    this.setState({ isMapExpanded });
+  };
 
   onOpenLesson = (date: Date, lesson: Lesson) => {
     this.setState({ openLesson: { date, lesson } });
@@ -243,28 +271,25 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
     let beforeFirstLessonCard = null;
 
     if (isToday) {
+      const { currentTime } = this.props;
       // Don't show any lessons in the past, and add the current time marker
-      const currentTime = getCurrentHours() * 100 + getCurrentMinutes();
+      const time = getHours(currentTime) * 100 + getMinutes(currentTime);
       // eslint-disable-next-line no-param-reassign
-      lessons = lessons.filter((lesson) => parseInt(lesson.EndTime, 10) > currentTime);
+      lessons = lessons.filter((lesson) => parseInt(lesson.EndTime, 10) > time);
 
       const nextLesson = minBy(lessons, (lesson) => lesson.StartTime);
 
       // If there is at least one lesson remaining today...
       if (nextLesson) {
-        const marker = <p className={styles.nowMarker}>{formatTime(currentTime)}</p>;
+        const marker = <p className={styles.nowMarker}>{formatTime(time)}</p>;
 
-        if (isLessonOngoing(nextLesson, currentTime)) {
+        if (isLessonOngoing(nextLesson, time)) {
           // If the next lesson is still ongoing, we put the marker inside the next lesson
           nextLessonMarker = marker;
         } else {
           // Otherwise add a new card before the next lesson
           beforeFirstLessonCard = (
-            <BeforeLessonCard
-              currentTime={this.props.currentTime}
-              nextLesson={nextLesson}
-              marker={marker}
-            />
+            <BeforeLessonCard currentTime={currentTime} nextLesson={nextLesson} marker={marker} />
           );
         }
       } else {
@@ -305,9 +330,15 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
         {this.props.matchBreakpoint && (
           <>
             <NoFooter />
-            <div className={styles.mapContainer}>
-              <EventMap venue={this.state.openLesson && this.state.openLesson.lesson.Venue} />
-            </div>
+            <MapContext.Provider value={{ toggleMapExpanded: this.onToggleMapExpanded }}>
+              <div
+                className={classnames(styles.mapContainer, {
+                  [styles.expanded]: this.state.isMapExpanded,
+                })}
+              >
+                <EventMap venue={this.state.openLesson && this.state.openLesson.lesson.Venue} />
+              </div>
+            </MapContext.Provider>
           </>
         )}
       </div>

@@ -8,6 +8,7 @@ import qs from 'query-string';
 import { pick, mapValues, size, isEqual, get } from 'lodash';
 
 import { Venue, VenueDetailList, VenueSearchOptions } from 'types/venues';
+import { TimePeriod } from 'types/views';
 
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import ApiError from 'views/errors/ApiError';
@@ -16,6 +17,11 @@ import LoadingSpinner from 'views/components/LoadingSpinner';
 import SearchBox from 'views/components/SearchBox';
 import { Clock, Map } from 'views/components/icons';
 import { venuePage } from 'views/routes/paths';
+import Modal from 'views/components/Modal';
+import Title from 'views/components/Title';
+import NoFooter from 'views/layout/NoFooter';
+import MapContext from 'views/components/map/MapContext';
+import makeResponsive from 'views/hocs/makeResponsive';
 
 import config from 'config';
 import nusmods from 'apis/nusmods';
@@ -23,16 +29,12 @@ import HistoryDebouncer from 'utils/HistoryDebouncer';
 import { searchVenue, filterAvailability, sortVenues } from 'utils/venues';
 import { breakpointDown } from 'utils/css';
 import { defer } from 'utils/react';
-import makeResponsive from 'views/hocs/makeResponsive';
-import Modal from 'views/components/Modal';
-import Title from 'views/components/Title';
-import NoFooter from 'views/layout/NoFooter';
+import { convertIndexToTime } from 'utils/timify';
 
 import AvailabilitySearch, { defaultSearchOptions } from './AvailabilitySearch';
 import VenueList from './VenueList';
 import VenueDetails from './VenueDetails';
 import VenueLocation from './VenueLocation';
-import VenueContext from './VenueContext';
 import styles from './VenuesContainer.scss';
 
 /* eslint-disable react/prop-types */
@@ -46,7 +48,7 @@ type Props = RouteComponentProps<Params> & { matchBreakpoint: boolean; venues: V
 
 type State = {
   // View state
-  isDetailScrollable: boolean;
+  isMapExpanded: boolean;
 
   // Search state
   searchTerm: string;
@@ -78,7 +80,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
     this.state = {
       searchOptions,
       isAvailabilityEnabled,
-      isDetailScrollable: true,
+      isMapExpanded: false,
       searchTerm: params.q || '',
       // eslint-disable-next-line react/no-unused-state
       pristineSearchOptions: !isAvailabilityEnabled,
@@ -139,8 +141,8 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
     }
   };
 
-  onToggleDetailScrollable = (isDetailScrollable: boolean) => {
-    this.setState({ isDetailScrollable });
+  onToggleMapExpanded = (isMapExpanded: boolean) => {
+    this.setState({ isMapExpanded });
   };
 
   updateURL = (debounce: boolean = true) => {
@@ -158,6 +160,22 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
       pathname,
     });
   };
+
+  getHighlightPeriod(): TimePeriod | undefined {
+    const { isAvailabilityEnabled, searchOptions } = this.state;
+
+    if (!isAvailabilityEnabled) return undefined;
+
+    const day = searchOptions.day;
+    const startTime = convertIndexToTime(searchOptions.time * 2);
+    const endTime = convertIndexToTime(2 * (searchOptions.time + searchOptions.duration));
+
+    return {
+      day,
+      startTime,
+      endTime,
+    };
+  }
 
   selectedVenue(): Venue | null {
     const { venue } = this.props.match.params;
@@ -251,20 +269,32 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
       const venueDetail = venues.find(([venue]) => venue.toLowerCase() === lowercaseSelectedVenue);
       if (!venueDetail) return null;
       const [venue, availability] = venueDetail;
-      return <VenueDetails venue={venue} availability={availability} />;
+      return (
+        <VenueDetails
+          venue={venue}
+          availability={availability}
+          highlightPeriod={this.getHighlightPeriod()}
+        />
+      );
     }
 
     const [venue, availability] = matchedVenues[venueIndex];
     const [previous] = get(matchedVenues, String(venueIndex - 1), []);
     const [next] = get(matchedVenues, String(venueIndex + 1), []);
     return (
-      <VenueDetails venue={venue} availability={availability} next={next} previous={previous} />
+      <VenueDetails
+        venue={venue}
+        availability={availability}
+        next={next}
+        previous={previous}
+        highlightPeriod={this.getHighlightPeriod()}
+      />
     );
   }
 
   render() {
     const selectedVenue = this.selectedVenue();
-    const { searchTerm, isAvailabilityEnabled, isDetailScrollable, searchOptions } = this.state;
+    const { searchTerm, isAvailabilityEnabled, isMapExpanded, searchOptions } = this.state;
     const { venues } = this.props;
 
     let matchedVenues = searchVenue(venues, searchTerm);
@@ -291,7 +321,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
           )}
         </div>
 
-        <VenueContext.Provider value={{ toggleDetailScrollable: this.onToggleDetailScrollable }}>
+        <MapContext.Provider value={{ toggleMapExpanded: this.onToggleMapExpanded }}>
           {this.props.matchBreakpoint ? (
             <Modal
               isOpen={selectedVenue != null}
@@ -311,7 +341,9 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
           ) : (
             <>
               <div
-                className={classnames(styles.venueDetail, { 'scrollable-y': isDetailScrollable })}
+                className={classnames(styles.venueDetail, {
+                  [styles.mapExpanded]: isMapExpanded,
+                })}
               >
                 {selectedVenue == null ? (
                   <div className={styles.noVenueSelected}>
@@ -325,7 +357,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
               <NoFooter />
             </>
           )}
-        </VenueContext.Provider>
+        </MapContext.Provider>
       </div>
     );
   }

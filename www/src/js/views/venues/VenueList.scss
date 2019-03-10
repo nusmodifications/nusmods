@@ -8,9 +8,9 @@ $padding-v: 0.5rem;
   top: 0;
   padding: $padding-v 0 $padding-v $padding-h;
   margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--gray-lighter);
   font-weight: $font-weight-bold;
   font-size: $font-size-lg;
-  border-bottom: 1px solid var(--gray-lighter);
   background: var(--body-bg);
 
   @include media-breakpoint-down(sm) {
@@ -19,17 +19,17 @@ $padding-v: 0.5rem;
 }
 
 .venueList {
-  padding: 0;
   list-style: none;
+  padding: 0;
 }
 
 .subList {
   display: flex;
   flex-wrap: wrap;
   justify-content: stretch;
+  list-style: none;
   padding: 0;
   margin-bottom: 0.5rem;
-  list-style: none;
 
   li {
     flex: 1 1 7rem;
@@ -40,16 +40,16 @@ $padding-v: 0.5rem;
     width: 100%;
     padding-right: $padding-h;
     padding-left: $padding-h;
-    text-align: left;
     border-color: transparent;
+    text-align: left;
   }
 }
 
 @supports (display: grid) {
   .subList {
     display: grid;
-    grid-gap: 1px;
     grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
+    grid-gap: 1px;
 
     li {
       margin: 0;

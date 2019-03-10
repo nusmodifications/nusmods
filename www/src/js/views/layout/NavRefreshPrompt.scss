@@ -5,10 +5,10 @@
 
   display: block;
   margin: 0.5rem (-$margin-offset) 0 ($grid-gutter-width / 2 - $margin-offset);
+  border: 0;
   font-size: $font-size-s;
   line-height: 1.2;
   text-align: center;
-  border: 0;
   background: none;
 
   :global {

@@ -92,15 +92,17 @@ export function twoHour(): Promise<string> {
     });
 }
 
-export function tomorrow(): Promise<string> {
+export function tomorrow(): Promise<string | null> {
   return axios
     .get<WeatherResponse<DayCastItem>>(`${API_PREFIX}/24-hour-weather-forecast`)
-    .then(
-      (response) =>
-        getResponseData(response).periods.find((period) =>
-          isSameDay(new Date(period.time.start), addDays(new Date(), 1)),
-        )!.regions.west,
-    );
+    .then((response) => {
+      const tomorrowForecast = getResponseData(response).periods.find((period) =>
+        isSameDay(new Date(period.time.start), addDays(new Date(), 1)),
+      );
+
+      // The forecast for tomorrow may not be available, so this can return null
+      return tomorrowForecast ? tomorrowForecast.regions.west : null;
+    });
 }
 
 export function fourDay(): Promise<Forecast[]> {

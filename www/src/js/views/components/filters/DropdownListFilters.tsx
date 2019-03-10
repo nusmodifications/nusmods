@@ -3,7 +3,7 @@ import Downshift, { DownshiftState, StateChangeOptions } from 'downshift';
 import classnames from 'classnames';
 import { each, values, uniq, omit } from 'lodash';
 
-import { OnFilterChange } from 'types/views';
+import { AnyGroup, OnFilterChange } from 'types/views';
 
 import { Search, ChevronDown } from 'views/components/icons';
 import makeResponsive from 'views/hocs/makeResponsive';
@@ -16,8 +16,8 @@ import Checklist from './Checklist';
 
 type Props = {
   onFilterChange: OnFilterChange;
-  groups: FilterGroup<any>[];
-  group: FilterGroup<any>;
+  groups: AnyGroup[];
+  group: AnyGroup;
   matchBreakpoint: boolean;
 };
 
@@ -47,7 +47,9 @@ export class DropdownListFiltersComponent extends React.PureComponent<Props, Sta
 
     const { group, onFilterChange } = this.props;
     onFilterChange(group.toggle(selectedItem));
-    this.setState({ searchedFilters: uniq([...this.state.searchedFilters, selectedItem]) });
+    this.setState((state) => ({
+      searchedFilters: uniq([...state.searchedFilters, selectedItem]),
+    }));
   };
 
   onOuterClick = () => {

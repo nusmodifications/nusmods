@@ -37,7 +37,7 @@ export function getScriptErrorHandler(scriptName: string) {
  * Wrap an async import() so that it automatically retries in case of a chunk
  * load error and when the user is online
  */
-export function retryImport(importFactory: () => Promise<any>, retries: number = 3) {
+export function retryImport<T>(importFactory: () => Promise<T>, retries: number = 3) {
   return retry(
     retries,
     importFactory,

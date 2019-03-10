@@ -27,8 +27,10 @@ class RandomKawaii extends React.PureComponent<Props> {
   constructor(props: Props) {
     super(props);
 
+    /* eslint-disable @typescript-eslint/no-non-null-assertion */
     this.kawaii = sample(icons)!;
     this.defaultMood = sample(defaultMoods)!;
+    /* eslint-enable */
   }
 
   render() {

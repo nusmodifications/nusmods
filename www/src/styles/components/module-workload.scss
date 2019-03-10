@@ -13,8 +13,8 @@
   }
 
   .module-workload-component {
-    margin-bottom: 0.4rem;
     overflow: hidden; // Avoid label from overflowing when they are too long
+    margin-bottom: 0.4rem;
   }
 
   h5 {
@@ -25,8 +25,8 @@
     font-size: $font-size-xs;
 
     abbr {
-      text-decoration: none;
       border-bottom: 0;
+      text-decoration: none;
     }
   }
 

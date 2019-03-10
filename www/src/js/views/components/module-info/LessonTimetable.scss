@@ -1,8 +1,8 @@
 @import "~styles/utils/modules-entry.scss";
 
 .lessonTimetable {
-  margin-top: 0.5rem;
   overflow: auto;
+  margin-top: 0.5rem;
 
   @supports (-webkit-overflow-scrolling: touch) {
     overflow: scroll;
