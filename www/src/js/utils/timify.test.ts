@@ -8,7 +8,8 @@ import {
   daysAfter,
   formatTime,
   DEFAULT_EARLIEST_TIME,
-  DEFAULT_LATEST_TIME, parseDate,
+  DEFAULT_LATEST_TIME,
+  parseDate,
 } from './timify';
 
 describe('convertTimeToIndex', () => {
@@ -134,6 +135,6 @@ describe(formatTime, () => {
 
 describe(parseDate, () => {
   test('should convert date string to local midnight Date object', () => {
-    expect(parseDate('2018-09-10')).toEqual(new Date('2018-09-10T00:00+0800'))
+    expect(parseDate('2018-09-10')).toEqual(new Date('2018-09-10T00:00+0800'));
   });
 });

@@ -1,5 +1,12 @@
 declare module 'ical-generator' {
-  export type RepeatFreq = 'YEARLY' | 'MONTHLY' | 'WEEKLY' | 'DAILY' | 'HOURLY' | 'MINUTELY' | 'SECONDLY';
+  export type RepeatFreq =
+    | 'YEARLY'
+    | 'MONTHLY'
+    | 'WEEKLY'
+    | 'DAILY'
+    | 'HOURLY'
+    | 'MINUTELY'
+    | 'SECONDLY';
 
   export type EventStatus = 'confirmed' | 'tentative' | 'cancelled';
 
