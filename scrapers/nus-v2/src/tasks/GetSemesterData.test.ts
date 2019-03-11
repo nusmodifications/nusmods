@@ -163,6 +163,9 @@ describe(parseWorkload, () => {
     expect(parseWorkload('3-0-0-5-3 (tentative)')).toEqual([3, 0, 0, 5, 3]);
 
     expect(parseWorkload('3(sectional)-0-0-4-3')).toEqual([3, 0, 0, 4, 3]);
+
+    // EC3343 - uses Unicode hyphen instead of dash
+    expect(parseWorkload('2‐1‐0‐2‐5')).toEqual([2, 1, 0, 2, 5]);
   });
 
   test('parseWorkload should return input string as is if it cannot be parsed', () => {
