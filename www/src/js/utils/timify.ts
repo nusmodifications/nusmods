@@ -5,6 +5,7 @@ import {
   getISODay,
   getMinutes,
   getSeconds,
+  parseISO,
   setHours,
   setMinutes,
   setSeconds,
@@ -160,4 +161,12 @@ export function daysAfter(startDate: Date, days: number): Date {
 export function toSingaporeTime(date: string | number | Date): Date {
   const localDate = new Date(date);
   return new Date(localDate.getTime() + (localDate.getTimezoneOffset() - SGT_OFFSET) * 60 * 1000);
+}
+
+/**
+ * Convert an ISO date string, eg. 2018-10-12 to a Date object with the
+ * given date and time set to midnight SGT (UTC+8)
+ */
+export function parseDate(string: string): Date {
+  return parseISO(`${string}T00:00+0800`);
 }

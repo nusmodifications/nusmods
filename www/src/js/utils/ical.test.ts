@@ -8,10 +8,10 @@ import iCalForTimetable, {
   iCalEventForExam,
   calculateNumericWeek,
   getTimeHour,
-  hoursAfter,
+  calculateWeekRange,
 } from 'utils/ical';
 
-import { Module, RawLesson } from 'types/modules';
+import { Module, RawLesson, WeekRange } from 'types/modules';
 import { EVEN_WEEK, EVERY_WEEK, ODD_WEEK } from 'test-utils/timetable';
 
 import { BFS1001, CS1010S, CS3216 } from '__mocks__/modules';
@@ -66,28 +66,21 @@ test('getTimeHour should return number of hours represented by a time string', (
   expect(getTimeHour('1030')).toEqual(10.5);
 });
 
-test('hoursAfter should return a date incremented by the given number of hours', () => {
-  const d = new Date('2016-11-23T00:00+0800');
-  expect(hoursAfter(d, 0)).toEqual(new Date('2016-11-23T00:00+0800'));
-  expect(hoursAfter(d, 5)).toEqual(new Date('2016-11-23T05:00+0800'));
-  expect(hoursAfter(d, 20)).toEqual(new Date('2016-11-23T20:00+0800'));
-  expect(hoursAfter(d, 10.5)).toEqual(new Date('2016-11-23T10:30+0800'));
-});
-
 test('iCalEventForExam should generate event', () => {
-  const actual: EventOption | null | undefined = iCalEventForExam(CS1010S, 1);
+  const actual = iCalEventForExam(CS1010S, 1);
   const expected: EventOption = {
     start: new Date('2017-11-29T17:00+0800'),
     end: new Date('2017-11-29T19:00+0800'),
     summary: 'CS1010S Exam',
     description: 'Programming Methodology',
   };
+
   expect(actual).toEqual(expected);
 });
 
 //     August 2016            September 2016         October 2016
 // Wk Mo Tu We Th Fr Sa | Wk Mo Tu We Th Fr Sa | Wk Mo Tu We Th Fr Sa
-//     2  3  4  5  6    | 04        1  2  3    | 07                 1
+//     1  2  3  4  5  6 | 04        1  2  3    | 07                 1
 // 01  8  9 10 11 12 13 | 05  5  6  7  8  9 10 | 08  3  4  5  6  7  8
 // 02 15 16 17 18 19 20 | 06 12 13 14 15 16 17 | 09 10 11 12 13 14 15
 // 03 22 23 24 25 26 27 | Re 19 20 21 22 23 24 | 10 17 18 19 20 21 22
@@ -104,16 +97,15 @@ test('iCalEventForExam should generate event', () => {
 
 describe(calculateNumericWeek, () => {
   const firstDay = new Date('2016-08-08T00:00+0800');
-  function testCalculateNumericWeek(weeks: number[]) {
-    return calculateNumericWeek(
+  const testCalculateNumericWeek = (weeks: number[]) =>
+    calculateNumericWeek(
       rawLesson({
         Weeks: weeks,
       }),
       1,
       weeks,
       firstDay,
-    ).repeating.exclude;
-  }
+    ).repeating!.exclude;
 
   test('generates exclusion for comma separated weeks', () => {
     expect(testCalculateNumericWeek([1, 2, 3, 4, 5, 6])).toEqual(
@@ -166,6 +158,57 @@ describe(calculateNumericWeek, () => {
     expect(testCalculateNumericWeek(EVERY_WEEK)).toEqual(
       expect.arrayContaining([new Date('2016-01-01T14:00+0800')]),
     );
+  });
+});
+
+describe(calculateWeekRange, () => {
+  const testCalculateWeekRange = (weekRange: WeekRange) =>
+    calculateWeekRange(
+      rawLesson({
+        Weeks: weekRange,
+      }),
+      1,
+      weekRange,
+    ).repeating!;
+
+  test('generate correct until date', () => {
+    const { until } = testCalculateWeekRange({
+      start: '2016-08-01', // Orientation
+      end: '2016-11-28', // Exam week 2
+    });
+
+    expect(until).toEqual(new Date('2016-11-28T17:00+0800'));
+  });
+
+  test('generate correct interval for week intervals', () => {
+    const { interval, until } = testCalculateWeekRange({
+      start: '2016-08-01', // Orientation
+      end: '2016-11-28', // Exam week 2
+      weekInterval: 2,
+    });
+
+    expect(interval).toEqual(2);
+
+    expect(until).toEqual(new Date('2016-11-28T17:00+0800'));
+  });
+
+  test('generate correct exclusion for irregular weeks', () => {
+    const { interval, exclude } = testCalculateWeekRange({
+      start: '2016-08-01', // Orientation
+      end: '2016-11-28', // Exam week 2
+      weekInterval: 2,
+      // Exclude 7th week from orientation = week 6
+      //        11th week from orientation = week 9 (including recess week)
+      weeks: [1, 3, 5, 9, 13, 15],
+    });
+
+    expect(exclude).toEqual(
+      expect.arrayContaining([
+        new Date('2016-09-12T14:00+0800'),
+        new Date('2016-10-10T14:00+0800'),
+      ]),
+    );
+    expect(interval).toEqual(2);
   });
 });
 

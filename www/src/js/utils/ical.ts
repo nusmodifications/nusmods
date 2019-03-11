@@ -1,7 +1,5 @@
 import _ from 'lodash';
-// @ts-ignore
 import { EventOption } from 'ical-generator';
-
 import {
   consumeWeeks,
   EndTime,
@@ -16,8 +14,8 @@ import { SemTimetableConfigWithLessons } from 'types/timetables';
 import config from 'config';
 import academicCalendar from 'data/academic-calendar';
 import { getModuleSemesterData } from 'utils/modules';
-import { daysAfter } from 'utils/timify';
-import { addDays, parseISO } from 'date-fns';
+import { addDays, addMinutes, addWeeks } from 'date-fns';
+import { parseDate } from './timify';
 
 const SG_UTC_TIME_DIFF_MS = 8 * 60 * 60 * 1000;
 export const RECESS_WEEK = -1;
@@ -38,16 +36,12 @@ export function getTimeHour(time: string) {
   return parseInt(time.slice(0, 2), 10) + parseInt(time.slice(2), 10) / 60;
 }
 
-/**
- * Return a copy of the original Date incremented by the given number of hours
- */
-export function hoursAfter(date: Date, sgHour: number): Date {
-  const d = new Date(date.valueOf());
-  d.setUTCHours(d.getUTCHours() + Math.floor(sgHour), (sgHour % 1) * 60);
-  return d;
+function addLessonOffset(date: Date, hourOffset: number): Date {
+  return addMinutes(date, hourOffset * 60);
 }
 
 export function iCalEventForExam(module: Module, semester: Semester): EventOption | null {
+  // TODO: Account for ExamDuration field
   const examDateString = _.get(getModuleSemesterData(module, semester), 'ExamDate');
   if (!examDateString) return null;
   const examDate = new Date(examDateString);
@@ -64,7 +58,7 @@ export function iCalEventForExam(module: Module, semester: Semester): EventOptio
 export function holidaysForYear(hourOffset: number = 0): Date[] {
   return config.holidays
     .map((date) => new Date(date.valueOf() - SG_UTC_TIME_DIFF_MS)) // Convert to local time
-    .map((holiday) => hoursAfter(holiday, hourOffset));
+    .map((holiday) => addLessonOffset(holiday, hourOffset));
 }
 
 // given academic weeks in semester and a start date in week 1,
@@ -72,14 +66,14 @@ export function holidaysForYear(hourOffset: number = 0): Date[] {
 export function datesForAcademicWeeks(start: Date, week: number): Date {
   // all weeks 7 and after are bumped by 7 days because of recess week
   if (week === RECESS_WEEK) {
-    return daysAfter(start, 6 * 7);
+    return addWeeks(start, 6);
   }
-  return daysAfter(start, (week <= 6 ? week - 1 : week) * 7);
+  return addWeeks(start, week <= 6 ? week - 1 : week);
 }
 
 function calculateStartEnd(date: Date, startTime: StartTime, endTime: EndTime) {
-  const start = hoursAfter(date, getTimeHour(startTime));
-  const end = hoursAfter(date, getTimeHour(endTime));
+  const start = addLessonOffset(date, getTimeHour(startTime));
+  const end = addLessonOffset(date, getTimeHour(endTime));
 
   return { start, end };
 }
@@ -90,7 +84,7 @@ export function calculateNumericWeek(
   weeks: number[],
   firstDayOfSchool: Date,
 ): EventOption {
-  const lessonDay = daysAfter(firstDayOfSchool, dayIndex(lesson.DayText));
+  const lessonDay = addDays(firstDayOfSchool, dayIndex(lesson.DayText));
   const { start, end } = calculateStartEnd(lessonDay, lesson.StartTime, lesson.EndTime);
   const excludedWeeks = _.difference([RECESS_WEEK, ...ALL_WEEKS], weeks);
 
@@ -114,30 +108,35 @@ export function calculateWeekRange(
   semester: Semester,
   weekRange: WeekRange,
 ): EventOption {
-  const lessonDay = parseISO(weekRange.start);
-  const { start, end } = calculateStartEnd(lessonDay, lesson.StartTime, lesson.EndTime);
+  const rangeStart = parseDate(weekRange.start);
+  const rangeEnd = parseDate(weekRange.end);
+  const { start, end } = calculateStartEnd(rangeStart, lesson.StartTime, lesson.EndTime);
 
   const interval = weekRange.weekInterval || 1;
   const exclusions = [];
 
   if (weekRange.weeks) {
     for (
-      let current = start, weekNumber = 1;
-      current <= end;
-      current = addDays(current, interval * 7), weekNumber += 1
+      let current = rangeStart, weekNumber = 1;
+      current <= rangeEnd;
+      current = addWeeks(current, interval), weekNumber += interval
     ) {
       if (!weekRange.weeks.includes(weekNumber)) {
-        exclusions.push(current);
+        const lessonTime = calculateStartEnd(current, lesson.StartTime, lesson.EndTime);
+        exclusions.push(lessonTime.start);
       }
     }
   }
+
+  const lastLesson = calculateStartEnd(rangeEnd, lesson.StartTime, lesson.EndTime);
 
   return {
     start,
     end,
     repeating: {
       interval,
-      until: end,
+      freq: 'WEEKLY',
+      until: lastLesson.end,
       byDay: [lesson.DayText.slice(0, 2)],
       exclude: [...exclusions, ...holidaysForYear(getTimeHour(lesson.StartTime))],
     },

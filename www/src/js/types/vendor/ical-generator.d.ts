@@ -1,7 +1,7 @@
 declare module 'ical-generator' {
-  type RepeatFreq = 'YEARLY' | 'MONTHLY' | 'WEEKLY' | 'DAILY' | 'HOURLY' | 'MINUTELY' | 'SECONDLY';
+  export type RepeatFreq = 'YEARLY' | 'MONTHLY' | 'WEEKLY' | 'DAILY' | 'HOURLY' | 'MINUTELY' | 'SECONDLY';
 
-  type EventStatus = 'confirmed' | 'tenative' | 'cancelled';
+  export type EventStatus = 'confirmed' | 'tentative' | 'cancelled';
 
   export type RepeatingEvent = {
     freq: RepeatFreq;
@@ -24,8 +24,11 @@ declare module 'ical-generator' {
     url?: string;
     timezone?: string;
     floating?: boolean;
+    location?: string;
   };
 
+  export type EventOption = Partial<Event>;
+
   const generator: Function;
-  export = generator;
+  export default generator;
 }
