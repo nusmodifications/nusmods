@@ -3,39 +3,40 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import jwt from 'jsonwebtoken';
 import expressPlayground from 'graphql-playground-middleware-express';
-
-const IS_DEV = process.env.NODE_ENV === 'development';
-const HASURA_ENDPOINT = IS_DEV ? 'http://localhost:8080/v1alpha1/graphql' : 'TODO';
-const JWT_SECRET: { key: string; type: string } = JSON.parse(process.env.JWT_SECRET!);
+import config from './config'
+import token from './token';
 
 const app = express();
 app.use(bodyParser.json({ limit: '1kb' }));
 
 // Host graphql playground
-app.get('/playground', expressPlayground({ endpoint: HASURA_ENDPOINT }));
+app.get('/playground', expressPlayground({ endpoint: config.hasuraUrl }));
 
+// 1. User tries to create or log in to account,
+//    client makes post request to /auth with email
+//    server sends a code to email with lifetime of 15 minutes
 app.post('/auth', (req, res) => {
-  jwt.sign(
-    {
-      'https://hasura.io/jwt/claims': {
-        'x-hasura-allowed-roles': ['user'],
-        'x-hasura-default-role': 'user',
-        'x-hasura-user-id': '1234567890',
-      },
-    },
-    JWT_SECRET.key,
-    { algorithm: JWT_SECRET.type, expiresIn: '15m' },
-    function onSignCallback(err, token) {
-      if (err) {
-        return res.sendStatus(500);
-      }
-      res.status(201).send({
-        access_token: token,
-      });
-    },
-  );
+
 });
+
+// 2. User recieves code on email, applies it on client,
+//    client makes a post request to /verity with code
+//    client receives a long lived refresh token and a short lived access token
+//    client stores both tokens
+app.post('/verify', (req, res) => {
+  token.getAccessToken()
+});
+
+// 3. User while holding valid refresh token and expired access token,
+//    client makes a post request to /refresh with both tokens
+//    client receives a new short lived access token
+// app.post('/refresh', (req, res) => {});
+
+// 4. Admin while holding valid secret,
+//    Admin makes a post request to /invalidate with optional id
+//    server flushes appropriate long lived refresh token
+// app.post('/invalidate:id', (req, res) => {})
 
 // Export default for fusebox to hotreload
 // Using http.createServer to get access to .close method
-export default http.createServer(app).listen(8081);
+export default http.createServer(app).listen(process.env.PORT);
