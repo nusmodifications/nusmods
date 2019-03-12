@@ -6,6 +6,8 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "node fuse",
+    "test": "jest",
+    "gen:types": "schemats generate -c \"${DATABASE_URL}\" -t account -o src/schema.ts",
     "clean": "docker-compose down && docker volume rm hasura_db_data"
   },
   "author": {
@@ -26,15 +28,18 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
-    "graphql-playground-middleware-express": "^1.7.11",
-    "jsonwebtoken": "^8.4.0"
+    "graphql-playground-middleware-express": "^1.7.12"
   },
   "devDependencies": {
     "@types/body-parser": "^1.17.0",
     "@types/express": "^4.16.1",
-    "@types/jsonwebtoken": "^8.3.0",
-    "@types/node": "^11.9.4",
+    "@types/jest": "^24.0.11",
+    "@types/node": "^11.11.1",
     "fuse-box": "^3.7.1",
-    "typescript": "^3.3.3"
+    "jest": "^24.4.0",
+    "jest-date-mock": "^1.0.7",
+    "schemats": "^3.0.3",
+    "ts-jest": "^24.0.0",
+    "typescript": "^3.3.3333"
   }
 }
