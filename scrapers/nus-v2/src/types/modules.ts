@@ -63,95 +63,88 @@ export type WorkloadComponent = 'Lecture' | 'Tutorial' | 'Laboratory' | 'Project
 // RawLesson is a lesson time slot obtained from the API.
 // Usually ModuleCode and ModuleTitle has to be injected in before using in the timetable.
 export type RawLesson = Readonly<{
-  ClassNo: ClassNo;
-  DayText: DayText;
-  EndTime: EndTime;
-  LessonType: LessonType;
-  StartTime: StartTime;
-  Venue: Venue;
-  Weeks: Weeks;
+  classNo: ClassNo;
+  day: DayText;
+  endTime: EndTime;
+  lessonType: LessonType;
+  startTime: StartTime;
+  venue: Venue;
+  weeks: Weeks;
 }>;
 
 // Semester-specific information of a module.
 export type SemesterData = {
-  Semester: Semester;
-  Timetable: RawLesson[];
+  semester: Semester;
+  timetable: RawLesson[];
 
   // Exam
-  ExamDate?: string;
-  ExamDuration?: number;
-
-  // Deprecated
-  LecturePeriods?: string[];
-  TutorialPeriods?: string[];
+  examDate?: string;
+  examDuration?: number;
 };
 
 // Information for a module for a particular academic year.
 export type Module = {
-  AcadYear: AcadYear;
+  acadYear: AcadYear;
 
   // Basic info
-  ModuleCode: ModuleCode;
-  ModuleTitle: ModuleTitle;
+  moduleCode: ModuleCode;
+  title: ModuleTitle;
 
   // Additional info
-  ModuleDescription?: string;
-  ModuleCredit: string;
-  Department: Department;
-  Faculty: Faculty;
-  Workload?: Workload;
-  Aliases?: ModuleCode[];
+  description?: string;
+  moduleCredit: string;
+  department: Department;
+  faculty: Faculty;
+  workload?: Workload;
+  aliases?: ModuleCode[];
 
   // Requsites
-  Prerequisite?: string;
-  Corequisite?: string;
-  Preclusion?: string;
+  prerequisite?: string;
+  corequisite?: string;
+  preclusion?: string;
 
   // Semester data
-  SemesterData: SemesterData[];
+  semesterData: SemesterData[];
 
   // Requisites
-  PrereqTree?: PrereqTree;
-  FulfillRequirements?: ModuleCode[];
-
-  // Deprecated
-  Types?: string[];
+  prereqTree?: PrereqTree;
+  fulfillRequirements?: ModuleCode[];
 };
 
 // This format is returned from the module list endpoint.
 export type ModuleCondensed = Readonly<{
-  ModuleCode: ModuleCode;
-  ModuleTitle: ModuleTitle;
-  Semesters: number[];
+  moduleCode: ModuleCode;
+  title: ModuleTitle;
+  semesters: number[];
 }>;
 
 // This format is returned from the module information endpoint
 export type SemesterDataCondensed = Readonly<{
-  Semester: Semester;
-  ExamDate?: string;
-  ExamDuration?: number;
+  semester: Semester;
+  examDate?: string;
+  examDuration?: number;
   // The full timetable is not provided to reduce space
 }>;
 
 export type ModuleInformation = Readonly<{
   // Basic info
-  ModuleCode: ModuleCode;
-  ModuleTitle: ModuleTitle;
+  moduleCode: ModuleCode;
+  title: ModuleTitle;
 
   // Additional info
-  ModuleDescription?: string;
-  ModuleCredit: string;
-  Department: Department;
-  Faculty: Faculty;
-  Workload?: Workload;
+  description?: string;
+  moduleCredit: string;
+  department: Department;
+  faculty: Faculty;
+  workload?: Workload;
 
   // Requsites
-  Prerequisite?: string;
-  Corequisite?: string;
-  Preclusion?: string;
+  prerequisite?: string;
+  corequisite?: string;
+  preclusion?: string;
 
   // Condensed semester info
-  SemesterData: SemesterDataCondensed[];
+  semesterData: SemesterDataCondensed[];
 
   // Requisite tree is not returned to save space
 }>;

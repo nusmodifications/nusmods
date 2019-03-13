@@ -28,8 +28,8 @@ const SEMESTER_NAMES: Record<number, SemesterName> = {
 };
 
 // Intermediate shape with Weeks typed as string[]
-type TempRawLesson = Omit<RawLesson, 'Weeks'> & {
-  Weeks: string[];
+type TempRawLesson = Omit<RawLesson, 'weeks'> & {
+  weeks: string[];
 };
 
 /**
@@ -104,16 +104,16 @@ export function mapTimetableLesson(lesson: TimetableLesson, logger: Logger): Tem
   return {
     // mod group contains the activity at the start - we remove that because
     // it is redundant
-    ClassNo: trimStart(modgrp, activity),
+    classNo: trimStart(modgrp, activity),
     // Start and end time don't have the ':' delimiter
-    StartTime: start_time.replace(':', ''),
-    EndTime: end_time.replace(':', ''),
+    startTime: start_time.replace(':', ''),
+    endTime: end_time.replace(':', ''),
     // For a single event, Weeks will always be one element
-    Weeks: [eventdate],
+    weeks: [eventdate],
     // Room can be null
-    Venue: room || '',
-    DayText: dayTextMap[day],
-    LessonType: activityLessonType[activity],
+    venue: room || '',
+    day: dayTextMap[day],
+    lessonType: activityLessonType[activity],
   };
 }
 
@@ -190,7 +190,7 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
       //    Otherwise, insert the lesson as a new item in the timetable
       const rawLesson = timetable[key];
       if (rawLesson) {
-        rawLesson.Weeks.push(lesson.eventdate);
+        rawLesson.weeks.push(lesson.eventdate);
       } else {
         timetable[key] = mapTimetableLesson(lesson, this.logger);
       }
@@ -202,7 +202,7 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
       // 5. Remove the lesson key inserted in (2) and remap the weeks to their correct shape
       values(timetableObject).map((lesson) => ({
         ...lesson,
-        Weeks: mapLessonWeeks(lesson.Weeks, this.semester, this.logger.child({ moduleCode })),
+        weeks: mapLessonWeeks(lesson.weeks, this.semester, this.logger.child({ moduleCode })),
       })),
     );
   };

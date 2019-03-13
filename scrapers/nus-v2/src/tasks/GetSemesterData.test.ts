@@ -37,45 +37,45 @@ describe(cleanModuleInfo, () => {
   test('should remove empty string requisite fields', () => {
     expect(
       cleanModuleInfo({
-        AcadYear: '2018/2019',
-        Preclusion: ' ',
-        ModuleDescription: 'Systems Architecture deals with principles...',
-        Department: 'Industrial Systems Eng & Mgmt',
-        Faculty: 'Engineering',
-        ModuleTitle: 'SYSTEMS ARCHITECTURE',
-        Workload: '3-0-0-5-2',
-        ModuleCredit: '4',
-        ModuleCode: 'SDM5001',
+        acadYear: '2018/2019',
+        preclusion: ' ',
+        description: 'Systems Architecture deals with principles...',
+        department: 'Industrial Systems Eng & Mgmt',
+        faculty: 'Engineering',
+        title: 'SYSTEMS ARCHITECTURE',
+        workload: '3-0-0-5-2',
+        moduleCredit: '4',
+        moduleCode: 'SDM5001',
       }),
     ).not.toHaveProperty('Preclusion');
 
     expect(
       cleanModuleInfo({
-        AcadYear: '2018/2019',
-        ModuleDescription: 'This module will introduce the history...',
-        Department: "FoL Dean's Office",
-        Faculty: 'Law',
-        ModuleTitle: 'Singapore Law in Context',
-        Workload: '3-0-0-0-7',
-        Prerequisite: 'Nil.',
-        ModuleCredit: '4',
-        ModuleCode: 'LC1015',
+        acadYear: '2018/2019',
+        description: 'This module will introduce the history...',
+        department: "FoL Dean's Office",
+        faculty: 'Law',
+        title: 'Singapore Law in Context',
+        workload: '3-0-0-0-7',
+        prerequisite: 'Nil.',
+        moduleCredit: '4',
+        moduleCode: 'LC1015',
       }),
     ).not.toHaveProperty('Prerequisite');
 
     const cleanedYID3216 = cleanModuleInfo({
-      AcadYear: '2018/2019',
-      Preclusion: 'None.',
-      ModuleDescription: 'Asia is known for its fast-paced economic growth...',
-      Department: 'Yale-NUS College',
-      Faculty: 'Yale-NUS College',
-      ModuleTitle: 'Environment, Development and Mobilisation in Asia',
-      Workload: '0-3-0-3-6.5',
-      Prerequisite:
+      acadYear: '2018/2019',
+      preclusion: 'None.',
+      description: 'Asia is known for its fast-paced economic growth...',
+      department: 'Yale-NUS College',
+      faculty: 'Yale-NUS College',
+      title: 'Environment, Development and Mobilisation in Asia',
+      workload: '0-3-0-3-6.5',
+      prerequisite:
         'YID1201 Introduction to Environmental Studies or with the permission of the instructor.',
-      Corequisite: 'None.',
-      ModuleCredit: '5',
-      ModuleCode: 'YID3216',
+      corequisite: 'None.',
+      moduleCredit: '5',
+      moduleCode: 'YID3216',
     });
 
     expect(cleanedYID3216).not.toHaveProperty('Preclusion');
@@ -85,55 +85,55 @@ describe(cleanModuleInfo, () => {
   test('should title case all caps titles', () => {
     expect(
       cleanModuleInfo({
-        AcadYear: '2018/2019',
-        Preclusion: ' ',
-        ModuleDescription: 'The objective is to expose students to the...',
-        Department: 'Mechanical Engineering',
-        Faculty: 'Engineering',
-        ModuleTitle: 'FRACTURE AND FATIGUE OF MATERIALS',
-        ModuleCredit: '4',
-        ModuleCode: 'ME5513',
+        acadYear: '2018/2019',
+        preclusion: ' ',
+        description: 'The objective is to expose students to the...',
+        department: 'Mechanical Engineering',
+        faculty: 'Engineering',
+        title: 'FRACTURE AND FATIGUE OF MATERIALS',
+        moduleCredit: '4',
+        moduleCode: 'ME5513',
       }),
-    ).toHaveProperty('ModuleTitle', 'Fracture and Fatigue of Materials');
+    ).toHaveProperty('title', 'Fracture and Fatigue of Materials');
 
     expect(
       cleanModuleInfo({
-        AcadYear: '2018/2019',
-        ModuleTitle: 'GRADUATE SEMINAR MODULE IN BIOLOGICAL SCIENCES',
-        Corequisite: 'NIL',
-        ModuleCode: 'BL5198',
-        ModuleDescription: 'This is a required module for all research Masters and PhD...',
-        ModuleCredit: '4',
-        Prerequisite: 'Basic knowledge in life sciences',
-        Department: 'Life Sciences',
-        Faculty: 'Science',
+        acadYear: '2018/2019',
+        title: 'GRADUATE SEMINAR MODULE IN BIOLOGICAL SCIENCES',
+        corequisite: 'NIL',
+        moduleCode: 'BL5198',
+        description: 'This is a required module for all research Masters and PhD...',
+        moduleCredit: '4',
+        prerequisite: 'Basic knowledge in life sciences',
+        department: 'Life Sciences',
+        faculty: 'Science',
       }),
-    ).toHaveProperty('ModuleTitle', 'Graduate Seminar Module in Biological Sciences');
+    ).toHaveProperty('title', 'Graduate Seminar Module in Biological Sciences');
   });
 
   test('should trim titles and other fields with whitespace characters', () => {
     expect(
       cleanModuleInfo({
-        AcadYear: '2018/2019',
-        ModuleDescription: 'The module covers the foundational knowledge of the sound...',
-        ModuleTitle: ' Phonetics and Phonology',
-        Department: 'English Language and Literature',
-        Faculty: 'Arts and Social Science',
-        Prerequisite:
+        acadYear: '2018/2019',
+        description: 'The module covers the foundational knowledge of the sound...',
+        title: ' Phonetics and Phonology',
+        department: 'English Language and Literature',
+        faculty: 'Arts and Social Science',
+        prerequisite:
           'Must be registered as a Graduate student in the university or with the approval of the Department.  ',
-        ModuleCredit: '4',
-        ModuleCode: 'EL5102',
+        moduleCredit: '4',
+        moduleCode: 'EL5102',
       }),
     ).toEqual({
-      AcadYear: '2018/2019',
-      ModuleDescription: 'The module covers the foundational knowledge of the sound...',
-      ModuleTitle: 'Phonetics and Phonology',
-      Department: 'English Language and Literature',
-      Faculty: 'Arts and Social Science',
-      Prerequisite:
+      acadYear: '2018/2019',
+      description: 'The module covers the foundational knowledge of the sound...',
+      title: 'Phonetics and Phonology',
+      department: 'English Language and Literature',
+      faculty: 'Arts and Social Science',
+      prerequisite:
         'Must be registered as a Graduate student in the university or with the approval of the Department.',
-      ModuleCredit: '4',
-      ModuleCode: 'EL5102',
+      moduleCredit: '4',
+      moduleCode: 'EL5102',
     });
   });
 });
