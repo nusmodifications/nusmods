@@ -35,7 +35,13 @@ info:
 
     Module endpoints return information on modules offered by NUS. Most of the module data is self-explanatory, but some of the data are more complex and is explained here.
 
-    #### Class numbers
+    #### Lessons
+
+    Each lesson in a timetable has a lesson type `LessonType` and class number `ClassNo`. Every student must take
+
+      ``` json
+
+      ```
 
     Each lesson has a `ClassNo` key. There can be multiple lessons of the same type and class number, in which case students must attend both.
 
@@ -71,7 +77,9 @@ info:
 
     **Prerequisites** are requirements you have to meet before you can take a module. These are usually in the form of other modules (see prerequisite tree below for a machine readable format), but can also be things like 'taken A-level H2 math' or '70 MCs and above'.
 
+
     **Preclusions** refer to modules or requirements that cannot be taken if this module is taken, and vice versa. These are usually modules whose content overlaps significantly with this module, and can usually be used to replace each other to fulfill prerequisites.
+
 
     **Corequisites** are modules that must be taken together with this module in the same semester. This usually refer to twined modules - modules which have linked syllabuses.
 
@@ -142,7 +150,7 @@ paths:
         200:
           description: 'Success'
           content:
-            application/json:
+            '*/*':
               schema:
                 type: array
                 items:
@@ -166,7 +174,7 @@ paths:
         200:
           description: 'Success'
           content:
-            application/json:
+            '*/*':
               schema:
                 type: 'array'
                 items:
@@ -191,7 +199,7 @@ paths:
         200:
           description: 'Success'
           content:
-            application/json:
+            '*/*':
               schema:
                 $ref: '#/components/schemas/Module'
         404:
@@ -211,7 +219,7 @@ paths:
         200:
           description: 'Success'
           content:
-            application/json:
+            '*/*':
               schema:
                 type: 'array'
                 items:
@@ -234,7 +242,7 @@ paths:
         200:
           description: 'Success'
           content:
-            application/json:
+            '*/*':
               schema:
                 type: 'object'
                 additionalProperties:
@@ -358,12 +366,6 @@ components:
           - CS1231
 
     Workload:
-      description:
-        'Usually an 5-tuple of numbers, describing the estimated number of hours per week the student is expected to put in for the module for **lectures, tutorials, laboratory, projects/fieldwork, and preparatory work** respectively. Each module credit represents 2.5 hours of work each week, so the standard 4 MC module represents 10 hours of work each week.
-
-        Note that this is only an estimate, and may be outdated or differ significantly in reality. Some modules also incorrectly lists the **total** workload hours instead of weekly, so very large values may show up.
-
-        This value is parsed from a string provided by the school, and occasionally this field will contain unusual values which cannot be parsed. In this case this field will contain the original string instead.'
       oneOf:
         - type: 'array'
           items:
@@ -414,7 +416,6 @@ components:
           type: 'string'
           example: '1200'
         Weeks:
-          description: 'The weeks the class is on. Typically this will be an array, representing the weeks of the semester the class takes place on, from weeks 1 to 13. If an object is returned, then this class takes place outside of the '
           oneOf:
             - $ref: '#/components/schemas/WeekRange'
             - type: 'array'
