@@ -3,8 +3,8 @@ import api, { NusApi } from '../services/nus-api';
 
 import faculties from './fixtures/faculties.json';
 import departments from './fixtures/departments.json';
-import CS2100Timetable1 from './fixtures/timetable/CS2100_1.json';
-import CS2100Timetable2 from './fixtures/timetable/CS2100_2.json';
+import CS2100Timetable1 from './fixtures/api-timetable/CS2100_1.json';
+import CS2100Timetable2 from './fixtures/api-timetable/CS2100_2.json';
 import CS2100Expected from './fixtures/expected/CS2100.json';
 
 import { fromTermCode } from '../utils/api';

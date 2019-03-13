@@ -1,6 +1,6 @@
-import GET1025 from './fixtures/timetable/GET1025.json';
-import GEK2041 from './fixtures/timetable/GEK2041.json';
-import PX2108 from './fixtures/timetable/PX2108.json';
+import GET1025 from './fixtures/nusmods-timetable/GET1025.json';
+import GEK2041 from './fixtures/nusmods-timetable/GEK2041.json';
+import PX2108 from './fixtures/nusmods-timetable/PX2108.json';
 
 import CollateVenues, { extractVenueAvailability } from './CollateVenues';
 import { EVERY_WEEK } from '../utils/test-utils';
@@ -10,32 +10,32 @@ describe(extractVenueAvailability, () => {
     expect(
       extractVenueAvailability([
         {
-          ModuleCode: 'CS3216',
-          ClassNo: '1',
-          StartTime: '1830',
-          EndTime: '2030',
-          Weeks: EVERY_WEEK,
-          Venue: 'COM1-VCRM',
-          DayText: 'Monday',
-          LessonType: 'Lecture',
+          moduleCode: 'CS3216',
+          classNo: '1',
+          startTime: '1830',
+          endTime: '2030',
+          weeks: EVERY_WEEK,
+          venue: 'COM1-VCRM',
+          day: 'Monday',
+          lessonType: 'Lecture',
         },
       ]),
     ).toEqual({
       'COM1-VCRM': [
         {
-          Day: 'Monday',
-          Classes: [
+          day: 'Monday',
+          classes: [
             {
-              ModuleCode: 'CS3216',
-              ClassNo: '1',
-              StartTime: '1830',
-              EndTime: '2030',
-              Weeks: EVERY_WEEK,
-              DayText: 'Monday',
-              LessonType: 'Lecture',
+              moduleCode: 'CS3216',
+              classNo: '1',
+              startTime: '1830',
+              endTime: '2030',
+              weeks: EVERY_WEEK,
+              day: 'Monday',
+              lessonType: 'Lecture',
             },
           ],
-          Availability: {
+          availability: {
             // '1000': 'vacant',
             // '1030': 'vacant',
             // '1100': 'vacant',
@@ -82,14 +82,14 @@ describe(extractVenueAvailability, () => {
     expect(
       extractVenueAvailability([
         {
-          ModuleCode: 'CS3216',
-          ClassNo: '1',
-          StartTime: '1830',
-          EndTime: '2030',
-          Weeks: EVERY_WEEK,
-          Venue: '',
-          DayText: 'Monday',
-          LessonType: 'Lecture',
+          moduleCode: 'CS3216',
+          classNo: '1',
+          startTime: '1830',
+          endTime: '2030',
+          weeks: EVERY_WEEK,
+          venue: '',
+          day: 'Monday',
+          lessonType: 'Lecture',
         },
       ]),
     ).toEqual({});
@@ -101,18 +101,18 @@ describe(CollateVenues, () => {
   test('should merge dual coded modules', async () => {
     const data: any = [
       {
-        ModuleCode: 'GET1025',
-        SemesterData: {
-          Timetable: GET1025,
+        moduleCode: 'GET1025',
+        semesterData: {
+          timetable: GET1025,
         },
-        Module: { ModuleTitle: 'Science Fiction and Philosophy' },
+        module: { title: 'Science Fiction and Philosophy' },
       },
       {
-        ModuleCode: 'GEK2041',
-        SemesterData: {
-          Timetable: GEK2041,
+        moduleCode: 'GEK2041',
+        semesterData: {
+          timetable: GEK2041,
         },
-        Module: { ModuleTitle: 'Science Fiction and Philosophy' },
+        module: { title: 'Science Fiction and Philosophy' },
       },
     ];
 
@@ -128,21 +128,21 @@ describe(CollateVenues, () => {
 Object {
   "AS2-0311": Array [
     Object {
-      "Availability": Object {
+      "availability": Object {
         "1600": "occupied",
         "1630": "occupied",
         "1700": "occupied",
         "1730": "occupied",
       },
-      "Classes": Array [
+      "classes": Array [
         Object {
-          "ClassNo": "E5",
-          "DayText": "Tuesday",
-          "EndTime": "1800",
-          "LessonType": "Tutorial",
-          "ModuleCode": "GET1025/​GEK2041",
-          "StartTime": "1600",
-          "Weeks": Array [
+          "classNo": "E5",
+          "day": "Tuesday",
+          "endTime": "1800",
+          "lessonType": "Tutorial",
+          "moduleCode": "GET1025/​GEK2041",
+          "startTime": "1600",
+          "weeks": Array [
             2,
             4,
             6,
@@ -152,24 +152,24 @@ Object {
           ],
         },
       ],
-      "Day": "Tuesday",
+      "day": "Tuesday",
     },
     Object {
-      "Availability": Object {
+      "availability": Object {
         "0800": "occupied",
         "0830": "occupied",
         "0900": "occupied",
         "0930": "occupied",
       },
-      "Classes": Array [
+      "classes": Array [
         Object {
-          "ClassNo": "E3",
-          "DayText": "Monday",
-          "EndTime": "1000",
-          "LessonType": "Tutorial",
-          "ModuleCode": "GET1025/​GEK2041",
-          "StartTime": "0800",
-          "Weeks": Array [
+          "classNo": "E3",
+          "day": "Monday",
+          "endTime": "1000",
+          "lessonType": "Tutorial",
+          "moduleCode": "GET1025/​GEK2041",
+          "startTime": "0800",
+          "weeks": Array [
             2,
             4,
             6,
@@ -179,26 +179,26 @@ Object {
           ],
         },
       ],
-      "Day": "Monday",
+      "day": "Monday",
     },
   ],
   "AS3-0209": Array [
     Object {
-      "Availability": Object {
+      "availability": Object {
         "1200": "occupied",
         "1230": "occupied",
         "1300": "occupied",
         "1330": "occupied",
       },
-      "Classes": Array [
+      "classes": Array [
         Object {
-          "ClassNo": "E4",
-          "DayText": "Thursday",
-          "EndTime": "1400",
-          "LessonType": "Tutorial",
-          "ModuleCode": "GET1025/​GEK2041",
-          "StartTime": "1200",
-          "Weeks": Array [
+          "classNo": "E4",
+          "day": "Thursday",
+          "endTime": "1400",
+          "lessonType": "Tutorial",
+          "moduleCode": "GET1025/​GEK2041",
+          "startTime": "1200",
+          "weeks": Array [
             2,
             4,
             6,
@@ -208,24 +208,24 @@ Object {
           ],
         },
       ],
-      "Day": "Thursday",
+      "day": "Thursday",
     },
     Object {
-      "Availability": Object {
+      "availability": Object {
         "1600": "occupied",
         "1630": "occupied",
         "1700": "occupied",
         "1730": "occupied",
       },
-      "Classes": Array [
+      "classes": Array [
         Object {
-          "ClassNo": "E6",
-          "DayText": "Wednesday",
-          "EndTime": "1800",
-          "LessonType": "Tutorial",
-          "ModuleCode": "GET1025/​GEK2041",
-          "StartTime": "1600",
-          "Weeks": Array [
+          "classNo": "E6",
+          "day": "Wednesday",
+          "endTime": "1800",
+          "lessonType": "Tutorial",
+          "moduleCode": "GET1025/​GEK2041",
+          "startTime": "1600",
+          "weeks": Array [
             2,
             4,
             6,
@@ -235,24 +235,24 @@ Object {
           ],
         },
       ],
-      "Day": "Wednesday",
+      "day": "Wednesday",
     },
     Object {
-      "Availability": Object {
+      "availability": Object {
         "1600": "occupied",
         "1630": "occupied",
         "1700": "occupied",
         "1730": "occupied",
       },
-      "Classes": Array [
+      "classes": Array [
         Object {
-          "ClassNo": "E2",
-          "DayText": "Friday",
-          "EndTime": "1800",
-          "LessonType": "Tutorial",
-          "ModuleCode": "GET1025/​GEK2041",
-          "StartTime": "1600",
-          "Weeks": Array [
+          "classNo": "E2",
+          "day": "Friday",
+          "endTime": "1800",
+          "lessonType": "Tutorial",
+          "moduleCode": "GET1025/​GEK2041",
+          "startTime": "1600",
+          "weeks": Array [
             2,
             4,
             6,
@@ -262,24 +262,24 @@ Object {
           ],
         },
       ],
-      "Day": "Friday",
+      "day": "Friday",
     },
     Object {
-      "Availability": Object {
+      "availability": Object {
         "1400": "occupied",
         "1430": "occupied",
         "1500": "occupied",
         "1530": "occupied",
       },
-      "Classes": Array [
+      "classes": Array [
         Object {
-          "ClassNo": "E1",
-          "DayText": "Monday",
-          "EndTime": "1600",
-          "LessonType": "Tutorial",
-          "ModuleCode": "GET1025/​GEK2041",
-          "StartTime": "1400",
-          "Weeks": Array [
+          "classNo": "E1",
+          "day": "Monday",
+          "endTime": "1600",
+          "lessonType": "Tutorial",
+          "moduleCode": "GET1025/​GEK2041",
+          "startTime": "1400",
+          "weeks": Array [
             2,
             4,
             6,
@@ -289,26 +289,26 @@ Object {
           ],
         },
       ],
-      "Day": "Monday",
+      "day": "Monday",
     },
   ],
   "LT12": Array [
     Object {
-      "Availability": Object {
+      "availability": Object {
         "0800": "occupied",
         "0830": "occupied",
         "0900": "occupied",
         "0930": "occupied",
       },
-      "Classes": Array [
+      "classes": Array [
         Object {
-          "ClassNo": "1",
-          "DayText": "Wednesday",
-          "EndTime": "1000",
-          "LessonType": "Lecture",
-          "ModuleCode": "GET1025/​GEK2041",
-          "StartTime": "0800",
-          "Weeks": Array [
+          "classNo": "1",
+          "day": "Wednesday",
+          "endTime": "1000",
+          "lessonType": "Lecture",
+          "moduleCode": "GET1025/​GEK2041",
+          "startTime": "0800",
+          "weeks": Array [
             1,
             2,
             3,
@@ -325,7 +325,7 @@ Object {
           ],
         },
       ],
-      "Day": "Wednesday",
+      "day": "Wednesday",
     },
   ],
 }
@@ -335,9 +335,9 @@ Object {
   test('should not alias modules with itself', async () => {
     const task = new CollateVenues(1, '2018/2019');
     const input: any = {
-      ModuleCode: 'PX2108',
-      SemesterData: { Timetable: PX2108 },
-      Module: { ModuleTitle: 'Basic Human Pathology' },
+      moduleCode: 'PX2108',
+      semesterData: { timetable: PX2108 },
+      module: { title: 'Basic Human Pathology' },
     };
     const { aliases, venues } = await task.run([input]);
 
@@ -345,21 +345,21 @@ Object {
 Object {
   "LT29": Array [
     Object {
-      "Availability": Object {
+      "availability": Object {
         "1400": "occupied",
         "1430": "occupied",
         "1500": "occupied",
         "1530": "occupied",
       },
-      "Classes": Array [
+      "classes": Array [
         Object {
-          "ClassNo": "1",
-          "DayText": "Monday",
-          "EndTime": "1600",
-          "LessonType": "Lecture",
-          "ModuleCode": "PX2108",
-          "StartTime": "1400",
-          "Weeks": Array [
+          "classNo": "1",
+          "day": "Monday",
+          "endTime": "1600",
+          "lessonType": "Lecture",
+          "moduleCode": "PX2108",
+          "startTime": "1400",
+          "weeks": Array [
             1,
             2,
             3,
@@ -375,24 +375,24 @@ Object {
           ],
         },
       ],
-      "Day": "Monday",
+      "day": "Monday",
     },
     Object {
-      "Availability": Object {
+      "availability": Object {
         "1400": "occupied",
         "1430": "occupied",
         "1500": "occupied",
         "1530": "occupied",
       },
-      "Classes": Array [
+      "classes": Array [
         Object {
-          "ClassNo": "1",
-          "DayText": "Thursday",
-          "EndTime": "1600",
-          "LessonType": "Lecture",
-          "ModuleCode": "PX2108",
-          "StartTime": "1400",
-          "Weeks": Array [
+          "classNo": "1",
+          "day": "Thursday",
+          "endTime": "1600",
+          "lessonType": "Lecture",
+          "moduleCode": "PX2108",
+          "startTime": "1400",
+          "weeks": Array [
             1,
             2,
             4,
@@ -406,131 +406,131 @@ Object {
           ],
         },
       ],
-      "Day": "Thursday",
+      "day": "Thursday",
     },
   ],
   "MD1-03-01B": Array [
     Object {
-      "Availability": Object {
+      "availability": Object {
         "1400": "occupied",
         "1430": "occupied",
         "1500": "occupied",
         "1530": "occupied",
       },
-      "Classes": Array [
+      "classes": Array [
         Object {
-          "ClassNo": "3",
-          "DayText": "Monday",
-          "EndTime": "1600",
-          "LessonType": "Tutorial",
-          "ModuleCode": "PX2108",
-          "StartTime": "1400",
-          "Weeks": Array [
+          "classNo": "3",
+          "day": "Monday",
+          "endTime": "1600",
+          "lessonType": "Tutorial",
+          "moduleCode": "PX2108",
+          "startTime": "1400",
+          "weeks": Array [
             9,
           ],
         },
       ],
-      "Day": "Monday",
+      "day": "Monday",
     },
   ],
   "MD1-03-01C": Array [
     Object {
-      "Availability": Object {
+      "availability": Object {
         "1400": "occupied",
         "1430": "occupied",
         "1500": "occupied",
         "1530": "occupied",
       },
-      "Classes": Array [
+      "classes": Array [
         Object {
-          "ClassNo": "2",
-          "DayText": "Monday",
-          "EndTime": "1600",
-          "LessonType": "Tutorial",
-          "ModuleCode": "PX2108",
-          "StartTime": "1400",
-          "Weeks": Array [
+          "classNo": "2",
+          "day": "Monday",
+          "endTime": "1600",
+          "lessonType": "Tutorial",
+          "moduleCode": "PX2108",
+          "startTime": "1400",
+          "weeks": Array [
             9,
           ],
         },
       ],
-      "Day": "Monday",
+      "day": "Monday",
     },
   ],
   "MD11-01-03": Array [
     Object {
-      "Availability": Object {
+      "availability": Object {
         "1400": "occupied",
         "1430": "occupied",
         "1500": "occupied",
         "1530": "occupied",
       },
-      "Classes": Array [
+      "classes": Array [
         Object {
-          "ClassNo": "1",
-          "DayText": "Monday",
-          "EndTime": "1600",
-          "LessonType": "Tutorial",
-          "ModuleCode": "PX2108",
-          "StartTime": "1400",
-          "Weeks": Array [
+          "classNo": "1",
+          "day": "Monday",
+          "endTime": "1600",
+          "lessonType": "Tutorial",
+          "moduleCode": "PX2108",
+          "startTime": "1400",
+          "weeks": Array [
             9,
           ],
         },
       ],
-      "Day": "Monday",
+      "day": "Monday",
     },
   ],
   "MD11CRCAUD": Array [
     Object {
-      "Availability": Object {
+      "availability": Object {
         "1400": "occupied",
         "1430": "occupied",
         "1500": "occupied",
         "1530": "occupied",
       },
-      "Classes": Array [
+      "classes": Array [
         Object {
-          "ClassNo": "1",
-          "DayText": "Thursday",
-          "EndTime": "1600",
-          "LessonType": "Tutorial",
-          "ModuleCode": "PX2108",
-          "StartTime": "1400",
-          "Weeks": Array [
+          "classNo": "1",
+          "day": "Thursday",
+          "endTime": "1600",
+          "lessonType": "Tutorial",
+          "moduleCode": "PX2108",
+          "startTime": "1400",
+          "weeks": Array [
             3,
             6,
             13,
           ],
         },
         Object {
-          "ClassNo": "2",
-          "DayText": "Thursday",
-          "EndTime": "1600",
-          "LessonType": "Tutorial",
-          "ModuleCode": "PX2108",
-          "StartTime": "1400",
-          "Weeks": Array [
+          "classNo": "2",
+          "day": "Thursday",
+          "endTime": "1600",
+          "lessonType": "Tutorial",
+          "moduleCode": "PX2108",
+          "startTime": "1400",
+          "weeks": Array [
             3,
             6,
             13,
           ],
         },
         Object {
-          "ClassNo": "3",
-          "DayText": "Thursday",
-          "EndTime": "1600",
-          "LessonType": "Tutorial",
-          "ModuleCode": "PX2108",
-          "StartTime": "1400",
-          "Weeks": Array [
+          "classNo": "3",
+          "day": "Thursday",
+          "endTime": "1600",
+          "lessonType": "Tutorial",
+          "moduleCode": "PX2108",
+          "startTime": "1400",
+          "weeks": Array [
             3,
             6,
             13,
           ],
         },
       ],
-      "Day": "Thursday",
+      "day": "Thursday",
     },
   ],
 }
@@ -542,38 +542,38 @@ Object {
     const task = new CollateVenues(1, '2018/2019');
     const input: any = [
       {
-        ModuleCode: 'EL5251',
-        SemesterData: {
-          Timetable: [
+        moduleCode: 'EL5251',
+        semesterData: {
+          timetable: [
             {
-              ClassNo: '1',
-              StartTime: '1800',
-              EndTime: '2100',
-              Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-              Venue: 'AS3-0306',
-              DayText: 'Friday',
-              LessonType: 'Seminar-Style Module Class',
+              classNo: '1',
+              startTime: '1800',
+              endTime: '2100',
+              weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+              venue: 'AS3-0306',
+              day: 'Friday',
+              lessonType: 'Seminar-Style Module Class',
             },
           ],
         },
-        Module: { ModuleTitle: 'Approaches to Discourse' },
+        module: { title: 'Approaches to Discourse' },
       },
       {
-        ModuleCode: 'EL6884',
-        SemesterData: {
-          Timetable: [
+        moduleCode: 'EL6884',
+        semesterData: {
+          timetable: [
             {
-              ClassNo: '1',
-              StartTime: '1800',
-              EndTime: '2100',
-              Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-              Venue: 'AS3-0306',
-              DayText: 'Friday',
-              LessonType: 'Seminar-Style Module Class',
+              classNo: '1',
+              startTime: '1800',
+              endTime: '2100',
+              weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+              venue: 'AS3-0306',
+              day: 'Friday',
+              lessonType: 'Seminar-Style Module Class',
             },
           ],
         },
-        Module: { ModuleTitle: 'Topics in Applied Linguistics' },
+        module: { title: 'Topics in Applied Linguistics' },
       },
     ];
 
@@ -582,7 +582,7 @@ Object {
 Object {
   "AS3-0306": Array [
     Object {
-      "Availability": Object {
+      "availability": Object {
         "1800": "occupied",
         "1830": "occupied",
         "1900": "occupied",
@@ -590,15 +590,15 @@ Object {
         "2000": "occupied",
         "2030": "occupied",
       },
-      "Classes": Array [
+      "classes": Array [
         Object {
-          "ClassNo": "1",
-          "DayText": "Friday",
-          "EndTime": "2100",
-          "LessonType": "Seminar-Style Module Class",
-          "ModuleCode": "EL5251/​EL6884",
-          "StartTime": "1800",
-          "Weeks": Array [
+          "classNo": "1",
+          "day": "Friday",
+          "endTime": "2100",
+          "lessonType": "Seminar-Style Module Class",
+          "moduleCode": "EL5251/​EL6884",
+          "startTime": "1800",
+          "weeks": Array [
             1,
             2,
             3,
@@ -615,7 +615,7 @@ Object {
           ],
         },
       ],
-      "Day": "Friday",
+      "day": "Friday",
     },
   ],
 }

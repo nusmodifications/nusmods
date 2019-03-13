@@ -46,12 +46,12 @@ export function expectSameKeys<T>(actual: T, expected: T) {
 
 export function serializeLesson(lesson: RawLesson) {
   return [
-    lesson.LessonType,
-    lesson.ClassNo,
-    lesson.StartTime,
-    lesson.Weeks,
-    lesson.DayText,
-    lesson.Venue,
+    lesson.lessonType,
+    lesson.classNo,
+    lesson.startTime,
+    lesson.weeks,
+    lesson.day,
+    lesson.venue,
   ].join('|');
 }
 
@@ -66,24 +66,24 @@ export function expectLessonsEqual(actual: RawLesson[], expected: RawLesson[]) {
 
 function expectHistoryEqual(actual: SemesterData[], expected: SemesterData[]) {
   zip(
-    sortBy(actual, (semester) => semester.Semester),
-    sortBy(expected, (semester) => semester.Semester),
+    sortBy(actual, (semester) => semester.semester),
+    sortBy(expected, (semester) => semester.semester),
   ).forEach(([actualSemester, expectedSemester]) => {
     if (!actualSemester || !expectedSemester) throw new Error('Length of semesters not equal');
 
-    expect(omit(actualSemester, 'Timetable')).toEqual(omit(expectedSemester, 'Timetable'));
+    expect(omit(actualSemester, 'timetable')).toEqual(omit(expectedSemester, 'timetable'));
 
-    expectLessonsEqual(actualSemester.Timetable, expectedSemester.Timetable);
+    expectLessonsEqual(actualSemester.timetable, expectedSemester.timetable);
   });
 }
 
 export function expectModulesEqual(actual: Module, expected: Module) {
   // FulfillRequirements is excluded because the modules that require CS2100 are not part of this test
-  const omittedKeys = ['SemesterData', 'FulfillRequirements'];
+  const omittedKeys = ['semesterData', 'fulfillRequirements'];
   expect(omit(actual, omittedKeys)).toEqual(omit(expected, omittedKeys));
 
   // Sort semesters and check history
-  expectHistoryEqual(actual.SemesterData, expected.SemesterData);
+  expectHistoryEqual(actual.semesterData, expected.semesterData);
 }
 
 /**

@@ -6,62 +6,62 @@ describe(combineModules, () => {
   const logger = mockLogger();
 
   test('should merge modules from different semesters together', () => {
-    const ModuleCode = 'ACC1006';
-    const Module = {
-      AcadYear: '2018/2019',
-      Description: 'This course aims to help students understand the role of information...',
-      Preclusion: 'Students who have passed FNA1006',
-      Faculty: 'Business',
-      Department: 'Accounting',
-      ModuleTitle: 'Accounting Information Systems',
-      Workload: '0-3-0-4-3',
-      Prerequisite: 'FNA1002 or ACC1002',
-      Corequisite: '',
-      ModuleCredit: '4',
-      ModuleCode: 'ACC1006',
+    const moduleCode = 'ACC1006';
+    const module = {
+      acadYear: '2018/2019',
+      description: 'This course aims to help students understand the role of information...',
+      preclusion: 'Students who have passed FNA1006',
+      faculty: 'Business',
+      department: 'Accounting',
+      title: 'Accounting Information Systems',
+      workload: '0-3-0-4-3',
+      prerequisite: 'FNA1002 or ACC1002',
+      corequisite: '',
+      moduleCredit: '4',
+      moduleCode: 'ACC1006',
     };
 
     const semesterOneData = {
-      Semester: 1,
-      Timetable: [
+      semester: 1,
+      timetable: [
         {
-          ClassNo: 'A1',
-          StartTime: '1400',
-          EndTime: '1700',
-          Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-          Venue: 'UTSRC-LT51',
-          DayText: 'Thursday',
-          LessonType: 'Sectional Teaching',
+          classNo: 'A1',
+          startTime: '1400',
+          endTime: '1700',
+          weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          venue: 'UTSRC-LT51',
+          day: 'Thursday',
+          lessonType: 'Sectional Teaching',
         },
       ],
-      ExamDate: '2018-12-06T13:00:00.000+08:00',
-      ExamDuration: 120,
+      examDate: '2018-12-06T13:00:00.000+08:00',
+      examDuration: 120,
     };
 
     const semesterTwoData = {
-      Semester: 2,
-      Timetable: [
+      semester: 2,
+      timetable: [
         {
-          ClassNo: 'A1',
-          StartTime: '0900',
-          EndTime: '1200',
-          Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-          Venue: 'BIZ2-0510',
-          DayText: 'Monday',
-          LessonType: 'Sectional Teaching',
+          classNo: 'A1',
+          startTime: '0900',
+          endTime: '1200',
+          weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          venue: 'BIZ2-0510',
+          day: 'Monday',
+          lessonType: 'Sectional Teaching',
         },
         {
-          ClassNo: 'A2',
-          StartTime: '1300',
-          EndTime: '1600',
-          Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-          Venue: 'BIZ2-0510',
-          DayText: 'Monday',
-          LessonType: 'Sectional Teaching',
+          classNo: 'A2',
+          startTime: '1300',
+          endTime: '1600',
+          weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          venue: 'BIZ2-0510',
+          day: 'Monday',
+          lessonType: 'Sectional Teaching',
         },
       ],
-      ExamDate: '2019-05-09T13:00:00.000+08:00',
-      ExamDuration: 120,
+      examDate: '2019-05-09T13:00:00.000+08:00',
+      examDuration: 120,
     };
 
     expect(
@@ -69,16 +69,16 @@ describe(combineModules, () => {
         [
           [
             {
-              ModuleCode,
-              Module,
-              SemesterData: semesterOneData,
+              moduleCode,
+              module,
+              semesterData: semesterOneData,
             },
           ],
           [
             {
-              ModuleCode,
-              Module,
-              SemesterData: semesterTwoData,
+              moduleCode,
+              module,
+              semesterData: semesterTwoData,
             },
           ],
         ],
@@ -87,8 +87,8 @@ describe(combineModules, () => {
       ),
     ).toEqual([
       {
-        ...Module,
-        SemesterData: [semesterOneData, semesterTwoData],
+        ...module,
+        semesterData: [semesterOneData, semesterTwoData],
       },
     ]);
   });
