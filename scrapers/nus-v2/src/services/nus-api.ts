@@ -263,7 +263,9 @@ class NusApi {
           if (error.thrown) {
             reject(error.thrown);
           } else {
-            reject(new UnknownApiError(`Unable to get semester timetable`));
+            const apiError = new UnknownApiError(`Unable to get semester timetable`);
+            apiError.originalError = apiError;
+            reject(apiError);
           }
         });
     });
@@ -288,7 +290,8 @@ class NusApi {
   /**
    * Get exam info on all modules in a semester
    */
-  getTermExams = async (term: string): Promise<ModuleExam[]> => this.callApi('examtt/published', { term });
+  getTermExams = async (term: string): Promise<ModuleExam[]> =>
+    this.callApi('examtt/published', { term });
 }
 
 // Export as default a singleton instance to be used globally
