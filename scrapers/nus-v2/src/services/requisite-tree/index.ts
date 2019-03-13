@@ -55,7 +55,7 @@ function parse(data: ModuleWithoutTree[], subLogger: Logger): PrereqTreeMap {
   const results: PrereqTreeMap = {};
 
   for (const module of data) {
-    const { moduleCode } = module;
+    const { moduleCode, prerequisite: value } = module;
     const value = module.prerequisite;
 
     if (
