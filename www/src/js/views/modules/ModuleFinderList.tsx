@@ -17,7 +17,7 @@ type Props = {
 };
 
 function getPageKey(modules: ModuleInformation[]): string {
-  const getId = (module: ModuleInformation | undefined) => get(module, 'ModuleCode', '');
+  const getId = (module: ModuleInformation | undefined) => get(module, 'moduleCode', '');
   return `${getId(head(modules))}-${getId(last(modules))}`;
 }
 

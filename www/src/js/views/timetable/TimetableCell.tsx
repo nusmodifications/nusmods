@@ -88,7 +88,7 @@ function formatWeekRange(weekRange: WeekRange) {
 function TimetableCell(props: Props) {
   const { lesson, showTitle, onClick, onHover, hoverLesson } = props;
 
-  const moduleName = showTitle ? `${lesson.ModuleCode} ${lesson.ModuleTitle}` : lesson.ModuleCode;
+  const moduleName = showTitle ? `${lesson.moduleCode} ${lesson.title}` : lesson.moduleCode;
   const Cell = props.onClick ? 'button' : 'div';
   const isHoveredOver = isEqual(getHoverLesson(lesson), hoverLesson);
 
@@ -101,7 +101,7 @@ function TimetableCell(props: Props) {
       }
     : {};
 
-  const weekText = consumeWeeks<React.ReactNode>(lesson.Weeks, formatNumericWeeks, formatWeekRange);
+  const weekText = consumeWeeks<React.ReactNode>(lesson.weeks, formatNumericWeeks, formatWeekRange);
 
   return (
     <Cell
@@ -131,9 +131,9 @@ function TimetableCell(props: Props) {
       <div className={styles.cellContainer}>
         <div className={styles.moduleName}>{moduleName}</div>
         <div>
-          {LESSON_TYPE_ABBREV[lesson.LessonType]} [{lesson.ClassNo}]
+          {LESSON_TYPE_ABBREV[lesson.lessonType]} [{lesson.classNo}]
         </div>
-        <div>{lesson.Venue}</div>
+        <div>{lesson.venue}</div>
         {weekText && <div>{weekText}</div>}
       </div>
     </Cell>

@@ -30,26 +30,26 @@ export default class DayEvents extends React.PureComponent<Props> {
     return (
       <div
         className={styles.lesson}
-        key={`${lesson.ModuleCode}-${lesson.LessonType}-${lesson.ClassNo}`}
+        key={`${lesson.moduleCode}-${lesson.lessonType}-${lesson.classNo}`}
       >
         <div className={styles.lessonTime}>
-          <p>{formatTime(lesson.StartTime)}</p>
+          <p>{formatTime(lesson.startTime)}</p>
           {i === 0 && marker}
-          <p>{formatTime(lesson.EndTime)}</p>
+          <p>{formatTime(lesson.endTime)}</p>
         </div>
 
         <div className={classnames(styles.card, `color-${lesson.colorIndex}`)}>
           <h4>
-            {lesson.ModuleCode} {lesson.ModuleTitle}
+            {lesson.moduleCode} {lesson.title}
           </h4>
           <p>
-            {lesson.LessonType} {lesson.ClassNo}
+            {lesson.lessonType} {lesson.classNo}
           </p>
-          <MapPin className={styles.venueIcon} /> {lesson.Venue}
+          <MapPin className={styles.venueIcon} /> {lesson.venue}
           <div>
             <EventMapInline
               className={styles.map}
-              venue={lesson.Venue}
+              venue={lesson.venue}
               isOpen={isOpen}
               toggleOpen={() => onOpenLesson(date, lesson)}
             />
@@ -65,8 +65,8 @@ export default class DayEvents extends React.PureComponent<Props> {
     const sortedLessons = lessons
       .filter((lesson) => isLessonAvailable(lesson, date, dayInfo))
       .sort((a, b) => {
-        const timeDiff = a.StartTime.localeCompare(b.StartTime);
-        return timeDiff !== 0 ? timeDiff : a.ClassNo.localeCompare(b.ClassNo);
+        const timeDiff = a.startTime.localeCompare(b.startTime);
+        return timeDiff !== 0 ? timeDiff : a.classNo.localeCompare(b.classNo);
       });
 
     return <div>{sortedLessons.map(this.renderLesson)}</div>;

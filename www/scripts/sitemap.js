@@ -37,7 +37,7 @@ const addDynamicPages = async (urls) => {
   const venues = _.uniq([...venues1, ...venues2]);
 
   modules.forEach((module) => {
-    urls.push(`modules/${module.ModuleCode}/${_.kebabCase(module.ModuleTitle)}`);
+    urls.push(`modules/${module.moduleCode}/${_.kebabCase(module.title)}`);
   });
 
   venues.forEach((venue) => {

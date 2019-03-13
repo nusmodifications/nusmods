@@ -11,13 +11,13 @@ import PC1222_JSON from './PC1222.json';
 // Have to cast these as Module explicitly, otherwise TS will try to
 // incorrectly infer the shape from the JSON - specifically Weeks will
 // not be cast correctly
-export const CS1010S = CS1010S_JSON as Module;
-export const ACC2002 = ACC2002_JSON as Module;
-export const BFS1001 = BFS1001_JSON as Module;
-export const CS3216 = CS3216_JSON as Module;
-export const GES1021 = GES1021_JSON as Module;
-export const PC1222 = PC1222_JSON as Module;
-export const CS4243 = CS4243_JSON as Module;
+export const CS1010S: Module = CS1010S_JSON;
+export const ACC2002: Module = ACC2002_JSON;
+export const BFS1001: Module = BFS1001_JSON;
+export const CS3216: Module = CS3216_JSON;
+export const GES1021: Module = GES1021_JSON;
+export const PC1222: Module = PC1222_JSON;
+export const CS4243: Module = CS4243_JSON;
 
 const modules: Module[] = [ACC2002, BFS1001, CS1010S, CS3216, GES1021, PC1222];
 export default modules;

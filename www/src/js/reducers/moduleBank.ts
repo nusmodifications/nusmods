@@ -44,7 +44,7 @@ const defaultModuleBankState: ModuleBank = {
 
 function precomputeFromModuleList(moduleList: ModuleList) {
   // Cache a mapping of all module codes to module data for fast module data lookup
-  const moduleCodes = zipObject(moduleList.map((module) => module.ModuleCode), moduleList);
+  const moduleCodes = zipObject(moduleList.map((module) => module.moduleCode), moduleList);
 
   return { moduleCodes };
 }
@@ -64,7 +64,7 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
         ...state,
         modules: {
           ...state.modules,
-          [action.payload.ModuleCode]: action.payload,
+          [action.payload.moduleCode]: action.payload,
         },
       };
 
@@ -96,7 +96,7 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
 
       return update(state, {
         moduleArchive: {
-          [action.payload.ModuleCode]: {
+          [action.payload.moduleCode]: {
             $auto: {
               [meta.academicYear]: {
                 $auto: { $set: action.payload },
@@ -110,7 +110,7 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
     case SET_EXPORTED_DATA:
       return {
         ...state,
-        modules: keyBy(action.payload.modules, (module: Module) => module.ModuleCode),
+        modules: keyBy(action.payload.modules, (module: Module) => module.moduleCode),
       };
 
     case REHYDRATE:

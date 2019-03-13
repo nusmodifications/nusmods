@@ -188,7 +188,7 @@ class TimetableContent extends React.Component<Props, State> {
   };
 
   removeModule = (module: ModuleWithColor) => {
-    this.props.removeModule(this.props.semester, module.ModuleCode);
+    this.props.removeModule(this.props.semester, module.moduleCode);
 
     // A tombstone is displayed in place of a deleted module
     this.setState({ tombstone: module });
@@ -210,8 +210,8 @@ class TimetableContent extends React.Component<Props, State> {
     <TimetableModulesTable
       modules={modules.map((module) => ({
         ...module,
-        colorIndex: this.props.colors[module.ModuleCode],
-        hiddenInTimetable: this.isHiddenInTimetable(module.ModuleCode),
+        colorIndex: this.props.colors[module.moduleCode],
+        hiddenInTimetable: this.isHiddenInTimetable(module.moduleCode),
       }))}
       horizontalOrientation={horizontalOrientation}
       semester={this.props.semester}
@@ -280,10 +280,10 @@ class TimetableContent extends React.Component<Props, State> {
 
     let timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons)
       // Do not process hidden modules
-      .filter((lesson) => !this.isHiddenInTimetable(lesson.ModuleCode));
+      .filter((lesson) => !this.isHiddenInTimetable(lesson.moduleCode));
 
     if (activeLesson) {
-      const moduleCode = activeLesson.ModuleCode;
+      const moduleCode = activeLesson.moduleCode;
       // Remove activeLesson because it will appear again
       timetableLessons = timetableLessons.filter(
         (lesson) => !areLessonsSameClass(lesson, activeLesson),
@@ -291,17 +291,17 @@ class TimetableContent extends React.Component<Props, State> {
 
       const module = modules[moduleCode];
       const moduleTimetable = getModuleTimetable(module, semester);
-      lessonsForLessonType(moduleTimetable, activeLesson.LessonType).forEach((lesson) => {
+      lessonsForLessonType(moduleTimetable, activeLesson.lessonType).forEach((lesson) => {
         const modifiableLesson: Lesson & { isActive?: boolean; isAvailable?: boolean } = {
           ...lesson,
           // Inject module code in
-          ModuleCode: moduleCode,
-          ModuleTitle: module.ModuleTitle,
+          moduleCode,
+          title: module.title,
         };
 
         if (areLessonsSameClass(modifiableLesson, activeLesson)) {
           modifiableLesson.isActive = true;
-        } else if (lesson.LessonType === activeLesson.LessonType) {
+        } else if (lesson.lessonType === activeLesson.lessonType) {
           modifiableLesson.isAvailable = true;
         }
         timetableLessons.push(modifiableLesson);
@@ -312,7 +312,7 @@ class TimetableContent extends React.Component<Props, State> {
     const coloredTimetableLessons = timetableLessons.map(
       (lesson: Lesson): ColoredLesson => ({
         ...lesson,
-        colorIndex: colors[lesson.ModuleCode],
+        colorIndex: colors[lesson.moduleCode],
       }),
     );
 
@@ -322,13 +322,13 @@ class TimetableContent extends React.Component<Props, State> {
       (dayRows) =>
         dayRows.map((row) =>
           row.map((lesson) => {
-            const module: Module = modules[lesson.ModuleCode];
+            const module: Module = modules[lesson.moduleCode];
             const moduleTimetable = getModuleTimetable(module, semester);
 
             return {
               ...lesson,
               isModifiable:
-                !readOnly && areOtherClassesAvailable(moduleTimetable, lesson.LessonType),
+                !readOnly && areOtherClassesAvailable(moduleTimetable, lesson.lessonType),
             };
           }),
         ),
@@ -366,8 +366,8 @@ class TimetableContent extends React.Component<Props, State> {
                 semester={semester}
                 modules={addedModules.map((module) => ({
                   ...module,
-                  colorIndex: this.props.colors[module.ModuleCode],
-                  hiddenInTimetable: this.isHiddenInTimetable(module.ModuleCode),
+                  colorIndex: this.props.colors[module.moduleCode],
+                  hiddenInTimetable: this.isHiddenInTimetable(module.moduleCode),
                 }))}
               />
             ) : (

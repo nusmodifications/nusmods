@@ -18,7 +18,7 @@ function initModules(groups: Group<any>[], modules: Module[]) {
 }
 
 function moduleCodeFilter(str: string): Filter {
-  return new Filter(str, str, (module) => module.ModuleCode.includes(str));
+  return new Filter(str, str, (module) => module.moduleCode.includes(str));
 }
 
 const f1 = new Filter('f1', 'f1', () => false);

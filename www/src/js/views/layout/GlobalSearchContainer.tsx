@@ -42,7 +42,7 @@ export class SearchContainerComponent extends React.Component<Props> {
   }
 
   onSelectModule = (module: ModuleCondensed) => {
-    this.props.history.push(modulePage(module.ModuleCode, module.ModuleTitle));
+    this.props.history.push(modulePage(module.moduleCode, module.title));
   };
 
   onSelectVenue = (venue: Venue) => {

@@ -92,8 +92,8 @@ export function calculateBorderTimings(
   let earliestTime: number = convertTimeToIndex(DEFAULT_EARLIEST_TIME);
   let latestTime: number = convertTimeToIndex(DEFAULT_LATEST_TIME);
   lessons.forEach((lesson) => {
-    earliestTime = Math.min(earliestTime, convertTimeToIndex(lesson.StartTime));
-    latestTime = Math.max(latestTime, convertTimeToIndex(lesson.EndTime));
+    earliestTime = Math.min(earliestTime, convertTimeToIndex(lesson.startTime));
+    latestTime = Math.max(latestTime, convertTimeToIndex(lesson.endTime));
   });
 
   // Consider time range of period, if applicable

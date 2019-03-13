@@ -25,11 +25,11 @@ function getExamDate(date: Date): string {
 function ExamModule({ module }: { module: ModuleWithColor }) {
   return (
     <Link
-      to={modulePage(module.ModuleCode, module.ModuleTitle)}
+      to={modulePage(module.moduleCode, module.title)}
       className={`hoverable color-${module.colorIndex}`}
     >
-      <div className={styles.moduleCode}>{module.ModuleCode}</div>
-      <div className={styles.moduleTitle}>{module.ModuleTitle}</div>
+      <div className={styles.moduleCode}>{module.moduleCode}</div>
+      <div className={styles.moduleTitle}>{module.title}</div>
     </Link>
   );
 }
@@ -82,7 +82,7 @@ export default function ExamWeek(props: Props) {
               <>
                 <h4>{modulesAtThisTime[0].time}</h4>
                 {modulesAtThisTime.map(({ module }) => (
-                  <ExamModule key={module.ModuleCode} module={module} />
+                  <ExamModule key={module.moduleCode} module={module} />
                 ))}
               </>
             )}

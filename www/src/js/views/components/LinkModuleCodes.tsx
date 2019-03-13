@@ -32,14 +32,13 @@ export const LinkModuleCodesComponent: React.FunctionComponent<Props> = (
 
     const tooltip = (
       <>
-        {module.ModuleTitle}{' '}
-        <SemesterBadge className={styles.semesters} semesters={module.Semesters} />{' '}
+        {module.title} <SemesterBadge className={styles.semesters} semesters={module.semesters} />{' '}
       </>
     );
 
     return (
       <Tooltip content={tooltip} distance={5} key={i} touchHold>
-        <Link className={className} to={modulePage(code, module.ModuleTitle)}>
+        <Link className={className} to={modulePage(code, module.title)}>
           {part}
         </Link>
       </Tooltip>

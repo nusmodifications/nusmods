@@ -6,14 +6,14 @@ describe('count()', () => {
   const modules = ['CS1010S', 'CS1231', 'GET1025', 'GET1029'].map(createModule);
 
   test('should return the total number of matched modules if the modules param is null', () => {
-    const filter = new Filter('test', 'test', (module) => module.ModuleCode.startsWith('CS'));
+    const filter = new Filter('test', 'test', (module) => module.moduleCode.startsWith('CS'));
     filter.initCount(modules);
 
     expect(filter.count(null)).toEqual(2);
   });
 
   test('should return the number of matched modules intersecting the provided modules', () => {
-    const filter = new Filter('test', 'test', (module) => module.ModuleCode.startsWith('CS'));
+    const filter = new Filter('test', 'test', (module) => module.moduleCode.startsWith('CS'));
     filter.initCount(modules);
 
     expect(filter.count(new Set([]))).toEqual(0);

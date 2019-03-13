@@ -6,14 +6,14 @@ import { ModulesSelectComponent } from './ModulesSelect';
 
 const modules = [
   {
-    ModuleCode: 'Test1',
-    ModuleTitle: 'ModuleTitle',
+    moduleCode: 'Test1',
+    title: 'ModuleTitle',
     isAdded: false,
     isAdding: false,
   },
   {
-    ModuleCode: 'Test2',
-    ModuleTitle: 'ModuleTitle',
+    moduleCode: 'Test2',
+    title: 'ModuleTitle',
     isAdded: true,
     isAdding: false,
   },
@@ -22,7 +22,7 @@ const modules = [
 const commonProps = {
   getFilteredModules: jest.fn((inputValue) => {
     if (!inputValue) return [];
-    return modules.filter((m) => m.ModuleCode.includes(inputValue));
+    return modules.filter((m) => m.moduleCode.includes(inputValue));
   }),
   onChange: jest.fn(),
   moduleCount: 3,
@@ -58,7 +58,7 @@ describe(ModulesSelectComponent, () => {
       .find('li')
       .first()
       .simulate('click');
-    expect(commonProps.onChange).toHaveBeenCalledWith(modules[0].ModuleCode);
+    expect(commonProps.onChange).toHaveBeenCalledWith(modules[0].moduleCode);
     // remain open
     expect(wrapper.state('isOpen')).toBe(true);
   });

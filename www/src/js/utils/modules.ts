@@ -25,20 +25,20 @@ export function getModuleSemesterData(
   module: Module,
   semester: Semester,
 ): SemesterData | undefined {
-  return module.SemesterData.find((semData: SemesterData) => semData.Semester === semester);
+  return module.semesterData.find((semData: SemesterData) => semData.semester === semester);
 }
 
 // Returns a flat array of lessons of a module for the corresponding semester.
 export function getModuleTimetable(module: Module, semester: Semester): ReadonlyArray<RawLesson> {
-  return _.get(getModuleSemesterData(module, semester), 'Timetable', []);
+  return _.get(getModuleSemesterData(module, semester), 'timetable', []);
 }
 
 // Do these two lessons belong to the same class?
 export function areLessonsSameClass(lesson1: Lesson, lesson2: Lesson): boolean {
   return (
-    lesson1.ModuleCode === lesson2.ModuleCode &&
-    lesson1.ClassNo === lesson2.ClassNo &&
-    lesson1.LessonType === lesson2.LessonType
+    lesson1.moduleCode === lesson2.moduleCode &&
+    lesson1.classNo === lesson2.classNo &&
+    lesson1.lessonType === lesson2.lessonType
   );
 }
 
@@ -53,7 +53,7 @@ export function formatExamDate(examDate: string | null | undefined): string {
 }
 
 export function getExamDate(module: Module, semester: Semester): string | null {
-  return _.get(getModuleSemesterData(module, semester), 'ExamDate') || null;
+  return _.get(getModuleSemesterData(module, semester), 'examDate') || null;
 }
 
 export function getFormattedExamDate(module: Module, semester: Semester): string {
@@ -67,12 +67,12 @@ export function getFirstAvailableSemester(
   semesters: ReadonlyArray<SemesterDataCondensed>,
   current: Semester = config.semester, // For testing only
 ): Semester {
-  const availableSemesters = semesters.map((semesterData) => semesterData.Semester);
+  const availableSemesters = semesters.map((semesterData) => semesterData.semester);
   return availableSemesters.includes(current) ? current : _.min(availableSemesters)!;
 }
 
 export function getSemestersOffered(module: Module): Semester[] {
-  return module.SemesterData.map((semesterData) => semesterData.Semester).sort();
+  return module.semesterData.map((semesterData) => semesterData.semester).sort();
 }
 
 export function renderMCs(moduleCredits: number | string) {

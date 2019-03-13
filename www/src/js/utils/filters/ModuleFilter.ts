@@ -24,7 +24,7 @@ export default class ModuleFilter {
 
     modules
       .filter((module) => this.test(module))
-      .forEach((module) => filteredModules.add(module.ModuleCode));
+      .forEach((module) => filteredModules.add(module.moduleCode));
 
     this.filteredModules = filteredModules;
   }

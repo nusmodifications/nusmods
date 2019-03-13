@@ -19,24 +19,24 @@ import { noBreak } from 'utils/react';
 import { EVERY_WEEK } from 'test-utils/timetable';
 import { CS1010S, CS3216 } from '__mocks__/modules';
 
-const mockLesson = _.cloneDeep(CS1010S.SemesterData[0].Timetable[0]) as Lesson;
-mockLesson.ModuleCode = 'CS1010S';
-mockLesson.ModuleTitle = 'Programming Methodology';
+const mockLesson = _.cloneDeep(CS1010S.semesterData[0].timetable[0]) as Lesson;
+mockLesson.moduleCode = 'CS1010S';
+mockLesson.title = 'Programming Methodology';
 
 test('getModuleSemesterData should return semester data if semester is present', () => {
   const sem: Semester = 1;
   const actual = getModuleSemesterData(CS3216, sem);
   const expected = {
-    Semester: 1,
-    Timetable: [
+    semester: 1,
+    timetable: [
       {
-        ClassNo: '1',
-        LessonType: 'Lecture',
-        Weeks: EVERY_WEEK,
-        DayText: 'Monday',
-        StartTime: '1830',
-        EndTime: '2030',
-        Venue: 'VCRm',
+        classNo: '1',
+        lessonType: 'Lecture',
+        weeks: EVERY_WEEK,
+        day: 'Monday',
+        startTime: '1830',
+        endTime: '2030',
+        venue: 'VCRm',
       },
     ],
   };
@@ -67,24 +67,24 @@ test(
   'areLessonsSameClass should identify lessons from the same ClassNo but ' +
     'with different timings as same class',
   () => {
-    const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'StartTime', '0000');
-    const otherLesson2: Lesson = lessonWithDifferentProperty(otherLesson, 'EndTime', '2300');
+    const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'startTime', '0000');
+    const otherLesson2: Lesson = lessonWithDifferentProperty(otherLesson, 'endTime', '2300');
     expect(areLessonsSameClass(mockLesson, otherLesson2)).toBe(true);
   },
 );
 
 test('areLessonsSameClass should identify lessons with different ModuleCode as different class', () => {
-  const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'ModuleCode');
+  const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'moduleCode');
   expect(areLessonsSameClass(mockLesson, otherLesson)).toBe(false);
 });
 
 test('areLessonsSameClass should identify lessons with different ClassNo as different class', () => {
-  const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'ClassNo');
+  const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'classNo');
   expect(areLessonsSameClass(mockLesson, otherLesson)).toBe(false);
 });
 
-test('areLessonsSameClass should identify lessons with different LessonType as different class', () => {
-  const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'LessonType');
+test('areLessonsSameClass should identify lessons with different lessonType as different class', () => {
+  const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'lessonType');
   expect(areLessonsSameClass(mockLesson, otherLesson)).toBe(false);
 });
 
@@ -117,8 +117,8 @@ test('getModuleSemExamDate should return "No Exam" if it does not exist', () => 
 describe(getFirstAvailableSemester, () => {
   function createSemesterData(semester: Semester): SemesterData {
     return {
-      Semester: semester,
-      Timetable: [],
+      semester,
+      timetable: [],
     };
   }
 

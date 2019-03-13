@@ -43,8 +43,8 @@ type Props = {
 
 class TimetableModulesTable extends React.PureComponent<Props> {
   renderModuleActions(module: ModuleWithColor) {
-    const hideBtnLabel = `${module.hiddenInTimetable ? 'Show' : 'Hide'} ${module.ModuleCode}`;
-    const removeBtnLabel = `Remove ${module.ModuleCode} from timetable`;
+    const hideBtnLabel = `${module.hiddenInTimetable ? 'Show' : 'Hide'} ${module.moduleCode}`;
+    const removeBtnLabel = `Remove ${module.moduleCode} from timetable`;
     const { semester } = this.props;
 
     return (
@@ -67,9 +67,9 @@ class TimetableModulesTable extends React.PureComponent<Props> {
               aria-label={hideBtnLabel}
               onClick={() => {
                 if (module.hiddenInTimetable) {
-                  this.props.showLessonInTimetable(semester, module.ModuleCode);
+                  this.props.showLessonInTimetable(semester, module.moduleCode);
                 } else {
-                  this.props.hideLessonInTimetable(semester, module.ModuleCode);
+                  this.props.hideLessonInTimetable(semester, module.moduleCode);
                 }
               }}
             >
@@ -88,7 +88,7 @@ class TimetableModulesTable extends React.PureComponent<Props> {
   renderModule = (module: ModuleWithColor) => {
     const { semester, readOnly, tombstone, resetTombstone } = this.props;
 
-    if (tombstone && tombstone.ModuleCode === module.ModuleCode) {
+    if (tombstone && tombstone.moduleCode === module.moduleCode) {
       return <ModuleTombstone module={module} resetTombstone={resetTombstone} />;
     }
 
@@ -96,25 +96,25 @@ class TimetableModulesTable extends React.PureComponent<Props> {
       <>
         <div className={styles.moduleColor}>
           <ColorPicker
-            label={`Change ${module.ModuleCode} timetable color`}
+            label={`Change ${module.moduleCode} timetable color`}
             color={module.colorIndex}
             isHidden={module.hiddenInTimetable}
             onChooseColor={(colorIndex: ColorIndex) => {
-              this.props.selectModuleColor(semester, module.ModuleCode, colorIndex);
+              this.props.selectModuleColor(semester, module.moduleCode, colorIndex);
             }}
           />
         </div>
         <div className={styles.moduleInfo}>
           {!readOnly && this.renderModuleActions(module)}
-          <Link to={modulePage(module.ModuleCode, module.ModuleTitle)}>
-            {module.ModuleCode} {module.ModuleTitle}
+          <Link to={modulePage(module.moduleCode, module.title)}>
+            {module.moduleCode} {module.title}
           </Link>
           <div className={styles.moduleExam}>
             {getExamDate(module, semester)
               ? `Exam: ${getFormattedExamDate(module, semester)}`
               : 'No Exam'}
             &nbsp;&middot;&nbsp;
-            {renderMCs(module.ModuleCredit)}
+            {renderMCs(module.moduleCredit)}
           </div>
         </div>
       </>
@@ -140,7 +140,7 @@ class TimetableModulesTable extends React.PureComponent<Props> {
               'col-sm-6',
               horizontalOrientation ? 'col-lg-4' : 'col-md-12',
             )}
-            key={module.ModuleCode}
+            key={module.moduleCode}
           >
             {this.renderModule(module)}
           </div>

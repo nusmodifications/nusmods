@@ -18,13 +18,13 @@ import { BFS1001, CS1010S, CS3216 } from '__mocks__/modules';
 import mockTimetable from '__mocks__/sem-timetable.json';
 
 const rawLesson = (override: Partial<RawLesson> = {}): RawLesson => ({
-  ClassNo: 'A1',
-  DayText: 'Monday',
-  EndTime: '1700',
-  LessonType: 'Sectional Teaching',
-  StartTime: '1400',
-  Venue: 'BIZ1-0303',
-  Weeks: [1, 2, 3, 4, 5, 6],
+  classNo: 'A1',
+  day: 'Monday',
+  endTime: '1700',
+  lessonType: 'Sectional Teaching',
+  startTime: '1400',
+  venue: 'BIZ1-0303',
+  weeks: [1, 2, 3, 4, 5, 6],
   ...override,
 });
 
@@ -100,7 +100,7 @@ describe(calculateNumericWeek, () => {
   const testCalculateNumericWeek = (weeks: number[]) =>
     calculateNumericWeek(
       rawLesson({
-        Weeks: weeks,
+        weeks,
       }),
       1,
       weeks,
@@ -165,7 +165,7 @@ describe(calculateWeekRange, () => {
   const testCalculateWeekRange = (weekRange: WeekRange) =>
     calculateWeekRange(
       rawLesson({
-        Weeks: weekRange,
+        weeks: weekRange,
       }),
       1,
       weekRange,
@@ -215,13 +215,13 @@ describe(calculateWeekRange, () => {
 test('iCalEventForLesson generates correct output', () => {
   const actual: EventOption = iCalEventForLesson(
     {
-      ClassNo: 'A1',
-      DayText: 'Monday',
-      EndTime: '1700',
-      LessonType: 'Sectional Teaching',
-      StartTime: '1400',
-      Venue: 'BIZ1-0303',
-      Weeks: [1, 2, 3, 4, 5, 6],
+      classNo: 'A1',
+      day: 'Monday',
+      endTime: '1700',
+      lessonType: 'Sectional Teaching',
+      startTime: '1400',
+      venue: 'BIZ1-0303',
+      weeks: [1, 2, 3, 4, 5, 6],
     },
     BFS1001 as Module,
     1,
@@ -248,13 +248,13 @@ test('iCalEventForLesson generates correct output', () => {
 test('work for half hour lesson offsets', () => {
   const actual: EventOption = iCalEventForLesson(
     {
-      ClassNo: 'A1',
-      DayText: 'Monday',
-      EndTime: '2030',
-      LessonType: 'Sectional Teaching',
-      StartTime: '1830',
-      Venue: 'BIZ1-0303',
-      Weeks: EVERY_WEEK,
+      classNo: 'A1',
+      day: 'Monday',
+      endTime: '2030',
+      lessonType: 'Sectional Teaching',
+      startTime: '1830',
+      venue: 'BIZ1-0303',
+      weeks: EVERY_WEEK,
     },
     BFS1001 as Module,
     1,
@@ -286,6 +286,6 @@ describe(iCalForTimetable, () => {
     };
     const actual = iCalForTimetable(1, mockTimetable, moduleData);
     // 5 lesson types for cs1010s, 1 for cs3216, 1 exam for cs1010s
-    expect(actual.length === 7).toBe(true);
+    expect(actual).toHaveLength(7);
   });
 });
