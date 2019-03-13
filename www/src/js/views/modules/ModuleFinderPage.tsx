@@ -10,7 +10,7 @@ type Props = {
 const ModuleFinderPage = React.memo(({ page }: Props) => (
   <ul className="modules-list">
     {page.map((module) => (
-      <ModuleFinderItem key={module.ModuleCode} module={module} />
+      <ModuleFinderItem key={module.moduleCode} module={module} />
     ))}
   </ul>
 ));

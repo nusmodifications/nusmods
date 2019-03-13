@@ -137,6 +137,6 @@ export default class FilterGroup<Filter extends ModuleFilter> {
   ): ModuleInformation[] {
     const filteredModuleCodes = FilterGroup.union(filterGroups);
     if (!filteredModuleCodes) return modules;
-    return modules.filter((module) => filteredModuleCodes.has(module.ModuleCode));
+    return modules.filter((module) => filteredModuleCodes.has(module.moduleCode));
   }
 }

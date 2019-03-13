@@ -8,7 +8,7 @@ import { CS3216, CS1010S } from '__mocks__/modules';
 
 // Stupid trick to get two modules with the same exam dates
 const CS1010X = clone(CS1010S);
-CS1010X.ModuleCode = 'CS1010X';
+CS1010X.moduleCode = 'CS1010X';
 
 /* eslint-disable no-useless-computed-key */
 
@@ -141,7 +141,7 @@ describe(getAcadYearModules, () => {
 
     const moduleBank = {
       modules: {},
-      moduleCodes: { CS3216: { Semesters: [1] } },
+      moduleCodes: { CS3216: { semesters: [1] } },
     };
 
     const state: any = { planner, moduleBank };
@@ -163,7 +163,7 @@ describe(getAcadYearModules, () => {
 
     const moduleBank = {
       modules: { CS3216 },
-      moduleCodes: { CS3216: { Semesters: [1] } },
+      moduleCodes: { CS3216: { semesters: [1] } },
     };
 
     const state: any = { planner, moduleBank };
@@ -193,8 +193,8 @@ describe(getAcadYearModules, () => {
     const moduleBank = {
       modules: { CS1010S, CS1010X },
       moduleCodes: {
-        CS1010S: { Semesters: [1] },
-        CS1010X: { Semesters: [1] },
+        CS1010S: { semesters: [1] },
+        CS1010X: { semesters: [1] },
       },
     };
 
@@ -235,8 +235,8 @@ describe(getAcadYearModules, () => {
     const moduleBank = {
       modules: { CS1010S, CS1010X },
       moduleCodes: {
-        CS1010S: { Semesters: [1] },
-        CS1010X: { Semesters: [1] },
+        CS1010S: { semesters: [1] },
+        CS1010X: { semesters: [1] },
       },
     };
 
@@ -274,8 +274,8 @@ describe(getAcadYearModules, () => {
         CS3216,
       },
       moduleCodes: {
-        CS2103T: { Semesters: [1, 2] },
-        CS3216: { Semesters: [1, 2] },
+        CS2103T: { semesters: [1, 2] },
+        CS3216: { semesters: [1, 2] },
       },
     };
 
@@ -312,8 +312,8 @@ describe(getAcadYearModules, () => {
         CS3216,
       },
       moduleCodes: {
-        CS2020: { Semesters: [1] },
-        CS3216: { Semesters: [1] },
+        CS2020: { semesters: [1] },
+        CS3216: { semesters: [1] },
       },
     };
 

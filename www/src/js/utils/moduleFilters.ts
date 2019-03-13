@@ -56,7 +56,7 @@ const makeFacultyFilter = (faculty: Faculty) =>
   new Filter(
     kebabCase(faculty),
     faculty,
-    (module: ModuleInformation) => module.Faculty === faculty,
+    (module: ModuleInformation) => module.faculty === faculty,
   );
 function makeFacultyFilterGroup(faculties: Faculty[]) {
   return new FilterGroup(FACULTY, 'Faculties', faculties.map(makeFacultyFilter));
@@ -66,7 +66,7 @@ const makeDepartmentFilter = (department: Department) =>
   new Filter(
     kebabCase(department),
     department,
-    (module: ModuleInformation) => module.Department === department,
+    (module: ModuleInformation) => module.department === department,
   );
 function makeDepartmentFilterGroup(departments: Department[]) {
   return new FilterGroup(DEPARTMENT, 'Departments', departments.map(makeDepartmentFilter));
@@ -75,7 +75,7 @@ function makeDepartmentFilterGroup(departments: Department[]) {
 function makeExamFilter() {
   return new FilterGroup(EXAMS, 'Exams', [
     new Filter('no-exam', 'No Exams', (module: ModuleInformation) =>
-      module.SemesterData.every((semesterData) => !semesterData.ExamDate),
+      module.semesterData.every((semesterData) => !semesterData.examDate),
     ),
   ]);
 }
@@ -95,7 +95,7 @@ export function defaultGroups(facultyMap: FacultyDepartments, query: string = ''
         return new Filter(
           semesterStr,
           name,
-          (module) => !!module.SemesterData.find((semData) => semData.Semester === semester),
+          (module) => !!module.semesterData.find((semData) => semData.semester === semester),
         );
       }),
     ),
@@ -107,13 +107,13 @@ export function defaultGroups(facultyMap: FacultyDepartments, query: string = ''
     ),
 
     [MODULE_CREDITS]: new FilterGroup(MODULE_CREDITS, 'Module Credit', [
-      new Filter('0', '0-3 MC', (module) => parseFloat(module.ModuleCredit) <= 3),
-      new Filter('4', '4 MC', (module) => module.ModuleCredit === '4'),
+      new Filter('0', '0-3 MC', (module) => parseFloat(module.moduleCredit) <= 3),
+      new Filter('4', '4 MC', (module) => module.moduleCredit === '4'),
       new Filter('5', '5-8 MC', (module) => {
-        const credits = parseFloat(module.ModuleCredit);
+        const credits = parseFloat(module.moduleCredit);
         return credits > 4 && credits <= 8;
       }),
-      new Filter('8', 'More than 8 MC', (module) => parseInt(module.ModuleCredit, 10) > 8),
+      new Filter('8', 'More than 8 MC', (module) => parseInt(module.moduleCredit, 10) > 8),
     ]),
 
     [DEPARTMENT]: makeDepartmentFilterGroup(departments),

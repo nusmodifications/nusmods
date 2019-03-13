@@ -31,33 +31,33 @@ export class LessonTimetableComponent extends React.PureComponent<Props, State> 
 
   renderTimetable(): React.ReactNode {
     const semester = this.props.semesterData.find(
-      (data) => data.Semester === this.state.selectedSem,
+      (data) => data.semester === this.state.selectedSem,
     );
-    if (!semester || !semester.Timetable) {
+    if (!semester || !semester.timetable) {
       return <p>Timetable info not available</p>;
     }
 
-    const lessons = semester.Timetable.map((lesson) => ({
+    const lessons = semester.timetable.map((lesson) => ({
       ...lesson,
-      ModuleCode: '',
-      ModuleTitle: '',
-      isModifiable: !!lesson.Venue,
+      moduleCode: '',
+      title: '',
+      isModifiable: !!lesson.venue,
     }));
-    const coloredLessons = colorLessonsByKey(lessons, 'LessonType');
+    const coloredLessons = colorLessonsByKey(lessons, 'lessonType');
     const arrangedLessons = arrangeLessonsForWeek(coloredLessons);
 
     return (
       <Timetable
         lessons={arrangedLessons}
         onModifyCell={(lesson: Lesson) => {
-          this.props.history.push(venuePage(lesson.Venue));
+          this.props.history.push(venuePage(lesson.venue));
         }}
       />
     );
   }
 
   render() {
-    const semesters = this.props.semesterData.map((data) => data.Semester);
+    const semesters = this.props.semesterData.map((data) => data.semester);
 
     return (
       <>

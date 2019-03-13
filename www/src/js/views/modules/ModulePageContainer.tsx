@@ -96,8 +96,8 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
     }
 
     return archiveYear
-      ? moduleArchive(moduleCode, archiveYear, module.ModuleTitle)
-      : modulePage(moduleCode, module.ModuleTitle);
+      ? moduleArchive(moduleCode, archiveYear, module.title)
+      : modulePage(moduleCode, module.title);
   }
 
   render() {

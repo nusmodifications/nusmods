@@ -138,8 +138,8 @@ export class ModulesSelectComponent extends React.Component<Props, State> {
               <li
                 {...getItemProps({
                   index,
-                  key: module.ModuleCode,
-                  item: module.ModuleCode,
+                  key: module.moduleCode,
+                  item: module.moduleCode,
                   disabled: module.isAdded || module.isAdding,
                 })}
                 className={classnames(styles.option, {
@@ -149,7 +149,7 @@ export class ModulesSelectComponent extends React.Component<Props, State> {
               >
                 {/* Using interpolated string instead of JSX because of iOS Safari
                     bug that drops the whitespace between the module code and title */}
-                {`${module.ModuleCode} ${module.ModuleTitle}`}
+                {`${module.moduleCode} ${module.title}`}
                 {module.isAdded && (
                   <div>
                     <span className="badge badge-info">Added</span>

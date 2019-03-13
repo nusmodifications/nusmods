@@ -86,15 +86,14 @@ class ContributeContainer extends React.PureComponent<Props> {
                 <React.Fragment key={semester}>
                   <h4>{config.semesterNames[semester]}</h4>
                   <div className={styles.reviewWrapper}>
-                    {moduleCondensed.map(({ ModuleCode, ModuleTitle }) => (
+                    {moduleCondensed.map(({ moduleCode, title }) => (
                       <Link
-                        key={ModuleCode}
+                        key={moduleCode}
                         className={classnames(styles.reviewButton, 'btn btn-outline-primary')}
-                        to={`${modulePage(ModuleCode, ModuleTitle)}#reviews`}
+                        to={`${modulePage(moduleCode, title)}#reviews`}
                         target="_blank"
                       >
-                        Review <span className={styles.reviewModuleCode}>{ModuleCode}</span>{' '}
-                        {ModuleTitle}
+                        Review <span className={styles.reviewModuleCode}>{moduleCode}</span> {title}
                       </Link>
                     ))}
                   </div>

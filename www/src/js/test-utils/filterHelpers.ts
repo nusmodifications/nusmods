@@ -4,13 +4,13 @@ import Filter from 'utils/filters/ModuleFilter';
 
 export function createModule(code: ModuleCode): Module {
   return {
-    ModuleCode: code,
-    ModuleTitle: 'Test Module',
-    SemesterData: [],
-    Department: 'Test Department',
-    Faculty: 'Test',
-    ModuleCredit: '4',
-    AcadYear: '16/17',
+    moduleCode: code,
+    title: 'Test Module',
+    semesterData: [],
+    department: 'Test Department',
+    faculty: 'Test',
+    moduleCredit: '4',
+    acadYear: '16/17',
   };
 }
 

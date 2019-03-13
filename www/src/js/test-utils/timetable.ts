@@ -13,15 +13,15 @@ export function createGenericLesson(
   classNo: ClassNo = '1',
 ): Lesson {
   return {
-    ModuleCode: 'GC1101',
-    ModuleTitle: 'Generic Title',
-    ClassNo: classNo,
-    LessonType: lessonType,
-    Weeks: EVERY_WEEK,
-    Venue: 'VCRm',
-    DayText: dayText,
-    StartTime: startTime,
-    EndTime: endTime,
+    moduleCode: 'GC1101',
+    title: 'Generic Title',
+    classNo,
+    lessonType,
+    weeks: EVERY_WEEK,
+    venue: 'VCRm',
+    day: dayText,
+    startTime,
+    endTime,
   };
 }
 

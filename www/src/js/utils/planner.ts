@@ -104,7 +104,7 @@ export function getModuleTitle(module: PlannerModuleInfo): string | null {
   const { moduleInfo, customInfo } = module;
   // customInfo.title is nullable, and there's no point in displaying an
   // empty string, so we can use || here
-  return (customInfo && customInfo.title) || (moduleInfo && moduleInfo.ModuleTitle) || null;
+  return (customInfo && customInfo.title) || (moduleInfo && moduleInfo.title) || null;
 }
 
 /**
@@ -117,7 +117,7 @@ export function getModuleCredit(module: PlannerModuleInfo): number | null {
   // Or operator (||) is not used because moduleCredit can be 0, which is
   // a falsey value
   if (customInfo) return customInfo.moduleCredit;
-  if (moduleInfo) return +moduleInfo.ModuleCredit;
+  if (moduleInfo) return +moduleInfo.moduleCredit;
   return null;
 }
 

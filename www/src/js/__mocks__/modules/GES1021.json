@@ -1,41 +1,41 @@
 {
-  "ModuleCode": "GES1021",
-  "ModuleTitle": "Natural Heritage of Singapore",
-  "AcadYear": "2017/2018",
-  "Department": "Biological Sciences",
-  "Faculty": "Science",
-  "ModuleDescription": "Located within one of the global centres of biodiversity, Singapore is endowed with a rich natural heritage that is impacted by expanding urbanisation. Development poses a great challenge to nature conservation and Singapore is an excellent model to study how a balance can be achieved. Students will be introduced to the country?s natural heritage, its historical, scientific and potential economic value. You will have the opportunity to explore important habitats, and to think critically about the issues of sustainable development and the nation?s responsibility to posterity and to regional and international conventions related to biodiversity conservation. Students are expected to undertake the field trips on their own and at their own time within the semester; and will be encouraged to ?self-learn?. A special website with information on the places to visit and their significance serves as a semi-interactive IT-resource. Suggested trails and what can be observed appear on the website. The students? independence and experiential learning aspects are strongly encouraged.",
-  "ModuleCredit": "4",
-  "Workload": [
+  "moduleCode": "GES1021",
+  "title": "Natural Heritage of Singapore",
+  "acadYear": "2017/2018",
+  "department": "Biological Sciences",
+  "faculty": "Science",
+  "description": "Located within one of the global centres of biodiversity, Singapore is endowed with a rich natural heritage that is impacted by expanding urbanisation. Development poses a great challenge to nature conservation and Singapore is an excellent model to study how a balance can be achieved. Students will be introduced to the country?s natural heritage, its historical, scientific and potential economic value. You will have the opportunity to explore important habitats, and to think critically about the issues of sustainable development and the nation?s responsibility to posterity and to regional and international conventions related to biodiversity conservation. Students are expected to undertake the field trips on their own and at their own time within the semester; and will be encouraged to ?self-learn?. A special website with information on the places to visit and their significance serves as a semi-interactive IT-resource. Suggested trails and what can be observed appear on the website. The students? independence and experiential learning aspects are strongly encouraged.",
+  "moduleCredit": "4",
+  "workload": [
     2,
     1,
     0,
     4,
     3
   ],
-  "Preclusion": "SSS1207",
-  "SemesterData": [
+  "preclusion": "SSS1207",
+  "semesterData": [
     {
-      "Semester": 2,
-      "ExamDate": "2018-05-07T13:00+0800",
-      "Timetable": [
+      "semester": 2,
+      "examDate": "2018-05-07T13:00+0800",
+      "timetable": [
         {
-          "ClassNo": "SL1",
-          "LessonType": "Lecture",
-          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-          "DayText": "Monday",
-          "StartTime": "1600",
-          "EndTime": "1800",
-          "Venue": "LT27"
+          "classNo": "SL1",
+          "lessonType": "Lecture",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Monday",
+          "startTime": "1600",
+          "endTime": "1800",
+          "venue": "LT27"
         },
         {
-          "ClassNo": "SL1",
-          "LessonType": "Lecture",
-          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-          "DayText": "Thursday",
-          "StartTime": "1600",
-          "EndTime": "1800",
-          "Venue": "LT27"
+          "classNo": "SL1",
+          "lessonType": "Lecture",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Thursday",
+          "startTime": "1600",
+          "endTime": "1800",
+          "venue": "LT27"
         }
       ],
       "LecturePeriods": [
@@ -44,26 +44,26 @@
       ]
     },
     {
-      "Semester": 1,
-      "ExamDate": "2017-11-29T17:00+0800",
-      "Timetable": [
+      "semester": 1,
+      "examDate": "2017-11-29T17:00+0800",
+      "timetable": [
         {
-          "ClassNo": "SL1",
-          "LessonType": "Lecture",
-          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-          "DayText": "Monday",
-          "StartTime": "1600",
-          "EndTime": "1800",
-          "Venue": "LT27"
+          "classNo": "SL1",
+          "lessonType": "Lecture",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Monday",
+          "startTime": "1600",
+          "endTime": "1800",
+          "venue": "LT27"
         },
         {
-          "ClassNo": "SL1",
-          "LessonType": "Lecture",
-          "Weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-          "DayText": "Wednesday",
-          "StartTime": "1600",
-          "EndTime": "1800",
-          "Venue": "LT27"
+          "classNo": "SL1",
+          "lessonType": "Lecture",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Wednesday",
+          "startTime": "1600",
+          "endTime": "1800",
+          "venue": "LT27"
         }
       ]
     }

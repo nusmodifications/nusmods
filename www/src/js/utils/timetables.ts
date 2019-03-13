@@ -52,8 +52,8 @@ import { getTimeAsDate } from './timify';
 import { getModuleSemesterData, getModuleTimetable } from './modules';
 import { deltas } from './array';
 
-type LessonTypeAbbrev = { [lessonType: string]: string };
-export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
+type lessonTypeAbbrev = { [lessonType: string]: string };
+export const LESSON_TYPE_ABBREV: lessonTypeAbbrev = {
   'Design Lecture': 'DLEC',
   Laboratory: 'LAB',
   Lecture: 'LEC',
@@ -91,18 +91,18 @@ export function isValidSemester(semester: Semester): boolean {
 export function randomModuleLessonConfig(lessons: ReadonlyArray<RawLesson>): ModuleLessonConfig {
   const lessonByGroups: { [lessonType: string]: ReadonlyArray<RawLesson> } = groupBy(
     lessons,
-    (lesson) => lesson.LessonType,
+    (lesson) => lesson.lessonType,
   );
 
   const lessonByGroupsByClassNo: {
     [lessonType: string]: { [classNo: string]: ReadonlyArray<RawLesson> };
-  } = mapValues(lessonByGroups, (lessonsOfSameLessonType: ReadonlyArray<RawLesson>) =>
-    groupBy(lessonsOfSameLessonType, (lesson) => lesson.ClassNo),
+  } = mapValues(lessonByGroups, (lessonsOfSamelessonType: ReadonlyArray<RawLesson>) =>
+    groupBy(lessonsOfSamelessonType, (lesson) => lesson.classNo),
   );
 
   return mapValues(
     lessonByGroupsByClassNo,
-    (group: { [classNo: string]: ReadonlyArray<RawLesson> }) => sample(group)![0].ClassNo,
+    (group: { [classNo: string]: ReadonlyArray<RawLesson> }) => sample(group)![0].classNo,
   );
 }
 
@@ -123,14 +123,14 @@ export function hydrateSemTimetableWithLessons(
         const lessons = getModuleTimetable(module, semester);
         const newLessons = lessons.filter(
           (lesson: RawLesson): boolean =>
-            lesson.LessonType === lessonType && lesson.ClassNo === classNo,
+            lesson.lessonType === lessonType && lesson.classNo === classNo,
         );
 
         const timetableLessons: Lesson[] = newLessons.map(
           (lesson: RawLesson): Lesson => ({
             ...lesson,
-            ModuleCode: moduleCode,
-            ModuleTitle: module.ModuleTitle,
+            moduleCode,
+            title: module.title,
           }),
         );
         return timetableLessons;
@@ -144,7 +144,7 @@ export function lessonsForLessonType<T extends RawLesson>(
   lessons: ReadonlyArray<T>,
   lessonType: LessonType,
 ): ReadonlyArray<T> {
-  return lessons.filter((lesson) => lesson.LessonType === lessonType);
+  return lessons.filter((lesson) => lesson.lessonType === lessonType);
 }
 
 //  Converts from timetable config format to flat array of lessons.
@@ -164,15 +164,15 @@ export function timetableLessonsArray(timetable: SemTimetableConfigWithLessons):
 //    Tuesday: [Lesson, ...],
 //  }
 export function groupLessonsByDay(lessons: ColoredLesson[]): TimetableDayFormat {
-  return groupBy(lessons, (lesson) => lesson.DayText);
+  return groupBy(lessons, (lesson) => lesson.day);
 }
 
 //  Determines if two lessons overlap:
 export function doLessonsOverlap(lesson1: Lesson, lesson2: Lesson): boolean {
   return (
-    lesson1.DayText === lesson2.DayText &&
-    lesson1.StartTime < lesson2.EndTime &&
-    lesson2.StartTime < lesson1.EndTime
+    lesson1.day === lesson2.day &&
+    lesson1.startTime < lesson2.endTime &&
+    lesson2.startTime < lesson1.endTime
   );
 }
 
@@ -189,8 +189,8 @@ export function arrangeLessonsWithinDay(lessons: ColoredLesson[]): TimetableDayA
     return rows;
   }
   const sortedLessons = lessons.sort((a, b) => {
-    const timeDiff = a.StartTime.localeCompare(b.StartTime);
-    return timeDiff !== 0 ? timeDiff : a.ClassNo.localeCompare(b.ClassNo);
+    const timeDiff = a.startTime.localeCompare(b.startTime);
+    return timeDiff !== 0 ? timeDiff : a.classNo.localeCompare(b.classNo);
   });
   sortedLessons.forEach((lesson: ColoredLesson) => {
     for (let i = 0; i < rows.length; i++) {
@@ -229,24 +229,24 @@ export function arrangeLessonsForWeek(lessons: ColoredLesson[]): TimetableArrang
 }
 
 // Determines if a Lesson on the timetable can be modifiable / dragged around.
-// Condition: There are multiple ClassNo for all the Array<Lesson> in a LessonType.
+// Condition: There are multiple ClassNo for all the Array<Lesson> in a lessonType.
 export function areOtherClassesAvailable(
   lessons: ReadonlyArray<RawLesson>,
   lessonType: LessonType,
 ): boolean {
-  const lessonTypeGroups = groupBy<RawLesson>(lessons, (lesson) => lesson.LessonType);
+  const lessonTypeGroups = groupBy<RawLesson>(lessons, (lesson) => lesson.lessonType);
   if (!lessonTypeGroups[lessonType]) {
-    // No such LessonType.
+    // No such lessonType.
     return false;
   }
-  return Object.keys(groupBy(lessonTypeGroups[lessonType], (lesson) => lesson.ClassNo)).length > 1;
+  return Object.keys(groupBy(lessonTypeGroups[lessonType], (lesson) => lesson.classNo)).length > 1;
 }
 
 // Find all exam clashes between modules in semester
 // Returns object associating exam dates with the modules clashing on those dates
 export function findExamClashes(modules: Module[], semester: Semester): ExamClashes {
   const groupedModules = groupBy(modules, (module) =>
-    get(getModuleSemesterData(module, semester), 'ExamDate'),
+    get(getModuleSemesterData(module, semester), 'examDate'),
   );
   delete groupedModules.undefined; // Remove modules without exams
   return omitBy(groupedModules, (mods) => mods.length === 1); // Remove non-clashing mods
@@ -258,7 +258,7 @@ export function isLessonAvailable(
   weekInfo: Readonly<AcadWeekInfo>,
 ): boolean {
   return consumeWeeks(
-    lesson.Weeks,
+    lesson.weeks,
     (weeks) => weeks.includes(weekInfo.num!),
     (weekRange) => {
       const end = minDate([parseISO(weekRange.end), date]);
@@ -273,16 +273,16 @@ export function isLessonAvailable(
 
 export function isLessonOngoing(lesson: Lesson, currentTime: number): boolean {
   return (
-    parseInt(lesson.StartTime, 10) <= currentTime && currentTime < parseInt(lesson.EndTime, 10)
+    parseInt(lesson.startTime, 10) <= currentTime && currentTime < parseInt(lesson.endTime, 10)
   );
 }
 
 export function getStartTimeAsDate(lesson: Lesson, date: Date = new Date()): Date {
-  return getTimeAsDate(lesson.StartTime, date);
+  return getTimeAsDate(lesson.startTime, date);
 }
 
 export function getEndTimeAsDate(lesson: Lesson, date: Date = new Date()): Date {
-  return getTimeAsDate(lesson.EndTime, date);
+  return getTimeAsDate(lesson.endTime, date);
 }
 
 /**
@@ -322,7 +322,7 @@ export function validateModuleLessons(
   const updatedLessonTypes: string[] = [];
 
   const validLessons = getModuleTimetable(module, semester);
-  const lessonsByType = groupBy(validLessons, (lesson) => lesson.LessonType);
+  const lessonsByType = groupBy(validLessons, (lesson) => lesson.lessonType);
 
   each(lessonsByType, (lessons: RawLesson[], lessonType: LessonType) => {
     const classNo = lessonConfig[lessonType];
@@ -335,8 +335,8 @@ export function validateModuleLessons(
     // - classNo is not valid anymore (ie. the class was removed)
     //
     // If a lesson type is removed, then it simply won't be copied over
-    if (!lessons.some((lesson) => lesson.ClassNo === classNo)) {
-      validatedLessonConfig[lessonType] = lessons[0].ClassNo;
+    if (!lessons.some((lesson) => lesson.classNo === classNo)) {
+      validatedLessonConfig[lessonType] = lessons[0].classNo;
       updatedLessonTypes.push(lessonType);
     } else {
       validatedLessonConfig[lessonType] = classNo;
@@ -450,21 +450,21 @@ export function isSameTimetableConfig(t1: SemTimetableConfig, t2: SemTimetableCo
 
 export function isSameLesson(l1: Lesson, l2: Lesson) {
   return (
-    l1.LessonType === l2.LessonType &&
-    l1.ClassNo === l2.ClassNo &&
-    l1.ModuleCode === l2.ModuleCode &&
-    l1.StartTime === l2.StartTime &&
-    l1.EndTime === l2.EndTime &&
-    l1.DayText === l2.DayText &&
-    isEqual(l1.Weeks, l2.Weeks)
+    l1.lessonType === l2.lessonType &&
+    l1.classNo === l2.classNo &&
+    l1.moduleCode === l2.moduleCode &&
+    l1.startTime === l2.startTime &&
+    l1.endTime === l2.endTime &&
+    l1.day === l2.day &&
+    isEqual(l1.weeks, l2.weeks)
   );
 }
 
 export function getHoverLesson(lesson: Lesson): HoverLesson {
   return {
-    classNo: lesson.ClassNo,
-    moduleCode: lesson.ModuleCode,
-    lessonType: lesson.LessonType,
+    classNo: lesson.classNo,
+    moduleCode: lesson.moduleCode,
+    lessonType: lesson.lessonType,
   };
 }
 
@@ -472,5 +472,5 @@ export function getHoverLesson(lesson: Lesson): HoverLesson {
  * Obtain a semi-unique key for a lesson
  */
 export function getLessonIdentifier(lesson: Lesson): string {
-  return `${lesson.ModuleCode}-${LESSON_TYPE_ABBREV[lesson.LessonType]}-${lesson.ClassNo}`;
+  return `${lesson.moduleCode}-${LESSON_TYPE_ABBREV[lesson.lessonType]}-${lesson.classNo}`;
 }

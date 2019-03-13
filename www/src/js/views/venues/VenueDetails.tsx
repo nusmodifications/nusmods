@@ -31,13 +31,13 @@ type Props = RouteComponentProps & {
 
 export class VenueDetailsComponent extends React.PureComponent<Props> {
   arrangedLessons() {
-    const lessons = flatMap(this.props.availability, (day) => day.Classes).map((venueLesson) => ({
+    const lessons = flatMap(this.props.availability, (day) => day.classes).map((venueLesson) => ({
       ...venueLesson,
       ModuleTitle: '',
       isModifiable: true,
     }));
 
-    const coloredLessons = colorLessonsByKey(lessons, 'ModuleCode');
+    const coloredLessons = colorLessonsByKey(lessons, 'moduleCode');
     // @ts-ignore TODO: Fix this typing
     return arrangeLessonsForWeek(coloredLessons);
   }
@@ -85,7 +85,7 @@ export class VenueDetailsComponent extends React.PureComponent<Props> {
             highlightPeriod={this.props.highlightPeriod}
             isVerticalOrientation={matchBreakpoint}
             onModifyCell={(lesson: Lesson) => {
-              history.push(modulePage(lesson.ModuleCode, lesson.ModuleTitle));
+              history.push(modulePage(lesson.moduleCode, lesson.title));
             }}
           />
         </div>

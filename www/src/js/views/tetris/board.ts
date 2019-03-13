@@ -282,17 +282,17 @@ function createLessonSquare(color: ColorIndex, row: number): ColoredLesson {
   return {
     // Fillers
     // TODO: Use existing modules?
-    ClassNo: '',
-    DayText: '',
-    Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-    LessonType: '',
-    ModuleCode: '',
-    ModuleTitle: '',
-    Venue: '',
+    classNo: '',
+    day: '',
+    weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+    lessonType: '',
+    moduleCode: '',
+    title: '',
+    venue: '',
 
     // Variable props
-    StartTime: convertIndexToTime(INITIAL_ROW_INDEX + row),
-    EndTime: convertIndexToTime(INITIAL_ROW_INDEX + row + 1),
+    startTime: convertIndexToTime(INITIAL_ROW_INDEX + row),
+    endTime: convertIndexToTime(INITIAL_ROW_INDEX + row + 1),
     colorIndex: color,
   };
 }

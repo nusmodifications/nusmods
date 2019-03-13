@@ -33,7 +33,7 @@ function isModuleOnTimetable(
   timetables: TimetableConfig,
   module: Module,
 ): boolean {
-  return !!get(timetables, [String(semester), module.ModuleCode]);
+  return !!get(timetables, [String(semester), module.moduleCode]);
 }
 
 export class AddModuleDropdownComponent extends React.PureComponent<Props, State> {
@@ -56,10 +56,10 @@ export class AddModuleDropdownComponent extends React.PureComponent<Props, State
     const { module, timetables } = this.props;
 
     if (isModuleOnTimetable(semester, timetables, module)) {
-      this.props.removeModule(semester, module.ModuleCode);
+      this.props.removeModule(semester, module.moduleCode);
     } else {
       this.setState({ loading: semester });
-      this.props.addModule(semester, module.ModuleCode);
+      this.props.addModule(semester, module.moduleCode);
     }
   }
 
@@ -91,9 +91,9 @@ export class AddModuleDropdownComponent extends React.PureComponent<Props, State
   render() {
     const { block, className, module } = this.props;
 
-    const defaultSemester = getFirstAvailableSemester(module.SemesterData);
+    const defaultSemester = getFirstAvailableSemester(module.semesterData);
     const otherSemesters = this.otherSemesters(defaultSemester);
-    const id = `add-to-timetable-${module.ModuleCode}`;
+    const id = `add-to-timetable-${module.moduleCode}`;
 
     /* eslint-disable jsx-a11y/label-has-for */
     return (

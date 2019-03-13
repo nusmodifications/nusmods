@@ -29,12 +29,12 @@ export default class ModuleSemesterInfo extends React.Component<Props, State> {
   };
 
   selectedSemester(): SemesterDataCondensed | undefined {
-    return this.props.semesters.find((data) => data.Semester === this.state.selected);
+    return this.props.semesters.find((data) => data.semester === this.state.selected);
   }
 
   render() {
     const semester = this.selectedSemester();
-    const semesters = this.props.semesters.map((data) => data.Semester);
+    const semesters = this.props.semesters.map((data) => data.semester);
 
     return (
       <div className="module-semester-container">
@@ -52,13 +52,13 @@ export default class ModuleSemesterInfo extends React.Component<Props, State> {
             <section className="module-exam">
               <h4>Exam</h4>
               <p>
-                {formatExamDate(semester.ExamDate)}{' '}
-                {semester.ExamDuration && `/ ${semester.ExamDuration / 60} hrs`}
+                {formatExamDate(semester.examDate)}{' '}
+                {semester.examDuration && `/ ${semester.examDuration / 60} hrs`}
               </p>
 
               <ModuleExamClash
-                semester={semester.Semester}
-                examDate={semester.ExamDate}
+                semester={semester.semester}
+                examDate={semester.examDate}
                 moduleCode={this.props.moduleCode}
               />
             </section>

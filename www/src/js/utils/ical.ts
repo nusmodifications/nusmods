@@ -42,7 +42,7 @@ function addLessonOffset(date: Date, hourOffset: number): Date {
 
 export function iCalEventForExam(module: Module, semester: Semester): EventOption | null {
   // TODO: Account for ExamDuration field
-  const examDateString = _.get(getModuleSemesterData(module, semester), 'ExamDate');
+  const examDateString = _.get(getModuleSemesterData(module, semester), 'examDate');
   if (!examDateString) return null;
   const examDate = new Date(examDateString);
   if (Number.isNaN(examDate.getTime())) return null;
@@ -50,8 +50,8 @@ export function iCalEventForExam(module: Module, semester: Semester): EventOptio
   return {
     start: examDate,
     end: new Date(examDate.valueOf() + EXAM_DURATION_MS),
-    summary: `${module.ModuleCode} Exam`,
-    description: module.ModuleTitle,
+    summary: `${module.moduleCode} Exam`,
+    description: module.title,
   };
 }
 
@@ -84,8 +84,8 @@ export function calculateNumericWeek(
   weeks: number[],
   firstDayOfSchool: Date,
 ): EventOption {
-  const lessonDay = addDays(firstDayOfSchool, dayIndex(lesson.DayText));
-  const { start, end } = calculateStartEnd(lessonDay, lesson.StartTime, lesson.EndTime);
+  const lessonDay = addDays(firstDayOfSchool, dayIndex(lesson.day));
+  const { start, end } = calculateStartEnd(lessonDay, lesson.startTime, lesson.endTime);
   const excludedWeeks = _.difference([RECESS_WEEK, ...ALL_WEEKS], weeks);
 
   return {
@@ -94,10 +94,10 @@ export function calculateNumericWeek(
     repeating: {
       freq: 'WEEKLY',
       count: NUM_WEEKS_IN_A_SEM,
-      byDay: [lesson.DayText.slice(0, 2)],
+      byDay: [lesson.day.slice(0, 2)],
       exclude: [
         ...excludedWeeks.map((week) => datesForAcademicWeeks(start, week)),
-        ...holidaysForYear(getTimeHour(lesson.StartTime)),
+        ...holidaysForYear(getTimeHour(lesson.startTime)),
       ],
     },
   };
@@ -110,7 +110,7 @@ export function calculateWeekRange(
 ): EventOption {
   const rangeStart = parseDate(weekRange.start);
   const rangeEnd = parseDate(weekRange.end);
-  const { start, end } = calculateStartEnd(rangeStart, lesson.StartTime, lesson.EndTime);
+  const { start, end } = calculateStartEnd(rangeStart, lesson.startTime, lesson.endTime);
 
   const interval = weekRange.weekInterval || 1;
   const exclusions = [];
@@ -122,13 +122,13 @@ export function calculateWeekRange(
       current = addWeeks(current, interval), weekNumber += interval
     ) {
       if (!weekRange.weeks.includes(weekNumber)) {
-        const lessonTime = calculateStartEnd(current, lesson.StartTime, lesson.EndTime);
+        const lessonTime = calculateStartEnd(current, lesson.startTime, lesson.endTime);
         exclusions.push(lessonTime.start);
       }
     }
   }
 
-  const lastLesson = calculateStartEnd(rangeEnd, lesson.StartTime, lesson.EndTime);
+  const lastLesson = calculateStartEnd(rangeEnd, lesson.startTime, lesson.endTime);
 
   return {
     start,
@@ -137,8 +137,8 @@ export function calculateWeekRange(
       interval,
       freq: 'WEEKLY',
       until: lastLesson.end,
-      byDay: [lesson.DayText.slice(0, 2)],
-      exclude: [...exclusions, ...holidaysForYear(getTimeHour(lesson.StartTime))],
+      byDay: [lesson.day.slice(0, 2)],
+      exclude: [...exclusions, ...holidaysForYear(getTimeHour(lesson.startTime))],
     },
   };
 }
@@ -154,16 +154,16 @@ export function iCalEventForLesson(
   firstDayOfSchool: Date,
 ): EventOption {
   const event = consumeWeeks(
-    lesson.Weeks,
+    lesson.weeks,
     (weeks) => calculateNumericWeek(lesson, semester, weeks, firstDayOfSchool),
     (weeks) => calculateWeekRange(lesson, semester, weeks),
   );
 
   return {
     ...event,
-    summary: `${module.ModuleCode} ${lesson.LessonType}`,
-    description: `${module.ModuleTitle}\n${lesson.LessonType} Group ${lesson.ClassNo}`,
-    location: lesson.Venue,
+    summary: `${module.moduleCode} ${lesson.lessonType}`,
+    description: `${module.title}\n${lesson.lessonType} Group ${lesson.classNo}`,
+    location: lesson.venue,
   };
 }
 

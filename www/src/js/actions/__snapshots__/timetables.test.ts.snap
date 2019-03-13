@@ -51,15 +51,16 @@ exports[`modifyLesson should return lesson payload 1`] = `
 Object {
   "payload": Object {
     "activeLesson": Object {
-      "ClassNo": "1",
-      "DayText": "Wednesday",
-      "EndTime": "1200",
-      "LessonType": "Lecture",
-      "ModuleCode": "CS1010S",
-      "ModuleTitle": "Programming Methodology",
-      "StartTime": "1000",
-      "Venue": "LT26",
-      "Weeks": Array [
+      "classNo": "1",
+      "colorIndex": 0,
+      "day": "Wednesday",
+      "endTime": "1200",
+      "lessonType": "Lecture",
+      "moduleCode": "CS1010S",
+      "startTime": "1000",
+      "title": "Programming Methodology",
+      "venue": "LT26",
+      "weeks": Array [
         1,
         2,
         3,
@@ -74,7 +75,6 @@ Object {
         12,
         13,
       ],
-      "colorIndex": 0,
     },
   },
   "type": "MODIFY_LESSON",

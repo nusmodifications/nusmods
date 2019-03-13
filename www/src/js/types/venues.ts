@@ -12,15 +12,15 @@ export type Availability = { [lessonTime: string]: VenueOccupiedState }; // E.g.
 
 // Raw lessons obtained from venue info API includes ModuleCode and without Venue
 export type VenueLesson = Omit<RawLesson, 'Venue'> & {
-  ModuleCode: ModuleCode;
+  moduleCode: ModuleCode;
 };
 
 // A venue's availability info for one day
 // E.g. { "Day": "Monday", "Classes": [...], "Availability": {...} }
 export type DayAvailability = {
-  readonly Day: DayText;
-  readonly Classes: VenueLesson[];
-  readonly Availability: Availability;
+  readonly day: DayText;
+  readonly classes: VenueLesson[];
+  readonly availability: Availability;
 };
 
 // Describes venueInformation.json

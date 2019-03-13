@@ -7,15 +7,7 @@ import {
   TimetableDayArrangement,
   TimetableDayFormat,
 } from 'types/timetables';
-import {
-  ClassNo,
-  ColoredLesson,
-  LessonType,
-  ModuleCode,
-  RawLesson,
-  Semester,
-  Weeks,
-} from 'types/modules';
+import { ColoredLesson, LessonType, RawLesson, Semester, Weeks } from 'types/modules';
 import { ModulesMap } from 'reducers/moduleBank';
 
 import _ from 'lodash';
@@ -88,13 +80,8 @@ test('randomModuleLessonConfig should return a random lesson config', () => {
 
 test('hydrateSemTimetableWithLessons should replace ClassNo with lessons', () => {
   const sem: Semester = 1;
-  const moduleCode: ModuleCode = 'CS1010S';
-  const modules: ModulesMap = {
-    [moduleCode]: CS1010S,
-  };
-  const tutorialClassNo: ClassNo = '8';
-  const recitationClassNo: ClassNo = '4';
-  const lectureClassNo: ClassNo = '1';
+  const moduleCode = 'CS1010S';
+  const modules: ModulesMap = { [moduleCode]: CS1010S };
   const config: SemTimetableConfig = {
     [moduleCode]: {
       Tutorial: '8',
@@ -102,28 +89,29 @@ test('hydrateSemTimetableWithLessons should replace ClassNo with lessons', () =>
       Lecture: '1',
     },
   };
+
   const configWithLessons: SemTimetableConfigWithLessons = hydrateSemTimetableWithLessons(
     config,
     modules,
     sem,
   );
-  expect(configWithLessons[moduleCode].Tutorial[0].ClassNo).toBe(tutorialClassNo);
-  expect(configWithLessons[moduleCode].Recitation[0].ClassNo).toBe(recitationClassNo);
-  expect(configWithLessons[moduleCode].Lecture[0].ClassNo).toBe(lectureClassNo);
+  expect(configWithLessons[moduleCode].Tutorial[0].classNo).toBe('8');
+  expect(configWithLessons[moduleCode].Recitation[0].classNo).toBe('4');
+  expect(configWithLessons[moduleCode].Lecture[0].classNo).toBe('1');
 });
 
-test('lessonsForLessonType should return all lessons belonging to a particular LessonType', () => {
+test('lessonsForLessonType should return all lessons belonging to a particular lessonType', () => {
   const sem: Semester = 1;
   const moduleTimetable = getModuleTimetable(CS1010S, sem);
   const lessonType = 'Tutorial';
   const lessons = lessonsForLessonType(moduleTimetable, lessonType);
   expect(lessons.length > 0).toBe(true);
   lessons.forEach((lesson: RawLesson) => {
-    expect(lesson.LessonType).toBe(lessonType);
+    expect(lesson.lessonType).toBe(lessonType);
   });
 });
 
-test('lessonsForLessonType should return empty array if no such LessonType is present', () => {
+test('lessonsForLessonType should return empty array if no such lessonType is present', () => {
   const sem: Semester = 1;
   const moduleTimetable = getModuleTimetable(CS1010S, sem);
   const lessons = lessonsForLessonType(moduleTimetable, 'Dota Session');
@@ -366,7 +354,7 @@ test('areOtherClassesAvailable', () => {
   ]);
   expect(areOtherClassesAvailable(lessons2, 'Lecture')).toBe(false);
 
-  // Lessons belong to different LessonType.
+  // Lessons belong to different lessonType.
   const lessons3: RawLesson[] = _.shuffle([
     createGenericLesson('Monday', '1000', '1200', 'Lecture', '1'),
     createGenericLesson('Monday', '1600', '1800', 'Lecture', '1'),
@@ -380,7 +368,7 @@ test('areOtherClassesAvailable', () => {
 test('findExamClashes should return non-empty object if exams clash', () => {
   const sem: Semester = 1;
   const examClashes = findExamClashes([CS1010S, CS4243 as any, CS3216], sem);
-  const examDate = _.get(getModuleSemesterData(CS1010S, sem), 'ExamDate');
+  const examDate = _.get(getModuleSemesterData(CS1010S, sem), 'examDate');
   if (!examDate) throw new Error('Cannot find ExamDate');
   expect(examClashes).toEqual({ [examDate]: [CS1010S, CS4243] });
 });
@@ -588,7 +576,7 @@ describe(formatNumericWeeks, () => {
 describe(isLessonAvailable, () => {
   function testLessonAvailable(weeks: Weeks, date: Date) {
     return isLessonAvailable(
-      { ...createGenericLesson(), Weeks: weeks },
+      { ...createGenericLesson(), weeks },
       date,
       NUSModerator.academicCalendar.getAcadWeekInfo(date),
     );

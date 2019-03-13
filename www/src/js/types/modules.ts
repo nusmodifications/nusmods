@@ -84,52 +84,52 @@ export const WORKLOAD_COMPONENTS: WorkloadComponent[] = [
 // RawLesson is a lesson time slot obtained from the API.
 // Usually ModuleCode and ModuleTitle has to be injected in before using in the timetable.
 export type RawLesson = Readonly<{
-  ClassNo: ClassNo;
-  DayText: DayText;
-  EndTime: EndTime;
-  LessonType: LessonType;
-  StartTime: StartTime;
-  Venue: Venue;
-  Weeks: Weeks;
+  classNo: ClassNo;
+  day: DayText;
+  startTime: StartTime;
+  endTime: EndTime;
+  lessonType: LessonType;
+  venue: Venue;
+  weeks: Weeks;
 }>;
 
 // Semester-specific information of a module.
 export type SemesterData = {
-  Semester: Semester;
-  Timetable: ReadonlyArray<RawLesson>;
+  semester: Semester;
+  timetable: ReadonlyArray<RawLesson>;
 
   // Exam
-  ExamDate?: string;
-  ExamDuration?: number;
+  examDate?: string;
+  examDuration?: number;
 };
 
 // Information for a module for a particular academic year.
 export type Module = {
-  AcadYear: AcadYear;
+  acadYear: AcadYear;
 
   // Basic info
-  ModuleCode: ModuleCode;
-  ModuleTitle: ModuleTitle;
+  moduleCode: ModuleCode;
+  title: ModuleTitle;
 
   // Additional info
-  ModuleDescription?: string;
-  ModuleCredit: string;
-  Department: Department;
-  Faculty: Faculty;
-  Workload?: Workload;
-  Aliases?: ModuleCode[];
+  description?: string;
+  moduleCredit: string;
+  department: Department;
+  faculty: Faculty;
+  workload?: Workload;
+  aliases?: ModuleCode[];
 
   // Requsites
-  Prerequisite?: string;
-  Corequisite?: string;
-  Preclusion?: string;
+  prerequisite?: string;
+  corequisite?: string;
+  preclusion?: string;
 
   // Semester data
-  SemesterData: ReadonlyArray<SemesterData>;
+  semesterData: ReadonlyArray<SemesterData>;
 
   // Requisites
-  PrereqTree?: PrereqTree;
-  FulfillRequirements?: ReadonlyArray<ModuleCode>;
+  prereqTree?: PrereqTree;
+  fulfillRequirements?: ReadonlyArray<ModuleCode>;
 };
 
 export type ModuleWithColor = Module & {
@@ -139,46 +139,46 @@ export type ModuleWithColor = Module & {
 
 // This format is returned from the module list endpoint.
 export type ModuleCondensed = Readonly<{
-  ModuleCode: ModuleCode;
-  ModuleTitle: ModuleTitle;
-  Semesters: ReadonlyArray<number>;
+  moduleCode: ModuleCode;
+  title: ModuleTitle;
+  semesters: ReadonlyArray<number>;
 }>;
 
 // This format is returned from the module information endpoint
 export type SemesterDataCondensed = Readonly<{
-  Semester: Semester;
-  ExamDate?: string;
-  ExamDuration?: number;
+  semester: Semester;
+  examDate?: string;
+  examDuration?: number;
   // The full timetable is not provided to reduce space
 }>;
 
 // Subset of Module object that contains the properties that are
 // needed for module search
 export type SearchableModule = {
-  ModuleCode: ModuleCode;
-  ModuleTitle: ModuleTitle;
-  ModuleDescription?: string;
+  moduleCode: ModuleCode;
+  title: ModuleTitle;
+  description?: string;
 };
 
 export type ModuleInformation = Readonly<{
   // Basic info
-  ModuleCode: ModuleCode;
-  ModuleTitle: ModuleTitle;
+  moduleCode: ModuleCode;
+  title: ModuleTitle;
 
   // Additional info
-  ModuleDescription?: string;
-  ModuleCredit: string;
-  Department: Department;
-  Faculty: Faculty;
-  Workload?: Workload;
+  description?: string;
+  moduleCredit: string;
+  department: Department;
+  faculty: Faculty;
+  workload?: Workload;
 
   // Requsites
-  Prerequisite?: string;
-  Corequisite?: string;
-  Preclusion?: string;
+  prerequisite?: string;
+  corequisite?: string;
+  preclusion?: string;
 
   // Condensed semester info
-  SemesterData: ReadonlyArray<SemesterDataCondensed>;
+  semesterData: ReadonlyArray<SemesterDataCondensed>;
 
   // Requisite tree is not returned to save space
 }>;
@@ -186,8 +186,8 @@ export type ModuleInformation = Readonly<{
 // RawLessons obtained from API does not include ModuleCode and ModuleTitle by default.
 // They have to be injected in before using in the timetable.
 export type Lesson = RawLesson & {
-  ModuleCode: ModuleCode;
-  ModuleTitle: ModuleTitle;
+  moduleCode: ModuleCode;
+  title: ModuleTitle;
 };
 
 export type ColoredLesson = Lesson & {

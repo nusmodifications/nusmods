@@ -1,20 +1,21 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
+import { ColoredLesson } from 'types/modules';
 import { HoverLesson } from 'types/timetables';
 import { EVERY_WEEK } from 'test-utils/timetable';
 import TimetableCell from './TimetableCell';
 
-const DEFAULT_LESSON = {
-  ModuleCode: 'CS1010',
-  ModuleTitle: 'Intro',
-  ClassNo: '1',
-  LessonType: 'Lecture',
-  Weeks: EVERY_WEEK,
-  DayText: 'Wednesday',
-  StartTime: '1000',
-  EndTime: '1200',
-  Venue: 'LT26',
+const DEFAULT_LESSON: ColoredLesson = {
+  moduleCode: 'CS1010',
+  title: 'Intro',
+  classNo: '1',
+  lessonType: 'Lecture',
+  weeks: EVERY_WEEK,
+  day: 'Wednesday',
+  startTime: '1000',
+  endTime: '1200',
+  venue: 'LT26',
   colorIndex: 1,
 };
 
