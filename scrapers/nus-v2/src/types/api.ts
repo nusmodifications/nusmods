@@ -42,11 +42,10 @@ export type ModuleInfo = Readonly<{
   CourseOfferNumber: string;
   Preclusion: string;
 
-  // Some system uses PrintCatalog, others use CatalogPrint
-  PrintCatalog: string;
+  PrintCatalog: 'Y' | 'N';
+  YearLong: 'Y' | 'N';
 
   CourseTitle: string;
-  YearLong: string;
   CoRequisite: string;
   CatalogNumber: string;
   Description: string;
