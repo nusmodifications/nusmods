@@ -174,7 +174,7 @@ export default class ModulePageContent extends React.Component<Props, State> {
                       </h3>
                       <p>
                         {formatExamDate(semester.examDate)}{' '}
-                        {semester.examDuration && `/ ${semester.examDuration / 60} hrs`}
+                        {semester.examDuration && `${BULLET} ${semester.examDuration / 60} hrs`}
                       </p>
 
                       <ModuleExamClash

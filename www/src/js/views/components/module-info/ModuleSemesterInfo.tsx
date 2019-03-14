@@ -3,6 +3,7 @@ import * as React from 'react';
 import { ModuleCode, Semester, SemesterDataCondensed } from 'types/modules';
 
 import { getFirstAvailableSemester, formatExamDate } from 'utils/modules';
+import { BULLET } from 'utils/react';
 import SemesterPicker from './SemesterPicker';
 import ModuleExamClash from './ModuleExamClash';
 
@@ -53,7 +54,7 @@ export default class ModuleSemesterInfo extends React.Component<Props, State> {
               <h4>Exam</h4>
               <p>
                 {formatExamDate(semester.examDate)}{' '}
-                {semester.examDuration && `/ ${semester.examDuration / 60} hrs`}
+                {semester.examDuration && `${BULLET} ${semester.examDuration / 60} hrs`}
               </p>
 
               <ModuleExamClash
