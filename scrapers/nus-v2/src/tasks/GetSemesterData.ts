@@ -50,27 +50,21 @@ export function cleanModuleInfo(module: SemesterModule) {
   let cleanedModule = module;
 
   // Title case module title if it is all uppercase
-  if (cleanedModule.ModuleTitle === cleanedModule.ModuleTitle.toUpperCase()) {
-    cleanedModule.ModuleTitle = titleize(cleanedModule.ModuleTitle);
+  if (cleanedModule.title === cleanedModule.title.toUpperCase()) {
+    cleanedModule.title = titleize(cleanedModule.title);
   }
 
   // Remove empty values like 'nil' and empty strings for keys that allow them
   // to be nullable
   cleanedModule = removeEmptyValues(cleanedModule, [
-    'Workload',
-    'Prerequisite',
-    'Corequisite',
-    'Preclusion',
+    'workload',
+    'prerequisite',
+    'corequisite',
+    'preclusion',
   ]);
 
   // Remove whitespace from some string values
-  trimValues(cleanedModule, [
-    'ModuleTitle',
-    'ModuleDescription',
-    'Prerequisite',
-    'Corequisite',
-    'Preclusion',
-  ]);
+  trimValues(cleanedModule, ['title', 'description', 'prerequisite', 'corequisite', 'preclusion']);
 
   return cleanedModule;
 }
@@ -125,17 +119,17 @@ const mapModuleInfo = (
   // We map department from our department list because
   // AcademicOrganisation.Description is empty for some reason
   return {
-    AcadYear,
-    Preclusion,
-    ModuleDescription: Description,
-    ModuleTitle: CourseTitle,
-    Department: departmentMap[AcademicOrganisation.Code],
-    Faculty: facultyMap[AcademicGroup.Code],
-    Workload: parseWorkload(WorkLoadHours),
-    Prerequisite: PreRequisite,
-    Corequisite: CoRequisite,
-    ModuleCredit: ModularCredit,
-    ModuleCode: Subject + CatalogNumber,
+    acadYear: AcadYear,
+    preclusion: Preclusion,
+    description: Description,
+    title: CourseTitle,
+    department: departmentMap[AcademicOrganisation.Code],
+    faculty: facultyMap[AcademicGroup.Code],
+    workload: parseWorkload(WorkLoadHours),
+    prerequisite: PreRequisite,
+    corequisite: CoRequisite,
+    moduleCredit: ModularCredit,
+    moduleCode: Subject + CatalogNumber,
   };
 };
 
@@ -223,21 +217,21 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
       }
 
       const examInfo = exams[moduleCode] || {};
-      const SemesterData = {
-        Semester: semester,
-        Timetable: timetable,
+      const semesterData = {
+        semester,
+        timetable,
         ...examInfo,
       };
 
       // Map module info to the shape expected by our frontend and clean up
       // the data by removing nil fields and fixing data issues
       const rawModule = mapModuleInfo(moduleInfo, departmentMap, facultyMap);
-      const Module = cleanModuleInfo(rawModule);
+      const module = cleanModuleInfo(rawModule);
 
       semesterModuleData.push({
-        Module,
-        SemesterData,
-        ModuleCode: moduleCode,
+        module,
+        semesterData,
+        moduleCode,
       });
     });
 
@@ -255,7 +249,7 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
     // Save the merged semester data to disk
     await Promise.all(
       semesterModuleData.map((semesterData) =>
-        this.io.semesterData(this.semester, semesterData.ModuleCode, semesterData.SemesterData),
+        this.io.semesterData(this.semester, semesterData.moduleCode, semesterData.semesterData),
       ),
     );
 

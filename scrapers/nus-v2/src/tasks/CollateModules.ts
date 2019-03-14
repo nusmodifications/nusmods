@@ -47,13 +47,13 @@ export function combineModules(
   // 1. Iterate over each module
   for (const semesterModules of semesters) {
     for (const semesterModule of semesterModules) {
-      const moduleCode = semesterModule.ModuleCode;
+      const { moduleCode } = semesterModule;
 
       // 2. Create the merged module data
       const module = {
-        ...semesterModule.Module,
-        Aliases: aliases[moduleCode],
-        SemesterData: [semesterModule.SemesterData],
+        ...semesterModule.module,
+        aliases: aliases[moduleCode],
+        semesterData: [semesterModule.semesterData],
       };
 
       // 3. On rare occasion the module data can change between semesters,
@@ -61,7 +61,7 @@ export function combineModules(
       const existingData = modules[moduleCode];
       if (existingData) {
         const left = omit(existingData, ['SemesterData', 'Aliases']);
-        const right = semesterModule.Module;
+        const right = semesterModule.module;
 
         if (!isEqual(left, right)) {
           logger.warn(
@@ -76,7 +76,7 @@ export function combineModules(
         // 4. Always use the latest semester's data. In case the two semester's data
         //    diverge we trust the latest semester's data to be canonical as most
         //    changes are additive, eg. adding more prereq options
-        module.SemesterData.unshift(...existingData.SemesterData);
+        module.semesterData.unshift(...existingData.semesterData);
       }
 
       modules[moduleCode] = module;
@@ -87,38 +87,38 @@ export function combineModules(
 }
 
 const getModuleCondensed = (module: ModuleWithoutTree): ModuleCondensed => ({
-  ModuleCode: module.ModuleCode,
-  ModuleTitle: module.ModuleTitle,
-  Semesters: module.SemesterData.map((semester) => semester.Semester),
+  moduleCode: module.moduleCode,
+  title: module.title,
+  semesters: module.semesterData.map((semester) => semester.semester),
 });
 
 // Avoid using _.pick here because it is not type safe
 /* eslint-disable no-shadow */
 const getModuleInformation = ({
-  ModuleCode,
-  ModuleTitle,
-  ModuleDescription,
-  ModuleCredit,
-  Department,
-  Faculty,
-  Workload,
-  Prerequisite,
-  Preclusion,
-  SemesterData,
+  moduleCode,
+  title,
+  description,
+  moduleCredit,
+  department,
+  faculty,
+  workload,
+  prerequisite,
+  preclusion,
+  semesterData,
 }: ModuleWithoutTree): ModuleInformation => ({
-  ModuleCode,
-  ModuleTitle,
-  ModuleDescription,
-  ModuleCredit,
-  Department,
-  Faculty,
-  Workload,
-  Prerequisite,
-  Preclusion,
-  SemesterData: SemesterData.map(({ Semester, ExamDate, ExamDuration }) => ({
-    Semester,
-    ExamDate,
-    ExamDuration,
+  moduleCode,
+  title,
+  description,
+  moduleCredit,
+  department,
+  faculty,
+  workload,
+  prerequisite,
+  preclusion,
+  semesterData: semesterData.map(({ semester, examDate, examDuration }) => ({
+    semester,
+    examDate,
+    examDuration,
   })),
 });
 /* eslint-enable */
@@ -165,7 +165,7 @@ export default class CollateModules extends BaseTask implements Task<Input, Outp
     this.logger.info(`Collated ${modules.length} modules`);
 
     // Save final combined module to their individual files
-    await Promise.all(modules.map((module) => this.io.module(module.ModuleCode, module)));
+    await Promise.all(modules.map((module) => this.io.module(module.moduleCode, module)));
 
     // Save condensed versions of the same information for searching
     const moduleCondensed = modules.map(getModuleCondensed);

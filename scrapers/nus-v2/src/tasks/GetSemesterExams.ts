@@ -24,8 +24,8 @@ export function mapExamInfo(moduleExam: ModuleExam): ExamInfo {
   const date = parse(`${exam_date} ${start_time} +08:00`, 'yyyy-MM-dd HH:mm XXX', new Date());
 
   return {
-    ExamDate: date.toISOString(),
-    ExamDuration: duration,
+    examDate: date.toISOString(),
+    examDuration: duration,
   };
   /* eslint-enable */
 }

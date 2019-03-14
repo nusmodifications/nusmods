@@ -17,29 +17,29 @@ import { union } from '../utils/set';
  */
 export function extractVenueAvailability(timetable: LessonWithModuleCode[]) {
   // 1. Only include lessons that actually have a venue
-  const filteredLessons = timetable.filter((lesson) => lesson.Venue);
+  const filteredLessons = timetable.filter((lesson) => lesson.venue);
 
   // 2. Map lessons to the venue they're in
-  const groupByVenue = groupBy(filteredLessons, (lesson) => lesson.Venue);
+  const groupByVenue = groupBy(filteredLessons, (lesson) => lesson.venue);
 
   return mapValues(groupByVenue, (venueLessons: LessonWithModuleCode[]) => {
     // 3. Remove the Venue key and map them again to the day of the lesson
-    const lessonWithoutVenue: VenueLesson[] = venueLessons.map(({ Venue, ...lesson }) => lesson);
-    const groupByDay = groupBy(lessonWithoutVenue, (lesson) => lesson.DayText);
+    const lessonWithoutVenue: VenueLesson[] = venueLessons.map(({ venue, ...lesson }) => lesson);
+    const groupByDay = groupBy(lessonWithoutVenue, (lesson) => lesson.day);
 
-    return map(groupByDay, (Classes: VenueLesson[], Day: string) => {
+    return map(groupByDay, (classes: VenueLesson[], day: string) => {
       // 4. Mark time between lesson start and end as occupied
       const availability: Availability = {};
-      for (const lesson of Classes) {
-        getTimeRange(lesson.StartTime, lesson.EndTime).forEach((time) => {
+      for (const lesson of classes) {
+        getTimeRange(lesson.startTime, lesson.endTime).forEach((time) => {
           availability[time] = OCCUPIED;
         });
       }
 
       return {
-        Day,
-        Classes,
-        Availability: availability,
+        day,
+        classes,
+        availability,
       };
     });
   });
@@ -91,10 +91,10 @@ export default class CollateVenues extends BaseTask implements Task<Input, Outpu
 
     // Insert module code and flatten lessons
     const venueLessons: LessonWithModuleCode[] = flatMap(input, (module) =>
-      module.SemesterData.Timetable.map(
+      module.semesterData.timetable.map(
         (lesson: RawLesson): LessonWithModuleCode => ({
           ...lesson,
-          ModuleCode: module.ModuleCode,
+          moduleCode: module.moduleCode,
         }),
       ),
     );
@@ -104,15 +104,15 @@ export default class CollateVenues extends BaseTask implements Task<Input, Outpu
     // Get a mapping of module code to module title to help with module aliasing
     const moduleCodeToTitle: { [moduleCode: string]: ModuleTitle } = {};
     input.forEach((module) => {
-      moduleCodeToTitle[module.ModuleCode] = module.Module.ModuleTitle;
+      moduleCodeToTitle[module.moduleCode] = module.module.title;
     });
 
     // Merge dual-coded modules and extract the aliases generated for use later
     const allAliases: ModuleAliases = {};
     for (const venue of values(venues)) {
       for (const availability of venue) {
-        const { lessons, aliases } = mergeDualCodedModules(availability.Classes);
-        availability.Classes = lessons;
+        const { lessons, aliases } = mergeDualCodedModules(availability.classes);
+        availability.classes = lessons;
 
         // Merge the alias mappings
         for (const [moduleCode, alias] of entries(aliases)) {
