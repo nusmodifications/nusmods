@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import _, { isEmpty } from 'lodash';
+import _ from 'lodash';
 
 import { ModulesMap } from 'reducers/moduleBank';
 import { ColorMapping, HORIZONTAL, TimetableOrientation } from 'types/reducers';
@@ -46,11 +46,9 @@ import {
 } from 'utils/timetables';
 import { resetScrollPosition } from 'utils/react';
 import { State as StoreState } from 'reducers';
-import config from 'config';
 import ModulesSelectContainer from 'views/timetable/ModulesSelectContainer';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
-import NoLessonWarning from 'views/timetable/NoLessonWarning';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
@@ -336,8 +334,6 @@ class TimetableContent extends React.Component<Props, State> {
 
     const isVerticalOrientation = timetableOrientation !== HORIZONTAL;
     const isShowingTitle = !isVerticalOrientation && showTitle;
-    const showNoLessonWarning =
-      !config.timetableAvailable.includes(semester) && isEmpty(arrangedLessonsWithModifiableFlag);
     const addedModules = this.addedModules();
 
     return (
@@ -383,7 +379,6 @@ class TimetableContent extends React.Component<Props, State> {
                   showTitle={isShowingTitle}
                   onModifyCell={this.modifyCell}
                 />
-                {showNoLessonWarning && <NoLessonWarning />}
               </div>
             )}
           </div>

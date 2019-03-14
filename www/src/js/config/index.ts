@@ -34,7 +34,6 @@ export type Config = {
 
   semesterNames: { [semester: string]: string };
   shortSemesterNames: { [semester: string]: string };
-  timetableAvailable: Semester[];
   archiveYears: string[];
 
   defaultPreferences: {
