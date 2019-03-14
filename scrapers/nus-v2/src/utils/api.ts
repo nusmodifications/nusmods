@@ -3,7 +3,7 @@
  */
 
 import { Semester } from '../types/modules';
-import { Cache } from '../services/io';
+import { Cache } from '../types/persist';
 import rootLogger, { Logger } from '../services/logger';
 
 /**

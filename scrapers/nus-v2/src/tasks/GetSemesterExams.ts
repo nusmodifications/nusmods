@@ -6,7 +6,7 @@ import { ModuleExam } from '../types/api';
 import { ExamInfo, ExamInfoMap } from '../types/mapper';
 import { Semester } from '../types/modules';
 import { Task } from '../types/tasks';
-import { Cache } from '../services/io';
+import { Cache } from '../types/persist';
 
 import BaseTask from './BaseTask';
 import config from '../config';

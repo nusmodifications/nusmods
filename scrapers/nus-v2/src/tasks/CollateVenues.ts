@@ -1,10 +1,10 @@
-import { map, entries, flatMap, groupBy, mapValues, values } from 'lodash';
+import { entries, flatMap, groupBy, map, mapValues, values } from 'lodash';
 
 import { Task } from '../types/tasks';
 import { Aliases, ModuleTitle, RawLesson, Semester } from '../types/modules';
 import { LessonWithModuleCode, ModuleAliases, SemesterModuleData } from '../types/mapper';
-import { Availability, VenueInfo, VenueLesson, OCCUPIED } from '../types/venues';
-import { Cache } from '../services/io';
+import { Availability, OCCUPIED, VenueInfo, VenueLesson } from '../types/venues';
+import { Cache } from '../types/persist';
 
 import BaseTask from './BaseTask';
 import config from '../config';

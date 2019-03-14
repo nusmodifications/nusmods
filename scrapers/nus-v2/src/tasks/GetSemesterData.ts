@@ -10,7 +10,7 @@ import {
 } from '../types/mapper';
 import { Semester, Workload } from '../types/modules';
 import { Task } from '../types/tasks';
-import { Cache } from '../services/io';
+import { Cache } from '../types/persist';
 
 import config from '../config';
 import BaseTask from './BaseTask';

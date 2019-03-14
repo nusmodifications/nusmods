@@ -64,13 +64,7 @@ export function combineModules(
         const right = semesterModule.module;
 
         if (!isEqual(left, right)) {
-          logger.warn(
-            {
-              left,
-              right,
-            },
-            'Module with different module info between semesters',
-          );
+          logger.warn({ left, right }, 'Module with different module info between semesters');
         }
 
         // 4. Always use the latest semester's data. In case the two semester's data
@@ -93,7 +87,6 @@ const getModuleCondensed = (module: ModuleWithoutTree): ModuleCondensed => ({
 });
 
 // Avoid using _.pick here because it is not type safe
-/* eslint-disable no-shadow */
 const getModuleInformation = ({
   moduleCode,
   title,

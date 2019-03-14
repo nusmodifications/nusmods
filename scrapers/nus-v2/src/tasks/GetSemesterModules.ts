@@ -4,7 +4,7 @@ import { flatten, partition } from 'lodash';
 import { AcademicGrp, AcademicOrg, ModuleInfo } from '../types/api';
 import { Semester } from '../types/modules';
 import { Task } from '../types/tasks';
-import { Cache } from '../services/io';
+import { Cache } from '../types/persist';
 
 import BaseTask from './BaseTask';
 import config from '../config';

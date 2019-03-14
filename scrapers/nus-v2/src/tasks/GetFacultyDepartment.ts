@@ -2,7 +2,7 @@ import { escapeRegExp, map } from 'lodash';
 
 import { AcademicGrp, AcademicOrg } from '../types/api';
 import { Task } from '../types/tasks';
-import { Cache } from '../services/io';
+import { Cache } from '../types/persist';
 
 import BaseTask from './BaseTask';
 import { cacheDownload } from '../utils/api';
