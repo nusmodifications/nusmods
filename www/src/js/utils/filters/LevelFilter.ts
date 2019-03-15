@@ -6,7 +6,7 @@ export default class LevelFilter extends ModuleFilter {
 
   constructor(level: ModuleLevel) {
     super(String(level), `${level}000`, (module) => {
-      const match = module.ModuleCode.match(/(\d)\d+/);
+      const match = module.moduleCode.match(/(\d)\d+/);
       if (!match) return false;
       return parseInt(match[1], 10) === level;
     });

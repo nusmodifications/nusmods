@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { ShallowWrapper, shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import _ from 'lodash';
 
-import { WORKLOAD_COMPONENTS } from 'utils/modules';
+import { Workload } from 'types/modules';
 import ModuleWorkload from './ModuleWorkload';
 
-function make(workload: { [workloadComponent: string]: number }) {
-  const workloadString = WORKLOAD_COMPONENTS.map((component) => workload[component] || 0).join('-');
-  return shallow(<ModuleWorkload workload={workloadString} />);
+function make(workload: Workload) {
+  return shallow(<ModuleWorkload workload={workload} />);
 }
 
 // Get the component name from anything that represents a component
@@ -25,11 +24,7 @@ function extractComponent(node: ShallowWrapper): string {
 }
 
 test('it should render workload correctly', () => {
-  const component = make({
-    Lecture: 2,
-    Laboratory: 2,
-    Preparation: 6,
-  });
+  const component = make([2, 0, 2, 0, 6]);
 
   // Check total workload count
   const heading = component.find('h4').first();
@@ -40,12 +35,13 @@ test('it should render workload correctly', () => {
 });
 
 test('it should render non-integer workloads correctly', () => {
-  const component = make({
-    Lecture: 1.5, // 2 blocks
-    Laboratory: 0.25, // 1 block
-    Project: 1.75, // 2 blocks
-    Preparation: 6.5, // 7 blocks
-  });
+  const component = make([
+    1.5, // 2 blocks
+    0,
+    0.25, // 1 block
+    1.75, // 2 blocks
+    6.5, // 7 blocks
+  ]);
 
   expect(component.find('.remainder')).toHaveLength(4);
 
@@ -59,11 +55,7 @@ test('it should render non-integer workloads correctly', () => {
 
 test('it should rearrange components correctly', () => {
   // Do not sort - all workloads are below 10 hrs
-  const noSorting = make({
-    Lecture: 2,
-    Laboratory: 9,
-    Preparation: 6,
-  });
+  const noSorting = make([2, 0, 9, 0, 6]);
 
   expect(noSorting.find('h5').map(extractComponent)).toEqual([
     'Lecture',
@@ -72,11 +64,7 @@ test('it should rearrange components correctly', () => {
   ]);
 
   // Do not sort - only last workload is 10+ hrs
-  const alreadySorted = make({
-    Lecture: 2,
-    Laboratory: 9,
-    Preparation: 10,
-  });
+  const alreadySorted = make([2, 0, 9, 0, 10]);
 
   expect(alreadySorted.find('h5').map(extractComponent)).toEqual([
     'Lecture',
@@ -85,11 +73,7 @@ test('it should rearrange components correctly', () => {
   ]);
 
   // Sort - Prep is after Lab, but has less than 10 hrs of workload
-  const needsSorting = make({
-    Lecture: 2,
-    Laboratory: 10,
-    Preparation: 6,
-  });
+  const needsSorting = make([2, 0, 10, 0, 6]);
 
   expect(needsSorting.find('h5').map(extractComponent)).toEqual([
     'Lecture',

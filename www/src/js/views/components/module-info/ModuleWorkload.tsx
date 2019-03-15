@@ -1,10 +1,8 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import _ from 'lodash';
+import { sum, partition, zip, range } from 'lodash';
 
-import { WorkloadComponent } from 'types/modules';
-
-import { parseWorkload, Workload } from 'utils/modules';
+import { Workload, WORKLOAD_COMPONENTS, WorkloadComponent } from 'types/modules';
 import Tooltip from 'views/components/Tooltip';
 
 const ROW_MAX = 10;
@@ -45,7 +43,7 @@ function workloadLabel(component: WorkloadComponent, hours: number): React.React
 }
 
 function workloadBlocks(component: WorkloadComponent, hours: number): React.ReactNode {
-  const blocks: React.ReactNode[] = _.range(Math.floor(hours)).map((hour) => (
+  const blocks: React.ReactNode[] = range(Math.floor(hours)).map((hour) => (
     <div key={hour} className={bgClass(component)} />
   ));
 
@@ -57,16 +55,21 @@ function workloadBlocks(component: WorkloadComponent, hours: number): React.Reac
   return blocks;
 }
 
-function sortWorkload(workload: Workload): [WorkloadComponent, number][] {
+type WorkloadTuple = [WorkloadComponent, number];
+
+function sortWorkload(workload: ReadonlyArray<number>): WorkloadTuple[] {
+  const components = zip(WORKLOAD_COMPONENTS, workload) as WorkloadTuple[];
+
+  // Only show non-empty components
+  const nonEmptyComponents = components.filter(([, hours]) => hours > 0);
+
   // Push longer components (those that take up more than one row) down
-  // @ts-ignore TODO: Figure out how to type this better
-  const components = _.entries(workload) as [WorkloadComponent, number][];
-  const [long, short] = _.partition(components, ([, hours]) => Math.ceil(hours) >= ROW_MAX);
+  const [long, short] = partition(nonEmptyComponents, ([, hours]) => Math.ceil(hours) >= ROW_MAX);
   return short.concat(long);
 }
 
 type Props = {
-  workload: string;
+  workload: Workload;
 };
 
 export default class ModuleWorkload extends React.PureComponent<Props> {
@@ -81,10 +84,10 @@ export default class ModuleWorkload extends React.PureComponent<Props> {
   }
 
   render() {
-    const workload = parseWorkload(this.props.workload);
+    const { workload } = this.props;
     if (typeof workload === 'string') return this.renderFallback();
 
-    const total = _.sum(_.values(workload));
+    const total = sum(workload);
 
     return (
       <div className="module-workload-container">

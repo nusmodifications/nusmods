@@ -1,61 +1,52 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import _ from 'lodash';
-
-import { NUM_DIFFERENT_COLORS } from 'utils/colors';
+import { flatten, values } from 'lodash';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 
-import { Module } from 'types/modules';
+import { ModuleCode, PrereqTree } from 'types/modules';
 
 import styles from './ModuleTree.scss';
+import { notNull } from '../../types/utils';
 
 type Props = {
-  module: Module;
+  moduleCode: ModuleCode;
+  fulfillRequirements?: ReadonlyArray<ModuleCode>;
+  prereqTree?: PrereqTree;
 };
 
 interface TreeDisplay {
   layer: number;
-  name: string;
+  node: PrereqTree;
   isPrereq?: boolean;
-  branches?: TreeDisplay[];
 }
 
-function isConditionalNode(name: string) {
-  return name === 'or' || name === 'and';
-}
-function formatConditional(name: string) {
-  return name === 'or' ? 'one of' : 'all of';
-}
-function incrementLayer(layer: number, name: string) {
-  return isConditionalNode(name) ? layer : (layer + 1) % NUM_DIFFERENT_COLORS;
-}
+const formatConditional = (name: string) => (name === 'or' ? 'one of' : 'all of');
 
-function Branch({ layer, branches }: { layer: number; branches: TreeDisplay[] }) {
+const nodeName = (node: PrereqTree) => (typeof node === 'string' ? node : Object.keys(node)[0]);
+
+const unwrapLayer = (node: PrereqTree) =>
+  typeof node === 'string' ? [node] : flatten(values(node).filter(notNull));
+
+function Branch(props: { nodes: PrereqTree[]; layer: number }) {
   return (
     <ul className={styles.tree}>
-      {branches.map((child) =>
-        _.castArray(child).map((subchild) => (
-          <Tree
-            key={subchild.name}
-            layer={incrementLayer(layer, subchild.name)}
-            name={subchild.name}
-            // @ts-ignore TODO: Rewrite this component for scraper v2
-            branches={subchild.children}
-          />
-        )),
-      )}
+      {props.nodes.map((child) => (
+        <li className={styles.branch} key={nodeName(child)}>
+          <Tree node={child} layer={props.layer} />
+        </li>
+      ))}
     </ul>
   );
 }
 
-function Tree({ layer, name, branches, isPrereq = false }: TreeDisplay) {
-  const isConditional = isConditionalNode(name);
+function Tree(props: TreeDisplay) {
+  const { layer, node, isPrereq } = props;
+
+  const isConditional = typeof node !== 'string';
+  const name = nodeName(node);
+
   return (
-    <li
-      className={classnames(styles.branch, {
-        [styles.prereqBranch]: isPrereq,
-      })}
-    >
+    <>
       <div
         className={classnames(styles.node, {
           [`hoverable color-${layer}`]: !isConditional,
@@ -69,42 +60,40 @@ function Tree({ layer, name, branches, isPrereq = false }: TreeDisplay) {
           <LinkModuleCodes className={styles.link}>{name}</LinkModuleCodes>
         )}
       </div>
-      {branches && branches.length > 0 && (
-        <Branch layer={incrementLayer(layer, name)} branches={branches} />
-      )}
-    </li>
+
+      {isConditional && <Branch nodes={unwrapLayer(node)} layer={layer + 1} />}
+    </>
   );
 }
 
 function ModuleTree(props: Props) {
-  const { ModmavenTree, LockedModules } = props.module;
-  if (!ModmavenTree) return null;
+  const { fulfillRequirements, prereqTree, moduleCode } = props;
 
   return (
     <div className={styles.container}>
-      {LockedModules && LockedModules.length > 0 && (
+      {fulfillRequirements && fulfillRequirements.length > 0 && (
         <>
           <ul className={styles.prereqTree}>
-            {LockedModules.map((name) => (
-              // @ts-ignore TODO: Rewrite this component for scraper v2
-              <Tree key={name} layer={0} name={name} branches={null} isPrereq />
+            {fulfillRequirements.map((fulfilledModule) => (
+              <li key={fulfilledModule} className={classnames(styles.branch, styles.prereqBranch)}>
+                <Tree layer={0} node={fulfilledModule} isPrereq />
+              </li>
             ))}
           </ul>
+
           <div className={classnames(styles.node, styles.conditional)}>needs</div>
         </>
       )}
+
       <ul className={classnames(styles.tree, styles.root)}>
-        <Tree
-          layer={1}
-          name={ModmavenTree.name}
-          // @ts-ignore TODO: Rewrite this component for scraper v2
-          branches={_.castArray(ModmavenTree.children)}
-        />
+        <li className={classnames(styles.branch)}>
+          <Tree layer={1} node={moduleCode} />
+
+          {prereqTree && <Branch nodes={[prereqTree]} layer={2} />}
+        </li>
       </ul>
     </div>
   );
 }
 
 export default ModuleTree;
-// For testing
-export { incrementLayer };

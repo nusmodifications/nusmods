@@ -1,18 +1,39 @@
 import { AcadWeekInfo } from 'nusmoderator';
-import _ from 'lodash';
+import {
+  mapValues,
+  flatMapDeep,
+  groupBy,
+  pick,
+  map,
+  isEmpty,
+  last,
+  omitBy,
+  invert,
+  values,
+  partition,
+  each,
+  difference,
+  range,
+  isEqual,
+  castArray,
+  get,
+  sample,
+} from 'lodash';
+import { addDays, min as minDate, parseISO } from 'date-fns';
 import qs from 'query-string';
 
 import {
   ClassNo,
   ColoredLesson,
+  consumeWeeks,
   Lesson,
   LessonType,
   Module,
   ModuleCode,
   RawLesson,
   Semester,
-  WeekText,
 } from 'types/modules';
+
 import {
   HoverLesson,
   ModuleLessonConfig,
@@ -22,15 +43,17 @@ import {
   TimetableDayArrangement,
   TimetableDayFormat,
 } from 'types/timetables';
+
 import { ModulesMap } from 'reducers/moduleBank';
 import { ModuleCodeMap } from 'types/reducers';
-
-import { getModuleSemesterData, getModuleTimetable } from 'utils/modules';
-import { getTimeAsDate } from 'utils/timify';
 import { ExamClashes } from 'types/views';
 
-type LessonTypeAbbrev = { [lessonType: string]: string };
-export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
+import { getTimeAsDate } from './timify';
+import { getModuleSemesterData, getModuleTimetable } from './modules';
+import { deltas } from './array';
+
+type lessonTypeAbbrev = { [lessonType: string]: string };
+export const LESSON_TYPE_ABBREV: lessonTypeAbbrev = {
   'Design Lecture': 'DLEC',
   Laboratory: 'LAB',
   Lecture: 'LEC',
@@ -46,7 +69,7 @@ export const LESSON_TYPE_ABBREV: LessonTypeAbbrev = {
 };
 
 // Reverse lookup map of LESSON_TYPE_ABBREV
-export const LESSON_ABBREV_TYPE: { [key: string]: LessonType } = _.invert(LESSON_TYPE_ABBREV);
+export const LESSON_ABBREV_TYPE: { [key: string]: LessonType } = invert(LESSON_TYPE_ABBREV);
 
 // Used for module config serialization - these must be query string safe
 // See: https://stackoverflow.com/a/31300627
@@ -65,21 +88,21 @@ export function isValidSemester(semester: Semester): boolean {
 //  {
 //    [lessonType: string]: ClassNo,
 //  }
-export function randomModuleLessonConfig(lessons: RawLesson[]): ModuleLessonConfig {
-  const lessonByGroups: { [lessonType: string]: RawLesson[] } = _.groupBy(
+export function randomModuleLessonConfig(lessons: ReadonlyArray<RawLesson>): ModuleLessonConfig {
+  const lessonByGroups: { [lessonType: string]: ReadonlyArray<RawLesson> } = groupBy(
     lessons,
-    (lesson) => lesson.LessonType,
+    (lesson) => lesson.lessonType,
   );
 
   const lessonByGroupsByClassNo: {
-    [lessonType: string]: { [classNo: string]: RawLesson[] };
-  } = _.mapValues(lessonByGroups, (lessonsOfSameLessonType: RawLesson[]) =>
-    _.groupBy(lessonsOfSameLessonType, (lesson) => lesson.ClassNo),
+    [lessonType: string]: { [classNo: string]: ReadonlyArray<RawLesson> };
+  } = mapValues(lessonByGroups, (lessonsOfSamelessonType: ReadonlyArray<RawLesson>) =>
+    groupBy(lessonsOfSamelessonType, (lesson) => lesson.classNo),
   );
 
-  return _.mapValues(
+  return mapValues(
     lessonByGroupsByClassNo,
-    (group: { [classNo: string]: RawLesson[] }) => _.sample(group)![0].ClassNo,
+    (group: { [classNo: string]: ReadonlyArray<RawLesson> }) => sample(group)![0].classNo,
   );
 }
 
@@ -89,24 +112,25 @@ export function hydrateSemTimetableWithLessons(
   modules: ModulesMap,
   semester: Semester,
 ): SemTimetableConfigWithLessons {
-  return _.mapValues(
+  return mapValues(
     semTimetableConfig,
     (moduleLessonConfig: ModuleLessonConfig, moduleCode: ModuleCode) => {
       const module: Module = modules[moduleCode];
       if (!module) return EMPTY_OBJECT;
 
       // TODO: Split this part into a smaller function: hydrateModuleConfigWithLessons.
-      return _.mapValues(moduleLessonConfig, (classNo: ClassNo, lessonType: LessonType) => {
-        const lessons: RawLesson[] = getModuleTimetable(module, semester);
-        const newLessons: RawLesson[] = lessons.filter(
+      return mapValues(moduleLessonConfig, (classNo: ClassNo, lessonType: LessonType) => {
+        const lessons = getModuleTimetable(module, semester);
+        const newLessons = lessons.filter(
           (lesson: RawLesson): boolean =>
-            lesson.LessonType === lessonType && lesson.ClassNo === classNo,
+            lesson.lessonType === lessonType && lesson.classNo === classNo,
         );
+
         const timetableLessons: Lesson[] = newLessons.map(
           (lesson: RawLesson): Lesson => ({
             ...lesson,
-            ModuleCode: moduleCode,
-            ModuleTitle: module.ModuleTitle,
+            moduleCode,
+            title: module.title,
           }),
         );
         return timetableLessons;
@@ -116,11 +140,11 @@ export function hydrateSemTimetableWithLessons(
 }
 
 //  Filters a flat array of lessons and returns the lessons corresponding to lessonType.
-export function lessonsForLessonType(
-  lessons: (RawLesson | Lesson)[],
+export function lessonsForLessonType<T extends RawLesson>(
+  lessons: ReadonlyArray<T>,
   lessonType: LessonType,
-): (RawLesson | Lesson)[] {
-  return _.filter(lessons, (lesson) => lesson.LessonType === lessonType);
+): ReadonlyArray<T> {
+  return lessons.filter((lesson) => lesson.lessonType === lessonType);
 }
 
 //  Converts from timetable config format to flat array of lessons.
@@ -131,7 +155,7 @@ export function lessonsForLessonType(
 //    }
 //  }
 export function timetableLessonsArray(timetable: SemTimetableConfigWithLessons): Lesson[] {
-  return _.flatMapDeep(timetable, _.values);
+  return flatMapDeep(timetable, values);
 }
 
 //  Groups flat array of lessons by day.
@@ -140,15 +164,15 @@ export function timetableLessonsArray(timetable: SemTimetableConfigWithLessons):
 //    Tuesday: [Lesson, ...],
 //  }
 export function groupLessonsByDay(lessons: ColoredLesson[]): TimetableDayFormat {
-  return _.groupBy(lessons, (lesson) => lesson.DayText);
+  return groupBy(lessons, (lesson) => lesson.day);
 }
 
 //  Determines if two lessons overlap:
 export function doLessonsOverlap(lesson1: Lesson, lesson2: Lesson): boolean {
   return (
-    lesson1.DayText === lesson2.DayText &&
-    lesson1.StartTime < lesson2.EndTime &&
-    lesson2.StartTime < lesson1.EndTime
+    lesson1.day === lesson2.day &&
+    lesson1.startTime < lesson2.endTime &&
+    lesson2.startTime < lesson1.endTime
   );
 }
 
@@ -161,17 +185,17 @@ export function doLessonsOverlap(lesson1: Lesson, lesson2: Lesson): boolean {
 //  ]
 export function arrangeLessonsWithinDay(lessons: ColoredLesson[]): TimetableDayArrangement {
   const rows: TimetableDayArrangement = [[]];
-  if (_.isEmpty(lessons)) {
+  if (isEmpty(lessons)) {
     return rows;
   }
   const sortedLessons = lessons.sort((a, b) => {
-    const timeDiff = a.StartTime.localeCompare(b.StartTime);
-    return timeDiff !== 0 ? timeDiff : a.ClassNo.localeCompare(b.ClassNo);
+    const timeDiff = a.startTime.localeCompare(b.startTime);
+    return timeDiff !== 0 ? timeDiff : a.classNo.localeCompare(b.classNo);
   });
   sortedLessons.forEach((lesson: ColoredLesson) => {
     for (let i = 0; i < rows.length; i++) {
       const rowLessons: ColoredLesson[] = rows[i];
-      const previousLesson = _.last(rowLessons);
+      const previousLesson = last(rowLessons);
       if (!previousLesson || !doLessonsOverlap(previousLesson, lesson)) {
         // Lesson does not overlap with any Lesson in the row. Add it to row.
         rowLessons.push(lesson);
@@ -201,73 +225,64 @@ export function arrangeLessonsWithinDay(lessons: ColoredLesson[]): TimetableDayA
 //  }
 export function arrangeLessonsForWeek(lessons: ColoredLesson[]): TimetableArrangement {
   const dayLessons = groupLessonsByDay(lessons);
-  return _.mapValues(dayLessons, (dayLesson: ColoredLesson[]) =>
-    arrangeLessonsWithinDay(dayLesson),
-  );
+  return mapValues(dayLessons, (dayLesson: ColoredLesson[]) => arrangeLessonsWithinDay(dayLesson));
 }
 
-//  Determines if a Lesson on the timetable can be modifiable / dragged around.
-//  Condition: There are multiple ClassNo for all the Array<Lesson> in a LessonType.
-export function areOtherClassesAvailable(lessons: RawLesson[], lessonType: LessonType): boolean {
-  const lessonTypeGroups: Record<string, any> = _.groupBy(lessons, (lesson) => lesson.LessonType);
+// Determines if a Lesson on the timetable can be modifiable / dragged around.
+// Condition: There are multiple ClassNo for all the Array<Lesson> in a lessonType.
+export function areOtherClassesAvailable(
+  lessons: ReadonlyArray<RawLesson>,
+  lessonType: LessonType,
+): boolean {
+  const lessonTypeGroups = groupBy<RawLesson>(lessons, (lesson) => lesson.lessonType);
   if (!lessonTypeGroups[lessonType]) {
-    // No such LessonType.
+    // No such lessonType.
     return false;
   }
-  return (
-    Object.keys(_.groupBy(lessonTypeGroups[lessonType], (lesson) => lesson.ClassNo)).length > 1
-  );
+  return Object.keys(groupBy(lessonTypeGroups[lessonType], (lesson) => lesson.classNo)).length > 1;
 }
 
 // Find all exam clashes between modules in semester
 // Returns object associating exam dates with the modules clashing on those dates
 export function findExamClashes(modules: Module[], semester: Semester): ExamClashes {
-  const groupedModules = _.groupBy(modules, (module) =>
-    _.get(getModuleSemesterData(module, semester), 'ExamDate'),
+  const groupedModules = groupBy(modules, (module) =>
+    get(getModuleSemesterData(module, semester), 'examDate'),
   );
   delete groupedModules.undefined; // Remove modules without exams
-  return _.omitBy(groupedModules, (mods) => mods.length === 1); // Remove non-clashing mods
+  return omitBy(groupedModules, (mods) => mods.length === 1); // Remove non-clashing mods
 }
 
-export function isLessonAvailable(lesson: Lesson, weekInfo: Readonly<AcadWeekInfo>): boolean {
-  if (!weekInfo.num) {
-    return false;
-  }
+export function isLessonAvailable(
+  lesson: Lesson,
+  date: Date,
+  weekInfo: Readonly<AcadWeekInfo>,
+): boolean {
+  return consumeWeeks(
+    lesson.weeks,
+    (weeks) => weeks.includes(weekInfo.num!),
+    (weekRange) => {
+      const end = minDate([parseISO(weekRange.end), date]);
+      for (let current = parseISO(weekRange.start); current <= end; current = addDays(current, 7)) {
+        if (isEqual(current, date)) return true;
+      }
 
-  if (lesson.LessonType === 'Tutorial' && weekInfo.num < 3) {
-    return false;
-  }
-
-  if (lesson.WeekText !== 'Every Week') {
-    if (lesson.WeekText === 'Even Week' && weekInfo.num % 2 === 1) {
       return false;
-    }
-
-    if (lesson.WeekText === 'Odd Week' && weekInfo.num % 2 === 0) {
-      return false;
-    }
-
-    const weekNumbers = lesson.WeekText.split(',').map((n) => parseInt(n, 10));
-    if (weekNumbers.every((n) => !Number.isNaN(n)) && !weekNumbers.includes(weekInfo.num)) {
-      return false;
-    }
-  }
-
-  return true;
+    },
+  );
 }
 
 export function isLessonOngoing(lesson: Lesson, currentTime: number): boolean {
   return (
-    parseInt(lesson.StartTime, 10) <= currentTime && currentTime < parseInt(lesson.EndTime, 10)
+    parseInt(lesson.startTime, 10) <= currentTime && currentTime < parseInt(lesson.endTime, 10)
   );
 }
 
 export function getStartTimeAsDate(lesson: Lesson, date: Date = new Date()): Date {
-  return getTimeAsDate(lesson.StartTime, date);
+  return getTimeAsDate(lesson.startTime, date);
 }
 
 export function getEndTimeAsDate(lesson: Lesson, date: Date = new Date()): Date {
-  return getTimeAsDate(lesson.EndTime, date);
+  return getTimeAsDate(lesson.endTime, date);
 }
 
 /**
@@ -283,11 +298,11 @@ export function validateTimetableModules(
   timetable: SemTimetableConfig,
   moduleCodes: ModuleCodeMap,
 ): [SemTimetableConfig, ModuleCode[]] {
-  const [valid, invalid] = _.partition(
-    _.keys(timetable),
+  const [valid, invalid] = partition(
+    Object.keys(timetable),
     (moduleCode: ModuleCode) => moduleCodes[moduleCode],
   );
-  return [_.pick(timetable, valid), invalid];
+  return [pick(timetable, valid), invalid];
 }
 
 /**
@@ -307,9 +322,9 @@ export function validateModuleLessons(
   const updatedLessonTypes: string[] = [];
 
   const validLessons = getModuleTimetable(module, semester);
-  const lessonsByType = _.groupBy(validLessons, (lesson) => lesson.LessonType);
+  const lessonsByType = groupBy(validLessons, (lesson) => lesson.lessonType);
 
-  _.each(lessonsByType, (lessons: RawLesson[], lessonType: LessonType) => {
+  each(lessonsByType, (lessons: RawLesson[], lessonType: LessonType) => {
     const classNo = lessonConfig[lessonType];
 
     // Check that the lesson exists and is valid. If it is not, insert a random
@@ -320,8 +335,8 @@ export function validateModuleLessons(
     // - classNo is not valid anymore (ie. the class was removed)
     //
     // If a lesson type is removed, then it simply won't be copied over
-    if (!lessons.some((lesson) => lesson.ClassNo === classNo)) {
-      validatedLessonConfig[lessonType] = lessons[0].ClassNo;
+    if (!lessons.some((lesson) => lesson.classNo === classNo)) {
+      validatedLessonConfig[lessonType] = lessons[0].classNo;
       updatedLessonTypes.push(lessonType);
     } else {
       validatedLessonConfig[lessonType] = classNo;
@@ -329,30 +344,30 @@ export function validateModuleLessons(
   });
 
   // Add all of the removed lesson types to the array of updated lesson types
-  updatedLessonTypes.push(..._.difference(Object.keys(lessonConfig), Object.keys(lessonsByType)));
+  updatedLessonTypes.push(...difference(Object.keys(lessonConfig), Object.keys(lessonsByType)));
   return [validatedLessonConfig, updatedLessonTypes];
 }
 
 // Get information for all modules present in a semester timetable config
 export function getSemesterModules(
-  timetable: { [moduleCode: string]: any },
+  timetable: { [moduleCode: string]: unknown },
   modules: ModulesMap,
 ): Module[] {
-  return _.values(_.pick(modules, Object.keys(timetable)));
+  return values(pick(modules, Object.keys(timetable)));
 }
 
 function serializeModuleConfig(config: ModuleLessonConfig): string {
   // eg. { Lecture: 1, Laboratory: 2 } => LEC=1,LAB=2
-  return _.map(config, (classNo, lessonType) =>
+  return map(config, (classNo, lessonType) =>
     [LESSON_TYPE_ABBREV[lessonType], encodeURIComponent(classNo)].join(LESSON_TYPE_SEP),
   ).join(LESSON_SEP);
 }
 
-function parseModuleConfig(serialized: string | null): ModuleLessonConfig {
+function parseModuleConfig(serialized: string | string[] | null): ModuleLessonConfig {
   const config: ModuleLessonConfig = {};
   if (!serialized) return config;
 
-  _.castArray(serialized).forEach((serializedModule) => {
+  castArray(serialized).forEach((serializedModule) => {
     serializedModule.split(LESSON_SEP).forEach((lesson) => {
       const [lessonTypeAbbr, classNo] = lesson.split(LESSON_TYPE_SEP);
       const lessonType = LESSON_ABBREV_TYPE[lessonTypeAbbr];
@@ -366,49 +381,46 @@ function parseModuleConfig(serialized: string | null): ModuleLessonConfig {
 }
 
 /**
- * Formats numeric week number string into something human readable
+ * Formats numeric week number array into something human readable
  *
  * - 1           => Week 1
  * - 1,2         => Weeks 1,2
  * - 1,2,3       => Weeks 1-3
  * - 1,2,3,5,6,7 => Weeks 1-3, 5-7
  */
-export function formatWeekNumber(weekText: WeekText) {
-  // Check if this is a numeric week number list and bail if it's not
-  const weeks = weekText.split(',').map((week) => parseInt(week.trim(), 10));
-  if (weeks.some(Number.isNaN)) {
-    return weekText;
+export function formatNumericWeeks(weeks: number[]): string | null {
+  if (weeks.length === 13) return null;
+  if (weeks.length === 1) return `Week ${weeks[0]}`;
+
+  // Check for odd / even weeks
+  if (weeks.length >= 6 && deltas(weeks).every((d) => d === 2)) {
+    return weeks[0] === 1 ? 'Odd Weeks' : 'Even Weeks';
   }
 
-  if (weeks.length === 1) {
-    return `Week ${weeks[0]}`;
-  }
-
-  // Find consecutive week numbers
+  // Merge consecutive
   const processed: (number | string)[] = [];
-  let start = weeks.shift()!;
-  let last = start;
+  let start = weeks[0];
+  let end = start;
 
   const mergeConsecutive = () => {
-    if (last - start > 2) {
-      processed.push(`${start}-${last}`);
+    if (end - start > 2) {
+      processed.push(`${start}-${end}`);
     } else {
-      processed.push(..._.range(start, last + 1));
+      processed.push(...range(start, end + 1));
     }
   };
 
-  while (weeks.length) {
-    const next = weeks.shift()!;
-    if (next - last === 1) {
+  weeks.slice(1).forEach((next) => {
+    if (next - end === 1) {
       // Consecutive week number - keep going
-      last = next;
+      end = next;
     } else {
       // Break = push the current chunk into processed
       mergeConsecutive();
       start = next;
-      last = start;
+      end = start;
     }
-  }
+  });
 
   mergeConsecutive();
 
@@ -424,35 +436,35 @@ export function formatWeekNumber(weekText: WeekText) {
 // => CS2104=LEC:1,Tut:2&CS2107=LEC:1,Tut:8
 export function serializeTimetable(timetable: SemTimetableConfig): string {
   // We are using query string safe characters, so this encoding is unnecessary
-  return qs.stringify(_.mapValues(timetable, serializeModuleConfig), { encode: false });
+  return qs.stringify(mapValues(timetable, serializeModuleConfig), { encode: false });
 }
 
 export function deserializeTimetable(serialized: string): SemTimetableConfig {
   const params: Record<string, string> = qs.parse(serialized);
-  return _.mapValues(params, parseModuleConfig);
+  return mapValues(params, parseModuleConfig);
 }
 
 export function isSameTimetableConfig(t1: SemTimetableConfig, t2: SemTimetableConfig): boolean {
-  return _.isEqual(t1, t2);
+  return isEqual(t1, t2);
 }
 
 export function isSameLesson(l1: Lesson, l2: Lesson) {
   return (
-    l1.LessonType === l2.LessonType &&
-    l1.ClassNo === l2.ClassNo &&
-    l1.ModuleCode === l2.ModuleCode &&
-    l1.StartTime === l2.StartTime &&
-    l1.EndTime === l2.EndTime &&
-    l1.DayText === l2.DayText &&
-    l1.WeekText === l2.WeekText
+    l1.lessonType === l2.lessonType &&
+    l1.classNo === l2.classNo &&
+    l1.moduleCode === l2.moduleCode &&
+    l1.startTime === l2.startTime &&
+    l1.endTime === l2.endTime &&
+    l1.day === l2.day &&
+    isEqual(l1.weeks, l2.weeks)
   );
 }
 
 export function getHoverLesson(lesson: Lesson): HoverLesson {
   return {
-    classNo: lesson.ClassNo,
-    moduleCode: lesson.ModuleCode,
-    lessonType: lesson.LessonType,
+    classNo: lesson.classNo,
+    moduleCode: lesson.moduleCode,
+    lessonType: lesson.lessonType,
   };
 }
 
@@ -460,5 +472,5 @@ export function getHoverLesson(lesson: Lesson): HoverLesson {
  * Obtain a semi-unique key for a lesson
  */
 export function getLessonIdentifier(lesson: Lesson): string {
-  return `${lesson.ModuleCode}-${LESSON_TYPE_ABBREV[lesson.LessonType]}-${lesson.ClassNo}`;
+  return `${lesson.moduleCode}-${LESSON_TYPE_ABBREV[lesson.lessonType]}-${lesson.classNo}`;
 }

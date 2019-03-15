@@ -181,7 +181,7 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
     const coloredTimetableLessons = timetableLessons.map(
       (lesson: Lesson): ColoredLesson => ({
         ...lesson,
-        colorIndex: colors[lesson.ModuleCode],
+        colorIndex: colors[lesson.moduleCode],
       }),
     );
 
@@ -223,7 +223,7 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
       const dayOfWeek = DaysOfWeek[getDayIndex(date)];
       const weekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(date);
       const lessons = get(groupedLessons, dayOfWeek, EMPTY_ARRAY).filter((lesson) =>
-        isLessonAvailable(lesson, weekInfo),
+        isLessonAvailable(lesson, date, weekInfo),
       );
 
       if (
@@ -275,9 +275,9 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
       // Don't show any lessons in the past, and add the current time marker
       const time = getHours(currentTime) * 100 + getMinutes(currentTime);
       // eslint-disable-next-line no-param-reassign
-      lessons = lessons.filter((lesson) => parseInt(lesson.EndTime, 10) > time);
+      lessons = lessons.filter((lesson) => parseInt(lesson.endTime, 10) > time);
 
-      const nextLesson = minBy(lessons, (lesson) => lesson.StartTime);
+      const nextLesson = minBy(lessons, (lesson) => lesson.startTime);
 
       // If there is at least one lesson remaining today...
       if (nextLesson) {
@@ -336,7 +336,7 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
                   [styles.expanded]: this.state.isMapExpanded,
                 })}
               >
-                <EventMap venue={this.state.openLesson && this.state.openLesson.lesson.Venue} />
+                <EventMap venue={this.state.openLesson && this.state.openLesson.lesson.venue} />
               </div>
             </MapContext.Provider>
           </>

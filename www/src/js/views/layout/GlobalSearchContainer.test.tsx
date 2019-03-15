@@ -13,9 +13,9 @@ const MODULES = _.flatMap(
   letters,
   (firstLetter): ModuleCondensed[] =>
     letters.map((secondLetter) => ({
-      ModuleCode: `${firstLetter}${secondLetter}1010`,
-      ModuleTitle: 'Test',
-      Semesters: [1],
+      moduleCode: `${firstLetter}${secondLetter}1010`,
+      title: 'Test',
+      semesters: [1],
     })),
 );
 

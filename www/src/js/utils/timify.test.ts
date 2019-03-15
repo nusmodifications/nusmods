@@ -9,6 +9,7 @@ import {
   formatTime,
   DEFAULT_EARLIEST_TIME,
   DEFAULT_LATEST_TIME,
+  parseDate,
 } from './timify';
 
 describe('convertTimeToIndex', () => {
@@ -129,5 +130,11 @@ describe(formatTime, () => {
     expect(formatTime('1200')).toEqual('12 noon');
     expect(formatTime('1210')).toEqual('12:10 pm');
     expect(formatTime('2359')).toEqual('11:59 pm');
+  });
+});
+
+describe(parseDate, () => {
+  test('should convert date string to local midnight Date object', () => {
+    expect(parseDate('2018-09-10')).toEqual(new Date('2018-09-10T00:00+0800'));
   });
 });

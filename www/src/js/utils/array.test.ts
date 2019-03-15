@@ -1,5 +1,5 @@
 import { range, stubTrue, stubFalse } from 'lodash';
-import { firstNonNull, intersperse, takeUntil } from './array';
+import { deltas, firstNonNull, intersperse, takeUntil } from './array';
 
 test('intersperse should return array mixed with delimiter', () => {
   expect(intersperse([], 0)).toEqual([]);
@@ -29,5 +29,19 @@ describe(firstNonNull, () => {
     expect(firstNonNull([() => false, () => true])).toEqual(false);
     expect(firstNonNull([() => true, () => false])).toEqual(true);
     expect(firstNonNull([() => null, () => undefined])).toBeNull();
+  });
+});
+
+describe(deltas, () => {
+  test('should return an empty array for arrays of 0 or 1', () => {
+    expect(deltas([])).toEqual([]);
+    expect(deltas([1])).toEqual([]);
+    expect(deltas([-1])).toEqual([]);
+  });
+
+  test('should return difference between elements', () => {
+    expect(deltas([1, 2, 3, 4, 5])).toEqual([1, 1, 1, 1]);
+    expect(deltas([1, 3, 5, 7, 9])).toEqual([2, 2, 2, 2]);
+    expect(deltas([1, 1, -1, -3, -4])).toEqual([0, -2, -2, -1]);
   });
 });

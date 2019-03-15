@@ -7,7 +7,7 @@ import { State } from 'reducers';
 import { ModuleTableOrder } from 'types/views';
 import { Module, Semester } from 'types/modules';
 import { setModuleTableOrder } from 'actions/settings';
-import { getModuleExamDate, renderMCs } from 'utils/modules';
+import { getExamDate, renderMCs } from 'utils/modules';
 import styles from './TimetableModulesTable.scss';
 
 type ModuleOrder = {
@@ -18,10 +18,10 @@ type ModuleOrder = {
 export const moduleOrders: { [moduleTableOrder: string]: ModuleOrder } = {
   exam: {
     label: 'Exam Date',
-    orderBy: (module: Module, semester: Semester) => getModuleExamDate(module, semester),
+    orderBy: (module: Module, semester: Semester) => getExamDate(module, semester) || '',
   },
-  mc: { label: 'Module Credits', orderBy: (module: Module) => module.ModuleCredit },
-  code: { label: 'Module Code', orderBy: (module: Module) => module.ModuleCode },
+  mc: { label: 'Module Credits', orderBy: (module: Module) => module.moduleCredit },
+  code: { label: 'Module Code', orderBy: (module: Module) => module.moduleCode },
 };
 
 type Props = {
@@ -32,7 +32,7 @@ type Props = {
 };
 
 function ModulesTableFooter(props: Props) {
-  const totalMCs = sumBy(props.modules, (module) => parseInt(module.ModuleCredit, 10));
+  const totalMCs = sumBy(props.modules, (module) => parseInt(module.moduleCredit, 10));
 
   return (
     <div className={classnames(styles.footer, 'row align-items-center')}>

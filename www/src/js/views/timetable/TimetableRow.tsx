@@ -38,8 +38,8 @@ function TimetableRow(props: Props) {
   return (
     <div className={styles.timetableRow}>
       {lessons.map((lesson) => {
-        const startIndex = convertTimeToIndex(lesson.StartTime);
-        const endIndex = convertTimeToIndex(lesson.EndTime);
+        const startIndex = convertTimeToIndex(lesson.startTime);
+        const endIndex = convertTimeToIndex(lesson.endTime);
         const size = endIndex - startIndex;
 
         const dirStyle = verticalMode ? 'top' : 'marginLeft';
@@ -52,7 +52,7 @@ function TimetableRow(props: Props) {
           [sizeStyle]: `calc(${(size / totalCols) * 100}% - 1px)`,
         };
 
-        lastStartIndex = convertTimeToIndex(lesson.EndTime);
+        lastStartIndex = convertTimeToIndex(lesson.endTime);
 
         const conditionalProps =
           lesson.isModifiable && onModifyCell
@@ -63,7 +63,7 @@ function TimetableRow(props: Props) {
 
         return (
           <TimetableCell
-            key={lesson.StartTime}
+            key={lesson.startTime}
             style={style}
             lesson={lesson}
             showTitle={props.showTitle}

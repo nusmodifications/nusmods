@@ -1,4 +1,4 @@
-import { flatMap, sortBy, values } from 'lodash';
+import { flatMap, sortBy, values, get } from 'lodash';
 import { ModuleCode, Semesters, Semester } from 'types/modules';
 import { Conflict, ExamClashes, PlannerModuleInfo, PlannerModulesWithInfo } from 'types/views';
 import { CustomModuleData, ModuleCodeMap, ModuleTime } from 'types/reducers';
@@ -50,10 +50,10 @@ export function filterModuleForSemester(
 const prereqConflict = (modulesMap: ModulesMap, modulesTaken: Set<ModuleCode>) => (
   moduleCode: ModuleCode,
 ): Conflict | null => {
-  const moduleInfo = modulesMap[moduleCode];
-  if (!moduleInfo) return null;
+  const prereqs = get(modulesMap, [moduleCode, 'prereqTree']);
+  if (!prereqs) return null;
 
-  const unfulfilledPrereqs = checkPrerequisite(modulesTaken, moduleInfo.ModmavenTree);
+  const unfulfilledPrereqs = checkPrerequisite(modulesTaken, prereqs);
   if (!unfulfilledPrereqs || !unfulfilledPrereqs.length) return null;
 
   return { type: 'prereq', unfulfilledPrereqs };
@@ -75,8 +75,8 @@ const semesterConflict = (moduleCodeMap: ModuleCodeMap, semester: Semester) => (
 ): Conflict | null => {
   const moduleCondensed = moduleCodeMap[moduleCode];
   if (!moduleCondensed) return null;
-  if (!moduleCondensed.Semesters.includes(semester)) {
-    return { type: 'semester', semestersOffered: moduleCondensed.Semesters };
+  if (!moduleCondensed.semesters.includes(semester)) {
+    return { type: 'semester', semestersOffered: moduleCondensed.semesters };
   }
 
   return null;
@@ -89,11 +89,11 @@ const semesterConflict = (moduleCodeMap: ModuleCodeMap, semester: Semester) => (
  */
 const examConflict = (clashes: ExamClashes) => (moduleCode: ModuleCode): Conflict | null => {
   const clash = values(clashes).find((modules) =>
-    Boolean(modules.find((module) => module.ModuleCode === moduleCode)),
+    Boolean(modules.find((module) => module.moduleCode === moduleCode)),
   );
 
   if (clash) {
-    return { type: 'exam', conflictModules: clash.map((module) => module.ModuleCode) };
+    return { type: 'exam', conflictModules: clash.map((module) => module.moduleCode) };
   }
 
   return null;
@@ -189,10 +189,10 @@ export function getAcadYearModules(state: State): PlannerModulesWithInfo {
       // Only check for exam clashes for modules in the current year
       let clashes = {};
       if (year === config.academicYear) {
-        const sememsterModules = moduleCodes
+        const semesterModules = moduleCodes
           .map((moduleCode) => moduleBank.modules[moduleCode])
           .filter(Boolean);
-        clashes = findExamClashes(sememsterModules, semester);
+        clashes = findExamClashes(semesterModules, semester);
       }
 
       const conflictChecks = [

@@ -1,18 +1,21 @@
 import React from 'react';
 import classnames from 'classnames';
 import { isEqual } from 'lodash';
+import { addWeeks, format, parseISO } from 'date-fns';
+import NUSModerator, { AcadWeekInfo } from 'nusmoderator';
 
-import { ModifiableLesson } from 'types/modules';
+import { consumeWeeks, ModifiableLesson, WeekRange } from 'types/modules';
 import { HoverLesson } from 'types/timetables';
 import { OnHoverCell } from 'types/views';
 
 import {
-  formatWeekNumber,
+  formatNumericWeeks,
   getHoverLesson,
   getLessonIdentifier,
   LESSON_TYPE_ABBREV,
 } from 'utils/timetables';
 import elements from 'views/elements';
+import Tooltip from 'views/components/Tooltip/Tooltip';
 
 import styles from './TimetableCell.scss';
 
@@ -25,6 +28,58 @@ type Props = {
   hoverLesson?: HoverLesson | null;
 };
 
+const lessonDateFormat = 'MMM dd';
+
+function formatWeekInfo(weekInfo: AcadWeekInfo) {
+  if (weekInfo.type === 'Instructional') return `Week ${weekInfo.num}`;
+  return weekInfo.type;
+}
+
+function formatWeekRange(weekRange: WeekRange) {
+  const start = parseISO(weekRange.start);
+
+  // Start = end means there's just one lesson
+  if (weekRange.start === weekRange.end) return format(start, lessonDateFormat);
+
+  let dateRange = `${format(start, lessonDateFormat)}–${format(
+    parseISO(weekRange.end),
+    lessonDateFormat,
+  )}`;
+
+  // If lessons are not weekly, we need to mention that
+  if (weekRange.weekInterval) {
+    dateRange += `, every ${weekRange.weekInterval} weeks`;
+  }
+
+  if (!weekRange.weeks) return dateRange;
+
+  // If the weeks are uneven (ie. there are gaps), we need to use a full table
+  // to show all the dates the lesson is on
+  const table = (
+    <div className={styles.classes}>
+      <h5>Classes</h5>
+      <ol className={classnames({ [styles.twoColumn]: weekRange.weeks.length > 6 })}>
+        {weekRange.weeks.map((week) => {
+          const date = addWeeks(start, week - 1);
+          const weekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(date);
+          return (
+            <li key={week}>
+              {format(date, lessonDateFormat)}{' '}
+              <span className={styles.weekInfo}>({formatWeekInfo(weekInfo)})</span>
+            </li>
+          );
+        })}
+      </ol>
+    </div>
+  );
+
+  return (
+    <Tooltip content={table} interactive arrow>
+      <span className={styles.weeksSpecial}>{dateRange}</span>
+    </Tooltip>
+  );
+}
+
 /**
  * Smallest unit in timetable.
  * Representing a lesson in this case. In future we
@@ -33,7 +88,7 @@ type Props = {
 function TimetableCell(props: Props) {
   const { lesson, showTitle, onClick, onHover, hoverLesson } = props;
 
-  const moduleName = showTitle ? `${lesson.ModuleCode} ${lesson.ModuleTitle}` : lesson.ModuleCode;
+  const moduleName = showTitle ? `${lesson.moduleCode} ${lesson.title}` : lesson.moduleCode;
   const Cell = props.onClick ? 'button' : 'div';
   const isHoveredOver = isEqual(getHoverLesson(lesson), hoverLesson);
 
@@ -45,6 +100,8 @@ function TimetableCell(props: Props) {
         },
       }
     : {};
+
+  const weekText = consumeWeeks<React.ReactNode>(lesson.weeks, formatNumericWeeks, formatWeekRange);
 
   return (
     <Cell
@@ -74,10 +131,10 @@ function TimetableCell(props: Props) {
       <div className={styles.cellContainer}>
         <div className={styles.moduleName}>{moduleName}</div>
         <div>
-          {LESSON_TYPE_ABBREV[lesson.LessonType]} [{lesson.ClassNo}]
+          {LESSON_TYPE_ABBREV[lesson.lessonType]} [{lesson.classNo}]
         </div>
-        <div>{lesson.Venue}</div>
-        {lesson.WeekText !== 'Every Week' && <div>{formatWeekNumber(lesson.WeekText)}</div>}
+        <div>{lesson.venue}</div>
+        {weekText && <div>{weekText}</div>}
       </div>
     </Cell>
   );

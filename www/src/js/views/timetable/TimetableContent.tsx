@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import _, { isEmpty } from 'lodash';
+import _ from 'lodash';
 
 import { ModulesMap } from 'reducers/moduleBank';
 import { ColorMapping, HORIZONTAL, TimetableOrientation } from 'types/reducers';
@@ -31,7 +31,7 @@ import { undo } from 'actions/undoHistory';
 import {
   areLessonsSameClass,
   formatExamDate,
-  getModuleExamDate,
+  getExamDate,
   getModuleTimetable,
 } from 'utils/modules';
 import {
@@ -46,11 +46,9 @@ import {
 } from 'utils/timetables';
 import { resetScrollPosition } from 'utils/react';
 import { State as StoreState } from 'reducers';
-import config from 'config';
 import ModulesSelectContainer from 'views/timetable/ModulesSelectContainer';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
-import NoLessonWarning from 'views/timetable/NoLessonWarning';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
@@ -188,7 +186,7 @@ class TimetableContent extends React.Component<Props, State> {
   };
 
   removeModule = (module: ModuleWithColor) => {
-    this.props.removeModule(this.props.semester, module.ModuleCode);
+    this.props.removeModule(this.props.semester, module.moduleCode);
 
     // A tombstone is displayed in place of a deleted module
     this.setState({ tombstone: module });
@@ -199,7 +197,7 @@ class TimetableContent extends React.Component<Props, State> {
   // Returns modules currently in the timetable
   addedModules(): Module[] {
     const modules = getSemesterModules(this.props.timetableWithLessons, this.props.modules);
-    return _.sortBy(modules, (module: Module) => getModuleExamDate(module, this.props.semester));
+    return _.sortBy(modules, (module: Module) => getExamDate(module, this.props.semester));
   }
 
   renderModuleTable = (
@@ -210,8 +208,8 @@ class TimetableContent extends React.Component<Props, State> {
     <TimetableModulesTable
       modules={modules.map((module) => ({
         ...module,
-        colorIndex: this.props.colors[module.ModuleCode],
-        hiddenInTimetable: this.isHiddenInTimetable(module.ModuleCode),
+        colorIndex: this.props.colors[module.moduleCode],
+        hiddenInTimetable: this.isHiddenInTimetable(module.moduleCode),
       }))}
       horizontalOrientation={horizontalOrientation}
       semester={this.props.semester}
@@ -280,10 +278,10 @@ class TimetableContent extends React.Component<Props, State> {
 
     let timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons)
       // Do not process hidden modules
-      .filter((lesson) => !this.isHiddenInTimetable(lesson.ModuleCode));
+      .filter((lesson) => !this.isHiddenInTimetable(lesson.moduleCode));
 
     if (activeLesson) {
-      const moduleCode = activeLesson.ModuleCode;
+      const moduleCode = activeLesson.moduleCode;
       // Remove activeLesson because it will appear again
       timetableLessons = timetableLessons.filter(
         (lesson) => !areLessonsSameClass(lesson, activeLesson),
@@ -291,17 +289,17 @@ class TimetableContent extends React.Component<Props, State> {
 
       const module = modules[moduleCode];
       const moduleTimetable = getModuleTimetable(module, semester);
-      lessonsForLessonType(moduleTimetable, activeLesson.LessonType).forEach((lesson) => {
+      lessonsForLessonType(moduleTimetable, activeLesson.lessonType).forEach((lesson) => {
         const modifiableLesson: Lesson & { isActive?: boolean; isAvailable?: boolean } = {
           ...lesson,
           // Inject module code in
-          ModuleCode: moduleCode,
-          ModuleTitle: module.ModuleTitle,
+          moduleCode,
+          title: module.title,
         };
 
         if (areLessonsSameClass(modifiableLesson, activeLesson)) {
           modifiableLesson.isActive = true;
-        } else if (lesson.LessonType === activeLesson.LessonType) {
+        } else if (lesson.lessonType === activeLesson.lessonType) {
           modifiableLesson.isAvailable = true;
         }
         timetableLessons.push(modifiableLesson);
@@ -312,7 +310,7 @@ class TimetableContent extends React.Component<Props, State> {
     const coloredTimetableLessons = timetableLessons.map(
       (lesson: Lesson): ColoredLesson => ({
         ...lesson,
-        colorIndex: colors[lesson.ModuleCode],
+        colorIndex: colors[lesson.moduleCode],
       }),
     );
 
@@ -322,13 +320,13 @@ class TimetableContent extends React.Component<Props, State> {
       (dayRows) =>
         dayRows.map((row) =>
           row.map((lesson) => {
-            const module: Module = modules[lesson.ModuleCode];
+            const module: Module = modules[lesson.moduleCode];
             const moduleTimetable = getModuleTimetable(module, semester);
 
             return {
               ...lesson,
               isModifiable:
-                !readOnly && areOtherClassesAvailable(moduleTimetable, lesson.LessonType),
+                !readOnly && areOtherClassesAvailable(moduleTimetable, lesson.lessonType),
             };
           }),
         ),
@@ -336,8 +334,6 @@ class TimetableContent extends React.Component<Props, State> {
 
     const isVerticalOrientation = timetableOrientation !== HORIZONTAL;
     const isShowingTitle = !isVerticalOrientation && showTitle;
-    const showNoLessonWarning =
-      !config.timetableAvailable.includes(semester) && isEmpty(arrangedLessonsWithModifiableFlag);
     const addedModules = this.addedModules();
 
     return (
@@ -366,8 +362,8 @@ class TimetableContent extends React.Component<Props, State> {
                 semester={semester}
                 modules={addedModules.map((module) => ({
                   ...module,
-                  colorIndex: this.props.colors[module.ModuleCode],
-                  hiddenInTimetable: this.isHiddenInTimetable(module.ModuleCode),
+                  colorIndex: this.props.colors[module.moduleCode],
+                  hiddenInTimetable: this.isHiddenInTimetable(module.moduleCode),
                 }))}
               />
             ) : (
@@ -383,7 +379,6 @@ class TimetableContent extends React.Component<Props, State> {
                   showTitle={isShowingTitle}
                   onModifyCell={this.modifyCell}
                 />
-                {showNoLessonWarning && <NoLessonWarning />}
               </div>
             )}
           </div>

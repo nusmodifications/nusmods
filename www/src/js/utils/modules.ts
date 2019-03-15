@@ -1,18 +1,17 @@
 import _ from 'lodash';
-
 import {
-  Day,
   Lesson,
   Module,
   RawLesson,
   Semester,
   SemesterData,
-  Time,
-  WorkloadComponent,
+  SemesterDataCondensed,
 } from 'types/modules';
 
 import config from 'config';
 import { NBSP } from 'utils/react';
+import { format } from 'date-fns';
+import { toSingaporeTime } from './timify';
 
 // Look for strings that look like module codes - eg.
 // ACC1010  - 3 chars, 4 digits, no suffix
@@ -26,125 +25,54 @@ export function getModuleSemesterData(
   module: Module,
   semester: Semester,
 ): SemesterData | undefined {
-  return module.History.find((semData: SemesterData) => semData.Semester === semester);
+  return module.semesterData.find((semData: SemesterData) => semData.semester === semester);
 }
 
 // Returns a flat array of lessons of a module for the corresponding semester.
-export function getModuleTimetable(module: Module, semester: Semester): RawLesson[] {
-  return _.get(getModuleSemesterData(module, semester), 'Timetable', []);
+export function getModuleTimetable(module: Module, semester: Semester): ReadonlyArray<RawLesson> {
+  return _.get(getModuleSemesterData(module, semester), 'timetable', []);
 }
 
 // Do these two lessons belong to the same class?
 export function areLessonsSameClass(lesson1: Lesson, lesson2: Lesson): boolean {
   return (
-    lesson1.ModuleCode === lesson2.ModuleCode &&
-    lesson1.ClassNo === lesson2.ClassNo &&
-    lesson1.LessonType === lesson2.LessonType
+    lesson1.moduleCode === lesson2.moduleCode &&
+    lesson1.classNo === lesson2.classNo &&
+    lesson1.lessonType === lesson2.lessonType
   );
 }
 
 /**
- * Convert examDate to JS Date object. Unfortunately just doing
- * new Date(examDate) won't work on Safari, since the timestamp is almost but not
- * quite ISO8601 standard
- *
- * The API returns examDate with hhmm as the TZ specifier, but we want
- * this to work on machines in all timezones, so instead we lop it off and
- * pretend it is in UTC time
- */
-export function examDateToDate(examDate: string): Date {
-  return new Date(`${examDate.slice(0, 16)}Z`);
-}
-
-/**
- * Convert exam in ISO format to 12-hour date/time format. We slice off the
- * SGT time zone and interpret as UTC time, then use the getUTC* methods so
- * that they will correspond to Singapore time regardless of the local time
- * zone.
+ * Convert exam in ISO format to 12-hour date/time format.
  */
 export function formatExamDate(examDate: string | null | undefined): string {
   if (!examDate) return 'No Exam';
 
-  const date = examDateToDate(examDate);
-  const hours: number = date.getUTCHours();
-
-  const day: string = _.padStart(`${date.getUTCDate().toString()}`, 2, '0');
-  const month: string = _.padStart(`${date.getUTCMonth() + 1}`, 2, '0');
-  const year: number = date.getUTCFullYear();
-  const hour: number = hours % 12 || 12;
-  const minute: string = _.padStart(`${date.getUTCMinutes()}`, 2, '0');
-  const amPm: string = hours < 12 ? 'AM' : 'PM';
-  return `${day}-${month}-${year} ${hour}:${minute} ${amPm}`;
+  const localDate = toSingaporeTime(examDate);
+  return format(localDate, 'dd-MM-yyyy p');
 }
 
-export function getModuleExamDate(module: Module, semester: Semester): string {
-  return _.get(getModuleSemesterData(module, semester), 'ExamDate')!;
+export function getExamDate(module: Module, semester: Semester): string | null {
+  return _.get(getModuleSemesterData(module, semester), 'examDate') || null;
 }
 
-export function getFormattedModuleExamDate(module: Module, semester: Semester): string {
-  const examDate = getModuleExamDate(module, semester);
+export function getFormattedExamDate(module: Module, semester: Semester): string {
+  const examDate = getExamDate(module, semester);
   return formatExamDate(examDate);
 }
 
 // Returns the current semester if it is found in semesters, or the first semester
 // where it is available
 export function getFirstAvailableSemester(
-  semesters: SemesterData[],
+  semesters: ReadonlyArray<SemesterDataCondensed>,
   current: Semester = config.semester, // For testing only
 ): Semester {
-  const availableSemesters = semesters.map((semesterData) => semesterData.Semester);
+  const availableSemesters = semesters.map((semesterData) => semesterData.semester);
   return availableSemesters.includes(current) ? current : _.min(availableSemesters)!;
 }
 
 export function getSemestersOffered(module: Module): Semester[] {
-  return module.History.map((semesterData) => semesterData.Semester).sort();
-}
-
-// Workload components as defined by CORS, in their correct positions (see below).
-export const WORKLOAD_COMPONENTS: WorkloadComponent[] = [
-  'Lecture',
-  'Tutorial',
-  'Laboratory',
-  'Project',
-  'Preparation',
-];
-export type Workload = { [workloadComponent: string]: number } | string;
-
-// Parse the workload string into a mapping of individual components to their hours.
-// If the string is unparsable, it is returned without any modification.
-export function parseWorkload(workloadString: string): Workload {
-  const cleanedWorkloadString = workloadString
-    .replace(/\(.*?\)/g, '') // Remove stuff in parenthesis
-    .replace(/NA/g, '0') // Replace 'NA' with 0
-    .replace(/\s+/g, ''); // Remove whitespace
-
-  if (!/^((^|-)([\d.]+)){5}$/.test(cleanedWorkloadString)) return workloadString;
-  // Workload string is formatted as A-B-C-D-E where
-  // A: no. of lecture hours per week
-  // B: no. of tutorial hours per week
-  // C: no. of laboratory hours per week
-  // D: no. of hours for projects, assignments, fieldwork etc per week
-  // E: no. of hours for preparatory work by a student per week
-  // Taken from CORS:
-  // https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp?acad_y=2017/2018&sem_c=1&mod_c=CS2105
-  const hours = workloadString.split('-');
-
-  const workload: Workload = {};
-  _.zip(WORKLOAD_COMPONENTS, hours).forEach(([component, hourString]) => {
-    if (!component || typeof hourString === 'undefined') {
-      throw new Error('Invalid number of workload components');
-    }
-
-    const hour = parseFloat(hourString);
-    if (!hour) return;
-    workload[component] = hour;
-  });
-
-  return workload;
-}
-
-export function getTimeslot(day: Day, time: Time): string {
-  return `${day} ${time}`;
+  return module.semesterData.map((semesterData) => semesterData.semester).sort();
 }
 
 export function renderMCs(moduleCredits: number | string) {

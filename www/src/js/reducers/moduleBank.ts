@@ -1,10 +1,10 @@
+import update from 'immutability-helper';
+import { REHYDRATE, createMigrate } from 'redux-persist';
+import { keyBy, omit, size, zipObject } from 'lodash';
+
 import { FSA } from 'types/redux';
 import { Module } from 'types/modules';
 import { ModuleCodeMap, ModuleList, SUCCESS } from 'types/reducers';
-
-import update from 'immutability-helper';
-import { REHYDRATE } from 'redux-persist';
-import { keyBy, omit, size, zipObject } from 'lodash';
 
 import {
   FETCH_ARCHIVE_MODULE,
@@ -44,7 +44,7 @@ const defaultModuleBankState: ModuleBank = {
 
 function precomputeFromModuleList(moduleList: ModuleList) {
   // Cache a mapping of all module codes to module data for fast module data lookup
-  const moduleCodes = zipObject(moduleList.map((module) => module.ModuleCode), moduleList);
+  const moduleCodes = zipObject(moduleList.map((module) => module.moduleCode), moduleList);
 
   return { moduleCodes };
 }
@@ -64,7 +64,7 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
         ...state,
         modules: {
           ...state.modules,
-          [action.payload.ModuleCode]: action.payload,
+          [action.payload.moduleCode]: action.payload,
         },
       };
 
@@ -96,7 +96,7 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
 
       return update(state, {
         moduleArchive: {
-          [action.payload.ModuleCode]: {
+          [action.payload.moduleCode]: {
             $auto: {
               [meta.academicYear]: {
                 $auto: { $set: action.payload },
@@ -110,7 +110,7 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
     case SET_EXPORTED_DATA:
       return {
         ...state,
-        modules: keyBy(action.payload.modules, (module: Module) => module.ModuleCode),
+        modules: keyBy(action.payload.modules, (module: Module) => module.moduleCode),
       };
 
     case REHYDRATE:
@@ -131,6 +131,15 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
 export default moduleBank;
 
 export const persistConfig = {
+  version: 1,
   throttle: 1000,
   whitelist: ['modules', 'moduleList'],
+  migrate: createMigrate({
+    // Clear out modules - after switching to API v2 we need to flush all of the
+    // old module data
+    1: (state) => ({
+      ...state,
+      modules: {},
+    }),
+  }),
 };

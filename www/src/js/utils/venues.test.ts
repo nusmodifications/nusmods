@@ -1,34 +1,10 @@
 import venueInfo from '__mocks__/venueInformation.json';
 
-import { WeekText, ModuleCode, StartTime } from 'types/modules';
 import { VenueInfo } from 'types/venues';
-import { ZWSP } from 'utils/react';
-import {
-  searchVenue,
-  filterAvailability,
-  sortVenues,
-  getDuplicateModules,
-  mergeDualCodedModules,
-  floorName,
-} from './venues';
+import { searchVenue, filterAvailability, sortVenues, floorName } from './venues';
 
 const venues = sortVenues(venueInfo as VenueInfo);
 const getVenues = (...names: string[]) => venues.filter(([name]) => names.includes(name));
-
-const makeVenueLesson = (
-  moduleCode: ModuleCode,
-  props: { WeekText?: WeekText; StartTime?: StartTime } = {},
-) => ({
-  ClassNo: '1',
-  DayText: 'Monday',
-  LessonType: 'Lecture',
-  EndTime: '1000',
-  StartTime: '0900',
-  Venue: 'LT1',
-  WeekText: 'Every Week',
-  ModuleCode: moduleCode,
-  ...props,
-});
 
 describe(sortVenues, () => {
   test('handle empty venue object', () => {
@@ -121,69 +97,6 @@ describe(filterAvailability, () => {
         duration: 14,
       }),
     ).toEqual(getVenues('CQT/SR0622'));
-  });
-});
-
-describe(getDuplicateModules, () => {
-  it('should return an array of duplicated module codes', () => {
-    expect(getDuplicateModules([makeVenueLesson('GEK1901'), makeVenueLesson('GET1001')])).toEqual([
-      'GEK1901',
-      'GET1001',
-    ]);
-
-    expect(
-      getDuplicateModules([
-        makeVenueLesson('GEK1901', { WeekText: 'Odd Week' }),
-        makeVenueLesson('GET1001', { WeekText: 'Odd Week' }),
-        makeVenueLesson('GET1002', { WeekText: 'Even Week' }),
-      ]),
-    ).toEqual(['GEK1901', 'GET1001']);
-  });
-
-  it('should not consider modules happening on different weeks as duplicates', () => {
-    expect(
-      getDuplicateModules([
-        makeVenueLesson('GEK1901', { WeekText: 'Odd Week' }),
-        makeVenueLesson('GET1001', { WeekText: 'Even Week' }),
-      ]),
-    ).toEqual([]);
-  });
-});
-
-describe(mergeDualCodedModules, () => {
-  it('should merge modules with the same starting time', () => {
-    expect(mergeDualCodedModules([makeVenueLesson('GEK1901'), makeVenueLesson('GET1001')])).toEqual(
-      [makeVenueLesson(`GEK1901/${ZWSP}GET1001`)],
-    );
-  });
-
-  it('should merge module sets of modules with the same starting time', () => {
-    expect(
-      mergeDualCodedModules([
-        makeVenueLesson('GEK1901', { StartTime: '1000' }),
-        makeVenueLesson('GEK1901', { StartTime: '1400' }),
-        makeVenueLesson('GET1001', { StartTime: '1000' }),
-        makeVenueLesson('GET1001', { StartTime: '1400' }),
-        makeVenueLesson('GEK1902', { StartTime: '1200' }),
-        makeVenueLesson('GES1001', { StartTime: '1200' }),
-      ]),
-    ).toEqual([
-      makeVenueLesson(`GEK1901/${ZWSP}GET1001`, { StartTime: '1000' }),
-      makeVenueLesson(`GEK1901/${ZWSP}GET1001`, { StartTime: '1400' }),
-      makeVenueLesson(`GEK1902/${ZWSP}GES1001`, { StartTime: '1200' }),
-    ]);
-  });
-
-  it('should not merge modules on different weeks', () => {
-    expect(
-      mergeDualCodedModules([
-        makeVenueLesson('GEK1901', { WeekText: 'Odd Week' }),
-        makeVenueLesson('GET1001', { WeekText: 'Even Week' }),
-      ]),
-    ).toEqual([
-      makeVenueLesson('GEK1901', { WeekText: 'Odd Week' }),
-      makeVenueLesson('GET1001', { WeekText: 'Even Week' }),
-    ]);
   });
 });
 

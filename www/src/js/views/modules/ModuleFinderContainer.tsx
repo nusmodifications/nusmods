@@ -5,14 +5,13 @@ import axios from 'axios';
 import update from 'immutability-helper';
 import { each, mapValues, values } from 'lodash';
 
-import { Module, Semester, Semesters } from 'types/modules';
-import { AnyGroup, FilterGroups, PageRange, PageRangeDiff } from 'types/views';
+import { ModuleInformation } from 'types/modules';
+import { AnyGroup, FacultyDepartments, FilterGroups, PageRange, PageRangeDiff } from 'types/views';
 import { State as StoreState } from 'reducers';
 
 import ModuleFinderList from 'views/modules/ModuleFinderList';
 import ModuleSearchBox from 'views/modules/ModuleSearchBox';
 import ChecklistFilters from 'views/components/filters/ChecklistFilters';
-import TimeslotFilters from 'views/components/filters/TimeslotFilters';
 import DropdownListFilters from 'views/components/filters/DropdownListFilters';
 import ApiError from 'views/errors/ApiError';
 import LoadingSpinner from 'views/components/LoadingSpinner';
@@ -25,15 +24,12 @@ import {
   defaultGroups,
   updateGroups,
   serializeGroups,
-  invertFacultyDepartments,
   DEPARTMENT,
   EXAMS,
   FACULTY,
   LEVELS,
-  LECTURE_TIMESLOTS,
   MODULE_CREDITS,
   SEMESTER,
-  TUTORIAL_TIMESLOTS,
 } from 'utils/moduleFilters';
 import { createSearchFilter, SEARCH_QUERY_KEY, sortModules } from 'utils/moduleSearch';
 import nusmods from 'apis/nusmods';
@@ -53,7 +49,7 @@ export type Props = {
 export type State = {
   loading: boolean;
   page: PageRange;
-  modules: Module[];
+  modules: ModuleInformation[];
   filterGroups: FilterGroups;
   isMenuOpen: boolean;
   error: Error | null;
@@ -185,17 +181,14 @@ export class ModuleFinderContainerComponent extends React.Component<Props, State
     this.setState({ error: null });
 
     // Load module data
-    const modulesRequest = axios.get(nusmods.modulesUrl()).then(({ data }) => data);
+    const modulesRequest = axios
+      .get<ModuleInformation[]>(nusmods.modulesUrl())
+      .then(({ data }) => data);
 
     // Load faculty-department mapping
-    const makeFacultyRequest = (semester: Semester) =>
-      axios
-        .get(nusmods.facultyDepartmentsUrl(semester))
-        .then(({ data }) => invertFacultyDepartments(data));
-
-    const facultiesRequest = Promise.all(Semesters.map(makeFacultyRequest))
-      // Then merge all of the mappings together
-      .then((mappings) => Object.assign({}, ...mappings));
+    const facultiesRequest = axios
+      .get<FacultyDepartments>(nusmods.facultyDepartmentsUrl())
+      .then(({ data }) => data);
 
     // Finally initialize everything
     Promise.all([modulesRequest, facultiesRequest])
@@ -358,10 +351,6 @@ export class ModuleFinderContainerComponent extends React.Component<Props, State
                 <DropdownListFilters group={groups[FACULTY]} {...filterProps} />
 
                 <DropdownListFilters group={groups[DEPARTMENT]} {...filterProps} />
-
-                <TimeslotFilters group={groups[LECTURE_TIMESLOTS]} {...filterProps} />
-
-                <TimeslotFilters group={groups[TUTORIAL_TIMESLOTS]} {...filterProps} />
               </div>
             </SideMenu>
           </div>

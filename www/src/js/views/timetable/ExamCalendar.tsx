@@ -2,12 +2,13 @@ import * as React from 'react';
 import NUSModerator from 'nusmoderator';
 import { groupBy, range } from 'lodash';
 import classnames from 'classnames';
+import { addDays } from 'date-fns';
 
-import { ModuleWithColor, Semester, WorkingDaysOfWeek } from 'types/modules';
+import { ModuleWithColor, Semester, WorkingDays } from 'types/modules';
 import { ModuleWithExamTime, TimeSegment } from 'types/views';
 import config from 'config';
-import { examDateToDate, formatExamDate, getModuleExamDate } from 'utils/modules';
-import { daysAfter } from 'utils/timify';
+import { formatExamDate, getExamDate } from 'utils/modules';
+import { toSingaporeTime } from 'utils/timify';
 import elements from 'views/elements';
 import ExamWeek from './ExamWeek';
 import styles from './ExamCalendar.scss';
@@ -44,22 +45,22 @@ export default class ExamCalendar extends React.PureComponent<Props> {
     );
 
     let weekCount = 0;
-    let lastDayOfExams = daysAfter(firstDayOfExams, 0);
+    let lastDayOfExams = addDays(firstDayOfExams, 0);
 
     // Check modules for outliers, eg. GER1000 that has exams on the Saturday before the exam week
     // and expand the range accordingly
     this.getVisibleModules().forEach((module) => {
-      const dateString = getModuleExamDate(module, semester);
+      const dateString = getExamDate(module, semester);
       if (!dateString) return;
 
-      const date = examDateToDate(dateString);
+      const date = toSingaporeTime(dateString);
       while (date < firstDayOfExams) {
-        firstDayOfExams = daysAfter(firstDayOfExams, -7);
+        firstDayOfExams = addDays(firstDayOfExams, -7);
         weekCount += 1;
       }
 
       while (date > lastDayOfExams) {
-        lastDayOfExams = daysAfter(lastDayOfExams, 7);
+        lastDayOfExams = addDays(lastDayOfExams, 7);
         weekCount += 1;
       }
     });
@@ -74,7 +75,7 @@ export default class ExamCalendar extends React.PureComponent<Props> {
     // every time we need them
     const modulesWithExams: ModuleWithExamTime[] = [];
     this.getVisibleModules().forEach((module) => {
-      const dateTime = getModuleExamDate(module, semester);
+      const dateTime = getExamDate(module, semester);
       if (!dateTime) return;
 
       const [date, ...timeParts] = formatExamDate(dateTime).split(' ');
@@ -112,7 +113,7 @@ export default class ExamCalendar extends React.PureComponent<Props> {
     // (5 days), and expand as necessary
     const daysWithExams = Math.max(
       5,
-      ...modulesWithExams.map((module) => examDateToDate(module.dateTime).getUTCDay()),
+      ...modulesWithExams.map((module) => toSingaporeTime(module.dateTime).getDay()),
     );
 
     const modulesByExamDate = groupBy(modulesWithExams, (module) => module.date);
@@ -131,7 +132,7 @@ export default class ExamCalendar extends React.PureComponent<Props> {
             <tr>
               {range(daysWithExams).map((day) => (
                 <th key={day} className={styles.dayName}>
-                  {WorkingDaysOfWeek[day].slice(0, 3)}
+                  {WorkingDays[day].slice(0, 3)}
                 </th>
               ))}
             </tr>

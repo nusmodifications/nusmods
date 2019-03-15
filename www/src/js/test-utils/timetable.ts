@@ -1,5 +1,9 @@
 import { ClassNo, ColoredLesson, DayText, Lesson, LessonTime, LessonType } from 'types/modules';
 
+export const EVERY_WEEK = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+export const EVEN_WEEK = [2, 4, 6, 8, 10, 12];
+export const ODD_WEEK = [1, 3, 5, 7, 9, 11];
+
 // A generic lesson with some default.
 export function createGenericLesson(
   dayText: DayText = 'Monday',
@@ -9,15 +13,15 @@ export function createGenericLesson(
   classNo: ClassNo = '1',
 ): Lesson {
   return {
-    ModuleCode: 'GC1101',
-    ModuleTitle: 'Generic Title',
-    ClassNo: classNo,
-    LessonType: lessonType,
-    WeekText: 'Every Week',
-    Venue: 'VCRm',
-    DayText: dayText,
-    StartTime: startTime,
-    EndTime: endTime,
+    moduleCode: 'GC1101',
+    title: 'Generic Title',
+    classNo,
+    lessonType,
+    weeks: EVERY_WEEK,
+    venue: 'VCRm',
+    day: dayText,
+    startTime,
+    endTime,
   };
 }
 

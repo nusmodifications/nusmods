@@ -31,13 +31,16 @@ describe(ModuleFinderContainerComponent, () => {
     jest.spyOn(console, 'info').mockImplementation(_.noop);
 
     // Mock axios to stop it from firing API requests
-    jest
-      .spyOn(axios, 'get')
-      .mockImplementation((url) =>
-        url.includes('facultyDepartments')
-          ? Promise.resolve({ data: {} } as any)
-          : Promise.resolve({ data: [] } as any),
-      );
+    jest.spyOn(axios, 'get').mockImplementation((url) =>
+      url.includes('facultyDepartments')
+        ? Promise.resolve({
+            data: {
+              'School of Computing': ['Computer Science'],
+              'Faculty of Science': ['Mathematics'],
+            },
+          } as any)
+        : Promise.resolve({ data: [] } as any),
+    );
   });
 
   afterEach(() => {
@@ -94,18 +97,18 @@ describe(ModuleFinderContainerComponent, () => {
   test('should read initial filter state from query string', async () => {
     expect(activeFilters(await createContainer())).toEqual({});
 
-    expect(activeFilters(await createContainer(['?lecture=monday-morning']))).toEqual({
-      lecture: ['monday-morning'],
+    expect(activeFilters(await createContainer(['?level=2']))).toEqual({
+      level: ['2'],
+    });
+
+    expect(activeFilters(await createContainer(['?faculty=school-of-computing']))).toEqual({
+      faculty: ['school-of-computing'],
     });
 
     expect(
-      activeFilters(await createContainer(['?lecture=monday-morning,tuesday-afternoon'])),
-    ).toEqual({ lecture: ['monday-morning', 'tuesday-afternoon'] });
-
-    expect(
-      activeFilters(await createContainer(['?lecture=monday-morning,tuesday-afternoon&mc=0'])),
+      activeFilters(await createContainer(['?department=computer-science,mathematics&mc=0'])),
     ).toEqual({
-      lecture: ['monday-morning', 'tuesday-afternoon'],
+      department: ['computer-science', 'mathematics'],
       mc: ['0'],
     });
   });
@@ -114,14 +117,15 @@ describe(ModuleFinderContainerComponent, () => {
     // Simulate the URL changing to check that the filter state changes with it
     const container = await createContainer();
 
-    container.history.push('?lecture=monday-morning,tuesday-afternoon');
+    container.history.push('?faculty=school-of-computing');
     expect(activeFilters(container)).toEqual({
-      lecture: ['monday-morning', 'tuesday-afternoon'],
+      faculty: ['school-of-computing'],
     });
 
-    container.history.push('?lecture=monday-morning,tuesday-evening');
+    container.history.push('?mc=0&department=computer-science');
     expect(activeFilters(container)).toEqual({
-      lecture: ['monday-morning', 'tuesday-evening'],
+      mc: ['0'],
+      department: ['computer-science'],
     });
 
     container.history.replace('?mc=0');

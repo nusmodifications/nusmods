@@ -88,7 +88,7 @@ export function setLesson(
 }
 
 export function changeLesson(semester: Semester, lesson: Lesson): FSA {
-  return setLesson(semester, lesson.ModuleCode, lesson.LessonType, lesson.ClassNo);
+  return setLesson(semester, lesson.moduleCode, lesson.lessonType, lesson.classNo);
 }
 
 export const SET_LESSON_CONFIG = 'SET_LESSON_CONFIG';

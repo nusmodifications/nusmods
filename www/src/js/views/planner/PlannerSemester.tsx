@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { ModuleCode, Semester } from 'types/modules';
 import { PlannerModuleInfo } from 'types/views';
 import config from 'config';
-import { getModuleExamDate, renderMCs } from 'utils/modules';
+import { getExamDate, renderMCs } from 'utils/modules';
 import {
   getDroppableId,
   getModuleCredit,
@@ -63,7 +63,7 @@ export default class PlannerSemester extends React.PureComponent<Props> {
         index={index}
         moduleCode={moduleCode}
         moduleTitle={getModuleTitle(plannerModule)}
-        examDate={showExamDate && moduleInfo ? getModuleExamDate(moduleInfo, semester) : null}
+        examDate={showExamDate && moduleInfo ? getExamDate(moduleInfo, semester) : null}
         moduleCredit={showModuleMeta ? getModuleCredit(plannerModule) : null}
         conflict={conflict}
         removeModule={this.props.removeModule}

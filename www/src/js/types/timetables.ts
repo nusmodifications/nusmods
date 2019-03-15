@@ -7,7 +7,7 @@ import {
   ModifiableLesson,
 } from 'types/modules';
 
-//  ModuleLessonConfig is a mapping of LessonType to ClassNo for a module.
+//  ModuleLessonConfig is a mapping of lessonType to ClassNo for a module.
 export type ModuleLessonConfig = {
   [lessonType: string]: ClassNo;
 };
@@ -17,8 +17,8 @@ export type SemTimetableConfig = {
   [moduleCode: string]: ModuleLessonConfig;
 };
 
-//  ModuleLessonConfigWithLessons is a mapping of LessonType to an array of Lessons for a module.
-//  The array of Lessons must belong to that LessonType.
+//  ModuleLessonConfigWithLessons is a mapping of lessonType to an array of Lessons for a module.
+//  The array of Lessons must belong to that lessonType.
 export type ModuleLessonConfigWithLessons = {
   [lessonType: string]: Lesson[];
 };

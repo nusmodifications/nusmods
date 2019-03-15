@@ -54,11 +54,11 @@ export class CustomModuleFormComponent extends React.PureComponent<Props> {
     // We don't use props.addCustomModule because we don't want to save the reset
     // immediately in case the user wants to cancel
     if (this.inputModuleCredit.current) {
-      this.inputModuleCredit.current.value = moduleInfo.ModuleCredit;
+      this.inputModuleCredit.current.value = moduleInfo.moduleCredit;
     }
 
     if (this.inputTitle.current) {
-      this.inputTitle.current.value = moduleInfo.ModuleTitle;
+      this.inputTitle.current.value = moduleInfo.title;
     }
   };
 
@@ -109,8 +109,8 @@ export class CustomModuleFormComponent extends React.PureComponent<Props> {
 
           {moduleInfo && (
             <Tooltip
-              content={`Reset title to "${moduleInfo.ModuleTitle}" and credits to ${
-                moduleInfo.ModuleCredit
+              content={`Reset title to "${moduleInfo.title}" and credits to ${
+                moduleInfo.moduleCredit
               }`}
             >
               <button type="button" className="btn btn-secondary" onClick={this.resetCustomInfo}>

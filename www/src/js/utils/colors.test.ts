@@ -3,6 +3,7 @@ import { range, without, uniq } from 'lodash';
 import { ColorIndex, ColorMapping } from 'types/reducers';
 import { Lesson } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
+import { Omit } from 'types/utils';
 
 import { NUM_DIFFERENT_COLORS, getNewColor, colorLessonsByKey, fillColorMapping } from './colors';
 
@@ -42,33 +43,33 @@ describe(getNewColor, () => {
 });
 
 describe(colorLessonsByKey, () => {
-  const bareLesson = {
-    ClassNo: '',
-    DayText: '',
-    EndTime: '',
-    LessonType: '',
-    StartTime: '',
-    WeekText: '',
-    ModuleCode: '',
-    ModuleTitle: '',
+  const bareLesson: Omit<Lesson, 'venue'> = {
+    classNo: '',
+    day: 'Monday',
+    endTime: '',
+    lessonType: '',
+    startTime: '',
+    weeks: [],
+    moduleCode: '',
+    title: '',
   };
 
   test('it should assign colors deterministically', () => {
     const lessons: Lesson[] = [];
     range(NUM_DIFFERENT_COLORS).forEach((i) => {
       // Add 2 lessons for this ith venue
-      const newLesson = { ...bareLesson, Venue: `LT${i}` };
+      const newLesson = { ...bareLesson, venue: `LT${i}` };
       lessons.push(newLesson);
       lessons.push(newLesson);
     });
 
-    const coloredLessons = colorLessonsByKey(lessons, 'Venue');
+    const coloredLessons = colorLessonsByKey(lessons, 'venue');
 
     range(NUM_DIFFERENT_COLORS * 2).forEach((i) => {
       const coloredLesson = coloredLessons[i];
       const index = Math.floor(i / 2);
       expect(coloredLesson).toMatchObject(bareLesson); // Ensure that existing lesson info wasn't modified
-      expect(coloredLesson).toHaveProperty('Venue', `LT${index}`);
+      expect(coloredLesson).toHaveProperty('venue', `LT${index}`);
       expect(coloredLesson).toHaveProperty('colorIndex', index % NUM_DIFFERENT_COLORS);
     });
   });
