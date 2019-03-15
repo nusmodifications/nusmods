@@ -80,10 +80,14 @@ export function combineModules(
   return values(modules);
 }
 
-const getModuleCondensed = (module: ModuleWithoutTree): ModuleCondensed => ({
-  moduleCode: module.moduleCode,
-  title: module.title,
-  semesters: module.semesterData.map((semester) => semester.semester),
+const getModuleCondensed = ({
+  moduleCode,
+  title,
+  semesterData,
+}: ModuleWithoutTree): ModuleCondensed => ({
+  moduleCode,
+  title,
+  semesters: semesterData.map((semester) => semester.semester),
 });
 
 // Avoid using _.pick here because it is not type safe
@@ -114,7 +118,6 @@ const getModuleInformation = ({
     examDuration,
   })),
 });
-/* eslint-enable */
 
 /**
  * Collect semester data from multiple semesters together
