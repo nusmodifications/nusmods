@@ -2,13 +2,13 @@
 import { EventOption } from 'ical-generator';
 import config from 'config';
 import iCalForTimetable, {
-  RECESS_WEEK,
-  iCalEventForLesson,
-  datesForAcademicWeeks,
-  iCalEventForExam,
   calculateNumericWeek,
-  getTimeHour,
   calculateWeekRange,
+  datesForAcademicWeeks,
+  getTimeHour,
+  iCalEventForExam,
+  iCalEventForLesson,
+  RECESS_WEEK,
 } from 'utils/ical';
 
 import { Module, RawLesson, WeekRange } from 'types/modules';
@@ -66,16 +66,40 @@ test('getTimeHour should return number of hours represented by a time string', (
   expect(getTimeHour('1030')).toEqual(10.5);
 });
 
-test('iCalEventForExam should generate event', () => {
-  const actual = iCalEventForExam(CS1010S, 1);
-  const expected: EventOption = {
-    start: new Date('2017-11-29T17:00+0800'),
-    end: new Date('2017-11-29T19:00+0800'),
-    summary: 'CS1010S Exam',
-    description: 'Programming Methodology',
-  };
+describe(iCalEventForExam, () => {
+  test('should generate event', () => {
+    const expected: EventOption = {
+      start: new Date('2017-11-29T17:00+0800'),
+      end: new Date('2017-11-29T19:00+0800'),
+      summary: 'CS1010S Exam',
+      description: 'Programming Methodology',
+    };
 
-  expect(actual).toEqual(expected);
+    expect(iCalEventForExam(CS1010S, 1)).toEqual(expected);
+  });
+
+  test('should take into account examDuration', () => {
+    const module: Module = {
+      moduleCode: 'CS1010S',
+      title: 'Programming Methodology',
+      semesterData: [
+        {
+          semester: 1,
+          examDate: '2017-11-29T17:00+0800',
+          examDuration: 90,
+        },
+      ],
+    } as any;
+
+    const expected: EventOption = {
+      start: new Date('2017-11-29T17:00+0800'),
+      end: new Date('2017-11-29T18:30+0800'),
+      summary: 'CS1010S Exam',
+      description: 'Programming Methodology',
+    };
+
+    expect(iCalEventForExam(module, 1)).toEqual(expected);
+  });
 });
 
 //     August 2016            September 2016         October 2016
