@@ -39,7 +39,7 @@ info:
 
     ```json
     {
-      timetable: [
+      "timetable": [
         {
           "classNo": "1",
           "lessonType": "Lecture",
@@ -75,7 +75,7 @@ info:
 
     ```json
     {
-      timetable: [
+      "timetable": [
         {
           "classNo": "1",
           "lessonType": "Lecture",
