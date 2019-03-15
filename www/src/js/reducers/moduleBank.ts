@@ -140,6 +140,7 @@ export const persistConfig = {
     1: (state) => ({
       ...state,
       modules: {},
+      moduleList: [],
     }),
   }),
 };
