@@ -1,0 +1,116 @@
+[
+  {
+    "classNo": "1",
+    "startTime": "1400",
+    "endTime": "1600",
+    "weeks": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      10,
+      11,
+      12,
+      13
+    ],
+    "venue": "LT29",
+    "day": "Monday",
+    "lessonType": "Lecture"
+  },
+  {
+    "classNo": "1",
+    "startTime": "1400",
+    "endTime": "1600",
+    "weeks": [
+      3,
+      6,
+      13
+    ],
+    "venue": "MD11CRCAUD",
+    "day": "Thursday",
+    "lessonType": "Tutorial"
+  },
+  {
+    "classNo": "1",
+    "startTime": "1400",
+    "endTime": "1600",
+    "weeks": [
+      1,
+      2,
+      4,
+      5,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "venue": "LT29",
+    "day": "Thursday",
+    "lessonType": "Lecture"
+  },
+  {
+    "classNo": "2",
+    "startTime": "1400",
+    "endTime": "1600",
+    "weeks": [
+      3,
+      6,
+      13
+    ],
+    "venue": "MD11CRCAUD",
+    "day": "Thursday",
+    "lessonType": "Tutorial"
+  },
+  {
+    "classNo": "3",
+    "startTime": "1400",
+    "endTime": "1600",
+    "weeks": [
+      9
+    ],
+    "venue": "MD1-03-01B",
+    "day": "Monday",
+    "lessonType": "Tutorial"
+  },
+  {
+    "classNo": "3",
+    "startTime": "1400",
+    "endTime": "1600",
+    "weeks": [
+      3,
+      6,
+      13
+    ],
+    "venue": "MD11CRCAUD",
+    "day": "Thursday",
+    "lessonType": "Tutorial"
+  },
+  {
+    "classNo": "1",
+    "startTime": "1400",
+    "endTime": "1600",
+    "weeks": [
+      9
+    ],
+    "venue": "MD11-01-03",
+    "day": "Monday",
+    "lessonType": "Tutorial"
+  },
+  {
+    "classNo": "2",
+    "startTime": "1400",
+    "endTime": "1600",
+    "weeks": [
+      9
+    ],
+    "venue": "MD1-03-01C",
+    "day": "Monday",
+    "lessonType": "Tutorial"
+  }
+]

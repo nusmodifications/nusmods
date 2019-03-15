@@ -19,19 +19,19 @@ export type ModuleInfoMapped = ModuleInfo & {
 /**
  * Module type with semester-related info removed
  */
-export type SemesterModule = Omit<Module, 'SemesterData' | 'PrereqTree' | 'FulfillRequirements'>;
+export type SemesterModule = Omit<Module, 'semesterData' | 'prereqTree' | 'fulfillRequirements'>;
 
 export type SemesterModuleData = Readonly<{
-  ModuleCode: ModuleCode;
-  Module: SemesterModule;
-  SemesterData: SemesterData;
+  moduleCode: ModuleCode;
+  module: SemesterModule;
+  semesterData: SemesterData;
 }>;
 
-export type ModuleWithoutTree = Omit<Module, 'PrereqTree'>;
+export type ModuleWithoutTree = Omit<Module, 'prereqTree'>;
 
 // Intermediate shape used for venue collation
 export type LessonWithModuleCode = RawLesson & {
-  ModuleCode: ModuleCode;
+  moduleCode: ModuleCode;
 };
 
 export type ModuleAliases = {
@@ -42,8 +42,8 @@ export type ModuleAliases = {
  * The exam info part of semester data
  */
 export type ExamInfo = Readonly<{
-  ExamDate: string;
-  ExamDuration: number;
+  examDate: string;
+  examDuration: number;
 }>;
 
 export type ExamInfoMap = Readonly<{
@@ -53,9 +53,5 @@ export type ExamInfoMap = Readonly<{
 /**
  * Used to map faculty and department names to their codes returned by the API
  */
-export type FacultyCodeMap = Readonly<{
-  [code: string]: string;
-}>;
-export type DepartmentCodeMap = Readonly<{
-  [code: string]: string;
-}>;
+export type FacultyCodeMap = Readonly<{ [code: string]: string }>;
+export type DepartmentCodeMap = Readonly<{ [code: string]: string }>;

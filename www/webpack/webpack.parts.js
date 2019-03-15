@@ -275,6 +275,7 @@ exports.workbox = () => ({
             },
             expiration: {
               maxAgeSeconds: ONE_MONTH,
+              purgeOnQuotaError: true,
             },
           },
         },
@@ -291,6 +292,7 @@ exports.workbox = () => ({
             expiration: {
               maxEntries: 500,
               maxAgeSeconds: ONE_MONTH,
+              purgeOnQuotaError: true,
             },
           },
         },

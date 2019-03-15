@@ -55,8 +55,7 @@ function parse(data: ModuleWithoutTree[], subLogger: Logger): PrereqTreeMap {
   const results: PrereqTreeMap = {};
 
   for (const module of data) {
-    const moduleCode = module.ModuleCode;
-    const value = module.Prerequisite;
+    const { moduleCode, prerequisite: value } = module;
 
     if (
       // Filter out empty values
@@ -74,7 +73,7 @@ function parse(data: ModuleWithoutTree[], subLogger: Logger): PrereqTreeMap {
       const parsedValue = parseString(normalizedValue, moduleLog);
 
       if (parsedValue) {
-        results[module.ModuleCode] = parsedValue;
+        results[module.moduleCode] = parsedValue;
       }
     }
   }
@@ -89,7 +88,7 @@ export function insertRequisiteTree(modules: Module[], prerequisites: PrereqTree
   // Find modules which this module fulfill the requirements for
   const fulfillModulesMap: { [moduleCode: string]: Set<ModuleCode> } = {};
   for (const module of modules) {
-    fulfillModulesMap[module.ModuleCode] = new Set();
+    fulfillModulesMap[module.moduleCode] = new Set();
   }
 
   for (const [moduleCode, prereqs] of entries(prerequisites)) {
@@ -103,14 +102,14 @@ export function insertRequisiteTree(modules: Module[], prerequisites: PrereqTree
   }
 
   for (const module of modules) {
-    const moduleCode = module.ModuleCode;
+    const { moduleCode } = module;
 
     if (prerequisites[moduleCode]) {
-      module.PrereqTree = prerequisites[moduleCode];
+      module.prereqTree = prerequisites[moduleCode];
     }
 
     if (fulfillModulesMap[moduleCode].size > 0) {
-      module.FulfillRequirements = Array.from(fulfillModulesMap[moduleCode]);
+      module.fulfillRequirements = Array.from(fulfillModulesMap[moduleCode]);
     }
   }
 
@@ -121,7 +120,7 @@ export default async function generatePrereqTree(
   allModules: ModuleWithoutTree[],
 ): Promise<Module[]> {
   // check that all modules match regex and no modules contain operators
-  const moduleCodes: string[] = uniq(allModules.map((module) => module.ModuleCode));
+  const moduleCodes: string[] = uniq(allModules.map((module) => module.moduleCode));
 
   moduleCodes.forEach((moduleCode) => {
     const isModule = MODULE_REGEX.test(moduleCode);

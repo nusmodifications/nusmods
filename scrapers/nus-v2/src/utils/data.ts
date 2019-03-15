@@ -85,13 +85,13 @@ export function trimValues<T extends Record<string, any>>(object: T, keys: (keyo
  */
 export function getDuplicateModules(classes: VenueLesson[]): ModuleCode[] {
   const lessonsByTime: VenueLesson[][] = values(
-    groupBy(classes, (lesson) => [lesson.StartTime, lesson.EndTime, lesson.Weeks, lesson.DayText]),
+    groupBy(classes, (lesson) => [lesson.startTime, lesson.endTime, lesson.weeks, lesson.day]),
   );
 
   for (const lessons of lessonsByTime) {
     if (lessons.length > 1) {
       // Occasionally two classes share the same venue, so we don't count those
-      const moduleCodes = uniq(lessons.map((lesson) => lesson.ModuleCode));
+      const moduleCodes = uniq(lessons.map((lesson) => lesson.moduleCode));
       if (uniq(moduleCodes).length > 1) return moduleCodes;
     }
   }
@@ -109,13 +109,13 @@ export function mergeModules(classes: VenueLesson[], modules: ModuleCode[]): Ven
   // We only want to keep lessons from modules not in the list (index = -1) and
   // lessons from the first module (index = 0) since the rest are duplicates
   return classes
-    .filter((lesson) => modules.indexOf(lesson.ModuleCode) < 1)
+    .filter((lesson) => modules.indexOf(lesson.moduleCode) < 1)
     .map((lesson) => {
-      if (lesson.ModuleCode !== modules[0]) return lesson;
+      if (lesson.moduleCode !== modules[0]) return lesson;
 
       return {
         ...lesson,
-        ModuleCode: mergedModuleCode,
+        moduleCode: mergedModuleCode,
       };
     });
 }

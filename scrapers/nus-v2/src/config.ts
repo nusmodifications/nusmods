@@ -27,11 +27,15 @@ if (!env.appKey || !env.studentKey || !env.baseUrl) {
   );
 }
 
+// Add a trailing slash behind the base URL because otherwise the URL class will
+// replace the last segment of the URL with the relative part
+const addTrailingSlash = (url: string) => (url.endsWith('/') ? url : `${url}/`);
+
 const config: Config = {
   // From env
   appKey: env.appKey,
   studentKey: env.studentKey,
-  baseUrl: env.baseUrl,
+  baseUrl: addTrailingSlash(env.baseUrl),
   apiConcurrency: env.apiConcurrency || 5,
 
   // Other config

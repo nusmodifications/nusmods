@@ -15,8 +15,8 @@ describe(mapExamInfo, () => {
     });
 
     expect(actual).toEqual({
-      ExamDate: '2018-11-27T09:00:00.000Z',
-      ExamDuration: 120,
+      examDate: '2018-11-27T09:00:00.000Z',
+      examDuration: 120,
     });
   });
 });

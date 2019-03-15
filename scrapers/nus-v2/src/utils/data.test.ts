@@ -138,13 +138,13 @@ const makeVenueLesson = (
   moduleCode: ModuleCode,
   props: Partial<VenueLesson> = {},
 ): VenueLesson => ({
-  ClassNo: '1',
-  DayText: 'Monday',
-  LessonType: 'Lecture',
-  EndTime: '1000',
-  StartTime: '0900',
-  Weeks: EVERY_WEEK,
-  ModuleCode: moduleCode,
+  classNo: '1',
+  day: 'Monday',
+  lessonType: 'Lecture',
+  endTime: '1000',
+  startTime: '0900',
+  weeks: EVERY_WEEK,
+  moduleCode,
   ...props,
 });
 
@@ -157,9 +157,9 @@ describe(getDuplicateModules, () => {
 
     expect(
       getDuplicateModules([
-        makeVenueLesson('GEK1901', { Weeks: ODD_WEEK }),
-        makeVenueLesson('GET1001', { Weeks: ODD_WEEK }),
-        makeVenueLesson('GET1002', { Weeks: EVEN_WEEK }),
+        makeVenueLesson('GEK1901', { weeks: ODD_WEEK }),
+        makeVenueLesson('GET1001', { weeks: ODD_WEEK }),
+        makeVenueLesson('GET1002', { weeks: EVEN_WEEK }),
       ]),
     ).toEqual(['GEK1901', 'GET1001']);
   });
@@ -167,8 +167,8 @@ describe(getDuplicateModules, () => {
   it('should not consider modules happening on different weeks as duplicates', () => {
     expect(
       getDuplicateModules([
-        makeVenueLesson('GEK1901', { Weeks: ODD_WEEK }),
-        makeVenueLesson('GET1001', { Weeks: EVEN_WEEK }),
+        makeVenueLesson('GEK1901', { weeks: ODD_WEEK }),
+        makeVenueLesson('GET1001', { weeks: EVEN_WEEK }),
       ]),
     ).toEqual([]);
   });
@@ -190,19 +190,19 @@ describe(mergeDualCodedModules, () => {
   it('should merge module sets of modules with the same starting time', () => {
     const { lessons, aliases } = mergeDualCodedModules([
       // GEK1901 and GET1001 have the same lessons
-      makeVenueLesson('GEK1901', { StartTime: '1000' }),
-      makeVenueLesson('GEK1901', { StartTime: '1400' }),
-      makeVenueLesson('GET1001', { StartTime: '1000' }),
-      makeVenueLesson('GET1001', { StartTime: '1400' }),
+      makeVenueLesson('GEK1901', { startTime: '1000' }),
+      makeVenueLesson('GEK1901', { startTime: '1400' }),
+      makeVenueLesson('GET1001', { startTime: '1000' }),
+      makeVenueLesson('GET1001', { startTime: '1400' }),
       // GEK1902 and GES1001 have the same lessons
-      makeVenueLesson('GEK1902', { StartTime: '1200' }),
-      makeVenueLesson('GES1001', { StartTime: '1200' }),
+      makeVenueLesson('GEK1902', { startTime: '1200' }),
+      makeVenueLesson('GES1001', { startTime: '1200' }),
     ]);
 
     expect(lessons).toEqual([
-      makeVenueLesson(`GEK1901/${ZWSP}GET1001`, { StartTime: '1000' }),
-      makeVenueLesson(`GEK1901/${ZWSP}GET1001`, { StartTime: '1400' }),
-      makeVenueLesson(`GEK1902/${ZWSP}GES1001`, { StartTime: '1200' }),
+      makeVenueLesson(`GEK1901/${ZWSP}GET1001`, { startTime: '1000' }),
+      makeVenueLesson(`GEK1901/${ZWSP}GET1001`, { startTime: '1400' }),
+      makeVenueLesson(`GEK1902/${ZWSP}GES1001`, { startTime: '1200' }),
     ]);
 
     expect(aliases).toEqual({
@@ -215,13 +215,13 @@ describe(mergeDualCodedModules, () => {
 
   it('should not merge modules on different weeks', () => {
     const { lessons, aliases } = mergeDualCodedModules([
-      makeVenueLesson('GEK1901', { Weeks: ODD_WEEK }),
-      makeVenueLesson('GET1001', { Weeks: EVEN_WEEK }),
+      makeVenueLesson('GEK1901', { weeks: ODD_WEEK }),
+      makeVenueLesson('GET1001', { weeks: EVEN_WEEK }),
     ]);
 
     expect(lessons).toEqual([
-      makeVenueLesson('GEK1901', { Weeks: ODD_WEEK }),
-      makeVenueLesson('GET1001', { Weeks: EVEN_WEEK }),
+      makeVenueLesson('GEK1901', { weeks: ODD_WEEK }),
+      makeVenueLesson('GET1001', { weeks: EVEN_WEEK }),
     ]);
 
     expect(aliases).toEqual({});
