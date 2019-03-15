@@ -132,7 +132,17 @@ export function getDataWriter(academicYear: string): Persist {
       ),
 
     getModuleCodes: async () => {
-      const files = await fs.readdir(path.join(yearRoot, 'modules'));
+      let files: ModuleCode[];
+      try {
+        files = await fs.readdir(path.join(yearRoot, 'modules'));
+      } catch (e) {
+        if (e.code === 'ENOENT') {
+          files = [];
+        } else {
+          throw e;
+        }
+      }
+
       return files.map((filename) => path.basename(filename, '.json'));
     },
 

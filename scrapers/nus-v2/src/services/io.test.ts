@@ -5,6 +5,8 @@ import { subHours } from 'date-fns';
 import { getCacheFactory, getDataWriter } from './io';
 import { CacheExpiredError } from '../utils/errors';
 
+jest.unmock('fs-extra');
+
 beforeEach(() => {
   mockFs();
 });
@@ -66,6 +68,10 @@ describe(getCacheFactory, () => {
 
 describe(getDataWriter, () => {
   const persist = getDataWriter('2018/2019');
+
+  test('should return empty array if this is first scrape', async () => {
+    await expect(persist.getModuleCodes()).resolves.toEqual([]);
+  });
 
   test('should allow module data to be deleted', async () => {
     // Write some module data, then delete it and check that all files have been deleted
