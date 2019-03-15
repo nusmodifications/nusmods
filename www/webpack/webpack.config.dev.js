@@ -25,6 +25,12 @@ const developmentConfig = merge([
       'webpack/hot/only-dev-server',
       'main',
     ],
+    resolve: {
+      alias: {
+        // Replace React DOM with the hot reload patched version in development
+        'react-dom': '@hot-loader/react-dom',
+      },
+    },
     plugins: [
       new HtmlWebpackPlugin({
         template: path.join(parts.PATHS.app, 'index.html'),
