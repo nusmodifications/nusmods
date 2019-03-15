@@ -4,7 +4,7 @@ module.exports = {
       name: 'NUS Scraper v2',
       script: 'build/index.js',
 
-      args: 'scrape all',
+      args: 'all',
       instances: 1,
       // Set to false since this is a script and not a server, otherwise pm2 will keep trying
       // to restart this
