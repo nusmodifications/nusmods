@@ -62,26 +62,29 @@ export class AppShellComponent extends React.Component<Props, State> {
     const { timetables } = this.props;
 
     // Retrieve module list
-    this.fetchModuleList();
+    const moduleList = this.fetchModuleList();
 
     // Fetch the module data of the existing modules in the timetable and ensure all
     // lessons are filled
     each(timetables, (timetable, semesterString) => {
       const semester = Number(semesterString);
-      this.fetchTimetableModules(timetable, semester);
+      moduleList.then(() => {
+        // Wait for module list to be fetched before trying to fetch timetable modules
+        // TODO: There may be a more optimal way to do this
+        this.fetchTimetableModules(timetable, semester);
+      });
     });
 
     // Enable Matomo analytics
     trackPageView(this.props.history);
   }
 
-  fetchModuleList = () => {
+  fetchModuleList = () =>
     // TODO: This always re-fetch the entire modules list. Consider a better strategy for this
     this.props.fetchModuleList().catch((error) => {
       captureException(error);
       this.setState({ moduleListError: error });
     });
-  };
 
   fetchTimetableModules = (timetable: SemTimetableConfig, semester: Semester) => {
     this.props
