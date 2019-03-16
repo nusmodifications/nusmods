@@ -1,3 +1,5 @@
+import { difference } from 'lodash';
+
 import { Task } from '../types/tasks';
 import { Module, Semesters } from '../types/modules';
 
@@ -28,6 +30,10 @@ export default class DataPipeline extends BaseTask implements Task<void, Module[
   }
 
   async run() {
+    // Get a list of all existing modules so we can remove data for any modules
+    // that the school API does not return - ie. modules that are no longer offered
+    const existingModules = await this.io.getModuleCodes();
+
     const organizations = await new GetFacultyDepartment(this.academicYear).run();
 
     // Get each semester's data in series. Running it in parallel provides
@@ -54,6 +60,13 @@ export default class DataPipeline extends BaseTask implements Task<void, Module[
 
     const collateModules = new CollateModules(this.academicYear);
     const modules = await collateModules.run({ semesterData, aliases: allAliases });
+
+    // Delete all modules that are no longer offered
+    const removedModules = difference(existingModules, modules.map((module) => module.moduleCode));
+    if (removedModules.length) {
+      this.logger.info({ removedModules }, 'Removing no longer offered modules');
+      await Promise.all(removedModules.map((moduleCode) => this.io.deleteModule(moduleCode)));
+    }
 
     return modules;
   }

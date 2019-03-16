@@ -1,6 +1,7 @@
 import api from '../services/nus-api';
 import logger, { Logger } from '../services/logger';
-import { getDataWriter, getCacheFactory, Cache } from '../services/io';
+import { getCacheFactory, getDataWriter } from '../services/io';
+import { Cache, Persist } from '../types/persist';
 
 /**
  * Base task class. Dependencies and components are instance properties
@@ -10,7 +11,7 @@ export default abstract class BaseTask {
   protected academicYear: string;
 
   // For storing data to the file system
-  io: ReturnType<typeof getDataWriter>;
+  io: Persist;
 
   // To get a cache for data of T type
   protected getCache: <T>(key: string, expiry?: number) => Cache<T>;

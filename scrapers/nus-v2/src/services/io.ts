@@ -17,19 +17,10 @@ import {
   Semester,
   SemesterData,
 } from '../types/modules';
-
+import { Venue, VenueInfo } from '../types/venues';
+import { Cache, Persist } from '../types/persist';
 import config from '../config';
 import { CacheExpiredError } from '../utils/errors';
-import { Venue, VenueInfo } from '../types/venues';
-
-/**
- * Object representing a unique cache file on disk
- */
-export interface Cache<T> {
-  path: string;
-  write: (data: T) => Promise<void>;
-  read: () => Promise<T>;
-}
 
 const defaultExpiry = 24 * 60; // 1 day
 
@@ -75,10 +66,11 @@ export function getCacheFactory(academicYear: string) {
  * a function to send output to, this can be replaced with any persistence
  * mechanism in the future, eg. a database
  */
-export function getDataWriter(academicYear: string) {
+export function getDataWriter(academicYear: string): Persist {
   const yearRoot = getFileRoot(academicYear);
 
   // Directory structure
+  //
   // -- /2018-2019 (year)
   //  |--- facultyDepartments.json
   //  |--- aliases.json
@@ -92,13 +84,14 @@ export function getDataWriter(academicYear: string) {
   //       |--- /1 (semester)
   //            |--- venues.json
   //            |--- venueInformation.json
-  //            |--- /modules
-  //                 |--- /CS1010 (module)
-  //                 |    |--- timetable.json
-  //                 |    |--- semesterData.json
-  //                 |--- /...
+  //            |--- /CS1010 (module)
+  //            |    |--- timetable.json
+  //            |    |--- semesterData.json
+  //            |--- /...
   return {
+    // ///////////////////////////////////////////////////////////
     // Per year information
+    // ///////////////////////////////////////////////////////////
 
     // List of ModuleCondensed for searching
     moduleList: (data: ModuleCondensed[]) =>
@@ -116,13 +109,56 @@ export function getDataWriter(academicYear: string) {
     facultyDepartments: (data: { [faculty: string]: string[] }) =>
       fs.outputJSON(path.join(yearRoot, 'facultyDepartments.json'), data, writeOptions),
 
+    // ///////////////////////////////////////////////////////////
     // Per module information
+    // ///////////////////////////////////////////////////////////
 
     // Output for a specific module's data
     module: (moduleCode: ModuleCode, data: Module) =>
       fs.outputJSON(path.join(yearRoot, 'modules', `${moduleCode}.json`), data, writeOptions),
 
+    timetable: (semester: Semester, moduleCode: ModuleCode, data: RawLesson[]) =>
+      fs.outputJSON(
+        path.join(yearRoot, 'semesters', String(semester), moduleCode, 'timetable.json'),
+        data,
+        writeOptions,
+      ),
+
+    semesterData: (semester: Semester, moduleCode: ModuleCode, data: SemesterData) =>
+      fs.outputJSON(
+        path.join(yearRoot, 'semesters', String(semester), moduleCode, 'semesterData.json'),
+        data,
+        writeOptions,
+      ),
+
+    getModuleCodes: async () => {
+      let files: ModuleCode[];
+      try {
+        files = await fs.readdir(path.join(yearRoot, 'modules'));
+      } catch (e) {
+        if (e.code === 'ENOENT') {
+          files = [];
+        } else {
+          throw e;
+        }
+      }
+
+      return files.map((filename) => path.basename(filename, '.json'));
+    },
+
+    deleteModule: async (moduleCode: ModuleCode) => {
+      await Promise.all([
+        fs.remove(path.join(yearRoot, 'modules', `${moduleCode}.json`)),
+        fs.remove(path.join(yearRoot, 'semesters', '1', moduleCode)),
+        fs.remove(path.join(yearRoot, 'semesters', '2', moduleCode)),
+        fs.remove(path.join(yearRoot, 'semesters', '3', moduleCode)),
+        fs.remove(path.join(yearRoot, 'semesters', '4', moduleCode)),
+      ]);
+    },
+
+    // ///////////////////////////////////////////////////////////
     // Per semester information
+    // ///////////////////////////////////////////////////////////
 
     // List of venue codes used for searching
     venueList: (semester: Semester, data: Venue[]) =>
@@ -136,20 +172,6 @@ export function getDataWriter(academicYear: string) {
     venueInformation: (semester: Semester, data: VenueInfo) =>
       fs.outputJSON(
         path.join(yearRoot, 'semesters', String(semester), 'venueInformation.json'),
-        data,
-        writeOptions,
-      ),
-
-    timetable: (semester: Semester, moduleCode: ModuleCode, data: RawLesson[]) =>
-      fs.outputJSON(
-        path.join(yearRoot, 'semesters', String(semester), moduleCode, 'timetable.json'),
-        data,
-        writeOptions,
-      ),
-
-    semesterData: (semester: Semester, moduleCode: ModuleCode, data: SemesterData) =>
-      fs.outputJSON(
-        path.join(yearRoot, 'semesters', String(semester), moduleCode, 'semesterData.json'),
         data,
         writeOptions,
       ),

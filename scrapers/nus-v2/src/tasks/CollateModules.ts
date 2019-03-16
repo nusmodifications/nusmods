@@ -1,4 +1,4 @@
-import { mapValues, values, omit, isEqual, mergeWith } from 'lodash';
+import { mapValues, values, omit, isEqual, mergeWith, sortBy } from 'lodash';
 
 import { Task } from '../types/tasks';
 import { ModuleAliases, ModuleWithoutTree, SemesterModuleData } from '../types/mapper';
@@ -64,13 +64,7 @@ export function combineModules(
         const right = semesterModule.module;
 
         if (!isEqual(left, right)) {
-          logger.warn(
-            {
-              left,
-              right,
-            },
-            'Module with different module info between semesters',
-          );
+          logger.warn({ left, right }, 'Module with different module info between semesters');
         }
 
         // 4. Always use the latest semester's data. In case the two semester's data
@@ -86,14 +80,17 @@ export function combineModules(
   return values(modules);
 }
 
-const getModuleCondensed = (module: ModuleWithoutTree): ModuleCondensed => ({
-  moduleCode: module.moduleCode,
-  title: module.title,
-  semesters: module.semesterData.map((semester) => semester.semester),
+const getModuleCondensed = ({
+  moduleCode,
+  title,
+  semesterData,
+}: ModuleWithoutTree): ModuleCondensed => ({
+  moduleCode,
+  title,
+  semesters: semesterData.map((semester) => semester.semester),
 });
 
 // Avoid using _.pick here because it is not type safe
-/* eslint-disable no-shadow */
 const getModuleInformation = ({
   moduleCode,
   title,
@@ -121,7 +118,6 @@ const getModuleInformation = ({
     examDuration,
   })),
 });
-/* eslint-enable */
 
 /**
  * Collect semester data from multiple semesters together
@@ -159,8 +155,9 @@ export default class CollateModules extends BaseTask implements Task<Input, Outp
       this.logger,
     );
 
-    // Insert prerequisite trees into the modules
-    const modules: Module[] = await generatePrereqTree(modulesWithoutTree);
+    // Insert prerequisite trees into the modules and order them by module code
+    const unsortedModules: Module[] = await generatePrereqTree(modulesWithoutTree);
+    const modules = sortBy(unsortedModules, (module) => module.moduleCode);
 
     this.logger.info(`Collated ${modules.length} modules`);
 

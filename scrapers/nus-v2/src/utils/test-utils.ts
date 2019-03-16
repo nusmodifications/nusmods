@@ -2,8 +2,8 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { omit, sortBy, zip } from 'lodash';
 import httpStatus from 'http-status';
 
-import { Cache } from '../services/io';
-import { Weeks, Module, RawLesson, SemesterData } from '../types/modules';
+import { Cache } from '../types/persist';
+import { Module, RawLesson, SemesterData, Weeks } from '../types/modules';
 import { Logger } from '../services/logger';
 
 /* eslint-disable import/prefer-default-export */

@@ -145,6 +145,9 @@ describe(DataPipeline, () => {
     });
 
     const pipeline = new DataPipeline();
+    // Mock getModuleCodes since we've mocked fs-extra
+    pipeline.io.getModuleCodes = () => Promise.resolve([]);
+
     const [CS2100Actual] = await pipeline.run();
 
     expectModulesEqual(CS2100Actual, CS2100Expected);

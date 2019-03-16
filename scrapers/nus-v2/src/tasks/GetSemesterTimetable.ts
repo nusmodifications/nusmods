@@ -6,7 +6,7 @@ import { compareAsc, differenceInDays, format, parseISO } from 'date-fns';
 import { RawLesson, Semester, WeekRange, Weeks } from '../types/modules';
 import { Task } from '../types/tasks';
 import { TimetableLesson } from '../types/api';
-import { Cache } from '../services/io';
+import { Cache } from '../types/persist';
 
 import { Logger } from '../services/logger';
 import BaseTask from './BaseTask';
