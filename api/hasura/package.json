@@ -26,6 +26,7 @@
   ],
   "private": true,
   "dependencies": {
+    "@sendgrid/mail": "^6.3.1",
     "base-x": "^3.0.5",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",

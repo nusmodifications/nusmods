@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import expressPlayground from 'graphql-playground-middleware-express';
 import config from './config';
-import token from './token';
+import mailService from './mailService';
 import TokenController from './TokenController';
 import HttpStatus from './HttpStatus';
 
@@ -20,22 +20,29 @@ const tokenController = new TokenController(config.mailTokenLifeTime);
 app.post('/auth', (req, res) => {
   const email = req.body.email;
   if (!email) {
-    res.status(HttpStatus.BAD_REQUEST).send('Missing field `email` of type string in post body.');
+    return res
+      .status(HttpStatus.BAD_REQUEST)
+      .send('Missing field `email` of type string in post body.');
   }
 
   const mailToken = tokenController.request(email);
   if (!mailToken) {
-    res.status(HttpStatus.TOO_MANY_REQUESTS).send('Rate limit exceeded, please try again later.');
+    return res
+      .status(HttpStatus.TOO_MANY_REQUESTS)
+      .send('Rate limit exceeded, please try again later.');
   }
 
+  if (!config.mailApiKey) {
+    return res.send({ mailToken });
+  }
   mailService
-    .sendToken(mailToken)
+    .sendToken(email, mailToken)
     .then(() => {
-      res.status(HttpStatus.ACCEPTED);
+      res.sendStatus(HttpStatus.ACCEPTED);
     })
     .catch(() => {
       // TODO: log error
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Unable to send mail');
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Unable to send mail');
     });
 });
 
@@ -46,19 +53,26 @@ app.post('/auth', (req, res) => {
 app.post('/verify', (req, res) => {
   const email = req.body.email;
   if (!email) {
-    res.status(HttpStatus.BAD_REQUEST).send('Missing field `email` of type string in post body.');
+    return res
+      .status(HttpStatus.BAD_REQUEST)
+      .send('Missing field `email` of type string in post body.');
   }
   const token = req.body.token;
   if (!token) {
-    res.status(HttpStatus.BAD_REQUEST).send('Missing field `token` of type string in post body.');
+    return res
+      .status(HttpStatus.BAD_REQUEST)
+      .send('Missing field `token` of type string in post body.');
   }
   const mailToken = tokenController.verify(email, token);
   if (mailToken == null) {
-    res.status(HttpStatus.TOO_MANY_REQUESTS).send('Rate limit exceeded, please try again later.');
+    return res
+      .status(HttpStatus.TOO_MANY_REQUESTS)
+      .send('Rate limit exceeded, please try again later.');
   } else if (!mailToken) {
-    res.status(HttpStatus.UNAUTHORIZED).send('Invalid token');
+    return res.status(HttpStatus.UNAUTHORIZED).send('Invalid token');
   }
   const accessToken = token.getAccessToken();
+  return res.send(accessToken);
 });
 
 // 3. User while holding valid refresh token and expired access token,

@@ -2,9 +2,11 @@ export default {
   databaseUrl: '',
   hasuraUrl: '',
   // Mail Token for verifying accounts
+  mailAddress: '',
+  mailApiKey: '',
   mailTokenLifeTime: '1s',
-  hasuraTokenNameSpace: '',
   // Access Token for obtaining information (aka Hasura Token)
+  hasuraTokenNameSpace: '',
   hasuraTokenSecretKey: '',
   hasuraTokenSecretAlgorithm: '',
   hasuraTokenLifeTime: '1s',

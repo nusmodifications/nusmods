@@ -6,9 +6,11 @@ const config = {
   databaseUrl: process.env.DATABASE_URL,
   hasuraUrl: process.env.HASURA_URL as string,
   // Mail Token for verifying accounts
+  mailAddress: 'noreply@nusmods.com',
+  mailApiKey: process.env.SENDGRID_API_KEY as string,
   mailTokenLifeTime: '15m',
-  hasuraTokenNameSpace: hasuraConfig.claims_namespace,
   // Access Token for obtaining information (aka Hasura Token)
+  hasuraTokenNameSpace: hasuraConfig.claims_namespace,
   hasuraTokenSecretKey: hasuraConfig.key,
   hasuraTokenSecretAlgorithm: hasuraConfig.type,
   hasuraTokenLifeTime: '1d',
