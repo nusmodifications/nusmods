@@ -9,6 +9,12 @@ This project provides school data such as lessons and modules through an [API](h
 1. Ensure data consistency.
 1. Grow the ecosystem.
 
+## Usage
+
+`curl -d '{"email": "hello@nusmods.com"}' -H "Content-Type: application/json" -X POST http://localhost:8081/auth`
+
+`curl -d '{"email": "hello@nusmods.com", "token": "5Y2Q3dt2D4f6T6RXVFc7as" }' -H "Content-Type: application/json" -X POST http://localhost:8081/verify`
+
 ## Installation
 
 1. Run `cp .env.example .env`, which copies `.env.example` to a new file called `.env`.
