@@ -94,4 +94,12 @@ app.post('/verify', (req, res) => {
 //    client receives a new short lived access token
 // app.post('/refresh', (req, res) => {});
 
+// Handle shutdowns gracefully, remove all handlers and connections
+process.on('SIGTERM', () => {
+  // Cleanup in the reverse order
+  // accessTokenController.cleanup();
+  authTokenController.cleanup();
+  database.cleanup();
+});
+
 export default app;
