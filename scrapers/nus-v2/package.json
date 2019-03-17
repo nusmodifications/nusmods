@@ -18,6 +18,7 @@
   },
   "devDependencies": {
     "@types/bunyan": "1.8.5",
+    "@types/deep-diff": "1.0.0",
     "@types/fs-extra": "5.0.5",
     "@types/jest": "23.3.13",
     "@types/joi": "14.3.1",
@@ -51,6 +52,7 @@
     "bunyan": "1.8.12",
     "chevrotain": "4.2.0",
     "date-fns": "2.0.0-alpha.27",
+    "deep-diff": "1.0.2",
     "fs-extra": "7.0.1",
     "joi": "14.3.1",
     "lodash": "4.17.11",
