@@ -22,4 +22,8 @@ fuse
   // launch and restart express
   .completed((proc) => proc.require());
 
-fuse.run();
+fuse.run({
+  chokidar: {
+    usePolling: true,
+  },
+});

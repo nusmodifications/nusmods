@@ -6,7 +6,7 @@ services:
       - db_data:/var/lib/postgresql/data
 
   graphql-engine:
-    image: hasura/graphql-engine:v1.0.0-alpha38.cli-migrations
+    image: hasura/graphql-engine:v1.0.0-alpha40.cli-migrations
     volumes:
       - ./migrations:/hasura-migrations
     ports:
