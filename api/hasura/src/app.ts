@@ -5,7 +5,7 @@ import config from './config';
 import mailService from './mailService';
 import AuthTokenController from './AuthTokenController';
 import AccessTokenController from './AccessTokenController';
-import HttpStatus from './HttpStatus';
+import HttpStatus from './utils/HttpStatus';
 import Database from './db';
 
 const app = express();

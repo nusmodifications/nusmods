@@ -1,6 +1,6 @@
-import ExpiringMap from './ExpiringMap';
+import ExpiringMap from './utils/ExpiringMap';
 import crypto from 'crypto';
-import base58 from './base58';
+import base58 from './utils/base58';
 
 const RATE_LIMIT = 20;
 const RATE_LIMIT_RESET_TIMEOUT = '5m';
