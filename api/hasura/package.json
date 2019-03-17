@@ -31,7 +31,8 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "graphql-playground-middleware-express": "^1.7.12",
-    "jsonwebtoken": "^8.5.0"
+    "jsonwebtoken": "^8.5.0",
+    "pg": "^7.9.0"
   },
   "devDependencies": {
     "@types/base-x": "^3.0.0",
@@ -40,10 +41,11 @@
     "@types/jest": "^24.0.11",
     "@types/jsonwebtoken": "^8.3.2",
     "@types/ms": "^0.7.30",
-    "@types/node": "^11.9.4",
+    "@types/node": "^10.14.1",
+    "@types/pg": "^7.4.13",
     "fuse-box": "^3.7.1",
-    "jest": "^24.3.1",
     "jest-date-mock": "^1.0.7",
+    "jest": "^24.5.0",
     "schemats": "^3.0.3",
     "ts-jest": "^24.0.0",
     "typescript": "^3.3.3"

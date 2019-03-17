@@ -12,7 +12,7 @@ const MAIL_TOKEN_SIZE = 16;
  * per email address, care should be taken to limit by IP address
  * as well in the proxy layer, using things like nginx.
  */
-class TokenController {
+class AuthTokenController {
   private tokenMap: ExpiringMap<string, { token: string; verifyTimes: number }>;
   private requestRateLimitMap: ExpiringMap<string, number>;
   private requestLimit: number;
@@ -80,4 +80,4 @@ class TokenController {
   }
 }
 
-export default TokenController;
+export default AuthTokenController;

@@ -3,7 +3,7 @@ type SecretEnv = { claims_namespace: string; key: string; type: string };
 const hasuraConfig: SecretEnv = JSON.parse(process.env.HASURA_GRAPHQL_JWT_SECRET!);
 
 const config = {
-  databaseUrl: process.env.DATABASE_URL,
+  databaseUrl: process.env.DATABASE_URL as string,
   hasuraUrl: process.env.HASURA_URL as string,
   // Mail Token for verifying accounts
   mailAddress: 'noreply@nusmods.com',

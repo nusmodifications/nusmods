@@ -1,5 +1,4 @@
 import { Pool } from 'pg';
-import config from './config';
 import { account } from './schema';
 
 // Use parameterized query to prevent sql injection
@@ -11,32 +10,44 @@ ON CONFLICT(email) DO NOTHING
 RETURNING account_id;
 `.trim();
 
-const pool = new Pool({
-  connectionString: config.databaseUrl,
-});
-
 export type UserInput = Readonly<{
   email: string;
 }>;
 
-/**
- * Accepts an email and inserts into the database irregardless if it has been created
- * @param { email }
- */
-export async function findOrCreateUser({ email }: UserInput): Promise<Pick<account, 'account_id'>> {
-  const values = [email];
+class Database {
+  private pool: Pool;
 
-  const res = await pool.query(INSERT_ACCOUNT, values);
-  return res.rows[0];
+  constructor(connectionString: string) {
+    this.pool = new Pool({
+      connectionString,
+    });
+  }
+
+  /**
+   * Accepts an email and inserts into the database irregardless if it has been created
+   * @param { email }
+   */
+  async findOrCreateUser({ email }: UserInput): Promise<Pick<account, 'account_id'>> {
+    const values = [email];
+
+    const res = await this.pool.query(INSERT_ACCOUNT, values);
+    return res.rows[0];
+  }
+
+  /**
+   * Accepts an email and inserts into the database irregardless if it has been created
+   * @param { email }
+   */
+  async createUser({ email }: UserInput): Promise<Pick<account, 'account_id'>> {
+    const values = [email];
+
+    const res = await this.pool.query(INSERT_ACCOUNT, values);
+    return res.rows[0];
+  }
+
+  cleanup() {
+    return this.pool.end();
+  }
 }
 
-/**
- * Accepts an email and inserts into the database irregardless if it has been created
- * @param { email }
- */
-export async function createUser({ email }: UserInput): Promise<Pick<account, 'account_id'>> {
-  const values = [email];
-
-  const res = await pool.query(INSERT_ACCOUNT, values);
-  return res.rows[0];
-}
+export default Database;
