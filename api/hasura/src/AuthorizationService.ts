@@ -39,12 +39,13 @@ class AuthorizationService {
   }
 
   async getAccessToken(email: string): Promise<string> {
-    const accountId = await this.db.findOrCreateUser({ email });
+    const accountId = await this.db.findOrCreateUser(email);
     return this.generateToken(
       {
         [config.hasuraTokenNameSpace]: {
           'x-hasura-allowed-roles': ['user'],
           'x-hasura-default-role': 'user',
+          'x-hasura-account-id': accountId,
         },
       },
       config.hasuraTokenSecretKey,
@@ -55,9 +56,9 @@ class AuthorizationService {
     );
   }
 
-  async getRefreshToken(): Promise<string> {
-    const accountId = await this.db.findOrCreateUser({ email });
-    const sessionId = await this.db.createSession({ accountId });
+  async getRefreshToken(email: string, userAgent: string): Promise<string> {
+    const accountId = await this.db.findOrCreateUser(email);
+    const sessionId = await this.db.createSession(accountId, userAgent);
     return this.generateToken(sessionId, config.refreshTokenSecretKey, {
       algorithm: config.refreshTokenSecretAlgorithm,
       expiresIn: config.refreshTokenLifeTime,

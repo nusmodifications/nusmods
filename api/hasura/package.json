@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node fuse",
     "test": "jest",
-    "gen:types": "schemats generate -c \"${DATABASE_URL}\" -t account -o src/schema.ts",
+    "gen:types": "schemats generate -c \"${DATABASE_URL}\" -t account -t session -o src/schema.ts",
     "clean": "docker-compose down && docker volume rm hasura_db_data"
   },
   "author": {
@@ -44,8 +44,8 @@
     "@types/node": "^10.14.1",
     "@types/pg": "^7.4.13",
     "fuse-box": "^3.7.1",
-    "jest-date-mock": "^1.0.7",
     "jest": "^24.5.0",
+    "jest-date-mock": "^1.0.7",
     "schemats": "^3.0.3",
     "ts-jest": "^24.0.0",
     "typescript": "^3.3.3"

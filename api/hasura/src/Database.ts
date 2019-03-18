@@ -1,18 +1,14 @@
 import { Pool } from 'pg';
-import { account } from './schema';
+import { account, session } from './schema';
 
 // Use parameterized query to prevent sql injection
 // https://node-postgres.com/features/queries#parameterized-query
-const INSERT_ACCOUNT = `
+const UPSERT_ACCOUNT = `
 INSERT INTO account (email)
 VALUES($1)
 ON CONFLICT(email) DO NOTHING
 RETURNING account_id;
 `.trim();
-
-export type UserInput = Readonly<{
-  email: string;
-}>;
 
 class Database {
   private pool: Pool;
@@ -27,21 +23,21 @@ class Database {
    * Accepts an email and inserts into the database irregardless if it has been created
    * @param { email }
    */
-  async findOrCreateUser({ email }: UserInput): Promise<Pick<account, 'account_id'>> {
+  async findOrCreateUser(email: string): Promise<account['account_id']> {
     const values = [email];
 
-    const res = await this.pool.query(INSERT_ACCOUNT, values);
+    const res = await this.pool.query(UPSERT_ACCOUNT, values);
     return res.rows[0];
   }
 
-  /**
-   * Accepts an email and inserts into the database irregardless if it has been created
-   * @param { email }
-   */
-  async createUser({ email }: UserInput): Promise<Pick<account, 'account_id'>> {
-    const values = [email];
+  async createSession(
+    accountId: string,
+    expiresAt: number,
+    userAgent: string,
+  ): Promise<session['session_id']> {
+    const values = [accountId, expiresAt, userAgent];
 
-    const res = await this.pool.query(INSERT_ACCOUNT, values);
+    const res = await this.pool.query(UPSERT_ACCOUNT, values);
     return res.rows[0];
   }
 
