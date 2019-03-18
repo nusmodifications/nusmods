@@ -1,7 +1,13 @@
-import { mapValues, values, omit, isEqual, mergeWith, sortBy } from 'lodash';
+import { mapValues, values, pick, mergeWith, sortBy } from 'lodash';
+import { diff } from 'deep-diff';
 
 import { Task } from '../types/tasks';
-import { ModuleAliases, ModuleWithoutTree, SemesterModuleData } from '../types/mapper';
+import {
+  ModuleAliases,
+  ModuleWithoutTree,
+  SemesterModule,
+  SemesterModuleData,
+} from '../types/mapper';
 import { Module, ModuleCode, ModuleCondensed, ModuleInformation } from '../types/modules';
 
 import BaseTask from './BaseTask';
@@ -35,6 +41,32 @@ export function mergeAliases(aliases: ModuleAliases[]): { [moduleCode: string]: 
 }
 
 /**
+ * Check that the module info match between the previous semester's module info
+ * and the next semester's info. Discrepancy would mean that the module's data
+ * has been updated between semesters, which would be a source of error because
+ * we assume that the data does not differ, and when it does showing the latest
+ * semester's data is correct.
+ *
+ * This function returns null if the two agree, otherwise it returns an object
+ * containing the keys that don't.
+ */
+export function moduleDataCheck(
+  module: ModuleWithoutTree,
+  semesterModule: SemesterModule,
+): { left: unknown; right: unknown } | null {
+  const { semesterData, aliases, ...existing } = module;
+
+  const difference = diff(existing, semesterModule);
+  if (!difference) return null;
+
+  const keys = difference.map((edit): string => edit.path && edit.path[0]);
+  return {
+    left: pick(module, keys),
+    right: pick(semesterModule, keys),
+  };
+}
+
+/**
  * Combine modules from multiple semesters into one
  */
 export function combineModules(
@@ -60,11 +92,10 @@ export function combineModules(
       //    which we log here for safety
       const existingData = modules[moduleCode];
       if (existingData) {
-        const left = omit(existingData, ['SemesterData', 'Aliases']);
-        const right = semesterModule.module;
+        const difference = moduleDataCheck(existingData, semesterModule.module);
 
-        if (!isEqual(left, right)) {
-          logger.warn({ left, right }, 'Module with different module info between semesters');
+        if (difference) {
+          logger.warn(difference, 'Module with different module info between semesters');
         }
 
         // 4. Always use the latest semester's data. In case the two semester's data

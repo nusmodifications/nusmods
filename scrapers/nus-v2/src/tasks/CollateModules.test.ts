@@ -1,5 +1,5 @@
 import { mapValues } from 'lodash';
-import { combineModules, mergeAliases } from './CollateModules';
+import { combineModules, mergeAliases, moduleDataCheck } from './CollateModules';
 import { mockLogger } from '../utils/test-utils';
 
 describe(combineModules, () => {
@@ -14,9 +14,8 @@ describe(combineModules, () => {
       faculty: 'Business',
       department: 'Accounting',
       title: 'Accounting Information Systems',
-      workload: '0-3-0-4-3',
+      workload: [0, 3, 0, 4, 3],
       prerequisite: 'FNA1002 or ACC1002',
-      corequisite: '',
       moduleCredit: '4',
       moduleCode: 'ACC1006',
     };
@@ -91,6 +90,72 @@ describe(combineModules, () => {
         semesterData: [semesterOneData, semesterTwoData],
       },
     ]);
+  });
+});
+
+describe(moduleDataCheck, () => {
+  const semesterModule = {
+    acadYear: '2018/2019',
+    description: 'This course aims to help students understand the role of information...',
+    preclusion: 'Students who have passed FNA1006',
+    faculty: 'Business',
+    department: 'Accounting',
+    title: 'Accounting Information Systems',
+    workload: [0, 3, 0, 4, 3],
+    prerequisite: 'FNA1002 or ACC1002',
+    moduleCredit: '4',
+    moduleCode: 'ACC1006',
+  };
+
+  const module = {
+    ...semesterModule,
+    aliases: ['ACC1006X'],
+    semesterData: [
+      {
+        semester: 1,
+        timetable: [
+          {
+            classNo: 'A1',
+            startTime: '1400',
+            endTime: '1700',
+            weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+            venue: 'UTSRC-LT51',
+            day: 'Thursday',
+            lessonType: 'Sectional Teaching',
+          },
+        ],
+        examDate: '2018-12-06T13:00:00.000+08:00',
+        examDuration: 120,
+      },
+    ],
+  };
+
+  test('should return null if the two are the same', () => {
+    expect(moduleDataCheck(module, semesterModule)).toBeNull();
+  });
+
+  test('should return keys that are different', () => {
+    expect(
+      moduleDataCheck(
+        {
+          ...module,
+          // Change workload
+          workload: [0, 3, 1, 3, 3],
+          // Add corequisite
+          corequisite: 'ACC1006C',
+        },
+        semesterModule,
+      ),
+    ).toEqual({
+      left: {
+        workload: [0, 3, 1, 3, 3],
+        corequisite: 'ACC1006C',
+      },
+      right: {
+        workload: [0, 3, 0, 4, 3],
+        corequisite: undefined,
+      },
+    });
   });
 });
 
