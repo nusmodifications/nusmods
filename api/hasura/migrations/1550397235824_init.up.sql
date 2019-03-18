@@ -39,6 +39,26 @@ COMMENT ON TABLE public.account IS 'Contains user account data';
 
 
 --
+-- Name: session; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.session (
+    session_id uuid DEFAULT public.gen_random_uuid() PRIMARY KEY,
+    last_accessed_at timestamp with time zone DEFAULT now() NOT NULL,
+    expires_at timestamp with time zone NOT NULL,
+    account_id uuid NOT NULL,
+    user_agent text NOT NULL
+);
+
+
+--
+-- Name: TABLE session; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON TABLE public.session IS 'Contains user session data';
+
+
+--
 -- Name: school; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -223,6 +243,14 @@ COMMENT ON TABLE public.days_of_week IS 'Describes days of week (e.g. Mon, Tues)
 INSERT INTO public.days_of_week (day)
 VALUES  ('Monday'), ('Tuesday'), ('Wednesday'), ('Thursday'), ('Friday'),
         ('Saturday'), ('Sunday');
+
+
+--
+-- Name: session session_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.session
+    ADD CONSTRAINT session_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.account(account_id);
 
 
 --

@@ -53,8 +53,7 @@
                 - department_id
                 - school_id
               filter: {}
-              limit: 1000
-            role: public
+            role: collaborator
           - comment: null
             permission:
               allow_aggregations: true
@@ -72,7 +71,27 @@
                 - department_id
                 - school_id
               filter: {}
-            role: collaborator
+              limit: 1000
+            role: user
+          - comment: null
+            permission:
+              allow_aggregations: true
+              columns:
+                - venue_id
+                - created_at
+                - updated_at
+                - code
+                - name
+                - latitude
+                - longitude
+                - alttitude
+                - floor
+                - term_id
+                - department_id
+                - school_id
+              filter: {}
+              limit: 1000
+            role: public
         table: venue
         update_permissions:
           - comment: null
@@ -157,6 +176,24 @@
                 - value
               filter: {}
               limit: 1000
+            role: user
+          - comment: null
+            permission:
+              allow_aggregations: true
+              columns:
+                - code
+                - corequisite_text
+                - course_id
+                - created_at
+                - description
+                - preclusion_text
+                - prerequisite_text
+                - term_id
+                - title
+                - updated_at
+                - value
+              filter: {}
+              limit: 1000
             role: public
         table: course
         update_permissions:
@@ -176,6 +213,27 @@
               filter: {}
               set: {}
             role: collaborator
+      - array_relationships: []
+        delete_permissions: []
+        event_triggers: []
+        insert_permissions: []
+        object_relationships: []
+        select_permissions:
+          - comment: null
+            permission:
+              allow_aggregations: false
+              columns:
+                - session_id
+                - last_accessed_at
+                - expires_at
+                - account_id
+                - user_agent
+              filter:
+                account_id:
+                  _eq: X-Hasura-Account-Id
+            role: user
+        table: session
+        update_permissions: []
       - array_relationships:
           - comment: null
             name: coursesByTermId
@@ -227,8 +285,7 @@
                 - name
                 - school_id
               filter: {}
-              limit: 1000
-            role: public
+            role: collaborator
           - comment: null
             permission:
               allow_aggregations: true
@@ -241,7 +298,22 @@
                 - name
                 - school_id
               filter: {}
-            role: collaborator
+              limit: 1000
+            role: user
+          - comment: null
+            permission:
+              allow_aggregations: true
+              columns:
+                - term_id
+                - created_at
+                - updated_at
+                - starts_at
+                - ends_at
+                - name
+                - school_id
+              filter: {}
+              limit: 1000
+            role: public
         table: term
         update_permissions:
           - comment: null
@@ -277,7 +349,7 @@
                 - long_url
                 - short_url
               filter: {}
-            role: public
+            role: collaborator
           - comment: null
             permission:
               allow_aggregations: false
@@ -285,7 +357,15 @@
                 - long_url
                 - short_url
               filter: {}
-            role: collaborator
+            role: user
+          - comment: null
+            permission:
+              allow_aggregations: false
+              columns:
+                - long_url
+                - short_url
+              filter: {}
+            role: public
         table: url
         update_permissions: []
       - array_relationships:
@@ -331,8 +411,8 @@
                 - long_name
                 - short_name
               filter: {}
-              limit: 1000
-            role: public
+              limit: 0
+            role: collaborator
           - comment: null
             permission:
               allow_aggregations: true
@@ -343,8 +423,20 @@
                 - long_name
                 - short_name
               filter: {}
-              limit: 0
-            role: collaborator
+              limit: 1000
+            role: user
+          - comment: null
+            permission:
+              allow_aggregations: true
+              columns:
+                - school_id
+                - created_at
+                - updated_at
+                - long_name
+                - short_name
+              filter: {}
+              limit: 1000
+            role: public
         table: school
         update_permissions:
           - comment: null
@@ -357,13 +449,19 @@
               filter: {}
               set: {}
             role: collaborator
-      - array_relationships: []
+      - array_relationships:
+          - comment: null
+            name: sessionsByAccountId
+            using:
+              foreign_key_constraint_on:
+                column: account_id
+                table: session
         delete_permissions:
           - comment: null
             permission:
               filter:
                 account_id:
-                  _eq: X-Hasura-User-Id
+                  _eq: X-Hasura-Account-Id
             role: user
         event_triggers: []
         insert_permissions:
@@ -371,20 +469,13 @@
             permission:
               check:
                 account_id:
-                  _eq: X-Hasura-User-Id
+                  _eq: X-Hasura-Account-Id
               columns:
                 - account_id
                 - updated_at
               set:
-                account_id: x-hasura-User-Id
+                account_id: x-hasura-Account-Id
             role: user
-          - comment: null
-            permission:
-              check: {}
-              columns:
-                - email
-              set: {}
-            role: auth-server
         object_relationships: []
         select_permissions:
           - comment: null
@@ -396,17 +487,8 @@
                 - updated_at
               filter:
                 account_id:
-                  _eq: X-Hasura-User-Id
+                  _eq: X-Hasura-Account-Id
             role: user
-          - comment: null
-            permission:
-              allow_aggregations: false
-              columns:
-                - account_id
-                - email
-              filter: {}
-              limit: 1
-            role: auth-server
         table: account
         update_permissions:
           - comment: null
@@ -415,7 +497,7 @@
                 - updated_at
               filter:
                 account_id:
-                  _eq: X-Hasura-User-Id
+                  _eq: X-Hasura-Account-Id
               set: {}
             role: user
       - array_relationships: []
@@ -463,8 +545,7 @@
                 - course_id
                 - venue_id
               filter: {}
-              limit: 1000
-            role: public
+            role: collaborator
           - comment: null
             permission:
               allow_aggregations: true
@@ -481,7 +562,26 @@
                 - course_id
                 - venue_id
               filter: {}
-            role: collaborator
+              limit: 1000
+            role: user
+          - comment: null
+            permission:
+              allow_aggregations: true
+              columns:
+                - lesson_id
+                - created_at
+                - updated_at
+                - starts_at
+                - end_at
+                - type
+                - day
+                - week
+                - code
+                - course_id
+                - venue_id
+              filter: {}
+              limit: 1000
+            role: public
         table: lesson
         update_permissions:
           - comment: null
@@ -530,6 +630,31 @@
             permission:
               allow_aggregations: true
               columns:
+                - created_at
+                - department_id
+                - name
+                - school_id
+                - term_id
+                - updated_at
+              filter: {}
+            role: collaborator
+          - comment: null
+            permission:
+              allow_aggregations: true
+              columns:
+                - department_id
+                - created_at
+                - updated_at
+                - name
+                - term_id
+                - school_id
+              filter: {}
+              limit: 1000
+            role: user
+          - comment: null
+            permission:
+              allow_aggregations: true
+              columns:
                 - department_id
                 - created_at
                 - updated_at
@@ -539,18 +664,6 @@
               filter: {}
               limit: 1000
             role: public
-          - comment: null
-            permission:
-              allow_aggregations: true
-              columns:
-                - created_at
-                - department_id
-                - name
-                - school_id
-                - term_id
-                - updated_at
-              filter: {}
-            role: collaborator
         table: department
         update_permissions:
           - comment: null
