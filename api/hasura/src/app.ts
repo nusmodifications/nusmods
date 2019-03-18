@@ -3,10 +3,10 @@ import bodyParser from 'body-parser';
 import expressPlayground from 'graphql-playground-middleware-express';
 import config from './config';
 import mailService from './mailService';
-import AuthTokenController from './AuthTokenController';
-import AccessTokenController from './AccessTokenController';
+import AuthenticationService from './AuthenticationService';
+import AuthorizationService from './AuthorizationService';
+import Database from './Database';
 import HttpStatus from './utils/HttpStatus';
-import Database from './db';
 
 const app = express();
 app.use(bodyParser.json({ limit: '1kb' }));
@@ -15,8 +15,8 @@ app.use(bodyParser.json({ limit: '1kb' }));
 app.get('/playground', expressPlayground({ endpoint: config.hasuraUrl }));
 
 const database = new Database(config.databaseUrl);
-const authTokenController = new AuthTokenController(config.mailTokenLifeTime);
-const accessTokenController = new AccessTokenController(database);
+const authenticationService = new AuthenticationService(config.mailTokenLifeTime);
+const authorizationService = new AuthorizationService(database);
 
 // 1. User tries to create or log in to account,
 //    client makes post request to /auth with email
@@ -29,7 +29,7 @@ app.post('/auth', (req, res) => {
       .send('Missing field `email` of type string in post body.');
   }
 
-  const mailToken = authTokenController.request(email);
+  const mailToken = authenticationService.request(email);
   if (!mailToken) {
     return res
       .status(HttpStatus.TOO_MANY_REQUESTS)
@@ -69,7 +69,7 @@ app.post('/verify', (req, res) => {
       .status(HttpStatus.BAD_REQUEST)
       .send('Missing field `token` of type string in post body.');
   }
-  const mailToken = authTokenController.verify(email, token);
+  const mailToken = authenticationService.verify(email, token);
   if (mailToken == null) {
     return res
       .status(HttpStatus.TOO_MANY_REQUESTS)
@@ -78,7 +78,7 @@ app.post('/verify', (req, res) => {
     return res.status(HttpStatus.UNAUTHORIZED).send('Invalid token');
   }
 
-  accessTokenController
+  authorizationService
     .getAccessToken(email)
     .then((accessToken) => {
       return res.send({ accessToken });
@@ -97,8 +97,8 @@ app.post('/verify', (req, res) => {
 // Handle shutdowns gracefully, remove all handlers and connections
 process.on('SIGTERM', () => {
   // Cleanup in the reverse order
-  // accessTokenController.cleanup();
-  authTokenController.cleanup();
+  // authorizationService.cleanup();
+  authenticationService.cleanup();
   database.cleanup();
 });
 

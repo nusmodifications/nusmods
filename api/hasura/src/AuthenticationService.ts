@@ -7,12 +7,25 @@ const RATE_LIMIT_RESET_TIMEOUT = '5m';
 const MAIL_TOKEN_SIZE = 16;
 
 /**
- * The store allows retrieval of tokens while managing expiry,
+ * Authentication is the process of ascertaining that
+ * somebody really is who they claim to be.
+ *
+ * AuthenticationService gives a token which should be sent to the
+ * user through a transport which only they have access to,
+ * such as email or sms, in order to verify their identify.
+ * This flow is known as "passwordless", and care must taken to prevent
+ * brute force attacks through rate limiting and short token lifetimes.
+ *
+ * This service allows retrieval of tokens while managing expiry,
  * retries and rate limiting. While rate limiting here is applied
  * per email address, care should be taken to limit by IP address
  * as well in the proxy layer, using things like nginx.
+ *
+ * Passwordless FAQ: https://auth0.com/docs/connections/passwordless/faq
+ * Passwordless flow diagram: https://auth0.com/docs/connections/passwordless/spa-email-link
+ * Authentication definition: https://stackoverflow.com/a/6556548
  */
-class AuthTokenController {
+class AuthenticationService {
   private tokenMap: ExpiringMap<string, { token: string; verifyTimes: number }>;
   private requestRateLimitMap: ExpiringMap<string, number>;
   private requestLimit: number;
@@ -31,8 +44,8 @@ class AuthTokenController {
   }
 
   /**
-   * Request will return a new token until the number of tries
-   * in user defined argument `` has been exceeded.
+   * Returns a new token until the number of tries
+   * in user defined argument `requestLimit` has been exceeded.
    *
    * @param email user email address
    */
@@ -50,9 +63,9 @@ class AuthTokenController {
   }
 
   /**
-   * `verify` will check that a token for a given email address
-   * is valid until the number of tries in user defined argument
-   * `` has been exceeded.
+   * Checks that a token for a given email address is valid
+   * until the number of tries in user defined argument
+   * `verifyLimit` has been exceeded.
    *
    * @param email user email address
    * @param token mail token as keyed in by the user
@@ -80,4 +93,4 @@ class AuthTokenController {
   }
 }
 
-export default AuthTokenController;
+export default AuthenticationService;
