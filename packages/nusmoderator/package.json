@@ -47,7 +47,7 @@
     "@babel/preset-env": "7.3.4",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.0.1",
-    "babel-jest": "24.0.0",
+    "babel-jest": "24.5.0",
     "documentation": "9.3.0",
     "eslint": "5.13.0",
     "eslint-config-airbnb-base": "13.1.0",
@@ -55,7 +55,7 @@
     "eslint-plugin-flowtype": "3.2.1",
     "eslint-plugin-import": "2.16.0",
     "eslint-plugin-prettier": "3.0.1",
-    "jest": "24.0.0",
+    "jest": "24.5.0",
     "microbundle": "0.11.0",
     "prettier": "1.16.4",
     "rimraf": "2.6.3"
