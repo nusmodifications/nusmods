@@ -15,8 +15,12 @@ app.use(bodyParser.json({ limit: '1kb' }));
 app.get('/playground', expressPlayground({ endpoint: config.hasuraUrl }));
 
 const database = new Database(config.databaseUrl);
-const authenticationService = new AuthenticationService(config.mailTokenLifeTime);
-const authorizationService = new AuthorizationService(database);
+const authenticationService = new AuthenticationService(config.passcode);
+const authorizationService = new AuthorizationService(
+  database,
+  config.accessToken,
+  config.refreshToken,
+);
 
 // 1. User tries to create or log in to account,
 //    client makes post request to /auth with email
@@ -29,18 +33,18 @@ app.post('/auth', (req, res) => {
       .send('Missing field `email` of type string in post body.');
   }
 
-  const mailToken = authenticationService.request(email);
-  if (!mailToken) {
+  const passcode = authenticationService.request(email);
+  if (!passcode) {
     return res
       .status(HttpStatus.TOO_MANY_REQUESTS)
       .send('Rate limit exceeded, please try again later.');
   }
 
-  if (!config.mailApiKey) {
-    return res.send({ mailToken });
+  if (!config.mailAddress) {
+    return res.send({ passcode });
   }
   mailService
-    .sendToken(email, mailToken)
+    .sendPasscode(email, passcode)
     .then(() => {
       res.sendStatus(HttpStatus.ACCEPTED);
     })
@@ -79,8 +83,9 @@ app.post('/verify', (req, res) => {
   }
 
   authorizationService
-    .getAccessToken(email)
-    .then((accessToken) => {
+    .createTokens(email, req.header('user-agent') || '')
+    .then(({ accessToken, refreshToken, refreshTokenExpiryTime }) => {
+      // res.header('set-cookie')
       return res.send({ accessToken });
     })
     .catch(() => {

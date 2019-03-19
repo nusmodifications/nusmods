@@ -1,5 +1,4 @@
 import { advanceBy } from 'jest-date-mock';
-import ms from 'ms';
 import ExpiringMap from './ExpiringMap';
 
 jest.mock('./config');
@@ -9,11 +8,11 @@ describe('ExpiringMap', () => {
   let instance: ExpiringMap<string, string>;
   const testKey = 'testKey';
   const testValue = 'testValue';
-  const durationString = '1s';
-  const tick = ms(durationString) + 10; // Allow slack
+  const duration = 1;
+  const tick = duration + 1; // Allow slack
 
   beforeEach(() => {
-    instance = new ExpiringMap(durationString);
+    instance = new ExpiringMap(duration);
   });
 
   afterEach(() => {

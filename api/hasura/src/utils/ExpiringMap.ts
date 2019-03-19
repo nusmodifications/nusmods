@@ -1,5 +1,3 @@
-import ms from 'ms';
-
 type Value<T> = Readonly<{
   value: T;
   expiresBy: number;
@@ -12,13 +10,13 @@ type Value<T> = Readonly<{
  * deleting the map to prevent memory leaks.
  */
 class ExpiringMap<K, V> {
-  private innerMap: Map<K, Value<V>>;
-  private ttl: number;
-  private vacuumHandler: NodeJS.Timeout;
+  private readonly innerMap: Map<K, Value<V>>;
+  private readonly ttl: number;
+  private readonly vacuumHandler: NodeJS.Timeout;
 
-  constructor(ttl: string) {
+  constructor(ttl: number) {
     this.innerMap = new Map();
-    this.ttl = ms(ttl);
+    this.ttl = ttl;
     this.vacuumHandler = setInterval(() => this.vacuum(), this.ttl);
   }
 

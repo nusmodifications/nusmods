@@ -1,6 +1,19 @@
 import jwt from 'jsonwebtoken';
-import config from './config';
+
 import Database from './Database';
+
+type AccessTokenConfig = {
+  nameSpace: string;
+  secretKey: string;
+  secretAlgorithm: string;
+  lifeTime: number;
+};
+
+type RefreshTokenConfig = {
+  secretKey: string;
+  secretAlgorithm: string;
+  lifeTime: number;
+};
 
 /**
  * Authorization refers to rules that determine who is allowed to do what.
@@ -11,10 +24,18 @@ import Database from './Database';
  * Authorization definition: https://stackoverflow.com/a/6556548
  */
 class AuthorizationService {
-  private db: Database;
+  private readonly db: Database;
+  private accessTokenConfig: Readonly<AccessTokenConfig>;
+  private refreshTokenConfig: Readonly<RefreshTokenConfig>;
 
-  constructor(database: Database) {
+  constructor(
+    database: Database,
+    accessTokenConfig: AccessTokenConfig,
+    refreshTokenConfig: RefreshTokenConfig,
+  ) {
     this.db = database;
+    this.accessTokenConfig = accessTokenConfig;
+    this.refreshTokenConfig = refreshTokenConfig;
   }
 
   /**
@@ -38,31 +59,53 @@ class AuthorizationService {
     });
   }
 
-  async getAccessToken(email: string): Promise<string> {
-    const accountId = await this.db.findOrCreateUser(email);
+  async createAccessToken(accountId: string): Promise<string> {
     return this.generateToken(
       {
-        [config.hasuraTokenNameSpace]: {
+        [this.accessTokenConfig.nameSpace]: {
           'x-hasura-allowed-roles': ['user'],
           'x-hasura-default-role': 'user',
           'x-hasura-account-id': accountId,
         },
       },
-      config.hasuraTokenSecretKey,
+      this.accessTokenConfig.secretKey,
       {
-        algorithm: config.hasuraTokenSecretAlgorithm,
-        expiresIn: config.hasuraTokenLifeTime,
+        algorithm: this.accessTokenConfig.secretAlgorithm,
+        expiresIn: this.accessTokenConfig.lifeTime,
       },
     );
   }
 
-  async getRefreshToken(email: string, userAgent: string): Promise<string> {
-    const accountId = await this.db.findOrCreateUser(email);
-    const sessionId = await this.db.createSession(accountId, userAgent);
-    return this.generateToken(sessionId, config.refreshTokenSecretKey, {
-      algorithm: config.refreshTokenSecretAlgorithm,
-      expiresIn: config.refreshTokenLifeTime,
+  async createRefreshToken(
+    accountId: string,
+    userAgent: string,
+  ): Promise<{ token: string; expiryTime: number }> {
+    const expiryTime = Date.now() + this.refreshTokenConfig.lifeTime;
+    const sessionId = await this.db.createSession(accountId, expiryTime, userAgent);
+
+    const token = await this.generateToken(sessionId, this.refreshTokenConfig.secretKey, {
+      algorithm: this.refreshTokenConfig.secretAlgorithm,
+      expiresIn: this.refreshTokenConfig.lifeTime,
     });
+
+    return {
+      token,
+      expiryTime,
+    };
+  }
+
+  async createTokens(email: string, userAgent: string) {
+    const accountId = await this.db.findOrCreateUser(email);
+    const accessToken = await this.createAccessToken(accountId);
+    const {
+      token: refreshToken,
+      expiryTime: refreshTokenExpiryTime,
+    } = await this.createRefreshToken(accountId, userAgent);
+    return {
+      accessToken,
+      refreshToken,
+      refreshTokenExpiryTime,
+    };
   }
 }
 

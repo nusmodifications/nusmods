@@ -2,21 +2,26 @@ import ExpiringMap from './utils/ExpiringMap';
 import crypto from 'crypto';
 import base58 from './utils/base58';
 
-const RATE_LIMIT = 20;
-const RATE_LIMIT_RESET_TIMEOUT = '5m';
-const MAIL_TOKEN_SIZE = 16;
+const PASSCODE_SIZE = 16;
+
+type PasscodeConfig = {
+  verifyTimeout: number;
+  verifyLimit: number;
+  requestLimitResetTimeout: number;
+  requestLimit: number;
+};
 
 /**
  * Authentication is the process of ascertaining that
  * somebody really is who they claim to be.
  *
- * AuthenticationService gives a token which should be sent to the
+ * AuthenticationService gives a passcode which should be sent to the
  * user through a transport which only they have access to,
  * such as email or sms, in order to verify their identify.
  * This flow is known as "passwordless", and care must taken to prevent
- * brute force attacks through rate limiting and short token lifetimes.
+ * brute force attacks through rate limiting and short passcode lifetimes.
  *
- * This service allows retrieval of tokens while managing expiry,
+ * This service allows retrieval of passcodes while managing expiry,
  * retries and rate limiting. While rate limiting here is applied
  * per email address, care should be taken to limit by IP address
  * as well in the proxy layer, using things like nginx.
@@ -26,25 +31,20 @@ const MAIL_TOKEN_SIZE = 16;
  * Authentication definition: https://stackoverflow.com/a/6556548
  */
 class AuthenticationService {
-  private tokenMap: ExpiringMap<string, { token: string; verifyTimes: number }>;
-  private requestRateLimitMap: ExpiringMap<string, number>;
-  private requestLimit: number;
-  private verifyLimit: number;
+  private readonly passcodeMap: ExpiringMap<string, { passcode: string; verifyTimes: number }>;
+  private readonly requestRateLimitMap: ExpiringMap<string, number>;
+  private readonly requestLimit: number;
+  private readonly verifyLimit: number;
 
-  constructor(
-    tokenTimeout: string,
-    requestLimit: number = RATE_LIMIT,
-    requestLimitResetTimeout: string = RATE_LIMIT_RESET_TIMEOUT,
-    verifyLimit: number = RATE_LIMIT,
-  ) {
-    this.tokenMap = new ExpiringMap(tokenTimeout);
-    this.requestRateLimitMap = new ExpiringMap(requestLimitResetTimeout);
-    this.requestLimit = requestLimit;
-    this.verifyLimit = verifyLimit;
+  constructor(passcodeConfig: PasscodeConfig) {
+    this.passcodeMap = new ExpiringMap(passcodeConfig.verifyTimeout);
+    this.verifyLimit = passcodeConfig.verifyLimit;
+    this.requestRateLimitMap = new ExpiringMap(passcodeConfig.requestLimitResetTimeout);
+    this.requestLimit = passcodeConfig.requestLimit;
   }
 
   /**
-   * Returns a new token until the number of tries
+   * Returns a new passcode until the number of tries
    * in user defined argument `requestLimit` has been exceeded.
    *
    * @param email user email address
@@ -56,31 +56,31 @@ class AuthenticationService {
     }
     this.requestRateLimitMap.set(email, requestTries + 1);
 
-    const buf = crypto.randomBytes(MAIL_TOKEN_SIZE);
-    const token = base58.encode(buf);
-    this.tokenMap.set(email, { token, verifyTimes: 0 });
-    return token;
+    const buf = crypto.randomBytes(PASSCODE_SIZE);
+    const passcode = base58.encode(buf);
+    this.passcodeMap.set(email, { passcode, verifyTimes: 0 });
+    return passcode;
   }
 
   /**
-   * Checks that a token for a given email address is valid
+   * Checks that a passcode for a given email address is valid
    * until the number of tries in user defined argument
    * `verifyLimit` has been exceeded.
    *
    * @param email user email address
-   * @param token mail token as keyed in by the user
+   * @param passcode mail passcode as keyed in by the user
    */
-  verify(email: string, token: string): boolean | null {
-    const verifyData = this.tokenMap.get(email);
+  verify(email: string, passcode: string): boolean | null {
+    const verifyData = this.passcodeMap.get(email);
 
     if (!verifyData) {
       return false;
     }
 
-    const { token: correctToken, verifyTimes } = verifyData;
-    const isVerified = correctToken === token;
+    const { passcode: correctPasscode, verifyTimes } = verifyData;
+    const isVerified = correctPasscode === passcode;
     if (!isVerified && verifyTimes > this.verifyLimit) {
-      this.tokenMap.set(email, { token: correctToken, verifyTimes: verifyTimes + 1 });
+      this.passcodeMap.set(email, { passcode: correctPasscode, verifyTimes: verifyTimes + 1 });
       return null;
     }
 
@@ -88,7 +88,7 @@ class AuthenticationService {
   }
 
   cleanup() {
-    this.tokenMap.cleanup();
+    this.passcodeMap.cleanup();
     this.requestRateLimitMap.cleanup();
   }
 }

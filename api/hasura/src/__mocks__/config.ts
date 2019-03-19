@@ -1,17 +1,26 @@
 export default {
   databaseUrl: '',
   hasuraUrl: '',
-  // Mail Token for verifying accounts
-  mailAddress: '',
   mailApiKey: '',
-  mailTokenLifeTime: '1s',
+  mailAddress: '',
+  // Passcode for verifying accounts
+  passcode: {
+    verifyTimeout: 1,
+    verifyLimit: 20,
+    requestLimitResetTimeout: 1,
+    requestLimit: 20,
+  },
   // Access Token for obtaining information (aka Hasura Token)
-  hasuraTokenNameSpace: '',
-  hasuraTokenSecretKey: '',
-  hasuraTokenSecretAlgorithm: '',
-  hasuraTokenLifeTime: '1s',
+  accessToken: {
+    nameSpace: '',
+    secretKey: '',
+    secretAlgorithm: '',
+    lifeTime: 1,
+  },
   // Refresh Token for obtaining Access Token (aka Long Lived Token)
-  refreshTokenSecretKey: '',
-  refreshTokenSecretAlgorithm: '',
-  refreshTokenLifeTime: '1s',
+  refreshToken: {
+    secretKey: '',
+    secretAlgorithm: '',
+    lifeTime: 1,
+  },
 };
