@@ -1,5 +1,10 @@
+import configUtils from '../utils/configUtils';
+
 export default {
-  databaseUrl: '',
+  database: {
+    connectionString: configUtils.getEnv('DATABASE_URL'),
+    maxConnections: 1,
+  },
   hasuraUrl: '',
   mailApiKey: '',
   mailAddress: '',

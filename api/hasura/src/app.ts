@@ -14,7 +14,7 @@ app.use(bodyParser.json({ limit: '1kb' }));
 // Host graphql playground
 app.get('/playground', expressPlayground({ endpoint: config.hasuraUrl }));
 
-const database = new Database(config.databaseUrl);
+const database = new Database(config.database);
 const authenticationService = new AuthenticationService(config.passcode);
 const authorizationService = new AuthorizationService(
   database,

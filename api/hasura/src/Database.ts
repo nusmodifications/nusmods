@@ -10,12 +10,18 @@ ON CONFLICT(email) DO NOTHING
 RETURNING account_id;
 `.trim();
 
+type DatabaseConfig = Readonly<{
+  connectionString: string;
+  maxConnections: number | undefined;
+}>;
+
 class Database {
   private pool: Pool;
 
-  constructor(connectionString: string) {
+  constructor(config: DatabaseConfig) {
     this.pool = new Pool({
-      connectionString,
+      connectionString: config.connectionString,
+      max: config.maxConnections,
     });
   }
 

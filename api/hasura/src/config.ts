@@ -1,19 +1,24 @@
-import ms from 'ms';
+import configUtils from './utils/configUtils';
 
-// TODO: Give more descriptive errors if any environment variables are missing
-type SecretEnv = { claims_namespace: string; key: string; type: string };
-const hasuraConfig: SecretEnv = JSON.parse(process.env.HASURA_GRAPHQL_JWT_SECRET!);
+const MINUTE = 60 * 1000;
+const HOUR = 60 * MINUTE;
+const DAY = 24 * HOUR;
+
+const hasuraConfig = configUtils.getSecretEnv('HASURA_GRAPHQL_JWT_SECRET');
 
 const config = {
-  databaseUrl: process.env.DATABASE_URL as string,
-  hasuraUrl: process.env.HASURA_URL as string,
-  mailApiKey: process.env.SENDGRID_API_KEY as string,
+  database: {
+    connectionString: configUtils.getEnv('DATABASE_URL'),
+    maxConnections: parseInt(process.env.DATABASE_MAX_CONNECTIONS as string, 10) || 10,
+  },
+  hasuraUrl: configUtils.getEnv('HASURA_URL'),
+  mailApiKey: configUtils.getEnv('SENDGRID_API_KEY'),
   mailAddress: 'noreply@nusmods.com',
   // Passcode for verifying accounts
   passcode: {
-    verifyTimeout: ms('15m'),
+    verifyTimeout: 15 * MINUTE,
     verifyLimit: 20,
-    requestLimitResetTimeout: ms('5m'),
+    requestLimitResetTimeout: 5 * MINUTE,
     requestLimit: 20,
   },
   // Access Token for obtaining information (aka Hasura Token)
@@ -21,14 +26,18 @@ const config = {
     nameSpace: hasuraConfig.claims_namespace,
     secretKey: hasuraConfig.key,
     secretAlgorithm: hasuraConfig.type,
-    lifeTime: ms('1d'),
+    lifeTime: 16 * HOUR,
   },
   // Refresh Token for obtaining Access Token (aka Long Lived Token)
   refreshToken: {
     secretKey: hasuraConfig.key,
     secretAlgorithm: hasuraConfig.type,
-    lifeTime: ms('90d'),
+    lifeTime: 90 * DAY,
   },
 };
 
-export default config;
+function readonly<T>(x: T): Readonly<T> {
+  return x;
+}
+
+export default readonly(config);
