@@ -1,14 +1,14 @@
-import { each, fromPairs, keyBy } from 'lodash';
+import { each, fromPairs, keyBy, isEmpty } from 'lodash';
 import { strict as assert } from 'assert';
 
-import { AcademicGrp, AcademicOrg, ModuleInfo } from '../types/api';
+import { AcademicGrp, AcademicOrg, ModuleAttributeEntry, ModuleInfo } from '../types/api';
 import {
   DepartmentCodeMap,
   FacultyCodeMap,
   SemesterModule,
   SemesterModuleData,
 } from '../types/mapper';
-import { Semester, Workload } from '../types/modules';
+import { NUSModuleAttributes, Semester, Workload } from '../types/modules';
 import { Task } from '../types/tasks';
 import { Cache } from '../types/persist';
 
@@ -21,6 +21,7 @@ import { fromTermCode } from '../utils/api';
 import { validateSemester } from '../services/validation';
 import { removeEmptyValues, titleize, trimValues } from '../utils/data';
 import { difference } from '../utils/set';
+import { Logger } from '../services/logger';
 
 interface Input {
   departments: AcademicOrg[];
@@ -39,6 +40,42 @@ export const getDepartmentCodeMap = (departments: AcademicOrg[]): DepartmentCode
 
 export const getFacultyCodeMap = (departments: AcademicGrp[]): FacultyCodeMap =>
   fromPairs(departments.map((faculty) => [faculty.AcademicGroup, faculty.Description]));
+
+const attributeMap: { [attribute: string]: keyof NUSModuleAttributes } = {
+  YEAR: 'year',
+  UROP: 'urop',
+  SSGF: 'ssgf',
+  SFS: 'sfs',
+  PRQY: 'su',
+  NPRY: 'su',
+  GRDY: 'su',
+  LABB: 'lab',
+  ISM: 'ism',
+  HFYP: 'fyp',
+};
+
+export function mapAttributes(
+  attributes: ModuleAttributeEntry[],
+  logger: Logger,
+): NUSModuleAttributes | undefined {
+  const nusAttributes: NUSModuleAttributes = {};
+
+  for (const entry of attributes) {
+    if (!attributeMap[entry.CourseAttribute]) continue;
+
+    if (entry.CourseAttributeValue === 'YES' || entry.CourseAttributeValue === 'HT') {
+      nusAttributes[attributeMap[entry.CourseAttribute]] = true;
+    } else if (entry.CourseAttributeValue !== 'NO') {
+      logger.warn(
+        { value: entry.CourseAttributeValue, key: entry.CourseAttribute },
+        'Non-standard course attribute value',
+      );
+    }
+  }
+
+  if (isEmpty(nusAttributes)) return undefined;
+  return nusAttributes;
+}
 
 /**
  * Clean module info
@@ -98,6 +135,7 @@ const mapModuleInfo = (
   moduleInfo: ModuleInfo,
   departmentMap: DepartmentCodeMap,
   facultyMap: FacultyCodeMap,
+  logger: Logger,
 ): SemesterModule => {
   const {
     Term,
@@ -112,6 +150,7 @@ const mapModuleInfo = (
     Description,
     Subject,
     CatalogNumber,
+    ModuleAttributes = [],
   } = moduleInfo;
 
   const [AcadYear] = fromTermCode(Term);
@@ -130,6 +169,7 @@ const mapModuleInfo = (
     corequisite: CoRequisite,
     moduleCredit: ModularCredit,
     moduleCode: Subject + CatalogNumber,
+    attributes: mapAttributes(ModuleAttributes, logger),
   };
 };
 
@@ -207,12 +247,10 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
     // and exam info (missing modules since many modules don't have exams).
     const semesterModuleData: SemesterModuleData[] = [];
     each(timetables, (timetable, moduleCode) => {
+      const logger = this.logger.child({ moduleCode });
       const moduleInfo = modulesMap[moduleCode];
       if (!moduleInfo) {
-        this.logger.debug(
-          { moduleCode, timetable },
-          'Found module with timetable but no module info',
-        );
+        logger.debug({ timetable }, 'Found module with timetable but no module info');
         return;
       }
 
@@ -225,7 +263,7 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
 
       // Map module info to the shape expected by our frontend and clean up
       // the data by removing nil fields and fixing data issues
-      const rawModule = mapModuleInfo(moduleInfo, departmentMap, facultyMap);
+      const rawModule = mapModuleInfo(moduleInfo, departmentMap, facultyMap, logger);
       const module = cleanModuleInfo(rawModule);
 
       semesterModuleData.push({

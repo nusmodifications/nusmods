@@ -82,6 +82,17 @@ export type SemesterData = {
   examDuration?: number;
 };
 
+export type NUSModuleAttributes = Partial<{
+  year: boolean; // Year long
+  su: boolean; // Can S/U
+  ssgf: boolean; // SkillsFuture Funded
+  sfs: boolean; // SkillsFuture series
+  lab: boolean; // Lab based
+  ism: boolean; // Independent study
+  urop: boolean; // Undergraduate Research Opportunities Program
+  fyp: boolean; // Honours / Final Year Project
+}>;
+
 // Information for a module for a particular academic year.
 export type Module = {
   acadYear: AcadYear;
@@ -97,6 +108,7 @@ export type Module = {
   faculty: Faculty;
   workload?: Workload;
   aliases?: ModuleCode[];
+  attributes?: NUSModuleAttributes;
 
   // Requsites
   prerequisite?: string;
@@ -106,7 +118,7 @@ export type Module = {
   // Semester data
   semesterData: SemesterData[];
 
-  // Requisites
+  // Requisite tree
   prereqTree?: PrereqTree;
   fulfillRequirements?: ModuleCode[];
 };
