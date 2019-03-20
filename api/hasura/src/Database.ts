@@ -3,11 +3,22 @@ import { account, session } from './schema';
 
 // Use parameterized query to prevent sql injection
 // https://node-postgres.com/features/queries#parameterized-query
+// Lock row to obtain account_id without writing twice
+// https://stackoverflow.com/a/40325406
 const UPSERT_ACCOUNT = `
-INSERT INTO account (email)
-VALUES($1)
-ON CONFLICT(email) DO NOTHING
-RETURNING account_id;
+WITH ins AS (
+  INSERT INTO account (email)
+  VALUES      ($1)
+  ON CONFLICT (email) DO UPDATE
+  SET         email = NULL
+  WHERE FALSE -- never executed, but locks the row
+  RETURNING   account_id
+)
+SELECT account_id FROM ins
+UNION  ALL
+SELECT account_id FROM account
+WHERE  email = $1
+LIMIT  1;
 `.trim();
 
 type DatabaseConfig = Readonly<{
@@ -32,8 +43,12 @@ class Database {
   async findOrCreateUser(email: string): Promise<account['account_id']> {
     const values = [email];
 
-    const res = await this.pool.query(UPSERT_ACCOUNT, values);
-    return res.rows[0];
+    const res = await this.pool.query({
+      text: UPSERT_ACCOUNT,
+      values,
+    });
+    const firstRow = res.rows[0];
+    return firstRow.account_id;
   }
 
   async createSession(
