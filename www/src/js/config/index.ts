@@ -47,6 +47,7 @@ export type Config = {
   contact: {
     blog: string;
     email: string;
+    privateEmail: string;
     facebook: string;
     githubOrg: string;
     githubRepo: string;
@@ -75,6 +76,7 @@ function convertCorsDate(roundData: typeof corsData[0]): CorsRound {
 
 const augmentedConfig: Config = {
   ...appConfig,
+
   corsUrl: appConfig.corsUrl
     .replace('<AcademicYear>', appConfig.academicYear)
     .replace('<Semester>', String(appConfig.semester)),
