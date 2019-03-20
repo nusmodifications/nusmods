@@ -32,14 +32,32 @@ export type ModuleAcademicGroup = Readonly<{
   Description: string;
 }>;
 
+// Possible CourseAttribute values. CourseAttributeValue is usually 'YES' or 'NO'.
+// YEAR - Year-Long Module
+// UROP - Undergraduate Research Opportunities Programme
+// SSGF - SkillsFuture Funded
+// SFS - SkillsFuture Series
+// PRQY - Has NUS Prereq and can SU
+// PRQN - Has NUS Prereq and cannot SU
+// NPRY - Without NUS Prereq and can SU
+// NPRN - Without NUS Prereq & cannot SU
+// LABB - LAB Based
+// ISM - Independent Study Module
+// HFYP - Honours/Final Year Project (value is 'HT', not 'YES' like the other attributes)
+// GRDY - GD modules eligible for SU
+export type ModuleAttributeEntry = Readonly<{
+  CourseAttributeValue: string;
+  CourseAttribute: string;
+}>;
+
 export type ModuleInfo = Readonly<{
   Term: string;
   AcademicOrganisation: ModuleAcademicOrganisation;
   AcademicGroup: ModuleAcademicGroup;
   WorkLoadHours: string;
   EffectiveDate: string;
-  CourseId: string;
-  CourseOfferNumber: string;
+  CourseId: string; // Internal ID used to connect dual-coded modules
+  CourseOfferNumber: string; // Usually 1, can be 2 or more for dual-coded modules
   Preclusion: string;
 
   PrintCatalog: 'Y' | 'N';
@@ -47,15 +65,13 @@ export type ModuleInfo = Readonly<{
 
   CourseTitle: string;
   CoRequisite: string;
-  CatalogNumber: string;
   Description: string;
   ModularCredit: string;
   PreRequisite: string;
-  Subject: string;
+  Subject: string; // The letter prefix part of the module code
+  CatalogNumber: string; // The number and suffix part of the module code
 
-  // I'm not sure what this is used for
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ModuleAttributes: any;
+  ModuleAttributes?: ModuleAttributeEntry[];
 }>;
 
 export type TimetableLesson = Readonly<{

@@ -133,6 +133,7 @@ const getModuleInformation = ({
   prerequisite,
   preclusion,
   semesterData,
+  attributes,
 }: ModuleWithoutTree): ModuleInformation => ({
   moduleCode,
   title,
@@ -143,6 +144,7 @@ const getModuleInformation = ({
   workload,
   prerequisite,
   preclusion,
+  attributes,
   semesterData: semesterData.map(({ semester, examDate, examDuration }) => ({
     semester,
     examDate,
