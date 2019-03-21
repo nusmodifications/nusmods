@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import ScrollSpy from 'react-scrollspy';
 import { kebabCase, map, mapValues, values, sortBy } from 'lodash';
 
-import { Module, NUSModuleAttributes } from 'types/modules';
+import { Module, NUSModuleAttributes, attributeDescription } from 'types/modules';
 
 import config from 'config';
 import { formatExamDate, getSemestersOffered } from 'utils/modules';
@@ -37,17 +37,6 @@ export type Props = {
 
 type State = {
   isMenuOpen: boolean;
-};
-
-const attributeDescription: { [key in keyof NUSModuleAttributes]: string } = {
-  year: 'Year long module',
-  su: 'Can S/U',
-  ssgf: 'SkillsFuture funded',
-  sfs: 'SkillsFuture series',
-  lab: 'Lab based module',
-  ism: 'Independent study module',
-  urop: 'Undergraduate Research Opportunities Program',
-  fyp: 'Honours / Final Year Project',
 };
 
 export const SIDE_MENU_LABELS = {

@@ -81,7 +81,7 @@ export const WORKLOAD_COMPONENTS: WorkloadComponent[] = [
   'Preparation',
 ];
 
-export type NUSModuleAttributes = Partial<{
+type AttributeMap = {
   year: boolean; // Year long
   su: boolean; // Can S/U
   ssgf: boolean; // SkillsFuture Funded
@@ -90,7 +90,20 @@ export type NUSModuleAttributes = Partial<{
   ism: boolean; // Independent study
   urop: boolean; // Undergraduate Research Opportunities Program
   fyp: boolean; // Honours / Final Year Project
-}>;
+};
+
+export type NUSModuleAttributes = Partial<AttributeMap>;
+
+export const attributeDescription: { [key in keyof AttributeMap]: string } = {
+  year: 'Year long module',
+  su: 'Has S/U option',
+  ssgf: 'SkillsFuture funded',
+  sfs: 'SkillsFuture series',
+  lab: 'Lab based module',
+  ism: 'Independent study module',
+  urop: 'Undergraduate Research Opportunities Program',
+  fyp: 'Honours / Final Year Project',
+};
 
 // RawLesson is a lesson time slot obtained from the API.
 // Usually ModuleCode and ModuleTitle has to be injected in before using in the timetable.
