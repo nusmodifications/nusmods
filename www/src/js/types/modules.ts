@@ -81,6 +81,17 @@ export const WORKLOAD_COMPONENTS: WorkloadComponent[] = [
   'Preparation',
 ];
 
+export type NUSModuleAttributes = Partial<{
+  year: boolean; // Year long
+  su: boolean; // Can S/U
+  ssgf: boolean; // SkillsFuture Funded
+  sfs: boolean; // SkillsFuture series
+  lab: boolean; // Lab based
+  ism: boolean; // Independent study
+  urop: boolean; // Undergraduate Research Opportunities Program
+  fyp: boolean; // Honours / Final Year Project
+}>;
+
 // RawLesson is a lesson time slot obtained from the API.
 // Usually ModuleCode and ModuleTitle has to be injected in before using in the timetable.
 export type RawLesson = Readonly<{
@@ -118,6 +129,7 @@ export type Module = {
   faculty: Faculty;
   workload?: Workload;
   aliases?: ModuleCode[];
+  attributes?: NUSModuleAttributes;
 
   // Requsites
   prerequisite?: string;
@@ -127,7 +139,7 @@ export type Module = {
   // Semester data
   semesterData: ReadonlyArray<SemesterData>;
 
-  // Requisites
+  // Requisite tree
   prereqTree?: PrereqTree;
   fulfillRequirements?: ReadonlyArray<ModuleCode>;
 };
@@ -149,7 +161,6 @@ export type SemesterDataCondensed = Readonly<{
   semester: Semester;
   examDate?: string;
   examDuration?: number;
-  // The full timetable is not provided to reduce space
 }>;
 
 // Subset of Module object that contains the properties that are
@@ -171,6 +182,7 @@ export type ModuleInformation = Readonly<{
   department: Department;
   faculty: Faculty;
   workload?: Workload;
+  attributes?: NUSModuleAttributes;
 
   // Requsites
   prerequisite?: string;

@@ -73,6 +73,16 @@ $sticky-top: $navbar-height;
   }
 }
 
+.attributes {
+  composes: list-unstyled from global;
+
+  .checkmark {
+    width: 1.2rem;
+    margin: 0 0.2rem 0 0.5rem;
+    color: theme-color(success);
+  }
+}
+
 .section {
   // Account for the fixed header's height. If this is not done, when side menu links are
   // clicked a portion of the content will be clipped by the fixed header.

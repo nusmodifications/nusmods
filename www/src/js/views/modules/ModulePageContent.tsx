@@ -1,15 +1,16 @@
-import * as React from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import ScrollSpy from 'react-scrollspy';
 import { kebabCase, map, mapValues, values, sortBy } from 'lodash';
 
-import { Module } from 'types/modules';
+import { Module, NUSModuleAttributes } from 'types/modules';
 
 import config from 'config';
 import { formatExamDate, getSemestersOffered } from 'utils/modules';
 import { intersperse } from 'utils/array';
 import { BULLET } from 'utils/react';
 import { NAVTAB_HEIGHT } from 'views/layout/Navtabs';
+
 import ModuleTree from 'views/modules/ModuleTree';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import CommentCount from 'views/components/disqus/CommentCount';
@@ -24,7 +25,7 @@ import AddModuleDropdown from 'views/components/module-info/AddModuleDropdown';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
 import ScrollToTop from 'views/components/ScrollToTop';
-import { Archive } from 'views/components/icons';
+import { Archive, Check } from 'views/components/icons';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
 
 import styles from './ModulePageContent.scss';
@@ -36,6 +37,17 @@ export type Props = {
 
 type State = {
   isMenuOpen: boolean;
+};
+
+const attributeDescription: { [key in keyof NUSModuleAttributes]: string } = {
+  year: 'Year long module',
+  su: 'Can S/U',
+  ssgf: 'SkillsFuture funded',
+  sfs: 'SkillsFuture series',
+  lab: 'Lab based module',
+  ism: 'Independent study module',
+  urop: 'Undergraduate Research Opportunities Program',
+  fyp: 'Honours / Final Year Project',
 };
 
 export const SIDE_MENU_LABELS = {
@@ -150,6 +162,22 @@ export default class ModulePageContent extends React.Component<Props, State> {
                         <dt>Preclusion</dt>
                         <dd>
                           <LinkModuleCodes>{module.preclusion}</LinkModuleCodes>
+                        </dd>
+                      </>
+                    )}
+
+                    {module.attributes && (
+                      <>
+                        <dt>Additional Information</dt>
+                        <dd>
+                          <ul className={styles.attributes}>
+                            {Object.keys(module.attributes).map((key) => (
+                              <li key={key}>
+                                <Check className={styles.checkmark} />{' '}
+                                {attributeDescription[key as keyof NUSModuleAttributes]}
+                              </li>
+                            ))}
+                          </ul>
                         </dd>
                       </>
                     )}
