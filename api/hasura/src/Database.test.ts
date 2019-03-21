@@ -28,6 +28,12 @@ describe('Database', () => {
     await dbMigration.down(client);
   });
 
+  afterAll(async () => {
+    await dbMigration.up(client);
+    await client.end();
+    await database.cleanup();
+  });
+
   const SELECT_ALL_FROM_ACCOUNT = 'SELECT * FROM account';
   const INSERT_ACCOUNT_RETURNING_ALL = 'INSERT INTO account (email) VALUES($1) RETURNING *';
   const SELECT_ALL_FROM_SESSION = 'SELECT * FROM session';
