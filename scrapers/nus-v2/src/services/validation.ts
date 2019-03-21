@@ -28,6 +28,10 @@ const lessonSchema = Joi.object({
   numweeks: Joi.number()
     .integer()
     .greater(0),
+
+  csize: Joi.number()
+    .integer()
+    .greater(0),
 });
 
 export function validateLesson(lesson: TimetableLesson, logger: Logger = rootLogger) {
