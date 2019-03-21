@@ -26,6 +26,7 @@ export interface AcadWeekInfo {
 }
 
 declare class AcademicCalendar {
+  getAcadYearStartDate(acadYear: string): Date;
   getAcadYear(date: Date): AcadYear;
   getAcadSem(weekNumber: number): string;
   getAcadWeekName(weekNumber: number): AcadWeek;
