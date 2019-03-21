@@ -44,7 +44,7 @@ class AuthorizationService {
    * because overloading and typescript don't mix.
    */
   private generateToken(
-    payload: string | object,
+    payload: object,
     secret: jwt.Secret,
     options: jwt.SignOptions,
   ): Promise<string> {
@@ -83,7 +83,7 @@ class AuthorizationService {
     const expiryTime = new Date(Date.now() + this.refreshTokenConfig.lifeTime);
     const sessionId = await this.db.createSession(accountId, expiryTime, userAgent);
 
-    const token = await this.generateToken(sessionId, this.refreshTokenConfig.secretKey, {
+    const token = await this.generateToken({ sessionId }, this.refreshTokenConfig.secretKey, {
       algorithm: this.refreshTokenConfig.secretAlgorithm,
       expiresIn: this.refreshTokenConfig.lifeTime,
     });

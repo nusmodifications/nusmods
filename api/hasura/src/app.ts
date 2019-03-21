@@ -8,7 +8,11 @@ import AuthorizationService from './AuthorizationService';
 import Database from './Database';
 import HttpStatus from './utils/HttpStatus';
 
+const IS_PROD = process.env.NODE_ENV === 'production';
+
 const app = express();
+app.disable('x-powered-by');
+app.disable('etag');
 app.use(bodyParser.json({ limit: '1kb' }));
 
 // Host graphql playground
@@ -40,13 +44,13 @@ app.post('/auth', (req, res) => {
       .send('Rate limit exceeded, please try again later.');
   }
 
-  if (!config.mailAddress) {
+  if (!IS_PROD) {
     return res.send({ passcode });
   }
   mailService
     .sendPasscode(email, passcode)
     .then(() => {
-      res.sendStatus(HttpStatus.ACCEPTED);
+      return res.sendStatus(HttpStatus.ACCEPTED);
     })
     .catch(() => {
       // TODO: log error
@@ -85,10 +89,16 @@ app.post('/verify', (req, res) => {
   authorizationService
     .createTokens(email, req.header('user-agent') || '')
     .then(({ accessToken, refreshToken, refreshTokenExpiryTime }) => {
-      // res.header('set-cookie')
+      res.cookie('refresh', refreshToken, {
+        path: '/auth',
+        secure: true,
+        httpOnly: true,
+        expires: refreshTokenExpiryTime,
+      });
       return res.send({ accessToken });
     })
-    .catch(() => {
+    .catch((e) => {
+      console.error(e);
       // TODO: log error
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Unable to create access token');
     });

@@ -13,7 +13,7 @@ This project provides school data such as lessons and modules through an [API](h
 
 `curl -d '{"email": "hello@nusmods.com"}' -H "Content-Type: application/json" -X POST http://localhost:8081/auth`
 
-`curl -d '{"email": "hello@nusmods.com", "token": "5Y2Q3dt2D4f6T6RXVFc7as" }' -H "Content-Type: application/json" -X POST http://localhost:8081/verify`
+`curl -id '{"email": "hello@nusmods.com", "token": "5Y2Q3dt2D4f6T6RXVFc7as" }' -H "Content-Type: application/json" -X POST http://localhost:8081/verify`
 
 ## Installation
 
