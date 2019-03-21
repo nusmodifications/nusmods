@@ -10,6 +10,8 @@ const { FuseBox } = require('fuse-box');
 const fuse = FuseBox.init({
   homeDir: 'src',
   output: 'dist/$name.js',
+  target: `server@esnext`,
+  tsConfig: './tsconfig.json',
 });
 
 fuse.dev({ port: 4445, httpServer: false });

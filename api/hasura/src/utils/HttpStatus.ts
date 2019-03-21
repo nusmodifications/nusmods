@@ -10,7 +10,7 @@
  *
  * Ported by Bryce Neal.
  */
-const enum HttpStatus {
+enum HttpStatus {
   // 1xx responses provides information about ongoing request
   CONTINUE = 100,
   SWITCHING_PROTOCOLS = 101,
