@@ -140,7 +140,19 @@ export type ModuleFinderState = {
 /* planner.js */
 // The year, semester the module will be taken in, and the order
 // it appears on the list for the semester
-export type ModuleTime = [string, Semester, number];
+export type ModuleTime = {
+  year: string;
+  semester: Semester;
+  index: number;
+};
+
+export type PlaceholderTime = {
+  year: string;
+  semester: Semester;
+  index: number;
+  placeholder: string;
+  moduleCode?: ModuleCode;
+};
 
 export type CustomModule = {
   // For modules which the school no longer offers, we let students
@@ -154,14 +166,16 @@ export type CustomModuleData = {
 };
 
 // Mapping modules to when they will be taken
-export type PlannerState = {
-  readonly minYear: string;
-  readonly maxYear: string;
-  readonly iblocs: boolean;
+export type PlannerState = Readonly<{
+  minYear: string;
+  maxYear: string;
+  iblocs: boolean;
 
-  readonly modules: {
+  modules: {
     [moduleCode: string]: ModuleTime;
   };
 
-  readonly custom: CustomModuleData;
-};
+  placeholders: PlaceholderTime[];
+
+  custom: CustomModuleData;
+}>;

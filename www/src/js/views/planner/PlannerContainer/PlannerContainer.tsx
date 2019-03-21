@@ -5,17 +5,17 @@ import { DragDropContext, Droppable, OnDragEndResponder } from 'react-beautiful-
 import classnames from 'classnames';
 
 import { Module, ModuleCode, Semester } from 'types/modules';
-import { PlannerModuleInfo, PlannerModulesWithInfo } from 'types/views';
+import { PlannerModulesWithInfo, PlannerModuleInfo } from 'types/planner';
 import { State as StoreState } from 'reducers';
 import { MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
 import {
   EXEMPTION_SEMESTER,
   EXEMPTION_YEAR,
+  fromDroppableId,
+  getTotalMC,
   IBLOCS_SEMESTER,
   PLAN_TO_TAKE_SEMESTER,
   PLAN_TO_TAKE_YEAR,
-  fromDroppableId,
-  getTotalMC,
 } from 'utils/planner';
 import { addPlannerModule, movePlannerModule, removePlannerModule } from 'actions/planner';
 import { toggleFeedback } from 'actions/app';

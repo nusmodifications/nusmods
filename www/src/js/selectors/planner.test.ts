@@ -18,6 +18,7 @@ const defaultState: PlannerState = {
   iblocs: false,
   modules: {},
   custom: {},
+  placeholders: [],
 };
 
 describe(getPrereqModuleCode, () => {
@@ -76,7 +77,7 @@ describe(getAcadYearModules, () => {
         getState({
           ...defaultState,
           modules: {
-            CS1010S: ['2018/2019', 1, 0],
+            CS1010S: { year: '2018/2019', semester: 1, index: 0 },
           },
         }),
       ),
@@ -94,7 +95,7 @@ describe(getAcadYearModules, () => {
         getState({
           ...defaultState,
           modules: {
-            CS1010X: ['2018/2019', 3, 0],
+            CS1010X: { year: '2018/2019', semester: 3, index: 0 },
           },
         }),
       ),
@@ -114,9 +115,9 @@ describe(getAcadYearModules, () => {
         getState({
           ...defaultState,
           modules: {
-            CS1010S: ['2018/2019', 1, 1],
-            MA1521: ['2018/2019', 1, 0],
-            MA1101R: ['2018/2019', 1, 2],
+            CS1010S: { year: '2018/2019', semester: 1, index: 1 },
+            MA1521: { year: '2018/2019', semester: 1, index: 0 },
+            MA1101R: { year: '2018/2019', semester: 1, index: 2 },
           },
         }),
       ),
@@ -135,7 +136,7 @@ describe(getAcadYearModules, () => {
       ...defaultState,
       modules: {
         // CS3216 is not offered in sem 2
-        CS3216: ['2018/2019', 2, 0],
+        CS3216: { year: '2018/2019', semester: 2, index: 0 },
       },
     };
 
@@ -157,7 +158,7 @@ describe(getAcadYearModules, () => {
       ...defaultState,
       modules: {
         // CS3216 requires CS2103
-        CS3216: ['2018/2019', 1, 0],
+        CS3216: { year: '2018/2019', semester: 1, index: 0 },
       },
     };
 
@@ -185,8 +186,8 @@ describe(getAcadYearModules, () => {
       minYear: '2017/2018',
       modules: {
         // config.academicYear is mocked to '2017/2018'
-        CS1010X: ['2017/2018', 1, 0],
-        CS1010S: ['2017/2018', 1, 1],
+        CS1010X: { year: '2017/2018', semester: 1, index: 0 },
+        CS1010S: { year: '2017/2018', semester: 1, index: 1 },
       },
     };
 
@@ -227,8 +228,8 @@ describe(getAcadYearModules, () => {
       maxYear: '2016/2017',
       modules: {
         // config.academicYear is mocked to '2017/2018'
-        CS1010X: ['2016/2017', 1, 0],
-        CS1010S: ['2016/2017', 1, 1],
+        CS1010X: { year: '2016/2017', semester: 1, index: 0 },
+        CS1010S: { year: '2016/2017', semester: 1, index: 1 },
       },
     };
 
@@ -264,8 +265,8 @@ describe(getAcadYearModules, () => {
       ...defaultState,
       modules: {
         // CS3216 requires CS2103, but we have CS2103T
-        CS2103T: ['2018/2019', 1, 0],
-        CS3216: ['2018/2019', 2, 0],
+        CS2103T: { year: '2018/2019', semester: 1, index: 0 },
+        CS3216: { year: '2018/2019', semester: 2, index: 0 },
       },
     };
 
@@ -296,8 +297,8 @@ describe(getAcadYearModules, () => {
     const planner: PlannerState = {
       ...defaultState,
       modules: {
-        CS2020: ['2018/2019', 1, 0],
-        CS3216: ['2018/2019', 1, 1],
+        CS2020: { year: '2018/2019', semester: 1, index: 0 },
+        CS3216: { year: '2018/2019', semester: 1, index: 1 },
       },
       custom: {
         CS2020: {
@@ -345,7 +346,7 @@ describe(getAcadYearModules, () => {
     const state = getState({
       ...defaultState,
       modules: {
-        CS2020: ['2018/2019', 1, 0],
+        CS2020: { year: '2018/2019', semester: 1, index: 0 },
       },
     });
 
@@ -358,7 +359,7 @@ describe(getAcadYearModules, () => {
     const state = getState({
       ...defaultState,
       modules: {
-        CS2020: ['2018/2019', 1, 0],
+        CS2020: { year: '2018/2019', semester: 1, index: 0 },
       },
       custom: {
         CS2020: {

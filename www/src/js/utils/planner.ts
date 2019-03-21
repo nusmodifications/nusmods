@@ -1,6 +1,6 @@
 import { flatten, sum } from 'lodash';
 import { ModuleCode, Semester, PrereqTree } from 'types/modules';
-import { PlannerModuleInfo } from 'types/views';
+import { PlannerModuleInfo } from 'types/planner';
 import config from 'config';
 import { notNull } from '../types/utils';
 

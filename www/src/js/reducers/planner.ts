@@ -1,9 +1,10 @@
 import produce from 'immer';
-import { pull, max, min } from 'lodash';
+import { pull, max, min, mapValues } from 'lodash';
+import { createMigrate } from 'redux-persist';
 
 import { PlannerState } from 'types/reducers';
 import { FSA } from 'types/redux';
-import { ModuleCode } from 'types/modules';
+import { ModuleCode, Semester } from 'types/modules';
 import {
   ADD_PLANNER_MODULE,
   MOVE_PLANNER_MODULE,
@@ -22,6 +23,7 @@ const defaultPlannerState: PlannerState = {
   iblocs: false,
 
   modules: {},
+  placeholders: [],
   custom: {},
 };
 
@@ -74,7 +76,7 @@ export default function planner(
       // to update the index of the old module list
       let oldModuleOrder: ModuleCode[] = [];
       if (state.modules[moduleCode]) {
-        const [oldYear, oldSemester] = state.modules[moduleCode];
+        const { year: oldYear, semester: oldSemester } = state.modules[moduleCode];
         if (oldYear !== year || oldSemester !== semester) {
           oldModuleOrder = pull(
             filterModuleForSemester(state.modules, oldYear, oldSemester),
@@ -84,14 +86,14 @@ export default function planner(
       }
 
       return produce(state, (draft) => {
-        draft.modules[moduleCode] = [year, semester, index];
+        draft.modules[moduleCode] = { year, semester, index };
 
         newModuleOrder.forEach((newModuleCode, order) => {
-          draft.modules[newModuleCode][2] = order;
+          draft.modules[newModuleCode].index = order;
         });
 
         oldModuleOrder.forEach((oldModuleCode, order) => {
-          draft.modules[oldModuleCode][2] = order;
+          draft.modules[oldModuleCode].index = order;
         });
       });
     }
@@ -110,3 +112,24 @@ export default function planner(
       return state;
   }
 }
+
+export const persistConfig = {
+  version: 1,
+  migrate: createMigrate({
+    // @ts-ignore TS doesn't like this for some reason
+    1: (state: PlannerState) => ({
+      ...state,
+      // Map old ModuleTime type to new ModuleTime shape
+      modules: mapValues(
+        (state.modules as unknown) as { [moduleCode: string]: [string, Semester, number] },
+        ([year, semester, order]) => ({
+          year,
+          semester,
+          order,
+        }),
+      ),
+      // Add new placeholders array
+      placeholders: [],
+    }),
+  }),
+};

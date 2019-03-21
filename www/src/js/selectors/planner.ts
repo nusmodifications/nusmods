@@ -1,6 +1,6 @@
 import { flatMap, sortBy, values, get } from 'lodash';
-import { ModuleCode, Semesters, Semester } from 'types/modules';
-import { Conflict, ExamClashes, PlannerModuleInfo, PlannerModulesWithInfo } from 'types/views';
+import { ModuleCode, Semester, Semesters } from 'types/modules';
+import { ExamClashes } from 'types/views';
 import { CustomModuleData, ModuleCodeMap, ModuleTime } from 'types/reducers';
 import { State } from 'reducers';
 import config from 'config';
@@ -15,6 +15,7 @@ import {
 } from 'utils/planner';
 import { ModulesMap } from 'reducers/moduleBank';
 import { findExamClashes } from 'utils/timetables';
+import { Conflict, PlannerModuleInfo, PlannerModulesWithInfo } from '../types/planner';
 
 /* eslint-disable no-useless-computed-key */
 
@@ -28,11 +29,11 @@ export function filterModuleForSemester(
   semester: Semester,
 ) {
   const filteredModules = Object.keys(modules).filter((moduleCode) => {
-    const [moduleYear, moduleSemester] = modules[moduleCode];
-    return moduleYear === year && moduleSemester === semester;
+    const time = modules[moduleCode];
+    return time.year === year && time.semester === semester;
   });
 
-  return sortBy<ModuleCode>(filteredModules, (moduleCode: ModuleCode) => modules[moduleCode][2]);
+  return sortBy<ModuleCode>(filteredModules, (moduleCode: ModuleCode) => modules[moduleCode].index);
 }
 
 /**
@@ -175,7 +176,9 @@ export function getAcadYearModules(state: State): PlannerModulesWithInfo {
     ...getIBLOCs(state),
   ];
   const modulesTaken = new Set<ModuleCode>(
-    flatMap(exemptions, (module) => getPrereqModuleCode(module.moduleCode)),
+    flatMap(exemptions, (module) =>
+      module.moduleCode ? getPrereqModuleCode(module.moduleCode) : [],
+    ),
   );
 
   // Same type as PlannerModulesWithInfo, but writable so we can build it here
