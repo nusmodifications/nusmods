@@ -17,7 +17,7 @@ fuse.dev({ port: 4445, httpServer: false });
 fuse
   .bundle('server')
   .instructions('> [index.ts]')
-  .watch()
+  .watch((path) => !path.endsWith('.test.ts'))
   // Execute process right after bundling is completed
   // launch and restart express
   .completed((proc) => proc.require());
