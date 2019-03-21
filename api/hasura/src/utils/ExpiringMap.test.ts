@@ -1,7 +1,6 @@
 import { advanceBy } from 'jest-date-mock';
 import ExpiringMap from './ExpiringMap';
 
-jest.mock('./config');
 jest.useFakeTimers();
 
 describe('ExpiringMap', () => {
