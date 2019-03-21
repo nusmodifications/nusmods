@@ -79,8 +79,8 @@ class AuthorizationService {
   async createRefreshToken(
     accountId: string,
     userAgent: string,
-  ): Promise<{ token: string; expiryTime: number }> {
-    const expiryTime = Date.now() + this.refreshTokenConfig.lifeTime;
+  ): Promise<{ token: string; expiryTime: Date }> {
+    const expiryTime = new Date(Date.now() + this.refreshTokenConfig.lifeTime);
     const sessionId = await this.db.createSession(accountId, expiryTime, userAgent);
 
     const token = await this.generateToken(sessionId, this.refreshTokenConfig.secretKey, {

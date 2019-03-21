@@ -254,6 +254,13 @@ ALTER TABLE ONLY public.session
 
 
 --
+-- Name: session session_expires_at_future; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.session
+    ADD CONSTRAINT session_expires_at_future CHECK (expires_at > now());
+
+--
 -- Name: course course_term_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 

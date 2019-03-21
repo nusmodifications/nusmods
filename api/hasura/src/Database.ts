@@ -21,6 +21,12 @@ WHERE  email = $1
 LIMIT  1;
 `.trim();
 
+const INSERT_SESSION = `
+INSERT INTO session (account_id, expires_at, user_agent)
+VALUES      ($1, $2, $3)
+RETURNING   session_id
+`.trim();
+
 type DatabaseConfig = Readonly<{
   connectionString: string;
   maxConnections: number | undefined;
@@ -53,13 +59,14 @@ class Database {
 
   async createSession(
     accountId: string,
-    expiresAt: number,
+    expiresAt: Date,
     userAgent: string,
   ): Promise<session['session_id']> {
     const values = [accountId, expiresAt, userAgent];
 
-    const res = await this.pool.query(UPSERT_ACCOUNT, values);
-    return res.rows[0];
+    const res = await this.pool.query(INSERT_SESSION, values);
+    const firstRow = res.rows[0];
+    return firstRow.session_id;
   }
 
   cleanup() {

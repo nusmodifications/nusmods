@@ -2,6 +2,7 @@ import { Client } from 'pg';
 import Database from './Database';
 import config from './config';
 import dbMigration from './__tests__/utils/dbMigration';
+import dateUtils from './__tests__/utils/date';
 
 jest.mock('./config');
 
@@ -27,36 +28,85 @@ describe('Database', () => {
     await dbMigration.down(client);
   });
 
-  it('should create user if it does not exist', async () => {
-    expect.assertions(4);
+  const SELECT_ALL_FROM_ACCOUNT = 'SELECT * FROM account';
+  const INSERT_ACCOUNT_RETURNING_ALL = 'INSERT INTO account (email) VALUES($1) RETURNING *';
+  const SELECT_ALL_FROM_SESSION = 'SELECT * FROM session';
 
-    const accountId = await database.findOrCreateUser(TEST_EMAIL);
-    expect(typeof accountId).toBe('string');
+  describe('account', () => {
+    it('should create user if it does not exist', async () => {
+      expect.assertions(4);
 
-    const accounts = await client.query('SELECT * FROM account');
-    expect(accounts.rowCount).toBe(1);
+      const accountId = await database.findOrCreateUser(TEST_EMAIL);
+      expect(typeof accountId).toBe('string');
 
-    const account = accounts.rows[0];
-    expect(account).toMatchObject({
-      account_id: accountId,
-      email: TEST_EMAIL,
+      const accounts = await client.query(SELECT_ALL_FROM_ACCOUNT);
+      expect(accounts.rowCount).toBe(1);
+
+      const account = accounts.rows[0];
+      expect(account).toMatchObject({
+        account_id: accountId,
+        email: TEST_EMAIL,
+      });
+      expect(account.created_at).toEqual(account.updated_at);
     });
-    expect(account.created_at).toEqual(account.updated_at);
+
+    it('should not create user if it does exist', async () => {
+      expect.assertions(3);
+
+      const insertedAccount = await client.query(INSERT_ACCOUNT_RETURNING_ALL, [TEST_EMAIL]);
+
+      const queriedAccountId = await database.findOrCreateUser(TEST_EMAIL);
+      expect(queriedAccountId).toEqual(insertedAccount.rows[0].account_id);
+
+      let accounts = await client.query(SELECT_ALL_FROM_ACCOUNT);
+      expect(accounts.rowCount).toBe(1);
+      expect(accounts.rows[0]).toEqual(insertedAccount.rows[0]);
+    });
   });
 
-  it('should not create user if it does exist', async () => {
-    expect.assertions(3);
+  describe('session', () => {
+    const expiresAt = new Date(Date.now() + 99999);
+    const userAgent = 'test user agent';
+    let accountId: string;
 
-    const insertedAccounts = await client.query(
-      'INSERT INTO account (email) VALUES($1) RETURNING *',
-      [TEST_EMAIL],
-    );
+    beforeEach(async () => {
+      accountId = await database.findOrCreateUser(TEST_EMAIL);
+    });
 
-    const queriedAccountId = await database.findOrCreateUser(TEST_EMAIL);
-    expect(queriedAccountId).toEqual(insertedAccounts.rows[0].account_id);
+    it('should create session', async () => {
+      expect.assertions(5);
 
-    let accounts = await client.query('SELECT * FROM account');
-    expect(accounts.rowCount).toBe(1);
-    expect(accounts.rows[0]).toEqual(insertedAccounts.rows[0]);
+      const sessionId = await database.createSession(accountId, expiresAt, userAgent);
+      expect(typeof sessionId).toBe('string');
+
+      const sessions = await client.query(SELECT_ALL_FROM_SESSION);
+      expect(sessions.rowCount).toBe(1);
+
+      const session = sessions.rows[0];
+      expect(session).toMatchObject({
+        session_id: sessionId,
+        account_id: accountId,
+        user_agent: userAgent,
+      });
+
+      expect(session.expires_at).toEqual(expiresAt);
+      expect(dateUtils.toEpoch(session.last_accessed_at)).toBeLessThanOrEqual(Date.now());
+    });
+
+    it('should allow multiple sessions', async () => {
+      expect.assertions(1);
+
+      await database.createSession(accountId, expiresAt, userAgent);
+      await database.createSession(accountId, expiresAt, userAgent);
+
+      const sessions = await client.query(SELECT_ALL_FROM_SESSION);
+      expect(sessions.rowCount).toBe(2);
+    });
+
+    it('should not allow creation of expired session', () => {
+      expect(
+        database.createSession(accountId, new Date(Date.now() - 99999), userAgent),
+      ).rejects.toThrowError();
+    });
   });
 });
