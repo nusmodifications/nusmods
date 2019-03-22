@@ -95,7 +95,7 @@ export function mapLessonWeeks(dates: string[], semester: number, logger: Logger
 }
 
 export function mapTimetableLesson(lesson: TimetableLesson, logger: Logger): TempRawLesson {
-  const { room, start_time, end_time, day, modgrp, activity, eventdate } = lesson;
+  const { room, start_time, end_time, day, modgrp, activity, eventdate, csize } = lesson;
 
   if (has(unrecognizedLessonTypes, activity)) {
     logger.warn({ activity }, `Lesson type not recognized by the frontend used`);
@@ -114,6 +114,7 @@ export function mapTimetableLesson(lesson: TimetableLesson, logger: Logger): Tem
     venue: room || '',
     day: dayTextMap[day],
     lessonType: activityLessonType[activity],
+    size: csize,
   };
 }
 

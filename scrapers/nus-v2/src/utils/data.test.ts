@@ -144,6 +144,7 @@ const makeVenueLesson = (
   endTime: '1000',
   startTime: '0900',
   weeks: EVERY_WEEK,
+  size: 30,
   moduleCode,
   ...props,
 });
