@@ -3,11 +3,11 @@ import classnames from 'classnames';
 import { map, sumBy } from 'lodash';
 import { connect } from 'react-redux';
 
-import { State } from '../../reducers/state';
 import { ModuleTableOrder } from 'types/views';
 import { Module, Semester } from 'types/modules';
 import { setModuleTableOrder } from 'actions/settings';
 import { getExamDate, renderMCs } from 'utils/modules';
+import { State } from '../../types/state';
 import styles from './TimetableModulesTable.scss';
 
 type ModuleOrder = {

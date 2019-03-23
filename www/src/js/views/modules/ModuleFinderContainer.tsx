@@ -7,7 +7,6 @@ import { each, mapValues, values } from 'lodash';
 
 import { ModuleInformation } from 'types/modules';
 import { AnyGroup, FacultyDepartments, FilterGroups, PageRange, PageRangeDiff } from 'types/views';
-import { State as StoreState } from '../../reducers/state';
 
 import ModuleFinderList from 'views/modules/ModuleFinderList';
 import ModuleSearchBox from 'views/modules/ModuleSearchBox';
@@ -39,6 +38,7 @@ import HistoryDebouncer from 'utils/HistoryDebouncer';
 import { defer } from 'utils/react';
 import { breakpointUp, queryMatch } from 'utils/css';
 import { captureException } from 'utils/error';
+import { State as StoreState } from '../../types/state';
 import styles from './ModuleFinderContainer.scss';
 
 export type Props = {

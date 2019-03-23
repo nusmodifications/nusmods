@@ -1,10 +1,9 @@
 import { FSA } from 'types/redux';
 
-import { State } from './state';
-
 import { REMOVE_MODULE, SET_TIMETABLE } from 'actions/timetables';
 
 import persistReducer from 'storage/persistReducer';
+import { State } from '../types/state';
 
 // Non-persisted reducers
 import requests from './requests';
@@ -13,7 +12,7 @@ import moduleFinder from './moduleFinder';
 import createUndoReducer from './undoHistory';
 
 // Persisted reducers
-import moduleBankReducer, { persistConfig as moduleBankPersistConfig} from './moduleBank';
+import moduleBankReducer, { persistConfig as moduleBankPersistConfig } from './moduleBank';
 import venueBankReducer, { persistConfig as venueBankPersistConfig } from './venueBank';
 import timetablesReducer, { persistConfig as timetablesPersistConfig } from './timetables';
 import themeReducer from './theme';

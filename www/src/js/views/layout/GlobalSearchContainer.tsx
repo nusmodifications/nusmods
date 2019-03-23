@@ -1,4 +1,3 @@
-import { State } from '../../reducers/state';
 import { ModuleCondensed } from 'types/modules';
 import { Venue, VenueList } from 'types/venues';
 import { ModuleList } from 'types/reducers';
@@ -15,6 +14,7 @@ import { createSearchPredicate, regexify, sortModules, tokenize } from 'utils/mo
 import { breakpointUp } from 'utils/css';
 import { takeUntil } from 'utils/array';
 import makeResponsive from 'views/hocs/makeResponsive';
+import { State } from '../../types/state';
 
 type Props = RouteComponentProps & {
   moduleList: ModuleList;

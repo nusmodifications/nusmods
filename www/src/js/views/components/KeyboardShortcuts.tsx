@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import Mousetrap from 'mousetrap';
 import { groupBy, map } from 'lodash';
 
-import { State as StoreState } from '../../reducers/state';
 import { Mode, ThemeId, DARK_MODE } from 'types/settings';
 import { FSA } from 'types/redux';
 import themes from 'data/themes.json';
@@ -14,6 +13,7 @@ import { openNotification } from 'actions/app';
 import { toggleMode } from 'actions/settings';
 import { intersperse } from 'utils/array';
 import ComponentMap from 'utils/ComponentMap';
+import { State as StoreState } from '../../types/state';
 import Modal from './Modal';
 import styles from './KeyboardShortcuts.scss';
 

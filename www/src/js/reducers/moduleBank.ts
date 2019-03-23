@@ -11,9 +11,9 @@ import {
   FETCH_MODULE,
   FETCH_MODULE_LIST,
   REMOVE_LRU_MODULE,
+  SET_EXPORTED_DATA,
   UPDATE_MODULE_TIMESTAMP,
-} from 'actions/moduleBank';
-import { SET_EXPORTED_DATA } from 'actions/constants';
+} from 'actions/constants';
 
 export type ModulesMap = {
   [moduleCode: string]: Module;

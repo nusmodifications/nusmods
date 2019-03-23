@@ -2,9 +2,9 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 
-import { State as StoreState } from '../../../reducers/state';
 import { NotificationData } from 'types/reducers';
 import { popNotification } from 'actions/app';
+import { State as StoreState } from '../../../types/state';
 import styles from './Notification.scss';
 
 type Props = {

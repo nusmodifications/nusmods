@@ -2,11 +2,11 @@ import { createSelector } from 'reselect';
 
 import { ModuleCode, ModuleCondensed, Semester } from 'types/modules';
 import { ModuleBank } from 'reducers/moduleBank';
-import { State } from '../reducers/state';
 import { SemTimetableConfig } from 'types/timetables';
 import { ModuleCodeMap, ModuleSelectListItem } from 'types/reducers';
 import { notNull } from 'types/utils';
 import { getRequestModuleCode } from 'actions/moduleBank';
+import { State } from '../types/state';
 import { isOngoing } from './requests';
 
 const moduleCodesSelector = (state: ModuleBank) => state.moduleCodes;

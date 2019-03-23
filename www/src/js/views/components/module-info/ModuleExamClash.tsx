@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { get } from 'lodash';
 
-import { State } from '../../../reducers/state';
 import { Module, Semester, ModuleCode } from 'types/modules';
 
 import { AlertTriangle } from 'views/components/icons';
@@ -11,6 +10,7 @@ import { getModuleSemesterData } from 'utils/modules';
 import { getSemesterModules } from 'utils/timetables';
 import { getSemesterTimetable } from 'reducers/timetables';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
+import { State } from '../../../types/state';
 
 import styles from './ModuleExamClash.scss';
 

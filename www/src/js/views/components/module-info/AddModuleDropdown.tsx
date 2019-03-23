@@ -6,11 +6,11 @@ import { get } from 'lodash';
 
 import { Module, ModuleCode, Semester } from 'types/modules';
 import { TimetableConfig } from 'types/timetables';
-import { State as StoreState } from '../../../reducers/state';
 
 import { addModule, removeModule } from 'actions/timetables';
 import { getFirstAvailableSemester, getSemestersOffered } from 'utils/modules';
 import config from 'config';
+import { State as StoreState } from '../../../types/state';
 
 import styles from './AddModuleDropdown.scss';
 

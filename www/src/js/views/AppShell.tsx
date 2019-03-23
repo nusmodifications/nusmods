@@ -3,7 +3,6 @@ import { TimetableConfig, SemTimetableConfig } from 'types/timetables';
 import { ModuleList, NotificationOptions } from 'types/reducers';
 import { Semester } from 'types/modules';
 import { Mode, DARK_MODE } from 'types/settings';
-import { State as StoreState } from '../reducers/state';
 
 import Helmet from 'react-helmet';
 import { NavLink, withRouter, RouteComponentProps } from 'react-router-dom';
@@ -26,6 +25,7 @@ import ErrorPage from 'views/errors/ErrorPage';
 import ApiError from 'views/errors/ApiError';
 import { trackPageView } from 'bootstrapping/matomo';
 import Logo from 'img/nusmods-logo.svg';
+import { State as StoreState } from '../types/state';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
 import KeyboardShortcuts from './components/KeyboardShortcuts';

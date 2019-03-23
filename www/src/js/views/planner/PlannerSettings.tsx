@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 
 import config from 'config';
-import { State } from '../../reducers/state';
 import { getYearsBetween, offsetAcadYear } from 'utils/modules';
 import { acadYearLabel } from 'utils/planner';
 import { setPlannerIBLOCs, setPlannerMaxYear, setPlannerMinYear } from 'actions/planner';
 import ExternalLink from 'views/components/ExternalLink';
 import Toggle from 'views/components/Toggle';
+import { State } from '../../types/state';
 import styles from './PlannerSettings.scss';
 
 type Props = {

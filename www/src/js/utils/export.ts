@@ -1,7 +1,7 @@
 import { Semester } from 'types/modules';
-import { State } from '../reducers/state';
 import { ExportData } from 'types/export';
 import { getSemesterTimetable } from 'reducers/timetables';
+import { State } from '../types/state';
 
 export function extractStateForExport(semester: Semester, state: State): ExportData {
   const { colors, timetable } = getSemesterTimetable(semester, state.timetables);

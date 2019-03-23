@@ -16,7 +16,6 @@ import Title from 'views/components/Title';
 import { FeedbackButtons } from 'views/components/FeedbackModal';
 import { getModuleCondensed } from 'selectors/moduleBank';
 import { currentTests } from 'views/settings/BetaToggle';
-import { State as StoreState } from '../../../reducers/state';
 import { notNull } from 'types/utils';
 import config from 'config';
 
@@ -28,6 +27,7 @@ import BugReportIcon from 'img/icons/bug-report.svg';
 import DeveloperIcon from 'img/icons/programmer.svg';
 import ContributeIcon from 'img/icons/love.svg';
 import VenueIcon from 'img/icons/compass.svg';
+import { State as StoreState } from '../../../types/state';
 
 import UnmappedVenues from '../UnmappedVenues';
 import ContributorList from '../ContributorList';

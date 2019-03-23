@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 
 import { Mode, ThemeId } from 'types/settings';
-import { State as StoreState } from '../../reducers/state';
 import { Tracker } from 'types/views';
 
 import availableThemes from 'data/themes.json';
@@ -24,6 +23,7 @@ import { supportsCSSVariables } from 'utils/css';
 import { withTracker } from 'bootstrapping/matomo';
 import ExternalLink from 'views/components/ExternalLink';
 import Toggle from 'views/components/Toggle';
+import { State as StoreState } from '../../types/state';
 
 import ThemeOption from './ThemeOption';
 import ModeSelect from './ModeSelect';

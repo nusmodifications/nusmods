@@ -7,7 +7,6 @@ import { sortBy } from 'lodash';
 import { ModuleCode, ModuleWithColor, Semester } from 'types/modules';
 import { ColorIndex } from 'types/reducers';
 import { ModuleTableOrder } from 'types/views';
-import { State as StoreState } from '../../reducers/state';
 
 import ColorPicker from 'views/components/ColorPicker';
 import { Eye, EyeOff, Trash } from 'views/components/icons';
@@ -20,6 +19,7 @@ import { getFormattedExamDate, getExamDate, renderMCs } from 'utils/modules';
 import { modulePage } from 'views/routes/paths';
 import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip';
+import { State as StoreState } from '../../types/state';
 
 import styles from './TimetableModulesTable.scss';
 import ModuleTombstone from './ModuleTombstone';

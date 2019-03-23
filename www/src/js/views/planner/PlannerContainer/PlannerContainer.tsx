@@ -6,7 +6,6 @@ import classnames from 'classnames';
 
 import { Module, ModuleCode, Semester } from 'types/modules';
 import { PlannerModuleInfo, PlannerModulesWithInfo } from 'types/views';
-import { State as StoreState } from '../../../reducers/state';
 import { MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
 import {
   EXEMPTION_SEMESTER,
@@ -25,6 +24,7 @@ import { Settings, Trash } from 'views/components/icons';
 import Title from 'views/components/Title';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import Modal from 'views/components/Modal';
+import { State as StoreState } from '../../../types/state';
 import PlannerSemester from '../PlannerSemester';
 import PlannerYear from '../PlannerYear';
 import PlannerSettings from '../PlannerSettings';

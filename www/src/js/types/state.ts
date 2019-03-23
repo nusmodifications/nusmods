@@ -5,11 +5,11 @@ import {
   Requests,
   SettingsState,
   ThemeState,
-  TimetablesState
-} from '../types/reducers';
-import { ModuleBank } from './moduleBank';
-import { UndoHistoryState } from './undoHistory';
-import { VenueBank } from './venueBank';
+  TimetablesState,
+} from './reducers';
+import { ModuleBank } from '../reducers/moduleBank';
+import { UndoHistoryState } from '../reducers/undoHistory';
+import { VenueBank } from '../reducers/venueBank';
 
 export type State = {
   moduleBank: ModuleBank;

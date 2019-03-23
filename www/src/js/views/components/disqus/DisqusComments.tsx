@@ -4,11 +4,11 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 
 import { Mode } from 'types/settings';
-import { State as StoreState } from '../../../reducers/state';
 import config from 'config';
 import { MessageSquare } from 'views/components/icons';
 import insertScript from 'utils/insertScript';
 import { getScriptErrorHandler } from 'utils/error';
+import { State as StoreState } from '../../../types/state';
 import styles from './DisqusComments.scss';
 
 type Props = DisqusConfig & {

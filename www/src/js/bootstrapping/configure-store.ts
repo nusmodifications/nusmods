@@ -9,7 +9,7 @@ import ravenMiddleware from 'middlewares/raven-middleware';
 import { setAutoFreeze } from 'immer';
 
 import { FSA, GetState } from 'types/redux';
-import { State } from '../reducers/state';
+import { State } from '../types/state';
 
 // Extend immutability-helper with autovivification commands. This allows immutability-helper
 // to automatically create objects if it doesn't exist before
