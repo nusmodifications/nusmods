@@ -7,9 +7,9 @@ import {
   ThemeState,
   TimetablesState,
 } from './reducers';
-import { ModuleBank } from '../reducers/moduleBank';
-import { UndoHistoryState } from '../reducers/undoHistory';
-import { VenueBank } from '../reducers/venueBank';
+import { ModuleBank } from 'reducers/moduleBank';
+import { UndoHistoryState } from 'reducers/undoHistory';
+import { VenueBank } from 'reducers/venueBank';
 
 export type State = {
   moduleBank: ModuleBank;
