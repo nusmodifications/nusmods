@@ -26,7 +26,7 @@ type Props = Readonly<{
   className?: string;
 
   addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void;
-  removeModule: (moduleCode: ModuleCode) => void;
+  removeModule: (id: string) => void;
   addCustomData: (moduleCode: ModuleCode) => void;
 }>;
 
@@ -53,15 +53,17 @@ export default class PlannerSemester extends React.PureComponent<Props> {
 
   renderModule = (plannerModule: PlannerModuleInfo, index: number) => {
     const { year, semester, showModuleMeta } = this.props;
-    const { moduleCode, moduleInfo, conflict } = plannerModule;
+    const { id, moduleCode, moduleInfo, conflict, placeholder } = plannerModule;
 
     const showExamDate = showModuleMeta && config.academicYear === year;
 
     return (
       <PlannerModule
-        key={moduleCode}
+        key={id}
+        id={id}
         index={index}
         moduleCode={moduleCode}
+        placeholder={placeholder}
         moduleTitle={getModuleTitle(plannerModule)}
         examDate={showExamDate && moduleInfo ? getExamDate(moduleInfo, semester) : null}
         moduleCredit={showModuleMeta ? getModuleCredit(plannerModule) : null}

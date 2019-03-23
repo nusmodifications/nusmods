@@ -17,7 +17,7 @@ type Props = {
   readonly semesters: { [semester: string]: PlannerModuleInfo[] };
 
   readonly addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void;
-  readonly removeModule: (moduleCode: ModuleCode) => void;
+  readonly removeModule: (id: string) => void;
   readonly addCustomData: (moduleCode: ModuleCode) => void;
 };
 

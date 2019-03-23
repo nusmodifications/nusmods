@@ -32,26 +32,21 @@ import CustomModuleForm from '../CustomModuleForm';
 
 import styles from './PlannerContainer.scss';
 
-export type Props = {
-  readonly modules: PlannerModulesWithInfo;
-  readonly exemptions: PlannerModuleInfo[];
-  readonly planToTake: PlannerModuleInfo[];
-  readonly iblocsModules: PlannerModuleInfo[];
-  readonly iblocs: boolean;
+export type Props = Readonly<{
+  modules: PlannerModulesWithInfo;
+  exemptions: PlannerModuleInfo[];
+  planToTake: PlannerModuleInfo[];
+  iblocsModules: PlannerModuleInfo[];
+  iblocs: boolean;
 
   // Actions
-  readonly fetchModule: (moduleCode: ModuleCode) => Promise<Module>;
-  readonly toggleFeedback: () => void;
+  fetchModule: (moduleCode: ModuleCode) => Promise<Module>;
+  toggleFeedback: () => void;
 
-  readonly addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void;
-  readonly moveModule: (
-    moduleCode: ModuleCode,
-    year: string,
-    semester: Semester,
-    index: number,
-  ) => void;
-  readonly removeModule: (moduleCode: ModuleCode) => void;
-};
+  addModule: (year: string, semester: Semester, module: { moduleCode: ModuleCode }) => void;
+  moveModule: (id: string, year: string, semester: Semester, index: number) => void;
+  removeModule: (id: string) => void;
+}>;
 
 type SemesterModules = { [semester: string]: PlannerModuleInfo[] };
 
@@ -95,7 +90,7 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
 
     if (moduleCodes) {
       moduleCodes.forEach((moduleCode) => {
-        this.props.addModule(moduleCode, year, semester);
+        this.props.addModule(year, semester, { moduleCode });
         // TODO: Handle error
         this.props.fetchModule(moduleCode);
       });

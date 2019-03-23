@@ -100,7 +100,9 @@ export function acadYearLabel(year: string) {
  * Get a planner module's title, preferring customInfo over moduleInfo.
  * This allows the user to override our data in case there are mistakes.
  */
-export function getModuleTitle(module: PlannerModuleInfo): string | null {
+export function getModuleTitle(
+  module: Pick<PlannerModuleInfo, 'moduleInfo' | 'customInfo'>,
+): string | null {
   const { moduleInfo, customInfo } = module;
   // customInfo.title is nullable, and there's no point in displaying an
   // empty string, so we can use || here
@@ -111,7 +113,9 @@ export function getModuleTitle(module: PlannerModuleInfo): string | null {
  * Get a planner module's credits, preferring customInfo over moduleInfo.
  * This allows the user to override our data in case there are mistakes.
  */
-export function getModuleCredit(module: PlannerModuleInfo): number | null {
+export function getModuleCredit(
+  module: Pick<PlannerModuleInfo, 'moduleInfo' | 'customInfo'>,
+): number | null {
   const { moduleInfo, customInfo } = module;
 
   // Or operator (||) is not used because moduleCredit can be 0, which is
@@ -124,7 +128,9 @@ export function getModuleCredit(module: PlannerModuleInfo): number | null {
 /**
  * Get total module credits for the given array of planner modules
  */
-export function getTotalMC(modules: PlannerModuleInfo[]): number {
+export function getTotalMC(
+  modules: Pick<PlannerModuleInfo, 'moduleInfo' | 'customInfo'>[],
+): number {
   // Remove nulls using .filter(Boolean)
   return sum(modules.map(getModuleCredit).filter(Boolean));
 }

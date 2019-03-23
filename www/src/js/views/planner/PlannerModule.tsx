@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 import classnames from 'classnames';
 
 import { ModuleCode, ModuleTitle } from 'types/modules';
-import { Conflict } from 'types/planner';
+import { Conflict, PlannerPlaceholder } from 'types/planner';
 import config from 'config';
 import { renderMCs } from 'utils/modules';
 import { conflictToText } from 'utils/planner';
@@ -19,17 +19,19 @@ import styles from './PlannerModule.scss';
 
 type Props = Readonly<{
   // Module information
-  moduleCode: ModuleCode;
   moduleTitle: ModuleTitle | null;
   moduleCredit: number | null;
   examDate: string | null;
+  moduleCode?: ModuleCode;
+  placeholder?: PlannerPlaceholder;
   conflict?: Conflict | null;
 
   // For draggable
+  id: string;
   index: number;
 
   // Actions
-  removeModule: (moduleCode: ModuleCode) => void;
+  removeModule: (id: string) => void;
   addCustomData: (moduleCode: ModuleCode) => void;
 }>;
 
@@ -112,15 +114,21 @@ export default class PlannerModule extends React.PureComponent<Props> {
     );
   }
 
-  removeModule = () => this.props.removeModule(this.props.moduleCode);
+  removeModule = () => {
+    this.props.removeModule(this.props.id);
+  };
 
-  editCustomData = () => this.props.addCustomData(this.props.moduleCode);
+  editCustomData = () => {
+    if (this.props.moduleCode) {
+      this.props.addCustomData(this.props.moduleCode);
+    }
+  };
 
   render() {
-    const { moduleCode, moduleTitle, index, conflict } = this.props;
+    const { id, moduleCode, moduleTitle, index, conflict } = this.props;
 
     return (
-      <Draggable key={moduleCode} draggableId={moduleCode} index={index}>
+      <Draggable key={moduleCode} draggableId={id} index={index}>
         {(provided, snapshot) => (
           <div
             ref={provided.innerRef}
@@ -135,9 +143,11 @@ export default class PlannerModule extends React.PureComponent<Props> {
 
             <div className={styles.moduleInfo}>
               <div className={styles.moduleName}>
-                <Link to={modulePage(moduleCode, moduleTitle)}>
-                  <strong>{moduleCode}</strong> {moduleTitle}
-                </Link>
+                {moduleCode && (
+                  <Link to={modulePage(moduleCode, moduleTitle)}>
+                    <strong>{moduleCode}</strong> {moduleTitle}
+                  </Link>
+                )}
               </div>
 
               {this.renderMeta()}

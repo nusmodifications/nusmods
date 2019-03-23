@@ -1,10 +1,10 @@
 import produce from 'immer';
-import { pull, max, min, mapValues } from 'lodash';
+import { pull, max, min, each } from 'lodash';
 import { createMigrate } from 'redux-persist';
 
 import { PlannerState } from 'types/reducers';
 import { FSA } from 'types/redux';
-import { ModuleCode, Semester } from 'types/modules';
+import { Semester } from 'types/modules';
 import {
   ADD_PLANNER_MODULE,
   MOVE_PLANNER_MODULE,
@@ -16,6 +16,7 @@ import {
 } from 'actions/planner';
 import { filterModuleForSemester } from 'selectors/planner';
 import config from 'config';
+import { Omit } from '../types/utils';
 
 const defaultPlannerState: PlannerState = {
   minYear: config.academicYear,
@@ -23,9 +24,24 @@ const defaultPlannerState: PlannerState = {
   iblocs: false,
 
   modules: {},
-  placeholders: [],
   custom: {},
 };
+
+function nextId(modules: PlannerState['modules']): string {
+  const maxId = Math.max(...Object.keys(modules).map(Number));
+  return String(maxId + 1);
+}
+
+function getSemesterIds(
+  modules: PlannerState['modules'],
+  year: string,
+  semester: Semester,
+  exclude?: string,
+): string[] {
+  const ids = filterModuleForSemester(modules, year, semester).map((module) => module.id);
+  if (exclude) return pull(ids, exclude);
+  return ids;
+}
 
 export default function planner(
   state: PlannerState = defaultPlannerState,
@@ -49,58 +65,59 @@ export default function planner(
     case SET_PLANNER_IBLOCS:
       return { ...state, iblocs: action.payload };
 
-    // Adding and updating planner modules currently do the exact same thing.
-    // We assume the user knows when evoking MOVE that the module is in the
-    // planner already
-    case ADD_PLANNER_MODULE:
+    case ADD_PLANNER_MODULE: {
+      const { year, semester, moduleCode, placeholderId } = action.payload;
+
+      const id = nextId(state.modules);
+      const index = getSemesterIds(state.modules, year, semester).length;
+
+      return produce(state, (draft) => {
+        draft.modules[id] = {
+          id,
+          year,
+          semester,
+          index,
+          moduleCode,
+          placeholderId,
+        };
+      });
+    }
+
     case MOVE_PLANNER_MODULE: {
-      const { year, semester, index } = action.payload;
-      const moduleCode = action.payload.moduleCode.toUpperCase();
+      const { id, year, semester, index } = action.payload;
 
       // Insert the module into its new location and update the location of
-      // all other modules on the list
-      const newModuleOrder = pull(
-        filterModuleForSemester(state.modules, year, semester),
-        moduleCode,
-      );
-
-      // If index is not specified we assume the module is to be pushed to the
-      // end of the index
-      if (index == null) {
-        newModuleOrder.push(moduleCode);
-      } else {
-        newModuleOrder.splice(index, 0, moduleCode);
-      }
+      // all other modules on the list. We exclude the moved module because otherwise
+      // a duplicate will be inserted
+      const newModuleOrder = getSemesterIds(state.modules, year, semester, id);
+      newModuleOrder.splice(index, 0, id);
 
       // If the module is moved from another year / semester, then we also need
       // to update the index of the old module list
-      let oldModuleOrder: ModuleCode[] = [];
-      if (state.modules[moduleCode]) {
-        const { year: oldYear, semester: oldSemester } = state.modules[moduleCode];
-        if (oldYear !== year || oldSemester !== semester) {
-          oldModuleOrder = pull(
-            filterModuleForSemester(state.modules, oldYear, oldSemester),
-            moduleCode,
-          );
-        }
+      let oldModuleOrder: string[] = [];
+      const { year: oldYear, semester: oldSemester } = state.modules[id];
+      if (oldYear !== year || oldSemester !== semester) {
+        oldModuleOrder = getSemesterIds(state.modules, oldYear, oldSemester, id);
       }
 
+      // Update the index of all affected modules
       return produce(state, (draft) => {
-        draft.modules[moduleCode] = { year, semester, index };
+        draft.modules[id].year = year;
+        draft.modules[id].semester = semester;
 
-        newModuleOrder.forEach((newModuleCode, order) => {
-          draft.modules[newModuleCode].index = order;
+        newModuleOrder.forEach((newId, order) => {
+          draft.modules[newId].index = order;
         });
 
-        oldModuleOrder.forEach((oldModuleCode, order) => {
-          draft.modules[oldModuleCode].index = order;
+        oldModuleOrder.forEach((oldId, order) => {
+          draft.modules[oldId].index = order;
         });
       });
     }
 
     case REMOVE_PLANNER_MODULE:
       return produce(state, (draft) => {
-        delete draft.modules[action.payload.moduleCode];
+        delete draft.modules[action.payload.id];
       });
 
     case ADD_CUSTOM_PLANNER_DATA:
@@ -113,23 +130,40 @@ export default function planner(
   }
 }
 
+// Migration from state V0 -> V1
+type PlannerStateV0 = Omit<PlannerState, 'modules'> & {
+  modules: { [moduleCode: string]: [string, Semester, number] };
+};
+export function migrateV0toV1(oldState: PlannerStateV0): PlannerState {
+  // Map the old module time mapping of module code to module time tuple
+  // to the new mapping of id to module time object
+  let id = 0;
+
+  const newModules: PlannerState['modules'] = {};
+
+  each(oldState.modules, ([year, semester, index], moduleCode) => {
+    newModules[id] = {
+      id: String(id),
+      year,
+      semester,
+      index,
+      moduleCode,
+    };
+
+    id += 1;
+  });
+
+  return {
+    ...oldState,
+    // Map old ModuleTime type to new PlannerTime shape
+    modules: newModules,
+  };
+}
+
 export const persistConfig = {
   version: 1,
   migrate: createMigrate({
     // @ts-ignore TS doesn't like this for some reason
-    1: (state: PlannerState) => ({
-      ...state,
-      // Map old ModuleTime type to new ModuleTime shape
-      modules: mapValues(
-        (state.modules as unknown) as { [moduleCode: string]: [string, Semester, number] },
-        ([year, semester, order]) => ({
-          year,
-          semester,
-          order,
-        }),
-      ),
-      // Add new placeholders array
-      placeholders: [],
-    }),
+    1: migrateV0toV1,
   }),
 };

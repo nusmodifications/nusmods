@@ -140,18 +140,21 @@ export type ModuleFinderState = {
 /* planner.js */
 // The year, semester the module will be taken in, and the order
 // it appears on the list for the semester
-export type ModuleTime = {
-  year: string;
-  semester: Semester;
-  index: number;
-};
+export type PlannerTime = {
+  // The key in PlannerState.modules
+  id: string;
 
-export type PlaceholderTime = {
+  // The year, semester and zero-indexed position of the module in the planner
   year: string;
   semester: Semester;
   index: number;
-  placeholder: string;
+
+  // Technically this should be { moduleCode } | { moduleCode?, placeholderId }
+  // that is, it should either have a placeholder ID and maybe a module code
+  // or a module code, but because TS handles union types poorly we're just
+  // merging the two here
   moduleCode?: ModuleCode;
+  placeholderId?: string;
 };
 
 export type CustomModule = {
@@ -171,11 +174,6 @@ export type PlannerState = Readonly<{
   maxYear: string;
   iblocs: boolean;
 
-  modules: {
-    [moduleCode: string]: ModuleTime;
-  };
-
-  placeholders: PlaceholderTime[];
-
+  modules: { [id: string]: PlannerTime };
   custom: CustomModuleData;
 }>;

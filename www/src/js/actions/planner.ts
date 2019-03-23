@@ -28,46 +28,44 @@ export function setPlannerIBLOCs(iblocs: boolean) {
 
 export const ADD_PLANNER_MODULE = 'ADD_PLANNER_MODULE';
 export function addPlannerModule(
-  moduleCode: ModuleCode,
   year: string,
   semester: Semester,
-  index: number | null = null,
+  module: { moduleCode: ModuleCode } | { placeholderId: string },
 ): FSA {
   return {
     type: ADD_PLANNER_MODULE,
     payload: {
       year,
       semester,
-      moduleCode,
-      index,
+      ...module,
     },
   };
 }
 
 export const MOVE_PLANNER_MODULE = 'MOVE_PLANNER_MODULE';
 export function movePlannerModule(
-  moduleCode: ModuleCode,
+  id: string,
   year: string,
   semester: Semester,
-  index: number | null = null,
+  index: number,
 ): FSA {
   return {
     type: MOVE_PLANNER_MODULE,
     payload: {
+      id,
       year,
       semester,
-      moduleCode,
       index,
     },
   };
 }
 
 export const REMOVE_PLANNER_MODULE = 'REMOVE_PLANNER_MODULE';
-export function removePlannerModule(moduleCode: ModuleCode): FSA {
+export function removePlannerModule(id: string): FSA {
   return {
     type: REMOVE_PLANNER_MODULE,
     payload: {
-      moduleCode,
+      id,
     },
   };
 }

@@ -9,8 +9,8 @@ export interface PlannerPlaceholder {
 }
 
 export type PlaceholderMap = {
-  [id: string]: PlannerPlaceholder
-}
+  [id: string]: PlannerPlaceholder;
+};
 
 export type ExamConflict = {
   type: 'exam';
@@ -37,19 +37,15 @@ export type PlannerModulesWithInfo = {
 };
 
 export type PlannerModuleInfo = {
+  id: string;
   moduleInfo?: Module | null;
   // Custom info added by the student to override our data or to fill in the blanks
   // This is a separate field for easier typing
   customInfo?: CustomModule | null;
   conflict?: Conflict | null;
-} & (
-  | {
-      moduleCode: ModuleCode;
-    }
-  | {
-      moduleCode?: ModuleCode;
-      placeholder: PlannerPlaceholder;
-    });
+  moduleCode?: ModuleCode;
+  placeholder?: PlannerPlaceholder;
+};
 
 export type PrereqConflict = {
   type: 'prereq';
