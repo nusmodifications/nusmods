@@ -79,6 +79,8 @@ module.exports = {
       },
     ],
 
+    'no-continue': 'off',
+
     'import/no-extraneous-dependencies': ['error', { devDependencies: ['**/*.test.ts', 'src/utils/test-utils.ts'] }],
 
     // Rule is buggy when used with TypeScript
