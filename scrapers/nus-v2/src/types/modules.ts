@@ -70,6 +70,7 @@ export type RawLesson = Readonly<{
   startTime: StartTime;
   venue: Venue;
   weeks: Weeks;
+  size: number;
 }>;
 
 // Semester-specific information of a module.
