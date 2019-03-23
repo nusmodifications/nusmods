@@ -1,5 +1,5 @@
 import { Module } from 'types/modules';
-import { ModuleCodeMap, ModuleList, } from 'types/moduleReducers';
+import { ModuleCodeMap, ModuleList } from 'types/moduleReducers';
 import { VenueList } from 'types/venues';
 
 /** moduleBank types * */

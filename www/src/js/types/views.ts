@@ -1,5 +1,6 @@
 import FilterGroup from 'utils/filters/FilterGroup';
 import { Lesson, ModifiableLesson } from './lessons';
+import { CustomModule, ModuleList } from './moduleReducers';
 import { Module, ModuleWithColor, PrereqTree } from './modules';
 import {
   Department,
@@ -9,7 +10,6 @@ import {
   Semester,
   StartTime,
 } from './modulesBase';
-import { CustomModule, ModuleList } from './moduleReducers';
 import { HoverLesson } from './timetables';
 import { NextBusTimings, Venue, VenueList } from './venues';
 
@@ -36,8 +36,6 @@ export type SearchItem =
   | { readonly type: 'SEARCH'; readonly result: 'MODULE' | 'VENUE'; readonly term: string };
 
 /* browse/ModuleFinderContainer */
-export type FilterGroupId = string;
-
 export type AnyGroup = FilterGroup<any>;
 
 export type OnFilterChange = (filterGroup: AnyGroup) => unknown;
