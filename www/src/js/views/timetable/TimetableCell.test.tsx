@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import { ColoredLesson } from 'types/modules';
+import { ColoredLesson } from 'types/lessons';
 import { HoverLesson } from 'types/timetables';
 import { EVERY_WEEK } from 'test-utils/timetable';
 import TimetableCell from './TimetableCell';

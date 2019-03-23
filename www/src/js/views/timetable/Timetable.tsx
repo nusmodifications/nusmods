@@ -2,7 +2,7 @@ import * as React from 'react';
 import { flattenDeep, noop, values } from 'lodash';
 import classnames from 'classnames';
 
-import { ColoredLesson } from 'types/modules';
+import { ColoredLesson } from 'types/lessons';
 import { HoverLesson, TimetableArrangement } from 'types/timetables';
 import { OnModifyCell, TimePeriod } from 'types/views';
 

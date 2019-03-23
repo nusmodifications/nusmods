@@ -4,11 +4,12 @@ import { selectSemester } from 'actions/settings';
 
 import reducer from 'reducers/app';
 
-import { Lesson, Semester } from 'types/modulesBase';
+import { Semester } from 'types/modulesBase';
 import { FSA } from 'types/redux';
 import { AppState } from 'types/reducers';
 import { initAction } from 'test-utils/redux';
 import lessons from '__mocks__/lessons-array.json';
+import { Lesson } from '../types/lessons';
 
 const semester: Semester = 1;
 const anotherSemester: Semester = 2;

@@ -1,6 +1,5 @@
 import {
   Faculty,
-  Lesson,
   ModuleCode,
   ModuleCondensed,
   SearchableModule,
@@ -9,6 +8,7 @@ import {
 import { Mode } from 'types/settings';
 import { TimetableConfig } from 'types/timetables';
 import { ModuleTableOrder } from 'types/views';
+import { Lesson } from './lessons';
 
 /* app.js */
 export type NotificationOptions = {

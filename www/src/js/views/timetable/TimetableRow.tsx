@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ModifiableLesson } from 'types/modules';
+import { ModifiableLesson } from 'types/lessons';
 import { HoverLesson } from 'types/timetables';
 import { OnHoverCell, OnModifyCell } from 'types/views';
 

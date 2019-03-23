@@ -6,8 +6,8 @@ import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import { PrereqTree } from 'types/modules';
 import { ModuleCode } from 'types/modulesBase';
 
-import styles from './ModuleTree.scss';
 import { notNull } from 'types/utils';
+import styles from './ModuleTree.scss';
 
 type Props = {
   moduleCode: ModuleCode;

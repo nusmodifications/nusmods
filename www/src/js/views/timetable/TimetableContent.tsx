@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 import { ModulesMap } from 'reducers/constants';
 import { ColorMapping, HORIZONTAL, TimetableOrientation } from 'types/reducers';
-import { ColoredLesson, ModifiableLesson, Module, ModuleWithColor } from 'types/modules';
+import { Module, ModuleWithColor } from 'types/modules';
 import {
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
@@ -40,8 +40,9 @@ import { resetScrollPosition } from 'utils/react';
 import ModulesSelectContainer from 'views/timetable/ModulesSelectContainer';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
-import { Lesson, ModuleCode, Semester } from 'types/modulesBase';
+import { ModuleCode, Semester } from 'types/modulesBase';
 import { State as StoreState } from 'types/state';
+import { ColoredLesson, Lesson, ModifiableLesson } from '../../types/lessons';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';

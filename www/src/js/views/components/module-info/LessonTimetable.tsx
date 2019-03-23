@@ -9,7 +9,8 @@ import { arrangeLessonsForWeek } from 'utils/timetables';
 import { colorLessonsByKey } from 'utils/colors';
 import { getFirstAvailableSemester } from 'utils/modules';
 import { venuePage } from 'views/routes/paths';
-import { Lesson, Semester } from 'types/modulesBase';
+import { Semester } from 'types/modulesBase';
+import { Lesson } from '../../../types/lessons';
 import styles from './LessonTimetable.scss';
 
 type Props = RouteComponentProps & { semesterData: ReadonlyArray<SemesterData> };

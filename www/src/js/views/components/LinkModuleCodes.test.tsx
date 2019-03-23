@@ -6,8 +6,8 @@ import { entries } from 'lodash';
 import { ModuleCodeMap } from 'types/reducers';
 import { getModuleCondensed } from 'selectors/moduleBank';
 
-import { LinkModuleCodesComponent } from './LinkModuleCodes';
 import { ModuleCondensed } from 'types/modulesBase';
+import { LinkModuleCodesComponent } from './LinkModuleCodes';
 
 describe(LinkModuleCodesComponent, () => {
   const testModules: { [moduleCode: string]: ModuleCondensed } = {

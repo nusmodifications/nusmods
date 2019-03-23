@@ -37,32 +37,18 @@ export type SearchableModule = {
   description?: string;
 };
 
-// Usually ModuleCode and ModuleTitle has to be injected in before using in the timetable.
-export type RawLesson = Readonly<{
-  classNo: ClassNo;
-  day: DayText;
-  startTime: StartTime;
-  endTime: EndTime;
-  lessonType: LessonType;
-  venue: Venue;
-  weeks: Weeks;
-}>;
-
-// They have to be injected in before using in the timetable.
-export type Lesson = RawLesson & {
-  moduleCode: ModuleCode;
-  title: ModuleTitle;
-};
-
 // This format is returned from the module information endpoint
 export type Department = string;
+
 export type Workload = string | ReadonlyArray<number>;
+
 export type SemesterDataCondensed = Readonly<{
   semester: Semester;
   examDate?: string;
   examDuration?: number;
   // The full timetable is not provided to reduce space
 }>;
+
 export type ModuleInformation = Readonly<{
   // Basic info
   moduleCode: ModuleCode;

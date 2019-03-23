@@ -14,7 +14,7 @@ import {
 } from 'date-fns';
 import produce from 'immer';
 
-import { DaysOfWeek, ColoredLesson } from 'types/modules';
+import { DaysOfWeek } from 'types/modules';
 import { SemTimetableConfigWithLessons } from 'types/timetables';
 import { ColorMapping } from 'types/reducers';
 import { EmptyGroupType, SelectedLesson } from 'types/views';
@@ -40,7 +40,7 @@ import MapContext from 'views/components/map/MapContext';
 import { formatTime, getDayIndex } from 'utils/timify';
 import { breakpointUp } from 'utils/css';
 import { EMPTY_ARRAY } from 'types/utils';
-import { Lesson } from 'types/modulesBase';
+import { ColoredLesson, Lesson } from 'types/lessons';
 import { State as StoreState } from '../../../types/state';
 
 import DayEvents from '../DayEvents';

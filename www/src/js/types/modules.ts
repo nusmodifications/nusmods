@@ -1,12 +1,11 @@
 // Components within a module:
+import { RawLesson } from './lessons';
 import {
   AcadYear,
   Department,
   Faculty,
-  Lesson,
   ModuleCode,
   ModuleTitle,
-  RawLesson,
   Semester,
   WeekRange,
   Weeks,
@@ -118,24 +117,3 @@ export type ModuleCondensed = Readonly<{
   title: ModuleTitle;
   semesters: ReadonlyArray<number>;
 }>;
-
-// RawLessons obtained from API does not include ModuleCode and ModuleTitle by default.
-// They have to be injected in before using in the timetable.
-export type Lesson = RawLesson & {
-  moduleCode: ModuleCode;
-  title: ModuleTitle;
-};
-
-export type ColoredLesson = Lesson & {
-  colorIndex: number;
-};
-
-type Modifiable = {
-  isModifiable?: boolean;
-  isAvailable?: boolean;
-  isActive?: boolean;
-  colorIndex: number;
-};
-
-// Lessons do not implement a modifiable interface.
-export type ModifiableLesson = ColoredLesson & Modifiable;

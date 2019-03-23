@@ -1,4 +1,5 @@
-import { DayText, ModuleCode, RawLesson } from 'types/modulesBase';
+import { DayText, ModuleCode } from 'types/modulesBase';
+import { RawLesson } from './lessons';
 import { Omit } from './utils';
 
 export type Venue = string;

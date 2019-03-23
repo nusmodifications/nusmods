@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { flatMap } from 'lodash';
 
 import { DayAvailability, Venue } from 'types/venues';
-import { Lesson } from 'types/modulesBase';
+import { Lesson } from 'types/lessons';
 import { TimePeriod } from 'types/views';
 
 import { colorLessonsByKey } from 'utils/colors';
