@@ -1,10 +1,9 @@
 import * as React from 'react';
 
-import { SemesterDataCondensed } from 'types/moduleBaseTypes';
+import { SemesterDataCondensed, ModuleCode, Semester } from 'types/modulesBase';
 
 import { getFirstAvailableSemester, formatExamDate } from 'utils/modules';
 import { BULLET } from 'utils/react';
-import { ModuleCode, Semester } from '../../../types/moduleBaseTypes';
 import SemesterPicker from './SemesterPicker';
 import ModuleExamClash from './ModuleExamClash';
 

@@ -8,7 +8,7 @@ import {
   TimetableDayFormat,
 } from 'types/timetables';
 import { ColoredLesson } from 'types/modules';
-import { ModulesMap } from 'reducers/moduleBank';
+import { ModulesMap } from 'reducers/constants';
 
 import _ from 'lodash';
 
@@ -28,7 +28,7 @@ import {
 } from 'test-utils/timetable';
 
 import { parseISO } from 'date-fns';
-import { LessonType, RawLesson, Semester, Weeks } from '../types/moduleBaseTypes';
+import { LessonType, RawLesson, Semester, Weeks } from 'types/modulesBase';
 import {
   areOtherClassesAvailable,
   arrangeLessonsForWeek,

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { TimetableConfig, SemTimetableConfig } from 'types/timetables';
 import { ModuleList, NotificationOptions } from 'types/reducers';
-import { Semester } from 'types/moduleBaseTypes';
+import { Semester } from 'types/modulesBase';
 import { Mode, DARK_MODE } from 'types/settings';
 
 import Helmet from 'react-helmet';

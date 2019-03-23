@@ -7,7 +7,7 @@ import { ModuleCodeMap } from 'types/reducers';
 import { getModuleCondensed } from 'selectors/moduleBank';
 
 import { LinkModuleCodesComponent } from './LinkModuleCodes';
-import { ModuleCondensed } from '../../types/moduleBaseTypes';
+import { ModuleCondensed } from 'types/modulesBase';
 
 describe(LinkModuleCodesComponent, () => {
   const testModules: { [moduleCode: string]: ModuleCondensed } = {

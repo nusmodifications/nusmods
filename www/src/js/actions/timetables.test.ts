@@ -1,4 +1,4 @@
-import { ModuleCode, Lesson, Semester } from 'types/moduleBaseTypes';
+import { ModuleCode, Lesson, Semester } from 'types/modulesBase';
 import { SemTimetableConfig } from 'types/timetables';
 
 import lessons from '__mocks__/lessons-array.json';

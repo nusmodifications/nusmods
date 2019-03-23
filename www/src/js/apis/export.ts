@@ -1,8 +1,8 @@
 import qs from 'query-string';
 
-import { Semester } from 'types/moduleBaseTypes';
+import { Semester } from 'types/modulesBase';
 import { extractStateForExport } from 'utils/export';
-import { State } from '../types/state';
+import { State } from 'types/state';
 
 export type ExportOptions = {
   pixelRatio?: number;

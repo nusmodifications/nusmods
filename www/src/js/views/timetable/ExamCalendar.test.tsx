@@ -8,7 +8,7 @@ import mockModules from '__mocks__/modules';
 
 /** @vars {Module} */
 import GER1000 from '__mocks__/modules/GER1000.json';
-import { Semester } from '../../types/moduleBaseTypes';
+import { Semester } from 'types/modulesBase';
 
 import ExamCalendar, { getTimeSegment } from './ExamCalendar';
 import styles from './ExamCalendar.scss';

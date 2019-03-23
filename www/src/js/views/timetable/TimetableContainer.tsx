@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { withRouter, Redirect, RouteComponentProps } from 'react-router-dom';
 import classnames from 'classnames';
 
-import { ModuleCode, Semester } from 'types/moduleBaseTypes';
+import { ModuleCode, Semester } from 'types/modulesBase';
 import { SemTimetableConfig } from 'types/timetables';
 import { ColorMapping, NotificationOptions } from 'types/reducers';
-import { ModulesMap } from 'reducers/moduleBank';
+import { ModulesMap } from 'reducers/constants';
 
 import { selectSemester } from 'actions/settings';
 import { getSemesterTimetable } from 'reducers/timetables';

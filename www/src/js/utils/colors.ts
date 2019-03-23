@@ -2,7 +2,7 @@ import { range, without, sample } from 'lodash';
 
 import { SemTimetableConfig } from 'types/timetables';
 import { ColorIndex, ColorMapping } from 'types/reducers';
-import { ModuleCode } from 'types/moduleBaseTypes';
+import { ModuleCode } from 'types/modulesBase';
 
 export const NUM_DIFFERENT_COLORS = 8;
 

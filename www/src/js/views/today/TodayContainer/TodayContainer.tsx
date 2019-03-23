@@ -40,7 +40,7 @@ import MapContext from 'views/components/map/MapContext';
 import { formatTime, getDayIndex } from 'utils/timify';
 import { breakpointUp } from 'utils/css';
 import { EMPTY_ARRAY } from 'types/utils';
-import { Lesson } from '../../../types/moduleBaseTypes';
+import { Lesson } from 'types/modulesBase';
 import { State as StoreState } from '../../../types/state';
 
 import DayEvents from '../DayEvents';

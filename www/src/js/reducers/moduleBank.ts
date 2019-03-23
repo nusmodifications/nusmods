@@ -15,17 +15,6 @@ import { ModuleList, SUCCESS } from 'types/reducers';
 import { FSA } from 'types/redux';
 import { ModuleBank } from './constants';
 
-export type ModulesMap = {
-  [moduleCode: string]: Module;
-};
-
-export type ModuleArchive = {
-  [moduleCode: string]: {
-    // Mapping acad year to module info
-    [key: string]: Module;
-  };
-};
-
 const defaultModuleBankState: ModuleBank = {
   moduleList: [], // List of basic modules data (module code, name, semester)
   modules: {}, // Object of Module code -> Module details

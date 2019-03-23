@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ModuleInformation } from 'types/moduleBaseTypes';
+import { ModuleInformation } from 'types/modulesBase';
 import ModuleFinderItem from 'views/components/ModuleFinderItem';
 
 type Props = {

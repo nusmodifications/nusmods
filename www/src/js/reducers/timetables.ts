@@ -4,7 +4,7 @@ import { createMigrate } from 'redux-persist';
 
 import { PersistConfig } from 'storage/persistReducer';
 import { FSA } from 'types/redux';
-import { ModuleCode, Semester } from 'types/moduleBaseTypes';
+import { ModuleCode, Semester } from 'types/modulesBase';
 import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import { ColorMapping, TimetablesState } from 'types/reducers';
 

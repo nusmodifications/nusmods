@@ -34,17 +34,10 @@ import {
   TimetableDayFormat,
 } from 'types/timetables';
 
-import { ModulesMap } from 'reducers/moduleBank';
+import { ModulesMap } from 'reducers/constants';
 import { ModuleCodeMap } from 'types/reducers';
 import { ExamClashes } from 'types/views';
-import {
-  ClassNo,
-  Lesson,
-  LessonType,
-  ModuleCode,
-  RawLesson,
-  Semester,
-} from '../types/moduleBaseTypes';
+import { ClassNo, Lesson, LessonType, ModuleCode, RawLesson, Semester } from 'types/modulesBase';
 
 import { getTimeAsDate } from './timify';
 import { getModuleSemesterData, getModuleTimetable } from './modules';

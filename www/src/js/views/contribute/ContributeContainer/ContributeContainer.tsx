@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { map, mapValues, values, flatten } from 'lodash';
 
-import { ModuleCondensed } from 'types/moduleBaseTypes';
+import { ModuleCondensed } from 'types/modulesBase';
 
 import { toggleFeedback } from 'actions/app';
 import { toggleBetaTesting } from 'actions/settings';

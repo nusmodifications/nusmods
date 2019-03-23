@@ -14,7 +14,7 @@ import {
   validateTimetableModules,
 } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
-import { ClassNo, Lesson, LessonType, ModuleCode, Semester } from '../types/moduleBaseTypes';
+import { ClassNo, Lesson, LessonType, ModuleCode, Semester } from 'types/modulesBase';
 
 export const ADD_MODULE = 'ADD_MODULE';
 export function addModule(semester: Semester, moduleCode: ModuleCode) {

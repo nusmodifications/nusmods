@@ -1,8 +1,7 @@
-import { AcadYear } from 'types/moduleBaseTypes';
+import { AcadYear, Semester } from 'types/modulesBase';
 
 import holidays from 'data/holidays.json';
 import corsData from 'data/cors-schedule-ay1819-sem2.json';
-import { Semester } from '../types/moduleBaseTypes';
 import appConfig from './app-config.json';
 
 export type CorsPeriodType = 'open' | 'closed';

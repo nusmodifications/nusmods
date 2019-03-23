@@ -1,4 +1,4 @@
-import { Semester } from 'types/moduleBaseTypes';
+import { Semester } from 'types/modulesBase';
 import { ExportData } from 'types/export';
 import { getSemesterTimetable } from 'reducers/timetables';
 import { State } from '../types/state';

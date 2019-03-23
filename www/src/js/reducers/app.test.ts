@@ -4,7 +4,7 @@ import { selectSemester } from 'actions/settings';
 
 import reducer from 'reducers/app';
 
-import { Lesson, Semester } from 'types/moduleBaseTypes';
+import { Lesson, Semester } from 'types/modulesBase';
 import { FSA } from 'types/redux';
 import { AppState } from 'types/reducers';
 import { initAction } from 'test-utils/redux';

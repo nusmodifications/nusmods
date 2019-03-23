@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { ModuleCode, ModuleCondensed } from 'types/moduleBaseTypes';
+import { ModuleCode, ModuleCondensed } from 'types/modulesBase';
 import { State } from 'types/state';
 
 import { modulePage } from 'views/routes/paths';

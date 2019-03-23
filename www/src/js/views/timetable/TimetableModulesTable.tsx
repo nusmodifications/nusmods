@@ -19,8 +19,8 @@ import { getFormattedExamDate, getExamDate, renderMCs } from 'utils/modules';
 import { modulePage } from 'views/routes/paths';
 import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip';
-import { ModuleCode, Semester } from '../../types/moduleBaseTypes';
-import { State as StoreState } from '../../types/state';
+import { ModuleCode, Semester } from 'types/modulesBase';
+import { State as StoreState } from 'types/state';
 
 import styles from './TimetableModulesTable.scss';
 import ModuleTombstone from './ModuleTombstone';

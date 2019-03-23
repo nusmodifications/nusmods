@@ -7,8 +7,8 @@ import { ModuleTableOrder } from 'types/views';
 import { Module } from 'types/modules';
 import { setModuleTableOrder } from 'actions/settings';
 import { getExamDate, renderMCs } from 'utils/modules';
-import { Semester } from '../../types/moduleBaseTypes';
-import { State } from '../../types/state';
+import { Semester } from 'types/modulesBase';
+import { State } from 'types/state';
 import styles from './TimetableModulesTable.scss';
 
 type ModuleOrder = {

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import classnames from 'classnames';
 
-import { ModuleCode, ModuleTitle } from 'types/moduleBaseTypes';
+import { ModuleCode, ModuleTitle } from 'types/modulesBase';
 import { Conflict } from 'types/views';
 import config from 'config';
 import { renderMCs } from 'utils/modules';

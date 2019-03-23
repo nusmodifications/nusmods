@@ -5,7 +5,7 @@ import {
   ModuleCondensed,
   SearchableModule,
   Semester,
-} from 'types/moduleBaseTypes';
+} from 'types/modulesBase';
 import { Mode } from 'types/settings';
 import { TimetableConfig } from 'types/timetables';
 import { ModuleTableOrder } from 'types/views';

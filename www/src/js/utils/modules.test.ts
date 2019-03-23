@@ -18,7 +18,7 @@ import { noBreak } from 'utils/react';
 
 import { EVERY_WEEK } from 'test-utils/timetable';
 import { CS1010S, CS3216 } from '__mocks__/modules';
-import { Lesson, Semester } from '../types/moduleBaseTypes';
+import { Lesson, Semester } from 'types/modulesBase';
 
 const mockLesson = _.cloneDeep(CS1010S.semesterData[0].timetable[0]) as Lesson;
 mockLesson.moduleCode = 'CS1010S';

@@ -3,7 +3,7 @@ import { pull, max, min } from 'lodash';
 
 import { PlannerState } from 'types/reducers';
 import { FSA } from 'types/redux';
-import { ModuleCode } from 'types/moduleBaseTypes';
+import { ModuleCode } from 'types/modulesBase';
 import {
   ADD_PLANNER_MODULE,
   MOVE_PLANNER_MODULE,

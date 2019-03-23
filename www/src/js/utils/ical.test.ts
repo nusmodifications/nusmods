@@ -16,7 +16,7 @@ import { EVEN_WEEK, EVERY_WEEK, ODD_WEEK } from 'test-utils/timetable';
 
 import { BFS1001, CS1010S, CS3216 } from '__mocks__/modules';
 import mockTimetable from '__mocks__/sem-timetable.json';
-import { RawLesson, WeekRange } from '../types/moduleBaseTypes';
+import { RawLesson, WeekRange } from 'types/modulesBase';
 
 const rawLesson = (override: Partial<RawLesson> = {}): RawLesson => ({
   classNo: 'A1',

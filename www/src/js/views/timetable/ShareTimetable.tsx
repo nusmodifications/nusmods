@@ -5,7 +5,7 @@ import axios from 'axios';
 import { QRCodeProps } from 'react-qr-svg';
 
 import { SemTimetableConfig } from 'types/timetables';
-import { Semester } from 'types/moduleBaseTypes';
+import { Semester } from 'types/modulesBase';
 
 import config from 'config';
 import { absolutePath, timetableShare } from 'views/routes/paths';

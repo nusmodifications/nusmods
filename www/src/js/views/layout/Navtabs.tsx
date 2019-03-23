@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { RouteComponentProps, NavLink, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 
-import { Semester } from 'types/moduleBaseTypes';
+import { Semester } from 'types/modulesBase';
 import {
   BookOpen,
   Calendar,

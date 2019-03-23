@@ -9,7 +9,7 @@ import config from 'config';
 import LevelFilter from 'utils/filters/LevelFilter';
 import Filter from 'utils/filters/ModuleFilter';
 import FilterGroup from 'utils/filters/FilterGroup';
-import { Department, Faculty, ModuleInformation } from '../types/moduleBaseTypes';
+import { Department, Faculty, ModuleInformation } from 'types/modulesBase';
 import { createSearchFilter, SEARCH_QUERY_KEY } from './moduleSearch';
 
 export const LEVELS = 'level';

@@ -5,7 +5,7 @@ import { Module } from 'types/modules';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 
 import { CS1010S, CS3216 } from '__mocks__/modules';
-import { ModuleCode } from '../../../types/moduleBaseTypes';
+import { ModuleCode } from 'types/modulesBase';
 import { ModuleExamClashComponent } from './ModuleExamClash';
 
 describe(ModuleExamClashComponent, () => {

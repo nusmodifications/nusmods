@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Redirect } from 'react-router-dom';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { SemTimetableConfig } from 'types/timetables';
-import { ModulesMap } from 'reducers/moduleBank';
+import { ModulesMap } from 'reducers/constants';
 
 import createHistory from 'test-utils/createHistory';
 

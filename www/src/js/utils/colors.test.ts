@@ -1,7 +1,7 @@
 import { range, without, uniq } from 'lodash';
 
 import { ColorIndex, ColorMapping } from 'types/reducers';
-import { Lesson } from 'types/moduleBaseTypes';
+import { Lesson } from 'types/modulesBase';
 import { SemTimetableConfig } from 'types/timetables';
 import { Omit } from 'types/utils';
 

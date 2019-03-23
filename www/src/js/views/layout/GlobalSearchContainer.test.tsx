@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import _ from 'lodash';
 
-import { ModuleCondensed } from 'types/moduleBaseTypes';
+import { ModuleCondensed } from 'types/modulesBase';
 import { SearchContainerComponent } from 'views/layout/GlobalSearchContainer';
 import createHistory from 'test-utils/createHistory';
 

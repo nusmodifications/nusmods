@@ -1,4 +1,4 @@
-import { ModuleCondensed } from 'types/moduleBaseTypes';
+import { ModuleCondensed } from 'types/modulesBase';
 import { Venue, VenueList } from 'types/venues';
 import { ModuleList } from 'types/reducers';
 import { ResultType, SearchResult, VENUE_RESULT } from 'types/views';

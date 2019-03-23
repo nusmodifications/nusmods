@@ -1,4 +1,4 @@
-import { ModuleCode } from 'types/moduleBaseTypes';
+import { ModuleCode } from 'types/modulesBase';
 import moduleList from '__mocks__/modules';
 
 import { createSearchFilter, sortModules } from './moduleSearch';

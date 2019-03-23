@@ -11,7 +11,7 @@ import {
   WeekRange,
   Weeks,
   Workload,
-} from './moduleBaseTypes';
+} from './modulesBase';
 import { ColorIndex } from './reducers';
 
 /**

@@ -12,10 +12,10 @@ import {
   PLAN_TO_TAKE_SEMESTER,
   PLAN_TO_TAKE_YEAR,
 } from 'utils/planner';
-import { ModulesMap } from 'reducers/moduleBank';
+import { ModulesMap } from 'reducers/constants';
 import { findExamClashes } from 'utils/timetables';
-import { ModuleCode, Semester } from '../types/moduleBaseTypes';
-import { State } from '../types/state';
+import { ModuleCode, Semester } from 'types/modulesBase';
+import { State } from 'types/state';
 
 /* eslint-disable no-useless-computed-key */
 

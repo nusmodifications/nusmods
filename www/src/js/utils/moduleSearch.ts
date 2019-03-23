@@ -1,7 +1,7 @@
 import { sortBy } from 'lodash';
 import FilterGroup from 'utils/filters/FilterGroup';
 import ModuleFilter from 'utils/filters/ModuleFilter';
-import { ModuleCode, ModuleTitle, SearchableModule } from 'types/moduleBaseTypes';
+import { ModuleCode, ModuleTitle, SearchableModule } from 'types/modulesBase';
 
 // The query string key used for the search term eg. q | null | undefined=Search+Term
 export const SEARCH_QUERY_KEY = 'q';

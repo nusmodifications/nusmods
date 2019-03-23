@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 
 import { toggleTimetableOrientation, toggleTitleDisplay } from 'actions/theme';
-import { Semester } from 'types/moduleBaseTypes';
+import { Semester } from 'types/modulesBase';
 import { SemTimetableConfig } from 'types/timetables';
 
 import { Sidebar, Type, Grid, Calendar } from 'views/components/icons';

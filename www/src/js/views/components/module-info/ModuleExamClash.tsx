@@ -10,8 +10,8 @@ import { getModuleSemesterData } from 'utils/modules';
 import { getSemesterModules } from 'utils/timetables';
 import { getSemesterTimetable } from 'reducers/timetables';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
-import { ModuleCode, Semester } from '../../../types/moduleBaseTypes';
-import { State } from '../../../types/state';
+import { ModuleCode, Semester } from 'types/modulesBase';
+import { State } from 'types/state';
 
 import styles from './ModuleExamClash.scss';
 

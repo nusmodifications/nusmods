@@ -16,7 +16,7 @@ import {
 } from 'utils/timetables';
 import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip/Tooltip';
-import { WeekRange } from '../../types/moduleBaseTypes';
+import { WeekRange } from 'types/modulesBase';
 
 import styles from './TimetableCell.scss';
 

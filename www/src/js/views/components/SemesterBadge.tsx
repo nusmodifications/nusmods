@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import config from 'config';
-import { Semester } from 'types/moduleBaseTypes';
+import { Semester } from 'types/modulesBase';
 import styles from './SemesterBadge.scss';
 
 /* eslint-disable no-useless-computed-key */

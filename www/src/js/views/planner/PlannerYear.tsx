@@ -2,7 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { size, sortBy, toPairs, flatMap, values } from 'lodash';
 
-import { ModuleCode, Semester } from 'types/moduleBaseTypes';
+import { ModuleCode, Semester } from 'types/modulesBase';
 import { PlannerModuleInfo } from 'types/views';
 import config from 'config';
 import { getTotalMC, getSemesterName } from 'utils/planner';

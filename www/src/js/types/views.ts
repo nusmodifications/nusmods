@@ -7,8 +7,8 @@ import {
   ModuleCondensed,
   Semester,
   StartTime,
-} from './moduleBaseTypes';
-import { ModifiableLesson, Module, ModuleWithColor, PrereqTree} from './modules';
+} from './modulesBase';
+import { ModifiableLesson, Module, ModuleWithColor, PrereqTree } from './modules';
 import { CustomModule, ModuleList } from './reducers';
 import { NextBusTimings, Venue, VenueList } from './venues';
 import { HoverLesson } from './timetables';

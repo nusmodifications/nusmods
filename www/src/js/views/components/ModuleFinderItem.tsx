@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { ModuleInformation } from 'types/moduleBaseTypes';
+import { ModuleInformation } from 'types/modulesBase';
 import { ModuleSearch } from 'types/reducers';
 
 import { modulePage } from 'views/routes/paths';

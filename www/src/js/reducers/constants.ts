@@ -1,8 +1,19 @@
 import { ModuleCodeMap, ModuleList } from 'types/reducers';
 import { VenueList } from 'types/venues';
-import { ModuleArchive, ModulesMap } from './moduleBank';
+import { Module } from 'types/modules';
 
 /** moduleBank types * */
+
+export type ModulesMap = {
+  [moduleCode: string]: Module;
+};
+
+export type ModuleArchive = {
+  [moduleCode: string]: {
+    // Mapping acad year to module info
+    [key: string]: Module;
+  };
+};
 
 export type ModuleBank = {
   moduleList: ModuleList;

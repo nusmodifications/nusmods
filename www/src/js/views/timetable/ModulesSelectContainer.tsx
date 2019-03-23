@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { ModuleSelectList } from 'types/reducers';
-import { ModuleCode, Semester } from 'types/moduleBaseTypes';
+import { ModuleCode, Semester } from 'types/modulesBase';
 import { SemTimetableConfig } from 'types/timetables';
 
 import Online from 'views/components/Online';

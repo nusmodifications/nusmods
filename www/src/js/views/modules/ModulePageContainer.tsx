@@ -14,8 +14,8 @@ import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { moduleArchive, modulePage } from 'views/routes/paths';
 import { isFailure } from 'selectors/requests';
-import { ModuleCode } from '../../types/moduleBaseTypes';
-import { State as StoreState } from '../../types/state';
+import { ModuleCode } from 'types/modulesBase';
+import { State as StoreState } from 'types/state';
 
 import { Props as ModulePageContentProp } from './ModulePageContent';
 

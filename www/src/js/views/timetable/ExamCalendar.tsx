@@ -10,7 +10,7 @@ import config from 'config';
 import { formatExamDate, getExamDate } from 'utils/modules';
 import { toSingaporeTime } from 'utils/timify';
 import elements from 'views/elements';
-import { Semester } from '../../types/moduleBaseTypes';
+import { Semester } from 'types/modulesBase';
 import ExamWeek from './ExamWeek';
 import styles from './ExamCalendar.scss';
 

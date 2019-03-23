@@ -1,4 +1,4 @@
-import { ModuleCode, Semester } from 'types/moduleBaseTypes';
+import { ModuleCode, Semester } from 'types/modulesBase';
 import { FSA } from 'types/redux';
 import { CustomModule } from 'types/reducers';
 
