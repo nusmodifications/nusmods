@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import _ from 'lodash';
 
-import { Workload } from 'types/modules';
+import { Workload } from 'types/moduleBaseTypes';
 import ModuleWorkload from './ModuleWorkload';
 
 function make(workload: Workload) {

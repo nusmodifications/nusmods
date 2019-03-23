@@ -1,17 +1,14 @@
 import FilterGroup from 'utils/filters/FilterGroup';
 import {
-  StartTime,
+  Department,
   EndTime,
   Lesson,
-  ModifiableLesson,
-  Module,
   ModuleCode,
   ModuleCondensed,
-  ModuleWithColor,
   Semester,
-  PrereqTree,
-  Department,
-} from './modules';
+  StartTime,
+} from './moduleBaseTypes';
+import { ModifiableLesson, Module, ModuleWithColor, PrereqTree} from './modules';
 import { CustomModule, ModuleList } from './reducers';
 import { NextBusTimings, Venue, VenueList } from './venues';
 import { HoverLesson } from './timetables';

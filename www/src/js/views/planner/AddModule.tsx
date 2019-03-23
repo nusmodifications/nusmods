@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { Semester } from 'types/modules';
+import { Semester } from 'types/moduleBaseTypes';
 import { Plus, Close } from 'views/components/icons';
 import styles from './AddModule.scss';
 

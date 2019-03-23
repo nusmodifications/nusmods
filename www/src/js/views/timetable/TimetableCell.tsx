@@ -4,7 +4,7 @@ import { isEqual } from 'lodash';
 import { addWeeks, format, parseISO } from 'date-fns';
 import NUSModerator, { AcadWeekInfo } from 'nusmoderator';
 
-import { consumeWeeks, ModifiableLesson, WeekRange } from 'types/modules';
+import { consumeWeeks, ModifiableLesson } from 'types/modules';
 import { HoverLesson } from 'types/timetables';
 import { OnHoverCell } from 'types/views';
 
@@ -16,6 +16,7 @@ import {
 } from 'utils/timetables';
 import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip/Tooltip';
+import { WeekRange } from '../../types/moduleBaseTypes';
 
 import styles from './TimetableCell.scss';
 

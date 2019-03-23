@@ -5,7 +5,7 @@ import classnames from 'classnames';
 
 import { highlight } from 'utils/react';
 import { ChevronRight, Help, Search } from 'views/components/icons';
-import { ModuleCondensed } from 'types/modules';
+import { ModuleCondensed } from 'types/moduleBaseTypes';
 import { Venue } from 'types/venues';
 import {
   ResultType,

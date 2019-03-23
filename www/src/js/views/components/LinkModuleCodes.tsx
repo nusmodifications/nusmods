@@ -2,7 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { ModuleCode, ModuleCondensed } from 'types/modules';
+import { ModuleCode, ModuleCondensed } from 'types/moduleBaseTypes';
+import { State } from 'types/state';
 
 import { modulePage } from 'views/routes/paths';
 import Tooltip from 'views/components/Tooltip';
@@ -10,7 +11,6 @@ import SemesterBadge from 'views/components/SemesterBadge';
 import { getModuleCondensed } from 'selectors/moduleBank';
 import { replaceWithNode } from 'utils/react';
 import { MODULE_CODE_REGEX } from 'utils/modules';
-import { State } from '../../types/state';
 import styles from './LinkModuleCodes.scss';
 
 type Props = {

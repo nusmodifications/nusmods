@@ -1,5 +1,5 @@
 import { FSA } from 'types/redux';
-import { Faculty, Semester } from 'types/modules';
+import { Faculty, Semester } from 'types/moduleBaseTypes';
 import { Mode } from 'types/settings';
 import { ModuleTableOrder } from 'types/views';
 

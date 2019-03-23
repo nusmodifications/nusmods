@@ -1,4 +1,4 @@
-import { Semester } from 'types/modules';
+import { Semester } from 'types/moduleBaseTypes';
 import { CS1010S } from '__mocks__/modules';
 
 import {

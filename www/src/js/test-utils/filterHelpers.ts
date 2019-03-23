@@ -1,6 +1,7 @@
-import { Module, ModuleCode } from 'types/modules';
+import { Module } from 'types/modules';
 import FilterGroup from 'utils/filters/FilterGroup';
 import Filter from 'utils/filters/ModuleFilter';
+import { ModuleCode } from '../types/moduleBaseTypes';
 
 export function createModule(code: ModuleCode): Module {
   return {

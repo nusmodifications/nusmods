@@ -2,8 +2,9 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { sum, partition, zip, range } from 'lodash';
 
-import { Workload, WORKLOAD_COMPONENTS, WorkloadComponent } from 'types/modules';
+import { WORKLOAD_COMPONENTS, WorkloadComponent } from 'types/modules';
 import Tooltip from 'views/components/Tooltip';
+import { Workload } from '../../../types/moduleBaseTypes';
 
 const ROW_MAX = 10;
 

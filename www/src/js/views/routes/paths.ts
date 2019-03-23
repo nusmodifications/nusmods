@@ -1,5 +1,5 @@
 import { kebabCase, each } from 'lodash';
-import { ModuleCode, ModuleTitle, Semester } from 'types/modules';
+import { ModuleCode, ModuleTitle, Semester } from 'types/moduleBaseTypes';
 import { Venue } from 'types/venues';
 import { SemTimetableConfig } from 'types/timetables';
 import { serializeTimetable } from 'utils/timetables';

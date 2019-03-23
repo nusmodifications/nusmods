@@ -1,11 +1,12 @@
 import { keyBy, values } from 'lodash';
 import update from 'immutability-helper';
 
-import { ModuleCode, ModuleInformation } from 'types/modules';
+import { ModuleInformation } from 'types/moduleBaseTypes';
 import { FilterGroupId } from 'types/views';
 import { notNull } from 'types/utils';
 
 import { intersection, union } from 'utils/set';
+import { ModuleCode } from 'types/moduleBaseTypes';
 import ModuleFilter from './ModuleFilter';
 
 export const ID_DELIMITER = ',';

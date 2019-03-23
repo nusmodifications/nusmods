@@ -5,7 +5,7 @@ import { Redirect, withRouter, RouteComponentProps, match as Match } from 'react
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import { get } from 'lodash';
 
-import { Module, ModuleCode } from 'types/modules';
+import { Module } from 'types/modules';
 
 import { fetchArchiveRequest, fetchModule, fetchModuleArchive } from 'actions/moduleBank';
 import { captureException, retryImport } from 'utils/error';
@@ -14,6 +14,7 @@ import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { moduleArchive, modulePage } from 'views/routes/paths';
 import { isFailure } from 'selectors/requests';
+import { ModuleCode } from '../../types/moduleBaseTypes';
 import { State as StoreState } from '../../types/state';
 
 import { Props as ModulePageContentProp } from './ModulePageContent';

@@ -1,5 +1,6 @@
-import { ModuleCode, ModuleInformation } from 'types/modules';
+import { ModuleInformation } from 'types/moduleBaseTypes';
 import { intersectionCount } from 'utils/set';
+import { ModuleCode } from 'types/moduleBaseTypes';
 
 export default class ModuleFilter {
   enabled = false;

@@ -1,3 +1,4 @@
+import { ModuleBank, UndoHistoryState, VenueBank } from 'reducers/constants';
 import {
   AppState,
   ModuleFinderState,
@@ -7,9 +8,6 @@ import {
   ThemeState,
   TimetablesState,
 } from './reducers';
-import { ModuleBank } from 'reducers/constants';
-import { UndoHistoryState } from 'reducers/undoHistory';
-import { VenueBank } from 'reducers/venueBank';
 
 export type State = {
   moduleBank: ModuleBank;

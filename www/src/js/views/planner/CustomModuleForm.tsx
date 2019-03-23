@@ -2,11 +2,12 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { CustomModule } from 'types/reducers';
-import { Module, ModuleCode } from 'types/modules';
+import { Module } from 'types/modules';
 
 import Tooltip from 'views/components/Tooltip/Tooltip';
 import { addCustomModule } from 'actions/planner';
 import { getModuleCredit, getModuleTitle } from 'utils/planner';
+import { ModuleCode } from '../../types/moduleBaseTypes';
 import { State as StoreState } from '../../types/state';
 import styles from './CustomModuleForm.scss';
 

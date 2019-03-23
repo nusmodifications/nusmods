@@ -1,4 +1,4 @@
-import { Semester } from 'types/modules';
+import { Semester } from 'types/moduleBaseTypes';
 
 import * as React from 'react';
 import config from 'config';

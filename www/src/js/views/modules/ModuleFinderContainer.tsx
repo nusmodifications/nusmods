@@ -5,7 +5,7 @@ import axios from 'axios';
 import update from 'immutability-helper';
 import { each, mapValues, values } from 'lodash';
 
-import { ModuleInformation } from 'types/modules';
+import { ModuleInformation } from 'types/moduleBaseTypes';
 import { AnyGroup, FacultyDepartments, FilterGroups, PageRange, PageRangeDiff } from 'types/views';
 
 import ModuleFinderList from 'views/modules/ModuleFinderList';

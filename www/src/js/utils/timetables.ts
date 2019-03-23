@@ -22,17 +22,7 @@ import {
 import { addDays, min as minDate, parseISO } from 'date-fns';
 import qs from 'query-string';
 
-import {
-  ClassNo,
-  ColoredLesson,
-  consumeWeeks,
-  Lesson,
-  LessonType,
-  Module,
-  ModuleCode,
-  RawLesson,
-  Semester,
-} from 'types/modules';
+import { ColoredLesson, consumeWeeks, Module } from 'types/modules';
 
 import {
   HoverLesson,
@@ -47,6 +37,14 @@ import {
 import { ModulesMap } from 'reducers/moduleBank';
 import { ModuleCodeMap } from 'types/reducers';
 import { ExamClashes } from 'types/views';
+import {
+  ClassNo,
+  Lesson,
+  LessonType,
+  ModuleCode,
+  RawLesson,
+  Semester,
+} from '../types/moduleBaseTypes';
 
 import { getTimeAsDate } from './timify';
 import { getModuleSemesterData, getModuleTimetable } from './modules';

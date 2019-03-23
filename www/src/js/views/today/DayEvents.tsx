@@ -2,11 +2,12 @@ import { AcadWeekInfo } from 'nusmoderator';
 import { isSameDay } from 'date-fns';
 import * as React from 'react';
 import classnames from 'classnames';
-import { ColoredLesson, Lesson } from 'types/modules';
+import { ColoredLesson } from 'types/modules';
 import { SelectedLesson } from 'types/views';
 import { MapPin } from 'views/components/icons';
 import { formatTime } from 'utils/timify';
 import { isLessonAvailable, isSameLesson } from 'utils/timetables';
+import { Lesson } from 'types/moduleBaseTypes';
 import EventMapInline from './EventMapInline';
 import styles from './DayEvents.scss';
 

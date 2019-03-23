@@ -3,12 +3,13 @@ import update, { Spec } from 'immutability-helper';
 import qs from 'query-string';
 
 import { FilterGroups, FacultyDepartments } from 'types/views';
-import { Faculty, Department, ModuleLevel, ModuleInformation } from 'types/modules';
+import { ModuleLevel } from 'types/modules';
 
 import config from 'config';
 import LevelFilter from 'utils/filters/LevelFilter';
 import Filter from 'utils/filters/ModuleFilter';
 import FilterGroup from 'utils/filters/FilterGroup';
+import { Department, Faculty, ModuleInformation } from '../types/moduleBaseTypes';
 import { createSearchFilter, SEARCH_QUERY_KEY } from './moduleSearch';
 
 export const LEVELS = 'level';

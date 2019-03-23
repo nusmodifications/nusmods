@@ -1,7 +1,7 @@
 import { clone } from 'lodash';
 import { getAcadYearModules, getPrereqModuleCode } from 'selectors/planner';
 import { PlannerState } from 'types/reducers';
-import { ModuleCode } from 'types/modules';
+import { ModuleCode } from 'types/moduleBaseTypes';
 
 import { CS3216, CS1010S } from '__mocks__/modules';
 import { State } from '../types/state';

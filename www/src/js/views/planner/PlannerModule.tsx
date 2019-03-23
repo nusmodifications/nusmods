@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import classnames from 'classnames';
 
-import { ModuleCode, ModuleTitle } from 'types/modules';
+import { ModuleCode, ModuleTitle } from 'types/moduleBaseTypes';
 import { Conflict } from 'types/views';
 import config from 'config';
 import { renderMCs } from 'utils/modules';
@@ -13,9 +13,9 @@ import { AlertTriangle } from 'views/components/icons';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import { modulePage } from 'views/routes/paths';
 
+import { toSingaporeTime } from 'utils/timify';
 import ModuleMenu from './ModuleMenu';
 import styles from './PlannerModule.scss';
-import { toSingaporeTime } from '../../utils/timify';
 
 type Props = Readonly<{
   // Module information

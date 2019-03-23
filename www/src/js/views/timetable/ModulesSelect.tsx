@@ -9,7 +9,7 @@ import Downshift, {
 import classnames from 'classnames';
 
 import { ModuleSelectList } from 'types/reducers';
-import { ModuleCode } from 'types/modules';
+import { ModuleCode } from 'types/moduleBaseTypes';
 
 import { breakpointUp } from 'utils/css';
 import makeResponsive from 'views/hocs/makeResponsive';

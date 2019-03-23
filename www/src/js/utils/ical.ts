@@ -2,20 +2,13 @@ import _ from 'lodash';
 import { EventOption } from 'ical-generator';
 import { addDays, addMinutes, addWeeks, isValid } from 'date-fns';
 
-import {
-  consumeWeeks,
-  EndTime,
-  Module,
-  RawLesson,
-  Semester,
-  StartTime,
-  WeekRange,
-} from 'types/modules';
+import { consumeWeeks, Module } from 'types/modules';
 import { SemTimetableConfigWithLessons } from 'types/timetables';
 
 import config from 'config';
 import academicCalendar from 'data/academic-calendar';
 import { getModuleSemesterData } from 'utils/modules';
+import { EndTime, RawLesson, Semester, StartTime, WeekRange } from '../types/moduleBaseTypes';
 import { parseDate } from './timify';
 
 const SG_UTC_TIME_DIFF_MS = 8 * 60 * 60 * 1000;

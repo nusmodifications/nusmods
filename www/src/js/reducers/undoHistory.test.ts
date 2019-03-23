@@ -4,9 +4,9 @@ import { pick } from 'lodash';
 import undoHistory, {
   computeUndoStacks,
   mergePresent,
-  UndoHistoryState,
   UndoHistoryConfig,
 } from 'reducers/undoHistory';
+import { UndoHistoryState } from './constants';
 
 const WATCHED_ACTION = 'WATCHED_ACTION';
 const IGNORED_ACTION = 'IGNORED_ACTION';

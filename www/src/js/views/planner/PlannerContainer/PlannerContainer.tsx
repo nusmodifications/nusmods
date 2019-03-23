@@ -4,7 +4,7 @@ import { flatMap, flatten, sortBy, toPairs, values } from 'lodash';
 import { DragDropContext, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 
-import { Module, ModuleCode, Semester } from 'types/modules';
+import { Module } from 'types/modules';
 import { PlannerModuleInfo, PlannerModulesWithInfo } from 'types/views';
 import { MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
 import {
@@ -24,6 +24,7 @@ import { Settings, Trash } from 'views/components/icons';
 import Title from 'views/components/Title';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import Modal from 'views/components/Modal';
+import { ModuleCode, Semester } from '../../../types/moduleBaseTypes';
 import { State as StoreState } from '../../../types/state';
 import PlannerSemester from '../PlannerSemester';
 import PlannerYear from '../PlannerYear';

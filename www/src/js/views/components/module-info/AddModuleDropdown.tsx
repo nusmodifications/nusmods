@@ -4,12 +4,13 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
 
-import { Module, ModuleCode, Semester } from 'types/modules';
+import { Module } from 'types/modules';
 import { TimetableConfig } from 'types/timetables';
 
 import { addModule, removeModule } from 'actions/timetables';
 import { getFirstAvailableSemester, getSemestersOffered } from 'utils/modules';
 import config from 'config';
+import { ModuleCode, Semester } from '../../../types/moduleBaseTypes';
 import { State as StoreState } from '../../../types/state';
 
 import styles from './AddModuleDropdown.scss';

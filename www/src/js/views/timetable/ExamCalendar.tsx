@@ -4,12 +4,13 @@ import { groupBy, range } from 'lodash';
 import classnames from 'classnames';
 import { addDays } from 'date-fns';
 
-import { ModuleWithColor, Semester, WorkingDays } from 'types/modules';
+import { ModuleWithColor, WorkingDays } from 'types/modules';
 import { ModuleWithExamTime, TimeSegment } from 'types/views';
 import config from 'config';
 import { formatExamDate, getExamDate } from 'utils/modules';
 import { toSingaporeTime } from 'utils/timify';
 import elements from 'views/elements';
+import { Semester } from '../../types/moduleBaseTypes';
 import ExamWeek from './ExamWeek';
 import styles from './ExamCalendar.scss';
 

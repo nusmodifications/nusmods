@@ -1,4 +1,4 @@
-import { ModuleCode } from 'types/modules';
+import { ModuleCode } from 'types/moduleBaseTypes';
 import config from 'config';
 import { isOngoing, isSuccess } from 'selectors/requests';
 import { fetchArchiveRequest } from 'actions/moduleBank';

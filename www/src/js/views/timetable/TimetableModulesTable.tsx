@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { sortBy } from 'lodash';
 
-import { ModuleCode, ModuleWithColor, Semester } from 'types/modules';
+import { ModuleWithColor } from 'types/modules';
 import { ColorIndex } from 'types/reducers';
 import { ModuleTableOrder } from 'types/views';
 
@@ -19,6 +19,7 @@ import { getFormattedExamDate, getExamDate, renderMCs } from 'utils/modules';
 import { modulePage } from 'views/routes/paths';
 import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip';
+import { ModuleCode, Semester } from '../../types/moduleBaseTypes';
 import { State as StoreState } from '../../types/state';
 
 import styles from './TimetableModulesTable.scss';

@@ -2,7 +2,7 @@ import * as React from 'react';
 import Waypoint from 'react-waypoint';
 import { head, last, chunk, get } from 'lodash';
 
-import { ModuleInformation } from 'types/modules';
+import { ModuleInformation } from 'types/moduleBaseTypes';
 import { PageRange, PageRangeDiff, OnPageChange } from 'types/views';
 
 import Warning from 'views/errors/Warning';

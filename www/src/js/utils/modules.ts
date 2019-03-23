@@ -1,16 +1,10 @@
 import _ from 'lodash';
-import {
-  Lesson,
-  Module,
-  RawLesson,
-  Semester,
-  SemesterData,
-  SemesterDataCondensed,
-} from 'types/modules';
+import { Module, SemesterData} from 'types/modules';
 
 import config from 'config';
 import { NBSP } from 'utils/react';
 import { format } from 'date-fns';
+import { Lesson, RawLesson, Semester, SemesterDataCondensed } from '../types/moduleBaseTypes';
 import { toSingaporeTime } from './timify';
 
 // Look for strings that look like module codes - eg.

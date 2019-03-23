@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter, Redirect, RouteComponentProps } from 'react-router-dom';
 import classnames from 'classnames';
 
-import { ModuleCode, Semester } from 'types/modules';
+import { ModuleCode, Semester } from 'types/moduleBaseTypes';
 import { SemTimetableConfig } from 'types/timetables';
 import { ColorMapping, NotificationOptions } from 'types/reducers';
 import { ModulesMap } from 'reducers/moduleBank';
@@ -22,7 +22,7 @@ import { Repeat } from 'views/components/icons';
 import SemesterSwitcher from 'views/components/semester-switcher/SemesterSwitcher';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import ScrollToTop from 'views/components/ScrollToTop';
-import { State as StoreState } from '../../types/state';
+import { State as StoreState } from 'types/state';
 import TimetableContent from './TimetableContent';
 
 import styles from './TimetableContainer.scss';
