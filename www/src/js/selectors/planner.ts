@@ -2,7 +2,7 @@ import { flatMap, sortBy, values, get } from 'lodash';
 import { ModuleCode, Semesters, Semester } from 'types/modules';
 import { Conflict, ExamClashes, PlannerModuleInfo, PlannerModulesWithInfo } from 'types/views';
 import { CustomModuleData, ModuleCodeMap, ModuleTime } from 'types/reducers';
-import { State } from 'reducers';
+import { State } from '../reducers/state';
 import config from 'config';
 import { getYearsBetween, subtractAcadYear } from 'utils/modules';
 import {

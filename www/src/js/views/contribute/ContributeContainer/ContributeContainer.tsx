@@ -16,7 +16,7 @@ import Title from 'views/components/Title';
 import { FeedbackButtons } from 'views/components/FeedbackModal';
 import { getModuleCondensed } from 'selectors/moduleBank';
 import { currentTests } from 'views/settings/BetaToggle';
-import { State as StoreState } from 'reducers';
+import { State as StoreState } from '../../../reducers/state';
 import { notNull } from 'types/utils';
 import config from 'config';
 

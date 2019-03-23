@@ -1,4 +1,4 @@
-import { State } from 'reducers';
+import { State } from '../reducers/state';
 import { SUCCESS, FAILURE, REQUEST } from 'types/reducers';
 
 export function isOngoing(state: State, key: string) {

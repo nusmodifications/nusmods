@@ -1,5 +1,5 @@
 import { Store } from 'redux';
-import { State } from 'reducers';
+import { State } from 'reducers/state';
 import { Persistor } from 'storage/persistReducer';
 
 import * as React from 'react';

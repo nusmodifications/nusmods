@@ -1,5 +1,5 @@
 import { Middleware } from 'redux';
-import { State } from 'reducers';
+import { State } from '../reducers/state';
 import axios, { AxiosRequestConfig } from 'axios';
 import { FAILURE, REQUEST, SUCCESS } from 'types/reducers';
 import { API_REQUEST } from 'actions/requests';

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 
 import { Mode, ThemeId } from 'types/settings';
-import { State as StoreState } from 'reducers';
+import { State as StoreState } from '../../reducers/state';
 import { Tracker } from 'types/views';
 
 import availableThemes from 'data/themes.json';

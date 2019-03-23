@@ -2,7 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
-import { State as StoreState } from 'reducers';
+import { State as StoreState } from '../../reducers/state';
 import { updateServiceWorker } from 'bootstrapping/service-worker';
 import { Refresh } from 'views/components/icons';
 import styles from 'views/components/notfications/Announcements.scss';

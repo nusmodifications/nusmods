@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter, Redirect, RouteComponentProps } from 'react-router-dom';
 import classnames from 'classnames';
 
-import { State as StoreState } from 'reducers';
+import { State as StoreState } from '../../reducers/state';
 import { ModuleCode, Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
 import { ColorMapping, NotificationOptions } from 'types/reducers';

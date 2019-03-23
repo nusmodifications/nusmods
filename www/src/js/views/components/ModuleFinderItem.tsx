@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { ModuleInformation } from 'types/modules';
 import { ModuleSearch } from 'types/reducers';
-import { State } from 'reducers';
+import { State } from '../../reducers/state';
 
 import { modulePage } from 'views/routes/paths';
 import { BULLET, highlight } from 'utils/react';

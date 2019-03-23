@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { RouteComponentProps, NavLink, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 
-import { State } from 'reducers';
+import { State } from '../../reducers/state';
 import { Semester } from 'types/modules';
 import {
   BookOpen,

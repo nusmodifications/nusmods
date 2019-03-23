@@ -1,4 +1,4 @@
-import { State } from 'reducers';
+import { State } from '../reducers/state';
 
 // Flux Standard Action: https://github.com/acdlite/flux-standard-action
 export type FSA = {

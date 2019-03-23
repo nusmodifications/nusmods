@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 
 import config from 'config';
-import { State } from 'reducers';
+import { State } from '../../reducers/state';
 import { getYearsBetween, offsetAcadYear } from 'utils/modules';
 import { acadYearLabel } from 'utils/planner';
 import { setPlannerIBLOCs, setPlannerMaxYear, setPlannerMinYear } from 'actions/planner';

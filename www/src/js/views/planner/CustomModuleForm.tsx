@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { State as StoreState } from 'reducers';
+import { State as StoreState } from '../../reducers/state';
 import { CustomModule } from 'types/reducers';
 import { Module, ModuleCode } from 'types/modules';
 

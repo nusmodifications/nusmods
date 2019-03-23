@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import * as Sentry from '@sentry/browser';
 
-import { State } from 'reducers';
+import { State } from '../../reducers/state';
 import { ModuleCode } from 'types/modules';
 import RandomKawaii from 'views/components/RandomKawaii';
 import Title from 'views/components/Title';

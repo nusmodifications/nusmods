@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 
 import { Mode } from 'types/settings';
-import { State as StoreState } from 'reducers';
+import { State as StoreState } from '../../../reducers/state';
 import config from 'config';
 import { MessageSquare } from 'views/components/icons';
 import insertScript from 'utils/insertScript';

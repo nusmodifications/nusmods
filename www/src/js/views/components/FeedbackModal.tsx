@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { State } from 'reducers';
+import { State } from '../../reducers/state';
 
 import config from 'config';
 import { toggleFeedback } from 'actions/app';

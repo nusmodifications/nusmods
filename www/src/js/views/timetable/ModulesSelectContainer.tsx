@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { ModuleSelectList } from 'types/reducers';
 import { ModuleCode, Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
-import { State as StoreState } from 'reducers';
+import { State as StoreState } from '../../reducers/state';
 
 import Online from 'views/components/Online';
 import { popNotification } from 'actions/app';

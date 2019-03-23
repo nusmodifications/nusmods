@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { map, sumBy } from 'lodash';
 import { connect } from 'react-redux';
 
-import { State } from 'reducers';
+import { State } from '../../reducers/state';
 import { ModuleTableOrder } from 'types/views';
 import { Module, Semester } from 'types/modules';
 import { setModuleTableOrder } from 'actions/settings';

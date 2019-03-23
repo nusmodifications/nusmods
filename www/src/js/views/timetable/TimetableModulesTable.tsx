@@ -7,7 +7,7 @@ import { sortBy } from 'lodash';
 import { ModuleCode, ModuleWithColor, Semester } from 'types/modules';
 import { ColorIndex } from 'types/reducers';
 import { ModuleTableOrder } from 'types/views';
-import { State as StoreState } from 'reducers';
+import { State as StoreState } from '../../reducers/state';
 
 import ColorPicker from 'views/components/ColorPicker';
 import { Eye, EyeOff, Trash } from 'views/components/icons';

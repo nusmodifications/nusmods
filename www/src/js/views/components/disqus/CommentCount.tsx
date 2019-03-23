@@ -2,7 +2,7 @@ import { DisqusConfig } from 'types/views';
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { State as StoreState } from 'reducers';
+import { State as StoreState } from '../../../reducers/state';
 import config from 'config';
 import insertScript from 'utils/insertScript';
 import { getScriptErrorHandler } from 'utils/error';

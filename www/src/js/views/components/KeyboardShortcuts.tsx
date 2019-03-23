@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Mousetrap from 'mousetrap';
 import { groupBy, map } from 'lodash';
 
-import { State as StoreState } from 'reducers';
+import { State as StoreState } from '../../reducers/state';
 import { Mode, ThemeId, DARK_MODE } from 'types/settings';
 import { FSA } from 'types/redux';
 import themes from 'data/themes.json';

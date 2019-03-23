@@ -7,7 +7,7 @@ import { each, mapValues, values } from 'lodash';
 
 import { ModuleInformation } from 'types/modules';
 import { AnyGroup, FacultyDepartments, FilterGroups, PageRange, PageRangeDiff } from 'types/views';
-import { State as StoreState } from 'reducers';
+import { State as StoreState } from '../../reducers/state';
 
 import ModuleFinderList from 'views/modules/ModuleFinderList';
 import ModuleSearchBox from 'views/modules/ModuleSearchBox';

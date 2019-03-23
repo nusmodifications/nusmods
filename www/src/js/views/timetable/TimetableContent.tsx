@@ -45,7 +45,7 @@ import {
   timetableLessonsArray,
 } from 'utils/timetables';
 import { resetScrollPosition } from 'utils/react';
-import { State as StoreState } from 'reducers';
+import { State as StoreState } from '../../reducers/state';
 import ModulesSelectContainer from 'views/timetable/ModulesSelectContainer';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';

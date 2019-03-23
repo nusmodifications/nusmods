@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
-import { State as StoreState } from 'reducers';
+import { State as StoreState } from '../../reducers/state';
 import { Semester } from 'types/modules';
 
 import exportApi from 'apis/export';

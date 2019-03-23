@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { capitalize } from 'lodash';
 
-import { State } from 'reducers';
+import { State } from '../../../reducers/state';
 import { NotificationOptions } from 'types/reducers';
 
 import config, { CorsRound } from 'config';

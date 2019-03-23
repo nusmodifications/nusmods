@@ -1,13 +1,6 @@
 import { FSA } from 'types/redux';
-import {
-  AppState,
-  ModuleFinderState,
-  PlannerState,
-  Requests,
-  SettingsState,
-  ThemeState,
-  TimetablesState,
-} from 'types/reducers';
+
+import { State } from './state';
 
 import { REMOVE_MODULE, SET_TIMETABLE } from 'actions/timetables';
 
@@ -17,31 +10,15 @@ import persistReducer from 'storage/persistReducer';
 import requests from './requests';
 import app from './app';
 import moduleFinder from './moduleFinder';
-import createUndoReducer, { UndoHistoryState } from './undoHistory';
+import createUndoReducer from './undoHistory';
 
 // Persisted reducers
-import moduleBankReducer, {
-  ModuleBank,
-  persistConfig as moduleBankPersistConfig,
-} from './moduleBank';
-import venueBankReducer, { VenueBank, persistConfig as venueBankPersistConfig } from './venueBank';
+import moduleBankReducer, { persistConfig as moduleBankPersistConfig} from './moduleBank';
+import venueBankReducer, { persistConfig as venueBankPersistConfig } from './venueBank';
 import timetablesReducer, { persistConfig as timetablesPersistConfig } from './timetables';
 import themeReducer from './theme';
 import settingsReducer from './settings';
 import plannerReducer from './planner';
-
-export type State = {
-  moduleBank: ModuleBank;
-  venueBank: VenueBank;
-  requests: Requests;
-  timetables: TimetablesState;
-  app: AppState;
-  theme: ThemeState;
-  settings: SettingsState;
-  moduleFinder: ModuleFinderState;
-  planner: PlannerState;
-  undoHistory: UndoHistoryState;
-};
 
 // Persist reducers
 const moduleBank = persistReducer('moduleBank', moduleBankReducer, moduleBankPersistConfig);

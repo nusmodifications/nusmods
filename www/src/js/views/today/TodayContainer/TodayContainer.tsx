@@ -18,7 +18,7 @@ import { DaysOfWeek, ColoredLesson, Lesson } from 'types/modules';
 import { SemTimetableConfigWithLessons } from 'types/timetables';
 import { ColorMapping } from 'types/reducers';
 import { EmptyGroupType, SelectedLesson } from 'types/views';
-import { State as StoreState } from 'reducers';
+import { State as StoreState } from '../../../reducers/state';
 
 import {
   groupLessonsByDay,

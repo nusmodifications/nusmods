@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { get } from 'lodash';
 
-import { State } from 'reducers';
+import { State } from '../../../reducers/state';
 import { Module, Semester, ModuleCode } from 'types/modules';
 
 import { AlertTriangle } from 'views/components/icons';

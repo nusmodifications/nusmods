@@ -4,7 +4,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import qs from 'query-string';
 import classnames from 'classnames';
 
-import { State } from 'reducers';
+import { State } from '../../reducers/state';
 import elements from 'views/elements';
 import SearchBox from 'views/components/SearchBox';
 import { searchModules } from 'actions/moduleFinder';

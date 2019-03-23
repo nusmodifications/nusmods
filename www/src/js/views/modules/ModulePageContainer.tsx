@@ -6,7 +6,7 @@ import deferComponentRender from 'views/hocs/deferComponentRender';
 import { get } from 'lodash';
 
 import { Module, ModuleCode } from 'types/modules';
-import { State as StoreState } from 'reducers';
+import { State as StoreState } from '../../reducers/state';
 
 import { fetchArchiveRequest, fetchModule, fetchModuleArchive } from 'actions/moduleBank';
 import { captureException, retryImport } from 'utils/error';

@@ -1,6 +1,6 @@
 import { Middleware } from 'redux';
 import * as Sentry from '@sentry/browser';
-import { State } from 'reducers';
+import { State } from '../reducers/state';
 import produce from 'immer';
 
 const stateTransformer = (state: State): Record<string, any> => ({

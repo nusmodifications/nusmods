@@ -1,4 +1,4 @@
-import { State } from 'reducers';
+import { State } from '../../reducers/state';
 import { ModuleCondensed } from 'types/modules';
 import { Venue, VenueList } from 'types/venues';
 import { ModuleList } from 'types/reducers';
