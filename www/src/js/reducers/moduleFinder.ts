@@ -1,4 +1,4 @@
-import { ModuleFinderState } from 'types/reducers';
+import { ModuleFinderState } from 'types/moduleReducers';
 import { FSA } from 'types/redux';
 import update from 'immutability-helper';
 import { SEARCH_MODULES, RESET_MODULE_FINDER } from 'actions/moduleFinder';

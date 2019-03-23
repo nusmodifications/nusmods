@@ -1,12 +1,11 @@
 import { findLastIndex, min, range, zip } from 'lodash';
 import produce from 'immer';
 
-import { ColorIndex } from 'types/reducers';
 import { DaysOfWeek } from 'types/modules';
 import { notNull } from 'types/utils';
 import { convertIndexToTime } from 'utils/timify';
-import { TimetableArrangement, TimetableDayArrangement } from 'types/timetables';
-import { ColoredLesson } from '../../types/lessons';
+import { ColorIndex, TimetableArrangement, TimetableDayArrangement } from 'types/timetables';
+import { ColoredLesson } from 'types/lessons';
 
 export const ROWS = 20;
 export const COLUMNS = 9;

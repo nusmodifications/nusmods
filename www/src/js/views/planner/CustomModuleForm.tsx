@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { CustomModule } from 'types/reducers';
+import { CustomModule } from 'types/moduleReducers';
 import { Module } from 'types/modules';
 
 import Tooltip from 'views/components/Tooltip/Tooltip';

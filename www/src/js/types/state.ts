@@ -1,7 +1,7 @@
 import { ModuleBank, UndoHistoryState, VenueBank } from 'reducers/constants';
+import { ModuleFinderState } from './moduleReducers';
 import {
   AppState,
-  ModuleFinderState,
   PlannerState,
   Requests,
   SettingsState,

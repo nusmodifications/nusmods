@@ -47,3 +47,5 @@ export type HoverLesson = {
   readonly moduleCode: ModuleCode;
   readonly lessonType: LessonType;
 };
+
+export type ColorIndex = number;

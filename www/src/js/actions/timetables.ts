@@ -1,8 +1,8 @@
 import { each, flatMap } from 'lodash';
 
-import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
+import { ColorIndex, ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import { FSA, GetState } from 'types/redux';
-import { ColorIndex, ColorMapping } from 'types/reducers';
+import { ColorMapping } from 'types/reducers';
 import { Module } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';

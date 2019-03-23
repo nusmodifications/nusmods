@@ -11,7 +11,7 @@ import {
   Weeks,
   Workload,
 } from './modulesBase';
-import { ColorIndex } from './reducers';
+import { ColorIndex } from './timetables';
 
 /**
  * Typesafe helper functions for consuming Weeks

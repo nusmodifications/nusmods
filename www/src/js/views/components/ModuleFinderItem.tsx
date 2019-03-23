@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { ModuleInformation } from 'types/modulesBase';
-import { ModuleSearch } from 'types/reducers';
+import { ModuleSearch } from 'types/moduleReducers';
 
 import { modulePage } from 'views/routes/paths';
 import { BULLET, highlight } from 'utils/react';

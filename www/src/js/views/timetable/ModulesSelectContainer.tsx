@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { ModuleSelectList } from 'types/reducers';
+import { ModuleSelectList } from 'types/moduleReducers';
 import { ModuleCode, Semester } from 'types/modulesBase';
 import { SemTimetableConfig } from 'types/timetables';
 

@@ -1,14 +1,9 @@
-import {
-  Faculty,
-  ModuleCode,
-  ModuleCondensed,
-  SearchableModule,
-  Semester,
-} from 'types/modulesBase';
+import { Faculty, ModuleCode, Semester } from 'types/modulesBase';
 import { Mode } from 'types/settings';
-import { TimetableConfig } from 'types/timetables';
+import { ColorIndex, TimetableConfig } from 'types/timetables';
 import { ModuleTableOrder } from 'types/views';
 import { Lesson } from './lessons';
+import { CustomModuleData, ModuleTime } from './moduleReducers';
 
 /* app.js */
 export type NotificationOptions = {
@@ -99,7 +94,6 @@ export type SettingsState = {
 };
 
 /* timetables.js */
-export type ColorIndex = number;
 
 // Mapping of module to color index [0, NUM_DIFFERENT_COLORS)
 export type ColorMapping = { [moduleCode: string]: ColorIndex };
@@ -115,43 +109,11 @@ export type TimetablesState = {
   readonly archive: { [key: string]: TimetableConfig };
 };
 
-/* moduleBank.js */
-export type ModuleSelectListItem = SearchableModule & {
-  readonly isAdded: boolean;
-  readonly isAdding: boolean;
-};
-export type ModuleList = ModuleCondensed[];
-export type ModuleSelectList = ModuleSelectListItem[];
-export type ModuleCodeMap = { [moduleCode: string]: ModuleCondensed };
-
 /* venueBank.js */
 // VenueList is defined in venues.js
 
-/* moduleFinder.js */
-export type ModuleSearch = {
-  readonly term: string;
-  readonly tokens: string[];
-};
-
-export type ModuleFinderState = {
-  readonly search: ModuleSearch;
-};
-
 /* planner.js */
-// The year, semester the module will be taken in, and the order
-// it appears on the list for the semester
-export type ModuleTime = [string, Semester, number];
-
-export type CustomModule = {
-  // For modules which the school no longer offers, we let students
-  // key in the name and MCs manually
-  readonly title?: string | null;
-  readonly moduleCredit: number;
-};
-
-export type CustomModuleData = {
-  [moduleCode: string]: CustomModule;
-};
+// Also see moduleReducers.ts
 
 // Mapping modules to when they will be taken
 export type PlannerState = {

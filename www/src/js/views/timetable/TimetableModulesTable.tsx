@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { sortBy } from 'lodash';
 
 import { ModuleWithColor } from 'types/modules';
-import { ColorIndex } from 'types/reducers';
+import { ColorIndex } from 'types/timetables';
 import { ModuleTableOrder } from 'types/views';
 
 import ColorPicker from 'views/components/ColorPicker';

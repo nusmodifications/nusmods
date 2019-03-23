@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { TimetableConfig, SemTimetableConfig } from 'types/timetables';
-import { ModuleList, NotificationOptions } from 'types/reducers';
+import { NotificationOptions } from 'types/reducers';
 import { Semester } from 'types/modulesBase';
 import { Mode, DARK_MODE } from 'types/settings';
 
@@ -25,6 +25,7 @@ import ErrorPage from 'views/errors/ErrorPage';
 import ApiError from 'views/errors/ApiError';
 import { trackPageView } from 'bootstrapping/matomo';
 import Logo from 'img/nusmods-logo.svg';
+import { ModuleList } from '../types/moduleReducers';
 import { State as StoreState } from '../types/state';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';

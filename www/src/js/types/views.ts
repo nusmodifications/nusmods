@@ -1,5 +1,6 @@
 import FilterGroup from 'utils/filters/FilterGroup';
 import { Lesson, ModifiableLesson } from './lessons';
+import { Module, ModuleWithColor, PrereqTree } from './modules';
 import {
   Department,
   EndTime,
@@ -8,10 +9,9 @@ import {
   Semester,
   StartTime,
 } from './modulesBase';
-import { Module, ModuleWithColor, PrereqTree } from './modules';
-import { CustomModule, ModuleList } from './reducers';
-import { NextBusTimings, Venue, VenueList } from './venues';
+import { CustomModule, ModuleList } from './moduleReducers';
 import { HoverLesson } from './timetables';
+import { NextBusTimings, Venue, VenueList } from './venues';
 
 export type ComponentMap = {
   globalSearchInput: HTMLInputElement | null;

@@ -1,8 +1,8 @@
 import { range, without, uniq } from 'lodash';
 
-import { ColorIndex, ColorMapping } from 'types/reducers';
+import { ColorMapping } from 'types/reducers';
 import { Lesson } from 'types/lessons';
-import { SemTimetableConfig } from 'types/timetables';
+import { ColorIndex, SemTimetableConfig } from 'types/timetables';
 import { Omit } from 'types/utils';
 
 import { NUM_DIFFERENT_COLORS, getNewColor, colorLessonsByKey, fillColorMapping } from './colors';

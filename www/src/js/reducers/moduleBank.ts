@@ -10,9 +10,10 @@ import update from 'immutability-helper';
 import { keyBy, omit, size, zipObject } from 'lodash';
 import { createMigrate, REHYDRATE } from 'redux-persist';
 import { Module } from 'types/modules';
-import { ModuleList, SUCCESS } from 'types/reducers';
+import { SUCCESS } from 'types/reducers';
 
 import { FSA } from 'types/redux';
+import { ModuleList } from '../types/moduleReducers';
 import { ModuleBank } from './constants';
 
 const defaultModuleBankState: ModuleBank = {

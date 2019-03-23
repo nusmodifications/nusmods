@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { mount } from 'enzyme';
 import { entries } from 'lodash';
 
-import { ModuleCodeMap } from 'types/reducers';
+import { ModuleCodeMap } from 'types/moduleReducers';
 import { getModuleCondensed } from 'selectors/moduleBank';
 
 import { ModuleCondensed } from 'types/modulesBase';

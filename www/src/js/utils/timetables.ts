@@ -35,7 +35,7 @@ import {
 } from 'types/timetables';
 
 import { ModulesMap } from 'reducers/constants';
-import { ModuleCodeMap } from 'types/reducers';
+import { ModuleCodeMap } from 'types/moduleReducers';
 import { ExamClashes } from 'types/views';
 import { ClassNo, LessonType, ModuleCode, Semester } from 'types/modulesBase';
 import { ColoredLesson, Lesson, RawLesson } from '../types/lessons';

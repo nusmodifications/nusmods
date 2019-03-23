@@ -8,7 +8,7 @@ import Downshift, {
 } from 'downshift';
 import classnames from 'classnames';
 
-import { ModuleSelectList } from 'types/reducers';
+import { ModuleSelectList } from 'types/moduleReducers';
 import { ModuleCode } from 'types/modulesBase';
 
 import { breakpointUp } from 'utils/css';
