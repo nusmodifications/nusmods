@@ -13,7 +13,7 @@ import {
   REMOVE_LRU_MODULE,
   UPDATE_MODULE_TIMESTAMP,
 } from 'actions/moduleBank';
-import { SET_EXPORTED_DATA } from 'actions/export';
+import { SET_EXPORTED_DATA } from 'actions/constants';
 
 export type ModulesMap = {
   [moduleCode: string]: Module;

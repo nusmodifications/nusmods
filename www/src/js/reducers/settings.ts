@@ -17,7 +17,7 @@ import {
   TOGGLE_BETA_TESTING_STATUS,
   SET_LOAD_DISQUS_MANUALLY,
 } from 'actions/settings';
-import { SET_EXPORTED_DATA } from 'actions/export';
+import { SET_EXPORTED_DATA } from 'actions/constants';
 import { DIMENSIONS, withTracker } from 'bootstrapping/matomo';
 import { LIGHT_MODE, DARK_MODE } from 'types/settings';
 import config from 'config';
