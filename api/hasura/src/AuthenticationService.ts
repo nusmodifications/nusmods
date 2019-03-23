@@ -83,6 +83,7 @@ class AuthenticationService {
       this.passcodeMap.set(email, { passcode: correctPasscode, verifyTimes: verifyTimes + 1 });
       return null;
     }
+    // TODO: remove from passcode map once verified
 
     return isVerified;
   }

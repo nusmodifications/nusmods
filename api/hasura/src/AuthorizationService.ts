@@ -1,6 +1,6 @@
-import jwt from 'jsonwebtoken';
-
 import Database from './Database';
+import jwt from './utils/jwt';
+import { InvalidTokenError, TokenExpiredError } from './utils/errors';
 
 type AccessTokenConfig = {
   nameSpace: string;
@@ -13,6 +13,10 @@ type RefreshTokenConfig = {
   secretKey: string;
   secretAlgorithm: string;
   lifeTime: number;
+};
+
+type RefreshTokenPayload = {
+  sessionId: string;
 };
 
 /**
@@ -38,29 +42,8 @@ class AuthorizationService {
     this.refreshTokenConfig = refreshTokenConfig;
   }
 
-  /**
-   * Promise version of jwt.sign.
-   * Does not use util.promisfy
-   * because overloading and typescript don't mix.
-   */
-  private generateToken(
-    payload: object,
-    secret: jwt.Secret,
-    options: jwt.SignOptions,
-  ): Promise<string> {
-    return new Promise((resolve, reject) => {
-      jwt.sign(payload, secret, options, (err, token) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(token);
-        }
-      });
-    });
-  }
-
   async createAccessToken(accountId: string): Promise<string> {
-    return this.generateToken(
+    return jwt.generateToken(
       {
         [this.accessTokenConfig.nameSpace]: {
           'x-hasura-allowed-roles': ['user'],
@@ -83,7 +66,7 @@ class AuthorizationService {
     const expiryTime = new Date(Date.now() + this.refreshTokenConfig.lifeTime);
     const sessionId = await this.db.createSession(accountId, expiryTime, userAgent);
 
-    const token = await this.generateToken({ sessionId }, this.refreshTokenConfig.secretKey, {
+    const token = await jwt.generateToken({ sessionId }, this.refreshTokenConfig.secretKey, {
       algorithm: this.refreshTokenConfig.secretAlgorithm,
       expiresIn: this.refreshTokenConfig.lifeTime,
     });
@@ -106,6 +89,33 @@ class AuthorizationService {
       refreshToken,
       refreshTokenExpiryTime,
     };
+  }
+
+  async decodeRefreshToken(refreshToken: string): Promise<RefreshTokenPayload> {
+    const decoded = await jwt.decodeToken(refreshToken, this.refreshTokenConfig.secretKey, {
+      algorithm: this.refreshTokenConfig.secretAlgorithm,
+    });
+    const keys = Object.keys(decoded);
+    if (keys.length !== 1 || keys[0] !== 'sessionId') {
+      throw new InvalidTokenError(`Only a single key 'sessionId' is allowed in token`);
+    }
+    // Unable to refine type to recognise 'sessionId' is in payload
+    // See: https://github.com/Microsoft/TypeScript/issues/21732
+    const refreshPayload = decoded as RefreshTokenPayload;
+    if (typeof refreshPayload.sessionId !== 'string') {
+      throw new InvalidTokenError(`Value of 'sessionId' must be of type string`);
+    }
+    return refreshPayload;
+  }
+
+  async refreshAccessToken(refreshToken: string): Promise<string> {
+    const token = await this.decodeRefreshToken(refreshToken);
+    const session = await this.db.findSession(token.sessionId);
+    if (session.expiresAt >= new Date()) {
+      throw new TokenExpiredError('Refresh token has expired', session.expiresAt);
+    }
+
+    return this.createAccessToken(session.accountId);
   }
 }
 

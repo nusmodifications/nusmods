@@ -27,6 +27,13 @@ VALUES      ($1, $2, $3)
 RETURNING   session_id
 `.trim();
 
+const FIND_SESSION = `
+SELECT (account_id, expires_at)
+FROM   session
+WHERE  session_id = $1
+LIMIT  1
+`;
+
 type DatabaseConfig = Readonly<{
   connectionString: string;
   maxConnections: number | undefined;
@@ -67,6 +74,22 @@ class Database {
     const res = await this.pool.query(INSERT_SESSION, values);
     const firstRow = res.rows[0];
     return firstRow.session_id;
+  }
+
+  async findSession(
+    sessionId: string,
+  ): Promise<{
+    accountId: session['account_id'];
+    expiresAt: session['expires_at'];
+  }> {
+    const values = [sessionId];
+
+    const res = await this.pool.query(FIND_SESSION, values);
+    const firstRow = res.rows[0];
+    return {
+      accountId: firstRow.account_id,
+      expiresAt: firstRow.expires_at,
+    };
   }
 
   cleanup() {

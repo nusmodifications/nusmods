@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 import expressPlayground from 'graphql-playground-middleware-express';
 import config from './config';
 import mailService from './mailService';
@@ -14,6 +15,7 @@ const app = express();
 app.disable('x-powered-by');
 app.disable('etag');
 app.use(bodyParser.json({ limit: '1kb' }));
+app.use(cookieParser());
 
 // Host graphql playground
 app.get('/playground', expressPlayground({ endpoint: config.hasuraUrl }));
@@ -104,10 +106,26 @@ app.post('/verify', (req, res) => {
     });
 });
 
-// 3. User while holding valid refresh token and expired access token,
-//    client makes a post request to /refresh with both tokens
+// 3. User while holding valid refresh token in cookies,
+//    client makes a post request to /refresh
 //    client receives a new short lived access token
-// app.post('/refresh', (req, res) => {});
+app.post('/refresh', (req, res) => {
+  const refreshToken = req.cookies.refresh;
+  if (!refreshToken) {
+    return res.status(HttpStatus.UNAUTHORIZED).send('No refresh token in cookie header');
+  }
+
+  authorizationService
+    .refreshAccessToken(refreshToken)
+    .then((accessToken) => {
+      return res.send({ accessToken });
+    })
+    .catch((e) => {
+      console.error(e);
+      // TODO: log error
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Unable to create access token');
+    });
+});
 
 // Handle shutdowns gracefully, remove all handlers and connections
 process.on('SIGTERM', () => {
