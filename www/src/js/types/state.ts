@@ -7,7 +7,7 @@ import {
   ThemeState,
   TimetablesState,
 } from './reducers';
-import { ModuleBank } from 'reducers/moduleBank';
+import { ModuleBank } from 'reducers/constants';
 import { UndoHistoryState } from 'reducers/undoHistory';
 import { VenueBank } from 'reducers/venueBank';
 

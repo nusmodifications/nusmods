@@ -11,6 +11,6 @@ export const FETCH_ARCHIVE_MODULE = 'FETCH_ARCHIVE_MODULE'; // Action to fetch m
 export const UNDO = 'UNDO';
 export const REDO = 'REDO';
 
-/** export constant(s) **/
+/** export constants **/
 
 export const SET_EXPORTED_DATA = 'SET_EXPORTED_DATA';
