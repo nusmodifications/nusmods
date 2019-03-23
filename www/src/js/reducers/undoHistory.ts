@@ -1,7 +1,8 @@
 import { FSA } from 'types/redux';
 
 import { pick, takeRight, set, get, last } from 'lodash';
-import { UNDO, REDO } from 'actions/undoHistory';
+import { UNDO} from 'actions/constants';
+import { REDO } from '../actions/constants';
 
 export type UndoHistoryConfig = {
   reducerName: string;
