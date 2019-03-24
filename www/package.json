@@ -54,7 +54,7 @@
     "@types/react-leaflet": "2.2.0",
     "@types/react-loadable": "5.5.0",
     "@types/react-modal": "3.8.1",
-    "@types/react-redux": "7.0.3",
+    "@types/react-redux": "7.0.5",
     "@types/react-router-dom": "4.3.1",
     "@types/react-scrollspy": "3.3.0",
     "@types/redux-mock-store": "1.0.0",
