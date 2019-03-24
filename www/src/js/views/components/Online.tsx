@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { State } from '../../types/state';
+import { State } from 'types/state';
 
 type Props = {
   children: React.ReactNode | ((isOnline: boolean) => Node);

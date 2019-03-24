@@ -8,7 +8,7 @@ import { SemTimetableConfig } from 'types/timetables';
 import { fillColorMapping } from 'utils/colors';
 import TimetableContent from 'views/timetable/TimetableContent';
 import { ColorMapping } from 'types/reducers';
-import { State as StoreState } from '../types/state';
+import { State as StoreState } from 'types/state';
 
 type Props = {
   store: Store<StoreState, any>;

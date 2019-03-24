@@ -38,7 +38,7 @@ import HistoryDebouncer from 'utils/HistoryDebouncer';
 import { defer } from 'utils/react';
 import { breakpointUp, queryMatch } from 'utils/css';
 import { captureException } from 'utils/error';
-import { State as StoreState } from '../../types/state';
+import { State as StoreState } from 'types/state';
 import styles from './ModuleFinderContainer.scss';
 
 export type Props = {

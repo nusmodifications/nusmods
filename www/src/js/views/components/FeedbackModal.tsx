@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import config from 'config';
 import { toggleFeedback } from 'actions/app';
-import { State } from '../../types/state';
+import { State } from 'types/state';
 import ExternalLink from './ExternalLink';
 import { Heart, GitHub, Facebook, Mail } from './icons';
 import CloseButton from './CloseButton';

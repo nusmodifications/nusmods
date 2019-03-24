@@ -7,7 +7,7 @@ import { VenueList as Venues, VenueLocationMap } from 'types/venues';
 
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import VenueList from 'views/venues/VenueList';
-import { State as StoreState } from '../../types/state';
+import { State as StoreState } from 'types/state';
 import styles from './UnmappedVenues.scss';
 import withVenueLocations from '../components/map/withVenueLocations';
 

@@ -8,7 +8,7 @@ import elements from 'views/elements';
 import SearchBox from 'views/components/SearchBox';
 import { searchModules } from 'actions/moduleFinder';
 import { SEARCH_QUERY_KEY } from 'utils/moduleSearch';
-import { State } from '../../types/state';
+import { State } from 'types/state';
 
 type OwnProps = RouteComponentProps & {
   useInstantSearch: boolean;

@@ -13,7 +13,7 @@ import { openNotification } from 'actions/app';
 import { toggleMode } from 'actions/settings';
 import { intersperse } from 'utils/array';
 import ComponentMap from 'utils/ComponentMap';
-import { State as StoreState } from '../../types/state';
+import { State as StoreState } from 'types/state';
 import Modal from './Modal';
 import styles from './KeyboardShortcuts.scss';
 

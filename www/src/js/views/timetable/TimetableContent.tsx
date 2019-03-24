@@ -42,7 +42,7 @@ import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
 import { ModuleCode, Semester } from 'types/modulesBase';
 import { State as StoreState } from 'types/state';
-import { ColoredLesson, Lesson, ModifiableLesson } from '../../types/lessons';
+import { ColoredLesson, Lesson, ModifiableLesson } from 'types/lessons';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';

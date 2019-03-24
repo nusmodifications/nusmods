@@ -3,7 +3,7 @@ import { FSA } from 'types/redux';
 import { REMOVE_MODULE, SET_TIMETABLE } from 'actions/timetables';
 
 import persistReducer from 'storage/persistReducer';
-import { State } from '../types/state';
+import { State } from 'types/state';
 
 // Non-persisted reducers
 import requests from './requests';

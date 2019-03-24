@@ -15,7 +15,7 @@ import {
 } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
 import { ClassNo, LessonType, ModuleCode, Semester } from 'types/modulesBase';
-import { Lesson } from '../types/lessons';
+import { Lesson } from 'types/lessons';
 
 export const ADD_MODULE = 'ADD_MODULE';
 export function addModule(semester: Semester, moduleCode: ModuleCode) {

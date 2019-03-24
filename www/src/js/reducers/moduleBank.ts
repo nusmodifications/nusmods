@@ -13,7 +13,7 @@ import { Module } from 'types/modules';
 import { SUCCESS } from 'types/reducers';
 
 import { FSA } from 'types/redux';
-import { ModuleList } from '../types/moduleReducers';
+import { ModuleList } from 'types/moduleReducers';
 import { ModuleBank } from './constants';
 
 const defaultModuleBankState: ModuleBank = {

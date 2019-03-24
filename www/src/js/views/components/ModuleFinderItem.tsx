@@ -8,7 +8,7 @@ import { ModuleSearch } from 'types/moduleReducers';
 import { modulePage } from 'views/routes/paths';
 import { BULLET, highlight } from 'utils/react';
 import { intersperse } from 'utils/array';
-import { State } from '../../types/state';
+import { State } from 'types/state';
 import ModuleSemesterInfo from './module-info/ModuleSemesterInfo';
 import ModuleWorkload from './module-info/ModuleWorkload';
 import LinkModuleCodes from './LinkModuleCodes';

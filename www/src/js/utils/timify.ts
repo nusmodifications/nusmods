@@ -12,7 +12,7 @@ import {
   startOfDay,
 } from 'date-fns';
 import { TimePeriod } from 'types/views';
-import { Lesson } from '../types/lessons';
+import { Lesson } from 'types/lessons';
 
 const SGT_OFFSET = -8 * 60;
 

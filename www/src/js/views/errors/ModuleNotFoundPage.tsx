@@ -12,7 +12,7 @@ import { MODULE_CODE_REGEX } from 'utils/modules';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { availableArchive, isArchiveLoading } from 'selectors/timetables';
 import { moduleArchive } from 'views/routes/paths';
-import { State } from '../../types/state';
+import { State } from 'types/state';
 import styles from './ErrorPage.scss';
 
 type OwnProps = {

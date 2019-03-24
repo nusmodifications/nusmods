@@ -12,7 +12,7 @@ import { roundStart, currentPeriod, currentRound } from 'utils/cors';
 import { forceCorsRound } from 'utils/debug';
 import CloseButton from 'views/components/CloseButton';
 import ExternalLink from 'views/components/ExternalLink';
-import { State } from '../../../types/state';
+import { State } from 'types/state';
 
 import styles from './CorsNotification.scss';
 

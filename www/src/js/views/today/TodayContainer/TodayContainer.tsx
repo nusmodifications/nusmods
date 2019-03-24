@@ -41,7 +41,7 @@ import { formatTime, getDayIndex } from 'utils/timify';
 import { breakpointUp } from 'utils/css';
 import { EMPTY_ARRAY } from 'types/utils';
 import { ColoredLesson, Lesson } from 'types/lessons';
-import { State as StoreState } from '../../../types/state';
+import { State as StoreState } from 'types/state';
 
 import DayEvents from '../DayEvents';
 import DayHeader from '../DayHeader';

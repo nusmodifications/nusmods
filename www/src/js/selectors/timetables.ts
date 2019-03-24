@@ -2,7 +2,7 @@ import { ModuleCode } from 'types/modulesBase';
 import config from 'config';
 import { isOngoing, isSuccess } from 'selectors/requests';
 import { fetchArchiveRequest } from 'actions/moduleBank';
-import { State } from '../types/state';
+import { State } from 'types/state';
 
 export function isArchiveLoading(state: State, moduleCode: ModuleCode) {
   return config.archiveYears.some((year) =>

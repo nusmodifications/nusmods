@@ -8,7 +8,7 @@ import { ExportData } from 'types/export';
 import configureStore from 'bootstrapping/configure-store';
 import { setExportedData } from 'actions/export';
 import { DARK_MODE } from 'types/settings';
-import { State as StoreState } from '../types/state';
+import { State as StoreState } from 'types/state';
 
 import TimetableOnly from './TimetableOnly';
 import './main.scss';

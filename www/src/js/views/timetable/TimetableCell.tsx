@@ -17,7 +17,7 @@ import {
 import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip/Tooltip';
 import { WeekRange } from 'types/modulesBase';
-import { ModifiableLesson } from '../../types/lessons';
+import { ModifiableLesson } from 'types/lessons';
 
 import styles from './TimetableCell.scss';
 

@@ -23,7 +23,7 @@ import { supportsCSSVariables } from 'utils/css';
 import { withTracker } from 'bootstrapping/matomo';
 import ExternalLink from 'views/components/ExternalLink';
 import Toggle from 'views/components/Toggle';
-import { State as StoreState } from '../../types/state';
+import { State as StoreState } from 'types/state';
 
 import ThemeOption from './ThemeOption';
 import ModeSelect from './ModeSelect';

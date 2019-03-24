@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 import { NotificationData } from 'types/reducers';
 import { popNotification } from 'actions/app';
-import { State as StoreState } from '../../../types/state';
+import { State as StoreState } from 'types/state';
 import styles from './Notification.scss';
 
 type Props = {

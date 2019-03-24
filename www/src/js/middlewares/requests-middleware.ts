@@ -2,7 +2,7 @@ import { Middleware } from 'redux';
 import axios, { AxiosRequestConfig } from 'axios';
 import { FAILURE, REQUEST, SUCCESS } from 'types/reducers';
 import { API_REQUEST } from 'actions/requests';
-import { State } from '../types/state';
+import { State } from 'types/state';
 
 function makeRequest(request: AxiosRequestConfig) {
   return axios({

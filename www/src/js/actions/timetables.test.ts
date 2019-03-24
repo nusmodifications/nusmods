@@ -3,7 +3,7 @@ import { SemTimetableConfig } from 'types/timetables';
 
 import lessons from '__mocks__/lessons-array.json';
 import { CS1010S, CS3216 } from '__mocks__/modules';
-import { Lesson } from '../types/lessons';
+import { Lesson } from 'types/lessons';
 
 import * as actions from './timetables';
 

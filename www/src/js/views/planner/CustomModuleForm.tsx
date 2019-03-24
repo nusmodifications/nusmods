@@ -8,7 +8,7 @@ import Tooltip from 'views/components/Tooltip/Tooltip';
 import { addCustomModule } from 'actions/planner';
 import { getModuleCredit, getModuleTitle } from 'utils/planner';
 import { ModuleCode } from 'types/modulesBase';
-import { State as StoreState } from '../../types/state';
+import { State as StoreState } from 'types/state';
 import styles from './CustomModuleForm.scss';
 
 type OwnProps = Readonly<{

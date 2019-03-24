@@ -14,7 +14,7 @@ import { createSearchPredicate, regexify, sortModules, tokenize } from 'utils/mo
 import { breakpointUp } from 'utils/css';
 import { takeUntil } from 'utils/array';
 import makeResponsive from 'views/hocs/makeResponsive';
-import { State } from '../../types/state';
+import { State } from 'types/state';
 
 type Props = RouteComponentProps & {
   moduleList: ModuleList;

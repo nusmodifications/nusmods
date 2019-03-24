@@ -38,7 +38,7 @@ import { ModulesMap } from 'reducers/constants';
 import { ModuleCodeMap } from 'types/moduleReducers';
 import { ExamClashes } from 'types/views';
 import { ClassNo, LessonType, ModuleCode, Semester } from 'types/modulesBase';
-import { ColoredLesson, Lesson, RawLesson } from '../types/lessons';
+import { ColoredLesson, Lesson, RawLesson } from 'types/lessons';
 
 import { getTimeAsDate } from './timify';
 import { getModuleSemesterData, getModuleTimetable } from './modules';

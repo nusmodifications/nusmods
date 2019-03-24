@@ -4,8 +4,8 @@ import { Module, SemesterData } from 'types/modules';
 import config from 'config';
 import { NBSP } from 'utils/react';
 import { format } from 'date-fns';
-import { Lesson, RawLesson } from '../types/lessons';
-import { Semester, SemesterDataCondensed } from '../types/modulesBase';
+import { Lesson, RawLesson } from 'types/lessons';
+import { Semester, SemesterDataCondensed } from 'types/modulesBase';
 import { toSingaporeTime } from './timify';
 
 // Look for strings that look like module codes - eg.

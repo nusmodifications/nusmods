@@ -9,7 +9,7 @@ import config from 'config';
 import academicCalendar from 'data/academic-calendar';
 import { getModuleSemesterData } from 'utils/modules';
 import { EndTime, Semester, StartTime, WeekRange } from 'types/modulesBase';
-import { RawLesson } from '../types/lessons';
+import { RawLesson } from 'types/lessons';
 import { parseDate } from './timify';
 
 const SG_UTC_TIME_DIFF_MS = 8 * 60 * 60 * 1000;

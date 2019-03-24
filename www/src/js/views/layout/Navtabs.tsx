@@ -20,7 +20,7 @@ import { timetablePage } from 'views/routes/paths';
 import { preload as preloadToday } from 'views/today/TodayContainer';
 import { preload as preloadVenues } from 'views/venues/VenuesContainer';
 import { preload as preloadContribute } from 'views/contribute/ContributeContainer';
-import { State } from '../../types/state';
+import { State } from 'types/state';
 import NavRefreshPrompt from './NavRefreshPrompt';
 
 import styles from './Navtabs.scss';
