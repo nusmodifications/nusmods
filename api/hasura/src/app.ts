@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { RequestHandler } from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import expressPlayground from 'graphql-playground-middleware-express';
@@ -106,19 +106,37 @@ app.post('/verify', (req, res) => {
     });
 });
 
+const refreshTokenHandler: RequestHandler = (req, res, next) => {
+  if (!req.cookies.refresh) {
+    return res.status(HttpStatus.UNAUTHORIZED).send('No refresh token in cookie header');
+  }
+  next();
+});
+
 // 3. User while holding valid refresh token in cookies,
 //    client makes a post request to /refresh
 //    client receives a new short lived access token
-app.post('/refresh', (req, res) => {
+app.post('/refresh', refreshTokenHandler, (req, res) => {
   const refreshToken = req.cookies.refresh;
-  if (!refreshToken) {
-    return res.status(HttpStatus.UNAUTHORIZED).send('No refresh token in cookie header');
-  }
-
   authorizationService
     .refreshAccessToken(refreshToken)
     .then((accessToken) => {
       return res.send({ accessToken });
+    })
+    .catch((e) => {
+      console.error(e);
+      // TODO: log error
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Unable to create access token');
+    });
+});
+
+// 3. User can choose to logout, which removes current session
+app.post('/logout', refreshTokenHandler, (req, res) => {
+  const refreshToken = req.cookies.refresh;
+  authorizationService
+    .revokeRefreshToken(refreshToken)
+    .then(() => {
+      return res.sendStatus(HttpStatus.NO_CONTENT);
     })
     .catch((e) => {
       console.error(e);

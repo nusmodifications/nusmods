@@ -42,7 +42,7 @@ class AuthorizationService {
     this.refreshTokenConfig = refreshTokenConfig;
   }
 
-  async createAccessToken(accountId: string): Promise<string> {
+  private async createAccessToken(accountId: string): Promise<string> {
     return jwt.generateToken(
       {
         [this.accessTokenConfig.nameSpace]: {
@@ -59,7 +59,7 @@ class AuthorizationService {
     );
   }
 
-  async createRefreshToken(
+  private async createRefreshToken(
     accountId: string,
     userAgent: string,
   ): Promise<{ token: string; expiryTime: Date }> {
@@ -108,14 +108,28 @@ class AuthorizationService {
     return refreshPayload;
   }
 
-  async refreshAccessToken(refreshToken: string): Promise<string> {
+  private async getSession(refreshToken: string): ReturnType<Database['findSession']> {
     const token = await this.decodeRefreshToken(refreshToken);
     const session = await this.db.findSession(token.sessionId);
     if (session.expiresAt >= new Date()) {
       throw new TokenExpiredError('Refresh token has expired', session.expiresAt);
     }
+    return session;
+  }
 
+  async refreshAccessToken(refreshToken: string): Promise<string> {
+    const session = await this.getSession(refreshToken);
     return this.createAccessToken(session.accountId);
+  }
+
+  async revokeRefreshToken(refreshToken: string) {
+    const token = await this.decodeRefreshToken(refreshToken);
+    await this.db.deleteSessionBySessionId(token.sessionId);
+  }
+
+  async revokeAllRefreshTokens(refreshToken: string) {
+    const session = await this.getSession(refreshToken);
+    await this.db.deleteSessionsByAccountId(session.accountId);
   }
 }
 
