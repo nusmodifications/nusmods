@@ -52,6 +52,12 @@ describe('ExpiringMap', () => {
     expect(instance.get(testKey)).toBeUndefined();
   });
 
+  it('should delete key', () => {
+    instance.set(testKey, testValue);
+    instance.delete(testKey);
+    expect(instance.get(testKey)).toBeUndefined();
+  });
+
   it('should vacuum after certain time has passed', async () => {
     instance.set(testKey, testValue);
     expect(instance.size).toBe(1);

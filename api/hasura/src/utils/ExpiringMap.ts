@@ -50,6 +50,10 @@ class ExpiringMap<K, V> {
     return this;
   }
 
+  delete(key: K): boolean {
+    return this.innerMap.delete(key);
+  }
+
   private vacuum() {
     const dateNow = Date.now();
     for (const [key, val] of this.innerMap.entries()) {
