@@ -71,7 +71,7 @@ describe('Database', () => {
   });
 
   describe('session', () => {
-    const expiresAt = new Date(Date.now() + 99999);
+    const futureDate = new Date(Date.now() + 99999);
     const userAgent = 'test user agent';
     let accountId: string;
 
@@ -82,7 +82,7 @@ describe('Database', () => {
     it('should create session', async () => {
       expect.assertions(5);
 
-      const sessionId = await database.createSession(accountId, expiresAt, userAgent);
+      const sessionId = await database.createSession(accountId, futureDate, userAgent);
       expect(typeof sessionId).toBe('string');
 
       const sessions = await client.query(SELECT_ALL_FROM_SESSION);
@@ -95,15 +95,15 @@ describe('Database', () => {
         user_agent: userAgent,
       });
 
-      expect(session.expires_at).toEqual(expiresAt);
+      expect(session.expires_at).toEqual(futureDate);
       expect(dateUtils.toEpoch(session.last_accessed_at)).toBeLessThanOrEqual(Date.now());
     });
 
     it('should allow multiple sessions', async () => {
       expect.assertions(1);
 
-      await database.createSession(accountId, expiresAt, userAgent);
-      await database.createSession(accountId, expiresAt, userAgent);
+      await database.createSession(accountId, futureDate, userAgent);
+      await database.createSession(accountId, futureDate, userAgent);
 
       const sessions = await client.query(SELECT_ALL_FROM_SESSION);
       expect(sessions.rowCount).toBe(2);
@@ -113,6 +113,41 @@ describe('Database', () => {
       expect(
         database.createSession(accountId, new Date(Date.now() - 99999), userAgent),
       ).rejects.toThrowError();
+    });
+
+    it('should delete session', async () => {
+      expect.assertions(1);
+
+      const sessionId = await database.createSession(accountId, futureDate, userAgent);
+      await database.deleteSessionBySessionId(sessionId);
+
+      const sessions = await client.query(SELECT_ALL_FROM_SESSION);
+      expect(sessions.rowCount).toBe(0);
+    });
+
+    it('should delete sessions by accountId', async () => {
+      expect.assertions(1);
+
+      await database.createSession(accountId, futureDate, userAgent);
+      await database.createSession(accountId, futureDate, userAgent);
+      await database.deleteSessionsByAccountId(accountId);
+
+      const sessions = await client.query(SELECT_ALL_FROM_SESSION);
+      expect(sessions.rowCount).toBe(0);
+    });
+
+    it('should delete sessions older than given date', async () => {
+      expect.assertions(2);
+
+      const currentDate = new Date(Date.now() + 1000);
+      await database.createSession(accountId, currentDate, userAgent);
+      const sessionId = await database.createSession(accountId, futureDate, userAgent);
+      await database.deleteSessionsByExpiresAt(currentDate);
+
+      const sessions = await client.query(SELECT_ALL_FROM_SESSION);
+      expect(sessions.rowCount).toBe(1);
+      const session = sessions.rows[0];
+      expect(session.session_id).toBe(sessionId);
     });
   });
 });

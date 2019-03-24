@@ -1,9 +1,10 @@
 import { Pool } from 'pg';
 import { account, session } from './schema';
 
-// Use parameterized query to prevent sql injection
+// IMPORTANT: Use parameterized query to prevent sql injection
 // https://node-postgres.com/features/queries#parameterized-query
-// Lock row to obtain account_id without writing twice
+
+// Lock row to obtain account_id without writing to db twice
 // https://stackoverflow.com/a/40325406
 const UPSERT_ACCOUNT = `
 WITH ins AS (
@@ -34,11 +35,30 @@ WHERE  session_id = $1
 LIMIT  1
 `;
 
+const DELETE_SESSION_BY_SESSION_ID = `
+DELETE FROM session
+WHERE       session_id = $1;
+`.trim();
+
+const DELETE_SESSIONS_BY_ACCOUNT_ID = `
+DELETE FROM session
+WHERE       account_id = $1;
+`.trim();
+
+const DELETE_SESSIONS_BY_EXPIRES_AT = `
+DELETE FROM session
+WHERE       expires_at <= $1;
+`.trim();
+
 type DatabaseConfig = Readonly<{
   connectionString: string;
   maxConnections: number | undefined;
 }>;
 
+/**
+ * Connects to the postgresql database and executes operations for the
+ * account and session tables.
+ */
 class Database {
   private pool: Pool;
 
@@ -50,8 +70,9 @@ class Database {
   }
 
   /**
-   * Accepts an email and inserts into the database irregardless if it has been created
-   * @param { email }
+   * Accepts an email and either create a new account, or find the existing account
+   *
+   * @param email email of the account
    */
   async findOrCreateUser(email: string): Promise<account['account_id']> {
     const values = [email];
@@ -64,6 +85,13 @@ class Database {
     return firstRow.account_id;
   }
 
+  /**
+   * Creates a session for the account
+   *
+   * @param accountId accountId session belongs to
+   * @param expiresAt future date when the session will be invalid
+   * @param userAgent user agent of the session
+   */
   async createSession(
     accountId: string,
     expiresAt: Date,
@@ -76,6 +104,11 @@ class Database {
     return firstRow.session_id;
   }
 
+  /**
+   * Finds a session, irregardless if it has expired or not
+   *
+   * @param sessionId sessionId to match session with
+   */
   async findSession(
     sessionId: string,
   ): Promise<{
@@ -90,6 +123,39 @@ class Database {
       accountId: firstRow.account_id,
       expiresAt: firstRow.expires_at,
     };
+  }
+
+  /**
+   * Deletes the session which match the session id
+   *
+   * @param sessionId session that matches this sessionId will be deleted
+   */
+  async deleteSessionBySessionId(sessionId: string) {
+    const values = [sessionId];
+
+    await this.pool.query(DELETE_SESSION_BY_SESSION_ID, values);
+  }
+
+  /**
+   * Deletes sessions which match the account id
+   *
+   * @param accountId sessions matching this accountId will be deleted
+   */
+  async deleteSessionsByAccountId(accountId: string) {
+    const values = [accountId];
+
+    await this.pool.query(DELETE_SESSIONS_BY_ACCOUNT_ID, values);
+  }
+
+  /**
+   * Deletes sessions older than the date provided
+   *
+   * @param dateCutOff sessions older than this date will be deleted
+   */
+  async deleteSessionsByExpiresAt(dateCutOff: Date) {
+    const values = [dateCutOff];
+
+    await this.pool.query(DELETE_SESSIONS_BY_EXPIRES_AT, values);
   }
 
   cleanup() {
