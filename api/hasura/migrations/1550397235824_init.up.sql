@@ -250,7 +250,7 @@ VALUES  ('Monday'), ('Tuesday'), ('Wednesday'), ('Thursday'), ('Friday'),
 --
 
 ALTER TABLE ONLY public.session
-    ADD CONSTRAINT session_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.account(account_id);
+    ADD CONSTRAINT session_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.account(account_id) ON DELETE CASCADE;
 
 
 --
