@@ -95,9 +95,8 @@ class AuthorizationService {
     const decoded = await jwt.decodeToken(refreshToken, this.refreshTokenConfig.secretKey, {
       algorithm: this.refreshTokenConfig.secretAlgorithm,
     });
-    const keys = Object.keys(decoded);
-    if (keys.length !== 1 || keys[0] !== 'sessionId') {
-      throw new InvalidTokenError(`Only a single key 'sessionId' is allowed in token`);
+    if (!('sessionId' in decoded)) {
+      throw new InvalidTokenError(`key 'sessionId' not found in token`);
     }
     // Unable to refine type to recognise 'sessionId' is in payload
     // See: https://github.com/Microsoft/TypeScript/issues/21732
@@ -111,7 +110,7 @@ class AuthorizationService {
   private async getSession(refreshToken: string): ReturnType<Database['findSession']> {
     const token = await this.decodeRefreshToken(refreshToken);
     const session = await this.db.findSession(token.sessionId);
-    if (session.expiresAt >= new Date()) {
+    if (session.expiresAt <= new Date()) {
       throw new TokenExpiredError('Refresh token has expired', session.expiresAt);
     }
     return session;
