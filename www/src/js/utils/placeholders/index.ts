@@ -5,3 +5,8 @@ export default {
   ...general,
   ...cs,
 };
+
+export const placeholderGroups = {
+  general,
+  cs,
+};

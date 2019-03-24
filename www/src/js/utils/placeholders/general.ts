@@ -3,32 +3,32 @@ import { PlaceholderMap } from 'types/planner';
 const placeholders: PlaceholderMap = {
   ge: {
     id: 'ge',
-    name: 'GE modules',
+    name: 'Any GE module',
     filter: (module) => !!module.moduleCode.match(/^GE[HQRST]/i),
   },
   get: {
     id: 'get',
-    name: 'GET',
+    name: 'Any GET',
     filter: (module) => module.moduleCode.startsWith('GET'),
   },
   ges: {
     id: 'ges',
-    name: 'GES',
+    name: 'Any GES',
     filter: (module) => module.moduleCode.startsWith('GES'),
   },
   ger: {
     id: 'ger',
-    name: 'GER',
+    name: 'Any GER',
     filter: (module) => module.moduleCode.startsWith('GER'),
   },
   geq: {
     id: 'geq',
-    name: 'GEQ',
+    name: 'Any GEQ',
     filter: (module) => module.moduleCode.startsWith('GEQ'),
   },
   geh: {
     id: 'geh',
-    name: 'GEH',
+    name: 'Any GEH',
     filter: (module) => module.moduleCode.startsWith('GEH'),
   },
 };

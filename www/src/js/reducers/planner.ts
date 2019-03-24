@@ -27,11 +27,19 @@ const defaultPlannerState: PlannerState = {
   custom: {},
 };
 
+/**
+ * Derive the next ID in PlannerState.modules by incrementing from the last
+ * existing ID
+ */
 function nextId(modules: PlannerState['modules']): string {
   const maxId = Math.max(...Object.keys(modules).map(Number));
   return String(maxId + 1);
 }
 
+/**
+ * Get a list of IDs in a specific year and semester, optionally excluding the
+ * given ID
+ */
 function getSemesterIds(
   modules: PlannerState['modules'],
   year: string,

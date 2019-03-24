@@ -16,7 +16,7 @@
 }
 
 .actions {
-  margin-top: 0.4rem;
+  margin-top: 0.6rem;
 }
 
 .cancel {
@@ -30,4 +30,20 @@
   font-size: 0.85rem;
   line-height: 1.25;
   color: var(--gray);
+}
+
+.orDivider {
+  margin: 0.5rem 0 1rem;
+  border-bottom: 1px solid var(--gray-light);
+  line-height: 0;
+  text-align: center;
+
+  span {
+    display: inline-block;
+    width: 2rem;
+    margin-bottom: -1.85rem;
+    font-size: 0.9rem;
+    line-height: 1;
+    background: var(--body-bg);
+  }
 }
