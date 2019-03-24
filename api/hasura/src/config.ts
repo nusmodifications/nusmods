@@ -16,7 +16,8 @@ const config = {
   mailAddress: 'noreply@nusmods.com',
   // Passcode for verifying accounts
   passcode: {
-    verifyTimeout: 15 * MINUTE,
+    passcodeLength: 6,
+    verifyTimeout: 5 * MINUTE,
     verifyLimit: 20,
     requestLimitResetTimeout: 5 * MINUTE,
     requestLimit: 20,

@@ -1,10 +1,18 @@
-import ExpiringMap from './utils/ExpiringMap';
 import crypto from 'crypto';
 import base58 from './utils/base58';
+import ExpiringMap from './utils/ExpiringMap';
+import { RateLimitError } from './utils/errors';
 
-const PASSCODE_SIZE = 16;
-
+/**
+ * @typedef {Object} PasscodeConfig
+ * @property {number} passcodeLength - number of characters in the passcode
+ * @property {number} verifyTimeout - miliseconds since first verify to reset limit
+ * @property {number} verifyLimit - number of times (inclusive) before rate limit is reached
+ * @property {number} requestLimitResetTimeout -  miliseconds since first request to reset limit
+ * @property {number} requestLimit - number of times (inclusive) before rate limit is reached
+ */
 type PasscodeConfig = {
+  passcodeLength: number;
   verifyTimeout: number;
   verifyLimit: number;
   requestLimitResetTimeout: number;
@@ -32,15 +40,37 @@ type PasscodeConfig = {
  */
 class AuthenticationService {
   private readonly passcodeMap: ExpiringMap<string, { passcode: string; verifyTimes: number }>;
+  private readonly passcodeLength: number;
+  private readonly passcodeBytes: number;
   private readonly requestRateLimitMap: ExpiringMap<string, number>;
   private readonly requestLimit: number;
   private readonly verifyLimit: number;
 
+  /**
+   * Constructs a service that allows retrieval of passcodes while managing expiry,
+   * retries and rate limiting.
+   *
+   * @param {PasscodeConfig} passcodeConfig
+   */
   constructor(passcodeConfig: PasscodeConfig) {
     this.passcodeMap = new ExpiringMap(passcodeConfig.verifyTimeout);
+    this.passcodeLength = passcodeConfig.passcodeLength;
+    this.passcodeBytes = AuthenticationService.getEncodingBytesLength(this.passcodeLength);
     this.verifyLimit = passcodeConfig.verifyLimit;
     this.requestRateLimitMap = new ExpiringMap(passcodeConfig.requestLimitResetTimeout);
     this.requestLimit = passcodeConfig.requestLimit;
+  }
+
+  /**
+   * Base58 encodes 5.858 bits per character on average, so we need to calculate
+   * the minimum number of bytes (8 bits) for the buffer, in order to generate
+   * an encoded string that has at least the required length.
+   *
+   * @param length length of encoded string
+   */
+  private static getEncodingBytesLength(length: number) {
+    const encodingFactor = 8 / 5.858;
+    return Math.ceil(length * encodingFactor);
   }
 
   /**
@@ -49,15 +79,14 @@ class AuthenticationService {
    *
    * @param email user email address
    */
-  request(email: string): string | null {
-    const requestTries = this.requestRateLimitMap.get(email) || 0;
-    if (requestTries > this.requestLimit) {
-      return null;
+  request(email: string): string {
+    const requestTimes = this.requestRateLimitMap.get(email) || 0;
+    if (requestTimes >= this.requestLimit) {
+      throw new RateLimitError();
     }
-    this.requestRateLimitMap.set(email, requestTries + 1);
-
-    const buf = crypto.randomBytes(PASSCODE_SIZE);
-    const passcode = base58.encode(buf);
+    this.requestRateLimitMap.set(email, requestTimes + 1);
+    const buf = crypto.randomBytes(this.passcodeBytes);
+    const passcode = base58.encode(buf).slice(0, this.passcodeLength);
     this.passcodeMap.set(email, { passcode, verifyTimes: 0 });
     return passcode;
   }
@@ -79,11 +108,13 @@ class AuthenticationService {
 
     const { passcode: correctPasscode, verifyTimes } = verifyData;
     const isVerified = correctPasscode === passcode;
-    if (!isVerified && verifyTimes > this.verifyLimit) {
+    if (isVerified) {
+      this.passcodeMap.delete(email);
+    } else if (verifyTimes >= this.verifyLimit) {
+      throw new RateLimitError();
+    } else {
       this.passcodeMap.set(email, { passcode: correctPasscode, verifyTimes: verifyTimes + 1 });
-      return null;
     }
-    // TODO: remove from passcode map once verified
 
     return isVerified;
   }
