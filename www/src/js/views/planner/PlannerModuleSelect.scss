@@ -1,0 +1,19 @@
+@import '~styles/utils/modules-entry';
+
+.dropdown {
+  composes: list-unstyled scrollable-y from global;
+  position: absolute;
+  max-height: 15rem;
+  border: 1px solid var(--gray-light);
+  font-size: $font-size-sm;
+  background: var(--body-bg);
+
+  li {
+    padding: 0.2rem 0.4rem;
+    cursor: pointer;
+
+    &.highlightItem {
+      background: var(--gray-lighter);
+    }
+  }
+}

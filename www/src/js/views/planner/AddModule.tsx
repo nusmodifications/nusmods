@@ -7,6 +7,7 @@ import { AddModuleData } from 'types/planner';
 import { placeholderGroups } from 'utils/placeholders';
 
 import { Plus, Close } from 'views/components/icons';
+import PlannerModuleSelect from './PlannerModuleSelect';
 import styles from './AddModule.scss';
 
 type Props = Readonly<{
@@ -19,7 +20,6 @@ type Props = Readonly<{
 
 type State = {
   readonly isOpen: boolean;
-  readonly value: string;
 };
 
 const placeholderTitles: Record<keyof typeof placeholderGroups, string> = {
@@ -27,37 +27,43 @@ const placeholderTitles: Record<keyof typeof placeholderGroups, string> = {
   cs: 'Computer Science',
 };
 
+const placeholderOptions = map(placeholderGroups, (placeholderMap, group) => (
+  <optgroup label={(placeholderTitles as Record<string, string>)[group]} key={group}>
+    {map(placeholderMap, (placeholder, id) => (
+      <option key={id} value={id}>
+        {placeholder.name}
+      </option>
+    ))}
+  </optgroup>
+));
+
 export default class AddModule extends React.PureComponent<Props, State> {
   state = {
     isOpen: false,
-    value: '',
   };
 
-  textareaRef = React.createRef<HTMLTextAreaElement>();
   selectRef = React.createRef<HTMLSelectElement>();
 
-  onSubmit = (evt: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLTextAreaElement>) => {
+  onSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
     const select = this.selectRef.current;
-    const textArea = this.textareaRef.current;
-    if (!select || !textArea) return;
+    if (!select || !select.value) return;
 
-    if (select.value) {
-      this.props.onAddModule({
-        type: 'placeholder',
-        placeholderId: select.value,
-      });
-      select.value = '';
-    } else {
-      this.props.onAddModule({
-        type: 'module',
-        moduleCode: textArea.value.trim(),
-      });
+    this.props.onAddModule({
+      type: 'placeholder',
+      placeholderId: select.value,
+    });
+    select.value = '';
+  };
 
-      textArea.value = '';
-      textArea.focus();
-    }
+  onSelectModule = (input: string) => {
+    this.props.onAddModule({
+      type: 'module',
+      moduleCode: input.trim(),
+    });
+
+    this.onCancel();
   };
 
   onCancel = () => {
@@ -88,19 +94,12 @@ export default class AddModule extends React.PureComponent<Props, State> {
             Module Code
           </label>
           <div className="input-group">
-            <textarea
-              ref={this.textareaRef}
+            <PlannerModuleSelect
               id={inputId}
-              className="form-control"
-              placeholder="eg. CS1010S"
-              value={this.state.value}
-              onKeyDown={(evt) => {
-                if (evt.key === 'Enter') this.onSubmit(evt);
-                if (evt.key === 'Escape') this.onCancel();
-              }}
-              // We can use autofocus here because this element only appears when
-              // the button is clicked
-              autoFocus // eslint-disable-line jsx-a11y/no-autofocus
+              rows={3}
+              semester={this.props.semester}
+              onSelect={this.onSelectModule}
+              onCancel={this.onCancel}
             />
           </div>
 
@@ -110,15 +109,7 @@ export default class AddModule extends React.PureComponent<Props, State> {
 
           <select className="form-control form-control-sm" ref={this.selectRef} defaultValue="">
             <option value="">Select category</option>
-            {map(placeholderGroups, (placeholderMap, group) => (
-              <optgroup label={(placeholderTitles as Record<string, string>)[group]} key={group}>
-                {map(placeholderMap, (placeholder, id) => (
-                  <option key={id} value={id}>
-                    {placeholder.name}
-                  </option>
-                ))}
-              </optgroup>
-            ))}
+            {placeholderOptions}
           </select>
 
           <div className={styles.actions}>

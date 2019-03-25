@@ -115,6 +115,9 @@ function mapModuleToInfo(
 
   if (placeholderId) {
     moduleInfo.placeholder = placeholders[placeholderId];
+    moduleInfo.customInfo = {
+      moduleCredit: 4,
+    };
   }
 
   if (moduleCode) {
