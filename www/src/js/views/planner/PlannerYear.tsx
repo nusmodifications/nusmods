@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { flatMap, size, sortBy, toPairs, values } from 'lodash';
 
 import { ModuleCode, Semester } from 'types/modules';
-import { PlannerModuleInfo } from 'types/planner';
+import { AddModuleData, PlannerModuleInfo } from 'types/planner';
 import config from 'config';
 import { getSemesterName, getTotalMC } from 'utils/planner';
 import { Minus, Plus } from 'views/components/icons';
@@ -11,15 +11,15 @@ import { renderMCs } from 'utils/modules';
 import PlannerSemester from './PlannerSemester';
 import styles from './PlannerYear.scss';
 
-type Props = {
-  readonly name: string; // eg. iBLOCs, Year 1, etc.
-  readonly year: string; // Actual academic year
-  readonly semesters: { [semester: string]: PlannerModuleInfo[] };
+type Props = Readonly<{
+  name: string; // eg. iBLOCs, Year 1, etc.
+  year: string; // Actual academic year
+  semesters: { [semester: string]: PlannerModuleInfo[] };
 
-  readonly addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void;
-  readonly removeModule: (id: string) => void;
-  readonly addCustomData: (moduleCode: ModuleCode) => void;
-};
+  addModule: (year: string, semester: Semester, module: AddModuleData) => void;
+  removeModule: (id: string) => void;
+  addCustomData: (moduleCode: ModuleCode) => void;
+}>;
 
 type State = {
   readonly showSpecialSem: boolean;

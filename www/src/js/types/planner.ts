@@ -1,6 +1,10 @@
 import { Module, ModuleCode, Semester, PrereqTree, ModuleInformation } from './modules';
 import { CustomModule } from './reducers';
 
+export type AddModuleData =
+  | { type: 'module'; moduleCode: ModuleCode }
+  | { type: 'placeholder'; placeholderId: string };
+
 export interface PlannerPlaceholder {
   id: string;
   name: string;

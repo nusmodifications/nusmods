@@ -3,18 +3,19 @@ import classnames from 'classnames';
 import { map } from 'lodash';
 
 import { Semester } from 'types/modules';
+import { AddModuleData } from 'types/planner';
 import { placeholderGroups } from 'utils/placeholders';
-import { Plus, Close } from 'views/components/icons';
 
+import { Plus, Close } from 'views/components/icons';
 import styles from './AddModule.scss';
 
-type Props = {
-  readonly year: string;
-  readonly semester: Semester;
+type Props = Readonly<{
+  year: string;
+  semester: Semester;
 
-  readonly className?: string;
-  readonly onAddModule: (input: string) => void;
-};
+  className?: string;
+  onAddModule: (module: AddModuleData) => void;
+}>;
 
 type State = {
   readonly isOpen: boolean;
@@ -38,21 +39,24 @@ export default class AddModule extends React.PureComponent<Props, State> {
   onSubmit = (evt: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLTextAreaElement>) => {
     evt.preventDefault();
 
-    if (!this.selectRef.current || !this.textareaRef.current) return;
+    const select = this.selectRef.current;
+    const textArea = this.textareaRef.current;
+    if (!select || !textArea) return;
 
-    if (this.selectRef.current.value) {
-
+    if (select.value) {
+      this.props.onAddModule({
+        type: 'placeholder',
+        placeholderId: select.value,
+      });
+      select.value = '';
     } else {
+      this.props.onAddModule({
+        type: 'module',
+        moduleCode: textArea.value.trim(),
+      });
 
-    }
-
-    console.log(this.selectRef.current.value);
-
-    this.props.onAddModule(this.state.value.trim());
-    this.setState({ value: '' });
-
-    if (this.textareaRef.current) {
-      this.textareaRef.current.focus();
+      textArea.value = '';
+      textArea.focus();
     }
   };
 

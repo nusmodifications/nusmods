@@ -1,5 +1,6 @@
 import { ModuleCode, Semester } from 'types/modules';
 import { FSA } from 'types/redux';
+import { AddModuleData } from 'types/planner';
 import { CustomModule } from 'types/reducers';
 
 export const SET_PLANNER_MIN_YEAR = 'SET_PLANNER_MIN_YEAR';
@@ -27,11 +28,7 @@ export function setPlannerIBLOCs(iblocs: boolean) {
 }
 
 export const ADD_PLANNER_MODULE = 'ADD_PLANNER_MODULE';
-export function addPlannerModule(
-  year: string,
-  semester: Semester,
-  module: { moduleCode: ModuleCode } | { placeholderId: string },
-): FSA {
+export function addPlannerModule(year: string, semester: Semester, module: AddModuleData): FSA {
   return {
     type: ADD_PLANNER_MODULE,
     payload: {

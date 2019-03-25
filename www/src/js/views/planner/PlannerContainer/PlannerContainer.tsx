@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { flatMap, flatten, sortBy, toPairs, values } from 'lodash';
 import { DragDropContext, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 
 import { Module, ModuleCode, Semester } from 'types/modules';
-import { PlannerModulesWithInfo, PlannerModuleInfo } from 'types/planner';
+import { PlannerModulesWithInfo, PlannerModuleInfo, AddModuleData } from 'types/planner';
 import { State as StoreState } from 'reducers';
 import { MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
 import {
@@ -43,7 +43,7 @@ export type Props = Readonly<{
   fetchModule: (moduleCode: ModuleCode) => Promise<Module>;
   toggleFeedback: () => void;
 
-  addModule: (year: string, semester: Semester, module: { moduleCode: ModuleCode }) => void;
+  addModule: (year: string, semester: Semester, module: AddModuleData) => void;
   moveModule: (id: string, year: string, semester: Semester, index: number) => void;
   removeModule: (id: string) => void;
 }>;
@@ -84,16 +84,20 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
     ).then(() => this.setState({ loading: false }));
   }
 
-  onAddModule = (input: string, year: string, semester: Semester) => {
-    // Extract everything that looks like a module code
-    const moduleCodes = input.toUpperCase().match(MODULE_CODE_REGEX);
+  onAddModule = (year: string, semester: Semester, module: AddModuleData) => {
+    if (module.type === 'module') {
+      // Extract everything that looks like a module code
+      const moduleCodes = module.moduleCode.toUpperCase().match(MODULE_CODE_REGEX);
 
-    if (moduleCodes) {
-      moduleCodes.forEach((moduleCode) => {
-        this.props.addModule(year, semester, { moduleCode });
-        // TODO: Handle error
-        this.props.fetchModule(moduleCode);
-      });
+      if (moduleCodes) {
+        moduleCodes.forEach((moduleCode) => {
+          this.props.addModule(year, semester, { type: 'module', moduleCode });
+          // TODO: Handle error
+          this.props.fetchModule(moduleCode);
+        });
+      }
+    } else {
+      this.props.addModule(year, semester, module);
     }
   };
 

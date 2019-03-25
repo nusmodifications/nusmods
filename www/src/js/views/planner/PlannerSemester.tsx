@@ -3,7 +3,7 @@ import { Droppable } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 
 import { ModuleCode, Semester } from 'types/modules';
-import { PlannerModuleInfo } from 'types/planner';
+import { AddModuleData, PlannerModuleInfo } from 'types/planner';
 import config from 'config';
 import { getExamDate, renderMCs } from 'utils/modules';
 import {
@@ -25,7 +25,7 @@ type Props = Readonly<{
   showModuleMeta: boolean;
   className?: string;
 
-  addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void;
+  addModule: (year: string, semester: Semester, module: AddModuleData) => void;
   removeModule: (id: string) => void;
   addCustomData: (moduleCode: ModuleCode) => void;
 }>;
@@ -105,7 +105,7 @@ export default class PlannerSemester extends React.PureComponent<Props> {
               <AddModule
                 year={year}
                 semester={semester}
-                onAddModule={(moduleCode) => this.props.addModule(moduleCode, year, +semester)}
+                onAddModule={(module) => this.props.addModule(year, +semester, module)}
               />
             </div>
           </div>
