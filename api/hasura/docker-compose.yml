@@ -10,7 +10,7 @@ services:
     volumes:
       - ./migrations:/hasura-migrations
     ports:
-      - '8080:8080'
+      - '3000:3000'
     depends_on:
       - 'postgres'
     env_file:
@@ -26,14 +26,14 @@ services:
       - ~/.cache/yarn:/home/node/.cache/yarn
       - .:/home/node/app
     ports:
-      - '8081:8081'
+      - '3001:3001'
     env_file:
       - ./.env
     environment:
       DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
-      HASURA_URL: 'http://graphql-engine:8080/v1alpha1/graphql'
+      HASURA_URL: 'http://graphql-engine:3000/v1alpha1/graphql'
       NODE_ENV: 'development'
-      PORT: 8081
+      PORT: 3001
     user: ${CURRENT_UID:-1000:1000}
 
 volumes:

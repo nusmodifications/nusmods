@@ -2,7 +2,7 @@
   "name": "graphql",
   "version": "1.0.0",
   "description": "University data GraphQL API server",
-  "homepage": "http://api.nusmods.com",
+  "homepage": "https://api.nusmods.com",
   "main": "src/index.ts",
   "scripts": {
     "start": "node fuse",
@@ -18,12 +18,7 @@
     "type": "git",
     "url": "git://github.com/nusmodifications/nusmods.git"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/nusmodifications/nusmods/blob/master/LICENSE"
-    }
-  ],
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "@sendgrid/mail": "^6.3.1",

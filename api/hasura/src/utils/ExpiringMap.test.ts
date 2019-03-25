@@ -3,7 +3,7 @@ import ExpiringMap from './ExpiringMap';
 
 jest.useFakeTimers();
 
-describe('ExpiringMap', () => {
+describe(ExpiringMap, () => {
   let instance: ExpiringMap<string, string>;
   const testKey = 'testKey';
   const testValue = 'testValue';
