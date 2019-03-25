@@ -25,6 +25,19 @@
     z-index: 1000;
     opacity: 0.7;
   }
+
+  &.placeholder {
+    $stripe-light: lighten(theme-color('success'), 3);
+    $stripe-dark: darken(theme-color('success'), 3);
+
+    background: repeating-linear-gradient(
+      -45deg,
+      $stripe-light,
+      $stripe-light 1rem,
+      $stripe-dark 1rem,
+      $stripe-dark 2rem
+    );
+  }
 }
 
 .menu {
@@ -63,6 +76,20 @@
     &:hover {
       text-decoration: underline;
     }
+  }
+}
+
+.placeholderName {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.8rem;
+}
+
+.placeholderSelect {
+  &,
+  &:hover {
+    border: 1px solid;
+    color: inherit;
   }
 }
 

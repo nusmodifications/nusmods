@@ -12,6 +12,7 @@ import Clock from 'react-feather/dist/icons/clock';
 import Copy from 'react-feather/dist/icons/copy';
 import DollarSign from 'react-feather/dist/icons/dollar-sign';
 import Download from 'react-feather/dist/icons/download';
+import Edit from 'react-feather/dist/icons/edit-3';
 import Eye from 'react-feather/dist/icons/eye';
 import EyeOff from 'react-feather/dist/icons/eye-off';
 import Facebook from 'react-feather/dist/icons/facebook';
@@ -59,6 +60,7 @@ export {
   Copy,
   DollarSign,
   Download,
+  Edit,
   Eye,
   EyeOff,
   Facebook,

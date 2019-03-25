@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
@@ -10,7 +10,7 @@ import config from 'config';
 import { renderMCs } from 'utils/modules';
 import { conflictToText } from 'utils/planner';
 import { toSingaporeTime } from 'utils/timify';
-import { AlertTriangle } from 'views/components/icons';
+import { AlertTriangle, ChevronDown } from 'views/components/icons';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import { modulePage } from 'views/routes/paths';
 
@@ -35,10 +35,34 @@ type Props = Readonly<{
   addCustomData: (moduleCode: ModuleCode) => void;
 }>;
 
+type State = {
+  isEditingPlaceholder: boolean;
+};
+
 /**
  * Component for a single module on the planner
  */
-export default class PlannerModule extends React.PureComponent<Props> {
+export default class PlannerModule extends React.PureComponent<Props, State> {
+  state: State = {
+    isEditingPlaceholder: false,
+  };
+
+  removeModule = () => {
+    this.props.removeModule(this.props.id);
+  };
+
+  editCustomData = () => {
+    if (this.props.moduleCode) {
+      this.props.addCustomData(this.props.moduleCode);
+    }
+  };
+
+  toggleEditPlaceholder = () => {
+    this.setState((state) => ({
+      isEditingPlaceholder: !state.isEditingPlaceholder,
+    }));
+  };
+
   renderConflict(conflict: Conflict) {
     switch (conflict.type) {
       case 'noInfo':
@@ -114,18 +138,52 @@ export default class PlannerModule extends React.PureComponent<Props> {
     );
   }
 
-  removeModule = () => {
-    this.props.removeModule(this.props.id);
-  };
+  renderPlaceholderForm() {
+    const { placeholder, moduleCode, moduleTitle } = this.props;
+    if (!placeholder) return null;
 
-  editCustomData = () => {
-    if (this.props.moduleCode) {
-      this.props.addCustomData(this.props.moduleCode);
+    if (!this.state.isEditingPlaceholder) {
+      return (
+        <>
+          <button
+            type="button"
+            className={classnames('btn btn-sm btn-svg', styles.placeholderSelect)}
+            onClick={this.toggleEditPlaceholder}
+          >
+            {moduleCode || 'Select Module'} <ChevronDown />
+          </button>{' '}
+          {moduleCode && moduleTitle && (
+            <Link to={modulePage(moduleCode, moduleTitle)}>{moduleTitle}</Link>
+          )}
+        </>
+      );
     }
-  };
+
+    return (
+      <form>
+        {placeholder.modules ? (
+          <select className="form-control form-control-sm">
+            <option value="">Select module</option>
+            {Array.from(placeholder.modules).map((placeholderModuleCode) => (
+              <option value={placeholderModuleCode}>{placeholderModuleCode}</option>
+            ))}
+          </select>
+        ) : (
+          <div className="input-group">
+            <input
+              type="text"
+              className="form-control form-control-sm"
+              placeholder="Select module"
+              autoFocus // eslint-disable-line jsx-a11y/no-autofocus
+            />
+          </div>
+        )}
+      </form>
+    );
+  }
 
   render() {
-    const { id, moduleCode, moduleTitle, index, conflict } = this.props;
+    const { id, placeholder, moduleCode, moduleTitle, index, conflict } = this.props;
 
     return (
       <Draggable key={moduleCode} draggableId={id} index={index}>
@@ -135,6 +193,7 @@ export default class PlannerModule extends React.PureComponent<Props> {
             className={classnames(styles.module, {
               [styles.warning]: conflict,
               [styles.isDragging]: snapshot.isDragging,
+              [styles.placeholder]: placeholder,
             })}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
@@ -143,10 +202,17 @@ export default class PlannerModule extends React.PureComponent<Props> {
 
             <div className={styles.moduleInfo}>
               <div className={styles.moduleName}>
-                {moduleCode && (
-                  <Link to={modulePage(moduleCode, moduleTitle)}>
-                    <strong>{moduleCode}</strong> {moduleTitle}
-                  </Link>
+                {placeholder ? (
+                  <>
+                    <strong className={styles.placeholderName}>{placeholder.name}</strong>
+                    {this.renderPlaceholderForm()}
+                  </>
+                ) : (
+                  moduleCode && (
+                    <Link to={modulePage(moduleCode, moduleTitle)}>
+                      <strong>{moduleCode}</strong> {moduleTitle}
+                    </Link>
+                  )
                 )}
               </div>
 

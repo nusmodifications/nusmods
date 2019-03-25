@@ -1,8 +1,8 @@
 import { PlaceholderMap } from 'types/planner';
 
 const placeholders: PlaceholderMap = {
-  science: {
-    id: 'science',
+  csScience: {
+    id: 'csScience',
     name: 'Science requirement',
     modules: new Set([
       'CM1121',
@@ -39,7 +39,6 @@ const placeholders: PlaceholderMap = {
       'MA2104',
       'MA1104',
       'MA2104',
-      'AY2017',
       'MA2101',
       'MA2108',
       'MA2501',
