@@ -80,7 +80,8 @@ describe(ADD_PLANNER_MODULE, () => {
 
   test('should add module to semester and year', () => {
     expect(
-      reducer(initial, addPlannerModule('2018/2019', 2, { moduleCode: 'CS2030' })).modules,
+      reducer(initial, addPlannerModule('2018/2019', 2, { type: 'module', moduleCode: 'CS2030' }))
+        .modules,
     ).toEqual({
       0: { id: '0', moduleCode: 'CS1010S', year: '2018/2019', semester: 1, index: 0 },
       1: { id: '1', moduleCode: 'CS2030', year: '2018/2019', semester: 2, index: 0 },
@@ -96,7 +97,8 @@ describe(ADD_PLANNER_MODULE, () => {
 
     // Inserts new module in correct position
     expect(
-      reducer(initial, addPlannerModule('2018/2019', 1, { moduleCode: 'CS2030' })).modules,
+      reducer(initial, addPlannerModule('2018/2019', 1, { type: 'module', moduleCode: 'CS2030' }))
+        .modules,
     ).toEqual({
       0: { id: '0', moduleCode: 'CS1010S', year: '2018/2019', semester: 1, index: 0 },
       1: { id: '1', moduleCode: 'CS2030', year: '2018/2019', semester: 1, index: 1 },
