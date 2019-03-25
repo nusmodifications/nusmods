@@ -3,8 +3,8 @@ import config from './config';
 
 sendgrid.setApiKey(config.mailApiKey);
 
-function sendPasscode(recipientEmail: string, passcode: string) {
-  return sendgrid.send({
+async function sendPasscode(recipientEmail: string, passcode: string) {
+  await sendgrid.send({
     from: config.mailAddress,
     to: recipientEmail,
     subject: 'Your NUSMods auth passcode',

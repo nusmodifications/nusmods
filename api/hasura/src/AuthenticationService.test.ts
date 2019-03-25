@@ -9,8 +9,8 @@ jest.useFakeTimers();
 describe(AuthenticationService, () => {
   let authService: AuthenticationService;
   const passcodeLength = 4;
-  const duration = 1;
-  const tick = duration + 1; // Allow slack
+  const duration = 10;
+  const tick = duration + 20; // Allow slack
 
   beforeEach(() => {
     authService = new AuthenticationService({

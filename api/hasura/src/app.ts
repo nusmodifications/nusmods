@@ -8,8 +8,9 @@ import AuthenticationService from './AuthenticationService';
 import AuthorizationService from './AuthorizationService';
 import Database from './Database';
 import HttpStatus from './utils/HttpStatus';
+import { RateLimitError } from './utils/errors';
 
-const IS_PROD = process.env.NODE_ENV === 'production';
+const IS_DEV = process.env.NODE_ENV === 'development';
 
 const app = express();
 app.disable('x-powered-by');
@@ -39,25 +40,23 @@ app.post('/auth', (req, res) => {
       .send('Missing field `email` of type string in post body.');
   }
 
-  const passcode = authenticationService.request(email);
-  if (!passcode) {
-    return res
-      .status(HttpStatus.TOO_MANY_REQUESTS)
-      .send('Rate limit exceeded, please try again later.');
-  }
+  try {
+    const passcode = authenticationService.request(email);
+    if (IS_DEV) {
+      return res.send({ passcode });
+    }
 
-  if (!IS_PROD) {
-    return res.send({ passcode });
+    return mailService
+      .sendPasscode(email, passcode)
+      .then(() => res.sendStatus(HttpStatus.ACCEPTED));
+  } catch (e) {
+    if (e instanceof RateLimitError) {
+      return res
+        .status(HttpStatus.TOO_MANY_REQUESTS)
+        .send('Rate limit exceeded, please try again later.');
+    }
+    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Unable to send mail');
   }
-  mailService
-    .sendPasscode(email, passcode)
-    .then(() => {
-      return res.sendStatus(HttpStatus.ACCEPTED);
-    })
-    .catch(() => {
-      // TODO: log error
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Unable to send mail');
-    });
 });
 
 // 2. User recieves code on email, applies it on client,
@@ -111,7 +110,7 @@ const refreshTokenHandler: RequestHandler = (req, res, next) => {
     return res.status(HttpStatus.UNAUTHORIZED).send('No refresh token in cookie header');
   }
   next();
-});
+};
 
 // 3. User while holding valid refresh token in cookies,
 //    client makes a post request to /refresh

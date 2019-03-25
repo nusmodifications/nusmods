@@ -11,8 +11,6 @@ describe(AuthorizationService, () => {
   let authService: AuthorizationService;
   let db: any;
   const userAgent = 'test user agent';
-  const duration = 1;
-  const tick = duration + 1; // Allow slack
 
   beforeEach(() => {
     db = new Database({ connectionString: '', maxConnections: 1 });
