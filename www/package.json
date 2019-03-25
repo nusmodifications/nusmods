@@ -47,7 +47,7 @@
     "@types/query-string": "5.0.0",
     "@types/react": "16.8.8",
     "@types/react-beautiful-dnd": "10.0.1",
-    "@types/react-dom": "16.8.2",
+    "@types/react-dom": "16.8.3",
     "@types/react-helmet": "5.0.8",
     "@types/react-hot-loader": "4.1.0",
     "@types/react-kawaii": "0.11.0",
