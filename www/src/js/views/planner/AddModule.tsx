@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { Semester } from 'types/modulesBase';
-import { Plus, Close } from 'views/components/icons';
+import { Semester } from 'types/modules';
+import { Close, Plus } from 'views/components/icons';
 import styles from './AddModule.scss';
 
 type Props = {

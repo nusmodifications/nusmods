@@ -1,9 +1,15 @@
-import { Faculty, ModuleCode, Semester } from 'types/modulesBase';
-import { Mode } from 'types/settings';
-import { ColorIndex, TimetableConfig } from 'types/timetables';
-import { ModuleTableOrder } from 'types/views';
-import { Lesson } from './lessons';
-import { CustomModuleData, ModuleTime } from './moduleReducers';
+import { Mode } from './settings';
+import { ColorIndex, Lesson, TimetableConfig } from './timetables';
+import {
+  Faculty,
+  Module,
+  ModuleCode,
+  ModuleCondensed,
+  SearchableModule,
+  Semester,
+} from './modules';
+import { CustomModuleData, ModuleTime } from './planner';
+import { VenueList } from './venues';
 
 /* app.js */
 export type NotificationOptions = {
@@ -82,6 +88,8 @@ export type CorsNotificationSettings = {
   readonly dismissed: string[];
 };
 
+export type ModuleTableOrder = 'exam' | 'mc' | 'code';
+
 export type SettingsState = {
   readonly newStudent: boolean;
   readonly faculty: Faculty | null;
@@ -126,4 +134,59 @@ export type PlannerState = {
   };
 
   readonly custom: CustomModuleData;
+};
+
+/* moduleBank.js */
+export type ModuleSelectListItem = SearchableModule & {
+  readonly isAdded: boolean;
+  readonly isAdding: boolean;
+};
+
+/* moduleFinder.js */
+export type ModuleSearch = {
+  readonly term: string;
+  readonly tokens: string[];
+};
+
+export type ModuleFinderState = {
+  readonly search: ModuleSearch;
+};
+export type ModuleList = ModuleCondensed[];
+export type ModuleSelectList = ModuleSelectListItem[];
+export type ModuleCodeMap = { [moduleCode: string]: ModuleCondensed };
+export type ModuleArchive = {
+  [moduleCode: string]: {
+    // Mapping acad year to module info
+    [key: string]: Module;
+  };
+};
+
+/**
+ * moduleBank types
+ */
+export type ModulesMap = {
+  [moduleCode: string]: Module;
+};
+export type ModuleBank = {
+  moduleList: ModuleList;
+  modules: ModulesMap;
+  moduleCodes: ModuleCodeMap;
+  moduleArchive: ModuleArchive;
+  apiLastUpdatedTimestamp: string | null;
+};
+
+/**
+ * undoHistory types
+ */
+export type UndoHistoryState = {
+  past: Record<string, any>[];
+  present: Record<string, any> | undefined;
+  future: Record<string, any>[];
+};
+
+/**
+ * venueBank types
+ */
+export type VenueBank = {
+  readonly venueList: VenueList;
 };

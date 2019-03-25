@@ -1,5 +1,4 @@
-import { ColoredLesson, Lesson, ModifiableLesson } from 'types/lessons';
-import { ClassNo, LessonType, ModuleCode } from 'types/modulesBase';
+import { ClassNo, LessonType, ModuleCode, ModuleTitle, RawLesson } from './modules';
 
 //  ModuleLessonConfig is a mapping of lessonType to ClassNo for a module.
 export type ModuleLessonConfig = {
@@ -12,6 +11,23 @@ export type SemTimetableConfig = {
 };
 
 //  ModuleLessonConfigWithLessons is a mapping of lessonType to an array of Lessons for a module.
+export type Lesson = RawLesson & {
+  moduleCode: ModuleCode;
+  title: ModuleTitle;
+};
+
+export type ColoredLesson = Lesson & {
+  colorIndex: ColorIndex;
+};
+
+type Modifiable = {
+  isModifiable?: boolean;
+  isAvailable?: boolean;
+  isActive?: boolean;
+  colorIndex: ColorIndex;
+};
+
+export type ModifiableLesson = ColoredLesson & Modifiable;
 //  The array of Lessons must belong to that lessonType.
 export type ModuleLessonConfigWithLessons = {
   [lessonType: string]: Lesson[];

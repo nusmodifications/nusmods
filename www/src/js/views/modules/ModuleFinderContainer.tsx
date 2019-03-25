@@ -5,7 +5,7 @@ import axios from 'axios';
 import update from 'immutability-helper';
 import { each, mapValues, values } from 'lodash';
 
-import { ModuleInformation } from 'types/modulesBase';
+import { ModuleInformation } from 'types/modules';
 import { AnyGroup, FacultyDepartments, FilterGroups, PageRange, PageRangeDiff } from 'types/views';
 
 import ModuleFinderList from 'views/modules/ModuleFinderList';
@@ -21,14 +21,14 @@ import Omelette, { matchEgg } from 'views/components/Omelette';
 import { forceInstantSearch } from 'utils/debug';
 import {
   defaultGroups,
-  updateGroups,
-  serializeGroups,
   DEPARTMENT,
   EXAMS,
   FACULTY,
   LEVELS,
   MODULE_CREDITS,
   SEMESTER,
+  serializeGroups,
+  updateGroups,
 } from 'utils/moduleFilters';
 import { createSearchFilter, SEARCH_QUERY_KEY, sortModules } from 'utils/moduleSearch';
 import nusmods from 'apis/nusmods';

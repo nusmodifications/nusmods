@@ -4,17 +4,17 @@ import { flatMap, flatten, sortBy, toPairs, values } from 'lodash';
 import { DragDropContext, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 
-import { Module } from 'types/modules';
+import { Module, ModuleCode, Semester } from 'types/modules';
 import { PlannerModuleInfo, PlannerModulesWithInfo } from 'types/views';
 import { MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
 import {
   EXEMPTION_SEMESTER,
   EXEMPTION_YEAR,
+  fromDroppableId,
+  getTotalMC,
   IBLOCS_SEMESTER,
   PLAN_TO_TAKE_SEMESTER,
   PLAN_TO_TAKE_YEAR,
-  fromDroppableId,
-  getTotalMC,
 } from 'utils/planner';
 import { addPlannerModule, movePlannerModule, removePlannerModule } from 'actions/planner';
 import { toggleFeedback } from 'actions/app';
@@ -24,7 +24,6 @@ import { Settings, Trash } from 'views/components/icons';
 import Title from 'views/components/Title';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import Modal from 'views/components/Modal';
-import { ModuleCode, Semester } from 'types/modulesBase';
 import { State as StoreState } from 'types/state';
 import PlannerSemester from '../PlannerSemester';
 import PlannerYear from '../PlannerYear';

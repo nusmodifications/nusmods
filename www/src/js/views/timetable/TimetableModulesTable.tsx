@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { sortBy } from 'lodash';
 
-import { ModuleWithColor } from 'types/modules';
+import { ModuleWithColor } from 'types/views';
 import { ColorIndex } from 'types/timetables';
-import { ModuleTableOrder } from 'types/views';
+import { ModuleCode, Semester } from 'types/modules';
 
 import ColorPicker from 'views/components/ColorPicker';
 import { Eye, EyeOff, Trash } from 'views/components/icons';
@@ -15,16 +15,16 @@ import {
   selectModuleColor,
   showLessonInTimetable,
 } from 'actions/timetables';
-import { getFormattedExamDate, getExamDate, renderMCs } from 'utils/modules';
+import { getExamDate, getFormattedExamDate, renderMCs } from 'utils/modules';
 import { modulePage } from 'views/routes/paths';
 import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip';
-import { ModuleCode, Semester } from 'types/modulesBase';
 import { State as StoreState } from 'types/state';
 
 import styles from './TimetableModulesTable.scss';
 import ModuleTombstone from './ModuleTombstone';
 import { moduleOrders } from './ModulesTableFooter';
+import { ModuleTableOrder } from '../../types/reducers';
 
 type Props = {
   semester: Semester;

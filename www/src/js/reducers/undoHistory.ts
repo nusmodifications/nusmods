@@ -2,7 +2,7 @@ import { REDO, UNDO } from 'actions/constants';
 
 import { get, last, pick, set, takeRight } from 'lodash';
 import { FSA } from 'types/redux';
-import { UndoHistoryState } from './constants';
+import { UndoHistoryState } from '../types/reducers';
 
 export type UndoHistoryConfig = {
   reducerName: string;

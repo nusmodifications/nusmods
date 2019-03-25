@@ -1,4 +1,4 @@
-import { Faculty, Semester } from 'types/modulesBase';
+import { Faculty, Semester } from 'types/modules';
 
 import * as actions from 'actions/settings';
 

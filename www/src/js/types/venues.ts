@@ -1,5 +1,4 @@
-import { DayText, ModuleCode } from 'types/modulesBase';
-import { RawLesson } from './lessons';
+import { DayText, EndTime, StartTime, ModuleCode, RawLesson } from './modules';
 import { Omit } from './utils';
 
 export type Venue = string;
@@ -70,3 +69,20 @@ export type NextBusTimings = { [route: string]: NextBus };
 
 // data/venues.json is of this type
 export type VenueLocationMap = { readonly [key: string]: VenueLocation };
+
+export type BusTiming = {
+  // Loading uses a boolean instead of making timings null so that
+  // the old timing can be seen while it is refreshed
+  isLoading: boolean;
+  timings?: NextBusTimings | null;
+  error?: Error | null;
+};
+
+/**
+ * Represents a time period in the timetable.
+ */
+export type TimePeriod = {
+  day: number; // Day of week (ie. 0 = Monday, 1 = Tuesday etc.)
+  startTime: StartTime;
+  endTime: EndTime;
+};

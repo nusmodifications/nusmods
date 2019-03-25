@@ -1,11 +1,11 @@
 import { FSA } from 'types/redux';
-import { ThemeState, VERTICAL, HORIZONTAL } from 'types/reducers';
+import { HORIZONTAL, ThemeState, VERTICAL } from 'types/reducers';
 import { Theme } from 'types/settings';
 
 import { SET_EXPORTED_DATA } from 'actions/constants';
 import {
-  SELECT_THEME,
   CYCLE_THEME,
+  SELECT_THEME,
   TOGGLE_TIMETABLE_ORIENTATION,
   TOGGLE_TITLE_DISPLAY,
 } from 'actions/theme';

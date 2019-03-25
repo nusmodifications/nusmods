@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { ModuleInformation } from 'types/modulesBase';
-import { ModuleSearch } from 'types/moduleReducers';
+import { ModuleInformation } from 'types/modules';
+import { ModuleSearch } from 'types/reducers';
 
 import { modulePage } from 'views/routes/paths';
 import { BULLET, highlight } from 'utils/react';

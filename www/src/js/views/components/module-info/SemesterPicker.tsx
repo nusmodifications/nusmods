@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { each } from 'lodash';
 
-import { Semester } from 'types/modulesBase';
+import { Semester } from 'types/modules';
 
 import ButtonGroupSelector, {
   Props as ButtonGroupProps,

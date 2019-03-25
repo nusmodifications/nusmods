@@ -11,13 +11,11 @@ import iCalForTimetable, {
   RECESS_WEEK,
 } from 'utils/ical';
 
-import { Module } from 'types/modules';
+import { Module, RawLesson, WeekRange } from 'types/modules';
 import { EVEN_WEEK, EVERY_WEEK, ODD_WEEK } from 'test-utils/timetable';
 
 import { BFS1001, CS1010S, CS3216 } from '__mocks__/modules';
 import mockTimetable from '__mocks__/sem-timetable.json';
-import { WeekRange } from 'types/modulesBase';
-import { RawLesson } from 'types/lessons';
 
 const rawLesson = (override: Partial<RawLesson> = {}): RawLesson => ({
   classNo: 'A1',

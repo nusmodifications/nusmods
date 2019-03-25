@@ -1,30 +1,28 @@
 // Components within a module:
-import { RawLesson } from './lessons';
-import {
-  AcadYear,
-  Department,
-  Faculty,
-  ModuleCode,
-  ModuleTitle,
-  Semester,
-  WeekRange,
-  Weeks,
-  Workload,
-} from './modulesBase';
-import { ColorIndex } from './timetables';
-
-/**
- * Typesafe helper functions for consuming Weeks
- */
-export const isWeekRange = (week: Weeks): week is WeekRange => !Array.isArray(week);
-
-export const consumeWeeks = <T = void>(
-  weeks: Weeks,
-  consumeNumericWeeks: (weeks: number[]) => T,
-  consumeWeekRange: (weekRange: WeekRange) => T,
-): T => {
-  if (Array.isArray(weeks)) return consumeNumericWeeks(weeks);
-  return consumeWeekRange(weeks as WeekRange);
+export type AcadYear = string;
+export type ClassNo = string;
+export type DayText = string;
+export type StartTime = string;
+export type EndTime = string;
+export type Faculty = string;
+export type LessonTime = StartTime | EndTime;
+export type LessonType = string;
+export type ModuleCode = string;
+export type ModuleTitle = string;
+export type Semester = number;
+export type Department = string;
+export type Workload = string | ReadonlyArray<number>;
+export type Venue = string;
+export type Weeks = ReadonlyArray<number> | WeekRange;
+export type WeekRange = {
+  // The start and end dates
+  start: string;
+  end: string;
+  // Number of weeks between each lesson. If not specified one week is assumed
+  // ie. there are lessons every week
+  weekInterval?: number;
+  // Week intervals for modules with uneven spacing between lessons
+  weeks?: number[];
 };
 
 // Recursive tree of module codes and boolean operators for the prereq tree
@@ -65,7 +63,46 @@ export const WORKLOAD_COMPONENTS: WorkloadComponent[] = [
   'Preparation',
 ];
 
+/**
+ * Typesafe helper functions for consuming Weeks
+ */
+export const isWeekRange = (week: Weeks): week is WeekRange => !Array.isArray(week);
+
+export const consumeWeeks = <T = void>(
+  weeks: Weeks,
+  consumeNumericWeeks: (weeks: number[]) => T,
+  consumeWeekRange: (weekRange: WeekRange) => T,
+): T => {
+  if (Array.isArray(weeks)) return consumeNumericWeeks(weeks);
+  return consumeWeekRange(weeks as WeekRange);
+};
+
+export type SearchableModule = {
+  moduleCode: ModuleCode;
+  title: ModuleTitle;
+  description?: string;
+};
+
+export type SemesterDataCondensed = Readonly<{
+  semester: Semester;
+  examDate?: string;
+  examDuration?: number;
+  // The full timetable is not provided to reduce space
+}>;
+
 // RawLesson is a lesson time slot obtained from the API.
+// Lessons do not implement a modifiable interface.
+// They have to be injected in before using in the timetable.
+// Usually ModuleCode and ModuleTitle has to be injected in before using in the timetable.
+export type RawLesson = Readonly<{
+  classNo: ClassNo;
+  day: DayText;
+  startTime: StartTime;
+  endTime: EndTime;
+  lessonType: LessonType;
+  venue: Venue;
+  weeks: Weeks;
+}>;
 
 // Semester-specific information of a module.
 export type SemesterData = {
@@ -76,6 +113,38 @@ export type SemesterData = {
   examDate?: string;
   examDuration?: number;
 };
+
+// This format is returned from the module list endpoint.
+export type ModuleCondensed = Readonly<{
+  moduleCode: ModuleCode;
+  title: ModuleTitle;
+  semesters: ReadonlyArray<number>;
+}>;
+
+// This format is returned from the module information endpoint
+// Subset of Module object that contains the properties that are needed for module search
+export type ModuleInformation = Readonly<{
+  // Basic info
+  moduleCode: ModuleCode;
+  title: ModuleTitle;
+
+  // Additional info
+  description?: string;
+  moduleCredit: string;
+  department: Department;
+  faculty: Faculty;
+  workload?: Workload;
+
+  // Requsites
+  prerequisite?: string;
+  corequisite?: string;
+  preclusion?: string;
+
+  // Condensed semester info
+  semesterData: ReadonlyArray<SemesterDataCondensed>;
+
+  // Requisite tree is not returned to save space
+}>;
 
 // Information for a module for a particular academic year.
 export type Module = {
@@ -105,15 +174,3 @@ export type Module = {
   prereqTree?: PrereqTree;
   fulfillRequirements?: ReadonlyArray<ModuleCode>;
 };
-
-export type ModuleWithColor = Module & {
-  colorIndex: ColorIndex;
-  hiddenInTimetable: boolean;
-};
-
-// This format is returned from the module list endpoint.
-export type ModuleCondensed = Readonly<{
-  moduleCode: ModuleCode;
-  title: ModuleTitle;
-  semesters: ReadonlyArray<number>;
-}>;

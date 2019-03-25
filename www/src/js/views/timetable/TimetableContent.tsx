@@ -3,10 +3,12 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { ModulesMap } from 'reducers/constants';
-import { ColorMapping, HORIZONTAL, TimetableOrientation } from 'types/reducers';
-import { Module, ModuleWithColor } from 'types/modules';
+import { ColorMapping, HORIZONTAL, ModulesMap, TimetableOrientation } from 'types/reducers';
+import { Module, ModuleCode, Semester } from 'types/modules';
 import {
+  ColoredLesson,
+  Lesson,
+  ModifiableLesson,
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
   TimetableArrangement,
@@ -40,9 +42,8 @@ import { resetScrollPosition } from 'utils/react';
 import ModulesSelectContainer from 'views/timetable/ModulesSelectContainer';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
-import { ModuleCode, Semester } from 'types/modulesBase';
 import { State as StoreState } from 'types/state';
-import { ColoredLesson, Lesson, ModifiableLesson } from 'types/lessons';
+import { ModuleWithColor } from 'types/views';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';

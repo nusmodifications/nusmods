@@ -3,15 +3,15 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 
 import { Mode, ThemeId } from 'types/settings';
-import { Tracker } from 'types/views';
+import { Tracker } from 'types/vendor/piwik';
 
 import availableThemes from 'data/themes.json';
 import { selectTheme } from 'actions/theme';
 import {
   selectFaculty,
   selectMode,
-  toggleBetaTesting,
   setLoadDisqusManually,
+  toggleBetaTesting,
 } from 'actions/settings';
 import ScrollToTop from 'views/components/ScrollToTop';
 import Timetable from 'views/timetable/Timetable';

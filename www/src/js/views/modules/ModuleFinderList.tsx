@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Waypoint from 'react-waypoint';
-import { head, last, chunk, get } from 'lodash';
+import { chunk, get, head, last } from 'lodash';
 
-import { ModuleInformation } from 'types/modulesBase';
-import { PageRange, PageRangeDiff, OnPageChange } from 'types/views';
+import { ModuleInformation } from 'types/modules';
+import { OnPageChange, PageRange, PageRangeDiff } from 'types/views';
 
 import Warning from 'views/errors/Warning';
 import ModuleFinderPage from './ModuleFinderPage';

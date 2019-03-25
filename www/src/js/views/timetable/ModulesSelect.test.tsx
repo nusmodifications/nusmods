@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import Downshift from 'downshift';
 import Modal from 'views/components/Modal';
 import { ModulesSelectComponent } from './ModulesSelect';

@@ -2,12 +2,11 @@ import { requestAction } from 'actions/requests';
 import NUSModsApi from 'apis/nusmods';
 import config from 'config';
 import { flatMap, get, size, sortBy, zip } from 'lodash';
-import { ModulesMap } from 'reducers/constants';
-import { Module } from 'types/modules';
+import { ModulesMap } from 'types/reducers';
+import { AcadYear, Module, ModuleCode } from 'types/modules';
 
 import { GetState } from 'types/redux';
 import { TimetableConfig } from 'types/timetables';
-import { AcadYear, ModuleCode } from 'types/modulesBase';
 import {
   FETCH_ARCHIVE_MODULE,
   FETCH_MODULE,

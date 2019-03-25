@@ -1,15 +1,14 @@
-import { map, each, isEmpty, kebabCase, values, flatten } from 'lodash';
+import { each, flatten, isEmpty, kebabCase, map, values } from 'lodash';
 import update, { Spec } from 'immutability-helper';
 import qs from 'query-string';
 
-import { FilterGroups, FacultyDepartments } from 'types/views';
-import { ModuleLevel } from 'types/modules';
+import { FacultyDepartments, FilterGroups } from 'types/views';
+import { Department, Faculty, ModuleInformation, ModuleLevel } from 'types/modules';
 
 import config from 'config';
 import LevelFilter from 'utils/filters/LevelFilter';
 import Filter from 'utils/filters/ModuleFilter';
 import FilterGroup from 'utils/filters/FilterGroup';
-import { Department, Faculty, ModuleInformation } from 'types/modulesBase';
 import { createSearchFilter, SEARCH_QUERY_KEY } from './moduleSearch';
 
 export const LEVELS = 'level';

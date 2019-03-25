@@ -1,6 +1,6 @@
 import { removeLRUModule, updateModuleTimestamp } from 'actions/moduleBank';
 import { REMOVE_LRU_MODULE, UPDATE_MODULE_TIMESTAMP } from '../actions/constants';
-import { ModuleBank } from './constants';
+import { ModuleBank } from '../types/reducers';
 import reducer from './moduleBank';
 
 const defaultModuleBankState: ModuleBank = {

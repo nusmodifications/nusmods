@@ -1,22 +1,21 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { withRouter, Redirect, RouteComponentProps } from 'react-router-dom';
+import { Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 
-import { ModuleCode, Semester } from 'types/modulesBase';
+import { ModuleCode, Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
-import { ColorMapping, NotificationOptions } from 'types/reducers';
-import { ModulesMap } from 'reducers/constants';
+import { ColorMapping, ModulesMap, NotificationOptions } from 'types/reducers';
 
 import { selectSemester } from 'actions/settings';
 import { getSemesterTimetable } from 'reducers/timetables';
-import { setTimetable, fetchTimetableModules } from 'actions/timetables';
+import { fetchTimetableModules, setTimetable } from 'actions/timetables';
 import { openNotification } from 'actions/app';
 import { undo } from 'actions/undoHistory';
 import { getModuleCondensed } from 'selectors/moduleBank';
 import { deserializeTimetable } from 'utils/timetables';
 import { fillColorMapping } from 'utils/colors';
-import { semesterForTimetablePage, timetablePage, TIMETABLE_SHARE } from 'views/routes/paths';
+import { semesterForTimetablePage, TIMETABLE_SHARE, timetablePage } from 'views/routes/paths';
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import { Repeat } from 'views/components/icons';
 import SemesterSwitcher from 'views/components/semester-switcher/SemesterSwitcher';

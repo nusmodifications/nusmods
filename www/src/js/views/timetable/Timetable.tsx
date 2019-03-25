@@ -2,9 +2,8 @@ import * as React from 'react';
 import { flattenDeep, noop, values } from 'lodash';
 import classnames from 'classnames';
 
-import { ColoredLesson } from 'types/lessons';
-import { HoverLesson, TimetableArrangement } from 'types/timetables';
-import { OnModifyCell, TimePeriod } from 'types/views';
+import { ColoredLesson, HoverLesson, TimetableArrangement } from 'types/timetables';
+import { OnModifyCell } from 'types/views';
 
 import {
   calculateBorderTimings,
@@ -16,6 +15,7 @@ import {
 import elements from 'views/elements';
 import withTimer, { TimerData } from 'views/hocs/withTimer';
 
+import { TimePeriod } from 'types/venues';
 import styles from './Timetable.scss';
 import TimetableTimings from './TimetableTimings';
 import TimetableDay from './TimetableDay';

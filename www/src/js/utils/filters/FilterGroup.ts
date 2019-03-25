@@ -1,7 +1,7 @@
 import update from 'immutability-helper';
 import { keyBy, values } from 'lodash';
 
-import { ModuleCode, ModuleInformation } from 'types/modulesBase';
+import { ModuleCode, ModuleInformation } from 'types/modules';
 import { notNull } from 'types/utils';
 
 import { intersection, union } from 'utils/set';

@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { RouteComponentProps, NavLink, withRouter } from 'react-router-dom';
+import { NavLink, RouteComponentProps, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 
-import { Semester } from 'types/modulesBase';
+import { Semester } from 'types/modules';
 import {
   BookOpen,
   Calendar,
   Clock,
   Heart,
   Map,
-  Trello,
   Settings,
   Star,
+  Trello,
 } from 'views/components/icons';
 import ExternalLink from 'views/components/ExternalLink';
 import Online from 'views/components/Online';

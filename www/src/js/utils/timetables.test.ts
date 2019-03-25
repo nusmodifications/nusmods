@@ -1,5 +1,6 @@
 import NUSModerator from 'nusmoderator';
 import {
+  ColoredLesson,
   ModuleLessonConfig,
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
@@ -7,9 +8,8 @@ import {
   TimetableDayArrangement,
   TimetableDayFormat,
 } from 'types/timetables';
-import { ColoredLesson, RawLesson } from 'types/lessons';
-import { LessonType, Semester, Weeks } from 'types/modulesBase';
-import { ModulesMap } from 'reducers/constants';
+import { LessonType, RawLesson, Semester, Weeks } from 'types/modules';
+import { ModulesMap } from 'types/reducers';
 
 import _ from 'lodash';
 

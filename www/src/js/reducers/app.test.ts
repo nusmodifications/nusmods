@@ -1,15 +1,15 @@
-import { modifyLesson, changeLesson, cancelModifyLesson } from 'actions/timetables';
+import { cancelModifyLesson, changeLesson, modifyLesson } from 'actions/timetables';
 import { openNotification, popNotification, setOnlineStatus } from 'actions/app';
 import { selectSemester } from 'actions/settings';
 
 import reducer from 'reducers/app';
 
-import { Semester } from 'types/modulesBase';
+import { Semester } from 'types/modules';
 import { FSA } from 'types/redux';
 import { AppState } from 'types/reducers';
 import { initAction } from 'test-utils/redux';
 import lessons from '__mocks__/lessons-array.json';
-import { Lesson } from 'types/lessons';
+import { Lesson } from 'types/timetables';
 
 const semester: Semester = 1;
 const anotherSemester: Semester = 2;

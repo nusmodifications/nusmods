@@ -1,6 +1,6 @@
-import { ModuleCondensed } from 'types/modulesBase';
+import { ModuleCondensed } from 'types/modules';
 import { Venue, VenueList } from 'types/venues';
-import { ModuleList } from 'types/moduleReducers';
+import { ModuleList } from 'types/reducers';
 import { ResultType, SearchResult, VENUE_RESULT } from 'types/views';
 
 import * as React from 'react';

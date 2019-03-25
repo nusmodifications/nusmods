@@ -1,8 +1,8 @@
-import { range, without, sample } from 'lodash';
+import { range, sample, without } from 'lodash';
 
 import { ColorIndex, SemTimetableConfig } from 'types/timetables';
 import { ColorMapping } from 'types/reducers';
-import { ModuleCode } from 'types/modulesBase';
+import { ModuleCode } from 'types/modules';
 
 export const NUM_DIFFERENT_COLORS = 8;
 

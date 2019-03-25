@@ -1,6 +1,6 @@
 import qs from 'query-string';
 
-import { Semester } from 'types/modulesBase';
+import { Semester } from 'types/modules';
 import { extractStateForExport } from 'utils/export';
 import { State } from 'types/state';
 

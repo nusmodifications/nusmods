@@ -3,7 +3,7 @@ import * as React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
-import { Semester } from 'types/modulesBase';
+import { Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
 import { fillColorMapping } from 'utils/colors';
 import TimetableContent from 'views/timetable/TimetableContent';

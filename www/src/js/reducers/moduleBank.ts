@@ -3,18 +3,16 @@ import {
   FETCH_MODULE,
   FETCH_MODULE_LIST,
   REMOVE_LRU_MODULE,
-  SET_EXPORTED_DATA,
   UPDATE_MODULE_TIMESTAMP,
+  SET_EXPORTED_DATA,
 } from 'actions/constants';
 import update from 'immutability-helper';
 import { keyBy, omit, size, zipObject } from 'lodash';
 import { createMigrate, REHYDRATE } from 'redux-persist';
 import { Module } from 'types/modules';
-import { SUCCESS } from 'types/reducers';
+import { ModuleBank, ModuleList, SUCCESS } from 'types/reducers';
 
 import { FSA } from 'types/redux';
-import { ModuleList } from 'types/moduleReducers';
-import { ModuleBank } from './constants';
 
 const defaultModuleBankState: ModuleBank = {
   moduleList: [], // List of basic modules data (module code, name, semester)

@@ -3,8 +3,7 @@ import classnames from 'classnames';
 import { flatten, values } from 'lodash';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 
-import { PrereqTree } from 'types/modules';
-import { ModuleCode } from 'types/modulesBase';
+import { ModuleCode, PrereqTree } from 'types/modules';
 
 import { notNull } from 'types/utils';
 import styles from './ModuleTree.scss';

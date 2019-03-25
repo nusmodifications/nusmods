@@ -2,14 +2,14 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
-import { map, mapValues, values, flatten } from 'lodash';
+import { flatten, map, mapValues, values } from 'lodash';
 
-import { ModuleCondensed } from 'types/modulesBase';
+import { ModuleCondensed } from 'types/modules';
 
 import { toggleFeedback } from 'actions/app';
 import { toggleBetaTesting } from 'actions/settings';
 import { modulePage } from 'views/routes/paths';
-import { Zap, DollarSign } from 'views/components/icons';
+import { DollarSign, Zap } from 'views/components/icons';
 import ExternalLink from 'views/components/ExternalLink';
 import ScrollToTop from 'views/components/ScrollToTop';
 import Title from 'views/components/Title';

@@ -1,9 +1,9 @@
 import { clone } from 'lodash';
 import { getAcadYearModules, getPrereqModuleCode } from 'selectors/planner';
 import { PlannerState } from 'types/reducers';
-import { ModuleCode } from 'types/modulesBase';
+import { ModuleCode } from 'types/modules';
 
-import { CS3216, CS1010S } from '__mocks__/modules';
+import { CS1010S, CS3216 } from '__mocks__/modules';
 import { State } from 'types/state';
 
 // Stupid trick to get two modules with the same exam dates

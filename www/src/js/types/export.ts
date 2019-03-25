@@ -1,5 +1,5 @@
 import { SemTimetableConfig } from 'types/timetables';
-import { ModuleCode, Semester } from 'types/modulesBase';
+import { Semester, ModuleCode } from 'types/modules';
 import { Mode } from 'types/settings';
 import { ColorMapping, ThemeState } from 'types/reducers';
 

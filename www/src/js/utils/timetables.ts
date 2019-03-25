@@ -1,31 +1,41 @@
 import { AcadWeekInfo } from 'nusmoderator';
 import {
-  mapValues,
-  flatMapDeep,
-  groupBy,
-  pick,
-  map,
-  isEmpty,
-  last,
-  omitBy,
-  invert,
-  values,
-  partition,
-  each,
-  difference,
-  range,
-  isEqual,
   castArray,
+  difference,
+  each,
+  flatMapDeep,
   get,
+  groupBy,
+  invert,
+  isEmpty,
+  isEqual,
+  last,
+  map,
+  mapValues,
+  omitBy,
+  partition,
+  pick,
+  range,
   sample,
+  values,
 } from 'lodash';
 import { addDays, min as minDate, parseISO } from 'date-fns';
 import qs from 'query-string';
 
-import { consumeWeeks, Module } from 'types/modules';
+import {
+  ClassNo,
+  consumeWeeks,
+  LessonType,
+  Module,
+  ModuleCode,
+  RawLesson,
+  Semester,
+} from 'types/modules';
 
 import {
+  ColoredLesson,
   HoverLesson,
+  Lesson,
   ModuleLessonConfig,
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
@@ -34,11 +44,8 @@ import {
   TimetableDayFormat,
 } from 'types/timetables';
 
-import { ModulesMap } from 'reducers/constants';
-import { ModuleCodeMap } from 'types/moduleReducers';
+import { ModuleCodeMap, ModulesMap } from 'types/reducers';
 import { ExamClashes } from 'types/views';
-import { ClassNo, LessonType, ModuleCode, Semester } from 'types/modulesBase';
-import { ColoredLesson, Lesson, RawLesson } from 'types/lessons';
 
 import { getTimeAsDate } from './timify';
 import { getModuleSemesterData, getModuleTimetable } from './modules';

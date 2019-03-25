@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { ModuleSelectList } from 'types/moduleReducers';
-import { ModuleCode, Semester } from 'types/modulesBase';
+import { ModuleSelectList } from 'types/reducers';
+import { ModuleCode, Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
 
 import Online from 'views/components/Online';

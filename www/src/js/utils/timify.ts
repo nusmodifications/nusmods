@@ -1,4 +1,4 @@
-import { DayText, LessonTime } from 'types/modulesBase';
+import { DayText, LessonTime } from 'types/modules';
 import {
   format,
   getHours,
@@ -11,8 +11,8 @@ import {
   setSeconds,
   startOfDay,
 } from 'date-fns';
-import { TimePeriod } from 'types/views';
-import { Lesson } from 'types/lessons';
+import { TimePeriod } from 'types/venues';
+import { Lesson } from 'types/timetables';
 
 const SGT_OFFSET = -8 * 60;
 

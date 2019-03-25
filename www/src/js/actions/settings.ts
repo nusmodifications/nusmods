@@ -1,7 +1,7 @@
 import { FSA } from 'types/redux';
-import { Faculty, Semester } from 'types/modulesBase';
+import { Faculty, Semester } from 'types/modules';
 import { Mode } from 'types/settings';
-import { ModuleTableOrder } from 'types/views';
+import { ModuleTableOrder } from 'types/reducers';
 
 export const SELECT_SEMESTER = 'SELECT_SEMESTER';
 export function selectSemester(semester: Semester): FSA {

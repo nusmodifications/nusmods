@@ -1,9 +1,8 @@
 import { createSelector } from 'reselect';
 
-import { ModuleCode, ModuleCondensed, Semester } from 'types/modulesBase';
-import { ModuleBank } from 'reducers/constants';
+import { ModuleCode, ModuleCondensed, Semester } from 'types/modules';
+import { ModuleBank, ModuleCodeMap, ModuleSelectListItem } from 'types/reducers';
 import { SemTimetableConfig } from 'types/timetables';
-import { ModuleSelectListItem, ModuleCodeMap } from 'types/moduleReducers';
 import { notNull } from 'types/utils';
 import { getRequestModuleCode } from 'actions/moduleBank';
 import { State } from 'types/state';

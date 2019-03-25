@@ -3,12 +3,11 @@ import { mount } from 'enzyme';
 import _ from 'lodash';
 import { Link, MemoryRouter } from 'react-router-dom';
 
-import { ModuleWithColor } from 'types/modules';
+import { ModuleWithColor } from 'types/views';
 import mockModules from '__mocks__/modules';
-
 /** @vars {Module} */
 import GER1000 from '__mocks__/modules/GER1000.json';
-import { Semester } from 'types/modulesBase';
+import { Semester } from 'types/modules';
 
 import ExamCalendar, { getTimeSegment } from './ExamCalendar';
 import styles from './ExamCalendar.scss';

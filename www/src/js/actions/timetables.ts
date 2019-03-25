@@ -1,9 +1,9 @@
 import { each, flatMap } from 'lodash';
 
-import { ColorIndex, ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
+import { Lesson, ColorIndex, ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import { FSA, GetState } from 'types/redux';
 import { ColorMapping } from 'types/reducers';
-import { Module } from 'types/modules';
+import { ClassNo, LessonType, Module, ModuleCode, Semester } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
 import { openNotification } from 'actions/app';
@@ -14,8 +14,6 @@ import {
   validateTimetableModules,
 } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
-import { ClassNo, LessonType, ModuleCode, Semester } from 'types/modulesBase';
-import { Lesson } from 'types/lessons';
 
 export const ADD_MODULE = 'ADD_MODULE';
 export function addModule(semester: Semester, moduleCode: ModuleCode) {

@@ -3,9 +3,8 @@ import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import { flatMap } from 'lodash';
 
-import { DayAvailability, Venue } from 'types/venues';
-import { Lesson } from 'types/lessons';
-import { TimePeriod } from 'types/views';
+import { DayAvailability, TimePeriod, Venue } from 'types/venues';
+import { Lesson } from 'types/timetables';
 
 import { colorLessonsByKey } from 'utils/colors';
 import { arrangeLessonsForWeek } from 'utils/timetables';

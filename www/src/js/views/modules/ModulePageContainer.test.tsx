@@ -2,14 +2,13 @@ import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Redirect } from 'react-router-dom';
 
-import { Module } from 'types/modules';
+import { Module, ModuleCode } from 'types/modules';
 import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import createHistory from 'test-utils/createHistory';
 import { waitFor } from 'test-utils/async';
 import ApiError from 'views/errors/ApiError';
 import { CS1010S } from '__mocks__/modules';
-import { ModuleCode } from 'types/modulesBase';
 import { ModulePageContainerComponent } from './ModulePageContainer';
 
 jest.mock('utils/error');

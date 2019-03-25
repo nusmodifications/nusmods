@@ -8,8 +8,8 @@ import Downshift, {
 } from 'downshift';
 import classnames from 'classnames';
 
-import { ModuleSelectList } from 'types/moduleReducers';
-import { ModuleCode } from 'types/modulesBase';
+import { ModuleSelectList } from 'types/reducers';
+import { ModuleCode } from 'types/modules';
 
 import { breakpointUp } from 'utils/css';
 import makeResponsive from 'views/hocs/makeResponsive';

@@ -3,10 +3,10 @@ import { MemoryRouter } from 'react-router-dom';
 import { mount } from 'enzyme';
 import { entries } from 'lodash';
 
-import { ModuleCodeMap } from 'types/moduleReducers';
+import { ModuleCodeMap } from 'types/reducers';
 import { getModuleCondensed } from 'selectors/moduleBank';
 
-import { ModuleCondensed } from 'types/modulesBase';
+import { ModuleCondensed } from 'types/modules';
 import { LinkModuleCodesComponent } from './LinkModuleCodes';
 
 describe(LinkModuleCodesComponent, () => {

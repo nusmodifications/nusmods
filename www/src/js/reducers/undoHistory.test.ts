@@ -1,4 +1,4 @@
-import { undo, redo } from 'actions/undoHistory';
+import { redo, undo } from 'actions/undoHistory';
 import update from 'immutability-helper';
 import { pick } from 'lodash';
 import undoHistory, {
@@ -6,7 +6,7 @@ import undoHistory, {
   mergePresent,
   UndoHistoryConfig,
 } from 'reducers/undoHistory';
-import { UndoHistoryState } from './constants';
+import { UndoHistoryState } from '../types/reducers';
 
 const WATCHED_ACTION = 'WATCHED_ACTION';
 const IGNORED_ACTION = 'IGNORED_ACTION';
