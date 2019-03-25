@@ -14,7 +14,7 @@ import {
 } from 'utils/planner';
 import { findExamClashes } from 'utils/timetables';
 import { State } from 'types/state';
-import { CustomModuleData, ModuleTime } from '../types/planner';
+import { CustomModuleData, ModuleTime } from 'types/planner';
 
 /* eslint-disable no-useless-computed-key */
 

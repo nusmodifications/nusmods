@@ -21,10 +21,10 @@ import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip';
 import { State as StoreState } from 'types/state';
 
+import { ModuleTableOrder } from 'types/reducers';
 import styles from './TimetableModulesTable.scss';
 import ModuleTombstone from './ModuleTombstone';
 import { moduleOrders } from './ModulesTableFooter';
-import { ModuleTableOrder } from '../../types/reducers';
 
 type Props = {
   semester: Semester;

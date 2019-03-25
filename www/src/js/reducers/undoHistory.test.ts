@@ -6,7 +6,7 @@ import undoHistory, {
   mergePresent,
   UndoHistoryConfig,
 } from 'reducers/undoHistory';
-import { UndoHistoryState } from '../types/reducers';
+import { UndoHistoryState } from 'types/reducers';
 
 const WATCHED_ACTION = 'WATCHED_ACTION';
 const IGNORED_ACTION = 'IGNORED_ACTION';
