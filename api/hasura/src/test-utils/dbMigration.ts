@@ -9,7 +9,7 @@ const afs = {
 };
 
 async function getMigrationFiles(filenameEnd: string) {
-  const migrationsPath = path.resolve(__dirname, '../../../migrations');
+  const migrationsPath = path.resolve(__dirname, '../../migrations');
   const dir: fs.Dirent[] = await afs.readdir(migrationsPath, { withFileTypes: true });
   const migrationFilePaths = dir
     .filter((dirent) => dirent.isFile() && dirent.name.endsWith(filenameEnd))

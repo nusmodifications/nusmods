@@ -45,7 +45,7 @@ describe(ExpiringMap, () => {
     instance.set(testKey, testValue);
     expect(instance.get(testKey)).toBe(testValue);
 
-    advanceBy(tick / 2);
+    advanceBy(duration / 2);
     instance.set(testKey, testValue);
 
     advanceBy(tick / 2);

@@ -1,8 +1,7 @@
 import { Client } from 'pg';
 import Database from './Database';
 import config from './config';
-import dbMigration from './__tests__/utils/dbMigration';
-import dateUtils from './__tests__/utils/date';
+import dbMigration from './test-utils/dbMigration';
 
 jest.mock('./config');
 
@@ -96,7 +95,7 @@ describe('Database', () => {
       });
 
       expect(session.expires_at).toEqual(futureDate);
-      expect(dateUtils.toEpoch(session.last_accessed_at)).toBeLessThanOrEqual(Date.now());
+      expect(session.last_accessed_at <= new Date()).toBeTruthy();
     });
 
     it('should allow multiple sessions', async () => {
@@ -109,8 +108,8 @@ describe('Database', () => {
       expect(sessions.rowCount).toBe(2);
     });
 
-    it('should not allow creation of expired session', () => {
-      expect(
+    it('should not allow creation of expired session', async () => {
+      await expect(
         database.createSession(accountId, new Date(Date.now() - 99999), userAgent),
       ).rejects.toThrowError();
     });
