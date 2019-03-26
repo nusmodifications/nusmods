@@ -4,12 +4,11 @@ import { shallow } from 'enzyme';
 import { Module, ModuleCode } from 'types/modules';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 
-import cs1010s from '__mocks__/modules/CS1010S.json';
-import cs3216 from '__mocks__/modules/CS3216.json';
+import { CS1010S, CS3216 } from '__mocks__/modules';
 import { ModuleExamClashComponent } from './ModuleExamClash';
 
 describe(ModuleExamClashComponent, () => {
-  const MODULES = [cs1010s, cs3216];
+  const MODULES = [CS1010S, CS3216];
 
   function make(moduleCode: ModuleCode, examDate?: string, modules: Module[] = MODULES) {
     return shallow(

@@ -1,14 +1,22 @@
 import _ from 'lodash';
-// @ts-ignore
 import { EventOption } from 'ical-generator';
+import { addDays, addMinutes, addWeeks, isValid } from 'date-fns';
 
-import { Module, ModuleCode, RawLesson, Semester } from 'types/modules';
-import { ModuleLessonConfigWithLessons, SemTimetableConfigWithLessons } from 'types/timetables';
+import {
+  consumeWeeks,
+  EndTime,
+  Module,
+  RawLesson,
+  Semester,
+  StartTime,
+  WeekRange,
+} from 'types/modules';
+import { SemTimetableConfigWithLessons } from 'types/timetables';
 
 import config from 'config';
 import academicCalendar from 'data/academic-calendar';
 import { getModuleSemesterData } from 'utils/modules';
-import { daysAfter } from 'utils/timify';
+import { parseDate } from './timify';
 
 const SG_UTC_TIME_DIFF_MS = 8 * 60 * 60 * 1000;
 export const RECESS_WEEK = -1;
@@ -16,9 +24,7 @@ const NUM_WEEKS_IN_A_SEM = 14; // including reading week
 const ODD_WEEKS = [1, 3, 5, 7, 9, 11, 13];
 const EVEN_WEEKS = [2, 4, 6, 8, 10, 12];
 const ALL_WEEKS = [...ODD_WEEKS, ...EVEN_WEEKS];
-const WEEKS_WITHOUT_TUTORIALS = [1, 2];
-const EXAM_DURATION_MS = 2 * 60 * 60 * 1000; // 2 hours
-const tutorialLessonTypes = ['Design Lecture', 'Laboratory', 'Recitation'];
+const DEFAULT_EXAM_DURATION = 120; // If not provided, assume exams are 2 hours long
 
 function dayIndex(weekday: string) {
   return ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'].indexOf(weekday.toLowerCase());
@@ -31,42 +37,32 @@ export function getTimeHour(time: string) {
   return parseInt(time.slice(0, 2), 10) + parseInt(time.slice(2), 10) / 60;
 }
 
-// needed cos the utils method formats the date for display
-/**
- * Return a copy of the original Date incremented by the given number of hours
- */
-export function hoursAfter(date: Date, sgHour: number): Date {
-  const d = new Date(date.valueOf());
-  d.setUTCHours(d.getUTCHours() + Math.floor(sgHour), (sgHour % 1) * 60);
-  return d;
+function addLessonOffset(date: Date, hourOffset: number): Date {
+  return addMinutes(date, hourOffset * 60);
 }
 
 export function iCalEventForExam(module: Module, semester: Semester): EventOption | null {
-  const examDateString = _.get(getModuleSemesterData(module, semester), 'ExamDate');
-  if (!examDateString) return null;
-  const examDate = new Date(examDateString);
-  if (Number.isNaN(examDate.getTime())) return null;
+  const semesterData = getModuleSemesterData(module, semester);
+  if (!semesterData) return null;
+
+  const { examDate, examDuration } = semesterData;
+  if (!examDate) return null;
+
+  const start = new Date(examDate);
+  if (!isValid(start)) return null;
 
   return {
-    start: examDate,
-    end: new Date(examDate.valueOf() + EXAM_DURATION_MS),
-    summary: `${module.ModuleCode} Exam`,
-    description: module.ModuleTitle,
-    url: `http://www.nus.edu.sg/registrar/event/examschedule-sem${semester}.html`,
+    start,
+    end: addMinutes(start, examDuration || DEFAULT_EXAM_DURATION),
+    summary: `${module.moduleCode} Exam`,
+    description: module.title,
   };
-}
-
-export function isTutorial(lesson: RawLesson): boolean {
-  return (
-    tutorialLessonTypes.includes(lesson.LessonType) ||
-    lesson.LessonType.toLowerCase().includes('tutorial')
-  );
 }
 
 export function holidaysForYear(hourOffset: number = 0): Date[] {
   return config.holidays
     .map((date) => new Date(date.valueOf() - SG_UTC_TIME_DIFF_MS)) // Convert to local time
-    .map((holiday) => hoursAfter(holiday, hourOffset));
+    .map((holiday) => addLessonOffset(holiday, hourOffset));
 }
 
 // given academic weeks in semester and a start date in week 1,
@@ -74,54 +70,81 @@ export function holidaysForYear(hourOffset: number = 0): Date[] {
 export function datesForAcademicWeeks(start: Date, week: number): Date {
   // all weeks 7 and after are bumped by 7 days because of recess week
   if (week === RECESS_WEEK) {
-    return daysAfter(start, 6 * 7);
+    return addWeeks(start, 6);
   }
-  return daysAfter(start, (week <= 6 ? week - 1 : week) * 7);
+  return addWeeks(start, week <= 6 ? week - 1 : week);
 }
 
-/**
- * Calculates the dates that should be excluded for lesson
- *
- * - Exclude entire weeks that do not apply for the lesson
- * - Exclude all holidays
- *
- * Exclusions are represented by datetime when the event will start, so we calculate
- * excluded weeks by simply offsetting the first lesson's date by seven days per week
- */
-export function calculateExclusion(lesson: RawLesson, firstLesson: Date) {
-  // 1. Always exclude recess week
-  let excludedWeeks = [RECESS_WEEK];
+function calculateStartEnd(date: Date, startTime: StartTime, endTime: EndTime) {
+  const start = addLessonOffset(date, getTimeHour(startTime));
+  const end = addLessonOffset(date, getTimeHour(endTime));
 
-  // 2. Exclude weeks 1 and 2 if this is a tutorial
-  if (isTutorial(lesson)) {
-    excludedWeeks = excludedWeeks.concat(WEEKS_WITHOUT_TUTORIALS);
-  }
+  return { start, end };
+}
 
-  switch (lesson.WeekText) {
-    // 3. Exclude odd/even weeks for even/odd week lessons
-    case 'Odd Week':
-      excludedWeeks = _.union(excludedWeeks, EVEN_WEEKS);
-      break;
-    case 'Even Week':
-      excludedWeeks = _.union(excludedWeeks, ODD_WEEKS);
-      break;
-    case 'Every Week':
-      break;
+export function calculateNumericWeek(
+  lesson: RawLesson,
+  semester: Semester,
+  weeks: number[],
+  firstDayOfSchool: Date,
+): EventOption {
+  const lessonDay = addDays(firstDayOfSchool, dayIndex(lesson.day));
+  const { start, end } = calculateStartEnd(lessonDay, lesson.startTime, lesson.endTime);
+  const excludedWeeks = _.difference([RECESS_WEEK, ...ALL_WEEKS], weeks);
 
-    // 4. If WeekText is not any of the above, then assume it consists of a list of weeks
-    //    with lessons, so we exclude weeks without lessons
-    default: {
-      const weeksWithClasses = lesson.WeekText.split(',').map((w) => parseInt(w, 10));
-      excludedWeeks = _.union(excludedWeeks, _.difference(ALL_WEEKS, weeksWithClasses));
+  return {
+    start,
+    end,
+    repeating: {
+      freq: 'WEEKLY',
+      count: NUM_WEEKS_IN_A_SEM,
+      byDay: [lesson.day.slice(0, 2)],
+      exclude: [
+        ...excludedWeeks.map((week) => datesForAcademicWeeks(start, week)),
+        ...holidaysForYear(getTimeHour(lesson.startTime)),
+      ],
+    },
+  };
+}
+
+export function calculateWeekRange(
+  lesson: RawLesson,
+  semester: Semester,
+  weekRange: WeekRange,
+): EventOption {
+  const rangeStart = parseDate(weekRange.start);
+  const rangeEnd = parseDate(weekRange.end);
+  const { start, end } = calculateStartEnd(rangeStart, lesson.startTime, lesson.endTime);
+
+  const interval = weekRange.weekInterval || 1;
+  const exclusions = [];
+
+  if (weekRange.weeks) {
+    for (
+      let current = rangeStart, weekNumber = 1;
+      current <= rangeEnd;
+      current = addWeeks(current, interval), weekNumber += interval
+    ) {
+      if (!weekRange.weeks.includes(weekNumber)) {
+        const lessonTime = calculateStartEnd(current, lesson.startTime, lesson.endTime);
+        exclusions.push(lessonTime.start);
+      }
     }
   }
 
-  return [
-    // 5. Convert the academic weeks into dates
-    ...excludedWeeks.map((week) => datesForAcademicWeeks(firstLesson, week)),
-    // 6. Exclude holidays
-    ...holidaysForYear(getTimeHour(lesson.StartTime)),
-  ];
+  const lastLesson = calculateStartEnd(rangeEnd, lesson.startTime, lesson.endTime);
+
+  return {
+    start,
+    end,
+    repeating: {
+      interval,
+      freq: 'WEEKLY',
+      until: lastLesson.end,
+      byDay: [lesson.day.slice(0, 2)],
+      exclude: [...exclusions, ...holidaysForYear(getTimeHour(lesson.startTime))],
+    },
+  };
 }
 
 /**
@@ -134,28 +157,17 @@ export function iCalEventForLesson(
   semester: Semester,
   firstDayOfSchool: Date,
 ): EventOption {
-  // set start date and time, end date and time
-  const lessonDayMidnight = daysAfter(firstDayOfSchool, dayIndex(lesson.DayText));
-  const start = hoursAfter(lessonDayMidnight, getTimeHour(lesson.StartTime));
-  const end = hoursAfter(lessonDayMidnight, getTimeHour(lesson.EndTime));
-
-  const exclude = calculateExclusion(lesson, start);
+  const event = consumeWeeks(
+    lesson.weeks,
+    (weeks) => calculateNumericWeek(lesson, semester, weeks, firstDayOfSchool),
+    (weeks) => calculateWeekRange(lesson, semester, weeks),
+  );
 
   return {
-    start,
-    end,
-    summary: `${module.ModuleCode} ${lesson.LessonType}`,
-    description: `${module.ModuleTitle}\n${lesson.LessonType} Group ${lesson.ClassNo}`,
-    location: lesson.Venue,
-    url:
-      'https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp?' +
-      `acad_y=${module.AcadYear}&sem_c=${semester}&mod_c=${module.ModuleCode}`,
-    repeating: {
-      freq: 'WEEKLY',
-      count: NUM_WEEKS_IN_A_SEM,
-      byDay: [lesson.DayText.slice(0, 2)],
-      exclude,
-    },
+    ...event,
+    summary: `${module.moduleCode} ${lesson.lessonType}`,
+    description: `${module.title}\n${lesson.lessonType} Group ${lesson.classNo}`,
+    location: lesson.venue,
   };
 }
 
@@ -168,17 +180,18 @@ export default function iCalForTimetable(
   const [year, month, day] = academicCalendar[academicYear][semester].start;
   // 'month - 1' because JS months are zero indexed
   const firstDayOfSchool = new Date(Date.UTC(year, month - 1, day) - SG_UTC_TIME_DIFF_MS);
-  const events = _.flatMap(
-    timetable,
-    (lessonConfig: ModuleLessonConfigWithLessons, moduleCode: ModuleCode) =>
-      _.concat(
-        _.flatMap(lessonConfig, (lessons) =>
-          lessons.map((lesson) =>
-            iCalEventForLesson(lesson, moduleData[moduleCode], semester, firstDayOfSchool),
-          ),
-        ),
-        iCalEventForExam(moduleData[moduleCode], semester) || [],
-      ),
-  );
+  const events: EventOption[] = [];
+
+  _.each(timetable, (lessonConfig, moduleCode) => {
+    _.each(lessonConfig, (lessons) => {
+      lessons.forEach((lesson) => {
+        events.push(iCalEventForLesson(lesson, moduleData[moduleCode], semester, firstDayOfSchool));
+      });
+    });
+
+    const examEvent = iCalEventForExam(moduleData[moduleCode], semester);
+    if (examEvent) events.push(examEvent);
+  });
+
   return events;
 }

@@ -1,6 +1,5 @@
 const path = require('path');
 const merge = require('webpack-merge');
-const webpack = require('webpack');
 const TerserJsPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -66,7 +65,6 @@ const productionConfig = merge([
     },
     plugins: [
       // SEE: https://medium.com/webpack/brief-introduction-to-scope-hoisting-in-webpack-8435084c171f
-      new webpack.optimize.ModuleConcatenationPlugin(),
       new HtmlWebpackPlugin({
         template: path.join(parts.PATHS.app, 'index.html'),
         minify: {

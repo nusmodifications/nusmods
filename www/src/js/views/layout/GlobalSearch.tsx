@@ -227,16 +227,16 @@ class GlobalSearch extends React.Component<Props, State> {
                 {modules.map((module, index) => (
                   <div
                     {...getItemProps({
-                      key: module.ModuleCode,
+                      key: module.moduleCode,
                       item: { type: MODULE_RESULT, module },
                     })}
                     className={classnames(styles.option, {
                       [styles.selected]: highlightedIndex === index + 1,
                     })}
                   >
-                    <span>{highlight(`${module.ModuleCode} ${module.ModuleTitle}`, tokens)}</span>
+                    <span>{highlight(`${module.moduleCode} ${module.title}`, tokens)}</span>
 
-                    <SemesterBadge className={styles.semesters} semesters={module.Semesters} />
+                    <SemesterBadge className={styles.semesters} semesters={module.semesters} />
                   </div>
                 ))}
               </>

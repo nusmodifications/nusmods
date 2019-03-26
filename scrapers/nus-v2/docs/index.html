@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>NUSMods API</title>
+    <link rel="stylesheet" type="text/css" href="./swagger-ui.css" />
+    <link rel="stylesheet" type="text/css" href="./prism.css" />
+    <link rel="icon" type="image/png" href="./favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="./favicon-16x16.png" sizes="16x16" />
+    <style>
+      html {
+        box-sizing: border-box;
+        overflow: -moz-scrollbars-vertical;
+        overflow-y: scroll;
+      }
+
+      *,
+      *:before,
+      *:after {
+        box-sizing: inherit;
+      }
+
+      body {
+        margin: 0;
+        background: #fafafa;
+      }
+
+      .swagger-ui .information-container {
+        max-width: 35rem;
+      }
+
+      .swagger-ui .renderedMarkdown pre {
+        padding: 3px 5px;
+        border-radius: 4px;
+        line-height: 1;
+        background: #f5f2f0;
+      }
+
+      .swagger-ui .renderedMarkdown pre code {
+        background: none;
+        padding: 0;
+        color: unset;
+        font-weight: unset;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="swagger-ui"></div>
+
+    <script src="./swagger-ui-bundle.js"></script>
+    <script src="./swagger-ui-standalone-preset.js"></script>
+    <script src="prism.js"></script>
+
+    <script>
+      function SyntaxHighlightPlugin() {
+        return {
+          afterLoad: function() {
+            // setTimeout is a hack to only run syntax highlighting after Swagger UI has rendered
+            setTimeout(function() {
+              Prism.highlightAll();
+            }, 500);
+          },
+        };
+      }
+
+      window.onload = function() {
+        // Begin Swagger UI call region
+        const ui = SwaggerUIBundle({
+          url: './swagger.yaml',
+          dom_id: '#swagger-ui',
+          deepLinking: true,
+          presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
+          plugins: [SyntaxHighlightPlugin],
+          layout: 'StandaloneLayout',
+        });
+        // End Swagger UI call region
+
+        window.ui = ui;
+      };
+    </script>
+
+    <!-- Matomo -->
+    <script type="text/javascript">
+      var _paq = window._paq || [];
+      /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+        var u = '//analytics.nusmods.com/';
+        _paq.push(['setTrackerUrl', u + 'matomo.php']);
+        _paq.push(['setSiteId', '2']);
+        var d = document,
+          g = d.createElement('script'),
+          s = d.getElementsByTagName('script')[0];
+        g.type = 'text/javascript';
+        g.async = true;
+        g.defer = true;
+        g.src = u + 'matomo.js';
+        s.parentNode.insertBefore(g, s);
+      })();
+    </script>
+    <!-- End Matomo Code -->
+  </body>
+</html>

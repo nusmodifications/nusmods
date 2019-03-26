@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 
 import { Module } from 'types/modules';
 /** @var {Module} */
-import CS1010S from '__mocks__/modules/CS1010S.json';
+import { CS1010S } from '__mocks__/modules';
 
 import ModulePageContent from './ModulePageContent';
 

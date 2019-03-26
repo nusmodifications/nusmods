@@ -64,7 +64,7 @@ export const persistConfig = {
   },
 };
 
-// Map of LessonType to ClassNo.
+// Map of lessonType to ClassNo.
 const defaultModuleLessonConfig: ModuleLessonConfig = {};
 
 function moduleLessonConfig(

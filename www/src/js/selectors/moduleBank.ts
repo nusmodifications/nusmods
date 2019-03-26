@@ -36,11 +36,11 @@ export function getSemModuleSelectList(
   return (
     state.moduleBank.moduleList
       // In specified semester and not within the timetable.
-      .filter((item) => item.Semesters.includes(semester))
+      .filter((item) => item.semesters.includes(semester))
       .map((module) => ({
         ...module,
-        isAdded: module.ModuleCode in semTimetableConfig,
-        isAdding: pendingModules.has(module.ModuleCode),
+        isAdded: module.moduleCode in semTimetableConfig,
+        isAdding: pendingModules.has(module.moduleCode),
       }))
   );
 }

@@ -37,9 +37,9 @@ export class ModuleExamClashComponent extends React.PureComponent<Props> {
     const clashes = modules.filter(
       (module) =>
         // Exclude current module
-        module.ModuleCode !== moduleCode &&
+        module.moduleCode !== moduleCode &&
         // And find modules with the same exam date
-        get(getModuleSemesterData(module, semester), 'ExamDate') === examDate,
+        get(getModuleSemesterData(module, semester), 'examDate') === examDate,
     );
     if (!clashes.length) return null;
 
@@ -50,7 +50,7 @@ export class ModuleExamClashComponent extends React.PureComponent<Props> {
         <AlertTriangle className={styles.icon} />
         <p className={styles.warning}>
           Your {useSingular ? 'module' : 'modules'}{' '}
-          <LinkModuleCodes>{clashes.map((module) => module.ModuleCode).join(', ')}</LinkModuleCodes>{' '}
+          <LinkModuleCodes>{clashes.map((module) => module.moduleCode).join(', ')}</LinkModuleCodes>{' '}
           {useSingular ? 'has' : 'have'} exams at the same time
         </p>
       </div>

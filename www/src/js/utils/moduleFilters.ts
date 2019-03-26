@@ -1,21 +1,17 @@
-import { map, mapValues, each, isEmpty, groupBy, kebabCase } from 'lodash';
+import { map, each, isEmpty, kebabCase, values, flatten } from 'lodash';
 import produce from 'immer';
 import qs from 'query-string';
 
-import { FilterGroups, DepartmentFaculty } from 'types/views';
-import { Module, Faculty, Department, ModuleLevel, Timeslots } from 'types/modules';
+import { FilterGroups, FacultyDepartments } from 'types/views';
+import { Faculty, Department, ModuleLevel, ModuleInformation } from 'types/modules';
 
 import config from 'config';
 import LevelFilter from 'utils/filters/LevelFilter';
-import TimeslotFilter from 'utils/filters/TimeslotFilter';
 import Filter from 'utils/filters/ModuleFilter';
 import FilterGroup from 'utils/filters/FilterGroup';
-import { getModuleSemesterData } from 'utils/modules';
 import { createSearchFilter, SEARCH_QUERY_KEY } from './moduleSearch';
 
 export const LEVELS = 'level';
-export const LECTURE_TIMESLOTS = 'lecture';
-export const TUTORIAL_TIMESLOTS = 'tutorial';
 export const MODULE_CREDITS = 'mc';
 export const SEMESTER = 'sem';
 export const FACULTY = 'faculty';
@@ -23,21 +19,6 @@ export const DEPARTMENT = 'department';
 export const EXAMS = 'exam';
 
 const moduleLevels: ModuleLevel[] = [1, 2, 3, 4, 5, 6, 8];
-
-/**
- * Invert the { [faculty: string]: Departments[] } mapping to { [department: string]: Faculty }
- */
-export function invertFacultyDepartments(mapping: {
-  [faculty: string]: Department[];
-}): DepartmentFaculty {
-  const departmentFaculty: Record<string, string> = {};
-  each(mapping, (departments, faculty) => {
-    departments.forEach((department) => {
-      departmentFaculty[department] = faculty;
-    });
-  });
-  return departmentFaculty;
-}
 
 /**
  * Update the provided filter groups to the state in the query string immutably
@@ -69,48 +50,39 @@ export function serializeGroups(groups: FilterGroups): string {
   return qs.stringify(query, { encode: false });
 }
 
-function makeFacultyFilter(faculties: DepartmentFaculty) {
-  const facultyDepartments: { [faculty: string]: Set<Department> } = mapValues(
-    groupBy(Object.keys(faculties), (department) => faculties[department]),
-    (departments) => new Set(departments),
+const makeFacultyFilter = (faculty: Faculty) =>
+  new Filter(
+    kebabCase(faculty),
+    faculty,
+    (module: ModuleInformation) => module.faculty === faculty,
   );
-
-  const filters = map(
-    facultyDepartments,
-    (departments: Set<Department>, faculty: Faculty) =>
-      new Filter(kebabCase(faculty), faculty, (module: Module) =>
-        departments.has(module.Department),
-      ),
-  );
-
-  return new FilterGroup(FACULTY, 'Faculties', filters);
+function makeFacultyFilterGroup(faculties: Faculty[]) {
+  return new FilterGroup(FACULTY, 'Faculties', faculties.map(makeFacultyFilter));
 }
 
-function makeDepartmentFilter(faculties: DepartmentFaculty) {
-  return new FilterGroup(
-    DEPARTMENT,
-    'Departments',
-    Object.keys(faculties).map(
-      (department: Department) =>
-        new Filter(
-          kebabCase(department),
-          department,
-          (module: Module) => module.Department === department,
-        ),
-    ),
+const makeDepartmentFilter = (department: Department) =>
+  new Filter(
+    kebabCase(department),
+    department,
+    (module: ModuleInformation) => module.department === department,
   );
+function makeDepartmentFilterGroup(departments: Department[]) {
+  return new FilterGroup(DEPARTMENT, 'Departments', departments.map(makeDepartmentFilter));
 }
 
 function makeExamFilter() {
   return new FilterGroup(EXAMS, 'Exams', [
-    new Filter('no-exam', 'No Exams', (module: Module) =>
-      module.History.every((semesterData) => !semesterData.ExamDate),
+    new Filter('no-exam', 'No Exams', (module: ModuleInformation) =>
+      module.semesterData.every((semesterData) => !semesterData.examDate),
     ),
   ]);
 }
 
-export function defaultGroups(faculties: DepartmentFaculty, query: string = ''): FilterGroups {
+export function defaultGroups(facultyMap: FacultyDepartments, query: string = ''): FilterGroups {
   const params = qs.parse(query);
+
+  const faculties = Object.keys(facultyMap);
+  const departments = flatten(values(facultyMap));
 
   const groups: FilterGroups = {
     [SEMESTER]: new FilterGroup(
@@ -118,7 +90,11 @@ export function defaultGroups(faculties: DepartmentFaculty, query: string = ''):
       'Available In',
       map(config.semesterNames, (name, semesterStr) => {
         const semester = parseInt(semesterStr, 10);
-        return new Filter(semesterStr, name, (module) => !!getModuleSemesterData(module, semester));
+        return new Filter(
+          semesterStr,
+          name,
+          (module) => !!module.semesterData.find((semData) => semData.semester === semester),
+        );
       }),
     ),
 
@@ -128,31 +104,19 @@ export function defaultGroups(faculties: DepartmentFaculty, query: string = ''):
       moduleLevels.map((level) => new LevelFilter(level)),
     ),
 
-    [LECTURE_TIMESLOTS]: new FilterGroup(
-      LECTURE_TIMESLOTS,
-      'With Lectures At',
-      Timeslots.map(([day, time]) => new TimeslotFilter(day, time, 'Lecture')),
-    ),
-
-    [TUTORIAL_TIMESLOTS]: new FilterGroup(
-      TUTORIAL_TIMESLOTS,
-      'With Tutorials At',
-      Timeslots.map(([day, time]) => new TimeslotFilter(day, time, 'Tutorial')),
-    ),
-
     [MODULE_CREDITS]: new FilterGroup(MODULE_CREDITS, 'Module Credit', [
-      new Filter('0', '0-3 MC', (module) => parseFloat(module.ModuleCredit) <= 3),
-      new Filter('4', '4 MC', (module) => module.ModuleCredit === '4'),
+      new Filter('0', '0-3 MC', (module) => parseFloat(module.moduleCredit) <= 3),
+      new Filter('4', '4 MC', (module) => module.moduleCredit === '4'),
       new Filter('5', '5-8 MC', (module) => {
-        const credits = parseFloat(module.ModuleCredit);
+        const credits = parseFloat(module.moduleCredit);
         return credits > 4 && credits <= 8;
       }),
-      new Filter('8', 'More than 8 MC', (module) => parseInt(module.ModuleCredit, 10) > 8),
+      new Filter('8', 'More than 8 MC', (module) => parseInt(module.moduleCredit, 10) > 8),
     ]),
 
-    [DEPARTMENT]: makeDepartmentFilter(faculties),
+    [DEPARTMENT]: makeDepartmentFilterGroup(departments),
 
-    [FACULTY]: makeFacultyFilter(faculties),
+    [FACULTY]: makeFacultyFilterGroup(faculties),
 
     [EXAMS]: makeExamFilter(),
   };

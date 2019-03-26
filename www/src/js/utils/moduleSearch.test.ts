@@ -37,7 +37,7 @@ describe('createSearchFilter', () => {
 
 describe('sortModules', () => {
   function testSortModule(term: string, ...results: ModuleCode[]) {
-    const sorted = sortModules(term, moduleList).map((m) => m.ModuleCode);
+    const sorted = sortModules(term, moduleList).map((m) => m.moduleCode);
     expect(sorted.slice(0, results.length)).toEqual(results);
   }
 

@@ -7,38 +7,39 @@ import { ModuleCodeMap } from 'types/reducers';
 import { getModuleCondensed } from 'selectors/moduleBank';
 
 import { LinkModuleCodesComponent } from './LinkModuleCodes';
+import { ModuleCondensed } from '../../types/modules';
 
 describe(LinkModuleCodesComponent, () => {
-  const testModules = {
+  const testModules: { [moduleCode: string]: ModuleCondensed } = {
     CS3216: {
-      ModuleCode: 'CS3216',
-      ModuleTitle: 'Software Product Engineering for Digital Markets',
-      Semesters: [1],
+      moduleCode: 'CS3216',
+      title: 'Software Product Engineering for Digital Markets',
+      semesters: [1],
     },
     CS1010FC: {
-      ModuleCode: 'CS1010FC',
-      ModuleTitle: 'Programming Methodology',
-      Semesters: [3, 2],
+      moduleCode: 'CS1010FC',
+      title: 'Programming Methodology',
+      semesters: [3, 2],
     },
     ACC1002: {
-      ModuleCode: 'ACC1002',
-      ModuleTitle: 'Financial Accounting',
-      Semesters: [2, 1],
+      moduleCode: 'ACC1002',
+      title: 'Financial Accounting',
+      semesters: [2, 1],
     },
     BMA5000A: {
-      ModuleCode: 'BMA5000A',
-      ModuleTitle: 'Managerial Economics',
-      Semesters: [2, 1],
+      moduleCode: 'BMA5000A',
+      title: 'Managerial Economics',
+      semesters: [2, 1],
     },
     PS1101E: {
-      ModuleCode: 'PS1101E',
-      ModuleTitle: 'Introduction to Politics',
-      Semesters: [2, 1],
+      moduleCode: 'PS1101E',
+      title: 'Introduction to Politics',
+      semesters: [2, 1],
     },
     CS1010S: {
-      ModuleCode: 'CS1010S',
-      ModuleTitle: 'Programming Methodology',
-      Semesters: [2, 1],
+      moduleCode: 'CS1010S',
+      title: 'Programming Methodology',
+      semesters: [2, 1],
     },
   };
 
@@ -90,9 +91,9 @@ describe(LinkModuleCodesComponent, () => {
   test('should ignore modules that are not available', () => {
     const component = create('CS1010FC, CS1020, ACC1002', {
       ACC1002: {
-        ModuleCode: 'ACC1002',
-        ModuleTitle: 'Financial Accounting',
-        Semesters: [2, 1],
+        moduleCode: 'ACC1002',
+        title: 'Financial Accounting',
+        semesters: [2, 1],
       },
     });
 

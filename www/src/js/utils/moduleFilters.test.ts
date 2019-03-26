@@ -7,9 +7,8 @@ import ModuleFilter from './filters/ModuleFilter';
 describe('defaultGroups()', () => {
   const groups: FilterGroup<any>[] = _.values(
     defaultGroups({
-      Biology: 'Science',
-      Physics: 'Science',
-      'Computer Science': 'School Of Computing',
+      Science: ['Biology', 'Physics'],
+      'School Of Computing': ['Computer Science'],
     }),
   );
 

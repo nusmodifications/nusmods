@@ -2729,7 +2729,11 @@
   },
   "TC-SR4": {
     "roomName": "Tembusu Seminar Room 4",
-    "floor": 1
+    "floor": 1,
+    "location": {
+      "x": 103.77345002721997,
+      "y": 1.3058887418233325
+    }
   },
   "TP-SR9": {
     "roomName": "Town Plaza Seminar Room 9",
@@ -3633,6 +3637,54 @@
     "location": {
       "x": 103.77349088189862,
       "y": 1.3058723772982943
+    }
+  },
+  "MD7_LAB8": {
+    "roomName": "Lab 8",
+    "floor": 1,
+    "location": {
+      "x": 103.78117382526399,
+      "y": 1.296064279348453
+    }
+  },
+  "ERC-SR5": {
+    "roomName": "Seminar Room 5",
+    "floor": 2,
+    "location": {
+      "x": 103.77291262149812,
+      "y": 1.3062781790917393
+    }
+  },
+  "AS2-ELAB": {
+    "roomName": "Earth Lab",
+    "floor": 2,
+    "location": {
+      "x": 103.77095729112628,
+      "y": 1.2952598223768155
+    }
+  },
+  "CELC-SR1A": {
+    "roomName": "CELC-SR1A",
+    "floor": 1,
+    "location": {
+      "x": 103.77141508957457,
+      "y": 1.2969542578046174
+    }
+  },
+  "E3-0605-06": {
+    "roomName": "Tutorial Room",
+    "floor": 6,
+    "location": {
+      "x": 103.77156078815462,
+      "y": 1.2995985239475776
+    }
+  },
+  "E3-0603-04": {
+    "roomName": "Tutorial Room",
+    "floor": 6,
+    "location": {
+      "x": 103.77160638570787,
+      "y": 1.2994984664852203
     }
   }
 }

@@ -24,15 +24,15 @@ export function createSearchPredicate(
   return function predicate(module: SearchableModule): boolean {
     return searchRegexes.every((regex) => {
       if (
-        regex.test(module.ModuleCode) ||
-        regex.test(module.ModuleTitle) ||
-        regex.test(module.ModuleCode.replace(/\D+/, ''))
+        regex.test(module.moduleCode) ||
+        regex.test(module.title) ||
+        regex.test(module.moduleCode.replace(/\D+/, ''))
       ) {
         return true;
       }
 
-      if (module.ModuleDescription) {
-        return regex.test(module.ModuleDescription);
+      if (module.description) {
+        return regex.test(module.description);
       }
 
       return false;
@@ -47,7 +47,7 @@ export function createSearchFilter(searchTerm: string): FilterGroup<ModuleFilter
 }
 
 export function sortModules<
-  T extends { readonly ModuleCode: ModuleCode; readonly ModuleTitle: ModuleTitle }
+  T extends { readonly moduleCode: ModuleCode; readonly title: ModuleTitle }
 >(searchTerm: string, modules: T[]): T[] {
   const searchRegexes = tokenize(searchTerm).map(regexify);
 
@@ -55,11 +55,11 @@ export function sortModules<
     let sum = 0;
     for (let i = 0; i < searchRegexes.length; i++) {
       if (
-        searchRegexes[i].test(module.ModuleCode) ||
-        searchRegexes[i].test(module.ModuleCode.replace(/\D+/, ''))
+        searchRegexes[i].test(module.moduleCode) ||
+        searchRegexes[i].test(module.moduleCode.replace(/\D+/, ''))
       ) {
         sum += 1;
-      } else if (searchRegexes[i].test(module.ModuleTitle)) {
+      } else if (searchRegexes[i].test(module.title)) {
         sum += 2;
       } else {
         sum += 3;

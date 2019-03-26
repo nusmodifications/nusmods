@@ -3,7 +3,7 @@ import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import { flatMap } from 'lodash';
 
-import { DayAvailability, Venue, VenueLesson } from 'types/venues';
+import { DayAvailability, Venue } from 'types/venues';
 import { Lesson } from 'types/modules';
 import { TimePeriod } from 'types/views';
 
@@ -14,7 +14,6 @@ import Timetable from 'views/timetable/Timetable';
 import makeResponsive from 'views/hocs/makeResponsive';
 import { modulePage, venuePage } from 'views/routes/paths';
 import Title from 'views/components/Title';
-import { mergeDualCodedModules } from 'utils/venues';
 import { breakpointDown } from 'utils/css';
 import VenueLocation from './VenueLocation';
 
@@ -32,12 +31,13 @@ type Props = RouteComponentProps & {
 
 export class VenueDetailsComponent extends React.PureComponent<Props> {
   arrangedLessons() {
-    const lessons = flatMap(
-      this.props.availability,
-      (day): VenueLesson[] => mergeDualCodedModules(day.Classes),
-    ).map((venueLesson) => ({ ...venueLesson, ModuleTitle: '', isModifiable: true }));
+    const lessons = flatMap(this.props.availability, (day) => day.classes).map((venueLesson) => ({
+      ...venueLesson,
+      ModuleTitle: '',
+      isModifiable: true,
+    }));
 
-    const coloredLessons = colorLessonsByKey(lessons, 'ModuleCode');
+    const coloredLessons = colorLessonsByKey(lessons, 'moduleCode');
     // @ts-ignore TODO: Fix this typing
     return arrangeLessonsForWeek(coloredLessons);
   }
@@ -85,7 +85,7 @@ export class VenueDetailsComponent extends React.PureComponent<Props> {
             highlightPeriod={this.props.highlightPeriod}
             isVerticalOrientation={matchBreakpoint}
             onModifyCell={(lesson: Lesson) => {
-              history.push(modulePage(lesson.ModuleCode, lesson.ModuleTitle));
+              history.push(modulePage(lesson.moduleCode, lesson.title));
             }}
           />
         </div>

@@ -1,4 +1,4 @@
-import { Module, ModuleCode } from 'types/modules';
+import { ModuleCode, ModuleInformation } from 'types/modules';
 import { intersectionCount } from 'utils/set';
 
 export default class ModuleFilter {
@@ -8,23 +8,23 @@ export default class ModuleFilter {
 
   label: string;
 
-  test: (module: Module) => boolean;
+  test: (module: ModuleInformation) => boolean;
 
   // ModuleCode of modules that this filter matches
   filteredModules?: Set<ModuleCode>;
 
-  constructor(id: string, label: string, test: (module: Module) => boolean) {
+  constructor(id: string, label: string, test: (module: ModuleInformation) => boolean) {
     this.id = id;
     this.label = label;
     this.test = test;
   }
 
-  initCount(modules: Module[]) {
+  initCount(modules: ModuleInformation[]) {
     const filteredModules = new Set();
 
     modules
       .filter((module) => this.test(module))
-      .forEach((module) => filteredModules.add(module.ModuleCode));
+      .forEach((module) => filteredModules.add(module.moduleCode));
 
     this.filteredModules = filteredModules;
   }

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { Module } from 'types/modules';
+import { ModuleInformation } from 'types/modules';
 import { ModuleSearch } from 'types/reducers';
 import { State } from 'reducers';
 
@@ -14,7 +14,7 @@ import ModuleWorkload from './module-info/ModuleWorkload';
 import LinkModuleCodes from './LinkModuleCodes';
 
 type Props = {
-  module: Module;
+  module: ModuleInformation;
   search: ModuleSearch;
 };
 
@@ -33,53 +33,53 @@ export class ModuleFinderItemComponent extends React.PureComponent<Props> {
           <div className="col-lg-8 col-md-12 col-sm-8">
             <header>
               <h2 className="modules-title">
-                <Link to={modulePage(module.ModuleCode, module.ModuleTitle)}>
-                  {this.highlight(`${module.ModuleCode} ${module.ModuleTitle}`)}
+                <Link to={modulePage(module.moduleCode, module.title)}>
+                  {this.highlight(`${module.moduleCode} ${module.title}`)}
                 </Link>
               </h2>
               <p>
                 {intersperse(
                   [
-                    <span key="department">{module.Department}</span>,
-                    <span key="mc">{module.ModuleCredit} MCs</span>,
+                    <span key="department">{module.department}</span>,
+                    <span key="mc">{module.moduleCredit} MCs</span>,
                   ],
                   BULLET,
                 )}
               </p>
             </header>
-            {module.ModuleDescription && <p>{this.highlight(module.ModuleDescription)}</p>}
+            {module.description && <p>{this.highlight(module.description)}</p>}
             <dl>
-              {module.Preclusion && (
+              {module.preclusion && (
                 <>
                   <dt>Preclusions</dt>
                   <dd>
-                    <LinkModuleCodes>{module.Preclusion}</LinkModuleCodes>
+                    <LinkModuleCodes>{module.preclusion}</LinkModuleCodes>
                   </dd>
                 </>
               )}
 
-              {module.Prerequisite && (
+              {module.prerequisite && (
                 <>
                   <dt>Prerequisite</dt>
                   <dd>
-                    <LinkModuleCodes>{module.Prerequisite}</LinkModuleCodes>
+                    <LinkModuleCodes>{module.prerequisite}</LinkModuleCodes>
                   </dd>
                 </>
               )}
 
-              {module.Corequisite && (
+              {module.corequisite && (
                 <>
                   <dt>Corequisite</dt>
                   <dd>
-                    <LinkModuleCodes>{module.Corequisite}</LinkModuleCodes>
+                    <LinkModuleCodes>{module.corequisite}</LinkModuleCodes>
                   </dd>
                 </>
               )}
             </dl>
           </div>
           <div className="col-lg-4 col-md-12 col-sm-4">
-            <ModuleSemesterInfo semesters={module.History} moduleCode={module.ModuleCode} />
-            {module.Workload && <ModuleWorkload workload={module.Workload} />}
+            <ModuleSemesterInfo semesters={module.semesterData} moduleCode={module.moduleCode} />
+            {module.workload && <ModuleWorkload workload={module.workload} />}
           </div>
         </div>
       </li>

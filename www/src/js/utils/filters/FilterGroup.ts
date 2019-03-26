@@ -1,7 +1,7 @@
 import { keyBy, values } from 'lodash';
 import update from 'immutability-helper';
 
-import { Module, ModuleCode } from 'types/modules';
+import { ModuleCode, ModuleInformation } from 'types/modules';
 import { FilterGroupId } from 'types/views';
 import { notNull } from 'types/utils';
 
@@ -50,7 +50,7 @@ export default class FilterGroup<Filter extends ModuleFilter> {
     this.updateActiveFilters();
   }
 
-  initFilters(modules: Module[]) {
+  initFilters(modules: ModuleInformation[]) {
     values(this.filters).forEach((filter) => filter.initCount(modules));
     return this;
   }
@@ -135,9 +135,12 @@ export default class FilterGroup<Filter extends ModuleFilter> {
    * @param {FilterGroup<any>[]} filterGroups
    * @returns {Module[]}
    */
-  static apply(modules: Module[], filterGroups: FilterGroup<any>[]): Module[] {
+  static apply(
+    modules: ModuleInformation[],
+    filterGroups: FilterGroup<any>[],
+  ): ModuleInformation[] {
     const filteredModuleCodes = FilterGroup.union(filterGroups);
     if (!filteredModuleCodes) return modules;
-    return modules.filter((module) => filteredModuleCodes.has(module.ModuleCode));
+    return modules.filter((module) => filteredModuleCodes.has(module.moduleCode));
   }
 }

@@ -1,23 +1,35 @@
 import { DisqusConfig } from 'types/views';
 import * as React from 'react';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 
 import { Mode } from 'types/settings';
-import { State } from 'reducers';
+import { State as StoreState } from 'reducers';
 import config from 'config';
+import { MessageSquare } from 'views/components/icons';
 import insertScript from 'utils/insertScript';
 import { getScriptErrorHandler } from 'utils/error';
+import styles from './DisqusComments.scss';
 
 type Props = DisqusConfig & {
   // Disqus autodetects page background color so that its own font color has
   // enough contrast to be read, but only when the widget is loaded, so we use
   // this to force the widget after night mode is activated or deactivated
   mode: Mode;
+
+  loadDisqusManually: boolean;
+};
+
+type State = {
+  allowDisqus: boolean;
 };
 
 const SCRIPT_ID = 'dsq-embed-scr';
 
-class DisqusComments extends React.PureComponent<Props> {
+class DisqusComments extends React.PureComponent<Props, State> {
+  state = {
+    allowDisqus: false,
+  };
   componentDidMount() {
     this.loadInstance();
   }
@@ -36,6 +48,8 @@ class DisqusComments extends React.PureComponent<Props> {
   /* eslint-disable @typescript-eslint/camelcase */
 
   loadInstance = () => {
+    if (this.props.loadDisqusManually && !this.state.allowDisqus) return;
+
     if (window.DISQUS) {
       // See https://help.disqus.com/customer/portal/articles/472107
       window.DISQUS.reset({
@@ -73,10 +87,26 @@ class DisqusComments extends React.PureComponent<Props> {
   }
 
   render() {
+    if (this.props.loadDisqusManually && !this.state.allowDisqus) {
+      return (
+        <div className="text-center">
+          <button
+            type="button"
+            onClick={() => this.setState({ allowDisqus: true })}
+            className={classnames(styles.loadDisqusBtn, 'btn btn-lg btn-outline-primary')}
+          >
+            <MessageSquare />
+            Load Disqus Comments
+          </button>
+        </div>
+      );
+    }
+
     return <div id="disqus_thread" />;
   }
 }
 
-export default connect((state: State) => ({
+export default connect((state: StoreState) => ({
+  loadDisqusManually: state.settings.loadDisqusManually,
   mode: state.settings.mode,
 }))(DisqusComments);

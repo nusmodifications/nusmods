@@ -32,7 +32,7 @@ export function getNewColor(currentColors: ColorIndex[], randomize: boolean = tr
 }
 
 // Color lessons by a certain property of every lesson
-// e.g. clbk([...], 'LessonType') colors lessons by their type
+// e.g. clbk([...], 'lessonType') colors lessons by their type
 export function colorLessonsByKey<T>(
   lessons: T[],
   key: keyof T,

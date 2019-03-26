@@ -9,25 +9,26 @@ module.exports = {
   // bail: false,
 
   // Automatically clear mock calls and instances between every test
-  // clearMocks: false,
+  clearMocks: true,
 
   // Indicates whether the coverage information should be collected while executing the test
   // collectCoverage: false,
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
-  collectCoverageFrom: ['src/**/*.js'],
+  collectCoverageFrom: ['<rootDir>/**/*.ts'],
 
   // The directory where Jest should output its coverage files
-  coverageDirectory: 'coverage',
+  coverageDirectory: '<rootDir>/../coverage',
 
   // An array of regexp pattern strings used to skip coverage collection
-  // coveragePathIgnorePatterns: [
-  //   "/node_modules/"
-  // ],
+  coveragePathIgnorePatterns: [
+    '<rootDir>/utils/test-utils\\.ts$',
+    '\\.d\\.ts$',
+  ],
 
   // A list of reporter names that Jest uses when writing coverage reports
   // Only write lcov files in CIs
-  coverageReporters: ['text'].concat(process.env.CI ? 'lcov' : []),
+  coverageReporters: ['text', 'lcov'],
 
   // A path to a module which exports an async function that is triggered once before all test suites
   // globalSetup: null,
@@ -36,15 +37,16 @@ module.exports = {
   // globalTeardown: null,
 
   // A preset that is used as a base for Jest's configuration
-  // preset: null,
+  preset: 'ts-jest',
 
   // Use this configuration option to add custom reporters to Jest
   // reporters: undefined,
 
+  // The root directory that Jest should scan for tests and modules within.
+  rootDir: 'src',
+
   // A list of paths to directories that Jest should use to search for files in
-  roots: [
-    'src'
-  ],
+  // roots: ['src'],
 
   // Allows you to use a custom runner instead of Jest's default test runner
   // runner: "jest-runner",
@@ -53,7 +55,7 @@ module.exports = {
   // setupFiles: [],
 
   // The path to a module that runs some code to configure or set up the testing framework before each test
-  // setupTestFrameworkScriptFile: null,
+  setupFilesAfterEnv: ['<rootDir>/../scripts/jest-setup.js'],
 
   // A list of paths to snapshot serializer modules Jest should use for snapshot testing
   // snapshotSerializers: [],

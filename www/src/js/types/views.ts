@@ -1,7 +1,7 @@
 import FilterGroup from 'utils/filters/FilterGroup';
 import {
+  StartTime,
   EndTime,
-  Faculty,
   Lesson,
   ModifiableLesson,
   Module,
@@ -9,8 +9,8 @@ import {
   ModuleCondensed,
   ModuleWithColor,
   Semester,
-  StartTime,
-  Tree,
+  PrereqTree,
+  Department,
 } from './modules';
 import { CustomModule, ModuleList } from './reducers';
 import { NextBusTimings, Venue, VenueList } from './venues';
@@ -45,7 +45,7 @@ export type AnyGroup = FilterGroup<any>;
 
 export type OnFilterChange = (filterGroup: AnyGroup) => unknown;
 export type FilterGroups = { [filterGroupId: string]: AnyGroup };
-export type DepartmentFaculty = { [department: string]: Faculty };
+export type FacultyDepartments = { [faculty: string]: Department[] };
 
 export type PageRange = {
   readonly current: number;
@@ -144,6 +144,14 @@ export type Tracker = {
   // Removes a user's consent, both if the consent was one-time only and if the consent was
   // remembered. After calling this method, the user will have to consent again in order to be tracked.
   forgetConsentGiven: () => void;
+
+  // Opt user out of tracker using cookie
+  optUserOut: () => void;
+
+  forgetUserOptOut: () => void;
+
+  // Check for user opt out status
+  isUserOptedOut: () => boolean;
 };
 
 export type TimeSegment = 'Morning' | 'Afternoon' | 'Evening';
@@ -170,17 +178,17 @@ export type EmptyGroupType =
 /* views/planner */
 export type PrereqConflict = {
   type: 'prereq';
-  unfulfilledPrereqs: Tree[];
+  unfulfilledPrereqs: ReadonlyArray<PrereqTree>;
 };
 
 export type ExamConflict = {
   type: 'exam';
-  conflictModules: ModuleCode[];
+  conflictModules: ReadonlyArray<ModuleCode>;
 };
 
 export type SemesterConflict = {
   type: 'semester';
-  semestersOffered: Semester[];
+  semestersOffered: ReadonlyArray<Semester>;
 };
 
 export type NoInfo = {

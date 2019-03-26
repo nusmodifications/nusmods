@@ -4,14 +4,13 @@ import Filter from 'utils/filters/ModuleFilter';
 
 export function createModule(code: ModuleCode): Module {
   return {
-    ModuleCode: code,
-    ModuleTitle: 'Test Module',
-    History: [],
-    Types: [],
-    Department: 'Test Department',
-    ModuleCredit: '4',
-    AcadYear: '16/17',
-    ModmavenTree: { name: 'Test Module', children: [] },
+    moduleCode: code,
+    title: 'Test Module',
+    semesterData: [],
+    department: 'Test Department',
+    faculty: 'Test',
+    moduleCredit: '4',
+    acadYear: '16/17',
   };
 }
 

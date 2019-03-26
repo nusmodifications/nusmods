@@ -275,13 +275,14 @@ exports.workbox = () => ({
             },
             expiration: {
               maxAgeSeconds: ONE_MONTH,
+              purgeOnQuotaError: true,
             },
           },
         },
         // Everything else (module info, module list) uses network first because
         // they are relatively small and needs to be as updated as possible
         {
-          urlPattern: new RegExp(_.escapeRegExp(nusmods.ayBaseUrl())),
+          urlPattern: new RegExp(_.escapeRegExp(nusmods.baseUrl())),
           handler: 'networkFirst',
           options: {
             cacheName: 'api-network-first-cache',
@@ -291,6 +292,7 @@ exports.workbox = () => ({
             expiration: {
               maxEntries: 500,
               maxAgeSeconds: ONE_MONTH,
+              purgeOnQuotaError: true,
             },
           },
         },

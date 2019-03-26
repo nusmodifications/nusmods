@@ -1,7 +1,5 @@
 import { Semester } from 'types/modules';
-
-/** @var {Module} */
-import CS1010S from '__mocks__/modules/CS1010S.json';
+import { CS1010S } from '__mocks__/modules';
 
 import {
   acadYearLabel,
@@ -15,118 +13,38 @@ import {
 describe(checkPrerequisite, () => {
   const moduleSet = new Set(['CS1010S', 'CS2107', 'CS2105', 'MA1101R', 'MA1521', 'MA2104']);
 
-  test('should return null if there are no prerequisites', () => {
-    // No prerequisites
-    expect(
-      checkPrerequisite(moduleSet, {
-        name: 'CS1010S',
-        children: [],
-      }),
-    ).toBeNull();
-  });
-
   test('should return null if single prerequisite is met', () => {
-    expect(
-      checkPrerequisite(moduleSet, {
-        name: 'CS2107',
-        children: [
-          {
-            name: 'CS1010S',
-            children: [],
-          },
-        ],
-      }),
-    ).toBeNull();
+    expect(checkPrerequisite(moduleSet, 'CS1010S')).toBeNull();
   });
 
   test('should return null if all prerequisites are met', () => {
     // Or operator
     expect(
       checkPrerequisite(moduleSet, {
-        name: 'or',
-        children: [
-          {
-            name: 'MA1521',
-            children: [],
-          },
-          {
-            name: 'MA1102',
-            children: [],
-          },
-        ],
+        or: ['MA1521', 'MA1102'],
       }),
     ).toBeNull();
 
     // And operator
     expect(
       checkPrerequisite(moduleSet, {
-        name: 'and',
-        children: [
-          {
-            name: 'MA1521',
-            children: [],
-          },
-          {
-            name: 'MA1101R',
-            children: [],
-          },
-        ],
+        and: ['MA1521', 'MA1101R'],
       }),
     ).toBeNull();
   });
 
   test('should return module that are not fulfilled', () => {
-    expect(
-      checkPrerequisite(moduleSet, {
-        name: 'CS2040',
-        children: [
-          {
-            name: 'CS2030',
-            children: [],
-          },
-        ],
-      }),
-    ).toEqual([
-      {
-        name: 'CS2030',
-        children: [],
-      },
-    ]);
+    expect(checkPrerequisite(moduleSet, 'CS2030')).toEqual(['CS2030']);
   });
 
   test('should return all modules that are not fulfilled', () => {
     expect(
       checkPrerequisite(moduleSet, {
-        name: 'CS2040',
-        children: [
-          {
-            name: 'or',
-            children: [
-              {
-                name: 'CS2030',
-                children: [],
-              },
-              {
-                name: 'CS1020',
-                children: [],
-              },
-            ],
-          },
-        ],
+        or: ['CS2030', 'CS1020'],
       }),
     ).toEqual([
       {
-        name: 'or',
-        children: [
-          {
-            name: 'CS2030',
-            children: [],
-          },
-          {
-            name: 'CS1020',
-            children: [],
-          },
-        ],
+        or: ['CS2030', 'CS1020'],
       },
     ]);
   });
@@ -134,12 +52,7 @@ describe(checkPrerequisite, () => {
 
 describe(conflictToText, () => {
   test('should describe single modules', () => {
-    expect(
-      conflictToText({
-        name: 'CS1010S',
-        children: [],
-      }),
-    ).toEqual('CS1010S');
+    expect(conflictToText('CS1010S')).toEqual('CS1010S');
   });
 });
 

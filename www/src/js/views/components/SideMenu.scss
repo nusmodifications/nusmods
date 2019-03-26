@@ -16,7 +16,7 @@ $animation-duration: 0.3s;
   composes: scrollable from global;
   position: sticky;
   top: $offset-top;
-  max-height: calc(100vh - #{$offset-top});
+  height: calc(100vh - #{$offset-top});
   overscroll-behavior: contain; // stylelint-disable-line property-no-unknown
 }
 

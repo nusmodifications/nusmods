@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import ScrollSpy from 'react-scrollspy';
-import { kebabCase, map, mapValues, values } from 'lodash';
+import { kebabCase, map, mapValues, values, sortBy } from 'lodash';
 
 import { Module } from 'types/modules';
 
@@ -26,7 +26,6 @@ import Title from 'views/components/Title';
 import ScrollToTop from 'views/components/ScrollToTop';
 import { Archive } from 'views/components/icons';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
-import ExternalLink from 'views/components/ExternalLink';
 
 import styles from './ModulePageContent.scss';
 
@@ -57,21 +56,24 @@ export default class ModulePageContent extends React.Component<Props, State> {
 
   render() {
     const { module, archiveYear } = this.props;
-    const { ModuleCode, ModuleTitle } = module;
+    const { moduleCode, title } = module;
 
-    const pageTitle = `${ModuleCode} ${ModuleTitle}`;
+    const pageTitle = `${moduleCode} ${title}`;
     const semesters = getSemestersOffered(module);
     const isArchive = !!archiveYear;
 
     const disqusConfig = {
-      url: `https://nusmods.com/modules/${ModuleCode}/reviews`,
-      identifier: ModuleCode,
+      url: `https://nusmods.com/modules/${moduleCode}/reviews`,
+      identifier: moduleCode,
       title: pageTitle,
     };
 
+    const moduleCodes = [moduleCode];
+    if (module.aliases) moduleCodes.push(...module.aliases);
+
     return (
       <div className={classnames('page-container', styles.moduleInfoPage)}>
-        <Title description={module.ModuleDescription}>{pageTitle}</Title>
+        <Title description={module.description}>{pageTitle}</Title>
 
         <Announcements />
 
@@ -95,15 +97,16 @@ export default class ModulePageContent extends React.Component<Props, State> {
             >
               <header className={styles.header}>
                 <h1 className={styles.pageTitle}>
-                  <span className={styles.moduleCodeTitle}>{ModuleCode}</span>
-                  {ModuleTitle}
+                  <span className={styles.moduleCodeTitle}>{moduleCodes.join('/')}</span>
+                  {title}
                 </h1>
 
                 <p>
                   {intersperse(
                     [
-                      <span key="department">{module.Department}</span>,
-                      <span key="mc">{module.ModuleCredit} MCs</span>,
+                      <span key="department">{module.department}</span>,
+                      <span key="faculty">{module.faculty}</span>,
+                      <span key="mc">{module.moduleCredit} MCs</span>,
                     ],
                     BULLET,
                   )}
@@ -121,39 +124,39 @@ export default class ModulePageContent extends React.Component<Props, State> {
 
               <section className={classnames('row', styles.details)}>
                 <div className="col-sm-8">
-                  {module.ModuleDescription && <p>{module.ModuleDescription}</p>}
+                  {module.description && <p>{module.description}</p>}
 
                   <dl>
-                    {module.Prerequisite && (
+                    {module.prerequisite && (
                       <>
                         <dt>Prerequisite</dt>
                         <dd>
-                          <LinkModuleCodes>{module.Prerequisite}</LinkModuleCodes>
+                          <LinkModuleCodes>{module.prerequisite}</LinkModuleCodes>
                         </dd>
                       </>
                     )}
 
-                    {module.Corequisite && (
+                    {module.corequisite && (
                       <>
                         <dt>Corequisite</dt>
                         <dd>
-                          <LinkModuleCodes>{module.Corequisite}</LinkModuleCodes>
+                          <LinkModuleCodes>{module.corequisite}</LinkModuleCodes>
                         </dd>
                       </>
                     )}
 
-                    {module.Preclusion && (
+                    {module.preclusion && (
                       <>
                         <dt>Preclusion</dt>
                         <dd>
-                          <LinkModuleCodes>{module.Preclusion}</LinkModuleCodes>
+                          <LinkModuleCodes>{module.preclusion}</LinkModuleCodes>
                         </dd>
                       </>
                     )}
                   </dl>
 
-                  {module.Workload ? (
-                    <ModuleWorkload workload={module.Workload} />
+                  {module.workload ? (
+                    <ModuleWorkload workload={module.workload} />
                   ) : (
                     <>
                       <h4>Workload</h4>
@@ -163,18 +166,21 @@ export default class ModulePageContent extends React.Component<Props, State> {
                 </div>
 
                 <div className="col-sm-4">
-                  {module.History.sort((a, b) => a.Semester - b.Semester).map((semesterData) => (
-                    <div key={semesterData.Semester} className={styles.exam}>
+                  {sortBy(module.semesterData, (semester) => semester.semester).map((semester) => (
+                    <div key={semester.semester} className={styles.exam}>
                       <h3 className={styles.descriptionHeading}>
-                        {module.History.length > 1 && config.semesterNames[semesterData.Semester]}{' '}
+                        {module.semesterData.length > 1 && config.semesterNames[semester.semester]}{' '}
                         Exam
                       </h3>
-                      <p>{formatExamDate(semesterData.ExamDate)}</p>
+                      <p>
+                        {formatExamDate(semester.examDate)}{' '}
+                        {semester.examDuration && `${BULLET} ${semester.examDuration / 60} hrs`}
+                      </p>
 
                       <ModuleExamClash
-                        semester={semesterData.Semester}
-                        examDate={semesterData.ExamDate}
-                        moduleCode={ModuleCode}
+                        semester={semester.semester}
+                        examDate={semester.examDate}
+                        moduleCode={moduleCode}
                       />
                     </div>
                   ))}
@@ -184,27 +190,6 @@ export default class ModulePageContent extends React.Component<Props, State> {
                       <AddModuleDropdown module={module} className="btn-group-sm" block />
                     </div>
                   )}
-
-                  <div>
-                    <h3 className={styles.descriptionHeading}>Official Links</h3>
-                    {intersperse(
-                      [
-                        <ExternalLink
-                          key="ivle"
-                          href={config.ivleUrl.replace('<ModuleCode>', ModuleCode)}
-                        >
-                          IVLE
-                        </ExternalLink>,
-                        <ExternalLink
-                          key="cors"
-                          href={config.corsUrl.replace('<ModuleCode>', ModuleCode)}
-                        >
-                          CORS
-                        </ExternalLink>,
-                      ],
-                      BULLET,
-                    )}
-                  </div>
                 </div>
               </section>
             </div>
@@ -212,13 +197,17 @@ export default class ModulePageContent extends React.Component<Props, State> {
             <section className={styles.section} id={SIDE_MENU_ITEMS.prerequisites}>
               <h2 className={styles.sectionHeading}>Prerequisite Tree</h2>
               <ErrorBoundary>
-                <ModuleTree module={module} />
+                <ModuleTree
+                  moduleCode={moduleCode}
+                  prereqTree={module.prereqTree}
+                  fulfillRequirements={module.fulfillRequirements}
+                />
               </ErrorBoundary>
             </section>
 
             <section className={styles.section} id="timetable">
               <h2 className={styles.sectionHeading}>Timetable</h2>
-              <LessonTimetable semesterData={module.History} />
+              <LessonTimetable semesterData={module.semesterData} />
             </section>
 
             <section className={styles.section} id={SIDE_MENU_ITEMS.reviews}>

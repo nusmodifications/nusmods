@@ -15,6 +15,7 @@ import {
   TOGGLE_CORS_NOTIFICATION_GLOBALLY,
   SET_MODULE_TABLE_SORT,
   TOGGLE_BETA_TESTING_STATUS,
+  SET_LOAD_DISQUS_MANUALLY,
 } from 'actions/settings';
 import { SET_EXPORTED_DATA } from 'actions/export';
 import { DIMENSIONS, withTracker } from 'bootstrapping/matomo';
@@ -35,6 +36,7 @@ const defaultSettingsState: SettingsState = {
   corsNotification: defaultCorsNotificationState,
   moduleTableOrder: 'exam',
   beta: false,
+  loadDisqusManually: false,
 };
 
 function settings(state: SettingsState = defaultSettingsState, action: FSA): SettingsState {
@@ -98,6 +100,12 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
         beta: newStatus,
       };
     }
+
+    case SET_LOAD_DISQUS_MANUALLY:
+      return {
+        ...state,
+        loadDisqusManually: action.payload,
+      };
 
     case REHYDRATE: {
       let nextState = state;

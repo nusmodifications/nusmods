@@ -1,7 +1,8 @@
-import { castArray, flatten, sum } from 'lodash';
-import { ModuleCode, Semester, Tree } from 'types/modules';
+import { flatten, sum } from 'lodash';
+import { ModuleCode, Semester, PrereqTree } from 'types/modules';
 import { PlannerModuleInfo } from 'types/views';
 import config from 'config';
+import { notNull } from '../types/utils';
 
 // "Exemption" and "plan to take" modules are special columns used to hold modules
 // outside the normal planner. "Exemption" modules are coded as -1 year so
@@ -32,51 +33,45 @@ export function getSemesterName(semester: Semester) {
  * been taken. If the requirements are met, null is returned, otherwise an
  * array of unfulfilled requirements is returned.
  */
-export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: Tree) {
-  function walkTree(fragment: Tree): Tree[] | null {
-    // Tree appears to be incorrectly typed. Sometimes for no apparent
-    // reason the fragment is double wrapped in an array
-    // eslint-disable-next-line no-param-reassign
-    if (Array.isArray(fragment)) fragment = fragment[0];
+export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: PrereqTree) {
+  function walkTree(fragment: PrereqTree): PrereqTree[] | null {
+    if (typeof fragment === 'string') {
+      return moduleSet.has(fragment) ? null : [fragment];
+    }
 
-    if (fragment.name === 'or') {
-      return fragment.children.every((child) => !!walkTree(child))
+    if (fragment.or) {
+      return fragment.or.every((child) => !!walkTree(child))
         ? // All return non-null = all unfulfilled
           [fragment]
         : null;
     }
-    if (fragment.name === 'and') {
-      const notFulfilled = fragment.children.map(walkTree).filter(Boolean);
-      // @ts-ignore TODO: Fix this when we transition to v2 data type
+
+    if (fragment.and) {
+      const notFulfilled = fragment.and.map(walkTree).filter(notNull);
       return notFulfilled.length === 0 ? null : flatten(notFulfilled);
     }
 
-    return moduleSet.has(fragment.name) ? null : [fragment];
+    // Shouldn't reach here
+    throw new Error('Invalid prereq tree');
   }
 
-  // The root node is always the module itself, so we always start one child down
-  const children = castArray(tree.children);
-  if (children.length === 0) return null;
-  return walkTree(children[0]);
+  return walkTree(tree);
 }
 
 /**
  * Converts conflicts into human readable text form
  */
-export function conflictToText(conflict: Tree): string {
-  // Tree appears to be incorrectly typed. Sometimes for no apparent
-  // reason the fragment is double wrapped in an array
-  // eslint-disable-next-line no-param-reassign
-  if (Array.isArray(conflict)) conflict = conflict[0];
+export function conflictToText(conflict: PrereqTree): string {
+  if (typeof conflict === 'string') return conflict;
 
-  if (conflict.name === 'or') {
-    return conflict.children.map(conflictToText).join(' or ');
+  if (conflict.or) {
+    return conflict.or.map(conflictToText).join(' or ');
   }
-  if (conflict.name === 'and') {
-    return conflict.children.map(conflictToText).join(' and ');
+  if (conflict.and) {
+    return conflict.and.map(conflictToText).join(' and ');
   }
 
-  return conflict.name;
+  throw new Error('Invalid prereq tree');
 }
 
 /**
@@ -109,7 +104,7 @@ export function getModuleTitle(module: PlannerModuleInfo): string | null {
   const { moduleInfo, customInfo } = module;
   // customInfo.title is nullable, and there's no point in displaying an
   // empty string, so we can use || here
-  return (customInfo && customInfo.title) || (moduleInfo && moduleInfo.ModuleTitle) || null;
+  return (customInfo && customInfo.title) || (moduleInfo && moduleInfo.title) || null;
 }
 
 /**
@@ -122,7 +117,7 @@ export function getModuleCredit(module: PlannerModuleInfo): number | null {
   // Or operator (||) is not used because moduleCredit can be 0, which is
   // a falsey value
   if (customInfo) return customInfo.moduleCredit;
-  if (moduleInfo) return +moduleInfo.ModuleCredit;
+  if (moduleInfo) return +moduleInfo.moduleCredit;
   return null;
 }
 
