@@ -2,7 +2,7 @@ import { FSA } from 'types/redux';
 import { Module } from 'types/modules';
 import { ModuleCodeMap, ModuleList, SUCCESS } from 'types/reducers';
 
-import update from 'immutability-helper';
+import produce from 'immer';
 import { REHYDRATE } from 'redux-persist';
 import { keyBy, omit, size, zipObject } from 'lodash';
 
@@ -94,16 +94,12 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
         return state;
       }
 
-      return update(state, {
-        moduleArchive: {
-          [action.payload.ModuleCode]: {
-            $auto: {
-              [meta.academicYear]: {
-                $auto: { $set: action.payload },
-              },
-            },
-          },
-        },
+      return produce(state, (draft) => {
+        if (!draft.moduleArchive[action.payload.ModuleCode]) {
+          draft.moduleArchive[action.payload.ModuleCode] = {};
+        }
+
+        draft.moduleArchive[action.payload.ModuleCode][meta.academicYear] = action.payload;
       });
     }
 

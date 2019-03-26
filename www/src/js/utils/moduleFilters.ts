@@ -1,5 +1,5 @@
 import { map, mapValues, each, isEmpty, groupBy, kebabCase } from 'lodash';
-import update, { Spec } from 'immutability-helper';
+import produce from 'immer';
 import qs from 'query-string';
 
 import { FilterGroups, DepartmentFaculty } from 'types/views';
@@ -44,16 +44,14 @@ export function invertFacultyDepartments(mapping: {
  */
 export function updateGroups(groups: FilterGroups, query: string): FilterGroups {
   const params = qs.parse(query);
-  const updater: Spec<FilterGroups> = {};
 
-  each(groups, (group) => {
-    const currentQuery = group.toQueryString();
-    if (currentQuery === params[group.id] || (!params[group.id] && !currentQuery)) return;
-    updater[group.id] = { $set: group.fromQueryString(params[group.id]) };
+  return produce(groups, (draft) => {
+    each(draft, (group) => {
+      const currentQuery = group.toQueryString();
+      if (currentQuery === params[group.id] || (!params[group.id] && !currentQuery)) return;
+      draft[group.id] = group.fromQueryString(params[group.id]);
+    });
   });
-
-  if (isEmpty(updater)) return groups;
-  return update(groups, updater);
 }
 
 /**

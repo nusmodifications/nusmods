@@ -73,8 +73,12 @@ export default class FilterGroup<Filter extends ModuleFilter> {
       // @ts-ignore
       filters: { [id]: { enabled: { $set: newValue } } },
     });
-    updated.updateActiveFilters();
 
+    // const newUpdated = produce(this, draft => {
+    //   draft.filters[id].enabled = newValue;
+    // });
+
+    updated.updateActiveFilters();
     return updated;
   }
 
