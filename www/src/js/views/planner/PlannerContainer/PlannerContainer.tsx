@@ -17,7 +17,12 @@ import {
   PLAN_TO_TAKE_SEMESTER,
   PLAN_TO_TAKE_YEAR,
 } from 'utils/planner';
-import { addPlannerModule, movePlannerModule, removePlannerModule } from 'actions/planner';
+import {
+  addPlannerModule,
+  movePlannerModule,
+  removePlannerModule,
+  setPlaceholderModule,
+} from 'actions/planner';
 import { toggleFeedback } from 'actions/app';
 import { fetchModule } from 'actions/moduleBank';
 import { getAcadYearModules, getExemptions, getIBLOCs, getPlanToTake } from 'selectors/planner';
@@ -46,6 +51,7 @@ export type Props = Readonly<{
   addModule: (year: string, semester: Semester, module: AddModuleData) => void;
   moveModule: (id: string, year: string, semester: Semester, index: number) => void;
   removeModule: (id: string) => void;
+  setPlaceholderModule: (id: string, moduleCode: ModuleCode) => void;
 }>;
 
 type SemesterModules = { [semester: string]: PlannerModuleInfo[] };
@@ -120,6 +126,11 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
       showCustomModule: moduleCode,
     });
 
+  onSetPlaceholderModule = (id: string, moduleCode: ModuleCode) => {
+    this.props.setPlaceholderModule(id, moduleCode);
+    this.props.fetchModule(moduleCode);
+  };
+
   closeAddCustomData = () => this.setState({ showCustomModule: null });
 
   renderHeader() {
@@ -171,6 +182,13 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
       (pairs) => pairs[0],
     );
 
+    const commonProps = {
+      addModule: this.onAddModule,
+      addCustomData: this.onAddCustomData,
+      setPlaceholderModule: this.onSetPlaceholderModule,
+      removeModule: this.props.removeModule,
+    };
+
     return (
       <div className={styles.pageContainer}>
         <Title>Module Planner</Title>
@@ -186,9 +204,7 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
                   year={subtractAcadYear(sortedModules[0][0])}
                   semester={IBLOCS_SEMESTER}
                   modules={iblocsModules}
-                  addModule={this.onAddModule}
-                  removeModule={this.props.removeModule}
-                  addCustomData={this.onAddCustomData}
+                  {...commonProps}
                 />
               </section>
             )}
@@ -199,9 +215,7 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
                 name={`Year ${index + 1}`}
                 year={year}
                 semesters={semesters}
-                addModule={this.onAddModule}
-                removeModule={this.props.removeModule}
-                addCustomData={this.onAddCustomData}
+                {...commonProps}
               />
             ))}
           </div>
@@ -213,10 +227,8 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
                 year={EXEMPTION_YEAR}
                 semester={EXEMPTION_SEMESTER}
                 modules={exemptions}
-                addModule={this.onAddModule}
-                removeModule={this.props.removeModule}
                 showModuleMeta={false}
-                addCustomData={this.onAddCustomData}
+                {...commonProps}
               />
             </section>
 
@@ -226,9 +238,7 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
                 year={PLAN_TO_TAKE_YEAR}
                 semester={PLAN_TO_TAKE_SEMESTER}
                 modules={planToTake}
-                addModule={this.onAddModule}
-                removeModule={this.props.removeModule}
-                addCustomData={this.onAddCustomData}
+                {...commonProps}
               />
             </section>
 
@@ -291,6 +301,7 @@ const PlannerContainer = connect(
   {
     fetchModule,
     toggleFeedback,
+    setPlaceholderModule,
     addModule: addPlannerModule,
     moveModule: movePlannerModule,
     removeModule: removePlannerModule,

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import classnames from 'classnames';
 
-import { ModuleCode, ModuleTitle } from 'types/modules';
+import { ModuleCode, ModuleTitle, Semester } from 'types/modules';
 import { Conflict, PlannerPlaceholder } from 'types/planner';
 import config from 'config';
 import { renderMCs } from 'utils/modules';
@@ -16,6 +16,7 @@ import { modulePage } from 'views/routes/paths';
 
 import ModuleMenu from './ModuleMenu';
 import styles from './PlannerModule.scss';
+import PlannerModuleSelect from './PlannerModuleSelect';
 
 type Props = Readonly<{
   // Module information
@@ -25,6 +26,7 @@ type Props = Readonly<{
   moduleCode?: ModuleCode;
   placeholder?: PlannerPlaceholder;
   conflict?: Conflict | null;
+  semester?: Semester;
 
   // For draggable
   id: string;
@@ -33,6 +35,7 @@ type Props = Readonly<{
   // Actions
   removeModule: (id: string) => void;
   addCustomData: (moduleCode: ModuleCode) => void;
+  setPlaceholderModule: (id: string, moduleCode: ModuleCode) => void;
 }>;
 
 type State = {
@@ -61,6 +64,11 @@ export default class PlannerModule extends React.PureComponent<Props, State> {
     this.setState((state) => ({
       isEditingPlaceholder: !state.isEditingPlaceholder,
     }));
+  };
+
+  setPlaceholderModule = (moduleCode: ModuleCode) => {
+    this.props.setPlaceholderModule(this.props.id, moduleCode);
+    this.toggleEditPlaceholder();
   };
 
   renderConflict(conflict: Conflict) {
@@ -139,7 +147,7 @@ export default class PlannerModule extends React.PureComponent<Props, State> {
   }
 
   renderPlaceholderForm() {
-    const { placeholder, moduleCode, moduleTitle } = this.props;
+    const { placeholder, moduleCode, moduleTitle, semester } = this.props;
     if (!placeholder) return null;
 
     if (!this.state.isEditingPlaceholder) {
@@ -147,7 +155,9 @@ export default class PlannerModule extends React.PureComponent<Props, State> {
         <>
           <button
             type="button"
-            className={classnames('btn btn-sm btn-svg', styles.placeholderSelect)}
+            className={classnames('btn btn-sm btn-svg', styles.placeholderSelect, {
+              [styles.empty]: !moduleCode,
+            })}
             onClick={this.toggleEditPlaceholder}
           >
             {moduleCode || 'Select Module'} <ChevronDown />
@@ -161,23 +171,16 @@ export default class PlannerModule extends React.PureComponent<Props, State> {
 
     return (
       <form>
-        {placeholder.modules ? (
-          <select className="form-control form-control-sm">
-            <option value="">Select module</option>
-            {Array.from(placeholder.modules).map((placeholderModuleCode) => (
-              <option value={placeholderModuleCode}>{placeholderModuleCode}</option>
-            ))}
-          </select>
-        ) : (
-          <div className="input-group">
-            <input
-              type="text"
-              className="form-control form-control-sm"
-              placeholder="Select module"
-              autoFocus // eslint-disable-line jsx-a11y/no-autofocus
-            />
-          </div>
-        )}
+        <PlannerModuleSelect
+          onSelect={this.setPlaceholderModule}
+          onCancel={this.toggleEditPlaceholder}
+          onBlur={this.toggleEditPlaceholder}
+          showOnly={placeholder.modules}
+          filter={placeholder.filter}
+          defaultValue={moduleCode}
+          className={styles.placeholderInput}
+          semester={semester}
+        />
       </form>
     );
   }
@@ -193,7 +196,7 @@ export default class PlannerModule extends React.PureComponent<Props, State> {
             className={classnames(styles.module, {
               [styles.warning]: conflict,
               [styles.isDragging]: snapshot.isDragging,
-              [styles.placeholder]: placeholder,
+              [styles.placeholder]: placeholder && !moduleCode,
             })}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
@@ -209,7 +212,7 @@ export default class PlannerModule extends React.PureComponent<Props, State> {
                   </>
                 ) : (
                   moduleCode && (
-                    <Link to={modulePage(moduleCode, moduleTitle)}>
+                    <Link className="d-block" to={modulePage(moduleCode, moduleTitle)}>
                       <strong>{moduleCode}</strong> {moduleTitle}
                     </Link>
                   )

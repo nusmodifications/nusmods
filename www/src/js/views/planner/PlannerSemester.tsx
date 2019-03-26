@@ -28,6 +28,7 @@ type Props = Readonly<{
   addModule: (year: string, semester: Semester, module: AddModuleData) => void;
   removeModule: (id: string) => void;
   addCustomData: (moduleCode: ModuleCode) => void;
+  setPlaceholderModule: (id: string, moduleCode: ModuleCode) => void;
 }>;
 
 function renderSemesterMeta(plannerModules: PlannerModuleInfo[]) {
@@ -68,8 +69,10 @@ export default class PlannerSemester extends React.PureComponent<Props> {
         examDate={showExamDate && moduleInfo ? getExamDate(moduleInfo, semester) : null}
         moduleCredit={showModuleMeta ? getModuleCredit(plannerModule) : null}
         conflict={conflict}
+        semester={semester}
         removeModule={this.props.removeModule}
         addCustomData={this.props.addCustomData}
+        setPlaceholderModule={this.props.setPlaceholderModule}
       />
     );
   };

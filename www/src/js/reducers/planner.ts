@@ -13,6 +13,7 @@ import {
   SET_PLANNER_MAX_YEAR,
   SET_PLANNER_MIN_YEAR,
   ADD_CUSTOM_PLANNER_DATA,
+  SET_PLACEHOLDER_MODULE,
 } from 'actions/planner';
 import { filterModuleForSemester } from 'selectors/planner';
 import config from 'config';
@@ -131,6 +132,11 @@ export default function planner(
     case ADD_CUSTOM_PLANNER_DATA:
       return produce(state, (draft) => {
         draft.custom[action.payload.moduleCode] = action.payload.data;
+      });
+
+    case SET_PLACEHOLDER_MODULE:
+      return produce(state, (draft) => {
+        draft.modules[action.payload.id].moduleCode = action.payload.moduleCode;
       });
 
     default:

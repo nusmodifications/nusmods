@@ -67,6 +67,17 @@ export function removePlannerModule(id: string): FSA {
   };
 }
 
+export const SET_PLACEHOLDER_MODULE = 'SET_PLACEHOLDER_MODULE';
+export function setPlaceholderModule(id: string, moduleCode: ModuleCode): FSA {
+  return {
+    type: SET_PLACEHOLDER_MODULE,
+    payload: {
+      id,
+      moduleCode,
+    },
+  };
+}
+
 export const ADD_CUSTOM_PLANNER_DATA = 'ADD_CUSTOM_PLANNER_DATA';
 export function addCustomModule(moduleCode: ModuleCode, data: CustomModule): FSA {
   return {

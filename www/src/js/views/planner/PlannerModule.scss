@@ -27,11 +27,11 @@
   }
 
   &.placeholder {
-    $stripe-light: lighten(theme-color('success'), 3);
+    $stripe-light: lighten(theme-color('success'), 2);
     $stripe-dark: darken(theme-color('success'), 3);
 
-    background: repeating-linear-gradient(
-      -45deg,
+    background-image: repeating-linear-gradient(
+      135deg,
       $stripe-light,
       $stripe-light 1rem,
       $stripe-dark 1rem,
@@ -70,7 +70,6 @@
   margin-bottom: 0.4rem;
 
   a {
-    display: block;
     color: inherit;
 
     &:hover {
@@ -86,10 +85,34 @@
 }
 
 .placeholderSelect {
+  padding: 0 0.3rem;
+  font-weight: bold;
+
   &,
   &:hover {
-    border: 1px solid;
+    border: 1px dashed;
     color: inherit;
+  }
+
+  &.empty {
+    display: block;
+    font-size: 1rem;
+  }
+
+  svg {
+    width: 1rem;
+  }
+}
+
+// .module added for specificity
+.module .placeholderInput {
+  height: 2rem;
+  color: inherit;
+  background: transparent;
+  resize: none;
+
+  &::placeholder {
+    color: rgba(#fff, 0.5);
   }
 }
 

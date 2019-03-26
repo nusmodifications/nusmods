@@ -10,6 +10,7 @@ import { Minus, Plus } from 'views/components/icons';
 import { renderMCs } from 'utils/modules';
 import PlannerSemester from './PlannerSemester';
 import styles from './PlannerYear.scss';
+import PlannerModule from './PlannerModule';
 
 type Props = Readonly<{
   name: string; // eg. iBLOCs, Year 1, etc.
@@ -19,6 +20,7 @@ type Props = Readonly<{
   addModule: (year: string, semester: Semester, module: AddModuleData) => void;
   removeModule: (id: string) => void;
   addCustomData: (moduleCode: ModuleCode) => void;
+  setPlaceholderModule: (id: string, moduleCode: ModuleCode) => void;
 }>;
 
 type State = {
@@ -90,6 +92,7 @@ export default class PlannerYear extends React.PureComponent<Props, State> {
                 addModule={this.props.addModule}
                 removeModule={this.props.removeModule}
                 addCustomData={this.props.addCustomData}
+                setPlaceholderModule={this.props.setPlaceholderModule}
               />
             </div>
           ))}
