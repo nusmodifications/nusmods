@@ -1,4 +1,4 @@
-import { Module, ModuleCode, Semester, PrereqTree, ModuleInformation } from './modules';
+import { Module, ModuleCode, Semester, PrereqTree, ModuleCondensed } from './modules';
 import { CustomModule } from './reducers';
 
 export type AddModuleData =
@@ -9,7 +9,7 @@ export interface PlannerPlaceholder {
   id: string;
   name: string;
   modules?: Set<ModuleCode>;
-  filter?: (module: ModuleInformation) => boolean;
+  filter?: (module: ModuleCondensed) => boolean;
 }
 
 export type PlaceholderMap = {

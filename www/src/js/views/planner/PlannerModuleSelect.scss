@@ -3,16 +3,20 @@
 .dropdown {
   composes: list-unstyled scrollable-y from global;
   position: absolute;
+  z-index: 1;
   max-height: 15rem;
   border: 1px solid var(--gray-light);
   font-size: $font-size-sm;
+  color: var(--body-color);
   background: var(--body-bg);
 
   li {
-    padding: 0.2rem 0.4rem;
+    padding: 0.3rem 0.4rem;
+    font-size: 0.8rem;
     cursor: pointer;
 
     &.highlightItem {
+      color: theme-color();
       background: var(--gray-lighter);
     }
   }

@@ -33,17 +33,30 @@
 }
 
 .orDivider {
-  margin: 0.5rem 0 1rem;
-  border-bottom: 1px solid var(--gray-light);
-  line-height: 0;
+  position: relative;
+  margin: 0.2rem 0;
   text-align: center;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    display: block;
+    width: 5.5rem;
+    border-bottom: 1px solid var(--gray-lighter);
+  }
+
+  &::after {
+    right: 0;
+    left: auto;
+  }
 
   span {
     display: inline-block;
     width: 2rem;
-    margin-bottom: -1.85rem;
     font-size: 0.9rem;
     line-height: 1;
-    background: var(--body-bg);
   }
 }
