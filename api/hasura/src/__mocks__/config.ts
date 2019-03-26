@@ -17,15 +17,15 @@ export default {
   },
   // Access Token for obtaining information (aka Hasura Token)
   accessToken: {
-    nameSpace: '',
-    secretKey: '',
-    secretAlgorithm: '',
+    nameSpace: 'nameSpace',
+    secretKey: 'secret',
+    secretAlgorithm: 'HS256',
     lifeTime: 1,
   },
   // Refresh Token for obtaining Access Token (aka Long Lived Token)
   refreshToken: {
-    secretKey: '',
-    secretAlgorithm: '',
+    secretKey: 'secret',
+    secretAlgorithm: 'HS256',
     lifeTime: 1,
   },
 };
