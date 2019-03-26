@@ -1,6 +1,7 @@
+import { JsonWebTokenError } from 'jsonwebtoken';
 export { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 
-export class InvalidTokenError extends Error {
+export class InvalidTokenError extends JsonWebTokenError {
   public constructor(message: string = 'Invalid token') {
     super(message);
     Error.captureStackTrace(this, InvalidTokenError);

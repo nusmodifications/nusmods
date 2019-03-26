@@ -1,16 +1,16 @@
 import request from 'supertest';
 import app from './app';
+import HttpStatus from './utils/HttpStatus';
 import mailService from './mailService';
 import AuthenticationService from './AuthenticationService';
 import AuthorizationService from './AuthorizationService';
-import HttpStatus from './utils/HttpStatus';
-import { RateLimitError } from './utils/errors';
+import { RateLimitError, InvalidTokenError, TokenExpiredError } from './utils/errors';
 
 const TEST_EMAIL = 'test@example.com';
+const TEST_COOKIE = 'refresh=refresh;';
 const PLACEHOLDER = 'placeholder';
 
 jest.mock('./config');
-jest.mock('./AuthenticationService');
 jest.mock('./AuthenticationService');
 jest.mock('./AuthorizationService');
 jest.mock('./mailService');
@@ -21,6 +21,7 @@ describe(app, () => {
     mockedMailService.sendPasscode.mockImplementation(() => Promise.resolve());
 
     let authEndpoint: request.Test;
+
     beforeEach(() => {
       authEndpoint = request(app).post('/auth');
     });
@@ -74,7 +75,7 @@ describe(app, () => {
     const spyCreateTokensImplementation = jest.spyOn(AuthorizationService.prototype, 'createTokens')
       .mockImplementationOnce;
 
-    it('should be successful if verification details are correct', (done) => {
+    it('should send access and refresh tokens if verification is successful', (done) => {
       spyVerifyImplementation(() => true);
       const accessToken = 'accessToken';
       spyCreateTokensImplementation(() =>
@@ -146,6 +147,103 @@ describe(app, () => {
       });
       verifyEndpoint
         .send({ email: PLACEHOLDER, passcode: PLACEHOLDER })
+        .expect(HttpStatus.INTERNAL_SERVER_ERROR)
+        .end(done);
+    });
+  });
+
+  describe('/refresh', () => {
+    let refreshEndpoint: request.Test;
+
+    beforeEach(() => {
+      refreshEndpoint = request(app).post('/refresh');
+    });
+
+    const spyRefreshTokenImplementation = jest.spyOn(
+      AuthorizationService.prototype,
+      'refreshAccessToken',
+    ).mockImplementationOnce;
+
+    it('should send new accessToken if session is valid', (done) => {
+      const accessToken = 'accessToken';
+      spyRefreshTokenImplementation(() => Promise.resolve(accessToken));
+
+      refreshEndpoint
+        .set('cookie', TEST_COOKIE)
+        .expect(HttpStatus.OK, { accessToken })
+        .end(done);
+    });
+
+    it('should return unauthorized if there is no refresh token', (done) => {
+      refreshEndpoint.expect(HttpStatus.UNAUTHORIZED).end(done);
+    });
+
+    it('should return unauthorized if token is invalid', (done) => {
+      spyRefreshTokenImplementation(() => {
+        throw new InvalidTokenError();
+      });
+      refreshEndpoint
+        .set('cookie', TEST_COOKIE)
+        .expect(HttpStatus.UNAUTHORIZED)
+        .end(done);
+    });
+
+    it('should return unauthorized if token is expired', (done) => {
+      spyRefreshTokenImplementation(() => {
+        throw new TokenExpiredError('test', new Date());
+      });
+      refreshEndpoint
+        .set('cookie', TEST_COOKIE)
+        .expect(HttpStatus.UNAUTHORIZED)
+        .end(done);
+    });
+
+    it('should error if unknown error is thrown', (done) => {
+      spyRefreshTokenImplementation(() => {
+        throw new Error();
+      });
+      refreshEndpoint
+        .set('cookie', TEST_COOKIE)
+        .expect(HttpStatus.INTERNAL_SERVER_ERROR)
+        .end(done);
+    });
+  });
+
+  describe('/logout', () => {
+    let logoutEndpoint: request.Test;
+
+    beforeEach(() => {
+      logoutEndpoint = request(app).post('/logout');
+    });
+
+    const spyRevokeTokenImplementation = jest.spyOn(
+      AuthorizationService.prototype,
+      'revokeRefreshToken',
+    ).mockImplementationOnce;
+
+    it('should set expired cookie if session is valid', (done) => {
+      spyRevokeTokenImplementation(() => Promise.resolve());
+
+      logoutEndpoint
+        .set('cookie', TEST_COOKIE)
+        .expect(HttpStatus.NO_CONTENT)
+        .expect(
+          'set-cookie',
+          'refresh=; Path=/auth; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure',
+        )
+        .end(done);
+    });
+
+    it('should be successful if there is no session', (done) => {
+      logoutEndpoint.expect(HttpStatus.NO_CONTENT).end(done);
+    });
+
+    it('should error if unknown error is thrown', (done) => {
+      spyRevokeTokenImplementation(() => {
+        throw new Error();
+      });
+      logoutEndpoint
+        .set('cookie', TEST_COOKIE)
         .expect(HttpStatus.INTERNAL_SERVER_ERROR)
         .end(done);
     });

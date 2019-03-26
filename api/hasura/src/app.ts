@@ -8,7 +8,7 @@ import AuthenticationService from './AuthenticationService';
 import AuthorizationService from './AuthorizationService';
 import Database from './Database';
 import HttpStatus from './utils/HttpStatus';
-import { RateLimitError } from './utils/errors';
+import { RateLimitError, JsonWebTokenError } from './utils/errors';
 
 const IS_DEV = process.env.NODE_ENV === 'development';
 
@@ -80,7 +80,7 @@ app.post('/verify', emailHandler, (req, res) => {
   try {
     const isVerified = authenticationService.verify(email, passcode);
     if (!isVerified) {
-      return res.status(HttpStatus.UNAUTHORIZED).send('Invalid token');
+      return res.status(HttpStatus.UNAUTHORIZED).send('Invalid passcode');
     }
 
     authorizationService
@@ -105,42 +105,53 @@ app.post('/verify', emailHandler, (req, res) => {
   }
 });
 
-const refreshTokenHandler: RequestHandler = (req, res, next) => {
-  if (!req.cookies.refresh) {
-    return res.status(HttpStatus.UNAUTHORIZED).send('No refresh token in cookie header');
-  }
-  next();
-};
-
 // 3. User while holding valid refresh token in cookies,
 //    client makes a post request to /refresh
 //    client receives a new short lived access token
-app.post('/refresh', refreshTokenHandler, (req, res) => {
+app.post('/refresh', (req, res) => {
   const refreshToken = req.cookies.refresh;
-  authorizationService
-    .refreshAccessToken(refreshToken)
-    .then((accessToken) => {
+  if (!refreshToken) {
+    return res.sendStatus(HttpStatus.UNAUTHORIZED);
+  }
+  try {
+    authorizationService.refreshAccessToken(refreshToken).then((accessToken) => {
       return res.send({ accessToken });
-    })
-    .catch((e) => {
-      console.error(e);
-      // TODO: log error
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Unable to create access token');
     });
+  } catch (e) {
+    if (e instanceof JsonWebTokenError) {
+      return res.sendStatus(HttpStatus.UNAUTHORIZED);
+    }
+    // TODO: log error
+    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Unable to create access token');
+  }
 });
 
 // 3. User can choose to logout, which removes current session
-app.post('/logout', refreshTokenHandler, (req, res) => {
+//    client should not be aware if refresh token is present or valid
+const EPOCH = new Date(0);
+app.post('/logout', (req, res) => {
   const refreshToken = req.cookies.refresh;
+
+  if (!refreshToken) {
+    return res.sendStatus(HttpStatus.NO_CONTENT);
+  }
+
   authorizationService
     .revokeRefreshToken(refreshToken)
     .then(() => {
+      // Send back empty string and past expiry date to delete cookie
+      // Reference: https://stackoverflow.com/a/5285982
+      res.cookie('refresh', '', {
+        path: '/auth',
+        secure: true,
+        httpOnly: true,
+        expires: EPOCH,
+      });
       return res.sendStatus(HttpStatus.NO_CONTENT);
     })
     .catch((e) => {
-      console.error(e);
       // TODO: log error
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Unable to create access token');
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Unable to log out');
     });
 });
 
