@@ -32,7 +32,6 @@ services:
     environment:
       DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
       HASURA_URL: 'http://graphql-engine:3000/v1alpha1/graphql'
-      NODE_ENV: 'development'
       PORT: 3001
     user: ${CURRENT_UID:-1000:1000}
 

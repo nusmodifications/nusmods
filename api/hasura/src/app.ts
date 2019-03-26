@@ -29,17 +29,21 @@ const authorizationService = new AuthorizationService(
   config.refreshToken,
 );
 
-// 1. User tries to create or log in to account,
-//    client makes post request to /auth with email
-//    server sends a code to email with lifetime of 15 minutes
-app.post('/auth', (req, res) => {
+const emailHandler: RequestHandler = (req, res, next) => {
   const email = req.body.email;
   if (!email) {
     return res
       .status(HttpStatus.BAD_REQUEST)
       .send('Missing field `email` of type string in post body.');
   }
+  next();
+};
 
+// 1. User tries to create or log in to account,
+//    client makes post request to /auth with email
+//    server sends a code to email with lifetime of 15 minutes
+app.post('/auth', emailHandler, (req, res) => {
+  const { email } = req.body;
   try {
     const passcode = authenticationService.request(email);
     if (IS_DEV) {
@@ -65,44 +69,40 @@ app.post('/auth', (req, res) => {
 //    client stores the access token using localstorage and similar alternatives
 //    client stores the refresh token as a cookie
 //    the cookie is http-only and so Javascript cannot access it
-app.post('/verify', (req, res) => {
-  const email = req.body.email;
-  if (!email) {
+app.post('/verify', emailHandler, (req, res) => {
+  const { email, passcode } = req.body;
+  if (!passcode) {
     return res
       .status(HttpStatus.BAD_REQUEST)
-      .send('Missing field `email` of type string in post body.');
-  }
-  const token = req.body.token;
-  if (!token) {
-    return res
-      .status(HttpStatus.BAD_REQUEST)
-      .send('Missing field `token` of type string in post body.');
-  }
-  const mailToken = authenticationService.verify(email, token);
-  if (mailToken == null) {
-    return res
-      .status(HttpStatus.TOO_MANY_REQUESTS)
-      .send('Rate limit exceeded, please try again later.');
-  } else if (!mailToken) {
-    return res.status(HttpStatus.UNAUTHORIZED).send('Invalid token');
+      .send('Missing field `passcode` of type string in post body.');
   }
 
-  authorizationService
-    .createTokens(email, req.header('user-agent') || '')
-    .then(({ accessToken, refreshToken, refreshTokenExpiryTime }) => {
-      res.cookie('refresh', refreshToken, {
-        path: '/auth',
-        secure: true,
-        httpOnly: true,
-        expires: refreshTokenExpiryTime,
+  try {
+    const isVerified = authenticationService.verify(email, passcode);
+    if (!isVerified) {
+      return res.status(HttpStatus.UNAUTHORIZED).send('Invalid token');
+    }
+
+    authorizationService
+      .createTokens(email, req.header('user-agent') || '')
+      .then(({ accessToken, refreshToken, refreshTokenExpiryTime }) => {
+        res.cookie('refresh', refreshToken, {
+          path: '/auth',
+          secure: true,
+          httpOnly: true,
+          expires: refreshTokenExpiryTime,
+        });
+        return res.send({ accessToken });
       });
-      return res.send({ accessToken });
-    })
-    .catch((e) => {
-      console.error(e);
-      // TODO: log error
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Unable to create access token');
-    });
+  } catch (e) {
+    // TODO: log error
+    if (e instanceof RateLimitError) {
+      return res
+        .status(HttpStatus.TOO_MANY_REQUESTS)
+        .send('Rate limit exceeded, please try again later.');
+    }
+    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Unable to send mail');
+  }
 });
 
 const refreshTokenHandler: RequestHandler = (req, res, next) => {

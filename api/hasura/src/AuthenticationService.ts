@@ -99,7 +99,7 @@ class AuthenticationService {
    * @param email user email address
    * @param passcode mail passcode as keyed in by the user
    */
-  verify(email: string, passcode: string): boolean | null {
+  verify(email: string, passcode: string): boolean {
     const verifyData = this.passcodeMap.get(email);
 
     if (!verifyData) {
