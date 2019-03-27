@@ -1,4 +1,4 @@
-import { Tracker } from 'types/views';
+import { Tracker } from 'types/vendor/piwik';
 
 declare global {
   interface Window {

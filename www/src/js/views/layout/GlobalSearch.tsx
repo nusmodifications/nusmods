@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { stubString, omit } from 'lodash';
+import { omit, stubString } from 'lodash';
 import Downshift, { ChildrenFunction, DownshiftState, StateChangeOptions } from 'downshift';
 import classnames from 'classnames';
 
@@ -8,11 +8,11 @@ import { ChevronRight, Help, Search } from 'views/components/icons';
 import { ModuleCondensed } from 'types/modules';
 import { Venue } from 'types/venues';
 import {
+  MODULE_RESULT,
   ResultType,
+  SEARCH_RESULT,
   SearchItem,
   SearchResult,
-  MODULE_RESULT,
-  SEARCH_RESULT,
   VENUE_RESULT,
 } from 'types/views';
 

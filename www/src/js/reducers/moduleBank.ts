@@ -1,38 +1,18 @@
-import update from 'immutability-helper';
-import { REHYDRATE, createMigrate } from 'redux-persist';
-import { keyBy, omit, size, zipObject } from 'lodash';
-
-import { FSA } from 'types/redux';
-import { Module } from 'types/modules';
-import { ModuleCodeMap, ModuleList, SUCCESS } from 'types/reducers';
-
 import {
   FETCH_ARCHIVE_MODULE,
   FETCH_MODULE,
   FETCH_MODULE_LIST,
   REMOVE_LRU_MODULE,
   UPDATE_MODULE_TIMESTAMP,
-} from 'actions/moduleBank';
-import { SET_EXPORTED_DATA } from 'actions/export';
+  SET_EXPORTED_DATA,
+} from 'actions/constants';
+import update from 'immutability-helper';
+import { keyBy, omit, size, zipObject } from 'lodash';
+import { createMigrate, REHYDRATE } from 'redux-persist';
+import { Module } from 'types/modules';
+import { ModuleBank, ModuleList, SUCCESS } from 'types/reducers';
 
-export type ModulesMap = {
-  [moduleCode: string]: Module;
-};
-
-export type ModuleArchive = {
-  [moduleCode: string]: {
-    // Mapping acad year to module info
-    [key: string]: Module;
-  };
-};
-
-export type ModuleBank = {
-  moduleList: ModuleList;
-  modules: ModulesMap;
-  moduleCodes: ModuleCodeMap;
-  moduleArchive: ModuleArchive;
-  apiLastUpdatedTimestamp: string | null;
-};
+import { FSA } from 'types/redux';
 
 const defaultModuleBankState: ModuleBank = {
   moduleList: [], // List of basic modules data (module code, name, semester)

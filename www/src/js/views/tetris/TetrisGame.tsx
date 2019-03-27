@@ -4,7 +4,7 @@ import { debounce, noop, shuffle } from 'lodash';
 import classnames from 'classnames';
 import produce from 'immer';
 
-import { ColorIndex } from 'types/reducers';
+import { ColorIndex } from 'types/timetables';
 import Timetable from 'views/timetable/Timetable';
 import TimetableDay from 'views/timetable/TimetableDay';
 import Title from 'views/components/Title';

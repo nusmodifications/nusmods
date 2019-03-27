@@ -1,24 +1,23 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { minBy, range, get } from 'lodash';
+import { get, minBy, range } from 'lodash';
 import NUSModerator, { AcadWeekInfo } from 'nusmoderator';
 import classnames from 'classnames';
 import {
   addDays,
   differenceInCalendarDays,
+  getHours,
+  getMinutes,
   isSameDay,
   isWeekend,
   parseISO,
-  getHours,
-  getMinutes,
 } from 'date-fns';
 import produce from 'immer';
 
-import { DaysOfWeek, ColoredLesson, Lesson } from 'types/modules';
-import { SemTimetableConfigWithLessons } from 'types/timetables';
+import { DaysOfWeek } from 'types/modules';
+import { Lesson, ColoredLesson, SemTimetableConfigWithLessons } from 'types/timetables';
 import { ColorMapping } from 'types/reducers';
 import { EmptyGroupType, SelectedLesson } from 'types/views';
-import { State as StoreState } from 'reducers';
 
 import {
   groupLessonsByDay,
@@ -41,6 +40,7 @@ import MapContext from 'views/components/map/MapContext';
 import { formatTime, getDayIndex } from 'utils/timify';
 import { breakpointUp } from 'utils/css';
 import { EMPTY_ARRAY } from 'types/utils';
+import { State as StoreState } from 'types/state';
 
 import DayEvents from '../DayEvents';
 import DayHeader from '../DayHeader';

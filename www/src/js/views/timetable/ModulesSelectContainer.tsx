@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import { ModuleSelectList } from 'types/reducers';
 import { ModuleCode, Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
-import { State as StoreState } from 'reducers';
 
 import Online from 'views/components/Online';
 import { popNotification } from 'actions/app';
 import { getSemModuleSelectList } from 'selectors/moduleBank';
 import { createSearchPredicate, sortModules } from 'utils/moduleSearch';
+import { State as StoreState } from 'types/state';
 import ModulesSelect from './ModulesSelect';
 
 type OwnProps = {

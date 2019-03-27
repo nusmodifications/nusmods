@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import Downshift, { ChildrenFunction } from 'downshift';
 import _ from 'lodash';
 
-import { ColorIndex } from 'types/reducers';
+import { ColorIndex } from 'types/timetables';
 
 import { NUM_DIFFERENT_COLORS } from 'utils/colors';
 import styles from './ColorPicker.scss';

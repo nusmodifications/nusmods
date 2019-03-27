@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import ColorPicker from 'views/components/ColorPicker';
-import { ColorIndex } from 'types/reducers';
+import { ColorIndex } from 'types/timetables';
 import { expectColor } from 'test-utils/theme';
 
 import styles from './ColorPicker.scss';

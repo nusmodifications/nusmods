@@ -6,7 +6,7 @@ import { toggleTimetableOrientation, toggleTitleDisplay } from 'actions/theme';
 import { Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
 
-import { Sidebar, Type, Grid, Calendar } from 'views/components/icons';
+import { Calendar, Grid, Sidebar, Type } from 'views/components/icons';
 import elements from 'views/elements';
 import ShareTimetable from './ShareTimetable';
 import ExportMenu from './ExportMenu';

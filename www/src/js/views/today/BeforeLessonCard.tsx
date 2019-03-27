@@ -3,7 +3,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
-import { Lesson } from 'types/modules';
+import { Lesson } from 'types/timetables';
 import { getStartTimeAsDate } from 'utils/timetables';
 import { differenceInHours, formatDistanceStrict } from 'date-fns';
 import { venuePage } from 'views/routes/paths';
