@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { RouteComponentProps, NavLink, withRouter } from 'react-router-dom';
+import { NavLink, RouteComponentProps, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 
-import { State } from 'reducers';
 import { Semester } from 'types/modules';
 import {
   BookOpen,
@@ -11,9 +10,9 @@ import {
   Clock,
   Heart,
   Map,
-  Trello,
   Settings,
   Star,
+  Trello,
 } from 'views/components/icons';
 import ExternalLink from 'views/components/ExternalLink';
 import Online from 'views/components/Online';
@@ -21,6 +20,7 @@ import { timetablePage } from 'views/routes/paths';
 import { preload as preloadToday } from 'views/today/TodayContainer';
 import { preload as preloadVenues } from 'views/venues/VenuesContainer';
 import { preload as preloadContribute } from 'views/contribute/ContributeContainer';
+import { State } from 'types/state';
 import NavRefreshPrompt from './NavRefreshPrompt';
 
 import styles from './Navtabs.scss';

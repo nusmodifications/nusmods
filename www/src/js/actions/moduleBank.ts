@@ -1,24 +1,28 @@
-import { AcadYear, Module, ModuleCode } from 'types/modules';
-import { TimetableConfig } from 'types/timetables';
-
-import { GetState } from 'types/redux';
-import { ModulesMap } from 'reducers/moduleBank';
-import { size, get, flatMap, sortBy, zip } from 'lodash';
 import { requestAction } from 'actions/requests';
 import NUSModsApi from 'apis/nusmods';
 import config from 'config';
+import { flatMap, get, size, sortBy, zip } from 'lodash';
+import { ModulesMap } from 'types/reducers';
+import { AcadYear, Module, ModuleCode } from 'types/modules';
+
+import { GetState } from 'types/redux';
+import { TimetableConfig } from 'types/timetables';
+import {
+  FETCH_ARCHIVE_MODULE,
+  FETCH_MODULE,
+  FETCH_MODULE_LIST,
+  REMOVE_LRU_MODULE,
+  UPDATE_MODULE_TIMESTAMP,
+} from './constants';
 
 const MAX_MODULE_LIMIT = 100;
 
-export const FETCH_MODULE_LIST = 'FETCH_MODULE_LIST';
 export function fetchModuleList() {
   return requestAction(FETCH_MODULE_LIST, FETCH_MODULE_LIST, {
     url: NUSModsApi.moduleListUrl(),
   });
 }
 
-// Action to fetch modules
-export const FETCH_MODULE = 'FETCH_MODULE';
 export function fetchModuleRequest(moduleCode: ModuleCode) {
   return `${FETCH_MODULE}/${moduleCode}`;
 }
@@ -29,7 +33,6 @@ export function getRequestModuleCode(key: string): ModuleCode | null {
   return null;
 }
 
-export const UPDATE_MODULE_TIMESTAMP = 'UPDATE_MODULE_TIMESTAMP';
 export function updateModuleTimestamp(moduleCode: ModuleCode) {
   return {
     type: UPDATE_MODULE_TIMESTAMP,
@@ -37,7 +40,6 @@ export function updateModuleTimestamp(moduleCode: ModuleCode) {
   };
 }
 
-export const REMOVE_LRU_MODULE = 'REMOVE_LRU_MODULE';
 export function removeLRUModule(moduleCodes: ModuleCode[]) {
   return {
     type: REMOVE_LRU_MODULE,
@@ -114,8 +116,6 @@ export function fetchModule(moduleCode: ModuleCode) {
   };
 }
 
-// Action to fetch module from previous years
-export const FETCH_ARCHIVE_MODULE = 'FETCH_ARCHIVE_MODULE';
 export function fetchArchiveRequest(moduleCode: ModuleCode, year: string) {
   return `${FETCH_ARCHIVE_MODULE}_${moduleCode}_${year}`;
 }

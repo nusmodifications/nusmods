@@ -1,7 +1,8 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { History } from 'history';
-import { Tracker } from 'types/views';
 import { each } from 'lodash';
+
+import { Tracker } from 'types/vendor/piwik';
 import insertScript from 'utils/insertScript';
 import { getScriptErrorHandler } from 'utils/error';
 

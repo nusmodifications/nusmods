@@ -4,10 +4,10 @@ import classnames from 'classnames';
 import { partition } from 'lodash';
 
 import { VenueList as Venues, VenueLocationMap } from 'types/venues';
-import { State as StoreState } from 'reducers';
 
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import VenueList from 'views/venues/VenueList';
+import { State as StoreState } from 'types/state';
 import styles from './UnmappedVenues.scss';
 import withVenueLocations from '../components/map/withVenueLocations';
 

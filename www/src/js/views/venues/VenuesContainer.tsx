@@ -1,14 +1,13 @@
 import * as React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Loadable, { LoadingComponentProps } from 'react-loadable';
 import classnames from 'classnames';
 import axios from 'axios';
 import produce from 'immer';
 import qs from 'query-string';
-import { pick, mapValues, size, isEqual, get } from 'lodash';
+import { get, isEqual, mapValues, pick, size } from 'lodash';
 
-import { Venue, VenueDetailList, VenueSearchOptions } from 'types/venues';
-import { TimePeriod } from 'types/views';
+import { TimePeriod, Venue, VenueDetailList, VenueSearchOptions } from 'types/venues';
 
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import ApiError from 'views/errors/ApiError';
@@ -26,7 +25,7 @@ import makeResponsive from 'views/hocs/makeResponsive';
 import config from 'config';
 import nusmods from 'apis/nusmods';
 import HistoryDebouncer from 'utils/HistoryDebouncer';
-import { searchVenue, filterAvailability, sortVenues } from 'utils/venues';
+import { filterAvailability, searchVenue, sortVenues } from 'utils/venues';
 import { breakpointDown } from 'utils/css';
 import { defer } from 'utils/react';
 import { convertIndexToTime } from 'utils/timify';

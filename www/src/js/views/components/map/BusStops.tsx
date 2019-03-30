@@ -4,8 +4,7 @@ import { Marker, Popup } from 'react-leaflet';
 import classnames from 'classnames';
 import produce from 'immer';
 
-import { BusStop } from 'types/venues';
-import { BusTiming } from 'types/views';
+import { BusStop, BusTiming } from 'types/venues';
 
 import busStopJSON from 'data/bus-stops.json';
 import { allowBusStopEditing } from 'utils/debug';

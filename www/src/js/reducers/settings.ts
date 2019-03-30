@@ -6,20 +6,20 @@ import { FSA } from 'types/redux';
 import { SettingsState } from 'types/reducers';
 
 import {
-  SELECT_NEW_STUDENT,
-  SELECT_FACULTY,
-  SELECT_MODE,
-  TOGGLE_MODE,
   DISMISS_CORS_NOTIFICATION,
   ENABLE_CORS_NOTIFICATION,
-  TOGGLE_CORS_NOTIFICATION_GLOBALLY,
+  SELECT_FACULTY,
+  SELECT_MODE,
+  SELECT_NEW_STUDENT,
+  SET_LOAD_DISQUS_MANUALLY,
   SET_MODULE_TABLE_SORT,
   TOGGLE_BETA_TESTING_STATUS,
-  SET_LOAD_DISQUS_MANUALLY,
+  TOGGLE_CORS_NOTIFICATION_GLOBALLY,
+  TOGGLE_MODE,
 } from 'actions/settings';
-import { SET_EXPORTED_DATA } from 'actions/export';
+import { SET_EXPORTED_DATA } from 'actions/constants';
 import { DIMENSIONS, withTracker } from 'bootstrapping/matomo';
-import { LIGHT_MODE, DARK_MODE } from 'types/settings';
+import { DARK_MODE, LIGHT_MODE } from 'types/settings';
 import config from 'config';
 
 export const defaultCorsNotificationState = {

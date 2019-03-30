@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 
-import { ModuleCode, Semester } from 'types/modules';
+import { Semester, ModuleCode } from 'types/modules';
 import { PlannerModuleInfo } from 'types/views';
 import config from 'config';
 import { getExamDate, renderMCs } from 'utils/modules';

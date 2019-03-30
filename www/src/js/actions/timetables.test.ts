@@ -1,5 +1,5 @@
-import { ModuleCode, Semester, Lesson } from 'types/modules';
-import { SemTimetableConfig } from 'types/timetables';
+import { ModuleCode, Semester } from 'types/modules';
+import { SemTimetableConfig, Lesson } from 'types/timetables';
 
 import lessons from '__mocks__/lessons-array.json';
 import { CS1010S, CS3216 } from '__mocks__/modules';

@@ -1,13 +1,13 @@
-import { map, each, isEmpty, kebabCase, values, flatten } from 'lodash';
+import { each, flatten, isEmpty, kebabCase, map, values } from 'lodash';
 import update, { Spec } from 'immutability-helper';
 import qs from 'query-string';
 
-import { FilterGroups, FacultyDepartments } from 'types/views';
+import { FacultyDepartments, FilterGroups } from 'types/views';
 import {
-  Faculty,
   Department,
-  ModuleLevel,
+  Faculty,
   ModuleInformation,
+  ModuleLevel,
   NUSModuleAttributes,
   attributeDescription,
 } from 'types/modules';

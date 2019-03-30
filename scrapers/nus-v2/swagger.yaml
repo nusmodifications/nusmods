@@ -347,16 +347,17 @@ paths:
                     $ref: '#/components/schemas/VenueInformation'
                 example:
                   LT19:
-                    - Day: 'Monday'
-                      Classes:
-                        - ClassNo: '1'
-                          StartTime: '1830'
-                          EndTime: '2030'
-                          Weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-                          DayText: 'Wednesday'
-                          LessonType: 'Lecture'
+                    - day: 'Monday'
+                      classes:
+                        - classNo: '1'
+                          startTime: '1830'
+                          endTime: '2030'
+                          weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+                          day: 'Wednesday'
+                          lessonType: 'Lecture'
                           moduleCode: 'CS5322'
-                      Availability:
+                          size: 40
+                      availability:
                         0900: 'occupied'
                         0930: 'occupied'
                         1000: 'occupied'
@@ -399,7 +400,7 @@ components:
   schemas:
     VenueInformation:
       properties:
-        Day:
+        day:
           type: 'string'
           enum:
             - 'Monday'
@@ -408,11 +409,11 @@ components:
             - 'Thursday'
             - 'Friday'
             - 'Saturday'
-        Classes:
+        classes:
           type: 'array'
           items:
             $ref: '#/components/schemas/VenueLesson'
-        Availability:
+        availability:
           type: 'object'
           additionalProperties:
             enum:
@@ -494,12 +495,12 @@ components:
 
     Lesson:
       required:
-        - 'ClassNo'
-        - 'StartTime'
-        - 'EndTime'
-        - 'Weeks'
-        - 'Venue'
-        - 'LessonType'
+        - 'classNo'
+        - 'startTime'
+        - 'endTime'
+        - 'weeks'
+        - 'venue'
+        - 'lessonType'
       properties:
         classNo:
           type: 'string'
@@ -520,12 +521,15 @@ components:
         venue:
           type: 'string'
           example: 'COM1-0208'
-        dayText:
+        day:
           type: 'string'
           example: 'Friday'
         lessonType:
           type: 'string'
           example: 'Tutorial'
+        size:
+          type: 'number'
+          example: 30
 
     ModuleCondensed:
       required:
@@ -649,13 +653,13 @@ components:
           example: 'Computing'
         workload:
           $ref: '#/components/schemas/Workload'
-        Prerequisite:
+        prerequisite:
           type: 'string'
           example: 'CS1010 or its equivalent'
-        Preclusion:
+        preclusion:
           type: 'string'
           example: 'CS1104 or Students from department of ECE'
-        Corequisite:
+        corequisite:
           type: 'string'
           example: 'Students must take CS2101 in the same semester as this module'
         semesterData:

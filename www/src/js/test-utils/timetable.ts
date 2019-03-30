@@ -1,4 +1,5 @@
-import { ClassNo, ColoredLesson, DayText, Lesson, LessonTime, LessonType } from 'types/modules';
+import { ClassNo, DayText, LessonTime, LessonType } from 'types/modules';
+import { ColoredLesson, Lesson } from 'types/timetables';
 
 export const EVERY_WEEK = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 export const EVEN_WEEK = [2, 4, 6, 8, 10, 12];

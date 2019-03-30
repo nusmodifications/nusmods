@@ -3,12 +3,13 @@ import { persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
 // @ts-ignore We're replacing immutability-helper anyway
 import update, { extend } from 'immutability-helper';
-import rootReducer, { State } from 'reducers';
+import rootReducer from 'reducers';
 import requestsMiddleware from 'middlewares/requests-middleware';
 import ravenMiddleware from 'middlewares/raven-middleware';
 import { setAutoFreeze } from 'immer';
 
 import { FSA, GetState } from 'types/redux';
+import { State } from 'types/state';
 
 // Extend immutability-helper with autovivification commands. This allows immutability-helper
 // to automatically create objects if it doesn't exist before

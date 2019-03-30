@@ -4,8 +4,8 @@ import { groupBy, range } from 'lodash';
 import classnames from 'classnames';
 import { addDays } from 'date-fns';
 
-import { ModuleWithColor, Semester, WorkingDays } from 'types/modules';
-import { ModuleWithExamTime, TimeSegment } from 'types/views';
+import { Semester, WorkingDays } from 'types/modules';
+import { ModuleWithColor, ModuleWithExamTime, TimeSegment } from 'types/views';
 import config from 'config';
 import { formatExamDate, getExamDate } from 'utils/modules';
 import { toSingaporeTime } from 'utils/timify';

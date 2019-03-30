@@ -3,12 +3,12 @@ import * as React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
-import { State as StoreState } from 'reducers';
 import { Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
 import { fillColorMapping } from 'utils/colors';
 import TimetableContent from 'views/timetable/TimetableContent';
 import { ColorMapping } from 'types/reducers';
+import { State as StoreState } from 'types/state';
 
 type Props = {
   store: Store<StoreState, any>;

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import { Lesson, Semester, SemesterData } from 'types/modules';
+import { Semester, SemesterData } from 'types/modules';
 
 import Timetable from 'views/timetable/Timetable';
 import SemesterPicker from 'views/components/module-info/SemesterPicker';
@@ -9,6 +9,7 @@ import { arrangeLessonsForWeek } from 'utils/timetables';
 import { colorLessonsByKey } from 'utils/colors';
 import { getFirstAvailableSemester } from 'utils/modules';
 import { venuePage } from 'views/routes/paths';
+import { Lesson } from 'types/timetables';
 import styles from './LessonTimetable.scss';
 
 type Props = RouteComponentProps & { semesterData: ReadonlyArray<SemesterData> };

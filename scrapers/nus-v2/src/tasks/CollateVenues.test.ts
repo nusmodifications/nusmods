@@ -18,6 +18,7 @@ describe(extractVenueAvailability, () => {
           venue: 'COM1-VCRM',
           day: 'Monday',
           lessonType: 'Lecture',
+          size: 30,
         },
       ]),
     ).toEqual({
@@ -33,6 +34,7 @@ describe(extractVenueAvailability, () => {
               weeks: EVERY_WEEK,
               day: 'Monday',
               lessonType: 'Lecture',
+              size: 30,
             },
           ],
           availability: {
@@ -90,6 +92,7 @@ describe(extractVenueAvailability, () => {
           venue: '',
           day: 'Monday',
           lessonType: 'Lecture',
+          size: 30,
         },
       ]),
     ).toEqual({});

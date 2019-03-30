@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Redirect } from 'react-router-dom';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { SemTimetableConfig } from 'types/timetables';
-import { ModulesMap } from 'reducers/moduleBank';
+import { ModulesMap } from 'types/reducers';
 
 import createHistory from 'test-utils/createHistory';
 
-import { timetablePage, semesterForTimetablePage, timetableShare } from 'views/routes/paths';
+import { semesterForTimetablePage, timetablePage, timetableShare } from 'views/routes/paths';
 
 import { CS1010S, CS3216 } from '__mocks__/modules';
 
