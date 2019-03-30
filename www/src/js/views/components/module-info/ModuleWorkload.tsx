@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { sum, partition, zip, range } from 'lodash';
+import { partition, range, sum, zip } from 'lodash';
 
 import { Workload, WORKLOAD_COMPONENTS, WorkloadComponent } from 'types/modules';
 import Tooltip from 'views/components/Tooltip';

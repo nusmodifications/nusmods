@@ -1,9 +1,9 @@
 import { each, flatMap } from 'lodash';
 
-import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
+import { Lesson, ColorIndex, ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import { FSA, GetState } from 'types/redux';
-import { ColorIndex, ColorMapping } from 'types/reducers';
-import { ClassNo, Lesson, LessonType, Module, ModuleCode, Semester } from 'types/modules';
+import { ColorMapping } from 'types/reducers';
+import { ClassNo, LessonType, Module, ModuleCode, Semester } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
 import { openNotification } from 'actions/app';

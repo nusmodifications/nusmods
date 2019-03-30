@@ -1,11 +1,10 @@
-import { range, without, uniq } from 'lodash';
+import { range, uniq, without } from 'lodash';
 
-import { ColorIndex, ColorMapping } from 'types/reducers';
-import { Lesson } from 'types/modules';
-import { SemTimetableConfig } from 'types/timetables';
+import { ColorMapping } from 'types/reducers';
+import { ColorIndex, Lesson, SemTimetableConfig } from 'types/timetables';
 import { Omit } from 'types/utils';
 
-import { NUM_DIFFERENT_COLORS, getNewColor, colorLessonsByKey, fillColorMapping } from './colors';
+import { colorLessonsByKey, fillColorMapping, getNewColor, NUM_DIFFERENT_COLORS } from './colors';
 
 describe(getNewColor, () => {
   test('it should get color without randomization', () => {

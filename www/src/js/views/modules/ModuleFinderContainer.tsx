@@ -2,12 +2,11 @@ import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import update from 'immutability-helper';
+import produce from 'immer';
 import { each, mapValues, values } from 'lodash';
 
 import { ModuleInformation } from 'types/modules';
 import { AnyGroup, FacultyDepartments, FilterGroups, PageRange, PageRangeDiff } from 'types/views';
-import { State as StoreState } from 'reducers';
 
 import ModuleFinderList from 'views/modules/ModuleFinderList';
 import ModuleSearchBox from 'views/modules/ModuleSearchBox';
@@ -22,14 +21,14 @@ import Omelette, { matchEgg } from 'views/components/Omelette';
 import { forceInstantSearch } from 'utils/debug';
 import {
   defaultGroups,
-  updateGroups,
-  serializeGroups,
   DEPARTMENT,
   EXAMS,
   FACULTY,
   LEVELS,
   MODULE_CREDITS,
   SEMESTER,
+  serializeGroups,
+  updateGroups,
 } from 'utils/moduleFilters';
 import { createSearchFilter, SEARCH_QUERY_KEY, sortModules } from 'utils/moduleSearch';
 import nusmods from 'apis/nusmods';
@@ -39,6 +38,7 @@ import HistoryDebouncer from 'utils/HistoryDebouncer';
 import { defer } from 'utils/react';
 import { breakpointUp, queryMatch } from 'utils/css';
 import { captureException } from 'utils/error';
+import { State as StoreState } from 'types/state';
 import styles from './ModuleFinderContainer.scss';
 
 export type Props = {
@@ -133,13 +133,15 @@ export class ModuleFinderContainerComponent extends React.Component<Props, State
 
   onFilterChange = (newGroup: AnyGroup, resetScroll: boolean = true) => {
     this.setState(
-      (state) =>
-        update(state, {
-          // Update filter group with its new state
-          filterGroups: { [newGroup.id]: { $set: newGroup } },
-          // Reset back to the first page
-          page: { $merge: { start: 0, current: 0 } },
-        }),
+      produce((draft) => {
+        // Update filter group with its new state
+        draft.filterGroups[newGroup.id] = newGroup;
+
+        // Reset back to the first page
+        draft.page.start = 0;
+        draft.page.current = 0;
+      }),
+
       () => {
         this.updateQueryString();
 

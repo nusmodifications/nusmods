@@ -1,7 +1,10 @@
 import { ModuleCode, ModuleInformation } from 'types/modules';
 import { intersectionCount } from 'utils/set';
+import { immerable } from 'immer';
 
 export default class ModuleFilter {
+  static [immerable] = true;
+
   enabled = false;
 
   id: string;

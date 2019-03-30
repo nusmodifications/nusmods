@@ -4,23 +4,23 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
-import { State as StoreState } from 'reducers';
 import { Semester } from 'types/modules';
 
 import exportApi from 'apis/export';
 import { downloadAsIcal, SUPPORTS_DOWNLOAD } from 'actions/export';
 import {
-  Image,
-  Calendar,
-  FileText,
-  Download,
-  ChevronDown,
   AlertTriangle,
+  Calendar,
+  ChevronDown,
+  Download,
+  FileText,
+  Image,
 } from 'views/components/icons';
 import Online from 'views/components/Online';
 import Modal from 'views/components/Modal';
 import ComponentMap from 'utils/ComponentMap';
 import { Counter } from 'utils/react';
+import { State as StoreState } from 'types/state';
 
 import styles from './ExportMenu.scss';
 

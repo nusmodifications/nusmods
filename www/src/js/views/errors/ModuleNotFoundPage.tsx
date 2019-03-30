@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import * as Sentry from '@sentry/browser';
 
-import { State } from 'reducers';
 import { ModuleCode } from 'types/modules';
 import RandomKawaii from 'views/components/RandomKawaii';
 import Title from 'views/components/Title';
@@ -13,6 +12,7 @@ import { MODULE_CODE_REGEX } from 'utils/modules';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { availableArchive, isArchiveLoading } from 'selectors/timetables';
 import { moduleArchive } from 'views/routes/paths';
+import { State } from 'types/state';
 import styles from './ErrorPage.scss';
 
 type OwnProps = {

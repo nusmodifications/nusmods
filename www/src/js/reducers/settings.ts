@@ -1,25 +1,25 @@
 import { uniq, without } from 'lodash';
-import update from 'immutability-helper';
+import produce from 'immer';
 import { REHYDRATE } from 'redux-persist';
 
 import { FSA } from 'types/redux';
 import { SettingsState } from 'types/reducers';
 
 import {
-  SELECT_NEW_STUDENT,
-  SELECT_FACULTY,
-  SELECT_MODE,
-  TOGGLE_MODE,
   DISMISS_CORS_NOTIFICATION,
   ENABLE_CORS_NOTIFICATION,
-  TOGGLE_CORS_NOTIFICATION_GLOBALLY,
+  SELECT_FACULTY,
+  SELECT_MODE,
+  SELECT_NEW_STUDENT,
+  SET_LOAD_DISQUS_MANUALLY,
   SET_MODULE_TABLE_SORT,
   TOGGLE_BETA_TESTING_STATUS,
-  SET_LOAD_DISQUS_MANUALLY,
+  TOGGLE_CORS_NOTIFICATION_GLOBALLY,
+  TOGGLE_MODE,
 } from 'actions/settings';
-import { SET_EXPORTED_DATA } from 'actions/export';
+import { SET_EXPORTED_DATA } from 'actions/constants';
 import { DIMENSIONS, withTracker } from 'bootstrapping/matomo';
-import { LIGHT_MODE, DARK_MODE } from 'types/settings';
+import { DARK_MODE, LIGHT_MODE } from 'types/settings';
 import config from 'config';
 
 export const defaultCorsNotificationState = {
@@ -63,24 +63,20 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
       };
 
     case TOGGLE_CORS_NOTIFICATION_GLOBALLY:
-      return update(state, {
-        corsNotification: {
-          enabled: { $set: action.payload.enabled },
-        },
+      return produce(state, (draft) => {
+        draft.corsNotification.enabled = action.payload.enabled;
       });
 
     case DISMISS_CORS_NOTIFICATION:
-      return update(state, {
-        corsNotification: {
-          dismissed: (rounds: string[]) => uniq([...rounds, action.payload.round]),
-        },
+      return produce(state, (draft) => {
+        const rounds: string[] = draft.corsNotification.dismissed;
+        draft.corsNotification.dismissed = uniq([...rounds, action.payload.round]);
       });
 
     case ENABLE_CORS_NOTIFICATION:
-      return update(state, {
-        corsNotification: {
-          dismissed: (rounds: string[]) => without(rounds, action.payload.round),
-        },
+      return produce(state, (draft) => {
+        const rounds: string[] = draft.corsNotification.dismissed;
+        draft.corsNotification.dismissed = without(rounds, action.payload.round);
       });
 
     case SET_EXPORTED_DATA:
@@ -117,14 +113,11 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
       // Rehydrating from store - check that the key is the same, and if not,
       // reset to default state since the old dismissed notification settings is stale
       if (nextState.corsNotification.semesterKey !== config.getSemesterKey()) {
-        nextState = update(nextState, {
-          corsNotification: {
-            semesterKey: { $set: config.getSemesterKey() },
-            dismissed: { $set: [] },
-          },
+        nextState = produce(nextState, (draft) => {
+          draft.corsNotification.semesterKey = config.getSemesterKey();
+          draft.corsNotification.dismissed = [];
         });
       }
-
       return nextState;
     }
 

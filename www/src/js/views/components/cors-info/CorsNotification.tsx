@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { capitalize } from 'lodash';
 
-import { State } from 'reducers';
 import { NotificationOptions } from 'types/reducers';
 
 import config, { CorsRound } from 'config';
@@ -13,6 +12,7 @@ import { roundStart, currentPeriod, currentRound } from 'utils/cors';
 import { forceCorsRound } from 'utils/debug';
 import CloseButton from 'views/components/CloseButton';
 import ExternalLink from 'views/components/ExternalLink';
+import { State } from 'types/state';
 
 import styles from './CorsNotification.scss';
 

@@ -1,8 +1,7 @@
-import { flatMap, sortBy, values, get } from 'lodash';
-import { ModuleCode, Semesters, Semester } from 'types/modules';
+import { flatMap, get, sortBy, values } from 'lodash';
+import { ModuleCode, Semester, Semesters } from 'types/modules';
 import { Conflict, ExamClashes, PlannerModuleInfo, PlannerModulesWithInfo } from 'types/views';
-import { CustomModuleData, ModuleCodeMap, ModuleTime } from 'types/reducers';
-import { State } from 'reducers';
+import { ModuleCodeMap, ModulesMap } from 'types/reducers';
 import config from 'config';
 import { getYearsBetween, subtractAcadYear } from 'utils/modules';
 import {
@@ -13,8 +12,9 @@ import {
   PLAN_TO_TAKE_SEMESTER,
   PLAN_TO_TAKE_YEAR,
 } from 'utils/planner';
-import { ModulesMap } from 'reducers/moduleBank';
 import { findExamClashes } from 'utils/timetables';
+import { State } from 'types/state';
+import { CustomModuleData, ModuleTime } from 'types/planner';
 
 /* eslint-disable no-useless-computed-key */
 

@@ -1,10 +1,7 @@
-import {
-  REMOVE_LRU_MODULE,
-  removeLRUModule,
-  UPDATE_MODULE_TIMESTAMP,
-  updateModuleTimestamp,
-} from 'actions/moduleBank';
-import reducer, { ModuleBank } from './moduleBank';
+import { removeLRUModule, updateModuleTimestamp } from 'actions/moduleBank';
+import { REMOVE_LRU_MODULE, UPDATE_MODULE_TIMESTAMP } from 'actions/constants';
+import { ModuleBank } from 'types/reducers';
+import reducer from './moduleBank';
 
 const defaultModuleBankState: ModuleBank = {
   moduleList: [], // List of modules
