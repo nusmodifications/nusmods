@@ -1,5 +1,3 @@
-import { State } from 'reducers';
-
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -7,6 +5,7 @@ import { Link } from 'react-router-dom';
 import ExternalLink from 'views/components/ExternalLink';
 import config from 'config';
 import { toggleFeedback } from 'actions/app';
+import { State } from 'types/state';
 import styles from './Footer.scss';
 
 type Props = {

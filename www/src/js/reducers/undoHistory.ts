@@ -1,19 +1,14 @@
-import { FSA } from 'types/redux';
+import { REDO, UNDO } from 'actions/constants';
 
-import { pick, takeRight, set, get, last } from 'lodash';
-import { UNDO, REDO } from 'actions/undoHistory';
+import { get, last, pick, set, takeRight } from 'lodash';
+import { FSA } from 'types/redux';
+import { UndoHistoryState } from 'types/reducers';
 
 export type UndoHistoryConfig = {
   reducerName: string;
   limit?: number;
   actionsToWatch: string[];
   whitelist: string[];
-};
-
-export type UndoHistoryState = {
-  past: Record<string, any>[];
-  present: Record<string, any> | undefined;
-  future: Record<string, any>[];
 };
 
 // Call the reducer with empty action to populate the initial state

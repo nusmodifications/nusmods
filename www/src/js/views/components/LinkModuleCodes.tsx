@@ -2,8 +2,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { State } from 'reducers';
 import { ModuleCode, ModuleCondensed } from 'types/modules';
+import { State } from 'types/state';
 
 import { modulePage } from 'views/routes/paths';
 import Tooltip from 'views/components/Tooltip';

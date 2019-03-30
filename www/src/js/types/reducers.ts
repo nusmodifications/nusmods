@@ -1,14 +1,15 @@
+import { Mode } from './settings';
+import { ColorIndex, Lesson, TimetableConfig } from './timetables';
 import {
   Faculty,
-  Lesson,
+  Module,
   ModuleCode,
   ModuleCondensed,
   SearchableModule,
   Semester,
-} from 'types/modules';
-import { Mode } from 'types/settings';
-import { TimetableConfig } from 'types/timetables';
-import { ModuleTableOrder } from 'types/views';
+} from './modules';
+import { CustomModuleData, ModuleTime } from './planner';
+import { VenueList } from './venues';
 
 /* app.js */
 export type NotificationOptions = {
@@ -87,6 +88,8 @@ export type CorsNotificationSettings = {
   readonly dismissed: string[];
 };
 
+export type ModuleTableOrder = 'exam' | 'mc' | 'code';
+
 export type SettingsState = {
   readonly newStudent: boolean;
   readonly faculty: Faculty | null;
@@ -99,7 +102,6 @@ export type SettingsState = {
 };
 
 /* timetables.js */
-export type ColorIndex = number;
 
 // Mapping of module to color index [0, NUM_DIFFERENT_COLORS)
 export type ColorMapping = { [moduleCode: string]: ColorIndex };
@@ -115,43 +117,11 @@ export type TimetablesState = {
   readonly archive: { [key: string]: TimetableConfig };
 };
 
-/* moduleBank.js */
-export type ModuleSelectListItem = SearchableModule & {
-  readonly isAdded: boolean;
-  readonly isAdding: boolean;
-};
-export type ModuleList = ModuleCondensed[];
-export type ModuleSelectList = ModuleSelectListItem[];
-export type ModuleCodeMap = { [moduleCode: string]: ModuleCondensed };
-
 /* venueBank.js */
 // VenueList is defined in venues.js
 
-/* moduleFinder.js */
-export type ModuleSearch = {
-  readonly term: string;
-  readonly tokens: string[];
-};
-
-export type ModuleFinderState = {
-  readonly search: ModuleSearch;
-};
-
 /* planner.js */
-// The year, semester the module will be taken in, and the order
-// it appears on the list for the semester
-export type ModuleTime = [string, Semester, number];
-
-export type CustomModule = {
-  // For modules which the school no longer offers, we let students
-  // key in the name and MCs manually
-  readonly title?: string | null;
-  readonly moduleCredit: number;
-};
-
-export type CustomModuleData = {
-  [moduleCode: string]: CustomModule;
-};
+// Also see moduleReducers.ts
 
 // Mapping modules to when they will be taken
 export type PlannerState = {
@@ -164,4 +134,59 @@ export type PlannerState = {
   };
 
   readonly custom: CustomModuleData;
+};
+
+/* moduleBank.js */
+export type ModuleSelectListItem = SearchableModule & {
+  readonly isAdded: boolean;
+  readonly isAdding: boolean;
+};
+
+/* moduleFinder.js */
+export type ModuleSearch = {
+  readonly term: string;
+  readonly tokens: string[];
+};
+
+export type ModuleFinderState = {
+  readonly search: ModuleSearch;
+};
+export type ModuleList = ModuleCondensed[];
+export type ModuleSelectList = ModuleSelectListItem[];
+export type ModuleCodeMap = { [moduleCode: string]: ModuleCondensed };
+export type ModuleArchive = {
+  [moduleCode: string]: {
+    // Mapping acad year to module info
+    [key: string]: Module;
+  };
+};
+
+/**
+ * moduleBank types
+ */
+export type ModulesMap = {
+  [moduleCode: string]: Module;
+};
+export type ModuleBank = {
+  moduleList: ModuleList;
+  modules: ModulesMap;
+  moduleCodes: ModuleCodeMap;
+  moduleArchive: ModuleArchive;
+  apiLastUpdatedTimestamp: string | null;
+};
+
+/**
+ * undoHistory types
+ */
+export type UndoHistoryState = {
+  past: Record<string, any>[];
+  present: Record<string, any> | undefined;
+  future: Record<string, any>[];
+};
+
+/**
+ * venueBank types
+ */
+export type VenueBank = {
+  readonly venueList: VenueList;
 };

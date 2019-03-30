@@ -1,7 +1,8 @@
 import { ModuleFinderState } from 'types/reducers';
-import { FSA } from 'types/redux';
 import produce from 'immer';
-import { SEARCH_MODULES, RESET_MODULE_FINDER } from 'actions/moduleFinder';
+
+import { FSA } from 'types/redux';
+import { RESET_MODULE_FINDER, SEARCH_MODULES } from 'actions/moduleFinder';
 import { tokenize } from 'utils/moduleSearch';
 
 const defaultState: ModuleFinderState = {

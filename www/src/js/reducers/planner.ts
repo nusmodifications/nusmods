@@ -1,17 +1,17 @@
 import produce from 'immer';
-import { pull, max, min } from 'lodash';
+import { max, min, pull } from 'lodash';
 
 import { PlannerState } from 'types/reducers';
 import { FSA } from 'types/redux';
 import { ModuleCode } from 'types/modules';
 import {
+  ADD_CUSTOM_PLANNER_DATA,
   ADD_PLANNER_MODULE,
   MOVE_PLANNER_MODULE,
   REMOVE_PLANNER_MODULE,
   SET_PLANNER_IBLOCS,
   SET_PLANNER_MAX_YEAR,
   SET_PLANNER_MIN_YEAR,
-  ADD_CUSTOM_PLANNER_DATA,
 } from 'actions/planner';
 import { filterModuleForSemester } from 'selectors/planner';
 import config from 'config';

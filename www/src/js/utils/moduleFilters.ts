@@ -1,9 +1,9 @@
-import { map, each, isEmpty, kebabCase, values, flatten } from 'lodash';
+import { each, flatten, kebabCase, map, values } from 'lodash';
 import produce from 'immer';
 import qs from 'query-string';
 
-import { FilterGroups, FacultyDepartments } from 'types/views';
-import { Faculty, Department, ModuleLevel, ModuleInformation } from 'types/modules';
+import { FacultyDepartments, FilterGroups } from 'types/views';
+import { Department, Faculty, ModuleInformation, ModuleLevel } from 'types/modules';
 
 import config from 'config';
 import LevelFilter from 'utils/filters/LevelFilter';

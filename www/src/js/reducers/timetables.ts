@@ -19,8 +19,8 @@ import {
   SET_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
 } from 'actions/timetables';
-import { SET_EXPORTED_DATA } from 'actions/export';
 import { getNewColor } from 'utils/colors';
+import { SET_EXPORTED_DATA } from 'actions/constants';
 
 const EMPTY_OBJECT = {};
 

@@ -7,7 +7,6 @@ import { each, mapValues, values } from 'lodash';
 
 import { ModuleInformation } from 'types/modules';
 import { AnyGroup, FacultyDepartments, FilterGroups, PageRange, PageRangeDiff } from 'types/views';
-import { State as StoreState } from 'reducers';
 
 import ModuleFinderList from 'views/modules/ModuleFinderList';
 import ModuleSearchBox from 'views/modules/ModuleSearchBox';
@@ -22,14 +21,14 @@ import Omelette, { matchEgg } from 'views/components/Omelette';
 import { forceInstantSearch } from 'utils/debug';
 import {
   defaultGroups,
-  updateGroups,
-  serializeGroups,
   DEPARTMENT,
   EXAMS,
   FACULTY,
   LEVELS,
   MODULE_CREDITS,
   SEMESTER,
+  serializeGroups,
+  updateGroups,
 } from 'utils/moduleFilters';
 import { createSearchFilter, SEARCH_QUERY_KEY, sortModules } from 'utils/moduleSearch';
 import nusmods from 'apis/nusmods';
@@ -39,6 +38,7 @@ import HistoryDebouncer from 'utils/HistoryDebouncer';
 import { defer } from 'utils/react';
 import { breakpointUp, queryMatch } from 'utils/css';
 import { captureException } from 'utils/error';
+import { State as StoreState } from 'types/state';
 import styles from './ModuleFinderContainer.scss';
 
 export type Props = {

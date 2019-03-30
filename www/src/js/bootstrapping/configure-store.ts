@@ -1,12 +1,13 @@
 import { createStore, applyMiddleware, compose, Store } from 'redux';
 import { persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
-import rootReducer, { State } from 'reducers';
+import rootReducer from 'reducers';
 import requestsMiddleware from 'middlewares/requests-middleware';
 import ravenMiddleware from 'middlewares/raven-middleware';
 import { setAutoFreeze } from 'immer';
 
 import { FSA, GetState } from 'types/redux';
+import { State } from 'types/state';
 
 // For redux-devtools-extensions - see
 // https://github.com/zalmoxisus/redux-devtools-extension

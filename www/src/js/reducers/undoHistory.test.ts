@@ -1,12 +1,13 @@
-import { undo, redo } from 'actions/undoHistory';
 import produce from 'immer';
 import { pick } from 'lodash';
+
+import { redo, undo } from 'actions/undoHistory';
 import undoHistory, {
   computeUndoStacks,
   mergePresent,
-  UndoHistoryState,
   UndoHistoryConfig,
 } from 'reducers/undoHistory';
+import { UndoHistoryState } from 'types/reducers';
 
 const WATCHED_ACTION = 'WATCHED_ACTION';
 const IGNORED_ACTION = 'IGNORED_ACTION';
