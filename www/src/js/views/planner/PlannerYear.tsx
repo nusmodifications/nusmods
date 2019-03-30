@@ -10,7 +10,6 @@ import { Minus, Plus } from 'views/components/icons';
 import { renderMCs } from 'utils/modules';
 import PlannerSemester from './PlannerSemester';
 import styles from './PlannerYear.scss';
-import PlannerModule from './PlannerModule';
 
 type Props = Readonly<{
   name: string; // eg. iBLOCs, Year 1, etc.

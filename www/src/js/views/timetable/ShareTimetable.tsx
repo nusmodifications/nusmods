@@ -9,7 +9,7 @@ import { Semester } from 'types/modules';
 
 import config from 'config';
 import { absolutePath, timetableShare } from 'views/routes/paths';
-import { Repeat, Copy, Mail } from 'views/components/icons';
+import { Copy, Mail, Repeat } from 'views/components/icons';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import LoadingSpinner from 'views/components/LoadingSpinner';

@@ -15,8 +15,8 @@ import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import { modulePage } from 'views/routes/paths';
 
 import ModuleMenu from './ModuleMenu';
-import styles from './PlannerModule.scss';
 import PlannerModuleSelect from './PlannerModuleSelect';
+import styles from './PlannerModule.scss';
 
 type Props = Readonly<{
   // Module information

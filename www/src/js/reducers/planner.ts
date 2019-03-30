@@ -1,23 +1,24 @@
 import produce from 'immer';
-import { pull, max, min, each } from 'lodash';
+import { max, min, pull, each } from 'lodash';
 import { createMigrate } from 'redux-persist';
 
 import { PlannerState } from 'types/reducers';
 import { FSA } from 'types/redux';
 import { Semester } from 'types/modules';
+import { Omit } from 'types/utils';
+
 import {
+  ADD_CUSTOM_PLANNER_DATA,
   ADD_PLANNER_MODULE,
   MOVE_PLANNER_MODULE,
   REMOVE_PLANNER_MODULE,
   SET_PLANNER_IBLOCS,
   SET_PLANNER_MAX_YEAR,
   SET_PLANNER_MIN_YEAR,
-  ADD_CUSTOM_PLANNER_DATA,
   SET_PLACEHOLDER_MODULE,
 } from 'actions/planner';
 import { filterModuleForSemester } from 'selectors/planner';
 import config from 'config';
-import { Omit } from '../types/utils';
 
 const defaultPlannerState: PlannerState = {
   minYear: config.academicYear,

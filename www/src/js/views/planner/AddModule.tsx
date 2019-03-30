@@ -6,7 +6,7 @@ import { Semester } from 'types/modules';
 import { AddModuleData } from 'types/planner';
 import { placeholderGroups } from 'utils/placeholders';
 
-import { Plus, Close } from 'views/components/icons';
+import { Close, Plus } from 'views/components/icons';
 import PlannerModuleSelect from './PlannerModuleSelect';
 import styles from './AddModule.scss';
 

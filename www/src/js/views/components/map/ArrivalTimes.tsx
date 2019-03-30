@@ -1,9 +1,8 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { sortBy, entries } from 'lodash';
+import { entries, sortBy } from 'lodash';
 
-import { BusTiming } from 'types/views';
-import { NextBus, NextBusTime } from 'types/venues';
+import { BusTiming, NextBus, NextBusTime } from 'types/venues';
 import { Refresh } from 'views/components/icons';
 import styles from './BusStops.scss';
 

@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 
+import { State } from 'types/state';
+
 import { ModuleCode, ModuleCondensed, Semester } from 'types/modules';
-import { State } from 'reducers';
 import { createSearchPredicate } from 'utils/moduleSearch';
 import { takeUntil } from 'utils/array';
 

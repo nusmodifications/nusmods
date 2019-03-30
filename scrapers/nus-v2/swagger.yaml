@@ -356,6 +356,7 @@ paths:
                           day: 'Wednesday'
                           lessonType: 'Lecture'
                           moduleCode: 'CS5322'
+                          size: 40
                       availability:
                         0900: 'occupied'
                         0930: 'occupied'
@@ -526,6 +527,9 @@ components:
         lessonType:
           type: 'string'
           example: 'Tutorial'
+        size:
+          type: 'number'
+          example: 30
 
     ModuleCondensed:
       required:

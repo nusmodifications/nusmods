@@ -1,12 +1,13 @@
+import produce, { immerable } from 'immer';
 import { keyBy, values } from 'lodash';
-import update from 'immutability-helper';
 
 import { ModuleCode, ModuleInformation } from 'types/modules';
-import { FilterGroupId } from 'types/views';
 import { notNull } from 'types/utils';
 
 import { intersection, union } from 'utils/set';
 import ModuleFilter from './ModuleFilter';
+
+export type FilterGroupId = string;
 
 export const ID_DELIMITER = ',';
 
@@ -33,6 +34,8 @@ export const ID_DELIMITER = ',';
  * URL to be updated when filters are turned on and off.
  */
 export default class FilterGroup<Filter extends ModuleFilter> {
+  static [immerable] = true;
+
   id: FilterGroupId;
 
   label: string;
@@ -65,16 +68,15 @@ export default class FilterGroup<Filter extends ModuleFilter> {
   }
 
   toggle(idOrFilter: string | Filter, value?: boolean): FilterGroup<Filter> {
-    const id = idOrFilter instanceof ModuleFilter ? idOrFilter.id : idOrFilter;
+    const id = typeof idOrFilter === 'string' ? idOrFilter : idOrFilter.id;
     if (!this.filters[id]) return this;
 
     const newValue = typeof value === 'boolean' ? value : !this.filters[id].enabled;
-    const updated = update(this, {
-      // @ts-ignore
-      filters: { [id]: { enabled: { $set: newValue } } },
+    const updated = produce(this, (draft) => {
+      draft.filters[id].enabled = newValue;
     });
-    updated.updateActiveFilters();
 
+    updated.updateActiveFilters();
     return updated;
   }
 

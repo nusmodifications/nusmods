@@ -1,5 +1,5 @@
 import { ShallowWrapper, ReactWrapper } from 'enzyme';
-import { ColorIndex } from 'types/reducers';
+import { ColorIndex } from 'types/timetables';
 
 export function expectColor(element: ReactWrapper | ShallowWrapper, color?: ColorIndex) {
   if (color == null) {

@@ -2,9 +2,10 @@ import * as React from 'react';
 import classnames from 'classnames';
 
 import { HoverLesson, TimetableDayArrangement } from 'types/timetables';
-import { OnHoverCell, OnModifyCell, TimePeriod } from 'types/views';
+import { OnHoverCell, OnModifyCell } from 'types/views';
 import { convertTimeToIndex } from 'utils/timify';
 
+import { TimePeriod } from 'types/venues';
 import styles from './TimetableDay.scss';
 import TimetableRow from './TimetableRow';
 import CurrentTimeIndicator from './CurrentTimeIndicator';

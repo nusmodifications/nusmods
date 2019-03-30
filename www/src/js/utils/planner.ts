@@ -1,8 +1,8 @@
 import { flatten, sum } from 'lodash';
-import { ModuleCode, Semester, PrereqTree } from 'types/modules';
+import { ModuleCode, PrereqTree, Semester } from 'types/modules';
 import { PlannerModuleInfo } from 'types/planner';
 import config from 'config';
-import { notNull } from '../types/utils';
+import { notNull } from 'types/utils';
 
 // "Exemption" and "plan to take" modules are special columns used to hold modules
 // outside the normal planner. "Exemption" modules are coded as -1 year so

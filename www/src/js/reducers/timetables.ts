@@ -1,5 +1,5 @@
 import { get, omit, values } from 'lodash';
-import update from 'immutability-helper';
+import produce from 'immer';
 import { createMigrate } from 'redux-persist';
 
 import { PersistConfig } from 'storage/persistReducer';
@@ -19,8 +19,8 @@ import {
   SET_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
 } from 'actions/timetables';
-import { SET_EXPORTED_DATA } from 'actions/export';
 import { getNewColor } from 'utils/colors';
+import { SET_EXPORTED_DATA } from 'actions/constants';
 
 const EMPTY_OBJECT = {};
 
@@ -181,13 +181,9 @@ function timetables(state: TimetablesState = defaultTimetableState, action: FSA)
     case SET_TIMETABLE: {
       const { semester, timetable, colors } = action.payload;
 
-      return update(state, {
-        lessons: {
-          [semester]: { $set: timetable || defaultSemTimetableConfig },
-        },
-        colors: {
-          [semester]: { $set: colors || {} },
-        },
+      return produce(state, (draft) => {
+        draft.lessons[semester] = timetable || defaultSemTimetableConfig;
+        draft.colors[semester] = colors || {};
       });
     }
 
@@ -200,16 +196,10 @@ function timetables(state: TimetablesState = defaultTimetableState, action: FSA)
     case SHOW_LESSON_IN_TIMETABLE: {
       const { semester } = action.payload;
 
-      return update(state, {
-        lessons: {
-          [semester]: { $set: semTimetable(state.lessons[semester], action) },
-        },
-        colors: {
-          [semester]: { $set: semColors(state.colors[semester], action) },
-        },
-        hidden: {
-          [semester]: { $set: semHiddenModules(state.hidden[semester], action) },
-        },
+      return produce(state, (draft) => {
+        draft.lessons[semester] = semTimetable(draft.lessons[semester], action);
+        draft.colors[semester] = semColors(state.colors[semester], action);
+        draft.hidden[semester] = semHiddenModules(state.hidden[semester], action);
       });
     }
 

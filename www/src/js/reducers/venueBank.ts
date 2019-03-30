@@ -1,12 +1,6 @@
-import { FSA } from 'types/redux';
-import { VenueList } from 'types/venues';
-
 import { FETCH_VENUE_LIST } from 'actions/venueBank';
-import { SUCCESS } from 'types/reducers';
-
-export type VenueBank = {
-  readonly venueList: VenueList;
-};
+import { SUCCESS, VenueBank } from 'types/reducers';
+import { FSA } from 'types/redux';
 
 const defaultModuleBankState: VenueBank = {
   venueList: [], // List of venue strings

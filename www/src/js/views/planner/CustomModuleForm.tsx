@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { State as StoreState } from 'reducers';
 import { CustomModule } from 'types/reducers';
 import { Module, ModuleCode } from 'types/modules';
+import { State as StoreState } from 'types/state';
 
 import Tooltip from 'views/components/Tooltip/Tooltip';
 import { addCustomModule } from 'actions/planner';

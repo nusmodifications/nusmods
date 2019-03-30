@@ -4,6 +4,7 @@ import { FSA, GetState } from 'types/redux';
 import { hydrateSemTimetableWithLessons } from 'utils/timetables';
 import { captureException, retryImport } from 'utils/error';
 import { getSemesterTimetable } from 'reducers/timetables';
+import { SET_EXPORTED_DATA } from './constants';
 
 function downloadUrl(blob: Blob, filename: string) {
   const link = document.createElement('a');
@@ -49,7 +50,6 @@ export function downloadAsIcal(semester: Semester) {
   };
 }
 
-export const SET_EXPORTED_DATA = 'SET_EXPORTED_DATA';
 export function setExportedData(modules: Module[], data: ExportData): FSA {
   return {
     type: SET_EXPORTED_DATA,

@@ -3,16 +3,15 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 
 import { Mode, ThemeId } from 'types/settings';
-import { State as StoreState } from 'reducers';
-import { Tracker } from 'types/views';
+import { Tracker } from 'types/vendor/piwik';
 
 import availableThemes from 'data/themes.json';
 import { selectTheme } from 'actions/theme';
 import {
   selectFaculty,
   selectMode,
-  toggleBetaTesting,
   setLoadDisqusManually,
+  toggleBetaTesting,
 } from 'actions/settings';
 import ScrollToTop from 'views/components/ScrollToTop';
 import Timetable from 'views/timetable/Timetable';
@@ -24,6 +23,7 @@ import { supportsCSSVariables } from 'utils/css';
 import { withTracker } from 'bootstrapping/matomo';
 import ExternalLink from 'views/components/ExternalLink';
 import Toggle from 'views/components/Toggle';
+import { State as StoreState } from 'types/state';
 
 import ThemeOption from './ThemeOption';
 import ModeSelect from './ModeSelect';

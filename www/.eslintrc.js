@@ -35,9 +35,6 @@ module.exports = {
     'no-alert': 'off',
     'prefer-destructuring': 'off',
 
-    // TODO: Should fix this - we don't want to accidentally create unresolvable dep chains
-    'import/no-cycle': 'off',
-
     'import/extensions': [
       warnInDevelopment,
       'always',

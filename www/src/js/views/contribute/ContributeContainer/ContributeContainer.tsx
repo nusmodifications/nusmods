@@ -2,21 +2,20 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
-import { map, mapValues, values, flatten } from 'lodash';
+import { flatten, map, mapValues, values } from 'lodash';
 
 import { ModuleCondensed } from 'types/modules';
 
 import { toggleFeedback } from 'actions/app';
 import { toggleBetaTesting } from 'actions/settings';
 import { modulePage } from 'views/routes/paths';
-import { Zap, DollarSign } from 'views/components/icons';
+import { DollarSign, Zap } from 'views/components/icons';
 import ExternalLink from 'views/components/ExternalLink';
 import ScrollToTop from 'views/components/ScrollToTop';
 import Title from 'views/components/Title';
 import { FeedbackButtons } from 'views/components/FeedbackModal';
 import { getModuleCondensed } from 'selectors/moduleBank';
 import { currentTests } from 'views/settings/BetaToggle';
-import { State as StoreState } from 'reducers';
 import { notNull } from 'types/utils';
 import config from 'config';
 
@@ -28,6 +27,7 @@ import BugReportIcon from 'img/icons/bug-report.svg';
 import DeveloperIcon from 'img/icons/programmer.svg';
 import ContributeIcon from 'img/icons/love.svg';
 import VenueIcon from 'img/icons/compass.svg';
+import { State as StoreState } from 'types/state';
 
 import UnmappedVenues from '../UnmappedVenues';
 import ContributorList from '../ContributorList';
