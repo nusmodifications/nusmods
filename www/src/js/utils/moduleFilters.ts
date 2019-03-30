@@ -1,5 +1,5 @@
-import { each, flatten, isEmpty, kebabCase, map, values } from 'lodash';
-import update, { Spec } from 'immutability-helper';
+import { each, flatten, kebabCase, map, values } from 'lodash';
+import produce from 'immer';
 import qs from 'query-string';
 
 import { FacultyDepartments, FilterGroups } from 'types/views';
@@ -25,16 +25,14 @@ const moduleLevels: ModuleLevel[] = [1, 2, 3, 4, 5, 6, 8];
  */
 export function updateGroups(groups: FilterGroups, query: string): FilterGroups {
   const params = qs.parse(query);
-  const updater: Spec<FilterGroups> = {};
 
-  each(groups, (group) => {
-    const currentQuery = group.toQueryString();
-    if (currentQuery === params[group.id] || (!params[group.id] && !currentQuery)) return;
-    updater[group.id] = { $set: group.fromQueryString(params[group.id]) };
+  return produce(groups, (draft) => {
+    each(draft, (group) => {
+      const currentQuery = group.toQueryString();
+      if (currentQuery === params[group.id] || (!params[group.id] && !currentQuery)) return;
+      draft[group.id] = group.fromQueryString(params[group.id]);
+    });
   });
-
-  if (isEmpty(updater)) return groups;
-  return update(groups, updater);
 }
 
 /**

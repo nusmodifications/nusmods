@@ -1,3 +1,6 @@
+import produce from 'immer';
+import { keyBy, omit, size, zipObject } from 'lodash';
+
 import {
   FETCH_ARCHIVE_MODULE,
   FETCH_MODULE,
@@ -6,8 +9,6 @@ import {
   UPDATE_MODULE_TIMESTAMP,
   SET_EXPORTED_DATA,
 } from 'actions/constants';
-import update from 'immutability-helper';
-import { keyBy, omit, size, zipObject } from 'lodash';
 import { createMigrate, REHYDRATE } from 'redux-persist';
 import { Module } from 'types/modules';
 import { ModuleBank, ModuleList, SUCCESS } from 'types/reducers';
@@ -74,16 +75,12 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
         return state;
       }
 
-      return update(state, {
-        moduleArchive: {
-          [action.payload.moduleCode]: {
-            $auto: {
-              [meta.academicYear]: {
-                $auto: { $set: action.payload },
-              },
-            },
-          },
-        },
+      return produce(state, (draft) => {
+        if (!draft.moduleArchive[action.payload.ModuleCode]) {
+          draft.moduleArchive[action.payload.ModuleCode] = {};
+        }
+
+        draft.moduleArchive[action.payload.ModuleCode][meta.academicYear] = action.payload;
       });
     }
 
