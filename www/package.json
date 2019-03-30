@@ -143,7 +143,6 @@
     "downshift": "2.2.3",
     "ical-generator": "https://github.com/ZhangYiJiang/ical-generator.git#ed6928fe",
     "immer": "2.1.4",
-    "immutability-helper": "2.9.1",
     "json2mq": "0.2.0",
     "leaflet": "1.4.0",
     "leaflet-gesture-handling": "1.1.8",
