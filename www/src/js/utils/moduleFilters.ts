@@ -3,7 +3,14 @@ import produce from 'immer';
 import qs from 'query-string';
 
 import { FacultyDepartments, FilterGroups } from 'types/views';
-import { Department, Faculty, ModuleInformation, ModuleLevel } from 'types/modules';
+import {
+  Department,
+  Faculty,
+  ModuleInformation,
+  ModuleLevel,
+  NUSModuleAttributes,
+  attributeDescription,
+} from 'types/modules';
 
 import config from 'config';
 import LevelFilter from 'utils/filters/LevelFilter';
@@ -17,6 +24,7 @@ export const SEMESTER = 'sem';
 export const FACULTY = 'faculty';
 export const DEPARTMENT = 'department';
 export const EXAMS = 'exam';
+export const ATTRIBUTES = 'attr';
 
 const moduleLevels: ModuleLevel[] = [1, 2, 3, 4, 5, 6, 8];
 
@@ -78,6 +86,14 @@ function makeExamFilter() {
   ]);
 }
 
+function makeAttributeFilter(attribute: keyof NUSModuleAttributes): Filter {
+  return new Filter(
+    attribute,
+    attributeDescription[attribute],
+    (module: ModuleInformation) => !!module.attributes && !!module.attributes[attribute],
+  );
+}
+
 export function defaultGroups(facultyMap: FacultyDepartments, query: string = ''): FilterGroups {
   const params = qs.parse(query);
 
@@ -119,6 +135,14 @@ export function defaultGroups(facultyMap: FacultyDepartments, query: string = ''
     [FACULTY]: makeFacultyFilterGroup(faculties),
 
     [EXAMS]: makeExamFilter(),
+
+    [ATTRIBUTES]: new FilterGroup(ATTRIBUTES, 'Others', [
+      makeAttributeFilter('su'),
+      makeAttributeFilter('ssgf'),
+      makeAttributeFilter('sfs'),
+      makeAttributeFilter('lab'),
+      makeAttributeFilter('ism'),
+    ]),
   };
 
   // Search query group

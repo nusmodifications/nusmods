@@ -4,6 +4,7 @@ import AlertTriangle from 'react-feather/dist/icons/alert-triangle';
 import Archive from 'react-feather/dist/icons/archive';
 import BookOpen from 'react-feather/dist/icons/book-open';
 import Calendar from 'react-feather/dist/icons/calendar';
+import Check from 'react-feather/dist/icons/check';
 import ChevronLeft from 'react-feather/dist/icons/chevron-left';
 import ChevronRight from 'react-feather/dist/icons/chevron-right';
 import ChevronDown from 'react-feather/dist/icons/chevron-down';
@@ -51,6 +52,7 @@ export {
   AlertTriangle,
   BookOpen,
   Calendar,
+  Check,
   ChevronLeft,
   ChevronRight,
   ChevronDown,

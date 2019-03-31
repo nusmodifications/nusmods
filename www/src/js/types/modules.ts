@@ -90,6 +90,30 @@ export type SemesterDataCondensed = Readonly<{
   // The full timetable is not provided to reduce space
 }>;
 
+type AttributeMap = {
+  year: boolean; // Year long
+  su: boolean; // Can S/U
+  ssgf: boolean; // SkillsFuture Funded
+  sfs: boolean; // SkillsFuture series
+  lab: boolean; // Lab based
+  ism: boolean; // Independent study
+  urop: boolean; // Undergraduate Research Opportunities Program
+  fyp: boolean; // Honours / Final Year Project
+};
+
+export type NUSModuleAttributes = Partial<AttributeMap>;
+
+export const attributeDescription: { [key in keyof AttributeMap]: string } = {
+  year: 'Year long module',
+  su: 'Has S/U option',
+  ssgf: 'SkillsFuture funded',
+  sfs: 'SkillsFuture series',
+  lab: 'Lab based module',
+  ism: 'Independent study module',
+  urop: 'Undergraduate Research Opportunities Program',
+  fyp: 'Honours / Final Year Project',
+};
+
 // RawLesson is a lesson time slot obtained from the API.
 // Lessons do not implement a modifiable interface.
 // They have to be injected in before using in the timetable.
@@ -134,6 +158,8 @@ export type ModuleInformation = Readonly<{
   department: Department;
   faculty: Faculty;
   workload?: Workload;
+  aliases?: ModuleCode[];
+  attributes?: NUSModuleAttributes;
 
   // Requsites
   prerequisite?: string;
@@ -161,6 +187,7 @@ export type Module = {
   faculty: Faculty;
   workload?: Workload;
   aliases?: ModuleCode[];
+  attributes?: NUSModuleAttributes;
 
   // Requsites
   prerequisite?: string;
