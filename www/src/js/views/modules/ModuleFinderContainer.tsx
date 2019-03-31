@@ -29,6 +29,7 @@ import {
   SEMESTER,
   serializeGroups,
   updateGroups,
+  ATTRIBUTES,
 } from 'utils/moduleFilters';
 import { createSearchFilter, SEARCH_QUERY_KEY, sortModules } from 'utils/moduleSearch';
 import nusmods from 'apis/nusmods';
@@ -353,6 +354,8 @@ export class ModuleFinderContainerComponent extends React.Component<Props, State
                 <DropdownListFilters group={groups[FACULTY]} {...filterProps} />
 
                 <DropdownListFilters group={groups[DEPARTMENT]} {...filterProps} />
+
+                <ChecklistFilters group={groups[ATTRIBUTES]} {...filterProps} />
               </div>
             </SideMenu>
           </div>
