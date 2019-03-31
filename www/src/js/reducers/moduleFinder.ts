@@ -1,6 +1,7 @@
 import { ModuleFinderState } from 'types/reducers';
+import produce from 'immer';
+
 import { FSA } from 'types/redux';
-import update from 'immutability-helper';
 import { RESET_MODULE_FINDER, SEARCH_MODULES } from 'actions/moduleFinder';
 import { tokenize } from 'utils/moduleSearch';
 
@@ -21,11 +22,9 @@ export default function moduleFinder(
 
     case SEARCH_MODULES: {
       const term = action.payload.searchTerm;
-      return update(state, {
-        search: {
-          term: { $set: term },
-          tokens: { $set: tokenize(term) },
-        },
+      return produce(state, (draft) => {
+        draft.search.term = term;
+        draft.search.tokens = tokenize(term);
       });
     }
 

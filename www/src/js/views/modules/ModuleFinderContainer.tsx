@@ -2,7 +2,7 @@ import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import update from 'immutability-helper';
+import produce from 'immer';
 import { each, mapValues, values } from 'lodash';
 
 import { ModuleInformation } from 'types/modules';
@@ -134,13 +134,15 @@ export class ModuleFinderContainerComponent extends React.Component<Props, State
 
   onFilterChange = (newGroup: AnyGroup, resetScroll: boolean = true) => {
     this.setState(
-      (state) =>
-        update(state, {
-          // Update filter group with its new state
-          filterGroups: { [newGroup.id]: { $set: newGroup } },
-          // Reset back to the first page
-          page: { $merge: { start: 0, current: 0 } },
-        }),
+      produce((draft) => {
+        // Update filter group with its new state
+        draft.filterGroups[newGroup.id] = newGroup;
+
+        // Reset back to the first page
+        draft.page.start = 0;
+        draft.page.current = 0;
+      }),
+
       () => {
         this.updateQueryString();
 
