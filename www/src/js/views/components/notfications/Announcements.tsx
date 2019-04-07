@@ -2,11 +2,13 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
+import config from 'config';
 import storage from 'storage';
 import { announcementKey } from 'storage/keys';
 import { toggleFeedback } from 'actions/app';
 import { Heart } from 'views/components/icons';
 import CloseButton from 'views/components/CloseButton';
+import ExternalLink from 'views/components/ExternalLink';
 import styles from './Announcements.scss';
 
 type Props = {
@@ -55,13 +57,14 @@ class Announcements extends React.PureComponent<Props, State> {
           <h3>
             NUSMods{' '}
             <span role="img" aria-label="hearts">
-              💖
+              ❤️
             </span>{' '}
             NUS
           </h3>
           <p>
-            We&apos;re official! NUSMods now uses data provided directly from the registrar office,
-            which means better and more accurate information for you.
+            We&apos;re official! NUSMods now uses data provided directly by NUS Registrar&apos;s
+            Office and NUSIT, which means better and more accurate information for you.{' '}
+            <ExternalLink href={`${config.contact.blog}/title`}>Learn more.</ExternalLink>
           </p>
         </div>
 
