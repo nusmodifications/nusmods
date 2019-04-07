@@ -64,7 +64,9 @@ class Announcements extends React.PureComponent<Props, State> {
           <p>
             We&apos;re official! NUSMods now uses data provided directly by NUS Registrar&apos;s
             Office and NUSIT, which means better and more accurate information for you.{' '}
-            <ExternalLink href={`${config.contact.blog}/title`}>Learn more.</ExternalLink>
+            <ExternalLink href={`${config.contact.blog}/nusmods-is-official`}>
+              Learn more.
+            </ExternalLink>
           </p>
         </div>
 
