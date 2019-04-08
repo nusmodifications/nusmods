@@ -1,12 +1,11 @@
 import { RouteComponentProps } from 'react-router-dom';
+// createMemoryHistory, react-router-dom's internal dependency,
+// is used here to construct the history object needed for testing.
+// This is not added as a dev dependency to avoid version desync
+// between the version depended on by react-router-dom
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Location } from 'history';
+import { createMemoryHistory, Location } from 'history';
 import _ from 'lodash';
-
-// react-router-dom internal dependency, used here to construct the history
-// object needed for testing. This is not added as a dev dependency to avoid
-// version desync between the version depended on by react-router-dom
-import createMemoryHistory from 'history/createMemoryHistory'; // eslint-disable-line import/no-extraneous-dependencies
 
 type MatchShape = {
   params?: { [key: string]: string | null | undefined };

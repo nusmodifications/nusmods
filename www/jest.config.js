@@ -2,6 +2,7 @@ module.exports = {
   roots: ['<rootDir>/src/js'],
   moduleDirectories: ['node_modules', '<rootDir>/src/js'],
   moduleFileExtensions: ['jsx', 'js', 'ts', 'tsx'],
+  modulePathIgnorePatterns: ['node_modules'],
   testPathIgnorePatterns: [],
   testRegex: 'src/js/.+\\.test\\.[jt]sx?$',
   setupFiles: ['<rootDir>/scripts/test.js'],

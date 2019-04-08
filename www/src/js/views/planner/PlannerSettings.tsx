@@ -45,7 +45,6 @@ function graduationLabel(offset: number) {
 function buttonProps(selected: boolean, disabled: boolean) {
   return {
     disabled,
-    type: 'button',
     className: classnames('btn btn-block', {
       'btn-outline-secondary': disabled,
       'btn-outline-primary': !selected && !disabled,
@@ -69,8 +68,8 @@ export function PlannerSettingsComponent(props: Props) {
             return (
               <li key={year}>
                 <button
-                  type="button"
                   onClick={() => props.setMinYear(year)}
+                  type="button"
                   {...buttonProps(props.minYear === year, year > props.maxYear)}
                 >
                   AY{acadYearLabel(year)}
@@ -94,8 +93,8 @@ export function PlannerSettingsComponent(props: Props) {
           {graduationLabels.map((year, offset) => (
             <li key={year}>
               <button
-                type="button"
                 onClick={() => props.setMaxYear(year)}
+                type="button"
                 {...buttonProps(props.maxYear === year, year < props.minYear)}
               >
                 {graduationLabel(offset)}
