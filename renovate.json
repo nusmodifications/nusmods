@@ -62,6 +62,12 @@
       "packagePatterns": ["(redux|reselect|immer)"],
       "excludePackagePatterns": ["redux-mock"],
       "groupName": "state-management"
+    },
+    {
+      "description": "Group typescript typings together",
+      "packagePatterns": ["^@types/"],
+      "excludePackageNames": ["react(-dom|-router)?$", "(redux|reselect|immer)"],
+      "groupName": "definitelyTyped"
     }
   ],
 <<<<<<< HEAD
