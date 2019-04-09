@@ -1,7 +1,7 @@
 {
   "extends": [
     "config:base",
-    "schedule:earlyMondays",
+    "schedule:weekends",
     "group:babelMonorepo",
     "group:materialMonorepo",
     ":automergePr",
