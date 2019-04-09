@@ -4,9 +4,9 @@
     "schedule:weekends",
     "group:babelMonorepo",
     "group:materialMonorepo",
-    ":automergePr",
+    ":automergeBranchPush",
     ":automergeRequireAllStatusChecks",
-    ":automergeLinters",
+    ":automergeMinor",
     ":prConcurrentLimit10",
     ":label(dependencies)",
     ":timezone(Asia/Singapore)"
@@ -66,19 +66,11 @@
     {
       "description": "Group typescript typings together",
       "packagePatterns": ["^@types/"],
-      "excludePackageNames": ["react(-dom|-router)?$", "(redux|reselect|immer)"],
+      "excludePackageNames": ["react(-dom|-router)?$", "(redux|reselect|immer|query-string)"],
       "groupName": "definitelyTyped"
     }
   ],
-<<<<<<< HEAD
-<<<<<<< HEAD
-  "ignoreDeps": ["stylelint"],
-=======
-  "excludePackageNames": ["query-string"],
->>>>>>> Update renovate config
-=======
   "ignoreDeps": ["query-string"],
->>>>>>> Fix renovate config
   "pathRules": [
     {
       "paths": ["packages/**"],
