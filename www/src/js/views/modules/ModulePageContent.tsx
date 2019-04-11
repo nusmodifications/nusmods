@@ -25,7 +25,7 @@ import AddModuleDropdown from 'views/components/module-info/AddModuleDropdown';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
 import ScrollToTop from 'views/components/ScrollToTop';
-import { Archive, Check } from 'views/components/icons';
+import { Archive, Check, AlertTriangle } from 'views/components/icons';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
 
 import styles from './ModulePageContent.scss';
@@ -207,6 +207,12 @@ export default class ModulePageContent extends React.Component<Props, State> {
                       <AddModuleDropdown module={module} className="btn-group-sm" block />
                     </div>
                   )}
+
+                  <p>
+                    <a className="" href="mailto:modules@nusmods.com">
+                      <AlertTriangle /> Report errors
+                    </a>
+                  </p>
                 </div>
               </section>
             </div>

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import config from 'config';
 import ExternalLink from 'views/components/ExternalLink';
 import StaticPage from './StaticPage';
@@ -71,33 +72,18 @@ export default function FaqContainer() {
             semester.
           </li>
         </ul>
-        <p>
-          We do not update module data manually. All module data shown in NUSMods is obtained from{' '}
-          <ExternalLink href="https://myaces.nus.edu.sg/cors/jsp/report/ModuleInfoListing.jsp">
-            CORS
-          </ExternalLink>{' '}
-          and{' '}
-          <ExternalLink href="https://ivle.nus.edu.sg/lms/public/search_course_public.aspx">
-            IVLE
-          </ExternalLink>
-          . Protip: every NUSMods module page also has a direct link to CORS and IVLE. Once the data
-          becomes available there, NUSMods will reflect it within a day or two using the latest
-          blockchain technology.
-        </p>
-        <p>
-          Some faculties (FASS in particular) maintain their module timetable schedule on their
-          faculty website, without updating the official school data sources such as CORS and IVLE.
-          Unfortunately, we cannot obtain data from your faculty&apos;s site. Please tell your
-          faculty to update CORS and IVLE.
-        </p>
-        <p>
-          <strong>TL;DR</strong>: Please contact us only <em>after</em> you have done all these:
-        </p>
+        <p>Please ensure the following:</p>
         <ol>
-          <li>You have ensured that the missing/incorrect data can be seen in CORS or IVLE.</li>
-          <li>You have waited 1-2 days after checking CORS and IVLE in step 1.</li>
+          <li>You are sure that the module should exist or that the data on NUSMods is wrong.</li>
+          <li>You have waited one day and the error is still present.</li>
           <li>You have refreshed NUSMods after step 2.</li>
         </ol>
+        <p>
+          If you have done all the above and the error is still present, please write to us at{' '}
+          <ExternalLink href="mailto:modules@nusmods.com">modules@nusmods.com</ExternalLink>. We
+          will work with the Registrar&apos;s Office to rectify any errors. Once the data becomes
+          available, NUSMods will reflect it within a day.
+        </p>
       </div>
 
       <div className={styles.question} id="mac-calendar">
@@ -133,22 +119,22 @@ export default function FaqContainer() {
       <div className={styles.question} id="about">
         <h5>NUSMods is cool, where do you guys come from?</h5>
         <p>
-          NUSMods is a student-run initiative and is not affiliated with the National University of
-          Singapore. NUSMods was born out of the frustration of a lack of usable NUS timetable
-          planners (
+          NUSMods is a student-run initiative born out of the frustration of a lack of usable NUS
+          timetable planners (
           <ExternalLink href="https://webrb.nus.edu.sg/ctt/builder.aspx">
             the official one
           </ExternalLink>{' '}
-          provides a delightful hair-pulling experience &ndash; go ahead, try it out). Also, it
-          seems like NUS does not intend to improve it anytime soon. Since most of us come from the
-          School of Computing, we decided to put our technical skills to use, creating something
-          that will make your lives easier and better.
+          provides a delightful hair-pulling experience &ndash; go ahead, try it out). Since most of
+          us come from the School of Computing, we decided to put our technical skills to use,
+          creating something that will make your lives easier and better.
         </p>
         <p>
-          NUSMods does not make decisions regarding your curriculum, module availability and module
-          timetable. If you have questions regarding your curriculum, CORS bidding, IVLE, or
-          anything unrelated to NUSMods, it would be better to either contact your faculty and
-          department or just <ExternalLink href="https://www.google.com/">Google</ExternalLink> it.
+          Starting in AY18/19 Special Term I, NUSMods will become the university&apos;s official
+          timetable planner. However, apart from that, we are unaffiliated with NUS. NUSMods
+          certainly does not make decisions regarding your curriculum, module availability and
+          module timetable. If you have questions regarding your curriculum, module registration,
+          LumiNUS, or anything unrelated to NUSMods, please either contact your faculty or just{' '}
+          <ExternalLink href="https://www.google.com/">Google</ExternalLink> it.
         </p>
       </div>
 
@@ -167,7 +153,7 @@ export default function FaqContainer() {
           Please update your browser. Although we recommend the latest version of Google Chrome,
           Firefox, Safari or Edge, we support the latest two versions of these browsers.
           Unfortunately, we cannot support more browsers or older versions due to our limited
-          resources. If you are using iOS 9 or below, please update your device to iOS 10 or 11, or
+          resources. If you are using iOS 10 or below, please update your device to iOS 11 or 12, or
           use another computer to access NUSMods.
         </p>
         <p>
@@ -182,7 +168,7 @@ export default function FaqContainer() {
           Congratulations on making it to the end! If you still want to contact us, you may reach us
           via email at nusmods&#123;at&#125;googlegroups[dot]com or via{' '}
           <ExternalLink href={config.contact.messenger}>Messenger</ExternalLink>. Please allow up to
-          90 working days for a reply.
+          90 working days for a reply. We are busy <Link to="/team">students</Link> as well!
         </p>
       </div>
     </StaticPage>
