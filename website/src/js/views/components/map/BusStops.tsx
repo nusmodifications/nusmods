@@ -135,9 +135,9 @@ export default class BusStops extends React.PureComponent<Props, State> {
 
           const icon = new DivIcon({
             html: `
-              <div 
-                title="${stop.name}" 
-                data-code="${stop.code}" 
+              <div
+                title="${stop.name}"
+                data-code="${stop.code}"
                 class="${hitAreaClass}"
               ></div>
               <div class="${routeWrapperClass}">
