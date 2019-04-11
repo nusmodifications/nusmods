@@ -1,6 +1,6 @@
 module.exports = {
   extends: [
-    // Only enable the TypeScript rules under src/js
+    // Only enable the TypeScript rules under src
     'plugin:@typescript-eslint/recommended',
     'plugin:import/typescript',
     'prettier/@typescript-eslint',

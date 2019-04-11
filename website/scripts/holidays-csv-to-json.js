@@ -4,7 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const OUT_FILE = path.join(__dirname, '../src/js/data/holidays.json');
+const OUT_FILE = path.join(__dirname, '../src/data/holidays.json');
 const IN_DIR = path.join(__dirname, 'holidays');
 
 const inputs = fs.readdirSync(IN_DIR);

@@ -9,8 +9,8 @@ const childProcess = require('child_process');
 const moment = require('moment');
 
 const packageJson = require('../package.json');
-const nusmods = require('../src/js/apis/nusmods');
-const config = require('../src/js/config/app-config.json');
+const nusmods = require('../src/apis/nusmods');
+const config = require('../src/config/app-config.json');
 
 const ROOT = path.join(__dirname, '..');
 const SRC = 'src';
@@ -23,13 +23,12 @@ const PATHS = {
   // Using an absolute path will cause transient dependencies to be resolved to OUR
   // version of the same module, so this is kept relative
   node: 'node_modules',
-  app: path.join(ROOT, SRC),
-  scripts: path.join(ROOT, SRC, 'js'),
+  src: path.join(ROOT, SRC),
   styles: path.join(ROOT, SRC, 'styles'),
   images: path.join(ROOT, SRC, 'img'),
   build: path.join(ROOT, 'dist'),
   buildTimetable: path.join(ROOT, 'dist-timetable'),
-  fixtures: path.join(ROOT, SRC, 'js', '__mocks__'),
+  fixtures: path.join(ROOT, SRC, '__mocks__'),
 };
 
 // These dependencies will be extracted out into `vendor.js` in production build.
@@ -132,7 +131,7 @@ exports.lintCSS = (options) =>
     : {
         plugins: [
           new StyleLintPlugin({
-            context: PATHS.app,
+            context: PATHS.src,
             ...options,
           }),
         ],

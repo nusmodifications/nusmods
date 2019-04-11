@@ -33,7 +33,7 @@ const developmentConfig = merge([
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: path.join(parts.PATHS.app, 'index.html'),
+        template: path.join(parts.PATHS.src, 'index.html'),
         cache: true,
       }),
       // Copy files from static folder over (in-memory)
@@ -59,7 +59,7 @@ const developmentConfig = merge([
   },
   process.env.DEBUG_WORKBOX ? parts.workbox() : {},
   parts.lintJavaScript({
-    include: parts.PATHS.app,
+    include: parts.PATHS.src,
   }),
   parts.lintCSS(),
   parts.loadImages({
@@ -69,7 +69,8 @@ const developmentConfig = merge([
     include: parts.PATHS.styles,
   }),
   parts.loadCSS({
-    include: parts.PATHS.scripts,
+    include: parts.PATHS.src,
+    exclude: parts.PATHS.styles,
     options: {
       modules: true,
       localIdentName: '[name]-[local]_[hash:base64:4]',

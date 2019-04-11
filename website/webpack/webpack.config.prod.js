@@ -9,8 +9,8 @@ const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin
 
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
-const nusmods = require('../src/js/apis/nusmods');
-const config = require('../src/js/config/app-config.json');
+const nusmods = require('../src/apis/nusmods');
+const config = require('../src/config/app-config.json');
 
 /**
  * Extracts css into their own file.
@@ -50,7 +50,8 @@ const productionConfig = merge([
         },
         {
           test: /\.(css|scss)$/,
-          include: parts.PATHS.scripts,
+          include: parts.PATHS.src,
+          exclude: parts.PATHS.styles,
           use: [
             MiniCssExtractPlugin.loader,
             ...parts.getCSSConfig({
@@ -66,7 +67,7 @@ const productionConfig = merge([
     plugins: [
       // SEE: https://medium.com/webpack/brief-introduction-to-scope-hoisting-in-webpack-8435084c171f
       new HtmlWebpackPlugin({
-        template: path.join(parts.PATHS.app, 'index.html'),
+        template: path.join(parts.PATHS.src, 'index.html'),
         minify: {
           removeComments: true,
           removeRedundantAttributes: true,

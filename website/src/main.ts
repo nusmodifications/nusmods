@@ -14,7 +14,7 @@ import subscribeOnlineEvents from 'bootstrapping/subscribeOnlineEvents';
 import { initializeMamoto } from 'bootstrapping/matomo';
 import initializeServiceWorker from 'bootstrapping/service-worker';
 
-import '../styles/main.scss';
+import 'styles/main.scss';
 
 const { store, persistor } = configureStore();
 

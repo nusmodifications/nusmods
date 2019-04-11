@@ -13,7 +13,7 @@ const routes = ['A1', 'A2', 'B1', 'B2', 'C', 'BTC1', 'BTC2', 'D1', 'D2'];
 const getBusStop = 'https://nextbus.comfortdelgro.com.sg/eventservice.svc/busstops';
 const getBusRoute = 'https://nextbus.comfortdelgro.com.sg/eventservice.svc/pickuppoint';
 
-const dataPath = path.join(__dirname, '../src/js/data/bus-stops.json');
+const dataPath = path.join(__dirname, '../src/data/bus-stops.json');
 
 async function downloadBusStops() {
   const busStopResponse = await axios.get(getBusStop);

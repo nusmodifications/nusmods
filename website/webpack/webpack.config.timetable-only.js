@@ -12,7 +12,7 @@ const cssExtractPlugin = new MiniCssExtractPlugin({
   chunkFilename: '[contenthash].css',
 });
 
-const source = (file) => path.join('js/timetable-export', file);
+const source = (file) => path.join('timetable-export', file);
 
 const productionConfig = merge([
   parts.setFreeVariable('process.env.NODE_ENV', process.env.NODE_ENV || 'production'),
@@ -43,7 +43,8 @@ const productionConfig = merge([
         },
         {
           test: /\.(css|scss)$/,
-          include: parts.PATHS.scripts,
+          include: parts.PATHS.src,
+          exclude: parts.PATHS.styles,
           use: [
             MiniCssExtractPlugin.loader,
             ...parts.getCSSConfig({
@@ -58,7 +59,7 @@ const productionConfig = merge([
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: path.join(parts.PATHS.app, source('index.html')),
+        template: path.join(parts.PATHS.src, source('index.html')),
         inlineSource: '\\.(js|css)$',
       }),
       new HtmlWebpackInlineSourcePlugin(),

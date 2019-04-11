@@ -2,14 +2,14 @@ const axios = require('axios');
 const fs = require('fs-extra');
 const _ = require('lodash');
 const path = require('path');
-const nusmods = require('../src/js/apis/nusmods');
+const nusmods = require('../src/apis/nusmods');
 
 const args = process.argv.slice(2);
 
 const remoteSource =
   args[0] ||
   'https://raw.githubusercontent.com/taneliang/NUSVenues/master/results/finalVenues.json';
-const localSource = args[1] || path.resolve(__dirname, '../src/js/data/venues.json');
+const localSource = args[1] || path.resolve(__dirname, '../src/data/venues.json');
 
 (async () => {
   const [rawRemoteVenues, localVenues, apiVenues1, apiVenues2] = await Promise.all([

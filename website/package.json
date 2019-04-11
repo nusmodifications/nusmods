@@ -11,7 +11,7 @@
     "promote-staging": "bash scripts/promote-staging.sh",
     "typecheck": "tsc --noEmit",
     "lint": "yarn lint:code && yarn lint:styles",
-    "lint:code": "eslint --ext .js,.ts,.tsx src/js webpack scripts",
+    "lint:code": "eslint --ext .js,.ts,.tsx src webpack scripts",
     "lint:styles": "stylelint \"src/**/*.scss\" --syntax scss",
     "size": "bundlesize",
     "test": "jest --coverage",

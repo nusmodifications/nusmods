@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('graceful-fs');
 const { URL } = require('url');
 const axios = require('axios');
-const api = require('../src/js/apis/nusmods');
+const api = require('../src/apis/nusmods');
 
 // Generates a static sitemap of NUSMods.com
 

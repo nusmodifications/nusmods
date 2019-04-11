@@ -7,7 +7,7 @@
  * assume anything that's not to be an acronym or abbreviation and
  * leaves them untouched.
  */
-const venueFile = '../src/js/data/venues.json';
+const venueFile = '../src/data/venues.json';
 
 const venues = require(venueFile); // eslint-disable-line import/no-dynamic-require
 const _ = require('lodash');

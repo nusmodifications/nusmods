@@ -12,7 +12,7 @@ import { State as StoreState } from 'types/state';
 
 import TimetableOnly from './TimetableOnly';
 import './main.scss';
-import '../../styles/main.scss';
+import '../styles/main.scss';
 
 declare global {
   interface Window {
