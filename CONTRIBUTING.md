@@ -1,44 +1,49 @@
 # Contributing
 
-Inspired by/copied shamelessly from React's [contribution guide](https://reactjs.org/docs/how-to-contribute.html).
+You are here to help on NUSMods? Awesome! There are many ways to contribute, from writing tutorials or blog posts, improving the documentation, submitting bug reports and feature requests or writing code for NUSMods. Every small bit helps us out immensely.
 
-## Code of Conduct
+## How to use this guide
 
-We have adopted the same Code of Conduct as Facebook that we expect project participants to adhere to. Please read [the full text](https://code.facebook.com/codeofconduct) so that you can understand what actions will and will not be tolerated.
+If you're a beginner, there may be lots of technical terms used here that are foreign to you. Don't worry, we were once in your shoes too. Take it one step at a time and do some research. Get in touch with us if you need help.
 
-## Open Development
+Experienced developers may choose to skip this guide. As this guide explains how our development process is conducted, which is very similar to most open source projects.
 
-All work on NUSMods happens directly on GitHub. Both core team members and external contributors send pull requests which go through the same review process.
+Along the way, if you find details that are missing or wrong, or you have an idea on how to improve this guide, feel free to submit a [pull request](#submit-a-pull-request).
 
-## Branch Organization
+## Technical Prerequisites
 
-We practice trunk-based development and do deployments from the `master` branch, which is the only stable and long-lived branch around. We will do our best to keep the `master` branch in good shape, with tests passing at all times.
+These are the tools that keep NUSMods ticking. It would be helpful to have a brief understanding of these technologies.
 
-## Bugs
+- Git is the basic software we use for collaboration. [Atlassian's Git Tutorials](https://www.atlassian.com/git/tutorials) is a very comprehensive resource.
+- Javascript is _the_ programming language NUSMods uses. [Mozilla's Javascript Guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript) is a good place to start to learn the language.
+- Typescript is a language superset of Javascript. It adds types to Javascript to help us understand the code better and reduce bugs. You can refer to the [Typescript Documentation](https://www.typescriptlang.org/docs/home.html) to learn more.
 
-#### Where to Find Known Issues
+## Repo Overview
 
-We are using [GitHub Issues](https://github.com/nusmodifications/nusmods/issues) for our public bugs. Before filing a new task, try to make sure your problem doesn't already exist.
+This repository contains all the code that NUSMods uses. It may seem overwhelming, but each folder is self contained.
 
-#### Reporting Bug
+| Folder    | Purpose                                                     |
+| --------- | ----------------------------------------------------------- |
+| /www      | Creates https://www.nusmods.com website                     |
+| /scrapers | Scrapers that collect information from NUS                  |
+| /export   | Downloads the timetable as images and pdfs                  |
+| /packages | Helper Javascript libraries that non-nusmods people can use |
 
-Simply open up the [bug report form](https://github.com/nusmodifications/nusmods/issues/new?template=BUG_REPORT.md) and fill in the given template.
+Tip: Pick an area you're interested in, and just focus on it. It is not necessary to know all the code to contribute.
 
-## How to Get in Touch
+## Development Tools
 
-We can be reached via the following methods, in order of preference.
-
-- Telegram: https://telegram.me/nusmods
-- Messenger: https://www.m.me/nusmods
-- Facebook: https://www.facebook.com/nusmods
-- Twitter: https://twitter.com/nusmods
-- Email: nusmods@googlegroups.com
+You should have [Node](https://nodejs.org/) installed at v8.0.0+ and [Yarn](https://yarnpkg.com/en/) at v1.2.0+. We recommend using [nvm](https://github.com/creationix/nvm) to manage your Node versions.
 
 ## Proposing a Change
 
 If you intend to make any non-trivial changes to the UI or implementation in any of the projects, we recommend first [filing an issue](https://github.com/nusmodifications/nusmods/issues/new?template=FEATURE_REQUEST.md). This lets us reach an agreement on your proposal before you put significant effort into it.
 
 If you're only fixing a bug, it's fine to submit a pull request right away but we still recommend to file an issue detailing what you're fixing. This is helpful in case we don't accept that specific fix but want to keep track of the issue.
+
+## Branch Organization
+
+We practice trunk-based development and do deployments from the `master` branch, which is the only stable and long-lived branch around. We will do our best to keep the `master` branch in good shape, with tests passing at all times.
 
 ## Your First Pull Request
 
@@ -52,7 +57,7 @@ If you decide to fix an issue, please be sure to check the comment thread in cas
 
 If somebody claims an issue but doesn't follow up for more than two weeks, it's fine to take over it but you should still leave a comment.
 
-## Sending a Pull Request
+## Submit a Pull Request
 
 The core team is monitoring for pull requests. We will review your pull request and either merge it, request changes to it, or close it with an explanation.
 
@@ -65,14 +70,9 @@ Before submitting a pull request, please make sure the following is done:
 1. Run `yarn run ci` which runs the linting, testing and building steps. This is the command that is run on our CI system. There should not be errors shown. Alternatively, you can run the linting, testing and building step separately via `yarn run lint`, `yarn test` and `yarn run build` respectively.
 1. There might be project-specific contribution details. Please read the README of the respective projects.
 
-## Contribution Prerequisites
+### Code of Conduct
 
-- You have [Node](https://nodejs.org/) installed at v8.0.0+ and [Yarn](https://yarnpkg.com/en/) at v1.2.0+. We recommend using [nvm](https://github.com/creationix/nvm) to manage your Node versions.
-- You are familiar with Git.
-
-## Development Workflow
-
-Refer to each project's README for development instructions on the specific project.
+We have adopted Facebook's Code of Conduct that we expect project participants to adhere to. Kindly read [the full text](https://code.facebook.com/codeofconduct) to understand what actions will and will not be tolerated.
 
 ## License
 

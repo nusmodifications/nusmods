@@ -4,17 +4,17 @@
 
 [![Backers on Open Collective](https://opencollective.com/nusmods/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/nusmods/sponsors/badge.svg)](#sponsors) [![Coverage Status](https://coveralls.io/repos/github/nusmodifications/nusmods/badge.svg?branch=master)](https://coveralls.io/github/nusmodifications/nusmods?branch=master) [![CircleCI Build Status](https://circleci.com/gh/nusmodifications/nusmods.svg?style=shield)](https://circleci.com/gh/nusmodifications/nusmods)
 
-Help contribute to NUSMods!
+NUSMods is the official course catalogue, module search and timetable builder for National University of Singapore.
 
-## Projects
+## Structure
 
-This monorepo consists of 5 projects. Further details can be found at the links below.
+This repository contains all the code that runs NUSMods. It consists of multiple smaller projects.
 
-1. [NUSMods R website](www)
-1. [NUSMods API Servers](api)
-1. [NUSMods Scrapers](scrapers)
-1. [NUSMods Timetable Export Service](export)
-1. [`nusmoderator` npm package](packages/nusmoderator)
+- [NUSMods.com website](www)
+- [NUSMods API Servers](api)
+- [NUSMods Scrapers](scrapers)
+- [NUSMods Timetable Export Service](export)
+- [`nusmoderator` npm package](packages/nusmoderator)
 
 ## Talk to us!
 
@@ -28,21 +28,25 @@ We can be reached via the following methods, in order of preference.
 
 ## Contributing
 
-### Code of Conduct
+### Reporting Bugs
 
-We have adopted the same Code of Conduct as Facebook that we expect project participants to adhere to. Please read [the full text](https://code.facebook.com/codeofconduct) so that you can understand what actions will and will not be tolerated.
+Found a bug? Before reporting it, check the [issue page](https://github.com/nusmodifications/nusmods/issues) to see if we are aware of it. If not, simply open up the [bug report form](https://github.com/nusmodifications/nusmods/issues/new?template=BUG_REPORT.md) and fill it.
 
 ### Contributing Guide
 
-Read our [contributing guide](CONTRIBUTING.md) to learn about our development process, how to propose bug fixes and improvements, and how to build and test your changes to NUSMods.
+Our [contributing guide](CONTRIBUTING.md) will help you get started, regardless of skill level. It explains the project structure and how developing on NUSMods work.
 
 ### Good First Issues
 
-To help you get your feet wet and get you familiar with our contribution process, we have a list of [good first issues](https://github.com/nusmodifications/nusmods/labels/good%20first%20issue) that contain bugs and small features which have a relatively limited scope. This is a great place to get started.
+Want to your feet wet and familiar with our contribution process? We have a list of [good first issues](https://github.com/nusmodifications/nusmods/labels/good%20first%20issue) that contain bugs and small features which have a relatively limited scope. This is a great place to get started.
+
+### Code of Conduct
+
+We have adopted Facebook's Code of Conduct that we expect project participants to adhere to. Kindly read [the full text](https://code.facebook.com/codeofconduct) to understand what actions will and will not be tolerated.
 
 ### Contributors
 
-This project exists thanks to all the people who contributed. [[Contribute](CONTRIBUTING.md)].
+This project exists thanks to all the people who contributed.
 <a href="https://github.com/nusmodifications/nusmods/graphs/contributors"><img src="https://opencollective.com/nusmods/contributors.svg?width=890&button=false" /></a>
 
 ### Backers
