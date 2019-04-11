@@ -128,12 +128,13 @@ export function getAcadWeekName(acadWeekNumber) {
 /**
   * Computes the current academic week and return in an object of acad date components
   * @param  {Date} date
-  * @return {Object} {
-                    year: "15/16",
-                    sem: 'Semester 1'|'Semester 2'|'Special Sem 1'|'Special Sem 2',
-                    type: 'Instructional'|'Reading'|'Examination'|'Recess'|'Vacation'|'Orientation',
-                    num: <weekNum>
-                  }
+  * @return {Object}
+  * {
+  *   year: "15/16",
+  *   sem: 'Semester 1'|'Semester 2'|'Special Sem 1'|'Special Sem 2',
+  *   type: 'Instructional'|'Reading'|'Examination'|'Recess'|'Vacation'|'Orientation',
+  *   num: <weekNum>
+  * }
   */
 export function getAcadWeekInfo(date) {
   const currentAcad = getAcadYear(date);
