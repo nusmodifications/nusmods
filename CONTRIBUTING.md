@@ -1,39 +1,41 @@
 # Contributing
 
-You are here to help on NUSMods? Awesome! There are many ways to contribute, from writing tutorials or blog posts, improving the documentation, submitting bug reports and feature requests or writing code for NUSMods. Every small bit helps us out immensely.
+Are you here to make NUSMods better? Awesome!
+
+There are many ways to contribute, from writing tutorials or blog posts, improving the documentation, submitting bug reports and feature requests or writing code for NUSMods. Every small bit helps us out immensely.
 
 ## How to use this guide
 
-If you're a beginner, there may be lots of technical terms used here that are foreign to you. Don't worry, we were once in your shoes too. Take it one step at a time and do some research. Get in touch with us if you need help.
+If you're a beginner, lots of technical terms in this guide may be foreign to you. Don't worry, we were once in your shoes too. Take it one step at a time and do some research. As always, get in touch with us if you need any help.
 
-Experienced developers may choose to skip this guide. As this guide explains how our development process is conducted, which is very similar to most open source projects.
+Experienced developers may choose to skip this guide. Our development process is very similar to most other open source projects.
 
-Along the way, if you find details that are missing or wrong, or you have an idea on how to improve this guide, feel free to submit a [pull request](#submit-a-pull-request).
+Along the way, if you find details that are missing or wrong, or you would like to improve this guide, feel free to submit a [pull request](#submit-a-pull-request).
 
 ## Technical Prerequisites
 
-These are the tools that keep NUSMods ticking. It would be helpful to have a brief understanding of these technologies.
+These are the tools that keep NUSMods ticking. It would be helpful to have a basic understanding of these technologies.
 
-- Git is the basic software we use for collaboration. [Atlassian's Git Tutorials](https://www.atlassian.com/git/tutorials) is a very comprehensive resource.
-- Javascript is _the_ programming language NUSMods uses. [Mozilla's Javascript Guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript) is a good place to start to learn the language.
-- Typescript is a language superset of Javascript. It adds types to Javascript to help us understand the code better and reduce bugs. You can refer to the [Typescript Documentation](https://www.typescriptlang.org/docs/home.html) to learn more.
+- Git is the software we use for collaboration. [Atlassian's Git Tutorials](https://www.atlassian.com/git/tutorials) is a very comprehensive resource.
+- JavaScript is _the_ programming language NUSMods uses. [Mozilla's Javascript Guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript) is a good place to start to learn the language.
+- TypeScript is a language superset of JavaScript, i.e. it's JavaScript but with more features. Its biggest additional feature is types, which help us understand the code better and reduce bugs. Refer to the [TypeScript Documentation](https://www.typescriptlang.org/docs/home.html) to learn more.
 
 ## Repo Overview
 
 This repository contains all the code that NUSMods uses. It may seem overwhelming, but each folder is self contained.
 
-| Folder    | Purpose                                                     |
-| --------- | ----------------------------------------------------------- |
-| /www      | Creates https://www.nusmods.com website                     |
-| /scrapers | Scrapers that collect information from NUS                  |
-| /export   | Downloads the timetable as images and pdfs                  |
-| /packages | Helper Javascript libraries that non-nusmods people can use |
+| Folder    | Purpose                                                                            |
+| --------- | ---------------------------------------------------------------------------------- |
+| /www      | Houses the code for the https://www.nusmods.com website                            |
+| /scrapers | Scripts that download module and timetable data from NUS to our server             |
+| /export   | Contains a service which allows users to download the timetable as images and PDFs |
+| /packages | Helper JavaScript libraries that can be reused by projects outside NUSMods         |
 
 Tip: Pick an area you're interested in, and just focus on it. It is not necessary to know all the code to contribute.
 
 ## Development Tools
 
-You should have [Node](https://nodejs.org/) installed at v8.0.0+ and [Yarn](https://yarnpkg.com/en/) at v1.2.0+. We recommend using [nvm](https://github.com/creationix/nvm) to manage your Node versions.
+You should have [Node.js](https://nodejs.org/) version 10.13.0 or above and [Yarn](https://yarnpkg.com/en/) version 1.2.0 or above. We recommend using [nvm](https://github.com/creationix/nvm) to manage your Node versions.
 
 ## Proposing a Change
 

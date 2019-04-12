@@ -4,11 +4,11 @@
 
 [![Backers on Open Collective](https://opencollective.com/nusmods/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/nusmods/sponsors/badge.svg)](#sponsors) [![Coverage Status](https://coveralls.io/repos/github/nusmodifications/nusmods/badge.svg?branch=master)](https://coveralls.io/github/nusmodifications/nusmods?branch=master) [![CircleCI Build Status](https://circleci.com/gh/nusmodifications/nusmods.svg?style=shield)](https://circleci.com/gh/nusmodifications/nusmods)
 
-NUSMods is the official course catalogue, module search and timetable builder for National University of Singapore.
+NUSMods is the official course catalogue, module search and timetable builder for the National University of Singapore.
 
 ## Structure
 
-This repository contains all the code that runs NUSMods. It consists of multiple smaller projects.
+This repository contains all the code that runs NUSMods, and consists of these projects:
 
 - [NUSMods.com website](www)
 - [NUSMods API Servers](api)
@@ -30,15 +30,15 @@ We can be reached via the following methods, in order of preference.
 
 ### Reporting Bugs
 
-Found a bug? Before reporting it, check the [issue page](https://github.com/nusmodifications/nusmods/issues) to see if we are aware of it. If not, simply open up the [bug report form](https://github.com/nusmodifications/nusmods/issues/new?template=BUG_REPORT.md) and fill it.
+Found a bug? Before reporting it, check the [issue page](https://github.com/nusmodifications/nusmods/issues) to see if we are aware of it. If not, simply open up the [bug report form](https://github.com/nusmodifications/nusmods/issues/new?template=BUG_REPORT.md) and fill it up.
 
 ### Contributing Guide
 
-Our [contributing guide](CONTRIBUTING.md) will help you get started, regardless of skill level. It explains the project structure and how developing on NUSMods work.
+Our [contributing guide](CONTRIBUTING.md) will help you get started, regardless of skill level. It explains the project structure and our development process.
 
 ### Good First Issues
 
-Want to your feet wet and familiar with our contribution process? We have a list of [good first issues](https://github.com/nusmodifications/nusmods/labels/good%20first%20issue) that contain bugs and small features which have a relatively limited scope. This is a great place to get started.
+Want to your feet wet and contribute? We have a list of [good first issues](https://github.com/nusmodifications/nusmods/labels/good%20first%20issue) that contain bugs and small features which have a relatively limited scope. This is a great place to get started.
 
 ### Code of Conduct
 
