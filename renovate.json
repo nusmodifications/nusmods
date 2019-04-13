@@ -23,15 +23,13 @@
       "groupName": "material monorepo"
     }
   ],
-  "ignoreDeps": [
-    "stylelint"
-  ],
+  "ignoreDeps": ["stylelint"],
   "pathRules": [
     {
       "paths": ["packages/**"],
       "extends": ["config:js-lib"]
     }
   ],
-  "ignorePaths": ["api/data", "scrapers/nus", ".nvmrc"],
+  "ignorePaths": ["scrapers/nus", ".nvmrc"],
   "prHourlyLimit": 0
 }

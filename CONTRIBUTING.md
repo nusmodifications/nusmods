@@ -66,7 +66,7 @@ The core team is monitoring for pull requests. We will review your pull request 
 Before submitting a pull request, please make sure the following is done:
 
 1. [Fork the repository](https://github.com/nusmodifications/nusmods) and create your branch from `master`.
-1. Run `yarn` in the root of the project that you are working on (`/www`, `/export`, `/api` or `/packages/nusmoderator`).
+1. Run `yarn` in the root of the project that you are working on (`/website`, `/export`, or `/packages/nusmoderator`).
 1. If you've fixed a bug or added code that should be tested, add tests! We ask that you write tests if your feature contains non-trivial logic. Tests can be omitted for minor layout or stylistic changes (or simply generate a snapshot).
 1. Ensure the test suite passes (`yarn test`). Tip: `yarn test:watch` is helpful in development.
 1. Run `yarn run ci` which runs the linting, testing and building steps. This is the command that is run on our CI system. There should not be errors shown. Alternatively, you can run the linting, testing and building step separately via `yarn run lint`, `yarn test` and `yarn run build` respectively.
