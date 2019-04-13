@@ -10,7 +10,7 @@ This scrapers folder is set up to support multiple scrapers for multiple
 universities. However, we have only implemented an NUS scraper. More details
 can be found in its folder.
 
-1. [NUS](nus)
+1. [NUS](nus-v2)
 
 If you are from another university and would like to implement a scraper for
 your uni, feel free to file an issue or just contact us! We already have some
