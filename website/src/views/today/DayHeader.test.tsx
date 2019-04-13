@@ -44,7 +44,31 @@ describe(HeaderDate, () => {
   });
 
   test('render date as day of week if offset more than one', () => {
-    expect(shallow(<HeaderDate offset={2}>{today}</HeaderDate>)).toMatchSnapshot();
-    expect(shallow(<HeaderDate offset={3}>{today}</HeaderDate>)).toMatchSnapshot();
+    expect(shallow(<HeaderDate offset={2}>{today}</HeaderDate>)).toMatchInlineSnapshot(`
+<time
+  dateTime="2016-11-23T01:00:00.000Z"
+>
+  <span
+    className="date"
+  >
+    23rd November
+  </span>
+   
+  Wednesday
+</time>
+`);
+    expect(shallow(<HeaderDate offset={3}>{today}</HeaderDate>)).toMatchInlineSnapshot(`
+<time
+  dateTime="2016-11-23T01:00:00.000Z"
+>
+  <span
+    className="date"
+  >
+    23rd November
+  </span>
+   
+  Wednesday
+</time>
+`);
   });
 });
