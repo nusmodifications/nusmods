@@ -9826,10 +9826,10 @@ redux-mock-store@1.5.3:
   dependencies:
     lodash.isplainobject "^4.0.6"
 
-redux-persist@5.9.1:
-  version "5.9.1"
-  resolved "https://registry.yarnpkg.com/redux-persist/-/redux-persist-5.9.1.tgz#83bd4abd526ef768f63fceee338fa9d8ed6552d6"
-  integrity sha512-WIaLCd975R16W7nD1wqUPLcqeLztIRvsSSNZdblEjtihL1wz+NSOq9nYUSvsdoWJOtfm9RbDF4IVd0a3VOtZcw==
+redux-persist@5.10.0:
+  version "5.10.0"
+  resolved "https://registry.yarnpkg.com/redux-persist/-/redux-persist-5.10.0.tgz#5d8d802c5571e55924efc1c3a9b23575283be62b"
+  integrity sha512-sSJAzNq7zka3qVHKce1hbvqf0Vf5DuTVm7dr4GtsqQVOexnrvbV47RWFiPxQ8fscnyiuWyD2O92DOxPl0tGCRg==
 
 redux-thunk@2.2.0:
   version "2.2.0"
