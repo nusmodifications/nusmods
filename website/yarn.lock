@@ -1336,10 +1336,10 @@
     "@types/leaflet" "*"
     "@types/react" "*"
 
-"@types/react-loadable@5.5.0":
-  version "5.5.0"
-  resolved "https://registry.yarnpkg.com/@types/react-loadable/-/react-loadable-5.5.0.tgz#7a878408ad940250aeb91d77d2b54a18f3c7c946"
-  integrity sha512-evH/O6Wytz6lSmi36YL7YHnFc46zRPSA8+XNtTXI4D7A/CP7OVwcWbHjb2yGbh/jDxxhnTwIVO/PeqDXtUegnQ==
+"@types/react-loadable@5.5.1":
+  version "5.5.1"
+  resolved "https://registry.yarnpkg.com/@types/react-loadable/-/react-loadable-5.5.1.tgz#f04a262f16e9f088098ddad1aa50682ad0984aa7"
+  integrity sha512-PSmh6IT9vHeO9QjhApMMiJ65T0Amrpf3fom+04ur872IdgCZK9MzjeN3Q11bzgQMkrV448sbT8WopQw9o0LX1g==
   dependencies:
     "@types/react" "*"
     "@types/webpack" "*"
