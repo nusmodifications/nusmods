@@ -106,7 +106,7 @@
     "nightwatch": "0.9.21",
     "node-sass": "4.11.0",
     "postcss-loader": "3.0.0",
-    "prettier": "1.16.4",
+    "prettier": "1.17.0",
     "react-dev-utils": "7.0.5",
     "react-hot-loader": "4.8.0",
     "react-test-renderer": "16.8.6",
