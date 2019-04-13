@@ -1,29 +1,76 @@
 {
   "extends": [
     "config:base",
-    "schedule:earlyMondays",
-    "group:linters",
-    ":automergePr",
+    "schedule:weekends",
+    "group:babelMonorepo",
+    "group:materialMonorepo",
+    ":automergeBranchPush",
     ":automergeRequireAllStatusChecks",
-    ":automergeLinters",
+    ":automergeMinor",
     ":prConcurrentLimit10",
     ":label(dependencies)",
     ":timezone(Asia/Singapore)"
   ],
   "packageRules": [
     {
+      "description": "Group lodash packages together",
+      "extends": "monorepo:lodash",
+      "packagePatterns": ["^@types/lodash"],
+      "groupName": "lodash"
+    },
+    {
       "description": "Group Webpack-related packages together",
       "packagePatterns": ["-loader$", "webpack"],
-      "excludePackageNames": ["react-hot-loader"],
+      "excludePackagePatterns": ["react-hot-loader"],
       "groupName": "webpack"
     },
     {
-      "description": "Group material-components-web monorepo packages together",
-      "packagePatterns": ["^@material/"],
-      "groupName": "material monorepo"
+      "description": "Group mapbox packages together",
+      "packagePatterns": ["^(leaflet|mapbox)"],
+      "groupName": "mapbox"
+    },
+    {
+      "description": "Group eslint packages together",
+      "packagePatterns": ["eslint"],
+      "excludePackageNames": ["eslint-loader"],
+      "groupName": "eslint"
+    },
+    {
+      "description": "Group stylelint packages together",
+      "packagePatterns": ["stylelint"],
+      "excludePackageNames": ["stylelint-webpack-plugin"],
+      "groupName": "stylelint"
+    },
+    {
+      "extends": "monorepo:jest",
+      "packagePatterns": ["(jest|enzyme|mock)"],
+      "packageNames": ["identity-obj-proxy"],
+      "groupName": "test"
+    },
+    {
+      "extends": "monorepo:react",
+      "packageNames": ["@types/react", "@types/react-dom"],
+      "groupName": "react"
+    },
+    {
+      "extends": "monorepo:reactrouter",
+      "packagePatterns": ["^@types/react-router"],
+      "groupName": "react-router"
+    },
+    {
+      "description": "Group state management packages together",
+      "packagePatterns": ["(redux|reselect|immer)"],
+      "excludePackagePatterns": ["redux-mock"],
+      "groupName": "state-management"
+    },
+    {
+      "description": "Group typescript typings together",
+      "packagePatterns": ["^@types/"],
+      "excludePackageNames": ["react(-dom|-router)?$", "(redux|reselect|immer|query-string)"],
+      "groupName": "definitelyTyped"
     }
   ],
-  "ignoreDeps": ["stylelint"],
+  "ignoreDeps": ["query-string"],
   "pathRules": [
     {
       "paths": ["packages/**"],
