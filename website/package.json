@@ -164,7 +164,7 @@
     "react-qr-svg": "2.2.1",
     "react-redux": "5.1.1",
     "react-router-dom": "4.3.1",
-    "react-scrollspy": "3.3.5",
+    "react-scrollspy": "3.4.0",
     "react-waypoint": "8.1.0",
     "redux": "4.0.1",
     "redux-persist": "5.9.1",
