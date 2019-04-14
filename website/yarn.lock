@@ -9645,10 +9645,10 @@ react-router@^4.3.1:
     prop-types "^15.6.1"
     warning "^4.0.1"
 
-react-scrollspy@3.3.5:
-  version "3.3.5"
-  resolved "https://registry.yarnpkg.com/react-scrollspy/-/react-scrollspy-3.3.5.tgz#e3e605bfc153a23f5fdf1279dd9f397d6e76e228"
-  integrity sha512-s2wAoFGgeArJ8bSpdxwWiZpVzHc+VN5K7996v35JysXXYqfqSHj+yhLpre6v5kQVAT4DFpTnnMOmrhZqfyxEgA==
+react-scrollspy@3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/react-scrollspy/-/react-scrollspy-3.4.0.tgz#5cf2e5b3e5de2d268a9456dfbbebed77aa6358a2"
+  integrity sha512-l7XDF6ZWuP0X+pLw+i5V8akWph/IQZ6/fnPXPN2R/xsgbXzXLtC/3URNcxj/hKIRjQpdYMrJR2VKqMkw2nnTvQ==
   dependencies:
     babel-runtime "^6.26.0"
     classnames "^2.2.5"
