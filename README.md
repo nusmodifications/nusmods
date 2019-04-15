@@ -10,7 +10,7 @@ NUSMods is the official course catalogue, module search and timetable builder fo
 
 This repository contains all the code that runs NUSMods, and consists of these projects:
 
-- [NUSMods.com website](www)
+- [NUSMods.com website](website)
 - [NUSMods Scrapers](scrapers)
 - [NUSMods Timetable Export Service](export)
 - [`nusmoderator` npm package](packages/nusmoderator)
@@ -19,8 +19,8 @@ This repository contains all the code that runs NUSMods, and consists of these p
 
 We can be reached via the following methods, in order of preference.
 
-- Telegram: https://telegram.me/nusmods
-- Messenger: https://www.m.me/nusmods
+- Telegram: https://t.me/nusmods
+- Messenger: https://m.me/nusmods
 - Email: nusmods@googlegroups.com (for security related issues please email mods@nusmods.com instead)
 - Facebook: https://www.facebook.com/nusmods
 - Twitter: https://twitter.com/nusmods
