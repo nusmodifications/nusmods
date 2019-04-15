@@ -2572,10 +2572,10 @@ babel-plugin-transform-object-rest-spread@^6.26.0:
     babel-plugin-syntax-object-rest-spread "^6.8.0"
     babel-runtime "^6.26.0"
 
-babel-plugin-transform-react-class-to-function@1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-transform-react-class-to-function/-/babel-plugin-transform-react-class-to-function-1.2.0.tgz#81c91eece7d6c26d03c4f4b3432f4234e346d310"
-  integrity sha512-l81LG5HdtZTUxkcsWN+Q38sALuzQ/WJ2wYCumMp9kRQtNqMrjfNdY9BHziF2YauijYIx181/0biUOoTUQRGxDw==
+babel-plugin-transform-react-class-to-function@1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/babel-plugin-transform-react-class-to-function/-/babel-plugin-transform-react-class-to-function-1.2.2.tgz#9846c176eb2432bd6b42d9ed9a7cbc979a571245"
+  integrity sha512-qkRxpJ5iq1CATblWivTRRHSWGjbRptT7YTcCHo2KCDegn8dNu6CSvhrWW17RieItH9AZ+G2GsaRY+RnL1umthQ==
   dependencies:
     "@babel/helper-plugin-utils" "^7.0.0"
 
