@@ -3686,5 +3686,37 @@
       "x": 103.77160638570787,
       "y": 1.2994984664852203
     }
+  },
+  "SPSWETLAB": {
+    "roomName": "SPSWETLAB",
+    "floor": 2,
+    "location": {
+      "x": 103.78030210733415,
+      "y": 1.296855328454714
+    }
+  },
+  "BIZ2-0413B": {
+    "roomName": "Seminar Room 04-13B",
+    "floor": 4,
+    "location": {
+      "x": 103.77504911418305,
+      "y": 1.2933189348382488
+    }
+  },
+  "BIZ2-0413A": {
+    "roomName": "Seminar Room 04-13A",
+    "floor": 4,
+    "location": {
+      "x": 103.77531319856645,
+      "y": 1.293255759734801
+    }
+  },
+  "TH-SR1": {
+    "roomName": "Temasek Hall Office, Seminar Room",
+    "floor": 2,
+    "location": {
+      "x": 103.77129374071957,
+      "y": 1.2927169615398948
+    }
   }
 }
