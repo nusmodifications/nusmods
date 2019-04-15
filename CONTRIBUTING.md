@@ -26,7 +26,7 @@ This repository contains all the code that NUSMods uses. It may seem overwhelmin
 
 | Folder    | Purpose                                                                            |
 | --------- | ---------------------------------------------------------------------------------- |
-| /www      | Houses the code for the https://www.nusmods.com website                            |
+| /website  | Houses the code for the https://nusmods.com website                                |
 | /scrapers | Scripts that download module and timetable data from NUS to our server             |
 | /export   | Contains a service which allows users to download the timetable as images and PDFs |
 | /packages | Helper JavaScript libraries that can be reused by projects outside NUSMods         |
