@@ -23,14 +23,14 @@
   "author": "NUSModifications",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "7.2.3",
-    "@babel/core": "7.3.4",
-    "@babel/plugin-proposal-class-properties": "7.3.4",
-    "@babel/plugin-proposal-object-rest-spread": "7.3.4",
+    "@babel/cli": "7.4.3",
+    "@babel/core": "7.4.3",
+    "@babel/plugin-proposal-class-properties": "7.4.0",
+    "@babel/plugin-proposal-object-rest-spread": "7.4.3",
     "@babel/plugin-syntax-dynamic-import": "7.2.0",
     "@babel/plugin-transform-react-constant-elements": "7.2.0",
     "@babel/plugin-transform-react-inline-elements": "7.2.0",
-    "@babel/preset-env": "7.3.4",
+    "@babel/preset-env": "7.4.3",
     "@babel/preset-react": "7.0.0",
     "@babel/preset-typescript": "7.3.3",
     "@hot-loader/react-dom": "16.8.6",
@@ -64,7 +64,7 @@
     "babel-loader": "8.0.5",
     "babel-plugin-dynamic-import-node": "2.2.0",
     "babel-plugin-lodash": "3.3.4",
-    "babel-plugin-transform-react-class-to-function": "1.2.0",
+    "babel-plugin-transform-react-class-to-function": "1.2.2",
     "babel-plugin-transform-react-remove-prop-types": "0.4.24",
     "bundlesize": "0.17.1",
     "chalk": "2.4.2",
@@ -136,6 +136,7 @@
     "@tippy.js/react": "1.1.1",
     "axios": "0.18.0",
     "bootstrap": "4.3.1",
+    "browserslist-config-nusmods": "file:../packages/browserslist-config-nusmods",
     "bowser": "1.9.4",
     "classnames": "2.2.6",
     "core-js": "3.0.1",
@@ -172,10 +173,7 @@
     "reselect": "4.0.0"
   },
   "browserslist": [
-    "last 2 versions",
-    "iOS >= 9",
-    "Safari >= 9",
-    "not ie <= 11"
+    "extends browserslist-config-nusmods"
   ],
   "bundlesize": [
     {

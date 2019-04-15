@@ -1,3 +1,5 @@
+const pkgJson = require('./package.json');
+
 module.exports = (api) => {
   api.cache.using(() => process.env.NODE_ENV);
 
@@ -11,8 +13,10 @@ module.exports = (api) => {
       '@babel/preset-env',
       {
         // eslint-disable-next-line global-require
-        targets: IS_TEST ? { node: true } : { browsers: require('./package.json').browserslist },
+        targets: IS_TEST ? { node: true } : { browsers: pkgJson.browserslist },
         modules: IS_TEST ? 'commonjs' : false,
+        useBuiltIns: 'usage',
+        corejs: pkgJson.dependencies['core-js'],
         // Exclude transforms that make all code slower
         // See https://github.com/facebook/create-react-app/pull/5278
         exclude: ['transform-typeof-symbol'],
