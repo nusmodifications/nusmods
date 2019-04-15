@@ -1,5 +1,0 @@
----
-- hosts: all
-  roles:
-    - cd_project_dir
-- include: site.yml

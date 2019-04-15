@@ -1,6 +1,0 @@
----
-- hosts: all
-  become: yes
-  roles:
-    - apt-get_update
-    - app_server

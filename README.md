@@ -11,7 +11,6 @@ NUSMods is the official course catalogue, module search and timetable builder fo
 This repository contains all the code that runs NUSMods, and consists of these projects:
 
 - [NUSMods.com website](www)
-- [NUSMods API Servers](api)
 - [NUSMods Scrapers](scrapers)
 - [NUSMods Timetable Export Service](export)
 - [`nusmoderator` npm package](packages/nusmoderator)

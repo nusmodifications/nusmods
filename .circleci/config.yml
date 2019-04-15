@@ -30,18 +30,6 @@ jobs:
           paths:
             - .
 
-  data-server:
-    <<: *defaults
-    working_directory: ~/nusmods/api/data
-    steps:
-      - attach_workspace:
-          at: ~/nusmods
-      - restore_cache: *restore_node_deps
-      - run: yarn --frozen-lockfile --non-interactive
-      - save_cache: *save_node_deps
-      - run: yarn lint
-      - run: yarn test --runInBand
-
   nus-scrapers:
     <<: *defaults
     working_directory: ~/nusmods/scrapers/nus
@@ -94,9 +82,9 @@ jobs:
       - store_artifacts:
           path: README.md
 
-  www:
+  website:
     <<: *defaults
-    working_directory: ~/nusmods/www
+    working_directory: ~/nusmods/website
     environment:
       NODE_ENV: production
       TZ: Asia/Singapore
@@ -143,9 +131,6 @@ workflows:
   build_and_test:
     jobs:
       - checkout
-      - data-server:
-          requires:
-            - checkout
       - nus-scrapers:
           requires:
             - checkout
@@ -155,6 +140,6 @@ workflows:
       - nusmoderator:
           requires:
             - checkout
-      - www:
+      - website:
           requires:
             - checkout
