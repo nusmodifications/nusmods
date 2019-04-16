@@ -12,7 +12,6 @@ module.exports = (api) => {
     [
       '@babel/preset-env',
       {
-        // eslint-disable-next-line global-require
         targets: IS_TEST ? { node: true } : { browsers: pkgJson.browserslist },
         modules: IS_TEST ? 'commonjs' : false,
         useBuiltIns: 'usage',
