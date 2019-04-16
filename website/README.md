@@ -10,7 +10,7 @@ NUSMods R is built using [React][react], [Redux][redux] and [Bootstrap][bootstra
 
 ## Browser support
 
-Please refer to our [browserslist config](../packages/browserslist-config-nusmods/index.js).
+Please refer to our [browserslist config](../packages/browserslist-config-nusmods).
 
 ## Contributing
 
