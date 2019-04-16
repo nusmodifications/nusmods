@@ -1,5 +1,3 @@
-import 'bootstrapping/polyfill';
-
 // Import Sentry earliest to capture exceptions
 import 'bootstrapping/sentry';
 import 'bootstrapping/browser';
