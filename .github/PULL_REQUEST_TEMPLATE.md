@@ -1,17 +1,19 @@
-<!-- Thank you for contributing to NUSMods! -->
+<!--
+Thank you for contributing to NUSMods!
+The template below was made to help both you and the reviewers understand
+your changes. Please fill it up to the best of your ability.
+(These are comments, they won't be shown in the "preview")
+-->
 
-## Purpose
-
+## Context
 <!-- Please link to a Github issue (type `#` to autocomplete issue) -->
 <!-- Or provide a brief explanation about the problem -->
 
-## Changes
-
+## Implementation
 <!-- Explain how your solution solves the problem -->
 <!-- If it affects UI, an image or gif is greatly encouraged. -->
 
 ## Other Information
-
 <!--
 This section is optional, it's for stuff like:
 - Requiring assistance regarding x
