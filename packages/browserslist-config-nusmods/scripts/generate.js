@@ -91,8 +91,8 @@ async function output(stats) {
   console.log(`\nSupported browsers:\n${browsers.join('\n')}`);
 
   return Promise.all([
-    fs.outputFile(path.resolve('../index.js'), `module.exports = ${browserslistString}`),
-    fs.outputJson(path.resolve('../browserslist-stats.json'), stats, { spaces: '\t' }),
+    fs.outputFile(path.normalize('../index.js'), `module.exports = ${browserslistString}`),
+    fs.outputJson(path.normalize('../browserslist-stats.json'), stats, { spaces: '\t' }),
   ]);
 }
 
