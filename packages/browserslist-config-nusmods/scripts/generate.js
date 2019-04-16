@@ -90,9 +90,10 @@ async function output(stats) {
   });
   console.log(`\nSupported browsers:\n${browsers.join('\n')}`);
 
+  const pathAtRoot = (filename) => path.resolve(__dirname, '..', filename);
   return Promise.all([
-    fs.outputFile(path.normalize('../index.js'), `module.exports = ${browserslistString}`),
-    fs.outputJson(path.normalize('../browserslist-stats.json'), stats, { spaces: '\t' }),
+    fs.outputFile(pathAtRoot('index.js'), `module.exports = ${browserslistString}`),
+    fs.outputJson(pathAtRoot('browserslist-stats.json'), stats, { spaces: '\t' }),
   ]);
 }
 
