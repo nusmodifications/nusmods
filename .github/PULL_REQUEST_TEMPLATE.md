@@ -16,7 +16,9 @@ your changes. Please fill it up to the best of your ability.
 ## Other Information
 <!--
 This section is optional, it's for stuff like:
-- Requiring assistance regarding x
+- Any questions you may have
+- Any assistance you need
+- Any tasks that are incomplete
 - Letting us know that you're new to this (so we know how much to help out)
 - Random gifs and emojis
 -->
