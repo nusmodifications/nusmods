@@ -8,21 +8,9 @@ NUSMods R is built using [React][react], [Redux][redux] and [Bootstrap][bootstra
 - Analytics: https://analytics.nusmods.com/
 - Deployment dashboard: https://launch.nusmods.com/
 
-To install NUSMods V2 (the previous version of NUSMods), refer [here](../provisioning/README.md).
-
 ## Browser support
 
-Desktop browsers:
-
-- Last two versions of all evergreen desktop browsers (Chrome, Firefox, Edge, Safari)
-- IE is completely **unsupported**
-
-Mobile browsers:
-
-- iOS 10 and above
-- Chrome Mobile last two versions
-
-We try not to break iOS 9 (ie. display white screen of death or use unsupported APIs), but we don't guarantee the page will be appear exactly the same as in more modern browsers.
+Please refer to our [browserslist config](../packages/browserslist-config-nusmods).
 
 ## Contributing
 
@@ -280,7 +268,6 @@ NUSMods tries to be as lean as possible. Adding external dependencies should be 
 When adding packages, TypeScript requires a library definition, or libdef. To try to install one from the [community repository][definitely-typed], install `@types/<package name>`. Make sure the installed libdef's version matches that of the package.
 
 If a community libdef is not available, you can try writing your own and placing it in `js/types/vendor`.
-
 
 ### Testing and Linting
 
