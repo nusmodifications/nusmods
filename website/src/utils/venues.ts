@@ -37,7 +37,7 @@ export function filterAvailability(
   return venues.filter(([, venue]) => {
     const start = time * 100;
     const dayAvailability = venue.find((availability) => availability.day === SCHOOLDAYS[day]);
-    if (!dayAvailability) return false;
+    if (!dayAvailability) return true;
 
     // Check that all half-hour slots within the time requested are vacant
     for (let i = 0; i < duration * 2; i++) {

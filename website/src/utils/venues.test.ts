@@ -98,6 +98,20 @@ describe(filterAvailability, () => {
       }),
     ).toEqual(getVenues('CQT/SR0622'));
   });
+
+  test('should return venue which are empty the whole day', () => {
+    const availableVenues = filterAvailability(
+      [['LT1', []]], // Venue has no lessons at all
+      {
+        day: 0,
+        time: 9,
+        duration: 1,
+      },
+    );
+
+    expect(availableVenues).toHaveLength(1);
+    expect(availableVenues[0][0]).toEqual('LT1');
+  });
 });
 
 describe(floorName, () => {
