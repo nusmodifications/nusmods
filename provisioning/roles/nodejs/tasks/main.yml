@@ -1,5 +1,0 @@
----
-- get_url: url=https://deb.nodesource.com/setup_5.x dest={{ project_dir }}/setup_5.x mode=0744
-- shell: "{{ project_dir }}/setup_5.x"
-  become: yes
-- apt: name=nodejs

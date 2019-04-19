@@ -1,3 +1,9 @@
+# NUS Scraper
+
+This folder contains the scraper which produces our [v2 API data][api-v2] from internal NUS APIs.
+
+**Note:** as this project gets its data from internal NUS APIs, you won't be able to contribute to this project without having the API domain and auth keys. Sadly, at the request of the university, we won't be able to release this information to non-core developers. If you have any ideas to improve the scraper, please [create an issue](https://github.com/nusmodifications/nusmods/issues/new/choose) instead.
+
 ## Getting Started
 
 Node 8.13 or above is required, though Node 10 is preferred.
@@ -20,6 +26,7 @@ yarn dev test | yarn bunyan
 
 - `build` - use Babel to compile the code for production
 - `scrape` - run the scraper. See CLI commands below for a list of commands. Remember to use `NODE_ENV=production` in production.
+- `docs` - copy the Swagger docs into the data folder
 
 ### For development
 
@@ -67,6 +74,8 @@ Error handling is done through Sentry.
 
 ## v2 Data Changes
 
+This section details the differences between our [v1][api-v1] and [v2][api-v2] APIs.
+
 ### Module data
 
 - `Faculty` is provided in addition to `Department`
@@ -106,4 +115,6 @@ Error handling is done through Sentry.
 
 - `Availability` now only marks occupied times. Vacant times are simply left out of the object.
 
+[api-v1]: https://api.nusmods.com
+[api-v2]: https://api.nusmods.com/v2
 [bunyan]: https://github.com/trentm/node-bunyan

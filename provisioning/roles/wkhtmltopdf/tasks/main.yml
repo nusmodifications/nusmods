@@ -1,9 +1,0 @@
----
-- apt: name=fontconfig
-- stat: path=/usr/local/bin/wkhtmltopdf
-  register: usr_local_bin_wkhtmltopdf
-- get_url: url=http://download.gna.org/wkhtmltopdf/0.12/0.12.2.1/wkhtmltox-0.12.2.1_linux-trusty-amd64.deb dest=/tmp sha256sum=1cf47ab83a3352e7df95f2973061e8c90daabb1333f00e2385cb8b2b0ff22a90
-  when: not usr_local_bin_wkhtmltopdf.stat.exists
-- apt: deb=/tmp/wkhtmltox-0.12.2.1_linux-trusty-amd64.deb
-  when: not usr_local_bin_wkhtmltopdf.stat.exists
-- file: path=/tmp/wkhtmltox-0.12.2.1_linux-trusty-amd64.deb state=absent

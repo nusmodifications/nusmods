@@ -3,12 +3,12 @@ const warnInDevelopment = process.env.NODE_ENV === 'production' ? 'error' : 'war
 module.exports = {
   parser: 'babel-eslint',
   root: true,
-  extends: ['airbnb-base', 'plugin:flowtype/recommended', 'prettier'],
+  extends: ['airbnb-base', 'prettier'],
   env: {
     browser: true,
     node: true,
   },
-  plugins: ['import', 'flowtype', 'prettier'],
+  plugins: ['import', 'prettier'],
   overrides: [
     {
       files: '**/*.test.{js,jsx}',
