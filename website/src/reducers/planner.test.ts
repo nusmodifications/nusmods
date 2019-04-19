@@ -13,7 +13,7 @@ import {
   setPlannerIBLOCs,
 } from 'actions/planner';
 import { PlannerState } from 'types/reducers';
-import reducer, { migrateV0toV1 } from './planner';
+import reducer, { migrateV0toV1, nextId } from './planner';
 
 const defaultState: PlannerState = {
   minYear: '2017/2018',
@@ -22,6 +22,15 @@ const defaultState: PlannerState = {
   modules: {},
   custom: {},
 };
+
+describe(nextId, () => {
+  const module: any = {};
+
+  test('should produce next ID', () => {
+    expect(nextId({})).toEqual('0');
+    expect(nextId({ 0: module })).toEqual('1');
+  });
+});
 
 /* eslint-disable no-useless-computed-key */
 
@@ -87,14 +96,6 @@ describe(ADD_PLANNER_MODULE, () => {
       1: { id: '1', moduleCode: 'CS2030', year: '2018/2019', semester: 2, index: 0 },
     });
 
-    // Add module code in uppercase
-    // expect(
-    //   reducer(initial, addPlannerModule('2018/2019', 2, { moduleCode: 'cs2030' })).modules,
-    // ).toEqual({
-    //   0: { id: '0', moduleCode: 'CS1010S', year: '2018/2019', semester: 1, index: 0 },
-    //   1: { id: '1', moduleCode: 'CS2030', year: '2018/2019', semester: 2, index: 0 },
-    // });
-
     // Inserts new module in correct position
     expect(
       reducer(initial, addPlannerModule('2018/2019', 1, { type: 'module', moduleCode: 'CS2030' }))
@@ -105,17 +106,18 @@ describe(ADD_PLANNER_MODULE, () => {
     });
   });
 
-  // TODO: Should this be fixed?
-  // test('should not add duplicate modules', () => {
-  //   expect(
-  //     Object.keys(reducer(initial, addPlannerModule('CS1010S', '2018/2019', 1)).modules),
-  //   ).toHaveLength(1);
-  //
-  //   // Also deduplicate lowercase module codes
-  //   expect(
-  //     Object.keys(reducer(initial, addPlannerModule('cs1010s', '2018/2019', 1)).modules),
-  //   ).toHaveLength(1);
-  // });
+  test('can insert multiple modules in order', () => {
+    const insertCS1010S = addPlannerModule('2018/2019', 1, {
+      type: 'module',
+      moduleCode: 'CS1010S',
+    });
+    const insertCS1231 = addPlannerModule('2018/2019', 1, { type: 'module', moduleCode: 'CS1231' });
+
+    expect(reducer(reducer(defaultState, insertCS1010S), insertCS1231).modules).toEqual({
+      0: { id: '0', moduleCode: 'CS1010S', year: '2018/2019', semester: 1, index: 0 },
+      1: { id: '1', moduleCode: 'CS1231', year: '2018/2019', semester: 1, index: 1 },
+    });
+  });
 });
 
 describe(MOVE_PLANNER_MODULE, () => {

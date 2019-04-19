@@ -1,5 +1,5 @@
 import produce from 'immer';
-import { max, min, pull, each } from 'lodash';
+import { each, max, min, pull } from 'lodash';
 import { createMigrate } from 'redux-persist';
 
 import { PlannerState } from 'types/reducers';
@@ -12,10 +12,10 @@ import {
   ADD_PLANNER_MODULE,
   MOVE_PLANNER_MODULE,
   REMOVE_PLANNER_MODULE,
+  SET_PLACEHOLDER_MODULE,
   SET_PLANNER_IBLOCS,
   SET_PLANNER_MAX_YEAR,
   SET_PLANNER_MIN_YEAR,
-  SET_PLACEHOLDER_MODULE,
 } from 'actions/planner';
 import { filterModuleForSemester } from 'selectors/planner';
 import config from 'config';
@@ -33,9 +33,10 @@ const defaultPlannerState: PlannerState = {
  * Derive the next ID in PlannerState.modules by incrementing from the last
  * existing ID
  */
-function nextId(modules: PlannerState['modules']): string {
-  const maxId = Math.max(...Object.keys(modules).map(Number));
-  return String(maxId + 1);
+export function nextId(modules: PlannerState['modules']): string {
+  const ids = Object.keys(modules).map(Number);
+  if (ids.length === 0) return '0';
+  return String(Math.max(...ids) + 1);
 }
 
 /**
