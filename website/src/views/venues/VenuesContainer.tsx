@@ -278,8 +278,9 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
     }
 
     const [venue, availability] = matchedVenues[venueIndex];
-    const [previous] = get(matchedVenues, String(venueIndex - 1), []);
-    const [next] = get(matchedVenues, String(venueIndex + 1), []);
+    const [previous] = matchedVenues[venueIndex - 1] || [];
+    const [next] = matchedVenues[venueIndex + 1] || [];
+
     return (
       <VenueDetails
         venue={venue}
