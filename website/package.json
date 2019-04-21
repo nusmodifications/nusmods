@@ -150,7 +150,7 @@
     "lodash": "4.17.11",
     "mousetrap": "1.6.3",
     "no-scroll": "2.1.1",
-    "nusmoderator": "2.2.0",
+    "nusmoderator": "3.0.0",
     "query-string": "5.0.0",
     "react": "16.8.6",
     "react-beautiful-dnd": "10.1.1",
