@@ -85,7 +85,8 @@ export type SemesterData = {
 
 export type NUSModuleAttributes = Partial<{
   year: boolean; // Year long
-  su: boolean; // Can S/U
+  su: boolean; // Can S/U (undergraduate)
+  grsu: boolean; // Can S/U (graduate)
   ssgf: boolean; // SkillsFuture Funded
   sfs: boolean; // SkillsFuture series
   lab: boolean; // Lab based
