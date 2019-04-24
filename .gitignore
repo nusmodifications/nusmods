@@ -29,7 +29,6 @@ infra/instance/proxy.env
 *.dbf
 *.mdb
 *.pdb
-*.sql
 *.sqlite3
 
 ### Emacs ###
