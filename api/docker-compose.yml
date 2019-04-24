@@ -1,0 +1,24 @@
+version: '3.6'
+services:
+  postgres:
+    image: postgres:11.1-alpine
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  graphql-engine:
+    image: hasura/graphql-engine:v1.0.0-alpha40.cli-migrations
+    volumes:
+      - ./migrations:/hasura-migrations
+    ports:
+      - '8080:8080'
+    depends_on:
+      - 'postgres'
+    env_file:
+      - ./.env
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: 'postgres://postgres:@postgres:5432/postgres'
+      HASURA_GRAPHQL_ENABLE_CONSOLE: 'true' # set to "false" to disable console
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: 'public'
+
+volumes:
+  db_data:
