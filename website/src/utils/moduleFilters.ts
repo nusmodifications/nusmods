@@ -138,6 +138,7 @@ export function defaultGroups(facultyMap: FacultyDepartments, query: string = ''
 
     [ATTRIBUTES]: new FilterGroup(ATTRIBUTES, 'Others', [
       makeAttributeFilter('su'),
+      makeAttributeFilter('grsu'),
       makeAttributeFilter('ssgf'),
       makeAttributeFilter('sfs'),
       makeAttributeFilter('lab'),
