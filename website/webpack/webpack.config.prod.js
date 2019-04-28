@@ -101,6 +101,10 @@ const productionConfig = merge([
           sourceMap: true,
           terserOptions: {
             compress: {
+              // Terser enables arrow functions after Babel transpilation,
+              // which breaks targets that have no support for arrow fns.
+              // When we drop support for Safari 9.1, we can re-enable this.
+              arrows: false,
               // Two passes yield the most optimal results
               passes: 2,
             },

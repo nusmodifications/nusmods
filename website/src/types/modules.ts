@@ -93,6 +93,7 @@ export type SemesterDataCondensed = Readonly<{
 type AttributeMap = {
   year: boolean; // Year long
   su: boolean; // Can S/U
+  grsu: boolean;
   ssgf: boolean; // SkillsFuture Funded
   sfs: boolean; // SkillsFuture series
   lab: boolean; // Lab based
@@ -105,7 +106,8 @@ export type NUSModuleAttributes = Partial<AttributeMap>;
 
 export const attributeDescription: { [key in keyof AttributeMap]: string } = {
   year: 'Year long module',
-  su: 'Has S/U option',
+  su: 'Has undergraduate S/U option',
+  grsu: 'Has graduate S/U option',
   ssgf: 'SkillsFuture funded',
   sfs: 'SkillsFuture series',
   lab: 'Lab based module',
