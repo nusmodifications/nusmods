@@ -25,7 +25,7 @@ import makeResponsive from 'views/hocs/makeResponsive';
 import config from 'config';
 import nusmods from 'apis/nusmods';
 import HistoryDebouncer from 'utils/HistoryDebouncer';
-import { filterAvailability, searchVenue, sortVenues } from 'utils/venues';
+import { clampClassDuration, filterAvailability, searchVenue, sortVenues } from 'utils/venues';
 import { breakpointDown } from 'utils/css';
 import { defer } from 'utils/react';
 import { convertIndexToTime } from 'utils/timify';
@@ -102,8 +102,8 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
   }
 
   onFindFreeRoomsClicked = () => {
-    this.setState((state) =>
-      produce(state, (draft) => {
+    this.setState(
+      produce((draft) => {
         const { pristineSearchOptions, isAvailabilityEnabled } = draft;
         draft.isAvailabilityEnabled = !isAvailabilityEnabled;
 
@@ -162,12 +162,15 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
 
   getHighlightPeriod(): TimePeriod | undefined {
     const { isAvailabilityEnabled, searchOptions } = this.state;
+    const clampedSearchOptions = clampClassDuration(searchOptions);
 
     if (!isAvailabilityEnabled) return undefined;
 
-    const day = searchOptions.day;
-    const startTime = convertIndexToTime(searchOptions.time * 2);
-    const endTime = convertIndexToTime(2 * (searchOptions.time + searchOptions.duration));
+    const day = clampedSearchOptions.day;
+    const startTime = convertIndexToTime(clampedSearchOptions.time * 2);
+    const endTime = convertIndexToTime(
+      2 * (clampedSearchOptions.time + clampedSearchOptions.duration),
+    );
 
     return {
       day,
@@ -214,7 +217,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
           <div className={styles.availabilitySearch}>
             <AvailabilitySearch
               isEnabled={isAvailabilityEnabled}
-              searchOptions={searchOptions}
+              searchOptions={clampClassDuration(searchOptions)}
               onUpdate={this.onAvailabilityUpdate}
             />
           </div>
