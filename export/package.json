@@ -24,6 +24,6 @@
     "lodash": "4.17.11",
     "nodemon": "1.18.11",
     "pug": "2.0.3",
-    "puppeteer": "1.11.0"
+    "puppeteer": "1.15.0"
   }
 }
