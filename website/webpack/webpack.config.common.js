@@ -15,7 +15,7 @@ const commonConfig = merge([
       // so that we can use absolute paths in our imports.
       // E.g. Importing our own module at `/js/path/to/module` will simply be:
       // `import module from 'path/to/module;`
-      modules: [parts.PATHS.src, parts.PATHS.styles, parts.PATHS.node, parts.PATHS.images],
+      modules: [parts.PATHS.src, parts.PATHS.node],
       // Maps specific modules, similar to modules above, except in this case
       // we map the folders directly - for instance we only want __mocks__ and not
       // any of the other folders under root to be imported from root, so we use
