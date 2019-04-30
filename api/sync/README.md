@@ -39,6 +39,12 @@ Things you may want to cover:
     * Log in API endpoint (to get API token): http://localhost:3000/auth/sign_in
     * Letter opener (sent email viewer): http://localhost:3000/letter_opener
 
+    To interact with byebug prompts, attach to the running container with:
+
+    ```bash
+    docker attach sync_web_1
+    ```
+
 * How to run the test suite
 
 * Services (job queues, cache servers, search engines, etc.)
