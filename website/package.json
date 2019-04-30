@@ -13,7 +13,6 @@
     "lint": "yarn lint:code && yarn lint:styles",
     "lint:code": "eslint --ext .js,.ts,.tsx src webpack scripts",
     "lint:styles": "stylelint \"src/**/*.scss\" --syntax scss",
-    "size": "bundlesize",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
     "e2e": "nightwatch -e default,safariMobile,safariDesktop,edge",
@@ -34,6 +33,7 @@
     "@babel/preset-react": "7.0.0",
     "@babel/preset-typescript": "7.3.3",
     "@hot-loader/react-dom": "16.8.6",
+    "@packtracker/webpack-plugin": "2.0.1",
     "@svgr/webpack": "4.2.0",
     "@types/classnames": "2.2.7",
     "@types/enzyme": "3.9.1",
@@ -66,7 +66,6 @@
     "babel-plugin-lodash": "3.3.4",
     "babel-plugin-transform-react-class-to-function": "1.2.2",
     "babel-plugin-transform-react-remove-prop-types": "0.4.24",
-    "bundlesize": "0.17.1",
     "chalk": "2.4.2",
     "cheerio": "1.0.0-rc.3",
     "clean-webpack-plugin": "1.0.1",
@@ -136,8 +135,8 @@
     "@tippy.js/react": "1.1.1",
     "axios": "0.18.0",
     "bootstrap": "4.3.1",
-    "browserslist-config-nusmods": "file:../packages/browserslist-config-nusmods",
     "bowser": "1.9.4",
+    "browserslist-config-nusmods": "file:../packages/browserslist-config-nusmods",
     "classnames": "2.2.6",
     "core-js": "3.0.1",
     "date-fns": "2.0.0-alpha.27",
@@ -174,15 +173,5 @@
   },
   "browserslist": [
     "extends browserslist-config-nusmods"
-  ],
-  "bundlesize": [
-    {
-      "path": "dist/*.js",
-      "maxSize": "300 kB"
-    },
-    {
-      "path": "dist/*.css",
-      "maxSize": "40 kB"
-    }
   ]
 }
