@@ -1,0 +1,77 @@
+@import '~styles/utils/modules-entry.scss';
+
+/*
+  Remove scroll on the body when react-modal is open
+  Link: https://github.com/reactjs/react-modal#body-class
+  iOS bug: https://www.eventbrite.com/engineering/mobile-safari-why/
+  Workaround for iOS bug: always shows bottom nav bar.
+  See ModulesSelect.jsx with noScroll implementation.
+*/
+:global(.ReactModal__Body--open) {
+  overflow: hidden;
+}
+
+.animated {
+  :global {
+    animation: zoomIn 0.2s;
+  }
+}
+
+:global(.ReactModal__Overlay--before-close) {
+  .animated {
+    :global {
+      // Update closeTimeoutMS prop in Modal.jsx if this duration is changed
+      animation: zoomOut 0.15s forwards;
+    }
+  }
+}
+
+.modal {
+  $spacing: 1rem;
+
+  composes: scrollable-y from global;
+  position: absolute;
+  top: $spacing;
+  right: $spacing;
+  left: $spacing;
+  max-width: 40rem;
+  max-height: calc(100% - #{2 * $spacing});
+  padding: 1rem;
+  margin: 0 auto;
+  background: var(--body-bg);
+  box-shadow: 0 6px 24px rgba(#000, 0.18);
+
+  @include media-breakpoint-down(xs) {
+    &.fullscreen {
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      max-width: 100%;
+      max-height: 100%;
+      padding: 0;
+    }
+  }
+
+  @include media-breakpoint-up(md) {
+    top: 5%;
+    max-height: 90%;
+    padding: 2rem;
+  }
+
+  @include night-mode {
+    border: 1px solid #444;
+    box-shadow: 0 6px 24px rgba(#000, 0.5);
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $modal-z-index;
+  overflow-y: hidden;
+  background: var(--body-bg-70);
+}

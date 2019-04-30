@@ -1,0 +1,15 @@
+@import '~styles/utils/modules-entry';
+
+.openMap {
+  composes: btn btn-link btn-block from global;
+  border-top: 1px solid;
+  border-radius: 0;
+  color: inherit;
+
+  &:hover,
+  &:active,
+  &:focus {
+    border-top: 1px solid;
+    color: inherit;
+  }
+}

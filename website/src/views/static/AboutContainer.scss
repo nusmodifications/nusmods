@@ -1,0 +1,16 @@
+@import '~styles/utils/modules-entry';
+
+.actionContainer {
+  .btnContainer {
+    margin-bottom: 0.5rem;
+
+    &:last-child {
+      margin-right: 0;
+      margin-bottom: 1rem;
+    }
+
+    @include media-breakpoint-up(lg) {
+      margin-right: 1rem;
+    }
+  }
+}

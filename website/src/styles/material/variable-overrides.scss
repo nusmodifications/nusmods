@@ -1,0 +1,13 @@
+@import '../constants';
+
+// Theme variables for Material Web Components
+// See: https://github.com/material-components/material-components-web/blob/master/docs/theming.md#step-3-changing-the-theme-with-sass
+
+// Currently used only for FAB, which uses the theme-secondary for
+// background colors
+$mdc-theme-secondary: theme-color();
+
+$mdc-typography-font-family: $font-family-base;
+
+$mdc-snackbar-background-color: var(--gray-dark);
+$mdc-snackbar-foreground-color: var(--gray-lightest);

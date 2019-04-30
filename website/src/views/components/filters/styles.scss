@@ -1,0 +1,148 @@
+@import '~styles/utils/modules-entry.scss';
+
+$v-padding: 0.6rem;
+$h-padding: $grid-gutter-width / 2;
+
+.heading {
+  margin-bottom: 0;
+  font-weight: bold;
+  font-size: $font-size-xs;
+
+  @include touchscreen-or-breakpoint-down {
+    padding: $v-padding $h-padding;
+    border-bottom: 1px solid var(--gray-lighter);
+    font-size: $font-size-sm;
+  }
+}
+
+.label {
+  margin: 0;
+  font-size: $font-size-xs;
+
+  &,
+  label,
+  input {
+    cursor: pointer;
+  }
+
+  &:hover {
+    color: theme-color();
+  }
+
+  &.enabled {
+    font-weight: bold;
+    color: theme-color();
+  }
+
+  .checklist &,
+  .dropdown & {
+    display: block;
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
+
+    @include touchscreen-or-breakpoint-down {
+      padding: $v-padding $h-padding $v-padding ($h-padding + 20px);
+      border-bottom: 1px solid var(--gray-lighter);
+    }
+  }
+
+  :global(.text-muted) {
+    font-weight: normal;
+  }
+
+  @include touchscreen-only {
+    font-size: $font-size-sm;
+  }
+}
+
+.checklist,
+.dropdown {
+  input {
+    margin-top: 0.15rem;
+  }
+}
+
+.dropdown {
+  $icon-size: 1rem;
+
+  h4 label {
+    margin-bottom: 0;
+  }
+
+  .label {
+    white-space: normal;
+  }
+
+  .searchWrapper {
+    position: relative;
+    margin-right: ($grid-gutter-width / 2);
+
+    // To select both the search glass icon and the chevron
+    svg {
+      position: absolute;
+      top: 0.35rem;
+      width: $icon-size;
+      height: $icon-size;
+      cursor: pointer;
+      transition: $transition-base;
+    }
+
+    .searchIcon {
+      left: 0;
+    }
+
+    .openIcon {
+      right: 0;
+    }
+
+    &.focused svg {
+      color: theme-color();
+    }
+  }
+
+  .searchInput {
+    padding-left: $icon-size + 0.3rem;
+    margin: 0.2rem 0;
+    border-width: 0 0 1px;
+    border-radius: 0;
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
+  :global(.dropdown-menu) {
+    width: calc(100% - 0.2rem);
+    max-height: 17rem;
+    padding: 0;
+    margin: 0;
+    border-radius: 0 0 3px 3px;
+
+    .label {
+      padding: 0;
+    }
+
+    :global(.dropdown-selected) .label {
+      color: currentColor;
+    }
+  }
+
+  select {
+    width: calc(100% - 3px);
+  }
+
+  @include media-breakpoint-down(sm) {
+    .heading {
+      border-bottom: 0;
+    }
+
+    .searchWrapper {
+      margin: 0 ($grid-gutter-width / 2);
+    }
+
+    select {
+      width: calc(100% - #{$grid-gutter-width});
+      margin: 0.5rem ($grid-gutter-width / 2);
+    }
+  }
+}

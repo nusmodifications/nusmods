@@ -1,0 +1,57 @@
+@import "~styles/utils/modules-entry.scss";
+
+.searchWrapper {
+  position: relative;
+
+  input {
+    padding: 0.8rem 1rem 0.8rem 2rem;
+    border-width: 0 0 1px;
+    border-radius: 0;
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}
+
+.searchIcon {
+  position: absolute;
+  height: 100%;
+  transition: color 0.3s;
+}
+
+.searchBoxFocused {
+  .searchIcon {
+    color: theme-color();
+  }
+}
+
+.searchHelp {
+  position: absolute;
+  top: calc(50% - 0.9rem);
+  right: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--gray-light);
+}
+
+@include media-breakpoint-down(sm) {
+  .searchWrapper {
+    input {
+      padding: 0.8rem 0 0.8rem 2.2rem;
+      border: 0;
+      font-size: 1rem;
+    }
+  }
+
+  .searchIcon {
+    left: $grid-gutter-width / 2;
+    width: 1rem;
+    padding-bottom: 0.1rem; // Visual alignment
+  }
+}
+
+@include mobile-landscape {
+  .searchBox {
+    top: 0;
+  }
+}

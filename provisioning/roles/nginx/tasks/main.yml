@@ -1,5 +1,0 @@
----
-- apt_repository: repo=ppa:nginx/stable
-- apt: name=nginx
-- file: path=/etc/nginx/sites-enabled/default state=absent
-  notify: reload nginx

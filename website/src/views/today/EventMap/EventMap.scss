@@ -1,0 +1,16 @@
+@import '~styles/utils/modules-entry';
+
+.noLessonSelected {
+  $icon-size: 6rem;
+
+  opacity: 0.6;
+  margin-top: 10vh;
+  font-size: 1.4rem;
+  text-align: center;
+
+  svg {
+    width: $icon-size;
+    height: $icon-size;
+    margin-bottom: 1rem;
+  }
+}

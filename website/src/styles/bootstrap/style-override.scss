@@ -1,0 +1,80 @@
+// Override Bootstrap's styles
+body {
+  color: var(--body-color);
+  background: var(--body-bg);
+  transition: color, background 0.2s;
+}
+
+mark {
+  font-weight: bold;
+  color: currentColor;
+}
+
+// Dropdown menu
+.dropdown-menu {
+  width: 100%;
+  padding: 0.1rem 0;
+  box-shadow: 0 2px 6px rgba(#000, 0.25);
+
+  @include scrollable-y;
+
+  @include night-mode {
+    box-shadow: 0 2px 6px rgba(#000, 0.75);
+  }
+}
+
+.dropdown-item {
+  color: var(--body-color);
+  cursor: pointer;
+
+  &:hover,
+  &:focus,
+  &.dropdown-selected {
+    color: theme-color();
+    background: var(--gray-lightest);
+  }
+
+  &.dropdown-selected:active {
+    color: #fff;
+    background: theme-color();
+  }
+
+  &.dropdown-item-danger {
+    color: lighten(theme-color('danger'), 10);
+
+    &:hover,
+    &.dropdown-selected {
+      background: rgba(theme-color('danger'), 0.2);
+    }
+  }
+
+  @include touchscreen-only {
+    $touch-horizontal-padding: 0.5rem;
+
+    padding-top: $touch-horizontal-padding;
+    padding-bottom: $touch-horizontal-padding;
+    border-bottom: 1px solid var(--gray-lighter);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+}
+
+// Alerts
+@mixin alert-colors($name) {
+  .alert-#{$name} {
+    border-color: var(--alert-#{$name}-border);
+    color: var(--alert-#{$name}-color);
+    background: var(--alert-#{$name}-background);
+  }
+}
+
+@each $color in $alert-override-themes {
+  @include alert-colors($color);
+}
+
+// Display util (we don't import the whole thing, since we just need this one)
+.hidden {
+  display: none;
+}

@@ -1,0 +1,60 @@
+@import '~styles/utils/modules-entry';
+
+.exportMenu {
+  position: relative;
+
+  .toggle {
+    width: 100%;
+  }
+
+  .chevron {
+    margin: 0 -0.6rem 0 0.2rem;
+  }
+
+  .dropdownMenu {
+    width: 16rem;
+
+    svg {
+      margin-right: 0.2rem;
+      vertical-align: middle;
+    }
+
+    @include media-breakpoint-down(xs) {
+      width: auto;
+    }
+
+    @include media-breakpoint-up(md) {
+      font-size: $font-size-sm;
+    }
+
+    @include media-breakpoint-only(md) {
+      @include vertical-mode {
+        right: 0;
+        left: auto;
+      }
+    }
+  }
+}
+
+.modalContent {
+  display: flex;
+  font-size: 1.4rem;
+  line-height: 1.3;
+
+  svg {
+    $size: 3.8rem;
+
+    width: $size;
+    height: $size;
+    margin-right: 1.2rem;
+    color: theme-color(warning);
+  }
+}
+
+.modalButtons {
+  text-align: right;
+
+  :global(.btn) {
+    margin-right: 0.5rem;
+  }
+}

@@ -1,0 +1,33 @@
+@import '~styles/utils/modules-entry';
+
+:global(.btn).toggle {
+  padding-left: 0;
+  text-align: left;
+
+  svg {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-right: 0.2rem;
+  }
+}
+
+.form textarea {
+  font-size: 0.9rem;
+}
+
+.actions {
+  margin-top: 0.4rem;
+}
+
+.cancel {
+  border: 0;
+  color: var(--gray-light);
+  background: none;
+}
+
+.tip {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  line-height: 1.25;
+  color: var(--gray);
+}

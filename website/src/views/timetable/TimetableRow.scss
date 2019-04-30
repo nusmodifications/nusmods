@@ -1,0 +1,25 @@
+@import './_variables.scss';
+
+.timetableRow {
+  position: relative;
+  display: flex;
+  flex: 1 0 auto;
+  min-width: $timetable-col-width;
+  margin-bottom: 1px;
+
+  // Allow empty days to collapse...
+  &:empty {
+    // ...entirely on iPhone 5, since the screen is very small...
+    min-width: 0;
+
+    // ...and only a little bit for devices larger than iPhone 5
+    @media (min-width: 321px) {
+      min-width: $timetable-col-width * 0.8;
+    }
+  }
+
+  @include vertical-mode {
+    height: auto;
+    margin: 0 1px 0 0;
+  }
+}

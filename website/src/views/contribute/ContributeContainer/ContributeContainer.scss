@@ -1,0 +1,121 @@
+@import '~styles/utils/modules-entry';
+
+.pageContainer {
+  composes: page-container from global;
+  max-width: 40rem;
+
+  header {
+    text-align: center;
+
+    svg {
+      display: inline-block;
+      max-width: 6rem;
+      margin: 0 0.5rem 1rem;
+
+      &.topImage {
+        max-width: 14rem;
+        margin-bottom: 0;
+      }
+    }
+
+    h1 {
+      margin-bottom: 1rem;
+      font-weight: bold;
+      font-size: 2rem;
+    }
+
+    h2 {
+      margin-top: 3rem;
+      font-weight: bold;
+      font-size: 1.9rem;
+    }
+
+    h3 {
+      font-size: 1.6rem;
+    }
+  }
+
+  section {
+    margin-bottom: 10rem;
+  }
+
+  hr {
+    margin-bottom: 4rem;
+  }
+}
+
+.writeReviews {
+  h4 {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+}
+
+.reviewWrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  grid-gap: 0.5rem;
+  margin-bottom: 1.5rem;
+
+  .reviewButton {
+    line-height: 1.25;
+    white-space: normal;
+
+    .reviewModuleCode {
+      display: block;
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+  }
+}
+
+.backerAvatars {
+  overflow: auto;
+  margin-bottom: 1.5rem;
+
+  img {
+    display: block;
+  }
+}
+
+.githubLinks,
+.contributeLinks {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  grid-gap: 1rem;
+  margin-bottom: 2rem;
+
+  :global(.btn) {
+    white-space: normal;
+  }
+
+  h4 {
+    margin: 1rem 0 0.3rem;
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+
+  p {
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+}
+
+.betaButton,
+.donateButton {
+  margin-top: 1rem;
+
+  svg {
+    display: block;
+    width: 3rem;
+    height: 3rem;
+    margin: 0.5rem auto;
+  }
+}
+
+.attribution {
+  margin-top: 4rem;
+  font-size: 0.9rem;
+  color: var(--gray-light);
+}

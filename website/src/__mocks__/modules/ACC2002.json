@@ -1,0 +1,278 @@
+{
+  "moduleCode": "ACC2002",
+  "title": "Managerial Accounting",
+  "acadYear": "2017/2018",
+  "department": "Accounting",
+  "faculty": "Business",
+  "description": "This course covers major concepts, tools and techniques in managerial accounting. It provides students with an appreciation of how managerial accounting evolves with changes in the business environment and why the usefulness of managerial accounting systems depends on the organisational context. The emphasis is on the use of managerial accounting information for decision-making, planning, and controlling activities. Students are introduced to both traditional and contemporary managerial accounting concepts and techniques.",
+  "moduleCredit": "4",
+  "workload": [2, 2, 0, 3, 4],
+  "Prerequisite": "Students must have completed BK1003 or BZ1002 or BH1002 or FNA1002 or FNA1002X or FNA1002E or ACC1002 or ACC1002X or BH1002E or CS1304 or EC3212 or EG1422 before they are allowed to take ACC2002.",
+  "preclusion": "BH2002 or BZ3102 or BK2001 or FNA2002 or IE4242",
+  "semesterData": [
+    {
+      "semester": 2,
+      "examDate": "2018-05-02T17:00+0800",
+      "timetable": [
+        {
+          "classNo": "K1",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Tuesday",
+          "startTime": "0900",
+          "endTime": "1200",
+          "venue": "BIZ1-0301"
+        },
+        {
+          "classNo": "K10",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Wednesday",
+          "startTime": "0800",
+          "endTime": "1100",
+          "venue": "BIZ2-0510"
+        },
+        {
+          "classNo": "K11",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Wednesday",
+          "startTime": "1400",
+          "endTime": "1700",
+          "venue": "BIZ2-0510"
+        },
+        {
+          "classNo": "K12",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Thursday",
+          "startTime": "0800",
+          "endTime": "1100",
+          "venue": "BIZ2-0510"
+        },
+        {
+          "classNo": "K13",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Monday",
+          "startTime": "1300",
+          "endTime": "1600",
+          "venue": "BIZ2-0202"
+        },
+        {
+          "classNo": "K14",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Tuesday",
+          "startTime": "1100",
+          "endTime": "1400",
+          "venue": "BIZ2-0509"
+        },
+        {
+          "classNo": "K15",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Thursday",
+          "startTime": "1500",
+          "endTime": "1800",
+          "venue": "BIZ2-0509"
+        },
+        {
+          "classNo": "K2",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Tuesday",
+          "startTime": "1400",
+          "endTime": "1700",
+          "venue": "BIZ2-0413B"
+        },
+        {
+          "classNo": "K3",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Wednesday",
+          "startTime": "0900",
+          "endTime": "1200",
+          "venue": "BIZ1-0205"
+        },
+        {
+          "classNo": "K4",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Wednesday",
+          "startTime": "1300",
+          "endTime": "1600",
+          "venue": "BIZ1-0304"
+        },
+        {
+          "classNo": "K5",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Monday",
+          "startTime": "0900",
+          "endTime": "1200",
+          "venue": "BIZ2-0202"
+        },
+        {
+          "classNo": "K8",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Wednesday",
+          "startTime": "1200",
+          "endTime": "1500",
+          "venue": "BIZ1-0201"
+        },
+        {
+          "classNo": "K9",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Thursday",
+          "startTime": "1100",
+          "endTime": "1400",
+          "venue": "BIZ2-0509"
+        }
+      ],
+      "LecturePeriods": [
+        "Tuesday Morning",
+        "Wednesday Morning",
+        "Wednesday Afternoon",
+        "Thursday Morning",
+        "Monday Afternoon",
+        "Thursday Afternoon",
+        "Tuesday Afternoon",
+        "Monday Morning"
+      ]
+    },
+    {
+      "semester": 1,
+      "examDate": "2017-12-01T09:00+0800",
+      "timetable": [
+        {
+          "classNo": "B1",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Tuesday",
+          "startTime": "0900",
+          "endTime": "1200",
+          "venue": "BIZ2-0413B"
+        },
+        {
+          "classNo": "B10",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Wednesday",
+          "startTime": "1300",
+          "endTime": "1600",
+          "venue": "BIZ1-0203"
+        },
+        {
+          "classNo": "B11",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Friday",
+          "startTime": "1400",
+          "endTime": "1700",
+          "venue": "BIZ2-0413C"
+        },
+        {
+          "classNo": "B2",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Tuesday",
+          "startTime": "1400",
+          "endTime": "1700",
+          "venue": "BIZ2-0413B"
+        },
+        {
+          "classNo": "B3",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Wednesday",
+          "startTime": "0900",
+          "endTime": "1200",
+          "venue": "BIZ2-0413B"
+        },
+        {
+          "classNo": "B4",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Thursday",
+          "startTime": "1100",
+          "endTime": "1400",
+          "venue": "BIZ2-0413A"
+        },
+        {
+          "classNo": "B5",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Thursday",
+          "startTime": "1500",
+          "endTime": "1800",
+          "venue": "BIZ2-0413A"
+        },
+        {
+          "classNo": "B6",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Wednesday",
+          "startTime": "0800",
+          "endTime": "1100",
+          "venue": "BIZ1-0303"
+        },
+        {
+          "classNo": "B7",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Wednesday",
+          "startTime": "1400",
+          "endTime": "1700",
+          "venue": "BIZ1-0303"
+        },
+        {
+          "classNo": "B8",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Friday",
+          "startTime": "1500",
+          "endTime": "1800",
+          "venue": "BIZ1-0204"
+        },
+        {
+          "classNo": "B9",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Wednesday",
+          "startTime": "0900",
+          "endTime": "1200",
+          "venue": "BIZ1-0203"
+        }
+      ],
+      "LecturePeriods": [
+        "Tuesday Morning",
+        "Wednesday Afternoon",
+        "Friday Afternoon",
+        "Tuesday Afternoon",
+        "Wednesday Morning",
+        "Thursday Morning",
+        "Thursday Afternoon"
+      ]
+    }
+  ],
+  "prereqTree": {
+    "or": [
+      "BK1003",
+      "BZ1002",
+      "BH1002",
+      "FNA1002",
+      "FNA1002X",
+      "FNA1002E",
+      "ACC1002",
+      "ACC1002X",
+      "BH1002E",
+      "CS1304",
+      "EC3212",
+      "EG1422"
+    ]
+  },
+  "LockedModules": ["ACC3602"]
+}

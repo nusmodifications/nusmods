@@ -1,0 +1,42 @@
+@import '~styles/utils/modules-entry';
+
+.location {
+  @include media-breakpoint-down(sm) {
+    margin: 0 $grid-gutter-width / 2;
+  }
+}
+
+.map {
+  height: 100%;
+}
+
+.gmapBtn {
+  position: absolute;
+  top: $leaflet-control-offset;
+  right: $leaflet-control-offset;
+  z-index: 180;
+}
+
+.mapWrapper {
+  position: relative;
+  height: 30rem;
+
+  &.expanded {
+    position: fixed;
+    top: $navbar-height;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: $venue-detail-expanded-z-index;
+    height: auto;
+    margin: 0;
+
+    @include media-breakpoint-down(sm) {
+      top: 0;
+    }
+  }
+
+  @include media-breakpoint-down(sm) {
+    height: 20rem;
+  }
+}

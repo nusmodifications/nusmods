@@ -1,0 +1,16 @@
+.contributorUsername {
+  display: inline-block;
+  overflow: hidden;
+  max-width: 100%;
+  margin: 0.8rem 0 -0.4rem;
+  font-weight: bold;
+  text-overflow: ellipsis;
+}
+
+.commits {
+  line-height: 1.2;
+}
+
+.thumbnail {
+  width: 100%;
+}

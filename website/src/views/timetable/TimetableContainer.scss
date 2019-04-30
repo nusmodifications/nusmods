@@ -1,0 +1,50 @@
+@import "~styles/utils/modules-entry.scss";
+
+.importAlert {
+  overflow: hidden;
+
+  h3 {
+    margin-bottom: 0.2rem;
+    font-weight: $font-weight-bold;
+    font-size: 1rem;
+  }
+
+  p {
+    margin-bottom: 0;
+    line-height: 1.3;
+  }
+
+  svg {
+    position: absolute;
+    top: -1rem;
+    left: -1rem;
+    opacity: 0.08;
+    width: 8rem;
+    height: 8rem;
+  }
+
+  .actions {
+    :global(.btn) {
+      margin-left: 0.5rem;
+    }
+  }
+
+  @include media-breakpoint-up(md) {
+    .row {
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  @include media-breakpoint-down(sm) {
+    .actions {
+      margin-top: 1rem;
+      text-align: left;
+
+      :global(.btn) {
+        margin-right: 0.5rem;
+        margin-left: 0;
+      }
+    }
+  }
+}

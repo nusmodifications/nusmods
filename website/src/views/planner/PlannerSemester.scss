@@ -1,0 +1,45 @@
+@import '~styles/utils/modules-entry';
+@import 'variables';
+
+$empty-message-height: 6rem;
+
+.semester {
+  position: relative;
+  width: $semester-width;
+  // Prevents the semester from collapsing at the start since all children are
+  // absolute positioned
+  min-height: 14rem;
+  margin: 0 $column-gutter 2rem 0;
+
+  &.emptyList .addModule {
+    position: absolute;
+    top: $empty-message-height + 0.5rem;
+  }
+}
+
+.semesterMeta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: var(--gray);
+
+  p {
+    margin-bottom: 0;
+  }
+}
+
+.addModule {
+  margin-top: 0.2rem;
+}
+
+.emptyListMessage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: $empty-message-height;
+  padding: 0.5rem 1rem;
+  border: 1px dashed var(--gray-light);
+  border-radius: 0.3rem;
+  color: var(--gray-light);
+}

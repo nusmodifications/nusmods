@@ -1,0 +1,130 @@
+{
+  "moduleCode": "BFS1001",
+  "title": "Personal Development & Career Management",
+  "department": "Dean's Office (Biz)",
+  "faculty": "Business",
+  "description": "This module is the School’s flagship program that looks into the personal and professional development of students, and prepares them to be work-world ready. Over 6 weeks, students will understand their own strengths and motivations, explore activities to enrich their student life, and acquire essential career skills including resume writing, interviewing and networking techniques. Upon completion, students will be more equipped to put into practice what they have learnt in their internship and subsequently job application. Completion of an internship is not a requirement for this module.",
+  "moduleCredit": "0",
+  "acadYear": "2016/2017",
+  "semesterData": [
+    {
+      "semester": 1,
+      "timetable": [
+        {
+          "classNo": "A1",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6],
+          "day": "Monday",
+          "startTime": "1400",
+          "endTime": "1700",
+          "venue": "BIZ1-0303"
+        },
+        {
+          "classNo": "A2",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6],
+          "day": "Wednesday",
+          "startTime": "1100",
+          "endTime": "1400",
+          "venue": "BIZ1-0203"
+        },
+        {
+          "classNo": "A3",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6],
+          "day": "Thursday",
+          "startTime": "1100",
+          "endTime": "1400",
+          "venue": "BIZ1-0203"
+        },
+        {
+          "classNo": "A4",
+          "lessonType": "Sectional Teaching",
+          "weeks": [7, 8, 9, 10, 11, 12, 13],
+          "day": "Monday",
+          "startTime": "1400",
+          "endTime": "1700",
+          "venue": "BIZ1-0303"
+        },
+        {
+          "classNo": "A5",
+          "lessonType": "Sectional Teaching",
+          "weeks": [7, 8, 9, 10, 11, 12, 13],
+          "day": "Wednesday",
+          "startTime": "1100",
+          "endTime": "1400",
+          "venue": "BIZ1-0203"
+        },
+        {
+          "classNo": "A6",
+          "lessonType": "Sectional Teaching",
+          "weeks": [7, 8, 9, 10, 11, 12, 13],
+          "day": "Thursday",
+          "startTime": "1100",
+          "endTime": "1400",
+          "venue": "BIZ1-0203"
+        }
+      ],
+      "LecturePeriods": ["Monday Afternoon", "Wednesday Morning", "Thursday Morning"]
+    },
+    {
+      "semester": 2,
+      "timetable": [
+        {
+          "classNo": "A1",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6],
+          "day": "Tuesday",
+          "startTime": "1100",
+          "endTime": "1400",
+          "venue": "BIZ1-0203"
+        },
+        {
+          "classNo": "A2",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6],
+          "day": "Wednesday",
+          "startTime": "0900",
+          "endTime": "1200",
+          "venue": "BIZ1-0203"
+        },
+        {
+          "classNo": "A3",
+          "lessonType": "Sectional Teaching",
+          "weeks": [1, 2, 3, 4, 5, 6],
+          "day": "Wednesday",
+          "startTime": "1200",
+          "endTime": "1500",
+          "venue": "BIZ1-0203"
+        },
+        {
+          "classNo": "A4",
+          "lessonType": "Sectional Teaching",
+          "weeks": [7, 8, 9, 10, 11, 12, 13],
+          "day": "Tuesday",
+          "startTime": "1100",
+          "endTime": "1400",
+          "venue": "BIZ1-0203"
+        },
+        {
+          "classNo": "A5",
+          "lessonType": "Sectional Teaching",
+          "weeks": [7, 8, 9, 10, 11, 12, 13],
+          "day": "Wednesday",
+          "startTime": "0900",
+          "endTime": "1200",
+          "venue": "BIZ1-0203"
+        },
+        {
+          "classNo": "A6",
+          "lessonType": "Sectional Teaching",
+          "weeks": [7, 8, 9, 10, 11, 12, 13],
+          "day": "Wednesday",
+          "startTime": "1200",
+          "endTime": "1500",
+          "venue": "BIZ1-0203"
+        }
+      ]
+    }
+  ]
+}

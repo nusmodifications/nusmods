@@ -1,0 +1,39 @@
+@import '~styles/utils/modules-entry';
+
+$gradient-height: 6rem;
+
+.wrapper {
+  .progress {
+    height: 3rem;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+  }
+}
+
+.hidden {
+  position: relative;
+  overflow: hidden;
+  max-height: 20rem;
+  border-bottom: 1px solid theme-color();
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: $gradient-height;
+    background: linear-gradient(to bottom, var(--body-bg-transparent), var(--body-bg));
+  }
+}
+
+.showMore {
+  position: relative;
+  z-index: 1;
+  margin-top: -1.2rem;
+  text-align: center;
+
+  button {
+    background: var(--body-bg);
+  }
+}

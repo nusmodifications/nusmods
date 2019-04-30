@@ -1,0 +1,29 @@
+@import '~styles/utils/modules-entry';
+
+.appIcon {
+  max-width: 256px;
+  margin: 0 auto 1rem;
+
+  @include media-breakpoint-down(xs) {
+    display: block;
+    width: 128px;
+    text-align: center;
+  }
+}
+
+.appEntry {
+  width: 100%;
+  margin: 2rem 0;
+
+  p {
+    margin-bottom: 0.5rem;
+  }
+
+  @include media-breakpoint-down(xs) {
+    margin: 3rem 0;
+  }
+}
+
+.appName {
+  margin-bottom: 0;
+}

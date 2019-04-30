@@ -1,12 +1,26 @@
+import { addWeeks, startOfWeek, isBefore, getYear } from 'date-fns';
+
 /* eslint-disable no-fallthrough, no-console */
-export const acadYearStartDates = {
-  '19/20': new Date('August 5, 2019'),
-  '18/19': new Date('August 6, 2018'),
-  '17/18': new Date('August 7, 2017'),
-  '16/17': new Date('August 1, 2016'),
-  '15/16': new Date('August 3, 2015'),
-  '14/15': new Date('August 4, 2014'),
-};
+
+/**
+ * Returns a Date object of the first weekday of Week 0 of that academic year.
+ * Assumes Week 0 begins on the first Monday of August.
+ * @param acadYear the academic year. E.g. "18/19"
+ * @return {Date} Start date of the academic year
+ */
+export function getAcadYearStartDate(acadYear) {
+  const shortYear = acadYear.split('/')[0];
+  const targetYear = 2000 + parseInt(shortYear, 10);
+  const firstDateOfMonth = new Date(targetYear, 7, 1, 0, 0, 0);
+  const nearestMonday = startOfWeek(firstDateOfMonth, { weekStartsOn: 1 });
+
+  if (isBefore(nearestMonday, firstDateOfMonth)) {
+    const firstMonday = addWeeks(nearestMonday, 1);
+    return firstMonday;
+  }
+  // 1st Aug is already a Monday
+  return nearestMonday;
+}
 
 // Constant variables.
 const oneWeekDuration = 1000 * 60 * 60 * 24 * 7;
@@ -16,62 +30,61 @@ const special1 = 'Special Term I';
 const special2 = 'Special Term II';
 
 /**
- * Computes the current acad year and return an object of acad year and start date for that year.
- * If the date is too far into the future (not within supported range),
- * the last-supported academic year is returned.
- * If the date is too early (not within supported range), null is returned.
+ * Takes in a Date and returns an object of acad year and start date for that year.
  * @param  {Date} date
  * @return {Object} acadYearObject - { year: "15/16", startDate: Date }
  */
 export function getAcadYear(date) {
-  const years = Object.keys(acadYearStartDates);
-  years.sort().reverse();
+  const shortYear = getYear(date) % 100;
 
-  for (let i = 0; i < years.length; i += 1) {
-    const year = years[i];
-    if (date >= acadYearStartDates[year]) {
-      return {
-        year,
-        startDate: acadYearStartDates[year],
-      };
-    }
-  }
-  return null;
+  // A date like 8th August 2015 can either be in AY15/16 or AY16/17. We check
+  // the date against the start of AY15/16 and return the correct one.
+  const potentialAcadYear = `${shortYear}/${shortYear + 1}`;
+  const potentialStartDate = getAcadYearStartDate(potentialAcadYear);
+
+  const year = isBefore(date, potentialStartDate)
+    ? `${shortYear - 1}/${shortYear}`
+    : potentialAcadYear;
+
+  return {
+    year,
+    startDate: getAcadYearStartDate(year),
+  };
 }
 
 /**
  * Computes the current academic semester.
  * Expects a week number of a year.
- * @param  {Number} acadWeekNumber
- * @return {String} semester - "Semester 1"
+ * @param  {number} acadWeekNumber
+ * @return {string} semester - "Semester 1"
  * @example acadWeekNumber(3)
  */
 export function getAcadSem(acadWeekNumber) {
   const earliestSupportedWeek = 1;
-  const lastWeekofSem1 = 23;
-  const lastWeekofSem2 = 40;
-  const lastWeekofSpecialSem1 = 46;
-  const lastWeekofSpecialSem2 = 52;
+  const lastWeekOfSem1 = 23;
+  const lastWeekOfSem2 = 40;
+  const lastWeekOfSpecialSem1 = 46;
+  const lastWeekOfSpecialSem2 = 52;
 
-  if (acadWeekNumber >= earliestSupportedWeek && acadWeekNumber <= lastWeekofSem1) {
-    return sem1;
-  } else if (acadWeekNumber > lastWeekofSem1 && acadWeekNumber <= lastWeekofSem2) {
-    return sem2;
-  } else if (acadWeekNumber > lastWeekofSem2 && acadWeekNumber <= lastWeekofSpecialSem1) {
-    return special1;
-  } else if (acadWeekNumber > lastWeekofSpecialSem1 && acadWeekNumber <= lastWeekofSpecialSem2) {
-    return special2;
+  if (acadWeekNumber < earliestSupportedWeek) {
+    console.warn(`[nusmoderator] Unsupported acadWeekNumber: ${acadWeekNumber}`);
+    return null;
   }
 
-  console.warn(`[nusmoderator] Unsupported acadWeekNumber as parameter: ${acadWeekNumber}`);
+  if (acadWeekNumber <= lastWeekOfSem1) return sem1;
+  if (acadWeekNumber <= lastWeekOfSem2) return sem2;
+  if (acadWeekNumber <= lastWeekOfSpecialSem1) return special1;
+  if (acadWeekNumber <= lastWeekOfSpecialSem2) return special2;
+
+  console.warn(`[nusmoderator] Unsupported acadWeekNumber: ${acadWeekNumber}`);
   return null;
 }
 
 /**
  * Computes the current academic week of the semester
  * Expects a week number of a semester.
- * @param  {Number} acadWeekNumber
- * @return {String} semester - "Recess" | "Reading" | "Examination"
+ * @param  {number} acadWeekNumber
+ * @return {string} semester - "Recess" | "Reading" | "Examination"
  * @example acadWeekNumber(3)
  */
 export function getAcadWeekName(acadWeekNumber) {
@@ -115,19 +128,22 @@ export function getAcadWeekName(acadWeekNumber) {
 /**
   * Computes the current academic week and return in an object of acad date components
   * @param  {Date} date
-  * @return {Object} {
-                    year: "15/16",
-                    sem: 'Semester 1'|'Semester 2'|'Special Sem 1'|'Special Sem 2',
-                    type: 'Instructional'|'Reading'|'Examination'|'Recess'|'Vacation'|'Orientation',
-                    num: <weekNum>
-                  }
+  * @return {Object}
+  * {
+  *   year: "15/16",
+  *   sem: 'Semester 1'|'Semester 2'|'Special Sem 1'|'Special Sem 2',
+  *   type: 'Instructional'|'Reading'|'Examination'|'Recess'|'Vacation'|'Orientation',
+  *   num: <weekNum>
+  * }
   */
 export function getAcadWeekInfo(date) {
   const currentAcad = getAcadYear(date);
   const acadYear = currentAcad.year;
-  const acadYearStartDate = currentAcad.startDate;
+  const acadYearStartDate = getAcadYearStartDate(acadYear);
 
-  let acadWeekNumber = Math.ceil(((date.getTime() - acadYearStartDate.getTime()) + 1) / oneWeekDuration);
+  let acadWeekNumber = Math.ceil(
+    (date.getTime() - acadYearStartDate.getTime() + 1) / oneWeekDuration,
+  );
   const semester = getAcadSem(acadWeekNumber);
 
   let weekType = null;
@@ -180,7 +196,7 @@ export function getAcadWeekInfo(date) {
  * @returns {Date}
  */
 export function getExamWeek(year, semester) {
-  const startDate = acadYearStartDates[year];
+  const startDate = getAcadYearStartDate(year);
 
   if (!startDate) {
     console.warn(`[nusmoderator] Unsupported year: ${year}`);
@@ -201,12 +217,12 @@ export function getExamWeek(year, semester) {
   }
 
   const d = new Date(startDate.valueOf());
-  d.setDate(startDate.getDate() + (weeks * 7));
+  d.setDate(startDate.getDate() + weeks * 7);
   return d;
 }
 
 export default {
-  acadYearStartDates,
+  getAcadYearStartDate,
   getAcadYear,
   getAcadSem,
   getAcadWeekName,

@@ -1,0 +1,316 @@
+{
+  "moduleCode": "PC1222",
+  "title": "Fundamentals of Physics II",
+  "acadYear": "2017/2018",
+  "department": "Physics",
+  "faculty": "Science",
+  "description": "The module aims to bridge the gap between O level Physics and first year university physics level. The module covers the fundamentals of three branches of physics: electricity &amp; magnetism, optics and modern physics. Topics included in the part on electricity &amp; magnetism are Coulombs law, electric field and potential, capacitance, current and resistance, DC circuits, magnetic fields, magnetic effects on current, electromagnetic induction, AC circuits and electromagnetic waves. The part on optics encompasses topics such as reflection and refraction, systems of lenses, optical instruments, interference, diffraction, grating and polarization. Topics covered in the part on modern physics are blackbody radiation, photoelectric effect, atomic transitions and spectra, the uncertainty principle, wave-particle duality, radioactivity and decay processes, binding energy and fusion energy and fusion &amp; fission.",
+  "moduleCredit": "4",
+  "workload": [3, 1, 1, 2, 3],
+  "Prerequisite": "'O' level pass in Physics or Combined Science (Physics & Chemistry OR Physics & Biology).",
+  "preclusion": "'A' Level OR H2 Pass in Physics or PC1143, or PC1144 or PC1432/PC1432X",
+  "semesterData": [
+    {
+      "semester": 2,
+      "examDate": "2018-05-10T09:00+0800",
+      "timetable": [
+        {
+          "classNo": "M02",
+          "lessonType": "Laboratory",
+          "weeks": [4, 6, 8, 10, 12],
+          "day": "Monday",
+          "startTime": "1400",
+          "endTime": "1700",
+          "venue": "S12-0402"
+        },
+        {
+          "classNo": "U02",
+          "lessonType": "Laboratory",
+          "weeks": [4, 6, 8, 10, 12],
+          "day": "Tuesday",
+          "startTime": "1400",
+          "endTime": "1700",
+          "venue": "S12-0402"
+        },
+        {
+          "classNo": "W01",
+          "lessonType": "Laboratory",
+          "weeks": [3, 5, 7, 9, 11],
+          "day": "Wednesday",
+          "startTime": "1400",
+          "endTime": "1700",
+          "venue": "S12-0402"
+        },
+        {
+          "classNo": "W02",
+          "lessonType": "Laboratory",
+          "weeks": [4, 6, 8, 10, 12],
+          "day": "Wednesday",
+          "startTime": "1400",
+          "endTime": "1700",
+          "venue": "S12-0402"
+        },
+        {
+          "classNo": "SL1",
+          "lessonType": "Lecture",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Tuesday",
+          "startTime": "1000",
+          "endTime": "1200",
+          "venue": "LT31"
+        },
+        {
+          "classNo": "SL1",
+          "lessonType": "Lecture",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Friday",
+          "startTime": "1000",
+          "endTime": "1200",
+          "venue": "LT31"
+        },
+        {
+          "classNo": "ST1",
+          "lessonType": "Tutorial",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Monday",
+          "startTime": "1700",
+          "endTime": "1800",
+          "venue": "S12-0401"
+        },
+        {
+          "classNo": "ST2",
+          "lessonType": "Tutorial",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Tuesday",
+          "startTime": "1700",
+          "endTime": "1800",
+          "venue": "S12-0401"
+        }
+      ],
+      "LecturePeriods": ["Tuesday Morning", "Friday Morning"],
+      "TutorialPeriods": ["Monday Afternoon", "Tuesday Afternoon", "Wednesday Afternoon"]
+    },
+    {
+      "semester": 1,
+      "examDate": "2017-12-05T17:00+0800",
+      "timetable": [
+        {
+          "classNo": "F01",
+          "lessonType": "Laboratory",
+          "weeks": [3, 5, 7, 9, 11],
+          "day": "Friday",
+          "startTime": "1400",
+          "endTime": "1700",
+          "venue": "S12-0402"
+        },
+        {
+          "classNo": "F02",
+          "lessonType": "Laboratory",
+          "weeks": [4, 6, 8, 10, 12],
+          "day": "Friday",
+          "startTime": "1400",
+          "endTime": "1700",
+          "venue": "S12-0402"
+        },
+        {
+          "classNo": "M01",
+          "lessonType": "Laboratory",
+          "weeks": [3, 5, 7, 9, 11],
+          "day": "Monday",
+          "startTime": "1400",
+          "endTime": "1700",
+          "venue": "S12-0402"
+        },
+        {
+          "classNo": "M02",
+          "lessonType": "Laboratory",
+          "weeks": [4, 6, 8, 10, 12],
+          "day": "Monday",
+          "startTime": "1400",
+          "endTime": "1700",
+          "venue": "S12-0402"
+        },
+        {
+          "classNo": "T01",
+          "lessonType": "Laboratory",
+          "weeks": [3, 5, 7, 9, 11],
+          "day": "Thursday",
+          "startTime": "1400",
+          "endTime": "1700",
+          "venue": "S12-0402"
+        },
+        {
+          "classNo": "T02",
+          "lessonType": "Laboratory",
+          "weeks": [4, 6, 8, 10, 12],
+          "day": "Thursday",
+          "startTime": "1400",
+          "endTime": "1700",
+          "venue": "S12-0402"
+        },
+        {
+          "classNo": "U01",
+          "lessonType": "Laboratory",
+          "weeks": [3, 5, 7, 9, 11],
+          "day": "Tuesday",
+          "startTime": "1400",
+          "endTime": "1700",
+          "venue": "S12-0402"
+        },
+        {
+          "classNo": "U02",
+          "lessonType": "Laboratory",
+          "weeks": [4, 6, 8, 10, 12],
+          "day": "Tuesday",
+          "startTime": "1400",
+          "endTime": "1700",
+          "venue": "S12-0402"
+        },
+        {
+          "classNo": "W02",
+          "lessonType": "Laboratory",
+          "weeks": [4, 6, 8, 10, 12],
+          "day": "Wednesday",
+          "startTime": "1400",
+          "endTime": "1700",
+          "venue": "S12-0402"
+        },
+        {
+          "classNo": "WM2",
+          "lessonType": "Laboratory",
+          "weeks": [4, 6, 8, 10, 12],
+          "day": "Wednesday",
+          "startTime": "0900",
+          "endTime": "1200",
+          "venue": "S12-0402"
+        },
+        {
+          "classNo": "SL1",
+          "lessonType": "Lecture",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Tuesday",
+          "startTime": "1200",
+          "endTime": "1400",
+          "venue": "LT25"
+        },
+        {
+          "classNo": "SL1",
+          "lessonType": "Lecture",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Friday",
+          "startTime": "1200",
+          "endTime": "1400",
+          "venue": "LT25"
+        },
+        {
+          "classNo": "T1",
+          "lessonType": "Tutorial",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Monday",
+          "startTime": "1600",
+          "endTime": "1700",
+          "venue": "S11-0204"
+        },
+        {
+          "classNo": "T10",
+          "lessonType": "Tutorial",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Friday",
+          "startTime": "1700",
+          "endTime": "1800",
+          "venue": "S11-0204"
+        },
+        {
+          "classNo": "T11",
+          "lessonType": "Tutorial",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Wednesday",
+          "startTime": "0900",
+          "endTime": "1000",
+          "venue": "CQT/SR0315"
+        },
+        {
+          "classNo": "T2",
+          "lessonType": "Tutorial",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Monday",
+          "startTime": "1700",
+          "endTime": "1800",
+          "venue": "S11-0204"
+        },
+        {
+          "classNo": "T3",
+          "lessonType": "Tutorial",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Tuesday",
+          "startTime": "1600",
+          "endTime": "1700",
+          "venue": "S11-0204"
+        },
+        {
+          "classNo": "T4",
+          "lessonType": "Tutorial",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Tuesday",
+          "startTime": "1700",
+          "endTime": "1800",
+          "venue": "S11-0204"
+        },
+        {
+          "classNo": "T5",
+          "lessonType": "Tutorial",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Thursday",
+          "startTime": "1500",
+          "endTime": "1600",
+          "venue": "S11-0204"
+        },
+        {
+          "classNo": "T6",
+          "lessonType": "Tutorial",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Thursday",
+          "startTime": "1600",
+          "endTime": "1700",
+          "venue": "S11-0204"
+        },
+        {
+          "classNo": "T7",
+          "lessonType": "Tutorial",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Thursday",
+          "startTime": "1700",
+          "endTime": "1800",
+          "venue": "S11-0204"
+        },
+        {
+          "classNo": "T8",
+          "lessonType": "Tutorial",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Friday",
+          "startTime": "1500",
+          "endTime": "1600",
+          "venue": "S11-0204"
+        },
+        {
+          "classNo": "T9",
+          "lessonType": "Tutorial",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Friday",
+          "startTime": "1600",
+          "endTime": "1700",
+          "venue": "S11-0204"
+        }
+      ],
+      "LecturePeriods": ["Tuesday Afternoon", "Friday Afternoon"],
+      "TutorialPeriods": [
+        "Friday Afternoon",
+        "Monday Afternoon",
+        "Thursday Afternoon",
+        "Tuesday Afternoon",
+        "Wednesday Afternoon",
+        "Wednesday Morning"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "CS1010S": {
+    "Lecture": [{
+      "classNo": "1",
+      "lessonType": "Lecture",
+      "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+      "day": "Wednesday",
+      "startTime": "1000",
+      "endTime": "1200",
+      "venue": "LT26",
+      "moduleCode": "CS1010S",
+      "title": "Programming Methodology"
+    }],
+    "Recitation": [{
+      "classNo": "1",
+      "lessonType": "Recitation",
+      "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+      "day": "Thursday",
+      "startTime": "1000",
+      "endTime": "1100",
+      "venue": "VCRm",
+      "moduleCode": "CS1010S",
+      "title": "Programming Methodology"
+    }, {
+      "classNo": "1",
+      "lessonType": "Recitation",
+      "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+      "day": "Thursday",
+      "startTime": "1200",
+      "endTime": "1300",
+      "venue": "VCRm",
+      "moduleCode": "CS1010S",
+      "title": "Programming Methodology"
+    }],
+    "Tutorial": [{
+      "classNo": "2",
+      "lessonType": "Tutorial",
+      "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+      "day": "Monday",
+      "startTime": "0900",
+      "endTime": "1000",
+      "venue": "COM1-0203",
+      "moduleCode": "CS1010S",
+      "title": "Programming Methodology"
+    }, {
+      "classNo": "2",
+      "lessonType": "Tutorial",
+      "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+      "day": "Tuesday",
+      "startTime": "0900",
+      "endTime": "1000",
+      "venue": "COM1-0216",
+      "moduleCode": "CS1010S",
+      "title": "Programming Methodology"
+    }]
+  },
+  "CS3216": {
+    "Lecture": [{
+      "classNo": "1",
+      "lessonType": "Lecture",
+      "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+      "day": "Monday",
+      "startTime": "1830",
+      "endTime": "2030",
+      "venue": "VCRm",
+      "moduleCode": "CS3216",
+      "title": "Application Development on Evolving Platforms"
+    }]
+  }
+}

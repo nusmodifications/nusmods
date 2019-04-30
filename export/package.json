@@ -7,24 +7,23 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "forever start --spinSleepTime 2000 --killSignal=SIGTERM -c 'nodemon --exitcrash' ./app.js",
+    "start": "pm2 start ecosystem.config.js",
     "dev": "nodemon ./app.js",
     "devtools": "DEVTOOLS=1 nodemon ./app.js",
-    "deploy": "rsync -avu --delete-after . ../../nusmods-export"
+    "deploy": "rsync -avu --delete-after . ../../nusmods-export && pm2 restart ecosystem.config.js"
   },
   "dependencies": {
+    "@sentry/node": "4.6.6",
     "axios": "0.18.0",
     "bunyan": "1.8.12",
-    "forever": "0.15.3",
-    "fs-extra": "5.0.0",
-    "http-graceful-shutdown": "2.1.1",
-    "koa": "2.5.2",
+    "fs-extra": "7.0.1",
+    "http-graceful-shutdown": "2.2.3",
+    "koa": "2.7.0",
     "koa-router": "7.4.0",
-    "koa-views": "6.1.4",
-    "lodash": "4.17.5",
-    "nodemon": "1.17.2",
+    "koa-views": "6.2.0",
+    "lodash": "4.17.11",
+    "nodemon": "1.18.11",
     "pug": "2.0.3",
-    "puppeteer": "1.2.0",
-    "raven": "2.4.2"
+    "puppeteer": "1.15.0"
   }
 }

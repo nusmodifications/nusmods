@@ -1,0 +1,129 @@
+@import '~styles/utils/modules-entry.scss';
+
+$connector-size: 0.75rem;
+
+.container {
+  display: flex;
+  overflow-y: auto;
+  align-items: center;
+  // Leave some space for the tooltip
+  padding: 3rem 0;
+
+  @include media-breakpoint-up(sm) {
+    justify-content: center;
+  }
+}
+
+.root {
+  // Current viewing module
+  :global(.color-1) {
+    margin: 0;
+    font-size: 1.1rem;
+
+    &::before {
+      display: none;
+    }
+  }
+}
+
+.tree,
+.prereqTree {
+  position: relative;
+  list-style: none;
+  padding: 0;
+  margin: 0.125rem 0;
+  text-align: center;
+}
+
+.node {
+  position: relative;
+  display: flex;
+  flex: 0 1 5rem;
+  justify-content: center;
+  align-items: center;
+  padding: 0.125rem 0.25rem;
+  margin: 0 0 1px $connector-size;
+  border-radius: $btn-border-radius;
+
+  &::before {
+    top: 50%;
+    left: -$connector-size;
+    width: $connector-size;
+    height: 1px;
+  }
+}
+
+.link {
+  display: block;
+  width: 100%;
+  color: currentColor;
+
+  &:hover {
+    color: currentColor;
+  }
+}
+
+.node::before,
+.conditional::after,
+.branch::before,
+.branch::after {
+  content: '';
+  position: absolute;
+  background: var(--gray-light);
+}
+
+.conditional {
+  flex: 0 0 auto;
+  margin-right: $connector-size;
+  border: 0;
+
+  &::after {
+    top: 50%;
+    right: -$connector-size;
+    width: $connector-size;
+    height: 1px;
+  }
+}
+
+.branch {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  &::before,
+  &::after {
+    left: 0;
+    width: 1px;
+    height: 50%;
+  }
+
+  &::before {
+    top: 0;
+  }
+
+  &::after {
+    bottom: 0;
+  }
+
+  &:first-child::before,
+  &:last-child::after {
+    display: none;
+  }
+}
+
+.prereqBranch {
+  &::before,
+  &::after {
+    right: 0;
+    left: auto;
+  }
+}
+
+.prereqNode {
+  margin: 0 $connector-size 1px 0;
+
+  &::before {
+    right: -$connector-size;
+    left: auto;
+  }
+}

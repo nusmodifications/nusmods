@@ -1,0 +1,95 @@
+@import '~styles/utils/modules-entry';
+@import 'variables';
+
+.module {
+  padding: $module-padding-v $module-padding-h;
+  margin-bottom: 0.4rem;
+  border-bottom: 0.15rem solid darken(theme-color('success'), 10);
+  border-radius: 0.35rem;
+  font-size: 0.9rem;
+  line-height: 1.3;
+  color: darken(theme-color('success'), 30);
+  background: lighten(theme-color('success'), 3);
+
+  &.warning {
+    border-color: darken(theme-color('warning'), 10);
+    color: darken(theme-color('warning'), 40);
+    background: theme-color('warning');
+
+    .menuBtn :global(.close) {
+      color: #000;
+    }
+  }
+
+  &.isDragging {
+    z-index: 1000;
+    opacity: 0.7;
+  }
+}
+
+.menu {
+  width: 12rem;
+}
+
+.menuBtn {
+  position: relative;
+  float: right;
+  margin: -0.3rem -0.3rem 0 0;
+
+  :global(.close) {
+    float: none;
+    color: #fff;
+  }
+}
+
+.moduleMeta {
+  display: flex;
+  opacity: 0.8;
+  justify-content: space-between;
+  font-size: 0.8rem;
+}
+
+.moduleInfo {
+  flex: 1 1 auto;
+}
+
+.moduleName {
+  margin-bottom: 0.4rem;
+
+  a {
+    display: block;
+    color: inherit;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.conflicts {
+  padding-top: 0.4rem;
+  margin-top: 0.4rem;
+  border-top: 1px solid darken(theme-color('warning'), 10);
+  font-size: $font-size-s;
+  line-height: 1.25;
+}
+
+.warningIcon {
+  flex: 0 0 1.5rem;
+  margin-right: 0.4rem;
+}
+
+.conflictHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.3rem;
+
+  p {
+    margin-bottom: 0;
+  }
+}
+
+.prereqs {
+  padding: 0;
+  margin: 0 0 0.2rem 1rem;
+}

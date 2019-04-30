@@ -1,0 +1,121 @@
+[
+  {
+    "classNo": "E4",
+    "startTime": "1200",
+    "endTime": "1400",
+    "weeks": [
+      2,
+      4,
+      6,
+      8,
+      10,
+      12
+    ],
+    "venue": "AS3-0209",
+    "day": "Thursday",
+    "lessonType": "Tutorial"
+  },
+  {
+    "classNo": "E6",
+    "startTime": "1600",
+    "endTime": "1800",
+    "weeks": [
+      2,
+      4,
+      6,
+      8,
+      10,
+      12
+    ],
+    "venue": "AS3-0209",
+    "day": "Wednesday",
+    "lessonType": "Tutorial"
+  },
+  {
+    "classNo": "E5",
+    "startTime": "1600",
+    "endTime": "1800",
+    "weeks": [
+      2,
+      4,
+      6,
+      8,
+      10,
+      12
+    ],
+    "venue": "AS2-0311",
+    "day": "Tuesday",
+    "lessonType": "Tutorial"
+  },
+  {
+    "classNo": "E3",
+    "startTime": "0800",
+    "endTime": "1000",
+    "weeks": [
+      2,
+      4,
+      6,
+      8,
+      10,
+      12
+    ],
+    "venue": "AS2-0311",
+    "day": "Monday",
+    "lessonType": "Tutorial"
+  },
+  {
+    "classNo": "1",
+    "startTime": "0800",
+    "endTime": "1000",
+    "weeks": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "venue": "LT12",
+    "day": "Wednesday",
+    "lessonType": "Lecture"
+  },
+  {
+    "classNo": "E2",
+    "startTime": "1600",
+    "endTime": "1800",
+    "weeks": [
+      2,
+      4,
+      6,
+      8,
+      10,
+      12
+    ],
+    "venue": "AS3-0209",
+    "day": "Friday",
+    "lessonType": "Tutorial"
+  },
+  {
+    "classNo": "E1",
+    "startTime": "1400",
+    "endTime": "1600",
+    "weeks": [
+      2,
+      4,
+      6,
+      8,
+      10,
+      12
+    ],
+    "venue": "AS3-0209",
+    "day": "Monday",
+    "lessonType": "Tutorial"
+  }
+]

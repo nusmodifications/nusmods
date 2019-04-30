@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`cancelModifyLesson should not have payload 1`] = `
+Object {
+  "payload": null,
+  "type": "CANCEL_MODIFY_LESSON",
+}
+`;
+
+exports[`changeLesson should return updated information to change lesson 1`] = `
+Object {
+  "payload": Object {
+    "classNo": "1",
+    "lessonType": "Recitation",
+    "moduleCode": "CS1010S",
+    "semester": 1,
+  },
+  "type": "CHANGE_LESSON",
+}
+`;
+
+exports[`fetchTimetableModules should fetch modules 1`] = `
+Array [
+  Array [
+    [Function],
+  ],
+]
+`;
+
+exports[`hide/show timetable modules should dispatch a module code for hiding 1`] = `
+Object {
+  "payload": Object {
+    "moduleCode": "CS1010",
+    "semester": 1,
+  },
+  "type": "HIDE_LESSON_IN_TIMETABLE",
+}
+`;
+
+exports[`hide/show timetable modules should dispatch a module code for showing 1`] = `
+Object {
+  "payload": Object {
+    "moduleCode": "CS1020",
+    "semester": 1,
+  },
+  "type": "SHOW_LESSON_IN_TIMETABLE",
+}
+`;
+
+exports[`modifyLesson should return lesson payload 1`] = `
+Object {
+  "payload": Object {
+    "activeLesson": Object {
+      "classNo": "1",
+      "colorIndex": 0,
+      "day": "Wednesday",
+      "endTime": "1200",
+      "lessonType": "Lecture",
+      "moduleCode": "CS1010S",
+      "startTime": "1000",
+      "title": "Programming Methodology",
+      "venue": "LT26",
+      "weeks": Array [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+      ],
+    },
+  },
+  "type": "MODIFY_LESSON",
+}
+`;
+
+exports[`removeLesson should return information to remove module 1`] = `
+Object {
+  "payload": Object {
+    "moduleCode": "CS1010",
+    "semester": 1,
+  },
+  "type": "REMOVE_MODULE",
+}
+`;
+
+exports[`select module color should dispatch a select of module color 1`] = `
+Object {
+  "payload": Object {
+    "colorIndex": 0,
+    "moduleCode": "CS1010S",
+    "semester": 1,
+  },
+  "type": "SELECT_MODULE_COLOR",
+}
+`;
+
+exports[`select module color should dispatch a select of module color 2`] = `
+Object {
+  "payload": Object {
+    "colorIndex": 1,
+    "moduleCode": "CS3216",
+    "semester": 1,
+  },
+  "type": "SELECT_MODULE_COLOR",
+}
+`;

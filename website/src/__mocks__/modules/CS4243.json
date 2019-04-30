@@ -1,0 +1,179 @@
+{
+  "moduleCode": "CS4243",
+  "title": "Computer Vision and Pattern Recognition",
+  "acadYear": "2017/2018",
+  "department": "Computer Science",
+  "faculty": "Computing",
+  "description": "In this module, various methods for computers to understand and interpret the contents of images are investigated. The objective is to expose the students to the basic concepts underlying various computer vision techniques and the application of current techniques for problem solving. Topics covered include morphological operations, convolution and cross correlation, edge and corner detection, colour, texture, motion, image registration and mosaicking, 3D vision, camera calibration and 3D reconstruction, eigenface and pattern recognition. Laboratory exercises and projects are included for the students to solve practical problems using computer vision and image processing software packages.",
+  "moduleCredit": "4",
+  "workload": [3, 0, 0, 3, 4],
+  "Prerequisite": "(CS1020 or CS1020E or CS2020 or ((CS2030 or CS2113/T) and (CS2040 or CS2040C)))\nand (MA1101R or MA1506) and (MA1102R or MA1505C or MA1505 or MA1521), and (ST1232 or ST2131 or ST2334)",
+  "semesterData": [
+    {
+      "semester": 1,
+      "examDate": "2017-11-29T17:00+0800",
+      "timetable": [
+        {
+          "classNo": "1",
+          "lessonType": "Laboratory",
+          "weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Tuesday",
+          "startTime": "1400",
+          "endTime": "1600",
+          "venue": "AS6-0421"
+        },
+        {
+          "classNo": "2",
+          "lessonType": "Laboratory",
+          "weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Tuesday",
+          "startTime": "1600",
+          "endTime": "1800",
+          "venue": "AS6-0421"
+        },
+        {
+          "classNo": "3",
+          "lessonType": "Laboratory",
+          "weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Tuesday",
+          "startTime": "1830",
+          "endTime": "2030",
+          "venue": "AS6-0421"
+        },
+        {
+          "classNo": "4",
+          "lessonType": "Laboratory",
+          "weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Thursday",
+          "startTime": "1600",
+          "endTime": "1800",
+          "venue": "AS6-0421"
+        },
+        {
+          "classNo": "5",
+          "lessonType": "Laboratory",
+          "weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Friday",
+          "startTime": "1000",
+          "endTime": "1200",
+          "venue": "AS6-0421"
+        },
+        {
+          "classNo": "1",
+          "lessonType": "Lecture",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Monday",
+          "startTime": "1830",
+          "endTime": "2030",
+          "venue": "LT15"
+        }
+      ]
+    }
+  ],
+  "ParsedPrerequisite": {
+    "and": [
+      {
+        "or": [
+          "CS1020",
+          "CS1020E",
+          "CS2020",
+          {
+            "and": [
+              {
+                "or": [
+                  "CS2030",
+                  "CS2113",
+                  "CS2113T"
+                ]
+              },
+              {
+                "or": [
+                  "CS2040",
+                  "CS2040C"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "or": [
+          "MA1101R",
+          "MA1506"
+        ]
+      },
+      {
+        "or": [
+          "MA1102R",
+          "MA1505C",
+          "MA1505",
+          "MA1521"
+        ]
+      },
+      {
+        "or": [
+          "ST1232",
+          "ST2131",
+          "ST2334"
+        ]
+      }
+    ]
+  },
+  "prereqTree": {
+    "and": [
+      {
+        "and": [
+          {
+            "or": [
+              "CS1020",
+              "CS1020E",
+              "CS2020",
+              {
+                "or": [
+                  "CS2030",
+                  "CS2113",
+                  "CS2113T"
+                ]
+              }
+            ]
+          },
+          {
+            "or": [
+              "CS2040",
+              "CS2040C"
+            ]
+          }
+        ]
+      },
+      {
+        "or": [
+          "MA1101R",
+          "MA1311",
+          "MA1506",
+          "MA1508E"
+        ]
+      },
+      {
+        "or": [
+          "MA1102R",
+          "MA1505",
+          {
+            "and": [
+              "MA1511",
+              "MA1512"
+            ]
+          },
+          "MA1521"
+        ]
+      },
+      {
+        "or": [
+          "ST1232",
+          "ST2131",
+          "ST2334"
+        ]
+      }
+    ]
+  },
+  "fulfillRequirements": []
+}

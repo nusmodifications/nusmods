@@ -1,0 +1,81 @@
+@import '~styles/utils/modules-entry';
+
+.page {
+  max-width: 65rem;
+  font-size: 1.2rem;
+
+  h2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem 0;
+
+    .logo {
+      width: 12rem;
+    }
+
+    .heart {
+      display: inline-block;
+      width: 3rem;
+      height: 3rem;
+      margin: 0 1rem;
+      color: theme-color(danger);
+
+      :global {
+        animation: pulse-more 2s infinite;
+      }
+    }
+
+    svg {
+      max-width: 15rem;
+    }
+
+    @include media-breakpoint-down(sm) {
+      flex-direction: column;
+
+      .heart {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+
+  .shirts {
+    display: block;
+    width: 100%;
+  }
+
+  .steps {
+    list-style: none;
+    margin: 3rem 0;
+    font-size: 1.4rem;
+
+    a {
+      font-weight: bold;
+    }
+
+    li {
+      margin-bottom: 1.8rem;
+      margin-left: 1.8rem;
+      counter-increment: steps;
+
+      &::before {
+        content: counter(steps);
+        display: inline-block;
+        width: 2.2rem;
+        height: 2.2rem;
+        margin: 0 0.6rem 0 -2.8rem;
+        border: 1px solid theme-color();
+        font-weight: bold;
+        line-height: 2rem;
+        text-align: center;
+      }
+    }
+  }
+
+  .disclaimer {
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    line-height: 1.35;
+  }
+}

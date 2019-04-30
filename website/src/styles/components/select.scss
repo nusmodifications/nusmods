@@ -1,0 +1,14 @@
+// Mobile Safari doesn't allow styling <select> background unless we use
+// -webkit-appearance: none. That property removes all native styling, so
+// we need to put back the dropdown arrow, which is what the SVG background
+// is for
+body.mobile-safari {
+  select,
+  select:focus {
+    padding-right: 2rem;
+    background: transparent
+      url("data:image/svg+xml;utf8,<svg fill='rgb(170, 170, 170)' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>")
+      no-repeat center right 4px;
+    -webkit-appearance: none;
+  }
+}

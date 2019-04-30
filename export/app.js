@@ -3,7 +3,7 @@ const Koa = require('koa');
 const Router = require('koa-router');
 const views = require('koa-views');
 const gracefulShutdown = require('http-graceful-shutdown');
-const Raven = require('raven');
+const Sentry = require('@sentry/node');
 const _ = require('lodash');
 
 const render = require('./render');
@@ -28,12 +28,11 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Set up Raven
-Raven.disableConsoleAlerts();
-Raven.config(process.env.NODE_ENV === 'production' && config.ravenDsn)
-  .install({
-    captureUnhandledRejections: true,
-    autoBreadcrumbs: true,
-  });
+if (process.env.NODE_ENV === 'production') {
+  Sentry.init({
+    dsn: config.ravenDsn,
+  })
+}
 
 // Start router
 const app = new Koa();
@@ -42,11 +41,27 @@ const router = new Router();
 router
   .get('/image', async (ctx) => {
     const { page, data } = ctx.state;
+    const { height, width } = ctx.query;
 
     // Validate options
-    const options = {
+    let options = {
       pixelRatio: _.clamp((Number(ctx.query.pixelRatio) || 1), 1, 3),
     };
+
+    if (
+      typeof height !== 'undefined' &&
+      typeof width !== 'undefined' &&
+      !Number.isNaN(height) && // accept floats
+      !Number.isNaN(width) && // accept floats
+      height > 0 &&
+      width > 0
+    ) {
+      options = {
+        ...options,
+        height: Number(height),
+        width: Number(width),
+      };
+    }
 
     ctx.body = await render.image(page, data, options);
     ctx.attachment('My Timetable.png');
@@ -71,9 +86,7 @@ const errorHandler = async (ctx, next) => {
       ctx.status = 404;
     }
   } catch (e) {
-    const eventId = Raven.captureException(e.original || e, {
-      req: ctx.req,
-    });
+    const eventId = Sentry.captureException(e.original || e);
 
     console.error(e);
 

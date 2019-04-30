@@ -1,0 +1,40 @@
+@keyframes leaflet-gestures-fadein {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.leaflet-container::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 461;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  font-size: 22px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  animation: leaflet-gestures-fadein 0.8s backwards;
+}
+
+.leaflet-gesture-handling-touch-warning::after,
+.leaflet-gesture-handling-scroll-warning::after {
+  animation: leaflet-gestures-fadein 0.8s forwards;
+}
+
+.leaflet-gesture-handling-touch-warning::after {
+  content: attr(data-gesture-handling-touch-content);
+}
+
+.leaflet-gesture-handling-scroll-warning::after {
+  content: attr(data-gesture-handling-scroll-content);
+}

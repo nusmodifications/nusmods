@@ -1,0 +1,11 @@
+@import "~styles/utils/modules-entry.scss";
+
+.lessonTimetable {
+  overflow: auto;
+  margin-top: 0.5rem;
+
+  @supports (-webkit-overflow-scrolling: touch) {
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+}

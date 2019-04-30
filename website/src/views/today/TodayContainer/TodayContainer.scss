@@ -1,0 +1,73 @@
+@import '~styles/utils/modules-entry';
+
+$schedule-width: 25rem;
+$gutter: 0.75rem;
+
+.todayPage {
+  composes: page-container from global;
+
+  :global {
+    animation-name: $page-entering-animation;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .schedule,
+  .mapContainer {
+    top: $navbar-height;
+    bottom: 0;
+  }
+
+  .schedule {
+    position: fixed;
+    left: $side-nav-width-md + $gutter;
+    z-index: 1;
+    overflow: auto;
+    width: $schedule-width;
+    padding: 1rem $gutter 0 0;
+    border-right: 1px solid var(--gray-lighter);
+
+    @include scrollable-y;
+  }
+
+  .mapContainer {
+    position: fixed;
+    right: 0;
+    left: $side-nav-width-md + $schedule-width + $gutter;
+
+    &.expanded {
+      z-index: $venue-detail-expanded-z-index;
+    }
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .schedule {
+    left: $side-nav-width-lg + $gutter;
+  }
+
+  .mapContainer {
+    left: $side-nav-width-lg + $schedule-width + $gutter;
+  }
+}
+
+.day {
+  margin-bottom: 4rem;
+}
+
+.nowMarker {
+  font-weight: bold;
+  color: theme-color('danger');
+
+  &::after {
+    content: '•';
+    position: absolute;
+    margin-left: 0.2rem;
+  }
+}
+
+.attribution {
+  font-size: 0.9rem;
+  text-align: right;
+  color: var(--gray-light);
+}

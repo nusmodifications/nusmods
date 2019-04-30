@@ -1,0 +1,66 @@
+// Override the default bootstrap variables in this file.
+
+// Colors
+$gray-dark:                 #222324;
+$gray:                      #69707a;
+$gray-light:                #aeb1b5;
+$gray-lighter:              #d3d6db;
+$gray-lightest:             #f3f5f8;
+
+$primary: #ff5138;
+$danger: #b71c1c;
+$secondary: $gray;
+$light: $gray-lightest;
+$dark: $gray-dark;
+
+// Options
+
+// Body
+$body-color: $gray;
+
+// Typography
+$font-size-xlg:   2rem !default;
+$font-size-s:     0.85rem !default;
+$font-size-xs:    0.75rem !default;
+$font-size-xxs:   0.65rem !default;
+
+// Fonts
+$headings-margin-bottom:    1rem;
+
+// Form states and alerts
+$state-success-text:        #fff;
+$state-success-bg:          theme-color('success');
+
+$state-info-text:           #fff;
+$state-info-bg:             theme-color('info');
+
+$state-warning-text:        #fff;
+$state-warning-bg:          theme-color('warning');
+
+$state-danger-text:         #fff;
+$state-danger-bg:           theme-color('danger');
+
+// Element styles
+$mark-bg: transparent;
+$hr-border-color: var(--gray-lighter);
+
+$input-border-color: var(--gray-lighter);
+$input-disabled-bg: var(--gray-lighter);
+
+$input-bg: var(--body-bg);
+$input-color: var(--body-color);
+$input-border-color: var(--gray-lighter);
+$input-focus-bg: var(--body-bg);
+$input-focus-color: var(--body-color);
+$input-focus-border-color: $primary;
+$input-disabled-bg: var(--body-bg);
+
+$dropdown-border-color: var(--gray-lighter);
+$dropdown-bg: var(--body-bg);
+
+$mark-padding: 0;
+
+// $zindex-dropdown: 820 - set in constants.css with the rest of the z-indexes
+
+// Close button line color
+$close-color: var(--gray-dark);

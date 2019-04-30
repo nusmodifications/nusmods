@@ -1,0 +1,179 @@
+@import '~styles/utils/modules-entry';
+$icon-size: $font-size-lg;
+$input-width: 2rem;
+$input-width-open: 21rem;
+$input-width-open-lg: 34rem;
+$container-padding: 0.5rem;
+$dropdown-height: 40rem;
+
+.container {
+  composes: btn-svg from global;
+  position: relative;
+  height: 100%;
+  padding-right: $container-padding;
+  margin-left: auto;
+  border-right: 1px solid var(--gray-lighter);
+  font-size: 0.9rem;
+
+  &:hover .icon {
+    color: theme-color();
+  }
+}
+
+$icon-dist: $input-width-open - $input-width;
+$icon-dist-lg: $input-width-open-lg - $input-width;
+
+.icon {
+  position: absolute;
+  top: 0.3rem; // For Safari 9
+  right: $icon-dist + $container-padding;
+  width: $icon-size;
+  height: $icon-size;
+  transform: translate($icon-dist - 0.25rem);
+  transition: all $desktop-entering-duration $material-deceleration-curve;
+
+  @include media-breakpoint-up(lg) {
+    right: $icon-dist-lg + $container-padding;
+    transform: translate($icon-dist-lg - 0.25rem);
+  }
+}
+
+.iconOpen {
+  color: theme-color();
+  transform: translate(0);
+}
+
+.input {
+  position: absolute;
+  right: $input-width-open + $container-padding;
+  opacity: 0;
+  width: $input-width;
+  height: 100%;
+  padding-left: $input-width;
+  border: 0;
+  font-size: $font-size-s;
+  color: var(--body-color);
+  background: transparent;
+  cursor: pointer;
+  transform: translate($input-width-open);
+  transition: transform $desktop-entering-duration $material-deceleration-curve,
+    opacity $desktop-entering-duration $material-deceleration-curve 75ms;
+
+  &:focus {
+    outline: none;
+    background: transparent;
+    box-shadow: none;
+  }
+}
+
+.openWidth {
+  width: $input-width-open;
+
+  @include media-breakpoint-up(lg) {
+    width: $input-width-open-lg;
+  }
+}
+
+.inputOpen {
+  composes: openWidth;
+  right: 0;
+  opacity: 1;
+  cursor: auto;
+  transform: translate(0);
+}
+
+.selectListContainer {
+  position: absolute;
+  top: $navbar-height - 0.5rem;
+  right: 0;
+  z-index: $module-select-z-index;
+  border: $input-btn-border-width solid $input-border-color;
+  border-width: 0 $input-btn-border-width $input-btn-border-width;
+  border-radius: 0 0 $btn-border-radius $btn-border-radius;
+  color: var(--body-color);
+  background: var(--body-bg);
+}
+
+.selectList {
+  composes: list-unstyled scrollable-y from global;
+  max-height: $dropdown-height;
+  @media (max-height: $dropdown-height + 5rem) {
+    max-height: calc(90vh - #{$navbar-height});
+  }
+}
+
+.item {
+  composes: openWidth;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem $container-padding;
+  cursor: pointer;
+}
+
+.selectHeader {
+  composes: item;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--gray-lighter);
+  font-size: 0.95rem;
+
+  &.selected {
+    > :global(.btn-svg) {
+      color: theme-color();
+    }
+
+    .svg {
+      transform: translateX(0.2rem);
+    }
+  }
+}
+
+.headerName {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  transition: $entering-duration transform $material-standard-curve;
+}
+
+.option {
+  composes: item;
+
+  &.selected {
+    color: theme-color();
+    background: var(--gray-lightest);
+  }
+
+  .semesters {
+    flex: 0 0 auto;
+    margin-right: 0.4rem;
+  }
+}
+
+.noResults {
+  composes: openWidth;
+  text-align: center;
+
+  p {
+    margin-bottom: 0.4rem;
+  }
+
+  svg {
+    opacity: 0.35;
+    width: 4rem;
+    height: 4rem;
+    margin-top: 1rem;
+  }
+
+  :global(.btn).selected {
+    text-decoration: underline;
+  }
+}
+
+.searchTerm {
+  composes: h4 from global;
+  display: block;
+  white-space: normal;
+}

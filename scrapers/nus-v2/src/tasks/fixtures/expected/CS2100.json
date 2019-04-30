@@ -1,0 +1,730 @@
+{
+  "acadYear": "2018/2019",
+  "preclusion": "CS1104 or Students from Department of ECE",
+  "description": "The objective of this module is to familiarise students with the fundamentals of computing devices. Through this module students will understand the basics of data representation, and how the various parts of a computer work, separately and with each other. This allows students to understand the issues in computing devices, and how these issues affect the implementation of solutions. Topics covered include data representation systems, combinational and sequential circuit design techniques, assembly language, processor execution cycles, pipelining, memory hierarchy and input/output systems.",
+  "title": "Computer Organisation",
+  "department": "Computer Science",
+  "faculty": "Computing",
+  "workload": [3, 1, 1, 3, 2],
+  "prerequisite": "CS1010 or its equivalent",
+  "moduleCredit": "4",
+  "moduleCode": "CS2100",
+  "semesterData": [
+    {
+      "semester": 1,
+      "timetable": [
+        {
+          "classNo": "08",
+          "startTime": "1100",
+          "endTime": "1200",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0208",
+          "day": "Friday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "06",
+          "startTime": "0900",
+          "endTime": "1000",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0208",
+          "day": "Thursday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "1",
+          "startTime": "1200",
+          "endTime": "1300",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "LT19",
+          "day": "Wednesday",
+          "lessonType": "Lecture",
+          "size": 250
+        },
+        {
+          "classNo": "06",
+          "startTime": "1100",
+          "endTime": "1200",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Thursday",
+          "lessonType": "Laboratory",
+          "size": 21
+        },
+        {
+          "classNo": "01",
+          "startTime": "1300",
+          "endTime": "1400",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Monday",
+          "lessonType": "Laboratory",
+          "size": 21
+        },
+        {
+          "classNo": "12",
+          "startTime": "1700",
+          "endTime": "1800",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Thursday",
+          "lessonType": "Laboratory",
+          "size": 21
+        },
+        {
+          "classNo": "02",
+          "startTime": "1400",
+          "endTime": "1500",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Monday",
+          "lessonType": "Laboratory",
+          "size": 21
+        },
+        {
+          "classNo": "05",
+          "startTime": "1700",
+          "endTime": "1800",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Monday",
+          "lessonType": "Laboratory",
+          "size": 21
+        },
+        {
+          "classNo": "03",
+          "startTime": "1500",
+          "endTime": "1600",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Monday",
+          "lessonType": "Laboratory",
+          "size": 21
+        },
+        {
+          "classNo": "04",
+          "startTime": "1600",
+          "endTime": "1700",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Monday",
+          "lessonType": "Laboratory",
+          "size": 21
+        },
+        {
+          "classNo": "07",
+          "startTime": "1200",
+          "endTime": "1300",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Thursday",
+          "lessonType": "Laboratory",
+          "size": 21
+        },
+        {
+          "classNo": "08",
+          "startTime": "1300",
+          "endTime": "1400",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Thursday",
+          "lessonType": "Laboratory",
+          "size": 21
+        },
+        {
+          "classNo": "10",
+          "startTime": "1500",
+          "endTime": "1600",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Thursday",
+          "lessonType": "Laboratory",
+          "size": 21
+        },
+        {
+          "classNo": "11",
+          "startTime": "1600",
+          "endTime": "1700",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Thursday",
+          "lessonType": "Laboratory",
+          "size": 21
+        },
+        {
+          "classNo": "1",
+          "startTime": "1600",
+          "endTime": "1800",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "LT19",
+          "day": "Tuesday",
+          "lessonType": "Lecture",
+          "size": 250
+        },
+        {
+          "classNo": "03",
+          "startTime": "0900",
+          "endTime": "1000",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM2-0108",
+          "day": "Wednesday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "11",
+          "startTime": "1300",
+          "endTime": "1400",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0203",
+          "day": "Friday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "04",
+          "startTime": "1600",
+          "endTime": "1700",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0208",
+          "day": "Monday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "05",
+          "startTime": "1700",
+          "endTime": "1800",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0208",
+          "day": "Monday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "09",
+          "startTime": "1600",
+          "endTime": "1700",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0209",
+          "day": "Thursday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "02",
+          "startTime": "0800",
+          "endTime": "0900",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0209",
+          "day": "Tuesday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "10",
+          "startTime": "1500",
+          "endTime": "1600",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0208",
+          "day": "Friday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "12",
+          "startTime": "0900",
+          "endTime": "1000",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0207",
+          "day": "Monday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "01",
+          "startTime": "1300",
+          "endTime": "1400",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0208",
+          "day": "Friday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "07",
+          "startTime": "1000",
+          "endTime": "1100",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM2-0108",
+          "day": "Wednesday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "09",
+          "startTime": "1400",
+          "endTime": "1500",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Thursday",
+          "lessonType": "Laboratory",
+          "size": 21
+        }
+      ],
+      "examDate": "2018-11-27T09:00:00.000Z",
+      "examDuration": 120
+    },
+    {
+      "semester": 2,
+      "timetable": [
+        {
+          "classNo": "2",
+          "startTime": "1000",
+          "endTime": "1200",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "I3-AUD",
+          "day": "Monday",
+          "lessonType": "Lecture",
+          "size": 200
+        },
+        {
+          "classNo": "1",
+          "startTime": "1400",
+          "endTime": "1500",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "I3-AUD",
+          "day": "Wednesday",
+          "lessonType": "Lecture",
+          "size": 200
+        },
+        {
+          "classNo": "2",
+          "startTime": "1500",
+          "endTime": "1600",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "I3-AUD",
+          "day": "Wednesday",
+          "lessonType": "Lecture",
+          "size": 200
+        },
+        {
+          "classNo": "06",
+          "startTime": "1200",
+          "endTime": "1300",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0209",
+          "day": "Friday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "04",
+          "startTime": "1100",
+          "endTime": "1200",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0201",
+          "day": "Wednesday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "08",
+          "startTime": "1200",
+          "endTime": "1300",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0207",
+          "day": "Monday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "19",
+          "startTime": "1600",
+          "endTime": "1700",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Thursday",
+          "lessonType": "Laboratory",
+          "size": 20
+        },
+        {
+          "classNo": "20",
+          "startTime": "1700",
+          "endTime": "1800",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Thursday",
+          "lessonType": "Laboratory",
+          "size": 20
+        },
+        {
+          "classNo": "02",
+          "startTime": "0900",
+          "endTime": "1000",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Monday",
+          "lessonType": "Laboratory",
+          "size": 20
+        },
+        {
+          "classNo": "03",
+          "startTime": "1000",
+          "endTime": "1100",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Monday",
+          "lessonType": "Laboratory",
+          "size": 20
+        },
+        {
+          "classNo": "04",
+          "startTime": "1100",
+          "endTime": "1200",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Monday",
+          "lessonType": "Laboratory",
+          "size": 20
+        },
+        {
+          "classNo": "05",
+          "startTime": "1200",
+          "endTime": "1300",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Monday",
+          "lessonType": "Laboratory",
+          "size": 20
+        },
+        {
+          "classNo": "06",
+          "startTime": "1300",
+          "endTime": "1400",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Monday",
+          "lessonType": "Laboratory",
+          "size": 20
+        },
+        {
+          "classNo": "07",
+          "startTime": "1400",
+          "endTime": "1500",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Monday",
+          "lessonType": "Laboratory",
+          "size": 20
+        },
+        {
+          "classNo": "08",
+          "startTime": "1500",
+          "endTime": "1600",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Monday",
+          "lessonType": "Laboratory",
+          "size": 20
+        },
+        {
+          "classNo": "09",
+          "startTime": "1600",
+          "endTime": "1700",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Monday",
+          "lessonType": "Laboratory",
+          "size": 20
+        },
+        {
+          "classNo": "14",
+          "startTime": "1100",
+          "endTime": "1200",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Thursday",
+          "lessonType": "Laboratory",
+          "size": 20
+        },
+        {
+          "classNo": "15",
+          "startTime": "1200",
+          "endTime": "1300",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Thursday",
+          "lessonType": "Laboratory",
+          "size": 20
+        },
+        {
+          "classNo": "16",
+          "startTime": "1300",
+          "endTime": "1400",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Thursday",
+          "lessonType": "Laboratory",
+          "size": 20
+        },
+        {
+          "classNo": "17",
+          "startTime": "1400",
+          "endTime": "1500",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Thursday",
+          "lessonType": "Laboratory",
+          "size": 20
+        },
+        {
+          "classNo": "18",
+          "startTime": "1500",
+          "endTime": "1600",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Thursday",
+          "lessonType": "Laboratory",
+          "size": 20
+        },
+        {
+          "classNo": "10",
+          "startTime": "1700",
+          "endTime": "1800",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Monday",
+          "lessonType": "Laboratory",
+          "size": 20
+        },
+        {
+          "classNo": "11",
+          "startTime": "0800",
+          "endTime": "0900",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Thursday",
+          "lessonType": "Laboratory",
+          "size": 20
+        },
+        {
+          "classNo": "12",
+          "startTime": "0900",
+          "endTime": "1000",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Thursday",
+          "lessonType": "Laboratory",
+          "size": 20
+        },
+        {
+          "classNo": "13",
+          "startTime": "1000",
+          "endTime": "1100",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0207",
+          "day": "Wednesday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "14",
+          "startTime": "1100",
+          "endTime": "1200",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0209",
+          "day": "Tuesday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "01",
+          "startTime": "1100",
+          "endTime": "1200",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0207",
+          "day": "Wednesday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "12",
+          "startTime": "1700",
+          "endTime": "1800",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0207",
+          "day": "Thursday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "15",
+          "startTime": "0800",
+          "endTime": "0900",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0209",
+          "day": "Friday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "1",
+          "startTime": "1600",
+          "endTime": "1800",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "I3-AUD",
+          "day": "Tuesday",
+          "lessonType": "Lecture",
+          "size": 200
+        },
+        {
+          "classNo": "20",
+          "startTime": "1500",
+          "endTime": "1600",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0209",
+          "day": "Friday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "05",
+          "startTime": "1100",
+          "endTime": "1200",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0209",
+          "day": "Friday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "02",
+          "startTime": "0900",
+          "endTime": "1000",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0209",
+          "day": "Friday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "16",
+          "startTime": "1200",
+          "endTime": "1300",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0209",
+          "day": "Wednesday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "17",
+          "startTime": "1300",
+          "endTime": "1400",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0209",
+          "day": "Wednesday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "18",
+          "startTime": "1300",
+          "endTime": "1400",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0209",
+          "day": "Friday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "19",
+          "startTime": "1400",
+          "endTime": "1500",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0209",
+          "day": "Friday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "11",
+          "startTime": "1500",
+          "endTime": "1600",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0203",
+          "day": "Monday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "13",
+          "startTime": "1000",
+          "endTime": "1100",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Thursday",
+          "lessonType": "Laboratory",
+          "size": 20
+        },
+        {
+          "classNo": "03",
+          "startTime": "1000",
+          "endTime": "1100",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0207",
+          "day": "Tuesday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "10",
+          "startTime": "0900",
+          "endTime": "1000",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0201",
+          "day": "Tuesday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "01",
+          "startTime": "0800",
+          "endTime": "0900",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0113",
+          "day": "Monday",
+          "lessonType": "Laboratory",
+          "size": 20
+        },
+        {
+          "classNo": "07",
+          "startTime": "1300",
+          "endTime": "1400",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0209",
+          "day": "Tuesday",
+          "lessonType": "Tutorial",
+          "size": 20
+        },
+        {
+          "classNo": "09",
+          "startTime": "1600",
+          "endTime": "1700",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "venue": "COM1-0203",
+          "day": "Monday",
+          "lessonType": "Tutorial",
+          "size": 20
+        }
+      ],
+      "examDate": "2019-05-02T09:00:00.000Z",
+      "examDuration": 120
+    }
+  ],
+  "prereqTree": "CS1010",
+  "fulfillRequirements": ["CS2106", "CS3210"]
+}

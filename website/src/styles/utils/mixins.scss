@@ -1,0 +1,81 @@
+@mixin color($color) {
+  border-color: darken($color, 20%);
+  color: darken($color, 40%);
+  background-color: $color;
+
+  &.hoverable:hover,
+  &.hoverable.hover {
+    background-color: darken($color, 10%);
+  }
+}
+
+@mixin mobile-landscape {
+  @include media-breakpoint-down(sm) {
+    @media (max-height: 15rem) {
+      @content;
+    }
+  }
+}
+
+@mixin scrollable {
+  overflow: auto;
+
+  // @supports is used here because Safari requires overflow: scroll to be used in conjunction with
+  // -webkit-overflow-scrolling: touch to ensure smooth scrolling on iOS, but this causes ugly
+  // scrollbars to appear in other browsers
+  @supports (-webkit-overflow-scrolling: touch) {
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@mixin scrollable-y {
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  // @supports is used here because Safari requires overflow: scroll to be used in conjunction with
+  // -webkit-overflow-scrolling: touch to ensure smooth scrolling on iOS, but this causes ugly
+  // scrollbars to appear in other browsers
+  @supports (-webkit-overflow-scrolling: touch) {
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@mixin touchscreen-only {
+  @media (pointer: coarse) {
+    @content;
+  }
+}
+
+// Selects both touchscreens and small devices
+@mixin touchscreen-or-breakpoint-down($breakpoint: sm) {
+  $max: breakpoint-max($breakpoint);
+
+  @if $max {
+    @media (max-width: $max), (pointer: coarse) {
+      @content;
+    }
+  }
+  @else {
+    @media (pointer: coarse) {
+      @content;
+    }
+  }
+}
+
+@mixin night-mode {
+  @at-root {
+    :global(.mode-dark) & {
+      @content;
+    }
+  }
+}
+
+@mixin vertical-mode {
+  @at-root {
+    :global(.verticalMode) & {
+      @content;
+    }
+  }
+}

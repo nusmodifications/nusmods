@@ -1,0 +1,24 @@
+@import '~styles/utils/modules-entry';
+
+.heading {
+  margin: 3rem 0;
+}
+
+.portrait {
+  max-width: 256px;
+  margin: 0 auto 1rem;
+
+  @include media-breakpoint-down(xs) {
+    display: block;
+    width: 128px;
+  }
+}
+
+.teamMember {
+  margin: 2rem 0;
+
+  @include media-breakpoint-down(xs) {
+    margin: 3rem 0;
+    text-align: center;
+  }
+}

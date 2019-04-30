@@ -16,20 +16,37 @@ yarn add nusmoderator
 
 #### Table of Contents
 
+-   [getAcadYearStartDate](#getacadyearstartdate)
+    -   [Parameters](#parameters)
 -   [getAcadYear](#getacadyear)
+    -   [Parameters](#parameters-1)
 -   [getAcadSem](#getacadsem)
+    -   [Parameters](#parameters-2)
+    -   [Examples](#examples)
 -   [getAcadWeekName](#getacadweekname)
+    -   [Parameters](#parameters-3)
+    -   [Examples](#examples-1)
 -   [getAcadWeekInfo](#getacadweekinfo)
+    -   [Parameters](#parameters-4)
 -   [getExamWeek](#getexamweek)
+    -   [Parameters](#parameters-5)
+
+### getAcadYearStartDate
+
+Returns a Date object of the first weekday of Week 0 of that academic year.
+Assumes Week 0 begins on the first Monday of August.
+
+#### Parameters
+
+-   `acadYear`  the academic year. E.g. "18/19"
+
+Returns **[Date](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)** Start date of the academic year
 
 ### getAcadYear
 
-Computes the current acad year and return an object of acad year and start date for that year.
-If the date is too far into the future (not within supported range),
-the last-supported academic year is returned.
-If the date is too early (not within supported range), null is returned.
+Takes in a Date and returns an object of acad year and start date for that year.
 
-**Parameters**
+#### Parameters
 
 -   `date` **[Date](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)** 
 
@@ -40,55 +57,55 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 Computes the current academic semester.
 Expects a week number of a year.
 
-**Parameters**
+#### Parameters
 
--   `acadWeekNumber` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+-   `acadWeekNumber` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
-**Examples**
+#### Examples
 
 ```javascript
 acadWeekNumber(3)
 ```
 
-Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** semester - "Semester 1"
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** semester - "Semester 1"
 
 ### getAcadWeekName
 
 Computes the current academic week of the semester
 Expects a week number of a semester.
 
-**Parameters**
+#### Parameters
 
--   `acadWeekNumber` **[Number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+-   `acadWeekNumber` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
-**Examples**
+#### Examples
 
 ```javascript
 acadWeekNumber(3)
 ```
 
-Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** semester - "Recess" | "Reading" | "Examination"
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** semester - "Recess" | "Reading" | "Examination"
 
 ### getAcadWeekInfo
 
 Computes the current academic week and return in an object of acad date components
 
-**Parameters**
+#### Parameters
 
 -   `date` **[Date](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)** 
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** {
-year: "15/16",
-sem: 'Semester 1'|'Semester 2'|'Special Sem 1'|'Special Sem 2',
-type: 'Instructional'|'Reading'|'Examination'|'Recess'|'Vacation'|'Orientation',
-num: <weekNum>
+  year: "15/16",
+  sem: 'Semester 1'|'Semester 2'|'Special Sem 1'|'Special Sem 2',
+  type: 'Instructional'|'Reading'|'Examination'|'Recess'|'Vacation'|'Orientation',
+  num: <weekNum>
 }
 
 ### getExamWeek
 
 Get the first day of the exam week for the given semester
 
-**Parameters**
+#### Parameters
 
 -   `year` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
 -   `semester` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
