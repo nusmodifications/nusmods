@@ -35,7 +35,7 @@ def new_courses
     code = "#{Faker::Address.state_abbr}#{course_num}#{Faker::Address.state_abbr}"
     Course.new(
       code: code,
-      title: Faker::Educator.course,
+      title: Faker::Educator.course_name,
       description: Faker::Lorem.paragraph,
       slug: code.downcase,
       credit: Faker::Number.between(1, 8).to_s,
