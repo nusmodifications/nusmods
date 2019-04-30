@@ -33,7 +33,7 @@
     "@babel/preset-react": "7.0.0",
     "@babel/preset-typescript": "7.3.3",
     "@hot-loader/react-dom": "16.8.6",
-    "@packtracker/webpack-plugin": "^2.0.1",
+    "@packtracker/webpack-plugin": "2.0.1",
     "@svgr/webpack": "4.2.0",
     "@types/classnames": "2.2.7",
     "@types/enzyme": "3.9.1",
