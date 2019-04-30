@@ -118,9 +118,6 @@ jobs:
       - run:
           name: Build web page
           command: yarn build
-      - run:
-          name: Report bundle size
-          command: yarn size
       - store_test_results:
           path: reports/junit
       - store_artifacts:
