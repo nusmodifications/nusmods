@@ -32,6 +32,7 @@ Things you may want to cover:
 
     Relevant links:
 
+    * Admin page: http://localhost:3000/admin
     * GraphQL Playground: http://localhost:3000/playground
     * Log in page: http://localhost:3000/users/sign_in
     * Letter opener (sent email viewer): http://localhost:3000/letter_opener
