@@ -1,18 +1,16 @@
 {
   "name": "nusmoderator",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "A lightweight library with helpful functions for NUS-related matters",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",
-  "types": "./index.d.ts",
+  "types": "dist/index.d.ts",
   "files": [
-    "dist",
-    "index.d.ts"
+    "dist"
   ],
   "scripts": {
     "clean": "rimraf dist coverage",
-    "ci": "npm run lint && npm run test",
     "lint": "documentation lint src && eslint src",
     "docs": "documentation readme src --section=API",
     "build": "microbundle",
@@ -43,11 +41,7 @@
   "homepage": "https://github.com/nusmodifications/nusmods/tree/master/packages/nusmoderator",
   "npmName": "nusmoderator",
   "devDependencies": {
-    "@babel/core": "7.4.4",
-    "@babel/preset-env": "7.4.4",
-    "babel-core": "7.0.0-bridge.0",
-    "babel-eslint": "10.0.1",
-    "babel-jest": "24.7.1",
+    "@types/jest": "24.0.12",
     "documentation": "10.1.0",
     "eslint": "5.16.0",
     "eslint-config-airbnb-base": "13.1.0",
@@ -57,7 +51,8 @@
     "jest": "24.7.1",
     "microbundle": "0.11.0",
     "prettier": "1.17.0",
-    "rimraf": "2.6.3"
+    "rimraf": "2.6.3",
+    "ts-jest": "24.0.2"
   },
   "dependencies": {
     "date-fns": "2.0.0-alpha.27"
