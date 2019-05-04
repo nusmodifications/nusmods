@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "clean": "rimraf dist coverage",
-    "lint": "documentation lint src && eslint src",
+    "lint": "documentation lint src && eslint --ext .ts src",
     "docs": "documentation readme src --section=API",
     "build": "microbundle",
     "test": "jest --coverage",
@@ -42,9 +42,10 @@
   "npmName": "nusmoderator",
   "devDependencies": {
     "@types/jest": "24.0.12",
+    "@typescript-eslint/eslint-plugin": "1.7.0",
+    "@typescript-eslint/parser": "1.7.0",
     "documentation": "10.1.0",
     "eslint": "5.16.0",
-    "eslint-config-airbnb-base": "13.1.0",
     "eslint-config-prettier": "4.2.0",
     "eslint-plugin-import": "2.17.2",
     "eslint-plugin-prettier": "3.0.1",

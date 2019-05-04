@@ -145,6 +145,7 @@ export function getAcadWeekInfo(date: Date): AcadWeekInfo {
   let acadWeekNumber = Math.ceil(
     (date.getTime() - acadYearStartDate.getTime() + 1) / oneWeekDuration,
   );
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const semester = getAcadSem(acadWeekNumber)!;
 
   let weekType = null;
@@ -163,6 +164,7 @@ export function getAcadWeekInfo(date: Date): AcadWeekInfo {
         break;
       }
       acadWeekNumber -= 1;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const acadWeek = getAcadWeekName(acadWeekNumber)!;
       weekType = acadWeek.weekType;
       weekNumber = acadWeek.weekNumber;
