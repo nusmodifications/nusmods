@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { History } from 'history';
+import { History, LocationDescriptorObject } from 'history';
 
 import * as React from 'react';
 import axios from 'axios';
@@ -65,7 +65,7 @@ describe(ModuleFinderContainerComponent, () => {
     return container as Container;
   }
 
-  function extractQueryString(location: { search: string } | string): string {
+  function extractQueryString(location: LocationDescriptorObject): string {
     const query =
       typeof location === 'string'
         ? qs.extract(location)
@@ -87,8 +87,8 @@ describe(ModuleFinderContainerComponent, () => {
     return active;
   }
 
-  function interceptRouteChanges(history: History): string[] {
-    const calls: string[] = [];
+  function interceptRouteChanges(history: History): LocationDescriptorObject[] {
+    const calls: LocationDescriptorObject[] = [];
     jest.spyOn(history, 'push').mockImplementation((location) => calls.push(location));
     jest.spyOn(history, 'replace').mockImplementation((location) => calls.push(location));
     return calls;
