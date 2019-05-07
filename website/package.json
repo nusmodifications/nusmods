@@ -54,7 +54,7 @@
     "@types/react-leaflet": "2.2.1",
     "@types/react-loadable": "5.5.0",
     "@types/react-modal": "3.8.1",
-    "@types/react-redux": "7.0.3",
+    "@types/react-redux": "7.0.8",
     "@types/react-router-dom": "4.3.2",
     "@types/react-scrollspy": "3.3.0",
     "@types/redux-mock-store": "1.0.0",
@@ -142,7 +142,7 @@
     "date-fns": "2.0.0-alpha.27",
     "downshift": "3.2.10",
     "ical-generator": "https://github.com/ZhangYiJiang/ical-generator.git#ed6928fe",
-    "immer": "2.1.4",
+    "immer": "2.1.5",
     "json2mq": "0.2.0",
     "leaflet": "1.4.0",
     "leaflet-gesture-handling": "1.1.8",
@@ -167,8 +167,8 @@
     "react-scrollspy": "3.4.0",
     "react-waypoint": "8.1.0",
     "redux": "4.0.1",
-    "redux-persist": "5.9.1",
-    "redux-thunk": "2.2.0",
+    "redux-persist": "5.10.0",
+    "redux-thunk": "2.3.0",
     "reselect": "4.0.0"
   },
   "browserslist": [
