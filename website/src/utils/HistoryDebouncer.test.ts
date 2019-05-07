@@ -4,7 +4,7 @@ import createHistory from 'test-utils/createHistory';
 import HistoryDebouncer from './HistoryDebouncer';
 
 describe(HistoryDebouncer, () => {
-  let mockNow: jest.MockInstance<typeof Date.now>;
+  const mockNow = jest.spyOn(Date, 'now');
 
   function createHistoryMock(initialEntries = ['/']): jest.Mocked<History> {
     const { history } = createHistory(initialEntries);
@@ -15,12 +15,11 @@ describe(HistoryDebouncer, () => {
   }
 
   beforeEach(() => {
-    jest.spyOn(Date, 'now').mockReturnValue(0);
-    mockNow = Date.now as any;
+    mockNow.mockReturnValue(0);
   });
 
   afterEach(() => {
-    mockNow.mockRestore();
+    mockNow.mockReset();
   });
 
   test('should call history.push() at the leading edge', () => {
