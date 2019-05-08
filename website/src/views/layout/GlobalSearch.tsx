@@ -58,10 +58,10 @@ class GlobalSearch extends React.Component<Props, State> {
 
   onOuterClick = () => {
     if (this.state.inputValue) {
-      this.setState({
+      this.setState((prevState) => ({
         isOpen: true,
-        inputValue: this.state.inputValue,
-      });
+        inputValue: prevState.inputValue,
+      }));
 
       if (this.input) this.input.blur();
     } else {

@@ -162,7 +162,8 @@ export class ModuleFinderContainerComponent extends React.Component<Props, State
   };
 
   onClearFilter = () => {
-    const filterGroups = mapValues(this.state.filterGroups, (group: FilterGroup<any>) => {
+    const state = this.state;
+    const filterGroups = mapValues(state.filterGroups, (group: FilterGroup<any>) => {
       // Don't clear search query
       if (group.id === SEARCH_QUERY_KEY) return group;
       return group.reset();

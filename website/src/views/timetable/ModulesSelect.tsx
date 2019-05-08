@@ -41,10 +41,10 @@ export class ModulesSelectComponent extends React.Component<Props, State> {
   };
 
   onOuterClick = () => {
-    this.setState({
+    this.setState((prevState) => ({
       isOpen: false,
-      inputValue: this.state.inputValue,
-    });
+      inputValue: prevState.inputValue,
+    }));
   };
 
   onInputValueChange = (

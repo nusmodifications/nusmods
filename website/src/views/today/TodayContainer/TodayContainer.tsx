@@ -130,22 +130,24 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
   componentDidMount() {
     weatherAPI
       .twoHour()
-      .then((weather) => this.setState({ weather: { ...this.state.weather, '0': weather } }))
+      .then((weather) =>
+        this.setState((prevState) => ({ weather: { ...prevState.weather, '0': weather } })),
+      )
       .catch(captureException);
 
     weatherAPI
       .tomorrow()
       .then((weather) => {
         if (!weather) return;
-        this.setState({ weather: { ...this.state.weather, '1': weather } });
+        this.setState((prevState) => ({ weather: { ...prevState.weather, '1': weather } }));
       })
       .catch(captureException);
 
     weatherAPI
       .fourDay()
       .then((forecasts) => {
-        this.setState(
-          produce(this.state, (draft) => {
+        this.setState((prevState) => {
+          produce(prevState, (draft) => {
             forecasts.forEach((forecast) => {
               const days = differenceInCalendarDays(
                 parseISO(forecast.timestamp),
@@ -157,8 +159,8 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
                 draft.weather[key] = forecast.forecast;
               }
             });
-          }),
-        );
+          });
+        });
       })
       .catch(captureException);
   }

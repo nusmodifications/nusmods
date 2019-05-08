@@ -53,7 +53,7 @@ export class DropdownListFiltersComponent extends React.PureComponent<Props, Sta
   };
 
   onOuterClick = () => {
-    this.setState({ inputValue: this.state.inputValue });
+    this.setState((prevState) => ({ inputValue: prevState.inputValue }));
   };
 
   onInputValueChange = (inputValue: string) => {
