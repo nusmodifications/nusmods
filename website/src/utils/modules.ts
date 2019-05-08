@@ -62,6 +62,8 @@ export function getFirstAvailableSemester(
   current: Semester = config.semester, // For testing only
 ): Semester {
   const availableSemesters = semesters.map((semesterData) => semesterData.semester);
+  // Assume there is at least 1 semester
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return availableSemesters.includes(current) ? current : _.min(availableSemesters)!;
 }
 
