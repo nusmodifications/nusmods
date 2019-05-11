@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outDir": "build",
+    "target": "es2018",
+    "module": "commonjs",
+    "baseUrl": "./src",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true
+  },
+  "include": ["src"]
+}
