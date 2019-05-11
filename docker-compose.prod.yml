@@ -1,0 +1,25 @@
+version: '3.7'
+services:
+  export:
+    build:
+      context: .
+      dockerfile: export/Dockerfile.prod
+    expose:
+      - '8082'
+    security_opt:
+      - seccomp="infrastructure/chromium.seccomp.json"
+    environment:
+      - NODE_ENV=production
+      - PORT=8082
+      - HOST=0.0.0.0
+    restart: on-failure
+  proxy:
+    build:
+      context: ./
+      dockerfile: website/Dockerfile.prod
+    ports:
+      - '80:80'
+      - '443:443'
+    depends_on:
+      - export
+    restart: on-failure

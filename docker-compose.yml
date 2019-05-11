@@ -1,0 +1,56 @@
+version: '3.7'
+services:
+  website:
+    build:
+      context: .
+      dockerfile: website/Dockerfile.dev
+    volumes:
+      - ~/.cache/yarn:/home/node/.cache/yarn
+      - ./website:/home/node/app/website
+      - ./packages:/home/node/app/packages
+      - ./.prettierrc.js:/home/node/app/.prettierrc.js
+    expose:
+      - '8080'
+    environment:
+      - NODE_ENV=development
+      - PORT=8080
+      - HOST=0.0.0.0
+    user: ${CURRENT_UID:-1000:1000}
+    restart: on-failure
+  export:
+    build:
+      context: .
+      dockerfile: export/Dockerfile.dev
+    volumes:
+      - ~/.cache/yarn:/home/node/.cache/yarn
+      - ./export:/home/node/app/export
+      - ./.prettierrc.js:/home/node/app/.prettierrc.js
+    expose:
+      - '8082'
+    security_opt:
+      - seccomp="infrastructure/chromium.seccomp.json"
+    environment:
+      - NODE_ENV=development
+      - PORT=8082
+      - HOST=0.0.0.0
+    user: ${CURRENT_UID:-1000:1000}
+    restart: on-failure
+  proxy:
+    image: fholzer/nginx-brotli:v1.16.0
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./infrastructure/nginx.dev.conf:/etc/nginx/nginx.conf
+    secrets:
+      - 'server.key'
+      - 'server.crt'
+    depends_on:
+      - website
+    restart: on-failure
+
+secrets:
+  'server.key':
+    file: ./infrastructure/server.key
+  'server.crt':
+    file: ./infrastructure/server.crt

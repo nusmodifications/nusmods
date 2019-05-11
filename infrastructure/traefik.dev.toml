@@ -1,0 +1,20 @@
+debug=true
+loglevel = "INFO"
+defaultEntryPoints = ["http", "https", "ws", "wss"]
+InsecureSkipVerify = true
+
+[frontends]
+  [frontends.frontend1]
+  backend = "backend1"
+    [frontends.frontend1.routes.test_1]
+    rule = "PathPrefix: /graphql"
+
+[entryPoints]
+  [entryPoints.http]
+    address = ":80"
+  [entryPoints.https]
+    address = ":443"
+    [entryPoints.https.tls]
+      [[entryPoints.https.tls.certificates]]
+      certFile = "/etc/traefik/traefik.crt"
+      keyFile = "/etc/traefik/traefik.key"

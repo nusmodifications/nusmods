@@ -1,0 +1,9 @@
+FROM node:10-alpine
+
+RUN apk update && \
+    apk add --no-cache git python build-base && \
+    mkdir -p /home/node/app
+
+WORKDIR /home/node/app/website
+
+CMD yarn && yarn start

@@ -13,13 +13,17 @@ const config = require('./config');
 // Config check
 if (process.env.NODE_ENV === 'production') {
   if (!config.moduleData) {
-    throw new Error('No moduleData path set - check config.js. ' +
-      'This should be the path to the api/<academic year>/modules folder.');
+    throw new Error(
+      'No moduleData path set - check config.js. ' +
+        'This should be the path to the api/<academic year>/modules folder.',
+    );
   }
 
   if (!fs.existsSync(config.moduleData) || !fs.lstatSync(config.moduleData).isDirectory()) {
-    throw new Error('moduleData path does not exist or is not a directory - check config.js. ' +
-      'This should be the path to the api/<academic year>/modules folder.');
+    throw new Error(
+      'moduleData path does not exist or is not a directory - check config.js. ' +
+        'This should be the path to the api/<academic year>/modules folder.',
+    );
   }
 
   if (!config.ravenDsn) {
@@ -31,7 +35,7 @@ if (process.env.NODE_ENV === 'production') {
 if (process.env.NODE_ENV === 'production') {
   Sentry.init({
     dsn: config.ravenDsn,
-  })
+  });
 }
 
 // Start router
@@ -45,7 +49,7 @@ router
 
     // Validate options
     let options = {
-      pixelRatio: _.clamp((Number(ctx.query.pixelRatio) || 1), 1, 3),
+      pixelRatio: _.clamp(Number(ctx.query.pixelRatio) || 1, 1, 3),
     };
 
     if (
@@ -106,9 +110,11 @@ const errorHandler = async (ctx, next) => {
 };
 
 app
-  .use(views(__dirname + '/views', {
-    extension: 'pug',
-  }))
+  .use(
+    views(__dirname + '/views', {
+      extension: 'pug',
+    }),
+  )
   .use(errorHandler)
   .use(data.parseExportData)
   .use(render.openPage)
@@ -116,7 +122,8 @@ app
   .use(router.allowedMethods());
 
 // Wait for the browser to finish launching before starting the server
-render.launch()
+render
+  .launch()
   .then(async (browser) => {
     // Attach the page and browser objects to context
     app.context.browser = browser;
@@ -128,7 +135,7 @@ render.launch()
       app.context.pageContent = await fs.readFile(config.page, 'utf-8');
     }
 
-    const server = app.listen(process.env.PORT || 3000);
+    const server = app.listen(process.env.PORT || 3000, process.env.HOST);
     console.log('Export server started');
 
     gracefulShutdown(server);

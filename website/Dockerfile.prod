@@ -1,0 +1,28 @@
+FROM node:10-alpine
+
+RUN apk update && \
+    apk add --no-cache git python build-base && \
+    mkdir -p /home/node/app
+
+WORKDIR /home/node/app/website
+
+# multiple copy statements because we want to cache
+# from least likely to most likely to change
+
+COPY ./website/static/ ./static/
+COPY ./website/webpack/ ./webpack/
+COPY ./website/scripts/ ./scripts/
+COPY ./packages/ /home/node/app/packages/
+COPY ./website/.postcssrc.js  ./website/babel.config.js ./website/tsconfig.json ./
+COPY ./website/package.json ./website/yarn.lock ./
+
+RUN ls -la1; yarn --no-cache --frozen-lockfile
+
+COPY ./website/src/ ./src
+
+RUN yarn build
+
+FROM fholzer/nginx-brotli:v1.16.0
+
+COPY --from=0 /home/node/app/website/dist /usr/share/nginx/html
+COPY ./infrastructure/nginx.prod.conf /etc/nginx/nginx.conf
