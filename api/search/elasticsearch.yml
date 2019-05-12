@@ -1,0 +1,7 @@
+cluster.name: "nusmods-cluster"
+network.host: 0.0.0.0
+
+http.cors.enabled: true
+http.cors.allow-credentials: true
+http.cors.allow-origin: "*"
+http.cors.allow-headers: X-Requested-With, X-Auth-Token, Content-Type, Content-Length, Authorization, Access-Control-Allow-Headers, Accept
