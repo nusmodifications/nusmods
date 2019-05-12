@@ -1,6 +1,9 @@
 import { Client } from '@elastic/elasticsearch';
 import { flatMap } from 'lodash';
-import data from '../../scrapers/nus-v2/data/2018-2019/moduleInformation.json';
+
+// Be sure to download this file.
+// `wget https://api.nusmods.com/v2/2018-2019/moduleInformation.json`
+import data from './moduleInformation.json';
 
 // Source: https://github.com/lodash/lodash/issues/2339#issuecomment-319536784
 const intersperse = <T>(arr: Array<T>, inter: T) => flatMap(arr, (a) => [inter, a]);
@@ -10,18 +13,39 @@ const client = new Client({ node: 'http://localhost:9200' });
 const bulkBody = intersperse(data, { index: {} });
 
 async function setup() {
-  await client.indices.delete({
-    index: 'modules',
-  });
+  try {
+    await client.indices.delete({
+      index: 'modules',
+    });
+  } catch (e) {
+    // ignore deletion failure
+  }
 
   await client.indices.create({
     index: 'modules',
+    body: {
+      mappings: {
+        properties: {
+          workload: { type: 'text' },
+        },
+      },
+    },
   });
 
-  await client.bulk({
-    index: 'modules',
-    body: bulkBody,
-  });
+  client.bulk(
+    {
+      index: 'modules',
+      body: bulkBody,
+    },
+    (err, res) => {
+      const { items } = res.body;
+      const erroredItems = items.filter((i: any) => i.index.status != 201);
+      console.log(`${erroredItems.length} insertion errors of ${res.body.items.length} items.`);
+      for (let item of erroredItems) {
+        console.log('ERROR importing item', item.index.error);
+      }
+    },
+  );
 }
 
 setup();
