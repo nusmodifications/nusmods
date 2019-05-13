@@ -6,6 +6,7 @@ import {
   DataSearch,
   ReactiveList,
   SelectedFilters,
+  MultiList,
   MultiDataList,
   MultiDropdownList,
   MultiRange,
@@ -100,6 +101,7 @@ function ModuleFinderContainerComponent<Props, State>() {
                   and: [
                     'GeneralSearchBox',
                     'SemFilter',
+                    'LevelFilter',
                     'MCFilter',
                     'FacultyFilter',
                     'DepartmentFilter',
@@ -148,12 +150,19 @@ function ModuleFinderContainerComponent<Props, State>() {
                   showCount
                   showSearch={false}
                 />
+                <MultiList
+                  componentId="LevelFilter"
+                  dataField="moduleCode.level"
+                  title="Level"
+                  filterLabel="Level"
+                  sortBy="asc"
+                  showSearch={false}
+                />
                 <MultiRange
                   componentId="MCFilter"
                   dataField="moduleCredit"
                   title="Module Credit"
                   filterLabel="MCs"
-                  interval={1}
                   react={{
                     and: ['GeneralSearchBox', 'FacultyFilter', 'DepartmentFilter'],
                   }}
