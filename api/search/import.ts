@@ -23,6 +23,7 @@ async function setup() {
 
   await client.indices.create({
     index: 'modules',
+    include_type_name: false, // TODO: Remove when upgrading to Elasticsearch 7
     body: {
       mappings: {
         properties: {
@@ -36,6 +37,7 @@ async function setup() {
   client.bulk(
     {
       index: 'modules',
+      type: '_doc', // TODO: Remove when upgrading to Elasticsearch 7
       body: bulkBody,
     },
     (err, res) => {

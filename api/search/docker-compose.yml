@@ -2,7 +2,7 @@ version: '3'
 
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.0.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.7.2
     environment:
       - discovery.type=single-node # Bypass bootstrap checks in single-node dev cluster. See: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-dev-mode
       - bootstrap.memory_lock=true
@@ -17,7 +17,7 @@ services:
     ports:
       - "9200:9200"
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.0.1
+    image: docker.elastic.co/kibana/kibana:6.7.2
     ports:
       - "5601:5601"
 volumes:
