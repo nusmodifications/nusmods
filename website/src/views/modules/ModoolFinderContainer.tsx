@@ -5,8 +5,9 @@ import {
   ReactiveBase,
   DataSearch,
   ReactiveList,
-  RangeInput,
+  SelectedFilters,
   DynamicRangeSlider,
+  MultiDropdownList,
 } from '@appbaseio/reactivesearch';
 import axios from 'axios';
 import produce from 'immer';
@@ -80,16 +81,18 @@ function ModuleFinderContainerComponent<Props, State>() {
             <DataSearch
               componentId="GeneralSearchBox"
               autosuggest={false}
-              debounce={100}
+              debounce={1000}
+              showFilter={false}
               placeholder="Module code, names and descriptions"
               dataField={['moduleCode', 'title', 'description']}
             />
+
             <ul className="modules-list">
               <ReactiveList
                 componentId="SearchResult"
                 dataField="moduleCode"
                 react={{
-                  and: ['MCFilter', 'GeneralSearchBox'],
+                  and: ['GeneralSearchBox', 'MCFilter', 'FacultyFilter', 'DepartmentFilter'],
                 }}
                 renderItem={(res) => <ModuleFinderItem key={res.moduleCode} module={res} />}
                 renderResultStats={(res) => {
@@ -116,11 +119,39 @@ function ModuleFinderContainerComponent<Props, State>() {
                 <header className={styles.filterHeader}>
                   <h3>Refine by</h3>
                 </header>
+
+                <SelectedFilters showClearAll clearAllLabel="Clear filters" />
+
+                <MultiDropdownList
+                  componentId="FacultyFilter"
+                  dataField="faculty.keyword"
+                  title="Faculty"
+                  filterLabel="Faculty"
+                  queryFormat="or"
+                  showCheckbox
+                  react={{
+                    and: ['MCFilter'],
+                  }}
+                />
+                <MultiDropdownList
+                  componentId="DepartmentFilter"
+                  dataField="department.keyword"
+                  title="Department"
+                  filterLabel="Department"
+                  queryFormat="or"
+                  showCheckbox
+                  react={{
+                    and: ['MCFilter'],
+                  }}
+                />
                 <DynamicRangeSlider
                   componentId="MCFilter"
                   dataField="moduleCredit"
                   title="Module Credit"
                   interval={1}
+                  react={{
+                    and: ['GeneralSearchBox', 'FacultyFilter', 'DepartmentFilter'],
+                  }}
                 />
               </div>
             </SideMenu>
