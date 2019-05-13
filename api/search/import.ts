@@ -27,6 +27,7 @@ async function setup() {
       mappings: {
         properties: {
           workload: { type: 'text' },
+          moduleCredit: { type: 'short' },
         },
       },
     },
