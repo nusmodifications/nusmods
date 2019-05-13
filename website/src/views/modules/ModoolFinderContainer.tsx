@@ -1,7 +1,13 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { ReactiveBase, DataSearch, ReactiveList } from '@appbaseio/reactivesearch';
+import {
+  ReactiveBase,
+  DataSearch,
+  ReactiveList,
+  RangeInput,
+  DynamicRangeSlider,
+} from '@appbaseio/reactivesearch';
 import axios from 'axios';
 import produce from 'immer';
 import { each, mapValues, values } from 'lodash';
@@ -62,6 +68,7 @@ export type State = {
 const pageHead = <Title>Modules</Title>;
 
 function ModuleFinderContainerComponent<Props, State>() {
+  const [isMenuOpen, setMenuOpen] = useState(false);
   return (
     <div className="modules-page-container page-container">
       {pageHead}
@@ -71,7 +78,7 @@ function ModuleFinderContainerComponent<Props, State>() {
             <h1 className="sr-only">Module Finder</h1>
 
             <DataSearch
-              componentId="SearchSensor"
+              componentId="GeneralSearchBox"
               autosuggest={false}
               debounce={100}
               placeholder="Module code, names and descriptions"
@@ -82,7 +89,7 @@ function ModuleFinderContainerComponent<Props, State>() {
                 componentId="SearchResult"
                 dataField="moduleCode"
                 react={{
-                  and: ['SearchSensor'],
+                  and: ['MCFilter', 'GeneralSearchBox'],
                 }}
                 renderItem={(res) => <ModuleFinderItem key={res.moduleCode} module={res} />}
                 renderResultStats={(res) => {
@@ -97,6 +104,26 @@ function ModuleFinderContainerComponent<Props, State>() {
                 renderNoResults={() => <Warning message="No modules found" />}
               />
             </ul>
+          </div>
+
+          <div className="col-md-4 col-lg-3">
+            <SideMenu
+              isOpen={isMenuOpen}
+              toggleMenu={() => setMenuOpen(!isMenuOpen)}
+              openIcon={<Filter aria-label={OPEN_MENU_LABEL} />}
+            >
+              <div className={styles.moduleFilters}>
+                <header className={styles.filterHeader}>
+                  <h3>Refine by</h3>
+                </header>
+                <DynamicRangeSlider
+                  componentId="MCFilter"
+                  dataField="moduleCredit"
+                  title="Module Credit"
+                  interval={1}
+                />
+              </div>
+            </SideMenu>
           </div>
         </div>
       </ReactiveBase>
