@@ -129,6 +129,7 @@
     "workbox-webpack-plugin": "3.6.3"
   },
   "dependencies": {
+    "@appbaseio/reactivesearch": "^3.0.0-rc.8",
     "@material/fab": "0.40.1",
     "@material/snackbar": "0.40.1",
     "@sentry/browser": "4.6.6",
