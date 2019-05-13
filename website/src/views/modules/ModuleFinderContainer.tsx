@@ -1,14 +1,22 @@
 import React, { useState } from 'react';
 import {
-  ReactiveBase,
-  ReactiveList,
+  SearchkitManager,
+  SearchkitProvider,
+  SearchBox,
+  RefinementListFilter,
+  Hits,
+  HitsStats,
+  HitItemProps,
+  SearchkitComponent,
   SelectedFilters,
-  MultiList,
-  MultiDataList,
-  MultiDropdownList,
-  MultiRange,
-} from '@appbaseio/reactivesearch';
-import { map } from 'lodash';
+  MenuFilter,
+  HierarchicalMenuFilter,
+  Pagination,
+  ResetFilters,
+} from 'searchkit';
+import axios from 'axios';
+import produce from 'immer';
+import { each, mapValues, values } from 'lodash';
 
 import { attributeDescription } from 'types/modules';
 
@@ -32,76 +40,37 @@ import styles from './ModuleFinderContainer.scss';
 
 export type Props = {};
 
+const searchkit = new SearchkitManager('http://localhost:9200/modules');
+
 const pageHead = <Title>Modules</Title>;
 
-const reactiveBaseResetTheme = {
-  typography: {
-    fontFamily: 'inherit',
-    fontSize: 'inherit',
-  },
-};
+function HitModuleItem(props: HitItemProps) {
+  const { result } = props;
+  console.log('kon', result);
+  const { _source: source } = result;
+  return <ModuleFinderItem key={source.moduleCode} module={source} />;
+}
 
 const ModuleFinderContainer: React.FunctionComponent<Props> = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   return (
     <div className="modules-page-container page-container">
       {pageHead}
-      <ReactiveBase
-        className={styles.reactiveBase}
-        app="modules"
-        url="http://localhost:9200"
-        theme={reactiveBaseResetTheme}
-      >
+      <SearchkitProvider searchkit={searchkit}>
         <div className="row">
           <div className="col">
             <h1 className="sr-only">Module Finder</h1>
 
-            <ModuleSearchBox
-              componentId="q"
-              showFilter={false}
-              URLParams
-              dataField={['moduleCode^10', 'title^3', 'description']}
+            <SearchBox
+              searchOnChange
+              queryFields={['moduleCode', 'title', 'description']}
+              placeholder="Module code, names and descriptions"
             />
 
             <ul className="modules-list">
-              <ReactiveList
-                componentId="page"
-                dataField="moduleCode"
-                pagination
-                URLParams
-                react={{
-                  and: ['q', 'sem', 'level', 'mcs', 'faculty', 'department', 'attrs'],
-                }}
-                innerClass={{
-                  pagination: styles.pagination,
-                }}
-              >
-                {(innerProps) => {
-                  const { loading, error, resultStats, data, rawData } = innerProps;
-                  if (loading) return <LoadingSpinner />;
-
-                  if (error) {
-                    // TODO: Replace
-                    console.log('kena error', error);
-                  }
-
-                  if (data.length === 0) {
-                    return <Warning message="No modules found" />;
-                  }
-
-                  const moduleItems = data.map((res) => (
-                    <ModuleFinderItem key={res.moduleCode} module={res} />
-                  ));
-
-                  return (
-                    <>
-                      <div className="module-page-divider">{resultStats.total} modules found</div>
-                      {moduleItems}
-                    </>
-                  );
-                }}
-              </ReactiveList>
+              <Hits hitsPerPage={5} itemComponent={HitModuleItem} />
             </ul>
+            <Pagination showNumbers showLast />
           </div>
 
           <div className="col-md-4 col-lg-3">
@@ -114,100 +83,11 @@ const ModuleFinderContainer: React.FunctionComponent<Props> = () => {
                 <header className={styles.filterHeader}>
                   <h3>Refine by</h3>
                 </header>
-
-                <SelectedFilters showClearAll clearAllLabel="Clear filters" />
-
-                <MultiDataList
-                  componentId="sem"
-                  dataField="semesterData.semester"
-                  title="Offered In"
-                  filterLabel="Offered In"
-                  URLParams
-                  data={map(config.semesterNames, (semName, semNumStr) => ({
-                    label: semName,
-                    value: semNumStr,
-                  }))}
-                  defaultValue={Object.values(config.semesterNames)}
-                  react={{
-                    and: ['q', 'level', 'mcs', 'faculty', 'department', 'attrs'],
-                  }}
-                  showCount
-                  showSearch={false}
-                />
-                <MultiList
-                  componentId="level"
-                  dataField="moduleCode.level"
-                  title="Level"
-                  filterLabel="Level"
-                  sortBy="asc"
-                  showSearch={false}
-                  URLParams
-                  react={{
-                    and: ['q', 'sem', 'mcs', 'faculty', 'department', 'attrs'],
-                  }}
-                />
-                <MultiRange
-                  componentId="mcs"
-                  dataField="moduleCredit"
-                  title="Module Credit"
-                  filterLabel="MCs"
-                  URLParams
-                  data={[
-                    { start: 0, end: 3, label: '0-3 MC' },
-                    { start: 4, end: 4, label: '4 MC' },
-                    { start: 5, end: 8, label: '5-8 MC' },
-                    { start: 8, end: 300, label: 'More than 8 MC' },
-                  ]}
-                  react={{
-                    and: ['q', 'sem', 'level', 'faculty', 'department', 'attrs'],
-                  }}
-                />
-                <MultiDropdownList
-                  componentId="faculty"
-                  dataField="faculty.keyword"
-                  title="Faculty"
-                  filterLabel="Faculty"
-                  queryFormat="or"
-                  showCheckbox
-                  URLParams
-                  react={{
-                    and: ['q', 'sem', 'level', 'mcs', 'department', 'attrs'],
-                  }}
-                />
-                <MultiDropdownList
-                  componentId="department"
-                  dataField="department.keyword"
-                  title="Department"
-                  filterLabel="Department"
-                  queryFormat="or"
-                  showCheckbox
-                  URLParams
-                  react={{
-                    and: ['q', 'sem', 'level', 'mcs', 'faculty', 'attrs'],
-                  }}
-                />
-                <MultiDataList
-                  componentId="attrs"
-                  dataField="attributes"
-                  title="Other attributes"
-                  URLParams
-                  data={['su', 'grsu', 'ssgf', 'sfs', 'lab', 'ism'].map((attr) => ({
-                    label: attributeDescription[attr] || attr,
-                    value: attr,
-                  }))}
-                  multiSelect
-                  showSearch={false}
-                  customQuery={(values) => {
-                    if (!Array.isArray(values) || values.length === 0) return null;
-                    const should = values.map((v) => ({ match: { [`attributes.${v}`]: true } }));
-                    return { query: { bool: { should } } };
-                  }}
-                />
               </div>
             </SideMenu>
           </div>
         </div>
-      </ReactiveBase>
+      </SearchkitProvider>
     </div>
   );
 };
