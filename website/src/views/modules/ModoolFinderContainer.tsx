@@ -6,13 +6,13 @@ import {
   DataSearch,
   ReactiveList,
   SelectedFilters,
-  DynamicRangeSlider,
+  MultiDataList,
   MultiDropdownList,
   MultiRange,
 } from '@appbaseio/reactivesearch';
 import axios from 'axios';
 import produce from 'immer';
-import { each, mapValues, values } from 'lodash';
+import { map } from 'lodash';
 
 import { ModuleInformation } from 'types/modules';
 import { AnyGroup, FacultyDepartments, FilterGroups, PageRange, PageRangeDiff } from 'types/views';
@@ -29,6 +29,8 @@ import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
 import { Filter } from 'views/components/icons';
 import Title from 'views/components/Title';
 import Omelette, { matchEgg } from 'views/components/Omelette';
+
+import config from 'config';
 import { forceInstantSearch } from 'utils/debug';
 import {
   defaultGroups,
@@ -94,7 +96,13 @@ function ModuleFinderContainerComponent<Props, State>() {
                 dataField="moduleCode"
                 pagination
                 react={{
-                  and: ['GeneralSearchBox', 'MCFilter', 'FacultyFilter', 'DepartmentFilter'],
+                  and: [
+                    'GeneralSearchBox',
+                    'SemFilter',
+                    'MCFilter',
+                    'FacultyFilter',
+                    'DepartmentFilter',
+                  ],
                 }}
                 renderItem={(res) => <ModuleFinderItem key={res.moduleCode} module={res} />}
                 renderResultStats={(res) => {
@@ -124,6 +132,20 @@ function ModuleFinderContainerComponent<Props, State>() {
 
                 <SelectedFilters showClearAll clearAllLabel="Clear filters" />
 
+                <MultiDataList
+                  componentId="SemFilter"
+                  dataField="semesterData.semester"
+                  title="Available In"
+                  filterLabel="Available In"
+                  data={map(config.semesterNames, (semName, semNumStr) => ({
+                    label: semName,
+                    value: semNumStr,
+                  }))}
+                  queryFormat="or"
+                  showCheckbox
+                  showCount
+                  showSearch={false}
+                />
                 <MultiRange
                   componentId="MCFilter"
                   dataField="moduleCredit"
