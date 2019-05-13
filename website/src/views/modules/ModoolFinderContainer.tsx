@@ -9,12 +9,13 @@ import {
   MultiDataList,
   MultiDropdownList,
   MultiRange,
+  ToggleButton,
 } from '@appbaseio/reactivesearch';
 import axios from 'axios';
 import produce from 'immer';
 import { map } from 'lodash';
 
-import { ModuleInformation } from 'types/modules';
+import { ModuleInformation, attributeDescription } from 'types/modules';
 import { AnyGroup, FacultyDepartments, FilterGroups, PageRange, PageRangeDiff } from 'types/views';
 
 import ModuleFinderItem from 'views/components/ModuleFinderItem';
@@ -102,6 +103,7 @@ function ModuleFinderContainerComponent<Props, State>() {
                     'MCFilter',
                     'FacultyFilter',
                     'DepartmentFilter',
+                    'AttributeFilter',
                   ],
                 }}
                 renderItem={(res) => <ModuleFinderItem key={res.moduleCode} module={res} />}
@@ -182,6 +184,22 @@ function ModuleFinderContainerComponent<Props, State>() {
                   showCheckbox
                   react={{
                     and: ['MCFilter'],
+                  }}
+                />
+                <MultiDataList
+                  componentId="AttributeFilter"
+                  dataField="attributes"
+                  title="Other attributes"
+                  data={['su', 'grsu', 'ssgf', 'sfs', 'lab', 'ism'].map((attr) => ({
+                    label: attributeDescription[attr] || attr,
+                    value: attr,
+                  }))}
+                  multiSelect
+                  showSearch={false}
+                  customQuery={(values) => {
+                    if (!Array.isArray(values) || values.length === 0) return null;
+                    const should = values.map((v) => ({ match: { [`attributes.${v}`]: true } }));
+                    return { query: { bool: { should } } };
                   }}
                 />
               </div>
