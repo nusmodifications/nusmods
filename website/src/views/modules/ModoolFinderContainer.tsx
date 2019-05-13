@@ -8,6 +8,7 @@ import {
   SelectedFilters,
   DynamicRangeSlider,
   MultiDropdownList,
+  MultiRange,
 } from '@appbaseio/reactivesearch';
 import axios from 'axios';
 import produce from 'immer';
@@ -91,6 +92,7 @@ function ModuleFinderContainerComponent<Props, State>() {
               <ReactiveList
                 componentId="SearchResult"
                 dataField="moduleCode"
+                pagination
                 react={{
                   and: ['GeneralSearchBox', 'MCFilter', 'FacultyFilter', 'DepartmentFilter'],
                 }}
@@ -122,6 +124,22 @@ function ModuleFinderContainerComponent<Props, State>() {
 
                 <SelectedFilters showClearAll clearAllLabel="Clear filters" />
 
+                <MultiRange
+                  componentId="MCFilter"
+                  dataField="moduleCredit"
+                  title="Module Credit"
+                  filterLabel="MCs"
+                  interval={1}
+                  react={{
+                    and: ['GeneralSearchBox', 'FacultyFilter', 'DepartmentFilter'],
+                  }}
+                  data={[
+                    { start: 0, end: 3, label: '0-3 MC' },
+                    { start: 4, end: 4, label: '4 MC' },
+                    { start: 5, end: 8, label: '5-8 MC' },
+                    { start: 8, end: 300, label: 'More than 8 MC' },
+                  ]}
+                />
                 <MultiDropdownList
                   componentId="FacultyFilter"
                   dataField="faculty.keyword"
@@ -142,15 +160,6 @@ function ModuleFinderContainerComponent<Props, State>() {
                   showCheckbox
                   react={{
                     and: ['MCFilter'],
-                  }}
-                />
-                <DynamicRangeSlider
-                  componentId="MCFilter"
-                  dataField="moduleCredit"
-                  title="Module Credit"
-                  interval={1}
-                  react={{
-                    and: ['GeneralSearchBox', 'FacultyFilter', 'DepartmentFilter'],
                   }}
                 />
               </div>
