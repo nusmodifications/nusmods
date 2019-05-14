@@ -72,6 +72,9 @@ const ModuleFinderContainer: React.FunctionComponent<Props> = () => {
                 react={{
                   and: ['q', 'sem', 'level', 'mcs', 'faculty', 'department', 'attrs'],
                 }}
+                innerClass={{
+                  pagination: styles.pagination,
+                }}
                 loader={<LoadingSpinner />}
                 renderItem={(res) => <ModuleFinderItem key={res.moduleCode} module={res} />}
                 renderResultStats={(res) => {

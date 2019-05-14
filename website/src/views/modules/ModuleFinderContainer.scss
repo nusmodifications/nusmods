@@ -1,8 +1,24 @@
-@import "~styles/utils/modules-entry.scss";
+@import "~styles/bootstrap/bootstrap";
+@import "~styles/utils/modules-entry";
 
 div.reactiveBase {
   width: inherit;
   color: inherit;
+}
+
+div.pagination {
+  a {
+    &[disabled] {
+      @extend .btn.disabled;
+    }
+
+    &:global(.active) {
+      @extend .btn-primary;
+    }
+
+    @extend .btn;
+    @extend .btn-light;
+  }
 }
 
 .moduleFilters {
