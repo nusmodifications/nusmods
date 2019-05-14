@@ -125,6 +125,9 @@ const ModuleFinderContainer: React.FunctionComponent<Props> = () => {
                   sortBy="asc"
                   showSearch={false}
                   URLParams
+                  react={{
+                    and: ['q', 'sem', 'mcs', 'faculty', 'department', 'attrs'],
+                  }}
                 />
                 <MultiRange
                   componentId="mcs"
@@ -138,6 +141,9 @@ const ModuleFinderContainer: React.FunctionComponent<Props> = () => {
                     { start: 5, end: 8, label: '5-8 MC' },
                     { start: 8, end: 300, label: 'More than 8 MC' },
                   ]}
+                  react={{
+                    and: ['q', 'sem', 'level', 'faculty', 'department', 'attrs'],
+                  }}
                 />
                 <MultiDropdownList
                   componentId="faculty"
@@ -148,7 +154,7 @@ const ModuleFinderContainer: React.FunctionComponent<Props> = () => {
                   showCheckbox
                   URLParams
                   react={{
-                    and: ['mcs'],
+                    and: ['q', 'sem', 'level', 'mcs', 'department', 'attrs'],
                   }}
                 />
                 <MultiDropdownList
@@ -160,7 +166,7 @@ const ModuleFinderContainer: React.FunctionComponent<Props> = () => {
                   showCheckbox
                   URLParams
                   react={{
-                    and: ['mcs'],
+                    and: ['q', 'sem', 'level', 'mcs', 'faculty', 'attrs'],
                   }}
                 />
                 <MultiDataList
