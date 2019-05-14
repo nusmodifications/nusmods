@@ -1,27 +1,20 @@
 import React, { useState } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
 import {
   ReactiveBase,
-  DataSearch,
   ReactiveList,
   SelectedFilters,
   MultiList,
   MultiDataList,
   MultiDropdownList,
   MultiRange,
-  ToggleButton,
 } from '@appbaseio/reactivesearch';
-import axios from 'axios';
-import produce from 'immer';
 import { map } from 'lodash';
 
-import { ModuleInformation, attributeDescription } from 'types/modules';
-import { AnyGroup, FacultyDepartments, FilterGroups, PageRange, PageRangeDiff } from 'types/views';
+import { attributeDescription } from 'types/modules';
 
 import ModuleFinderItem from 'views/components/ModuleFinderItem';
 import ModuleFinderList from 'views/modules/ModuleFinderList';
-import ModuleSearchBox from 'views/modules/ModuleSearchBox';
+import ModuleSearchBox from 'views/modules/ReactiveModuleSearchBox';
 import ChecklistFilters from 'views/components/filters/ChecklistFilters';
 import DropdownListFilters from 'views/components/filters/DropdownListFilters';
 import ApiError from 'views/errors/ApiError';
@@ -34,80 +27,52 @@ import Omelette, { matchEgg } from 'views/components/Omelette';
 
 import config from 'config';
 import { forceInstantSearch } from 'utils/debug';
-import {
-  defaultGroups,
-  DEPARTMENT,
-  EXAMS,
-  FACULTY,
-  LEVELS,
-  MODULE_CREDITS,
-  SEMESTER,
-  serializeGroups,
-  updateGroups,
-  ATTRIBUTES,
-} from 'utils/moduleFilters';
-import { createSearchFilter, SEARCH_QUERY_KEY, sortModules } from 'utils/moduleSearch';
-import nusmods from 'apis/nusmods';
-import { resetModuleFinder } from 'actions/moduleFinder';
-import FilterGroup from 'utils/filters/FilterGroup';
-import HistoryDebouncer from 'utils/HistoryDebouncer';
-import { defer } from 'utils/react';
-import { breakpointUp, queryMatch } from 'utils/css';
 import { captureException } from 'utils/error';
-import { State as StoreState } from 'types/state';
 import styles from './ModuleFinderContainer.scss';
 
-export type Props = {
-  searchTerm: string;
-  resetModuleFinder: () => unknown;
-} & RouteComponentProps;
-
-export type State = {
-  // loading: boolean;
-  // page: PageRange;
-  // modules: ModuleInformation[];
-  // filterGroups: FilterGroups;
-  // isMenuOpen: boolean;
-  // error: Error | null;
-};
+export type Props = {};
 
 const pageHead = <Title>Modules</Title>;
 
-function ModuleFinderContainerComponent<Props, State>() {
+const reactiveBaseResetTheme = {
+  typography: {
+    fontFamily: 'inherit',
+    fontSize: 'inherit',
+  },
+};
+
+const ModuleFinderContainer: React.FunctionComponent<Props> = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   return (
     <div className="modules-page-container page-container">
       {pageHead}
-      <ReactiveBase app="modules" url="http://localhost:9200">
+      <ReactiveBase
+        className={styles.reactiveBase}
+        app="modules"
+        url="http://localhost:9200"
+        theme={reactiveBaseResetTheme}
+      >
         <div className="row">
           <div className="col">
             <h1 className="sr-only">Module Finder</h1>
 
-            <DataSearch
-              componentId="GeneralSearchBox"
-              autosuggest={false}
-              debounce={1000}
+            <ModuleSearchBox
+              componentId="q"
               showFilter={false}
-              placeholder="Module code, names and descriptions"
-              dataField={['moduleCode', 'title', 'description']}
+              URLParams
+              dataField={['moduleCode^10', 'title^3', 'description']}
             />
 
             <ul className="modules-list">
               <ReactiveList
-                componentId="SearchResult"
+                componentId="page"
                 dataField="moduleCode"
                 pagination
+                URLParams
                 react={{
-                  and: [
-                    'GeneralSearchBox',
-                    'SemFilter',
-                    'LevelFilter',
-                    'MCFilter',
-                    'FacultyFilter',
-                    'DepartmentFilter',
-                    'AttributeFilter',
-                  ],
+                  and: ['q', 'sem', 'level', 'mcs', 'faculty', 'department', 'attrs'],
                 }}
+                loader={<LoadingSpinner />}
                 renderItem={(res) => <ModuleFinderItem key={res.moduleCode} module={res} />}
                 renderResultStats={(res) => {
                   let { numberOfResults } = res;
@@ -137,35 +102,36 @@ function ModuleFinderContainerComponent<Props, State>() {
                 <SelectedFilters showClearAll clearAllLabel="Clear filters" />
 
                 <MultiDataList
-                  componentId="SemFilter"
+                  componentId="sem"
                   dataField="semesterData.semester"
                   title="Available In"
                   filterLabel="Available In"
+                  URLParams
                   data={map(config.semesterNames, (semName, semNumStr) => ({
                     label: semName,
                     value: semNumStr,
                   }))}
-                  queryFormat="or"
-                  showCheckbox
+                  react={{
+                    and: ['q', 'level', 'mcs', 'faculty', 'department', 'attrs'],
+                  }}
                   showCount
                   showSearch={false}
                 />
                 <MultiList
-                  componentId="LevelFilter"
+                  componentId="level"
                   dataField="moduleCode.level"
                   title="Level"
                   filterLabel="Level"
                   sortBy="asc"
                   showSearch={false}
+                  URLParams
                 />
                 <MultiRange
-                  componentId="MCFilter"
+                  componentId="mcs"
                   dataField="moduleCredit"
                   title="Module Credit"
                   filterLabel="MCs"
-                  react={{
-                    and: ['GeneralSearchBox', 'FacultyFilter', 'DepartmentFilter'],
-                  }}
+                  URLParams
                   data={[
                     { start: 0, end: 3, label: '0-3 MC' },
                     { start: 4, end: 4, label: '4 MC' },
@@ -174,31 +140,34 @@ function ModuleFinderContainerComponent<Props, State>() {
                   ]}
                 />
                 <MultiDropdownList
-                  componentId="FacultyFilter"
+                  componentId="faculty"
                   dataField="faculty.keyword"
                   title="Faculty"
                   filterLabel="Faculty"
                   queryFormat="or"
                   showCheckbox
+                  URLParams
                   react={{
-                    and: ['MCFilter'],
+                    and: ['mcs'],
                   }}
                 />
                 <MultiDropdownList
-                  componentId="DepartmentFilter"
+                  componentId="department"
                   dataField="department.keyword"
                   title="Department"
                   filterLabel="Department"
                   queryFormat="or"
                   showCheckbox
+                  URLParams
                   react={{
-                    and: ['MCFilter'],
+                    and: ['mcs'],
                   }}
                 />
                 <MultiDataList
-                  componentId="AttributeFilter"
+                  componentId="attrs"
                   dataField="attributes"
                   title="Other attributes"
+                  URLParams
                   data={['su', 'grsu', 'ssgf', 'sfs', 'lab', 'ism'].map((attr) => ({
                     label: attributeDescription[attr] || attr,
                     value: attr,
@@ -218,16 +187,6 @@ function ModuleFinderContainerComponent<Props, State>() {
       </ReactiveBase>
     </div>
   );
-}
+};
 
-const mapStateToProps = (state: StoreState) => ({
-  searchTerm: state.moduleFinder.search.term,
-});
-
-// Explicitly naming the components to make HMR work
-const ModuleFinderContainerWithRouter = withRouter(ModuleFinderContainerComponent);
-const ModuleFinderContainer = connect(
-  mapStateToProps,
-  { resetModuleFinder },
-)(ModuleFinderContainerWithRouter);
 export default ModuleFinderContainer;

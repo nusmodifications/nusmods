@@ -1,5 +1,10 @@
 @import "~styles/utils/modules-entry.scss";
 
+div.reactiveBase {
+  width: inherit;
+  color: inherit;
+}
+
 .moduleFilters {
   height: 100%;
 
