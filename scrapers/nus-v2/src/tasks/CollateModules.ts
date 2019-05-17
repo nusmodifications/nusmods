@@ -122,7 +122,7 @@ const getModuleCondensed = ({
 });
 
 // Avoid using _.pick here because it is not type safe
-const getModuleInformation = ({
+const getModuleInfo = ({
   moduleCode,
   title,
   description,
@@ -157,7 +157,8 @@ const getModuleInformation = ({
  *
  * Output:
  *  - modules/<ModuleCode>.json
- *  - moduleInformation.json
+ *  - moduleInformation.json // DEPRECATED. TODO: Remove after AY19/20 starts
+ *  - moduleInfo.json
  *  - moduleList.json
  */
 export default class CollateModules extends BaseTask implements Task<Input, Output> {
@@ -199,13 +200,19 @@ export default class CollateModules extends BaseTask implements Task<Input, Outp
 
     // Save condensed versions of the same information for searching
     const moduleCondensed = modules.map(getModuleCondensed);
-    const moduleInformation = modules.map(getModuleInformation);
+    const moduleInfo = modules.map(getModuleInfo);
 
     await Promise.all([
       this.io.moduleList(moduleCondensed),
-      this.io.moduleInformation(moduleInformation),
+      this.io.moduleInfo(moduleInfo),
       this.io.moduleAliases(combinedAliases),
     ]);
+
+    // DEPRECATED. TODO: Remove after AY19/20 starts.
+    if (config.academicYear === '2018/2019') {
+      const moduleInformation = moduleInfo.filter((modInfo) => modInfo.semesterData.length > 0);
+      await this.io.moduleInformation(moduleInformation);
+    }
 
     return values(modules);
   }
