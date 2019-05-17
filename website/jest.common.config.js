@@ -2,7 +2,6 @@ module.exports = {
   roots: ['<rootDir>/src'],
   moduleDirectories: ['node_modules', '<rootDir>/src'],
   moduleFileExtensions: ['jsx', 'js', 'ts', 'tsx'],
-  testPathIgnorePatterns: [],
   setupFiles: ['<rootDir>/scripts/test.js'],
   moduleNameMapper: {
     // Mock non JS files as strings

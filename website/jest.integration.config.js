@@ -4,6 +4,6 @@ const commonConfig = require('./jest.common.config');
 // which would make coverage data random
 module.exports = {
   ...commonConfig,
-  testRegex: 'src/.+\\.integration\\.[jt]sx?$',
+  testRegex: 'src/.+\\.integration\\.test\\.[jt]sx?$',
   collectCoverage: false,
 };
