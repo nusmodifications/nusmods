@@ -30,7 +30,7 @@ export function firstNonNull<T>(producers: (() => T | null)[]): T | null {
   return null;
 }
 
-export function deltas(numbers: ReadonlyArray<number>): number[] {
+export function deltas(numbers: readonly number[]): number[] {
   const result: number[] = [];
   let previous = numbers[0];
   if (typeof previous !== 'number') return result;
