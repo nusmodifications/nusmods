@@ -134,7 +134,7 @@ export class ModuleFinderContainerComponent extends React.Component<Props, State
 
   onFilterChange = (newGroup: AnyGroup, resetScroll: boolean = true) => {
     this.setState(
-      produce<State>((draft) => {
+      produce((draft) => {
         // Update filter group with its new state
         draft.filterGroups[newGroup.id] = newGroup;
 
