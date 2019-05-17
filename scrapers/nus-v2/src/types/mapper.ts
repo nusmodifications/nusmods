@@ -24,7 +24,7 @@ export type SemesterModule = Omit<Module, 'semesterData' | 'prereqTree' | 'fulfi
 export type SemesterModuleData = Readonly<{
   moduleCode: ModuleCode;
   module: SemesterModule;
-  semesterData: SemesterData;
+  semesterData?: SemesterData;
 }>;
 
 export type ModuleWithoutTree = Omit<Module, 'prereqTree'>;

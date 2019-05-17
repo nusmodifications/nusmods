@@ -79,13 +79,13 @@ export function combineModules(
   // 1. Iterate over each module
   for (const semesterModules of semesters) {
     for (const semesterModule of semesterModules) {
-      const { moduleCode } = semesterModule;
+      const { moduleCode, semesterData } = semesterModule;
 
       // 2. Create the merged module data
       const module = {
         ...semesterModule.module,
         aliases: aliases[moduleCode],
-        semesterData: [semesterModule.semesterData],
+        semesterData: semesterData ? [semesterData] : [],
       };
 
       // 3. On rare occasion the module data can change between semesters,

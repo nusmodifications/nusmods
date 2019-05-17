@@ -1,4 +1,4 @@
-import { entries, flatMap, groupBy, map, mapValues, values } from 'lodash';
+import { entries, compact, flatMap, groupBy, map, mapValues, values } from 'lodash';
 
 import { Task } from '../types/tasks';
 import { Aliases, ModuleTitle, RawLesson, Semester } from '../types/modules';
@@ -90,13 +90,14 @@ export default class CollateVenues extends BaseTask implements Task<Input, Outpu
     this.logger.info(`Collating venues for ${this.academicYear} semester ${this.semester}`);
 
     // Insert module code and flatten lessons
-    const venueLessons: LessonWithModuleCode[] = flatMap(input, (module) =>
-      module.semesterData.timetable.map(
-        (lesson: RawLesson): LessonWithModuleCode => ({
+    const venueLessons: LessonWithModuleCode[] = compact(
+      flatMap<SemesterModuleData, LessonWithModuleCode | undefined>(input, (module) => {
+        if (!module.semesterData) return undefined;
+        return module.semesterData.timetable.map((lesson: RawLesson) => ({
           ...lesson,
           moduleCode: module.moduleCode,
-        }),
-      ),
+        }));
+      }),
     );
 
     const venues = extractVenueAvailability(venueLessons);
