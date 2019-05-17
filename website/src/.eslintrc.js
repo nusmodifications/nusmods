@@ -10,6 +10,7 @@ module.exports = {
     {
       files: [
         '**/*.test.{js,ts,jsx,tsx}',
+        '**/*.integration.{js,ts,jsx,tsx}',
         '**/__mocks__/**/*.{js,ts,jsx,tsx}',
         'test-utils/**/*.{js,ts,jsx,tsx}',
       ],
