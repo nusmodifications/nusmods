@@ -1,22 +1,31 @@
 import React, { useState } from 'react';
 import {
-  SearchkitManager,
-  SearchkitProvider,
-  SearchBox,
-  RefinementListFilter,
+  CheckboxItemList,
+  DynamicRangeFilter,
+  HierarchicalMenuFilter,
+  HitItemProps,
   Hits,
   HitsStats,
-  HitItemProps,
-  SearchkitComponent,
-  SelectedFilters,
+  ItemHistogramList,
   MenuFilter,
-  HierarchicalMenuFilter,
+  MultiMatchQuery,
+  NumericRefinementListFilter,
   Pagination,
+  RangeFilter,
+  GroupedSelectedFilters,
+  RefinementListFilter,
   ResetFilters,
+  SearchBox,
+  SearchkitComponent,
+  SearchkitManager,
+  SearchkitProvider,
+  Select,
+  Toggle,
 } from 'searchkit';
 import axios from 'axios';
 import produce from 'immer';
 import { each, mapValues, values } from 'lodash';
+import classnames from 'classnames';
 
 import { attributeDescription } from 'types/modules';
 
@@ -46,7 +55,6 @@ const pageHead = <Title>Modules</Title>;
 
 function HitModuleItem(props: HitItemProps) {
   const { result } = props;
-  console.log('kon', result);
   const { _source: source } = result;
   return <ModuleFinderItem key={source.moduleCode} module={source} />;
 }
@@ -63,14 +71,74 @@ const ModuleFinderContainer: React.FunctionComponent<Props> = () => {
 
             <SearchBox
               searchOnChange
-              queryFields={['moduleCode', 'title', 'description']}
+              searchThrottleTime={300}
+              queryFields={['moduleCode^10', 'title^3', 'description']}
+              queryBuilder={(query: string, options: Record<string, any>) => ({
+                bool: {
+                  should: [
+                    {
+                      // eslint-disable-next-line @typescript-eslint/camelcase
+                      multi_match: {
+                        query,
+                        ...options,
+                        type: 'best_fields',
+                        operator: 'or',
+                        fuzziness: 'AUTO',
+                      },
+                    },
+                    {
+                      // eslint-disable-next-line @typescript-eslint/camelcase
+                      multi_match: {
+                        query,
+                        ...options,
+                        type: 'phrase_prefix',
+                        operator: 'or',
+                      },
+                    },
+                  ],
+                  minimum_should_match: '1', // eslint-disable-line @typescript-eslint/camelcase
+                },
+              })}
               placeholder="Module code, names and descriptions"
             />
 
             <ul className="modules-list">
+              <HitsStats
+                component={({ hitsCount }) => (
+                  <div className="module-page-divider">{hitsCount} modules found</div>
+                )}
+              />
               <Hits hitsPerPage={5} itemComponent={HitModuleItem} />
             </ul>
-            <Pagination showNumbers showLast />
+            <Pagination
+              showNumbers
+              listComponent={({ items, selectedItems, toggleItem }) => {
+                return (
+                  <nav aria-label="Page navigation example">
+                    <ul className="pagination justify-content-center">
+                      {items.map(({ key, label, page, disabled }) => (
+                        <li
+                          key={key}
+                          className={classnames(
+                            'page-item',
+                            disabled ? 'disabled' : null,
+                            selectedItems.includes(key) ? 'active' : null,
+                          )}
+                        >
+                          <button
+                            type="button"
+                            className="page-link"
+                            onClick={() => toggleItem(key)}
+                          >
+                            {label}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </nav>
+                );
+              }}
+            />
           </div>
 
           <div className="col-md-4 col-lg-3">
@@ -82,7 +150,89 @@ const ModuleFinderContainer: React.FunctionComponent<Props> = () => {
               <div className={styles.moduleFilters}>
                 <header className={styles.filterHeader}>
                   <h3>Refine by</h3>
+
+                  <GroupedSelectedFilters />
+
+                  <ResetFilters
+                    className="button"
+                    options={{ filter: true }}
+                    component={({ hasFilters, resetFilters }) =>
+                      hasFilters && (
+                        <button
+                          className="btn btn-link btn-sm"
+                          type="button"
+                          onClick={resetFilters}
+                        >
+                          Clear Filters
+                        </button>
+                      )
+                    }
+                  />
                 </header>
+
+                <RefinementListFilter
+                  id="sem"
+                  title="Offered In"
+                  field="semesterData.semester"
+                  operator="OR"
+                  orderKey="_term"
+                  orderDirection="asc"
+                  bucketsTransform={(a) => {
+                    return a.map(({ key, ...rest }) => ({
+                      key,
+                      ...rest,
+                      label: config.semesterNames[key],
+                    }));
+                  }}
+                />
+
+                <RefinementListFilter
+                  id="level"
+                  title="Level"
+                  field="moduleCode.level"
+                  operator="OR"
+                  orderKey="_term"
+                  orderDirection="asc"
+                />
+
+                <NumericRefinementListFilter
+                  id="mcs"
+                  title="MCs"
+                  field="moduleCredit"
+                  listComponent={CheckboxItemList}
+                  multiselect
+                  options={[
+                    { title: 'All' },
+                    { title: '0-3 MC', from: 0, to: 3 },
+                    { title: '4 MC', from: 4, to: 4 },
+                    { title: '5-8 MC', from: 5, to: 8 },
+                    { title: 'More than 8 MC', from: 8, to: 300 },
+                  ]}
+                />
+
+                <RefinementListFilter
+                  id="fac"
+                  title="Faculty"
+                  field="faculty.keyword"
+                  operator="OR"
+                  listComponent={CheckboxItemList}
+                />
+
+                <RefinementListFilter
+                  id="dept"
+                  title="Department"
+                  field="department.keyword"
+                  operator="OR"
+                  listComponent={CheckboxItemList}
+                />
+
+                <RefinementListFilter
+                  id="attrs"
+                  title="Attributes"
+                  field="attributes"
+                  operator="OR"
+                  listComponent={CheckboxItemList}
+                />
               </div>
             </SideMenu>
           </div>
