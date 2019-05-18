@@ -7,6 +7,7 @@ import {
   Hits,
   HitsStats,
   ItemHistogramList,
+  ItemProps,
   MenuFilter,
   MultiMatchQuery,
   NumericRefinementListFilter,
@@ -32,7 +33,8 @@ import { attributeDescription } from 'types/modules';
 import ModuleFinderItem from 'views/components/ModuleFinderItem';
 import ModuleFinderList from 'views/modules/ModuleFinderList';
 import ModuleSearchBox from 'views/modules/ModuleSearchBox';
-import ChecklistFilters from 'views/components/filters/ChecklistFilters';
+import FilterContainer from 'views/components/filters/FilterContainer';
+import CheckboxItem from 'views/components/filters/CheckboxItem';
 import DropdownListFilters from 'views/components/filters/DropdownListFilters';
 import ApiError from 'views/errors/ApiError';
 import Warning from 'views/errors/Warning';
@@ -45,6 +47,7 @@ import Omelette, { matchEgg } from 'views/components/Omelette';
 import config from 'config';
 import { forceInstantSearch } from 'utils/debug';
 import { captureException } from 'utils/error';
+import filterStyles from 'views/components/filters/styles.scss';
 import styles from './ModuleFinderContainer.scss';
 
 export type Props = {};
@@ -59,7 +62,7 @@ function HitModuleItem(props: HitItemProps) {
   return <ModuleFinderItem key={source.moduleCode} module={source} />;
 }
 
-const ModuleFinderContainer: React.FunctionComponent<Props> = () => {
+const ModuleFinderContainer = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   return (
     <div className="modules-page-container page-container">
@@ -184,6 +187,8 @@ const ModuleFinderContainer: React.FunctionComponent<Props> = () => {
                       label: config.semesterNames[key],
                     }));
                   }}
+                  containerComponent={FilterContainer}
+                  itemComponent={CheckboxItem}
                 />
 
                 <RefinementListFilter
@@ -193,13 +198,14 @@ const ModuleFinderContainer: React.FunctionComponent<Props> = () => {
                   operator="OR"
                   orderKey="_term"
                   orderDirection="asc"
+                  containerComponent={FilterContainer}
+                  itemComponent={CheckboxItem}
                 />
 
                 <NumericRefinementListFilter
                   id="mcs"
                   title="MCs"
                   field="moduleCredit"
-                  listComponent={CheckboxItemList}
                   multiselect
                   options={[
                     { title: 'All' },
@@ -208,6 +214,8 @@ const ModuleFinderContainer: React.FunctionComponent<Props> = () => {
                     { title: '5-8 MC', from: 5, to: 8 },
                     { title: 'More than 8 MC', from: 8, to: 300 },
                   ]}
+                  containerComponent={FilterContainer}
+                  itemComponent={CheckboxItem}
                 />
 
                 <RefinementListFilter
@@ -215,7 +223,8 @@ const ModuleFinderContainer: React.FunctionComponent<Props> = () => {
                   title="Faculty"
                   field="faculty.keyword"
                   operator="OR"
-                  listComponent={CheckboxItemList}
+                  containerComponent={FilterContainer}
+                  itemComponent={CheckboxItem}
                 />
 
                 <RefinementListFilter
@@ -223,7 +232,8 @@ const ModuleFinderContainer: React.FunctionComponent<Props> = () => {
                   title="Department"
                   field="department.keyword"
                   operator="OR"
-                  listComponent={CheckboxItemList}
+                  containerComponent={FilterContainer}
+                  itemComponent={CheckboxItem}
                 />
 
                 <RefinementListFilter
@@ -231,7 +241,8 @@ const ModuleFinderContainer: React.FunctionComponent<Props> = () => {
                   title="Attributes"
                   field="attributes"
                   operator="OR"
-                  listComponent={CheckboxItemList}
+                  containerComponent={FilterContainer}
+                  itemComponent={CheckboxItem}
                 />
               </div>
             </SideMenu>
