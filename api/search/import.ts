@@ -2,8 +2,8 @@ import { Client } from '@elastic/elasticsearch';
 import { flatMap } from 'lodash';
 
 // Be sure to download this file.
-// `wget https://api.nusmods.com/v2/2018-2019/moduleInformation.json`
-import data from './moduleInformation.json';
+// `wget https://api.nusmods.com/v2/2018-2019/moduleInfo.json`
+import data from './moduleInfo.json';
 
 // Source: https://github.com/lodash/lodash/issues/2339#issuecomment-319536784
 const intersperse = <T>(arr: Array<T>, inter: T) => flatMap(arr, (a) => [inter, a]);
