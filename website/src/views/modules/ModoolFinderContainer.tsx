@@ -107,13 +107,14 @@ const ModuleFinderContainer: React.FunctionComponent<Props> = () => {
                 <MultiDataList
                   componentId="sem"
                   dataField="semesterData.semester"
-                  title="Available In"
-                  filterLabel="Available In"
+                  title="Offered In"
+                  filterLabel="Offered In"
                   URLParams
                   data={map(config.semesterNames, (semName, semNumStr) => ({
                     label: semName,
                     value: semNumStr,
                   }))}
+                  defaultValue={Object.values(config.semesterNames)}
                   react={{
                     and: ['q', 'level', 'mcs', 'faculty', 'department', 'attrs'],
                   }}
