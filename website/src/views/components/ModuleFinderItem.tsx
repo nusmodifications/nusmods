@@ -3,25 +3,25 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { ModuleInformation } from 'types/modules';
-import { ModuleSearch } from 'types/reducers';
+import { State } from 'types/state';
 
+import { tokenize } from 'utils/moduleSearch';
 import { modulePage } from 'views/routes/paths';
 import { BULLET, highlight } from 'utils/react';
 import { intersperse } from 'utils/array';
-import { State } from 'types/state';
 import ModuleSemesterInfo from './module-info/ModuleSemesterInfo';
 import ModuleWorkload from './module-info/ModuleWorkload';
 import LinkModuleCodes from './LinkModuleCodes';
 
 type Props = {
   module: ModuleInformation;
-  search: ModuleSearch;
+  search?: string;
 };
 
-export class ModuleFinderItemComponent extends React.PureComponent<Props> {
+export default class ModuleFinderItemComponent extends React.PureComponent<Props> {
   highlight(content: string) {
-    if (!this.props.search.term) return content;
-    return highlight(content, this.props.search.tokens);
+    if (!this.props.search || this.props.search.length === 0) return content;
+    return highlight(content, tokenize(this.props.search));
   }
 
   render() {
@@ -86,7 +86,3 @@ export class ModuleFinderItemComponent extends React.PureComponent<Props> {
     );
   }
 }
-
-export default connect((state: State) => ({
-  search: state.moduleFinder.search,
-}))(ModuleFinderItemComponent);

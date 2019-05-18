@@ -75,19 +75,32 @@ const ModuleFinderContainer: React.FunctionComponent<Props> = () => {
                 innerClass={{
                   pagination: styles.pagination,
                 }}
-                loader={<LoadingSpinner />}
-                renderItem={(res) => <ModuleFinderItem key={res.moduleCode} module={res} />}
-                renderResultStats={(res) => {
-                  let { numberOfResults } = res;
-                  // numberOfResults is an object instead of a number in Elasticsearch 7.
-                  // See: https://github.com/appbaseio/reactivesearch/issues/948#issuecomment-488661618
-                  if (!Number.isInteger(numberOfResults)) {
-                    numberOfResults = numberOfResults.value;
+              >
+                {(innerProps) => {
+                  const { loading, error, resultStats, data, rawData } = innerProps;
+                  if (loading) return <LoadingSpinner />;
+
+                  if (error) {
+                    // TODO: Replace
+                    console.log('kena error', error);
                   }
-                  return <div className="module-page-divider">{numberOfResults} modules found</div>;
+
+                  if (data.length === 0) {
+                    return <Warning message="No modules found" />;
+                  }
+
+                  const moduleItems = data.map((res) => (
+                    <ModuleFinderItem key={res.moduleCode} module={res} />
+                  ));
+
+                  return (
+                    <>
+                      <div className="module-page-divider">{resultStats.total} modules found</div>
+                      {moduleItems}
+                    </>
+                  );
                 }}
-                renderNoResults={() => <Warning message="No modules found" />}
-              />
+              </ReactiveList>
             </ul>
           </div>
 

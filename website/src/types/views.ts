@@ -1,4 +1,3 @@
-import FilterGroup from 'utils/filters/FilterGroup';
 import { Department, Module, ModuleCode, ModuleCondensed, PrereqTree, Semester } from './modules';
 import { ModuleList } from './reducers';
 import { ColorIndex, HoverLesson, Lesson, ModifiableLesson } from './timetables';

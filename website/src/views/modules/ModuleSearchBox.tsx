@@ -2,13 +2,13 @@ import * as React from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { ReactiveComponent } from '@appbaseio/reactivesearch';
 import classnames from 'classnames';
+import { fromPairs } from 'lodash';
 
 import elements from 'views/elements';
 import SearchBox from 'views/components/SearchBox';
 
 type Props = RouteComponentProps & {
   componentId: string;
-  dataField: string | string[];
   URLParams?: boolean;
 };
 
