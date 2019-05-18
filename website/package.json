@@ -120,11 +120,11 @@
     "stylelint-config-standard": "18.3.0",
     "stylelint-order": "3.0.0",
     "stylelint-webpack-plugin": "0.10.5",
-    "terser-webpack-plugin": "1.2.3",
+    "terser-webpack-plugin": "1.2.4",
     "typescript": "3.4.5",
     "url-loader": "1.1.2",
     "webpack": "4.31.0",
-    "webpack-dev-server": "3.3.1",
+    "webpack-dev-server": "3.4.1",
     "webpack-merge": "4.2.1",
     "workbox-webpack-plugin": "3.6.3"
   },
