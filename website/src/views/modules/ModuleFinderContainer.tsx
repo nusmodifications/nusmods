@@ -36,7 +36,7 @@ import ModuleFinderList from 'views/modules/ModuleFinderList';
 import ModuleSearchBox from 'views/modules/ModuleSearchBox';
 import FilterContainer from 'views/components/filters/FilterContainer';
 import CheckboxItem from 'views/components/filters/CheckboxItem';
-import DropdownListFilters from 'views/components/filters/DropdownListFilters';
+import DropdownListFilters from 'views/components/filters/SKDropdownListFilters';
 import ApiError from 'views/errors/ApiError';
 import Warning from 'views/errors/Warning';
 import ModuleFinderNoHits from 'views/errors/ModuleFinderNoHits';
@@ -228,6 +228,7 @@ const ModuleFinderContainer = () => {
                   operator="OR"
                   containerComponent={FilterContainer}
                   itemComponent={CheckboxItem}
+                  listComponent={DropdownListFilters}
                 />
 
                 <RefinementListFilter
@@ -237,6 +238,7 @@ const ModuleFinderContainer = () => {
                   operator="OR"
                   containerComponent={FilterContainer}
                   itemComponent={CheckboxItem}
+                  listComponent={DropdownListFilters}
                 />
 
                 <RefinementListFilter
