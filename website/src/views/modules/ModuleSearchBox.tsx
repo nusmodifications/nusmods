@@ -1,42 +1,76 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import qs from 'query-string';
+import { ReactiveComponent } from '@appbaseio/reactivesearch';
 import classnames from 'classnames';
 
 import elements from 'views/elements';
 import SearchBox from 'views/components/SearchBox';
-import { searchModules } from 'actions/moduleFinder';
-import { SEARCH_QUERY_KEY } from 'utils/moduleSearch';
-import { State } from 'types/state';
 
-type OwnProps = RouteComponentProps & {
-  useInstantSearch: boolean;
-};
-
-type Props = OwnProps & {
-  searchModules: (str: string) => void;
-  initialSearchTerm?: string;
+type Props = RouteComponentProps & {
+  componentId: string;
+  dataField: string | string[];
+  URLParams?: boolean;
 };
 
 export const ModuleSearchBoxComponent: React.FunctionComponent<Props> = (props: Props) => {
+  const { dataField, componentId, URLParams } = props;
+
+  const createQuery = (searchString: string) => {
+    return {
+      query: {
+        bool: {
+          should: [
+            {
+              // eslint-disable-next-line @typescript-eslint/camelcase
+              multi_match: {
+                query: searchString,
+                fields: dataField,
+                type: 'best_fields',
+                operator: 'or',
+                fuzziness: 'AUTO',
+              },
+            },
+            {
+              // eslint-disable-next-line @typescript-eslint/camelcase
+              multi_match: {
+                query: searchString,
+                fields: dataField,
+                type: 'phrase_prefix',
+                operator: 'or',
+              },
+            },
+          ],
+          minimum_should_match: '1', // eslint-disable-line @typescript-eslint/camelcase
+        },
+      },
+    };
+  };
+
+  // TODO: Fix bug where navigating back/forward in the browser doesn't change
+  // search box text. May need to change SearchBox to be a controlled component.
   return (
-    <SearchBox
-      className={classnames(elements.moduleFinderSearchBox, 'search-panel')}
-      throttle={300}
-      useInstantSearch={props.useInstantSearch}
-      initialSearchTerm={props.initialSearchTerm || null}
-      placeholder="Module code, names and descriptions"
-      onSearch={props.searchModules}
+    <ReactiveComponent
+      componentId={componentId}
+      showFilter={false}
+      URLParams={URLParams}
+      render={({ setQuery, value }) => (
+        <SearchBox
+          className={classnames(elements.moduleFinderSearchBox, 'search-panel')}
+          throttle={300}
+          useInstantSearch
+          initialSearchTerm={value || null}
+          placeholder="Module code, names and descriptions"
+          onSearch={(searchString) => {
+            if (searchString.trim().length === 0) {
+              setQuery(null);
+              return;
+            }
+            setQuery({ query: createQuery(searchString), value: searchString });
+          }}
+        />
+      )}
     />
   );
 };
 
-const ConnectedModuleSearchBox = connect(
-  (state: State, ownProps: OwnProps) => ({
-    initialSearchTerm: qs.parse(ownProps.location.search)[SEARCH_QUERY_KEY],
-  }),
-  { searchModules },
-)(ModuleSearchBoxComponent);
-
-export default withRouter(ConnectedModuleSearchBox);
+export default withRouter(ModuleSearchBoxComponent);

@@ -4,7 +4,6 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import TimetableContainer from 'views/timetable/TimetableContainer';
 import ModulePageContainer from 'views/modules/ModulePageContainer';
 import ModuleFinderContainer from 'views/modules/ModuleFinderContainer';
-import ModoolFinderContainer from 'views/modules/ModoolFinderContainer';
 import VenuesContainer from 'views/venues/VenuesContainer';
 import SettingsContainer from 'views/settings/SettingsContainer';
 import AboutContainer from 'views/static/AboutContainer';
@@ -26,7 +25,6 @@ export default function Routes() {
       <Redirect exact from="/" to="/timetable" />
       <Route path="/timetable/:semester?/:action?" component={TimetableContainer} />
       <Route exact path="/modules" component={ModuleFinderContainer} />
-      <Route exact path="/modools" component={ModoolFinderContainer} />
       <Route path="/modules/:moduleCode/:slug?" component={ModulePageContainer} />
       <Route path="/archive/:moduleCode/:year/:slug?" component={ModulePageContainer} />
       <Route path="/venues/:venue?" component={VenuesContainer} />
