@@ -10,6 +10,7 @@ import {
   ItemProps,
   MenuFilter,
   MultiMatchQuery,
+  NoHits,
   NumericRefinementListFilter,
   Pagination,
   RangeFilter,
@@ -38,6 +39,7 @@ import CheckboxItem from 'views/components/filters/CheckboxItem';
 import DropdownListFilters from 'views/components/filters/DropdownListFilters';
 import ApiError from 'views/errors/ApiError';
 import Warning from 'views/errors/Warning';
+import ModuleFinderNoHits from 'views/errors/ModuleFinderNoHits';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
 import { Filter } from 'views/components/icons';
@@ -112,6 +114,7 @@ const ModuleFinderContainer = () => {
                 )}
               />
               <Hits hitsPerPage={5} itemComponent={HitModuleItem} />
+              <NoHits suggestionsField="title" component={ModuleFinderNoHits} />
             </ul>
             <Pagination
               showNumbers
