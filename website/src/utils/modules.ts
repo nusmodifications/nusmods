@@ -23,7 +23,7 @@ export function getModuleSemesterData(
 }
 
 // Returns a flat array of lessons of a module for the corresponding semester.
-export function getModuleTimetable(module: Module, semester: Semester): ReadonlyArray<RawLesson> {
+export function getModuleTimetable(module: Module, semester: Semester): readonly RawLesson[] {
   return _.get(getModuleSemesterData(module, semester), 'timetable', []);
 }
 
@@ -58,7 +58,7 @@ export function getFormattedExamDate(module: Module, semester: Semester): string
 // Returns the current semester if it is found in semesters, or the first semester
 // where it is available
 export function getFirstAvailableSemester(
-  semesters: ReadonlyArray<SemesterDataCondensed>,
+  semesters: readonly SemesterDataCondensed[],
   current: Semester = config.semester, // For testing only
 ): Semester {
   const availableSemesters = semesters.map((semesterData) => semesterData.semester);
