@@ -16,7 +16,7 @@
     "@sentry/node": "5.2.0",
     "axios": "0.18.0",
     "bunyan": "1.8.12",
-    "fs-extra": "8.0.0",
+    "fs-extra": "8.0.1",
     "http-graceful-shutdown": "2.2.3",
     "koa": "2.7.0",
     "koa-router": "7.4.0",
@@ -24,6 +24,6 @@
     "lodash": "4.17.11",
     "nodemon": "1.19.0",
     "pug": "2.0.3",
-    "puppeteer": "1.15.0"
+    "puppeteer": "1.16.0"
   }
 }
