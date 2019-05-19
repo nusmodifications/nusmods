@@ -6,6 +6,8 @@ import {
   HitItemProps,
   Hits,
   HitsStats,
+  HitsStatsDisplayProps,
+  InitialLoader,
   ItemHistogramList,
   ItemProps,
   MenuFilter,
@@ -109,12 +111,13 @@ const ModuleFinderContainer = () => {
 
             <ul className="modules-list">
               <HitsStats
-                component={({ hitsCount }) => (
+                component={({ hitsCount }: HitsStatsDisplayProps) => (
                   <div className="module-page-divider">{hitsCount} modules found</div>
                 )}
               />
               <Hits hitsPerPage={5} itemComponent={HitModuleItem} />
               <NoHits suggestionsField="title" component={ModuleFinderNoHits} />
+              <InitialLoader component={LoadingSpinner} />
             </ul>
             <Pagination
               showNumbers
