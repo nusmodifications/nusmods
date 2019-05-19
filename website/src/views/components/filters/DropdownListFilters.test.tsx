@@ -1,17 +1,24 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 
-import FilterGroup from 'utils/filters/FilterGroup';
-import { createGroup, createModule } from 'test-utils/filterHelpers';
+import { RefinementItem, RefinementDisplayItem } from 'types/views';
 import { DropdownListFiltersComponent } from './DropdownListFilters';
 
 describe(DropdownListFiltersComponent, () => {
   const CHECKBOX = '☑';
-  const modules = [createModule('CS1010S'), createModule('CS3216')];
+
+  /* eslint-disable @typescript-eslint/camelcase */
+  const allItems: RefinementItem[] = [
+    { key: "It's a Test", doc_count: 20 },
+    { key: 'Still Testing', doc_count: 0, missing: true },
+    { key: "It's Business Time", missing: true },
+    { key: "This One's For Pickering" },
+  ];
+  /* eslint-enable @typescript-eslint/camelcase */
 
   function make(
-    filterGroup: FilterGroup<any>,
-    groups: FilterGroup<any>[] = [filterGroup],
+    items: RefinementItem[],
+    selectedItems: string[],
     matchBreakpoint: boolean = false,
   ) {
     const onFilterChange = jest.fn();
@@ -21,10 +28,11 @@ describe(DropdownListFiltersComponent, () => {
 
       wrapper: mount(
         <DropdownListFiltersComponent
-          onFilterChange={onFilterChange}
-          group={filterGroup}
-          groups={groups}
+          items={items}
+          selectedItems={selectedItems}
+          toggleItem={onFilterChange}
           matchBreakpoint={matchBreakpoint}
+          setItems={() => {}}
         />,
       ),
     };
@@ -33,25 +41,25 @@ describe(DropdownListFiltersComponent, () => {
   // TODO: Write some sort of adaptor that reads off both <select> and <Downshift>
   //       to ensure values in both match
   test('use native <select> element on mobile', () => {
-    const group = createGroup(modules);
-    const { wrapper } = make(group, [group], true);
+    const { wrapper } = make(allItems, [], true);
 
     expect(wrapper.find('select').exists()).toBe(true);
-    expect(wrapper.find('option')).toHaveLength(3); // One placeholder and two options
+    expect(wrapper.find('option')).toHaveLength(allItems.length + 1); // 1 extra placeholder
 
     expect(wrapper.find('ul.list-unstyled input')).toHaveLength(0);
   });
 
   test('change value when <select> value changes', () => {
-    const group = createGroup(modules);
-    const { wrapper, onFilterChange } = make(group, [group], true);
+    const { wrapper, onFilterChange } = make(allItems, [], true);
 
     // Simulate selecting an <option> in the <select>
-    wrapper.find('select').simulate('change', { target: { value: 'a' } });
-    const [[nextGroup1]] = onFilterChange.mock.calls;
-    expect(nextGroup1).toEqual(group.toggle('a'));
+    const { key: firstItemKey } = allItems[0];
+    wrapper.find('select').simulate('change', { target: { value: firstItemKey } });
+    expect(onFilterChange.mock.calls.length).toEqual(1);
+    const [[toggledKey]] = onFilterChange.mock.calls;
+    expect(toggledKey).toEqual(firstItemKey);
 
-    wrapper.setProps({ group: nextGroup1 });
+    wrapper.setProps({ selectedItems: [firstItemKey] });
 
     // Should render the option inside the <select> with a checkmark
     expect(
@@ -68,8 +76,8 @@ describe(DropdownListFiltersComponent, () => {
   });
 
   test('render a list of previously selected items outside the <select>', () => {
-    const group = createGroup(modules).toggle('a');
-    const { wrapper, onFilterChange } = make(group, [group], true);
+    const { key: firstItemKey } = allItems[0];
+    const { wrapper, onFilterChange } = make(allItems, [firstItemKey], true);
 
     // Should render the item in the checklist outside
     const checklist1 = wrapper.find('ul.list-unstyled input');
@@ -78,10 +86,11 @@ describe(DropdownListFiltersComponent, () => {
 
     // Simulate unchecking the checkbox on the checklist outside
     checklist1.simulate('change', { target: { value: false } });
-    const [[nextGroup1]] = onFilterChange.mock.calls;
-    expect(nextGroup1).toEqual(group.toggle('a'));
+    expect(onFilterChange.mock.calls.length).toEqual(1);
+    const [[toggledKey]] = onFilterChange.mock.calls;
+    expect(toggledKey).toEqual(firstItemKey);
 
-    wrapper.setProps({ group: nextGroup1 });
+    wrapper.setProps({ selectedItems: [] });
     const checklist2 = wrapper.find('ul.list-unstyled input');
     expect(checklist2).toHaveLength(1);
     expect(checklist2.at(0).prop('checked')).toBe(false);

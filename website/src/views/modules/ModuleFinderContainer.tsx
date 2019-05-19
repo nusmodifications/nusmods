@@ -38,7 +38,7 @@ import ModuleFinderList from 'views/modules/ModuleFinderList';
 import ModuleSearchBox from 'views/modules/ModuleSearchBox';
 import FilterContainer from 'views/components/filters/FilterContainer';
 import CheckboxItem from 'views/components/filters/CheckboxItem';
-import DropdownListFilters from 'views/components/filters/SKDropdownListFilters';
+import DropdownListFilters from 'views/components/filters/DropdownListFilters';
 import ApiError from 'views/errors/ApiError';
 import Warning from 'views/errors/Warning';
 import ModuleFinderNoHits from 'views/errors/ModuleFinderNoHits';
@@ -229,9 +229,11 @@ const ModuleFinderContainer = () => {
                   title="Faculty"
                   field="faculty.keyword"
                   operator="OR"
+                  size={500}
                   containerComponent={FilterContainer}
                   itemComponent={CheckboxItem}
                   listComponent={DropdownListFilters}
+                  translations={{ placeholder: 'Add faculties filter...' }}
                 />
 
                 <RefinementListFilter
@@ -239,9 +241,11 @@ const ModuleFinderContainer = () => {
                   title="Department"
                   field="department.keyword"
                   operator="OR"
+                  size={500}
                   containerComponent={FilterContainer}
                   itemComponent={CheckboxItem}
                   listComponent={DropdownListFilters}
+                  translations={{ placeholder: 'Add departments filter...' }}
                 />
 
                 <RefinementListFilter

@@ -3,15 +3,12 @@ import { ItemProps } from 'searchkit';
 import classnames from 'classnames';
 import styles from './styles.scss';
 
-const CheckboxItem = ({
-  active,
-  count,
-  disabled,
-  itemKey,
-  label,
-  showCount,
-  onClick,
-}: ItemProps) => {
+type Props = Pick<
+  ItemProps,
+  'active' | 'count' | 'disabled' | 'itemKey' | 'label' | 'showCount' | 'onClick'
+>;
+
+const CheckboxItem = ({ active, count, disabled, itemKey, label, showCount, onClick }: Props) => {
   return (
     <li key={itemKey} className={classnames(styles.label, 'form-check')}>
       <input
