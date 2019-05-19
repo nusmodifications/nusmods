@@ -279,7 +279,7 @@ export default class ModulePageContent extends React.Component<Props, State> {
                   currentClassName={styles.activeMenuItem}
                   offset={-NAVTAB_HEIGHT}
                 >
-                  {map(SIDE_MENU_LABELS, (label, key) => (
+                  {map(SIDE_MENU_LABELS, (label, key: keyof typeof SIDE_MENU_LABELS) => (
                     <li key={label}>
                       <a onClick={() => this.toggleMenu(false)} href={`#${SIDE_MENU_ITEMS[key]}`}>
                         {label}
