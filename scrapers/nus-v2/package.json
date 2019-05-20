@@ -43,7 +43,7 @@
     "swagger-ui-dist": "3.21.0",
     "ts-jest": "24.0.0",
     "ts-node": "8.0.2",
-    "typescript": "3.3.3",
+    "typescript": "3.4.4",
     "typescript-eslint-parser": "22.0.0"
   },
   "dependencies": {

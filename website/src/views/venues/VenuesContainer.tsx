@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import axios from 'axios';
 import produce from 'immer';
 import qs from 'query-string';
-import { get, isEqual, mapValues, pick, size } from 'lodash';
+import { isEqual, mapValues, pick, size } from 'lodash';
 
 import { TimePeriod, Venue, VenueDetailList, VenueSearchOptions } from 'types/venues';
 
@@ -278,8 +278,9 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
     }
 
     const [venue, availability] = matchedVenues[venueIndex];
-    const [previous] = get(matchedVenues, String(venueIndex - 1), []);
-    const [next] = get(matchedVenues, String(venueIndex + 1), []);
+    const [previous] = matchedVenues[venueIndex - 1] || ([] as string[]);
+    const [next] = matchedVenues[venueIndex + 1] || ([] as string[]);
+
     return (
       <VenueDetails
         venue={venue}
