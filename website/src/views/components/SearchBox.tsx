@@ -9,13 +9,13 @@ type Props = {
   className?: string;
   throttle: number;
   useInstantSearch: boolean;
-  initialSearchTerm: string | null;
+  value: string | null;
   placeholder: string;
-  onSearch: (str: string) => void;
+  onChange: (value: string) => void;
+  onSearch: () => void;
 };
 
 type State = {
-  searchTerm: string;
   isFocused: boolean;
   hasChanges: boolean;
 };
@@ -28,11 +28,8 @@ export default class SearchBox extends React.PureComponent<Props, State> {
 
     this.state = {
       isFocused: false,
-      searchTerm: this.props.initialSearchTerm || '',
       hasChanges: false,
     };
-
-    this.props.onSearch(this.state.searchTerm);
   }
 
   onSubmit = () => {
@@ -40,9 +37,8 @@ export default class SearchBox extends React.PureComponent<Props, State> {
 
     if (element) {
       const searchTerm = element.value;
-      this.setState({ searchTerm });
-
-      this.debouncedSearch(searchTerm);
+      this.props.onChange(searchTerm);
+      this.debouncedSearch();
       this.debouncedSearch.flush();
       element.blur();
     }
@@ -51,15 +47,15 @@ export default class SearchBox extends React.PureComponent<Props, State> {
   onInput = (evt: React.ChangeEvent<HTMLInputElement>) => {
     if (evt.target instanceof HTMLInputElement) {
       const searchTerm = evt.target.value;
-      this.setState({ searchTerm, hasChanges: true });
-
-      if (this.props.useInstantSearch) this.debouncedSearch(searchTerm);
+      this.props.onChange(searchTerm);
+      this.setState({ hasChanges: true });
+      if (this.props.useInstantSearch) this.debouncedSearch();
     }
   };
 
-  private search = (input: string) => {
+  private search = () => {
     this.setState({ hasChanges: false });
-    this.props.onSearch(input.trim());
+    this.props.onSearch();
   };
 
   // eslint-disable-next-line react/sort-comp
@@ -100,7 +96,7 @@ export default class SearchBox extends React.PureComponent<Props, State> {
             type="search"
             autoComplete="off"
             ref={this.searchElement}
-            value={this.state.searchTerm}
+            value={this.props.value || ''}
             onChange={this.onInput}
             onFocus={() => this.setState({ isFocused: true })}
             onBlur={() => {
