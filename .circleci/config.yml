@@ -116,6 +116,13 @@ jobs:
             yarn test --runInBand --reporters=default --reporters=jest-junit
             cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
       - run:
+          name: Integration tests
+          environment:
+            NODE_ENV: test
+          command: |
+            set -e
+            yarn test:integration --runInBand
+      - run:
           name: Build web page
           command: yarn build
       - store_test_results:
