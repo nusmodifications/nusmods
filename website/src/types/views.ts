@@ -93,17 +93,17 @@ export type EmptyGroupType =
 /* views/planner */
 export type PrereqConflict = {
   type: 'prereq';
-  unfulfilledPrereqs: ReadonlyArray<PrereqTree>;
+  unfulfilledPrereqs: readonly PrereqTree[];
 };
 
 export type ExamConflict = {
   type: 'exam';
-  conflictModules: ReadonlyArray<ModuleCode>;
+  conflictModules: readonly ModuleCode[];
 };
 
 export type SemesterConflict = {
   type: 'semester';
-  semestersOffered: ReadonlyArray<Semester>;
+  semestersOffered: readonly Semester[];
 };
 
 export type NoInfo = {

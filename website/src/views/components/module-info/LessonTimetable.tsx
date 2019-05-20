@@ -12,7 +12,7 @@ import { venuePage } from 'views/routes/paths';
 import { Lesson } from 'types/timetables';
 import styles from './LessonTimetable.scss';
 
-type Props = RouteComponentProps & { semesterData: ReadonlyArray<SemesterData> };
+type Props = RouteComponentProps & { semesterData: readonly SemesterData[] };
 
 type State = {
   selectedSem: Semester;
