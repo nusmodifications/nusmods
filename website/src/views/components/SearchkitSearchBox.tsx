@@ -10,10 +10,12 @@ interface Props extends SearchkitComponentProps {
   throttle: number;
   queryFields?: string[];
   queryBuilder?: Function;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   queryOptions?: Record<string, any>;
   id?: string;
   placeholder?: string;
   prefixQueryFields?: string[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   prefixQueryOptions?: Record<string, any>;
 }
 

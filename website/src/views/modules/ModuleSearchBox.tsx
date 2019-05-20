@@ -5,7 +5,7 @@ type Props = {
   id: string;
 };
 
-const buildQuery = (query: string, options: Record<string, any>) => ({
+const buildQuery = (query: string, options: Record<string, string | string[]>) => ({
   bool: {
     should: [
       {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 
-import { RefinementItem, RefinementDisplayItem } from 'types/views';
+import { RefinementItem } from 'types/views';
 import { DropdownListFiltersComponent } from './DropdownListFilters';
 
 describe(DropdownListFiltersComponent, () => {
