@@ -45,7 +45,6 @@ import LoadingSpinner from 'views/components/LoadingSpinner';
 import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
 import { Filter } from 'views/components/icons';
 import Title from 'views/components/Title';
-import Omelette, { matchEgg } from 'views/components/Omelette';
 
 import config from 'config';
 import { forceInstantSearch } from 'utils/debug';

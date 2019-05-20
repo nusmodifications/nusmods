@@ -1,5 +1,6 @@
 import React from 'react';
 import { NoHitsDisplayProps } from 'searchkit';
+import Omelette, { matchEgg } from 'views/components/Omelette';
 import Warning from './Warning';
 import styles from './ErrorPage.scss';
 
@@ -15,6 +16,8 @@ const ModuleFinderNoHits = ({
   return (
     <>
       <Warning message={noResultsLabel} />
+
+      {matchEgg(query) && <Omelette query={query} />}
 
       <div className={styles.buttons}>
         {!!suggestion && (
