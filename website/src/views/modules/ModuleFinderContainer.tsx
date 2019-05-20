@@ -51,7 +51,6 @@ import Omelette, { matchEgg } from 'views/components/Omelette';
 import config from 'config';
 import { forceInstantSearch } from 'utils/debug';
 import { captureException } from 'utils/error';
-import filterStyles from 'views/components/filters/styles.scss';
 import styles from './ModuleFinderContainer.scss';
 
 export type Props = {};
@@ -128,9 +127,6 @@ const ModuleFinderContainer = () => {
               <div className={styles.moduleFilters}>
                 <header className={styles.filterHeader}>
                   <h3>Refine by</h3>
-
-                  <GroupedSelectedFilters />
-
                   <ResetFilters
                     className="button"
                     options={{ filter: true }}
