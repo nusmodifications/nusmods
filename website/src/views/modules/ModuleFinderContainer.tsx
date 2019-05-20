@@ -214,11 +214,10 @@ const ModuleFinderContainer = () => {
                   field="moduleCredit"
                   multiselect
                   options={[
-                    { title: 'All' },
-                    { title: '0-3 MC', from: 0, to: 3 },
-                    { title: '4 MC', from: 4, to: 4 },
-                    { title: '5-8 MC', from: 5, to: 8 },
-                    { title: 'More than 8 MC', from: 8, to: 300 },
+                    { title: '0-3 MC', to: 4 },
+                    { title: '4 MC', from: 4, to: 5 },
+                    { title: '5-8 MC', from: 5, to: 9 },
+                    { title: 'More than 8 MC', from: 9 },
                   ]}
                   containerComponent={FilterContainer}
                   itemComponent={CheckboxItem}
