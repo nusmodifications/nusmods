@@ -76,38 +76,7 @@ const ModuleFinderContainer = () => {
           <div className="col">
             <h1 className="sr-only">Module Finder</h1>
 
-            <SearchBox
-              searchOnChange
-              searchThrottleTime={300}
-              queryFields={['moduleCode^10', 'title^3', 'description']}
-              queryBuilder={(query: string, options: Record<string, any>) => ({
-                bool: {
-                  should: [
-                    {
-                      // eslint-disable-next-line @typescript-eslint/camelcase
-                      multi_match: {
-                        query,
-                        ...options,
-                        type: 'best_fields',
-                        operator: 'or',
-                        fuzziness: 'AUTO',
-                      },
-                    },
-                    {
-                      // eslint-disable-next-line @typescript-eslint/camelcase
-                      multi_match: {
-                        query,
-                        ...options,
-                        type: 'phrase_prefix',
-                        operator: 'or',
-                      },
-                    },
-                  ],
-                  minimum_should_match: '1', // eslint-disable-line @typescript-eslint/camelcase
-                },
-              })}
-              placeholder="Module code, names and descriptions"
-            />
+            <ModuleSearchBox id="q" />
 
             <ul className="modules-list">
               <HitsStats

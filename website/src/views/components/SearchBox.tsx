@@ -10,7 +10,7 @@ type Props = {
   throttle: number;
   useInstantSearch: boolean;
   value: string | null;
-  placeholder: string;
+  placeholder?: string;
   onChange: (value: string) => void;
   onSearch: () => void;
 };
