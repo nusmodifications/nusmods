@@ -39,9 +39,8 @@ import ModuleSearchBox from 'views/modules/ModuleSearchBox';
 import FilterContainer from 'views/components/filters/FilterContainer';
 import CheckboxItem from 'views/components/filters/CheckboxItem';
 import DropdownListFilters from 'views/components/filters/DropdownListFilters';
-import ApiError from 'views/errors/ApiError';
-import Warning from 'views/errors/Warning';
 import ModuleFinderNoHits from 'views/errors/ModuleFinderNoHits';
+import ModuleFinderApiError from 'views/errors/ModuleFinderApiError';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
 import { Filter } from 'views/components/icons';
@@ -84,7 +83,11 @@ const ModuleFinderContainer = () => {
                 )}
               />
               <Hits hitsPerPage={5} itemComponent={HitModuleItem} />
-              <NoHits suggestionsField="title" component={ModuleFinderNoHits} />
+              <NoHits
+                suggestionsField="title"
+                component={ModuleFinderNoHits}
+                errorComponent={ModuleFinderApiError}
+              />
               <InitialLoader component={LoadingSpinner} />
             </ul>
             <Pagination
