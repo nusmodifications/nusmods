@@ -13,12 +13,9 @@ export function forceRefreshPrompt() {
   return getParams().refresh === '1';
 }
 
-// Force module finder to always enable or disable instant search
-export function forceInstantSearch() {
-  const instant = getParams().instant;
-
-  if (typeof instant === 'undefined') return null;
-  return instant === '1';
+// Force us to use a provided Elasticsearch host URL, overriding the one in config
+export function forceElasticsearchHost() {
+  return getParams().eshost;
 }
 
 // Force the current date/time to some value for components that use the

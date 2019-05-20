@@ -19,11 +19,13 @@ import { ModuleFinderHitModuleItem } from 'views/components/ModuleFinderItem';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import Title from 'views/components/Title';
 
-import { forceInstantSearch } from 'utils/debug';
+import { forceElasticsearchHost } from 'utils/debug';
+import config from 'config';
 
 export type Props = {};
 
-const searchkit = new SearchkitManager('http://localhost:9200/modules');
+const esHostUrl = `${forceElasticsearchHost() || config.elasticsearchBaseUrl}/modules`;
+const searchkit = new SearchkitManager(esHostUrl);
 
 const pageHead = <Title>Modules</Title>;
 
@@ -46,7 +48,7 @@ const ModuleFinderContainer = () => {
                   )
                 }
               />
-              <Hits hitsPerPage={5} itemComponent={ModuleFinderHitModuleItem} />
+              <Hits hitsPerPage={10} itemComponent={ModuleFinderHitModuleItem} />
               <NoHits
                 suggestionsField="title"
                 component={ModuleFinderNoHits}
