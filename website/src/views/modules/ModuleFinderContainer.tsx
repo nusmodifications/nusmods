@@ -22,8 +22,6 @@ import Title from 'views/components/Title';
 import { forceElasticsearchHost } from 'utils/debug';
 import config from 'config';
 
-export type Props = {};
-
 const esHostUrl = `${forceElasticsearchHost() || config.elasticsearchBaseUrl}/modules`;
 const searchkit = new SearchkitManager(esHostUrl);
 

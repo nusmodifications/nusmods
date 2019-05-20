@@ -26,9 +26,12 @@ type State = {
  * @see Adapted from <a href="https://github.com/searchkit/searchkit/blob/016c899c97f72ea3ad5afc017345e41c9003172a/packages/searchkit/src/components/search/search-box/SearchBox.tsx">Searchkit's SearchBox component</a>.
  */
 export default class SearchkitSearchBox extends SearchkitComponent<Props, State> {
-  state = {
-    input: undefined,
-  };
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      input: undefined,
+    };
+  }
 
   queryAccessor() {
     return this.accessor as QueryAccessor;
@@ -66,7 +69,7 @@ export default class SearchkitSearchBox extends SearchkitComponent<Props, State>
   }
 
   getAccessorValue() {
-    return this.queryAccessor().state.getValue() || '';
+    return (this.queryAccessor().state.getValue() || '').toString();
   }
 
   handleQueryChange = (searchString: string) => {
