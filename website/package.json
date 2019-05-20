@@ -129,7 +129,6 @@
     "workbox-webpack-plugin": "3.6.3"
   },
   "dependencies": {
-    "@appbaseio/reactivesearch": "^3.0.0-rc.10",
     "@material/fab": "0.40.1",
     "@material/snackbar": "0.40.1",
     "@sentry/browser": "4.6.6",
@@ -166,12 +165,11 @@
     "react-redux": "5.1.1",
     "react-router-dom": "4.3.1",
     "react-scrollspy": "3.4.0",
-    "react-waypoint": "9.0.2",
     "redux": "4.0.1",
     "redux-persist": "5.10.0",
     "redux-thunk": "2.3.0",
     "reselect": "4.0.0",
-    "searchkit": "^2.3.1-alpha.9"
+    "searchkit": "2.3.1-alpha.9"
   },
   "browserslist": [
     "extends browserslist-config-nusmods"

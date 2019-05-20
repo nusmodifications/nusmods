@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { HitItemProps } from 'searchkit';
 
 import { ModuleInformation } from 'types/modules';
-import { State } from 'types/state';
 
 import { tokenize } from 'utils/moduleSearch';
 import { modulePage } from 'views/routes/paths';
@@ -18,7 +17,7 @@ type Props = {
   search?: string;
 };
 
-export default class ModuleFinderItemComponent extends React.PureComponent<Props> {
+export default class ModuleFinderItem extends React.PureComponent<Props> {
   highlight(content: string) {
     if (!this.props.search || this.props.search.length === 0) return content;
     return highlight(content, tokenize(this.props.search));
@@ -85,4 +84,11 @@ export default class ModuleFinderItemComponent extends React.PureComponent<Props
       </li>
     );
   }
+}
+
+export function ModuleFinderHitModuleItem(props: HitItemProps) {
+  const {
+    result: { _source: source },
+  } = props;
+  return <ModuleFinderItem key={source.moduleCode} module={source} />;
 }
