@@ -2,7 +2,6 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
-import { updateServiceWorker } from 'bootstrapping/service-worker';
 import { Refresh } from 'views/components/icons';
 import styles from 'views/components/notfications/Announcements.scss';
 import LoadingSpinner from 'views/components/LoadingSpinner';
@@ -34,7 +33,9 @@ class RefreshPrompt extends React.PureComponent<Props, State> {
     }
 
     this.setState({ isReloading: true });
-    updateServiceWorker();
+    import('bootstrapping/service-worker').then(({ updateServiceWorker }) => {
+      updateServiceWorker();
+    });
   };
 
   render() {

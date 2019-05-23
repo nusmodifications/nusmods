@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { updateServiceWorker } from 'bootstrapping/service-worker';
 import classnames from 'classnames';
 import { Refresh } from 'views/components/icons';
 import LoadingSpinner from 'views/components/LoadingSpinner';
@@ -18,7 +17,9 @@ export default class NavRefreshPrompt extends React.PureComponent<Props, State> 
 
   onReload = () => {
     this.setState({ isReloading: true });
-    updateServiceWorker();
+    import('bootstrapping/service-worker').then(({ updateServiceWorker }) => {
+      updateServiceWorker();
+    });
   };
 
   render() {

@@ -1,18 +1,14 @@
-// Code taken from https://developers.google.com/web/tools/workbox/guides/advanced-recipes
+/**
+ * SW Lifecycle 1:
+ * In the service worker, listen formessages from the browser.
+ * If the message is 'skipWaiting',
+ * the service worker's skipWaiting phase is triggered
+ *
+ * See: https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerGlobalScope/skipWaiting
+ */
 self.addEventListener('message', (event) => {
-  if (!event.data) {
-    return;
-  }
-
-  switch (event.data) {
-    // When the user clicks on the update button, we skipWaiting and refresh the
-    // page
-    case 'skipWaiting':
-      self.skipWaiting();
-      break;
-    default:
-      // NOOP
-      break;
+  if (event.data === 'skipWaiting') {
+    self.skipWaiting();
   }
 });
 

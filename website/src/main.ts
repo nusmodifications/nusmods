@@ -37,7 +37,9 @@ if (
   // Allow us to force Workbox to be enabled for debugging
   process.env.DEBUG_WORKBOX
 ) {
-  import('bootstrapping/service-worker');
+  import('bootstrapping/service-worker').then((module) => {
+    module.default(store);
+  });
 }
 
 if (process.env.NODE_ENV === 'production') {
