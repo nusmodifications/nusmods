@@ -10,7 +10,6 @@ import App from 'App';
 import configureStore from 'bootstrapping/configure-store';
 import subscribeOnlineEvents from 'bootstrapping/subscribeOnlineEvents';
 import { initializeMamoto } from 'bootstrapping/matomo';
-import initializeServiceWorker from 'bootstrapping/service-worker';
 
 import 'styles/main.scss';
 
@@ -38,7 +37,7 @@ if (
   // Allow us to force Workbox to be enabled for debugging
   process.env.DEBUG_WORKBOX
 ) {
-  initializeServiceWorker(store);
+  import('bootstrapping/service-worker');
 }
 
 if (process.env.NODE_ENV === 'production') {
