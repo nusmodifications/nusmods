@@ -263,7 +263,7 @@ exports.workbox = () => ({
         // large, so this will improve perceived performance
         {
           urlPattern: new RegExp(staleWhileRevalidatePaths.map(_.escapeRegExp).join('|')),
-          handler: 'staleWhileRevalidate',
+          handler: 'StaleWhileRevalidate',
           options: {
             cacheName: 'api-stale-while-revalidate-cache',
             cacheableResponse: {
@@ -282,7 +282,7 @@ exports.workbox = () => ({
         // they are relatively small and needs to be as updated as possible
         {
           urlPattern: new RegExp(_.escapeRegExp(nusmods.baseUrl())),
-          handler: 'networkFirst',
+          handler: 'NetworkFirst',
           options: {
             cacheName: 'api-network-first-cache',
             cacheableResponse: {
