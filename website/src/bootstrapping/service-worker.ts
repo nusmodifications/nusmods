@@ -5,33 +5,33 @@ import { captureException } from 'utils/error';
 
 // Code follows documentation in
 // https://developers.google.com/web/tools/workbox/modules/workbox-window
-const wb = new Workbox('/service-worker.js');
+const workbox = new Workbox('/service-worker.js');
 
 export function updateServiceWorker() {
   // Set up a listener that will reload the page
   // as soon as the previously waiting service worker has taken control.
-  wb.addEventListener('controlling', () => {
+  workbox.addEventListener('controlling', () => {
     window.location.reload();
   });
   // Send a message telling the service worker to skip waiting.
   // This will trigger the `controlling` event handler above.
   // @ts-ignore messageSW should receive an argument
-  wb.messageSW({ type: 'skipWaiting' });
+  workbox.messageSW({ type: 'skipWaiting' });
 }
 
 export default function initializeServiceWorker(store: Store<any, any>) {
   let updateIntervalId: number;
   // Add an event listener to detect when the registered
   // service worker has installed but is waiting to activate.
-  wb.addEventListener('waiting', () => {
+  workbox.addEventListener('waiting', () => {
     store.dispatch(promptRefresh());
     window.clearInterval(updateIntervalId);
   });
 
-  wb.register()
+  workbox.register()
     .then((registration) => {
       // Track updates to the Service Worker.
-      if (!wb.controlling) {
+      if (!workbox.controlling) {
         // The window client isn't currently controlled so it's a new service
         // worker that will activate immediately
         return;

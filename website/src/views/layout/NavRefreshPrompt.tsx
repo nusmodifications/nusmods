@@ -17,7 +17,7 @@ export default class NavRefreshPrompt extends React.PureComponent<Props, State> 
 
   onReload = () => {
     this.setState({ isReloading: true });
-    import('bootstrapping/service-worker').then(({ updateServiceWorker }) => {
+    import(/* webpackChunkName: "service-worker" */'bootstrapping/service-worker').then(({ updateServiceWorker }) => {
       updateServiceWorker();
     });
   };

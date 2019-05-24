@@ -37,7 +37,7 @@ if (
   // Allow us to force Workbox to be enabled for debugging
   process.env.DEBUG_WORKBOX
 ) {
-  import('bootstrapping/service-worker').then((module) => {
+  import(/* webpackChunkName: "service-worker" */ 'bootstrapping/service-worker').then((module) => {
     module.default(store);
   });
 }
