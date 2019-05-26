@@ -19,7 +19,7 @@ const Checklist = ({ allItems, selectedItems, searchedItems, onSelectItem, showC
     <CheckboxItem
       key={key}
       active={selected}
-      count={count || -1}
+      count={count || 0}
       showCount={showCount === true && typeof count !== 'undefined'}
       itemKey={key}
       label={key}

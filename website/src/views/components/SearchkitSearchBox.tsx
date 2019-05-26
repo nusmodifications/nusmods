@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { QueryAccessor, SearchkitComponent, SearchkitComponentProps } from 'searchkit';
 import classnames from 'classnames';
-import { assign } from 'lodash';
 
 import elements from 'views/elements';
 import SearchBox from 'views/components/SearchBox';
+
+// The default URL query string key used for the search term
+const DEFAULT_SEARCH_QUERY_KEY = 'q';
 
 interface Props extends SearchkitComponentProps {
   throttle: number;
@@ -25,7 +27,7 @@ type State = {
 
 /**
  * A Searchkit wrapper around our SearchBox.
- * @see Adapted from <a href="https://github.com/searchkit/searchkit/blob/016c899c97f72ea3ad5afc017345e41c9003172a/packages/searchkit/src/components/search/search-box/SearchBox.tsx">Searchkit's SearchBox component</a>.
+ * @see Adapted from [Searchkit's SearchBox component](https://github.com/searchkit/searchkit/blob/016c899c97f72ea3ad5afc017345e41c9003172a/packages/searchkit/src/components/search/search-box/SearchBox.tsx).
  */
 export default class SearchkitSearchBox extends SearchkitComponent<Props, State> {
   constructor(props: Props) {
@@ -50,9 +52,9 @@ export default class SearchkitSearchBox extends SearchkitComponent<Props, State>
     } = this.props;
     return new QueryAccessor(id || 'q', {
       prefixQueryFields,
-      prefixQueryOptions: assign({}, prefixQueryOptions),
+      prefixQueryOptions: { ...prefixQueryOptions },
       queryFields: queryFields || ['_all'],
-      queryOptions: assign({}, queryOptions),
+      queryOptions: { ...queryOptions },
       queryBuilder,
       onQueryStateChange: () => {
         if (!this.unmounted && this.state.input) {

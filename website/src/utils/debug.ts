@@ -13,7 +13,7 @@ export function forceRefreshPrompt() {
   return getParams().refresh === '1';
 }
 
-// Force us to use a provided Elasticsearch host URL, overriding the one in config
+// Overriding the Elasticsearch host URL from config, used for testing with a local ES server
 export function forceElasticsearchHost() {
   return getParams().eshost;
 }

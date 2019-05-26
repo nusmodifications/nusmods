@@ -54,13 +54,13 @@ const ModuleFinderSidebar = () => {
           operator="OR"
           orderKey="_term"
           orderDirection="asc"
-          bucketsTransform={(a: RefinementItem[]) => {
-            return a.map(({ key, ...rest }) => ({
+          bucketsTransform={(semItem: RefinementItem[]) =>
+            semItem.map(({ key, ...rest }) => ({
               key,
               ...rest,
               label: config.semesterNames[key],
-            }));
-          }}
+            }))
+          }
           containerComponent={FilterContainer}
           itemComponent={CheckboxItem}
         />
