@@ -10,8 +10,6 @@ const intersperse = <T>(arr: Array<T>, inter: T) => flatMap(arr, (a) => [inter, 
 
 const client = new Client({ node: 'http://localhost:9200' });
 
-const bulkBody = intersperse(data, { index: {} });
-
 // Tokenizes a string into an array of digits
 const first_digit_tokenizer = {
   type: 'simple_pattern',
@@ -30,6 +28,16 @@ const thousandizer_filter = {
   pattern: '(\\d+)',
   replacement: '$1000',
 };
+
+const importableData = data.map((mod) => {
+  if (!mod.attributes) return mod;
+  return {
+    ...mod,
+    trueAttributes: Object.keys(mod.attributes),
+  };
+});
+
+const bulkBody = intersperse(importableData, { index: {} });
 
 async function setup() {
   try {
