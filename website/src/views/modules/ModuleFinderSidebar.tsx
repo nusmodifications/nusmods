@@ -6,8 +6,7 @@ import {
   ResetFiltersDisplayProps,
 } from 'searchkit';
 
-// TODO: Needed when implementing attribute filter
-// import { attributeDescription } from 'types/modules';
+import { attributeDescription } from 'types/modules';
 import { RefinementItem } from 'types/views';
 
 import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
@@ -117,9 +116,16 @@ const ModuleFinderSidebar = () => {
 
         <RefinementListFilter
           id="attrs"
-          title="Attributes"
-          field="attributes"
+          title="Others"
+          field="trueAttributes.keyword"
           operator="OR"
+          bucketsTransform={(attributeItem: RefinementItem[]) =>
+            attributeItem.map(({ key, ...rest }) => ({
+              key,
+              ...rest,
+              label: attributeDescription[key as keyof typeof attributeDescription] || key,
+            }))
+          }
           containerComponent={FilterContainer}
           itemComponent={CheckboxItem}
         />
