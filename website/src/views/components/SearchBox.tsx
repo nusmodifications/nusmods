@@ -34,14 +34,23 @@ export default class SearchBox extends React.PureComponent<Props, State> {
 
   onSubmit = () => {
     const element = this.searchElement.current;
+    if (!element) return;
+    // element's onBlur callback will trigger the search flow. If we also
+    // invoke onSearch in onSubmit, onSearch will be called twice.
+    element.blur();
+  };
 
-    if (element) {
-      const searchTerm = element.value;
-      this.props.onChange(searchTerm);
-      this.debouncedSearch();
-      this.debouncedSearch.flush();
-      element.blur();
-    }
+  onBlur = () => {
+    const element = this.searchElement.current;
+    if (!element) return;
+
+    // Don't search if no changes
+    if (!this.state.hasChanges) return;
+
+    const searchTerm = element.value;
+    this.props.onChange(searchTerm);
+    this.debouncedSearch();
+    this.debouncedSearch.flush();
   };
 
   onInput = (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -101,7 +110,7 @@ export default class SearchBox extends React.PureComponent<Props, State> {
             onFocus={() => this.setState({ isFocused: true })}
             onBlur={() => {
               this.setState({ isFocused: false });
-              this.onSubmit();
+              this.onBlur();
             }}
             placeholder={this.props.placeholder}
             spellCheck

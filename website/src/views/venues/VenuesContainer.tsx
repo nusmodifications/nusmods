@@ -128,9 +128,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
     });
 
   onSearchBoxChange = (searchBoxValue: string) => {
-    if (searchBoxValue !== this.state.searchBoxValue) {
-      this.setState({ searchBoxValue });
-    }
+    this.setState({ searchBoxValue });
   };
 
   onSearch = () => {
