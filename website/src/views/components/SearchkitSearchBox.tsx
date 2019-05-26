@@ -50,7 +50,7 @@ export default class SearchkitSearchBox extends SearchkitComponent<Props, State>
       queryOptions,
       prefixQueryOptions,
     } = this.props;
-    return new QueryAccessor(id || 'q', {
+    return new QueryAccessor(id || DEFAULT_SEARCH_QUERY_KEY, {
       prefixQueryFields,
       prefixQueryOptions: { ...prefixQueryOptions },
       queryFields: queryFields || ['_all'],
@@ -85,6 +85,11 @@ export default class SearchkitSearchBox extends SearchkitComponent<Props, State>
     this.searchkit.performSearch();
   };
 
+  handleBlur = () => {
+    // Flush (should use accessor's state now)
+    this.setState({ input: undefined });
+  };
+
   render() {
     if (!this.queryAccessor()) return null;
     return (
@@ -96,6 +101,7 @@ export default class SearchkitSearchBox extends SearchkitComponent<Props, State>
         placeholder={this.props.placeholder}
         onChange={this.handleQueryChange}
         onSearch={this.handleSearch}
+        onBlur={this.handleBlur}
       />
     );
   }

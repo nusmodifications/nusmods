@@ -13,6 +13,7 @@ type Props = {
   placeholder?: string;
   onChange: (value: string) => void;
   onSearch: () => void;
+  onBlur?: () => void;
 };
 
 type State = {
@@ -41,6 +42,8 @@ export default class SearchBox extends React.PureComponent<Props, State> {
   };
 
   onBlur = () => {
+    if (this.props.onBlur) this.props.onBlur();
+
     const element = this.searchElement.current;
     if (!element) return;
 
