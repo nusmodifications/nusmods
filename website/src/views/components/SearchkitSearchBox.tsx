@@ -22,7 +22,7 @@ interface Props extends SearchkitComponentProps {
 }
 
 type State = {
-  input?: string;
+  input: string;
 };
 
 /**
@@ -33,8 +33,22 @@ export default class SearchkitSearchBox extends SearchkitComponent<Props, State>
   constructor(props: Props) {
     super(props);
     this.state = {
-      input: undefined,
+      input: '', // Start off with an empty search string
     };
+  }
+
+  componentDidMount() {
+    super.componentDidMount();
+    // Set our value to accessor's value. SearchkitComponent should have
+    // already set accessor in its componentDidMount implementation.
+    this.restoreValueFromAccessor();
+  }
+
+  restoreValueFromAccessor() {
+    // This will crash if queryAccessor hasn't been set (it should be set by
+    // our superclass).
+    const input = (this.queryAccessor().state.getValue() || '').toString();
+    this.setState({ input });
   }
 
   queryAccessor() {
@@ -50,30 +64,18 @@ export default class SearchkitSearchBox extends SearchkitComponent<Props, State>
       queryOptions,
       prefixQueryOptions,
     } = this.props;
-    return new QueryAccessor(id || 'q', {
+    return new QueryAccessor(id || DEFAULT_SEARCH_QUERY_KEY, {
       prefixQueryFields,
       prefixQueryOptions: { ...prefixQueryOptions },
       queryFields: queryFields || ['_all'],
       queryOptions: { ...queryOptions },
       queryBuilder,
       onQueryStateChange: () => {
-        if (!this.unmounted && this.state.input) {
-          this.setState({ input: undefined });
+        if (!this.unmounted) {
+          this.restoreValueFromAccessor();
         }
       },
     });
-  }
-
-  getValue() {
-    const { input } = this.state;
-    if (typeof input === 'undefined') {
-      return this.getAccessorValue();
-    }
-    return input;
-  }
-
-  getAccessorValue() {
-    return (this.queryAccessor().state.getValue() || '').toString();
   }
 
   handleQueryChange = (searchString: string) => {
@@ -81,7 +83,7 @@ export default class SearchkitSearchBox extends SearchkitComponent<Props, State>
   };
 
   handleSearch = () => {
-    this.queryAccessor().setQueryString(this.getValue().trim());
+    this.queryAccessor().setQueryString(this.state.input.trim());
     this.searchkit.performSearch();
   };
 
@@ -92,7 +94,7 @@ export default class SearchkitSearchBox extends SearchkitComponent<Props, State>
         className={classnames(elements.moduleFinderSearchBox, 'search-panel')}
         throttle={this.props.throttle}
         useInstantSearch
-        value={this.getValue()}
+        value={this.state.input}
         placeholder={this.props.placeholder}
         onChange={this.handleQueryChange}
         onSearch={this.handleSearch}
