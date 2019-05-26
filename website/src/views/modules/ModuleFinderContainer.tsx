@@ -4,6 +4,7 @@ import {
   HitsStats,
   HitsStatsDisplayProps,
   InitialLoader,
+  LoadingComponent,
   NoHits,
   Pagination,
   SearchkitManager,
@@ -43,18 +44,27 @@ const ModuleFinderContainer = () => {
             <ul className={styles.modulesList}>
               <HitsStats
                 component={({ hitsCount }: HitsStatsDisplayProps) =>
-                  hitsCount > 0 && (
-                    <div className={styles.modulePageDivider}>{hitsCount} modules found</div>
+                  hitsCount > 0 ? (
+                    <div className={styles.modulePageDivider}>
+                      {hitsCount} modules found{' '}
+                      <LoadingComponent>
+                        <LoadingSpinner small />
+                      </LoadingComponent>
+                    </div>
+                  ) : (
+                    <LoadingComponent>
+                      <LoadingSpinner />
+                    </LoadingComponent>
                   )
                 }
               />
+              <InitialLoader component={LoadingComponent} />
               <Hits hitsPerPage={10} itemComponent={ModuleFinderHitModuleItem} />
               <NoHits
                 suggestionsField="title"
                 component={ModuleFinderNoHits}
                 errorComponent={ModuleFinderApiError}
               />
-              <InitialLoader component={LoadingSpinner} />
             </ul>
             <Pagination showNumbers listComponent={ModuleFinderPager} />
           </div>
