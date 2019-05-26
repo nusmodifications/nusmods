@@ -1,0 +1,56 @@
+@import '~styles/utils/modules-entry';
+
+// Semester Info
+.moduleSemesterContainer {
+  margin-bottom: 1rem;
+
+  section {
+    margin-bottom: 1rem;
+  }
+
+  :global(.btn-group) {
+    // Make the btn-group children fill up all available space
+    display: flex;
+    margin-bottom: 1rem;
+
+    :global(.btn) {
+      flex: 1 auto;
+      padding: 0.4rem 0 0.3rem;
+      margin-right: 3px;
+      border-width: 0 0 0.1rem;
+      border-radius: 0;
+      font-size: $font-size-xs;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &:disabled {
+        border-color: var(--gray-light);
+        color: var(--gray);
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  h4 {
+    margin-bottom: 0;
+    font-weight: bold;
+    font-size: $font-size-sm;
+  }
+
+  .moduleExam p {
+    margin-bottom: 0;
+  }
+
+  // Add a little space above the
+  @include media-breakpoint-only(md) {
+    margin-top: 2rem;
+  }
+
+  @include media-breakpoint-down(xs) {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+}
+

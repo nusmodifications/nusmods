@@ -9,6 +9,7 @@ import {
   SearchkitManager,
   SearchkitProvider,
 } from 'searchkit';
+import classnames from 'classnames';
 
 import ModuleFinderSidebar from 'views/modules/ModuleFinderSidebar';
 import ModuleSearchBox from 'views/modules/ModuleSearchBox';
@@ -21,6 +22,7 @@ import Title from 'views/components/Title';
 
 import { forceElasticsearchHost } from 'utils/debug';
 import config from 'config';
+import styles from './ModuleFinderContainer.scss';
 
 const esHostUrl = `${forceElasticsearchHost() || config.elasticsearchBaseUrl}/modules`;
 const searchkit = new SearchkitManager(esHostUrl);
@@ -29,7 +31,7 @@ const pageHead = <Title>Modules</Title>;
 
 const ModuleFinderContainer = () => {
   return (
-    <div className="modules-page-container page-container">
+    <div className={classnames(styles.modulesPageContainer, 'page-container')}>
       {pageHead}
       <SearchkitProvider searchkit={searchkit}>
         <div className="row">
@@ -38,11 +40,11 @@ const ModuleFinderContainer = () => {
 
             <ModuleSearchBox id="q" />
 
-            <ul className="modules-list">
+            <ul className={styles.modulesList}>
               <HitsStats
                 component={({ hitsCount }: HitsStatsDisplayProps) =>
                   hitsCount > 0 && (
-                    <div className="module-page-divider">{hitsCount} modules found</div>
+                    <div className={styles.modulePageDivider}>{hitsCount} modules found</div>
                   )
                 }
               />

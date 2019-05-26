@@ -11,6 +11,7 @@ import { intersperse } from 'utils/array';
 import ModuleSemesterInfo from './module-info/ModuleSemesterInfo';
 import ModuleWorkload from './module-info/ModuleWorkload';
 import LinkModuleCodes from './LinkModuleCodes';
+import styles from './ModuleFinderItem.scss';
 
 type Props = {
   module: ModuleInformation;
@@ -27,11 +28,11 @@ export default class ModuleFinderItem extends React.PureComponent<Props> {
     const { module } = this.props;
 
     return (
-      <li className="modules-item">
+      <li className={styles.modulesItem}>
         <div className="row">
           <div className="col-lg-8 col-md-12 col-sm-8">
             <header>
-              <h2 className="modules-title">
+              <h2 className={styles.modulesTitle}>
                 <Link to={modulePage(module.moduleCode, module.title)}>
                   {this.highlight(`${module.moduleCode} ${module.title}`)}
                 </Link>
@@ -86,6 +87,7 @@ export default class ModuleFinderItem extends React.PureComponent<Props> {
   }
 }
 
+// A wrapper around ModuleFinderItem to make it compatible with Searchkit.
 export function ModuleFinderHitModuleItem(props: HitItemProps) {
   const {
     result: { _source: source },
