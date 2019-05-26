@@ -73,12 +73,19 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
           this.logger.debug('Filtered out %i non-print modules', hidden.length);
         }
 
+        if (printed.filter((module) => containsNbsp(module.Description)).length > 0) {
+          this.logger.error(`The module below contains nbsp ${module}`);
+        }
         return printed;
       } catch (e) {
         this.logger.error(e, `Cannot get modules from ${department.Description}`);
         throw new TaskError(`Cannot get modules from ${department.Description}`, this, e);
       }
     });
+
+    const containsNbsp = function(desc: any) {
+      return new RegExp('\u00A0').test(desc);
+    };
 
     let modules: ModuleInfo[];
     try {
