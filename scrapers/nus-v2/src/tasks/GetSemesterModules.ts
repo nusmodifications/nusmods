@@ -84,7 +84,7 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
     });
 
     const containsNbsp = function(desc: any) {
-      return new RegExp('\u00A0').test(desc);
+      return new RegExp('\u00A0[^ ]*\u00A0[^ ]*\u00A0').test(desc);
     };
 
     let modules: ModuleInfo[];
