@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import { NBSP } from 'utils/react';
 import styles from './styles.scss';
 
 interface Props {
@@ -32,7 +33,7 @@ const CheckboxItem = ({ active, count, disabled, itemKey, label, showCount, onCl
         {label}
         {showCount && typeof count !== 'undefined' && (
           <>
-            &nbsp;
+            {NBSP}
             <span className="text-muted">({count})</span>{' '}
           </>
         )}
