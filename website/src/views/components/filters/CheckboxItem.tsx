@@ -1,12 +1,16 @@
 import React from 'react';
-import { ItemProps } from 'searchkit';
 import classnames from 'classnames';
 import styles from './styles.scss';
 
-type Props = Pick<
-  ItemProps,
-  'active' | 'count' | 'disabled' | 'itemKey' | 'label' | 'showCount' | 'onClick'
->;
+interface Props {
+  onClick: React.ChangeEventHandler<HTMLInputElement>;
+  label: string;
+  count: number | string;
+  active?: boolean;
+  disabled?: boolean;
+  showCount: boolean;
+  itemKey?: string;
+}
 
 const CheckboxItem = ({ active, count, disabled, itemKey, label, showCount, onClick }: Props) => {
   return (
