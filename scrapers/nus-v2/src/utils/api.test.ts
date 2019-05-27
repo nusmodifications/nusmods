@@ -1,4 +1,4 @@
-import { cacheDownload, fromTermCode, getTermCode, retry } from './api';
+import { cacheDownload, fromTermCode, getTermCode, retry, containsNbsp } from './api';
 import { mockCache } from './test-utils';
 
 describe(getTermCode, () => {
@@ -93,5 +93,18 @@ describe(retry, () => {
     }
 
     expect(fn).toBeCalledTimes(1);
+  });
+});
+
+
+describe(containsNbsp, () => {
+  test('should return true on triple consecutive Nbsp', () => {
+    var nbsp = String.fromCharCode(160);
+    expect(containsNbsp(`a${nbsp}b${nbsp}c${nbsp}a`)).toBe(true);
+    expect(containsNbsp(`a${nbsp}b${nbsp}c${nbsp}d${nbsp}a`)).toBe(true);
+
+    expect(containsNbsp(`a${nbsp}b ${nbsp}c${nbsp}a`)).toBe(false);
+    expect(containsNbsp(`a${nbsp}a`)).toBe(false);
+    expect(containsNbsp(``)).toBe(false);
   });
 });
