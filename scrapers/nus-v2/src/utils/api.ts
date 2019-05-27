@@ -70,3 +70,8 @@ export async function retry<T>(
     return retry(promiseFactory, maxRetries - 1, retryIf);
   }
 }
+
+export function containsNbsp (desc: any) {
+  //\u00A0 is non-breaking space
+  return new RegExp('\u00A0[^ ]*\u00A0[^ ]*\u00A0').test(desc);
+};

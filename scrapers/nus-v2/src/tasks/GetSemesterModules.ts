@@ -2,13 +2,13 @@ import { strict as assert } from 'assert';
 import { flatten, partition } from 'lodash';
 
 import { AcademicGrp, AcademicOrg, ModuleInfo } from '../types/api';
-import { Semester } from '../types/modules';
+import { Semester, Module } from '../types/modules';
 import { Task } from '../types/tasks';
 import { Cache } from '../types/persist';
 
 import BaseTask from './BaseTask';
 import config from '../config';
-import { getTermCode, retry } from '../utils/api';
+import { getTermCode, retry, containsNbsp } from '../utils/api';
 import { TaskError, UnknownApiError } from '../utils/errors';
 import { validateSemester } from '../services/validation';
 
@@ -74,8 +74,9 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
         }
 
         if (printed.filter((module) => containsNbsp(module.Description)).length > 0) {
-          this.logger.error(`The module below contains nbsp ${module}`);
+          this.logger.error(`Some module(s) contains non-breaking spaces`);
         }
+
         return printed;
       } catch (e) {
         this.logger.error(e, `Cannot get modules from ${department.Description}`);
@@ -83,9 +84,7 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
       }
     });
 
-    const containsNbsp = function(desc: any) {
-      return new RegExp('\u00A0[^ ]*\u00A0[^ ]*\u00A0').test(desc);
-    };
+    
 
     let modules: ModuleInfo[];
     try {
