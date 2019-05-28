@@ -32,6 +32,6 @@ describe(getWeatherIcon, () => {
     ['Showers', Rain],
     ['Windy', Wind],
   ])('%s', (desc, expected) => {
-    expect(getWeatherIcon(desc)).toBe(expected);
+    expect(getWeatherIcon(desc as string)).toBe(expected as React.ComponentType);
   });
 });

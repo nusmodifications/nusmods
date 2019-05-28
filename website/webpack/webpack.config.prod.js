@@ -6,6 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
+const PacktrackerPlugin = require('@packtracker/webpack-plugin');
 
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
@@ -92,7 +93,11 @@ const productionConfig = merge([
       new CopyWebpackPlugin([{ from: 'static', context: parts.PATHS.root }], {
         copyUnmodified: true,
       }),
-    ],
+      process.env.CI &&
+        new PacktrackerPlugin({
+          upload: true,
+        }),
+    ].filter(Boolean),
     optimization: {
       minimizer: [
         new TerserJsPlugin({

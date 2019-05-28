@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Waypoint from 'react-waypoint';
+import { Waypoint } from 'react-waypoint';
 import { chunk, get, head, last } from 'lodash';
 
 import { ModuleInformation } from 'types/modules';

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { shallow, ShallowWrapper } from 'enzyme';
 
 import { waitFor } from 'test-utils/async';
@@ -14,9 +14,13 @@ describe('ShareTimetable', () => {
 
   // Mock Axios to stop it from firing API requests
   beforeEach(() => {
-    jest
-      .spyOn(axios, 'get')
-      .mockImplementation(() => Promise.resolve({ data: { [SHORT_URL_KEY]: MOCK_SHORTURL } }));
+    jest.spyOn(axios, 'get').mockResolvedValue({
+      data: { [SHORT_URL_KEY]: MOCK_SHORTURL },
+      config: {},
+      status: 200,
+      headers: {},
+      statusText: 'Ok',
+    });
   });
 
   afterEach(() => {
@@ -96,7 +100,7 @@ describe('ShareTimetable', () => {
   });
 
   test('should display long URL if data is corrupted', async () => {
-    mockAxios.get.mockReturnValue(Promise.resolve({})); // No short URL
+    mockAxios.get.mockResolvedValue({} as AxiosResponse); // No short URL
     const wrapper = shallow(<ShareTimetable semester={1} timetable={timetable} />);
 
     await openAndWait(wrapper);
@@ -105,7 +109,7 @@ describe('ShareTimetable', () => {
   });
 
   test('should display long URL if the endpoint returns an error', async () => {
-    mockAxios.get.mockReturnValue(Promise.reject());
+    mockAxios.get.mockRejectedValue(new Error());
     const wrapper = shallow(<ShareTimetable semester={1} timetable={timetable} />);
 
     await openAndWait(wrapper);
