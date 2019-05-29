@@ -2,7 +2,7 @@ import { strict as assert } from 'assert';
 import { flatten, partition } from 'lodash';
 
 import { AcademicGrp, AcademicOrg, ModuleInfo } from '../types/api';
-import { Semester, Module } from '../types/modules';
+import { Semester } from '../types/modules';
 import { Task } from '../types/tasks';
 import { Cache } from '../types/persist';
 
@@ -73,9 +73,15 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
           this.logger.debug('Filtered out %i non-print modules', hidden.length);
         }
 
-        if (printed.filter((module) => containsNbsp(module.Description)).length > 0) {
-          this.logger.error(`Some module(s) contains non-breaking spaces`);
-        }
+        printed.map(
+          (module) =>
+            !!containsNbsp(module.Description) &&
+            this.logger.error(
+              `Bad data. Module description for ${
+                module.CatalogNumber
+              } contains non-breaking spaces`,
+            ),
+        );
 
         return printed;
       } catch (e) {
@@ -83,8 +89,6 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
         throw new TaskError(`Cannot get modules from ${department.Description}`, this, e);
       }
     });
-
-    
 
     let modules: ModuleInfo[];
     try {

@@ -71,7 +71,7 @@ export async function retry<T>(
   }
 }
 
-export function containsNbsp (desc: any) {
-  //\u00A0 is non-breaking space
+export function containsNbsp(desc: string) {
+  // \u00A0 is non-breaking space
   return new RegExp('\u00A0[^ ]*\u00A0[^ ]*\u00A0').test(desc);
-};
+}

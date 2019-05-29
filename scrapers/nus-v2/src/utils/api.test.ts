@@ -96,15 +96,14 @@ describe(retry, () => {
   });
 });
 
-
 describe(containsNbsp, () => {
   test('should return true on triple consecutive Nbsp', () => {
-    var nbsp = String.fromCharCode(160);
+    const nbsp = String.fromCharCode(160);
     expect(containsNbsp(`a${nbsp}b${nbsp}c${nbsp}a`)).toBe(true);
     expect(containsNbsp(`a${nbsp}b${nbsp}c${nbsp}d${nbsp}a`)).toBe(true);
 
     expect(containsNbsp(`a${nbsp}b ${nbsp}c${nbsp}a`)).toBe(false);
     expect(containsNbsp(`a${nbsp}a`)).toBe(false);
-    expect(containsNbsp(``)).toBe(false);
+    expect(containsNbsp('')).toBe(false);
   });
 });
