@@ -36,7 +36,7 @@
     "@hot-loader/react-dom": "16.8.6",
     "@packtracker/webpack-plugin": "2.0.1",
     "@svgr/webpack": "4.2.0",
-    "@types/classnames": "2.2.7",
+    "@types/classnames": "2.2.8",
     "@types/enzyme": "3.9.3",
     "@types/jest": "24.0.13",
     "@types/js-combinatorics": "0.5.31",
