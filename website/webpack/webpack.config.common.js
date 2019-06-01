@@ -51,7 +51,7 @@ const commonConfig = merge([
     include: parts.PATHS.src,
   }),
   parts.mockNode(),
-  // parts.setFreeVariable('process.env', parts.appVersion()),
+  parts.setFreeVariable('process.env', parts.appVersion()),
 ]);
 
 module.exports = commonConfig;
