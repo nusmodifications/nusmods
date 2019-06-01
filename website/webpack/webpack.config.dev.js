@@ -11,6 +11,7 @@ const parts = require('./webpack.parts');
 const developmentConfig = merge([
   parts.setFreeVariable('process.env.NODE_ENV', 'development'),
   parts.setFreeVariable('process.env.DEBUG_WORKBOX', process.env.DEBUG_WORKBOX),
+  parts.setFreeVariable('process.env.DATA_API_BASE_URL', process.env.DATA_API_BASE_URL),
   commonConfig,
   {
     mode: 'development',

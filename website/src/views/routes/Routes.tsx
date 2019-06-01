@@ -49,7 +49,6 @@ export default function Routes() {
       <Redirect from="/help" to="/faq" />
       <ExternalRedirect path="/news/nusdiscount" to="https://www.facebook.com/nusdiscount/" />
       <ExternalRedirect path="/news/bareNUS" to="https://www.facebook.com/bareNUS" />
-      <ExternalRedirect path="/api" to="https://api.nusmods.com" appendPath />
 
       {/* 404 page */}
       <Route component={NotFoundPage} />
