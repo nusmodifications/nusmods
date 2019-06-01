@@ -6,4 +6,4 @@ RUN apk update && \
 
 WORKDIR /home/node/app/website
 
-CMD yarn && yarn start
+CMD yarn && yarn start:export & yarn start

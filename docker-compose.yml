@@ -11,6 +11,7 @@ services:
       - ./.prettierrc.js:/home/node/app/.prettierrc.js
     expose:
       - '8080'
+      - '8081'
     environment:
       - NODE_ENV=development
       - PORT=8080
@@ -28,6 +29,8 @@ services:
       - ./.prettierrc.js:/home/node/app/.prettierrc.js
     expose:
       - '8082'
+    depends_on:
+      - website
     security_opt:
       - seccomp="infrastructure/chromium.seccomp.json"
     environment:

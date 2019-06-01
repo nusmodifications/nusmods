@@ -6,7 +6,8 @@ module.exports = {
 
   // Path to the Chrome executable - for Puppeteer 0.13, use Chrome 64.
   // If left blank this will use the version of Chromium that comes with Puppeteer
-  // instead
+  // instead. Use the chromium-browser path below for Docker.
+  // chromeExecutable: '/usr/bin/chromium-browser',
   chromeExecutable: null,
 
   // If set to a local path, the page will be loaded using setContent - use this
