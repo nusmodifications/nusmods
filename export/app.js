@@ -12,14 +12,10 @@ const config = require('./config');
 
 // Config check
 if (process.env.NODE_ENV === 'production') {
-  if (!config.moduleData) {
-    throw new Error(
-      'No moduleData path set - check config.js. ' +
-        'This should be the path to the api/<academic year>/modules folder.',
-    );
-  }
-
-  if (!fs.existsSync(config.moduleData) || !fs.lstatSync(config.moduleData).isDirectory()) {
+  if (
+    config.moduleData &&
+    (!fs.existsSync(config.moduleData) || !fs.lstatSync(config.moduleData).isDirectory())
+  ) {
     throw new Error(
       'moduleData path does not exist or is not a directory - check config.js. ' +
         'This should be the path to the api/<academic year>/modules folder.',
@@ -27,12 +23,13 @@ if (process.env.NODE_ENV === 'production') {
   }
 
   if (!config.ravenDsn) {
-    throw new Error('Raven DSN is not specified - check config.js');
+    // TODO: Replace with Bunyan log?
+    console.error('[WARNING] Raven DSN is not specified - check config.js');
   }
 }
 
 // Set up Raven
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production' && config.ravenDsn) {
   Sentry.init({
     dsn: config.ravenDsn,
   });

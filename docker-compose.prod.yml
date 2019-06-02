@@ -1,11 +1,28 @@
+#
+# NOTE: You probably don't want to start this directly.
+# Use infrastructure/start-prod.sh to start NUSMods in production.
+#
 version: '3.7'
 services:
+  website:
+    build:
+      context: .
+      dockerfile: website/Dockerfile.prod
+      args:
+        - GIT_COMMIT_HASH
+        - DATA_API_BASE_URL=/api
+    expose:
+      - 8080
+      - 8081
+    restart: on-failure
   export:
     build:
       context: .
       dockerfile: export/Dockerfile.prod
     expose:
-      - '8082'
+      - 8082
+    depends_on:
+      - website
     security_opt:
       - seccomp="infrastructure/chromium.seccomp.json"
     environment:
@@ -14,12 +31,10 @@ services:
       - HOST=0.0.0.0
     restart: on-failure
   proxy:
-    build:
-      context: ./
-      dockerfile: website/Dockerfile.prod
+    image: abiosoft/caddy:no-stats
     ports:
-      - '80:80'
-      - '443:443'
-    depends_on:
-      - export
+      - ${EXPOSED_PORT}:2015
+    volumes:
+      - ./infrastructure/Caddyfile:/etc/Caddyfile
+      - ./infrastructure/logs:/logs
     restart: on-failure

@@ -20,9 +20,12 @@ RUN ls -la1; yarn --no-cache --frozen-lockfile
 
 COPY ./website/src/ ./src
 
+ARG DATA_API_BASE_URL
+ARG GIT_COMMIT_HASH
 RUN yarn build
 
-FROM fholzer/nginx-brotli:v1.16.0
+FROM abiosoft/caddy:no-stats
 
-COPY --from=0 /home/node/app/website/dist /usr/share/nginx/html
-COPY ./infrastructure/nginx.prod.conf /etc/nginx/nginx.conf
+COPY --from=0 /home/node/app/website/dist /srv/dist
+COPY --from=0 /home/node/app/website/dist-timetable /srv/dist-timetable
+COPY ./website/Caddyfile /etc/Caddyfile

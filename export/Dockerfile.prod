@@ -22,7 +22,8 @@ RUN mkdir -p /home/node/Downloads \
 
 WORKDIR /home/node/app/export
 
-COPY ./export/package.json ./export/yarn.lock ./
+COPY ./export/package.json ./export/yarn.lock ./export/config.docker.js ./
+RUN mv ./config.docker.js ./config.js
 
 RUN ls -la1; yarn --no-cache --frozen-lockfile --production
 
