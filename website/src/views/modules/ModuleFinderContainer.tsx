@@ -1,10 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import {
   Hits,
   HitsStats,
   HitsStatsDisplayProps,
   InitialLoader,
   LoadingComponent,
+  HitsListProps,
   NoHits,
   Pagination,
   SearchkitManager,
@@ -12,16 +13,20 @@ import {
 } from 'searchkit';
 import classnames from 'classnames';
 
+import { ElasticSearchResult } from 'types/vendor/elastic-search';
+import { ModuleInformation } from 'types/modules';
+
 import ModuleFinderSidebar from 'views/modules/ModuleFinderSidebar';
 import ModuleSearchBox from 'views/modules/ModuleSearchBox';
 import ModuleFinderNoHits from 'views/errors/ModuleFinderNoHits';
 import ModuleFinderApiError from 'views/errors/ModuleFinderApiError';
 import ModuleFinderPager from 'views/components/ModuleFinderPager';
-import { ModuleFinderHitModuleItem } from 'views/components/ModuleFinderItem';
+import ModuleFinderItem from 'views/components/ModuleFinderItem';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import Title from 'views/components/Title';
 
 import { forceElasticsearchHost } from 'utils/debug';
+import { HIGHLIGHT_OPTIONS, mapElasticSearchResult } from 'utils/elasticSearch';
 import config from 'config';
 import styles from './ModuleFinderContainer.scss';
 
@@ -30,7 +35,16 @@ const searchkit = new SearchkitManager(esHostUrl);
 
 const pageHead = <Title>Modules</Title>;
 
-const ModuleFinderContainer = () => {
+const ModuleInformationListComponent: React.FC<HitsListProps> = ({ hits }) => (
+  <ul className={styles.modulesList}>
+    {hits.map((hit) => {
+      const module = mapElasticSearchResult(hit as ElasticSearchResult<ModuleInformation>);
+      return <ModuleFinderItem key={module.moduleCode} module={module} />;
+    })}
+  </ul>
+);
+
+const ModuleFinderContainer: React.FC = () => {
   return (
     <div className={classnames(styles.modulesPageContainer, 'page-container')}>
       {pageHead}
@@ -41,7 +55,7 @@ const ModuleFinderContainer = () => {
 
             <ModuleSearchBox id="q" />
 
-            <ul className={styles.modulesList}>
+            <div>
               <HitsStats
                 component={({ hitsCount }: HitsStatsDisplayProps) =>
                   hitsCount > 0 ? (
@@ -59,13 +73,18 @@ const ModuleFinderContainer = () => {
                 }
               />
               <InitialLoader component={LoadingComponent} />
-              <Hits hitsPerPage={10} itemComponent={ModuleFinderHitModuleItem} />
+              <Hits
+                hitsPerPage={10}
+                listComponent={ModuleInformationListComponent}
+                customHighlight={HIGHLIGHT_OPTIONS}
+                scrollTo
+              />
               <NoHits
                 suggestionsField="title"
                 component={ModuleFinderNoHits}
                 errorComponent={ModuleFinderApiError}
               />
-            </ul>
+            </div>
             <Pagination showNumbers listComponent={ModuleFinderPager} />
           </div>
 
