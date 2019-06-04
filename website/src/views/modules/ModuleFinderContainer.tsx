@@ -72,19 +72,23 @@ const ModuleFinderContainer: React.FC = () => {
                   )
                 }
               />
+
               <InitialLoader component={LoadingComponent} />
+
               <Hits
                 hitsPerPage={10}
                 listComponent={ModuleInformationListComponent}
                 customHighlight={HIGHLIGHT_OPTIONS}
-                scrollTo
+                scrollTo="html"
               />
+
               <NoHits
                 suggestionsField="title"
                 component={ModuleFinderNoHits}
                 errorComponent={ModuleFinderApiError}
               />
             </div>
+
             <Pagination showNumbers listComponent={ModuleFinderPager} />
           </div>
 
