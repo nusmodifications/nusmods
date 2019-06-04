@@ -1,7 +1,7 @@
 const fs = require('fs-extra');
 const puppeteer = require('puppeteer');
 
-const config = require('./config');
+const config = require('../config');
 const { getModules } = require('./data');
 
 // Arbitrarily high number - just make sure it doesn't clip the timetable

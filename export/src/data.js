@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const axios = require('axios');
 const _ = require('lodash');
-const config = require('./config');
+const config = require('../config');
 
 async function fetchModule(moduleCode) {
   let fileName = `${moduleCode}.json`;
@@ -12,13 +12,15 @@ async function fetchModule(moduleCode) {
   }
 
   // For development only
-  const req = await axios.get(`http://api.nusmods.com/v2/${config.academicYear}/modules/${fileName}`);
+  const req = await axios.get(
+    `http://api.nusmods.com/v2/${config.academicYear}/modules/${fileName}`,
+  );
   return req.data;
 }
 
 async function getModules(moduleCodes) {
   const modules = await Promise.all(
-    moduleCodes.map(moduleCode => fetchModule(moduleCode).catch(() => null))
+    moduleCodes.map((moduleCode) => fetchModule(moduleCode).catch(() => null)),
   );
 
   return modules.filter(Boolean);
@@ -41,11 +43,7 @@ function parseExportData(ctx, next) {
 function validateExportData(data) {
   if (!_.isObject(data)) throw new Error('data should be an object');
 
-  if (
-    !_.isInteger(data.semester) ||
-    data.semester < 1 ||
-    data.semester > 4
-  ) {
+  if (!_.isInteger(data.semester) || data.semester < 1 || data.semester > 4) {
     throw new Error('Invalid semester');
   }
 
