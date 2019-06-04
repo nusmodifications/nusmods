@@ -28,7 +28,8 @@ export default function initializeServiceWorker(store: Store<any, any>) {
     window.clearInterval(updateIntervalId);
   });
 
-  workbox.register()
+  workbox
+    .register()
     .then((registration) => {
       // Track updates to the Service Worker.
       if (!workbox.controlling) {

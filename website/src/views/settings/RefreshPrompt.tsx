@@ -33,9 +33,11 @@ class RefreshPrompt extends React.PureComponent<Props, State> {
     }
 
     this.setState({ isReloading: true });
-    import(/* webpackChunkName: "service-worker" */'bootstrapping/service-worker').then(({ updateServiceWorker }) => {
-      updateServiceWorker();
-    });
+    import(/* webpackChunkName: "service-worker" */ 'bootstrapping/service-worker').then(
+      ({ updateServiceWorker }) => {
+        updateServiceWorker();
+      },
+    );
   };
 
   render() {
