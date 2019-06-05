@@ -19,6 +19,8 @@ services:
     build:
       context: .
       dockerfile: export/Dockerfile.prod
+    env_file:
+      - export/.env
     expose:
       - 8082
     depends_on:

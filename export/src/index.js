@@ -2,7 +2,7 @@ const fs = require('fs-extra');
 const Sentry = require('@sentry/node');
 const gracefulShutdown = require('http-graceful-shutdown');
 
-const config = require('../config');
+const config = require('./config');
 const app = require('./app');
 const render = require('./render');
 

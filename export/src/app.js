@@ -6,7 +6,7 @@ const _ = require('lodash');
 
 const render = require('./render');
 const data = require('./data');
-const config = require('../config');
+const config = require('./config');
 
 // Start router
 const app = new Koa();

@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const axios = require('axios');
 const _ = require('lodash');
-const config = require('../config');
+const config = require('./config');
 
 async function fetchModule(moduleCode) {
   let fileName = `${moduleCode}.json`;

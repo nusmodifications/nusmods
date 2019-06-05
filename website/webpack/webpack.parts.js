@@ -333,12 +333,17 @@ exports.mockNode = () => ({
  * @returns Object with keys `commitHash` and `versionStr`.
  */
 exports.appVersion = () => {
-  const commitHash =
-    process.env.GIT_COMMIT_HASH ||
-    childProcess
-      .execSync('git rev-parse HEAD')
-      .toString()
-      .trim();
+  let commitHash;
+  try {
+    commitHash =
+      process.env.GIT_COMMIT_HASH ||
+      childProcess
+        .execFileSync('git', ['rev-parse', 'HEAD'])
+        .toString()
+        .trim();
+  } catch (e) {
+    commitHash = '1234567';
+  }
   // Version format: <YYYYMMDD date>-<7-char hash substring>
   const versionStr = commitHash && `${moment().format('YYYYMMDD')}-${commitHash.substring(0, 7)}`;
   return { commitHash, versionStr };
