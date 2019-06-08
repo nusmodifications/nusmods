@@ -18,6 +18,8 @@ import DropdownListFilters from 'views/components/filters/DropdownListFilters';
 import config from 'config';
 import styles from './ModuleFinderSidebar.scss';
 
+const RESET_FILTER_OPTIONS = { filter: true };
+
 const ModuleFinderSidebar = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   return (
@@ -31,7 +33,7 @@ const ModuleFinderSidebar = () => {
           <h3>Refine by</h3>
           <ResetFilters
             className="button"
-            options={{ filter: true }}
+            options={RESET_FILTER_OPTIONS}
             component={({ hasFilters, resetFilters }: ResetFiltersDisplayProps) =>
               hasFilters && (
                 <button

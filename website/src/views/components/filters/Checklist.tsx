@@ -10,7 +10,13 @@ type Props = {
   showCount?: boolean;
 };
 
-const Checklist = ({ allItems, selectedItems, searchedItems, onSelectItem, showCount }: Props) => {
+const Checklist: React.FC<Props> = ({
+  allItems,
+  selectedItems,
+  searchedItems,
+  onSelectItem,
+  showCount,
+}) => {
   const displayItems = searchedItems.map(
     (key) => allItems.find((i) => i.key === key) || { key, selected: selectedItems.includes(key) },
   );
