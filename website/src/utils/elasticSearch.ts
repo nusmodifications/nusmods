@@ -1,16 +1,14 @@
-import produce from 'immer';
-
-import { ElasticSearchResult, StringProperties } from 'types/vendor/elastic-search';
-import { ModuleInformation } from 'types/modules';
+import { escapeRegExp, escape } from 'lodash';
 
 const PRE_TAG = '<mark>';
 const POST_TAG = '</mark>';
 
-const PRE_TAG_REGEX = new RegExp(PRE_TAG, 'gi');
-const POST_TAG_REGEX = new RegExp(POST_TAG, 'gi');
+const PRE_TAG_REGEX = new RegExp(escapeRegExp(PRE_TAG), 'gi');
+const POST_TAG_REGEX = new RegExp(escapeRegExp(POST_TAG), 'gi');
 
 /* eslint-disable @typescript-eslint/camelcase, no-underscore-dangle */
 
+// For options, see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html#highlighting-settings
 export const HIGHLIGHT_OPTIONS = {
   pre_tags: [PRE_TAG],
   post_tags: [POST_TAG],
@@ -19,45 +17,23 @@ export const HIGHLIGHT_OPTIONS = {
     title: {},
     description: {},
   },
+  encoder: 'html',
 };
 
-function mergeModuleHighlight(
-  field: StringProperties<ModuleInformation>,
-  highlights: string[],
-  module: ModuleInformation,
-): ModuleInformation {
-  if (!module[field]) return module;
-
-  return produce(module, (draft) => {
+export function mergeModuleHighlight(
+  source: string,
+  highlights: string[] | undefined,
+): {
+  __html: string;
+} {
+  // Always escape the source since these fields are displayed using dangerously set HTML
+  let escapedSource = escape(source);
+  if (highlights) {
     highlights.forEach((highlight) => {
       const original = highlight.replace(PRE_TAG_REGEX, '').replace(POST_TAG_REGEX, '');
-      draft[field] = draft[field]!.replace(original, highlight); // eslint-disable-line @typescript-eslint/no-non-null-assertion
+      escapedSource = escapedSource.replace(original, highlight);
     });
-  });
-}
-
-/**
- * Injects highlights from Elastic Search results into the ES search hit
- */
-export function mapElasticSearchResult(
-  hit: ElasticSearchResult<ModuleInformation>,
-): ModuleInformation {
-  // Merge highlights into module
-  let module = hit._source;
-
-  if (hit.highlight) {
-    if (hit.highlight.moduleCode) {
-      module = mergeModuleHighlight('moduleCode', hit.highlight.moduleCode, module);
-    }
-
-    if (hit.highlight.title) {
-      module = mergeModuleHighlight('title', hit.highlight.title, module);
-    }
-
-    if (hit.highlight.description) {
-      module = mergeModuleHighlight('description', hit.highlight.description, module);
-    }
   }
 
-  return module;
+  return { __html: escapedSource };
 }
