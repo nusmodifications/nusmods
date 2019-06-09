@@ -35,12 +35,16 @@ function warningFilter(warning) {
 }
 
 function handleErrors(stats) {
-  if (stats.compilation.errors.length) {
+  if (stats.hasErrors()) {
     printErrors('Failed to compile.', stats.compilation.errors);
     process.exit(1);
   }
 
-  if (process.env.CI && stats.compilation.warnings.filter(warningFilter).length) {
+  const statsJson = stats.toJSON({
+    warnings: true,
+  });
+
+  if (process.env.CI && statsJson.warnings.filter(warningFilter).length) {
     // eslint-disable-next-line max-len
     printErrors(
       'Failed to compile. When process.env.CI = true, warnings are treated as failures. Most CI servers set this automatically.',
