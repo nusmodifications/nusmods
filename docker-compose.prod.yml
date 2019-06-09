@@ -39,4 +39,5 @@ services:
     volumes:
       - ./infra/instance/Caddyfile:/etc/Caddyfile
       - ./infra/instance/logs:/logs
+      - ./infra/instance/.caddy:/root/.caddy
     restart: on-failure

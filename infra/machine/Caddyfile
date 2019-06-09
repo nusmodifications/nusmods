@@ -1,0 +1,9 @@
+dockerize2-elg.2.nusmods.com {
+  gzip
+  push
+  proxy / :8022 {
+    transparent
+    websocket
+    max_fails 3
+  }
+}

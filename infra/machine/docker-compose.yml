@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+  machine-proxy:
+    image: abiosoft/caddy:no-stats
+    network_mode: host
+    volumes:
+      - ./Caddyfile:/etc/Caddyfile:ro
+      - ./logs:/logs
+      - ~/.caddy:/root/.caddy # Location to store certificates
+    restart: on-failure
