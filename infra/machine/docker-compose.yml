@@ -1,5 +1,6 @@
 version: '3.7'
 services:
+
   machine-proxy:
     image: abiosoft/caddy:no-stats
     network_mode: host
@@ -8,3 +9,25 @@ services:
       - ./logs:/logs
       - ~/.caddy:/root/.caddy # Location to store certificates
     restart: on-failure
+
+  # Exposed on port 19999 on the server, which should be blocked
+  # (intentionally!) by the firewall.
+  #
+  # If you have SSH access to the server, you can access it by forwarding port
+  # 19999 of your local machine to the server by running: `ssh -L
+  # 19999:localhost:19999 [2.]nusmods.com`. You will then be able to access the
+  # site at http://localhost:19999.
+  netdata:
+    image: netdata/netdata
+    network_mode: host
+    hostname: localhost # FQDN of netdata host
+    expose:
+      - 19999
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - apparmor:unconfined
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
