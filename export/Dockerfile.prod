@@ -22,15 +22,14 @@ RUN mkdir -p /home/node/Downloads \
 
 WORKDIR /home/node/app/export
 
-COPY ./export/package.json ./export/yarn.lock ./export/config.docker.js ./
-RUN mv ./config.docker.js ./config.js
+COPY ./export/package.json ./export/yarn.lock ./
 
 RUN ls -la1; yarn --no-cache --frozen-lockfile --production
 
-COPY ./export/app.js ./export/render.js ./export/data.js ./export/views ./
+COPY ./export/src ./src
 
 # Run everything after as non-privileged user.
 USER node
 
 ENTRYPOINT ["dumb-init", "--"]
-CMD yarn && node ./app.js
+CMD yarn && node ./src/index.js
