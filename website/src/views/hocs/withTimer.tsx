@@ -55,7 +55,7 @@ function withTimer<Props extends TimerData>(
     render() {
       // TODO: remove as Props hack as defined in:
       // https://github.com/Microsoft/TypeScript/issues/28938#issuecomment-450636046
-      return <WrappedComponent {...this.state} {...this.props as Props} />;
+      return <WrappedComponent {...this.state} {...(this.props as Props)} />;
     }
   };
 }
