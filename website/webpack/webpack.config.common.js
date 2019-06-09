@@ -50,7 +50,7 @@ const commonConfig = merge([
       // Ignore warning about possible order conflict emitted by MiniCssExtractPlugin. This is irrelevant
       // because order doesn't matter as we use CSS modules
       // See https://stackoverflow.com/questions/51971857/mini-css-extract-plugin-warning-in-chunk-chunkname-mini-css-extract-plugin-con
-      warningsFilter: (warning) => warning.includes('Conflicting order between'),
+      warningsFilter: (warning) => !warning.includes('Conflicting order between'),
     },
   },
   parts.transpileJavascript({
