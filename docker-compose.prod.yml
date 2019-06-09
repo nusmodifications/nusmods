@@ -1,6 +1,6 @@
 #
 # NOTE: You probably don't want to start this directly.
-# Use infrastructure/start-prod.sh to start NUSMods in production.
+# Use infra/instance/start-prod.sh to start NUSMods in production.
 #
 version: '3.7'
 services:
@@ -26,7 +26,7 @@ services:
     depends_on:
       - website
     security_opt:
-      - seccomp="infrastructure/chromium.seccomp.json"
+      - seccomp="infra/instance/chromium.seccomp.json"
     environment:
       - NODE_ENV=production
       - PORT=8082
@@ -37,6 +37,6 @@ services:
     ports:
       - ${EXPOSED_PORT}:2015
     volumes:
-      - ./infrastructure/Caddyfile:/etc/Caddyfile
-      - ./infrastructure/logs:/logs
+      - ./infra/instance/Caddyfile:/etc/Caddyfile
+      - ./infra/instance/logs:/logs
     restart: on-failure

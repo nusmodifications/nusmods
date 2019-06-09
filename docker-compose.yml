@@ -36,7 +36,7 @@ services:
     depends_on:
       - website
     security_opt:
-      - seccomp="infrastructure/chromium.seccomp.json"
+      - seccomp="infra/instance/chromium.seccomp.json"
     environment:
       - NODE_ENV=development
       - PORT=8082
@@ -50,6 +50,6 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - ./infrastructure/Caddyfile:/etc/Caddyfile
-      - ./infrastructure/logs:/logs
+      - ./infra/instance/Caddyfile:/etc/Caddyfile
+      - ./infra/instance/logs:/logs
     restart: on-failure

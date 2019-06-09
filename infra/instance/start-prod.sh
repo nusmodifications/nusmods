@@ -15,7 +15,8 @@ if [ -z "$EXPOSED_PORT" ]; then
   exit 1
 fi
 
-pushd ..
+# Navigate to project root
+pushd ../..
 
 # Start docker-compose
 export GIT_COMMIT_HASH=$(git rev-parse HEAD)
