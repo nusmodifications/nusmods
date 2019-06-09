@@ -40,7 +40,7 @@ function handleErrors(stats) {
     process.exit(1);
   }
 
-  const statsJson = stats.toJSON({
+  const statsJson = stats.toJson({
     warnings: true,
   });
 
