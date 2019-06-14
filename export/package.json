@@ -17,7 +17,7 @@
     "axios": "0.19.0",
     "bunyan": "1.8.12",
     "fs-extra": "8.0.1",
-    "http-graceful-shutdown": "2.3.1",
+    "http-graceful-shutdown": "2.3.2",
     "koa": "2.7.0",
     "koa-router": "7.4.0",
     "koa-views": "6.2.0",

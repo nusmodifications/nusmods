@@ -1102,10 +1102,10 @@ http-errors@~1.6.2:
     setprototypeof "1.1.0"
     statuses ">= 1.4.0 < 2"
 
-http-graceful-shutdown@2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/http-graceful-shutdown/-/http-graceful-shutdown-2.3.1.tgz#55f9e8e5cbb14847fa18eb7724bdfc142ed09b33"
-  integrity sha512-ai2VJoymgBZ/tUo/HJv2LNfyWQOPTmFSlrmNJnjuQef3ybUZUX/P3f37m+TYNnjJxOONTMdnWPUH24S08hPVUA==
+http-graceful-shutdown@2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/http-graceful-shutdown/-/http-graceful-shutdown-2.3.2.tgz#2334e3036c88283567fdab5e371ffad327fb886e"
+  integrity sha512-Dn7fJjHWboN7WjNDuo7d7ZISdUlbnyQEtOjBwMGJig45ZztHQxCsnW9N89Pr3gb6VzvZy1HySgAu2Q98j6S17w==
   dependencies:
     debug "^4.1.1"
 
