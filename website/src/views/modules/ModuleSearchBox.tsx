@@ -1,42 +1,47 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import qs from 'query-string';
-import classnames from 'classnames';
+import SearchkitSearchBox from 'views/components/SearchkitSearchBox';
 
-import elements from 'views/elements';
-import SearchBox from 'views/components/SearchBox';
-import { searchModules } from 'actions/moduleFinder';
-import { SEARCH_QUERY_KEY } from 'utils/moduleSearch';
-import { State } from 'types/state';
-
-type OwnProps = RouteComponentProps & {
-  useInstantSearch: boolean;
+type Props = {
+  id: string;
 };
 
-type Props = OwnProps & {
-  searchModules: (str: string) => void;
-  initialSearchTerm?: string;
-};
+const buildQuery = (query: string, options: Record<string, string | string[]>) => ({
+  bool: {
+    should: [
+      {
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        multi_match: {
+          query,
+          ...options,
+          type: 'best_fields',
+          operator: 'and',
+          fuzziness: 'AUTO',
+        },
+      },
+      {
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        multi_match: {
+          query,
+          ...options,
+          type: 'phrase_prefix',
+          operator: 'and',
+        },
+      },
+    ],
+    minimum_should_match: '1', // eslint-disable-line @typescript-eslint/camelcase
+  },
+});
 
-export const ModuleSearchBoxComponent: React.FunctionComponent<Props> = (props: Props) => {
+const ModuleSearchBox = ({ id }: Props) => {
   return (
-    <SearchBox
-      className={classnames(elements.moduleFinderSearchBox, 'search-panel')}
+    <SearchkitSearchBox
+      id={id}
       throttle={300}
-      useInstantSearch={props.useInstantSearch}
-      initialSearchTerm={props.initialSearchTerm || null}
+      queryFields={['moduleCode^10', 'title^3', 'description']}
+      queryBuilder={buildQuery}
       placeholder="Module code, names and descriptions"
-      onSearch={props.searchModules}
     />
   );
 };
 
-const ConnectedModuleSearchBox = connect(
-  (state: State, ownProps: OwnProps) => ({
-    initialSearchTerm: qs.parse(ownProps.location.search)[SEARCH_QUERY_KEY],
-  }),
-  { searchModules },
-)(ModuleSearchBoxComponent);
-
-export default withRouter(ConnectedModuleSearchBox);
+export default ModuleSearchBox;
