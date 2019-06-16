@@ -32,7 +32,7 @@ type Props = PagerProps & {
   readonly matchBreakpoint: boolean;
 };
 
-const ModuleFinderPager: React.FC<Props> = ({
+export const ModuleFinderPagerComponent: React.FC<Props> = ({
   selectedPage,
   totalNumPages,
   onGoToFirst,
@@ -110,5 +110,5 @@ const ModuleFinderPager: React.FC<Props> = ({
   );
 };
 
-const ResponsiveModuleFinderPager = makeResponsive(ModuleFinderPager, breakpointDown('md'));
-export default ResponsiveModuleFinderPager;
+const ModuleFinderPager = makeResponsive(ModuleFinderPagerComponent, breakpointDown('md'));
+export default ModuleFinderPager;
