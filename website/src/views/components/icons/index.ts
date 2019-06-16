@@ -8,6 +8,8 @@ import Check from 'react-feather/dist/icons/check';
 import ChevronLeft from 'react-feather/dist/icons/chevron-left';
 import ChevronRight from 'react-feather/dist/icons/chevron-right';
 import ChevronDown from 'react-feather/dist/icons/chevron-down';
+import ChevronsLeft from 'react-feather/dist/icons/chevrons-left';
+import ChevronsRight from 'react-feather/dist/icons/chevrons-right';
 import Close from 'react-feather/dist/icons/x';
 import Clock from 'react-feather/dist/icons/clock';
 import Copy from 'react-feather/dist/icons/copy';
@@ -56,6 +58,8 @@ export {
   ChevronLeft,
   ChevronRight,
   ChevronDown,
+  ChevronsLeft,
+  ChevronsRight,
   Close,
   Clock,
   Copy,
