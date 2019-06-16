@@ -7,15 +7,17 @@ type Props = {
   white?: boolean;
 };
 
-export default function LoadingSpinner(props: Props) {
+const LoadingSpinner: React.FC<Props> = ({ small, white }) => {
   return (
     <div
       className={classnames(styles.loader, {
-        [styles.small]: props.small,
-        [styles.white]: props.white,
+        [styles.small]: small,
+        [styles.white]: white,
       })}
     >
       <span className="sr-only">Loading...</span>
     </div>
   );
-}
+};
+
+export default LoadingSpinner;
