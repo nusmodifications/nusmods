@@ -1,0 +1,22 @@
+@import '~styles/utils/modules-entry';
+
+.svg {
+  display: block;
+  width: 1.1rem;
+}
+
+.pagerButton {
+  min-width: 2.3em;
+  border-width: 0;
+  font-weight: bold;
+  color: inherit;
+
+  &.disabled {
+    opacity: 0;
+  }
+
+  &.active {
+    color: white;
+    background-color: $primary;
+  }
+}

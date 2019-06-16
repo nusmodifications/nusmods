@@ -1,10 +1,53 @@
 import * as React from 'react';
 import classnames from 'classnames';
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'views/components/icons';
 import { PagerProps, FIRST_PAGE_INDEX } from 'views/components/searchkit/Pagination';
 import { range } from 'lodash';
 
-// Number of pages to show before/after the current number
-const pageScope = 3;
+import styles from './ModuleFinderPager.scss';
+
+type PagerButtonProps = {
+  disabled?: boolean;
+  active?: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+};
+
+// Calculate first and last page nums to display in pager.
+export function displayPageRange(
+  selectedPage: number,
+  totalNumPages: number,
+  numVisiblePages: number,
+) {
+  if (selectedPage === 0 || numVisiblePages === 0 || totalNumPages === 0) return null;
+
+  let firstPageNum = selectedPage - Math.floor(numVisiblePages / 2);
+  let lastPageNum = firstPageNum + numVisiblePages - 1;
+  if (firstPageNum < FIRST_PAGE_INDEX) {
+    lastPageNum += FIRST_PAGE_INDEX - firstPageNum;
+    firstPageNum = FIRST_PAGE_INDEX;
+  }
+  lastPageNum = Math.min(totalNumPages, lastPageNum);
+  return { firstPageNum, lastPageNum };
+}
+
+const PagerButton: React.FC<PagerButtonProps> = ({ disabled, active, onClick, children }) => (
+  <li>
+    <button
+      type="button"
+      className={classnames(
+        'btn',
+        styles.pagerButton,
+        disabled && styles.disabled,
+        active && styles.active,
+      )}
+      disabled={disabled}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  </li>
+);
 
 const ModuleFinderPager: React.FC<PagerProps> = ({
   selectedPage,
@@ -17,43 +60,50 @@ const ModuleFinderPager: React.FC<PagerProps> = ({
 }) => {
   if (totalNumPages <= 0) return null;
 
-  const numberRange = range(
-    Math.max(selectedPage - pageScope, FIRST_PAGE_INDEX),
-    Math.min(totalNumPages, selectedPage + pageScope) + 1,
-  );
+  // Number of pages to show in the pager
+  const numVisiblePages = 7;
+  const startEndPages = displayPageRange(selectedPage, totalNumPages, numVisiblePages);
+  if (!startEndPages) return null;
+
+  const { firstPageNum, lastPageNum } = startEndPages;
+  const pageRange = range(firstPageNum, lastPageNum + 1);
+
   return (
     <nav aria-label="Module search result pagination">
       <ul className="pagination justify-content-center">
-        <li className={classnames('page-item', selectedPage === FIRST_PAGE_INDEX && 'disabled')}>
-          <button type="button" className="page-link" onClick={onGoToFirst}>
-            First
-          </button>
-        </li>
-        <li className={classnames('page-item', selectedPage === FIRST_PAGE_INDEX && 'disabled')}>
-          <button type="button" className="page-link" onClick={onGoToPrevious}>
-            Previous
-          </button>
-        </li>
-        {numberRange.map((pageNum) => (
-          <li
+        <PagerButton disabled={selectedPage === FIRST_PAGE_INDEX} onClick={onGoToFirst}>
+          <span aria-hidden="true">
+            <ChevronsLeft className={styles.svg} />
+          </span>
+          <span className="sr-only">First</span>
+        </PagerButton>
+        <PagerButton disabled={selectedPage === FIRST_PAGE_INDEX} onClick={onGoToPrevious}>
+          <span aria-hidden="true">
+            <ChevronLeft className={styles.svg} />
+          </span>
+          <span className="sr-only">Previous</span>
+        </PagerButton>
+        {pageRange.map((pageNum) => (
+          <PagerButton
             key={pageNum}
-            className={classnames('page-item', selectedPage === pageNum && 'active')}
+            active={selectedPage === pageNum}
+            onClick={() => onGoToPage(pageNum)}
           >
-            <button type="button" className="page-link" onClick={() => onGoToPage(pageNum)}>
-              {pageNum}
-            </button>
-          </li>
+            {pageNum}
+          </PagerButton>
         ))}
-        <li className={classnames('page-item', selectedPage === totalNumPages && 'disabled')}>
-          <button type="button" className="page-link" onClick={onGoToNext}>
-            Next
-          </button>
-        </li>
-        <li className={classnames('page-item', selectedPage === totalNumPages && 'disabled')}>
-          <button type="button" className="page-link" onClick={onGoToLast}>
-            Last
-          </button>
-        </li>
+        <PagerButton disabled={selectedPage === totalNumPages} onClick={onGoToNext}>
+          <span aria-hidden="true">
+            <ChevronRight className={styles.svg} />
+          </span>
+          <span className="sr-only">Next</span>
+        </PagerButton>
+        <PagerButton disabled={selectedPage === totalNumPages} onClick={onGoToLast}>
+          <span aria-hidden="true">
+            <ChevronsRight className={styles.svg} />
+          </span>
+          <span className="sr-only">Last</span>
+        </PagerButton>
       </ul>
     </nav>
   );
