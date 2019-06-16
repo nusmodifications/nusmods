@@ -7,7 +7,6 @@ import {
   LoadingComponent,
   HitsListProps,
   NoHits,
-  Pagination,
   SearchkitManager,
   SearchkitProvider,
 } from 'searchkit';
@@ -22,6 +21,7 @@ import ModuleFinderNoHits from 'views/errors/ModuleFinderNoHits';
 import ModuleFinderApiError from 'views/errors/ModuleFinderApiError';
 import ModuleFinderPager from 'views/components/ModuleFinderPager';
 import ModuleFinderItem from 'views/components/ModuleFinderItem';
+import Pagination from 'views/components/searchkit/Pagination';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import Title from 'views/components/Title';
 
@@ -99,7 +99,7 @@ const ModuleFinderContainer: React.FC = () => {
               />
             </div>
 
-            <Pagination showNumbers listComponent={ModuleFinderPager} />
+            <Pagination pagerComponent={ModuleFinderPager} />
           </div>
 
           <div className="col-md-4 col-lg-3">
