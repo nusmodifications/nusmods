@@ -66,6 +66,9 @@ async function setup() {
           tokenizer: { first_digit_tokenizer },
           filter: { first_token_limit_filter, thousandizer_filter },
         },
+        index: {
+          max_result_window: 20000, // Default limit is 10k, but we have >11k mods
+        },
       },
       mappings: {
         properties: {
