@@ -1,22 +1,18 @@
 @import '~styles/utils/modules-entry';
 
+.paginationList {
+  align-items: center;
+}
+
 .svg {
   display: block;
   width: 1.1rem;
 }
 
-.pagerButton {
-  min-width: 2.3em;
-  border-width: 0;
+.mobilePages {
+  margin: 0 1em;
   font-weight: bold;
-  color: inherit;
-
-  &.disabled {
-    opacity: 0;
-  }
-
-  &.active {
-    color: white;
-    background-color: $primary;
-  }
+  text-align: center;
+  color: $primary;
+  user-select: none;
 }
