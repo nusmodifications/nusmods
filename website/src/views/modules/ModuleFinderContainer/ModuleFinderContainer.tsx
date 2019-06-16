@@ -67,12 +67,7 @@ const ModuleFinderContainer: React.FC = () => {
               <HitsStats
                 component={({ hitsCount }: HitsStatsDisplayProps) =>
                   hitsCount > 0 ? (
-                    <div className={styles.modulePageDivider}>
-                      {hitsCount} modules found{' '}
-                      <LoadingComponent>
-                        <LoadingSpinner small />
-                      </LoadingComponent>
-                    </div>
+                    <div className={styles.modulePageDivider}>{hitsCount} modules found</div>
                   ) : (
                     <LoadingComponent>
                       <LoadingSpinner />
