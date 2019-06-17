@@ -125,7 +125,6 @@ const productionConfig = merge([
       runtimeChunk: 'single',
     },
   },
-  parts.workbox(),
   parts.clean(parts.PATHS.build),
   // If the file size is below the specified limit
   // the file is converted into a data URL and inlined to avoid requests.

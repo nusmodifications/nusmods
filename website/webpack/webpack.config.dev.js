@@ -57,7 +57,6 @@ const developmentConfig = merge([
       }),
     ],
   },
-  process.env.DEBUG_WORKBOX ? parts.workbox() : {},
   parts.lintJavaScript({
     include: parts.PATHS.src,
   }),
