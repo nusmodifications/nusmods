@@ -13,7 +13,15 @@ interface Props {
   itemKey?: string;
 }
 
-const CheckboxItem = ({ active, count, disabled, itemKey, label, showCount, onClick }: Props) => {
+const CheckboxItem: React.FC<Props> = ({
+  active,
+  count,
+  disabled,
+  itemKey,
+  label,
+  showCount,
+  onClick,
+}) => {
   return (
     <li key={itemKey} className={classnames(styles.label, 'form-check')}>
       <input
