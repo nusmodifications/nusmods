@@ -10,7 +10,7 @@ import App from 'App';
 import configureStore from 'bootstrapping/configure-store';
 import subscribeOnlineEvents from 'bootstrapping/subscribeOnlineEvents';
 import { initializeMamoto } from 'bootstrapping/matomo';
-import initializeServiceWorker from 'bootstrapping/service-worker';
+import registerServiceWorker from 'bootstrapping/service-worker-manager';
 
 import 'styles/main.scss';
 
@@ -38,7 +38,7 @@ if (
   // Allow us to force service worker to be enabled for debugging
   process.env.DEBUG_SERVICE_WORKER
 ) {
-  initializeServiceWorker(store);
+  registerServiceWorker(store);
 }
 
 if (process.env.NODE_ENV === 'production') {

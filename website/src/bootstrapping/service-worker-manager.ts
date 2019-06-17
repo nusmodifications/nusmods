@@ -38,7 +38,7 @@ function onNewServiceWorkerWaiting(registration: ServiceWorkerRegistration, call
   registration.addEventListener('updatefound', awaitStateChange);
 }
 
-export default function initializeServiceWorker(store: Store<any, any>) {
+export default function registerServiceWorker(store: Store<any, any>) {
   const { serviceWorker } = navigator;
   if (!serviceWorker) {
     return;
