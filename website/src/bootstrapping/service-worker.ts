@@ -5,29 +5,23 @@ import { captureException } from 'utils/error';
 let currentRegistration: ServiceWorkerRegistration;
 
 export function updateServiceWorker() {
-  if (!currentRegistration || !currentRegistration.waiting) {
-    // Just to ensure registration.waiting is available before
-    // calling postMessage()
-    return;
+  // Ensure new service worker is waiting before asking it to skip waiting.
+  if (currentRegistration && currentRegistration.waiting) {
+    currentRegistration.waiting.postMessage('skipWaiting');
   }
-
-  currentRegistration.waiting.postMessage('skipWaiting');
 }
 
-// Code taken from https://developers.google.com/web/tools/workbox/guides/advanced-recipes
-function onNewServiceWorker(registration: ServiceWorkerRegistration, callback: () => void) {
+// Code adapted from https://redfin.engineering/how-to-fix-the-refresh-button-when-using-service-workers-a8e27af6df68
+function onNewServiceWorkerWaiting(registration: ServiceWorkerRegistration, callback: () => void) {
   if (registration.waiting) {
-    // SW is waiting to activate. Can occur if multiple clients open and
-    // one of the clients is refreshed.
+    // SW is already waiting to activate.
+    // This can occur if multiple clients are open and one of the clients is refreshed.
     callback();
     return;
   }
 
-  const listenInstalledStateChange = () => {
-    if (!registration.installing) {
-      return;
-    }
-
+  function awaitStateChange() {
+    if (!registration.installing) return;
     registration.installing.addEventListener('statechange', (event) => {
       // @ts-ignore Not sure how we can get this event to be typed correctly
       if (event.target && event.target.state === 'installed') {
@@ -35,15 +29,13 @@ function onNewServiceWorker(registration: ServiceWorkerRegistration, callback: (
         callback();
       }
     });
-  };
-
-  if (registration.installing) {
-    listenInstalledStateChange();
-  } else {
-    // We are currently controlled so a new SW may be found...
-    // Add a listener in case a new SW is found,
-    registration.addEventListener('updatefound', listenInstalledStateChange);
   }
+
+  // Trigger immediately just in case it's already installing
+  awaitStateChange();
+  // Add a listener when a new service worker is installing
+  // See: https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration/onupdatefound
+  registration.addEventListener('updatefound', awaitStateChange);
 }
 
 export default function initializeServiceWorker(store: Store<any, any>) {
@@ -55,31 +47,32 @@ export default function initializeServiceWorker(store: Store<any, any>) {
   serviceWorker
     .register('/service-worker.js')
     .then((registration) => {
-      // Track updates to the Service Worker.
       if (!serviceWorker.controller) {
-        // The window client isn't currently controlled so it's a new service
-        // worker that will activate immediately
+        // The window client isn't currently controlled so it's a
+        // new service worker that will activate on next load on its own.
         return;
       }
 
-      // Refresh the service worker regularly so that the user gets the update
-      // notice if they leave the tab open for a while
+      // When the user asks to refresh the UI, we'll need to reload the window
+      // in order for the activated service worker to take over.
+      let isRefreshing: boolean;
+      serviceWorker.addEventListener('controllerchange', () => {
+        // Ensure refresh is only called once - This works around a bug in "force update on reload".
+        if (isRefreshing) return;
+        isRefreshing = true;
+        window.location.reload();
+      });
+
+      // Browsers' default checking interval is 24 hours, which is too long.
+      // Instead, we check for the new service worker hourly so that the user gets
+      // the update notice if they leave the tab open for a while.
       const updateIntervalId = window.setInterval(() => {
         if (navigator.onLine) {
           registration.update();
         }
       }, 60 * 60 * 1000);
 
-      // When the user asks to refresh the UI, we'll need to reload the window
-      let preventDevToolsReloadLoop: boolean;
-      serviceWorker.addEventListener('controllerchange', () => {
-        // Ensure refresh is only called once - This works around a bug in "force update on reload".
-        if (preventDevToolsReloadLoop) return;
-        preventDevToolsReloadLoop = true;
-        window.location.reload();
-      });
-
-      onNewServiceWorker(registration, () => {
+      onNewServiceWorkerWaiting(registration, () => {
         currentRegistration = registration;
         store.dispatch(promptRefresh());
         window.clearInterval(updateIntervalId);
