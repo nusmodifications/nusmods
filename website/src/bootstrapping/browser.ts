@@ -6,7 +6,6 @@
 import bowser from 'bowser';
 import * as Sentry from '@sentry/browser';
 
-import { parseFloat } from 'types/utils';
 import { canUseBrowserLocalStorage } from 'storage/localStorage';
 import { BROWSER_WARNING_KEY } from 'storage/keys';
 import styles from './browser.scss';
@@ -21,17 +20,10 @@ const linkForChromePlayStore = composeAnchorText(
 );
 
 const browserCanUseLocalStorage = canUseBrowserLocalStorage();
-const isBrowserSupported =
-  bowser.check(
-    {
-      msedge: '14',
-      chrome: '56',
-      firefox: '52',
-      safari: '10',
-    },
-    true,
-  ) ||
-  (bowser.ios && parseFloat(bowser.osversion));
+// We no longer polyfill String.prototype.padStart,
+// which serves as a simple benchmark on whether this browser can be supported
+// See: https://caniuse.com/#feat=pad-start-end
+const isBrowserSupported = 'padStart' in String.prototype;
 
 // Add unsupported tag so that we can filter out reports from those users
 Sentry.configureScope((scope) => {

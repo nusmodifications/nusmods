@@ -19,7 +19,6 @@ import Title from 'views/components/Title';
 import deferComponentRender from 'views/hocs/deferComponentRender';
 
 import Online from 'views/components/Online';
-import { supportsCSSVariables } from 'utils/css';
 import { withTracker } from 'bootstrapping/matomo';
 import ExternalLink from 'views/components/ExternalLink';
 import Toggle from 'views/components/Toggle';
@@ -74,29 +73,6 @@ class SettingsContainer extends React.Component<Props, State> {
     });
   };
 
-  renderNightModeOption() {
-    return (
-      <div>
-        <h4 id="night-mode">Night Mode</h4>
-        <div className={styles.toggleRow}>
-          <div className={styles.toggleDescription}>
-            <p>
-              Night mode turns the light surfaces of the page dark, creating an experience ideal for
-              the dark. Try it out!
-            </p>
-            <p>
-              Protip: Press <kbd>X</kbd> to toggle modes anywhere on NUSMods.
-            </p>
-          </div>
-          <div className={styles.toggle}>
-            <ModeSelect mode={this.props.mode} onSelectMode={this.props.selectMode} />
-          </div>
-        </div>
-        <hr />
-      </div>
-    );
-  }
-
   render() {
     const { currentThemeId } = this.props;
 
@@ -112,7 +88,24 @@ class SettingsContainer extends React.Component<Props, State> {
         <h1 className={styles.title}>Settings</h1>
         <hr />
 
-        {supportsCSSVariables() && this.renderNightModeOption()}
+        <div>
+          <h4 id="night-mode">Night Mode</h4>
+          <div className={styles.toggleRow}>
+            <div className={styles.toggleDescription}>
+              <p>
+                Night mode turns the light surfaces of the page dark, creating an experience ideal
+                for the dark. Try it out!
+              </p>
+              <p>
+                Protip: Press <kbd>X</kbd> to toggle modes anywhere on NUSMods.
+              </p>
+            </div>
+            <div className={styles.toggle}>
+              <ModeSelect mode={this.props.mode} onSelectMode={this.props.selectMode} />
+            </div>
+          </div>
+          <hr />
+        </div>
 
         <h4 id="theme">Theme</h4>
 

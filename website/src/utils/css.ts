@@ -39,10 +39,5 @@ export function queryMatch(query: QueryObject) {
   return window.matchMedia(json2mq(query));
 }
 
-export function supportsCSSVariables() {
-  // Safari does not support supports('--var', 'red')
-  return CSS.supports && CSS.supports('(--var: red)');
-}
-
 // Safari and Non-Safari browsers in iOS
 export const isMobileIos = (): boolean => bowser.ios;

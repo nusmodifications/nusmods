@@ -20,7 +20,7 @@ const config = {
 
         browser: 'Firefox',
         // Latest ESR
-        browserVersion: '60',
+        browserVersion: '64',
       },
     },
 
@@ -36,13 +36,13 @@ const config = {
       desiredCapabilities: {
         os: 'OS X',
         browser: 'Safari',
-        browserVersion: '9.1',
+        browserVersion: '10',
       },
     },
 
     edge: {
       browser: 'Edge',
-      browserVersion: '16.0',
+      browserVersion: '17.0',
     },
   },
 };

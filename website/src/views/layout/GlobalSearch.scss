@@ -25,7 +25,6 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
 
 .icon {
   position: absolute;
-  top: 0.3rem; // For Safari 9
   right: $icon-dist + $container-padding;
   width: $icon-size;
   height: $icon-size;
