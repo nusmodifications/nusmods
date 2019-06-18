@@ -40,7 +40,7 @@ function convertLesson({
   };
 }
 
-function convertSemesterData({ ExamDate, Semester, Timetable }: V1SemesterData): SemesterData {
+function convertSemesterData({ ExamDate, Semester, Timetable = [] }: V1SemesterData): SemesterData {
   return {
     examDate: ExamDate,
     semester: Semester,
@@ -54,7 +54,7 @@ function convertModule(
     ModuleCode,
     ModuleCredit,
     ModuleTitle,
-    History,
+    History = [],
     Workload,
     Department,
     Prerequisite,
@@ -69,7 +69,7 @@ function convertModule(
     moduleCode: ModuleCode,
     title: ModuleTitle,
     department: Department,
-    faculty: departmentFaculty[Department],
+    faculty: departmentFaculty[Department] || '',
     semesterData: History.map(convertSemesterData),
     corequisite: Corequisite,
     prerequisite: Prerequisite,
@@ -85,6 +85,22 @@ interface Input {
 
 type Output = Module[];
 
+function buildFacultyMap(departments: AcademicOrg[], faculties: AcademicGrp[]) {
+  const departmentFaculty: Record<string, string> = {};
+
+  // Map departments to their corresponding faculty. This works because the first three chars of
+  // the department code (AcademicOrganization) matches the faculty code (AcademicGroup)
+  for (const department of departments) {
+    for (const faculty of faculties) {
+      if (department.AcademicOrganisation.startsWith(faculty.AcademicGroup)) {
+        departmentFaculty[department.Description] = faculty.Description;
+      }
+    }
+  }
+
+  return departmentFaculty;
+}
+
 export default class MigrateV1ToV2 extends BaseTask implements Task<Input, Output> {
   name = 'Convert v1 modules to v2 data';
   private v1DataReader: V1DataReader;
@@ -97,11 +113,15 @@ export default class MigrateV1ToV2 extends BaseTask implements Task<Input, Outpu
 
   async run(input: Input): Promise<Module[]> {
     const modules = await this.v1DataReader.listModules();
+    const departmentFaculty = buildFacultyMap(input.departments, input.faculties);
 
     const convertedModules = await Promise.all(
-      modules.map(async (moduleCode) =>
-        convertModule(await this.v1DataReader.getModule(moduleCode)),
-      ),
+      modules.map(async (moduleCode) => {
+        const v1Module = await this.v1DataReader.getModule(moduleCode);
+        const v2Module = convertModule(v1Module, departmentFaculty);
+        this.io.module(moduleCode, v2Module);
+        return v2Module;
+      }),
     );
 
     return convertedModules;
