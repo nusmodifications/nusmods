@@ -17,15 +17,7 @@ type WeekText = string; // E.g. "Every Week", "Odd Week"
 type Venue = string;
 
 // Auxiliary data types
-type Day =
-  | 'Monday'
-  | 'Tuesday'
-  | 'Wednesday'
-  | 'Thursday'
-  | 'Friday'
-  | 'Saturday'
-  | 'Sunday';
-
+type Day = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
 
 type Time = 'Morning' | 'Afternoon' | 'Evening';
 
