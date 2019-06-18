@@ -1,4 +1,4 @@
-import produce from 'immer';
+import produce, { Draft } from 'immer';
 import { keyBy, omit, size, zipObject } from 'lodash';
 
 import {
@@ -75,12 +75,14 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
         return state;
       }
 
+      // Type hack to get this to work with the assignment below
+      const module: Draft<Module> = action.payload;
       return produce(state, (draft) => {
-        if (!draft.moduleArchive[action.payload.ModuleCode]) {
-          draft.moduleArchive[action.payload.ModuleCode] = {};
+        if (!draft.moduleArchive[module.moduleCode]) {
+          draft.moduleArchive[module.moduleCode] = {};
         }
 
-        draft.moduleArchive[action.payload.ModuleCode][meta.academicYear] = action.payload;
+        draft.moduleArchive[module.moduleCode][meta.academicYear] = module;
       });
     }
 
