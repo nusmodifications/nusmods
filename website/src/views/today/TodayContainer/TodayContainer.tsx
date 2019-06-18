@@ -28,7 +28,6 @@ import {
 } from 'utils/timetables';
 import { captureException } from 'utils/error';
 import Title from 'views/components/Title';
-import Announcements from 'views/components/notfications/Announcements';
 import { getSemesterTimetable } from 'reducers/timetables';
 import ExternalLink from 'views/components/ExternalLink';
 import * as weatherAPI from 'apis/weather';
@@ -316,8 +315,6 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
     return (
       <div className={styles.todayPage}>
         <Title>Today</Title>
-
-        <Announcements />
 
         <div className={styles.schedule}>
           {this.groupLessons()}
