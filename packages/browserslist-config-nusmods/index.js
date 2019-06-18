@@ -1,4 +1,6 @@
 module.exports = [
+  'chrome 75',
+  'chrome 74',
   'chrome 73',
   'chrome 72',
   'chrome 71',
@@ -18,6 +20,7 @@ module.exports = [
   'ios_saf 12.0-12.1',
   'ios_saf 11.0-11.2',
   'ios_saf 10.0-10.2',
+  'opera 58',
   'opera 57',
   'safari 12.1',
   'safari 12',
@@ -25,6 +28,6 @@ module.exports = [
   'safari 11',
   'safari 10.1',
   'safari 10',
-  'safari 9.1',
+  'samsung 9.2',
   'samsung 8.2',
 ];
