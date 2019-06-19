@@ -54,8 +54,6 @@ export type Tree = {
 };
 
 // Information for a module for a particular academic year.
-// This is probably the only model you need to be concerned with.
-// For some reason es6 object literal property value shorthand is not recognized >_<
 export type V1Module = {
   AcadYear: AcadYear;
   Corequisite?: string;
