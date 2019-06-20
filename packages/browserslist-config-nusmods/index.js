@@ -28,6 +28,5 @@ module.exports = [
   'safari 11',
   'safari 10.1',
   'safari 10',
-  'samsung 9.2',
   'samsung 8.2',
 ];
