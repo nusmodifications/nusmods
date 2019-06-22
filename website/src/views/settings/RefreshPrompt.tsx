@@ -62,7 +62,7 @@ class RefreshPrompt extends React.PureComponent<Props, State> {
             disabled={isReloading}
             ref={this.buttonRef}
           >
-            {isReloading ? <LoadingSpinner small /> : 'Refresh page'}
+            {isReloading ? <LoadingSpinner small white /> : 'Refresh page'}
           </button>
         </div>
       </div>

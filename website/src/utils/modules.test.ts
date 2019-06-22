@@ -157,7 +157,9 @@ describe(renderMCs, () => {
     // Singular
     [1, '1 MC'],
     ['1', '1 MC'],
-  ])('%s to equal %s', (mc, expected) => expect(renderMCs(mc)).toEqual(noBreak(expected)));
+  ])('%s to equal %s', (mc, expected) =>
+    expect(renderMCs(mc)).toEqual(noBreak(expected as string)),
+  );
 });
 
 describe(subtractAcadYear, () => {

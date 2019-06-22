@@ -48,7 +48,7 @@ const attributeMap: { [attribute: string]: keyof NUSModuleAttributes } = {
   SFS: 'sfs',
   PRQY: 'su',
   NPRY: 'su',
-  GRDY: 'su',
+  GRDY: 'grsu',
   LABB: 'lab',
   ISM: 'ism',
   HFYP: 'fyp',

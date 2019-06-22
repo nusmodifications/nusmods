@@ -4,6 +4,7 @@ import { partition, range, sum, zip } from 'lodash';
 
 import { Workload, WORKLOAD_COMPONENTS, WorkloadComponent } from 'types/modules';
 import Tooltip from 'views/components/Tooltip';
+import styles from './ModuleWorkload.scss';
 
 const ROW_MAX = 10;
 
@@ -49,7 +50,9 @@ function workloadBlocks(component: WorkloadComponent, hours: number): React.Reac
 
   // Remainders (for non-integer workloads) are displayed as vertical half-blocks
   if (hours % 1) {
-    blocks.push(<div key="remainder" className={classnames('remainder', bgClass(component))} />);
+    blocks.push(
+      <div key="remainder" className={classnames(styles.remainder, bgClass(component))} />,
+    );
   }
 
   return blocks;
@@ -57,7 +60,7 @@ function workloadBlocks(component: WorkloadComponent, hours: number): React.Reac
 
 type WorkloadTuple = [WorkloadComponent, number];
 
-function sortWorkload(workload: ReadonlyArray<number>): WorkloadTuple[] {
+function sortWorkload(workload: readonly number[]): WorkloadTuple[] {
   const components = zip(WORKLOAD_COMPONENTS, workload) as WorkloadTuple[];
 
   // Only show non-empty components
@@ -76,9 +79,9 @@ export default class ModuleWorkload extends React.PureComponent<Props> {
   renderFallback(): React.ReactNode {
     // Workload cannot be parsed - so we just display it without any visualization
     return (
-      <div className="module-workload-container">
+      <div className={styles.moduleWorkloadContainer}>
         <h4>Workload</h4>
-        <p className="module-workload-fallback">{this.props.workload}</p>
+        <p className={styles.moduleWorkloadFallback}>{this.props.workload}</p>
       </div>
     );
   }
@@ -90,20 +93,20 @@ export default class ModuleWorkload extends React.PureComponent<Props> {
     const total = sum(workload);
 
     return (
-      <div className="module-workload-container">
+      <div className={styles.moduleWorkloadContainer}>
         <h4>Workload - {total} hrs</h4>
-        <div className="module-workload">
+        <div className={styles.moduleWorkload}>
           {sortWorkload(workload).map(([component, hours]) => (
             <Tooltip content={`${hours} hours of ${component}`} key={component}>
               <div
-                className="module-workload-component"
+                className={styles.moduleWorkloadComponent}
                 style={{ width: `${(100 / ROW_MAX) * Math.min(ROW_MAX, Math.ceil(hours))}%` }}
               >
                 <h5 className={textClass(component)}>{workloadLabel(component, hours)}</h5>
 
                 <div
-                  className={classnames('module-workload-blocks', {
-                    'blocks-fixed': Math.ceil(hours) > ROW_MAX,
+                  className={classnames(styles.moduleWorkloadBlocks, {
+                    [styles.blocksFixed]: Math.ceil(hours) > ROW_MAX,
                   })}
                 >
                   {workloadBlocks(component, hours)}

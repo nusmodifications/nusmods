@@ -46,7 +46,7 @@ function makeResponsive<Props extends WithBreakpoint>(
       return (
         // TODO: remove as Props hack as defined in:
         // https://github.com/Microsoft/TypeScript/issues/28938#issuecomment-450636046
-        <WrappedComponent {...this.props as Props} matchBreakpoint={this.state.matchBreakpoint} />
+        <WrappedComponent {...(this.props as Props)} matchBreakpoint={this.state.matchBreakpoint} />
       );
     }
   };

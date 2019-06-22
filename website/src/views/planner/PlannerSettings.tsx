@@ -45,7 +45,6 @@ function graduationLabel(offset: number) {
 function buttonProps(selected: boolean, disabled: boolean) {
   return {
     disabled,
-    type: 'button',
     className: classnames('btn btn-block', {
       'btn-outline-secondary': disabled,
       'btn-outline-primary': !selected && !disabled,

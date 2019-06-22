@@ -15,7 +15,7 @@ const BADGE_COLOR: { [semester: number]: string } = {
 
 type Props = {
   className?: string;
-  semesters: ReadonlyArray<Semester>;
+  semesters: readonly Semester[];
 };
 
 export default function(props: Props) {

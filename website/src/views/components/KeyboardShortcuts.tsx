@@ -18,7 +18,7 @@ import Modal from './Modal';
 import styles from './KeyboardShortcuts.scss';
 
 type Props = RouteComponentProps & {
-  dispatch: Dispatch<FSA, StoreState>;
+  dispatch: Dispatch<FSA>;
   theme: ThemeId;
   mode: Mode;
 };
