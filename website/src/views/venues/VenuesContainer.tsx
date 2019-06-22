@@ -138,7 +138,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
   onAvailabilityUpdate = (searchOptions: VenueSearchOptions) => {
     if (!isEqual(searchOptions, this.state.searchOptions)) {
       this.setState({
-        searchOptions,
+        searchOptions: clampClassDuration(searchOptions),
         // eslint-disable-next-line react/no-unused-state
         pristineSearchOptions: false, // user changed searchOptions
       });
@@ -167,20 +167,12 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
 
   getHighlightPeriod(): TimePeriod | undefined {
     const { isAvailabilityEnabled, searchOptions } = this.state;
-    const clampedSearchOptions = clampClassDuration(searchOptions);
-
     if (!isAvailabilityEnabled) return undefined;
 
-    const day = clampedSearchOptions.day;
-    const startTime = convertIndexToTime(clampedSearchOptions.time * 2);
-    const endTime = convertIndexToTime(
-      2 * (clampedSearchOptions.time + clampedSearchOptions.duration),
-    );
-
     return {
-      day,
-      startTime,
-      endTime,
+      day: searchOptions.day,
+      startTime: convertIndexToTime(searchOptions.time * 2),
+      endTime: convertIndexToTime(2 * (searchOptions.time + searchOptions.duration)),
     };
   }
 
@@ -223,7 +215,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
           <div className={styles.availabilitySearch}>
             <AvailabilitySearch
               isEnabled={isAvailabilityEnabled}
-              searchOptions={clampClassDuration(searchOptions)}
+              searchOptions={searchOptions}
               onUpdate={this.onAvailabilityUpdate}
             />
           </div>

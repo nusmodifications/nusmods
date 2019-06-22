@@ -8,6 +8,7 @@ import { SCHOOLDAYS } from './timify';
 // The first and last starting time of lessons
 export const FIRST_CLASS_HOUR = 8;
 export const LAST_CLASS_HOUR = 22;
+export const SCHOOL_CLOSE_HOUR = 24;
 
 // Array of [0, 30, 100, 130, 200, 230, ...], used to create time strings at half hour intervals
 // eg. 900 + hourDifference[2] // (9am + 2 * 30 minutes = 10am)
@@ -61,8 +62,8 @@ export function filterAvailability(
  */
 export function clampClassDuration(searchOptions: VenueSearchOptions): VenueSearchOptions {
   return produce(searchOptions, (draft) => {
-    draft.duration =
-      draft.time - clamp(draft.time + draft.duration, FIRST_CLASS_HOUR, LAST_CLASS_HOUR);
+    const newEndTime = clamp(draft.time + draft.duration, FIRST_CLASS_HOUR, SCHOOL_CLOSE_HOUR);
+    draft.duration = newEndTime - draft.time;
   });
 }
 
