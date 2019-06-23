@@ -18,7 +18,6 @@ describe(ModuleFinderPagerButton, () => {
     expect(componentWrapper.exists('button')).toBe(true);
     const button = componentWrapper.find('button');
     expect(button.hasClass(styles.active)).toBe(false);
-    expect(button.hasClass(styles.disabled)).toBe(false);
     expect(button.prop('disabled')).toBeFalsy();
   });
 
@@ -31,7 +30,6 @@ describe(ModuleFinderPagerButton, () => {
   test('should render disabled button', () => {
     const componentWrapper = shallow(<ModuleFinderPagerButton {...defaultProps} disabled />);
     const button = componentWrapper.find('button');
-    expect(button.hasClass(styles.disabled)).toBe(true);
     expect(button.prop('disabled')).toBe(true);
   });
 
