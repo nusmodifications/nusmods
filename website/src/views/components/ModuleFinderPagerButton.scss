@@ -6,8 +6,8 @@
   font-weight: bold;
   color: inherit;
 
-  &.disabled {
-    opacity: 0;
+  &:disabled {
+    visibility: hidden;
   }
 
   &.active {
