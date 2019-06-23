@@ -1,4 +1,18 @@
-dockerize2-elg.2.nusmods.com {
+# TODO: Main {$SERVER_DOMAIN} entry
+
+# TODO: modsn.us
+
+# TODO: api
+
+# TODO: analytics
+
+# TODO: launch
+
+# TODO: v2
+
+# Deploy previews
+
+dockerize-elg.{$SERVER_DOMAIN} {
   gzip
   push
   proxy / :8022 {
@@ -7,3 +21,33 @@ dockerize2-elg.2.nusmods.com {
     max_fails 3
   }
 }
+
+# Proxies
+
+github.{$SERVER_DOMAIN} {
+  gzip
+  push
+  cors
+  cache {
+    default_max_age 1h
+  }
+  proxy /repo https://api.github.com/repos/nusmodifications/nusmods {
+    without /repo
+  }
+  proxy /venues https://raw.githubusercontent.com/nusmodifications/nusmods/master/website/src/data/venues.json {
+    without /venues
+  }
+}
+
+nextbus.{$SERVER_DOMAIN} {
+  gzip
+  push
+  cors
+  cache {
+    default_max_age 30s
+  }
+  proxy /arrival https://nextbus.comfortdelgro.com.sg/eventservice.svc/shuttleservice {
+    without /arrival
+  }
+}
+

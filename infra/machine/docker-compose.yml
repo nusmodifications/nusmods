@@ -3,6 +3,8 @@ services:
   machine-proxy:
     image: abiosoft/caddy:no-stats
     network_mode: host
+    environment:
+      - SERVER_DOMAIN=${SERVER_DOMAIN:?SERVER_DOMAIN}
     volumes:
       - ./Caddyfile:/etc/Caddyfile:ro
       - ./logs:/logs
