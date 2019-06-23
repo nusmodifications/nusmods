@@ -10,7 +10,7 @@ const parts = require('./webpack.parts');
 
 const developmentConfig = merge([
   parts.setFreeVariable('process.env.NODE_ENV', 'development'),
-  parts.setFreeVariable('process.env.DEBUG_WORKBOX', process.env.DEBUG_WORKBOX),
+  parts.setFreeVariable('process.env.DEBUG_SERVICE_WORKER', process.env.DEBUG_SERVICE_WORKER),
   commonConfig,
   {
     mode: 'development',
@@ -57,7 +57,6 @@ const developmentConfig = merge([
       }),
     ],
   },
-  process.env.DEBUG_WORKBOX ? parts.workbox() : {},
   parts.lintJavaScript({
     include: parts.PATHS.src,
   }),
