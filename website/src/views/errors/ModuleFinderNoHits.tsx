@@ -16,7 +16,7 @@ export interface NoHitsDisplayProps {
   filtersCount: number;
 }
 
-const ModuleFinderNoHits = ({
+const ModuleFinderNoHits: React.FC<NoHitsDisplayProps> = ({
   noResultsLabel,
   resetFiltersFn,
   setSuggestionFn,
@@ -24,7 +24,7 @@ const ModuleFinderNoHits = ({
   query,
   filtersCount,
   translate,
-}: NoHitsDisplayProps) => {
+}) => {
   return (
     <>
       <Warning message={noResultsLabel} />

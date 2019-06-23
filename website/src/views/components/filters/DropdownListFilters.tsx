@@ -22,7 +22,12 @@ type DisplayProps = {
 };
 
 // Use a native select for mobile devices
-const MobileFilter = ({ allItems, onSelectItem, showCount, placeholder }: DisplayProps) => (
+const MobileFilter: React.FC<DisplayProps> = ({
+  allItems,
+  onSelectItem,
+  showCount,
+  placeholder,
+}) => (
   <select
     className="form-control"
     onChange={(evt) => {
@@ -43,7 +48,12 @@ const MobileFilter = ({ allItems, onSelectItem, showCount, placeholder }: Displa
 );
 
 // Use a search-select combo dropdown on desktop
-const DesktopFilter = ({ allItems, onSelectItem, showCount, placeholder }: DisplayProps) => {
+const DesktopFilter: React.FC<DisplayProps> = ({
+  allItems,
+  onSelectItem,
+  showCount,
+  placeholder,
+}) => {
   const [isFocused, setIsFocused] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const searchInput = useRef<HTMLInputElement>(null);
@@ -157,14 +167,14 @@ const DesktopFilter = ({ allItems, onSelectItem, showCount, placeholder }: Displ
   );
 };
 
-export const DropdownListFiltersComponent = ({
+export const DropdownListFiltersComponent: React.FC<Props> = ({
   items,
   selectedItems,
   toggleItem,
   showCount,
   translate,
   matchBreakpoint,
-}: Props) => {
+}) => {
   const [searchedItems, setSearchedFilters] = useState(selectedItems);
 
   const onSelectItem = (selectedItem: string) => {

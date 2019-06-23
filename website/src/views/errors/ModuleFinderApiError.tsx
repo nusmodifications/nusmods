@@ -8,7 +8,7 @@ type NoHitsErrorDisplayProps = {
   resetSearchFn: () => void;
 };
 
-const ModuleFinderApiError = ({ resetSearchFn }: NoHitsErrorDisplayProps) => {
+const ModuleFinderApiError: React.FC<NoHitsErrorDisplayProps> = ({ resetSearchFn }) => {
   return <ApiError dataName="module information" retry={resetSearchFn} />;
 };
 
