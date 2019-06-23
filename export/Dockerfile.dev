@@ -28,4 +28,4 @@ WORKDIR /home/node/app/export
 COPY export/package.json export/yarn.lock ./
 
 ENTRYPOINT ["dumb-init", "--"]
-CMD yarn && yarn dev
+CMD yarn && yarn dev --exitcrash
