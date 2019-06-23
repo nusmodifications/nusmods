@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: website/Dockerfile.dev
       args:
-        - GIT_COMMIT_HASH=DEVELOP
+        - GIT_COMMIT_HASH
         - DATA_API_BASE_URL=/api
     volumes:
       - ~/.cache/yarn:/home/node/.cache/yarn
@@ -48,7 +48,7 @@ services:
   proxy:
     image: abiosoft/caddy:no-stats
     ports:
-      - 8080:8080
+      - 8080:2015
     volumes:
       - ./infra/instance/Caddyfile:/etc/Caddyfile
       - ./infra/instance/logs:/logs

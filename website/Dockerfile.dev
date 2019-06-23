@@ -4,4 +4,10 @@ RUN mkdir -p /home/node/app
 
 WORKDIR /home/node/app/website
 
+ARG DATA_API_BASE_URL
+ENV DATA_API_BASE_URL $DATA_API_BASE_URL
+
+ARG GIT_COMMIT_HASH
+ENV GIT_COMMIT_HASH $GIT_COMMIT_HASH
+
 CMD yarn && yarn start:export & yarn start

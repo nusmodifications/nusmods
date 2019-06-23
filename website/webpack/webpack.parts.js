@@ -269,7 +269,7 @@ exports.appVersion = () => {
         .toString()
         .trim();
   } catch (e) {
-    commitHash = '1234567';
+    commitHash = 'UNSET';
   }
   // Version format: <YYYYMMDD date>-<7-char hash substring>
   const versionStr = commitHash && `${moment().format('YYYYMMDD')}-${commitHash.substring(0, 7)}`;
