@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === 'production') {
   ) {
     throw new Error(
       'moduleData path does not exist or is not a directory - check config.js. ' +
-        'This should be the path to the api/<academic year>/modules folder.',
+        'This should be the path to the api/v2/<academic year>/modules folder.',
     );
   }
 

@@ -7,9 +7,6 @@ const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
 
-const nodeEnvStr = process.env.NODE_ENV || 'production';
-const isProd = nodeEnvStr === 'production';
-
 const cssExtractPlugin = new MiniCssExtractPlugin({
   filename: '[contenthash].css',
   chunkFilename: '[contenthash].css',
@@ -18,7 +15,7 @@ const cssExtractPlugin = new MiniCssExtractPlugin({
 const source = (file) => path.join('timetable-export', file);
 
 const productionConfig = merge([
-  parts.setFreeVariable('process.env.NODE_ENV', nodeEnvStr),
+  parts.setFreeVariable('process.env.NODE_ENV', process.env.NODE_ENV || 'production'),
   commonConfig,
   {
     // Override common's entry point
@@ -32,7 +29,7 @@ const productionConfig = merge([
     output: {
       // The build folder.
       path: parts.PATHS.buildTimetable,
-      filename: isProd ? '[chunkhash].js' : '[hash].js',
+      filename: '[chunkhash].js',
       // This is used for require.ensure. The setup
       // will work without but this is useful to set.
       chunkFilename: '[chunkhash].js',

@@ -16,9 +16,8 @@ async function setViewport(page, options = {}) {
 }
 
 async function launch() {
-  const executablePath = config.chromeExecutable ? config.chromeExecutable : undefined;
   const browser = await puppeteer.launch({
-    executablePath,
+    executablePath: config.chromeExecutable,
     devtools: !!process.env.DEVTOOLS,
     args: [
       '--headless',
