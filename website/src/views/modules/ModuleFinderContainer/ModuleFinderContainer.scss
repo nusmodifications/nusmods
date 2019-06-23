@@ -1,0 +1,27 @@
+@import '~styles/utils/modules-entry';
+
+div.modulesPageContainer {
+  max-width: 75rem;
+  margin-left: 0;
+  animation-name: $page-entering-animation;
+}
+
+.modulesList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  mark {
+    border-bottom: 1px solid;
+  }
+}
+
+.modulePageDivider {
+  width: 100%;
+  padding: 0.6rem;
+  margin: 1rem 0;
+  border-bottom: 1px solid var(--gray-lighter);
+  font-size: $font-size-sm;
+  text-align: right;
+  color: var(--gray);
+}

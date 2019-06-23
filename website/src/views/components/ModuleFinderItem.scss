@@ -1,0 +1,10 @@
+@import '~styles/utils/modules-entry';
+
+.modulesItem {
+  margin-bottom: 3rem;
+
+  .modulesTitle {
+    margin-top: 0.15rem; // align baseline with semester switcher
+    font-size: $font-size-lg;
+  }
+}
