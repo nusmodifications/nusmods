@@ -2,6 +2,8 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { noop } from 'lodash';
 
+import Tooltip from 'views/components/Tooltip';
+
 import ModuleFinderPagerButton from './ModuleFinderPagerButton';
 import styles from './ModuleFinderPagerButton.scss';
 
@@ -31,6 +33,16 @@ describe(ModuleFinderPagerButton, () => {
     const button = componentWrapper.find('button');
     expect(button.hasClass(styles.disabled)).toBe(true);
     expect(button.prop('disabled')).toBe(true);
+  });
+
+  test('should only render tooltip in appropriate conditions', () => {
+    const componentWrapperWithoutTitle = shallow(<ModuleFinderPagerButton {...defaultProps} />);
+    expect(componentWrapperWithoutTitle.exists(Tooltip)).toBe(false);
+
+    const componentWrapperWithTitle = shallow(
+      <ModuleFinderPagerButton {...defaultProps} tooltipTitle="test" />,
+    );
+    expect(componentWrapperWithTitle.exists(Tooltip)).toBe(true);
   });
 
   test('should respond to clicks', () => {

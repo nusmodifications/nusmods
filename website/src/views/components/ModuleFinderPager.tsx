@@ -71,35 +71,36 @@ export const ModuleFinderPagerComponent: React.FC<Props> = ({
   return (
     <nav aria-label="Module search result pagination">
       <ul className={classnames('pagination justify-content-center', styles.paginationList)}>
-        <ModuleFinderPagerButton disabled={selectedPage === FIRST_PAGE_INDEX} onClick={onGoToFirst}>
-          <span aria-hidden="true">
-            <ChevronsLeft className={styles.svg} />
-          </span>
-          <span className="sr-only">First</span>
+        <ModuleFinderPagerButton
+          tooltipTitle="First page"
+          disabled={selectedPage === FIRST_PAGE_INDEX}
+          onClick={onGoToFirst}
+        >
+          <ChevronsLeft className={styles.svg} />
         </ModuleFinderPagerButton>
         <ModuleFinderPagerButton
+          tooltipTitle="Previous page"
           disabled={selectedPage === FIRST_PAGE_INDEX}
           onClick={onGoToPrevious}
         >
-          <span aria-hidden="true">
-            <ChevronLeft className={styles.svg} />
-          </span>
-          <span className="sr-only">Previous</span>
+          <ChevronLeft className={styles.svg} />
         </ModuleFinderPagerButton>
 
         {matchBreakpoint ? renderMobilePages() : renderDesktopPages()}
 
-        <ModuleFinderPagerButton disabled={selectedPage === totalNumPages} onClick={onGoToNext}>
-          <span aria-hidden="true">
-            <ChevronRight className={styles.svg} />
-          </span>
-          <span className="sr-only">Next</span>
+        <ModuleFinderPagerButton
+          tooltipTitle="Next page"
+          disabled={selectedPage === totalNumPages}
+          onClick={onGoToNext}
+        >
+          <ChevronRight className={styles.svg} />
         </ModuleFinderPagerButton>
-        <ModuleFinderPagerButton disabled={selectedPage === totalNumPages} onClick={onGoToLast}>
-          <span aria-hidden="true">
-            <ChevronsRight className={styles.svg} />
-          </span>
-          <span className="sr-only">Last</span>
+        <ModuleFinderPagerButton
+          tooltipTitle="Last page"
+          disabled={selectedPage === totalNumPages}
+          onClick={onGoToLast}
+        >
+          <ChevronsRight className={styles.svg} />
         </ModuleFinderPagerButton>
       </ul>
     </nav>
