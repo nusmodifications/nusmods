@@ -65,11 +65,7 @@ export const ModuleFinderPagerComponent: React.FC<Props> = ({
   }
 
   function renderMobilePages() {
-    return (
-      <span className={styles.mobilePages}>
-        Page {selectedPage} of {totalNumPages}
-      </span>
-    );
+    return <span className={styles.mobilePages}>Page {selectedPage}</span>;
   }
 
   return (
