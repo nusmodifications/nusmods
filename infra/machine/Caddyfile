@@ -33,9 +33,13 @@ github.{$SERVER_DOMAIN} {
   }
   proxy /repo https://api.github.com/repos/nusmodifications/nusmods {
     without /repo
+    header_upstream content-type application/json
+    header_upstream user-agent nusmodifications
   }
   proxy /venues https://raw.githubusercontent.com/nusmodifications/nusmods/master/website/src/data/venues.json {
     without /venues
+    header_upstream content-type application/json
+    header_upstream user-agent nusmodifications
   }
 }
 
