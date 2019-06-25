@@ -2,7 +2,15 @@
 
 # TODO: modsn.us
 
-# TODO: api
+# api.nusmods.com
+
+api.{$SERVER_DOMAIN} {
+  gzip
+  push
+  cors
+  root /root/apidata
+  browse
+}
 
 # TODO: analytics
 

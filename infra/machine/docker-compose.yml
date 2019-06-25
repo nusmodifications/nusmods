@@ -9,4 +9,5 @@ services:
       - ./Caddyfile:/etc/Caddyfile:ro
       - ./logs:/logs
       - ~/.caddy:/root/.caddy # Location to store certificates
+      - ~/api.nusmods.com:/root/apidata:ro # Place API data in ~/api.nusmods.com
     restart: on-failure
