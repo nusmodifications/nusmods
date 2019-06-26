@@ -33,11 +33,14 @@ services:
       - HOST=0.0.0.0
     restart: on-failure
   proxy:
-    image: abiosoft/caddy:no-stats
+    image: abiosoft/caddy:php-no-stats
     ports:
       - ${EXPOSED_PORT}:2015
+    env_file:
+      - ./infra/instance/proxy.env
     volumes:
       - ./infra/instance/Caddyfile:/etc/Caddyfile
       - ./infra/instance/logs:/logs
       - ./infra/instance/.caddy:/root/.caddy
+      - ./infra/instance/short_url.php:/srv/short_url.php
     restart: on-failure

@@ -25,8 +25,12 @@
     without /api
   }
 
-  # Proxy the short_url.php endpoint because it does not support CORS
-  proxy /short_url.php https://nusmods.com/short_url.php
+  fastcgi /short_url.php 127.0.0.1:9000 php {
+    env YOURLS_USER {$YOURLS_USER}
+    env YOURLS_PASS {$YOURLS_PASS}
+  }
 
   redir /news https://blog.nusmods.com 301
+
+  on startup php-fpm7
 }

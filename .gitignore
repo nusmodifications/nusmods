@@ -15,6 +15,9 @@ build/
 cache/
 .cache-loader
 
+# Env files
+infra/instance/proxy.env
+
 # Rest adapted from https://www.gitignore.io/api/vim,node,linux,macos,emacs,windows,ansible,database,webstorm,visualstudiocode
 
 ### Ansible ###
