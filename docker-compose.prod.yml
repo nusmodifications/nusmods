@@ -1,0 +1,46 @@
+#
+# NOTE: You probably don't want to start this directly.
+# Use infra/instance/start-prod.sh to start NUSMods in production.
+#
+version: '3.7'
+services:
+  website:
+    build:
+      context: .
+      dockerfile: website/Dockerfile.prod
+      args:
+        - GIT_COMMIT_HASH
+        - DATA_API_BASE_URL=/api
+    expose:
+      - 8080
+      - 8081
+    restart: on-failure
+  export:
+    build:
+      context: .
+      dockerfile: export/Dockerfile.prod
+    env_file:
+      - export/.env
+    expose:
+      - 8082
+    depends_on:
+      - website
+    security_opt:
+      - seccomp="infra/instance/chromium.seccomp.json"
+    environment:
+      - NODE_ENV=production
+      - PORT=8082
+      - HOST=0.0.0.0
+    restart: on-failure
+  proxy:
+    image: abiosoft/caddy:php-no-stats
+    ports:
+      - ${EXPOSED_PORT}:2015
+    env_file:
+      - ./infra/instance/proxy.env
+    volumes:
+      - ./infra/instance/Caddyfile:/etc/Caddyfile
+      - ./infra/instance/logs:/logs
+      - ./infra/instance/.caddy:/root/.caddy
+      - ./infra/instance/short_url.php:/srv/short_url.php
+    restart: on-failure

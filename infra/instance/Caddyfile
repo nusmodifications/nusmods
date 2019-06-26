@@ -1,0 +1,36 @@
+:2015 {
+  log /logs/access.log
+  errors /logs/error.log
+
+  push
+
+  proxy / website:8080 {
+    transparent
+    websocket
+    max_fails 3
+  }
+
+  proxy /export/ export:8082 {
+    transparent
+    websocket
+    max_fails 3
+    without /export
+  }
+
+  # Put proxy in the reverse proxy so that we don't create unnecessary
+  # redirects (which need the JS bundle to be loaded before React Router kicks
+  # in).
+  # TODO: Replace with file hosting in prod
+  proxy /api https://api.nusmods.com/ {
+    without /api
+  }
+
+  fastcgi /short_url.php 127.0.0.1:9000 php {
+    env YOURLS_USER {$YOURLS_USER}
+    env YOURLS_PASS {$YOURLS_PASS}
+  }
+
+  redir /news https://blog.nusmods.com 301
+
+  on startup php-fpm7
+}
