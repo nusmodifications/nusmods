@@ -1,7 +1,9 @@
 version: '3.7'
 services:
   machine-proxy:
-    image: abiosoft/caddy:no-stats
+    build:
+      context: .
+      dockerfile: ./Dockerfile-proxy
     network_mode: host
     environment:
       - SERVER_DOMAIN=${SERVER_DOMAIN:?SERVER_DOMAIN}

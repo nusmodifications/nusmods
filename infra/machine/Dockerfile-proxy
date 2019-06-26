@@ -1,0 +1,5 @@
+FROM abiosoft/caddy:no-stats
+
+# Add mailcap for mime types
+# See: https://github.com/mholt/caddy/issues/1050#issuecomment-484013773
+RUN apk --no-cache add mailcap
