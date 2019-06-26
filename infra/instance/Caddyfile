@@ -27,4 +27,6 @@
 
   # Proxy the short_url.php endpoint because it does not support CORS
   proxy /short_url.php https://nusmods.com/short_url.php
+
+  redir /news https://blog.nusmods.com 301
 }
