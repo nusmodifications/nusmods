@@ -1,16 +1,24 @@
-# TODO: Main {$SERVER_DOMAIN} entry
+{$SERVER_DOMAIN} {
+  gzip
+  push
+  proxy / :8022 {
+    transparent
+    websocket
+    max_fails 3
+  }
+}
 
 # TODO: modsn.us
 
 # api.nusmods.com
-
-api.{$SERVER_DOMAIN} {
-  gzip
-  push
-  cors
-  root /root/apidata
-  browse
-}
+# This config works, but we do not plan to serve API data from this server.
+# api.{$SERVER_DOMAIN} {
+#   gzip
+#   push
+#   cors
+#   root /root/apidata
+#   browse
+# }
 
 # TODO: analytics
 
@@ -20,15 +28,15 @@ api.{$SERVER_DOMAIN} {
 
 # Deploy previews
 
-dockerize-elg.{$SERVER_DOMAIN} {
-  gzip
-  push
-  proxy / :8022 {
-    transparent
-    websocket
-    max_fails 3
-  }
-}
+# dockerize-elg.{$SERVER_DOMAIN} {
+#   gzip
+#   push
+#   proxy / :8022 {
+#     transparent
+#     websocket
+#     max_fails 3
+#   }
+# }
 
 # Proxies
 
@@ -62,4 +70,3 @@ nextbus.{$SERVER_DOMAIN} {
     without /arrival
   }
 }
-
