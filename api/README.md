@@ -1,5 +1,7 @@
 # GraphQL Server
 
+**Note:** This server is a work in progress and is _not_ used in production. To access the API currently used by the nusmods.com website, please head to https://api.nusmods.com/v2.
+
 This project provides school data such as lessons and modules through an [API](https://www.mulesoft.com/resources/api/what-is-an-api).
 
 **Primary Goals**
@@ -22,9 +24,21 @@ This project provides school data such as lessons and modules through an [API](h
 
 ## Setting up
 
-1. Run `docker-compose up`
+Pull and build docker images to run in later steps.
 
-This process runs 3 things.
+```
+docker-compose build
+```
+
+## Development
+
+### Run docker images
+
+```
+docker-compose up
+```
+
+This command runs 3 docker images.
 
 The first is a SQL database, which stores all the data.
 
@@ -32,11 +46,38 @@ The second is a hasura instance, which sits between clients and the database to 
 
 The third is an authentication server, which authorizes clients to talk to the hasura instance. (WIP)
 
-## Development
-
-The hasura admin interface is available on http://localhost:3000. The password for it is "development", which you can change via the `.env` file.
+The hasura admin interface is available on http://localhost:8080. The password for it is "development", which you can change via the `.env` file.
 
 You may use the GraphiQL interface to explore the GraphQL schema and make requests to view the data.
+
+### Shutting down
+
+```
+docker-compose down
+```
+
+### Removing database volume
+
+This is useful for testing migrations by nuking the database.
+
+```sh
+docker-compose down --volumes
+```
+
+### Accessing hasura console
+
+From your computer:
+
+```
+docker-compose up
+docker-compose exec graphql-engine sh
+```
+
+From inside the docker container:
+
+```
+/bin/hasura-cli [command]
+```
 
 ## Deep Dive
 
