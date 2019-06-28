@@ -1506,16 +1506,16 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
-"@packtracker/webpack-plugin@2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@packtracker/webpack-plugin/-/webpack-plugin-2.0.1.tgz#bd188431f724b759231f844fad031b20bb4616f3"
-  integrity sha512-OjzXfDsEjQuxLqPpSwjDIktIDBV7ygw58j2vNk41cJo/lDS/aPuBwKCmcbW7PraL5y+gQ0yxurVSKdda9t5LgA==
+"@packtracker/webpack-plugin@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@packtracker/webpack-plugin/-/webpack-plugin-2.1.0.tgz#57c1020c0d5d353f688d21b85c723d577a31f0e5"
+  integrity sha512-H5UddXmJDsKEiVTAOEGiL3LVhj4A/q4LPrXSUXJFCaKRcHGGhO+nfzTiLgewbV3cQdPDGNbtyN9ZFiHMe8Y9bg==
   dependencies:
     lodash "^4.17.11"
     minimist "^1.2.0"
     omit-deep "^0.3.0"
     tiny-json-http "^7.0.2"
-    webpack-bundle-analyzer "^3.0.4"
+    webpack-bundle-analyzer "^3.3.2"
 
 "@sentry/browser@5.4.3":
   version "5.4.3"
@@ -12993,7 +12993,7 @@ webidl-conversions@^4.0.2:
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-4.0.2.tgz#a855980b1f0b6b359ba1d5d9fb39ae941faa63ad"
   integrity sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg==
 
-webpack-bundle-analyzer@^3.0.4:
+webpack-bundle-analyzer@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/webpack-bundle-analyzer/-/webpack-bundle-analyzer-3.3.2.tgz#3da733a900f515914e729fcebcd4c40dde71fc6f"
   integrity sha512-7qvJLPKB4rRWZGjVp5U1KEjwutbDHSKboAl0IfafnrdXMrgC0tOtZbQD6Rw0u4cmpgRN4O02Fc0t8eAT+FgGzA==
