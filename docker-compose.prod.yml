@@ -49,7 +49,7 @@ services:
       - 9200
     restart: on-failure
   kibana:
-    image: docker.elastic.co/kibana/kibana:6.7.2
+    image: docker.elastic.co/kibana/kibana:6.8.1
     expose:
       - 5601
     environment:
