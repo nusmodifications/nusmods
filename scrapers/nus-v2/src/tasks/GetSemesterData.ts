@@ -7,6 +7,7 @@ import {
   FacultyCodeMap,
   SemesterModule,
   SemesterModuleData,
+  WritableSemesterModuleData,
 } from '../types/mapper';
 import { NUSModuleAttributes, Semester, Workload } from '../types/modules';
 import { Task } from '../types/tasks';
@@ -250,29 +251,25 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
       const module = cleanModuleInfo(rawModule);
 
       const timetable = timetables[moduleCode];
-      if (!timetable) {
-        // Modules without timetable lessons are not offered this semester.
-        // Store the module anyway so that we know it exists, but don't set
-        // semesterData.
-        semesterModuleData.push({
-          module,
-          moduleCode,
-        });
-        return;
-      }
 
-      const examInfo = exams[moduleCode] || {};
-      const semesterData = {
-        semester,
-        timetable,
-        ...examInfo,
+      const semesterModuleDatum: WritableSemesterModuleData = {
+        module,
+        moduleCode,
       };
 
-      semesterModuleData.push({
-        module,
-        semesterData,
-        moduleCode,
-      });
+      // Modules without timetable lessons are not offered this semester.
+      // Store the module anyway so that we know it exists, but don't set
+      // semesterData.
+      if (timetable) {
+        const examInfo = exams[moduleCode] || {};
+        semesterModuleDatum.semesterData = {
+          semester,
+          timetable,
+          ...examInfo,
+        };
+      }
+
+      semesterModuleData.push(semesterModuleDatum);
     });
 
     // Log modules that have timetables but no module info

@@ -15,6 +15,7 @@ import config from '../config';
 import { Logger } from '../services/logger';
 import generatePrereqTree from '../services/requisite-tree';
 import { union } from '../utils/set';
+import { isModuleOffered } from '../utils/data';
 
 interface Input {
   semesterData: SemesterModuleData[][];
@@ -82,7 +83,7 @@ export function combineModules(
       const { moduleCode, semesterData } = semesterModule;
 
       // 2. Create the merged module data
-      const module = {
+      const module: ModuleWithoutTree = {
         ...semesterModule.module,
         aliases: aliases[moduleCode],
         semesterData: semesterData ? [semesterData] : [],
@@ -198,8 +199,9 @@ export default class CollateModules extends BaseTask implements Task<Input, Outp
     // Save final combined module to their individual files
     await Promise.all(modules.map((module) => this.io.module(module.moduleCode, module)));
 
-    // Save condensed versions of the same information for searching
-    const moduleCondensed = modules.map(getModuleCondensed);
+    // Save condensed versions of the same information for searching. For module list we only save
+    // offered modules so that they don't go into the add module dropdown
+    const moduleCondensed = modules.filter(isModuleOffered).map(getModuleCondensed);
     const moduleInfo = modules.map(getModuleInfo);
 
     await Promise.all([
