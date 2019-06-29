@@ -33,7 +33,7 @@ services:
       - HOST=0.0.0.0
     restart: on-failure
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.7.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.1
     environment:
       - discovery.type=single-node # Bypass bootstrap checks in single-node dev cluster. See: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-dev-mode
       - bootstrap.memory_lock=true
