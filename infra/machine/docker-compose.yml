@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  machine-proxy:
+    build:
+      context: .
+      dockerfile: ./Dockerfile-proxy
+    network_mode: host
+    environment:
+      - SERVER_DOMAIN=${SERVER_DOMAIN:?SERVER_DOMAIN}
+    volumes:
+      - ./Caddyfile:/etc/Caddyfile:ro
+      - ./logs:/logs
+      - ~/.caddy:/root/.caddy # Location to store certificates
+      - ~/api.nusmods.com:/root/apidata:ro # Place API data in ~/api.nusmods.com
+    restart: on-failure

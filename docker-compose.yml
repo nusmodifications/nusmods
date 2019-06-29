@@ -1,0 +1,84 @@
+version: '3.7'
+services:
+  website:
+    build:
+      context: .
+      dockerfile: website/Dockerfile.dev
+      args:
+        - GIT_COMMIT_HASH
+        - DATA_API_BASE_URL=/api
+    volumes:
+      - ~/.cache/yarn:/home/node/.cache/yarn
+      - ./website:/home/node/app/website
+      - ./packages:/home/node/app/packages
+      - ./.prettierrc.js:/home/node/app/.prettierrc.js
+    expose:
+      - 8080
+      - 8081
+    environment:
+      - NODE_ENV=development
+      - PORT=8080
+      - HOST=0.0.0.0
+    user: ${CURRENT_UID:-1000:1000}
+    restart: on-failure
+  export:
+    build:
+      context: .
+      dockerfile: export/Dockerfile.dev
+    env_file:
+      - export/.env
+    volumes:
+      - ~/.cache/yarn:/home/node/.cache/yarn
+      - ./export:/home/node/app/export
+      - ./.prettierrc.js:/home/node/app/.prettierrc.js
+    expose:
+      - 8082
+    depends_on:
+      - website
+    security_opt:
+      - seccomp="infra/instance/chromium.seccomp.json"
+    environment:
+      - NODE_ENV=development
+      - PORT=8082
+      - HOST=0.0.0.0
+      - PAGE=http://website:8081
+      - CHROME_EXECUTABLE=/usr/bin/chromium-browser
+    user: ${CURRENT_UID:-1000:1000}
+    restart: on-failure
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.1
+    environment:
+      - discovery.type=single-node # Bypass bootstrap checks in single-node dev cluster. See: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-dev-mode
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+    volumes:
+      - ./infra/instance/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - esdata01:/usr/share/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    expose:
+      - 9200
+    restart: on-failure
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.7.2
+    expose:
+      - 5601
+    environment:
+      - SERVER_BASEPATH=/kibana
+      - SERVER_REWRITEBASEPATH=true
+    restart: on-failure
+  proxy:
+    image: abiosoft/caddy:php-no-stats
+    ports:
+      - 8080:2015
+    env_file:
+      - ./infra/instance/proxy.env
+    volumes:
+      - ./infra/instance/Caddyfile:/etc/Caddyfile
+      - ./infra/instance/logs:/logs
+      - ./infra/instance/short_url.php:/srv/short_url.php
+    restart: on-failure
+volumes:
+  esdata01:

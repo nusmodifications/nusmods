@@ -1,0 +1,72 @@
+{$SERVER_DOMAIN} {
+  gzip
+  push
+  proxy / :8022 {
+    transparent
+    websocket
+    max_fails 3
+  }
+}
+
+# TODO: modsn.us
+
+# api.nusmods.com
+# This config works, but we do not plan to serve API data from this server.
+# api.{$SERVER_DOMAIN} {
+#   gzip
+#   push
+#   cors
+#   root /root/apidata
+#   browse
+# }
+
+# TODO: analytics
+
+# TODO: launch
+
+# TODO: v2
+
+# Deploy previews
+
+# dockerize-elg.{$SERVER_DOMAIN} {
+#   gzip
+#   push
+#   proxy / :8022 {
+#     transparent
+#     websocket
+#     max_fails 3
+#   }
+# }
+
+# Proxies
+
+github.{$SERVER_DOMAIN} {
+  gzip
+  push
+  cors
+  cache {
+    default_max_age 1h
+  }
+  proxy /repo https://api.github.com/repos/nusmodifications/nusmods {
+    without /repo
+    header_upstream content-type application/json
+    header_upstream user-agent nusmodifications
+  }
+  proxy /venues https://raw.githubusercontent.com/nusmodifications/nusmods/master/website/src/data/venues.json {
+    without /venues
+    header_upstream content-type application/json
+    header_upstream user-agent nusmodifications
+  }
+}
+
+nextbus.{$SERVER_DOMAIN} {
+  gzip
+  push
+  cors
+  cache {
+    default_max_age 30s
+  }
+  proxy /arrival https://nextbus.comfortdelgro.com.sg/eventservice.svc/shuttleservice {
+    without /arrival
+  }
+}

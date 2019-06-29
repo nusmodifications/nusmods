@@ -69,7 +69,7 @@ export default function withVenueLocations<Props extends VenueLocations>(
 
     // eslint-disable-next-line react/prop-types
     render({ Component, venueLocations }, props: Omit<Props, keyof VenueLocations>) {
-      return <Component venueLocations={venueLocations} {...props as Props} />;
+      return <Component venueLocations={venueLocations} {...(props as Props)} />;
     },
   });
 }
