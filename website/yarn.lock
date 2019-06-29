@@ -1506,16 +1506,16 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
-"@packtracker/webpack-plugin@2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@packtracker/webpack-plugin/-/webpack-plugin-2.0.1.tgz#bd188431f724b759231f844fad031b20bb4616f3"
-  integrity sha512-OjzXfDsEjQuxLqPpSwjDIktIDBV7ygw58j2vNk41cJo/lDS/aPuBwKCmcbW7PraL5y+gQ0yxurVSKdda9t5LgA==
+"@packtracker/webpack-plugin@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@packtracker/webpack-plugin/-/webpack-plugin-2.1.0.tgz#57c1020c0d5d353f688d21b85c723d577a31f0e5"
+  integrity sha512-H5UddXmJDsKEiVTAOEGiL3LVhj4A/q4LPrXSUXJFCaKRcHGGhO+nfzTiLgewbV3cQdPDGNbtyN9ZFiHMe8Y9bg==
   dependencies:
     lodash "^4.17.11"
     minimist "^1.2.0"
     omit-deep "^0.3.0"
     tiny-json-http "^7.0.2"
-    webpack-bundle-analyzer "^3.0.4"
+    webpack-bundle-analyzer "^3.3.2"
 
 "@sentry/browser@5.4.3":
   version "5.4.3"
@@ -1829,10 +1829,10 @@
   dependencies:
     "@types/geojson" "*"
 
-"@types/lodash@4.14.134":
-  version "4.14.134"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.134.tgz#9032b440122db3a2a56200e91191996161dde5b9"
-  integrity sha512-2/O0khFUCFeDlbi7sZ7ZFRCcT812fAeOLm7Ev4KbwASkZ575TDrDcY7YyaoHdTOzKcNbfiwLYZqPmoC4wadrsw==
+"@types/lodash@4.14.135":
+  version "4.14.135"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.135.tgz#d2607c35dd68f70c2b35ba020c667493dedd8447"
+  integrity sha512-Ed+tSZ9qM1oYpi5kzdsBuOzcAIn1wDW+e8TFJ50IMJMlSopGdJgKAbhHzN6h1E1OfjlGOr2JepzEWtg9NIfoNg==
 
 "@types/lodash@^4.14.77":
   version "4.14.126"
@@ -1938,10 +1938,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-redux@7.1.0":
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-7.1.0.tgz#ed2c90ff192433251bd8a264195529f3613d53e2"
-  integrity sha512-SBJd6oNACDU/taMcDzFfj0mbVa+OI42L8WNvgPsCWiWUNIavPLeX5oA22V64tYIDUc7cGmJjDyLlWeCrqpZu1w==
+"@types/react-redux@7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-7.1.1.tgz#eb01e89cf71cad77df9f442b819d5db692b997cb"
+  integrity sha512-owqNahzE8en/jR4NtrUJDJya3tKru7CIEGSRL/pVS84LtSCdSoT7qZTkrbBd3S4Lp11sAp+7LsvxIeONJVKMnw==
   dependencies:
     "@types/hoist-non-react-statics" "^3.3.0"
     "@types/react" "*"
@@ -4227,10 +4227,10 @@ date-fns@2.0.0-alpha.27:
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.0-alpha.27.tgz#5ecd4204ef0e7064264039570f6e8afbc014481c"
   integrity sha512-cqfVLS+346P/Mpj2RpDrBv0P4p2zZhWWvfY5fuWrXNR/K38HaAGEkeOwb47hIpQP9Jr/TIxjZ2/sNMQwdXuGMg==
 
-date-fns@2.0.0-alpha.36:
-  version "2.0.0-alpha.36"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.0-alpha.36.tgz#e3d106fbc6a7247e951916229b948d47848d6102"
-  integrity sha512-VcO89v0bmgw1V6wVlg9iYiOfyS9/m8T/TDhLBlERkF9NxVEatVr3LcwronDtUGMwGAK6KxUzs2TrOx7TzANMkw==
+date-fns@2.0.0-beta.2:
+  version "2.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.0-beta.2.tgz#ccd556df832ef761baa88c600f53d2e829245999"
+  integrity sha512-4cicZF707RNerr3/Q3CcdLo+3OHMCfrRXE7h5iFgn7AMvX07sqKLxSf8Yp+WJW5bvKr2cy9/PkctXLv4iFtOaA==
 
 date-now@^0.1.4:
   version "0.1.4"
@@ -5570,12 +5570,12 @@ from2@^2.1.0:
     inherits "^2.0.1"
     readable-stream "^2.0.0"
 
-fs-extra@8.0.1:
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-8.0.1.tgz#90294081f978b1f182f347a440a209154344285b"
-  integrity sha512-W+XLrggcDzlle47X/XnS7FXrXu9sDo+Ze9zpndeBxdgv88FHLm1HtmkhEwavruS6koanBjp098rUpHs65EmG7A==
+fs-extra@8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-8.1.0.tgz#49d43c45a88cd9677668cb7be1b46efdb8d2e1c0"
+  integrity sha512-yhlQgA6mnOJUKOsRUFsgJdQCvkKhcz8tlZG5HBQfReYZy46OwLcY+Zia0mtdHsOo9y/hP+CxMN0TU9QxoOtG4g==
   dependencies:
-    graceful-fs "^4.1.2"
+    graceful-fs "^4.2.0"
     jsonfile "^4.0.0"
     universalify "^0.1.0"
 
@@ -5860,7 +5860,12 @@ gonzales-pe@^4.2.3:
   dependencies:
     minimist "1.1.x"
 
-graceful-fs@4.1.15, graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6:
+graceful-fs@4.2.0, graceful-fs@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.0.tgz#8d8fdc73977cb04104721cb53666c1ca64cd328b"
+  integrity sha512-jpSvDPV4Cq/bgtpndIWbI5hmYxhQGHPC4d4cqBPb4DLniCfhJokdXhwhaDuLBGLQdvvRum/UiX6ECVIPvDXqdg==
+
+graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6:
   version "4.1.15"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.15.tgz#ffb703e1066e8a0eeaa4c8b80ba9253eeefbfb00"
   integrity sha512-6uHUhOPEBgQ24HM+r6b/QwWfZq+yiFcipKFrOFiBEnWdy5sdzYoi+pJeQaPI5qOLRFqWmAXUPQNsielzdLoecA==
@@ -12993,7 +12998,7 @@ webidl-conversions@^4.0.2:
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-4.0.2.tgz#a855980b1f0b6b359ba1d5d9fb39ae941faa63ad"
   integrity sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg==
 
-webpack-bundle-analyzer@^3.0.4:
+webpack-bundle-analyzer@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/webpack-bundle-analyzer/-/webpack-bundle-analyzer-3.3.2.tgz#3da733a900f515914e729fcebcd4c40dde71fc6f"
   integrity sha512-7qvJLPKB4rRWZGjVp5U1KEjwutbDHSKboAl0IfafnrdXMrgC0tOtZbQD6Rw0u4cmpgRN4O02Fc0t8eAT+FgGzA==
