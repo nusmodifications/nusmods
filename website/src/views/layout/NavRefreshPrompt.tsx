@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { updateServiceWorker } from 'bootstrapping/service-worker';
+import { updateServiceWorker } from 'bootstrapping/service-worker-manager';
 import classnames from 'classnames';
 import { Refresh } from 'views/components/icons';
 import LoadingSpinner from 'views/components/LoadingSpinner';

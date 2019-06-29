@@ -6,7 +6,8 @@ class NUSModsApi {
    * @returns {string}
    */
   static baseUrl(academicYear = config.academicYear) {
-    return `${config.apiBaseUrl}/v2/${academicYear.replace('/', '-')}`;
+    const apiBaseUrl = process.env.DATA_API_BASE_URL || config.apiBaseUrl;
+    return `${apiBaseUrl}/v2/${academicYear.replace('/', '-')}`;
   }
 
   /**

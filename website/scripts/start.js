@@ -12,11 +12,10 @@ const developmentConfig = require(CONFIG_FILE); // eslint-disable-line import/no
 // host: options.host || '0.0.0.0';
 const DEFAULT_HOST = process.env.HOST || 'localhost';
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 8080;
-const DEFAULT_EXPORT_PORT = parseInt(process.env.EXPORT_PORT, 10) || 3000;
 const PROTOCOL = process.env.HTTPS === 'true' ? 'https' : 'http';
 const OPEN_BROWSER = process.env.OPEN_BROWSER !== '0'; // Open browser unless told otherwise
 
-function runDevServer(host, port, exportPort, protocol, shouldOpenBrowser) {
+function runDevServer(host, port, protocol, shouldOpenBrowser) {
   const compiler = Webpack(developmentConfig);
   const devServer = new WebpackDevServer(compiler, {
     // Enable history API fallback so HTML5 History API based
@@ -46,22 +45,6 @@ function runDevServer(host, port, exportPort, protocol, shouldOpenBrowser) {
       performance: false,
     },
     https: protocol === 'https',
-
-    proxy: {
-      // Proxy the short_url.php endpoint because it does not support CORS
-      '/short_url.php': {
-        target: 'https://nusmods.com',
-        changeOrigin: true,
-      },
-
-      // Proxy export endpoints to the local version for development
-      '/export': {
-        target: `http://${host}:${exportPort}`,
-        pathRewrite: {
-          '^/export': '',
-        },
-      },
-    },
   });
 
   // Launch WebpackDevServer.
@@ -80,4 +63,4 @@ function runDevServer(host, port, exportPort, protocol, shouldOpenBrowser) {
   });
 }
 
-runDevServer(DEFAULT_HOST, DEFAULT_PORT, DEFAULT_EXPORT_PORT, PROTOCOL, OPEN_BROWSER);
+runDevServer(DEFAULT_HOST, DEFAULT_PORT, PROTOCOL, OPEN_BROWSER);

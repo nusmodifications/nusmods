@@ -32,7 +32,7 @@ const buildQuery = (query: string, options: Record<string, string | string[]>) =
   },
 });
 
-const ModuleSearchBox = ({ id }: Props) => {
+const ModuleSearchBox: React.FC<Props> = ({ id }) => {
   return (
     <SearchkitSearchBox
       id={id}

@@ -8,15 +8,17 @@ type Props = {
   className?: string;
 };
 
-export default function LoadingSpinner(props: Props) {
+const LoadingSpinner: React.FC<Props> = ({ small, white, className }) => {
   return (
     <div
-      className={classnames(styles.loader, props.className, {
-        [styles.small]: props.small,
-        [styles.white]: props.white,
+      className={classnames(styles.loader, className, {
+        [styles.small]: small,
+        [styles.white]: white,
       })}
     >
       <span className="sr-only">Loading...</span>
     </div>
   );
-}
+};
+
+export default LoadingSpinner;
