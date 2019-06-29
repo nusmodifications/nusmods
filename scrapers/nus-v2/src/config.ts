@@ -17,6 +17,9 @@ export type Config = Readonly<{
 
   // Root folder for data
   dataPath: string;
+
+  // URL for ES client to connect
+  elasticUrl: string;
 }>;
 
 const env = fs.readJSONSync(path.join(__dirname, '../env.json'));
@@ -35,6 +38,7 @@ const config: Config = {
   // From env
   appKey: env.appKey,
   studentKey: env.studentKey,
+  elasticUrl: env.elasticUrl,
   baseUrl: addTrailingSlash(env.baseUrl),
   apiConcurrency: env.apiConcurrency || 5,
 

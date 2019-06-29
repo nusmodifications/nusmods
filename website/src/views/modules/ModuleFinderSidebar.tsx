@@ -119,7 +119,7 @@ const ModuleFinderSidebar: React.FC = () => {
         <RefinementListFilter
           id="attrs"
           title="Others"
-          field="moduleAttributeList.keyword"
+          field="moduleAttributesList.keyword"
           operator="OR"
           bucketsTransform={(attributeItem: RefinementItem[]) =>
             attributeItem.map(({ key, ...rest }) => ({
