@@ -13,10 +13,26 @@ test('should fetch archive pages if moduleCode looks like a module code', () => 
       availableArchive={[]}
       fetchModuleArchive={fetchModuleArchive}
       isLoading={false}
+      tryArchive
     />,
   );
 
   expect(fetchModuleArchive).toBeCalled();
+});
+
+test('should not fetch archive pages if tryArchive is false', () => {
+  const fetchModuleArchive = jest.fn();
+  shallow(
+    <ModuleNotFoundPageComponent
+      moduleCode="CS1010S"
+      availableArchive={[]}
+      fetchModuleArchive={fetchModuleArchive}
+      isLoading={false}
+      tryArchive={false}
+    />,
+  );
+
+  expect(fetchModuleArchive).not.toBeCalled();
 });
 
 test("should not fetch archive pages if moduleCode doesn't look like module code", () => {
@@ -27,6 +43,7 @@ test("should not fetch archive pages if moduleCode doesn't look like module code
       availableArchive={[]}
       fetchModuleArchive={fetchModuleArchive}
       isLoading={false}
+      tryArchive
     />,
   );
 
@@ -39,6 +56,7 @@ test('should show spinner while archive pages are loading', () => {
       moduleCode="CS1010S"
       availableArchive={[]}
       fetchModuleArchive={jest.fn()}
+      tryArchive
       isLoading
     />,
   );
@@ -53,6 +71,7 @@ test('should suggest archive pages if they are available', () => {
       availableArchive={['2015/2016', '2017/2018']}
       fetchModuleArchive={jest.fn()}
       isLoading={false}
+      tryArchive
     />,
   );
 
