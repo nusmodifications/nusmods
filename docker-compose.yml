@@ -52,7 +52,7 @@ services:
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
     volumes:
-      - ./infra/instance/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./api/search/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
       - esdata01:/usr/share/elasticsearch/data
     ulimits:
       memlock:
