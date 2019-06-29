@@ -4,6 +4,8 @@
 
   push
 
+  basicauth /kibana mods@nusmods.com {$KIBANA_PASS}
+
   proxy / website:8080 {
     transparent
     websocket
