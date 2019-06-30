@@ -6,7 +6,7 @@ import { breakpointDown } from 'utils/css';
 import makeResponsive from 'views/hocs/makeResponsive';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'views/components/icons';
 import { PagerProps, FIRST_PAGE_INDEX } from 'views/components/searchkit/Pagination';
-import ModuleFinderPagerButton from 'views/components/ModuleFinderPagerButton';
+import ModuleFinderPagerButton from 'views/modules/ModuleFinderPagerButton';
 
 import styles from './ModuleFinderPager.scss';
 

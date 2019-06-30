@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { noop } from 'lodash';
-import ModuleFinderPagerButton from 'views/components/ModuleFinderPagerButton';
+import ModuleFinderPagerButton from 'views/modules/ModuleFinderPagerButton';
 import { displayPageRange, ModuleFinderPagerComponent } from './ModuleFinderPager';
 
 describe(displayPageRange, () => {

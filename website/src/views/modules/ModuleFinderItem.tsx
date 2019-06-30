@@ -7,9 +7,9 @@ import { ElasticSearchResult } from 'types/vendor/elastic-search';
 import { modulePage } from 'views/routes/paths';
 import { BULLET } from 'utils/react';
 import { intersperse } from 'utils/array';
-import ModuleSemesterInfo from './module-info/ModuleSemesterInfo';
-import ModuleWorkload from './module-info/ModuleWorkload';
-import LinkModuleCodes from './LinkModuleCodes';
+import ModuleSemesterInfo from '../components/module-info/ModuleSemesterInfo';
+import ModuleWorkload from '../components/module-info/ModuleWorkload';
+import LinkModuleCodes from '../components/LinkModuleCodes';
 import styles from './ModuleFinderItem.scss';
 import { mergeModuleHighlight } from '../../utils/elasticSearch';
 
