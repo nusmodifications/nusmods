@@ -24,7 +24,7 @@ const thousandizer_filter = {
 };
 
 export default async function importData(client: Client, data: any) {
-  const importableData = data.map((mod) => {
+  const importableData = data.map((mod: any) => {
     if (!mod.attributes) return mod;
     return {
       ...mod,
