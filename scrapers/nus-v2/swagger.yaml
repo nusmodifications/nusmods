@@ -258,11 +258,35 @@ paths:
 
   /{acadYear}/moduleInformation.json:
     get:
+      deprecated: true
       summary: 'Get detailed information about all modules'
       description: |
         Get all information about modules except for timetable and prereq tree in a year. This is compact enough to be loaded and filtered in browsers without lag and is useful for faceted search and detailed module listing.
 
-        NUSMods uses this information for the detailed module search page.
+        In AY2018/2019, NUSMods used this information for the detailed module search page. This endpoint will no longer be present starting in AY2019/2020. Please use the moduleInfo.json endpoint instead, which contains modules which are not offered in the specified academic year, but is otherwise identical to this endpoint.
+      parameters:
+        - $ref: '#/components/parameters/acadYear'
+      tags:
+        - 'Modules'
+      responses:
+        200:
+          description: 'Success'
+          content:
+            application/json:
+              schema:
+                type: 'array'
+                items:
+                  $ref: '#/components/schemas/ModuleInformation'
+        404:
+          $ref: '#/components/responses/404'
+
+  /{acadYear}/moduleInfo.json:
+    get:
+      summary: 'Get detailed information about all modules'
+      description: |
+        Get all information about modules except for timetable and prereq tree in a year. This is compact enough to be loaded and filtered in browsers without lag and is useful for faceted search and detailed module listing.
+
+        NUSMods feeds this information into an Elasticsearch search server for the detailed module search page.
       parameters:
         - $ref: '#/components/parameters/acadYear'
       tags:

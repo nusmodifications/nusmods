@@ -98,6 +98,11 @@ export function getDataWriter(academicYear: string): Persist {
       fs.outputJSON(path.join(yearRoot, 'moduleList.json'), data, writeOptions),
 
     // List of partial module info for module finder
+    moduleInfo: (data: ModuleInformation[]) =>
+      fs.outputJSON(path.join(yearRoot, 'moduleInfo.json'), data, writeOptions),
+
+    // DEPRECATED. TODO: Remove after AY19/20 starts.
+    // List of partial module info for module finder
     moduleInformation: (data: ModuleInformation[]) =>
       fs.outputJSON(path.join(yearRoot, 'moduleInformation.json'), data, writeOptions),
 
