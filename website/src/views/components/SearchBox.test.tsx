@@ -23,7 +23,7 @@ describe(SearchBox, () => {
         <SearchBox
           throttle={0}
           useInstantSearch={false}
-          isLoading={true}
+          isLoading
           value=""
           placeholder=""
           onChange={jest.fn()}
