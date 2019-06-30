@@ -4,7 +4,7 @@
 
 import { uniq, trim, groupBy, values } from 'lodash';
 import { VenueLesson } from '../types/venues';
-import { DayText, LessonType, ModuleCode } from '../types/modules';
+import { DayText, LessonType, ModuleCode, SemesterData } from '../types/modules';
 import { ModuleAliases } from '../types/mapper';
 
 export const ZWSP = '\u200b';
@@ -189,3 +189,7 @@ export const activityLessonType: Record<string, LessonType> = {
 
   ...unrecognizedLessonTypes,
 };
+
+export function isModuleOffered(module: { semesterData: SemesterData[] }): boolean {
+  return module.semesterData && module.semesterData.length > 0;
+}
