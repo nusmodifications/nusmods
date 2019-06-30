@@ -3,12 +3,12 @@ import { flatMap } from 'lodash';
 
 // Be sure to download this file.
 // `wget https://api.nusmods.com/v2/2018-2019/moduleInfo.json`
-import data from './moduleInfo.json';
+// import data from './moduleInfo.json';
 
 // Source: https://github.com/lodash/lodash/issues/2339#issuecomment-319536784
 const intersperse = <T>(arr: Array<T>, inter: T) => flatMap(arr, (a) => [inter, a]);
 
-const client = new Client({ node: 'http://localhost:9200' });
+const client = new Client({ node: 'http://elasticsearch:9200' });
 
 // Tokenizes a string into an array of digits
 const first_digit_tokenizer = {
@@ -29,17 +29,17 @@ const thousandizer_filter = {
   replacement: '$1000',
 };
 
-const importableData = data.map((mod) => {
-  if (!mod.attributes) return mod;
-  return {
-    ...mod,
-    trueAttributes: Object.keys(mod.attributes),
-  };
-});
+export default async function importData(data: any) {
+  const importableData = data.map((mod) => {
+    if (!mod.attributes) return mod;
+    return {
+      ...mod,
+      trueAttributes: Object.keys(mod.attributes),
+    };
+  });
 
-const bulkBody = intersperse(importableData, { index: {} });
+  const bulkBody = intersperse(importableData, { index: {} });
 
-async function setup() {
   try {
     await client.indices.delete({
       index: 'modules',
@@ -109,5 +109,3 @@ async function setup() {
     },
   );
 }
-
-setup();

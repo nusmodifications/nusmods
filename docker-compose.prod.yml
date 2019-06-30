@@ -56,6 +56,13 @@ services:
       - SERVER_BASEPATH=/kibana
       - SERVER_REWRITEBASEPATH=true
     restart: on-failure
+  es-importer:
+    build:
+      context: .
+      dockerfile: api/search/Dockerfile
+    depends_on:
+      - elasticsearch
+    restart: on-failure
   proxy:
     image: abiosoft/caddy:php-no-stats
     ports:
