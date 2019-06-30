@@ -6,7 +6,7 @@ import {
   ResetFiltersDisplayProps,
 } from 'searchkit';
 
-import { attributeDescription } from 'types/modules';
+import { attributeDescription, NUSModuleAttributes } from 'types/modules';
 import { RefinementItem } from 'types/views';
 
 import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
@@ -119,13 +119,13 @@ const ModuleFinderSidebar: React.FC = () => {
         <RefinementListFilter
           id="attrs"
           title="Others"
-          field="trueAttributes.keyword"
+          field="moduleAttributesList.keyword"
           operator="OR"
           bucketsTransform={(attributeItem: RefinementItem[]) =>
             attributeItem.map(({ key, ...rest }) => ({
               key,
               ...rest,
-              label: attributeDescription[key as keyof typeof attributeDescription] || key,
+              label: attributeDescription[key as keyof NUSModuleAttributes] || key,
             }))
           }
           containerComponent={FilterContainer}
