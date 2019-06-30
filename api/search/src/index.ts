@@ -5,11 +5,15 @@ import importData from './import';
 
 let client: Client | null;
 
-// Run scraper at 5:30, 6:30 and 7:30
-// https://crontab.guru/#30_5,6,7_*_*_*
-cron.schedule('30 5,6,7 * * *', () => {
-  axios('https://api.nusmods.com/v2/2018-2019/moduleInfo.json')
-    .then((data) => {
+async function runImport() {
+  await axios
+    .get('https://api.nusmods.com/v2/2018-2019/moduleInfo.json')
+    .then(({ data, status }) => {
+      if (status !== 200) {
+        console.error('Could not get moduleInfo.json with HTTP status', status);
+        process.exit(3);
+        return;
+      }
       if (!client) {
         client = new Client({ node: 'http://elasticsearch:9200' });
       }
@@ -21,10 +25,21 @@ cron.schedule('30 5,6,7 * * *', () => {
     })
     .then(() => {
       client = null;
+    })
+    .catch((e) => {
+      console.error('Exiting due to caught exception', e);
+      process.exit(10);
     });
-});
+}
 
-process.on('SIGTERM', () => {
+// Run importer at 5:30, 6:30 and 7:30
+// https://crontab.guru/#30_5,6,7_*_*_*
+cron.schedule('30 5,6,7 * * *', () => runImport());
+
+runImport();
+
+process.on('SIGTERM', (code) => {
+  console.log('SIGTERM with exit code', code);
   if (client) {
     client.close();
   }
