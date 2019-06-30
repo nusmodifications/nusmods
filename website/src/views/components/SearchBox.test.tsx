@@ -9,6 +9,7 @@ describe(SearchBox, () => {
         <SearchBox
           throttle={0}
           useInstantSearch={false}
+          isLoading={false}
           value=""
           placeholder=""
           onChange={jest.fn()}
@@ -22,6 +23,21 @@ describe(SearchBox, () => {
         <SearchBox
           throttle={0}
           useInstantSearch={false}
+          isLoading={true}
+          value=""
+          placeholder=""
+          onChange={jest.fn()}
+          onSearch={jest.fn()}
+        />,
+      ),
+    ).toMatchSnapshot();
+
+    expect(
+      shallow(
+        <SearchBox
+          throttle={0}
+          useInstantSearch={false}
+          isLoading={false}
           value="Hello world"
           placeholder="Testing testing 123"
           onChange={jest.fn()}

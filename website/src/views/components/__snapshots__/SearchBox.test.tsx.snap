@@ -15,7 +15,7 @@ exports[`SearchBox should match snapshot 1`] = `
     onSubmit={[Function]}
   >
     <Search
-      className="searchIcon"
+      className="leftAccessory searchIcon"
       color="currentColor"
       size="24"
     />
@@ -49,8 +49,46 @@ exports[`SearchBox should match snapshot 2`] = `
     className="searchWrapper"
     onSubmit={[Function]}
   >
+    <div
+      className="leftAccessory spinnerContainer"
+    >
+      <LoadingSpinner
+        className="spinner"
+        small={true}
+      />
+    </div>
+    <input
+      autoComplete="off"
+      className="form-control form-control-lg"
+      id="search-box"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      placeholder=""
+      spellCheck={true}
+      type="search"
+      value=""
+    />
+  </form>
+</div>
+`;
+
+exports[`SearchBox should match snapshot 3`] = `
+<div
+  className=""
+>
+  <label
+    className="sr-only"
+    htmlFor="search-box"
+  >
+    Search
+  </label>
+  <form
+    className="searchWrapper"
+    onSubmit={[Function]}
+  >
     <Search
-      className="searchIcon"
+      className="leftAccessory searchIcon"
       color="currentColor"
       size="24"
     />
