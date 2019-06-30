@@ -24,7 +24,7 @@
     "lodash": "4.17.11",
     "nodemon": "1.19.1",
     "pug": "2.0.4",
-    "puppeteer": "1.18.0"
+    "puppeteer": "1.18.1"
   },
   "devDependencies": {
     "dotenv": "8.0.0"

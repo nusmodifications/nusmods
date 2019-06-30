@@ -7,7 +7,7 @@ cd ..
 
 # Run the scraper
 yarn build
-pm2 start ecosystem.config.js
+node build/index.js all
 
 # Update docs
 yarn docs
