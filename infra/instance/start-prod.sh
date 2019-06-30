@@ -20,6 +20,6 @@ pushd ../..
 
 # Start docker-compose
 export GIT_COMMIT_HASH=$(git rev-parse HEAD)
-docker-compose -f docker-compose.prod.yml build
+docker-compose -f docker-compose.prod.yml build --no-cache
 docker-compose -f docker-compose.prod.yml up
 docker-compose -f docker-compose.prod.yml down --remove-orphans
