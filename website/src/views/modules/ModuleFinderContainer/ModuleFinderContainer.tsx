@@ -22,7 +22,6 @@ import ModuleFinderApiError from 'views/errors/ModuleFinderApiError';
 import ModuleFinderPager from 'views/components/ModuleFinderPager';
 import ModuleFinderItem from 'views/components/ModuleFinderItem';
 import Pagination from 'views/components/searchkit/Pagination';
-import LoadingSpinner from 'views/components/LoadingSpinner';
 import Title from 'views/components/Title';
 
 import { forceElasticsearchHost } from 'utils/debug';
@@ -65,21 +64,14 @@ const ModuleFinderContainer: React.FC = () => {
 
             <div>
               <HitsStats
-                component={({ hitsCount }: HitsStatsDisplayProps) =>
-                  hitsCount > 0 ? (
-                    <div className={styles.modulePageDivider}>
-                      {hitsCount} modules found{' '}
-                      <LoadingComponent>
-                        <LoadingSpinner small />
-                      </LoadingComponent>
-                    </div>
-                  ) : (
-                    <LoadingComponent>
-                      <LoadingSpinner />
-                    </LoadingComponent>
-                  )
-                }
+                component={({ hitsCount }: HitsStatsDisplayProps) => (
+                  <div className={styles.modulePageDivider}>{hitsCount} modules found</div>
+                )}
               />
+
+              <LoadingComponent>
+                <div className={styles.loadingOverlay} />
+              </LoadingComponent>
 
               <InitialLoader component={LoadingComponent} />
 

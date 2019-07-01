@@ -105,8 +105,8 @@ export type NUSModuleAttributes = Partial<AttributeMap>;
 
 export const attributeDescription: { [key in keyof AttributeMap]: string } = {
   year: 'Year long module',
-  su: 'Has undergraduate S/U option',
-  grsu: 'Has graduate S/U option',
+  su: 'Has S/U option for Undergraduate students only',
+  grsu: 'Has S/U option for relevant Graduate (Research) students only',
   ssgf: 'SkillsFuture funded',
   sfs: 'SkillsFuture series',
   lab: 'Lab based module',

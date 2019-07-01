@@ -45,6 +45,30 @@ services:
       - CHROME_EXECUTABLE=/usr/bin/chromium-browser
     user: ${CURRENT_UID:-1000:1000}
     restart: on-failure
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.1
+    environment:
+      - discovery.type=single-node # Bypass bootstrap checks in single-node dev cluster. See: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-dev-mode
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+    volumes:
+      - ./api/search/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - esdata01:/usr/share/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    expose:
+      - 9200
+    restart: on-failure
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.8.1
+    expose:
+      - 5601
+    environment:
+      - SERVER_BASEPATH=/kibana
+      - SERVER_REWRITEBASEPATH=true
+    restart: on-failure
   proxy:
     image: abiosoft/caddy:php-no-stats
     ports:
@@ -56,3 +80,5 @@ services:
       - ./infra/instance/logs:/logs
       - ./infra/instance/short_url.php:/srv/short_url.php
     restart: on-failure
+volumes:
+  esdata01:

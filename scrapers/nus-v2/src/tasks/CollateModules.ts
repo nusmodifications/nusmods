@@ -15,6 +15,7 @@ import config from '../config';
 import { Logger } from '../services/logger';
 import generatePrereqTree from '../services/requisite-tree';
 import { union } from '../utils/set';
+import { isModuleOffered } from '../utils/data';
 
 interface Input {
   semesterData: SemesterModuleData[][];
@@ -79,13 +80,13 @@ export function combineModules(
   // 1. Iterate over each module
   for (const semesterModules of semesters) {
     for (const semesterModule of semesterModules) {
-      const { moduleCode } = semesterModule;
+      const { moduleCode, semesterData } = semesterModule;
 
       // 2. Create the merged module data
-      const module = {
+      const module: ModuleWithoutTree = {
         ...semesterModule.module,
         aliases: aliases[moduleCode],
-        semesterData: [semesterModule.semesterData],
+        semesterData: semesterData ? [semesterData] : [],
       };
 
       // 3. On rare occasion the module data can change between semesters,
@@ -122,7 +123,7 @@ const getModuleCondensed = ({
 });
 
 // Avoid using _.pick here because it is not type safe
-const getModuleInformation = ({
+const getModuleInfo = ({
   moduleCode,
   title,
   description,
@@ -157,7 +158,8 @@ const getModuleInformation = ({
  *
  * Output:
  *  - modules/<ModuleCode>.json
- *  - moduleInformation.json
+ *  - moduleInformation.json // DEPRECATED. TODO: Remove after AY19/20 starts
+ *  - moduleInfo.json
  *  - moduleList.json
  */
 export default class CollateModules extends BaseTask implements Task<Input, Output> {
@@ -197,15 +199,22 @@ export default class CollateModules extends BaseTask implements Task<Input, Outp
     // Save final combined module to their individual files
     await Promise.all(modules.map((module) => this.io.module(module.moduleCode, module)));
 
-    // Save condensed versions of the same information for searching
-    const moduleCondensed = modules.map(getModuleCondensed);
-    const moduleInformation = modules.map(getModuleInformation);
+    // Save condensed versions of the same information for searching. For module list we only save
+    // offered modules so that they don't go into the add module dropdown
+    const moduleCondensed = modules.filter(isModuleOffered).map(getModuleCondensed);
+    const moduleInfo = modules.map(getModuleInfo);
 
     await Promise.all([
       this.io.moduleList(moduleCondensed),
-      this.io.moduleInformation(moduleInformation),
+      this.io.moduleInfo(moduleInfo),
       this.io.moduleAliases(combinedAliases),
     ]);
+
+    // DEPRECATED. TODO: Remove after AY19/20 starts.
+    if (config.academicYear === '2018/2019') {
+      const moduleInformation = moduleInfo.filter((modInfo) => modInfo.semesterData.length > 0);
+      await this.io.moduleInformation(moduleInformation);
+    }
 
     return values(modules);
   }

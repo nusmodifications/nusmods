@@ -4,6 +4,8 @@
 
   push
 
+  basicauth /kibana mods@nusmods.com {$KIBANA_PASS}
+
   proxy / website:8080 {
     transparent
     websocket
@@ -15,6 +17,19 @@
     websocket
     max_fails 3
     without /export
+  }
+
+  proxy /elasticsearch/modules/_search elasticsearch:9200 {
+    transparent
+    websocket
+    max_fails 3
+    without /elasticsearch
+  }
+
+  proxy /kibana kibana:5601 {
+    transparent
+    websocket
+    max_fails 3
   }
 
   # Put proxy in the reverse proxy so that we don't create unnecessary
