@@ -19,8 +19,8 @@ import ModuleFinderSidebar from 'views/modules/ModuleFinderSidebar';
 import ModuleSearchBox from 'views/modules/ModuleSearchBox';
 import ModuleFinderNoHits from 'views/errors/ModuleFinderNoHits';
 import ModuleFinderApiError from 'views/errors/ModuleFinderApiError';
-import ModuleFinderPager from 'views/components/ModuleFinderPager';
-import ModuleFinderItem from 'views/components/ModuleFinderItem';
+import ModuleFinderPager from 'views/modules/ModuleFinderPager';
+import ModuleFinderItem from 'views/modules/ModuleFinderItem';
 import Pagination from 'views/components/searchkit/Pagination';
 import Title from 'views/components/Title';
 
