@@ -1,8 +1,9 @@
 :8080 {
   push
   root /srv/dist
+  browse
   rewrite {
-    to {path} {path}/ /
+    to /new/{path} /new/{path}/ /new/ /old/{path} /old/{path}/ /old/
   }
 }
 

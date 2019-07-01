@@ -26,6 +26,6 @@ RUN yarn build
 
 FROM abiosoft/caddy:no-stats
 
-COPY --from=0 /home/node/app/website/dist /srv/dist
+COPY --from=0 /home/node/app/website/dist /srv/dist/new
 COPY --from=0 /home/node/app/website/dist-timetable /srv/dist-timetable
 COPY ./website/Caddyfile /etc/Caddyfile
