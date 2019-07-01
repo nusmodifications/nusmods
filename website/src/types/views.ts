@@ -1,4 +1,4 @@
-import { Department, Module, ModuleCode, ModuleCondensed, PrereqTree, Semester } from './modules';
+import { Module, ModuleCode, ModuleCondensed, PrereqTree, Semester } from './modules';
 import { ModuleList } from './reducers';
 import { ColorIndex, HoverLesson, Lesson, ModifiableLesson } from './timetables';
 import { Venue, VenueList } from './venues';
@@ -29,23 +29,6 @@ export type SearchItem =
 /* browse/ModuleFinderContainer */
 export type RefinementItem = { key: string; doc_count?: number; missing?: boolean };
 export type RefinementDisplayItem = RefinementItem & { selected: boolean };
-
-export type PageRange = {
-  readonly current: number;
-  readonly start: number; // The first page shown, zero indexed
-  readonly loaded: number; // The number of pages loaded
-};
-
-export type PageRangeDiff = {
-  // Start and pages are ADDED to the previous state
-  start?: number;
-  loaded?: number;
-
-  // Current page is SET
-  current?: number;
-};
-
-export type OnPageChange = (pageRangeDiff: PageRangeDiff) => void;
 
 export type DisqusConfig = {
   readonly identifier: string;
