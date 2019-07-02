@@ -20,7 +20,7 @@ import styles from './ModuleFinderSidebar.scss';
 
 const RESET_FILTER_OPTIONS = { filter: true };
 
-const ModuleFinderSidebar: React.FC = () => {
+const ModuleFinderSidebar = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   return (
     <SideMenu

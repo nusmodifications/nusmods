@@ -7,7 +7,7 @@ type Props = {
   toggleItem: (key: string) => void;
 };
 
-const ModuleFinderPager: React.FC<Props> = ({ items, selectedItems, toggleItem }) => {
+const ModuleFinderPager = ({ items, selectedItems, toggleItem }: Props) => {
   return (
     <nav aria-label="Module search result pagination">
       <ul className="pagination justify-content-center">
