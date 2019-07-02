@@ -4,17 +4,11 @@ import styles from './LoadingSpinner.scss';
 
 type Props = {
   small?: boolean;
-  white?: boolean;
 };
 
 export default function LoadingSpinner(props: Props) {
   return (
-    <div
-      className={classnames(styles.loader, {
-        [styles.small]: props.small,
-        [styles.white]: props.white,
-      })}
-    >
+    <div className={classnames(styles.loader, { [styles.small]: props.small })}>
       <span className="sr-only">Loading...</span>
     </div>
   );

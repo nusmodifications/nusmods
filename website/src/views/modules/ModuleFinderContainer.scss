@@ -1,8 +1,7 @@
-@import "~styles/utils/modules-entry";
+@import "~styles/utils/modules-entry.scss";
 
 .moduleFilters {
   height: 100%;
-  user-select: none;
 
   .filterHeader {
     display: flex;
