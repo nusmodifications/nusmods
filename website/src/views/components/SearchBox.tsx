@@ -2,7 +2,6 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { debounce } from 'lodash';
 
-import LoadingSpinner from 'views/components/LoadingSpinner';
 import { Search } from 'views/components/icons';
 import styles from './SearchBox.scss';
 
@@ -10,7 +9,6 @@ type Props = {
   className?: string;
   throttle: number;
   useInstantSearch: boolean;
-  isLoading: boolean;
   value: string | null;
   placeholder?: string;
   onChange: (value: string) => void;
@@ -87,7 +85,6 @@ export default class SearchBox extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { value, placeholder, isLoading } = this.props;
     return (
       <div
         className={classnames(this.props.className, {
@@ -104,27 +101,21 @@ export default class SearchBox extends React.PureComponent<Props, State> {
             evt.preventDefault();
           }}
         >
-          {isLoading ? (
-            <div className={classnames(styles.leftAccessory, styles.spinnerContainer)}>
-              <LoadingSpinner className={styles.spinner} small />
-            </div>
-          ) : (
-            <Search className={classnames(styles.leftAccessory, styles.searchIcon)} />
-          )}
+          <Search className={styles.searchIcon} />
           <input
             id="search-box"
             className="form-control form-control-lg"
             type="search"
             autoComplete="off"
             ref={this.searchElement}
-            value={value || ''}
+            value={this.props.value || ''}
             onChange={this.onInput}
             onFocus={() => this.setState({ isFocused: true })}
             onBlur={() => {
               this.setState({ isFocused: false });
               this.onBlur();
             }}
-            placeholder={placeholder}
+            placeholder={this.props.placeholder}
             spellCheck
           />
         </form>

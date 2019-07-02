@@ -198,7 +198,6 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
           className={styles.searchBox}
           throttle={0}
           useInstantSearch
-          isLoading={false}
           value={searchBoxValue}
           placeholder="e.g. LT27"
           onChange={this.onSearchBoxChange}

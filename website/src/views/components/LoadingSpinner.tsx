@@ -5,13 +5,12 @@ import styles from './LoadingSpinner.scss';
 type Props = {
   small?: boolean;
   white?: boolean;
-  className?: string;
 };
 
-const LoadingSpinner: React.FC<Props> = ({ small, white, className }) => {
+const LoadingSpinner: React.FC<Props> = ({ small, white }) => {
   return (
     <div
-      className={classnames(styles.loader, className, {
+      className={classnames(styles.loader, {
         [styles.small]: small,
         [styles.white]: white,
       })}
