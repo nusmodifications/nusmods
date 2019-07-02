@@ -42,9 +42,9 @@ function assertRedirect(component: ShallowWrapper, redirectTo = CANONICAL) {
 
 describe(ModulePageContainerComponent, () => {
   test('should show 404 page when the module code does not exist', () => {
-    const wrapper = make('CS1234', '/modules/CS1234', { moduleExists: false });
-    wrapper.setState({ error: { response: { status: 404 } } });
-    expect(wrapper.type()).toEqual(ModuleNotFoundPage);
+    expect(make('CS1234', '/modules/CS1234', { moduleExists: false }).type()).toEqual(
+      ModuleNotFoundPage,
+    );
   });
 
   test('should redirect to canonical URL', () => {

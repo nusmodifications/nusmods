@@ -27,6 +27,7 @@ type OwnProps = RouteComponentProps<Params>;
 
 type Props = OwnProps & {
   module: Module | null;
+  moduleExists: boolean;
   moduleCode: ModuleCode;
   fetchModule: () => Promise<Module>;
   archiveYear?: string;
@@ -34,7 +35,7 @@ type Props = OwnProps & {
 
 type State = {
   ModulePageContent: React.ComponentType<ModulePageContentProp> | null;
-  error?: Error;
+  error?: any;
 };
 
 /**
@@ -69,7 +70,9 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
   }
 
   fetchModule() {
-    this.props.fetchModule().catch(this.handleFetchError);
+    if (this.props.moduleExists || this.props.archiveYear) {
+      this.props.fetchModule().catch(this.handleFetchError);
+    }
   }
 
   fetchPageImport() {
@@ -99,9 +102,9 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
 
   render() {
     const { ModulePageContent, error } = this.state;
-    const { module, moduleCode, match, location, archiveYear } = this.props;
+    const { module, moduleCode, moduleExists, match, location, archiveYear } = this.props;
 
-    if (get(error, ['response', 'status'], 200) === 404) {
+    if (!moduleExists) {
       return <ModuleNotFoundPage moduleCode={moduleCode} />;
     }
 

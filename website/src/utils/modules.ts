@@ -82,13 +82,6 @@ export function addAcadYear(acadYear: string): string {
   return acadYear.replace(/\d+/g, (year) => String(parseInt(year, 10) + 1));
 }
 
-export function isOffered(module: {
-  semesterData?: readonly (SemesterData | SemesterDataCondensed)[];
-}): boolean {
-  if (module.semesterData) return module.semesterData.length > 0;
-  return false;
-}
-
 export function offsetAcadYear(year: string, offset: number) {
   let i = offset;
   let currentYear = year;
