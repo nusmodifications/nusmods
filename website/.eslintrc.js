@@ -78,7 +78,6 @@ module.exports = {
     'react/require-default-props': 'off',
     'react/jsx-filename-extension': ['error', { extensions: ['.tsx', '.jsx'] }],
     'react/default-props-match-prop-types': ['error', { allowRequiredDefaults: true }],
-    'react/prop-types': 'off',
 
     // Too verbose, creates too many variables
     'react/destructuring-assignment': 'off',

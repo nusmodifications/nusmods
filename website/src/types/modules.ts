@@ -49,6 +49,7 @@ export const WorkingDays: readonly Day[] = [
 
 export const DaysOfWeek: readonly Day[] = [...WorkingDays, 'Sunday'];
 
+export type ModuleLevel = 1 | 2 | 3 | 4 | 5 | 6 | 8;
 export const Semesters: readonly Semester[] = [1, 2, 3, 4];
 
 export type WorkloadComponent = 'Lecture' | 'Tutorial' | 'Laboratory' | 'Project' | 'Preparation';

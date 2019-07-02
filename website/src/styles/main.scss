@@ -25,7 +25,11 @@
 // Components
 @import 'components/loading-spinner';
 @import 'components/search-panel';
+@import 'components/module-workload';
 @import 'components/sentry';
 @import 'components/buttons';
 @import 'components/kbd';
 @import 'components/select';
+
+// Pages
+@import 'pages/module-finder';

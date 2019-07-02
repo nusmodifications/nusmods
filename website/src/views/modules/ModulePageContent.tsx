@@ -6,7 +6,7 @@ import { kebabCase, map, mapValues, values, sortBy } from 'lodash';
 import { Module, NUSModuleAttributes, attributeDescription } from 'types/modules';
 
 import config from 'config';
-import { formatExamDate, getSemestersOffered, isOffered } from 'utils/modules';
+import { formatExamDate, getSemestersOffered } from 'utils/modules';
 import { intersperse } from 'utils/array';
 import { BULLET } from 'utils/react';
 import { NAVTAB_HEIGHT } from 'views/layout/Navtabs';
@@ -62,7 +62,6 @@ export default class ModulePageContent extends React.Component<Props, State> {
     const pageTitle = `${moduleCode} ${title}`;
     const semesters = getSemestersOffered(module);
     const isArchive = !!archiveYear;
-    const offered = isOffered(module);
 
     const disqusConfig = {
       url: `https://nusmods.com/modules/${moduleCode}/reviews`,
@@ -87,17 +86,6 @@ export default class ModulePageContent extends React.Component<Props, State> {
             <p>
               You are looking at archived information of this module from academic year{' '}
               <strong>{archiveYear}</strong>. Information on this page may be out of date.
-            </p>
-          </div>
-        )}
-
-        {!offered && (
-          <div className={classnames(styles.archiveWarning, 'alert alert-warning')}>
-            <Archive className={styles.archiveIcon} />
-            <p>
-              This module is not offered in this academic year. You may use this information to map
-              exchange modules or to see modules that were previously or may be offered in the
-              future.
             </p>
           </div>
         )}
@@ -214,7 +202,7 @@ export default class ModulePageContent extends React.Component<Props, State> {
                     </div>
                   ))}
 
-                  {!isArchive && offered && (
+                  {!isArchive && (
                     <div className={styles.addToTimetable}>
                       <AddModuleDropdown module={module} className="btn-group-sm" block />
                     </div>

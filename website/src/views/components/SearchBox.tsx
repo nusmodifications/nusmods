@@ -2,7 +2,6 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { debounce } from 'lodash';
 
-import LoadingSpinner from 'views/components/LoadingSpinner';
 import { Search } from 'views/components/icons';
 import styles from './SearchBox.scss';
 
@@ -10,15 +9,13 @@ type Props = {
   className?: string;
   throttle: number;
   useInstantSearch: boolean;
-  isLoading: boolean;
-  value: string | null;
-  placeholder?: string;
-  onChange: (value: string) => void;
-  onSearch: () => void;
-  onBlur?: () => void;
+  initialSearchTerm: string | null;
+  placeholder: string;
+  onSearch: (str: string) => void;
 };
 
 type State = {
+  searchTerm: string;
   isFocused: boolean;
   hasChanges: boolean;
 };
@@ -31,45 +28,38 @@ export default class SearchBox extends React.PureComponent<Props, State> {
 
     this.state = {
       isFocused: false,
+      searchTerm: this.props.initialSearchTerm || '',
       hasChanges: false,
     };
+
+    this.props.onSearch(this.state.searchTerm);
   }
 
   onSubmit = () => {
     const element = this.searchElement.current;
-    if (!element) return;
-    // element's onBlur callback will trigger the search flow. If we also
-    // invoke onSearch in onSubmit, onSearch will be called twice.
-    element.blur();
-  };
 
-  onBlur = () => {
-    if (this.props.onBlur) this.props.onBlur();
+    if (element) {
+      const searchTerm = element.value;
+      this.setState({ searchTerm });
 
-    const element = this.searchElement.current;
-    if (!element) return;
-
-    // Don't search if no changes
-    if (!this.state.hasChanges) return;
-
-    const searchTerm = element.value;
-    this.props.onChange(searchTerm);
-    this.debouncedSearch();
-    this.debouncedSearch.flush();
+      this.debouncedSearch(searchTerm);
+      this.debouncedSearch.flush();
+      element.blur();
+    }
   };
 
   onInput = (evt: React.ChangeEvent<HTMLInputElement>) => {
     if (evt.target instanceof HTMLInputElement) {
       const searchTerm = evt.target.value;
-      this.props.onChange(searchTerm);
-      this.setState({ hasChanges: true });
-      if (this.props.useInstantSearch) this.debouncedSearch();
+      this.setState({ searchTerm, hasChanges: true });
+
+      if (this.props.useInstantSearch) this.debouncedSearch(searchTerm);
     }
   };
 
-  private search = () => {
+  private search = (input: string) => {
     this.setState({ hasChanges: false });
-    this.props.onSearch();
+    this.props.onSearch(input.trim());
   };
 
   // eslint-disable-next-line react/sort-comp
@@ -87,7 +77,6 @@ export default class SearchBox extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { value, placeholder, isLoading } = this.props;
     return (
       <div
         className={classnames(this.props.className, {
@@ -104,27 +93,21 @@ export default class SearchBox extends React.PureComponent<Props, State> {
             evt.preventDefault();
           }}
         >
-          {isLoading ? (
-            <div className={classnames(styles.leftAccessory, styles.spinnerContainer)}>
-              <LoadingSpinner className={styles.spinner} small />
-            </div>
-          ) : (
-            <Search className={classnames(styles.leftAccessory, styles.searchIcon)} />
-          )}
+          <Search className={styles.searchIcon} />
           <input
             id="search-box"
             className="form-control form-control-lg"
             type="search"
             autoComplete="off"
             ref={this.searchElement}
-            value={value || ''}
+            value={this.state.searchTerm}
             onChange={this.onInput}
             onFocus={() => this.setState({ isFocused: true })}
             onBlur={() => {
               this.setState({ isFocused: false });
-              this.onBlur();
+              this.onSubmit();
             }}
-            placeholder={placeholder}
+            placeholder={this.props.placeholder}
             spellCheck
           />
         </form>
