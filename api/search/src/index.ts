@@ -7,7 +7,7 @@ let client: Client | null;
 
 async function runImport() {
   await axios
-    .get('https://api.nusmods.com/v2/2018-2019/moduleInfo.json')
+    .get('https://api.nusmods.com/v2/2019-2020/moduleInfo.json')
     .then(({ data, status }) => {
       if (status !== 200) {
         console.error('Could not get moduleInfo.json with HTTP status', status);
