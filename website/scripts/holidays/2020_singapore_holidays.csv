@@ -1,0 +1,12 @@
+Date,Name,Day,Observance,Observance Strategy
+2020-01-01,New Year's Day,Wednesday,2020-01-01,actual_day
+2020-01-25,Chinese New Year Day 1,Saturday,2020-01-25,actual_day
+2020-01-26,Chinese New Year Day 2,Sunday,2020-01-27,next_monday
+2020-04-10,Good Friday,Friday,2020-04-10,actual_day
+2020-05-01,Labour Day,Friday,2020-05-01,actual_day
+2020-05-07,Vesak Day,Thursday,2020-05-07,actual_day
+2020-05-24,Hari Raya Puasa,Sunday,2020-05-25,next_monday
+2020-07-31,Hari Raya Haji,Friday,2020-07-31,actual_day
+2020-08-09,National Day,Sunday,2020-08-10,next_monday
+2020-11-14,Deepavali,Saturday,2020-11-14,actual_day
+2020-12-25,Christmas Day,Friday,2020-12-25,actual_day
