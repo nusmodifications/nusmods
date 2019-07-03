@@ -64,7 +64,7 @@ export default class GetSemesterExams extends BaseTask implements Task<void, Out
     this.examCache = this.getCache<ModuleExam[]>(`semester-${semester}-exams`, 5 * 24 * 60);
   }
 
-  async run() {
+  async run(): Promise<Output> {
     this.logger.info(
       `Getting exams for all modules in ${this.academicYear} semester ${this.semester}`,
     );
