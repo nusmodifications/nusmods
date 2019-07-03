@@ -78,7 +78,11 @@ export default class GetSemesterExams extends BaseTask implements Task<void, Out
         this.logger,
       );
     } catch (e) {
-      throw new TaskError('Cannot get exam data', this, e);
+      this.logger.error(
+        e,
+        `Cannot get exam data for ${this.academicYear} semester ${this.semester}`,
+      );
+      return {} as Output;
     }
 
     // Try to filter out invalid exams
