@@ -11,7 +11,6 @@ import { Cache } from '../types/persist';
 import BaseTask from './BaseTask';
 import config from '../config';
 import { cacheDownload, getTermCode } from '../utils/api';
-import { TaskError } from '../utils/errors';
 import { validateExam, validateSemester } from '../services/validation';
 
 /* eslint-disable @typescript-eslint/camelcase */
@@ -82,7 +81,8 @@ export default class GetSemesterExams extends BaseTask implements Task<void, Out
         e,
         `Cannot get exam data for ${this.academicYear} semester ${this.semester}`,
       );
-      return {} as Output;
+      const exams: Output = {};
+      return exams;
     }
 
     // Try to filter out invalid exams
