@@ -211,10 +211,8 @@ export default class CollateModules extends BaseTask implements Task<Input, Outp
     ]);
 
     // DEPRECATED. TODO: Remove after AY19/20 starts.
-    if (config.academicYear === '2018/2019') {
-      const moduleInformation = moduleInfo.filter((modInfo) => modInfo.semesterData.length > 0);
-      await this.io.moduleInformation(moduleInformation);
-    }
+    const moduleInformation = moduleInfo.filter(isModuleOffered);
+    await this.io.moduleInformation(moduleInformation);
 
     return values(modules);
   }
