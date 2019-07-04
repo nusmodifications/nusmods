@@ -17,3 +17,4 @@ Create a new issue on GitHub with this checklist after the finals every semester
 ## Every Semester
 
 - [ ] Update semester in `app-config.json`
+- [ ] Add semester to `examAvailability` to indicate exam information is available for the semester
