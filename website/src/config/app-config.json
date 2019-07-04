@@ -13,6 +13,9 @@
     "2017/2018",
     "2018/2019"
   ],
+  "examAvailability": [
+    1
+  ],
   "semesterNames": {
     "1": "Semester 1",
     "2": "Semester 2",
