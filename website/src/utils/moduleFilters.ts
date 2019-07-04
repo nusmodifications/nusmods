@@ -80,9 +80,17 @@ function makeDepartmentFilterGroup(departments: Department[]) {
 
 function makeExamFilter() {
   return new FilterGroup(EXAMS, 'Exams', [
-    new Filter('no-exam', 'No Exams', (module: ModuleInformation) =>
-      module.semesterData.every((semesterData) => !semesterData.examDate),
-    ),
+    new Filter('no-exam', 'No Exams', (module: ModuleInformation) => {
+      const semestersWithExamInfo = module.semesterData.filter((semesterData) =>
+        config.examAvailabilitySet.has(semesterData.semester),
+      );
+      // If we don't have data on whether a module has exams then we filter it out just to be safe
+      if (semestersWithExamInfo.length === 0) return false;
+
+      // This assumes that if a module has no exams in sem 1, and we have no info in sem 2, then
+      // the module will also have no exam in sem 2
+      return module.semesterData.every((semesterData) => !semesterData.examDate);
+    }),
   ]);
 }
 
