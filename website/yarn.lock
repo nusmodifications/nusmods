@@ -10393,10 +10393,10 @@ react-helmet@5.2.1:
     react-fast-compare "^2.0.2"
     react-side-effect "^1.1.0"
 
-react-hot-loader@4.12.0:
-  version "4.12.0"
-  resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-4.12.0.tgz#cb93d78db8b97fd7c1f5ab688a7eeaa4ad47df3f"
-  integrity sha512-N+8ct1euiQnwqqDyX+SrxsgZ13ax4e8JiHbSAPf7xAshPxF3iTqVJQUxOLH90RXOFaT8LLynq0VPz3rCK7AW1A==
+react-hot-loader@4.12.3:
+  version "4.12.3"
+  resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-4.12.3.tgz#0972255cd110a00860902e82bb2b789a262cfe01"
+  integrity sha512-XBhxogFOxEh8L4Ykdk2mp704Xc/eoy+bwadEYMvmBhjAz3wg+DfMpINMkA+kLTRDinqwjssDfA9DhUJznRjvuA==
   dependencies:
     fast-levenshtein "^2.0.6"
     global "^4.3.0"
