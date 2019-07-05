@@ -1830,15 +1830,15 @@
   resolved "https://registry.yarnpkg.com/@types/cheerio/-/cheerio-0.22.10.tgz#780d552467824be4a241b29510a7873a7432c4a6"
   integrity sha512-fOM/Jhv51iyugY7KOBZz2ThfT1gwvsGCfWxpLpZDgkGjpEO4Le9cld07OdskikLjDUQJ43dzDaVRSFwQlpdqVg==
 
-"@types/classnames@2.2.8":
-  version "2.2.8"
-  resolved "https://registry.yarnpkg.com/@types/classnames/-/classnames-2.2.8.tgz#17139e1e1104203572caa4368f6796f6225b70b4"
-  integrity sha512-3UrLzPnz8u+MMXuJTF++389IfLSQUbl5F3ry9WCxva0BKG5H/oo5NuPRXk+HrpPU1+5pVHSWhnVWRzIaFQ7QuQ==
+"@types/classnames@2.2.9":
+  version "2.2.9"
+  resolved "https://registry.yarnpkg.com/@types/classnames/-/classnames-2.2.9.tgz#d868b6febb02666330410fe7f58f3c4b8258be7b"
+  integrity sha512-MNl+rT5UmZeilaPxAVs6YaPC2m6aA8rofviZbhbxpPpl61uKodfdQVsBtgJGTqGizEf02oW3tsVe7FYB8kK14A==
 
-"@types/enzyme@3.9.4":
-  version "3.9.4"
-  resolved "https://registry.yarnpkg.com/@types/enzyme/-/enzyme-3.9.4.tgz#08f3ebfa24aa881021693a0fe615d6d2720c07ad"
-  integrity sha512-bQcwt5gcKnekrbci4hcapfE2J6rkkFbHM1l4VobLtSl4ogOfj0lvSxrdS6FftCakmJqqPBqdQCwb5KnlivL6SQ==
+"@types/enzyme@3.10.1":
+  version "3.10.1"
+  resolved "https://registry.yarnpkg.com/@types/enzyme/-/enzyme-3.10.1.tgz#74a7f7345075a4c03e574661068d3f96a054f495"
+  integrity sha512-Jd2hvn3w/0rBH8qD2n+JLMq2GjmZoKTZc5TTg8q9cDnJ9jkR7gzPV+ZdipKwGkWpMRXKDm9kuc9UiUqsW5s20w==
   dependencies:
     "@types/cheerio" "*"
     "@types/react" "*"
@@ -1944,10 +1944,10 @@
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
   integrity sha512-tHq6qdbT9U1IRSGf14CL0pUlULksvY9OZ+5eEgl1N7t+OA3tGvNpxJCzuKQlsNgCVwbAs670L1vcVQi8j9HjnA==
 
-"@types/mousetrap@1.6.2":
-  version "1.6.2"
-  resolved "https://registry.yarnpkg.com/@types/mousetrap/-/mousetrap-1.6.2.tgz#5f48bdbd28c8a447167263ae436488f1d8be072d"
-  integrity sha512-m67PUdzoHJGmYJ6Fno4iXocl+azw9cuz8tdUG21M04UzMRUT1YfxPIIIt3lQkXLMGwlGSKXYNGxCOMxKlGegIw==
+"@types/mousetrap@1.6.3":
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/@types/mousetrap/-/mousetrap-1.6.3.tgz#3159a01a2b21c9155a3d8f85588885d725dc987d"
+  integrity sha512-13gmo3M2qVvjQrWNseqM3+cR6S2Ss3grbR2NZltgMq94wOwqJYQdgn8qzwDshzgXqMlSUtyPZjysImmktu22ew==
 
 "@types/no-scroll@2.1.0":
   version "2.1.0"
