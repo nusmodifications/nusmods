@@ -391,9 +391,11 @@ export function formatNumericWeeks(weeks: number[]): string | null {
   if (weeks.length === 13) return null;
   if (weeks.length === 1) return `Week ${weeks[0]}`;
 
-  // Check for odd / even weeks
-  if (weeks.length >= 6 && deltas(weeks).every((d) => d === 2)) {
-    return weeks[0] % 2 ? 'Odd Weeks' : 'Even Weeks';
+  // Check for odd / even weeks. There are more odd weeks then even weeks, so we have to split
+  // the length check.
+  if (deltas(weeks).every((d) => d === 2)) {
+    if (weeks[0] % 2 === 0 && weeks.length >= 6) return 'Even Weeks';
+    if (weeks[0] % 2 === 1 && weeks.length >= 7) return 'Odd Weeks';
   }
 
   // Merge consecutive
