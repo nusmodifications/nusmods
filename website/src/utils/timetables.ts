@@ -393,7 +393,7 @@ export function formatNumericWeeks(weeks: number[]): string | null {
 
   // Check for odd / even weeks
   if (weeks.length >= 6 && deltas(weeks).every((d) => d === 2)) {
-    return weeks[0] === 1 ? 'Odd Weeks' : 'Even Weeks';
+    return weeks[0] % 2 ? 'Odd Weeks' : 'Even Weeks';
   }
 
   // Merge consecutive
