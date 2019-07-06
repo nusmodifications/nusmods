@@ -21,6 +21,24 @@ services:
       - HOST=0.0.0.0
     user: ${CURRENT_UID:-1000:1000}
     restart: on-failure
+
+  graphql:
+    image: hasura/graphql-engine:v1.0.0-beta.2.cli-migrations
+    volumes:
+      - ./api/graphql/migrations:/hasura-migrations
+    expose:
+      - 8082
+    depends_on:
+      - 'postgres'
+    env_file:
+      - ./api/graphql/.env
+    environment:
+      - HASURA_GRAPHQL_SERVER_PORT=8082
+      - HASURA_GRAPHQL_DATABASE_URL=postgres://postgres:@postgres:5432/postgres
+      - HASURA_GRAPHQL_UNAUTHORIZED_ROLE=public
+      - HASURA_GRAPHQL_ADMIN_SECRET=development
+      - HASURA_GRAPHQL_ENABLE_CONSOLE=true
+
   export:
     build:
       context: .
@@ -32,7 +50,7 @@ services:
       - ./export:/home/node/app/export
       - ./.prettierrc.js:/home/node/app/.prettierrc.js
     expose:
-      - 8082
+      - 8083
     depends_on:
       - website
     init: true
@@ -40,12 +58,18 @@ services:
       - seccomp="infra/instance/chromium.seccomp.json"
     environment:
       - NODE_ENV=development
-      - PORT=8082
+      - PORT=8083
       - HOST=0.0.0.0
       - PAGE=http://website:8081
       - CHROME_EXECUTABLE=/usr/bin/chromium-browser
     user: ${CURRENT_UID:-1000:1000}
     restart: on-failure
+
+  postgres:
+    image: postgres:11.4-alpine
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
   proxy:
     image: abiosoft/caddy:php-no-stats
     ports:
@@ -57,3 +81,6 @@ services:
       - ./infra/instance/logs:/logs
       - ./infra/instance/short_url.php:/srv/short_url.php
     restart: on-failure
+
+volumes:
+  db_data:

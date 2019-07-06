@@ -12,7 +12,14 @@
     max_fails 3
   }
 
-  proxy /export/ export:8082 {
+  proxy /graphql graphql:8082 {
+    transparent
+    websocket
+    max_fails 3
+    without /graphql
+  }
+
+  proxy /export/ export:8083 {
     transparent
     websocket
     max_fails 3

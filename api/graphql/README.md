@@ -11,12 +11,6 @@ This project provides school data such as lessons and modules through an [API](h
 1. Ensure data consistency.
 1. Grow the ecosystem.
 
-## Usage
-
-`curl -d '{"email": "hello@nusmods.com"}' -H "Content-Type: application/json" -X POST http://localhost:3001/auth`
-
-`curl -id '{"email": "hello@nusmods.com", "token": "5Y2Q3dt2D4f6T6RXVFc7as" }' -H "Content-Type: application/json" -X POST http://localhost:3001/verify`
-
 ## Installation
 
 1. Run `cp .env.example .env`, which copies `.env.example` to a new file called `.env`.
@@ -38,7 +32,7 @@ docker-compose build
 docker-compose up
 ```
 
-This command runs 3 docker images.
+This command runs many docker images, but only 3 are related to this project.
 
 The first is a SQL database, which stores all the data.
 
@@ -46,7 +40,7 @@ The second is a hasura instance, which sits between clients and the database to 
 
 The third is an authentication server, which authorizes clients to talk to the hasura instance. (WIP)
 
-The hasura admin interface is available on http://localhost:8080. The password for it is "development", which you can change via the `.env` file.
+The hasura admin interface is available on http://localhost:8082/graphql/console. The password for it is "development" in development mode.
 
 You may use the GraphiQL interface to explore the GraphQL schema and make requests to view the data.
 
@@ -70,7 +64,7 @@ From your computer:
 
 ```
 docker-compose up
-docker-compose exec graphql-engine sh
+docker-compose exec graphql sh
 ```
 
 From inside the docker container:
