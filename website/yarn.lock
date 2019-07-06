@@ -10040,16 +10040,15 @@ react-helmet@5.2.1:
     react-fast-compare "^2.0.2"
     react-side-effect "^1.1.0"
 
-react-hot-loader@4.12.3:
-  version "4.12.3"
-  resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-4.12.3.tgz#0972255cd110a00860902e82bb2b789a262cfe01"
-  integrity sha512-XBhxogFOxEh8L4Ykdk2mp704Xc/eoy+bwadEYMvmBhjAz3wg+DfMpINMkA+kLTRDinqwjssDfA9DhUJznRjvuA==
+react-hot-loader@4.12.4:
+  version "4.12.4"
+  resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-4.12.4.tgz#20f5c37488563b63de55160b31136c226577fc91"
+  integrity sha512-BC8Er2zXumeKDQVyICIVgJTUwya3+lL2ubtyJtlGS5i1RAuk/Art5NSFILqhXdI560hAz2ri7LP4sH3ns61/vQ==
   dependencies:
     fast-levenshtein "^2.0.6"
     global "^4.3.0"
     hoist-non-react-statics "^3.3.0"
     loader-utils "^1.1.0"
-    lodash "^4.17.11"
     prop-types "^15.6.1"
     react-lifecycles-compat "^3.0.4"
     shallowequal "^1.0.2"
