@@ -7,7 +7,7 @@ if (loadRaven) {
   Sentry.init({
     dsn: 'https://4b4fe71954424fd39ac88a4f889ffe20@sentry.io/213986',
 
-    release: process.env.versionStr || 'UNKNOWN_RELEASE',
+    release: process.env.VERSION_STR || 'UNKNOWN_RELEASE',
 
     beforeSend(event, hint) {
       const message = get(hint, ['originalException', 'message']);
