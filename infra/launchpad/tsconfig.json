@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
-    "outDir": "build",
-    "target": "es2018",
-    "module": "commonjs",
+    "target": "esnext",
+    "module": "esnext",
+    "jsx": "react",
+    "noEmit": true,
     "baseUrl": "./src",
     "resolveJsonModule": true,
     "esModuleInterop": true,
