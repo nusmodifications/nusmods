@@ -1,6 +1,8 @@
 const express = require('express');
 const next = require('next');
 
+const apiRouter = require('./api');
+
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev, dir: './src/web' });
 const handle = app.getRequestHandler();
@@ -10,7 +12,7 @@ app
   .then(() => {
     const server = express();
 
-    server.get('/api', (req, res) => res.send('TODO API'));
+    server.use('/api', apiRouter.router);
 
     server.get('*', (req, res) => {
       return handle(req, res);

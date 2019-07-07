@@ -15,8 +15,9 @@ build/
 cache/
 .cache-loader
 
-# Env files
+# Env and config files
 infra/instance/proxy.env
+infra/launchpad/config.js
 
 # Next.js
 .next
