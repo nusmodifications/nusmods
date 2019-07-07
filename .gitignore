@@ -18,6 +18,9 @@ cache/
 # Env files
 infra/instance/proxy.env
 
+# Next.js
+.next
+
 # Rest adapted from https://www.gitignore.io/api/vim,node,linux,macos,emacs,windows,ansible,database,webstorm,visualstudiocode
 
 ### Ansible ###
