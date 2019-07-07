@@ -23,7 +23,7 @@ export default class ModuleFilter {
   }
 
   initCount(modules: ModuleInformation[]) {
-    const filteredModules = new Set();
+    const filteredModules = new Set<string>();
 
     modules
       .filter((module) => this.test(module))
