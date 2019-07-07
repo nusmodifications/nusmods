@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import { Mode } from './settings';
 import { ColorIndex, Lesson, TimetableConfig } from './timetables';
 import {
@@ -65,7 +66,7 @@ export const FAILURE = '_FAILURE';
 
 export type FetchRequest = {
   status: ApiStatus;
-  error?: any;
+  error?: AxiosError;
 };
 
 export type Requests = { [requestKey: string]: FetchRequest };

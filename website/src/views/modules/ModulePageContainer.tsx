@@ -35,7 +35,7 @@ type Props = OwnProps & {
 
 type State = {
   ModulePageContent: React.ComponentType<ModulePageContentProp> | null;
-  error?: any;
+  error?: AxiosError;
 };
 
 /**
