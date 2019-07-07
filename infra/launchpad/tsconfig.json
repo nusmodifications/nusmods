@@ -5,6 +5,8 @@
     "jsx": "react",
     "noEmit": true,
     "baseUrl": "./src",
+    "allowJs": true,
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
