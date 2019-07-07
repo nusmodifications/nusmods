@@ -22,7 +22,18 @@
 
 # TODO: analytics
 
-# TODO: launch
+# Launchpad (on port 3000)
+
+launch.{$SERVER_DOMAIN} {
+  gzip
+  push
+
+  proxy / :3000 {
+    transparent
+    websocket
+    max_fails 3
+  }
+}
 
 # TODO: v2
 
