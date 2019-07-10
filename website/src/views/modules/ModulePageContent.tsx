@@ -6,7 +6,7 @@ import { kebabCase, map, mapValues, values, sortBy } from 'lodash';
 import { Module, NUSModuleAttributes, attributeDescription } from 'types/modules';
 
 import config from 'config';
-import { formatExamDate, getSemestersOffered } from 'utils/modules';
+import { getSemestersOffered } from 'utils/modules';
 import { intersperse } from 'utils/array';
 import { BULLET } from 'utils/react';
 import { NAVTAB_HEIGHT } from 'views/layout/Navtabs';
@@ -21,6 +21,7 @@ import SideMenu from 'views/components/SideMenu';
 import LessonTimetable from 'views/components/module-info/LessonTimetable';
 import ModuleExamClash from 'views/components/module-info/ModuleExamClash';
 import ModuleWorkload from 'views/components/module-info/ModuleWorkload';
+import ModuleExamInfo from 'views/components/module-info/ModuleExamInfo';
 import AddModuleDropdown from 'views/components/module-info/AddModuleDropdown';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
@@ -189,10 +190,8 @@ export default class ModulePageContent extends React.Component<Props, State> {
                         {module.semesterData.length > 1 && config.semesterNames[semester.semester]}{' '}
                         Exam
                       </h3>
-                      <p>
-                        {formatExamDate(semester.examDate)}{' '}
-                        {semester.examDuration && `${BULLET} ${semester.examDuration / 60} hrs`}
-                      </p>
+
+                      <ModuleExamInfo semesterData={semester} />
 
                       <ModuleExamClash
                         semester={semester.semester}

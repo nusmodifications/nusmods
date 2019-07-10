@@ -83,6 +83,13 @@ describe(combineModules, () => {
               semesterData: semesterTwoData,
             },
           ],
+          [
+            {
+              moduleCode,
+              module,
+              // No semesterData - should be ignored
+            },
+          ],
         ],
         {},
         logger,
@@ -91,6 +98,16 @@ describe(combineModules, () => {
       {
         ...module,
         semesterData: [semesterOneData, semesterTwoData],
+      },
+    ]);
+
+    // 2 modules without semesterData - should result in empty semesterData array.
+    expect(
+      combineModules([[{ moduleCode, module }], [{ moduleCode, module }]], {}, logger),
+    ).toEqual([
+      {
+        ...module,
+        semesterData: [],
       },
     ]);
   });

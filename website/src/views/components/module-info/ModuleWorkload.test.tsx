@@ -4,7 +4,6 @@ import _ from 'lodash';
 
 import { Workload } from 'types/modules';
 import ModuleWorkload from './ModuleWorkload';
-import styles from './ModuleWorkload.scss';
 
 function make(workload: Workload) {
   return shallow(<ModuleWorkload workload={workload} />);
@@ -12,11 +11,11 @@ function make(workload: Workload) {
 
 // Get the component name from anything that represents a component
 function extractComponent(node: ShallowWrapper): string {
-  if (node.hasClass(styles.moduleWorkloadComponent)) {
+  if (node.hasClass('module-workload-component')) {
     return extractComponent(node.find('h5').first());
   }
 
-  if (node.hasClass(styles.moduleWorkloadBlocks)) {
+  if (node.hasClass('module-workload-blocks')) {
     return extractComponent(node.children().first());
   }
 
@@ -32,7 +31,7 @@ test('it should render workload correctly', () => {
   expect(heading.text()).toEqual(expect.stringContaining('10'));
 
   // Check that the correct number of blocks have been rendered
-  expect(component.find(`.${styles.moduleWorkloadBlocks}`).children()).toHaveLength(10);
+  expect(component.find('.module-workload-blocks').children()).toHaveLength(10);
 });
 
 test('it should render non-integer workloads correctly', () => {
@@ -44,14 +43,14 @@ test('it should render non-integer workloads correctly', () => {
     6.5, // 7 blocks
   ]);
 
-  expect(component.find(`.${styles.remainder}`)).toHaveLength(4);
+  expect(component.find('.remainder')).toHaveLength(4);
 
   // Total hours should be 10
   const heading = component.find('h4').first();
   expect(heading.text()).toEqual(expect.stringContaining('10'));
 
   // But total number of blocks should be 12
-  expect(component.find(`.${styles.moduleWorkloadBlocks}`).children()).toHaveLength(12);
+  expect(component.find('.module-workload-blocks').children()).toHaveLength(12);
 });
 
 test('it should rearrange components correctly', () => {

@@ -1,0 +1,15 @@
+:8080 {
+  push
+  root /srv/dist
+  rewrite {
+    to {path} {path}/ /
+  }
+}
+
+:8081 {
+  push
+  root /srv/dist-timetable
+  rewrite {
+    to {path} {path}/ /
+  }
+}

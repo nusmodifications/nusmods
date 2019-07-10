@@ -26,7 +26,6 @@ export type Config = {
   getSemesterKey: () => string;
 
   apiBaseUrl: string;
-  elasticsearchBaseUrl: string;
   corsUrl: string;
   ivleUrl: string;
 
@@ -36,6 +35,8 @@ export type Config = {
   semesterNames: { [semester: string]: string };
   shortSemesterNames: { [semester: string]: string };
   archiveYears: string[];
+  examAvailability: Semester[];
+  examAvailabilitySet: Set<Semester>;
 
   defaultPreferences: {
     theme: string;
@@ -85,6 +86,8 @@ const augmentedConfig: Config = {
   holidays: holidays.map((date) => new Date(date)),
 
   corsSchedule: corsData.map(convertCorsDate),
+
+  examAvailabilitySet: new Set(appConfig.examAvailability),
 
   /**
    * Returns a unique key for every acad year + semester

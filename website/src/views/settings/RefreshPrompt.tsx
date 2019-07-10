@@ -2,7 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
-import { updateServiceWorker } from 'bootstrapping/service-worker';
+import { updateServiceWorker } from 'bootstrapping/service-worker-manager';
 import { Refresh } from 'views/components/icons';
 import styles from 'views/components/notfications/Announcements.scss';
 import LoadingSpinner from 'views/components/LoadingSpinner';
@@ -62,7 +62,7 @@ class RefreshPrompt extends React.PureComponent<Props, State> {
             disabled={isReloading}
             ref={this.buttonRef}
           >
-            {isReloading ? <LoadingSpinner small white /> : 'Refresh page'}
+            {isReloading ? <LoadingSpinner small /> : 'Refresh page'}
           </button>
         </div>
       </div>

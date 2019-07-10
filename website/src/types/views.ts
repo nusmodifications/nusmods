@@ -1,3 +1,4 @@
+import FilterGroup from 'utils/filters/FilterGroup';
 import { Department, Module, ModuleCode, ModuleCondensed, PrereqTree, Semester } from './modules';
 import { ModuleList } from './reducers';
 import { ColorIndex, HoverLesson, Lesson, ModifiableLesson } from './timetables';
@@ -27,8 +28,11 @@ export type SearchItem =
   | { readonly type: 'SEARCH'; readonly result: 'MODULE' | 'VENUE'; readonly term: string };
 
 /* browse/ModuleFinderContainer */
-export type RefinementItem = { key: string; doc_count?: number; missing?: boolean };
-export type RefinementDisplayItem = RefinementItem & { selected: boolean };
+export type AnyGroup = FilterGroup<any>;
+
+export type OnFilterChange = (filterGroup: AnyGroup) => unknown;
+export type FilterGroups = { [filterGroupId: string]: AnyGroup };
+export type FacultyDepartments = { [faculty: string]: Department[] };
 
 export type PageRange = {
   readonly current: number;

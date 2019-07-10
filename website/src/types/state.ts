@@ -1,5 +1,6 @@
 import {
   AppState,
+  ModuleFinderState,
   PlannerState,
   Requests,
   SettingsState,
@@ -18,6 +19,7 @@ export type State = {
   app: AppState;
   theme: ThemeState;
   settings: SettingsState;
+  moduleFinder: ModuleFinderState;
   planner: PlannerState;
   undoHistory: UndoHistoryState;
 };

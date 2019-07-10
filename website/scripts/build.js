@@ -27,24 +27,13 @@ function printErrors(summary, errors) {
   });
 }
 
-function warningFilter(warning) {
-  // Ignore warning about possible order conflict emitted by MiniCSSExtractPlugin. This is irrelevant for us
-  // because order doesn't matter as we use CSS modules
-  // See https://stackoverflow.com/questions/51971857/mini-css-extract-plugin-warning-in-chunk-chunkname-mini-css-extract-plugin-con
-  return !warning.includes('Conflicting order between');
-}
-
 function handleErrors(stats) {
-  if (stats.hasErrors()) {
+  if (stats.compilation.errors.length) {
     printErrors('Failed to compile.', stats.compilation.errors);
     process.exit(1);
   }
 
-  const statsJson = stats.toJson({
-    warnings: true,
-  });
-
-  if (process.env.CI && statsJson.warnings.filter(warningFilter).length) {
+  if (process.env.CI && stats.compilation.warnings.length) {
     // eslint-disable-next-line max-len
     printErrors(
       'Failed to compile. When process.env.CI = true, warnings are treated as failures. Most CI servers set this automatically.',

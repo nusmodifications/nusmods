@@ -5,6 +5,7 @@ import { escapeRegExp, castArray } from 'lodash';
 export const NBSP = '\u00a0';
 export const ZWSP = '\u200b';
 export const BULLET = ' • ';
+export const BULLET_NBSP = '\u00a0•\u00a0';
 
 /**
  * Replace substring matching the provided regex with React nodes. This is
