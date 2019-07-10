@@ -10,7 +10,7 @@ module.exports = {
       autorestart: false,
       watch: false,
 
-      cron_restart: '0 10 4,5 * *',
+      cron_restart: '10 4,5 * * *',
 
       env: {
         NODE_ENV: 'production',

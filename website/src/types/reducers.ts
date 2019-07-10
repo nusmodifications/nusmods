@@ -141,6 +141,16 @@ export type ModuleSelectListItem = SearchableModule & {
   readonly isAdded: boolean;
   readonly isAdding: boolean;
 };
+
+/* moduleFinder.js */
+export type ModuleSearch = {
+  readonly term: string;
+  readonly tokens: string[];
+};
+
+export type ModuleFinderState = {
+  readonly search: ModuleSearch;
+};
 export type ModuleList = ModuleCondensed[];
 export type ModuleSelectList = ModuleSelectListItem[];
 export type ModuleCodeMap = { [moduleCode: string]: ModuleCondensed };

@@ -21,11 +21,13 @@ export type ModuleInfoMapped = ModuleInfo & {
  */
 export type SemesterModule = Omit<Module, 'semesterData' | 'prereqTree' | 'fulfillRequirements'>;
 
-export type SemesterModuleData = Readonly<{
+export type WritableSemesterModuleData = {
   moduleCode: ModuleCode;
   module: SemesterModule;
-  semesterData: SemesterData;
-}>;
+  semesterData?: SemesterData;
+};
+
+export type SemesterModuleData = Readonly<WritableSemesterModuleData>;
 
 export type ModuleWithoutTree = Omit<Module, 'prereqTree'>;
 

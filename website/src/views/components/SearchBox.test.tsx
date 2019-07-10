@@ -9,9 +9,8 @@ describe(SearchBox, () => {
         <SearchBox
           throttle={0}
           useInstantSearch={false}
-          value=""
+          initialSearchTerm=""
           placeholder=""
-          onChange={jest.fn()}
           onSearch={jest.fn()}
         />,
       ),
@@ -22,9 +21,8 @@ describe(SearchBox, () => {
         <SearchBox
           throttle={0}
           useInstantSearch={false}
-          value="Hello world"
+          initialSearchTerm="Hello world"
           placeholder="Testing testing 123"
-          onChange={jest.fn()}
           onSearch={jest.fn()}
         />,
       ),

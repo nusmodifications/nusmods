@@ -8,6 +8,7 @@ import { State } from 'types/state';
 // Non-persisted reducers
 import requests from './requests';
 import app from './app';
+import moduleFinder from './moduleFinder';
 import createUndoReducer from './undoHistory';
 
 // Persisted reducers
@@ -45,6 +46,7 @@ export default function(state: State = defaultState, action: FSA): State {
     app: app(state.app, action),
     theme: theme(state.theme, action),
     settings: settings(state.settings, action),
+    moduleFinder: moduleFinder(state.moduleFinder, action),
     planner: planner(state.planner, action),
     undoHistory: state.undoHistory,
   };

@@ -2,11 +2,10 @@ import * as React from 'react';
 
 import { ModuleCode, Semester, SemesterDataCondensed } from 'types/modules';
 
-import { formatExamDate, getFirstAvailableSemester } from 'utils/modules';
-import { BULLET } from 'utils/react';
+import { getFirstAvailableSemester } from 'utils/modules';
 import SemesterPicker from './SemesterPicker';
 import ModuleExamClash from './ModuleExamClash';
-import styles from './ModuleSemesterInfo.scss';
+import ModuleExamInfo from './ModuleExamInfo';
 
 type Props = {
   moduleCode: ModuleCode;
@@ -39,7 +38,7 @@ export default class ModuleSemesterInfo extends React.Component<Props, State> {
     const semesters = this.props.semesters.map((data) => data.semester);
 
     return (
-      <div className={styles.moduleSemesterContainer}>
+      <div className="module-semester-container">
         <SemesterPicker
           semesters={semesters}
           selectedSemester={this.state.selected}
@@ -50,13 +49,10 @@ export default class ModuleSemesterInfo extends React.Component<Props, State> {
         />
 
         {semester && (
-          <>
-            <section className={styles.moduleExam}>
+          <div className="module-semester-info">
+            <section className="module-exam">
               <h4>Exam</h4>
-              <p>
-                {formatExamDate(semester.examDate)}{' '}
-                {semester.examDuration && `${BULLET} ${semester.examDuration / 60} hrs`}
-              </p>
+              <ModuleExamInfo semesterData={semester} />
 
               <ModuleExamClash
                 semester={semester.semester}
@@ -64,7 +60,7 @@ export default class ModuleSemesterInfo extends React.Component<Props, State> {
                 moduleCode={this.props.moduleCode}
               />
             </section>
-          </>
+          </div>
         )}
       </div>
     );

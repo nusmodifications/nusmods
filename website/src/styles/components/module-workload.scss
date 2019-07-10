@@ -1,24 +1,18 @@
-@import '~styles/utils/modules-entry';
-
-.moduleWorkloadContainer {
-  margin-bottom: 1rem;
-
+.module-workload-container {
   h4 {
     margin-bottom: 0.4rem;
-    font-weight: bold;
+  }
+
+  .module-workload-fallback {
     font-size: $font-size-sm;
   }
 
-  .moduleWorkloadFallback {
-    font-size: $font-size-sm;
-  }
-
-  .moduleWorkload {
+  .module-workload {
     display: flex;
     flex-wrap: wrap;
   }
 
-  .moduleWorkloadComponent {
+  .module-workload-component {
     overflow: hidden; // Avoid label from overflowing when they are too long
     margin-bottom: 0.4rem;
   }
@@ -36,7 +30,7 @@
     }
   }
 
-  .moduleWorkloadBlocks {
+  .module-workload-blocks {
     display: flex;
     flex-wrap: wrap;
 
@@ -52,7 +46,7 @@
       }
     }
 
-    &.blocksFixed div {
+    &.blocks-fixed div {
       flex: 0 auto;
       width: 10%;
     }

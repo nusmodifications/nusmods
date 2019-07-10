@@ -7,6 +7,8 @@ import { sortBy } from 'lodash';
 import { ModuleWithColor } from 'types/views';
 import { ColorIndex } from 'types/timetables';
 import { ModuleCode, Semester } from 'types/modules';
+import { State as StoreState } from 'types/state';
+import { ModuleTableOrder } from 'types/reducers';
 
 import ColorPicker from 'views/components/ColorPicker';
 import { Eye, EyeOff, Trash } from 'views/components/icons';
@@ -16,12 +18,13 @@ import {
   showLessonInTimetable,
 } from 'actions/timetables';
 import { getExamDate, getFormattedExamDate, renderMCs } from 'utils/modules';
+import { intersperse } from 'utils/array';
+import { BULLET_NBSP } from 'utils/react';
 import { modulePage } from 'views/routes/paths';
 import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip';
-import { State as StoreState } from 'types/state';
+import config from 'config';
 
-import { ModuleTableOrder } from 'types/reducers';
 import styles from './TimetableModulesTable.scss';
 import ModuleTombstone from './ModuleTombstone';
 import { moduleOrders } from './ModulesTableFooter';
@@ -93,6 +96,16 @@ class TimetableModulesTable extends React.PureComponent<Props> {
       return <ModuleTombstone module={module} resetTombstone={resetTombstone} />;
     }
 
+    // Second row of text consists of the exam date and the MCs
+    const secondRowText = [renderMCs(module.moduleCredit)];
+    if (config.examAvailabilitySet.has(semester)) {
+      secondRowText.unshift(
+        getExamDate(module, semester)
+          ? `Exam: ${getFormattedExamDate(module, semester)}`
+          : 'No Exam',
+      );
+    }
+
     return (
       <>
         <div className={styles.moduleColor}>
@@ -110,13 +123,7 @@ class TimetableModulesTable extends React.PureComponent<Props> {
           <Link to={modulePage(module.moduleCode, module.title)}>
             {module.moduleCode} {module.title}
           </Link>
-          <div className={styles.moduleExam}>
-            {getExamDate(module, semester)
-              ? `Exam: ${getFormattedExamDate(module, semester)}`
-              : 'No Exam'}
-            &nbsp;&middot;&nbsp;
-            {renderMCs(module.moduleCredit)}
-          </div>
+          <div className={styles.moduleExam}>{intersperse(secondRowText, BULLET_NBSP)}</div>
         </div>
       </>
     );

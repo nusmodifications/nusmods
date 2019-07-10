@@ -1,0 +1,20 @@
+{
+  "name": "search",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@elastic/elasticsearch": "7.2.0",
+    "axios": "0.19.0",
+    "lodash": "4.17.11",
+    "node-cron": "2.0.3"
+  },
+  "devDependencies": {
+    "@types/lodash": "4.14.135",
+    "@types/node": "12.0.12",
+    "@types/node-cron": "2.0.2",
+    "prettier": "1.18.2",
+    "ts-node": "8.3.0",
+    "typescript": "3.5.2"
+  }
+}

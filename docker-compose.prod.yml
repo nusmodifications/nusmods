@@ -37,9 +37,9 @@ services:
     environment:
       - discovery.type=single-node # Bypass bootstrap checks in single-node dev cluster. See: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-dev-mode
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+      - 'ES_JAVA_OPTS=-Xms256m -Xmx256m'
     volumes:
-      - ./infra/instance/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./api/search/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
       - esdata01:/usr/share/elasticsearch/data
     ulimits:
       memlock:
@@ -55,6 +55,13 @@ services:
     environment:
       - SERVER_BASEPATH=/kibana
       - SERVER_REWRITEBASEPATH=true
+    restart: on-failure
+  es-importer:
+    build:
+      context: .
+      dockerfile: api/search/Dockerfile.prod
+    depends_on:
+      - elasticsearch
     restart: on-failure
   proxy:
     image: abiosoft/caddy:php-no-stats
