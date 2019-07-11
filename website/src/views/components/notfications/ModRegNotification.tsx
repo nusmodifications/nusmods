@@ -5,16 +5,16 @@ import { capitalize } from 'lodash';
 
 import { NotificationOptions } from 'types/reducers';
 
-import config, { CorsRound } from 'config';
+import config, { ModRegRound } from 'config';
 import { dismissCorsNotification } from 'actions/settings';
 import { openNotification } from 'actions/app';
-import { roundStart, currentPeriod, currentRound } from 'utils/cors';
+import { roundStart, currentPeriod, currentRound } from 'utils/modreg';
 import { forceCorsRound } from 'utils/debug';
 import CloseButton from 'views/components/CloseButton';
 import ExternalLink from 'views/components/ExternalLink';
 import { State } from 'types/state';
 
-import styles from './CorsNotification.scss';
+import styles from './ModRegNotification.scss';
 
 type Props = {
   // True only in the preview in the settings page since we don't want
@@ -29,9 +29,9 @@ type Props = {
 
 const NOW = new Date();
 
-export function corsNotificationText(
+export function notificationText(
   useLineBreaks: boolean,
-  round: CorsRound | null = currentRound(),
+  round: ModRegRound | null = currentRound(),
   now: Date = new Date(),
 ): React.ReactNode {
   if (!round) return null;
@@ -63,7 +63,7 @@ function currentTime() {
   return NOW;
 }
 
-export class CorsNotificationComponent extends React.PureComponent<Props> {
+export class ModRegNotificationComponent extends React.PureComponent<Props> {
   dismiss = (round: string) => {
     this.props.dismissCorsNotification(round);
     this.props.openNotification('Reminder snoozed until start of next round', {
@@ -94,9 +94,7 @@ export class CorsNotificationComponent extends React.PureComponent<Props> {
     return (
       <div className={styles.wrapper}>
         <ExternalLink href="https://myaces.nus.edu.sg/cors/StudentLogin">
-          <div className={styles.notification}>
-            {corsNotificationText(true, round, currentTime())}
-          </div>
+          <div className={styles.notification}>{notificationText(true, round, currentTime())}</div>
         </ExternalLink>
 
         {!hideCloseButton && (
@@ -112,12 +110,12 @@ const mapStateToProps = (state: State) => ({
   dismissedRounds: state.settings.corsNotification.dismissed,
 });
 
-const withStoreCorsNotification = connect(
+const withStoreModRegNotification = connect(
   mapStateToProps,
   {
     dismissCorsNotification,
     openNotification,
   },
-)(CorsNotificationComponent);
-const CorsNotification = withRouter(withStoreCorsNotification);
-export default CorsNotification;
+)(ModRegNotificationComponent);
+const ModRegNotification = withRouter(withStoreModRegNotification);
+export default ModRegNotification;

@@ -4,19 +4,19 @@ import holidays from 'data/holidays.json';
 import corsData from 'data/cors-schedule-ay1819-sem2.json';
 import appConfig from './app-config.json';
 
-export type CorsPeriodType = 'open' | 'closed';
+export type RegPeriodType = 'Select Modules' | 'Select Tutorials / Labs';
 
-export type CorsPeriod = {
-  type: CorsPeriodType;
+export type RegPeriod = {
+  type: RegPeriodType;
   start: string;
   startDate: Date;
   end: string;
   endDate: Date;
 };
 
-export type CorsRound = {
+export type ModRegRound = {
   round: string;
-  periods: CorsPeriod[];
+  periods: RegPeriod[];
 };
 
 export type Config = {
@@ -59,16 +59,16 @@ export type Config = {
 
   holidays: Date[];
 
-  corsSchedule: CorsRound[];
+  corsSchedule: ModRegRound[];
 };
 
-function convertCorsDate(roundData: typeof corsData[0]): CorsRound {
+function convertModRegDate(roundData: typeof corsData[0]): ModRegRound {
   return {
     ...roundData,
     periods: roundData.periods.map((period) => ({
       ...period,
       // To make TypeScript happy
-      type: period.type as CorsPeriodType,
+      type: period.type as RegPeriodType,
       // Convert timestamps to date objects
       startDate: new Date(period.startTs),
       endDate: new Date(period.endTs),
@@ -85,7 +85,7 @@ const augmentedConfig: Config = {
 
   holidays: holidays.map((date) => new Date(date)),
 
-  corsSchedule: corsData.map(convertCorsDate),
+  corsSchedule: corsData.map(convertModRegDate),
 
   examAvailabilitySet: new Set(appConfig.examAvailability),
 

@@ -2,12 +2,12 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import moment, { Moment } from 'moment';
 
-import config, { CorsRound, CorsPeriod, CorsPeriodType } from 'config';
+import config, { ModRegRound, RegPeriod, RegPeriodType } from 'config';
 import createHistory from 'test-utils/createHistory';
 import ExternalLink from 'views/components/ExternalLink';
-import { CorsNotificationComponent } from './CorsNotification';
+import { ModRegNotificationComponent } from './ModRegNotification';
 
-describe(CorsNotificationComponent, () => {
+describe(ModRegNotificationComponent, () => {
   // Save the original CORS schedule for this test and restore it afterwards
   let originalSchedule: typeof config.corsSchedule;
   beforeAll(() => {
@@ -21,8 +21,8 @@ describe(CorsNotificationComponent, () => {
   function corsPeriod(
     start: Moment,
     durationInHours: number = 1,
-    type: CorsPeriodType = 'open',
-  ): CorsPeriod {
+    type: RegPeriodType = 'Select Modules',
+  ): RegPeriod {
     const end = start.clone().add(durationInHours, 'hour');
 
     return {
@@ -34,7 +34,7 @@ describe(CorsNotificationComponent, () => {
     };
   }
 
-  function setSchedule(schedule: CorsRound[]) {
+  function setSchedule(schedule: ModRegRound[]) {
     config.corsSchedule = schedule;
   }
 
@@ -47,7 +47,7 @@ describe(CorsNotificationComponent, () => {
       openNotification,
 
       wrapper: shallow(
-        <CorsNotificationComponent
+        <ModRegNotificationComponent
           enabled={enabled}
           dismissedRounds={dismissedRounds}
           dismissCorsNotification={dismissCorsNotification}
@@ -121,7 +121,7 @@ describe(CorsNotificationComponent, () => {
         round: '0',
         periods: [
           corsPeriod(moment().subtract(2, 'hour')),
-          corsPeriod(moment().add(1, 'hour'), 1, 'closed'),
+          corsPeriod(moment().add(1, 'hour'), 1, 'Select Modules'),
         ],
       },
     ]);
