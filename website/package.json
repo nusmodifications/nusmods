@@ -166,7 +166,7 @@
     "react-router-dom": "5.0.1",
     "react-scrollspy": "3.4.0",
     "react-waypoint": "9.0.2",
-    "redux": "4.0.1",
+    "redux": "4.0.4",
     "redux-persist": "5.10.0",
     "redux-thunk": "2.3.0",
     "reselect": "4.0.0"
