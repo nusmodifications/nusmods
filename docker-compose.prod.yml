@@ -11,16 +11,25 @@ services:
       args:
         - GIT_COMMIT_HASH
         - DATA_API_BASE_URL=/api
+    networks:
+      - web
     expose:
       - 8080
       - 8081
     restart: on-failure
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.backend=website'
+      - 'traefik.frontend.rule=Host:nusmods.com, www.nusmods.com'
+      - 'traefik.port=8080'
   export:
     build:
       context: .
       dockerfile: export/Dockerfile.prod
     env_file:
       - export/.env
+    networks:
+      - web
     expose:
       - 8082
     depends_on:
@@ -32,6 +41,11 @@ services:
       - PORT=8082
       - HOST=0.0.0.0
     restart: on-failure
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.backend=export'
+      - 'traefik.frontend.rule=Host:nusmods.com,www.nusmods.com;PathPrefixStrip:/export/'
+      - 'traefik.port=8082'
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.8.1
     environment:
@@ -45,35 +59,49 @@ services:
       memlock:
         soft: -1
         hard: -1
+    networks:
+      - internal
+      - web
     expose:
       - 9200
     restart: on-failure
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.backend=elasticsearch'
+      - 'traefik.frontend.rule=Host:nusmods.com,www.nusmods.com;PathPrefix:/elasticsearch/modules/_search;PathPrefixStrip:/elasticsearch'
+      - 'traefik.port=9200'
   kibana:
     image: docker.elastic.co/kibana/kibana:6.8.1
+    networks:
+      - web
     expose:
       - 5601
     environment:
       - SERVER_BASEPATH=/kibana
       - SERVER_REWRITEBASEPATH=true
     restart: on-failure
-  es-importer:
-    build:
-      context: .
-      dockerfile: api/search/Dockerfile.prod
-    depends_on:
-      - elasticsearch
-    restart: on-failure
-  proxy:
-    image: abiosoft/caddy:php-no-stats
-    ports:
-      - ${EXPOSED_PORT}:2015
-    env_file:
-      - ./infra/instance/proxy.env
-    volumes:
-      - ./infra/instance/Caddyfile:/etc/Caddyfile
-      - ./infra/instance/logs:/logs
-      - ./infra/instance/.caddy:/root/.caddy
-      - ./infra/instance/short_url.php:/srv/short_url.php
-    restart: on-failure
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.backend=kibana'
+      - 'traefik.frontend.rule=Host:nusmods.com,www.nusmods.com;PathPrefix:/kibana'
+      - 'traefik.frontend.auth.basic=test:$$apr1$$H6uskkkW$$IgXLP6ewTrSuBkTrqE8wj/'
+      - 'traefik.port=5601'
+  # es-importer:
+  #   build:
+  #     context: .
+  #     dockerfile: api/search/Dockerfile.prod
+  #   depends_on:
+  #     - elasticsearch
+  #   networks:
+  #     - internal
+  #   restart: on-failure
 volumes:
   esdata01:
+
+# Connect to a bridge network called 'web',
+# which allows communication with other docker-compose setups
+networks:
+  internal:
+  web:
+    external:
+      name: machine_web

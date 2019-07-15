@@ -1,0 +1,45 @@
+debug = true
+logLevel = "DEBUG"
+defaultEntryPoints = ["https","http"]
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+  compress = true
+    [entryPoints.http.redirect]
+    entryPoint = "https"
+
+  [entryPoints.https]
+  address = ":443"
+    [entryPoints.https.tls]
+      [[entryPoints.https.tls.certificates]]
+      certFile = "/certs/cert.crt"
+      keyFile = "/certs/cert.key"
+
+  [entryPoints.nusmodsApi]
+    [entryPoints.nusmodsApi.redirect]
+    regex = "^http://.+/api/(.*)"
+    replacement = "https://api.nusmods.com/$1"
+
+  [entryPoints.traefik]
+  address = ":5678"
+
+# [retry]
+# attempts = 3
+# maxMem = 3
+
+[api]
+entryPoint = "traefik"
+
+[docker]
+endpoint = "unix:///var/run/docker.sock"
+domain = "localhost"
+watch = true
+exposedByDefault = false
+
+# [acme]
+# entryPoint = "https"
+# storage = "/etc/traefik/acme/acme.json"
+# onHostRule = true
+#   [acme.httpChallenge]
+#   entryPoint = "http"
