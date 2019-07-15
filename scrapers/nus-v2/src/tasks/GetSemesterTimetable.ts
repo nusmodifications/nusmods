@@ -57,6 +57,11 @@ const getLessonKey = (lesson: TimetableLesson) =>
  * the range of date and the intervals between lessons
  */
 export function mapLessonWeeks(dates: string[], semester: number, logger: Logger): Weeks {
+  // Sanity check for lessons occurring on duplicate days
+  if (dates.length !== new Set(dates).size) {
+    logger.error('Lesson has duplicate dates');
+  }
+
   const semesterName = SEMESTER_NAMES[semester];
   const lessonDates = dates.map((date) => parseISO(date)).sort(compareAsc);
   const weekInfo = lessonDates.map(NUSModerator.academicCalendar.getAcadWeekInfo);
@@ -203,7 +208,11 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
       // 5. Remove the lesson key inserted in (2) and remap the weeks to their correct shape
       values(timetableObject).map((lesson) => ({
         ...lesson,
-        weeks: mapLessonWeeks(lesson.weeks, this.semester, this.logger.child({ moduleCode })),
+        weeks: mapLessonWeeks(
+          lesson.weeks,
+          this.semester,
+          this.logger.child({ moduleCode, lesson }),
+        ),
       })),
     );
   };
