@@ -1,15 +1,23 @@
 version: '3.7'
 services:
   machine-proxy:
-    build:
-      context: .
-      dockerfile: ./Dockerfile-proxy
-    network_mode: host
-    environment:
-      - SERVER_DOMAIN=${SERVER_DOMAIN:?SERVER_DOMAIN}
+    image: traefik:alpine
+    ports:
+      - '80:80'
+      - '443:443'
+      - '5678:5678'
+    networks:
+      - web
     volumes:
-      - ./Caddyfile:/etc/Caddyfile:ro
-      - ./logs:/logs
-      - ~/.caddy:/root/.caddy # Location to store certificates
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.toml:/traefik.toml
+      - ./certs/:/certs/
+      - ~/data/traefik/acme.json:/acme.json
       - ~/api.nusmods.com:/root/apidata:ro # Place API data in ~/api.nusmods.com
     restart: on-failure
+
+# Create a bridge network called 'web',
+# which allows communication with other docker-compose setups
+networks:
+  web:
+    driver: bridge
