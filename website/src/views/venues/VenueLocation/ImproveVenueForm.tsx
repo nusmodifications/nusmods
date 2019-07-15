@@ -14,6 +14,7 @@ import { markerIcon } from 'views/components/map/icons';
 import ExpandMap from 'views/components/map/ExpandMap';
 
 import mapStyles from 'views/components/map/LocationMap.scss';
+import { captureException } from 'utils/error';
 import styles from './ImproveVenueForm.scss';
 
 type Props = {
@@ -119,7 +120,13 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
         room: roomName,
       })
       .then(() => this.setState({ submitted: true }))
-      .catch((error) => this.setState({ error }))
+      .catch((originalError) => {
+        const error = new Error(
+          `Error while submitting improve venue form - ${originalError.message}`,
+        );
+        captureException(error, { originalError });
+        this.setState({ error });
+      })
       .then(() => this.setState({ submitting: false }));
   };
 
