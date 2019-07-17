@@ -10,7 +10,8 @@
     "start": "pm2 start ecosystem.config.js",
     "dev": "nodemon -r dotenv/config ./src",
     "devtools": "DEVTOOLS=1 nodemon -r dotenv/config ./src",
-    "deploy": "rsync -avu --delete-after . ../../nusmods-export && pm2 restart ecosystem.config.js"
+    "deploy": "rsync -avu --delete-after . ../../nusmods-export && pm2 restart ecosystem.config.js",
+    "lint": "prettier --write"
   },
   "dependencies": {
     "@sentry/node": "5.5.0",
@@ -27,6 +28,14 @@
     "puppeteer": "1.18.1"
   },
   "devDependencies": {
-    "dotenv": "8.0.0"
+    "@types/fs-extra": "^8.0.0",
+    "@types/koa": "2.0.49",
+    "@types/koa-router": "^7.0.42",
+    "@types/koa-views": "^2.0.3",
+    "@types/lodash": "4.14.136",
+    "@types/puppeteer": "^1.12.4",
+    "dotenv": "8.0.0",
+    "prettier": "1.18.2",
+    "typescript": "3.5.3"
   }
 }

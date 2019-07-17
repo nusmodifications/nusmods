@@ -1,10 +1,13 @@
-const path = require('path');
-const fs = require('fs-extra');
-const axios = require('axios');
-const _ = require('lodash');
-const config = require('./config');
+import path from 'path';
+import fs from 'fs-extra';
+import axios from 'axios';
+import _ from 'lodash';
+import { Middleware } from 'koa';
 
-async function fetchModule(moduleCode) {
+import config from './config';
+import { PageData, State } from './types';
+
+async function fetchModule(moduleCode: string) {
   let fileName = `${moduleCode}.json`;
 
   if (config.moduleData) {
@@ -18,7 +21,7 @@ async function fetchModule(moduleCode) {
   return req.data;
 }
 
-async function getModules(moduleCodes) {
+export async function getModules(moduleCodes: string[]) {
   const modules = await Promise.all(
     moduleCodes.map((moduleCode) => fetchModule(moduleCode).catch(() => null)),
   );
@@ -26,7 +29,7 @@ async function getModules(moduleCodes) {
   return modules.filter(Boolean);
 }
 
-function parseExportData(ctx, next) {
+export const parseExportData: Middleware<State> = (ctx, next) => {
   if (ctx.query.data) {
     try {
       const data = JSON.parse(ctx.query.data);
@@ -38,23 +41,13 @@ function parseExportData(ctx, next) {
   }
 
   return next();
-}
+};
 
-function validateExportData(data) {
+function validateExportData(data: PageData) {
   if (!_.isObject(data)) throw new Error('data should be an object');
 
   if (!_.isInteger(data.semester) || data.semester < 1 || data.semester > 4) {
     throw new Error('Invalid semester');
-  }
-
-  // Handles pre-persist-migration data format
-  // TODO: Remove after AY2017/18 Sem 2 when the Redux Persist migration is also removed
-  if (!_.isObject(data.hidden)) {
-    data.hidden = _.get(data, 'settings.hiddenInTimetable', []);
-  }
-
-  if (!_.isObject(data.colors)) {
-    data.colors = _.get(data, 'theme.colors', {});
   }
 
   // TODO: Improve these validation
@@ -70,8 +63,3 @@ function validateExportData(data) {
     throw new Error('Invalid theme');
   }
 }
-
-module.exports = {
-  parseExportData,
-  getModules,
-};

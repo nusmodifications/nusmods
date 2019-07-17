@@ -1,10 +1,10 @@
-const fs = require('fs-extra');
-const Sentry = require('@sentry/node');
-const gracefulShutdown = require('http-graceful-shutdown');
+import fs from 'fs-extra';
+import Sentry from '@sentry/node';
+import gracefulShutdown from 'http-graceful-shutdown';
 
-const config = require('./config');
-const app = require('./app');
-const render = require('./render');
+import config from './config';
+import app from './app';
+import * as render from './render';
 
 // Config check
 if (process.env.NODE_ENV === 'production') {
@@ -45,7 +45,7 @@ render
       app.context.pageContent = await fs.readFile(config.page, 'utf-8');
     }
 
-    const server = app.listen(process.env.PORT || 3000, process.env.HOST);
+    const server = app.listen(Number(process.env.PORT) || 3000, process.env.HOST);
     console.log('Export server started');
 
     gracefulShutdown(server);
