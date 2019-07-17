@@ -18,7 +18,7 @@
     "test:watch": "jest --watch",
     "e2e": "nightwatch -e default,safariMobile,safariDesktop,edge",
     "cors": "node scripts/cors-crawler",
-    "ci": "cross-env NODE_ENV=production npm run lint && npm run typecheck && npm test && npm test:integration && npm rebuild node-sass && npm run build"
+    "ci": "cross-env NODE_ENV=production yarn lint && yarn typecheck && yarn test && yarn test:integration && npm rebuild node-sass && yarn build"
   },
   "author": "NUSModifications",
   "license": "MIT",
