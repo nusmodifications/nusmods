@@ -54,6 +54,8 @@ module.exports = {
     'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
     'no-bitwise': 'off',
 
+    'react/no-unescaped-entities': 'off',
+
     'react/no-array-index-key': 'off',
 
     // SEE: https://github.com/yannickcr/eslint-plugin-react/issues
