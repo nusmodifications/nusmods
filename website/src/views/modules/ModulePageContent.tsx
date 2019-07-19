@@ -26,10 +26,11 @@ import AddModuleDropdown from 'views/components/module-info/AddModuleDropdown';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
 import ScrollToTop from 'views/components/ScrollToTop';
-import { Archive, Check, AlertTriangle } from 'views/components/icons';
+import { Archive, Check } from 'views/components/icons';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
 
 import styles from './ModulePageContent.scss';
+import ReportError from './ReportError';
 
 export type Props = {
   module: Module;
@@ -208,9 +209,7 @@ export default class ModulePageContent extends React.Component<Props, State> {
                   )}
 
                   <p>
-                    <a className="" href="mailto:modules@nusmods.com">
-                      <AlertTriangle /> Report errors
-                    </a>
+                    <ReportError moduleCode={moduleCode} />
                   </p>
                 </div>
               </section>
