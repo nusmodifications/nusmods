@@ -19,3 +19,8 @@ yarn docs
 # Sync with live data
 echo "Syncing data"
 rsync -ahz --delete-after --exclude='cache/' data/ ../../../api.nusmods.com/v2
+
+# pm2 doesn't restart processes that have stopped, so this just noops until
+# the next cron restart
+echo "Finished syncing data. Sleeping."
+sleep 86400
