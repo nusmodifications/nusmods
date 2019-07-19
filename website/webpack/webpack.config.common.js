@@ -34,6 +34,9 @@ const commonConfig = merge([
     entry: {
       // This will build an app.js file from the `main` module.
       app: ['main'],
+      // Browser warning, exported separately so it doesn't have anything that IE11
+      // does not support
+      browser: ['bootstrapping/browser'],
     },
     context: parts.PATHS.src,
     output: {

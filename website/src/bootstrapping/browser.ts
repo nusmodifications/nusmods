@@ -4,12 +4,13 @@
 // user will at least be able to see the dialog warning them of the browser incompatibility.
 
 import bowser from 'bowser';
-import * as Sentry from '@sentry/browser';
 
 import { parseFloat } from 'types/utils';
 import { canUseBrowserLocalStorage } from 'storage/localStorage';
 import { BROWSER_WARNING_KEY } from 'storage/keys';
 import styles from './browser.scss';
+
+/* eslint-disable import/prefer-default-export */
 
 const composeAnchorText = (innerHTML: string, href: string) =>
   `<a href=${href} target="_blank" rel="noopener noreferrer">${innerHTML}</a>`;
@@ -21,7 +22,7 @@ const linkForChromePlayStore = composeAnchorText(
 );
 
 const browserCanUseLocalStorage = canUseBrowserLocalStorage();
-const isBrowserSupported =
+export const isBrowserSupported =
   bowser.check(
     {
       msedge: '14',
@@ -32,11 +33,6 @@ const isBrowserSupported =
     true,
   ) ||
   (bowser.ios && parseFloat(bowser.osversion));
-
-// Add unsupported tag so that we can filter out reports from those users
-Sentry.configureScope((scope) => {
-  scope.setTag('unsupported', String(!isBrowserSupported));
-});
 
 if (!isBrowserSupported) {
   // Show unsupported browser warning
