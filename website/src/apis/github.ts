@@ -1,5 +1,6 @@
 import axios from 'axios';
 import qs from 'query-string';
+import { useRepoVenues } from 'utils/debug';
 import { Contributor } from 'types/contributor';
 import { VenueLocationMap } from 'types/venues';
 
@@ -38,6 +39,7 @@ let memoizedVenuePromise: Promise<VenueLocationMap> | null = null;
  * Download venue locations from the copy of data/venues.json hosted on GitHub
  */
 export function getVenueLocations(): Promise<VenueLocationMap> {
+  if (useRepoVenues()) return import('data/venues').then((module) => module.default);
   if (memoizedVenuePromise) return memoizedVenuePromise;
   const url = `${baseUrl}/venues`;
   const promise = axios
