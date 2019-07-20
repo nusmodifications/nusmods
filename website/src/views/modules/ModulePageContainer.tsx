@@ -35,7 +35,7 @@ type Props = OwnProps & {
 
 type State = {
   ModulePageContent: React.ComponentType<ModulePageContentProp> | null;
-  error?: any;
+  error?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 };
 
 /**
@@ -105,7 +105,7 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
     const { module, moduleCode, moduleExists, match, location, archiveYear } = this.props;
 
     if (!moduleExists) {
-      return <ModuleNotFoundPage moduleCode={moduleCode} />;
+      return <ModuleNotFoundPage tryArchive={!archiveYear} moduleCode={moduleCode} />;
     }
 
     // If there is an error but module data can still be found, we assume module has

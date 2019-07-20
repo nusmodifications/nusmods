@@ -21,7 +21,7 @@
     "koa": "2.7.0",
     "koa-router": "7.4.0",
     "koa-views": "6.2.0",
-    "lodash": "4.17.11",
+    "lodash": "4.17.14",
     "nodemon": "1.19.1",
     "pug": "2.0.4",
     "puppeteer": "1.18.1"
