@@ -1,3 +1,11 @@
+.button {
+  display: flex;
+
+  .icon {
+    margin-right: 0.3em;
+  }
+}
+
 .heading {
   font-weight: bold;
   font-size: 1.4rem;

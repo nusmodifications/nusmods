@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 
 import { ModuleCode } from 'types/modules';
 import { AlertTriangle } from 'views/components/icons';
@@ -17,8 +18,13 @@ const ReportError: React.FC<Props> = ({ moduleCode }) => {
 
   return (
     <>
-      <button type="button" className="btn btn-link" onClick={() => setIsOpen(!isOpen)}>
-        <AlertTriangle /> Report errors
+      <button
+        type="button"
+        className={classnames('btn btn-link', styles.button)}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <AlertTriangle className={styles.icon} />
+        Report errors
       </button>
 
       <Modal isOpen={isOpen} onRequestClose={() => setIsOpen(false)} animate>
