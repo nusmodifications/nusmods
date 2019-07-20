@@ -15,11 +15,9 @@ defaultEntryPoints = ["https","http"]
       [[entryPoints.https.tls.certificates]]
       certFile = "/certs/cert.crt"
       keyFile = "/certs/cert.key"
-
-  [entryPoints.nusmodsApi]
-    [entryPoints.nusmodsApi.redirect]
-    regex = "^http://.+/api/(.*)"
-    replacement = "https://api.nusmods.com/$1"
+    [entryPoints.https.redirect]
+      regex = "^https://.+/api/(.*)"
+      replacement = "https://api.nusmods.com/$1"
 
   [entryPoints.traefik]
   address = ":5678"
