@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Starts a production instance of NUSMods.
-# Usage: start-prod.sh <port to expose NUSMods on>
+# Stop all production instances of NUSMods.
+# Usage: prod-down.sh
 
 # Exit when any command fails
 set -e
