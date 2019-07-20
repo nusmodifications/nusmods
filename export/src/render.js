@@ -9,7 +9,7 @@ const VIEWPORT_HEIGHT = 2000;
 
 async function setViewport(page, options = {}) {
   await page.setViewport({
-    deviceScaleFactor: options.deviceScaleFactor || 1,
+    deviceScaleFactor: options.pixelRatio || 1,
     width: options.width || config.pageWidth,
     height: options.height || VIEWPORT_HEIGHT,
   });
