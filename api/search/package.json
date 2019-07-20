@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "@types/lodash": "4.14.136",
-    "@types/node": "12.6.2",
+    "@types/node": "12.6.8",
     "@types/node-cron": "2.0.2",
     "prettier": "1.18.2",
     "ts-node": "8.3.0",
