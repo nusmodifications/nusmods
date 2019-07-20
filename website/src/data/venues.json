@@ -2723,8 +2723,8 @@
     "roomName": "Ngee Ann Kongsi Auditorium",
     "floor": 2,
     "location": {
-      "x": 103.773178,
-      "y": 1.305546
+      "x": 103.77310842275621,
+      "y": 1.305495177478812
     }
   },
   "TC-SR4": {
@@ -2779,16 +2779,16 @@
     "roomName": "East Core - Programme Room 2",
     "floor": 2,
     "location": {
-      "x": 103.77246850300989,
-      "y": 1.3074623343447909
+      "x": 103.77238932595665,
+      "y": 1.30699712587118
     }
   },
   "Y-CR3": {
     "roomName": "Saga College - Classroom 3",
     "floor": 1,
     "location": {
-      "x": 103.77201037850928,
-      "y": 1.3056591015490226
+      "x": 103.77228751042186,
+      "y": 1.3057888366434272
     }
   },
   "BIZ2-0413C": {
@@ -2945,27 +2945,51 @@
   },
   "Y-CR18": {
     "roomName": "Cendana College - Classroom 18",
-    "floor": 1
+    "floor": 1,
+    "location": {
+      "x": 103.77209827949825,
+      "y": 1.3081501754171658
+    }
   },
   "Y-CR19": {
     "roomName": "Cendana College - Classroom 19",
-    "floor": 1
+    "floor": 1,
+    "location": {
+      "x": 103.77215597089427,
+      "y": 1.3081995151835102
+    }
   },
   "Y-CR20": {
     "roomName": "Cendana College - Classroom 20",
-    "floor": 1
+    "floor": 1,
+    "location": {
+      "x": 103.77235118806529,
+      "y": 1.3080455966903655
+    }
   },
   "Y-CR21": {
     "roomName": "Cendana College - Classroom 21",
-    "floor": 2
+    "floor": 2,
+    "location": {
+      "x": 103.77233728358148,
+      "y": 1.308000010773302
+    }
   },
   "Y-CR22": {
     "roomName": "Cendana College - Classroom 22",
-    "floor": 2
+    "floor": 2,
+    "location": {
+      "x": 103.77225734320442,
+      "y": 1.307863790088413
+    }
   },
   "Y-CR23": {
     "roomName": "Cendana College - Classroom 23",
-    "floor": 2
+    "floor": 2,
+    "location": {
+      "x": 103.77215275048388,
+      "y": 1.3078777339744636
+    }
   },
   "Y-AChemLab": {
     "roomName": "East Core - Lab 2 (Analytical Chem)",
@@ -2977,7 +3001,11 @@
   },
   "Y-CR15": {
     "roomName": "East Core - Classroom 15 (Teal Classroom)",
-    "floor": 1
+    "floor": 1,
+    "location": {
+      "x": 103.77235445340203,
+      "y": 1.3068319447806727
+    }
   },
   "Y-CR16": {
     "roomName": "East Core - Classroom 16 (Flex Classroom)",
@@ -2985,19 +3013,35 @@
   },
   "Y-CR17": {
     "roomName": "East Core - Classroom 17",
-    "floor": 2
+    "floor": 2,
+    "location": {
+      "x": 103.77250958293335,
+      "y": 1.3081051258162757
+    }
   },
   "Y-CompLab": {
     "roomName": "East Core - Computer Lab",
-    "floor": 2
+    "floor": 2,
+    "location": {
+      "x": 103.77246979126771,
+      "y": 1.307215400856019
+    }
   },
   "Y-GLRm1": {
     "roomName": "East Core - Global Learning Room 1",
-    "floor": 1
+    "floor": 1,
+    "location": {
+      "x": 103.77237745388989,
+      "y": 1.3072727852552588
+    }
   },
   "Y-GLRm2": {
     "roomName": "East Core - Global Learning Room 2",
-    "floor": 1
+    "floor": 1,
+    "location": {
+      "x": 103.77240007414356,
+      "y": 1.3072642043058085
+    }
   },
   "Y-OChemLab": {
     "roomName": "East Core - Lab 4 (Organic Chem)",
@@ -3005,7 +3049,11 @@
   },
   "Y-PgRm1": {
     "roomName": "East Core - Programme Room 1",
-    "floor": 2
+    "floor": 2,
+    "location": {
+      "x": 103.77237859616122,
+      "y": 1.306963338813609
+    }
   },
   "Y-PhysLab": {
     "roomName": "East Core - Lab 3 (Physics)",
@@ -3037,11 +3085,19 @@
   },
   "Y-CR14": {
     "roomName": "Elm College - Classroom 14",
-    "floor": 2
+    "floor": 2,
+    "location": {
+      "x": 103.77215083192603,
+      "y": 1.3066957241756028
+    }
   },
   "Y-CR9": {
-    "roomName": "Elm College - Classroom 9",
-    "floor": "Ground"
+    "roomName": "Classroom 9",
+    "floor": 0,
+    "location": {
+      "x": 103.77197577457565,
+      "y": 1.3064871024405618
+    }
   },
   "Y-KChanrai": {
     "roomName": "Elm College - Kewalram Chanrai Room",
@@ -3053,51 +3109,87 @@
   },
   "Y-TCTLT": {
     "roomName": "Elm College - Tan Chin Tuan Lecture Theatre",
-    "floor": "Ground"
+    "floor": 0,
+    "location": {
+      "x": 103.77199562435915,
+      "y": 1.3066678362266242
+    }
   },
   "Y-WriteCtr": {
     "roomName": "Writers Centre - Elm",
     "floor": 2
   },
   "Y-CR1": {
-    "roomName": "Saga College - Classroom 1",
-    "floor": "Ground"
+    "roomName": "Classroom 1",
+    "floor": 0,
+    "location": {
+      "x": 103.77175099762619,
+      "y": 1.30581028874315
+    }
   },
   "Y-CR2": {
-    "roomName": "Saga College - Classroom 2",
-    "floor": 1
+    "roomName": "Classroom 2",
+    "floor": 1,
+    "location": {
+      "x": 103.7721532656606,
+      "y": 1.3058998512411744
+    }
   },
   "Y-CR4": {
     "roomName": "Saga College - Classroom 4",
-    "floor": 1
+    "floor": 1,
+    "location": {
+      "x": 103.77198030467714,
+      "y": 1.3055480367418686
+    }
   },
   "Y-CR5": {
     "roomName": "Saga College - Classroom 5",
-    "floor": 1
+    "floor": 0,
+    "location": {
+      "x": 103.77175095637367,
+      "y": 1.3058006353023917
+    }
   },
   "Y-CR6": {
     "roomName": "Saga College - Classroom 6",
-    "floor": 2
+    "floor": 2,
+    "location": {
+      "x": 103.77228639676764,
+      "y": 1.3057765016696252
+    }
   },
   "Y-CR7": {
-    "roomName": "Saga College - Classroom 7",
-    "floor": 2
+    "roomName": "Classroom 7",
+    "floor": 2,
+    "location": {
+      "x": 103.7720808680825,
+      "y": 1.3055544725401718
+    }
   },
   "Y-CR8": {
-    "roomName": "Saga College - Classroom 8",
-    "floor": 2
+    "roomName": "Classroom 8",
+    "floor": 2,
+    "location": {
+      "x": 103.77190469324051,
+      "y": 1.3055469641326765
+    }
   },
   "Y-LT1": {
     "roomName": "Saga College - Lecture Theatre 1",
-    "floor": "Ground",
+    "floor": 1,
     "location": {
-      "x": 103.77202,
-      "y": 1.30588
+      "x": 103.77192265324696,
+      "y": 1.3058977060435655
     }
   },
   "Y-ArtsStud": {
     "roomName": "West Core - Studio 2 (Georgette Chen Arts Studio)",
-    "floor": "Ground"
+    "floor": 0,
+    "location": {
+      "x": 103.77209881561728,
+      "y": 1.307876661468576
+    }
   },
   "Y-BlackBox": {
     "roomName": "West Core - Black Box Theatre",
@@ -3109,11 +3201,19 @@
   },
   "Y-PerfHall": {
     "roomName": "West Core - Performance Hall",
-    "floor": "Ground"
+    "floor": 0,
+    "location": {
+      "x": 103.77194627811501,
+      "y": 1.3070223321416874
+    }
   },
   "Y-PracRm6": {
     "roomName": "West Core - Practice Room 6",
-    "floor": 2
+    "floor": 2,
+    "location": {
+      "x": 103.77197626576837,
+      "y": 1.3073548394422478
+    }
   },
   "Y-Studio3": {
     "roomName": "West Core - Studio 3",
