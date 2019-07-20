@@ -26,20 +26,13 @@ const ReportError: React.FC<Props> = ({ moduleCode }) => {
         <h2 className={styles.heading}>Reporting an issue with {moduleCode}</h2>
         <p>
           NUSMods is run by a very small number of volunteers. Response can take up to a week,
-          especially during module registration. Since NUSMods only displays data given to us by the
-          school, it is only useful to email us if you suspect there's a bug.
+          especially during module registration.
         </p>
 
         <p>
-          Most of the time it is instead faster to email your faculty (
-          <ExternalLink href="http://www.nus.edu.sg/registrar/info/modreg/UGFac_Contacts.pdf">
-            undergraduate
-          </ExternalLink>
-          ,{' '}
-          <ExternalLink href="http://www.nus.edu.sg/registrar/info/modreg/GDFac_ModRelatedLinks.pdf">
-            graduate
-          </ExternalLink>
-          ) and cc us. Examples of questions that may be better answered by the school are:
+          For most issues related to modules and timetables, it will be faster to email your faculty
+          and CC <a href="mailto:modules@nusmods.com">modules@nusmods.com</a>. Examples of questions
+          that will be better answered by the faculties are:
         </p>
 
         <ul>
@@ -50,8 +43,20 @@ const ReportError: React.FC<Props> = ({ moduleCode }) => {
         </ul>
 
         <p>
-          For faculty, NUSMods updates its information from the Registrar's Office every night.
-          Please wait up to 48 hours for information to be updated before emailing us.
+          Here are the faculty contact details for{' '}
+          <ExternalLink href="http://www.nus.edu.sg/registrar/info/modreg/UGFac_Contacts.pdf">
+            undergraduate{' '}
+          </ExternalLink>
+          and{' '}
+          <ExternalLink href="http://www.nus.edu.sg/registrar/info/modreg/GDFac_ModRelatedLinks.pdf">
+            graduate{' '}
+          </ExternalLink>
+          students.
+        </p>
+
+        <p>
+          NUSMods updates its information from the Registrar's Office every night. Please wait up to
+          48 hours for information to be updated before reporting any issues.
         </p>
 
         <hr />
