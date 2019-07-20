@@ -26,6 +26,7 @@ export type Config = {
   getSemesterKey: () => string;
 
   apiBaseUrl: string;
+  elasticsearchBaseUrl: string;
   corsUrl: string;
   ivleUrl: string;
 
