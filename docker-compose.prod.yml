@@ -86,15 +86,15 @@ services:
       - 'traefik.frontend.rule=Host:nusmods.com,www.nusmods.com;PathPrefix:/kibana'
       - 'traefik.frontend.auth.basic=test:$$apr1$$H6uskkkW$$IgXLP6ewTrSuBkTrqE8wj/'
       - 'traefik.port=5601'
-  # es-importer:
-  #   build:
-  #     context: .
-  #     dockerfile: api/search/Dockerfile.prod
-  #   depends_on:
-  #     - elasticsearch
-  #   networks:
-  #     - internal
-  #   restart: on-failure
+  es-importer:
+    build:
+      context: .
+      dockerfile: api/search/Dockerfile.prod
+    depends_on:
+      - elasticsearch
+    networks:
+      - internal
+    restart: on-failure
 volumes:
   esdata01:
 
