@@ -27,6 +27,7 @@ type OwnProps = RouteComponentProps<Params>;
 
 type Props = OwnProps & {
   module: Module | null;
+  moduleExists: boolean;
   moduleCode: ModuleCode;
   fetchModule: () => Promise<Module>;
   archiveYear?: string;
@@ -69,7 +70,9 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
   }
 
   fetchModule() {
-    this.props.fetchModule().catch(this.handleFetchError);
+    if (this.props.moduleExists || this.props.archiveYear) {
+      this.props.fetchModule().catch(this.handleFetchError);
+    }
   }
 
   fetchPageImport() {

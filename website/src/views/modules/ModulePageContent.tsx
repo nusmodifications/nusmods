@@ -6,7 +6,7 @@ import { kebabCase, map, mapValues, values, sortBy } from 'lodash';
 import { Module, NUSModuleAttributes, attributeDescription } from 'types/modules';
 
 import config from 'config';
-import { formatExamDate, getSemestersOffered, isOffered } from 'utils/modules';
+import { getSemestersOffered, isOffered } from 'utils/modules';
 import { intersperse } from 'utils/array';
 import { BULLET } from 'utils/react';
 import { NAVTAB_HEIGHT } from 'views/layout/Navtabs';
