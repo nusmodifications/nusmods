@@ -15,6 +15,7 @@ import CollateModules from './tasks/CollateModules';
 import DataPipeline from './tasks/DataPipeline';
 
 import config from './config';
+import MigrateV1ToV2 from './tasks/MigrateV1ToV2';
 
 function handleFatalError(e: Error): void {
   logger.fatal(e, 'Fatal error');
@@ -120,9 +121,25 @@ yargs
     }),
   })
   .command({
-    command: 'all',
+    command: 'all [year]',
     describe: 'run all tasks in a single pipeline',
+    builder: {
+      year: parameters.year,
+    },
     handler: run(({ year }) => new DataPipeline(year).run()),
+  })
+  .command({
+    command: 'migrate [year]',
+    describe: 'move v1 modules to v2 modules format',
+    builder: {
+      year: parameters.year,
+    },
+    handler: run(async ({ year }) => {
+      // Always use current year because v2 API endpoint may not return data for past years
+      const input = await new GetFacultyDepartment(config.academicYear).run();
+      const convertedModules = await new MigrateV1ToV2(year).run(input);
+      logger.info(`Converted ${convertedModules.length} modules`);
+    }),
   })
   .demandCommand()
   .strict()
