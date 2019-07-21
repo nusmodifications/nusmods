@@ -1,74 +1,48 @@
-debug = true
-logLevel = "DEBUG"
-defaultEntryPoints = ["https","http"]
+# Global configuration
+[global]
+  # Do not send anonymous usage for now
+  sendAnonymousUsage = false
 
+# Providers discover the services
+# that live on your infrastructure (their IP, health, ...)
+[providers]
+  # Tell traefik to use Docker as a provider
+  [providers.docker]
+    # Listen to the default docker socket
+    endpoint = "unix:///var/run/docker.sock"
+    # Manually have containers opt in to being exposed to traefik
+    exposedByDefault = false
+
+# Entrypoints listen for incoming traffic (ports, ...)
 [entryPoints]
-  [entryPoints.http]
-  address = ":80"
-  compress = true
-    [entryPoints.http.redirect]
-    entryPoint = "https"
+  # Tell traefik to listen to incoming traffic on ports 80
+  [entryPoints.web]
+    address = ":80"
 
-  [entryPoints.https]
-  address = ":443"
-    [entryPoints.https.tls]
-      [[entryPoints.https.tls.certificates]]
-      certFile = "/certs/cert.crt"
-      keyFile = "/certs/cert.key"
-    [entryPoints.https.redirect]
-      regex = "^https://.+/api/(.*)"
-      replacement = "https://api.nusmods.com/$1"
+  # Tell traefik to listen to incoming traffic on ports 443
+  [entryPoints.web-secure]
+    address = ":443"
 
-  [entryPoints.traefik]
-  address = ":5678"
+# Routers analyse the requests (host, path, headers, SSL, ...)
+# Services forward the request to your services (load balancing, ...)
 
-# [retry]
-# attempts = 3
-# maxMem = 3
+[[tls.certificates]]
+  certFile = "/certs/cert.crt"
+  keyFile = "/certs/cert.key"
 
+# Middlewares may update the request or make decisions based on the request (authentication, rate limiting, headers, ...)
+[http.middlewares]
+  [http.middlewares.add-foo-prefix.addPrefix]
+    prefix = "/foo"
+  [http.middlewares.common.headers]
+    # Redirect all non-http call to https
+    sslRedirect = true
+  # Gzip files
+  # [http.middlewares.common.compress]
+
+# Traefik's own API handler, which exposes information such as
+# the configuration of all routers, services, middlewares, etc.
+# https://docs.traefik.io/v2.0/operations/api/
 [api]
-entryPoint = "traefik"
-
-[docker]
-endpoint = "unix:///var/run/docker.sock"
-domain = "localhost"
-watch = true
-exposedByDefault = false
-
-# [acme]
-# entryPoint = "https"
-# storage = "/etc/traefik/acme/acme.json"
-# onHostRule = true
-#   [acme.httpChallenge]
-#   entryPoint = "http"
-
-[backends]
-  [backends.fake]
-    [backends.fake.servers.s1]
-      url="http://1.2.3.4"
-
-[frontends]
-[frontends.r1]
-  backend = "fake"
-  [frontends.r1.redirect]
-    regex = "^https://.+/api/(.*)"
-    replacement = "https://api.nusmods.com/$1"
-    permanent = false
-[frontends.r2]
-  backend = "fake"
-  [frontends.r2.redirect]
-    regex = "^https://nextbus.nusmods.com/arrival(.*)"
-    replacement = "https://nextbus.comfortdelgro.com.sg/eventservice.svc/shuttleservice$1"
-    permanent = false
-[frontends.r3]
-  backend = "fake"
-  [frontends.r3.redirect]
-    regex = "^https://github.nusmods.com/repo(.*)"
-    replacement = "https://api.github.com/repos/nusmodifications/nusmods$1"
-    permanent = false
-[frontends.r4]
-  backend = "fake"
-  [frontends.r4.redirect]
-    regex = "^https://github.nusmods.com/venues(.*)"
-    replacement = "https://raw.githubusercontent.com/nusmodifications/nusmods/master/website/src/data/venues.json"
-    permanent = false
+  # Dashboard isn't working for beta
+  dashboard = false

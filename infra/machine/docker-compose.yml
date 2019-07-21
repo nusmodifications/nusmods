@@ -1,23 +1,22 @@
 version: '3.7'
 services:
   machine-proxy:
-    image: traefik:alpine
+    image: traefik:v2.0-alpine
     ports:
       - '80:80'
       - '443:443'
-      - '5678:5678'
+      - '8080:8080'
     networks:
-      - web
+      - intranet
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik.toml:/traefik.toml
       - ./certs/:/certs/
       - ~/data/traefik/acme.json:/acme.json
-      - ~/api.nusmods.com:/root/apidata:ro # Place API data in ~/api.nusmods.com
     restart: on-failure
 
-# Create a bridge network called 'web',
+# Create a bridge network called 'intranet',
 # which allows communication with other docker-compose setups
 networks:
-  web:
+  intranet:
     driver: bridge

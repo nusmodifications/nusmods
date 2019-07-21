@@ -12,16 +12,17 @@ services:
         - GIT_COMMIT_HASH
         - DATA_API_BASE_URL=/api
     networks:
-      - web
+      - intranet
     expose:
       - 8080
       - 8081
     restart: on-failure
     labels:
       - 'traefik.enable=true'
-      - 'traefik.backend=website'
-      - 'traefik.frontend.rule=Host:nusmods.com, www.nusmods.com'
-      - 'traefik.port=8080'
+      # - 'traefik.http.routers.website.middlewares=common@file'
+      - 'traefik.http.routers.website.tls'
+      - 'traefik.http.routers.website.middlewares=add-foo-prefix@file'
+      - 'traefik.http.routers.website.rule=Host(`nusmods.com`, `{subdomain:\d+}.nusmods.com`)'
   export:
     build:
       context: .
@@ -29,7 +30,7 @@ services:
     env_file:
       - export/.env
     networks:
-      - web
+      - intranet
     expose:
       - 8082
     depends_on:
@@ -42,8 +43,8 @@ services:
       - HOST=0.0.0.0
     restart: on-failure
     labels:
-      - 'traefik.enable=true'
-      - 'traefik.backend=export'
+      - 'traefik.http.routers.export.middlewares=common@file'
+      - 'traefik.http.routers.export.rule=Host(`nusmods.com`, `{subdomain:\d+}.nusmods.com`)'
       - 'traefik.frontend.rule=Host:nusmods.com,www.nusmods.com;PathPrefixStrip:/export/'
       - 'traefik.port=8082'
   elasticsearch:
@@ -61,19 +62,19 @@ services:
         hard: -1
     networks:
       - internal
-      - web
+      - intranet
     expose:
       - 9200
     restart: on-failure
     labels:
-      - 'traefik.enable=true'
+      # - 'traefik.enable=true'
       - 'traefik.backend=elasticsearch'
       - 'traefik.frontend.rule=Host:nusmods.com,www.nusmods.com;PathPrefix:/elasticsearch/modules/_search;PathPrefixStrip:/elasticsearch'
       - 'traefik.port=9200'
   kibana:
     image: docker.elastic.co/kibana/kibana:6.8.1
     networks:
-      - web
+      - intranet
     expose:
       - 5601
     environment:
@@ -81,7 +82,7 @@ services:
       - SERVER_REWRITEBASEPATH=true
     restart: on-failure
     labels:
-      - 'traefik.enable=true'
+      # - 'traefik.enable=true'
       - 'traefik.backend=kibana'
       - 'traefik.frontend.rule=Host:nusmods.com,www.nusmods.com;PathPrefix:/kibana'
       - 'traefik.frontend.auth.basic=test:$$apr1$$H6uskkkW$$IgXLP6ewTrSuBkTrqE8wj/'
@@ -98,10 +99,10 @@ services:
 volumes:
   esdata01:
 
-# Connect to a bridge network called 'web',
+# Connect to a bridge network called 'intranet',
 # which allows communication with other docker-compose setups
 networks:
   internal:
-  web:
+  intranet:
     external:
-      name: machine_web
+      name: machine_intranet
