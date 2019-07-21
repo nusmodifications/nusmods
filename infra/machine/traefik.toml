@@ -12,9 +12,6 @@ defaultEntryPoints = ["https","http"]
   [entryPoints.https]
   address = ":443"
     [entryPoints.https.tls]
-      [[entryPoints.https.tls.certificates]]
-      certFile = "/certs/cert.crt"
-      keyFile = "/certs/cert.key"
     [entryPoints.https.redirect]
       regex = "^https://.+/api/(.*)"
       replacement = "https://api.nusmods.com/$1"
@@ -38,7 +35,7 @@ exposedByDefault = false
 [acme]
 entryPoint = "https"
 email = "mods@nusmods.com"
-storage = "/etc/traefik/acme/acme.json"
+storage = "/acme.json"
 onHostRule = true
 [acme.dnsChallenge]
   provider = "cloudflare"
