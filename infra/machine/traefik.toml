@@ -41,3 +41,34 @@ exposedByDefault = false
 # onHostRule = true
 #   [acme.httpChallenge]
 #   entryPoint = "http"
+
+[backends]
+  [backends.fake]
+    [backends.fake.servers.s1]
+      url="http://1.2.3.4"
+
+[frontends]
+[frontends.r1]
+  backend = "fake"
+  [frontends.r1.redirect]
+    regex = "^https://.+/api/(.*)"
+    replacement = "https://api.nusmods.com/$1"
+    permanent = false
+[frontends.r2]
+  backend = "fake"
+  [frontends.r2.redirect]
+    regex = "^https://nextbus.nusmods.com/arrival(.*)"
+    replacement = "https://nextbus.comfortdelgro.com.sg/eventservice.svc/shuttleservice$1"
+    permanent = false
+[frontends.r3]
+  backend = "fake"
+  [frontends.r3.redirect]
+    regex = "^https://github.nusmods.com/repo(.*)"
+    replacement = "https://api.github.com/repos/nusmodifications/nusmods$1"
+    permanent = false
+[frontends.r4]
+  backend = "fake"
+  [frontends.r4.redirect]
+    regex = "^https://github.nusmods.com/venues(.*)"
+    replacement = "https://raw.githubusercontent.com/nusmodifications/nusmods/master/website/src/data/venues.json"
+    permanent = false
