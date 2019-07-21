@@ -4,12 +4,21 @@ import styles from './LoadingSpinner.scss';
 
 type Props = {
   small?: boolean;
+  white?: boolean;
+  className?: string;
 };
 
-export default function LoadingSpinner(props: Props) {
+const LoadingSpinner: React.FC<Props> = ({ small, white, className }) => {
   return (
-    <div className={classnames(styles.loader, { [styles.small]: props.small })}>
+    <div
+      className={classnames(styles.loader, className, {
+        [styles.small]: small,
+        [styles.white]: white,
+      })}
+    >
       <span className="sr-only">Loading...</span>
     </div>
   );
-}
+};
+
+export default LoadingSpinner;

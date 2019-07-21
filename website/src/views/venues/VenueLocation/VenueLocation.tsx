@@ -80,7 +80,7 @@ export default class VenueLocation extends React.PureComponent<Props, State> {
       <div>
         <p>
           <strong>{location.roomName}</strong> ({venue})
-          {location.floor && (
+          {location.floor != null && (
             <>
               {' '}
               is on <strong>{floorName(location.floor)}</strong>

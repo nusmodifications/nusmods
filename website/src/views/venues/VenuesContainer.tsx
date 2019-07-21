@@ -50,7 +50,8 @@ type State = {
   isMapExpanded: boolean;
 
   // Search state
-  searchTerm: string;
+  searchBoxValue: string; // Value of the controlled search box; updated real-time
+  searchTerm: string; // Actual string to search with; deferred update
   isAvailabilityEnabled: boolean;
   searchOptions: VenueSearchOptions;
   pristineSearchOptions: boolean;
@@ -76,11 +77,13 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
       : defaultSearchOptions();
 
     this.history = new HistoryDebouncer(history);
+    const searchTerm = params.q || '';
     this.state = {
       searchOptions,
       isAvailabilityEnabled,
       isMapExpanded: false,
-      searchTerm: params.q || '',
+      searchTerm,
+      searchBoxValue: searchTerm,
       // eslint-disable-next-line react/no-unused-state
       pristineSearchOptions: !isAvailabilityEnabled,
     };
@@ -124,10 +127,12 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
       pathname: venuePage(),
     });
 
-  onSearch = (searchTerm: string) => {
-    if (searchTerm !== this.state.searchTerm) {
-      defer(() => this.setState({ searchTerm }));
-    }
+  onSearchBoxChange = (searchBoxValue: string) => {
+    this.setState({ searchBoxValue });
+  };
+
+  onSearch = () => {
+    defer(() => this.setState((prevState) => ({ searchTerm: prevState.searchBoxValue.trim() })));
   };
 
   onAvailabilityUpdate = (searchOptions: VenueSearchOptions) => {
@@ -183,7 +188,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
   }
 
   renderSearch() {
-    const { searchTerm, isAvailabilityEnabled, searchOptions } = this.state;
+    const { searchBoxValue, isAvailabilityEnabled, searchOptions } = this.state;
 
     return (
       <div className={styles.venueSearch}>
@@ -193,8 +198,10 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
           className={styles.searchBox}
           throttle={0}
           useInstantSearch
-          initialSearchTerm={searchTerm}
+          isLoading={false}
+          value={searchBoxValue}
           placeholder="e.g. LT27"
+          onChange={this.onSearchBoxChange}
           onSearch={this.onSearch}
         />
 
