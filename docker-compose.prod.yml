@@ -12,7 +12,7 @@ services:
         - GIT_COMMIT_HASH
         - DATA_API_BASE_URL=/api
     networks:
-      - web
+      - intranet
     expose:
       - 8080
       - 8081
@@ -29,7 +29,7 @@ services:
     env_file:
       - export/.env
     networks:
-      - web
+      - intranet
     expose:
       - 8082
     depends_on:
@@ -60,8 +60,8 @@ services:
         soft: -1
         hard: -1
     networks:
-      - internal
-      - web
+      - private
+      - intranet
     expose:
       - 9200
     restart: on-failure
@@ -73,7 +73,7 @@ services:
   kibana:
     image: docker.elastic.co/kibana/kibana:6.8.1
     networks:
-      - web
+      - intranet
     expose:
       - 5601
     environment:
@@ -84,7 +84,7 @@ services:
       - 'traefik.enable=true'
       - 'traefik.backend=kibana'
       - 'traefik.frontend.rule=Host:nusmods.com,www.nusmods.com;PathPrefix:/kibana'
-      - 'traefik.frontend.auth.basic=test:$$apr1$$H6uskkkW$$IgXLP6ewTrSuBkTrqE8wj/'
+      - 'traefik.frontend.auth.basic=test:${BASIC_AUTH-$$apr1$$H6uskkkW$$IgXLP6ewTrSuBkTrqE8wj/}'
       - 'traefik.port=5601'
   es-importer:
     build:
@@ -93,15 +93,15 @@ services:
     depends_on:
       - elasticsearch
     networks:
-      - internal
+      - private
     restart: on-failure
 volumes:
   esdata01:
 
-# Connect to a bridge network called 'web',
+# Connect to a bridge network called 'intranet',
 # which allows communication with other docker-compose setups
 networks:
-  internal:
-  web:
+  private:
+  intranet:
     external:
-      name: machine_web
+      name: machine_intranet

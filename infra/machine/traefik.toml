@@ -35,12 +35,16 @@ domain = "localhost"
 watch = true
 exposedByDefault = false
 
-# [acme]
-# entryPoint = "https"
-# storage = "/etc/traefik/acme/acme.json"
-# onHostRule = true
-#   [acme.httpChallenge]
-#   entryPoint = "http"
+[acme]
+entryPoint = "https"
+email = "mods@nusmods.com"
+storage = "/etc/traefik/acme/acme.json"
+onHostRule = true
+[acme.dnsChallenge]
+  provider = "cloudflare"
+[[acme.domains]]
+  main = "*.nusmods.com"
+  sans = ["nusmods.com"]
 
 [backends]
   [backends.fake]
