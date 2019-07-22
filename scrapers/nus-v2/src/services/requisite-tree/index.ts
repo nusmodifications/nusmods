@@ -49,6 +49,10 @@ const RESTRICTED_KEYWORDS = [
   // 4 out of 5 requirement cannot be represented
   '4 out of the 5',
   '4 of the 5',
+  // Negative prereqs (eg. any English module except ES1000) cannot be represented
+  'not',
+  'NOT',
+  'Not',
 ];
 
 function parse(data: ModuleWithoutTree[], subLogger: Logger): PrereqTreeMap {
@@ -122,7 +126,7 @@ export default async function generatePrereqTree(
   // check that all modules match regex and no modules contain operators
   const moduleCodes: string[] = uniq(allModules.map((module) => module.moduleCode));
 
-  moduleCodes.forEach((moduleCode) => {
+  for (const moduleCode of moduleCodes) {
     const isModule = MODULE_REGEX.test(moduleCode);
 
     if (!isModule) {
@@ -132,7 +136,7 @@ export default async function generatePrereqTree(
     if (OPERATORS_REGEX.test(moduleCode)) {
       throw new Error(`Module ${moduleCode}'s module code contains operators.`);
     }
-  });
+  }
 
   const prerequisites = parse(allModules, logger);
   const modules = insertRequisiteTree(allModules, prerequisites);

@@ -9,18 +9,22 @@ const VIEWPORT_HEIGHT = 2000;
 
 async function setViewport(page, options = {}) {
   await page.setViewport({
-    deviceScaleFactor: options.deviceScaleFactor || 1,
+    deviceScaleFactor: options.pixelRatio || 1,
     width: options.width || config.pageWidth,
     height: options.height || VIEWPORT_HEIGHT,
   });
 }
 
 async function launch() {
-  const executablePath = config.chromeExecutable ?
-    config.chromeExecutable : undefined;
   const browser = await puppeteer.launch({
-    executablePath,
+    executablePath: config.chromeExecutable,
     devtools: !!process.env.DEVTOOLS,
+    args: [
+      '--headless',
+      '--disable-gpu',
+      '--disable-software-rasterizer',
+      '--disable-dev-shm-usage',
+    ],
   });
 
   const page = await browser.newPage();
@@ -65,7 +69,7 @@ async function injectData(page, data) {
   const modules = await getModules(moduleCodes);
 
   await page.evaluate(`
-    new Promise((resolve) => 
+    new Promise((resolve) =>
       window.setData(${JSON.stringify(modules)}, ${JSON.stringify(data)}, resolve)
     )
   `);

@@ -1,0 +1,79 @@
+#
+# NOTE: You probably don't want to start this directly.
+# Use infra/instance/start-prod.sh to start NUSMods in production.
+#
+version: '3.7'
+services:
+  website:
+    build:
+      context: .
+      dockerfile: website/Dockerfile.prod
+      args:
+        - GIT_COMMIT_HASH
+        - DATA_API_BASE_URL=/api
+    expose:
+      - 8080
+      - 8081
+    restart: on-failure
+  export:
+    build:
+      context: .
+      dockerfile: export/Dockerfile.prod
+    env_file:
+      - export/.env
+    expose:
+      - 8082
+    depends_on:
+      - website
+    security_opt:
+      - seccomp="infra/instance/chromium.seccomp.json"
+    environment:
+      - NODE_ENV=production
+      - PORT=8082
+      - HOST=0.0.0.0
+    restart: on-failure
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.1
+    environment:
+      - discovery.type=single-node # Bypass bootstrap checks in single-node dev cluster. See: https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-dev-mode
+      - bootstrap.memory_lock=true
+      - 'ES_JAVA_OPTS=-Xms256m -Xmx256m'
+    volumes:
+      - ./api/search/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - esdata01:/usr/share/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    expose:
+      - 9200
+    restart: on-failure
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.8.1
+    expose:
+      - 5601
+    environment:
+      - SERVER_BASEPATH=/kibana
+      - SERVER_REWRITEBASEPATH=true
+    restart: on-failure
+  es-importer:
+    build:
+      context: .
+      dockerfile: api/search/Dockerfile.prod
+    depends_on:
+      - elasticsearch
+    restart: on-failure
+  proxy:
+    image: abiosoft/caddy:php-no-stats
+    ports:
+      - ${EXPOSED_PORT}:2015
+    env_file:
+      - ./infra/instance/proxy.env
+    volumes:
+      - ./infra/instance/Caddyfile:/etc/Caddyfile
+      - ./infra/instance/logs:/logs
+      - ./infra/instance/.caddy:/root/.caddy
+      - ./infra/instance/short_url.php:/srv/short_url.php
+    restart: on-failure
+volumes:
+  esdata01:

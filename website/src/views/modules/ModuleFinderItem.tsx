@@ -1,17 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import classnames from 'classnames';
 
 import { ModuleInformation } from 'types/modules';
 import { ElasticSearchResult } from 'types/vendor/elastic-search';
 
 import { modulePage } from 'views/routes/paths';
+import ModuleSemesterInfo from 'views/components/module-info/ModuleSemesterInfo';
+import ModuleWorkload from 'views/components/module-info/ModuleWorkload';
+import LinkModuleCodes from 'views/components/LinkModuleCodes';
+import { Archive } from 'views/components/icons';
 import { BULLET } from 'utils/react';
 import { intersperse } from 'utils/array';
-import ModuleSemesterInfo from './module-info/ModuleSemesterInfo';
-import ModuleWorkload from './module-info/ModuleWorkload';
-import LinkModuleCodes from './LinkModuleCodes';
+import { mergeModuleHighlight } from 'utils/elasticSearch';
+import { isOffered } from 'utils/modules';
+
 import styles from './ModuleFinderItem.scss';
-import { mergeModuleHighlight } from '../../utils/elasticSearch';
 
 type Props = {
   module: ModuleInformation;
@@ -88,7 +92,14 @@ const ModuleFinderItem: React.FC<Props> = ({ module, highlight = {} }) => {
           </dl>
         </div>
         <div className="col-lg-4 col-md-12 col-sm-4">
-          <ModuleSemesterInfo semesters={module.semesterData} moduleCode={module.moduleCode} />
+          {isOffered(module) ? (
+            <ModuleSemesterInfo semesters={module.semesterData} moduleCode={module.moduleCode} />
+          ) : (
+            <div className={classnames(styles.notOffered, 'alert alert-warning')}>
+              <Archive className={styles.archiveIcon} />
+              <p>This module is not offered this year</p>
+            </div>
+          )}
           {module.workload && <ModuleWorkload workload={module.workload} />}
         </div>
       </div>

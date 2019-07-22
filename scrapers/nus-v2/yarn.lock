@@ -3014,10 +3014,12 @@ number-is-nan@^1.0.0:
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
   integrity sha1-CXtgK1NCKlIsGvuHkDGDNpQaAR0=
 
-nusmoderator@2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/nusmoderator/-/nusmoderator-2.2.0.tgz#ebefb120ed50cd1b91279e05d977eab3802675d4"
-  integrity sha512-+dKie1QFAqDPxXqyJZTcmS0crxoeJpLNIpa/vbmQo8b+yON6NpztSfG4fXflZxOwucqKu8uDhazucILrvc1Z/w==
+nusmoderator@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/nusmoderator/-/nusmoderator-3.0.0.tgz#9ab8ad2207d415a12c31f2979fc225dbe992b37d"
+  integrity sha512-kTD12nfQcMj6MI/eMalYt/jzqKfyBP6J4rxtYzrzxlf6EtwnjGdfZBLaFT2nFQwhQLnaulQQzZ2l/OTetSR7+g==
+  dependencies:
+    date-fns "2.0.0-alpha.27"
 
 nwsapi@^2.0.7:
   version "2.0.9"

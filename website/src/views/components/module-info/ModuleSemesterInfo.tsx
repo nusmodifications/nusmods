@@ -2,10 +2,10 @@ import * as React from 'react';
 
 import { ModuleCode, Semester, SemesterDataCondensed } from 'types/modules';
 
-import { formatExamDate, getFirstAvailableSemester } from 'utils/modules';
-import { BULLET } from 'utils/react';
+import { getFirstAvailableSemester } from 'utils/modules';
 import SemesterPicker from './SemesterPicker';
 import ModuleExamClash from './ModuleExamClash';
+import ModuleExamInfo from './ModuleExamInfo';
 import styles from './ModuleSemesterInfo.scss';
 
 type Props = {
@@ -53,10 +53,7 @@ export default class ModuleSemesterInfo extends React.Component<Props, State> {
           <>
             <section className={styles.moduleExam}>
               <h4>Exam</h4>
-              <p>
-                {formatExamDate(semester.examDate)}{' '}
-                {semester.examDuration && `${BULLET} ${semester.examDuration / 60} hrs`}
-              </p>
+              <ModuleExamInfo semesterData={semester} />
 
               <ModuleExamClash
                 semester={semester.semester}

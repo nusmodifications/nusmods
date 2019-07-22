@@ -189,10 +189,12 @@ class ContributeContainer extends React.PureComponent<Props> {
             <h3>Donate</h3>
           </header>
           <p>
-            NUSMods runs on servers that costs US$20 (about S$27) every month to run. Currently we
-            fund this out of our own pockets, but you can help defray this cost. Our expenses are
-            transparent and can be viewed on{' '}
-            <ExternalLink href="https://opencollective.com">OpenCollective</ExternalLink>.
+            NUSMods servers are currently graciously paid for by the school, but we still need money
+            to promote NUSMods and find contributors to ensure the site is maintained in the long
+            term. More contributors will also mean we can work on bringing you new features, such as
+            those currently in beta. Your contributions will go towards the cost of promotional
+            materials such as T-shirts and stickers. Our expenses are transparent and can be viewed
+            on <ExternalLink href="https://opencollective.com">OpenCollective</ExternalLink>.
           </p>
 
           <p>These are our current backers:</p>

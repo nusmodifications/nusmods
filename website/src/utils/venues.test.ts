@@ -121,6 +121,10 @@ describe(filterAvailability, () => {
 });
 
 describe(floorName, () => {
+  it('should show 0 as the ground floor', () => {
+    expect(floorName(0)).toEqual('the ground floor');
+  });
+
   it('should add B to basement floors', () => {
     expect(floorName(-1)).toEqual('floor B1');
     expect(floorName(-2)).toEqual('floor B2');

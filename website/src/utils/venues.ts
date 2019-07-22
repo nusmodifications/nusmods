@@ -72,6 +72,10 @@ export function floorName(floor: number | string): string {
     return `${floor.toLowerCase()} floor`;
   }
 
+  if (floor === 0) {
+    return 'the ground floor';
+  }
+
   const floorNumber = floor < 0 ? `B${-floor}` : floor;
   return `floor ${floorNumber}`;
 }

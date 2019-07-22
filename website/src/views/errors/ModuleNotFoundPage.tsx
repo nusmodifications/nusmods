@@ -16,6 +16,7 @@ import { State } from 'types/state';
 import styles from './ErrorPage.scss';
 
 type OwnProps = {
+  tryArchive: boolean;
   moduleCode: ModuleCode;
 };
 
@@ -32,7 +33,7 @@ export class ModuleNotFoundPageComponent extends React.PureComponent<Props> {
     });
 
     // If we think this is a module, try checking for archived modules
-    if (this.props.moduleCode.match(MODULE_CODE_REGEX)) {
+    if (this.props.moduleCode.match(MODULE_CODE_REGEX) && this.props.tryArchive) {
       this.props.fetchModuleArchive(this.props.moduleCode);
     }
   }
