@@ -1,22 +1,28 @@
+import { mapValues } from 'lodash';
+import { format } from 'date-fns';
+
 import { AcadYear, Semester } from 'types/modules';
 
 import holidays from 'data/holidays.json';
-import corsData from 'data/cors-schedule-ay1819-sem2.json';
+import corsData from 'data/modreg-schedule-ay1920-sem1.json';
 import appConfig from './app-config.json';
 
-export type RegPeriodType = 'Select Modules' | 'Select Tutorials / Labs';
+const regPeriods = [
+  'Select Modules',
+  'Select Tutorials / Labs',
+  'Add / Swap Tutorials',
+  'Submit Module Requests',
+] as const;
+export type RegPeriodType = typeof regPeriods[number];
+export type ScheduleType = 'Undergraduate' | 'Graduate';
 
 export type RegPeriod = {
   type: RegPeriodType;
+  name?: string;
   start: string;
   startDate: Date;
   end: string;
   endDate: Date;
-};
-
-export type ModRegRound = {
-  round: string;
-  periods: RegPeriod[];
 };
 
 export type Config = {
@@ -60,21 +66,17 @@ export type Config = {
 
   holidays: Date[];
 
-  corsSchedule: ModRegRound[];
+  modRegSchedule: { [type in ScheduleType]: RegPeriod[] };
 };
 
-function convertModRegDate(roundData: typeof corsData[0]): ModRegRound {
-  return {
-    ...roundData,
-    periods: roundData.periods.map((period) => ({
-      ...period,
-      // To make TypeScript happy
-      type: period.type as RegPeriodType,
-      // Convert timestamps to date objects
-      startDate: new Date(period.startTs),
-      endDate: new Date(period.endTs),
-    })),
-  };
+export function convertModRegDates(roundData: typeof corsData[ScheduleType]): RegPeriod[] {
+  return roundData.map((data) => ({
+    ...data,
+    type: data.type as RegPeriodType,
+    start: format(new Date(data.start), 'EEEE io LLLL, haaaa'),
+    startDate: new Date(data.start),
+    endDate: new Date(data.end),
+  }));
 }
 
 const augmentedConfig: Config = {
@@ -86,7 +88,7 @@ const augmentedConfig: Config = {
 
   holidays: holidays.map((date) => new Date(date)),
 
-  corsSchedule: corsData.map(convertModRegDate),
+  modRegSchedule: mapValues(corsData, convertModRegDates),
 
   examAvailabilitySet: new Set(appConfig.examAvailability),
 
