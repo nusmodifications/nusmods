@@ -3,6 +3,9 @@ import { Faculty, Semester } from 'types/modules';
 import { Mode } from 'types/settings';
 import { ModuleTableOrder } from 'types/reducers';
 
+import { RegPeriod } from 'config';
+import { getRoundKey } from 'selectors/modreg';
+
 export const SELECT_SEMESTER = 'SELECT_SEMESTER';
 export function selectSemester(semester: Semester): FSA {
   return {
@@ -43,26 +46,26 @@ export function toggleMode(): FSA {
   };
 }
 
-export const DISMISS_CORS_NOTIFICATION = 'DISMISS_CORS_NOTIFICATION';
-export function dismissCorsNotification(round: string): FSA {
+export const DISMISS_MODREG_NOTIFICATION = 'DISMISS_MODREG_NOTIFICATION';
+export function dismissModregNotification(round: RegPeriod): FSA {
   return {
-    type: DISMISS_CORS_NOTIFICATION,
-    payload: { round },
+    type: DISMISS_MODREG_NOTIFICATION,
+    payload: { round: getRoundKey(round) },
   };
 }
 
-export const ENABLE_CORS_NOTIFICATION = 'ENABLE_CORS_NOTIFICATION';
-export function enableCorsNotification(round: string): FSA {
+export const ENABLE_MODREG_NOTIFICATION = 'ENABLE_MODREG_NOTIFICATION';
+export function enableModRegNotification(round: RegPeriod): FSA {
   return {
-    type: ENABLE_CORS_NOTIFICATION,
-    payload: { round },
+    type: ENABLE_MODREG_NOTIFICATION,
+    payload: { round: getRoundKey(round) },
   };
 }
 
-export const TOGGLE_CORS_NOTIFICATION_GLOBALLY = 'TOGGLE_CORS_NOTIFICATION_GLOBALLY';
-export function toggleCorsNotificationGlobally(enabled: boolean): FSA {
+export const TOGGLE_MODREG_NOTIFICATION_GLOBALLY = 'TOGGLE_MODREG_NOTIFICATION_GLOBALLY';
+export function toggleModRegNotificationGlobally(enabled: boolean): FSA {
   return {
-    type: TOGGLE_CORS_NOTIFICATION_GLOBALLY,
+    type: TOGGLE_MODREG_NOTIFICATION_GLOBALLY,
     payload: { enabled },
   };
 }
