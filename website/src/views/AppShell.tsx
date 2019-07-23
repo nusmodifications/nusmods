@@ -29,6 +29,7 @@ import { State as StoreState } from 'types/state';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
 import KeyboardShortcuts from './components/KeyboardShortcuts';
+
 import styles from './AppShell.scss';
 
 type Props = RouteComponentProps & {
