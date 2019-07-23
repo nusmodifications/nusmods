@@ -1,29 +1,37 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import { isEqual } from 'lodash';
 
 import { Mode, ThemeId } from 'types/settings';
 import { Tracker } from 'types/vendor/piwik';
+import { ModRegNotificationSettings } from 'types/reducers';
+import { State as StoreState } from 'types/state';
+import { RegPeriod, SCHEDULE_TYPES, ScheduleType } from 'config';
 
 import availableThemes from 'data/themes.json';
 import { selectTheme } from 'actions/theme';
 import {
+  dismissModregNotification,
+  enableModRegNotification,
   selectFaculty,
   selectMode,
   setLoadDisqusManually,
+  setModRegScheduleType,
   toggleBetaTesting,
+  toggleModRegNotificationGlobally,
 } from 'actions/settings';
 import ScrollToTop from 'views/components/ScrollToTop';
 import Timetable from 'views/timetable/Timetable';
 import Title from 'views/components/Title';
 import deferComponentRender from 'views/hocs/deferComponentRender';
-
 import Online from 'views/components/Online';
 import { supportsCSSVariables } from 'utils/css';
 import { withTracker } from 'bootstrapping/matomo';
 import ExternalLink from 'views/components/ExternalLink';
 import Toggle from 'views/components/Toggle';
-import { State as StoreState } from 'types/state';
+import ModRegNotification from 'views/components/notfications/ModRegNotification';
+import { getRoundKey, getRounds } from 'selectors/modreg';
 
 import ThemeOption from './ThemeOption';
 import ModeSelect from './ModeSelect';
@@ -37,12 +45,18 @@ type Props = {
   mode: Mode;
   betaTester: boolean;
   loadDisqusManually: boolean;
+  modRegNotification: ModRegNotificationSettings;
 
   selectTheme: (theme: ThemeId) => void;
   selectMode: (mode: Mode) => void;
 
   toggleBetaTesting: () => void;
   setLoadDisqusManually: (status: boolean) => void;
+
+  setModRegScheduleType: (scheduleType: ScheduleType) => void;
+  toggleModRegNotificationGlobally: (enabled: boolean) => void;
+  enableModRegNotification: (round: RegPeriod) => void;
+  dismissModregNotification: (round: RegPeriod) => void;
 };
 
 type State = {
@@ -74,6 +88,48 @@ class SettingsContainer extends React.Component<Props, State> {
     });
   };
 
+  renderModRegNotificationRounds() {
+    const { modRegNotification } = this.props;
+    const rounds = getRounds(modRegNotification);
+
+    return rounds.map((round) => {
+      const roundKey = getRoundKey(round);
+      const isSnoozed = modRegNotification.dismissed.find((dismissed) =>
+        isEqual(dismissed, roundKey),
+      );
+
+      return (
+        <React.Fragment key={round.type}>
+          <h5>
+            {round.type} {round.name ? `(Round ${round.name})` : ''}
+          </h5>
+          <div className={styles.toggleRow}>
+            <div className={styles.toggleDescription}>
+              <p>
+                {isSnoozed
+                  ? 'You have snoozed reminders until the end of this round'
+                  : 'You can also temporarily snooze the notification until the end of this round.'}
+              </p>
+            </div>
+            <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
+              <button
+                className="btn btn-outline-primary"
+                type="button"
+                onClick={() =>
+                  isSnoozed
+                    ? this.props.enableModRegNotification(round)
+                    : this.props.dismissModregNotification(round)
+                }
+              >
+                {isSnoozed ? 'Unsnooze' : 'Snooze'}
+              </button>
+            </div>
+          </div>
+        </React.Fragment>
+      );
+    });
+  }
+
   renderNightModeOption() {
     return (
       <div>
@@ -98,7 +154,7 @@ class SettingsContainer extends React.Component<Props, State> {
   }
 
   render() {
-    const { currentThemeId } = this.props;
+    const { currentThemeId, modRegNotification } = this.props;
 
     return (
       <div className={classnames(styles.settingsPage, 'page-container')}>
@@ -136,6 +192,57 @@ class SettingsContainer extends React.Component<Props, State> {
             />
           ))}
         </div>
+
+        <hr />
+
+        <h4 id="cors">ModReg Reminder</h4>
+
+        <div className={styles.notificationPreview}>
+          <ModRegNotification hideCloseButton />
+        </div>
+
+        <div className={styles.toggleRow}>
+          <div className={styles.toggleDescription}>
+            <p>You can get a reminder about when ModReg rounds starts with a small notification.</p>
+          </div>
+          <div className={styles.toggle}>
+            <Toggle
+              isOn={modRegNotification.enabled}
+              onChange={() =>
+                this.props.toggleModRegNotificationGlobally(!modRegNotification.enabled)
+              }
+            />
+          </div>
+        </div>
+
+        {modRegNotification.enabled && (
+          <>
+            <div className="row">
+              <div className="col-sm-12">
+                <h5>Course</h5>
+              </div>
+              <div className="col-sm-8">
+                <p>Choose your course so we can show you the appropriate ModReg schedule</p>
+              </div>
+              <div className="col-sm-4">
+                <select
+                  className="form-control"
+                  onChange={(evt) =>
+                    this.props.setModRegScheduleType(evt.target.value as ScheduleType)
+                  }
+                >
+                  {SCHEDULE_TYPES.map((type) => (
+                    <option value={type} key={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {this.renderModRegNotificationRounds()}
+          </>
+        )}
 
         <hr />
 
@@ -213,6 +320,7 @@ const mapStateToProps = (state: StoreState) => ({
   currentThemeId: state.theme.id,
   betaTester: state.settings.beta || false,
   loadDisqusManually: state.settings.loadDisqusManually,
+  modRegNotification: state.settings.modRegNotification,
 });
 
 const connectedSettings = connect(
@@ -223,6 +331,10 @@ const connectedSettings = connect(
     selectMode,
     toggleBetaTesting,
     setLoadDisqusManually,
+    toggleModRegNotificationGlobally,
+    dismissModregNotification,
+    enableModRegNotification,
+    setModRegScheduleType,
   },
 )(SettingsContainer);
 

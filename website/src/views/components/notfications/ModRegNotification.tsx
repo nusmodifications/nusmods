@@ -1,18 +1,17 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { capitalize } from 'lodash';
 
 import { NotificationOptions } from 'types/reducers';
+import { State } from 'types/state';
 
-import config, { ModRegRound } from 'config';
-import { dismissCorsNotification } from 'actions/settings';
+import config, { RegPeriod } from 'config';
+import { dismissModregNotification } from 'actions/settings';
 import { openNotification } from 'actions/app';
-import { roundStart, currentPeriod, currentRound } from 'utils/modreg';
-import { forceCorsRound } from 'utils/debug';
+import { getRounds } from 'selectors/modreg';
 import CloseButton from 'views/components/CloseButton';
 import ExternalLink from 'views/components/ExternalLink';
-import { State } from 'types/state';
+import { forceTimer } from 'utils/debug';
 
 import styles from './ModRegNotification.scss';
 
@@ -20,52 +19,35 @@ type Props = {
   // True only in the preview in the settings page since we don't want
   // users accidentally dismissing that
   hideCloseButton?: boolean;
-  enabled: boolean;
-  dismissedRounds: string[];
+  rounds: RegPeriod[];
 
-  dismissCorsNotification: (str: string) => void;
+  dismissModregNotification: (round: RegPeriod) => void;
   openNotification: (str: string, notificationOptions: NotificationOptions) => void;
 } & RouteComponentProps;
 
-const NOW = new Date();
+// Holy shit
+const MOD_REG_URL =
+  'https://myedurec.nus.edu.sg/psc/cs90prd/EMPLOYEE/SA/c/N_STUDENT_RECORDS.N_MRS_START_MD_FL.GBL?Action=U&MD=Y&GMenu=N_STUDENT_RECORDS&GComp=N_MRS_START_NAV_FL&GPage=N_MRS_START_NAV_FL&scname=N_MRS_MODULE_REG_NAV&dup=Y&';
 
 export function notificationText(
   useLineBreaks: boolean,
-  round: ModRegRound | null = currentRound(),
-  now: Date = new Date(),
+  round: RegPeriod,
+  now: Date,
 ): React.ReactNode {
-  if (!round) return null;
-  const period = currentPeriod(round, now);
-  if (!period) return null;
-  const isRoundOpen = now >= period.startDate;
+  const isRoundOpen = now >= round.startDate;
 
   return (
     <>
-      {isRoundOpen ? 'Current' : 'Next'} CORS round:{' '}
-      <strong>
-        {round.round} ({capitalize(period.type)})
-      </strong>
-      {isRoundOpen ? ' till' : ' at'} {useLineBreaks && <br />}
-      <strong>{isRoundOpen ? period.end : period.start}</strong>
+      {isRoundOpen ? 'Current' : 'Next'} <strong>{round.type}</strong>{' '}
+      {round.name ? `(Round ${round.name})` : ''}: {useLineBreaks && <br />}
+      {isRoundOpen ? ' till' : ' at'} <strong>{isRoundOpen ? round.end : round.start}</strong>
     </>
   );
 }
 
-function currentTime() {
-  const debugRound = forceCorsRound();
-
-  // For manual testing - add round | null | undefined=1A (or other round names) to trigger the notification
-  if (debugRound) {
-    const round = config.corsSchedule.find((r) => r.round === debugRound);
-    if (round) return roundStart(round);
-  }
-
-  return NOW;
-}
-
 export class ModRegNotificationComponent extends React.PureComponent<Props> {
-  dismiss = (round: string) => {
-    this.props.dismissCorsNotification(round);
+  dismiss = (round: RegPeriod) => {
+    this.props.dismissModregNotification(round);
     this.props.openNotification('Reminder snoozed until start of next round', {
       timeout: 12000,
       action: {
@@ -78,44 +60,42 @@ export class ModRegNotificationComponent extends React.PureComponent<Props> {
   };
 
   render() {
-    const { enabled, dismissedRounds, hideCloseButton } = this.props;
-
-    // User has disabled CORS notification globally
-    if (!enabled) return null;
-
-    const round = currentRound(currentTime());
-
-    // CORS bidding is over - don't show anything
-    if (!round) return null;
-
-    // User has dismissed this round of CORS notifications
-    if (dismissedRounds.includes(round.round)) return null;
+    const { rounds, hideCloseButton } = this.props;
+    if (!rounds.length) return null;
 
     return (
-      <div className={styles.wrapper}>
-        <ExternalLink href="https://myaces.nus.edu.sg/cors/StudentLogin">
-          <div className={styles.notification}>{notificationText(true, round, currentTime())}</div>
-        </ExternalLink>
+      <div className={styles.container}>
+        {rounds.map((round) => (
+          <div className={styles.notificationWrapper} key={round.type}>
+            <ExternalLink href={MOD_REG_URL}>
+              <div className={styles.notification}>
+                {notificationText(true, round, forceTimer() || new Date())}
+              </div>
+            </ExternalLink>
 
-        {!hideCloseButton && (
-          <CloseButton className={styles.close} onClick={() => this.dismiss(round.round)} />
-        )}
+            {!hideCloseButton && (
+              <CloseButton className={styles.close} onClick={() => this.dismiss(round)} />
+            )}
+          </div>
+        ))}
       </div>
     );
   }
 }
 
 const mapStateToProps = (state: State) => ({
-  enabled: state.settings.corsNotification.enabled,
-  dismissedRounds: state.settings.corsNotification.dismissed,
+  rounds: getRounds(state.settings.modRegNotification, config.modRegSchedule).filter(
+    (round) => !round.dismissed,
+  ),
 });
 
 const withStoreModRegNotification = connect(
   mapStateToProps,
   {
-    dismissCorsNotification,
+    dismissModregNotification,
     openNotification,
   },
 )(ModRegNotificationComponent);
+
 const ModRegNotification = withRouter(withStoreModRegNotification);
 export default ModRegNotification;
