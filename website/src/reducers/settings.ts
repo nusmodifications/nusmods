@@ -1,4 +1,4 @@
-import { uniqBy, isEqual } from 'lodash';
+import { isEqual } from 'lodash';
 import produce from 'immer';
 import { REHYDRATE, createMigrate } from 'redux-persist';
 
@@ -16,11 +16,13 @@ import {
   TOGGLE_BETA_TESTING_STATUS,
   TOGGLE_MODREG_NOTIFICATION_GLOBALLY,
   TOGGLE_MODE,
+  SET_MODREG_SCHEDULE_TYPE,
 } from 'actions/settings';
 import { SET_EXPORTED_DATA } from 'actions/constants';
 import { DIMENSIONS, withTracker } from 'bootstrapping/matomo';
 import { DARK_MODE, LIGHT_MODE } from 'types/settings';
 import config from 'config';
+import { isRoundDismissed } from '../selectors/modreg';
 
 export const defaultCorsNotificationState = {
   semesterKey: config.getSemesterKey(),
@@ -70,17 +72,21 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
 
     case DISMISS_MODREG_NOTIFICATION:
       return produce(state, (draft) => {
-        draft.modRegNotification.dismissed = uniqBy(
-          [...draft.modRegNotification.dismissed, action.payload.round],
-          isEqual,
-        );
+        if (!isRoundDismissed(action.payload.round, draft.modRegNotification.dismissed)) {
+          draft.modRegNotification.dismissed.push(action.payload.round);
+        }
       });
 
     case ENABLE_MODREG_NOTIFICATION:
       return produce(state, (draft) => {
-        draft.modRegNotification.dismissed = draft.modRegNotification.dismissed.filter((key) =>
-          isEqual(key, action.payload.round),
+        draft.modRegNotification.dismissed = draft.modRegNotification.dismissed.filter(
+          (key) => !isEqual(key, action.payload.round),
         );
+      });
+
+    case SET_MODREG_SCHEDULE_TYPE:
+      return produce(state, (draft) => {
+        draft.modRegNotification.scheduleType = action.payload;
       });
 
     case SET_EXPORTED_DATA:

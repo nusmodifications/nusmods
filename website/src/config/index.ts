@@ -7,14 +7,16 @@ import holidays from 'data/holidays.json';
 import corsData from 'data/modreg-schedule-ay1920-sem1.json';
 import appConfig from './app-config.json';
 
-const regPeriods = [
+export const regPeriods = [
   'Select Modules',
   'Select Tutorials / Labs',
   'Add / Swap Tutorials',
   'Submit Module Requests',
 ] as const;
 export type RegPeriodType = typeof regPeriods[number];
-export type ScheduleType = 'Undergraduate' | 'Graduate';
+
+export const SCHEDULE_TYPES = ['Undergraduate', 'Graduate'] as const;
+export type ScheduleType = typeof SCHEDULE_TYPES[number];
 
 export type RegPeriod = {
   type: RegPeriodType;

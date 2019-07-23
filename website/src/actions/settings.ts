@@ -3,7 +3,7 @@ import { Faculty, Semester } from 'types/modules';
 import { Mode } from 'types/settings';
 import { ModuleTableOrder } from 'types/reducers';
 
-import { RegPeriod } from 'config';
+import { RegPeriod, ScheduleType } from 'config';
 import { getRoundKey } from 'selectors/modreg';
 
 export const SELECT_SEMESTER = 'SELECT_SEMESTER';
@@ -67,6 +67,14 @@ export function toggleModRegNotificationGlobally(enabled: boolean): FSA {
   return {
     type: TOGGLE_MODREG_NOTIFICATION_GLOBALLY,
     payload: { enabled },
+  };
+}
+
+export const SET_MODREG_SCHEDULE_TYPE = 'SET_MODREG_SCHEDULE_TYPE';
+export function setModRegScheduleType(scheduleType: ScheduleType): FSA {
+  return {
+    type: SET_MODREG_SCHEDULE_TYPE,
+    payload: scheduleType,
   };
 }
 

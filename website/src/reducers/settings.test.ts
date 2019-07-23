@@ -1,9 +1,10 @@
 import { FSA } from 'types/redux';
 import { SettingsState } from 'types/reducers';
+import produce from 'immer';
 
 import * as actions from 'actions/settings';
 import reducer from 'reducers/settings';
-import { LIGHT_MODE, DARK_MODE } from 'types/settings';
+import { DARK_MODE, LIGHT_MODE } from 'types/settings';
 import { initAction, rehydrateAction } from 'test-utils/redux';
 import config, { RegPeriod } from 'config';
 
@@ -26,13 +27,13 @@ const settingsWithNewStudent: SettingsState = { ...initialState, newStudent: tru
 const faculty = 'School of Computing';
 const settingsWithFaculty: SettingsState = { ...initialState, faculty };
 const settingsWithDarkMode: SettingsState = { ...initialState, mode: DARK_MODE };
-const settingsWithDismissedNotifications: SettingsState = {
-  ...initialState,
-  modRegNotification: {
-    ...initialState.modRegNotification,
-    dismissed: [['Select Modules', '1'], ['Add / Swap Tutorials'], ['Select Modules', '2']],
-  },
-};
+const settingsWithDismissedNotifications: SettingsState = produce(initialState, (draft) => {
+  draft.modRegNotification.dismissed = [
+    { type: 'Select Modules', name: '1' },
+    { type: 'Add / Swap Tutorials', name: undefined },
+    { type: 'Select Modules', name: '2' },
+  ];
+});
 
 describe('settings', () => {
   test('settings should return initial state', () => {
@@ -108,37 +109,44 @@ describe('modRegNotification settings', () => {
 
   test('dismiss ModReg notification', () => {
     // Dismissing round that already exists shouldn't do anything
-    const state1 = reducer(
-      settingsWithDismissedNotifications,
-      actions.dismissModregNotification({ type: 'Select Modules', name: '1' } as RegPeriod),
-    );
-    expect(state1.modRegNotification.dismissed).toEqual([
-      ['Select Modules', '1'],
-      ['Add / Swap Tutorials'],
-      ['Select Modules', '2'],
-    ]);
+    expect(
+      reducer(
+        settingsWithDismissedNotifications,
+        actions.dismissModregNotification({ type: 'Select Modules', name: '1' } as RegPeriod),
+      ).modRegNotification.dismissed,
+    ).toEqual(settingsWithDismissedNotifications.modRegNotification.dismissed);
 
-    const state2 = reducer(
-      settingsWithDismissedNotifications,
-      actions.dismissModregNotification({ type: 'Add / Swap Tutorials' } as RegPeriod),
-    );
-    expect(state2.modRegNotification.dismissed).toEqual([
-      ['Select Modules', '1'],
-      ['Add / Swap Tutorials'],
-      ['Select Modules', '2'],
-    ]);
+    expect(
+      reducer(
+        settingsWithDismissedNotifications,
+        actions.dismissModregNotification({ type: 'Add / Swap Tutorials' } as RegPeriod),
+      ).modRegNotification.dismissed,
+    ).toEqual(settingsWithDismissedNotifications.modRegNotification.dismissed);
 
     // Only add items that are unique
-    const state3 = reducer(
-      settingsWithDismissedNotifications,
-      actions.dismissModregNotification({ type: 'Select Modules', name: '3' } as RegPeriod),
-    );
-    expect(state3.modRegNotification.dismissed).toEqual([
-      ['Select Modules', '1'],
-      ['Add / Swap Tutorials'],
-      ['Select Modules', '2'],
-      ['Select Modules', '3'],
+    expect(
+      reducer(
+        settingsWithDismissedNotifications,
+        actions.dismissModregNotification({ type: 'Select Modules', name: '3' } as RegPeriod),
+      ).modRegNotification.dismissed,
+    ).toEqual([
+      { type: 'Select Modules', name: '1' },
+      { type: 'Add / Swap Tutorials', name: undefined },
+      { type: 'Select Modules', name: '2' },
+      { type: 'Select Modules', name: '3' },
     ]);
+  });
+
+  test('dismiss/enable notifications should be opposites', () => {
+    expect(
+      reducer(
+        reducer(
+          initialState,
+          actions.dismissModregNotification({ type: 'Select Modules', name: '1' } as RegPeriod),
+        ),
+        actions.enableModRegNotification({ type: 'Select Modules', name: '1' } as RegPeriod),
+      ).modRegNotification.dismissed,
+    ).toEqual([]);
   });
 
   test('toggle ModReg notification globally', () => {
@@ -147,6 +155,17 @@ describe('modRegNotification settings', () => {
 
     const state2 = reducer(initialState, actions.toggleModRegNotificationGlobally(false));
     expect(state2.modRegNotification.enabled).toEqual(false);
+  });
+
+  test('set schedule type', () => {
+    expect(
+      reducer(initialState, actions.setModRegScheduleType('Graduate')).modRegNotification
+        .scheduleType,
+    ).toEqual('Graduate');
+    expect(
+      reducer(initialState, actions.setModRegScheduleType('Undergraduate')).modRegNotification
+        .scheduleType,
+    ).toEqual('Undergraduate');
   });
 });
 

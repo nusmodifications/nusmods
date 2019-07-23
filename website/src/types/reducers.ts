@@ -84,7 +84,7 @@ export type ThemeState = Readonly<{
 }>;
 
 /* settings */
-export type ModRegRoundKey = [RegPeriodType, string?]; // Uniquely identifies each round
+export type ModRegRoundKey = { type: RegPeriodType; name?: string };
 
 export type ModRegNotificationSettings = {
   readonly enabled: boolean;
