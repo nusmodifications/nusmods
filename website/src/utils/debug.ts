@@ -35,11 +35,6 @@ export function forceTimer() {
   return date;
 }
 
-// Force the CORS reminder for a certain round (eg. 0, 1A, 2B) to appear
-export function forceCorsRound(): string {
-  return getParams().round;
-}
-
 export function allowBusStopEditing() {
   return getParams().edit === '1';
 }

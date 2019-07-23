@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import { AcadYear, Semester } from 'types/modules';
 
 import holidays from 'data/holidays.json';
-import corsData from 'data/modreg-schedule-ay1920-sem1.json';
+import modRegData from 'data/modreg-schedule-ay1920-sem1.json';
 import appConfig from './app-config.json';
 
 export const regPeriods = [
@@ -71,11 +71,12 @@ export type Config = {
   modRegSchedule: { [type in ScheduleType]: RegPeriod[] };
 };
 
-export function convertModRegDates(roundData: typeof corsData[ScheduleType]): RegPeriod[] {
+export function convertModRegDates(roundData: typeof modRegData[ScheduleType]): RegPeriod[] {
   return roundData.map((data) => ({
     ...data,
     type: data.type as RegPeriodType,
     start: format(new Date(data.start), 'EEEE io LLLL, haaaa'),
+    end: format(new Date(data.end), 'EEEE io LLLL, haaaa'),
     startDate: new Date(data.start),
     endDate: new Date(data.end),
   }));
@@ -90,7 +91,7 @@ const augmentedConfig: Config = {
 
   holidays: holidays.map((date) => new Date(date)),
 
-  modRegSchedule: mapValues(corsData, convertModRegDates),
+  modRegSchedule: mapValues(modRegData, convertModRegDates),
 
   examAvailabilitySet: new Set(appConfig.examAvailability),
 

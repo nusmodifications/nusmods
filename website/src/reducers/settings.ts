@@ -24,7 +24,7 @@ import { DARK_MODE, LIGHT_MODE } from 'types/settings';
 import config from 'config';
 import { isRoundDismissed } from '../selectors/modreg';
 
-export const defaultCorsNotificationState = {
+export const defaultModRegNotificationState = {
   semesterKey: config.getSemesterKey(),
   dismissed: [],
   enabled: true,
@@ -36,7 +36,7 @@ const defaultSettingsState: SettingsState = {
   faculty: '',
   mode: LIGHT_MODE,
   hiddenInTimetable: [],
-  modRegNotification: defaultCorsNotificationState,
+  modRegNotification: defaultModRegNotificationState,
   moduleTableOrder: 'exam',
   beta: false,
   loadDisqusManually: false,

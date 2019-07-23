@@ -53,7 +53,7 @@ export class ModRegNotificationComponent extends React.PureComponent<Props> {
       action: {
         text: 'Settings',
         handler: () => {
-          this.props.history.push('/settings#cors');
+          this.props.history.push('/settings#modreg');
         },
       },
     });

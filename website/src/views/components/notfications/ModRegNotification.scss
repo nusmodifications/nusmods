@@ -2,7 +2,7 @@
 
 .container {
   composes: no-export from global;
-  z-index: $cors-notification-z-index;
+  z-index: $modreg-notification-z-index;
 }
 
 .notificationWrapper {

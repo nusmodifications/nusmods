@@ -195,7 +195,7 @@ class SettingsContainer extends React.Component<Props, State> {
 
         <hr />
 
-        <h4 id="cors">ModReg Reminder</h4>
+        <h4 id="modreg">ModReg Reminder</h4>
 
         <div className={styles.notificationPreview}>
           <ModRegNotification hideCloseButton />
