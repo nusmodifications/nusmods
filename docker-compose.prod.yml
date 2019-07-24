@@ -20,7 +20,7 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.backend=website'
-      - 'traefik.frontend.rule=HostRegexp:nusmods.com,www.nusmods.com,{subdomain:[0-9]+}.nusmods.com'
+      - 'traefik.frontend.rule=HostRegexp:nusmods.com,{subdomain:[0-9]+}.nusmods.com'
       - 'traefik.port=8080'
   export:
     build:
@@ -44,7 +44,7 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.backend=export'
-      - 'traefik.frontend.rule=HostRegexp:nusmods.com,www.nusmods.com,{subdomain:[0-9]+}.nusmods.com;PathPrefixStrip:/export/'
+      - 'traefik.frontend.rule=HostRegexp:nusmods.com,{subdomain:[0-9]+}.nusmods.com;PathPrefixStrip:/export/'
       - 'traefik.port=8082'
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.8.1
@@ -68,7 +68,7 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.backend=elasticsearch'
-      - 'traefik.frontend.rule=HostRegexp:nusmods.com,www.nusmods.com,{subdomain:[0-9]+}.nusmods.com;PathPrefix:/elasticsearch/modules/_search;PathPrefixStrip:/elasticsearch'
+      - 'traefik.frontend.rule=HostRegexp:nusmods.com,{subdomain:[0-9]+}.nusmods.com;PathPrefix:/elasticsearch/modules/_search;PathPrefixStrip:/elasticsearch'
       - 'traefik.port=9200'
   kibana:
     image: docker.elastic.co/kibana/kibana:6.8.1
@@ -83,7 +83,7 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.backend=kibana'
-      - 'traefik.frontend.rule=HostRegexp:nusmods.com,www.nusmods.com,{subdomain:[0-9]+}.nusmods.com;PathPrefix:/kibana'
+      - 'traefik.frontend.rule=HostRegexp:nusmods.com,{subdomain:[0-9]+}.nusmods.com;PathPrefix:/kibana'
       - 'traefik.frontend.auth.basic=test:${BASIC_AUTH-$$apr1$$H6uskkkW$$IgXLP6ewTrSuBkTrqE8wj/}'
       - 'traefik.port=5601'
   es-importer:

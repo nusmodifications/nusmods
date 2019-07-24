@@ -13,8 +13,9 @@ defaultEntryPoints = ["https","http"]
   address = ":443"
     [entryPoints.https.tls]
     [entryPoints.https.redirect]
-      regex = "^https://.+/api/(.*)"
-      replacement = "https://api.nusmods.com/$1"
+      permanent=true
+      regex = "^https://www.(.*)"
+      replacement = "https://$1"
 
   [entryPoints.traefik]
   address = ":5678"
