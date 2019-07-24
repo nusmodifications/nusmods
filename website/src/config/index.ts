@@ -35,8 +35,6 @@ export type Config = {
 
   apiBaseUrl: string;
   elasticsearchBaseUrl: string;
-  corsUrl: string;
-  ivleUrl: string;
 
   disqusShortname: string;
   venueFeedbackApi: string;
@@ -84,10 +82,6 @@ export function convertModRegDates(roundData: typeof modRegData[ScheduleType]): 
 
 const augmentedConfig: Config = {
   ...appConfig,
-
-  corsUrl: appConfig.corsUrl
-    .replace('<AcademicYear>', appConfig.academicYear)
-    .replace('<Semester>', String(appConfig.semester)),
 
   holidays: holidays.map((date) => new Date(date)),
 
