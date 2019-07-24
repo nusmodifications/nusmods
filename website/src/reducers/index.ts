@@ -15,7 +15,7 @@ import moduleBankReducer, { persistConfig as moduleBankPersistConfig } from './m
 import venueBankReducer, { persistConfig as venueBankPersistConfig } from './venueBank';
 import timetablesReducer, { persistConfig as timetablesPersistConfig } from './timetables';
 import themeReducer from './theme';
-import settingsReducer from './settings';
+import settingsReducer, { persistConfig as settingsPersistConfig } from './settings';
 import plannerReducer from './planner';
 
 // Persist reducers
@@ -23,7 +23,7 @@ const moduleBank = persistReducer('moduleBank', moduleBankReducer, moduleBankPer
 const venueBank = persistReducer('venueBank', venueBankReducer, venueBankPersistConfig);
 const timetables = persistReducer('timetables', timetablesReducer, timetablesPersistConfig);
 const theme = persistReducer('theme', themeReducer);
-const settings = persistReducer('settings', settingsReducer);
+const settings = persistReducer('settings', settingsReducer, settingsPersistConfig);
 const planner = persistReducer('planner', plannerReducer);
 
 // @ts-ignore: State default is delegated to its child reducers.
