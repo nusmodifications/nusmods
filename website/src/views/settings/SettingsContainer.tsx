@@ -31,7 +31,7 @@ import { withTracker } from 'bootstrapping/matomo';
 import ExternalLink from 'views/components/ExternalLink';
 import Toggle from 'views/components/Toggle';
 import ModRegNotification from 'views/components/notfications/ModRegNotification';
-import { getRoundKey, getRounds } from 'selectors/modreg';
+import { getModRegRoundKey, getRounds } from 'selectors/modreg';
 
 import ThemeOption from './ThemeOption';
 import ModeSelect from './ModeSelect';
@@ -93,7 +93,7 @@ class SettingsContainer extends React.Component<Props, State> {
     const rounds = getRounds(modRegNotification);
 
     return rounds.map((round) => {
-      const roundKey = getRoundKey(round);
+      const roundKey = getModRegRoundKey(round);
       const isSnoozed = modRegNotification.dismissed.find((dismissed) =>
         isEqual(dismissed, roundKey),
       );
@@ -198,7 +198,7 @@ class SettingsContainer extends React.Component<Props, State> {
         <h4 id="modreg">ModReg Reminder</h4>
 
         <div className={styles.notificationPreview}>
-          <ModRegNotification hideCloseButton />
+          <ModRegNotification dismissible />
         </div>
 
         <div className={styles.toggleRow}>

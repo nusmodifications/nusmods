@@ -4,7 +4,7 @@ import { Mode } from 'types/settings';
 import { ModuleTableOrder } from 'types/reducers';
 
 import { RegPeriod, ScheduleType } from 'config';
-import { getRoundKey } from 'selectors/modreg';
+import { getModRegRoundKey } from 'selectors/modreg';
 
 export const SELECT_SEMESTER = 'SELECT_SEMESTER';
 export function selectSemester(semester: Semester): FSA {
@@ -50,7 +50,7 @@ export const DISMISS_MODREG_NOTIFICATION = 'DISMISS_MODREG_NOTIFICATION';
 export function dismissModregNotification(round: RegPeriod): FSA {
   return {
     type: DISMISS_MODREG_NOTIFICATION,
-    payload: { round: getRoundKey(round) },
+    payload: { round: getModRegRoundKey(round) },
   };
 }
 
@@ -58,7 +58,7 @@ export const ENABLE_MODREG_NOTIFICATION = 'ENABLE_MODREG_NOTIFICATION';
 export function enableModRegNotification(round: RegPeriod): FSA {
   return {
     type: ENABLE_MODREG_NOTIFICATION,
-    payload: { round: getRoundKey(round) },
+    payload: { round: getModRegRoundKey(round) },
   };
 }
 

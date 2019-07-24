@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 import { Semesters } from 'types/modules';
 import academicCalendar from 'data/academic-calendar.json';
-import { getRoundKey } from 'selectors/modreg';
+import { getModRegRoundKey } from 'selectors/modreg';
 
 import config from './index';
 
@@ -13,7 +13,7 @@ test('Academic calendar should have start dates for the current academic year', 
 
 test('Every ModReg round has unique keys', () => {
   Object.values(config.modRegSchedule).forEach((rounds) => {
-    const keys = rounds.map(getRoundKey);
+    const keys = rounds.map(getModRegRoundKey);
     expect(keys).toEqual(Array.from(new Set(keys)));
   });
 });

@@ -20,7 +20,7 @@ export type ScheduleType = typeof SCHEDULE_TYPES[number];
 
 export type RegPeriod = {
   type: RegPeriodType;
-  name?: string;
+  name: string;
   start: string;
   startDate: Date;
   end: string;

@@ -11,7 +11,7 @@ const NO_NOTIFICATIONS: RegPeriodView[] = [];
 
 const NOTIFICATIONS_BEFORE_DAYS = 3;
 
-export function getRoundKey({ type, name }: RegPeriod): ModRegRoundKey {
+export function getModRegRoundKey({ type, name }: RegPeriod): ModRegRoundKey {
   return { type, name };
 }
 
@@ -35,7 +35,7 @@ export function getRounds(
     // Use the current round if it is earlier than the existing one
     const previousPeriod = nextRoundByType[period.type];
     if (!previousPeriod || previousPeriod.startDate > period.startDate) {
-      const roundKey = getRoundKey(period);
+      const roundKey = getModRegRoundKey(period);
       nextRoundByType[period.type] = {
         ...period,
         dismissed: isRoundDismissed(roundKey, dismissed),

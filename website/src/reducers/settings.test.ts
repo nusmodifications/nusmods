@@ -30,7 +30,7 @@ const settingsWithDarkMode: SettingsState = { ...initialState, mode: DARK_MODE }
 const settingsWithDismissedNotifications: SettingsState = produce(initialState, (draft) => {
   draft.modRegNotification.dismissed = [
     { type: 'Select Modules', name: '1' },
-    { type: 'Add / Swap Tutorials', name: undefined },
+    { type: 'Add / Swap Tutorials', name: '' },
     { type: 'Select Modules', name: '2' },
   ];
 });
@@ -119,7 +119,7 @@ describe('modRegNotification settings', () => {
     expect(
       reducer(
         settingsWithDismissedNotifications,
-        actions.dismissModregNotification({ type: 'Add / Swap Tutorials' } as RegPeriod),
+        actions.dismissModregNotification({ type: 'Add / Swap Tutorials', name: '' } as RegPeriod),
       ).modRegNotification.dismissed,
     ).toEqual(settingsWithDismissedNotifications.modRegNotification.dismissed);
 
@@ -131,7 +131,7 @@ describe('modRegNotification settings', () => {
       ).modRegNotification.dismissed,
     ).toEqual([
       { type: 'Select Modules', name: '1' },
-      { type: 'Add / Swap Tutorials', name: undefined },
+      { type: 'Add / Swap Tutorials', name: '' },
       { type: 'Select Modules', name: '2' },
       { type: 'Select Modules', name: '3' },
     ]);

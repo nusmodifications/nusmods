@@ -16,9 +16,9 @@ import { forceTimer } from 'utils/debug';
 import styles from './ModRegNotification.scss';
 
 type Props = {
-  // True only in the preview in the settings page since we don't want
-  // users accidentally dismissing that
-  hideCloseButton?: boolean;
+  // True only on the settings page since we don't want
+  // users accidentally dismissing the preview notification
+  dismissible?: boolean;
   rounds: RegPeriod[];
 
   dismissModregNotification: (round: RegPeriod) => void;
@@ -60,7 +60,7 @@ export class ModRegNotificationComponent extends React.PureComponent<Props> {
   };
 
   render() {
-    const { rounds, hideCloseButton } = this.props;
+    const { rounds, dismissible } = this.props;
     if (!rounds.length) return null;
 
     return (
@@ -73,7 +73,7 @@ export class ModRegNotificationComponent extends React.PureComponent<Props> {
               </div>
             </ExternalLink>
 
-            {!hideCloseButton && (
+            {!dismissible && (
               <CloseButton className={styles.close} onClick={() => this.dismiss(round)} />
             )}
           </div>
