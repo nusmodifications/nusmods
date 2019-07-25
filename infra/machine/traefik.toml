@@ -12,10 +12,6 @@ defaultEntryPoints = ["https","http"]
   [entryPoints.https]
   address = ":443"
     [entryPoints.https.tls]
-    [entryPoints.https.redirect]
-      permanent=true
-      regex = "^https://www.(.*)"
-      replacement = "https://$1"
 
   [entryPoints.traefik]
   address = ":5678"
@@ -53,24 +49,18 @@ onHostRule = true
 [frontends.r1]
   backend = "fake"
   [frontends.r1.redirect]
-    regex = "^https://.+/api/(.*)"
-    replacement = "https://api.nusmods.com/$1"
+    regex = "^https://nextbus.nusmods.com/arrival(.*)"
+    replacement = "https://nextbus.comfortdelgro.com.sg/eventservice.svc/shuttleservice$1"
     permanent = false
 [frontends.r2]
   backend = "fake"
   [frontends.r2.redirect]
-    regex = "^https://nextbus.nusmods.com/arrival(.*)"
-    replacement = "https://nextbus.comfortdelgro.com.sg/eventservice.svc/shuttleservice$1"
+    regex = "^https://github.nusmods.com/repo(.*)"
+    replacement = "https://api.github.com/repos/nusmodifications/nusmods$1"
     permanent = false
 [frontends.r3]
   backend = "fake"
   [frontends.r3.redirect]
-    regex = "^https://github.nusmods.com/repo(.*)"
-    replacement = "https://api.github.com/repos/nusmodifications/nusmods$1"
-    permanent = false
-[frontends.r4]
-  backend = "fake"
-  [frontends.r4.redirect]
     regex = "^https://github.nusmods.com/venues(.*)"
     replacement = "https://raw.githubusercontent.com/nusmodifications/nusmods/master/website/src/data/venues.json"
     permanent = false
