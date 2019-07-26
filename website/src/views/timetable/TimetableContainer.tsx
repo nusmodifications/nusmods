@@ -21,8 +21,6 @@ import { Repeat } from 'views/components/icons';
 import SemesterSwitcher from 'views/components/semester-switcher/SemesterSwitcher';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import ScrollToTop from 'views/components/ScrollToTop';
-import ErrorBoundary from 'views/errors/ErrorBoundary';
-import ModRegNotification from 'views/components/notfications/ModRegNotification';
 import { State as StoreState } from 'types/state';
 import TimetableContent from './TimetableContent';
 
@@ -210,10 +208,6 @@ export class TimetableContainerComponent extends React.PureComponent<Props, Stat
     return (
       <div>
         <ScrollToTop onComponentDidMount />
-
-        <ErrorBoundary>
-          <ModRegNotification />
-        </ErrorBoundary>
 
         <TimetableContent
           key={semester}
