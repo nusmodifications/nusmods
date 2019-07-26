@@ -10274,10 +10274,10 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-beautiful-dnd@11.0.4:
-  version "11.0.4"
-  resolved "https://registry.yarnpkg.com/react-beautiful-dnd/-/react-beautiful-dnd-11.0.4.tgz#4f9baa0bf035aac44e60702d6b20b4f140c18f1a"
-  integrity sha512-Obt3mYk8PhVMVp/AtgVgzP4YT2lJ2znN8XNsioYBoBbLTINurAF9H7toLoc3cCRnCYgUI1QUwK+UltXsuckSdQ==
+react-beautiful-dnd@11.0.5:
+  version "11.0.5"
+  resolved "https://registry.yarnpkg.com/react-beautiful-dnd/-/react-beautiful-dnd-11.0.5.tgz#16b1dbd4d6493de0cb3f842cad57c7e9e1ff5fe7"
+  integrity sha512-7llby9U+jIfkINcyxPHVWU0HFYzqxMemUYgGHsFsbx4fZo1n/pW6sYKYzhxGxR3Ap5HxqswcQkKUZX4uEUWhlw==
   dependencies:
     "@babel/runtime-corejs2" "^7.4.5"
     css-box-model "^1.1.2"
