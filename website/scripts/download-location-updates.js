@@ -1,10 +1,16 @@
 const axios = require('axios');
 const _ = require('lodash');
+const path = require('path');
+const { promises: fs } = require('fs');
+
+const VENUES_PATH = path.join(__dirname, '../src/data/venues.json');
 
 /**
  * Downloads location update issues from GitHub and allows for easy
  * copy pasting into venues.json
  */
+
+const ISSUES_URL = 'https://api.github.com/repos/nusmodifications/nusmods/issues';
 
 /**
  * Returns the last code block from the issue
@@ -21,6 +27,7 @@ function getCodeBlock(body) {
       if (inCodeBlock) {
         inCodeBlock = false;
         blocks.push(currentBlock.trim());
+        currentBlock = '';
       } else {
         inCodeBlock = true;
       }
@@ -37,12 +44,15 @@ function getCodeBlock(body) {
 }
 
 async function downloadIssues() {
-  const url = 'https://api.github.com/repos/nusmodifications/nusmods/issues';
+  // eslint-disable-next-line import/no-dynamic-require, global-require
+  let venues = require(VENUES_PATH);
 
-  const res = await axios.get(url, {
+  const res = await axios.get(ISSUES_URL, {
     params: {
       labels: 'venue data',
       state: 'open',
+      // Apply earlier issues first
+      direction: 'asc',
     },
     headers: {
       'user-agent': 'nusmodifications',
@@ -52,24 +62,25 @@ async function downloadIssues() {
   const issues = res.data;
 
   const issuesFound = [];
-  const codeBlocks = [];
   issues.forEach((issue) => {
     const codeBlock = getCodeBlock(issue.body);
+    let data;
 
     try {
-      JSON.parse(`{${codeBlock}}`);
+      data = JSON.parse(`{${codeBlock}}`);
     } catch (e) {
       console.error(`Cannot parse\n${codeBlock}\nas JSON`);
       return;
     }
 
-    issuesFound.push(issue.number);
-    codeBlocks.push(codeBlock);
+    issuesFound.push([issue.number, Object.keys(data)[0]]);
+    venues = { ...venues, ...data };
   });
 
-  console.log(issuesFound.map((id) => `Closes #${id}`).join('\n'));
+  console.log(issuesFound.map(([id, venue]) => `Closes #${id} - ${venue}`).join('\n'));
   console.log();
-  console.log(codeBlocks.join(',\n'));
+
+  await fs.writeFile(VENUES_PATH, JSON.stringify(venues, null, 2));
 }
 
 downloadIssues();
