@@ -1,7 +1,7 @@
 const axios = require('axios');
 const _ = require('lodash');
 const path = require('path');
-const { promises: fs } = require('fs');
+const fs = require('fs');
 
 const VENUES_PATH = path.join(__dirname, '../src/data/venues.json');
 
@@ -80,7 +80,7 @@ async function downloadIssues() {
   console.log(issuesFound.map(([id, venue]) => `Closes #${id} - ${venue}`).join('\n'));
   console.log();
 
-  await fs.writeFile(VENUES_PATH, JSON.stringify(venues, null, 2));
+  fs.writeFileSync(VENUES_PATH, JSON.stringify(venues, null, 2));
 }
 
 downloadIssues();
