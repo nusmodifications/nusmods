@@ -1,8 +1,8 @@
 import { Client } from '@elastic/elasticsearch';
 
-import config from '../config';
-import { Persist } from '../types/persist';
-import { ModuleCode, ModuleInformation } from '../types/modules';
+import { Persist } from '../../types/persist';
+import { ModuleCode, ModuleInformation } from '../../types/modules';
+import logger from '../logger';
 
 /* eslint-disable @typescript-eslint/camelcase */
 
@@ -27,7 +27,7 @@ const thousandizer_filter = {
   replacement: '$1000',
 };
 
-async function createIndex(client: Client) {
+async function createIndex(client: Client): Promise<Client> {
   try {
     await client.indices.create({
       index: INDEX_NAME,
@@ -83,93 +83,110 @@ async function createIndex(client: Client) {
       throw e;
     }
   }
+
+  return client;
 }
 
-export default function getElasticPersist(): Persist {
-  // Construct the ElasticSearch client
-  // eslint-disable-next-line no-underscore-dangle
-  const _client = new Client({
-    // TODO: INSERT cloud: CREDENTIALS HERE
-  });
+/* eslint-disable class-methods-use-this */
+export default class ElasticPersist implements Persist {
+  private readonly client: Promise<Client>;
 
-  const creatingIndex = createIndex(_client);
-  const getClient = async () => {
-    await creatingIndex;
-    return _client;
+  constructor() {
+    const client = new Client({
+      // TODO: INSERT cloud: CREDENTIALS HERE
+    });
+
+    this.client = createIndex(client);
+  }
+
+  deleteModule = async (moduleCode: ModuleCode) => {
+    const client = await this.client;
+    await client.delete({
+      id: moduleCode,
+      index: INDEX_NAME,
+      type: '_doc',
+    });
   };
 
-  return {
-    deleteModule: async (moduleCode: ModuleCode) => {
-      const client = await getClient();
-      await client.delete({
-        id: moduleCode,
-        index: INDEX_NAME,
-        type: '_doc',
+  moduleInfo = async (moduleInfo: ModuleInformation[]) => {
+    const bulkBody: any[] = []; // eslint-disable-line @typescript-eslint/no-explicit-any
+
+    for (const module of moduleInfo) {
+      bulkBody.push({
+        index: { _id: module.moduleCode },
       });
-    },
 
-    moduleInfo: async (moduleInfo: ModuleInformation[]) => {
-      const bulkBody: any[] = [];
-
-      for (const module of moduleInfo) {
+      if (module.attributes) {
         bulkBody.push({
-          index: { _id: module.moduleCode },
+          ...module,
+          moduleAttributesList: Object.keys(module.attributes),
         });
-
-        if (module.attributes) {
-          bulkBody.push({
-            ...module,
-            moduleAttributesList: Object.keys(module.attributes),
-          });
-        } else {
-          bulkBody.push(module);
-        }
+      } else {
+        bulkBody.push(module);
       }
+    }
 
-      const client = await getClient();
-      const res = await client.bulk({
-        index: 'modules',
-        type: '_doc', // TODO: Remove when upgrading to Elasticsearch 7
-        body: bulkBody,
+    const client = await this.client;
+    const res = await client.bulk({
+      index: 'modules',
+      type: '_doc', // TODO: Remove when upgrading to Elasticsearch 7
+      body: bulkBody,
+    });
+
+    const { items } = res.body;
+
+    // Log errors
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const erroredItems = items.filter((i: any) => i.index.status !== 201);
+    if (erroredItems.length) {
+      logger.error(`Insertion errors encountered`, {
+        erroredLength: erroredItems.length,
+        totalLength: res.body.items.length,
       });
 
-      const { items } = res.body;
-      const erroredItems = items.filter((i: any) => i.index.status !== 201);
-      console.log(`${erroredItems.length} insertion errors of ${res.body.items.length} items.`);
       for (const item of erroredItems) {
-        console.log('ERROR importing item', item.index.error);
+        logger.error('Error importing item', item.index.error);
       }
-    },
-
-    facultyDepartments() {
-      return Promise.resolve();
-    },
-    getModuleCodes() {
-      return Promise.resolve([]);
-    },
-    module() {
-      return Promise.resolve();
-    },
-    moduleAliases() {
-      return Promise.resolve();
-    },
-    moduleInformation() {
-      return Promise.resolve();
-    },
-    moduleList() {
-      return Promise.resolve();
-    },
-    semesterData() {
-      return Promise.resolve();
-    },
-    timetable() {
-      return Promise.resolve();
-    },
-    venueInformation() {
-      return Promise.resolve();
-    },
-    venueList() {
-      return Promise.resolve();
-    },
+    }
   };
+
+  facultyDepartments() {
+    return Promise.resolve();
+  }
+
+  getModuleCodes() {
+    return Promise.resolve([]);
+  }
+
+  module() {
+    return Promise.resolve();
+  }
+
+  moduleAliases() {
+    return Promise.resolve();
+  }
+
+  moduleInformation() {
+    return Promise.resolve();
+  }
+
+  moduleList() {
+    return Promise.resolve();
+  }
+
+  semesterData() {
+    return Promise.resolve();
+  }
+
+  timetable() {
+    return Promise.resolve();
+  }
+
+  venueInformation() {
+    return Promise.resolve();
+  }
+
+  venueList() {
+    return Promise.resolve();
+  }
 }
