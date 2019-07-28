@@ -29,52 +29,65 @@ const thousandizer_filter = {
 
 export default async function getElasticPersist(): Promise<Persist> {
   // Construct the ElasticSearch client
-  const client = new Client({ node: config.elasticUrl });
-
-  await client.indices.create({
-    index: INDEX_NAME,
-    include_type_name: false, // TODO: Remove when upgrading to Elasticsearch 7
-    body: {
-      settings: {
-        analysis: {
-          analyzer: {
-            // An analyzer that produces a level string from a modcode, i.e.
-            // "CNS1010SX" => "1000", "CS2030" => "2000", etc.
-            level_analyzer: {
-              type: 'custom',
-              tokenizer: 'first_digit_tokenizer',
-              filter: ['first_token_limit_filter', 'thousandizer_filter'],
-            },
-          },
-          tokenizer: { first_digit_tokenizer },
-          filter: { first_token_limit_filter, thousandizer_filter },
-        },
-        index: {
-          max_result_window: 20000, // Default limit is 10k, but we have >11k mods
-        },
-      },
-      mappings: {
-        properties: {
-          workload: { type: 'text' },
-          moduleCredit: { type: 'short' },
-          moduleCode: {
-            type: 'text',
-            fields: {
-              keyword: {
-                type: 'keyword',
-                ignore_above: 10,
-              },
-              level: {
-                type: 'text',
-                analyzer: 'level_analyzer',
-                fielddata: true, // To allow usage in MultiList on the frontend
-              },
-            },
-          },
-        },
-      },
-    },
+  const client = new Client({
+    // TODO: INSERT cloud: CREDENTIALS HERE
   });
+
+  try {
+    await client.indices.create({
+      index: INDEX_NAME,
+      include_type_name: false, // TODO: Remove when upgrading to Elasticsearch 7
+      body: {
+        settings: {
+          analysis: {
+            analyzer: {
+              // An analyzer that produces a level string from a modcode, i.e.
+              // "CNS1010SX" => "1000", "CS2030" => "2000", etc.
+              level_analyzer: {
+                type: 'custom',
+                tokenizer: 'first_digit_tokenizer',
+                filter: ['first_token_limit_filter', 'thousandizer_filter'],
+              },
+            },
+            tokenizer: { first_digit_tokenizer },
+            filter: { first_token_limit_filter, thousandizer_filter },
+          },
+          index: {
+            max_result_window: 20000, // Default limit is 10k, but we have >11k mods
+          },
+        },
+        mappings: {
+          properties: {
+            workload: { type: 'text' },
+            moduleCredit: { type: 'short' },
+            moduleCode: {
+              type: 'text',
+              fields: {
+                keyword: {
+                  type: 'keyword',
+                  ignore_above: 10,
+                },
+                level: {
+                  type: 'text',
+                  analyzer: 'level_analyzer',
+                  fielddata: true, // To allow usage in MultiList on the frontend
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+  } catch (e) {
+    // Ignore resource exist exception as we will handle cases where the index
+    // already exists.
+    if (
+      e.name !== 'ResponseError' ||
+      e.meta.body.error.type !== 'resource_already_exists_exception'
+    ) {
+      throw e;
+    }
+  }
 
   return {
     deleteModule: async (moduleCode: ModuleCode) => {
@@ -85,10 +98,10 @@ export default async function getElasticPersist(): Promise<Persist> {
       });
     },
 
-    moduleInformation: async (moduleInformation: ModuleInformation[]) => {
+    moduleInfo: async (moduleInfo: ModuleInformation[]) => {
       const bulkBody: any[] = [];
 
-      for (const module of moduleInformation) {
+      for (const module of moduleInfo) {
         bulkBody.push({
           index: { _id: module.moduleCode },
         });
@@ -118,31 +131,34 @@ export default async function getElasticPersist(): Promise<Persist> {
     },
 
     facultyDepartments() {
-      throw new Error('not implemented');
+      return Promise.resolve();
     },
     getModuleCodes() {
-      throw new Error('not implemented');
+      return Promise.resolve([]);
     },
     module() {
-      throw new Error('not implemented');
+      return Promise.resolve();
     },
     moduleAliases() {
-      throw new Error('not implemented');
+      return Promise.resolve();
+    },
+    moduleInformation() {
+      return Promise.resolve();
     },
     moduleList() {
-      throw new Error('not implemented');
+      return Promise.resolve();
     },
     semesterData() {
-      throw new Error('not implemented');
+      return Promise.resolve();
     },
     timetable() {
-      throw new Error('not implemented');
+      return Promise.resolve();
     },
     venueInformation() {
-      throw new Error('not implemented');
+      return Promise.resolve();
     },
     venueList() {
-      throw new Error('not implemented');
+      return Promise.resolve();
     },
   };
 }
