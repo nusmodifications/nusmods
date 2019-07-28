@@ -27,12 +27,7 @@ const thousandizer_filter = {
   replacement: '$1000',
 };
 
-export default async function getElasticPersist(): Promise<Persist> {
-  // Construct the ElasticSearch client
-  const client = new Client({
-    // TODO: INSERT cloud: CREDENTIALS HERE
-  });
-
+async function createIndex(client: Client) {
   try {
     await client.indices.create({
       index: INDEX_NAME,
@@ -88,9 +83,24 @@ export default async function getElasticPersist(): Promise<Persist> {
       throw e;
     }
   }
+}
+
+export default function getElasticPersist(): Persist {
+  // Construct the ElasticSearch client
+  // eslint-disable-next-line no-underscore-dangle
+  const _client = new Client({
+    // TODO: INSERT cloud: CREDENTIALS HERE
+  });
+
+  const creatingIndex = createIndex(_client);
+  const getClient = async () => {
+    await creatingIndex;
+    return _client;
+  };
 
   return {
     deleteModule: async (moduleCode: ModuleCode) => {
+      const client = await getClient();
       await client.delete({
         id: moduleCode,
         index: INDEX_NAME,
@@ -116,6 +126,7 @@ export default async function getElasticPersist(): Promise<Persist> {
         }
       }
 
+      const client = await getClient();
       const res = await client.bulk({
         index: 'modules',
         type: '_doc', // TODO: Remove when upgrading to Elasticsearch 7
