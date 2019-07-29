@@ -28,7 +28,7 @@ export default async function importData(client: Client, data: any) {
     if (!mod.attributes) return mod;
     return {
       ...mod,
-      moduleAttributeList: Object.keys(mod.attributes),
+      moduleAttributesList: Object.keys(mod.attributes),
     };
   });
 
