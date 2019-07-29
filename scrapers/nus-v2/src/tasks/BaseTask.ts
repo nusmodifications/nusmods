@@ -1,6 +1,6 @@
 import api from '../services/nus-api';
 import logger, { Logger } from '../services/logger';
-import { getCacheFactory, getDataWriter } from '../services/io';
+import { getCacheFactory, CombinedPersist } from '../services/io';
 import { Cache, Persist } from '../types/persist';
 
 /**
@@ -19,7 +19,7 @@ export default abstract class BaseTask {
   constructor(academicYear: string) {
     this.academicYear = academicYear;
 
-    this.io = getDataWriter(academicYear);
+    this.io = new CombinedPersist(academicYear);
     this.getCache = getCacheFactory(academicYear);
   }
 

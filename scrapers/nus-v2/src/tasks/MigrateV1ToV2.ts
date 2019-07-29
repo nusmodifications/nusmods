@@ -6,7 +6,7 @@ import { AcademicGrp, AcademicOrg } from '../types/api';
 import { parseWorkload } from './GetSemesterData';
 import BaseTask from './BaseTask';
 import { Task } from '../types/tasks';
-import V1DataReader from '../services/v1-io';
+import V1DataReader from '../services/io/v1-io';
 import { Logger } from '../services/logger';
 
 interface Input {
