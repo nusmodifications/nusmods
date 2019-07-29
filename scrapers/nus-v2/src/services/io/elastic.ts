@@ -2,6 +2,7 @@ import { Client } from '@elastic/elasticsearch';
 
 import { Persist } from '../../types/persist';
 import { ModuleCode, ModuleInformation } from '../../types/modules';
+import config from '../../config';
 import logger from '../logger';
 
 /* eslint-disable @typescript-eslint/camelcase */
@@ -92,9 +93,7 @@ export default class ElasticPersist implements Persist {
   private readonly client: Promise<Client>;
 
   constructor() {
-    const client = new Client({
-      // TODO: INSERT cloud: CREDENTIALS HERE
-    });
+    const client = new Client(config.elasticConfig);
 
     this.client = createIndex(client);
   }
