@@ -1,9 +1,12 @@
 @import "~styles/utils/modules-entry";
 
-.wrapper {
+.container {
   composes: no-export from global;
+  z-index: $modreg-notification-z-index;
+}
+
+.notificationWrapper {
   position: relative;
-  z-index: $cors-notification-z-index;
 }
 
 .notification {
@@ -37,7 +40,7 @@
 }
 
 @include media-breakpoint-up(md) {
-  .wrapper {
+  .container {
     position: fixed;
     bottom: 2rem;
     left: 2rem;
@@ -50,6 +53,7 @@
   }
 
   .notification {
+    margin-top: 1rem;
     box-shadow: 0 3px 12px rgba(#000, 0.3);
   }
 }

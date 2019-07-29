@@ -3,6 +3,7 @@ import { ModuleList } from './reducers';
 import { ColorIndex, HoverLesson, Lesson, ModifiableLesson } from './timetables';
 import { Venue, VenueList } from './venues';
 import { CustomModule } from './planner';
+import { RegPeriod } from '../config';
 
 export type ComponentMap = {
   globalSearchInput: HTMLInputElement | null;
@@ -72,6 +73,12 @@ export type EmptyGroupType =
   | 'holiday'
   | 'recess'
   | 'reading';
+
+/* views/notifications/ModRegNotification */
+export interface RegPeriodView extends RegPeriod {
+  // Augmented for the frontend. The modreg selector maps RegPeriod to this type.
+  dismissed: boolean;
+}
 
 /* views/planner */
 export type PrereqConflict = {
