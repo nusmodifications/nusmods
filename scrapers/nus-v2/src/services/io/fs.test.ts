@@ -2,7 +2,7 @@ import * as fs from 'fs-extra';
 import mockFs from 'mock-fs';
 import { subHours } from 'date-fns';
 
-import { getCacheFactory, getFileSystemWriter } from './io';
+import { getCacheFactory, getFileSystemWriter } from './fs';
 import { CacheExpiredError } from '../../utils/errors';
 
 jest.unmock('fs-extra');
