@@ -118,7 +118,7 @@ export default class ElasticPersist implements Persist {
       if (module.attributes) {
         bulkBody.push({
           ...module,
-          moduleAttributesList: Object.keys(module.attributes),
+          moduleAttributes: Object.keys(module.attributes),
         });
       } else {
         bulkBody.push(module);
