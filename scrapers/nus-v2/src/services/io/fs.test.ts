@@ -2,8 +2,8 @@ import * as fs from 'fs-extra';
 import mockFs from 'mock-fs';
 import { subHours } from 'date-fns';
 
-import { getCacheFactory, getDataWriter } from './io';
-import { CacheExpiredError } from '../utils/errors';
+import { getCacheFactory, getFileSystemWriter } from './fs';
+import { CacheExpiredError } from '../../utils/errors';
 
 jest.unmock('fs-extra');
 
@@ -66,8 +66,8 @@ describe(getCacheFactory, () => {
   });
 });
 
-describe(getDataWriter, () => {
-  const persist = getDataWriter('2018/2019');
+describe(getFileSystemWriter, () => {
+  const persist = getFileSystemWriter('2018/2019');
 
   test('should return empty array if this is first scrape', async () => {
     await expect(persist.getModuleCodes()).resolves.toEqual([]);

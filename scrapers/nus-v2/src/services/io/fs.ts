@@ -16,11 +16,11 @@ import {
   RawLesson,
   Semester,
   SemesterData,
-} from '../types/modules';
-import { Venue, VenueInfo } from '../types/venues';
-import { Cache, Persist } from '../types/persist';
-import config from '../config';
-import { CacheExpiredError } from '../utils/errors';
+} from '../../types/modules';
+import { Venue, VenueInfo } from '../../types/venues';
+import { Cache, Persist } from '../../types/persist';
+import config from '../../config';
+import { CacheExpiredError } from '../../utils/errors';
 
 const defaultExpiry = 24 * 60; // 1 day
 
@@ -66,7 +66,7 @@ export function getCacheFactory(academicYear: string) {
  * a function to send output to, this can be replaced with any persistence
  * mechanism in the future, eg. a database
  */
-export function getDataWriter(academicYear: string): Persist {
+export function getFileSystemWriter(academicYear: string): Persist {
   const yearRoot = getFileRoot(academicYear);
 
   // Directory structure
