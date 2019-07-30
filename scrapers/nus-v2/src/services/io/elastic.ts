@@ -137,7 +137,7 @@ export default class ElasticPersist implements Persist {
     // Log errors
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const erroredItems = items.filter((i: any) => {
-      const status = i.index.status;
+      const { status } = i.index;
       // Filter out status code 2xx
       return status < 200 || status >= 300;
     });
