@@ -6,7 +6,7 @@ services:
       dockerfile: website/Dockerfile.dev
       args:
         - GIT_COMMIT_HASH
-        - DATA_API_BASE_URL=/api
+        - DATA_API_BASE_URL
     volumes:
       - ~/.cache/yarn:/home/node/.cache/yarn
       - ./website:/home/node/app/website

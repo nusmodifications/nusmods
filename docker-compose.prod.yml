@@ -10,7 +10,7 @@ services:
       dockerfile: website/Dockerfile.prod
       args:
         - GIT_COMMIT_HASH
-        - DATA_API_BASE_URL=/api
+        - DATA_API_BASE_URL
     networks:
       - intranet
     expose:
