@@ -35,6 +35,7 @@ services:
       - 8082
     depends_on:
       - website
+    init: true
     security_opt:
       - seccomp="infra/instance/chromium.seccomp.json"
     environment:

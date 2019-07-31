@@ -34,6 +34,7 @@ services:
       - 8082
     depends_on:
       - website
+    init: true
     security_opt:
       - seccomp="infra/instance/chromium.seccomp.json"
     environment:
@@ -50,7 +51,6 @@ services:
 # Connect to a bridge network called 'intranet',
 # which allows communication with other docker-compose setups
 networks:
-  private:
   intranet:
     external:
       name: machine_intranet
