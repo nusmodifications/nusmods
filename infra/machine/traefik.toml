@@ -18,6 +18,19 @@ defaultEntryPoints = ["https","http"]
 # attempts = 3
 # maxMem = 3
 
+[file]
+
+[backends]
+  [backends.nusmodsApiBackend]
+    [backends.nusmodsApiBackend.servers.server0]
+      url = "https://api.nusmods.com"
+
+[frontends]
+[frontends.nusmodsApi]
+  backend = "nusmodsApiBackend"
+    [frontends.nusmodsApi.routes.rule0]
+    rule = "HostRegexp:nusmods.com,{subdomain:[0-9]+}.nusmods.com;PathPrefixStrip:/api/"
+
 [api]
 entryPoint = "traefik"
 
@@ -37,28 +50,3 @@ onHostRule = true
 [[acme.domains]]
   main = "*.nusmods.com"
   sans = ["nusmods.com"]
-
-[backends]
-  [backends.fake]
-    [backends.fake.servers.s1]
-      url="http://1.2.3.4"
-
-[frontends]
-[frontends.r1]
-  backend = "fake"
-  [frontends.r1.redirect]
-    regex = "^https://nextbus.nusmods.com/arrival(.*)"
-    replacement = "https://nextbus.comfortdelgro.com.sg/eventservice.svc/shuttleservice$1"
-    permanent = false
-[frontends.r2]
-  backend = "fake"
-  [frontends.r2.redirect]
-    regex = "^https://github.nusmods.com/repo(.*)"
-    replacement = "https://api.github.com/repos/nusmodifications/nusmods$1"
-    permanent = false
-[frontends.r3]
-  backend = "fake"
-  [frontends.r3.redirect]
-    regex = "^https://github.nusmods.com/venues(.*)"
-    replacement = "https://raw.githubusercontent.com/nusmodifications/nusmods/master/website/src/data/venues.json"
-    permanent = false
