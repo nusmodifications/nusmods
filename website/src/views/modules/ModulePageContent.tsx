@@ -259,18 +259,25 @@ export default class ModulePageContent extends React.Component<Props, State> {
                             vibrant and rich NUS community.
                           </p>
                           <p>
-                            <strong>Please note:</strong> <br />
-                            1. Because the experience of each module will differ according to the
-                            professor teaching the module, at the start of your review, please state
-                            the semester taken and the name of the professor who taught the module
-                            in that semester.
-                            <br /> 2. Other students will read your review to get an idea of what
-                            taking the module will be like. If you'd like to give feedback about the
-                            module to NUS, please use the official Student Feedback system as NUS
-                            does not monitor these reviews.
-                            <br />
-                            3. The claims made in these reviews have not been verified by NUS or
-                            NUSMods. Please take all claims with a grain of salt.
+                            <strong>Please note:</strong>
+                            <ol>
+                              <li>
+                                1. Because the experience of each module will differ according to
+                                the professor teaching the module, at the start of your review,
+                                please state the semester taken and the name of the professor who
+                                taught the module in that semester.
+                              </li>
+                              <li>
+                                2. Other students will read your review to get an idea of what
+                                taking the module will be like. If you'd like to give feedback about
+                                the module to NUS, please use the official Student Feedback system
+                                as NUS does not monitor these reviews.
+                              </li>
+                              <li>
+                                3. The claims made in these reviews have not been verified by NUS or
+                                NUSMods. Please take all claims with a grain of salt.
+                              </li>
+                            </ol>
                           </p>
                         </div>
                       </div>
