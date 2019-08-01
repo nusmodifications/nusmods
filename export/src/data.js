@@ -5,17 +5,22 @@ const _ = require('lodash');
 const config = require('./config');
 
 async function fetchModule(moduleCode) {
-  let fileName = `${moduleCode}.json`;
+  const fileName = `${moduleCode}.json`;
 
+  let mod;
   if (config.moduleData) {
-    return fs.readJSON(path.join(config.moduleData, fileName));
+    mod = await fs.readJSON(path.join(config.moduleData, fileName)).catch(() => undefined);
   }
 
-  // For development only
-  const req = await axios.get(
-    `http://api.nusmods.com/v2/${config.academicYear}/modules/${fileName}`,
-  );
-  return req.data;
+  // Use fallback
+  if (!mod) {
+    const req = await axios.get(
+      `https://api.nusmods.com/v2/${config.academicYear}/modules/${fileName}`,
+    );
+    mod = req.data;
+  }
+
+  return mod;
 }
 
 async function getModules(moduleCodes) {
