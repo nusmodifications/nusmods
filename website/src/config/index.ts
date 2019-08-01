@@ -73,8 +73,8 @@ export function convertModRegDates(roundData: typeof modRegData[ScheduleType]): 
   return roundData.map((data) => ({
     ...data,
     type: data.type as RegPeriodType,
-    start: format(new Date(data.start), 'EEEE io LLLL, haaaa'),
-    end: format(new Date(data.end), 'EEEE io LLLL, haaaa'),
+    start: format(new Date(data.start), 'EEEE do LLLL, haaaa'),
+    end: format(new Date(data.end), 'EEEE do LLLL, haaaa'),
     startDate: new Date(data.start),
     endDate: new Date(data.end),
   }));
