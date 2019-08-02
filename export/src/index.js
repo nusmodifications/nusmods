@@ -7,7 +7,7 @@ const app = require('./app');
 const render = require('./render');
 
 // Config check
-if (!(config.academicYear && /\d{4}-\d{4}/.test(config.academicYear))) {
+if (!config.academicYear || !/\d{4}-\d{4}/.test(config.academicYear)) {
   throw new Error(
     'academicYear is not set - check config.js. ' +
       'This should be in the form of <year>-<year> (e.g. 2019-2020).',
