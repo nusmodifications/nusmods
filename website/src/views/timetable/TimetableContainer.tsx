@@ -208,6 +208,7 @@ export class TimetableContainerComponent extends React.PureComponent<Props, Stat
     return (
       <div>
         <ScrollToTop onComponentDidMount />
+
         <TimetableContent
           key={semester}
           semester={semester}

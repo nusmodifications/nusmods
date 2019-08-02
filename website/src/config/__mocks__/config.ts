@@ -1,5 +1,7 @@
 import config from '..';
 
+export { convertModRegDates } from '..';
+
 const mockConfig = {
   ...config,
   academicYear: '2017/2018',

@@ -2677,7 +2677,11 @@
   },
   "SDE-ER4": {
     "roomName": "Executive Room 4",
-    "floor": 3
+    "floor": 2,
+    "location": {
+      "x": 103.77112029684575,
+      "y": 1.2973720912301383
+    }
   },
   "LT19": {
     "roomName": "Lecture Theater 19",
@@ -3817,6 +3821,110 @@
     "location": {
       "x": 103.77129374071957,
       "y": 1.2927169615398948
+    }
+  },
+  "PGPH-FR4": {
+    "roomName": "Function Room 4",
+    "floor": -1,
+    "location": {
+      "x": 103.78055155277254,
+      "y": 1.290896141645534
+    }
+  },
+  "S12-0402A": {
+    "roomName": "Level 1000 Physics Lab",
+    "floor": 4,
+    "location": {
+      "x": 103.77876788377763,
+      "y": 1.2969470029855712
+    }
+  },
+  "S12-0402B": {
+    "roomName": "Level 1000 Physics Lab",
+    "floor": 4,
+    "location": {
+      "x": 103.77875983715059,
+      "y": 1.2969389584199256
+    }
+  },
+  "S12-0402C": {
+    "roomName": "Level 1000 Physics Lab",
+    "floor": 4,
+    "location": {
+      "x": 103.77877861261369,
+      "y": 1.2969470029855712
+    }
+  },
+  "S12-0402D": {
+    "roomName": "Level 1000 Physics Lab",
+    "floor": 4,
+    "location": {
+      "x": 103.77879202365877,
+      "y": 1.2969362768980521
+    }
+  },
+  "S1A-03LAB1": {
+    "roomName": "Life Sciences Laboratory 1",
+    "floor": 3,
+    "location": {
+      "x": 103.7782827,
+      "y": 1.2959638
+    }
+  },
+  "S1A-03LAB2": {
+    "roomName": "S1A-03LAB2",
+    "floor": 3,
+    "location": {
+      "x": 103.7784543,
+      "y": 1.2959319
+    }
+  },
+  "S1A-04LAB3": {
+    "roomName": "S1A-04LAB3",
+    "floor": 4,
+    "location": {
+      "x": 103.7783194,
+      "y": 1.2959363
+    }
+  },
+  "S2-03LAB7": {
+    "roomName": "S2-03LAB7",
+    "floor": 3,
+    "location": {
+      "x": 103.7781376,
+      "y": 1.2956254
+    }
+  },
+  "S16-03-0506": {
+    "roomName": "S16-03-0506",
+    "floor": 3,
+    "location": {
+      "x": 103.7803574,
+      "y": 1.2967088
+    }
+  },
+  "EA-04-21": {
+    "roomName": "EA-04-21",
+    "floor": 4,
+    "location": {
+      "x": 103.77052545547487,
+      "y": 1.3001422018796116
+    }
+  },
+  "AS6-0211": {
+    "roomName": "as6-0211",
+    "floor": 1,
+    "location": {
+      "x": 103.77247542142871,
+      "y": 1.2947845222627083
+    }
+  },
+  "UTSRC-PR1": {
+    "roomName": "UTown, SRC, Practice Room 1",
+    "floor": 3,
+    "location": {
+      "x": 103.77260953187944,
+      "y": 1.3042476033435082
     }
   }
 }

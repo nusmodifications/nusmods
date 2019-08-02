@@ -1,9 +1,9 @@
-import FilterGroup from 'utils/filters/FilterGroup';
-import { Department, Module, ModuleCode, ModuleCondensed, PrereqTree, Semester } from './modules';
+import { Module, ModuleCode, ModuleCondensed, PrereqTree, Semester } from './modules';
 import { ModuleList } from './reducers';
 import { ColorIndex, HoverLesson, Lesson, ModifiableLesson } from './timetables';
 import { Venue, VenueList } from './venues';
 import { CustomModule } from './planner';
+import { RegPeriod } from '../config';
 
 export type ComponentMap = {
   globalSearchInput: HTMLInputElement | null;
@@ -28,28 +28,8 @@ export type SearchItem =
   | { readonly type: 'SEARCH'; readonly result: 'MODULE' | 'VENUE'; readonly term: string };
 
 /* browse/ModuleFinderContainer */
-export type AnyGroup = FilterGroup<any>;
-
-export type OnFilterChange = (filterGroup: AnyGroup) => unknown;
-export type FilterGroups = { [filterGroupId: string]: AnyGroup };
-export type FacultyDepartments = { [faculty: string]: Department[] };
-
-export type PageRange = {
-  readonly current: number;
-  readonly start: number; // The first page shown, zero indexed
-  readonly loaded: number; // The number of pages loaded
-};
-
-export type PageRangeDiff = {
-  // Start and pages are ADDED to the previous state
-  start?: number;
-  loaded?: number;
-
-  // Current page is SET
-  current?: number;
-};
-
-export type OnPageChange = (pageRangeDiff: PageRangeDiff) => void;
+export type RefinementItem = { key: string; doc_count?: number; missing?: boolean };
+export type RefinementDisplayItem = RefinementItem & { selected: boolean };
 
 export type DisqusConfig = {
   readonly identifier: string;
@@ -93,6 +73,12 @@ export type EmptyGroupType =
   | 'holiday'
   | 'recess'
   | 'reading';
+
+/* views/notifications/ModRegNotification */
+export interface RegPeriodView extends RegPeriod {
+  // Augmented for the frontend. The modreg selector maps RegPeriod to this type.
+  dismissed: boolean;
+}
 
 /* views/planner */
 export type PrereqConflict = {

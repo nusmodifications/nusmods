@@ -22,7 +22,12 @@ exports[`NavtabsComponent renders into nav element 1`] = `
   <NavLink
     activeClassName="linkActive"
     className="link"
-    to="/modules"
+    to={
+      Object {
+        "pathname": "/modules",
+        "search": "?sem[0]=1&sem[1]=2&sem[2]=3&sem[3]=4",
+      }
+    }
   >
     <BookOpen
       color="currentColor"

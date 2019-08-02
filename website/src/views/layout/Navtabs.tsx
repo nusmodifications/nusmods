@@ -51,7 +51,10 @@ export function NavtabsComponent(props: Props) {
         <Calendar />
         <span className={styles.title}>Timetable</span>
       </NavLink>
-      <NavLink {...tabProps} to="/modules">
+      <NavLink
+        {...tabProps}
+        to={{ pathname: '/modules', search: '?sem[0]=1&sem[1]=2&sem[2]=3&sem[3]=4' }}
+      >
         <BookOpen />
         <span className={styles.title}>Modules</span>
       </NavLink>

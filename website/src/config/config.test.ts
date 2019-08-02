@@ -1,22 +1,26 @@
 import _ from 'lodash';
-import { Semesters } from 'types/modules';
-import { roundEnd } from 'utils/cors';
-import academicCalendar from 'data/academic-calendar.json';
-import config from './index';
 
-function isSorted(arr: any[]) {
-  return arr.slice(1).every((item, index) => item >= arr[index]);
-}
+import { Semesters } from 'types/modules';
+import academicCalendar from 'data/academic-calendar.json';
+import { getModRegRoundKey } from 'selectors/modreg';
+
+import config from './index';
 
 test('Academic calendar should have start dates for the current academic year', () => {
   // @ts-ignore
   expect(academicCalendar[config.academicYear]).toBeDefined();
 });
 
-test('CORS schedule is sorted', () => {
-  expect(isSorted(config.corsSchedule.map(roundEnd))).toBe(true);
-  config.corsSchedule.forEach((round) => {
-    expect(isSorted(round.periods.map((period) => period.endDate))).toBe(true);
+test('Every ModReg round has unique keys', () => {
+  Object.values(config.modRegSchedule).forEach((rounds) => {
+    const keys = rounds.map(getModRegRoundKey);
+    expect(keys).toEqual(Array.from(new Set(keys)));
+  });
+});
+
+_.flatten(Object.values(config.modRegSchedule)).forEach((round) => {
+  test(`${round.type} ${round.name} should end after it starts`, () => {
+    expect(round.startDate.getTime()).toBeLessThan(round.endDate.getTime());
   });
 });
 

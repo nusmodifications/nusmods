@@ -37,7 +37,7 @@ export default class NavRefreshPrompt extends React.PureComponent<Props, State> 
           <div
             className={classnames('btn btn-sm btn-block btn-success', { disabled: isReloading })}
           >
-            {isReloading ? <LoadingSpinner small /> : 'Refresh page'}
+            {isReloading ? <LoadingSpinner small white /> : 'Refresh page'}
           </div>
         </div>
       </button>
