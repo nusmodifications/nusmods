@@ -8,11 +8,17 @@ async function fetchModule(moduleCode) {
   const fileName = `${moduleCode}.json`;
 
   let mod;
+
   if (config.moduleData) {
-    mod = await fs.readJSON(path.join(config.moduleData, fileName)).catch(() => undefined);
+    try {
+      mod = await fs.readJSON(path.join(config.moduleData, fileName));
+    } catch (error) {
+      // Continue if file is not found
+      if (err.code !== 'ENOENT') throw error;
+    }
   }
 
-  // Use fallback
+  // Use fallback if no mod is found
   if (!mod) {
     const req = await axios.get(
       `https://api.nusmods.com/v2/${config.academicYear}/modules/${fileName}`,
