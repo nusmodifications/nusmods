@@ -93,6 +93,10 @@ export default class ElasticPersist implements Persist {
   private readonly client: Promise<Client>;
 
   constructor() {
+    if (!config.elasticConfig) {
+      throw new Error('elasticConfig in config.json is not set');
+    }
+
     const client = new Client(config.elasticConfig);
 
     this.client = createIndex(client);
