@@ -31,7 +31,7 @@ const lessonSchema = Joi.object({
 
   csize: Joi.number()
     .integer()
-    .greater(0),
+    .positive(),
 });
 
 export function validateLesson(lesson: TimetableLesson, logger: Logger = rootLogger) {
