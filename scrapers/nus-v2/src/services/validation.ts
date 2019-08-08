@@ -29,9 +29,10 @@ const lessonSchema = Joi.object({
     .integer()
     .greater(0),
 
+  // csize of 0 occur on valid lessons for some reason
   csize: Joi.number()
     .integer()
-    .greater(0),
+    .greater(-1),
 });
 
 export function validateLesson(lesson: TimetableLesson, logger: Logger = rootLogger) {
