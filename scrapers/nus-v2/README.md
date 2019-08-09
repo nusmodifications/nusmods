@@ -20,6 +20,10 @@ yarn dev help
 yarn dev test | yarn bunyan
 ```
 
+### Setting up ElasticSearch
+
+We use ElasticSearch for our module search page. For local development it is not necessary to set this up because the scraper will automatically fall back to storing all data on the file system. To set up the ElasticSearch config, simple specify the `elasticConfig` key in `env.json` with the necessary configuration options that will be passed into the ElasticSearch client.
+
 ## Yarn Commands
 
 ### For production
@@ -56,8 +60,7 @@ Run these through `yarn scrape` in production or `yarn dev` in development piped
 - Get department / faculty codes (`GetDepartmentFaculty`)
 - Get semester data for all four semesters (`GetSemesterData`)
   - Get semester modules (`GetSemesterModules`)
-    - Fan out to all modules
-      - Get module timetable (`GetModuleTimetable`)
+    - Get module timetable for each department (`GetModuleTimetable`)
   - Get semester exams (`GetModuleExams`)
 - Collate venues (`CollateVenues`)
 - Collate modules (`CombineModules`)
@@ -77,6 +80,8 @@ Error handling is done through Sentry.
 This section details the differences between our [v1][api-v1] and [v2][api-v2] APIs.
 
 ### Module data
+
+All keys are switched from TitleCase to camelCase.
 
 - `Faculty` is provided in addition to `Department`
 - `Types` is removed - this is not used anywhere in the v3 frontend because it is difficult to keep up to date
