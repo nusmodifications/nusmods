@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@elastic/elasticsearch@7.2.0":
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/@elastic/elasticsearch/-/elasticsearch-7.2.0.tgz#c200090b3164733affc960c6e09a8c650dc7a45a"
-  integrity sha512-n4t7XX5NLf4KuFVx7h/0V3WgF5BLRWUDvRyYMf+iRbR2dvZSD3BFYSqw757uDcXOE5lnxhJHBoT6CptpA6HW0g==
+"@elastic/elasticsearch@7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@elastic/elasticsearch/-/elasticsearch-7.3.0.tgz#d62508cc03e91dd0676914a50af6500b45bfb199"
+  integrity sha512-CA8V4txIS+BPZg37ZVtOi5mN2xnXYAeQUCvgkjdtc2CzTd5pJrjdPzdmaDDATNc8nhlHMrqxMZZmpKD3OUkjAg==
   dependencies:
     debug "^4.1.1"
     decompress-response "^4.2.0"
