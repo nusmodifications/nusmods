@@ -72,7 +72,7 @@
     "clean-webpack-plugin": "1.0.1",
     "connect-history-api-fallback": "1.6.0",
     "copy-webpack-plugin": "4.6.0",
-    "coveralls": "3.0.5",
+    "coveralls": "3.0.6",
     "cross-env": "5.2.0",
     "css-loader": "2.1.1",
     "cssnano": "4.1.10",
