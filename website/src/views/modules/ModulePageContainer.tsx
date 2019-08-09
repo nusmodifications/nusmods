@@ -7,13 +7,12 @@ import { get } from 'lodash';
 
 import { Module, ModuleCode } from 'types/modules';
 
-import { fetchArchiveRequest, fetchModule, fetchModuleArchive } from 'actions/moduleBank';
+import { fetchModule, fetchModuleArchive } from 'actions/moduleBank';
 import { captureException, retryImport } from 'utils/error';
 import ApiError from 'views/errors/ApiError';
 import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { moduleArchive, modulePage } from 'views/routes/paths';
-import { isFailure } from 'selectors/requests';
 import { State as StoreState } from 'types/state';
 
 import { Props as ModulePageContentProp } from './ModulePageContent';
@@ -27,7 +26,6 @@ type OwnProps = RouteComponentProps<Params>;
 
 type Props = OwnProps & {
   module: Module | null;
-  moduleExists: boolean;
   moduleCode: ModuleCode;
   fetchModule: () => Promise<Module>;
   archiveYear?: string;
@@ -35,7 +33,7 @@ type Props = OwnProps & {
 
 type State = {
   ModulePageContent: React.ComponentType<ModulePageContentProp> | null;
-  error?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  error?: Error;
 };
 
 /**
@@ -70,9 +68,7 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
   }
 
   fetchModule() {
-    if (this.props.moduleExists || this.props.archiveYear) {
-      this.props.fetchModule().catch(this.handleFetchError);
-    }
+    this.props.fetchModule().catch(this.handleFetchError);
   }
 
   fetchPageImport() {
@@ -102,9 +98,9 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
 
   render() {
     const { ModulePageContent, error } = this.state;
-    const { module, moduleCode, moduleExists, match, location, archiveYear } = this.props;
+    const { module, moduleCode, match, location, archiveYear } = this.props;
 
-    if (!moduleExists) {
+    if (get(error, ['response', 'status'], 200) === 404) {
       return <ModuleNotFoundPage tryArchive={!archiveYear} moduleCode={moduleCode} />;
     }
 
@@ -154,8 +150,6 @@ const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
     return {
       moduleCode,
       archiveYear: year,
-      // Use !isFailure to account for loading state
-      moduleExists: !isFailure(state, fetchArchiveRequest(moduleCode, year)),
       module: get(moduleBank.moduleArchive, [moduleCode, year], null),
     };
   }
@@ -163,7 +157,6 @@ const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
   return {
     moduleCode,
     archiveYear: year,
-    moduleExists: !!moduleBank.moduleCodes[moduleCode],
     module: moduleBank.modules[moduleCode],
   };
 };
