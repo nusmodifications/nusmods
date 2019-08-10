@@ -49,5 +49,9 @@ module.exports = merge([
     },
   },
 
-  parts.loadCSS(),
+  parts.loadCSS({
+    options: {
+      modules: true,
+    },
+  }),
 ]);

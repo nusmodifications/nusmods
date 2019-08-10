@@ -48,8 +48,6 @@ const developmentConfig = merge([
       // Waiting on: https://github.com/jantimon/html-webpack-plugin/issues/533
       // { multiStep: true }
       new webpack.HotModuleReplacementPlugin(),
-      // do not emit compiled assets that include errors
-      new webpack.NoEmitOnErrorsPlugin(),
       // Caches compiled modules to disk to improve rebuild times
       new HardSourceWebpackPlugin({
         info: {
