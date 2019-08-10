@@ -14,4 +14,4 @@ export const isBrowserSupported =
     },
     true,
   ) ||
-  (bowser.ios && parseFloat(bowser.osversion));
+  (bowser.ios && parseFloat(bowser.osversion) >= 10);
