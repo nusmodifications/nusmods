@@ -45,7 +45,6 @@ const productionConfig = merge([
       name: 'img/[name].[hash].[ext]',
     },
   }),
-  parts.clean(parts.PATHS.buildTimetable),
   parts.productionCSS(),
 ]);
 

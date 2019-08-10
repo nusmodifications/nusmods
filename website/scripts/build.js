@@ -1,5 +1,5 @@
 const util = require('util');
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 const chalk = require('chalk');
 const webpack = require('webpack');
@@ -55,6 +55,10 @@ async function build(previousFileSizes) {
   console.log();
 
   try {
+    // Remove dist folders
+    fs.removeSync(parts.PATHS.build);
+    console.log(`${parts.PATHS.build} has been removed`);
+
     // Build the browser warning bundle first so we can pass it to the main bundle
     const browserWarningStats = await runWebpack(browserWarning);
     handleErrors(browserWarningStats);
@@ -84,6 +88,8 @@ async function build(previousFileSizes) {
 
     // Build the timetable-only build for the export service
     console.log(chalk.cyan('Creating timetable-only build...'));
+    fs.removeSync(parts.PATHS.buildTimetable);
+    console.log(`${parts.PATHS.buildTimetable} has been removed`);
     console.log();
 
     const timetableOnlyStats = await runWebpack(timetableOnly);

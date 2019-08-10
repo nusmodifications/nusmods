@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const childProcess = require('child_process');
@@ -50,21 +49,6 @@ exports.setFreeVariable = (key, value) => {
     plugins: [new webpack.DefinePlugin(env)],
   };
 };
-
-/**
- * Removes the folder/file to make way for new changes.
- *
- * @see https://survivejs.com/webpack/building/tidying-up/#setting-up-cleanwebpackplugin-
- */
-exports.clean = (...pathsToBeCleaned) => ({
-  plugins: [
-    new CleanWebpackPlugin([...pathsToBeCleaned], {
-      // Without `root` CleanWebpackPlugin won't point to our
-      // project and will fail to work.
-      root: process.cwd(),
-    }),
-  ],
-});
 
 /**
  * For extracting chunks into different bundles for caching.
