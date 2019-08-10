@@ -3,6 +3,7 @@ const webpack = require('webpack');
 
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const childProcess = require('child_process');
 const moment = require('moment');
 
@@ -183,7 +184,43 @@ exports.loadCSS = ({ include, exclude, options } = {}) => ({
         include,
         exclude,
 
-        use: [].concat('style-loader', exports.getCSSConfig({ options })),
+        use: ['style-loader', ...exports.getCSSConfig({ options })],
+      },
+    ],
+  },
+});
+
+exports.productionCSS = ({ options } = {}) => ({
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash:8].css',
+      chunkFilename: '[name].[contenthash:8].css',
+      ignoreOrder: true,
+
+      ...options,
+    }),
+  ],
+
+  module: {
+    rules: [
+      {
+        test: /\.(css|scss)$/,
+        include: PATHS.styles,
+        use: [MiniCssExtractPlugin.loader, ...exports.getCSSConfig(options)],
+      },
+      {
+        test: /\.(css|scss)$/,
+        include: PATHS.src,
+        exclude: PATHS.styles,
+        use: [
+          MiniCssExtractPlugin.loader,
+          ...exports.getCSSConfig({
+            options: {
+              modules: true,
+              localIdentName: '[hash:base64:8]',
+            },
+          }),
+        ],
       },
     ],
   },

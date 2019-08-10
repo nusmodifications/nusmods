@@ -5,14 +5,14 @@ import 'bootstrapping/browser';
 import ReactDOM from 'react-dom';
 import ReactModal from 'react-modal';
 
-import App from 'App';
-
 import configureStore from 'bootstrapping/configure-store';
 import subscribeOnlineEvents from 'bootstrapping/subscribeOnlineEvents';
 import { initializeMamoto } from 'bootstrapping/matomo';
 import registerServiceWorker from 'bootstrapping/service-worker-manager';
 
 import 'styles/main.scss';
+
+import App from './App';
 
 const { store, persistor } = configureStore();
 

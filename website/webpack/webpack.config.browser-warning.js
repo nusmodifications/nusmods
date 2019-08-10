@@ -1,0 +1,53 @@
+const merge = require('webpack-merge');
+
+const parts = require('./webpack.parts');
+
+module.exports = merge([
+  {
+    // Don't attempt to continue if there are any errors.
+    bail: true,
+    mode: 'production',
+    entry: 'entry/browser-warning/main',
+
+    output: {
+      path: parts.PATHS.build,
+      filename: 'browser-warning.[hash].js',
+    },
+
+    resolve: {
+      modules: [parts.PATHS.src, parts.PATHS.node],
+      extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+      symlinks: false,
+    },
+
+    // We generate sourcemaps in production. This is slow but gives good results.
+    // You can exclude the *.map files from the build during deployment.
+    devtool: 'source-map',
+
+    module: {
+      rules: [
+        {
+          test: /\.[j|t]sx?$/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                '@babel/preset-typescript',
+                [
+                  '@babel/preset-env',
+                  {
+                    targets: {
+                      ie: '11',
+                    },
+                  },
+                ],
+              ],
+            },
+          },
+        },
+      ],
+    },
+  },
+
+  parts.loadCSS(),
+]);

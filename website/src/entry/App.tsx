@@ -13,7 +13,7 @@ import Routes from 'views/routes/Routes';
 import { DIMENSIONS, setCustomDimensions } from 'bootstrapping/matomo';
 
 type Props = {
-  store: Store<State, any>;
+  store: Store<State>;
   persistor: Persistor;
 };
 
