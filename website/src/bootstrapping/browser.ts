@@ -1,4 +1,4 @@
-import Detective from 'obsolete-web/esm/detective';
+import Detective from 'obsolete-web/cjs/detective';
 import browsersList from 'browserslist-config-nusmods';
 
 /* eslint-disable import/prefer-default-export */
