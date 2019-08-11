@@ -2,10 +2,8 @@
 // is incompatible or not optimal for using the app, a banner is appended into the DOM body.
 // This is so that in cases where the React app completely fails to render anything at all, the
 // user will at least be able to see the dialog warning them of the browser incompatibility.
-import bowser from 'bowser';
-
 import { BROWSER_WARNING_KEY } from '../../storage/keys';
-import { isBrowserSupported } from '../../bootstrapping/browser';
+import { isBrowserSupported, isIOS, isAndroidChrome } from '../../bootstrapping/browser';
 import { canUseBrowserLocalStorage } from '../../storage/localStorage';
 
 import styles from './browser-warning.scss';
@@ -26,10 +24,10 @@ if (
     !browserCanUseLocalStorage)
 ) {
   let promptText = `NUSMods may not work properly. Please consider updating your web browser or switching to the latest version of ${linkForChrome} or ${linkForFirefox}.`;
-  if (bowser.ios) {
+  if (isIOS) {
     promptText = `NUSMods may not work properly. Please consider updating your device to iOS 11 or higher.`;
   }
-  if (bowser.android && bowser.chrome) {
+  if (isAndroidChrome) {
     promptText = `NUSMods may not work properly. Please consider ${linkForChromePlayStore}.`;
   }
 

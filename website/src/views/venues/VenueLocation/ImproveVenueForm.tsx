@@ -3,7 +3,6 @@ import { LatLng } from 'leaflet';
 import { Map, Marker, TileLayer, Viewport } from 'react-leaflet';
 import classnames from 'classnames';
 import axios from 'axios';
-import bowser from 'bowser';
 import produce from 'immer';
 
 import { LatLngTuple, Venue, VenueLocation } from 'types/venues';
@@ -12,6 +11,7 @@ import { MapPin, ThumbsUp } from 'views/components/icons';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { markerIcon } from 'views/components/map/icons';
 import ExpandMap from 'views/components/map/ExpandMap';
+import { isIOS } from 'bootstrapping/browser';
 
 import mapStyles from 'views/components/map/LocationMap.scss';
 import { captureException } from 'utils/error';
@@ -181,7 +181,7 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
     // HACK: There's an iOS bug that clips the expanded map around the modal,
     // making it impossible to exit the expanded state. While we find a better
     // solution for now we'll just hide the button
-    const showExpandMapBtn = !bowser.ios;
+    const showExpandMapBtn = !isIOS;
 
     return (
       <form className="form-row" onSubmit={this.onSubmit}>
