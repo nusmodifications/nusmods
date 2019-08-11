@@ -260,7 +260,7 @@ export default class ModulePageContent extends React.Component<Props, State> {
                           </p>
                           <p>
                             <strong>Please note:</strong>
-                            <ol>
+                            <ol className={styles.modReviewDescription}>
                               <li>
                                 Because the experience of each module will differ according to the
                                 professor teaching the module, at the start of your review, please
