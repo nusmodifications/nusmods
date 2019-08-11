@@ -71,7 +71,7 @@ const errorHandler = async (ctx, next) => {
     } else {
       await ctx.render('500', {
         eventId,
-        dsn: config.publicDsn,
+        dsn: config.sentryDsn,
       });
     }
 
