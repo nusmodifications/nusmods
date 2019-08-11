@@ -148,7 +148,7 @@
     "mousetrap": "1.6.3",
     "no-scroll": "2.1.1",
     "nusmoderator": "3.0.0",
-    "obsolete-web": "^0.5.6",
+    "obsolete-web": "0.5.6",
     "query-string": "5.0.0",
     "react": "16.8.6",
     "react-beautiful-dnd": "11.0.5",

@@ -8952,7 +8952,7 @@ object.values@^1.0.4, object.values@^1.1.0:
     function-bind "^1.1.1"
     has "^1.0.3"
 
-obsolete-web@^0.5.6:
+obsolete-web@0.5.6:
   version "0.5.6"
   resolved "https://registry.yarnpkg.com/obsolete-web/-/obsolete-web-0.5.6.tgz#29685e774190d858613c0a98dd428f5e66611d13"
   integrity sha512-rrs7kSJxOVFvvY7wuCfjg/ngXbO6q1m7Llq30RaN9WYIDH1zAoA1xWLIY39D3e5967g/NeCasI/o8ojhMMkaaA==
