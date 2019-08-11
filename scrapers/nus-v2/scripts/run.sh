@@ -8,8 +8,11 @@ date
 cd "$(dirname "$0")"
 cd ..
 
-# Run the scraper
+# Build the scraper
+rm -rf build
 yarn build
+
+# Run the scraper
 echo "Running scraper"
 node build/index.js all
 
