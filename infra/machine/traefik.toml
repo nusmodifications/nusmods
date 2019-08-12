@@ -14,10 +14,6 @@ defaultEntryPoints = ["https","http"]
   [entryPoints.traefik]
   address = ":5678"
 
-# [retry]
-# attempts = 3
-# maxMem = 3
-
 [file]
 
 [backends]
