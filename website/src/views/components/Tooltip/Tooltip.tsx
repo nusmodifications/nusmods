@@ -7,7 +7,8 @@ import 'styles/tippy/tippy.css';
 export type Props = TippyProps & {};
 
 function Tooltip(props: Props) {
-  const tippyProps = props;
+  // Clone the props to make it extensible
+  const tippyProps = { ...props };
 
   // HACK: Emulate Android tooltip behavior (hold to show tooltip, tap to
   // activate click) on iOS

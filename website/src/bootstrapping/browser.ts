@@ -1,8 +1,6 @@
 import Detective from 'obsolete-web/cjs/detective';
 import browsersList from 'browserslist-config-nusmods';
 
-/* eslint-disable import/prefer-default-export */
-
 const detective = new Detective();
 
 export const isBrowserSupported = detective.detect(navigator.userAgent, browsersList, true, true);
