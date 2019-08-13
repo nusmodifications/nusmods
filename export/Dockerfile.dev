@@ -9,8 +9,7 @@ RUN apk update && apk upgrade && \
       nss@edge \
       freetype@edge \
       harfbuzz@edge \
-      ttf-freefont@edge \
-      dumb-init@edge
+      ttf-freefont@edge
 
 # Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
@@ -27,5 +26,4 @@ WORKDIR /home/node/app/export
 
 COPY export/package.json export/yarn.lock ./
 
-ENTRYPOINT ["dumb-init", "--"]
 CMD yarn && yarn dev --exitcrash
