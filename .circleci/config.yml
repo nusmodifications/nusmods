@@ -114,7 +114,7 @@ jobs:
           command: |
             set -e
             yarn test --runInBand --reporters=default --reporters=jest-junit
-            yarn codecov -f ./coverage
+            yarn codecov --disable=gcov -f ./coverage/coverage-final.json
       - run:
           name: Integration tests
           environment:
