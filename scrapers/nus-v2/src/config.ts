@@ -20,7 +20,7 @@ export type Config = Readonly<{
   dataPath: string;
 
   // Config to connect to elasticsearch
-  elasticConfig: ClientOptions;
+  elasticConfig?: ClientOptions;
 }>;
 
 const env = fs.readJSONSync(path.join(__dirname, '../env.json'));

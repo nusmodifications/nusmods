@@ -15,6 +15,7 @@ import { getFileSystemWriter } from './fs';
 import ElasticPersist from './elastic';
 
 export { getCacheFactory } from './fs';
+export { getFileSystemWriter };
 
 /**
  * Call both file system and ElasticSearch persist backends
