@@ -6,12 +6,15 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 const PacktrackerPlugin = require('@packtracker/webpack-plugin');
 
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
 const nusmods = require('../src/apis/nusmods');
 const config = require('../src/config/app-config.json');
+
+const IS_CI = !!process.env.CI;
 
 /**
  * Extracts css into their own file.
@@ -89,11 +92,15 @@ const productionConfig = merge([
         preload: /\.js$/,
       }),
       cssExtractPlugin,
+      !IS_CI &&
+        new CompressionPlugin({
+          test: /\.(js|css|html|json|svg|xml|txt)$/,
+        }),
       // Copy files from static folder over to dist
       new CopyWebpackPlugin([{ from: 'static', context: parts.PATHS.root }], {
         copyUnmodified: true,
       }),
-      process.env.CI &&
+      IS_CI &&
         new PacktrackerPlugin({
           upload: true,
         }),
