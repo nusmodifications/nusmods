@@ -1,7 +1,16 @@
+import { once } from 'lodash';
+
 import api from '../services/nus-api';
 import logger, { Logger } from '../services/logger';
-import { getCacheFactory, CombinedPersist } from '../services/io';
+import { getCacheFactory, CombinedPersist, getFileSystemWriter } from '../services/io';
 import { Cache, Persist } from '../types/persist';
+import config from '../config';
+
+// Always persist to ES in production, otherwise persist to FS only
+const useElasticSearch = process.env.NODE_ENV === 'production' ? true : !!config.elasticConfig;
+const elasticConfigWarning = once(() => {
+  logger.warn('Data is not persisted to ElasticSearch because it is not configured');
+});
 
 /**
  * Base task class. Dependencies and components are instance properties
@@ -19,7 +28,13 @@ export default abstract class BaseTask {
   constructor(academicYear: string) {
     this.academicYear = academicYear;
 
-    this.io = new CombinedPersist(academicYear);
+    if (useElasticSearch) {
+      this.io = new CombinedPersist(academicYear);
+    } else {
+      elasticConfigWarning();
+      this.io = getFileSystemWriter(academicYear);
+    }
+
     this.getCache = getCacheFactory(academicYear);
   }
 
