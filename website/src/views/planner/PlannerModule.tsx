@@ -61,7 +61,7 @@ export default class PlannerModule extends React.PureComponent<Props> {
           <div className={styles.conflictHeader}>
             <AlertTriangle className={styles.warningIcon} />
             <p>
-              Module may only only be offered in{' '}
+              Module may only be offered in{' '}
               {conflict.semestersOffered
                 .map((semester) => config.shortSemesterNames[semester])
                 .join(', ')}

@@ -83,5 +83,10 @@ All projects and packages in this repository are [MIT licensed](LICENSE).
 
 [![](misc/zoho-logo.png)][zoho]
 
+[1Password] lets us manage our account passwords, identities and keys as a team securely and efficiently.
+
+[![](misc/1password-logo.png)](1password)
+
 [browserstack]: https://www.browserstack.com/
 [zoho]: https://www.zoho.com/
+[1password]: https://1password.com/

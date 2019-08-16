@@ -41,10 +41,10 @@ export default function Omelette(props: Props) {
 
   return (
     <>
-      <p className="text-center">
-        Sorry, we couldn&apos;t find what you were looking for. We did find this though
+      <p className="text-center">We did find this though ⤵️</p>
+      <p>
+        <video className="embed-responsive" src={cook(atob(yolk))} controls />
       </p>
-      <video className="embed-responsive" src={cook(atob(yolk))} controls />
     </>
   );
 }

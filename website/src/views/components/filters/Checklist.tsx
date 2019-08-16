@@ -1,45 +1,39 @@
 import * as React from 'react';
-import classnames from 'classnames';
-import ModuleFilter from 'utils/filters/ModuleFilter';
-import styles from './styles.scss';
+import { RefinementDisplayItem } from 'types/views';
+import CheckboxItem from './CheckboxItem';
 
 type Props = {
-  // Needed to generate unique ID and labels for checkbox and radio inputs
-  groupId: string;
-  filters: ModuleFilter[];
-  onChange: (moduleFilter: ModuleFilter) => void;
-  getCount: (moduleFilter: ModuleFilter) => number;
+  allItems: RefinementDisplayItem[];
+  selectedItems: string[]; // Items which are currently selected (i.e. checked)
+  searchedItems: string[]; // Items which have been selected at some point
+  onSelectItem: (selectedItem: string) => void;
+  showCount?: boolean;
 };
 
-export default function Checklist({ groupId, filters, onChange, getCount }: Props) {
-  return (
-    <ul className="list-unstyled">
-      {filters.map((filter: ModuleFilter) => {
-        const id = `${groupId}-${filter.id}`;
-
-        return (
-          <li key={filter.label} className={classnames(styles.label, 'form-check')}>
-            <input
-              id={id}
-              className="form-check-input"
-              type="checkbox"
-              checked={filter.enabled}
-              onChange={() => onChange(filter)}
-            />
-
-            <label
-              htmlFor={id}
-              className={classnames('form-check-label', {
-                [styles.enabled]: filter.enabled,
-              })}
-            >
-              {filter.label}
-              &nbsp;
-              <span className="text-muted">({getCount(filter)})</span>
-            </label>
-          </li>
-        );
-      })}
-    </ul>
+const Checklist: React.FC<Props> = ({
+  allItems,
+  selectedItems,
+  searchedItems,
+  onSelectItem,
+  showCount,
+}) => {
+  const displayItems = searchedItems.map(
+    (key) => allItems.find((i) => i.key === key) || { key, selected: selectedItems.includes(key) },
   );
-}
+
+  const itemComponents = displayItems.map(({ key, doc_count: count, selected }) => (
+    <CheckboxItem
+      key={key}
+      active={selected}
+      count={count || 0}
+      showCount={showCount === true && typeof count !== 'undefined'}
+      itemKey={key}
+      label={key}
+      onClick={() => onSelectItem(key)}
+    />
+  ));
+
+  return <ul className="list-unstyled">{itemComponents}</ul>;
+};
+
+export default Checklist;

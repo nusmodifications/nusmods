@@ -42,6 +42,8 @@ import { resetScrollPosition } from 'utils/react';
 import ModulesSelectContainer from 'views/timetable/ModulesSelectContainer';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
+import ErrorBoundary from 'views/errors/ErrorBoundary';
+import ModRegNotification from 'views/components/notfications/ModRegNotification';
 import { State as StoreState } from 'types/state';
 import { ModuleWithColor } from 'types/views';
 import Timetable from './Timetable';
@@ -342,6 +344,10 @@ class TimetableContent extends React.Component<Props, State> {
         <Title>Timetable</Title>
 
         <Announcements />
+
+        <ErrorBoundary>
+          <ModRegNotification />
+        </ErrorBoundary>
 
         <div>{this.props.header}</div>
 

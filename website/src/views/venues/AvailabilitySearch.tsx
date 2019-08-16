@@ -4,6 +4,7 @@ import { range } from 'lodash';
 
 import { VenueSearchOptions } from 'types/venues';
 import { SCHOOLDAYS, formatHour, getDayIndex, getCurrentHours } from 'utils/timify';
+import { FIRST_CLASS_HOUR, LAST_CLASS_HOUR } from 'utils/venues';
 import styles from './AvailabilitySearch.scss';
 
 type Props = {
@@ -13,9 +14,6 @@ type Props = {
   onUpdate: (venueSearchOptions: VenueSearchOptions) => void;
 };
 
-// The first and last starting time of lessons
-const FIRST_CLASS_HOUR = 8;
-const LAST_CLASS_HOUR = 22;
 const CLASS_START_HOURS = range(FIRST_CLASS_HOUR, LAST_CLASS_HOUR + 1);
 
 export function defaultSearchOptions(

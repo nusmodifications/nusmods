@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
 import { Semester } from 'types/modules';
+import { SemTimetableConfig } from 'types/timetables';
 
 import exportApi from 'apis/export';
 import { downloadAsIcal, SUPPORTS_DOWNLOAD } from 'actions/export';
@@ -32,6 +33,7 @@ const PDF: ExportAction = 'PDF';
 type Props = {
   state: StoreState;
   semester: Semester;
+  timetable: SemTimetableConfig;
   downloadAsIcal: (semester: Semester) => void;
 };
 
@@ -67,7 +69,7 @@ export class ExportMenuComponent extends React.PureComponent<Props, State> {
     toggleMenu,
     highlightedIndex,
   }) => {
-    const { semester, state } = this.props;
+    const { semester, timetable, state } = this.props;
     const counter = new Counter();
 
     return (
@@ -91,7 +93,7 @@ export class ExportMenuComponent extends React.PureComponent<Props, State> {
         >
           <Online>
             <a
-              href={exportApi.image(semester, state, window.devicePixelRatio)}
+              href={exportApi.image(semester, timetable, state, window.devicePixelRatio)}
               className={classnames('dropdown-item', {
                 'dropdown-selected': counter.matches(highlightedIndex),
               })}
@@ -101,7 +103,7 @@ export class ExportMenuComponent extends React.PureComponent<Props, State> {
             </a>
 
             <a
-              href={exportApi.pdf(semester, state)}
+              href={exportApi.pdf(semester, timetable, state)}
               className={classnames('dropdown-item', {
                 'dropdown-selected': counter.matches(highlightedIndex),
               })}
