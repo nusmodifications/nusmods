@@ -3,7 +3,7 @@ import { Semester } from 'types/modules';
 import * as React from 'react';
 import config from 'config';
 
-import { ChevronLeft, ChevronRight } from 'views/components/icons';
+import { ChevronLeft, ChevronRight } from 'react-feather';
 
 import { isValidSemester } from 'utils/timetables';
 

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import storage from 'storage';
 import { announcementKey } from 'storage/keys';
 import { toggleFeedback } from 'actions/app';
-import { Heart } from 'views/components/icons';
+import { Heart } from 'react-feather';
 import CloseButton from 'views/components/CloseButton';
 import styles from './Announcements.scss';
 

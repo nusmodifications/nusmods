@@ -9,7 +9,7 @@ import { Conflict } from 'types/views';
 import config from 'config';
 import { renderMCs } from 'utils/modules';
 import { conflictToText } from 'utils/planner';
-import { AlertTriangle } from 'views/components/icons';
+import { AlertTriangle } from 'react-feather';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import { modulePage } from 'views/routes/paths';
 

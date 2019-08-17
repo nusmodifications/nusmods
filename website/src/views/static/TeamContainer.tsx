@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React from 'react';
+import { Facebook, Linkedin, GitHub, Twitter } from 'react-feather';
 
 import ExternalLink from 'views/components/ExternalLink';
 import Tooltip from 'views/components/Tooltip';
-import { Facebook, LinkedIn, GitHub, Twitter } from 'views/components/icons';
 import teamMembers from 'data/team.json';
 import StaticPage from './StaticPage';
 import styles from './TeamContainer.scss';
@@ -87,7 +87,7 @@ function TeamMember({ member }: Props) {
                     href={`https://www.linkedin.com/in/${member.linkedin}`}
                     aria-label="Linkedin profile"
                   >
-                    <LinkedIn />
+                    <Linkedin />
                   </ExternalLink>
                 </Tooltip>
               </div>
