@@ -1,7 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import classnames from 'classnames';
+import { X as Close, Plus } from 'react-feather';
+
 import { Semester } from 'types/modules';
-import { Close, Plus } from 'views/components/icons';
 import styles from './AddModule.scss';
 
 type Props = {

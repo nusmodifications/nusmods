@@ -3,20 +3,13 @@ import Downshift, { ChildrenFunction } from 'downshift';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
+import { AlertTriangle, Calendar, ChevronDown, Download, FileText, Image } from 'react-feather';
 
 import { Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
 
 import exportApi from 'apis/export';
 import { downloadAsIcal, SUPPORTS_DOWNLOAD } from 'actions/export';
-import {
-  AlertTriangle,
-  Calendar,
-  ChevronDown,
-  Download,
-  FileText,
-  Image,
-} from 'views/components/icons';
 import Online from 'views/components/Online';
 import Modal from 'views/components/Modal';
 import ComponentMap from 'utils/ComponentMap';
