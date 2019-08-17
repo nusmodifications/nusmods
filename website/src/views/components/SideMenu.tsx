@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 
-import { Menu, Close } from 'react-feather';
+import { Menu, X as Close } from 'react-feather';
 import makeResponsive from 'views/hocs/makeResponsive';
 import disableScrolling from 'utils/disableScrolling';
 import { breakpointUp } from 'utils/css';

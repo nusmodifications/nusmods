@@ -1,9 +1,9 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
+import { RefreshCw as Refresh } from 'react-feather';
 
 import { updateServiceWorker } from 'bootstrapping/service-worker-manager';
-import { Refresh } from 'react-feather';
 import styles from 'views/components/notfications/Announcements.scss';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { State as StoreState } from 'types/state';

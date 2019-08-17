@@ -2,9 +2,9 @@ import * as React from 'react';
 import { omit, stubString } from 'lodash';
 import Downshift, { ChildrenFunction, DownshiftState, StateChangeOptions } from 'downshift';
 import classnames from 'classnames';
+import { ChevronRight, HelpCircle as Help, Search } from 'react-feather';
 
 import { highlight } from 'utils/react';
-import { ChevronRight, Help, Search } from 'react-feather';
 import { ModuleCondensed } from 'types/modules';
 import { Venue } from 'types/venues';
 import {

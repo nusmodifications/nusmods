@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { Close } from 'react-feather';
+import { X as Close } from 'react-feather';
 
 import styles from './CloseButton.scss';
 
