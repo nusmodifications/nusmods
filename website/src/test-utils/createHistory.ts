@@ -13,19 +13,19 @@ type MatchShape = {
 
 type HistoryEntry = string | Partial<Location>;
 
-export default function createHistory<T>(
+export default function createHistory<T = {}>(
   initialEntries: HistoryEntry | Readonly<HistoryEntry[]> = '/',
   matchParams: MatchShape = {},
 ): RouteComponentProps<T> {
   const entries = _.castArray(initialEntries);
   const history = createMemoryHistory({ initialEntries: entries as any });
-  const { params = {}, isExact = true } = matchParams;
+  const { params = {} as T, isExact = true } = matchParams;
 
   const match = {
     params,
     isExact,
-    path: entries[0],
-    url: entries[0],
+    path: entries[0], // FIXME: This should be a string and not a Location/HistoryEntry/array
+    url: entries[0], // FIXME: This should be a string and not a Location/HistoryEntry/array
   } as any;
 
   return {
