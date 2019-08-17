@@ -2,7 +2,7 @@ import * as React from 'react';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 
-import { ChevronDown } from 'views/components/icons';
+import { ChevronDown } from 'react-feather'
 import styles from './PlannerModule.scss';
 
 type Props = {

@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { entries, sortBy } from 'lodash';
 
 import { BusTiming, NextBus, NextBusTime } from 'types/venues';
-import { Refresh } from 'views/components/icons';
+import { Refresh } from 'react-feather'
 import styles from './BusStops.scss';
 
 type Props = BusTiming & {

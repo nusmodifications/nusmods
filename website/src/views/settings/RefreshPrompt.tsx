@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 
 import { updateServiceWorker } from 'bootstrapping/service-worker-manager';
-import { Refresh } from 'views/components/icons';
+import { Refresh } from 'react-feather'
 import styles from 'views/components/notfications/Announcements.scss';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { State as StoreState } from 'types/state';

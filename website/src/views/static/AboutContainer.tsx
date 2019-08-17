@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { toggleFeedback } from 'actions/app';
 import config from 'config';
 
-import { Mail, Layers, GitHub } from 'views/components/icons';
+import { Mail, Layers, GitHub } from 'react-feather'
 import ExternalLink from 'views/components/ExternalLink';
 
 import StaticPage from './StaticPage';

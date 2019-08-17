@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 
 import { ModuleCode } from 'types/modules';
-import { AlertTriangle } from 'views/components/icons';
+import { AlertTriangle } from 'react-feather'
 import Modal from 'views/components/Modal';
 import ExternalLink from 'views/components/ExternalLink';
 import CloseButton from 'views/components/CloseButton';

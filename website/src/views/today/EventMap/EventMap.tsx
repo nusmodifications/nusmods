@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Venue, VenueLocationMap } from 'types/venues';
 import LocationMap from 'views/components/map/LocationMap';
-import { Map } from 'views/components/icons';
+import { Map } from 'react-feather'
 import styles from './EventMap.scss';
 
 export type OwnProps = {

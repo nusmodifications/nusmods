@@ -26,7 +26,7 @@ import AddModuleDropdown from 'views/components/module-info/AddModuleDropdown';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
 import ScrollToTop from 'views/components/ScrollToTop';
-import { Archive, Check } from 'views/components/icons';
+import { Archive, Check } from 'react-feather'
 import ErrorBoundary from 'views/errors/ErrorBoundary';
 
 import styles from './ModulePageContent.scss';

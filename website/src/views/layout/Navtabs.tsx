@@ -2,8 +2,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { NavLink, RouteComponentProps, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
-
-import { Semester } from 'types/modules';
 import {
   BookOpen,
   Calendar,
@@ -13,7 +11,9 @@ import {
   Settings,
   Star,
   Trello,
-} from 'views/components/icons';
+} from 'react-feather';
+
+import { Semester } from 'types/modules';
 import ExternalLink from 'views/components/ExternalLink';
 import Online from 'views/components/Online';
 import { timetablePage } from 'views/routes/paths';

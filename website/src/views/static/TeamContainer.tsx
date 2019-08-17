@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import ExternalLink from 'views/components/ExternalLink';
 import Tooltip from 'views/components/Tooltip';
-import { Facebook, LinkedIn, GitHub, Twitter } from 'views/components/icons';
+import { Facebook, LinkedIn, GitHub, Twitter } from 'react-feather'
 import teamMembers from 'data/team.json';
 import StaticPage from './StaticPage';
 import styles from './TeamContainer.scss';

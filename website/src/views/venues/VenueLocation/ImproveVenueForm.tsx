@@ -8,7 +8,7 @@ import produce from 'immer';
 
 import { LatLngTuple, Venue, VenueLocation } from 'types/venues';
 import config from 'config';
-import { MapPin, ThumbsUp } from 'views/components/icons';
+import { MapPin, ThumbsUp } from 'react-feather'
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { markerIcon } from 'views/components/map/icons';
 import ExpandMap from 'views/components/map/ExpandMap';
