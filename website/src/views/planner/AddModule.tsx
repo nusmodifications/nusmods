@@ -62,6 +62,9 @@ export default class AddModule extends React.PureComponent<Props, State> {
     }
 
     const inputId = `${this.props.year}-${this.props.semester}`;
+
+    // Bug in TypeScript ESLint parser prevents us from disabling this on just the line
+    /* eslint-disable jsx-a11y/no-autofocus */
     return (
       <form onSubmit={this.onSubmit} className={classnames(this.props.className, styles.form)}>
         <label htmlFor={inputId} className="sr-only">
@@ -82,7 +85,7 @@ export default class AddModule extends React.PureComponent<Props, State> {
             onBlur={this.onBlur}
             // We can use autofocus here because this element only appears when
             // the button is clicked
-            autoFocus // eslint-disable-line jsx-a11y/no-autofocus
+            autoFocus
           />
         </div>
         <div className={styles.actions}>

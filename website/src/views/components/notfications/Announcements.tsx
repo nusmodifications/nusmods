@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
@@ -36,7 +36,7 @@ class Announcements extends React.PureComponent<Props, State> {
 
     this.state = {
       // Set to constant false to turn off announcement
-      isOpen: key ? !storage.getItem(key) : true,
+      isOpen: false, // key ? !storage.getItem(key) : true,
     };
   }
 

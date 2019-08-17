@@ -84,7 +84,7 @@ function TimetableActions(props: Props) {
       </div>
 
       <div className={styles.buttonGroup} role="group" aria-label="Timetable exporting">
-        <ExportMenu semester={props.semester} />
+        <ExportMenu semester={props.semester} timetable={props.timetable} />
 
         <ShareTimetable semester={props.semester} timetable={props.timetable} />
       </div>

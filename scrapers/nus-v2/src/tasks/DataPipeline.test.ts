@@ -11,6 +11,7 @@ import { fromTermCode } from '../utils/api';
 import { expectModulesEqual } from '../utils/test-utils';
 import { ModuleExam, ModuleInfo, TimetableLesson } from '../types/api';
 
+jest.mock('../services/io/elastic');
 jest.mock('../services/nus-api');
 const mockApi: jest.Mocked<NusApi> = api as any;
 

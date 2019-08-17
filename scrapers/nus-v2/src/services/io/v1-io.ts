@@ -1,6 +1,6 @@
 import * as fs from 'fs-extra';
 import path from 'path';
-import config from '../config';
+import config from '../../config';
 
 export default class V1DataReader {
   protected readonly academicYear: string;

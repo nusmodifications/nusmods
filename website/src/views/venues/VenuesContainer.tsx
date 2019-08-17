@@ -2,7 +2,7 @@ import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Loadable, { LoadingComponentProps } from 'react-loadable';
 import classnames from 'classnames';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import produce from 'immer';
 import qs from 'query-string';
 import { isEqual, mapValues, pick, size } from 'lodash';
@@ -25,7 +25,7 @@ import makeResponsive from 'views/hocs/makeResponsive';
 import config from 'config';
 import nusmods from 'apis/nusmods';
 import HistoryDebouncer from 'utils/HistoryDebouncer';
-import { filterAvailability, searchVenue, sortVenues } from 'utils/venues';
+import { clampClassDuration, filterAvailability, searchVenue, sortVenues } from 'utils/venues';
 import { breakpointDown } from 'utils/css';
 import { defer } from 'utils/react';
 import { convertIndexToTime } from 'utils/timify';
@@ -105,8 +105,8 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
   }
 
   onFindFreeRoomsClicked = () => {
-    this.setState((state) =>
-      produce(state, (draft) => {
+    this.setState(
+      produce((draft) => {
         const { pristineSearchOptions, isAvailabilityEnabled } = draft;
         draft.isAvailabilityEnabled = !isAvailabilityEnabled;
 
@@ -138,7 +138,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
   onAvailabilityUpdate = (searchOptions: VenueSearchOptions) => {
     if (!isEqual(searchOptions, this.state.searchOptions)) {
       this.setState({
-        searchOptions,
+        searchOptions: clampClassDuration(searchOptions),
         // eslint-disable-next-line react/no-unused-state
         pristineSearchOptions: false, // user changed searchOptions
       });
@@ -167,17 +167,12 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
 
   getHighlightPeriod(): TimePeriod | undefined {
     const { isAvailabilityEnabled, searchOptions } = this.state;
-
     if (!isAvailabilityEnabled) return undefined;
 
-    const day = searchOptions.day;
-    const startTime = convertIndexToTime(searchOptions.time * 2);
-    const endTime = convertIndexToTime(2 * (searchOptions.time + searchOptions.duration));
-
     return {
-      day,
-      startTime,
-      endTime,
+      day: searchOptions.day,
+      startTime: convertIndexToTime(searchOptions.time * 2),
+      endTime: convertIndexToTime(2 * (searchOptions.time + searchOptions.duration)),
     };
   }
 
@@ -373,7 +368,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
 // Explicitly declare top level components for React hot reloading to work.
 const ResponsiveVenuesContainer = makeResponsive(VenuesContainerComponent, breakpointDown('sm'));
 const RoutedVenuesContainer = withRouter(ResponsiveVenuesContainer);
-const AsyncVenuesContainer = Loadable.Map({
+const AsyncVenuesContainer = Loadable.Map<Props, { venues: AxiosResponse }>({
   loader: {
     venues: () => axios.get(nusmods.venuesUrl(config.semester)),
   },

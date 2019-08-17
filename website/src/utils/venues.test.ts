@@ -1,7 +1,13 @@
 import venueInfo from '__mocks__/venueInformation.json';
 
 import { VenueInfo } from 'types/venues';
-import { searchVenue, filterAvailability, sortVenues, floorName } from './venues';
+import {
+  searchVenue,
+  filterAvailability,
+  sortVenues,
+  floorName,
+  clampClassDuration,
+} from './venues';
 
 const venues = sortVenues(venueInfo as VenueInfo);
 const getVenues = (...names: string[]) => venues.filter(([name]) => names.includes(name));
@@ -134,5 +140,59 @@ describe(floorName, () => {
   it('should handle named floors', () => {
     expect(floorName('Ground')).toEqual('ground floor');
     expect(floorName('Mezzanine')).toEqual('mezzanine floor');
+  });
+});
+
+describe(clampClassDuration, () => {
+  it('should not change duration within school hours', () => {
+    expect(
+      clampClassDuration({
+        day: 1,
+        duration: 1,
+        time: 8,
+      }).duration,
+    ).toEqual(1);
+
+    expect(
+      clampClassDuration({
+        day: 1,
+        duration: 16,
+        time: 8,
+      }).duration,
+    ).toEqual(16);
+
+    expect(
+      clampClassDuration({
+        day: 1,
+        duration: 12,
+        time: 12,
+      }).duration,
+    ).toEqual(12);
+
+    expect(
+      clampClassDuration({
+        day: 1,
+        duration: 4,
+        time: 20,
+      }).duration,
+    ).toEqual(4);
+  });
+
+  it('should clamp durations to within school hours', () => {
+    expect(
+      clampClassDuration({
+        day: 1,
+        duration: 20,
+        time: 8,
+      }).duration,
+    ).toEqual(16);
+
+    expect(
+      clampClassDuration({
+        day: 1,
+        duration: 10,
+        time: 20,
+      }).duration,
+    ).toEqual(4);
   });
 });
