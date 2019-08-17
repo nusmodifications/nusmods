@@ -6,11 +6,14 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const PacktrackerPlugin = require('@packtracker/webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
 const nusmods = require('../src/apis/nusmods');
 const config = require('../src/config/app-config.json');
+
+const IS_CI = !!process.env.CI;
 
 const productionConfig = ({ browserWarningPath }) =>
   merge([
@@ -58,6 +61,10 @@ const productionConfig = ({ browserWarningPath }) =>
           inline: /manifest/,
           preload: /\.js$/,
         }),
+        !IS_CI &&
+          new CompressionPlugin({
+            test: /\.(js|css|html|json|svg|xml|txt)$/,
+          }),
         // Copy files from static folder over to dist
         new CopyWebpackPlugin([{ from: 'static', context: parts.PATHS.root }], {
           copyUnmodified: true,
