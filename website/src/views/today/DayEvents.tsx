@@ -5,7 +5,7 @@ import classnames from 'classnames';
 
 import { Lesson, ColoredLesson } from 'types/timetables';
 import { SelectedLesson } from 'types/views';
-import { MapPin } from 'react-feather'
+import { MapPin } from 'react-feather';
 import { formatTime } from 'utils/timify';
 import { isLessonAvailable, isSameLesson } from 'utils/timetables';
 import EventMapInline from './EventMapInline';

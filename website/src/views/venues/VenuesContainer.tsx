@@ -14,7 +14,7 @@ import ApiError from 'views/errors/ApiError';
 import Warning from 'views/errors/Warning';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import SearchBox from 'views/components/SearchBox';
-import { Clock, Map } from 'react-feather'
+import { Clock, Map } from 'react-feather';
 import { venuePage } from 'views/routes/paths';
 import Modal from 'views/components/Modal';
 import Title from 'views/components/Title';

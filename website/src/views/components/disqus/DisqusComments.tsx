@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { Mode } from 'types/settings';
 import config from 'config';
-import { MessageSquare } from 'react-feather'
+import { MessageSquare } from 'react-feather';
 import insertScript from 'utils/insertScript';
 import { getScriptErrorHandler } from 'utils/error';
 import { State as StoreState } from 'types/state';

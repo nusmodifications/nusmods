@@ -4,7 +4,7 @@ import { range } from 'lodash';
 
 import { breakpointDown } from 'utils/css';
 import makeResponsive from 'views/hocs/makeResponsive';
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'react-feather'
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'react-feather';
 import { PagerProps, FIRST_PAGE_INDEX } from 'views/components/searchkit/Pagination';
 import ModuleFinderPagerButton from 'views/modules/ModuleFinderPagerButton';
 

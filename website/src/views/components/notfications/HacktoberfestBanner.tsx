@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import storage from 'storage';
 import { HACKTOBERFEST } from 'storage/keys';
-import { Heart } from 'react-feather'
+import { Heart } from 'react-feather';
 import CloseButton from 'views/components/CloseButton';
 import styles from './Announcements.scss';
 

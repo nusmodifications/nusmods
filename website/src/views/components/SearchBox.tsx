@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { debounce } from 'lodash';
 
 import LoadingSpinner from 'views/components/LoadingSpinner';
-import { Search } from 'react-feather'
+import { Search } from 'react-feather';
 import styles from './SearchBox.scss';
 
 type Props = {

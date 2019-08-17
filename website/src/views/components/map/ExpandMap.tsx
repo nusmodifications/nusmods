@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withLeaflet, ContextProps } from 'react-leaflet';
 import Control from 'react-leaflet-control';
-import { Maximize, Minimize } from 'react-feather'
+import { Maximize, Minimize } from 'react-feather';
 import Tooltip from 'views/components/Tooltip';
 
 type Props = ContextProps & {

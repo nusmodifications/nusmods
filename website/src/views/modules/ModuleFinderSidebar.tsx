@@ -10,7 +10,7 @@ import { attributeDescription, NUSModuleAttributes } from 'types/modules';
 import { RefinementItem } from 'types/views';
 
 import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
-import { Filter } from 'react-feather'
+import { Filter } from 'react-feather';
 import FilterContainer from 'views/components/filters/FilterContainer';
 import CheckboxItem from 'views/components/filters/CheckboxItem';
 import DropdownListFilters from 'views/components/filters/DropdownListFilters';

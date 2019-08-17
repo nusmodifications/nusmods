@@ -9,7 +9,7 @@ import { Semester } from 'types/modules';
 
 import config from 'config';
 import { absolutePath, timetableShare } from 'views/routes/paths';
-import { Copy, Mail, Repeat } from 'react-feather'
+import { Copy, Mail, Repeat } from 'react-feather';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import LoadingSpinner from 'views/components/LoadingSpinner';

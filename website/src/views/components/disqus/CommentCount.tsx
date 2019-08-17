@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import config from 'config';
 import insertScript from 'utils/insertScript';
 import { getScriptErrorHandler } from 'utils/error';
-import { MessageSquare } from 'react-feather'
+import { MessageSquare } from 'react-feather';
 import { State as StoreState } from 'types/state';
 
 import styles from './CommentCount.scss';

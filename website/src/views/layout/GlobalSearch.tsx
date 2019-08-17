@@ -4,7 +4,7 @@ import Downshift, { ChildrenFunction, DownshiftState, StateChangeOptions } from 
 import classnames from 'classnames';
 
 import { highlight } from 'utils/react';
-import { ChevronRight, Help, Search } from 'react-feather'
+import { ChevronRight, Help, Search } from 'react-feather';
 import { ModuleCondensed } from 'types/modules';
 import { Venue } from 'types/venues';
 import {

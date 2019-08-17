@@ -9,7 +9,7 @@ import { modulePage } from 'views/routes/paths';
 import ModuleSemesterInfo from 'views/components/module-info/ModuleSemesterInfo';
 import ModuleWorkload from 'views/components/module-info/ModuleWorkload';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
-import { Archive } from 'react-feather'
+import { Archive } from 'react-feather';
 import { BULLET } from 'utils/react';
 import { intersperse } from 'utils/array';
 import { mergeModuleHighlight } from 'utils/elasticSearch';

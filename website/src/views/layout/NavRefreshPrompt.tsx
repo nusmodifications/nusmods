@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { updateServiceWorker } from 'bootstrapping/service-worker-manager';
 import classnames from 'classnames';
-import { Refresh } from 'react-feather'
+import { Refresh } from 'react-feather';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import styles from './NavRefreshPrompt.scss';
 

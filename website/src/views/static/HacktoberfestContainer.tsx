@@ -3,7 +3,7 @@ import StaticPage from 'views/static/StaticPage';
 import styles from 'views/static/HacktoberfestContainer.scss';
 import ExternalLink from 'views/components/ExternalLink';
 import HacktoberfestLogo from 'views/static/HacktoberfestLogo';
-import { Heart } from 'react-feather'
+import { Heart } from 'react-feather';
 import Logo from 'img/nusmods-logo.svg';
 import shirt from 'img/nusmods-shirts.png';
 

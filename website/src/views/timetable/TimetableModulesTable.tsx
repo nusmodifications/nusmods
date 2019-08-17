@@ -11,7 +11,7 @@ import { State as StoreState } from 'types/state';
 import { ModuleTableOrder } from 'types/reducers';
 
 import ColorPicker from 'views/components/ColorPicker';
-import { Eye, EyeOff, Trash } from 'react-feather'
+import { Eye, EyeOff, Trash } from 'react-feather';
 import {
   hideLessonInTimetable,
   selectModuleColor,

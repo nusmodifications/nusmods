@@ -2,16 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { NavLink, RouteComponentProps, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
-import {
-  BookOpen,
-  Calendar,
-  Clock,
-  Heart,
-  Map,
-  Settings,
-  Star,
-  Trello,
-} from 'react-feather';
+import { BookOpen, Calendar, Clock, Heart, Map, Settings, Star, Trello } from 'react-feather';
 
 import { Semester } from 'types/modules';
 import ExternalLink from 'views/components/ExternalLink';
