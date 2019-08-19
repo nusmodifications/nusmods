@@ -36,10 +36,14 @@
   left: $spacing;
   max-width: 40rem;
   max-height: calc(100% - #{2 * $spacing});
-  padding: 1rem;
+  padding: $modal-padding;
   margin: 0 auto;
   background: var(--body-bg);
   box-shadow: 0 6px 24px rgba(#000, 0.18);
+
+  &.noPadding {
+    padding: 0;
+  }
 
   @include media-breakpoint-down(xs) {
     &.fullscreen {

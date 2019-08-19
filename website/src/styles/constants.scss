@@ -29,7 +29,9 @@ $material-sharp-curve: cubic-bezier(0.4, 0, 0.6, 1);
 $page-entering-duration: $fullscreen-duration;
 $page-entering-animation: fadeIn;
 
+// Sizes
 $leaflet-control-offset: 0.5rem;
+$modal-padding: 1rem;
 
 $alert-override-themes: success, info, danger, warning;
 

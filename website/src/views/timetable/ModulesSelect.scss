@@ -1,4 +1,5 @@
 @import '~styles/utils/modules-entry';
+
 $input-height: 2.75rem;
 $module-list-height: 13.5rem;
 
@@ -32,13 +33,7 @@ $module-list-height: 13.5rem;
     margin-top: $input-height;
   }
 
-  .close {
-    position: fixed;
-  }
-
   .input {
-    position: fixed;
-    top: 0;
     border-width: 0 0 1px;
     border-radius: 0;
     box-shadow: none;
@@ -47,6 +42,10 @@ $module-list-height: 13.5rem;
     @include night-mode {
       box-shadow: none;
     }
+  }
+
+  .tip {
+    padding: 0.75rem;
   }
 }
 
