@@ -12,7 +12,10 @@ export function expectColor(element: ReactWrapper | ShallowWrapper, color?: Colo
   }
 }
 
-export function addColors(modules: Module[], hiddenInTimetable: boolean = false): ModuleWithColor[] {
+export function addColors(
+  modules: Module[],
+  hiddenInTimetable: boolean = false,
+): ModuleWithColor[] {
   return modules.map((module, index) => ({
     ...module,
     colorIndex: index,
