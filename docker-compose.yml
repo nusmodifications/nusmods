@@ -23,7 +23,7 @@ services:
     restart: on-failure
 
   graphql:
-    image: hasura/graphql-engine:v1.0.0-beta.2.cli-migrations
+    image: hasura/graphql-engine:v1.0.0-beta.4.cli-migrations
     volumes:
       - ./api/graphql/migrations:/hasura-migrations
     expose:
