@@ -2677,7 +2677,7 @@
   },
   "SDE-ER4": {
     "roomName": "Executive Room 4",
-    "floor": 2,
+    "floor": 3,
     "location": {
       "x": 103.77112029684575,
       "y": 1.2973720912301383
@@ -3975,14 +3975,6 @@
       "y": 1.296862409348664
     }
   },
-  "CELC-TR6": {
-    "roomName": "Cell",
-    "floor": 1,
-    "location": {
-      "x": 103.77348124980928,
-      "y": 1.2965496349310917
-    }
-  },
   "SDE2-MEZZ": {
     "roomName": "SDE2-MEZZ",
     "floor": -1,
@@ -3997,6 +3989,70 @@
     "location": {
       "x": 103.77294212579729,
       "y": 1.3022612709751085
+    }
+  },
+  "S5-01GEN": {
+    "roomName": "Chemistry General Teaching Lab",
+    "floor": 1,
+    "location": {
+      "x": 103.77986222505571,
+      "y": 1.29553333777584
+    }
+  },
+  "E2-0306PC3": {
+    "roomName": "PC3",
+    "floor": 3,
+    "location": {
+      "x": 103.7711423635483,
+      "y": 1.2993598687394592
+    }
+  },
+  "AS1-0205": {
+    "roomName": "AS1-0205",
+    "floor": 2,
+    "location": {
+      "x": 103.77212060584722,
+      "y": 1.2951284277138495
+    }
+  },
+  "S5-01PHYS": {
+    "roomName": "S5-01PHYS",
+    "floor": 1,
+    "location": {
+      "x": 103.77974152565004,
+      "y": 1.2955447342501536
+    }
+  },
+  "AS3-0620": {
+    "roomName": "AS3-0620",
+    "floor": 6,
+    "location": {
+      "x": 103.77139627176558,
+      "y": 1.294715473014447
+    }
+  },
+  "RH-CONF-RM": {
+    "roomName": "Conference Room",
+    "floor": 3,
+    "location": {
+      "x": 103.77391813424904,
+      "y": 1.2997500633015104
+    }
+  },
+  "GBT-Lab": {
+    "roomName": "Green Building Technologies Lab",
+    "floor": 2,
+    "location": {
+      "x": 103.7705455,
+      "y": 1.2968031
+    }
+  },
+  "LAW_SR4-1": {
+    "roomName": "Seminar Room 4-1",
+    "floor": 4,
+    "location": {
+      "x": 103.81666213274005,
+      "y": 1.3186904481919393
     }
   }
 }
