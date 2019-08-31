@@ -125,9 +125,9 @@
     "terser-webpack-plugin": "1.4.1",
     "typescript": "3.5.3",
     "url-loader": "1.1.2",
-    "webpack": "4.39.2",
+    "webpack": "4.39.3",
     "webpack-dev-server": "3.8.0",
-    "webpack-merge": "4.2.1"
+    "webpack-merge": "4.2.2"
   },
   "dependencies": {
     "@material/fab": "0.40.1",
