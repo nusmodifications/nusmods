@@ -2,6 +2,8 @@
 // is incompatible or not optimal for using the app, a banner is appended into the DOM body.
 // This is so that in cases where the React app completely fails to render anything at all, the
 // user will at least be able to see the dialog warning them of the browser incompatibility.
+import 'core-js/stable';
+
 import { BROWSER_WARNING_KEY } from '../../storage/keys';
 import { isBrowserSupported, isIOS, isAndroidChrome } from '../../bootstrapping/browser';
 import { canUseBrowserLocalStorage } from '../../storage/localStorage';
