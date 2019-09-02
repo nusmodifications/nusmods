@@ -34,10 +34,19 @@ function convertToCheckTree(versionMap: VersionMap): Bowser.Parser.checkTree {
   return checkTree;
 }
 
+function setMinVersion(versionMap: VersionMap, key: string, version: number) {
+  const currentVersion = versionMap[key];
+  if (currentVersion == null || version < currentVersion) {
+    // eslint-disable-next-line no-param-reassign
+    versionMap[key] = version;
+  }
+}
+
 export function browserlistToBowser(browserlist: string[]): Bowser.Parser.checkTree {
   const minVersions: VersionMap = {
     desktop: {},
     mobile: {},
+    tablet: {},
   };
 
   browserlist.forEach((browser) => {
@@ -47,22 +56,25 @@ export function browserlistToBowser(browserlist: string[]): Bowser.Parser.checkT
     const minVersion = parseVersion(versions);
 
     if (parsedBrowser.platform != null) {
-      minVersions[parsedBrowser.platform][parsedBrowser.browser] = Math.min(
-        minVersion,
-        minVersions[parsedBrowser.platform][parsedBrowser.browser] || Number.MAX_VALUE,
-      );
+      setMinVersion(minVersions[parsedBrowser.platform], parsedBrowser.browser, minVersion);
+
+      // Bowser treats tablet and phones OS separate, but we don't want that distinction
+      if (parsedBrowser.platform === 'mobile') {
+        setMinVersion(minVersions.tablet, parsedBrowser.browser, minVersion);
+      }
     } else {
-      minVersions[parsedBrowser.browser] = Math.min(
-        minVersion,
-        minVersions[parsedBrowser.browser] || Number.MAX_VALUE,
-      );
+      setMinVersion(minVersions, parsedBrowser.browser, minVersion);
     }
   });
 
   return convertToCheckTree(minVersions);
 }
 
+const checkTree = browserlistToBowser(browsersList);
 const parser = Bowser.getParser(window.navigator.userAgent);
-export const isBrowserSupported = parser.satisfies(browserlistToBowser(browsersList));
+export const isBrowserSupported =
+  parser.satisfies(checkTree) ||
+  // Alias Mobile Safari version to iOS version so that all browsers on iOS are supported
+  parser.satisfies({ ios: checkTree.mobile.safari });
 export const isIOS = parser.is('ios');
 export const isAndroidChrome = parser.satisfies({ mobile: { chrome: '>1' } });

@@ -25,6 +25,10 @@ describe(browserlistToBowser, () => {
         samsung_internet: '>=8',
         safari: '>=10.1',
       },
+      tablet: {
+        samsung_internet: '>=8',
+        safari: '>=10.1',
+      },
       desktop: {
         safari: '>=9',
       },
