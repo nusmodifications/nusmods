@@ -136,7 +136,7 @@
     "@tippy.js/react": "1.1.1",
     "axios": "0.19.0",
     "bootstrap": "4.3.1",
-    "bowser": "1.9.4",
+    "bowser": "2.5.4",
     "browserslist-config-nusmods": "file:../packages/browserslist-config-nusmods",
     "classnames": "2.2.6",
     "core-js": "3.2.1",
