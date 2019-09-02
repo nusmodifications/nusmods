@@ -4,7 +4,7 @@ import { ListProps } from 'searchkit';
 import classnames from 'classnames';
 import { uniq, omit } from 'lodash';
 
-import { Search, ChevronDown } from 'views/components/icons';
+import { Search, ChevronDown } from 'react-feather';
 import makeResponsive, { WithBreakpoint } from 'views/hocs/makeResponsive';
 import { RefinementItem, RefinementDisplayItem } from 'types/views';
 import { highlight } from 'utils/react';

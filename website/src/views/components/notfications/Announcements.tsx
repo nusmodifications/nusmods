@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
 import storage from 'storage';
 import { announcementKey } from 'storage/keys';
 import { toggleFeedback } from 'actions/app';
-import { Heart } from 'views/components/icons';
+import { Heart } from 'react-feather';
 import CloseButton from 'views/components/CloseButton';
 import styles from './Announcements.scss';
 
@@ -36,7 +36,7 @@ class Announcements extends React.PureComponent<Props, State> {
 
     this.state = {
       // Set to constant false to turn off announcement
-      isOpen: key ? !storage.getItem(key) : true,
+      isOpen: false, // key ? !storage.getItem(key) : true,
     };
   }
 

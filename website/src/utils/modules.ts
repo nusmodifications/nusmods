@@ -43,7 +43,7 @@ export function formatExamDate(examDate: string | null | undefined): string {
   if (!examDate) return 'No Exam';
 
   const localDate = toSingaporeTime(examDate);
-  return format(localDate, 'dd-MM-yyyy p');
+  return format(localDate, 'dd-MMM-yyyy p');
 }
 
 export function getExamDate(module: Module, semester: Semester): string | null {

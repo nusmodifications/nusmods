@@ -56,6 +56,10 @@ export type ModuleWithColor = Module & {
   hiddenInTimetable: boolean;
 };
 
+export type TombstoneModule = ModuleWithColor & {
+  index: number;
+};
+
 export type ModuleWithExamTime = {
   readonly module: ModuleWithColor;
   readonly dateTime: string;
