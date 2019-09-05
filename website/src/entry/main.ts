@@ -1,6 +1,5 @@
 // Import Sentry earliest to capture exceptions
 import 'bootstrapping/sentry';
-import 'bootstrapping/browser';
 
 import ReactDOM from 'react-dom';
 import ReactModal from 'react-modal';
@@ -26,7 +25,7 @@ const render = () => {
 };
 
 if (module.hot) {
-  module.hot.accept('App', render);
+  module.hot.accept('./App', render);
 }
 
 render();

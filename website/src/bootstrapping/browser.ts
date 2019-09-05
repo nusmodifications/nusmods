@@ -6,7 +6,7 @@ export type VersionMap = Record<string, any>; // Too fiddly to type properly
 
 function parseBrowser(browser: string): { platform?: Platform; browser: string } {
   // Split desktop and mobile Safari because we support different versions of each
-  if (browser === 'ios_safari') return { platform: 'mobile', browser: 'safari' };
+  if (browser === 'ios_saf') return { platform: 'mobile', browser: 'safari' };
   if (browser === 'safari') return { platform: 'desktop', browser: 'safari' };
 
   // Samsung internet browser has a different name under bowser

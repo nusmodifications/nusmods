@@ -24,7 +24,7 @@ const developmentConfig = merge([
       // See: https://survivejs.com/webpack/appendices/hmr/#setting-wds-entry-points-manually
       'webpack-dev-server/client',
       'webpack/hot/only-dev-server',
-      'main',
+      'entry/main',
     ],
     resolve: {
       alias: {
