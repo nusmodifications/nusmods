@@ -28,6 +28,8 @@ module.exports = merge([
       rules: [
         {
           test: /\.[j|t]sx?$/,
+          // Do not transpile core-js - this causes compat issues on IE
+          exclude: /node_modules\/core-js/,
           use: {
             loader: 'babel-loader',
             options: {
