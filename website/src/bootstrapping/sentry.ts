@@ -36,6 +36,6 @@ if (loadRaven) {
 
   // Add unsupported tag so that we can filter out reports from those users
   Sentry.configureScope((scope) => {
-    scope.setTag('unsupported', String(!isBrowserSupported));
+    scope.setTag('unsupported', String(!isBrowserSupported()));
   });
 }

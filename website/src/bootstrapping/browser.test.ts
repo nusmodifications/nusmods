@@ -20,7 +20,7 @@ describe(browserlistToBowser, () => {
   });
 
   it('should return map Samsung Internet browser and iOS Safari correctly', () => {
-    expect(browserlistToBowser(['samsung 8', 'ios_safari 10.1', 'safari 9'])).toEqual({
+    expect(browserlistToBowser(['samsung 8', 'ios_safari 10.1', 'safari 9', 'safari 10'])).toEqual({
       mobile: {
         samsung_internet: '>=8',
         safari: '>=10.1',
@@ -38,6 +38,11 @@ describe(browserlistToBowser, () => {
   it('should return correct mapping for version ranges', () => {
     expect(browserlistToBowser(['chrome 10.1-10.2', 'chrome 9.0-9.2'])).toMatchObject({
       chrome: '>=9',
+    });
+
+    expect(browserlistToBowser(['ios_safari 10.1-10.2', 'ios_safari 9.0-9.2'])).toMatchObject({
+      mobile: { safari: '>=9' },
+      tablet: { safari: '>=9' },
     });
   });
 });

@@ -21,7 +21,7 @@ const linkForChromePlayStore = composeAnchorText(
 
 const browserCanUseLocalStorage = canUseBrowserLocalStorage();
 if (
-  !isBrowserSupported &&
+  !isBrowserSupported() &&
   ((browserCanUseLocalStorage && !localStorage.getItem(BROWSER_WARNING_KEY)) ||
     !browserCanUseLocalStorage)
 ) {
@@ -60,16 +60,16 @@ if (
   const container = document.createElement('div');
   container.className = styles.browserWarning;
   container.innerHTML = template;
-  const body = document.body;
-  if (body) body.appendChild(container);
+  document.body.appendChild(container);
 
   const element = document.getElementById('browserWarning-continue');
   if (element) {
     element.addEventListener('click', () => {
       const checkbox = document.getElementById('browserWarning-ignore');
-      if (browserCanUseLocalStorage && checkbox && (checkbox as HTMLInputElement).checked)
+      if (browserCanUseLocalStorage && checkbox && (checkbox as HTMLInputElement).checked) {
         localStorage.setItem(BROWSER_WARNING_KEY, navigator.userAgent);
-      if (body) body.removeChild(container);
+      }
+      document.body.removeChild(container);
     });
   }
 }

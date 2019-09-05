@@ -1,7 +1,7 @@
 import Bowser from 'bowser';
 import browsersList from 'browserslist-config-nusmods';
 
-export type Platform = 'mobile' | 'desktop';
+export type Platform = 'mobile' | 'desktop' | 'tablet';
 export type VersionMap = Record<string, any>; // Too fiddly to type properly
 
 function parseBrowser(browser: string): { platform?: Platform; browser: string } {
@@ -49,21 +49,20 @@ export function browserlistToBowser(browserlist: string[]): Bowser.Parser.checkT
     tablet: {},
   };
 
-  browserlist.forEach((browser) => {
-    const [browserName, versions] = browser.split(/\s+/g);
+  browserlist.forEach((browserlistItem) => {
+    const [browserName, versions] = browserlistItem.split(/\s+/g);
 
-    const parsedBrowser = parseBrowser(browserName);
+    const { browser, platform } = parseBrowser(browserName);
     const minVersion = parseVersion(versions);
 
-    if (parsedBrowser.platform != null) {
-      setMinVersion(minVersions[parsedBrowser.platform], parsedBrowser.browser, minVersion);
+    if (platform != null) {
+      setMinVersion(minVersions[platform], browser, minVersion);
 
       // Bowser treats tablet and phones OS separate, but we don't want that distinction
-      if (parsedBrowser.platform === 'mobile') {
-        setMinVersion(minVersions.tablet, parsedBrowser.browser, minVersion);
-      }
+      if (platform === 'mobile') setMinVersion(minVersions.tablet, browser, minVersion);
+      if (platform === 'tablet') setMinVersion(minVersions.mobile, browser, minVersion);
     } else {
-      setMinVersion(minVersions, parsedBrowser.browser, minVersion);
+      setMinVersion(minVersions, browser, minVersion);
     }
   });
 
@@ -72,9 +71,21 @@ export function browserlistToBowser(browserlist: string[]): Bowser.Parser.checkT
 
 const checkTree = browserlistToBowser(browsersList);
 const parser = Bowser.getParser(window.navigator.userAgent);
-export const isBrowserSupported =
-  parser.satisfies(checkTree) ||
-  // Alias Mobile Safari version to iOS version so that all browsers on iOS are supported
-  parser.satisfies({ ios: checkTree.mobile.safari });
+
 export const isIOS = parser.is('ios');
 export const isAndroidChrome = parser.satisfies({ mobile: { chrome: '>1' } });
+export const isBrowserSupported = () => {
+  if (parser.satisfies(checkTree)) {
+    return true;
+  }
+
+  if (isIOS) {
+    const os = parser.getOS();
+    const minVersion = parseFloat(checkTree.mobile.safari.slice(2));
+    if (os.version != null && parseFloat(os.version) >= minVersion) {
+      return true;
+    }
+  }
+
+  return false;
+};
