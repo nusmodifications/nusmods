@@ -1,7 +1,6 @@
 // Define media breakpoints
 import json2mq, { QueryObject } from 'json2mq';
 import { entries } from 'lodash';
-import bowser from 'bowser';
 
 export type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
@@ -43,6 +42,3 @@ export function supportsCSSVariables() {
   // Safari does not support supports('--var', 'red')
   return CSS.supports && CSS.supports('(--var: red)');
 }
-
-// Safari and Non-Safari browsers in iOS
-export const isMobileIos = (): boolean => bowser.ios;

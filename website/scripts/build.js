@@ -1,5 +1,5 @@
 const util = require('util');
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 const chalk = require('chalk');
 const webpack = require('webpack');
@@ -10,6 +10,7 @@ const {
 
 const production = require('../webpack/webpack.config.prod');
 const timetableOnly = require('../webpack/webpack.config.timetable-only');
+const browserWarning = require('../webpack/webpack.config.browser-warning');
 const parts = require('../webpack/webpack.parts');
 
 function runWebpack(config) {
@@ -27,13 +28,6 @@ function printErrors(summary, errors) {
   });
 }
 
-function warningFilter(warning) {
-  // Ignore warning about possible order conflict emitted by MiniCSSExtractPlugin. This is irrelevant for us
-  // because order doesn't matter as we use CSS modules
-  // See https://stackoverflow.com/questions/51971857/mini-css-extract-plugin-warning-in-chunk-chunkname-mini-css-extract-plugin-con
-  return !warning.includes('Conflicting order between');
-}
-
 function handleErrors(stats) {
   if (stats.hasErrors()) {
     printErrors('Failed to compile.', stats.compilation.errors);
@@ -44,7 +38,7 @@ function handleErrors(stats) {
     warnings: true,
   });
 
-  if (process.env.CI && statsJson.warnings.filter(warningFilter).length) {
+  if (process.env.CI && statsJson.warnings.length) {
     // eslint-disable-next-line max-len
     printErrors(
       'Failed to compile. When process.env.CI = true, warnings are treated as failures. Most CI servers set this automatically.',
@@ -61,7 +55,24 @@ async function build(previousFileSizes) {
   console.log();
 
   try {
-    const mainStats = await runWebpack(production);
+    // Remove dist folders
+    fs.removeSync(parts.PATHS.build);
+    console.log(`${parts.PATHS.build} has been removed`);
+
+    // Build the browser warning bundle first so we can pass it to the main bundle
+    const browserWarningStats = await runWebpack(browserWarning);
+    handleErrors(browserWarningStats);
+
+    // The browser warning bundle should only have one JS file which includes both the JS and CSS
+    // for the browser warning. We pass this to the main site's Webpack config so it can be loaded
+    // in the HTML using a script tag
+    const browserWarningPath = browserWarningStats
+      .toJson()
+      .assets.map((asset) => asset.name)
+      .filter((name) => !name.endsWith('.map'))[0];
+
+    // Build the main website bundle
+    const mainStats = await runWebpack(production({ browserWarningPath }));
     handleErrors(mainStats);
 
     console.log(chalk.green('Compiled successfully.'));
@@ -75,7 +86,10 @@ async function build(previousFileSizes) {
     console.log(`The ${chalk.cyan(parts.PATHS.build)} folder is ready to be deployed.`);
     console.log();
 
+    // Build the timetable-only build for the export service
     console.log(chalk.cyan('Creating timetable-only build...'));
+    fs.removeSync(parts.PATHS.buildTimetable);
+    console.log(`${parts.PATHS.buildTimetable} has been removed`);
     console.log();
 
     const timetableOnlyStats = await runWebpack(timetableOnly);
