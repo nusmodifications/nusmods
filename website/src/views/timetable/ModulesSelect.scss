@@ -30,10 +30,12 @@ $module-list-height: 13.5rem;
   // where the input is moved out of view by the keyboard that opens
   // due to input autofocus
   .selectList {
-    margin-top: $input-height;
+    padding-top: $input-height;
   }
 
   .input {
+    position: absolute;
+    top: 0;
     border-width: 0 0 1px;
     border-radius: 0;
     box-shadow: none;
