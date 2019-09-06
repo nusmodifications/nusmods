@@ -23,7 +23,7 @@ export type ExamConflict = {
 
 export type SemesterConflict = {
   type: 'semester';
-  semestersOffered: ReadonlyArray<Semester>;
+  semestersOffered: readonly Semester[];
 };
 
 export type NoInfo = {
