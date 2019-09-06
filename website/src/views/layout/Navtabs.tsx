@@ -32,12 +32,10 @@ export function NavtabsComponent(props: Props) {
 
   return (
     <nav className={styles.nav}>
-      {props.beta && (
-        <NavLink {...tabProps} to="/today" onMouseOver={preloadToday} onFocus={preloadToday}>
-          <Clock />
-          <span className={styles.title}>Today</span>
-        </NavLink>
-      )}
+      <NavLink {...tabProps} to="/today" onMouseOver={preloadToday} onFocus={preloadToday}>
+        <Clock />
+        <span className={styles.title}>Today</span>
+      </NavLink>
       <NavLink {...tabProps} to={timetablePage(props.activeSemester)}>
         <Calendar />
         <span className={styles.title}>Timetable</span>
@@ -53,16 +51,14 @@ export function NavtabsComponent(props: Props) {
         <Map />
         <span className={styles.title}>Venues</span>
       </NavLink>
-      {props.beta && (
-        <NavLink
-          {...tabProps}
-          className={classnames(tabProps.className, styles.hiddenOnMobile)}
-          to="/planner"
-        >
-          <Trello />
-          <span className={styles.title}>Planner</span>
-        </NavLink>
-      )}
+      <NavLink
+        {...tabProps}
+        className={classnames(tabProps.className, styles.hiddenOnMobile)}
+        to="/planner"
+      >
+        <Trello />
+        <span className={styles.title}>Planner</span>
+      </NavLink>
       <NavLink {...tabProps} to="/settings">
         <Settings />
         <span className={styles.title}>Settings</span>
