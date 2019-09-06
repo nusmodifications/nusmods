@@ -3,7 +3,6 @@
     "config:base",
     "schedule:weekends",
     "group:babelMonorepo",
-    "group:materialMonorepo",
     ":automergePr",
     ":automergeRequireAllStatusChecks",
     ":automergeMinor",
@@ -79,7 +78,13 @@
       "groupName": "definitelyTyped"
     }
   ],
-  "ignoreDeps": ["query-string", "@types/query-string"],
+  "ignoreDeps": [
+    "query-string",
+    "@types/query-string",
+    "@material/snackbar",
+    "@material/fab",
+    "puppeteer"
+  ],
   "pathRules": [
     {
       "paths": ["packages/**"],

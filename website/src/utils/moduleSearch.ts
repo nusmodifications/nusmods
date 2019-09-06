@@ -1,10 +1,5 @@
 import { sortBy } from 'lodash';
-import FilterGroup from 'utils/filters/FilterGroup';
-import ModuleFilter from 'utils/filters/ModuleFilter';
 import { ModuleCode, ModuleTitle, SearchableModule } from 'types/modules';
-
-// The query string key used for the search term eg. q | null | undefined=Search+Term
-export const SEARCH_QUERY_KEY = 'q';
 
 export function tokenize(str: string): string[] {
   return str.trim().split(/\W+/g);
@@ -38,12 +33,6 @@ export function createSearchPredicate(
       return false;
     });
   };
-}
-
-export function createSearchFilter(searchTerm: string): FilterGroup<ModuleFilter> {
-  const predicate = createSearchPredicate(searchTerm);
-  const filter = new ModuleFilter(encodeURIComponent(searchTerm), searchTerm, predicate);
-  return new FilterGroup(SEARCH_QUERY_KEY, 'Search', [filter]).toggle(filter, !!searchTerm);
 }
 
 export function sortModules<

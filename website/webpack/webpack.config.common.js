@@ -15,7 +15,7 @@ const commonConfig = merge([
       // so that we can use absolute paths in our imports.
       // E.g. Importing our own module at `/js/path/to/module` will simply be:
       // `import module from 'path/to/module;`
-      modules: [parts.PATHS.src, parts.PATHS.styles, parts.PATHS.node, parts.PATHS.images],
+      modules: [parts.PATHS.src, parts.PATHS.node],
       // Maps specific modules, similar to modules above, except in this case
       // we map the folders directly - for instance we only want __mocks__ and not
       // any of the other folders under root to be imported from root, so we use
@@ -33,7 +33,7 @@ const commonConfig = merge([
     // convenient with more complex configurations.
     entry: {
       // This will build an app.js file from the `main` module.
-      app: ['main'],
+      app: ['entry/main'],
     },
     context: parts.PATHS.src,
     output: {
@@ -46,12 +46,17 @@ const commonConfig = merge([
       // Disable performance hints since we use our own size reporter
       hints: false,
     },
+    optimization: {
+      // do not emit compiled assets that include errors
+      noEmitOnErrors: true,
+    },
   },
   parts.transpileJavascript({
     include: parts.PATHS.src,
   }),
   parts.mockNode(),
-  parts.setFreeVariable('process.env', parts.appVersion()),
+  parts.setFreeVariable('process.env.DISPLAY_COMMIT_HASH', parts.appVersion().commitHash),
+  parts.setFreeVariable('process.env.VERSION_STR', parts.appVersion().versionStr),
 ]);
 
 module.exports = commonConfig;

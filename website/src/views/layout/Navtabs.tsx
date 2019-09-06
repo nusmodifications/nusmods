@@ -2,18 +2,9 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { NavLink, RouteComponentProps, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
+import { BookOpen, Calendar, Clock, Heart, Map, Settings, Star, Trello } from 'react-feather';
 
 import { Semester } from 'types/modules';
-import {
-  BookOpen,
-  Calendar,
-  Clock,
-  Heart,
-  Map,
-  Settings,
-  Star,
-  Trello,
-} from 'views/components/icons';
 import ExternalLink from 'views/components/ExternalLink';
 import Online from 'views/components/Online';
 import { timetablePage } from 'views/routes/paths';
@@ -51,7 +42,10 @@ export function NavtabsComponent(props: Props) {
         <Calendar />
         <span className={styles.title}>Timetable</span>
       </NavLink>
-      <NavLink {...tabProps} to="/modules">
+      <NavLink
+        {...tabProps}
+        to={{ pathname: '/modules', search: '?sem[0]=1&sem[1]=2&sem[2]=3&sem[3]=4' }}
+      >
         <BookOpen />
         <span className={styles.title}>Modules</span>
       </NavLink>

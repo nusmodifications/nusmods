@@ -11,9 +11,9 @@ export type ModuleCode = string;
 export type ModuleTitle = string;
 export type Semester = number;
 export type Department = string;
-export type Workload = string | ReadonlyArray<number>;
+export type Workload = string | readonly number[];
 export type Venue = string;
-export type Weeks = ReadonlyArray<number> | WeekRange;
+export type Weeks = readonly number[] | WeekRange;
 export type WeekRange = {
   // The start and end dates
   start: string;
@@ -38,7 +38,7 @@ export type Day =
   | 'Saturday'
   | 'Sunday';
 
-export const WorkingDays: ReadonlyArray<Day> = [
+export const WorkingDays: readonly Day[] = [
   'Monday',
   'Tuesday',
   'Wednesday',
@@ -47,10 +47,9 @@ export const WorkingDays: ReadonlyArray<Day> = [
   'Saturday',
 ];
 
-export const DaysOfWeek: ReadonlyArray<Day> = [...WorkingDays, 'Sunday'];
+export const DaysOfWeek: readonly Day[] = [...WorkingDays, 'Sunday'];
 
-export type ModuleLevel = 1 | 2 | 3 | 4 | 5 | 6 | 8;
-export const Semesters: ReadonlyArray<Semester> = [1, 2, 3, 4];
+export const Semesters: readonly Semester[] = [1, 2, 3, 4];
 
 export type WorkloadComponent = 'Lecture' | 'Tutorial' | 'Laboratory' | 'Project' | 'Preparation';
 
@@ -93,6 +92,7 @@ export type SemesterDataCondensed = Readonly<{
 type AttributeMap = {
   year: boolean; // Year long
   su: boolean; // Can S/U
+  grsu: boolean;
   ssgf: boolean; // SkillsFuture Funded
   sfs: boolean; // SkillsFuture series
   lab: boolean; // Lab based
@@ -105,7 +105,8 @@ export type NUSModuleAttributes = Partial<AttributeMap>;
 
 export const attributeDescription: { [key in keyof AttributeMap]: string } = {
   year: 'Year long module',
-  su: 'Has S/U option',
+  su: 'Has S/U option for Undergraduate students only',
+  grsu: 'Has S/U option for relevant Graduate (Research) students only',
   ssgf: 'SkillsFuture funded',
   sfs: 'SkillsFuture series',
   lab: 'Lab based module',
@@ -131,7 +132,7 @@ export type RawLesson = Readonly<{
 // Semester-specific information of a module.
 export type SemesterData = {
   semester: Semester;
-  timetable: ReadonlyArray<RawLesson>;
+  timetable: readonly RawLesson[];
 
   // Exam
   examDate?: string;
@@ -142,7 +143,7 @@ export type SemesterData = {
 export type ModuleCondensed = Readonly<{
   moduleCode: ModuleCode;
   title: ModuleTitle;
-  semesters: ReadonlyArray<number>;
+  semesters: readonly number[];
 }>;
 
 // This format is returned from the module information endpoint
@@ -167,7 +168,7 @@ export type ModuleInformation = Readonly<{
   preclusion?: string;
 
   // Condensed semester info
-  semesterData: ReadonlyArray<SemesterDataCondensed>;
+  semesterData: readonly SemesterDataCondensed[];
 
   // Requisite tree is not returned to save space
 }>;
@@ -195,9 +196,9 @@ export type Module = {
   preclusion?: string;
 
   // Semester data
-  semesterData: ReadonlyArray<SemesterData>;
+  semesterData: readonly SemesterData[];
 
   // Requisites
   prereqTree?: PrereqTree;
-  fulfillRequirements?: ReadonlyArray<ModuleCode>;
+  fulfillRequirements?: readonly ModuleCode[];
 };

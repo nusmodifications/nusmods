@@ -1,0 +1,56 @@
+#
+# NOTE: You probably don't want to start this directly.
+# Use infra/instance/start-prod.sh to start NUSMods in production.
+#
+version: '3.7'
+services:
+  website:
+    build:
+      context: .
+      dockerfile: website/Dockerfile.prod
+      args:
+        - GIT_COMMIT_HASH
+        - DATA_API_BASE_URL
+    networks:
+      - intranet
+    expose:
+      - 8080
+      - 8081
+    restart: on-failure
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.backend=website'
+      - 'traefik.frontend.rule=HostRegexp:nusmods.com,{subdomain:[0-9]+}.nusmods.com'
+      - 'traefik.port=8080'
+  export:
+    build:
+      context: .
+      dockerfile: export/Dockerfile.prod
+    env_file:
+      - export/.env
+    networks:
+      - intranet
+    expose:
+      - 8082
+    depends_on:
+      - website
+    init: true
+    security_opt:
+      - seccomp="infra/instance/chromium.seccomp.json"
+    environment:
+      - NODE_ENV=production
+      - PORT=8082
+      - HOST=0.0.0.0
+    restart: on-failure
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.backend=export'
+      - 'traefik.frontend.rule=HostRegexp:nusmods.com,{subdomain:[0-9]+}.nusmods.com;PathPrefixStrip:/export/'
+      - 'traefik.port=8082'
+
+# Connect to a bridge network called 'intranet',
+# which allows communication with other docker-compose setups
+networks:
+  intranet:
+    external:
+      name: machine_intranet

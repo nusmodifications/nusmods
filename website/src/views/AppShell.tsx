@@ -11,7 +11,6 @@ import classnames from 'classnames';
 import { each } from 'lodash';
 
 import weekText from 'utils/weekText';
-import { isMobileIos } from 'utils/css';
 import { captureException } from 'utils/error';
 import { openNotification } from 'actions/app';
 import { fetchModuleList } from 'actions/moduleBank';
@@ -24,11 +23,13 @@ import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ErrorPage from 'views/errors/ErrorPage';
 import ApiError from 'views/errors/ApiError';
 import { trackPageView } from 'bootstrapping/matomo';
+import { isIOS } from 'bootstrapping/browser';
 import Logo from 'img/nusmods-logo.svg';
 import { State as StoreState } from 'types/state';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
 import KeyboardShortcuts from './components/KeyboardShortcuts';
+
 import styles from './AppShell.scss';
 
 type Props = RouteComponentProps & {
@@ -55,8 +56,6 @@ type State = {
 
 export class AppShellComponent extends React.Component<Props, State> {
   state: State = {};
-
-  isMobileIos = isMobileIos();
 
   componentDidMount() {
     const { timetables } = this.props;
@@ -116,7 +115,7 @@ export class AppShellComponent extends React.Component<Props, State> {
             className={classnames(`theme-${this.props.theme}`, {
               'mode-dark': isDarkMode,
               'mdc-theme--dark': isDarkMode,
-              'mobile-safari': this.isMobileIos,
+              'mobile-safari': isIOS,
             })}
           />
         </Helmet>

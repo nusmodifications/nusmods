@@ -6,8 +6,9 @@ import { toggleTimetableOrientation, toggleTitleDisplay } from 'actions/theme';
 import { Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
 
-import { Calendar, Grid, Sidebar, Type } from 'views/components/icons';
+import { Calendar, Grid, Sidebar, Type } from 'react-feather';
 import elements from 'views/elements';
+import config from 'config';
 import ShareTimetable from './ShareTimetable';
 import ExportMenu from './ExportMenu';
 
@@ -59,29 +60,31 @@ function TimetableActions(props: Props) {
           </button>
         )}
 
-        <button
-          type="button"
-          className={classnames(
-            styles.calendarBtn,
-            elements.examCalendarBtn,
-            'btn-outline-primary btn btn-svg',
-          )}
-          onClick={props.toggleExamCalendar}
-        >
-          {props.showExamCalendar ? (
-            <>
-              <Grid className="svg svg-small" /> Timetable
-            </>
-          ) : (
-            <>
-              <Calendar className="svg svg-small" /> Exam Calendar
-            </>
-          )}
-        </button>
+        {config.examAvailabilitySet.has(props.semester) && (
+          <button
+            type="button"
+            className={classnames(
+              styles.calendarBtn,
+              elements.examCalendarBtn,
+              'btn-outline-primary btn btn-svg',
+            )}
+            onClick={props.toggleExamCalendar}
+          >
+            {props.showExamCalendar ? (
+              <>
+                <Grid className="svg svg-small" /> Timetable
+              </>
+            ) : (
+              <>
+                <Calendar className="svg svg-small" /> Exam Calendar
+              </>
+            )}
+          </button>
+        )}
       </div>
 
       <div className={styles.buttonGroup} role="group" aria-label="Timetable exporting">
-        <ExportMenu semester={props.semester} />
+        <ExportMenu semester={props.semester} timetable={props.timetable} />
 
         <ShareTimetable semester={props.semester} timetable={props.timetable} />
       </div>

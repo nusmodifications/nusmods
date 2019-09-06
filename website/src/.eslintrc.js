@@ -48,6 +48,16 @@ module.exports = {
     },
 
     {
+      files: ['**/*.d.ts'],
+      rules: {
+        // ESLint triggers this on declared constructors, which is useless
+        'no-useless-constructor': 'off',
+        // Also triggering incorrectly in some type declarations
+        '@typescript-eslint/no-unused-vars': 'off',
+      }
+    },
+
+    {
       files: ['{apis,test-utils,types,utils}/**/*.{js,ts,jsx,tsx}'],
       rules: {
         // Util files don't necessarily need a default export

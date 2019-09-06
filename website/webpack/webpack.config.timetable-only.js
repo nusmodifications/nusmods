@@ -1,21 +1,18 @@
 const path = require('path');
 const merge = require('webpack-merge');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
 
-const cssExtractPlugin = new MiniCssExtractPlugin({
-  filename: '[contenthash].css',
-  chunkFilename: '[contenthash].css',
-});
+const nodeEnvStr = process.env.NODE_ENV || 'production';
+const isProd = nodeEnvStr === 'production';
 
-const source = (file) => path.join('timetable-export', file);
+const source = (file) => path.join('entry/export', file);
 
 const productionConfig = merge([
-  parts.setFreeVariable('process.env.NODE_ENV', process.env.NODE_ENV || 'production'),
+  parts.setFreeVariable('process.env.NODE_ENV', nodeEnvStr),
   commonConfig,
   {
     // Override common's entry point
@@ -29,33 +26,10 @@ const productionConfig = merge([
     output: {
       // The build folder.
       path: parts.PATHS.buildTimetable,
-      filename: '[chunkhash].js',
+      filename: isProd ? '[chunkhash].js' : '[hash].js',
       // This is used for require.ensure. The setup
       // will work without but this is useful to set.
       chunkFilename: '[chunkhash].js',
-    },
-    module: {
-      rules: [
-        {
-          test: /\.(css|scss)$/,
-          include: parts.PATHS.styles,
-          use: [MiniCssExtractPlugin.loader, ...parts.getCSSConfig()],
-        },
-        {
-          test: /\.(css|scss)$/,
-          include: parts.PATHS.src,
-          exclude: parts.PATHS.styles,
-          use: [
-            MiniCssExtractPlugin.loader,
-            ...parts.getCSSConfig({
-              options: {
-                modules: true,
-                localIdentName: '[hash:base64:8]',
-              },
-            }),
-          ],
-        },
-      ],
     },
     plugins: [
       new HtmlWebpackPlugin({
@@ -63,7 +37,6 @@ const productionConfig = merge([
         inlineSource: '\\.(js|css)$',
       }),
       new HtmlWebpackInlineSourcePlugin(),
-      cssExtractPlugin,
     ],
   },
   parts.loadImages({
@@ -72,7 +45,7 @@ const productionConfig = merge([
       name: 'img/[name].[hash].[ext]',
     },
   }),
-  parts.clean(parts.PATHS.buildTimetable),
+  parts.productionCSS(),
 ]);
 
 module.exports = productionConfig;

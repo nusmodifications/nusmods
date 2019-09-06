@@ -1,0 +1,25 @@
+version: '3.7'
+services:
+  machine-proxy:
+    image: traefik:alpine
+    ports:
+      - '80:80'
+      - '443:443'
+      - '5678:5678'
+    networks:
+      - intranet
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.toml:/traefik.toml
+      - ~/data/traefik/acme.json:/acme.json
+    environment:
+      - CF_API_EMAIL=mods@nusmods.com
+      # Global API key from https://dash.cloudflare.com/167b11872d587468306d035b93d7a11b/profile/api-tokens
+      - CF_API_KEY=${CF_API_KEY:?Environment variable CF_API_KEY is missing}
+    restart: on-failure
+
+# Create a bridge network called 'intranet',
+# which allows communication with other docker-compose setups
+networks:
+  intranet:
+    driver: bridge

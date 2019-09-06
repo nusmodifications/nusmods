@@ -10,7 +10,7 @@ import config from 'config';
 import { renderMCs } from 'utils/modules';
 import { conflictToText } from 'utils/planner';
 import { toSingaporeTime } from 'utils/timify';
-import { AlertTriangle, ChevronDown } from 'views/components/icons';
+import { AlertTriangle, ChevronDown } from 'react-feather';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import { modulePage } from 'views/routes/paths';
 
@@ -95,7 +95,7 @@ export default class PlannerModule extends React.PureComponent<Props, State> {
           <div className={styles.conflictHeader}>
             <AlertTriangle className={styles.warningIcon} />
             <p>
-              Module may only only be offered in{' '}
+              Module may only be offered in{' '}
               {conflict.semestersOffered
                 .map((semester) => config.shortSemesterNames[semester])
                 .join(', ')}

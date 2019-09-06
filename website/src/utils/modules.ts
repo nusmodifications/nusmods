@@ -23,7 +23,7 @@ export function getModuleSemesterData(
 }
 
 // Returns a flat array of lessons of a module for the corresponding semester.
-export function getModuleTimetable(module: Module, semester: Semester): ReadonlyArray<RawLesson> {
+export function getModuleTimetable(module: Module, semester: Semester): readonly RawLesson[] {
   return _.get(getModuleSemesterData(module, semester), 'timetable', []);
 }
 
@@ -43,7 +43,7 @@ export function formatExamDate(examDate: string | null | undefined): string {
   if (!examDate) return 'No Exam';
 
   const localDate = toSingaporeTime(examDate);
-  return format(localDate, 'dd-MM-yyyy p');
+  return format(localDate, 'dd-MMM-yyyy p');
 }
 
 export function getExamDate(module: Module, semester: Semester): string | null {
@@ -58,7 +58,7 @@ export function getFormattedExamDate(module: Module, semester: Semester): string
 // Returns the current semester if it is found in semesters, or the first semester
 // where it is available
 export function getFirstAvailableSemester(
-  semesters: ReadonlyArray<SemesterDataCondensed>,
+  semesters: readonly SemesterDataCondensed[],
   current: Semester = config.semester, // For testing only
 ): Semester {
   const availableSemesters = semesters.map((semesterData) => semesterData.semester);
@@ -80,6 +80,13 @@ export function subtractAcadYear(acadYear: string): string {
 
 export function addAcadYear(acadYear: string): string {
   return acadYear.replace(/\d+/g, (year) => String(parseInt(year, 10) + 1));
+}
+
+export function isOffered(module: {
+  semesterData?: readonly (SemesterData | SemesterDataCondensed)[];
+}): boolean {
+  if (module.semesterData) return module.semesterData.length > 0;
+  return false;
 }
 
 export function offsetAcadYear(year: string, offset: number) {

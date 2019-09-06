@@ -5,10 +5,10 @@ import { API_REQUEST } from 'actions/requests';
 import requestMiddleware from './requests-middleware';
 
 jest.mock('axios');
-const mockAxios: jest.MockInstance<AxiosInstance> = axios as any;
+const mockAxios: jest.Mocked<AxiosInstance> = axios as any;
 
 describe(requestMiddleware, () => {
-  const mockStore = configureStore([requestMiddleware]);
+  const mockStore = configureStore<{}>([requestMiddleware]);
   const requestAction = {
     type: 'TEST_ACTION',
     payload: {
@@ -24,24 +24,25 @@ describe(requestMiddleware, () => {
   beforeEach(() => {
     store = mockStore();
 
-    mockAxios.mockClear();
+    mockAxios.request.mockClear();
   });
 
   it('should make async calls and dispatch actions on success', async () => {
-    mockAxios.mockReturnValue(
-      Promise.resolve({
-        data: {
-          hello: 'world',
-        },
-        headers: {
-          'content-type': 'application/json',
-        },
-      }),
-    );
+    mockAxios.request.mockResolvedValueOnce({
+      status: 200,
+      statusText: 'OK',
+      data: {
+        hello: 'world',
+      },
+      headers: {
+        'content-type': 'application/json',
+      },
+      config: {},
+    });
 
     await store.dispatch(requestAction);
 
-    expect(axios).toBeCalledTimes(1);
+    expect(mockAxios.request).toBeCalledTimes(1);
 
     expect(store.getActions()).toMatchObject([
       {
@@ -67,12 +68,12 @@ describe(requestMiddleware, () => {
 
   it('should dispatch error on failure', async () => {
     const error = new Error('The server is on fire');
-    mockAxios.mockReturnValue(Promise.reject(error));
+    mockAxios.request.mockRejectedValueOnce(error);
 
     const p = store.dispatch(requestAction);
     await expect(p).rejects.toEqual(error);
 
-    expect(mockAxios).toBeCalledTimes(1);
+    expect(mockAxios.request).toBeCalledTimes(1);
 
     expect(store.getActions()).toMatchObject([
       {

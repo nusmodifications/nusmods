@@ -5,7 +5,7 @@ import { API_REQUEST } from 'actions/requests';
 import { State } from 'types/state';
 
 function makeRequest(request: AxiosRequestConfig) {
-  return axios({
+  return axios.request({
     ...request,
     headers: {
       'Content-Type': 'application/json',

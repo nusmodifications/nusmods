@@ -8,7 +8,7 @@ import { Lesson } from 'types/timetables';
 
 import { colorLessonsByKey } from 'utils/colors';
 import { arrangeLessonsForWeek } from 'utils/timetables';
-import { ChevronLeft, ChevronRight } from 'views/components/icons';
+import { ChevronLeft, ChevronRight } from 'react-feather';
 import Timetable from 'views/timetable/Timetable';
 import makeResponsive from 'views/hocs/makeResponsive';
 import { modulePage, venuePage } from 'views/routes/paths';

@@ -1,12 +1,12 @@
 import React from 'react';
 import classnames from 'classnames';
 import { map } from 'lodash';
+import { X as Close, Plus } from 'react-feather';
 
 import { Semester } from 'types/modules';
 import { AddModuleData } from 'types/planner';
 import { placeholderGroups } from 'utils/placeholders';
 
-import { Close, Plus } from 'views/components/icons';
 import PlannerModuleSelect from './PlannerModuleSelect';
 import styles from './AddModule.scss';
 
@@ -87,6 +87,9 @@ export default class AddModule extends React.PureComponent<Props, State> {
     }
 
     const inputId = `${this.props.year}-${this.props.semester}`;
+
+    // Bug in TypeScript ESLint parser prevents us from disabling this on just the line
+    /* eslint-disable jsx-a11y/no-autofocus */
     return (
       <>
         <form onSubmit={this.onSubmit} className={classnames(this.props.className, styles.form)}>

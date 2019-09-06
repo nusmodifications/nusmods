@@ -87,9 +87,9 @@ export function PlannerModuleSelectComponent({
     <Downshift
       onChange={onSelect}
       onOuterClick={onBlur}
-      defaultInputValue={defaultValue}
-      defaultIsOpen={false}
-      defaultHighlightedIndex={0}
+      initialInputValue={defaultValue}
+      initialIsOpen={false}
+      initialHighlightedIndex={0}
     >
       {({
         isOpen,
@@ -105,13 +105,13 @@ export function PlannerModuleSelectComponent({
         return (
           <div>
             <textarea
-              {...getInputProps({
+              {...(getInputProps({
                 // Passed props
                 id,
                 rows,
                 // Hack to get a RefObject<HTMLTextArea> working here
                 // since Downshift assumes the input is always an <input>
-                ref: (textareaRef as unknown) as RefObject<HTMLInputElement>,
+                ref: textareaRef,
                 className: classnames(className, 'form-control form-control-sm'),
                 onKeyDown: (evt) => {
                   if (evt.key === 'Enter') {
@@ -135,7 +135,7 @@ export function PlannerModuleSelectComponent({
                 // Static props
                 placeholder: 'eg. CS1010S',
                 autoFocus: true,
-              })}
+              }) as React.HTMLProps<HTMLTextAreaElement>)}
             />
 
             {isOpen && (
