@@ -2941,10 +2941,10 @@ bootstrap@4.3.1:
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.3.1.tgz#280ca8f610504d99d7b6b4bfc4b68cec601704ac"
   integrity sha512-rXqOmH1VilAt2DyPzluTi2blhk17bO7ef+zLLPlWvG494pDxcM234pJ8wTc/6R40UWizAIIMgxjvxZg5kmsbag==
 
-bowser@2.5.4:
-  version "2.5.4"
-  resolved "https://registry.yarnpkg.com/bowser/-/bowser-2.5.4.tgz#850fccfebde92165440279b5ab19be3c7f05cfe1"
-  integrity sha512-74GGwfc2nzYD19JCiA0RwCxdq7IY5jHeEaSrrgm/5kusEuK+7UK0qDG3gyzN47c4ViNyO4osaKtZE+aSV6nlpQ==
+bowser@2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/bowser/-/bowser-2.6.0.tgz#cd44db9bb5b9b5c5f87b6989eee4e6f5de922d28"
+  integrity sha512-XRw4Jia3NraR44ra2Iw5BZJq9LBpZepCGjWanIcEFZjslXWNJAaBd0iKDvdX7urEULkDQY4IEveJfJ6ANEC+bQ==
 
 brace-expansion@^1.0.0, brace-expansion@^1.1.7:
   version "1.1.11"
