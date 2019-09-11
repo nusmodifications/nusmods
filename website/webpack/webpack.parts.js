@@ -148,9 +148,11 @@ exports.getCSSConfig = ({ options } = {}) => [
   {
     loader: 'sass-loader',
     options: {
-      // @material packages uses '@material' directly as part of their import paths.
-      // Without this those imports will not resolve properly
-      includePaths: [PATHS.node],
+      sassOptions: {
+        // @material packages uses '@material' directly as part of their import paths.
+        // Without this those imports will not resolve properly
+        includePaths: [PATHS.node],
+      },
     },
   },
 ];
@@ -200,8 +202,9 @@ exports.productionCSS = ({ options } = {}) => ({
           MiniCssExtractPlugin.loader,
           ...exports.getCSSConfig({
             options: {
-              modules: true,
-              localIdentName: '[hash:base64:8]',
+              modules: {
+                localIdentName: '[hash:base64:8]',
+              },
             },
           }),
         ],
