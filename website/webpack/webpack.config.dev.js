@@ -70,8 +70,9 @@ const developmentConfig = merge([
     include: parts.PATHS.src,
     exclude: parts.PATHS.styles,
     options: {
-      modules: true,
-      localIdentName: '[name]-[local]_[hash:base64:4]',
+      modules: {
+        localIdentName: '[name]-[local]',
+      },
     },
   }),
 ]);
