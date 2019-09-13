@@ -49,7 +49,7 @@
     "@types/react": "16.9.2",
     "@types/react-beautiful-dnd": "11.0.3",
     "@types/react-dom": "16.9.0",
-    "@types/react-helmet": "5.0.9",
+    "@types/react-helmet": "5.0.10",
     "@types/react-hot-loader": "4.1.0",
     "@types/react-kawaii": "0.11.0",
     "@types/react-leaflet": "2.4.0",
