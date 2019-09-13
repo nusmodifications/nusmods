@@ -1580,6 +1580,11 @@
     tiny-json-http "^7.1.2"
     webpack-bundle-analyzer "^3.4.1"
 
+"@reach/auto-id@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@reach/auto-id/-/auto-id-0.2.0.tgz#97f9e48fe736aa5c6f4f32cf73c1f19d005f8550"
+  integrity sha512-lVK/svL2HuQdp7jgvlrLkFsUx50Az9chAhxpiPwBqcS83I2pVWvXp98FOcSCCJCV++l115QmzHhFd+ycw1zLBg==
+
 "@sentry/browser@5.6.3":
   version "5.6.3"
   resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-5.6.3.tgz#5cc37b0443eba55ad13c13d34d6b95ff30dfbfe3"
@@ -4728,13 +4733,15 @@ dot-prop@^4.1.1:
   dependencies:
     is-obj "^1.0.0"
 
-downshift@3.2.14:
-  version "3.2.14"
-  resolved "https://registry.yarnpkg.com/downshift/-/downshift-3.2.14.tgz#5ca9ebc1ce65141652cf9ae71e3528dc95bc74ee"
-  integrity sha512-1gdKK6CtvLnHtNN4FRvLzdhjIoga6NnpkDVNf0WIpnpkU1d0c+EkYzZQd9bJnPafGIbgQjNOrGYAv7r3biGVgg==
+downshift@3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/downshift/-/downshift-3.3.1.tgz#429ce98be43115664d2ea54f841d80059007b883"
+  integrity sha512-PdbDQIq7hVE9HO2fHMZA1JaoVKClNHkXIcDZAlCmXksCd7cU+demBjuYhYIXUml/8n6RejXbvXakg2mK1pbUyw==
   dependencies:
     "@babel/runtime" "^7.4.5"
+    "@reach/auto-id" "^0.2.0"
     compute-scroll-into-view "^1.0.9"
+    keyboard-key "1.0.4"
     prop-types "^15.7.2"
     react-is "^16.9.0"
 
@@ -7772,6 +7779,11 @@ jsx-ast-utils@^2.2.1:
   dependencies:
     array-includes "^3.0.3"
     object.assign "^4.1.0"
+
+keyboard-key@1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/keyboard-key/-/keyboard-key-1.0.4.tgz#52d8fa07b7e17757072aa22a67fb4ae85e4c46b0"
+  integrity sha512-my04dE6BCwPpwoe4KYKfPxWiwgDYQOHrVmtzn1CfzmoEsGG/ef4oZGaXCzi1+iFhG7CN5JkOuxmei5OABY8/ag==
 
 killable@^1.0.1:
   version "1.0.1"
