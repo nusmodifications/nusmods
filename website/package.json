@@ -124,7 +124,7 @@
     "terser-webpack-plugin": "1.4.1",
     "typescript": "3.5.3",
     "url-loader": "2.1.0",
-    "webpack": "4.39.3",
+    "webpack": "4.40.2",
     "webpack-dev-server": "3.8.0",
     "webpack-merge": "4.2.2"
   },
