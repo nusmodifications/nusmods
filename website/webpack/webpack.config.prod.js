@@ -77,9 +77,6 @@ const productionConfig = ({ browserWarningPath }) =>
       optimization: {
         minimizer: [
           new TerserJsPlugin({
-            cache: true,
-            parallel: true,
-            sourceMap: true,
             terserOptions: {
               compress: {
                 // Terser enables arrow functions after Babel transpilation,
