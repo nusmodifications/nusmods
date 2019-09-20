@@ -53,7 +53,7 @@
     "eslint-config-airbnb-base": "13.2.0",
     "eslint-config-prettier": "4.3.0",
     "eslint-plugin-import": "2.18.2",
-    "eslint-plugin-prettier": "3.1.0",
+    "eslint-plugin-prettier": "3.1.1",
     "jest": "24.9.0",
     "microbundle": "0.11.0",
     "prettier": "1.18.2",
