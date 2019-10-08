@@ -9,9 +9,7 @@ module.exports = {
 
   root: true,
   extends: ['airbnb', 'prettier', 'prettier/react'],
-  env: {
-    browser: true,
-  },
+
   plugins: ['@typescript-eslint', 'prettier', 'import', 'jsx-a11y', 'react'],
 
   settings: {
@@ -77,10 +75,16 @@ module.exports = {
       },
     ],
 
+    // These lints are not useful
     'react/require-default-props': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'react/state-in-constructor': 'off',
+
+    // Defaults to outside, which is pretty ugly
+    "react/static-property-placement": ['error', 'static public field'],
+
     'react/jsx-filename-extension': ['error', { extensions: ['.tsx', '.jsx'] }],
     'react/default-props-match-prop-types': ['error', { allowRequiredDefaults: true }],
-    'react/prop-types': 'off',
 
     // TypeScript lints this for us
     'react/prop-types': 'off',
@@ -93,6 +97,10 @@ module.exports = {
 
     // TODO: Replace divs with buttons, but remove all button styling.
     'jsx-a11y/no-static-element-interactions': 'off',
+
+    // Seem to be triggering on th, so setting to warn for now
+    // TODO: Wait for https://github.com/evcohen/eslint-plugin-jsx-a11y/issues/637
+    'jsx-a11y/control-has-associated-label': 'warn',
 
     // The default option requires BOTH id and nesting, which is excessive,
     // especially with checkboxes and radiobuttons. This changes it to EITHER
