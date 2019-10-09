@@ -10,11 +10,11 @@ Node 10 or above is required. We use Node 10 in production.
 
 Use `yarn` to install dependencies, then set up `env.json` with all the necessary keys and API base URL, then run the test script to check the setup is okay.
 
-```
+```sh
 yarn
 
 cp env.example.json env.json
-vi env.json
+vi env.json  # add your appKey, studentKey and the baseUrl here
 
 yarn dev help
 yarn dev test | yarn bunyan
