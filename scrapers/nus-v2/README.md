@@ -13,8 +13,8 @@ Use `yarn` to install dependencies, then set up `env.json` with all the necessar
 ```
 yarn
 
-cp env.example.json
-vim env.example.json
+cp env.example.json env.json
+vi env.json
 
 yarn dev help
 yarn dev test | yarn bunyan
