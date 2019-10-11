@@ -37,7 +37,8 @@ Our [contributing guide](CONTRIBUTING.md) will help you get started, regardless 
 
 ### Good First Issues
 
-Want to your feet wet and contribute? We have a list of [good first issues](https://github.com/nusmodifications/nusmods/labels/good%20first%20issue) that contain bugs and small features which have a relatively limited scope. This is a great place to get started.
+Want to wet your feet and contribute? We have a list of [good first issues](https://github.com/nusmodifications/nusmods/labels/good%20first%20issue) that contain bugs and small features which have a relatively limited scope. This is a great place to get started.
+
 
 ### Code of Conduct
 
