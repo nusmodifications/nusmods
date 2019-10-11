@@ -7,8 +7,7 @@ import { getModRegRoundKey } from 'selectors/modreg';
 import config from './index';
 
 test('Academic calendar should have start dates for the current academic year', () => {
-  // @ts-ignore
-  expect(academicCalendar[config.academicYear]).toBeDefined();
+  expect((academicCalendar as Record<string, unknown>)[config.academicYear]).toBeDefined();
 });
 
 test('Every ModReg round has unique keys', () => {

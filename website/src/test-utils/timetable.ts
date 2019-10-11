@@ -32,7 +32,7 @@ export function createGenericColoredLesson(
   endTime?: LessonTime,
   lessonType?: LessonType,
   classNo?: ClassNo,
-  colorIndex: number = 0,
+  colorIndex = 0,
 ): ColoredLesson {
   return {
     ...createGenericLesson(dayText, startTime, endTime, lessonType, classNo),

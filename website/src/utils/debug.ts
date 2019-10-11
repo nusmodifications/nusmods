@@ -39,6 +39,6 @@ export function allowBusStopEditing() {
   return getParams().edit === '1';
 }
 
-export function useRepoVenues() {
+export function preferRepoVenues() {
   return getParams().localVenue === '1';
 }

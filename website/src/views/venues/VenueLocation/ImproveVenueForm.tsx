@@ -143,7 +143,7 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
     );
   };
 
-  updateLocation = (latlng: LatLng | LatLngTuple, updateViewport: boolean = true) => {
+  updateLocation = (latlng: LatLng | LatLngTuple, updateViewport = true) => {
     this.setState((state) =>
       produce(state, (draft) => {
         const latlngTuple: [number, number] = Array.isArray(latlng)
