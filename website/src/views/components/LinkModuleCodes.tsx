@@ -19,9 +19,7 @@ type Props = {
   className?: string;
 };
 
-export const LinkModuleCodesComponent: React.FunctionComponent<Props> = (
-  props,
-): React.ReactNode => {
+export const LinkModuleCodesComponent: React.FunctionComponent<Props> = (props) => {
   const { children, className } = props;
 
   return replaceWithNode(children, MODULE_CODE_REGEX, (part, i) => {
