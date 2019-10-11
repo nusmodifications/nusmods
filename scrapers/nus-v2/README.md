@@ -14,7 +14,7 @@ Use `yarn` to install dependencies, then set up `env.json` with all the necessar
 yarn
 
 cp env.example.json env.json
-vi env.json  # add your appKey, studentKey and the baseUrl here
+vim env.json  # add your appKey, studentKey and the baseUrl here
 
 yarn dev help
 yarn dev test | yarn bunyan
