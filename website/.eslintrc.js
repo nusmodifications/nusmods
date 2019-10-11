@@ -15,7 +15,7 @@ module.exports = {
   root: true,
   extends: ['airbnb', 'prettier', 'prettier/react'],
 
-  plugins: ['@typescript-eslint', 'prettier', 'import', 'jsx-a11y', 'react'],
+  plugins: ['@typescript-eslint', 'prettier', 'import', 'jsx-a11y', 'react', 'react-hooks'],
 
   settings: {
     'import/resolver': {
@@ -99,6 +99,9 @@ module.exports = {
 
     // TODO: Fix this
     'react/no-access-state-in-setstate': 'warn',
+
+    "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+    "react-hooks/exhaustive-deps": "warn", // Checks effect dependencies
 
     // TODO: Replace divs with buttons, but remove all button styling.
     'jsx-a11y/no-static-element-interactions': 'off',
