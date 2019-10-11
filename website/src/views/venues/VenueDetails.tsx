@@ -32,12 +32,11 @@ export class VenueDetailsComponent extends React.PureComponent<Props> {
   arrangedLessons() {
     const lessons = flatMap(this.props.availability, (day) => day.classes).map((venueLesson) => ({
       ...venueLesson,
-      ModuleTitle: '',
+      title: '',
       isModifiable: true,
     }));
 
     const coloredLessons = colorLessonsByKey(lessons, 'moduleCode');
-    // @ts-ignore TODO: Fix this typing
     return arrangeLessonsForWeek(coloredLessons);
   }
 

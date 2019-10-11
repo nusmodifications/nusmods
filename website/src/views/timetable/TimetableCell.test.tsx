@@ -48,7 +48,7 @@ describe(TimetableCell, () => {
 
     const buttons = wrapper.find('button');
     buttons.at(0).simulate('click', {
-      preventDefault() {},
+      preventDefault: jest.fn(),
       currentTarget: document.createElement('button'),
     });
     expect(onClick).toBeCalled();

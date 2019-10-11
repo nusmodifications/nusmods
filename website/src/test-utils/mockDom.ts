@@ -3,13 +3,11 @@ export default function mockDom() {
   window.scrollTo = jest.fn();
 
   if (!window.performance) {
-    // @ts-ignore
-    window.performance = { now: jest.fn() };
+    (window as any).performance = { now: jest.fn() };
   }
 
   if (!window.matchMedia) {
-    // @ts-ignore
-    global.matchMedia = jest.fn(() => ({ matches: jest.fn(), addListener: jest.fn() }));
+    (window as any).matchMedia = jest.fn(() => ({ matches: jest.fn(), addListener: jest.fn() }));
   }
 
   // JSDom does not stub scrollIntoView - https://github.com/jsdom/jsdom/issues/1695

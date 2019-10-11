@@ -24,12 +24,8 @@ function serializeState(
 }
 
 export default {
-  image: (
-    semester: Semester,
-    timetable: SemTimetableConfig,
-    state: State,
-    pixelRatio: number = 1,
-  ) => `${baseUrl}/image?${serializeState(semester, timetable, state, { pixelRatio })}`,
+  image: (semester: Semester, timetable: SemTimetableConfig, state: State, pixelRatio = 1) =>
+    `${baseUrl}/image?${serializeState(semester, timetable, state, { pixelRatio })}`,
   pdf: (semester: Semester, timetable: SemTimetableConfig, state: State) =>
     `${baseUrl}/pdf?${serializeState(semester, timetable, state)}`,
 };

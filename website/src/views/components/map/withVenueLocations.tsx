@@ -2,7 +2,7 @@ import React, { ComponentType } from 'react';
 import Loadable, { LoadingComponentProps } from 'react-loadable';
 
 import { VenueLocationMap } from 'types/venues';
-import { Omit } from 'types/utils';
+import { Subtract } from 'types/utils';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import ApiError from 'views/errors/ApiError';
 import { getVenueLocations } from 'apis/github';
@@ -68,7 +68,7 @@ export default function withVenueLocations<Props extends VenueLocations>(
     },
 
     // eslint-disable-next-line react/prop-types
-    render({ Component, venueLocations }, props: Omit<Props, keyof VenueLocations>) {
+    render({ Component, venueLocations }, props: Subtract<Props, VenueLocations>) {
       return <Component venueLocations={venueLocations} {...(props as Props)} />;
     },
   });

@@ -185,8 +185,9 @@ const connectedAppShell = connect(
     validateTimetable,
     openNotification,
   },
-  // @ts-ignore TODO: Patch types for Redux for request-middleware
-)(AppShellComponent);
+  // TODO: Patch types for Redux for request-middleware
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+)(AppShellComponent as any);
 
 // withRouter here is used to ensure re-render when routes change, since
 // connect implements shouldComponentUpdate based purely on props. If it

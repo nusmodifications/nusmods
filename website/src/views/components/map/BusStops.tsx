@@ -43,8 +43,9 @@ export default class BusStops extends React.PureComponent<Props, State> {
     super(props);
 
     if (allowBusStopEditing()) {
-      // @ts-ignore
-      window.getState = () => this.state;
+      // For debugging
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).getState = () => this.state;
 
       // eslint-disable-next-line no-console
       console.log(
