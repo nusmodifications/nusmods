@@ -1,7 +1,7 @@
 import { each, flatMap } from 'lodash';
 
 import { Lesson, ColorIndex, ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
-import { FSA, GetState } from 'types/redux';
+import { GetState } from 'types/redux';
 import { ColorMapping } from 'types/reducers';
 import { ClassNo, LessonType, Module, ModuleCode, Semester } from 'types/modules';
 
@@ -49,7 +49,7 @@ export function addModule(semester: Semester, moduleCode: ModuleCode) {
 }
 
 export const REMOVE_MODULE = 'REMOVE_MODULE';
-export function removeModule(semester: Semester, moduleCode: ModuleCode): FSA {
+export function removeModule(semester: Semester, moduleCode: ModuleCode) {
   return {
     type: REMOVE_MODULE,
     payload: {
@@ -60,7 +60,7 @@ export function removeModule(semester: Semester, moduleCode: ModuleCode): FSA {
 }
 
 export const MODIFY_LESSON = 'MODIFY_LESSON';
-export function modifyLesson(activeLesson: Lesson): FSA {
+export function modifyLesson(activeLesson: Lesson) {
   return {
     type: MODIFY_LESSON,
     payload: {
@@ -75,7 +75,7 @@ export function setLesson(
   moduleCode: ModuleCode,
   lessonType: LessonType,
   classNo: ClassNo,
-): FSA {
+) {
   return {
     type: CHANGE_LESSON,
     payload: {
@@ -87,7 +87,7 @@ export function setLesson(
   };
 }
 
-export function changeLesson(semester: Semester, lesson: Lesson): FSA {
+export function changeLesson(semester: Semester, lesson: Lesson) {
   return setLesson(semester, lesson.moduleCode, lesson.lessonType, lesson.classNo);
 }
 
@@ -96,7 +96,7 @@ export function setLessonConfig(
   semester: Semester,
   moduleCode: ModuleCode,
   lessonConfig: ModuleLessonConfig,
-): FSA {
+) {
   return {
     type: SET_LESSON_CONFIG,
     payload: {
@@ -108,7 +108,7 @@ export function setLessonConfig(
 }
 
 export const CANCEL_MODIFY_LESSON = 'CANCEL_MODIFY_LESSON';
-export function cancelModifyLesson(): FSA {
+export function cancelModifyLesson() {
   return {
     type: CANCEL_MODIFY_LESSON,
     payload: null,
@@ -179,7 +179,7 @@ export function selectModuleColor(
   semester: Semester,
   moduleCode: ModuleCode,
   colorIndex: ColorIndex,
-): FSA {
+) {
   return {
     type: SELECT_MODULE_COLOR,
     payload: {
@@ -191,7 +191,7 @@ export function selectModuleColor(
 }
 
 export const HIDE_LESSON_IN_TIMETABLE = 'HIDE_LESSON_IN_TIMETABLE';
-export function hideLessonInTimetable(semester: Semester, moduleCode: ModuleCode): FSA {
+export function hideLessonInTimetable(semester: Semester, moduleCode: ModuleCode) {
   return {
     type: HIDE_LESSON_IN_TIMETABLE,
     payload: { moduleCode, semester },
@@ -199,7 +199,7 @@ export function hideLessonInTimetable(semester: Semester, moduleCode: ModuleCode
 }
 
 export const SHOW_LESSON_IN_TIMETABLE = 'SHOW_LESSON_IN_TIMETABLE';
-export function showLessonInTimetable(semester: Semester, moduleCode: ModuleCode): FSA {
+export function showLessonInTimetable(semester: Semester, moduleCode: ModuleCode) {
   return {
     type: SHOW_LESSON_IN_TIMETABLE,
     payload: { moduleCode, semester },
