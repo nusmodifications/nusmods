@@ -27,6 +27,6 @@
     "puppeteer": "1.12.2"
   },
   "devDependencies": {
-    "dotenv": "8.1.0"
+    "dotenv": "8.2.0"
   }
 }
