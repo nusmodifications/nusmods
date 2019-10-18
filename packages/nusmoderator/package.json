@@ -60,6 +60,6 @@
     "rimraf": "3.0.0"
   },
   "dependencies": {
-    "date-fns": "2.4.1"
+    "date-fns": "2.5.1"
   }
 }
