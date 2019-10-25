@@ -79,7 +79,21 @@ export async function retry<T>(
   }
 }
 
-export function containsNbsp(desc: string) {
-  // \u00A0 is non-breaking space
-  return new RegExp('\u00A0[^ ]*\u00A0[^ ]*\u00A0').test(desc);
+export function containsNbsp(desc: string): boolean {
+  // checks if string contains 3 consecutive nbsps without space in between
+  const nbsp = String.fromCharCode(160);
+  const descLength = desc.length;
+
+  function containsNbspHelper(str: string, pos: number, nbsps: number): boolean {
+    if (nbsps === 3) return true;
+    if (pos === descLength) return false;
+    if (str[pos] === nbsp) {
+      return containsNbspHelper(str, pos + 1, nbsps + 1);
+    }
+    if (str[pos] === ' ') {
+      return containsNbspHelper(str, pos + 1, 0);
+    }
+    return containsNbspHelper(str, pos + 1, nbsps);
+  }
+  return containsNbspHelper(desc, 0, 0);
 }

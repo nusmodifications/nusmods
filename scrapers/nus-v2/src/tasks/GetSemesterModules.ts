@@ -73,7 +73,7 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
           this.logger.debug('Filtered out %i non-print modules', hidden.length);
         }
 
-        printed.map(
+        printed.forEach(
           (module) =>
             !!containsNbsp(module.Description) &&
             this.logger.error(
