@@ -24,8 +24,8 @@ export class OnlineComponent extends React.Component<Props> {
     const { children, isOnline } = this.props;
 
     if (typeof children === 'function') {
-      // @ts-ignore Not technically safe, since some ReactNodes are also functions, but this is safe enough
-      return children(isOnline);
+      // Not technically safe, since some ReactNodes are also functions, but this is safe enough
+      return (children as Function)(isOnline);
     }
     if (isOnline) return children;
     return null;

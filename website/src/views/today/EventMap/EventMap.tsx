@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Venue, VenueLocationMap } from 'types/venues';
 import LocationMap from 'views/components/map/LocationMap';
-import { Map } from 'views/components/icons';
+import { Map } from 'react-feather';
 import styles from './EventMap.scss';
 
 export type OwnProps = {
@@ -14,7 +14,7 @@ export type Props = OwnProps &
     venueLocations: VenueLocationMap;
   }>;
 
-export default function EventMap(props: Props) {
+const EventMap: React.FC<Props> = (props) => {
   if (!props.venue) {
     return (
       <div className={styles.noLessonSelected}>
@@ -31,4 +31,6 @@ export default function EventMap(props: Props) {
 
   const position: [number, number] = [venueLocation.location.y, venueLocation.location.x];
   return <LocationMap height="100%" position={position} />;
-}
+};
+
+export default EventMap;

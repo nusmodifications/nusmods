@@ -1,0 +1,48 @@
+defaultEntryPoints = ["https","http"]
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+  compress = true
+    [entryPoints.http.redirect]
+    entryPoint = "https"
+
+  [entryPoints.https]
+  address = ":443"
+    [entryPoints.https.tls]
+
+  [entryPoints.traefik]
+  address = ":5678"
+
+[file]
+
+[backends]
+  [backends.nusmodsApiBackend]
+    [backends.nusmodsApiBackend.servers.server0]
+      url = "https://api.nusmods.com"
+
+[frontends]
+[frontends.nusmodsApi]
+  backend = "nusmodsApiBackend"
+    [frontends.nusmodsApi.routes.rule0]
+    rule = "HostRegexp:nusmods.com,{subdomain:[0-9]+}.nusmods.com;PathPrefixStrip:/api/"
+
+[api]
+entryPoint = "traefik"
+
+[docker]
+endpoint = "unix:///var/run/docker.sock"
+domain = "localhost"
+watch = true
+exposedByDefault = false
+
+[acme]
+entryPoint = "https"
+email = "mods@nusmods.com"
+storage = "/acme.json"
+onHostRule = true
+[acme.dnsChallenge]
+  provider = "cloudflare"
+[[acme.domains]]
+  main = "*.nusmods.com"
+  sans = ["nusmods.com"]

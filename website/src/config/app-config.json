@@ -1,16 +1,19 @@
 {
   "brandName": "NUSMods",
   "defaultDescription": "NUSMods is a timetable builder and knowledge platform, providing students with a better way to plan their school timetable and useful module-related information that are community-driven.",
-  "academicYear": "2018/2019",
+  "academicYear": "2019/2020",
   "apiBaseUrl": "https://nusmods.com/api",
-  "semester": 2,
-  "corsUrl": "https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp?acad_y=<AcademicYear>&sem_c=<Semester>&mod_c=<ModuleCode>",
-  "ivleUrl": "http://ivle.nus.edu.sg/lms/public/list_course_public.aspx?code=<ModuleCode>",
+  "elasticsearchBaseUrl": "https://382c4d616054428291bc86fdf4001a6e.ap-southeast-1.aws.found.io:9243",
+  "semester": 1,
   "disqusShortname": "nusmods-prod",
-  "venueFeedbackApi": "https://mediumdeviation.lib.id/nusmods-venue-github-hook@0.0.5/",
+  "venueFeedbackApi": "https://mediumdeviation.lib.id/nusmods-venue-github-hook@0.0.8/",
   "archiveYears": [
     "2016/2017",
-    "2017/2018"
+    "2017/2018",
+    "2018/2019"
+  ],
+  "examAvailability": [
+    1, 2, 3, 4
   ],
   "semesterNames": {
     "1": "Semester 1",

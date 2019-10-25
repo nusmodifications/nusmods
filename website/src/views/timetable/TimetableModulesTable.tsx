@@ -3,36 +3,40 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { sortBy } from 'lodash';
+import produce from 'immer';
 
-import { ModuleWithColor } from 'types/views';
+import { ModuleWithColor, TombstoneModule } from 'types/views';
 import { ColorIndex } from 'types/timetables';
 import { ModuleCode, Semester } from 'types/modules';
+import { State as StoreState } from 'types/state';
+import { ModuleTableOrder } from 'types/reducers';
 
 import ColorPicker from 'views/components/ColorPicker';
-import { Eye, EyeOff, Trash } from 'views/components/icons';
+import { Eye, EyeOff, Trash } from 'react-feather';
 import {
   hideLessonInTimetable,
   selectModuleColor,
   showLessonInTimetable,
 } from 'actions/timetables';
 import { getExamDate, getFormattedExamDate, renderMCs } from 'utils/modules';
+import { intersperse } from 'utils/array';
+import { BULLET_NBSP } from 'utils/react';
 import { modulePage } from 'views/routes/paths';
 import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip';
-import { State as StoreState } from 'types/state';
+import config from 'config';
 
-import { ModuleTableOrder } from 'types/reducers';
 import styles from './TimetableModulesTable.scss';
 import ModuleTombstone from './ModuleTombstone';
 import { moduleOrders } from './ModulesTableFooter';
 
-type Props = {
+export type Props = {
   semester: Semester;
   readOnly: boolean;
   horizontalOrientation: boolean;
   moduleTableOrder: ModuleTableOrder;
   modules: ModuleWithColor[];
-  tombstone: ModuleWithColor | null; // Placeholder for a deleted module
+  tombstone: TombstoneModule | null; // Placeholder for a deleted module
 
   // Actions
   selectModuleColor: (semester: Semester, moduleCode: ModuleCode, colorIndex: ColorIndex) => void;
@@ -42,7 +46,7 @@ type Props = {
   resetTombstone: () => void;
 };
 
-class TimetableModulesTable extends React.PureComponent<Props> {
+export class TimetableModulesTableComponent extends React.PureComponent<Props> {
   renderModuleActions(module: ModuleWithColor) {
     const hideBtnLabel = `${module.hiddenInTimetable ? 'Show' : 'Hide'} ${module.moduleCode}`;
     const removeBtnLabel = `Remove ${module.moduleCode} from timetable`;
@@ -93,6 +97,16 @@ class TimetableModulesTable extends React.PureComponent<Props> {
       return <ModuleTombstone module={module} resetTombstone={resetTombstone} />;
     }
 
+    // Second row of text consists of the exam date and the MCs
+    const secondRowText = [renderMCs(module.moduleCredit)];
+    if (config.examAvailabilitySet.has(semester)) {
+      secondRowText.unshift(
+        getExamDate(module, semester)
+          ? `Exam: ${getFormattedExamDate(module, semester)}`
+          : 'No Exam',
+      );
+    }
+
     return (
       <>
         <div className={styles.moduleColor}>
@@ -110,13 +124,7 @@ class TimetableModulesTable extends React.PureComponent<Props> {
           <Link to={modulePage(module.moduleCode, module.title)}>
             {module.moduleCode} {module.title}
           </Link>
-          <div className={styles.moduleExam}>
-            {getExamDate(module, semester)
-              ? `Exam: ${getFormattedExamDate(module, semester)}`
-              : 'No Exam'}
-            &nbsp;&middot;&nbsp;
-            {renderMCs(module.moduleCredit)}
-          </div>
+          <div className={styles.moduleExam}>{intersperse(secondRowText, BULLET_NBSP)}</div>
         </div>
       </>
     );
@@ -129,7 +137,11 @@ class TimetableModulesTable extends React.PureComponent<Props> {
     // tombstone contains the data for the last deleted module. We insert it back
     // so that it gets sorted into its original location, then in renderModule()
     // takes care of rendering the tombstone
-    if (tombstone) modules = [...modules, tombstone];
+    if (tombstone && !modules.some((module) => module.moduleCode === tombstone.moduleCode)) {
+      modules = produce(modules, (draft: ModuleWithColor[]) => {
+        draft.splice(tombstone.index, 0, tombstone);
+      });
+    }
     modules = sortBy(modules, (module) => moduleOrders[moduleTableOrder].orderBy(module, semester));
 
     return (
@@ -158,4 +170,4 @@ export default connect(
     hideLessonInTimetable,
     showLessonInTimetable,
   },
-)(TimetableModulesTable);
+)(TimetableModulesTableComponent);

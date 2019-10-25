@@ -40,7 +40,10 @@ class ColorPicker extends React.PureComponent<Props> {
             [styles.hidden]: isHidden,
           })}
         />
-        <div className={classnames(styles.palette, { hidden: !isOpen })} {...getMenuProps()}>
+        <div
+          className={classnames(styles.palette, { [styles.isClosed]: !isOpen })}
+          {...getMenuProps()}
+        >
           {_.range(NUM_DIFFERENT_COLORS).map((index: ColorIndex) => (
             <button
               type="button"

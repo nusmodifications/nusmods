@@ -18,6 +18,10 @@ export interface Persist {
   moduleList: (data: ModuleCondensed[]) => Promise<void>;
 
   // List of partial module info for module finder
+  moduleInfo: (data: ModuleInformation[]) => Promise<void>;
+
+  // DEPRECATED. TODO: Remove after AY19/20 starts.
+  // List of partial module info for module finder
   moduleInformation: (data: ModuleInformation[]) => Promise<void>;
 
   // Mapping modules to other dual coded modules

@@ -49,7 +49,6 @@ export const WorkingDays: readonly Day[] = [
 
 export const DaysOfWeek: readonly Day[] = [...WorkingDays, 'Sunday'];
 
-export type ModuleLevel = 1 | 2 | 3 | 4 | 5 | 6 | 8;
 export const Semesters: readonly Semester[] = [1, 2, 3, 4];
 
 export type WorkloadComponent = 'Lecture' | 'Tutorial' | 'Laboratory' | 'Project' | 'Preparation';
@@ -106,8 +105,8 @@ export type NUSModuleAttributes = Partial<AttributeMap>;
 
 export const attributeDescription: { [key in keyof AttributeMap]: string } = {
   year: 'Year long module',
-  su: 'Has undergraduate S/U option',
-  grsu: 'Has graduate S/U option',
+  su: 'Has S/U option for Undergraduate students only',
+  grsu: 'Has S/U option for relevant Graduate (Research) students only',
   ssgf: 'SkillsFuture funded',
   sfs: 'SkillsFuture series',
   lab: 'Lab based module',

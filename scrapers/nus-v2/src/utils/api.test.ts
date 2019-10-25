@@ -47,6 +47,15 @@ describe(cacheDownload, () => {
     expect(result).toEqual('File content');
     expect(cache.write).not.toBeCalled();
   });
+
+  test('should throw download error if reading from cache was also unsuccessful', async () => {
+    const downloadError = new Error('The API server is on fire');
+    const download = jest.fn().mockRejectedValue(downloadError);
+    const cache = mockCache('File content');
+    cache.read.mockRejectedValue(new Error('The file system is also on fire'));
+
+    await expect(cacheDownload('data', download, cache)).rejects.toEqual(downloadError);
+  });
 });
 
 describe(retry, () => {

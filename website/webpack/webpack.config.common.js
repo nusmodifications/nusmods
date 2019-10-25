@@ -33,7 +33,7 @@ const commonConfig = merge([
     // convenient with more complex configurations.
     entry: {
       // This will build an app.js file from the `main` module.
-      app: ['main'],
+      app: ['entry/main'],
     },
     context: parts.PATHS.src,
     output: {
@@ -46,12 +46,17 @@ const commonConfig = merge([
       // Disable performance hints since we use our own size reporter
       hints: false,
     },
+    optimization: {
+      // do not emit compiled assets that include errors
+      noEmitOnErrors: true,
+    },
   },
   parts.transpileJavascript({
     include: parts.PATHS.src,
   }),
   parts.mockNode(),
-  parts.setFreeVariable('process.env', parts.appVersion()),
+  parts.setFreeVariable('process.env.DISPLAY_COMMIT_HASH', parts.appVersion().commitHash),
+  parts.setFreeVariable('process.env.VERSION_STR', parts.appVersion().versionStr),
 ]);
 
 module.exports = commonConfig;

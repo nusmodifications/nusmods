@@ -1,14 +1,17 @@
+/* eslint-disable @typescript-eslint/camelcase */
+
 module.exports = {
   apps: [
     {
       name: 'NUS Scraper v2',
-      script: 'build/index.js',
+      script: 'scripts/run.sh',
 
-      args: 'all',
       instances: 1,
-      // Set to false since this is a script and not a server, otherwise pm2 will keep trying
-      // to restart this
-      autorestart: false,
+      // Can't get pm2 cron or system cron to work, and since the API is so unpredictably bad,
+      // we just restart the script every hour regardless of whether it is successful or not
+      autorestart: true,
+      restart_delay: 60 * 60 * 1000,
+
       watch: false,
 
       env: {

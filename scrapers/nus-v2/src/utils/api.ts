@@ -46,10 +46,18 @@ export async function cacheDownload<T>(
     }
 
     return data;
-  } catch (err) {
+  } catch (downloadError) {
     // If the file is not available we try to load it from cache instead
-    logger.warn(err, `Cannot load ${name} from API, attempting to read from cache`);
-    return cache.read();
+    logger.warn(downloadError, `Cannot load ${name} from API, attempting to read from cache`);
+
+    try {
+      // Deliberately awaiting on cache.read() to catch read errors
+      return await cache.read();
+    } catch (cacheError) {
+      // Rethrow the download error if the cache is not available since an ENOTFOUND or
+      // CacheExpiredError is usually not helpful
+      throw downloadError;
+    }
   }
 }
 

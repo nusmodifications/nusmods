@@ -5,9 +5,11 @@ import { connect } from 'react-redux';
 
 import { ModuleTableOrder } from 'types/reducers';
 import { Module, Semester } from 'types/modules';
+import { State } from 'types/state';
+
 import { setModuleTableOrder } from 'actions/settings';
 import { getExamDate, renderMCs } from 'utils/modules';
-import { State } from 'types/state';
+import config from 'config';
 import styles from './TimetableModulesTable.scss';
 
 type ModuleOrder = {
@@ -25,6 +27,7 @@ export const moduleOrders: { [moduleTableOrder: string]: ModuleOrder } = {
 };
 
 type Props = {
+  semester: Semester;
   moduleTableOrder: ModuleTableOrder;
   modules: Module[];
 
@@ -37,6 +40,12 @@ function ModulesTableFooter(props: Props) {
   return (
     <div className={classnames(styles.footer, 'row align-items-center')}>
       <div className="col-12">
+        {!config.examAvailabilitySet.has(props.semester) && (
+          <div className="alert alert-warning">
+            Exam dates are not available for this semester yet. Module combinations may not be
+            available due to conflicting exams.
+          </div>
+        )}
         <hr />
       </div>
       <div className="col">

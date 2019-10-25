@@ -90,4 +90,21 @@ describe(parseString, () => {
       ),
     ).toEqual(result);
   });
+
+  it('parses "((CS2010 or its equivalent) or CS2020 or (CS2040 or its equivalent))\nand (MA1100 or (CS1231 or its equivalent))"', () => {
+    expect(
+      parse(
+        '((CS2010 or its equivalent) or CS2020 or (CS2040 or its equivalent)) and (MA1100 or (CS1231 or its equivalent))',
+      ),
+    ).toEqual({
+      and: [
+        {
+          or: ['CS2010', 'CS2020', 'CS2040'],
+        },
+        {
+          or: ['MA1100', 'CS1231'],
+        },
+      ],
+    });
+  });
 });

@@ -1,5 +1,6 @@
 import path from 'path';
 import * as fs from 'fs-extra';
+import { ClientOptions } from '@elastic/elasticsearch';
 
 export type Config = Readonly<{
   appKey: string;
@@ -17,6 +18,9 @@ export type Config = Readonly<{
 
   // Root folder for data
   dataPath: string;
+
+  // Config to connect to elasticsearch
+  elasticConfig?: ClientOptions;
 }>;
 
 const env = fs.readJSONSync(path.join(__dirname, '../env.json'));
@@ -35,11 +39,12 @@ const config: Config = {
   // From env
   appKey: env.appKey,
   studentKey: env.studentKey,
+  elasticConfig: env.elasticConfig,
   baseUrl: addTrailingSlash(env.baseUrl),
   apiConcurrency: env.apiConcurrency || 5,
 
   // Other config
-  academicYear: '2018/2019',
+  academicYear: '2019/2020',
   dataPath: path.resolve(__dirname, '../data'),
 };
 

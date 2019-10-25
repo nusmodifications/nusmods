@@ -7,6 +7,7 @@ import {
   FacultyCodeMap,
   SemesterModule,
   SemesterModuleData,
+  WritableSemesterModuleData,
 } from '../types/mapper';
 import { NUSModuleAttributes, Semester, Workload } from '../types/modules';
 import { Task } from '../types/tasks';
@@ -237,57 +238,67 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
 
     // Combine all three source of data into one set of semester module info.
     //
-    // We iterate over timetables because only modules with timetable lessons
-    // are are actually offered.
-    //
     // The data source is less consistent than we'd like, because there are
     // modules with timetable but no module info, and modules with exam info
-    // but no timetable/module info. Timetable is the best option here compared
-    // to module info (which has a lot of modules but most are not offered)
-    // and exam info (missing modules since many modules don't have exams).
+    // but no timetable/module info.
     const semesterModuleData: SemesterModuleData[] = [];
-    each(timetables, (timetable, moduleCode) => {
+    each(modulesMap, (moduleInfo, moduleCode) => {
       const logger = this.logger.child({ moduleCode });
-      const moduleInfo = modulesMap[moduleCode];
-      if (!moduleInfo) {
-        logger.debug({ timetable }, 'Found module with timetable but no module info');
-        return;
-      }
-
-      const examInfo = exams[moduleCode] || {};
-      const semesterData = {
-        semester,
-        timetable,
-        ...examInfo,
-      };
 
       // Map module info to the shape expected by our frontend and clean up
       // the data by removing nil fields and fixing data issues
       const rawModule = mapModuleInfo(moduleInfo, departmentMap, facultyMap, logger);
       const module = cleanModuleInfo(rawModule);
 
-      semesterModuleData.push({
+      const timetable = timetables[moduleCode];
+
+      const semesterModuleDatum: WritableSemesterModuleData = {
         module,
-        semesterData,
         moduleCode,
-      });
+      };
+
+      // Modules without timetable lessons are not offered this semester.
+      // Store the module anyway so that we know it exists, but don't set
+      // semesterData.
+      if (timetable) {
+        const examInfo = exams[moduleCode] || {};
+        semesterModuleDatum.semesterData = {
+          semester,
+          timetable,
+          ...examInfo,
+        };
+      }
+
+      semesterModuleData.push(semesterModuleDatum);
     });
+
+    // Log modules that have timetables but no module info
+    const noInfoModulesWithTimetables = Array.from(
+      difference(new Set(Object.keys(timetables)), new Set(Object.keys(modulesMap))),
+    );
+    if (noInfoModulesWithTimetables.length > 0) {
+      this.logger.debug(
+        { moduleCodes: noInfoModulesWithTimetables.sort() },
+        'Found modules with timetable but no info',
+      );
+    }
 
     // Log modules that have exams but no timetables
     const noInfoModulesWithExams = Array.from(
-      difference(new Set(Object.keys(exams)), new Set(Object.keys(timetables))),
+      difference(new Set(Object.keys(exams)), new Set(Object.keys(modulesMap))),
     );
     if (noInfoModulesWithExams.length > 0) {
       this.logger.debug(
         { moduleCodes: noInfoModulesWithExams.sort() },
-        'Found modules with exam but no info/timetable',
+        'Found modules with exam but no info',
       );
     }
 
     // Save the merged semester data to disk
     await Promise.all(
-      semesterModuleData.map((semesterData) =>
-        this.io.semesterData(this.semester, semesterData.moduleCode, semesterData.semesterData),
+      semesterModuleData.map(
+        ({ moduleCode, semesterData }) =>
+          semesterData && this.io.semesterData(this.semester, moduleCode, semesterData),
       ),
     );
 

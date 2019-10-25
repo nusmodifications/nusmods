@@ -43,23 +43,23 @@
   "homepage": "https://github.com/nusmodifications/nusmods/tree/master/packages/nusmoderator",
   "npmName": "nusmoderator",
   "devDependencies": {
-    "@babel/core": "7.4.5",
-    "@babel/preset-env": "7.4.5",
+    "@babel/core": "7.6.4",
+    "@babel/preset-env": "7.6.3",
     "babel-core": "7.0.0-bridge.0",
-    "babel-eslint": "10.0.1",
-    "babel-jest": "24.8.0",
-    "documentation": "11.0.0",
-    "eslint": "5.16.0",
-    "eslint-config-airbnb-base": "13.1.0",
-    "eslint-config-prettier": "4.3.0",
-    "eslint-plugin-import": "2.17.3",
-    "eslint-plugin-prettier": "3.1.0",
-    "jest": "24.8.0",
+    "babel-eslint": "10.0.3",
+    "babel-jest": "24.9.0",
+    "documentation": "12.1.2",
+    "eslint": "6.5.1",
+    "eslint-config-airbnb-base": "14.0.0",
+    "eslint-config-prettier": "6.4.0",
+    "eslint-plugin-import": "2.18.2",
+    "eslint-plugin-prettier": "3.1.1",
+    "jest": "24.9.0",
     "microbundle": "0.11.0",
-    "prettier": "1.17.1",
-    "rimraf": "2.6.3"
+    "prettier": "1.18.2",
+    "rimraf": "3.0.0"
   },
   "dependencies": {
-    "date-fns": "2.0.0-alpha.27"
+    "date-fns": "2.5.1"
   }
 }

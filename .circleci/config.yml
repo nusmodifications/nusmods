@@ -114,7 +114,7 @@ jobs:
           command: |
             set -e
             yarn test --runInBand --reporters=default --reporters=jest-junit
-            cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+            yarn codecov --disable=gcov -f ./coverage/coverage-final.json
       - run:
           name: Integration tests
           environment:

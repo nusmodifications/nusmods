@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { updateServiceWorker } from 'bootstrapping/service-worker';
 import classnames from 'classnames';
-import { Refresh } from 'views/components/icons';
+import { RefreshCw as Refresh } from 'react-feather';
+
+import { updateServiceWorker } from 'bootstrapping/service-worker-manager';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import styles from './NavRefreshPrompt.scss';
 
@@ -37,7 +38,7 @@ export default class NavRefreshPrompt extends React.PureComponent<Props, State> 
           <div
             className={classnames('btn btn-sm btn-block btn-success', { disabled: isReloading })}
           >
-            {isReloading ? <LoadingSpinner small /> : 'Refresh page'}
+            {isReloading ? <LoadingSpinner small white /> : 'Refresh page'}
           </div>
         </div>
       </button>

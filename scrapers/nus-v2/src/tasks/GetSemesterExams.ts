@@ -11,8 +11,8 @@ import { Cache } from '../types/persist';
 import BaseTask from './BaseTask';
 import config from '../config';
 import { cacheDownload, getTermCode } from '../utils/api';
-import { TaskError } from '../utils/errors';
 import { validateExam, validateSemester } from '../services/validation';
+import { NotFoundError } from '../utils/errors';
 
 /* eslint-disable @typescript-eslint/camelcase */
 
@@ -59,10 +59,12 @@ export default class GetSemesterExams extends BaseTask implements Task<void, Out
       year: academicYear,
     });
 
-    this.examCache = this.getCache<ModuleExam[]>(`semester-${semester}-exams`);
+    // Set expiry to 5 days in case the API goes down, we don't wipe all
+    // existing exam data (ノ°Д°）ノ︵ ┻━┻
+    this.examCache = this.getCache<ModuleExam[]>(`semester-${semester}-exams`, 5 * 24 * 60);
   }
 
-  async run() {
+  async run(): Promise<Output> {
     this.logger.info(
       `Getting exams for all modules in ${this.academicYear} semester ${this.semester}`,
     );
@@ -78,7 +80,17 @@ export default class GetSemesterExams extends BaseTask implements Task<void, Out
         this.logger,
       );
     } catch (e) {
-      throw new TaskError('Cannot get exam data', this, e);
+      // API may not return exam info for future semesters, we need to distinguish this from API
+      // errors
+      if (e instanceof NotFoundError) {
+        this.logger.error(
+          e,
+          `Cannot get exam data for ${this.academicYear} semester ${this.semester}`,
+        );
+        return {};
+      }
+
+      throw e;
     }
 
     // Try to filter out invalid exams

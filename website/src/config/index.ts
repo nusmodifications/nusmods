@@ -1,22 +1,30 @@
+import { mapValues } from 'lodash';
+import { format } from 'date-fns';
+
 import { AcadYear, Semester } from 'types/modules';
 
 import holidays from 'data/holidays.json';
-import corsData from 'data/cors-schedule-ay1819-sem2.json';
+import modRegData from 'data/modreg-schedule-ay1920-sem1.json';
 import appConfig from './app-config.json';
 
-export type CorsPeriodType = 'open' | 'closed';
+export const regPeriods = [
+  'Select Modules',
+  'Select Tutorials / Labs',
+  'Add / Swap Tutorials',
+  'Submit Module Requests',
+] as const;
+export type RegPeriodType = typeof regPeriods[number];
 
-export type CorsPeriod = {
-  type: CorsPeriodType;
+export const SCHEDULE_TYPES = ['Undergraduate', 'Graduate'] as const;
+export type ScheduleType = typeof SCHEDULE_TYPES[number];
+
+export type RegPeriod = {
+  type: RegPeriodType;
+  name: string;
   start: string;
   startDate: Date;
   end: string;
   endDate: Date;
-};
-
-export type CorsRound = {
-  round: string;
-  periods: CorsPeriod[];
 };
 
 export type Config = {
@@ -26,8 +34,7 @@ export type Config = {
   getSemesterKey: () => string;
 
   apiBaseUrl: string;
-  corsUrl: string;
-  ivleUrl: string;
+  elasticsearchBaseUrl: string;
 
   disqusShortname: string;
   venueFeedbackApi: string;
@@ -35,6 +42,8 @@ export type Config = {
   semesterNames: { [semester: string]: string };
   shortSemesterNames: { [semester: string]: string };
   archiveYears: string[];
+  examAvailability: Semester[];
+  examAvailabilitySet: Set<Semester>;
 
   defaultPreferences: {
     theme: string;
@@ -57,33 +66,28 @@ export type Config = {
 
   holidays: Date[];
 
-  corsSchedule: CorsRound[];
+  modRegSchedule: { [type in ScheduleType]: RegPeriod[] };
 };
 
-function convertCorsDate(roundData: typeof corsData[0]): CorsRound {
-  return {
-    ...roundData,
-    periods: roundData.periods.map((period) => ({
-      ...period,
-      // To make TypeScript happy
-      type: period.type as CorsPeriodType,
-      // Convert timestamps to date objects
-      startDate: new Date(period.startTs),
-      endDate: new Date(period.endTs),
-    })),
-  };
+export function convertModRegDates(roundData: typeof modRegData[ScheduleType]): RegPeriod[] {
+  return roundData.map((data) => ({
+    ...data,
+    type: data.type as RegPeriodType,
+    start: format(new Date(data.start), 'EEEE do LLLL, haaaa'),
+    end: format(new Date(data.end), 'EEEE do LLLL, haaaa'),
+    startDate: new Date(data.start),
+    endDate: new Date(data.end),
+  }));
 }
 
 const augmentedConfig: Config = {
   ...appConfig,
 
-  corsUrl: appConfig.corsUrl
-    .replace('<AcademicYear>', appConfig.academicYear)
-    .replace('<Semester>', String(appConfig.semester)),
-
   holidays: holidays.map((date) => new Date(date)),
 
-  corsSchedule: corsData.map(convertCorsDate),
+  modRegSchedule: mapValues(modRegData, convertModRegDates),
+
+  examAvailabilitySet: new Set(appConfig.examAvailability),
 
   /**
    * Returns a unique key for every acad year + semester

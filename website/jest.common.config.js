@@ -19,5 +19,5 @@ module.exports = {
   collectCoverageFrom: ['**/!(*.d).{js,jsx,ts,tsx}'],
   coveragePathIgnorePatterns: ['/node_modules/', '<rootDir>/src/(?:test-utils|e2e)'],
   // Only write lcov files in CIs
-  coverageReporters: ['text'].concat(process.env.CI ? 'lcov' : []),
+  coverageReporters: ['text'].concat(process.env.CI ? 'json' : []),
 };
