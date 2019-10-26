@@ -1,4 +1,4 @@
-  # Production Server Setup Guides
+# Production Server Setup Guides
 
 Guides to set up NUSMods on production servers.
 
