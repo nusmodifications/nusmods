@@ -1,5 +1,5 @@
 export default {
-  academicYear: process.env.ACADEMIC_YEAR || '2017-2018',
+  academicYear: process.env.ACADEMIC_YEAR,
 
   // Width of the page in pixels
   pageWidth: Number(process.env.PAGE_WIDTH) || 1024,
@@ -20,9 +20,6 @@ export default {
   // throw an error.
   moduleData: process.env.MODULE_DATA || null,
 
-  // Full DSN string used to report errors to Raven from the server - used only in production
-  ravenDsn: process.env.RAVEN_DSN,
-
-  // Public key only DSN string used for the Raven error feedback form
-  publicDsn: process.env.PUBLIC_DSN,
+  // Sentry DSN string used for the error reporting and feedback form
+  sentryDsn: process.env.SENTRY_DSN,
 };

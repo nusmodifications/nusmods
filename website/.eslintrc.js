@@ -5,14 +5,17 @@ module.exports = {
 
   parserOptions: {
     project: './tsconfig.json',
+
+    // @typescript-eslint/parser doesn't play well with eslint --watch, this is
+    // a stopgap measure to allow adding new files in the IDE to still work.
+    // See https://github.com/typescript-eslint/typescript-eslint/issues/890
+    createDefaultProgram: process.env.NODE_ENV !== 'production' && !process.env.CI,
   },
 
   root: true,
   extends: ['airbnb', 'prettier', 'prettier/react'],
-  env: {
-    browser: true,
-  },
-  plugins: ['@typescript-eslint', 'prettier', 'import', 'jsx-a11y', 'react'],
+
+  plugins: ['@typescript-eslint', 'prettier', 'import', 'jsx-a11y', 'react', 'react-hooks'],
 
   settings: {
     'import/resolver': {
@@ -54,6 +57,8 @@ module.exports = {
     'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
     'no-bitwise': 'off',
 
+    'react/no-unescaped-entities': 'off',
+
     'react/no-array-index-key': 'off',
 
     // SEE: https://github.com/yannickcr/eslint-plugin-react/issues
@@ -75,7 +80,14 @@ module.exports = {
       },
     ],
 
+    // These lints are not useful
     'react/require-default-props': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'react/state-in-constructor': 'off',
+
+    // Defaults to outside, which is pretty ugly
+    "react/static-property-placement": ['error', 'static public field'],
+
     'react/jsx-filename-extension': ['error', { extensions: ['.tsx', '.jsx'] }],
     'react/default-props-match-prop-types': ['error', { allowRequiredDefaults: true }],
 
@@ -88,8 +100,15 @@ module.exports = {
     // TODO: Fix this
     'react/no-access-state-in-setstate': 'warn',
 
+    "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+    "react-hooks/exhaustive-deps": "warn", // Checks effect dependencies
+
     // TODO: Replace divs with buttons, but remove all button styling.
     'jsx-a11y/no-static-element-interactions': 'off',
+
+    // Seem to be triggering on th, so setting to warn for now
+    // TODO: Wait for https://github.com/evcohen/eslint-plugin-jsx-a11y/issues/637
+    'jsx-a11y/control-has-associated-label': 'warn',
 
     // The default option requires BOTH id and nesting, which is excessive,
     // especially with checkboxes and radiobuttons. This changes it to EITHER

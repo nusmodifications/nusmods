@@ -1,8 +1,14 @@
 import { VenueInfo, VenueSearchOptions, VenueDetailList, OCCUPIED } from 'types/venues';
-import { range, entries, padStart } from 'lodash';
+import { range, entries, padStart, clamp } from 'lodash';
+import produce from 'immer';
 
 import { tokenize } from './moduleSearch';
 import { SCHOOLDAYS } from './timify';
+
+// The first and last starting time of lessons
+export const FIRST_CLASS_HOUR = 8;
+export const LAST_CLASS_HOUR = 22;
+export const SCHOOL_CLOSE_HOUR = 24;
 
 // Array of [0, 30, 100, 130, 200, 230, ...], used to create time strings at half hour intervals
 // eg. 900 + hourDifference[2] // (9am + 2 * 30 minutes = 10am)
@@ -51,9 +57,23 @@ export function filterAvailability(
   });
 }
 
+/**
+ * Clamp the duration of the search option to within school hours
+ */
+export function clampClassDuration(searchOptions: VenueSearchOptions): VenueSearchOptions {
+  return produce(searchOptions, (draft) => {
+    const newEndTime = clamp(draft.time + draft.duration, FIRST_CLASS_HOUR, SCHOOL_CLOSE_HOUR);
+    draft.duration = newEndTime - draft.time;
+  });
+}
+
 export function floorName(floor: number | string): string {
   if (typeof floor === 'string') {
     return `${floor.toLowerCase()} floor`;
+  }
+
+  if (floor === 0) {
+    return 'the ground floor';
   }
 
   const floorNumber = floor < 0 ? `B${-floor}` : floor;

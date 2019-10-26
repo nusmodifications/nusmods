@@ -2,7 +2,7 @@ import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Loadable, { LoadingComponentProps } from 'react-loadable';
 import classnames from 'classnames';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import produce from 'immer';
 import qs from 'query-string';
 import { isEqual, mapValues, pick, size } from 'lodash';
@@ -14,7 +14,7 @@ import ApiError from 'views/errors/ApiError';
 import Warning from 'views/errors/Warning';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import SearchBox from 'views/components/SearchBox';
-import { Clock, Map } from 'views/components/icons';
+import { Clock, Map } from 'react-feather';
 import { venuePage } from 'views/routes/paths';
 import Modal from 'views/components/Modal';
 import Title from 'views/components/Title';
@@ -25,7 +25,7 @@ import makeResponsive from 'views/hocs/makeResponsive';
 import config from 'config';
 import nusmods from 'apis/nusmods';
 import HistoryDebouncer from 'utils/HistoryDebouncer';
-import { filterAvailability, searchVenue, sortVenues } from 'utils/venues';
+import { clampClassDuration, filterAvailability, searchVenue, sortVenues } from 'utils/venues';
 import { breakpointDown } from 'utils/css';
 import { defer } from 'utils/react';
 import { convertIndexToTime } from 'utils/timify';
@@ -50,7 +50,8 @@ type State = {
   isMapExpanded: boolean;
 
   // Search state
-  searchTerm: string;
+  searchBoxValue: string; // Value of the controlled search box; updated real-time
+  searchTerm: string; // Actual string to search with; deferred update
   isAvailabilityEnabled: boolean;
   searchOptions: VenueSearchOptions;
   pristineSearchOptions: boolean;
@@ -76,11 +77,13 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
       : defaultSearchOptions();
 
     this.history = new HistoryDebouncer(history);
+    const searchTerm = params.q || '';
     this.state = {
       searchOptions,
       isAvailabilityEnabled,
       isMapExpanded: false,
-      searchTerm: params.q || '',
+      searchTerm,
+      searchBoxValue: searchTerm,
       // eslint-disable-next-line react/no-unused-state
       pristineSearchOptions: !isAvailabilityEnabled,
     };
@@ -102,8 +105,8 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
   }
 
   onFindFreeRoomsClicked = () => {
-    this.setState((state) =>
-      produce(state, (draft) => {
+    this.setState(
+      produce((draft) => {
         const { pristineSearchOptions, isAvailabilityEnabled } = draft;
         draft.isAvailabilityEnabled = !isAvailabilityEnabled;
 
@@ -124,16 +127,18 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
       pathname: venuePage(),
     });
 
-  onSearch = (searchTerm: string) => {
-    if (searchTerm !== this.state.searchTerm) {
-      defer(() => this.setState({ searchTerm }));
-    }
+  onSearchBoxChange = (searchBoxValue: string) => {
+    this.setState({ searchBoxValue });
+  };
+
+  onSearch = () => {
+    defer(() => this.setState((prevState) => ({ searchTerm: prevState.searchBoxValue.trim() })));
   };
 
   onAvailabilityUpdate = (searchOptions: VenueSearchOptions) => {
     if (!isEqual(searchOptions, this.state.searchOptions)) {
       this.setState({
-        searchOptions,
+        searchOptions: clampClassDuration(searchOptions),
         // eslint-disable-next-line react/no-unused-state
         pristineSearchOptions: false, // user changed searchOptions
       });
@@ -144,7 +149,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
     this.setState({ isMapExpanded });
   };
 
-  updateURL = (debounce: boolean = true) => {
+  updateURL = (debounce = true) => {
     const { searchTerm, isAvailabilityEnabled, searchOptions } = this.state;
     let query: Partial<Params> = {};
 
@@ -162,17 +167,12 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
 
   getHighlightPeriod(): TimePeriod | undefined {
     const { isAvailabilityEnabled, searchOptions } = this.state;
-
     if (!isAvailabilityEnabled) return undefined;
 
-    const day = searchOptions.day;
-    const startTime = convertIndexToTime(searchOptions.time * 2);
-    const endTime = convertIndexToTime(2 * (searchOptions.time + searchOptions.duration));
-
     return {
-      day,
-      startTime,
-      endTime,
+      day: searchOptions.day,
+      startTime: convertIndexToTime(searchOptions.time * 2),
+      endTime: convertIndexToTime(2 * (searchOptions.time + searchOptions.duration)),
     };
   }
 
@@ -183,7 +183,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
   }
 
   renderSearch() {
-    const { searchTerm, isAvailabilityEnabled, searchOptions } = this.state;
+    const { searchBoxValue, isAvailabilityEnabled, searchOptions } = this.state;
 
     return (
       <div className={styles.venueSearch}>
@@ -193,8 +193,10 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
           className={styles.searchBox}
           throttle={0}
           useInstantSearch
-          initialSearchTerm={searchTerm}
+          isLoading={false}
+          value={searchBoxValue}
           placeholder="e.g. LT27"
+          onChange={this.onSearchBoxChange}
           onSearch={this.onSearch}
         />
 
@@ -366,7 +368,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
 // Explicitly declare top level components for React hot reloading to work.
 const ResponsiveVenuesContainer = makeResponsive(VenuesContainerComponent, breakpointDown('sm'));
 const RoutedVenuesContainer = withRouter(ResponsiveVenuesContainer);
-const AsyncVenuesContainer = Loadable.Map({
+const AsyncVenuesContainer = Loadable.Map<Props, { venues: AxiosResponse }>({
   loader: {
     venues: () => axios.get(nusmods.venuesUrl(config.semester)),
   },

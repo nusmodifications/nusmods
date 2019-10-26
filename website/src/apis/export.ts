@@ -3,6 +3,7 @@ import qs from 'query-string';
 import { Semester } from 'types/modules';
 import { extractStateForExport } from 'utils/export';
 import { State } from 'types/state';
+import { SemTimetableConfig } from 'types/timetables';
 
 export type ExportOptions = {
   pixelRatio?: number;
@@ -10,15 +11,21 @@ export type ExportOptions = {
 
 const baseUrl = '/export';
 
-function serializeState(semester: Semester, state: State, options: ExportOptions = {}) {
+function serializeState(
+  semester: Semester,
+  timetable: SemTimetableConfig,
+  state: State,
+  options: ExportOptions = {},
+) {
   return qs.stringify({
-    data: JSON.stringify(extractStateForExport(semester, state)),
+    data: JSON.stringify(extractStateForExport(semester, timetable, state)),
     ...options,
   });
 }
 
 export default {
-  image: (semester: Semester, state: State, pixelRatio: number = 1) =>
-    `${baseUrl}/image?${serializeState(semester, state, { pixelRatio })}`,
-  pdf: (semester: Semester, state: State) => `${baseUrl}/pdf?${serializeState(semester, state)}`,
+  image: (semester: Semester, timetable: SemTimetableConfig, state: State, pixelRatio = 1) =>
+    `${baseUrl}/image?${serializeState(semester, timetable, state, { pixelRatio })}`,
+  pdf: (semester: Semester, timetable: SemTimetableConfig, state: State) =>
+    `${baseUrl}/pdf?${serializeState(semester, timetable, state)}`,
 };

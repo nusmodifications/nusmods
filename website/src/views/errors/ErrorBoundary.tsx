@@ -17,7 +17,7 @@ export default class ErrorBoundary extends React.Component<Props, State> {
     errorPage: () => null,
   };
 
-  state = {
+  state: State = {
     error: null,
   };
 

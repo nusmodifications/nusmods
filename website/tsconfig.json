@@ -42,5 +42,7 @@
     // Ignore errors emitted from .d.ts files
     "skipLibCheck": true
   },
-  "include": ["src"]
+  // webpack, scripts and root js files are not really typechecked, but @eslint-typescript/parser needs them
+  // to be specified for the linter to work
+  "include": ["src", "webpack", "scripts", "*.js"]
 }

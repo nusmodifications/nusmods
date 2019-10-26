@@ -8,7 +8,7 @@
 // eslint-disable-next-line import/prefer-default-export
 export interface Task<Input = void, Output = void> {
   // Name of the task
-  name: string;
+  readonly name: string;
 
   // Execute the task
   run(input: Input): Promise<Output>;

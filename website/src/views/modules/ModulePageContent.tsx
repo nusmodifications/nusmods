@@ -6,7 +6,7 @@ import { kebabCase, map, mapValues, values, sortBy } from 'lodash';
 import { Module, NUSModuleAttributes, attributeDescription } from 'types/modules';
 
 import config from 'config';
-import { getSemestersOffered } from 'utils/modules';
+import { getSemestersOffered, isOffered } from 'utils/modules';
 import { intersperse } from 'utils/array';
 import { BULLET } from 'utils/react';
 import { NAVTAB_HEIGHT } from 'views/layout/Navtabs';
@@ -26,10 +26,11 @@ import AddModuleDropdown from 'views/components/module-info/AddModuleDropdown';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
 import ScrollToTop from 'views/components/ScrollToTop';
-import { Archive, Check, AlertTriangle } from 'views/components/icons';
+import { Archive, Check } from 'react-feather';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
 
 import styles from './ModulePageContent.scss';
+import ReportError from './ReportError';
 
 export type Props = {
   module: Module;
@@ -63,6 +64,7 @@ export default class ModulePageContent extends React.Component<Props, State> {
     const pageTitle = `${moduleCode} ${title}`;
     const semesters = getSemestersOffered(module);
     const isArchive = !!archiveYear;
+    const offered = isOffered(module);
 
     const disqusConfig = {
       url: `https://nusmods.com/modules/${moduleCode}/reviews`,
@@ -87,6 +89,17 @@ export default class ModulePageContent extends React.Component<Props, State> {
             <p>
               You are looking at archived information of this module from academic year{' '}
               <strong>{archiveYear}</strong>. Information on this page may be out of date.
+            </p>
+          </div>
+        )}
+
+        {!offered && (
+          <div className={classnames(styles.archiveWarning, 'alert alert-warning')}>
+            <Archive className={styles.archiveIcon} />
+            <p>
+              This module is not offered in this academic year. You may use this information to map
+              exchange modules or to see modules that were previously or may be offered in the
+              future.
             </p>
           </div>
         )}
@@ -201,16 +214,14 @@ export default class ModulePageContent extends React.Component<Props, State> {
                     </div>
                   ))}
 
-                  {!isArchive && (
+                  {!isArchive && offered && (
                     <div className={styles.addToTimetable}>
                       <AddModuleDropdown module={module} className="btn-group-sm" block />
                     </div>
                   )}
 
                   <p>
-                    <a className="" href="mailto:modules@nusmods.com">
-                      <AlertTriangle /> Report errors
-                    </a>
+                    <ReportError moduleCode={moduleCode} />
                   </p>
                 </div>
               </section>
@@ -248,10 +259,25 @@ export default class ModulePageContent extends React.Component<Props, State> {
                             vibrant and rich NUS community.
                           </p>
                           <p>
-                            <strong>Please note:</strong> Because the experience of each module will
-                            differ according to the professor teaching the module, at the start of
-                            your review, please state the semester taken and the name of the
-                            professor who taught the module in that semester.
+                            <strong>Please note:</strong>
+                            <ol className={styles.modReviewDescription}>
+                              <li>
+                                Because the experience of each module will differ according to the
+                                professor teaching the module, at the start of your review, please
+                                state the semester taken and the name of the professor who taught
+                                the module in that semester.
+                              </li>
+                              <li>
+                                Other students will read your review to get an idea of what taking
+                                the module will be like. If you'd like to give feedback about the
+                                module to NUS, please use the official Student Feedback system as
+                                NUS does not monitor these reviews.
+                              </li>
+                              <li>
+                                The claims made in these reviews have not been verified by NUS or
+                                NUSMods. Please take all claims with a grain of salt.
+                              </li>
+                            </ol>
                           </p>
                         </div>
                       </div>

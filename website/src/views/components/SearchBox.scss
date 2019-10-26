@@ -1,4 +1,4 @@
-@import "~styles/utils/modules-entry.scss";
+@import '~styles/utils/modules-entry.scss';
 
 .searchWrapper {
   position: relative;
@@ -7,21 +7,27 @@
     padding: 0.8rem 1rem 0.8rem 2rem;
     border-width: 0 0 1px;
     border-radius: 0;
-
     &:focus {
       box-shadow: none;
     }
   }
 }
 
-.searchIcon {
+.leftAccessory {
   position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100%;
   transition: color 0.3s;
+
+  .spinner {
+    display: block;
+  }
 }
 
 .searchBoxFocused {
-  .searchIcon {
+  .leftAccessory {
     color: theme-color();
   }
 }
@@ -43,10 +49,17 @@
     }
   }
 
-  .searchIcon {
+  .leftAccessory {
     left: $grid-gutter-width / 2;
-    width: 1rem;
-    padding-bottom: 0.1rem; // Visual alignment
+
+    &.searchIcon {
+      width: 1rem;
+      padding-bottom: 0.1rem; // Visual alignment
+    }
+
+    &.spinnerContainer {
+      padding-bottom: 0.2rem; // Visual alignment
+    }
   }
 }
 

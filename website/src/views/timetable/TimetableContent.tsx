@@ -42,8 +42,10 @@ import { resetScrollPosition } from 'utils/react';
 import ModulesSelectContainer from 'views/timetable/ModulesSelectContainer';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
+import ErrorBoundary from 'views/errors/ErrorBoundary';
+import ModRegNotification from 'views/components/notfications/ModRegNotification';
 import { State as StoreState } from 'types/state';
-import { ModuleWithColor } from 'types/views';
+import { ModuleWithColor, TombstoneModule } from 'types/views';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
@@ -86,7 +88,7 @@ type Props = OwnProps & {
 type State = {
   isScrolledHorizontally: boolean;
   showExamCalendar: boolean;
-  tombstone: ModuleWithColor | null;
+  tombstone: TombstoneModule | null;
 };
 
 /**
@@ -181,10 +183,15 @@ class TimetableContent extends React.Component<Props, State> {
   };
 
   removeModule = (module: ModuleWithColor) => {
+    // Save the index of the module before removal so the tombstone can be inserted into
+    // the correct position
+    const index = this.addedModules().findIndex(
+      ({ moduleCode }) => moduleCode === module.moduleCode,
+    );
     this.props.removeModule(this.props.semester, module.moduleCode);
 
     // A tombstone is displayed in place of a deleted module
-    this.setState({ tombstone: module });
+    this.setState({ tombstone: { ...module, index } });
   };
 
   resetTombstone = () => this.setState({ tombstone: null });
@@ -198,7 +205,7 @@ class TimetableContent extends React.Component<Props, State> {
   renderModuleTable = (
     modules: Module[],
     horizontalOrientation: boolean,
-    tombstone: ModuleWithColor | null = null,
+    tombstone: TombstoneModule | null = null,
   ) => (
     <TimetableModulesTable
       modules={modules.map((module) => ({
@@ -342,6 +349,10 @@ class TimetableContent extends React.Component<Props, State> {
         <Title>Timetable</Title>
 
         <Announcements />
+
+        <ErrorBoundary>
+          <ModRegNotification />
+        </ErrorBoundary>
 
         <div>{this.props.header}</div>
 

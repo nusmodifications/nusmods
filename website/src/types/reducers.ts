@@ -1,3 +1,5 @@
+import { RegPeriodType, ScheduleType } from 'config';
+
 import { Mode } from './settings';
 import { ColorIndex, Lesson, TimetableConfig } from './timetables';
 import {
@@ -82,10 +84,13 @@ export type ThemeState = Readonly<{
 }>;
 
 /* settings */
-export type CorsNotificationSettings = {
+export type ModRegRoundKey = { type: RegPeriodType; name?: string };
+
+export type ModRegNotificationSettings = {
   readonly enabled: boolean;
   readonly semesterKey: string;
-  readonly dismissed: string[];
+  readonly dismissed: ModRegRoundKey[];
+  readonly scheduleType: ScheduleType;
 };
 
 export type ModuleTableOrder = 'exam' | 'mc' | 'code';
@@ -95,7 +100,7 @@ export type SettingsState = {
   readonly faculty: Faculty | null;
   readonly mode: Mode;
   readonly hiddenInTimetable: ModuleCode[];
-  readonly corsNotification: CorsNotificationSettings;
+  readonly modRegNotification: ModRegNotificationSettings;
   readonly moduleTableOrder: ModuleTableOrder;
   readonly beta?: boolean;
   readonly loadDisqusManually: boolean;
@@ -140,16 +145,6 @@ export type PlannerState = {
 export type ModuleSelectListItem = SearchableModule & {
   readonly isAdded: boolean;
   readonly isAdding: boolean;
-};
-
-/* moduleFinder.js */
-export type ModuleSearch = {
-  readonly term: string;
-  readonly tokens: string[];
-};
-
-export type ModuleFinderState = {
-  readonly search: ModuleSearch;
 };
 export type ModuleList = ModuleCondensed[];
 export type ModuleSelectList = ModuleSelectListItem[];

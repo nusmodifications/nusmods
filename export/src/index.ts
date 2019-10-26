@@ -7,6 +7,13 @@ import app from './app';
 import * as render from './render';
 
 // Config check
+if (!config.academicYear || !/\d{4}-\d{4}/.test(config.academicYear)) {
+  throw new Error(
+    'academicYear is not set - check config.js. ' +
+      'This should be in the form of <year>-<year> (e.g. 2019-2020).',
+  );
+}
+
 if (process.env.NODE_ENV === 'production') {
   if (
     config.moduleData &&
@@ -18,17 +25,15 @@ if (process.env.NODE_ENV === 'production') {
     );
   }
 
-  if (!config.ravenDsn) {
+  // Set up Raven
+  if (config.sentryDsn) {
+    Sentry.init({
+      dsn: config.sentryDsn,
+    });
+  } else {
     // TODO: Replace with Bunyan log?
-    console.error('[WARNING] Raven DSN is not specified - check config.js');
+    console.error('[WARNING] Sentry DSN is not specified - check config.js');
   }
-}
-
-// Set up Raven
-if (process.env.NODE_ENV === 'production' && config.ravenDsn) {
-  Sentry.init({
-    dsn: config.ravenDsn,
-  });
 }
 
 // Wait for the browser to finish launching before starting the server

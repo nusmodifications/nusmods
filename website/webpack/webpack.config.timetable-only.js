@@ -1,6 +1,5 @@
 const path = require('path');
 const merge = require('webpack-merge');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 
@@ -10,12 +9,7 @@ const parts = require('./webpack.parts');
 const nodeEnvStr = process.env.NODE_ENV || 'production';
 const isProd = nodeEnvStr === 'production';
 
-const cssExtractPlugin = new MiniCssExtractPlugin({
-  filename: '[contenthash].css',
-  chunkFilename: '[contenthash].css',
-});
-
-const source = (file) => path.join('timetable-export', file);
+const source = (file) => path.join('entry/export', file);
 
 const productionConfig = merge([
   parts.setFreeVariable('process.env.NODE_ENV', nodeEnvStr),
@@ -37,36 +31,12 @@ const productionConfig = merge([
       // will work without but this is useful to set.
       chunkFilename: '[chunkhash].js',
     },
-    module: {
-      rules: [
-        {
-          test: /\.(css|scss)$/,
-          include: parts.PATHS.styles,
-          use: [MiniCssExtractPlugin.loader, ...parts.getCSSConfig()],
-        },
-        {
-          test: /\.(css|scss)$/,
-          include: parts.PATHS.src,
-          exclude: parts.PATHS.styles,
-          use: [
-            MiniCssExtractPlugin.loader,
-            ...parts.getCSSConfig({
-              options: {
-                modules: true,
-                localIdentName: '[hash:base64:8]',
-              },
-            }),
-          ],
-        },
-      ],
-    },
     plugins: [
       new HtmlWebpackPlugin({
         template: path.join(parts.PATHS.src, source('index.html')),
         inlineSource: '\\.(js|css)$',
       }),
       new HtmlWebpackInlineSourcePlugin(),
-      cssExtractPlugin,
     ],
   },
   parts.loadImages({
@@ -75,7 +45,7 @@ const productionConfig = merge([
       name: 'img/[name].[hash].[ext]',
     },
   }),
-  parts.clean(parts.PATHS.buildTimetable),
+  parts.productionCSS(),
 ]);
 
 module.exports = productionConfig;
