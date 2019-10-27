@@ -156,4 +156,6 @@ const ModuleFinderSidebar: React.FC = React.memo(() => {
   );
 });
 
+ModuleFinderSidebar.displayName = 'ModuleFinderSidebar';
+
 export default ModuleFinderSidebar;
