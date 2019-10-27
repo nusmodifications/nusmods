@@ -6,12 +6,12 @@ import {
   ResetFiltersDisplayProps,
   CheckboxFilter,
 } from 'searchkit';
+import { Filter } from 'react-feather';
 
 import { attributeDescription, NUSModuleAttributes } from 'types/modules';
 import { RefinementItem } from 'types/views';
 
 import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
-import { Filter } from 'react-feather';
 import FilterContainer from 'views/components/filters/FilterContainer';
 import CheckboxItem from 'views/components/filters/CheckboxItem';
 import DropdownListFilters from 'views/components/filters/DropdownListFilters';
@@ -23,6 +23,7 @@ const RESET_FILTER_OPTIONS = { filter: true };
 
 const NO_EXAM_QUERY = {
   bool: {
+    // eslint-disable-next-line @typescript-eslint/camelcase
     must_not: {
       exists: {
         field: 'semesterData.examDate',
