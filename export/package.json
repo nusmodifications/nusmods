@@ -2,14 +2,17 @@
   "name": "nusmods-export",
   "version": "0.0.1",
   "description": "Server-side timetable rendering for NUSMods export service",
-  "main": "src/index.js",
+  "main": "build/index.js",
   "author": "NUSModifications",
   "license": "MIT",
   "private": true,
   "scripts": {
     "start": "pm2 start ecosystem.config.js",
-    "dev": "nodemon -r dotenv/config ./src",
-    "devtools": "DEVTOOLS=1 nodemon -r dotenv/config ./src",
+    "build": "tsc",
+    "nodemon": "nodemon -r dotenv/config ./build/index.js",
+    "watch": "tsc --watch",
+    "dev": "run-p nodemon watch",
+    "devtools": "cross-env DEVTOOLS=1 yarn dev",
     "deploy": "rsync -avu --delete-after . ../../nusmods-export && pm2 restart ecosystem.config.js",
     "lint": "prettier --write"
   },
@@ -28,13 +31,15 @@
     "puppeteer": "1.12.2"
   },
   "devDependencies": {
-    "@types/fs-extra": "^8.0.0",
+    "@types/fs-extra": "8.0.0",
     "@types/koa": "2.0.49",
-    "@types/koa-router": "^7.0.42",
-    "@types/koa-views": "^2.0.3",
+    "@types/koa-router": "7.0.42",
+    "@types/koa-views": "2.0.3",
     "@types/lodash": "4.14.136",
-    "@types/puppeteer": "^1.12.4",
+    "@types/puppeteer": "1.12.4",
+    "cross-env": "6.0.3",
     "dotenv": "8.2.0",
+    "npm-run-all": "4.1.5",
     "prettier": "1.18.2",
     "typescript": "3.5.3"
   }
