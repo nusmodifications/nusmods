@@ -4,6 +4,7 @@ import {
   RefinementListFilter,
   ResetFilters,
   ResetFiltersDisplayProps,
+  CheckboxFilter,
 } from 'searchkit';
 
 import { attributeDescription, NUSModuleAttributes } from 'types/modules';
@@ -20,7 +21,17 @@ import styles from './ModuleFinderSidebar.scss';
 
 const RESET_FILTER_OPTIONS = { filter: true };
 
-const ModuleFinderSidebar: React.FC = () => {
+const NO_EXAM_QUERY = {
+  bool: {
+    must_not: {
+      exists: {
+        field: 'semesterData.examDate',
+      },
+    },
+  },
+};
+
+const ModuleFinderSidebar: React.FC = React.memo(() => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   return (
     <SideMenu
@@ -62,6 +73,15 @@ const ModuleFinderSidebar: React.FC = () => {
               label: config.semesterNames[key],
             }))
           }
+          containerComponent={FilterContainer}
+          itemComponent={CheckboxItem}
+        />
+
+        <CheckboxFilter
+          id="exam"
+          title="Exams"
+          label="No Exam"
+          filter={NO_EXAM_QUERY}
           containerComponent={FilterContainer}
           itemComponent={CheckboxItem}
         />
@@ -134,6 +154,6 @@ const ModuleFinderSidebar: React.FC = () => {
       </div>
     </SideMenu>
   );
-};
+});
 
 export default ModuleFinderSidebar;
