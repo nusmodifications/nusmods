@@ -4,7 +4,6 @@ import {
   RefinementListFilter,
   ResetFilters,
   ResetFiltersDisplayProps,
-  CheckboxFilter,
 } from 'searchkit';
 import { Filter } from 'react-feather';
 
@@ -18,19 +17,26 @@ import DropdownListFilters from 'views/components/filters/DropdownListFilters';
 
 import config from 'config';
 import styles from './ModuleFinderSidebar.scss';
+import ChecklistFilter, { FilterItem } from '../components/filters/ChecklistFilter';
 
 const RESET_FILTER_OPTIONS = { filter: true };
 
-const NO_EXAM_QUERY = {
-  bool: {
-    // eslint-disable-next-line @typescript-eslint/camelcase
-    must_not: {
-      exists: {
-        field: 'semesterData.examDate',
+const EXAM_FILTER_ITEMS: FilterItem[] = [
+  {
+    key: 'no-exam',
+    label: 'No Exam',
+    filter: {
+      bool: {
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        must_not: {
+          exists: {
+            field: 'semesterData.examDate',
+          },
+        },
       },
     },
   },
-};
+];
 
 const ModuleFinderSidebar: React.FC = React.memo(() => {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -78,14 +84,7 @@ const ModuleFinderSidebar: React.FC = React.memo(() => {
           itemComponent={CheckboxItem}
         />
 
-        <CheckboxFilter
-          id="exam"
-          title="Exams"
-          label="No Exam"
-          filter={NO_EXAM_QUERY}
-          containerComponent={FilterContainer}
-          itemComponent={CheckboxItem}
-        />
+        <ChecklistFilter title="Exams" items={EXAM_FILTER_ITEMS} />
 
         <RefinementListFilter
           id="level"
