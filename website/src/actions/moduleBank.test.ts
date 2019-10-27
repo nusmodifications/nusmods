@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { TimetableConfig } from 'types/timetables';
 import * as actions from 'actions/moduleBank';
 import NUSModsApi from 'apis/nusmods';
+import { getLRUModules } from './moduleBank-lru';
 
 // Mock NUSModsApi as its URLs contain the current AY, breaking the snapshot tests
 // every AY.
@@ -83,7 +84,7 @@ test('getLRUModule should return the LRU and non-timetable module', () => {
   };
 
   const currentModule = 'ACC1002';
-  const resultOfAction = actions.getLRUModules(modules, timetableConfig, currentModule);
+  const resultOfAction = getLRUModules(modules, timetableConfig, currentModule);
   expect(resultOfAction).toMatchSnapshot();
 });
 

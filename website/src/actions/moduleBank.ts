@@ -1,19 +1,20 @@
 import { requestAction } from 'actions/requests';
 import NUSModsApi from 'apis/nusmods';
 import config from 'config';
-import { flatMap, get, size, sortBy, zip } from 'lodash';
-import { ModulesMap } from 'types/reducers';
+import { size, zip } from 'lodash';
 import { AcadYear, Module, ModuleCode } from 'types/modules';
 
 import { GetState } from 'types/redux';
-import { TimetableConfig } from 'types/timetables';
 import {
   FETCH_ARCHIVE_MODULE,
   FETCH_MODULE,
   FETCH_MODULE_LIST,
+  fetchArchiveRequest,
+  fetchModuleRequest,
   REMOVE_LRU_MODULE,
   UPDATE_MODULE_TIMESTAMP,
 } from './constants';
+import { getLRUModules } from './moduleBank-lru';
 
 const MAX_MODULE_LIMIT = 100;
 
@@ -21,16 +22,6 @@ export function fetchModuleList() {
   return requestAction(FETCH_MODULE_LIST, FETCH_MODULE_LIST, {
     url: NUSModsApi.moduleListUrl(),
   });
-}
-
-export function fetchModuleRequest(moduleCode: ModuleCode) {
-  return `${FETCH_MODULE}/${moduleCode}`;
-}
-
-export function getRequestModuleCode(key: string): ModuleCode | null {
-  const parts = key.split('/');
-  if (parts.length === 2 && parts[0] === FETCH_MODULE) return parts[1];
-  return null;
 }
 
 export function updateModuleTimestamp(moduleCode: ModuleCode) {
@@ -45,30 +36,6 @@ export function removeLRUModule(moduleCodes: ModuleCode[]) {
     type: REMOVE_LRU_MODULE,
     payload: moduleCodes,
   };
-}
-
-// Export for testing
-export function getLRUModules(
-  modules: ModulesMap,
-  lessons: TimetableConfig,
-  currentModule: string,
-  toRemove = 1,
-): ModuleCode[] {
-  // Pull all the modules in all the timetables
-  const timetableModules = new Set(flatMap(lessons, (semester) => Object.keys(semester)));
-
-  // Remove the module which is least recently used and which is not in timetable
-  // and not the currently loaded one
-  const canRemove: ModuleCode[] = Object.keys(modules).filter(
-    (moduleCode) => moduleCode !== currentModule && !timetableModules.has(moduleCode),
-  );
-
-  // Sort them based on the timestamp alone
-  const sortedModules = sortBy<ModuleCode>(canRemove, (moduleCode) =>
-    get(modules[moduleCode], ['timestamp'], 0),
-  );
-
-  return sortedModules.slice(0, toRemove);
 }
 
 export function fetchModule(moduleCode: ModuleCode) {
@@ -114,10 +81,6 @@ export function fetchModule(moduleCode: ModuleCode) {
       },
     );
   };
-}
-
-export function fetchArchiveRequest(moduleCode: ModuleCode, year: string) {
-  return `${FETCH_ARCHIVE_MODULE}_${moduleCode}_${year}`;
 }
 
 export function fetchModuleArchive(moduleCode: ModuleCode, year: string) {

@@ -15,7 +15,7 @@ import {
 } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
 
-export const ADD_MODULE = 'ADD_MODULE';
+export const ADD_MODULE = 'ADD_MODULE' as const;
 export function addModule(semester: Semester, moduleCode: ModuleCode) {
   return (dispatch: Function, getState: GetState) =>
     dispatch(fetchModule(moduleCode)).then(() => {
@@ -48,7 +48,7 @@ export function addModule(semester: Semester, moduleCode: ModuleCode) {
     });
 }
 
-export const REMOVE_MODULE = 'REMOVE_MODULE';
+export const REMOVE_MODULE = 'REMOVE_MODULE' as const;
 export function removeModule(semester: Semester, moduleCode: ModuleCode) {
   return {
     type: REMOVE_MODULE,
@@ -59,7 +59,7 @@ export function removeModule(semester: Semester, moduleCode: ModuleCode) {
   };
 }
 
-export const MODIFY_LESSON = 'MODIFY_LESSON';
+export const MODIFY_LESSON = 'MODIFY_LESSON' as const;
 export function modifyLesson(activeLesson: Lesson) {
   return {
     type: MODIFY_LESSON,
@@ -69,7 +69,7 @@ export function modifyLesson(activeLesson: Lesson) {
   };
 }
 
-export const CHANGE_LESSON = 'CHANGE_LESSON';
+export const CHANGE_LESSON = 'CHANGE_LESSON' as const;
 export function setLesson(
   semester: Semester,
   moduleCode: ModuleCode,
@@ -91,7 +91,7 @@ export function changeLesson(semester: Semester, lesson: Lesson) {
   return setLesson(semester, lesson.moduleCode, lesson.lessonType, lesson.classNo);
 }
 
-export const SET_LESSON_CONFIG = 'SET_LESSON_CONFIG';
+export const SET_LESSON_CONFIG = 'SET_LESSON_CONFIG' as const;
 export function setLessonConfig(
   semester: Semester,
   moduleCode: ModuleCode,
@@ -107,7 +107,7 @@ export function setLessonConfig(
   };
 }
 
-export const CANCEL_MODIFY_LESSON = 'CANCEL_MODIFY_LESSON';
+export const CANCEL_MODIFY_LESSON = 'CANCEL_MODIFY_LESSON' as const;
 export function cancelModifyLesson() {
   return {
     type: CANCEL_MODIFY_LESSON,
@@ -115,7 +115,7 @@ export function cancelModifyLesson() {
   };
 }
 
-export const SET_TIMETABLE = 'SET_TIMETABLE';
+export const SET_TIMETABLE = 'SET_TIMETABLE' as const;
 export function setTimetable(
   semester: Semester,
   timetable?: SemTimetableConfig,
@@ -174,7 +174,7 @@ export function fetchTimetableModules(timetables: SemTimetableConfig[]) {
   };
 }
 
-export const SELECT_MODULE_COLOR = 'SELECT_MODULE_COLOR';
+export const SELECT_MODULE_COLOR = 'SELECT_MODULE_COLOR' as const;
 export function selectModuleColor(
   semester: Semester,
   moduleCode: ModuleCode,
@@ -190,7 +190,7 @@ export function selectModuleColor(
   };
 }
 
-export const HIDE_LESSON_IN_TIMETABLE = 'HIDE_LESSON_IN_TIMETABLE';
+export const HIDE_LESSON_IN_TIMETABLE = 'HIDE_LESSON_IN_TIMETABLE' as const;
 export function hideLessonInTimetable(semester: Semester, moduleCode: ModuleCode) {
   return {
     type: HIDE_LESSON_IN_TIMETABLE,
@@ -198,7 +198,7 @@ export function hideLessonInTimetable(semester: Semester, moduleCode: ModuleCode
   };
 }
 
-export const SHOW_LESSON_IN_TIMETABLE = 'SHOW_LESSON_IN_TIMETABLE';
+export const SHOW_LESSON_IN_TIMETABLE = 'SHOW_LESSON_IN_TIMETABLE' as const;
 export function showLessonInTimetable(semester: Semester, moduleCode: ModuleCode) {
   return {
     type: SHOW_LESSON_IN_TIMETABLE,

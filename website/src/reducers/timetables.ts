@@ -3,7 +3,6 @@ import produce from 'immer';
 import { createMigrate } from 'redux-persist';
 
 import { PersistConfig } from 'storage/persistReducer';
-import { FSA } from 'types/redux';
 import { ModuleCode, Semester } from 'types/modules';
 import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import { ColorMapping, TimetablesState } from 'types/reducers';
@@ -21,6 +20,7 @@ import {
 } from 'actions/timetables';
 import { getNewColor } from 'utils/colors';
 import { SET_EXPORTED_DATA } from 'actions/constants';
+import { Actions } from '../types/actions';
 
 const EMPTY_OBJECT = {};
 
@@ -69,7 +69,7 @@ const defaultModuleLessonConfig: ModuleLessonConfig = {};
 
 function moduleLessonConfig(
   state: ModuleLessonConfig = defaultModuleLessonConfig,
-  action: FSA,
+  action: Actions,
 ): ModuleLessonConfig {
   if (!action.payload) return state;
 
@@ -171,7 +171,7 @@ export const defaultTimetableState: TimetablesState = {
   archive: {},
 };
 
-function timetables(state: TimetablesState = defaultTimetableState, action: FSA): TimetablesState {
+function timetables(state: TimetablesState = defaultTimetableState, action: Actions): TimetablesState {
   // All normal timetable actions should specify their semester
   if (!action.payload || !action.payload.semester) {
     return state;

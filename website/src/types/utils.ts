@@ -8,8 +8,10 @@
 export type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;
 export type Subtract<T extends K, K> = Omit<T, keyof K>;
 
-export type Filter<T, U> = T extends U ? T : never;  // Remove types from T that are not assignable to U
-export type FunctionPropertyNames<T> = { [K in keyof T]: T[K] extends Function ? K : never }[keyof T];
+export type Filter<T, U> = T extends U ? T : never; // Remove types from T that are not assignable to U
+export type FunctionPropertyNames<T> = {
+  [K in keyof T]: T[K] extends Function ? K : never;
+}[keyof T];
 
 /**
  * Returns the types of the value of T

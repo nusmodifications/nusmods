@@ -65,3 +65,21 @@ const requestMiddleware: Middleware<any, State, any> = () => (next) => (action) 
 };
 
 export default requestMiddleware;
+
+export type RequestType<Type extends string> = Type & { __requestType: any };
+export type SuccessType<Type extends string> = Type & { __successType: any };
+export type ErrorType<Type extends string> = Type & { __errorType: any };
+
+export type RequestAction<Type extends string, Request, Response> =
+  | {
+      type: RequestType<Type>;
+      payload: Request;
+    }
+  | {
+      type: SuccessType<Type>;
+      payload: Response;
+    }
+  | {
+      type: ErrorType<Type>;
+      payload: Error;
+    };
