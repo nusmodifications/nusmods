@@ -88,12 +88,11 @@ All projects and packages in this repository are [MIT licensed](LICENSE).
 
 [![](misc/1password-logo.png)](1password)
 
-[Netlify](https://www.netlify.com) deploys our branches so we can easily test incoming Pull Requests. 
+[Netlify](netlify) automatically deploys our branches so we can easily test incoming Pull Requests. 
 
-<a href="https://www.netlify.com">
-  <img src="https://www.netlify.com/img/global/badges/netlify-dark.svg"/>
-</a>
+[![](misc/netlify-logo.png)](netlify)
 
 [browserstack]: https://www.browserstack.com/
 [zoho]: https://www.zoho.com/
 [1password]: https://1password.com/
+[netlify]: https://www.netlify.com
