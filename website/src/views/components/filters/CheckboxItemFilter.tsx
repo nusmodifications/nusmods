@@ -1,19 +1,18 @@
 import React from 'react';
 import { CheckboxFilterAccessor, SearchkitComponent, SearchkitComponentProps } from 'searchkit';
 
+import { ElasticSearchFilter } from 'types/vendor/elastic-search';
 import CheckboxItem from './CheckboxItem';
 
 interface CheckboxItemFilterProps extends SearchkitComponentProps {
   id: string;
   label: string;
-  filter: any;
+  filter: ElasticSearchFilter;
   showCount: boolean;
   disabled: boolean;
 }
 
-type State = {
-  checked: boolean;
-};
+type State = {};
 
 /**
  * SearchKit's default CheckboxFilter comes with an unnecessary title and is hard to customize.
@@ -25,10 +24,6 @@ type State = {
  */
 export default class CheckboxItemFilter extends SearchkitComponent<CheckboxItemFilterProps, State> {
   accessor!: CheckboxFilterAccessor;
-
-  state: State = {
-    checked: false,
-  };
 
   static defaultProps = {
     showCount: true,
@@ -47,7 +42,6 @@ export default class CheckboxItemFilter extends SearchkitComponent<CheckboxItemF
 
   setFilters: React.ChangeEventHandler<HTMLInputElement> = (evt) => {
     const { checked } = evt.target;
-    this.setState({ checked });
     this.accessor.state = this.accessor.state.setValue(checked);
     this.searchkit.performSearch();
   };
@@ -58,6 +52,7 @@ export default class CheckboxItemFilter extends SearchkitComponent<CheckboxItemF
     return (
       <CheckboxItem
         onClick={this.setFilters}
+        active={this.accessor.state.getValue()}
         itemKey={id}
         label={label}
         count={this.accessor.getDocCount()}
