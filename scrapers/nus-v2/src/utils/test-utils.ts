@@ -105,8 +105,9 @@ export function mockResponse<T>(
     data,
     // The server almost always returns 200, even if there is an application error
     status: status || 200,
-    // @ts-ignore TS won't recognize this as valid because httpStatus is defined as a dictionary of static values
-    statusText: statusText || httpStatus[status] || 'OK',
+    // Mildly horrifying coercions to make this at least somewhat readable
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    statusText: statusText || (httpStatus as any)[status!] || 'OK',
     headers: headers || {},
     config: config || {},
     request: request || {},
