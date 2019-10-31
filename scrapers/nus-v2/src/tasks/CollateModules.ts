@@ -28,12 +28,14 @@ type Output = Module[];
  */
 export function mergeAliases(aliases: ModuleAliases[]): { [moduleCode: string]: ModuleCode[] } {
   // Returning undefined causes mergeWith to use the original merge
-
+  // This version of the function cannot be expressed in TypeScript, so we just cast it to any
   /* eslint-disable consistent-return */
-  // @ts-ignore mergeWith allows multiple objects to be merged, but the libdef doesn't
-  const merged: ModuleAliases = mergeWith(...aliases, (src, dest) => {
-    if (src && dest) return union(src, dest);
-  });
+  const merged: ModuleAliases = (mergeWith as Function)(
+    ...aliases,
+    (src: Set<ModuleCode> | undefined, dest: Set<ModuleCode> | undefined) => {
+      if (src && dest) return union(src, dest);
+    },
+  );
   /* eslint-enable */
 
   // Convert the set to an array to make it easier to output since JSON doesn't
