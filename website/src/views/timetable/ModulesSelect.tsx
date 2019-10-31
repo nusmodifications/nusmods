@@ -17,6 +17,8 @@ import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import elements from 'views/elements';
 
+import { Trash } from 'react-feather';
+import { ModuleWithColor } from 'types/views';
 import styles from './ModulesSelect.scss';
 
 type Props = {
@@ -27,6 +29,7 @@ type Props = {
 
   getFilteredModules: (string: string | null) => ModuleSelectList;
   onChange: (moduleCode: ModuleCode) => void;
+  onRemoveModule: (moduleCode: ModuleCode) => void;
 };
 
 type State = {
@@ -152,6 +155,18 @@ export class ModulesSelectComponent extends React.Component<Props, State> {
                 {`${module.moduleCode} ${module.title}`}
                 {module.isAdded && (
                   <div>
+                    <button
+                      type="button"
+                      className={classnames(
+                        'btn btn-outline-secondary btn-svg',
+                        styles.moduleAction,
+                      )}
+                      onClick={() => {
+                        this.props.onRemoveModule(module.moduleCode);
+                      }}
+                    >
+                      <Trash className={styles.actionIcon} />{' '}
+                    </button>
                     <span className="badge badge-info">Added</span>
                   </div>
                 )}

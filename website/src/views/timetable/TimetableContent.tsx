@@ -182,16 +182,15 @@ class TimetableContent extends React.Component<Props, State> {
     this.resetTombstone();
   };
 
-  removeModule = (module: ModuleWithColor) => {
+  removeModule = (moduleCode: ModuleCode) => {
     // Save the index of the module before removal so the tombstone can be inserted into
     // the correct position
-    const index = this.addedModules().findIndex(
-      ({ moduleCode }) => moduleCode === module.moduleCode,
-    );
-    this.props.removeModule(this.props.semester, module.moduleCode);
+    const index = this.addedModules().findIndex(({ moduleCode }) => moduleCode === moduleCode);
+    this.props.removeModule(this.props.semester, moduleCode);
+    const moduleWithColor = this.toModuleWithColor(this.addedModules()[index]);
 
     // A tombstone is displayed in place of a deleted module
-    this.setState({ tombstone: { ...module, index } });
+    this.setState({ tombstone: { ...moduleWithColor, index } });
   };
 
   resetTombstone = () => this.setState({ tombstone: null });
@@ -202,17 +201,19 @@ class TimetableContent extends React.Component<Props, State> {
     return _.sortBy(modules, (module: Module) => getExamDate(module, this.props.semester));
   }
 
+  toModuleWithColor = (module: Module) => ({
+    ...module,
+    colorIndex: this.props.colors[module.moduleCode],
+    hiddenInTimetable: this.isHiddenInTimetable(module.moduleCode),
+  });
+
   renderModuleTable = (
     modules: Module[],
     horizontalOrientation: boolean,
     tombstone: TombstoneModule | null = null,
   ) => (
     <TimetableModulesTable
-      modules={modules.map((module) => ({
-        ...module,
-        colorIndex: this.props.colors[module.moduleCode],
-        hiddenInTimetable: this.isHiddenInTimetable(module.moduleCode),
-      }))}
+      modules={modules.map(this.toModuleWithColor)}
       horizontalOrientation={horizontalOrientation}
       semester={this.props.semester}
       onRemoveModule={this.removeModule}
@@ -412,6 +413,7 @@ class TimetableContent extends React.Component<Props, State> {
                     semester={semester}
                     timetable={this.props.timetable}
                     addModule={this.addModule}
+                    removeModule={this.removeModule}
                   />
                 )}
               </div>

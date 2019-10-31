@@ -10,6 +10,7 @@ import { popNotification } from 'actions/app';
 import { getSemModuleSelectList } from 'selectors/moduleBank';
 import { createSearchPredicate, sortModules } from 'utils/moduleSearch';
 import { State as StoreState } from 'types/state';
+import { ModuleWithColor } from 'types/views';
 import ModulesSelect from './ModulesSelect';
 
 type OwnProps = {
@@ -20,6 +21,7 @@ type OwnProps = {
 type Props = OwnProps & {
   moduleList: ModuleSelectList;
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
+  removeModule: (moduleCode: ModuleCode) => void;
   popNotification: () => void;
 };
 
@@ -54,6 +56,7 @@ class ModulesSelectContainer extends React.Component<Props> {
               isOnline ? 'Add module to timetable' : 'You need to be online to add modules'
             }
             disabled={!isOnline}
+            onRemoveModule={this.props.removeModule}
           />
         )}
       </Online>
