@@ -40,7 +40,7 @@ export function FooterComponent(props: Props) {
 
   return (
     <footer className={styles.footer}>
-      <div className="container">
+      <div className={styles.footerContainer}>
         <ul className={styles.footerLinks}>
           <li>
             <ExternalLink href={config.contact.githubRepo}>GitHub</ExternalLink>
