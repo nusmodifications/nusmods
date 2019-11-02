@@ -45,7 +45,7 @@ import Title from 'views/components/Title';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ModRegNotification from 'views/components/notfications/ModRegNotification';
 import { State as StoreState } from 'types/state';
-import { ModuleWithColor, TombstoneModule } from 'types/views';
+import { TombstoneModule } from 'types/views';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
@@ -182,11 +182,13 @@ class TimetableContent extends React.Component<Props, State> {
     this.resetTombstone();
   };
 
-  removeModule = (moduleCode: ModuleCode) => {
+  removeModule = (moduleCodeToRemove: ModuleCode) => {
     // Save the index of the module before removal so the tombstone can be inserted into
     // the correct position
-    const index = this.addedModules().findIndex(({ moduleCode }) => moduleCode === moduleCode);
-    this.props.removeModule(this.props.semester, moduleCode);
+    const index = this.addedModules().findIndex(
+      ({ moduleCode }) => moduleCode === moduleCodeToRemove,
+    );
+    this.props.removeModule(this.props.semester, moduleCodeToRemove);
     const moduleWithColor = this.toModuleWithColor(this.addedModules()[index]);
 
     // A tombstone is displayed in place of a deleted module
