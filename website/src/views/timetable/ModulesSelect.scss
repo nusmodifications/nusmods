@@ -108,3 +108,7 @@ $module-list-height: 13.5rem;
   color: var(--gray-light);
   cursor: default;
 }
+
+.actionIcon {
+  composes: svg-small from global;
+}

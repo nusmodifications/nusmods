@@ -10,7 +10,6 @@ import { popNotification } from 'actions/app';
 import { getSemModuleSelectList } from 'selectors/moduleBank';
 import { createSearchPredicate, sortModules } from 'utils/moduleSearch';
 import { State as StoreState } from 'types/state';
-import { ModuleWithColor } from 'types/views';
 import ModulesSelect from './ModulesSelect';
 
 type OwnProps = {

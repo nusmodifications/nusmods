@@ -16,9 +16,9 @@ import makeResponsive from 'views/hocs/makeResponsive';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import elements from 'views/elements';
+import Tooltip from 'views/components/Tooltip';
 
 import { Trash } from 'react-feather';
-import { ModuleWithColor } from 'types/views';
 import styles from './ModulesSelect.scss';
 
 type Props = {
@@ -117,6 +117,7 @@ export class ModulesSelectComponent extends React.Component<Props, State> {
     const showResults = isOpen && results.length > 0;
     const showTip = isModalOpen && !results.length;
     const showNoResultMessage = isOpen && inputValue && !results.length;
+    const removeBtnLabel = (moduleCode: ModuleCode) => `Remove ${moduleCode} from timetable`;
 
     return (
       <div className={styles.container}>
@@ -155,18 +156,18 @@ export class ModulesSelectComponent extends React.Component<Props, State> {
                 {`${module.moduleCode} ${module.title}`}
                 {module.isAdded && (
                   <div>
-                    <button
-                      type="button"
-                      className={classnames(
-                        'btn btn-outline-secondary btn-svg',
-                        styles.moduleAction,
-                      )}
-                      onClick={() => {
-                        this.props.onRemoveModule(module.moduleCode);
-                      }}
-                    >
-                      <Trash className={styles.actionIcon} />{' '}
-                    </button>
+                    <Tooltip content={removeBtnLabel(module.moduleCode)} touchHold>
+                      <button
+                        type="button"
+                        className={classnames('btn btn-svg')}
+                        aria-label={removeBtnLabel(module.moduleCode)}
+                        onClick={() => {
+                          this.props.onRemoveModule(module.moduleCode);
+                        }}
+                      >
+                        <Trash className={styles.actionIcon} />{' '}
+                      </button>
+                    </Tooltip>
                     <span className="badge badge-info">Added</span>
                   </div>
                 )}
