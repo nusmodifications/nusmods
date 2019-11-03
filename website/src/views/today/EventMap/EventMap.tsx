@@ -14,7 +14,7 @@ export type Props = OwnProps &
     venueLocations: VenueLocationMap;
   }>;
 
-export default function EventMap(props: Props) {
+const EventMap: React.FC<Props> = (props) => {
   if (!props.venue) {
     return (
       <div className={styles.noLessonSelected}>
@@ -31,4 +31,6 @@ export default function EventMap(props: Props) {
 
   const position: [number, number] = [venueLocation.location.y, venueLocation.location.x];
   return <LocationMap height="100%" position={position} />;
-}
+};
+
+export default EventMap;

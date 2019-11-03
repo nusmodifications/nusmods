@@ -23,8 +23,7 @@ function onNewServiceWorkerWaiting(registration: ServiceWorkerRegistration, call
   function awaitStateChange() {
     if (!registration.installing) return;
     registration.installing.addEventListener('statechange', (event) => {
-      // @ts-ignore Not sure how we can get this event to be typed correctly
-      if (event.target && event.target.state === 'installed') {
+      if (event.target && (event.target as ServiceWorker).state === 'installed') {
         // A new service worker is available, inform the user
         callback();
       }

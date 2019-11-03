@@ -4,13 +4,9 @@ export default function insertScript(
 ): Promise<Event> {
   return new Promise((resolve, reject) => {
     const script = window.document.createElement('script');
+
+    Object.assign(script, options);
     script.src = src;
-
-    Object.keys(options).forEach((option) => {
-      // @ts-ignore TS doesn't allow us to transfer props this way
-      script[option] = options[option];
-    });
-
     script.onload = resolve;
     script.onerror = reject;
 

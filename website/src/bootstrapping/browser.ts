@@ -1,100 +1,91 @@
-// This script checks for browser compatibility and is executed outside React's scope. If a browser
-// is incompatible or not optimal for using the app, a pop-up dialog is appended into the DOM body.
-// This is so that in cases where the React app completely fails to render anything at all, the
-// user will at least be able to see the dialog warning them of the browser incompatibility.
+import Bowser from 'bowser';
+import browsersList from 'browserslist-config-nusmods';
 
-import bowser from 'bowser';
-import * as Sentry from '@sentry/browser';
+export type Platform = 'mobile' | 'desktop' | 'tablet';
+export type VersionMap = Record<string, any>; // Too fiddly to type properly
 
-import { parseFloat } from 'types/utils';
-import { canUseBrowserLocalStorage } from 'storage/localStorage';
-import { BROWSER_WARNING_KEY } from 'storage/keys';
-import styles from './browser.scss';
+function parseBrowser(browser: string): { platform?: Platform; browser: string } {
+  // Split desktop and mobile Safari because we support different versions of each
+  if (browser === 'ios_saf') return { platform: 'mobile', browser: 'safari' };
+  if (browser === 'safari') return { platform: 'desktop', browser: 'safari' };
 
-const composeAnchorText = (innerHTML: string, href: string) =>
-  `<a href=${href} target="_blank" rel="noopener noreferrer">${innerHTML}</a>`;
-const linkForChrome = composeAnchorText('Google Chrome', 'https://www.google.com/chrome/');
-const linkForFirefox = composeAnchorText('Mozilla Firefox', 'https://www.mozilla.org/en-US/');
-const linkForChromePlayStore = composeAnchorText(
-  'updating your web browser',
-  'http://play.google.com/store/apps/details?id=com.android.chrome',
-);
+  // Samsung internet browser has a different name under bowser
+  if (browser === 'samsung') return { platform: 'mobile', browser: 'samsung_internet' };
 
-const browserCanUseLocalStorage = canUseBrowserLocalStorage();
-const isBrowserSupported =
-  bowser.check(
-    {
-      msedge: '14',
-      chrome: '56',
-      firefox: '52',
-      safari: '10',
-    },
-    true,
-  ) ||
-  (bowser.ios && parseFloat(bowser.osversion));
+  return { browser };
+}
 
-// Add unsupported tag so that we can filter out reports from those users
-Sentry.configureScope((scope) => {
-  scope.setTag('unsupported', String(!isBrowserSupported));
-});
+function parseVersion(version: string): number {
+  const versions = version.split(/-/g).map((versionStr) => parseFloat(versionStr));
+  return Math.min(...versions);
+}
 
-if (!isBrowserSupported) {
-  // Show unsupported browser warning
-  if (
-    (browserCanUseLocalStorage && !localStorage.getItem(BROWSER_WARNING_KEY)) ||
-    !browserCanUseLocalStorage
-  ) {
-    const promptText = (() => {
-      // Users can only update Safari by updating the OS in iOS
-      if (bowser.ios)
-        return `NUSMods may not work properly. Please consider updating your device to iOS 11 or higher.`;
-      if (bowser.android && bowser.chrome)
-        return `NUSMods may not work properly. Please consider ${linkForChromePlayStore}.`;
-      return `NUSMods may not work properly. Please consider updating your web browser or switching to the latest version of ${linkForChrome} or ${linkForFirefox}.`;
-    })();
-    const template = `
-      <div class="${styles.modal}">
-      <h3>Your web browser is outdated or unsupported</h3>
-      <p>${promptText}</p>
-      <div class="form-row align-items-center">
-        <div class="col-auto">
-          <button class="btn btn-primary" id="browserWarning-continue" type="button">Continue to NUSMods</button>
-        </div>
-        ${
-          // Show "don't show again" only if the browser supports localStorage
-          browserCanUseLocalStorage
-            ? `
-              <div class="col-auto ${styles.checkboxContainer}">
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" id="browserWarning-ignore" type="checkbox">
-                  <label class="form-check-label" for="browserWarning-ignore">Don't show this message again</label>
-                </div>
-              </div>
-              `
-            : ''
-        }
-        </div>
-      </div>
-    `;
-    const container = document.createElement('div');
-    container.className = styles.browserWarning;
-    container.innerHTML = template;
-    const body = document.body;
-    if (body) body.appendChild(container);
+function convertToCheckTree(versionMap: VersionMap): Bowser.Parser.checkTree {
+  const checkTree: Bowser.Parser.checkTree = {};
 
-    const element = document.getElementById('browserWarning-continue');
-    if (element) {
-      element.addEventListener('click', () => {
-        const checkbox = document.getElementById('browserWarning-ignore');
-        if (
-          browserCanUseLocalStorage &&
-          checkbox &&
-          checkbox instanceof HTMLInputElement &&
-          checkbox.checked
-        )
-          localStorage.setItem(BROWSER_WARNING_KEY, navigator.userAgent);
-        if (body) body.removeChild(container);
-      });
+  Object.keys(versionMap).forEach((key) => {
+    if (typeof versionMap[key] === 'number') {
+      checkTree[key] = `>=${versionMap[key]}`;
+    } else {
+      checkTree[key] = convertToCheckTree(versionMap[key]);
     }
+  });
+
+  return checkTree;
+}
+
+function setMinVersion(versionMap: VersionMap, key: string, version: number) {
+  const currentVersion = versionMap[key];
+  if (currentVersion == null || version < currentVersion) {
+    // eslint-disable-next-line no-param-reassign
+    versionMap[key] = version;
   }
 }
+
+export function browserlistToBowser(browserlist: string[]): Bowser.Parser.checkTree {
+  const minVersions: VersionMap = {
+    desktop: {},
+    mobile: {},
+    tablet: {},
+  };
+
+  browserlist.forEach((browserlistItem) => {
+    const [browserName, versions] = browserlistItem.split(/\s+/g);
+
+    const { browser, platform } = parseBrowser(browserName);
+    const minVersion = parseVersion(versions);
+
+    if (platform != null) {
+      setMinVersion(minVersions[platform], browser, minVersion);
+
+      // Bowser treats tablet and phones OS separate, but we don't want that distinction
+      if (platform === 'mobile') setMinVersion(minVersions.tablet, browser, minVersion);
+      if (platform === 'tablet') setMinVersion(minVersions.mobile, browser, minVersion);
+    } else {
+      setMinVersion(minVersions, browser, minVersion);
+    }
+  });
+
+  return convertToCheckTree(minVersions);
+}
+
+const checkTree = browserlistToBowser(browsersList);
+const parser = Bowser.getParser(window.navigator.userAgent);
+
+export const isIOS = parser.is('ios');
+export const isAndroidChrome = parser.satisfies({ mobile: { chrome: '>1' } });
+export const isBrowserSupported = () => {
+  if (parser.satisfies(checkTree)) {
+    return true;
+  }
+
+  if (isIOS) {
+    const os = parser.getOS();
+    const minVersion = parseFloat(checkTree.mobile.safari.slice(2));
+    if (os.version != null && parseFloat(os.version) >= minVersion) {
+      return true;
+    }
+  }
+
+  return false;
+};

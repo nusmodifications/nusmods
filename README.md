@@ -37,7 +37,8 @@ Our [contributing guide](CONTRIBUTING.md) will help you get started, regardless 
 
 ### Good First Issues
 
-Want to your feet wet and contribute? We have a list of [good first issues](https://github.com/nusmodifications/nusmods/labels/good%20first%20issue) that contain bugs and small features which have a relatively limited scope. This is a great place to get started.
+Want to wet your feet and contribute? We have a list of [good first issues](https://github.com/nusmodifications/nusmods/labels/good%20first%20issue) that contain bugs and small features which have a relatively limited scope. This is a great place to get started.
+
 
 ### Code of Conduct
 
@@ -87,6 +88,11 @@ All projects and packages in this repository are [MIT licensed](LICENSE).
 
 [![](misc/1password-logo.png)](1password)
 
+[Netlify](netlify) automatically deploys our branches so we can easily test incoming Pull Requests. 
+
+[![](misc/netlify-logo.png)](netlify)
+
 [browserstack]: https://www.browserstack.com/
 [zoho]: https://www.zoho.com/
 [1password]: https://1password.com/
+[netlify]: https://www.netlify.com

@@ -1,8 +1,8 @@
 import { retryImport } from 'utils/error';
 import withVenueLocations from 'views/components/map/withVenueLocations';
+import { Props } from './VenueLocation';
 
-export default withVenueLocations(() =>
-  // @ts-ignore: Error with resolving dynamic import with retries
+export default withVenueLocations<Props>(() =>
   retryImport(() => import(/* webpackChunkName: "venue" */ './VenueLocation')).then(
     (module) => module.default,
   ),

@@ -1,4 +1,3 @@
-// @ts-ignore
 import { EventOption } from 'ical-generator';
 import config from 'config';
 import iCalForTimetable, {

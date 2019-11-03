@@ -11,7 +11,7 @@ import { ColorMapping } from 'types/reducers';
 import { State as StoreState } from 'types/state';
 
 type Props = {
-  store: Store<StoreState, any>;
+  store: Store<StoreState>;
 };
 
 type State = {

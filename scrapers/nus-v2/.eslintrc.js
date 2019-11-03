@@ -83,10 +83,6 @@ module.exports = {
 
     'import/no-extraneous-dependencies': ['error', { devDependencies: ['**/*.test.ts', 'src/utils/test-utils.ts'] }],
 
-    // Rule is buggy when used with TypeScript
-    // TODO: Remove this when https://github.com/benmosher/eslint-plugin-import/issues/1282 is resolved
-    'import/named': 'off',
-
     // Makes the code unnecessarily verbose
     '@typescript-eslint/explicit-member-accessibility': 'off',
 

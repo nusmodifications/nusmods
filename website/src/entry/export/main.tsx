@@ -11,12 +11,13 @@ import { DARK_MODE } from 'types/settings';
 import { State as StoreState } from 'types/state';
 
 import TimetableOnly from './TimetableOnly';
+
+import 'styles/main.scss';
 import './main.scss';
-import '../styles/main.scss';
 
 declare global {
   interface Window {
-    store: Store<StoreState, any>;
+    store: Store<StoreState>;
     setData: (modules: Module[], data: ExportData, callback: () => void) => void;
   }
 }

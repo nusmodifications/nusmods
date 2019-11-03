@@ -3,8 +3,7 @@ import { render } from 'enzyme';
 import { highlight, wrapComponentName, Counter } from './react';
 
 describe(highlight, () => {
-  // @ts-ignore
-  const h = (...args) => render(<p>{highlight(...args)}</p>);
+  const h = (...args: Parameters<typeof highlight>) => render(<p>{highlight(...args)}</p>);
 
   test('should wrap search terms with <mark>', () => {
     expect(h('Hello world', 'hello').find('mark')).toHaveLength(1);
