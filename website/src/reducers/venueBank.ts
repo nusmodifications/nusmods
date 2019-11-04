@@ -1,6 +1,7 @@
 import { FETCH_VENUE_LIST } from 'actions/venueBank';
-import { SUCCESS, VenueBank } from 'types/reducers';
+import { VenueBank } from 'types/reducers';
 import { Actions } from 'types/actions';
+import { SUCCESS_KEY } from '../middlewares/requests-middleware';
 
 const defaultModuleBankState: VenueBank = {
   venueList: [], // List of venue strings
@@ -8,7 +9,7 @@ const defaultModuleBankState: VenueBank = {
 
 function venueBank(state: VenueBank = defaultModuleBankState, action: Actions): VenueBank {
   switch (action.type) {
-    case FETCH_VENUE_LIST + SUCCESS:
+    case SUCCESS_KEY(FETCH_VENUE_LIST):
       return {
         ...state,
         venueList: action.payload,

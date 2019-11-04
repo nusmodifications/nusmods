@@ -13,19 +13,22 @@ import { ExtractActionShape } from './redux';
 
 type AppAction = ExtractActionShape<typeof app>;
 type ExportActionsAction = ExtractActionShape<typeof exportActions>;
-type ModuleBankAction = ExtractActionShape<typeof moduleBank>;
+type ModuleBankAction =
+  | ExtractActionShape<typeof moduleBank.Internal>
+  | moduleBank.ModuleBankRequestActions;
 type PlannerAction = ExtractActionShape<typeof planner>;
 type SettingsAction = ExtractActionShape<typeof settings>;
 type ThemeAction = ExtractActionShape<typeof theme>;
-type TimetablesAction = ExtractActionShape<typeof timetables> |
-  ExtractActionShape<typeof timetables.Internal>;
+type TimetablesAction =
+  | ExtractActionShape<typeof timetables>
+  | ExtractActionShape<typeof timetables.Internal>;
 type UndoHistoryAction = ExtractActionShape<typeof undoHistory>;
-type VenueBankAction = ExtractActionShape<typeof venueBank>;
+type VenueBankAction = venueBank.VenueActions;
 
 type InitActions = {
-  type: 'INIT',
-  payload: null
-}
+  type: 'INIT';
+  payload: null;
+};
 
 type ReduxPersistActions = {
   type: typeof REHYDRATE;
@@ -42,4 +45,5 @@ export type Actions =
   | TimetablesAction
   | UndoHistoryAction
   | VenueBankAction
-  | ReduxPersistActions | InitActions;
+  | ReduxPersistActions
+  | InitActions;

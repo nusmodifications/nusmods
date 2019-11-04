@@ -89,12 +89,12 @@ test('getLRUModule should return the LRU and non-timetable module', () => {
 });
 
 test('removeLRUModule should return an action', () => {
-  const resultOfAction = actions.removeLRUModule(['ACC1001']);
+  const resultOfAction = actions.Internal.removeLRUModule(['ACC1001']);
   expect(resultOfAction).toMatchSnapshot();
 });
 
 test('updateModuleTimestamp should return an action', () => {
-  const resultOfAction = actions.updateModuleTimestamp('ACC1001');
+  const resultOfAction = actions.Internal.updateModuleTimestamp('ACC1001');
   expect(resultOfAction).toMatchSnapshot();
 });
 

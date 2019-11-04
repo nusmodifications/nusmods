@@ -3,7 +3,7 @@ import { ExportData } from 'types/export';
 import { GetState } from 'types/redux';
 import { hydrateSemTimetableWithLessons } from 'utils/timetables';
 import { captureException, retryImport } from 'utils/error';
-import { getSemesterTimetable } from 'reducers/timetables';
+import { getSemesterTimetable } from 'selectors/timetables';
 import { SET_EXPORTED_DATA } from './constants';
 
 function downloadUrl(blob: Blob, filename: string) {

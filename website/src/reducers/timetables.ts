@@ -3,7 +3,7 @@ import produce from 'immer';
 import { createMigrate } from 'redux-persist';
 
 import { PersistConfig } from 'storage/persistReducer';
-import { ModuleCode, Semester } from 'types/modules';
+import { ModuleCode } from 'types/modules';
 import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import { ColorMapping, TimetablesState } from 'types/reducers';
 
@@ -21,8 +21,6 @@ import {
 import { getNewColor } from 'utils/colors';
 import { SET_EXPORTED_DATA } from 'actions/constants';
 import { Actions } from '../types/actions';
-
-const EMPTY_OBJECT = {};
 
 export const persistConfig = {
   /* eslint-disable no-useless-computed-key */
@@ -223,14 +221,3 @@ function timetables(
 }
 
 export default timetables;
-
-// Extract sem timetable and colors for a specific semester from TimetablesState
-export function getSemesterTimetable(
-  semester: Semester,
-  state: TimetablesState,
-): { timetable: SemTimetableConfig; colors: ColorMapping } {
-  return {
-    timetable: state.lessons[semester] || EMPTY_OBJECT,
-    colors: state.colors[semester] || EMPTY_OBJECT,
-  };
-}

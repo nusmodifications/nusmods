@@ -8,7 +8,7 @@ import { SemTimetableConfig } from 'types/timetables';
 import { ColorMapping, ModulesMap, NotificationOptions } from 'types/reducers';
 
 import { selectSemester } from 'actions/settings';
-import { getSemesterTimetable } from 'reducers/timetables';
+import { getSemesterTimetable } from 'selectors/timetables';
 import { fetchTimetableModules, setTimetable } from 'actions/timetables';
 import { openNotification } from 'actions/app';
 import { undo } from 'actions/undoHistory';

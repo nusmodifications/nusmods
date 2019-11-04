@@ -12,7 +12,7 @@ describe(DisconnectedModuleTombstone, () => {
 
   beforeEach(() => {
     mockProps = {
-      module: CS1010S as unknown as Module,
+      module: (CS1010S as unknown) as Module,
       resetTombstone: jest.fn(),
       undo: jest.fn(),
     } as any;

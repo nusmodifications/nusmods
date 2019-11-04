@@ -28,7 +28,7 @@ import {
 } from 'utils/timetables';
 import { captureException } from 'utils/error';
 import Title from 'views/components/Title';
-import { getSemesterTimetable } from 'reducers/timetables';
+import { getSemesterTimetable } from 'selectors/timetables';
 import ExternalLink from 'views/components/ExternalLink';
 import * as weatherAPI from 'apis/weather';
 import config from 'config';
@@ -221,8 +221,8 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
       const date = addDays(currentTime, day);
       const dayOfWeek = DaysOfWeek[getDayIndex(date)];
       const weekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(date);
-      const lessons = get(groupedLessons, dayOfWeek, EMPTY_ARRAY as ColoredLesson[]).filter((lesson) =>
-        isLessonAvailable(lesson, date, weekInfo),
+      const lessons = get(groupedLessons, dayOfWeek, EMPTY_ARRAY as ColoredLesson[]).filter(
+        (lesson) => isLessonAvailable(lesson, date, weekInfo),
       );
 
       if (
