@@ -2,8 +2,9 @@ import produce from 'immer';
 import { max, min, pull } from 'lodash';
 
 import { PlannerState } from 'types/reducers';
-import { FSA } from 'types/redux';
 import { ModuleCode } from 'types/modules';
+import { Actions } from 'types/actions';
+
 import {
   ADD_CUSTOM_PLANNER_DATA,
   ADD_PLANNER_MODULE,
@@ -27,7 +28,7 @@ const defaultPlannerState: PlannerState = {
 
 export default function planner(
   state: PlannerState = defaultPlannerState,
-  action: FSA,
+  action: Actions,
 ): PlannerState {
   switch (action.type) {
     case SET_PLANNER_MIN_YEAR:

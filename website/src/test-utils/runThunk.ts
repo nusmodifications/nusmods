@@ -1,13 +1,13 @@
-import { FSA } from 'types/redux';
+import { Actions } from 'types/actions';
 
 export default async function runThunk(
-  action: FSA | Function,
+  action: Actions | Function,
   dispatch: Function,
   getState: Function = () => {},
 ) {
   if (typeof action === 'function') {
     const p = action(
-      (nextAction: FSA | Function) => runThunk(nextAction, dispatch, getState),
+      (nextAction: Actions | Function) => runThunk(nextAction, dispatch, getState),
       getState,
     );
 
