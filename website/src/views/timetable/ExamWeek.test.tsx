@@ -24,7 +24,7 @@ function make(props = {}) {
   );
 }
 
-describe.skip(ExamWeek, () => {
+describe(ExamWeek, () => {
   test('render provided number of days', () => {
     expect(make({ days: 5 }).find('th')).toHaveLength(5);
     expect(make({ days: 6 }).find('th')).toHaveLength(6);

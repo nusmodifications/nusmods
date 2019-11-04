@@ -118,7 +118,7 @@ describe(iCalEventForExam, () => {
 // E1 21 22 23 24 25 26 |
 // E2 28 29 30          |
 
-describe.skip(calculateNumericWeek, () => {
+describe(calculateNumericWeek, () => {
   const firstDay = new Date('2016-08-08T00:00+0800');
   const testCalculateNumericWeek = (weeks: number[]) =>
     calculateNumericWeek(
