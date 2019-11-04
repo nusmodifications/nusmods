@@ -94,7 +94,7 @@ function moduleLessonConfig(
 const defaultSemTimetableConfig: SemTimetableConfig = {};
 function semTimetable(
   state: SemTimetableConfig = defaultSemTimetableConfig,
-  action: FSA,
+  action: Actions,
 ): SemTimetableConfig {
   const moduleCode = get(action, 'payload.moduleCode');
   if (!moduleCode) return state;
@@ -120,7 +120,7 @@ function semTimetable(
 
 // Map of semester to color mapping
 const defaultSemColorMap = {};
-function semColors(state: ColorMapping = defaultSemColorMap, action: FSA): ColorMapping {
+function semColors(state: ColorMapping = defaultSemColorMap, action: Actions): ColorMapping {
   const moduleCode = get(action, 'payload.moduleCode');
   if (!moduleCode) return state;
 
@@ -147,7 +147,7 @@ function semColors(state: ColorMapping = defaultSemColorMap, action: FSA): Color
 
 // Map of semester to list of hidden modules
 const defaultHiddenState: ModuleCode[] = [];
-function semHiddenModules(state = defaultHiddenState, action: FSA) {
+function semHiddenModules(state = defaultHiddenState, action: Actions) {
   if (!action.payload) {
     return state;
   }
@@ -171,9 +171,12 @@ export const defaultTimetableState: TimetablesState = {
   archive: {},
 };
 
-function timetables(state: TimetablesState = defaultTimetableState, action: Actions): TimetablesState {
+function timetables(
+  state: TimetablesState = defaultTimetableState,
+  action: Actions,
+): TimetablesState {
   // All normal timetable actions should specify their semester
-  if (!action.payload || !action.payload.semester) {
+  if (!action.payload) {
     return state;
   }
 

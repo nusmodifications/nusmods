@@ -15,7 +15,33 @@ import {
 } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
 
+// Actions that should not be used directly outside of thunks
+export const SET_TIMETABLE = 'SET_TIMETABLE' as const;
 export const ADD_MODULE = 'ADD_MODULE' as const;
+export const Internal = {
+  setTimetable(
+    semester: Semester,
+    timetable: SemTimetableConfig | undefined,
+    colors?: ColorMapping,
+  ) {
+    return {
+      type: SET_TIMETABLE,
+      payload: { semester, timetable, colors },
+    };
+  },
+
+  addModule(semester: Semester, moduleCode: ModuleCode, moduleLessonConfig: ModuleLessonConfig) {
+    return {
+      type: ADD_MODULE,
+      payload: {
+        semester,
+        moduleCode,
+        moduleLessonConfig,
+      },
+    };
+  },
+};
+
 export function addModule(semester: Semester, moduleCode: ModuleCode) {
   return (dispatch: Function, getState: GetState) =>
     dispatch(fetchModule(moduleCode)).then(() => {
@@ -37,14 +63,7 @@ export function addModule(semester: Semester, moduleCode: ModuleCode) {
       const lessons = getModuleTimetable(module, semester);
       const moduleLessonConfig = randomModuleLessonConfig(lessons);
 
-      dispatch({
-        type: ADD_MODULE,
-        payload: {
-          semester,
-          moduleCode,
-          moduleLessonConfig,
-        },
-      });
+      dispatch(Internal.addModule(semester, moduleCode, moduleLessonConfig));
     });
 }
 
@@ -115,7 +134,6 @@ export function cancelModifyLesson() {
   };
 }
 
-export const SET_TIMETABLE = 'SET_TIMETABLE' as const;
 export function setTimetable(
   semester: Semester,
   timetable?: SemTimetableConfig,
@@ -127,10 +145,7 @@ export function setTimetable(
       [validatedTimetable] = validateTimetableModules(timetable, getState().moduleBank.moduleCodes);
     }
 
-    return dispatch({
-      type: SET_TIMETABLE,
-      payload: { semester, timetable: validatedTimetable, colors },
-    });
+    return dispatch(Internal.setTimetable(semester, validatedTimetable, colors));
   };
 }
 

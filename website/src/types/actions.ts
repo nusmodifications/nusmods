@@ -17,12 +17,19 @@ type ModuleBankAction = ExtractActionShape<typeof moduleBank>;
 type PlannerAction = ExtractActionShape<typeof planner>;
 type SettingsAction = ExtractActionShape<typeof settings>;
 type ThemeAction = ExtractActionShape<typeof theme>;
-type TimetablesAction = ExtractActionShape<typeof timetables>;
+type TimetablesAction = ExtractActionShape<typeof timetables> |
+  ExtractActionShape<typeof timetables.Internal>;
 type UndoHistoryAction = ExtractActionShape<typeof undoHistory>;
 type VenueBankAction = ExtractActionShape<typeof venueBank>;
 
+type InitActions = {
+  type: 'INIT',
+  payload: null
+}
+
 type ReduxPersistActions = {
   type: typeof REHYDRATE;
+  payload: null;
 };
 
 export type Actions =
@@ -35,4 +42,4 @@ export type Actions =
   | TimetablesAction
   | UndoHistoryAction
   | VenueBankAction
-  | ReduxPersistActions;
+  | ReduxPersistActions | InitActions;
