@@ -112,3 +112,8 @@ $module-list-height: 13.5rem;
 .actionIcon {
   composes: svg-small from global;
 }
+
+.actionButton {
+  padding: 0px 10px;
+  margin: -10px 0px;
+}

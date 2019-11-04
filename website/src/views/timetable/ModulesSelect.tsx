@@ -7,6 +7,7 @@ import Downshift, {
   StateChangeOptions,
 } from 'downshift';
 import classnames from 'classnames';
+import { Trash } from 'react-feather';
 
 import { ModuleSelectList } from 'types/reducers';
 import { ModuleCode } from 'types/modules';
@@ -18,7 +19,6 @@ import CloseButton from 'views/components/CloseButton';
 import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip';
 
-import { Trash } from 'react-feather';
 import styles from './ModulesSelect.scss';
 
 type Props = {
@@ -159,7 +159,7 @@ export class ModulesSelectComponent extends React.Component<Props, State> {
                     <Tooltip content={removeBtnLabel(module.moduleCode)} touchHold>
                       <button
                         type="button"
-                        className={classnames('btn btn-svg')}
+                        className={classnames('btn btn-svg btn-sm', styles.actionButton)}
                         aria-label={removeBtnLabel(module.moduleCode)}
                         onClick={() => {
                           this.props.onRemoveModule(module.moduleCode);
