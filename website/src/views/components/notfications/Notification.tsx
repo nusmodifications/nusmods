@@ -52,7 +52,7 @@ export class NotificationComponent extends React.Component<Props, State> {
 
   element = React.createRef<HTMLDivElement>();
 
-  transitioning: boolean = false;
+  transitioning = false;
 
   constructor(props: Props) {
     super(props);

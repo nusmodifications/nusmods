@@ -149,7 +149,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
     this.setState({ isMapExpanded });
   };
 
-  updateURL = (debounce: boolean = true) => {
+  updateURL = (debounce = true) => {
     const { searchTerm, isAvailabilityEnabled, searchOptions } = this.state;
     let query: Partial<Params> = {};
 

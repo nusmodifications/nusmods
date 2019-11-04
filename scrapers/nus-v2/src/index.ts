@@ -5,7 +5,7 @@ import * as yargs from 'yargs';
 import { size, mapValues } from 'lodash';
 
 import logger from './services/logger';
-import { Semesters } from './types/modules';
+import { Aliases, Semesters } from './types/modules';
 
 import TestApi from './tasks/TestApi';
 import GetFacultyDepartment from './tasks/GetFacultyDepartment';
@@ -102,12 +102,12 @@ yargs
       const semesterData = [];
 
       for (const semester of Semesters) {
-        const semesterAliases = await new CollateVenues(semester, year).aliasCache
-          .read()
-          .catch((e) => {
+        const semesterAliases = await new CollateVenues(semester, year).aliasCache.read().catch(
+          (e): Aliases => {
             logger.warn(e, `No module alias info available for ${semester}`);
-            return [];
-          });
+            return {};
+          },
+        );
         aliases.push(mapValues(semesterAliases, (moduleCodes) => new Set(moduleCodes)));
 
         const modules = await new GetSemesterData(semester, year).outputCache.read().catch((e) => {

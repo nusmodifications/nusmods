@@ -26,8 +26,9 @@ const theme = persistReducer('theme', themeReducer);
 const settings = persistReducer('settings', settingsReducer, settingsPersistConfig);
 const planner = persistReducer('planner', plannerReducer, plannerPersistConfig);
 
-// @ts-ignore: State default is delegated to its child reducers.
-const defaultState: State = {};
+// State default is delegated to its child reducers.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const defaultState: State = {} as any;
 const undoReducer = createUndoReducer({
   limit: 1,
   reducerName: 'undoHistory',

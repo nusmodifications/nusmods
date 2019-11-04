@@ -16,11 +16,7 @@ describe(DropdownListFiltersComponent, () => {
   ];
   /* eslint-enable @typescript-eslint/camelcase */
 
-  function make(
-    items: RefinementItem[],
-    selectedItems: string[],
-    matchBreakpoint: boolean = false,
-  ) {
+  function make(items: RefinementItem[], selectedItems: string[], matchBreakpoint = false) {
     const onFilterChange = jest.fn();
 
     return {
