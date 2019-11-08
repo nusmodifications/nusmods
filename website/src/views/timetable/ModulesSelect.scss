@@ -1,6 +1,8 @@
 @import '~styles/utils/modules-entry';
+
 $input-height: 2.75rem;
 $module-list-height: 13.5rem;
+$item-padding-vertical: 0.6rem;
 
 .container {
   position: relative;
@@ -84,7 +86,7 @@ $module-list-height: 13.5rem;
 .item,
 .tip {
   width: 100%;
-  padding: 0.6rem 0.5rem;
+  padding: $item-padding-vertical 0.5rem;
   font-size: 0.9rem;
   color: var(--body-color);
   background: var(--body-bg);
@@ -113,7 +115,6 @@ $module-list-height: 13.5rem;
   composes: svg-small from global;
 }
 
-.actionButton {
-  padding: 0 10;
-  margin: -10 0;
+.optionActions {
+  margin: -$item-padding-vertical 0;
 }

@@ -155,22 +155,25 @@ export class ModulesSelectComponent extends React.Component<Props, State> {
                     bug that drops the whitespace between the module code and title */}
                 {`${module.moduleCode} ${module.title}`}
                 {module.isAdded && (
-                  <div>
-                    <Tooltip content={removeBtnLabel(module.moduleCode)} touchHold>
-                      <button
-                        type="button"
-                        className={classnames('btn btn-svg btn-sm', styles.actionButton)}
-                        aria-label={removeBtnLabel(module.moduleCode)}
-                        onClick={() => {
-                          this.props.onRemoveModule(module.moduleCode);
-                        }}
-                      >
-                        <Trash className={styles.actionIcon} />{' '}
-                      </button>
-                    </Tooltip>
-                    <span className="badge badge-info">Added</span>
-                  </div>
+                  <>
+                    <div className={styles.optionActions}>
+                      <Tooltip content={removeBtnLabel(module.moduleCode)} touchHold>
+                        <button
+                          type="button"
+                          className={classnames('btn btn-svg btn-sm', styles.actionButton)}
+                          aria-label={removeBtnLabel(module.moduleCode)}
+                          onClick={() => {
+                            this.props.onRemoveModule(module.moduleCode);
+                          }}
+                        >
+                          <Trash className={styles.actionIcon} />{' '}
+                        </button>
+                      </Tooltip>
+                      <span className="badge badge-info">Added</span>
+                    </div>
+                  </>
                 )}
+
                 {module.isAdding && (
                   <div>
                     <span className="badge badge-warning">Adding...</span>
