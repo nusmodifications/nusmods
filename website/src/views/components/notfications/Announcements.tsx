@@ -1,14 +1,12 @@
-import * as React from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
-import config from 'config';
 import storage from 'storage';
 import { announcementKey } from 'storage/keys';
 import { toggleFeedback } from 'actions/app';
-import { Heart } from 'views/components/icons';
+import { Heart } from 'react-feather';
 import CloseButton from 'views/components/CloseButton';
-import ExternalLink from 'views/components/ExternalLink';
 import styles from './Announcements.scss';
 
 type Props = {
@@ -24,12 +22,13 @@ type State = {
  * set the key to null.
  *
  * Previous keys:
+ * - 'ay201920-new-data' - AY2019/20 data is available
  * - 'nusmods-is-official' - NUSMods switch to official APIs
  * - 'nusmods-r-announcement' - NUSMods R announcement message
  * - 'ay201819-new-data' - AY2018/19 data is available
  * - 'ay201819-s2-new-data' - S2 data available
  */
-const key = announcementKey('nusmods-is-official');
+const key = announcementKey('ay201920-new-data');
 
 class Announcements extends React.PureComponent<Props, State> {
   constructor(props: Props) {
@@ -37,7 +36,7 @@ class Announcements extends React.PureComponent<Props, State> {
 
     this.state = {
       // Set to constant false to turn off announcement
-      isOpen: key ? !storage.getItem(key) : true,
+      isOpen: false, // key ? !storage.getItem(key) : true,
     };
   }
 
@@ -54,19 +53,10 @@ class Announcements extends React.PureComponent<Props, State> {
         <Heart className={styles.backgroundIcon} />
 
         <div className={styles.body}>
-          <h3>
-            NUSMods{' '}
-            <span role="img" aria-label="hearts">
-              ❤️
-            </span>{' '}
-            NUS
-          </h3>
+          <h3>AY2019/20 modules now available!</h3>
           <p>
-            We&apos;re official! NUSMods now uses data provided directly by NUS Registrar&apos;s
-            Office and NUSIT, which means better and more accurate information for you.{' '}
-            <ExternalLink href={`${config.contact.blog}/nusmods-is-official`}>
-              Learn more.
-            </ExternalLink>
+            NUSMods now has AY2019/20 module information available. The data is accurate but subject
+            to changes. Happy new academic year!
           </p>
         </div>
 

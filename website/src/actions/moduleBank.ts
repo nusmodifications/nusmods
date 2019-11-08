@@ -52,7 +52,7 @@ export function getLRUModules(
   modules: ModulesMap,
   lessons: TimetableConfig,
   currentModule: string,
-  toRemove: number = 1,
+  toRemove = 1,
 ): ModuleCode[] {
   // Pull all the modules in all the timetables
   const timetableModules = new Set(flatMap(lessons, (semester) => Object.keys(semester)));

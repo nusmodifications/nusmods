@@ -31,7 +31,8 @@ export default class DataPipeline extends BaseTask implements Task<void, Module[
 
   async run() {
     // Get a list of all existing modules so we can remove data for any modules
-    // that the school API does not return - ie. modules that are no longer offered
+    // that the school API does not return - ie. modules that are no longer
+    // active.
     const existingModules = await this.io.getModuleCodes();
 
     const organizations = await new GetFacultyDepartment(this.academicYear).run();
@@ -61,10 +62,10 @@ export default class DataPipeline extends BaseTask implements Task<void, Module[
     const collateModules = new CollateModules(this.academicYear);
     const modules = await collateModules.run({ semesterData, aliases: allAliases });
 
-    // Delete all modules that are no longer offered
+    // Delete all modules that are no longer active
     const removedModules = difference(existingModules, modules.map((module) => module.moduleCode));
     if (removedModules.length) {
-      this.logger.info({ removedModules }, 'Removing no longer offered modules');
+      this.logger.info({ removedModules }, 'Removing no longer active modules');
       await Promise.all(removedModules.map((moduleCode) => this.io.deleteModule(moduleCode)));
     }
 

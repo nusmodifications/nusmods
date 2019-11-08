@@ -1,5 +1,9 @@
 ### NUSMods ###
 
+# Certificates
+*.crt
+*.key
+
 # Build folders
 /data/
 dist/
@@ -11,8 +15,8 @@ build/
 cache/
 .cache-loader
 
-# Local config
-/export/config.js
+# Env files
+infra/instance/proxy.env
 
 # Rest adapted from https://www.gitignore.io/api/vim,node,linux,macos,emacs,windows,ansible,database,webstorm,visualstudiocode
 

@@ -1,4 +1,4 @@
-import React, { ComponentType } from 'react';
+import React from 'react';
 import classnames from 'classnames';
 
 import { LatLngTuple, Venue, VenueLocation, VenueLocationMap } from 'types/venues';
@@ -17,13 +17,13 @@ export type Props = OwnProps & {
   readonly venueLocations: VenueLocationMap;
 };
 
-const EventMapInline: ComponentType<Props> = ({
+const EventMapInline: React.FunctionComponent<Props> = ({
   venue,
   isOpen,
   className,
   toggleOpen,
   venueLocations,
-}: Props) => {
+}) => {
   const venueLocation: VenueLocation = venueLocations[venue];
   if (!venueLocation || !venueLocation.location) {
     return null;

@@ -8,7 +8,6 @@ import { State } from 'types/state';
 // Non-persisted reducers
 import requests from './requests';
 import app from './app';
-import moduleFinder from './moduleFinder';
 import createUndoReducer from './undoHistory';
 
 // Persisted reducers
@@ -16,7 +15,7 @@ import moduleBankReducer, { persistConfig as moduleBankPersistConfig } from './m
 import venueBankReducer, { persistConfig as venueBankPersistConfig } from './venueBank';
 import timetablesReducer, { persistConfig as timetablesPersistConfig } from './timetables';
 import themeReducer from './theme';
-import settingsReducer from './settings';
+import settingsReducer, { persistConfig as settingsPersistConfig } from './settings';
 import plannerReducer from './planner';
 
 // Persist reducers
@@ -24,11 +23,12 @@ const moduleBank = persistReducer('moduleBank', moduleBankReducer, moduleBankPer
 const venueBank = persistReducer('venueBank', venueBankReducer, venueBankPersistConfig);
 const timetables = persistReducer('timetables', timetablesReducer, timetablesPersistConfig);
 const theme = persistReducer('theme', themeReducer);
-const settings = persistReducer('settings', settingsReducer);
+const settings = persistReducer('settings', settingsReducer, settingsPersistConfig);
 const planner = persistReducer('planner', plannerReducer);
 
-// @ts-ignore: State default is delegated to its child reducers.
-const defaultState: State = {};
+// State default is delegated to its child reducers.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const defaultState: State = {} as any;
 const undoReducer = createUndoReducer({
   limit: 1,
   reducerName: 'undoHistory',
@@ -46,7 +46,6 @@ export default function(state: State = defaultState, action: FSA): State {
     app: app(state.app, action),
     theme: theme(state.theme, action),
     settings: settings(state.settings, action),
-    moduleFinder: moduleFinder(state.moduleFinder, action),
     planner: planner(state.planner, action),
     undoHistory: state.undoHistory,
   };

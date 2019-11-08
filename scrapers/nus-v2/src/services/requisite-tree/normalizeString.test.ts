@@ -7,7 +7,7 @@ describe(normalize, () => {
     const testString =
       'ACC1002 Financial Accounting, BSP1004 Legal Environment of Business, FIN2004 Finance';
     const expected =
-      'ACC1002 Financial Accounting or  BSP1004 Legal Environment of Business or  FIN2004 Finance';
+      'ACC1002 Financial Accounting or BSP1004 Legal Environment of Business or FIN2004 Finance';
     expect(normalize(testString)).toBe(expected);
   });
 
@@ -15,7 +15,7 @@ describe(normalize, () => {
     const testString =
       'ACC1002 Financial Accounting, BSP1004 Legal Environment of Business, and FIN2004 Finance';
     const expected =
-      'ACC1002 Financial Accounting and  BSP1004 Legal Environment of Business and  FIN2004 Finance';
+      'ACC1002 Financial Accounting and BSP1004 Legal Environment of Business and FIN2004 Finance';
     expect(normalize(testString)).toBe(expected);
   });
 
@@ -34,7 +34,7 @@ describe(normalize, () => {
   it('removes module titles that contains operators 1', () => {
     const testString =
       'ACC3616 Corporate Governance and Risk Management or ACC3612 Risk Management and Internal Control';
-    const expected = 'ACC3616 Corporate  Management or ACC3612 Risk  Control';
+    const expected = 'ACC3616 Corporate Management or ACC3612 Risk Control';
     expect(normalize(testString)).toBe(expected);
   });
 

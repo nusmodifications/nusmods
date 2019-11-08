@@ -114,6 +114,8 @@ const replaceOperators = (str: string) =>
     .replace(/ plus /g, OPERATORS.and)
     .replace(OPERATORS_REGEX, R.toLower);
 
+const normalizeWhitespace = (str: string) => str.replace(/\s+/g, ' ');
+
 export const normalize = R.pipe(
   removeSpaceFromModule,
   fixOperatorTypos,
@@ -124,6 +126,7 @@ export const normalize = R.pipe(
   fixBrackets,
   replaceOperators,
   removeModuleTitles,
+  normalizeWhitespace,
 );
 
 export default function normalizeString(string: string, moduleCode: ModuleCode): string {

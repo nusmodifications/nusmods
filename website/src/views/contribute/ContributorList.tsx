@@ -25,9 +25,7 @@ export function ContributorListComponent(props: { contributors: Contributor[] })
           <p className={styles.commits}>
             <ExternalLink
               className="text-muted"
-              href={`https://github.com/nusmodifications/nusmods/commits?author=${
-                contributor.login
-              }`}
+              href={`https://github.com/nusmodifications/nusmods/commits?author=${contributor.login}`}
             >
               {contributor.contributions} {contributor.contributions === 1 ? 'commit' : 'commits'}
             </ExternalLink>

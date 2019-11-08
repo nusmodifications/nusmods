@@ -6,19 +6,23 @@ This folder contains the scraper which produces our [v2 API data][api-v2] from i
 
 ## Getting Started
 
-Node 8.13 or above is required, though Node 10 is preferred.
+Node 10 or above is required. We use Node 10 in production.
 
 Use `yarn` to install dependencies, then set up `env.json` with all the necessary keys and API base URL, then run the test script to check the setup is okay.
 
-```
+```sh
 yarn
 
-cp env.example.json
-vim env.example.json
+cp env.example.json env.json
+vim env.json  # add your appKey, studentKey and the baseUrl here
 
 yarn dev help
 yarn dev test | yarn bunyan
 ```
+
+### Setting up ElasticSearch
+
+We use ElasticSearch for our module search page. For local development it is not necessary to set this up because the scraper will automatically fall back to storing all data on the file system. To set up the ElasticSearch config, simple specify the `elasticConfig` key in `env.json` with the necessary configuration options that will be passed into the ElasticSearch client.
 
 ## Yarn Commands
 
@@ -56,8 +60,7 @@ Run these through `yarn scrape` in production or `yarn dev` in development piped
 - Get department / faculty codes (`GetDepartmentFaculty`)
 - Get semester data for all four semesters (`GetSemesterData`)
   - Get semester modules (`GetSemesterModules`)
-    - Fan out to all modules
-      - Get module timetable (`GetModuleTimetable`)
+    - Get module timetable for each department (`GetModuleTimetable`)
   - Get semester exams (`GetModuleExams`)
 - Collate venues (`CollateVenues`)
 - Collate modules (`CombineModules`)
@@ -77,6 +80,8 @@ Error handling is done through Sentry.
 This section details the differences between our [v1][api-v1] and [v2][api-v2] APIs.
 
 ### Module data
+
+All keys are switched from TitleCase to camelCase.
 
 - `Faculty` is provided in addition to `Department`
 - `Types` is removed - this is not used anywhere in the v3 frontend because it is difficult to keep up to date

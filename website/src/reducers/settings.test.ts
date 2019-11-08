@@ -1,21 +1,23 @@
 import { FSA } from 'types/redux';
 import { SettingsState } from 'types/reducers';
+import produce from 'immer';
 
 import * as actions from 'actions/settings';
 import reducer from 'reducers/settings';
-import { LIGHT_MODE, DARK_MODE } from 'types/settings';
+import { DARK_MODE, LIGHT_MODE } from 'types/settings';
 import { initAction, rehydrateAction } from 'test-utils/redux';
-import config from 'config/__mocks__/config';
+import config, { RegPeriod } from 'config';
 
 const initialState: SettingsState = {
   newStudent: false,
   faculty: '',
   mode: LIGHT_MODE,
   hiddenInTimetable: [],
-  corsNotification: {
+  modRegNotification: {
     enabled: true,
     semesterKey: config.getSemesterKey(),
     dismissed: [],
+    scheduleType: 'Undergraduate',
   },
   moduleTableOrder: 'exam',
   loadDisqusManually: false,
@@ -25,13 +27,13 @@ const settingsWithNewStudent: SettingsState = { ...initialState, newStudent: tru
 const faculty = 'School of Computing';
 const settingsWithFaculty: SettingsState = { ...initialState, faculty };
 const settingsWithDarkMode: SettingsState = { ...initialState, mode: DARK_MODE };
-const settingsWithDismissedNotifications: SettingsState = {
-  ...initialState,
-  corsNotification: {
-    ...initialState.corsNotification,
-    dismissed: ['0', '1A'],
-  },
-};
+const settingsWithDismissedNotifications: SettingsState = produce(initialState, (draft) => {
+  draft.modRegNotification.dismissed = [
+    { type: 'Select Modules', name: '1' },
+    { type: 'Add / Swap Tutorials', name: '' },
+    { type: 'Select Modules', name: '2' },
+  ];
+});
 
 describe('settings', () => {
   test('settings should return initial state', () => {
@@ -69,14 +71,22 @@ describe('settings', () => {
     const nextState2: SettingsState = reducer(nextState, action);
     expect(nextState2).toEqual(initialState);
   });
+
+  test('set module table order', () => {
+    const state1 = reducer(initialState, actions.setModuleTableOrder('mc'));
+    expect(state1.moduleTableOrder).toEqual('mc');
+
+    const state2 = reducer(initialState, actions.setModuleTableOrder('code'));
+    expect(state2.moduleTableOrder).toEqual('code');
+  });
 });
 
-describe('corsNotification settings', () => {
+describe('modRegNotification settings', () => {
   test('clear out dismissed notifications when semester changes', () => {
     config.getSemesterKey = () => '2017/2018 Semester 2';
 
     const nextState: SettingsState = reducer(settingsWithDismissedNotifications, rehydrateAction());
-    expect(nextState.corsNotification).toMatchObject({
+    expect(nextState.modRegNotification).toMatchObject({
       semesterKey: '2017/2018 Semester 2',
       dismissed: [],
       enabled: true,
@@ -87,41 +97,75 @@ describe('corsNotification settings', () => {
     config.getSemesterKey = () => '2017/2018 Semester 2';
     const settingsState: SettingsState = {
       ...initialState,
-      corsNotification: {
-        ...initialState.corsNotification,
+      modRegNotification: {
+        ...initialState.modRegNotification,
         enabled: false,
       },
     };
 
     const nextState: SettingsState = reducer(settingsState, rehydrateAction());
-    expect(nextState.corsNotification).toHaveProperty('enabled', false);
+    expect(nextState.modRegNotification).toHaveProperty('enabled', false);
   });
 
-  test('dismiss CORS notification', () => {
-    const state1 = reducer(initialState, actions.dismissCorsNotification('1A'));
-    expect(state1.corsNotification.dismissed).toEqual(['1A']);
+  test('dismiss ModReg notification', () => {
+    // Dismissing round that already exists shouldn't do anything
+    expect(
+      reducer(
+        settingsWithDismissedNotifications,
+        actions.dismissModregNotification({ type: 'Select Modules', name: '1' } as RegPeriod),
+      ).modRegNotification.dismissed,
+    ).toEqual(settingsWithDismissedNotifications.modRegNotification.dismissed);
 
-    const state2 = reducer(state1, actions.dismissCorsNotification('1B'));
-    expect(state2.corsNotification.dismissed).toEqual(['1A', '1B']);
+    expect(
+      reducer(
+        settingsWithDismissedNotifications,
+        actions.dismissModregNotification({ type: 'Add / Swap Tutorials', name: '' } as RegPeriod),
+      ).modRegNotification.dismissed,
+    ).toEqual(settingsWithDismissedNotifications.modRegNotification.dismissed);
 
-    const state3 = reducer(state2, actions.dismissCorsNotification('1B'));
-    expect(state3.corsNotification.dismissed).toEqual(['1A', '1B']);
+    // Only add items that are unique
+    expect(
+      reducer(
+        settingsWithDismissedNotifications,
+        actions.dismissModregNotification({ type: 'Select Modules', name: '3' } as RegPeriod),
+      ).modRegNotification.dismissed,
+    ).toEqual([
+      { type: 'Select Modules', name: '1' },
+      { type: 'Add / Swap Tutorials', name: '' },
+      { type: 'Select Modules', name: '2' },
+      { type: 'Select Modules', name: '3' },
+    ]);
   });
 
-  test('toggle CORS notification globally', () => {
-    const state1 = reducer(initialState, actions.toggleCorsNotificationGlobally(true));
-    expect(state1.corsNotification.enabled).toEqual(true);
-
-    const state2 = reducer(initialState, actions.toggleCorsNotificationGlobally(false));
-    expect(state2.corsNotification.enabled).toEqual(false);
+  test('dismiss/enable notifications should be opposites', () => {
+    expect(
+      reducer(
+        reducer(
+          initialState,
+          actions.dismissModregNotification({ type: 'Select Modules', name: '1' } as RegPeriod),
+        ),
+        actions.enableModRegNotification({ type: 'Select Modules', name: '1' } as RegPeriod),
+      ).modRegNotification.dismissed,
+    ).toEqual([]);
   });
 
-  test('set module table order', () => {
-    const state1 = reducer(initialState, actions.setModuleTableOrder('mc'));
-    expect(state1.moduleTableOrder).toEqual('mc');
+  test('toggle ModReg notification globally', () => {
+    const state1 = reducer(initialState, actions.toggleModRegNotificationGlobally(true));
+    expect(state1.modRegNotification.enabled).toEqual(true);
 
-    const state2 = reducer(initialState, actions.setModuleTableOrder('code'));
-    expect(state2.moduleTableOrder).toEqual('code');
+    const state2 = reducer(initialState, actions.toggleModRegNotificationGlobally(false));
+    expect(state2.modRegNotification.enabled).toEqual(false);
+  });
+
+  test('set schedule type', () => {
+    expect(
+      reducer(initialState, actions.setModRegScheduleType('Graduate')).modRegNotification
+        .scheduleType,
+    ).toEqual('Graduate');
+    expect(
+      reducer(initialState, actions.setModRegScheduleType('Undergraduate')).modRegNotification
+        .scheduleType,
+    ).toEqual('Undergraduate');
   });
 });
 

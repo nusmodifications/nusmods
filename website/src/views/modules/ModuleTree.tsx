@@ -10,7 +10,7 @@ import styles from './ModuleTree.scss';
 
 type Props = {
   moduleCode: ModuleCode;
-  fulfillRequirements?: ReadonlyArray<ModuleCode>;
+  fulfillRequirements?: readonly ModuleCode[];
   prereqTree?: PrereqTree;
 };
 

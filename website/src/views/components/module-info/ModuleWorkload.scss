@@ -1,0 +1,60 @@
+@import '~styles/utils/modules-entry';
+
+.moduleWorkloadContainer {
+  margin-bottom: 1rem;
+
+  h4 {
+    margin-bottom: 0.4rem;
+    font-weight: bold;
+    font-size: $font-size-sm;
+  }
+
+  .moduleWorkloadFallback {
+    font-size: $font-size-sm;
+  }
+
+  .moduleWorkload {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .moduleWorkloadComponent {
+    overflow: hidden; // Avoid label from overflowing when they are too long
+    margin-bottom: 0.4rem;
+  }
+
+  h5 {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 0.1rem;
+    font-weight: bold;
+    font-size: $font-size-xs;
+
+    abbr {
+      border-bottom: 0;
+      text-decoration: none;
+    }
+  }
+
+  .moduleWorkloadBlocks {
+    display: flex;
+    flex-wrap: wrap;
+
+    div {
+      flex: 1 auto;
+      height: 2rem;
+      margin: 0 0 1px;
+      border-right: 1px solid var(--body-bg);
+
+      &.remainder {
+        z-index: -1;
+        transform: skew(-30deg) translateX(-50%);
+      }
+    }
+
+    &.blocksFixed div {
+      flex: 0 auto;
+      width: 10%;
+    }
+  }
+}

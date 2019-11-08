@@ -109,9 +109,7 @@ export class CustomModuleFormComponent extends React.PureComponent<Props> {
 
           {moduleInfo && (
             <Tooltip
-              content={`Reset title to "${moduleInfo.title}" and credits to ${
-                moduleInfo.moduleCredit
-              }`}
+              content={`Reset title to "${moduleInfo.title}" and credits to ${moduleInfo.moduleCredit}`}
             >
               <button type="button" className="btn btn-secondary" onClick={this.resetCustomInfo}>
                 Reset Info

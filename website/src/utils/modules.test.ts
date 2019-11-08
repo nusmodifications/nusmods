@@ -90,13 +90,13 @@ test('areLessonsSameClass should identify lessons with different lessonType as d
 });
 
 test('formatExamDate should format an exam date string correctly', () => {
-  expect(formatExamDate('2016-11-23T01:00:00.000Z')).toBe('23-11-2016 9:00 AM');
-  expect(formatExamDate('2016-01-23T01:00:00.000Z')).toBe('23-01-2016 9:00 AM');
-  expect(formatExamDate('2016-11-03T01:00:00.000Z')).toBe('03-11-2016 9:00 AM');
-  expect(formatExamDate('2016-11-03T11:00:00.000Z')).toBe('03-11-2016 7:00 PM');
-  expect(formatExamDate('2016-11-03T11:30:00.000Z')).toBe('03-11-2016 7:30 PM');
-  expect(formatExamDate('2016-11-03T00:30:00.000Z')).toBe('03-11-2016 8:30 AM');
-  expect(formatExamDate('2016-01-03T00:01:00.000Z')).toBe('03-01-2016 8:01 AM');
+  expect(formatExamDate('2016-11-23T01:00:00.000Z')).toBe('23-Nov-2016 9:00 AM');
+  expect(formatExamDate('2016-01-23T01:00:00.000Z')).toBe('23-Jan-2016 9:00 AM');
+  expect(formatExamDate('2016-11-03T01:00:00.000Z')).toBe('03-Nov-2016 9:00 AM');
+  expect(formatExamDate('2016-11-03T11:00:00.000Z')).toBe('03-Nov-2016 7:00 PM');
+  expect(formatExamDate('2016-11-03T11:30:00.000Z')).toBe('03-Nov-2016 7:30 PM');
+  expect(formatExamDate('2016-11-03T00:30:00.000Z')).toBe('03-Nov-2016 8:30 AM');
+  expect(formatExamDate('2016-01-03T00:01:00.000Z')).toBe('03-Jan-2016 8:01 AM');
 });
 
 test('getModuleExamDate should return the correct exam date if it exists', () => {
@@ -107,7 +107,7 @@ test('getModuleExamDate should return the correct exam date if it exists', () =>
 test('getFormattedModuleExamDate should return the correctly formatted exam timing if it exists', () => {
   const sem: Semester = 1;
   const examTime: string = getFormattedExamDate(CS1010S, sem);
-  expect(examTime).toBe('29-11-2017 5:00 PM');
+  expect(examTime).toBe('29-Nov-2017 5:00 PM');
 });
 
 test('getModuleSemExamDate should return "No Exam" if it does not exist', () => {
@@ -157,7 +157,9 @@ describe(renderMCs, () => {
     // Singular
     [1, '1 MC'],
     ['1', '1 MC'],
-  ])('%s to equal %s', (mc, expected) => expect(renderMCs(mc)).toEqual(noBreak(expected)));
+  ])('%s to equal %s', (mc, expected) =>
+    expect(renderMCs(mc)).toEqual(noBreak(expected as string)),
+  );
 });
 
 describe(subtractAcadYear, () => {

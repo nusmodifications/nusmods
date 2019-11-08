@@ -87,21 +87,21 @@ export function isValidSemester(semester: Semester): boolean {
 //  {
 //    [lessonType: string]: ClassNo,
 //  }
-export function randomModuleLessonConfig(lessons: ReadonlyArray<RawLesson>): ModuleLessonConfig {
-  const lessonByGroups: { [lessonType: string]: ReadonlyArray<RawLesson> } = groupBy(
+export function randomModuleLessonConfig(lessons: readonly RawLesson[]): ModuleLessonConfig {
+  const lessonByGroups: { [lessonType: string]: readonly RawLesson[] } = groupBy(
     lessons,
     (lesson) => lesson.lessonType,
   );
 
   const lessonByGroupsByClassNo: {
-    [lessonType: string]: { [classNo: string]: ReadonlyArray<RawLesson> };
-  } = mapValues(lessonByGroups, (lessonsOfSamelessonType: ReadonlyArray<RawLesson>) =>
+    [lessonType: string]: { [classNo: string]: readonly RawLesson[] };
+  } = mapValues(lessonByGroups, (lessonsOfSamelessonType: readonly RawLesson[]) =>
     groupBy(lessonsOfSamelessonType, (lesson) => lesson.classNo),
   );
 
   return mapValues(
     lessonByGroupsByClassNo,
-    (group: { [classNo: string]: ReadonlyArray<RawLesson> }) => sample(group)![0].classNo,
+    (group: { [classNo: string]: readonly RawLesson[] }) => sample(group)![0].classNo,
   );
 }
 
@@ -140,9 +140,9 @@ export function hydrateSemTimetableWithLessons(
 
 //  Filters a flat array of lessons and returns the lessons corresponding to lessonType.
 export function lessonsForLessonType<T extends RawLesson>(
-  lessons: ReadonlyArray<T>,
+  lessons: readonly T[],
   lessonType: LessonType,
-): ReadonlyArray<T> {
+): readonly T[] {
   return lessons.filter((lesson) => lesson.lessonType === lessonType);
 }
 
@@ -230,7 +230,7 @@ export function arrangeLessonsForWeek(lessons: ColoredLesson[]): TimetableArrang
 // Determines if a Lesson on the timetable can be modifiable / dragged around.
 // Condition: There are multiple ClassNo for all the Array<Lesson> in a lessonType.
 export function areOtherClassesAvailable(
-  lessons: ReadonlyArray<RawLesson>,
+  lessons: readonly RawLesson[],
   lessonType: LessonType,
 ): boolean {
   const lessonTypeGroups = groupBy<RawLesson>(lessons, (lesson) => lesson.lessonType);
@@ -391,9 +391,11 @@ export function formatNumericWeeks(weeks: number[]): string | null {
   if (weeks.length === 13) return null;
   if (weeks.length === 1) return `Week ${weeks[0]}`;
 
-  // Check for odd / even weeks
-  if (weeks.length >= 6 && deltas(weeks).every((d) => d === 2)) {
-    return weeks[0] === 1 ? 'Odd Weeks' : 'Even Weeks';
+  // Check for odd / even weeks. There are more odd weeks then even weeks, so we have to split
+  // the length check.
+  if (deltas(weeks).every((d) => d === 2)) {
+    if (weeks[0] % 2 === 0 && weeks.length >= 6) return 'Even Weeks';
+    if (weeks[0] % 2 === 1 && weeks.length >= 7) return 'Odd Weeks';
   }
 
   // Merge consecutive

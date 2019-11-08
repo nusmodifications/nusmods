@@ -5,6 +5,7 @@ import { escapeRegExp, castArray } from 'lodash';
 export const NBSP = '\u00a0';
 export const ZWSP = '\u200b';
 export const BULLET = ' • ';
+export const BULLET_NBSP = '\u00a0•\u00a0';
 
 /**
  * Replace substring matching the provided regex with React nodes. This is
@@ -22,7 +23,7 @@ export function replaceWithNode(
   str: string,
   regex: RegExp,
   replacement: (match: string, index: number) => React.ReactNode,
-): React.ReactNode {
+): React.ReactElement {
   const parts = str.split(regex);
 
   // We want to ensure the resulting array always have the matches at even position
@@ -32,21 +33,22 @@ export function replaceWithNode(
   // so we add in an empty string to pad matches to even positions
   if (parts.length && regex.test(parts[0])) parts.unshift('');
 
-  return parts.map((part, i) => {
-    if (i % 2 === 0) return part;
-    return replacement(part, (i - 1) / 2);
-  });
+  return (
+    <>
+      {parts.map((part, i) => {
+        if (i % 2 === 0) return part;
+        return replacement(part, (i - 1) / 2);
+      })}
+    </>
+  );
 }
 
-export function highlight(
-  str: string,
-  search: string | string[],
-  Tag: string = 'mark',
-): React.ReactNode {
+export function highlight(str: string, search: string | string[], Tag = 'mark'): React.ReactNode {
   const terms = castArray(search).filter(Boolean);
   if (!terms.length) return str;
   const regex = new RegExp(`(${terms.map(escapeRegExp).join('|')})`, 'ig');
-  // @ts-ignore
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore This does not type check correctly
   return replaceWithNode(str, regex, (match, i) => <Tag key={i}>{match}</Tag>);
 }
 

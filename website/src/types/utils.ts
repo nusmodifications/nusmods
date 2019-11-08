@@ -6,8 +6,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 export type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;
+export type Subtract<T extends K, K> = Omit<T, keyof K>;
 
-export const EMPTY_ARRAY: ReadonlyArray<any> = [];
+export const EMPTY_ARRAY: readonly any[] = [];
 
 export const notFalsy = (Boolean as any) as <T>(x: T | false) => x is T;
 export const notNull = <T>(x: T | null | undefined): x is T => x != null;

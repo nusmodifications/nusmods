@@ -6,7 +6,6 @@ exports[`NavtabsComponent renders into nav element 1`] = `
 >
   <NavLink
     activeClassName="linkActive"
-    aria-current="page"
     className="link"
     to="/timetable/sem-1"
   >
@@ -22,9 +21,13 @@ exports[`NavtabsComponent renders into nav element 1`] = `
   </NavLink>
   <NavLink
     activeClassName="linkActive"
-    aria-current="page"
     className="link"
-    to="/modules"
+    to={
+      Object {
+        "pathname": "/modules",
+        "search": "?sem[0]=1&sem[1]=2&sem[2]=3&sem[3]=4",
+      }
+    }
   >
     <BookOpen
       color="currentColor"
@@ -38,7 +41,6 @@ exports[`NavtabsComponent renders into nav element 1`] = `
   </NavLink>
   <NavLink
     activeClassName="linkActive"
-    aria-current="page"
     className="link"
     onFocus={[Function]}
     onMouseOver={[Function]}
@@ -56,7 +58,6 @@ exports[`NavtabsComponent renders into nav element 1`] = `
   </NavLink>
   <NavLink
     activeClassName="linkActive"
-    aria-current="page"
     className="link"
     to="/settings"
   >
@@ -72,7 +73,6 @@ exports[`NavtabsComponent renders into nav element 1`] = `
   </NavLink>
   <NavLink
     activeClassName="linkActive"
-    aria-current="page"
     className="link hiddenOnMobile"
     onFocus={[Function]}
     onMouseOver={[Function]}

@@ -17,7 +17,7 @@ import { deserializeTimetable } from 'utils/timetables';
 import { fillColorMapping } from 'utils/colors';
 import { semesterForTimetablePage, TIMETABLE_SHARE, timetablePage } from 'views/routes/paths';
 import deferComponentRender from 'views/hocs/deferComponentRender';
-import { Repeat } from 'views/components/icons';
+import { Repeat } from 'react-feather';
 import SemesterSwitcher from 'views/components/semester-switcher/SemesterSwitcher';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import ScrollToTop from 'views/components/ScrollToTop';
@@ -208,6 +208,7 @@ export class TimetableContainerComponent extends React.PureComponent<Props, Stat
     return (
       <div>
         <ScrollToTop onComponentDidMount />
+
         <TimetableContent
           key={semester}
           semester={semester}

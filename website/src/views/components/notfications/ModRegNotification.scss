@@ -1,0 +1,59 @@
+@import "~styles/utils/modules-entry";
+
+.container {
+  composes: no-export from global;
+  z-index: $modreg-notification-z-index;
+}
+
+.notificationWrapper {
+  position: relative;
+}
+
+.notification {
+  padding: 0.6rem 3rem 0.6rem 1rem;
+  border: 1px solid theme-color();
+  border-radius: 0.3rem;
+  font-size: 0.9rem;
+  color: var(--body-color);
+  background: var(--body-bg);
+
+  @include media-breakpoint-down(sm) {
+    margin: 0 0 1rem;
+
+    br {
+      display: none;
+    }
+  }
+}
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 3rem;
+
+  @include media-breakpoint-down(sm) {
+    // Visually align with alert box close buttons
+    width: 4rem;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .container {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+
+    :global {
+      // Delay the animation a bit so that the user will not be distracted
+      // by the page loading
+      animation: bounceInUp 1.5s 0.7s backwards;
+    }
+  }
+
+  .notification {
+    margin-top: 1rem;
+    box-shadow: 0 3px 12px rgba(#000, 0.3);
+  }
+}

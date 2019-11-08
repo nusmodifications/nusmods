@@ -13,12 +13,9 @@ export function forceRefreshPrompt() {
   return getParams().refresh === '1';
 }
 
-// Force module finder to always enable or disable instant search
-export function forceInstantSearch() {
-  const instant = getParams().instant;
-
-  if (typeof instant === 'undefined') return null;
-  return instant === '1';
+// Overriding the Elasticsearch host URL from config, used for testing with a local ES server
+export function forceElasticsearchHost() {
+  return getParams().eshost;
 }
 
 // Force the current date/time to some value for components that use the
@@ -38,11 +35,10 @@ export function forceTimer() {
   return date;
 }
 
-// Force the CORS reminder for a certain round (eg. 0, 1A, 2B) to appear
-export function forceCorsRound() {
-  return getParams().round;
-}
-
 export function allowBusStopEditing() {
   return getParams().edit === '1';
+}
+
+export function preferRepoVenues() {
+  return getParams().localVenue === '1';
 }

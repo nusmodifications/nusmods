@@ -1,31 +1,34 @@
-import { uniq, without } from 'lodash';
+import { isEqual } from 'lodash';
 import produce from 'immer';
-import { REHYDRATE } from 'redux-persist';
+import { REHYDRATE, createMigrate } from 'redux-persist';
 
 import { FSA } from 'types/redux';
 import { SettingsState } from 'types/reducers';
 
 import {
-  DISMISS_CORS_NOTIFICATION,
-  ENABLE_CORS_NOTIFICATION,
+  DISMISS_MODREG_NOTIFICATION,
+  ENABLE_MODREG_NOTIFICATION,
   SELECT_FACULTY,
   SELECT_MODE,
   SELECT_NEW_STUDENT,
   SET_LOAD_DISQUS_MANUALLY,
   SET_MODULE_TABLE_SORT,
   TOGGLE_BETA_TESTING_STATUS,
-  TOGGLE_CORS_NOTIFICATION_GLOBALLY,
+  TOGGLE_MODREG_NOTIFICATION_GLOBALLY,
   TOGGLE_MODE,
+  SET_MODREG_SCHEDULE_TYPE,
 } from 'actions/settings';
 import { SET_EXPORTED_DATA } from 'actions/constants';
 import { DIMENSIONS, withTracker } from 'bootstrapping/matomo';
 import { DARK_MODE, LIGHT_MODE } from 'types/settings';
 import config from 'config';
+import { isRoundDismissed } from '../selectors/modreg';
 
-export const defaultCorsNotificationState = {
+export const defaultModRegNotificationState = {
   semesterKey: config.getSemesterKey(),
   dismissed: [],
   enabled: true,
+  scheduleType: 'Undergraduate' as const,
 };
 
 const defaultSettingsState: SettingsState = {
@@ -33,7 +36,7 @@ const defaultSettingsState: SettingsState = {
   faculty: '',
   mode: LIGHT_MODE,
   hiddenInTimetable: [],
-  corsNotification: defaultCorsNotificationState,
+  modRegNotification: defaultModRegNotificationState,
   moduleTableOrder: 'exam',
   beta: false,
   loadDisqusManually: false,
@@ -62,21 +65,28 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
         mode: state.mode === LIGHT_MODE ? DARK_MODE : LIGHT_MODE,
       };
 
-    case TOGGLE_CORS_NOTIFICATION_GLOBALLY:
+    case TOGGLE_MODREG_NOTIFICATION_GLOBALLY:
       return produce(state, (draft) => {
-        draft.corsNotification.enabled = action.payload.enabled;
+        draft.modRegNotification.enabled = action.payload.enabled;
       });
 
-    case DISMISS_CORS_NOTIFICATION:
+    case DISMISS_MODREG_NOTIFICATION:
       return produce(state, (draft) => {
-        const rounds: string[] = draft.corsNotification.dismissed;
-        draft.corsNotification.dismissed = uniq([...rounds, action.payload.round]);
+        if (!isRoundDismissed(action.payload.round, draft.modRegNotification.dismissed)) {
+          draft.modRegNotification.dismissed.push(action.payload.round);
+        }
       });
 
-    case ENABLE_CORS_NOTIFICATION:
+    case ENABLE_MODREG_NOTIFICATION:
       return produce(state, (draft) => {
-        const rounds: string[] = draft.corsNotification.dismissed;
-        draft.corsNotification.dismissed = without(rounds, action.payload.round);
+        draft.modRegNotification.dismissed = draft.modRegNotification.dismissed.filter(
+          (key) => !isEqual(key, action.payload.round),
+        );
+      });
+
+    case SET_MODREG_SCHEDULE_TYPE:
+      return produce(state, (draft) => {
+        draft.modRegNotification.scheduleType = action.payload;
       });
 
     case SET_EXPORTED_DATA:
@@ -112,10 +122,10 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
 
       // Rehydrating from store - check that the key is the same, and if not,
       // reset to default state since the old dismissed notification settings is stale
-      if (nextState.corsNotification.semesterKey !== config.getSemesterKey()) {
+      if (nextState.modRegNotification.semesterKey !== config.getSemesterKey()) {
         nextState = produce(nextState, (draft) => {
-          draft.corsNotification.semesterKey = config.getSemesterKey();
-          draft.corsNotification.dismissed = [];
+          draft.modRegNotification.semesterKey = config.getSemesterKey();
+          draft.modRegNotification.dismissed = [];
         });
       }
       return nextState;
@@ -127,3 +137,16 @@ function settings(state: SettingsState = defaultSettingsState, action: FSA): Set
 }
 
 export default settings;
+
+export const persistConfig = {
+  version: 1,
+  migrate: createMigrate({
+    // any is used because migration typing is hard
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    1: ({ corsNotification, ...state }: any) => ({
+      // Rename corsNotification to modRegNotification and set the default modRegScheduleType
+      modRegNotification: defaultSettingsState.modRegNotification,
+      ...state,
+    }),
+  }),
+};

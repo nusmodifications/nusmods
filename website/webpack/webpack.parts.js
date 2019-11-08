@@ -1,22 +1,15 @@
 const path = require('path');
 const webpack = require('webpack');
-const _ = require('lodash');
 
-const { GenerateSW } = require('workbox-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const childProcess = require('child_process');
 const moment = require('moment');
 
 const packageJson = require('../package.json');
-const nusmods = require('../src/apis/nusmods');
-const config = require('../src/config/app-config.json');
 
 const ROOT = path.join(__dirname, '..');
 const SRC = 'src';
-
-const ONE_MONTH = 30 * 24 * 60 * 60;
-const staleWhileRevalidatePaths = [nusmods.venuesUrl(config.semester), nusmods.modulesUrl()];
 
 const PATHS = {
   root: ROOT,
@@ -56,21 +49,6 @@ exports.setFreeVariable = (key, value) => {
     plugins: [new webpack.DefinePlugin(env)],
   };
 };
-
-/**
- * Removes the folder/file to make way for new changes.
- *
- * @see https://survivejs.com/webpack/building/tidying-up/#setting-up-cleanwebpackplugin-
- */
-exports.clean = (...pathsToBeCleaned) => ({
-  plugins: [
-    new CleanWebpackPlugin([...pathsToBeCleaned], {
-      // Without `root` CleanWebpackPlugin won't point to our
-      // project and will fail to work.
-      root: process.cwd(),
-    }),
-  ],
-});
 
 /**
  * For extracting chunks into different bundles for caching.
@@ -170,9 +148,11 @@ exports.getCSSConfig = ({ options } = {}) => [
   {
     loader: 'sass-loader',
     options: {
-      // @material packages uses '@material' directly as part of their import paths.
-      // Without this those imports will not resolve properly
-      includePaths: [PATHS.node],
+      sassOptions: {
+        // @material packages uses '@material' directly as part of their import paths.
+        // Without this those imports will not resolve properly
+        includePaths: [PATHS.node],
+      },
     },
   },
 ];
@@ -190,7 +170,44 @@ exports.loadCSS = ({ include, exclude, options } = {}) => ({
         include,
         exclude,
 
-        use: [].concat('style-loader', exports.getCSSConfig({ options })),
+        use: ['style-loader', ...exports.getCSSConfig({ options })],
+      },
+    ],
+  },
+});
+
+exports.productionCSS = ({ options } = {}) => ({
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash:8].css',
+      chunkFilename: '[name].[contenthash:8].css',
+      ignoreOrder: true,
+
+      ...options,
+    }),
+  ],
+
+  module: {
+    rules: [
+      {
+        test: /\.(css|scss)$/,
+        include: PATHS.styles,
+        use: [MiniCssExtractPlugin.loader, ...exports.getCSSConfig(options)],
+      },
+      {
+        test: /\.(css|scss)$/,
+        include: PATHS.src,
+        exclude: PATHS.styles,
+        use: [
+          MiniCssExtractPlugin.loader,
+          ...exports.getCSSConfig({
+            options: {
+              modules: {
+                localIdentName: '[hash:base64:8]',
+              },
+            },
+          }),
+        ],
       },
     ],
   },
@@ -248,72 +265,6 @@ exports.loadImages = ({ include, exclude, options } = {}) => ({
 });
 
 /**
- * Use Workbox to enable offline support with service worker
- *
- * @see https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin#generatesw_plugin_1
- *
- */
-exports.workbox = () => ({
-  plugins: [
-    new GenerateSW({
-      // Cache NUSMods API requests so that pages which depend on them can be
-      // viewed offline
-      runtimeCaching: [
-        // Module and venue info are served from cache first, because they are
-        // large, so this will improve perceived performance
-        {
-          urlPattern: new RegExp(staleWhileRevalidatePaths.map(_.escapeRegExp).join('|')),
-          handler: 'staleWhileRevalidate',
-          options: {
-            cacheName: 'api-stale-while-revalidate-cache',
-            cacheableResponse: {
-              // Do not cache opaque responses. All normal API responses should have
-              // CORS headers, so if it doesn't then the response is non-cachable
-              // and should be ignored
-              statuses: [200],
-            },
-            expiration: {
-              maxAgeSeconds: ONE_MONTH,
-              purgeOnQuotaError: true,
-            },
-          },
-        },
-        // Everything else (module info, module list) uses network first because
-        // they are relatively small and needs to be as updated as possible
-        {
-          urlPattern: new RegExp(_.escapeRegExp(nusmods.baseUrl())),
-          handler: 'networkFirst',
-          options: {
-            cacheName: 'api-network-first-cache',
-            cacheableResponse: {
-              statuses: [200],
-            },
-            expiration: {
-              maxEntries: 500,
-              maxAgeSeconds: ONE_MONTH,
-              purgeOnQuotaError: true,
-            },
-          },
-        },
-      ],
-
-      // Exclude hot reload related code in development
-      exclude: [/\.hot-update\.js(on)?$/],
-
-      // Include additional service worker code
-      importScripts: ['service-worker-notifications.js'],
-
-      // Always serve index.html since we're a SPA using HTML5 history
-      navigateFallback: 'index.html',
-
-      // Exclude /export, which are handled by the server
-      // short_url is not excluded because it is fetched, not navigated to
-      navigateFallbackBlacklist: [/^.*\/export.*$/],
-    }),
-  ],
-});
-
-/**
  * Some libraries import Node modules but don't use them in the browser.
  * Tell Webpack to provide empty mocks for them so importing them works.
  *
@@ -333,10 +284,17 @@ exports.mockNode = () => ({
  * @returns Object with keys `commitHash` and `versionStr`.
  */
 exports.appVersion = () => {
-  const commitHash = childProcess
-    .execSync('git rev-parse HEAD')
-    .toString()
-    .trim();
+  let commitHash;
+  try {
+    commitHash =
+      process.env.GIT_COMMIT_HASH ||
+      childProcess
+        .execFileSync('git', ['rev-parse', 'HEAD'])
+        .toString()
+        .trim();
+  } catch (e) {
+    commitHash = 'UNSET';
+  }
   // Version format: <YYYYMMDD date>-<7-char hash substring>
   const versionStr = commitHash && `${moment().format('YYYYMMDD')}-${commitHash.substring(0, 7)}`;
   return { commitHash, versionStr };

@@ -2,9 +2,9 @@ import * as React from 'react';
 import { omit, stubString } from 'lodash';
 import Downshift, { ChildrenFunction, DownshiftState, StateChangeOptions } from 'downshift';
 import classnames from 'classnames';
+import { ChevronRight, HelpCircle as Help, Search } from 'react-feather';
 
 import { highlight } from 'utils/react';
-import { ChevronRight, Help, Search } from 'views/components/icons';
 import { ModuleCondensed } from 'types/modules';
 import { Venue } from 'types/venues';
 import {
@@ -73,21 +73,23 @@ class GlobalSearch extends React.Component<Props, State> {
     this.setState({ inputValue: newInputValue });
   };
 
-  onChange = (item: SearchItem) => {
-    const { onSelectModule, onSelectVenue, onSearch } = this.props;
+  onChange = (item: SearchItem | null) => {
+    if (item) {
+      const { onSelectModule, onSelectVenue, onSearch } = this.props;
 
-    switch (item.type) {
-      case VENUE_RESULT:
-        onSelectVenue(item.venue);
-        break;
+      switch (item.type) {
+        case VENUE_RESULT:
+          onSelectVenue(item.venue);
+          break;
 
-      case MODULE_RESULT:
-        onSelectModule(item.module);
-        break;
+        case MODULE_RESULT:
+          onSelectModule(item.module);
+          break;
 
-      case SEARCH_RESULT:
-        onSearch(item.type, item.term);
-        break;
+        case SEARCH_RESULT:
+          onSearch(item.type, item.term);
+          break;
+      }
     }
 
     this.onClose();

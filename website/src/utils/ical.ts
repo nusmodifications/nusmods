@@ -59,7 +59,7 @@ export function iCalEventForExam(module: Module, semester: Semester): EventOptio
   };
 }
 
-export function holidaysForYear(hourOffset: number = 0): Date[] {
+export function holidaysForYear(hourOffset = 0): Date[] {
   return config.holidays
     .map((date) => new Date(date.valueOf() - SG_UTC_TIME_DIFF_MS)) // Convert to local time
     .map((holiday) => addLessonOffset(holiday, hourOffset));

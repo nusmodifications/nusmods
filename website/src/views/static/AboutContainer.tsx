@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { toggleFeedback } from 'actions/app';
 import config from 'config';
 
-import { Mail, Layers, GitHub } from 'views/components/icons';
+import { Mail, Layers, GitHub } from 'react-feather';
 import ExternalLink from 'views/components/ExternalLink';
 
 import StaticPage from './StaticPage';
@@ -24,7 +24,7 @@ function AboutContainer(props: Props) {
         students to plan their school timetables. Over time, more features have been added to
         improve the lives of NUS students. Besides timetable planning, NUSMods also serves as a
         complete knowledge bank of NUS modules by providing useful module-related information such
-        as archived CORS bidding statistics and community-driven module reviews and discussions.
+        as community-driven module reviews and discussions.
       </p>
 
       <h3>Goals</h3>
