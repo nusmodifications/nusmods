@@ -116,5 +116,7 @@ $item-padding-vertical: 0.6rem;
 }
 
 .optionActions {
+  display: flex;
+  align-items: center;
   margin: -$item-padding-vertical 0;
 }
