@@ -7,6 +7,7 @@ import Downshift, {
   StateChangeOptions,
 } from 'downshift';
 import classnames from 'classnames';
+import { Trash } from 'react-feather';
 
 import { ModuleSelectList } from 'types/reducers';
 import { ModuleCode } from 'types/modules';
@@ -16,6 +17,7 @@ import makeResponsive from 'views/hocs/makeResponsive';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import elements from 'views/elements';
+import Tooltip from 'views/components/Tooltip';
 
 import styles from './ModulesSelect.scss';
 
@@ -27,6 +29,7 @@ type Props = {
 
   getFilteredModules: (string: string | null) => ModuleSelectList;
   onChange: (moduleCode: ModuleCode) => void;
+  onRemoveModule: (moduleCode: ModuleCode) => void;
 };
 
 type State = {
@@ -114,6 +117,7 @@ export class ModulesSelectComponent extends React.Component<Props, State> {
     const showResults = isOpen && results.length > 0;
     const showTip = isModalOpen && !results.length;
     const showNoResultMessage = isOpen && inputValue && !results.length;
+    const removeBtnLabel = (moduleCode: ModuleCode) => `Remove ${moduleCode} from timetable`;
 
     return (
       <div className={styles.container}>
@@ -151,10 +155,23 @@ export class ModulesSelectComponent extends React.Component<Props, State> {
                     bug that drops the whitespace between the module code and title */}
                 {`${module.moduleCode} ${module.title}`}
                 {module.isAdded && (
-                  <div>
+                  <div className={styles.optionActions}>
+                    <Tooltip content={removeBtnLabel(module.moduleCode)} touchHold>
+                      <button
+                        type="button"
+                        className={classnames('btn btn-svg btn-sm', styles.actionButton)}
+                        aria-label={removeBtnLabel(module.moduleCode)}
+                        onClick={() => {
+                          this.props.onRemoveModule(module.moduleCode);
+                        }}
+                      >
+                        <Trash className={styles.actionIcon} />{' '}
+                      </button>
+                    </Tooltip>
                     <span className="badge badge-info">Added</span>
                   </div>
                 )}
+
                 {module.isAdding && (
                   <div>
                     <span className="badge badge-warning">Adding...</span>

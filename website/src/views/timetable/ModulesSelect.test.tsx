@@ -29,6 +29,7 @@ const commonProps = {
   placeholder: 'test placeholder',
   matchBreakpoint: false,
   disabled: false,
+  onRemoveModule: jest.fn(),
 };
 
 describe(ModulesSelectComponent, () => {

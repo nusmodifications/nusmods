@@ -42,7 +42,7 @@ export type Props = {
   selectModuleColor: (semester: Semester, moduleCode: ModuleCode, colorIndex: ColorIndex) => void;
   hideLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   showLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
-  onRemoveModule: (moduleWithColor: ModuleWithColor) => void;
+  onRemoveModule: (moduleCode: ModuleCode) => void;
   resetTombstone: () => void;
 };
 
@@ -60,7 +60,7 @@ export class TimetableModulesTableComponent extends React.PureComponent<Props> {
               type="button"
               className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
               aria-label={removeBtnLabel}
-              onClick={() => this.props.onRemoveModule(module)}
+              onClick={() => this.props.onRemoveModule(module.moduleCode)}
             >
               <Trash className={styles.actionIcon} />
             </button>
