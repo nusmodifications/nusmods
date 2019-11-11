@@ -43,7 +43,7 @@ class ExpandMap extends React.PureComponent<Props> {
 
     return (
       <Control position="bottomleft">
-        <Tooltip content={label} touchHold>
+        <Tooltip content={label} touch="hold">
           <button
             aria-label={label}
             type="button"
