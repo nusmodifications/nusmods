@@ -156,7 +156,7 @@ export class ModulesSelectComponent extends React.Component<Props, State> {
                 {`${module.moduleCode} ${module.title}`}
                 {module.isAdded && (
                   <div className={styles.optionActions}>
-                    <Tooltip content={removeBtnLabel(module.moduleCode)} touchHold>
+                    <Tooltip content={removeBtnLabel(module.moduleCode)} touch="hold">
                       <button
                         type="button"
                         className={classnames('btn btn-svg btn-sm', styles.actionButton)}

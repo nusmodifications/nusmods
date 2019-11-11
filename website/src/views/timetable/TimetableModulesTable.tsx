@@ -55,7 +55,7 @@ export class TimetableModulesTableComponent extends React.PureComponent<Props> {
     return (
       <div className={styles.moduleActionButtons}>
         <div className="btn-group">
-          <Tooltip content={removeBtnLabel} touchHold>
+          <Tooltip content={removeBtnLabel} touch="hold">
             <button
               type="button"
               className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
@@ -65,7 +65,7 @@ export class TimetableModulesTableComponent extends React.PureComponent<Props> {
               <Trash className={styles.actionIcon} />
             </button>
           </Tooltip>
-          <Tooltip content={hideBtnLabel} touchHold>
+          <Tooltip content={hideBtnLabel} touch="hold">
             <button
               type="button"
               className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
