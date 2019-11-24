@@ -11529,10 +11529,10 @@ react-router@5.1.2:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
-react-scrollspy@3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/react-scrollspy/-/react-scrollspy-3.4.0.tgz#5cf2e5b3e5de2d268a9456dfbbebed77aa6358a2"
-  integrity sha512-l7XDF6ZWuP0X+pLw+i5V8akWph/IQZ6/fnPXPN2R/xsgbXzXLtC/3URNcxj/hKIRjQpdYMrJR2VKqMkw2nnTvQ==
+react-scrollspy@3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/react-scrollspy/-/react-scrollspy-3.4.1.tgz#16d8a066efd338e9b428aa4e990c9e7cd75f6e2c"
+  integrity sha512-zXSMG1WlL/3AZ+rFq6jG3SB/Q2RHL/gNWysu9C9jaPdGstXquWz7Eu3ER/g7ZfsmmHacHYi4jkNC8QZHGnpcxA==
   dependencies:
     babel-runtime "^6.26.0"
     classnames "^2.2.5"
