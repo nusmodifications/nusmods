@@ -8,7 +8,7 @@
   "private": true,
   "scripts": {
     "start": "pm2 start ecosystem.config.js",
-    "dev": "nodemon -r dotenv/config ./src",
+    "dev": "nodemon --no-update-notifier -r dotenv/config ./src",
     "devtools": "DEVTOOLS=1 nodemon -r dotenv/config ./src",
     "deploy": "rsync -avu --delete-after . ../../nusmods-export && pm2 restart ecosystem.config.js"
   },
