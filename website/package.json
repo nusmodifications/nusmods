@@ -37,7 +37,7 @@
     "@packtracker/webpack-plugin": "2.2.0",
     "@svgr/webpack": "4.3.3",
     "@types/classnames": "2.2.9",
-    "@types/enzyme": "3.10.3",
+    "@types/enzyme": "3.10.4",
     "@types/jest": "24.0.23",
     "@types/js-combinatorics": "0.5.31",
     "@types/json2mq": "0.2.0",
