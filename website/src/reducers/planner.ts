@@ -1,6 +1,6 @@
 import produce from 'immer';
 import { each, max, min, pull } from 'lodash';
-import { createMigrate } from 'redux-persist';
+import { createMigrate, PersistedState } from 'redux-persist';
 
 import { PlannerState } from 'types/reducers';
 import { FSA } from 'types/redux';
@@ -150,7 +150,9 @@ export default function planner(
 type PlannerStateV0 = Omit<PlannerState, 'modules'> & {
   modules: { [moduleCode: string]: [string, Semester, number] };
 };
-export function migrateV0toV1(oldState: PlannerStateV0): PlannerState {
+export function migrateV0toV1(
+  oldState: PlannerStateV0 & PersistedState,
+): PlannerState & PersistedState {
   // Map the old module time mapping of module code to module time tuple
   // to the new mapping of id to module time object
   let id = 0;
@@ -179,7 +181,8 @@ export function migrateV0toV1(oldState: PlannerStateV0): PlannerState {
 export const persistConfig = {
   version: 1,
   migrate: createMigrate({
-    // @ts-ignore TS doesn't like this for some reason
-    1: migrateV0toV1,
+    // The typings for this seems really weird
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    1: migrateV0toV1 as any,
   }),
 };
