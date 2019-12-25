@@ -114,6 +114,8 @@ const replaceOperators = (str: string) =>
     .replace(/ plus /g, OPERATORS.and)
     .replace(OPERATORS_REGEX, R.toLower);
 
+const normalizeWhitespace = (str: string) => str.replace(/\s+/g, ' ');
+
 export const normalize = R.pipe(
   removeSpaceFromModule,
   fixOperatorTypos,
@@ -124,12 +126,16 @@ export const normalize = R.pipe(
   fixBrackets,
   replaceOperators,
   removeModuleTitles,
+  normalizeWhitespace,
 );
 
 export default function normalizeString(string: string, moduleCode: ModuleCode): string {
   // remove own module code from string (e.g. `CS1000R` would remove `CS1000R`, `CS1000`)
-  // @ts-ignore Strings are lists, damn it
-  const moduleWithoutPostfix = moduleCode.slice(0, R.findLastIndex(R.test(/\d/), moduleCode) + 1);
+  const moduleWithoutPostfix = moduleCode.slice(
+    0,
+    // Strings are arrays, dammit
+    R.findLastIndex(R.test(/\d/), (moduleCode as unknown) as string[]) + 1,
+  );
   const moduleRegex = new RegExp(`\\b${moduleWithoutPostfix}(?:[A-Z]|[A-Z]R)?\\b`, 'g');
   const preprocessed = string.replace(moduleRegex, '');
   return normalize(preprocessed);

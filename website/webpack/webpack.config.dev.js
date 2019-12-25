@@ -24,7 +24,7 @@ const developmentConfig = merge([
       // See: https://survivejs.com/webpack/appendices/hmr/#setting-wds-entry-points-manually
       'webpack-dev-server/client',
       'webpack/hot/only-dev-server',
-      'main',
+      'entry/main',
     ],
     resolve: {
       alias: {
@@ -48,8 +48,6 @@ const developmentConfig = merge([
       // Waiting on: https://github.com/jantimon/html-webpack-plugin/issues/533
       // { multiStep: true }
       new webpack.HotModuleReplacementPlugin(),
-      // do not emit compiled assets that include errors
-      new webpack.NoEmitOnErrorsPlugin(),
       // Caches compiled modules to disk to improve rebuild times
       new HardSourceWebpackPlugin({
         info: {
@@ -72,8 +70,9 @@ const developmentConfig = merge([
     include: parts.PATHS.src,
     exclude: parts.PATHS.styles,
     options: {
-      modules: true,
-      localIdentName: '[name]-[local]_[hash:base64:4]',
+      modules: {
+        localIdentName: '[name]-[local]',
+      },
     },
   }),
 ]);

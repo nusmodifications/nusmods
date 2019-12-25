@@ -6,7 +6,7 @@ import { toggleTimetableOrientation, toggleTitleDisplay } from 'actions/theme';
 import { Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
 
-import { Calendar, Grid, Sidebar, Type } from 'views/components/icons';
+import { Calendar, Grid, Sidebar, Type } from 'react-feather';
 import elements from 'views/elements';
 import config from 'config';
 import ShareTimetable from './ShareTimetable';
@@ -84,7 +84,7 @@ function TimetableActions(props: Props) {
       </div>
 
       <div className={styles.buttonGroup} role="group" aria-label="Timetable exporting">
-        <ExportMenu semester={props.semester} />
+        <ExportMenu semester={props.semester} timetable={props.timetable} />
 
         <ShareTimetable semester={props.semester} timetable={props.timetable} />
       </div>

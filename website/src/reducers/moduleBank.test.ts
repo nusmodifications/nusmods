@@ -12,13 +12,13 @@ const defaultModuleBankState: ModuleBank = {
 };
 
 describe(UPDATE_MODULE_TIMESTAMP, () => {
+  let dateNowSpy: jest.SpyInstance;
   beforeEach(() => {
-    jest.spyOn(Date, 'now').mockReturnValue(12345);
+    dateNowSpy = jest.spyOn(Date, 'now').mockReturnValue(12345);
   });
 
   afterEach(() => {
-    // @ts-ignore
-    Date.now.mockRestore();
+    dateNowSpy.mockRestore();
   });
 
   it('should update module timestamp', () => {

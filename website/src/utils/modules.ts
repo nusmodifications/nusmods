@@ -43,7 +43,7 @@ export function formatExamDate(examDate: string | null | undefined): string {
   if (!examDate) return 'No Exam';
 
   const localDate = toSingaporeTime(examDate);
-  return format(localDate, 'dd-MM-yyyy p');
+  return format(localDate, 'dd-MMM-yyyy p');
 }
 
 export function getExamDate(module: Module, semester: Semester): string | null {
@@ -82,6 +82,13 @@ export function subtractAcadYear(acadYear: string): string {
 
 export function addAcadYear(acadYear: string): string {
   return acadYear.replace(/\d+/g, (year) => String(parseInt(year, 10) + 1));
+}
+
+export function isOffered(module: {
+  semesterData?: readonly (SemesterData | SemesterDataCondensed)[];
+}): boolean {
+  if (module.semesterData) return module.semesterData.length > 0;
+  return false;
 }
 
 export function offsetAcadYear(year: string, offset: number) {

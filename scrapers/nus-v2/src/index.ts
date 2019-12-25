@@ -5,7 +5,7 @@ import * as yargs from 'yargs';
 import { size, mapValues } from 'lodash';
 
 import logger from './services/logger';
-import { Semesters } from './types/modules';
+import { Aliases, Semesters } from './types/modules';
 
 import TestApi from './tasks/TestApi';
 import GetFacultyDepartment from './tasks/GetFacultyDepartment';
@@ -15,6 +15,7 @@ import CollateModules from './tasks/CollateModules';
 import DataPipeline from './tasks/DataPipeline';
 
 import config from './config';
+import MigrateV1ToV2 from './tasks/MigrateV1ToV2';
 
 function handleFatalError(e: Error): void {
   logger.fatal(e, 'Fatal error');
@@ -101,12 +102,12 @@ yargs
       const semesterData = [];
 
       for (const semester of Semesters) {
-        const semesterAliases = await new CollateVenues(semester, year).aliasCache
-          .read()
-          .catch((e) => {
+        const semesterAliases = await new CollateVenues(semester, year).aliasCache.read().catch(
+          (e): Aliases => {
             logger.warn(e, `No module alias info available for ${semester}`);
-            return [];
-          });
+            return {};
+          },
+        );
         aliases.push(mapValues(semesterAliases, (moduleCodes) => new Set(moduleCodes)));
 
         const modules = await new GetSemesterData(semester, year).outputCache.read().catch((e) => {
@@ -120,9 +121,25 @@ yargs
     }),
   })
   .command({
-    command: 'all',
+    command: 'all [year]',
     describe: 'run all tasks in a single pipeline',
+    builder: {
+      year: parameters.year,
+    },
     handler: run(({ year }) => new DataPipeline(year).run()),
+  })
+  .command({
+    command: 'migrate [year]',
+    describe: 'move v1 modules to v2 modules format',
+    builder: {
+      year: parameters.year,
+    },
+    handler: run(async ({ year }) => {
+      // Always use current year because v2 API endpoint may not return data for past years
+      const input = await new GetFacultyDepartment(config.academicYear).run();
+      const convertedModules = await new MigrateV1ToV2(year).run(input);
+      logger.info(`Converted ${convertedModules.length} modules`);
+    }),
   })
   .demandCommand()
   .strict()

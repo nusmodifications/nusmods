@@ -40,7 +40,7 @@ export function FooterComponent(props: Props) {
 
   return (
     <footer className={styles.footer}>
-      <div className="container">
+      <div className={styles.footerContainer}>
         <ul className={styles.footerLinks}>
           <li>
             <ExternalLink href={config.contact.githubRepo}>GitHub</ExternalLink>
@@ -58,9 +58,7 @@ export function FooterComponent(props: Props) {
             <ExternalLink href={config.contact.blog}>Blog</ExternalLink>
           </li>
           <li>
-            <ExternalLink href="https://github.com/nusmodifications/nusmods/tree/master/api">
-              API
-            </ExternalLink>
+            <ExternalLink href="https://api.nusmods.com/v2">API</ExternalLink>
           </li>
           <li>
             <Link to="/apps">Apps</Link>

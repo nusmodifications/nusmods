@@ -57,6 +57,8 @@ $h-padding: $grid-gutter-width / 2;
 
 .checklist,
 .dropdown {
+  margin-bottom: 1rem;
+
   input {
     margin-top: 0.15rem;
   }

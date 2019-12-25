@@ -1,4 +1,8 @@
 module.exports = {
+  env: {
+    browser: true,
+  },
+
   extends: [
     // Only enable the TypeScript rules under src
     'plugin:@typescript-eslint/recommended',
@@ -17,6 +21,9 @@ module.exports = {
         jest: true,
       },
       rules: {
+        // These seem to be tripping randomly in tests unfortunately
+        'max-classes-per-file': 'off',
+
         'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
 
         // any is needed for mocking, amongst other things
@@ -45,6 +52,16 @@ module.exports = {
         // Easier to write interfaces with external libraries and APIs with any
         '@typescript-eslint/no-explicit-any': 'off',
       },
+    },
+
+    {
+      files: ['**/*.d.ts'],
+      rules: {
+        // ESLint triggers this on declared constructors, which is useless
+        'no-useless-constructor': 'off',
+        // Also triggering incorrectly in some type declarations
+        '@typescript-eslint/no-unused-vars': 'off',
+      }
     },
 
     {
@@ -88,8 +105,8 @@ module.exports = {
     // We use type aliases for data types, ie. things that are not new-able
     '@typescript-eslint/prefer-interface': 'off',
 
+    // TODO: Fix these
     '@typescript-eslint/no-explicit-any': 'warn',
-
     '@typescript-eslint/no-non-null-assertion': 'warn',
   },
 };

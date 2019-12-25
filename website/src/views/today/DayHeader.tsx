@@ -61,7 +61,7 @@ export default function DayHeader(props: Props) {
       </h2>
 
       {Icon && forecast && (
-        <Tooltip content={forecast} placement="bottom" offset={0}>
+        <Tooltip content={forecast} placement="bottom" distance={0}>
           <div className={styles.weather} aria-label={forecast}>
             <Icon />
           </div>

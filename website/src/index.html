@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
     <link href="${htmlWebpackPlugin.files.publicPath}apple-icon-180x180.png" rel="apple-touch-icon" sizes="180x180">
     <link href="${htmlWebpackPlugin.files.publicPath}favicon-32x32.png" rel="icon" type="image/png" sizes="32x32">
     <link href="${htmlWebpackPlugin.files.publicPath}favicon-16x16.png" rel="icon" type="image/png" sizes="16x16">
@@ -25,5 +25,7 @@
   <body>
     <div id="app"></div>
     <noscript>Please enable JavaScript to use ${htmlWebpackPlugin.options.brandName}</noscript>
+
+  <script src="/${htmlWebpackPlugin.options.browserWarningPath}" async defer></script>
   </body>
 </html>

@@ -1,8 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
 
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const childProcess = require('child_process');
 const moment = require('moment');
 
@@ -17,7 +17,7 @@ const PATHS = {
   // version of the same module, so this is kept relative
   node: 'node_modules',
   src: path.join(ROOT, SRC),
-  styles: path.join(ROOT, SRC, 'styles'),
+  styles: [path.join(ROOT, SRC, 'styles'), path.join(ROOT, 'node_modules')],
   images: path.join(ROOT, SRC, 'img'),
   build: path.join(ROOT, 'dist'),
   buildTimetable: path.join(ROOT, 'dist-timetable'),
@@ -49,21 +49,6 @@ exports.setFreeVariable = (key, value) => {
     plugins: [new webpack.DefinePlugin(env)],
   };
 };
-
-/**
- * Removes the folder/file to make way for new changes.
- *
- * @see https://survivejs.com/webpack/building/tidying-up/#setting-up-cleanwebpackplugin-
- */
-exports.clean = (...pathsToBeCleaned) => ({
-  plugins: [
-    new CleanWebpackPlugin([...pathsToBeCleaned], {
-      // Without `root` CleanWebpackPlugin won't point to our
-      // project and will fail to work.
-      root: process.cwd(),
-    }),
-  ],
-});
 
 /**
  * For extracting chunks into different bundles for caching.
@@ -163,9 +148,11 @@ exports.getCSSConfig = ({ options } = {}) => [
   {
     loader: 'sass-loader',
     options: {
-      // @material packages uses '@material' directly as part of their import paths.
-      // Without this those imports will not resolve properly
-      includePaths: [PATHS.node],
+      sassOptions: {
+        // @material packages uses '@material' directly as part of their import paths.
+        // Without this those imports will not resolve properly
+        includePaths: [PATHS.node],
+      },
     },
   },
 ];
@@ -183,7 +170,44 @@ exports.loadCSS = ({ include, exclude, options } = {}) => ({
         include,
         exclude,
 
-        use: [].concat('style-loader', exports.getCSSConfig({ options })),
+        use: ['style-loader', ...exports.getCSSConfig({ options })],
+      },
+    ],
+  },
+});
+
+exports.productionCSS = ({ options } = {}) => ({
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash:8].css',
+      chunkFilename: '[name].[contenthash:8].css',
+      ignoreOrder: true,
+
+      ...options,
+    }),
+  ],
+
+  module: {
+    rules: [
+      {
+        test: /\.(css|scss)$/,
+        include: PATHS.styles,
+        use: [MiniCssExtractPlugin.loader, ...exports.getCSSConfig(options)],
+      },
+      {
+        test: /\.(css|scss)$/,
+        include: PATHS.src,
+        exclude: PATHS.styles,
+        use: [
+          MiniCssExtractPlugin.loader,
+          ...exports.getCSSConfig({
+            options: {
+              modules: {
+                localIdentName: '[hash:base64:8]',
+              },
+            },
+          }),
+        ],
       },
     ],
   },

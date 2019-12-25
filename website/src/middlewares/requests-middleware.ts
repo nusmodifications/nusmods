@@ -14,6 +14,7 @@ function makeRequest(request: AxiosRequestConfig) {
 }
 
 // TODO: Figure out how to type Dispatch correctly
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const requestMiddleware: Middleware<any, State, any> = () => (next) => (action) => {
   if (!action.meta || !action.meta[API_REQUEST]) {
     // Non-api request action

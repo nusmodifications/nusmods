@@ -28,13 +28,12 @@ export default class HistoryDebouncer<HistoryLocationState = LocationState> {
     if (nextPath === createPath(this.history.location)) return;
 
     if (Date.now() - this.lastPush > this.wait) {
-      // @ts-ignore TypeScript doesn't recognize our push as a proxy for History.push's
+      // TypeScript doesn't recognize our push as a proxy for History.push's
       // overloaded signature, and it's really hard to fix this properly
-      this.history.push(path, state);
+      this.history.push(path as string, state);
     } else {
       try {
-        // @ts-ignore
-        this.history.replace(path, state);
+        this.history.replace(path as string, state);
       } catch (e) {
         // Ignore Safari's history.replaceState() rate limit error.
         // See https://github.com/nusmodifications/nusmods/issues/763

@@ -57,6 +57,11 @@ const getLessonKey = (lesson: TimetableLesson) =>
  * the range of date and the intervals between lessons
  */
 export function mapLessonWeeks(dates: string[], semester: number, logger: Logger): Weeks {
+  // Sanity check for lessons occurring on duplicate days
+  if (dates.length !== new Set(dates).size) {
+    logger.error('Lesson has duplicate dates');
+  }
+
   const semesterName = SEMESTER_NAMES[semester];
   const lessonDates = dates.map((date) => parseISO(date)).sort(compareAsc);
   const weekInfo = lessonDates.map(NUSModerator.academicCalendar.getAcadWeekInfo);
@@ -94,11 +99,23 @@ export function mapLessonWeeks(dates: string[], semester: number, logger: Logger
   return weekRange;
 }
 
-export function mapTimetableLesson(lesson: TimetableLesson, logger: Logger): TempRawLesson {
-  const { room, start_time, end_time, day, modgrp, activity, eventdate, csize } = lesson;
+export function mapTimetableLesson(lesson: TimetableLesson, logger: Logger): TempRawLesson | null {
+  const { room, start_time, end_time, day, module, modgrp, activity, eventdate, csize } = lesson;
 
   if (has(unrecognizedLessonTypes, activity)) {
-    logger.warn({ activity }, `Lesson type not recognized by the frontend used`);
+    logger.warn(
+      { moduleCode: module, activity },
+      'Lesson type not recognized by the frontend used',
+    );
+  }
+
+  if (!start_time || !end_time) {
+    const { session, term } = lesson;
+    logger.error(
+      { moduleCode: module, end_time, start_time },
+      'Lesson has no start and/or end time',
+    );
+    return null;
   }
 
   return {
@@ -193,7 +210,10 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
       if (rawLesson) {
         rawLesson.weeks.push(lesson.eventdate);
       } else {
-        timetable[key] = mapTimetableLesson(lesson, this.logger);
+        const lessons = mapTimetableLesson(lesson, this.logger);
+        if (lessons) {
+          timetable[key] = lessons;
+        }
       }
     });
 
@@ -203,7 +223,11 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
       // 5. Remove the lesson key inserted in (2) and remap the weeks to their correct shape
       values(timetableObject).map((lesson) => ({
         ...lesson,
-        weeks: mapLessonWeeks(lesson.weeks, this.semester, this.logger.child({ moduleCode })),
+        weeks: mapLessonWeeks(
+          lesson.weeks,
+          this.semester,
+          this.logger.child({ moduleCode, lesson }),
+        ),
       })),
     );
   };

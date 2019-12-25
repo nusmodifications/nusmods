@@ -19,10 +19,7 @@ type Props = {
   className?: string;
 };
 
-// @ts-ignore TODO: Figure out why TypeScript does not accept (props) => React.ReactNode as functional component
-export const LinkModuleCodesComponent: React.FunctionComponent<Props> = (
-  props: Props,
-): React.ReactNode => {
+export const LinkModuleCodesComponent: React.FC<Props> = (props) => {
   const { children, className } = props;
 
   return replaceWithNode(children, MODULE_CODE_REGEX, (part, i) => {
@@ -37,7 +34,7 @@ export const LinkModuleCodesComponent: React.FunctionComponent<Props> = (
     );
 
     return (
-      <Tooltip content={tooltip} distance={5} key={i} touchHold>
+      <Tooltip content={tooltip} distance={0} key={i} touch="hold">
         <Link className={className} to={modulePage(code, module.title)}>
           {part}
         </Link>

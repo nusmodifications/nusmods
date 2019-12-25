@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withLeaflet, ContextProps } from 'react-leaflet';
 import Control from 'react-leaflet-control';
-import { Maximize, Minimize } from 'views/components/icons';
+import { Maximize, Minimize } from 'react-feather';
 import Tooltip from 'views/components/Tooltip';
 
 type Props = ContextProps & {
@@ -43,7 +43,7 @@ class ExpandMap extends React.PureComponent<Props> {
 
     return (
       <Control position="bottomleft">
-        <Tooltip content={label} touchHold>
+        <Tooltip content={label} touch="hold">
           <button
             aria-label={label}
             type="button"
