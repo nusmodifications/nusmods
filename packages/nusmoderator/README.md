@@ -96,7 +96,7 @@ Computes the current academic week and return in an object of acad date componen
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** {
   year: "15/16",
-  sem: 'Semester 1'|'Semester 2'|'Special Sem 1'|'Special Sem 2',
+  sem: 'Semester 1'|'Semester 2'|'Special Term I'|'Special Term II',
   type: 'Instructional'|'Reading'|'Examination'|'Recess'|'Vacation'|'Orientation',
   num: <weekNum>
 }

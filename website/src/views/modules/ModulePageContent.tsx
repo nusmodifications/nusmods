@@ -258,27 +258,25 @@ export default class ModulePageContent extends React.Component<Props, State> {
                             have taken before. Your efforts will go a long way in building up a
                             vibrant and rich NUS community.
                           </p>
-                          <p>
-                            <strong>Please note:</strong>
-                            <ol className={styles.modReviewDescription}>
-                              <li>
-                                Because the experience of each module will differ according to the
-                                professor teaching the module, at the start of your review, please
-                                state the semester taken and the name of the professor who taught
-                                the module in that semester.
-                              </li>
-                              <li>
-                                Other students will read your review to get an idea of what taking
-                                the module will be like. If you'd like to give feedback about the
-                                module to NUS, please use the official Student Feedback system as
-                                NUS does not monitor these reviews.
-                              </li>
-                              <li>
-                                The claims made in these reviews have not been verified by NUS or
-                                NUSMods. Please take all claims with a grain of salt.
-                              </li>
-                            </ol>
-                          </p>
+                          <strong>Please note:</strong>
+                          <ol className={styles.modReviewDescription}>
+                            <li>
+                              Because the experience of each module will differ according to the
+                              professor teaching the module, at the start of your review, please
+                              state the semester taken and the name of the professor who taught the
+                              module in that semester.
+                            </li>
+                            <li>
+                              Other students will read your review to get an idea of what taking the
+                              module will be like. If you'd like to give feedback about the module
+                              to NUS, please use the official Student Feedback system as NUS does
+                              not monitor these reviews.
+                            </li>
+                            <li>
+                              The claims made in these reviews have not been verified by NUS or
+                              NUSMods. Please take all claims with a grain of salt.
+                            </li>
+                          </ol>
                         </div>
                       </div>
                       <div className="col-xl-8 order-xl-first">

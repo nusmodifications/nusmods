@@ -100,10 +100,13 @@ export function mapLessonWeeks(dates: string[], semester: number, logger: Logger
 }
 
 export function mapTimetableLesson(lesson: TimetableLesson, logger: Logger): TempRawLesson {
-  const { room, start_time, end_time, day, modgrp, activity, eventdate, csize } = lesson;
+  const { room, start_time, end_time, day, module, modgrp, activity, eventdate, csize } = lesson;
 
   if (has(unrecognizedLessonTypes, activity)) {
-    logger.warn({ activity }, `Lesson type not recognized by the frontend used`);
+    logger.warn(
+      { moduleCode: module, activity },
+      'Lesson type not recognized by the frontend used',
+    );
   }
 
   return {
@@ -177,6 +180,15 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
       if (!validateLesson(lesson, this.logger)) {
         if (lesson.module && !timetables[lesson.module]) {
           timetables[lesson.module] = {};
+        }
+
+        // Report serious error to Sentry
+        if (!lesson.start_time || !lesson.end_time || lesson.start_time === lesson.end_time) {
+          const { start_time, end_time, module } = lesson;
+          this.logger.error(
+            { moduleCode: module, end_time, start_time },
+            'Lesson has no start and/or end time',
+          );
         }
 
         invalid += 1;
