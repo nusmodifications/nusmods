@@ -146,8 +146,8 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
     weatherAPI
       .fourDay()
       .then((forecasts) => {
-        this.setState((prevState) => {
-          produce(prevState, (draft) => {
+        this.setState(
+          produce((draft) => {
             forecasts.forEach((forecast) => {
               const days = differenceInCalendarDays(
                 parseISO(forecast.timestamp),
@@ -159,8 +159,8 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
                 draft.weather[key] = forecast.forecast;
               }
             });
-          });
-        });
+          }),
+        );
       })
       .catch(captureException);
   }
