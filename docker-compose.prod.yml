@@ -1,6 +1,6 @@
 #
 # NOTE: You probably don't want to start this directly.
-# Use infra/instance/start-prod.sh to start NUSMods in production.
+# Use prod-up.sh to start NUSMods in production.
 #
 version: '3.7'
 services:
