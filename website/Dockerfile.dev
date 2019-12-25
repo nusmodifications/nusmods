@@ -4,8 +4,6 @@ RUN apk update && \
     apk add --no-cache git python build-base && \
     mkdir -p /home/node/app
 
-RUN mkdir -p /home/node/app
-
 WORKDIR /home/node/app/website
 
 ARG DATA_API_BASE_URL
