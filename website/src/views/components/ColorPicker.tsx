@@ -61,7 +61,7 @@ class ColorPicker extends React.PureComponent<Props> {
 
   render() {
     return (
-      <Downshift onChange={(colorIndex) => this.props.onChooseColor(colorIndex)}>
+      <Downshift onChange={(colorIndex) => colorIndex && this.props.onChooseColor(colorIndex)}>
         {this.renderColorPicker}
       </Downshift>
     );
