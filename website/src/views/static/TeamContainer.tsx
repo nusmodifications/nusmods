@@ -43,7 +43,7 @@ function TeamMember({ member }: Props) {
           <div className="row">
             {member.facebook && (
               <div className="col-sm-1 col">
-                <Tooltip content="Facebook profile" touchHold>
+                <Tooltip content="Facebook profile" touch="hold">
                   <ExternalLink
                     href={`https://www.facebook.com/${member.facebook}`}
                     aria-label="Facebook profile"
@@ -56,7 +56,7 @@ function TeamMember({ member }: Props) {
 
             {member.twitter && (
               <div className="col-sm-1 col">
-                <Tooltip content="Twitter profile" touchHold>
+                <Tooltip content="Twitter profile" touch="hold">
                   <ExternalLink
                     href={`https://www.twitter.com/${member.twitter}`}
                     aria-label="Twitter profile"
@@ -69,7 +69,7 @@ function TeamMember({ member }: Props) {
 
             {member.github && (
               <div className="col-sm-1 col">
-                <Tooltip content="GitHub profile" touchHold>
+                <Tooltip content="GitHub profile" touch="hold">
                   <ExternalLink
                     href={`https://www.github.com/${member.github}`}
                     aria-label="GitHub profile"
@@ -82,7 +82,7 @@ function TeamMember({ member }: Props) {
 
             {member.linkedin && (
               <div className="col-sm-1 col">
-                <Tooltip content="Linkedin profile" touchHold>
+                <Tooltip content="Linkedin profile" touch="hold">
                   <ExternalLink
                     href={`https://www.linkedin.com/in/${member.linkedin}`}
                     aria-label="Linkedin profile"

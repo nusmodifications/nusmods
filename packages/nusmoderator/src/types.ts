@@ -6,7 +6,7 @@ export type WeekType =
   | 'Vacation'
   | 'Orientation';
 
-export type Semester = 'Semester 1' | 'Semester 2' | 'Special Sem 1' | 'Special Sem 2';
+export type Semester = 'Semester 1' | 'Semester 2' | 'Special Term I' | 'Special Term II';
 
 export interface AcadYear {
   year: string;
@@ -20,9 +20,9 @@ export interface AcadWeek {
 
 export interface AcadWeekInfo {
   year: string;
-  sem: Semester;
-  type: WeekType;
-  num?: number;
+  sem: Semester | null;
+  type: WeekType | null;
+  num: number | null;
 }
 
 declare class AcademicCalendar {

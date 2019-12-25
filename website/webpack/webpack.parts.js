@@ -17,7 +17,7 @@ const PATHS = {
   // version of the same module, so this is kept relative
   node: 'node_modules',
   src: path.join(ROOT, SRC),
-  styles: path.join(ROOT, SRC, 'styles'),
+  styles: [path.join(ROOT, SRC, 'styles'), path.join(ROOT, 'node_modules')],
   images: path.join(ROOT, SRC, 'img'),
   build: path.join(ROOT, 'dist'),
   buildTimetable: path.join(ROOT, 'dist-timetable'),

@@ -5,11 +5,6 @@ module.exports = {
 
   parserOptions: {
     project: './tsconfig.json',
-
-    // @typescript-eslint/parser doesn't play well with eslint --watch, this is
-    // a stopgap measure to allow adding new files in the IDE to still work.
-    // See https://github.com/typescript-eslint/typescript-eslint/issues/890
-    createDefaultProgram: process.env.NODE_ENV !== 'production' && !process.env.CI,
   },
 
   root: true,
