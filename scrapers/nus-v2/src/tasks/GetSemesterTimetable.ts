@@ -183,13 +183,12 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
         }
 
         // Report serious error to Sentry
-        if (!lesson.start_time || !lesson.end_time) {
+        if (!lesson.start_time || !lesson.end_time || lesson.start_time === lesson.end_time) {
           const { start_time, end_time, module } = lesson;
           this.logger.error(
             { moduleCode: module, end_time, start_time },
             'Lesson has no start and/or end time',
           );
-          return null;
         }
 
         invalid += 1;

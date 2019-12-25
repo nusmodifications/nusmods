@@ -16,7 +16,7 @@ const lessonSchema = Joi.object({
   // Allow null because we can still use the rest of the information
   room: Joi.string().allow(null),
   start_time: Joi.string(),
-  end_time: Joi.string(),
+  end_time: Joi.string().not(Joi.ref('start_time')),
   eventdate: Joi.string().isoDate(),
 
   activity: Joi.string().only(Object.keys(activityLessonType)),
