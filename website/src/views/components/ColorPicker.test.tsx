@@ -73,16 +73,25 @@ test('should return the color index of the selected color', () => {
     .find('button')
     .at(1)
     .simulate('click');
-  expect(onChooseColor).toHaveBeenCalledTimes(1);
+  expect(onChooseColor).toHaveBeenCalled();
   expect(onChooseColor).toHaveBeenCalledWith(1);
 
   onChooseColor.mockClear();
 
-  // Choosing the already selected color should not trigger a call to
+  // Choosing the already selected color should not trigger another call to
   // onChooseColor.
   findPopup(wrapper)
     .find('button')
     .at(1)
     .simulate('click');
   expect(onChooseColor).not.toHaveBeenCalled();
+});
+
+test('should allow a falsy color index to be selected', () => {
+  const { wrapper, onChooseColor } = makeColorPicker();
+  findPopup(wrapper)
+    .find('button')
+    .first()
+    .simulate('click');
+  expect(onChooseColor).toHaveBeenCalledWith(0);
 });
