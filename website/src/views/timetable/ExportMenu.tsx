@@ -149,7 +149,4 @@ export class ExportMenuComponent extends React.PureComponent<Props, State> {
   }
 }
 
-export default connect(
-  (state: StoreState) => ({ state }),
-  { downloadAsIcal },
-)(ExportMenuComponent);
+export default connect((state: StoreState) => ({ state }), { downloadAsIcal })(ExportMenuComponent);
