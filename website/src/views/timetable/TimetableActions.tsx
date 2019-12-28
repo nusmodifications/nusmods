@@ -92,10 +92,7 @@ function TimetableActions(props: Props) {
   );
 }
 
-export default connect(
-  null,
-  {
-    toggleTimetableOrientation,
-    toggleTitleDisplay,
-  },
-)(TimetableActions);
+export default connect(null, {
+  toggleTimetableOrientation,
+  toggleTitleDisplay,
+})(TimetableActions);
