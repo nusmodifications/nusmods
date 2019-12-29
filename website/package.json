@@ -35,7 +35,7 @@
     "@babel/preset-typescript": "7.7.7",
     "@hot-loader/react-dom": "16.11.0",
     "@packtracker/webpack-plugin": "2.2.0",
-    "@svgr/webpack": "5.0.0",
+    "@svgr/webpack": "5.0.1",
     "@types/classnames": "2.2.9",
     "@types/enzyme": "3.10.4",
     "@types/jest": "24.0.25",
