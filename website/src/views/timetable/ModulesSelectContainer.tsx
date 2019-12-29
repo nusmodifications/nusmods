@@ -73,9 +73,6 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    popNotification,
-  },
-)(ModulesSelectContainer);
+export default connect(mapStateToProps, {
+  popNotification,
+})(ModulesSelectContainer);
