@@ -1,6 +1,7 @@
 // Import Sentry earliest to capture exceptions
 import 'bootstrapping/sentry';
 
+import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactModal from 'react-modal';
 
@@ -20,15 +21,7 @@ subscribeOnlineEvents(store);
 // Initialize ReactModal
 ReactModal.setAppElement('#app');
 
-const render = () => {
-  ReactDOM.render(App({ store, persistor }), document.getElementById('app'));
-};
-
-if (module.hot) {
-  module.hot.accept('./App', render);
-}
-
-render();
+ReactDOM.render(<App store={store} persistor={persistor} />, document.getElementById('app'));
 
 if (
   ('serviceWorker' in navigator &&
