@@ -232,7 +232,7 @@ const FormContent: React.FC<FormContentProps> = ({
           onChange={updateFormValue('contactId')}
           required
         >
-          <option disabled>Select a department / faculty</option>
+          <option value="">Select a department / faculty</option>
           {facultyEmails.map((config) => (
             <option value={config.id} key={config.id}>
               {config.label}
