@@ -13,7 +13,7 @@ import {
   parseISO,
 } from 'date-fns';
 import produce from 'immer';
-import { hot } from 'react-hot-loader/root'; // eslint-disable-line import/no-extraneous-dependencies
+import { hot } from 'react-hot-loader/root';
 
 import { DaysOfWeek } from 'types/modules';
 import { Lesson, ColoredLesson, SemTimetableConfigWithLessons } from 'types/timetables';

@@ -11,7 +11,7 @@ import {
   SearchkitProvider,
 } from 'searchkit';
 import classnames from 'classnames';
-import { hot } from 'react-hot-loader/root'; // eslint-disable-line import/no-extraneous-dependencies
+import { hot } from 'react-hot-loader/root';
 
 import { ElasticSearchResult } from 'types/vendor/elastic-search';
 import { ModuleInformation } from 'types/modules';

@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import ScrollSpy from 'react-scrollspy';
 import { kebabCase, map, mapValues, values, sortBy } from 'lodash';
-import { hot } from 'react-hot-loader/root'; // eslint-disable-line import/no-extraneous-dependencies
+import { hot } from 'react-hot-loader/root';
 
 import { Module, NUSModuleAttributes, attributeDescription } from 'types/modules';
 

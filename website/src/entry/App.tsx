@@ -3,7 +3,7 @@ import { State } from 'types/state';
 import { Persistor } from 'storage/persistReducer';
 
 import React from 'react';
-import { hot } from 'react-hot-loader/root'; // eslint-disable-line import/no-extraneous-dependencies
+import { hot } from 'react-hot-loader/root';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';

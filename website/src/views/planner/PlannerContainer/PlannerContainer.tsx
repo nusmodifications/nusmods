@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { flatMap, flatten, sortBy, toPairs, values } from 'lodash';
 import { DragDropContext, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 import classnames from 'classnames';
-import { hot } from 'react-hot-loader/root'; // eslint-disable-line import/no-extraneous-dependencies
+import { hot } from 'react-hot-loader/root';
 
 import { Module, ModuleCode, Semester } from 'types/modules';
 import { PlannerModuleInfo, PlannerModulesWithInfo } from 'types/views';
