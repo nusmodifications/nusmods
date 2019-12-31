@@ -98,6 +98,10 @@ function matchModule(module: Module) {
   });
 }
 
+/**
+ * Module error reporting component. Posts to a serverless script that then emails the relevant
+ * faculty / department with the issue.
+ */
 const ReportError = React.memo<Props>(({ module }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [formState, setFormState] = React.useState<FormState>({ type: 'unsubmitted' });
@@ -161,7 +165,7 @@ const ReportError = React.memo<Props>(({ module }) => {
         </p>
         <p>
           This form will send an email about this module to the faculty. If you think the issue is a
-          bug in NUSMods, please email <a href="mailto:modules@nusmods.com">bugs@nusmods.com</a>{' '}
+          bug in NUSMods, please email <a href="mailto:bugs@nusmods.com">bugs@nusmods.com</a>{' '}
           instead.
         </p>
 
