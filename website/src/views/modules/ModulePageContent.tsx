@@ -221,7 +221,7 @@ export default class ModulePageContent extends React.Component<Props, State> {
                   )}
 
                   <p>
-                    <ReportError moduleCode={moduleCode} />
+                    <ReportError module={module} />
                   </p>
                 </div>
               </section>
