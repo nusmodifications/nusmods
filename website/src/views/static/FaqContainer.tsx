@@ -79,10 +79,25 @@ export default function FaqContainer() {
           <li>You have refreshed NUSMods after step 2.</li>
         </ol>
         <p>
-          If you have done all the above and the error is still present, please write to us at{' '}
-          <ExternalLink href="mailto:modules@nusmods.com">modules@nusmods.com</ExternalLink>. We
-          will work with the Registrar&apos;s Office to rectify any errors. Once the data becomes
-          available, NUSMods will reflect it within a day.
+          After you have done all the above and the error persists, please use the "Report Error"
+          button on the module page to report an issue to the module's department or faculty. If the
+          department or faculty for this module cannot be found on this list, please refer to
+          ModReg's contact list for{' '}
+          <ExternalLink href="http://www.nus.edu.sg/ModReg/docs/UGFac_Contacts.pdf">
+            undergraduate
+          </ExternalLink>{' '}
+          or{' '}
+          <ExternalLink href="http://www.nus.edu.sg/ModReg/docs/GDFac_Contacts.pdf">
+            graduate
+          </ExternalLink>{' '}
+          students.
+        </p>
+        <p>
+          If you think the error is caused by a bug in NUSMods itself, please report it
+          <ExternalLink href="https://github.com/nusmodifications/nusmods/issues/new?template=Bug_report.md">
+            using GitHub
+          </ExternalLink>{' '}
+          or email <a href="mailto:bugs@nusmods.com">bugs@nusmods.com</a>.
         </p>
       </div>
 

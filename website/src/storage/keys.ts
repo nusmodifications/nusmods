@@ -15,3 +15,5 @@ export function announcementKey(key: string | null | undefined) {
 
 // Used by ModTris
 export const MODTRIS_SCORES = 'modtris-scores';
+
+export const CONTACT_INFO = 'contact-info';

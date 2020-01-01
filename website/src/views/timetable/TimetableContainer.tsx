@@ -240,16 +240,13 @@ const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
 };
 
 // Explicitly declare top level components for React hot reloading to work.
-const connectedTimetableContainer = connect(
-  mapStateToProps,
-  {
-    selectSemester,
-    setTimetable,
-    fetchTimetableModules,
-    openNotification,
-    undo,
-  },
-)(TimetableContainerComponent);
+const connectedTimetableContainer = connect(mapStateToProps, {
+  selectSemester,
+  setTimetable,
+  fetchTimetableModules,
+  openNotification,
+  undo,
+})(TimetableContainerComponent);
 
 const routedTimetableContainer = withRouter(connectedTimetableContainer);
 export default deferComponentRender(routedTimetableContainer);

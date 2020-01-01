@@ -101,7 +101,10 @@ export default class GetSemesterExams extends BaseTask implements Task<void, Out
       this.logger.warn({ invalidExams }, `Removed invalid exams`);
     }
 
-    const exams = mapValues(keyBy(validExams, (exam) => exam.module), mapExamInfo);
+    const exams = mapValues(
+      keyBy(validExams, (exam) => exam.module),
+      mapExamInfo,
+    );
     this.logger.info(`Downloaded ${rawExams.length} exams`);
 
     return exams;

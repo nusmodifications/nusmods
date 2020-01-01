@@ -89,13 +89,10 @@ const mapStateToProps = (state: State) => ({
   ),
 });
 
-const withStoreModRegNotification = connect(
-  mapStateToProps,
-  {
-    dismissModregNotification,
-    openNotification,
-  },
-)(ModRegNotificationComponent);
+const withStoreModRegNotification = connect(mapStateToProps, {
+  dismissModregNotification,
+  openNotification,
+})(ModRegNotificationComponent);
 
 const ModRegNotification = withRouter(withStoreModRegNotification);
 export default ModRegNotification;

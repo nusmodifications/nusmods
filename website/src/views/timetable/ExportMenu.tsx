@@ -39,7 +39,7 @@ export class ExportMenuComponent extends React.PureComponent<Props, State> {
     isMacWarningOpen: false,
   };
 
-  onSelect = (item: ExportAction) => {
+  onSelect = (item: ExportAction | null) => {
     if (item === CALENDAR) {
       this.props.downloadAsIcal(this.props.semester);
 
@@ -149,7 +149,4 @@ export class ExportMenuComponent extends React.PureComponent<Props, State> {
   }
 }
 
-export default connect(
-  (state: StoreState) => ({ state }),
-  { downloadAsIcal },
-)(ExportMenuComponent);
+export default connect((state: StoreState) => ({ state }), { downloadAsIcal })(ExportMenuComponent);

@@ -294,7 +294,6 @@ class GlobalSearch extends React.Component<Props, State> {
         stateReducer={this.stateReducer}
         /* Hack to force item selection to be empty */
         itemToString={stubString}
-        selectedItem=""
       >
         {this.renderDropdown}
       </Downshift>
