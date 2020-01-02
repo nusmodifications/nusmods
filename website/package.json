@@ -173,7 +173,7 @@
     "redux-persist": "5.10.0",
     "redux-thunk": "2.3.0",
     "reselect": "4.0.0",
-    "searchkit": "2.3.2"
+    "searchkit": "2.4.0"
   },
   "browserslist": [
     "extends browserslist-config-nusmods"
