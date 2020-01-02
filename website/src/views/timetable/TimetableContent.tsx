@@ -452,14 +452,11 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    addModule,
-    removeModule,
-    modifyLesson,
-    changeLesson,
-    cancelModifyLesson,
-    undo,
-  },
-)(TimetableContent);
+export default connect(mapStateToProps, {
+  addModule,
+  removeModule,
+  modifyLesson,
+  changeLesson,
+  cancelModifyLesson,
+  undo,
+})(TimetableContent);

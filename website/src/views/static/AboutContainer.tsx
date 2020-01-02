@@ -86,7 +86,4 @@ function AboutContainer(props: Props) {
   );
 }
 
-export default connect(
-  null,
-  { toggleFeedback },
-)(AboutContainer);
+export default connect(null, { toggleFeedback })(AboutContainer);
