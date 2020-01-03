@@ -7,7 +7,7 @@
   "semester": 2,
   "disqusShortname": "nusmods-prod",
   "venueFeedbackApi": "https://mediumdeviation.lib.id/nusmods-venue-github-hook@0.0.8/",
-  "moduleErrorApi": "https://mediumdeviation.lib.id/nusmods-module-error-reporting@0.0.1/",
+  "moduleErrorApi": "https://mediumdeviation.api.stdlib.com/nusmods-module-error-reporting@0.0.3/",
   "archiveYears": [
     "2016/2017",
     "2017/2018",
