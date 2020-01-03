@@ -5263,10 +5263,10 @@ dot-prop@^4.1.1:
   dependencies:
     is-obj "^1.0.0"
 
-downshift@4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/downshift/-/downshift-4.0.0.tgz#902406edbb3047a4fb71e9012e0fea44fefea255"
-  integrity sha512-3SsKdaJ9CKG/WrqCBHlS1m0bya2stfCjlUfW3Yhk2E1G1bWX5DH0KI4Ptra9nS4/HNy38HPSvJu2VoNg91oIGQ==
+downshift@4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/downshift/-/downshift-4.0.1.tgz#f9df1b19bd8a9c17b2bf79427edc05f92cdcd3d0"
+  integrity sha512-22SdWUfmGw3vWD46WqD6IbQ/CeEJmWWKFeGTVnIyxj11VuI/MaL516XRf9+O6uFJS3xHEW8BDVUSvM06/c2rNQ==
   dependencies:
     "@babel/runtime" "^7.4.5"
     compute-scroll-into-view "^1.0.9"
