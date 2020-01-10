@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@sentry/node": "5.10.2",
-    "axios": "0.19.0",
+    "axios": "0.19.1",
     "bunyan": "1.8.12",
     "fs-extra": "8.1.0",
     "http-graceful-shutdown": "2.3.2",
