@@ -4345,10 +4345,10 @@ compressible@~2.0.16:
   dependencies:
     mime-db ">= 1.38.0 < 2"
 
-compression-webpack-plugin@3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/compression-webpack-plugin/-/compression-webpack-plugin-3.0.1.tgz#be7a343e6dfbccbd64a77c5fbe29627d140fc321"
-  integrity sha512-FOwoBVzDiwSdJDnZTKXDpAjJU90k8SbChgxnoiYwTo15xjIDJkSC8wFKuc13DymXjgasPEqzS5+2RUgSKXdKKA==
+compression-webpack-plugin@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/compression-webpack-plugin/-/compression-webpack-plugin-3.1.0.tgz#9f510172a7b5fae5aad3b670652e8bd7997aeeca"
+  integrity sha512-iqTHj3rADN4yHwXMBrQa/xrncex/uEQy8QHlaTKxGchT/hC0SdlJlmL/5eRqffmWq2ep0/Romw6Ld39JjTR/ug==
   dependencies:
     cacache "^13.0.1"
     find-cache-dir "^3.0.0"
@@ -4683,10 +4683,10 @@ css-declaration-sorter@^4.0.1:
     postcss "^7.0.1"
     timsort "^0.3.0"
 
-css-loader@3.4.1:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-3.4.1.tgz#dfb7968aa9bffb26bd20375afdffe77d5a234b77"
-  integrity sha512-+ybmv7sVxxNEenQhkifQDvny/1iNQM7YooJbSfVUdQQvisyg1aKIqgGjCjoFSyVLJMp17z9rfZFQaR5HGHcMbw==
+css-loader@3.4.2:
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-3.4.2.tgz#d3fdb3358b43f233b78501c5ed7b1c6da6133202"
+  integrity sha512-jYq4zdZT0oS0Iykt+fqnzVLRIeiPWhka+7BqPn+oSIpWJAHak5tmB/WZrJ2a21JhCeFyNnnlroSl8c+MtVndzA==
   dependencies:
     camelcase "^5.3.1"
     cssesc "^3.0.0"
@@ -12367,16 +12367,16 @@ sass-graph@^2.2.4:
     scss-tokenizer "^0.2.3"
     yargs "^7.0.0"
 
-sass-loader@8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/sass-loader/-/sass-loader-8.0.0.tgz#e7b07a3e357f965e6b03dd45b016b0a9746af797"
-  integrity sha512-+qeMu563PN7rPdit2+n5uuYVR0SSVwm0JsOUsaJXzgYcClWSlmX0iHDnmeOobPkf5kUglVot3QS6SyLyaQoJ4w==
+sass-loader@8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/sass-loader/-/sass-loader-8.0.1.tgz#46cc2bc90de9ed0a121d023800a32049215fb57c"
+  integrity sha512-ANR2JHuoxzCI+OPDA0hJBv1Y16A2021hucu0S3DOGgpukKzq9W+4vX9jhIqs4qibT5E7RIRsHMMrN0kdF5nUig==
   dependencies:
     clone-deep "^4.0.1"
     loader-utils "^1.2.3"
     neo-async "^2.6.1"
-    schema-utils "^2.1.0"
-    semver "^6.3.0"
+    schema-utils "^2.6.1"
+    semver "^7.1.1"
 
 sax@^1.2.4, sax@~1.2.4:
   version "1.2.4"
@@ -12416,7 +12416,7 @@ schema-utils@^1.0.0:
     ajv-errors "^1.0.0"
     ajv-keywords "^3.1.0"
 
-schema-utils@^2.0.1, schema-utils@^2.1.0:
+schema-utils@^2.0.1:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-2.1.0.tgz#940363b6b1ec407800a22951bdcc23363c039393"
   integrity sha512-g6SViEZAfGNrToD82ZPUjq52KUPDYc+fN5+g6Euo5mLokl/9Yx14z0Cu4RR1m55HtBXejO0sBt+qw79axN+Fiw==
@@ -12511,6 +12511,11 @@ semver@^6.1.2, semver@^6.2.0, semver@^6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
   integrity sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==
+
+semver@^7.1.1:
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.1.1.tgz#29104598a197d6cbe4733eeecbe968f7b43a9667"
+  integrity sha512-WfuG+fl6eh3eZ2qAf6goB7nhiCd7NPXhmyFxigB/TOkQyeLP8w8GsVehvtGNtnNmyboz4TgeK40B1Kbql/8c5A==
 
 semver@~5.0.1:
   version "5.0.3"
@@ -13532,10 +13537,10 @@ teeny-request@^3.11.3:
     node-fetch "^2.2.0"
     uuid "^3.3.2"
 
-terser-webpack-plugin@2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/terser-webpack-plugin/-/terser-webpack-plugin-2.3.1.tgz#6a63c27debc15b25ffd2588562ee2eeabdcab923"
-  integrity sha512-dNxivOXmDgZqrGxOttBH6B4xaxT4zNC+Xd+2K8jwGDMK5q2CZI+KZMA1AAnSRT+BTRvuzKsDx+fpxzPAmAMVcA==
+terser-webpack-plugin@2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/terser-webpack-plugin/-/terser-webpack-plugin-2.3.2.tgz#6d3d1b0590c8f729bfbaeb7fb2528b8b62db4c74"
+  integrity sha512-SmvB/6gtEPv+CJ88MH5zDOsZdKXPS/Uzv2//e90+wM1IHFUhsguPKEILgzqrM1nQ4acRXN/SV4Obr55SXC+0oA==
   dependencies:
     cacache "^13.0.1"
     find-cache-dir "^3.2.0"
