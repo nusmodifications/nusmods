@@ -99,6 +99,17 @@ export function mapLessonWeeks(dates: string[], semester: number, logger: Logger
   return weekRange;
 }
 
+/**
+ * Mod group contains the activity at the start - this function removes that
+ * because it is redundant.
+ */
+export function transformModgrpToClassNo(modgrp: string, activity: string): string {
+  if (modgrp.startsWith(activity)) {
+    return modgrp.substring(activity.length);
+  }
+  return modgrp;
+}
+
 export function mapTimetableLesson(lesson: TimetableLesson, logger: Logger): TempRawLesson {
   const { room, start_time, end_time, day, module, modgrp, activity, eventdate, csize } = lesson;
 
@@ -110,9 +121,7 @@ export function mapTimetableLesson(lesson: TimetableLesson, logger: Logger): Tem
   }
 
   return {
-    // mod group contains the activity at the start - we remove that because
-    // it is redundant
-    classNo: trimStart(modgrp, activity),
+    classNo: transformModgrpToClassNo(modgrp, activity),
     // Start and end time don't have the ':' delimiter
     startTime: start_time.replace(':', ''),
     endTime: end_time.replace(':', ''),

@@ -5,9 +5,21 @@ import CN4205ETimetable from './fixtures/api-timetable/CN4205E.json';
 import CS1010XTimetable from './fixtures/api-timetable/CS1010X.json';
 import RE5001Timetable from './fixtures/api-timetable/RE5001.json';
 
-import GetSemesterTimetable from './GetSemesterTimetable';
+import GetSemesterTimetable, { transformModgrpToClassNo } from './GetSemesterTimetable';
 import { TimetableLesson } from '../types/api';
 import { Semester } from '../types/modules';
+
+describe(transformModgrpToClassNo, () => {
+  test('should remove activity string prefix from mod group', () => {
+    expect(transformModgrpToClassNo('TE1', 'T')).toEqual('E1');
+    expect(transformModgrpToClassNo('TTE1', 'T')).toEqual('TE1');
+    expect(transformModgrpToClassNo('LDE1', 'L')).toEqual('DE1');
+  });
+
+  test('should passthrough mod groups without activity prefix', () => {
+    expect(transformModgrpToClassNo('TDE1', 'L')).toEqual('TDE1');
+  });
+});
 
 describe(GetSemesterTimetable, () => {
   function createTask(lessons: TimetableLesson[], semester: Semester = 1) {
