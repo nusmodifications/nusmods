@@ -23,7 +23,7 @@ type State = {};
  * queried items are distinct and mutually exclusive.
  */
 export default class CheckboxItemFilter extends SearchkitComponent<CheckboxItemFilterProps, State> {
-  accessor!: CheckboxFilterAccessor; // This typing is bad - we
+  accessor!: CheckboxFilterAccessor; // This typing is bad - this should really be optional
 
   static defaultProps = {
     showCount: true,
