@@ -47,7 +47,13 @@ export default class CheckboxItemFilter extends SearchkitComponent<CheckboxItemF
   };
 
   render() {
+    // this.accessor's types are lying. It is in fact optional, but we can't make it that
+    // because that would conflict with the parent class's types. Setting this.accessor
+    // directly to defineAccessor() also does not work since SearchKit appears to only
+    // be initialized in didMount. This terrible pattern is also repeated in SearchKit's
+    // own components, so I guess we'll just have to live with this.
     if (!this.accessor) return null;
+
     const { id, label, showCount, disabled } = this.props;
 
     return (
