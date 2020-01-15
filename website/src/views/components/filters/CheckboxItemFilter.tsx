@@ -53,7 +53,7 @@ export default class CheckboxItemFilter extends SearchkitComponent<CheckboxItemF
     return (
       <CheckboxItem
         onClick={this.setFilters}
-        active={this.accessor.state.getValue()}
+        active={Boolean(this.accessor.state.getValue())}
         itemKey={id}
         label={label}
         count={this.accessor.getDocCount()}
