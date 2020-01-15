@@ -19,6 +19,15 @@ describe(transformModgrpToClassNo, () => {
   test('should passthrough mod groups without activity prefix', () => {
     expect(transformModgrpToClassNo('TDE1', 'L')).toEqual('TDE1');
   });
+
+  test('should trim whitespaces off mod group', () => {
+    expect(transformModgrpToClassNo('TDE1 ', 'L')).toEqual('TDE1');
+  });
+
+  test('should passthrough mod groups which are just the activity', () => {
+    expect(transformModgrpToClassNo('L', 'L')).toEqual('L');
+    expect(transformModgrpToClassNo('L ', 'L')).toEqual('L');
+  });
 });
 
 describe(GetSemesterTimetable, () => {

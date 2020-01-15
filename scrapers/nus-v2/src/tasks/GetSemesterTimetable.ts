@@ -104,10 +104,11 @@ export function mapLessonWeeks(dates: string[], semester: number, logger: Logger
  * because it is redundant.
  */
 export function transformModgrpToClassNo(modgrp: string, activity: string): string {
-  if (modgrp.startsWith(activity)) {
-    return modgrp.substring(activity.length);
+  const trimmedModgrp = modgrp.trim();
+  if (trimmedModgrp.startsWith(activity) && trimmedModgrp !== activity) {
+    return trimmedModgrp.substring(activity.length);
   }
-  return modgrp;
+  return trimmedModgrp;
 }
 
 export function mapTimetableLesson(lesson: TimetableLesson, logger: Logger): TempRawLesson {
