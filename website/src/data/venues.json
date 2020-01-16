@@ -4230,5 +4230,45 @@
       "x": 103.77314838535167,
       "y": 1.306576128579399
     }
+  },
+  "RVR-MPR01": {
+    "roomName": "Multi Purpose Room 1",
+    "floor": 1,
+    "location": {
+      "x": 103.77687692642213,
+      "y": 1.2973480580696695
+    }
+  },
+  "RVR-MPR02": {
+    "roomName": "Multi Purpose Room 2",
+    "floor": 1,
+    "location": {
+      "x": 103.77674013376237,
+      "y": 1.2974311852333447
+    }
+  },
+  "YSTCM-MLAB": {
+    "roomName": "Music Tech and Keyboard Lab",
+    "floor": 2,
+    "location": {
+      "x": 103.77272941774719,
+      "y": 1.3023654031322103
+    }
+  },
+  "E2-0309PC6": {
+    "roomName": "E2-0306PC6",
+    "floor": 3,
+    "location": {
+      "x": 103.77116650342943,
+      "y": 1.299378639374635
+    }
+  },
+  "CFG_CARSPA": {
+    "roomName": "CFG Career Space, Yusof Ishak House",
+    "floor": 3,
+    "location": {
+      "x": 103.7747633457184,
+      "y": 1.2985055114007384
+    }
   }
 }
