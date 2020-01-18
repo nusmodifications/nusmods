@@ -221,9 +221,11 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
       const date = addDays(currentTime, day);
       const dayOfWeek = DaysOfWeek[getDayIndex(date)];
       const weekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(date);
-      const lessons = get(groupedLessons, dayOfWeek, EMPTY_ARRAY as ColoredLesson[]).filter(
-        (lesson) => isLessonAvailable(lesson, date, weekInfo),
-      );
+      const lessons = get(
+        groupedLessons,
+        dayOfWeek,
+        EMPTY_ARRAY as ColoredLesson[],
+      ).filter((lesson) => isLessonAvailable(lesson, date, weekInfo));
 
       if (
         // Non-instructional week
