@@ -5,7 +5,6 @@ import { selectSemester } from 'actions/settings';
 import reducer from 'reducers/app';
 
 import { Semester } from 'types/modules';
-import { FSA } from 'types/redux';
 import { AppState } from 'types/reducers';
 import { initAction } from 'test-utils/redux';
 import lessons from '__mocks__/lessons-array.json';
@@ -33,7 +32,7 @@ test('app should return initial state', () => {
 
 // Tests for active semester.
 test('app should set active semester', () => {
-  const action: FSA = selectSemester(anotherSemester);
+  const action = selectSemester(anotherSemester);
   const nextState: AppState = reducer(appInitialState, action);
 
   expect(nextState).toEqual(appHasSemesterTwoState);
@@ -41,7 +40,7 @@ test('app should set active semester', () => {
 
 // Tests for active lesson.
 test('app should instantiate active lesson', () => {
-  const action: FSA = modifyLesson(lesson);
+  const action = modifyLesson(lesson);
   const nextState: AppState = reducer(appInitialState, action);
 
   expect(nextState).toEqual(appHasActiveLessonState);
@@ -49,14 +48,14 @@ test('app should instantiate active lesson', () => {
 
 test('app should set active lesson', () => {
   const anotherLesson: Lesson = lessons[1];
-  const action: FSA = modifyLesson(anotherLesson);
+  const action = modifyLesson(anotherLesson);
   const nextState: AppState = reducer(appHasActiveLessonState, action);
 
   expect(nextState).toEqual({ ...appInitialState, activeLesson: anotherLesson });
 });
 
 test('app should accept lesson change and unset active lesson', () => {
-  const action: FSA = changeLesson(semester, lesson);
+  const action = changeLesson(semester, lesson);
   const nextState: AppState = reducer(appInitialState, action);
 
   expect(nextState).toEqual(appInitialState);

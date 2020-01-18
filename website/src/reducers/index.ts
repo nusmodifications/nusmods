@@ -1,9 +1,8 @@
-import { FSA } from 'types/redux';
-
 import { REMOVE_MODULE, SET_TIMETABLE } from 'actions/timetables';
 
 import persistReducer from 'storage/persistReducer';
 import { State } from 'types/state';
+import { Actions } from 'types/actions';
 
 // Non-persisted reducers
 import requests from './requests';
@@ -36,7 +35,7 @@ const undoReducer = createUndoReducer({
   whitelist: ['timetables', 'theme.colors'],
 });
 
-export default function(state: State = defaultState, action: FSA): State {
+export default function(state: State = defaultState, action: Actions): State {
   // Update every reducer except the undo reducer
   const newState: State = {
     moduleBank: moduleBank(state.moduleBank, action),

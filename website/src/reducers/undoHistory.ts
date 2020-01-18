@@ -1,8 +1,8 @@
-import { REDO, UNDO } from 'actions/constants';
-
 import { get, last, pick, set, takeRight } from 'lodash';
-import { FSA } from 'types/redux';
+
+import { REDO, UNDO } from 'actions/constants';
 import { UndoHistoryState } from 'types/reducers';
+import { Actions } from 'types/actions';
 
 export type UndoHistoryConfig = {
   reducerName: string;
@@ -24,7 +24,7 @@ const initialState: UndoHistoryState = {
 // doesn't need to know that.
 export function computeUndoStacks<T extends Record<string, any>>(
   state: UndoHistoryState = initialState,
-  action: FSA,
+  action: Actions,
   previousAppState: T,
   presentAppState: T,
   config: UndoHistoryConfig,
@@ -91,7 +91,7 @@ export function mergePresent<T extends Record<string, any>>(
 // Given a config object, returns function which compute new state after
 // undoing/redoing/storing present as required by action.
 export default function createUndoReducer(config: UndoHistoryConfig) {
-  return <T extends Record<string, any>>(previousState: T, presentState: T, action: FSA) => {
+  return <T extends Record<string, any>>(previousState: T, presentState: T, action: Actions) => {
     // Calculate un/redone history
     const undoHistoryState = presentState[config.reducerName];
     const updatedHistory = computeUndoStacks(

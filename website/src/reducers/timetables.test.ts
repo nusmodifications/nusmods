@@ -24,6 +24,7 @@ describe('color reducers', () => {
         payload: {
           semester: 1,
           moduleCode: 'CS1010S',
+          moduleLessonConfig: {},
         },
       }).colors,
     ).toHaveProperty('1.CS1010S');
@@ -34,6 +35,7 @@ describe('color reducers', () => {
         payload: {
           semester: 2,
           moduleCode: 'CS3216',
+          moduleLessonConfig: {},
         },
       }).colors,
     ).toHaveProperty('2.CS3216');
