@@ -287,15 +287,12 @@ const mapStateToProps = (state: StoreState) => ({
   iblocsModules: getIBLOCs(state),
 });
 
-const PlannerContainer = connect(
-  mapStateToProps,
-  {
-    fetchModule,
-    toggleFeedback,
-    addModule: addPlannerModule,
-    moveModule: movePlannerModule,
-    removeModule: removePlannerModule,
-  },
-)(PlannerContainerComponent);
+const PlannerContainer = connect(mapStateToProps, {
+  fetchModule,
+  toggleFeedback,
+  addModule: addPlannerModule,
+  moveModule: movePlannerModule,
+  removeModule: removePlannerModule,
+})(PlannerContainerComponent);
 
 export default PlannerContainer;

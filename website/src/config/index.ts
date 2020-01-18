@@ -38,6 +38,7 @@ export type Config = {
 
   disqusShortname: string;
   venueFeedbackApi: string;
+  moduleErrorApi: string;
 
   semesterNames: { [semester: string]: string };
   shortSemesterNames: { [semester: string]: string };
