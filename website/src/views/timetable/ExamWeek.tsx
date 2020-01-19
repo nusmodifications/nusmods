@@ -65,11 +65,10 @@ export default function ExamWeek(props: Props) {
           examDateString = `${MONTHS[date.getUTCMonth()]} ${examDateString}`;
           currentMonth = date.getMonth();
         }
-        examDateString = `${examDateString} `;
         return (
           <th className={styles.dayDate} key={examDateString}>
             <time dateTime={date.toDateString()}>{examDateString}</time>
-            {isToday(date) && <span className="badge badge-pill badge-primary">Today</span>}
+            {isToday(date) && <span className={styles.todayBadge}>Today</span>}
           </th>
         );
       })}

@@ -32,13 +32,14 @@ describe(ExamWeek, () => {
 
   test('show month name when the months changes', () => {
     const weekOfApril29 = make({ firstDayOfExams: new Date('2019-04-29T00:00:00Z') });
-    expect(weekOfApril29.find('th').map((ele) => ele.text())).toEqual([
-      'Apr 29',
-      '30',
-      'May 1',
-      '2',
-      '3',
-    ]);
+    expect(
+      weekOfApril29.find('th').map((ele) =>
+        ele
+          .find('time')
+          .first()
+          .text(),
+      ),
+    ).toEqual(['Apr 29', '30', 'May 1', '2', '3']);
 
     const weekOfDec3 = make({
       weekNumber: 1,
@@ -48,7 +49,20 @@ describe(ExamWeek, () => {
       weekOfDec3
         .find('th')
         .first()
+        .find('time')
+        .first()
         .text(),
     ).toEqual('Dec 3');
+  });
+
+  test('highlight today', () => {
+    const weekOfToday = make();
+    expect(
+      weekOfToday
+        .find('th')
+        .first()
+        .find('span')
+        .text(),
+    ).toEqual('Today');
   });
 });
