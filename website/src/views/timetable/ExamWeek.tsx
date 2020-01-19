@@ -33,6 +33,15 @@ function ExamModule({ module }: { module: ModuleWithColor }) {
   );
 }
 
+function isToday(date: Date): boolean {
+  const today = new Date();
+  return (
+    date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear()
+  );
+}
+
 export default function ExamWeek(props: Props) {
   const { modules, weekNumber, firstDayOfExams, days } = props;
 
@@ -56,10 +65,11 @@ export default function ExamWeek(props: Props) {
           examDateString = `${MONTHS[date.getUTCMonth()]} ${examDateString}`;
           currentMonth = date.getMonth();
         }
-
+        examDateString = `${examDateString} `;
         return (
           <th className={styles.dayDate} key={examDateString}>
             <time dateTime={date.toDateString()}>{examDateString}</time>
+            {isToday(date) && <span className="badge badge-pill badge-primary">Today</span>}
           </th>
         );
       })}
