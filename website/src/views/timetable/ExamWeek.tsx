@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { range } from 'lodash';
+import { isToday } from 'date-fns';
 
 import { ModuleWithColor, ModuleWithExamTime, TIME_SEGMENTS } from 'types/views';
 import { formatExamDate } from 'utils/modules';
@@ -33,15 +34,6 @@ function ExamModule({ module }: { module: ModuleWithColor }) {
   );
 }
 
-function isToday(date: Date): boolean {
-  const today = new Date();
-  return (
-    date.getDate() === today.getDate() &&
-    date.getMonth() === today.getMonth() &&
-    date.getFullYear() === today.getFullYear()
-  );
-}
-
 export default function ExamWeek(props: Props) {
   const { modules, weekNumber, firstDayOfExams, days } = props;
 
@@ -68,7 +60,11 @@ export default function ExamWeek(props: Props) {
         return (
           <th className={styles.dayDate} key={examDateString}>
             <time dateTime={date.toDateString()}>{examDateString}</time>
-            {isToday(date) && <span className={styles.todayBadge}>Today</span>}
+            {isToday(date) && (
+              <span style={{ marginLeft: 4 }} className="badge badge-primary">
+                Today
+              </span>
+            )}
           </th>
         );
       })}
