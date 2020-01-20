@@ -32,7 +32,7 @@ describe(ExamWeek, () => {
 
   test('show month name when the months changes', () => {
     const weekOfApril29 = make({ firstDayOfExams: new Date('2019-04-29T00:00:00Z') });
-    expect(weekOfApril29.find('th time').map((ele) => ele.first().text())).toEqual([
+    expect(weekOfApril29.find('th time').map((ele) => ele.text())).toEqual([
       'Apr 29',
       '30',
       'May 1',
