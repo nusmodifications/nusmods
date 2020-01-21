@@ -60,11 +60,7 @@ export default function ExamWeek(props: Props) {
         return (
           <th className={styles.dayDate} key={examDateString}>
             <time dateTime={date.toDateString()}>{examDateString}</time>
-            {isToday(date) && (
-              <span style={{ marginLeft: 4 }} className="badge badge-primary">
-                Today
-              </span>
-            )}
+            {isToday(date) && <span className={styles.todayBadge}>Today</span>}
           </th>
         );
       })}
