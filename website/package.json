@@ -151,7 +151,7 @@
     "leaflet": "1.6.0",
     "leaflet-gesture-handling": "1.1.8",
     "lodash": "4.17.15",
-    "mousetrap": "1.6.3",
+    "mousetrap": "1.6.5",
     "no-scroll": "2.1.1",
     "nusmoderator": "3.0.0",
     "query-string": "5.0.0",
