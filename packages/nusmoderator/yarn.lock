@@ -1244,10 +1244,10 @@
     "@types/istanbul-lib-coverage" "*"
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@24.9.0":
-  version "24.9.0"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-24.9.0.tgz#78c6991cd1734cf0d390be24875e310bb0a9fb74"
-  integrity sha512-dXvuABY9nM1xgsXlOtLQXJKdacxZJd7AtvLsKZ/0b57ruMXDKCOXAC/M75GbllQX6o1pcZ5hAG4JzYy7Z/wM2w==
+"@types/jest@24.9.1":
+  version "24.9.1"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-24.9.1.tgz#02baf9573c78f1b9974a5f36778b366aa77bd534"
+  integrity sha512-Fb38HkXSVA4L8fGKEZ6le5bB8r6MRWlOCZbVuWZcmOMSCd2wCYOwN1ibj8daIoV9naq7aaOZjrLCoCMptKU/4Q==
   dependencies:
     jest-diff "^24.3.0"
 
@@ -1286,40 +1286,40 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@typescript-eslint/eslint-plugin@2.16.0":
-  version "2.16.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-2.16.0.tgz#bf339b7db824c7cc3fd1ebedbc88dd17016471af"
-  integrity sha512-TKWbeFAKRPrvKiR9GNxErQ8sELKqg1ZvXi6uho07mcKShBnCnqNpDQWP01FEvWKf0bxM2g7uQEI5MNjSNqvUpQ==
+"@typescript-eslint/eslint-plugin@2.18.0":
+  version "2.18.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-2.18.0.tgz#f8cf272dfb057ecf1ea000fea1e0b3f06a32f9cb"
+  integrity sha512-kuO8WQjV+RCZvAXVRJfXWiJ8iYEtfHlKgcqqqXg9uUkIolEHuUaMmm8/lcO4xwCOtaw6mY0gStn2Lg4/eUXXYQ==
   dependencies:
-    "@typescript-eslint/experimental-utils" "2.16.0"
+    "@typescript-eslint/experimental-utils" "2.18.0"
     eslint-utils "^1.4.3"
     functional-red-black-tree "^1.0.1"
     regexpp "^3.0.0"
     tsutils "^3.17.1"
 
-"@typescript-eslint/experimental-utils@2.16.0":
-  version "2.16.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/experimental-utils/-/experimental-utils-2.16.0.tgz#bba65685728c532e0ddc811a0376e8d38e671f77"
-  integrity sha512-bXTmAztXpqxliDKZgvWkl+5dHeRN+jqXVZ16peKKFzSXVzT6mz8kgBpHiVzEKO2NZ8OCU7dG61K9sRS/SkUUFQ==
+"@typescript-eslint/experimental-utils@2.18.0":
+  version "2.18.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/experimental-utils/-/experimental-utils-2.18.0.tgz#e4eab839082030282496c1439bbf9fdf2a4f3da8"
+  integrity sha512-J6MopKPHuJYmQUkANLip7g9I82ZLe1naCbxZZW3O2sIxTiq/9YYoOELEKY7oPg0hJ0V/AQ225h2z0Yp+RRMXhw==
   dependencies:
     "@types/json-schema" "^7.0.3"
-    "@typescript-eslint/typescript-estree" "2.16.0"
+    "@typescript-eslint/typescript-estree" "2.18.0"
     eslint-scope "^5.0.0"
 
-"@typescript-eslint/parser@2.16.0":
-  version "2.16.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-2.16.0.tgz#d0c0135a8fdb915f670802ddd7c1ba457c1b4f9d"
-  integrity sha512-+w8dMaYETM9v6il1yYYkApMSiwgnqXWJbXrA94LAWN603vXHACsZTirJduyeBOJjA9wT6xuXe5zZ1iCUzoxCfw==
+"@typescript-eslint/parser@2.18.0":
+  version "2.18.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-2.18.0.tgz#d5f7fc1839abd4a985394e40e9d2454bd56aeb1f"
+  integrity sha512-SJJPxFMEYEWkM6pGfcnjLU+NJIPo+Ko1QrCBL+i0+zV30ggLD90huEmMMhKLHBpESWy9lVEeWlQibweNQzyc+A==
   dependencies:
     "@types/eslint-visitor-keys" "^1.0.0"
-    "@typescript-eslint/experimental-utils" "2.16.0"
-    "@typescript-eslint/typescript-estree" "2.16.0"
+    "@typescript-eslint/experimental-utils" "2.18.0"
+    "@typescript-eslint/typescript-estree" "2.18.0"
     eslint-visitor-keys "^1.1.0"
 
-"@typescript-eslint/typescript-estree@2.16.0":
-  version "2.16.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-2.16.0.tgz#b444943a76c716ed32abd08cbe96172d2ca0ab75"
-  integrity sha512-hyrCYjFHISos68Bk5KjUAXw0pP/455qq9nxqB1KkT67Pxjcfw+r6Yhcmqnp8etFL45UexCHUMrADHH7dI/m2WQ==
+"@typescript-eslint/typescript-estree@2.18.0":
+  version "2.18.0"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-2.18.0.tgz#cfbd16ed1b111166617d718619c19b62764c8460"
+  integrity sha512-gVHylf7FDb8VSi2ypFuEL3hOtoC4HkZZ5dOjXvVjoyKdRrvXAOPSzpNRnKMfaUUEiSLP8UF9j9X9EDLxC0lfZg==
   dependencies:
     debug "^4.1.1"
     eslint-visitor-keys "^1.1.0"
@@ -3002,10 +3002,10 @@ eslint-config-airbnb-base@14.0.0:
     object.assign "^4.1.0"
     object.entries "^1.1.0"
 
-eslint-config-prettier@6.9.0:
-  version "6.9.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-6.9.0.tgz#430d24822e82f7deb1e22a435bfa3999fae4ad64"
-  integrity sha512-k4E14HBtcLv0uqThaI6I/n1LEqROp8XaPu6SO9Z32u5NlGRC07Enu1Bh2KEFw4FNHbekH8yzbIU9kUGxbiGmCA==
+eslint-config-prettier@6.10.0:
+  version "6.10.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-6.10.0.tgz#7b15e303bf9c956875c948f6b21500e48ded6a7f"
+  integrity sha512-AtndijGte1rPILInUdHjvKEGbIV06NuvPrqlIEaEaWtbtvJh464mDeyGMdZEQMsGvC0ZVkiex1fSNcC4HAbRGg==
   dependencies:
     get-stdin "^6.0.0"
 
@@ -3025,10 +3025,10 @@ eslint-module-utils@^2.4.1:
     debug "^2.6.9"
     pkg-dir "^2.0.0"
 
-eslint-plugin-import@2.20.0:
-  version "2.20.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.20.0.tgz#d749a7263fb6c29980def8e960d380a6aa6aecaa"
-  integrity sha512-NK42oA0mUc8Ngn4kONOPsPB1XhbUvNHqF+g307dPV28aknPoiNnKLFd9em4nkswwepdF5ouieqv5Th/63U7YJQ==
+eslint-plugin-import@2.20.1:
+  version "2.20.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.20.1.tgz#802423196dcb11d9ce8435a5fc02a6d3b46939b3"
+  integrity sha512-qQHgFOTjguR+LnYRoToeZWT62XM55MBVXObHM6SKFd1VzDcX/vqT1kAz8ssqigh5eMj8qXcRoXXGZpPP6RfdCw==
   dependencies:
     array-includes "^3.0.3"
     array.prototype.flat "^1.2.1"
@@ -7332,10 +7332,10 @@ rimraf@2.6.3, rimraf@^2.6.2:
   dependencies:
     glob "^7.1.3"
 
-rimraf@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-3.0.0.tgz#614176d4b3010b75e5c390eb0ee96f6dc0cebb9b"
-  integrity sha512-NDGVxTsjqfunkds7CqsOiEnxln4Bo7Nddl3XhS4pXg5OzwkLqJ971ZVAAnB+DDLnF76N+VnDEiBHaVV8I06SUg==
+rimraf@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-3.0.1.tgz#48d3d4cb46c80d388ab26cd61b1b466ae9ae225a"
+  integrity sha512-IQ4ikL8SjBiEDZfk+DFVwqRK8md24RWMEJkdSlgNLkyyAImcjf8SWvU1qFMDOb4igBClbTQ/ugPqXcRwdFTxZw==
   dependencies:
     glob "^7.1.3"
 

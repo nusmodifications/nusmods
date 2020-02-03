@@ -13,8 +13,8 @@
     "deploy": "rsync -avu --delete-after . ../../nusmods-export && pm2 restart ecosystem.config.js"
   },
   "dependencies": {
-    "@sentry/node": "5.11.1",
-    "axios": "0.19.1",
+    "@sentry/node": "5.11.2",
+    "axios": "0.19.2",
     "bunyan": "1.8.12",
     "fs-extra": "8.1.0",
     "http-graceful-shutdown": "2.3.2",
