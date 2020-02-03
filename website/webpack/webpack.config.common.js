@@ -13,7 +13,7 @@ const commonConfig = merge([
     resolve: {
       // Specify a few root paths when importing our own modules,
       // so that we can use absolute paths in our imports.
-      // E.g. Importing our own module at `/js/path/to/module` will simply be:
+      // E.g. Importing our own module at `/website/src/path/to/module` will simply be:
       // `import module from 'path/to/module;`
       modules: [parts.PATHS.src, parts.PATHS.node],
       // Maps specific modules, similar to modules above, except in this case
