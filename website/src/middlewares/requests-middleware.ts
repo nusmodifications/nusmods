@@ -1,5 +1,5 @@
 import { Middleware } from 'redux';
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, AxiosError } from 'axios';
 import { FAILURE, REQUEST, SUCCESS } from 'types/reducers';
 import { API_REQUEST } from 'actions/requests';
 import { State } from 'types/state';
@@ -88,7 +88,7 @@ const requestMiddleware: Middleware<any, State, any> = () => (next) => (action) 
           responseHeaders: response.headers,
         },
       }),
-    (error) => {
+    (error: AxiosError) => {
       next({
         type: FAILURE_KEY(type),
         payload: error,

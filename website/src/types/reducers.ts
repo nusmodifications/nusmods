@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import { RegPeriodType, ScheduleType } from 'config';
 
 import { Mode } from './settings';
@@ -67,7 +68,7 @@ export const FAILURE = '_FAILURE' as const;
 
 export type FetchRequest = {
   status: ApiStatus;
-  error?: any;
+  error?: AxiosError;
 };
 
 export type Requests = { [requestKey: string]: FetchRequest };

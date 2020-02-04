@@ -7,8 +7,8 @@ import { Filter, Values } from './utils';
  */
 export type FSA = {
   type: string;
-  payload: any;
-  meta?: any;
+  payload: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  meta?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   error?: boolean;
 };
 

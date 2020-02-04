@@ -44,7 +44,7 @@ export function originalPosition(tiles: Board) {
     // Center the piece
     x: Math.floor(COLUMNS / 2 - tiles.length / 2),
     // Find the number of tiles needed to move the entire piece above the start line
-    y: min(tiles.map((column) => -findLastIndex(column, notNull)))! - 1,
+    y: (min(tiles.map((column) => -findLastIndex(column, notNull))) || 0) - 1,
   };
 }
 
