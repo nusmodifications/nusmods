@@ -65,7 +65,7 @@ export class ModulesSelectComponent extends React.Component<Props, State> {
     });
   };
 
-  onChange = (item: ModuleCode) => this.props.onChange(item);
+  onChange = (selectedItem: ModuleCode | null) => selectedItem && this.props.onChange(selectedItem);
 
   closeSelect = () => {
     this.setState({

@@ -1,5 +1,12 @@
 import _ from 'lodash';
-import { Module, RawLesson, Semester, SemesterData, SemesterDataCondensed } from 'types/modules';
+import {
+  Module,
+  ModuleCode,
+  RawLesson,
+  Semester,
+  SemesterData,
+  SemesterDataCondensed,
+} from 'types/modules';
 
 import config from 'config';
 import { NBSP } from 'utils/react';
@@ -119,4 +126,8 @@ export function getYearsBetween(minYear: string, maxYear: string): string[] {
   }
   years.push(maxYear);
   return years;
+}
+
+export function isGraduateModule(module: { moduleCode: ModuleCode }): boolean {
+  return Boolean(/\w+(5|6)\d+/.test(module.moduleCode));
 }

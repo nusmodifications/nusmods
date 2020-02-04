@@ -6,7 +6,7 @@ import Mousetrap from 'mousetrap';
 import { groupBy, map } from 'lodash';
 
 import { Mode, ThemeId, DARK_MODE } from 'types/settings';
-import { FSA } from 'types/redux';
+import { Actions } from 'types/actions';
 import themes from 'data/themes.json';
 import { cycleTheme, toggleTimetableOrientation } from 'actions/theme';
 import { openNotification } from 'actions/app';
@@ -18,7 +18,7 @@ import Modal from './Modal';
 import styles from './KeyboardShortcuts.scss';
 
 type Props = RouteComponentProps & {
-  dispatch: Dispatch<FSA>;
+  dispatch: Dispatch<Actions>;
   theme: ThemeId;
   mode: Mode;
 };

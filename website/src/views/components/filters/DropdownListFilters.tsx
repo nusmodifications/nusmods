@@ -89,6 +89,7 @@ const DesktopFilter: React.FC<DisplayProps> = ({
     <Downshift
       onOuterClick={onOuterClick}
       onChange={(selectedItem, { clearSelection }) => {
+        if (!selectedItem) return;
         onSelectItem(selectedItem);
         clearSelection();
       }}
