@@ -2671,10 +2671,10 @@
   resolved "https://registry.yarnpkg.com/@types/query-string/-/query-string-5.0.0.tgz#5dbebd24d0abeb555d0dd9704c33462d84a45e69"
   integrity sha512-5wxncaH2wdueIw8mYrRF+G+1sxwxK9AQYWK6V+EJvZ52YesFh2PnG7yRQ4zeThd2Ewy6xCCTUCG6tfRyUzqyIA==
 
-"@types/react-beautiful-dnd@12.1.0":
-  version "12.1.0"
-  resolved "https://registry.yarnpkg.com/@types/react-beautiful-dnd/-/react-beautiful-dnd-12.1.0.tgz#b4dfaa334014eb9b3bd2c099649fc4616a00888e"
-  integrity sha512-Sq9YyKaWhHrnJfENbQLM/dnKbMdZ1+rR8JbWGg8TbyCyklz0vSd8azR+8TByinK2Ly52JH2uyh7WEH6UR1CW3A==
+"@types/react-beautiful-dnd@12.1.1":
+  version "12.1.1"
+  resolved "https://registry.yarnpkg.com/@types/react-beautiful-dnd/-/react-beautiful-dnd-12.1.1.tgz#149e638c0f912eee6b74ea419b26bb43d0b1da60"
+  integrity sha512-CPKynKgGVRK+xmywLMD0qNWamdscxhgf1Um+2oEgN6Qibn1rye3M4p2bdxAMgtOTZ2L81bYl6KGKSzJVboJWeA==
   dependencies:
     "@types/react" "*"
 
