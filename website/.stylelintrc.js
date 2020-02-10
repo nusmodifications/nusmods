@@ -369,5 +369,9 @@ module.exports = {
       ],
       { unspecified: 'bottomAlphabetical' },
     ],
+    'value-keyword-case': [
+      'lower',
+      { ignoreProperties: ['composes'] },
+    ],
   },
 };
