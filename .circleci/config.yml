@@ -16,7 +16,7 @@ save_cache: &save_node_deps
   key: v2-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
   paths:
     - ~/.cache/yarn
-
+    - node_modules
 jobs:
   checkout:
     <<: *defaults
