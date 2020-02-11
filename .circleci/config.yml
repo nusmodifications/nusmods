@@ -7,9 +7,9 @@ defaults: &defaults
 restore_cache: &restore_node_deps
   name: Restore node_modules cache
   keys:
-    - v3-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
-    - v3-node-{{ arch }}-{{ .Branch }}-
-    - v3-node-{{ arch }}-
+    - v2-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
+    - v2-node-{{ arch }}-{{ .Branch }}-
+    - v2-node-{{ arch }}-
 
 save_cache: &save_node_deps
   name: Save node_modules cache
