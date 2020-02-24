@@ -4,8 +4,9 @@ $header-margin-top: 1rem;
 $sticky-top: $navbar-height;
 
 .pageTitle {
-  margin: 0 0 0.5rem;
-  font-size: $font-size-xlg;
+  margin: 0 0 1rem 0;
+  font-weight: 600;
+  font-size: $font-size-xlg * 1.25;
 }
 
 .moduleInfoPage {
@@ -35,15 +36,14 @@ $sticky-top: $navbar-height;
 
 .moduleCodeTitle {
   display: block;
-  margin-bottom: 0.2rem;
-  font-weight: bold;
-  font-size: $font-size-xlg * 1.2;
+  margin-bottom: 0.5rem;
+  font-size: $font-size-xlg * 0.8;
   color: theme-color();
 }
 
 .header {
-  padding: 0 0 1rem;
-  margin-bottom: 1rem;
+  padding: 0 0 1.5rem;
+  margin-bottom: 1.5rem;
   border-bottom: 1px solid var(--gray-lighter);
 
   p {
@@ -52,9 +52,9 @@ $sticky-top: $navbar-height;
 }
 
 .sectionHeading {
-  padding: 0.6rem 0;
-  margin: 0 0 0.6rem;
-  border-bottom: 1px solid var(--gray-lighter);
+  padding: 1.5rem 0 1rem 0;
+  margin: 0 0 1rem;
+  border-top: 1px solid var(--gray-lighter);
   font-weight: $font-weight-bold;
   font-size: $font-size-lg;
 }

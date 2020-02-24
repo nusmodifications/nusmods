@@ -49,9 +49,13 @@ a {
   flex: 1 auto;
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 
+  .main-content {
+    padding-top: 1rem;
+  }
+
   @include media-breakpoint-down(sm) {
     .main-content {
-      padding-top: 1rem;
+      padding-top: 2rem;
     }
   }
 
