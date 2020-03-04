@@ -4230,5 +4230,85 @@
       "x": 103.77314838535167,
       "y": 1.306576128579399
     }
+  },
+  "RVR-MPR01": {
+    "roomName": "Multi Purpose Room 1",
+    "floor": 1,
+    "location": {
+      "x": 103.77687692642213,
+      "y": 1.2973480580696695
+    }
+  },
+  "RVR-MPR02": {
+    "roomName": "Multi Purpose Room 2",
+    "floor": 1,
+    "location": {
+      "x": 103.77674013376237,
+      "y": 1.2974311852333447
+    }
+  },
+  "YSTCM-MLAB": {
+    "roomName": "Music Tech and Keyboard Lab",
+    "floor": 2,
+    "location": {
+      "x": 103.77272941774719,
+      "y": 1.3023654031322103
+    }
+  },
+  "E2-0309PC6": {
+    "roomName": "E2-0306PC6",
+    "floor": 3,
+    "location": {
+      "x": 103.77116650342943,
+      "y": 1.299378639374635
+    }
+  },
+  "CFG_CARSPA": {
+    "roomName": "CFG Career Space, Yusof Ishak House",
+    "floor": 3,
+    "location": {
+      "x": 103.7747633457184,
+      "y": 1.2985055114007384
+    }
+  },
+  "AS3-0314": {
+    "roomName": "AS3-0314",
+    "floor": 3,
+    "location": {
+      "x": 103.77111034010251,
+      "y": 1.2947020653932226
+    }
+  },
+  "YSTCM-SR3": {
+    "roomName": "Seminar Room 3",
+    "floor": 1,
+    "location": {
+      "x": 103.7725628,
+      "y": 1.3025707
+    }
+  },
+  "AS7-0201A": {
+    "roomName": "Room 1",
+    "floor": 2,
+    "location": {
+      "x": 103.77105252409778,
+      "y": 1.29427033995146
+    }
+  },
+  "AS4-0513": {
+    "roomName": "AS3-0513",
+    "floor": 5,
+    "location": {
+      "x": 103.77196827769893,
+      "y": 1.2945733522257314
+    }
+  },
+  "E5-04-1617": {
+    "roomName": "E5-04-1617",
+    "floor": 4,
+    "location": {
+      "x": 103.77254515886308,
+      "y": 1.297952070704839
+    }
   }
 }
