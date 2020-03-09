@@ -31,6 +31,7 @@ type Props = {
 function TimetableRow(props: Props) {
   const { startingIndex, endingIndex, lessons, onModifyCell, verticalMode } = props;
   const totalCols = endingIndex - startingIndex;
+  const zeroDurationCellSize = 0.25;
 
   let lastStartIndex = startingIndex;
 
@@ -38,7 +39,13 @@ function TimetableRow(props: Props) {
     <div className={styles.timetableRow}>
       {lessons.map((lesson) => {
         const startIndex = convertTimeToIndex(lesson.startTime);
-        const endIndex = convertTimeToIndex(lesson.endTime);
+        let endIndex = convertTimeToIndex(lesson.endTime);
+
+        // set predefined cell size for lessons with zero duration
+        if (startIndex === endIndex) {
+          endIndex = startIndex + zeroDurationCellSize;
+        }
+
         const size = endIndex - startIndex;
 
         const dirStyle = verticalMode ? 'top' : 'marginLeft';
@@ -51,7 +58,7 @@ function TimetableRow(props: Props) {
           [sizeStyle]: `calc(${(size / totalCols) * 100}% - 1px)`,
         };
 
-        lastStartIndex = convertTimeToIndex(lesson.endTime);
+        lastStartIndex = endIndex;
 
         const conditionalProps =
           lesson.isModifiable && onModifyCell
