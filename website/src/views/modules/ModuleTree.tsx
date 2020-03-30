@@ -70,29 +70,39 @@ function ModuleTree(props: Props) {
   const { fulfillRequirements, prereqTree, moduleCode } = props;
 
   return (
-    <div className={styles.container}>
-      {fulfillRequirements && fulfillRequirements.length > 0 && (
-        <>
-          <ul className={styles.prereqTree}>
-            {fulfillRequirements.map((fulfilledModule) => (
-              <li key={fulfilledModule} className={classnames(styles.branch, styles.prereqBranch)}>
-                <Tree layer={0} node={fulfilledModule} isPrereq />
-              </li>
-            ))}
-          </ul>
+    <>
+      <div className={styles.container}>
+        {fulfillRequirements && fulfillRequirements.length > 0 && (
+          <>
+            <ul className={styles.prereqTree}>
+              {fulfillRequirements.map((fulfilledModule) => (
+                <li
+                  key={fulfilledModule}
+                  className={classnames(styles.branch, styles.prereqBranch)}
+                >
+                  <Tree layer={0} node={fulfilledModule} isPrereq />
+                </li>
+              ))}
+            </ul>
 
-          <div className={classnames(styles.node, styles.conditional)}>needs</div>
-        </>
-      )}
+            <div className={classnames(styles.node, styles.conditional)}>needs</div>
+          </>
+        )}
 
-      <ul className={classnames(styles.tree, styles.root)}>
-        <li className={classnames(styles.branch)}>
-          <Tree layer={1} node={moduleCode} />
+        <ul className={classnames(styles.tree, styles.root)}>
+          <li className={classnames(styles.branch)}>
+            <Tree layer={1} node={moduleCode} />
 
-          {prereqTree && <Branch nodes={[prereqTree]} layer={2} />}
-        </li>
-      </ul>
-    </div>
+            {prereqTree && <Branch nodes={[prereqTree]} layer={2} />}
+          </li>
+        </ul>
+      </div>
+
+      <p className="alert alert-warning">
+        The prerequisite tree is displayed for visualization purposes and may not be accurate.
+        Viewers are encouraged to double check details.
+      </p>
+    </>
   );
 }
 
