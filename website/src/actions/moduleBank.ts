@@ -73,11 +73,11 @@ export function fetchModule(moduleCode: ModuleCode) {
         url: NUSModsApi.moduleDetailsUrl(moduleCode),
       }),
     ).then(
-      (result: any) => {
+      (result: string) => {
         onFinally();
         return result;
       },
-      (error: any) => {
+      (error: Error) => {
         onFinally();
         throw error;
       },

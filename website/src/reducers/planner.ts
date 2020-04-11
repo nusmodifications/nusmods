@@ -35,14 +35,14 @@ export default function planner(
       return {
         ...state,
         minYear: action.payload,
-        maxYear: max([action.payload, state.maxYear])!,
+        maxYear: max([action.payload, state.maxYear]) as string,
       };
 
     case SET_PLANNER_MAX_YEAR:
       return {
         ...state,
         maxYear: action.payload,
-        minYear: min([action.payload, state.minYear])!,
+        minYear: min([action.payload, state.minYear]) as string,
       };
 
     case SET_PLANNER_IBLOCS:
