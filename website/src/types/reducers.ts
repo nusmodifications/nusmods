@@ -174,10 +174,10 @@ export type ModuleBank = {
 /**
  * undoHistory types
  */
-export type UndoHistoryState = {
-  past: Record<string, any>[];
-  present: Record<string, any> | undefined;
-  future: Record<string, any>[];
+export type UndoHistoryState<T extends { undoHistory: UndoHistoryState<T> }> = {
+  past: Partial<T>[];
+  present: Partial<T> | undefined;
+  future: Partial<T>[];
 };
 
 /**

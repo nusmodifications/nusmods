@@ -28,9 +28,8 @@ const planner = persistReducer('planner', plannerReducer);
 // State default is delegated to its child reducers.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const defaultState: State = {} as any;
-const undoReducer = createUndoReducer({
+const undoReducer = createUndoReducer<State>({
   limit: 1,
-  reducerName: 'undoHistory',
   actionsToWatch: [REMOVE_MODULE, SET_TIMETABLE],
   whitelist: ['timetables', 'theme.colors'],
 });
