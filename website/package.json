@@ -112,7 +112,7 @@
     "postcss-loader": "3.0.0",
     "prettier": "1.19.1",
     "react-dev-utils": "10.2.1",
-    "react-hot-loader": "4.12.19",
+    "react-hot-loader": "4.12.20",
     "react-test-renderer": "16.13.0",
     "redux-logger": "3.0.6",
     "redux-mock-store": "1.5.4",
