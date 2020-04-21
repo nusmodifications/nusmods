@@ -19,5 +19,5 @@ export type State = {
   theme: ThemeState;
   settings: SettingsState;
   planner: PlannerState;
-  undoHistory: UndoHistoryState;
+  undoHistory: UndoHistoryState<State>;
 };
