@@ -14,10 +14,10 @@ type Props = {
   showRefresh: boolean;
 };
 
-const ErrorPage = React.memo<Props>(({ error, showReportDialog, showRefresh = true }) => {
+const ErrorPage = (props: Props) => {
   const errorMessage = () => {
     let message = 'something went wrong';
-    if (error) message = `${message} - ${error}`;
+    if (props.error) message = `${message} - ${props.error}`;
     return message;
   };
 
@@ -33,7 +33,7 @@ const ErrorPage = React.memo<Props>(({ error, showReportDialog, showRefresh = tr
         <span className={styles.expr}>Uh oh</span> {errorMessage()}
       </h1>
 
-      {showReportDialog && (
+      {props.showReportDialog && (
         <Online isLive={false}>
           <p>
             An error report has been made and we will look into this. We would really appreciate it
@@ -50,7 +50,7 @@ const ErrorPage = React.memo<Props>(({ error, showReportDialog, showRefresh = tr
         </Online>
       )}
 
-      {showRefresh && (
+      {props.showRefresh && (
         <Online>
           <button
             type="button"
@@ -63,6 +63,10 @@ const ErrorPage = React.memo<Props>(({ error, showReportDialog, showRefresh = tr
       )}
     </div>
   );
-});
+};
 
-export default ErrorPage;
+ErrorPage.defaultProps = {
+  showRefresh: true,
+};
+
+export default React.memo(ErrorPage);

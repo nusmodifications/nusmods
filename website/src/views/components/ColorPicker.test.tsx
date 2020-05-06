@@ -16,11 +16,11 @@ function makeColorPicker(color: ColorIndex = 0) {
   };
 }
 
-function findPopup(wrapper: ReactWrapper<ColorPicker>) {
+function findPopup(wrapper: ReactWrapper) {
   return wrapper.find(`.${styles.palette}`);
 }
 
-function isPopupClosed(wrapper: ReactWrapper<ColorPicker>) {
+function isPopupClosed(wrapper: ReactWrapper) {
   return findPopup(wrapper).hasClass('isClosed');
 }
 

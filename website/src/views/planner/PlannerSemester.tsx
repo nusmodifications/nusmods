@@ -46,12 +46,12 @@ function renderSemesterMeta(plannerModules: PlannerModuleInfo[]) {
 /**
  * Component for a single column of modules for a single semester
  */
-const PlannerSemester = React.memo<Props>(({ showModuleMeta = true, ...props }) => {
+const PlannerSemester = (props: Props) => {
   const renderModule = (plannerModule: PlannerModuleInfo, index: number) => {
     const { year, semester } = props;
     const { moduleCode, moduleInfo, conflict } = plannerModule;
 
-    const showExamDate = showModuleMeta && config.academicYear === year;
+    const showExamDate = props.showModuleMeta && config.academicYear === year;
 
     return (
       <PlannerModule
@@ -60,7 +60,7 @@ const PlannerSemester = React.memo<Props>(({ showModuleMeta = true, ...props }) 
         moduleCode={moduleCode}
         moduleTitle={getModuleTitle(plannerModule)}
         examDate={showExamDate && moduleInfo ? getExamDate(moduleInfo, semester) : null}
-        moduleCredit={showModuleMeta ? getModuleCredit(plannerModule) : null}
+        moduleCredit={props.showModuleMeta ? getModuleCredit(plannerModule) : null}
         conflict={conflict}
         removeModule={props.removeModule}
         addCustomData={props.addCustomData}
@@ -92,7 +92,7 @@ const PlannerSemester = React.memo<Props>(({ showModuleMeta = true, ...props }) 
             </p>
           )}
 
-          {showModuleMeta && modules.length > 0 && renderSemesterMeta(modules)}
+          {props.showModuleMeta && modules.length > 0 && renderSemesterMeta(modules)}
 
           <div className={styles.addModule}>
             <AddModule
@@ -105,6 +105,10 @@ const PlannerSemester = React.memo<Props>(({ showModuleMeta = true, ...props }) 
       )}
     </Droppable>
   );
-});
+};
 
-export default PlannerSemester;
+PlannerSemester.defaultProps = {
+  showModuleMeta: true,
+};
+
+export default React.memo(PlannerSemester);

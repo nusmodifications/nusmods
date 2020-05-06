@@ -9,22 +9,22 @@ type Props = {
   onChange: (boolean: boolean) => void;
 };
 
-const Toggle = React.memo<Props>(({ labels = ['On', 'Off'], isOn, onChange, className }) => {
+const Toggle = (props: Props) => {
   return (
     <div className="btn-group" role="group">
-      {labels.map((label, index) => {
+      {props.labels.map((label, index) => {
         const value = index === 0;
 
         return (
           <button
             key={label}
             type="button"
-            className={classnames('btn', className, {
-              'btn-primary': value === isOn,
-              'btn-outline-primary': value !== isOn,
+            className={classnames('btn', props.className, {
+              'btn-primary': value === props.isOn,
+              'btn-outline-primary': value !== props.isOn,
             })}
             onClick={() => {
-              if (value !== isOn) onChange(value);
+              if (value !== props.isOn) props.onChange(value);
             }}
           >
             {label}
@@ -33,6 +33,10 @@ const Toggle = React.memo<Props>(({ labels = ['On', 'Off'], isOn, onChange, clas
       })}
     </div>
   );
-});
+};
 
-export default Toggle;
+Toggle.defaultProps = {
+  labels: ['On', 'Off'],
+};
+
+export default React.memo(Toggle);
