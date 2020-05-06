@@ -33,19 +33,19 @@ export function defaultSearchOptions(
   };
 }
 
-export default class AvailabilitySearch extends React.PureComponent<Props> {
-  onUpdate = (event: React.SyntheticEvent<HTMLSelectElement>, key: keyof VenueSearchOptions) => {
-    if (typeof event.currentTarget.value !== 'undefined') {
-      const { searchOptions, onUpdate } = this.props;
-      onUpdate({
-        ...searchOptions,
-        [key]: +event.currentTarget.value,
-      });
-    }
-  };
-
-  render() {
-    const { searchOptions, className } = this.props;
+const AvailabilitySearch = React.memo<Props>(
+  ({ className, isEnabled, searchOptions, ...props }) => {
+    const onUpdate = (
+      event: React.SyntheticEvent<HTMLSelectElement>,
+      key: keyof VenueSearchOptions,
+    ) => {
+      if (typeof event.currentTarget.value !== 'undefined') {
+        props.onUpdate({
+          ...searchOptions,
+          [key]: +event.currentTarget.value,
+        });
+      }
+    };
 
     return (
       <div className={classnames(className, styles.search)}>
@@ -55,7 +55,7 @@ export default class AvailabilitySearch extends React.PureComponent<Props> {
             id="venue-day"
             className="form-control"
             value={searchOptions.day}
-            onChange={(evt) => this.onUpdate(evt, 'day')}
+            onChange={(evt) => onUpdate(evt, 'day')}
           >
             {SCHOOLDAYS.map((name, day) => (
               <option key={day} value={day}>
@@ -71,7 +71,7 @@ export default class AvailabilitySearch extends React.PureComponent<Props> {
             id="venue-time"
             className="form-control"
             value={searchOptions.time}
-            onChange={(evt) => this.onUpdate(evt, 'time')}
+            onChange={(evt) => onUpdate(evt, 'time')}
           >
             {CLASS_START_HOURS.map((hour) => (
               <option key={hour} value={hour}>
@@ -87,7 +87,7 @@ export default class AvailabilitySearch extends React.PureComponent<Props> {
             id="venue-duration"
             className="form-control"
             value={searchOptions.duration}
-            onChange={(evt) => this.onUpdate(evt, 'duration')}
+            onChange={(evt) => onUpdate(evt, 'duration')}
           >
             {range(1, LAST_CLASS_HOUR + 3 - searchOptions.time).map((hour) => (
               <option key={hour} value={hour}>
@@ -98,5 +98,7 @@ export default class AvailabilitySearch extends React.PureComponent<Props> {
         </div>
       </div>
     );
-  }
-}
+  },
+);
+
+export default AvailabilitySearch;

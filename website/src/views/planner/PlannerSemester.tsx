@@ -46,13 +46,9 @@ function renderSemesterMeta(plannerModules: PlannerModuleInfo[]) {
 /**
  * Component for a single column of modules for a single semester
  */
-export default class PlannerSemester extends React.PureComponent<Props> {
-  static defaultProps = {
-    showModuleMeta: true,
-  };
-
-  renderModule = (plannerModule: PlannerModuleInfo, index: number) => {
-    const { year, semester, showModuleMeta } = this.props;
+const PlannerSemester = React.memo<Props>(({ showModuleMeta = true, ...props }) => {
+  const renderModule = (plannerModule: PlannerModuleInfo, index: number) => {
+    const { year, semester } = props;
     const { moduleCode, moduleInfo, conflict } = plannerModule;
 
     const showExamDate = showModuleMeta && config.academicYear === year;
@@ -66,49 +62,49 @@ export default class PlannerSemester extends React.PureComponent<Props> {
         examDate={showExamDate && moduleInfo ? getExamDate(moduleInfo, semester) : null}
         moduleCredit={showModuleMeta ? getModuleCredit(plannerModule) : null}
         conflict={conflict}
-        removeModule={this.props.removeModule}
-        addCustomData={this.props.addCustomData}
+        removeModule={props.removeModule}
+        addCustomData={props.addCustomData}
       />
     );
   };
 
-  render() {
-    const { year, semester, modules, showModuleMeta } = this.props;
-    const droppableId = getDroppableId(year, semester);
+  const { year, semester, modules } = props;
+  const droppableId = getDroppableId(year, semester);
 
-    return (
-      <Droppable droppableId={droppableId}>
-        {(provided, snapshot) => (
-          <div
-            className={classnames(styles.semester, this.props.className, {
-              [styles.emptyList]: modules.length === 0,
-              [styles.dragOver]: snapshot.isDraggingOver,
-            })}
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-          >
-            {modules.map(this.renderModule)}
+  return (
+    <Droppable droppableId={droppableId}>
+      {(provided, snapshot) => (
+        <div
+          className={classnames(styles.semester, props.className, {
+            [styles.emptyList]: modules.length === 0,
+            [styles.dragOver]: snapshot.isDraggingOver,
+          })}
+          ref={provided.innerRef}
+          {...provided.droppableProps}
+        >
+          {modules.map(renderModule)}
 
-            {provided.placeholder}
+          {provided.placeholder}
 
-            {modules.length === 0 && (
-              <p className={styles.emptyListMessage}>
-                Drop module here to add to {getSemesterName(semester)}
-              </p>
-            )}
+          {modules.length === 0 && (
+            <p className={styles.emptyListMessage}>
+              Drop module here to add to {getSemesterName(semester)}
+            </p>
+          )}
 
-            {showModuleMeta && modules.length > 0 && renderSemesterMeta(modules)}
+          {showModuleMeta && modules.length > 0 && renderSemesterMeta(modules)}
 
-            <div className={styles.addModule}>
-              <AddModule
-                year={year}
-                semester={semester}
-                onAddModule={(moduleCode) => this.props.addModule(moduleCode, year, +semester)}
-              />
-            </div>
+          <div className={styles.addModule}>
+            <AddModule
+              year={year}
+              semester={semester}
+              onAddModule={(moduleCode) => props.addModule(moduleCode, year, +semester)}
+            />
           </div>
-        )}
-      </Droppable>
-    );
-  }
-}
+        </div>
+      )}
+    </Droppable>
+  );
+});
+
+export default PlannerSemester;

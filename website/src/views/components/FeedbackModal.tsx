@@ -42,33 +42,31 @@ export function FeedbackButtons() {
   );
 }
 
-export class FeedbackModalComponent extends React.PureComponent<Props> {
-  render() {
-    return (
-      <Modal
-        isOpen={this.props.isOpen}
-        onRequestClose={this.props.toggleFeedback}
-        className={styles.modal}
-        animate
-      >
-        <CloseButton absolutePositioned onClick={this.props.toggleFeedback} />
-        <div className={styles.content}>
-          <Heart className={styles.topIcon} />
-          <h1>Let us know what you think!</h1>
-          <p>
-            Thank you for your time! You can talk to us on Messenger, file an issue on GitHub, or
-            send us an email.
-          </p>
-          <FeedbackButtons />
-        </div>
-      </Modal>
-    );
-  }
-}
+export const FeedbackModalComponent = (props: Props) => {
+  return (
+    <Modal
+      isOpen={props.isOpen}
+      onRequestClose={props.toggleFeedback}
+      className={styles.modal}
+      animate
+    >
+      <CloseButton absolutePositioned onClick={props.toggleFeedback} />
+      <div className={styles.content}>
+        <Heart className={styles.topIcon} />
+        <h1>Let us know what you think!</h1>
+        <p>
+          Thank you for your time! You can talk to us on Messenger, file an issue on GitHub, or send
+          us an email.
+        </p>
+        <FeedbackButtons />
+      </div>
+    </Modal>
+  );
+};
 
 export default connect(
   (state: State) => ({
     isOpen: state.app.isFeedbackModalOpen,
   }),
   { toggleFeedback },
-)(FeedbackModalComponent);
+)(React.memo(FeedbackModalComponent));
