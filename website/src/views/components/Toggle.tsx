@@ -2,17 +2,17 @@ import * as React from 'react';
 import classnames from 'classnames';
 
 type Props = {
-  labels: [string, string];
+  labels?: [string, string];
   isOn?: boolean | null;
   className?: string;
 
   onChange: (boolean: boolean) => void;
 };
 
-const Toggle = (props: Props) => {
+const Toggle: React.FC<Props> = ({ labels = ['On', 'Off'], ...props }) => {
   return (
     <div className="btn-group" role="group">
-      {props.labels.map((label, index) => {
+      {labels.map((label, index) => {
         const value = index === 0;
 
         return (
@@ -33,10 +33,6 @@ const Toggle = (props: Props) => {
       })}
     </div>
   );
-};
-
-Toggle.defaultProps = {
-  labels: ['On', 'Off'],
 };
 
 export default React.memo(Toggle);

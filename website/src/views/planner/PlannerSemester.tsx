@@ -22,7 +22,7 @@ type Props = Readonly<{
   semester: Semester;
   modules: PlannerModuleInfo[];
 
-  showModuleMeta: boolean;
+  showModuleMeta?: boolean;
   className?: string;
 
   addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void;
@@ -46,12 +46,12 @@ function renderSemesterMeta(plannerModules: PlannerModuleInfo[]) {
 /**
  * Component for a single column of modules for a single semester
  */
-const PlannerSemester = (props: Props) => {
+const PlannerSemester: React.FC<Props> = ({ showModuleMeta = true, ...props }) => {
   const renderModule = (plannerModule: PlannerModuleInfo, index: number) => {
     const { year, semester } = props;
     const { moduleCode, moduleInfo, conflict } = plannerModule;
 
-    const showExamDate = props.showModuleMeta && config.academicYear === year;
+    const showExamDate = showModuleMeta && config.academicYear === year;
 
     return (
       <PlannerModule
@@ -60,7 +60,7 @@ const PlannerSemester = (props: Props) => {
         moduleCode={moduleCode}
         moduleTitle={getModuleTitle(plannerModule)}
         examDate={showExamDate && moduleInfo ? getExamDate(moduleInfo, semester) : null}
-        moduleCredit={props.showModuleMeta ? getModuleCredit(plannerModule) : null}
+        moduleCredit={showModuleMeta ? getModuleCredit(plannerModule) : null}
         conflict={conflict}
         removeModule={props.removeModule}
         addCustomData={props.addCustomData}
@@ -92,7 +92,7 @@ const PlannerSemester = (props: Props) => {
             </p>
           )}
 
-          {props.showModuleMeta && modules.length > 0 && renderSemesterMeta(modules)}
+          {showModuleMeta && modules.length > 0 && renderSemesterMeta(modules)}
 
           <div className={styles.addModule}>
             <AddModule
@@ -105,10 +105,6 @@ const PlannerSemester = (props: Props) => {
       )}
     </Droppable>
   );
-};
-
-PlannerSemester.defaultProps = {
-  showModuleMeta: true,
 };
 
 export default React.memo(PlannerSemester);

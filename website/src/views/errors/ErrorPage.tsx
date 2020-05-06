@@ -11,10 +11,10 @@ type Props = {
   children?: React.ReactNode;
   error?: string;
   showReportDialog?: boolean;
-  showRefresh: boolean;
+  showRefresh?: boolean;
 };
 
-const ErrorPage = (props: Props) => {
+const ErrorPage: React.FC<Props> = ({ showRefresh = true, ...props }) => {
   const errorMessage = () => {
     let message = 'something went wrong';
     if (props.error) message = `${message} - ${props.error}`;
@@ -50,7 +50,7 @@ const ErrorPage = (props: Props) => {
         </Online>
       )}
 
-      {props.showRefresh && (
+      {showRefresh && (
         <Online>
           <button
             type="button"
@@ -63,10 +63,6 @@ const ErrorPage = (props: Props) => {
       )}
     </div>
   );
-};
-
-ErrorPage.defaultProps = {
-  showRefresh: true,
 };
 
 export default React.memo(ErrorPage);

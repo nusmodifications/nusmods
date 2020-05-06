@@ -50,7 +50,7 @@ export function notificationText(
   );
 }
 
-export const ModRegNotificationComponent = (props: Props) => {
+export const ModRegNotificationComponent: React.FC<Props> = (props) => {
   const dismiss = (round: RegPeriod) => {
     props.dismissModregNotification(round);
     props.openNotification('Reminder snoozed until start of next round', {

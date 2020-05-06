@@ -46,7 +46,7 @@ export type Props = {
   resetTombstone: () => void;
 };
 
-export const TimetableModulesTableComponent = (props: Props) => {
+export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
   const renderModuleActions = (module: ModuleWithColor) => {
     const hideBtnLabel = `${module.hiddenInTimetable ? 'Show' : 'Hide'} ${module.moduleCode}`;
     const removeBtnLabel = `Remove ${module.moduleCode} from timetable`;

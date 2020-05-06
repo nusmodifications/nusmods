@@ -28,7 +28,12 @@ type Props = OwnProps & {
  * Shows a warning if the provided examDate clashes with the exam of any modules
  * that are already taken
  */
-export const ModuleExamClashComponent = ({ modules, moduleCode, semester, examDate }: Props) => {
+export const ModuleExamClashComponent: React.FC<Props> = ({
+  modules,
+  moduleCode,
+  semester,
+  examDate,
+}) => {
   if (!examDate) return null;
 
   const clashes = modules.filter(

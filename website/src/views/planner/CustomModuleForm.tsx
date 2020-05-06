@@ -22,7 +22,7 @@ type Props = OwnProps &
     addCustomModule: (moduleCode: ModuleCode, data: CustomModule) => void;
   }>;
 
-export const CustomModuleFormComponent = (props: Props) => {
+export const CustomModuleFormComponent: React.FC<Props> = (props) => {
   // We use an uncontrolled form here because we don't want to update the
   // module title and MCs live
   const inputModuleCredit = React.createRef<HTMLInputElement>();

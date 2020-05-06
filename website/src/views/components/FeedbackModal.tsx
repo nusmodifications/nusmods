@@ -42,7 +42,7 @@ export function FeedbackButtons() {
   );
 }
 
-export const FeedbackModalComponent = (props: Props) => {
+export const FeedbackModalComponent: React.FC<Props> = (props) => {
   return (
     <Modal
       isOpen={props.isOpen}

@@ -28,7 +28,7 @@ type Props = RouteComponentProps & {
   readonly matchBreakpoint: boolean;
 };
 
-export const VenueDetailsComponent = (props: Props) => {
+export const VenueDetailsComponent: React.FC<Props> = (props) => {
   const arrangedLessons = () => {
     const lessons = flatMap(props.availability, (day) => day.classes).map((venueLesson) => ({
       ...venueLesson,
