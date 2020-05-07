@@ -2,22 +2,14 @@
 
 $header-margin-top: 1rem;
 $animation-duration: 0.3s;
+$offset-top: $navbar-height + 1rem;
 
 // Side menu styles
 //  - md and above, display as sticky side menu
 //  - sm and below, display as FAB + menu drawer appearing from below
+
 .fab {
   display: none;
-}
-
-.sideMenu {
-  $offset-top: $navbar-height + 1rem;
-
-  composes: scrollable from global;
-  position: sticky;
-  top: $offset-top;
-  height: calc(100vh - #{$offset-top});
-  overscroll-behavior: contain; // stylelint-disable-line property-no-unknown
 }
 
 .overlay {
@@ -34,24 +26,47 @@ $animation-duration: 0.3s;
   }
 }
 
+.boundaryContainer {
+  position: sticky;
+  top: $offset-top;
+
+  display: flex;
+  pointer-events: none;
+}
+
+.sideMenu {
+  composes: scrollable from global;
+  max-height: calc(100vh - #{$offset-top});
+  overscroll-behavior: contain; // stylelint-disable-line property-no-unknown
+  pointer-events: all;
+}
+
 @include media-breakpoint-down(sm) {
   .fab {
     display: block;
   }
 
-  .sideMenu {
+  .boundaryContainer {
     position: fixed;
-    top: auto;
     bottom: 0;
     left: 0;
     z-index: $side-menu-z-index;
+
     width: 100%;
+
+    // Menu should stick to bottom of screen
+    flex-direction: column-reverse;
+  }
+
+  .sideMenu {
     padding: 1rem 0 3rem;
     background: var(--body-bg);
     box-shadow: 0 -10px 20px var(--navtab-shadow);
-    transform: translateY(100%);
-    transition: transform $animation-duration;
+    width: 100%;
 
+    // Entry/exit animation
+    transition: transform $animation-duration;
+    transform: translateY(100%);
     &.isOpen {
       transform: translateY(0);
     }
