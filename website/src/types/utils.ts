@@ -5,7 +5,6 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-export type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;
 export type Subtract<T extends K, K> = Omit<T, keyof K>;
 
 export type Filter<T, U> = T extends U ? T : never; // Remove types from T that are not assignable to U

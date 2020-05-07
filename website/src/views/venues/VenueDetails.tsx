@@ -30,11 +30,14 @@ type Props = RouteComponentProps & {
 
 export class VenueDetailsComponent extends React.PureComponent<Props> {
   arrangedLessons() {
-    const lessons = flatMap(this.props.availability, (day) => day.classes).map((venueLesson) => ({
-      ...venueLesson,
-      title: '',
-      isModifiable: true,
-    }));
+    const lessons: Lesson[] = flatMap(this.props.availability, (day) => day.classes).map(
+      (venueLesson) => ({
+        ...venueLesson,
+        title: '',
+        isModifiable: true,
+        venue: '',
+      }),
+    );
 
     const coloredLessons = colorLessonsByKey(lessons, 'moduleCode');
     return arrangeLessonsForWeek(coloredLessons);
