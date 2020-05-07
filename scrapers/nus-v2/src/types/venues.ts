@@ -1,5 +1,4 @@
 import { DayText, ModuleCode, RawLesson } from './modules';
-import { Omit } from './utils';
 
 export type Venue = string;
 export type VenueList = Venue[];

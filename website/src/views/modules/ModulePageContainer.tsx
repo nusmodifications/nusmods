@@ -68,6 +68,7 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
   }
 
   fetchModule() {
+    this.setState({ error: undefined });
     this.props.fetchModule().catch(this.handleFetchError);
   }
 

@@ -1,8 +1,38 @@
 import { Middleware } from 'redux';
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, AxiosError } from 'axios';
 import { FAILURE, REQUEST, SUCCESS } from 'types/reducers';
 import { API_REQUEST } from 'actions/requests';
 import { State } from 'types/state';
+
+export type ActionType<Action extends string, Type extends string> = Action & { __type: Type };
+
+export type RequestAction<Type extends string, Meta = {}> = {
+  type: ActionType<Type, typeof REQUEST>;
+  payload: AxiosRequestConfig;
+  meta: Meta;
+};
+
+export type SuccessAction<Type extends string, Response, Meta = {}> = {
+  type: ActionType<Type, typeof SUCCESS>;
+  payload: Response;
+  meta: Meta & {
+    requestStatus: typeof SUCCESS;
+    responseHeaders: { [header: string]: string };
+  };
+};
+
+export type FailureAction<Type extends string, Meta = {}> = {
+  type: ActionType<Type, typeof FAILURE>;
+  payload: Error;
+  meta: Meta & {
+    requestStatus: typeof FAILURE;
+  };
+};
+
+export type RequestActions<Type extends string, Response, Meta = {}> =
+  | RequestAction<Type, Meta>
+  | SuccessAction<Type, Response, Meta>
+  | FailureAction<Type, Meta>;
 
 function makeRequest(request: AxiosRequestConfig) {
   return axios.request({
@@ -11,6 +41,14 @@ function makeRequest(request: AxiosRequestConfig) {
       'Content-Type': 'application/json',
     },
   });
+}
+
+export function SUCCESS_KEY<Type extends string>(key: Type): ActionType<Type, typeof SUCCESS> {
+  return (key + SUCCESS) as ActionType<Type, typeof SUCCESS>;
+}
+
+export function FAILURE_KEY<Type extends string>(key: Type): ActionType<Type, typeof FAILURE> {
+  return (key + FAILURE) as ActionType<Type, typeof FAILURE>;
 }
 
 // TODO: Figure out how to type Dispatch correctly
@@ -39,7 +77,7 @@ const requestMiddleware: Middleware<any, State, any> = () => (next) => (action) 
   return makeRequest(payload).then(
     (response) =>
       next({
-        type: type + SUCCESS,
+        type: SUCCESS_KEY(type),
         payload: response.data,
         meta: {
           ...meta,
@@ -48,9 +86,9 @@ const requestMiddleware: Middleware<any, State, any> = () => (next) => (action) 
           responseHeaders: response.headers,
         },
       }),
-    (error) => {
+    (error: AxiosError) => {
       next({
-        type: type + FAILURE,
+        type: FAILURE_KEY(type),
         payload: error,
         meta: {
           ...meta,
