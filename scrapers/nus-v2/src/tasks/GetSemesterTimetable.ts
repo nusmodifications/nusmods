@@ -15,7 +15,6 @@ import { getTermCode, retry } from '../utils/api';
 import { validateLesson, validateSemester } from '../services/validation';
 import { activityLessonType, dayTextMap, unrecognizedLessonTypes } from '../utils/data';
 import { allEqual, deltas } from '../utils/arrays';
-import { Omit } from '../types/utils';
 import { ISO8601_DATE_FORMAT } from '../utils/time';
 
 /* eslint-disable @typescript-eslint/camelcase */

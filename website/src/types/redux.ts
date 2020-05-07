@@ -1,5 +1,5 @@
 import { State } from './state';
-import { Filter, Values } from './utils';
+import { Values } from './utils';
 
 /**
  * Flux Standard Action: https://github.com/acdlite/flux-standard-action
@@ -20,7 +20,7 @@ export type GetState = () => State;
 export type ExtractActionShape<ActionCreators extends {}> = Exclude<
   // Get return types for all exported functions
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ReturnType<Filter<Values<ActionCreators>, (...args: any) => any>>,
+  ReturnType<Extract<Values<ActionCreators>, (...args: any) => any>>,
   // Exclude thunks from redux-thunk
   Function
 >;
