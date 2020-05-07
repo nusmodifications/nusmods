@@ -29,7 +29,7 @@ import {
 } from 'utils/timetables';
 import { captureException } from 'utils/error';
 import Title from 'views/components/Title';
-import { getSemesterTimetable } from 'reducers/timetables';
+import { getSemesterTimetable } from 'selectors/timetables';
 import ExternalLink from 'views/components/ExternalLink';
 import * as weatherAPI from 'apis/weather';
 import config from 'config';
@@ -131,14 +131,16 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
   componentDidMount() {
     weatherAPI
       .twoHour()
-      .then((weather) => this.setState({ weather: { ...this.state.weather, '0': weather } }))
+      .then((weather) =>
+        this.setState((prevState) => ({ weather: { ...prevState.weather, '0': weather } })),
+      )
       .catch(captureException);
 
     weatherAPI
       .tomorrow()
       .then((weather) => {
         if (!weather) return;
-        this.setState({ weather: { ...this.state.weather, '1': weather } });
+        this.setState((prevState) => ({ weather: { ...prevState.weather, '1': weather } }));
       })
       .catch(captureException);
 
@@ -146,7 +148,7 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
       .fourDay()
       .then((forecasts) => {
         this.setState(
-          produce(this.state, (draft) => {
+          produce((draft) => {
             forecasts.forEach((forecast) => {
               const days = differenceInCalendarDays(
                 parseISO(forecast.timestamp),
@@ -222,9 +224,11 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
       const date = addDays(currentTime, day);
       const dayOfWeek = DaysOfWeek[getDayIndex(date)];
       const weekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(date);
-      const lessons = get(groupedLessons, dayOfWeek, EMPTY_ARRAY).filter((lesson) =>
-        isLessonAvailable(lesson, date, weekInfo),
-      );
+      const lessons = get(
+        groupedLessons,
+        dayOfWeek,
+        EMPTY_ARRAY as ColoredLesson[],
+      ).filter((lesson) => isLessonAvailable(lesson, date, weekInfo));
 
       if (
         // Non-instructional week

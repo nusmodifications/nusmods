@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -32,7 +32,7 @@ describe(ExamWeek, () => {
 
   test('show month name when the months changes', () => {
     const weekOfApril29 = make({ firstDayOfExams: new Date('2019-04-29T00:00:00Z') });
-    expect(weekOfApril29.find('th').map((ele) => ele.text())).toEqual([
+    expect(weekOfApril29.find('th time').map((ele) => ele.text())).toEqual([
       'Apr 29',
       '30',
       'May 1',
@@ -46,9 +46,19 @@ describe(ExamWeek, () => {
     });
     expect(
       weekOfDec3
-        .find('th')
+        .find('th time')
         .first()
         .text(),
     ).toEqual('Dec 3');
+  });
+
+  test('highlight today', () => {
+    const weekOfToday = make();
+    expect(
+      weekOfToday
+        .find('th span')
+        .first()
+        .text(),
+    ).toEqual('Today');
   });
 });

@@ -1,82 +1,51 @@
 import { requestAction } from 'actions/requests';
 import NUSModsApi from 'apis/nusmods';
 import config from 'config';
-import { flatMap, get, size, sortBy, zip } from 'lodash';
-import { ModulesMap } from 'types/reducers';
-import { AcadYear, Module, ModuleCode } from 'types/modules';
-
+import { size, zip } from 'lodash';
+import { AcadYear, Module, ModuleCode, ModuleCondensed } from 'types/modules';
+import { RequestActions } from 'middlewares/requests-middleware';
 import { GetState } from 'types/redux';
-import { TimetableConfig } from 'types/timetables';
 import {
   FETCH_ARCHIVE_MODULE,
   FETCH_MODULE,
   FETCH_MODULE_LIST,
+  fetchArchiveRequest,
+  fetchModuleRequest,
   REMOVE_LRU_MODULE,
   UPDATE_MODULE_TIMESTAMP,
 } from './constants';
-
-const MAX_MODULE_LIMIT = 100;
+import { getLRUModules } from './moduleBank-lru';
 
 export function fetchModuleList() {
-  return requestAction(FETCH_MODULE_LIST, FETCH_MODULE_LIST, {
+  return requestAction(FETCH_MODULE_LIST, {
     url: NUSModsApi.moduleListUrl(),
   });
 }
+export type FetchModuleListActions = RequestActions<typeof FETCH_MODULE_LIST, ModuleCondensed[]>;
 
-export function fetchModuleRequest(moduleCode: ModuleCode) {
-  return `${FETCH_MODULE}/${moduleCode}`;
-}
+const MAX_MODULE_LIMIT = 100;
+export const Internal = {
+  updateModuleTimestamp(moduleCode: ModuleCode) {
+    return {
+      type: UPDATE_MODULE_TIMESTAMP,
+      payload: moduleCode,
+    };
+  },
 
-export function getRequestModuleCode(key: string): ModuleCode | null {
-  const parts = key.split('/');
-  if (parts.length === 2 && parts[0] === FETCH_MODULE) return parts[1];
-  return null;
-}
-
-export function updateModuleTimestamp(moduleCode: ModuleCode) {
-  return {
-    type: UPDATE_MODULE_TIMESTAMP,
-    payload: moduleCode,
-  };
-}
-
-export function removeLRUModule(moduleCodes: ModuleCode[]) {
-  return {
-    type: REMOVE_LRU_MODULE,
-    payload: moduleCodes,
-  };
-}
-
-// Export for testing
-export function getLRUModules(
-  modules: ModulesMap,
-  lessons: TimetableConfig,
-  currentModule: string,
-  toRemove = 1,
-): ModuleCode[] {
-  // Pull all the modules in all the timetables
-  const timetableModules = new Set(flatMap(lessons, (semester) => Object.keys(semester)));
-
-  // Remove the module which is least recently used and which is not in timetable
-  // and not the currently loaded one
-  const canRemove: ModuleCode[] = Object.keys(modules).filter(
-    (moduleCode) => moduleCode !== currentModule && !timetableModules.has(moduleCode),
-  );
-
-  // Sort them based on the timestamp alone
-  const sortedModules = sortBy<ModuleCode>(canRemove, (moduleCode) =>
-    get(modules[moduleCode], ['timestamp'], 0),
-  );
-
-  return sortedModules.slice(0, toRemove);
-}
+  removeLRUModule(moduleCodes: ModuleCode[]) {
+    return {
+      type: REMOVE_LRU_MODULE,
+      payload: moduleCodes,
+    };
+  },
+};
 
 export function fetchModule(moduleCode: ModuleCode) {
   return (dispatch: Function, getState: GetState) => {
     const onFinally = () => {
       // Update the timestamp of the accessed module if it is in the store.
       if (getState().moduleBank.modules[moduleCode]) {
-        dispatch(updateModuleTimestamp(moduleCode));
+        dispatch(Internal.updateModuleTimestamp(moduleCode));
       }
 
       // Remove the LRU module if the size exceeds the maximum and if anything
@@ -93,7 +62,7 @@ export function fetchModule(moduleCode: ModuleCode) {
         );
 
         if (LRUModule) {
-          dispatch(removeLRUModule(LRUModule));
+          dispatch(Internal.removeLRUModule(LRUModule));
         }
       }
     };
@@ -104,21 +73,18 @@ export function fetchModule(moduleCode: ModuleCode) {
         url: NUSModsApi.moduleDetailsUrl(moduleCode),
       }),
     ).then(
-      (result: any) => {
+      (result: string) => {
         onFinally();
         return result;
       },
-      (error: any) => {
+      (error: Error) => {
         onFinally();
         throw error;
       },
     );
   };
 }
-
-export function fetchArchiveRequest(moduleCode: ModuleCode, year: string) {
-  return `${FETCH_ARCHIVE_MODULE}_${moduleCode}_${year}`;
-}
+export type FetchModuleActions = RequestActions<typeof FETCH_MODULE, Omit<Module, 'timestamp'>>;
 
 export function fetchModuleArchive(moduleCode: ModuleCode, year: string) {
   const key = fetchArchiveRequest(moduleCode, year);
@@ -130,6 +96,11 @@ export function fetchModuleArchive(moduleCode: ModuleCode, year: string) {
 
   return action;
 }
+export type FetchModuleArchiveActions = RequestActions<
+  typeof FETCH_ARCHIVE_MODULE,
+  Omit<Module, 'timestamp'>,
+  { academicYear: string }
+>;
 
 export function fetchAllModuleArchive(moduleCode: ModuleCode) {
   // Returns: Promise<[AcadYear, Module?][]>
@@ -140,3 +111,8 @@ export function fetchAllModuleArchive(moduleCode: ModuleCode) {
       ),
     ).then((modules) => zip<AcadYear, Module[]>(config.archiveYears, modules));
 }
+
+export type ModuleBankRequestActions =
+  | FetchModuleListActions
+  | FetchModuleActions
+  | FetchModuleArchiveActions;

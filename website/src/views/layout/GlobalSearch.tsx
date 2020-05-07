@@ -57,9 +57,13 @@ class GlobalSearch extends React.Component<Props, State> {
   };
 
   onOuterClick = () => {
+    // Preserve input value (if present) after user clicks outside.
     if (this.state.inputValue) {
       this.setState({
         isOpen: true,
+        // Cannot use prevState as prevState.inputValue will be empty string
+        // instead of the (non-empty) this.state.inputValue.
+        // eslint-disable-next-line react/no-access-state-in-setstate
         inputValue: this.state.inputValue,
       });
 

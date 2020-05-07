@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { formatDistance } from 'date-fns';
 
 import { NotificationOptions } from 'types/reducers';
 import { State } from 'types/state';
@@ -35,12 +36,16 @@ export function notificationText(
   now: Date,
 ): React.ReactNode {
   const isRoundOpen = now >= round.startDate;
+  const timeFromNow = formatDistance(now, isRoundOpen ? round.endDate : round.startDate, {
+    includeSeconds: true,
+  });
 
   return (
     <>
       {isRoundOpen ? 'Current' : 'Next'} <strong>{round.type}</strong>{' '}
       {round.name ? `(Round ${round.name})` : ''}: {useLineBreaks && <br />}
       {isRoundOpen ? ' till' : ' at'} <strong>{isRoundOpen ? round.end : round.start}</strong>
+      {useLineBreaks && <br />} ({timeFromNow} from now)
     </>
   );
 }

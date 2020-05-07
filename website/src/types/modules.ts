@@ -201,4 +201,7 @@ export type Module = {
   // Requisites
   prereqTree?: PrereqTree;
   fulfillRequirements?: readonly ModuleCode[];
+
+  // Meta
+  timestamp: number;
 };
