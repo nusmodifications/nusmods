@@ -156,7 +156,7 @@
     "nusmoderator": "3.0.0",
     "query-string": "5.0.0",
     "react": "16.13.1",
-    "react-beautiful-dnd": "12.2.0",
+    "react-beautiful-dnd": "13.0.0",
     "react-dom": "16.13.1",
     "react-feather": "2.0.4",
     "react-helmet": "5.2.1",
