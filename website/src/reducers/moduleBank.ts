@@ -127,6 +127,7 @@ export const persistConfig = {
       // FIXME: Remove the next line when _persist is optional again.
       // Cause: https://github.com/rt2zz/redux-persist/pull/919
       // Issue: https://github.com/rt2zz/redux-persist/pull/1170
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       _persist: state?._persist!,
     }),
   }),
