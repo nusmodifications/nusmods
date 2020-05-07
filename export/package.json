@@ -16,7 +16,7 @@
     "@sentry/node": "5.15.5",
     "axios": "0.19.2",
     "bunyan": "1.8.12",
-    "fs-extra": "8.1.0",
+    "fs-extra": "9.0.0",
     "http-graceful-shutdown": "2.3.2",
     "koa": "2.11.0",
     "koa-router": "7.4.0",

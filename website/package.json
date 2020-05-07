@@ -93,7 +93,7 @@
     "eslint-plugin-react-hooks": "2.5.1",
     "express": "4.17.1",
     "fast-json-stable-stringify": "2.1.0",
-    "fs-extra": "8.1.0",
+    "fs-extra": "9.0.0",
     "graceful-fs": "4.2.3",
     "hard-source-webpack-plugin": "0.13.1",
     "html-webpack-inline-source-plugin": "0.0.10",
