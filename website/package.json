@@ -43,7 +43,7 @@
     "@types/jest": "25.2.1",
     "@types/js-combinatorics": "0.5.31",
     "@types/json2mq": "0.2.0",
-    "@types/leaflet": "1.5.8",
+    "@types/leaflet": "1.5.12",
     "@types/lodash": "4.14.150",
     "@types/mousetrap": "1.6.3",
     "@types/no-scroll": "2.1.0",
