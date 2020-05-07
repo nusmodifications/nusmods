@@ -8,7 +8,7 @@ import { Module, ModuleCode, Semester } from 'types/modules';
 import { AlertTriangle } from 'react-feather';
 import { getModuleSemesterData } from 'utils/modules';
 import { getSemesterModules } from 'utils/timetables';
-import { getSemesterTimetable } from 'reducers/timetables';
+import { getSemesterTimetable } from 'selectors/timetables';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import { State } from 'types/state';
 

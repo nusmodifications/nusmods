@@ -3,7 +3,6 @@ import classnames from 'classnames';
 import { groupBy, toPairs, sortBy } from 'lodash';
 import { Link, LinkProps } from 'react-router-dom';
 
-import { Omit } from 'types/utils';
 import { Venue } from 'types/venues';
 import { venuePage } from 'views/routes/paths';
 

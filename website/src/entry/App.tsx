@@ -2,8 +2,8 @@ import { Store } from 'redux';
 import { State } from 'types/state';
 import { Persistor } from 'storage/persistReducer';
 
-import * as React from 'react';
-import { AppContainer } from 'react-hot-loader'; // eslint-disable-line import/no-extraneous-dependencies
+import React from 'react';
+import { hot } from 'react-hot-loader/root';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -17,7 +17,7 @@ type Props = {
   persistor: Persistor;
 };
 
-export default function App({ store, persistor }: Props) {
+const App: React.FC<Props> = ({ store, persistor }) => {
   const onBeforeLift = () => {
     const { theme, settings } = store.getState();
 
@@ -28,16 +28,16 @@ export default function App({ store, persistor }: Props) {
   };
 
   return (
-    <AppContainer>
-      <Provider store={store}>
-        <PersistGate persistor={persistor} onBeforeLift={onBeforeLift}>
-          <Router>
-            <AppShell>
-              <Routes />
-            </AppShell>
-          </Router>
-        </PersistGate>
-      </Provider>
-    </AppContainer>
+    <Provider store={store}>
+      <PersistGate persistor={persistor} onBeforeLift={onBeforeLift}>
+        <Router>
+          <AppShell>
+            <Routes />
+          </AppShell>
+        </Router>
+      </PersistGate>
+    </Provider>
   );
-}
+};
+
+export default hot(App);

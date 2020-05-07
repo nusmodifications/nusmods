@@ -2,7 +2,6 @@ import * as React from 'react';
 import { differenceInMilliseconds } from 'date-fns';
 import { wrapComponentName } from 'utils/react';
 import { forceTimer } from 'utils/debug';
-import { Omit } from 'types/utils';
 
 export interface TimerData {
   readonly currentTime: Date;

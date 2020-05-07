@@ -2,8 +2,9 @@ import produce from 'immer';
 import { max, min, pull } from 'lodash';
 
 import { PlannerState } from 'types/reducers';
-import { FSA } from 'types/redux';
 import { ModuleCode } from 'types/modules';
+import { Actions } from 'types/actions';
+
 import {
   ADD_CUSTOM_PLANNER_DATA,
   ADD_PLANNER_MODULE,
@@ -27,21 +28,21 @@ const defaultPlannerState: PlannerState = {
 
 export default function planner(
   state: PlannerState = defaultPlannerState,
-  action: FSA,
+  action: Actions,
 ): PlannerState {
   switch (action.type) {
     case SET_PLANNER_MIN_YEAR:
       return {
         ...state,
         minYear: action.payload,
-        maxYear: max([action.payload, state.maxYear]),
+        maxYear: max([action.payload, state.maxYear]) as string,
       };
 
     case SET_PLANNER_MAX_YEAR:
       return {
         ...state,
         maxYear: action.payload,
-        minYear: min([action.payload, state.minYear]),
+        minYear: min([action.payload, state.minYear]) as string,
       };
 
     case SET_PLANNER_IBLOCS:
@@ -64,10 +65,12 @@ export default function planner(
 
       // If index is not specified we assume the module is to be pushed to the
       // end of the index
+      let moduleIndex: number; // This awkward if-else is the only way TS will type this correctly
       if (index == null) {
-        newModuleOrder.push(moduleCode);
+        moduleIndex = newModuleOrder.push(moduleCode) - 1;
       } else {
-        newModuleOrder.splice(index, 0, moduleCode);
+        moduleIndex = index;
+        newModuleOrder.splice(moduleIndex, 0, moduleCode);
       }
 
       // If the module is moved from another year / semester, then we also need
@@ -84,7 +87,7 @@ export default function planner(
       }
 
       return produce(state, (draft) => {
-        draft.modules[moduleCode] = [year, semester, index];
+        draft.modules[moduleCode] = [year, semester, moduleIndex];
 
         newModuleOrder.forEach((newModuleCode, order) => {
           draft.modules[newModuleCode][2] = order;

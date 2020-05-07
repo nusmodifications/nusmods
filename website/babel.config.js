@@ -30,13 +30,15 @@ module.exports = (api) => {
     // Deviate from spec, but Object.defineProperty is expensive
     // See https://github.com/facebook/create-react-app/issues/4263
     ['@babel/plugin-proposal-class-properties', { loose: true }],
+    // Let's assume document.all doesn't exist to reduce the generated code size
+    ['@babel/plugin-proposal-optional-chaining', { loose: true }],
+    ['@babel/plugin-proposal-nullish-coalescing-operator', { loose: true }],
   ];
 
   if (IS_DEV || IS_PROD) {
     plugins.push(['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }]);
-  }
-
-  if (IS_DEV) {
+    // In production this cleans up hot reload code
+    // See https://github.com/gaearon/react-hot-loader#what-about-production
     plugins.push('react-hot-loader/babel');
   }
 

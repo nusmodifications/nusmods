@@ -1,6 +1,6 @@
-import { FSA } from 'types/redux';
 import { HORIZONTAL, ThemeState, VERTICAL } from 'types/reducers';
 import { Theme } from 'types/settings';
+import { Actions } from 'types/actions';
 
 import { SET_EXPORTED_DATA } from 'actions/constants';
 import {
@@ -20,7 +20,7 @@ export const defaultThemeState: ThemeState = {
 };
 export const themeIds = themes.map((obj: Theme) => obj.id);
 
-function theme(state: ThemeState = defaultThemeState, action: FSA): ThemeState {
+function theme(state: ThemeState = defaultThemeState, action: Actions): ThemeState {
   function setTheme(newTheme: string): ThemeState {
     // Update theme analytics info
     withTracker((tracker) => tracker.setCustomDimension(DIMENSIONS.theme, newTheme));

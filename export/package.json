@@ -8,21 +8,21 @@
   "private": true,
   "scripts": {
     "start": "pm2 start ecosystem.config.js",
-    "dev": "nodemon -r dotenv/config ./src",
+    "dev": "nodemon --no-update-notifier -r dotenv/config ./src",
     "devtools": "DEVTOOLS=1 nodemon -r dotenv/config ./src",
     "deploy": "rsync -avu --delete-after . ../../nusmods-export && pm2 restart ecosystem.config.js"
   },
   "dependencies": {
-    "@sentry/node": "5.7.1",
-    "axios": "0.19.0",
+    "@sentry/node": "5.15.5",
+    "axios": "0.19.2",
     "bunyan": "1.8.12",
-    "fs-extra": "8.1.0",
+    "fs-extra": "9.0.0",
     "http-graceful-shutdown": "2.3.2",
-    "koa": "2.10.0",
-    "koa-router": "7.4.0",
+    "koa": "2.11.0",
+    "koa-router": "8.0.8",
     "koa-views": "6.2.1",
     "lodash": "4.17.15",
-    "nodemon": "1.19.4",
+    "nodemon": "2.0.3",
     "pug": "2.0.4",
     "puppeteer": "1.12.2"
   },

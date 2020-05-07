@@ -1,4 +1,4 @@
-import { removeLRUModule, updateModuleTimestamp } from 'actions/moduleBank';
+import { Internal } from 'actions/moduleBank';
 import { REMOVE_LRU_MODULE, UPDATE_MODULE_TIMESTAMP } from 'actions/constants';
 import { ModuleBank } from 'types/reducers';
 import reducer from './moduleBank';
@@ -32,7 +32,7 @@ describe(UPDATE_MODULE_TIMESTAMP, () => {
       modules,
     };
 
-    expect(reducer(before, updateModuleTimestamp('CS1010S'))).toMatchObject({
+    expect(reducer(before, Internal.updateModuleTimestamp('CS1010S'))).toMatchObject({
       modules: {
         CS1010S: { timestamp: 12345 },
         ACC1000: { timestamp: 0 },
@@ -53,7 +53,7 @@ describe(REMOVE_LRU_MODULE, () => {
       modules,
     };
 
-    expect(reducer(before, removeLRUModule(['CS1010S']))).toMatchObject({
+    expect(reducer(before, Internal.removeLRUModule(['CS1010S']))).toMatchObject({
       modules: {
         ACC1000: {},
       },
