@@ -8,7 +8,7 @@ import { Cache } from '../types/persist';
 
 import BaseTask from './BaseTask';
 import config from '../config';
-import { getTermCode, retry, containsNbsp } from '../utils/api';
+import { getTermCode, retry, containsNbsps } from '../utils/api';
 import { TaskError, UnknownApiError } from '../utils/errors';
 import { validateSemester } from '../services/validation';
 
@@ -75,11 +75,9 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
 
         printed.forEach(
           (module) =>
-            !!containsNbsp(module.Description) &&
+            !!containsNbsps(module.Description) &&
             this.logger.error(
-              `Bad data. Module description for ${
-                module.CatalogNumber
-              } contains non-breaking spaces`,
+              `Bad data. Module description for ${module.CatalogNumber} contains non-breaking spaces`,
             ),
         );
 

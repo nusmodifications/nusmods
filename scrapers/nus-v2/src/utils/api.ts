@@ -87,7 +87,7 @@ export async function retry<T>(
  * regular spaces, while still allowing intentional uses of NBSPs. The >3
  * consecutive criterion is just a simple good-enough heuristic.
  */
-export function containsNbsp(desc: string): boolean {
+export function containsNbsps(desc: string): boolean {
   // checks if string contains 3 consecutive nbsps without space in between
   const nbsp = String.fromCharCode(160);
   const descLength = desc.length;
