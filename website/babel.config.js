@@ -37,7 +37,8 @@ module.exports = (api) => {
 
   if (IS_DEV || IS_PROD) {
     plugins.push(['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }]);
-    // In production this cleans up hot reload code - https://github.com/gaearon/react-hot-loader#what-about-production
+    // In production this cleans up hot reload code
+    // See https://github.com/gaearon/react-hot-loader#what-about-production
     plugins.push('react-hot-loader/babel');
   }
 
