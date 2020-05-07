@@ -79,6 +79,14 @@ export async function retry<T>(
   }
 }
 
+/**
+ * Returns true if `desc` has >3 consecutive non-breaking spaces (i.e. NBSPs
+ * that do not have spaces between them).
+ *
+ * Intended to catch cases where someone unintentially used NBSPs instead of
+ * regular spaces, while still allowing intentional uses of NBSPs. The >3
+ * consecutive criterion is just a simple good-enough heuristic.
+ */
 export function containsNbsp(desc: string): boolean {
   // checks if string contains 3 consecutive nbsps without space in between
   const nbsp = String.fromCharCode(160);
