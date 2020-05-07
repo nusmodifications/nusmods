@@ -13,6 +13,7 @@ import {
   parseISO,
 } from 'date-fns';
 import produce from 'immer';
+import { hot } from 'react-hot-loader/root';
 
 import { DaysOfWeek } from 'types/modules';
 import { Lesson, ColoredLesson, SemTimetableConfigWithLessons } from 'types/timetables';
@@ -366,4 +367,4 @@ const ConnectedTimetableContainer = connect(mapStateToProps)(TodayContainerCompo
 const TodayContainerWithTimer = withTimer(ConnectedTimetableContainer);
 const ResponsiveTodayContainer = makeResponsive(TodayContainerWithTimer, breakpointUp('lg'));
 
-export default ResponsiveTodayContainer;
+export default hot(ResponsiveTodayContainer);

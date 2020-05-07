@@ -2,6 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import ScrollSpy from 'react-scrollspy';
 import { kebabCase, map, mapValues, values, sortBy } from 'lodash';
+import { hot } from 'react-hot-loader/root';
 
 import { Module, NUSModuleAttributes, attributeDescription } from 'types/modules';
 
@@ -50,7 +51,7 @@ export const SIDE_MENU_LABELS = {
 
 export const SIDE_MENU_ITEMS = mapValues(SIDE_MENU_LABELS, kebabCase);
 
-export default class ModulePageContent extends React.Component<Props, State> {
+class ModulePageContent extends React.Component<Props, State> {
   state: State = {
     isMenuOpen: false,
   };
@@ -319,3 +320,5 @@ export default class ModulePageContent extends React.Component<Props, State> {
     );
   }
 }
+
+export default hot(ModulePageContent);
