@@ -55,15 +55,19 @@ $offset-top: $navbar-height + 1rem;
   }
 
   .sideMenu {
+    // Translate top of menu to the bottom of the screen. Add an additional
+    // offset to prevent closed menu from appearing behind iOS Safari's toolbar.
+    $closed-menu-translation: calc(100% + 120px);
+
     width: 100%;
     padding: 1rem 0 3rem;
     background: var(--body-bg);
-    box-shadow: 0 -10px 20px var(--navtab-shadow);
 
     // Entry/exit animation
-    transform: translateY(100%);
-    transition: transform $animation-duration;
+    transform: translateY($closed-menu-translation);
+    transition: transform $animation-duration, box-shadow $animation-duration;
     &.isOpen {
+      box-shadow: 0 -10px 20px var(--navtab-shadow);
       transform: translateY(0);
     }
   }
