@@ -15,8 +15,8 @@ export default function persistReducer<S>(
   key: string,
   reducer: Reducer<S, Actions>,
   options: Pick<
-    PersistConfig,
-    Exclude<keyof PersistConfig, keyof { key: string; storage: Record<string, unknown> }>
+    PersistConfig<S>,
+    Exclude<keyof PersistConfig<S>, keyof { key: string; storage: Record<string, unknown> }>
   > = {},
 ) {
   return (basePersistReducer<S, Actions>(
