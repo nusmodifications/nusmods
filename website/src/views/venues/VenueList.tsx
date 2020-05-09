@@ -14,7 +14,7 @@ type Props = {
   linkProps?: Omit<LinkProps, 'to'>;
 };
 
-export default function VenueList(props: Props) {
+const VenueList: React.FC<Props> = (props) => {
   const venueList = groupBy(props.venues, (venue) => venue.charAt(0).toUpperCase());
   const sortedVenueList = sortBy(toPairs(venueList), ([key]) => key);
 
@@ -47,4 +47,6 @@ export default function VenueList(props: Props) {
       ))}
     </ul>
   );
-}
+};
+
+export default VenueList;

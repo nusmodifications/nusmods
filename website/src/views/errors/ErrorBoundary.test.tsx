@@ -19,9 +19,9 @@ const error = new Error('Test error');
 
 // Stateless React component which throws error
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function ThrowsError(props: any): null {
+const ThrowsError: React.FC<unknown> = (): never => {
   throw error;
-}
+};
 
 describe('ErrorBoundary', () => {
   let consoleError: typeof console.error;

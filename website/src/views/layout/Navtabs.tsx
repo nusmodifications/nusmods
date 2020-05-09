@@ -24,7 +24,7 @@ type Props = RouteComponentProps & {
   promptRefresh: boolean;
 };
 
-export function NavtabsComponent(props: Props) {
+export const NavtabsComponent: React.FC<Props> = (props) => {
   const tabProps = {
     className: styles.link,
     activeClassName: styles.linkActive,
@@ -101,7 +101,7 @@ export function NavtabsComponent(props: Props) {
       )}
     </nav>
   );
-}
+};
 
 const connectedNavtabs = connect((state: State) => ({
   activeSemester: state.app.activeSemester,

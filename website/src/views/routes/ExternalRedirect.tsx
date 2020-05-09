@@ -7,7 +7,7 @@ type Props = {
   appendPath?: boolean;
 };
 
-export default function ExternalRedirect({ to, appendPath, path, ...props }: Props) {
+const ExternalRedirect: React.FC<Props> = ({ to, appendPath, path, ...props }) => {
   let newLocation = to;
 
   if (appendPath) {
@@ -25,4 +25,6 @@ export default function ExternalRedirect({ to, appendPath, path, ...props }: Pro
       }}
     />
   );
-}
+};
+
+export default ExternalRedirect;

@@ -8,14 +8,12 @@ type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   className?: string;
 };
 
-function Fab({ children, className, ...otherProps }: Props) {
-  return (
-    <div className={classnames(className, styles.fab)}>
-      <button type="button" className="mdc-fab material-icons" {...otherProps}>
-        {children}
-      </button>
-    </div>
-  );
-}
+const Fab: React.FC<Props> = ({ children, className, ...otherProps }) => (
+  <div className={classnames(className, styles.fab)}>
+    <button type="button" className="mdc-fab material-icons" {...otherProps}>
+      {children}
+    </button>
+  </div>
+);
 
 export default Fab;

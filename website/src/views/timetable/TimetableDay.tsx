@@ -51,7 +51,7 @@ function calculateLessonStyle(
   };
 }
 
-function TimetableDay(props: Props) {
+const TimetableDay: React.FC<Props> = (props) => {
   const { startingIndex, endingIndex, verticalMode, highlightPeriod } = props;
 
   const columns = endingIndex - startingIndex;
@@ -100,6 +100,6 @@ function TimetableDay(props: Props) {
       {props.isCurrentDay && <div className={classnames('no-export', styles.currentDay)} />}
     </li>
   );
-}
+};
 
 export default TimetableDay;

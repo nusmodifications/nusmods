@@ -27,19 +27,17 @@ const nodeName = (node: PrereqTree) => (typeof node === 'string' ? node : Object
 const unwrapLayer = (node: PrereqTree) =>
   typeof node === 'string' ? [node] : flatten(values(node).filter(notNull));
 
-function Branch(props: { nodes: PrereqTree[]; layer: number }) {
-  return (
-    <ul className={styles.tree}>
-      {props.nodes.map((child) => (
-        <li className={styles.branch} key={nodeName(child)}>
-          <Tree node={child} layer={props.layer} />
-        </li>
-      ))}
-    </ul>
-  );
-}
+const Branch: React.FC<{ nodes: PrereqTree[]; layer: number }> = (props) => (
+  <ul className={styles.tree}>
+    {props.nodes.map((child) => (
+      <li className={styles.branch} key={nodeName(child)}>
+        <Tree node={child} layer={props.layer} />
+      </li>
+    ))}
+  </ul>
+);
 
-function Tree(props: TreeDisplay) {
+const Tree: React.FC<TreeDisplay> = (props) => {
   const { layer, node, isPrereq } = props;
 
   const isConditional = typeof node !== 'string';
@@ -64,9 +62,9 @@ function Tree(props: TreeDisplay) {
       {isConditional && <Branch nodes={unwrapLayer(node)} layer={layer + 1} />}
     </>
   );
-}
+};
 
-function ModuleTree(props: Props) {
+const ModuleTree: React.FC<Props> = (props) => {
   const { fulfillRequirements, prereqTree, moduleCode } = props;
 
   return (
@@ -104,6 +102,6 @@ function ModuleTree(props: Props) {
       </p>
     </>
   );
-}
+};
 
 export default ModuleTree;

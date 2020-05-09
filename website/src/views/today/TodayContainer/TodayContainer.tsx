@@ -105,22 +105,17 @@ function getDayType(date: Date, weekInfo: AcadWeekInfo): EmptyGroupType {
   }
 }
 
-export function DaySection(
-  props: Readonly<{
-    children: React.ReactNode;
-    date: Date | Date[];
-    offset: number;
-    forecast?: string;
-  }>,
-) {
-  return (
-    <section className={styles.day}>
-      <DayHeader date={props.date} offset={props.offset} forecast={props.forecast} />
-      {props.children}
-    </section>
-  );
-}
-
+export const DaySection: React.FC<Readonly<{
+  children: React.ReactNode;
+  date: Date | Date[];
+  offset: number;
+  forecast?: string;
+}>> = (props) => (
+  <section className={styles.day}>
+    <DayHeader date={props.date} offset={props.offset} forecast={props.forecast} />
+    {props.children}
+  </section>
+);
 export class TodayContainerComponent extends React.PureComponent<Props, State> {
   state: State = {
     weather: {},

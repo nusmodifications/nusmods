@@ -7,7 +7,7 @@ type Props = {
   description: string;
 };
 
-function Title(props: Props) {
+const Title: React.FC<Props> = (props) => {
   // We use defer=false to allow Google Analytics autotrack to send the correct
   // page title. See bootstrapping/google-analytics.js
   return (
@@ -18,7 +18,7 @@ function Title(props: Props) {
       <meta property="og:description" content={props.description} />
     </Helmet>
   );
-}
+};
 
 Title.defaultProps = {
   description:

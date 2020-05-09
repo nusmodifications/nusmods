@@ -13,7 +13,7 @@ type Props = {
   toggleFeedback: () => void;
 };
 
-export function FooterComponent(props: Props) {
+export const FooterComponent: React.FC<Props> = (props) => {
   const commitHash = process.env.DISPLAY_COMMIT_HASH;
   const versionStr = process.env.VERSION_STR;
 
@@ -101,7 +101,7 @@ export function FooterComponent(props: Props) {
       </div>
     </footer>
   );
-}
+};
 
 export default connect(
   (state: State) => {
