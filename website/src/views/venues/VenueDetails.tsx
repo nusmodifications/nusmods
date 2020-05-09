@@ -30,12 +30,14 @@ type Props = RouteComponentProps & {
 
 export const VenueDetailsComponent: React.FC<Props> = (props) => {
   const arrangedLessons = () => {
-    const lessons: Lesson[] = flatMap(props.availability, (day) => day.classes).map((venueLesson) => ({
-      ...venueLesson,
-      title: '',
-      isModifiable: true,
-      venue: '',
-    }));
+    const lessons: Lesson[] = flatMap(props.availability, (day) => day.classes).map(
+      (venueLesson) => ({
+        ...venueLesson,
+        title: '',
+        isModifiable: true,
+        venue: '',
+      }),
+    );
 
     const coloredLessons = colorLessonsByKey(lessons, 'moduleCode');
     return arrangeLessonsForWeek(coloredLessons);
