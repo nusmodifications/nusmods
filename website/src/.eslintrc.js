@@ -91,9 +91,6 @@ module.exports = {
     'import/named': 'off',
 
     // Makes the code unnecessarily verbose
-    '@typescript-eslint/explicit-member-accessibility': 'off',
-
-    // Makes the code unnecessarily verbose
     '@typescript-eslint/explicit-function-return-type': 'off',
 
     '@typescript-eslint/no-unused-vars': [
@@ -102,8 +99,5 @@ module.exports = {
         ignoreRestSiblings: true,
       },
     ],
-
-    // We use type aliases for data types, ie. things that are not new-able
-    '@typescript-eslint/prefer-interface': 'off',
   },
 };
