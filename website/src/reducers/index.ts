@@ -34,7 +34,7 @@ const undoReducer = createUndoReducer<State>({
   whitelist: ['timetables', 'theme.colors'],
 });
 
-export default function(state: State = defaultState, action: Actions): State {
+export default function reducers(state: State = defaultState, action: Actions): State {
   // Update every reducer except the undo reducer
   const newState: State = {
     moduleBank: moduleBank(state.moduleBank, action),
