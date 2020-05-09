@@ -4,7 +4,7 @@ const TerserJsPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
-const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
+const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const PacktrackerPlugin = require('@packtracker/webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 
@@ -38,13 +38,10 @@ const productionConfig = ({ browserWarningPath }) =>
         // SEE: https://medium.com/webpack/brief-introduction-to-scope-hoisting-in-webpack-8435084c171f
         new HtmlWebpackPlugin({
           template: path.join(parts.PATHS.src, 'index.html'),
-          minify: {
-            removeComments: true,
-            removeRedundantAttributes: true,
-          },
-          // Embed the runtime entry point chunk in the HTML itself
-          // See runtimeChunk below
-          inlineSource: 'runtime',
+
+          // Allows us to use InlineChunkHtmlPlugin to embed the runtime entry
+          // point chunk in the HTML itself. See runtimeChunk below.
+          inject: true,
 
           // Embed the browser warning code from the browser-warning Webpack bundle
           browserWarningPath,
@@ -55,8 +52,7 @@ const productionConfig = ({ browserWarningPath }) =>
           brandName: config.brandName,
           description: config.defaultDescription,
         }),
-        // Allows us to use the inlineSource option above
-        new HtmlWebpackInlineSourcePlugin(),
+        new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime/]),
         new ScriptExtHtmlWebpackPlugin({
           inline: /manifest/,
           preload: /\.js$/,
