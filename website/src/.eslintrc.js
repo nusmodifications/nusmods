@@ -104,9 +104,5 @@ module.exports = {
 
     // We use type aliases for data types, ie. things that are not new-able
     '@typescript-eslint/prefer-interface': 'off',
-
-    // TODO: Fix these
-    '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/no-non-null-assertion': 'warn',
   },
 };
