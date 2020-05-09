@@ -36,8 +36,12 @@ type Props = Readonly<{
 /**
  * Component for a single module on the planner
  */
-export default class PlannerModule extends React.PureComponent<Props> {
-  renderConflict(conflict: Conflict) {
+const PlannerModule = React.memo<Props>((props) => {
+  const removeModule = () => props.removeModule(props.moduleCode);
+
+  const editCustomData = () => props.addCustomData(props.moduleCode);
+
+  const renderConflict = (conflict: Conflict) => {
     switch (conflict.type) {
       case 'noInfo':
         return (
@@ -45,11 +49,7 @@ export default class PlannerModule extends React.PureComponent<Props> {
             <AlertTriangle className={styles.warningIcon} />
             <p>
               No data on this module.{' '}
-              <button
-                type="button"
-                className="btn btn-link btn-inline"
-                onClick={this.editCustomData}
-              >
+              <button type="button" className="btn btn-link btn-inline" onClick={editCustomData}>
                 Add data
               </button>
             </p>
@@ -98,10 +98,10 @@ export default class PlannerModule extends React.PureComponent<Props> {
       default:
         return null;
     }
-  }
+  };
 
-  renderMeta() {
-    const { moduleCredit, examDate } = this.props;
+  const renderMeta = () => {
+    const { moduleCredit, examDate } = props;
     if (!moduleCredit && !examDate) return null;
 
     return (
@@ -110,43 +110,39 @@ export default class PlannerModule extends React.PureComponent<Props> {
         {examDate && <div>{format(toSingaporeTime(examDate), 'MMM d, h:mm a')}</div>}
       </div>
     );
-  }
+  };
 
-  removeModule = () => this.props.removeModule(this.props.moduleCode);
+  const { moduleCode, moduleTitle, index, conflict } = props;
 
-  editCustomData = () => this.props.addCustomData(this.props.moduleCode);
+  return (
+    <Draggable key={moduleCode} draggableId={moduleCode} index={index}>
+      {(provided, snapshot) => (
+        <div
+          ref={provided.innerRef}
+          className={classnames(styles.module, {
+            [styles.warning]: conflict,
+            [styles.isDragging]: snapshot.isDragging,
+          })}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
+          <ModuleMenu removeModule={removeModule} editCustomData={editCustomData} />
 
-  render() {
-    const { moduleCode, moduleTitle, index, conflict } = this.props;
-
-    return (
-      <Draggable key={moduleCode} draggableId={moduleCode} index={index}>
-        {(provided, snapshot) => (
-          <div
-            ref={provided.innerRef}
-            className={classnames(styles.module, {
-              [styles.warning]: conflict,
-              [styles.isDragging]: snapshot.isDragging,
-            })}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-          >
-            <ModuleMenu removeModule={this.removeModule} editCustomData={this.editCustomData} />
-
-            <div className={styles.moduleInfo}>
-              <div className={styles.moduleName}>
-                <Link to={modulePage(moduleCode, moduleTitle)}>
-                  <strong>{moduleCode}</strong> {moduleTitle}
-                </Link>
-              </div>
-
-              {this.renderMeta()}
-
-              {conflict && <div className={styles.conflicts}>{this.renderConflict(conflict)}</div>}
+          <div className={styles.moduleInfo}>
+            <div className={styles.moduleName}>
+              <Link to={modulePage(moduleCode, moduleTitle)}>
+                <strong>{moduleCode}</strong> {moduleTitle}
+              </Link>
             </div>
+
+            {renderMeta()}
+
+            {conflict && <div className={styles.conflicts}>{renderConflict(conflict)}</div>}
           </div>
-        )}
-      </Draggable>
-    );
-  }
-}
+        </div>
+      )}
+    </Draggable>
+  );
+});
+
+export default PlannerModule;
