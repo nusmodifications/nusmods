@@ -82,8 +82,9 @@ module.exports = {
   ],
 
   rules: {
-    // Assume TypeScript will catch this for us
+    // Use @typescript-eslint to catch this
     'default-case': 'off',
+    '@typescript-eslint/switch-exhaustiveness-check': 'error',
 
     // Rule is buggy when used with TypeScript
     // TODO: Remove this when https://github.com/benmosher/eslint-plugin-import/issues/1282 is resolved
