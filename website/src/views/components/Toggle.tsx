@@ -9,7 +9,7 @@ type Props = {
   onChange: (boolean: boolean) => void;
 };
 
-const Toggle: React.FC<Props> = ({ labels = ['On', 'Off'], ...props }) => {
+const Toggle: React.FC<Props> = ({ labels = ['On', 'Off'], isOn, className, onChange }) => {
   return (
     <div className="btn-group" role="group">
       {labels.map((label, index) => {
@@ -19,12 +19,12 @@ const Toggle: React.FC<Props> = ({ labels = ['On', 'Off'], ...props }) => {
           <button
             key={label}
             type="button"
-            className={classnames('btn', props.className, {
-              'btn-primary': value === props.isOn,
-              'btn-outline-primary': value !== props.isOn,
+            className={classnames('btn', className, {
+              'btn-primary': value === isOn,
+              'btn-outline-primary': value !== isOn,
             })}
             onClick={() => {
-              if (value !== props.isOn) props.onChange(value);
+              if (value !== isOn) onChange(value);
             }}
           >
             {label}

@@ -14,10 +14,10 @@ type Props = {
   showRefresh?: boolean;
 };
 
-const ErrorPage: React.FC<Props> = ({ showRefresh = true, ...props }) => {
+const ErrorPage: React.FC<Props> = ({ error, showReportDialog, showRefresh = true }) => {
   const errorMessage = () => {
     let message = 'something went wrong';
-    if (props.error) message = `${message} - ${props.error}`;
+    if (error) message = `${message} - ${error}`;
     return message;
   };
 
@@ -33,7 +33,7 @@ const ErrorPage: React.FC<Props> = ({ showRefresh = true, ...props }) => {
         <span className={styles.expr}>Uh oh</span> {errorMessage()}
       </h1>
 
-      {props.showReportDialog && (
+      {showReportDialog && (
         <Online isLive={false}>
           <p>
             An error report has been made and we will look into this. We would really appreciate it

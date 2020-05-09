@@ -19,7 +19,14 @@ type Props = {
 };
 
 const SemesterPicker = React.memo<Props>(
-  ({ showDisabled = false, useShortNames = false, ...props }) => {
+  ({
+    semesters,
+    showDisabled = false,
+    useShortNames = false,
+    size,
+    selectedSemester,
+    onSelectSemester,
+  }) => {
     const semesterNames = () => {
       return useShortNames ? config.shortSemesterNames : config.semesterNames;
     };
@@ -29,7 +36,6 @@ const SemesterPicker = React.memo<Props>(
      */
     const semesterMap = (): { [key: string]: Semester | null } => {
       const map: { [key: string]: Semester | null } = {};
-      const { semesters } = props;
 
       each(semesterNames(), (name: string, key: string) => {
         const semester = semesters.find((sem) => String(sem) === key);
@@ -39,11 +45,11 @@ const SemesterPicker = React.memo<Props>(
       return map;
     };
 
-    const onSelectSemester = (choice: string) => {
+    const onSelectSemesterInner = (choice: string) => {
       const chosen = semesterMap()[choice];
 
       if (chosen) {
-        props.onSelectSemester(Number(chosen));
+        onSelectSemester(Number(chosen));
       }
     };
 
@@ -64,7 +70,6 @@ const SemesterPicker = React.memo<Props>(
       return { attrs };
     };
 
-    const { size, selectedSemester } = props;
     const semesterMapObtained = semesterMap();
     const selected = selectedSemester ? semesterNames()[selectedSemester] : null;
 
@@ -74,7 +79,7 @@ const SemesterPicker = React.memo<Props>(
         size={size}
         choices={Object.keys(semesterMapObtained)}
         selectedChoice={selected}
-        onChoiceSelect={onSelectSemester}
+        onChoiceSelect={onSelectSemesterInner}
       />
     );
   },

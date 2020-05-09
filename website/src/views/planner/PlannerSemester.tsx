@@ -46,9 +46,17 @@ function renderSemesterMeta(plannerModules: PlannerModuleInfo[]) {
 /**
  * Component for a single column of modules for a single semester
  */
-const PlannerSemester: React.FC<Props> = ({ showModuleMeta = true, ...props }) => {
+const PlannerSemester: React.FC<Props> = ({
+  year,
+  semester,
+  modules,
+  showModuleMeta = true,
+  className,
+  addModule,
+  removeModule,
+  addCustomData,
+}) => {
   const renderModule = (plannerModule: PlannerModuleInfo, index: number) => {
-    const { year, semester } = props;
     const { moduleCode, moduleInfo, conflict } = plannerModule;
 
     const showExamDate = showModuleMeta && config.academicYear === year;
@@ -62,20 +70,19 @@ const PlannerSemester: React.FC<Props> = ({ showModuleMeta = true, ...props }) =
         examDate={showExamDate && moduleInfo ? getExamDate(moduleInfo, semester) : null}
         moduleCredit={showModuleMeta ? getModuleCredit(plannerModule) : null}
         conflict={conflict}
-        removeModule={props.removeModule}
-        addCustomData={props.addCustomData}
+        removeModule={removeModule}
+        addCustomData={addCustomData}
       />
     );
   };
 
-  const { year, semester, modules } = props;
   const droppableId = getDroppableId(year, semester);
 
   return (
     <Droppable droppableId={droppableId}>
       {(provided, snapshot) => (
         <div
-          className={classnames(styles.semester, props.className, {
+          className={classnames(styles.semester, className, {
             [styles.emptyList]: modules.length === 0,
             [styles.dragOver]: snapshot.isDraggingOver,
           })}
@@ -98,7 +105,7 @@ const PlannerSemester: React.FC<Props> = ({ showModuleMeta = true, ...props }) =
             <AddModule
               year={year}
               semester={semester}
-              onAddModule={(moduleCode) => props.addModule(moduleCode, year, +semester)}
+              onAddModule={(moduleCode) => addModule(moduleCode, year, +semester)}
             />
           </div>
         </div>
