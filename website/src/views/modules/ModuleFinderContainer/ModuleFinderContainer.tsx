@@ -35,12 +35,11 @@ const searchkit = new SearchkitManager(esHostUrl);
 
 const pageHead = <Title>Modules</Title>;
 
-/* eslint-disable no-underscore-dangle */
-
 const ModuleInformationListComponent: React.FC<HitsListProps> = ({ hits }) => (
   <ul className={styles.modulesList}>
     {hits.map((hit) => {
       const result = hit as ElasticSearchResult<ModuleInformation>;
+      /* eslint-disable no-underscore-dangle */
       return (
         <ModuleFinderItem
           key={result._source.moduleCode}
@@ -48,6 +47,7 @@ const ModuleInformationListComponent: React.FC<HitsListProps> = ({ hits }) => (
           highlight={result.highlight}
         />
       );
+      /* eslint-enable */
     })}
   </ul>
 );

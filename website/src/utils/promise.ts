@@ -10,7 +10,8 @@ export async function retry<T>(
   shouldRetry: (error: Error) => boolean = () => true,
 ): Promise<T> {
   try {
-    return fn();
+    // Be sure to await before returning!
+    return await fn();
   } catch (err) {
     if (retries <= 0 || !shouldRetry(err)) {
       throw err;

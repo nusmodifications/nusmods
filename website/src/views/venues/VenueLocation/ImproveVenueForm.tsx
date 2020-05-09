@@ -40,8 +40,7 @@ type State = {
   // from location
   viewport: Viewport;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  error?: any;
+  error?: Error;
 };
 
 const wellKnownLocations: Record<string, LatLngTuple> = {

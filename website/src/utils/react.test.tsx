@@ -31,7 +31,7 @@ describe(highlight, () => {
 });
 
 describe('wrapComponentName()', () => {
-  /* eslint-disable react/prefer-stateless-function, react/no-multi-comp */
+  /* eslint-disable react/prefer-stateless-function */
   class TestComponent extends React.Component<{}> {}
   class TestPureComponent extends React.PureComponent<{}> {}
   class TestComponentWithDisplayName extends React.Component<{}> {
