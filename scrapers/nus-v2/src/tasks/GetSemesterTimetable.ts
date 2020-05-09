@@ -1,5 +1,5 @@
 import { strict as assert } from 'assert';
-import { has, last, map, mapValues, trimStart, values } from 'lodash';
+import { has, last, map, mapValues, values } from 'lodash';
 import NUSModerator, { Semester as SemesterName } from 'nusmoderator';
 import { compareAsc, differenceInDays, format, parseISO } from 'date-fns';
 
