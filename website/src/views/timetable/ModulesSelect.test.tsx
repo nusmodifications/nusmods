@@ -55,10 +55,7 @@ describe(ModulesSelectComponent, () => {
   it('should call onChange when module is selected', () => {
     const wrapper = mount(<ModulesSelectComponent {...commonProps} matchBreakpoint />);
     wrapper.setState({ isOpen: true, inputValue: 'T' });
-    wrapper
-      .find('li')
-      .first()
-      .simulate('click');
+    wrapper.find('li').first().simulate('click');
     expect(commonProps.onChange).toHaveBeenCalledWith(modules[0].moduleCode);
     // remain open
     expect(wrapper.state('isOpen')).toBe(true);

@@ -60,12 +60,7 @@ describe(DropdownListFiltersComponent, () => {
     wrapper.setProps({ selectedItems: [firstItemKey] });
 
     // Should render the option inside the <select> with a checkmark
-    expect(
-      wrapper
-        .find('option')
-        .at(1)
-        .text(),
-    ).toMatch(CHECKBOX);
+    expect(wrapper.find('option').at(1).text()).toMatch(CHECKBOX);
 
     // Should render the item in the checklist outside
     const checklist = wrapper.find('ul.list-unstyled input');
