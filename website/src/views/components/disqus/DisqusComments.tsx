@@ -30,6 +30,7 @@ class DisqusComments extends React.PureComponent<Props, State> {
   state = {
     allowDisqus: false,
   };
+
   componentDidMount() {
     this.loadInstance();
   }

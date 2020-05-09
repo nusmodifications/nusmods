@@ -326,7 +326,7 @@ export default class TetrisGame extends React.PureComponent<Props, State> {
 
     this.setState((state) =>
       produce(state, (draft) => {
-        const holdPiece = draft.holdPiece;
+        const { holdPiece } = draft;
 
         // Reset the position of the current piece when it is held
         draft.holdPiece = {

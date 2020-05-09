@@ -344,7 +344,7 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
 }
 
 export const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
-  const modules = state.moduleBank.modules;
+  const { modules } = state.moduleBank;
   const lastDay = addDays(ownProps.currentTime, DAYS);
   const weekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(lastDay);
   const semester = semesterNameMap[weekInfo.sem];
