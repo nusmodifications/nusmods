@@ -2,9 +2,7 @@ import * as Sentry from '@sentry/browser';
 import { each, size } from 'lodash';
 import { retry } from 'utils/promise';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-export function captureException(error: any, extra: any = {}) {
+export function captureException(error: Error, extra: { [key: string]: unknown } = {}) {
   Sentry.withScope((scope) => {
     each(extra, (data, key) => {
       scope.setExtra(key, extra[key]);
@@ -22,7 +20,7 @@ export function captureException(error: any, extra: any = {}) {
  * scripts using <script> tags
  */
 export function getScriptErrorHandler(scriptName: string) {
-  return (error: any) => {
+  return (error: unknown) => {
     if (error instanceof Error) {
       captureException(error);
     } else {

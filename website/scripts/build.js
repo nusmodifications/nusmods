@@ -39,7 +39,6 @@ function handleErrors(stats) {
   });
 
   if (process.env.CI && statsJson.warnings.length) {
-    // eslint-disable-next-line max-len
     printErrors(
       'Failed to compile. When process.env.CI = true, warnings are treated as failures. Most CI servers set this automatically.',
       stats.compilation.warnings,

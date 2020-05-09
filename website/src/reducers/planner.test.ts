@@ -23,8 +23,6 @@ const defaultState: PlannerState = {
   custom: {},
 };
 
-/* eslint-disable no-useless-computed-key */
-
 describe(SET_PLANNER_MIN_YEAR, () => {
   test('should set min year', () => {
     expect(reducer(defaultState, setPlannerMinYear('2016/2017'))).toEqual({
