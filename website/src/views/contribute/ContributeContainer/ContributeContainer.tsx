@@ -319,10 +319,7 @@ const ConnectedContributeContainer = connect(
     const getModule = getModuleCondensed(state.moduleBank);
     const modules: SemesterModules = mapValues(
       state.timetables.lessons,
-      (timetable): ModuleCondensed[] =>
-        Object.keys(timetable)
-          .map(getModule)
-          .filter(notNull),
+      (timetable): ModuleCondensed[] => Object.keys(timetable).map(getModule).filter(notNull),
     );
 
     return {
