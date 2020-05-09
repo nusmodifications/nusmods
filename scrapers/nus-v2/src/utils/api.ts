@@ -78,3 +78,16 @@ export async function retry<T>(
     return retry(promiseFactory, maxRetries - 1, retryIf);
   }
 }
+
+/**
+ * Returns true if `desc` has >3 consecutive non-breaking spaces without spaces
+ * between them.
+ *
+ * Intended to catch cases where someone unintentially used NBSPs instead of
+ * regular spaces, while still allowing intentional uses of NBSPs. The >3
+ * consecutive criterion is just a simple good-enough heuristic.
+ */
+export function containsNbsps(desc: string): boolean {
+  // \u00A0 is an NBSP
+  return new RegExp(/\u00A0[^ ]*\u00A0[^ ]*\u00A0/).test(desc);
+}

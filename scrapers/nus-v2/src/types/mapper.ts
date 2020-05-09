@@ -3,7 +3,6 @@
  * to modules.js
  */
 
-import { Omit } from './utils';
 import { ModuleInfo } from './api';
 import { Module, ModuleCode, RawLesson, SemesterData } from './modules';
 

@@ -214,7 +214,7 @@ describe('stateReconciler', () => {
     throw new Error('No stateReconciler');
   }
 
-  const reconcilerPersistConfig = { debug: false } as PersistConfig;
+  const reconcilerPersistConfig = { debug: false } as PersistConfig<TimetablesState>;
 
   test('should return inbound state when academic year is the same', () => {
     expect(stateReconciler(inbound, initialState, initialState, reconcilerPersistConfig)).toEqual(
