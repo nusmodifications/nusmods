@@ -81,7 +81,7 @@ module.exports = {
     'react/state-in-constructor': 'off',
 
     // Defaults to outside, which is pretty ugly
-    "react/static-property-placement": ['error', 'static public field'],
+    'react/static-property-placement': ['error', 'static public field'],
 
     'react/jsx-filename-extension': ['error', { extensions: ['.tsx', '.jsx'] }],
     'react/default-props-match-prop-types': ['error', { allowRequiredDefaults: true }],
@@ -95,8 +95,8 @@ module.exports = {
     // TODO: Fix this
     'react/no-access-state-in-setstate': 'warn',
 
-    "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
-    "react-hooks/exhaustive-deps": "warn", // Checks effect dependencies
+    'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
+    'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
 
     // TODO: Replace divs with buttons, but remove all button styling.
     'jsx-a11y/no-static-element-interactions': 'off',

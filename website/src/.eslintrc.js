@@ -61,7 +61,7 @@ module.exports = {
         'no-useless-constructor': 'off',
         // Also triggering incorrectly in some type declarations
         '@typescript-eslint/no-unused-vars': 'off',
-      }
+      },
     },
 
     {
