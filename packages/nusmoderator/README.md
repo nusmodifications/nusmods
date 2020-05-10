@@ -38,7 +38,7 @@ Assumes Week 0 begins on the first Monday of August.
 
 #### Parameters
 
--   `acadYear`  the academic year. E.g. "18/19"
+-   `acadYear` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the academic year. E.g. "18/19"
 
 Returns **[Date](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)** Start date of the academic year
 
@@ -50,7 +50,7 @@ Takes in a Date and returns an object of acad year and start date for that year.
 
 -   `date` **[Date](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)** 
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** acadYearObject - { year: "15/16", startDate: Date }
+Returns **AcadYear** acadYearObject - { year: "15/16", startDate: Date }
 
 ### getAcadSem
 
@@ -67,7 +67,7 @@ Expects a week number of a year.
 acadWeekNumber(3)
 ```
 
-Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** semester - "Semester 1"
+Returns **(Semester | null)** semester - "Semester 1"
 
 ### getAcadWeekName
 
@@ -84,30 +84,25 @@ Expects a week number of a semester.
 acadWeekNumber(3)
 ```
 
-Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** semester - "Recess" | "Reading" | "Examination"
+Returns **(AcadWeek | null)** week e.g. Recess, Reading, Examination
 
 ### getAcadWeekInfo
 
-Computes the current academic week and return in an object of acad date components
+Computes the current academic week and return an object of acad date components.
 
 #### Parameters
 
 -   `date` **[Date](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)** 
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** {
-  year: "15/16",
-  sem: 'Semester 1'|'Semester 2'|'Special Term I'|'Special Term II',
-  type: 'Instructional'|'Reading'|'Examination'|'Recess'|'Vacation'|'Orientation',
-  num: <weekNum>
-}
+Returns **AcadWeekInfo** object containing acad week information
 
 ### getExamWeek
 
-Get the first day of the exam week for the given semester
+Get the first day of the exam week for the given semester.
 
 #### Parameters
 
 -   `year` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
 -   `semester` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
-Returns **[Date](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)** 
+Returns **([Date](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date) | null)** date of the first day of the semester's exam week
