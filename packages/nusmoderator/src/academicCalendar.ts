@@ -7,7 +7,7 @@ import { WeekType, Semester, AcadYear, AcadWeek, AcadWeekInfo } from './types';
  * Returns a Date object of the first weekday of Week 0 of that academic year.
  * Assumes Week 0 begins on the first Monday of August.
  * @param acadYear the academic year. E.g. "18/19"
- * @return {Date} Start date of the academic year
+ * @return Start date of the academic year
  */
 export function getAcadYearStartDate(acadYear: string): Date {
   const shortYear = acadYear.split('/')[0];
