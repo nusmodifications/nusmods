@@ -35,7 +35,7 @@ type Props = {
   query: string;
 };
 
-export default function Omelette(props: Props) {
+const Omelette: React.FC<Props> = (props) => {
   const yolk = matchEgg(props.query);
   if (!yolk) return null;
 
@@ -47,4 +47,6 @@ export default function Omelette(props: Props) {
       </p>
     </>
   );
-}
+};
+
+export default Omelette;

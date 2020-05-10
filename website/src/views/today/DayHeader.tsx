@@ -12,13 +12,10 @@ type Props = {
   readonly offset: number; // number of days from today
 };
 
-export function HeaderDate({
-  children,
-  offset,
-}: {
+export const HeaderDate: React.FC<{
   readonly children: Date;
   readonly offset: number;
-}) {
+}> = ({ children, offset }) => {
   let title;
   let subtitle;
 
@@ -35,9 +32,9 @@ export function HeaderDate({
       <span className={styles.date}>{subtitle}</span> {title}
     </time>
   );
-}
+};
 
-export default function DayHeader(props: Props) {
+const DayHeader: React.FC<Props> = (props) => {
   const { forecast } = props;
   const Icon = forecast ? getWeatherIcon(forecast) : null;
 
@@ -69,4 +66,6 @@ export default function DayHeader(props: Props) {
       )}
     </header>
   );
-}
+};
+
+export default DayHeader;

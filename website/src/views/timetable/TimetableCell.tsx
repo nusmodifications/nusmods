@@ -84,7 +84,7 @@ function formatWeekRange(weekRange: WeekRange) {
  * Representing a lesson in this case. In future we
  * might explore other representations e.g. grouped lessons
  */
-function TimetableCell(props: Props) {
+const TimetableCell: React.FC<Props> = (props) => {
   const { lesson, showTitle, onClick, onHover, hoverLesson } = props;
 
   const moduleName = showTitle ? `${lesson.moduleCode} ${lesson.title}` : lesson.moduleCode;
@@ -137,6 +137,6 @@ function TimetableCell(props: Props) {
       </div>
     </Cell>
   );
-}
+};
 
 export default TimetableCell;

@@ -32,32 +32,30 @@ type State = {
   errorMessage: string;
 };
 
-function AppEntry({ app }: AppEntryProps) {
-  return (
-    <section className={styles.appEntry}>
-      <div className="row">
-        <div className="col-lg-2 col-sm-3 text-center-md">
-          <ExternalLink href={app.url} className={styles.appIcon}>
-            <img
-              className="rounded-circle img-fluid img-thumbnail"
-              src={app.icon_url}
-              alt={app.name}
-            />
-          </ExternalLink>
-        </div>
-        <div className="col-lg-10 col-sm-9">
-          <ExternalLink href={app.url}>
-            <h4 className={styles.appName}>{app.name}</h4>
-          </ExternalLink>
-          <p>
-            <small>{app.author}</small>
-          </p>
-          <p>{app.description}</p>
-        </div>
+const AppEntry: React.FC<AppEntryProps> = ({ app }) => (
+  <section className={styles.appEntry}>
+    <div className="row">
+      <div className="col-lg-2 col-sm-3 text-center-md">
+        <ExternalLink href={app.url} className={styles.appIcon}>
+          <img
+            className="rounded-circle img-fluid img-thumbnail"
+            src={app.icon_url}
+            alt={app.name}
+          />
+        </ExternalLink>
       </div>
-    </section>
-  );
-}
+      <div className="col-lg-10 col-sm-9">
+        <ExternalLink href={app.url}>
+          <h4 className={styles.appName}>{app.name}</h4>
+        </ExternalLink>
+        <p>
+          <small>{app.author}</small>
+        </p>
+        <p>{app.description}</p>
+      </div>
+    </div>
+  </section>
+);
 
 const title = 'Apps';
 
