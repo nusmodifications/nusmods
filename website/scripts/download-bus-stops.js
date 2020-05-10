@@ -2,19 +2,16 @@ const path = require('path');
 const axios = require('axios');
 const fs = require('fs-extra');
 
-/**
- * Download bus stop location information from ComfortDelGro's
- * NUS NextBus API
- */
-
-/* eslint-disable camelcase */
-
 const routes = ['A1', 'A2', 'B1', 'B2', 'C', 'BTC1', 'BTC2', 'D1', 'D2'];
 const getBusStop = 'https://nextbus.comfortdelgro.com.sg/eventservice.svc/busstops';
 const getBusRoute = 'https://nextbus.comfortdelgro.com.sg/eventservice.svc/pickuppoint';
 
 const dataPath = path.join(__dirname, '../src/data/bus-stops.json');
 
+/**
+ * Download bus stop location information from ComfortDelGro's
+ * NUS NextBus API
+ */
 async function downloadBusStops() {
   const busStopResponse = await axios.get(getBusStop);
   const data = busStopResponse.data.BusStopsResult.busstops;
@@ -42,18 +39,18 @@ async function downloadBusStops() {
 
   // Insert the bus stops for each route into their bus stops
   await Promise.all(
-    routes.map(async (route_code) => {
-      const response = await axios.get(getBusRoute, { params: { route_code } });
+    routes.map(async (routeCode) => {
+      const response = await axios.get(getBusRoute, { params: { route_code: routeCode } });
       response.data.PickupPointResult.pickuppoint.forEach((point) => {
         if (!point) return;
 
         if (!busStops[point.busstopcode]) {
           console.warn(point);
-          console.warn(`For route ${route_code}`);
+          console.warn(`For route ${routeCode}`);
           return;
         }
 
-        busStops[point.busstopcode].routes.push(route_code);
+        busStops[point.busstopcode].routes.push(routeCode);
       });
     }),
   );

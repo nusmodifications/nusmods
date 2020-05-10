@@ -1,17 +1,6 @@
 import { State } from './state';
 import { Values } from './utils';
 
-/**
- * Flux Standard Action: https://github.com/acdlite/flux-standard-action
- * @deprecated Use Actions from types/actions instead
- */
-export type FSA = {
-  type: string;
-  payload: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  meta?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  error?: boolean;
-};
-
 export type GetState = () => State;
 
 /**

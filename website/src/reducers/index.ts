@@ -26,8 +26,7 @@ const settings = persistReducer('settings', settingsReducer, settingsPersistConf
 const planner = persistReducer('planner', plannerReducer);
 
 // State default is delegated to its child reducers.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const defaultState: State = {} as any;
+const defaultState = ({} as unknown) as State;
 const undoReducer = createUndoReducer<State>({
   limit: 1,
   actionsToWatch: [REMOVE_MODULE, SET_TIMETABLE],

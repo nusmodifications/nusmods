@@ -30,6 +30,7 @@ class DisqusComments extends React.PureComponent<Props, State> {
   state = {
     allowDisqus: false,
   };
+
   componentDidMount() {
     this.loadInstance();
   }
@@ -45,8 +46,6 @@ class DisqusComments extends React.PureComponent<Props, State> {
     }
   }
 
-  /* eslint-disable @typescript-eslint/camelcase */
-
   loadInstance = () => {
     if (this.props.loadDisqusManually && !this.state.allowDisqus) return;
 
@@ -59,8 +58,8 @@ class DisqusComments extends React.PureComponent<Props, State> {
     } else {
       // Inject the Disqus script if we're loading it for the first time, ie. when
       // window.DISQUS is not set
-      window.disqus_config = this.getDisqusConfig();
-      window.disqus_shortname = config.disqusShortname;
+      window.disqus_config = this.getDisqusConfig(); // eslint-disable-line @typescript-eslint/camelcase
+      window.disqus_shortname = config.disqusShortname; // eslint-disable-line @typescript-eslint/camelcase
 
       insertScript(`https://${config.disqusShortname}.disqus.com/embed.js`, {
         id: SCRIPT_ID,

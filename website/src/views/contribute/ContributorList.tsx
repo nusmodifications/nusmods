@@ -59,7 +59,6 @@ const ContributorList = Loadable.Map<Props, Export>({
   },
 
   // This is not a proper render function, so prop validation doesn't work
-  /* eslint-disable react/prop-types */
   render(loaded, props) {
     let { contributors } = loaded;
     if (props.size) contributors = contributors.slice(0, props.size);

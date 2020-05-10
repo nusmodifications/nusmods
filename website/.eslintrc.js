@@ -30,9 +30,6 @@ module.exports = {
     'no-debugger': warnInDevelopment,
     'no-console': warnInDevelopment,
 
-    'no-alert': 'off',
-    'prefer-destructuring': 'off',
-
     'import/extensions': [
       warnInDevelopment,
       'always',
@@ -44,20 +41,12 @@ module.exports = {
       },
     ],
 
-    // Allow properties that are logically grouped together to be written
-    // without line breaks
-    'lines-between-class-members': 'off',
-
     // Enable i++ in for loops
     'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
-    'no-bitwise': 'off',
 
     'react/no-unescaped-entities': 'off',
 
     'react/no-array-index-key': 'off',
-
-    // SEE: https://github.com/yannickcr/eslint-plugin-react/issues
-    'react/no-unused-prop-types': 'off',
 
     // Enables typing to be placed above lifecycle
     'react/sort-comp': [
@@ -76,7 +65,6 @@ module.exports = {
     ],
 
     // These lints are not useful
-    'react/require-default-props': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react/state-in-constructor': 'off',
 
@@ -91,9 +79,6 @@ module.exports = {
 
     // Too verbose, creates too many variables
     'react/destructuring-assignment': 'off',
-
-    // TODO: Fix this
-    'react/no-access-state-in-setstate': 'warn',
 
     'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
     'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
