@@ -11,8 +11,8 @@
   ],
   "scripts": {
     "clean": "rimraf dist coverage",
-    "lint": "documentation lint src && eslint --ext .ts src",
-    "docs": "documentation readme src --section=API",
+    "lint": "documentation lint src --parse-extension ts && eslint --ext .ts src",
+    "docs": "documentation readme src --parse-extension ts --section=API",
     "build": "microbundle",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
