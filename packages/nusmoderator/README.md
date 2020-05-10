@@ -202,10 +202,6 @@ Type: ([WeekType](#weektype) | null)
 -   **See: getAcadWeekInfo
     **
 
-The number of weeks from Week 1 of the semester. Can be null for unknown
-reasons, but generally this should be populated for all instructional
-weeks and for most vacation weeks.
-
 This `AcadWeek` is the `weekNumber`-th week with this academic week type
 in the semester. `null` if the semester has exactly 1 week of this type.
 Examples below:
