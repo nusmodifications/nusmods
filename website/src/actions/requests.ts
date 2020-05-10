@@ -35,7 +35,7 @@ export const requestAction: RequestActionCreator = (
   key: RequestKey,
   type: string | AxiosRequestConfig,
   options?: AxiosRequestConfig,
-): RequestAction<any> => {
+): RequestAction<RequestKey | string> => {
   let payload: AxiosRequestConfig;
 
   if (typeof type !== 'string') {
@@ -45,7 +45,6 @@ export const requestAction: RequestActionCreator = (
   } else if (options) {
     payload = options;
   } else {
-    // Keeps Flow happy
     throw new Error();
   }
 

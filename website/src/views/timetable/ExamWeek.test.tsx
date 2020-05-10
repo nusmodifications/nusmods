@@ -44,21 +44,11 @@ describe(ExamWeek, () => {
       weekNumber: 1,
       firstDayOfExams: new Date(new Date('2018-11-26T00:00:00Z')),
     });
-    expect(
-      weekOfDec3
-        .find('th time')
-        .first()
-        .text(),
-    ).toEqual('Dec 3');
+    expect(weekOfDec3.find('th time').first().text()).toEqual('Dec 3');
   });
 
   test('highlight today', () => {
     const weekOfToday = make();
-    expect(
-      weekOfToday
-        .find('th span')
-        .first()
-        .text(),
-    ).toEqual('Today');
+    expect(weekOfToday.find('th span').first().text()).toEqual('Today');
   });
 });

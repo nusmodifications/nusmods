@@ -61,7 +61,7 @@ module.exports = {
         'no-useless-constructor': 'off',
         // Also triggering incorrectly in some type declarations
         '@typescript-eslint/no-unused-vars': 'off',
-      }
+      },
     },
 
     {
@@ -82,15 +82,9 @@ module.exports = {
   ],
 
   rules: {
-    // Assume TypeScript will catch this for us
+    // Use @typescript-eslint to catch this
     'default-case': 'off',
-
-    // Rule is buggy when used with TypeScript
-    // TODO: Remove this when https://github.com/benmosher/eslint-plugin-import/issues/1282 is resolved
-    'import/named': 'off',
-
-    // Makes the code unnecessarily verbose
-    '@typescript-eslint/explicit-member-accessibility': 'off',
+    '@typescript-eslint/switch-exhaustiveness-check': 'error',
 
     // Makes the code unnecessarily verbose
     '@typescript-eslint/explicit-function-return-type': 'off',
@@ -101,12 +95,5 @@ module.exports = {
         ignoreRestSiblings: true,
       },
     ],
-
-    // We use type aliases for data types, ie. things that are not new-able
-    '@typescript-eslint/prefer-interface': 'off',
-
-    // TODO: Fix these
-    '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/no-non-null-assertion': 'warn',
   },
 };

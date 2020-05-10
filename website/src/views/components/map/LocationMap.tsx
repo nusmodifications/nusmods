@@ -82,12 +82,12 @@ export class LocationMapComponent extends React.PureComponent<Props, State> {
   }
 }
 
-export default function LocationMap(props: OwnProps) {
-  return (
-    <MapContext.Consumer>
-      {({ toggleMapExpanded }) => (
-        <LocationMapComponent toggleExpanded={toggleMapExpanded} {...props} />
-      )}
-    </MapContext.Consumer>
-  );
-}
+const LocationMap: React.FC<OwnProps> = (props) => (
+  <MapContext.Consumer>
+    {({ toggleMapExpanded }) => (
+      <LocationMapComponent toggleExpanded={toggleMapExpanded} {...props} />
+    )}
+  </MapContext.Consumer>
+);
+
+export default LocationMap;

@@ -169,7 +169,7 @@ export class KeyboardShortcutsComponent extends React.PureComponent<Props, State
           {map(sections, (shortcuts, heading) => (
             <tbody key={heading}>
               <tr>
-                <th />
+                <th aria-label="Key column" />
                 <th>{heading}</th>
               </tr>
 

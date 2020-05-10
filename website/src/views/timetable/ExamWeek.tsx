@@ -24,19 +24,17 @@ function getExamDate(date: Date): string {
   return formatExamDate(date.toISOString()).split(' ')[0];
 }
 
-function ExamModule({ module }: { module: ModuleWithColor }) {
-  return (
-    <Link
-      to={modulePage(module.moduleCode, module.title)}
-      className={`hoverable color-${module.colorIndex}`}
-    >
-      <div className={styles.moduleCode}>{module.moduleCode}</div>
-      <div className={styles.moduleTitle}>{module.title}</div>
-    </Link>
-  );
-}
+const ExamModule: React.FC<{ module: ModuleWithColor }> = ({ module }) => (
+  <Link
+    to={modulePage(module.moduleCode, module.title)}
+    className={`hoverable color-${module.colorIndex}`}
+  >
+    <div className={styles.moduleCode}>{module.moduleCode}</div>
+    <div className={styles.moduleTitle}>{module.title}</div>
+  </Link>
+);
 
-export default function ExamWeekComponent(props: Props) {
+const ExamWeekComponent: React.FC<Props> = (props) => {
   const { modules, weekNumber, firstDayOfExams, days } = props;
   const currentTime = useCurrentTime();
 
@@ -101,4 +99,6 @@ export default function ExamWeekComponent(props: Props) {
       {moduleRows}
     </>
   );
-}
+};
+
+export default ExamWeekComponent;

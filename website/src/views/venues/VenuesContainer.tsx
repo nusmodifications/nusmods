@@ -36,8 +36,6 @@ import VenueDetails from './VenueDetails';
 import VenueLocation from './VenueLocation';
 import styles from './VenuesContainer.scss';
 
-/* eslint-disable react/prop-types */
-
 export type Params = {
   q: string;
   venue: string;

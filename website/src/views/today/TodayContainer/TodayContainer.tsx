@@ -13,6 +13,7 @@ import {
   parseISO,
 } from 'date-fns';
 import produce from 'immer';
+import { hot } from 'react-hot-loader/root';
 
 import { DaysOfWeek } from 'types/modules';
 import { Lesson, ColoredLesson, SemTimetableConfigWithLessons } from 'types/timetables';
@@ -104,22 +105,17 @@ function getDayType(date: Date, weekInfo: AcadWeekInfo): EmptyGroupType {
   }
 }
 
-export function DaySection(
-  props: Readonly<{
-    children: React.ReactNode;
-    date: Date | Date[];
-    offset: number;
-    forecast?: string;
-  }>,
-) {
-  return (
-    <section className={styles.day}>
-      <DayHeader date={props.date} offset={props.offset} forecast={props.forecast} />
-      {props.children}
-    </section>
-  );
-}
-
+export const DaySection: React.FC<Readonly<{
+  children: React.ReactNode;
+  date: Date | Date[];
+  offset: number;
+  forecast?: string;
+}>> = (props) => (
+  <section className={styles.day}>
+    <DayHeader date={props.date} offset={props.offset} forecast={props.forecast} />
+    {props.children}
+  </section>
+);
 export class TodayContainerComponent extends React.PureComponent<Props, State> {
   state: State = {
     weather: {},
@@ -348,7 +344,7 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
 }
 
 export const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
-  const modules = state.moduleBank.modules;
+  const { modules } = state.moduleBank;
   const lastDay = addDays(ownProps.currentTime, DAYS);
   const weekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(lastDay);
   const semester = semesterNameMap[weekInfo.sem];
@@ -366,4 +362,4 @@ const ConnectedTimetableContainer = connect(mapStateToProps)(TodayContainerCompo
 const TodayContainerWithTimer = withTimer(ConnectedTimetableContainer);
 const ResponsiveTodayContainer = makeResponsive(TodayContainerWithTimer, breakpointUp('lg'));
 
-export default ResponsiveTodayContainer;
+export default hot(ResponsiveTodayContainer);

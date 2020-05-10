@@ -48,6 +48,7 @@ const TRANSITION_DURATION = 250;
  */
 export class NotificationComponent extends React.Component<Props, State> {
   openTimeoutId?: number;
+
   closeTimeoutId?: number;
 
   element = React.createRef<HTMLDivElement>();
@@ -147,7 +148,7 @@ export class NotificationComponent extends React.Component<Props, State> {
               className="mdc-snackbar__action-button"
               onClick={() => {
                 this.setState({ actionClicked: true });
-                const handler = action.handler;
+                const { handler } = action;
                 // Don't auto-close if handler returns false
                 if (handler && handler() === false) return;
                 this.props.popNotification();

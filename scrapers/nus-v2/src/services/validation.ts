@@ -26,14 +26,10 @@ const lessonSchema = Joi.object({
   // Assume lessons on Sunday are invalid
   day: Joi.string().only(Object.keys(dayTextMap)),
 
-  numweeks: Joi.number()
-    .integer()
-    .greater(0),
+  numweeks: Joi.number().integer().greater(0),
 
   // csize of 0 occur on valid lessons for some reason
-  csize: Joi.number()
-    .integer()
-    .greater(-1),
+  csize: Joi.number().integer().greater(-1),
 });
 
 export function validateLesson(lesson: TimetableLesson, logger: Logger = rootLogger) {
@@ -51,9 +47,7 @@ export function validateLesson(lesson: TimetableLesson, logger: Logger = rootLog
 const examSchema = Joi.object({
   start_time: Joi.string(),
   module: Joi.string(),
-  duration: Joi.number()
-    .integer()
-    .greater(0),
+  duration: Joi.number().integer().greater(0),
   exam_date: Joi.string().isoDate(),
 });
 

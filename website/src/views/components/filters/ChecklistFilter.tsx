@@ -1,12 +1,13 @@
 import React from 'react';
 
+import { ElasticSearchFilter } from 'types/vendor/elastic-search';
 import FilterContainer from './FilterContainer';
 import CheckboxItemFilter from './CheckboxItemFilter';
 
 export type FilterItem = {
   key: string;
   label: string;
-  filter: any;
+  filter: ElasticSearchFilter;
 };
 
 interface ChecklistFilterProps {

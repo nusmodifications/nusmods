@@ -288,10 +288,7 @@ exports.appVersion = () => {
   try {
     commitHash =
       process.env.GIT_COMMIT_HASH ||
-      childProcess
-        .execFileSync('git', ['rev-parse', 'HEAD'])
-        .toString()
-        .trim();
+      childProcess.execFileSync('git', ['rev-parse', 'HEAD']).toString().trim();
   } catch (e) {
     commitHash = 'UNSET';
   }

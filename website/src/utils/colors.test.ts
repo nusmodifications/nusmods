@@ -2,7 +2,6 @@ import { range, uniq, without } from 'lodash';
 
 import { ColorMapping } from 'types/reducers';
 import { ColorIndex, Lesson, SemTimetableConfig } from 'types/timetables';
-import { Omit } from 'types/utils';
 
 import { colorLessonsByKey, fillColorMapping, getNewColor, NUM_DIFFERENT_COLORS } from './colors';
 

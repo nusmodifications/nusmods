@@ -67,7 +67,7 @@
     "eslint-plugin-prettier": "^2.6.0",
     "jest": "^23.6.0",
     "mock-fs": "^4.2.0",
-    "prettier": "^1.11.1",
+    "prettier": "^2.0.5",
     "webpack": "^4.29.1",
     "webpack-cli": "^3.2.3",
     "webpack-node-externals": "^1.7.2"

@@ -44,7 +44,7 @@ const colors = [
   'rgb(216, 67, 21)',
 ];
 
-export default function TetrisLogo() {
+const TetrisLogo: React.FC = () => {
   // Create the diagonal bands by offsetting the color using line and char index
   // Make the bands move by offsetting the color using time
   const currentTime = useCurrentTime(INTERVAL);
@@ -75,4 +75,6 @@ export default function TetrisLogo() {
       </pre>
     </div>
   );
-}
+};
+
+export default TetrisLogo;

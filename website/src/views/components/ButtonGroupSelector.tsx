@@ -11,7 +11,7 @@ export type Props = {
   ariaLabel?: string;
 };
 
-export default function ButtonGroupSelector(props: Props) {
+const ButtonGroupSelector: React.FC<Props> = (props) => {
   const {
     size,
     choices,
@@ -49,4 +49,6 @@ export default function ButtonGroupSelector(props: Props) {
       {buttons}
     </div>
   );
-}
+};
+
+export default ButtonGroupSelector;

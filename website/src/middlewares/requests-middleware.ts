@@ -4,18 +4,16 @@ import { FAILURE, REQUEST, SUCCESS } from 'types/reducers';
 import { API_REQUEST } from 'actions/requests';
 import { State } from 'types/state';
 
-export type RequestType<Type extends string> = Type & { __requestType: any };
-export type SuccessType<Type extends string> = Type & { __successType: any };
-export type ErrorType<Type extends string> = Type & { __errorType: any };
+export type ActionType<Action extends string, Type extends string> = Action & { __type: Type };
 
 export type RequestAction<Type extends string, Meta = {}> = {
-  type: RequestType<Type>;
+  type: ActionType<Type, typeof REQUEST>;
   payload: AxiosRequestConfig;
   meta: Meta;
 };
 
 export type SuccessAction<Type extends string, Response, Meta = {}> = {
-  type: SuccessType<Type>;
+  type: ActionType<Type, typeof SUCCESS>;
   payload: Response;
   meta: Meta & {
     requestStatus: typeof SUCCESS;
@@ -24,7 +22,7 @@ export type SuccessAction<Type extends string, Response, Meta = {}> = {
 };
 
 export type FailureAction<Type extends string, Meta = {}> = {
-  type: ErrorType<Type>;
+  type: ActionType<Type, typeof FAILURE>;
   payload: Error;
   meta: Meta & {
     requestStatus: typeof FAILURE;
@@ -45,12 +43,12 @@ function makeRequest(request: AxiosRequestConfig) {
   });
 }
 
-export function SUCCESS_KEY<Type extends string>(key: Type): SuccessType<Type> {
-  return (key + SUCCESS) as SuccessType<Type>;
+export function SUCCESS_KEY<Type extends string>(key: Type): ActionType<Type, typeof SUCCESS> {
+  return (key + SUCCESS) as ActionType<Type, typeof SUCCESS>;
 }
 
-export function FAILURE_KEY<Type extends string>(key: Type): ErrorType<Type> {
-  return (key + FAILURE) as ErrorType<Type>;
+export function FAILURE_KEY<Type extends string>(key: Type): ActionType<Type, typeof FAILURE> {
+  return (key + FAILURE) as ActionType<Type, typeof FAILURE>;
 }
 
 // TODO: Figure out how to type Dispatch correctly
