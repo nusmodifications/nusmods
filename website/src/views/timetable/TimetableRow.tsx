@@ -36,48 +36,46 @@ const TimetableRow: React.FC<Props> = (props) => {
 
   return (
     <div className={styles.timetableRow}>
-      {lessons
-        .map((lesson) => {
-          const startIndex = convertTimeToIndex(lesson.startTime);
-          const endIndex = convertTimeToIndex(lesson.endTime);
+      {lessons.map((lesson) => {
+        const startIndex = convertTimeToIndex(lesson.startTime);
+        const endIndex = convertTimeToIndex(lesson.endTime);
 
-          const size = endIndex - startIndex;
+        const size = endIndex - startIndex;
 
-          const dirStyle = verticalMode ? 'top' : 'marginLeft';
-          const sizeStyle = verticalMode ? 'height' : 'width';
+        const dirStyle = verticalMode ? 'top' : 'marginLeft';
+        const sizeStyle = verticalMode ? 'height' : 'width';
 
-          const transparent = lesson.startTime === lesson.endTime;
+        const transparent = lesson.startTime === lesson.endTime;
 
-          const dirValue = startIndex - (verticalMode ? startingIndex : lastStartIndex);
-          const style = {
-            // calc() adds a 1px gap between cells
-            [dirStyle]: `calc(${(dirValue / totalCols) * 100}% + 1px)`,
-            [sizeStyle]: `calc(${(size / totalCols) * 100}% - 1px)`,
-          };
+        const dirValue = startIndex - (verticalMode ? startingIndex : lastStartIndex);
+        const style = {
+          // calc() adds a 1px gap between cells
+          [dirStyle]: `calc(${(dirValue / totalCols) * 100}% + 1px)`,
+          [sizeStyle]: `calc(${(size / totalCols) * 100}% - 1px)`,
+        };
 
-          lastStartIndex = endIndex;
+        lastStartIndex = endIndex;
 
-          const conditionalProps =
-            lesson.isModifiable && onModifyCell
-              ? {
-                  onClick: (position: ClientRect) => onModifyCell(lesson, position),
-                }
-              : {};
+        const conditionalProps =
+          lesson.isModifiable && onModifyCell
+            ? {
+                onClick: (position: ClientRect) => onModifyCell(lesson, position),
+              }
+            : {};
 
-          return (
-            <TimetableCell
-              key={lesson.startTime}
-              style={style}
-              lesson={lesson}
-              showTitle={props.showTitle}
-              hoverLesson={props.hoverLesson}
-              onHover={props.onCellHover}
-              transparent={transparent}
-              {...conditionalProps}
-            />
-          );
-        })
-      }
+        return (
+          <TimetableCell
+            key={lesson.startTime}
+            style={style}
+            lesson={lesson}
+            showTitle={props.showTitle}
+            hoverLesson={props.hoverLesson}
+            onHover={props.onCellHover}
+            transparent={transparent}
+            {...conditionalProps}
+          />
+        );
+      })}
     </div>
   );
 };
