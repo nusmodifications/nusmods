@@ -38,10 +38,10 @@ $cell-border-radius: 6px;
   flex-direction: column;
   padding: $cell-padding;
   border-width: 0 0 0 0;
-  background-color: rgba(0, 0, 0, 0);
   font-size: $font-size-xxs;
   line-height: 0.85rem;
   text-align: left;
+  background-color: rgba(0, 0, 0, 0);
   transition: background-color $desktop-entering-duration $material-deceleration-curve;
   animation-duration: $desktop-entering-duration;
 
