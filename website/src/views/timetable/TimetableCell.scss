@@ -30,6 +30,32 @@ $cell-border-radius: 6px;
   }
 }
 
+.transparentCell {
+  // Flex to ensure cell content sticks to top, because browsers tend to
+  // vertical align middle button content
+  z-index: $timetable-cell-z-index;
+  display: flex;
+  flex-direction: column;
+  padding: $cell-padding;
+  border-width: 0 0 0 0;
+  background-color: rgba(0, 0, 0, 0);
+  font-size: $font-size-xxs;
+  line-height: 0.85rem;
+  text-align: left;
+  transition: background-color $desktop-entering-duration $material-deceleration-curve;
+  animation-duration: $desktop-entering-duration;
+
+  &:hover,
+  &:focus {
+    outline: none;
+  }
+
+  @include vertical-mode {
+    position: absolute;
+    width: 100%;
+  }
+}
+
 .cellContainer {
   width: 100%;
   height: 100%;

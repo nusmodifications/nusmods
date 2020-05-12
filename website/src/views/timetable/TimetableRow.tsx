@@ -37,7 +37,6 @@ const TimetableRow: React.FC<Props> = (props) => {
   return (
     <div className={styles.timetableRow}>
       {lessons
-        .filter(lesson => lesson.startTime !== lesson.endTime)
         .map((lesson) => {
           const startIndex = convertTimeToIndex(lesson.startTime);
           const endIndex = convertTimeToIndex(lesson.endTime);
@@ -46,6 +45,8 @@ const TimetableRow: React.FC<Props> = (props) => {
 
           const dirStyle = verticalMode ? 'top' : 'marginLeft';
           const sizeStyle = verticalMode ? 'height' : 'width';
+
+          const transparent = lesson.startTime === lesson.endTime;
 
           const dirValue = startIndex - (verticalMode ? startingIndex : lastStartIndex);
           const style = {
@@ -71,6 +72,7 @@ const TimetableRow: React.FC<Props> = (props) => {
               showTitle={props.showTitle}
               hoverLesson={props.hoverLesson}
               onHover={props.onCellHover}
+              transparent={transparent}
               {...conditionalProps}
             />
           );
