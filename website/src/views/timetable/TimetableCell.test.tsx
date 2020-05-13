@@ -30,6 +30,7 @@ function make(additionalProps: Partial<Props> = {}) {
     onHover: jest.fn(),
     showTitle: false,
     hoverLesson: null,
+    transparent: false,
     ...additionalProps,
   };
 

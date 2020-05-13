@@ -25,6 +25,7 @@ type Props = {
   style?: React.CSSProperties;
   onClick?: (position: ClientRect) => void;
   hoverLesson?: HoverLesson | null;
+  transparent: boolean;
 };
 
 const lessonDateFormat = 'MMM dd';
