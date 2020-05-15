@@ -1219,10 +1219,10 @@ koa-send@^5.0.0:
     mz "^2.7.0"
     resolve-path "^1.4.0"
 
-koa-views@6.2.1:
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/koa-views/-/koa-views-6.2.1.tgz#67638e754f9467fcb7ccd6ba601164cb5dadfea8"
-  integrity sha512-wU3tw48KuskaJg0x1JZmC73UWGgVmh6B54HuHDzTrkavig+dBI0NbFeGiWsaOCZREQkaTfIVXSPSByDant71ew==
+koa-views@6.2.2:
+  version "6.2.2"
+  resolved "https://registry.yarnpkg.com/koa-views/-/koa-views-6.2.2.tgz#37b9013f97565b037117c7b94edb6ea0a5183e6f"
+  integrity sha512-SzuGl/d/mBGjuGTbPeV9pPiQRztOrbHsJW/014cRiYTaaN6fD9EXHUVq5NDsXtpulQUsjeykA9+jpHaO2cxLvw==
   dependencies:
     consolidate "0.15.1"
     debug "^4.1.0"
