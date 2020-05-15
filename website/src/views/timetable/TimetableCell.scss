@@ -4,15 +4,13 @@ $cell-padding: 0.3rem;
 $cell-opacity: 0.5;
 $cell-border-radius: 6px;
 
-.cell {
+.baseCell {
   // Flex to ensure cell content sticks to top, because browsers tend to
   // vertical align middle button content
   z-index: $timetable-cell-z-index;
   display: flex;
   flex-direction: column;
   padding: $cell-padding;
-  border-width: 0 0 0.2rem;
-  border-style: solid;
   font-size: $font-size-xxs;
   line-height: 0.85rem;
   text-align: left;
@@ -22,38 +20,17 @@ $cell-border-radius: 6px;
   &:hover,
   &:focus {
     outline: none;
-  }
-
-  @include vertical-mode {
-    position: absolute;
-    width: 100%;
   }
 }
 
+.coloredCell {
+  border-width: 0 0 0.2rem;
+  border-style: solid;
+}
+
 .transparentCell {
-  // Flex to ensure cell content sticks to top, because browsers tend to
-  // vertical align middle button content
-  z-index: $timetable-cell-z-index;
-  display: flex;
-  flex-direction: column;
-  padding: $cell-padding;
   border-width: 0 0 0 0;
-  font-size: $font-size-xxs;
-  line-height: 0.85rem;
-  text-align: left;
   background-color: rgba(0, 0, 0, 0);
-  transition: background-color $desktop-entering-duration $material-deceleration-curve;
-  animation-duration: $desktop-entering-duration;
-
-  &:hover,
-  &:focus {
-    outline: none;
-  }
-
-  @include vertical-mode {
-    position: absolute;
-    width: 100%;
-  }
 }
 
 .cellContainer {

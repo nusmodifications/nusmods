@@ -102,9 +102,8 @@ const TimetableCell: React.FC<Props> = (props) => {
     : {};
 
   const weekText = consumeWeeks<React.ReactNode>(lesson.weeks, formatNumericWeeks, formatWeekRange);
-  const cellStyle = transparent ? styles.transparentCell : styles.cell;
 
-  let className = classnames(cellStyle, getLessonIdentifier(lesson), elements.lessons, {
+  let className = classnames(styles.baseCell, getLessonIdentifier(lesson), elements.lessons, {
     hoverable: !!onClick,
     [styles.clickable]: !!onClick,
     [styles.available]: lesson.isAvailable,
@@ -117,7 +116,7 @@ const TimetableCell: React.FC<Props> = (props) => {
 
   className = transparent
     ? classnames(className, styles.transparentCell)
-    : classnames(className, styles.cell, `color-${lesson.colorIndex}`);
+    : classnames(className, styles.coloredCell, `color-${lesson.colorIndex}`);
 
   return (
     <Cell
