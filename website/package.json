@@ -137,7 +137,7 @@
     "@sentry/browser": "5.15.5",
     "@tippy.js/react": "3.1.1",
     "axios": "0.19.2",
-    "bootstrap": "4.4.1",
+    "bootstrap": "4.5.0",
     "bowser": "2.9.0",
     "browserslist-config-nusmods": "file:../packages/browserslist-config-nusmods",
     "classnames": "2.2.6",
