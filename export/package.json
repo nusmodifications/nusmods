@@ -22,7 +22,7 @@
     "koa-router": "8.0.8",
     "koa-views": "6.2.2",
     "lodash": "4.17.15",
-    "nodemon": "2.0.3",
+    "nodemon": "2.0.4",
     "pug": "2.0.4",
     "puppeteer": "1.12.2"
   },
