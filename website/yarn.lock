@@ -2152,18 +2152,18 @@
     "@types/istanbul-lib-coverage" "*"
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@25.2.1":
-  version "25.2.1"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-25.2.1.tgz#9544cd438607955381c1bdbdb97767a249297db5"
-  integrity sha512-msra1bCaAeEdkSyA0CZ6gW1ukMIvZ5YoJkdXw/qhQdsuuDlFTcEUrUw8CLCPt2rVRUfXlClVvK2gvPs9IokZaA==
+"@types/jest@25.2.2":
+  version "25.2.2"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-25.2.2.tgz#6a752e7a00f69c3e790ea00c345029d5cefa92bf"
+  integrity sha512-aRctFbG8Pb7DSLzUt/fEtL3q/GKb9mretFuYhRub2J0q6NhzBYbx9HTQzHrWgBNIxYOlxGNVe6Z54cpbUt+Few==
   dependencies:
     jest-diff "^25.2.1"
     pretty-format "^25.2.1"
 
-"@types/js-combinatorics@0.5.31":
-  version "0.5.31"
-  resolved "https://registry.yarnpkg.com/@types/js-combinatorics/-/js-combinatorics-0.5.31.tgz#a61a3f625009e2e693492c158ac8afb243efecad"
-  integrity sha512-0JGeWYJdHIpX2gttyxqnzpKwK3KmyFZysWI8+fnXdiOo/kEFxDMdo/pwhrtBrHvYgRAsDNJCSQzgA+m8vbHvFw==
+"@types/js-combinatorics@0.5.32":
+  version "0.5.32"
+  resolved "https://registry.yarnpkg.com/@types/js-combinatorics/-/js-combinatorics-0.5.32.tgz#befa3c2b6ea10c45fd8d672f7aa477a79a2601ed"
+  integrity sha512-rSdlsZTJla6sSMrYoXEDklQLDoXCnpHIwzvkTWhjIdk1S42GHQ/QNHRBAzKno0eZ+dORGoJ9tsgB1xH+4DozAA==
 
 "@types/json-schema@^7.0.3":
   version "7.0.4"
@@ -2266,10 +2266,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-helmet@5.0.15":
-  version "5.0.15"
-  resolved "https://registry.yarnpkg.com/@types/react-helmet/-/react-helmet-5.0.15.tgz#af0370617307e9f062c6aee0f1f5588224ce646e"
-  integrity sha512-CCjqvecDJTXRrHG8aTc2YECcQCl26za/q+NaBRvy/wtm0Uh38koM2dpv2bG1xJV4ckz3t1lm2/5KU6nt2s9BWg==
+"@types/react-helmet@5.0.16":
+  version "5.0.16"
+  resolved "https://registry.yarnpkg.com/@types/react-helmet/-/react-helmet-5.0.16.tgz#dafac5f043665b880559285a27c71a69abd1f29e"
+  integrity sha512-++KMqwodVBg75hT2ZT4jobvDPi6iPUl/Lhrn0nP1XTcmFLtccaDb4FTAxzrj3egL7WQYTDnpHuPj52FSFkJqzA==
   dependencies:
     "@types/react" "*"
 
