@@ -167,7 +167,7 @@
     "react-modal": "3.11.2",
     "react-qr-svg": "2.2.2",
     "react-redux": "7.2.0",
-    "react-router-dom": "5.1.2",
+    "react-router-dom": "5.2.0",
     "react-scrollspy": "3.4.2",
     "redux": "4.0.5",
     "redux-persist": "6.0.0",
