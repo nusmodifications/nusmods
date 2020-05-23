@@ -1,9 +1,9 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { CommentCountComponent } from './CommentCount';
 import insertScript from 'utils/insertScript';
+import { CommentCountComponent } from './CommentCount';
 
-jest.mock('utils/insertScript', () => jest.fn().mockResolvedValueOnce('fuck'));
+jest.mock('utils/insertScript', () => jest.fn());
 
 const disqusConfig = {
   url: 'https://nusmods.com/modules/CS1010/reviews',
