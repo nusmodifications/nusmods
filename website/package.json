@@ -142,7 +142,7 @@
     "browserslist-config-nusmods": "file:../packages/browserslist-config-nusmods",
     "classnames": "2.2.6",
     "core-js": "3.6.5",
-    "date-fns": "2.13.0",
+    "date-fns": "2.14.0",
     "downshift": "5.4.0",
     "ical-generator": "https://github.com/ZhangYiJiang/ical-generator.git#ed6928fe",
     "immer": "6.0.5",
