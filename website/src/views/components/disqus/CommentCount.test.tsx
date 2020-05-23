@@ -3,7 +3,6 @@ import { mount } from 'enzyme';
 import { CommentCountComponent } from './CommentCount';
 import insertScript from 'utils/insertScript';
 
-// const mockInsertScript = jest.fn();
 jest.mock('utils/insertScript', () => jest.fn().mockResolvedValueOnce('fuck'));
 
 const disqusConfig = {
