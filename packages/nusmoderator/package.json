@@ -58,6 +58,6 @@
     "typescript": "3.8.3"
   },
   "dependencies": {
-    "date-fns": "2.13.0"
+    "date-fns": "2.14.0"
   }
 }
