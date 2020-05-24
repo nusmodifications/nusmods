@@ -27,7 +27,7 @@ const EXAM_FILTER_ITEMS: FilterItem[] = [
     label: 'No Exam',
     filter: {
       bool: {
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line camelcase
         must_not: {
           exists: {
             field: 'semesterData.examDate',
