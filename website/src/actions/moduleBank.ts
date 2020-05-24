@@ -1,10 +1,12 @@
+import { size, zip } from 'lodash';
+
+import type { AcadYear, Module, ModuleCode, ModuleCondensed } from 'types/modules';
+import type { RequestActions } from 'middlewares/requests-middleware';
+import type { Dispatch, GetState } from 'types/redux';
+
 import { requestAction } from 'actions/requests';
 import NUSModsApi from 'apis/nusmods';
 import config from 'config';
-import { size, zip } from 'lodash';
-import { AcadYear, Module, ModuleCode, ModuleCondensed } from 'types/modules';
-import { RequestActions } from 'middlewares/requests-middleware';
-import { GetState } from 'types/redux';
 import {
   FETCH_ARCHIVE_MODULE,
   FETCH_MODULE,
@@ -41,7 +43,7 @@ export const Internal = {
 };
 
 export function fetchModule(moduleCode: ModuleCode) {
-  return (dispatch: Function, getState: GetState) => {
+  return (dispatch: Dispatch, getState: GetState) => {
     const onFinally = () => {
       // Update the timestamp of the accessed module if it is in the store.
       if (getState().moduleBank.modules[moduleCode]) {
@@ -93,7 +95,6 @@ export function fetchModuleArchive(moduleCode: ModuleCode, year: string) {
   });
 
   action.meta.academicYear = year;
-
   return action;
 }
 export type FetchModuleArchiveActions = RequestActions<
@@ -104,7 +105,7 @@ export type FetchModuleArchiveActions = RequestActions<
 
 export function fetchAllModuleArchive(moduleCode: ModuleCode) {
   // Returns: Promise<[AcadYear, Module?][]>
-  return (dispatch: Function) =>
+  return (dispatch: Dispatch) =>
     Promise.all(
       config.archiveYears.map((year) =>
         dispatch(fetchModuleArchive(moduleCode, year)).catch(() => null),

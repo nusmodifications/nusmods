@@ -8,7 +8,7 @@ jest.mock('axios');
 const mockAxios: jest.Mocked<AxiosInstance> = axios as any;
 
 describe(requestMiddleware, () => {
-  const mockStore = configureStore<{}>([requestMiddleware]);
+  const mockStore = configureStore([requestMiddleware]);
   const requestAction = {
     type: 'TEST_ACTION',
     payload: {

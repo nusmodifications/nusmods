@@ -5,7 +5,8 @@ import { match as Match, Redirect, RouteComponentProps, withRouter } from 'react
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import { get } from 'lodash';
 
-import { Module, ModuleCode } from 'types/modules';
+import type { Module, ModuleCode } from 'types/modules';
+import type { Dispatch } from 'types/redux';
 
 import { fetchModule, fetchModuleArchive } from 'actions/moduleBank';
 import { captureException, retryImport } from 'utils/error';
@@ -162,7 +163,7 @@ const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Function, ownProps: OwnProps) => {
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: OwnProps) => {
   const { moduleCode, year } = getPropsFromMatch(ownProps.match);
 
   return {

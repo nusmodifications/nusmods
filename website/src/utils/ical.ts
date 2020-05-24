@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { EventOption } from 'ical-generator';
+import type { EventOption } from 'ical-generator';
 import { addDays, addMinutes, addWeeks, isValid } from 'date-fns';
 
 import {

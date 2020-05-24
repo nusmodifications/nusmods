@@ -10,7 +10,8 @@ export interface NoHitsDisplayProps {
   noResultsLabel: string;
   resetFiltersFn: () => void;
   setSuggestionFn: () => void;
-  translate: Function;
+  // Approximate typing - searchkit types this as Function, which is even less strict
+  translate: (key: string, variables: Record<string, string>) => string;
   suggestion: string;
   query: string;
   filtersCount: number;

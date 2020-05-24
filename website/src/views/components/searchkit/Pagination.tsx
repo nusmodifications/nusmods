@@ -19,7 +19,7 @@ export interface PaginationProps extends SearchkitComponentProps {
 export const FIRST_PAGE_INDEX = 1;
 
 // Custom equivalent of Searchkit's Pagination component
-export default class Pagination extends SearchkitComponent<PaginationProps, {}> {
+export default class Pagination extends SearchkitComponent<PaginationProps, undefined> {
   paginationAccessor() {
     return this.accessor as PaginationAccessor;
   }

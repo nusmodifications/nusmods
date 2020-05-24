@@ -10,7 +10,7 @@ import CloseButton from 'views/components/CloseButton';
 import styles from './Announcements.scss';
 
 type Props = {
-  toggleFeedback: Function;
+  toggleFeedback: () => void;
 };
 
 type State = {
