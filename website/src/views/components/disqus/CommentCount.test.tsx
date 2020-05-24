@@ -4,6 +4,11 @@ import insertScript from 'utils/insertScript';
 import { CommentCountComponent } from './CommentCount';
 
 jest.mock('utils/insertScript', () => jest.fn());
+// Return value is mocked outside of jest.mock's factory because JSDOM symbols
+// like Event are not available since module mocks are hoisted
+(insertScript as jest.MockedFunction<typeof insertScript>).mockResolvedValue(
+  new Event('mock event'),
+);
 
 const disqusConfig = {
   url: 'https://nusmods.com/modules/CS1010/reviews',
@@ -13,15 +18,13 @@ const disqusConfig = {
 
 describe(CommentCountComponent, () => {
   test('should be disabled (render null) if user has enabled loadDisqusManually', () => {
-    const wrapper = mount(<CommentCountComponent loadDisqusManually {...disqusConfig} />);
+    const wrapper = mount(<CommentCountComponent {...disqusConfig} loadDisqusManually />);
     expect(wrapper.isEmptyRender()).toBe(true);
+    expect(insertScript).not.toBeCalled();
   });
 
   test('should insert Disqus script if loadDisqusManually is false', () => {
-    (insertScript as jest.MockedFunction<typeof insertScript>).mockResolvedValueOnce(
-      new Event('mock event'),
-    );
-    mount(<CommentCountComponent loadDisqusManually={false} {...disqusConfig} />);
+    mount(<CommentCountComponent {...disqusConfig} loadDisqusManually={false} />);
     expect(insertScript).toBeCalled();
   });
 });

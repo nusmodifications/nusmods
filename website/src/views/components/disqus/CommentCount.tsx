@@ -34,8 +34,9 @@ function loadInstance() {
 
 export const CommentCountComponent: React.FC<Props> = ({ identifier, url, loadDisqusManually }) => {
   useEffect(() => {
-    if (loadDisqusManually) return;
-    loadInstance();
+    if (!loadDisqusManually) {
+      loadInstance();
+    }
   }, [loadDisqusManually]);
 
   if (loadDisqusManually) return null;
