@@ -47,7 +47,7 @@ export function highlight(str: string, search: string | string[], Tag = 'mark'):
   const terms = castArray(search).filter(Boolean);
   if (!terms.length) return str;
   const regex = new RegExp(`(${terms.map(escapeRegExp).join('|')})`, 'ig');
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore This does not type check correctly
   return replaceWithNode(str, regex, (match, i) => <Tag key={i}>{match}</Tag>);
 }
@@ -72,7 +72,7 @@ export function defer(task: () => unknown) {
 }
 
 // We really don't care about the props here
-export function wrapComponentName<T extends {}>(
+export function wrapComponentName<T extends Record<string, unknown>>(
   Component: React.ComponentType<T>,
   wrapper: string,
 ): string {
