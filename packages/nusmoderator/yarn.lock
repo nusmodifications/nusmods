@@ -483,10 +483,10 @@
     esutils "^2.0.2"
     js-tokens "^4.0.0"
 
-"@babel/parser@7.9.4", "@babel/parser@^7.8.6", "@babel/parser@^7.9.0":
-  version "7.9.4"
-  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.9.4.tgz#68a35e6b0319bbc014465be43828300113f2f2e8"
-  integrity sha512-bC49otXX6N0/VYhgOMh4gnP26E9xnDZK3TmbNpxYzzz9BQLBosQwfyOe9/cXUU3txYhTzLCbcqd5c8y/OmCjHA==
+"@babel/parser@7.10.2":
+  version "7.10.2"
+  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.10.2.tgz#871807f10442b92ff97e4783b9b54f6a0ca812d0"
+  integrity sha512-PApSXlNMJyB4JiGVhCOlzKIif+TKFTvu0aQAhnTvfP/z3vVSN6ZypH5bfUNwFXXjRQtUEBNFd2PtmCmG2Py3qQ==
 
 "@babel/parser@^7.1.0":
   version "7.3.4"
@@ -506,6 +506,11 @@
   version "7.8.4"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.8.4.tgz#d1dbe64691d60358a974295fa53da074dd2ce8e8"
   integrity sha512-0fKu/QqildpXmPVaRBoXOlyBb3MC+J0A66x97qEfLOMkn3u6nfY5esWogQwi/K0BjASYy4DbnsEWnpNL6qT5Mw==
+
+"@babel/parser@^7.8.6", "@babel/parser@^7.9.0":
+  version "7.9.4"
+  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.9.4.tgz#68a35e6b0319bbc014465be43828300113f2f2e8"
+  integrity sha512-bC49otXX6N0/VYhgOMh4gnP26E9xnDZK3TmbNpxYzzz9BQLBosQwfyOe9/cXUU3txYhTzLCbcqd5c8y/OmCjHA==
 
 "@babel/plugin-proposal-async-generator-functions@^7.8.3":
   version "7.8.3"
@@ -3208,14 +3213,14 @@ doctrine@^3.0.0:
   dependencies:
     esutils "^2.0.2"
 
-documentation@13.0.0:
-  version "13.0.0"
-  resolved "https://registry.yarnpkg.com/documentation/-/documentation-13.0.0.tgz#7be30a05cf9f37aee64d6778410fd871477d8d95"
-  integrity sha512-Bet977bi9sg26d3k9wc7s790NkCUt7mEBSXcoorIXiaII3ryfTAbjFlIpg47gqrjcSyc3HxaRLBjAU3pnqKYww==
+documentation@13.0.1:
+  version "13.0.1"
+  resolved "https://registry.yarnpkg.com/documentation/-/documentation-13.0.1.tgz#3b540451f54998851e4d6b7e616e49df46a0372d"
+  integrity sha512-lFNDhc287R0W9k+tlmDyE9+L9x1HOePLJm6zv2tqiEzoin6yPURJz6GSYhL0KMMB7HPCi1brdxwYWXiuHrvBdA==
   dependencies:
     "@babel/core" "^7.9.0"
     "@babel/generator" "^7.9.4"
-    "@babel/parser" "7.9.4"
+    "@babel/parser" "7.10.2"
     "@babel/plugin-proposal-class-properties" "^7.8.3"
     "@babel/plugin-proposal-decorators" "^7.8.3"
     "@babel/plugin-proposal-do-expressions" "^7.8.3"
@@ -3246,7 +3251,7 @@ documentation@13.0.0:
     concat-stream "^1.6.0"
     diff "^4.0.1"
     doctrine-temporary-fork "2.1.0"
-    get-port "^4.0.0"
+    get-port "^5.0.0"
     git-url-parse "^11.1.2"
     github-slugger "1.2.0"
     glob "^7.1.2"
@@ -3260,7 +3265,7 @@ documentation@13.0.0:
     mime "^2.2.0"
     module-deps-sortable "5.0.0"
     parse-filepath "^1.0.2"
-    pify "^4.0.0"
+    pify "^5.0.0"
     read-pkg-up "^4.0.0"
     remark "^9.0.0"
     remark-html "^8.0.0"
@@ -3990,10 +3995,10 @@ get-caller-file@^2.0.1:
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-2.0.5.tgz#4f94412a82db32f36e3b0b9741f8a97feb031f7e"
   integrity sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==
 
-get-port@^4.0.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/get-port/-/get-port-4.1.0.tgz#93eb3d5552c197497d76e9c389a6ac9920e20192"
-  integrity sha512-4/fqAYrzrzOiqDrdeZRKXGdTGgbkfTEumGlNQPeP6Jy8w0PzN9mzeNQ3XgHaTNie8pQ3hOUkrwlZt2Fzk5H9mA==
+get-port@^5.0.0:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/get-port/-/get-port-5.1.1.tgz#0469ed07563479de6efb986baf053dcd7d4e3193"
+  integrity sha512-g/Q1aTSDOxFpchXC4i8ZWvxA1lnPqx/JHqcpIw0/LX9T8x/GBbi6YnlN5nhaKIFkT8oFsscUKgDJYxfwfS6QsQ==
 
 get-stdin@^6.0.0:
   version "6.0.0"
@@ -6435,7 +6440,7 @@ pify@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"
 
-pify@^4.0.0, pify@^4.0.1:
+pify@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/pify/-/pify-4.0.1.tgz#4b2cd25c50d598735c50292224fd8c6df41e3231"
   integrity sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==
