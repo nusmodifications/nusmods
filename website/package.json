@@ -94,7 +94,7 @@
     "eslint-plugin-react-hooks": "4.0.4",
     "express": "4.17.1",
     "fast-json-stable-stringify": "2.1.0",
-    "fs-extra": "9.0.0",
+    "fs-extra": "9.0.1",
     "graceful-fs": "4.2.4",
     "hard-source-webpack-plugin": "0.13.1",
     "html-webpack-plugin": "4.3.0",
