@@ -6013,10 +6013,10 @@ dot-prop@^4.1.1:
   dependencies:
     is-obj "^1.0.0"
 
-downshift@5.4.3:
-  version "5.4.3"
-  resolved "https://registry.yarnpkg.com/downshift/-/downshift-5.4.3.tgz#7dda5e5d07aa06d440af4e691e318ec9b4e3e78f"
-  integrity sha512-5RdEBfIfhK4dqoXvLKGrFqY+kE9iBjZJrJoxoWXQzXMCybyr7pbqq4rvXqvzbZtmCuCB8ZN9iGz5V96rv+Q7fw==
+downshift@5.4.5:
+  version "5.4.5"
+  resolved "https://registry.yarnpkg.com/downshift/-/downshift-5.4.5.tgz#dc2a02fa87ef98dd1d676bd9dc07fe836059b1c6"
+  integrity sha512-Dd49NfQqbekoNm1rwyyb3Tn3Km4VbV+V/BS2c/hU6lStnYGmq7Zt9TqSx0tDINN0nxeuKqGb3Wz7s8Ry1Xs2Tg==
   dependencies:
     "@babel/runtime" "^7.9.6"
     compute-scroll-into-view "^1.0.13"
