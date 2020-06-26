@@ -32,12 +32,10 @@ export const NavtabsComponent: React.FC<Props> = (props) => {
 
   return (
     <nav className={styles.nav}>
-      {props.beta && (
-        <NavLink {...tabProps} to="/today" onMouseOver={preloadToday} onFocus={preloadToday}>
-          <Clock />
-          <span className={styles.title}>Today</span>
-        </NavLink>
-      )}
+      <NavLink {...tabProps} to="/today" onMouseOver={preloadToday} onFocus={preloadToday}>
+        <Clock />
+        <span className={styles.title}>Today</span>
+      </NavLink>
       <NavLink {...tabProps} to={timetablePage(props.activeSemester)}>
         <Calendar />
         <span className={styles.title}>Timetable</span>
