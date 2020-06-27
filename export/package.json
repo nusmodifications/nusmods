@@ -13,14 +13,14 @@
     "deploy": "rsync -avu --delete-after . ../../nusmods-export && pm2 restart ecosystem.config.js"
   },
   "dependencies": {
-    "@sentry/node": "5.15.5",
+    "@sentry/node": "5.17.0",
     "axios": "0.19.2",
     "bunyan": "1.8.12",
-    "fs-extra": "9.0.0",
+    "fs-extra": "9.0.1",
     "http-graceful-shutdown": "2.3.2",
-    "koa": "2.12.0",
+    "koa": "2.12.1",
     "koa-router": "8.0.8",
-    "koa-views": "6.2.3",
+    "koa-views": "6.3.0",
     "lodash": "4.17.15",
     "nodemon": "2.0.4",
     "pug": "2.0.4",
