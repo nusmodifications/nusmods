@@ -88,6 +88,11 @@ exports[`SearchBox should match snapshot 3`] = `
     <Search
       className="leftAccessory searchIcon"
     />
+    <X
+      className="removeInput"
+      onClick={[Function]}
+      pointerEvents="bounding-box"
+    />
     <input
       autoComplete="off"
       className="form-control form-control-lg"
