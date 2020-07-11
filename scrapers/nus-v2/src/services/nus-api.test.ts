@@ -96,7 +96,7 @@ describe(callApi, () => {
 
 describe(NusApi, () => {
   test('should enforce maximum concurrency', async () => {
-    expect.assertions(6);
+    expect.assertions(7);
 
     mockedAxios.post.mockResolvedValue(
       mockResponse({ code: '00000', msg: '', data: 'Turn down for whaaaaat?' }),
@@ -109,19 +109,23 @@ describe(NusApi, () => {
     const p3 = api.callApi('test-3', {});
     const p4 = api.callApi('test-4', {});
 
+    // Expect 2 requests to have started, with 2 more waiting to be started.
     expect(mockedAxios.post).toBeCalledTimes(2);
     expect(api.queue.getPendingLength()).toEqual(2);
+    expect(api.queue.getQueueLength()).toEqual(2);
 
     await p1;
     await p2;
 
+    // Expect remaining 2 requests to have started.
     expect(mockedAxios.post).toBeCalledTimes(4);
-    expect(api.queue.getPendingLength()).toEqual(0);
     expect(api.queue.getQueueLength()).toEqual(0);
 
     await p3;
     await p4;
 
+    // Expect no more pending requests.
+    expect(api.queue.getPendingLength()).toEqual(0);
     expect(api.queue.getQueueLength()).toEqual(0);
   });
 });

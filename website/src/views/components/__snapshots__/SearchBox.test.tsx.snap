@@ -16,8 +16,6 @@ exports[`SearchBox should match snapshot 1`] = `
   >
     <Search
       className="leftAccessory searchIcon"
-      color="currentColor"
-      size="24"
     />
     <input
       autoComplete="off"
@@ -89,8 +87,11 @@ exports[`SearchBox should match snapshot 3`] = `
   >
     <Search
       className="leftAccessory searchIcon"
-      color="currentColor"
-      size="24"
+    />
+    <X
+      className="removeInput"
+      onClick={[Function]}
+      pointerEvents="bounding-box"
     />
     <input
       autoComplete="off"

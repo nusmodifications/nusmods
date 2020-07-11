@@ -74,3 +74,9 @@
   composes: h4 text-center from global;
   padding: 1.5rem 0;
 }
+
+.todayBadge {
+  composes: badge badge-primary from global;
+  margin-left: 0.4rem;
+  vertical-align: text-bottom;
+}

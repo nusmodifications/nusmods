@@ -24,6 +24,7 @@ describe('color reducers', () => {
         payload: {
           semester: 1,
           moduleCode: 'CS1010S',
+          moduleLessonConfig: {},
         },
       }).colors,
     ).toHaveProperty('1.CS1010S');
@@ -34,6 +35,7 @@ describe('color reducers', () => {
         payload: {
           semester: 2,
           moduleCode: 'CS3216',
+          moduleLessonConfig: {},
         },
       }).colors,
     ).toHaveProperty('2.CS3216');
@@ -212,7 +214,7 @@ describe('stateReconciler', () => {
     throw new Error('No stateReconciler');
   }
 
-  const reconcilerPersistConfig = { debug: false } as PersistConfig;
+  const reconcilerPersistConfig = { debug: false } as PersistConfig<TimetablesState>;
 
   test('should return inbound state when academic year is the same', () => {
     expect(stateReconciler(inbound, initialState, initialState, reconcilerPersistConfig)).toEqual(

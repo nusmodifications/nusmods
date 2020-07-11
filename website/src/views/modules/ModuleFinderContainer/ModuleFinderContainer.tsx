@@ -11,6 +11,7 @@ import {
   SearchkitProvider,
 } from 'searchkit';
 import classnames from 'classnames';
+import { hot } from 'react-hot-loader/root';
 
 import { ElasticSearchResult } from 'types/vendor/elastic-search';
 import { ModuleInformation } from 'types/modules';
@@ -34,12 +35,11 @@ const searchkit = new SearchkitManager(esHostUrl);
 
 const pageHead = <Title>Modules</Title>;
 
-/* eslint-disable no-underscore-dangle */
-
 const ModuleInformationListComponent: React.FC<HitsListProps> = ({ hits }) => (
   <ul className={styles.modulesList}>
     {hits.map((hit) => {
       const result = hit as ElasticSearchResult<ModuleInformation>;
+      /* eslint-disable no-underscore-dangle */
       return (
         <ModuleFinderItem
           key={result._source.moduleCode}
@@ -47,6 +47,7 @@ const ModuleInformationListComponent: React.FC<HitsListProps> = ({ hits }) => (
           highlight={result.highlight}
         />
       );
+      /* eslint-enable */
     })}
   </ul>
 );
@@ -103,4 +104,4 @@ const ModuleFinderContainer: React.FC = () => {
   );
 };
 
-export default ModuleFinderContainer;
+export default hot(ModuleFinderContainer);

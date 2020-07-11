@@ -69,7 +69,8 @@ export function getFirstAvailableSemester(
   current: Semester = config.semester, // For testing only
 ): Semester {
   const availableSemesters = semesters.map((semesterData) => semesterData.semester);
-  return availableSemesters.includes(current) ? current : _.min(availableSemesters)!;
+  // Assume there is at least 1 semester
+  return availableSemesters.includes(current) ? current : Math.min(...availableSemesters);
 }
 
 export function getSemestersOffered(module: Module): Semester[] {

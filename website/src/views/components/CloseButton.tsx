@@ -10,24 +10,24 @@ type Props = {
   absolutePositioned?: boolean; // For use in modals where we don't want the CloseButton to affect the layout of other elements.
 };
 
-function RawCloseButton({ onClick, className }: Props) {
-  return (
-    <button
-      className={classnames('close', className)}
-      type="button"
-      onClick={onClick}
-      aria-label="Close"
-    >
-      <Close />
-    </button>
-  );
-}
+const RawCloseButton: React.FC<Props> = ({ onClick, className }) => (
+  <button
+    className={classnames('close', className)}
+    type="button"
+    onClick={onClick}
+    aria-label="Close"
+  >
+    <Close />
+  </button>
+);
 
-export default function CloseButton(props: Props) {
+const CloseButton: React.FC<Props> = (props) => {
   if (!props.absolutePositioned) return <RawCloseButton {...props} />;
   return (
     <div className={styles.closeContainer}>
       <RawCloseButton {...props} className={classnames(props.className, styles.absCloseBtn)} />
     </div>
   );
-}
+};
+
+export default CloseButton;

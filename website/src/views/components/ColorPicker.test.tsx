@@ -16,11 +16,11 @@ function makeColorPicker(color: ColorIndex = 0) {
   };
 }
 
-function findPopup(wrapper: ReactWrapper<ColorPicker>) {
+function findPopup(wrapper: ReactWrapper) {
   return wrapper.find(`.${styles.palette}`);
 }
 
-function isPopupClosed(wrapper: ReactWrapper<ColorPicker>) {
+function isPopupClosed(wrapper: ReactWrapper) {
   return findPopup(wrapper).hasClass('isClosed');
 }
 
@@ -38,17 +38,11 @@ test('should have popup element in DOM even when closed', () => {
   expect(findPopup(wrapper).exists()).toBe(true);
 
   // Popup element should exist when open.
-  wrapper
-    .find('button')
-    .first()
-    .simulate('click');
+  wrapper.find('button').first().simulate('click');
   expect(findPopup(wrapper).exists()).toBe(true);
 
   // Popup element should exist after being closed.
-  wrapper
-    .find('button')
-    .first()
-    .simulate('click');
+  wrapper.find('button').first().simulate('click');
   expect(findPopup(wrapper).exists()).toBe(true);
 });
 
@@ -58,10 +52,7 @@ test('should open ColorPicker when the colored box is selected', () => {
   // Sanity check; ensure that picker is closed before click
   expect(isPopupClosed(wrapper)).toBe(true);
 
-  wrapper
-    .find('button')
-    .first()
-    .simulate('click');
+  wrapper.find('button').first().simulate('click');
   expect(isPopupClosed(wrapper)).toBe(false);
 });
 
@@ -69,10 +60,7 @@ test('should return the color index of the selected color', () => {
   const { wrapper, onChooseColor } = makeColorPicker();
 
   // Expect 1 call to onChooseColor
-  findPopup(wrapper)
-    .find('button')
-    .at(1)
-    .simulate('click');
+  findPopup(wrapper).find('button').at(1).simulate('click');
   expect(onChooseColor).toHaveBeenCalled();
   expect(onChooseColor).toHaveBeenCalledWith(1);
 
@@ -80,18 +68,12 @@ test('should return the color index of the selected color', () => {
 
   // Choosing the already selected color should not trigger another call to
   // onChooseColor.
-  findPopup(wrapper)
-    .find('button')
-    .at(1)
-    .simulate('click');
+  findPopup(wrapper).find('button').at(1).simulate('click');
   expect(onChooseColor).not.toHaveBeenCalled();
 });
 
 test('should allow a falsy color index to be selected', () => {
   const { wrapper, onChooseColor } = makeColorPicker();
-  findPopup(wrapper)
-    .find('button')
-    .first()
-    .simulate('click');
+  findPopup(wrapper).find('button').first().simulate('click');
   expect(onChooseColor).toHaveBeenCalledWith(0);
 });

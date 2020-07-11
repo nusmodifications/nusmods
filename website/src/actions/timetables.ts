@@ -1,7 +1,7 @@
 import { each, flatMap } from 'lodash';
 
 import { Lesson, ColorIndex, ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
-import { FSA, GetState } from 'types/redux';
+import { GetState } from 'types/redux';
 import { ColorMapping } from 'types/reducers';
 import { ClassNo, LessonType, Module, ModuleCode, Semester } from 'types/modules';
 
@@ -15,7 +15,33 @@ import {
 } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
 
-export const ADD_MODULE = 'ADD_MODULE';
+// Actions that should not be used directly outside of thunks
+export const SET_TIMETABLE = 'SET_TIMETABLE' as const;
+export const ADD_MODULE = 'ADD_MODULE' as const;
+export const Internal = {
+  setTimetable(
+    semester: Semester,
+    timetable: SemTimetableConfig | undefined,
+    colors?: ColorMapping,
+  ) {
+    return {
+      type: SET_TIMETABLE,
+      payload: { semester, timetable, colors },
+    };
+  },
+
+  addModule(semester: Semester, moduleCode: ModuleCode, moduleLessonConfig: ModuleLessonConfig) {
+    return {
+      type: ADD_MODULE,
+      payload: {
+        semester,
+        moduleCode,
+        moduleLessonConfig,
+      },
+    };
+  },
+};
+
 export function addModule(semester: Semester, moduleCode: ModuleCode) {
   return (dispatch: Function, getState: GetState) =>
     dispatch(fetchModule(moduleCode)).then(() => {
@@ -37,19 +63,12 @@ export function addModule(semester: Semester, moduleCode: ModuleCode) {
       const lessons = getModuleTimetable(module, semester);
       const moduleLessonConfig = randomModuleLessonConfig(lessons);
 
-      dispatch({
-        type: ADD_MODULE,
-        payload: {
-          semester,
-          moduleCode,
-          moduleLessonConfig,
-        },
-      });
+      dispatch(Internal.addModule(semester, moduleCode, moduleLessonConfig));
     });
 }
 
-export const REMOVE_MODULE = 'REMOVE_MODULE';
-export function removeModule(semester: Semester, moduleCode: ModuleCode): FSA {
+export const REMOVE_MODULE = 'REMOVE_MODULE' as const;
+export function removeModule(semester: Semester, moduleCode: ModuleCode) {
   return {
     type: REMOVE_MODULE,
     payload: {
@@ -59,8 +78,8 @@ export function removeModule(semester: Semester, moduleCode: ModuleCode): FSA {
   };
 }
 
-export const MODIFY_LESSON = 'MODIFY_LESSON';
-export function modifyLesson(activeLesson: Lesson): FSA {
+export const MODIFY_LESSON = 'MODIFY_LESSON' as const;
+export function modifyLesson(activeLesson: Lesson) {
   return {
     type: MODIFY_LESSON,
     payload: {
@@ -69,13 +88,13 @@ export function modifyLesson(activeLesson: Lesson): FSA {
   };
 }
 
-export const CHANGE_LESSON = 'CHANGE_LESSON';
+export const CHANGE_LESSON = 'CHANGE_LESSON' as const;
 export function setLesson(
   semester: Semester,
   moduleCode: ModuleCode,
   lessonType: LessonType,
   classNo: ClassNo,
-): FSA {
+) {
   return {
     type: CHANGE_LESSON,
     payload: {
@@ -87,16 +106,16 @@ export function setLesson(
   };
 }
 
-export function changeLesson(semester: Semester, lesson: Lesson): FSA {
+export function changeLesson(semester: Semester, lesson: Lesson) {
   return setLesson(semester, lesson.moduleCode, lesson.lessonType, lesson.classNo);
 }
 
-export const SET_LESSON_CONFIG = 'SET_LESSON_CONFIG';
+export const SET_LESSON_CONFIG = 'SET_LESSON_CONFIG' as const;
 export function setLessonConfig(
   semester: Semester,
   moduleCode: ModuleCode,
   lessonConfig: ModuleLessonConfig,
-): FSA {
+) {
   return {
     type: SET_LESSON_CONFIG,
     payload: {
@@ -107,15 +126,14 @@ export function setLessonConfig(
   };
 }
 
-export const CANCEL_MODIFY_LESSON = 'CANCEL_MODIFY_LESSON';
-export function cancelModifyLesson(): FSA {
+export const CANCEL_MODIFY_LESSON = 'CANCEL_MODIFY_LESSON' as const;
+export function cancelModifyLesson() {
   return {
     type: CANCEL_MODIFY_LESSON,
     payload: null,
   };
 }
 
-export const SET_TIMETABLE = 'SET_TIMETABLE';
 export function setTimetable(
   semester: Semester,
   timetable?: SemTimetableConfig,
@@ -127,10 +145,7 @@ export function setTimetable(
       [validatedTimetable] = validateTimetableModules(timetable, getState().moduleBank.moduleCodes);
     }
 
-    return dispatch({
-      type: SET_TIMETABLE,
-      payload: { semester, timetable: validatedTimetable, colors },
-    });
+    return dispatch(Internal.setTimetable(semester, validatedTimetable, colors));
   };
 }
 
@@ -174,12 +189,12 @@ export function fetchTimetableModules(timetables: SemTimetableConfig[]) {
   };
 }
 
-export const SELECT_MODULE_COLOR = 'SELECT_MODULE_COLOR';
+export const SELECT_MODULE_COLOR = 'SELECT_MODULE_COLOR' as const;
 export function selectModuleColor(
   semester: Semester,
   moduleCode: ModuleCode,
   colorIndex: ColorIndex,
-): FSA {
+) {
   return {
     type: SELECT_MODULE_COLOR,
     payload: {
@@ -190,16 +205,16 @@ export function selectModuleColor(
   };
 }
 
-export const HIDE_LESSON_IN_TIMETABLE = 'HIDE_LESSON_IN_TIMETABLE';
-export function hideLessonInTimetable(semester: Semester, moduleCode: ModuleCode): FSA {
+export const HIDE_LESSON_IN_TIMETABLE = 'HIDE_LESSON_IN_TIMETABLE' as const;
+export function hideLessonInTimetable(semester: Semester, moduleCode: ModuleCode) {
   return {
     type: HIDE_LESSON_IN_TIMETABLE,
     payload: { moduleCode, semester },
   };
 }
 
-export const SHOW_LESSON_IN_TIMETABLE = 'SHOW_LESSON_IN_TIMETABLE';
-export function showLessonInTimetable(semester: Semester, moduleCode: ModuleCode): FSA {
+export const SHOW_LESSON_IN_TIMETABLE = 'SHOW_LESSON_IN_TIMETABLE' as const;
+export function showLessonInTimetable(semester: Semester, moduleCode: ModuleCode) {
   return {
     type: SHOW_LESSON_IN_TIMETABLE,
     payload: { moduleCode, semester },

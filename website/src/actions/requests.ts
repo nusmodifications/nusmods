@@ -3,8 +3,8 @@ import { RequestKey } from 'types/reducers';
 
 export const API_REQUEST = 'API_REQUEST';
 
-export type RequestAction = {
-  type: string;
+export type RequestAction<Type extends string> = {
+  type: Type;
   payload: AxiosRequestConfig;
   meta: {
     [key: string]: string;
@@ -25,15 +25,17 @@ export type RequestAction = {
  * provided.
  */
 type RequestActionCreator = {
-  (key: RequestKey, options: AxiosRequestConfig): RequestAction;
-  (key: RequestKey, type: string, options: AxiosRequestConfig): RequestAction;
+  <Key extends string>(key: Key, options: AxiosRequestConfig): RequestAction<Key>;
+  <Type extends string>(key: RequestKey, type: Type, options: AxiosRequestConfig): RequestAction<
+    Type
+  >;
 };
 
 export const requestAction: RequestActionCreator = (
   key: RequestKey,
   type: string | AxiosRequestConfig,
   options?: AxiosRequestConfig,
-): RequestAction => {
+): RequestAction<RequestKey | string> => {
   let payload: AxiosRequestConfig;
 
   if (typeof type !== 'string') {
@@ -43,7 +45,6 @@ export const requestAction: RequestActionCreator = (
   } else if (options) {
     payload = options;
   } else {
-    // Keeps Flow happy
     throw new Error();
   }
 

@@ -1,7 +1,7 @@
 const path = require('path');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
+const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
@@ -34,9 +34,9 @@ const productionConfig = merge([
     plugins: [
       new HtmlWebpackPlugin({
         template: path.join(parts.PATHS.src, source('index.html')),
-        inlineSource: '\\.(js|css)$',
+        inject: true,
       }),
-      new HtmlWebpackInlineSourcePlugin(),
+      new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/\.(js|css)$/]),
     ],
   },
   parts.loadImages({

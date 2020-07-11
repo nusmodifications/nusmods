@@ -35,10 +35,7 @@ describe('ShareTimetable', () => {
 
   const openModal = (wrapper: ShallowWrapper) => wrapper.find('button').simulate('click');
   const closeModal = (wrapper: ShallowWrapper) =>
-    wrapper
-      .find(Modal)
-      .first()
-      .props().onRequestClose!({} as any);
+    wrapper.find(Modal).first().props().onRequestClose!({} as any);
 
   const openAndWait = async (wrapper: ShallowWrapper) => {
     openModal(wrapper);

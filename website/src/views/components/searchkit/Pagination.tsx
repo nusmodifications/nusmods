@@ -40,9 +40,13 @@ export default class Pagination extends SearchkitComponent<PaginationProps, {}> 
   }
 
   onGoToFirst = () => this.setPage(FIRST_PAGE_INDEX);
+
   onGoToPrevious = () => this.setPage(this.getCurrentPage() - 1);
+
   onGoToPage = (page: number) => this.setPage(page);
+
   onGoToNext = () => this.setPage(this.getCurrentPage() + 1);
+
   onGoToLast = () => this.setPage(this.getTotalPages());
 
   setPage(requestedPage: number) {

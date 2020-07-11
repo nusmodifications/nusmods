@@ -23,7 +23,7 @@ const freeRoomMessage = (
   </>
 );
 
-export default function BeforeLessonCard(props: Props) {
+const BeforeLessonCard: React.FC<Props> = (props) => {
   const { nextLesson, currentTime, marker } = props;
   const nextLessonDate = getStartTimeAsDate(nextLesson);
   const hoursTillNextLesson = differenceInHours(nextLessonDate, props.currentTime);
@@ -56,4 +56,6 @@ export default function BeforeLessonCard(props: Props) {
       </div>
     </div>
   );
-}
+};
+
+export default BeforeLessonCard;

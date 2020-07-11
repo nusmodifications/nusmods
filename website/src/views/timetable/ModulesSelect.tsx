@@ -46,6 +46,9 @@ export class ModulesSelectComponent extends React.Component<Props, State> {
   onOuterClick = () => {
     this.setState({
       isOpen: false,
+      // Cannot use prevState as prevState.inputValue will be empty string
+      // instead of the (possibly non-empty) this.state.inputValue.
+      // eslint-disable-next-line react/no-access-state-in-setstate
       inputValue: this.state.inputValue,
     });
   };

@@ -65,7 +65,7 @@ export default class BusStops extends React.PureComponent<Props, State> {
     if (!allowBusStopEditing()) return;
 
     const { target } = evt;
-    const code = target.getElement().children[0].dataset.code;
+    const { code } = target.getElement().children[0].dataset;
     const { lat, lng } = target.getLatLng();
 
     this.setState((state) =>

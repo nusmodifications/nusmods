@@ -2,21 +2,7 @@ version: 2
 
 defaults: &defaults
   docker:
-    - image: circleci/node:10
-
-restore_cache: &restore_node_deps
-  name: Restore node_modules cache
-  keys:
-    - v2-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
-    - v2-node-{{ arch }}-{{ .Branch }}-
-    - v2-node-{{ arch }}-
-
-save_cache: &save_node_deps
-  name: Save node_modules cache
-  key: v2-node-{{ arch }}-{{ .Branch }}-{{ checksum "yarn.lock" }}
-  paths:
-    - ~/.cache/yarn
-    - node_modules
+    - image: circleci/node:12
 
 jobs:
   checkout:
@@ -36,9 +22,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/nusmods
-      - restore_cache: *restore_node_deps
       - run: yarn --frozen-lockfile --non-interactive
-      - save_cache: *save_node_deps
       - run: yarn lint
       - run: yarn test --runInBand
       - run:
@@ -53,9 +37,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/nusmods
-      - restore_cache: *restore_node_deps
       - run: yarn --frozen-lockfile --non-interactive
-      - save_cache: *save_node_deps
       - run: yarn lint
       - run: yarn test --runInBand
       - run:
@@ -70,9 +52,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/nusmods
-      - restore_cache: *restore_node_deps
       - run: yarn --frozen-lockfile --non-interactive
-      - save_cache: *save_node_deps
       - run: yarn lint
       - run: yarn test --runInBand
       - run: yarn build
@@ -91,11 +71,9 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/nusmods
-      - restore_cache: *restore_node_deps
       - run:
           name: Install dependencies
           command: yarn --frozen-lockfile --non-interactive --production=false
-      - save_cache: *save_node_deps
       - run:
           name: Lint code
           command: yarn lint:code --cache --cache-location 'node_modules/.eslintcache/'

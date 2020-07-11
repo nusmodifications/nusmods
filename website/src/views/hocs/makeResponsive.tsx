@@ -2,7 +2,6 @@ import * as React from 'react';
 import json2mq, { QueryObject } from 'json2mq';
 
 import { wrapComponentName } from 'utils/react';
-import { Omit } from 'types/utils';
 
 export interface WithBreakpoint {
   matchBreakpoint: boolean;

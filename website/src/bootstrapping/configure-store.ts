@@ -6,12 +6,12 @@ import requestsMiddleware from 'middlewares/requests-middleware';
 import ravenMiddleware from 'middlewares/raven-middleware';
 import { setAutoFreeze } from 'immer';
 
-import { FSA, GetState } from 'types/redux';
+import { GetState } from 'types/redux';
 import { State } from 'types/state';
+import { Actions } from 'types/actions';
 
 // For redux-devtools-extensions - see
 // https://github.com/zalmoxisus/redux-devtools-extension
-// eslint-disable-next-line no-underscore-dangle
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 // immer uses Object.freeze on returned state objects, which is incompatible with
@@ -22,16 +22,15 @@ export default function configureStore(defaultState?: State) {
   const middlewares = [ravenMiddleware, thunk, requestsMiddleware];
 
   if (process.env.NODE_ENV === 'development') {
-    /* eslint-disable */
+    // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-extraneous-dependencies
     const { createLogger } = require('redux-logger');
-    /* eslint-enable */
     const logger = createLogger({
       level: 'info',
       collapsed: true,
       duration: true,
       diff: true,
       // Avoid diffing actions that insert a lot of stuff into the state to prevent console from lagging
-      diffPredicate: (getState: GetState, action: FSA) =>
+      diffPredicate: (getState: GetState, action: Actions) =>
         !action.type.startsWith('FETCH_MODULE_LIST') && !action.type.startsWith('persist/'),
     });
     middlewares.push(logger);

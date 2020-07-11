@@ -68,6 +68,7 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
   }
 
   fetchModule() {
+    this.setState({ error: undefined });
     this.props.fetchModule().catch(this.handleFetchError);
   }
 
@@ -133,7 +134,7 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
 }
 
 const getPropsFromMatch = (match: Match<Params>) => {
-  const year = match.params.year;
+  const { year } = match.params;
 
   return {
     moduleCode: (match.params.moduleCode || '').toUpperCase(),

@@ -14,7 +14,7 @@ type Props = {
   className?: string;
 };
 
-export default function ThemeOption(props: Props) {
+const ThemeOption: React.FC<Props> = (props) => {
   const { theme, isSelected, onSelectTheme, className } = props;
 
   return (
@@ -35,4 +35,6 @@ export default function ThemeOption(props: Props) {
       </ul>
     </button>
   );
-}
+};
+
+export default ThemeOption;

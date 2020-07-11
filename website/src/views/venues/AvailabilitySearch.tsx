@@ -33,10 +33,12 @@ export function defaultSearchOptions(
   };
 }
 
-export default class AvailabilitySearch extends React.PureComponent<Props> {
-  onUpdate = (event: React.SyntheticEvent<HTMLSelectElement>, key: keyof VenueSearchOptions) => {
+const AvailabilitySearch = React.memo<Props>(({ className, searchOptions, onUpdate }) => {
+  const onUpdateInner = (
+    event: React.SyntheticEvent<HTMLSelectElement>,
+    key: keyof VenueSearchOptions,
+  ) => {
     if (typeof event.currentTarget.value !== 'undefined') {
-      const { searchOptions, onUpdate } = this.props;
       onUpdate({
         ...searchOptions,
         [key]: +event.currentTarget.value,
@@ -44,59 +46,57 @@ export default class AvailabilitySearch extends React.PureComponent<Props> {
     }
   };
 
-  render() {
-    const { searchOptions, className } = this.props;
-
-    return (
-      <div className={classnames(className, styles.search)}>
-        <div className="form-group">
-          <label htmlFor="venue-day">On</label>
-          <select
-            id="venue-day"
-            className="form-control"
-            value={searchOptions.day}
-            onChange={(evt) => this.onUpdate(evt, 'day')}
-          >
-            {SCHOOLDAYS.map((name, day) => (
-              <option key={day} value={day}>
-                {name}s
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="venue-time">From</label>
-          <select
-            id="venue-time"
-            className="form-control"
-            value={searchOptions.time}
-            onChange={(evt) => this.onUpdate(evt, 'time')}
-          >
-            {CLASS_START_HOURS.map((hour) => (
-              <option key={hour} value={hour}>
-                {formatHour(hour)}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="venue-duration">To</label>
-          <select
-            id="venue-duration"
-            className="form-control"
-            value={searchOptions.duration}
-            onChange={(evt) => this.onUpdate(evt, 'duration')}
-          >
-            {range(1, LAST_CLASS_HOUR + 3 - searchOptions.time).map((hour) => (
-              <option key={hour} value={hour}>
-                {formatHour(searchOptions.time + hour)} ({hour} {hour === 1 ? 'hr' : 'hrs'})
-              </option>
-            ))}
-          </select>
-        </div>
+  return (
+    <div className={classnames(className, styles.search)}>
+      <div className="form-group">
+        <label htmlFor="venue-day">On</label>
+        <select
+          id="venue-day"
+          className="form-control"
+          value={searchOptions.day}
+          onChange={(evt) => onUpdateInner(evt, 'day')}
+        >
+          {SCHOOLDAYS.map((name, day) => (
+            <option key={day} value={day}>
+              {name}s
+            </option>
+          ))}
+        </select>
       </div>
-    );
-  }
-}
+
+      <div className="form-group">
+        <label htmlFor="venue-time">From</label>
+        <select
+          id="venue-time"
+          className="form-control"
+          value={searchOptions.time}
+          onChange={(evt) => onUpdateInner(evt, 'time')}
+        >
+          {CLASS_START_HOURS.map((hour) => (
+            <option key={hour} value={hour}>
+              {formatHour(hour)}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="venue-duration">To</label>
+        <select
+          id="venue-duration"
+          className="form-control"
+          value={searchOptions.duration}
+          onChange={(evt) => onUpdateInner(evt, 'duration')}
+        >
+          {range(1, LAST_CLASS_HOUR + 3 - searchOptions.time).map((hour) => (
+            <option key={hour} value={hour}>
+              {formatHour(searchOptions.time + hour)} ({hour} {hour === 1 ? 'hr' : 'hrs'})
+            </option>
+          ))}
+        </select>
+      </div>
+    </div>
+  );
+});
+
+export default AvailabilitySearch;
