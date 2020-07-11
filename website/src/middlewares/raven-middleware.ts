@@ -16,7 +16,7 @@ const ravenMiddleware: Middleware<{}, State> = (store) => {
         if (!draft.extra) {
           draft.extra = {};
         }
-        draft.extra!['redux:state'] = stateTransformer(store.getState());
+        draft.extra['redux:state'] = stateTransformer(store.getState());
       }),
     );
   });
