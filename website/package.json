@@ -102,7 +102,7 @@
     "icalendar": "0.7.1",
     "identity-obj-proxy": "3.0.0",
     "jest": "26.1.0",
-    "jest-junit": "10.0.0",
+    "jest-junit": "11.0.1",
     "js-combinatorics": "0.6.1",
     "lodash-webpack-plugin": "0.11.5",
     "mini-css-extract-plugin": "0.9.0",
