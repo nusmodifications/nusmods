@@ -217,7 +217,7 @@ const FormContent: React.FC<FormContentProps> = ({
   isSubmitting,
 }) => {
   const selectedContact = facultyEmails.find((config) => config.id === formData.contactId);
-
+  const isProductionMode = process.env.NODE_ENV === 'production';
   return (
     <form
       className={classnames('form-row', { disabled: isSubmitting })}
@@ -309,7 +309,11 @@ const FormContent: React.FC<FormContentProps> = ({
       </div>
 
       <footer className={classnames(styles.footer, 'col-sm-12')}>
-        <button type="submit" className="btn btn-primary btn-lg" disabled={isSubmitting}>
+        <button
+          type="submit"
+          className="btn btn-primary btn-lg"
+          disabled={!isProductionMode || isSubmitting}
+        >
           {isSubmitting && <LoadingSpinner small white />} Submit
         </button>
       </footer>
