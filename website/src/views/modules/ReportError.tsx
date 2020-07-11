@@ -128,8 +128,10 @@ const ReportError = React.memo<Props>(({ module }) => {
   );
 
   const onSubmit = React.useCallback(() => {
+    setFormState({ type: 'submitting' });
+
     const { name, replyTo, message, contactId } = formData;
-    return axios
+    axios
       .post(appConfig.moduleErrorApi, {
         name,
         contactId,
@@ -177,7 +179,10 @@ const ReportError = React.memo<Props>(({ module }) => {
         )}
 
         {formState.type === 'submitted' ? (
-          <div className="alert alert-success">Thank you for reporting the error.</div>
+          <div className="alert alert-success">
+            Thank you for reporting the error. A copy of the email that was sent to the faculty has
+            also been cc'd to you.
+          </div>
         ) : (
           <FormContent
             formData={formData}
@@ -281,13 +286,13 @@ const FormContent: React.FC<FormContentProps> = ({
           className="form-control"
           value={formData.message}
           onChange={updateFormValue('message')}
-          rows={5}
+          rows={8}
           required
         />
       </div>
 
-      <footer className="col-sm-12">
-        <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+      <footer className={classnames(styles.footer, 'col-sm-12')}>
+        <button type="submit" className="btn btn-primary btn-lg" disabled={isSubmitting}>
           {isSubmitting && <LoadingSpinner small white />} Submit
         </button>
       </footer>
