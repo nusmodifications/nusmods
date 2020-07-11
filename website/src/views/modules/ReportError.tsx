@@ -286,7 +286,7 @@ const FormContent: React.FC<FormContentProps> = ({
       </div>
 
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-email">Your Matriculation Number</label>
+        <label htmlFor="report-error-matric-number">Your Matriculation Number</label>
         <input
           id="report-error-matric-number"
           className="form-control"
