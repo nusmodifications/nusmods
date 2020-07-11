@@ -217,7 +217,9 @@ const FormContent: React.FC<FormContentProps> = ({
   isSubmitting,
 }) => {
   const selectedContact = facultyEmails.find((config) => config.id === formData.contactId);
-
+  // In production mode and debug mode, form can be submitted. Otherwise, form cannot be submitted
+  const [debug, setDebug] = React.useState(process.env.NODE_ENV === 'production');
+  window.SET_ERROR_REPORTING_DEBUG = setDebug;
   return (
     <form
       className={classnames('form-row', { disabled: isSubmitting })}
@@ -309,7 +311,7 @@ const FormContent: React.FC<FormContentProps> = ({
       </div>
 
       <footer className={classnames(styles.footer, 'col-sm-12')}>
-        <button type="submit" className="btn btn-primary btn-lg" disabled={isSubmitting}>
+        <button type="submit" className="btn btn-primary btn-lg" disabled={!debug || isSubmitting}>
           {isSubmitting && <LoadingSpinner small white />} Submit
         </button>
       </footer>

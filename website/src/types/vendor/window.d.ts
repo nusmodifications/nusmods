@@ -20,5 +20,8 @@ declare global {
 
     // For the Redux developer extension
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any;
+
+    // For enabling/disabling the submission button of the error reporting form
+    SET_ERROR_REPORTING_DEBUG: any;
   }
 }
