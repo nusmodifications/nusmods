@@ -52,6 +52,10 @@ export class KeyboardShortcutsComponent extends React.PureComponent<Props, State
     const { dispatch, history } = this.props;
 
     // Navigation
+    this.bind('y', NAVIGATION, 'Go to today', () => {
+      history.push('/today');
+    });
+
     this.bind('t', NAVIGATION, 'Go to timetable', () => {
       history.push('/timetable');
     });
