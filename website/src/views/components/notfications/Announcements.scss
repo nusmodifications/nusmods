@@ -23,12 +23,13 @@
   display: flex;
   overflow: hidden;
   justify-content: space-between;
+  padding: 1.2rem 1rem 1.1rem 1.4rem;
   line-height: 1.3;
 
   h3 {
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.5rem;
     font-weight: $font-weight-bold;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
 
   .body {
@@ -38,7 +39,11 @@
       text-decoration: underline;
     }
 
-    p:last-child {
+    .bodyElement {
+      margin-bottom: 0.4rem;
+    }
+
+    .bodyElement:last-child {
       margin-bottom: 0;
     }
   }
@@ -46,17 +51,16 @@
   .actions {
     margin-top: 0.5rem;
   }
+
+  @include media-breakpoint-down(xs) {
+    padding: 1rem 0.75rem 0.75rem 1rem;
+  }
 }
 
 .buttons {
   display: flex;
   flex: 0 0;
   align-items: center;
-}
-
-.closeButton {
-  align-self: stretch;
-  margin-left: 1rem;
 }
 
 .backgroundIcon {
