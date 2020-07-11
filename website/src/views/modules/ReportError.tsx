@@ -34,6 +34,7 @@ interface ReportErrorForm {
   name: string;
   contactId: FacultyEmail['id'] | undefined;
   replyTo: string;
+  matricNumber: string;
   message: string;
 }
 
@@ -46,6 +47,7 @@ type FormState =
 interface PersistedContactInfo {
   name: string;
   replyTo: string;
+  matricNumber: string;
 }
 
 const groupedByMatcherType = groupBy(facultyEmails, (config) => config.match.type) as Record<
@@ -58,6 +60,7 @@ function retrieveContactInfo(): PersistedContactInfo {
   return {
     name: '',
     replyTo: '',
+    matricNumber: '',
     ...persisted,
   };
 }
@@ -122,6 +125,7 @@ const ReportError = React.memo<Props>(({ module }) => {
       persistContactInfo({
         name: newFormData.name,
         replyTo: newFormData.replyTo,
+        matricNumber: newFormData.matricNumber,
       });
     },
     [formData],
@@ -130,12 +134,13 @@ const ReportError = React.memo<Props>(({ module }) => {
   const onSubmit = React.useCallback(() => {
     setFormState({ type: 'submitting' });
 
-    const { name, replyTo, message, contactId } = formData;
+    const { name, replyTo, matricNumber, message, contactId } = formData;
     axios
       .post(appConfig.moduleErrorApi, {
         name,
         contactId,
         moduleCode: module.moduleCode,
+        matricNumber,
         replyTo,
         message,
       })
@@ -222,7 +227,7 @@ const FormContent: React.FC<FormContentProps> = ({
       }}
     >
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-name">Your Name</label>
+        <label htmlFor="report-error-name">Your Full Name</label>
         <input
           className="form-control"
           id="report-error-name"
@@ -268,13 +273,24 @@ const FormContent: React.FC<FormContentProps> = ({
       </div>
 
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-email">Your Email</label>
+        <label htmlFor="report-error-email">Your School Email</label>
         <input
           type="email"
           id="report-error-email"
           className="form-control"
           value={formData.replyTo}
           onChange={updateFormValue('replyTo')}
+          required
+        />
+      </div>
+
+      <div className="form-group col-sm-12">
+        <label htmlFor="report-error-email">Your Matriculation Number</label>
+        <input
+          id="report-error-matric-number"
+          className="form-control"
+          value={formData.matricNumber}
+          onChange={updateFormValue('matricNumber')}
           required
         />
       </div>
