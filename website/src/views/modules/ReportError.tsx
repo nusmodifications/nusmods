@@ -278,6 +278,7 @@ const FormContent: React.FC<FormContentProps> = ({
           type="email"
           id="report-error-email"
           className="form-control"
+          pattern=".+@.+nus.+"
           value={formData.replyTo}
           onChange={updateFormValue('replyTo')}
           required
