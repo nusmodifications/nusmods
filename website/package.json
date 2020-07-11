@@ -56,7 +56,7 @@
     "@types/react-kawaii": "0.11.0",
     "@types/react-leaflet": "2.5.2",
     "@types/react-loadable": "5.5.3",
-    "@types/react-modal": "3.10.5",
+    "@types/react-modal": "3.10.6",
     "@types/react-redux": "7.1.9",
     "@types/react-router-dom": "5.1.5",
     "@types/react-scrollspy": "3.3.2",
