@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import storage from 'storage';
 import { announcementKey } from 'storage/keys';
 import { toggleFeedback } from 'actions/app';
-import { Heart } from 'react-feather';
+import { Sun } from 'react-feather';
 import CloseButton from 'views/components/CloseButton';
 import styles from './Announcements.scss';
 
@@ -51,7 +51,7 @@ class Announcements extends React.PureComponent<Props, State> {
 
     return (
       <div className={classnames('alert alert-success no-export', styles.announcement)}>
-        <Heart className={styles.backgroundIcon} />
+        <Sun className={styles.backgroundIcon} />
 
         <div className={styles.body}>
           <h3>AY2020/21 module information is available!</h3>
