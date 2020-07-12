@@ -152,7 +152,11 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
           </button>
         </h1>
 
-        <div>
+        <div className={styles.headerRight}>
+          <p className={styles.moduleStats}>
+            {count} {count === 1 ? 'module' : 'modules'} / {renderMCs(credits)}
+          </p>
+
           <button
             className="btn btn-svg btn-outline-primary"
             type="button"
@@ -160,9 +164,6 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
           >
             <Settings className="svg" /> Settings
           </button>
-          <p>
-            {count} {count === 1 ? 'module' : 'modules'} / {renderMCs(credits)}
-          </p>
         </div>
       </header>
     );
@@ -301,10 +302,9 @@ const PlannerContainer = connect(mapStateToProps, {
   fetchModule,
   toggleFeedback,
   setPlaceholderModule,
-    addModule: addPlannerModule,
-    moveModule: movePlannerModule,
-    removeModule: removePlannerModule,
-
+  addModule: addPlannerModule,
+  moveModule: movePlannerModule,
+  removeModule: removePlannerModule,
 })(PlannerContainerComponent);
 
 export default hot(PlannerContainer);

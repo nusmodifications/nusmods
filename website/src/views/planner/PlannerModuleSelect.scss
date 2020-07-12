@@ -1,5 +1,9 @@
 @import '~styles/utils/modules-entry';
 
+.wrapper {
+  width: 100%;
+}
+
 .dropdown {
   composes: list-unstyled scrollable-y from global;
   position: absolute;
@@ -17,7 +21,7 @@
 
     &.highlightItem {
       color: theme-color();
-      background: var(--gray-lighter);
+      background: var(--gray-lightest);
     }
   }
 }
