@@ -145,7 +145,7 @@ const ReportError = React.memo<Props>(({ module }) => {
         name,
         contactId,
         moduleCode: module.moduleCode,
-        matricNumber,
+        matricNumber: matricNumber.toUpperCase(),
         replyTo,
         message,
         debug,
@@ -247,6 +247,21 @@ const FormContent: React.FC<FormContentProps> = ({
       </div>
 
       <div className="form-group col-sm-12">
+        <label htmlFor="report-error-matric-number">Your Matriculation Number</label>
+        <input
+          id="report-error-matric-number"
+          className="form-control"
+          value={formData.matricNumber}
+          onChange={updateFormValue('matricNumber')}
+          placeholder="A1234567B"
+          minLength={9}
+          maxLength={9}
+          pattern="[aA][0-9]{7}[a-zA-Z]"
+          required
+        />
+      </div>
+
+      <div className="form-group col-sm-12">
         <label htmlFor="report-error-faculty">Department / Faculty</label>
         <select
           className="form-control"
@@ -293,18 +308,6 @@ const FormContent: React.FC<FormContentProps> = ({
           value={formData.replyTo}
           placeholder="e0012345@u.nus.edu"
           onChange={updateFormValue('replyTo')}
-          required
-        />
-      </div>
-
-      <div className="form-group col-sm-12">
-        <label htmlFor="report-error-matric-number">Your Matriculation Number</label>
-        <input
-          id="report-error-matric-number"
-          className="form-control"
-          value={formData.matricNumber}
-          onChange={updateFormValue('matricNumber')}
-          placeholder="A01234567B"
           required
         />
       </div>
