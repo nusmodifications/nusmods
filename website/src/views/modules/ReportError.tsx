@@ -169,7 +169,7 @@ const ReportError = React.memo<Props>(({ module }) => {
         Report errors
       </button>
 
-      <Modal isOpen={isOpen} onRequestClose={() => setIsOpen(false)} animate>
+      <Modal isOpen={isOpen} onRequestClose={() => setIsOpen(false)} shouldCloseOnOverlayClick={false} animate>
         <CloseButton onClick={() => setIsOpen(false)} />
         <h2 className={styles.heading}>Reporting an issue with {module.moduleCode}</h2>
         <p>
@@ -182,7 +182,7 @@ const ReportError = React.memo<Props>(({ module }) => {
           instead.
         </p>
 
-        {debug && <div className="alert alert-warning"><strong>Debug mode</strong> - submitting this form will send an email to modules@nusmods.com instead</div>}
+        {debug && <div className="alert alert-warning"><strong>Debug mode</strong> - this form will email modules@nusmods.com instead</div>}
 
         {formState.type === 'error' && (
           <div className="alert alert-danger" role="alert">
@@ -239,6 +239,7 @@ const FormContent: React.FC<FormContentProps> = ({
         <input
           className="form-control"
           id="report-error-name"
+          placeholder="Tan Ah Lee"
           value={formData.name}
           onChange={updateFormValue('name')}
           required
@@ -261,11 +262,13 @@ const FormContent: React.FC<FormContentProps> = ({
             </option>
           ))}
         </select>
+
         {selectedContact && (
           <p className="form-text text-muted">
             This will email <a href={`mailto:${selectedContact.email}`}>{selectedContact.email}</a>
           </p>
         )}
+
         <p className="form-text text-muted">
           If the department or faculty for this module cannot be found on this list, please refer to
           ModReg's contact list for{' '}
@@ -288,6 +291,7 @@ const FormContent: React.FC<FormContentProps> = ({
           className="form-control"
           pattern=".+@.+nus.+"
           value={formData.replyTo}
+          placeholder="e0012345@u.nus.edu"
           onChange={updateFormValue('replyTo')}
           required
         />
@@ -300,6 +304,7 @@ const FormContent: React.FC<FormContentProps> = ({
           className="form-control"
           value={formData.matricNumber}
           onChange={updateFormValue('matricNumber')}
+          placeholder="A01234567B"
           required
         />
       </div>
