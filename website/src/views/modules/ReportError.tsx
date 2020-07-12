@@ -34,6 +34,7 @@ interface ReportErrorForm {
   name: string;
   contactId: FacultyEmail['id'] | undefined;
   replyTo: string;
+  matricNumber: string;
   message: string;
 }
 
@@ -46,6 +47,7 @@ type FormState =
 interface PersistedContactInfo {
   name: string;
   replyTo: string;
+  matricNumber: string;
 }
 
 const groupedByMatcherType = (groupBy(facultyEmails, (config) => config.match.type) as unknown) as {
@@ -60,6 +62,7 @@ function retrieveContactInfo(): PersistedContactInfo {
   return {
     name: '',
     replyTo: '',
+    matricNumber: '',
     ...persisted,
   };
 }
@@ -108,6 +111,11 @@ const ReportError = React.memo<Props>(({ module }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [formState, setFormState] = React.useState<FormState>({ type: 'unsubmitted' });
 
+  // Causes the error reporting function to email modules@nusmods.com instead.
+  // In production, use SET_ERROR_REPORTING_DEBUG(true) to enable debug mode
+  const [debug, setDebug] = React.useState(process.env.NODE_ENV !== 'production');
+  window.SET_ERROR_REPORTING_DEBUG = setDebug;
+
   const [formData, setFormData] = React.useState<ReportErrorForm>(() => ({
     ...retrieveContactInfo(),
     message: '',
@@ -124,6 +132,7 @@ const ReportError = React.memo<Props>(({ module }) => {
       persistContactInfo({
         name: newFormData.name,
         replyTo: newFormData.replyTo,
+        matricNumber: newFormData.matricNumber,
       });
     },
     [formData],
@@ -132,14 +141,16 @@ const ReportError = React.memo<Props>(({ module }) => {
   const onSubmit = React.useCallback(() => {
     setFormState({ type: 'submitting' });
 
-    const { name, replyTo, message, contactId } = formData;
+    const { name, replyTo, matricNumber, message, contactId } = formData;
     axios
       .post(appConfig.moduleErrorApi, {
         name,
         contactId,
         moduleCode: module.moduleCode,
+        matricNumber: matricNumber.toUpperCase(),
         replyTo,
         message,
+        debug,
       })
       .then(() => setFormState({ type: 'submitted' }))
       .catch((error) => {
@@ -147,7 +158,7 @@ const ReportError = React.memo<Props>(({ module }) => {
         Sentry.captureException(error);
         setFormState({ type: 'error' });
       });
-  }, [formData, module]);
+  }, [formData, module, debug]);
 
   return (
     <>
@@ -160,7 +171,12 @@ const ReportError = React.memo<Props>(({ module }) => {
         Report errors
       </button>
 
-      <Modal isOpen={isOpen} onRequestClose={() => setIsOpen(false)} animate>
+      <Modal
+        isOpen={isOpen}
+        onRequestClose={() => setIsOpen(false)}
+        shouldCloseOnOverlayClick={false}
+        animate
+      >
         <CloseButton onClick={() => setIsOpen(false)} />
         <h2 className={styles.heading}>Reporting an issue with {module.moduleCode}</h2>
         <p>
@@ -172,6 +188,12 @@ const ReportError = React.memo<Props>(({ module }) => {
           bug in NUSMods, please email <a href="mailto:bugs@nusmods.com">bugs@nusmods.com</a>{' '}
           instead.
         </p>
+
+        {debug && (
+          <div className="alert alert-warning">
+            <strong>Debug mode</strong> - this form will email modules@nusmods.com instead
+          </div>
+        )}
 
         {formState.type === 'error' && (
           <div className="alert alert-danger" role="alert">
@@ -224,12 +246,27 @@ const FormContent: React.FC<FormContentProps> = ({
       }}
     >
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-name">Your Name</label>
+        <label htmlFor="report-error-name">Your Full Name</label>
         <input
           className="form-control"
           id="report-error-name"
           value={formData.name}
           onChange={updateFormValue('name')}
+          required
+        />
+      </div>
+
+      <div className="form-group col-sm-12">
+        <label htmlFor="report-error-matric-number">Your Matriculation Number</label>
+        <input
+          id="report-error-matric-number"
+          className="form-control"
+          value={formData.matricNumber}
+          onChange={updateFormValue('matricNumber')}
+          placeholder="A1234567B"
+          minLength={9}
+          maxLength={9}
+          pattern="[aA][0-9]{7}[a-zA-Z]"
           required
         />
       </div>
@@ -250,11 +287,13 @@ const FormContent: React.FC<FormContentProps> = ({
             </option>
           ))}
         </select>
+
         {selectedContact && (
           <p className="form-text text-muted">
             This will email <a href={`mailto:${selectedContact.email}`}>{selectedContact.email}</a>
           </p>
         )}
+
         <p className="form-text text-muted">
           If the department or faculty for this module cannot be found on this list, please refer to
           ModReg's contact list for{' '}
@@ -270,12 +309,14 @@ const FormContent: React.FC<FormContentProps> = ({
       </div>
 
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-email">Your Email</label>
+        <label htmlFor="report-error-email">Your School Email</label>
         <input
           type="email"
           id="report-error-email"
           className="form-control"
+          pattern=".+@.+nus.+"
           value={formData.replyTo}
+          placeholder="e0012345@u.nus.edu"
           onChange={updateFormValue('replyTo')}
           required
         />

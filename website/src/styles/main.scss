@@ -1,5 +1,3 @@
-/* @postcss-single-root-entry */
-
 // Define our own mixins, functions and constants first
 @import 'utils/mixins';
 @import 'utils/functions';
@@ -29,3 +27,4 @@
 @import 'components/buttons';
 @import 'components/kbd';
 @import 'components/select';
+@import 'components/form';
