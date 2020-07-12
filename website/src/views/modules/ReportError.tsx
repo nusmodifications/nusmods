@@ -248,7 +248,6 @@ const FormContent: React.FC<FormContentProps> = ({
         <input
           className="form-control"
           id="report-error-name"
-          placeholder="Tan Ah Lee"
           value={formData.name}
           onChange={updateFormValue('name')}
           required
