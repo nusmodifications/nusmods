@@ -95,7 +95,9 @@ function matchModule(module: Module) {
   if (facultyEmail) return facultyEmail;
 
   // 5. Finally check faculty, which is the least specific
-  return groupedByMatcherType.faculty.find(({ match }) => module.faculty === match.faculty && division === match.level);
+  return groupedByMatcherType.faculty.find(
+    ({ match }) => module.faculty === match.faculty && division === match.level,
+  );
 }
 
 /**
