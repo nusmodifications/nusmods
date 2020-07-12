@@ -1,7 +1,7 @@
 import React, { FormEventHandler } from 'react';
+import { castArray, groupBy } from 'lodash';
 import classnames from 'classnames';
 import produce from 'immer';
-import { groupBy } from 'lodash';
 import axios from 'axios';
 import { AlertTriangle } from 'react-feather';
 import * as Sentry from '@sentry/browser';
@@ -48,10 +48,12 @@ interface PersistedContactInfo {
   replyTo: string;
 }
 
-const groupedByMatcherType = groupBy(facultyEmails, (config) => config.match.type) as Record<
-  FacultyEmail['match']['type'],
-  FacultyEmail[]
->;
+const groupedByMatcherType = (groupBy(facultyEmails, (config) => config.match.type) as unknown) as {
+  moduleCode: FacultyEmail<ModuleCodeMatch>[];
+  modulePrefix: FacultyEmail<ModuleCodePrefixMatch>[];
+  faculty: FacultyEmail<FacultyMatch>[];
+  department: FacultyEmail<DepartmentMatch>[];
+};
 
 function retrieveContactInfo(): PersistedContactInfo {
   const persisted = JSON.parse(localStorage.getItem(CONTACT_INFO) ?? '{}');
@@ -67,35 +69,35 @@ function persistContactInfo(info: PersistedContactInfo) {
 }
 
 function matchModule(module: Module) {
+  let facultyEmail: FacultyEmail | undefined;
+
   // 1. Check which email to use for this module by specificity.
   //    The most specific is module code, so we check that first
-  let match = groupedByMatcherType.moduleCode.find(
-    (contact) => (contact.match as ModuleCodeMatch).moduleCode === module.moduleCode,
+  facultyEmail = groupedByMatcherType.moduleCode.find(({ match }) =>
+    castArray(match.moduleCode).find((code) => code === module.moduleCode),
   );
-  if (match) return match;
+  if (facultyEmail) return facultyEmail;
 
   // 2. Check module prefix next
-  match = groupedByMatcherType.modulePrefix.find((contact) =>
-    module.moduleCode.startsWith((contact.match as ModuleCodePrefixMatch).prefix),
+  facultyEmail = groupedByMatcherType.modulePrefix.find(({ match }) =>
+    module.moduleCode.startsWith(match.prefix),
   );
-  if (match) return match;
+  if (facultyEmail) return facultyEmail;
 
   // 3. Department and faculty matchers are split by graduate and undergrad classes. In NUS
   //    the 5-6000 level modules are graduate level modules
   const division: Division = isGraduateModule(module) ? 'grad' : 'undergrad';
 
   // 4. Check department
-  match = groupedByMatcherType.department.find((contact) => {
-    const contactMatch = contact.match as DepartmentMatch;
-    return module.department === contactMatch.department && division === contactMatch.level;
-  });
-  if (match) return match;
+  facultyEmail = groupedByMatcherType.department.find(
+    ({ match }) => module.department === match.department && division === match.level,
+  );
+  if (facultyEmail) return facultyEmail;
 
   // 5. Finally check faculty, which is the least specific
-  return groupedByMatcherType.faculty.find((contact) => {
-    const contactMatch = contact.match as FacultyMatch;
-    return module.faculty === contactMatch.faculty && division === contactMatch.level;
-  });
+  return groupedByMatcherType.faculty.find(
+    ({ match }) => module.faculty === match.faculty && division === match.level,
+  );
 }
 
 /**
