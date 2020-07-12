@@ -169,7 +169,12 @@ const ReportError = React.memo<Props>(({ module }) => {
         Report errors
       </button>
 
-      <Modal isOpen={isOpen} onRequestClose={() => setIsOpen(false)} shouldCloseOnOverlayClick={false} animate>
+      <Modal
+        isOpen={isOpen}
+        onRequestClose={() => setIsOpen(false)}
+        shouldCloseOnOverlayClick={false}
+        animate
+      >
         <CloseButton onClick={() => setIsOpen(false)} />
         <h2 className={styles.heading}>Reporting an issue with {module.moduleCode}</h2>
         <p>
@@ -182,7 +187,11 @@ const ReportError = React.memo<Props>(({ module }) => {
           instead.
         </p>
 
-        {debug && <div className="alert alert-warning"><strong>Debug mode</strong> - this form will email modules@nusmods.com instead</div>}
+        {debug && (
+          <div className="alert alert-warning">
+            <strong>Debug mode</strong> - this form will email modules@nusmods.com instead
+          </div>
+        )}
 
         {formState.type === 'error' && (
           <div className="alert alert-danger" role="alert">
