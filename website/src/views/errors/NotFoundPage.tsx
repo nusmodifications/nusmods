@@ -6,7 +6,7 @@ import RandomKawaii from 'views/components/RandomKawaii';
 import Title from 'views/components/Title';
 import styles from './ErrorPage.scss';
 
-export default function NotFoundPage() {
+const NotFoundPage: React.FC = () => {
   Sentry.withScope(() => {
     Sentry.captureMessage('404 - Page Not Found');
   });
@@ -38,4 +38,6 @@ export default function NotFoundPage() {
       </div>
     </div>
   );
-}
+};
+
+export default NotFoundPage;

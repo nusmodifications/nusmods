@@ -45,33 +45,14 @@ type State = {
 /**
  * Component for a single module on the planner
  */
-export default class PlannerModule extends React.PureComponent<Props, State> {
-  state: State = {
-    isEditingPlaceholder: false,
-  };
+const PlannerModule = React.memo<Props>((props) => {
+  const [isEditingPlaceholder, setEditingPlaceholder] = React.useState(false);
 
-  removeModule = () => {
-    this.props.removeModule(this.props.id);
-  };
+  const removeModule = () => props.removeModule(props.id);
 
-  editCustomData = () => {
-    if (this.props.moduleCode) {
-      this.props.addCustomData(this.props.moduleCode);
-    }
-  };
+  const editCustomData = () => props.addCustomData(props.id);
 
-  toggleEditPlaceholder = () => {
-    this.setState((state) => ({
-      isEditingPlaceholder: !state.isEditingPlaceholder,
-    }));
-  };
-
-  setPlaceholderModule = (moduleCode: ModuleCode) => {
-    this.props.setPlaceholderModule(this.props.id, moduleCode);
-    this.toggleEditPlaceholder();
-  };
-
-  renderConflict(conflict: Conflict) {
+  const renderConflict = (conflict: Conflict) => {
     switch (conflict.type) {
       case 'noInfo':
         return (
@@ -79,11 +60,7 @@ export default class PlannerModule extends React.PureComponent<Props, State> {
             <AlertTriangle className={styles.warningIcon} />
             <p>
               No data on this module.{' '}
-              <button
-                type="button"
-                className="btn btn-link btn-inline"
-                onClick={this.editCustomData}
-              >
+              <button type="button" className="btn btn-link btn-inline" onClick={editCustomData}>
                 Add data
               </button>
             </p>
@@ -132,10 +109,10 @@ export default class PlannerModule extends React.PureComponent<Props, State> {
       default:
         return null;
     }
-  }
+  };
 
-  renderMeta() {
-    const { moduleCredit, examDate } = this.props;
+  const renderMeta = () => {
+    const { moduleCredit, examDate } = props;
     if (!moduleCredit && !examDate) return null;
 
     return (
@@ -144,13 +121,12 @@ export default class PlannerModule extends React.PureComponent<Props, State> {
         {examDate && <div>{format(toSingaporeTime(examDate), 'MMM d, h:mm a')}</div>}
       </div>
     );
-  }
+  };
 
-  renderPlaceholderForm() {
-    const { placeholder, moduleCode, moduleTitle, semester } = this.props;
+  const renderPlaceholderForm = () => {
+    const { placeholder, moduleCode, moduleTitle, semester } = props;
     if (!placeholder) return null;
-
-    if (!this.state.isEditingPlaceholder) {
+    if (!isEditingPlaceholder) {
       return (
         <>
           <button
@@ -158,7 +134,7 @@ export default class PlannerModule extends React.PureComponent<Props, State> {
             className={classnames('btn btn-sm btn-svg', styles.placeholderSelect, {
               [styles.empty]: !moduleCode,
             })}
-            onClick={this.toggleEditPlaceholder}
+            onClick={() => setEditingPlaceholder(true)}
           >
             {moduleCode || 'Select Module'} <ChevronDown />
           </button>{' '}
@@ -172,9 +148,12 @@ export default class PlannerModule extends React.PureComponent<Props, State> {
     return (
       <form>
         <PlannerModuleSelect
-          onSelect={this.setPlaceholderModule}
-          onCancel={this.toggleEditPlaceholder}
-          onBlur={this.toggleEditPlaceholder}
+          onSelect={(newModuleCode: ModuleCode) => {
+            props.setPlaceholderModule(props.id, newModuleCode);
+            setEditingPlaceholder(false);
+          }}
+          onCancel={() => setEditingPlaceholder(false)}
+          onBlur={() => setEditingPlaceholder(false)}
           showOnly={placeholder.modules}
           filter={placeholder.filter}
           defaultValue={moduleCode}
@@ -183,49 +162,49 @@ export default class PlannerModule extends React.PureComponent<Props, State> {
         />
       </form>
     );
-  }
+  };
 
-  render() {
-    const { id, placeholder, moduleCode, moduleTitle, index, conflict } = this.props;
+  const { id, placeholder, moduleCode, moduleTitle, index, conflict } = props;
 
-    return (
-      <Draggable key={moduleCode} draggableId={id} index={index}>
-        {(provided, snapshot) => (
-          <div
-            ref={provided.innerRef}
-            className={classnames(styles.module, {
-              [styles.warning]: conflict,
-              [styles.isDragging]: snapshot.isDragging,
-              [styles.placeholder]: placeholder && !moduleCode,
-            })}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-          >
-            <ModuleMenu removeModule={this.removeModule} editCustomData={this.editCustomData} />
+  return (
+    <Draggable key={moduleCode} draggableId={id} index={index}>
+      {(provided, snapshot) => (
+        <div
+          ref={provided.innerRef}
+          className={classnames(styles.module, {
+            [styles.warning]: conflict,
+            [styles.isDragging]: snapshot.isDragging,
+            [styles.placeholder]: placeholder && !moduleCode,
+          })}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
+          <ModuleMenu removeModule={removeModule} editCustomData={editCustomData} />
 
-            <div className={styles.moduleInfo}>
-              <div className={styles.moduleName}>
-                {placeholder ? (
-                  <>
-                    <strong className={styles.placeholderName}>{placeholder.name}</strong>
-                    {this.renderPlaceholderForm()}
-                  </>
-                ) : (
-                  moduleCode && (
-                    <Link className="d-block" to={modulePage(moduleCode, moduleTitle)}>
-                      <strong>{moduleCode}</strong> {moduleTitle}
-                    </Link>
-                  )
-                )}
-              </div>
-
-              {this.renderMeta()}
-
-              {conflict && <div className={styles.conflicts}>{this.renderConflict(conflict)}</div>}
+          <div className={styles.moduleInfo}>
+            <div className={styles.moduleName}>
+              {placeholder ? (
+                <>
+                  <strong className={styles.placeholderName}>{placeholder.name}</strong>
+                  {renderPlaceholderForm()}
+                </>
+              ) : (
+                moduleCode && (
+                  <Link className="d-block" to={modulePage(moduleCode, moduleTitle)}>
+                    <strong>{moduleCode}</strong> {moduleTitle}
+                  </Link>
+                )
+              )}
             </div>
+
+            {renderMeta()}
+
+            {conflict && <div className={styles.conflicts}>{renderConflict(conflict)}</div>}
           </div>
-        )}
-      </Draggable>
-    );
-  }
-}
+        </div>
+      )}
+    </Draggable>
+  );
+});
+
+export default PlannerModule;

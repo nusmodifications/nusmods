@@ -91,7 +91,7 @@ export default class HighScoreForm extends React.PureComponent<Props, State> {
         <table className={classnames(styles.table, 'table table-sm table-borderless')}>
           <thead>
             <tr>
-              <th />
+              <th aria-label="Rank" />
               <th>Name</th>
               <th>Score</th>
             </tr>

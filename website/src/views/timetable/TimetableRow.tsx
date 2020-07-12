@@ -28,7 +28,7 @@ type Props = {
  * Reasoning for doing so is that we need rows to resize according to their
  * children's height, in which absolute positioning would not allow.
  */
-function TimetableRow(props: Props) {
+const TimetableRow: React.FC<Props> = (props) => {
   const { startingIndex, endingIndex, lessons, onModifyCell, verticalMode } = props;
   const totalCols = endingIndex - startingIndex;
 
@@ -74,6 +74,6 @@ function TimetableRow(props: Props) {
       })}
     </div>
   );
-}
+};
 
 export default TimetableRow;

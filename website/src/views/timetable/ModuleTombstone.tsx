@@ -11,39 +11,32 @@ export type Props = {
   resetTombstone: () => void;
 };
 
-function ModuleTombstone(props: Props) {
-  const { module } = props;
+const ModuleTombstone: React.FC<Props> = (props) => (
+  <div className={classnames(styles.moduleInfo, styles.tombstone)}>
+    <span>{props.module.moduleCode} removed</span>
 
-  return (
-    <div className={classnames(styles.moduleInfo, styles.tombstone)}>
-      <span>{module.moduleCode} removed</span>
-
-      <div className={styles.moduleActionButtons}>
-        <button
-          type="button"
-          className={classnames('btn btn-sm btn-link', styles.moduleAction)}
-          onClick={props.resetTombstone}
-        >
-          Dismiss
-        </button>
-        <button
-          type="button"
-          className={classnames('btn btn-sm btn-link', styles.moduleAction)}
-          onClick={() => {
-            props.undo();
-            props.resetTombstone();
-          }}
-        >
-          Undo
-        </button>
-      </div>
+    <div className={styles.moduleActionButtons}>
+      <button
+        type="button"
+        className={classnames('btn btn-sm btn-link', styles.moduleAction)}
+        onClick={props.resetTombstone}
+      >
+        Dismiss
+      </button>
+      <button
+        type="button"
+        className={classnames('btn btn-sm btn-link', styles.moduleAction)}
+        onClick={() => {
+          props.undo();
+          props.resetTombstone();
+        }}
+      >
+        Undo
+      </button>
     </div>
-  );
-}
+  </div>
+);
 
 export { ModuleTombstone as DisconnectedModuleTombstone };
 
-export default connect(
-  null,
-  { undo },
-)(ModuleTombstone);
+export default connect(null, { undo })(ModuleTombstone);

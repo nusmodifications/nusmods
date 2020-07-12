@@ -13,8 +13,10 @@ const ravenMiddleware: Middleware<{}, State> = (store) => {
   Sentry.configureScope((scope) => {
     scope.addEventProcessor((event) =>
       produce(event, (draft) => {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        draft.extra!['redux:state'] = stateTransformer(store.getState());
+        if (!draft.extra) {
+          draft.extra = {};
+        }
+        draft.extra['redux:state'] = stateTransformer(store.getState());
       }),
     );
   });

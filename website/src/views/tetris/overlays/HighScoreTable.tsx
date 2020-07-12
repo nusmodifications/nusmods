@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { getScoreData } from './score';
 
-export default function HighScoreTable() {
+const HighScoreTable: React.FC = () => {
   const highScores = getScoreData();
 
   return (
@@ -24,4 +24,6 @@ export default function HighScoreTable() {
       )}
     </div>
   );
-}
+};
+
+export default HighScoreTable;

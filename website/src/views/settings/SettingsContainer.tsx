@@ -323,19 +323,16 @@ const mapStateToProps = (state: StoreState) => ({
   modRegNotification: state.settings.modRegNotification,
 });
 
-const connectedSettings = connect(
-  mapStateToProps,
-  {
-    selectTheme,
-    selectFaculty,
-    selectMode,
-    toggleBetaTesting,
-    setLoadDisqusManually,
-    toggleModRegNotificationGlobally,
-    dismissModregNotification,
-    enableModRegNotification,
-    setModRegScheduleType,
-  },
-)(SettingsContainer);
+const connectedSettings = connect(mapStateToProps, {
+  selectTheme,
+  selectFaculty,
+  selectMode,
+  toggleBetaTesting,
+  setLoadDisqusManually,
+  toggleModRegNotificationGlobally,
+  dismissModregNotification,
+  enableModRegNotification,
+  setModRegScheduleType,
+})(SettingsContainer);
 
 export default deferComponentRender(connectedSettings);

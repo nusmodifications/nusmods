@@ -286,7 +286,7 @@ class TimetableContent extends React.Component<Props, State> {
       .filter((lesson) => !this.isHiddenInTimetable(lesson.moduleCode));
 
     if (activeLesson) {
-      const moduleCode = activeLesson.moduleCode;
+      const { moduleCode } = activeLesson;
       // Remove activeLesson because it will appear again
       timetableLessons = timetableLessons.filter(
         (lesson) => !areLessonsSameClass(lesson, activeLesson),
@@ -436,7 +436,7 @@ class TimetableContent extends React.Component<Props, State> {
 
 function mapStateToProps(state: StoreState, ownProps: OwnProps) {
   const { semester, timetable } = ownProps;
-  const modules = state.moduleBank.modules;
+  const { modules } = state.moduleBank;
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
   const hiddenInTimetable = state.timetables.hidden[semester] || [];
 
@@ -452,14 +452,11 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    addModule,
-    removeModule,
-    modifyLesson,
-    changeLesson,
-    cancelModifyLesson,
-    undo,
-  },
-)(TimetableContent);
+export default connect(mapStateToProps, {
+  addModule,
+  removeModule,
+  modifyLesson,
+  changeLesson,
+  cancelModifyLesson,
+  undo,
+})(TimetableContent);

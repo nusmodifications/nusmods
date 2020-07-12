@@ -2,10 +2,8 @@ import { isString } from 'lodash';
 import { captureException } from 'utils/error';
 import getLocalStorage from './localStorage';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 // Simple wrapper around localStorage to automagically parse and stringify payloads.
-function setItem(key: string, value: any) {
+function setItem(key: string, value: unknown) {
   try {
     getLocalStorage().setItem(key, isString(value) ? value : JSON.stringify(value));
   } catch (e) {
@@ -28,7 +26,7 @@ function setItem(key: string, value: any) {
   }
 }
 
-function getItem(key: string): any {
+function getItem(key: string): unknown {
   let value;
   try {
     value = getLocalStorage().getItem(key);

@@ -13,6 +13,7 @@ import {
   offsetAcadYear,
   renderMCs,
   subtractAcadYear,
+  isGraduateModule,
 } from 'utils/modules';
 import { noBreak } from 'utils/react';
 
@@ -206,5 +207,21 @@ describe(offsetAcadYear, () => {
   test('should work with positive offsets', () => {
     expect(offsetAcadYear('2018/2019', 1)).toEqual('2019/2020');
     expect(offsetAcadYear('2018/2019', 4)).toEqual('2022/2023');
+  });
+});
+
+describe(isGraduateModule, () => {
+  it('should return true for graduate modules', () => {
+    expect(isGraduateModule({ moduleCode: 'CS5012' })).toEqual(true);
+    expect(isGraduateModule({ moduleCode: 'CS6000' })).toEqual(true);
+    expect(isGraduateModule({ moduleCode: 'ACC5555X' })).toEqual(true);
+  });
+
+  it('should return false for undergrad modules', () => {
+    expect(isGraduateModule({ moduleCode: 'CS1232' })).toEqual(false);
+    expect(isGraduateModule({ moduleCode: 'CS4999' })).toEqual(false);
+    expect(isGraduateModule({ moduleCode: 'CS3567' })).toEqual(false);
+    expect(isGraduateModule({ moduleCode: 'CS1567D' })).toEqual(false);
+    expect(isGraduateModule({ moduleCode: 'ACC4999X' })).toEqual(false);
   });
 });

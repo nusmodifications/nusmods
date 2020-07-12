@@ -20,24 +20,22 @@ const MODES: ModeOption[] = [
   },
 ];
 
-export default function ModeSelect(props: Props) {
-  const { mode, onSelectMode } = props;
+const ModeSelect: React.FC<Props> = ({ mode, onSelectMode }) => (
+  <div className="btn-group" role="group">
+    {MODES.map(({ value, label }) => (
+      <button
+        type="button"
+        key={value}
+        className={classnames('btn', {
+          'btn-primary': mode === value,
+          'btn-outline-primary': mode !== value,
+        })}
+        onClick={() => onSelectMode(value)}
+      >
+        {label}
+      </button>
+    ))}
+  </div>
+);
 
-  return (
-    <div className="btn-group" role="group">
-      {MODES.map(({ value, label }) => (
-        <button
-          type="button"
-          key={value}
-          className={classnames('btn', {
-            'btn-primary': mode === value,
-            'btn-outline-primary': mode !== value,
-          })}
-          onClick={() => onSelectMode(value)}
-        >
-          {label}
-        </button>
-      ))}
-    </div>
-  );
-}
+export default ModeSelect;

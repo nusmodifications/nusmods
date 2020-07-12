@@ -9,7 +9,7 @@ type Props = {
   endingIndex: number;
 };
 
-function TimetableTimings(props: Props) {
+const TimetableTimings: React.FC<Props> = (props) => {
   const indices = range(props.startingIndex, props.endingIndex);
 
   return (
@@ -29,6 +29,6 @@ function TimetableTimings(props: Props) {
       <span />
     </div>
   );
-}
+};
 
 export default TimetableTimings;

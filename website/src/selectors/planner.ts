@@ -24,8 +24,6 @@ import { notNull } from 'types/utils';
 import { State } from 'types/state';
 import { ExamClashes } from 'types/views';
 
-/* eslint-disable no-useless-computed-key */
-
 /**
  * Get a list of modules planned for a specific semester in an acad year
  * in the order specified by the index

@@ -3,7 +3,6 @@ import classnames from 'classnames';
 import { groupBy, toPairs, sortBy } from 'lodash';
 import { Link, LinkProps } from 'react-router-dom';
 
-import { Omit } from 'types/utils';
 import { Venue } from 'types/venues';
 import { venuePage } from 'views/routes/paths';
 
@@ -15,8 +14,10 @@ type Props = {
   linkProps?: Omit<LinkProps, 'to'>;
 };
 
-export default function VenueList(props: Props) {
-  const venueList = groupBy(props.venues, (venue) => venue.charAt(0).toUpperCase());
+const VenueList: React.FC<Props> = (props) => {
+  // Added during the horrible COVID-19 times to hide E-Learning venues
+  const physicalVenues = props.venues.filter((venue) => !venue.startsWith('E-Learn'));
+  const venueList = groupBy(physicalVenues, (venue) => venue.charAt(0).toUpperCase());
   const sortedVenueList = sortBy(toPairs(venueList), ([key]) => key);
 
   return (
@@ -48,4 +49,6 @@ export default function VenueList(props: Props) {
       ))}
     </ul>
   );
-}
+};
+
+export default VenueList;

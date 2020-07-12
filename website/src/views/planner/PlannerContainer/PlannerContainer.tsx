@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { flatMap, flatten, sortBy, toPairs, values } from 'lodash';
 import { DragDropContext, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 import classnames from 'classnames';
+import { hot } from 'react-hot-loader/root';
 
 import { Module, ModuleCode, Semester } from 'types/modules';
 import { PlannerModulesWithInfo, PlannerModuleInfo, AddModuleData } from 'types/planner';
@@ -296,16 +297,14 @@ const mapStateToProps = (state: StoreState) => ({
   iblocsModules: getIBLOCs(state),
 });
 
-const PlannerContainer = connect(
-  mapStateToProps,
-  {
-    fetchModule,
-    toggleFeedback,
-    setPlaceholderModule,
+const PlannerContainer = connect(mapStateToProps, {
+  fetchModule,
+  toggleFeedback,
+  setPlaceholderModule,
     addModule: addPlannerModule,
     moveModule: movePlannerModule,
     removeModule: removePlannerModule,
-  },
-)(PlannerContainerComponent);
 
-export default PlannerContainer;
+})(PlannerContainerComponent);
+
+export default hot(PlannerContainer);

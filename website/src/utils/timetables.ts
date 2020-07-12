@@ -3,6 +3,7 @@ import {
   castArray,
   difference,
   each,
+  first,
   flatMapDeep,
   get,
   groupBy,
@@ -101,7 +102,8 @@ export function randomModuleLessonConfig(lessons: readonly RawLesson[]): ModuleL
 
   return mapValues(
     lessonByGroupsByClassNo,
-    (group: { [classNo: string]: readonly RawLesson[] }) => sample(group)![0].classNo,
+    (group: { [classNo: string]: readonly RawLesson[] }) =>
+      (first(sample(group)) as RawLesson).classNo,
   );
 }
 
@@ -258,7 +260,7 @@ export function isLessonAvailable(
 ): boolean {
   return consumeWeeks(
     lesson.weeks,
-    (weeks) => weeks.includes(weekInfo.num!),
+    (weeks) => weeks.includes(weekInfo.num as number),
     (weekRange) => {
       const end = minDate([parseISO(weekRange.end), date]);
       for (let current = parseISO(weekRange.start); current <= end; current = addDays(current, 7)) {

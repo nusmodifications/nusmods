@@ -1,5 +1,12 @@
 import _ from 'lodash';
-import { Module, RawLesson, Semester, SemesterData, SemesterDataCondensed } from 'types/modules';
+import {
+  Module,
+  ModuleCode,
+  RawLesson,
+  Semester,
+  SemesterData,
+  SemesterDataCondensed,
+} from 'types/modules';
 
 import config from 'config';
 import { NBSP } from 'utils/react';
@@ -62,7 +69,8 @@ export function getFirstAvailableSemester(
   current: Semester = config.semester, // For testing only
 ): Semester {
   const availableSemesters = semesters.map((semesterData) => semesterData.semester);
-  return availableSemesters.includes(current) ? current : _.min(availableSemesters)!;
+  // Assume there is at least 1 semester
+  return availableSemesters.includes(current) ? current : Math.min(...availableSemesters);
 }
 
 export function getSemestersOffered(module: Module): Semester[] {
@@ -117,4 +125,8 @@ export function getYearsBetween(minYear: string, maxYear: string): string[] {
   }
   years.push(maxYear);
   return years;
+}
+
+export function isGraduateModule(module: { moduleCode: ModuleCode }): boolean {
+  return Boolean(/[A-Z]+(5|6)\d{3}/i.test(module.moduleCode));
 }

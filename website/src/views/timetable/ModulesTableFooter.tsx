@@ -34,7 +34,7 @@ type Props = {
   setModuleTableOrder: (moduleTableOrder: ModuleTableOrder) => void;
 };
 
-function ModulesTableFooter(props: Props) {
+const ModulesTableFooter: React.FC<Props> = (props) => {
   const totalMCs = sumBy(props.modules, (module) => parseInt(module.moduleCredit, 10));
 
   return (
@@ -68,11 +68,8 @@ function ModulesTableFooter(props: Props) {
       </div>
     </div>
   );
-}
+};
 
-export default connect(
-  (state: State) => ({ moduleTableOrder: state.settings.moduleTableOrder }),
-  {
-    setModuleTableOrder,
-  },
-)(ModulesTableFooter);
+export default connect((state: State) => ({ moduleTableOrder: state.settings.moduleTableOrder }), {
+  setModuleTableOrder,
+})(ModulesTableFooter);

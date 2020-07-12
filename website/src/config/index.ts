@@ -38,20 +38,13 @@ export type Config = {
 
   disqusShortname: string;
   venueFeedbackApi: string;
+  moduleErrorApi: string;
 
   semesterNames: { [semester: string]: string };
   shortSemesterNames: { [semester: string]: string };
   archiveYears: string[];
   examAvailability: Semester[];
   examAvailabilitySet: Set<Semester>;
-
-  defaultPreferences: {
-    theme: string;
-    mode: string;
-    faculty: string;
-    student: string;
-    account: string;
-  };
 
   contact: {
     blog: string;

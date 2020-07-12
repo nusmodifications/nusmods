@@ -121,7 +121,7 @@ $sticky-top: $navbar-height;
 }
 
 .modReviewDescription {
-  padding: 0.3rem 0 0 1.6rem
+  padding: 0.3rem 0 0 1.6rem;
 }
 
 .reviews {
@@ -144,6 +144,10 @@ $sticky-top: $navbar-height;
     &:last-child {
       margin-bottom: 0;
     }
+  }
+
+  li {
+    font-size: $font-size-sm;
   }
 }
 

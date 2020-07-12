@@ -3,9 +3,9 @@ import { each, max, min, pull } from 'lodash';
 import { createMigrate, PersistedState } from 'redux-persist';
 
 import { PlannerState } from 'types/reducers';
-import { FSA } from 'types/redux';
+import { ModuleCode } from 'types/modules';
+import { Actions } from 'types/actions';
 import { Semester } from 'types/modules';
-import { Omit } from 'types/utils';
 
 import {
   ADD_CUSTOM_PLANNER_DATA,
@@ -56,21 +56,21 @@ function getSemesterIds(
 
 export default function planner(
   state: PlannerState = defaultPlannerState,
-  action: FSA,
+  action: Actions,
 ): PlannerState {
   switch (action.type) {
     case SET_PLANNER_MIN_YEAR:
       return {
         ...state,
         minYear: action.payload,
-        maxYear: max([action.payload, state.maxYear]),
+        maxYear: max([action.payload, state.maxYear]) as string,
       };
 
     case SET_PLANNER_MAX_YEAR:
       return {
         ...state,
         maxYear: action.payload,
-        minYear: min([action.payload, state.minYear]),
+        minYear: min([action.payload, state.minYear]) as string,
       };
 
     case SET_PLANNER_IBLOCS:

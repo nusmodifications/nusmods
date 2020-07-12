@@ -21,9 +21,9 @@ type Props = {
   readonly onOpenLesson: (date: Date, lesson: Lesson) => void;
 };
 
-export default class DayEvents extends React.PureComponent<Props> {
-  renderLesson = (lesson: ColoredLesson, i: number) => {
-    const { openLesson, onOpenLesson, marker, date } = this.props;
+const DayEvents = React.memo<Props>((props) => {
+  const renderLesson = (lesson: ColoredLesson, i: number) => {
+    const { openLesson, onOpenLesson, marker, date } = props;
 
     const isOpen =
       !!openLesson && isSameDay(openLesson.date, date) && isSameLesson(openLesson.lesson, lesson);
@@ -46,7 +46,8 @@ export default class DayEvents extends React.PureComponent<Props> {
           <p>
             {lesson.lessonType} {lesson.classNo}
           </p>
-          <MapPin className={styles.venueIcon} /> {lesson.venue}
+          <MapPin className={styles.venueIcon} />{' '}
+          {lesson.venue.startsWith('E-Learn') ? 'E-Learning' : lesson.venue}
           <div>
             <EventMapInline
               className={styles.map}
@@ -60,16 +61,16 @@ export default class DayEvents extends React.PureComponent<Props> {
     );
   };
 
-  render() {
-    const { lessons, date, dayInfo } = this.props;
+  const { lessons, date, dayInfo } = props;
 
-    const sortedLessons = lessons
-      .filter((lesson) => isLessonAvailable(lesson, date, dayInfo))
-      .sort((a, b) => {
-        const timeDiff = a.startTime.localeCompare(b.startTime);
-        return timeDiff !== 0 ? timeDiff : a.classNo.localeCompare(b.classNo);
-      });
+  const sortedLessons = lessons
+    .filter((lesson) => isLessonAvailable(lesson, date, dayInfo))
+    .sort((a, b) => {
+      const timeDiff = a.startTime.localeCompare(b.startTime);
+      return timeDiff !== 0 ? timeDiff : a.classNo.localeCompare(b.classNo);
+    });
 
-    return <div>{sortedLessons.map(this.renderLesson)}</div>;
-  }
-}
+  return <div>{sortedLessons.map(renderLesson)}</div>;
+});
+
+export default DayEvents;

@@ -1,5 +1,5 @@
 import { strict as assert } from 'assert';
-import { has, last, map, mapValues, trimStart, values } from 'lodash';
+import { has, last, map, mapValues, values } from 'lodash';
 import NUSModerator, { Semester as SemesterName } from 'nusmoderator';
 import { compareAsc, differenceInDays, format, parseISO } from 'date-fns';
 
@@ -15,7 +15,6 @@ import { getTermCode, retry } from '../utils/api';
 import { validateLesson, validateSemester } from '../services/validation';
 import { activityLessonType, dayTextMap, unrecognizedLessonTypes } from '../utils/data';
 import { allEqual, deltas } from '../utils/arrays';
-import { Omit } from '../types/utils';
 import { ISO8601_DATE_FORMAT } from '../utils/time';
 
 /* eslint-disable @typescript-eslint/camelcase */
@@ -99,7 +98,19 @@ export function mapLessonWeeks(dates: string[], semester: number, logger: Logger
   return weekRange;
 }
 
-export function mapTimetableLesson(lesson: TimetableLesson, logger: Logger): TempRawLesson | null {
+/**
+ * Mod group contains the activity at the start - this function removes that
+ * because it is redundant.
+ */
+export function transformModgrpToClassNo(modgrp: string, activity: string): string {
+  const trimmedModgrp = modgrp.trim();
+  if (trimmedModgrp.startsWith(activity) && trimmedModgrp !== activity) {
+    return trimmedModgrp.substring(activity.length);
+  }
+  return trimmedModgrp;
+}
+
+export function mapTimetableLesson(lesson: TimetableLesson, logger: Logger): TempRawLesson {
   const { room, start_time, end_time, day, module, modgrp, activity, eventdate, csize } = lesson;
 
   if (has(unrecognizedLessonTypes, activity)) {
@@ -109,19 +120,8 @@ export function mapTimetableLesson(lesson: TimetableLesson, logger: Logger): Tem
     );
   }
 
-  if (!start_time || !end_time) {
-    const { session, term } = lesson;
-    logger.error(
-      { moduleCode: module, end_time, start_time },
-      'Lesson has no start and/or end time',
-    );
-    return null;
-  }
-
   return {
-    // mod group contains the activity at the start - we remove that because
-    // it is redundant
-    classNo: trimStart(modgrp, activity),
+    classNo: transformModgrpToClassNo(modgrp, activity),
     // Start and end time don't have the ':' delimiter
     startTime: start_time.replace(':', ''),
     endTime: end_time.replace(':', ''),
@@ -191,6 +191,15 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
           timetables[lesson.module] = {};
         }
 
+        // Report serious error to Sentry
+        if (!lesson.start_time || !lesson.end_time || lesson.start_time === lesson.end_time) {
+          const { start_time, end_time, module } = lesson;
+          this.logger.error(
+            { moduleCode: module, end_time, start_time },
+            'Lesson has no start and/or end time',
+          );
+        }
+
         invalid += 1;
         return;
       }
@@ -210,10 +219,7 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
       if (rawLesson) {
         rawLesson.weeks.push(lesson.eventdate);
       } else {
-        const lessons = mapTimetableLesson(lesson, this.logger);
-        if (lessons) {
-          timetable[key] = lessons;
-        }
+        timetable[key] = mapTimetableLesson(lesson, this.logger);
       }
     });
 
