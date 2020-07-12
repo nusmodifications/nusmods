@@ -33,7 +33,7 @@ const commonConfig = merge([
     // convenient with more complex configurations.
     entry: {
       // This will build an app.js file from the `main` module.
-      app: ['entry/main'],
+      app: ['core-js/stable', 'regenerator-runtime/runtime', 'entry/main'],
     },
     context: parts.PATHS.src,
     output: {

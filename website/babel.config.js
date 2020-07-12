@@ -14,7 +14,7 @@ module.exports = (api) => {
       {
         targets: IS_TEST ? { node: true } : { browsers: pkgJson.browserslist },
         modules: IS_TEST ? 'commonjs' : false,
-        useBuiltIns: 'usage',
+        useBuiltIns: 'entry',
         corejs: pkgJson.dependencies['core-js'],
         // Exclude transforms that make all code slower
         // See https://github.com/facebook/create-react-app/pull/5278
