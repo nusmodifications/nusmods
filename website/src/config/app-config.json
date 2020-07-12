@@ -7,7 +7,7 @@
   "semester": 1,
   "disqusShortname": "nusmods-prod",
   "venueFeedbackApi": "https://mediumdeviation.lib.id/nusmods-venue-github-hook@0.0.8/",
-  "moduleErrorApi": "https://mediumdeviation.lib.id/nusmods-module-error-reporting@0.0.4/",
+  "moduleErrorApi": "https://mediumdeviation.lib.id/nusmods-module-error-reporting@0.0.7/",
   "archiveYears": ["2016/2017", "2017/2018", "2018/2019", "2019/2020"],
   "examAvailability": [1],
   "semesterNames": {
