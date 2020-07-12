@@ -22,13 +22,6 @@
     "3": "ST I",
     "4": "ST II"
   },
-  "defaultPreferences": {
-    "theme": "default",
-    "mode": "default",
-    "faculty": "default",
-    "student": "false",
-    "account": "P"
-  },
   "contact": {
     "blog": "https://blog.nusmods.com",
     "email": "nusmods@googlegroups.com",
