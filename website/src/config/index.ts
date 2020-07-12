@@ -46,14 +46,6 @@ export type Config = {
   examAvailability: Semester[];
   examAvailabilitySet: Set<Semester>;
 
-  defaultPreferences: {
-    theme: string;
-    mode: string;
-    faculty: string;
-    student: string;
-    account: string;
-  };
-
   contact: {
     blog: string;
     email: string;
