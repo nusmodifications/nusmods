@@ -109,6 +109,11 @@ const ReportError = React.memo<Props>(({ module }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [formState, setFormState] = React.useState<FormState>({ type: 'unsubmitted' });
 
+  // Causes the error reporting function to email modules@nusmods.com instead.
+  // In production, use SET_ERROR_REPORTING_DEBUG(true) to enable debug mode
+  const [debug, setDebug] = React.useState(process.env.NODE_ENV !== 'production');
+  window.SET_ERROR_REPORTING_DEBUG = setDebug;
+
   const [formData, setFormData] = React.useState<ReportErrorForm>(() => ({
     ...retrieveContactInfo(),
     message: '',
@@ -143,6 +148,7 @@ const ReportError = React.memo<Props>(({ module }) => {
         matricNumber,
         replyTo,
         message,
+        debug,
       })
       .then(() => setFormState({ type: 'submitted' }))
       .catch((error) => {
@@ -150,7 +156,7 @@ const ReportError = React.memo<Props>(({ module }) => {
         Sentry.captureException(error);
         setFormState({ type: 'error' });
       });
-  }, [formData, module]);
+  }, [formData, module, debug]);
 
   return (
     <>
@@ -175,6 +181,8 @@ const ReportError = React.memo<Props>(({ module }) => {
           bug in NUSMods, please email <a href="mailto:bugs@nusmods.com">bugs@nusmods.com</a>{' '}
           instead.
         </p>
+
+        {debug && <div className="alert alert-warning"><strong>Debug mode</strong> - submitting this form will send an email to modules@nusmods.com instead</div>}
 
         {formState.type === 'error' && (
           <div className="alert alert-danger" role="alert">
@@ -217,9 +225,7 @@ const FormContent: React.FC<FormContentProps> = ({
   isSubmitting,
 }) => {
   const selectedContact = facultyEmails.find((config) => config.id === formData.contactId);
-  // In production mode and debug mode, form can be submitted. Otherwise, form cannot be submitted
-  const [debug, setDebug] = React.useState(process.env.NODE_ENV === 'production');
-  window.SET_ERROR_REPORTING_DEBUG = setDebug;
+
   return (
     <form
       className={classnames('form-row', { disabled: isSubmitting })}
@@ -311,7 +317,7 @@ const FormContent: React.FC<FormContentProps> = ({
       </div>
 
       <footer className={classnames(styles.footer, 'col-sm-12')}>
-        <button type="submit" className="btn btn-primary btn-lg" disabled={!debug || isSubmitting}>
+        <button type="submit" className="btn btn-primary btn-lg" disabled={isSubmitting}>
           {isSubmitting && <LoadingSpinner small white />} Submit
         </button>
       </footer>
