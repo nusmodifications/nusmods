@@ -56,6 +56,7 @@ const PlannerSemester: React.FC<Props> = ({
   addModule,
   removeModule,
   addCustomData,
+  setPlaceholderModule,
 }) => {
   const renderModule = (plannerModule: PlannerModuleInfo, index: number) => {
     const { id, moduleCode, moduleInfo, conflict, placeholder } = plannerModule;
@@ -76,7 +77,7 @@ const PlannerSemester: React.FC<Props> = ({
         semester={semester}
         removeModule={removeModule}
         addCustomData={addCustomData}
-        setPlaceholderModule={this.props.setPlaceholderModule}
+        setPlaceholderModule={setPlaceholderModule}
       />
     );
   };

@@ -50,7 +50,9 @@ const PlannerModule = React.memo<Props>((props) => {
 
   const removeModule = () => props.removeModule(props.id);
 
-  const editCustomData = () => props.addCustomData(props.id);
+  const editCustomData = () => {
+    if (props.moduleCode) props.addCustomData(props.moduleCode);
+  };
 
   const renderConflict = (conflict: Conflict) => {
     switch (conflict.type) {
@@ -125,7 +127,9 @@ const PlannerModule = React.memo<Props>((props) => {
 
   const renderPlaceholderForm = () => {
     const { placeholder, moduleCode, moduleTitle, semester } = props;
+
     if (!placeholder) return null;
+
     if (!isEditingPlaceholder) {
       return (
         <>
@@ -148,8 +152,11 @@ const PlannerModule = React.memo<Props>((props) => {
     return (
       <form>
         <PlannerModuleSelect
-          onSelect={(newModuleCode: ModuleCode) => {
-            props.setPlaceholderModule(props.id, newModuleCode);
+          onSelect={(newModuleCode: ModuleCode | null) => {
+            if (newModuleCode) {
+              props.setPlaceholderModule(props.id, newModuleCode);
+            }
+
             setEditingPlaceholder(false);
           }}
           onCancel={() => setEditingPlaceholder(false)}

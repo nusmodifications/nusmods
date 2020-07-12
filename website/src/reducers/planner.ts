@@ -3,7 +3,6 @@ import { each, max, min, pull } from 'lodash';
 import { createMigrate, PersistedState } from 'redux-persist';
 
 import { PlannerState } from 'types/reducers';
-import { ModuleCode } from 'types/modules';
 import { Actions } from 'types/actions';
 import { Semester } from 'types/modules';
 
@@ -77,10 +76,15 @@ export default function planner(
       return { ...state, iblocs: action.payload };
 
     case ADD_PLANNER_MODULE: {
-      const { year, semester, moduleCode, placeholderId } = action.payload;
+      const { payload } = action;
+      const { year, semester } = payload;
 
       const id = nextId(state.modules);
       const index = getSemesterIds(state.modules, year, semester).length;
+      const props =
+        payload.type === 'placeholder'
+          ? { placeholderId: payload.placeholderId }
+          : { moduleCode: payload.moduleCode };
 
       return produce(state, (draft) => {
         draft.modules[id] = {
@@ -88,8 +92,7 @@ export default function planner(
           year,
           semester,
           index,
-          moduleCode,
-          placeholderId,
+          ...props,
         };
       });
     }

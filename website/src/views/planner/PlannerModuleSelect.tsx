@@ -19,7 +19,7 @@ type Props = Readonly<{
   defaultValue?: string;
 
   // For filtering
-  onSelect: (moduleCode: ModuleCode) => void;
+  onSelect: (moduleCode: ModuleCode | null) => void;
   onCancel?: () => void;
   onBlur?: () => void;
   semester?: Semester;
@@ -103,7 +103,7 @@ export function PlannerModuleSelectComponent({
         const filteredModules = filterModules(inputValue || '', allModules);
 
         return (
-          <div>
+          <div className={styles.wrapper}>
             <textarea
               {...(getInputProps({
                 // Passed props

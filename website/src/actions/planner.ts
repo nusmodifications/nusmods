@@ -39,12 +39,7 @@ export function addPlannerModule(year: string, semester: Semester, module: AddMo
 }
 
 export const MOVE_PLANNER_MODULE = 'MOVE_PLANNER_MODULE' as const;
-export function movePlannerModule(
-  id: string,
-  year: string,
-  semester: Semester,
-  index: number,
-) {
+export function movePlannerModule(id: string, year: string, semester: Semester, index: number) {
   return {
     type: MOVE_PLANNER_MODULE,
     payload: {
@@ -66,8 +61,8 @@ export function removePlannerModule(id: string) {
   };
 }
 
-export const SET_PLACEHOLDER_MODULE = 'SET_PLACEHOLDER_MODULE';
-export function setPlaceholderModule(id: string, moduleCode: ModuleCode): FSA {
+export const SET_PLACEHOLDER_MODULE = 'SET_PLACEHOLDER_MODULE' as const;
+export function setPlaceholderModule(id: string, moduleCode: ModuleCode) {
   return {
     type: SET_PLACEHOLDER_MODULE,
     payload: {

@@ -195,6 +195,7 @@ describe(migrateV0toV1, () => {
   test('should migrate old modules state to new modules state', () => {
     expect(
       migrateV0toV1({
+        _persist: {} as any,
         ...defaultState,
         modules: {
           CS1010S: ['2018/2019', 1, 0],
