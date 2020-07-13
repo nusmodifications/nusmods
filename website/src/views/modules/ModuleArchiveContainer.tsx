@@ -88,16 +88,6 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
     captureException(error);
   };
 
-  canonicalUrl() {
-    const { module, moduleCode, archiveYear } = this.props;
-
-    if (!module) {
-      throw new Error('canonicalUrl() called before module is loaded');
-    }
-
-    return moduleArchive(moduleCode, archiveYear, module.title);
-  }
-
   render() {
     const { ModulePageContent, error } = this.state;
     const { module, moduleCode, match, location, archiveYear } = this.props;
@@ -112,15 +102,19 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
       return <ApiError dataName="module information" retry={() => this.fetchModule()} />;
     }
 
-    if (module && match.url !== this.canonicalUrl()) {
-      return (
-        <Redirect
-          to={{
-            ...location,
-            pathname: this.canonicalUrl(),
-          }}
-        />
-      );
+    // Redirect to canonical URL
+    if (module) {
+      const canonicalUrl = moduleArchive(moduleCode, archiveYear, module.title);
+      if (match.url !== canonicalUrl) {
+        return (
+          <Redirect
+            to={{
+              ...location,
+              pathname: canonicalUrl,
+            }}
+          />
+        );
+      }
     }
 
     if (module && ModulePageContent) {
