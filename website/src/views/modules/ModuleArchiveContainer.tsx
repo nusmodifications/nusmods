@@ -37,21 +37,13 @@ type State = {
 };
 
 /**
- * Wrapper component that loads both module data and the module page component
- * simultaneously, and displays the correct component depending on the state.
- *
- * - Module data is considered to be loaded when the the data exists in
- *   the module bank
- * - Component is loaded when the dynamic import() Promise resolves
- *
- * We then render the correct component based on the status
- *
- * - Not found: moduleCode not in module list (this is checked synchronously)
- * - Error: Either requests failed
- * - Loading: Either requests are pending
- * - Loaded: Both requests are successfully loaded
+ * Wrapper component for the archive page that handles data fetching and error handling.
+ * This is very similar to ModulePageContainer except it is used for the archive
+ * page, so it uses different code paths for canonical URL, data fetching and
+ * error handling - the normal page tries to check the archives if this year's
+ * API returns 404, while this page doesn't.
  */
-export class ModulePageContainerComponent extends React.PureComponent<Props, State> {
+export class ModuleArchiveContainerComponent extends React.PureComponent<Props, State> {
   state: State = {
     ModulePageContent: null,
   };
@@ -161,9 +153,9 @@ const mapDispatchToProps = (dispatch: Function, ownProps: OwnProps) => {
   };
 };
 
-const connectedModulePageContainer = connect(
+const connectedModuleArchiveContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ModulePageContainerComponent);
-const routedModulePageContainer = withRouter(connectedModulePageContainer);
-export default deferComponentRender(routedModulePageContainer);
+)(ModuleArchiveContainerComponent);
+const routedModuleArchiveContainer = withRouter(connectedModuleArchiveContainer);
+export default deferComponentRender(routedModuleArchiveContainer);
