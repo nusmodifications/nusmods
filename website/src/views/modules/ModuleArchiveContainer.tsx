@@ -7,17 +7,18 @@ import { get } from 'lodash';
 
 import { Module, ModuleCode } from 'types/modules';
 
-import { fetchModule } from 'actions/moduleBank';
+import { fetchModuleArchive } from 'actions/moduleBank';
 import { captureException, retryImport } from 'utils/error';
 import ApiError from 'views/errors/ApiError';
 import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
-import { modulePage } from 'views/routes/paths';
+import { moduleArchive } from 'views/routes/paths';
 import { State as StoreState } from 'types/state';
 
 import { Props as ModulePageContentProp } from './ModulePageContent';
 
 type Params = {
+  year: string;
   moduleCode: string;
 };
 
@@ -27,6 +28,7 @@ type Props = OwnProps & {
   module: Module | null;
   moduleCode: ModuleCode;
   fetchModule: () => Promise<Module>;
+  archiveYear: string;
 };
 
 type State = {
@@ -60,7 +62,10 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (prevProps.moduleCode !== this.props.moduleCode) {
+    if (
+      prevProps.moduleCode !== this.props.moduleCode ||
+      prevProps.archiveYear !== this.props.archiveYear
+    ) {
       this.fetchModule();
     }
   }
@@ -84,21 +89,21 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
   };
 
   canonicalUrl() {
-    const { module, moduleCode } = this.props;
+    const { module, moduleCode, archiveYear } = this.props;
 
     if (!module) {
       throw new Error('canonicalUrl() called before module is loaded');
     }
 
-    return modulePage(moduleCode, module.title);
+    return moduleArchive(moduleCode, archiveYear, module.title);
   }
 
   render() {
     const { ModulePageContent, error } = this.state;
-    const { module, moduleCode, match, location } = this.props;
+    const { module, moduleCode, match, location, archiveYear } = this.props;
 
     if (get(error, ['response', 'status'], 200) === 404) {
-      return <ModuleNotFoundPage moduleCode={moduleCode} tryArchive />;
+      return <ModuleNotFoundPage moduleCode={moduleCode} tryArchive={false} />;
     }
 
     // If there is an error but module data can still be found, we assume module has
@@ -122,31 +127,43 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
       // Unique key forces component to remount whenever the user moves to
       // a new module. This allows the internal state (eg. currently selected
       // timetable semester) of <ModulePageContent> to be consistent
-      return <ModulePageContent key={moduleCode} module={module} />;
+      return (
+        <ModulePageContent
+          key={`${archiveYear}-${moduleCode}`}
+          archiveYear={archiveYear}
+          module={module}
+        />
+      );
     }
 
     return <LoadingSpinner />;
   }
 }
 
-const getPropsFromMatch = (match: Match<Params>) => ({
-  moduleCode: (match.params.moduleCode ?? '').toUpperCase(),
-});
+const getPropsFromMatch = (match: Match<Params>) => {
+  const { year, moduleCode = '' } = match.params;
+  return {
+    moduleCode: moduleCode.toUpperCase(),
+    year: year?.replace('-', '/'),
+  };
+};
 
 const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
-  const { moduleCode } = getPropsFromMatch(ownProps.match);
+  const { moduleCode, year } = getPropsFromMatch(ownProps.match);
   const { moduleBank } = state;
 
+  // If this is an archive page, load data from the archive
   return {
     moduleCode,
-    module: moduleBank.modules[moduleCode],
+    archiveYear: year,
+    module: get(moduleBank.moduleArchive, [moduleCode, year], null),
   };
 };
 
 const mapDispatchToProps = (dispatch: Function, ownProps: OwnProps) => {
-  const { moduleCode } = getPropsFromMatch(ownProps.match);
+  const { moduleCode, year } = getPropsFromMatch(ownProps.match);
   return {
-    fetchModule: () => dispatch(fetchModule(moduleCode)),
+    fetchModule: () => dispatch(fetchModuleArchive(moduleCode, year)),
   };
 };
 
