@@ -65,10 +65,10 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
     }
   }
 
-  fetchModule() {
+  fetchModule = () => {
     this.setState({ error: undefined });
     this.props.fetchModule().catch(this.handleFetchError);
-  }
+  };
 
   fetchPageImport() {
     // Try importing ModulePageContent thrice if we're online and
@@ -94,19 +94,12 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
     // If there is an error but module data can still be found, we assume module has
     // been loaded at some point, so we just show that instead
     if (error && !module) {
-      return <ApiError dataName="module information" retry={() => this.fetchModule()} />;
+      return <ApiError dataName="module information" retry={this.fetchModule} />;
     }
 
     // Redirect to canonical URL
     if (module && match.url !== modulePage(moduleCode, module.title)) {
-      return (
-        <Redirect
-          to={{
-            ...location,
-            pathname: modulePage(moduleCode, module.title),
-          }}
-        />
-      );
+      return <Redirect to={{ ...location, pathname: modulePage(moduleCode, module.title) }} />;
     }
 
     if (module && ModulePageContent) {
@@ -124,10 +117,8 @@ const getPropsFromMatch = (match: Match<Params>) => ({
   moduleCode: (match.params.moduleCode ?? '').toUpperCase(),
 });
 
-const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
+const mapStateToProps = ({ moduleBank }: StoreState, ownProps: OwnProps) => {
   const { moduleCode } = getPropsFromMatch(ownProps.match);
-  const { moduleBank } = state;
-
   return {
     moduleCode,
     module: moduleBank.modules[moduleCode],
