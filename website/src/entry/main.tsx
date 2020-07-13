@@ -1,5 +1,10 @@
 // Import Sentry earliest to capture exceptions
 import 'bootstrapping/sentry';
+// core-js has issues with Promise feature detection on Edge, and hence
+// polyfills Promise incorrectly. Importing this polyfill directly resolves that.
+// This is necessary as PersistGate used in ./App uses `Promise.prototype.finally`.
+// See: https://github.com/zloirock/core-js/issues/579#issuecomment-504325213
+import 'core-js/es/promise/finally';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
