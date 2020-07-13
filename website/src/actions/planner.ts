@@ -1,5 +1,6 @@
 import { ModuleCode, Semester } from 'types/modules';
-import { CustomModule } from 'types/planner';
+import { AddModuleData } from 'types/planner';
+import { CustomModule } from 'types/reducers';
 
 export const SET_PLANNER_MIN_YEAR = 'SET_PLANNER_MIN_YEAR' as const;
 export function setPlannerMinYear(year: string) {
@@ -26,46 +27,46 @@ export function setPlannerIBLOCs(iblocs: boolean) {
 }
 
 export const ADD_PLANNER_MODULE = 'ADD_PLANNER_MODULE' as const;
-export function addPlannerModule(
-  moduleCode: ModuleCode,
-  year: string,
-  semester: Semester,
-  index: number | null = null,
-) {
+export function addPlannerModule(year: string, semester: Semester, module: AddModuleData) {
   return {
     type: ADD_PLANNER_MODULE,
     payload: {
       year,
       semester,
-      moduleCode,
-      index,
+      ...module,
     },
   };
 }
 
 export const MOVE_PLANNER_MODULE = 'MOVE_PLANNER_MODULE' as const;
-export function movePlannerModule(
-  moduleCode: ModuleCode,
-  year: string,
-  semester: Semester,
-  index: number | null = null,
-) {
+export function movePlannerModule(id: string, year: string, semester: Semester, index: number) {
   return {
     type: MOVE_PLANNER_MODULE,
     payload: {
+      id,
       year,
       semester,
-      moduleCode,
       index,
     },
   };
 }
 
 export const REMOVE_PLANNER_MODULE = 'REMOVE_PLANNER_MODULE' as const;
-export function removePlannerModule(moduleCode: ModuleCode) {
+export function removePlannerModule(id: string) {
   return {
     type: REMOVE_PLANNER_MODULE,
     payload: {
+      id,
+    },
+  };
+}
+
+export const SET_PLACEHOLDER_MODULE = 'SET_PLACEHOLDER_MODULE' as const;
+export function setPlaceholderModule(id: string, moduleCode: ModuleCode) {
+  return {
+    type: SET_PLACEHOLDER_MODULE,
+    payload: {
+      id,
       moduleCode,
     },
   };

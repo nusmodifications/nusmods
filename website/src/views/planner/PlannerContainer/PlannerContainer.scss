@@ -29,6 +29,15 @@
   p {
     margin: 0;
   }
+
+  .headerRight {
+    display: flex;
+    align-items: center;
+  }
+
+  .moduleStats {
+    margin-right: 1rem;
+  }
 }
 
 .addYearButton {

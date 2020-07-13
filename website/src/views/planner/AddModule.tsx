@@ -1,49 +1,75 @@
 import React from 'react';
 import classnames from 'classnames';
+import { map } from 'lodash';
 import { X as Close, Plus } from 'react-feather';
 
-import { Semester } from 'types/modules';
+import { ModuleCode, Semester } from 'types/modules';
+import { AddModuleData } from 'types/planner';
+import { placeholderGroups } from 'utils/placeholders';
+
+import PlannerModuleSelect from './PlannerModuleSelect';
 import styles from './AddModule.scss';
 
-type Props = {
-  readonly year: string;
-  readonly semester: Semester;
+type Props = Readonly<{
+  year: string;
+  semester: Semester;
 
-  readonly className?: string;
-  readonly onAddModule: (input: string) => void;
-};
+  className?: string;
+  onAddModule: (module: AddModuleData) => void;
+}>;
 
 type State = {
   readonly isOpen: boolean;
-  readonly value: string;
 };
+
+const placeholderTitles: Record<keyof typeof placeholderGroups, string> = {
+  general: 'University Level Requirements',
+  cs: 'Computer Science',
+};
+
+const placeholderOptions = map(placeholderGroups, (placeholderMap, group) => (
+  <optgroup label={(placeholderTitles as Record<string, string>)[group]} key={group}>
+    {map(placeholderMap, (placeholder, id) => (
+      <option key={id} value={id}>
+        {placeholder.name}
+      </option>
+    ))}
+  </optgroup>
+));
 
 export default class AddModule extends React.PureComponent<Props, State> {
   state = {
     isOpen: false,
-    value: '',
   };
 
-  textareaRef = React.createRef<HTMLTextAreaElement>();
+  selectRef = React.createRef<HTMLSelectElement>();
 
-  onSubmit = (evt: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLTextAreaElement>) => {
+  onSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    this.props.onAddModule(this.state.value.trim());
-    this.setState({ value: '' });
 
-    if (this.textareaRef.current) {
-      this.textareaRef.current.focus();
-    }
+    const select = this.selectRef.current;
+    if (!select || !select.value) return;
+
+    this.props.onAddModule({
+      type: 'placeholder',
+      placeholderId: select.value,
+    });
+    select.value = '';
   };
 
-  onBlur = () => {
-    if (!this.state.value) {
-      this.setState({ isOpen: false });
+  onSelectModule = (input: ModuleCode | null) => {
+    if (input) {
+      this.props.onAddModule({
+        type: 'module',
+        moduleCode: input.trim(),
+      });
     }
+
+    this.onCancel();
   };
 
   onCancel = () => {
-    this.setState({ value: '', isOpen: false });
+    this.setState({ isOpen: false });
   };
 
   render() {
@@ -67,45 +93,49 @@ export default class AddModule extends React.PureComponent<Props, State> {
     // Bug in TypeScript ESLint parser prevents us from disabling this on just the line
     /* eslint-disable jsx-a11y/no-autofocus */
     return (
-      <form onSubmit={this.onSubmit} className={classnames(this.props.className, styles.form)}>
-        <label htmlFor={inputId} className="sr-only">
-          Module Code
-        </label>
-        <div className="input-group">
-          <textarea
-            ref={this.textareaRef}
-            id={inputId}
-            className="form-control"
-            placeholder="eg. CS1010S"
-            value={this.state.value}
-            onKeyDown={(evt) => {
-              if (evt.key === 'Enter') this.onSubmit(evt);
-              if (evt.key === 'Escape') this.onCancel();
-            }}
-            onChange={(evt) => this.setState({ value: evt.target.value })}
-            onBlur={this.onBlur}
-            // We can use autofocus here because this element only appears when
-            // the button is clicked
-            autoFocus
-          />
-        </div>
-        <div className={styles.actions}>
-          <button className={classnames('btn btn-primary')} type="submit">
-            Add module
-          </button>
-          <button
-            className={classnames(styles.cancel, 'btn btn-svg')}
-            type="button"
-            onClick={this.onCancel}
-          >
-            <Close />
-            <span className="sr-only">Cancel</span>
-          </button>
-          <p className={styles.tip}>
-            Tip: You can add multiple module at once, eg. copy from your transcript
-          </p>
-        </div>
-      </form>
+      <>
+        <form onSubmit={this.onSubmit} className={classnames(this.props.className, styles.form)}>
+          <label htmlFor={inputId} className="sr-only">
+            Module Code
+          </label>
+          <div className="input-group">
+            <PlannerModuleSelect
+              id={inputId}
+              rows={3}
+              semester={this.props.semester}
+              onSelect={this.onSelectModule}
+              onCancel={this.onCancel}
+            />
+          </div>
+
+          <div className={styles.orDivider}>
+            <span>or</span>
+          </div>
+
+          <select className="form-control form-control-sm" ref={this.selectRef} defaultValue="">
+            <option value="">Select category</option>
+            {placeholderOptions}
+          </select>
+
+          <div className={styles.actions}>
+            <button className={classnames('btn btn-primary')} type="submit">
+              Add module
+            </button>
+            <button
+              className={classnames(styles.cancel, 'btn btn-svg')}
+              type="button"
+              onClick={this.onCancel}
+            >
+              <Close />
+              <span className="sr-only">Cancel</span>
+            </button>
+            <p className={styles.tip}>
+              Tip: You can add multiple module at once, eg. copy from your transcript
+            </p>
+          </div>
+        </form>
+        <form />
+      </>
     );
   }
 }
