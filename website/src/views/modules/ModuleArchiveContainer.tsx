@@ -120,10 +120,10 @@ export class ModuleArchiveContainerComponent extends React.PureComponent<Props, 
 }
 
 const getPropsFromMatch = (match: Match<Params>) => {
-  const { year, moduleCode = '' } = match.params;
+  const { year = '', moduleCode = '' } = match.params;
   return {
     moduleCode: moduleCode.toUpperCase(),
-    year: year?.replace('-', '/'),
+    year: year.replace('-', '/'),
   };
 };
 
