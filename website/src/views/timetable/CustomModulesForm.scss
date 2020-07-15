@@ -1,0 +1,23 @@
+@import '~styles/utils/modules-entry';
+
+$input-height: 2.75rem;
+$module-list-height: 13.5rem;
+$item-padding-vertical: 0.6rem;
+
+.input {
+  composes: form-control from global;
+  text-align: left;
+  white-space: nowrap;
+
+  &:global(.form-control) {
+    height: $input-height;
+  }
+
+  &:not(:disabled) {
+    box-shadow: inset 2px 2px 4px rgba(#000, 0.1);
+
+    @include night-mode {
+      box-shadow: inset 2px 2px 4px rgba(#000, 0.9);
+    }
+  }
+}
