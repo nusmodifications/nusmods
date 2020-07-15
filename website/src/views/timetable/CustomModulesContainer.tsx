@@ -5,30 +5,36 @@ import { connect } from 'react-redux';
 import CustomModulesForm from 'views/timetable/CustomModulesForm';
 import styles from './CustomModulesContainer.scss';
 
-class CustomModulesAddContainer extends React.Component<Props> {
+type State = {
+  showCustomModulesForm: boolean,
+};
+
+class CustomModulesAddContainer extends React.Component<State> {
   state = {
-    showAddCustomModulesForm: false,
+    showCustomModulesForm: false,
   };
 
   onChange = () => {
-    if (this.state.showAddCustomModulesForm === true) {
-      this.setState({showAddCustomModulesForm: false })
+    if (this.state.showCustomModulesForm === true) {
+      this.setState({showCustomModulesForm: false })
     }
     else {
-      this.setState({showAddCustomModulesForm: true })
+      this.setState({showCustomModulesForm: true })
     }
   };
 
   render() {
     return (
-      <button
-        type="button"
-        className={classnames(styles.titleBtn, 'btn-outline-primary btn btn-svg')}
-        onClick={(this.onChange)}
-      >
-        Add custom modules to timetable
+      <div>
+        <button
+          type="button"
+          className={classnames(styles.titleBtn, 'btn-outline-primary btn btn-svg')}
+          onClick={(this.onChange)}
+        >
+          Add custom modules to timetable
+        </button>
         {this.state.showCustomModulesForm && <CustomModulesForm />}
-      </button>
+      </div>
     );
   }
 }
