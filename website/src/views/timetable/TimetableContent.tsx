@@ -40,6 +40,7 @@ import {
 } from 'utils/timetables';
 import { resetScrollPosition } from 'utils/react';
 import ModulesSelectContainer from 'views/timetable/ModulesSelectContainer';
+import CustomModulesContainer from 'views/timetable/CustomModulesContainer';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
@@ -411,12 +412,18 @@ class TimetableContent extends React.Component<Props, State> {
 
               <div className={styles.modulesSelect}>
                 {!readOnly && (
-                  <ModulesSelectContainer
-                    semester={semester}
-                    timetable={this.props.timetable}
-                    addModule={this.addModule}
-                    removeModule={this.removeModule}
-                  />
+                  <div>
+                    <ModulesSelectContainer
+                      semester={semester}
+                      timetable={this.props.timetable}
+                      addModule={this.addModule}
+                      removeModule={this.removeModule}
+                    />
+                    <CustomModulesContainer
+                      semester={semester}
+                      timetable={this.props.timetable}
+                    />
+                  </div>
                 )}
               </div>
 
