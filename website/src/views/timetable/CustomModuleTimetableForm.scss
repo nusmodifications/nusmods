@@ -1,0 +1,59 @@
+@import '~styles/utils/modules-entry';
+
+$input-height: 2.75rem;
+$module-list-height: 13.5rem;
+$item-padding-vertical: 0.6rem;
+
+.menu {
+  position: relative;
+
+  .toggle {
+    width: 100%;
+  }
+
+  .chevron {
+    margin: 0 -0.6rem 0 0.2rem;
+  }
+
+  .dropdownMenu {
+    width: 16rem;
+
+    svg {
+      margin-right: 0.2rem;
+      vertical-align: middle;
+    }
+
+    @include media-breakpoint-down(xs) {
+      width: auto;
+    }
+
+    @include media-breakpoint-up(md) {
+      font-size: $font-size-sm;
+    }
+
+    @include media-breakpoint-only(md) {
+      @include vertical-mode {
+        right: 0;
+        left: auto;
+      }
+    }
+  }
+}
+
+.input {
+  composes: form-control from global;
+  text-align: left;
+  white-space: nowrap;
+
+  &:global(.form-control) {
+    height: $input-height;
+  }
+
+  &:not(:disabled) {
+    box-shadow: inset 2px 2px 4px rgba(#000, 0.1);
+
+    @include night-mode {
+      box-shadow: inset 2px 2px 4px rgba(#000, 0.9);
+    }
+  }
+}
