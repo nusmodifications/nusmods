@@ -238,6 +238,7 @@ export class ModulesSelectComponent extends React.Component<Props, State> {
         >
           {this.props.placeholder}
         </button>
+        sfsdsfd
         <Modal
           isOpen={!disabled && isOpen}
           onRequestClose={this.closeSelect}
