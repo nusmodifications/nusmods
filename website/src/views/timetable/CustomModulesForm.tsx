@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-
+import Downshift, { ChildrenFunction } from 'downshift';
 import { addModule } from 'actions/timetables';
 import {
   Module,
@@ -13,9 +13,17 @@ import {
   SemesterData,
   Semester,
 } from 'types/modules';
+import { Counter } from 'utils/react';
+import { State as StoreState } from 'types/state';
+import CustomModuleTimetableForm from './CustomModuleTimetableForm'
 import styles from './CustomModulesForm.scss';
 
-type Props = {
+type OwnProps = {
+  // Own props
+  activeSemester: Semester;
+};
+
+type Props = OwnProps & {
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
 }
 
@@ -49,34 +57,6 @@ const semesterOneData = {
   examDuration: 120,
 };
 
-const semesterTwoData = {
-  semester: 2,
-  timetable: [
-    {
-      classNo: 'A1',
-      startTime: '0900',
-      endTime: '1200',
-      weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-      venue: 'BIZ2-0510',
-      day: 'Monday',
-      lessonType: 'Sectional Teaching',
-      size: 20,
-    },
-    {
-      classNo: 'A2',
-      startTime: '1300',
-      endTime: '1600',
-      weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-      venue: 'BIZ2-0510',
-      day: 'Monday',
-      lessonType: 'Sectional Teaching',
-      size: 20,
-    },
-  ],
-  examDate: '2019-05-09T13:00:00.000+08:00',
-  examDuration: 120,
-};
-
 class CustomModulesForm extends React.Component<Props, State> {
   state: State = {
     acadYear: '',
@@ -87,7 +67,7 @@ class CustomModulesForm extends React.Component<Props, State> {
     faculty: '',
     semesterData: [
       {
-        semester: 1,
+        semester: this.props.activeSemester,
         timetable: [
           {
             classNo: '',
@@ -127,11 +107,89 @@ class CustomModulesForm extends React.Component<Props, State> {
       prerequisite: 'FNA1002 or ACC1002',
       moduleCredit: '4',
       moduleCode: 'MA1101R',
-      semesterData: [semesterOneData, semesterTwoData],
+      semesterData: [semesterOneData],
       timestamp: Date.now(),
     }
     this.props.addModule(this.state.semesterData[0].semester, customModule.moduleCode);
   }
+  
+  onChangeClassNo = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    this.setState((prevState) => {
+      return {
+        semesterData: [{
+          semester: prevState.semesterData[0].semester,
+          timetable: prevState.semesterData[0].timetable.map((props, currentIndex) =>
+            currentIndex === index ? { ...props, classNo: event.target.value } : props
+          )
+        }]
+      }
+    })
+  };
+
+  onSelectStartTime = (item: string, index: number) => {
+    this.setState((prevState) => {
+      return {
+        semesterData: [{
+          semester: prevState.semesterData[0].semester,
+          timetable: prevState.semesterData[0].timetable.map((props, currentIndex) =>
+            currentIndex === index ? { ...props, startTime: item } : props
+          )
+        }]
+      }
+    })
+  };
+
+  onSelectEndTime = (item: string, index: number) => {
+    this.setState((prevState) => {
+      return {
+        semesterData: [{
+          semester: prevState.semesterData[0].semester,
+          timetable: prevState.semesterData[0].timetable.map((props, currentIndex) =>
+            currentIndex === index ? { ...props, endTime: item } : props
+          )
+        }]
+      }
+    })
+  };
+
+  onSelectVenue = (item: string, index: number) => {
+    this.setState((prevState) => {
+      return {
+        semesterData: [{
+          semester: prevState.semesterData[0].semester,
+          timetable: prevState.semesterData[0].timetable.map((props, currentIndex) =>
+            currentIndex === index ? { ...props, venue: item } : props
+          )
+        }]
+      }
+    })
+  };
+
+  onSelectDay = (item: string, index: number) => {
+    this.setState((prevState) => {
+      return {
+        semesterData: [{
+          semester: prevState.semesterData[0].semester,
+          timetable: prevState.semesterData[0].timetable.map((props, currentIndex) =>
+            currentIndex === index ? { ...props, day: item } : props
+          )
+        }]
+      }
+    })
+  };
+
+  onSelectLessonType = (item: string, index: number) => {
+    this.setState((prevState) => {
+      return {
+        semesterData: [{
+          semester: prevState.semesterData[0].semester,
+          timetable: prevState.semesterData[0].timetable.map((props, currentIndex) =>
+            currentIndex === index ? { ...props, lessonType: item } : props
+          )
+        }]
+      }
+    })
+  };
 
   render() {
     return (
@@ -146,6 +204,15 @@ class CustomModulesForm extends React.Component<Props, State> {
           onChange={e => this.setState({ title: e.target.value })}
           placeholder="Module Title"
         />
+        <CustomModuleTimetableForm
+          index={1}
+          onChangeClassNo={this.onChangeClassNo}
+          onSelectStartTime={this.onSelectStartTime}
+          onSelectEndTime={this.onSelectEndTime}
+          onSelectVenue={this.onSelectVenue}
+          onSelectDay={this.onSelectDay}
+          onSelectLessonType={this.onSelectLessonType}
+        />
         <button
           type="button"
           className={classnames(styles.titleBtn, 'btn-outline-primary btn btn-svg')}
@@ -159,8 +226,9 @@ class CustomModulesForm extends React.Component<Props, State> {
   }
 }
 
-function mapStateToProps() {
-  return {};
-}
-
+const mapStateToProps = (state: StoreState) => {
+  return {
+    activeSemester: state.app.activeSemester,
+  };
+};
 export default connect(mapStateToProps, { addModule })(CustomModulesForm);
