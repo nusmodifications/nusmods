@@ -46,7 +46,6 @@ export function addModule(semester: Semester, moduleCode: ModuleCode) {
   return (dispatch: Function, getState: GetState) =>
     dispatch(fetchModule(moduleCode)).then(() => {
       const module: Module = getState().moduleBank.modules[moduleCode];
-
       if (!module) {
         dispatch(
           openNotification(`Cannot load ${moduleCode}`, {
