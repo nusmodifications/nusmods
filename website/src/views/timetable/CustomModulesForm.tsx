@@ -15,6 +15,9 @@ import {
 } from 'types/modules';
 import styles from './CustomModulesForm.scss';
 
+type Props = {
+  addModule: (semester: Semester, moduleCode: ModuleCode) => void;
+}
 
 type State = {
   acadYear: AcadYear;
@@ -74,7 +77,7 @@ const semesterTwoData = {
   examDuration: 120,
 };
 
-class CustomModulesForm extends React.Component<State> {
+class CustomModulesForm extends React.Component<Props, State> {
   state: State = {
     acadYear: '',
     moduleCode: '',
@@ -84,7 +87,7 @@ class CustomModulesForm extends React.Component<State> {
     faculty: '',
     semesterData: [
       {
-        semester: 0,
+        semester: 1,
         timetable: [
           {
             classNo: '',
@@ -123,13 +126,11 @@ class CustomModulesForm extends React.Component<State> {
       workload: [0, 3, 0, 4, 3],
       prerequisite: 'FNA1002 or ACC1002',
       moduleCredit: '4',
-      moduleCode: 'CS1010S',
+      moduleCode: 'MA1101R',
       semesterData: [semesterOneData, semesterTwoData],
       timestamp: Date.now(),
     }
-
-    console.log(customModule)
-    addModule(this.state.semesterData[0].semester, customModule.moduleCode);
+    this.props.addModule(this.state.semesterData[0].semester, customModule.moduleCode);
   }
 
   render() {
@@ -162,4 +163,4 @@ function mapStateToProps() {
   return {};
 }
 
-export default connect(mapStateToProps, {})(CustomModulesForm);
+export default connect(mapStateToProps, { addModule })(CustomModulesForm);
