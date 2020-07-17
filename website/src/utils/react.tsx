@@ -72,10 +72,7 @@ export function defer(task: () => unknown) {
 }
 
 // We really don't care about the props here
-export function wrapComponentName<T extends Record<string, unknown>>(
-  Component: React.ComponentType<T>,
-  wrapper: string,
-): string {
+export function wrapComponentName<T>(Component: React.ComponentType<T>, wrapper: string): string {
   return `${wrapper}(${Component.displayName || Component.name || 'Component'})`;
 }
 

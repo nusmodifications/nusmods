@@ -52,7 +52,9 @@ export function addModule(semester: Semester, moduleCode: ModuleCode) {
           openNotification(`Cannot load ${moduleCode}`, {
             action: {
               text: 'Retry',
-              handler: () => dispatch(addModule(semester, moduleCode)),
+              handler: () => {
+                dispatch(addModule(semester, moduleCode));
+              },
             },
           }),
         );

@@ -1,5 +1,5 @@
 import type { ThunkDispatch } from 'redux-thunk';
-import type { RequestsDispatchExt } from 'middlewares/requests-middleware';
+import type { RequestsDispatchExt } from 'actions/requests';
 import type { State } from './state';
 import type { AnyFunction, Values } from './utils';
 import type { Actions } from './actions';

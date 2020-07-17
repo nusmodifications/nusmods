@@ -1,12 +1,11 @@
 import type { Middleware } from 'redux';
-import type { AxiosRequestConfig, AxiosError, AxiosPromise } from 'axios';
+import type { AxiosRequestConfig, AxiosError } from 'axios';
 import axios from 'axios';
 
 import type { State } from 'types/state';
 import type { Dispatch } from 'types/redux';
-import type { RequestType } from 'actions/constants';
 import { FAILURE, REQUEST, SUCCESS } from 'types/reducers';
-import { API_REQUEST } from 'actions/requests';
+import { API_REQUEST, RequestsDispatchExt } from 'actions/requests';
 
 export type ActionType<Action extends string, Type extends string> = Action & { __type: Type };
 
@@ -58,10 +57,6 @@ export function FAILURE_KEY<Type extends string>(key: Type): ActionType<Type, ty
   return (key + FAILURE) as ActionType<Type, typeof FAILURE>;
 }
 
-export interface RequestsDispatchExt {
-  <T>(requestAction: RequestAction<RequestType>): AxiosPromise<T>;
-}
-
 const requestMiddleware: Middleware<RequestsDispatchExt, State, Dispatch> = () => (next) => (
   action,
 ) => {
@@ -86,7 +81,7 @@ const requestMiddleware: Middleware<RequestsDispatchExt, State, Dispatch> = () =
 
   // Propagate the response of the request.
   return makeRequest(payload).then(
-    (response) =>
+    (response) => {
       next({
         type: SUCCESS_KEY(type),
         payload: response.data,
@@ -96,7 +91,10 @@ const requestMiddleware: Middleware<RequestsDispatchExt, State, Dispatch> = () =
           request: payload,
           responseHeaders: response.headers,
         },
-      }),
+      });
+
+      return response.data;
+    },
     (error: AxiosError) => {
       next({
         type: FAILURE_KEY(type),

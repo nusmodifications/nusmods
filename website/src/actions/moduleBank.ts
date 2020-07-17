@@ -70,14 +70,14 @@ export function fetchModule(moduleCode: ModuleCode) {
     };
 
     const key = fetchModuleRequest(moduleCode);
+
     return dispatch(
       requestAction(key, FETCH_MODULE, {
         url: NUSModsApi.moduleDetailsUrl(moduleCode),
       }),
     ).then(
-      (result: string) => {
+      () => {
         onFinally();
-        return result;
       },
       (error: Error) => {
         onFinally();
