@@ -2,6 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import Downshift, { ChildrenFunction } from 'downshift';
+import { Days } from 'types/modules';
 import { Counter } from 'utils/react';
 
 import styles from './CustomModuleTimetableForm.scss';
@@ -29,23 +30,19 @@ export default class CustomModuleTimetableForm extends React.Component<Props, St
   }
 
   onSelectDay = (selectedItem: string | null) => {
-    console.log("SDASD")
     if (selectedItem === null) {
       console.log("invalid");
       return;
     }
     const item: string = selectedItem || "";
     this.setState({selectedDay: item})
-    console.log(this.state.selectedDay)
     this.props.onSelectDay(item, this.props.index)
   }
 
   renderDropdownDay: ChildrenFunction<string> = ({
     isOpen,
     getItemProps,
-    getMenuProps,
     toggleMenu,
-    highlightedIndex,
   }) => {
     const counter = new Counter();
     return (
@@ -57,26 +54,18 @@ export default class CustomModuleTimetableForm extends React.Component<Props, St
         >
           {this.state.selectedDay!==""? this.state.selectedDay : "Day"}
         </button>
-
-        <div
-          className={classnames('dropdown-menu', styles.dropdownMenu, { show: isOpen })}
-          {...getMenuProps()}
-        >
           <div
-            className={classnames('dropdown-item', {
-              'dropdown-selected': counter.matches(highlightedIndex),
-            })}
+            className={classnames('dropdown-menu', styles.dropdownMenu, { show: isOpen })}
           >
-            Monday
-          </div>
-          <div
-            className={classnames('dropdown-item', {
-              'dropdown-selected': counter.matches(highlightedIndex),
-            })}
+          {Days.map((item, index) => (
+            <div
+            className="dropdown-item"
+            {...getItemProps({ key: index, index, item })}
           >
-            Tuesday
+            {item}
           </div>
-        </div>
+          ))}
+          </div>
       </div>
     )
   }
@@ -89,7 +78,7 @@ export default class CustomModuleTimetableForm extends React.Component<Props, St
           onChange={e => this.props.onChangeClassNo(e, this.props.index)}
           placeholder="Class No."
         />
-        <Downshift onSelect={this.onSelectDay}>{this.renderDropdownDay}</Downshift>
+        <Downshift onChange={this.onSelectDay}>{this.renderDropdownDay}</Downshift>
       </div>
     )
   }
