@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import Downshift, { ChildrenFunction } from 'downshift';
 import { addModule } from 'actions/timetables';
 import {
   Module,
@@ -13,7 +12,6 @@ import {
   SemesterData,
   Semester,
 } from 'types/modules';
-import { Counter } from 'utils/react';
 import { State as StoreState } from 'types/state';
 import CustomModuleTimetableForm from './CustomModuleTimetableForm'
 import styles from './CustomModulesForm.scss';
@@ -35,6 +33,7 @@ type State = {
   faculty: Faculty;
   moduleCredit: string;
   semesterData: SemesterData[];
+  currentTimetableIndex: number;
   timestamp: number;
 };
 
@@ -81,6 +80,7 @@ class CustomModulesForm extends React.Component<Props, State> {
         ],
       },
     ],
+    currentTimetableIndex: 0,
     timestamp: Date.now(),
   };
 
@@ -110,6 +110,7 @@ class CustomModulesForm extends React.Component<Props, State> {
       semesterData: [semesterOneData],
       timestamp: Date.now(),
     }
+    this.state.currentTimetableIndex += 1;
     this.props.addModule(this.state.semesterData[0].semester, customModule.moduleCode);
   }
   
@@ -191,21 +192,32 @@ class CustomModulesForm extends React.Component<Props, State> {
     })
   };
 
+  isFormValid = () => {
+    let validity: boolean = Boolean(this.state.moduleCode) && Boolean(this.state.title);
+    this.state.semesterData[0].timetable.forEach(function (schedule) {
+      validity = validity && Boolean(schedule.classNo && schedule.startTime && schedule.endTime && schedule.venue && schedule.day && schedule.lessonType)
+    });
+    console.log(validity);
+    return validity;
+  }
+
   render() {
     return (
       <div>
+        <div className={styles.buttonGroup}>
         <input
-          className={classnames(styles.input)}
+          className={classnames(styles.input, styles.titleIcon)}
           onChange={e => this.setState({ moduleCode: e.target.value })}
           placeholder="Module Code"
         />
         <input
-          className={classnames(styles.input)}
+          className={classnames(styles.input, styles.titleIcon)}
           onChange={e => this.setState({ title: e.target.value })}
           placeholder="Module Title"
-        />
+          />
+        </div>
         <CustomModuleTimetableForm
-          index={1}
+          index={this.state.currentTimetableIndex}
           onChangeClassNo={this.onChangeClassNo}
           onSelectStartTime={this.onSelectStartTime}
           onSelectEndTime={this.onSelectEndTime}
@@ -215,6 +227,7 @@ class CustomModulesForm extends React.Component<Props, State> {
         />
         <button
           type="button"
+          disabled={!this.isFormValid()}
           className={classnames(styles.titleBtn, 'btn-outline-primary btn btn-svg')}
           onClick={this.onSubmit}
         >
