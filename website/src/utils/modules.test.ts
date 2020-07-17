@@ -220,6 +220,8 @@ describe(isGraduateModule, () => {
   it('should return false for undergrad modules', () => {
     expect(isGraduateModule({ moduleCode: 'CS1232' })).toEqual(false);
     expect(isGraduateModule({ moduleCode: 'CS4999' })).toEqual(false);
+    expect(isGraduateModule({ moduleCode: 'CS3567' })).toEqual(false);
+    expect(isGraduateModule({ moduleCode: 'CS1567D' })).toEqual(false);
     expect(isGraduateModule({ moduleCode: 'ACC4999X' })).toEqual(false);
   });
 });

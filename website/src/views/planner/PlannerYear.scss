@@ -4,7 +4,7 @@
 .year {
   display: flex;
   flex-direction: column;
-  padding: 0.5rem;
+  padding: 0.6rem 1.2rem;
   margin-right: $column-gutter;
   border-radius: 0.5rem;
   background: var(--gray-lightest);
@@ -67,4 +67,10 @@
 
 .specialSemToggle {
   text-align: right;
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.2rem;
+  }
 }

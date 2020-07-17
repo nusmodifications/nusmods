@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { debounce } from 'lodash';
 
 import LoadingSpinner from 'views/components/LoadingSpinner';
-import { Search } from 'react-feather';
+import { Search, X } from 'react-feather';
 import styles from './SearchBox.scss';
 
 type Props = {
@@ -67,6 +67,12 @@ export default class SearchBox extends React.PureComponent<Props, State> {
     }
   };
 
+  onRemoveInput = () => {
+    this.props.onChange('');
+    this.setState({ hasChanges: true });
+    if (this.props.useInstantSearch) this.debouncedSearch();
+  };
+
   private search = () => {
     this.setState({ hasChanges: false });
     this.props.onSearch();
@@ -110,6 +116,13 @@ export default class SearchBox extends React.PureComponent<Props, State> {
             </div>
           ) : (
             <Search className={classnames(styles.leftAccessory, styles.searchIcon)} />
+          )}
+          {value && (
+            <X
+              className={styles.removeInput}
+              onClick={this.onRemoveInput}
+              pointerEvents="bounding-box"
+            />
           )}
           <input
             id="search-box"

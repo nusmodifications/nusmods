@@ -1,8 +1,8 @@
 import { flatten, sum } from 'lodash';
 import { ModuleCode, PrereqTree, Semester } from 'types/modules';
-import { PlannerModuleInfo } from 'types/views';
+import { PlannerModuleInfo } from 'types/planner';
 import config from 'config';
-import { notNull } from 'types/utils';
+import { assertNever, notNull } from 'types/utils';
 
 // "Exemption" and "plan to take" modules are special columns used to hold modules
 // outside the normal planner. "Exemption" modules are coded as -1 year so
@@ -39,20 +39,19 @@ export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: PrereqTree) 
       return moduleSet.has(fragment) ? null : [fragment];
     }
 
-    if (fragment.or) {
+    if ('or' in fragment) {
       return fragment.or.every((child) => !!walkTree(child))
         ? // All return non-null = all unfulfilled
           [fragment]
         : null;
     }
 
-    if (fragment.and) {
+    if ('and' in fragment) {
       const notFulfilled = fragment.and.map(walkTree).filter(notNull);
       return notFulfilled.length === 0 ? null : flatten(notFulfilled);
     }
 
-    // Shouldn't reach here
-    throw new Error('Invalid prereq tree');
+    return assertNever(fragment);
   }
 
   return walkTree(tree);
@@ -64,14 +63,15 @@ export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: PrereqTree) 
 export function conflictToText(conflict: PrereqTree): string {
   if (typeof conflict === 'string') return conflict;
 
-  if (conflict.or) {
+  if ('or' in conflict) {
     return conflict.or.map(conflictToText).join(' or ');
   }
-  if (conflict.and) {
+
+  if ('and' in conflict) {
     return conflict.and.map(conflictToText).join(' and ');
   }
 
-  throw new Error('Invalid prereq tree');
+  return assertNever(conflict);
 }
 
 /**
@@ -100,7 +100,9 @@ export function acadYearLabel(year: string) {
  * Get a planner module's title, preferring customInfo over moduleInfo.
  * This allows the user to override our data in case there are mistakes.
  */
-export function getModuleTitle(module: PlannerModuleInfo): string | null {
+export function getModuleTitle(
+  module: Pick<PlannerModuleInfo, 'moduleInfo' | 'customInfo'>,
+): string | null {
   const { moduleInfo, customInfo } = module;
   // customInfo.title is nullable, and there's no point in displaying an
   // empty string, so we can use || here
@@ -111,7 +113,9 @@ export function getModuleTitle(module: PlannerModuleInfo): string | null {
  * Get a planner module's credits, preferring customInfo over moduleInfo.
  * This allows the user to override our data in case there are mistakes.
  */
-export function getModuleCredit(module: PlannerModuleInfo): number | null {
+export function getModuleCredit(
+  module: Pick<PlannerModuleInfo, 'moduleInfo' | 'customInfo'>,
+): number | null {
   const { moduleInfo, customInfo } = module;
 
   // Or operator (||) is not used because moduleCredit can be 0, which is
@@ -124,7 +128,9 @@ export function getModuleCredit(module: PlannerModuleInfo): number | null {
 /**
  * Get total module credits for the given array of planner modules
  */
-export function getTotalMC(modules: PlannerModuleInfo[]): number {
+export function getTotalMC(
+  modules: Pick<PlannerModuleInfo, 'moduleInfo' | 'customInfo'>[],
+): number {
   // Remove nulls using .filter(Boolean)
   return sum(modules.map(getModuleCredit).filter(Boolean));
 }
