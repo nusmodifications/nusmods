@@ -9,6 +9,7 @@ const stateTransformer = (state: State): Record<string, unknown> => ({
   venueBank: `${state.venueBank.venueList.length} venues`,
 });
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 const ravenMiddleware: Middleware<{}, State> = (store) => {
   Sentry.configureScope((scope) => {
     scope.addEventProcessor((event) =>

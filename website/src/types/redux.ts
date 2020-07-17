@@ -1,11 +1,12 @@
 import type { ThunkDispatch } from 'redux-thunk';
+import type { RequestsDispatchExt } from 'middlewares/requests-middleware';
 import type { State } from './state';
 import type { AnyFunction, Values } from './utils';
 import type { Actions } from './actions';
 
 export type GetState = () => State;
 
-export type Dispatch = ThunkDispatch<State, undefined, Actions>;
+export type Dispatch = ThunkDispatch<State, undefined, Actions> & RequestsDispatchExt;
 
 /**
  * Helper for automatically extracting Redux action shapes from a map of action creators.

@@ -15,6 +15,7 @@ type MatchShape = {
 // out for simplicity
 type HistoryEntry = string;
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export default function createHistory<T = {}>(
   initialEntries: HistoryEntry | Readonly<HistoryEntry[]> = '/',
   matchParams: MatchShape = {},
