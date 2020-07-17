@@ -76,7 +76,7 @@ describe(getAcadYearModules, () => {
         getState({
           ...defaultState,
           modules: {
-            CS1010S: ['2018/2019', 1, 0],
+            0: { id: '0', moduleCode: 'CS1010S', year: '2018/2019', semester: 1, index: 0 },
           },
         }),
       ),
@@ -94,7 +94,7 @@ describe(getAcadYearModules, () => {
         getState({
           ...defaultState,
           modules: {
-            CS1010X: ['2018/2019', 3, 0],
+            0: { id: '0', moduleCode: 'CS1010X', year: '2018/2019', semester: 3, index: 0 },
           },
         }),
       ),
@@ -114,9 +114,9 @@ describe(getAcadYearModules, () => {
         getState({
           ...defaultState,
           modules: {
-            CS1010S: ['2018/2019', 1, 1],
-            MA1521: ['2018/2019', 1, 0],
-            MA1101R: ['2018/2019', 1, 2],
+            0: { id: '0', moduleCode: 'CS1010S', year: '2018/2019', semester: 1, index: 1 },
+            1: { id: '1', moduleCode: 'MA1521', year: '2018/2019', semester: 1, index: 0 },
+            2: { id: '2', moduleCode: 'MA1101R', year: '2018/2019', semester: 1, index: 2 },
           },
         }),
       ),
@@ -135,7 +135,7 @@ describe(getAcadYearModules, () => {
       ...defaultState,
       modules: {
         // CS3216 is not offered in sem 2
-        CS3216: ['2018/2019', 2, 0],
+        0: { id: '0', moduleCode: 'CS3216', year: '2018/2019', semester: 2, index: 0 },
       },
     };
 
@@ -147,6 +147,7 @@ describe(getAcadYearModules, () => {
     const state: any = { planner, moduleBank };
 
     expect(getAcadYearModules(state)).toHaveProperty('2018/2019.2.0', {
+      id: '0',
       moduleCode: 'CS3216',
       conflict: { type: 'semester', semestersOffered: [1] },
     });
@@ -157,7 +158,7 @@ describe(getAcadYearModules, () => {
       ...defaultState,
       modules: {
         // CS3216 requires CS2103
-        CS3216: ['2018/2019', 1, 0],
+        0: { id: '0', moduleCode: 'CS3216', year: '2018/2019', semester: 1, index: 0 },
       },
     };
 
@@ -169,6 +170,7 @@ describe(getAcadYearModules, () => {
     const state: any = { planner, moduleBank };
 
     expect(getAcadYearModules(state)).toHaveProperty('2018/2019.1.0', {
+      id: '0',
       moduleCode: 'CS3216',
       moduleInfo: CS3216,
       conflict: {
@@ -185,8 +187,8 @@ describe(getAcadYearModules, () => {
       minYear: '2017/2018',
       modules: {
         // config.academicYear is mocked to '2017/2018'
-        CS1010X: ['2017/2018', 1, 0],
-        CS1010S: ['2017/2018', 1, 1],
+        0: { id: '0', moduleCode: 'CS1010X', year: '2017/2018', semester: 1, index: 0 },
+        1: { id: '1', moduleCode: 'CS1010S', year: '2017/2018', semester: 1, index: 1 },
       },
     };
 
@@ -202,6 +204,7 @@ describe(getAcadYearModules, () => {
 
     expect(getAcadYearModules(state)).toHaveProperty('2017/2018.1', [
       {
+        id: '0',
         moduleCode: 'CS1010X',
         moduleInfo: CS1010X,
         conflict: {
@@ -210,6 +213,7 @@ describe(getAcadYearModules, () => {
         },
       },
       {
+        id: '1',
         moduleCode: 'CS1010S',
         moduleInfo: CS1010S,
         conflict: {
@@ -227,8 +231,8 @@ describe(getAcadYearModules, () => {
       maxYear: '2016/2017',
       modules: {
         // config.academicYear is mocked to '2017/2018'
-        CS1010X: ['2016/2017', 1, 0],
-        CS1010S: ['2016/2017', 1, 1],
+        0: { id: '0', moduleCode: 'CS1010X', year: '2016/2017', semester: 1, index: 0 },
+        1: { id: '1', moduleCode: 'CS1010S', year: '2016/2017', semester: 1, index: 1 },
       },
     };
 
@@ -244,11 +248,13 @@ describe(getAcadYearModules, () => {
 
     expect(getAcadYearModules(state)).toHaveProperty('2016/2017.1', [
       {
+        id: '0',
         moduleCode: 'CS1010X',
         moduleInfo: CS1010X,
         conflict: null,
       },
       {
+        id: '1',
         moduleCode: 'CS1010S',
         moduleInfo: CS1010S,
         conflict: null,
@@ -264,8 +270,8 @@ describe(getAcadYearModules, () => {
       ...defaultState,
       modules: {
         // CS3216 requires CS2103, but we have CS2103T
-        CS2103T: ['2018/2019', 1, 0],
-        CS3216: ['2018/2019', 2, 0],
+        0: { id: '0', moduleCode: 'CS2103T', year: '2018/2019', semester: 1, index: 0 },
+        1: { id: '1', moduleCode: 'CS3216', year: '2018/2019', semester: 2, index: 0 },
       },
     };
 
@@ -285,6 +291,7 @@ describe(getAcadYearModules, () => {
     };
 
     expect(getAcadYearModules(state)).toHaveProperty('2018/2019.2.0', {
+      id: '1',
       moduleCode: 'CS3216',
       moduleInfo: CS3216,
       conflict: null,
@@ -296,8 +303,8 @@ describe(getAcadYearModules, () => {
     const planner: PlannerState = {
       ...defaultState,
       modules: {
-        CS2020: ['2018/2019', 1, 0],
-        CS3216: ['2018/2019', 1, 1],
+        0: { id: '0', moduleCode: 'CS2020', year: '2018/2019', semester: 1, index: 0 },
+        1: { id: '1', moduleCode: 'CS3216', year: '2018/2019', semester: 1, index: 1 },
       },
       custom: {
         CS2020: {
@@ -345,7 +352,7 @@ describe(getAcadYearModules, () => {
     const state = getState({
       ...defaultState,
       modules: {
-        CS2020: ['2018/2019', 1, 0],
+        0: { id: '0', moduleCode: 'CS2020', year: '2018/2019', semester: 1, index: 0 },
       },
     });
 
@@ -358,7 +365,7 @@ describe(getAcadYearModules, () => {
     const state = getState({
       ...defaultState,
       modules: {
-        CS2020: ['2018/2019', 1, 0],
+        0: { id: '0', moduleCode: 'CS2020', year: '2018/2019', semester: 1, index: 0 },
       },
       custom: {
         CS2020: {

@@ -14,7 +14,7 @@ export type Values<T extends {}> = T[keyof T];
 
 export const EMPTY_ARRAY: readonly unknown[] = [];
 
-export const notNull = <T>(x: T | null | undefined): x is T => x !== null;
+export const notNull = <T>(x: T | null | undefined): x is T => x != null;
 
 // TypeScript by default only allows string in parseFloat, even though this works fine
 export const parseFloat = (float: number | string): number =>
