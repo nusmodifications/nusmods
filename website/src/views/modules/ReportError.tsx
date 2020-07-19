@@ -20,6 +20,7 @@ import CloseButton from 'views/components/CloseButton';
 import ExternalLink from 'views/components/ExternalLink';
 import facultyEmails from 'data/facultyEmail';
 import appConfig from 'config';
+import useGlobalDebugValue from '../hooks/useGlobalDebugValue';
 
 import styles from './ReportError.scss';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -113,8 +114,10 @@ const ReportError = React.memo<Props>(({ module }) => {
 
   // Causes the error reporting function to email modules@nusmods.com instead.
   // In production, use SET_ERROR_REPORTING_DEBUG(true) to enable debug mode
-  const [debug, setDebug] = React.useState(process.env.NODE_ENV !== 'production');
-  window.SET_ERROR_REPORTING_DEBUG = setDebug;
+  const debug = useGlobalDebugValue(
+    'SET_ERROR_REPORTING_DEBUG',
+    process.env.NODE_ENV !== 'production',
+  );
 
   const [formData, setFormData] = React.useState<ReportErrorForm>(() => ({
     ...retrieveContactInfo(),
