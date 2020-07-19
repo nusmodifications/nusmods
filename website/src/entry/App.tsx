@@ -11,6 +11,8 @@ import { PersistGate } from 'redux-persist/integration/react';
 import AppShell from 'views/AppShell';
 import Routes from 'views/routes/Routes';
 import { DIMENSIONS, setCustomDimensions } from 'bootstrapping/matomo';
+import ErrorBoundary from 'views/errors/ErrorBoundary';
+import ErrorPage from 'views/errors/ErrorPage';
 
 type Props = {
   store: Store<State>;
@@ -28,15 +30,17 @@ const App: React.FC<Props> = ({ store, persistor }) => {
   };
 
   return (
-    <Provider store={store}>
-      <PersistGate persistor={persistor} onBeforeLift={onBeforeLift}>
-        <Router>
-          <AppShell>
-            <Routes />
-          </AppShell>
-        </Router>
-      </PersistGate>
-    </Provider>
+    <ErrorBoundary errorPage={() => <ErrorPage showReportDialog />}>
+      <Provider store={store}>
+        <PersistGate persistor={persistor} onBeforeLift={onBeforeLift}>
+          <Router>
+            <AppShell>
+              <Routes />
+            </AppShell>
+          </Router>
+        </PersistGate>
+      </Provider>
+    </ErrorBoundary>
   );
 };
 

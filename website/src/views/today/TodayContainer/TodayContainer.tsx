@@ -127,9 +127,10 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
   componentDidMount() {
     weatherAPI
       .twoHour()
-      .then((weather) =>
-        this.setState((prevState) => ({ weather: { ...prevState.weather, '0': weather } })),
-      )
+      .then((weather) => {
+        if (!weather) return;
+        this.setState((prevState) => ({ weather: { ...prevState.weather, '0': weather } }));
+      })
       .catch(captureException);
 
     weatherAPI

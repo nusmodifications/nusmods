@@ -5,20 +5,20 @@ import { match as Match, Redirect, RouteComponentProps, withRouter } from 'react
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import { get } from 'lodash';
 
-import type { Module, ModuleCode } from 'types/modules';
-import type { Dispatch } from 'types/redux';
-import type { State as StoreState } from 'types/state';
+import { Module, ModuleCode } from 'types/modules';
 
-import { fetchModule } from 'actions/moduleBank';
+import { fetchModuleArchive } from 'actions/moduleBank';
 import { captureException, retryImport } from 'utils/error';
 import ApiError from 'views/errors/ApiError';
 import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
-import { modulePage } from 'views/routes/paths';
+import { moduleArchive } from 'views/routes/paths';
+import { State as StoreState } from 'types/state';
 
 import { Props as ModulePageContentProp } from './ModulePageContent';
 
 type Params = {
+  year: string;
   moduleCode: string;
 };
 
@@ -28,6 +28,7 @@ type Props = OwnProps & {
   module: Module | null;
   moduleCode: ModuleCode;
   fetchModule: () => Promise<Module>;
+  archiveYear: string;
 };
 
 type State = {
@@ -36,21 +37,13 @@ type State = {
 };
 
 /**
- * Wrapper component that loads both module data and the module page component
- * simultaneously, and displays the correct component depending on the state.
- *
- * - Module data is considered to be loaded when the the data exists in
- *   the module bank
- * - Component is loaded when the dynamic import() Promise resolves
- *
- * We then render the correct component based on the status
- *
- * - Not found: moduleCode not in module list (this is checked synchronously)
- * - Error: Either requests failed
- * - Loading: Either requests are pending
- * - Loaded: Both requests are successfully loaded
+ * Wrapper component for the archive page that handles data fetching and error handling.
+ * This is very similar to ModulePageContainer except it is used for the archive
+ * page, so it uses different code paths for canonical URL, data fetching and
+ * error handling - the normal page tries to check the archives if this year's
+ * API returns 404, while this page doesn't.
  */
-export class ModulePageContainerComponent extends React.PureComponent<Props, State> {
+export class ModuleArchiveContainerComponent extends React.PureComponent<Props, State> {
   state: State = {
     ModulePageContent: null,
   };
@@ -61,7 +54,10 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (prevProps.moduleCode !== this.props.moduleCode) {
+    if (
+      prevProps.moduleCode !== this.props.moduleCode ||
+      prevProps.archiveYear !== this.props.archiveYear
+    ) {
       this.fetchModule();
     }
   }
@@ -86,10 +82,10 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
 
   render() {
     const { ModulePageContent, error } = this.state;
-    const { module, moduleCode, match, location } = this.props;
+    const { module, moduleCode, match, location, archiveYear } = this.props;
 
     if (get(error, ['response', 'status'], 200) === 404) {
-      return <ModuleNotFoundPage moduleCode={moduleCode} tryArchive />;
+      return <ModuleNotFoundPage moduleCode={moduleCode} tryArchive={false} />;
     }
 
     // If there is an error but module data can still be found, we assume module has
@@ -99,43 +95,57 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
     }
 
     // Redirect to canonical URL
-    if (module && match.url !== modulePage(moduleCode, module.title)) {
-      return <Redirect to={{ ...location, pathname: modulePage(moduleCode, module.title) }} />;
+    if (module) {
+      const canonicalUrl = moduleArchive(moduleCode, archiveYear, module.title);
+      if (match.url !== canonicalUrl) {
+        return <Redirect to={{ ...location, pathname: canonicalUrl }} />;
+      }
     }
 
     if (module && ModulePageContent) {
       // Unique key forces component to remount whenever the user moves to
       // a new module. This allows the internal state (eg. currently selected
       // timetable semester) of <ModulePageContent> to be consistent
-      return <ModulePageContent key={moduleCode} module={module} />;
+      return (
+        <ModulePageContent
+          key={`${archiveYear}-${moduleCode}`}
+          archiveYear={archiveYear}
+          module={module}
+        />
+      );
     }
 
     return <LoadingSpinner />;
   }
 }
 
-const getPropsFromMatch = (match: Match<Params>) => ({
-  moduleCode: (match.params.moduleCode ?? '').toUpperCase(),
-});
+const getPropsFromMatch = (match: Match<Params>) => {
+  const { year = '', moduleCode = '' } = match.params;
+  return {
+    moduleCode: moduleCode.toUpperCase(),
+    year: year.replace('-', '/'),
+  };
+};
 
 const mapStateToProps = ({ moduleBank }: StoreState, ownProps: OwnProps) => {
-  const { moduleCode } = getPropsFromMatch(ownProps.match);
+  const { moduleCode, year } = getPropsFromMatch(ownProps.match);
   return {
     moduleCode,
-    module: moduleBank.modules[moduleCode],
+    archiveYear: year,
+    module: get(moduleBank.moduleArchive, [moduleCode, year], null),
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch, ownProps: OwnProps) => {
-  const { moduleCode } = getPropsFromMatch(ownProps.match);
+const mapDispatchToProps = (dispatch: Function, ownProps: OwnProps) => {
+  const { moduleCode, year } = getPropsFromMatch(ownProps.match);
   return {
-    fetchModule: () => dispatch(fetchModule(moduleCode)),
+    fetchModule: () => dispatch(fetchModuleArchive(moduleCode, year)),
   };
 };
 
-const connectedModulePageContainer = connect(
+const connectedModuleArchiveContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ModulePageContainerComponent);
-const routedModulePageContainer = withRouter(connectedModulePageContainer);
-export default deferComponentRender(routedModulePageContainer);
+)(ModuleArchiveContainerComponent);
+const routedModuleArchiveContainer = withRouter(connectedModuleArchiveContainer);
+export default deferComponentRender(routedModuleArchiveContainer);
