@@ -80,14 +80,16 @@ function getResponseData<T>(response: AxiosResponse<WeatherResponse<T>>): T {
   return data.items[0];
 }
 
-export function twoHour(): Promise<string> {
+export function twoHour(): Promise<string | null> {
   return axios
     .get<WeatherResponse<NowCastItem>>(`${API_PREFIX}/2-hour-weather-forecast`)
     .then((response) => {
-      const areaForecast = getResponseData(response).forecasts.find(
+      // 2-hour forecast may return an empty object sometimes, no idea why
+      const areaForecast = getResponseData(response).forecasts?.find(
         (forecast) => forecast.area === NOWCAST_AREA,
       );
-      if (!areaForecast) throw new Error(`Cannot find forecast for ${NOWCAST_AREA}`);
+
+      if (!areaForecast) return null;
       return areaForecast.forecast;
     });
 }
