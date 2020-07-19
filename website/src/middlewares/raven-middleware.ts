@@ -1,11 +1,15 @@
 import { Middleware } from 'redux';
+import { size } from 'lodash';
 import * as Sentry from '@sentry/browser';
 import produce from 'immer';
 import { State } from 'types/state';
 
 const stateTransformer = (state: State): Record<string, unknown> => ({
   ...state,
-  moduleBank: `${state.moduleBank.moduleList.length} modules`,
+  moduleBank: {
+    moduleList: `${state.moduleBank.moduleList.length} modules`,
+    modules: `${size(state.moduleBank.modules)} modules`,
+  },
   venueBank: `${state.venueBank.venueList.length} venues`,
 });
 

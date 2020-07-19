@@ -41,23 +41,23 @@
   "homepage": "https://github.com/nusmodifications/nusmods/tree/master/packages/nusmoderator",
   "npmName": "nusmoderator",
   "devDependencies": {
-    "@types/jest": "26.0.4",
+    "@types/jest": "26.0.5",
     "@typescript-eslint/eslint-plugin": "2.34.0",
     "@typescript-eslint/parser": "2.34.0",
     "documentation": "13.0.2",
-    "eslint": "7.4.0",
+    "eslint": "7.5.0",
     "eslint-config-airbnb-base": "14.2.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-import": "2.22.0",
     "eslint-plugin-prettier": "3.1.4",
     "jest": "26.1.0",
-    "microbundle": "0.12.2",
+    "microbundle": "0.12.3",
     "prettier": "2.0.5",
     "rimraf": "3.0.2",
-    "ts-jest": "26.1.1",
-    "typescript": "3.9.6"
+    "ts-jest": "26.1.3",
+    "typescript": "3.9.7"
   },
   "dependencies": {
-    "date-fns": "2.14.0"
+    "date-fns": "2.15.0"
   }
 }
