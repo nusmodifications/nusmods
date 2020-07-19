@@ -14,7 +14,6 @@ const icons = [SpeechBubble, Mug, Browser, Ghost];
 const defaultMoods: KawaiiMood[] = ['ko', 'sad', 'shocked'];
 
 class RandomKawaii extends React.PureComponent<Props> {
-  // TODO: Tighten this, possibly by creating a libdef for react-kawaii
   kawaii: React.ComponentType<KawaiiProps>;
 
   defaultMood: KawaiiMood;
