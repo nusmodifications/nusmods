@@ -161,10 +161,8 @@ export default class ElasticPersist implements Persist {
     return Promise.resolve();
   }
 
-  async getModuleCodes() {
-    const client = await this.client;
-    const result = client.bulk()
-    return
+  getModuleCodes() {
+    return Promise.resolve([]);
   }
 
   module() {
