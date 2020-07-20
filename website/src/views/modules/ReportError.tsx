@@ -183,8 +183,8 @@ const ReportError = React.memo<Props>(({ module }) => {
         <CloseButton onClick={() => setIsOpen(false)} />
         <h2 className={styles.heading}>Reporting an issue with {module.moduleCode}</h2>
         <p>
-          NUSMods updates its information from the Registrar's Office every night. Please wait up to
-          48 hours for information to be updated before reporting any issues.
+          NUSMods updates its information from the Registrar's Office every few hours. Please wait
+          up to 24 hours for information to be updated before reporting any issues.
         </p>
         <p>
           This form will send an email about this module to the faculty. If you think the issue is a
@@ -275,7 +275,7 @@ const FormContent: React.FC<FormContentProps> = ({
       </div>
 
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-faculty">Department / Faculty</label>
+        <label htmlFor="report-error-faculty">Module's Host Department / Faculty</label>
         <select
           className="form-control"
           id="report-error-faculty"
