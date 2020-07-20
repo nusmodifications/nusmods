@@ -249,7 +249,7 @@ const FormContent: React.FC<FormContentProps> = ({
       }}
     >
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-name">Your Full Name</label>
+        <label htmlFor="report-error-name">Your full name</label>
         <input
           className="form-control"
           id="report-error-name"
@@ -260,7 +260,7 @@ const FormContent: React.FC<FormContentProps> = ({
       </div>
 
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-matric-number">Your Matriculation Number</label>
+        <label htmlFor="report-error-matric-number">Your matriculation number</label>
         <input
           id="report-error-matric-number"
           className="form-control"
@@ -275,7 +275,7 @@ const FormContent: React.FC<FormContentProps> = ({
       </div>
 
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-faculty">Module's Host Department / Faculty</label>
+        <label htmlFor="report-error-faculty">Department / Faculty offering the module</label>
         <select
           className="form-control"
           id="report-error-faculty"
@@ -312,7 +312,7 @@ const FormContent: React.FC<FormContentProps> = ({
       </div>
 
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-email">Your School Email</label>
+        <label htmlFor="report-error-email">Your school email</label>
         <input
           type="email"
           id="report-error-email"
