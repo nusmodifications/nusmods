@@ -31,3 +31,12 @@ export type DayAvailability = Readonly<{
 export type VenueInfo = Readonly<{
   [venue: string]: DayAvailability[];
 }>;
+
+// Shape of data in data/venues.json
+export type VenueLocation = {
+  readonly roomName: string;
+  readonly floor?: number | string | null;
+  readonly location?: { x: number; y: number };
+};
+
+export type VenueLocationMap = { readonly [key: string]: VenueLocation };
