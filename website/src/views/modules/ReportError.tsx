@@ -275,7 +275,7 @@ const FormContent: React.FC<FormContentProps> = ({
       </div>
 
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-faculty">Department / Faculty offering the module</label>
+        <label htmlFor="report-error-faculty">Department/faculty offering the module</label>
         <select
           className="form-control"
           id="report-error-faculty"
@@ -283,7 +283,7 @@ const FormContent: React.FC<FormContentProps> = ({
           onChange={updateFormValue('contactId')}
           required
         >
-          <option value="">Select a department / faculty</option>
+          <option value="">Select a department/faculty</option>
           {facultyEmails.map((config) => (
             <option value={config.id} key={config.id}>
               {config.label}
