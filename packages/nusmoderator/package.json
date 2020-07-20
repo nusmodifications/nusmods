@@ -58,7 +58,6 @@
     "typescript": "3.9.7"
   },
   "dependencies": {
-    "date-fns": "2.15.0",
-    "yarn.lock": "^0.0.1-security"
+    "date-fns": "2.15.0"
   }
 }
