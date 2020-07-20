@@ -1,18 +1,24 @@
-import { Middleware } from 'redux';
-import axios, { AxiosRequestConfig, AxiosError } from 'axios';
+import type { Middleware } from 'redux';
+import type { AxiosRequestConfig, AxiosError } from 'axios';
+import axios from 'axios';
+
+import type { State } from 'types/state';
+import type { Dispatch } from 'types/redux';
 import { FAILURE, REQUEST, SUCCESS } from 'types/reducers';
-import { API_REQUEST } from 'actions/requests';
-import { State } from 'types/state';
+import { API_REQUEST, RequestsDispatchExt } from 'actions/requests';
 
 export type ActionType<Action extends string, Type extends string> = Action & { __type: Type };
 
-export type RequestAction<Type extends string, Meta = {}> = {
+// eslint-disable-next-line @typescript-eslint/ban-types
+type DefaultMeta = {};
+
+export type RequestAction<Type extends string, Meta = DefaultMeta> = {
   type: ActionType<Type, typeof REQUEST>;
   payload: AxiosRequestConfig;
   meta: Meta;
 };
 
-export type SuccessAction<Type extends string, Response, Meta = {}> = {
+export type SuccessAction<Type extends string, Response, Meta = DefaultMeta> = {
   type: ActionType<Type, typeof SUCCESS>;
   payload: Response;
   meta: Meta & {
@@ -21,7 +27,7 @@ export type SuccessAction<Type extends string, Response, Meta = {}> = {
   };
 };
 
-export type FailureAction<Type extends string, Meta = {}> = {
+export type FailureAction<Type extends string, Meta = DefaultMeta> = {
   type: ActionType<Type, typeof FAILURE>;
   payload: Error;
   meta: Meta & {
@@ -29,7 +35,7 @@ export type FailureAction<Type extends string, Meta = {}> = {
   };
 };
 
-export type RequestActions<Type extends string, Response, Meta = {}> =
+export type RequestActions<Type extends string, Response, Meta = DefaultMeta> =
   | RequestAction<Type, Meta>
   | SuccessAction<Type, Response, Meta>
   | FailureAction<Type, Meta>;
@@ -51,9 +57,9 @@ export function FAILURE_KEY<Type extends string>(key: Type): ActionType<Type, ty
   return (key + FAILURE) as ActionType<Type, typeof FAILURE>;
 }
 
-// TODO: Figure out how to type Dispatch correctly
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const requestMiddleware: Middleware<any, State, any> = () => (next) => (action) => {
+const requestMiddleware: Middleware<RequestsDispatchExt, State, Dispatch> = () => (next) => (
+  action,
+) => {
   if (!action.meta || !action.meta[API_REQUEST]) {
     // Non-api request action
     return next(action);
@@ -75,7 +81,7 @@ const requestMiddleware: Middleware<any, State, any> = () => (next) => (action) 
 
   // Propagate the response of the request.
   return makeRequest(payload).then(
-    (response) =>
+    (response) => {
       next({
         type: SUCCESS_KEY(type),
         payload: response.data,
@@ -85,7 +91,10 @@ const requestMiddleware: Middleware<any, State, any> = () => (next) => (action) 
           request: payload,
           responseHeaders: response.headers,
         },
-      }),
+      });
+
+      return response.data;
+    },
     (error: AxiosError) => {
       next({
         type: FAILURE_KEY(type),

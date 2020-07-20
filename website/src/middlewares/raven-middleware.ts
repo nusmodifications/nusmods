@@ -13,14 +13,15 @@ const stateTransformer = (state: State): Record<string, unknown> => ({
   venueBank: `${state.venueBank.venueList.length} venues`,
 });
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 const ravenMiddleware: Middleware<{}, State> = (store) => {
   Sentry.configureScope((scope) => {
     scope.addEventProcessor((event) =>
       produce(event, (draft) => {
-        if (!draft.extra) {
-          draft.extra = {};
-        }
-        draft.extra['redux:state'] = stateTransformer(store.getState());
+        draft.extra = {
+          ...(draft.extra ?? {}),
+          'redux:state': stateTransformer(store.getState()),
+        };
       }),
     );
   });
