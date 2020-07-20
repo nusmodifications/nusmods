@@ -31,9 +31,11 @@ export interface RequestsDispatchExt {
  */
 type RequestActionCreator = {
   <Key extends string>(key: Key, options: AxiosRequestConfig): DispatchRequestAction<Key>;
-  <Type extends string>(key: RequestKey, type: Type, options: AxiosRequestConfig): DispatchRequestAction<
-    Type
-  >;
+  <Type extends string>(
+    key: RequestKey,
+    type: Type,
+    options: AxiosRequestConfig,
+  ): DispatchRequestAction<Type>;
 };
 
 export const requestAction: RequestActionCreator = (
