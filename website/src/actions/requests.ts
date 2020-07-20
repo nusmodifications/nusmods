@@ -13,7 +13,7 @@ export type DispatchRequestAction<Type extends string> = {
 };
 
 export interface RequestsDispatchExt {
-  <T>(requestAction: DispatchRequestAction<RequestType>): T;
+  <T>(requestAction: DispatchRequestAction<RequestType>): Promise<T>;
 }
 
 /**

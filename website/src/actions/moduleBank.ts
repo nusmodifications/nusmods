@@ -1,4 +1,4 @@
-import { size, zip } from 'lodash';
+import { size } from 'lodash';
 
 import type { AcadYear, Module, ModuleCode, ModuleCondensed } from 'types/modules';
 import type { RequestActions } from 'middlewares/requests-middleware';
@@ -71,13 +71,14 @@ export function fetchModule(moduleCode: ModuleCode) {
 
     const key = fetchModuleRequest(moduleCode);
 
-    return dispatch(
+    return dispatch<Module>(
       requestAction(key, FETCH_MODULE, {
         url: NUSModsApi.moduleDetailsUrl(moduleCode),
       }),
     ).then(
-      () => {
+      (module) => {
         onFinally();
+        return module;
       },
       (error: Error) => {
         onFinally();
@@ -108,9 +109,11 @@ export function fetchAllModuleArchive(moduleCode: ModuleCode) {
   return (dispatch: Dispatch) =>
     Promise.all(
       config.archiveYears.map((year) =>
-        dispatch(fetchModuleArchive(moduleCode, year)).catch(() => null),
+        dispatch<Module>(fetchModuleArchive(moduleCode, year))
+          .catch(() => null)
+          .then((module): [AcadYear, Module | null] => [year, module]),
       ),
-    ).then((modules) => zip<AcadYear, Module[]>(config.archiveYears, modules));
+    );
 }
 
 export type ModuleBankRequestActions =

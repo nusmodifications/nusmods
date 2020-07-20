@@ -5,7 +5,9 @@ import { match as Match, Redirect, RouteComponentProps, withRouter } from 'react
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import { get } from 'lodash';
 
-import { Module, ModuleCode } from 'types/modules';
+import type { Module, ModuleCode } from 'types/modules';
+import type { State as StoreState } from 'types/state';
+import type { Dispatch } from 'types/redux';
 
 import { fetchModuleArchive } from 'actions/moduleBank';
 import { captureException, retryImport } from 'utils/error';
@@ -13,7 +15,6 @@ import ApiError from 'views/errors/ApiError';
 import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { moduleArchive } from 'views/routes/paths';
-import { State as StoreState } from 'types/state';
 
 import { Props as ModulePageContentProp } from './ModulePageContent';
 
@@ -136,10 +137,10 @@ const mapStateToProps = ({ moduleBank }: StoreState, ownProps: OwnProps) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Function, ownProps: OwnProps) => {
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: OwnProps) => {
   const { moduleCode, year } = getPropsFromMatch(ownProps.match);
   return {
-    fetchModule: () => dispatch(fetchModuleArchive(moduleCode, year)),
+    fetchModule: () => dispatch<Module>(fetchModuleArchive(moduleCode, year)),
   };
 };
 
