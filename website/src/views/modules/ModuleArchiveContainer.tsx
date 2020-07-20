@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { AxiosError } from 'axios';
-import { connect } from 'react-redux';
+import { connect, MapDispatchToPropsNonObject } from 'react-redux';
 import { match as Match, Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import { get } from 'lodash';
@@ -25,12 +25,16 @@ type Params = {
 
 type OwnProps = RouteComponentProps<Params>;
 
-type Props = OwnProps & {
-  module: Module | null;
-  moduleCode: ModuleCode;
+type DispatchProps = {
   fetchModule: () => Promise<Module>;
-  archiveYear: string;
 };
+
+type Props = OwnProps &
+  DispatchProps & {
+    module: Module | null;
+    moduleCode: ModuleCode;
+    archiveYear: string;
+  };
 
 type State = {
   ModulePageContent: React.ComponentType<ModulePageContentProp> | null;
@@ -146,7 +150,9 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: OwnProps) => {
 
 const connectedModuleArchiveContainer = connect(
   mapStateToProps,
-  mapDispatchToProps,
+  // Cast required because the version of Dispatch defined by connect does not have the extensions defined
+  // in our Dispatch
+  mapDispatchToProps as MapDispatchToPropsNonObject<DispatchProps, OwnProps>,
 )(ModuleArchiveContainerComponent);
 const routedModuleArchiveContainer = withRouter(connectedModuleArchiveContainer);
 export default deferComponentRender(routedModuleArchiveContainer);
