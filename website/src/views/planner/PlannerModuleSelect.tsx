@@ -81,7 +81,7 @@ export function PlannerModuleSelectComponent({
     }
 
     return selectedModules;
-  }, [modules, showOnly, semester]);
+  }, [filter, modules, showOnly, semester]);
 
   return (
     <Downshift
