@@ -12,6 +12,7 @@ interface CheckboxItemFilterProps extends SearchkitComponentProps {
   disabled: boolean;
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 type State = {};
 
 /**

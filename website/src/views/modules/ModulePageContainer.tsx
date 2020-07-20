@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { AxiosError } from 'axios';
-import { connect } from 'react-redux';
+import { connect, MapDispatchToPropsNonObject } from 'react-redux';
 import { match as Match, Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import { get } from 'lodash';
 
-import { Module, ModuleCode } from 'types/modules';
+import type { Module, ModuleCode } from 'types/modules';
+import type { Dispatch } from 'types/redux';
+import type { State as StoreState } from 'types/state';
 
 import { fetchModule } from 'actions/moduleBank';
 import { captureException, retryImport } from 'utils/error';
@@ -13,7 +15,6 @@ import ApiError from 'views/errors/ApiError';
 import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { modulePage } from 'views/routes/paths';
-import { State as StoreState } from 'types/state';
 
 import { Props as ModulePageContentProp } from './ModulePageContent';
 
@@ -23,11 +24,16 @@ type Params = {
 
 type OwnProps = RouteComponentProps<Params>;
 
-type Props = OwnProps & {
-  module: Module | null;
-  moduleCode: ModuleCode;
+type DispatchProps = {
   fetchModule: () => Promise<Module>;
 };
+
+type Props = OwnProps &
+  DispatchProps & {
+    module: Module | null;
+    moduleCode: ModuleCode;
+    fetchModule: () => Promise<Module>;
+  };
 
 type State = {
   ModulePageContent: React.ComponentType<ModulePageContentProp> | null;
@@ -125,7 +131,7 @@ const mapStateToProps = ({ moduleBank }: StoreState, ownProps: OwnProps) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Function, ownProps: OwnProps) => {
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: OwnProps) => {
   const { moduleCode } = getPropsFromMatch(ownProps.match);
   return {
     fetchModule: () => dispatch(fetchModule(moduleCode)),
@@ -134,7 +140,9 @@ const mapDispatchToProps = (dispatch: Function, ownProps: OwnProps) => {
 
 const connectedModulePageContainer = connect(
   mapStateToProps,
-  mapDispatchToProps,
+  // Cast required because the version of Dispatch defined by connect does not have the extensions defined
+  // in our Dispatch
+  mapDispatchToProps as MapDispatchToPropsNonObject<DispatchProps, OwnProps>,
 )(ModulePageContainerComponent);
 const routedModulePageContainer = withRouter(connectedModulePageContainer);
 export default deferComponentRender(routedModulePageContainer);

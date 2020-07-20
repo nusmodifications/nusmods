@@ -1,18 +1,16 @@
-import { Semester } from 'types/modules';
-
-import * as React from 'react';
-import config from 'config';
-
+import React from 'react';
 import { ChevronLeft, ChevronRight } from 'react-feather';
 
+import type { Semester } from 'types/modules';
 import { isValidSemester } from 'utils/timetables';
+import config from 'config';
 
 import styles from './SemesterSwitcher.scss';
 
 type Props = {
   readOnly?: boolean;
   semester: Semester;
-  onSelectSemester: Function;
+  onSelectSemester: (newSemester: Semester) => void;
 };
 
 const SemesterSwitcher = React.memo<Props>(({ readOnly, semester, onSelectSemester }) => {

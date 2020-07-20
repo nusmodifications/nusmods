@@ -9,7 +9,7 @@ import 'styles/tippy/tippy.css';
 // To use plugins, add them to DEFAULT_PLUGINS
 const DEFAULT_PLUGINS = [animateFill];
 
-export type Props = Omit<TippyProps, 'plugins'> & {};
+export type Props = Omit<TippyProps, 'plugins'>;
 const Tooltip: React.FC<Props> = (props) => {
   // Clone the props to make it extensible
   const tippyProps = { plugins: DEFAULT_PLUGINS, animateFill: true, ...props };
