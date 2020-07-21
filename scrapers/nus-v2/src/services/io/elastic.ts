@@ -5,7 +5,7 @@ import { ModuleCode, ModuleInformation } from '../../types/modules';
 import config from '../../config';
 import logger from '../logger';
 
-/* eslint-disable @typescript-eslint/camelcase, no-underscore-dangle */
+/* eslint-disable camelcase, no-underscore-dangle */
 
 // Typings for the result from the all modules search. This is a partial typing
 type ModuleSearchBody = {

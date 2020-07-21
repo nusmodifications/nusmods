@@ -4,6 +4,8 @@
  * types used in modules.js
  */
 
+/* eslint-disable camelcase */
+
 // AcademicGrp and AcademicOrg use abbreviation to avoid clashing with the
 // name of the field when destructuring
 export type AcademicGrp = Readonly<{

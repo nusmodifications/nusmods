@@ -1,6 +1,6 @@
 import { mapExamInfo } from './GetSemesterExams';
 
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable camelcase */
 
 describe(mapExamInfo, () => {
   test('should map module exam to date strings', () => {

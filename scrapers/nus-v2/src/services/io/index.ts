@@ -53,7 +53,7 @@ export class CombinedPersist implements Persist {
   }
 
   async getModuleCodes() {
-    const moduleCodes = await Promise.all(this.writers.map(writer => writer.getModuleCodes()));
+    const moduleCodes = await Promise.all(this.writers.map((writer) => writer.getModuleCodes()));
     return Array.from(new Set(moduleCodes.flat()));
   }
 

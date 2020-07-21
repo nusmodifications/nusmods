@@ -52,7 +52,7 @@ function mapErrorCode(code: string, msg: string) {
   return error;
 }
 
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable camelcase */
 
 /**
  * Base API call function. This function wraps around axios to provide basic

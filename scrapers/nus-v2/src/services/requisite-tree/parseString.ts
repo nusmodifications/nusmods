@@ -42,7 +42,7 @@ const WhiteSpace = createToken({
   name: 'Whitespace',
   pattern: /\s+/,
   group: Lexer.SKIPPED,
-  // eslint-disable-next-line @typescript-eslint/camelcase
+  // eslint-disable-next-line camelcase
   line_breaks: true,
 });
 
