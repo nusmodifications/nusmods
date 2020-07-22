@@ -19,7 +19,7 @@ const mockApi: jest.Mocked<NusApi> = api as any;
  * Full integration tests for the entire pipeline
  */
 
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable camelcase */
 
 // Mock data for the module info API endpoint
 const moduleInfoData: { [semester: string]: ModuleInfo[] } = {

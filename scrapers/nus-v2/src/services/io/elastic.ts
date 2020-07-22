@@ -5,7 +5,21 @@ import { ModuleCode, ModuleInformation } from '../../types/modules';
 import config from '../../config';
 import logger from '../logger';
 
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable camelcase, no-underscore-dangle */
+
+// Typings for the result from the all modules search. This is a partial typing
+type ModuleSearchBody = {
+  hits: {
+    total: number;
+    hits: {
+      _id: string;
+      _score: number;
+      _source: {
+        moduleCode: ModuleCode;
+      };
+    }[];
+  };
+};
 
 const INDEX_NAME = 'modules';
 
@@ -161,8 +175,20 @@ export default class ElasticPersist implements Persist {
     return Promise.resolve();
   }
 
-  getModuleCodes() {
-    return Promise.resolve([]);
+  async getModuleCodes() {
+    const client = await this.client;
+    const { body } = await client.search({
+      index: 'modules',
+      body: {
+        query: {
+          match_all: {},
+        },
+        _source: 'moduleCode',
+        size: 100_000, // Arbitrarily large number to force API to return all results
+      },
+    });
+
+    return (body as ModuleSearchBody).hits.hits.map((hit) => hit._source.moduleCode);
   }
 
   module() {
