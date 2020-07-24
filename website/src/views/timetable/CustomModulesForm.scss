@@ -1,3 +1,4 @@
+@import "./_variables.scss";
 @import '~styles/utils/modules-entry';
 
 $input-height: 2.75rem;
@@ -41,10 +42,39 @@ $btn-margin: 0.5rem;
     margin-left: $btn-margin;
   }
 
-  @include media-breakpoint-up(md) {
+  @include media-breakpoint-down(xs) {
+    > * {
+      flex: 1 1 100%;
+    }
+  }
+  
+  @include media-breakpoint-up(sm) {
     :global(.btn) {
       padding: 0.25rem 0.75rem;
       font-size: $font-size-sm;
     }
   }
+}
+
+
+// Two layout forms:
+//
+// 1. Left and right on one row, with space between two groups
+//   - md and above for horizontal
+//
+// 2. Left and right on 2 rows, full width (fullWidthGroup)
+//   - any size in vertical
+//   - sm and below for horizontal
+@mixin fullWidthGroup {
+  .buttonGroup {
+    width: calc(100% + #{$btn-margin}); // Make full width and negate the left shifting caused by our margin-left
+  }
+}
+
+:global(.verticalMode) {
+  @include fullWidthGroup;
+}
+
+@include media-breakpoint-down(sm) {
+  @include fullWidthGroup;
 }
