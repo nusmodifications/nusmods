@@ -9,6 +9,7 @@ import {
   ModuleTitle,
   Department,
   Faculty,
+  Weeks,
   SemesterData,
   Semester,
 } from 'types/modules';
@@ -32,7 +33,14 @@ type State = {
   department: Department;
   faculty: Faculty;
   moduleCredit: string;
-  semesterData: SemesterData[];
+  semester: Semester;
+  classNo: string;
+  startTime: string;
+  endTime: string;
+  weeks: Weeks;
+  venue: string;
+  day: string;
+  lessonType: string;
   currentTimetableIndex: number;
   timestamp: number;
 };
@@ -64,22 +72,14 @@ class CustomModulesForm extends React.Component<Props, State> {
     moduleCredit: '',
     department: '',
     faculty: '',
-    semesterData: [
-      {
-        semester: this.props.activeSemester,
-        timetable: [
-          {
-            classNo: '',
-            startTime: '',
-            endTime: '',
-            weeks: [],
-            venue: '',
-            day: '',
-            lessonType: '',
-          },
-        ],
-      },
-    ],
+    semester: this.props.activeSemester,
+    classNo: '',
+    startTime: '0000',
+    endTime: '0000',
+    weeks: [],
+    venue: '',
+    day: '',
+    lessonType: '',
     currentTimetableIndex: 0,
     timestamp: Date.now(),
   };
@@ -93,8 +93,8 @@ class CustomModulesForm extends React.Component<Props, State> {
       moduleCredit: this.state.moduleCredit,
       department: this.state.department,
       faculty: this.state.faculty,
-      semesterData: this.state.semesterData,
       timestamp: Date.now() || this.state.timestamp,
+      semesterData: []
     };
     customModule = {
       acadYear: '2018/2019',
@@ -111,109 +111,51 @@ class CustomModulesForm extends React.Component<Props, State> {
       timestamp: Date.now(),
     }
     this.state.currentTimetableIndex += 1;
-    this.props.addModule(this.state.semesterData[0].semester, customModule.moduleCode);
+    this.props.addModule(1, customModule.moduleCode);
   }
   
   onChangeClassNo = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
-    this.setState((prevState) => {
-      return {
-        semesterData: [{
-          semester: prevState.semesterData[0].semester,
-          timetable: prevState.semesterData[0].timetable.map((props, currentIndex) =>
-            currentIndex === index ? { ...props, classNo: event.target.value } : props
-          )
-        }]
-      }
-    })
+    this.setState({classNo : event.target.value})
   };
 
-  onSelectStartTime = (item: string, index: number) => {
-    this.setState((prevState) => {
-      return {
-        semesterData: [{
-          semester: prevState.semesterData[0].semester,
-          timetable: prevState.semesterData[0].timetable.map((props, currentIndex) =>
-            currentIndex === index ? { ...props, startTime: item } : props
-          )
-        }]
-      }
-    })
+  onSelectStartTime = (item: string, type: string, index: number) => {
+    this.setState(prevState => ({startTime: (type === "HH"? (item + prevState.startTime.slice(-2, 0)) : (prevState.startTime.slice(0, 2) + item))}))
   };
 
-  onSelectEndTime = (item: string, index: number) => {
-    this.setState((prevState) => {
-      return {
-        semesterData: [{
-          semester: prevState.semesterData[0].semester,
-          timetable: prevState.semesterData[0].timetable.map((props, currentIndex) =>
-            currentIndex === index ? { ...props, endTime: item } : props
-          )
-        }]
-      }
-    })
+  onSelectEndTime = (item: string, type: string, index: number) => {
+    this.setState(prevState => ({endTime: (type === "MM"? (item + prevState.startTime.slice(-2, 0)) : (prevState.startTime.slice(0, 2) + item))}))
   };
 
   onSelectVenue = (item: string, index: number) => {
-    this.setState((prevState) => {
-      return {
-        semesterData: [{
-          semester: prevState.semesterData[0].semester,
-          timetable: prevState.semesterData[0].timetable.map((props, currentIndex) =>
-            currentIndex === index ? { ...props, venue: item } : props
-          )
-        }]
-      }
-    })
+    this.setState( {venue : item})
   };
 
   onSelectDay = (item: string, index: number) => {
-    this.setState((prevState) => {
-      return {
-        semesterData: [{
-          semester: prevState.semesterData[0].semester,
-          timetable: prevState.semesterData[0].timetable.map((props, currentIndex) =>
-            currentIndex === index ? { ...props, day: item } : props
-          )
-        }]
-      }
-    })
+    this.setState({ day : item })
   };
 
   onSelectLessonType = (item: string, index: number) => {
-    this.setState((prevState) => {
-      return {
-        semesterData: [{
-          semester: prevState.semesterData[0].semester,
-          timetable: prevState.semesterData[0].timetable.map((props, currentIndex) =>
-            currentIndex === index ? { ...props, lessonType: item } : props
-          )
-        }]
-      }
-    })
+    this.setState({ lessonType : item })
   };
 
   isFormValid = () => {
-    let validity: boolean = Boolean(this.state.moduleCode) && Boolean(this.state.title);
-    this.state.semesterData[0].timetable.forEach(function (schedule) {
-      validity = validity && Boolean(schedule.classNo && schedule.startTime && schedule.endTime && schedule.venue && schedule.day && schedule.lessonType)
-    });
-    console.log(validity);
+    const validity = Boolean(this.state.moduleCode && this.state.title && this.state.classNo && this.state.startTime && this.state.endTime && this.state.venue && this.state.day && this.state.lessonType)
     return validity;
   }
 
   render() {
     return (
       <div>
-        <div className={styles.buttonGroup}>
-        <input
-          className={classnames(styles.input, styles.titleIcon)}
-          onChange={e => this.setState({ moduleCode: e.target.value })}
-          placeholder="Module Code"
-        />
-        <input
-          className={classnames(styles.input, styles.titleIcon)}
-          onChange={e => this.setState({ title: e.target.value })}
-          placeholder="Module Title"
+        <div className={styles.buttonGroup} role="group" aria-label="Custom module main information">
+          <input
+            className={classnames(styles.input, styles.titleIcon)}
+            onChange={e => this.setState({ moduleCode: e.target.value })}
+            placeholder="Module Code"
+          />
+          <input
+            className={classnames(styles.input, styles.titleIcon)}
+            onChange={e => this.setState({ title: e.target.value })}
+            placeholder="Module Title"
           />
         </div>
         <CustomModuleTimetableForm
@@ -233,6 +175,8 @@ class CustomModulesForm extends React.Component<Props, State> {
         >
           Create Module
         </button>
+        {this.state.weeks}
+        {this.state.semester}
 
       </div>
     );
