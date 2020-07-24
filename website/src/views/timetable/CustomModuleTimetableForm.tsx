@@ -33,8 +33,8 @@ export default class CustomModuleTimetableForm extends React.Component<Props, St
   state: State = {
     selectedLessonType: '',
     selectedDay: '',
-    selectedStartTimeHH: '00',
-    selectedStartTimeMM: '00',
+    selectedStartTimeHH: '',
+    selectedStartTimeMM: '',
   }
 
   renderDropdownLessonType: ChildrenFunction<string> = ({
@@ -49,7 +49,7 @@ export default class CustomModuleTimetableForm extends React.Component<Props, St
           type="button"
           onClick={() => toggleMenu()}
         >
-          {this.state.selectedDay !== '' ? this.state.selectedLessonType : 'Lesson Type'}
+          {this.state.selectedLessonType !== '' ? this.state.selectedLessonType : 'Lesson Type'}
         </button>
         <div className={classnames('dropdown-menu', styles.dropdownMenu, { show: isOpen })}>
           {Object.keys(LESSON_TYPE_ABBREV).map((item, index) => (
@@ -62,12 +62,23 @@ export default class CustomModuleTimetableForm extends React.Component<Props, St
     );
   }
 
+  onSelectLessonType = (selectedItem: string | null) => {
+    if (selectedItem === null) {
+      console.log("invalid");
+      return;
+    }
+    const item: string = selectedItem || "";
+    this.setState({ selectedLessonType: item });
+    this.props.onSelectLessonType(item, this.props.index)
+  }
+
   onSelectDay = (selectedItem: string | null) => {
     if (selectedItem === null) {
       console.log("invalid");
       return;
     }
     const item: string = selectedItem || "";
+    this.setState({ selectedDay: item });
     this.props.onSelectDay(item, this.props.index)
   }
 
@@ -104,7 +115,7 @@ export default class CustomModuleTimetableForm extends React.Component<Props, St
 
   onSelectStartTimeMM = (selectedItem: string | null) => {
     const item: string = selectedItem || "00";
-    this.setState({selectedStartTimeHH: item})
+    this.setState({selectedStartTimeMM: item})
     this.props.onSelectStartTime(item, "MM", this.props.index)
   }
 
@@ -192,7 +203,7 @@ export default class CustomModuleTimetableForm extends React.Component<Props, St
             onChange={(e) => this.props.onChangeClassNo(e, this.props.index)}
             placeholder="Class No."
           /> 
-          <Downshift onChange={this.onSelectDay}>{this.renderDropdownLessonType}</Downshift>
+          <Downshift onChange={this.onSelectLessonType}>{this.renderDropdownLessonType}</Downshift>
           <input
             className={classnames(styles.input)}
             onChange={(e) => this.props.onChangeClassNo(e, this.props.index)}
@@ -209,6 +220,7 @@ export default class CustomModuleTimetableForm extends React.Component<Props, St
               {this.renderDropdownStartTimeMM}
             </Downshift>
           </div>
+
           <div className={classnames(styles.timeInputHolder, 'btn btn-outline-primary btn-svg')}>
             <Downshift onChange={this.onSelectStartTimeHH}>
               {this.renderDropdownStartTimeHH}
