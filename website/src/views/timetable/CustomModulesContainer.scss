@@ -1,7 +1,11 @@
 @import '~styles/utils/modules-entry';
 
 .titleBtn {
-    @include vertical-mode {
-      display: none;
-    }
+
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+
+  @include vertical-mode {
+    display: none;
   }
+}
