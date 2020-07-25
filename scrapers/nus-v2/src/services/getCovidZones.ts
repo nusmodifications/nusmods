@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import axios from 'axios';
 
+import type { Venue, VenueLocationMap } from '../types/venues';
+
 const COVID_ZONE_URL =
   'https://raw.githubusercontent.com/nusmodifications/nusmods/master/website/src/data/covidZones.json';
 
@@ -45,16 +47,28 @@ function pointInPolygon(polygon: [number, number][], point: [number, number]) {
   return odd;
 }
 
-export function getLocationCovidZone(
-  zones: CovidZones,
-  location: { x: number; y: number },
-): CovidZoneId {
-  const zoneEntries = Object.entries(zones) as [CovidZoneId, CovidZone][];
-  const zone = zoneEntries.find(([, { positions }]) =>
-    pointInPolygon(positions, [location.y, location.x]),
-  );
+const getLocationCovidZone = _.memoize(
+  (zones: CovidZones, location: { x: number; y: number }): CovidZoneId => {
+    const zoneEntries = Object.entries(zones) as [CovidZoneId, CovidZone][];
+    const zone = zoneEntries.find(([, { positions }]) =>
+      pointInPolygon(positions, [location.y, location.x]),
+    );
 
-  return zone?.[0] ?? 'Unknown';
+    return zone?.[0] ?? 'Unknown';
+  },
+);
+
+export function getVenueCovidZone(
+  venues: VenueLocationMap,
+  zones: CovidZones,
+  venue: Venue,
+): CovidZoneId {
+  const venueInfo = venues[venue];
+  if (!venueInfo?.location) {
+    return 'Unknown';
+  }
+
+  return getLocationCovidZone(zones, venueInfo.location);
 }
 
 export default getCovidZones;
