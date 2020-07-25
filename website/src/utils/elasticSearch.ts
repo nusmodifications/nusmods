@@ -8,9 +8,9 @@ const POST_TAG_REGEX = new RegExp(escapeRegExp(POST_TAG), 'gi');
 
 // For options, see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html#highlighting-settings
 export const HIGHLIGHT_OPTIONS = {
-  // eslint-disable-next-line @typescript-eslint/camelcase
+  // eslint-disable-next-line camelcase
   pre_tags: [PRE_TAG],
-  // eslint-disable-next-line @typescript-eslint/camelcase
+  // eslint-disable-next-line camelcase
   post_tags: [POST_TAG],
   fields: {
     moduleCode: {},

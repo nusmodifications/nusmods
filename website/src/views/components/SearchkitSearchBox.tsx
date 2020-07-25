@@ -1,5 +1,10 @@
 import React from 'react';
-import { QueryAccessor, SearchkitComponent, SearchkitComponentProps } from 'searchkit';
+import {
+  QueryAccessor,
+  SearchkitComponent,
+  SearchkitComponentProps,
+  SearchOptions,
+} from 'searchkit';
 import classnames from 'classnames';
 
 import elements from 'views/elements';
@@ -8,17 +13,18 @@ import SearchBox from 'views/components/SearchBox';
 // The default URL query string key used for the search term
 const DEFAULT_SEARCH_QUERY_KEY = 'q';
 
-interface Props extends SearchkitComponentProps {
+// This should be SearchBoxProps from https://github.com/searchkit/searchkit/blob/016c899c97f72ea3ad5afc017345e41c9003172a/packages/searchkit/src/components/search/search-box/SearchBox.tsx
+type SearchBoxProps = SearchkitComponentProps &
+  Pick<
+    SearchOptions,
+    'queryFields' | 'queryBuilder' | 'queryOptions' | 'prefixQueryFields' | 'prefixQueryOptions'
+  > & {
+    id?: string;
+    placeholder?: string;
+  };
+
+interface Props extends SearchBoxProps {
   throttle: number;
-  queryFields?: string[];
-  queryBuilder?: Function;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  queryOptions?: Record<string, any>;
-  id?: string;
-  placeholder?: string;
-  prefixQueryFields?: string[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  prefixQueryOptions?: Record<string, any>;
 }
 
 type State = {

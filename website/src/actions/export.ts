@@ -1,6 +1,6 @@
-import { Module, Semester } from 'types/modules';
-import { ExportData } from 'types/export';
-import { GetState } from 'types/redux';
+import type { Module, Semester } from 'types/modules';
+import type { ExportData } from 'types/export';
+import type { Dispatch, GetState } from 'types/redux';
 import { hydrateSemTimetableWithLessons } from 'utils/timetables';
 import { captureException, retryImport } from 'utils/error';
 import { getSemesterTimetable } from 'selectors/timetables';
@@ -22,7 +22,7 @@ function downloadUrl(blob: Blob, filename: string) {
 export const SUPPORTS_DOWNLOAD = 'download' in document.createElement('a');
 
 export function downloadAsIcal(semester: Semester) {
-  return (dispatch: Function, getState: GetState) => {
+  return (dispatch: Dispatch, getState: GetState) => {
     Promise.all([
       retryImport(() => import(/* webpackChunkName: "export" */ 'ical-generator')),
       retryImport(() => import(/* webpackChunkName: "export" */ 'utils/ical')),

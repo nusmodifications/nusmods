@@ -183,8 +183,8 @@ const ReportError = React.memo<Props>(({ module }) => {
         <CloseButton onClick={() => setIsOpen(false)} />
         <h2 className={styles.heading}>Reporting an issue with {module.moduleCode}</h2>
         <p>
-          NUSMods updates its information from the Registrar's Office every night. Please wait up to
-          48 hours for information to be updated before reporting any issues.
+          NUSMods updates its information from the Registrar's Office every few hours. Please wait
+          up to 24 hours for information to be updated before reporting any issues.
         </p>
         <p>
           This form will send an email about this module to the faculty. If you think the issue is a
@@ -249,7 +249,7 @@ const FormContent: React.FC<FormContentProps> = ({
       }}
     >
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-name">Your Full Name</label>
+        <label htmlFor="report-error-name">Your full name</label>
         <input
           className="form-control"
           id="report-error-name"
@@ -260,7 +260,7 @@ const FormContent: React.FC<FormContentProps> = ({
       </div>
 
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-matric-number">Your Matriculation Number</label>
+        <label htmlFor="report-error-matric-number">Your matriculation number</label>
         <input
           id="report-error-matric-number"
           className="form-control"
@@ -275,7 +275,7 @@ const FormContent: React.FC<FormContentProps> = ({
       </div>
 
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-faculty">Department / Faculty</label>
+        <label htmlFor="report-error-faculty">Department/faculty offering the module</label>
         <select
           className="form-control"
           id="report-error-faculty"
@@ -283,7 +283,7 @@ const FormContent: React.FC<FormContentProps> = ({
           onChange={updateFormValue('contactId')}
           required
         >
-          <option value="">Select a department / faculty</option>
+          <option value="">Select a department/faculty</option>
           {facultyEmails.map((config) => (
             <option value={config.id} key={config.id}>
               {config.label}
@@ -312,7 +312,7 @@ const FormContent: React.FC<FormContentProps> = ({
       </div>
 
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-email">Your School Email</label>
+        <label htmlFor="report-error-email">Your school email</label>
         <input
           type="email"
           id="report-error-email"

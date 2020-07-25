@@ -10,7 +10,7 @@ import { Semester, Semesters } from '../types/modules';
 import { activityLessonType, dayTextMap } from '../utils/data';
 import rootLogger, { Logger } from './logger';
 
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable camelcase */
 
 const lessonSchema = Joi.object({
   // Allow null because we can still use the rest of the information

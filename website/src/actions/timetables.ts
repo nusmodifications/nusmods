@@ -1,9 +1,9 @@
 import { each, flatMap } from 'lodash';
 
-import { Lesson, ColorIndex, ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
-import { GetState } from 'types/redux';
-import { ColorMapping } from 'types/reducers';
-import { ClassNo, LessonType, Module, ModuleCode, Semester } from 'types/modules';
+import type { Lesson, ColorIndex, ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
+import type { Dispatch, GetState } from 'types/redux';
+import type { ColorMapping } from 'types/reducers';
+import type { ClassNo, LessonType, Module, ModuleCode, Semester } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
 import { openNotification } from 'actions/app';
@@ -43,7 +43,7 @@ export const Internal = {
 };
 
 export function addModule(semester: Semester, moduleCode: ModuleCode) {
-  return (dispatch: Function, getState: GetState) =>
+  return (dispatch: Dispatch, getState: GetState) =>
     dispatch(fetchModule(moduleCode)).then(() => {
       const module: Module = getState().moduleBank.modules[moduleCode];
 
@@ -52,7 +52,9 @@ export function addModule(semester: Semester, moduleCode: ModuleCode) {
           openNotification(`Cannot load ${moduleCode}`, {
             action: {
               text: 'Retry',
-              handler: () => dispatch(addModule(semester, moduleCode)),
+              handler: () => {
+                dispatch(addModule(semester, moduleCode));
+              },
             },
           }),
         );
@@ -139,7 +141,7 @@ export function setTimetable(
   timetable?: SemTimetableConfig,
   colors?: ColorMapping,
 ) {
-  return (dispatch: Function, getState: GetState) => {
+  return (dispatch: Dispatch, getState: GetState) => {
     let validatedTimetable = timetable;
     if (timetable) {
       [validatedTimetable] = validateTimetableModules(timetable, getState().moduleBank.moduleCodes);
@@ -150,7 +152,7 @@ export function setTimetable(
 }
 
 export function validateTimetable(semester: Semester) {
-  return (dispatch: Function, getState: GetState) => {
+  return (dispatch: Dispatch, getState: GetState) => {
     const { timetables, moduleBank } = getState();
 
     // Extract the timetable and the modules for the semester
@@ -177,7 +179,7 @@ export function validateTimetable(semester: Semester) {
 }
 
 export function fetchTimetableModules(timetables: SemTimetableConfig[]) {
-  return (dispatch: Function, getState: GetState) => {
+  return (dispatch: Dispatch, getState: GetState) => {
     const moduleCodes = new Set(flatMap(timetables, Object.keys));
     const validateModule = getModuleCondensed(getState().moduleBank);
 

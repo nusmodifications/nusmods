@@ -17,7 +17,7 @@ import { activityLessonType, dayTextMap, unrecognizedLessonTypes } from '../util
 import { allEqual, deltas } from '../utils/arrays';
 import { ISO8601_DATE_FORMAT } from '../utils/time';
 
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable camelcase */
 
 const SEMESTER_NAMES: Record<number, SemesterName> = {
   1: 'Semester 1',

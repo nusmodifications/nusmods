@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { AxiosError } from 'axios';
-import { connect } from 'react-redux';
+import { connect, MapDispatchToPropsNonObject } from 'react-redux';
 import { match as Match, Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import { get } from 'lodash';
 
-import { Module, ModuleCode } from 'types/modules';
+import type { Module, ModuleCode } from 'types/modules';
+import type { State as StoreState } from 'types/state';
+import type { Dispatch } from 'types/redux';
 
 import { fetchModuleArchive } from 'actions/moduleBank';
 import { captureException, retryImport } from 'utils/error';
@@ -13,7 +15,6 @@ import ApiError from 'views/errors/ApiError';
 import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { moduleArchive } from 'views/routes/paths';
-import { State as StoreState } from 'types/state';
 
 import { Props as ModulePageContentProp } from './ModulePageContent';
 
@@ -24,12 +25,16 @@ type Params = {
 
 type OwnProps = RouteComponentProps<Params>;
 
-type Props = OwnProps & {
-  module: Module | null;
-  moduleCode: ModuleCode;
+type DispatchProps = {
   fetchModule: () => Promise<Module>;
-  archiveYear: string;
 };
+
+type Props = OwnProps &
+  DispatchProps & {
+    module: Module | null;
+    moduleCode: ModuleCode;
+    archiveYear: string;
+  };
 
 type State = {
   ModulePageContent: React.ComponentType<ModulePageContentProp> | null;
@@ -136,16 +141,18 @@ const mapStateToProps = ({ moduleBank }: StoreState, ownProps: OwnProps) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Function, ownProps: OwnProps) => {
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: OwnProps) => {
   const { moduleCode, year } = getPropsFromMatch(ownProps.match);
   return {
-    fetchModule: () => dispatch(fetchModuleArchive(moduleCode, year)),
+    fetchModule: () => dispatch<Module>(fetchModuleArchive(moduleCode, year)),
   };
 };
 
 const connectedModuleArchiveContainer = connect(
   mapStateToProps,
-  mapDispatchToProps,
+  // Cast required because the version of Dispatch defined by connect does not have the extensions defined
+  // in our Dispatch
+  mapDispatchToProps as MapDispatchToPropsNonObject<DispatchProps, OwnProps>,
 )(ModuleArchiveContainerComponent);
 const routedModuleArchiveContainer = withRouter(connectedModuleArchiveContainer);
 export default deferComponentRender(routedModuleArchiveContainer);

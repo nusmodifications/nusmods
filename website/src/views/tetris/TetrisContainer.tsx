@@ -1,8 +1,10 @@
 import * as React from 'react';
 import Loadable, { LoadingComponentProps } from 'react-loadable';
+
+import type { EmptyProps } from 'types/utils';
 import ApiError from 'views/errors/ApiError';
 import LoadingSpinner from 'views/components/LoadingSpinner';
-import { Props as TetrisGameProps } from './TetrisGame';
+import type { Props as TetrisGameProps } from './TetrisGame';
 
 type Props = {
   readonly TetrisGame: React.ComponentType<TetrisGameProps>;
@@ -36,7 +38,7 @@ class TetrisContainer extends React.PureComponent<Props, State> {
  * Lazy load the TetrisGame component and pass it down to TetrisContainer
  */
 type Export = { TetrisGame: { default: React.ComponentType<TetrisGameProps> } };
-export default Loadable.Map<{}, Export>({
+export default Loadable.Map<EmptyProps, Export>({
   loader: {
     TetrisGame: () => import(/* webpackChunkName: "tetris" */ './TetrisGame'),
   },
