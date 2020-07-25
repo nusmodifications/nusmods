@@ -74,8 +74,8 @@ class CustomModulesForm extends React.Component<Props, State> {
     faculty: '',
     semester: this.props.activeSemester,
     classNo: '',
-    startTime: '0000',
-    endTime: '0000',
+    startTime: '',
+    endTime: '',
     weeks: [],
     venue: '',
     day: '',
@@ -94,7 +94,7 @@ class CustomModulesForm extends React.Component<Props, State> {
       department: this.state.department,
       faculty: this.state.faculty,
       timestamp: Date.now() || this.state.timestamp,
-      semesterData: []
+      semesterData: [],
     };
     customModule = {
       acadYear: '2018/2019',
@@ -109,52 +109,75 @@ class CustomModulesForm extends React.Component<Props, State> {
       moduleCode: 'MA1101R',
       semesterData: [semesterOneData],
       timestamp: Date.now(),
-    }
+    };
     this.state.currentTimetableIndex += 1;
     this.props.addModule(1, customModule.moduleCode);
-  }
-  
-  onChangeClassNo = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
-    this.setState({classNo : event.target.value})
   };
 
-  onSelectStartTime = (item: string, type: string, index: number) => {
-    this.setState(prevState => ({startTime: (type === "HH"? (item + prevState.startTime.slice(-2, 0)) : (prevState.startTime.slice(0, 2) + item))}))
+  onChangeClassNo = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ classNo: event.target.value });
   };
 
-  onSelectEndTime = (item: string, type: string, index: number) => {
-    this.setState(prevState => ({endTime: (type === "MM"? (item + prevState.startTime.slice(-2, 0)) : (prevState.startTime.slice(0, 2) + item))}))
+  onSelectStartTime = (item: string, type: string) => {
+    this.setState((prevState) => ({
+      startTime:
+        type === 'HH'
+          ? item + prevState.startTime.slice(-2, 0)
+          : prevState.startTime.slice(0, 2) + item,
+    }));
   };
 
-  onSelectVenue = (item: string, index: number) => {
-    this.setState( {venue : item})
+  onSelectEndTime = (item: string, type: string) => {
+    this.setState((prevState) => ({
+      endTime:
+        type === 'HH'
+          ? item + prevState.endTime.slice(-2, 0)
+          : prevState.endTime.slice(0, 2) + item,
+    }));
   };
 
-  onSelectDay = (item: string, index: number) => {
-    this.setState({ day : item })
+  onChangeVenue = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ venue: event.target.value });
   };
 
-  onSelectLessonType = (item: string, index: number) => {
-    this.setState({ lessonType : item })
+  onSelectDay = (item: string) => {
+    this.setState({ day: item });
+  };
+
+  onSelectLessonType = (item: string) => {
+    this.setState({ lessonType: item });
   };
 
   isFormValid = () => {
-    const validity = Boolean(this.state.moduleCode && this.state.title && this.state.classNo && this.state.startTime && this.state.endTime && this.state.venue && this.state.day && this.state.lessonType)
+    const validity = Boolean(
+      this.state.moduleCode &&
+        this.state.title &&
+        this.state.classNo &&
+        this.state.startTime.length === 4 &&
+        this.state.endTime.length === 4 &&
+        this.state.venue &&
+        this.state.day &&
+        this.state.lessonType,
+    );
     return validity;
-  }
+  };
 
   render() {
     return (
       <div>
-        <div className={styles.buttonGroup} role="group" aria-label="Custom module main information">
+        <div
+          className={styles.buttonGroup}
+          role="group"
+          aria-label="Custom module main information"
+        >
           <input
             className={classnames(styles.input, styles.titleIcon)}
-            onChange={e => this.setState({ moduleCode: e.target.value })}
+            onChange={(e) => this.setState({ moduleCode: e.target.value })}
             placeholder="Module Code"
           />
           <input
             className={classnames(styles.input, styles.titleIcon)}
-            onChange={e => this.setState({ title: e.target.value })}
+            onChange={(e) => this.setState({ title: e.target.value })}
             placeholder="Module Title"
           />
         </div>
@@ -163,7 +186,7 @@ class CustomModulesForm extends React.Component<Props, State> {
           onChangeClassNo={this.onChangeClassNo}
           onSelectStartTime={this.onSelectStartTime}
           onSelectEndTime={this.onSelectEndTime}
-          onSelectVenue={this.onSelectVenue}
+          onChangeVenue={this.onChangeVenue}
           onSelectDay={this.onSelectDay}
           onSelectLessonType={this.onSelectLessonType}
         />
@@ -177,7 +200,6 @@ class CustomModulesForm extends React.Component<Props, State> {
         </button>
         {this.state.weeks}
         {this.state.semester}
-
       </div>
     );
   }
