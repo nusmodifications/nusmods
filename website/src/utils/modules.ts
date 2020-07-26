@@ -78,7 +78,7 @@ export function getSemestersOffered(module: Module): Semester[] {
 }
 
 export function renderMCs(moduleCredits: number | string) {
-  const credit = typeof moduleCredits === 'string' ? parseInt(moduleCredits, 10) : moduleCredits;
+  const credit = typeof moduleCredits === 'string' ? parseFloat(moduleCredits) : moduleCredits;
   return `${credit}${NBSP}${credit === 1 ? 'MC' : 'MCs'}`;
 }
 

@@ -154,6 +154,7 @@ describe(renderMCs, () => {
     ['0', '0 MCs'],
     [5, '5 MCs'],
     ['5', '5 MCs'],
+    ['0.5', '0.5 MCs'],
 
     // Singular
     [1, '1 MC'],

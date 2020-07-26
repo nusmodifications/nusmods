@@ -7,7 +7,7 @@ import { hot } from 'react-hot-loader/root';
 import { Module, NUSModuleAttributes, attributeDescription } from 'types/modules';
 
 import config from 'config';
-import { getSemestersOffered, isOffered } from 'utils/modules';
+import { getSemestersOffered, isOffered, renderMCs } from 'utils/modules';
 import { intersperse } from 'utils/array';
 import { BULLET } from 'utils/react';
 import { NAVTAB_HEIGHT } from 'views/layout/Navtabs';
@@ -122,7 +122,7 @@ class ModulePageContent extends React.Component<Props, State> {
                     [
                       <span key="department">{module.department}</span>,
                       <span key="faculty">{module.faculty}</span>,
-                      <span key="mc">{module.moduleCredit} MCs</span>,
+                      <span key="mc">{renderMCs(module.moduleCredit)}</span>,
                     ],
                     BULLET,
                   )}
