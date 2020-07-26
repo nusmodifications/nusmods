@@ -10,6 +10,8 @@ import styles from './TimetableTimings.scss';
 type Props = {
   startingIndex: number;
   endingIndex: number;
+  onChangeEarliestIndexPreference: (amount: number) => void;
+  onChangeLatestIndexPreference: (amount: number) => void;
 };
 
 const TimetableTimings: React.FC<Props> = (props) => {
@@ -18,10 +20,20 @@ const TimetableTimings: React.FC<Props> = (props) => {
   return (
     <div className={styles.relative}>
       <div className={styles.buttonLeft}>
-        <button className={classnames('btn btn-inline')} type="button" aria-label="Previous Hours">
+        <button
+          className={classnames('btn btn-inline')}
+          type="button"
+          aria-label="Previous Start Hour"
+          onClick={() => props.onChangeEarliestIndexPreference(-1)}
+        >
           <ChevronLeft className={styles.svg} />
         </button>
-        <button className={classnames('btn btn-inline')} type="button" aria-label="Previous Hours">
+        <button
+          className={classnames('btn btn-inline')}
+          type="button"
+          aria-label="Previous Start Hour"
+          onClick={() => props.onChangeEarliestIndexPreference(1)}
+        >
           <ChevronRight className={styles.svg} />
         </button>
       </div>
@@ -41,10 +53,20 @@ const TimetableTimings: React.FC<Props> = (props) => {
         <span />
       </div>
       <div className={styles.buttonRight}>
-        <button className={classnames('btn btn-inline')} type="button" aria-label="Previous Hours">
+        <button
+          className={classnames('btn btn-inline')}
+          type="button"
+          aria-label="Previous End Hour"
+          onClick={() => props.onChangeLatestIndexPreference(-1)}
+        >
           <ChevronLeft className={styles.svg} />
         </button>
-        <button className={classnames('btn btn-inline')} type="button" aria-label="Previous Hours">
+        <button
+          className={classnames('btn btn-inline')}
+          type="button"
+          aria-label="Next End Hour"
+          onClick={() => props.onChangeLatestIndexPreference(-1)}
+        >
           <ChevronRight className={styles.svg} />
         </button>
       </div>

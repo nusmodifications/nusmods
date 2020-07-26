@@ -6,6 +6,9 @@ import { ColoredLesson, HoverLesson, TimetableArrangement } from 'types/timetabl
 import { OnModifyCell } from 'types/views';
 
 import {
+  DEFAULT_EARLIEST_TIME,
+  DEFAULT_LATEST_TIME,
+  convertTimeToIndex,
   calculateBorderTimings,
   getCurrentHours,
   getCurrentMinutes,
@@ -33,6 +36,8 @@ type Props = TimerData & {
 
 type State = {
   hoverLesson: HoverLesson | null;
+  earliestIndexPreference: number,
+  latestIndexPreference: number,
 };
 
 const nullCurrentTimeIndicatorStyle: React.CSSProperties = {
@@ -51,10 +56,32 @@ class Timetable extends React.PureComponent<Props, State> {
 
   state = {
     hoverLesson: null,
+    earliestIndexPreference: convertTimeToIndex(DEFAULT_EARLIEST_TIME),
+    latestIndexPreference: convertTimeToIndex(DEFAULT_LATEST_TIME),
   };
+
+  componentDidMount() {
+    console.log(this.state.earliestIndexPreference);
+    console.log(this.state.latestIndexPreference);
+  }
 
   onCellHover = (hoverLesson: HoverLesson | null) => {
     this.setState({ hoverLesson });
+  };
+
+  onChangeEarliestIndexPreference = (amount) => {
+    console.log(amount);
+    
+    this.setState((prevState) => ({
+      earliestIndexPreference: prevState.earliestIndexPreference + (amount * 2)
+    }));
+  };
+
+  onChangeLatestIndexPreference = (amount) => {
+    console.log(amount);
+    this.setState((prevState) => ({
+      latestIndexPreference: prevState.latestIndexPreference + (amount * 2),
+    }));
   };
 
   render() {
@@ -65,7 +92,7 @@ class Timetable extends React.PureComponent<Props, State> {
     );
 
     const lessons = flattenDeep<ColoredLesson>(values(this.props.lessons));
-    const { startingIndex, endingIndex } = calculateBorderTimings(lessons, highlightPeriod);
+    const { startingIndex, endingIndex } = calculateBorderTimings(lessons, highlightPeriod, this.state.earliestIndexPreference, this.state.latestIndexPreference);
     const currentDayIndex = getDayIndex(); // Monday = 0, Friday = 4
 
     // Calculate the margin offset for the CurrentTimeIndicator
@@ -84,7 +111,12 @@ class Timetable extends React.PureComponent<Props, State> {
     return (
       <div>
         <div className={classnames(styles.container, elements.timetable)}>
-          <TimetableTimings startingIndex={startingIndex} endingIndex={endingIndex} />
+          <TimetableTimings
+            startingIndex={startingIndex}
+            endingIndex={endingIndex}
+            onChangeEarliestIndexPreference={this.onChangeEarliestIndexPreference}
+            onChangeLatestIndexPreference={this.onChangeLatestIndexPreference}
+          />
           <ol className={styles.days}>
             {schoolDays.map((day, index) => (
               <TimetableDay

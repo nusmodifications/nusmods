@@ -89,9 +89,11 @@ export const DEFAULT_LATEST_TIME: LessonTime = '1800';
 export function calculateBorderTimings(
   lessons: Lesson[],
   period?: TimePeriod,
+  startIndexPreference: number, 
+  endIndexPreference: number,
 ): { startingIndex: number; endingIndex: number } {
-  let earliestTime: number = convertTimeToIndex(DEFAULT_EARLIEST_TIME);
-  let latestTime: number = convertTimeToIndex(DEFAULT_LATEST_TIME);
+  let earliestTime: number = startIndexPreference;
+  let latestTime: number = endIndexPreference;
   lessons.forEach((lesson) => {
     earliestTime = Math.min(earliestTime, convertTimeToIndex(lesson.startTime));
     latestTime = Math.max(latestTime, convertTimeToIndex(lesson.endTime));
