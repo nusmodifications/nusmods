@@ -13,7 +13,8 @@ import {
   offsetAcadYear,
   renderMCs,
   subtractAcadYear,
-  isGraduateModule, renderExamDuration,
+  isGraduateModule,
+  renderExamDuration,
 } from 'utils/modules';
 import { noBreak } from 'utils/react';
 
@@ -159,9 +160,7 @@ describe(renderMCs, () => {
     // Singular
     [1, '1 MC'],
     ['1', '1 MC'],
-  ])('%s to equal %s', (mc, expected) =>
-    expect(renderMCs(mc)).toEqual(noBreak(expected)),
-  );
+  ])('%s to equal %s', (mc, expected) => expect(renderMCs(mc)).toEqual(noBreak(expected)));
 });
 
 describe(renderExamDuration, () => {
