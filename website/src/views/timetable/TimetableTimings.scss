@@ -29,6 +29,27 @@
   }
 }
 
+.buttonLeft {
+  float: left;
+  z-index: -1;
+  margin-top: -5px;
+  border: 0;
+  @include media-breakpoint-down(sm) {
+    display:none;
+  }
+}
+
+.buttonRight {
+  float: right;
+  z-index: -1;
+  margin-left: -40px;
+  margin-top: -25px;
+  border: 0;
+  @include media-breakpoint-down(sm) {
+    display:none;
+  }
+}
+
 .time {
   transform: translateX(-50%);
 
