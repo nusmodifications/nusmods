@@ -232,7 +232,12 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
             step="1"
             placeholder="eg. 1"
             value={floor}
-            onChange={(evt) => this.setState({ floor: parseInt(evt.target.value, 10) })}
+            onChange={(evt) => {
+              const newFloor = parseInt(evt.target.value, 10);
+              if (!Number.isNaN(newFloor)) {
+                this.setState({ floor: newFloor });
+              }
+            }}
             required
           />
           <small className="form-text text-muted" id="improve-venue-floor-help">
