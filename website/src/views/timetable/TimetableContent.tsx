@@ -421,7 +421,6 @@ class TimetableContent extends React.Component<Props, State> {
                     />
                     <CustomModulesContainer
                       semester={semester}
-                      timetable={this.props.timetable}
                     />
                   </div>
                 )}

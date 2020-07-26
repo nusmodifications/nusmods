@@ -5,11 +5,18 @@ import { connect } from 'react-redux';
 import CustomModulesForm from 'views/timetable/CustomModulesForm';
 import styles from './CustomModulesContainer.scss';
 
+type OwnProps = {
+  // Own props
+  semester: number;
+};
+
+type Props = OwnProps;
+
 type State = {
   showCustomModulesForm: boolean,
 };
 
-class CustomModulesAddContainer extends React.Component<State> {
+class CustomModulesAddContainer extends React.Component<Props, State> {
   state = {
     showCustomModulesForm: false,
   };
