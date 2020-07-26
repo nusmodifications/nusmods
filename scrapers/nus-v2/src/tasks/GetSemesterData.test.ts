@@ -1,3 +1,4 @@
+import { RawLesson } from '../types/modules';
 import departments from './fixtures/departments.json';
 import faculties from './fixtures/faculties.json';
 import {
@@ -5,6 +6,7 @@ import {
   getDepartmentCodeMap,
   getFacultyCodeMap,
   parseWorkload,
+  getLessonCovidZones,
 } from './GetSemesterData';
 
 describe(getDepartmentCodeMap, () => {
@@ -30,6 +32,19 @@ describe(getFacultyCodeMap, () => {
       '003': 'School of Computing',
       '004': 'Faculty of Dentistry',
     });
+  });
+});
+
+describe(getLessonCovidZones, () => {
+  test('should collect covid zones from lessons', () => {
+    const lessons = [
+      { covidZone: 'A' },
+      { covidZone: 'A' },
+      { covidZone: 'B' },
+      { covidZone: 'Unknown' },
+    ] as RawLesson[];
+
+    expect(new Set(getLessonCovidZones(lessons))).toEqual(new Set(['A', 'B', 'Unknown']));
   });
 });
 

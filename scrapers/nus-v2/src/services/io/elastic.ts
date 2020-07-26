@@ -76,7 +76,7 @@ async function createIndex(client: Client): Promise<Client> {
         filter: { first_token_limit_filter, thousandizer_filter },
       },
       index: {
-        max_result_window: 20000, // Default limit is 10k, but we have >11k mods
+        max_result_window: 20_000, // Default limit is 10k, but we have >11k mods
       },
     },
   });
@@ -101,6 +101,9 @@ async function createIndex(client: Client): Promise<Client> {
               fielddata: true, // To allow usage in MultiList on the frontend
             },
           },
+        },
+        semesterData: {
+          type: 'nested',
         },
       },
     },

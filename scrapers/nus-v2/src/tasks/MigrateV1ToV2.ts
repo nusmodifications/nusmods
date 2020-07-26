@@ -3,7 +3,7 @@ import NUSModerator from 'nusmoderator';
 import { RawLesson, Weeks, Module, SemesterData, Semester } from '../types/modules';
 import { V1Module, V1RawLesson, V1SemesterData } from '../types/v1';
 import { AcademicGrp, AcademicOrg } from '../types/api';
-import { parseWorkload } from './GetSemesterData';
+import { getLessonCovidZones, parseWorkload } from './GetSemesterData';
 import BaseTask from './BaseTask';
 import { Task } from '../types/tasks';
 import V1DataReader from '../services/io/v1-io';
@@ -118,16 +118,19 @@ export default class MigrateV1ToV2 extends BaseTask implements Task<Input, Outpu
     weeks: this.convertWeekText(WeekText, semester, logger),
     venue: Venue,
     size: 0,
+    covidZone: 'Unknown', // Ah, a more innocent time
   });
 
   private convertSemesterData = (
     { ExamDate: examDate, Semester: semester, Timetable = [] }: V1SemesterData,
     logger: Logger,
   ): SemesterData => {
+    const timetable = Timetable.map((lesson) => this.convertLesson(lesson, semester, logger));
     return {
       examDate,
       semester,
-      timetable: Timetable.map((lesson) => this.convertLesson(lesson, semester, logger)),
+      timetable,
+      covidZones: getLessonCovidZones(timetable),
     };
   };
 

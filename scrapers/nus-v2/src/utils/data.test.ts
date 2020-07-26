@@ -146,6 +146,7 @@ const makeVenueLesson = (
   weeks: EVERY_WEEK,
   size: 30,
   moduleCode,
+  covidZone: 'Unknown',
   ...props,
 });
 
@@ -228,10 +229,3 @@ describe(mergeDualCodedModules, () => {
     expect(aliases).toEqual({});
   });
 });
-
-// describe(compareWeeks, () => {
-//   test('it should allow weeks to be sorted', () => {
-//     const weeks: LessonWeek[] = ['Reading', 1, 2, 7, 6, 'Orientation', 10, 'Recess'];
-//     expect(weeks.sort(compareWeeks)).toEqual(['Orientation', 1, 2, 6, 'Recess', 7, 10, 'Reading']);
-//   });
-// });

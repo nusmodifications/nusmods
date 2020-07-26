@@ -8,11 +8,81 @@
 import axios from 'axios';
 import oboe from 'oboe';
 import Queue from 'promise-queue';
+import { URL } from 'url';
 
-import { ModuleCode } from '../types/modules';
-import { AcademicGrp, AcademicOrg, ModuleExam, ModuleInfo, TimetableLesson } from '../types/api';
-import config from '../config';
+import type {
+  AcademicGrp,
+  AcademicOrg,
+  ModuleExam,
+  ModuleInfo,
+  TimetableLesson,
+} from '../types/api';
+import type { ModuleCode } from '../types/modules';
+
 import { AuthError, NotFoundError, UnknownApiError } from '../utils/errors';
+import config from '../config';
+
+// Interface extracted for easier mocking
+export interface INusApi {
+  /**
+   * Obtain an array of faculties in the school (aka. academic groups)
+   */
+  getFaculty: () => Promise<AcademicGrp[]>;
+
+  /**
+   * Obtain an array of departments in the school (aka. academic organizations)
+   */
+  getDepartment: () => Promise<AcademicOrg[]>;
+
+  /**
+   * Get info for a specific module in a specific term.
+   *
+   * @throws {NotFoundError} If module cannot be found.
+   */
+  getModuleInfo: (term: string, moduleCode: ModuleCode) => Promise<ModuleInfo>;
+
+  /**
+   * Get all modules corresponding to a specific faculty during a specific term
+   */
+  getFacultyModules: (term: string, facultyCode: string) => Promise<ModuleInfo[]>;
+
+  /**
+   * Get all modules corresponding to a specific department during a specific term
+   */
+  getDepartmentModules: (term: string, departmentCode: string) => Promise<ModuleInfo[]>;
+
+  /**
+   * Returns every lesson associated with a module in a specific term in one massive
+   * array
+   */
+  getModuleTimetable: (term: string, module: ModuleCode) => Promise<TimetableLesson[]>;
+
+  getDepartmentTimetables: (term: string, departmentCode: string) => Promise<TimetableLesson[]>;
+
+  /**
+   * Loads an entire semester's timetable from the API. Because the JSON returned
+   * is very large, instead of waiting for the entire JSON to be loaded into memory
+   * we pass the individual lessons to a consumer function instead as they are
+   * streamed, then immediately discard them to limit memory usage.
+   */
+  getSemesterTimetables: (
+    term: string,
+    lessonConsumer: (lesson: TimetableLesson) => void,
+  ) => Promise<void>;
+
+  /**
+   * Get exam info for a specific module
+   *
+   * @throws {NotFoundError} If the module in question has no exam (or if the information
+   *    is not available yet - the API makes no distinction)
+   */
+  getModuleExam: (term: string, module: ModuleCode) => Promise<ModuleExam>;
+
+  /**
+   * Get exam info on all modules in a semester
+   */
+  getTermExams: (term: string) => Promise<ModuleExam[]>;
+}
 
 type ApiParams = {
   [key: string]: string;
@@ -108,8 +178,8 @@ async function callApi<Data>(endpoint: string, params: ApiParams): Promise<Data>
 }
 
 // Do not instantiate directly, use the singleton instance instead
-class NusApi {
-  queue: Queue;
+class NusApi implements INusApi {
+  readonly queue: Queue;
 
   constructor(concurrency: number) {
     this.queue = new Queue(concurrency, Infinity);
@@ -124,7 +194,7 @@ class NusApi {
   /**
    * Calls the modules endpoint
    */
-  callModulesEndpoint = async (term: string, params: ApiParams) => {
+  callModulesEndpoint = async (term: string, params: ApiParams): Promise<ModuleInfo[]> => {
     try {
       // DO NOT remove this await - the promise must settle so the catch
       // can handle the NotFoundError from the API
@@ -144,9 +214,6 @@ class NusApi {
     }
   };
 
-  /**
-   * Obtain an array of faculties in the school (aka. academic groups)
-   */
   getFaculty = async (): Promise<AcademicGrp[]> =>
     this.callApi('config/get-acadgroup', {
       eff_status: 'A',
@@ -154,9 +221,6 @@ class NusApi {
       acad_group: '%',
     });
 
-  /**
-   * Obtain an array of departments in the school (aka. academic organizations)
-   */
   getDepartment = async (): Promise<AcademicOrg[]> =>
     this.callApi('config/get-acadorg', {
       eff_status: 'A',
@@ -164,11 +228,6 @@ class NusApi {
       acad_org: '%',
     });
 
-  /**
-   * Get info for a specific module in a specific term.
-   *
-   * @throws {NotFoundError} If module cannot be found.
-   */
   getModuleInfo = async (term: string, moduleCode: ModuleCode): Promise<ModuleInfo> => {
     // Module info API takes in subject and catalog number separately, so we need
     // to split the module code prefix out from the rest of it
@@ -190,22 +249,12 @@ class NusApi {
     return modules[0];
   };
 
-  /**
-   * Get all modules corresponding to a specific faculty during a specific term
-   */
   getFacultyModules = async (term: string, facultyCode: string) =>
     this.callModulesEndpoint(term, { acadgroup: facultyCode });
 
-  /**
-   * Get all modules corresponding to a specific department during a specific term
-   */
   getDepartmentModules = async (term: string, departmentCode: string): Promise<ModuleInfo[]> =>
     this.callModulesEndpoint(term, { acadorg: departmentCode });
 
-  /**
-   * Returns every lesson associated with a module in a specific term in one massive
-   * array
-   */
   getModuleTimetable = async (term: string, module: ModuleCode): Promise<TimetableLesson[]> =>
     this.callApi('classtt/withdate/published', {
       term,
@@ -221,12 +270,6 @@ class NusApi {
       deptfac: departmentCode,
     });
 
-  /**
-   * Loads an entire semester's timetable from the API. Because the JSON returned
-   * is very large, instead of waiting for the entire JSON to be loaded into memory
-   * we pass the individual lessons to a consumer function instead as they are
-   * streamed, then immediately discard them to limit memory usage.
-   */
   getSemesterTimetables = async (
     term: string,
     lessonConsumer: (lesson: TimetableLesson) => void,
@@ -270,12 +313,6 @@ class NusApi {
         });
     });
 
-  /**
-   * Get exam info for a specific module
-   *
-   * @throws {NotFoundError} If the module in question has no exam (or if the information
-   *    is not available yet - the API makes no distinction)
-   */
   getModuleExam = async (term: string, module: ModuleCode): Promise<ModuleExam> => {
     const exams = await this.callApi<ModuleExam[]>('examtt/published', {
       term,
@@ -287,15 +324,12 @@ class NusApi {
     return exams[0];
   };
 
-  /**
-   * Get exam info on all modules in a semester
-   */
   getTermExams = async (term: string): Promise<ModuleExam[]> =>
     this.callApi('examtt/published', { term });
 }
 
 // Export as default a singleton instance to be used globally
-const singletonInstance = new NusApi(config.apiConcurrency);
+const singletonInstance: INusApi = new NusApi(config.apiConcurrency);
 export default singletonInstance;
 
 // Exported for testing
