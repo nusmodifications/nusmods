@@ -14,7 +14,7 @@ const nusmods = require('../src/apis/nusmods');
 const config = require('../src/config/app-config.json');
 
 const IS_CI = !!process.env.CI;
-const IS_NETLIFY = !!process.env.NETLIFY
+const IS_NETLIFY = !!process.env.NETLIFY;
 
 const productionConfig = ({ browserWarningPath }) =>
   merge([
