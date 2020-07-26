@@ -29,25 +29,39 @@
   }
 }
 
+.relative{
+    position:relative;
+}
+
 .buttonLeft {
-  float: left;
-  z-index: -1;
   margin-top: -5px;
+  position: absolute;
+  left: 0;
+  top: 0;
   border: 0;
+  padding: 0;
   @include media-breakpoint-down(sm) {
     display:none;
   }
 }
 
 .buttonRight {
-  float: right;
-  z-index: -1;
-  margin-left: -40px;
-  margin-top: -25px;
+  margin-top: -5px;
+  position: absolute;
+  right: 0%;
+  top: 0;
   border: 0;
+  padding: 0;
   @include media-breakpoint-down(sm) {
     display:none;
   }
+}
+
+.svg {
+  display: inline-block;
+  width: 1.1rem;
+  margin-left: -5px;
+  border: 0;
 }
 
 .time {

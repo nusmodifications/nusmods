@@ -16,14 +16,15 @@ const TimetableTimings: React.FC<Props> = (props) => {
   const indices = range(props.startingIndex, props.endingIndex);
 
   return (
-    <div>
-      <button
-        className={classnames('btn btn-inline', styles.buttonLeft)}
-        type="button"
-        aria-label="Previous Hours"
-      >
-        <ChevronLeft />
-      </button>
+    <div className={styles.relative}>
+      <div className={styles.buttonLeft}>
+        <button className={classnames('btn btn-inline')} type="button" aria-label="Previous Hours">
+          <ChevronLeft className={styles.svg} />
+        </button>
+        <button className={classnames('btn btn-inline')} type="button" aria-label="Previous Hours">
+          <ChevronRight className={styles.svg} />
+        </button>
+      </div>
       <div className={styles.timings}>
         {indices.map((i) => {
           const time = convertIndexToTime(i);
@@ -39,13 +40,14 @@ const TimetableTimings: React.FC<Props> = (props) => {
         })}
         <span />
       </div>
-      <button
-        className={classnames('btn btn-inline', styles.buttonRight)}
-        type="button"
-        aria-label="Previous Hours"
-      >
-        <ChevronRight />
-      </button>
+      <div className={styles.buttonRight}>
+        <button className={classnames('btn btn-inline')} type="button" aria-label="Previous Hours">
+          <ChevronLeft className={styles.svg} />
+        </button>
+        <button className={classnames('btn btn-inline')} type="button" aria-label="Previous Hours">
+          <ChevronRight className={styles.svg} />
+        </button>
+      </div>
     </div>
   );
 };
