@@ -1,0 +1,4 @@
+# Disallow indexing for preview and other auto-deployed sites under CI
+
+User-agent: *
+Disallow: /

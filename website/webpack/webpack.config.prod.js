@@ -65,9 +65,13 @@ const productionConfig = ({ browserWarningPath }) =>
         new CopyWebpackPlugin([{ from: 'static', context: parts.PATHS.root }], {
           copyUnmodified: true,
         }),
-        process.env.CI &&
+        IS_CI &&
           new PacktrackerPlugin({
             upload: true,
+          }),
+        IS_CI &&
+          new CopyWebpackPlugin([{ from: 'static-ci', context: parts.PATHS.root }], {
+            copyUnmodified: true,
           }),
       ].filter(Boolean),
       optimization: {
