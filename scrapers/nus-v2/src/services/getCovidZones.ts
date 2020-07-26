@@ -13,7 +13,8 @@ export type CovidZone = {
 export type CovidZoneId = 'A' | 'B' | 'C' | 'D' | 'E' | 'Unknown';
 export type CovidZones = Record<Exclude<CovidZoneId, 'Unknown'>, CovidZone>;
 
-const getCovidZones = _.memoize(async () => {
+// Explicitly typed so it excludes MemoizedFunction typing for easier mocking
+const getCovidZones: () => Promise<CovidZones> = _.memoize(async () => {
   const response = await axios.get<CovidZones>(COVID_ZONE_URL);
   return response.data;
 });
@@ -49,6 +50,7 @@ function pointInPolygon(polygon: [number, number][], point: [number, number]) {
 
 const getLocationCovidZone = _.memoize(
   (zones: CovidZones, location: { x: number; y: number }): CovidZoneId => {
+    // Object.entries doesn't respect Record keys, so we need to cast here
     const zoneEntries = Object.entries(zones) as [CovidZoneId, CovidZone][];
     const zone = zoneEntries.find(([, { positions }]) =>
       pointInPolygon(positions, [location.y, location.x]),
