@@ -18,6 +18,7 @@ import { getModuleTimetable } from 'utils/modules';
 // Actions that should not be used directly outside of thunks
 export const SET_TIMETABLE = 'SET_TIMETABLE' as const;
 export const ADD_MODULE = 'ADD_MODULE' as const;
+export const ADD_CUSTOM_MODULE = 'ADD_CUSTOM_MODULE' as const;
 export const Internal = {
   setTimetable(
     semester: Semester,
@@ -64,6 +65,19 @@ export function addModule(semester: Semester, moduleCode: ModuleCode) {
 
       dispatch(Internal.addModule(semester, moduleCode, moduleLessonConfig));
     });
+}
+
+export function addCustomModule(semester: Semester, moduleCode: ModuleCode, module: Module) {
+  const lessons = getModuleTimetable(module, semester);
+  const moduleLessonConfig = randomModuleLessonConfig(lessons);
+  return {
+    type: ADD_CUSTOM_MODULE,
+    payload: {
+      semester,
+      moduleCode,
+      moduleLessonConfig,
+    },
+  };
 }
 
 export const REMOVE_MODULE = 'REMOVE_MODULE' as const;
