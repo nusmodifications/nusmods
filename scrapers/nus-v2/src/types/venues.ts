@@ -13,8 +13,8 @@ export type Availability = {
   [key: string]: VenueOccupiedState;
 };
 
-// Raw Lesson with Module Code and without Venue
-export type VenueLesson = Omit<RawLesson, 'venue'> & {
+// Raw Lesson with Module Code and without venue and covidZone
+export type VenueLesson = Omit<RawLesson, 'venue' | 'covidZone'> & {
   moduleCode: ModuleCode;
 };
 

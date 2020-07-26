@@ -21,7 +21,6 @@ describe(extractVenueAvailability, () => {
           day: 'Monday',
           lessonType: 'Lecture',
           size: 30,
-          covidZone: 'A',
         },
       ],
       availability: {

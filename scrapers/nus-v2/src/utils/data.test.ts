@@ -146,7 +146,6 @@ const makeVenueLesson = (
   weeks: EVERY_WEEK,
   size: 30,
   moduleCode,
-  covidZone: 'Unknown',
   ...props,
 });
 
