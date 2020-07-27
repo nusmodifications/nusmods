@@ -76,6 +76,7 @@ export function addCustomModule(semester: Semester, moduleCode: ModuleCode, modu
       semester,
       moduleCode,
       moduleLessonConfig,
+      module
     },
   };
 }
