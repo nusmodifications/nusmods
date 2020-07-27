@@ -57,7 +57,7 @@ class CustomModulesForm extends React.Component<Props, State> {
     classNo: '',
     startTime: '',
     endTime: '',
-    weeks: [],
+    weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
     venue: '',
     day: '',
     lessonType: '',
