@@ -87,7 +87,7 @@ class CustomModulesForm extends React.Component<Props, State> {
 
     const customModule: Module = {
       acadYear: this.state.acadYear,
-      moduleCode: this.state.moduleCode,
+      moduleCode: `${this.state.moduleCode}'`,
       title: this.state.title,
       moduleCredit: this.state.moduleCredit,
       department: this.state.department,
