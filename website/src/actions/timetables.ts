@@ -68,16 +68,30 @@ export function addModule(semester: Semester, moduleCode: ModuleCode) {
 }
 
 export function addCustomModule(semester: Semester, moduleCode: ModuleCode, module: Module) {
-  const lessons = getModuleTimetable(module, semester);
-  const moduleLessonConfig = randomModuleLessonConfig(lessons);
-  return {
-    type: ADD_CUSTOM_MODULE,
-    payload: {
-      semester,
-      moduleCode,
-      moduleLessonConfig,
-      module
-    },
+  return (dispatch: Function, getState: GetState) => {
+    const { modules } = getState().moduleBank;
+    if (Object.keys(modules).includes(moduleCode) && modules[moduleCode].title !== module.title) {
+      dispatch(openNotification(`Module ${moduleCode} exist with a different title`, {
+        action: {
+          text: '',
+          handler: () => dispatch(addCustomModule(semester, moduleCode, module)),
+        },
+      }));
+      return;
+    }
+
+    const lessons = getModuleTimetable(module, semester);
+    const moduleLessonConfig = randomModuleLessonConfig(lessons);
+    dispatch({
+      type: ADD_CUSTOM_MODULE,
+      payload: {
+        semester,
+        moduleCode,
+        moduleLessonConfig,
+        module
+      },
+    })
+
   };
 }
 
