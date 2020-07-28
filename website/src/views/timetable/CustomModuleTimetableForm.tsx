@@ -6,7 +6,6 @@ import { Days } from 'types/modules';
 import { LESSON_TYPE_ABBREV } from '../../utils/timetables';
 import ExportMenu from './ExportMenu';
 
-
 import styles from './CustomModuleTimetableForm.scss';
 
 type OwnProps = {
@@ -34,134 +33,168 @@ type State = {
 export default class CustomModuleTimetableForm extends React.Component<Props, State> {
   state: State = {
     selectedLessonType: '',
-    selectedDay: '',
-    selectedStartTimeHH: '',
-    selectedStartTimeMM: '',
-    selectedEndTimeHH: '',
-    selectedEndTimeMM: '',
+    selectedDay: 'Monday',
+    selectedStartTimeHH: '08',
+    selectedStartTimeMM: '00',
+    selectedEndTimeHH: '10',
+    selectedEndTimeMM: '00',
   };
 
-  renderDropdownLessonType: ChildrenFunction<string> = ({
-    isOpen,
-    getItemProps,
-    toggleMenu,
-  }) => {
-    return (
-      <div className={styles.dayMenu}>
-        <button
-          className={classnames(styles.toggle, 'btn btn-outline-primary btn-svg')}
-          type="button"
-          onClick={() => toggleMenu()}
-        >
-          {this.state.selectedLessonType !== ''
-            ? this.state.selectedLessonType
-            : 'Lesson Type'}
-        </button>
-        <div
-          className={classnames('dropdown-menu', styles.dropdownMenu, {
-            show: isOpen,
-          })}
-        >
-          {Object.keys(LESSON_TYPE_ABBREV).map((item, index) => (
-            <div
-              className="dropdown-item"
-              {...getItemProps({ key: index, index, item })}
-            >
-              {item}
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
 
-  onSelectLessonType = (selectedItem: string | null) => {
-    if (selectedItem === null) {
-      console.log('invalid');
-      return;
+  /*
+  onUpdateInner = (
+    event: React.SyntheticEvent<HTMLSelectElement>,
+    key: keyof ModuleClass,
+    additionalKey?: string,
+  ) => {
+    if (typeof event.currentTarget.value !== 'undefined') {
+      let finalValue = event.currentTarget.value;
+      if (additionalKey) {
+        finalValue = (additionalKey == 'hour') ?
+          +event.currentTarget.value + this.props.moduleClass.startTime.slice(-2, 0)
+          : this.props.moduleClass.startTime.slice(0, 2) + +event.currentTarget.value;
+      }
+      this.props.onChange({
+        ...this.props.moduleClass,
+        [key]: finalValue,
+      });
     }
-    const item: string = selectedItem || '';
-    this.setState({ selectedLessonType: item });
+  };
+  */
+
+  onSelectLessonType = (item: string) => {
     this.props.onSelectLessonType(item);
   };
 
-  onSelectDay = (selectedItem: string | null) => {
-    if (selectedItem === null) {
-      console.log('invalid');
-      return;
-    }
-    const item: string = selectedItem || '';
-    this.setState({ selectedDay: item });
-    this.props.onSelectDay(item);
+  renderDropdownLessonType = () => {
+    return (
+      <div className="form-group">
+        <label htmlFor="venue-time">Lesson Type</label>
+        <select
+          id="venue-time"
+          className="form-control"
+          value={this.state.selectedLessonType}
+          onChange={(evt) => this.onSelectLessonType(evt.currentTarget.value)}
+        >
+          {Object.keys(LESSON_TYPE_ABBREV).map((item) => (
+            <option key={item} value={item}>
+              {item}
+            </option>
+          ))}
+
+        </select>
+      </div>
+    );
   };
 
-  renderDropdownDay: ChildrenFunction<string> = ({
-    isOpen,
-    getItemProps,
-    toggleMenu,
-  }) => {
+
+  onSelectDay = (item: string) => {
+    this.props.onSelectDay(item);
+  }
+
+  renderDropdownDay = () => {
     return (
-      <div className={styles.dayMenu}>
-        <button
-          className={classnames(styles.toggle, 'btn btn-outline-primary btn-svg')}
-          type="button"
-          onClick={() => toggleMenu()}
+      <div className={(styles.search)}>
+
+      <div className="form-group">
+        <label htmlFor="venue-time">Day</label>
+        <select
+          id="venue-time"
+          className="form-control"
+          value={this.state.selectedDay}
+          onChange={(evt) => this.onSelectDay(evt.currentTarget.value)}
         >
-          {this.state.selectedDay !== '' ? this.state.selectedDay : 'Day'}
-        </button>
-        <div
-          className={classnames('dropdown-menu', styles.dropdownMenu, {
-            show: isOpen,
-          })}
-        >
-          {Days.map((item, index) => (
-            <div
-              className="dropdown-item"
-              {...getItemProps({ key: index, index, item })}
-            >
+          {Days.map((item) => (
+            <option key={item} value={item}>
               {item}
-            </div>
+            </option>
           ))}
+        </select>
+        </div>
+        </div>
+    );
+  };
+
+  onSelectStartTimeHH = (selectedItem: string) => {
+    this.props.onSelectStartTime(selectedItem, 'HH');
+  };
+
+  onSelectStartTimeMM = (selectedItem: string) => {
+    this.props.onSelectStartTime(selectedItem, 'MM');
+  };
+
+  renderDropdownStartTimeHH: ChildrenFunction<string> = () => {
+    return (
+      <div className={styles.timeMenu}>
+        <div className="form-group">
+          <label htmlFor="venue-time">Start Time Hour</label>
+          <select
+            id="venue-time"
+            className="form-control"
+            value={this.state.selectedStartTimeHH}
+            onChange={(evt) => this.onSelectStartTimeHH(evt.currentTarget.value)}
+          >
+            {[
+              '08',
+              '09',
+              '10',
+              '11',
+              '12',
+              '13',
+              '14',
+              '15',
+              '16',
+              '17',
+              '18',
+              '19',
+              '20',
+              '21',
+              '22',
+            ].map((item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
     );
   };
 
-  onSelectStartTimeHH = (selectedItem: string | null) => {
-    const item: string = selectedItem || '';
-    this.setState({ selectedStartTimeHH: item });
-    this.props.onSelectStartTime(item, 'HH');
-  };
-
-  onSelectStartTimeMM = (selectedItem: string | null) => {
-    const item: string = selectedItem || '00';
-    this.setState({ selectedStartTimeMM: item });
-    this.props.onSelectStartTime(item, 'MM');
-  };
-
-  renderDropdownStartTimeHH: ChildrenFunction<string> = ({
-    isOpen,
-    getItemProps,
-    toggleMenu,
-  }) => {
+  renderDropdownStartTimeMM: ChildrenFunction<string> = () => {
     return (
       <div className={styles.timeMenu}>
-        <button
-          className={styles.timeInput}
-          type="button"
-          onClick={() => toggleMenu()}
-        >
-          {this.state.selectedStartTimeHH !== ''
-            ? this.state.selectedStartTimeHH
-            : 'HH'}
-          <div
-            className={classnames('dropdown-menu', styles.dropdownMenu, {
-              show: isOpen,
-            })}
+        <div className="form-group">
+          <label htmlFor="venue-time">Start Time Minutes</label>
+          <select
+            id="venue-time"
+            className="form-control"
+            value={this.state.selectedStartTimeMM}
+            onChange={(evt) => this.onSelectStartTimeMM(evt.currentTarget.value)}
+          >
+            {['00', '15', '30', '45'].map((item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
+        </div>
+        </div>
+    );
+  };
+
+    renderDropdownEndTimeHH: ChildrenFunction<string> = () => {
+    return (
+      <div className={styles.timeMenu}>
+        <div className="form-group">
+          <label htmlFor="venue-time">End Time Hour</label>
+          <select
+            id="venue-time"
+            className="form-control"
+            value={this.state.selectedEndTimeHH}
+            onChange={(evt) => this.onSelectEndTimeHH(evt.currentTarget.value)}
           >
             {[
-              '06',
-              '07',
               '08',
               '09',
               '10',
@@ -177,201 +210,72 @@ export default class CustomModuleTimetableForm extends React.Component<Props, St
               '20',
               '21',
               '22',
-            ].map((item, index) => (
-              <div
-                className="dropdown-item"
-                {...getItemProps({ key: index, index, item })}
-              >
+            ].map((item) => (
+              <option key={item} value={item}>
                 {item}
-              </div>
+              </option>
             ))}
-          </div>
-        </button>
+          </select>
+        </div>
       </div>
     );
   };
 
-  renderDropdownStartTimeMM: ChildrenFunction<string> = ({
-    isOpen,
-    getItemProps,
-    toggleMenu,
-  }) => {
-    return (
-      <div className={styles.time3Menu}>
-        <button
-          className={styles.timeInput}
-          type="button"
-          onClick={() => toggleMenu()}
-        >
-          {this.state.selectedStartTimeMM !== ''
-            ? this.state.selectedStartTimeMM
-            : 'MM'}
-
-          <div
-            className={classnames('dropdown-menu', styles.dropdownMenu, {
-              show: isOpen,
-            })}
-          >
-            {['00', '15', '30', '45'].map((item, index) => (
-              <div
-                className="dropdown-item"
-                {...getItemProps({ key: index, index, item })}
-              >
-                {item}
-              </div>
-            ))}
-          </div>
-        </button>
-      </div>
-    );
-  };
-
-  renderDropdownEndTimeHH: ChildrenFunction<string> = ({
-    isOpen,
-    getItemProps,
-    toggleMenu,
-  }) => {
+  renderDropdownEndTimeMM: ChildrenFunction<string> = () => {
     return (
       <div className={styles.timeMenu}>
-        <button
-          className={styles.timeInput}
-          type="button"
-          onClick={() => toggleMenu()}
-        >
-          {this.state.selectedEndTimeHH !== ''
-            ? this.state.selectedEndTimeHH
-            : 'HH'}
-          <div
-            className={classnames('dropdown-menu', styles.dropdownMenu, {
-              show: isOpen,
-            })}
+        <div className="form-group">
+          <label htmlFor="venue-time">End Time Minutes</label>
+          <select
+            id="venue-time"
+            className="form-control"
+            value={this.state.selectedEndTimeMM}
+            onChange={(evt) => this.onSelectEndTimeMM(evt.currentTarget.value)}
           >
-            {[
-              '06',
-              '07',
-              '08',
-              '09',
-              '10',
-              '11',
-              '12',
-              '13',
-              '14',
-              '15',
-              '16',
-              '17',
-              '18',
-              '19',
-              '20',
-              '21',
-              '22',
-            ].map((item, index) => (
-              <div
-                className="dropdown-item"
-                {...getItemProps({ key: index, index, item })}
-              >
+            {['00', '15', '30', '45'].map((item) => (
+              <option key={item} value={item}>
                 {item}
-              </div>
+              </option>
             ))}
-          </div>
-        </button>
-      </div>
+          </select>
+        </div>
+        </div>
     );
   };
 
-  renderDropdownEndTimeMM: ChildrenFunction<string> = ({
-    isOpen,
-    getItemProps,
-    toggleMenu,
-  }) => {
-    return (
-      <div className={styles.time3Menu}>
-        <button
-          className={styles.timeInput}
-          type="button"
-          onClick={() => toggleMenu()}
-        >
-          {this.state.selectedEndTimeMM !== ''
-            ? this.state.selectedEndTimeMM
-            : 'MM'}
 
-          <div
-            className={classnames('dropdown-menu', styles.dropdownMenu, {
-              show: isOpen,
-            })}
-          >
-            {['00', '15', '30', '45'].map((item, index) => (
-              <div
-                className="dropdown-item"
-                {...getItemProps({ key: index, index, item })}
-              >
-                {item}
-              </div>
-            ))}
-          </div>
-        </button>
-      </div>
-    );
+
+  onSelectEndTimeHH = (selectedItem: string) => {
+    this.props.onSelectEndTime(selectedItem, 'HH');
   };
 
-  onSelectEndTimeHH = (selectedItem: string | null) => {
-    const item: string = selectedItem || '00';
-    this.setState({ selectedEndTimeHH: item });
-    this.props.onSelectEndTime(item, 'HH');
-  };
-
-  onSelectEndTimeMM = (selectedItem: string | null) => {
-    const item: string = selectedItem || '00';
-    this.setState({ selectedEndTimeMM: item });
-    this.props.onSelectEndTime(item, 'MM');
+  onSelectEndTimeMM = (selectedItem: string) => {
+    this.props.onSelectEndTime(selectedItem, 'MM');
   };
 
   render() {
     return (
       <div>
-        <div className={styles.formGroup}>
+        <div className={(styles.formGroup)}>
           <input
             className={classnames(styles.input)}
             onChange={(e) => this.props.onChangeClassNo(e)}
             placeholder="Class No."
           />
-          <Downshift onChange={this.onSelectLessonType}>
-            {this.renderDropdownLessonType}
-          </Downshift>
+          {this.renderDropdownLessonType}
           <input
             className={classnames(styles.input)}
             onChange={(e) => this.props.onChangeVenue(e)}
             placeholder="Venue."
           />
-          <Downshift onChange={this.onSelectDay}>{this.renderDropdownDay}</Downshift>
+          {this.renderDropdownDay()}
 
-          <div
-            className={classnames(
-              styles.timeInputHolder,
-              'btn btn-outline-primary btn-svg',
-            )}
-          >
-            <Downshift onChange={this.onSelectStartTimeHH}>
-              {this.renderDropdownStartTimeHH}
-            </Downshift>
-            :
-            <Downshift onChange={this.onSelectStartTimeMM}>
-              {this.renderDropdownStartTimeMM}
-            </Downshift>
+          <div className={classnames(styles.timeInputHolder, 'btn btn-outline-primary btn-svg')}>
+            {this.renderDropdownStartTimeHH}:{this.renderDropdownStartTimeMM}
           </div>
 
-          <div
-            className={classnames(
-              styles.timeInputHolder,
-              'btn btn-outline-primary btn-svg',
-            )}
-          >
-            <Downshift onChange={this.onSelectEndTimeHH}>
-              {this.renderDropdownEndTimeHH}
-            </Downshift>
-            :
-            <Downshift onChange={this.onSelectEndTimeMM}>
-              {this.renderDropdownEndTimeMM}
-            </Downshift>
+          <div className={classnames(styles.timeInputHolder, 'btn btn-outline-primary btn-svg')}>
+            {this.renderDropdownEndTimeHH}:{this.renderDropdownEndTimeMM}
           </div>
         </div>
       </div>

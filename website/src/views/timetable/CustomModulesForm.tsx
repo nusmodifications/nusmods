@@ -26,7 +26,7 @@ type Props = OwnProps & {
   addCustomModule: (semester: Semester, moduleCode: ModuleCode, module: Module) => void;
 }
 
-type State = {
+export type ModuleClass = {
   acadYear: AcadYear;
   moduleCode: ModuleCode;
   title: ModuleTitle;
@@ -44,6 +44,8 @@ type State = {
   currentTimetableIndex: number;
   timestamp: number;
 };
+
+type State = ModuleClass;
 
 class CustomModulesForm extends React.Component<Props, State> {
   state: State = {
@@ -78,7 +80,6 @@ class CustomModulesForm extends React.Component<Props, State> {
           venue: this.state.venue,
           day: this.state.day,
           lessonType: this.state.lessonType,
-          size: 20,
         },
       ],
       examDate: '',
@@ -93,7 +94,7 @@ class CustomModulesForm extends React.Component<Props, State> {
       department: this.state.department,
       faculty: this.state.faculty,
       timestamp: Date.now() || this.state.timestamp,
-      semesterData: [semesterOneData,],
+      semesterData: [semesterOneData],
     };
     this.props.addCustomModule(this.state.semester, customModule.moduleCode, customModule);
   };
@@ -175,6 +176,7 @@ class CustomModulesForm extends React.Component<Props, State> {
           onSelectDay={this.onSelectDay}
           onSelectLessonType={this.onSelectLessonType}
         />
+        <input id="1" className="form-check-input" type="checkbox" checked="" />
         <button
           type="button"
           disabled={!this.isFormValid()}

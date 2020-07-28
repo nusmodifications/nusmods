@@ -168,6 +168,19 @@ $btn-margin: 0.5rem;
   border: 0;
 }
 
+.search {
+  label {
+    margin-bottom: 0;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-s;
+  }
+
+  :global(.form-group) {
+    margin-bottom: 0;
+  }
+}
+
+
 /*.modalContent {
   display: flex;
   font-size: 1.4rem;
