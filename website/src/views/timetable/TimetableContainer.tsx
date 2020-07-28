@@ -101,7 +101,6 @@ export class TimetableContainerComponent extends React.PureComponent<Props, Stat
         .filter(this.props.isValidModule)
         .forEach((moduleCode) => moduleCodes.add(moduleCode));
     }
-
     // TODO: Account for loading error
     return Array.from(moduleCodes).some((moduleCode) => !modules[moduleCode]);
   }

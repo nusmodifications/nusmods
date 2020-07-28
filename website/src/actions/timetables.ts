@@ -3,7 +3,7 @@ import { each, flatMap } from 'lodash';
 import { Lesson, ColorIndex, ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import { GetState } from 'types/redux';
 import { ColorMapping } from 'types/reducers';
-import { ClassNo, LessonType, Module, ModuleCode, Semester } from 'types/modules';
+import { ClassNo, LessonType, Module, ModuleCode, Semester, SemesterData } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
 import { openNotification } from 'actions/app';
@@ -14,6 +14,7 @@ import {
   validateTimetableModules,
 } from 'utils/timetables';
 import { getModuleTimetable } from 'utils/modules';
+import { current } from 'immer';
 
 // Actions that should not be used directly outside of thunks
 export const SET_TIMETABLE = 'SET_TIMETABLE' as const;
@@ -41,6 +42,18 @@ export const Internal = {
       },
     };
   },
+
+  addCustomModule(semester: Semester, moduleCode: ModuleCode, moduleLessonConfig: ModuleLessonConfig, module: Module) {
+    return {
+      type: ADD_CUSTOM_MODULE,
+      payload: {
+        semester,
+        moduleCode,
+        moduleLessonConfig,
+        module
+      },
+    }
+  }
 };
 
 export function addModule(semester: Semester, moduleCode: ModuleCode) {
@@ -70,41 +83,41 @@ export function addModule(semester: Semester, moduleCode: ModuleCode) {
 export function addCustomModule(semester: Semester, moduleCode: ModuleCode, module: Module) {
   return (dispatch: Function, getState: GetState) => {
     const { modules } = getState().moduleBank;
-    if (Object.keys(modules).includes(moduleCode) && modules[moduleCode].title !== module.title) {
-      console.log("A")
-      dispatch(openNotification(`Module ${moduleCode} exist with a different title`, {
-        action: {
-          text: '',
-          handler: () => dispatch(addCustomModule(semester, moduleCode, module)),
-        },
-      }));
-      return;
-    }
-
-    //  const customModule = module;
-    const customModule = module;
-    console.log(customModule)
-    /*
     if (Object.keys(modules).includes(moduleCode)) {
-      console.log("AAA")
-      const storedModule = modules[moduleCode];
-      customModule.semesterData = [...storedModule.semesterData, customModule.semesterData[0]]
-      console.log(customModule);
+      if (modules[moduleCode].title !== module.title) {
+        dispatch(openNotification(`Module ${moduleCode} exist with a different title`, {
+          action: {
+            text: '',
+            handler: () => dispatch(addCustomModule(semester, moduleCode, module)),
+          },
+        }));
+        return;
+      }
     }
-    */
+    
+    let customModule = module;
 
-    const lessons = getModuleTimetable(module, semester);
+    if (Object.keys(modules).includes(moduleCode)) {
+        console.log("A")
+        const storedModule = modules[moduleCode];
+        const selectedSemester = getState().app.activeSemester;
+        const modifiedCurrentSemesterData = storedModule.semesterData.map(currentSemesterData =>
+          currentSemesterData.semester === selectedSemester ?
+            {
+              ...currentSemesterData,
+              timetable: ([...currentSemesterData.timetable, customModule.semesterData[0].timetable[0]])
+            }
+            :
+            currentSemesterData
+        );
+        // console.log(modifiedCurrentSemesterData);
+        customModule = { ...storedModule, semesterData: modifiedCurrentSemesterData };
+        // console.log(storedModule);
+    }
+    const lessons = getModuleTimetable(customModule, semester);
     const moduleLessonConfig = randomModuleLessonConfig(lessons);
-    dispatch({
-      type: ADD_CUSTOM_MODULE,
-      payload: {
-        semester,
-        moduleCode,
-        moduleLessonConfig,
-        module
-      },
-    })
-
+    dispatch(Internal.addCustomModule(semester, moduleCode, moduleLessonConfig, customModule));
+    //  const customModule = module;
   };
 }
 
