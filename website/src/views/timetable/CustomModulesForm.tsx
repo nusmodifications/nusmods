@@ -15,9 +15,7 @@ import {
   Semester,
 } from 'types/modules';
 import { State as StoreState } from 'types/state';
-import CheckboxItem from 'views/components/filters/CheckboxItem';
 import { LESSON_TYPE_ABBREV } from '../../utils/timetables';
-import CustomModuleTimetableForm from './CustomModuleTimetableForm'
 import styles from './CustomModulesForm.scss';
 
 type OwnProps = {
@@ -85,12 +83,12 @@ export type ModuleClass = {
 
 type State = ModuleClass;
 
-class CustomModulesForm extends React.Component<Props, State> {
+class CustomModulesForm extends React.PureComponent<Props, State> {
   state: State = {
     acadYear: '',
     moduleCode: '',
     title: '',
-    moduleCredit: '1',
+    moduleCredit: '4',
     department: '',
     faculty: '',
     semester: this.props.activeSemester,
@@ -100,7 +98,7 @@ class CustomModulesForm extends React.Component<Props, State> {
     weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
     venue: '',
     day: 'Monday',
-    lessonType: '',
+    lessonType: 'Lecture',
     timestamp: Date.now(),
   };
 
@@ -119,8 +117,6 @@ class CustomModulesForm extends React.Component<Props, State> {
           lessonType: this.state.lessonType,
         },
       ],
-      examDate: '',
-      examDuration: 0,
     };
 
     const customModule: Module = {
@@ -220,7 +216,7 @@ class CustomModulesForm extends React.Component<Props, State> {
         <select
           id="end-time"
           className="form-control"
-          value={this.state.startTime}
+          value={this.state.endTime}
           onChange={(e) => this.setState({ endTime: e.target.value })}
         >
           {hours
@@ -305,41 +301,7 @@ class CustomModulesForm extends React.Component<Props, State> {
     );
   };
 
-
-
-  /*
-  renderChecklistWeeks = () => (
-    Array.from(Array(13), (_, i) => i + 1).map((item) => (
-      <CheckboxItem
-        onClick={() => this.onSelectWeek(item)}
-        active
-        itemKey={`${item}`}
-        label={`${item}`}
-        count={0}
-        showCount={false}
-        disabled={false}
-      />
-    ))
-  )
-  */
-
-
-
-  isFormValid = () => {
-    const validity = Boolean(
-      this.state.moduleCode &&
-        this.state.title &&
-        this.state.classNo &&
-        this.state.startTime.length === 4 &&
-        this.state.endTime.length === 4 &&
-        this.state.startTime < this.state.endTime &&
-        this.state.venue &&
-        this.state.day &&
-        this.state.lessonType,
-    );
-    return validity;
-  };
-
+  
   render() {
     return (
       <form onSubmit={this.onSubmit}>
@@ -362,7 +324,7 @@ class CustomModulesForm extends React.Component<Props, State> {
           <input
             type="submit"
             value="Create Module"
-            className={classnames(styles.titleBtn, 'btn-outline-primary btn btn-svg')}
+            className={classnames(styles.submitBtn, 'btn-outline-primary btn btn-svg')}
           />
         </div>
       </form>

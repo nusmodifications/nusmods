@@ -26,31 +26,10 @@ $btn-margin: 0.5rem;
   }
 }
 
-.buttonGroup {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-left: -$btn-margin; // Negate childrens' left margins
-
-  > * {
-    flex-grow: 1;
-    margin-bottom: $btn-margin;
-    margin-left: $btn-margin;
-  }
-
-  @include media-breakpoint-down(xs) {
-    > * {
-      flex: 1 1 100%;
-    }
-  }
-  
-  @include media-breakpoint-up(sm) {
-    :global(.btn) {
-      padding: 0.25rem 0.75rem;
-      font-size: $font-size-sm;
-    }
-  }
+.submitBtn {
+  margin-top: 1rem;
 }
+
 
 .formGroup {
   display: flex;
@@ -59,7 +38,7 @@ $btn-margin: 0.5rem;
   margin-left: -$btn-margin; // Negate childrens' left margins
 
   > * {
-    flex: 1 1 calc(33.333% - 1rem);
+    flex: 0 1 calc(33.333% - 1rem);
     flex-grow: 1;
     margin-bottom: $btn-margin;
     margin-left: $btn-margin;
@@ -67,13 +46,13 @@ $btn-margin: 0.5rem;
 
   @include media-breakpoint-down(sm) {
     > * {
-      flex: 1 1 calc(50% - 1rem);
+      flex: 0 1 calc(50% - 1rem);
     }
   }
   
   @include media-breakpoint-down(xs) {
     > * {
-      flex: 1 1 100%;
+      flex: 0 1 100%;
     }
   }
 
@@ -87,7 +66,7 @@ $btn-margin: 0.5rem;
   @include vertical-mode {
     @include media-breakpoint-down(lg) {
       > * {
-        flex: 1 1 calc(50% - 1rem);
+        flex: 0 1 calc(50% - 1rem);
       }
     }
   }
