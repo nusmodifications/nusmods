@@ -38,7 +38,7 @@ class CustomModulesAddContainer extends React.Component<Props, State> {
           className={classnames(styles.titleBtn, 'btn-outline-primary btn btn-svg')}
           onClick={(this.onChange)}
         >
-          Add custom modules to timetable
+          Add custom module to timetable
         </button>
         {this.state.showCustomModulesForm && <CustomModulesForm />}
       </div>
