@@ -30,7 +30,6 @@ $btn-margin: 0.5rem;
   margin-top: 1rem;
 }
 
-
 .formGroup {
   display: flex;
   flex-wrap: wrap;
@@ -73,40 +72,6 @@ $btn-margin: 0.5rem;
 
 }
 
-
-.weeksGroup {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-left: -$btn-margin; // Negate childrens' left margins
-
-  > * {
-    flex: 1 1 calc(100% / 13 - 55rem);
-    flex-grow: 1;
-    margin-bottom: $btn-margin;
-    margin-left: $btn-margin;
-  }
-
-  @include media-breakpoint-down(sm) {
-    > * {
-      flex: 1 1 calc(100% / 7 - 40rem);
-    }
-  }
-  
-  @include media-breakpoint-down(xs) {
-    > * {
-      flex: 1 1 calc(100% / 7 - 40rem);
-    }
-  }
-
-  @include media-breakpoint-up(md) {
-    :global(.btn) {
-      padding: 0.25rem 0.75rem;
-      //font-size: $font-size-sm;
-    }
-  }
-}
-
 // Two layout forms:
 //
 // 1. Left and right on one row, with space between two groups
@@ -140,9 +105,6 @@ $btn-margin: 0.5rem;
     margin-bottom: 0;
   }
 }
-
-$v-padding: 0.6rem;
-$h-padding: $grid-gutter-width / 2;
 
 .label {
   margin: 0;
