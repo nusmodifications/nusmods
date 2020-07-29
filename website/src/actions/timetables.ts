@@ -90,7 +90,7 @@ export function addCustomModule(semester: Semester, moduleCode: ModuleCode, modu
     if (Object.keys(modules).includes(moduleCode)) {
       if (modules[moduleCode].title !== module.title) {
         dispatch(
-          openNotification(`Module ${moduleCode} exist with a different title`, {
+          openNotification(`Module ${moduleCode.slice(0, -1)} exist with a different title`, {
             action: {
               text: '',
               handler: () => dispatch(addCustomModule(semester, moduleCode, module)),
