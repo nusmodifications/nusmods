@@ -419,9 +419,7 @@ class TimetableContent extends React.Component<Props, State> {
                       addModule={this.addModule}
                       removeModule={this.removeModule}
                     />
-                    <CustomModulesContainer
-                      semester={semester}
-                    />
+                    <CustomModulesContainer semester={semester} />
                   </div>
                 )}
               </div>

@@ -53,7 +53,7 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: Actions)
           [action.payload.moduleCode]: { ...action.payload, timestamp: Date.now() },
         },
       };
-    
+
     case ADD_CUSTOM_MODULE:
       return {
         ...state,

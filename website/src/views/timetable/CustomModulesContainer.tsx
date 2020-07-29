@@ -13,7 +13,7 @@ type OwnProps = {
 type Props = OwnProps;
 
 type State = {
-  showCustomModulesForm: boolean,
+  showCustomModulesForm: boolean;
 };
 
 class CustomModulesAddContainer extends React.Component<Props, State> {
@@ -23,10 +23,9 @@ class CustomModulesAddContainer extends React.Component<Props, State> {
 
   onChange = () => {
     if (this.state.showCustomModulesForm === true) {
-      this.setState({showCustomModulesForm: false })
-    }
-    else {
-      this.setState({showCustomModulesForm: true })
+      this.setState({ showCustomModulesForm: false });
+    } else {
+      this.setState({ showCustomModulesForm: true });
     }
   };
 
@@ -36,7 +35,7 @@ class CustomModulesAddContainer extends React.Component<Props, State> {
         <button
           type="button"
           className={classnames(styles.titleBtn, 'btn-outline-primary btn btn-svg')}
-          onClick={(this.onChange)}
+          onClick={this.onChange}
         >
           Add custom module to timetable
         </button>
@@ -47,10 +46,7 @@ class CustomModulesAddContainer extends React.Component<Props, State> {
 }
 
 function mapStateToProps() {
-
-  return {
-
-  };
+  return {};
 }
 
 export default connect(mapStateToProps, {})(CustomModulesAddContainer);

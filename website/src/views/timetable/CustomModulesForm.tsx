@@ -11,7 +11,6 @@ import {
   Department,
   Faculty,
   Weeks,
-  SemesterData,
   Semester,
 } from 'types/modules';
 import { State as StoreState } from 'types/state';
@@ -25,7 +24,7 @@ type OwnProps = {
 type Props = OwnProps & {
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
   addCustomModule: (semester: Semester, moduleCode: ModuleCode, module: Module) => void;
-}
+};
 
 const hours = [
   '0800',
@@ -301,7 +300,6 @@ class CustomModulesForm extends React.PureComponent<Props, State> {
     );
   };
 
-  
   render() {
     return (
       <form onSubmit={this.onSubmit}>

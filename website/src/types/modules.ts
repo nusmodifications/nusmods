@@ -46,7 +46,7 @@ export const Days: readonly Day[] = [
   'Friday',
   'Saturday',
   'Sunday',
-]
+];
 
 export const WorkingDays: readonly Day[] = [
   'Monday',
