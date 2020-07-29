@@ -104,7 +104,7 @@ class CustomModulesForm extends React.Component<Props, State> {
     timestamp: Date.now(),
   };
 
-  onSubmit = (evt: React.SyntheticEvent<HTMLButtonElement, MouseEvent>) => {
+  onSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     const semesterOneData = {
       semester: this.state.semester,
@@ -145,6 +145,7 @@ class CustomModulesForm extends React.Component<Props, State> {
           className={classnames(styles.input, styles.titleIcon)}
           onChange={(e) => this.setState({ moduleCode: e.target.value })}
           placeholder="Module Code"
+          required
         />
       </div>
     );
@@ -159,6 +160,7 @@ class CustomModulesForm extends React.Component<Props, State> {
           className={classnames(styles.input, styles.titleIcon)}
           onChange={(e) => this.setState({ title: e.target.value })}
           placeholder="Module Title"
+          required
         />
       </div>
     );
@@ -262,6 +264,7 @@ class CustomModulesForm extends React.Component<Props, State> {
           className={classnames(styles.input, styles.titleIcon)}
           onChange={(e) => this.setState({ classNo: e.target.value })}
           placeholder="Class No"
+          required
         />
       </div>
     );
@@ -276,6 +279,7 @@ class CustomModulesForm extends React.Component<Props, State> {
           className={classnames(styles.input, styles.titleIcon)}
           onChange={(e) => this.setState({ venue: e.target.value })}
           placeholder="Venue"
+          required
         />
       </div>
     );
@@ -338,7 +342,7 @@ class CustomModulesForm extends React.Component<Props, State> {
 
   render() {
     return (
-      <div>
+      <form onSubmit={this.onSubmit}>
         <div className={styles.search}>
           <div
             className={styles.formGroup}
@@ -355,16 +359,13 @@ class CustomModulesForm extends React.Component<Props, State> {
             {this.renderDropdownStartTime()}
             {this.renderDropdownEndTime()}
           </div>
-          <button
-            type="button"
-            disabled={!this.isFormValid()}
+          <input
+            type="submit"
+            value="Create Module"
             className={classnames(styles.titleBtn, 'btn-outline-primary btn btn-svg')}
-            onClick={this.onSubmit}
-          >
-            Create Module
-          </button>
+          />
         </div>
-      </div>
+      </form>
     );
   }
 }
