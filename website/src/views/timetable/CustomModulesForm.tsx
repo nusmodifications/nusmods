@@ -2,17 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { addModule, addCustomModule } from 'actions/timetables';
-import {
-  Days,
-  Module,
-  AcadYear,
-  ModuleCode,
-  ModuleTitle,
-  Department,
-  Faculty,
-  Weeks,
-  Semester,
-} from 'types/modules';
+import { Days, Module, ModuleCode, ModuleTitle, Semester } from 'types/modules';
 import { State as StoreState } from 'types/state';
 import { LESSON_TYPE_ABBREV } from '../../utils/timetables';
 import styles from './CustomModulesForm.scss';
@@ -118,15 +108,14 @@ class CustomModulesForm extends React.PureComponent<Props, State> {
       semesterData: [semesterDatum],
     };
     this.props.addCustomModule(semesterDatum.semester, customModule.moduleCode, customModule);
-    
   };
 
   renderInputModuleCode = () => {
     return (
       <div className="form-group">
-        <label htmlFor="module-code">Module Code</label>
+        <label htmlFor="module-code-custom-module">Module Code</label>
         <input
-          id="module-code"
+          id="module-code-custom-module"
           className={classnames(styles.input, styles.titleIcon)}
           onChange={(e) => this.setState({ moduleCode: e.target.value })}
           placeholder="Module Code"
@@ -139,9 +128,9 @@ class CustomModulesForm extends React.PureComponent<Props, State> {
   renderInputModuleTitle = () => {
     return (
       <div className="form-group">
-        <label htmlFor="module-title">Module Title</label>
+        <label htmlFor="module-title-custom-module">Module Title</label>
         <input
-          id="module-title"
+          id="module-title-custom-module"
           className={classnames(styles.input, styles.titleIcon)}
           onChange={(e) => this.setState({ title: e.target.value })}
           placeholder="Module Title"
@@ -154,9 +143,9 @@ class CustomModulesForm extends React.PureComponent<Props, State> {
   renderInputModuleCredit = () => {
     return (
       <div className="form-group">
-        <label htmlFor="module-credit">Module Credit</label>
+        <label htmlFor="module-credit-custom-module">Module Credit</label>
         <input
-          id="module-credit"
+          id="module-credit-custom-module"
           className="form-control"
           value={this.state.moduleCredit}
           onChange={(e) => this.setState({ moduleCredit: e.target.value })}
@@ -178,9 +167,9 @@ class CustomModulesForm extends React.PureComponent<Props, State> {
   renderDropdownStartTime = () => {
     return (
       <div className="form-group">
-        <label htmlFor="start-time">Start Time</label>
+        <label htmlFor="start-time-custom-module">Start Time</label>
         <select
-          id="start-time"
+          id="start-time-custom-module"
           className="form-control"
           value={this.state.startTime}
           onChange={(e) => this.setState({ startTime: e.target.value })}
@@ -198,9 +187,9 @@ class CustomModulesForm extends React.PureComponent<Props, State> {
   renderDropdownEndTime = () => {
     return (
       <div className="form-group">
-        <label htmlFor="end-time">End Time</label>
+        <label htmlFor="end-time-custom-module">End Time</label>
         <select
-          id="end-time"
+          id="end-time-custom-module"
           className="form-control"
           value={this.state.endTime}
           onChange={(e) => this.setState({ endTime: e.target.value })}
@@ -220,9 +209,9 @@ class CustomModulesForm extends React.PureComponent<Props, State> {
   renderDropdownLessonType = () => {
     return (
       <div className="form-group">
-        <label htmlFor="lesson-type">Lesson Type</label>
+        <label htmlFor="lesson-type-custom-module">Lesson Type</label>
         <select
-          id="lesson-type"
+          id="lesson-type-custom-module"
           className="form-control"
           value={this.state.lessonType}
           onChange={(e) => this.setState({ lessonType: e.target.value })}
@@ -240,9 +229,9 @@ class CustomModulesForm extends React.PureComponent<Props, State> {
   renderInputClassNo = () => {
     return (
       <div className="form-group">
-        <label htmlFor="module-code">Class No.</label>
+        <label htmlFor="class-no-custom-module">Class No.</label>
         <input
-          id="module-code"
+          id="class-no-custom-module"
           className={classnames(styles.input, styles.titleIcon)}
           onChange={(e) => this.setState({ classNo: e.target.value })}
           placeholder="Class No"
@@ -255,9 +244,9 @@ class CustomModulesForm extends React.PureComponent<Props, State> {
   renderInputVenue = () => {
     return (
       <div className="form-group">
-        <label htmlFor="module-code">Venue</label>
+        <label htmlFor="venue-custom-module">Venue</label>
         <input
-          id="module-code"
+          id="venue-custom-module"
           className={classnames(styles.input, styles.titleIcon)}
           onChange={(e) => this.setState({ venue: e.target.value })}
           placeholder="Venue"
@@ -270,9 +259,9 @@ class CustomModulesForm extends React.PureComponent<Props, State> {
   renderDropdownDay = () => {
     return (
       <div className="form-group">
-        <label htmlFor="day">Day</label>
+        <label htmlFor="day-custom-module">Day</label>
         <select
-          id="day"
+          id="day-custom-module"
           className="form-control"
           value={this.state.day}
           onChange={(e) => this.setState({ day: e.target.value })}
@@ -309,7 +298,8 @@ class CustomModulesForm extends React.PureComponent<Props, State> {
           <button
             type="submit"
             className={classnames(styles.submitBtn, 'btn-outline-primary btn btn-svg')}
-          >Create Module
+          >
+            Create Module
           </button>
         </div>
       </form>
