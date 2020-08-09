@@ -19,7 +19,6 @@ import styles from './CustomModulesForm.scss';
 
 type OwnProps = {
   activeSemester: Semester;
-  stateLOL: State;
 };
 
 type Props = OwnProps & {
@@ -64,54 +63,43 @@ const hours = [
 ];
 
 export type ModuleClass = {
-  acadYear: AcadYear;
   moduleCode: ModuleCode;
   title: ModuleTitle;
-  department: Department;
-  faculty: Faculty;
   moduleCredit: string;
-  semester: Semester;
   classNo: string;
   startTime: string;
   endTime: string;
-  weeks: Weeks;
   venue: string;
   day: string;
   lessonType: string;
-  timestamp: number;
 };
 
 type State = ModuleClass;
 
 class CustomModulesForm extends React.PureComponent<Props, State> {
   state: State = {
-    acadYear: '',
     moduleCode: '',
     title: '',
     moduleCredit: '4',
-    department: '',
-    faculty: '',
-    semester: this.props.activeSemester,
     classNo: '',
     startTime: '0800',
     endTime: '1000',
-    weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
     venue: '',
     day: 'Monday',
     lessonType: 'Lecture',
-    timestamp: Date.now(),
   };
 
   onSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
+
     const semesterDatum = {
-      semester: this.state.semester,
+      semester: this.props.activeSemester,
       timetable: [
         {
           classNo: this.state.classNo,
           startTime: this.state.startTime,
           endTime: this.state.endTime,
-          weeks: this.state.weeks,
+          weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
           venue: this.state.venue,
           day: this.state.day,
           lessonType: this.state.lessonType,
@@ -120,17 +108,16 @@ class CustomModulesForm extends React.PureComponent<Props, State> {
     };
 
     const customModule: Module = {
-      acadYear: this.state.acadYear,
+      acadYear: '',
       moduleCode: `${this.state.moduleCode}'`,
       title: this.state.title,
       moduleCredit: this.state.moduleCredit,
-      department: this.state.department,
-      faculty: this.state.faculty,
-      timestamp: Date.now() || this.state.timestamp,
+      department: '',
+      faculty: '',
+      timestamp: Date.now(),
       semesterData: [semesterDatum],
     };
-    console.log(this.props.stateLOL)
-    this.props.addCustomModule(this.state.semester, customModule.moduleCode, customModule);
+    this.props.addCustomModule(semesterDatum.semester, customModule.moduleCode, customModule);
     
   };
 
@@ -333,7 +320,6 @@ class CustomModulesForm extends React.PureComponent<Props, State> {
 const mapStateToProps = (state: StoreState) => {
   return {
     activeSemester: state.app.activeSemester,
-    stateLOL: state
   };
 };
 export default connect(mapStateToProps, { addModule, addCustomModule })(CustomModulesForm);
