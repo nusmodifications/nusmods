@@ -19,6 +19,7 @@ import styles from './CustomModulesForm.scss';
 
 type OwnProps = {
   activeSemester: Semester;
+  stateLOL: State;
 };
 
 type Props = OwnProps & {
@@ -103,7 +104,7 @@ class CustomModulesForm extends React.PureComponent<Props, State> {
 
   onSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    const semesterOneData = {
+    const semesterDatum = {
       semester: this.state.semester,
       timetable: [
         {
@@ -126,9 +127,11 @@ class CustomModulesForm extends React.PureComponent<Props, State> {
       department: this.state.department,
       faculty: this.state.faculty,
       timestamp: Date.now() || this.state.timestamp,
-      semesterData: [semesterOneData],
+      semesterData: [semesterDatum],
     };
+    console.log(this.props.stateLOL)
     this.props.addCustomModule(this.state.semester, customModule.moduleCode, customModule);
+    
   };
 
   renderInputModuleCode = () => {
@@ -165,18 +168,15 @@ class CustomModulesForm extends React.PureComponent<Props, State> {
     return (
       <div className="form-group">
         <label htmlFor="module-credit">Module Credit</label>
-        <select
+        <input
           id="module-credit"
           className="form-control"
           value={this.state.moduleCredit}
           onChange={(e) => this.setState({ moduleCredit: e.target.value })}
-        >
-          {Array.from(Array(10), (_, i) => i + 1).map((item) => (
-            <option key={item} value={item}>
-              {item}
-            </option>
-          ))}
-        </select>
+          type="number"
+          step="1"
+          min="0"
+        />
       </div>
     );
   };
@@ -319,11 +319,11 @@ class CustomModulesForm extends React.PureComponent<Props, State> {
             {this.renderDropdownStartTime()}
             {this.renderDropdownEndTime()}
           </div>
-          <input
+          <button
             type="submit"
-            value="Create Module"
             className={classnames(styles.submitBtn, 'btn-outline-primary btn btn-svg')}
-          />
+          >Create Module
+          </button>
         </div>
       </form>
     );
@@ -333,6 +333,7 @@ class CustomModulesForm extends React.PureComponent<Props, State> {
 const mapStateToProps = (state: StoreState) => {
   return {
     activeSemester: state.app.activeSemester,
+    stateLOL: state
   };
 };
 export default connect(mapStateToProps, { addModule, addCustomModule })(CustomModulesForm);
