@@ -36,8 +36,8 @@ type Props = TimerData & {
 
 type State = {
   hoverLesson: HoverLesson | null;
-  earliestIndexPreference: number,
-  latestIndexPreference: number,
+  earliestIndexPreference: number;
+  latestIndexPreference: number;
 };
 
 const nullCurrentTimeIndicatorStyle: React.CSSProperties = {
@@ -60,24 +60,19 @@ class Timetable extends React.PureComponent<Props, State> {
     latestIndexPreference: convertTimeToIndex(DEFAULT_LATEST_TIME),
   };
 
-  componentDidMount() {
-    console.log(this.state.earliestIndexPreference);
-    console.log(this.state.latestIndexPreference);
-  }
-
   onCellHover = (hoverLesson: HoverLesson | null) => {
     this.setState({ hoverLesson });
   };
 
-  onChangeEarliestIndexPreference = (amount: number) => {    
+  onChangeEarliestIndexPreference = (amount: number) => {
     this.setState((prevState) => ({
-      earliestIndexPreference: prevState.earliestIndexPreference + (amount * 2)
+      earliestIndexPreference: prevState.earliestIndexPreference + amount * 2,
     }));
   };
 
   onChangeLatestIndexPreference = (amount: number) => {
     this.setState((prevState) => ({
-      latestIndexPreference: prevState.latestIndexPreference + (amount * 2),
+      latestIndexPreference: prevState.latestIndexPreference + amount * 2,
     }));
   };
 
