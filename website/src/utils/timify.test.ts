@@ -37,22 +37,22 @@ describe('convertTimeToIndex', () => {
 });
 
 describe('calculateBorderTimings()', () => {
-  test('calculate default border timings correctly', () => {
+  test('calculate default border timings, with no start and end index preference, correctly', () => {
     const timings = calculateBorderTimings([
       createGenericLesson('Anyday', '1100', '1230'),
       createGenericLesson('Anyday', '1330', '1400'),
       createGenericLesson('Anyday', '1300', '1500'),
-    ]);
+    ], convertTimeToIndex(DEFAULT_EARLIEST_TIME), convertTimeToIndex(DEFAULT_LATEST_TIME));
     expect(timings.startingIndex).toBe(convertTimeToIndex(DEFAULT_EARLIEST_TIME));
     expect(timings.endingIndex).toBe(convertTimeToIndex(DEFAULT_LATEST_TIME));
   });
 
-  test('calculate border timings correctly', () => {
+  test('calculate border timings, with no start and end index preference, correctly', () => {
     const timings = calculateBorderTimings([
       createGenericLesson('Anyday', '0800', '1230'),
       createGenericLesson('Anyday', '1330', '1400'),
       createGenericLesson('Anyday', '1300', '1500'),
-    ]);
+    ], convertTimeToIndex(DEFAULT_EARLIEST_TIME), convertTimeToIndex(DEFAULT_LATEST_TIME));
     expect(timings.startingIndex).toBe(convertTimeToIndex('0800'));
     expect(timings.endingIndex).toBe(convertTimeToIndex(DEFAULT_LATEST_TIME));
 
@@ -60,17 +60,17 @@ describe('calculateBorderTimings()', () => {
       createGenericLesson('Anyday', '1100', '1230'),
       createGenericLesson('Anyday', '1330', '1400'),
       createGenericLesson('Anyday', '2000', '2100'),
-    ]);
+    ], convertTimeToIndex(DEFAULT_EARLIEST_TIME), convertTimeToIndex(DEFAULT_LATEST_TIME));
     expect(timings2.startingIndex).toBe(convertTimeToIndex(DEFAULT_EARLIEST_TIME));
     expect(timings2.endingIndex).toBe(convertTimeToIndex('2100'));
   });
 
-  test('calculate non-hour border timings correctly', () => {
+  test('calculate non-hour border timings, with no start and end index preference, correctly', () => {
     const timings = calculateBorderTimings([
       createGenericLesson('Anyday', '0830', '1230'),
       createGenericLesson('Anyday', '1330', '1400'),
       createGenericLesson('Anyday', '1300', '1500'),
-    ]);
+    ], convertTimeToIndex(DEFAULT_EARLIEST_TIME), convertTimeToIndex(DEFAULT_LATEST_TIME));
     expect(timings.startingIndex).toBe(convertTimeToIndex('0800'));
     expect(timings.endingIndex).toBe(convertTimeToIndex(DEFAULT_LATEST_TIME));
 
@@ -78,7 +78,7 @@ describe('calculateBorderTimings()', () => {
       createGenericLesson('Anyday', '1100', '1230'),
       createGenericLesson('Anyday', '1330', '1400'),
       createGenericLesson('Anyday', '2000', '2130'),
-    ]);
+    ], convertTimeToIndex(DEFAULT_EARLIEST_TIME), convertTimeToIndex(DEFAULT_LATEST_TIME));
     expect(timings2.startingIndex).toBe(convertTimeToIndex(DEFAULT_EARLIEST_TIME));
     expect(timings2.endingIndex).toBe(convertTimeToIndex('2200'));
 
@@ -86,10 +86,31 @@ describe('calculateBorderTimings()', () => {
       createGenericLesson('Anyday', '0630', '1230'),
       createGenericLesson('Anyday', '1330', '1400'),
       createGenericLesson('Anyday', '2000', '2230'),
-    ]);
+    ], convertTimeToIndex(DEFAULT_EARLIEST_TIME), convertTimeToIndex(DEFAULT_LATEST_TIME));
     expect(timings3.startingIndex).toBe(convertTimeToIndex('0600'));
     expect(timings3.endingIndex).toBe(convertTimeToIndex('2300'));
   });
+
+  test('calculate non-hour border timings, with start and end index preference overidden, correctly', () => {
+    const timings = calculateBorderTimings([
+      createGenericLesson('Anyday', '0830', '1230'),
+      createGenericLesson('Anyday', '1330', '1400'),
+      createGenericLesson('Anyday', '1300', '1500'),
+    ], convertTimeToIndex('0900'), convertTimeToIndex('1400'));
+    expect(timings.startingIndex).toBe(convertTimeToIndex('0800'));
+    expect(timings.endingIndex).toBe(convertTimeToIndex('1500'));
+  });
+
+  test('calculate non-hour border timings, with start and end index preference not overidden, correctly', () => {
+    const timings = calculateBorderTimings([
+      createGenericLesson('Anyday', '0830', '1230'),
+      createGenericLesson('Anyday', '1330', '1400'),
+      createGenericLesson('Anyday', '1300', '1500'),
+    ], convertTimeToIndex('0700'), convertTimeToIndex('1600'));
+    expect(timings.startingIndex).toBe(convertTimeToIndex('0700'));
+    expect(timings.endingIndex).toBe(convertTimeToIndex('1600'));
+  });
+
 });
 
 describe('formatHour()', () => {
