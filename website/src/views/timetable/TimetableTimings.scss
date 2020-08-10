@@ -30,28 +30,28 @@
 }
 
 .relative{
-    position:relative;
+  position:relative;
 }
 
 .buttonLeft {
-  margin-top: -5px;
   position: absolute;
-  left: 0;
   top: 0;
-  border: 0;
+  left: 0;
   padding: 0;
+  margin-top: -5px;
+  border: 0;
   @include media-breakpoint-down(sm) {
     display:none;
   }
 }
 
 .buttonRight {
-  margin-top: -5px;
   position: absolute;
-  right: 0%;
   top: 0;
-  border: 0;
+  right: 0%;
   padding: 0;
+  margin-top: -5px;
+  border: 0;
   @include media-breakpoint-down(sm) {
     display:none;
   }
