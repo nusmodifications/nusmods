@@ -24,6 +24,7 @@ const TimetableTimings: React.FC<Props> = (props) => {
           className={classnames('btn btn-inline')}
           type="button"
           aria-label="Previous Start Hour"
+          disabled={props.startingIndex <= 12}
           onClick={() => props.onChangeEarliestIndexPreference(-1)}
         >
           <ChevronLeft className={styles.svg} />
@@ -31,7 +32,8 @@ const TimetableTimings: React.FC<Props> = (props) => {
         <button
           className={classnames('btn btn-inline')}
           type="button"
-          aria-label="Previous Start Hour"
+          aria-label="Next Start Hour"
+          disabled={props.endingIndex - props.startingIndex <= 4}
           onClick={() => props.onChangeEarliestIndexPreference(1)}
         >
           <ChevronRight className={styles.svg} />
@@ -57,6 +59,7 @@ const TimetableTimings: React.FC<Props> = (props) => {
           className={classnames('btn btn-inline')}
           type="button"
           aria-label="Previous End Hour"
+          disabled={props.endingIndex - props.startingIndex <= 4}
           onClick={() => props.onChangeLatestIndexPreference(-1)}
         >
           <ChevronLeft className={styles.svg} />
@@ -65,7 +68,8 @@ const TimetableTimings: React.FC<Props> = (props) => {
           className={classnames('btn btn-inline')}
           type="button"
           aria-label="Next End Hour"
-          onClick={() => props.onChangeLatestIndexPreference(-1)}
+          disabled={props.endingIndex >= 48}
+          onClick={() => props.onChangeLatestIndexPreference(1)}
         >
           <ChevronRight className={styles.svg} />
         </button>
