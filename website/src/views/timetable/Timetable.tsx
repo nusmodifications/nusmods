@@ -69,16 +69,13 @@ class Timetable extends React.PureComponent<Props, State> {
     this.setState({ hoverLesson });
   };
 
-  onChangeEarliestIndexPreference = (amount) => {
-    console.log(amount);
-    
+  onChangeEarliestIndexPreference = (amount: number) => {    
     this.setState((prevState) => ({
       earliestIndexPreference: prevState.earliestIndexPreference + (amount * 2)
     }));
   };
 
-  onChangeLatestIndexPreference = (amount) => {
-    console.log(amount);
+  onChangeLatestIndexPreference = (amount: number) => {
     this.setState((prevState) => ({
       latestIndexPreference: prevState.latestIndexPreference + (amount * 2),
     }));
@@ -86,13 +83,18 @@ class Timetable extends React.PureComponent<Props, State> {
 
   render() {
     const { highlightPeriod } = this.props;
-
     const schoolDays = SCHOOLDAYS.filter(
       (day) => day !== 'Saturday' || this.props.lessons.Saturday,
     );
 
     const lessons = flattenDeep<ColoredLesson>(values(this.props.lessons));
-    const { startingIndex, endingIndex } = calculateBorderTimings(lessons, highlightPeriod, this.state.earliestIndexPreference, this.state.latestIndexPreference);
+    const { startingIndex, endingIndex } = calculateBorderTimings(
+      lessons,
+      this.state.earliestIndexPreference,
+      this.state.latestIndexPreference,
+      highlightPeriod,
+    );
+
     const currentDayIndex = getDayIndex(); // Monday = 0, Friday = 4
 
     // Calculate the margin offset for the CurrentTimeIndicator
