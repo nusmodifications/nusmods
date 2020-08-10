@@ -88,9 +88,9 @@ export const DEFAULT_LATEST_TIME: LessonTime = '1800';
 // This bounds will then be used to decide the starting and ending hours of the timetable.
 export function calculateBorderTimings(
   lessons: Lesson[],
-  period?: TimePeriod,
   startIndexPreference: number, 
   endIndexPreference: number,
+  period?: TimePeriod,
 ): { startingIndex: number; endingIndex: number } {
   let earliestTime: number = startIndexPreference;
   let latestTime: number = endIndexPreference;
