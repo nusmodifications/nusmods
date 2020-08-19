@@ -92,7 +92,7 @@ const FaqContainer: React.FC = () => (
         students.
       </p>
       <p>
-        If you think the error is caused by a bug in NUSMods itself, please report it
+        If you think the error is caused by a bug in NUSMods itself, please report it{' '}
         <ExternalLink href="https://github.com/nusmodifications/nusmods/issues/new?template=Bug_report.md">
           using GitHub
         </ExternalLink>{' '}
