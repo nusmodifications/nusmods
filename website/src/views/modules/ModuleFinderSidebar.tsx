@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { State as StoreState } from 'types/state';
 import {
   NumericRefinementListFilter,
   RefinementListFilter,
@@ -7,17 +9,20 @@ import {
 } from 'searchkit';
 import { Filter } from 'react-feather';
 
-import { attributeDescription, NUSModuleAttributes } from 'types/modules';
+import { attributeDescription, NUSModuleAttributes, Module } from 'types/modules';
 import { RefinementItem } from 'types/views';
 
 import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
 import FilterContainer from 'views/components/filters/FilterContainer';
 import CheckboxItem from 'views/components/filters/CheckboxItem';
 import DropdownListFilters from 'views/components/filters/DropdownListFilters';
+import { getSemesterTimetable } from 'selectors/timetables';
+import { getSemesterModules } from 'utils/timetables';
 
 import config from 'config';
 import styles from './ModuleFinderSidebar.scss';
 import ChecklistFilter, { FilterItem } from '../components/filters/ChecklistFilter';
+
 
 const RESET_FILTER_OPTIONS = { filter: true };
 
@@ -36,9 +41,26 @@ const EXAM_FILTER_ITEMS: FilterItem[] = [
       },
     },
   },
+  {
+    key: 'no-exam-clash',
+    label: "No clashes with current module's exams",
+    filter: {
+      bool: {
+        must_not: {
+          exists: {
+            field: 'semesterData.examDate',
+          }
+        }
+      }
+    }
+  }
 ];
 
-const ModuleFinderSidebar: React.FC = React.memo(() => {
+type Props = {
+  modules: Module[]
+}
+
+const ModuleFinderSidebar: React.FC<Props> = React.memo(({ modules }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   return (
     <SideMenu
@@ -65,7 +87,7 @@ const ModuleFinderSidebar: React.FC = React.memo(() => {
             }
           />
         </header>
-
+        <h1>HI!!! {modules[0].semesterData[0].examDate}</h1>
         <RefinementListFilter
           id="sem"
           title="Offered In"
@@ -158,4 +180,12 @@ const ModuleFinderSidebar: React.FC = React.memo(() => {
 
 ModuleFinderSidebar.displayName = 'ModuleFinderSidebar';
 
-export default ModuleFinderSidebar;
+const mapStateToProps = (state: StoreState) => {
+  const { app: { activeSemester }, moduleBank: { modules }} = state;
+  const { timetable } = getSemesterTimetable(activeSemester, state.timetables);
+  const modulesMap = state.moduleBank.modules;
+  return { modules: getSemesterModules(timetable, modulesMap) };
+};
+
+export default connect(mapStateToProps, null)(ModuleFinderSidebar)
+
