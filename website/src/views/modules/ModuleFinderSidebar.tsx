@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { State as StoreState } from 'types/state';
 import {
   NumericRefinementListFilter,
@@ -9,7 +9,7 @@ import {
 } from 'searchkit';
 import { Filter } from 'react-feather';
 
-import { attributeDescription, NUSModuleAttributes, Module } from 'types/modules';
+import { attributeDescription, NUSModuleAttributes, SemesterData } from 'types/modules';
 import { RefinementItem } from 'types/views';
 
 import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
@@ -18,10 +18,12 @@ import CheckboxItem from 'views/components/filters/CheckboxItem';
 import DropdownListFilters from 'views/components/filters/DropdownListFilters';
 import { getSemesterTimetable } from 'selectors/timetables';
 import { getSemesterModules } from 'utils/timetables';
+import { getModuleSemesterData } from 'utils/modules';
 
 import config from 'config';
 import styles from './ModuleFinderSidebar.scss';
 import ChecklistFilter, { FilterItem } from '../components/filters/ChecklistFilter';
+
 
 
 const RESET_FILTER_OPTIONS = { filter: true };
@@ -56,12 +58,35 @@ const EXAM_FILTER_ITEMS: FilterItem[] = [
   }
 ];
 
-type Props = {
-  modules: Module[]
-}
-
-const ModuleFinderSidebar: React.FC<Props> = React.memo(({ modules }) => {
+const ModuleFinderSidebar: React.FC = React.memo(() => {
   const [isMenuOpen, setMenuOpen] = useState(false);
+
+  const selectedModules = useSelector((state: StoreState) => {
+    const { app: { activeSemester }, moduleBank: { modules }} = state;
+    const { timetable } = getSemesterTimetable(activeSemester, state.timetables);
+    const allSemesterModules = getSemesterModules(timetable, modules);
+    return allSemesterModules.map(module => getModuleSemesterData(module, activeSemester)) ;
+  });
+
+  const generateExamDateFilterItems: () => FilterItem[] = () => {
+    const examDateFilters = selectedModules.map(module => ({
+      'match': {
+        'semesterData.examDate': `${module ? module.examDate : null}`
+      }
+    }))
+
+    return [{
+      key: 'no-exam-clash',
+      label: 'No exam clashes with currently selected modules',
+      filter: {
+        must_not: {
+          bool: {
+            must: examDateFilters
+          }
+        }
+      }
+    }];
+  }
   return (
     <SideMenu
       isOpen={isMenuOpen}
@@ -87,7 +112,6 @@ const ModuleFinderSidebar: React.FC<Props> = React.memo(({ modules }) => {
             }
           />
         </header>
-        <h1>HI!!! {modules[0].semesterData[0].examDate}</h1>
         <RefinementListFilter
           id="sem"
           title="Offered In"
@@ -180,12 +204,15 @@ const ModuleFinderSidebar: React.FC<Props> = React.memo(({ modules }) => {
 
 ModuleFinderSidebar.displayName = 'ModuleFinderSidebar';
 
-const mapStateToProps = (state: StoreState) => {
-  const { app: { activeSemester }, moduleBank: { modules }} = state;
-  const { timetable } = getSemesterTimetable(activeSemester, state.timetables);
-  const modulesMap = state.moduleBank.modules;
-  return { modules: getSemesterModules(timetable, modulesMap) };
-};
+// const mapStateToProps = (state: StoreState) => {
+//   const { app: { activeSemester }, moduleBank: { modules }} = state;
+//   const { timetable } = getSemesterTimetable(activeSemester, state.timetables);
+//   const allSemesterModules = getSemesterModules(timetable, modules);
+//   return { 
+//     modules: allSemesterModules.map(module => getModuleSemesterData(module, activeSemester)) 
+//   };
+// };
 
-export default connect(mapStateToProps, null)(ModuleFinderSidebar)
+export default ModuleFinderSidebar;
+
 

@@ -97,7 +97,6 @@ const ModuleFinderContainer: React.FC = () => {
 
           <div className="col-md-4 col-lg-3">
             <ModuleFinderSidebar
-              modules={[]}
             />
           </div>
         </div>
