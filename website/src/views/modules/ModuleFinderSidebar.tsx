@@ -6,6 +6,8 @@ import {
   RefinementListFilter,
   ResetFilters,
   ResetFiltersDisplayProps,
+  TermsQuery,
+  BoolMustNot
 } from 'searchkit';
 import { Filter } from 'react-feather';
 
@@ -43,19 +45,6 @@ const EXAM_FILTER_ITEMS: FilterItem[] = [
       },
     },
   },
-  {
-    key: 'no-exam-clash',
-    label: "No clashes with current module's exams",
-    filter: {
-      bool: {
-        must_not: {
-          exists: {
-            field: 'semesterData.examDate',
-          }
-        }
-      }
-    }
-  }
 ];
 
 const ModuleFinderSidebar: React.FC = React.memo(() => {
@@ -68,25 +57,23 @@ const ModuleFinderSidebar: React.FC = React.memo(() => {
     return allSemesterModules.map(module => getModuleSemesterData(module, activeSemester)) ;
   });
 
-  const generateExamDateFilterItems: () => FilterItem[] = () => {
-    const examDateFilters = selectedModules.map(module => ({
-      'match': {
-        'semesterData.examDate': `${module ? module.examDate : null}`
-      }
-    }))
+  const generateExamDateClashFilter: () => FilterItem[] = () => {
+    const examDates = selectedModules.map(module => {
+      return module?.examDate;
+    });
 
     return [{
       key: 'no-exam-clash',
-      label: 'No exam clashes with currently selected modules',
-      filter: {
-        must_not: {
-          bool: {
-            must: examDateFilters
-          }
-        }
-      }
+      label: 'No Exam Clash with currently selected modules',
+      filter: BoolMustNot(TermsQuery("semesterData.examDate", examDates)),
     }];
   }
+
+  const getExamFilters: () => FilterItem[] = () => {
+    const examDateClashFilter = generateExamDateClashFilter();
+    return EXAM_FILTER_ITEMS.concat(examDateClashFilter);
+  }
+
   return (
     <SideMenu
       isOpen={isMenuOpen}
@@ -130,7 +117,7 @@ const ModuleFinderSidebar: React.FC = React.memo(() => {
           itemComponent={CheckboxItem}
         />
 
-        <ChecklistFilter title="Exams" items={EXAM_FILTER_ITEMS} />
+        <ChecklistFilter title="Exams" items={getExamFilters()} />
 
         <RefinementListFilter
           id="level"
