@@ -50,6 +50,7 @@ const EXAM_FILTER_ITEMS: FilterItem[] = [
 const ModuleFinderSidebar: React.FC = React.memo(() => {
   const [isMenuOpen, setMenuOpen] = useState(false);
 
+  // Get selected modules' semester data 
   const selectedModules = useSelector((state: StoreState) => {
     const { app: { activeSemester }, moduleBank: { modules }} = state;
     const { timetable } = getSemesterTimetable(activeSemester, state.timetables);
@@ -117,7 +118,10 @@ const ModuleFinderSidebar: React.FC = React.memo(() => {
           itemComponent={CheckboxItem}
         />
 
-        <ChecklistFilter title="Exams" items={getExamFilters()} />
+        <ChecklistFilter 
+          title="Exams" 
+          items={getExamFilters()} 
+        />
 
         <RefinementListFilter
           id="level"
@@ -190,15 +194,6 @@ const ModuleFinderSidebar: React.FC = React.memo(() => {
 });
 
 ModuleFinderSidebar.displayName = 'ModuleFinderSidebar';
-
-// const mapStateToProps = (state: StoreState) => {
-//   const { app: { activeSemester }, moduleBank: { modules }} = state;
-//   const { timetable } = getSemesterTimetable(activeSemester, state.timetables);
-//   const allSemesterModules = getSemesterModules(timetable, modules);
-//   return { 
-//     modules: allSemesterModules.map(module => getModuleSemesterData(module, activeSemester)) 
-//   };
-// };
 
 export default ModuleFinderSidebar;
 

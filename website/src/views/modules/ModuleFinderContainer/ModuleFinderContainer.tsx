@@ -96,8 +96,7 @@ const ModuleFinderContainer: React.FC = () => {
           </div>
 
           <div className="col-md-4 col-lg-3">
-            <ModuleFinderSidebar
-            />
+            <ModuleFinderSidebar />
           </div>
         </div>
       </SearchkitProvider>
