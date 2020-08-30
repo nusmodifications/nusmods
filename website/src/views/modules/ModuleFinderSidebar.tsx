@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { State as StoreState } from 'types/state';
 import {
   NumericRefinementListFilter,
@@ -18,6 +18,7 @@ import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
 import FilterContainer from 'views/components/filters/FilterContainer';
 import CheckboxItem from 'views/components/filters/CheckboxItem';
 import DropdownListFilters from 'views/components/filters/DropdownListFilters';
+
 import { getSemesterTimetable } from 'selectors/timetables';
 import { getSemesterModules } from 'utils/timetables';
 import { getModuleSemesterData } from 'utils/modules';
@@ -65,7 +66,7 @@ const ModuleFinderSidebar: React.FC = React.memo(() => {
 
     return [{
       key: 'no-exam-clash',
-      label: 'No Exam Clash with currently selected modules',
+      label: 'No Exam Clash with Currently Selected Modules',
       filter: BoolMustNot(TermsQuery("semesterData.examDate", examDates)),
     }];
   }
