@@ -7,11 +7,11 @@ import {
   ResetFilters,
   ResetFiltersDisplayProps,
   TermsQuery,
-  BoolMustNot
+  BoolMustNot,
 } from 'searchkit';
 import { Filter } from 'react-feather';
 
-import { attributeDescription, NUSModuleAttributes, SemesterData } from 'types/modules';
+import { attributeDescription, NUSModuleAttributes } from 'types/modules';
 import { RefinementItem } from 'types/views';
 
 import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
@@ -26,8 +26,6 @@ import { getModuleSemesterData } from 'utils/modules';
 import config from 'config';
 import styles from './ModuleFinderSidebar.scss';
 import ChecklistFilter, { FilterItem } from '../components/filters/ChecklistFilter';
-
-
 
 const RESET_FILTER_OPTIONS = { filter: true };
 
@@ -51,30 +49,35 @@ const EXAM_FILTER_ITEMS: FilterItem[] = [
 const ModuleFinderSidebar: React.FC = React.memo(() => {
   const [isMenuOpen, setMenuOpen] = useState(false);
 
-  // Get selected modules' semester data 
   const selectedModules = useSelector((state: StoreState) => {
-    const { app: { activeSemester }, moduleBank: { modules }} = state;
-    const { timetable } = getSemesterTimetable(activeSemester, state.timetables);
+    const {
+      app: { activeSemester },
+      moduleBank: { modules },
+      timetables,
+    } = state;
+    const { timetable } = getSemesterTimetable(activeSemester, timetables);
     const allSemesterModules = getSemesterModules(timetable, modules);
-    return allSemesterModules.map(module => getModuleSemesterData(module, activeSemester)) ;
+    return allSemesterModules.map((module) => getModuleSemesterData(module, activeSemester));
   });
 
   const generateExamDateClashFilter: () => FilterItem[] = () => {
-    const examDates = selectedModules.map(module => {
+    const examDates = selectedModules.map((module) => {
       return module?.examDate;
     });
 
-    return [{
-      key: 'no-exam-clash',
-      label: 'No Exam Clash with Currently Selected Modules',
-      filter: BoolMustNot(TermsQuery("semesterData.examDate", examDates)),
-    }];
-  }
+    return [
+      {
+        key: 'no-exam-clash',
+        label: 'No Exam Clash with Currently Selected Modules',
+        filter: BoolMustNot(TermsQuery('semesterData.examDate', examDates)),
+      },
+    ];
+  };
 
   const getExamFilters: () => FilterItem[] = () => {
     const examDateClashFilter = generateExamDateClashFilter();
     return EXAM_FILTER_ITEMS.concat(examDateClashFilter);
-  }
+  };
 
   return (
     <SideMenu
@@ -119,10 +122,7 @@ const ModuleFinderSidebar: React.FC = React.memo(() => {
           itemComponent={CheckboxItem}
         />
 
-        <ChecklistFilter 
-          title="Exams" 
-          items={getExamFilters()} 
-        />
+        <ChecklistFilter title="Exams" items={getExamFilters()} />
 
         <RefinementListFilter
           id="level"
@@ -197,5 +197,3 @@ const ModuleFinderSidebar: React.FC = React.memo(() => {
 ModuleFinderSidebar.displayName = 'ModuleFinderSidebar';
 
 export default ModuleFinderSidebar;
-
-
