@@ -41,7 +41,7 @@
   "homepage": "https://github.com/nusmodifications/nusmods/tree/master/packages/nusmoderator",
   "npmName": "nusmoderator",
   "devDependencies": {
-    "@types/jest": "26.0.13",
+    "@types/jest": "26.0.14",
     "@typescript-eslint/eslint-plugin": "3.10.1",
     "@typescript-eslint/parser": "3.10.1",
     "documentation": "13.0.2",
