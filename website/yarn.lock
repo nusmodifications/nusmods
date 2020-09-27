@@ -9748,10 +9748,10 @@ lazy-cache@^1.0.3:
   resolved "https://registry.yarnpkg.com/lazy-cache/-/lazy-cache-1.0.4.tgz#a1d78fc3a50474cb80845d3b3b6e1da49a446e8e"
   integrity sha1-odePw6UEdMuAhF07O24dpJpEbo4=
 
-leaflet-gesture-handling@1.1.8:
-  version "1.1.8"
-  resolved "https://registry.yarnpkg.com/leaflet-gesture-handling/-/leaflet-gesture-handling-1.1.8.tgz#6c0cc434604f514183f69dc98c8d8411b91c7733"
-  integrity sha512-QnKNAqZxaO4nzCsHA9l/vPazF15TILkSaYNoDqMtiVXrsWMWh6fWD4phRuftPC+kvY9OBzVKuTfKlLdhZ/2oIg==
+leaflet-gesture-handling@1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/leaflet-gesture-handling/-/leaflet-gesture-handling-1.2.1.tgz#d88c9524be8a971a088b6a136b4f292d3016dae8"
+  integrity sha512-MEod/3BmosTud0n/sw3iUecnOUDBz2U21gzwaOZS62voaNRkMj4Sm3XPjtnmivyMgYYF0tRHCMfVEYwcRsprUg==
 
 leaflet@1.7.1:
   version "1.7.1"
