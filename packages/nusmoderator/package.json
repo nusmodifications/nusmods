@@ -51,7 +51,7 @@
     "eslint-plugin-import": "2.22.0",
     "eslint-plugin-prettier": "3.1.4",
     "jest": "26.4.2",
-    "microbundle": "0.12.3",
+    "microbundle": "0.12.4",
     "prettier": "2.1.2",
     "rimraf": "3.0.2",
     "ts-jest": "26.4.0",
