@@ -1,6 +1,5 @@
-import * as React from 'react';
+import React, { useState, useCallback, useMemo, useRef } from 'react';
 import classnames from 'classnames';
-import { debounce } from 'lodash';
 
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { Search, X } from 'react-feather';
@@ -23,127 +22,116 @@ type State = {
   hasChanges: boolean;
 };
 
-export default class SearchBox extends React.PureComponent<Props, State> {
-  searchElement = React.createRef<HTMLInputElement>();
+const SearchBox: React.FC<Props> = ({
+  className,
+  useInstantSearch,
+  isLoading,
+  value,
+  placeholder,
+  onChange,
+  onSearch,
+  onBlur: onBlurProp,
+}) => {
+  const [isFocused, setIsFocused] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false);
+  const searchElement = useRef<HTMLInputElement>(null);
 
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      isFocused: false,
-      hasChanges: false,
-    };
-  }
-
-  onSubmit = () => {
-    const element = this.searchElement.current;
+  const onSubmit = useCallback(() => {
+    const element = searchElement.current;
     if (!element) return;
     // element's onBlur callback will trigger the search flow. If we also
     // invoke onSearch in onSubmit, onSearch will be called twice.
     element.blur();
-  };
+  }, []);
 
-  onBlur = () => {
-    if (this.props.onBlur) this.props.onBlur();
+  const search = useCallback(() => {
+    setHasChanges(false);
+    onSearch();
+  }, [onSearch, setHasChanges]);
 
-    const element = this.searchElement.current;
+  const onBlur = useCallback(() => {
+    if (onBlurProp) onBlurProp();
+
+    const element = searchElement.current;
     if (!element) return;
 
     // Don't search if no changes
-    if (!this.state.hasChanges) return;
+    if (!hasChanges) return;
 
     const searchTerm = element.value;
-    this.props.onChange(searchTerm);
-    this.debouncedSearch();
-    this.debouncedSearch.flush();
-  };
+    onChange(searchTerm);
+    search();
+  }, [search, hasChanges, onBlurProp, onChange]);
 
-  onInput = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    if (evt.target instanceof HTMLInputElement) {
-      const searchTerm = evt.target.value;
-      this.props.onChange(searchTerm);
-      this.setState({ hasChanges: true });
-      if (this.props.useInstantSearch) this.debouncedSearch();
-    }
-  };
+  const onInput = useCallback(
+    (evt: React.ChangeEvent<HTMLInputElement>) => {
+      if (evt.target instanceof HTMLInputElement) {
+        const searchTerm = evt.target.value;
+        onChange(searchTerm);
+        setHasChanges(true);
+        if (useInstantSearch) search();
+      }
+    },
+    [onChange, setHasChanges, useInstantSearch, search],
+  );
 
-  onRemoveInput = () => {
-    this.props.onChange('');
-    this.setState({ hasChanges: true });
-    if (this.props.useInstantSearch) this.debouncedSearch();
-  };
+  const onRemoveInput = useCallback(() => {
+    onChange('');
+    setHasChanges(true);
+    if (useInstantSearch) search();
+  }, [search, onChange, setHasChanges, useInstantSearch]);
 
-  private search = () => {
-    this.setState({ hasChanges: false });
-    this.props.onSearch();
-  };
+  const showSubmitHelp = useMemo(() => {
+    return !useInstantSearch && hasChanges && searchElement.current && searchElement.current.value;
+  }, [useInstantSearch, hasChanges]);
 
-  // eslint-disable-next-line react/sort-comp
-  private debouncedSearch = debounce(this.search, this.props.throttle, {
-    leading: false,
-  });
-
-  showSubmitHelp() {
-    return (
-      !this.props.useInstantSearch &&
-      this.state.hasChanges &&
-      this.searchElement.current &&
-      this.searchElement.current.value
-    );
-  }
-
-  render() {
-    const { value, placeholder, isLoading } = this.props;
-    return (
-      <div
-        className={classnames(this.props.className, {
-          [styles.searchBoxFocused]: this.state.isFocused,
-        })}
+  return (
+    <div
+      className={classnames(className, {
+        [styles.searchBoxFocused]: isFocused,
+      })}
+    >
+      <label htmlFor="search-box" className="sr-only">
+        Search
+      </label>
+      <form
+        className={styles.searchWrapper}
+        onSubmit={(evt) => {
+          onSubmit();
+          evt.preventDefault();
+        }}
       >
-        <label htmlFor="search-box" className="sr-only">
-          Search
-        </label>
-        <form
-          className={styles.searchWrapper}
-          onSubmit={(evt) => {
-            this.onSubmit();
-            evt.preventDefault();
+        {isLoading ? (
+          <div className={classnames(styles.leftAccessory, styles.spinnerContainer)}>
+            <LoadingSpinner className={styles.spinner} small />
+          </div>
+        ) : (
+          <Search className={classnames(styles.leftAccessory, styles.searchIcon)} />
+        )}
+        {value && (
+          <X className={styles.removeInput} onClick={onRemoveInput} pointerEvents="bounding-box" />
+        )}
+        <input
+          id="search-box"
+          className="form-control form-control-lg"
+          type="search"
+          autoComplete="off"
+          ref={searchElement}
+          value={value || ''}
+          onChange={onInput}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => {
+            setIsFocused(false);
+            onBlur();
           }}
-        >
-          {isLoading ? (
-            <div className={classnames(styles.leftAccessory, styles.spinnerContainer)}>
-              <LoadingSpinner className={styles.spinner} small />
-            </div>
-          ) : (
-            <Search className={classnames(styles.leftAccessory, styles.searchIcon)} />
-          )}
-          {value && (
-            <X
-              className={styles.removeInput}
-              onClick={this.onRemoveInput}
-              pointerEvents="bounding-box"
-            />
-          )}
-          <input
-            id="search-box"
-            className="form-control form-control-lg"
-            type="search"
-            autoComplete="off"
-            ref={this.searchElement}
-            value={value || ''}
-            onChange={this.onInput}
-            onFocus={() => this.setState({ isFocused: true })}
-            onBlur={() => {
-              this.setState({ isFocused: false });
-              this.onBlur();
-            }}
-            placeholder={placeholder}
-            spellCheck
-          />
-        </form>
+          placeholder={placeholder}
+          spellCheck
+        />
+      </form>
 
-        {this.showSubmitHelp() && <p className={styles.searchHelp}>Press enter to search</p>}
-      </div>
-    );
-  }
-}
+      {showSubmitHelp && <p className={styles.searchHelp}>Press enter to search</p>}
+    </div>
+  );
+};
+
+export default SearchBox;
