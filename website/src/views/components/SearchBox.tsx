@@ -1,4 +1,10 @@
-import React, { useState, useCallback, useMemo, useRef } from 'react';
+import React, {
+  useState,
+  useCallback,
+  useMemo,
+  useRef,
+  unstable_useTransition as useTransition,
+} from 'react';
 import classnames from 'classnames';
 
 import LoadingSpinner from 'views/components/LoadingSpinner';
@@ -35,6 +41,7 @@ const SearchBox: React.FC<Props> = ({
   const [isFocused, setIsFocused] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
   const searchElement = useRef<HTMLInputElement>(null);
+  const [setTransition, isPending] = useTransition();
 
   const onSubmit = useCallback(() => {
     const element = searchElement.current;
@@ -69,7 +76,11 @@ const SearchBox: React.FC<Props> = ({
         const searchTerm = evt.target.value;
         onChange(searchTerm);
         setHasChanges(true);
-        if (useInstantSearch) search();
+        setTransition(() => {
+          performance.mark('search start');
+          if (useInstantSearch) search();
+          performance.mark('search end');
+        });
       }
     },
     [onChange, setHasChanges, useInstantSearch, search],

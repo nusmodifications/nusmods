@@ -1,4 +1,7 @@
 import * as React from 'react';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { unstable_next as next } from 'scheduler';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Loadable, { LoadingComponentProps } from 'react-loadable';
 import classnames from 'classnames';
@@ -159,10 +162,12 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
 
     const pathname = venuePage(this.selectedVenue());
     const history = debounce ? this.history : this.props.history;
-    history.push({
-      ...this.props.location,
-      search: qs.stringify(query),
-      pathname,
+    next(() => {
+      history.push({
+        ...this.props.location,
+        search: qs.stringify(query),
+        pathname,
+      });
     });
   };
 
