@@ -13,7 +13,7 @@ type Props = {
   value: string | null;
   placeholder?: string;
   onChange: (value: string) => void;
-  onSearch: () => void;
+  onSearch?: () => void;
   onBlur?: () => void;
 };
 
@@ -46,7 +46,7 @@ const SearchBox: React.FC<Props> = ({
 
   const search = useCallback(() => {
     setHasChanges(false);
-    onSearch();
+    if (onSearch) onSearch();
   }, [onSearch, setHasChanges]);
 
   const onBlur = useCallback(() => {
@@ -67,8 +67,8 @@ const SearchBox: React.FC<Props> = ({
     (evt: React.ChangeEvent<HTMLInputElement>) => {
       if (evt.target instanceof HTMLInputElement) {
         const searchTerm = evt.target.value;
-        onChange(searchTerm);
         setHasChanges(true);
+        onChange(searchTerm);
         if (useInstantSearch) search();
       }
     },

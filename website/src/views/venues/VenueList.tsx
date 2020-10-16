@@ -14,7 +14,7 @@ type Props = {
   linkProps?: Omit<LinkProps, 'to'>;
 };
 
-const VenueList: React.FC<Props> = (props) => {
+const VenueList: React.FC<Props> = React.memo((props) => {
   // Added during the horrible COVID-19 times to hide E-Learning venues
   const physicalVenues = props.venues.filter((venue) => !venue.startsWith('E-Learn'));
   const venueList = groupBy(physicalVenues, (venue) => venue.charAt(0).toUpperCase());
@@ -49,6 +49,6 @@ const VenueList: React.FC<Props> = (props) => {
       ))}
     </ul>
   );
-};
+});
 
 export default VenueList;
