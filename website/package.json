@@ -23,7 +23,7 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/cli": "7.12.1",
-    "@babel/core": "7.12.1",
+    "@babel/core": "7.12.3",
     "@babel/plugin-proposal-class-properties": "7.12.1",
     "@babel/plugin-proposal-nullish-coalescing-operator": "7.12.1",
     "@babel/plugin-proposal-object-rest-spread": "7.12.1",
