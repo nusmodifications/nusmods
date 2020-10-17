@@ -5,7 +5,7 @@ import { flatMap, size, sortBy, toPairs, values } from 'lodash';
 import { ModuleCode, Semester } from 'types/modules';
 import { AddModuleData, PlannerModuleInfo } from 'types/planner';
 import config from 'config';
-import { getSemesterName, getTotalMC } from 'utils/planner';
+import { getSemesterName, getTotalMC, YEAR_LONG } from 'utils/planner';
 import { Minus, Plus } from 'react-feather';
 import { renderMCs } from 'utils/modules';
 import PlannerSemester from './PlannerSemester';
@@ -15,6 +15,7 @@ type Props = Readonly<{
   name: string; // eg. iBLOCs, Year 1, etc.
   year: string; // Actual academic year
   semesters: { [semester: string]: PlannerModuleInfo[] };
+  draggedModuleType: string | null;
 
   addModule: (year: string, semester: Semester, module: AddModuleData) => void;
   removeModule: (id: string) => void;
@@ -80,22 +81,26 @@ export default class PlannerYear extends React.PureComponent<Props, State> {
         })}
       >
         {this.renderHeader()}
-
-        {yearLongModules.length > 0 && (
-          <div key={yearLongSemester}>
-            <h3 className={styles.semesterHeader}>{getSemesterName(+yearLongSemester)}</h3>
-            <PlannerSemester
-              year={year}
-              semester={+yearLongSemester}
-              modules={yearLongModules}
-              className={styles.semesterYearLong}
-              addModule={this.props.addModule}
-              removeModule={this.props.removeModule}
-              addCustomData={this.props.addCustomData}
-              setPlaceholderModule={this.props.setPlaceholderModule}
-            />
-          </div>
-        )}
+        <div
+          key={yearLongSemester}
+          className={classnames({
+            [styles.hideSemester]:
+              yearLongModules.length === 0 && this.props.draggedModuleType !== YEAR_LONG,
+          })}
+        >
+          <h3 className={styles.semesterHeader}>{getSemesterName(+yearLongSemester)}</h3>
+          <PlannerSemester
+            year={year}
+            semester={+yearLongSemester}
+            modules={yearLongModules}
+            className={styles.semesterYearLong}
+            addModule={this.props.addModule}
+            removeModule={this.props.removeModule}
+            addCustomData={this.props.addCustomData}
+            setPlaceholderModule={this.props.setPlaceholderModule}
+            draggedModuleType={this.props.draggedModuleType}
+          />
+        </div>
         <div className={styles.semesters}>
           {sortedSemesters.map(([semester, modules]) => (
             <div className={styles.semesterWrapper} key={semester}>
@@ -109,6 +114,7 @@ export default class PlannerYear extends React.PureComponent<Props, State> {
                 removeModule={this.props.removeModule}
                 addCustomData={this.props.addCustomData}
                 setPlaceholderModule={this.props.setPlaceholderModule}
+                draggedModuleType={this.props.draggedModuleType}
               />
             </div>
           ))}

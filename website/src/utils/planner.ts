@@ -145,7 +145,7 @@ export function getTotalMC(
 }
 
 /**
- * Returns whether or not a planner module is year long
+ * Returns whether or not a planner module is year-long
  */
 export function isYearLong(module: Pick<PlannerModuleInfo, 'moduleInfo' | 'customInfo'>): boolean {
   return module.moduleInfo ? isYearLongModule(module.moduleInfo) : false;

@@ -1,7 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { flatMap, flatten, sortBy, toPairs, values } from 'lodash';
-import { DragDropContext, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
+import {
+  DragDropContext,
+  Droppable,
+  OnDragEndResponder,
+  OnDragStartResponder,
+} from 'react-beautiful-dnd';
 import classnames from 'classnames';
 import { hot } from 'react-hot-loader/root';
 
@@ -64,6 +69,7 @@ type State = {
   readonly showSettings: boolean;
   // Module code is the module being edited. null means the modal is not open
   readonly showCustomModule: ModuleCode | null;
+  readonly draggedModuleType: string | null;
 };
 
 const TRASH_ID = 'trash';
@@ -73,6 +79,7 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
     loading: true,
     showSettings: false,
     showCustomModule: null,
+    draggedModuleType: null,
   };
 
   componentDidMount() {
@@ -114,6 +121,13 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
     }
   };
 
+  onDragStart: OnDragStartResponder = (evt) => {
+    const { draggableId } = evt;
+    const type = draggableId.split('|')[1];
+
+    this.setState({ draggedModuleType: type });
+  };
+
   onDropEnd: OnDragEndResponder = (evt) => {
     const { destination, draggableId } = evt;
 
@@ -126,6 +140,7 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
       const [year, semester] = fromDroppableId(destination.droppableId);
       this.props.moveModule(draggableId, year, +semester, destination.index);
     }
+    this.setState({ draggedModuleType: null });
   };
 
   onAddCustomData = (moduleCode: ModuleCode) =>
@@ -195,6 +210,7 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
       addCustomData: this.onAddCustomData,
       setPlaceholderModule: this.onSetPlaceholderModule,
       removeModule: this.props.removeModule,
+      draggedModuleType: this.state.draggedModuleType,
     };
 
     return (
@@ -203,7 +219,7 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
 
         {this.renderHeader()}
 
-        <DragDropContext onDragEnd={this.onDropEnd}>
+        <DragDropContext onDragStart={this.onDragStart} onDragEnd={this.onDropEnd}>
           <div className={styles.yearWrapper}>
             {iblocs && (
               <section>
