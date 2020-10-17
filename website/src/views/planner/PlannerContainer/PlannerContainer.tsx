@@ -7,7 +7,7 @@ import { hot } from 'react-hot-loader/root';
 
 import { Module, ModuleCode, Semester } from 'types/modules';
 import { PlannerModulesWithInfo, PlannerModuleInfo, AddModuleData } from 'types/planner';
-import { MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
+import { isYearLongModule, MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
 import {
   EXEMPTION_SEMESTER,
   EXEMPTION_YEAR,
@@ -20,6 +20,7 @@ import {
 import {
   addPlannerModule,
   movePlannerModule,
+  movePlannerYearLongModule,
   removePlannerModule,
   setPlaceholderModule,
 } from 'actions/planner';
@@ -51,6 +52,7 @@ export type Props = Readonly<{
 
   addModule: (year: string, semester: Semester, module: AddModuleData) => void;
   moveModule: (id: string, year: string, semester: Semester, index: number) => void;
+  moveYearLongModule: (year: string, semester: Semester, moduleCode: ModuleCode) => void;
   removeModule: (id: string) => void;
   setPlaceholderModule: (id: string, moduleCode: ModuleCode) => void;
 }>;
@@ -100,7 +102,11 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
         moduleCodes.forEach((moduleCode) => {
           this.props.addModule(year, semester, { type: 'module', moduleCode });
           // TODO: Handle error
-          this.props.fetchModule(moduleCode);
+          this.props.fetchModule(moduleCode).then((fetchedModule) => {
+            if (isYearLongModule(fetchedModule)) {
+              this.props.moveYearLongModule(year, semester, moduleCode);
+            }
+          });
         });
       }
     } else {
@@ -304,6 +310,7 @@ const PlannerContainer = connect(mapStateToProps, {
   setPlaceholderModule,
   addModule: addPlannerModule,
   moveModule: movePlannerModule,
+  moveYearLongModule: movePlannerYearLongModule,
   removeModule: removePlannerModule,
 })(PlannerContainerComponent);
 

@@ -17,6 +17,12 @@ $empty-message-height: 6rem;
   }
 }
 
+.yearLong {
+  width: $semester-width * 2 + $column-gutter;
+  min-height: 0;
+  margin: 0 0 2rem 0;
+}
+
 .semesterMeta {
   display: flex;
   justify-content: space-between;

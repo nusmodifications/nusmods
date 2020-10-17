@@ -16,6 +16,7 @@ import {
   IBLOCS_SEMESTER,
   PLAN_TO_TAKE_SEMESTER,
   PLAN_TO_TAKE_YEAR,
+  YEAR_LONG_SEMESTER,
 } from 'utils/planner';
 import { findExamClashes } from 'utils/timetables';
 import { Conflict, PlannerModuleInfo, PlannerModulesWithInfo } from 'types/planner';
@@ -77,6 +78,7 @@ const noInfoConflict = (moduleCodeMap: ModuleCodeMap, customData: CustomModuleDa
 const semesterConflict = (moduleCodeMap: ModuleCodeMap, semester: Semester) => (
   moduleCode: ModuleCode,
 ): Conflict | null => {
+  if (semester === YEAR_LONG_SEMESTER) return null;
   const moduleCondensed = moduleCodeMap[moduleCode];
   if (!moduleCondensed) return null;
   if (!moduleCondensed.semesters.includes(semester)) {

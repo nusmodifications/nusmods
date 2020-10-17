@@ -69,6 +69,8 @@ export default class PlannerYear extends React.PureComponent<Props, State> {
     if (!showSpecialSem) {
       sortedSemesters = sortedSemesters.filter(([semester]) => +semester <= 2);
     }
+    const [yearLongSemester, yearLongModules] = sortedSemesters[0];
+    sortedSemesters = sortedSemesters.filter(([semester]) => +semester > 0);
 
     return (
       <section
@@ -79,6 +81,21 @@ export default class PlannerYear extends React.PureComponent<Props, State> {
       >
         {this.renderHeader()}
 
+        {yearLongModules.length > 0 && (
+          <div key={yearLongSemester}>
+            <h3 className={styles.semesterHeader}>{getSemesterName(+yearLongSemester)}</h3>
+            <PlannerSemester
+              year={year}
+              semester={+yearLongSemester}
+              modules={yearLongModules}
+              className={styles.semesterYearLong}
+              addModule={this.props.addModule}
+              removeModule={this.props.removeModule}
+              addCustomData={this.props.addCustomData}
+              setPlaceholderModule={this.props.setPlaceholderModule}
+            />
+          </div>
+        )}
         <div className={styles.semesters}>
           {sortedSemesters.map(([semester, modules]) => (
             <div className={styles.semesterWrapper} key={semester}>

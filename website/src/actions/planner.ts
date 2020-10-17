@@ -51,6 +51,22 @@ export function movePlannerModule(id: string, year: string, semester: Semester, 
   };
 }
 
+export const MOVE_PLANNER_YEAR_LONG_MODULE = 'MOVE_PLANNER_YEAR_LONG_MODULE' as const;
+export function movePlannerYearLongModule(
+  year: string,
+  semester: Semester,
+  moduleCode: ModuleCode,
+) {
+  return {
+    type: MOVE_PLANNER_YEAR_LONG_MODULE,
+    payload: {
+      year,
+      semester,
+      moduleCode,
+    },
+  };
+}
+
 export const REMOVE_PLANNER_MODULE = 'REMOVE_PLANNER_MODULE' as const;
 export function removePlannerModule(id: string) {
   return {

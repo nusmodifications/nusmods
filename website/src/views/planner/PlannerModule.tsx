@@ -171,7 +171,7 @@ const PlannerModule = React.memo<Props>((props) => {
     );
   };
 
-  const { id, placeholder, moduleCode, moduleTitle, index, conflict } = props;
+  const { id, placeholder, moduleCode, moduleTitle, index, conflict, semester } = props;
 
   return (
     <Draggable key={moduleCode} draggableId={id} index={index}>
