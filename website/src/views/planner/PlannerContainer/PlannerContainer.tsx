@@ -130,15 +130,16 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
 
   onDropEnd: OnDragEndResponder = (evt) => {
     const { destination, draggableId } = evt;
+    const id = draggableId.split('|')[0];
 
     // No destination = drag and drop cancelled / dropped on invalid target
     if (!destination) return;
 
     if (destination.droppableId === TRASH_ID) {
-      this.props.removeModule(draggableId);
+      this.props.removeModule(id);
     } else {
       const [year, semester] = fromDroppableId(destination.droppableId);
-      this.props.moveModule(draggableId, year, +semester, destination.index);
+      this.props.moveModule(id, year, +semester, destination.index);
     }
     this.setState({ draggedModuleType: null });
   };

@@ -100,8 +100,7 @@ export default function planner(
     }
 
     case MOVE_PLANNER_MODULE: {
-      const { year, semester, index } = action.payload;
-      const id = action.payload.id.split('|')[0];
+      const { id, year, semester, index } = action.payload;
 
       // Insert the module into its new location and update the location of
       // all other modules on the list. We exclude the moved module because otherwise
