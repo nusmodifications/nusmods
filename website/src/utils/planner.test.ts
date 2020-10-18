@@ -83,15 +83,10 @@ describe(getTotalMC, () => {
   });
 
   test('should use 0 for module with no data', () => {
-    expect(getTotalMC([{ moduleCode: 'CS2020' }, { moduleCode: 'CS1010S' }])).toEqual(0);
+    expect(getTotalMC([{}, {}])).toEqual(0);
   });
 
   test('should merge module credit from module info and custom info', () => {
-    expect(
-      getTotalMC([
-        { moduleCode: 'CS2020', customInfo: { moduleCredit: 6 } },
-        { moduleCode: 'CS1010S', moduleInfo: CS1010S },
-      ]),
-    ).toEqual(10);
+    expect(getTotalMC([{ customInfo: { moduleCredit: 6 } }, { moduleInfo: CS1010S }])).toEqual(10);
   });
 });

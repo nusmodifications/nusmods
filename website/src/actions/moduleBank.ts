@@ -1,10 +1,12 @@
+import { size } from 'lodash';
+
+import type { AcadYear, Module, ModuleCode, ModuleCondensed } from 'types/modules';
+import type { RequestActions } from 'middlewares/requests-middleware';
+import type { Dispatch, GetState } from 'types/redux';
+
 import { requestAction } from 'actions/requests';
 import NUSModsApi from 'apis/nusmods';
 import config from 'config';
-import { size, zip } from 'lodash';
-import { AcadYear, Module, ModuleCode, ModuleCondensed } from 'types/modules';
-import { RequestActions } from 'middlewares/requests-middleware';
-import { GetState } from 'types/redux';
 import {
   FETCH_ARCHIVE_MODULE,
   FETCH_MODULE,
@@ -41,7 +43,7 @@ export const Internal = {
 };
 
 export function fetchModule(moduleCode: ModuleCode) {
-  return (dispatch: Function, getState: GetState) => {
+  return (dispatch: Dispatch, getState: GetState) => {
     const onFinally = () => {
       // Update the timestamp of the accessed module if it is in the store.
       if (getState().moduleBank.modules[moduleCode]) {
@@ -68,14 +70,15 @@ export function fetchModule(moduleCode: ModuleCode) {
     };
 
     const key = fetchModuleRequest(moduleCode);
-    return dispatch(
+
+    return dispatch<Module>(
       requestAction(key, FETCH_MODULE, {
         url: NUSModsApi.moduleDetailsUrl(moduleCode),
       }),
     ).then(
-      (result: string) => {
+      (module) => {
         onFinally();
-        return result;
+        return module;
       },
       (error: Error) => {
         onFinally();
@@ -93,7 +96,6 @@ export function fetchModuleArchive(moduleCode: ModuleCode, year: string) {
   });
 
   action.meta.academicYear = year;
-
   return action;
 }
 export type FetchModuleArchiveActions = RequestActions<
@@ -104,12 +106,14 @@ export type FetchModuleArchiveActions = RequestActions<
 
 export function fetchAllModuleArchive(moduleCode: ModuleCode) {
   // Returns: Promise<[AcadYear, Module?][]>
-  return (dispatch: Function) =>
+  return (dispatch: Dispatch) =>
     Promise.all(
       config.archiveYears.map((year) =>
-        dispatch(fetchModuleArchive(moduleCode, year)).catch(() => null),
+        dispatch<Module>(fetchModuleArchive(moduleCode, year))
+          .catch(() => null)
+          .then((module): [AcadYear, Module | null] => [year, module]),
       ),
-    ).then((modules) => zip<AcadYear, Module[]>(config.archiveYears, modules));
+    );
 }
 
 export type ModuleBankRequestActions =

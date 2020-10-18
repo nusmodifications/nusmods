@@ -6,6 +6,7 @@ Date,Name,Day,Observance,Observance Strategy
 2020-05-01,Labour Day,Friday,2020-05-01,actual_day
 2020-05-07,Vesak Day,Thursday,2020-05-07,actual_day
 2020-05-24,Hari Raya Puasa,Sunday,2020-05-25,next_monday
+2020-07-10,Polling Day,Friday,2020-07-10,actual_day
 2020-07-31,Hari Raya Haji,Friday,2020-07-31,actual_day
 2020-08-09,National Day,Sunday,2020-08-10,next_monday
 2020-11-14,Deepavali,Saturday,2020-11-14,actual_day

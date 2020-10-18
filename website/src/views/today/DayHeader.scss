@@ -1,8 +1,11 @@
 @import '~styles/utils/modules-entry';
 
+$header-height: 4rem;
+
 .header {
   display: flex;
   justify-content: space-between;
+  height: $header-height;
   margin-bottom: 0.5rem;
   border-bottom: 1px solid var(--gray-light);
 
@@ -27,7 +30,8 @@
   }
 
   .weather {
-    width: 4rem;
+    width: $header-height;
+    height: $header-height;
 
     svg path {
       fill: currentColor;

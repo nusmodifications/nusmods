@@ -1,7 +1,7 @@
 import React, { FormEventHandler } from 'react';
+import { castArray, groupBy } from 'lodash';
 import classnames from 'classnames';
 import produce from 'immer';
-import { groupBy } from 'lodash';
 import axios from 'axios';
 import { AlertTriangle } from 'react-feather';
 import * as Sentry from '@sentry/browser';
@@ -20,6 +20,7 @@ import CloseButton from 'views/components/CloseButton';
 import ExternalLink from 'views/components/ExternalLink';
 import facultyEmails from 'data/facultyEmail';
 import appConfig from 'config';
+import useGlobalDebugValue from '../hooks/useGlobalDebugValue';
 
 import styles from './ReportError.scss';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -34,6 +35,7 @@ interface ReportErrorForm {
   name: string;
   contactId: FacultyEmail['id'] | undefined;
   replyTo: string;
+  matricNumber: string;
   message: string;
 }
 
@@ -46,18 +48,22 @@ type FormState =
 interface PersistedContactInfo {
   name: string;
   replyTo: string;
+  matricNumber: string;
 }
 
-const groupedByMatcherType = groupBy(facultyEmails, (config) => config.match.type) as Record<
-  FacultyEmail['match']['type'],
-  FacultyEmail[]
->;
+const groupedByMatcherType = (groupBy(facultyEmails, (config) => config.match.type) as unknown) as {
+  moduleCode: FacultyEmail<ModuleCodeMatch>[];
+  modulePrefix: FacultyEmail<ModuleCodePrefixMatch>[];
+  faculty: FacultyEmail<FacultyMatch>[];
+  department: FacultyEmail<DepartmentMatch>[];
+};
 
 function retrieveContactInfo(): PersistedContactInfo {
   const persisted = JSON.parse(localStorage.getItem(CONTACT_INFO) ?? '{}');
   return {
     name: '',
     replyTo: '',
+    matricNumber: '',
     ...persisted,
   };
 }
@@ -67,35 +73,35 @@ function persistContactInfo(info: PersistedContactInfo) {
 }
 
 function matchModule(module: Module) {
+  let facultyEmail: FacultyEmail | undefined;
+
   // 1. Check which email to use for this module by specificity.
   //    The most specific is module code, so we check that first
-  let match = groupedByMatcherType.moduleCode.find(
-    (contact) => (contact.match as ModuleCodeMatch).moduleCode === module.moduleCode,
+  facultyEmail = groupedByMatcherType.moduleCode.find(({ match }) =>
+    castArray(match.moduleCode).find((code) => code === module.moduleCode),
   );
-  if (match) return match;
+  if (facultyEmail) return facultyEmail;
 
   // 2. Check module prefix next
-  match = groupedByMatcherType.modulePrefix.find((contact) =>
-    module.moduleCode.startsWith((contact.match as ModuleCodePrefixMatch).prefix),
+  facultyEmail = groupedByMatcherType.modulePrefix.find(({ match }) =>
+    module.moduleCode.startsWith(match.prefix),
   );
-  if (match) return match;
+  if (facultyEmail) return facultyEmail;
 
   // 3. Department and faculty matchers are split by graduate and undergrad classes. In NUS
   //    the 5-6000 level modules are graduate level modules
   const division: Division = isGraduateModule(module) ? 'grad' : 'undergrad';
 
   // 4. Check department
-  match = groupedByMatcherType.department.find((contact) => {
-    const contactMatch = contact.match as DepartmentMatch;
-    return module.department === contactMatch.department && division === contactMatch.level;
-  });
-  if (match) return match;
+  facultyEmail = groupedByMatcherType.department.find(
+    ({ match }) => module.department === match.department && division === match.level,
+  );
+  if (facultyEmail) return facultyEmail;
 
   // 5. Finally check faculty, which is the least specific
-  return groupedByMatcherType.faculty.find((contact) => {
-    const contactMatch = contact.match as FacultyMatch;
-    return module.faculty === contactMatch.faculty && division === contactMatch.level;
-  });
+  return groupedByMatcherType.faculty.find(
+    ({ match }) => module.faculty === match.faculty && division === match.level,
+  );
 }
 
 /**
@@ -105,6 +111,13 @@ function matchModule(module: Module) {
 const ReportError = React.memo<Props>(({ module }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [formState, setFormState] = React.useState<FormState>({ type: 'unsubmitted' });
+
+  // Causes the error reporting function to email modules@nusmods.com instead.
+  // In production, use SET_ERROR_REPORTING_DEBUG(true) to enable debug mode
+  const debug = useGlobalDebugValue(
+    'SET_ERROR_REPORTING_DEBUG',
+    process.env.NODE_ENV !== 'production',
+  );
 
   const [formData, setFormData] = React.useState<ReportErrorForm>(() => ({
     ...retrieveContactInfo(),
@@ -122,20 +135,25 @@ const ReportError = React.memo<Props>(({ module }) => {
       persistContactInfo({
         name: newFormData.name,
         replyTo: newFormData.replyTo,
+        matricNumber: newFormData.matricNumber,
       });
     },
     [formData],
   );
 
   const onSubmit = React.useCallback(() => {
-    const { name, replyTo, message, contactId } = formData;
-    return axios
+    setFormState({ type: 'submitting' });
+
+    const { name, replyTo, matricNumber, message, contactId } = formData;
+    axios
       .post(appConfig.moduleErrorApi, {
         name,
         contactId,
         moduleCode: module.moduleCode,
+        matricNumber: matricNumber.toUpperCase(),
         replyTo,
         message,
+        debug,
       })
       .then(() => setFormState({ type: 'submitted' }))
       .catch((error) => {
@@ -143,7 +161,7 @@ const ReportError = React.memo<Props>(({ module }) => {
         Sentry.captureException(error);
         setFormState({ type: 'error' });
       });
-  }, [formData, module]);
+  }, [formData, module, debug]);
 
   return (
     <>
@@ -156,18 +174,29 @@ const ReportError = React.memo<Props>(({ module }) => {
         Report errors
       </button>
 
-      <Modal isOpen={isOpen} onRequestClose={() => setIsOpen(false)} animate>
+      <Modal
+        isOpen={isOpen}
+        onRequestClose={() => setIsOpen(false)}
+        shouldCloseOnOverlayClick={false}
+        animate
+      >
         <CloseButton onClick={() => setIsOpen(false)} />
         <h2 className={styles.heading}>Reporting an issue with {module.moduleCode}</h2>
         <p>
-          NUSMods updates its information from the Registrar's Office every night. Please wait up to
-          48 hours for information to be updated before reporting any issues.
+          NUSMods updates its information from the Registrar's Office every few hours. Please wait
+          up to 24 hours for information to be updated before reporting any issues.
         </p>
         <p>
           This form will send an email about this module to the faculty. If you think the issue is a
           bug in NUSMods, please email <a href="mailto:bugs@nusmods.com">bugs@nusmods.com</a>{' '}
           instead.
         </p>
+
+        {debug && (
+          <div className="alert alert-warning">
+            <strong>Debug mode</strong> - this form will email modules@nusmods.com instead
+          </div>
+        )}
 
         {formState.type === 'error' && (
           <div className="alert alert-danger" role="alert">
@@ -177,7 +206,10 @@ const ReportError = React.memo<Props>(({ module }) => {
         )}
 
         {formState.type === 'submitted' ? (
-          <div className="alert alert-success">Thank you for reporting the error.</div>
+          <div className="alert alert-success">
+            Thank you for reporting the error. A copy of the email that was sent to the faculty has
+            also been cc'd to you.
+          </div>
         ) : (
           <FormContent
             formData={formData}
@@ -217,7 +249,7 @@ const FormContent: React.FC<FormContentProps> = ({
       }}
     >
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-name">Your Name</label>
+        <label htmlFor="report-error-name">Your full name</label>
         <input
           className="form-control"
           id="report-error-name"
@@ -228,7 +260,22 @@ const FormContent: React.FC<FormContentProps> = ({
       </div>
 
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-faculty">Department / Faculty</label>
+        <label htmlFor="report-error-matric-number">Your matriculation number</label>
+        <input
+          id="report-error-matric-number"
+          className="form-control"
+          value={formData.matricNumber}
+          onChange={updateFormValue('matricNumber')}
+          placeholder="A1234567B"
+          minLength={9}
+          maxLength={9}
+          pattern="[aA][0-9]{7}[a-zA-Z]"
+          required
+        />
+      </div>
+
+      <div className="form-group col-sm-12">
+        <label htmlFor="report-error-faculty">Department/faculty offering the module</label>
         <select
           className="form-control"
           id="report-error-faculty"
@@ -236,18 +283,20 @@ const FormContent: React.FC<FormContentProps> = ({
           onChange={updateFormValue('contactId')}
           required
         >
-          <option value="">Select a department / faculty</option>
+          <option value="">Select a department/faculty</option>
           {facultyEmails.map((config) => (
             <option value={config.id} key={config.id}>
               {config.label}
             </option>
           ))}
         </select>
+
         {selectedContact && (
           <p className="form-text text-muted">
             This will email <a href={`mailto:${selectedContact.email}`}>{selectedContact.email}</a>
           </p>
         )}
+
         <p className="form-text text-muted">
           If the department or faculty for this module cannot be found on this list, please refer to
           ModReg's contact list for{' '}
@@ -263,12 +312,14 @@ const FormContent: React.FC<FormContentProps> = ({
       </div>
 
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-email">Your Email</label>
+        <label htmlFor="report-error-email">Your school email</label>
         <input
           type="email"
           id="report-error-email"
           className="form-control"
+          pattern=".+@.+nus.+"
           value={formData.replyTo}
+          placeholder="e0012345@u.nus.edu"
           onChange={updateFormValue('replyTo')}
           required
         />
@@ -281,13 +332,13 @@ const FormContent: React.FC<FormContentProps> = ({
           className="form-control"
           value={formData.message}
           onChange={updateFormValue('message')}
-          rows={5}
+          rows={8}
           required
         />
       </div>
 
-      <footer className="col-sm-12">
-        <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+      <footer className={classnames(styles.footer, 'col-sm-12')}>
+        <button type="submit" className="btn btn-primary btn-lg" disabled={isSubmitting}>
           {isSubmitting && <LoadingSpinner small white />} Submit
         </button>
       </footer>

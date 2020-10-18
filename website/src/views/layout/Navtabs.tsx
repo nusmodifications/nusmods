@@ -6,13 +6,11 @@ import { BookOpen, Calendar, Clock, Heart, Map, Settings, Star, Trello } from 'r
 
 import { Semester } from 'types/modules';
 import ExternalLink from 'views/components/ExternalLink';
-import Online from 'views/components/Online';
 import { timetablePage } from 'views/routes/paths';
 import { preload as preloadToday } from 'views/today/TodayContainer';
 import { preload as preloadVenues } from 'views/venues/VenuesContainer';
 import { preload as preloadContribute } from 'views/contribute/ContributeContainer';
 import { State } from 'types/state';
-import NavRefreshPrompt from './NavRefreshPrompt';
 
 import styles from './Navtabs.scss';
 
@@ -21,7 +19,6 @@ export const NAVTAB_HEIGHT = 48;
 type Props = RouteComponentProps & {
   activeSemester: Semester;
   beta: boolean;
-  promptRefresh: boolean;
 };
 
 export const NavtabsComponent: React.FC<Props> = (props) => {
@@ -32,12 +29,10 @@ export const NavtabsComponent: React.FC<Props> = (props) => {
 
   return (
     <nav className={styles.nav}>
-      {props.beta && (
-        <NavLink {...tabProps} to="/today" onMouseOver={preloadToday} onFocus={preloadToday}>
-          <Clock />
-          <span className={styles.title}>Today</span>
-        </NavLink>
-      )}
+      <NavLink {...tabProps} to="/today" onMouseOver={preloadToday} onFocus={preloadToday}>
+        <Clock />
+        <span className={styles.title}>Today</span>
+      </NavLink>
       <NavLink {...tabProps} to={timetablePage(props.activeSemester)}>
         <Calendar />
         <span className={styles.title}>Timetable</span>
@@ -66,15 +61,6 @@ export const NavtabsComponent: React.FC<Props> = (props) => {
       <NavLink {...tabProps} to="/settings">
         <Settings />
         <span className={styles.title}>Settings</span>
-        {props.promptRefresh && (
-          <Online>
-            <div
-              className={classnames(styles.updateDot)}
-              title="Update available"
-              aria-label="Update available"
-            />
-          </Online>
-        )}
       </NavLink>
       <NavLink
         {...tabProps}
@@ -94,11 +80,6 @@ export const NavtabsComponent: React.FC<Props> = (props) => {
         <Heart />
         <span className={styles.title}>Whispers</span>
       </ExternalLink>
-      {props.promptRefresh && (
-        <Online>
-          <NavRefreshPrompt />
-        </Online>
-      )}
     </nav>
   );
 };
@@ -106,7 +87,6 @@ export const NavtabsComponent: React.FC<Props> = (props) => {
 const connectedNavtabs = connect((state: State) => ({
   activeSemester: state.app.activeSemester,
   beta: !!state.settings.beta,
-  promptRefresh: state.app.promptRefresh,
 }))(NavtabsComponent);
 
 export default withRouter(connectedNavtabs);

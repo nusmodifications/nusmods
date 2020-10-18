@@ -8,6 +8,13 @@ export const UPDATE_MODULE_TIMESTAMP = 'UPDATE_MODULE_TIMESTAMP' as const;
 export const REMOVE_LRU_MODULE = 'REMOVE_LRU_MODULE' as const;
 export const FETCH_ARCHIVE_MODULE = 'FETCH_ARCHIVE_MODULE' as const; // Action to fetch module from previous years
 
+export type RequestType =
+  | typeof FETCH_MODULE
+  | typeof FETCH_MODULE_LIST
+  | typeof UPDATE_MODULE_TIMESTAMP
+  | typeof REMOVE_LRU_MODULE
+  | typeof FETCH_ARCHIVE_MODULE;
+
 export function fetchModuleRequest(moduleCode: ModuleCode) {
   return `${FETCH_MODULE}/${moduleCode}`;
 }

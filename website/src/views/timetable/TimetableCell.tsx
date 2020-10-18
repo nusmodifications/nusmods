@@ -133,7 +133,7 @@ const TimetableCell: React.FC<Props> = (props) => {
         <div>
           {LESSON_TYPE_ABBREV[lesson.lessonType]} [{lesson.classNo}]
         </div>
-        <div>{lesson.venue}</div>
+        <div>{lesson.venue.startsWith('E-Learn') ? 'E-Learning' : lesson.venue}</div>
         {weekText && <div>{weekText}</div>}
       </div>
     </Cell>

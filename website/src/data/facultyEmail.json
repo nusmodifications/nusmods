@@ -435,6 +435,38 @@
       "type": "moduleCode",
       "moduleCode": "GMS1000"
     }
+  },  {
+    "id": "als",
+    "label": "ALS1010 & ALS1020",
+    "email": "alsbox1@nus.edu.sg",
+    "match": {
+      "type": "moduleCode",
+      "moduleCode": ["ALS1010", "ALS1020"]
+    }
+  },{
+    "id": "cfg1002",
+    "label": "CFG1002",
+    "email": "careercatalyst@nus.edu.sg",
+    "match": {
+      "type": "moduleCode",
+      "moduleCode": "CFG1002"
+    }
+  },{
+    "id": "ger1000",
+    "label": "GER1000",
+    "email": "qradmin@nus.edu.sg",
+    "match": {
+      "type": "moduleCode",
+      "moduleCode": "GER1000"
+    }
+  },{
+    "id": "geq1000",
+    "label": "GEQ1000",
+    "email": "askq@nus.edu.sg",
+    "match": {
+      "type": "moduleCode",
+      "moduleCode": "GEQ1000"
+    }
   },
   {
     "id": "dent",
@@ -524,6 +556,16 @@
       "type": "department",
       "department": "Center for Engl Lang Comms",
       "level": "grad"
+    }
+  },
+  {
+    "id": "ctpclc",
+    "label": "Chua Thian Poh Community Leadership Centre",
+    "email": "ctpclc@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Chua Thian Poh Community Leadership Centre",
+      "level": "undergrad"
     }
   }
 ]

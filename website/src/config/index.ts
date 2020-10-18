@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import { AcadYear, Semester } from 'types/modules';
 
 import holidays from 'data/holidays.json';
-import modRegData from 'data/modreg-schedule-ay1920-sem1.json';
+import modRegData from 'data/modreg-schedule-ay2021-sem1.json';
 import appConfig from './app-config.json';
 
 export const regPeriods = [
@@ -45,14 +45,6 @@ export type Config = {
   archiveYears: string[];
   examAvailability: Semester[];
   examAvailabilitySet: Set<Semester>;
-
-  defaultPreferences: {
-    theme: string;
-    mode: string;
-    faculty: string;
-    student: string;
-    account: string;
-  };
 
   contact: {
     blog: string;

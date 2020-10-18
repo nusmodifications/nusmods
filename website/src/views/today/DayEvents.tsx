@@ -46,7 +46,8 @@ const DayEvents = React.memo<Props>((props) => {
           <p>
             {lesson.lessonType} {lesson.classNo}
           </p>
-          <MapPin className={styles.venueIcon} /> {lesson.venue}
+          <MapPin className={styles.venueIcon} />{' '}
+          {lesson.venue.startsWith('E-Learn') ? 'E-Learning' : lesson.venue}
           <div>
             <EventMapInline
               className={styles.map}

@@ -1,5 +1,5 @@
-import { Persist } from '../../types/persist';
-import {
+import type { Persist } from '../../types/persist';
+import type {
   Aliases,
   Module,
   ModuleCode,
@@ -9,7 +9,7 @@ import {
   Semester,
   SemesterData,
 } from '../../types/modules';
-import { Venue, VenueInfo } from '../../types/venues';
+import type { Venue, VenueInfo } from '../../types/venues';
 
 import { getFileSystemWriter } from './fs';
 import ElasticPersist from './elastic';
@@ -22,12 +22,9 @@ export { getFileSystemWriter };
  */
 export class CombinedPersist implements Persist {
   private readonly writers: Persist[] = [];
-  private readonly fileSystemWriter: Persist;
 
   constructor(acadYear: string) {
-    this.fileSystemWriter = getFileSystemWriter(acadYear);
-
-    this.writers.push(this.fileSystemWriter);
+    this.writers.push(getFileSystemWriter(acadYear));
     this.writers.push(new ElasticPersist());
   }
 
@@ -55,8 +52,9 @@ export class CombinedPersist implements Persist {
     await Promise.all(this.writers.map((writer) => writer.module(moduleCode, data)));
   }
 
-  getModuleCodes() {
-    return this.fileSystemWriter.getModuleCodes();
+  async getModuleCodes() {
+    const moduleCodes = await Promise.all(this.writers.map((writer) => writer.getModuleCodes()));
+    return Array.from(new Set(moduleCodes.flat()));
   }
 
   async deleteModule(moduleCode: ModuleCode) {

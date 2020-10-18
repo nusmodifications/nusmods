@@ -39,7 +39,6 @@ import NoFooter from 'views/layout/NoFooter';
 import MapContext from 'views/components/map/MapContext';
 import { formatTime, getDayIndex } from 'utils/timify';
 import { breakpointUp } from 'utils/css';
-import { EMPTY_ARRAY } from 'types/utils';
 import { State as StoreState } from 'types/state';
 
 import DayEvents from '../DayEvents';
@@ -48,6 +47,8 @@ import EmptyLessonGroup from '../EmptyLessonGroup';
 import BeforeLessonCard from '../BeforeLessonCard';
 import EventMap from '../EventMap';
 import styles from './TodayContainer.scss';
+
+const EMPTY_LESSONS: ColoredLesson[] = [];
 
 // Map the semester property from AcadWeekInfo to semester number
 const semesterNameMap: Record<string, number> = {
@@ -126,9 +127,10 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
   componentDidMount() {
     weatherAPI
       .twoHour()
-      .then((weather) =>
-        this.setState((prevState) => ({ weather: { ...prevState.weather, '0': weather } })),
-      )
+      .then((weather) => {
+        if (!weather) return;
+        this.setState((prevState) => ({ weather: { ...prevState.weather, '0': weather } }));
+      })
       .catch(captureException);
 
     weatherAPI
@@ -219,11 +221,9 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
       const date = addDays(currentTime, day);
       const dayOfWeek = DaysOfWeek[getDayIndex(date)];
       const weekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(date);
-      const lessons = get(
-        groupedLessons,
-        dayOfWeek,
-        EMPTY_ARRAY as ColoredLesson[],
-      ).filter((lesson) => isLessonAvailable(lesson, date, weekInfo));
+      const lessons = get(groupedLessons, dayOfWeek, EMPTY_LESSONS).filter((lesson) =>
+        isLessonAvailable(lesson, date, weekInfo),
+      );
 
       if (
         // Non-instructional week

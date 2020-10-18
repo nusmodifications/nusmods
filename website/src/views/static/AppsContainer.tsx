@@ -1,7 +1,9 @@
 import * as React from 'react';
 import axios from 'axios';
 
-import Loader from 'views/components/LoadingSpinner';
+import type { EmptyProps } from 'types/utils';
+import type { AppInfo } from 'types/apps';
+import LoadingSpinner from 'views/components/LoadingSpinner';
 import ExternalLink from 'views/components/ExternalLink';
 
 import StaticPage from './StaticPage';
@@ -9,21 +11,11 @@ import styles from './AppsContainer.scss';
 
 const APPS_URL = 'https://nusmodifications.github.io/nusmods-apps/apps.json';
 
-type AppInfo = {
-  name: string;
-  description: string;
-  author: string;
-  url: string;
-  repository_url?: string;
-  icon_url: string;
-  tags: string[];
-};
-
 type AppEntryProps = {
   app: AppInfo;
 };
 
-type Props = {};
+type Props = EmptyProps;
 
 type State = {
   appsData: AppInfo[] | null;
@@ -37,11 +29,7 @@ const AppEntry: React.FC<AppEntryProps> = ({ app }) => (
     <div className="row">
       <div className="col-lg-2 col-sm-3 text-center-md">
         <ExternalLink href={app.url} className={styles.appIcon}>
-          <img
-            className="rounded-circle img-fluid img-thumbnail"
-            src={app.icon_url}
-            alt={app.name}
-          />
+          <img className="rounded-circle img-fluid img-thumbnail" src={app.icon_url} alt="" />
         </ExternalLink>
       </div>
       <div className="col-lg-10 col-sm-9">
@@ -99,7 +87,7 @@ class AppsContainer extends React.Component<Props, State> {
           !
         </p>
 
-        {this.state.isLoading && <Loader />}
+        {this.state.isLoading && <LoadingSpinner />}
         {this.state.isError && (
           <div className="alert alert-danger">
             <strong>Something went wrong!</strong>

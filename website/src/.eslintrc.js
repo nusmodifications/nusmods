@@ -76,7 +76,7 @@ module.exports = {
       files: ['{apis,types}/**/*.{ts,tsx}'],
       rules: {
         // External types may not be camelcase
-        '@typescript-eslint/camelcase': 'off',
+        camelcase: 'off',
       },
     },
   ],
@@ -88,6 +88,8 @@ module.exports = {
 
     // Makes the code unnecessarily verbose
     '@typescript-eslint/explicit-function-return-type': 'off',
+    // We use type inference heavily for things like reducers
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
 
     '@typescript-eslint/no-unused-vars': [
       'warn',

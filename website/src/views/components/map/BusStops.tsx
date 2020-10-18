@@ -1,10 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import { DivIcon, DragEndEvent } from 'leaflet';
 import { Marker, Popup } from 'react-leaflet';
 import classnames from 'classnames';
 import produce from 'immer';
 
-import { BusStop, BusTiming } from 'types/venues';
+import type { BusStop, BusTiming } from 'types/venues';
+import type { EmptyProps } from 'types/utils';
 
 import busStopJSON from 'data/bus-stops.json';
 import { allowBusStopEditing } from 'utils/debug';
@@ -14,7 +15,7 @@ import { ArrivalTimes } from './ArrivalTimes';
 
 const busStops = busStopJSON as BusStop[];
 
-type Props = {};
+type Props = EmptyProps;
 
 type State = {
   // Bus stop data is stored in state to allow for editing
@@ -135,6 +136,7 @@ export default class BusStops extends React.PureComponent<Props, State> {
           );
 
           const icon = new DivIcon({
+            // language=HTML
             html: `
               <div
                 title="${stop.name}"

@@ -18,7 +18,7 @@ const fryingPans = [
   (c: string) => c.charAt(0),
 ];
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const cook = (query: string) => fryingPans.reduce((a, b) => a.map(b), Array.from(query)).join('');
 

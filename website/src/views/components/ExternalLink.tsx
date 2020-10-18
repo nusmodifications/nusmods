@@ -4,10 +4,12 @@ type Props = React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string; chi
 
 // Renders an anchor tag that safely opens href in a new tab or window.
 // See https://mathiasbynens.github.io/rel-noopener/
-const ExternalLink: React.FC<Props> = ({ children, ...otherProps }) => (
-  <a target="_blank" rel="noopener noreferrer" {...otherProps}>
-    {children}
-  </a>
+const ExternalLink = React.forwardRef<HTMLAnchorElement, Props>(
+  ({ children, ...otherProps }, ref) => (
+    <a target="_blank" rel="noopener noreferrer" ref={ref} {...otherProps}>
+      {children}
+    </a>
+  ),
 );
 
 export default ExternalLink;

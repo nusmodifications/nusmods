@@ -67,7 +67,8 @@ export default function withVenueLocations<Props extends VenueLocations>(
     },
 
     render({ Component, venueLocations }, props: Subtract<Props, VenueLocations>) {
-      return <Component venueLocations={venueLocations} {...(props as Props)} />;
+      const propsWithVenueLocations = { venueLocations, ...props } as Props;
+      return <Component {...propsWithVenueLocations} />;
     },
   });
 }

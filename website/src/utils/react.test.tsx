@@ -32,9 +32,9 @@ describe(highlight, () => {
 
 describe('wrapComponentName()', () => {
   /* eslint-disable react/prefer-stateless-function */
-  class TestComponent extends React.Component<{}> {}
-  class TestPureComponent extends React.PureComponent<{}> {}
-  class TestComponentWithDisplayName extends React.Component<{}> {
+  class TestComponent extends React.Component {}
+  class TestPureComponent extends React.PureComponent {}
+  class TestComponentWithDisplayName extends React.Component {
     static displayName = 'TestComponentName';
   }
   const FunctionalComponent = () => null;

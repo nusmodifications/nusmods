@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { CustomModule } from 'types/planner';
+import { CustomModule } from 'types/reducers';
 import { Module, ModuleCode } from 'types/modules';
+import { State as StoreState } from 'types/state';
 
 import Tooltip from 'views/components/Tooltip/Tooltip';
 import { addCustomModule } from 'actions/planner';
 import { getModuleCredit, getModuleTitle } from 'utils/planner';
-import { State as StoreState } from 'types/state';
 import styles from './CustomModuleForm.scss';
 
 type OwnProps = Readonly<{

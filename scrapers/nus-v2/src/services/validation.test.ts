@@ -1,6 +1,6 @@
 import { validateExam, validateLesson, validateSemester } from './validation';
 
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable camelcase */
 
 describe(validateLesson, () => {
   test('should return false if the lesson is invalid', () => {

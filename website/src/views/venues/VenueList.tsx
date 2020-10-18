@@ -15,7 +15,9 @@ type Props = {
 };
 
 const VenueList: React.FC<Props> = (props) => {
-  const venueList = groupBy(props.venues, (venue) => venue.charAt(0).toUpperCase());
+  // Added during the horrible COVID-19 times to hide E-Learning venues
+  const physicalVenues = props.venues.filter((venue) => !venue.startsWith('E-Learn'));
+  const venueList = groupBy(physicalVenues, (venue) => venue.charAt(0).toUpperCase());
   const sortedVenueList = sortBy(toPairs(venueList), ([key]) => key);
 
   return (

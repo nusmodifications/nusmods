@@ -7,14 +7,14 @@ import { DropdownListFiltersComponent } from './DropdownListFilters';
 describe(DropdownListFiltersComponent, () => {
   const CHECKBOX = '☑';
 
-  /* eslint-disable @typescript-eslint/camelcase */
+  /* eslint-disable camelcase */
   const allItems: RefinementItem[] = [
     { key: "It's a Test", doc_count: 20 },
     { key: 'Still Testing', doc_count: 0, missing: true },
     { key: "It's Business Time", missing: true },
     { key: "This One's For Pickering" },
   ];
-  /* eslint-enable @typescript-eslint/camelcase */
+  /* eslint-enable */
 
   function make(items: RefinementItem[], selectedItems: string[], matchBreakpoint = false) {
     const onFilterChange = jest.fn();

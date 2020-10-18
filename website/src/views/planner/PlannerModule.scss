@@ -25,6 +25,19 @@
     z-index: 1000;
     opacity: 0.7;
   }
+
+  &.placeholder {
+    $stripe-light: lighten(theme-color('success'), 3.5);
+    $stripe-dark: darken(theme-color('success'), 0.5);
+
+    background-image: repeating-linear-gradient(
+      130deg,
+      $stripe-light,
+      $stripe-light 1rem,
+      $stripe-dark 1rem,
+      $stripe-dark 2rem
+    );
+  }
 }
 
 .menu {
@@ -33,6 +46,7 @@
 
 .menuBtn {
   position: relative;
+  z-index: 1;
   float: right;
   margin: -0.3rem -0.3rem 0 0;
 
@@ -57,12 +71,52 @@
   margin-bottom: 0.4rem;
 
   a {
-    display: block;
     color: inherit;
 
     &:hover {
       text-decoration: underline;
     }
+  }
+}
+
+.placeholderName {
+  display: block;
+  opacity: 0.7;
+  margin: 0.2rem 0 0.4rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.placeholderSelect {
+  padding: 0 0.3rem;
+  font-weight: bold;
+
+  &,
+  &:hover {
+    border: 1px dashed;
+    color: inherit;
+  }
+
+  &.empty {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  svg {
+    width: 1rem;
+  }
+}
+
+// .module added for specificity
+.module .placeholderInput {
+  color: inherit;
+  background: transparent;
+  resize: none;
+
+  &::placeholder {
+    color: rgba(#fff, 0.5);
   }
 }
 

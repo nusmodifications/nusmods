@@ -31,7 +31,7 @@ export type QueryParam = {
   semester: string;
 };
 
-type OwnProps = RouteComponentProps<QueryParam> & {};
+type OwnProps = RouteComponentProps<QueryParam>;
 
 type Props = OwnProps & {
   modules: ModulesMap;

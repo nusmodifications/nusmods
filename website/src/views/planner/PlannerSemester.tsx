@@ -3,7 +3,7 @@ import { Droppable } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 
 import { Semester, ModuleCode } from 'types/modules';
-import { PlannerModuleInfo } from 'types/views';
+import { AddModuleData, PlannerModuleInfo } from 'types/planner';
 import config from 'config';
 import { getExamDate, renderMCs } from 'utils/modules';
 import {
@@ -25,9 +25,10 @@ type Props = Readonly<{
   showModuleMeta?: boolean;
   className?: string;
 
-  addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void;
-  removeModule: (moduleCode: ModuleCode) => void;
+  addModule: (year: string, semester: Semester, module: AddModuleData) => void;
+  removeModule: (id: string) => void;
   addCustomData: (moduleCode: ModuleCode) => void;
+  setPlaceholderModule: (id: string, moduleCode: ModuleCode) => void;
 }>;
 
 function renderSemesterMeta(plannerModules: PlannerModuleInfo[]) {
@@ -55,23 +56,28 @@ const PlannerSemester: React.FC<Props> = ({
   addModule,
   removeModule,
   addCustomData,
+  setPlaceholderModule,
 }) => {
   const renderModule = (plannerModule: PlannerModuleInfo, index: number) => {
-    const { moduleCode, moduleInfo, conflict } = plannerModule;
+    const { id, moduleCode, moduleInfo, conflict, placeholder } = plannerModule;
 
     const showExamDate = showModuleMeta && config.academicYear === year;
 
     return (
       <PlannerModule
-        key={moduleCode}
+        key={id}
+        id={id}
         index={index}
         moduleCode={moduleCode}
+        placeholder={placeholder}
         moduleTitle={getModuleTitle(plannerModule)}
         examDate={showExamDate && moduleInfo ? getExamDate(moduleInfo, semester) : null}
         moduleCredit={showModuleMeta ? getModuleCredit(plannerModule) : null}
         conflict={conflict}
+        semester={semester}
         removeModule={removeModule}
         addCustomData={addCustomData}
+        setPlaceholderModule={setPlaceholderModule}
       />
     );
   };
@@ -105,7 +111,7 @@ const PlannerSemester: React.FC<Props> = ({
             <AddModule
               year={year}
               semester={semester}
-              onAddModule={(moduleCode) => addModule(moduleCode, year, +semester)}
+              onAddModule={(module) => addModule(year, +semester, module)}
             />
           </div>
         </div>
