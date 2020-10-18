@@ -45,8 +45,6 @@ const TimetableRow: React.FC<Props> = (props) => {
         const dirStyle = verticalMode ? 'top' : 'marginLeft';
         const sizeStyle = verticalMode ? 'height' : 'width';
 
-        const transparent = lesson.startTime === lesson.endTime;
-
         const dirValue = startIndex - (verticalMode ? startingIndex : lastStartIndex);
         const style = {
           // calc() adds a 1px gap between cells
@@ -71,7 +69,7 @@ const TimetableRow: React.FC<Props> = (props) => {
             showTitle={props.showTitle}
             hoverLesson={props.hoverLesson}
             onHover={props.onCellHover}
-            transparent={transparent}
+            transparent={lesson.startTime === lesson.endTime}
             {...conditionalProps}
           />
         );
