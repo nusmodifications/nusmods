@@ -25,6 +25,7 @@ type Props = {
   style?: React.CSSProperties;
   onClick?: (position: ClientRect) => void;
   hoverLesson?: HoverLesson | null;
+  transparent: boolean;
 };
 
 const lessonDateFormat = 'MMM dd';
@@ -85,7 +86,7 @@ function formatWeekRange(weekRange: WeekRange) {
  * might explore other representations e.g. grouped lessons
  */
 const TimetableCell: React.FC<Props> = (props) => {
-  const { lesson, showTitle, onClick, onHover, hoverLesson } = props;
+  const { lesson, showTitle, onClick, onHover, hoverLesson, transparent } = props;
 
   const moduleName = showTitle ? `${lesson.moduleCode} ${lesson.title}` : lesson.moduleCode;
   const Cell = props.onClick ? 'button' : 'div';
@@ -102,24 +103,26 @@ const TimetableCell: React.FC<Props> = (props) => {
 
   const weekText = consumeWeeks<React.ReactNode>(lesson.weeks, formatNumericWeeks, formatWeekRange);
 
+  const className = classnames(
+    styles.baseCell,
+    getLessonIdentifier(lesson),
+    elements.lessons,
+    transparent ? styles.transparentCell : [styles.coloredCell, `color-${lesson.colorIndex}`],
+    {
+      hoverable: !!onClick,
+      [styles.clickable]: !!onClick,
+      [styles.available]: lesson.isAvailable,
+      [styles.active]: lesson.isActive,
+      // Local hover style for the timetable planner timetable,
+      [styles.hover]: isHoveredOver,
+      // Global hover style for module page timetable
+      hover: isHoveredOver,
+    },
+  );
+
   return (
     <Cell
-      className={classnames(
-        styles.cell,
-        getLessonIdentifier(lesson),
-        elements.lessons,
-        `color-${lesson.colorIndex}`,
-        {
-          hoverable: !!onClick,
-          [styles.clickable]: !!onClick,
-          [styles.available]: lesson.isAvailable,
-          [styles.active]: lesson.isActive,
-          // Local hover style for the timetable planner timetable,
-          [styles.hover]: isHoveredOver,
-          // Global hover style for module page timetable
-          hover: isHoveredOver,
-        },
-      )}
+      className={className}
       style={props.style}
       onMouseEnter={() => onHover(getHoverLesson(lesson))}
       onTouchStart={() => onHover(getHoverLesson(lesson))}

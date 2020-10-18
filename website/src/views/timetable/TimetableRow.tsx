@@ -39,6 +39,7 @@ const TimetableRow: React.FC<Props> = (props) => {
       {lessons.map((lesson) => {
         const startIndex = convertTimeToIndex(lesson.startTime);
         const endIndex = convertTimeToIndex(lesson.endTime);
+
         const size = endIndex - startIndex;
 
         const dirStyle = verticalMode ? 'top' : 'marginLeft';
@@ -51,7 +52,7 @@ const TimetableRow: React.FC<Props> = (props) => {
           [sizeStyle]: `calc(${(size / totalCols) * 100}% - 1px)`,
         };
 
-        lastStartIndex = convertTimeToIndex(lesson.endTime);
+        lastStartIndex = endIndex;
 
         const conditionalProps =
           lesson.isModifiable && onModifyCell
@@ -68,6 +69,7 @@ const TimetableRow: React.FC<Props> = (props) => {
             showTitle={props.showTitle}
             hoverLesson={props.hoverLesson}
             onHover={props.onCellHover}
+            transparent={lesson.startTime === lesson.endTime}
             {...conditionalProps}
           />
         );
