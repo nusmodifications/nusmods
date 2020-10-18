@@ -47,6 +47,26 @@ async function createIndex(client: Client): Promise<Client> {
     await client.indices.create({
       index: INDEX_NAME,
       include_type_name: false, // TODO: Remove when upgrading to Elasticsearch 7
+      body: {
+        settings: {
+          analysis: {
+            analyzer: {
+              // An analyzer that produces a level string from a modcode, i.e.
+              // "CNS1010SX" => "1000", "CS2030" => "2000", etc.
+              level_analyzer: {
+                type: 'custom',
+                tokenizer: 'first_digit_tokenizer',
+                filter: ['first_token_limit_filter', 'thousandizer_filter'],
+              },
+            },
+            tokenizer: { first_digit_tokenizer },
+            filter: { first_token_limit_filter, thousandizer_filter },
+          },
+          index: {
+            max_result_window: 20_000, // Default limit is 10k, but we have >11k mods
+          },
+        },
+      },
     });
   } catch (e) {
     // Ignore resource exist exception as we will handle cases where the index
@@ -58,28 +78,6 @@ async function createIndex(client: Client): Promise<Client> {
       throw e;
     }
   }
-
-  await client.indices.putSettings({
-    index: INDEX_NAME,
-    body: {
-      analysis: {
-        analyzer: {
-          // An analyzer that produces a level string from a modcode, i.e.
-          // "CNS1010SX" => "1000", "CS2030" => "2000", etc.
-          level_analyzer: {
-            type: 'custom',
-            tokenizer: 'first_digit_tokenizer',
-            filter: ['first_token_limit_filter', 'thousandizer_filter'],
-          },
-        },
-        tokenizer: { first_digit_tokenizer },
-        filter: { first_token_limit_filter, thousandizer_filter },
-      },
-      index: {
-        max_result_window: 20_000, // Default limit is 10k, but we have >11k mods
-      },
-    },
-  });
 
   await client.indices.putMapping({
     index: INDEX_NAME,
