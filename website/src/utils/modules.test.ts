@@ -14,11 +14,12 @@ import {
   renderMCs,
   subtractAcadYear,
   isGraduateModule,
+  isYearLongModule,
 } from 'utils/modules';
 import { noBreak } from 'utils/react';
 
 import { EVERY_WEEK } from 'test-utils/timetable';
-import { CS1010S, CS3216 } from '__mocks__/modules';
+import { CS1010S, CS3216, GEQ1917 } from '__mocks__/modules';
 import { Lesson } from 'types/timetables';
 
 const mockLesson = _.cloneDeep(CS1010S.semesterData[0].timetable[0]) as Lesson;
@@ -223,5 +224,15 @@ describe(isGraduateModule, () => {
     expect(isGraduateModule({ moduleCode: 'CS3567' })).toEqual(false);
     expect(isGraduateModule({ moduleCode: 'CS1567D' })).toEqual(false);
     expect(isGraduateModule({ moduleCode: 'ACC4999X' })).toEqual(false);
+  });
+});
+
+describe(isYearLongModule, () => {
+  test('should return false for semester-long module', () => {
+    expect(isYearLongModule(CS1010S)).toEqual(false);
+  });
+
+  test('should return true for year-long module', () => {
+    expect(isYearLongModule(GEQ1917)).toEqual(true);
   });
 });
