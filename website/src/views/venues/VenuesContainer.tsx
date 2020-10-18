@@ -1,6 +1,12 @@
 import * as React from 'react';
 // eslint-disable-next-line camelcase
-import { useCallback, useEffect, useState, useMemo } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useState,
+  useMemo,
+  unstable_useDeferredValue as useDeferredValue,
+} from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import Loadable, { LoadingComponentProps } from 'react-loadable';
 import classnames from 'classnames';
@@ -58,7 +64,7 @@ export const VenuesContainerComponent: React.FC<Props> = ({ matchBreakpoint, ven
 
   // Search state
   const [searchBoxValue, setSearchBoxValue] = useState(() => qs.parse(location.search).q || '');
-  const searchTerm = searchBoxValue; // Redundant now, but this can be deferred to improve perf
+  const searchTerm = useDeferredValue(searchBoxValue);
   const [isAvailabilityEnabled, setIsAvailabilityEnabled] = useState(() => {
     const params = qs.parse(location.search);
     return !!(params.time && params.day && params.duration);

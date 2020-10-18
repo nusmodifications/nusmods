@@ -7,7 +7,7 @@ import 'bootstrapping/sentry';
 import 'core-js/es/promise/finally';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/profiling';
 import ReactModal from 'react-modal';
 
 import configureStore from 'bootstrapping/configure-store';
@@ -26,7 +26,9 @@ subscribeOnlineEvents(store);
 // Initialize ReactModal
 ReactModal.setAppElement('#app');
 
-ReactDOM.render(<App store={store} persistor={persistor} />, document.getElementById('app'));
+ReactDOM.unstable_createRoot(document.getElementById('app')).render(
+  <App store={store} persistor={persistor} />,
+);
 
 if (
   ('serviceWorker' in navigator &&
