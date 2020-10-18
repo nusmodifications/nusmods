@@ -239,6 +239,14 @@
       "y": 1.2933361735350462
     }
   },
+  "BIZ2-HSSAU": {
+    "roomName": "Hon Sui Sen Auditorium",
+    "floor": 1,
+    "location": {
+      "x": 103.7746254,
+      "y": 1.2933012
+    }
+  },
   "BIZ1-0203": {
     "roomName": "Seminar Room 2-3",
     "floor": 2,
@@ -2468,11 +2476,11 @@
     }
   },
   "E4A-04-08": {
-    "roomName": "General Office",
+    "roomName": "DSA Lab",
     "floor": 4,
     "location": {
-      "x": 103.7723285415776,
-      "y": 1.298387416948554
+      "x": 103.77258529989966,
+      "y": 1.2986036801783416
     }
   },
   "E4A-06-07": {
@@ -3196,8 +3204,12 @@
     }
   },
   "Y-BlackBox": {
-    "roomName": "West Core - Black Box Theatre",
-    "floor": "Ground"
+    "roomName": "Black Box Theatre",
+    "floor": 0,
+    "location": {
+      "x": 103.77202749252321,
+      "y": 1.3074888814478036
+    }
   },
   "Y-DanceStu": {
     "roomName": "West Core - Studio 1 (Dance Studio)",
@@ -4365,6 +4377,22 @@
     "location": {
       "x": 103.81671683479652,
       "y": 1.3187506180542539
+    }
+  },
+  "BIZ1-0504": {
+    "roomName": "Biz1",
+    "floor": 1,
+    "location": {
+      "x": 103.77365827560426,
+      "y": 1.2933264430775053
+    }
+  },
+  "UT22-07-02": {
+    "roomName": "CREATE SDE studio",
+    "floor": 7,
+    "location": {
+      "x": 103.77355133186032,
+      "y": 1.3037287973496303
     }
   }
 }
