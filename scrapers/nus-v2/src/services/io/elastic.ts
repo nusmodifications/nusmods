@@ -46,7 +46,6 @@ async function createIndex(client: Client): Promise<Client> {
   try {
     await client.indices.create({
       index: INDEX_NAME,
-      include_type_name: false, // TODO: Remove when upgrading to Elasticsearch 7
       body: {
         settings: {
           analysis: {
@@ -63,7 +62,7 @@ async function createIndex(client: Client): Promise<Client> {
             filter: { first_token_limit_filter, thousandizer_filter },
           },
           index: {
-            max_result_window: 20000, // Default limit is 10k, but we have >11k mods
+            max_result_window: 20_000, // Default limit is 10k, but we have >11k mods
           },
         },
         mappings: {
@@ -121,7 +120,6 @@ export default class ElasticPersist implements Persist {
     await client.delete({
       id: moduleCode,
       index: INDEX_NAME,
-      type: '_doc',
     });
   };
 
@@ -146,7 +144,6 @@ export default class ElasticPersist implements Persist {
     const client = await this.client;
     const res = await client.bulk({
       index: 'modules',
-      type: '_doc', // TODO: Remove when upgrading to Elasticsearch 7
       body: bulkBody,
     });
 
@@ -184,7 +181,7 @@ export default class ElasticPersist implements Persist {
           match_all: {},
         },
         _source: 'moduleCode',
-        size: 100_000, // Arbitrarily large number to force API to return all results
+        size: 20_000, // Arbitrarily large number to force ES to return all results. Must be <= index.max_result_window
       },
     });
 
