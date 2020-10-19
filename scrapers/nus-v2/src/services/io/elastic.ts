@@ -21,7 +21,7 @@ type ModuleSearchBody = {
   };
 };
 
-const INDEX_NAME = 'modules';
+const INDEX_NAME = 'modules_v2';
 
 // Tokenizes a string into an array of digits
 const first_digit_tokenizer = {
@@ -150,7 +150,7 @@ export default class ElasticPersist implements Persist {
 
     const client = await this.client;
     const res = await client.bulk({
-      index: 'modules',
+      index: INDEX_NAME,
       body: bulkBody,
     });
 
@@ -182,7 +182,7 @@ export default class ElasticPersist implements Persist {
   async getModuleCodes() {
     const client = await this.client;
     const { body } = await client.search({
-      index: 'modules',
+      index: INDEX_NAME,
       body: {
         query: {
           match_all: {},
