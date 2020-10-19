@@ -26,11 +26,16 @@ const EXAM_FILTER_ITEMS: FilterItem[] = [
     key: 'no-exam',
     label: 'No Exam',
     filter: {
-      bool: {
-        // eslint-disable-next-line camelcase
-        must_not: {
-          exists: {
-            field: 'semesterData.examDate',
+      nested: {
+        path: 'semesterData',
+        query: {
+          bool: {
+            // eslint-disable-next-line camelcase
+            must_not: {
+              exists: {
+                field: 'semesterData.examDate',
+              },
+            },
           },
         },
       },
@@ -70,6 +75,10 @@ const ModuleFinderSidebar: React.FC = React.memo(() => {
           id="sem"
           title="Offered In"
           field="semesterData.semester"
+          fieldOptions={{
+            type: 'nested',
+            options: { path: 'semesterData' },
+          }}
           operator="OR"
           orderKey="_term"
           orderDirection="asc"
