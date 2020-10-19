@@ -26,12 +26,11 @@ const EXAM_FILTER_ITEMS: FilterItem[] = [
     key: 'no-exam',
     label: 'No Exam',
     filter: {
-      nested: {
-        path: 'semesterData',
-        query: {
-          bool: {
-            // eslint-disable-next-line camelcase
-            must_not: {
+      bool: {
+        must_not: {
+          nested: {
+            path: 'semesterData',
+            query: {
               exists: {
                 field: 'semesterData.examDate',
               },
