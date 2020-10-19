@@ -9574,10 +9574,10 @@ js-base64@^2.1.8:
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.5.1.tgz#1efa39ef2c5f7980bb1784ade4a8af2de3291121"
   integrity sha512-M7kLczedRMYX4L8Mdh4MzyAMM9O5osx+4FcOQuTvr3A9F2D9S5JXheN0ewNbrvK2UatkTRhL5ejGmGSjNMiZuw==
 
-js-combinatorics@0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/js-combinatorics/-/js-combinatorics-0.6.1.tgz#d26e9a7aaac03a463611d18309fa9010ff903eff"
-  integrity sha512-VDPHc5J++qdzvngxUhOnUGwegFB9vlNzyWTD6oXKCd9qvw8NAsZdFaWK44W91U0GtBR9R0yppMgzNwTJQYymqg==
+js-combinatorics@1.4.5:
+  version "1.4.5"
+  resolved "https://registry.yarnpkg.com/js-combinatorics/-/js-combinatorics-1.4.5.tgz#f9b5d57ba97d1dba420c133b4ddbfabc5a41353c"
+  integrity sha512-lIBPgsZnIK5S8kCyTUY4L34Kq5YXj2LXyk9WJDPsK6iklV96+ZahxIsgHtXcwHhG9XZhqrS1EbnaEkUh5gyXdg==
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
