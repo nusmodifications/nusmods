@@ -13952,10 +13952,10 @@ scss-tokenizer@^0.2.3:
     js-base64 "^2.1.8"
     source-map "^0.4.2"
 
-searchkit@2.4.1:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/searchkit/-/searchkit-2.4.1.tgz#1c67bace9564985aa1c0d7ff1fc04d032fea65a4"
-  integrity sha512-K/oDM5SXCT7oVfciBoZgsy3UcQ3KmZ1XH8b7nVzQ/LRRj3eyx7Qd2hj4UEgoiVAdZe47iF1fqT4nxjalSkSfcQ==
+searchkit@2.4.1-alpha.5:
+  version "2.4.1-alpha.5"
+  resolved "https://registry.yarnpkg.com/searchkit/-/searchkit-2.4.1-alpha.5.tgz#e2ca37b6bc227dbcbeaf055d8506210b4b4f9351"
+  integrity sha512-IhNwdLH3OW4hsDi2bpm4oPvjmIT7DuLjmm4M6G7TlHpEDApjS+74by6pEFPxS2hLQCRJbR1/IeJAcl1KHk1/KA==
   dependencies:
     "@types/history" "^4.6.0"
     "@types/lodash" "^4.14.77"
