@@ -14,6 +14,7 @@ import {
   renderMCs,
   subtractAcadYear,
   isGraduateModule,
+  renderExamDuration,
 } from 'utils/modules';
 import { noBreak } from 'utils/react';
 
@@ -148,18 +149,29 @@ describe(getFirstAvailableSemester, () => {
 });
 
 describe(renderMCs, () => {
-  it.each([
+  it.each<[string | number, string]>([
     // Plural
     [0, '0 MCs'],
     ['0', '0 MCs'],
     [5, '5 MCs'],
     ['5', '5 MCs'],
+    ['0.5', '0.5 MCs'],
 
     // Singular
     [1, '1 MC'],
     ['1', '1 MC'],
-  ])('%s to equal %s', (mc, expected) =>
-    expect(renderMCs(mc)).toEqual(noBreak(expected as string)),
+  ])('%s to equal %s', (mc, expected) => expect(renderMCs(mc)).toEqual(noBreak(expected)));
+});
+
+describe(renderExamDuration, () => {
+  it.each<[number, string]>([
+    [45, '45 mins'],
+    [60, '1 hr'],
+    [90, '1.5 hrs'],
+    [120, '2 hrs'],
+    [180, '3 hrs'],
+  ])('%s to equal %s', (duration, expected) =>
+    expect(renderExamDuration(duration)).toEqual(noBreak(expected)),
   );
 });
 
