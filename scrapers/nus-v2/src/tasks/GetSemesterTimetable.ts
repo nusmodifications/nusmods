@@ -111,7 +111,20 @@ export function transformModgrpToClassNo(modgrp: string, activity: string): stri
 }
 
 export function mapTimetableLesson(lesson: TimetableLesson, logger: Logger): TempRawLesson {
-  const { room, start_time, end_time, day, module, modgrp, activity, eventdate, csize } = lesson;
+  const {
+    room: providedRoom,
+    start_time,
+    end_time,
+    day,
+    module,
+    modgrp,
+    activity,
+    eventdate,
+    csize,
+  } = lesson;
+
+  // Save E-Learn_* venues as E-Learning
+  const room = providedRoom?.startsWith('E-Learn_') ? 'E-Learning' : providedRoom;
 
   if (has(unrecognizedLessonTypes, activity)) {
     logger.warn(

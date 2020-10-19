@@ -1613,4 +1613,115 @@ Object {
 }
 `);
   });
+
+  // Lessons with E-Learn_* in venue should have E-Learning as venue
+  test('should save venue of lessons with E-Learning venues correctly', async () => {
+    const task = createTask(
+      CS4238Timetable.map((lesson) => {
+        return { ...lesson, room: 'E-Learn_C' };
+      }),
+    );
+    const timetable = await task.run();
+
+    expect(timetable.CS4238).toMatchInlineSnapshot(`
+Array [
+  Object {
+    "classNo": "1",
+    "day": "Monday",
+    "endTime": "2030",
+    "lessonType": "Lecture",
+    "size": 40,
+    "startTime": "1830",
+    "venue": "E-Learning",
+    "weeks": Array [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+    ],
+  },
+  Object {
+    "classNo": "2",
+    "day": "Tuesday",
+    "endTime": "2030",
+    "lessonType": "Lecture",
+    "size": 40,
+    "startTime": "1830",
+    "venue": "E-Learning",
+    "weeks": Array [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+    ],
+  },
+  Object {
+    "classNo": "2",
+    "day": "Tuesday",
+    "endTime": "2130",
+    "lessonType": "Laboratory",
+    "size": 40,
+    "startTime": "2030",
+    "venue": "E-Learning",
+    "weeks": Array [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+    ],
+  },
+  Object {
+    "classNo": "1",
+    "day": "Monday",
+    "endTime": "2130",
+    "lessonType": "Laboratory",
+    "size": 40,
+    "startTime": "2030",
+    "venue": "E-Learning",
+    "weeks": Array [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+    ],
+  },
+]
+`);
+  });
 });
