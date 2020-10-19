@@ -8,7 +8,13 @@ export const HACKTOBERFEST = 'hacktoberfest-2018';
 
 // Used by announcements
 const ANNOUNCEMENT_PREFIX = 'announcements.';
-export function announcementKey(key: string | null | undefined) {
+/**
+ * Returns a transformed announcement key. Possible values:
+ *
+ * - `null`: An announcement that cannot be dismissed.
+ * - A `string` value: A dismissable announcement.
+ */
+export function announcementKey(key: string | null) {
   if (!key) return null;
   return `${ANNOUNCEMENT_PREFIX}${key}`;
 }
