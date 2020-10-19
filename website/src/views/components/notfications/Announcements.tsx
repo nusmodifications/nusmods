@@ -26,7 +26,7 @@ const enableAnnouncements = false;
  */
 const key = announcementKey('ay202021-new-data');
 
-const Announcements: React.FC = memo(() => {
+const Announcements = memo(() => {
   const [isOpen, setIsOpen] = useState(() => {
     if (!enableAnnouncements) return false;
     if (key) return !storage.getItem(key);
