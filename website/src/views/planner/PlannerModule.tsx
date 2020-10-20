@@ -38,10 +38,6 @@ type Props = Readonly<{
   setPlaceholderModule: (id: string, moduleCode: ModuleCode) => void;
 }>;
 
-type State = {
-  isEditingPlaceholder: boolean;
-};
-
 /**
  * Component for a single module on the planner
  */

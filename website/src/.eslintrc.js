@@ -86,6 +86,9 @@ module.exports = {
     'default-case': 'off',
     '@typescript-eslint/switch-exhaustiveness-check': 'error',
 
+    // Doesn't work with TypeScript
+    'no-use-before-define': 'off',
+
     // Makes the code unnecessarily verbose
     '@typescript-eslint/explicit-function-return-type': 'off',
     // We use type inference heavily for things like reducers
