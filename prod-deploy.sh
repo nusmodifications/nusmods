@@ -10,6 +10,11 @@ set -x
 
 git pull
 
+# At the end of this script, we'll want to only keep cached builds of both the
+# current and new deploys.
+# --force simply disables confirmation.
+docker system prune --all --force
+
 # Build and deploy green, we have 2 versions now
 export GIT_COMMIT_HASH=$(git rev-parse HEAD)
 docker-compose --project-name=green -f docker-compose.prod.yml build --no-cache
