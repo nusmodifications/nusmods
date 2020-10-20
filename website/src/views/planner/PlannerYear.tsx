@@ -5,7 +5,7 @@ import { flatMap, size, sortBy, toPairs, values } from 'lodash';
 import { ModuleCode, Semester } from 'types/modules';
 import { AddModuleData, PlannerModuleInfo } from 'types/planner';
 import config from 'config';
-import { getSemesterName, getTotalMC, YEAR_LONG } from 'utils/planner';
+import { getSemesterName, getTotalMC, YEAR_LONG, YEAR_LONG_SEMESTER } from 'utils/planner';
 import { Minus, Plus } from 'react-feather';
 import { renderMCs } from 'utils/modules';
 import PlannerSemester from './PlannerSemester';
@@ -70,8 +70,8 @@ export default class PlannerYear extends React.PureComponent<Props, State> {
     if (!showSpecialSem) {
       sortedSemesters = sortedSemesters.filter(([semester]) => +semester <= 2);
     }
-    const [yearLongSemester, yearLongModules] = sortedSemesters[0];
-    sortedSemesters = sortedSemesters.filter(([semester]) => +semester > 0);
+    const [yearLongSemester, yearLongModules] = sortedSemesters[YEAR_LONG_SEMESTER];
+    sortedSemesters = sortedSemesters.filter(([semester]) => +semester > YEAR_LONG_SEMESTER);
 
     return (
       <section

@@ -12,7 +12,7 @@ import { hot } from 'react-hot-loader/root';
 
 import { Module, ModuleCode, Semester } from 'types/modules';
 import { PlannerModulesWithInfo, PlannerModuleInfo, AddModuleData } from 'types/planner';
-import { isYearLongModule, MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
+import { MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
 import {
   EXEMPTION_SEMESTER,
   EXEMPTION_YEAR,
@@ -110,7 +110,7 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
           this.props.addModule(year, semester, { type: 'module', moduleCode });
           // TODO: Handle error
           this.props.fetchModule(moduleCode).then((fetchedModule) => {
-            if (isYearLongModule(fetchedModule)) {
+            if (fetchedModule.attributes?.year) {
               this.props.moveYearLongModule(year, semester, moduleCode);
             }
           });

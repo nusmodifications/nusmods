@@ -130,7 +130,3 @@ export function getYearsBetween(minYear: string, maxYear: string): string[] {
 export function isGraduateModule(module: { moduleCode: ModuleCode }): boolean {
   return Boolean(/[A-Z]+(5|6)\d{3}/i.test(module.moduleCode));
 }
-
-export function isYearLongModule(module: Module): boolean {
-  return Boolean(module.attributes?.year);
-}

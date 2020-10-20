@@ -3,7 +3,6 @@ import { ModuleCode, PrereqTree, Semester } from 'types/modules';
 import { PlannerModuleInfo } from 'types/planner';
 import config from 'config';
 import { assertNever, notNull } from 'types/utils';
-import { isYearLongModule } from 'utils/modules';
 
 // "Exemption" and "plan to take" modules are special columns used to hold modules
 // outside the normal planner. "Exemption" modules are coded as -1 year so
@@ -20,7 +19,7 @@ export const PLAN_TO_TAKE_SEMESTER = -2;
 // We assume iBLOCs takes place in special term 1
 export const IBLOCS_SEMESTER = 3;
 
-export const SEMESTER_LONG = 'SEMESTER';
+export const SEMESTER_LONG = 'SEMESTER_LONG';
 export const YEAR_LONG = 'YEAR_LONG';
 
 export function getSemesterName(semester: Semester) {
@@ -148,5 +147,5 @@ export function getTotalMC(
  * Returns whether or not a planner module is year-long
  */
 export function isYearLong(module: Pick<PlannerModuleInfo, 'moduleInfo' | 'customInfo'>): boolean {
-  return module.moduleInfo ? isYearLongModule(module.moduleInfo) : false;
+  return module.moduleInfo ? Boolean(module.moduleInfo.attributes?.year) : false;
 }

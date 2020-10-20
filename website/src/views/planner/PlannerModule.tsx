@@ -189,8 +189,6 @@ const PlannerModule = React.memo<Props>((props) => {
         >
           <ModuleMenu removeModule={removeModule} editCustomData={editCustomData} />
 
-          {}
-
           <div className={styles.moduleInfo}>
             <div className={styles.moduleName}>
               {placeholder ? (
