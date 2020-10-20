@@ -1,6 +1,10 @@
 import { mapValues } from 'lodash';
+
+import type { SemesterData, Module } from '../types/modules';
 import { combineModules, mergeAliases, moduleDataCheck } from './CollateModules';
 import { mockLogger } from '../utils/test-utils';
+
+jest.mock('../services/io/elastic');
 
 describe(combineModules, () => {
   const logger = mockLogger();
@@ -20,7 +24,7 @@ describe(combineModules, () => {
       moduleCode: 'ACC1006',
     };
 
-    const semesterOneData = {
+    const semesterOneData: SemesterData = {
       semester: 1,
       timetable: [
         {
@@ -32,13 +36,15 @@ describe(combineModules, () => {
           day: 'Thursday',
           lessonType: 'Sectional Teaching',
           size: 20,
+          covidZone: 'A',
         },
       ],
+      covidZones: ['A'],
       examDate: '2018-12-06T13:00:00.000+08:00',
       examDuration: 120,
     };
 
-    const semesterTwoData = {
+    const semesterTwoData: SemesterData = {
       semester: 2,
       timetable: [
         {
@@ -50,6 +56,7 @@ describe(combineModules, () => {
           day: 'Monday',
           lessonType: 'Sectional Teaching',
           size: 20,
+          covidZone: 'C',
         },
         {
           classNo: 'A2',
@@ -60,8 +67,10 @@ describe(combineModules, () => {
           day: 'Monday',
           lessonType: 'Sectional Teaching',
           size: 20,
+          covidZone: 'C',
         },
       ],
+      covidZones: ['C'],
       examDate: '2019-05-09T13:00:00.000+08:00',
       examDuration: 120,
     };
@@ -127,7 +136,7 @@ describe(moduleDataCheck, () => {
     moduleCode: 'ACC1006',
   };
 
-  const module = {
+  const module: Module = {
     ...semesterModule,
     aliases: ['ACC1006X'],
     semesterData: [
@@ -143,8 +152,10 @@ describe(moduleDataCheck, () => {
             day: 'Thursday',
             lessonType: 'Sectional Teaching',
             size: 20,
+            covidZone: 'A',
           },
         ],
+        covidZones: ['A'],
         examDate: '2018-12-06T13:00:00.000+08:00',
         examDuration: 120,
       },

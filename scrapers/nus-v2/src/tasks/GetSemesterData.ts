@@ -1,15 +1,16 @@
 import { each, fromPairs, keyBy, isEmpty } from 'lodash';
 import { strict as assert } from 'assert';
 
-import { AcademicGrp, AcademicOrg, ModuleAttributeEntry, ModuleInfo } from '../types/api';
-import {
+import type { AcademicGrp, AcademicOrg, ModuleAttributeEntry, ModuleInfo } from '../types/api';
+import type {
   DepartmentCodeMap,
   FacultyCodeMap,
   SemesterModule,
   SemesterModuleData,
   WritableSemesterModuleData,
 } from '../types/mapper';
-import { NUSModuleAttributes, Semester, Workload } from '../types/modules';
+import type { NUSModuleAttributes, RawLesson, Semester, Workload } from '../types/modules';
+import type { CovidZoneId } from '../services/getCovidZones';
 import { Task } from '../types/tasks';
 import { Cache } from '../types/persist';
 
@@ -127,6 +128,14 @@ export function parseWorkload(workloadString: string): Workload {
   // Taken from CORS:
   // https://myaces.nus.edu.sg/cors/jsp/report/ModuleDetailedInfo.jsp?acad_y=2017/2018&sem_c=1&mod_c=CS2105
   return cleanedWorkloadString.split(/[-‐]/).map((text) => parseFloat(text));
+}
+
+export function getLessonCovidZones(lessons: RawLesson[]): CovidZoneId[] {
+  const zones = new Set<CovidZoneId>();
+  for (const { covidZone } of lessons) {
+    zones.add(covidZone);
+  }
+  return Array.from(zones);
 }
 
 /**
@@ -251,7 +260,6 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
       const module = cleanModuleInfo(rawModule);
 
       const timetable = timetables[moduleCode];
-
       const semesterModuleDatum: WritableSemesterModuleData = {
         module,
         moduleCode,
@@ -265,6 +273,7 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
         semesterModuleDatum.semesterData = {
           semester,
           timetable,
+          covidZones: getLessonCovidZones(timetable),
           ...examInfo,
         };
       }

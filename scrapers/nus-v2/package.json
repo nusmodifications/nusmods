@@ -28,6 +28,7 @@
     "@types/promise-queue": "2.2.0",
     "@types/ramda": "0.25.50",
     "@types/yargs": "12.0.9",
+    "@types/node": "12.12.6",
     "@typescript-eslint/eslint-plugin": "3.6.1",
     "@typescript-eslint/parser": "3.6.1",
     "eslint": "7.5.0",
