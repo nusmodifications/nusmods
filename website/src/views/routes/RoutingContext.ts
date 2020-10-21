@@ -1,11 +1,15 @@
 import type { Location, BrowserHistory, State } from 'history';
-import type { RouteConfig } from 'react-router-config';
 import type { JSResource } from 'utils/JSResource';
 
 import { createContext } from 'react';
-import { match } from 'react-router-dom';
+import type { match } from 'react-router-dom';
 
 type PreparedProps = { [key: string]: JSResource<unknown> };
+
+export type EntryPointComponentProps = React.PropsWithChildren<{
+  match: match<any>;
+  prepared: { [key: string]: unknown };
+}>;
 
 export interface EntryPointRouteConfig {
   key?: React.Key;
@@ -13,20 +17,20 @@ export interface EntryPointRouteConfig {
   path?: string | string[];
   exact?: boolean;
   strict?: boolean;
-  routes?: RouteConfig[];
-  componentResource: JSResource<unknown>;
+  routes?: EntryPointRouteConfig[];
+  componentResource: JSResource<React.ComponentType<EntryPointComponentProps>>;
   prepare: <Params>(matchParams: Params) => PreparedProps;
 }
 
-export type RouteComponentProps<Params, Component extends React.ComponentType> = {
-  component: JSResource<Component>;
+export type RouteComponentProps<Params> = {
+  component: JSResource<React.ComponentType<EntryPointComponentProps>>;
   prepared: PreparedProps;
   routeData: match<Params>;
 };
 
 export type RouteEntry = {
   location: Location<State>;
-  entries: RouteComponentProps<unknown, any>[];
+  entries: RouteComponentProps<unknown>[];
 };
 
 export type RoutingSubscriber = (nextEntry: RouteEntry) => void;

@@ -40,6 +40,7 @@ import MapContext from 'views/components/map/MapContext';
 import { formatTime, getDayIndex } from 'utils/timify';
 import { breakpointUp } from 'utils/css';
 import { State as StoreState } from 'types/state';
+import type { EntryPointComponentProps } from 'views/routes/RoutingContext';
 
 import DayEvents from './DayEvents';
 import DayHeader from './DayHeader';
@@ -58,7 +59,7 @@ const semesterNameMap: Record<string, number> = {
   'Special Sem 2': 4,
 };
 
-export type OwnProps = TimerData;
+export type OwnProps = TimerData & EntryPointComponentProps;
 
 export type Props = OwnProps &
   Readonly<{

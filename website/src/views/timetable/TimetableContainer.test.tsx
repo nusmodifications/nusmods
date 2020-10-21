@@ -44,12 +44,12 @@ describe(TimetableContainerComponent, () => {
           timetable={timetable}
           colors={{}}
           modules={modules}
-          selectSemester={selectSemester}
-          setTimetable={setTimetable}
-          fetchTimetableModules={fetchTimetableModules}
-          openNotification={openNotification}
+          selectSemesterProp={selectSemester}
+          setTimetableProp={setTimetable}
+          fetchTimetableModulesProp={fetchTimetableModules}
+          openNotificationProp={openNotification}
           isValidModule={isModuleValid}
-          undo={undo}
+          undoProp={undo}
           {...router}
         />,
       ),
