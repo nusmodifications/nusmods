@@ -2,7 +2,7 @@ import { BrowserHistoryOptions, createBrowserHistory } from 'history';
 import { MatchedRoute, matchRoutes } from 'react-router-config';
 import {
   EntryPointRouteConfig,
-  PreparedRouteEntry,
+  RouteComponentProps,
   RouteEntry,
   RoutingContextType,
   RoutingSubscriber,
@@ -35,7 +35,7 @@ function matchEntryPointRoutes<Params>(
  */
 function prepareMatches<Params>(
   matches: MatchedEntryPointRoute<Params>[],
-): PreparedRouteEntry<Params, unknown>[] {
+): RouteComponentProps<Params, any>[] {
   return matches.map((match) => {
     const { route, match: matchData } = match;
     const prepared = route.prepare(matchData.params);
