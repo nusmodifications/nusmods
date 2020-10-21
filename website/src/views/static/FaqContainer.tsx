@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'views/routes/Link';
 import config from 'config';
 import ExternalLink from 'views/components/ExternalLink';
 import StaticPage from './StaticPage';

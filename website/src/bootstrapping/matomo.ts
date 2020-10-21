@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { History } from 'history';
 import { each } from 'lodash';
 
@@ -68,7 +67,7 @@ export function setCustomDimensions(dimensions: { [id: number]: string }) {
 }
 
 export function trackPageView(history: History) {
-  history.listen((location, action) => {
+  return history.listen(({ action }) => {
     if (action === 'PUSH') {
       // Wait a bit for the page title to update
       setTimeout(() => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'views/routes/Link';
 import { range } from 'lodash';
 import { isSameDay, addDays } from 'date-fns';
 

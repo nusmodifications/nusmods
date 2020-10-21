@@ -1,50 +1,29 @@
-import * as React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import { scrollToHash } from 'utils/react';
-
-export type Props = RouteComponentProps & {
-  onComponentDidMount?: boolean;
-  onPathChange?: boolean;
-  scrollToHash?: boolean;
-};
 
 function scrollToTop() {
   window.scrollTo(0, 0);
 }
 
-export class ScrollToTopComponent extends React.Component<Props> {
-  static defaultProps = {
-    onComponentDidMount: false,
-    onPathChange: false,
-    scrollToHash: true,
-  };
+export type Props = {
+  onComponentDidMount?: boolean;
+  shouldScrollToHash?: boolean;
+};
 
-  componentDidMount() {
-    if (this.props.onComponentDidMount && !window.location.hash) {
+const ScrollToTop: React.FC<Props> = ({
+  onComponentDidMount = false,
+  shouldScrollToHash = true,
+}) => {
+  useEffect(() => {
+    // FIXME:  This effect runs on mount AND when any of those props change.
+    if (onComponentDidMount && !window.location.hash) {
       scrollToTop();
-    } else if (this.props.scrollToHash) {
+    } else if (shouldScrollToHash) {
       scrollToHash();
     }
-  }
+  }, [onComponentDidMount, shouldScrollToHash]);
 
-  componentDidUpdate(prevProps: Props) {
-    const {
-      onPathChange,
-      location: { pathname, hash },
-    } = this.props;
+  return null;
+};
 
-    if (
-      onPathChange &&
-      pathname !== prevProps.location.pathname &&
-      hash === prevProps.location.hash
-    ) {
-      scrollToTop();
-    }
-  }
-
-  render() {
-    return null;
-  }
-}
-
-export default withRouter(ScrollToTopComponent);
+export default ScrollToTop;

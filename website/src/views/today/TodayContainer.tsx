@@ -41,11 +41,11 @@ import { formatTime, getDayIndex } from 'utils/timify';
 import { breakpointUp } from 'utils/css';
 import { State as StoreState } from 'types/state';
 
-import DayEvents from '../DayEvents';
-import DayHeader from '../DayHeader';
-import EmptyLessonGroup from '../EmptyLessonGroup';
-import BeforeLessonCard from '../BeforeLessonCard';
-import EventMap from '../EventMap';
+import DayEvents from './DayEvents';
+import DayHeader from './DayHeader';
+import EmptyLessonGroup from './EmptyLessonGroup';
+import BeforeLessonCard from './BeforeLessonCard';
+import EventMap from './EventMap';
 import styles from './TodayContainer.scss';
 
 const EMPTY_LESSONS: ColoredLesson[] = [];

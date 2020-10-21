@@ -368,7 +368,8 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
 
 // Explicitly declare top level components for React hot reloading to work.
 const ResponsiveVenuesContainer = makeResponsive(VenuesContainerComponent, breakpointDown('sm'));
-const RoutedVenuesContainer = withRouter(ResponsiveVenuesContainer);
+// const RoutedVenuesContainer = withRouter(ResponsiveVenuesContainer);
+const RoutedVenuesContainer = ResponsiveVenuesContainer;
 const AsyncVenuesContainer = Loadable.Map<Subtract<Props, LoadedProps>, { venues: AxiosResponse }>({
   loader: {
     venues: () => axios.get(nusmods.venuesUrl(config.semester)),

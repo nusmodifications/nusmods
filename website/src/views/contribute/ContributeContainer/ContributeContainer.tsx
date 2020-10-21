@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { Link } from 'react-router-dom';
+import Link from 'views/routes/Link';
 import { flatten, map, mapValues, values } from 'lodash';
 
 import { ModuleCondensed } from 'types/modules';

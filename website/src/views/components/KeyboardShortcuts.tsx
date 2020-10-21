@@ -196,4 +196,5 @@ const KeyboardShortcutsConnected = connect((state: StoreState) => ({
   theme: state.theme.id,
 }))(KeyboardShortcutsComponent);
 
-export default withRouter(KeyboardShortcutsConnected);
+// export default withRouter(KeyboardShortcutsConnected);
+export default KeyboardShortcutsConnected;

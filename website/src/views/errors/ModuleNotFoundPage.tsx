@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'views/routes/Link';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import * as Sentry from '@sentry/browser';

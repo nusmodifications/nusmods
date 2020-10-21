@@ -106,7 +106,8 @@ export class SearchContainerComponent extends React.Component<Props> {
   }
 }
 
-const routedSearchContainer = withRouter(SearchContainerComponent);
+// const routedSearchContainer = withRouter(SearchContainerComponent);
+const routedSearchContainer = SearchContainerComponent;
 const connectedSearchContainer = connect(
   (state: State) => ({
     moduleList: state.moduleBank.moduleList,

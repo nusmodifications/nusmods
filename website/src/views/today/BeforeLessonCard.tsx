@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import classnames from 'classnames';
-import { Link } from 'react-router-dom';
+import Link from 'views/routes/Link';
 
 import { Lesson } from 'types/timetables';
 import { getStartTimeAsDate } from 'utils/timetables';

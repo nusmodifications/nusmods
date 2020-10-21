@@ -154,5 +154,6 @@ const connectedModuleArchiveContainer = connect(
   // in our Dispatch
   mapDispatchToProps as MapDispatchToPropsNonObject<DispatchProps, OwnProps>,
 )(ModuleArchiveContainerComponent);
-const routedModuleArchiveContainer = withRouter(connectedModuleArchiveContainer);
+const routedModuleArchiveContainer = connectedModuleArchiveContainer;
+// const routedModuleArchiveContainer = withRouter(connectedModuleArchiveContainer);
 export default deferComponentRender(routedModuleArchiveContainer);

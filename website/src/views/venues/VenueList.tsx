@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { groupBy, toPairs, sortBy } from 'lodash';
-import { Link, LinkProps } from 'react-router-dom';
+import Link, { LinkProps } from 'views/routes/Link';
 
 import { Venue } from 'types/venues';
 import { venuePage } from 'views/routes/paths';

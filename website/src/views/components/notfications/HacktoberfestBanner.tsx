@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Link } from 'react-router-dom';
+import Link from 'views/routes/Link';
 
 import type { EmptyProps } from 'types/utils';
 import storage from 'storage';

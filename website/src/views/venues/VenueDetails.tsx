@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import classnames from 'classnames';
 import { flatMap } from 'lodash';
+import Link from 'views/routes/Link';
 
 import { DayAvailability, TimePeriod, Venue } from 'types/venues';
 import { Lesson } from 'types/timetables';
@@ -97,4 +98,5 @@ const ResponsiveVenueDetails = makeResponsive(
   React.memo(VenueDetailsComponent),
   breakpointDown('lg'),
 );
-export default withRouter(ResponsiveVenueDetails);
+export default ResponsiveVenueDetails;
+// export default withRouter(ResponsiveVenueDetails);

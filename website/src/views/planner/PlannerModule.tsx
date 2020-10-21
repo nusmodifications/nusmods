@@ -1,6 +1,6 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { Link } from 'react-router-dom';
+import Link from 'views/routes/Link';
 import { format } from 'date-fns';
 import classnames from 'classnames';
 

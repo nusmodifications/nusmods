@@ -2,7 +2,7 @@ import * as React from 'react';
 import Downshift, { ChildrenFunction } from 'downshift';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { Link } from 'react-router-dom';
+import Link from 'views/routes/Link';
 import { AlertTriangle, Calendar, ChevronDown, Download, FileText, Image } from 'react-feather';
 
 import { Semester } from 'types/modules';

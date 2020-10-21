@@ -16,7 +16,6 @@ import { getModuleCondensed } from 'selectors/moduleBank';
 import { deserializeTimetable } from 'utils/timetables';
 import { fillColorMapping } from 'utils/colors';
 import { semesterForTimetablePage, TIMETABLE_SHARE, timetablePage } from 'views/routes/paths';
-import deferComponentRender from 'views/hocs/deferComponentRender';
 import { Repeat } from 'react-feather';
 import SemesterSwitcher from 'views/components/semester-switcher/SemesterSwitcher';
 import LoadingSpinner from 'views/components/LoadingSpinner';
@@ -66,9 +65,10 @@ export class TimetableContainerComponent extends React.PureComponent<Props, Stat
   constructor(props: Props) {
     super(props);
 
-    const { semester, match, location } = props;
-    const importedTimetable =
-      semester && match.params.action ? deserializeTimetable(location.search) : null;
+    // const { semester, match, location } = props;
+    // const importedTimetable =
+    //   semester && match.params.action ? deserializeTimetable(location.search) : null;
+    const importedTimetable = null;
 
     this.state = {
       importedTimetable,
@@ -248,5 +248,4 @@ const connectedTimetableContainer = connect(mapStateToProps, {
   undo,
 })(TimetableContainerComponent);
 
-const routedTimetableContainer = withRouter(connectedTimetableContainer);
-export default deferComponentRender(routedTimetableContainer);
+export default connectedTimetableContainer;

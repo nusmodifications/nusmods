@@ -95,5 +95,6 @@ const withStoreModRegNotification = connect(mapStateToProps, {
   openNotification,
 })(React.memo(ModRegNotificationComponent));
 
-const ModRegNotification = withRouter(withStoreModRegNotification);
+// const ModRegNotification = withRouter(withStoreModRegNotification);
+const ModRegNotification = withStoreModRegNotification;
 export default ModRegNotification;

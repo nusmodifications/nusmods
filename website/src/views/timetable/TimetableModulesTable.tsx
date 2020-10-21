@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import Link from 'views/routes/Link';
 import classnames from 'classnames';
 import { sortBy } from 'lodash';
 import produce from 'immer';

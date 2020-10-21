@@ -144,5 +144,6 @@ const connectedModulePageContainer = connect(
   // in our Dispatch
   mapDispatchToProps as MapDispatchToPropsNonObject<DispatchProps, OwnProps>,
 )(ModulePageContainerComponent);
-const routedModulePageContainer = withRouter(connectedModulePageContainer);
+// const routedModulePageContainer = withRouter(connectedModulePageContainer);
+const routedModulePageContainer = connectedModulePageContainer;
 export default deferComponentRender(routedModulePageContainer);
