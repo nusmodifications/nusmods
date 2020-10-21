@@ -4,33 +4,41 @@ import type { JSResource } from 'utils/JSResource';
 import { createContext } from 'react';
 import type { match } from 'react-router-dom';
 
-type PreparedProps = { [key: string]: JSResource<unknown> };
+// type PreparedProps = { [key: string]: JSResource<unknown> };
 
-export type EntryPointComponentProps = React.PropsWithChildren<{
-  match: match<any>;
-  prepared: { [key: string]: unknown };
+export type EntryPointComponentProps<PreparedProps, Params> = React.PropsWithChildren<{
+  match: match<Params>;
+  prepared: PreparedProps;
 }>;
 
-export interface EntryPointRouteConfig {
+export interface EntryPointRouteConfig<
+  PreparedProps,
+  Params,
+  ComponentProps = EntryPointComponentProps<Params, PreparedProps>
+> {
   key?: React.Key;
   location?: Location;
   path?: string | string[];
   exact?: boolean;
   strict?: boolean;
-  routes?: EntryPointRouteConfig[];
-  componentResource: JSResource<React.ComponentType<EntryPointComponentProps>>;
-  prepare: <Params>(matchParams: Params) => PreparedProps;
+  routes?: EntryPointRouteConfig<any, any>[];
+  componentResource: JSResource<React.ComponentType<ComponentProps>>;
+  prepare: (matchParams: Params) => PreparedProps;
 }
 
-export type RouteComponentProps<Params> = {
-  component: JSResource<React.ComponentType<EntryPointComponentProps>>;
+export type RouteComponentProps<
+  PreparedProps,
+  Params,
+  ComponentProps = EntryPointComponentProps<Params, PreparedProps>
+> = {
+  component: JSResource<React.ComponentType<ComponentProps>>;
   prepared: PreparedProps;
   routeData: match<Params>;
 };
 
 export type RouteEntry = {
   location: Location<State>;
-  entries: RouteComponentProps<unknown>[];
+  entries: RouteComponentProps<unknown, unknown>[];
 };
 
 export type RoutingSubscriber = (nextEntry: RouteEntry) => void;

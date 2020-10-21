@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
-import { match as Match, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import classnames from 'classnames';
 
 import { ModuleCode, Semester } from 'types/modules';
@@ -25,6 +25,7 @@ import SemesterSwitcher from 'views/components/semester-switcher/SemesterSwitche
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import ScrollToTop from 'views/components/ScrollToTop';
 import { State as StoreState } from 'types/state';
+import { EntryPointComponentProps } from 'views/routes/RoutingContext';
 import TimetableContent from './TimetableContent';
 
 import styles from './TimetableContainer.scss';
@@ -34,9 +35,7 @@ export type QueryParam = {
   semester: string;
 };
 
-type OwnProps = {
-  match: Match<QueryParam>;
-};
+type OwnProps = EntryPointComponentProps<unknown, QueryParam>;
 
 type Props = OwnProps & {
   modules: ModulesMap;

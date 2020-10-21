@@ -8,22 +8,21 @@ import {
   RoutingSubscriber,
 } from './RoutingContext';
 
-interface MatchedEntryPointRoute<Params extends { [K in keyof Params]?: string }>
-  extends MatchedRoute<Params> {
-  route: EntryPointRouteConfig;
+interface MatchedEntryPointRoute<PreparedProps, Params> extends MatchedRoute<Params> {
+  route: EntryPointRouteConfig<PreparedProps, Params>;
 }
 
 /**
  * Match the current location to the corresponding route entry.
  */
-function matchEntryPointRoutes<Params>(
-  routes: EntryPointRouteConfig[],
+function matchEntryPointRoutes(
+  routes: EntryPointRouteConfig<unknown, unknown>[],
   locationPathname: string,
-): MatchedEntryPointRoute<Params>[] {
+): MatchedEntryPointRoute<unknown, unknown>[] {
   const matchedRoutes = (matchRoutes(
     routes,
     locationPathname,
-  ) as unknown) as MatchedEntryPointRoute<Params>[];
+  ) as unknown) as MatchedEntryPointRoute<unknown, unknown>[];
   if (!Array.isArray(matchedRoutes) || matchedRoutes.length === 0) {
     throw new Error(`No route for ${locationPathname}`);
   }
@@ -33,9 +32,9 @@ function matchEntryPointRoutes<Params>(
 /**
  * Load the data for the matched route, given the params extracted from the route
  */
-function prepareMatches<Params>(
-  matches: MatchedEntryPointRoute<Params>[],
-): RouteComponentProps<Params, any>[] {
+function prepareMatches(
+  matches: MatchedEntryPointRoute<unknown, unknown>[],
+): RouteComponentProps<unknown, unknown>[] {
   return matches.map((match) => {
     const { route, match: matchData } = match;
     const prepared = route.prepare(matchData.params);
@@ -54,7 +53,7 @@ function prepareMatches<Params>(
  * location to the corresponding route entry, and then preloads the code and data for the route.
  */
 export default function createRouter(
-  routes: EntryPointRouteConfig[],
+  routes: EntryPointRouteConfig<unknown, unknown>[],
   options: BrowserHistoryOptions | undefined,
 ) {
   // Initialize history

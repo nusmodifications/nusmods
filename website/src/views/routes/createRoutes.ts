@@ -6,7 +6,7 @@ import venueLocationResource from 'views/components/map/venueLocationResource';
 import { EntryPointRouteConfig } from './RoutingContext';
 
 // TODO: Define entry points closer to modules
-export default function createRoutes(dispatch: Dispatch): EntryPointRouteConfig[] {
+export default function createRoutes(dispatch: Dispatch): EntryPointRouteConfig<any, any>[] {
   return [
     {
       componentResource: JSResource(
@@ -39,7 +39,9 @@ export default function createRoutes(dispatch: Dispatch): EntryPointRouteConfig[
                 /* webpackChunkName: "TimetableContainer.route" */ 'views/timetable/TimetableContainer'
               ),
           ),
-          prepare: ({ semester, action }) => ({}),
+          prepare: () => {
+            /* noop */
+          },
         },
         {
           path: '/today',

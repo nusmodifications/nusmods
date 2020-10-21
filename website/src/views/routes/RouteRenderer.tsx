@@ -128,7 +128,7 @@ const RouterRenderer: React.FC = () => {
  * our ErrorBoundary/Suspense components, so we have to ensure that the suspend/error happens
  * in a child component.
  */
-const RouteComponent: React.FC<RouteComponentProps<unknown>> = ({
+const RouteComponent: React.FC<RouteComponentProps<unknown, unknown>> = ({
   component,
   routeData,
   prepared,
