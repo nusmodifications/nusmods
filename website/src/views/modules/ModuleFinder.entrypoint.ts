@@ -1,16 +1,15 @@
 import { JSResource } from 'utils/JSResource';
-import venueLocationResource from 'views/components/map/venueLocationResource';
 import { EntryPoint } from 'views/routes/types';
 
 export type PreparedProps = unknown;
 
 const entryPoint: EntryPoint<PreparedProps> = {
   component: JSResource(
-    'Today',
-    () => import(/* webpackChunkName: "Today.route" */ './TodayContainer'),
+    'ModuleFinder',
+    () => import(/* webpackChunkName: "ModuleFinder.route" */ './ModuleFinderContainer'),
   ),
   prepare() {
-    venueLocationResource.preloadOrReloadIfError();
+    return {};
   },
 };
 

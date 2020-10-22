@@ -40,7 +40,7 @@ import MapContext from 'views/components/map/MapContext';
 import { formatTime, getDayIndex } from 'utils/timify';
 import { breakpointUp } from 'utils/css';
 import { State as StoreState } from 'types/state';
-import type { EntryPointComponentProps } from 'views/routes/EntryPointContainer';
+import type { EntryPointComponentProps } from 'views/routes/types';
 
 import DayEvents from './DayEvents';
 import DayHeader from './DayHeader';

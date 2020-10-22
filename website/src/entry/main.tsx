@@ -9,7 +9,7 @@ import 'core-js/es/promise/finally';
 import React from 'react';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { unstable_createRoot as createRoot } from 'react-dom/profiling';
+import { unstable_createRoot as createRoot } from 'react-dom';
 import ReactModal from 'react-modal';
 
 import configureStore from 'bootstrapping/configure-store';

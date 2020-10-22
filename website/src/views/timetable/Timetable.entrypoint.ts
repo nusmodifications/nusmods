@@ -1,5 +1,5 @@
 import { JSResource } from 'utils/JSResource';
-import { EntryPoint } from 'views/routes/EntryPointContainer';
+import { EntryPoint } from 'views/routes/types';
 
 const entryPoint: EntryPoint<unknown> = {
   component: JSResource(

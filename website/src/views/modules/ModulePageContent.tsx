@@ -29,12 +29,13 @@ import Title from 'views/components/Title';
 import ScrollToTop from 'views/components/ScrollToTop';
 import { Archive, Check } from 'react-feather';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
+import type { JSResource } from 'utils/JSResource';
 
 import styles from './ModulePageContent.scss';
 import ReportError from './ReportError';
 
 export type Props = {
-  module: Module;
+  module: Module | JSResource<Module>;
   archiveYear?: string;
 };
 
@@ -59,7 +60,16 @@ class ModulePageContent extends React.Component<Props, State> {
   toggleMenu = (isMenuOpen: boolean) => this.setState({ isMenuOpen });
 
   render() {
-    const { module, archiveYear } = this.props;
+    const { module: moduleOrResource, archiveYear } = this.props;
+
+    // TODO: Deprecate module: Module; always use resource
+    let module: Module;
+    if ('read' in moduleOrResource) {
+      module = moduleOrResource.read();
+    } else {
+      module = moduleOrResource;
+    }
+
     const { moduleCode, title } = module;
 
     const pageTitle = `${moduleCode} ${title}`;

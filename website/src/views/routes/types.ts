@@ -1,6 +1,6 @@
 import type { Params, PartialRouteObject, RouteObject } from 'react-router';
-import type { useDispatch } from 'react-redux';
 import type { JSResource } from 'utils/JSResource';
+import type { Dispatch } from 'types/redux';
 
 export type EntryPointComponentProps<PreparedProps> = React.PropsWithChildren<{
   params: Params;
@@ -9,7 +9,7 @@ export type EntryPointComponentProps<PreparedProps> = React.PropsWithChildren<{
 
 export type EntryPoint<PreparedProps, ComponentProps = EntryPointComponentProps<PreparedProps>> = {
   component: JSResource<React.ComponentType<ComponentProps>>;
-  prepare: (matchParams: Params, dispatch: ReturnType<typeof useDispatch>) => PreparedProps;
+  prepare: (matchParams: Params, dispatch: Dispatch) => PreparedProps;
 };
 
 export interface EntryPointRouteObject extends RouteObject {

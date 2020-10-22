@@ -7,11 +7,13 @@ import TimetableRootRedirector from 'views/timetable/TimetableRootRedirector';
 import appShellEntryPoint from 'views/AppShell.entrypoint';
 import timetableEntryPoint from 'views/timetable/Timetable.entrypoint';
 import todayEntryPoint from 'views/today/Today.entrypoint';
+import moduleFinderEntryPoint from 'views/modules/ModuleFinder.entrypoint';
+import modulePageEntryPoint from 'views/modules/ModulePage.entrypoint';
 
-// import TimetableContainer from 'views/timetable/TimetableContainer';
-// import ModulePageContainer from 'views/modules/ModulePageContainer';
+import type { Dispatch } from 'types/redux';
+import type { EntryPoint, EntryPointPartialRouteObject, EntryPointRouteObject } from './types';
+
 // import ModuleArchiveContainer from 'views/modules/ModuleArchiveContainer';
-// import ModuleFinderContainer from 'views/modules/ModuleFinderContainer';
 // import VenuesContainer from 'views/venues/VenuesContainer';
 // import SettingsContainer from 'views/settings/SettingsContainer';
 // import AboutContainer from 'views/static/AboutContainer';
@@ -26,11 +28,10 @@ import todayEntryPoint from 'views/today/Today.entrypoint';
 
 import EntryPointContainer from './EntryPointContainer';
 import { RoutePreloaderProvider } from './RoutePreloaderContext';
-import { EntryPoint, EntryPointPartialRouteObject, EntryPointRouteObject } from './types';
 
-function makeEntryPointRoute(
+function entryPointRoute(
   entryPoint: EntryPoint<any>,
-  dispatch: ReturnType<typeof useDispatch>,
+  dispatch: Dispatch,
 ): EntryPointPartialRouteObject {
   return {
     element: <EntryPointContainer entryPoint={entryPoint} />,
@@ -42,8 +43,6 @@ function makeEntryPointRoute(
   };
 }
 
-// <Route exact path="/modules" component={ModuleFinderContainer} />
-// <Route path="/modules/:moduleCode/:slug?" component={ModulePageContainer} />
 // <Route path="/archive/:moduleCode/:year/:slug?" component={ModuleArchiveContainer} />
 // <Route path="/venues/:venue?" component={VenuesContainer} />
 // today
@@ -58,9 +57,7 @@ function makeEntryPointRoute(
 // <Route path="/contributors" component={ContributorsContainer} />
 // <Route path="/apps" component={AppsContainer} />
 
-function createPartialRoutes(
-  dispatch: ReturnType<typeof useDispatch>,
-): EntryPointPartialRouteObject[] {
+function createPartialRoutes(dispatch: Dispatch): EntryPointPartialRouteObject[] {
   // IMPORTANT: Remember to update any route changes on the sitemap
   return [
     // v2 routes
@@ -79,17 +76,19 @@ function createPartialRoutes(
     // { path: '/api', element: <ExternalRedirect to="https://api.nusmods.com" appendPath /> },
 
     {
-      ...makeEntryPointRoute(appShellEntryPoint, dispatch),
+      ...entryPointRoute(appShellEntryPoint, dispatch),
       children: [
         { path: '/', element: <Navigate to="/timetable" /> },
         {
           path: '/timetable',
           children: [
-            { path: ':semester/*', ...makeEntryPointRoute(timetableEntryPoint, dispatch) },
+            { path: ':semester/*', ...entryPointRoute(timetableEntryPoint, dispatch) },
             { path: '/', element: <TimetableRootRedirector /> },
           ],
         },
-        { path: '/today', ...makeEntryPointRoute(todayEntryPoint, dispatch) },
+        { path: '/today', ...entryPointRoute(todayEntryPoint, dispatch) },
+        { path: '/modules', ...entryPointRoute(moduleFinderEntryPoint, dispatch) },
+        { path: '/modules/:moduleCode/*', ...entryPointRoute(modulePageEntryPoint, dispatch) },
 
         // 404 page
         { element: <NotFoundPage /> },
@@ -124,7 +123,7 @@ function createRoutesFromArray(array: EntryPointPartialRouteObject[]): EntryPoin
 }
 
 const Routes: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch>();
   const routes = useMemo(() => createRoutesFromArray(createPartialRoutes(dispatch)), [dispatch]);
   const element = useRoutes(routes);
   return <RoutePreloaderProvider routes={routes}>{element}</RoutePreloaderProvider>;

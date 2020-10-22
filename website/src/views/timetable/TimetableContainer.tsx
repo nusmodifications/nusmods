@@ -23,7 +23,8 @@ import SemesterSwitcher from 'views/components/semester-switcher/SemesterSwitche
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import ScrollToTop from 'views/components/ScrollToTop';
 import { State } from 'types/state';
-import type { EntryPointComponentProps } from 'views/routes/EntryPointContainer';
+import type { EntryPointComponentProps } from 'views/routes/types';
+import type { Dispatch } from 'types/redux';
 import TimetableContent from './TimetableContent';
 
 import styles from './TimetableContainer.scss';
@@ -59,7 +60,7 @@ export const TimetableContainerComponent: React.FC<Props> = () => {
   const modules = useSelector((state: State) => state.moduleBank.modules);
   const activeSemester = useSelector((state: State) => state.app.activeSemester);
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch>();
 
   const [importedTimetable, setImportedTimetable] = useState(() =>
     semester && action ? deserializeTimetable(location.search) : null,
