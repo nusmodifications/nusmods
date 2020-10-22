@@ -59,7 +59,7 @@ const semesterNameMap: Record<string, number> = {
   'Special Sem 2': 4,
 };
 
-export type OwnProps = TimerData & EntryPointComponentProps<{}, {}>;
+export type OwnProps = TimerData & EntryPointComponentProps<unknown, unknown>;
 
 export type Props = OwnProps &
   Readonly<{
