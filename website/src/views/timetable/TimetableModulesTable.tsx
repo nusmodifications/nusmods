@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import Link from 'views/routes/Link';
+import { PreloadingLink } from 'views/routes/PreloadingLink';
 import classnames from 'classnames';
 import { sortBy } from 'lodash';
 import produce from 'immer';
@@ -121,9 +121,9 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
         </div>
         <div className={styles.moduleInfo}>
           {!readOnly && renderModuleActions(module)}
-          <Link to={modulePage(module.moduleCode, module.title)}>
+          <PreloadingLink to={modulePage(module.moduleCode, module.title)}>
             {module.moduleCode} {module.title}
-          </Link>
+          </PreloadingLink>
           <div className={styles.moduleExam}>{intersperse(secondRowText, BULLET_NBSP)}</div>
         </div>
       </>

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import _ from 'lodash';
-import { Link, MemoryRouter } from 'react-router-dom';
+import { PreloadingLink, MemoryRouter } from 'react-router-dom';
 
 import { ModuleWithColor } from 'types/views';
 import mockModules from '__mocks__/modules';
@@ -72,7 +72,7 @@ describe(ExamCalendar, () => {
 
     expect(
       wrapper
-        .find(Link)
+        .find(PreloadingLink)
         .map((element) => element.find(`.${styles.moduleCode}`).text())
         .sort(),
     ).toEqual(['ACC2002', 'CS1010S', 'GES1021', 'PC1222']);
@@ -81,7 +81,7 @@ describe(ExamCalendar, () => {
   test('show modules outside the two week exam period', () => {
     const wrapper = make([(GER1000 as unknown) as ModuleWithColor]);
 
-    expect(wrapper.find(Link)).toHaveLength(1);
+    expect(wrapper.find(PreloadingLink)).toHaveLength(1);
     expect(wrapper.find('tbody tr')).toHaveLength(TR_PER_WEEK);
   });
 
@@ -90,7 +90,7 @@ describe(ExamCalendar, () => {
     modules[0].hiddenInTimetable = true;
     const wrapper = make(modules);
 
-    expect(wrapper.find(Link)).toHaveLength(3);
+    expect(wrapper.find(PreloadingLink)).toHaveLength(3);
   });
 });
 

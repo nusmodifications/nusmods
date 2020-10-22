@@ -8,7 +8,7 @@ import ExternalLink from 'views/components/ExternalLink';
 import { timetablePage } from 'views/routes/paths';
 import { preload as preloadVenues } from 'views/venues/VenuesContainer';
 import { preload as preloadContribute } from 'views/contribute/ContributeContainer';
-import NavLink from 'views/routes/NavLink';
+import { PreloadingNavLink } from 'views/routes/PreloadingLink';
 import { State } from 'types/state';
 
 import styles from './Navtabs.scss';
@@ -27,40 +27,45 @@ const tabProps = {
 
 export const NavtabsComponent = memo<Props>(({ activeSemester, beta }) => (
   <nav className={styles.nav}>
-    <NavLink {...tabProps} to="/today">
+    <PreloadingNavLink {...tabProps} to="/today">
       <Clock />
       <span className={styles.title}>Today</span>
-    </NavLink>
-    <NavLink {...tabProps} to={timetablePage(activeSemester)}>
+    </PreloadingNavLink>
+    <PreloadingNavLink {...tabProps} to={timetablePage(activeSemester)}>
       <Calendar />
       <span className={styles.title}>Timetable</span>
-    </NavLink>
-    <NavLink
+    </PreloadingNavLink>
+    <PreloadingNavLink
       {...tabProps}
       to={{ pathname: '/modules', search: '?sem[0]=1&sem[1]=2&sem[2]=3&sem[3]=4' }}
     >
       <BookOpen />
       <span className={styles.title}>Modules</span>
-    </NavLink>
-    <NavLink {...tabProps} to="/venues" onMouseOver={preloadVenues} onFocus={preloadVenues}>
+    </PreloadingNavLink>
+    <PreloadingNavLink
+      {...tabProps}
+      to="/venues"
+      onMouseOver={preloadVenues}
+      onFocus={preloadVenues}
+    >
       <Map />
       <span className={styles.title}>Venues</span>
-    </NavLink>
+    </PreloadingNavLink>
     {beta && (
-      <NavLink
+      <PreloadingNavLink
         {...tabProps}
         className={classnames(tabProps.className, styles.hiddenOnMobile)}
         to="/planner"
       >
         <Trello />
         <span className={styles.title}>Planner</span>
-      </NavLink>
+      </PreloadingNavLink>
     )}
-    <NavLink {...tabProps} to="/settings">
+    <PreloadingNavLink {...tabProps} to="/settings">
       <Settings />
       <span className={styles.title}>Settings</span>
-    </NavLink>
-    <NavLink
+    </PreloadingNavLink>
+    <PreloadingNavLink
       {...tabProps}
       className={classnames(tabProps.className, styles.hiddenOnMobile)}
       onMouseOver={preloadContribute}
@@ -69,7 +74,7 @@ export const NavtabsComponent = memo<Props>(({ activeSemester, beta }) => (
     >
       <Star />
       <span className={styles.title}>Contribute</span>
-    </NavLink>
+    </PreloadingNavLink>
     <div className={styles.divider} />
     <ExternalLink
       className={classnames(tabProps.className, styles.hiddenOnMobile)}

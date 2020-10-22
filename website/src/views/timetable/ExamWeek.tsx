@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'views/routes/Link';
+import { PreloadingLink } from 'views/routes/PreloadingLink';
 import { range } from 'lodash';
 import { isSameDay, addDays } from 'date-fns';
 
@@ -25,13 +25,13 @@ function getExamDate(date: Date): string {
 }
 
 const ExamModule: React.FC<{ module: ModuleWithColor }> = ({ module }) => (
-  <Link
+  <PreloadingLink
     to={modulePage(module.moduleCode, module.title)}
     className={`hoverable color-${module.colorIndex}`}
   >
     <div className={styles.moduleCode}>{module.moduleCode}</div>
     <div className={styles.moduleTitle}>{module.title}</div>
-  </Link>
+  </PreloadingLink>
 );
 
 const ExamWeekComponent: React.FC<Props> = (props) => {

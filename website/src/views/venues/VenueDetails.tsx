@@ -2,7 +2,7 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import classnames from 'classnames';
 import { flatMap } from 'lodash';
-import Link from 'views/routes/Link';
+import { PreloadingLink } from 'views/routes/PreloadingLink';
 
 import { DayAvailability, TimePeriod, Venue } from 'types/venues';
 import { Lesson } from 'types/timetables';
@@ -51,7 +51,7 @@ export const VenueDetailsComponent: React.FC<Props> = (props) => {
       <Title description={`NUS classroom timetable for ${venue}`}>{`${venue} - Venues`}</Title>
 
       <header className={styles.header}>
-        <Link
+        <PreloadingLink
           className={classnames('btn btn-link btn-svg', {
             disabled: !previous,
           })}
@@ -61,9 +61,9 @@ export const VenueDetailsComponent: React.FC<Props> = (props) => {
           }}
         >
           <ChevronLeft /> {previous}
-        </Link>
+        </PreloadingLink>
         <h1>{venue}</h1>
-        <Link
+        <PreloadingLink
           className={classnames('btn btn-link btn-svg', {
             disabled: !next,
           })}
@@ -73,7 +73,7 @@ export const VenueDetailsComponent: React.FC<Props> = (props) => {
           }}
         >
           {next} <ChevronRight />
-        </Link>
+        </PreloadingLink>
       </header>
 
       <div className={styles.location}>

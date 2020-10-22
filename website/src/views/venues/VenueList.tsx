@@ -1,7 +1,8 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { groupBy, toPairs, sortBy } from 'lodash';
-import Link, { LinkProps } from 'views/routes/Link';
+import type { LinkProps } from 'react-router-dom';
+import { PreloadingLink } from 'views/routes/PreloadingLink';
 
 import { Venue } from 'types/venues';
 import { venuePage } from 'views/routes/paths';
@@ -29,7 +30,7 @@ const VenueList: React.FC<Props> = (props) => {
           <ul className={styles.subList}>
             {venues.map((venue) => (
               <li key={venue}>
-                <Link
+                <PreloadingLink
                   to={{
                     pathname: venuePage(venue),
                     search: window.location.search,
@@ -41,7 +42,7 @@ const VenueList: React.FC<Props> = (props) => {
                   {...props.linkProps}
                 >
                   {venue}
-                </Link>
+                </PreloadingLink>
               </li>
             ))}
           </ul>

@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import Link from 'views/routes/Link';
+import { PreloadingLink } from 'views/routes/PreloadingLink';
 
 import type { EmptyProps } from 'types/utils';
 import storage from 'storage';
@@ -45,9 +45,9 @@ export default class HacktoberfestBanner extends React.PureComponent<Props, Stat
         </div>
 
         <div className={styles.buttons}>
-          <Link to="/hacktoberfest" className="btn btn-info">
+          <PreloadingLink to="/hacktoberfest" className="btn btn-info">
             Find out more
-          </Link>
+          </PreloadingLink>
 
           <CloseButton className={styles.closeButton} onClick={this.dismiss} />
         </div>

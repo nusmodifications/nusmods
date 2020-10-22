@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'views/routes/Link';
+import { PreloadingLink } from 'views/routes/PreloadingLink';
 import classnames from 'classnames';
 
 import { ModuleInformation } from 'types/modules';
@@ -32,7 +32,7 @@ const ModuleFinderItem: React.FC<Props> = ({ module, highlight = {} }) => {
         <div className="col-lg-8 col-md-12 col-sm-8">
           <header>
             <h2 className={styles.modulesTitle}>
-              <Link to={modulePage(module.moduleCode, module.title)}>
+              <PreloadingLink to={modulePage(module.moduleCode, module.title)}>
                 <span
                   dangerouslySetInnerHTML={mergeModuleHighlight(
                     module.moduleCode,
@@ -42,7 +42,7 @@ const ModuleFinderItem: React.FC<Props> = ({ module, highlight = {} }) => {
                 <span
                   dangerouslySetInnerHTML={mergeModuleHighlight(module.title, highlight.title)}
                 />
-              </Link>
+              </PreloadingLink>
             </h2>
             <p>
               {intersperse(

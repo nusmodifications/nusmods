@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { AxiosError } from 'axios';
 import { connect, MapDispatchToPropsNonObject } from 'react-redux';
-import { match as Match, Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
+import { match as Match, Navigate, RouteComponentProps, withRouter } from 'react-router-dom';
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import { get } from 'lodash';
 
@@ -103,7 +103,7 @@ export class ModuleArchiveContainerComponent extends React.PureComponent<Props, 
     if (module) {
       const canonicalUrl = moduleArchive(moduleCode, archiveYear, module.title);
       if (match.url !== canonicalUrl) {
-        return <Redirect to={{ ...location, pathname: canonicalUrl }} />;
+        return <Navigate to={{ ...location, pathname: canonicalUrl }} />;
       }
     }
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import Link from 'views/routes/Link';
+import { PreloadingLink } from 'views/routes/PreloadingLink';
 import { flatten, map, mapValues, values } from 'lodash';
 
 import { ModuleCondensed } from 'types/modules';
@@ -83,14 +83,14 @@ const ContributeContainer = React.memo<Props>(({ modules, beta, ...props }) => (
               <h4>{config.semesterNames[semester]}</h4>
               <div className={styles.reviewWrapper}>
                 {moduleCondensed.map(({ moduleCode, title }) => (
-                  <Link
+                  <PreloadingLink
                     key={moduleCode}
                     className={classnames(styles.reviewButton, 'btn btn-outline-primary')}
                     to={`${modulePage(moduleCode, title)}#reviews`}
                     target="_blank"
                   >
                     Review <span className={styles.reviewModuleCode}>{moduleCode}</span> {title}
-                  </Link>
+                  </PreloadingLink>
                 ))}
               </div>
             </React.Fragment>
@@ -145,8 +145,8 @@ const ContributeContainer = React.memo<Props>(({ modules, beta, ...props }) => (
               </button>
             </p>
             <p>
-              Go to <Link to="/settings#beta">settings</Link> if you wish to stop using NUSMods
-              Beta.
+              Go to <PreloadingLink to="/settings#beta">settings</PreloadingLink> if you wish to
+              stop using NUSMods Beta.
             </p>
           </>
         ) : (
@@ -297,9 +297,9 @@ const ContributeContainer = React.memo<Props>(({ modules, beta, ...props }) => (
       <ContributorList size={12} />
 
       <p className="text-right">
-        <Link to="/contributors" className="btn btn-outline-primary">
+        <PreloadingLink to="/contributors" className="btn btn-outline-primary">
           View all contributors →
-        </Link>
+        </PreloadingLink>
       </p>
     </section>
 

@@ -1,11 +1,10 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Navigate, useParams, useNavigate, useLocation } from 'react-router-dom';
 import classnames from 'classnames';
 
 import { ModuleCode, Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
-import { ColorMapping, ModulesMap, NotificationOptions } from 'types/reducers';
 
 import { selectSemester as selectSemesterAction } from 'actions/settings';
 import { getSemesterTimetable } from 'selectors/timetables';
@@ -19,13 +18,12 @@ import { getModuleCondensed } from 'selectors/moduleBank';
 import { deserializeTimetable } from 'utils/timetables';
 import { fillColorMapping } from 'utils/colors';
 import { semesterForTimetablePage, TIMETABLE_SHARE, timetablePage } from 'views/routes/paths';
-import { useHistory } from 'views/routes/hooks';
 import { Repeat } from 'react-feather';
 import SemesterSwitcher from 'views/components/semester-switcher/SemesterSwitcher';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import ScrollToTop from 'views/components/ScrollToTop';
-import { State as StoreState } from 'types/state';
-import { EntryPointComponentProps } from 'views/routes/RoutingContext';
+import { State } from 'types/state';
+import type { EntryPointComponentProps } from 'views/routes/EntryPointContainer';
 import TimetableContent from './TimetableContent';
 
 import styles from './TimetableContainer.scss';
@@ -35,26 +33,7 @@ export type QueryParam = {
   semester: string;
 };
 
-type OwnProps = EntryPointComponentProps<unknown, QueryParam>;
-
-type Props = OwnProps & {
-  modules: ModulesMap;
-  semester: Semester | null;
-  activeSemester: Semester;
-  timetable: SemTimetableConfig;
-  colors: ColorMapping;
-
-  isValidModule: (moduleCode: ModuleCode) => boolean;
-  selectSemesterProp: (semester: Semester) => void;
-  setTimetableProp: (
-    semester: Semester,
-    semTimetableConfig: SemTimetableConfig,
-    colorMapping: ColorMapping,
-  ) => void;
-  fetchTimetableModulesProp: (semTimetableConfig: SemTimetableConfig[]) => void;
-  openNotificationProp: (str: string, notificationOptions: NotificationOptions) => void;
-  undoProp: () => void;
-};
+type Props = EntryPointComponentProps<unknown>;
 
 /**
  * Manages semester switching and sync/shared timetables
@@ -62,206 +41,180 @@ type Props = OwnProps & {
  * - Import timetable data from query string if action is defined
  * - Create the UI for the user to confirm their actions
  */
-export const TimetableContainerComponent = memo<Props>(
-  ({
-    match,
+export const TimetableContainerComponent: React.FC<Props> = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const params = useParams();
+  const action = params['*'];
 
-    modules,
-    semester,
-    activeSemester,
-    timetable,
-    colors,
+  const semester = useMemo(() => semesterForTimetablePage(params.semester), [params.semester]);
 
-    isValidModule,
-    selectSemesterProp,
-    setTimetableProp,
-    fetchTimetableModulesProp,
-    openNotificationProp,
-    undoProp,
-  }) => {
-    const history = useHistory();
-    const { location } = history;
-    const { action } = match.params;
+  const { timetable, colors } = useSelector((state: State) =>
+    semester ? getSemesterTimetable(semester, state.timetables) : { timetable: {}, colors: {} },
+  );
+  const getModule = useSelector((state: State) => getModuleCondensed(state.moduleBank));
+  const isValidModule = useCallback((moduleCode: ModuleCode) => !!getModule(moduleCode), [
+    getModule,
+  ]);
+  const modules = useSelector((state: State) => state.moduleBank.modules);
+  const activeSemester = useSelector((state: State) => state.app.activeSemester);
 
-    const [importedTimetable, setImportedTimetable] = useState(() =>
-      semester && action ? deserializeTimetable(location.search) : null,
-    );
+  const dispatch = useDispatch();
 
-    useEffect(() => {
-      // TODO: Preload this
-      if (importedTimetable) {
-        fetchTimetableModulesProp([importedTimetable]);
-      }
-    }, [fetchTimetableModulesProp, importedTimetable]);
+  const [importedTimetable, setImportedTimetable] = useState(() =>
+    semester && action ? deserializeTimetable(location.search) : null,
+  );
 
-    const selectSemester = useCallback(
-      (selectedSemester: Semester) => {
-        selectSemesterProp(selectedSemester);
+  useEffect(() => {
+    // TODO: Preload this
+    if (importedTimetable) {
+      dispatch(fetchTimetableModulesAction([importedTimetable]));
+    }
+  }, [dispatch, importedTimetable]);
 
-        history.push({
-          ...location,
-          pathname: timetablePage(selectedSemester),
-        });
-      },
-      [history, location, selectSemesterProp],
-    );
+  const selectSemester = useCallback(
+    (selectedSemester: Semester) => {
+      dispatch(selectSemesterAction(selectedSemester));
 
-    const isLoading = useMemo(() => {
-      // Check that all modules are fully loaded into the ModuleBank
-      const moduleCodes = new Set(Object.keys(timetable));
-      if (importedTimetable) {
-        Object.keys(importedTimetable)
-          .filter(isValidModule)
-          .forEach((moduleCode) => moduleCodes.add(moduleCode));
-      }
+      navigate({
+        ...location,
+        pathname: timetablePage(selectedSemester),
+      });
+    },
+    [dispatch, location, navigate],
+  );
 
-      // TODO: Account for loading error
-      return Array.from(moduleCodes).some((moduleCode) => !modules[moduleCode]);
-    }, [importedTimetable, isValidModule, modules, timetable]);
+  const isLoading = useMemo(() => {
+    // Check that all modules are fully loaded into the ModuleBank
+    const moduleCodes = new Set(Object.keys(timetable));
+    if (importedTimetable) {
+      Object.keys(importedTimetable)
+        .filter(isValidModule)
+        .forEach((moduleCode) => moduleCodes.add(moduleCode));
+    }
 
-    const clearImportedTimetable = useCallback(() => {
-      if (semester) {
-        setImportedTimetable(null);
-        history.push(timetablePage(semester));
-      }
-    }, [history, semester]);
+    // TODO: Account for loading error
+    return Array.from(moduleCodes).some((moduleCode) => !modules[moduleCode]);
+  }, [importedTimetable, isValidModule, modules, timetable]);
 
-    const importTimetable = useCallback(
-      (guaranteedSemester: Semester, sharedTimetable: SemTimetableConfig) => {
-        const filledColors = fillColorMapping(sharedTimetable, colors);
-        setTimetableProp(guaranteedSemester, sharedTimetable, filledColors);
-        clearImportedTimetable();
+  const clearImportedTimetable = useCallback(() => {
+    if (semester) {
+      setImportedTimetable(null);
+      navigate(timetablePage(semester));
+    }
+  }, [navigate, semester]);
 
-        openNotificationProp('Timetable imported', {
+  const importTimetable = useCallback(
+    (guaranteedSemester: Semester, sharedTimetable: SemTimetableConfig) => {
+      const filledColors = fillColorMapping(sharedTimetable, colors);
+      dispatch(setTimetableAction(guaranteedSemester, sharedTimetable, filledColors));
+      clearImportedTimetable();
+
+      dispatch(
+        openNotificationAction('Timetable imported', {
           timeout: 12000,
           overwritable: true,
           action: {
             text: 'Undo',
-            handler: undoProp,
+            handler: () => !!dispatch(undoAction),
           },
-        });
-      },
-      [clearImportedTimetable, colors, openNotificationProp, setTimetableProp, undoProp],
-    );
+        }),
+      );
+    },
+    [clearImportedTimetable, colors, dispatch],
+  );
 
-    const renderSharingHeader = useCallback(
-      (guaranteedSemester: Semester, sharedTimetable: SemTimetableConfig) => {
-        return (
-          <div className={classnames('alert', 'alert-success', styles.importAlert)}>
-            <Repeat />
+  const renderSharingHeader = useCallback(
+    (guaranteedSemester: Semester, sharedTimetable: SemTimetableConfig) => {
+      return (
+        <div className={classnames('alert', 'alert-success', styles.importAlert)}>
+          <Repeat />
 
-            <div className={classnames('row', styles.row)}>
-              <div className={classnames('col')}>
-                <h3>This timetable was shared with you</h3>
-                <p>
-                  Clicking import will <strong>replace</strong> your saved timetable with the one
-                  below.
-                </p>
-              </div>
+          <div className={classnames('row', styles.row)}>
+            <div className={classnames('col')}>
+              <h3>This timetable was shared with you</h3>
+              <p>
+                Clicking import will <strong>replace</strong> your saved timetable with the one
+                below.
+              </p>
+            </div>
 
-              <div className={classnames('col-md-auto', styles.actions)}>
-                <button
-                  className="btn btn-success"
-                  type="button"
-                  onClick={() => importTimetable(guaranteedSemester, sharedTimetable)}
-                >
-                  Import
-                </button>
-                <button
-                  className="btn btn-outline-primary"
-                  type="button"
-                  onClick={clearImportedTimetable}
-                >
-                  Back to saved timetable
-                </button>
-              </div>
+            <div className={classnames('col-md-auto', styles.actions)}>
+              <button
+                className="btn btn-success"
+                type="button"
+                onClick={() => importTimetable(guaranteedSemester, sharedTimetable)}
+              >
+                Import
+              </button>
+              <button
+                className="btn btn-outline-primary"
+                type="button"
+                onClick={clearImportedTimetable}
+              >
+                Back to saved timetable
+              </button>
             </div>
           </div>
-        );
-      },
-      [clearImportedTimetable, importTimetable],
-    );
+        </div>
+      );
+    },
+    [clearImportedTimetable, importTimetable],
+  );
 
-    const renderTimetableHeader = useCallback(
-      (guaranteedSemester: Semester, readOnly?: boolean) => {
-        return (
-          <SemesterSwitcher
-            semester={guaranteedSemester}
-            onSelectSemester={selectSemester}
-            readOnly={readOnly}
-          />
-        );
-      },
-      [selectSemester],
-    );
-
-    // 1. If the URL doesn't look correct, we'll direct the user to the home page
-    if (semester == null || (action && action !== TIMETABLE_SHARE)) {
-      return <Redirect to={timetablePage(activeSemester)} />;
-    }
-
-    // 2. If we are importing a timetable, check that all imported modules are
-    //    loaded first, and display a spinner if they're not.
-    if (isLoading) {
-      return <LoadingSpinner />;
-    }
-
-    // 3. Construct the color map
-    const displayedTimetable = importedTimetable || timetable;
-    const filledColors = fillColorMapping(displayedTimetable, colors);
-
-    // 4. If there is an imported timetable, we show the sharing header which
-    //    asks the user if they want to import the shared timetable
-    const header = importedTimetable ? (
-      <>
-        {renderSharingHeader(semester, importedTimetable)}
-        {renderTimetableHeader(semester, true)}
-      </>
-    ) : (
-      renderTimetableHeader(semester)
-    );
-
-    return (
-      <div>
-        <ScrollToTop onComponentDidMount />
-
-        <TimetableContent
-          key={semester}
-          semester={semester}
-          timetable={displayedTimetable}
-          colors={filledColors}
-          header={header}
-          readOnly={!!importedTimetable}
+  const renderTimetableHeader = useCallback(
+    (guaranteedSemester: Semester, readOnly?: boolean) => {
+      return (
+        <SemesterSwitcher
+          semester={guaranteedSemester}
+          onSelectSemester={selectSemester}
+          readOnly={readOnly}
         />
-      </div>
-    );
-  },
-);
+      );
+    },
+    [selectSemester],
+  );
 
-const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
-  const semester = semesterForTimetablePage(ownProps.match.params.semester);
-  const { timetable, colors } = semester
-    ? getSemesterTimetable(semester, state.timetables)
-    : { timetable: {}, colors: {} };
-  const getModule = getModuleCondensed(state.moduleBank);
+  // 1. If the URL doesn't look correct, we'll direct the user to the home page
+  if (semester == null || (action && action !== TIMETABLE_SHARE)) {
+    return <Navigate to={timetablePage(activeSemester)} />;
+  }
 
-  return {
-    semester,
-    timetable,
-    colors,
-    isValidModule: (moduleCode: ModuleCode) => !!getModule(moduleCode),
-    modules: state.moduleBank.modules,
-    activeSemester: state.app.activeSemester,
-  };
+  // 2. If we are importing a timetable, check that all imported modules are
+  //    loaded first, and display a spinner if they're not.
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  // 3. Construct the color map
+  const displayedTimetable = importedTimetable || timetable;
+  const filledColors = fillColorMapping(displayedTimetable, colors);
+
+  // 4. If there is an imported timetable, we show the sharing header which
+  //    asks the user if they want to import the shared timetable
+  const header = importedTimetable ? (
+    <>
+      {renderSharingHeader(semester, importedTimetable)}
+      {renderTimetableHeader(semester, true)}
+    </>
+  ) : (
+    renderTimetableHeader(semester)
+  );
+
+  return (
+    <div>
+      <ScrollToTop onComponentDidMount />
+
+      <TimetableContent
+        key={semester}
+        semester={semester}
+        timetable={displayedTimetable}
+        colors={filledColors}
+        header={header}
+        readOnly={!!importedTimetable}
+      />
+    </div>
+  );
 };
 
-// Explicitly declare top level components for React hot reloading to work.
-const connectedTimetableContainer = connect(mapStateToProps, {
-  selectSemesterProp: selectSemesterAction,
-  setTimetableProp: setTimetableAction,
-  fetchTimetableModulesProp: fetchTimetableModulesAction,
-  openNotificationProp: openNotificationAction,
-  undoProp: undoAction,
-})(TimetableContainerComponent);
-
-export default connectedTimetableContainer;
+export default memo(TimetableContainerComponent);

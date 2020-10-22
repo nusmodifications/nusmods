@@ -94,6 +94,9 @@ class Resource<Result> {
     if (this.error !== null) {
       throw this.error;
     }
+    if (this.promise === null) {
+      throw new Error('preload() must be called before read().');
+    }
     throw this.promise;
   }
 

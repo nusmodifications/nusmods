@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { SemTimetableConfig } from 'types/timetables';
 import { ModulesMap } from 'types/reducers';
@@ -67,7 +67,7 @@ describe(TimetableContainerComponent, () => {
   }
 
   function expectRedirect(wrapper: ShallowWrapper, to = timetablePage(1)) {
-    expect(wrapper.type()).toEqual(Redirect);
+    expect(wrapper.type()).toEqual(Navigate);
     expect(wrapper.prop('to')).toEqual(to);
   }
 

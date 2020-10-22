@@ -8,6 +8,7 @@ import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { each } from 'lodash';
+import { useLocation } from 'react-router-dom';
 
 import weekText from 'utils/weekText';
 import { captureException } from 'utils/error';
@@ -21,6 +22,7 @@ import Navtabs from 'views/layout/Navtabs';
 import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
 import Notification from 'views/components/notfications/Notification';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
+import { PreloadingNavLink } from 'views/routes/PreloadingLink';
 import ErrorPage from 'views/errors/ErrorPage';
 import ApiError from 'views/errors/ApiError';
 import { trackPageView } from 'bootstrapping/matomo';
@@ -31,9 +33,6 @@ import type { JSResource } from 'utils/JSResource';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
 import KeyboardShortcuts from './components/KeyboardShortcuts';
-import NavLink from './routes/NavLink';
-import RoutingContext from './routes/RoutingContext';
-import { useLocation } from './routes/hooks';
 
 import styles from './AppShell.scss';
 
@@ -74,14 +73,14 @@ export const AppShellComponent: React.FC<Props> = ({
   const location = useLocation();
 
   // Enable Matomo analytics
-  const router = useContext(RoutingContext);
-  useEffect(() => {
-    if (router) {
-      // Unsubscribe when router changes or on unmount
-      return trackPageView(router.history);
-    }
-    return undefined;
-  }, [router]);
+  // const router = useContext(RoutingContext);
+  // useEffect(() => {
+  //   if (router) {
+  //     // Unsubscribe when router changes or on unmount
+  //     return trackPageView(router.history);
+  //   }
+  //   return undefined;
+  // }, [router]);
 
   const fetchTimetableModules = useCallback(
     (timetable: SemTimetableConfig, semester: Semester) => {
@@ -134,9 +133,9 @@ export const AppShellComponent: React.FC<Props> = ({
       </Helmet>
 
       <nav className={styles.navbar}>
-        <NavLink className={styles.brand} to="/" title="Home">
+        <PreloadingNavLink className={styles.brand} to="/" title="Home">
           <Logo className={styles.brandLogo} title="NUSMods" />
-        </NavLink>
+        </PreloadingNavLink>
 
         <div className={styles.navRight}>
           <ErrorBoundary>

@@ -2,7 +2,7 @@ import * as React from 'react';
 import Downshift, { ChildrenFunction } from 'downshift';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import Link from 'views/routes/Link';
+import { PreloadingLink } from 'views/routes/PreloadingLink';
 import { AlertTriangle, Calendar, ChevronDown, Download, FileText, Image } from 'react-feather';
 
 import { Semester } from 'types/modules';
@@ -132,9 +132,9 @@ export class ExportMenuComponent extends React.PureComponent<Props, State> {
             <p>The calendar you have just downloaded may not work with the macOS Calendar app.</p>
           </div>
           <div className={styles.modalButtons}>
-            <Link to="/faq#mac-calendar" className="btn btn-outline-primary">
+            <PreloadingLink to="/faq#mac-calendar" className="btn btn-outline-primary">
               Find out more
-            </Link>
+            </PreloadingLink>
             <button type="button" className="btn btn-primary" onClick={this.closeMacOSWarningModal}>
               Gotcha
             </button>

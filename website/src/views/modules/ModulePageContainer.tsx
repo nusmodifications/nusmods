@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { AxiosError } from 'axios';
 import { connect, MapDispatchToPropsNonObject } from 'react-redux';
-import { match as Match, Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
+import { match as Match, Navigate, RouteComponentProps, withRouter } from 'react-router-dom';
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import { get } from 'lodash';
 
@@ -103,9 +103,9 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
       return <ApiError dataName="module information" retry={this.fetchModule} />;
     }
 
-    // Redirect to canonical URL
+    // Navigate to canonical URL
     if (module && match.url !== modulePage(moduleCode, module.title)) {
-      return <Redirect to={{ ...location, pathname: modulePage(moduleCode, module.title) }} />;
+      return <Navigate to={{ ...location, pathname: modulePage(moduleCode, module.title) }} />;
     }
 
     if (module && ModulePageContent) {

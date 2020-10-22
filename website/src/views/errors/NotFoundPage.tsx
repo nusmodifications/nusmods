@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Link from 'views/routes/Link';
+import { Link } from 'react-router-dom';
 import * as Sentry from '@sentry/browser';
 
 import RandomKawaii from 'views/components/RandomKawaii';

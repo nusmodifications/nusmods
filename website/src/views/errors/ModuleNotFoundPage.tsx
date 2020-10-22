@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Link from 'views/routes/Link';
+import { PreloadingLink } from 'views/routes/PreloadingLink';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import * as Sentry from '@sentry/browser';
@@ -63,21 +63,21 @@ export class ModuleNotFoundPageComponent extends React.PureComponent<Props> {
 
             <div className={styles.buttons}>
               {this.props.availableArchive.map((year) => (
-                <Link
+                <PreloadingLink
                   className="btn btn-outline-primary"
                   to={moduleArchive(moduleCode, year)}
                   key={year}
                 >
                   AY
                   {year} archive
-                </Link>
+                </PreloadingLink>
               ))}
             </div>
 
             <p>
               Otherwise, if this is not what you are looking for,{' '}
-              <Link to="/">go back to nusmods.com</Link> or{' '}
-              <Link to="/modules">try the module finder</Link>.
+              <PreloadingLink to="/">go back to nusmods.com</PreloadingLink> or{' '}
+              <PreloadingLink to="/modules">try the module finder</PreloadingLink>.
             </p>
           </>
         ) : (
@@ -103,9 +103,9 @@ export class ModuleNotFoundPageComponent extends React.PureComponent<Props> {
               >
                 {moduleCode} should be here
               </button>
-              <Link className="btn btn-primary" to="/">
+              <PreloadingLink className="btn btn-primary" to="/">
                 Bring me home
-              </Link>
+              </PreloadingLink>
             </div>
           </>
         )}

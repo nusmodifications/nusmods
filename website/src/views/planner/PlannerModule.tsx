@@ -1,6 +1,6 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import Link from 'views/routes/Link';
+import { PreloadingLink } from 'views/routes/PreloadingLink';
 import { format } from 'date-fns';
 import classnames from 'classnames';
 
@@ -139,7 +139,7 @@ const PlannerModule = React.memo<Props>((props) => {
             {moduleCode || 'Select Module'} <ChevronDown />
           </button>{' '}
           {moduleCode && moduleTitle && (
-            <Link to={modulePage(moduleCode, moduleTitle)}>{moduleTitle}</Link>
+            <PreloadingLink to={modulePage(moduleCode, moduleTitle)}>{moduleTitle}</PreloadingLink>
           )}
         </>
       );
@@ -193,9 +193,9 @@ const PlannerModule = React.memo<Props>((props) => {
                 </>
               ) : (
                 moduleCode && (
-                  <Link className="d-block" to={modulePage(moduleCode, moduleTitle)}>
+                  <PreloadingLink className="d-block" to={modulePage(moduleCode, moduleTitle)}>
                     <strong>{moduleCode}</strong> {moduleTitle}
-                  </Link>
+                  </PreloadingLink>
                 )
               )}
             </div>

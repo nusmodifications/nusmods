@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 import { Module, ModuleCode } from 'types/modules';
 import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
@@ -36,7 +36,7 @@ function make(moduleCode: ModuleCode, url: string, options: Partial<MakeContaine
 }
 
 function assertRedirect(component: ShallowWrapper, redirectTo = CANONICAL) {
-  expect(component.type()).toEqual(Redirect);
+  expect(component.type()).toEqual(Navigate);
   expect(component.props()).toMatchObject({ to: { pathname: redirectTo } });
 }
 
