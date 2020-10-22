@@ -30,7 +30,8 @@ import { HIGHLIGHT_OPTIONS } from 'utils/elasticSearch';
 import config from 'config';
 import styles from './ModuleFinderContainer.scss';
 
-const esHostUrl = `${forceElasticsearchHost() || config.elasticsearchBaseUrl}/modules`;
+const esIndex = 'modules_v2';
+const esHostUrl = `${forceElasticsearchHost() || config.elasticsearchBaseUrl}/${esIndex}`;
 const searchkit = new SearchkitManager(esHostUrl, {
   // Ensure displayed no. modules found is accurate.
   searchUrlPath: '_search?track_total_hits=true',

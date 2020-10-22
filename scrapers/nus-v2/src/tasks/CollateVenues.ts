@@ -23,8 +23,10 @@ export function extractVenueAvailability(timetable: LessonWithModuleCode[]) {
   const groupByVenue = groupBy(filteredLessons, (lesson) => lesson.venue);
 
   return mapValues(groupByVenue, (venueLessons: LessonWithModuleCode[]) => {
-    // 3. Remove the Venue key and map them again to the day of the lesson
-    const lessonWithoutVenue: VenueLesson[] = venueLessons.map(({ venue, ...lesson }) => lesson);
+    // 3. Remove the venue and covidZone key and map them again to the day of the lesson
+    const lessonWithoutVenue: VenueLesson[] = venueLessons.map(
+      ({ venue, covidZone, ...lesson }) => lesson,
+    );
     const groupByDay = groupBy(lessonWithoutVenue, (lesson) => lesson.day);
 
     return map(groupByDay, (classes: VenueLesson[], day: string) => {
