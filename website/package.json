@@ -34,7 +34,7 @@
     "@babel/preset-env": "7.12.1",
     "@babel/preset-react": "7.12.1",
     "@babel/preset-typescript": "7.12.1",
-    "@hot-loader/react-dom": "16.13.0",
+    "@hot-loader/react-dom": "16.14.0",
     "@packtracker/webpack-plugin": "2.3.0",
     "@svgr/webpack": "5.4.0",
     "@types/classnames": "2.2.10",
