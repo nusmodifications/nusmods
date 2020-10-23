@@ -144,6 +144,7 @@ export type ModuleCondensed = Readonly<{
   moduleCode: ModuleCode;
   title: ModuleTitle;
   semesters: readonly number[];
+  yearLong?: boolean;
 }>;
 
 // This format is returned from the module information endpoint

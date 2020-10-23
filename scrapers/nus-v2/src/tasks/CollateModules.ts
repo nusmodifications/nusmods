@@ -118,10 +118,12 @@ const getModuleCondensed = ({
   moduleCode,
   title,
   semesterData,
+  attributes,
 }: ModuleWithoutTree): ModuleCondensed => ({
   moduleCode,
   title,
   semesters: semesterData.map((semester) => semester.semester),
+  yearLong: Boolean(attributes ? attributes.year : false),
 });
 
 // Avoid using _.pick here because it is not type safe

@@ -2,7 +2,7 @@ import { Module, ModuleCode, Semester, PrereqTree, ModuleCondensed } from './mod
 import { CustomModule } from './reducers';
 
 export type AddModuleData =
-  | { type: 'module'; moduleCode: ModuleCode }
+  | { type: 'module'; moduleCode: ModuleCode; yearLong?: boolean }
   | { type: 'placeholder'; placeholderId: string };
 
 export interface PlannerPlaceholder {

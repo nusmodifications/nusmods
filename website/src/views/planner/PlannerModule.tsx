@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import classnames from 'classnames';
 
-import { ModuleCode, ModuleTitle, Semester } from 'types/modules';
+import { ModuleCode, ModuleCondensed, ModuleTitle, Semester } from 'types/modules';
 import { Conflict, PlannerPlaceholder } from 'types/planner';
 import config from 'config';
 import { renderMCs } from 'utils/modules';
@@ -153,9 +153,9 @@ const PlannerModule = React.memo<Props>((props) => {
     return (
       <form>
         <PlannerModuleSelect
-          onSelect={(newModuleCode: ModuleCode | null) => {
-            if (newModuleCode) {
-              props.setPlaceholderModule(props.id, newModuleCode);
+          onSelect={(module: ModuleCondensed | null) => {
+            if (module) {
+              props.setPlaceholderModule(props.id, module.moduleCode);
             }
 
             setEditingPlaceholder(false);

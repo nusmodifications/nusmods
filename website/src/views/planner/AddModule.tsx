@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { map } from 'lodash';
 import { X as Close, Plus } from 'react-feather';
 
-import { ModuleCode, Semester } from 'types/modules';
+import { ModuleCondensed, Semester } from 'types/modules';
 import { AddModuleData } from 'types/planner';
 import { placeholderGroups } from 'utils/placeholders';
 
@@ -57,11 +57,12 @@ export default class AddModule extends React.PureComponent<Props, State> {
     select.value = '';
   };
 
-  onSelectModule = (input: ModuleCode | null) => {
-    if (input) {
+  onSelectModule = (module: ModuleCondensed | null) => {
+    if (module) {
       this.props.onAddModule({
         type: 'module',
-        moduleCode: input.trim(),
+        moduleCode: module.moduleCode.trim(),
+        yearLong: Boolean(module.yearLong),
       });
     }
 

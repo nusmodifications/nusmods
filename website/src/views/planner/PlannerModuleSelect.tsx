@@ -19,7 +19,7 @@ type Props = Readonly<{
   defaultValue?: string;
 
   // For filtering
-  onSelect: (moduleCode: ModuleCode | null) => void;
+  onSelect: (module: ModuleCondensed | null) => void;
   onCancel?: () => void;
   onBlur?: () => void;
   semester?: Semester;
@@ -121,7 +121,7 @@ export function PlannerModuleSelectComponent({
                     } else if (inputValue != null) {
                       // Otherwise we use the input value - this allows the user to
                       // enter multiple
-                      onSelect(inputValue);
+                      onSelect(modules.find((module) => module.moduleCode === inputValue) ?? null);
                     }
                   }
 
@@ -148,7 +148,7 @@ export function PlannerModuleSelectComponent({
                   <li
                     {...getItemProps({
                       key: module.moduleCode,
-                      item: module.moduleCode,
+                      item: module,
                       className: classnames({
                         [styles.highlightItem]: index === highlightedIndex,
                       }),

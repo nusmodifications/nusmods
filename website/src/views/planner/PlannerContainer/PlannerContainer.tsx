@@ -21,6 +21,7 @@ import {
   IBLOCS_SEMESTER,
   PLAN_TO_TAKE_SEMESTER,
   PLAN_TO_TAKE_YEAR,
+  YEAR_LONG_SEMESTER,
 } from 'utils/planner';
 import {
   addPlannerModule,
@@ -107,13 +108,21 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
 
       if (moduleCodes) {
         moduleCodes.forEach((moduleCode) => {
-          this.props.addModule(year, semester, { type: 'module', moduleCode });
+          if (module.yearLong) {
+            this.props.addModule(year, YEAR_LONG_SEMESTER, {
+              type: 'module',
+              moduleCode,
+              yearLong: module.yearLong,
+            });
+          } else {
+            this.props.addModule(year, semester, {
+              type: 'module',
+              moduleCode,
+              yearLong: module.yearLong,
+            });
+          }
           // TODO: Handle error
-          this.props.fetchModule(moduleCode).then((fetchedModule) => {
-            if (fetchedModule.attributes?.year) {
-              this.props.moveYearLongModule(year, semester, moduleCode);
-            }
-          });
+          this.props.fetchModule(moduleCode);
         });
       }
     } else {
