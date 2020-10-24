@@ -1,7 +1,5 @@
-import { flatten } from 'lodash';
-
 export function union<T>(...sets: Set<T>[]): Set<T> {
-  return new Set(flatten(sets.map((s) => Array.from(s))));
+  return new Set(sets.flatMap((s) => Array.from(s)));
 }
 
 export function intersection<T>(...sets: Set<T>[]): Set<T> {

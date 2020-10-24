@@ -1,4 +1,6 @@
 // Components within a module:
+import { CovidZoneId } from '../services/getCovidZones';
+
 export type AcadYear = string; // E.g. "2016/2017"
 export type ClassNo = string; // E.g. "1", "A"
 export type DayText = string; // E.g. "Monday", "Tuesday"
@@ -71,12 +73,16 @@ export type RawLesson = Readonly<{
   venue: Venue;
   weeks: Weeks;
   size: number;
+  covidZone: CovidZoneId;
 }>;
 
 // Semester-specific information of a module.
 export type SemesterData = {
   semester: Semester;
   timetable: RawLesson[];
+
+  // Aggregated from timetable
+  covidZones: CovidZoneId[];
 
   // Exam
   examDate?: string;
@@ -134,12 +140,10 @@ export type ModuleCondensed = Readonly<{
 }>;
 
 // This format is returned from the module information endpoint
-export type SemesterDataCondensed = Readonly<{
-  semester: Semester;
-  examDate?: string;
-  examDuration?: number;
-  // The full timetable is not provided to reduce space
-}>;
+export type SemesterDataCondensed = Readonly<
+  // The full timetable is omitted to save space
+  Omit<SemesterData, 'timetable'>
+>;
 
 export type ModuleInformation = Readonly<{
   // Basic info

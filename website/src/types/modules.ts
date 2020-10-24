@@ -69,7 +69,7 @@ export const isWeekRange = (week: Weeks): week is WeekRange => !Array.isArray(we
 
 export const consumeWeeks = <T = void>(
   weeks: Weeks,
-  consumeNumericWeeks: (weeks: number[]) => T,
+  consumeNumericWeeks: (numericWeeks: number[]) => T,
   consumeWeekRange: (weekRange: WeekRange) => T,
 ): T => {
   if (Array.isArray(weeks)) return consumeNumericWeeks(weeks);
