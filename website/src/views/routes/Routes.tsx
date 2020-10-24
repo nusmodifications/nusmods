@@ -9,11 +9,11 @@ import timetableEntryPoint from 'views/timetable/Timetable.entrypoint';
 import todayEntryPoint from 'views/today/Today.entrypoint';
 import moduleFinderEntryPoint from 'views/modules/ModuleFinder.entrypoint';
 import modulePageEntryPoint from 'views/modules/ModulePage.entrypoint';
+import moduleArchiveEntryPoint from 'views/modules/ModuleArchive.entrypoint';
 
 import type { Dispatch } from 'types/redux';
 import type { EntryPoint, EntryPointPartialRouteObject, EntryPointRouteObject } from './types';
 
-// import ModuleArchiveContainer from 'views/modules/ModuleArchiveContainer';
 // import VenuesContainer from 'views/venues/VenuesContainer';
 // import SettingsContainer from 'views/settings/SettingsContainer';
 // import AboutContainer from 'views/static/AboutContainer';
@@ -43,7 +43,6 @@ function entryPointRoute(
   };
 }
 
-// <Route path="/archive/:moduleCode/:year/:slug?" component={ModuleArchiveContainer} />
 // <Route path="/venues/:venue?" component={VenuesContainer} />
 // today
 // <Route path="/planner" component={PlannerContainer} />
@@ -78,17 +77,39 @@ function createPartialRoutes(dispatch: Dispatch): EntryPointPartialRouteObject[]
     {
       ...entryPointRoute(appShellEntryPoint, dispatch),
       children: [
-        { path: '/', element: <Navigate to="/timetable" /> },
+        {
+          path: '/',
+          element: <Navigate to="/timetable" />,
+        },
         {
           path: '/timetable',
           children: [
-            { path: ':semester/*', ...entryPointRoute(timetableEntryPoint, dispatch) },
-            { path: '/', element: <TimetableRootRedirector /> },
+            {
+              path: ':semester/*',
+              ...entryPointRoute(timetableEntryPoint, dispatch),
+            },
+            {
+              path: '/',
+              element: <TimetableRootRedirector />,
+            },
           ],
         },
-        { path: '/today', ...entryPointRoute(todayEntryPoint, dispatch) },
-        { path: '/modules', ...entryPointRoute(moduleFinderEntryPoint, dispatch) },
-        { path: '/modules/:moduleCode/*', ...entryPointRoute(modulePageEntryPoint, dispatch) },
+        {
+          path: '/today',
+          ...entryPointRoute(todayEntryPoint, dispatch),
+        },
+        {
+          path: '/modules',
+          ...entryPointRoute(moduleFinderEntryPoint, dispatch),
+        },
+        {
+          path: '/modules/:moduleCode/*',
+          ...entryPointRoute(modulePageEntryPoint, dispatch),
+        },
+        {
+          path: '/archive/:moduleCode/:archiveYear/*',
+          ...entryPointRoute(moduleArchiveEntryPoint, dispatch),
+        },
 
         // 404 page
         {

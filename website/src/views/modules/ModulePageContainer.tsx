@@ -1,9 +1,8 @@
 import React, { Suspense, useEffect } from 'react';
-import type { Params } from 'react-router';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { get } from 'lodash';
 
-import type { Module } from 'types/modules';
+import type { Module, ModuleCode } from 'types/modules';
 import type { EntryPointComponentProps } from 'views/routes/types';
 import type { JSResource } from 'utils/JSResource';
 
@@ -15,18 +14,19 @@ import ErrorBoundary from 'views/errors/ErrorBoundary';
 
 import ModulePageContent from './ModulePageContent';
 
+// TODO: Can we dedupe PreparedProps definitions with those in *.entrypoint.ts?
 type PreparedProps = {
   module: JSResource<Module>;
+  moduleCode: ModuleCode;
 };
 
 type Props = EntryPointComponentProps<PreparedProps>;
 
-const getPropsFromParams = (params: Params) => ({
-  moduleCode: (params.moduleCode ?? '').toUpperCase(),
-});
-
 // TODO: Generalize this smart error fallback for other error boundaries
-const ErrorFallback: React.FC<{ error: Error; moduleCode: string }> = ({ error, moduleCode }) => {
+const ErrorFallback: React.FC<{
+  error: Error;
+  moduleCode: ModuleCode;
+}> = ({ error, moduleCode }) => {
   if (get(error, ['response', 'status'], 200) === 404) {
     return <ModuleNotFoundPage moduleCode={moduleCode} tryArchive />;
   }
@@ -51,20 +51,17 @@ const ErrorFallback: React.FC<{ error: Error; moduleCode: string }> = ({ error, 
  * - Loading: Either requests are pending
  * - Loaded: Both requests are successfully loaded
  */
-export const ModulePageContainerComponent: React.FC<Props> = ({ prepared: { module } }) => {
+export const ModulePageContainerComponent: React.FC<Props> = ({
+  prepared: { module, moduleCode },
+}) => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const params = useParams();
-  const { moduleCode } = getPropsFromParams(params);
-
   useEffect(() => {
     // Navigate to canonical URL
-    if (module.get() && location.pathname !== modulePage(moduleCode, module.get()?.title)) {
-      navigate(
-        { ...location, pathname: modulePage(moduleCode, module.get()?.title) },
-        { replace: true },
-      );
+    const canonicalUrl = modulePage(moduleCode, module.get()?.title);
+    if (module.get() && location.pathname !== canonicalUrl) {
+      navigate({ ...location, pathname: canonicalUrl }, { replace: true });
     }
   }, [location, module, moduleCode, navigate]);
 

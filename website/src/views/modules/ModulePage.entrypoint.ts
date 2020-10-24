@@ -1,12 +1,13 @@
 import type { Params } from 'react-router';
 import { fetchModule } from 'actions/moduleBank';
-import { Module } from 'types/modules';
 import { captureException } from 'utils/error';
 import { JSResource } from 'utils/JSResource';
-import { EntryPoint } from 'views/routes/types';
+import type { Module, ModuleCode } from 'types/modules';
+import type { EntryPoint } from 'views/routes/types';
 
 export type PreparedProps = {
   module: JSResource<Module>;
+  moduleCode: ModuleCode;
 };
 
 const getPropsFromParams = (params: Params) => ({
@@ -29,9 +30,13 @@ const entryPoint: EntryPoint<PreparedProps> = {
         throw error;
       }),
     );
+    // TODO: If the resource doesn't exist, we're looking at spraying many
+    // requests for the same 404 resource because `prepare` may be called
+    // multiple times on a single navigation.
     module.preloadOrReloadIfError();
     return {
       module,
+      moduleCode,
     };
   },
 };
