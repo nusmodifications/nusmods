@@ -3,8 +3,8 @@ import { EntryPoint } from 'views/routes/types';
 
 const entryPoint: EntryPoint<unknown> = {
   component: JSResource(
-    'Timetable',
-    () => import(/* webpackChunkName: "Timetable.route" */ 'views/timetable/TimetableContainer'),
+    'TimetableContainer',
+    () => import(/* webpackChunkName: "TimetableContainer" */ 'views/timetable/TimetableContainer'),
   ),
   prepare() {
     return {};

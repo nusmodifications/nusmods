@@ -1,5 +1,39 @@
-type Loadable<Result> = Result | { default: Result };
-type Loader<Result> = () => Promise<Loadable<Result>>;
+type Module<T> = { default: T };
+type Loader<T> = () => Promise<Module<T>>;
+
+export interface JSResourceReference<T> {
+  /**
+   * Returns the module's id
+   */
+  getModuleId(): string;
+
+  /**
+   * Gets a module if it is already loaded, undefined otherwise.
+   */
+  getModuleIfRequired(): T | undefined;
+
+  /**
+   * Loads the resource if necessary
+   */
+  preload(): Promise<T>;
+
+  preloadOrReloadIfError(): void;
+
+  /**
+   * This is the key method for integrating with React Suspense. Read will:
+   * - "Suspend" if the resource is still pending (currently implemented as
+   *   throwing a Promise, though this is subject to change in future
+   *   versions of React)
+   * - Throw an error if the resource failed to load.
+   * - Return the data of the resource if available.
+   */
+  read(): T;
+
+  /**
+   * Convenience function that preloads and reads this resource.
+   */
+  fetch(): T;
+}
 
 /**
  * A cache of resources to avoid loading the same module twice. This is important
@@ -7,32 +41,38 @@ type Loader<Result> = () => Promise<Loadable<Result>>;
  * modules, so to be able to access already-loaded modules synchronously we
  * must have stored the previous result somewhere.
  */
-const resourceMap = new Map();
+const resourceMap = new Map<string, JSResourceImpl<unknown>>();
 
 /**
- * A generic resource: given some method to asynchronously load a value - the loader()
- * argument - it allows accessing the state of the resource.
+ * A generic resource: given some method to asynchronously load a value -- the
+ * loader() argument -- it allows accessing the state of the resource.
+ *
+ * The main differences between this and `Resource` are:
+ * - `JSResourceImpl` returns a promise on preload.
+ * - `Resource` allows a single resource to load values for different keys.
  */
-class Resource<Result> {
-  private error: Error | null = null;
+class JSResourceImpl<T> implements JSResourceReference<T> {
+  private error: Error | undefined;
 
-  private promise: Promise<Result> | null = null;
+  private promise: Promise<T> | undefined;
 
-  private result: Result | null = null;
+  private result: T | undefined;
 
-  private loader: Loader<Result>;
+  private moduleId: string;
 
-  constructor(loader: Loader<Result>) {
+  private loader: Loader<T>;
+
+  constructor(moduleId: string, loader: Loader<T>) {
+    this.moduleId = moduleId;
     this.loader = loader;
   }
 
-  // TODO: Check if we should do this or implement a way to replace the resource
-  // instance entirely. I suspect this current approach will not trigger
-  // renders.
-  reset() {
-    this.error = null;
-    this.promise = null;
-    this.result = null;
+  getModuleId() {
+    return this.moduleId;
+  }
+
+  getModuleIfRequired() {
+    return this.result;
   }
 
   /**
@@ -42,15 +82,9 @@ class Resource<Result> {
     let { promise } = this;
     if (promise == null) {
       promise = this.loader()
-        .then((result) => {
-          let unmoduledResult: Result;
-          if (result.default) {
-            unmoduledResult = result.default;
-          } else {
-            unmoduledResult = result;
-          }
-          this.result = unmoduledResult;
-          return unmoduledResult;
+        .then(({ default: result }) => {
+          this.result = result;
+          return result;
         })
         .catch((error) => {
           this.error = error;
@@ -62,8 +96,10 @@ class Resource<Result> {
   }
 
   preloadOrReloadIfError() {
-    if (this.error !== null) {
-      this.reset();
+    if (this.error !== undefined) {
+      this.error = undefined;
+      this.promise = undefined;
+      this.result = undefined;
     }
     this.preload();
   }
@@ -73,7 +109,7 @@ class Resource<Result> {
    * is resolved yet.
    */
   get() {
-    if (this.result != null) {
+    if (this.result !== undefined) {
       return this.result;
     }
     return undefined;
@@ -88,13 +124,13 @@ class Resource<Result> {
    * - Return the data of the resource if available.
    */
   read() {
-    if (this.result !== null) {
+    if (this.result !== undefined) {
       return this.result;
     }
-    if (this.error !== null) {
+    if (this.error !== undefined) {
       throw this.error;
     }
-    if (this.promise === null) {
+    if (this.promise === undefined) {
       throw new Error('preload() must be called before read().');
     }
     throw this.promise;
@@ -105,8 +141,6 @@ class Resource<Result> {
     return this.read();
   }
 }
-
-export type JSResource<Result> = Resource<Result>;
 
 /**
  * A helper method to create a resource, intended for dynamically loading code.
@@ -125,11 +159,11 @@ export type JSResource<Result> = Resource<Result>;
  * @param {*} moduleId A globally unique identifier for the resource used for caching
  * @param {*} loader A method to load the resource's data if necessary
  */
-export function JSResource<Result>(moduleId: unknown, loader: Loader<Result>): JSResource<Result> {
+export function JSResource<T>(moduleId: string, loader: Loader<T>): JSResourceReference<T> {
   let resource = resourceMap.get(moduleId);
   if (resource == null) {
-    resource = new Resource(loader);
+    resource = new JSResourceImpl(moduleId, loader);
     resourceMap.set(moduleId, resource);
   }
-  return resource;
+  return resource as JSResourceReference<T>;
 }

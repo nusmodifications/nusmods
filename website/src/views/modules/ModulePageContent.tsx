@@ -29,13 +29,13 @@ import Title from 'views/components/Title';
 import ScrollToTop from 'views/components/ScrollToTop';
 import { Archive, Check } from 'react-feather';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
-import type { JSResource } from 'utils/JSResource';
+import type { Resource } from 'utils/Resource';
 
 import styles from './ModulePageContent.scss';
 import ReportError from './ReportError';
 
 export type Props = {
-  module: Module | JSResource<Module>;
+  module: Module | Resource<void, string, Module>;
   archiveYear?: string;
 };
 

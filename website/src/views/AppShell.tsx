@@ -29,7 +29,7 @@ import { trackPageView } from 'bootstrapping/matomo';
 import { isIOS } from 'bootstrapping/browser';
 import Logo from 'img/nusmods-logo.svg';
 import { State as StoreState } from 'types/state';
-import type { JSResource } from 'utils/JSResource';
+import type { Resource } from 'utils/Resource';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
 import KeyboardShortcuts from './components/KeyboardShortcuts';
@@ -41,7 +41,8 @@ type Props = {
 
   // From router
   prepared: {
-    moduleList: JSResource<unknown>;
+    moduleList: Resource<void, string, unknown>;
+    moduleListPromise: Promise<unknown>;
   };
 
   // From Redux state
@@ -103,9 +104,10 @@ export const AppShellComponent: React.FC<Props> = ({
     () => {
       // Fetch the module data of the existing modules in the timetable and ensure all
       // lessons are filled
+      // TODO: Defer to an idle callback?
       each(timetables, (timetable, semesterString) => {
         const semester = Number(semesterString);
-        prepared.moduleList.preload().then(() => {
+        prepared.moduleListPromise.then(() => {
           // Wait for module list to be fetched before trying to fetch timetable modules
           // TODO: There may be a more optimal way to do this
           fetchTimetableModules(timetable, semester);

@@ -5,8 +5,8 @@ export type PreparedProps = unknown;
 
 const entryPoint: EntryPoint<PreparedProps> = {
   component: JSResource(
-    'ModuleFinder',
-    () => import(/* webpackChunkName: "ModuleFinder.route" */ './ModuleFinderContainer'),
+    'ModuleFinderContainer',
+    () => import(/* webpackChunkName: "ModuleFinderContainer" */ './ModuleFinderContainer'),
   ),
   prepare() {
     return {};

@@ -4,7 +4,7 @@ import { get } from 'lodash';
 
 import type { Module, ModuleCode } from 'types/modules';
 import type { EntryPointComponentProps } from 'views/routes/types';
-import type { JSResource } from 'utils/JSResource';
+import type { Resource } from 'utils/Resource';
 
 import ApiError from 'views/errors/ApiError';
 import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
@@ -16,7 +16,7 @@ import ModulePageContent from './ModulePageContent';
 
 // TODO: Can we dedupe PreparedProps definitions with those in *.entrypoint.ts?
 type PreparedProps = {
-  module: JSResource<Module>;
+  module: Resource<void, string, Module>;
   moduleCode: ModuleCode;
 };
 

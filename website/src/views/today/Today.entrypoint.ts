@@ -6,11 +6,11 @@ export type PreparedProps = unknown;
 
 const entryPoint: EntryPoint<PreparedProps> = {
   component: JSResource(
-    'Today',
-    () => import(/* webpackChunkName: "Today.route" */ './TodayContainer'),
+    'TodayContainer',
+    () => import(/* webpackChunkName: "TodayContainer" */ './TodayContainer'),
   ),
   prepare() {
-    venueLocationResource.preloadOrReloadIfError();
+    venueLocationResource.preload();
   },
 };
 
