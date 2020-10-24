@@ -91,7 +91,10 @@ function createPartialRoutes(dispatch: Dispatch): EntryPointPartialRouteObject[]
         { path: '/modules/:moduleCode/*', ...entryPointRoute(modulePageEntryPoint, dispatch) },
 
         // 404 page
-        { element: <NotFoundPage /> },
+        {
+          path: '*',
+          element: <NotFoundPage />,
+        },
       ],
     },
   ];
