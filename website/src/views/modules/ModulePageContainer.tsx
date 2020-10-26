@@ -1,7 +1,9 @@
 import React, { Suspense, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { get } from 'lodash';
 
+import type { State } from 'types/state';
 import type { Module, ModuleCode } from 'types/modules';
 import type { EntryPointComponentProps } from 'views/routes/types';
 import type { Resource } from 'utils/Resource';
@@ -16,7 +18,7 @@ import ModulePageContent from './ModulePageContent';
 
 // TODO: Can we dedupe PreparedProps definitions with those in *.entrypoint.ts?
 type PreparedProps = {
-  module: Resource<void, string, Module>;
+  moduleResource: Resource<{ moduleCode: ModuleCode }, string, Module>;
   moduleCode: ModuleCode;
 };
 
@@ -52,15 +54,19 @@ const ErrorFallback: React.FC<{
  * - Loaded: Both requests are successfully loaded
  */
 export const ModulePageContainerComponent: React.FC<Props> = ({
-  prepared: { module, moduleCode },
+  prepared: { moduleResource, moduleCode },
 }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // If module already exists within our Redux store, use it instead of the
+  // preloaded resource (which writes to the Redux store anyway).
+  const module = useSelector((state: State) => state.moduleBank.modules[moduleCode]);
+
   useEffect(() => {
     // Navigate to canonical URL
-    const canonicalUrl = modulePage(moduleCode, module.get()?.title);
-    if (module.get() && location.pathname !== canonicalUrl) {
+    const canonicalUrl = modulePage(moduleCode, module?.title);
+    if (module && location.pathname !== canonicalUrl) {
       navigate({ ...location, pathname: canonicalUrl }, { replace: true });
     }
   }, [location, module, moduleCode, navigate]);
@@ -74,7 +80,11 @@ export const ModulePageContainerComponent: React.FC<Props> = ({
       errorPage={(error) => <ErrorFallback error={error} moduleCode={moduleCode} />}
     >
       <Suspense fallback={<LoadingSpinner />}>
-        <ModulePageContent module={module} />
+        <ModulePageContent
+          module={module}
+          moduleResource={moduleResource}
+          moduleCode={moduleCode}
+        />
       </Suspense>
     </ErrorBoundary>
   );

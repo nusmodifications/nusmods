@@ -7,8 +7,21 @@ export type EntryPointComponentProps<PreparedProps> = React.PropsWithChildren<{
 }>;
 
 export type EntryPoint<PreparedProps, ComponentProps = EntryPointComponentProps<PreparedProps>> = {
+  /**
+   * A reference to the root React component of this entry point.
+   */
   component: JSResourceReference<React.ComponentType<ComponentProps>>;
-  prepare: (matchParams: Params, dispatch: Dispatch) => PreparedProps;
+  /**
+   * Should be idempotent as there is a good chance it'll be called multiple
+   * times in quick succession on a single page navigation.
+   */
+  getPreparedProps: (params: Params, dispatch: Dispatch) => PreparedProps;
+  /**
+   * Optionally invalidate prepared props. Typically done so that the next call
+   * to getPreparedProps can prepare a fresh set of data or retry any failed
+   * requests.
+   */
+  disposePreparedProps?: (params: Params) => void;
 };
 
 export interface EntryPointRouteObject extends RouteObject {

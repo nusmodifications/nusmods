@@ -8,7 +8,7 @@ const entryPoint: EntryPoint<PreparedProps> = {
     'ModuleFinderContainer',
     () => import(/* webpackChunkName: "ModuleFinderContainer" */ './ModuleFinderContainer'),
   ),
-  prepare() {
+  getPreparedProps() {
     return {};
   },
 };

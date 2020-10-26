@@ -6,7 +6,7 @@ const entryPoint: EntryPoint<unknown> = {
     'TimetableContainer',
     () => import(/* webpackChunkName: "TimetableContainer" */ 'views/timetable/TimetableContainer'),
   ),
-  prepare() {
+  getPreparedProps() {
     return {};
   },
 };

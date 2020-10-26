@@ -9,8 +9,9 @@ const entryPoint: EntryPoint<PreparedProps> = {
     'TodayContainer',
     () => import(/* webpackChunkName: "TodayContainer" */ './TodayContainer'),
   ),
-  prepare() {
+  getPreparedProps() {
     venueLocationResource.preload();
+    return {};
   },
 };
 

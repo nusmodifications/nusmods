@@ -1,7 +1,9 @@
 import React, { Suspense, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { get } from 'lodash';
 
+import type { State } from 'types/state';
 import type { Module, ModuleCode } from 'types/modules';
 import type { EntryPointComponentProps } from 'views/routes/types';
 import type { Resource } from 'utils/Resource';
@@ -15,7 +17,7 @@ import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ModulePageContent from './ModulePageContent';
 
 type PreparedProps = {
-  module: Resource<void, string, Module>;
+  moduleResource: Resource<{ moduleCode: ModuleCode; archiveYear: string }, string, Module>;
   moduleCode: ModuleCode;
   archiveYear: string;
 };
@@ -43,15 +45,21 @@ const ErrorFallback: React.FC<{
  * while this page doesn't.
  */
 export const ModuleArchiveContainerComponent: React.FC<Props> = ({
-  prepared: { module, moduleCode, archiveYear },
+  prepared: { moduleResource, moduleCode, archiveYear },
 }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // If module already exists within our Redux store, use it instead of the
+  // preloaded resource (which writes to the Redux store anyway).
+  const module = useSelector((state: State) =>
+    get(state.moduleBank.moduleArchive, [moduleCode, archiveYear], undefined),
+  );
+
   useEffect(() => {
     // Navigate to canonical URL
-    const canonicalUrl = moduleArchive(moduleCode, archiveYear, module.get()?.title);
-    if (module.get() && location.pathname !== canonicalUrl) {
+    const canonicalUrl = moduleArchive(moduleCode, archiveYear, module?.title);
+    if (module && location.pathname !== canonicalUrl) {
       navigate({ ...location, pathname: canonicalUrl }, { replace: true });
     }
   }, [archiveYear, location, module, moduleCode, navigate]);
@@ -62,7 +70,12 @@ export const ModuleArchiveContainerComponent: React.FC<Props> = ({
       errorPage={(error) => <ErrorFallback error={error} moduleCode={moduleCode} />}
     >
       <Suspense fallback={<LoadingSpinner />}>
-        <ModulePageContent module={module} archiveYear={archiveYear} />
+        <ModulePageContent
+          module={module}
+          moduleResource={moduleResource}
+          moduleCode={moduleCode}
+          archiveYear={archiveYear}
+        />
       </Suspense>
     </ErrorBoundary>
   );

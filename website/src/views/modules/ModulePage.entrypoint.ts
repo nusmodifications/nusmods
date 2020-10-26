@@ -6,8 +6,10 @@ import { JSResource } from 'utils/JSResource';
 import type { Module, ModuleCode } from 'types/modules';
 import type { EntryPoint } from 'views/routes/types';
 
+type ModuleResource = Resource<{ moduleCode: ModuleCode }, string, Module>;
+
 export type PreparedProps = {
-  module: Resource<void, string, Module>;
+  moduleResource: ModuleResource;
   moduleCode: ModuleCode;
 };
 
@@ -15,31 +17,38 @@ const getPropsFromParams = (params: Params) => ({
   moduleCode: (params.moduleCode ?? '').toUpperCase(),
 });
 
+let moduleResource: ModuleResource;
+
 const entryPoint: EntryPoint<PreparedProps> = {
   component: JSResource(
     'ModulePageContainer',
     () => import(/* webpackChunkName: "ModulePageContainer" */ './ModulePageContainer'),
   ),
-  prepare(params, dispatch) {
+  getPreparedProps(params, dispatch) {
+    if (!moduleResource) {
+      moduleResource = createResource(
+        ({ moduleCode }) =>
+          dispatch(fetchModule(moduleCode)).catch((error) => {
+            captureException(error);
+            // TODO: If there is an error but module data can still be found, we
+            // can assume module has been loaded at some point, so we can just show
+            // that instead
+            throw error;
+          }),
+        ({ moduleCode }) => `ModulePageContainer-module-${moduleCode}`,
+      );
+    }
+
     const { moduleCode } = getPropsFromParams(params);
-    const module = createResource<void, string, Module>(
-      () =>
-        dispatch(fetchModule(moduleCode)).catch((error) => {
-          captureException(error);
-          // TODO: If there is an error but module data can still be found, we
-          // can assume module has been loaded at some point, so we can just show
-          // that instead
-          throw error;
-        }),
-      () => `ModulePageContainer-module-${moduleCode}`,
-    );
-    // TODO: Temp failures will prevent the module from ever being loaded, until
-    // a reload.
-    module.preload();
+    moduleResource.preload({ moduleCode });
     return {
-      module,
+      moduleResource,
       moduleCode,
     };
+  },
+  disposePreparedProps(params) {
+    const { moduleCode } = getPropsFromParams(params);
+    moduleResource.invalidate({ moduleCode });
   },
 };
 

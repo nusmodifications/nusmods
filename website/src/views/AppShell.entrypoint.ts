@@ -14,32 +14,35 @@ export type PreparedProps = {
 // Typed as unknown because we don't actually need the output
 let cachedModuleListPromise: Promise<unknown>;
 
+let moduleListResource: Resource<void, string, unknown>;
+
 const entryPoint: EntryPoint<PreparedProps> = {
   component: JSResource(
     'AppShell',
     () => import(/* webpackChunkName: "AppShell" */ 'views/AppShell'),
   ),
-  prepare(_params, dispatch) {
-    const moduleList = createResource<void, string, unknown>(
-      () => {
-        if (!cachedModuleListPromise) {
-          // TODO: Defer to an idle callback?
+  getPreparedProps(_params, dispatch) {
+    if (!moduleListResource) {
+      moduleListResource = createResource<void, string, unknown>(
+        () => {
           cachedModuleListPromise = (async () => {
             try {
+              // TODO: Defer to an idle callback?
               return (dispatch(fetchModuleList()) as unknown) as Promise<unknown>;
             } catch (error) {
               captureException(error);
               throw error;
             }
           })();
-        }
-        return cachedModuleListPromise;
-      },
-      () => 'moduleList',
-    );
-    moduleList.preload();
+          return cachedModuleListPromise;
+        },
+        () => 'moduleList',
+      );
+    }
+
+    moduleListResource.preload();
     return {
-      moduleList,
+      moduleList: moduleListResource,
       moduleListPromise: cachedModuleListPromise,
     };
   },

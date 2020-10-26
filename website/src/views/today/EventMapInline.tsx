@@ -15,7 +15,7 @@ export type Props = {
 };
 
 const EventMapInline = memo<Props>(({ venue, isOpen, className, toggleOpen }) => {
-  const venueLocations = venueLocationResource.fetch();
+  const venueLocations = venueLocationResource.read();
 
   const venueLocation: VenueLocation = venueLocations[venue];
   if (!venueLocation || !venueLocation.location) {

@@ -4,7 +4,7 @@ import ScrollSpy from 'react-scrollspy';
 import { kebabCase, map, mapValues, values, sortBy } from 'lodash';
 import { hot } from 'react-hot-loader/root';
 
-import { Module, NUSModuleAttributes, attributeDescription } from 'types/modules';
+import { Module, NUSModuleAttributes, attributeDescription, ModuleCode } from 'types/modules';
 
 import config from 'config';
 import { getSemestersOffered, isOffered, renderMCs } from 'utils/modules';
@@ -35,7 +35,11 @@ import styles from './ModulePageContent.scss';
 import ReportError from './ReportError';
 
 export type Props = {
-  module: Module | Resource<void, string, Module>;
+  /** Module, if we already have it. */
+  module: Module | undefined;
+  /** Resource to suspend on if `module` is falsy. */
+  moduleResource: Resource<{ moduleCode: ModuleCode; archiveYear?: string }, string, Module>;
+  moduleCode: ModuleCode;
   archiveYear?: string;
 };
 
@@ -60,17 +64,9 @@ class ModulePageContent extends React.Component<Props, State> {
   toggleMenu = (isMenuOpen: boolean) => this.setState({ isMenuOpen });
 
   render() {
-    const { module: moduleOrResource, archiveYear } = this.props;
-
-    // TODO: Deprecate module: Module; always use resource
-    let module: Module;
-    if ('read' in moduleOrResource) {
-      module = moduleOrResource.read();
-    } else {
-      module = moduleOrResource;
-    }
-
-    const { moduleCode, title } = module;
+    const { module: moduleProp, moduleResource, moduleCode, archiveYear } = this.props;
+    const module = moduleProp ?? moduleResource.read({ moduleCode, archiveYear });
+    const { title } = module;
 
     const pageTitle = `${moduleCode} ${title}`;
     const semesters = getSemestersOffered(module);

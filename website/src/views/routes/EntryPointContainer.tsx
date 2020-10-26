@@ -1,6 +1,8 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { Outlet, useParams } from 'react-router-dom';
+import { isEqual } from 'lodash';
+import useMemoCompare from 'views/hooks/useMemoCompare';
 import type { Dispatch } from 'types/redux';
 import type { EntryPoint } from './types';
 
@@ -12,9 +14,22 @@ const EntryPointContainer: React.FC<Props> = ({ entryPoint }) => {
   const EntryPointComponent = entryPoint.component.read();
   const params = useParams();
   const dispatch = useDispatch<Dispatch>();
-  // TODO: Figure out a way to prepare outside render. Should reuse prepare result from preload
+
+  // Use a memoized copy of params so that we don't cause unnecessary
+  // renders/disposes if params didn't actually change.
+  const stableParams = useMemoCompare(params, isEqual);
+
+  const prepared = useMemo(() => {
+    return entryPoint.getPreparedProps(stableParams, dispatch);
+  }, [stableParams, entryPoint, dispatch]);
+
+  // Dispose of any prepared props if they're no longer usable.
+  useEffect(() => {
+    return () => entryPoint.disposePreparedProps?.(stableParams);
+  }, [entryPoint, prepared, stableParams]);
+
   return (
-    <EntryPointComponent prepared={entryPoint.prepare(params, dispatch)}>
+    <EntryPointComponent prepared={prepared}>
       <Outlet />
     </EntryPointComponent>
   );

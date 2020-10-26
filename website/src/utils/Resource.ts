@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as React from 'react';
-import { createContext } from 'react';
 
 // Cache implementation was forked from the React repo:
 // https://github.com/facebook/react/blob/4e5d7faf54b38ebfc7a2dcadbd09a25d6f330ac0/packages/react-devtools-shared/src/devtools/cache.js
@@ -31,7 +29,7 @@ type Result<Value> = PendingResult | ResolvedResult<Value> | RejectedResult;
 // TODO: Reduce API surface area?
 export type Resource<Input, Key, Value> = {
   clear(): void;
-  invalidate(key: Key): void;
+  invalidate(input: Input): void;
 
   /**
    * Returns the result, if available. This can be useful to check if the value
@@ -60,25 +58,6 @@ export type Resource<Input, Key, Value> = {
 const Pending = 0;
 const Resolved = 1;
 const Rejected = 2;
-
-// TODO: Decide if we should dump this as it's only used for a dev check
-const { ReactCurrentDispatcher } =
-  // eslint-disable-next-line no-underscore-dangle
-  (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
-
-function readContext(Context: React.Context<null>, observedBits: void | number | boolean) {
-  const dispatcher = ReactCurrentDispatcher.current;
-  if (dispatcher === null) {
-    throw new Error(
-      'Resource.ts: read and preload may only be called from within a ' +
-        "component's render. They are not supported in event handlers or " +
-        'lifecycle methods.',
-    );
-  }
-  return dispatcher.readContext(Context, observedBits);
-}
-
-const CacheContext = createContext(null);
 
 type Config = {
   useWeakMap?: boolean;
@@ -145,8 +124,9 @@ export function createResource<Input, Key, Value>(
       entries.delete(resource);
     },
 
-    invalidate(key: Key): void {
+    invalidate(input: Input): void {
       const entriesForResource = getEntriesForResource(resource);
+      const key = hashInput(input);
       entriesForResource.delete(key);
     },
 
@@ -164,9 +144,6 @@ export function createResource<Input, Key, Value>(
     },
 
     read(input: Input): Value {
-      // Prevent access outside of render.
-      readContext(CacheContext);
-
       const key = hashInput(input);
       const result: Result<Value> = accessResult(resource, fetch, input, key);
       switch (result.status) {
@@ -189,9 +166,6 @@ export function createResource<Input, Key, Value>(
     },
 
     preload(input: Input): void {
-      // Prevent access outside of render.
-      readContext(CacheContext);
-
       const key = hashInput(input);
       accessResult(resource, fetch, input, key);
     },

@@ -11,7 +11,7 @@ export type Props = {
 };
 
 const EventMap = memo<Props>(({ venue }) => {
-  const venueLocations = venueLocationResource.fetch();
+  const venueLocations = venueLocationResource.read();
 
   if (!venue) {
     return (

@@ -38,7 +38,7 @@ function entryPointRoute(
     preloadCode: () => entryPoint.component.preloadOrReloadIfError(),
     preload(params) {
       entryPoint.component.preloadOrReloadIfError();
-      entryPoint.prepare(params, dispatch);
+      entryPoint.getPreparedProps(params, dispatch);
     },
   };
 }
