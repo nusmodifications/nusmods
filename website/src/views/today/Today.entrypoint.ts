@@ -10,6 +10,7 @@ const entryPoint: EntryPoint<PreparedProps> = {
     () => import(/* webpackChunkName: "TodayContainer" */ './TodayContainer'),
   ),
   getPreparedProps() {
+    // Preload EventMap/EventMapInline data requirements
     venueLocationResource.preload();
     return {};
   },

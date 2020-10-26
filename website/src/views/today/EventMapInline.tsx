@@ -14,7 +14,7 @@ export type Props = {
   toggleOpen: () => void;
 };
 
-const EventMapInline = memo<Props>(({ venue, isOpen, className, toggleOpen }) => {
+const EventMapInline: React.FC<Props> = ({ venue, isOpen, className, toggleOpen }) => {
   const venueLocations = venueLocationResource.read();
 
   const venueLocation: VenueLocation = venueLocations[venue];
@@ -38,6 +38,6 @@ const EventMapInline = memo<Props>(({ venue, isOpen, className, toggleOpen }) =>
       <LocationMap position={position} />
     </div>
   );
-});
+};
 
-export default EventMapInline;
+export default memo(EventMapInline);

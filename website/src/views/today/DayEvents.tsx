@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { memo, Suspense } from 'react';
 import { AcadWeekInfo } from 'nusmoderator';
 import { isSameDay } from 'date-fns';
 import classnames from 'classnames';
@@ -21,7 +21,7 @@ type Props = {
   readonly onOpenLesson: (date: Date, lesson: Lesson) => void;
 };
 
-const DayEvents = React.memo<Props>((props) => {
+const DayEvents: React.FC<Props> = (props) => {
   const renderLesson = (lesson: ColoredLesson, i: number) => {
     const { openLesson, onOpenLesson, marker, date } = props;
 
@@ -48,14 +48,16 @@ const DayEvents = React.memo<Props>((props) => {
           </p>
           <MapPin className={styles.venueIcon} />{' '}
           {lesson.venue.startsWith('E-Learn') ? 'E-Learning' : lesson.venue}
-          <div>
-            <EventMapInline
-              className={styles.map}
-              venue={lesson.venue}
-              isOpen={isOpen}
-              toggleOpen={() => onOpenLesson(date, lesson)}
-            />
-          </div>
+          <Suspense fallback={null}>
+            <div>
+              <EventMapInline
+                className={styles.map}
+                venue={lesson.venue}
+                isOpen={isOpen}
+                toggleOpen={() => onOpenLesson(date, lesson)}
+              />
+            </div>
+          </Suspense>
         </div>
       </div>
     );
@@ -71,6 +73,6 @@ const DayEvents = React.memo<Props>((props) => {
     });
 
   return <div>{sortedLessons.map(renderLesson)}</div>;
-});
+};
 
-export default DayEvents;
+export default memo(DayEvents);

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { Suspense } from 'react';
 import { connect } from 'react-redux';
 import { get, minBy, range } from 'lodash';
 import NUSModerator, { AcadWeekInfo } from 'nusmoderator';
@@ -41,6 +41,7 @@ import { formatTime, getDayIndex } from 'utils/timify';
 import { breakpointUp } from 'utils/css';
 import { State as StoreState } from 'types/state';
 import type { EntryPointComponentProps } from 'views/routes/types';
+import LoadingSpinner from 'views/components/LoadingSpinner';
 
 import DayEvents from './DayEvents';
 import DayHeader from './DayHeader';
@@ -334,7 +335,9 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
                   [styles.expanded]: this.state.isMapExpanded,
                 })}
               >
-                <EventMap venue={this.state.openLesson && this.state.openLesson.lesson.venue} />
+                <Suspense fallback={<LoadingSpinner />}>
+                  <EventMap venue={this.state.openLesson && this.state.openLesson.lesson.venue} />
+                </Suspense>
               </div>
             </MapContext.Provider>
           </>

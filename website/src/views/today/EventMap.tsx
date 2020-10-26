@@ -10,7 +10,7 @@ export type Props = {
   venue: Venue | null;
 };
 
-const EventMap = memo<Props>(({ venue }) => {
+const EventMap: React.FC<Props> = ({ venue }) => {
   const venueLocations = venueLocationResource.read();
 
   if (!venue) {
@@ -29,6 +29,6 @@ const EventMap = memo<Props>(({ venue }) => {
 
   const position: [number, number] = [venueLocation.location.y, venueLocation.location.x];
   return <LocationMap height="100%" position={position} />;
-});
+};
 
-export default EventMap;
+export default memo(EventMap);
