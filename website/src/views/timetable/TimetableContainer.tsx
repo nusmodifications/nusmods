@@ -30,7 +30,7 @@ import TimetableContent from './TimetableContent';
 import styles from './TimetableContainer.scss';
 
 export type QueryParam = {
-  action: string;
+  '*': string | null; // action
   semester: string;
 };
 
@@ -45,7 +45,7 @@ type Props = EntryPointComponentProps<unknown>;
 export const TimetableContainerComponent: React.FC<Props> = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const params = useParams();
+  const params = useParams() as QueryParam;
   const action = params['*'];
 
   const semester = useMemo(() => semesterForTimetablePage(params.semester), [params.semester]);

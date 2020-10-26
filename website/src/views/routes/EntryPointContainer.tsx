@@ -14,7 +14,7 @@ const EntryPointContainer: React.FC<Props> = ({ entryPoint }) => {
   const dispatch = useDispatch<Dispatch>();
   // TODO: Figure out a way to prepare outside render. Should reuse prepare result from preload
   return (
-    <EntryPointComponent params={params} prepared={entryPoint.prepare(params, dispatch)}>
+    <EntryPointComponent prepared={entryPoint.prepare(params, dispatch)}>
       <Outlet />
     </EntryPointComponent>
   );

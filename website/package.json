@@ -58,7 +58,6 @@
     "@types/react-redux": "7.1.9",
     "@types/react-scrollspy": "3.3.3",
     "@types/redux-mock-store": "1.0.2",
-    "@types/use-subscription": "^1.0.0",
     "@types/webpack-env": "1.15.3",
     "@typescript-eslint/eslint-plugin": "4.5.0",
     "@typescript-eslint/parser": "4.5.0",
@@ -171,9 +170,7 @@
     "redux-persist": "6.0.0",
     "redux-thunk": "2.3.0",
     "reselect": "4.0.0",
-    "resolve-pathname": "^3.0.0",
-    "searchkit": "2.4.1-alpha.5",
-    "use-subscription": "^0.0.0-experimental-4ead6b530"
+    "searchkit": "2.4.1-alpha.5"
   },
   "browserslist": [
     "extends browserslist-config-nusmods"

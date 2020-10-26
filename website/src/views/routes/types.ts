@@ -3,7 +3,6 @@ import type { JSResourceReference } from 'utils/JSResource';
 import type { Dispatch } from 'types/redux';
 
 export type EntryPointComponentProps<PreparedProps> = React.PropsWithChildren<{
-  params: Params;
   prepared: PreparedProps;
 }>;
 

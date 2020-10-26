@@ -34,7 +34,7 @@ export const PreloadingLink = forwardRef<HTMLAnchorElement, LinkProps>(
   },
 );
 
-export const PreloadingNavLink = forwardRef<HTMLAnchorElement, LinkProps>(
+export const PreloadingNavLink = forwardRef<HTMLAnchorElement, NavLinkProps>(
   function PreloadingNavLinkComponent(props, ref) {
     const preloadCallbacks = usePreloadCallbacks(props);
     return <NavLink {...props} {...preloadCallbacks} ref={ref} />;
