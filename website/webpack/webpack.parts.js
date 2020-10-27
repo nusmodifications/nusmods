@@ -6,8 +6,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const childProcess = require('child_process');
 const moment = require('moment');
 
-const packageJson = require('../package.json');
-
 const ROOT = path.join(__dirname, '..');
 const SRC = 'src';
 
@@ -24,17 +22,6 @@ const PATHS = {
   fixtures: path.join(ROOT, SRC, '__mocks__'),
 };
 
-// These dependencies will be extracted out into `vendor.js` in production build.
-// App bundle changes more often than vendor bundle and splitting app bundle from
-// 3rd-party vendor bundle allows the vendor bundle to be cached.
-const VENDOR = [
-  ...Object.keys(packageJson.dependencies),
-  // Secondary dependencies
-  'history', // History module used by router
-  'fbjs', // facebook deps
-  'prop-types', // gone but not forgotten
-];
-
 /**
  * Set environment variables (and more).
  *
@@ -49,32 +36,6 @@ exports.setFreeVariable = (key, value) => {
     plugins: [new webpack.DefinePlugin(env)],
   };
 };
-
-/**
- * For extracting chunks into different bundles for caching.
- *
- * @see https://webpack.js.org/plugins/commons-chunk-plugin/#options
- * @see https://survivejs.com/webpack/building/bundle-splitting/
- * @see https://survivejs.com/webpack/building/bundle-splitting/#loading-dependencies-to-a-vendor-bundle-automatically
- */
-exports.extractBundle = ({ name, entries }) => ({
-  plugins: [
-    // Extract bundle and manifest files. Manifest is
-    // needed for reliable caching.
-    new webpack.optimize.CommonsChunkPlugin({
-      names: [name],
-      minChunks: ({ resource }) =>
-        resource &&
-        resource.includes('node_modules') &&
-        resource.match(/\.js$/) &&
-        entries.some((entry) => resource.includes(entry)),
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      names: 'manifest',
-      minChunks: Infinity,
-    }),
-  ],
-});
 
 /**
  * Lints javascript to make sure code is up to standard.
@@ -135,7 +96,7 @@ exports.transpileJavascript = ({ include, exclude, options }) => ({
   },
 });
 
-exports.getCSSConfig = ({ options } = {}) => [
+const getCSSConfig = ({ options } = {}) => [
   {
     loader: 'css-loader',
     // Enable 'composes' from other scss files
@@ -170,7 +131,7 @@ exports.loadCSS = ({ include, exclude, options } = {}) => ({
         include,
         exclude,
 
-        use: ['style-loader', ...exports.getCSSConfig({ options })],
+        use: ['style-loader', ...getCSSConfig({ options })],
       },
     ],
   },
@@ -192,7 +153,7 @@ exports.productionCSS = ({ options } = {}) => ({
       {
         test: /\.(css|scss)$/,
         include: PATHS.styles,
-        use: [MiniCssExtractPlugin.loader, ...exports.getCSSConfig(options)],
+        use: [MiniCssExtractPlugin.loader, ...getCSSConfig(options)],
       },
       {
         test: /\.(css|scss)$/,
@@ -200,7 +161,7 @@ exports.productionCSS = ({ options } = {}) => ({
         exclude: PATHS.styles,
         use: [
           MiniCssExtractPlugin.loader,
-          ...exports.getCSSConfig({
+          ...getCSSConfig({
             options: {
               modules: {
                 localIdentName: '[hash:base64:8]',
@@ -298,4 +259,3 @@ exports.appVersion = () => {
 };
 
 exports.PATHS = PATHS;
-exports.VENDOR = VENDOR;
