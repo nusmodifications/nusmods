@@ -3,7 +3,6 @@ const { merge } = require('webpack-merge');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
@@ -52,12 +51,6 @@ const developmentConfig = merge([
       // Waiting on: https://github.com/jantimon/html-webpack-plugin/issues/533
       // { multiStep: true }
       new webpack.HotModuleReplacementPlugin(),
-      // Caches compiled modules to disk to improve rebuild times
-      new HardSourceWebpackPlugin({
-        info: {
-          level: 'info',
-        },
-      }),
     ],
   },
   parts.lintJavaScript({
