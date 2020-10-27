@@ -44,7 +44,9 @@ const developmentConfig = merge([
         ],
       }),
       // Ignore node_modules so CPU usage with poll watching drops significantly.
-      new webpack.WatchIgnorePlugin([parts.PATHS.node, parts.PATHS.build]),
+      new webpack.WatchIgnorePlugin({
+        paths: [parts.PATHS.node, parts.PATHS.build],
+      }),
       // Enable multi-pass compilation for enhanced performance
       // in larger projects. Good default.
       // Waiting on: https://github.com/jantimon/html-webpack-plugin/issues/533
