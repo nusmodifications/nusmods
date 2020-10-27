@@ -9,8 +9,8 @@ import { captureException } from 'utils/error';
 
 import { Props, DaySection, TodayContainerComponent, mapStateToProps } from './TodayContainer';
 import forecasts from './__mocks__/forecasts.json';
-import DayEvents from '../DayEvents';
-import styles from '../DayEvents.scss';
+import DayEvents from './DayEvents';
+import styles from './DayEvents.scss';
 
 /* eslint-disable no-useless-computed-key */
 

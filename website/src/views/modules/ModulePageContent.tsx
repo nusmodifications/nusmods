@@ -4,7 +4,7 @@ import ScrollSpy from 'react-scrollspy';
 import { kebabCase, map, mapValues, values, sortBy } from 'lodash';
 import { hot } from 'react-hot-loader/root';
 
-import { Module, NUSModuleAttributes, attributeDescription } from 'types/modules';
+import { Module, NUSModuleAttributes, attributeDescription, ModuleCode } from 'types/modules';
 
 import config from 'config';
 import { getSemestersOffered, isOffered, renderMCs } from 'utils/modules';
@@ -29,12 +29,17 @@ import Title from 'views/components/Title';
 import ScrollToTop from 'views/components/ScrollToTop';
 import { Archive, Check } from 'react-feather';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
+import type { Resource } from 'utils/Resource';
 
 import styles from './ModulePageContent.scss';
 import ReportError from './ReportError';
 
 export type Props = {
-  module: Module;
+  /** Module, if we already have it. */
+  module: Module | undefined;
+  /** Resource to suspend on if `module` is falsy. */
+  moduleResource: Resource<{ moduleCode: ModuleCode; archiveYear?: string }, string, Module>;
+  moduleCode: ModuleCode;
   archiveYear?: string;
 };
 
@@ -59,8 +64,9 @@ class ModulePageContent extends React.Component<Props, State> {
   toggleMenu = (isMenuOpen: boolean) => this.setState({ isMenuOpen });
 
   render() {
-    const { module, archiveYear } = this.props;
-    const { moduleCode, title } = module;
+    const { module: moduleProp, moduleResource, moduleCode, archiveYear } = this.props;
+    const module = moduleProp ?? moduleResource.read({ moduleCode, archiveYear });
+    const { title } = module;
 
     const pageTitle = `${moduleCode} ${title}`;
     const semesters = getSemestersOffered(module);
@@ -82,7 +88,7 @@ class ModulePageContent extends React.Component<Props, State> {
 
         <Announcements />
 
-        <ScrollToTop onComponentDidMount scrollToHash />
+        <ScrollToTop onComponentDidMount shouldScrollToHash />
 
         {isArchive && (
           <div className={classnames(styles.archiveWarning, 'alert alert-warning')}>

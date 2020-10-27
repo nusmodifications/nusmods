@@ -59,7 +59,7 @@ describe(LinkModuleCodesComponent, () => {
 
   test('should convert module codes to links', () => {
     const component = create('CS3216, CS1010FC, ACC1002, BMA 5000A', testModules);
-    const links = component.find('Link');
+    const links = component.find('PreloadingLink');
     expect(links).toHaveLength(4);
 
     const moduleEntries = entries(testModules);
@@ -85,7 +85,7 @@ describe(LinkModuleCodesComponent, () => {
       'CS1010FCThis teCS1010FCxt contains module codes in wordsACC1010FC',
       testModules,
     );
-    expect(component.find('Link')).toHaveLength(0);
+    expect(component.find('PreloadingLink')).toHaveLength(0);
   });
 
   test('should ignore modules that are not available', () => {
@@ -97,8 +97,8 @@ describe(LinkModuleCodesComponent, () => {
       },
     });
 
-    expect(component.find('Link')).toHaveLength(1);
-    const ACC1002 = component.find('Link').at(0);
+    expect(component.find('PreloadingLink')).toHaveLength(1);
+    const ACC1002 = component.find('PreloadingLink').at(0);
     expect(ACC1002.text()).toEqual('ACC1002');
   });
 });

@@ -30,6 +30,7 @@ const defaultLoadingComponent = () => <LoadingSpinner />;
  *                     Defaults to <ApiError />
  * @param Loading      Component shown while the data is loading
  *                     Defaults to <LoadingSpinner />
+ * @deprecated Use `venueLocationResource` instead.
  */
 export default function withVenueLocations<Props extends VenueLocations>(
   getComponent: () => Promise<ComponentType<Props>>,

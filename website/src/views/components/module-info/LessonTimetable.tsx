@@ -73,4 +73,5 @@ export class LessonTimetableComponent extends React.PureComponent<Props, State> 
   }
 }
 
-export default withRouter(LessonTimetableComponent);
+// export default withRouter(LessonTimetableComponent);
+export default LessonTimetableComponent;

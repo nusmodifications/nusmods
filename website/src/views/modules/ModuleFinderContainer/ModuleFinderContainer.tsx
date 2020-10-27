@@ -13,6 +13,7 @@ import {
 import classnames from 'classnames';
 import { hot } from 'react-hot-loader/root';
 
+import type { EntryPointComponentProps } from 'views/routes/types';
 import { ElasticSearchResult } from 'types/vendor/elastic-search';
 import { ModuleInformation } from 'types/modules';
 
@@ -29,6 +30,8 @@ import { forceElasticsearchHost } from 'utils/debug';
 import { HIGHLIGHT_OPTIONS } from 'utils/elasticSearch';
 import config from 'config';
 import styles from './ModuleFinderContainer.scss';
+
+type Props = EntryPointComponentProps<unknown>;
 
 const esIndex = 'modules_v2';
 const esHostUrl = `${forceElasticsearchHost() || config.elasticsearchBaseUrl}/${esIndex}`;
@@ -56,7 +59,7 @@ const ModuleInformationListComponent: React.FC<HitsListProps> = ({ hits }) => (
   </ul>
 );
 
-const ModuleFinderContainer: React.FC = () => {
+const ModuleFinderContainer: React.FC<Props> = () => {
   return (
     <div className={classnames(styles.modulesPageContainer, 'page-container')}>
       {pageHead}

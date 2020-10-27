@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { PreloadingLink } from 'views/routes/PreloadingLink';
 import config from 'config';
 import ExternalLink from 'views/components/ExternalLink';
 import StaticPage from './StaticPage';
@@ -181,7 +181,8 @@ const FaqContainer: React.FC = () => (
         Congratulations on making it to the end! If you still want to contact us, you may reach us
         via email at nusmods&#123;at&#125;googlegroups[dot]com or via{' '}
         <ExternalLink href={config.contact.messenger}>Messenger</ExternalLink>. Please allow up to
-        90 working days for a reply. We are busy <Link to="/team">students</Link> as well!
+        90 working days for a reply. We are busy{' '}
+        <PreloadingLink to="/team">students</PreloadingLink> as well!
       </p>
     </div>
   </StaticPage>

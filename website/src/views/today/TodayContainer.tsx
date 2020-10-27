@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { Suspense } from 'react';
 import { connect } from 'react-redux';
 import { get, minBy, range } from 'lodash';
 import NUSModerator, { AcadWeekInfo } from 'nusmoderator';
@@ -40,12 +40,14 @@ import MapContext from 'views/components/map/MapContext';
 import { formatTime, getDayIndex } from 'utils/timify';
 import { breakpointUp } from 'utils/css';
 import { State as StoreState } from 'types/state';
+import type { EntryPointComponentProps } from 'views/routes/types';
+import LoadingSpinner from 'views/components/LoadingSpinner';
 
-import DayEvents from '../DayEvents';
-import DayHeader from '../DayHeader';
-import EmptyLessonGroup from '../EmptyLessonGroup';
-import BeforeLessonCard from '../BeforeLessonCard';
-import EventMap from '../EventMap';
+import DayEvents from './DayEvents';
+import DayHeader from './DayHeader';
+import EmptyLessonGroup from './EmptyLessonGroup';
+import BeforeLessonCard from './BeforeLessonCard';
+import EventMap from './EventMap';
 import styles from './TodayContainer.scss';
 
 const EMPTY_LESSONS: ColoredLesson[] = [];
@@ -58,7 +60,7 @@ const semesterNameMap: Record<string, number> = {
   'Special Sem 2': 4,
 };
 
-export type OwnProps = TimerData;
+export type OwnProps = TimerData & EntryPointComponentProps<unknown>;
 
 export type Props = OwnProps &
   Readonly<{
@@ -333,7 +335,9 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
                   [styles.expanded]: this.state.isMapExpanded,
                 })}
               >
-                <EventMap venue={this.state.openLesson && this.state.openLesson.lesson.venue} />
+                <Suspense fallback={<LoadingSpinner />}>
+                  <EventMap venue={this.state.openLesson && this.state.openLesson.lesson.venue} />
+                </Suspense>
               </div>
             </MapContext.Provider>
           </>

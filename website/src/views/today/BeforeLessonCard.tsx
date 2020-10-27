@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import classnames from 'classnames';
-import { Link } from 'react-router-dom';
+import { PreloadingLink } from 'views/routes/PreloadingLink';
 
 import { Lesson } from 'types/timetables';
 import { getStartTimeAsDate } from 'utils/timetables';
@@ -19,7 +19,7 @@ type Props = {
 const freeRoomMessage = (
   <>
     Need help finding a free classroom to study in? Check out our{' '}
-    <Link to={venuePage()}>free room finder</Link>.
+    <PreloadingLink to={venuePage()}>free room finder</PreloadingLink>.
   </>
 );
 

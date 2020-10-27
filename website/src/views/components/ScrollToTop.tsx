@@ -1,50 +1,44 @@
-import * as React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { scrollToHash } from 'utils/react';
-
-export type Props = RouteComponentProps & {
-  onComponentDidMount?: boolean;
-  onPathChange?: boolean;
-  scrollToHash?: boolean;
-};
 
 function scrollToTop() {
   window.scrollTo(0, 0);
 }
 
-export class ScrollToTopComponent extends React.Component<Props> {
-  static defaultProps = {
-    onComponentDidMount: false,
-    onPathChange: false,
-    scrollToHash: true,
-  };
+export type Props = {
+  onComponentDidMount?: boolean;
+  onPathChange?: boolean;
+  shouldScrollToHash?: boolean;
+};
 
-  componentDidMount() {
-    if (this.props.onComponentDidMount && !window.location.hash) {
+const ScrollToTop: React.FC<Props> = ({
+  onComponentDidMount = false,
+  onPathChange = false,
+  shouldScrollToHash = true,
+}) => {
+  useEffect(
+    () => {
+      if (onComponentDidMount && !window.location.hash) {
+        scrollToTop();
+      } else if (shouldScrollToHash) {
+        scrollToHash();
+      }
+    },
+    // This effect should only be run on component mount; don't care if props
+    // change afterwards.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
+
+  const location = useLocation();
+  useEffect(() => {
+    if (onPathChange) {
       scrollToTop();
-    } else if (this.props.scrollToHash) {
-      scrollToHash();
     }
-  }
+  }, [onPathChange, location.pathname, location.hash]);
 
-  componentDidUpdate(prevProps: Props) {
-    const {
-      onPathChange,
-      location: { pathname, hash },
-    } = this.props;
+  return null;
+};
 
-    if (
-      onPathChange &&
-      pathname !== prevProps.location.pathname &&
-      hash === prevProps.location.hash
-    ) {
-      scrollToTop();
-    }
-  }
-
-  render() {
-    return null;
-  }
-}
-
-export default withRouter(ScrollToTopComponent);
+export default ScrollToTop;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { Link } from 'react-router-dom';
+import { PreloadingLink } from 'react-router-dom';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { moduleArchive } from 'views/routes/paths';
 import { ModuleNotFoundPageComponent } from './ModuleNotFoundPage';
@@ -75,7 +75,7 @@ test('should suggest archive pages if they are available', () => {
     />,
   );
 
-  const links = wrapper.find(Link).map((link) => link.prop('to'));
+  const links = wrapper.find(PreloadingLink).map((link) => link.prop('to'));
 
   expect(links).toEqual(
     expect.arrayContaining([

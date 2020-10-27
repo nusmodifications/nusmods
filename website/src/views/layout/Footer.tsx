@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { PreloadingLink } from 'views/routes/PreloadingLink';
 
 import ExternalLink from 'views/components/ExternalLink';
 import config from 'config';
@@ -61,41 +61,41 @@ export const FooterComponent: React.FC<Props> = (props) => {
             <ExternalLink href="https://api.nusmods.com/v2">API</ExternalLink>
           </li>
           <li>
-            <Link to="/apps">Apps</Link>
+            <PreloadingLink to="/apps">Apps</PreloadingLink>
           </li>
           <li>
-            <Link to="/about">About</Link>
+            <PreloadingLink to="/about">About</PreloadingLink>
           </li>
           <li>
-            <Link to="/team">Team</Link>
+            <PreloadingLink to="/team">Team</PreloadingLink>
           </li>
           <li>
-            <Link to="/contributors">Contributors</Link>
+            <PreloadingLink to="/contributors">Contributors</PreloadingLink>
           </li>
           <li>
-            <Link to="/faq">FAQ</Link>
+            <PreloadingLink to="/faq">FAQ</PreloadingLink>
           </li>
 
           {/* new Date().getMonth() === 9 && (
             <li>
-              <Link to="/hacktoberfest">
+              <PreloadingLink to="/hacktoberfest">
                 <strong>Hacktoberfest!</strong>
-              </Link>
+              </PreloadingLink>
             </li>
           ) */}
 
           <li>
-            <Link to="/contribute" className={styles.feedbackBtn}>
+            <PreloadingLink to="/contribute" className={styles.feedbackBtn}>
               Contribute to NUSMods!
-            </Link>
+            </PreloadingLink>
           </li>
         </ul>
         <p>{lastUpdatedText}</p>
         <p>
           Designed and built with all the love in the world by{' '}
           <ExternalLink href={config.contact.githubOrg}>@nusmodifications</ExternalLink>. Maintained
-          by the <Link to="/team">core team</Link> with the help of{' '}
-          <Link to="/contributors">our contributors</Link>.
+          by the <PreloadingLink to="/team">core team</PreloadingLink> with the help of{' '}
+          <PreloadingLink to="/contributors">our contributors</PreloadingLink>.
         </p>
         <p>Copyright © 2014 - Present, NUSModifications. All rights reserved. {versionSpan}</p>
       </div>

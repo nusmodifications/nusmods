@@ -1,29 +1,22 @@
-import React from 'react';
+import React, { memo } from 'react';
 import classnames from 'classnames';
 
-import { LatLngTuple, Venue, VenueLocation, VenueLocationMap } from 'types/venues';
+import { LatLngTuple, Venue, VenueLocation } from 'types/venues';
 import LocationMap from 'views/components/map/LocationMap';
+import venueLocationResource from 'views/components/map/venueLocationResource';
 import styles from './EventMapInline.scss';
 
-export type OwnProps = Readonly<{
+export type Props = {
   isOpen: boolean;
   className?: string;
   venue: Venue;
 
   toggleOpen: () => void;
-}>;
-
-export type Props = OwnProps & {
-  readonly venueLocations: VenueLocationMap;
 };
 
-const EventMapInline: React.FunctionComponent<Props> = ({
-  venue,
-  isOpen,
-  className,
-  toggleOpen,
-  venueLocations,
-}) => {
+const EventMapInline: React.FC<Props> = ({ venue, isOpen, className, toggleOpen }) => {
+  const venueLocations = venueLocationResource.read();
+
   const venueLocation: VenueLocation = venueLocations[venue];
   if (!venueLocation || !venueLocation.location) {
     return null;
@@ -47,4 +40,4 @@ const EventMapInline: React.FunctionComponent<Props> = ({
   );
 };
 
-export default EventMapInline;
+export default memo(EventMapInline);

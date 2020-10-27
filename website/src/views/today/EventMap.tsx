@@ -1,21 +1,19 @@
-import * as React from 'react';
+import React, { memo } from 'react';
 
-import { Venue, VenueLocationMap } from 'types/venues';
+import { Venue } from 'types/venues';
 import LocationMap from 'views/components/map/LocationMap';
 import { Map } from 'react-feather';
+import venueLocationResource from 'views/components/map/venueLocationResource';
 import styles from './EventMap.scss';
 
-export type OwnProps = {
-  readonly venue: Venue | null;
+export type Props = {
+  venue: Venue | null;
 };
 
-export type Props = OwnProps &
-  Readonly<{
-    venueLocations: VenueLocationMap;
-  }>;
+const EventMap: React.FC<Props> = ({ venue }) => {
+  const venueLocations = venueLocationResource.read();
 
-const EventMap: React.FC<Props> = (props) => {
-  if (!props.venue) {
+  if (!venue) {
     return (
       <div className={styles.noLessonSelected}>
         <Map />
@@ -24,7 +22,7 @@ const EventMap: React.FC<Props> = (props) => {
     );
   }
 
-  const venueLocation = props.venueLocations[props.venue];
+  const venueLocation = venueLocations[venue];
   if (!venueLocation || !venueLocation.location) {
     return <p>We don&apos;t have information about this venue :(</p>;
   }
@@ -33,4 +31,4 @@ const EventMap: React.FC<Props> = (props) => {
   return <LocationMap height="100%" position={position} />;
 };
 
-export default EventMap;
+export default memo(EventMap);
