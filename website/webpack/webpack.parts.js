@@ -226,20 +226,6 @@ exports.loadImages = ({ include, exclude, options } = {}) => ({
 });
 
 /**
- * Some libraries import Node modules but don't use them in the browser.
- * Tell Webpack to provide empty mocks for them so importing them works.
- *
- * @see https://webpack.js.org/configuration/node/#node
- */
-exports.mockNode = () => ({
-  node: {
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty',
-  },
-});
-
-/**
  * Generates an app version string using the git commit hash and current date.
  *
  * @returns Object with keys `commitHash` and `versionStr`.
