@@ -46,10 +46,6 @@ const commonConfig = merge([
       // Disable performance hints since we use our own size reporter
       hints: false,
     },
-    optimization: {
-      // do not emit compiled assets that include errors
-      noEmitOnErrors: true,
-    },
   },
   parts.transpileJavascript({
     include: parts.PATHS.src,
