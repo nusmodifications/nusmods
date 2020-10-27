@@ -6,7 +6,17 @@ class NUSModsApi {
    * @returns {string}
    */
   static baseUrl(academicYear = config.academicYear) {
-    const apiBaseUrl = DATA_API_BASE_URL || config.apiBaseUrl;
+    let envApiBaseUrl;
+    if (typeof DATA_API_BASE_URL !== 'undefined') {
+      // Use global constant defined with Webpack's DefinePlugin
+      envApiBaseUrl = DATA_API_BASE_URL;
+    } else if (typeof process !== 'undefined') {
+      // Use Node.js `process`, which will be defined if we're in a Node.js
+      // environment (e.g. when building).
+      envApiBaseUrl = process.env.DATA_API_BASE_URL;
+    }
+
+    const apiBaseUrl = envApiBaseUrl || config.apiBaseUrl;
     return `${apiBaseUrl}/v2/${academicYear.replace('/', '-')}`;
   }
 
