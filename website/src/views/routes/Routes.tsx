@@ -4,12 +4,13 @@ import { Navigate, Outlet, useRoutes } from 'react-router-dom';
 import NotFoundPage from 'views/errors/NotFoundPage';
 import TimetableRootRedirector from 'views/timetable/TimetableRootRedirector';
 
-import appShellEntryPoint from 'views/AppShell.entrypoint';
-import timetableEntryPoint from 'views/timetable/Timetable.entrypoint';
-import todayEntryPoint from 'views/today/Today.entrypoint';
-import moduleFinderEntryPoint from 'views/modules/ModuleFinder.entrypoint';
-import modulePageEntryPoint from 'views/modules/ModulePage.entrypoint';
-import moduleArchiveEntryPoint from 'views/modules/ModuleArchive.entrypoint';
+import AppShellEntryPoint from 'views/AppShell.entrypoint';
+import TimetableEntryPoint from 'views/timetable/Timetable.entrypoint';
+import TodayEntryPoint from 'views/today/Today.entrypoint';
+import ModuleFinderEntryPoint from 'views/modules/ModuleFinder.entrypoint';
+import ModulePageEntryPoint from 'views/modules/ModulePage.entrypoint';
+import ModuleArchiveEntryPoint from 'views/modules/ModuleArchive.entrypoint';
+import TetrisContainerEntryPoint from 'views/tetris/TetrisContainer.entrypoint';
 
 import type { Dispatch } from 'types/redux';
 import type { EntryPoint, EntryPointPartialRouteObject, EntryPointRouteObject } from './types';
@@ -24,7 +25,6 @@ import type { EntryPoint, EntryPointPartialRouteObject, EntryPointRouteObject } 
 // import AppsContainer from 'views/static/AppsContainer';
 // import TodayContainer from 'views/today/TodayContainer';
 // import PlannerContainer from 'views/planner/PlannerContainer';
-// import TetrisContainer from 'views/tetris/TetrisContainer';
 
 import EntryPointContainer from './EntryPointContainer';
 import { RoutePreloaderProvider } from './RoutePreloaderContext';
@@ -46,7 +46,7 @@ function entryPointRoute(
 // <Route path="/venues/:venue?" component={VenuesContainer} />
 // today
 // <Route path="/planner" component={PlannerContainer} />
-// <Route path="/tetris" component={TetrisContainer} />
+// tetris
 
 // <Route path="/about" component={AboutContainer} />
 // <Route path="/faq" component={FaqContainer} />
@@ -75,7 +75,7 @@ function createPartialRoutes(dispatch: Dispatch): EntryPointPartialRouteObject[]
     // { path: '/api', element: <ExternalRedirect to="https://api.nusmods.com" appendPath /> },
 
     {
-      ...entryPointRoute(appShellEntryPoint, dispatch),
+      ...entryPointRoute(AppShellEntryPoint, dispatch),
       children: [
         {
           path: '/',
@@ -86,7 +86,7 @@ function createPartialRoutes(dispatch: Dispatch): EntryPointPartialRouteObject[]
           children: [
             {
               path: ':semester/*',
-              ...entryPointRoute(timetableEntryPoint, dispatch),
+              ...entryPointRoute(TimetableEntryPoint, dispatch),
             },
             {
               path: '/',
@@ -96,19 +96,23 @@ function createPartialRoutes(dispatch: Dispatch): EntryPointPartialRouteObject[]
         },
         {
           path: '/today',
-          ...entryPointRoute(todayEntryPoint, dispatch),
+          ...entryPointRoute(TodayEntryPoint, dispatch),
         },
         {
           path: '/modules',
-          ...entryPointRoute(moduleFinderEntryPoint, dispatch),
+          ...entryPointRoute(ModuleFinderEntryPoint, dispatch),
         },
         {
           path: '/modules/:moduleCode/*',
-          ...entryPointRoute(modulePageEntryPoint, dispatch),
+          ...entryPointRoute(ModulePageEntryPoint, dispatch),
         },
         {
           path: '/archive/:moduleCode/:archiveYear/*',
-          ...entryPointRoute(moduleArchiveEntryPoint, dispatch),
+          ...entryPointRoute(ModuleArchiveEntryPoint, dispatch),
+        },
+        {
+          path: '/tetris',
+          ...entryPointRoute(TetrisContainerEntryPoint, dispatch),
         },
 
         // 404 page
