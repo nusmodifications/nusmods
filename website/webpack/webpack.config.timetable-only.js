@@ -46,6 +46,7 @@ const productionConfig = merge([
     },
   }),
   parts.productionCSS(),
+  parts.devServer(),
 ]);
 
 module.exports = productionConfig;

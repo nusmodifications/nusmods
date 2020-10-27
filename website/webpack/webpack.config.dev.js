@@ -72,6 +72,7 @@ const developmentConfig = merge([
       },
     },
   }),
+  parts.devServer(),
 ]);
 
 module.exports = developmentConfig;

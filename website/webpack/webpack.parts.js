@@ -225,6 +225,20 @@ exports.loadImages = ({ include, exclude, options } = {}) => ({
   },
 });
 
+exports.devServer = () => ({
+  devServer: {
+    // Enable history API fallback so HTML5 History API based
+    // routing works. Good for complex setups.
+    historyApiFallback: true,
+    // Open browser unless told otherwise
+    open: process.env.OPEN_BROWSER !== '0',
+    // Enable hot reloading server.
+    hotOnly: true,
+    // Overlay compiler errors, useful when something breaks
+    overlay: true,
+  },
+});
+
 /**
  * Generates an app version string using the git commit hash and current date.
  *
