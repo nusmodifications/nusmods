@@ -1,4 +1,4 @@
-// Injected by Webpack DefinePlugin
+// Globals injected by Webpack DefinePlugin
 // eslint-disable-next-line no-underscore-dangle
 declare const __DEV__: boolean;
 declare const DATA_API_BASE_URL: string | undefined;

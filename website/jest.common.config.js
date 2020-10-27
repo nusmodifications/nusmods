@@ -13,9 +13,14 @@ module.exports = {
     // Mock SCSS and CSS modules as objects
     '\\.(?:css|scss)$': 'identity-obj-proxy',
   },
+  // Mimic the globals we set with Webpack's DefinePlugin
   globals: {
     // Default to development
     __DEV__: process.env.NODE_ENV !== 'production',
+    DATA_API_BASE_URL: undefined,
+    VERSION_STR: undefined,
+    DISPLAY_COMMIT_HASH: undefined,
+    DEBUG_SERVICE_WORKER: false,
   },
   // Allow us to directly use enzyme wrappers for snapshotting
   // Usage: expect(enzyme.shallow(<div/>)).toMatchSnapshot();
