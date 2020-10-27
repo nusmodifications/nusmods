@@ -27,6 +27,13 @@ const commonConfig = merge([
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
       // We don't use symlinks, so disable for performance
       symlinks: false,
+      // ical-generator imports Node.js core modules, which don't exist in a
+      // browser environment. Tell Webpack to provide empty modules for them so
+      // importing them works.
+      fallback: {
+        fs: false,
+        os: false,
+      },
     },
     // Entry accepts a path or an object of entries.
     // We'll be using the latter form given it's
