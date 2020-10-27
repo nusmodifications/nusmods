@@ -19,6 +19,17 @@ const IS_NETLIFY = !!process.env.NETLIFY;
 
 const productionConfig = ({ browserWarningPath }) =>
   merge([
+    {
+      plugins: [
+        new webpack.DefinePlugin({
+          __DEV__: false,
+          DISPLAY_COMMIT_HASH: JSON.stringify(parts.appVersion().commitHash),
+          VERSION_STR: JSON.stringify(parts.appVersion().versionStr),
+          DEBUG_SERVICE_WORKER: !!process.env.DEBUG_SERVICE_WORKER,
+          DATA_API_BASE_URL: JSON.stringify(process.env.DATA_API_BASE_URL),
+        }),
+      ],
+    },
     commonConfig,
     {
       // Don't attempt to continue if there are any errors.
@@ -36,9 +47,6 @@ const productionConfig = ({ browserWarningPath }) =>
         chunkFilename: '[name].[contenthash:8].js',
       },
       plugins: [
-        new webpack.DefinePlugin({
-          __DEV__: false,
-        }),
         // SEE: https://medium.com/webpack/brief-introduction-to-scope-hoisting-in-webpack-8435084c171f
         new HtmlWebpackPlugin({
           template: path.join(parts.PATHS.src, 'index.html'),

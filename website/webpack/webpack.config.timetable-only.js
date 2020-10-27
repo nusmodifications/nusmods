@@ -12,6 +12,17 @@ const isProduction = process.env.NODE_ENV === 'production';
 const source = (file) => path.join('entry/export', file);
 
 const productionConfig = merge([
+  {
+    plugins: [
+      new webpack.DefinePlugin({
+        __DEV__: !isProduction,
+        DISPLAY_COMMIT_HASH: JSON.stringify(parts.appVersion().commitHash),
+        VERSION_STR: JSON.stringify(parts.appVersion().versionStr),
+        DEBUG_SERVICE_WORKER: !!process.env.DEBUG_SERVICE_WORKER,
+        DATA_API_BASE_URL: JSON.stringify(process.env.DATA_API_BASE_URL),
+      }),
+    ],
+  },
   commonConfig,
   {
     // Override common's entry point
@@ -31,11 +42,6 @@ const productionConfig = merge([
       chunkFilename: '[chunkhash].js',
     },
     plugins: [
-      new webpack.DefinePlugin({
-        __DEV__: !isProduction,
-        DEBUG_SERVICE_WORKER: !!process.env.DEBUG_SERVICE_WORKER,
-        DATA_API_BASE_URL: JSON.stringify(process.env.DATA_API_BASE_URL),
-      }),
       new HtmlWebpackPlugin({
         template: path.join(parts.PATHS.src, source('index.html')),
         inject: true,
