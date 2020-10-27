@@ -17,9 +17,9 @@ module.exports = {
   globals: {
     // Default to development
     __DEV__: process.env.NODE_ENV !== 'production',
-    DATA_API_BASE_URL: undefined,
-    VERSION_STR: undefined,
-    DISPLAY_COMMIT_HASH: undefined,
+    DATA_API_BASE_URL: '',
+    VERSION_STR: '',
+    DISPLAY_COMMIT_HASH: '',
     DEBUG_SERVICE_WORKER: false,
   },
   // Allow us to directly use enzyme wrappers for snapshotting
