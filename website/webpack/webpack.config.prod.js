@@ -63,16 +63,16 @@ const productionConfig = ({ browserWarningPath }) =>
             test: /\.(js|css|html|json|svg|xml|txt)$/,
           }),
         // Copy files from static folder over to dist
-        new CopyWebpackPlugin([{ from: 'static', context: parts.PATHS.root }], {
-          copyUnmodified: true,
+        new CopyWebpackPlugin({
+          patterns: [{ from: 'static', context: parts.PATHS.root }],
         }),
         IS_CI &&
           new PacktrackerPlugin({
             upload: true,
           }),
         (IS_CI || IS_NETLIFY) &&
-          new CopyWebpackPlugin([{ from: 'static-ci', context: parts.PATHS.root }], {
-            copyUnmodified: true,
+          new CopyWebpackPlugin({
+            patterns: [{ from: 'static-ci', context: parts.PATHS.root }],
           }),
       ].filter(Boolean),
       optimization: {
