@@ -5,7 +5,6 @@ const TerserJsPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
-const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const PacktrackerPlugin = require('@packtracker/webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 
@@ -52,9 +51,8 @@ const productionConfig = ({ browserWarningPath }) =>
         new HtmlWebpackPlugin({
           template: path.join(parts.PATHS.src, 'index.html'),
 
-          // Allows us to use InlineChunkHtmlPlugin to embed the runtime entry
-          // point chunk in the HTML itself. See runtimeChunk below.
-          inject: true,
+          // Inject css and js files manually for optimization purposes
+          inject: false,
 
           // Embed the browser warning code from the browser-warning Webpack bundle
           browserWarningPath,
@@ -64,11 +62,6 @@ const productionConfig = ({ browserWarningPath }) =>
           venuesUrl: nusmods.venuesUrl(config.semester),
           brandName: config.brandName,
           description: config.defaultDescription,
-        }),
-        new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime/]),
-        new ScriptExtHtmlWebpackPlugin({
-          inline: /manifest/,
-          preload: /\.js$/,
         }),
         !IS_CI &&
           new CompressionPlugin({

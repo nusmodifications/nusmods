@@ -9,7 +9,15 @@
     <link href="<%= htmlWebpackPlugin.files.publicPath %>safari-pinned-tab.svg" rel="mask-icon" color="#ff5138">
     <link href="<%= htmlWebpackPlugin.files.publicPath %>manifest.json" rel="manifest">
     <link href="<%= htmlWebpackPlugin.options.moduleListUrl %>" rel="preload" as="fetch" crossorigin="anonymous">
-    <link href="<%= htmlWebpackPlugin.options.venuesUrl %>" rel="prefetch" />
+    <link href="<%= htmlWebpackPlugin.options.venuesUrl %>" rel="prefetch">
+    <% const loadedJsFiles = htmlWebpackPlugin.files.js.filter((file) => !file.includes("runtime")); %>
+    <% const inlinedJsFiles = htmlWebpackPlugin.files.js.filter((file) => file.includes("runtime")); %>
+    <% for (const jsFile of loadedJsFiles) { %>
+        <link href="<%= jsFile %>" rel="preload" as="script">
+    <% } %>
+    <% for (const cssFile of htmlWebpackPlugin.files.css) { %>
+      <link href="<%= cssFile %>" rel="stylesheet">
+    <% } %>
     <title><%= htmlWebpackPlugin.options.brandName %></title>
     <!-- data-react-helmet="true" is set on tags which should be replaced by React Helmet (See <Title> component) -->
     <meta name="description" content="<%= htmlWebpackPlugin.options.description %>" data-react-helmet="true">
@@ -26,6 +34,14 @@
     <div id="app"></div>
     <noscript>Please enable JavaScript to use <%= htmlWebpackPlugin.options.brandName %></noscript>
 
-  <script src="/<%= htmlWebpackPlugin.options.browserWarningPath %>" async defer></script>
+    <script src="/<%= htmlWebpackPlugin.options.browserWarningPath %>" async defer></script>
+    <% for (const jsFile of inlinedJsFiles) { %>
+      <script>
+        <%= compilation.assets[jsFile.substr(htmlWebpackPlugin.files.publicPath.length)].source() %>
+      </script>
+    <% } %>
+    <% for (const jsFile of loadedJsFiles) { %>
+      <script src="<%= jsFile %>" defer></script>
+    <% } %>
   </body>
 </html>
