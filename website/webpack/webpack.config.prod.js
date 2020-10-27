@@ -105,7 +105,7 @@ const productionConfig = ({ browserWarningPath }) =>
       include: parts.PATHS.images,
       options: {
         limit: 15000,
-        name: 'img/[name].[hash].[ext]',
+        name: 'img/[name].[contenthash].[ext]',
       },
     }),
     parts.productionCSS(),

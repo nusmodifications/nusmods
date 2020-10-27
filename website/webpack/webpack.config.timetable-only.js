@@ -26,7 +26,7 @@ const productionConfig = merge([
     output: {
       // The build folder.
       path: parts.PATHS.buildTimetable,
-      filename: isProd ? '[chunkhash].js' : '[hash].js',
+      filename: isProd ? '[chunkhash].js' : '[contenthash].js',
       // This is used for require.ensure. The setup
       // will work without but this is useful to set.
       chunkFilename: '[chunkhash].js',
@@ -42,7 +42,7 @@ const productionConfig = merge([
   parts.loadImages({
     include: parts.PATHS.images,
     options: {
-      name: 'img/[name].[hash].[ext]',
+      name: 'img/[name].[contenthash].[ext]',
     },
   }),
   parts.productionCSS(),
