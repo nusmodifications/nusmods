@@ -17,7 +17,7 @@ const developmentConfig = merge([
     mode: 'development',
     // Use a fast source map for good-enough debugging usage
     // https://webpack.js.org/configuration/devtool/#devtool
-    devtool: 'cheap-module-eval-source-map',
+    devtool: 'eval-cheap-module-source-map',
     entry: [
       'react-hot-loader/patch',
       // Modify entry for hot module reload to work
