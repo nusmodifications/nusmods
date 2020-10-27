@@ -13,6 +13,10 @@ module.exports = {
     // Mock SCSS and CSS modules as objects
     '\\.(?:css|scss)$': 'identity-obj-proxy',
   },
+  globals: {
+    // Default to development
+    __DEV__: process.env.NODE_ENV !== 'production',
+  },
   // Allow us to directly use enzyme wrappers for snapshotting
   // Usage: expect(enzyme.shallow(<div/>)).toMatchSnapshot();
   snapshotSerializers: ['<rootDir>/node_modules/enzyme-to-json/serializer'],

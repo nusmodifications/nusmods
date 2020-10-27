@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const path = require('path');
 const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -6,13 +7,11 @@ const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
 
-const nodeEnvStr = process.env.NODE_ENV || 'production';
-const isProd = nodeEnvStr === 'production';
+const isProduction = process.env.NODE_ENV === 'production';
 
 const source = (file) => path.join('entry/export', file);
 
 const productionConfig = merge([
-  parts.setFreeVariable('process.env.NODE_ENV', nodeEnvStr),
   commonConfig,
   {
     // Override common's entry point
@@ -26,12 +25,17 @@ const productionConfig = merge([
     output: {
       // The build folder.
       path: parts.PATHS.buildTimetable,
-      filename: isProd ? '[chunkhash].js' : '[contenthash].js',
+      filename: isProduction ? '[chunkhash].js' : '[contenthash].js',
       // This is used for require.ensure. The setup
       // will work without but this is useful to set.
       chunkFilename: '[chunkhash].js',
     },
     plugins: [
+      new webpack.DefinePlugin({
+        __DEV__: !isProduction,
+        DEBUG_SERVICE_WORKER: !!process.env.DEBUG_SERVICE_WORKER,
+        DATA_API_BASE_URL: JSON.stringify(process.env.DATA_API_BASE_URL),
+      }),
       new HtmlWebpackPlugin({
         template: path.join(parts.PATHS.src, source('index.html')),
         inject: true,

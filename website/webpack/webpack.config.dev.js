@@ -8,9 +8,6 @@ const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
 
 const developmentConfig = merge([
-  parts.setFreeVariable('process.env.NODE_ENV', 'development'),
-  parts.setFreeVariable('process.env.DEBUG_SERVICE_WORKER', process.env.DEBUG_SERVICE_WORKER),
-  parts.setFreeVariable('process.env.DATA_API_BASE_URL', process.env.DATA_API_BASE_URL),
   commonConfig,
   {
     mode: 'development',
@@ -32,6 +29,11 @@ const developmentConfig = merge([
       },
     },
     plugins: [
+      new webpack.DefinePlugin({
+        __DEV__: true,
+        DEBUG_SERVICE_WORKER: !!process.env.DEBUG_SERVICE_WORKER,
+        DATA_API_BASE_URL: JSON.stringify(process.env.DATA_API_BASE_URL),
+      }),
       new HtmlWebpackPlugin({
         template: path.join(parts.PATHS.src, 'index.html'),
         cache: true,

@@ -23,7 +23,7 @@ export default function persistReducer<S>(
     {
       key,
       storage,
-      debug: process.env.NODE_ENV !== 'production',
+      debug: __DEV__,
       ...options,
     },
     reducer,

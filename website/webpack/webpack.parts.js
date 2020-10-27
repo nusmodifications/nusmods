@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -20,21 +19,6 @@ const PATHS = {
   build: path.join(ROOT, 'dist'),
   buildTimetable: path.join(ROOT, 'dist-timetable'),
   fixtures: path.join(ROOT, SRC, '__mocks__'),
-};
-
-/**
- * Set environment variables (and more).
- *
- * @see https://webpack.js.org/plugins/define-plugin/
- * @see https://survivejs.com/webpack/optimizing/environment-variables/
- */
-exports.setFreeVariable = (key, value) => {
-  const env = {};
-  env[key] = JSON.stringify(value);
-
-  return {
-    plugins: [new webpack.DefinePlugin(env)],
-  };
 };
 
 /**

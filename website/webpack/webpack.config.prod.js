@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const path = require('path');
 const { merge } = require('webpack-merge');
 const TerserJsPlugin = require('terser-webpack-plugin');
@@ -18,7 +19,6 @@ const IS_NETLIFY = !!process.env.NETLIFY;
 
 const productionConfig = ({ browserWarningPath }) =>
   merge([
-    parts.setFreeVariable('process.env.NODE_ENV', 'production'),
     commonConfig,
     {
       // Don't attempt to continue if there are any errors.
@@ -36,6 +36,9 @@ const productionConfig = ({ browserWarningPath }) =>
         chunkFilename: '[name].[contenthash:8].js',
       },
       plugins: [
+        new webpack.DefinePlugin({
+          __DEV__: false,
+        }),
         // SEE: https://medium.com/webpack/brief-introduction-to-scope-hoisting-in-webpack-8435084c171f
         new HtmlWebpackPlugin({
           template: path.join(parts.PATHS.src, 'index.html'),

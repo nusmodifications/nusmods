@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 
 const parts = require('./webpack.parts');
@@ -53,12 +54,16 @@ const commonConfig = merge([
       // Disable performance hints since we use our own size reporter
       hints: false,
     },
+    plugins: [
+      new webpack.DefinePlugin({
+        DISPLAY_COMMIT_HASH: JSON.stringify(parts.appVersion().commitHash),
+        VERSION_STR: JSON.stringify(parts.appVersion().versionStr),
+      }),
+    ],
   },
   parts.transpileJavascript({
     include: parts.PATHS.src,
   }),
-  parts.setFreeVariable('process.env.DISPLAY_COMMIT_HASH', parts.appVersion().commitHash),
-  parts.setFreeVariable('process.env.VERSION_STR', parts.appVersion().versionStr),
 ]);
 
 module.exports = commonConfig;

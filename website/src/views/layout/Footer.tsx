@@ -14,8 +14,8 @@ type Props = {
 };
 
 export const FooterComponent: React.FC<Props> = (props) => {
-  const commitHash = process.env.DISPLAY_COMMIT_HASH;
-  const versionStr = process.env.VERSION_STR;
+  const commitHash = DISPLAY_COMMIT_HASH;
+  const versionStr = VERSION_STR;
 
   // Try catch because of Chrome crashing on calling toLocaleString with no parameter
   // See https://sentry.io/nusmods/v3/issues/434084130/
