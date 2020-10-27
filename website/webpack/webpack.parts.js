@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const childProcess = require('child_process');
-const moment = require('moment');
+const { format } = require('date-fns');
 
 const ROOT = path.join(__dirname, '..');
 const SRC = 'src';
@@ -253,8 +253,9 @@ exports.appVersion = () => {
   } catch (e) {
     commitHash = 'UNSET';
   }
-  // Version format: <YYYYMMDD date>-<7-char hash substring>
-  const versionStr = commitHash && `${moment().format('YYYYMMDD')}-${commitHash.substring(0, 7)}`;
+  // Version format: <yyyyMMdd date>-<7-char hash substring>
+  const versionStr =
+    commitHash && `${format(new Date(), 'yyyyMMdd')}-${commitHash.substring(0, 7)}`;
   return { commitHash, versionStr };
 };
 
