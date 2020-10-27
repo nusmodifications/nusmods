@@ -111,7 +111,6 @@
     "redux-logger": "3.0.6",
     "redux-mock-store": "1.5.4",
     "sass-loader": "10.0.5",
-    "script-ext-html-webpack-plugin": "2.1.5",
     "serve-static": "1.14.1",
     "style-loader": "2.0.0",
     "stylelint": "13.7.2",

@@ -4,7 +4,6 @@ const { merge } = require('webpack-merge');
 const TerserJsPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const PacktrackerPlugin = require('@packtracker/webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 
