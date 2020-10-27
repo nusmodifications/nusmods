@@ -4,7 +4,8 @@ import * as Sentry from '@sentry/browser';
 import { isBrowserSupported } from './browser';
 
 // Configure Raven - the client for Sentry, which we use to handle errors
-const loadRaven = process.env.NODE_ENV === 'production';
+// const loadRaven = process.env.NODE_ENV === 'production';
+const loadRaven = false;
 if (loadRaven) {
   Sentry.init({
     dsn: 'https://4b4fe71954424fd39ac88a4f889ffe20@sentry.io/213986',
