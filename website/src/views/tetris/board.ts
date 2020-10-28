@@ -200,7 +200,7 @@ export function placePieceOnBoard(board: Board, ...pieces: Piece[]): Board {
   return produce(board, (draft) => {
     pieces.forEach((piece) => {
       iteratePiece(piece, (tile: Square, col: number, row: number) => {
-        draft[col][row] = tile;
+        draft[col][row] = { ...tile };
       });
     });
   });
