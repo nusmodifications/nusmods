@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 const icalendar = require('icalendar');
-const { addDays, format, getDay, isBefore } = require('date-fns');
+const { addDays, format, getDay } = require('date-fns');
 
 const args = process.argv.slice(2);
 const years = args[0];
@@ -46,10 +46,8 @@ years
             date: new Date(event.getPropertyValue('DTSTART').valueOf()),
             name: event.getPropertyValue('SUMMARY'),
           }))
-          .sort((a, b) =>
-            // Order not guaranteed. Have to sort.
-            isBefore(a.date, b.date) ? -1 : 1,
-          );
+          // Order not guaranteed. Have to sort (in ascending order).
+          .sort((a, b) => a.date - b.date);
 
         const data = [];
         const DATE_FORMAT = 'yyyy-MM-dd';
