@@ -1,4 +1,5 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
+import * as React from 'react';
 
 type Props = React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string; children: ReactNode };
 

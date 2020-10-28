@@ -1,4 +1,3 @@
-import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 
 import { CS1010S, CS3216, CS4243 } from '__mocks__/modules';

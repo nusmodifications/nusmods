@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { PanelProps } from 'searchkit';
 
 import styles from './styles.scss';

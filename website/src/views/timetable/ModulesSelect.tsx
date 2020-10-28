@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Component } from 'react';
 import { omit } from 'lodash';
 import Downshift, {
   ChildrenFunction,
@@ -37,7 +37,7 @@ type State = {
   inputValue: string;
 };
 
-export class ModulesSelectComponent extends React.Component<Props, State> {
+export class ModulesSelectComponent extends Component<Props, State> {
   state = {
     isOpen: false,
     inputValue: '',

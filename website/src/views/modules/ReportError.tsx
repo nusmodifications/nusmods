@@ -1,4 +1,5 @@
-import React, { FormEventHandler } from 'react';
+import { FormEventHandler } from 'react';
+import * as React from 'react';
 import { castArray, groupBy } from 'lodash';
 import classnames from 'classnames';
 import produce from 'immer';

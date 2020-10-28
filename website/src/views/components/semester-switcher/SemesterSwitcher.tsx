@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { ChevronLeft, ChevronRight } from 'react-feather';
 
 import type { Semester } from 'types/modules';
@@ -13,7 +13,7 @@ type Props = {
   onSelectSemester: (newSemester: Semester) => void;
 };
 
-const SemesterSwitcher = React.memo<Props>(({ readOnly, semester, onSelectSemester }) => {
+const SemesterSwitcher = memo<Props>(({ readOnly, semester, onSelectSemester }) => {
   const switchSemester = (offset: number) => {
     const newSemester: Semester = semester + offset;
     if (!isValidSemester(newSemester)) {

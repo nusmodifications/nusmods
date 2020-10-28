@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import Downshift from 'downshift';
 import classnames from 'classnames';

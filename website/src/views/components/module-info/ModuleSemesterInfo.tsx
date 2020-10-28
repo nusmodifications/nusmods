@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Component } from 'react';
 
 import { ModuleCode, Semester, SemesterDataCondensed } from 'types/modules';
 
@@ -17,7 +17,7 @@ type State = {
   selected: Semester;
 };
 
-export default class ModuleSemesterInfo extends React.Component<Props, State> {
+export default class ModuleSemesterInfo extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { PureComponent } from 'react';
 import classnames from 'classnames';
 import { flatMap, size, sortBy, toPairs, values } from 'lodash';
 
@@ -26,7 +26,7 @@ type State = {
   readonly showSpecialSem: boolean;
 };
 
-export default class PlannerYear extends React.PureComponent<Props, State> {
+export default class PlannerYear extends PureComponent<Props, State> {
   state = {
     // Always display Special Terms I and II if either one has modules
     showSpecialSem: this.hasSpecialTermModules(),

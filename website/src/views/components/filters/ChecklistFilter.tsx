@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 
 import { ElasticSearchFilter } from 'types/vendor/elastic-search';
 import FilterContainer from './FilterContainer';
@@ -17,7 +17,7 @@ interface ChecklistFilterProps {
   disabled?: boolean;
 }
 
-const ChecklistFilter = React.memo<ChecklistFilterProps>(
+const ChecklistFilter = memo<ChecklistFilterProps>(
   ({ title, items, disabled = false, showCount = true }) => {
     return (
       <FilterContainer title={title} disabled={disabled}>

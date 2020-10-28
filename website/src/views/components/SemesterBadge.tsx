@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import config from 'config';
 import { Semester } from 'types/modules';

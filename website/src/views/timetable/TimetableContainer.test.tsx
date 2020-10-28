@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { Redirect } from 'react-router-dom';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { SemTimetableConfig } from 'types/timetables';

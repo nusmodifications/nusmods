@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import { NBSP } from 'utils/react';
 import styles from './styles.scss';
