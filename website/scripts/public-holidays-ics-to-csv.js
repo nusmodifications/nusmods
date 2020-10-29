@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 const icalendar = require('icalendar');
-const { addDays, format, getDay } = require('date-fns');
+const { addDays, format, isSunday } = require('date-fns');
 
 const args = process.argv.slice(2);
 const years = args[0];
@@ -61,7 +61,7 @@ years
           // FIXME: If first day of CNY is a Sunday, this code will not mark
           // Tuesday as a holiday.
           if (
-            getDay(date) === 0 && // 0 = Sunday
+            isSunday(date) &&
             i < calendarEvents.length &&
             calendarEvents[i + 1].name !== 'Chinese New Year'
           ) {
