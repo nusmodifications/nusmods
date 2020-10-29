@@ -26,10 +26,10 @@ describe(TetrisGame, () => {
 
     for (let game = 0; game < 100; game++) {
       // Keep a list of moves made for debugging
-      const currentMoves: string[] = []
+      const currentMoves: string[] = [];
       try {
         for (let tick = 0; tick < 1000; tick++) {
-          const [moveLabel, move] = _.sample(moves)!
+          const [moveLabel, move] = _.sample(moves)!;
           currentMoves.push(moveLabel);
           move();
           wrapper.render();
@@ -37,6 +37,7 @@ describe(TetrisGame, () => {
           if (!instance.isPlaying()) break;
         }
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.log(currentMoves);
         throw e;
       }
