@@ -1,5 +1,5 @@
-import { FormEventHandler } from 'react';
 import * as React from 'react';
+import { FormEventHandler, memo, useCallback, useState } from 'react';
 import { castArray, groupBy } from 'lodash';
 import classnames from 'classnames';
 import produce from 'immer';
@@ -109,9 +109,9 @@ function matchModule(module: Module) {
  * Module error reporting component. Posts to a serverless script that then emails the relevant
  * faculty / department with the issue.
  */
-const ReportError = React.memo<Props>(({ module }) => {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [formState, setFormState] = React.useState<FormState>({ type: 'unsubmitted' });
+const ReportError = memo<Props>(({ module }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [formState, setFormState] = useState<FormState>({ type: 'unsubmitted' });
 
   // Causes the error reporting function to email modules@nusmods.com instead.
   // In production, use SET_ERROR_REPORTING_DEBUG(true) to enable debug mode
@@ -120,13 +120,13 @@ const ReportError = React.memo<Props>(({ module }) => {
     process.env.NODE_ENV !== 'production',
   );
 
-  const [formData, setFormData] = React.useState<ReportErrorForm>(() => ({
+  const [formData, setFormData] = useState<ReportErrorForm>(() => ({
     ...retrieveContactInfo(),
     message: '',
     contactId: matchModule(module)?.id,
   }));
 
-  const updateFormValue = React.useCallback(
+  const updateFormValue = useCallback(
     (key: keyof ReportErrorForm): FormEventHandler => (evt) => {
       const newFormData = produce(formData, (draft) => {
         draft[key] = (evt.target as HTMLInputElement).value;
@@ -142,7 +142,7 @@ const ReportError = React.memo<Props>(({ module }) => {
     [formData],
   );
 
-  const onSubmit = React.useCallback(() => {
+  const onSubmit = useCallback(() => {
     setFormState({ type: 'submitting' });
 
     const { name, replyTo, matricNumber, message, contactId } = formData;

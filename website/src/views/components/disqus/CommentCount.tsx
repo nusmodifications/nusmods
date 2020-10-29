@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import * as React from 'react';
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import config from 'config';
