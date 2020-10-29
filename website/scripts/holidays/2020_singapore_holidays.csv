@@ -1,7 +1,7 @@
 Date,Name,Day,Observance,Observance Strategy
 2020-01-01,New Year's Day,Wednesday,2020-01-01,actual_day
-2020-01-25,Chinese New Year Day 1,Saturday,2020-01-25,actual_day
-2020-01-26,Chinese New Year Day 2,Sunday,2020-01-27,next_monday
+2020-01-25,Chinese New Year,Saturday,2020-01-25,actual_day
+2020-01-26,Chinese New Year,Sunday,2020-01-27,next_monday
 2020-04-10,Good Friday,Friday,2020-04-10,actual_day
 2020-05-01,Labour Day,Friday,2020-05-01,actual_day
 2020-05-07,Vesak Day,Thursday,2020-05-07,actual_day
