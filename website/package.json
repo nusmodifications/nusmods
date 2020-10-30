@@ -42,7 +42,7 @@
     "@types/jest": "26.0.15",
     "@types/json2mq": "0.2.0",
     "@types/leaflet": "1.5.12",
-    "@types/lodash": "4.14.162",
+    "@types/lodash": "4.14.164",
     "@types/mousetrap": "1.6.4",
     "@types/no-scroll": "2.1.0",
     "@types/query-string": "5.0.0",
