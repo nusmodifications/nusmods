@@ -35,13 +35,6 @@ const commonConfig = merge([
         os: false,
       },
     },
-    // Entry accepts a path or an object of entries.
-    // We'll be using the latter form given it's
-    // convenient with more complex configurations.
-    entry: {
-      // This will build an app.js file from the `main` module.
-      app: ['entry/main'],
-    },
     context: parts.PATHS.src,
     output: {
       publicPath,
