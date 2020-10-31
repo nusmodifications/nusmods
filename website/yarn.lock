@@ -12954,10 +12954,10 @@ react-modal@3.11.2:
     react-lifecycles-compat "^3.0.0"
     warning "^4.0.3"
 
-react-qr-svg@2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/react-qr-svg/-/react-qr-svg-2.2.2.tgz#1b78ff7264d056d01dcca6313a4313849c8c5de8"
-  integrity sha512-uUsleAZBsQ0DmN88hBXkUfzxdKzMgQMZxMfIrIj3SXyLM5iqVrGBkMWw57tiknmdet0vu/lvmljgROdLN8KzEA==
+react-qr-svg@2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/react-qr-svg/-/react-qr-svg-2.3.0.tgz#1de0356b9cb96536281c502c06fd93a4b1ec70ea"
+  integrity sha512-Z+Kt5oNcB5LeGBJw7BcKMQKmC0JwUyTpdhBUOIQ6JQETdVl1EgODtOaiFJYRhvk+lh3WDKZb+TU31md5lfAKAw==
   dependencies:
     prop-types "^15.5.8"
     qr.js "0.0.0"
