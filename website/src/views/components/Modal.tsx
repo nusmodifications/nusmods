@@ -12,6 +12,7 @@ type Props = ModalProps & {
   children?: React.ReactNode;
   fullscreen: boolean;
   animate?: boolean;
+  noPadding?: boolean;
 };
 
 export default class Modal extends React.Component<Props> {
@@ -36,7 +37,15 @@ export default class Modal extends React.Component<Props> {
   }
 
   render() {
-    const { className, overlayClassName, children, fullscreen, animate, ...rest } = this.props;
+    const {
+      className,
+      overlayClassName,
+      children,
+      fullscreen,
+      animate,
+      noPadding,
+      ...rest
+    } = this.props;
 
     return (
       <ReactModal
@@ -44,6 +53,7 @@ export default class Modal extends React.Component<Props> {
         className={classnames(styles.modal, className, {
           [styles.fullscreen]: fullscreen,
           [styles.animated]: animate,
+          [styles.noPadding]: noPadding,
         })}
         closeTimeoutMS={animate ? 150 : 0}
         {...rest}

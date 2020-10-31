@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { omit } from 'lodash';
 import Downshift, {
   ChildrenFunction,
@@ -244,6 +244,7 @@ export class ModulesSelectComponent extends React.Component<Props, State> {
           className={styles.modal}
           shouldCloseOnOverlayClick={false}
           fullscreen
+          noPadding
         >
           {downshiftComponent}
         </Modal>

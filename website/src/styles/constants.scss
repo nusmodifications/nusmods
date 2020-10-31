@@ -30,7 +30,9 @@ $page-entering-duration: $fullscreen-duration;
 /* stylelint-disable-next-line value-keyword-case */
 $page-entering-animation: fadeIn;
 
+// Sizes
 $leaflet-control-offset: 0.5rem;
+$modal-padding: 1rem;
 
 $alert-override-themes: success, info, danger, warning;
 
