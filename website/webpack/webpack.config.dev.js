@@ -26,13 +26,12 @@ const developmentConfig = merge([
     // Use a fast source map for good-enough debugging usage
     // https://webpack.js.org/configuration/devtool/#devtool
     devtool: 'eval-cheap-module-source-map',
-    entry: [
-      // Modify entry for hot module reload to work
-      // See: https://survivejs.com/webpack/appendices/hmr/#setting-wds-entry-points-manually
-      'webpack-dev-server/client',
-      'webpack/hot/only-dev-server',
-      'entry/main',
-    ],
+    entry: 'entry/main',
+    // Fixes HMR in Webpack 5
+    // TODO: Remove once one of these issues are fixed:
+    // https://github.com/pmmmwh/react-refresh-webpack-plugin/issues/235
+    // https://github.com/webpack/webpack-dev-server/issues/2758
+    target: 'web',
     plugins: [
       new HtmlWebpackPlugin({
         template: path.join(parts.PATHS.src, 'index.html'),
@@ -48,7 +47,6 @@ const developmentConfig = merge([
       new webpack.WatchIgnorePlugin({
         paths: [parts.PATHS.node, parts.PATHS.build],
       }),
-      new webpack.HotModuleReplacementPlugin(),
       new ReactRefreshWebpackPlugin(),
     ],
   },
