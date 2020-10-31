@@ -1,4 +1,4 @@
-import React, { memo, useState, useCallback } from 'react';
+import { memo, useState, useCallback } from 'react';
 import classnames from 'classnames';
 import { Sun } from 'react-feather';
 

@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import Loadable, { LoadingComponentProps } from 'react-loadable';
 
 import LoadingSpinner from 'views/components/LoadingSpinner';

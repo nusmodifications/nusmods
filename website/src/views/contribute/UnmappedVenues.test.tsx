@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { shallow } from 'enzyme';
 import { VenueLocationMap } from 'types/venues';
 import { UnmappedVenuesComponent } from './UnmappedVenues';

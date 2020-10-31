@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Map as LeafletMap } from 'leaflet';
 import { Map, Marker, TileLayer, Polygon, Tooltip } from 'react-leaflet';
 import { GestureHandling } from 'leaflet-gesture-handling';

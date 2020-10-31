@@ -1,8 +1,8 @@
-import * as React from 'react';
+import { createRef, PureComponent } from 'react';
 import Mousetrap from 'mousetrap';
 import { debounce, noop, shuffle } from 'lodash';
 import classnames from 'classnames';
-import produce from 'immer';
+import produce, { current, Draft } from 'immer';
 
 import { ColorIndex } from 'types/timetables';
 import Timetable from 'views/timetable/Timetable';
@@ -105,10 +105,10 @@ function renderPiece(tiles: Board) {
   );
 }
 
-export default class TetrisGame extends React.PureComponent<Props, State> {
+export default class TetrisGame extends PureComponent<Props, State> {
   intervalId?: number;
 
-  gameWrapper = React.createRef<HTMLDivElement>();
+  gameWrapper = createRef<HTMLDivElement>();
 
   // Ticks are not stored as state because it only affects game logic
   // and not rendering
@@ -267,12 +267,13 @@ export default class TetrisGame extends React.PureComponent<Props, State> {
    * Moves the current piece down by 1 unit, returning true if it is possible and
    * false otherwise, because the piece has collided with the bottom or other blocks
    */
-  movePieceDown = (draft: State) => {
+  movePieceDown = (draft: Draft<State>) => {
     if (!this.isPlaying()) return false;
 
+    const currentState = current(draft);
     const nextPiece = {
-      ...draft.currentPiece,
-      y: draft.currentPiece.y + 1,
+      ...currentState.currentPiece,
+      y: currentState.currentPiece.y + 1,
     };
 
     // If the next position is valid then we simply move the piece down one
@@ -283,7 +284,7 @@ export default class TetrisGame extends React.PureComponent<Props, State> {
 
     // Otherwise we stick the piece in place and move to add a new piece
     // Add piece to board - this.state.currentPiece is used so we use the old y pos
-    const boardWithPiece = placePieceOnBoard(draft.board, draft.currentPiece);
+    const boardWithPiece = placePieceOnBoard(currentState.board, currentState.currentPiece);
 
     // Check for row removal
     const { newBoard, rowsCleared } = removeCompleteRows(boardWithPiece);
@@ -345,7 +346,7 @@ export default class TetrisGame extends React.PureComponent<Props, State> {
     );
   };
 
-  popNextPiece = (draft: State) => {
+  popNextPiece = (draft: Draft<State>) => {
     const nextPiece = draft.nextPieces.shift();
     if (!nextPiece) {
       throw new Error('nextPieces is empty');

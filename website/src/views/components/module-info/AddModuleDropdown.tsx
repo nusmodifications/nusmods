@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { PureComponent } from 'react';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
@@ -36,7 +36,7 @@ function isModuleOnTimetable(
   return !!get(timetables, [String(semester), module.moduleCode]);
 }
 
-export class AddModuleDropdownComponent extends React.PureComponent<Props, State> {
+export class AddModuleDropdownComponent extends PureComponent<Props, State> {
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
     const { timetables, module } = nextProps;
     const { loading } = prevState;

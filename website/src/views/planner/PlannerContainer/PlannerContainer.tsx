@@ -1,4 +1,4 @@
-import React from 'react';
+import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { flatMap, flatten, sortBy, toPairs, values } from 'lodash';
 import { DragDropContext, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
@@ -66,7 +66,7 @@ type State = {
 
 const TRASH_ID = 'trash';
 
-export class PlannerContainerComponent extends React.PureComponent<Props, State> {
+export class PlannerContainerComponent extends PureComponent<Props, State> {
   state: State = {
     loading: true,
     showSettings: false,

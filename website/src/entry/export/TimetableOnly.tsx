@@ -1,5 +1,5 @@
 import { Store } from 'redux';
-import * as React from 'react';
+import { Component } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
@@ -20,7 +20,7 @@ type State = {
   colors: ColorMapping;
 };
 
-export default class TimetableOnly extends React.Component<Props, State> {
+export default class TimetableOnly extends Component<Props, State> {
   state = {
     semester: 1,
     timetable: {},

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { SemTimetableConfig, TimetableConfig } from 'types/timetables';
 import { ModuleList, NotificationOptions } from 'types/reducers';
 import { Semester } from 'types/modules';

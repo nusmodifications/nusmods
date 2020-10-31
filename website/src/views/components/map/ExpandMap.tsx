@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { PureComponent } from 'react';
 import { withLeaflet, ContextProps } from 'react-leaflet';
 import Control from 'react-leaflet-control';
 import { Maximize, Minimize } from 'react-feather';
@@ -9,7 +9,7 @@ type Props = ContextProps & {
   readonly onToggleExpand: (boolean: boolean) => void;
 };
 
-class ExpandMap extends React.PureComponent<Props> {
+class ExpandMap extends PureComponent<Props> {
   componentDidUpdate() {
     if (this.props.leaflet && this.props.leaflet.map) {
       const { map } = this.props.leaflet;

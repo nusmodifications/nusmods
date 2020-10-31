@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { memo } from 'react';
 import classnames from 'classnames';
 import Downshift, { ChildrenFunction } from 'downshift';
 import _ from 'lodash';
@@ -20,7 +20,7 @@ type Props = {
  *
  * For use in places like changing module colors
  */
-const ColorPicker = React.memo<Props>((props) => {
+const ColorPicker = memo<Props>((props) => {
   const renderColorPicker: ChildrenFunction<ColorIndex> = ({
     getToggleButtonProps,
     getItemProps,

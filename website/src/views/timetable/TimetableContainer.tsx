@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
@@ -62,7 +62,7 @@ type State = {
  * - Import timetable data from query string if action is defined
  * - Create the UI for the user to confirm their actions
  */
-export class TimetableContainerComponent extends React.PureComponent<Props, State> {
+export class TimetableContainerComponent extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 

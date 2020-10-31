@@ -1,4 +1,3 @@
-import * as React from 'react';
 import ScrollSpy from 'react-scrollspy';
 import { shallow } from 'enzyme';
 

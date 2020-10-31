@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { memo } from 'react';
 import { each } from 'lodash';
 
 import { Semester } from 'types/modules';
@@ -18,7 +18,7 @@ type Props = {
   onSelectSemester: (semester: Semester) => void;
 };
 
-const SemesterPicker = React.memo<Props>(
+const SemesterPicker = memo<Props>(
   ({
     semesters,
     showDisabled = false,

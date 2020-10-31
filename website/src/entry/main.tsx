@@ -6,7 +6,6 @@ import 'bootstrapping/sentry';
 // See: https://github.com/zloirock/core-js/issues/579#issuecomment-504325213
 import 'core-js/es/promise/finally';
 
-import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactModal from 'react-modal';
 

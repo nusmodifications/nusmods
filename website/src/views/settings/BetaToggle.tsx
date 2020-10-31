@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { memo } from 'react';
 import Toggle from 'views/components/Toggle';
 import ExternalLink from 'views/components/ExternalLink';
 import config from 'config';
@@ -11,7 +11,7 @@ type Props = {
   toggleStates: () => void;
 };
 
-const BetaToggle = React.memo<Props>((props) => {
+const BetaToggle = memo<Props>((props) => {
   const { betaTester, toggleStates } = props;
   const hasTests = currentTests.length > 0;
 

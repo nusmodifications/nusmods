@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import classnames from 'classnames';
 import ScrollSpy from 'react-scrollspy';
 import { kebabCase, map, mapValues, values, sortBy } from 'lodash';
@@ -51,7 +51,7 @@ export const SIDE_MENU_LABELS = {
 
 export const SIDE_MENU_ITEMS = mapValues(SIDE_MENU_LABELS, kebabCase);
 
-class ModulePageContent extends React.Component<Props, State> {
+class ModulePageContent extends Component<Props, State> {
   state: State = {
     isMenuOpen: false,
   };
