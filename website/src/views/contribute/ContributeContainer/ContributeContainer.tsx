@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { memo, Fragment } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
@@ -43,7 +43,7 @@ type Props = {
   toggleBetaTesting: () => void;
 };
 
-const ContributeContainer = React.memo<Props>(({ modules, beta, ...props }) => (
+const ContributeContainer = memo<Props>(({ modules, beta, ...props }) => (
   <div className={styles.pageContainer}>
     <ScrollToTop onComponentDidMount />
     <Title>Contribute</Title>
@@ -79,7 +79,7 @@ const ContributeContainer = React.memo<Props>(({ modules, beta, ...props }) => (
 
         <div className={styles.writeReviews}>
           {map(modules, (moduleCondensed, semester) => (
-            <React.Fragment key={semester}>
+            <Fragment key={semester}>
               <h4>{config.semesterNames[semester]}</h4>
               <div className={styles.reviewWrapper}>
                 {moduleCondensed.map(({ moduleCode, title }) => (
@@ -93,7 +93,7 @@ const ContributeContainer = React.memo<Props>(({ modules, beta, ...props }) => (
                   </Link>
                 ))}
               </div>
-            </React.Fragment>
+            </Fragment>
           ))}
         </div>
       </section>

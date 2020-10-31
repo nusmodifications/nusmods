@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Component } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Loadable, { LoadingComponentProps } from 'react-loadable';
 import classnames from 'classnames';
@@ -60,7 +60,7 @@ type State = {
 
 const pageHead = <Title>Venues</Title>;
 
-export class VenuesContainerComponent extends React.Component<Props, State> {
+export class VenuesContainerComponent extends Component<Props, State> {
   history: HistoryDebouncer;
 
   constructor(props: Props) {

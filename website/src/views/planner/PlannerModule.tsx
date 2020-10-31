@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo, useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
@@ -41,8 +41,8 @@ type Props = Readonly<{
 /**
  * Component for a single module on the planner
  */
-const PlannerModule = React.memo<Props>((props) => {
-  const [isEditingPlaceholder, setEditingPlaceholder] = React.useState(false);
+const PlannerModule = memo<Props>((props) => {
+  const [isEditingPlaceholder, setEditingPlaceholder] = useState(false);
 
   const removeModule = () => props.removeModule(props.id);
 

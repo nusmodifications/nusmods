@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { CheckboxFilterAccessor, SearchkitComponent, SearchkitComponentProps } from 'searchkit';
 
 import { ElasticSearchFilter } from 'types/vendor/elastic-search';

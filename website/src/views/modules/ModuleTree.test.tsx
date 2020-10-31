@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { render } from 'enzyme';
 
 import ModuleTree from './ModuleTree';

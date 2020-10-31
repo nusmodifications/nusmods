@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Component } from 'react';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { scrollToHash } from 'utils/react';
 
@@ -12,7 +12,7 @@ function scrollToTop() {
   window.scrollTo(0, 0);
 }
 
-export class ScrollToTopComponent extends React.Component<Props> {
+export class ScrollToTopComponent extends Component<Props> {
   static defaultProps = {
     onComponentDidMount: false,
     onPathChange: false,

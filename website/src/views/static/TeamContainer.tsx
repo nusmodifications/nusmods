@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Facebook, Linkedin, GitHub, Twitter } from 'react-feather';
 
 import ExternalLink from 'views/components/ExternalLink';

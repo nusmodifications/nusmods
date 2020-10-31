@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { ModuleSelectList } from 'types/reducers';
@@ -30,7 +30,7 @@ const RESULTS_LIMIT = 500;
  * Container for modules select
  * Governs the module filtering logic and non-select related logic such as notification.
  */
-class ModulesSelectContainer extends React.Component<Props> {
+class ModulesSelectContainer extends Component<Props> {
   onChange = (moduleCode: ModuleCode) => {
     this.props.popNotification();
     this.props.addModule(this.props.semester, moduleCode);

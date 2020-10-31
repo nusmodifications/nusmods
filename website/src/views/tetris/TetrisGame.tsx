@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { createRef, PureComponent } from 'react';
 import Mousetrap from 'mousetrap';
 import { debounce, noop, shuffle } from 'lodash';
 import classnames from 'classnames';
@@ -105,10 +105,10 @@ function renderPiece(tiles: Board) {
   );
 }
 
-export default class TetrisGame extends React.PureComponent<Props, State> {
+export default class TetrisGame extends PureComponent<Props, State> {
   intervalId?: number;
 
-  gameWrapper = React.createRef<HTMLDivElement>();
+  gameWrapper = createRef<HTMLDivElement>();
 
   // Ticks are not stored as state because it only affects game logic
   // and not rendering

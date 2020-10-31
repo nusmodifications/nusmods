@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { shallow } from 'enzyme';
 import { daysAfter } from 'utils/timify';
 import DayHeader, { HeaderDate } from './DayHeader';

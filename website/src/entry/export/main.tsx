@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { createRef } from 'react';
 import ReactDOM from 'react-dom';
 import { Store } from 'redux';
 
@@ -27,7 +27,7 @@ const { store } = configureStore();
 window.store = store;
 
 // For Puppeteer to import data
-const timetableRef = React.createRef<TimetableOnly>();
+const timetableRef = createRef<TimetableOnly>();
 window.setData = function setData(modules, data, callback) {
   const { semester, timetable, colors } = data;
 

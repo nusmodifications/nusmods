@@ -1,4 +1,4 @@
-import React from 'react';
+import { PureComponent } from 'react';
 import { DivIcon, DragEndEvent } from 'leaflet';
 import { Marker, Popup } from 'react-leaflet';
 import classnames from 'classnames';
@@ -39,7 +39,7 @@ busStops.forEach((stop: BusStop) => {
 /**
  * Displays bus stop routes as markers, and timings in a popup when they are clicked
  */
-export default class BusStops extends React.PureComponent<Props, State> {
+export default class BusStops extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
