@@ -62,7 +62,7 @@
     "@types/webpack-env": "1.15.3",
     "@typescript-eslint/eslint-plugin": "4.5.0",
     "@typescript-eslint/parser": "4.5.0",
-    "@wojtekmaj/enzyme-adapter-react-17": "^0.1.1",
+    "@wojtekmaj/enzyme-adapter-react-17": "0.2.0",
     "babel-jest": "26.5.2",
     "babel-loader": "8.1.0",
     "babel-plugin-dynamic-import-node": "2.3.3",
