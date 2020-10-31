@@ -60,26 +60,6 @@ exports.lintCSS = (options) =>
         ],
       };
 
-/**
- * Allows us to write ES6/ES2015 Javascript.
- *
- * @see https://webpack.js.org/loaders/babel-loader/
- * @see https://survivejs.com/webpack/loading/javascript/#setting-up-babel-loader-
- */
-exports.transpileJavascript = ({ include, exclude, options }) => ({
-  module: {
-    rules: [
-      {
-        test: /\.[j|t]sx?$/,
-        include,
-        exclude,
-
-        use: [{ loader: 'babel-loader', options }],
-      },
-    ],
-  },
-});
-
 const getCSSConfig = ({ options } = {}) => [
   {
     loader: 'css-loader',
