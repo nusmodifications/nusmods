@@ -11,7 +11,6 @@ import {
   SearchkitProvider,
 } from 'searchkit';
 import classnames from 'classnames';
-import { hot } from 'react-hot-loader/root';
 
 import { ElasticSearchResult } from 'types/vendor/elastic-search';
 import { ModuleInformation } from 'types/modules';
@@ -108,4 +107,4 @@ const ModuleFinderContainer: React.FC = () => {
   );
 };
 
-export default hot(ModuleFinderContainer);
+export default ModuleFinderContainer;
