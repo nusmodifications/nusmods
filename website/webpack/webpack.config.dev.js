@@ -3,6 +3,7 @@ const { merge } = require('webpack-merge');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
@@ -26,19 +27,12 @@ const developmentConfig = merge([
     // https://webpack.js.org/configuration/devtool/#devtool
     devtool: 'eval-cheap-module-source-map',
     entry: [
-      'react-hot-loader/patch',
       // Modify entry for hot module reload to work
       // See: https://survivejs.com/webpack/appendices/hmr/#setting-wds-entry-points-manually
       'webpack-dev-server/client',
       'webpack/hot/only-dev-server',
       'entry/main',
     ],
-    resolve: {
-      alias: {
-        // Replace React DOM with the hot reload patched version in development
-        'react-dom': '@hot-loader/react-dom',
-      },
-    },
     plugins: [
       new HtmlWebpackPlugin({
         template: path.join(parts.PATHS.src, 'index.html'),
@@ -54,11 +48,8 @@ const developmentConfig = merge([
       new webpack.WatchIgnorePlugin({
         paths: [parts.PATHS.node, parts.PATHS.build],
       }),
-      // Enable multi-pass compilation for enhanced performance
-      // in larger projects. Good default.
-      // Waiting on: https://github.com/jantimon/html-webpack-plugin/issues/533
-      // { multiStep: true }
       new webpack.HotModuleReplacementPlugin(),
+      new ReactRefreshWebpackPlugin(),
     ],
   },
   parts.lintJavaScript({
