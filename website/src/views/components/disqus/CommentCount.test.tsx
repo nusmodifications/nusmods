@@ -1,4 +1,3 @@
-import React from 'react';
 import { mount } from 'enzyme';
 import insertScript from 'utils/insertScript';
 import { CommentCountComponent } from './CommentCount';

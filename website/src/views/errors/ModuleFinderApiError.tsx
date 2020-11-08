@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import ApiError from './ApiError';
 
 // Should be defined in Searchkit, but it isn't exported.

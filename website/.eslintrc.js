@@ -83,6 +83,9 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
     'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
 
+    // Unnecessary with JSX transform
+    'react/react-in-jsx-scope': 'off',
+
     // TODO: Replace divs with buttons, but remove all button styling.
     'jsx-a11y/no-static-element-interactions': 'off',
 

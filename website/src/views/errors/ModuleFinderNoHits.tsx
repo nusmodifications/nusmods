@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import Omelette, { matchEgg } from 'views/components/Omelette';
 import Warning from './Warning';
 import styles from './ErrorPage.scss';

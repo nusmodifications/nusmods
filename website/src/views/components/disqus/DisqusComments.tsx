@@ -1,5 +1,5 @@
 import { DisqusConfig } from 'types/views';
-import * as React from 'react';
+import { PureComponent } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
@@ -26,7 +26,7 @@ type State = {
 
 const SCRIPT_ID = 'dsq-embed-scr';
 
-class DisqusComments extends React.PureComponent<Props, State> {
+class DisqusComments extends PureComponent<Props, State> {
   state = {
     allowDisqus: false,
   };

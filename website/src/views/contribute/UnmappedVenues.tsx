@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { partition } from 'lodash';
@@ -20,7 +20,7 @@ type State = {
   readonly expanded: boolean;
 };
 
-export class UnmappedVenuesComponent extends React.PureComponent<Props, State> {
+export class UnmappedVenuesComponent extends PureComponent<Props, State> {
   state = {
     expanded: false,
   };

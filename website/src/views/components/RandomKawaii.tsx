@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { sample } from 'lodash';
 import { SpeechBubble, Mug, Browser, Ghost, KawaiiMood, KawaiiProps } from 'react-kawaii';
 

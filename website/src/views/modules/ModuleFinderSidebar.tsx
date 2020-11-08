@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+import { memo, useState } from 'react';
 import {
   NumericRefinementListFilter,
   RefinementListFilter,
@@ -42,7 +43,7 @@ const EXAM_FILTER_ITEMS: FilterItem[] = [
   },
 ];
 
-const ModuleFinderSidebar: React.FC = React.memo(() => {
+const ModuleFinderSidebar: React.FC = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   return (
     <SideMenu
@@ -162,8 +163,6 @@ const ModuleFinderSidebar: React.FC = React.memo(() => {
       </div>
     </SideMenu>
   );
-});
+};
 
-ModuleFinderSidebar.displayName = 'ModuleFinderSidebar';
-
-export default ModuleFinderSidebar;
+export default memo(ModuleFinderSidebar);

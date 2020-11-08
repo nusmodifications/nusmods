@@ -21,7 +21,16 @@ module.exports = (api) => {
         exclude: ['transform-typeof-symbol'],
       },
     ],
-    ['@babel/preset-react', { development: !IS_PROD }],
+    [
+      '@babel/preset-react',
+      {
+        development: !IS_PROD,
+        // Enable JSX transform
+        // TODO: Remove in Babel 8, when this will be the default option
+        // See: https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#manual-babel-setup
+        runtime: 'automatic',
+      },
+    ],
   ];
 
   const plugins = [

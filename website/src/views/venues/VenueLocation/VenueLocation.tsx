@@ -1,4 +1,4 @@
-import React from 'react';
+import { PureComponent } from 'react';
 import classnames from 'classnames';
 
 import { LatLngTuple, VenueLocation as VenueLocationItem, VenueLocationMap } from 'types/venues';
@@ -20,7 +20,7 @@ type State = {
   readonly isFeedbackModalOpen: boolean;
 };
 
-export default class VenueLocation extends React.PureComponent<Props, State> {
+export default class VenueLocation extends PureComponent<Props, State> {
   state: State = {
     isFeedbackModalOpen: false,
   };

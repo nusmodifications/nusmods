@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { PureComponent } from 'react';
 import NUSModerator from 'nusmoderator';
 import { groupBy, range } from 'lodash';
 import classnames from 'classnames';
@@ -30,7 +30,7 @@ export function getTimeSegment(time: string): TimeSegment {
   return hour === 12 || hour < 5 ? 'Afternoon' : 'Evening';
 }
 
-export default class ExamCalendar extends React.PureComponent<Props> {
+export default class ExamCalendar extends PureComponent<Props> {
   getVisibleModules(): ModuleWithColor[] {
     return this.props.modules.filter((module) => !module.hiddenInTimetable);
   }

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { PaginationAccessor, SearchkitComponent, SearchkitComponentProps } from 'searchkit';
 import { clamp, get } from 'lodash';
 
