@@ -21,7 +21,7 @@ COPY ./export/package.json ./export/yarn.lock ./
 
 RUN ls -la1; yarn --no-cache --frozen-lockfile --production
 
-COPY ./export/src ./src
+COPY --chown=node:node ./export/src ./src
 
 # Run everything after as non-privileged user.
 USER node
