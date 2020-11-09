@@ -14,9 +14,6 @@ type Props = {
 };
 
 export const FooterComponent: React.FC<Props> = (props) => {
-  const commitHash = process.env.DISPLAY_COMMIT_HASH;
-  const versionStr = process.env.VERSION_STR;
-
   // Try catch because of Chrome crashing on calling toLocaleString with no parameter
   // See https://sentry.io/nusmods/v3/issues/434084130/
   let lastUpdatedText = 'Loading data...';
@@ -28,11 +25,13 @@ export const FooterComponent: React.FC<Props> = (props) => {
     }
   }
 
-  const versionSpan = commitHash && versionStr && (
+  const versionSpan = DISPLAY_COMMIT_HASH && VERSION_STR && (
     <span>
       NUSMods R version{' '}
-      <ExternalLink href={`https://github.com/nusmodifications/nusmods/commit/${commitHash}`}>
-        {versionStr}
+      <ExternalLink
+        href={`https://github.com/nusmodifications/nusmods/commit/${DISPLAY_COMMIT_HASH}`}
+      >
+        {VERSION_STR}
       </ExternalLink>
       .
     </span>

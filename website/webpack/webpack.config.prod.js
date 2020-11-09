@@ -1,5 +1,6 @@
+const webpack = require('webpack');
 const path = require('path');
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const TerserJsPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -18,7 +19,17 @@ const IS_NETLIFY = !!process.env.NETLIFY;
 
 const productionConfig = ({ browserWarningPath }) =>
   merge([
-    parts.setFreeVariable('process.env.NODE_ENV', 'production'),
+    {
+      plugins: [
+        new webpack.DefinePlugin({
+          __DEV__: false,
+          DISPLAY_COMMIT_HASH: JSON.stringify(parts.appVersion().commitHash),
+          VERSION_STR: JSON.stringify(parts.appVersion().versionStr),
+          DEBUG_SERVICE_WORKER: !!process.env.DEBUG_SERVICE_WORKER,
+          DATA_API_BASE_URL: JSON.stringify(process.env.DATA_API_BASE_URL),
+        }),
+      ],
+    },
     commonConfig,
     {
       // Don't attempt to continue if there are any errors.
@@ -27,6 +38,7 @@ const productionConfig = ({ browserWarningPath }) =>
       // We generate sourcemaps in production. This is slow but gives good results.
       // You can exclude the *.map files from the build during deployment.
       devtool: 'source-map',
+      entry: 'entry/main',
       output: {
         // The build folder.
         path: parts.PATHS.build,
@@ -63,16 +75,16 @@ const productionConfig = ({ browserWarningPath }) =>
             test: /\.(js|css|html|json|svg|xml|txt)$/,
           }),
         // Copy files from static folder over to dist
-        new CopyWebpackPlugin([{ from: 'static', context: parts.PATHS.root }], {
-          copyUnmodified: true,
+        new CopyWebpackPlugin({
+          patterns: [{ from: 'static', context: parts.PATHS.root }],
         }),
         IS_CI &&
           new PacktrackerPlugin({
             upload: true,
           }),
         (IS_CI || IS_NETLIFY) &&
-          new CopyWebpackPlugin([{ from: 'static-ci', context: parts.PATHS.root }], {
-            copyUnmodified: true,
+          new CopyWebpackPlugin({
+            patterns: [{ from: 'static-ci', context: parts.PATHS.root }],
           }),
       ].filter(Boolean),
       optimization: {
@@ -105,7 +117,7 @@ const productionConfig = ({ browserWarningPath }) =>
       include: parts.PATHS.images,
       options: {
         limit: 15000,
-        name: 'img/[name].[hash].[ext]',
+        name: 'img/[name].[contenthash].[ext]',
       },
     }),
     parts.productionCSS(),
