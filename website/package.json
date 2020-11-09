@@ -35,7 +35,7 @@
     "@babel/preset-react": "7.12.5",
     "@babel/preset-typescript": "7.12.1",
     "@packtracker/webpack-plugin": "2.3.0",
-    "@pmmmwh/react-refresh-webpack-plugin": "0.4.2",
+    "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
     "@svgr/webpack": "5.4.0",
     "@types/classnames": "2.2.11",
     "@types/enzyme": "3.10.8",
