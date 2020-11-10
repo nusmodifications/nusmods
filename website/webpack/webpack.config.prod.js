@@ -50,7 +50,7 @@ const productionConfig = ({ browserWarningPath }) =>
         new HtmlWebpackPlugin({
           template: path.join(parts.PATHS.src, 'index.html'),
 
-          // Inject css and js files manually for optimization purposes
+          // Inject CSS and JS files manually for optimization purposes
           inject: false,
 
           // Embed the browser warning code from the browser-warning Webpack bundle

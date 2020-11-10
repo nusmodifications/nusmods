@@ -43,6 +43,10 @@ const developmentConfig = merge([
       new HtmlWebpackPlugin({
         template: path.join(parts.PATHS.src, 'index.html'),
         cache: true,
+        // Our production Webpack config manually injects CSS and JS files.
+        // Do the same in development so that we can reuse the same index.html
+        // file without having double/triple-injected scripts.
+        inject: false,
       }),
       // Copy files from static folder over (in-memory)
       new CopyWebpackPlugin({
