@@ -13,6 +13,15 @@ module.exports = {
     // Mock SCSS and CSS modules as objects
     '\\.(?:css|scss)$': 'identity-obj-proxy',
   },
+  // Mimic the globals we set with Webpack's DefinePlugin
+  globals: {
+    // Default to development
+    __DEV__: process.env.NODE_ENV !== 'production',
+    DATA_API_BASE_URL: '',
+    VERSION_STR: '',
+    DISPLAY_COMMIT_HASH: '',
+    DEBUG_SERVICE_WORKER: false,
+  },
   // Allow us to directly use enzyme wrappers for snapshotting
   // Usage: expect(enzyme.shallow(<div/>)).toMatchSnapshot();
   snapshotSerializers: ['<rootDir>/node_modules/enzyme-to-json/serializer'],

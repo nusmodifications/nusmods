@@ -12,4 +12,4 @@ ENV DATA_API_BASE_URL $DATA_API_BASE_URL
 ARG GIT_COMMIT_HASH
 ENV GIT_COMMIT_HASH $GIT_COMMIT_HASH
 
-CMD yarn && (yarn start & HOST=website yarn start:export)
+CMD yarn && (yarn start & yarn start:export --host website)

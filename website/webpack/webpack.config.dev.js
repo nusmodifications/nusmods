@@ -1,23 +1,30 @@
 const webpack = require('webpack');
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
 
 const developmentConfig = merge([
-  parts.setFreeVariable('process.env.NODE_ENV', 'development'),
-  parts.setFreeVariable('process.env.DEBUG_SERVICE_WORKER', process.env.DEBUG_SERVICE_WORKER),
-  parts.setFreeVariable('process.env.DATA_API_BASE_URL', process.env.DATA_API_BASE_URL),
+  {
+    plugins: [
+      new webpack.DefinePlugin({
+        __DEV__: true,
+        DISPLAY_COMMIT_HASH: JSON.stringify(parts.appVersion().commitHash),
+        VERSION_STR: JSON.stringify(parts.appVersion().versionStr),
+        DEBUG_SERVICE_WORKER: !!process.env.DEBUG_SERVICE_WORKER,
+        DATA_API_BASE_URL: JSON.stringify(process.env.DATA_API_BASE_URL),
+      }),
+    ],
+  },
   commonConfig,
   {
     mode: 'development',
     // Use a fast source map for good-enough debugging usage
     // https://webpack.js.org/configuration/devtool/#devtool
-    devtool: 'cheap-module-eval-source-map',
+    devtool: 'eval-cheap-module-source-map',
     entry: [
       'react-hot-loader/patch',
       // Modify entry for hot module reload to work
@@ -38,22 +45,20 @@ const developmentConfig = merge([
         cache: true,
       }),
       // Copy files from static folder over (in-memory)
-      new CopyWebpackPlugin([
-        { from: 'static', context: parts.PATHS.root, ignore: ['short_url.php'] },
-      ]),
+      new CopyWebpackPlugin({
+        patterns: [
+          { from: 'static', context: parts.PATHS.root, globOptions: { ignore: ['short_url.php'] } },
+        ],
+      }),
       // Ignore node_modules so CPU usage with poll watching drops significantly.
-      new webpack.WatchIgnorePlugin([parts.PATHS.node, parts.PATHS.build]),
+      new webpack.WatchIgnorePlugin({
+        paths: [parts.PATHS.node, parts.PATHS.build],
+      }),
       // Enable multi-pass compilation for enhanced performance
       // in larger projects. Good default.
       // Waiting on: https://github.com/jantimon/html-webpack-plugin/issues/533
       // { multiStep: true }
       new webpack.HotModuleReplacementPlugin(),
-      // Caches compiled modules to disk to improve rebuild times
-      new HardSourceWebpackPlugin({
-        info: {
-          level: 'info',
-        },
-      }),
     ],
   },
   parts.lintJavaScript({
@@ -75,6 +80,7 @@ const developmentConfig = merge([
       },
     },
   }),
+  parts.devServer(),
 ]);
 
 module.exports = developmentConfig;
