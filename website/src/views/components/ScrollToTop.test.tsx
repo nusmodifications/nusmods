@@ -1,8 +1,10 @@
-import { MemoryRouter } from 'react-router-dom';
-import { mount, ReactWrapper } from 'enzyme';
+import { act } from 'react-dom/test-utils';
+import { Router } from 'react-router-dom';
+import { mount } from 'enzyme';
+import createHistory from 'test-utils/createHistory';
 import mockDom from 'test-utils/mockDom';
 
-import ScrollToTop, { ScrollToTopComponent } from './ScrollToTop';
+import ScrollToTop from './ScrollToTop';
 
 type Props = {
   onComponentDidMount?: boolean;
@@ -14,21 +16,19 @@ describe('ScrollToTopComponent', () => {
     mockDom();
   });
 
-  // Construct a testable ScrollToTop component
   function make(props: Props = {}) {
-    return mount(
-      <MemoryRouter>
-        {}
-        <ScrollToTop
-          onComponentDidMount={props.onComponentDidMount}
-          onPathChange={props.onPathChange}
-        />
-      </MemoryRouter>,
-    );
-  }
-
-  function getHistory(wrapper: ReactWrapper) {
-    return wrapper.find(ScrollToTopComponent).prop('history');
+    const { history } = createHistory();
+    act(() => {
+      mount(
+        <Router history={history}>
+          <ScrollToTop
+            onComponentDidMount={props.onComponentDidMount}
+            onPathChange={props.onPathChange}
+          />
+        </Router>,
+      );
+    });
+    return history;
   }
 
   test('default behavior does not do anything', () => {
@@ -42,10 +42,9 @@ describe('ScrollToTopComponent', () => {
   });
 
   test('onPathChange attribute behaves correctly', () => {
-    const wrapper = make({ onPathChange: true });
-    const history = getHistory(wrapper);
+    const history = make({ onPathChange: true });
     expect(window.scrollTo).not.toHaveBeenCalled();
-    history.push('/foo');
+    act(() => history.push('/foo'));
     expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
   });
 
@@ -55,17 +54,15 @@ describe('ScrollToTopComponent', () => {
   });
 
   test('integration test', () => {
-    const wrapper = make({ onComponentDidMount: true, onPathChange: true });
-    const history = getHistory(wrapper);
-
+    const history = make({ onComponentDidMount: true, onPathChange: true });
     expect(window.scrollTo).toHaveBeenCalledTimes(1);
     expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
-    history.push('/foo');
+    act(() => history.push('/foo'));
     expect(window.scrollTo).toHaveBeenCalledTimes(2);
     expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
-    history.push('/foo');
+    act(() => history.push('/foo'));
     expect(window.scrollTo).toHaveBeenCalledTimes(2);
-    history.push('/bar');
+    act(() => history.push('/bar'));
     expect(window.scrollTo).toHaveBeenCalledTimes(3);
   });
 });

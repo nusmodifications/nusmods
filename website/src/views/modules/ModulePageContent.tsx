@@ -81,7 +81,7 @@ class ModulePageContent extends Component<Props, State> {
 
         <Announcements />
 
-        <ScrollToTop onComponentDidMount scrollToHash />
+        <ScrollToTop onComponentDidMount shouldScrollToHash />
 
         {isArchive && (
           <div className={classnames(styles.archiveWarning, 'alert alert-warning')}>
