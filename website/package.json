@@ -141,7 +141,7 @@
     "date-fns": "2.16.1",
     "downshift": "5.4.7",
     "ical-generator": "https://github.com/ZhangYiJiang/ical-generator.git#ed6928fe",
-    "immer": "7.0.14",
+    "immer": "7.0.15",
     "json2mq": "0.2.0",
     "leaflet": "1.7.1",
     "leaflet-gesture-handling": "1.2.1",
