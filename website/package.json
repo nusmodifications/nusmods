@@ -157,7 +157,7 @@
     "react-helmet": "6.1.0",
     "react-hot-loader": "4.13.0",
     "react-kawaii": "0.16.0",
-    "react-leaflet": "2.8.0",
+    "react-leaflet": "3.0.2",
     "react-leaflet-control": "2.1.2",
     "react-loadable": "5.5.0",
     "react-modal": "3.11.2",
