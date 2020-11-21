@@ -105,12 +105,14 @@ function getDayType(date: Date, weekInfo: AcadWeekInfo): EmptyGroupType {
   }
 }
 
-export const DaySection: React.FC<Readonly<{
-  children: React.ReactNode;
-  date: Date | Date[];
-  offset: number;
-  forecast?: string;
-}>> = (props) => (
+export const DaySection: React.FC<
+  Readonly<{
+    children: React.ReactNode;
+    date: Date | Date[];
+    offset: number;
+    forecast?: string;
+  }>
+> = (props) => (
   <section className={styles.day}>
     <DayHeader date={props.date} offset={props.offset} forecast={props.forecast} />
     {props.children}
