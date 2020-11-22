@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useLayoutEffect } from 'react';
+import { FC, memo, useLayoutEffect } from 'react';
 import { Maximize, Minimize } from 'react-feather';
 import { useMap } from 'react-leaflet';
 import Tooltip from 'views/components/Tooltip';
@@ -6,7 +6,7 @@ import LeafletControl from './LeafletControl';
 
 type Props = {
   isExpanded: boolean;
-  onToggleExpand: (boolean: boolean) => void;
+  onToggleExpand: () => void;
 };
 
 const ExpandMap: FC<Props> = ({ isExpanded, onToggleExpand }) => {
@@ -32,10 +32,6 @@ const ExpandMap: FC<Props> = ({ isExpanded, onToggleExpand }) => {
     }
   }, [isExpanded, map]);
 
-  const expandMap = useCallback(() => {
-    onToggleExpand(!isExpanded);
-  }, [isExpanded, onToggleExpand]);
-
   const label = isExpanded ? 'Minimize map' : 'Maximize map';
 
   return (
@@ -45,7 +41,7 @@ const ExpandMap: FC<Props> = ({ isExpanded, onToggleExpand }) => {
           aria-label={label}
           type="button"
           className="btn btn-sm btn-secondary"
-          onClick={expandMap}
+          onClick={onToggleExpand}
         >
           {isExpanded ? <Minimize /> : <Maximize />}
         </button>
