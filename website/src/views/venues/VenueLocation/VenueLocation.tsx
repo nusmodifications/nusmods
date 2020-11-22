@@ -1,7 +1,11 @@
 import { PureComponent } from 'react';
 import classnames from 'classnames';
 
-import { LatLngTuple, VenueLocation as VenueLocationItem, VenueLocationMap } from 'types/venues';
+import type {
+  LatLngTuple,
+  VenueLocation as VenueLocationItem,
+  VenueLocationMap,
+} from 'types/venues';
 import Modal from 'views/components/Modal';
 import LocationMap from 'views/components/map/LocationMap';
 import CloseButton from 'views/components/CloseButton';

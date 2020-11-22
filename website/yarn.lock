@@ -12189,11 +12189,6 @@ react-kawaii@0.16.0:
   dependencies:
     prop-types "^15.6.2"
 
-react-leaflet-control@2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/react-leaflet-control/-/react-leaflet-control-2.1.2.tgz#c716c5c1797375e4fd941c9e2e0c148bc34edbb0"
-  integrity sha512-xdheoLuLEeDGZ6/FKsnKjMYxC9BlyxsK5L5S27Dd6Z+FYP4jIa1Ekhu7UDgTV7GGSw+Yjjf8uofoheylxggB6w==
-
 react-leaflet@3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/react-leaflet/-/react-leaflet-3.0.2.tgz#4133a0550efe7e24be272b9e24e72fa98b51b751"
