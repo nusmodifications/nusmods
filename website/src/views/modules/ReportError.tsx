@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { FormEventHandler, memo, useCallback, useState } from 'react';
+import { FC, FormEventHandler, memo, useCallback, useState } from 'react';
 import { castArray, groupBy } from 'lodash';
 import classnames from 'classnames';
 import produce from 'immer';
@@ -7,7 +6,7 @@ import axios from 'axios';
 import { AlertTriangle } from 'react-feather';
 import * as Sentry from '@sentry/browser';
 
-import {
+import type {
   DepartmentMatch,
   Division,
   FacultyEmail,
@@ -15,7 +14,7 @@ import {
   ModuleCodeMatch,
   ModuleCodePrefixMatch,
 } from 'types/facultyEmail';
-import { Module } from 'types/modules';
+import type { Module } from 'types/modules';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import ExternalLink from 'views/components/ExternalLink';
@@ -155,7 +154,7 @@ const ReportError = memo<Props>(({ module }) => {
       })
       .then(() => setFormState({ type: 'submitted' }))
       .catch((error) => {
-        Sentry.setExtras(formData);
+        Sentry.setExtras({ ...formData });
         Sentry.captureException(error);
         setFormState({ type: 'error' });
       });
@@ -230,7 +229,7 @@ interface FormContentProps {
   isSubmitting: boolean;
 }
 
-const FormContent: React.FC<FormContentProps> = ({
+const FormContent: FC<FormContentProps> = ({
   formData,
   onSubmit,
   updateFormValue,
@@ -344,7 +343,7 @@ const FormContent: React.FC<FormContentProps> = ({
   );
 };
 
-const ReportErrorWrapper: React.FC<Props> = ({ module }) => (
+const ReportErrorWrapper: FC<Props> = ({ module }) => (
   // Force form state to re-initialize when the module changes
   <ReportError module={module} key={module.moduleCode} />
 );
