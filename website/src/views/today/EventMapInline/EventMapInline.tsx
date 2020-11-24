@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 
-import { LatLngTuple, Venue, VenueLocation, VenueLocationMap } from 'types/venues';
+import type { LatLngTuple, Venue, VenueLocation, VenueLocationMap } from 'types/venues';
 import LocationMap from 'views/components/map/LocationMap';
 import styles from './EventMapInline.scss';
 
