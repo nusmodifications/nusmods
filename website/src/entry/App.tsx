@@ -3,7 +3,6 @@ import { State } from 'types/state';
 import { Persistor } from 'storage/persistReducer';
 
 import * as React from 'react';
-import { hot } from 'react-hot-loader/root';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -44,4 +43,4 @@ const App: React.FC<Props> = ({ store, persistor }) => {
   );
 };
 
-export default hot(App);
+export default App;

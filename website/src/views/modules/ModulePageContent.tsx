@@ -2,7 +2,6 @@ import { Component } from 'react';
 import classnames from 'classnames';
 import ScrollSpy from 'react-scrollspy';
 import { kebabCase, map, mapValues, values, sortBy } from 'lodash';
-import { hot } from 'react-hot-loader/root';
 
 import { Module, NUSModuleAttributes, attributeDescription } from 'types/modules';
 
@@ -321,4 +320,4 @@ class ModulePageContent extends Component<Props, State> {
   }
 }
 
-export default hot(ModulePageContent);
+export default ModulePageContent;
