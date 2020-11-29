@@ -47,7 +47,6 @@ const developmentConfig = merge([
         inject: false,
 
         templateParameters: (compilation, assets, assetTags, options) => {
-          console.log('SNoke', assets.js);
           const [inlinedJsFiles, loadedJsFiles] = partition(assets.js, (file) =>
             file.includes('runtime'),
           );
