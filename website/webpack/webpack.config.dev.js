@@ -1,12 +1,16 @@
 const webpack = require('webpack');
-const { merge } = require('webpack-merge');
 const path = require('path');
+const { partition } = require('lodash');
+
+const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
+const nusmods = require('../src/apis/nusmods');
+const config = require('../src/config/app-config.json');
 
 const developmentConfig = merge([
   {
@@ -34,8 +38,37 @@ const developmentConfig = merge([
     target: 'web',
     plugins: [
       new HtmlWebpackPlugin({
-        template: path.join(parts.PATHS.src, 'index.html'),
+        template: path.join(parts.PATHS.src, 'index.ejs'),
         cache: true,
+
+        // Our production Webpack config manually injects CSS and JS files.
+        // Do the same in development so that we can reuse the same index.html
+        // file without having double/triple-injected scripts.
+        inject: false,
+
+        templateParameters: (compilation, assets, assetTags, options) => {
+          const [inlinedJsFiles, loadedJsFiles] = partition(assets.js, (file) =>
+            file.includes('runtime'),
+          );
+          return {
+            // Passthrough parameters
+            // See: https://github.com/jantimon/html-webpack-plugin/blob/master/examples/template-parameters/index.ejs
+            compilation,
+            webpackConfig: compilation.options,
+            htmlWebpackPlugin: {
+              tags: assetTags,
+              files: assets,
+              options,
+            },
+            // Other custom parameters
+            loadedJsFiles,
+            inlinedJsFiles,
+            moduleListUrl: nusmods.moduleListUrl(),
+            venuesUrl: nusmods.venuesUrl(config.semester),
+            brandName: config.brandName,
+            description: config.defaultDescription,
+          };
+        },
       }),
       // Copy files from static folder over (in-memory)
       new CopyWebpackPlugin({
