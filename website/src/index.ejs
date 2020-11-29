@@ -8,33 +8,33 @@
     <link href="<%= htmlWebpackPlugin.files.publicPath %>favicon-16x16.png" rel="icon" type="image/png" sizes="16x16">
     <link href="<%= htmlWebpackPlugin.files.publicPath %>safari-pinned-tab.svg" rel="mask-icon" color="#ff5138">
     <link href="<%= htmlWebpackPlugin.files.publicPath %>manifest.json" rel="manifest">
-    <link href="<%= htmlWebpackPlugin.options.moduleListUrl %>" rel="preload" as="fetch" crossorigin="anonymous">
-    <link href="<%= htmlWebpackPlugin.options.venuesUrl %>" rel="prefetch">
-    <% const loadedJsFiles = htmlWebpackPlugin.files.js.filter((file) => !file.includes("runtime")); %>
-    <% const inlinedJsFiles = htmlWebpackPlugin.files.js.filter((file) => file.includes("runtime")); %>
+    <link href="<%= moduleListUrl %>" rel="preload" as="fetch" crossorigin="anonymous">
+    <link href="<%= venuesUrl %>" rel="prefetch">
     <% for (const jsFile of loadedJsFiles) { %>
         <link href="<%= jsFile %>" rel="preload" as="script">
     <% } %>
     <% for (const cssFile of htmlWebpackPlugin.files.css) { %>
       <link href="<%= cssFile %>" rel="stylesheet">
     <% } %>
-    <title><%= htmlWebpackPlugin.options.brandName %></title>
+    <title><%= brandName %></title>
     <!-- data-react-helmet="true" is set on tags which should be replaced by React Helmet (See <Title> component) -->
-    <meta name="description" content="<%= htmlWebpackPlugin.options.description %>" data-react-helmet="true">
+    <meta name="description" content="<%= description %>" data-react-helmet="true">
     <!-- Open Graph general (Facebook, Pinterest & Google+) -->
-    <meta name="og:title" content="<%= htmlWebpackPlugin.options.brandName %>" data-react-helmet="true">
-    <meta name="og:description" content="<%= htmlWebpackPlugin.options.description %>" data-react-helmet="true">
-    <meta name="og:site_name" content="<%= htmlWebpackPlugin.options.brandName %>">
+    <meta name="og:title" content="<%= brandName %>" data-react-helmet="true">
+    <meta name="og:description" content="<%= description %>" data-react-helmet="true">
+    <meta name="og:site_name" content="<%= brandName %>">
     <meta name="og:type" content="website">
     <!-- Open Search -->
-    <link href="<%= htmlWebpackPlugin.files.publicPath %>opensearch.xml" rel="search" title="<%= htmlWebpackPlugin.options.brandName %> Modules" type="application/opensearchdescription+xml">
+    <link href="<%= htmlWebpackPlugin.files.publicPath %>opensearch.xml" rel="search" title="<%= brandName %> Modules" type="application/opensearchdescription+xml">
     <meta name="theme-color" content="#ffffff" />
   </head>
   <body>
     <div id="app"></div>
-    <noscript>Please enable JavaScript to use <%= htmlWebpackPlugin.options.brandName %></noscript>
+    <noscript>Please enable JavaScript to use <%= brandName %></noscript>
 
-    <script src="/<%= htmlWebpackPlugin.options.browserWarningPath %>" async defer></script>
+    <% if (typeof browserWarningPath !== 'undefined') { %>
+      <script src="/<%= browserWarningPath %>" async defer></script>
+    <% } %>
     <% for (const jsFile of inlinedJsFiles) { %>
       <script>
         <%= compilation.assets[jsFile.substr(htmlWebpackPlugin.files.publicPath.length)].source() %>
