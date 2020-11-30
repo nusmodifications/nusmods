@@ -86,7 +86,7 @@ async function injectData(page: Page, data: PageData) {
   const appEle = await page.$('#timetable-only');
   if (!appEle) throw new Error('#timetable-only element not found');
 
-  return await appEle.boundingBox() || undefined;
+  return (await appEle.boundingBox()) || undefined;
 }
 
 export async function image(page: Page, data: PageData, options: ViewportOptions = {}) {
