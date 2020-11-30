@@ -9,7 +9,7 @@ import * as render from './render';
 // Config check
 if (!config.academicYear || !/\d{4}-\d{4}/.test(config.academicYear)) {
   throw new Error(
-    'academicYear is not set - check config.js. ' +
+    'academicYear is not set - check config.ts. ' +
       'This should be in the form of <year>-<year> (e.g. 2019-2020).',
   );
 }
@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === 'production') {
     (!fs.existsSync(config.moduleData) || !fs.lstatSync(config.moduleData).isDirectory())
   ) {
     throw new Error(
-      'moduleData path does not exist or is not a directory - check config.js. ' +
+      'moduleData path does not exist or is not a directory - check config.ts. ' +
         'This should be the path to the api/v2/<academic year>/modules folder.',
     );
   }
@@ -32,7 +32,7 @@ if (process.env.NODE_ENV === 'production') {
     });
   } else {
     // TODO: Replace with Bunyan log?
-    console.error('[WARNING] Sentry DSN is not specified - check config.js');
+    console.error('[WARNING] Sentry DSN is not specified - check config.ts');
   }
 }
 
