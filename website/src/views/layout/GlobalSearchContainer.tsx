@@ -88,7 +88,8 @@ export class SearchContainerComponent extends Component<Props> {
       return { modules: modules.slice(0, 6), venues: venues.slice(0, 4), tokens };
     }
 
-    // Some venues, show as many of them as possible as they are rare
+    // Either there are few modules, few venues, or both.
+    // If venues exist, show as many of them as possible as they are rare
     return { modules: modules.slice(0, RESULTS_LIMIT - venues.length), venues, tokens };
   };
 
