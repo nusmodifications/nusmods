@@ -23,7 +23,9 @@ RUN ls -la1; yarn --no-cache --frozen-lockfile --production
 
 COPY --chown=node:node ./export/src ./src
 
+RUN yarn build
+
 # Run everything after as non-privileged user.
 USER node
 
-CMD node ./src/index.js
+CMD node ./build/index.js
