@@ -8,7 +8,7 @@ import _ from 'lodash';
 import * as render from './render';
 import * as data from './data';
 import config from './config';
-import { State } from './types';
+import type { State } from './types';
 
 // Start router
 const app = new Koa<State>();

@@ -2,10 +2,10 @@ import path from 'path';
 import fs from 'fs-extra';
 import axios from 'axios';
 import _ from 'lodash';
-import { Middleware } from 'koa';
+import type { Middleware } from 'koa';
 
 import config from './config';
-import { PageData, State } from './types';
+import type { PageData, State } from './types';
 
 async function fetchModule(moduleCode: string) {
   const fileName = `${moduleCode}.json`;

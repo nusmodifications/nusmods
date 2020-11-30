@@ -1,10 +1,10 @@
 import fs from 'fs-extra';
 import puppeteer, { Page } from 'puppeteer';
-import { Middleware } from 'koa';
+import type { Middleware } from 'koa';
 
 import { getModules } from './data';
 import config from './config';
-import { PageData, State } from './types';
+import type { PageData, State } from './types';
 
 // Arbitrarily high number - just make sure it doesn't clip the timetable
 const VIEWPORT_HEIGHT = 2000;
