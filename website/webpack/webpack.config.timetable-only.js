@@ -31,7 +31,7 @@ const productionConfig = merge([
     entry: source('main.tsx'),
     // Don't attempt to continue if there are any errors.
     bail: true,
-    mode: 'production',
+    mode: __DEV__ ? 'development' : 'production',
     // We generate sourcemaps in production. This is slow but gives good results.
     // You can exclude the *.map files from the build during deployment.
     devtool: 'source-map',
@@ -48,7 +48,10 @@ const productionConfig = merge([
         template: path.join(parts.PATHS.src, source('index.html')),
         inject: true,
       }),
-      new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/\.(js|css)$/]),
+      // TODO: Reenable InlineChunkHtmlPlugin in dev once
+      // https://github.com/pmmmwh/react-refresh-webpack-plugin/pull/241 is
+      // released. Otherwise website crashes on load.
+      !__DEV__ && new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/\.(js|css)$/]),
       __DEV__ && new ReactRefreshWebpackPlugin(),
     ].filter(Boolean),
   },

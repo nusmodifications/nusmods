@@ -14,7 +14,8 @@ services:
       - ~/data/traefik/acme.json:/acme.json
     environment:
       - CF_API_EMAIL=mods@nusmods.com
-      # Global API key from https://dash.cloudflare.com/167b11872d587468306d035b93d7a11b/profile/api-tokens
+      # Global API key. To retrieve it, log into the mods@nusmods.com account,
+      # then go to https://dash.cloudflare.com/profile/api-tokens.
       - CF_API_KEY=${CF_API_KEY:?Environment variable CF_API_KEY is missing}
     restart: on-failure
 

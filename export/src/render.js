@@ -51,7 +51,7 @@ async function openPage(ctx, next) {
   }
 
   if (ctx.pageUrl) {
-    await page.goto(ctx.pageUrl, { waitFor: 'load' });
+    await page.goto(ctx.pageUrl, { waitUntil: 'load' });
   } else {
     await page.setContent(ctx.pageContent);
   }
@@ -94,7 +94,7 @@ async function image(page, data, options = {}) {
 
 async function pdf(page, data) {
   await injectData(page, data);
-  await page.emulateMedia('screen');
+  await page.emulateMediaType('screen');
 
   return await page.pdf({
     printBackground: true,
