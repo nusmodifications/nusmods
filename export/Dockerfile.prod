@@ -17,9 +17,9 @@ RUN mkdir -p /home/node/Downloads \
 
 WORKDIR /home/node/app/export
 
-COPY ./export/package.json ./export/yarn.lock ./
+COPY ./export/package.json ./export/yarn.lock ./export/tsconfig.json ./
 
-RUN ls -la1; yarn --no-cache --frozen-lockfile --production
+RUN ls -la1; yarn --no-cache --frozen-lockfile
 
 COPY --chown=node:node ./export/src ./src
 
