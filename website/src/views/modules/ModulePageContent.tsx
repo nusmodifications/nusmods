@@ -240,7 +240,7 @@ class ModulePageContent extends Component<Props, State> {
 
             <section className={styles.section} id="timetable">
               <h2 className={styles.sectionHeading}>Timetable</h2>
-              <LessonTimetable semesterData={module.semesterData} />
+              <LessonTimetable allSemesterData={module.semesterData} />
             </section>
 
             <section className={styles.section} id={SIDE_MENU_ITEMS.reviews}>
