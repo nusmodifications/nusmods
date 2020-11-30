@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
@@ -26,7 +26,7 @@ type Props = OwnProps & {
   fetchModuleArchive: (str: string) => Promise<unknown>;
 };
 
-export class ModuleNotFoundPageComponent extends React.PureComponent<Props> {
+export class ModuleNotFoundPageComponent extends PureComponent<Props> {
   componentDidMount() {
     Sentry.withScope(() => {
       Sentry.captureMessage('404 - Module Not Found');

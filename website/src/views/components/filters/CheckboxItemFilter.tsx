@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { CheckboxFilterAccessor, SearchkitComponent, SearchkitComponentProps } from 'searchkit';
 
 import { ElasticSearchFilter } from 'types/vendor/elastic-search';
@@ -12,6 +12,7 @@ interface CheckboxItemFilterProps extends SearchkitComponentProps {
   disabled: boolean;
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 type State = {};
 
 /**

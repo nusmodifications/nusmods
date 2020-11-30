@@ -1,13 +1,12 @@
-import React from 'react';
+import { Component } from 'react';
 import classnames from 'classnames';
 import ScrollSpy from 'react-scrollspy';
 import { kebabCase, map, mapValues, values, sortBy } from 'lodash';
-import { hot } from 'react-hot-loader/root';
 
 import { Module, NUSModuleAttributes, attributeDescription } from 'types/modules';
 
 import config from 'config';
-import { getSemestersOffered, isOffered } from 'utils/modules';
+import { getSemestersOffered, isOffered, renderMCs } from 'utils/modules';
 import { intersperse } from 'utils/array';
 import { BULLET } from 'utils/react';
 import { NAVTAB_HEIGHT } from 'views/layout/Navtabs';
@@ -51,7 +50,7 @@ export const SIDE_MENU_LABELS = {
 
 export const SIDE_MENU_ITEMS = mapValues(SIDE_MENU_LABELS, kebabCase);
 
-class ModulePageContent extends React.Component<Props, State> {
+class ModulePageContent extends Component<Props, State> {
   state: State = {
     isMenuOpen: false,
   };
@@ -122,7 +121,7 @@ class ModulePageContent extends React.Component<Props, State> {
                     [
                       <span key="department">{module.department}</span>,
                       <span key="faculty">{module.faculty}</span>,
-                      <span key="mc">{module.moduleCredit} MCs</span>,
+                      <span key="mc">{renderMCs(module.moduleCredit)}</span>,
                     ],
                     BULLET,
                   )}
@@ -321,4 +320,4 @@ class ModulePageContent extends React.Component<Props, State> {
   }
 }
 
-export default hot(ModulePageContent);
+export default ModulePageContent;

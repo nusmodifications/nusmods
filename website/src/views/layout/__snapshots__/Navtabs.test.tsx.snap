@@ -90,7 +90,7 @@ exports[`NavtabsComponent renders into nav element 1`] = `
   <div
     className="divider"
   />
-  <ExternalLink
+  <ForwardRef
     className="link hiddenOnMobile"
     href="https://nuswhispers.com"
   >
@@ -100,6 +100,6 @@ exports[`NavtabsComponent renders into nav element 1`] = `
     >
       Whispers
     </span>
-  </ExternalLink>
+  </ForwardRef>
 </nav>
 `;

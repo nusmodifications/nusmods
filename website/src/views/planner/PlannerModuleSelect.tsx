@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import { HTMLProps, useEffect, useMemo, useRef } from 'react';
 import { connect } from 'react-redux';
 import Downshift from 'downshift';
 import classnames from 'classnames';
@@ -81,7 +81,7 @@ export function PlannerModuleSelectComponent({
     }
 
     return selectedModules;
-  }, [modules, showOnly, semester]);
+  }, [filter, modules, showOnly, semester]);
 
   return (
     <Downshift
@@ -135,7 +135,7 @@ export function PlannerModuleSelectComponent({
                 // Static props
                 placeholder: 'eg. CS1010S',
                 autoFocus: true,
-              }) as React.HTMLProps<HTMLTextAreaElement>)}
+              }) as HTMLProps<HTMLTextAreaElement>)}
             />
 
             {isOpen && (

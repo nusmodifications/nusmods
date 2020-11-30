@@ -1,59 +1,86 @@
 const webpack = require('webpack');
-const merge = require('webpack-merge');
 const path = require('path');
+const { partition } = require('lodash');
+
+const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
+const nusmods = require('../src/apis/nusmods');
+const config = require('../src/config/app-config.json');
 
 const developmentConfig = merge([
-  parts.setFreeVariable('process.env.NODE_ENV', 'development'),
-  parts.setFreeVariable('process.env.DEBUG_SERVICE_WORKER', process.env.DEBUG_SERVICE_WORKER),
-  parts.setFreeVariable('process.env.DATA_API_BASE_URL', process.env.DATA_API_BASE_URL),
+  {
+    plugins: [
+      new webpack.DefinePlugin({
+        __DEV__: true,
+        DISPLAY_COMMIT_HASH: JSON.stringify(parts.appVersion().commitHash),
+        VERSION_STR: JSON.stringify(parts.appVersion().versionStr),
+        DEBUG_SERVICE_WORKER: !!process.env.DEBUG_SERVICE_WORKER,
+        DATA_API_BASE_URL: JSON.stringify(process.env.DATA_API_BASE_URL),
+      }),
+    ],
+  },
   commonConfig,
   {
     mode: 'development',
     // Use a fast source map for good-enough debugging usage
     // https://webpack.js.org/configuration/devtool/#devtool
-    devtool: 'cheap-module-eval-source-map',
-    entry: [
-      'react-hot-loader/patch',
-      // Modify entry for hot module reload to work
-      // See: https://survivejs.com/webpack/appendices/hmr/#setting-wds-entry-points-manually
-      'webpack-dev-server/client',
-      'webpack/hot/only-dev-server',
-      'entry/main',
-    ],
-    resolve: {
-      alias: {
-        // Replace React DOM with the hot reload patched version in development
-        'react-dom': '@hot-loader/react-dom',
-      },
-    },
+    devtool: 'eval-cheap-module-source-map',
+    entry: 'entry/main',
+    // Fixes HMR in Webpack 5
+    // TODO: Remove once one of these issues are fixed:
+    // https://github.com/pmmmwh/react-refresh-webpack-plugin/issues/235
+    // https://github.com/webpack/webpack-dev-server/issues/2758
+    target: 'web',
     plugins: [
       new HtmlWebpackPlugin({
-        template: path.join(parts.PATHS.src, 'index.html'),
+        template: path.join(parts.PATHS.src, 'index.ejs'),
         cache: true,
-      }),
-      // Copy files from static folder over (in-memory)
-      new CopyWebpackPlugin([
-        { from: 'static', context: parts.PATHS.root, ignore: ['short_url.php'] },
-      ]),
-      // Ignore node_modules so CPU usage with poll watching drops significantly.
-      new webpack.WatchIgnorePlugin([parts.PATHS.node, parts.PATHS.build]),
-      // Enable multi-pass compilation for enhanced performance
-      // in larger projects. Good default.
-      // Waiting on: https://github.com/jantimon/html-webpack-plugin/issues/533
-      // { multiStep: true }
-      new webpack.HotModuleReplacementPlugin(),
-      // Caches compiled modules to disk to improve rebuild times
-      new HardSourceWebpackPlugin({
-        info: {
-          level: 'info',
+
+        // Our production Webpack config manually injects CSS and JS files.
+        // Do the same in development so that we can reuse the same index.html
+        // file without having double/triple-injected scripts.
+        inject: false,
+
+        templateParameters: (compilation, assets, assetTags, options) => {
+          const [inlinedJsFiles, loadedJsFiles] = partition(assets.js, (file) =>
+            file.includes('runtime'),
+          );
+          return {
+            // Passthrough parameters
+            // See: https://github.com/jantimon/html-webpack-plugin/blob/master/examples/template-parameters/index.ejs
+            compilation,
+            webpackConfig: compilation.options,
+            htmlWebpackPlugin: {
+              tags: assetTags,
+              files: assets,
+              options,
+            },
+            // Other custom parameters
+            loadedJsFiles,
+            inlinedJsFiles,
+            moduleListUrl: nusmods.moduleListUrl(),
+            venuesUrl: nusmods.venuesUrl(config.semester),
+            brandName: config.brandName,
+            description: config.defaultDescription,
+          };
         },
       }),
+      // Copy files from static folder over (in-memory)
+      new CopyWebpackPlugin({
+        patterns: [
+          { from: 'static', context: parts.PATHS.root, globOptions: { ignore: ['short_url.php'] } },
+        ],
+      }),
+      // Ignore node_modules so CPU usage with poll watching drops significantly.
+      new webpack.WatchIgnorePlugin({
+        paths: [parts.PATHS.node, parts.PATHS.build],
+      }),
+      new ReactRefreshWebpackPlugin(),
     ],
   },
   parts.lintJavaScript({
@@ -75,6 +102,7 @@ const developmentConfig = merge([
       },
     },
   }),
+  parts.devServer(),
 ]);
 
 module.exports = developmentConfig;

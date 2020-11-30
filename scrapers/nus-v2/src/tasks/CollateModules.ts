@@ -27,13 +27,13 @@ type Output = Module[];
  * Merge aliases and convert set to array
  */
 export function mergeAliases(aliases: ModuleAliases[]): { [moduleCode: string]: ModuleCode[] } {
-  // Returning undefined causes mergeWith to use the original merge
   // This version of the function cannot be expressed in TypeScript, so we just cast it to any
-  /* eslint-disable consistent-return */
+  /* eslint-disable consistent-return, @typescript-eslint/ban-types */
   const merged: ModuleAliases = (mergeWith as Function)(
     ...aliases,
     (src: Set<ModuleCode> | undefined, dest: Set<ModuleCode> | undefined) => {
       if (src && dest) return union(src, dest);
+      // Returning void causes mergeWith to use the original merge
     },
   );
   /* eslint-enable */
@@ -135,6 +135,7 @@ const getModuleInfo = ({
   workload,
   prerequisite,
   preclusion,
+  corequisite,
   semesterData,
   attributes,
 }: ModuleWithoutTree): ModuleInformation => ({
@@ -147,11 +148,13 @@ const getModuleInfo = ({
   workload,
   prerequisite,
   preclusion,
+  corequisite,
   attributes,
-  semesterData: semesterData.map(({ semester, examDate, examDuration }) => ({
+  semesterData: semesterData.map(({ semester, examDate, examDuration, covidZones }) => ({
     semester,
     examDate,
     examDuration,
+    covidZones,
   })),
 });
 

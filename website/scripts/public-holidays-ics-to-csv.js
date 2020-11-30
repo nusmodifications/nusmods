@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 const icalendar = require('icalendar');
-const moment = require('moment');
+const { addDays, format, isSunday } = require('date-fns');
 
 const args = process.argv.slice(2);
 const years = args[0];
@@ -25,7 +25,7 @@ if (!fs.existsSync(OUT_DIR)) {
 async function fetchPublicHolidaysIcs(year) {
   console.log(`Fetching ICS for ${year}...`);
   const URL =
-    'http://www.mom.gov.sg/~/media/mom/documents/employment-practices/' +
+    'https://www.mom.gov.sg/~/media/mom/documents/employment-practices/' +
     `public-holidays/public-holidays-sg-${year}.ics`;
   const res = await axios.get(URL);
   console.log(`Fetched ICS for ${year}...`);
@@ -43,34 +43,35 @@ years
         const calendarEvents = ical
           .events()
           .map((event) => ({
-            date: moment(event.getPropertyValue('DTSTART').valueOf()),
+            date: new Date(event.getPropertyValue('DTSTART').valueOf()),
             name: event.getPropertyValue('SUMMARY'),
           }))
-          .sort((a, b) =>
-            // Order not guaranteed. Have to sort.
-            a.date.isBefore(b.date) ? -1 : 1,
-          );
+          // Order not guaranteed. Have to sort (in ascending order).
+          .sort((a, b) => a.date - b.date);
 
         const data = [];
-        const DATE_FORMAT = 'YYYY-MM-DD';
+        const DATE_FORMAT = 'yyyy-MM-dd';
         for (let i = 0; i < calendarEvents.length; i++) {
           const event = calendarEvents[i];
           const { name, date } = event;
           let actualDay = true;
-          // Sunday that is not first day of CNY.
+          // Mark Sunday holidays as observed next Monday.
+          // Ignore Sundays that are the first day of CNY, as Monday will
+          // already have a CNY Day 2 event.
+          // FIXME: If first day of CNY is a Sunday, this code will not mark
+          // Tuesday as a holiday.
           if (
-            date.format('dddd') === 'Sunday' &&
+            isSunday(date) &&
             i < calendarEvents.length &&
             calendarEvents[i + 1].name !== 'Chinese New Year'
           ) {
             actualDay = false;
-            i += 1; // Skip because the next event is the observance event.
           }
           data.push({
-            date: date.format(DATE_FORMAT),
+            date: format(date, DATE_FORMAT),
             name,
-            day: date.format('dddd'), // The day in text, e.g. Monday.
-            observance: date.add(actualDay ? 0 : 1, 'day').format(DATE_FORMAT),
+            day: format(date, 'EEEE'), // The day in text, e.g. Monday.
+            observance: format(addDays(date, actualDay ? 0 : 1, 'day'), DATE_FORMAT),
             observance_strategy: actualDay ? 'actual_day' : 'next_monday',
           });
         }

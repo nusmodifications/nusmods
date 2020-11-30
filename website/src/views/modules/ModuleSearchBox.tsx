@@ -6,10 +6,10 @@ type Props = {
 };
 
 const buildQuery = (query: string, options: Record<string, string | string[]>) => ({
+  // eslint-disable camelcase
   bool: {
     should: [
       {
-        // eslint-disable-next-line @typescript-eslint/camelcase
         multi_match: {
           query,
           ...options,
@@ -19,7 +19,6 @@ const buildQuery = (query: string, options: Record<string, string | string[]>) =
         },
       },
       {
-        // eslint-disable-next-line @typescript-eslint/camelcase
         multi_match: {
           query,
           ...options,
@@ -28,7 +27,8 @@ const buildQuery = (query: string, options: Record<string, string | string[]>) =
         },
       },
     ],
-    minimum_should_match: '1', // eslint-disable-line @typescript-eslint/camelcase
+    minimum_should_match: '1',
+    // eslint-enable
   },
 });
 

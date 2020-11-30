@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {
   Hits,
   HitsStats,
@@ -11,7 +11,6 @@ import {
   SearchkitProvider,
 } from 'searchkit';
 import classnames from 'classnames';
-import { hot } from 'react-hot-loader/root';
 
 import { ElasticSearchResult } from 'types/vendor/elastic-search';
 import { ModuleInformation } from 'types/modules';
@@ -30,8 +29,12 @@ import { HIGHLIGHT_OPTIONS } from 'utils/elasticSearch';
 import config from 'config';
 import styles from './ModuleFinderContainer.scss';
 
-const esHostUrl = `${forceElasticsearchHost() || config.elasticsearchBaseUrl}/modules`;
-const searchkit = new SearchkitManager(esHostUrl);
+const esIndex = 'modules_v2';
+const esHostUrl = `${forceElasticsearchHost() || config.elasticsearchBaseUrl}/${esIndex}`;
+const searchkit = new SearchkitManager(esHostUrl, {
+  // Ensure displayed no. modules found is accurate.
+  searchUrlPath: '_search?track_total_hits=true',
+});
 
 const pageHead = <Title>Modules</Title>;
 
@@ -104,4 +107,4 @@ const ModuleFinderContainer: React.FC = () => {
   );
 };
 
-export default hot(ModuleFinderContainer);
+export default ModuleFinderContainer;

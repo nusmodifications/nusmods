@@ -1,5 +1,5 @@
 import { DisqusConfig } from 'types/views';
-import * as React from 'react';
+import { PureComponent } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
@@ -26,7 +26,7 @@ type State = {
 
 const SCRIPT_ID = 'dsq-embed-scr';
 
-class DisqusComments extends React.PureComponent<Props, State> {
+class DisqusComments extends PureComponent<Props, State> {
   state = {
     allowDisqus: false,
   };
@@ -58,8 +58,8 @@ class DisqusComments extends React.PureComponent<Props, State> {
     } else {
       // Inject the Disqus script if we're loading it for the first time, ie. when
       // window.DISQUS is not set
-      window.disqus_config = this.getDisqusConfig(); // eslint-disable-line @typescript-eslint/camelcase
-      window.disqus_shortname = config.disqusShortname; // eslint-disable-line @typescript-eslint/camelcase
+      window.disqus_config = this.getDisqusConfig(); // eslint-disable-line camelcase
+      window.disqus_shortname = config.disqusShortname; // eslint-disable-line camelcase
 
       insertScript(`https://${config.disqusShortname}.disqus.com/embed.js`, {
         id: SCRIPT_ID,

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import ColorPicker from 'views/components/ColorPicker';
 import { ColorIndex } from 'types/timetables';

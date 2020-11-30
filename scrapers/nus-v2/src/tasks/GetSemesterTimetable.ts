@@ -3,6 +3,9 @@ import { has, last, map, mapValues, values } from 'lodash';
 import NUSModerator, { Semester as SemesterName } from 'nusmoderator';
 import { compareAsc, differenceInDays, format, parseISO } from 'date-fns';
 
+import getCovidZones, { getVenueCovidZone } from '../services/getCovidZones';
+import getVenueLocations from '../services/getVenueLocations';
+
 import { RawLesson, Semester, WeekRange, Weeks } from '../types/modules';
 import { Task } from '../types/tasks';
 import { TimetableLesson } from '../types/api';
@@ -17,7 +20,7 @@ import { activityLessonType, dayTextMap, unrecognizedLessonTypes } from '../util
 import { allEqual, deltas } from '../utils/arrays';
 import { ISO8601_DATE_FORMAT } from '../utils/time';
 
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable camelcase */
 
 const SEMESTER_NAMES: Record<number, SemesterName> = {
   1: 'Semester 1',
@@ -27,7 +30,7 @@ const SEMESTER_NAMES: Record<number, SemesterName> = {
 };
 
 // Intermediate shape with Weeks typed as string[]
-type TempRawLesson = Omit<RawLesson, 'weeks'> & {
+type TempRawLesson = Omit<RawLesson, 'weeks' | 'covidZone'> & {
   weeks: string[];
 };
 
@@ -152,7 +155,9 @@ interface Output {
 export default class GetSemesterTimetable extends BaseTask implements Task<Input, Output> {
   semester: Semester;
   academicYear: string;
-  timetableCache: Cache<TimetableLesson[]>;
+  private readonly timetableCache: Cache<TimetableLesson[]>;
+  private readonly covidZones = getCovidZones();
+  private readonly venueLocations = getVenueLocations();
 
   get name() {
     return `Get timetable for semester ${this.semester}`;
@@ -239,7 +244,17 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
   };
 
   async run() {
-    const timetables = await retry(this.getTimetable, 3);
+    const timetablesWithoutCovidZones = await retry(this.getTimetable, 3);
+
+    // Insert covid zoning to raw lessons. This is done separate from getTimetable so it can be
+    // removed easily in the future
+    const [covidZones, venues] = await Promise.all([this.covidZones, this.venueLocations]);
+    const timetables = mapValues(timetablesWithoutCovidZones, (lessons) =>
+      lessons.map((lesson) => ({
+        ...lesson,
+        covidZone: getVenueCovidZone(venues, covidZones, lesson.venue),
+      })),
+    );
 
     // Save all the timetables to disk
     await Promise.all(

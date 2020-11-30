@@ -1,4 +1,3 @@
-import React from 'react';
 import { mount } from 'enzyme';
 import { SearchkitManager } from 'searchkit';
 
@@ -17,7 +16,7 @@ describe(CheckboxItemFilter, () => {
         searchkit={mockSearchkit}
         label="Test Checkbox"
         filter={{
-          // eslint-disable-next-line @typescript-eslint/camelcase
+          // eslint-disable-next-line camelcase
           match_all: {},
         }}
         id="test-id"

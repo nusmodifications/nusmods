@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { State } from 'types/state';
 
 type Props = {
-  children: React.ReactNode | ((isOnline: boolean) => Node);
+  children: React.ReactNode | ((isOnline: boolean) => React.ReactNode);
 
   isOnline: boolean;
   isLive: boolean;
@@ -25,7 +25,7 @@ export class OnlineComponent extends React.Component<Props> {
 
     if (typeof children === 'function') {
       // Not technically safe, since some ReactNodes are also functions, but this is safe enough
-      return (children as Function)(isOnline);
+      return (children as (online: boolean) => React.ReactNode)(isOnline);
     }
     if (isOnline) return children;
     return null;

@@ -3,6 +3,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 
 import TimetableContainer from 'views/timetable/TimetableContainer';
 import ModulePageContainer from 'views/modules/ModulePageContainer';
+import ModuleArchiveContainer from 'views/modules/ModuleArchiveContainer';
 import ModuleFinderContainer from 'views/modules/ModuleFinderContainer';
 import VenuesContainer from 'views/venues/VenuesContainer';
 import SettingsContainer from 'views/settings/SettingsContainer';
@@ -24,10 +25,8 @@ const Routes: React.FC = () => (
     <Redirect exact from="/" to="/timetable" />
     <Route path="/timetable/:semester?/:action?" component={TimetableContainer} />
     <Route exact path="/modules" component={ModuleFinderContainer} />
-    <Route
-      path={['/modules/:moduleCode/:slug?', '/archive/:moduleCode/:year/:slug?']}
-      component={ModulePageContainer}
-    />
+    <Route path="/modules/:moduleCode/:slug?" component={ModulePageContainer} />
+    <Route path="/archive/:moduleCode/:year/:slug?" component={ModuleArchiveContainer} />
     <Route path="/venues/:venue?" component={VenuesContainer} />
     <Route path="/today" component={TodayContainer} />
     <Route path="/planner" component={PlannerContainer} />

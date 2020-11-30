@@ -1,4 +1,4 @@
-import React, { FormEventHandler } from 'react';
+import { FC, FormEventHandler, memo, useCallback, useState } from 'react';
 import { castArray, groupBy } from 'lodash';
 import classnames from 'classnames';
 import produce from 'immer';
@@ -6,7 +6,7 @@ import axios from 'axios';
 import { AlertTriangle } from 'react-feather';
 import * as Sentry from '@sentry/browser';
 
-import {
+import type {
   DepartmentMatch,
   Division,
   FacultyEmail,
@@ -14,12 +14,13 @@ import {
   ModuleCodeMatch,
   ModuleCodePrefixMatch,
 } from 'types/facultyEmail';
-import { Module } from 'types/modules';
+import type { Module } from 'types/modules';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import ExternalLink from 'views/components/ExternalLink';
 import facultyEmails from 'data/facultyEmail';
 import appConfig from 'config';
+import useGlobalDebugValue from '../hooks/useGlobalDebugValue';
 
 import styles from './ReportError.scss';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -107,22 +108,21 @@ function matchModule(module: Module) {
  * Module error reporting component. Posts to a serverless script that then emails the relevant
  * faculty / department with the issue.
  */
-const ReportError = React.memo<Props>(({ module }) => {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [formState, setFormState] = React.useState<FormState>({ type: 'unsubmitted' });
+const ReportError = memo<Props>(({ module }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [formState, setFormState] = useState<FormState>({ type: 'unsubmitted' });
 
   // Causes the error reporting function to email modules@nusmods.com instead.
   // In production, use SET_ERROR_REPORTING_DEBUG(true) to enable debug mode
-  const [debug, setDebug] = React.useState(process.env.NODE_ENV !== 'production');
-  window.SET_ERROR_REPORTING_DEBUG = setDebug;
+  const debug = useGlobalDebugValue('SET_ERROR_REPORTING_DEBUG', __DEV__);
 
-  const [formData, setFormData] = React.useState<ReportErrorForm>(() => ({
+  const [formData, setFormData] = useState<ReportErrorForm>(() => ({
     ...retrieveContactInfo(),
     message: '',
     contactId: matchModule(module)?.id,
   }));
 
-  const updateFormValue = React.useCallback(
+  const updateFormValue = useCallback(
     (key: keyof ReportErrorForm): FormEventHandler => (evt) => {
       const newFormData = produce(formData, (draft) => {
         draft[key] = (evt.target as HTMLInputElement).value;
@@ -138,7 +138,7 @@ const ReportError = React.memo<Props>(({ module }) => {
     [formData],
   );
 
-  const onSubmit = React.useCallback(() => {
+  const onSubmit = useCallback(() => {
     setFormState({ type: 'submitting' });
 
     const { name, replyTo, matricNumber, message, contactId } = formData;
@@ -154,7 +154,7 @@ const ReportError = React.memo<Props>(({ module }) => {
       })
       .then(() => setFormState({ type: 'submitted' }))
       .catch((error) => {
-        Sentry.setExtras(formData);
+        Sentry.setExtras({ ...formData });
         Sentry.captureException(error);
         setFormState({ type: 'error' });
       });
@@ -180,8 +180,8 @@ const ReportError = React.memo<Props>(({ module }) => {
         <CloseButton onClick={() => setIsOpen(false)} />
         <h2 className={styles.heading}>Reporting an issue with {module.moduleCode}</h2>
         <p>
-          NUSMods updates its information from the Registrar's Office every night. Please wait up to
-          48 hours for information to be updated before reporting any issues.
+          NUSMods updates its information from the Registrar's Office every few hours. Please wait
+          up to 24 hours for information to be updated before reporting any issues.
         </p>
         <p>
           This form will send an email about this module to the faculty. If you think the issue is a
@@ -229,7 +229,7 @@ interface FormContentProps {
   isSubmitting: boolean;
 }
 
-const FormContent: React.FC<FormContentProps> = ({
+const FormContent: FC<FormContentProps> = ({
   formData,
   onSubmit,
   updateFormValue,
@@ -246,7 +246,7 @@ const FormContent: React.FC<FormContentProps> = ({
       }}
     >
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-name">Your Full Name</label>
+        <label htmlFor="report-error-name">Your full name</label>
         <input
           className="form-control"
           id="report-error-name"
@@ -257,7 +257,7 @@ const FormContent: React.FC<FormContentProps> = ({
       </div>
 
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-matric-number">Your Matriculation Number</label>
+        <label htmlFor="report-error-matric-number">Your matriculation number</label>
         <input
           id="report-error-matric-number"
           className="form-control"
@@ -272,7 +272,7 @@ const FormContent: React.FC<FormContentProps> = ({
       </div>
 
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-faculty">Department / Faculty</label>
+        <label htmlFor="report-error-faculty">Department/faculty offering the module</label>
         <select
           className="form-control"
           id="report-error-faculty"
@@ -280,7 +280,7 @@ const FormContent: React.FC<FormContentProps> = ({
           onChange={updateFormValue('contactId')}
           required
         >
-          <option value="">Select a department / faculty</option>
+          <option value="">Select a department/faculty</option>
           {facultyEmails.map((config) => (
             <option value={config.id} key={config.id}>
               {config.label}
@@ -309,7 +309,7 @@ const FormContent: React.FC<FormContentProps> = ({
       </div>
 
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-email">Your School Email</label>
+        <label htmlFor="report-error-email">Your school email</label>
         <input
           type="email"
           id="report-error-email"
@@ -343,7 +343,7 @@ const FormContent: React.FC<FormContentProps> = ({
   );
 };
 
-const ReportErrorWrapper: React.FC<Props> = ({ module }) => (
+const ReportErrorWrapper: FC<Props> = ({ module }) => (
   // Force form state to re-initialize when the module changes
   <ReportError module={module} key={module.moduleCode} />
 );

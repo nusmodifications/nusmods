@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { flatten, size } from 'lodash';
 import { shallow } from 'enzyme';
 

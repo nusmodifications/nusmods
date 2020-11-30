@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { shallow } from 'enzyme';
 
 import { ColoredLesson, HoverLesson } from 'types/timetables';
@@ -30,6 +29,7 @@ function make(additionalProps: Partial<Props> = {}) {
     onHover: jest.fn(),
     showTitle: false,
     hoverLesson: null,
+    transparent: false,
     ...additionalProps,
   };
 

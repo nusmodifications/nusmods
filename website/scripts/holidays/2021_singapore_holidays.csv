@@ -1,7 +1,7 @@
 Date,Name,Day,Observance,Observance Strategy
 2021-01-01,New Year's Day,Friday,2021-01-01,actual_day
-2021-02-12,Chinese New Year Day 1,Friday,2021-02-12,actual_day
-2021-02-13,Chinese New Year Day 2,Saturday,2021-02-13,actual_day
+2021-02-12,Chinese New Year,Friday,2021-02-12,actual_day
+2021-02-13,Chinese New Year,Saturday,2021-02-13,actual_day
 2021-04-02,Good Friday,Friday,2021-04-02,actual_day
 2021-05-01,Labour Day,Saturday,2021-05-01,actual_day
 2021-05-13,Hari Raya Puasa,Thursday,2021-05-13,actual_day

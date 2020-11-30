@@ -1,6 +1,6 @@
 import { browserlistToBowser } from './browser';
 
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable camelcase */
 
 describe(browserlistToBowser, () => {
   it('should return a mapping to the lowest version in the list', () => {

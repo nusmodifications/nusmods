@@ -14,7 +14,7 @@ import { cacheDownload, getTermCode } from '../utils/api';
 import { validateExam, validateSemester } from '../services/validation';
 import { NotFoundError } from '../utils/errors';
 
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable camelcase */
 
 /**
  * Extract the part of the raw ModuleExam that is used in SemesterData

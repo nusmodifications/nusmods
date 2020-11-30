@@ -1,10 +1,12 @@
 import { createStore, applyMiddleware, compose, Store } from 'redux';
 import { persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
+import { setAutoFreeze } from 'immer';
+
 import rootReducer from 'reducers';
 import requestsMiddleware from 'middlewares/requests-middleware';
 import ravenMiddleware from 'middlewares/raven-middleware';
-import { setAutoFreeze } from 'immer';
+import getLocalStorage from 'storage/localStorage';
 
 import { GetState } from 'types/redux';
 import { State } from 'types/state';
@@ -19,9 +21,13 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 setAutoFreeze(false);
 
 export default function configureStore(defaultState?: State) {
+  // Clear legacy reduxState deprecated by https://github.com/nusmodifications/nusmods/pull/669
+  // to reduce the amount of data NUSMods is using
+  getLocalStorage().removeItem('reduxState');
+
   const middlewares = [ravenMiddleware, thunk, requestsMiddleware];
 
-  if (process.env.NODE_ENV === 'development') {
+  if (__DEV__) {
     // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-extraneous-dependencies
     const { createLogger } = require('redux-logger');
     const logger = createLogger({

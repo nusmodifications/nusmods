@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+import { memo, useState } from 'react';
 import {
   NumericRefinementListFilter,
   RefinementListFilter,
@@ -27,10 +28,14 @@ const EXAM_FILTER_ITEMS: FilterItem[] = [
     label: 'No Exam',
     filter: {
       bool: {
-        // eslint-disable-next-line @typescript-eslint/camelcase
         must_not: {
-          exists: {
-            field: 'semesterData.examDate',
+          nested: {
+            path: 'semesterData',
+            query: {
+              exists: {
+                field: 'semesterData.examDate',
+              },
+            },
           },
         },
       },
@@ -38,7 +43,7 @@ const EXAM_FILTER_ITEMS: FilterItem[] = [
   },
 ];
 
-const ModuleFinderSidebar: React.FC = React.memo(() => {
+const ModuleFinderSidebar: React.FC = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   return (
     <SideMenu
@@ -70,6 +75,10 @@ const ModuleFinderSidebar: React.FC = React.memo(() => {
           id="sem"
           title="Offered In"
           field="semesterData.semester"
+          fieldOptions={{
+            type: 'nested',
+            options: { path: 'semesterData' },
+          }}
           operator="OR"
           orderKey="_term"
           orderDirection="asc"
@@ -154,8 +163,6 @@ const ModuleFinderSidebar: React.FC = React.memo(() => {
       </div>
     </SideMenu>
   );
-});
+};
 
-ModuleFinderSidebar.displayName = 'ModuleFinderSidebar';
-
-export default ModuleFinderSidebar;
+export default memo(ModuleFinderSidebar);

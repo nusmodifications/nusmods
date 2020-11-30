@@ -1,35 +1,39 @@
 import * as React from 'react';
 import { AxiosError } from 'axios';
-import { connect } from 'react-redux';
+import { connect, MapDispatchToPropsNonObject } from 'react-redux';
 import { match as Match, Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import { get } from 'lodash';
 
-import { Module, ModuleCode } from 'types/modules';
+import type { Module, ModuleCode } from 'types/modules';
+import type { Dispatch } from 'types/redux';
+import type { State as StoreState } from 'types/state';
 
-import { fetchModule, fetchModuleArchive } from 'actions/moduleBank';
+import { fetchModule } from 'actions/moduleBank';
 import { captureException, retryImport } from 'utils/error';
 import ApiError from 'views/errors/ApiError';
 import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
-import { moduleArchive, modulePage } from 'views/routes/paths';
-import { State as StoreState } from 'types/state';
+import { modulePage } from 'views/routes/paths';
 
 import { Props as ModulePageContentProp } from './ModulePageContent';
 
 type Params = {
-  year: string;
   moduleCode: string;
 };
 
 type OwnProps = RouteComponentProps<Params>;
 
-type Props = OwnProps & {
-  module: Module | null;
-  moduleCode: ModuleCode;
+type DispatchProps = {
   fetchModule: () => Promise<Module>;
-  archiveYear?: string;
 };
+
+type Props = OwnProps &
+  DispatchProps & {
+    module: Module | null;
+    moduleCode: ModuleCode;
+    fetchModule: () => Promise<Module>;
+  };
 
 type State = {
   ModulePageContent: React.ComponentType<ModulePageContentProp> | null;
@@ -67,10 +71,10 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
     }
   }
 
-  fetchModule() {
+  fetchModule = () => {
     this.setState({ error: undefined });
     this.props.fetchModule().catch(this.handleFetchError);
-  }
+  };
 
   fetchPageImport() {
     // Try importing ModulePageContent thrice if we're online and
@@ -85,96 +89,60 @@ export class ModulePageContainerComponent extends React.PureComponent<Props, Sta
     captureException(error);
   };
 
-  canonicalUrl() {
-    const { module, moduleCode, archiveYear } = this.props;
-
-    if (!module) {
-      throw new Error('canonicalUrl() called before module is loaded');
-    }
-
-    return archiveYear
-      ? moduleArchive(moduleCode, archiveYear, module.title)
-      : modulePage(moduleCode, module.title);
-  }
-
   render() {
     const { ModulePageContent, error } = this.state;
-    const { module, moduleCode, match, location, archiveYear } = this.props;
+    const { module, moduleCode, match, location } = this.props;
 
     if (get(error, ['response', 'status'], 200) === 404) {
-      return <ModuleNotFoundPage tryArchive={!archiveYear} moduleCode={moduleCode} />;
+      return <ModuleNotFoundPage moduleCode={moduleCode} tryArchive />;
     }
 
     // If there is an error but module data can still be found, we assume module has
     // been loaded at some point, so we just show that instead
     if (error && !module) {
-      return <ApiError dataName="module information" retry={() => this.fetchModule()} />;
+      return <ApiError dataName="module information" retry={this.fetchModule} />;
     }
 
-    if (module && match.url !== this.canonicalUrl()) {
-      return (
-        <Redirect
-          to={{
-            ...location,
-            pathname: this.canonicalUrl(),
-          }}
-        />
-      );
+    // Redirect to canonical URL
+    if (module && match.url !== modulePage(moduleCode, module.title)) {
+      return <Redirect to={{ ...location, pathname: modulePage(moduleCode, module.title) }} />;
     }
 
     if (module && ModulePageContent) {
       // Unique key forces component to remount whenever the user moves to
       // a new module. This allows the internal state (eg. currently selected
       // timetable semester) of <ModulePageContent> to be consistent
-      return <ModulePageContent key={moduleCode} archiveYear={archiveYear} module={module} />;
+      return <ModulePageContent key={moduleCode} module={module} />;
     }
 
     return <LoadingSpinner />;
   }
 }
 
-const getPropsFromMatch = (match: Match<Params>) => {
-  const { year } = match.params;
+const getPropsFromMatch = (match: Match<Params>) => ({
+  moduleCode: (match.params.moduleCode ?? '').toUpperCase(),
+});
 
-  return {
-    moduleCode: (match.params.moduleCode || '').toUpperCase(),
-    year: year && year.replace('-', '/'),
-  };
-};
-
-const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
-  const { moduleCode, year } = getPropsFromMatch(ownProps.match);
-  const { moduleBank } = state;
-
-  // If this is an archive page, load data from the archive
-  if (year) {
-    return {
-      moduleCode,
-      archiveYear: year,
-      module: get(moduleBank.moduleArchive, [moduleCode, year], null),
-    };
-  }
-
+const mapStateToProps = ({ moduleBank }: StoreState, ownProps: OwnProps) => {
+  const { moduleCode } = getPropsFromMatch(ownProps.match);
   return {
     moduleCode,
-    archiveYear: year,
     module: moduleBank.modules[moduleCode],
   };
 };
 
-const mapDispatchToProps = (dispatch: Function, ownProps: OwnProps) => {
-  const { moduleCode, year } = getPropsFromMatch(ownProps.match);
-
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: OwnProps) => {
+  const { moduleCode } = getPropsFromMatch(ownProps.match);
   return {
-    fetchModule: year
-      ? () => dispatch(fetchModuleArchive(moduleCode, year))
-      : () => dispatch(fetchModule(moduleCode)),
+    fetchModule: () => dispatch(fetchModule(moduleCode)),
   };
 };
 
 const connectedModulePageContainer = connect(
   mapStateToProps,
-  mapDispatchToProps,
+  // Cast required because the version of Dispatch defined by connect does not have the extensions defined
+  // in our Dispatch
+  mapDispatchToProps as MapDispatchToPropsNonObject<DispatchProps, OwnProps>,
 )(ModulePageContainerComponent);
 const routedModulePageContainer = withRouter(connectedModulePageContainer);
 export default deferComponentRender(routedModulePageContainer);

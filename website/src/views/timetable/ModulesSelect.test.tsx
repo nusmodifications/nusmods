@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { mount, shallow } from 'enzyme';
 import Downshift from 'downshift';
 import Modal from 'views/components/Modal';

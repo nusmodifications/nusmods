@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { memo } from 'react';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 
@@ -16,7 +16,7 @@ type MenuItem = {
   className?: string;
 };
 
-const ModuleMenu = React.memo((props: Props) => {
+const ModuleMenu = memo((props: Props) => {
   const menuItems: MenuItem[] = [
     { label: 'Edit MC and Title', action: props.editCustomData },
     { label: 'Remove', action: props.removeModule, className: 'dropdown-item-danger' },

@@ -76,7 +76,7 @@ module.exports = {
       files: ['{apis,types}/**/*.{ts,tsx}'],
       rules: {
         // External types may not be camelcase
-        '@typescript-eslint/camelcase': 'off',
+        camelcase: 'off',
       },
     },
   ],
@@ -86,8 +86,13 @@ module.exports = {
     'default-case': 'off',
     '@typescript-eslint/switch-exhaustiveness-check': 'error',
 
+    // Doesn't work with TypeScript
+    'no-use-before-define': 'off',
+
     // Makes the code unnecessarily verbose
     '@typescript-eslint/explicit-function-return-type': 'off',
+    // We use type inference heavily for things like reducers
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
 
     '@typescript-eslint/no-unused-vars': [
       'warn',
@@ -95,5 +100,14 @@ module.exports = {
         ignoreRestSiblings: true,
       },
     ],
+  },
+
+  // Mimic the globals we set with Webpack's DefinePlugin
+  globals: {
+    __DEV__: 'readonly',
+    DATA_API_BASE_URL: 'readonly',
+    VERSION_STR: 'readonly',
+    DISPLAY_COMMIT_HASH: 'readonly',
+    DEBUG_SERVICE_WORKER: 'readonly',
   },
 };

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { shallow } from 'enzyme';
 import qs from 'query-string';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -14,11 +13,8 @@ import { Params, VenuesContainerComponent } from './VenuesContainer';
 
 const venues = sortVenues(venueInfo as VenueInfo);
 
-function createComponent(selectedVenue: Venue | null = null, search?: string) {
-  const location = {
-    search,
-    pathname: venuePage(selectedVenue),
-  };
+function createComponent(selectedVenue: Venue | null = null, search = '') {
+  const location = venuePage(selectedVenue) + search;
   const match = { params: { venue: selectedVenue } };
   const router = createHistory<Params>(location, match);
 

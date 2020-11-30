@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { memo } from 'react';
 import classnames from 'classnames';
 import { entries, sortBy } from 'lodash';
 
@@ -46,7 +46,7 @@ function fixRouteName(name: string) {
   return name.replace(/\s?\(/, ' (');
 }
 
-export const ArrivalTimes = React.memo<Props>((props: Props) => {
+export const ArrivalTimes = memo<Props>((props: Props) => {
   if (props.error) {
     return (
       <>

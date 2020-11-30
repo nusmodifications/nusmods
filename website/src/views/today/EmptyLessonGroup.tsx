@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { EmptyGroupType } from 'types/views';
 
 import BeachIcon from 'img/icons/beach.svg';

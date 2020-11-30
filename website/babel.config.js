@@ -21,7 +21,16 @@ module.exports = (api) => {
         exclude: ['transform-typeof-symbol'],
       },
     ],
-    ['@babel/preset-react', { development: !IS_PROD }],
+    [
+      '@babel/preset-react',
+      {
+        development: !IS_PROD,
+        // Enable JSX transform
+        // TODO: Remove in Babel 8, when this will be the default option
+        // See: https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#manual-babel-setup
+        runtime: 'automatic',
+      },
+    ],
   ];
 
   const plugins = [
@@ -37,9 +46,10 @@ module.exports = (api) => {
 
   if (IS_DEV || IS_PROD) {
     plugins.push(['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }]);
-    // In production this cleans up hot reload code
-    // See https://github.com/gaearon/react-hot-loader#what-about-production
-    plugins.push('react-hot-loader/babel');
+  }
+
+  if (IS_DEV) {
+    plugins.push('react-refresh/babel');
   }
 
   if (IS_PROD) {

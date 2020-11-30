@@ -7,9 +7,11 @@ import CS2100Timetable1 from './fixtures/api-timetable/CS2100_1.json';
 import CS2100Timetable2 from './fixtures/api-timetable/CS2100_2.json';
 import CS2100Expected from './fixtures/expected/CS2100.json';
 
+import type { ModuleExam, ModuleInfo, TimetableLesson } from '../types/api';
+import type { Module } from '../types/modules';
+
 import { fromTermCode } from '../utils/api';
 import { expectModulesEqual } from '../utils/test-utils';
-import { ModuleExam, ModuleInfo, TimetableLesson } from '../types/api';
 
 jest.mock('../services/io/elastic');
 jest.mock('../services/nus-api');
@@ -19,7 +21,7 @@ const mockApi: jest.Mocked<NusApi> = api as any;
  * Full integration tests for the entire pipeline
  */
 
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable camelcase */
 
 // Mock data for the module info API endpoint
 const moduleInfoData: { [semester: string]: ModuleInfo[] } = {
@@ -151,6 +153,6 @@ describe(DataPipeline, () => {
 
     const [CS2100Actual] = await pipeline.run();
 
-    expectModulesEqual(CS2100Actual, CS2100Expected);
+    expectModulesEqual(CS2100Actual, CS2100Expected as Module);
   });
 });

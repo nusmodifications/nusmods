@@ -13,7 +13,6 @@ import {
   parseISO,
 } from 'date-fns';
 import produce from 'immer';
-import { hot } from 'react-hot-loader/root';
 
 import { DaysOfWeek } from 'types/modules';
 import { Lesson, ColoredLesson, SemTimetableConfigWithLessons } from 'types/timetables';
@@ -106,12 +105,14 @@ function getDayType(date: Date, weekInfo: AcadWeekInfo): EmptyGroupType {
   }
 }
 
-export const DaySection: React.FC<Readonly<{
-  children: React.ReactNode;
-  date: Date | Date[];
-  offset: number;
-  forecast?: string;
-}>> = (props) => (
+export const DaySection: React.FC<
+  Readonly<{
+    children: React.ReactNode;
+    date: Date | Date[];
+    offset: number;
+    forecast?: string;
+  }>
+> = (props) => (
   <section className={styles.day}>
     <DayHeader date={props.date} offset={props.offset} forecast={props.forecast} />
     {props.children}
@@ -127,9 +128,10 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
   componentDidMount() {
     weatherAPI
       .twoHour()
-      .then((weather) =>
-        this.setState((prevState) => ({ weather: { ...prevState.weather, '0': weather } })),
-      )
+      .then((weather) => {
+        if (!weather) return;
+        this.setState((prevState) => ({ weather: { ...prevState.weather, '0': weather } }));
+      })
       .catch(captureException);
 
     weatherAPI
@@ -361,4 +363,4 @@ const ConnectedTimetableContainer = connect(mapStateToProps)(TodayContainerCompo
 const TodayContainerWithTimer = withTimer(ConnectedTimetableContainer);
 const ResponsiveTodayContainer = makeResponsive(TodayContainerWithTimer, breakpointUp('lg'));
 
-export default hot(ResponsiveTodayContainer);
+export default ResponsiveTodayContainer;
