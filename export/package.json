@@ -9,7 +9,7 @@
   "scripts": {
     "start": "pm2 start ecosystem.config.js",
     "build": "tsc",
-    "nodemon": "nodemon -r dotenv/config ./build/index.js",
+    "nodemon": "nodemon --no-update-notifier -r dotenv/config ./build/index.js",
     "watch": "tsc --watch",
     "dev": "run-p nodemon watch",
     "devtools": "cross-env DEVTOOLS=1 yarn dev",
@@ -17,18 +17,18 @@
     "lint": "prettier --write"
   },
   "dependencies": {
-    "@sentry/node": "5.7.1",
-    "axios": "0.19.0",
-    "bunyan": "1.8.12",
-    "fs-extra": "8.1.0",
+    "@sentry/node": "5.27.6",
+    "axios": "0.21.0",
+    "bunyan": "1.8.14",
+    "fs-extra": "9.0.1",
     "http-graceful-shutdown": "2.3.2",
-    "koa": "2.10.0",
-    "koa-router": "7.4.0",
-    "koa-views": "6.2.1",
-    "lodash": "4.17.15",
-    "nodemon": "1.19.4",
-    "pug": "2.0.4",
-    "puppeteer": "1.12.2"
+    "koa": "2.13.0",
+    "koa-router": "10.0.0",
+    "koa-views": "6.3.1",
+    "lodash": "4.17.20",
+    "nodemon": "2.0.6",
+    "pug": "3.0.0",
+    "puppeteer": "5.5.0"
   },
   "devDependencies": {
     "@types/fs-extra": "8.0.0",

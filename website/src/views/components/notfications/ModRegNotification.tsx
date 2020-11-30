@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { formatDistance } from 'date-fns';
 
 import { NotificationOptions } from 'types/reducers';
 import { State } from 'types/state';
@@ -35,53 +36,53 @@ export function notificationText(
   now: Date,
 ): React.ReactNode {
   const isRoundOpen = now >= round.startDate;
+  const timeFromNow = formatDistance(now, isRoundOpen ? round.endDate : round.startDate, {
+    includeSeconds: true,
+  });
 
   return (
     <>
       {isRoundOpen ? 'Current' : 'Next'} <strong>{round.type}</strong>{' '}
       {round.name ? `(Round ${round.name})` : ''}: {useLineBreaks && <br />}
       {isRoundOpen ? ' till' : ' at'} <strong>{isRoundOpen ? round.end : round.start}</strong>
+      {useLineBreaks && <br />} ({timeFromNow} from now)
     </>
   );
 }
 
-export class ModRegNotificationComponent extends React.PureComponent<Props> {
-  dismiss = (round: RegPeriod) => {
-    this.props.dismissModregNotification(round);
-    this.props.openNotification('Reminder snoozed until start of next round', {
+export const ModRegNotificationComponent: React.FC<Props> = (props) => {
+  const dismiss = (round: RegPeriod) => {
+    props.dismissModregNotification(round);
+    props.openNotification('Reminder snoozed until start of next round', {
       timeout: 12000,
       action: {
         text: 'Settings',
         handler: () => {
-          this.props.history.push('/settings#modreg');
+          props.history.push('/settings#modreg');
         },
       },
     });
   };
 
-  render() {
-    const { rounds, dismissible } = this.props;
-    if (!rounds.length) return null;
+  const { rounds, dismissible } = props;
+  if (!rounds.length) return null;
 
-    return (
-      <div className={styles.container}>
-        {rounds.map((round) => (
-          <div className={styles.notificationWrapper} key={round.type}>
-            <ExternalLink href={MOD_REG_URL}>
-              <div className={styles.notification}>
-                {notificationText(true, round, forceTimer() || new Date())}
-              </div>
-            </ExternalLink>
+  return (
+    <div className={styles.container}>
+      {rounds.map((round) => (
+        <div className={styles.notificationWrapper} key={round.type}>
+          <ExternalLink href={MOD_REG_URL}>
+            <div className={styles.notification}>
+              {notificationText(true, round, forceTimer() || new Date())}
+            </div>
+          </ExternalLink>
 
-            {!dismissible && (
-              <CloseButton className={styles.close} onClick={() => this.dismiss(round)} />
-            )}
-          </div>
-        ))}
-      </div>
-    );
-  }
-}
+          {!dismissible && <CloseButton className={styles.close} onClick={() => dismiss(round)} />}
+        </div>
+      ))}
+    </div>
+  );
+};
 
 const mapStateToProps = (state: State) => ({
   rounds: getRounds(state.settings.modRegNotification, config.modRegSchedule).filter(
@@ -89,13 +90,10 @@ const mapStateToProps = (state: State) => ({
   ),
 });
 
-const withStoreModRegNotification = connect(
-  mapStateToProps,
-  {
-    dismissModregNotification,
-    openNotification,
-  },
-)(ModRegNotificationComponent);
+const withStoreModRegNotification = connect(mapStateToProps, {
+  dismissModregNotification,
+  openNotification,
+})(React.memo(ModRegNotificationComponent));
 
 const ModRegNotification = withRouter(withStoreModRegNotification);
 export default ModRegNotification;

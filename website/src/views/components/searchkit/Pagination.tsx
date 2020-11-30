@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { PaginationAccessor, SearchkitComponent, SearchkitComponentProps } from 'searchkit';
 import { clamp, get } from 'lodash';
 
@@ -19,6 +19,7 @@ export interface PaginationProps extends SearchkitComponentProps {
 export const FIRST_PAGE_INDEX = 1;
 
 // Custom equivalent of Searchkit's Pagination component
+// eslint-disable-next-line @typescript-eslint/ban-types
 export default class Pagination extends SearchkitComponent<PaginationProps, {}> {
   paginationAccessor() {
     return this.accessor as PaginationAccessor;
@@ -34,15 +35,17 @@ export default class Pagination extends SearchkitComponent<PaginationProps, {}> 
   }
 
   getTotalPages() {
-    return Math.ceil(
-      get(this.getResults(), 'hits.total', 1) / get(this.getQuery(), 'query.size', 10),
-    );
+    return Math.ceil(this.getHitsCount() / get(this.getQuery(), 'query.size', 10));
   }
 
   onGoToFirst = () => this.setPage(FIRST_PAGE_INDEX);
+
   onGoToPrevious = () => this.setPage(this.getCurrentPage() - 1);
+
   onGoToPage = (page: number) => this.setPage(page);
+
   onGoToNext = () => this.setPage(this.getCurrentPage() + 1);
+
   onGoToLast = () => this.setPage(this.getTotalPages());
 
   setPage(requestedPage: number) {

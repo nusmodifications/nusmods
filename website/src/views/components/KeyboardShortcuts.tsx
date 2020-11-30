@@ -6,7 +6,7 @@ import Mousetrap from 'mousetrap';
 import { groupBy, map } from 'lodash';
 
 import { Mode, ThemeId, DARK_MODE } from 'types/settings';
-import { FSA } from 'types/redux';
+import { Actions } from 'types/actions';
 import themes from 'data/themes.json';
 import { cycleTheme, toggleTimetableOrientation } from 'actions/theme';
 import { openNotification } from 'actions/app';
@@ -18,7 +18,7 @@ import Modal from './Modal';
 import styles from './KeyboardShortcuts.scss';
 
 type Props = RouteComponentProps & {
-  dispatch: Dispatch<FSA>;
+  dispatch: Dispatch<Actions>;
   theme: ThemeId;
   mode: Mode;
 };
@@ -52,6 +52,10 @@ export class KeyboardShortcutsComponent extends React.PureComponent<Props, State
     const { dispatch, history } = this.props;
 
     // Navigation
+    this.bind('y', NAVIGATION, 'Go to today', () => {
+      history.push('/today');
+    });
+
     this.bind('t', NAVIGATION, 'Go to timetable', () => {
       history.push('/timetable');
     });
@@ -169,7 +173,7 @@ export class KeyboardShortcutsComponent extends React.PureComponent<Props, State
           {map(sections, (shortcuts, heading) => (
             <tbody key={heading}>
               <tr>
-                <th />
+                <th aria-label="Key column" />
                 <th>{heading}</th>
               </tr>
 

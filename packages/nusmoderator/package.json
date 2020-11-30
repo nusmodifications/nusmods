@@ -1,19 +1,17 @@
 {
   "name": "nusmoderator",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "A lightweight library with helpful functions for NUS-related matters",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",
-  "types": "./index.d.ts",
+  "types": "dist/index.d.ts",
   "files": [
-    "dist",
-    "index.d.ts"
+    "dist"
   ],
   "scripts": {
     "clean": "rimraf dist coverage",
-    "ci": "npm run lint && npm run test",
-    "lint": "documentation lint src && eslint src",
+    "lint": "documentation lint src && eslint --ext .ts src",
     "docs": "documentation readme src --section=API",
     "build": "microbundle",
     "test": "jest --coverage",
@@ -43,23 +41,23 @@
   "homepage": "https://github.com/nusmodifications/nusmods/tree/master/packages/nusmoderator",
   "npmName": "nusmoderator",
   "devDependencies": {
-    "@babel/core": "7.6.4",
-    "@babel/preset-env": "7.6.3",
-    "babel-core": "7.0.0-bridge.0",
-    "babel-eslint": "10.0.3",
-    "babel-jest": "24.9.0",
-    "documentation": "12.1.2",
-    "eslint": "6.6.0",
-    "eslint-config-airbnb-base": "14.0.0",
-    "eslint-config-prettier": "6.5.0",
-    "eslint-plugin-import": "2.18.2",
-    "eslint-plugin-prettier": "3.1.1",
-    "jest": "24.9.0",
-    "microbundle": "0.11.0",
-    "prettier": "1.18.2",
-    "rimraf": "3.0.0"
+    "@types/jest": "26.0.15",
+    "@typescript-eslint/eslint-plugin": "4.8.2",
+    "@typescript-eslint/parser": "4.8.2",
+    "documentation": "13.1.0",
+    "eslint": "7.14.0",
+    "eslint-config-airbnb-base": "14.2.1",
+    "eslint-config-prettier": "6.15.0",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-prettier": "3.1.4",
+    "jest": "26.6.3",
+    "microbundle": "0.12.4",
+    "prettier": "2.2.1",
+    "rimraf": "3.0.2",
+    "ts-jest": "26.4.4",
+    "typescript": "4.1.2"
   },
   "dependencies": {
-    "date-fns": "2.6.0"
+    "date-fns": "2.16.1"
   }
 }

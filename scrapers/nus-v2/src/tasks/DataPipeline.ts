@@ -63,7 +63,10 @@ export default class DataPipeline extends BaseTask implements Task<void, Module[
     const modules = await collateModules.run({ semesterData, aliases: allAliases });
 
     // Delete all modules that are no longer active
-    const removedModules = difference(existingModules, modules.map((module) => module.moduleCode));
+    const removedModules = difference(
+      existingModules,
+      modules.map((module) => module.moduleCode),
+    );
     if (removedModules.length) {
       this.logger.info({ removedModules }, 'Removing no longer active modules');
       await Promise.all(removedModules.map((moduleCode) => this.io.deleteModule(moduleCode)));

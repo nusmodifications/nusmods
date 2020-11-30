@@ -2,8 +2,8 @@ import { isEqual } from 'lodash';
 import produce from 'immer';
 import { REHYDRATE, createMigrate } from 'redux-persist';
 
-import { FSA } from 'types/redux';
 import { SettingsState } from 'types/reducers';
+import { Actions } from 'types/actions';
 
 import {
   DISMISS_MODREG_NOTIFICATION,
@@ -22,7 +22,7 @@ import { SET_EXPORTED_DATA } from 'actions/constants';
 import { DIMENSIONS, withTracker } from 'bootstrapping/matomo';
 import { DARK_MODE, LIGHT_MODE } from 'types/settings';
 import config from 'config';
-import { isRoundDismissed } from '../selectors/modreg';
+import { isRoundDismissed } from 'selectors/modreg';
 
 export const defaultModRegNotificationState = {
   semesterKey: config.getSemesterKey(),
@@ -42,7 +42,7 @@ const defaultSettingsState: SettingsState = {
   loadDisqusManually: false,
 };
 
-function settings(state: SettingsState = defaultSettingsState, action: FSA): SettingsState {
+function settings(state: SettingsState = defaultSettingsState, action: Actions): SettingsState {
   switch (action.type) {
     case SELECT_NEW_STUDENT:
       return {

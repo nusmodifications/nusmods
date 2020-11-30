@@ -1,15 +1,20 @@
-import { AxiosRequestConfig } from 'axios';
-import { RequestKey } from 'types/reducers';
+import type { AxiosRequestConfig } from 'axios';
+import type { RequestKey } from 'types/reducers';
+import type { RequestType } from './constants';
 
 export const API_REQUEST = 'API_REQUEST';
 
-export type RequestAction = {
-  type: string;
+export type DispatchRequestAction<Type extends string> = {
+  type: Type;
   payload: AxiosRequestConfig;
   meta: {
     [key: string]: string;
   };
 };
+
+export interface RequestsDispatchExt {
+  <T>(requestAction: DispatchRequestAction<RequestType>): Promise<T>;
+}
 
 /**
  * Create an action that makes a HTTP request. key is a string that uniquely
@@ -25,15 +30,19 @@ export type RequestAction = {
  * provided.
  */
 type RequestActionCreator = {
-  (key: RequestKey, options: AxiosRequestConfig): RequestAction;
-  (key: RequestKey, type: string, options: AxiosRequestConfig): RequestAction;
+  <Key extends string>(key: Key, options: AxiosRequestConfig): DispatchRequestAction<Key>;
+  <Type extends string>(
+    key: RequestKey,
+    type: Type,
+    options: AxiosRequestConfig,
+  ): DispatchRequestAction<Type>;
 };
 
 export const requestAction: RequestActionCreator = (
   key: RequestKey,
   type: string | AxiosRequestConfig,
   options?: AxiosRequestConfig,
-): RequestAction => {
+): DispatchRequestAction<RequestKey | string> => {
   let payload: AxiosRequestConfig;
 
   if (typeof type !== 'string') {
@@ -43,7 +52,6 @@ export const requestAction: RequestActionCreator = (
   } else if (options) {
     payload = options;
   } else {
-    // Keeps Flow happy
     throw new Error();
   }
 

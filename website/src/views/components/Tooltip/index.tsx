@@ -1,29 +1,49 @@
 import * as React from 'react';
+
 import { retryImport } from 'utils/error';
-import { Props } from './Tooltip';
+
+import { Props, TooltipGroupProps } from './Tooltip';
 
 // Can't use react-loadable for this since children and other props
 // are not passed down - https://github.com/jamiebuilds/react-loadable/pull/161
-export default class AsyncTooltip extends React.PureComponent<Props> {
-  static Tooltip: React.ComponentType<Props> | null;
+let AsyncTooltip: React.ComponentType<Props> | null = null;
+let AsyncTooltipGroup: React.ComponentType<TooltipGroupProps> | null = null;
 
-  componentDidMount() {
-    if (!AsyncTooltip.Tooltip) {
+const useLoadTooltip = () => {
+  React.useEffect(() => {
+    if (!AsyncTooltip || !AsyncTooltipGroup) {
       retryImport(() => import(/* webpackChunkName: "tooltip" */ './Tooltip')).then((module) => {
         // Dirty but it works
-        AsyncTooltip.Tooltip = module.default;
-        this.forceUpdate();
+        AsyncTooltip = module.default;
+        AsyncTooltipGroup = module.TooltipGroup;
       });
     }
+  }, []);
+};
+
+const Tooltip = React.memo<Props>(({ children, ...props }) => {
+  useLoadTooltip();
+
+  if (!AsyncTooltip) {
+    return children;
   }
 
-  render() {
-    const { children, ...props } = this.props;
+  return <AsyncTooltip {...props}>{children}</AsyncTooltip>;
+});
+Tooltip.displayName = 'Tooltip';
 
-    if (!AsyncTooltip.Tooltip) {
-      return children;
-    }
+const TooltipGroup = React.memo<TooltipGroupProps>(({ children, ...props }) => {
+  useLoadTooltip();
 
-    return <AsyncTooltip.Tooltip {...props}>{children}</AsyncTooltip.Tooltip>;
+  if (!AsyncTooltipGroup) {
+    // cast needed because TooltipGroupProps types children as React.ReactElement which is not
+    // compatible with the return type of React.FC, React.ReactElement
+    return children as React.ReactElement;
   }
-}
+
+  return <AsyncTooltipGroup {...props}>{children}</AsyncTooltipGroup>;
+});
+TooltipGroup.displayName = 'TooltipGroup';
+
+export default Tooltip;
+export { TooltipGroup };

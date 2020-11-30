@@ -49,6 +49,15 @@ module.exports = {
   rules: {
     'prettier/prettier': WARN_IN_DEV,
 
+    'import/extensions': [
+      'error',
+      'always',
+      {
+        js: 'never',
+        ts: 'never',
+      },
+    ],
+
     // Enable i++ in for loops
     'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
 
@@ -83,15 +92,12 @@ module.exports = {
 
     'import/no-extraneous-dependencies': ['error', { devDependencies: ['**/*.test.ts', 'src/utils/test-utils.ts'] }],
 
-    // Rule is buggy when used with TypeScript
-    // TODO: Remove this when https://github.com/benmosher/eslint-plugin-import/issues/1282 is resolved
-    'import/named': 'off',
-
     // Makes the code unnecessarily verbose
     '@typescript-eslint/explicit-member-accessibility': 'off',
 
     // Makes the code unnecessarily verbose
     '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
 
     '@typescript-eslint/no-unused-vars': [
       WARN_IN_DEV,

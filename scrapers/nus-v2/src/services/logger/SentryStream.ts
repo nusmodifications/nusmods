@@ -9,6 +9,11 @@ import { Stream } from 'bunyan';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+interface SentryError extends Error {
+  code?: string;
+  signal?: string;
+}
+
 type BunyanRecord = {
   msg: string;
   level: number;
@@ -42,13 +47,11 @@ function getSentryLevel(record: BunyanRecord): Sentry.Severity {
 function deserializeError(data: any) {
   if (data instanceof Error) return data;
 
-  const error = new Error(data.message);
+  const error: SentryError = new Error(data.message);
   error.name = data.name;
   error.stack = data.stack;
 
-  // @ts-ignore
   if (data.code) error.code = data.code;
-  // @ts-ignore
   if (data.signal) error.signal = data.signal;
 
   return error;
@@ -76,9 +79,7 @@ export default function getSentryStream(config: StreamConfig = {}): Stream {
         scope.setLevel(level);
 
         each(tags, (value, prop) => {
-          // TODO: Look into this?
-          // @ts-ignore
-          scope.setTag(prop, value || null);
+          scope.setTag(prop, String(value));
         });
 
         each(extra, (value, prop) => {

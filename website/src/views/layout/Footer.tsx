@@ -13,10 +13,7 @@ type Props = {
   toggleFeedback: () => void;
 };
 
-export function FooterComponent(props: Props) {
-  const commitHash = process.env.DISPLAY_COMMIT_HASH;
-  const versionStr = process.env.VERSION_STR;
-
+export const FooterComponent: React.FC<Props> = (props) => {
   // Try catch because of Chrome crashing on calling toLocaleString with no parameter
   // See https://sentry.io/nusmods/v3/issues/434084130/
   let lastUpdatedText = 'Loading data...';
@@ -28,11 +25,13 @@ export function FooterComponent(props: Props) {
     }
   }
 
-  const versionSpan = commitHash && versionStr && (
+  const versionSpan = DISPLAY_COMMIT_HASH && VERSION_STR && (
     <span>
       NUSMods R version{' '}
-      <ExternalLink href={`https://github.com/nusmodifications/nusmods/commit/${commitHash}`}>
-        {versionStr}
+      <ExternalLink
+        href={`https://github.com/nusmodifications/nusmods/commit/${DISPLAY_COMMIT_HASH}`}
+      >
+        {VERSION_STR}
       </ExternalLink>
       .
     </span>
@@ -40,7 +39,7 @@ export function FooterComponent(props: Props) {
 
   return (
     <footer className={styles.footer}>
-      <div className="container">
+      <div className={styles.footerContainer}>
         <ul className={styles.footerLinks}>
           <li>
             <ExternalLink href={config.contact.githubRepo}>GitHub</ExternalLink>
@@ -101,7 +100,7 @@ export function FooterComponent(props: Props) {
       </div>
     </footer>
   );
-}
+};
 
 export default connect(
   (state: State) => {

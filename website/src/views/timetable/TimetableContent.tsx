@@ -45,7 +45,7 @@ import Title from 'views/components/Title';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ModRegNotification from 'views/components/notfications/ModRegNotification';
 import { State as StoreState } from 'types/state';
-import { ModuleWithColor, TombstoneModule } from 'types/views';
+import { TombstoneModule } from 'types/views';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
@@ -182,16 +182,17 @@ class TimetableContent extends React.Component<Props, State> {
     this.resetTombstone();
   };
 
-  removeModule = (module: ModuleWithColor) => {
+  removeModule = (moduleCodeToRemove: ModuleCode) => {
     // Save the index of the module before removal so the tombstone can be inserted into
     // the correct position
     const index = this.addedModules().findIndex(
-      ({ moduleCode }) => moduleCode === module.moduleCode,
+      ({ moduleCode }) => moduleCode === moduleCodeToRemove,
     );
-    this.props.removeModule(this.props.semester, module.moduleCode);
+    this.props.removeModule(this.props.semester, moduleCodeToRemove);
+    const moduleWithColor = this.toModuleWithColor(this.addedModules()[index]);
 
     // A tombstone is displayed in place of a deleted module
-    this.setState({ tombstone: { ...module, index } });
+    this.setState({ tombstone: { ...moduleWithColor, index } });
   };
 
   resetTombstone = () => this.setState({ tombstone: null });
@@ -202,17 +203,19 @@ class TimetableContent extends React.Component<Props, State> {
     return _.sortBy(modules, (module: Module) => getExamDate(module, this.props.semester));
   }
 
+  toModuleWithColor = (module: Module) => ({
+    ...module,
+    colorIndex: this.props.colors[module.moduleCode],
+    hiddenInTimetable: this.isHiddenInTimetable(module.moduleCode),
+  });
+
   renderModuleTable = (
     modules: Module[],
     horizontalOrientation: boolean,
     tombstone: TombstoneModule | null = null,
   ) => (
     <TimetableModulesTable
-      modules={modules.map((module) => ({
-        ...module,
-        colorIndex: this.props.colors[module.moduleCode],
-        hiddenInTimetable: this.isHiddenInTimetable(module.moduleCode),
-      }))}
+      modules={modules.map(this.toModuleWithColor)}
       horizontalOrientation={horizontalOrientation}
       semester={this.props.semester}
       onRemoveModule={this.removeModule}
@@ -283,7 +286,7 @@ class TimetableContent extends React.Component<Props, State> {
       .filter((lesson) => !this.isHiddenInTimetable(lesson.moduleCode));
 
     if (activeLesson) {
-      const moduleCode = activeLesson.moduleCode;
+      const { moduleCode } = activeLesson;
       // Remove activeLesson because it will appear again
       timetableLessons = timetableLessons.filter(
         (lesson) => !areLessonsSameClass(lesson, activeLesson),
@@ -412,6 +415,7 @@ class TimetableContent extends React.Component<Props, State> {
                     semester={semester}
                     timetable={this.props.timetable}
                     addModule={this.addModule}
+                    removeModule={this.removeModule}
                   />
                 )}
               </div>
@@ -432,7 +436,7 @@ class TimetableContent extends React.Component<Props, State> {
 
 function mapStateToProps(state: StoreState, ownProps: OwnProps) {
   const { semester, timetable } = ownProps;
-  const modules = state.moduleBank.modules;
+  const { modules } = state.moduleBank;
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
   const hiddenInTimetable = state.timetables.hidden[semester] || [];
 
@@ -448,14 +452,11 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    addModule,
-    removeModule,
-    modifyLesson,
-    changeLesson,
-    cancelModifyLesson,
-    undo,
-  },
-)(TimetableContent);
+export default connect(mapStateToProps, {
+  addModule,
+  removeModule,
+  modifyLesson,
+  changeLesson,
+  cancelModifyLesson,
+  undo,
+})(TimetableContent);

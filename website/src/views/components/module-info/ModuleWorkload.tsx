@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { partition, range, sum, zip } from 'lodash';
 
 import { Workload, WORKLOAD_COMPONENTS, WorkloadComponent } from 'types/modules';
-import Tooltip from 'views/components/Tooltip';
+import Tooltip, { TooltipGroup } from 'views/components/Tooltip';
 import styles from './ModuleWorkload.scss';
 
 const ROW_MAX = 10;
@@ -75,27 +75,24 @@ type Props = {
   workload: Workload;
 };
 
-export default class ModuleWorkload extends React.PureComponent<Props> {
-  renderFallback(): React.ReactNode {
+const ModuleWorkload = React.memo<Props>(({ workload }) => {
+  if (typeof workload === 'string') {
     // Workload cannot be parsed - so we just display it without any visualization
     return (
       <div className={styles.moduleWorkloadContainer}>
         <h4>Workload</h4>
-        <p className={styles.moduleWorkloadFallback}>{this.props.workload}</p>
+        <p className={styles.moduleWorkloadFallback}>{workload}</p>
       </div>
     );
   }
 
-  render() {
-    const { workload } = this.props;
-    if (typeof workload === 'string') return this.renderFallback();
+  const total = sum(workload);
 
-    const total = sum(workload);
-
-    return (
-      <div className={styles.moduleWorkloadContainer}>
-        <h4>Workload - {total} hrs</h4>
-        <div className={styles.moduleWorkload}>
+  return (
+    <div className={styles.moduleWorkloadContainer}>
+      <h4>Workload - {total} hrs</h4>
+      <div className={styles.moduleWorkload}>
+        <TooltipGroup distance={0}>
           {sortWorkload(workload).map(([component, hours]) => (
             <Tooltip content={`${hours} hours of ${component}`} key={component}>
               <div
@@ -114,8 +111,12 @@ export default class ModuleWorkload extends React.PureComponent<Props> {
               </div>
             </Tooltip>
           ))}
-        </div>
+        </TooltipGroup>
       </div>
-    );
-  }
-}
+    </div>
+  );
+});
+
+ModuleWorkload.displayName = 'ModuleWorkload';
+
+export default ModuleWorkload;

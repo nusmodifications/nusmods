@@ -18,18 +18,18 @@ type Props = {
   semesters: readonly Semester[];
 };
 
-export default function(props: Props) {
-  return (
-    <span className={classnames(props.className, styles.semesters)}>
-      {props.semesters.map((semester) => (
-        <span
-          key={semester}
-          className={classnames('badge', BADGE_COLOR[semester])}
-          title={config.semesterNames[semester]}
-        >
-          {config.shortSemesterNames[semester]}
-        </span>
-      ))}
-    </span>
-  );
-}
+const SemesterBadge: React.FC<Props> = ({ className, semesters }) => (
+  <span className={classnames(className, styles.semesters)}>
+    {semesters.map((semester) => (
+      <span
+        key={semester}
+        className={classnames('badge', BADGE_COLOR[semester])}
+        title={config.semesterNames[semester]}
+      >
+        {config.shortSemesterNames[semester]}
+      </span>
+    ))}
+  </span>
+);
+
+export default SemesterBadge;

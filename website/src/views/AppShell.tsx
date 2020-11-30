@@ -4,7 +4,7 @@ import { ModuleList, NotificationOptions } from 'types/reducers';
 import { Semester } from 'types/modules';
 import { DARK_MODE, Mode } from 'types/settings';
 
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import { NavLink, RouteComponentProps, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classnames from 'classnames';

@@ -169,9 +169,7 @@ function normalize(data, subLog) {
 
     let duration;
     if (exam.Duration) {
-      duration = `P${exam.Duration.replace(/\s/g, '')
-        .toUpperCase()
-        .slice(0, 5)}`;
+      duration = `P${exam.Duration.replace(/\s/g, '').toUpperCase().slice(0, 5)}`;
     }
     return {
       ModuleCode: exam.ModuleCode,
@@ -282,7 +280,10 @@ function parseModule(rawModule, lessonTypes) {
   });
   module.LecturePeriods = [...periods.Lecture];
   module.TutorialPeriods = [...periods.Tutorial];
-  return R.pipe(R.pick(MODULE_FIELDS), R.pickBy((val) => val && !R.isEmpty(val)))(module);
+  return R.pipe(
+    R.pick(MODULE_FIELDS),
+    R.pickBy((val) => val && !R.isEmpty(val)),
+  )(module);
 }
 
 /**

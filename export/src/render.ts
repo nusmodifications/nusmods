@@ -102,7 +102,7 @@ export async function image(page: Page, data: PageData, options: ViewportOptions
 
 export async function pdf(page: Page, data: PageData) {
   await injectData(page, data);
-  await page.emulateMedia('screen');
+  await page.emulateMediaType('screen');
 
   return await page.pdf({
     printBackground: true,

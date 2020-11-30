@@ -5,10 +5,10 @@ type Props = {
   readonly children: React.ReactNode;
 };
 
-export default function GameOverlay(props: Props) {
-  return (
-    <div className={styles.overlay}>
-      <div className={styles.overlayContent}>{props.children}</div>
-    </div>
-  );
-}
+const GameOverlay: React.FC<Props> = (props) => (
+  <div className={styles.overlay}>
+    <div className={styles.overlayContent}>{props.children}</div>
+  </div>
+);
+
+export default GameOverlay;

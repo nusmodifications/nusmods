@@ -7,12 +7,23 @@ exports[`NavtabsComponent renders into nav element 1`] = `
   <NavLink
     activeClassName="linkActive"
     className="link"
+    onFocus={[Function]}
+    onMouseOver={[Function]}
+    to="/today"
+  >
+    <Clock />
+    <span
+      className="title"
+    >
+      Today
+    </span>
+  </NavLink>
+  <NavLink
+    activeClassName="linkActive"
+    className="link"
     to="/timetable/sem-1"
   >
-    <Calendar
-      color="currentColor"
-      size="24"
-    />
+    <Calendar />
     <span
       className="title"
     >
@@ -29,10 +40,7 @@ exports[`NavtabsComponent renders into nav element 1`] = `
       }
     }
   >
-    <BookOpen
-      color="currentColor"
-      size="24"
-    />
+    <BookOpen />
     <span
       className="title"
     >
@@ -46,10 +54,7 @@ exports[`NavtabsComponent renders into nav element 1`] = `
     onMouseOver={[Function]}
     to="/venues"
   >
-    <Map
-      color="currentColor"
-      size="24"
-    />
+    <Map />
     <span
       className="title"
     >
@@ -61,10 +66,7 @@ exports[`NavtabsComponent renders into nav element 1`] = `
     className="link"
     to="/settings"
   >
-    <Settings
-      color="currentColor"
-      size="24"
-    />
+    <Settings />
     <span
       className="title"
     >
@@ -78,10 +80,7 @@ exports[`NavtabsComponent renders into nav element 1`] = `
     onMouseOver={[Function]}
     to="/contribute"
   >
-    <Star
-      color="currentColor"
-      size="24"
-    />
+    <Star />
     <span
       className="title"
     >
@@ -91,19 +90,16 @@ exports[`NavtabsComponent renders into nav element 1`] = `
   <div
     className="divider"
   />
-  <ExternalLink
+  <ForwardRef
     className="link hiddenOnMobile"
     href="https://nuswhispers.com"
   >
-    <Heart
-      color="currentColor"
-      size="24"
-    />
+    <Heart />
     <span
       className="title"
     >
       Whispers
     </span>
-  </ExternalLink>
+  </ForwardRef>
 </nav>
 `;

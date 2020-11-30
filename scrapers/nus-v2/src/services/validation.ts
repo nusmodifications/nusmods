@@ -10,12 +10,13 @@ import { Semester, Semesters } from '../types/modules';
 import { activityLessonType, dayTextMap } from '../utils/data';
 import rootLogger, { Logger } from './logger';
 
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable camelcase */
 
 const lessonSchema = Joi.object({
   // Allow null because we can still use the rest of the information
   room: Joi.string().allow(null),
   start_time: Joi.string(),
+  end_time: Joi.string().not(Joi.ref('start_time')),
   eventdate: Joi.string().isoDate(),
 
   activity: Joi.string().only(Object.keys(activityLessonType)),
@@ -25,14 +26,10 @@ const lessonSchema = Joi.object({
   // Assume lessons on Sunday are invalid
   day: Joi.string().only(Object.keys(dayTextMap)),
 
-  numweeks: Joi.number()
-    .integer()
-    .greater(0),
+  numweeks: Joi.number().integer().greater(0),
 
   // csize of 0 occur on valid lessons for some reason
-  csize: Joi.number()
-    .integer()
-    .greater(-1),
+  csize: Joi.number().integer().greater(-1),
 });
 
 export function validateLesson(lesson: TimetableLesson, logger: Logger = rootLogger) {
@@ -50,9 +47,7 @@ export function validateLesson(lesson: TimetableLesson, logger: Logger = rootLog
 const examSchema = Joi.object({
   start_time: Joi.string(),
   module: Joi.string(),
-  duration: Joi.number()
-    .integer()
-    .greater(0),
+  duration: Joi.number().integer().greater(0),
   exam_date: Joi.string().isoDate(),
 });
 

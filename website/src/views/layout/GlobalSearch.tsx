@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Component, Fragment } from 'react';
 import { omit, stubString } from 'lodash';
 import Downshift, { ChildrenFunction, DownshiftState, StateChangeOptions } from 'downshift';
 import classnames from 'classnames';
@@ -35,7 +35,7 @@ type State = {
 
 const PLACEHOLDER = 'Search modules & venues. Try "GER" or "LT".';
 
-class GlobalSearch extends React.Component<Props, State> {
+class GlobalSearch extends Component<Props, State> {
   input: HTMLInputElement | null = null;
 
   state = {
@@ -57,9 +57,13 @@ class GlobalSearch extends React.Component<Props, State> {
   };
 
   onOuterClick = () => {
+    // Preserve input value (if present) after user clicks outside.
     if (this.state.inputValue) {
       this.setState({
         isOpen: true,
+        // Cannot use prevState as prevState.inputValue will be empty string
+        // instead of the (non-empty) this.state.inputValue.
+        // eslint-disable-next-line react/no-access-state-in-setstate
         inputValue: this.state.inputValue,
       });
 
@@ -118,7 +122,7 @@ class GlobalSearch extends React.Component<Props, State> {
     // key to ensure the input element does not change during rerender, which would cause
     // selection to be lost
     const searchForm = (
-      <React.Fragment key="search">
+      <Fragment key="search">
         <Search className={classnames(styles.icon, { [styles.iconOpen]: isOpen })} />
         <label className="sr-only" {...getLabelProps()}>
           {PLACEHOLDER}
@@ -132,7 +136,7 @@ class GlobalSearch extends React.Component<Props, State> {
           {...getInputProps({ placeholder: PLACEHOLDER })}
           onFocus={this.onOpen}
         />
-      </React.Fragment>
+      </Fragment>
     );
 
     const searchResults = this.props.getResults(inputValue);
@@ -294,7 +298,6 @@ class GlobalSearch extends React.Component<Props, State> {
         stateReducer={this.stateReducer}
         /* Hack to force item selection to be empty */
         itemToString={stubString}
-        selectedItem=""
       >
         {this.renderDropdown}
       </Downshift>

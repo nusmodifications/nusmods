@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Component, PureComponent } from 'react';
 import { render } from 'enzyme';
 import { highlight, wrapComponentName, Counter } from './react';
 
@@ -7,11 +7,7 @@ describe(highlight, () => {
 
   test('should wrap search terms with <mark>', () => {
     expect(h('Hello world', 'hello').find('mark')).toHaveLength(1);
-    expect(
-      h('Hello world', 'hello')
-        .find('mark')
-        .text(),
-    ).toEqual('Hello');
+    expect(h('Hello world', 'hello').find('mark').text()).toEqual('Hello');
 
     // Case insensitivity
     expect(h('Hello heLLo world', 'hello').find('mark')).toHaveLength(2);
@@ -35,10 +31,10 @@ describe(highlight, () => {
 });
 
 describe('wrapComponentName()', () => {
-  /* eslint-disable react/prefer-stateless-function, react/no-multi-comp */
-  class TestComponent extends React.Component<{}> {}
-  class TestPureComponent extends React.PureComponent<{}> {}
-  class TestComponentWithDisplayName extends React.Component<{}> {
+  /* eslint-disable react/prefer-stateless-function */
+  class TestComponent extends Component {}
+  class TestPureComponent extends PureComponent {}
+  class TestComponentWithDisplayName extends Component {
     static displayName = 'TestComponentName';
   }
   const FunctionalComponent = () => null;

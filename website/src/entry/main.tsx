@@ -1,5 +1,10 @@
 // Import Sentry earliest to capture exceptions
 import 'bootstrapping/sentry';
+// core-js has issues with Promise feature detection on Edge, and hence
+// polyfills Promise incorrectly. Importing this polyfill directly resolves that.
+// This is necessary as PersistGate used in ./App uses `Promise.prototype.finally`.
+// See: https://github.com/zloirock/core-js/issues/579#issuecomment-504325213
+import 'core-js/es/promise/finally';
 
 import ReactDOM from 'react-dom';
 import ReactModal from 'react-modal';
@@ -20,26 +25,16 @@ subscribeOnlineEvents(store);
 // Initialize ReactModal
 ReactModal.setAppElement('#app');
 
-const render = () => {
-  ReactDOM.render(App({ store, persistor }), document.getElementById('app'));
-};
-
-if (module.hot) {
-  module.hot.accept('./App', render);
-}
-
-render();
+ReactDOM.render(<App store={store} persistor={persistor} />, document.getElementById('app'));
 
 if (
-  ('serviceWorker' in navigator &&
-    window.location.protocol === 'https:' &&
-    process.env.NODE_ENV === 'production') ||
+  (!__DEV__ && 'serviceWorker' in navigator && window.location.protocol === 'https:') ||
   // Allow us to force service worker to be enabled for debugging
-  process.env.DEBUG_SERVICE_WORKER
+  DEBUG_SERVICE_WORKER
 ) {
   registerServiceWorker(store);
 }
 
-if (process.env.NODE_ENV === 'production') {
+if (!__DEV__) {
   initializeMamoto();
 }

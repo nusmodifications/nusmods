@@ -28,7 +28,7 @@ type Props = {
  * Reasoning for doing so is that we need rows to resize according to their
  * children's height, in which absolute positioning would not allow.
  */
-function TimetableRow(props: Props) {
+const TimetableRow: React.FC<Props> = (props) => {
   const { startingIndex, endingIndex, lessons, onModifyCell, verticalMode } = props;
   const totalCols = endingIndex - startingIndex;
 
@@ -39,6 +39,7 @@ function TimetableRow(props: Props) {
       {lessons.map((lesson) => {
         const startIndex = convertTimeToIndex(lesson.startTime);
         const endIndex = convertTimeToIndex(lesson.endTime);
+
         const size = endIndex - startIndex;
 
         const dirStyle = verticalMode ? 'top' : 'marginLeft';
@@ -51,7 +52,7 @@ function TimetableRow(props: Props) {
           [sizeStyle]: `calc(${(size / totalCols) * 100}% - 1px)`,
         };
 
-        lastStartIndex = convertTimeToIndex(lesson.endTime);
+        lastStartIndex = endIndex;
 
         const conditionalProps =
           lesson.isModifiable && onModifyCell
@@ -68,12 +69,13 @@ function TimetableRow(props: Props) {
             showTitle={props.showTitle}
             hoverLesson={props.hoverLesson}
             onHover={props.onCellHover}
+            transparent={lesson.startTime === lesson.endTime}
             {...conditionalProps}
           />
         );
       })}
     </div>
   );
-}
+};
 
 export default TimetableRow;

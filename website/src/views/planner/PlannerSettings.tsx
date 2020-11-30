@@ -53,7 +53,7 @@ function buttonProps(selected: boolean, disabled: boolean) {
   };
 }
 
-export function PlannerSettingsComponent(props: Props) {
+export const PlannerSettingsComponent: React.FC<Props> = (props) => {
   const matriculationLabels = getYearLabels(MIN_YEARS, MAX_YEARS).reverse();
   const graduationLabels = getYearLabels(0, GRADUATE_IN);
 
@@ -123,7 +123,7 @@ export function PlannerSettingsComponent(props: Props) {
       </section>
     </div>
   );
-}
+};
 
 const PlannerSettings = connect(
   (state: State) => ({

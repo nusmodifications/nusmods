@@ -13,7 +13,8 @@ export type Semester = number;
 export type Department = string;
 export type Workload = string | readonly number[];
 export type Venue = string;
-export type Weeks = readonly number[] | WeekRange;
+export type Weeks = NumericWeeks | WeekRange;
+export type NumericWeeks = readonly number[];
 export type WeekRange = {
   // The start and end dates
   start: string;
@@ -26,7 +27,7 @@ export type WeekRange = {
 };
 
 // Recursive tree of module codes and boolean operators for the prereq tree
-export type PrereqTree = string | { and?: PrereqTree[]; or?: PrereqTree[] };
+export type PrereqTree = string | { and: PrereqTree[] } | { or: PrereqTree[] };
 
 // Auxiliary data types
 export type Day =
@@ -69,7 +70,7 @@ export const isWeekRange = (week: Weeks): week is WeekRange => !Array.isArray(we
 
 export const consumeWeeks = <T = void>(
   weeks: Weeks,
-  consumeNumericWeeks: (weeks: number[]) => T,
+  consumeNumericWeeks: (numericWeeks: NumericWeeks) => T,
   consumeWeekRange: (weekRange: WeekRange) => T,
 ): T => {
   if (Array.isArray(weeks)) return consumeNumericWeeks(weeks);
@@ -201,4 +202,7 @@ export type Module = {
   // Requisites
   prereqTree?: PrereqTree;
   fulfillRequirements?: readonly ModuleCode[];
+
+  // Meta
+  timestamp: number;
 };

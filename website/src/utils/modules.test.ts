@@ -13,6 +13,8 @@ import {
   offsetAcadYear,
   renderMCs,
   subtractAcadYear,
+  isGraduateModule,
+  renderExamDuration,
 } from 'utils/modules';
 import { noBreak } from 'utils/react';
 
@@ -147,18 +149,29 @@ describe(getFirstAvailableSemester, () => {
 });
 
 describe(renderMCs, () => {
-  it.each([
+  it.each<[string | number, string]>([
     // Plural
     [0, '0 MCs'],
     ['0', '0 MCs'],
     [5, '5 MCs'],
     ['5', '5 MCs'],
+    ['0.5', '0.5 MCs'],
 
     // Singular
     [1, '1 MC'],
     ['1', '1 MC'],
-  ])('%s to equal %s', (mc, expected) =>
-    expect(renderMCs(mc)).toEqual(noBreak(expected as string)),
+  ])('%s to equal %s', (mc, expected) => expect(renderMCs(mc)).toEqual(noBreak(expected)));
+});
+
+describe(renderExamDuration, () => {
+  it.each<[number, string]>([
+    [45, '45 mins'],
+    [60, '1 hr'],
+    [90, '1.5 hrs'],
+    [120, '2 hrs'],
+    [180, '3 hrs'],
+  ])('%s to equal %s', (duration, expected) =>
+    expect(renderExamDuration(duration)).toEqual(noBreak(expected)),
   );
 });
 
@@ -206,5 +219,21 @@ describe(offsetAcadYear, () => {
   test('should work with positive offsets', () => {
     expect(offsetAcadYear('2018/2019', 1)).toEqual('2019/2020');
     expect(offsetAcadYear('2018/2019', 4)).toEqual('2022/2023');
+  });
+});
+
+describe(isGraduateModule, () => {
+  it('should return true for graduate modules', () => {
+    expect(isGraduateModule({ moduleCode: 'CS5012' })).toEqual(true);
+    expect(isGraduateModule({ moduleCode: 'CS6000' })).toEqual(true);
+    expect(isGraduateModule({ moduleCode: 'ACC5555X' })).toEqual(true);
+  });
+
+  it('should return false for undergrad modules', () => {
+    expect(isGraduateModule({ moduleCode: 'CS1232' })).toEqual(false);
+    expect(isGraduateModule({ moduleCode: 'CS4999' })).toEqual(false);
+    expect(isGraduateModule({ moduleCode: 'CS3567' })).toEqual(false);
+    expect(isGraduateModule({ moduleCode: 'CS1567D' })).toEqual(false);
+    expect(isGraduateModule({ moduleCode: 'ACC4999X' })).toEqual(false);
   });
 });

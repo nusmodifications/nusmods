@@ -1,6 +1,8 @@
-FROM node:10-alpine
+FROM node:12-alpine
 
-RUN mkdir -p /home/node/app
+RUN apk update && \
+    apk add --no-cache git python build-base && \
+    mkdir -p /home/node/app
 
 WORKDIR /home/node/app/website
 
@@ -10,4 +12,4 @@ ENV DATA_API_BASE_URL $DATA_API_BASE_URL
 ARG GIT_COMMIT_HASH
 ENV GIT_COMMIT_HASH $GIT_COMMIT_HASH
 
-CMD yarn && yarn start:export & yarn start
+CMD yarn && (yarn start --host 0.0.0.0 & yarn start:export --host website)

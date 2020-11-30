@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { ModuleSelectList } from 'types/reducers';
@@ -20,6 +20,7 @@ type OwnProps = {
 type Props = OwnProps & {
   moduleList: ModuleSelectList;
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
+  removeModule: (moduleCode: ModuleCode) => void;
   popNotification: () => void;
 };
 
@@ -29,7 +30,7 @@ const RESULTS_LIMIT = 500;
  * Container for modules select
  * Governs the module filtering logic and non-select related logic such as notification.
  */
-class ModulesSelectContainer extends React.Component<Props> {
+class ModulesSelectContainer extends Component<Props> {
   onChange = (moduleCode: ModuleCode) => {
     this.props.popNotification();
     this.props.addModule(this.props.semester, moduleCode);
@@ -54,6 +55,7 @@ class ModulesSelectContainer extends React.Component<Props> {
               isOnline ? 'Add module to timetable' : 'You need to be online to add modules'
             }
             disabled={!isOnline}
+            onRemoveModule={this.props.removeModule}
           />
         )}
       </Online>
@@ -71,9 +73,6 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    popNotification,
-  },
-)(ModulesSelectContainer);
+export default connect(mapStateToProps, {
+  popNotification,
+})(ModulesSelectContainer);

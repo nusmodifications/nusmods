@@ -3,7 +3,7 @@ import { PersistConfig, Persistor } from 'redux-persist/lib/types';
 import { persistReducer as basePersistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-import { FSA } from 'types/redux';
+import { Actions } from 'types/actions';
 
 // Re-export type for easier consumption in other parts of the project
 export { PersistConfig, Persistor };
@@ -13,19 +13,19 @@ export { PersistConfig, Persistor };
  */
 export default function persistReducer<S>(
   key: string,
-  reducer: Reducer<S, FSA>,
+  reducer: Reducer<S, Actions>,
   options: Pick<
-    PersistConfig,
-    Exclude<keyof PersistConfig, keyof { key: string; storage: Record<string, unknown> }>
+    PersistConfig<S>,
+    Exclude<keyof PersistConfig<S>, keyof { key: string; storage: Record<string, unknown> }>
   > = {},
 ) {
-  return (basePersistReducer<S, FSA>(
+  return (basePersistReducer<S, Actions>(
     {
       key,
       storage,
-      debug: process.env.NODE_ENV !== 'production',
+      debug: __DEV__,
       ...options,
     },
     reducer,
-  ) as unknown) as Reducer<S, FSA>; // We'll pretend the persist keys don't exist - the base reducers shouldn't access them anyway
+  ) as unknown) as Reducer<S, Actions>; // We'll pretend the persist keys don't exist - the base reducers shouldn't access them anyway
 }

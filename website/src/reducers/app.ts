@@ -1,5 +1,5 @@
-import { FSA } from 'types/redux';
 import { AppState } from 'types/reducers';
+import { Actions } from 'types/actions';
 import config from 'config';
 
 import { forceRefreshPrompt } from 'utils/debug';
@@ -25,17 +25,17 @@ const defaultAppState = (): AppState => ({
 });
 
 // This reducer is for storing state pertaining to the UI.
-function app(state: AppState = defaultAppState(), action: FSA): AppState {
+function app(state: AppState = defaultAppState(), action: Actions): AppState {
   switch (action.type) {
     case SELECT_SEMESTER:
       return {
         ...state,
-        activeSemester: action.payload && action.payload,
+        activeSemester: action.payload,
       };
     case MODIFY_LESSON:
       return {
         ...state,
-        activeLesson: action.payload && action.payload.activeLesson,
+        activeLesson: action.payload.activeLesson,
       };
     case CANCEL_MODIFY_LESSON:
     case CHANGE_LESSON:

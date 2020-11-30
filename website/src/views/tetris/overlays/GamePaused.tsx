@@ -9,20 +9,20 @@ type Props = {
   readonly resumeGame: () => void;
 };
 
-export default function GamePaused(props: Props) {
-  return (
-    <GameOverlay>
-      <h2>Game Paused</h2>
-      <p>
-        Score: <strong className={styles.finalScore}>{props.score}</strong>
-      </p>
-      <button
-        className={classnames('btn btn-lg btn-primary')}
-        type="button"
-        onClick={props.resumeGame}
-      >
-        Resume
-      </button>
-    </GameOverlay>
-  );
-}
+const GamePaused: React.FC<Props> = (props) => (
+  <GameOverlay>
+    <h2>Game Paused</h2>
+    <p>
+      Score: <strong className={styles.finalScore}>{props.score}</strong>
+    </p>
+    <button
+      className={classnames('btn btn-lg btn-primary')}
+      type="button"
+      onClick={props.resumeGame}
+    >
+      Resume
+    </button>
+  </GameOverlay>
+);
+
+export default GamePaused;

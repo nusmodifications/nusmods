@@ -3,6 +3,7 @@ import {
   castArray,
   difference,
   each,
+  first,
   flatMapDeep,
   get,
   groupBy,
@@ -28,6 +29,7 @@ import {
   LessonType,
   Module,
   ModuleCode,
+  NumericWeeks,
   RawLesson,
   Semester,
 } from 'types/modules';
@@ -101,7 +103,8 @@ export function randomModuleLessonConfig(lessons: readonly RawLesson[]): ModuleL
 
   return mapValues(
     lessonByGroupsByClassNo,
-    (group: { [classNo: string]: readonly RawLesson[] }) => sample(group)![0].classNo,
+    (group: { [classNo: string]: readonly RawLesson[] }) =>
+      (first(sample(group)) as RawLesson).classNo,
   );
 }
 
@@ -258,7 +261,7 @@ export function isLessonAvailable(
 ): boolean {
   return consumeWeeks(
     lesson.weeks,
-    (weeks) => weeks.includes(weekInfo.num!),
+    (weeks) => weeks.includes(weekInfo.num as number),
     (weekRange) => {
       const end = minDate([parseISO(weekRange.end), date]);
       for (let current = parseISO(weekRange.start); current <= end; current = addDays(current, 7)) {
@@ -387,7 +390,7 @@ function parseModuleConfig(serialized: string | string[] | null): ModuleLessonCo
  * - 1,2,3       => Weeks 1-3
  * - 1,2,3,5,6,7 => Weeks 1-3, 5-7
  */
-export function formatNumericWeeks(weeks: number[]): string | null {
+export function formatNumericWeeks(weeks: NumericWeeks): string | null {
   if (weeks.length === 13) return null;
   if (weeks.length === 1) return `Week ${weeks[0]}`;
 

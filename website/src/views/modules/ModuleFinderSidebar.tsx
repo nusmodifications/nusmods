@@ -1,24 +1,47 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+import { memo, useState } from 'react';
 import {
   NumericRefinementListFilter,
   RefinementListFilter,
   ResetFilters,
   ResetFiltersDisplayProps,
 } from 'searchkit';
+import { Filter } from 'react-feather';
 
 import { attributeDescription, NUSModuleAttributes } from 'types/modules';
 import { RefinementItem } from 'types/views';
 
 import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
-import { Filter } from 'react-feather';
 import FilterContainer from 'views/components/filters/FilterContainer';
 import CheckboxItem from 'views/components/filters/CheckboxItem';
 import DropdownListFilters from 'views/components/filters/DropdownListFilters';
 
 import config from 'config';
 import styles from './ModuleFinderSidebar.scss';
+import ChecklistFilter, { FilterItem } from '../components/filters/ChecklistFilter';
 
 const RESET_FILTER_OPTIONS = { filter: true };
+
+const EXAM_FILTER_ITEMS: FilterItem[] = [
+  {
+    key: 'no-exam',
+    label: 'No Exam',
+    filter: {
+      bool: {
+        must_not: {
+          nested: {
+            path: 'semesterData',
+            query: {
+              exists: {
+                field: 'semesterData.examDate',
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+];
 
 const ModuleFinderSidebar: React.FC = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -52,6 +75,10 @@ const ModuleFinderSidebar: React.FC = () => {
           id="sem"
           title="Offered In"
           field="semesterData.semester"
+          fieldOptions={{
+            type: 'nested',
+            options: { path: 'semesterData' },
+          }}
           operator="OR"
           orderKey="_term"
           orderDirection="asc"
@@ -65,6 +92,8 @@ const ModuleFinderSidebar: React.FC = () => {
           containerComponent={FilterContainer}
           itemComponent={CheckboxItem}
         />
+
+        <ChecklistFilter title="Exams" items={EXAM_FILTER_ITEMS} />
 
         <RefinementListFilter
           id="level"
@@ -136,4 +165,4 @@ const ModuleFinderSidebar: React.FC = () => {
   );
 };
 
-export default ModuleFinderSidebar;
+export default memo(ModuleFinderSidebar);

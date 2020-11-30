@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Component } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Loadable, { LoadingComponentProps } from 'react-loadable';
 import classnames from 'classnames';
@@ -7,7 +7,9 @@ import produce from 'immer';
 import qs from 'query-string';
 import { isEqual, mapValues, pick, size } from 'lodash';
 
-import { TimePeriod, Venue, VenueDetailList, VenueSearchOptions } from 'types/venues';
+import type { TimePeriod, Venue, VenueDetailList, VenueSearchOptions } from 'types/venues';
+import type { Subtract } from 'types/utils';
+import type { WithBreakpoint } from 'views/hocs/makeResponsive';
 
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import ApiError from 'views/errors/ApiError';
@@ -36,14 +38,13 @@ import VenueDetails from './VenueDetails';
 import VenueLocation from './VenueLocation';
 import styles from './VenuesContainer.scss';
 
-/* eslint-disable react/prop-types */
-
 export type Params = {
   q: string;
   venue: string;
 };
 
-type Props = RouteComponentProps<Params> & { matchBreakpoint: boolean; venues: VenueDetailList };
+type LoadedProps = { venues: VenueDetailList };
+type Props = RouteComponentProps<Params> & LoadedProps & WithBreakpoint;
 
 type State = {
   // View state
@@ -59,7 +60,7 @@ type State = {
 
 const pageHead = <Title>Venues</Title>;
 
-export class VenuesContainerComponent extends React.Component<Props, State> {
+export class VenuesContainerComponent extends Component<Props, State> {
   history: HistoryDebouncer;
 
   constructor(props: Props) {
@@ -242,7 +243,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
               className="btn btn-link"
               onClick={() => this.setState({ isAvailabilityEnabled: false })}
             >
-              Cancel free room search
+              Show all rooms
             </button>
           </p>
         )}
@@ -368,7 +369,7 @@ export class VenuesContainerComponent extends React.Component<Props, State> {
 // Explicitly declare top level components for React hot reloading to work.
 const ResponsiveVenuesContainer = makeResponsive(VenuesContainerComponent, breakpointDown('sm'));
 const RoutedVenuesContainer = withRouter(ResponsiveVenuesContainer);
-const AsyncVenuesContainer = Loadable.Map<Props, { venues: AxiosResponse }>({
+const AsyncVenuesContainer = Loadable.Map<Subtract<Props, LoadedProps>, { venues: AxiosResponse }>({
   loader: {
     venues: () => axios.get(nusmods.venuesUrl(config.semester)),
   },

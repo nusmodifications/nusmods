@@ -1,17 +1,19 @@
 import { createStore, applyMiddleware, compose, Store } from 'redux';
 import { persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
+import { setAutoFreeze } from 'immer';
+
 import rootReducer from 'reducers';
 import requestsMiddleware from 'middlewares/requests-middleware';
 import ravenMiddleware from 'middlewares/raven-middleware';
-import { setAutoFreeze } from 'immer';
+import getLocalStorage from 'storage/localStorage';
 
-import { FSA, GetState } from 'types/redux';
+import { GetState } from 'types/redux';
 import { State } from 'types/state';
+import { Actions } from 'types/actions';
 
 // For redux-devtools-extensions - see
 // https://github.com/zalmoxisus/redux-devtools-extension
-// eslint-disable-next-line no-underscore-dangle
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 // immer uses Object.freeze on returned state objects, which is incompatible with
@@ -19,19 +21,22 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 setAutoFreeze(false);
 
 export default function configureStore(defaultState?: State) {
+  // Clear legacy reduxState deprecated by https://github.com/nusmodifications/nusmods/pull/669
+  // to reduce the amount of data NUSMods is using
+  getLocalStorage().removeItem('reduxState');
+
   const middlewares = [ravenMiddleware, thunk, requestsMiddleware];
 
-  if (process.env.NODE_ENV === 'development') {
-    /* eslint-disable */
+  if (__DEV__) {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-extraneous-dependencies
     const { createLogger } = require('redux-logger');
-    /* eslint-enable */
     const logger = createLogger({
       level: 'info',
       collapsed: true,
       duration: true,
       diff: true,
       // Avoid diffing actions that insert a lot of stuff into the state to prevent console from lagging
-      diffPredicate: (getState: GetState, action: FSA) =>
+      diffPredicate: (getState: GetState, action: Actions) =>
         !action.type.startsWith('FETCH_MODULE_LIST') && !action.type.startsWith('persist/'),
     });
     middlewares.push(logger);

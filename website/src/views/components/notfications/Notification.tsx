@@ -48,6 +48,7 @@ const TRANSITION_DURATION = 250;
  */
 export class NotificationComponent extends React.Component<Props, State> {
   openTimeoutId?: number;
+
   closeTimeoutId?: number;
 
   element = React.createRef<HTMLDivElement>();
@@ -78,7 +79,7 @@ export class NotificationComponent extends React.Component<Props, State> {
     if (notifications[0] !== shownNotification) {
       // Active notification has changed
       if (isOpen) {
-        const discarded = !notifications.includes(shownNotification!);
+        const discarded = !shownNotification || !notifications.includes(shownNotification);
         if (shownNotification && shownNotification.willClose) {
           shownNotification.willClose(discarded, actionClicked);
         }
@@ -132,6 +133,35 @@ export class NotificationComponent extends React.Component<Props, State> {
     this.closeTimeoutId = window.setTimeout(() => this.clearTransition(), TRANSITION_DURATION);
   };
 
+  renderNotificationContent() {
+    const { shownNotification } = this.state;
+    if (!shownNotification) return null;
+
+    const { message, action } = shownNotification;
+    return (
+      <>
+        <div className="mdc-snackbar__text">{message}</div>
+        {action && (
+          <div className="mdc-snackbar__action-wrapper">
+            <button
+              type="button"
+              className="mdc-snackbar__action-button"
+              onClick={() => {
+                this.setState({ actionClicked: true });
+                const { handler } = action;
+                // Don't auto-close if handler returns false
+                if (handler && handler() === false) return;
+                this.props.popNotification();
+              }}
+            >
+              {action.text}
+            </button>
+          </div>
+        )}
+      </>
+    );
+  }
+
   render() {
     const { shownNotification, isOpen } = this.state;
 
@@ -146,28 +176,7 @@ export class NotificationComponent extends React.Component<Props, State> {
         onTransitionEnd={this.onTransitionEnd}
         ref={this.element}
       >
-        {!!shownNotification && (
-          <>
-            <div className="mdc-snackbar__text">{shownNotification.message}</div>
-            {shownNotification.action && (
-              <div className="mdc-snackbar__action-wrapper">
-                <button
-                  type="button"
-                  className="mdc-snackbar__action-button"
-                  onClick={() => {
-                    this.setState({ actionClicked: true });
-                    const handler = shownNotification.action!.handler;
-                    // Don't auto-close if handler returns false
-                    if (handler && handler() === false) return;
-                    this.props.popNotification();
-                  }}
-                >
-                  {shownNotification.action.text}
-                </button>
-              </div>
-            )}
-          </>
-        )}
+        {this.renderNotificationContent()}
       </div>
     );
   }

@@ -1,14 +1,13 @@
 import { REHYDRATE } from 'redux-persist';
-import { FSA } from 'types/redux';
 
-export function initAction(): FSA {
+export function initAction() {
   return {
-    type: 'INIT',
+    type: 'INIT' as const,
     payload: null,
   };
 }
 
-export function rehydrateAction(): FSA {
+export function rehydrateAction() {
   return {
     type: REHYDRATE,
     payload: null,

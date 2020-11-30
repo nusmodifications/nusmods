@@ -40,15 +40,16 @@ $venue-list-width: 16rem;
 
   .venuesList {
     width: $venue-list-width;
+    padding-bottom: env(safe-area-inset-bottom);
     border-right: 1px solid var(--gray-lighter);
 
     @include scrollable-y;
   }
 
   .venueDetail {
-    right: 0;
-    left: calc(#{$venue-list-width + $side-nav-width-md} + #{$gutter});
-    padding: 0 $gutter;
+    right: env(safe-area-inset-right);
+    left: calc(env(safe-area-inset-left) + #{$venue-list-width + $side-nav-width-md} + #{$gutter});
+    padding: 0 $gutter env(safe-area-inset-bottom) $gutter;
   }
 }
 

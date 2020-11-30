@@ -60,7 +60,17 @@ export class SideMenuComponent extends React.PureComponent<Props> {
           <div className={styles.overlay} onClick={() => toggleMenu(false)} />
         )}
 
-        <div className={classnames(styles.sideMenu, { [styles.isOpen]: isOpen })}>{children}</div>
+        {/* boundaryContainer defines the top and bottom boundaries which sideMenu can extend to */}
+        <div className={styles.boundaryContainer}>
+          {/*
+            sideMenu is the scrollable menu element. On mobile, it expands
+            from the bottom of the screen to the top boundary of the
+            container; i.e. if the menu's content is shorter than the
+            container, it'll appear as a little action sheet rising from the
+            bottom of the screen.
+          */}
+          <div className={classnames(styles.sideMenu, { [styles.isOpen]: isOpen })}>{children}</div>
+        </div>
       </>
     );
   }

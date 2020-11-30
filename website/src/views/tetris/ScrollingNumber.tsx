@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { createElement, PureComponent } from 'react';
 
 type Props = {
   children: number;
@@ -6,8 +6,7 @@ type Props = {
   className?: string;
 
   // Additional props
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
+  [key: string]: unknown;
 };
 
 type State = {
@@ -18,7 +17,7 @@ type State = {
  * Animates a number such that it increments or decrements (spins) towards
  * the actual value provided as the children
  */
-export default class ScrollingNumber extends React.PureComponent<Props, State> {
+export default class ScrollingNumber extends PureComponent<Props, State> {
   isAnimating = false;
 
   state = {
@@ -62,6 +61,6 @@ export default class ScrollingNumber extends React.PureComponent<Props, State> {
   render() {
     // Children is ignored since that represents the actual value
     const { children, tagName, ...otherProps } = this.props;
-    return React.createElement(tagName, otherProps, children);
+    return createElement(tagName, otherProps, children);
   }
 }

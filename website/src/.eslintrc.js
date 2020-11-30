@@ -61,7 +61,7 @@ module.exports = {
         'no-useless-constructor': 'off',
         // Also triggering incorrectly in some type declarations
         '@typescript-eslint/no-unused-vars': 'off',
-      }
+      },
     },
 
     {
@@ -76,24 +76,23 @@ module.exports = {
       files: ['{apis,types}/**/*.{ts,tsx}'],
       rules: {
         // External types may not be camelcase
-        '@typescript-eslint/camelcase': 'off',
+        camelcase: 'off',
       },
     },
   ],
 
   rules: {
-    // Assume TypeScript will catch this for us
+    // Use @typescript-eslint to catch this
     'default-case': 'off',
+    '@typescript-eslint/switch-exhaustiveness-check': 'error',
 
-    // Rule is buggy when used with TypeScript
-    // TODO: Remove this when https://github.com/benmosher/eslint-plugin-import/issues/1282 is resolved
-    'import/named': 'off',
-
-    // Makes the code unnecessarily verbose
-    '@typescript-eslint/explicit-member-accessibility': 'off',
+    // Doesn't work with TypeScript
+    'no-use-before-define': 'off',
 
     // Makes the code unnecessarily verbose
     '@typescript-eslint/explicit-function-return-type': 'off',
+    // We use type inference heavily for things like reducers
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
 
     '@typescript-eslint/no-unused-vars': [
       'warn',
@@ -101,12 +100,14 @@ module.exports = {
         ignoreRestSiblings: true,
       },
     ],
+  },
 
-    // We use type aliases for data types, ie. things that are not new-able
-    '@typescript-eslint/prefer-interface': 'off',
-
-    // TODO: Fix these
-    '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/no-non-null-assertion': 'warn',
+  // Mimic the globals we set with Webpack's DefinePlugin
+  globals: {
+    __DEV__: 'readonly',
+    DATA_API_BASE_URL: 'readonly',
+    VERSION_STR: 'readonly',
+    DISPLAY_COMMIT_HASH: 'readonly',
+    DEBUG_SERVICE_WORKER: 'readonly',
   },
 };

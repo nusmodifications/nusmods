@@ -3,8 +3,7 @@ import produce from 'immer';
 import { createMigrate } from 'redux-persist';
 
 import { PersistConfig } from 'storage/persistReducer';
-import { FSA } from 'types/redux';
-import { ModuleCode, Semester } from 'types/modules';
+import { ModuleCode } from 'types/modules';
 import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import { ColorMapping, TimetablesState } from 'types/reducers';
 
@@ -21,8 +20,7 @@ import {
 } from 'actions/timetables';
 import { getNewColor } from 'utils/colors';
 import { SET_EXPORTED_DATA } from 'actions/constants';
-
-const EMPTY_OBJECT = {};
+import { Actions } from '../types/actions';
 
 export const persistConfig = {
   /* eslint-disable no-useless-computed-key */
@@ -30,6 +28,11 @@ export const persistConfig = {
     [1]: (state) => ({
       ...state,
       archive: {},
+      // FIXME: Remove the next line when _persist is optional again.
+      // Cause: https://github.com/rt2zz/redux-persist/pull/919
+      // Issue: https://github.com/rt2zz/redux-persist/pull/1170
+      // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
+      _persist: state?._persist!,
     }),
   }),
   /* eslint-enable */
@@ -41,7 +44,7 @@ export const persistConfig = {
     inbound: TimetablesState,
     original: TimetablesState,
     reduced: TimetablesState,
-    { debug }: PersistConfig,
+    { debug }: PersistConfig<TimetablesState>,
   ): TimetablesState => {
     if (inbound.academicYear === original.academicYear) {
       return inbound;
@@ -69,7 +72,7 @@ const defaultModuleLessonConfig: ModuleLessonConfig = {};
 
 function moduleLessonConfig(
   state: ModuleLessonConfig = defaultModuleLessonConfig,
-  action: FSA,
+  action: Actions,
 ): ModuleLessonConfig {
   if (!action.payload) return state;
 
@@ -94,7 +97,7 @@ function moduleLessonConfig(
 const defaultSemTimetableConfig: SemTimetableConfig = {};
 function semTimetable(
   state: SemTimetableConfig = defaultSemTimetableConfig,
-  action: FSA,
+  action: Actions,
 ): SemTimetableConfig {
   const moduleCode = get(action, 'payload.moduleCode');
   if (!moduleCode) return state;
@@ -120,7 +123,7 @@ function semTimetable(
 
 // Map of semester to color mapping
 const defaultSemColorMap = {};
-function semColors(state: ColorMapping = defaultSemColorMap, action: FSA): ColorMapping {
+function semColors(state: ColorMapping = defaultSemColorMap, action: Actions): ColorMapping {
   const moduleCode = get(action, 'payload.moduleCode');
   if (!moduleCode) return state;
 
@@ -147,7 +150,7 @@ function semColors(state: ColorMapping = defaultSemColorMap, action: FSA): Color
 
 // Map of semester to list of hidden modules
 const defaultHiddenState: ModuleCode[] = [];
-function semHiddenModules(state = defaultHiddenState, action: FSA) {
+function semHiddenModules(state = defaultHiddenState, action: Actions) {
   if (!action.payload) {
     return state;
   }
@@ -171,9 +174,12 @@ export const defaultTimetableState: TimetablesState = {
   archive: {},
 };
 
-function timetables(state: TimetablesState = defaultTimetableState, action: FSA): TimetablesState {
+function timetables(
+  state: TimetablesState = defaultTimetableState,
+  action: Actions,
+): TimetablesState {
   // All normal timetable actions should specify their semester
-  if (!action.payload || !action.payload.semester) {
+  if (!action.payload) {
     return state;
   }
 
@@ -220,14 +226,3 @@ function timetables(state: TimetablesState = defaultTimetableState, action: FSA)
 }
 
 export default timetables;
-
-// Extract sem timetable and colors for a specific semester from TimetablesState
-export function getSemesterTimetable(
-  semester: Semester,
-  state: TimetablesState,
-): { timetable: SemTimetableConfig; colors: ColorMapping } {
-  return {
-    timetable: state.lessons[semester] || EMPTY_OBJECT,
-    colors: state.colors[semester] || EMPTY_OBJECT,
-  };
-}

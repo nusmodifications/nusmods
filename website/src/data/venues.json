@@ -239,6 +239,14 @@
       "y": 1.2933361735350462
     }
   },
+  "BIZ2-HSSAU": {
+    "roomName": "Hon Sui Sen Auditorium",
+    "floor": 1,
+    "location": {
+      "x": 103.7746254,
+      "y": 1.2933012
+    }
+  },
   "BIZ1-0203": {
     "roomName": "Seminar Room 2-3",
     "floor": 2,
@@ -2468,11 +2476,11 @@
     }
   },
   "E4A-04-08": {
-    "roomName": "General Office",
+    "roomName": "DSA Lab",
     "floor": 4,
     "location": {
-      "x": 103.7723285415776,
-      "y": 1.298387416948554
+      "x": 103.77258529989966,
+      "y": 1.2986036801783416
     }
   },
   "E4A-06-07": {
@@ -3196,8 +3204,12 @@
     }
   },
   "Y-BlackBox": {
-    "roomName": "West Core - Black Box Theatre",
-    "floor": "Ground"
+    "roomName": "Black Box Theatre",
+    "floor": 0,
+    "location": {
+      "x": 103.77202749252321,
+      "y": 1.3074888814478036
+    }
   },
   "Y-DanceStu": {
     "roomName": "West Core - Studio 1 (Dance Studio)",
@@ -4073,10 +4085,10 @@
   },
   "SDE2-ES2": {
     "roomName": "SDE2-ES2",
-    "floor": 1,
+    "floor": 3,
     "location": {
-      "x": 103.77351285600719,
-      "y": 1.2959540575922524
+      "x": 103.77117455005647,
+      "y": 1.2973165501923922
     }
   },
   "RC4-SR3": {
@@ -4125,6 +4137,262 @@
     "location": {
       "x": 103.81670504808427,
       "y": 1.3187687563308481
+    }
+  },
+  "SDE4-GISL1": {
+    "roomName": "GIS Lab",
+    "floor": 2,
+    "location": {
+      "x": 103.77018758666345,
+      "y": 1.2968615853665866
+    }
+  },
+  "SDE-EXR-2": {
+    "roomName": "SDE4 Executive Room 2",
+    "floor": 4,
+    "location": {
+      "x": 103.77033949101288,
+      "y": 1.2968782704103055
+    }
+  },
+  "USP-SR3": {
+    "roomName": "Seminar Room 3",
+    "floor": 2,
+    "location": {
+      "x": 103.77306148409846,
+      "y": 1.3068129730754225
+    }
+  },
+  "E4-02-06": {
+    "roomName": "E4-02-06",
+    "floor": 2,
+    "location": {
+      "x": 103.77178341150285,
+      "y": 1.2986859693257289
+    }
+  },
+  "RVR-SRM02": {
+    "roomName": "Seminar Rooms",
+    "floor": 1,
+    "location": {
+      "x": 103.77677393571237,
+      "y": 1.29739163213823
+    }
+  },
+  "EW1-02-03": {
+    "roomName": "Hydraulics Lab",
+    "floor": 2,
+    "location": {
+      "x": 103.77070488748149,
+      "y": 1.2986439029798538
+    }
+  },
+  "AS6-0215B": {
+    "roomName": "AS6-0215B",
+    "floor": 2,
+    "location": {
+      "x": 103.77296760678293,
+      "y": 1.2958468141238033
+    }
+  },
+  "SH-SR1": {
+    "roomName": "SH-SR1",
+    "floor": 2,
+    "location": {
+      "x": 103.77542841044601,
+      "y": 1.2913909617585373
+    }
+  },
+  "S6-04-08": {
+    "roomName": "Science Library",
+    "floor": 4,
+    "location": {
+      "x": 103.78010094165803,
+      "y": 1.295166639427762
+    }
+  },
+  "AS3-0312": {
+    "roomName": "0314",
+    "floor": 3,
+    "location": {
+      "x": 103.77141864426275,
+      "y": 1.2947474162756536
+    }
+  },
+  "ERC-SR11": {
+    "roomName": "ERC-SR11",
+    "floor": 3,
+    "location": {
+      "x": 103.77291262149812,
+      "y": 1.305924051894182
+    }
+  },
+  "S11-0302A": {
+    "roomName": "0302A",
+    "floor": 3,
+    "location": {
+      "x": 103.77877458930018,
+      "y": 1.2966448289709127
+    }
+  },
+  "USP-TR1": {
+    "roomName": "USP-TR1",
+    "floor": 1,
+    "location": {
+      "x": 103.77314838535167,
+      "y": 1.306576128579399
+    }
+  },
+  "RVR-MPR01": {
+    "roomName": "Multi Purpose Room 1",
+    "floor": 1,
+    "location": {
+      "x": 103.77687692642213,
+      "y": 1.2973480580696695
+    }
+  },
+  "RVR-MPR02": {
+    "roomName": "Multi Purpose Room 2",
+    "floor": 1,
+    "location": {
+      "x": 103.77674013376237,
+      "y": 1.2974311852333447
+    }
+  },
+  "YSTCM-MLAB": {
+    "roomName": "Music Tech and Keyboard Lab",
+    "floor": 2,
+    "location": {
+      "x": 103.77272941774719,
+      "y": 1.3023654031322103
+    }
+  },
+  "E2-0309PC6": {
+    "roomName": "E2-0306PC6",
+    "floor": 3,
+    "location": {
+      "x": 103.77116650342943,
+      "y": 1.299378639374635
+    }
+  },
+  "CFG_CARSPA": {
+    "roomName": "CFG Career Space, Yusof Ishak House",
+    "floor": 3,
+    "location": {
+      "x": 103.7747633457184,
+      "y": 1.2985055114007384
+    }
+  },
+  "AS3-0314": {
+    "roomName": "AS3-0314",
+    "floor": 3,
+    "location": {
+      "x": 103.77111034010251,
+      "y": 1.2947020653932226
+    }
+  },
+  "YSTCM-SR3": {
+    "roomName": "Seminar Room 3",
+    "floor": 1,
+    "location": {
+      "x": 103.7725628,
+      "y": 1.3025707
+    }
+  },
+  "AS7-0201A": {
+    "roomName": "Room 1",
+    "floor": 2,
+    "location": {
+      "x": 103.77105252409778,
+      "y": 1.29427033995146
+    }
+  },
+  "AS4-0513": {
+    "roomName": "AS3-0513",
+    "floor": 5,
+    "location": {
+      "x": 103.77196827769893,
+      "y": 1.2945733522257314
+    }
+  },
+  "E5-04-1617": {
+    "roomName": "E5-04-1617",
+    "floor": 4,
+    "location": {
+      "x": 103.77254515886308,
+      "y": 1.297952070704839
+    }
+  },
+  "LAW_CR3-5": {
+    "roomName": "LAW CR3-5",
+    "floor": 3,
+    "location": {
+      "x": 103.81700009107591,
+      "y": 1.3189643800229218
+    }
+  },
+  "LAW_SR5-4": {
+    "roomName": "SR 5 - 4",
+    "floor": 5,
+    "location": {
+      "x": 103.81657764315605,
+      "y": 1.3186839958358212
+    }
+  },
+  "Frontier": {
+    "roomName": "Frontier",
+    "floor": 1,
+    "location": {
+      "x": 103.78003966445547,
+      "y": 1.296364945076005
+    }
+  },
+  "S8-0402": {
+    "roomName": "S8-0402",
+    "floor": 4,
+    "location": {
+      "x": 103.77937403740883,
+      "y": 1.296072323916885
+    }
+  },
+  "TP-SR2": {
+    "roomName": "TP-SR2",
+    "floor": 2,
+    "location": {
+      "x": 103.77355339315676,
+      "y": 1.3038567726300767
+    }
+  },
+  "LAW_CR2-1": {
+    "roomName": "CR 2-1",
+    "floor": 2,
+    "location": {
+      "x": 103.81667928422443,
+      "y": 1.3187050325808396
+    }
+  },
+  "LAW_CR2-2": {
+    "roomName": "CR2-2",
+    "floor": 2,
+    "location": {
+      "x": 103.81671683479652,
+      "y": 1.3187506180542539
+    }
+  },
+  "BIZ1-0504": {
+    "roomName": "Biz1",
+    "floor": 1,
+    "location": {
+      "x": 103.77365827560426,
+      "y": 1.2933264430775053
+    }
+  },
+  "UT22-07-02": {
+    "roomName": "CREATE SDE studio",
+    "floor": 7,
+    "location": {
+      "x": 103.77355133186032,
+      "y": 1.3037287973496303
     }
   }
 }

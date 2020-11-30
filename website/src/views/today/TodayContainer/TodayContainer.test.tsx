@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { flatten, size } from 'lodash';
 import { shallow } from 'enzyme';
 
@@ -151,16 +150,8 @@ describe(TodayContainerComponent, () => {
     const cards = days.map((w) => w.shallow().find(`.${styles.card}`));
     const titles = cards.map((c) =>
       c.map((ele) => {
-        const code = ele
-          .find('h4')
-          .text()
-          .split(' ')[0];
-
-        const lesson = ele
-          .find('p')
-          .first()
-          .text();
-
+        const code = ele.find('h4').text().split(' ')[0];
+        const lesson = ele.find('p').first().text();
         return `${code} ${lesson}`;
       }),
     );

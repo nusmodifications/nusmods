@@ -1,0 +1,571 @@
+[
+  {
+    "id": "nm_ug",
+    "label": "Communications and New Media (Undergrad)",
+    "email": "cnm.undergraduate@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Communications and New Media",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "ell_ug",
+    "label": "English Language & Literature (Undergrad)",
+    "email": "ellbox5@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "English Language and Literature",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "ell_gd",
+    "label": "English Language & Literature (Graduate)",
+    "email": "ellbox3@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "English Language and Literature",
+      "level": "grad"
+    }
+  },
+  {
+    "id": "hist_ug",
+    "label": "History (Undergrad)",
+    "email": "hishelp@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "History",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "hist_gd",
+    "label": "History (Graduate)",
+    "email": "hisbox1@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "History",
+      "level": "grad"
+    }
+  },
+  {
+    "id": "mal_ug",
+    "label": "Malay Studies (Undergrad)",
+    "email": "fasbox59@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Malay Studies",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "chs_gd",
+    "label": "Chinese Studies (Graduate)",
+    "email": "fasaslhl@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Chinese Studies",
+      "level": "grad"
+    }
+  },
+  {
+    "id": "polsci_ug",
+    "label": "Political Science (Undergrad)",
+    "email": "polbox2@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Political Science",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "polsci_gl",
+    "label": "Political Science - Global Studies (Undergrad)",
+    "email": "polnyjw@nus.edu.sg",
+    "match": {
+      "type": "modulePrefix",
+      "prefix": "GL"
+    }
+  },
+  {
+    "id": "psy_ug",
+    "label": "Psychology (Undergrad)",
+    "email": "psybox1@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Psychology",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "soc_ug",
+    "label": "Sociology (Undergrad)",
+    "email": "socbox3@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Sociology",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "lang_ug",
+    "label": "Centre for Language Studies (Undergrad)",
+    "email": "clssec@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Centre for Language Studies",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "se_ug",
+    "label": "Southeast Asian Studies (Undergrad)",
+    "email": "fasbox59@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Southeast Asian Studies",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "fass_ug",
+    "label": "Faculty of Arts and Social Science (Undergrad)",
+    "email": "fashelp@nus.edu.sg",
+    "match": {
+      "type": "faculty",
+      "faculty": "Arts and Social Science",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "fass_gd",
+    "label": "Faculty of Arts and Social Science (Graduate)",
+    "email": "fasbox4@nus.edu.sg",
+    "match": {
+      "type": "faculty",
+      "faculty": "Arts and Social Science",
+      "level": "grad"
+    }
+  },
+  {
+    "id": "biz_ug",
+    "label": "Business (Undergrad)",
+    "email": "biz_modreg@nus.edu.sg",
+    "match": {
+      "type": "faculty",
+      "faculty": "NUS Business School",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "arch_ug",
+    "label": "Architecture (Undergrad)",
+    "email": "akisec@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Architecture",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "id_ug",
+    "label": "Industrial Design (Undergrad)",
+    "email": "didsec@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Industrial Design",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "re_ug",
+    "label": "Real Estate (Undergrad)",
+    "email": "kay@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Real Estate",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "re_gd",
+    "label": "Real Estate (Grad)",
+    "email": "rstyal@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Real Estate",
+      "level": "grad"
+    }
+  },
+  {
+    "id": "sde_ug",
+    "label": "Design and Environment (Undergrad)",
+    "email": "sdelsm@nus.edu.sg",
+    "match": {
+      "type": "faculty",
+      "faculty": "Design and Environment",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "sde_gd",
+    "label": "Design and Environment (Graduate)",
+    "email": "sdeaml@nus.edu.sg",
+    "match": {
+      "type": "faculty",
+      "faculty": "Design and Environment",
+      "level": "grad"
+    }
+  },
+  {
+    "id": "comp_ug",
+    "label": "Computing (Undergrad)",
+    "email": "socug@comp.nus.edu.sg",
+    "match": {
+      "type": "faculty",
+      "faculty": "Computing",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "comp_gd",
+    "label": "Computing (Graduate)",
+    "email": "mcomp@comp.nus.edu.sg",
+    "match": {
+      "type": "faculty",
+      "faculty": "Computing",
+      "level": "grad"
+    }
+  },
+  {
+    "id": "bioeng_ug",
+    "label": "Biomedical Engineering (Undergrad)",
+    "email": "biechlh@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Biomedical Engineering",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "chembioeng_ug",
+    "label": "Chemical and Biomolecular Engineering (Undergrad)",
+    "email": "chbeug@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Chemical and Biomolecular Engineering",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "esp_ug",
+    "label": "Engineering Science Programme (Undergrad)",
+    "email": "espsps@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Engineering Science Programme",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "ise_ug",
+    "label": "Industrial & Systems Engineering (Undergrad)",
+    "email": "isebox1@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Industrial Systems Engineering and Management",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "mse_ug",
+    "label": "Materials Science & Engineering (Undergrad)",
+    "email": "msecch@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Materials Science and Engineering",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "me_ug",
+    "label": "Mechanical Engineering (Undergrad)",
+    "email": "enquire_me@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Mechanical Engineering",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "eng_ug",
+    "label": "Engineering (Undergrad)",
+    "email": "engbox28@nus.edu.sg",
+    "match": {
+      "type": "faculty",
+      "faculty": "Engineering",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "nur_ug",
+    "label": "Nursing (Undergrad)",
+    "email": "nurhlm@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Alice Lee Center for Nursing Studies",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "ssh_ug",
+    "label": "Public Health (Undergrad)",
+    "email": "UGHelp_SPH@nus.edu.sg",
+    "match": {
+      "type": "faculty",
+      "faculty": "SSH School of Public Health",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "law_ug",
+    "label": "Law (Undergrad)",
+    "email": "lawundergrad@nus.edu.sg",
+    "match": {
+      "type": "faculty",
+      "faculty": "Law",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "law_gd",
+    "label": "Law (Graduate)",
+    "email": "lawgrad@nus.edu.sg",
+    "match": {
+      "type": "faculty",
+      "faculty": "Law",
+      "level": "grad"
+    }
+  },
+  {
+    "id": "bio_ug",
+    "label": "Biological Sciences / Life Sciences Programme (Undergrad)",
+    "email": "dbsbox2@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Biological Science",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "chm_ug",
+    "label": "Chemistry (Undergrad)",
+    "email": "chmbox3@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Chemistry",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "math_ug",
+    "label": "Mathematics (Undergrad)",
+    "email": "matbox3@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Mathematics",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "phy_ug",
+    "label": "Physics (Undergrad)",
+    "email": "phybox3@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Physics",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "stat_ug",
+    "label": "Statistics and Applied Probability (Undergrad)",
+    "email": "stabox3@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Statistics and Applied Probability",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "food_ug",
+    "label": "Food Science and Technology (Undergrad)",
+    "email": "chmbox5@nus.edu.sg",
+    "match": {
+      "type": "modulePrefix",
+      "prefix": "FST"
+    }
+  },
+  {
+    "id": "sci_ug",
+    "label": "Science (Undergrad)",
+    "email": "scimr@nus.edu.sg",
+    "match": {
+      "type": "faculty",
+      "faculty": "Science",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "sci_gd",
+    "label": "Science (Graduate)",
+    "email": "scidrgs@nus.edu.sg",
+    "match": {
+      "type": "faculty",
+      "faculty": "Science",
+      "level": "grad"
+    }
+  },
+  {
+    "id": "gms1000",
+    "label": "GMS1000",
+    "email": "admissions@duke-nus.edu.sg",
+    "match": {
+      "type": "moduleCode",
+      "moduleCode": "GMS1000"
+    }
+  },  {
+    "id": "als",
+    "label": "ALS1010 & ALS1020",
+    "email": "alsbox1@nus.edu.sg",
+    "match": {
+      "type": "moduleCode",
+      "moduleCode": ["ALS1010", "ALS1020"]
+    }
+  },{
+    "id": "cfg1002",
+    "label": "CFG1002",
+    "email": "careercatalyst@nus.edu.sg",
+    "match": {
+      "type": "moduleCode",
+      "moduleCode": "CFG1002"
+    }
+  },{
+    "id": "ger1000",
+    "label": "GER1000",
+    "email": "qradmin@nus.edu.sg",
+    "match": {
+      "type": "moduleCode",
+      "moduleCode": "GER1000"
+    }
+  },{
+    "id": "geq1000",
+    "label": "GEQ1000",
+    "email": "askq@nus.edu.sg",
+    "match": {
+      "type": "moduleCode",
+      "moduleCode": "GEQ1000"
+    }
+  },
+  {
+    "id": "dent",
+    "label": "Dentistry",
+    "email": "denlg@nus.edu.sg",
+    "match": {
+      "type": "faculty",
+      "faculty": "Dentistry",
+      "level": "grad"
+    }
+  },
+  {
+    "id": "mus_ug",
+    "label": "Yong Siew Toh Conservatory of Music (Undergrad)",
+    "email": "musmodules@nus.edu.sg",
+    "match": {
+      "type": "faculty",
+      "faculty": "YST Conservatory of Music",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "yale",
+    "label": "Yale-NUS College",
+    "email": "appeals@yale-nus.edu.sg",
+    "match": {
+      "type": "faculty",
+      "faculty": "Yale-NUS College",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "capt",
+    "label": "College of Alice and Peter Tan",
+    "email": "captbox2@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "College of Alice and Peter Tan",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "rc4",
+    "label": "Residential College 4",
+    "email": "rc4box2@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Residential College 4",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "temb",
+    "label": "Tembusu College",
+    "email": "tembusu-modules@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Tembusu College",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "rvc",
+    "label": "Ridge View Residential College",
+    "email": "askrvrc@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Ridge View Residential College",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "celc_ug",
+    "label": "Center for English Language Communications (Undergrad)",
+    "email": "elcbox72@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Center for Engl Lang Comms",
+      "level": "undergrad"
+    }
+  },
+  {
+    "id": "celc_gd",
+    "label": "Center for English Language Communications (Graduate)",
+    "email": "elcbox50@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Center for Engl Lang Comms",
+      "level": "grad"
+    }
+  },
+  {
+    "id": "ctpclc",
+    "label": "Chua Thian Poh Community Leadership Centre",
+    "email": "ctpclc@nus.edu.sg",
+    "match": {
+      "type": "department",
+      "department": "Chua Thian Poh Community Leadership Centre",
+      "level": "undergrad"
+    }
+  }
+]

@@ -83,7 +83,8 @@
     "@types/query-string",
     "@material/snackbar",
     "@material/fab",
-    "puppeteer"
+    "puppeteer",
+    "searchkit"
   ],
   "pathRules": [
     {

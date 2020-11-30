@@ -23,9 +23,7 @@ export function getNewColor(currentColors: ColorIndex[], randomize = true): Colo
   });
 
   if (randomize) {
-    // Safe to assert non null because the previous step ensures availableColorIndices is never empty
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return sample(availableColors)!;
+    return sample(availableColors) ?? availableColors[0];
   }
 
   return availableColors[0];

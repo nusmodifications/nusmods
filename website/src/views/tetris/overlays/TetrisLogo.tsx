@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { chunk } from 'lodash';
-import withTimer, { TimerData } from 'views/hocs/withTimer';
+
+import useCurrentTime from 'views/hooks/useCurrentTime';
 import styles from './TetrisLogo.scss';
 
-type Props = TimerData & {};
-
 const FPS = 5;
-const interval = 1000 / FPS;
+const INTERVAL = 1000 / FPS;
 
 const SEGMENT_WIDTH = 4;
 
@@ -45,11 +44,11 @@ const colors = [
   'rgb(216, 67, 21)',
 ];
 
-function TetrisLogo(props: Props) {
+const TetrisLogo: React.FC = () => {
   // Create the diagonal bands by offsetting the color using line and char index
   // Make the bands move by offsetting the color using time
-
-  const timeOffset = Math.round(props.currentTime.getTime() / interval);
+  const currentTime = useCurrentTime(INTERVAL);
+  const timeOffset = Math.round(currentTime.getTime() / INTERVAL);
 
   const wrappedLines = segments.map((line, lineIndex) =>
     line.map((segment, charIndex) => (
@@ -76,6 +75,6 @@ function TetrisLogo(props: Props) {
       </pre>
     </div>
   );
-}
+};
 
-export default withTimer(TetrisLogo, interval);
+export default TetrisLogo;

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
@@ -8,7 +8,7 @@ import { SemTimetableConfig } from 'types/timetables';
 import { ColorMapping, ModulesMap, NotificationOptions } from 'types/reducers';
 
 import { selectSemester } from 'actions/settings';
-import { getSemesterTimetable } from 'reducers/timetables';
+import { getSemesterTimetable } from 'selectors/timetables';
 import { fetchTimetableModules, setTimetable } from 'actions/timetables';
 import { openNotification } from 'actions/app';
 import { undo } from 'actions/undoHistory';
@@ -31,7 +31,7 @@ export type QueryParam = {
   semester: string;
 };
 
-type OwnProps = RouteComponentProps<QueryParam> & {};
+type OwnProps = RouteComponentProps<QueryParam>;
 
 type Props = OwnProps & {
   modules: ModulesMap;
@@ -62,7 +62,7 @@ type State = {
  * - Import timetable data from query string if action is defined
  * - Create the UI for the user to confirm their actions
  */
-export class TimetableContainerComponent extends React.PureComponent<Props, State> {
+export class TimetableContainerComponent extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -240,16 +240,13 @@ const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
 };
 
 // Explicitly declare top level components for React hot reloading to work.
-const connectedTimetableContainer = connect(
-  mapStateToProps,
-  {
-    selectSemester,
-    setTimetable,
-    fetchTimetableModules,
-    openNotification,
-    undo,
-  },
-)(TimetableContainerComponent);
+const connectedTimetableContainer = connect(mapStateToProps, {
+  selectSemester,
+  setTimetable,
+  fetchTimetableModules,
+  openNotification,
+  undo,
+})(TimetableContainerComponent);
 
 const routedTimetableContainer = withRouter(connectedTimetableContainer);
 export default deferComponentRender(routedTimetableContainer);

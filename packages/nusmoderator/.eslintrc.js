@@ -1,34 +1,33 @@
 const warnInDevelopment = process.env.NODE_ENV === 'production' ? 'error' : 'warn';
 
 module.exports = {
-  parser: 'babel-eslint',
+  parser: '@typescript-eslint/parser',
   root: true,
-  extends: ['airbnb-base', 'prettier'],
+  extends: [
+    'plugin:@typescript-eslint/recommended',
+    'plugin:import/typescript',
+    'prettier/@typescript-eslint',
+    'prettier',
+  ],
   env: {
     browser: true,
     node: true,
   },
-  plugins: ['import', 'prettier'],
-  overrides: [
-    {
-      files: '**/*.test.{js,jsx}',
-      env: {
-        jest: true,
-      },
-    },
-  ],
+  plugins: ['@typescript-eslint', 'prettier', 'import'],
   rules: {
     'prettier/prettier': warnInDevelopment,
-    'arrow-body-style': 'off',
-    'arrow-parens': ['error', 'as-needed', { requireForBlockBody: true }],
-    'max-len': ['error', 120],
     'import/extensions': [
-      'error',
+      warnInDevelopment,
       'always',
       {
         js: 'never',
+        ts: 'never',
       },
     ],
+    // Makes the code unnecessarily verbose
+    '@typescript-eslint/explicit-member-accessibility': 'off',
+    // Makes the code unnecessarily verbose
+    '@typescript-eslint/explicit-function-return-type': 'off',
     'linebreak-style': 'off',
   },
 };

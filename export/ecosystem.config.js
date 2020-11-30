@@ -1,5 +1,5 @@
 module.exports = {
-  apps : [
+  apps: [
     {
       name: 'Export (Staging)',
       script: 'build/index.js',

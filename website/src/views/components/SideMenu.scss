@@ -2,22 +2,14 @@
 
 $header-margin-top: 1rem;
 $animation-duration: 0.3s;
+$offset-top: $navbar-height + 1rem;
 
 // Side menu styles
 //  - md and above, display as sticky side menu
 //  - sm and below, display as FAB + menu drawer appearing from below
+
 .fab {
   display: none;
-}
-
-.sideMenu {
-  $offset-top: $navbar-height + 1rem;
-
-  composes: scrollable from global;
-  position: sticky;
-  top: $offset-top;
-  height: calc(100vh - #{$offset-top});
-  overscroll-behavior: contain; // stylelint-disable-line property-no-unknown
 }
 
 .overlay {
@@ -34,25 +26,48 @@ $animation-duration: 0.3s;
   }
 }
 
+.boundaryContainer {
+  position: sticky;
+  top: $offset-top;
+  display: flex;
+  pointer-events: none;
+}
+
+.sideMenu {
+  composes: scrollable from global;
+  max-height: calc(100vh - #{$offset-top});
+  pointer-events: auto;
+  overscroll-behavior: contain;
+}
+
 @include media-breakpoint-down(sm) {
   .fab {
     display: block;
   }
 
-  .sideMenu {
+  .boundaryContainer {
     position: fixed;
-    top: auto;
     bottom: 0;
     left: 0;
     z-index: $side-menu-z-index;
+    flex-direction: column-reverse; // Menu should stick to bottom of screen
+    width: 100%;
+  }
+
+  .sideMenu {
+    // Translate top of menu to the bottom of the screen. Add an additional
+    // offset to prevent closed menu from appearing behind iOS Safari's toolbar.
+    $closed-menu-translation: calc(100% + 120px);
+
     width: 100%;
     padding: 1rem 0 3rem;
     background: var(--body-bg);
-    box-shadow: 0 -10px 20px var(--navtab-shadow);
-    transform: translateY(100%);
-    transition: transform $animation-duration;
 
+    // Entry/exit animation
+    transform: translateY($closed-menu-translation);
+    transition: transform $animation-duration, box-shadow $animation-duration;
     &.isOpen {
+      box-shadow: 0 -10px 20px var(--navtab-shadow);
       transform: translateY(0);
     }
   }

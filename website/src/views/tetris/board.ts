@@ -14,11 +14,9 @@ import { convertIndexToTime } from 'utils/timify';
 export const ROWS = 20;
 export const COLUMNS = 9;
 
-/**
+/*
  * Contains most of the gameplay logic
  */
-
-/* eslint-disable no-continue, consistent-return, no-loop-func */
 
 // The first timetable row index to be used
 export const INITIAL_ROW_INDEX = 16; // 8am
@@ -44,7 +42,7 @@ export function originalPosition(tiles: Board) {
     // Center the piece
     x: Math.floor(COLUMNS / 2 - tiles.length / 2),
     // Find the number of tiles needed to move the entire piece above the start line
-    y: min(tiles.map((column) => -findLastIndex(column, notNull)))! - 1,
+    y: (min(tiles.map((column) => -findLastIndex(column, notNull))) || 0) - 1,
   };
 }
 
@@ -127,6 +125,7 @@ function iterateBoard(
 
     for (let row = 0; row < column.length; row++) {
       const tile = column[row];
+      // eslint-disable-next-line no-continue
       if (!tile) continue;
       if (iterator(tile, col, row) === false) {
         continueIterating = false;
@@ -217,6 +216,7 @@ export function isPieceInBounds(piece: Piece) {
       isValid = false;
       return false;
     }
+    return undefined;
   });
 
   return isValid;
@@ -231,6 +231,7 @@ export function isPiecePositionValid(board: Board, piece: Piece) {
       isValid = false;
       return false;
     }
+    return undefined;
   });
 
   return isValid;
@@ -266,7 +267,9 @@ export function removeCompleteRows(board: Board) {
     // TODO: Optimize based on where the piece has landed
     let row = ROWS - 1;
     while (row >= 0) {
+      // eslint-disable-next-line no-loop-func
       if (draft.every((column) => column[row] != null)) {
+        // eslint-disable-next-line no-loop-func
         draft.forEach((column) => {
           column.splice(row, 1);
           column.unshift(null);

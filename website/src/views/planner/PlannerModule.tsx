@@ -1,43 +1,56 @@
-import * as React from 'react';
+import { memo, useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import classnames from 'classnames';
 
-import { ModuleCode, ModuleTitle } from 'types/modules';
-import { Conflict } from 'types/views';
+import { ModuleCode, ModuleTitle, Semester } from 'types/modules';
+import { Conflict, PlannerPlaceholder } from 'types/planner';
 import config from 'config';
 import { renderMCs } from 'utils/modules';
 import { conflictToText } from 'utils/planner';
-import { AlertTriangle } from 'react-feather';
+import { toSingaporeTime } from 'utils/timify';
+import { AlertTriangle, ChevronDown } from 'react-feather';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import { modulePage } from 'views/routes/paths';
 
-import { toSingaporeTime } from 'utils/timify';
 import ModuleMenu from './ModuleMenu';
+import PlannerModuleSelect from './PlannerModuleSelect';
 import styles from './PlannerModule.scss';
 
 type Props = Readonly<{
   // Module information
-  moduleCode: ModuleCode;
   moduleTitle: ModuleTitle | null;
   moduleCredit: number | null;
   examDate: string | null;
+  moduleCode?: ModuleCode;
+  placeholder?: PlannerPlaceholder;
   conflict?: Conflict | null;
+  semester?: Semester;
 
   // For draggable
+  id: string;
   index: number;
 
   // Actions
-  removeModule: (moduleCode: ModuleCode) => void;
+  removeModule: (id: string) => void;
   addCustomData: (moduleCode: ModuleCode) => void;
+  setPlaceholderModule: (id: string, moduleCode: ModuleCode) => void;
 }>;
 
 /**
  * Component for a single module on the planner
  */
-export default class PlannerModule extends React.PureComponent<Props> {
-  renderConflict(conflict: Conflict) {
+const PlannerModule = memo<Props>((props) => {
+  const [isEditingPlaceholder, setEditingPlaceholder] = useState(false);
+
+  const removeModule = () => props.removeModule(props.id);
+
+  const editCustomData = () => {
+    if (props.moduleCode) props.addCustomData(props.moduleCode);
+  };
+
+  const renderConflict = (conflict: Conflict) => {
     switch (conflict.type) {
       case 'noInfo':
         return (
@@ -45,11 +58,7 @@ export default class PlannerModule extends React.PureComponent<Props> {
             <AlertTriangle className={styles.warningIcon} />
             <p>
               No data on this module.{' '}
-              <button
-                type="button"
-                className="btn btn-link btn-inline"
-                onClick={this.editCustomData}
-              >
+              <button type="button" className="btn btn-link btn-inline" onClick={editCustomData}>
                 Add data
               </button>
             </p>
@@ -98,10 +107,10 @@ export default class PlannerModule extends React.PureComponent<Props> {
       default:
         return null;
     }
-  }
+  };
 
-  renderMeta() {
-    const { moduleCredit, examDate } = this.props;
+  const renderMeta = () => {
+    const { moduleCredit, examDate } = props;
     if (!moduleCredit && !examDate) return null;
 
     return (
@@ -110,43 +119,95 @@ export default class PlannerModule extends React.PureComponent<Props> {
         {examDate && <div>{format(toSingaporeTime(examDate), 'MMM d, h:mm a')}</div>}
       </div>
     );
-  }
+  };
 
-  removeModule = () => this.props.removeModule(this.props.moduleCode);
+  const renderPlaceholderForm = () => {
+    const { placeholder, moduleCode, moduleTitle, semester } = props;
 
-  editCustomData = () => this.props.addCustomData(this.props.moduleCode);
+    if (!placeholder) return null;
 
-  render() {
-    const { moduleCode, moduleTitle, index, conflict } = this.props;
+    if (!isEditingPlaceholder) {
+      return (
+        <>
+          <button
+            type="button"
+            className={classnames('btn btn-sm btn-svg', styles.placeholderSelect, {
+              [styles.empty]: !moduleCode,
+            })}
+            onClick={() => setEditingPlaceholder(true)}
+          >
+            {moduleCode || 'Select Module'} <ChevronDown />
+          </button>{' '}
+          {moduleCode && moduleTitle && (
+            <Link to={modulePage(moduleCode, moduleTitle)}>{moduleTitle}</Link>
+          )}
+        </>
+      );
+    }
 
     return (
-      <Draggable key={moduleCode} draggableId={moduleCode} index={index}>
-        {(provided, snapshot) => (
-          <div
-            ref={provided.innerRef}
-            className={classnames(styles.module, {
-              [styles.warning]: conflict,
-              [styles.isDragging]: snapshot.isDragging,
-            })}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-          >
-            <ModuleMenu removeModule={this.removeModule} editCustomData={this.editCustomData} />
+      <form>
+        <PlannerModuleSelect
+          onSelect={(newModuleCode: ModuleCode | null) => {
+            if (newModuleCode) {
+              props.setPlaceholderModule(props.id, newModuleCode);
+            }
 
-            <div className={styles.moduleInfo}>
-              <div className={styles.moduleName}>
-                <Link to={modulePage(moduleCode, moduleTitle)}>
-                  <strong>{moduleCode}</strong> {moduleTitle}
-                </Link>
-              </div>
-
-              {this.renderMeta()}
-
-              {conflict && <div className={styles.conflicts}>{this.renderConflict(conflict)}</div>}
-            </div>
-          </div>
-        )}
-      </Draggable>
+            setEditingPlaceholder(false);
+          }}
+          onCancel={() => setEditingPlaceholder(false)}
+          onBlur={() => setEditingPlaceholder(false)}
+          showOnly={placeholder.modules}
+          filter={placeholder.filter}
+          defaultValue={moduleCode}
+          className={styles.placeholderInput}
+          semester={semester}
+        />
+      </form>
     );
-  }
-}
+  };
+
+  const { id, placeholder, moduleCode, moduleTitle, index, conflict } = props;
+
+  return (
+    <Draggable key={moduleCode} draggableId={id} index={index}>
+      {(provided, snapshot) => (
+        <div
+          ref={provided.innerRef}
+          className={classnames(styles.module, {
+            [styles.warning]: conflict,
+            [styles.isDragging]: snapshot.isDragging,
+            [styles.placeholder]: placeholder && !moduleCode,
+          })}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
+          <ModuleMenu removeModule={removeModule} editCustomData={editCustomData} />
+
+          <div className={styles.moduleInfo}>
+            <div className={styles.moduleName}>
+              {placeholder ? (
+                <>
+                  <strong className={styles.placeholderName}>{placeholder.name}</strong>
+                  {renderPlaceholderForm()}
+                </>
+              ) : (
+                moduleCode && (
+                  <Link className="d-block" to={modulePage(moduleCode, moduleTitle)}>
+                    <strong>{moduleCode}</strong> {moduleTitle}
+                  </Link>
+                )
+              )}
+            </div>
+
+            {renderMeta()}
+
+            {conflict && <div className={styles.conflicts}>{renderConflict(conflict)}</div>}
+          </div>
+        </div>
+      )}
+    </Draggable>
+  );
+});
+
+export default PlannerModule;

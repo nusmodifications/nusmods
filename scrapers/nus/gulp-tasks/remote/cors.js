@@ -42,15 +42,10 @@ function processModulePage(webpage, moduleInfo) {
   if ($.text().includes(NO_INFO)) {
     return null;
   }
-  const timestamp = $('h2')
-    .text()
-    .match(TIMESTAMP_REGEX)
-    .pop();
+  const timestamp = $('h2').text().match(TIMESTAMP_REGEX).pop();
 
   // first table consist of details of the module
-  const moduleDetails = $('.tableframe')
-    .first()
-    .find('tr td:nth-child(2)');
+  const moduleDetails = $('.tableframe').first().find('tr td:nth-child(2)');
   const timetable = [];
 
   // get the timetable info
@@ -66,10 +61,7 @@ function processModulePage(webpage, moduleInfo) {
       .map((i, el) => {
         const row = $('td', el);
         return {
-          ClassNo: row
-            .eq(0)
-            .text()
-            .trim(),
+          ClassNo: row.eq(0).text().trim(),
           LessonType: row.eq(1).text(),
           WeekText: row
             .eq(2)
@@ -86,10 +78,7 @@ function processModulePage(webpage, moduleInfo) {
     timetable.push(...timetableDetails);
   });
 
-  const examText = moduleDetails
-    .eq(4)
-    .text()
-    .trim();
+  const examText = moduleDetails.eq(4).text().trim();
   if (examText !== 'No Exam Date.') {
     const date = R.head(examText.split(' '));
     const examMoment = moment(date, DATE_FORMAT, true);
@@ -129,9 +118,7 @@ function processLessonTypes(webpage, lessonTypes) {
       .filter((i, el) => $('td', el).length > 6);
 
     rows.each((i, el) => {
-      const key = $('td', el)
-        .eq(1)
-        .text();
+      const key = $('td', el).eq(1).text();
 
       const originalVal = lessonTypes[key];
       // throw if original value is different from the new one
@@ -147,9 +134,7 @@ async function processListings(rootUrl, type, lessonTypes, config) {
   const url = `${rootUrl}${type}InfoListing.jsp`;
   const webpage = await gotCached(url, config);
   const $ = cheerio.load(webpage);
-  const listingInfo = $('h2')
-    .text()
-    .split(':');
+  const listingInfo = $('h2').text().split(':');
 
   const academicYear = listingInfo[1].match(ACADEMIC_YEAR_REGEX).shift();
   const semester = listingInfo[2].match(/\d/).shift();
@@ -167,10 +152,7 @@ async function processListings(rootUrl, type, lessonTypes, config) {
     const moduleInfo = {
       type,
       moduleCode: hyperlink.html().trim(),
-      department: $('td div', row)
-        .last()
-        .text()
-        .trim(),
+      department: $('td div', row).last().text().trim(),
     };
 
     const moduleData = await processModulePage(page, moduleInfo);

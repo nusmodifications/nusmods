@@ -42,39 +42,39 @@ export type Props = {
   selectModuleColor: (semester: Semester, moduleCode: ModuleCode, colorIndex: ColorIndex) => void;
   hideLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   showLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
-  onRemoveModule: (moduleWithColor: ModuleWithColor) => void;
+  onRemoveModule: (moduleCode: ModuleCode) => void;
   resetTombstone: () => void;
 };
 
-export class TimetableModulesTableComponent extends React.PureComponent<Props> {
-  renderModuleActions(module: ModuleWithColor) {
+export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
+  const renderModuleActions = (module: ModuleWithColor) => {
     const hideBtnLabel = `${module.hiddenInTimetable ? 'Show' : 'Hide'} ${module.moduleCode}`;
     const removeBtnLabel = `Remove ${module.moduleCode} from timetable`;
-    const { semester } = this.props;
+    const { semester } = props;
 
     return (
       <div className={styles.moduleActionButtons}>
         <div className="btn-group">
-          <Tooltip content={removeBtnLabel} touchHold>
+          <Tooltip content={removeBtnLabel} touch="hold">
             <button
               type="button"
               className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
               aria-label={removeBtnLabel}
-              onClick={() => this.props.onRemoveModule(module)}
+              onClick={() => props.onRemoveModule(module.moduleCode)}
             >
               <Trash className={styles.actionIcon} />
             </button>
           </Tooltip>
-          <Tooltip content={hideBtnLabel} touchHold>
+          <Tooltip content={hideBtnLabel} touch="hold">
             <button
               type="button"
               className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
               aria-label={hideBtnLabel}
               onClick={() => {
                 if (module.hiddenInTimetable) {
-                  this.props.showLessonInTimetable(semester, module.moduleCode);
+                  props.showLessonInTimetable(semester, module.moduleCode);
                 } else {
-                  this.props.hideLessonInTimetable(semester, module.moduleCode);
+                  props.hideLessonInTimetable(semester, module.moduleCode);
                 }
               }}
             >
@@ -88,10 +88,10 @@ export class TimetableModulesTableComponent extends React.PureComponent<Props> {
         </div>
       </div>
     );
-  }
+  };
 
-  renderModule = (module: ModuleWithColor) => {
-    const { semester, readOnly, tombstone, resetTombstone } = this.props;
+  const renderModule = (module: ModuleWithColor) => {
+    const { semester, readOnly, tombstone, resetTombstone } = props;
 
     if (tombstone && tombstone.moduleCode === module.moduleCode) {
       return <ModuleTombstone module={module} resetTombstone={resetTombstone} />;
@@ -115,12 +115,12 @@ export class TimetableModulesTableComponent extends React.PureComponent<Props> {
             color={module.colorIndex}
             isHidden={module.hiddenInTimetable}
             onChooseColor={(colorIndex: ColorIndex) => {
-              this.props.selectModuleColor(semester, module.moduleCode, colorIndex);
+              props.selectModuleColor(semester, module.moduleCode, colorIndex);
             }}
           />
         </div>
         <div className={styles.moduleInfo}>
-          {!readOnly && this.renderModuleActions(module)}
+          {!readOnly && renderModuleActions(module)}
           <Link to={modulePage(module.moduleCode, module.title)}>
             {module.moduleCode} {module.title}
           </Link>
@@ -130,38 +130,36 @@ export class TimetableModulesTableComponent extends React.PureComponent<Props> {
     );
   };
 
-  render() {
-    const { semester, tombstone, horizontalOrientation, moduleTableOrder } = this.props;
-    let { modules } = this.props;
+  const { semester, tombstone, horizontalOrientation, moduleTableOrder } = props;
+  let { modules } = props;
 
-    // tombstone contains the data for the last deleted module. We insert it back
-    // so that it gets sorted into its original location, then in renderModule()
-    // takes care of rendering the tombstone
-    if (tombstone && !modules.some((module) => module.moduleCode === tombstone.moduleCode)) {
-      modules = produce(modules, (draft: ModuleWithColor[]) => {
-        draft.splice(tombstone.index, 0, tombstone);
-      });
-    }
-    modules = sortBy(modules, (module) => moduleOrders[moduleTableOrder].orderBy(module, semester));
-
-    return (
-      <div className={classnames(styles.modulesTable, elements.moduleTable, 'row')}>
-        {modules.map((module) => (
-          <div
-            className={classnames(
-              styles.modulesTableRow,
-              'col-sm-6',
-              horizontalOrientation ? 'col-lg-4' : 'col-md-12',
-            )}
-            key={module.moduleCode}
-          >
-            {this.renderModule(module)}
-          </div>
-        ))}
-      </div>
-    );
+  // tombstone contains the data for the last deleted module. We insert it back
+  // so that it gets sorted into its original location, then in renderModule()
+  // takes care of rendering the tombstone
+  if (tombstone && !modules.some((module) => module.moduleCode === tombstone.moduleCode)) {
+    modules = produce(modules, (draft: ModuleWithColor[]) => {
+      draft.splice(tombstone.index, 0, tombstone);
+    });
   }
-}
+  modules = sortBy(modules, (module) => moduleOrders[moduleTableOrder].orderBy(module, semester));
+
+  return (
+    <div className={classnames(styles.modulesTable, elements.moduleTable, 'row')}>
+      {modules.map((module) => (
+        <div
+          className={classnames(
+            styles.modulesTableRow,
+            'col-sm-6',
+            horizontalOrientation ? 'col-lg-4' : 'col-md-12',
+          )}
+          key={module.moduleCode}
+        >
+          {renderModule(module)}
+        </div>
+      ))}
+    </div>
+  );
+};
 
 export default connect(
   (state: StoreState) => ({ moduleTableOrder: state.settings.moduleTableOrder }),
@@ -170,4 +168,4 @@ export default connect(
     hideLessonInTimetable,
     showLessonInTimetable,
   },
-)(TimetableModulesTableComponent);
+)(React.memo(TimetableModulesTableComponent));

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { memo } from 'react';
 import classnames from 'classnames';
 import Downshift, { ChildrenFunction } from 'downshift';
 import _ from 'lodash';
@@ -20,14 +20,14 @@ type Props = {
  *
  * For use in places like changing module colors
  */
-class ColorPicker extends React.PureComponent<Props> {
-  renderColorPicker: ChildrenFunction<ColorIndex> = ({
+const ColorPicker = memo<Props>((props) => {
+  const renderColorPicker: ChildrenFunction<ColorIndex> = ({
     getToggleButtonProps,
     getItemProps,
     getMenuProps,
     isOpen,
   }) => {
-    const { label, color, isHidden } = this.props;
+    const { label, color, isHidden } = props;
 
     return (
       <div className={styles.container}>
@@ -59,13 +59,11 @@ class ColorPicker extends React.PureComponent<Props> {
     );
   };
 
-  render() {
-    return (
-      <Downshift onChange={(colorIndex) => this.props.onChooseColor(colorIndex)}>
-        {this.renderColorPicker}
-      </Downshift>
-    );
-  }
-}
+  return (
+    <Downshift onChange={(colorIndex) => colorIndex !== null && props.onChooseColor(colorIndex)}>
+      {renderColorPicker}
+    </Downshift>
+  );
+});
 
 export default ColorPicker;

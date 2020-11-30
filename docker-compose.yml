@@ -17,8 +17,6 @@ services:
       - 8081
     environment:
       - NODE_ENV=development
-      - PORT=8080
-      - HOST=0.0.0.0
     user: ${CURRENT_UID:-1000:1000}
     restart: on-failure
   export:
@@ -47,13 +45,10 @@ services:
     user: ${CURRENT_UID:-1000:1000}
     restart: on-failure
   proxy:
-    image: abiosoft/caddy:php-no-stats
+    image: abiosoft/caddy:no-stats
     ports:
       - 8080:2015
-    env_file:
-      - ./infra/instance/proxy.env
     volumes:
       - ./infra/instance/Caddyfile:/etc/Caddyfile
       - ./infra/instance/logs:/logs
-      - ./infra/instance/short_url.php:/srv/short_url.php
     restart: on-failure

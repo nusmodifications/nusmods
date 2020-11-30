@@ -77,6 +77,8 @@ function renderType(type: EmptyGroupType) {
   }
 }
 
-export default function(props: Props) {
-  return <div className={styles.emptyGroup}>{renderType(props.type)}</div>;
-}
+const EmptyLessonGroup: React.FC<Props> = ({ type }) => (
+  <div className={styles.emptyGroup}>{renderType(type)}</div>
+);
+
+export default EmptyLessonGroup;

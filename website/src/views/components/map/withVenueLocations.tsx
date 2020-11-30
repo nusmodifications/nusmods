@@ -1,4 +1,4 @@
-import React, { ComponentType } from 'react';
+import { ComponentType } from 'react';
 import Loadable, { LoadingComponentProps } from 'react-loadable';
 
 import { VenueLocationMap } from 'types/venues';
@@ -11,8 +11,7 @@ export type VenueLocations = {
   readonly venueLocations: VenueLocationMap;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ErrorProps = { error: any; retry: () => void };
+export type ErrorProps = { error: unknown; retry: () => void };
 
 export type WithVenueLocationsOptions = {
   Error?: ComponentType<ErrorProps>;
@@ -67,9 +66,9 @@ export default function withVenueLocations<Props extends VenueLocations>(
       return null;
     },
 
-    // eslint-disable-next-line react/prop-types
     render({ Component, venueLocations }, props: Subtract<Props, VenueLocations>) {
-      return <Component venueLocations={venueLocations} {...(props as Props)} />;
+      const propsWithVenueLocations = { venueLocations, ...props } as Props;
+      return <Component {...propsWithVenueLocations} />;
     },
   });
 }

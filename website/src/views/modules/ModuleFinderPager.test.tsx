@@ -1,4 +1,3 @@
-import React from 'react';
 import { shallow } from 'enzyme';
 import { noop } from 'lodash';
 import ModuleFinderPagerButton from 'views/modules/ModuleFinderPagerButton';

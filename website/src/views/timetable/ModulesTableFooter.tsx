@@ -22,7 +22,7 @@ export const moduleOrders: { [moduleTableOrder: string]: ModuleOrder } = {
     label: 'Exam Date',
     orderBy: (module: Module, semester: Semester) => getExamDate(module, semester) || '',
   },
-  mc: { label: 'Module Credits', orderBy: (module: Module) => module.moduleCredit },
+  mc: { label: 'Module Credits', orderBy: (module: Module) => parseFloat(module.moduleCredit) },
   code: { label: 'Module Code', orderBy: (module: Module) => module.moduleCode },
 };
 
@@ -34,8 +34,8 @@ type Props = {
   setModuleTableOrder: (moduleTableOrder: ModuleTableOrder) => void;
 };
 
-function ModulesTableFooter(props: Props) {
-  const totalMCs = sumBy(props.modules, (module) => parseInt(module.moduleCredit, 10));
+const ModulesTableFooter: React.FC<Props> = (props) => {
+  const totalMCs = sumBy(props.modules, (module) => parseFloat(module.moduleCredit));
 
   return (
     <div className={classnames(styles.footer, 'row align-items-center')}>
@@ -68,11 +68,8 @@ function ModulesTableFooter(props: Props) {
       </div>
     </div>
   );
-}
+};
 
-export default connect(
-  (state: State) => ({ moduleTableOrder: state.settings.moduleTableOrder }),
-  {
-    setModuleTableOrder,
-  },
-)(ModulesTableFooter);
+export default connect((state: State) => ({ moduleTableOrder: state.settings.moduleTableOrder }), {
+  setModuleTableOrder,
+})(ModulesTableFooter);

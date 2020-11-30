@@ -3,7 +3,7 @@ import { Venue, VenueList } from 'types/venues';
 import { ModuleList } from 'types/reducers';
 import { ResultType, SearchResult, VENUE_RESULT } from 'types/views';
 
-import * as React from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import GlobalSearch from 'views/layout/GlobalSearch';
@@ -28,7 +28,7 @@ const RESULTS_LIMIT = 10;
 const LONG_LIST_LIMIT = 70;
 const MIN_INPUT_LENGTH = 2;
 
-export class SearchContainerComponent extends React.Component<Props> {
+export class SearchContainerComponent extends Component<Props> {
   componentDidMount() {
     this.props.fetchVenueList();
   }

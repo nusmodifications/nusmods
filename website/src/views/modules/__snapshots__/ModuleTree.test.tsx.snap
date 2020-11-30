@@ -1,565 +1,579 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ModuleTree should render prereq tree of module: CS3244 1`] = `
-<div
-  class="container"
->
-  <ul
-    class="prereqTree"
-  >
-    <li
-      class="branch prereqBranch"
-    >
-      <div
-        class="node hoverable color-0 prereqNode"
-      >
-        <mockedlink
-          class="link"
-        >
-          CS5242
-        </mockedlink>
-      </div>
-    </li>
-    <li
-      class="branch prereqBranch"
-    >
-      <div
-        class="node hoverable color-0 prereqNode"
-      >
-        <mockedlink
-          class="link"
-        >
-          CS5339
-        </mockedlink>
-      </div>
-    </li>
-    <li
-      class="branch prereqBranch"
-    >
-      <div
-        class="node hoverable color-0 prereqNode"
-      >
-        <mockedlink
-          class="link"
-        >
-          CS6281
-        </mockedlink>
-      </div>
-    </li>
-  </ul>
+Array [
   <div
-    class="node conditional"
+    class="container"
   >
-    needs
-  </div>
-  <ul
-    class="tree root"
-  >
-    <li
-      class="branch"
+    <ul
+      class="prereqTree"
     >
-      <div
-        class="node hoverable color-1"
+      <li
+        class="branch prereqBranch"
       >
-        <mockedlink
-          class="link"
+        <div
+          class="node hoverable color-0 prereqNode"
         >
-          CS3244
-        </mockedlink>
-      </div>
-      <ul
-        class="tree"
+          <mockedlink
+            class="link"
+          >
+            CS5242
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch prereqBranch"
       >
-        <li
-          class="branch"
+        <div
+          class="node hoverable color-0 prereqNode"
         >
-          <div
-            class="node conditional"
+          <mockedlink
+            class="link"
           >
-            all of
-          </div>
-          <ul
-            class="tree"
+            CS5339
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch prereqBranch"
+      >
+        <div
+          class="node hoverable color-0 prereqNode"
+        >
+          <mockedlink
+            class="link"
           >
-            <li
-              class="branch"
+            CS6281
+          </mockedlink>
+        </div>
+      </li>
+    </ul>
+    <div
+      class="node conditional"
+    >
+      needs
+    </div>
+    <ul
+      class="tree root"
+    >
+      <li
+        class="branch"
+      >
+        <div
+          class="node hoverable color-1"
+        >
+          <mockedlink
+            class="link"
+          >
+            CS3244
+          </mockedlink>
+        </div>
+        <ul
+          class="tree"
+        >
+          <li
+            class="branch"
+          >
+            <div
+              class="node conditional"
             >
-              <div
-                class="node conditional"
-              >
-                one of
-              </div>
-              <ul
-                class="tree"
-              >
-                <li
-                  class="branch"
-                >
-                  <div
-                    class="node hoverable color-4"
-                  >
-                    <mockedlink
-                      class="link"
-                    >
-                      CS2010
-                    </mockedlink>
-                  </div>
-                </li>
-                <li
-                  class="branch"
-                >
-                  <div
-                    class="node hoverable color-4"
-                  >
-                    <mockedlink
-                      class="link"
-                    >
-                      CS2020
-                    </mockedlink>
-                  </div>
-                </li>
-                <li
-                  class="branch"
-                >
-                  <div
-                    class="node hoverable color-4"
-                  >
-                    <mockedlink
-                      class="link"
-                    >
-                      CS2040
-                    </mockedlink>
-                  </div>
-                </li>
-                <li
-                  class="branch"
-                >
-                  <div
-                    class="node hoverable color-4"
-                  >
-                    <mockedlink
-                      class="link"
-                    >
-                      CS2040C
-                    </mockedlink>
-                  </div>
-                </li>
-              </ul>
-            </li>
-            <li
-              class="branch"
+              all of
+            </div>
+            <ul
+              class="tree"
             >
-              <div
-                class="node conditional"
+              <li
+                class="branch"
               >
-                one of
-              </div>
-              <ul
-                class="tree"
+                <div
+                  class="node conditional"
+                >
+                  one of
+                </div>
+                <ul
+                  class="tree"
+                >
+                  <li
+                    class="branch"
+                  >
+                    <div
+                      class="node hoverable color-4"
+                    >
+                      <mockedlink
+                        class="link"
+                      >
+                        CS2010
+                      </mockedlink>
+                    </div>
+                  </li>
+                  <li
+                    class="branch"
+                  >
+                    <div
+                      class="node hoverable color-4"
+                    >
+                      <mockedlink
+                        class="link"
+                      >
+                        CS2020
+                      </mockedlink>
+                    </div>
+                  </li>
+                  <li
+                    class="branch"
+                  >
+                    <div
+                      class="node hoverable color-4"
+                    >
+                      <mockedlink
+                        class="link"
+                      >
+                        CS2040
+                      </mockedlink>
+                    </div>
+                  </li>
+                  <li
+                    class="branch"
+                  >
+                    <div
+                      class="node hoverable color-4"
+                    >
+                      <mockedlink
+                        class="link"
+                      >
+                        CS2040C
+                      </mockedlink>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <li
+                class="branch"
               >
-                <li
-                  class="branch"
+                <div
+                  class="node conditional"
                 >
-                  <div
-                    class="node hoverable color-4"
-                  >
-                    <mockedlink
-                      class="link"
-                    >
-                      ESP1107
-                    </mockedlink>
-                  </div>
-                </li>
-                <li
-                  class="branch"
+                  one of
+                </div>
+                <ul
+                  class="tree"
                 >
-                  <div
-                    class="node hoverable color-4"
+                  <li
+                    class="branch"
                   >
-                    <mockedlink
-                      class="link"
+                    <div
+                      class="node hoverable color-4"
                     >
-                      ESP2107
-                    </mockedlink>
-                  </div>
-                </li>
-                <li
-                  class="branch"
-                >
-                  <div
-                    class="node hoverable color-4"
+                      <mockedlink
+                        class="link"
+                      >
+                        ESP1107
+                      </mockedlink>
+                    </div>
+                  </li>
+                  <li
+                    class="branch"
                   >
-                    <mockedlink
-                      class="link"
+                    <div
+                      class="node hoverable color-4"
                     >
-                      ST1232
-                    </mockedlink>
-                  </div>
-                </li>
-                <li
-                  class="branch"
-                >
-                  <div
-                    class="node hoverable color-4"
+                      <mockedlink
+                        class="link"
+                      >
+                        ESP2107
+                      </mockedlink>
+                    </div>
+                  </li>
+                  <li
+                    class="branch"
                   >
-                    <mockedlink
-                      class="link"
+                    <div
+                      class="node hoverable color-4"
                     >
-                      ST2131
-                    </mockedlink>
-                  </div>
-                </li>
-                <li
-                  class="branch"
-                >
-                  <div
-                    class="node hoverable color-4"
+                      <mockedlink
+                        class="link"
+                      >
+                        ST1232
+                      </mockedlink>
+                    </div>
+                  </li>
+                  <li
+                    class="branch"
                   >
-                    <mockedlink
-                      class="link"
+                    <div
+                      class="node hoverable color-4"
                     >
-                      ST2132
-                    </mockedlink>
-                  </div>
-                </li>
-                <li
-                  class="branch"
-                >
-                  <div
-                    class="node hoverable color-4"
+                      <mockedlink
+                        class="link"
+                      >
+                        ST2131
+                      </mockedlink>
+                    </div>
+                  </li>
+                  <li
+                    class="branch"
                   >
-                    <mockedlink
-                      class="link"
+                    <div
+                      class="node hoverable color-4"
                     >
-                      ST2334
-                    </mockedlink>
-                  </div>
-                </li>
-              </ul>
-            </li>
-            <li
-              class="branch"
-            >
-              <div
-                class="node conditional"
+                      <mockedlink
+                        class="link"
+                      >
+                        ST2132
+                      </mockedlink>
+                    </div>
+                  </li>
+                  <li
+                    class="branch"
+                  >
+                    <div
+                      class="node hoverable color-4"
+                    >
+                      <mockedlink
+                        class="link"
+                      >
+                        ST2334
+                      </mockedlink>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <li
+                class="branch"
               >
-                one of
-              </div>
-              <ul
-                class="tree"
+                <div
+                  class="node conditional"
+                >
+                  one of
+                </div>
+                <ul
+                  class="tree"
+                >
+                  <li
+                    class="branch"
+                  >
+                    <div
+                      class="node hoverable color-4"
+                    >
+                      <mockedlink
+                        class="link"
+                      >
+                        MA1101R
+                      </mockedlink>
+                    </div>
+                  </li>
+                  <li
+                    class="branch"
+                  >
+                    <div
+                      class="node hoverable color-4"
+                    >
+                      <mockedlink
+                        class="link"
+                      >
+                        MA1311
+                      </mockedlink>
+                    </div>
+                  </li>
+                  <li
+                    class="branch"
+                  >
+                    <div
+                      class="node hoverable color-4"
+                    >
+                      <mockedlink
+                        class="link"
+                      >
+                        MA1506
+                      </mockedlink>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <li
+                class="branch"
               >
-                <li
-                  class="branch"
+                <div
+                  class="node conditional"
                 >
-                  <div
-                    class="node hoverable color-4"
-                  >
-                    <mockedlink
-                      class="link"
-                    >
-                      MA1101R
-                    </mockedlink>
-                  </div>
-                </li>
-                <li
-                  class="branch"
+                  one of
+                </div>
+                <ul
+                  class="tree"
                 >
-                  <div
-                    class="node hoverable color-4"
+                  <li
+                    class="branch"
                   >
-                    <mockedlink
-                      class="link"
+                    <div
+                      class="node hoverable color-4"
                     >
-                      MA1311
-                    </mockedlink>
-                  </div>
-                </li>
-                <li
-                  class="branch"
-                >
-                  <div
-                    class="node hoverable color-4"
+                      <mockedlink
+                        class="link"
+                      >
+                        MA1102R
+                      </mockedlink>
+                    </div>
+                  </li>
+                  <li
+                    class="branch"
                   >
-                    <mockedlink
-                      class="link"
+                    <div
+                      class="node hoverable color-4"
                     >
-                      MA1506
-                    </mockedlink>
-                  </div>
-                </li>
-              </ul>
-            </li>
-            <li
-              class="branch"
-            >
-              <div
-                class="node conditional"
-              >
-                one of
-              </div>
-              <ul
-                class="tree"
-              >
-                <li
-                  class="branch"
-                >
-                  <div
-                    class="node hoverable color-4"
+                      <mockedlink
+                        class="link"
+                      >
+                        MA1505
+                      </mockedlink>
+                    </div>
+                  </li>
+                  <li
+                    class="branch"
                   >
-                    <mockedlink
-                      class="link"
+                    <div
+                      class="node hoverable color-4"
                     >
-                      MA1102R
-                    </mockedlink>
-                  </div>
-                </li>
-                <li
-                  class="branch"
-                >
-                  <div
-                    class="node hoverable color-4"
-                  >
-                    <mockedlink
-                      class="link"
-                    >
-                      MA1505
-                    </mockedlink>
-                  </div>
-                </li>
-                <li
-                  class="branch"
-                >
-                  <div
-                    class="node hoverable color-4"
-                  >
-                    <mockedlink
-                      class="link"
-                    >
-                      MA1521
-                    </mockedlink>
-                  </div>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-  </ul>
-</div>
+                      <mockedlink
+                        class="link"
+                      >
+                        MA1521
+                      </mockedlink>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>,
+  <p
+    class="alert alert-warning"
+  >
+    The prerequisite tree is displayed for visualization purposes and may not be accurate. Viewers are encouraged to double check details.
+  </p>,
+]
 `;
 
 exports[`ModuleTree should render requirements fulfilled tree of module: ACC1002 1`] = `
-<div
-  class="container"
->
-  <ul
-    class="prereqTree"
-  >
-    <li
-      class="branch prereqBranch"
-    >
-      <div
-        class="node hoverable color-0 prereqNode"
-      >
-        <mockedlink
-          class="link"
-        >
-          ACC1006
-        </mockedlink>
-      </div>
-    </li>
-    <li
-      class="branch prereqBranch"
-    >
-      <div
-        class="node hoverable color-0 prereqNode"
-      >
-        <mockedlink
-          class="link"
-        >
-          ACC2002
-        </mockedlink>
-      </div>
-    </li>
-    <li
-      class="branch prereqBranch"
-    >
-      <div
-        class="node hoverable color-0 prereqNode"
-      >
-        <mockedlink
-          class="link"
-        >
-          ACC3601
-        </mockedlink>
-      </div>
-    </li>
-    <li
-      class="branch prereqBranch"
-    >
-      <div
-        class="node hoverable color-0 prereqNode"
-      >
-        <mockedlink
-          class="link"
-        >
-          ACC3603
-        </mockedlink>
-      </div>
-    </li>
-    <li
-      class="branch prereqBranch"
-    >
-      <div
-        class="node hoverable color-0 prereqNode"
-      >
-        <mockedlink
-          class="link"
-        >
-          ACC3605
-        </mockedlink>
-      </div>
-    </li>
-    <li
-      class="branch prereqBranch"
-    >
-      <div
-        class="node hoverable color-0 prereqNode"
-      >
-        <mockedlink
-          class="link"
-        >
-          ACC3616
-        </mockedlink>
-      </div>
-    </li>
-    <li
-      class="branch prereqBranch"
-    >
-      <div
-        class="node hoverable color-0 prereqNode"
-      >
-        <mockedlink
-          class="link"
-        >
-          FIN2004
-        </mockedlink>
-      </div>
-    </li>
-    <li
-      class="branch prereqBranch"
-    >
-      <div
-        class="node hoverable color-0 prereqNode"
-      >
-        <mockedlink
-          class="link"
-        >
-          FIN2004X
-        </mockedlink>
-      </div>
-    </li>
-    <li
-      class="branch prereqBranch"
-    >
-      <div
-        class="node hoverable color-0 prereqNode"
-      >
-        <mockedlink
-          class="link"
-        >
-          FIN3113
-        </mockedlink>
-      </div>
-    </li>
-    <li
-      class="branch prereqBranch"
-    >
-      <div
-        class="node hoverable color-0 prereqNode"
-      >
-        <mockedlink
-          class="link"
-        >
-          FIN3130
-        </mockedlink>
-      </div>
-    </li>
-    <li
-      class="branch prereqBranch"
-    >
-      <div
-        class="node hoverable color-0 prereqNode"
-      >
-        <mockedlink
-          class="link"
-        >
-          IS5116
-        </mockedlink>
-      </div>
-    </li>
-    <li
-      class="branch prereqBranch"
-    >
-      <div
-        class="node hoverable color-0 prereqNode"
-      >
-        <mockedlink
-          class="link"
-        >
-          ACC3611
-        </mockedlink>
-      </div>
-    </li>
-    <li
-      class="branch prereqBranch"
-    >
-      <div
-        class="node hoverable color-0 prereqNode"
-      >
-        <mockedlink
-          class="link"
-        >
-          FIN3132
-        </mockedlink>
-      </div>
-    </li>
-    <li
-      class="branch prereqBranch"
-    >
-      <div
-        class="node hoverable color-0 prereqNode"
-      >
-        <mockedlink
-          class="link"
-        >
-          FIN4115
-        </mockedlink>
-      </div>
-    </li>
-  </ul>
+Array [
   <div
-    class="node conditional"
+    class="container"
   >
-    needs
-  </div>
-  <ul
-    class="tree root"
-  >
-    <li
-      class="branch"
+    <ul
+      class="prereqTree"
     >
-      <div
-        class="node hoverable color-1"
+      <li
+        class="branch prereqBranch"
       >
-        <mockedlink
-          class="link"
+        <div
+          class="node hoverable color-0 prereqNode"
         >
-          ACC1002
-        </mockedlink>
-      </div>
-    </li>
-  </ul>
-</div>
+          <mockedlink
+            class="link"
+          >
+            ACC1006
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch prereqBranch"
+      >
+        <div
+          class="node hoverable color-0 prereqNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            ACC2002
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch prereqBranch"
+      >
+        <div
+          class="node hoverable color-0 prereqNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            ACC3601
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch prereqBranch"
+      >
+        <div
+          class="node hoverable color-0 prereqNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            ACC3603
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch prereqBranch"
+      >
+        <div
+          class="node hoverable color-0 prereqNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            ACC3605
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch prereqBranch"
+      >
+        <div
+          class="node hoverable color-0 prereqNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            ACC3616
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch prereqBranch"
+      >
+        <div
+          class="node hoverable color-0 prereqNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            FIN2004
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch prereqBranch"
+      >
+        <div
+          class="node hoverable color-0 prereqNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            FIN2004X
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch prereqBranch"
+      >
+        <div
+          class="node hoverable color-0 prereqNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            FIN3113
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch prereqBranch"
+      >
+        <div
+          class="node hoverable color-0 prereqNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            FIN3130
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch prereqBranch"
+      >
+        <div
+          class="node hoverable color-0 prereqNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            IS5116
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch prereqBranch"
+      >
+        <div
+          class="node hoverable color-0 prereqNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            ACC3611
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch prereqBranch"
+      >
+        <div
+          class="node hoverable color-0 prereqNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            FIN3132
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch prereqBranch"
+      >
+        <div
+          class="node hoverable color-0 prereqNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            FIN4115
+          </mockedlink>
+        </div>
+      </li>
+    </ul>
+    <div
+      class="node conditional"
+    >
+      needs
+    </div>
+    <ul
+      class="tree root"
+    >
+      <li
+        class="branch"
+      >
+        <div
+          class="node hoverable color-1"
+        >
+          <mockedlink
+            class="link"
+          >
+            ACC1002
+          </mockedlink>
+        </div>
+      </li>
+    </ul>
+  </div>,
+  <p
+    class="alert alert-warning"
+  >
+    The prerequisite tree is displayed for visualization purposes and may not be accurate. Viewers are encouraged to double check details.
+  </p>,
+]
 `;

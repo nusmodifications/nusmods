@@ -1,8 +1,15 @@
 import _ from 'lodash';
-import { Module, RawLesson, Semester, SemesterData, SemesterDataCondensed } from 'types/modules';
+import type {
+  Module,
+  ModuleCode,
+  RawLesson,
+  Semester,
+  SemesterData,
+  SemesterDataCondensed,
+} from 'types/modules';
 
 import config from 'config';
-import { NBSP } from 'utils/react';
+import { NBSP, noBreak } from 'utils/react';
 import { format } from 'date-fns';
 import { Lesson } from 'types/timetables';
 import { toSingaporeTime } from './timify';
@@ -62,7 +69,8 @@ export function getFirstAvailableSemester(
   current: Semester = config.semester, // For testing only
 ): Semester {
   const availableSemesters = semesters.map((semesterData) => semesterData.semester);
-  return availableSemesters.includes(current) ? current : _.min(availableSemesters)!;
+  // Assume there is at least 1 semester
+  return availableSemesters.includes(current) ? current : Math.min(...availableSemesters);
 }
 
 export function getSemestersOffered(module: Module): Semester[] {
@@ -70,8 +78,16 @@ export function getSemestersOffered(module: Module): Semester[] {
 }
 
 export function renderMCs(moduleCredits: number | string) {
-  const credit = typeof moduleCredits === 'string' ? parseInt(moduleCredits, 10) : moduleCredits;
+  const credit = typeof moduleCredits === 'string' ? parseFloat(moduleCredits) : moduleCredits;
   return `${credit}${NBSP}${credit === 1 ? 'MC' : 'MCs'}`;
+}
+
+export function renderExamDuration(examDuration: number) {
+  const hours = examDuration / 60;
+  if (hours < 1) {
+    return noBreak(`${examDuration} mins`);
+  }
+  return noBreak(`${hours} ${hours === 1 ? 'hr' : 'hrs'}`);
 }
 
 export function subtractAcadYear(acadYear: string): string {
@@ -117,4 +133,8 @@ export function getYearsBetween(minYear: string, maxYear: string): string[] {
   }
   years.push(maxYear);
   return years;
+}
+
+export function isGraduateModule(module: { moduleCode: ModuleCode }): boolean {
+  return Boolean(/[A-Z]+(5|6)\d{3}/i.test(module.moduleCode));
 }

@@ -1,11 +1,12 @@
 import _ from 'lodash';
-import { EventOption } from 'ical-generator';
+import type { EventOption } from 'ical-generator';
 import { addDays, addMinutes, addWeeks, isValid } from 'date-fns';
 
 import {
   consumeWeeks,
   EndTime,
   Module,
+  NumericWeeks,
   RawLesson,
   Semester,
   StartTime,
@@ -85,7 +86,7 @@ function calculateStartEnd(date: Date, startTime: StartTime, endTime: EndTime) {
 export function calculateNumericWeek(
   lesson: RawLesson,
   semester: Semester,
-  weeks: number[],
+  weeks: NumericWeeks,
   firstDayOfSchool: Date,
 ): EventOption {
   const lessonDay = addDays(firstDayOfSchool, dayIndex(lesson.day));

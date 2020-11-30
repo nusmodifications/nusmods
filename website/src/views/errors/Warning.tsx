@@ -6,11 +6,11 @@ type Props = {
   message: string;
 };
 
-export default function Warning(props: Props) {
-  return (
-    <div className="text-center">
-      <AlertTriangle className={styles.noModulesIcon} />
-      <h4>{props.message}</h4>
-    </div>
-  );
-}
+const Warning: React.FC<Props> = (props) => (
+  <div className="text-center">
+    <AlertTriangle className={styles.noModulesIcon} />
+    <h4>{props.message}</h4>
+  </div>
+);
+
+export default Warning;

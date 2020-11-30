@@ -1,4 +1,5 @@
 import { addWeeks, startOfWeek, isBefore, getYear } from 'date-fns';
+import { WeekType, Semester, AcadYear, AcadWeek, AcadWeekInfo } from './types';
 
 /* eslint-disable no-fallthrough, no-console */
 
@@ -8,7 +9,7 @@ import { addWeeks, startOfWeek, isBefore, getYear } from 'date-fns';
  * @param acadYear the academic year. E.g. "18/19"
  * @return {Date} Start date of the academic year
  */
-export function getAcadYearStartDate(acadYear) {
+export function getAcadYearStartDate(acadYear: string): Date {
   const shortYear = acadYear.split('/')[0];
   const targetYear = 2000 + parseInt(shortYear, 10);
   const firstDateOfMonth = new Date(targetYear, 7, 1, 0, 0, 0);
@@ -34,7 +35,7 @@ const special2 = 'Special Term II';
  * @param  {Date} date
  * @return {Object} acadYearObject - { year: "15/16", startDate: Date }
  */
-export function getAcadYear(date) {
+export function getAcadYear(date: Date): AcadYear {
   const shortYear = getYear(date) % 100;
 
   // A date like 8th August 2015 can either be in AY15/16 or AY16/17. We check
@@ -59,7 +60,7 @@ export function getAcadYear(date) {
  * @return {string} semester - "Semester 1"
  * @example acadWeekNumber(3)
  */
-export function getAcadSem(acadWeekNumber) {
+export function getAcadSem(acadWeekNumber: number): Semester | null {
   const earliestSupportedWeek = 1;
   const lastWeekOfSem1 = 23;
   const lastWeekOfSem2 = 40;
@@ -87,7 +88,7 @@ export function getAcadSem(acadWeekNumber) {
  * @return {string} semester - "Recess" | "Reading" | "Examination"
  * @example acadWeekNumber(3)
  */
-export function getAcadWeekName(acadWeekNumber) {
+export function getAcadWeekName(acadWeekNumber: number): AcadWeek | null {
   switch (acadWeekNumber) {
     case 7:
       return {
@@ -126,17 +127,17 @@ export function getAcadWeekName(acadWeekNumber) {
 }
 
 /**
-  * Computes the current academic week and return in an object of acad date components
-  * @param  {Date} date
-  * @return {Object}
-  * {
-  *   year: "15/16",
-  *   sem: 'Semester 1'|'Semester 2'|'Special Sem 1'|'Special Sem 2',
-  *   type: 'Instructional'|'Reading'|'Examination'|'Recess'|'Vacation'|'Orientation',
-  *   num: <weekNum>
-  * }
-  */
-export function getAcadWeekInfo(date) {
+ * Computes the current academic week and return in an object of acad date components
+ * @param  {Date} date
+ * @return {Object}
+ * {
+ *   year: "15/16",
+ *   sem: 'Semester 1'|'Semester 2'|'Special Sem 1'|'Special Sem 2',
+ *   type: 'Instructional'|'Reading'|'Examination'|'Recess'|'Vacation'|'Orientation',
+ *   num: <weekNum>
+ * }
+ */
+export function getAcadWeekInfo(date: Date): AcadWeekInfo {
   const currentAcad = getAcadYear(date);
   const acadYear = currentAcad.year;
   const acadYearStartDate = getAcadYearStartDate(acadYear);
@@ -144,7 +145,8 @@ export function getAcadWeekInfo(date) {
   let acadWeekNumber = Math.ceil(
     (date.getTime() - acadYearStartDate.getTime() + 1) / oneWeekDuration,
   );
-  const semester = getAcadSem(acadWeekNumber);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const semester = getAcadSem(acadWeekNumber)!;
 
   let weekType = null;
   let weekNumber = null;
@@ -162,7 +164,10 @@ export function getAcadWeekInfo(date) {
         break;
       }
       acadWeekNumber -= 1;
-      ({ weekType, weekNumber } = getAcadWeekName(acadWeekNumber));
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const acadWeek = getAcadWeekName(acadWeekNumber)!;
+      weekType = acadWeek.weekType;
+      weekNumber = acadWeek.weekNumber;
       break;
     case special2: // Special Term II starts 6 weeks after Special Term I
       acadWeekNumber -= 6;
@@ -184,7 +189,7 @@ export function getAcadWeekInfo(date) {
   return {
     year: acadYear,
     sem: semester,
-    type: weekType,
+    type: weekType as WeekType | null,
     num: weekNumber,
   };
 }
@@ -195,7 +200,7 @@ export function getAcadWeekInfo(date) {
  * @param {number} semester
  * @returns {Date}
  */
-export function getExamWeek(year, semester) {
+export function getExamWeek(year: string, semester: number): Date | null {
   const startDate = getAcadYearStartDate(year);
 
   if (!startDate) {
@@ -203,7 +208,7 @@ export function getExamWeek(year, semester) {
     return null;
   }
 
-  const examWeek = {
+  const examWeek: { [semester: number]: number } = {
     1: 16,
     2: 38,
     3: 45,

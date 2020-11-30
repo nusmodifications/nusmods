@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { createRef, PureComponent } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { RefreshCw as Refresh } from 'react-feather';
@@ -16,10 +16,10 @@ type State = {
   isReloading: boolean;
 };
 
-class RefreshPrompt extends React.PureComponent<Props, State> {
+class RefreshPrompt extends PureComponent<Props, State> {
   buttonWidth?: number;
 
-  buttonRef = React.createRef<HTMLButtonElement>();
+  buttonRef = createRef<HTMLButtonElement>();
 
   state = {
     isReloading: false,

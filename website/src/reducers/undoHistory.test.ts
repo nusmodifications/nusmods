@@ -8,11 +8,12 @@ import undoHistory, {
   UndoHistoryConfig,
 } from 'reducers/undoHistory';
 import { UndoHistoryState } from 'types/reducers';
+import { Actions } from 'types/actions';
 
 const WATCHED_ACTION = 'WATCHED_ACTION';
 const IGNORED_ACTION = 'IGNORED_ACTION';
 
-const newFSA = (type: string, payload: Record<string, any> = {}) => ({ type, payload });
+const newFSA = (type: string, payload: Record<string, any> = {}) => ({ type, payload } as Actions);
 
 const emptyUndoHistory = { past: [], present: undefined, future: [] };
 
@@ -25,7 +26,7 @@ type TestState = {
     notToTouch: number[];
   };
   untouchable: { payload: string };
-  undoHistoryState: UndoHistoryState;
+  undoHistory: UndoHistoryState<TestState>;
 };
 
 const state: TestState = {
@@ -37,7 +38,7 @@ const state: TestState = {
     notToTouch: [3, 1, 4],
   },
   untouchable: { payload: 'donottouch' },
-  undoHistoryState: emptyUndoHistory,
+  undoHistory: emptyUndoHistory,
 };
 
 const mutatedState = produce(state, (draft) => {
@@ -46,21 +47,20 @@ const mutatedState = produce(state, (draft) => {
 });
 
 const config: UndoHistoryConfig = {
-  reducerName: 'undoHistoryState',
   actionsToWatch: [WATCHED_ACTION],
   whitelist: ['data.toMutate.numbers', 'data.toMutate.string'],
 };
 
 describe('#computeUndoStacks()', () => {
   test('should ignore irrelevant actions', () => {
-    const hist0 = state.undoHistoryState;
+    const hist0 = state.undoHistory;
     const hist1 = computeUndoStacks(hist0, newFSA(IGNORED_ACTION), state, mutatedState, config);
     expect(hist1).toEqual(hist0);
   });
 
   test('should store data when relevant actions dispatched', () => {
-    const hist0 = produce(state.undoHistoryState, (draft) => {
-      draft.future.push(draft);
+    const hist0 = produce(state.undoHistory, (draft) => {
+      draft.future.push(state);
     });
     const hist1 = computeUndoStacks(hist0, newFSA(WATCHED_ACTION), state, mutatedState, config);
     const hist2 = computeUndoStacks(hist1, newFSA(WATCHED_ACTION), mutatedState, state, config);
@@ -90,7 +90,7 @@ describe('#computeUndoStacks()', () => {
   });
 
   test('should undo', () => {
-    const hist0 = state.undoHistoryState; // Empty past, present and future
+    const hist0 = state.undoHistory; // Empty past, present and future
     const hist1 = computeUndoStacks(hist0, newFSA(WATCHED_ACTION), state, mutatedState, config); // Populate past and present
 
     // Expect present to be pushed to future
@@ -115,7 +115,7 @@ describe('#computeUndoStacks()', () => {
   });
 
   test('should redo', () => {
-    const hist0 = state.undoHistoryState; // Empty past, present and future
+    const hist0 = state.undoHistory; // Empty past, present and future
     const hist1 = computeUndoStacks(hist0, newFSA(WATCHED_ACTION), state, mutatedState, config); // Populate past and present
     const hist2 = computeUndoStacks(hist1, undo(), mutatedState, mutatedState, config); // Populate present and future, clears past
 
@@ -148,7 +148,7 @@ describe('#computeUndoStacks()', () => {
     const limitN = { ...config, limit: -1 }; // Edge case
 
     // Expect limit > 0 to be enforced
-    const hist0 = state.undoHistoryState; // Empty past, present and future
+    const hist0 = state.undoHistory; // Empty past, present and future
     const hist10 = computeUndoStacks(hist0, newFSA(WATCHED_ACTION), state, mutatedState, limit1); // Populate past and present
     const hist11 = computeUndoStacks(hist10, newFSA(WATCHED_ACTION), mutatedState, state, limit1);
     expect(hist11.past).toHaveLength(1); // Expect length to be limited
@@ -192,25 +192,25 @@ describe('#mergePresent()', () => {
 });
 
 describe('#undoHistory()()', () => {
-  const unredo = undoHistory(config);
+  const unredo = undoHistory<TestState>(config);
 
   test('should set history state and merges present state', () => {
-    const hist0 = state.undoHistoryState; // Empty past, present and future
+    const hist0 = state.undoHistory; // Empty past, present and future
     const hist1 = computeUndoStacks(hist0, newFSA(WATCHED_ACTION), state, mutatedState, config); // Populate past and present
 
     // Updates state if watched action dispatched
     const state0 = unredo(state, mutatedState, newFSA(WATCHED_ACTION)); // undoHistoryState populated
-    expect(state0.undoHistoryState).toEqual(hist1);
+    expect(state0.undoHistory).toEqual(hist1);
 
     // Expect undo to change a subset of data and change history state
     const state1 = unredo(state0, state0, undo()); // Undo
     expect(state1.data.notToTouch).toEqual(state0.data.notToTouch); // Make sure what's not persisted is not touched
     expect(state1).not.toEqual(state0);
-    expect(state1.undoHistoryState).not.toEqual(state0.undoHistoryState);
+    expect(state1.undoHistory).not.toEqual(state0.undoHistory);
 
     // Expect redo to reset a subset of data and history state
     const state2 = unredo(state1, state1, redo()); // Redo
     expect(state2).toEqual(state0);
-    expect(state2.undoHistoryState).toEqual(state0.undoHistoryState);
+    expect(state2.undoHistory).toEqual(state0.undoHistory);
   });
 });

@@ -10,16 +10,14 @@ type Props = {
   className?: string;
 };
 
-function StaticPage(props: Props) {
-  return (
-    <div className={classnames('page-container', props.className)}>
-      <ScrollToTop onComponentDidMount />
-      <Title>{props.title}</Title>
-      <div className="row">
-        <div className="col-md-8 offset-md-1">{props.children}</div>
-      </div>
+const StaticPage: React.FC<Props> = (props) => (
+  <div className={classnames('page-container', props.className)}>
+    <ScrollToTop onComponentDidMount />
+    <Title>{props.title}</Title>
+    <div className="row">
+      <div className="col-md-8 offset-md-1">{props.children}</div>
     </div>
-  );
-}
+  </div>
+);
 
 export default StaticPage;

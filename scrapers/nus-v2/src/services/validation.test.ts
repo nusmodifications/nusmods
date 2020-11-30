@@ -1,6 +1,6 @@
 import { validateExam, validateLesson, validateSemester } from './validation';
 
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable camelcase */
 
 describe(validateLesson, () => {
   test('should return false if the lesson is invalid', () => {
@@ -36,8 +36,25 @@ describe(validateLesson, () => {
       day: null,
     };
 
+    const invalidLesson3: any = {
+      term: '1810',
+      room: null,
+      numweeks: 0,
+      start_time: '12:00',
+      end_time: '12:00',
+      activity: 'L',
+      csize: 40,
+      module: 'EL4401',
+      eventdate: null,
+      session: '1',
+      modgrp: 'L1',
+      deptfac: '00104ACAD1',
+      day: null,
+    };
+
     expect(validateLesson(invalidLesson1)).toBe(false);
     expect(validateLesson(invalidLesson2)).toBe(false);
+    expect(validateLesson(invalidLesson3)).toBe(false);
   });
 
   test('should return true for valid lessons', () => {

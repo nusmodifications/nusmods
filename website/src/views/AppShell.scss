@@ -14,6 +14,7 @@ $logo-vert-padding: 0.875rem;
   display: flex;
   justify-content: space-between;
   height: $navbar-height;
+  padding: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
   background: var(--gray-lightest);
 }
 
@@ -27,7 +28,6 @@ $logo-vert-padding: 0.875rem;
 
 .brandLogo {
   width: 100%;
-  height: 100%;
 }
 
 .navRight {

@@ -1,6 +1,6 @@
 import { Semester } from 'types/modules';
 import { ExportData } from 'types/export';
-import { getSemesterTimetable } from 'reducers/timetables';
+import { getSemesterTimetable } from 'selectors/timetables';
 import { State } from 'types/state';
 import { SemTimetableConfig } from 'types/timetables';
 

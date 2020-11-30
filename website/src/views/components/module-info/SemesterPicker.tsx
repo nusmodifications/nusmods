@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { memo } from 'react';
 import { each } from 'lodash';
 
 import { Semester } from 'types/modules';
@@ -18,69 +18,71 @@ type Props = {
   onSelectSemester: (semester: Semester) => void;
 };
 
-export default class SemesterPicker extends React.PureComponent<Props> {
-  static defaultProps = {
-    showDisabled: false,
-    useShortNames: false,
-  };
+const SemesterPicker = memo<Props>(
+  ({
+    semesters,
+    showDisabled = false,
+    useShortNames = false,
+    size,
+    selectedSemester,
+    onSelectSemester,
+  }) => {
+    const semesterNames = () => {
+      return useShortNames ? config.shortSemesterNames : config.semesterNames;
+    };
 
-  onSelectSemester = (choice: string) => {
-    const chosen = this.semesterMap()[choice];
+    /**
+     * Map button labels (semester names) to semesters
+     */
+    const semesterMap = (): { [key: string]: Semester | null } => {
+      const map: { [key: string]: Semester | null } = {};
 
-    if (chosen) {
-      this.props.onSelectSemester(Number(chosen));
-    }
-  };
+      each(semesterNames(), (name: string, key: string) => {
+        const semester = semesters.find((sem) => String(sem) === key);
+        if (semester || showDisabled) map[name] = semester || null;
+      });
 
-  /**
-   * Map button labels (semester names) to semesters
-   */
-  semesterMap(): { [key: string]: Semester | null } {
-    const map: { [key: string]: Semester | null } = {};
-    const { semesters, showDisabled } = this.props;
+      return map;
+    };
 
-    each(this.semesterNames(), (name: string, key: string) => {
-      const semester = semesters.find((sem) => String(sem) === key);
-      if (semester || showDisabled) map[name] = semester || null;
-    });
+    const onSelectSemesterInner = (choice: string) => {
+      const chosen = semesterMap()[choice];
 
-    return map;
-  }
-
-  // Disable and add title for buttons representing semesters that are not available
-  buttonAttrs() {
-    const semesterMap = this.semesterMap();
-    const attrs: ButtonGroupProps['attrs'] = {};
-
-    each(this.semesterNames(), (name: string) => {
-      if (!semesterMap[name]) {
-        attrs[name] = {
-          disabled: true,
-          title: `This module is not available in ${name}`,
-        };
+      if (chosen) {
+        onSelectSemester(Number(chosen));
       }
-    });
+    };
 
-    return { attrs };
-  }
+    // Disable and add title for buttons representing semesters that are not available
+    const buttonAttrs = () => {
+      const semesterMapObtained = semesterMap();
+      const attrs: ButtonGroupProps['attrs'] = {};
 
-  semesterNames() {
-    return this.props.useShortNames ? config.shortSemesterNames : config.semesterNames;
-  }
+      each(semesterNames(), (name: string) => {
+        if (!semesterMapObtained[name]) {
+          attrs[name] = {
+            disabled: true,
+            title: `This module is not available in ${name}`,
+          };
+        }
+      });
 
-  render() {
-    const { size, selectedSemester } = this.props;
-    const semesterMap = this.semesterMap();
-    const selected = selectedSemester ? this.semesterNames()[selectedSemester] : null;
+      return { attrs };
+    };
+
+    const semesterMapObtained = semesterMap();
+    const selected = selectedSemester ? semesterNames()[selectedSemester] : null;
 
     return (
       <ButtonGroupSelector
-        {...this.buttonAttrs()}
+        {...buttonAttrs()}
         size={size}
-        choices={Object.keys(semesterMap)}
+        choices={Object.keys(semesterMapObtained)}
         selectedChoice={selected}
-        onChoiceSelect={this.onSelectSemester}
+        onChoiceSelect={onSelectSemesterInner}
       />
     );
-  }
-}
+  },
+);
+
+export default SemesterPicker;

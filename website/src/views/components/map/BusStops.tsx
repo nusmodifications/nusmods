@@ -1,10 +1,11 @@
-import * as React from 'react';
-import { DivIcon, DragEndEvent } from 'leaflet';
+import { PureComponent } from 'react';
+import { DivIcon, DragEndEventHandlerFn } from 'leaflet';
 import { Marker, Popup } from 'react-leaflet';
 import classnames from 'classnames';
 import produce from 'immer';
 
-import { BusStop, BusTiming } from 'types/venues';
+import type { BusStop, BusTiming } from 'types/venues';
+import type { EmptyProps } from 'types/utils';
 
 import busStopJSON from 'data/bus-stops.json';
 import { allowBusStopEditing } from 'utils/debug';
@@ -14,7 +15,7 @@ import { ArrivalTimes } from './ArrivalTimes';
 
 const busStops = busStopJSON as BusStop[];
 
-type Props = {};
+type Props = EmptyProps;
 
 type State = {
   // Bus stop data is stored in state to allow for editing
@@ -38,7 +39,7 @@ busStops.forEach((stop: BusStop) => {
 /**
  * Displays bus stop routes as markers, and timings in a popup when they are clicked
  */
-export default class BusStops extends React.PureComponent<Props, State> {
+export default class BusStops extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -60,12 +61,11 @@ export default class BusStops extends React.PureComponent<Props, State> {
   };
 
   // Only used for map editing
-  // TODO: Find out how to properly type Leaflet events
-  onDragEnd = (evt: DragEndEvent) => {
+  onDragEnd: DragEndEventHandlerFn = (evt) => {
     if (!allowBusStopEditing()) return;
 
     const { target } = evt;
-    const code = target.getElement().children[0].dataset.code;
+    const { code } = target.getElement().children[0].dataset;
     const { lat, lng } = target.getLatLng();
 
     this.setState((state) =>
@@ -135,6 +135,7 @@ export default class BusStops extends React.PureComponent<Props, State> {
           );
 
           const icon = new DivIcon({
+            // language=HTML
             html: `
               <div
                 title="${stop.name}"
@@ -155,7 +156,9 @@ export default class BusStops extends React.PureComponent<Props, State> {
               key={stop.code}
               icon={icon}
               position={stop.location}
-              onDragEnd={this.onDragEnd}
+              eventHandlers={{
+                dragend: this.onDragEnd,
+              }}
               draggable={allowEditing}
               autoPan={allowEditing}
             >

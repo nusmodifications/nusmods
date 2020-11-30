@@ -28,69 +28,73 @@ type Props = RouteComponentProps & {
   readonly matchBreakpoint: boolean;
 };
 
-export class VenueDetailsComponent extends React.PureComponent<Props> {
-  arrangedLessons() {
-    const lessons = flatMap(this.props.availability, (day) => day.classes).map((venueLesson) => ({
-      ...venueLesson,
-      title: '',
-      isModifiable: true,
-    }));
+export const VenueDetailsComponent: React.FC<Props> = (props) => {
+  const arrangedLessons = () => {
+    const lessons: Lesson[] = flatMap(props.availability, (day) => day.classes).map(
+      (venueLesson) => ({
+        ...venueLesson,
+        title: '',
+        isModifiable: true,
+        venue: '',
+      }),
+    );
 
     const coloredLessons = colorLessonsByKey(lessons, 'moduleCode');
     return arrangeLessonsForWeek(coloredLessons);
-  }
+  };
 
-  render() {
-    const { venue, previous, next, matchBreakpoint, history } = this.props;
+  const { venue, previous, next, matchBreakpoint, history } = props;
 
-    return (
-      <>
-        <Title description={`NUS classroom timetable for ${venue}`}>{`${venue} - Venues`}</Title>
+  return (
+    <>
+      <Title description={`NUS classroom timetable for ${venue}`}>{`${venue} - Venues`}</Title>
 
-        <header className={styles.header}>
-          <Link
-            className={classnames('btn btn-link btn-svg', {
-              disabled: !previous,
-            })}
-            to={{
-              pathname: venuePage(previous),
-              search: window.location.search,
-            }}
-          >
-            <ChevronLeft /> {previous}
-          </Link>
-          <h1>{venue}</h1>
-          <Link
-            className={classnames('btn btn-link btn-svg', {
-              disabled: !next,
-            })}
-            to={{
-              pathname: venuePage(next),
-              search: window.location.search,
-            }}
-          >
-            {next} <ChevronRight />
-          </Link>
-        </header>
+      <header className={styles.header}>
+        <Link
+          className={classnames('btn btn-link btn-svg', {
+            disabled: !previous,
+          })}
+          to={{
+            pathname: venuePage(previous),
+            search: window.location.search,
+          }}
+        >
+          <ChevronLeft /> {previous}
+        </Link>
+        <h1>{venue}</h1>
+        <Link
+          className={classnames('btn btn-link btn-svg', {
+            disabled: !next,
+          })}
+          to={{
+            pathname: venuePage(next),
+            search: window.location.search,
+          }}
+        >
+          {next} <ChevronRight />
+        </Link>
+      </header>
 
-        <div className={styles.location}>
-          <VenueLocation venue={venue} />
-        </div>
+      <div className={styles.location}>
+        <VenueLocation venue={venue} />
+      </div>
 
-        <div className={classnames(styles.timetable, { verticalMode: matchBreakpoint })}>
-          <Timetable
-            lessons={this.arrangedLessons()}
-            highlightPeriod={this.props.highlightPeriod}
-            isVerticalOrientation={matchBreakpoint}
-            onModifyCell={(lesson: Lesson) => {
-              history.push(modulePage(lesson.moduleCode, lesson.title));
-            }}
-          />
-        </div>
-      </>
-    );
-  }
-}
+      <div className={classnames(styles.timetable, { verticalMode: matchBreakpoint })}>
+        <Timetable
+          lessons={arrangedLessons()}
+          highlightPeriod={props.highlightPeriod}
+          isVerticalOrientation={matchBreakpoint}
+          onModifyCell={(lesson: Lesson) => {
+            history.push(modulePage(lesson.moduleCode, lesson.title));
+          }}
+        />
+      </div>
+    </>
+  );
+};
 
-const ResponsiveVenueDetails = makeResponsive(VenueDetailsComponent, breakpointDown('lg'));
+const ResponsiveVenueDetails = makeResponsive(
+  React.memo(VenueDetailsComponent),
+  breakpointDown('lg'),
+);
 export default withRouter(ResponsiveVenueDetails);

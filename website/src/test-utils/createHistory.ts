@@ -1,9 +1,9 @@
-import { RouteComponentProps } from 'react-router-dom';
+import type { RouteComponentProps, match as Match } from 'react-router-dom';
 // react-router-dom internal dependency, used here to construct the history
 // object needed for testing. This is not added as a dev dependency to avoid
 // version desync between the version depended on by react-router-dom
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Location, createMemoryHistory } from 'history';
+import { createMemoryHistory } from 'history';
 import _ from 'lodash';
 
 type MatchShape = {
@@ -11,22 +11,26 @@ type MatchShape = {
   isExact?: boolean;
 };
 
-type HistoryEntry = string | Partial<Location>;
+// This can also be Location, but no test case use that for now so we leave it
+// out for simplicity
+type HistoryEntry = string;
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export default function createHistory<T = {}>(
   initialEntries: HistoryEntry | Readonly<HistoryEntry[]> = '/',
   matchParams: MatchShape = {},
 ): RouteComponentProps<T> {
   const entries = _.castArray(initialEntries);
   const history = createMemoryHistory({ initialEntries: entries as any });
-  const { params = {} as T, isExact = true } = matchParams;
+  const { params = {}, isExact = true } = matchParams;
 
-  const match = {
-    params,
+  const match: Match<T> = {
+    // Not strictly type safe, but it's good enough for tests
+    params: (params as unknown) as T,
     isExact,
-    path: entries[0], // FIXME: This should be a string and not a Location/HistoryEntry/array
-    url: entries[0], // FIXME: This should be a string and not a Location/HistoryEntry/array
-  } as any;
+    path: entries[0],
+    url: entries[0],
+  };
 
   return {
     history,

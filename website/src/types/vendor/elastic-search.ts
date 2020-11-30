@@ -12,3 +12,8 @@ export interface ElasticSearchResult<T> {
   _source: T;
   highlight?: Partial<Record<StringProperties<T>, string[]>>;
 }
+
+// ElasticSearch filters are either SearchKit query builder objects (http://docs.searchkit.co/stable/core/QueryDSL.html)
+// or raw ES JSON DSL (https://www.elastic.co/guide/en/elasticsearch/reference/6.8/query-dsl.html)
+// Typing the JSON DSL is too hard, so we just use any
+export type ElasticSearchFilter = any; // eslint-disable-line @typescript-eslint/no-explicit-any

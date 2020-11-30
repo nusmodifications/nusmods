@@ -2,7 +2,6 @@
 // and assert against elements, which would be difficult to do otherwise because
 // we use CSS modules, which mangles the classnames.
 
-/* eslint-disable spaced-comment */
 const elements = {
   // Global
   timetable: 'timetable',

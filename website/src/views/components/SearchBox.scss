@@ -4,12 +4,30 @@
   position: relative;
 
   input {
-    padding: 0.8rem 1rem 0.8rem 2rem;
+    padding: 0.8rem 2rem 0.8rem 2rem;
     border-width: 0 0 1px;
     border-radius: 0;
     &:focus {
       box-shadow: none;
     }
+  }
+
+  ::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+  }
+
+  .removeInput {
+    position: absolute;
+    right: 0.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    transition: color 0.3s;
+  }
+
+  .removeInput:hover {
+    color: theme-color();
   }
 }
 
@@ -43,9 +61,14 @@
 @include media-breakpoint-down(sm) {
   .searchWrapper {
     input {
-      padding: 0.8rem 0 0.8rem 2.2rem;
+      padding: 0.8rem 1.6rem 0.8rem 2.2rem;
       border: 0;
       font-size: 1rem;
+    }
+
+    input::placeholder {
+      // For placeholder text to fully show on 320px viewports
+      overflow: visible;
     }
   }
 
@@ -60,6 +83,11 @@
     &.spinnerContainer {
       padding-bottom: 0.2rem; // Visual alignment
     }
+  }
+
+  .removeInput {
+    width: 1.4rem;
+    padding-right: 0.2rem;
   }
 }
 

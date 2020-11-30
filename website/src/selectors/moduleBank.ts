@@ -4,9 +4,9 @@ import { ModuleCode, ModuleCondensed, Semester } from 'types/modules';
 import { ModuleBank, ModuleCodeMap, ModuleSelectListItem } from 'types/reducers';
 import { SemTimetableConfig } from 'types/timetables';
 import { notNull } from 'types/utils';
-import { getRequestModuleCode } from 'actions/moduleBank';
 import { State } from 'types/state';
 import { isOngoing } from './requests';
+import { getRequestModuleCode } from '../actions/constants';
 
 const moduleCodesSelector = (state: ModuleBank) => state.moduleCodes;
 

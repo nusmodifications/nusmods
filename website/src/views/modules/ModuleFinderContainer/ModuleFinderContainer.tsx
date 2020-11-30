@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {
   Hits,
   HitsStats,
@@ -29,17 +29,20 @@ import { HIGHLIGHT_OPTIONS } from 'utils/elasticSearch';
 import config from 'config';
 import styles from './ModuleFinderContainer.scss';
 
-const esHostUrl = `${forceElasticsearchHost() || config.elasticsearchBaseUrl}/modules`;
-const searchkit = new SearchkitManager(esHostUrl);
+const esIndex = 'modules_v2';
+const esHostUrl = `${forceElasticsearchHost() || config.elasticsearchBaseUrl}/${esIndex}`;
+const searchkit = new SearchkitManager(esHostUrl, {
+  // Ensure displayed no. modules found is accurate.
+  searchUrlPath: '_search?track_total_hits=true',
+});
 
 const pageHead = <Title>Modules</Title>;
-
-/* eslint-disable no-underscore-dangle */
 
 const ModuleInformationListComponent: React.FC<HitsListProps> = ({ hits }) => (
   <ul className={styles.modulesList}>
     {hits.map((hit) => {
       const result = hit as ElasticSearchResult<ModuleInformation>;
+      /* eslint-disable no-underscore-dangle */
       return (
         <ModuleFinderItem
           key={result._source.moduleCode}
@@ -47,6 +50,7 @@ const ModuleInformationListComponent: React.FC<HitsListProps> = ({ hits }) => (
           highlight={result.highlight}
         />
       );
+      /* eslint-enable */
     })}
   </ul>
 );

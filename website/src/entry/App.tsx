@@ -3,7 +3,6 @@ import { State } from 'types/state';
 import { Persistor } from 'storage/persistReducer';
 
 import * as React from 'react';
-import { AppContainer } from 'react-hot-loader'; // eslint-disable-line import/no-extraneous-dependencies
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -11,13 +10,15 @@ import { PersistGate } from 'redux-persist/integration/react';
 import AppShell from 'views/AppShell';
 import Routes from 'views/routes/Routes';
 import { DIMENSIONS, setCustomDimensions } from 'bootstrapping/matomo';
+import ErrorBoundary from 'views/errors/ErrorBoundary';
+import ErrorPage from 'views/errors/ErrorPage';
 
 type Props = {
   store: Store<State>;
   persistor: Persistor;
 };
 
-export default function App({ store, persistor }: Props) {
+const App: React.FC<Props> = ({ store, persistor }) => {
   const onBeforeLift = () => {
     const { theme, settings } = store.getState();
 
@@ -28,7 +29,7 @@ export default function App({ store, persistor }: Props) {
   };
 
   return (
-    <AppContainer>
+    <ErrorBoundary errorPage={() => <ErrorPage showReportDialog />}>
       <Provider store={store}>
         <PersistGate persistor={persistor} onBeforeLift={onBeforeLift}>
           <Router>
@@ -38,6 +39,8 @@ export default function App({ store, persistor }: Props) {
           </Router>
         </PersistGate>
       </Provider>
-    </AppContainer>
+    </ErrorBoundary>
   );
-}
+};
+
+export default App;

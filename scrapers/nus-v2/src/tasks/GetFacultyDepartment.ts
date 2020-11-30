@@ -24,10 +24,10 @@ const abbreviationMap = {
   Stud: 'Studies',
 };
 
-const abbreviationRegex = map(
-  abbreviationMap,
-  (expanded, abbr): [RegExp, string] => [new RegExp(`\\b${escapeRegExp(abbr)}\\b`, 'gi'), expanded],
-);
+const abbreviationRegex = map(abbreviationMap, (expanded, abbr): [RegExp, string] => [
+  new RegExp(`\\b${escapeRegExp(abbr)}\\b`, 'gi'),
+  expanded,
+]);
 
 export function cleanNames(name: string): string {
   // 1. Expand all abbreviations. '&' has to be defined separately because it

@@ -21,7 +21,16 @@ module.exports = (api) => {
         exclude: ['transform-typeof-symbol'],
       },
     ],
-    ['@babel/preset-react', { development: !IS_PROD }],
+    [
+      '@babel/preset-react',
+      {
+        development: !IS_PROD,
+        // Enable JSX transform
+        // TODO: Remove in Babel 8, when this will be the default option
+        // See: https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#manual-babel-setup
+        runtime: 'automatic',
+      },
+    ],
   ];
 
   const plugins = [
@@ -30,6 +39,9 @@ module.exports = (api) => {
     // Deviate from spec, but Object.defineProperty is expensive
     // See https://github.com/facebook/create-react-app/issues/4263
     ['@babel/plugin-proposal-class-properties', { loose: true }],
+    // Let's assume document.all doesn't exist to reduce the generated code size
+    ['@babel/plugin-proposal-optional-chaining', { loose: true }],
+    ['@babel/plugin-proposal-nullish-coalescing-operator', { loose: true }],
   ];
 
   if (IS_DEV || IS_PROD) {
@@ -37,7 +49,7 @@ module.exports = (api) => {
   }
 
   if (IS_DEV) {
-    plugins.push('react-hot-loader/babel');
+    plugins.push('react-refresh/babel');
   }
 
   if (IS_PROD) {

@@ -11,8 +11,8 @@ type Props = {
 /**
  * A highlighted time period in the timetable.
  */
-function TimetableHighlight(props: Props) {
-  return <div className={classnames(styles.highlight, props.className)} style={props.style} />;
-}
+const TimetableHighlight: React.FC<Props> = (props) => (
+  <div className={classnames(styles.highlight, props.className)} style={props.style} />
+);
 
 export default TimetableHighlight;

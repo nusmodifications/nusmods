@@ -1,8 +1,6 @@
 import * as React from 'react';
 import config from 'config';
 
-/* eslint-disable */
-
 const eggs: Record<string, string> = {
   'JXg8I04=': 'JiEnPRxeXGE0PSQCAQcmMD4oHEoeITB8OwYAFiF6OCIBSRYqZH4jDAYXf2VrfUETFiw4',
   'LDQ4KAILHSEyMjkOFho=':
@@ -15,11 +13,12 @@ const k = config.brandName;
 
 const fryingPans = [
   (c: string) => c.charCodeAt(0),
-  (c: number, i: number) => c ^ k.charCodeAt(i % k.length),
+  (c: number, i: number) => c ^ k.charCodeAt(i % k.length), // eslint-disable-line no-bitwise
   String.fromCharCode,
   (c: string) => c.charAt(0),
 ];
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const cook = (query: string) => fryingPans.reduce((a, b) => a.map(b), Array.from(query)).join('');
 
@@ -28,6 +27,7 @@ export const matchEgg = (query: string) => {
     return eggs[btoa(cook(query.toLowerCase()))];
   } catch (e) {
     // Swallow error
+    return undefined;
   }
 };
 
@@ -35,10 +35,11 @@ type Props = {
   query: string;
 };
 
-export default function Omelette(props: Props) {
+const Omelette: React.FC<Props> = (props) => {
   const yolk = matchEgg(props.query);
   if (!yolk) return null;
 
+  /* eslint-disable jsx-a11y/accessible-emoji, jsx-a11y/media-has-caption */
   return (
     <>
       <p className="text-center">We did find this though ⤵️</p>
@@ -47,4 +48,7 @@ export default function Omelette(props: Props) {
       </p>
     </>
   );
-}
+  /* eslint-enable */
+};
+
+export default Omelette;

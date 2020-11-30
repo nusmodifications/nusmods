@@ -3,7 +3,7 @@ import { Droppable } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 
 import { Semester, ModuleCode } from 'types/modules';
-import { PlannerModuleInfo } from 'types/views';
+import { AddModuleData, PlannerModuleInfo } from 'types/planner';
 import config from 'config';
 import { getExamDate, renderMCs } from 'utils/modules';
 import {
@@ -22,12 +22,13 @@ type Props = Readonly<{
   semester: Semester;
   modules: PlannerModuleInfo[];
 
-  showModuleMeta: boolean;
+  showModuleMeta?: boolean;
   className?: string;
 
-  addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void;
-  removeModule: (moduleCode: ModuleCode) => void;
+  addModule: (year: string, semester: Semester, module: AddModuleData) => void;
+  removeModule: (id: string) => void;
   addCustomData: (moduleCode: ModuleCode) => void;
+  setPlaceholderModule: (id: string, moduleCode: ModuleCode) => void;
 }>;
 
 function renderSemesterMeta(plannerModules: PlannerModuleInfo[]) {
@@ -46,69 +47,77 @@ function renderSemesterMeta(plannerModules: PlannerModuleInfo[]) {
 /**
  * Component for a single column of modules for a single semester
  */
-export default class PlannerSemester extends React.PureComponent<Props> {
-  static defaultProps = {
-    showModuleMeta: true,
-  };
-
-  renderModule = (plannerModule: PlannerModuleInfo, index: number) => {
-    const { year, semester, showModuleMeta } = this.props;
-    const { moduleCode, moduleInfo, conflict } = plannerModule;
+const PlannerSemester: React.FC<Props> = ({
+  year,
+  semester,
+  modules,
+  showModuleMeta = true,
+  className,
+  addModule,
+  removeModule,
+  addCustomData,
+  setPlaceholderModule,
+}) => {
+  const renderModule = (plannerModule: PlannerModuleInfo, index: number) => {
+    const { id, moduleCode, moduleInfo, conflict, placeholder } = plannerModule;
 
     const showExamDate = showModuleMeta && config.academicYear === year;
 
     return (
       <PlannerModule
-        key={moduleCode}
+        key={id}
+        id={id}
         index={index}
         moduleCode={moduleCode}
+        placeholder={placeholder}
         moduleTitle={getModuleTitle(plannerModule)}
         examDate={showExamDate && moduleInfo ? getExamDate(moduleInfo, semester) : null}
         moduleCredit={showModuleMeta ? getModuleCredit(plannerModule) : null}
         conflict={conflict}
-        removeModule={this.props.removeModule}
-        addCustomData={this.props.addCustomData}
+        semester={semester}
+        removeModule={removeModule}
+        addCustomData={addCustomData}
+        setPlaceholderModule={setPlaceholderModule}
       />
     );
   };
 
-  render() {
-    const { year, semester, modules, showModuleMeta } = this.props;
-    const droppableId = getDroppableId(year, semester);
+  const droppableId = getDroppableId(year, semester);
 
-    return (
-      <Droppable droppableId={droppableId}>
-        {(provided, snapshot) => (
-          <div
-            className={classnames(styles.semester, this.props.className, {
-              [styles.emptyList]: modules.length === 0,
-              [styles.dragOver]: snapshot.isDraggingOver,
-            })}
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-          >
-            {modules.map(this.renderModule)}
+  return (
+    <Droppable droppableId={droppableId}>
+      {(provided, snapshot) => (
+        <div
+          className={classnames(styles.semester, className, {
+            [styles.emptyList]: modules.length === 0,
+            [styles.dragOver]: snapshot.isDraggingOver,
+          })}
+          ref={provided.innerRef}
+          {...provided.droppableProps}
+        >
+          {modules.map(renderModule)}
 
-            {provided.placeholder}
+          {provided.placeholder}
 
-            {modules.length === 0 && (
-              <p className={styles.emptyListMessage}>
-                Drop module here to add to {getSemesterName(semester)}
-              </p>
-            )}
+          {modules.length === 0 && (
+            <p className={styles.emptyListMessage}>
+              Drop module here to add to {getSemesterName(semester)}
+            </p>
+          )}
 
-            {showModuleMeta && modules.length > 0 && renderSemesterMeta(modules)}
+          {showModuleMeta && modules.length > 0 && renderSemesterMeta(modules)}
 
-            <div className={styles.addModule}>
-              <AddModule
-                year={year}
-                semester={semester}
-                onAddModule={(moduleCode) => this.props.addModule(moduleCode, year, +semester)}
-              />
-            </div>
+          <div className={styles.addModule}>
+            <AddModule
+              year={year}
+              semester={semester}
+              onAddModule={(module) => addModule(year, +semester, module)}
+            />
           </div>
-        )}
-      </Droppable>
-    );
-  }
-}
+        </div>
+      )}
+    </Droppable>
+  );
+};
+
+export default React.memo(PlannerSemester);

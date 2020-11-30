@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { isEqual } from 'lodash';
@@ -63,7 +63,7 @@ type State = {
   allowTracking: boolean;
 };
 
-class SettingsContainer extends React.Component<Props, State> {
+class SettingsContainer extends Component<Props, State> {
   state = {
     allowTracking: true,
   };
@@ -99,7 +99,7 @@ class SettingsContainer extends React.Component<Props, State> {
       );
 
       return (
-        <React.Fragment key={round.type}>
+        <Fragment key={round.type}>
           <h5>
             {round.type} {round.name ? `(Round ${round.name})` : ''}
           </h5>
@@ -125,7 +125,7 @@ class SettingsContainer extends React.Component<Props, State> {
               </button>
             </div>
           </div>
-        </React.Fragment>
+        </Fragment>
       );
     });
   }
@@ -323,19 +323,16 @@ const mapStateToProps = (state: StoreState) => ({
   modRegNotification: state.settings.modRegNotification,
 });
 
-const connectedSettings = connect(
-  mapStateToProps,
-  {
-    selectTheme,
-    selectFaculty,
-    selectMode,
-    toggleBetaTesting,
-    setLoadDisqusManually,
-    toggleModRegNotificationGlobally,
-    dismissModregNotification,
-    enableModRegNotification,
-    setModRegScheduleType,
-  },
-)(SettingsContainer);
+const connectedSettings = connect(mapStateToProps, {
+  selectTheme,
+  selectFaculty,
+  selectMode,
+  toggleBetaTesting,
+  setLoadDisqusManually,
+  toggleModRegNotificationGlobally,
+  dismissModregNotification,
+  enableModRegNotification,
+  setModRegScheduleType,
+})(SettingsContainer);
 
 export default deferComponentRender(connectedSettings);

@@ -105,37 +105,37 @@ $route-colors: (
 
 // Define a color for each route
 .routeA1 {
-  background: map-get($route-colors, A);
+  background: map-get($route-colors, 'A');
 }
 
 .routeA2 {
-  background: darken(map-get($route-colors, A), 12);
+  background: darken(map-get($route-colors, 'A'), 12);
 }
 
 .routeB1 {
-  background: map-get($route-colors, B);
+  background: map-get($route-colors, 'B');
 }
 
 .routeB2 {
-  background: lighten(map-get($route-colors, B), 15);
+  background: lighten(map-get($route-colors, 'B'), 15);
 }
 
 .routeC {
-  background: map-get($route-colors, C);
+  background: map-get($route-colors, 'C');
 }
 
 .routeD1 {
-  background: map-get($route-colors, D);
+  background: map-get($route-colors, 'D');
 }
 
 .routeD2 {
-  background: lighten(map-get($route-colors, D), 10);
+  background: lighten(map-get($route-colors, 'D'), 10);
 }
 
 .routeBTC1 {
-  background: map-get($route-colors, BTC);
+  background: map-get($route-colors, 'BTC');
 }
 
 .routeBTC2 {
-  background: lighten(map-get($route-colors, BTC), 15);
+  background: lighten(map-get($route-colors, 'BTC'), 15);
 }

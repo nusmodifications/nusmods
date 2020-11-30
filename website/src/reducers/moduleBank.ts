@@ -11,9 +11,10 @@ import {
 } from 'actions/constants';
 import { createMigrate, REHYDRATE } from 'redux-persist';
 import { Module } from 'types/modules';
-import { ModuleBank, ModuleList, SUCCESS } from 'types/reducers';
+import { ModuleBank, ModuleList } from 'types/reducers';
+import { SUCCESS_KEY } from 'middlewares/requests-middleware';
 
-import { FSA } from 'types/redux';
+import { Actions } from 'types/actions';
 
 const defaultModuleBankState: ModuleBank = {
   moduleList: [], // List of basic modules data (module code, name, semester)
@@ -25,14 +26,17 @@ const defaultModuleBankState: ModuleBank = {
 
 function precomputeFromModuleList(moduleList: ModuleList) {
   // Cache a mapping of all module codes to module data for fast module data lookup
-  const moduleCodes = zipObject(moduleList.map((module) => module.moduleCode), moduleList);
+  const moduleCodes = zipObject(
+    moduleList.map((module) => module.moduleCode),
+    moduleList,
+  );
 
   return { moduleCodes };
 }
 
-function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): ModuleBank {
+function moduleBank(state: ModuleBank = defaultModuleBankState, action: Actions): ModuleBank {
   switch (action.type) {
-    case FETCH_MODULE_LIST + SUCCESS:
+    case SUCCESS_KEY(FETCH_MODULE_LIST):
       return {
         ...state,
         ...precomputeFromModuleList(action.payload),
@@ -40,12 +44,12 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
         apiLastUpdatedTimestamp: action.meta && action.meta.responseHeaders['last-modified'],
       };
 
-    case FETCH_MODULE + SUCCESS:
+    case SUCCESS_KEY(FETCH_MODULE):
       return {
         ...state,
         modules: {
           ...state.modules,
-          [action.payload.moduleCode]: action.payload,
+          [action.payload.moduleCode]: { ...action.payload, timestamp: Date.now() },
         },
       };
 
@@ -69,14 +73,14 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: FSA): Mo
       };
     }
 
-    case FETCH_ARCHIVE_MODULE + SUCCESS: {
+    case SUCCESS_KEY(FETCH_ARCHIVE_MODULE): {
       const { meta } = action;
       if (!meta) {
         return state;
       }
 
       // Type hack to get this to work with the assignment below
-      const module: Draft<Module> = action.payload;
+      const module = { ...action.payload, timestamp: Date.now() } as Draft<Module>;
       return produce(state, (draft) => {
         if (!draft.moduleArchive[module.moduleCode]) {
           draft.moduleArchive[module.moduleCode] = {};
@@ -120,6 +124,11 @@ export const persistConfig = {
       ...state,
       modules: {},
       moduleList: [],
+      // FIXME: Remove the next line when _persist is optional again.
+      // Cause: https://github.com/rt2zz/redux-persist/pull/919
+      // Issue: https://github.com/rt2zz/redux-persist/pull/1170
+      // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
+      _persist: state?._persist!,
     }),
   }),
 };

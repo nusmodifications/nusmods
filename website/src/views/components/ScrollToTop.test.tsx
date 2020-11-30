@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { mount, ReactWrapper } from 'enzyme';
 import mockDom from 'test-utils/mockDom';

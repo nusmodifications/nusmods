@@ -1,11 +1,11 @@
-import * as React from 'react';
+import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { flatMap, flatten, sortBy, toPairs, values } from 'lodash';
 import { DragDropContext, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 
 import { Module, ModuleCode, Semester } from 'types/modules';
-import { PlannerModuleInfo, PlannerModulesWithInfo } from 'types/views';
+import { PlannerModulesWithInfo, PlannerModuleInfo, AddModuleData } from 'types/planner';
 import { MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
 import {
   EXEMPTION_SEMESTER,
@@ -16,7 +16,12 @@ import {
   PLAN_TO_TAKE_SEMESTER,
   PLAN_TO_TAKE_YEAR,
 } from 'utils/planner';
-import { addPlannerModule, movePlannerModule, removePlannerModule } from 'actions/planner';
+import {
+  addPlannerModule,
+  movePlannerModule,
+  removePlannerModule,
+  setPlaceholderModule,
+} from 'actions/planner';
 import { toggleFeedback } from 'actions/app';
 import { fetchModule } from 'actions/moduleBank';
 import { getAcadYearModules, getExemptions, getIBLOCs, getPlanToTake } from 'selectors/planner';
@@ -32,26 +37,22 @@ import CustomModuleForm from '../CustomModuleForm';
 
 import styles from './PlannerContainer.scss';
 
-export type Props = {
-  readonly modules: PlannerModulesWithInfo;
-  readonly exemptions: PlannerModuleInfo[];
-  readonly planToTake: PlannerModuleInfo[];
-  readonly iblocsModules: PlannerModuleInfo[];
-  readonly iblocs: boolean;
+export type Props = Readonly<{
+  modules: PlannerModulesWithInfo;
+  exemptions: PlannerModuleInfo[];
+  planToTake: PlannerModuleInfo[];
+  iblocsModules: PlannerModuleInfo[];
+  iblocs: boolean;
 
   // Actions
-  readonly fetchModule: (moduleCode: ModuleCode) => Promise<Module>;
-  readonly toggleFeedback: () => void;
+  fetchModule: (moduleCode: ModuleCode) => Promise<Module>;
+  toggleFeedback: () => void;
 
-  readonly addModule: (moduleCode: ModuleCode, year: string, semester: Semester) => void;
-  readonly moveModule: (
-    moduleCode: ModuleCode,
-    year: string,
-    semester: Semester,
-    index: number,
-  ) => void;
-  readonly removeModule: (moduleCode: ModuleCode) => void;
-};
+  addModule: (year: string, semester: Semester, module: AddModuleData) => void;
+  moveModule: (id: string, year: string, semester: Semester, index: number) => void;
+  removeModule: (id: string) => void;
+  setPlaceholderModule: (id: string, moduleCode: ModuleCode) => void;
+}>;
 
 type SemesterModules = { [semester: string]: PlannerModuleInfo[] };
 
@@ -64,7 +65,7 @@ type State = {
 
 const TRASH_ID = 'trash';
 
-export class PlannerContainerComponent extends React.PureComponent<Props, State> {
+export class PlannerContainerComponent extends PureComponent<Props, State> {
   state: State = {
     loading: true,
     showSettings: false,
@@ -89,16 +90,20 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
     ).then(() => this.setState({ loading: false }));
   }
 
-  onAddModule = (input: string, year: string, semester: Semester) => {
-    // Extract everything that looks like a module code
-    const moduleCodes = input.toUpperCase().match(MODULE_CODE_REGEX);
+  onAddModule = (year: string, semester: Semester, module: AddModuleData) => {
+    if (module.type === 'module') {
+      // Extract everything that looks like a module code
+      const moduleCodes = module.moduleCode.toUpperCase().match(MODULE_CODE_REGEX);
 
-    if (moduleCodes) {
-      moduleCodes.forEach((moduleCode) => {
-        this.props.addModule(moduleCode, year, semester);
-        // TODO: Handle error
-        this.props.fetchModule(moduleCode);
-      });
+      if (moduleCodes) {
+        moduleCodes.forEach((moduleCode) => {
+          this.props.addModule(year, semester, { type: 'module', moduleCode });
+          // TODO: Handle error
+          this.props.fetchModule(moduleCode);
+        });
+      }
+    } else {
+      this.props.addModule(year, semester, module);
     }
   };
 
@@ -121,6 +126,11 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
       showCustomModule: moduleCode,
     });
 
+  onSetPlaceholderModule = (id: string, moduleCode: ModuleCode) => {
+    this.props.setPlaceholderModule(id, moduleCode);
+    this.props.fetchModule(moduleCode);
+  };
+
   closeAddCustomData = () => this.setState({ showCustomModule: null });
 
   renderHeader() {
@@ -141,7 +151,11 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
           </button>
         </h1>
 
-        <div>
+        <div className={styles.headerRight}>
+          <p className={styles.moduleStats}>
+            {count} {count === 1 ? 'module' : 'modules'} / {renderMCs(credits)}
+          </p>
+
           <button
             className="btn btn-svg btn-outline-primary"
             type="button"
@@ -149,9 +163,6 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
           >
             <Settings className="svg" /> Settings
           </button>
-          <p>
-            {count} {count === 1 ? 'module' : 'modules'} / {renderMCs(credits)}
-          </p>
         </div>
       </header>
     );
@@ -172,6 +183,13 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
       (pairs) => pairs[0],
     );
 
+    const commonProps = {
+      addModule: this.onAddModule,
+      addCustomData: this.onAddCustomData,
+      setPlaceholderModule: this.onSetPlaceholderModule,
+      removeModule: this.props.removeModule,
+    };
+
     return (
       <div className={styles.pageContainer}>
         <Title>Module Planner</Title>
@@ -187,9 +205,7 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
                   year={subtractAcadYear(sortedModules[0][0])}
                   semester={IBLOCS_SEMESTER}
                   modules={iblocsModules}
-                  addModule={this.onAddModule}
-                  removeModule={this.props.removeModule}
-                  addCustomData={this.onAddCustomData}
+                  {...commonProps}
                 />
               </section>
             )}
@@ -200,9 +216,7 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
                 name={`Year ${index + 1}`}
                 year={year}
                 semesters={semesters}
-                addModule={this.onAddModule}
-                removeModule={this.props.removeModule}
-                addCustomData={this.onAddCustomData}
+                {...commonProps}
               />
             ))}
           </div>
@@ -214,10 +228,8 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
                 year={EXEMPTION_YEAR}
                 semester={EXEMPTION_SEMESTER}
                 modules={exemptions}
-                addModule={this.onAddModule}
-                removeModule={this.props.removeModule}
                 showModuleMeta={false}
-                addCustomData={this.onAddCustomData}
+                {...commonProps}
               />
             </section>
 
@@ -227,9 +239,7 @@ export class PlannerContainerComponent extends React.PureComponent<Props, State>
                 year={PLAN_TO_TAKE_YEAR}
                 semester={PLAN_TO_TAKE_SEMESTER}
                 modules={planToTake}
-                addModule={this.onAddModule}
-                removeModule={this.props.removeModule}
-                addCustomData={this.onAddCustomData}
+                {...commonProps}
               />
             </section>
 
@@ -287,15 +297,13 @@ const mapStateToProps = (state: StoreState) => ({
   iblocsModules: getIBLOCs(state),
 });
 
-const PlannerContainer = connect(
-  mapStateToProps,
-  {
-    fetchModule,
-    toggleFeedback,
-    addModule: addPlannerModule,
-    moveModule: movePlannerModule,
-    removeModule: removePlannerModule,
-  },
-)(PlannerContainerComponent);
+const PlannerContainer = connect(mapStateToProps, {
+  fetchModule,
+  toggleFeedback,
+  setPlaceholderModule,
+  addModule: addPlannerModule,
+  moveModule: movePlannerModule,
+  removeModule: removePlannerModule,
+})(PlannerContainerComponent);
 
 export default PlannerContainer;

@@ -1,0 +1,4 @@
+fixes:
+  # For now we only report website coverage, and since tests are run directly in
+  # the /website folder we need to add this
+  - "::website/"

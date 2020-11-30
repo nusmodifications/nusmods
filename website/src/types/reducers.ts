@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import { RegPeriodType, ScheduleType } from 'config';
 
 import { Mode } from './settings';
@@ -10,7 +11,6 @@ import {
   SearchableModule,
   Semester,
 } from './modules';
-import { CustomModuleData, ModuleTime } from './planner';
 import { VenueList } from './venues';
 
 /* app.js */
@@ -61,13 +61,13 @@ export type AppState = {
 export type RequestKey = string;
 
 export type ApiStatus = '_REQUEST' | '_SUCCESS' | '_FAILURE';
-export const REQUEST = '_REQUEST';
-export const SUCCESS = '_SUCCESS';
-export const FAILURE = '_FAILURE';
+export const REQUEST = '_REQUEST' as const;
+export const SUCCESS = '_SUCCESS' as const;
+export const FAILURE = '_FAILURE' as const;
 
 export type FetchRequest = {
   status: ApiStatus;
-  error?: any;
+  error?: AxiosError;
 };
 
 export type Requests = { [requestKey: string]: FetchRequest };
@@ -126,20 +126,45 @@ export type TimetablesState = {
 // VenueList is defined in venues.js
 
 /* planner.js */
-// Also see moduleReducers.ts
+// The year, semester the module will be taken in, and the order
+// it appears on the list for the semester
+export type PlannerTime = {
+  // The key in PlannerState.modules
+  id: string;
+
+  // The year, semester and zero-indexed position of the module in the planner
+  year: string;
+  semester: Semester;
+  index: number;
+
+  // Technically this should be { moduleCode } | { moduleCode?, placeholderId }
+  // that is, it should either have a placeholder ID and maybe a module code
+  // or a module code, but because TS handles union types poorly we're just
+  // merging the two here
+  moduleCode?: ModuleCode;
+  placeholderId?: string;
+};
+
+export type CustomModule = {
+  // For modules which the school no longer offers, we let students
+  // key in the name and MCs manually
+  readonly title?: string | null;
+  readonly moduleCredit: number;
+};
+
+export type CustomModuleData = {
+  [moduleCode: string]: CustomModule;
+};
 
 // Mapping modules to when they will be taken
-export type PlannerState = {
-  readonly minYear: string;
-  readonly maxYear: string;
-  readonly iblocs: boolean;
+export type PlannerState = Readonly<{
+  minYear: string;
+  maxYear: string;
+  iblocs: boolean;
 
-  readonly modules: {
-    [moduleCode: string]: ModuleTime;
-  };
-
-  readonly custom: CustomModuleData;
-};
+  modules: { [id: string]: PlannerTime };
+  custom: CustomModuleData;
+}>;
 
 /* moduleBank.js */
 export type ModuleSelectListItem = SearchableModule & {
@@ -173,10 +198,10 @@ export type ModuleBank = {
 /**
  * undoHistory types
  */
-export type UndoHistoryState = {
-  past: Record<string, any>[];
-  present: Record<string, any> | undefined;
-  future: Record<string, any>[];
+export type UndoHistoryState<T extends { undoHistory: UndoHistoryState<T> }> = {
+  past: Partial<T>[];
+  present: Partial<T> | undefined;
+  future: Partial<T>[];
 };
 
 /**

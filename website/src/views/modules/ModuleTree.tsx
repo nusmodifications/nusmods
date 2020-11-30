@@ -27,19 +27,17 @@ const nodeName = (node: PrereqTree) => (typeof node === 'string' ? node : Object
 const unwrapLayer = (node: PrereqTree) =>
   typeof node === 'string' ? [node] : flatten(values(node).filter(notNull));
 
-function Branch(props: { nodes: PrereqTree[]; layer: number }) {
-  return (
-    <ul className={styles.tree}>
-      {props.nodes.map((child) => (
-        <li className={styles.branch} key={nodeName(child)}>
-          <Tree node={child} layer={props.layer} />
-        </li>
-      ))}
-    </ul>
-  );
-}
+const Branch: React.FC<{ nodes: PrereqTree[]; layer: number }> = (props) => (
+  <ul className={styles.tree}>
+    {props.nodes.map((child) => (
+      <li className={styles.branch} key={nodeName(child)}>
+        <Tree node={child} layer={props.layer} />
+      </li>
+    ))}
+  </ul>
+);
 
-function Tree(props: TreeDisplay) {
+const Tree: React.FC<TreeDisplay> = (props) => {
   const { layer, node, isPrereq } = props;
 
   const isConditional = typeof node !== 'string';
@@ -64,36 +62,46 @@ function Tree(props: TreeDisplay) {
       {isConditional && <Branch nodes={unwrapLayer(node)} layer={layer + 1} />}
     </>
   );
-}
+};
 
-function ModuleTree(props: Props) {
+const ModuleTree: React.FC<Props> = (props) => {
   const { fulfillRequirements, prereqTree, moduleCode } = props;
 
   return (
-    <div className={styles.container}>
-      {fulfillRequirements && fulfillRequirements.length > 0 && (
-        <>
-          <ul className={styles.prereqTree}>
-            {fulfillRequirements.map((fulfilledModule) => (
-              <li key={fulfilledModule} className={classnames(styles.branch, styles.prereqBranch)}>
-                <Tree layer={0} node={fulfilledModule} isPrereq />
-              </li>
-            ))}
-          </ul>
+    <>
+      <div className={styles.container}>
+        {fulfillRequirements && fulfillRequirements.length > 0 && (
+          <>
+            <ul className={styles.prereqTree}>
+              {fulfillRequirements.map((fulfilledModule) => (
+                <li
+                  key={fulfilledModule}
+                  className={classnames(styles.branch, styles.prereqBranch)}
+                >
+                  <Tree layer={0} node={fulfilledModule} isPrereq />
+                </li>
+              ))}
+            </ul>
 
-          <div className={classnames(styles.node, styles.conditional)}>needs</div>
-        </>
-      )}
+            <div className={classnames(styles.node, styles.conditional)}>needs</div>
+          </>
+        )}
 
-      <ul className={classnames(styles.tree, styles.root)}>
-        <li className={classnames(styles.branch)}>
-          <Tree layer={1} node={moduleCode} />
+        <ul className={classnames(styles.tree, styles.root)}>
+          <li className={classnames(styles.branch)}>
+            <Tree layer={1} node={moduleCode} />
 
-          {prereqTree && <Branch nodes={[prereqTree]} layer={2} />}
-        </li>
-      </ul>
-    </div>
+            {prereqTree && <Branch nodes={[prereqTree]} layer={2} />}
+          </li>
+        </ul>
+      </div>
+
+      <p className="alert alert-warning">
+        The prerequisite tree is displayed for visualization purposes and may not be accurate.
+        Viewers are encouraged to double check details.
+      </p>
+    </>
   );
-}
+};
 
 export default ModuleTree;

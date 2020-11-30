@@ -36,8 +36,7 @@ export function deltas(numbers: readonly number[]): number[] {
   if (typeof previous !== 'number') return result;
 
   numbers.slice(1).forEach((element) => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    result.push(element - previous!);
+    result.push(element - previous);
     previous = element;
   });
 

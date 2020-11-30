@@ -1,5 +1,5 @@
 import { DisqusConfig } from 'types/views';
-import * as React from 'react';
+import { PureComponent } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
@@ -14,7 +14,7 @@ import styles from './DisqusComments.scss';
 type Props = DisqusConfig & {
   // Disqus autodetects page background color so that its own font color has
   // enough contrast to be read, but only when the widget is loaded, so we use
-  // this to force the widget after night mode is activated or deactivated
+  // this to reload the widget after night mode is activated or deactivated
   mode: Mode;
 
   loadDisqusManually: boolean;
@@ -26,10 +26,11 @@ type State = {
 
 const SCRIPT_ID = 'dsq-embed-scr';
 
-class DisqusComments extends React.PureComponent<Props, State> {
+class DisqusComments extends PureComponent<Props, State> {
   state = {
     allowDisqus: false,
   };
+
   componentDidMount() {
     this.loadInstance();
   }
@@ -37,15 +38,13 @@ class DisqusComments extends React.PureComponent<Props, State> {
   componentDidUpdate(prevProps: Props) {
     // Wait a bit for the page colors to change before reloading instance
     // 2 second delay is found empirically, and is longer than necessary to
-    // account for lag is slower user agents
+    // account for lag in slower user agents
     if (prevProps.mode !== this.props.mode) {
       setTimeout(this.loadInstance, 2000);
     } else {
       this.loadInstance();
     }
   }
-
-  /* eslint-disable @typescript-eslint/camelcase */
 
   loadInstance = () => {
     if (this.props.loadDisqusManually && !this.state.allowDisqus) return;
@@ -59,8 +58,8 @@ class DisqusComments extends React.PureComponent<Props, State> {
     } else {
       // Inject the Disqus script if we're loading it for the first time, ie. when
       // window.DISQUS is not set
-      window.disqus_config = this.getDisqusConfig();
-      window.disqus_shortname = config.disqusShortname;
+      window.disqus_config = this.getDisqusConfig(); // eslint-disable-line camelcase
+      window.disqus_shortname = config.disqusShortname; // eslint-disable-line camelcase
 
       insertScript(`https://${config.disqusShortname}.disqus.com/embed.js`, {
         id: SCRIPT_ID,
@@ -68,8 +67,6 @@ class DisqusComments extends React.PureComponent<Props, State> {
       }).catch(getScriptErrorHandler('Disqus comments'));
     }
   };
-
-  /* eslint-enable */
 
   getDisqusConfig() {
     // Disqus is configured using a function that modifies 'this', so we cannot use

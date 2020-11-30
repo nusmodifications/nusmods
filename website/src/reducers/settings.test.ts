@@ -1,4 +1,3 @@
-import { FSA } from 'types/redux';
 import { SettingsState } from 'types/reducers';
 import produce from 'immer';
 
@@ -42,29 +41,29 @@ describe('settings', () => {
   });
 
   test('can select new student', () => {
-    const action: FSA = actions.selectNewStudent(true);
+    const action = actions.selectNewStudent(true);
     const nextState: SettingsState = reducer(initialState, action);
     expect(nextState).toEqual(settingsWithNewStudent);
   });
 
   test('can select faculty', () => {
-    const action: FSA = actions.selectFaculty(faculty);
+    const action = actions.selectFaculty(faculty);
     const nextState: SettingsState = reducer(initialState, action);
     expect(nextState).toEqual(settingsWithFaculty);
   });
 
   test('can select mode', () => {
-    const action: FSA = actions.selectMode(DARK_MODE);
+    const action = actions.selectMode(DARK_MODE);
     const nextState: SettingsState = reducer(initialState, action);
     expect(nextState).toEqual(settingsWithDarkMode);
 
-    const action2: FSA = actions.selectMode(LIGHT_MODE);
+    const action2 = actions.selectMode(LIGHT_MODE);
     const nextState2: SettingsState = reducer(nextState, action2);
     expect(nextState2).toEqual(initialState);
   });
 
   test('can toggle mode', () => {
-    const action: FSA = actions.toggleMode();
+    const action = actions.toggleMode();
     const nextState: SettingsState = reducer(initialState, action);
     expect(nextState).toEqual(settingsWithDarkMode);
 

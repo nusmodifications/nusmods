@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import * as React from 'react';
+import { useState, useRef } from 'react';
 import Downshift, { DownshiftState, StateChangeOptions } from 'downshift';
 import { ListProps } from 'searchkit';
 import classnames from 'classnames';
@@ -89,6 +90,7 @@ const DesktopFilter: React.FC<DisplayProps> = ({
     <Downshift
       onOuterClick={onOuterClick}
       onChange={(selectedItem, { clearSelection }) => {
+        if (!selectedItem) return;
         onSelectItem(selectedItem);
         clearSelection();
       }}

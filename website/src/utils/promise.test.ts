@@ -13,10 +13,7 @@ describe('#retry()', () => {
     const mockFailingFn = jest.fn().mockReturnValue(Promise.reject(error));
 
     // Retry once
-    const shouldRetry = jest
-      .fn()
-      .mockReturnValueOnce(true)
-      .mockReturnValue(false);
+    const shouldRetry = jest.fn().mockReturnValueOnce(true).mockReturnValue(false);
 
     await expect(retry(3, mockFailingFn, shouldRetry)).rejects.toThrow(error);
     expect(mockFailingFn).toHaveBeenCalledTimes(2);

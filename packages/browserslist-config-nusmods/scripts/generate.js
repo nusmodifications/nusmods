@@ -97,6 +97,4 @@ async function output(stats) {
   ]);
 }
 
-fetch()
-  .then(process)
-  .then(output);
+fetch().then(process).then(output);

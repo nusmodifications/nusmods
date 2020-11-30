@@ -1,8 +1,8 @@
 import { ModuleCode, Semester } from 'types/modules';
-import { FSA } from 'types/redux';
-import { CustomModule } from 'types/planner';
+import { AddModuleData } from 'types/planner';
+import { CustomModule } from 'types/reducers';
 
-export const SET_PLANNER_MIN_YEAR = 'SET_PLANNER_MIN_YEAR';
+export const SET_PLANNER_MIN_YEAR = 'SET_PLANNER_MIN_YEAR' as const;
 export function setPlannerMinYear(year: string) {
   return {
     type: SET_PLANNER_MIN_YEAR,
@@ -10,7 +10,7 @@ export function setPlannerMinYear(year: string) {
   };
 }
 
-export const SET_PLANNER_MAX_YEAR = 'SET_PLANNER_MAX_YEAR';
+export const SET_PLANNER_MAX_YEAR = 'SET_PLANNER_MAX_YEAR' as const;
 export function setPlannerMaxYear(year: string) {
   return {
     type: SET_PLANNER_MAX_YEAR,
@@ -18,7 +18,7 @@ export function setPlannerMaxYear(year: string) {
   };
 }
 
-export const SET_PLANNER_IBLOCS = 'SET_PLANNER_IBLOCS';
+export const SET_PLANNER_IBLOCS = 'SET_PLANNER_IBLOCS' as const;
 export function setPlannerIBLOCs(iblocs: boolean) {
   return {
     type: SET_PLANNER_IBLOCS,
@@ -26,54 +26,54 @@ export function setPlannerIBLOCs(iblocs: boolean) {
   };
 }
 
-export const ADD_PLANNER_MODULE = 'ADD_PLANNER_MODULE';
-export function addPlannerModule(
-  moduleCode: ModuleCode,
-  year: string,
-  semester: Semester,
-  index: number | null = null,
-): FSA {
+export const ADD_PLANNER_MODULE = 'ADD_PLANNER_MODULE' as const;
+export function addPlannerModule(year: string, semester: Semester, module: AddModuleData) {
   return {
     type: ADD_PLANNER_MODULE,
     payload: {
       year,
       semester,
-      moduleCode,
-      index,
+      ...module,
     },
   };
 }
 
-export const MOVE_PLANNER_MODULE = 'MOVE_PLANNER_MODULE';
-export function movePlannerModule(
-  moduleCode: ModuleCode,
-  year: string,
-  semester: Semester,
-  index: number | null = null,
-): FSA {
+export const MOVE_PLANNER_MODULE = 'MOVE_PLANNER_MODULE' as const;
+export function movePlannerModule(id: string, year: string, semester: Semester, index: number) {
   return {
     type: MOVE_PLANNER_MODULE,
     payload: {
+      id,
       year,
       semester,
-      moduleCode,
       index,
     },
   };
 }
 
-export const REMOVE_PLANNER_MODULE = 'REMOVE_PLANNER_MODULE';
-export function removePlannerModule(moduleCode: ModuleCode): FSA {
+export const REMOVE_PLANNER_MODULE = 'REMOVE_PLANNER_MODULE' as const;
+export function removePlannerModule(id: string) {
   return {
     type: REMOVE_PLANNER_MODULE,
     payload: {
+      id,
+    },
+  };
+}
+
+export const SET_PLACEHOLDER_MODULE = 'SET_PLACEHOLDER_MODULE' as const;
+export function setPlaceholderModule(id: string, moduleCode: ModuleCode) {
+  return {
+    type: SET_PLACEHOLDER_MODULE,
+    payload: {
+      id,
       moduleCode,
     },
   };
 }
 
-export const ADD_CUSTOM_PLANNER_DATA = 'ADD_CUSTOM_PLANNER_DATA';
-export function addCustomModule(moduleCode: ModuleCode, data: CustomModule): FSA {
+export const ADD_CUSTOM_PLANNER_DATA = 'ADD_CUSTOM_PLANNER_DATA' as const;
+export function addCustomModule(moduleCode: ModuleCode, data: CustomModule) {
   return {
     type: ADD_CUSTOM_PLANNER_DATA,
     payload: { moduleCode, data },

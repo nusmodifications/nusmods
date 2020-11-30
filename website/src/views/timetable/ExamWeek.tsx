@@ -1,17 +1,20 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { range } from 'lodash';
+import { isSameDay, addDays } from 'date-fns';
 
 import { ModuleWithColor, ModuleWithExamTime, TIME_SEGMENTS } from 'types/views';
 import { formatExamDate } from 'utils/modules';
-import { daysAfter } from 'utils/timify';
 import { modulePage } from 'views/routes/paths';
+import useCurrentTime from 'views/hooks/useCurrentTime';
+
 import styles from 'views/timetable/ExamCalendar.scss';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 type Props = {
-  modules: { [key: string]: ModuleWithExamTime[] };
+  // Map of exam dates to modules with the same exam
+  modules: Record<string, ModuleWithExamTime[]>;
   weekNumber: number;
   firstDayOfExams: Date;
   days: number;
@@ -21,30 +24,29 @@ function getExamDate(date: Date): string {
   return formatExamDate(date.toISOString()).split(' ')[0];
 }
 
-function ExamModule({ module }: { module: ModuleWithColor }) {
-  return (
-    <Link
-      to={modulePage(module.moduleCode, module.title)}
-      className={`hoverable color-${module.colorIndex}`}
-    >
-      <div className={styles.moduleCode}>{module.moduleCode}</div>
-      <div className={styles.moduleTitle}>{module.title}</div>
-    </Link>
-  );
-}
+const ExamModule: React.FC<{ module: ModuleWithColor }> = ({ module }) => (
+  <Link
+    to={modulePage(module.moduleCode, module.title)}
+    className={`hoverable color-${module.colorIndex}`}
+  >
+    <div className={styles.moduleCode}>{module.moduleCode}</div>
+    <div className={styles.moduleTitle}>{module.title}</div>
+  </Link>
+);
 
-export default function ExamWeek(props: Props) {
+const ExamWeekComponent: React.FC<Props> = (props) => {
   const { modules, weekNumber, firstDayOfExams, days } = props;
+  const currentTime = useCurrentTime();
 
   // Array of dates to display
-  const dayDates = range(days).map((offset) => daysAfter(firstDayOfExams, weekNumber * 7 + offset));
+  const dayDates = range(days).map((offset) => addDays(firstDayOfExams, weekNumber * 7 + offset));
 
   // Start counting months using the last day of the previous week, or null if
   // this is the very first week, so the month always gets displayed on the
   // first cell
   const lastDayOfLastWeekOffset = (weekNumber - 1) * 7 + days - 1;
   let currentMonth =
-    weekNumber === 0 ? null : daysAfter(firstDayOfExams, lastDayOfLastWeekOffset).getMonth();
+    weekNumber === 0 ? null : addDays(firstDayOfExams, lastDayOfLastWeekOffset).getMonth();
 
   // Each week consists of a header row and three module rows, one for each possible time segment
   const headerRow = (
@@ -56,10 +58,10 @@ export default function ExamWeek(props: Props) {
           examDateString = `${MONTHS[date.getUTCMonth()]} ${examDateString}`;
           currentMonth = date.getMonth();
         }
-
         return (
           <th className={styles.dayDate} key={examDateString}>
             <time dateTime={date.toDateString()}>{examDateString}</time>
+            {isSameDay(currentTime, date) && <span className={styles.todayBadge}>Today</span>}
           </th>
         );
       })}
@@ -97,4 +99,6 @@ export default function ExamWeek(props: Props) {
       {moduleRows}
     </>
   );
-}
+};
+
+export default ExamWeekComponent;

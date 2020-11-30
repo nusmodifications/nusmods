@@ -14,7 +14,7 @@ import { cacheDownload, getTermCode } from '../utils/api';
 import { validateExam, validateSemester } from '../services/validation';
 import { NotFoundError } from '../utils/errors';
 
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable camelcase */
 
 /**
  * Extract the part of the raw ModuleExam that is used in SemesterData
@@ -101,7 +101,10 @@ export default class GetSemesterExams extends BaseTask implements Task<void, Out
       this.logger.warn({ invalidExams }, `Removed invalid exams`);
     }
 
-    const exams = mapValues(keyBy(validExams, (exam) => exam.module), mapExamInfo);
+    const exams = mapValues(
+      keyBy(validExams, (exam) => exam.module),
+      mapExamInfo,
+    );
     this.logger.info(`Downloaded ${rawExams.length} exams`);
 
     return exams;

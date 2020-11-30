@@ -25,7 +25,12 @@ describe(sortVenues, () => {
         b1: [],
         B2: [],
       }),
-    ).toEqual([['A1', []], ['a2', []], ['b1', []], ['B2', []]]);
+    ).toEqual([
+      ['A1', []],
+      ['a2', []],
+      ['b1', []],
+      ['B2', []],
+    ]);
   });
 
   test('sort venues using natual sorting', () => {

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Redirect } from 'react-router-dom';
 
@@ -18,15 +17,12 @@ const CANONICAL = '/modules/CS1010S/programming-methodology';
 type MakeContainerOptions = {
   module: Module | null;
   fetchModule: () => Promise<any>;
-  moduleExists: boolean;
-  archiveYear?: string;
 };
 
-function make(moduleCode: ModuleCode, url: string, options: Partial<MakeContainerOptions>) {
+function make(moduleCode: ModuleCode, url: string, options: Partial<MakeContainerOptions> = {}) {
   const props: MakeContainerOptions = {
     module: null,
     fetchModule: () => Promise.resolve(),
-    moduleExists: true,
     ...options,
   };
 
@@ -42,7 +38,7 @@ function assertRedirect(component: ShallowWrapper, redirectTo = CANONICAL) {
 
 describe(ModulePageContainerComponent, () => {
   test('should show 404 page when the module code does not exist', () => {
-    const wrapper = make('CS1234', '/modules/CS1234', { moduleExists: false });
+    const wrapper = make('CS1234', '/modules/CS1234');
     wrapper.setState({ error: { response: { status: 404 } } });
     expect(wrapper.type()).toEqual(ModuleNotFoundPage);
   });
@@ -52,10 +48,6 @@ describe(ModulePageContainerComponent, () => {
       make('CS1010S', '/modules/cs1010s/programming-methodology', { module: CS1010S }),
     );
     assertRedirect(make('CS1010S', '/modules/CS1010S', { module: CS1010S }));
-    assertRedirect(
-      make('CS1010S', '/archive/CS1010S', { module: CS1010S, archiveYear: '2017/2018' }),
-      '/archive/CS1010S/2017-2018/programming-methodology',
-    );
   });
 
   test('should fetch module', () => {

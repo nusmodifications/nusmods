@@ -1,4 +1,4 @@
-import { History, LocationDescriptorObject, createPath } from 'history'; // eslint-disable-line import/no-extraneous-dependencies
+import { History, LocationDescriptorObject, LocationState, createPath } from 'history'; // eslint-disable-line import/no-extraneous-dependencies
 
 /**
  * Wrapper around `RouterHistory` that converts `history.push()` to `history.replace()` if
@@ -9,20 +9,20 @@ import { History, LocationDescriptorObject, createPath } from 'history'; // esli
  * and starts the timer. All subsequent calls use `history.replace()` within `wait` milliseconds
  * and resets the timer. Once the timer expires, the next call will use `history.push()` again.
  */
-export default class HistoryDebouncer {
-  history: History;
+export default class HistoryDebouncer<HistoryLocationState = LocationState> {
+  history: History<HistoryLocationState>;
 
   wait: number;
 
   lastPush: number;
 
-  constructor(history: History, wait: number = 30 * 1000) {
+  constructor(history: History<HistoryLocationState>, wait: number = 30 * 1000) {
     this.history = history;
     this.wait = wait;
     this.lastPush = -wait - 1;
   }
 
-  push(path: string | LocationDescriptorObject, state?: any) {
+  push(path: string | LocationDescriptorObject, state?: HistoryLocationState) {
     // Do not navigate if the path object matches
     const nextPath = typeof path === 'string' ? path : createPath(path);
     if (nextPath === createPath(this.history.location)) return;

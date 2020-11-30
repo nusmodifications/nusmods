@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 
 import Tooltip from 'views/components/Tooltip';
@@ -34,7 +34,7 @@ const ModuleFinderPagerButton: React.FC<Props> = ({
   return (
     <li>
       {tooltipTitle ? (
-        <Tooltip content={tooltipTitle} delay={[800, 0]} touchHold>
+        <Tooltip content={tooltipTitle} delay={[800, 0]} touch="hold">
           {button}
         </Tooltip>
       ) : (
