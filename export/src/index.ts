@@ -1,5 +1,5 @@
 import fs from 'fs-extra';
-import Sentry from '@sentry/node';
+import * as Sentry from '@sentry/node';
 import gracefulShutdown from 'http-graceful-shutdown';
 
 import config from './config';

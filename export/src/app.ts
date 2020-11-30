@@ -1,7 +1,7 @@
 import Koa from 'koa';
 import Router from 'koa-router';
 import views from 'koa-views';
-import Sentry from '@sentry/node';
+import * as Sentry from '@sentry/node';
 
 import _ from 'lodash';
 
