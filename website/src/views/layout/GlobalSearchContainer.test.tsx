@@ -57,7 +57,7 @@ function make(storeOverrides: Partial<typeof relevantStoreContents> = {}, props 
     </MemoryRouter>,
   );
 }
-describe('GlobalSearchContainer', () => {
+describe(GlobalSearchContainer, () => {
   beforeEach(() => {
     // Replace fetchVenueList with a noop action to stop it from firing API requests
     mockedFetchVenueList.mockImplementation(() => initAction() as never);

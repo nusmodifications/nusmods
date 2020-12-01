@@ -1,11 +1,11 @@
-import { ModuleCondensed } from 'types/modules';
-import { Venue, VenueList } from 'types/venues';
-import { ModuleList } from 'types/reducers';
+import type { ModuleCondensed } from 'types/modules';
+import type { Venue } from 'types/venues';
+import type { State } from 'types/state';
 import { ResultType, SearchResult, VENUE_RESULT } from 'types/views';
 
-import { Component } from 'react';
-import { connect } from 'react-redux';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { FC, useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import GlobalSearch from 'views/layout/GlobalSearch';
 import { modulePage, venuePage } from 'views/routes/paths';
 
@@ -14,106 +14,97 @@ import { createSearchPredicate, regexify, sortModules, tokenize } from 'utils/mo
 import { breakpointUp } from 'utils/css';
 import { takeUntil } from 'utils/array';
 import makeResponsive from 'views/hocs/makeResponsive';
-import { State } from 'types/state';
-
-type Props = RouteComponentProps & {
-  moduleList: ModuleList;
-  venueList: VenueList;
-  matchBreakpoint: boolean;
-
-  fetchVenueList: () => void;
-};
 
 const RESULTS_LIMIT = 10;
 const LONG_LIST_LIMIT = 70;
 const MIN_INPUT_LENGTH = 2;
 
-class GlobalSearchContainerComponent extends Component<Props> {
-  componentDidMount() {
-    this.props.fetchVenueList();
-  }
+type Props = {
+  matchBreakpoint: boolean;
+};
 
-  shouldComponentUpdate(nextProps: Props) {
-    return (
-      this.props.matchBreakpoint !== nextProps.matchBreakpoint ||
-      this.props.moduleList.length !== nextProps.moduleList.length ||
-      this.props.venueList.length !== nextProps.venueList.length
-    );
-  }
+export const GlobalSearchContainer: FC<Props> = ({ matchBreakpoint }) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchVenueList());
+  }, [dispatch]);
 
-  onSelectModule = (module: ModuleCondensed) => {
-    this.props.history.push(modulePage(module.moduleCode, module.title));
-  };
+  const history = useHistory();
+  const onSelectModule = useCallback(
+    (module: ModuleCondensed) => {
+      history.push(modulePage(module.moduleCode, module.title));
+    },
+    [history],
+  );
 
-  onSelectVenue = (venue: Venue) => {
-    this.props.history.push(venuePage(venue));
-  };
+  const onSelectVenue = useCallback(
+    (venue: Venue) => {
+      history.push(venuePage(venue));
+    },
+    [history],
+  );
 
-  onSearch = (type: ResultType, query: string) => {
-    // TODO: Move this into a proper function
-    const path = type === VENUE_RESULT ? '/venues' : '/modules';
-    this.props.history.push(`${path}?q=${encodeURIComponent(query)}`);
-  };
+  const onSearch = useCallback(
+    (type: ResultType, query: string) => {
+      // TODO: Move this into a proper function
+      const path = type === VENUE_RESULT ? '/venues' : '/modules';
+      history.push(`${path}?q=${encodeURIComponent(query)}`);
+    },
+    [history],
+  );
 
-  getResults = (inputValue: string | null): SearchResult | null => {
-    if (!inputValue || inputValue.length < MIN_INPUT_LENGTH) {
-      return null;
-    }
+  const moduleList = useSelector(({ moduleBank }: State) => moduleBank.moduleList);
+  const venueList = useSelector(({ venueBank }: State) => venueBank.venueList);
 
-    const { moduleList, venueList } = this.props;
-    const tokens = tokenize(inputValue);
+  const getResults = useCallback(
+    (inputValue: string | null): SearchResult | null => {
+      if (!inputValue || inputValue.length < MIN_INPUT_LENGTH) {
+        return null;
+      }
 
-    // Filter venues
-    const regex = regexify(inputValue);
-    const venues = takeUntil(venueList, LONG_LIST_LIMIT, (venue) => regex.test(venue));
+      const tokens = tokenize(inputValue);
 
-    // Filter modules
-    const predicate = createSearchPredicate(inputValue);
-    const filteredModules = takeUntil(moduleList, LONG_LIST_LIMIT, (module) =>
-      predicate({ ...module }),
-    );
-    const modules = sortModules(inputValue, filteredModules.slice());
+      // Filter venues
+      const regex = regexify(inputValue);
+      const venues = takeUntil(venueList, LONG_LIST_LIMIT, (venue) => regex.test(venue));
 
-    // There's only one type of result - use the long list format
-    if (!modules.length || !venues.length) {
-      return {
-        modules: modules.slice(0, LONG_LIST_LIMIT),
-        venues: venues.slice(0, LONG_LIST_LIMIT),
-        tokens,
-      };
-    }
+      // Filter modules
+      const predicate = createSearchPredicate(inputValue);
+      const filteredModules = takeUntil(moduleList, LONG_LIST_LIMIT, (module) =>
+        predicate({ ...module }),
+      );
+      const modules = sortModules(inputValue, filteredModules.slice());
 
-    // Plenty of modules and venues, show 6 modules, 4 venues
-    if (modules.length >= 6 && venues.length >= 4) {
-      return { modules: modules.slice(0, 6), venues: venues.slice(0, 4), tokens };
-    }
+      // There's only one type of result - use the long list format
+      if (!modules.length || !venues.length) {
+        return {
+          modules: modules.slice(0, LONG_LIST_LIMIT),
+          venues: venues.slice(0, LONG_LIST_LIMIT),
+          tokens,
+        };
+      }
 
-    // Either there are few modules, few venues, or both.
-    // If venues exist, show as many of them as possible as they are rare
-    return { modules: modules.slice(0, RESULTS_LIMIT - venues.length), venues, tokens };
-  };
+      // Plenty of modules and venues, show 6 modules, 4 venues
+      if (modules.length >= 6 && venues.length >= 4) {
+        return { modules: modules.slice(0, 6), venues: venues.slice(0, 4), tokens };
+      }
 
-  render() {
-    const { matchBreakpoint } = this.props;
-    if (!matchBreakpoint) return null;
-    return (
-      <GlobalSearch
-        getResults={this.getResults}
-        onSelectModule={this.onSelectModule}
-        onSelectVenue={this.onSelectVenue}
-        onSearch={this.onSearch}
-      />
-    );
-  }
-}
+      // Either there are few modules, few venues, or both.
+      // If venues exist, show as many of them as possible as they are rare
+      return { modules: modules.slice(0, RESULTS_LIMIT - venues.length), venues, tokens };
+    },
+    [moduleList, venueList],
+  );
 
-const routedSearchContainer = withRouter(GlobalSearchContainerComponent);
-export const GlobalSearchContainer = connect(
-  (state: State) => ({
-    moduleList: state.moduleBank.moduleList,
-    venueList: state.venueBank.venueList,
-  }),
-  { fetchVenueList },
-)(routedSearchContainer);
+  if (!matchBreakpoint) return null;
+  return (
+    <GlobalSearch
+      getResults={getResults}
+      onSelectModule={onSelectModule}
+      onSelectVenue={onSelectVenue}
+      onSearch={onSearch}
+    />
+  );
+};
 
 export default makeResponsive(GlobalSearchContainer, breakpointUp('md'));
