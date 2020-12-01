@@ -9,7 +9,7 @@ const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
 
 // eslint-disable-next-line no-underscore-dangle
-const __DEV__ = process.env.NODE_ENV !== 'production';
+const __DEV__ = process.env.NODE_ENV === 'development';
 
 const source = (file) => path.join('entry/export', file);
 
@@ -18,6 +18,7 @@ const productionConfig = merge([
     plugins: [
       new webpack.DefinePlugin({
         __DEV__,
+        __TEST__: process.env.NODE_ENV === 'test',
         DISPLAY_COMMIT_HASH: JSON.stringify(parts.appVersion().commitHash),
         VERSION_STR: JSON.stringify(parts.appVersion().versionStr),
         DEBUG_SERVICE_WORKER: !!process.env.DEBUG_SERVICE_WORKER,

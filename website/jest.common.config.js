@@ -16,7 +16,8 @@ module.exports = {
   // Mimic the globals we set with Webpack's DefinePlugin
   globals: {
     // Default to development
-    __DEV__: process.env.NODE_ENV !== 'production',
+    __DEV__: process.env.NODE_ENV === 'development',
+    __TEST__: process.env.NODE_ENV === 'test',
     DATA_API_BASE_URL: '',
     VERSION_STR: '',
     DISPLAY_COMMIT_HASH: '',
