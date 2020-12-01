@@ -28,7 +28,7 @@ const RESULTS_LIMIT = 10;
 const LONG_LIST_LIMIT = 70;
 const MIN_INPUT_LENGTH = 2;
 
-export class SearchContainerComponent extends Component<Props> {
+class GlobalSearchContainerComponent extends Component<Props> {
   componentDidMount() {
     this.props.fetchVenueList();
   }
@@ -107,8 +107,8 @@ export class SearchContainerComponent extends Component<Props> {
   }
 }
 
-const routedSearchContainer = withRouter(SearchContainerComponent);
-const connectedSearchContainer = connect(
+const routedSearchContainer = withRouter(GlobalSearchContainerComponent);
+export const GlobalSearchContainer = connect(
   (state: State) => ({
     moduleList: state.moduleBank.moduleList,
     venueList: state.venueBank.venueList,
@@ -116,4 +116,4 @@ const connectedSearchContainer = connect(
   { fetchVenueList },
 )(routedSearchContainer);
 
-export default makeResponsive(connectedSearchContainer, breakpointUp('md'));
+export default makeResponsive(GlobalSearchContainer, breakpointUp('md'));

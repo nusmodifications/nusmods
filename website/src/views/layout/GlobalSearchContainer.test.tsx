@@ -1,10 +1,19 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import _ from 'lodash';
+import { Provider } from 'react-redux';
+import { MemoryRouter } from 'react-router-dom';
+import produce from 'immer';
+import configureStore from 'bootstrapping/configure-store';
+import { GlobalSearchContainer } from 'views/layout/GlobalSearchContainer';
+import reducers from 'reducers';
+import { initAction } from 'test-utils/redux';
+import type { ModuleCondensed } from 'types/modules';
+import { fetchVenueList } from 'actions/venueBank';
 
-import { ModuleCondensed } from 'types/modules';
-import { SearchContainerComponent } from 'views/layout/GlobalSearchContainer';
-import createHistory from 'test-utils/createHistory';
+jest.mock('actions/venueBank');
+
+const mockedFetchVenueList = fetchVenueList as jest.MockedFunction<typeof fetchVenueList>;
 
 const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
@@ -20,46 +29,71 @@ const MODULES = _.flatMap(letters, (firstLetter): ModuleCondensed[] =>
 // Produces 26 venues of the form AA-1, BB-1, CC-1, ...
 const VENUES = letters.map((letter) => `${letter}${letter}-1`);
 
-function make(props = {}) {
+const relevantStoreContents = {
+  moduleBank: { moduleList: MODULES },
+  venueBank: { venueList: VENUES },
+};
+
+function make(storeOverrides: Partial<typeof relevantStoreContents> = {}, props = {}) {
   const allProps = {
     matchBreakpoint: true,
-    fetchVenueList: jest.fn(),
-    moduleList: MODULES,
-    venueList: VENUES,
-    ...createHistory(),
     ...props,
   };
 
-  return render(<SearchContainerComponent {...allProps} />);
+  const { store } = configureStore(
+    produce(reducers(undefined, initAction()), (draft) => {
+      draft.moduleBank.moduleList = (storeOverrides.moduleBank?.moduleList ??
+        relevantStoreContents.moduleBank.moduleList) as typeof draft.moduleBank.moduleList;
+      draft.venueBank.venueList = (storeOverrides.venueBank?.venueList ??
+        relevantStoreContents.venueBank.venueList) as typeof draft.venueBank.venueList;
+    }),
+  );
+
+  return render(
+    <MemoryRouter>
+      <Provider store={store}>
+        <GlobalSearchContainer {...allProps} />
+      </Provider>
+    </MemoryRouter>,
+  );
 }
+describe('GlobalSearchContainer', () => {
+  beforeEach(() => {
+    // Replace fetchVenueList with a noop action to stop it from firing API requests
+    mockedFetchVenueList.mockImplementation(() => initAction() as never);
+  });
 
-test('hides module when screen size is small', () => {
-  expect(make().container).not.toBeEmptyDOMElement();
-  expect(make({ matchBreakpoint: false }).container).toBeEmptyDOMElement();
-});
+  afterEach(() => {
+    mockedFetchVenueList.mockReset();
+  });
 
-test('fetches venue list', () => {
-  const mock = jest.fn();
-  make({ fetchVenueList: mock });
-  expect(mock).toHaveBeenCalled();
-});
+  test('hides module when screen size is small', () => {
+    expect(make().container).not.toBeEmptyDOMElement();
+    expect(make({}, { matchBreakpoint: false }).container).toBeEmptyDOMElement();
+  });
 
-test('shows no choices when search is too short', () => {
-  make();
+  test('fetches venue list', () => {
+    expect(mockedFetchVenueList).not.toHaveBeenCalled();
+    make();
+    expect(mockedFetchVenueList).toHaveBeenCalled();
+  });
 
-  // Expect not to show choices when search string is too short
-  userEvent.type(screen.getByRole('textbox'), '1');
-  expect(screen.queryAllByRole('option')).toHaveLength(0);
+  test('shows no choices when search is too short', () => {
+    const { getByRole, queryAllByRole } = make();
 
-  // Expect to show choices when search string is long enough
-  userEvent.type(screen.getByRole('textbox'), '1');
-  expect(screen.queryAllByRole('option')).not.toHaveLength(0);
-});
+    // Expect not to show choices when search string is too short
+    userEvent.type(getByRole('textbox'), '1');
+    expect(queryAllByRole('option')).toHaveLength(0);
 
-test('shows at most 10 choices when there are many venues and modules', () => {
-  make();
-  userEvent.type(screen.getByRole('textbox'), '1 ');
-  expect(screen.getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
+    // Expect to show choices when search string is long enough
+    userEvent.type(getByRole('textbox'), '1');
+    expect(queryAllByRole('option')).not.toHaveLength(0);
+  });
+
+  test('shows at most 10 choices when there are many venues and modules', () => {
+    const { getByRole, getAllByRole } = make();
+    userEvent.type(getByRole('textbox'), '1 ');
+    expect(getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
     Array [
       "ModulesView All ",
       "AA1010 TestSem 1",
@@ -75,14 +109,14 @@ test('shows at most 10 choices when there are many venues and modules', () => {
       "DD-1",
     ]
   `);
-});
-
-test('prioritize showing venues when there are many venues even if there are modules', () => {
-  make({
-    moduleList: MODULES.slice(0, 5),
   });
-  userEvent.type(screen.getByRole('textbox'), '1 ');
-  expect(screen.getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
+
+  test('prioritize showing venues when there are many venues even if there are modules', () => {
+    const { getByRole, getAllByRole } = make({
+      moduleBank: { moduleList: MODULES.slice(0, 5) },
+    });
+    userEvent.type(getByRole('textbox'), '1 ');
+    expect(getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
     Array [
       "VenuesView All ",
       "AA-1",
@@ -113,14 +147,14 @@ test('prioritize showing venues when there are many venues even if there are mod
       "ZZ-1",
     ]
   `);
-});
-
-test('shows at most 10 choices when there are many modules', () => {
-  make({
-    venueList: VENUES.slice(0, 2),
   });
-  userEvent.type(screen.getByRole('textbox'), '1 ');
-  expect(screen.getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
+
+  test('shows at most 10 choices when there are many modules', () => {
+    const { getByRole, getAllByRole } = make({
+      venueBank: { venueList: VENUES.slice(0, 2) },
+    });
+    userEvent.type(getByRole('textbox'), '1 ');
+    expect(getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
     Array [
       "ModulesView All ",
       "AA1010 TestSem 1",
@@ -136,12 +170,12 @@ test('shows at most 10 choices when there are many modules', () => {
       "BB-1",
     ]
   `);
-});
+  });
 
-test('shows all results when there are few', () => {
-  make();
-  userEvent.type(screen.getByRole('textbox'), 'AA');
-  expect(screen.getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
+  test('shows all results when there are few', () => {
+    const { getByRole, getAllByRole } = make();
+    userEvent.type(getByRole('textbox'), 'AA');
+    expect(getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
     Array [
       "ModulesView All ",
       "AA1010 TestSem 1",
@@ -149,15 +183,15 @@ test('shows all results when there are few', () => {
       "AA-1",
     ]
   `);
-});
-
-test('show many results if the search only returns results of one type', () => {
-  make({
-    venueList: _.range(100).map((n) => `Venue ${n}`),
   });
 
-  userEvent.type(screen.getByRole('textbox'), '1010');
-  expect(screen.getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
+  test('show many results if the search only returns results of one type', () => {
+    const { getByRole, getAllByRole } = make({
+      venueBank: { venueList: _.range(100).map((n) => `Venue ${n}`) },
+    });
+
+    userEvent.type(getByRole('textbox'), '1010');
+    expect(getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
     Array [
       "ModulesView All ",
       "AA1010 TestSem 1",
@@ -233,10 +267,10 @@ test('show many results if the search only returns results of one type', () => {
     ]
   `);
 
-  userEvent.clear(screen.getByRole('textbox'));
+    userEvent.clear(getByRole('textbox'));
 
-  userEvent.type(screen.getByRole('textbox'), 'venue');
-  expect(screen.getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
+    userEvent.type(getByRole('textbox'), 'venue');
+    expect(getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
     Array [
       "VenuesView All ",
       "Venue 0",
@@ -311,4 +345,5 @@ test('show many results if the search only returns results of one type', () => {
       "Venue 69",
     ]
   `);
+  });
 });
