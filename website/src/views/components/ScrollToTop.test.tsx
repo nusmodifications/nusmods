@@ -2,7 +2,7 @@ import { act } from 'react-dom/test-utils';
 import { Router } from 'react-router-dom';
 import { mount } from 'enzyme';
 import createHistory from 'test-utils/createHistory';
-import mockDom from 'test-utils/mockDom';
+import { mockDom, mockDomReset } from 'test-utils/mockDom';
 
 import ScrollToTop from './ScrollToTop';
 
@@ -14,6 +14,10 @@ type Props = {
 describe('ScrollToTopComponent', () => {
   beforeEach(() => {
     mockDom();
+  });
+
+  afterEach(() => {
+    mockDomReset();
   });
 
   function make(props: Props = {}) {

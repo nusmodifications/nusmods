@@ -1,15 +1,16 @@
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import _ from 'lodash';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import produce from 'immer';
 import configureStore from 'bootstrapping/configure-store';
-import { GlobalSearchContainer } from 'views/layout/GlobalSearchContainer';
 import reducers from 'reducers';
-import { initAction } from 'test-utils/redux';
 import type { ModuleCondensed } from 'types/modules';
 import { fetchVenueList } from 'actions/venueBank';
+import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
+import { initAction } from 'test-utils/redux';
+import { mockDom, mockDomReset, mockWindowMatchMedia } from 'test-utils/mockDom';
 
 jest.mock('actions/venueBank');
 
@@ -34,12 +35,7 @@ const relevantStoreContents = {
   venueBank: { venueList: VENUES },
 };
 
-function make(storeOverrides: Partial<typeof relevantStoreContents> = {}, props = {}) {
-  const allProps = {
-    matchBreakpoint: true,
-    ...props,
-  };
-
+function make(storeOverrides: Partial<typeof relevantStoreContents> = {}) {
   const { store } = configureStore(
     produce(reducers(undefined, initAction()), (draft) => {
       draft.moduleBank.moduleList = (storeOverrides.moduleBank?.moduleList ??
@@ -52,24 +48,38 @@ function make(storeOverrides: Partial<typeof relevantStoreContents> = {}, props 
   return render(
     <MemoryRouter>
       <Provider store={store}>
-        <GlobalSearchContainer {...allProps} />
+        <GlobalSearchContainer />
       </Provider>
     </MemoryRouter>,
   );
 }
 describe(GlobalSearchContainer, () => {
   beforeEach(() => {
+    mockDom();
+
     // Replace fetchVenueList with a noop action to stop it from firing API requests
     mockedFetchVenueList.mockImplementation(() => initAction() as never);
   });
 
   afterEach(() => {
     mockedFetchVenueList.mockReset();
+    mockDomReset();
   });
 
   test('hides module when screen size is small', () => {
-    expect(make().container).not.toBeEmptyDOMElement();
-    expect(make({}, { matchBreakpoint: false }).container).toBeEmptyDOMElement();
+    let onMediaChangeCallback: () => void;
+    const addEventListener = (_type: string, listener: (...args: unknown[]) => void) => {
+      onMediaChangeCallback = listener;
+    };
+
+    mockWindowMatchMedia({ matches: true, addEventListener });
+    const { container } = make();
+    expect(container).not.toBeEmptyDOMElement();
+
+    mockWindowMatchMedia({ matches: false, addEventListener });
+    // Trigger render when matches changes
+    act(() => onMediaChangeCallback());
+    expect(container).toBeEmptyDOMElement();
   });
 
   test('fetches venue list', () => {
