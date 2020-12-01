@@ -1,29 +1,26 @@
 import type { ModuleCondensed } from 'types/modules';
 import type { Venue } from 'types/venues';
 import type { State } from 'types/state';
-import { ResultType, SearchResult, VENUE_RESULT } from 'types/views';
 
 import { FC, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+
+import useMediaQuery from 'views/hooks/useMediaQuery';
 import GlobalSearch from 'views/layout/GlobalSearch';
 import { modulePage, venuePage } from 'views/routes/paths';
 
+import { ResultType, SearchResult, VENUE_RESULT } from 'types/views';
 import { fetchVenueList } from 'actions/venueBank';
 import { createSearchPredicate, regexify, sortModules, tokenize } from 'utils/moduleSearch';
 import { breakpointUp } from 'utils/css';
 import { takeUntil } from 'utils/array';
-import makeResponsive from 'views/hocs/makeResponsive';
 
 const RESULTS_LIMIT = 10;
 const LONG_LIST_LIMIT = 70;
 const MIN_INPUT_LENGTH = 2;
 
-type Props = {
-  matchBreakpoint: boolean;
-};
-
-export const GlobalSearchContainer: FC<Props> = ({ matchBreakpoint }) => {
+const GlobalSearchContainer: FC = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchVenueList());
@@ -96,7 +93,9 @@ export const GlobalSearchContainer: FC<Props> = ({ matchBreakpoint }) => {
     [moduleList, venueList],
   );
 
-  if (!matchBreakpoint) return null;
+  const matchedBreakpoint = useMediaQuery(breakpointUp('md'));
+
+  if (!matchedBreakpoint) return null;
   return (
     <GlobalSearch
       getResults={getResults}
@@ -107,4 +106,4 @@ export const GlobalSearchContainer: FC<Props> = ({ matchBreakpoint }) => {
   );
 };
 
-export default makeResponsive(GlobalSearchContainer, breakpointUp('md'));
+export default GlobalSearchContainer;
