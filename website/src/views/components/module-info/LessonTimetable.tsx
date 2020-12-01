@@ -36,7 +36,7 @@ const SemesterLessonTimetable: FC<{ semesterData?: SemesterData }> = ({ semester
   );
 };
 
-const LessonTimetable: FC<{ allSemesterData: SemesterData[] }> = ({ allSemesterData }) => {
+const LessonTimetable: FC<{ allSemesterData: readonly SemesterData[] }> = ({ allSemesterData }) => {
   const [selectedSem, setSelectedSem] = useState(() => getFirstAvailableSemester(allSemesterData));
   return (
     <>
