@@ -1,5 +1,5 @@
 // Define media breakpoints
-import json2mq, { QueryObject } from 'json2mq';
+import type { QueryObject } from 'json2mq';
 import { entries } from 'lodash';
 
 export type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -32,10 +32,6 @@ export function breakpointUp(size: Breakpoint): QueryObject {
 
 export function touchScreenOnly(): QueryObject {
   return { pointer: 'coarse' };
-}
-
-export function queryMatch(query: QueryObject) {
-  return window.matchMedia(json2mq(query));
 }
 
 export function supportsCSSVariables() {
