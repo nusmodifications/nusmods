@@ -11,6 +11,7 @@ import { CS1010S } from '__mocks__/modules';
 
 import { ModuleArchiveContainerComponent } from './ModuleArchiveContainer';
 
+jest.mock('views/components/RandomKawaii');
 jest.mock('utils/error');
 
 const cs1010sResponse: AxiosResponse = {
