@@ -48,7 +48,7 @@ type State = {
  * error handling - the normal page tries to check the archives if this year's
  * API returns 404, while this page doesn't.
  */
-export class ModuleArchiveContainerComponent extends React.PureComponent<Props, State> {
+class ModuleArchiveContainer extends React.PureComponent<Props, State> {
   state: State = {
     ModulePageContent: null,
   };
@@ -76,7 +76,17 @@ export class ModuleArchiveContainerComponent extends React.PureComponent<Props, 
     // Try importing ModulePageContent thrice if we're online and
     // getting the "Loading chunk x failed." error.
     retryImport(() => import(/* webpackChunkName: "module" */ 'views/modules/ModulePageContent'))
-      .then((module) => this.setState({ ModulePageContent: module.default }))
+      // .then((module) =>
+      //   this.setState({
+      //     ModulePageContent:
+      //       // eslint-disable-next-line global-require
+      //       (module ?? (__TEST__ && require('views/modules/ModulePageContent'))).default,
+      //   }),
+      // )
+      .then((module) => {
+        console.log('WHY IS MODULE UNDEFINED', module);
+        this.setState({ ModulePageContent: module.default });
+      })
       .catch(this.handleFetchError);
   }
 
@@ -153,6 +163,6 @@ const connectedModuleArchiveContainer = connect(
   // Cast required because the version of Dispatch defined by connect does not have the extensions defined
   // in our Dispatch
   mapDispatchToProps as MapDispatchToPropsNonObject<DispatchProps, OwnProps>,
-)(ModuleArchiveContainerComponent);
-const routedModuleArchiveContainer = withRouter(connectedModuleArchiveContainer);
-export default deferComponentRender(routedModuleArchiveContainer);
+)(ModuleArchiveContainer);
+export const ModuleArchiveContainerComponent = withRouter(connectedModuleArchiveContainer);
+export default deferComponentRender(ModuleArchiveContainerComponent);
