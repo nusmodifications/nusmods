@@ -1,5 +1,5 @@
-import { Router } from 'react-router-dom';
 import { act, render } from '@testing-library/react';
+import { Router } from 'react-router-dom';
 import createHistory from 'test-utils/createHistory';
 import { mockDom, mockDomReset } from 'test-utils/mockDom';
 

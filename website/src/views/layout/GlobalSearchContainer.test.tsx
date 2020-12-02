@@ -1,25 +1,26 @@
+import type { ModuleCondensed } from 'types/modules';
+
 import { act, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import _ from 'lodash';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import produce from 'immer';
+import { range } from 'lodash';
 import configureStore from 'bootstrapping/configure-store';
 import reducers from 'reducers';
-import type { ModuleCondensed } from 'types/modules';
-import { fetchVenueList } from 'actions/venueBank';
-import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
 import { initAction } from 'test-utils/redux';
 import { mockDom, mockDomReset, mockWindowMatchMedia } from 'test-utils/mockDom';
 
-jest.mock('actions/venueBank');
+import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
+import { fetchVenueList } from 'actions/venueBank';
 
+jest.mock('actions/venueBank');
 const mockedFetchVenueList = fetchVenueList as jest.MockedFunction<typeof fetchVenueList>;
 
 const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 // Produces 26 * 26 = 676 modules of the form AA1010, AB1010, ...
-const MODULES = _.flatMap(letters, (firstLetter): ModuleCondensed[] =>
+const MODULES: ModuleCondensed[] = letters.flatMap((firstLetter) =>
   letters.map((secondLetter) => ({
     moduleCode: `${firstLetter}${secondLetter}1010`,
     title: 'Test',
@@ -40,8 +41,8 @@ function make(storeOverrides: Partial<typeof relevantStoreContents> = {}) {
     produce(reducers(undefined, initAction()), (draft) => {
       draft.moduleBank.moduleList = (storeOverrides.moduleBank?.moduleList ??
         relevantStoreContents.moduleBank.moduleList) as typeof draft.moduleBank.moduleList;
-      draft.venueBank.venueList = (storeOverrides.venueBank?.venueList ??
-        relevantStoreContents.venueBank.venueList) as typeof draft.venueBank.venueList;
+      draft.venueBank.venueList =
+        storeOverrides.venueBank?.venueList ?? relevantStoreContents.venueBank.venueList;
     }),
   );
 
@@ -197,7 +198,7 @@ describe(GlobalSearchContainer, () => {
 
   test('show many results if the search only returns results of one type', () => {
     const { getByRole, getAllByRole } = make({
-      venueBank: { venueList: _.range(100).map((n) => `Venue ${n}`) },
+      venueBank: { venueList: range(100).map((n) => `Venue ${n}`) },
     });
 
     userEvent.type(getByRole('textbox'), '1010');
