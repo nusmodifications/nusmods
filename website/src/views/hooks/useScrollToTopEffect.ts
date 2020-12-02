@@ -7,7 +7,7 @@ function scrollToTop() {
 }
 
 /**
- * Scrolls to top (or hash, if a hash is present in the URL) on the first
+ * Scrolls to top (or hash, if a hash is present in the URL) after the first
  * completed render.
  */
 export default function useScrollToTopEffect() {
@@ -16,7 +16,7 @@ export default function useScrollToTopEffect() {
   // tests).
   const { hash } = useLocation();
 
-  // Don't do anything after the first completed render.
+  // Intentionally *not* care after executing once.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => (hash ? scrollToHash(hash) : scrollToTop()), []);
 }
