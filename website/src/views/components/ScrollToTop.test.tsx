@@ -1,6 +1,5 @@
-import { act } from 'react-dom/test-utils';
 import { Router } from 'react-router-dom';
-import { mount } from 'enzyme';
+import { act, render } from '@testing-library/react';
 import createHistory from 'test-utils/createHistory';
 import { mockDom, mockDomReset } from 'test-utils/mockDom';
 
@@ -22,16 +21,14 @@ describe('ScrollToTopComponent', () => {
 
   function make(props: Props = {}) {
     const { history } = createHistory();
-    act(() => {
-      mount(
-        <Router history={history}>
-          <ScrollToTop
-            onComponentDidMount={props.onComponentDidMount}
-            onPathChange={props.onPathChange}
-          />
-        </Router>,
-      );
-    });
+    render(
+      <Router history={history}>
+        <ScrollToTop
+          onComponentDidMount={props.onComponentDidMount}
+          onPathChange={props.onPathChange}
+        />
+      </Router>,
+    );
     return history;
   }
 
