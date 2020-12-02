@@ -10,7 +10,8 @@ import type { State as StoreState } from 'types/state';
 import type { Dispatch } from 'types/redux';
 
 import { fetchModuleArchive } from 'actions/moduleBank';
-import { captureException, retryImport } from 'utils/error';
+import { captureException } from 'utils/error';
+import retryImport from 'utils/retryImport';
 import ApiError from 'views/errors/ApiError';
 import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';
@@ -76,17 +77,7 @@ class ModuleArchiveContainer extends React.PureComponent<Props, State> {
     // Try importing ModulePageContent thrice if we're online and
     // getting the "Loading chunk x failed." error.
     retryImport(() => import(/* webpackChunkName: "module" */ 'views/modules/ModulePageContent'))
-      // .then((module) =>
-      //   this.setState({
-      //     ModulePageContent:
-      //       // eslint-disable-next-line global-require
-      //       (module ?? (__TEST__ && require('views/modules/ModulePageContent'))).default,
-      //   }),
-      // )
-      .then((module) => {
-        console.log('WHY IS MODULE UNDEFINED', module);
-        this.setState({ ModulePageContent: module.default });
-      })
+      .then((module) => this.setState({ ModulePageContent: module.default }))
       .catch(this.handleFetchError);
   }
 

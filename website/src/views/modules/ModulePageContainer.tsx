@@ -10,7 +10,8 @@ import type { Dispatch } from 'types/redux';
 import type { State as StoreState } from 'types/state';
 
 import { fetchModule } from 'actions/moduleBank';
-import { captureException, retryImport } from 'utils/error';
+import { captureException } from 'utils/error';
+import retryImport from 'utils/retryImport';
 import ApiError from 'views/errors/ApiError';
 import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
 import LoadingSpinner from 'views/components/LoadingSpinner';

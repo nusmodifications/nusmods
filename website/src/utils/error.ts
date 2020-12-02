@@ -1,6 +1,5 @@
 import * as Sentry from '@sentry/browser';
 import { each, size } from 'lodash';
-import { retry } from 'utils/promise';
 
 export function captureException(error: Error, extra: { [key: string]: unknown } = {}) {
   Sentry.withScope((scope) => {
@@ -29,16 +28,4 @@ export function getScriptErrorHandler(scriptName: string) {
       });
     }
   };
-}
-
-/**
- * Wrap an async import() so that it automatically retries in case of a chunk
- * load error and when the user is online
- */
-export function retryImport<T>(importFactory: () => Promise<T>, retries = 3) {
-  return retry(
-    retries,
-    importFactory,
-    (error) => error.message.includes('Loading chunk ') && window.navigator.onLine,
-  );
 }

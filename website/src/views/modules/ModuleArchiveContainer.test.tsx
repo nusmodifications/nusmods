@@ -1,6 +1,6 @@
 import { waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 
 import configureStore from 'bootstrapping/configure-store';
 import reducers from 'reducers';
@@ -21,20 +21,24 @@ const cs1010sResponse: AxiosResponse = {
   config: {},
 };
 
-const notFoundResponse: AxiosResponse = {
-  data: undefined,
-  status: 404,
-  statusText: 'Not found',
-  headers: {},
-  config: {},
+const notFoundError: Partial<AxiosError> = {
+  response: {
+    data: undefined,
+    status: 404,
+    statusText: 'Not found',
+    headers: {},
+    config: {},
+  },
 };
 
-const someOtherErrorResponse: AxiosResponse = {
-  data: undefined,
-  status: 500,
-  statusText: 'Test error',
-  headers: {},
-  config: {},
+const someOtherError: Partial<AxiosError> = {
+  response: {
+    data: undefined,
+    status: 500,
+    statusText: 'Test error',
+    headers: {},
+    config: {},
+  },
 };
 
 const CANONICAL = '/archive/CS1010S/2017-2018/programming-methodology';
@@ -69,7 +73,7 @@ describe('ModuleArchiveContainerComponent', () => {
   });
 
   test('should show 404 page when the module code does not exist', async () => {
-    mockAxiosRequest.mockRejectedValue(notFoundResponse);
+    mockAxiosRequest.mockRejectedValue(notFoundError);
     const {
       renderResult: { getByText },
     } = make('/archive/CS1234/2017-2018');
@@ -85,17 +89,20 @@ describe('ModuleArchiveContainerComponent', () => {
   });
 
   test('should fetch module', async () => {
-    jest.spyOn(axios, 'get').mockResolvedValue(cs1010sResponse);
+    mockAxiosRequest.mockResolvedValue(cs1010sResponse);
     expect(mockAxiosRequest).not.toBeCalled(); // Sanity check
     const {
       renderResult: { getByText },
     } = make();
     expect(getByText(/Loading/i)).toBeInTheDocument();
-    await waitFor(() => expect(getByText(/CS1010S/)).toBeInTheDocument());
+    // Expect module information to be displayed
+    await waitFor(() => expect(getByText(/This module introduces/)).toBeInTheDocument());
+    // Expect component to fetch
+    expect(mockAxiosRequest).toBeCalled();
   });
 
   test('should show error if module fetch failed', async () => {
-    mockAxiosRequest.mockRejectedValue(someOtherErrorResponse);
+    mockAxiosRequest.mockRejectedValue(someOtherError);
     const {
       renderResult: { getByText },
     } = make();
