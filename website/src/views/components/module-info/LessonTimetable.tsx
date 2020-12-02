@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, memo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import type { SemesterData } from 'types/modules';
@@ -54,4 +54,4 @@ const LessonTimetable: FC<{ allSemesterData: readonly SemesterData[] }> = ({ all
   );
 };
 
-export default LessonTimetable;
+export default memo(LessonTimetable);

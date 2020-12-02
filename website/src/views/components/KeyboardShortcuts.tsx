@@ -127,7 +127,7 @@ const KeyboardShortcuts: React.FC = () => {
       notifyThemeChange();
     });
 
-    bind(['c', '0'], APPEARANCE, 'Next Theme', () => {
+    bind('c', APPEARANCE, 'Next Theme', () => {
       dispatch(cycleTheme(1));
       notifyThemeChange();
     });

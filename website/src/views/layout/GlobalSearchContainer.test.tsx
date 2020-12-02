@@ -1,4 +1,5 @@
-import type { ModuleCondensed } from 'types/modules';
+import type { ModuleList } from 'types/reducers';
+import type { VenueList } from 'types/venues';
 
 import { act, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -20,7 +21,7 @@ const mockedFetchVenueList = fetchVenueList as jest.MockedFunction<typeof fetchV
 const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 // Produces 26 * 26 = 676 modules of the form AA1010, AB1010, ...
-const MODULES: ModuleCondensed[] = letters.flatMap((firstLetter) =>
+const MODULES: ModuleList = letters.flatMap((firstLetter) =>
   letters.map((secondLetter) => ({
     moduleCode: `${firstLetter}${secondLetter}1010`,
     title: 'Test',
@@ -29,16 +30,18 @@ const MODULES: ModuleCondensed[] = letters.flatMap((firstLetter) =>
 );
 
 // Produces 26 venues of the form AA-1, BB-1, CC-1, ...
-const VENUES = letters.map((letter) => `${letter}${letter}-1`);
+const VENUES: VenueList = letters.map((letter) => `${letter}${letter}-1`);
 
 const relevantStoreContents = {
   moduleBank: { moduleList: MODULES },
   venueBank: { venueList: VENUES },
 };
 
+const initialState = reducers(undefined, initAction());
+
 function make(storeOverrides: Partial<typeof relevantStoreContents> = {}) {
   const { store } = configureStore(
-    produce(reducers(undefined, initAction()), (draft) => {
+    produce(initialState, (draft) => {
       draft.moduleBank.moduleList = (storeOverrides.moduleBank?.moduleList ??
         relevantStoreContents.moduleBank.moduleList) as typeof draft.moduleBank.moduleList;
       draft.venueBank.venueList =

@@ -8,8 +8,10 @@ const icons = [SpeechBubble, Mug, Browser, Ghost];
 const defaultMoods: KawaiiMood[] = ['ko', 'sad', 'shocked'];
 
 const RandomKawaii: FC<Props> = ({ size, color = '#FF715D', mood, ...wrapperProps }) => {
-  const [Kawaii] = useState(() => sample(icons) ?? icons[0]);
-  const [defaultMood] = useState(() => sample(defaultMoods) ?? defaultMoods[0]);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const [Kawaii] = useState(() => sample(icons)!);
+  const [defaultMood] = useState(() => sample(defaultMoods));
+
   return (
     <div {...wrapperProps}>
       <Kawaii size={size} color={color} mood={mood || defaultMood} />

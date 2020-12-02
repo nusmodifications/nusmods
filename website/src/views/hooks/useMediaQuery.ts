@@ -26,7 +26,7 @@ export default function useMediaQuery(mediaQuery: string | QueryObject | QueryOb
   );
 
   // TODO: Replace with useMutableSource after we adopt React concurrent mode. See:
-  // Docs: https://github.com/bvaughn/rfcs/blob/useMutableSource/text/0000-use-mutable-source.md
+  // Docs: https://github.com/reactjs/rfcs/blob/master/text/0147-use-mutable-source.md
   // Example: https://github.com/facebook/react/blob/36df483/packages/react-devtools-scheduling-profiler/src/hooks.js
   const matchedBreakpoint = useSubscription(subscription);
 

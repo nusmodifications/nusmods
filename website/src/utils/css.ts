@@ -2,26 +2,25 @@ import type { QueryObject } from 'json2mq';
 
 // NOTE: Keep in sync with Bootstrap's breakpoints.
 // Breakpoints at time of writing: https://getbootstrap.com/docs/4.5/layout/overview/
-const breakpoints = Object.freeze({
+const breakpoints = {
   xs: 0,
   sm: 576,
   md: 768,
   lg: 992,
   xl: 1200,
-});
+} as const;
 type Breakpoint = keyof typeof breakpoints;
 
-function nextBreakpoint(size: Breakpoint): number | null {
+function nextBreakpoint(size: Breakpoint): number | undefined {
   const breakpointEntries = Object.entries(breakpoints);
   const nextBreakpointIndex =
     breakpointEntries.findIndex(([breakpoint]) => breakpoint === size) + 1;
-  if (nextBreakpointIndex >= breakpointEntries.length) return null;
   return breakpointEntries[nextBreakpointIndex][1];
 }
 
 export function breakpointDown(size: Breakpoint): QueryObject {
   const nextSize = nextBreakpoint(size);
-  if (nextSize === null) return { all: true };
+  if (nextSize === undefined) return { all: true };
   return { maxWidth: nextSize - 1 };
 }
 
