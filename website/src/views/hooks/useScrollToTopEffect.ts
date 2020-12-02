@@ -16,7 +16,7 @@ export default function useScrollToTopEffect() {
   // tests).
   const { hash } = useLocation();
 
-  // Don't care if anything changes after the first render.
+  // Don't do anything after the first completed render.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => (hash ? scrollToHash(hash) : scrollToTop()), []);
 }
