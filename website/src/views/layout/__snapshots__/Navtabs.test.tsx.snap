@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`C should render into nav element 2`] = `
+exports[`Navtabs should render into nav element 2`] = `
 <div>
   <nav
     class="nav"
@@ -238,7 +238,7 @@ exports[`C should render into nav element 2`] = `
 </div>
 `;
 
-exports[`C should show beta tabs if beta is true 2`] = `
+exports[`Navtabs should show beta tabs if beta is true 2`] = `
 <div>
   <nav
     class="nav"
