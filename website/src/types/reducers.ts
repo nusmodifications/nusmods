@@ -177,7 +177,7 @@ export type ModuleCodeMap = { [moduleCode: string]: ModuleCondensed };
 export type ModuleArchive = {
   [moduleCode: string]: {
     // Mapping acad year to module info
-    [key: string]: Module;
+    [acadYear: string]: Module;
   };
 };
 
