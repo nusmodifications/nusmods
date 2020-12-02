@@ -196,7 +196,7 @@ describe(GlobalSearchContainer, () => {
   `);
   });
 
-  test('show many results if the search only returns results of one type', () => {
+  test('show many results if the search only returns modules', () => {
     const { getByRole, getAllByRole } = make({
       venueBank: { venueList: range(100).map((n) => `Venue ${n}`) },
     });
@@ -277,8 +277,12 @@ describe(GlobalSearchContainer, () => {
       "CR1010 TestSem 1",
     ]
   `);
+  });
 
-    userEvent.clear(getByRole('textbox'));
+  test('show many results if the search only returns venues', () => {
+    const { getByRole, getAllByRole } = make({
+      venueBank: { venueList: range(100).map((n) => `Venue ${n}`) },
+    });
 
     userEvent.type(getByRole('textbox'), 'venue');
     expect(getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
