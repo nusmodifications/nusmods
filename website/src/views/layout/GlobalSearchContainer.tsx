@@ -2,7 +2,7 @@ import type { ModuleCondensed } from 'types/modules';
 import type { Venue } from 'types/venues';
 import type { State } from 'types/state';
 
-import { FC, useCallback, useEffect } from 'react';
+import { FC, memo, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -106,4 +106,4 @@ const GlobalSearchContainer: FC = () => {
   );
 };
 
-export default GlobalSearchContainer;
+export default memo(GlobalSearchContainer);

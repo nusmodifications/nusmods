@@ -1,11 +1,11 @@
 import type { FC } from 'react';
-import useScrollToTopEffect from 'views/hooks/useScrollToTopEffect';
+import useScrollToTop from 'views/hooks/useScrollToTop';
 
 /**
- * @deprecated Use `useScrollToTopEffect` instead
+ * @deprecated Use `useScrollToTop` instead
  */
 const ScrollToTop: FC = () => {
-  useScrollToTopEffect();
+  useScrollToTop();
   return null;
 };
 

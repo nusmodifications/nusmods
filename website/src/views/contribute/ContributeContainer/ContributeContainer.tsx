@@ -15,7 +15,7 @@ import ExternalLink from 'views/components/ExternalLink';
 import Title from 'views/components/Title';
 import { FeedbackButtons } from 'views/components/FeedbackModal';
 import { getModuleCondensed } from 'selectors/moduleBank';
-import useScrollToTopEffect from 'views/hooks/useScrollToTopEffect';
+import useScrollToTop from 'views/hooks/useScrollToTop';
 import { currentTests } from 'views/settings/BetaToggle';
 import { notNull } from 'types/utils';
 import config from 'config';
@@ -44,7 +44,7 @@ type Props = {
 };
 
 const ContributeContainer: FC<Props> = ({ modules, beta, ...props }) => {
-  useScrollToTopEffect();
+  useScrollToTop();
   return (
     <div className={styles.pageContainer}>
       <Title>Contribute</Title>

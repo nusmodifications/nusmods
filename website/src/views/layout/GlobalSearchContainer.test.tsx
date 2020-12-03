@@ -57,7 +57,7 @@ function make(storeOverrides: Partial<typeof relevantStoreContents> = {}) {
     </MemoryRouter>,
   );
 }
-describe(GlobalSearchContainer, () => {
+describe('GlobalSearchContainer', () => {
   beforeEach(() => {
     mockDom();
 

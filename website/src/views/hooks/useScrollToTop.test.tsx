@@ -5,17 +5,17 @@ import createHistory from 'test-utils/createHistory';
 import { mockDom, mockDomReset } from 'test-utils/mockDom';
 import { scrollToHash } from 'utils/react';
 
-import useScrollToTopEffect from './useScrollToTopEffect';
+import useScrollToTop from './useScrollToTop';
 
 jest.mock('utils/react');
 const mockedScrollToHash = scrollToHash as jest.MockedFunction<typeof scrollToHash>;
 
 const Tester: FC = () => {
-  useScrollToTopEffect();
+  useScrollToTop();
   return null;
 };
 
-describe(useScrollToTopEffect, () => {
+describe(useScrollToTop, () => {
   beforeEach(() => {
     mockDom();
   });

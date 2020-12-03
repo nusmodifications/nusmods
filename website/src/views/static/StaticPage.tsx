@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import classnames from 'classnames';
 
 import Title from 'views/components/Title';
-import useScrollToTopEffect from 'views/hooks/useScrollToTopEffect';
+import useScrollToTop from 'views/hooks/useScrollToTop';
 
 type Props = {
   title: string;
@@ -10,7 +10,7 @@ type Props = {
 };
 
 const StaticPage: FC<Props> = ({ title, className, children }) => {
-  useScrollToTopEffect();
+  useScrollToTop();
   return (
     <div className={classnames('page-container', className)}>
       <Title>{title}</Title>

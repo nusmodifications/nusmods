@@ -10,7 +10,7 @@ function scrollToTop() {
  * Scrolls to top (or hash, if a hash is present in the URL) after the first
  * completed render.
  */
-export default function useScrollToTopEffect() {
+export default function useScrollToTop() {
   // TODO: Prevent location changes from triggering renders, as we don't care.
   // We can't use window.location to support non-browser environments (e.g.
   // tests).

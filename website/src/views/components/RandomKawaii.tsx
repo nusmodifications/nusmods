@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, useState } from 'react';
+import { FC, HTMLAttributes, memo, useState } from 'react';
 import { sample } from 'lodash';
 import { SpeechBubble, Mug, Browser, Ghost, KawaiiMood, KawaiiProps } from 'react-kawaii';
 
@@ -19,4 +19,4 @@ const RandomKawaii: FC<Props> = ({ size, color = '#FF715D', mood, ...wrapperProp
   );
 };
 
-export default RandomKawaii;
+export default memo(RandomKawaii);
