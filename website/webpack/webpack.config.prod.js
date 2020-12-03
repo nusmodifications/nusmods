@@ -23,6 +23,7 @@ const productionConfig = ({ browserWarningPath }) =>
       plugins: [
         new webpack.DefinePlugin({
           __DEV__: false,
+          __TEST__: false,
           DISPLAY_COMMIT_HASH: JSON.stringify(parts.appVersion().commitHash),
           VERSION_STR: JSON.stringify(parts.appVersion().versionStr),
           DEBUG_SERVICE_WORKER: !!process.env.DEBUG_SERVICE_WORKER,

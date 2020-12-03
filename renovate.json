@@ -42,7 +42,7 @@
     },
     {
       "extends": "monorepo:jest",
-      "packagePatterns": ["(jest|enzyme|mock)"],
+      "packagePatterns": ["(jest|enzyme|mock)", "^@testing-library/*"],
       "packageNames": ["identity-obj-proxy"],
       "groupName": "test"
     },

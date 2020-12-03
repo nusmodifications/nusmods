@@ -1,8 +1,8 @@
 import { requestAction } from 'actions/requests';
 import NUSModsApi from 'apis/nusmods';
 import config from 'config';
-import { RequestActions } from 'middlewares/requests-middleware';
-import { VenueList } from 'types/venues';
+import type { RequestActions } from 'middlewares/requests-middleware';
+import type { VenueList } from 'types/venues';
 
 export const FETCH_VENUE_LIST = 'FETCH_VENUE_LIST';
 export function fetchVenueList() {

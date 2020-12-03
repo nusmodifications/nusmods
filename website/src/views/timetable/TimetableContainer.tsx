@@ -207,7 +207,7 @@ export class TimetableContainerComponent extends PureComponent<Props, State> {
 
     return (
       <div>
-        <ScrollToTop onComponentDidMount />
+        <ScrollToTop />
 
         <TimetableContent
           key={semester}

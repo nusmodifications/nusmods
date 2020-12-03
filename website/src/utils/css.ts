@@ -1,28 +1,26 @@
-// Define media breakpoints
-import json2mq, { QueryObject } from 'json2mq';
-import { entries } from 'lodash';
+import type { QueryObject } from 'json2mq';
 
-export type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-
-const breakpoints: { [breakpoint: string]: number } = {
+// NOTE: Keep in sync with Bootstrap's breakpoints.
+// Breakpoints at time of writing: https://getbootstrap.com/docs/4.5/layout/overview/
+const breakpoints = {
   xs: 0,
   sm: 576,
   md: 768,
   lg: 992,
   xl: 1200,
-};
+} as const;
+type Breakpoint = keyof typeof breakpoints;
 
-function nextBreakpoint(size: Breakpoint): number | null | undefined {
-  const breakpointEntries = entries(breakpoints);
+function nextBreakpoint(size: Breakpoint): number | undefined {
+  const breakpointEntries = Object.entries(breakpoints);
   const nextBreakpointIndex =
     breakpointEntries.findIndex(([breakpoint]) => breakpoint === size) + 1;
-  if (nextBreakpointIndex >= breakpointEntries.length) return null;
   return breakpointEntries[nextBreakpointIndex][1];
 }
 
 export function breakpointDown(size: Breakpoint): QueryObject {
   const nextSize = nextBreakpoint(size);
-  if (nextSize == null) return { all: true };
+  if (nextSize === undefined) return { all: true };
   return { maxWidth: nextSize - 1 };
 }
 
@@ -32,10 +30,6 @@ export function breakpointUp(size: Breakpoint): QueryObject {
 
 export function touchScreenOnly(): QueryObject {
   return { pointer: 'coarse' };
-}
-
-export function queryMatch(query: QueryObject) {
-  return window.matchMedia(json2mq(query));
 }
 
 export function supportsCSSVariables() {
