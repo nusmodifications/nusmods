@@ -60,7 +60,7 @@ function make(location: string = CANONICAL) {
   );
 }
 
-describe('ModulePageContainerComponent', () => {
+describe(ModulePageContainerComponent, () => {
   let mockAxiosRequest: jest.SpiedFunction<typeof axios.request>;
 
   beforeEach(() => {
