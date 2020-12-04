@@ -127,6 +127,13 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
   }
 }
 
+.headerRow {
+  display: flex;
+  width: 100%;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+
 .headerName {
   text-transform: uppercase;
   letter-spacing: 0.06em;
