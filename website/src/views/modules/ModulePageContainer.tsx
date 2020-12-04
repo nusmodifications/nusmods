@@ -56,7 +56,7 @@ type State = {
  * - Loading: Either requests are pending
  * - Loaded: Both requests are successfully loaded
  */
-export class ModulePageContainerComponent extends React.PureComponent<Props, State> {
+class ModulePageContainer extends React.PureComponent<Props, State> {
   state: State = {
     ModulePageContent: null,
   };
@@ -144,6 +144,6 @@ const connectedModulePageContainer = connect(
   // Cast required because the version of Dispatch defined by connect does not have the extensions defined
   // in our Dispatch
   mapDispatchToProps as MapDispatchToPropsNonObject<DispatchProps, OwnProps>,
-)(ModulePageContainerComponent);
-const routedModulePageContainer = withRouter(connectedModulePageContainer);
-export default deferComponentRender(routedModulePageContainer);
+)(ModulePageContainer);
+export const ModulePageContainerComponent = withRouter(connectedModulePageContainer);
+export default deferComponentRender(ModulePageContainerComponent);

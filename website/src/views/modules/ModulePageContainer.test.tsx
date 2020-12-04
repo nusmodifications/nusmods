@@ -1,71 +1,112 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import { Redirect } from 'react-router-dom';
+import { waitFor } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 
-import { Module, ModuleCode } from 'types/modules';
-import ModuleNotFoundPage from 'views/errors/ModuleNotFoundPage';
-import LoadingSpinner from 'views/components/LoadingSpinner';
-import createHistory from 'test-utils/createHistory';
-import { waitFor } from 'test-utils/async';
-import ApiError from 'views/errors/ApiError';
+import configureStore from 'bootstrapping/configure-store';
+import reducers from 'reducers';
+import { mockDom, mockDomReset } from 'test-utils/mockDom';
+import { initAction } from 'test-utils/redux';
+import renderWithRouterMatch from 'test-utils/renderWithRouterMatch';
 import { CS1010S } from '__mocks__/modules';
+
 import { ModulePageContainerComponent } from './ModulePageContainer';
 
+jest.mock('views/components/RandomKawaii');
 jest.mock('utils/error');
+
+const cs1010sResponse: AxiosResponse = {
+  data: CS1010S,
+  status: 200,
+  statusText: 'Ok',
+  headers: {},
+  config: {},
+};
+
+const notFoundError: Partial<AxiosError> = {
+  response: {
+    data: undefined,
+    status: 404,
+    statusText: 'Not found',
+    headers: {},
+    config: {},
+  },
+};
+
+const someOtherError: Partial<AxiosError> = {
+  response: {
+    data: undefined,
+    status: 500,
+    statusText: 'Test error',
+    headers: {},
+    config: {},
+  },
+};
 
 const CANONICAL = '/modules/CS1010S/programming-methodology';
 
-type MakeContainerOptions = {
-  module: Module | null;
-  fetchModule: () => Promise<any>;
-};
+const initialState = reducers(undefined, initAction());
 
-function make(moduleCode: ModuleCode, url: string, options: Partial<MakeContainerOptions> = {}) {
-  const props: MakeContainerOptions = {
-    module: null,
-    fetchModule: () => Promise.resolve(),
-    ...options,
-  };
+function make(location: string = CANONICAL) {
+  const { store } = configureStore(initialState);
 
-  return shallow(
-    <ModulePageContainerComponent moduleCode={moduleCode} {...props} {...createHistory()} />,
+  return renderWithRouterMatch(
+    <Provider store={store}>
+      <ModulePageContainerComponent />
+    </Provider>,
+    {
+      path: '/modules/:moduleCode/:slug?',
+      location,
+    },
   );
 }
 
-function assertRedirect(component: ShallowWrapper, redirectTo = CANONICAL) {
-  expect(component.type()).toEqual(Redirect);
-  expect(component.props()).toMatchObject({ to: { pathname: redirectTo } });
-}
+describe('ModulePageContainerComponent', () => {
+  let mockAxiosRequest: jest.SpiedFunction<typeof axios.request>;
 
-describe(ModulePageContainerComponent, () => {
-  test('should show 404 page when the module code does not exist', () => {
-    const wrapper = make('CS1234', '/modules/CS1234');
-    wrapper.setState({ error: { response: { status: 404 } } });
-    expect(wrapper.type()).toEqual(ModuleNotFoundPage);
+  beforeEach(() => {
+    mockDom();
+    mockAxiosRequest = jest.spyOn(axios, 'request');
   });
 
-  test('should redirect to canonical URL', () => {
-    assertRedirect(
-      make('CS1010S', '/modules/cs1010s/programming-methodology', { module: CS1010S }),
+  afterEach(() => {
+    mockAxiosRequest.mockRestore();
+    mockDomReset();
+  });
+
+  test('should show 404 page when the module code does not exist', async () => {
+    mockAxiosRequest.mockRejectedValue(notFoundError);
+    const {
+      renderResult: { getByText },
+    } = make('/modules/CS1234');
+    await waitFor(() => expect(getByText(/module CS1234 not found/)).toBeInTheDocument());
+  });
+
+  test('should redirect to canonical URL', async () => {
+    mockAxiosRequest.mockResolvedValue(cs1010sResponse);
+    const { history } = make('/modules/CS1010S');
+    await waitFor(() =>
+      expect(history.location.pathname).toBe('/modules/CS1010S/programming-methodology'),
     );
-    assertRedirect(make('CS1010S', '/modules/CS1010S', { module: CS1010S }));
   });
 
-  test('should fetch module', () => {
-    const fetchModule = jest.fn().mockReturnValue(Promise.resolve());
-    const component = make('CS1010S', CANONICAL, { fetchModule });
-    expect(component.type()).toEqual(LoadingSpinner);
-    expect(fetchModule).toBeCalled();
+  test('should fetch module', async () => {
+    mockAxiosRequest.mockResolvedValue(cs1010sResponse);
+    expect(mockAxiosRequest).not.toBeCalled(); // Sanity check
+    const {
+      renderResult: { getByText },
+    } = make();
+    expect(getByText(/Loading/i)).toBeInTheDocument();
+    // Expect module information to be displayed
+    await waitFor(() => expect(getByText(/This module introduces/)).toBeInTheDocument());
+    // Expect component to fetch
+    expect(mockAxiosRequest).toBeCalled();
   });
 
   test('should show error if module fetch failed', async () => {
-    const fetchModule = jest.fn().mockReturnValue(Promise.reject(new Error('Test error')));
-    const component = make('CS1010S', CANONICAL, { fetchModule });
-    await waitFor(() => {
-      component.update();
-      return component.type() !== LoadingSpinner;
-    });
-
-    expect(component.type()).toEqual(ApiError);
-    expect(fetchModule).toBeCalled();
+    mockAxiosRequest.mockRejectedValue(someOtherError);
+    const {
+      renderResult: { getByText },
+    } = make();
+    await waitFor(() => expect(getByText(/can't load the module information/)).toBeInTheDocument());
   });
 });
