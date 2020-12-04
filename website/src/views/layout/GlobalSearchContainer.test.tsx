@@ -109,14 +109,14 @@ describe('GlobalSearchContainer', () => {
     userEvent.type(getByRole('textbox'), '1 ');
     expect(getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
     Array [
-      "ModulesView All ",
+      "View All Modules ",
       "AA1010 TestSem 1",
       "AB1010 TestSem 1",
       "AC1010 TestSem 1",
       "AD1010 TestSem 1",
       "AE1010 TestSem 1",
       "AF1010 TestSem 1",
-      "VenuesView All ",
+      "View All Venues ",
       "AA-1",
       "BB-1",
       "CC-1",
@@ -132,7 +132,7 @@ describe('GlobalSearchContainer', () => {
     userEvent.type(getByRole('textbox'), '1 ');
     expect(getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
     Array [
-      "VenuesView All ",
+      "View All Venues ",
       "AA-1",
       "BB-1",
       "CC-1",
@@ -170,7 +170,7 @@ describe('GlobalSearchContainer', () => {
     userEvent.type(getByRole('textbox'), '1 ');
     expect(getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
     Array [
-      "ModulesView All ",
+      "View All Modules ",
       "AA1010 TestSem 1",
       "AB1010 TestSem 1",
       "AC1010 TestSem 1",
@@ -179,7 +179,7 @@ describe('GlobalSearchContainer', () => {
       "AF1010 TestSem 1",
       "AG1010 TestSem 1",
       "AH1010 TestSem 1",
-      "VenuesView All ",
+      "View All Venues ",
       "AA-1",
       "BB-1",
     ]
@@ -191,9 +191,9 @@ describe('GlobalSearchContainer', () => {
     userEvent.type(getByRole('textbox'), 'AA');
     expect(getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
     Array [
-      "ModulesView All ",
+      "View All Modules ",
       "AA1010 TestSem 1",
-      "VenuesView All ",
+      "View All Venues ",
       "AA-1",
     ]
   `);
@@ -207,7 +207,7 @@ describe('GlobalSearchContainer', () => {
     userEvent.type(getByRole('textbox'), '1010');
     expect(getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
     Array [
-      "ModulesView All ",
+      "View All Modules ",
       "AA1010 TestSem 1",
       "AB1010 TestSem 1",
       "AC1010 TestSem 1",
@@ -290,7 +290,7 @@ describe('GlobalSearchContainer', () => {
     userEvent.type(getByRole('textbox'), 'venue');
     expect(getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
     Array [
-      "VenuesView All ",
+      "View All Venues ",
       "Venue 0",
       "Venue 1",
       "Venue 2",
