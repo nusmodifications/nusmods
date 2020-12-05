@@ -1,5 +1,6 @@
 import type { ModuleList } from 'types/reducers';
 import type { VenueList } from 'types/venues';
+
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
@@ -10,6 +11,7 @@ import configureStore from 'bootstrapping/configure-store';
 import reducers from 'reducers';
 import { initAction } from 'test-utils/redux';
 import { mockDom, mockDomReset, mockWindowMatchMedia } from 'test-utils/mockDom';
+
 import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
 import { fetchVenueList } from 'actions/venueBank';
 
