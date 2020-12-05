@@ -74,7 +74,7 @@
     "chalk": "4.1.0",
     "cheerio": "1.0.0-rc.3",
     "codecov": "3.8.1",
-    "compression-webpack-plugin": "6.1.1",
+    "compression-webpack-plugin": "7.0.0",
     "connect-history-api-fallback": "1.6.0",
     "copy-webpack-plugin": "6.3.2",
     "cross-env": "7.0.3",
@@ -132,7 +132,7 @@
   "dependencies": {
     "@material/fab": "0.40.1",
     "@material/snackbar": "0.40.1",
-    "@sentry/browser": "5.27.6",
+    "@sentry/browser": "5.28.0",
     "@tippy.js/react": "3.1.1",
     "axios": "0.21.0",
     "bootstrap": "4.5.3",
