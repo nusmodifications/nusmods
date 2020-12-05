@@ -1,11 +1,13 @@
 import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
+import { Repeat } from 'react-feather';
 import classnames from 'classnames';
 
-import { ModuleCode, Semester } from 'types/modules';
-import { SemTimetableConfig } from 'types/timetables';
-import { ColorMapping, ModulesMap, NotificationOptions } from 'types/reducers';
+import type { ModuleCode, Semester } from 'types/modules';
+import type { ColorMapping, ModulesMap, NotificationOptions } from 'types/reducers';
+import type { State as StoreState } from 'types/state';
+import type { SemTimetableConfig } from 'types/timetables';
 
 import { selectSemester } from 'actions/settings';
 import { getSemesterTimetable } from 'selectors/timetables';
@@ -17,16 +19,14 @@ import { deserializeTimetable } from 'utils/timetables';
 import { fillColorMapping } from 'utils/colors';
 import { semesterForTimetablePage, TIMETABLE_SHARE, timetablePage } from 'views/routes/paths';
 import deferComponentRender from 'views/hocs/deferComponentRender';
-import { Repeat } from 'react-feather';
 import SemesterSwitcher from 'views/components/semester-switcher/SemesterSwitcher';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import ScrollToTop from 'views/components/ScrollToTop';
-import { State as StoreState } from 'types/state';
 import TimetableContent from './TimetableContent';
 
 import styles from './TimetableContainer.scss';
 
-export type QueryParam = {
+type QueryParam = {
   action: string;
   semester: string;
 };
@@ -62,7 +62,7 @@ type State = {
  * - Import timetable data from query string if action is defined
  * - Create the UI for the user to confirm their actions
  */
-export class TimetableContainerComponent extends PureComponent<Props, State> {
+class TimetableContainer extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -246,7 +246,7 @@ const connectedTimetableContainer = connect(mapStateToProps, {
   fetchTimetableModules,
   openNotification,
   undo,
-})(TimetableContainerComponent);
+})(TimetableContainer);
 
-const routedTimetableContainer = withRouter(connectedTimetableContainer);
-export default deferComponentRender(routedTimetableContainer);
+export const TimetableContainerComponent = withRouter(connectedTimetableContainer);
+export default deferComponentRender(TimetableContainerComponent);
