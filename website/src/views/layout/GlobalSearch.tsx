@@ -228,7 +228,7 @@ class GlobalSearch extends Component<Props, State> {
                     <span className="btn-svg">
                       View All <ChevronRight className={styles.svg} />
                     </span>
-                    <span className={styles.headerName}>Modules </span>
+                    <span className={styles.headerName}>Modules</span>
                   </div>
                 </div>
 
@@ -242,7 +242,9 @@ class GlobalSearch extends Component<Props, State> {
                       [styles.selected]: highlightedIndex === index + 1,
                     })}
                   >
-                    <span>{highlight(`${module.moduleCode} ${module.title}`, tokens)}</span>
+                    {/* Extra space after module.title to aid screen reader to seperate module
+                     title from semester title */}
+                    <span>{highlight(`${module.moduleCode} ${module.title} `, tokens)}</span>
 
                     <SemesterBadge className={styles.semesters} semesters={module.semesters} />
                   </div>
@@ -264,7 +266,7 @@ class GlobalSearch extends Component<Props, State> {
                     <span className="btn-svg">
                       View All <ChevronRight className={styles.svg} />
                     </span>
-                    <span className={styles.headerName}>Venues </span>
+                    <span className={styles.headerName}>Venues</span>
                   </div>
                 </div>
 
