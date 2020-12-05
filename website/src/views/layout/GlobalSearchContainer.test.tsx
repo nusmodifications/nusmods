@@ -14,13 +14,9 @@ import { mockDom, mockDomReset, mockWindowMatchMedia } from 'test-utils/mockDom'
 
 import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
 import { fetchVenueList } from 'actions/venueBank';
-import useMediaQuery from '../hooks/useMediaQuery';
-
 jest.mock('actions/venueBank');
-jest.mock('../hooks/useMediaQuery');
 
 const mockedFetchVenueList = fetchVenueList as jest.MockedFunction<typeof fetchVenueList>;
-const mockedUseMediaQuery = useMediaQuery as jest.MockedFunction<typeof useMediaQuery>;
 
 const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
@@ -67,20 +63,17 @@ describe('GlobalSearchContainer', () => {
 
     // Replace fetchVenueList and useMediaQuery with a noop action to stop it from firing API requests
     mockedFetchVenueList.mockImplementation(() => initAction() as never);
-    mockedUseMediaQuery.mockImplementation(() => initAction() as never);
   });
 
   afterEach(() => {
     mockedFetchVenueList.mockReset();
-    mockedUseMediaQuery.mockReset();
     mockDomReset();
   });
 
   test('hides module when screen size is small', () => {
-    expect(mockedUseMediaQuery).not.toHaveBeenCalled();
-    mockWindowMatchMedia({ matches: true });
-    make();
-    expect(mockedUseMediaQuery).toHaveBeenCalled();
+    mockWindowMatchMedia({ matches: false });
+    const { container } = make();
+    expect(container).toBeEmptyDOMElement();
   });
 
   test('fetches venue list', () => {
