@@ -4,7 +4,7 @@ import type { Dispatch, GetState } from 'types/redux';
 import { hydrateSemTimetableWithLessons } from 'utils/timetables';
 import { captureException } from 'utils/error';
 import retryImport from 'utils/retryImport';
-import { getSemesterTimetable } from 'selectors/timetables';
+import { getSemesterTimetableLessons } from 'selectors/timetables';
 import { SET_EXPORTED_DATA } from './constants';
 
 function downloadUrl(blob: Blob, filename: string) {
@@ -29,11 +29,10 @@ export function downloadAsIcal(semester: Semester) {
       retryImport(() => import(/* webpackChunkName: "export" */ 'utils/ical')),
     ])
       .then(([ical, icalUtils]) => {
-        const {
-          moduleBank: { modules },
-          timetables,
-        } = getState();
-        const { timetable } = getSemesterTimetable(semester, timetables);
+        const state = getState();
+        const { modules } = state.moduleBank;
+
+        const timetable = getSemesterTimetableLessons(state)(semester);
         const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
 
         const events = icalUtils.default(semester, timetableWithLessons, modules);
