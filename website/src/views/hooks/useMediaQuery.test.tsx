@@ -6,7 +6,6 @@ import useMediaQuery from './useMediaQuery';
 
 const Tester: FC = () => {
   const matchedBreakpoint = useMediaQuery(breakpointUp('md'));
-
   return matchedBreakpoint ? <>matched</> : <>no match</>;
 };
 
