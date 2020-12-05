@@ -1,17 +1,16 @@
 import { act, render } from '@testing-library/react';
-import useMediaQuery from './useMediaQuery';
 import { breakpointUp } from 'utils/css';
 import { FC } from 'react';
 import { mockWindowMatchMedia } from 'test-utils/mockDom';
+import useMediaQuery from './useMediaQuery';
 
 const Tester: FC = () => {
   const matchedBreakpoint = useMediaQuery(breakpointUp('md'));
 
   if (matchedBreakpoint) {
     return <div />;
-  } else {
-    return null;
   }
+  return null;
 };
 
 describe(useMediaQuery, () => {
