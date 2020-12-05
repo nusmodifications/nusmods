@@ -1,6 +1,5 @@
 import type { ModuleList } from 'types/reducers';
 import type { VenueList } from 'types/venues';
-
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
