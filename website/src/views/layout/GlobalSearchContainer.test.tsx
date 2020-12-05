@@ -1,7 +1,7 @@
 import type { ModuleList } from 'types/reducers';
 import type { VenueList } from 'types/venues';
 
-import { act, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
@@ -75,22 +75,6 @@ describe('GlobalSearchContainer', () => {
     mockedUseMediaQuery.mockReset();
     mockDomReset();
   });
-
-  // test('hides module when screen size is small', () => {
-  //   let onMediaChangeCallback: () => void;
-  //   const addEventListener = (_type: string, listener: (...args: unknown[]) => void) => {
-  //     onMediaChangeCallback = listener;
-  //   };
-
-  //   mockWindowMatchMedia({ matches: true, addEventListener });
-  //   const { container } = make();
-  //   expect(container).not.toBeEmptyDOMElement();
-
-  //   mockWindowMatchMedia({ matches: false, addEventListener });
-  //   // Trigger render when matches changes
-  //   act(() => onMediaChangeCallback());
-  //   expect(container).toBeEmptyDOMElement();
-  // });
 
   test('hides module when screen size is small', () => {
     expect(mockedUseMediaQuery).not.toHaveBeenCalled();
