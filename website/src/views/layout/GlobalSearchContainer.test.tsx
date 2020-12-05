@@ -10,9 +10,9 @@ import configureStore from 'bootstrapping/configure-store';
 import reducers from 'reducers';
 import { initAction } from 'test-utils/redux';
 import { mockDom, mockDomReset, mockWindowMatchMedia } from 'test-utils/mockDom';
-
 import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
 import { fetchVenueList } from 'actions/venueBank';
+
 jest.mock('actions/venueBank');
 
 const mockedFetchVenueList = fetchVenueList as jest.MockedFunction<typeof fetchVenueList>;
