@@ -74,7 +74,7 @@
     "chalk": "4.1.0",
     "cheerio": "1.0.0-rc.3",
     "codecov": "3.8.1",
-    "compression-webpack-plugin": "6.1.1",
+    "compression-webpack-plugin": "7.0.0",
     "connect-history-api-fallback": "1.6.0",
     "copy-webpack-plugin": "6.3.2",
     "cross-env": "7.0.3",
