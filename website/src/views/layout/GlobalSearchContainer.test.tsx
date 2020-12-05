@@ -14,7 +14,6 @@ import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
 import { fetchVenueList } from 'actions/venueBank';
 
 jest.mock('actions/venueBank');
-
 const mockedFetchVenueList = fetchVenueList as jest.MockedFunction<typeof fetchVenueList>;
 
 const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
