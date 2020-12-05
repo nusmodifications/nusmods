@@ -316,7 +316,7 @@ const ContributeContainer: FC<Props> = ({ modules, beta, ...props }) => {
 
 const ConnectedContributeContainer = connect(
   (state: StoreState) => {
-    const getModule = getModuleCondensed(state.moduleBank);
+    const getModule = getModuleCondensed(state);
     const modules: SemesterModules = mapValues(
       state.timetables.lessons,
       (timetable): ModuleCondensed[] => Object.keys(timetable).map(getModule).filter(notNull),
