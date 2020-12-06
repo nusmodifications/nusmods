@@ -11,13 +11,13 @@ import createHistory from './createHistory';
  */
 export default function renderWithRouterMatch(children: ReactNode, { path = '/', location = '/' }) {
   const { history } = createHistory([location]);
-  const renderResult = render(
+  const view = render(
     <Router history={history}>
       <Route path={path}>{children}</Route>
     </Router>,
   );
   return {
     history,
-    renderResult,
+    view,
   };
 }
