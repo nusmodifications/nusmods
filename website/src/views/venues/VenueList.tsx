@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FC, useMemo } from 'react';
 import classnames from 'classnames';
 import { groupBy, toPairs, sortBy } from 'lodash';
 import { Link, LinkProps } from 'react-router-dom';
@@ -14,20 +14,21 @@ type Props = {
   linkProps?: Omit<LinkProps, 'to'>;
 };
 
-const VenueList: React.FC<Props> = (props) => {
-  // Added during the horrible COVID-19 times to hide E-Learning venues
-  const physicalVenues = props.venues.filter((venue) => !venue.startsWith('E-Learn'));
-  const venueList = groupBy(physicalVenues, (venue) => venue.charAt(0).toUpperCase());
-  const sortedVenueList = sortBy(toPairs(venueList), ([key]) => key);
+const VenueList: FC<Props> = ({ venues, selectedVenue, linkProps }) => {
+  const sortedVenueList = useMemo(() => {
+    // Added during the horrible COVID-19 times to hide E-Learning venues
+    const physicalVenues = venues.filter((venue) => !venue.startsWith('E-Learn'));
+    const venueList = groupBy(physicalVenues, (venue) => venue.charAt(0).toUpperCase());
+    return sortBy(toPairs(venueList), ([key]) => key);
+  }, [venues]);
 
   return (
     <ul className={styles.venueList}>
-      {sortedVenueList.map(([heading, venues]) => (
+      {sortedVenueList.map(([heading, sortedVenue]) => (
         <li key={heading}>
           <h3 className={styles.heading}>{heading}</h3>
-
           <ul className={styles.subList}>
-            {venues.map((venue) => (
+            {sortedVenue.map((venue) => (
               <li key={venue}>
                 <Link
                   to={{
@@ -36,9 +37,9 @@ const VenueList: React.FC<Props> = (props) => {
                   }}
                   className={classnames(
                     'btn',
-                    venue === props.selectedVenue ? 'btn-primary' : 'btn-outline-primary',
+                    venue === selectedVenue ? 'btn-primary' : 'btn-outline-primary',
                   )}
-                  {...props.linkProps}
+                  {...linkProps}
                 >
                   {venue}
                 </Link>
