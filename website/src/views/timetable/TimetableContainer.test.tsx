@@ -1,4 +1,4 @@
-import { waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import axios from 'axios';
 import produce from 'immer';
@@ -82,21 +82,17 @@ describe(TimetableContainerComponent, () => {
     // Use for-of loop as we `waitFor` must be executed sequentially.
     // eslint-disable-next-line no-restricted-syntax
     for (const semester of semesters) {
+      const { history } = make('/timetable', { app: { activeSemester: semester } });
       // eslint-disable-next-line no-await-in-loop
-      await waitFor(() => {
-        const { history } = make('/timetable', { app: { activeSemester: semester } });
-        return expect(history.location.pathname).toBe(timetablePage(semester));
-      });
+      await waitFor(() => expect(history.location.pathname).toBe(timetablePage(semester)));
     }
   });
 
   test('should redirect to homepage when the URL is invalid', async () => {
     function expectRedirectToHomepageFrom(from: string) {
-      return waitFor(() => {
-        const homepage = timetablePage(relevantStoreContents.app.activeSemester);
-        const { history } = make(from);
-        return expect(history.location.pathname).toBe(homepage);
-      });
+      const homepage = timetablePage(relevantStoreContents.app.activeSemester);
+      const { history } = make(from);
+      return waitFor(() => expect(history.location.pathname).toBe(homepage));
     }
     await expectRedirectToHomepageFrom('/timetable/hello');
     await expectRedirectToHomepageFrom('/timetable/sem-3');
@@ -111,18 +107,16 @@ describe(TimetableContainerComponent, () => {
     const semester = 1;
     const importedTimetable = { [moduleCodeThatCanBeLoaded]: { Lecture: '1' } };
     const location = timetableShare(semester, importedTimetable);
-    const {
-      renderResult: { getByRole, getByText },
-    } = make(location);
+    make(location);
 
     // Expect spinner when loading modules
-    expect(getByText(/Loading/)).toBeInTheDocument();
+    expect(screen.getByText(/Loading/)).toBeInTheDocument();
 
     // Expect import header to be present
-    await waitFor(() => expect(getByRole('button', { name: 'Import' })).toBeInTheDocument());
+    expect(await screen.findByRole('button', { name: 'Import' })).toBeInTheDocument();
 
     // Expect imported module info to be displayed
-    expect(getByText(/Personal Development & Career Management/)).toBeInTheDocument();
+    expect(screen.getByText(/Personal Development & Career Management/)).toBeInTheDocument();
 
     // Expect correct network calls to be made
     expect(mockAxiosRequest).toHaveBeenCalledTimes(1);
@@ -132,26 +126,21 @@ describe(TimetableContainerComponent, () => {
     const semester = 1;
     const importedTimetable = { TRUMP2020: { Lecture: '1' } };
     const location = timetableShare(semester, importedTimetable);
-    const {
-      renderResult: { getByRole, queryByText },
-    } = make(location);
+    make(location);
 
     // Expect nothing to be fetched and the invalid module to be ignored
-    expect(queryByText(/Loading/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Loading/)).not.toBeInTheDocument();
     expect(mockAxiosRequest).not.toHaveBeenCalledTimes(1);
-    expect(queryByText(/TRUMP2020/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/TRUMP2020/)).not.toBeInTheDocument();
 
     // Expect import header to still be present
-    expect(getByRole('button', { name: 'Import' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Import' })).toBeInTheDocument();
   });
 
   test('should display saved timetable when there is no imported timetable', () => {
     const semester = 1;
     const location = timetablePage(semester);
-    const {
-      store,
-      renderResult: { getByText, queryByRole, queryByText },
-    } = make(location);
+    const { store } = make(location);
 
     // Populate moduleBank using "succeeded" requests-middleware requests
     store.dispatch({ type: SUCCESS_KEY(FETCH_MODULE), payload: CS1010S });
@@ -162,13 +151,13 @@ describe(TimetableContainerComponent, () => {
     store.dispatch(setTimetable(semester, timetable));
 
     // Expect nothing to be fetched as timetable exists in `moduleBank`.
-    expect(queryByText(/Loading/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Loading/)).not.toBeInTheDocument();
     expect(mockAxiosRequest).not.toHaveBeenCalled();
 
     // Expect imported module info to be displayed
-    expect(getByText(/Programming Methodology/)).toBeInTheDocument();
+    expect(screen.getByText(/Programming Methodology/)).toBeInTheDocument();
 
     // Expect import header not to be present
-    expect(queryByRole('button', { name: 'Import' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Import' })).not.toBeInTheDocument();
   });
 });
