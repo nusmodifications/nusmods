@@ -16,9 +16,19 @@ export default function useMediaQuery(mediaQuery: string | QueryObject | QueryOb
       getCurrentValue: () => window.matchMedia(media).matches,
       subscribe(callback) {
         const mediaQueryList = window.matchMedia(media);
-        mediaQueryList.addEventListener('change', callback);
+        if (mediaQueryList.addEventListener) {
+          mediaQueryList.addEventListener('change', callback);
+        } else {
+          // To support quirk on Safari versions prior to Safari 14
+          // See https://github.com/nusmodifications/nusmods/issues/3029
+          mediaQueryList.addListener(callback);
+        }
         return () => {
-          mediaQueryList.removeEventListener('change', callback);
+          if (mediaQueryList.removeEventListener) {
+            mediaQueryList.removeEventListener('change', callback);
+          } else {
+            mediaQueryList.removeListener(callback);
+          }
         };
       },
     }),
