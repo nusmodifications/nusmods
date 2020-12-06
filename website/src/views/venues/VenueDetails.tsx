@@ -50,7 +50,7 @@ const VenueDetailsComponent: FC<Props> = ({
     [history],
   );
 
-  const matchedBreakpoint = useMediaQuery(breakpointDown('lg'));
+  const narrowViewport = useMediaQuery(breakpointDown('lg'));
 
   return (
     <>
@@ -86,11 +86,11 @@ const VenueDetailsComponent: FC<Props> = ({
         <VenueLocation venue={venue} />
       </div>
 
-      <div className={classnames(styles.timetable, { verticalMode: matchedBreakpoint })}>
+      <div className={classnames(styles.timetable, { verticalMode: narrowViewport })}>
         <Timetable
           lessons={arrangedLessons}
           highlightPeriod={highlightPeriod}
-          isVerticalOrientation={matchedBreakpoint}
+          isVerticalOrientation={narrowViewport}
           onModifyCell={navigateToLesson}
         />
       </div>
