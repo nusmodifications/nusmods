@@ -1,7 +1,7 @@
 import { FC, useMemo } from 'react';
 import classnames from 'classnames';
 import { groupBy, toPairs, sortBy } from 'lodash';
-import { Link, LinkProps } from 'react-router-dom';
+import { Link, LinkProps, useLocation } from 'react-router-dom';
 
 import { Venue } from 'types/venues';
 import { venuePage } from 'views/routes/paths';
@@ -22,6 +22,8 @@ const VenueList: FC<Props> = ({ venues, selectedVenue, linkProps }) => {
     return sortBy(toPairs(venueList), ([key]) => key);
   }, [venues]);
 
+  const location = useLocation();
+
   return (
     <ul className={styles.venueList}>
       {sortedVenueList.map(([heading, sortedVenue]) => (
@@ -32,8 +34,8 @@ const VenueList: FC<Props> = ({ venues, selectedVenue, linkProps }) => {
               <li key={venue}>
                 <Link
                   to={{
+                    ...location,
                     pathname: venuePage(venue),
-                    search: window.location.search,
                   }}
                   className={classnames(
                     'btn',
