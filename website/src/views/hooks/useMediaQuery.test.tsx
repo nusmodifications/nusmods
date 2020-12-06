@@ -18,7 +18,7 @@ describe(useMediaQuery, () => {
     mockDomReset();
   });
 
-  test('should display correct module based on matching', () => {
+  test('should return whether media queries were matched', () => {
     let onMediaChangeCallback: () => void;
     const addEventListener = (_type: string, listener: (...args: unknown[]) => void) => {
       onMediaChangeCallback = listener;

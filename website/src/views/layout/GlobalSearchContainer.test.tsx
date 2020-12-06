@@ -61,7 +61,7 @@ describe('GlobalSearchContainer', () => {
   beforeEach(() => {
     mockDom();
 
-    // Replace fetchVenueList and useMediaQuery with a noop action to stop it from firing API requests
+    // Replace fetchVenueList with a noop action to stop it from firing API requests
     mockedFetchVenueList.mockImplementation(() => initAction() as never);
   });
 
