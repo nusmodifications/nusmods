@@ -1,4 +1,4 @@
-import { QueryObject } from 'json2mq';
+import type { QueryObject } from 'json2mq';
 import { Module, ModuleCondensed } from './modules';
 import { ModuleList } from './reducers';
 import { ColorIndex, HoverLesson, Lesson, ModifiableLesson } from './timetables';
