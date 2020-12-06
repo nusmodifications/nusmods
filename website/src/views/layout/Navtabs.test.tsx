@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import configureStore from 'bootstrapping/configure-store';
 import produce from 'immer';
 import React from 'react';
@@ -24,7 +24,7 @@ function make(storeOverrides: Partial<typeof relevantStoreContents> = {}) {
       draft.settings.beta = storeOverrides.settings?.beta ?? relevantStoreContents.settings.beta;
     }),
   );
-  return render(
+  render(
     <MemoryRouter>
       <Provider store={store}>
         <Navtabs />,
@@ -35,9 +35,8 @@ function make(storeOverrides: Partial<typeof relevantStoreContents> = {}) {
 
 describe(Navtabs, () => {
   test('should render into nav element', () => {
-    const { container } = make();
-    expect(Array.from(container.getElementsByTagName('a')).map((elem) => elem.textContent))
-      .toMatchInlineSnapshot(`
+    make();
+    expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
       Array [
         "Today",
         "Timetable",
@@ -48,13 +47,11 @@ describe(Navtabs, () => {
         "Whispers",
       ]
     `);
-    expect(container).toMatchSnapshot();
   });
 
   test('should show beta tabs if beta is true', () => {
-    const { container } = make({ settings: { beta: true } });
-    expect(Array.from(container.getElementsByTagName('a')).map((elem) => elem.textContent))
-      .toMatchInlineSnapshot(`
+    make({ settings: { beta: true } });
+    expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
       Array [
         "Today",
         "Timetable",
@@ -66,6 +63,5 @@ describe(Navtabs, () => {
         "Whispers",
       ]
     `);
-    expect(container).toMatchSnapshot();
   });
 });

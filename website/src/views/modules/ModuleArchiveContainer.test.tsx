@@ -1,4 +1,4 @@
-import { waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
@@ -75,10 +75,8 @@ describe(ModuleArchiveContainerComponent, () => {
 
   test('should show 404 page when the module code does not exist', async () => {
     mockAxiosRequest.mockRejectedValue(notFoundError);
-    const {
-      renderResult: { getByText },
-    } = make('/archive/CS1234/2017-2018');
-    await waitFor(() => expect(getByText(/module CS1234 not found/)).toBeInTheDocument());
+    make('/archive/CS1234/2017-2018');
+    expect(await screen.findByText(/module CS1234 not found/)).toBeInTheDocument();
   });
 
   test('should redirect to canonical URL', async () => {
@@ -92,21 +90,17 @@ describe(ModuleArchiveContainerComponent, () => {
   test('should fetch module', async () => {
     mockAxiosRequest.mockResolvedValue(cs1010sResponse);
     expect(mockAxiosRequest).not.toBeCalled(); // Sanity check
-    const {
-      renderResult: { getByText },
-    } = make();
-    expect(getByText(/Loading/i)).toBeInTheDocument();
+    make();
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
     // Expect module information to be displayed
-    await waitFor(() => expect(getByText(/This module introduces/)).toBeInTheDocument());
+    expect(await screen.findByText(/This module introduces/)).toBeInTheDocument();
     // Expect component to fetch
     expect(mockAxiosRequest).toBeCalled();
   });
 
   test('should show error if module fetch failed', async () => {
     mockAxiosRequest.mockRejectedValue(someOtherError);
-    const {
-      renderResult: { getByText },
-    } = make();
-    await waitFor(() => expect(getByText(/can't load the module information/)).toBeInTheDocument());
+    make();
+    expect(await screen.findByText(/can't load the module information/)).toBeInTheDocument();
   });
 });
