@@ -58,8 +58,6 @@ type State = {
   pristineSearchOptions: boolean;
 };
 
-const pageHead = <Title>Venues</Title>;
-
 export class VenuesContainerComponent extends Component<Props, State> {
   history: HistoryDebouncer;
 
@@ -309,7 +307,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
 
     return (
       <div className={classnames('page-container', styles.pageContainer)}>
-        {pageHead}
+        <Title>Venues</Title>
 
         <div className={styles.venuesList}>
           {this.renderSearch()}
