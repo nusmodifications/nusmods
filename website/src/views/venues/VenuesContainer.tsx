@@ -1,9 +1,9 @@
-import { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { unstable_batchedUpdates as batchedUpdates } from 'react-dom';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import Loadable, { LoadingComponentProps } from 'react-loadable';
 import classnames from 'classnames';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import qs from 'query-string';
 import { isEqual, mapValues, noop, pick, size } from 'lodash';
 
@@ -353,9 +353,12 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
   );
 };
 
-const AsyncVenuesContainer = Loadable.Map<Subtract<Props, LoadedProps>, { venues: AxiosResponse }>({
+const AsyncVenuesContainer = Loadable.Map<Subtract<Props, LoadedProps>, LoadedProps>({
   loader: {
-    venues: () => axios.get(nusmods.venuesUrl(config.semester)),
+    venues: async () => {
+      const response = await axios.get(nusmods.venuesUrl(config.semester));
+      return sortVenues(response.data);
+    },
   },
   loading: (props: LoadingComponentProps) => {
     if (props.error) {
@@ -368,8 +371,8 @@ const AsyncVenuesContainer = Loadable.Map<Subtract<Props, LoadedProps>, { venues
 
     return null;
   },
-  render(loaded, props) {
-    return <VenuesContainerComponent venues={sortVenues(loaded.venues.data)} {...props} />;
+  render({ venues }, props) {
+    return <VenuesContainerComponent venues={venues} {...props} />;
   },
 });
 
