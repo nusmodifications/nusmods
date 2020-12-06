@@ -26,9 +26,7 @@ const SemesterPicker: FC<Props> = ({
   selectedSemester,
   onSelectSemester,
 }) => {
-  const semesterNames = () => {
-    return useShortNames ? config.shortSemesterNames : config.semesterNames;
-  };
+  const semesterNames = () => (useShortNames ? config.shortSemesterNames : config.semesterNames);
 
   /**
    * Map button labels (semester names) to semesters

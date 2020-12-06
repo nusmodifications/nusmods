@@ -25,27 +25,25 @@ const ModuleFinderNoHits: React.FC<NoHitsDisplayProps> = ({
   query,
   filtersCount,
   translate,
-}) => {
-  return (
-    <>
-      <Warning message={noResultsLabel} />
+}) => (
+  <>
+    <Warning message={noResultsLabel} />
 
-      {matchEgg(query) && <Omelette query={query} />}
+    {matchEgg(query) && <Omelette query={query} />}
 
-      <div className={styles.buttons}>
-        {!!suggestion && (
-          <button type="button" className="btn btn-outline-primary" onClick={setSuggestionFn}>
-            {translate('NoHits.DidYouMean', { suggestion })}
-          </button>
-        )}
-        {filtersCount > 0 && (
-          <button type="button" className="btn btn-outline-primary" onClick={resetFiltersFn}>
-            {translate('NoHits.SearchWithoutFilters', { query })}
-          </button>
-        )}
-      </div>
-    </>
-  );
-};
+    <div className={styles.buttons}>
+      {!!suggestion && (
+        <button type="button" className="btn btn-outline-primary" onClick={setSuggestionFn}>
+          {translate('NoHits.DidYouMean', { suggestion })}
+        </button>
+      )}
+      {filtersCount > 0 && (
+        <button type="button" className="btn btn-outline-primary" onClick={resetFiltersFn}>
+          {translate('NoHits.SearchWithoutFilters', { query })}
+        </button>
+      )}
+    </div>
+  </>
+);
 
 export default ModuleFinderNoHits;
