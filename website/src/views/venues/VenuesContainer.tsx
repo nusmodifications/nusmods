@@ -1,15 +1,14 @@
-import { Component } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { unstable_batchedUpdates as batchedUpdates } from 'react-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import Loadable, { LoadingComponentProps } from 'react-loadable';
 import classnames from 'classnames';
 import axios, { AxiosResponse } from 'axios';
-import produce from 'immer';
 import qs from 'query-string';
-import { isEqual, mapValues, pick, size } from 'lodash';
+import { isEqual, mapValues, noop, pick, size } from 'lodash';
 
 import type { TimePeriod, Venue, VenueDetailList, VenueSearchOptions } from 'types/venues';
 import type { Subtract } from 'types/utils';
-import type { WithBreakpoint } from 'views/hocs/makeResponsive';
 
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import ApiError from 'views/errors/ApiError';
@@ -22,14 +21,13 @@ import Modal from 'views/components/Modal';
 import Title from 'views/components/Title';
 import NoFooter from 'views/layout/NoFooter';
 import MapContext from 'views/components/map/MapContext';
-import makeResponsive from 'views/hocs/makeResponsive';
+import useMediaQuery from 'views/hooks/useMediaQuery';
 
 import config from 'config';
 import nusmods from 'apis/nusmods';
 import HistoryDebouncer from 'utils/HistoryDebouncer';
 import { clampClassDuration, filterAvailability, searchVenue, sortVenues } from 'utils/venues';
 import { breakpointDown } from 'utils/css';
-import { defer } from 'utils/react';
 import { convertIndexToTime } from 'utils/timify';
 
 import AvailabilitySearch, { defaultSearchOptions } from './AvailabilitySearch';
@@ -43,216 +41,27 @@ export type Params = {
   venue: string;
 };
 
-type LoadedProps = { venues: VenueDetailList };
-type Props = RouteComponentProps<Params> & LoadedProps & WithBreakpoint;
+const SecondaryPaneComponent: FC<{
+  highlightPeriod?: TimePeriod;
+  matchedVenues: VenueDetailList;
+  selectedVenue?: string;
+  venues: VenueDetailList;
+}> = ({ highlightPeriod, matchedVenues, selectedVenue, venues }) => {
+  const [isMapExpanded, setIsMapExpanded] = useState(false);
 
-type State = {
-  // View state
-  isMapExpanded: boolean;
-
-  // Search state
-  searchBoxValue: string; // Value of the controlled search box; updated real-time
-  searchTerm: string; // Actual string to search with; deferred update
-  isAvailabilityEnabled: boolean;
-  searchOptions: VenueSearchOptions;
-  pristineSearchOptions: boolean;
-};
-
-export class VenuesContainerComponent extends Component<Props, State> {
-  history: HistoryDebouncer;
-
-  constructor(props: Props) {
-    super(props);
-
-    const { location, history } = props;
-    const params = qs.parse(location.search);
-
-    // Extract searchOptions from the query string if they are present
-    const isAvailabilityEnabled = !!(params.time && params.day && params.duration);
-    const searchOptions = isAvailabilityEnabled
-      ? (mapValues(pick(params, ['time', 'day', 'duration']), (i) =>
-          parseInt(i, 10),
-        ) as VenueSearchOptions)
-      : defaultSearchOptions();
-
-    this.history = new HistoryDebouncer(history);
-    const searchTerm = params.q || '';
-    this.state = {
-      searchOptions,
-      isAvailabilityEnabled,
-      isMapExpanded: false,
-      searchTerm,
-      searchBoxValue: searchTerm,
-      // eslint-disable-next-line react/no-unused-state
-      pristineSearchOptions: !isAvailabilityEnabled,
-    };
-  }
-
-  componentDidMount() {
-    VenueLocation.preload();
-  }
-
-  componentDidUpdate(prevProps: Props, prevState: State) {
-    // Update URL if any of these props have changed
-    const { searchOptions, searchTerm, isAvailabilityEnabled } = this.state;
-
-    if (isAvailabilityEnabled !== prevState.isAvailabilityEnabled) {
-      this.updateURL(false);
-    } else if (searchOptions !== prevState.searchOptions || searchTerm !== prevState.searchTerm) {
-      this.updateURL();
-    }
-  }
-
-  onFindFreeRoomsClicked = () => {
-    this.setState(
-      produce((draft) => {
-        const { pristineSearchOptions, isAvailabilityEnabled } = draft;
-        draft.isAvailabilityEnabled = !isAvailabilityEnabled;
-
-        // Only reset search options if the user has never changed it, and if the
-        // search box is being opened. By resetting the option when the box is opened,
-        // the time when the box is opened will be used, instead of the time when the
-        // page is loaded
-        if (pristineSearchOptions && !isAvailabilityEnabled) {
-          draft.searchOptions = defaultSearchOptions();
-        }
+  const history = useHistory();
+  const onClearVenueSelect = useCallback(
+    () =>
+      history.push({
+        ...history.location,
+        pathname: venuePage(),
       }),
-    );
-  };
+    [history],
+  );
 
-  onClearVenueSelect = () =>
-    this.props.history.push({
-      ...this.props.history.location,
-      pathname: venuePage(),
-    });
+  const matchBreakpoint = useMediaQuery(breakpointDown('sm'));
 
-  onSearchBoxChange = (searchBoxValue: string) => {
-    this.setState({ searchBoxValue });
-  };
-
-  onSearch = () => {
-    defer(() => this.setState((prevState) => ({ searchTerm: prevState.searchBoxValue.trim() })));
-  };
-
-  onAvailabilityUpdate = (searchOptions: VenueSearchOptions) => {
-    if (!isEqual(searchOptions, this.state.searchOptions)) {
-      this.setState({
-        searchOptions: clampClassDuration(searchOptions),
-        // eslint-disable-next-line react/no-unused-state
-        pristineSearchOptions: false, // user changed searchOptions
-      });
-    }
-  };
-
-  onToggleMapExpanded = (isMapExpanded: boolean) => {
-    this.setState({ isMapExpanded });
-  };
-
-  updateURL = (debounce = true) => {
-    const { searchTerm, isAvailabilityEnabled, searchOptions } = this.state;
-    let query: Partial<Params> = {};
-
-    if (searchTerm) query.q = searchTerm;
-    if (isAvailabilityEnabled) query = { ...query, ...searchOptions };
-
-    const pathname = venuePage(this.selectedVenue());
-    const history = debounce ? this.history : this.props.history;
-    history.push({
-      ...this.props.location,
-      search: qs.stringify(query),
-      pathname,
-    });
-  };
-
-  getHighlightPeriod(): TimePeriod | undefined {
-    const { isAvailabilityEnabled, searchOptions } = this.state;
-    if (!isAvailabilityEnabled) return undefined;
-
-    return {
-      day: searchOptions.day,
-      startTime: convertIndexToTime(searchOptions.time * 2),
-      endTime: convertIndexToTime(2 * (searchOptions.time + searchOptions.duration)),
-    };
-  }
-
-  selectedVenue(): Venue | null {
-    const { venue } = this.props.match.params;
-    if (!venue) return null;
-    return decodeURIComponent(venue);
-  }
-
-  renderSearch() {
-    const { searchBoxValue, isAvailabilityEnabled, searchOptions } = this.state;
-
-    return (
-      <div className={styles.venueSearch}>
-        <h3>Venue Search</h3>
-
-        <SearchBox
-          className={styles.searchBox}
-          throttle={0}
-          useInstantSearch
-          isLoading={false}
-          value={searchBoxValue}
-          placeholder="e.g. LT27"
-          onChange={this.onSearchBoxChange}
-          onSearch={this.onSearch}
-        />
-
-        <button
-          className={classnames(
-            'btn btn-block btn-svg',
-            styles.availabilityToggle,
-            isAvailabilityEnabled ? 'btn-primary' : 'btn-outline-primary',
-          )}
-          onClick={this.onFindFreeRoomsClicked}
-          type="button"
-        >
-          <Clock className="svg" /> Find free rooms
-        </button>
-
-        {isAvailabilityEnabled && (
-          <div className={styles.availabilitySearch}>
-            <AvailabilitySearch
-              isEnabled={isAvailabilityEnabled}
-              searchOptions={searchOptions}
-              onUpdate={this.onAvailabilityUpdate}
-            />
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  renderNoResult(unfilteredCount: number) {
-    const { isAvailabilityEnabled } = this.state;
-
-    return (
-      <>
-        <Warning message="No matching venues found" />
-        {!!unfilteredCount && isAvailabilityEnabled && (
-          <p className="text-center text-muted">
-            {unfilteredCount === 1
-              ? 'There is a venue that is not shown because it is not free'
-              : `There are ${unfilteredCount} venues that are not shown because they are not free`}
-            <br />
-            <button
-              type="button"
-              className="btn btn-link"
-              onClick={() => this.setState({ isAvailabilityEnabled: false })}
-            >
-              Show all rooms
-            </button>
-          </p>
-        )}
-      </>
-    );
-  }
-
-  renderSelectedVenue(matchedVenues: VenueDetailList) {
-    const selectedVenue = this.selectedVenue();
-    const { venues } = this.props;
-
+  const venueDetailProps = useMemo(() => {
     if (!venues || !selectedVenue) return null;
 
     // Find the index of the current venue on the list of matched venues so
@@ -269,104 +78,281 @@ export class VenuesContainerComponent extends Component<Props, State> {
       const venueDetail = venues.find(([venue]) => venue.toLowerCase() === lowercaseSelectedVenue);
       if (!venueDetail) return null;
       const [venue, availability] = venueDetail;
-      return (
-        <VenueDetails
-          venue={venue}
-          availability={availability}
-          highlightPeriod={this.getHighlightPeriod()}
-        />
-      );
+      return { venue, availability, next: undefined, previous: undefined };
     }
 
     const [venue, availability] = matchedVenues[venueIndex];
     const [previous] = matchedVenues[venueIndex - 1] || ([] as string[]);
     const [next] = matchedVenues[venueIndex + 1] || ([] as string[]);
+    return { venue, availability, next, previous };
+  }, [matchedVenues, selectedVenue, venues]);
 
-    return (
-      <VenueDetails
-        venue={venue}
-        availability={availability}
-        next={next}
-        previous={previous}
-        highlightPeriod={this.getHighlightPeriod()}
-      />
-    );
+  function renderSelectedVenue() {
+    if (!venueDetailProps) {
+      return null;
+    }
+    return <VenueDetails {...venueDetailProps} highlightPeriod={highlightPeriod} />;
   }
 
-  render() {
-    const selectedVenue = this.selectedVenue();
-    const { searchTerm, isAvailabilityEnabled, isMapExpanded, searchOptions } = this.state;
-    const { venues } = this.props;
-
-    let matchedVenues = searchVenue(venues, searchTerm);
-    const unfilteredCount = size(matchedVenues);
-
-    if (isAvailabilityEnabled) {
-      matchedVenues = filterAvailability(matchedVenues, searchOptions);
-    }
-
-    return (
-      <div className={classnames('page-container', styles.pageContainer)}>
-        <Title>Venues</Title>
-
-        <div className={styles.venuesList}>
-          {this.renderSearch()}
-
-          {size(matchedVenues) === 0 ? (
-            this.renderNoResult(unfilteredCount)
-          ) : (
-            <VenueList
-              venues={matchedVenues.map(([venue]) => venue)}
-              selectedVenue={selectedVenue}
-            />
-          )}
-        </div>
-
-        <MapContext.Provider value={{ toggleMapExpanded: this.onToggleMapExpanded }}>
-          {this.props.matchBreakpoint ? (
-            <Modal
-              isOpen={selectedVenue != null}
-              onRequestClose={this.onClearVenueSelect}
-              className={styles.venueDetailModal}
-              fullscreen
-            >
-              <button
-                type="button"
-                className={classnames('btn btn-outline-primary btn-block', styles.closeButton)}
-                onClick={this.onClearVenueSelect}
-              >
-                Back to Venues
-              </button>
-              {this.renderSelectedVenue(matchedVenues)}
-            </Modal>
-          ) : (
-            <>
-              <div
-                className={classnames(styles.venueDetail, {
-                  [styles.mapExpanded]: isMapExpanded,
-                })}
-              >
-                {selectedVenue == null ? (
-                  <div className={styles.noVenueSelected}>
-                    <Map />
-                    <p>Select a venue on the left to see its timetable</p>
-                  </div>
-                ) : (
-                  this.renderSelectedVenue(matchedVenues)
-                )}
+  return (
+    <MapContext.Provider value={{ toggleMapExpanded: setIsMapExpanded }}>
+      {matchBreakpoint ? (
+        <Modal
+          isOpen={selectedVenue != null}
+          onRequestClose={onClearVenueSelect}
+          className={styles.venueDetailModal}
+          fullscreen
+        >
+          <button
+            type="button"
+            className={classnames('btn btn-outline-primary btn-block', styles.closeButton)}
+            onClick={onClearVenueSelect}
+          >
+            Back to Venues
+          </button>
+          {renderSelectedVenue()}
+        </Modal>
+      ) : (
+        <>
+          <div
+            className={classnames(styles.venueDetail, {
+              [styles.mapExpanded]: isMapExpanded,
+            })}
+          >
+            {selectedVenue == null ? (
+              <div className={styles.noVenueSelected}>
+                <Map />
+                <p>Select a venue on the left to see its timetable</p>
               </div>
-              <NoFooter />
-            </>
+            ) : (
+              renderSelectedVenue()
+            )}
+          </div>
+          <NoFooter />
+        </>
+      )}
+    </MapContext.Provider>
+  );
+};
+const SecondaryPane = memo(SecondaryPaneComponent);
+
+type LoadedProps = { venues: VenueDetailList };
+type Props = LoadedProps;
+
+export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
+  const history = useHistory();
+  const location = useLocation();
+  const matchParams = useParams<Params>();
+
+  // Search state
+  const [
+    /** Value of the controlled search box; updated real-time */
+    searchQuery,
+    setSearchQuery,
+  ] = useState<string>(() => qs.parse(location.search).q || '');
+  /** Actual string to search with; deferred update */
+  const deferredSearchQuery = searchQuery; // TODO: Redundant now. Use React.useDeferredValue after we adopt concurrent mode
+  const [isAvailabilityEnabled, setIsAvailabilityEnabled] = useState(() => {
+    const params = qs.parse(location.search);
+    return !!(params.time && params.day && params.duration);
+  });
+  const [searchOptions, setSearchOptions] = useState(() => {
+    const params = qs.parse(location.search);
+    // Extract searchOptions from the query string if they are present
+    return isAvailabilityEnabled
+      ? (mapValues(pick(params, ['time', 'day', 'duration']), (i) =>
+          parseInt(i, 10),
+        ) as VenueSearchOptions)
+      : defaultSearchOptions();
+  });
+  const [pristineSearchOptions, setPristineSearchOptions] = useState(() => !isAvailabilityEnabled);
+
+  const historyDebouncer = useMemo(() => new HistoryDebouncer(history), [history]);
+
+  // TODO: Check if this actually does anything useful
+  useEffect(() => {
+    VenueLocation.preload();
+  }, []);
+
+  const onFindFreeRoomsClicked = useCallback(() => {
+    batchedUpdates(() => {
+      setIsAvailabilityEnabled(!isAvailabilityEnabled);
+      if (pristineSearchOptions && !isAvailabilityEnabled) {
+        // Only reset search options if the user has never changed it, and if the
+        // search box is being opened. By resetting the option when the box is opened,
+        // the time when the box is opened will be used, instead of the time when the
+        // page is loaded
+        setSearchOptions(defaultSearchOptions());
+      }
+    });
+  }, [isAvailabilityEnabled, pristineSearchOptions]);
+
+  const onAvailabilityUpdate = useCallback(
+    (newSearchOptions: VenueSearchOptions) => {
+      if (!isEqual(newSearchOptions, searchOptions)) {
+        batchedUpdates(() => {
+          setSearchOptions(clampClassDuration(newSearchOptions));
+          setPristineSearchOptions(false); // user changed searchOptions
+        });
+      }
+    },
+    [searchOptions],
+  );
+
+  const highlightPeriod = useMemo<TimePeriod | undefined>(() => {
+    if (!isAvailabilityEnabled) return undefined;
+
+    return {
+      day: searchOptions.day,
+      startTime: convertIndexToTime(searchOptions.time * 2),
+      endTime: convertIndexToTime(2 * (searchOptions.time + searchOptions.duration)),
+    };
+  }, [isAvailabilityEnabled, searchOptions.day, searchOptions.duration, searchOptions.time]);
+
+  const selectedVenue = useMemo<Venue | undefined>(
+    () => (matchParams.venue ? decodeURIComponent(matchParams.venue) : undefined),
+    [matchParams.venue],
+  );
+
+  const updateURL = useCallback(
+    (debounce = true) => {
+      let query: Partial<Params> = {};
+
+      if (deferredSearchQuery) query.q = deferredSearchQuery;
+      if (isAvailabilityEnabled) query = { ...query, ...searchOptions };
+
+      const pathname = venuePage(selectedVenue);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const historyToUse = debounce ? historyDebouncer : history;
+      const search = qs.stringify(query);
+      if (history.location.search !== search || history.location.pathname !== pathname) {
+        // FIXME: This triggers some really slow updates
+        historyToUse.push({
+          ...history.location,
+          search,
+          pathname,
+        });
+      }
+    },
+    [
+      deferredSearchQuery,
+      history,
+      historyDebouncer,
+      isAvailabilityEnabled,
+      searchOptions,
+      selectedVenue,
+    ],
+  );
+
+  // FIXME: Only update URLs when isAvailabilityEnabled, searchOptions,
+  // deferredSearchQuery, or updateURL changed, not updateURL
+  // componentDidUpdate(prevProps: Props, prevState: State) {
+  //   // Update URL if any of these props have changed
+  //   const { searchOptions, deferredSearchQuery, isAvailabilityEnabled } = this.state;
+
+  //   if (isAvailabilityEnabled !== prevState.isAvailabilityEnabled) {
+  //     this.updateURL(false);
+  //   } else if (searchOptions !== prevState.searchOptions || deferredSearchQuery !== prevState.deferredSearchQuery) {
+  //     this.updateURL();
+  //   }
+  // }
+  // useEffect(() => updateURL(false), [isAvailabilityEnabled, updateURL]);
+  useEffect(() => updateURL(), [searchOptions, deferredSearchQuery, updateURL]);
+
+  const matchedVenues = useMemo(() => {
+    const matched = searchVenue(venues, deferredSearchQuery);
+    return isAvailabilityEnabled ? filterAvailability(matched, searchOptions) : matched;
+  }, [isAvailabilityEnabled, searchOptions, deferredSearchQuery, venues]);
+  const matchedVenueNames = useMemo(() => matchedVenues.map(([venue]) => venue), [matchedVenues]);
+
+  function renderSearch() {
+    return (
+      <div className={styles.venueSearch}>
+        <h3>Venue Search</h3>
+
+        <SearchBox
+          className={styles.searchBox}
+          throttle={0}
+          useInstantSearch
+          isLoading={false}
+          value={searchQuery}
+          placeholder="e.g. LT27"
+          onChange={setSearchQuery}
+          onSearch={noop}
+        />
+
+        <button
+          className={classnames(
+            'btn btn-block btn-svg',
+            styles.availabilityToggle,
+            isAvailabilityEnabled ? 'btn-primary' : 'btn-outline-primary',
           )}
-        </MapContext.Provider>
+          onClick={onFindFreeRoomsClicked}
+          type="button"
+        >
+          <Clock className="svg" /> Find free rooms
+        </button>
+
+        {isAvailabilityEnabled && (
+          <div className={styles.availabilitySearch}>
+            <AvailabilitySearch
+              isEnabled={isAvailabilityEnabled}
+              searchOptions={searchOptions}
+              onUpdate={onAvailabilityUpdate}
+            />
+          </div>
+        )}
       </div>
     );
   }
-}
 
-// Explicitly declare top level components for React hot reloading to work.
-const ResponsiveVenuesContainer = makeResponsive(VenuesContainerComponent, breakpointDown('sm'));
-const RoutedVenuesContainer = withRouter(ResponsiveVenuesContainer);
+  const disableAvailability = useCallback(() => setIsAvailabilityEnabled(false), []);
+
+  function renderNoResult() {
+    const unfilteredCount = size(matchedVenues);
+
+    return (
+      <>
+        <Warning message="No matching venues found" />
+        {!!unfilteredCount && isAvailabilityEnabled && (
+          <p className="text-center text-muted">
+            {unfilteredCount === 1
+              ? 'There is a venue that is not shown because it is not free'
+              : `There are ${unfilteredCount} venues that are not shown because they are not free`}
+            <br />
+            <button type="button" className="btn btn-link" onClick={disableAvailability}>
+              Show all rooms
+            </button>
+          </p>
+        )}
+      </>
+    );
+  }
+
+  return (
+    <div className={classnames('page-container', styles.pageContainer)}>
+      <Title>Venues</Title>
+
+      <div className={styles.venuesList}>
+        {renderSearch()}
+
+        {size(matchedVenues) === 0 ? (
+          renderNoResult()
+        ) : (
+          <VenueList venues={matchedVenueNames} selectedVenue={selectedVenue} />
+        )}
+      </div>
+
+      <SecondaryPane
+        highlightPeriod={highlightPeriod}
+        matchedVenues={matchedVenues}
+        selectedVenue={selectedVenue}
+        venues={venues}
+      />
+    </div>
+  );
+};
+
 const AsyncVenuesContainer = Loadable.Map<Subtract<Props, LoadedProps>, { venues: AxiosResponse }>({
   loader: {
     venues: () => axios.get(nusmods.venuesUrl(config.semester)),
@@ -383,7 +369,7 @@ const AsyncVenuesContainer = Loadable.Map<Subtract<Props, LoadedProps>, { venues
     return null;
   },
   render(loaded, props) {
-    return <RoutedVenuesContainer venues={sortVenues(loaded.venues.data)} {...props} />;
+    return <VenuesContainerComponent venues={sortVenues(loaded.venues.data)} {...props} />;
   },
 });
 
