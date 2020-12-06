@@ -2,6 +2,8 @@ import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { unstable_batchedUpdates as batchedUpdates } from 'react-dom';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import Loadable, { LoadingComponentProps } from 'react-loadable';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Location, locationsAreEqual } from 'history';
 import classnames from 'classnames';
 import axios from 'axios';
 import qs from 'query-string';
@@ -141,6 +143,7 @@ type Props = LoadedProps;
 
 export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
   const history = useHistory();
+  const debouncedHistory = useMemo(() => new HistoryDebouncer(history), [history]);
   const location = useLocation();
   const matchParams = useParams<Params>();
 
@@ -166,8 +169,6 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
       : defaultSearchOptions();
   });
   const [pristineSearchOptions, setPristineSearchOptions] = useState(() => !isAvailabilityEnabled);
-
-  const historyDebouncer = useMemo(() => new HistoryDebouncer(history), [history]);
 
   // TODO: Check if this actually does anything useful
   useEffect(() => {
@@ -214,50 +215,34 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
     [matchParams.venue],
   );
 
-  const updateURL = useCallback(
-    (debounce = true) => {
-      let query: Partial<Params> = {};
+  // Sync URL with component state
+  useEffect(() => {
+    let query: Partial<Params> = {};
+    if (deferredSearchQuery) query.q = deferredSearchQuery;
+    if (isAvailabilityEnabled) query = { ...query, ...searchOptions };
+    const search = qs.stringify(query);
 
-      if (deferredSearchQuery) query.q = deferredSearchQuery;
-      if (isAvailabilityEnabled) query = { ...query, ...searchOptions };
+    const pathname = venuePage(selectedVenue);
 
-      const pathname = venuePage(selectedVenue);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const historyToUse = debounce ? historyDebouncer : history;
-      const search = qs.stringify(query);
-      if (history.location.search !== search || history.location.pathname !== pathname) {
-        // FIXME: This triggers some really slow updates
-        historyToUse.push({
-          ...history.location,
-          search,
-          pathname,
-        });
-      }
-    },
-    [
-      deferredSearchQuery,
-      history,
-      historyDebouncer,
-      isAvailabilityEnabled,
-      searchOptions,
-      selectedVenue,
-    ],
-  );
+    const proposedLocation: Location = {
+      ...history.location,
+      search,
+      pathname,
+    };
 
-  // FIXME: Only update URLs when isAvailabilityEnabled, searchOptions,
-  // deferredSearchQuery, or updateURL changed, not updateURL
-  // componentDidUpdate(prevProps: Props, prevState: State) {
-  //   // Update URL if any of these props have changed
-  //   const { searchOptions, deferredSearchQuery, isAvailabilityEnabled } = this.state;
-
-  //   if (isAvailabilityEnabled !== prevState.isAvailabilityEnabled) {
-  //     this.updateURL(false);
-  //   } else if (searchOptions !== prevState.searchOptions || deferredSearchQuery !== prevState.deferredSearchQuery) {
-  //     this.updateURL();
-  //   }
-  // }
-  // useEffect(() => updateURL(false), [isAvailabilityEnabled, updateURL]);
-  useEffect(() => updateURL(), [searchOptions, deferredSearchQuery, updateURL]);
+    if (!locationsAreEqual(history.location, proposedLocation)) {
+      // TODO: Consider replacing our debounced history with
+      // `React.useTransition` or a React scheduler low priority callback.
+      debouncedHistory.push(proposedLocation);
+    }
+  }, [
+    debouncedHistory,
+    deferredSearchQuery,
+    history,
+    isAvailabilityEnabled,
+    searchOptions,
+    selectedVenue,
+  ]);
 
   const matchedVenues = useMemo(() => {
     const matched = searchVenue(venues, deferredSearchQuery);
@@ -307,10 +292,8 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
   }
 
   const disableAvailability = useCallback(() => setIsAvailabilityEnabled(false), []);
-
   function renderNoResult() {
     const unfilteredCount = size(matchedVenues);
-
     return (
       <>
         <Warning message="No matching venues found" />
