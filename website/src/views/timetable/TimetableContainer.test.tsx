@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import produce from 'immer';
 
 import type { Semester } from 'types/modules';
@@ -17,7 +17,7 @@ import renderWithRouterMatch from 'test-utils/renderWithRouterMatch';
 
 import { timetablePage, timetableShare } from 'views/routes/paths';
 
-import { CS1010S, CS3216 } from '__mocks__/modules';
+import { BFS1001, CS1010S, CS3216 } from '__mocks__/modules';
 import modulesList from '__mocks__/moduleList.json';
 
 import { TimetableContainerComponent } from './TimetableContainer';
@@ -28,6 +28,14 @@ import { TimetableContainerComponent } from './TimetableContainer';
  * modules to be fetched.
  */
 const moduleCodeThatCanBeLoaded = 'BFS1001';
+
+const bfs1001Response: AxiosResponse = {
+  data: BFS1001,
+  status: 200,
+  statusText: 'Ok',
+  headers: {},
+  config: {},
+};
 
 const relevantStoreContents = {
   app: {
@@ -68,6 +76,7 @@ describe(TimetableContainerComponent, () => {
   beforeEach(() => {
     mockDom();
     mockAxiosRequest = jest.spyOn(axios, 'request');
+    mockAxiosRequest.mockResolvedValue(bfs1001Response);
   });
 
   afterEach(() => {
