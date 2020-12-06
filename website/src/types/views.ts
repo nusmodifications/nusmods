@@ -1,9 +1,9 @@
+import { QueryObject } from 'json2mq';
 import { Module, ModuleCondensed } from './modules';
 import { ModuleList } from './reducers';
 import { ColorIndex, HoverLesson, Lesson, ModifiableLesson } from './timetables';
 import { Venue, VenueList } from './venues';
 import { RegPeriod } from '../config';
-import { QueryObject } from 'json2mq';
 
 export type ComponentMap = {
   globalSearchInput: HTMLInputElement | null;

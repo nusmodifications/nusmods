@@ -1,7 +1,7 @@
+import type { MediaQuery } from 'types/views';
 import { useMemo } from 'react';
 import { Subscription, useSubscription } from 'use-subscription';
 import json2mq from 'json2mq';
-import { MediaQuery } from 'types/views';
 
 /**
  * To be used together with utilities in css.ts.

@@ -1,7 +1,7 @@
-import type { ComponentType } from 'react'
+import type { ComponentType } from 'react';
+import type { MediaQuery } from 'types/views';
 
 import useMediaQuery from 'views/hooks/useMediaQuery';
-import { MediaQuery } from 'types/views';
 
 export type WithBreakpoint = {
   matchBreakpoint: boolean;
