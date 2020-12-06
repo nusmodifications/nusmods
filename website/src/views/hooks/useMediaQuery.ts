@@ -1,12 +1,13 @@
 import { useMemo } from 'react';
 import { Subscription, useSubscription } from 'use-subscription';
-import json2mq, { QueryObject } from 'json2mq';
+import json2mq from 'json2mq';
+import { MediaQuery } from 'types/views';
 
 /**
  * To be used together with utilities in css.ts.
  * @returns Whether `mediaQuery` is/are matched.
  */
-export default function useMediaQuery(mediaQuery: string | QueryObject | QueryObject[]) {
+export default function useMediaQuery(mediaQuery: MediaQuery) {
   const media = useMemo(() => (typeof mediaQuery === 'string' ? mediaQuery : json2mq(mediaQuery)), [
     mediaQuery,
   ]);

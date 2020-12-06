@@ -3,13 +3,23 @@ import { breakpointUp } from 'utils/css';
 import type { FC } from 'react';
 import { mockDom, mockDomReset, mockWindowMatchMedia } from 'test-utils/mockDom';
 import useMediaQuery from './useMediaQuery';
+import json2mq from 'json2mq';
+import { MediaQuery } from 'types/views';
 
-const Tester: FC = () => {
-  const matchedBreakpoint = useMediaQuery(breakpointUp('md'));
+type Props = {
+  mediaQuery: MediaQuery;
+};
+
+const Tester: FC<Props> = (props) => {
+  const matchedBreakpoint = useMediaQuery(props.mediaQuery);
   return matchedBreakpoint ? <>matched</> : <>no match</>;
 };
 
 describe(useMediaQuery, () => {
+  function make(mediaQuery: MediaQuery) {
+    return render(<Tester mediaQuery={mediaQuery} />);
+  }
+
   beforeEach(() => {
     mockDom();
   });
@@ -25,7 +35,7 @@ describe(useMediaQuery, () => {
     };
 
     mockWindowMatchMedia({ matches: true, addEventListener });
-    const { container } = render(<Tester />);
+    const { container } = make(breakpointUp('md'));
     expect(container).toMatchInlineSnapshot(`
       <div>
         matched
@@ -40,5 +50,19 @@ describe(useMediaQuery, () => {
         no match
       </div>
     `);
+  });
+
+  test('should transform media query correctly', () => {
+    mockWindowMatchMedia({ matches: false });
+    const matchMediaSpy = jest.spyOn(window, 'matchMedia');
+    expect(matchMediaSpy).not.toHaveBeenCalled();
+
+    const jsonMediaQuery = breakpointUp('md');
+    make(jsonMediaQuery);
+    expect(matchMediaSpy).toHaveBeenLastCalledWith(json2mq(jsonMediaQuery));
+
+    const stringMediaQuery = '(min-width: 100px)';
+    make(stringMediaQuery);
+    expect(matchMediaSpy).toHaveBeenLastCalledWith(stringMediaQuery);
   });
 });

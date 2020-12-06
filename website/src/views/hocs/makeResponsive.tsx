@@ -1,7 +1,7 @@
-import type { ComponentType } from 'react';
-import type { QueryObject } from 'json2mq';
+import type { ComponentType } from 'react'
 
 import useMediaQuery from 'views/hooks/useMediaQuery';
+import { MediaQuery } from 'types/views';
 
 export type WithBreakpoint = {
   matchBreakpoint: boolean;
@@ -12,7 +12,7 @@ export type WithBreakpoint = {
  */
 export default function makeResponsive<Props extends WithBreakpoint>(
   WrappedComponent: ComponentType<Props>,
-  mediaQuery: string | QueryObject | QueryObject[],
+  mediaQuery: MediaQuery,
 ): ComponentType<Omit<Props, keyof WithBreakpoint>> {
   return (props) => {
     const matchBreakpoint = useMediaQuery(mediaQuery);

@@ -3,6 +3,7 @@ import { ModuleList } from './reducers';
 import { ColorIndex, HoverLesson, Lesson, ModifiableLesson } from './timetables';
 import { Venue, VenueList } from './venues';
 import { RegPeriod } from '../config';
+import { QueryObject } from 'json2mq';
 
 export type ComponentMap = {
   globalSearchInput: HTMLInputElement | null;
@@ -82,3 +83,5 @@ export interface RegPeriodView extends RegPeriod {
   // Augmented for the frontend. The modreg selector maps RegPeriod to this type.
   dismissed: boolean;
 }
+
+export type MediaQuery = string | QueryObject | QueryObject[];
