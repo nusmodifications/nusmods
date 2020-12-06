@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useMemo } from 'react';
+import { FC, useCallback, useMemo } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'react-feather';
 import classnames from 'classnames';
@@ -26,13 +26,7 @@ type Props = {
   highlightPeriod?: TimePeriod;
 };
 
-const VenueDetailsComponent: FC<Props> = ({
-  venue,
-  previous,
-  next,
-  availability,
-  highlightPeriod,
-}) => {
+const VenueDetails: FC<Props> = ({ venue, previous, next, availability, highlightPeriod }) => {
   const arrangedLessons = useMemo(() => {
     const lessons: Lesson[] = flatMap(availability, (day) => day.classes).map((venueLesson) => ({
       ...venueLesson,
@@ -98,4 +92,4 @@ const VenueDetailsComponent: FC<Props> = ({
   );
 };
 
-export default memo(VenueDetailsComponent);
+export default VenueDetails;
