@@ -9,8 +9,17 @@ import createHistory from './createHistory';
  *
  * Inspiration: https://spectrum.chat/testing-library/help-react/attempting-to-test-react-router-match~b0550426-f54a-4b76-b402-c7b32204b55e?m=MTU2OTM1MzY4NjUwNw==
  */
-export default function renderWithRouterMatch(children: ReactNode, { path = '/', location = '/' }) {
-  const { history } = createHistory([location]);
+export default function renderWithRouterMatch(
+  children: ReactNode,
+  {
+    path = '/',
+    location,
+  }: {
+    path?: string;
+    location?: Parameters<typeof createHistory>[0];
+  },
+) {
+  const { history } = createHistory(location);
   const view = render(
     <Router history={history}>
       <Route path={path}>{children}</Route>
