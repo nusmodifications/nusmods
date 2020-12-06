@@ -8,17 +8,15 @@ type Props = {
   className?: string;
 };
 
-const LoadingSpinner: React.FC<Props> = ({ small, white, className }) => {
-  return (
-    <div
-      className={classnames(styles.loader, className, {
-        [styles.small]: small,
-        [styles.white]: white,
-      })}
-    >
-      <span className="sr-only">Loading...</span>
-    </div>
-  );
-};
+const LoadingSpinner: React.FC<Props> = ({ small, white, className }) => (
+  <div
+    className={classnames(styles.loader, className, {
+      [styles.small]: small,
+      [styles.white]: white,
+    })}
+  >
+    <span className="sr-only">Loading...</span>
+  </div>
+);
 
 export default LoadingSpinner;
