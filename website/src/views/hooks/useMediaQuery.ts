@@ -7,9 +7,9 @@ import json2mq, { QueryObject } from 'json2mq';
  * @returns Whether `mediaQuery` is/are matched.
  */
 export default function useMediaQuery(mediaQuery: string | QueryObject | QueryObject[]) {
-  const media = useMemo(() => {
-    return typeof mediaQuery === 'string' ? mediaQuery : json2mq(mediaQuery);
-  }, [mediaQuery]);
+  const media = useMemo(() => (typeof mediaQuery === 'string' ? mediaQuery : json2mq(mediaQuery)), [
+    mediaQuery,
+  ]);
 
   const subscription = useMemo<Subscription<boolean>>(
     () => ({
