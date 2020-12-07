@@ -1,4 +1,11 @@
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  FC,
+  unstable_useDeferredValue as useDeferredValue,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import Loadable, { LoadingComponentProps } from 'react-loadable';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -53,7 +60,7 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
     setSearchQuery,
   ] = useState<string>(() => qs.parse(location.search).q || '');
   /** Actual string to search with; deferred update */
-  const deferredSearchQuery = searchQuery; // TODO: Redundant now. Use React.useDeferredValue after we adopt concurrent mode
+  const deferredSearchQuery = useDeferredValue(searchQuery);
   const [isAvailabilityEnabled, setIsAvailabilityEnabled] = useState(() => {
     const params = qs.parse(location.search);
     return !!(params.time && params.day && params.duration);
