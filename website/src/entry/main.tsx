@@ -1,3 +1,6 @@
+/// <reference types="react/experimental" />
+/// <reference types="react-dom/experimental" />
+
 // Import Sentry earliest to capture exceptions
 import 'bootstrapping/sentry';
 // core-js has issues with Promise feature detection on Edge, and hence
@@ -6,7 +9,7 @@ import 'bootstrapping/sentry';
 // See: https://github.com/zloirock/core-js/issues/579#issuecomment-504325213
 import 'core-js/es/promise/finally';
 
-import ReactDOM from 'react-dom';
+import { unstable_createRoot as createRoot } from 'react-dom';
 import ReactModal from 'react-modal';
 
 import configureStore from 'bootstrapping/configure-store';
@@ -22,10 +25,15 @@ const { store, persistor } = configureStore();
 
 subscribeOnlineEvents(store);
 
-// Initialize ReactModal
-ReactModal.setAppElement('#app');
+const root = document.getElementById('app');
+if (!root) {
+  throw new Error('Could not find root #app element!');
+}
 
-ReactDOM.render(<App store={store} persistor={persistor} />, document.getElementById('app'));
+// Initialize ReactModal
+ReactModal.setAppElement(root);
+
+createRoot(root).render(<App store={store} persistor={persistor} />);
 
 if (
   (!__DEV__ &&
