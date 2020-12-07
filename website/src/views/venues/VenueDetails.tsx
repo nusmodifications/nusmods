@@ -1,49 +1,56 @@
-import * as React from 'react';
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { FC, memo, useCallback, useMemo } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { ChevronLeft, ChevronRight } from 'react-feather';
 import classnames from 'classnames';
 import { flatMap } from 'lodash';
 
-import { DayAvailability, TimePeriod, Venue } from 'types/venues';
-import { Lesson } from 'types/timetables';
+import type { DayAvailability, TimePeriod, Venue } from 'types/venues';
+import type { Lesson } from 'types/timetables';
 
 import { colorLessonsByKey } from 'utils/colors';
 import { arrangeLessonsForWeek } from 'utils/timetables';
-import { ChevronLeft, ChevronRight } from 'react-feather';
-import Timetable from 'views/timetable/Timetable';
-import makeResponsive from 'views/hocs/makeResponsive';
-import { modulePage, venuePage } from 'views/routes/paths';
 import Title from 'views/components/Title';
+import useMediaQuery from 'views/hooks/useMediaQuery';
+import { modulePage, venuePage } from 'views/routes/paths';
+import Timetable from 'views/timetable/Timetable';
 import { breakpointDown } from 'utils/css';
 import VenueLocation from './VenueLocation';
 
 import styles from './VenueDetails.scss';
 
-type Props = RouteComponentProps & {
-  readonly venue: Venue;
-  readonly previous?: Venue | null;
-  readonly next?: Venue | null;
-  readonly availability: DayAvailability[];
-  readonly highlightPeriod?: TimePeriod;
-
-  readonly matchBreakpoint: boolean;
+type Props = {
+  venue: Venue;
+  previous?: Venue | null;
+  next?: Venue | null;
+  availability: DayAvailability[];
+  highlightPeriod?: TimePeriod;
 };
 
-export const VenueDetailsComponent: React.FC<Props> = (props) => {
-  const arrangedLessons = () => {
-    const lessons: Lesson[] = flatMap(props.availability, (day) => day.classes).map(
-      (venueLesson) => ({
-        ...venueLesson,
-        title: '',
-        isModifiable: true,
-        venue: '',
-      }),
-    );
-
+const VenueDetailsComponent: FC<Props> = ({
+  venue,
+  previous,
+  next,
+  availability,
+  highlightPeriod,
+}) => {
+  const arrangedLessons = useMemo(() => {
+    const lessons: Lesson[] = flatMap(availability, (day) => day.classes).map((venueLesson) => ({
+      ...venueLesson,
+      title: '',
+      isModifiable: true,
+      venue: '',
+    }));
     const coloredLessons = colorLessonsByKey(lessons, 'moduleCode');
     return arrangeLessonsForWeek(coloredLessons);
-  };
+  }, [availability]);
 
-  const { venue, previous, next, matchBreakpoint, history } = props;
+  const history = useHistory();
+  const navigateToLesson = useCallback(
+    (lesson: Lesson) => history.push(modulePage(lesson.moduleCode, lesson.title)),
+    [history],
+  );
+
+  const narrowViewport = useMediaQuery(breakpointDown('lg'));
 
   return (
     <>
@@ -79,22 +86,16 @@ export const VenueDetailsComponent: React.FC<Props> = (props) => {
         <VenueLocation venue={venue} />
       </div>
 
-      <div className={classnames(styles.timetable, { verticalMode: matchBreakpoint })}>
+      <div className={classnames(styles.timetable, { verticalMode: narrowViewport })}>
         <Timetable
-          lessons={arrangedLessons()}
-          highlightPeriod={props.highlightPeriod}
-          isVerticalOrientation={matchBreakpoint}
-          onModifyCell={(lesson: Lesson) => {
-            history.push(modulePage(lesson.moduleCode, lesson.title));
-          }}
+          lessons={arrangedLessons}
+          highlightPeriod={highlightPeriod}
+          isVerticalOrientation={narrowViewport}
+          onModifyCell={navigateToLesson}
         />
       </div>
     </>
   );
 };
 
-const ResponsiveVenueDetails = makeResponsive(
-  React.memo(VenueDetailsComponent),
-  breakpointDown('lg'),
-);
-export default withRouter(ResponsiveVenueDetails);
+export default memo(VenueDetailsComponent);

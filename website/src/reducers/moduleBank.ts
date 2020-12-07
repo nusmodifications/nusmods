@@ -1,6 +1,10 @@
 import produce, { Draft } from 'immer';
 import { keyBy, omit, size, zipObject } from 'lodash';
 
+import type { Actions } from 'types/actions';
+import type { Module } from 'types/modules';
+import type { ModuleBank, ModuleList } from 'types/reducers';
+
 import {
   FETCH_ARCHIVE_MODULE,
   FETCH_MODULE,
@@ -10,11 +14,7 @@ import {
   SET_EXPORTED_DATA,
 } from 'actions/constants';
 import { createMigrate, REHYDRATE } from 'redux-persist';
-import { Module } from 'types/modules';
-import { ModuleBank, ModuleList } from 'types/reducers';
 import { SUCCESS_KEY } from 'middlewares/requests-middleware';
-
-import { Actions } from 'types/actions';
 
 const defaultModuleBankState: ModuleBank = {
   moduleList: [], // List of basic modules data (module code, name, semester)

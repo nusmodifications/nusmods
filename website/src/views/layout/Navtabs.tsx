@@ -1,27 +1,24 @@
-import * as React from 'react';
-import { connect } from 'react-redux';
-import { NavLink, RouteComponentProps, withRouter } from 'react-router-dom';
+import type { FC } from 'react';
+import { useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 import { BookOpen, Calendar, Clock, Heart, Map, Settings, Star, Trello } from 'react-feather';
 
-import { Semester } from 'types/modules';
 import ExternalLink from 'views/components/ExternalLink';
 import { timetablePage } from 'views/routes/paths';
 import { preload as preloadToday } from 'views/today/TodayContainer';
 import { preload as preloadVenues } from 'views/venues/VenuesContainer';
 import { preload as preloadContribute } from 'views/contribute/ContributeContainer';
-import { State } from 'types/state';
+import type { State } from 'types/state';
 
 import styles from './Navtabs.scss';
 
 export const NAVTAB_HEIGHT = 48;
 
-type Props = RouteComponentProps & {
-  activeSemester: Semester;
-  beta: boolean;
-};
+const Navtabs: FC = () => {
+  const activeSemester = useSelector(({ app }: State) => app.activeSemester);
+  const beta = useSelector(({ settings }: State) => settings.beta);
 
-export const NavtabsComponent: React.FC<Props> = (props) => {
   const tabProps = {
     className: styles.link,
     activeClassName: styles.linkActive,
@@ -33,7 +30,7 @@ export const NavtabsComponent: React.FC<Props> = (props) => {
         <Clock />
         <span className={styles.title}>Today</span>
       </NavLink>
-      <NavLink {...tabProps} to={timetablePage(props.activeSemester)}>
+      <NavLink {...tabProps} to={timetablePage(activeSemester)}>
         <Calendar />
         <span className={styles.title}>Timetable</span>
       </NavLink>
@@ -48,7 +45,7 @@ export const NavtabsComponent: React.FC<Props> = (props) => {
         <Map />
         <span className={styles.title}>Venues</span>
       </NavLink>
-      {props.beta && (
+      {beta && (
         <NavLink
           {...tabProps}
           className={classnames(tabProps.className, styles.hiddenOnMobile)}
@@ -84,9 +81,4 @@ export const NavtabsComponent: React.FC<Props> = (props) => {
   );
 };
 
-const connectedNavtabs = connect((state: State) => ({
-  activeSemester: state.app.activeSemester,
-  beta: !!state.settings.beta,
-}))(NavtabsComponent);
-
-export default withRouter(connectedNavtabs);
+export default Navtabs;

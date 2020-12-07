@@ -3,8 +3,10 @@ import { getModuleCondensed } from 'selectors/moduleBank';
 describe(getModuleCondensed, () => {
   test('should return a function that determines if the given module code is valid', () => {
     const state: any = {
-      moduleCodes: {
-        CS1010S: {},
+      moduleBank: {
+        moduleCodes: {
+          CS1010S: {},
+        },
       },
     };
 
