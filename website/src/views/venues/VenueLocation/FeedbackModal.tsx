@@ -1,7 +1,8 @@
 import { FC, useCallback, useState } from 'react';
 import classnames from 'classnames';
 
-import { VenueLocation } from 'types/venues';
+import type { VenueLocation } from 'types/venues';
+
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import ExternalLink from 'views/components/ExternalLink';
@@ -42,7 +43,7 @@ const FeedbackModal: FC<Props> = ({ venue, isOpen, onRequestClose, existingLocat
               >
                 <MapIcon />
                 <h3>Problem with map data</h3>
-                <p>eg. incorrect building outline, missing walkways</p>
+                <p>e.g. incorrect building outline, missing walkways</p>
               </ExternalLink>
             </div>
 
@@ -50,7 +51,7 @@ const FeedbackModal: FC<Props> = ({ venue, isOpen, onRequestClose, existingLocat
               <button type="button" className="btn btn-outline-secondary" onClick={goToForm}>
                 <MapPin />
                 <h3>Problem with venue data</h3>
-                <p>eg. incorrect room name, floor, location of the map pin</p>
+                <p>e.g. incorrect room name, floor, location of the map pin</p>
               </button>
             </div>
           </div>
