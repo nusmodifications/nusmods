@@ -33,7 +33,7 @@ import VenueList from './VenueList';
 import VenueLocation from './VenueLocation';
 import styles from './VenuesContainer.scss';
 
-export type Params = {
+type Params = {
   q: string;
   venue: string;
 };

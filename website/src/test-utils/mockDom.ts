@@ -1,3 +1,4 @@
+const nativeScroll = window.scroll;
 const nativeScrollTo = window.scrollTo;
 const nativePerformance = window.performance;
 const nativeMatchMedia = window.matchMedia;
@@ -5,6 +6,7 @@ const nativeScrollIntoView = Element.prototype.scrollIntoView;
 
 export function mockDom() {
   // Mock some of the DOM environment functions that are missing from JSDom
+  window.scroll = jest.fn();
   window.scrollTo = jest.fn();
 
   if (!window.performance) {
@@ -23,6 +25,7 @@ export function mockDom() {
 }
 
 export function mockDomReset() {
+  window.scroll = nativeScroll;
   window.scrollTo = nativeScrollTo;
 
   // @ts-expect-error We insist
