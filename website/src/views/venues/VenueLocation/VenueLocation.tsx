@@ -1,4 +1,4 @@
-import { PureComponent } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import classnames from 'classnames';
 
 import type {
@@ -6,6 +6,7 @@ import type {
   VenueLocation as VenueLocationItem,
   VenueLocationMap,
 } from 'types/venues';
+
 import Modal from 'views/components/Modal';
 import LocationMap from 'views/components/map/LocationMap';
 import CloseButton from 'views/components/CloseButton';
@@ -20,27 +21,16 @@ export type Props = {
   readonly venue: string;
 };
 
-type State = {
-  readonly isFeedbackModalOpen: boolean;
-};
+const VenueLocation: FC<Props> = ({ venueLocations, venue }) => {
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
+  const openModal = useCallback(() => setIsFeedbackModalOpen(true), []);
+  const closeModal = useCallback(() => setIsFeedbackModalOpen(false), []);
 
-export default class VenueLocation extends PureComponent<Props, State> {
-  state: State = {
-    isFeedbackModalOpen: false,
-  };
-
-  openModal = () => this.setState({ isFeedbackModalOpen: true });
-
-  closeModal = () => this.setState({ isFeedbackModalOpen: false });
-
-  renderFeedbackMenu(existingLocation: VenueLocationItem | null = null) {
-    const { venue } = this.props;
-    const { isFeedbackModalOpen } = this.state;
-
+  function renderFeedbackMenu(existingLocation: VenueLocationItem | null = null) {
     if (!existingLocation || !existingLocation.location) {
       return (
-        <Modal isOpen={isFeedbackModalOpen} onRequestClose={this.closeModal} animate>
-          <CloseButton onClick={this.closeModal} />
+        <Modal isOpen={isFeedbackModalOpen} onRequestClose={closeModal} animate>
+          <CloseButton onClick={closeModal} />
           <h2 className={styles.feedbackTitle}>Improve {venue}</h2>
           <ImproveVenueForm venue={venue} />
         </Modal>
@@ -51,76 +41,75 @@ export default class VenueLocation extends PureComponent<Props, State> {
       <FeedbackModal
         venue={venue}
         isOpen={isFeedbackModalOpen}
-        onRequestClose={this.closeModal}
+        onRequestClose={closeModal}
         existingLocation={existingLocation}
       />
     );
   }
 
-  render() {
-    const { venue, venueLocations } = this.props;
-    const location = venueLocations[venue];
+  const location = venueLocations[venue];
+  const position: LatLngTuple | null = useMemo(
+    () => (location?.location ? [location.location.y, location.location.x] : null),
+    [location],
+  );
 
-    if (!location) {
-      return (
-        <>
-          <div className={styles.noLocation}>
-            <p>We don&apos;t have data for this venue.</p>
-            <button type="button" className="btn btn-outline-primary" onClick={this.openModal}>
-              Help us map this venue
-            </button>
-          </div>
-
-          {this.renderFeedbackMenu()}
-        </>
-      );
-    }
-
-    const position: LatLngTuple | null = location.location
-      ? [location.location.y, location.location.x]
-      : null;
-
+  if (!location) {
     return (
-      <div>
-        <p>
-          <strong>{location.roomName}</strong> ({venue})
-          {location.floor != null && (
-            <>
-              {' '}
-              is on <strong>{floorName(location.floor)}</strong>
-            </>
-          )}
-          .
-        </p>
+      <>
+        <div className={styles.noLocation}>
+          <p>We don&apos;t have data for this venue.</p>
+          <button type="button" className="btn btn-outline-primary" onClick={openModal}>
+            Help us map this venue
+          </button>
+        </div>
 
-        {position ? (
-          <>
-            <LocationMap position={position} />
-
-            <p className={styles.feedbackBtn}>
-              See a problem?{' '}
-              <button
-                type="button"
-                className={classnames('btn btn-outline-primary')}
-                onClick={this.openModal}
-              >
-                Help us improve this map
-              </button>
-            </p>
-          </>
-        ) : (
-          <>
-            <p>We don&apos;t have the location of this venue, sorry :(</p>
-            <button type="button" className="btn btn-outline-primary" onClick={this.openModal}>
-              Help us map this venue
-            </button>
-          </>
-        )}
-
-        {this.renderFeedbackMenu(location)}
-
-        <hr />
-      </div>
+        {renderFeedbackMenu()}
+      </>
     );
   }
-}
+
+  return (
+    <div>
+      <p>
+        <strong>{location.roomName}</strong> ({venue})
+        {location.floor != null && (
+          <>
+            {' '}
+            is on <strong>{floorName(location.floor)}</strong>
+          </>
+        )}
+        .
+      </p>
+
+      {position ? (
+        <>
+          <LocationMap position={position} />
+
+          <p className={styles.feedbackBtn}>
+            See a problem?{' '}
+            <button
+              type="button"
+              className={classnames('btn btn-outline-primary')}
+              onClick={openModal}
+            >
+              Help us improve this map
+            </button>
+          </p>
+        </>
+      ) : (
+        <>
+          <p>We don&apos;t have the location of this venue, sorry :(</p>
+          <button type="button" className="btn btn-outline-primary" onClick={openModal}>
+            Help us map this venue
+          </button>
+        </>
+      )}
+
+      {renderFeedbackMenu(location)}
+
+      <hr />
+    </div>
+  );
+};
+
+export default VenueLocation;
