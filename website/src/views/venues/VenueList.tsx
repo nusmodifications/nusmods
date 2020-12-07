@@ -1,7 +1,7 @@
-import { FC, useMemo } from 'react';
+import { FC, memo, useMemo } from 'react';
 import classnames from 'classnames';
 import { groupBy, toPairs, sortBy } from 'lodash';
-import { Link, LinkProps, useLocation } from 'react-router-dom';
+import { Link, LinkProps, useHistory } from 'react-router-dom';
 
 import { Venue } from 'types/venues';
 import { venuePage } from 'views/routes/paths';
@@ -22,7 +22,7 @@ const VenueList: FC<Props> = ({ venues, selectedVenue, linkProps }) => {
     return sortBy(toPairs(venueList), ([key]) => key);
   }, [venues]);
 
-  const location = useLocation();
+  const history = useHistory();
 
   return (
     <ul className={styles.venueList}>
@@ -34,7 +34,7 @@ const VenueList: FC<Props> = ({ venues, selectedVenue, linkProps }) => {
               <li key={venue}>
                 <Link
                   to={{
-                    ...location,
+                    ...history.location,
                     pathname: venuePage(venue),
                   }}
                   className={classnames(
@@ -54,4 +54,4 @@ const VenueList: FC<Props> = ({ venues, selectedVenue, linkProps }) => {
   );
 };
 
-export default VenueList;
+export default memo(VenueList);
