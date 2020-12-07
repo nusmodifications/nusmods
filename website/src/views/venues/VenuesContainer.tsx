@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { unstable_batchedUpdates as batchedUpdates } from 'react-dom';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import Loadable, { LoadingComponentProps } from 'react-loadable';
@@ -17,24 +17,19 @@ import ApiError from 'views/errors/ApiError';
 import Warning from 'views/errors/Warning';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import SearchBox from 'views/components/SearchBox';
-import { Clock, Map } from 'react-feather';
+import { Clock } from 'react-feather';
 import { venuePage } from 'views/routes/paths';
-import Modal from 'views/components/Modal';
 import Title from 'views/components/Title';
-import NoFooter from 'views/layout/NoFooter';
-import MapContext from 'views/components/map/MapContext';
-import useMediaQuery from 'views/hooks/useMediaQuery';
 
 import config from 'config';
 import nusmods from 'apis/nusmods';
 import HistoryDebouncer from 'utils/HistoryDebouncer';
 import { clampClassDuration, filterAvailability, searchVenue, sortVenues } from 'utils/venues';
-import { breakpointDown } from 'utils/css';
 import { convertIndexToTime } from 'utils/timify';
 
 import AvailabilitySearch, { defaultSearchOptions } from './AvailabilitySearch';
+import VenueDetailsPane from './VenueDetailsPane';
 import VenueList from './VenueList';
-import VenueDetails from './VenueDetails';
 import VenueLocation from './VenueLocation';
 import styles from './VenuesContainer.scss';
 
@@ -42,101 +37,6 @@ export type Params = {
   q: string;
   venue: string;
 };
-
-const SecondaryPaneComponent: FC<{
-  highlightPeriod?: TimePeriod;
-  matchedVenues: VenueDetailList;
-  selectedVenue?: string;
-  venues: VenueDetailList;
-}> = ({ highlightPeriod, matchedVenues, selectedVenue, venues }) => {
-  const [isMapExpanded, setIsMapExpanded] = useState(false);
-
-  const history = useHistory();
-  const onClearVenueSelect = useCallback(
-    () =>
-      history.push({
-        ...history.location,
-        pathname: venuePage(),
-      }),
-    [history],
-  );
-
-  const matchBreakpoint = useMediaQuery(breakpointDown('sm'));
-
-  const venueDetailProps = useMemo(() => {
-    if (!venues || !selectedVenue) return null;
-
-    // Find the index of the current venue on the list of matched venues so
-    // we can obtain the previous and next item
-    const lowercaseSelectedVenue = selectedVenue.toLowerCase();
-    const venueIndex = matchedVenues.findIndex(
-      ([venue]) => venue.toLowerCase() === lowercaseSelectedVenue,
-    );
-
-    // The selected item may not be in the list of matched venues (if the user
-    // changed their search options afterwards), in which case we look for it in all
-    // venues
-    if (venueIndex === -1) {
-      const venueDetail = venues.find(([venue]) => venue.toLowerCase() === lowercaseSelectedVenue);
-      if (!venueDetail) return null;
-      const [venue, availability] = venueDetail;
-      return { venue, availability, next: undefined, previous: undefined };
-    }
-
-    const [venue, availability] = matchedVenues[venueIndex];
-    const [previous] = matchedVenues[venueIndex - 1] || ([] as string[]);
-    const [next] = matchedVenues[venueIndex + 1] || ([] as string[]);
-    return { venue, availability, next, previous };
-  }, [matchedVenues, selectedVenue, venues]);
-
-  function renderSelectedVenue() {
-    if (!venueDetailProps) {
-      return null;
-    }
-    return <VenueDetails {...venueDetailProps} highlightPeriod={highlightPeriod} />;
-  }
-
-  return (
-    <MapContext.Provider value={{ toggleMapExpanded: setIsMapExpanded }}>
-      {matchBreakpoint ? (
-        <Modal
-          isOpen={selectedVenue != null}
-          onRequestClose={onClearVenueSelect}
-          className={styles.venueDetailModal}
-          fullscreen
-        >
-          <button
-            type="button"
-            className={classnames('btn btn-outline-primary btn-block', styles.closeButton)}
-            onClick={onClearVenueSelect}
-          >
-            Back to Venues
-          </button>
-          {renderSelectedVenue()}
-        </Modal>
-      ) : (
-        <>
-          <div
-            className={classnames(styles.venueDetail, {
-              [styles.mapExpanded]: isMapExpanded,
-            })}
-          >
-            {selectedVenue == null ? (
-              <div className={styles.noVenueSelected}>
-                <Map />
-                <p>Select a venue on the left to see its timetable</p>
-              </div>
-            ) : (
-              renderSelectedVenue()
-            )}
-          </div>
-          <NoFooter />
-        </>
-      )}
-    </MapContext.Provider>
-  );
-};
-const SecondaryPane = memo(SecondaryPaneComponent);
 
 type LoadedProps = { venues: VenueDetailList };
 type Props = LoadedProps;
@@ -326,7 +226,7 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
         )}
       </div>
 
-      <SecondaryPane
+      <VenueDetailsPane
         highlightPeriod={highlightPeriod}
         matchedVenues={matchedVenues}
         selectedVenue={selectedVenue}
