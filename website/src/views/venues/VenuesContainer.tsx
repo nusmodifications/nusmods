@@ -13,7 +13,7 @@ import { Location, locationsAreEqual } from 'history';
 import classnames from 'classnames';
 import axios from 'axios';
 import qs from 'query-string';
-import { isEqual, mapValues, noop, pick, size } from 'lodash';
+import { isEqual, mapValues, pick, size } from 'lodash';
 
 import type { TimePeriod, Venue, VenueDetailList, VenueSearchOptions } from 'types/venues';
 import type { Subtract } from 'types/utils';
@@ -53,7 +53,6 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
   const location = useLocation();
   const matchParams = useParams<Params>();
 
-  // Search state
   const [
     /** Value of the controlled search box; updated real-time */
     searchQuery,
@@ -61,10 +60,13 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
   ] = useState<string>(() => qs.parse(location.search).q || '');
   /** Actual string to search with; deferred update */
   const deferredSearchQuery = useDeferredValue(searchQuery);
+
   const [isAvailabilityEnabled, setIsAvailabilityEnabled] = useState(() => {
     const params = qs.parse(location.search);
     return !!(params.time && params.day && params.duration);
   });
+  const deferredIsAvailabilityEnabled = useDeferredValue(isAvailabilityEnabled);
+
   const [searchOptions, setSearchOptions] = useState(() => {
     const params = qs.parse(location.search);
     // Extract searchOptions from the query string if they are present
@@ -103,14 +105,19 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
   );
 
   const highlightPeriod = useMemo<TimePeriod | undefined>(() => {
-    if (!isAvailabilityEnabled) return undefined;
+    if (!deferredIsAvailabilityEnabled) return undefined;
 
     return {
       day: searchOptions.day,
       startTime: convertIndexToTime(searchOptions.time * 2),
       endTime: convertIndexToTime(2 * (searchOptions.time + searchOptions.duration)),
     };
-  }, [isAvailabilityEnabled, searchOptions.day, searchOptions.duration, searchOptions.time]);
+  }, [
+    deferredIsAvailabilityEnabled,
+    searchOptions.day,
+    searchOptions.duration,
+    searchOptions.time,
+  ]);
 
   const selectedVenue = useMemo<Venue | undefined>(
     () => (matchParams.venue ? decodeURIComponent(matchParams.venue) : undefined),
@@ -121,7 +128,7 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
   useEffect(() => {
     let query: Partial<Params> = {};
     if (deferredSearchQuery) query.q = deferredSearchQuery;
-    if (isAvailabilityEnabled) query = { ...query, ...searchOptions };
+    if (deferredIsAvailabilityEnabled) query = { ...query, ...searchOptions };
     const search = qs.stringify(query);
 
     const pathname = venuePage(selectedVenue);
@@ -139,17 +146,17 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
     }
   }, [
     debouncedHistory,
+    deferredIsAvailabilityEnabled,
     deferredSearchQuery,
     history,
-    isAvailabilityEnabled,
     searchOptions,
     selectedVenue,
   ]);
 
   const matchedVenues = useMemo(() => {
     const matched = searchVenue(venues, deferredSearchQuery);
-    return isAvailabilityEnabled ? filterAvailability(matched, searchOptions) : matched;
-  }, [isAvailabilityEnabled, searchOptions, deferredSearchQuery, venues]);
+    return deferredIsAvailabilityEnabled ? filterAvailability(matched, searchOptions) : matched;
+  }, [deferredIsAvailabilityEnabled, searchOptions, deferredSearchQuery, venues]);
   const matchedVenueNames = useMemo(() => matchedVenues.map(([venue]) => venue), [matchedVenues]);
 
   function renderSearch() {
@@ -160,23 +167,25 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
         <SearchBox
           className={styles.searchBox}
           throttle={0}
-          isLoading={false}
           value={searchQuery}
           placeholder="e.g. LT27"
           onChange={setSearchQuery}
-          onSearch={noop}
         />
 
         <button
           className={classnames(
             'btn btn-block btn-svg',
-            styles.availabilityToggle,
             isAvailabilityEnabled ? 'btn-primary' : 'btn-outline-primary',
           )}
           onClick={onFindFreeRoomsClicked}
           type="button"
         >
-          <Clock className="svg" /> Find free rooms
+          {isAvailabilityEnabled !== deferredIsAvailabilityEnabled ? (
+            <LoadingSpinner className={styles.availabilitySpinner} white={isAvailabilityEnabled} />
+          ) : (
+            <Clock className="svg" />
+          )}{' '}
+          Find free rooms
         </button>
 
         {isAvailabilityEnabled && (
