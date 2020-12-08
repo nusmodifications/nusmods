@@ -1,5 +1,4 @@
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { unstable_batchedUpdates as batchedUpdates } from 'react-dom';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import Loadable, { LoadingComponentProps } from 'react-loadable';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -76,25 +75,21 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
   }, []);
 
   const onFindFreeRoomsClicked = useCallback(() => {
-    batchedUpdates(() => {
-      setIsAvailabilityEnabled(!isAvailabilityEnabled);
-      if (pristineSearchOptions && !isAvailabilityEnabled) {
-        // Only reset search options if the user has never changed it, and if the
-        // search box is being opened. By resetting the option when the box is opened,
-        // the time when the box is opened will be used, instead of the time when the
-        // page is loaded
-        setSearchOptions(defaultSearchOptions());
-      }
-    });
+    setIsAvailabilityEnabled(!isAvailabilityEnabled);
+    if (pristineSearchOptions && !isAvailabilityEnabled) {
+      // Only reset search options if the user has never changed it, and if the
+      // search box is being opened. By resetting the option when the box is opened,
+      // the time when the box is opened will be used, instead of the time when the
+      // page is loaded
+      setSearchOptions(defaultSearchOptions());
+    }
   }, [isAvailabilityEnabled, pristineSearchOptions]);
 
   const onAvailabilityUpdate = useCallback(
     (newSearchOptions: VenueSearchOptions) => {
       if (!isEqual(newSearchOptions, searchOptions)) {
-        batchedUpdates(() => {
-          setSearchOptions(clampClassDuration(newSearchOptions));
-          setPristineSearchOptions(false); // user changed searchOptions
-        });
+        setSearchOptions(clampClassDuration(newSearchOptions));
+        setPristineSearchOptions(false); // user changed searchOptions
       }
     },
     [searchOptions],
