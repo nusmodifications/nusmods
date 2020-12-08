@@ -36,7 +36,10 @@ const SearchBox: FC<Props> = ({
 }) => {
   const searchElement = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
-  const [hasChanges, setHasChanges] = useState(false);
+
+  // This is a ref instead of state as it is only used within event handlers and
+  // we don't want to trigger unnecessary renders when it's changed.
+  const hasChanges = useRef(false);
 
   const handleSubmit: FormEventHandler = useCallback((event) => {
     event.preventDefault();
@@ -48,10 +51,9 @@ const SearchBox: FC<Props> = ({
   }, []);
 
   const search = useCallback(() => {
-    setHasChanges(false);
+    hasChanges.current = false;
     onSearch();
   }, [onSearch]);
-
   const debouncedSearch = useMemo(
     () =>
       debounce(search, throttle, {
@@ -71,20 +73,20 @@ const SearchBox: FC<Props> = ({
     if (!element) return;
 
     // Don't search if no changes
-    if (!hasChanges) return;
+    if (!hasChanges.current) return;
 
     const searchTerm = element.value;
     onChange(searchTerm);
     debouncedSearch();
     debouncedSearch.flush();
-  }, [debouncedSearch, hasChanges, onBlur, onChange]);
+  }, [debouncedSearch, onBlur, onChange]);
 
   const handleInput: ChangeEventHandler<HTMLInputElement> = useCallback(
     (evt) => {
       if (evt.target instanceof HTMLInputElement) {
         const searchTerm = evt.target.value;
         onChange(searchTerm);
-        setHasChanges(true);
+        hasChanges.current = true;
         debouncedSearch();
       }
     },
@@ -93,7 +95,7 @@ const SearchBox: FC<Props> = ({
 
   const clearInput = useCallback(() => {
     onChange('');
-    setHasChanges(true);
+    hasChanges.current = true;
     debouncedSearch();
   }, [debouncedSearch, onChange]);
 
