@@ -6,7 +6,7 @@ import LoadingSpinner from 'views/components/LoadingSpinner';
 import { Search, X } from 'react-feather';
 import styles from './SearchBox.scss';
 
-type Props = {
+export type Props = {
   className?: string;
   throttle: number;
   isLoading: boolean;
