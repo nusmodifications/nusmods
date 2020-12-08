@@ -9,7 +9,6 @@ import styles from './SearchBox.scss';
 type Props = {
   className?: string;
   throttle: number;
-  useInstantSearch: boolean;
   isLoading: boolean;
   value: string | null;
   placeholder?: string;
@@ -63,14 +62,14 @@ export default class SearchBox extends React.PureComponent<Props, State> {
       const searchTerm = evt.target.value;
       this.props.onChange(searchTerm);
       this.setState({ hasChanges: true });
-      if (this.props.useInstantSearch) this.debouncedSearch();
+      this.debouncedSearch();
     }
   };
 
   onRemoveInput = () => {
     this.props.onChange('');
     this.setState({ hasChanges: true });
-    if (this.props.useInstantSearch) this.debouncedSearch();
+    this.debouncedSearch();
   };
 
   private search = () => {
@@ -82,15 +81,6 @@ export default class SearchBox extends React.PureComponent<Props, State> {
   private debouncedSearch = debounce(this.search, this.props.throttle, {
     leading: false,
   });
-
-  showSubmitHelp() {
-    return (
-      !this.props.useInstantSearch &&
-      this.state.hasChanges &&
-      this.searchElement.current &&
-      this.searchElement.current.value
-    );
-  }
 
   render() {
     const { value, placeholder, isLoading } = this.props;
@@ -141,8 +131,6 @@ export default class SearchBox extends React.PureComponent<Props, State> {
             spellCheck
           />
         </form>
-
-        {this.showSubmitHelp() && <p className={styles.searchHelp}>Press enter to search</p>}
       </div>
     );
   }

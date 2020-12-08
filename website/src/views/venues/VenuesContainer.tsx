@@ -153,7 +153,6 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
         <SearchBox
           className={styles.searchBox}
           throttle={0}
-          useInstantSearch
           isLoading={false}
           value={searchQuery}
           placeholder="e.g. LT27"

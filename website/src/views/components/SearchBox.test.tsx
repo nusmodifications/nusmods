@@ -7,7 +7,6 @@ describe(SearchBox, () => {
       shallow(
         <SearchBox
           throttle={0}
-          useInstantSearch={false}
           isLoading={false}
           value=""
           placeholder=""
@@ -21,7 +20,6 @@ describe(SearchBox, () => {
       shallow(
         <SearchBox
           throttle={0}
-          useInstantSearch={false}
           isLoading
           value=""
           placeholder=""
@@ -35,7 +33,6 @@ describe(SearchBox, () => {
       shallow(
         <SearchBox
           throttle={0}
-          useInstantSearch={false}
           isLoading={false}
           value="Hello world"
           placeholder="Testing testing 123"
