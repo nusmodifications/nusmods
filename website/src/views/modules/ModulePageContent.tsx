@@ -25,10 +25,10 @@ import ModuleExamInfo from 'views/components/module-info/ModuleExamInfo';
 import AddModuleDropdown from 'views/components/module-info/AddModuleDropdown';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
-import ScrollToTop from 'views/components/ScrollToTop';
 import { Archive, Check } from 'react-feather';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
 
+import useScrollToTop from 'views/hooks/useScrollToTop';
 import styles from './ModulePageContent.scss';
 import ReportError from './ReportError';
 
@@ -65,14 +65,13 @@ const ModulePageContent: React.FC<Props> = (props) => {
 
   const moduleCodes = [moduleCode];
   if (module.aliases) moduleCodes.push(...module.aliases);
+  useScrollToTop();
 
   return (
     <div className={classnames('page-container', styles.moduleInfoPage)}>
       <Title description={module.description}>{pageTitle}</Title>
 
       <Announcements />
-
-      <ScrollToTop />
 
       {isArchive && (
         <div className={classnames(styles.archiveWarning, 'alert alert-warning')}>
@@ -98,6 +97,7 @@ const ModulePageContent: React.FC<Props> = (props) => {
         <div className="col-md-9">
           <div
             id={SIDE_MENU_ITEMS.details}
+            data-testid="side-menu-items"
             className={classnames(styles.section, styles.firstSection)}
           >
             <header className={styles.header}>
@@ -217,7 +217,7 @@ const ModulePageContent: React.FC<Props> = (props) => {
             </section>
           </div>
 
-          <section className={styles.section} id={SIDE_MENU_ITEMS.prerequisites}>
+          <section className={styles.section} id={SIDE_MENU_ITEMS.prerequisites} data-testid="side-menu-items">
             <h2 className={styles.sectionHeading}>Prerequisite Tree</h2>
             <ErrorBoundary>
               <ModuleTree
@@ -228,12 +228,12 @@ const ModulePageContent: React.FC<Props> = (props) => {
             </ErrorBoundary>
           </section>
 
-          <section className={styles.section} id="timetable">
+          <section className={styles.section} id={SIDE_MENU_ITEMS.timetable} data-testid="side-menu-items">
             <h2 className={styles.sectionHeading}>Timetable</h2>
             <LessonTimetable allSemesterData={module.semesterData} />
           </section>
 
-          <section className={styles.section} id={SIDE_MENU_ITEMS.reviews}>
+          <section className={styles.section} id={SIDE_MENU_ITEMS.reviews} data-testid="side-menu-items">
             <h2 className={styles.sectionHeading}>Review and Discussion</h2>
             <Online isLive={false}>
               {(isOnline) =>
