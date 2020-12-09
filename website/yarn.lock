@@ -7845,9 +7845,9 @@ human-signals@^1.1.1:
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-1.1.1.tgz#c5b1cd14f50aeae09ab6c59fe63ba3395fe4dfa3"
   integrity sha512-SEQu7vl8KjNL2eoGBLF3+wAjpsNfA9XMlXAYj/3EdaNfAlxKthD1xjEQfGOUhllCGGJVNY34bRr6lPINhNjyZw==
 
-"ical-generator@https://github.com/chrisgzf/ical-generator.git#8fa2fc0e":
+"ical-generator@https://github.com/nusmodifications/ical-generator.git#a2aa62ed":
   version "0.2.10"
-  resolved "https://github.com/chrisgzf/ical-generator.git#8fa2fc0e7495de6bf08c66d922fea24028697c07"
+  resolved "https://github.com/nusmodifications/ical-generator.git#a2aa62ed82a7c947b3f02172ac2c8ed5a9e32eb8"
 
 icalendar@0.7.1:
   version "0.7.1"
