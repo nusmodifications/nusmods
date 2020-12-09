@@ -78,7 +78,7 @@ const SettingsContainer: React.FC<Props> = (props) => {
     });
   };
 
-  function renderModRegNotificationRounds() {
+  const renderModRegNotificationRounds = () => {
     const { modRegNotification } = props;
     const rounds = getRounds(modRegNotification);
 
@@ -118,30 +118,28 @@ const SettingsContainer: React.FC<Props> = (props) => {
         </Fragment>
       );
     });
-  }
+  };
 
-  function renderNightModeOption() {
-    return (
-      <div>
-        <h4 id="night-mode">Night Mode</h4>
-        <div className={styles.toggleRow}>
-          <div className={styles.toggleDescription}>
-            <p>
-              Night mode turns the light surfaces of the page dark, creating an experience ideal for
-              the dark. Try it out!
-            </p>
-            <p>
-              Protip: Press <kbd>X</kbd> to toggle modes anywhere on NUSMods.
-            </p>
-          </div>
-          <div className={styles.toggle}>
-            <ModeSelect mode={props.mode} onSelectMode={props.selectMode} />
-          </div>
+  const renderNightModeOption = () => (
+    <div>
+      <h4 id="night-mode">Night Mode</h4>
+      <div className={styles.toggleRow}>
+        <div className={styles.toggleDescription}>
+          <p>
+            Night mode turns the light surfaces of the page dark, creating an experience ideal for
+            the dark. Try it out!
+          </p>
+          <p>
+            Protip: Press <kbd>X</kbd> to toggle modes anywhere on NUSMods.
+          </p>
         </div>
-        <hr />
+        <div className={styles.toggle}>
+          <ModeSelect mode={props.mode} onSelectMode={props.selectMode} />
+        </div>
       </div>
-    );
-  }
+      <hr />
+    </div>
+  );
 
   const { currentThemeId, modRegNotification } = props;
   useScrollToTop();
