@@ -26,6 +26,8 @@ const SemesterBadge: React.FC<Props> = ({ className, semesters }) => (
         className={classnames('badge', BADGE_COLOR[semester])}
         title={config.semesterNames[semester]}
       >
+        {/* The space in sr-only span is for screen reader to read the text seperately for non-visual users */}
+        <span className="sr-only"> </span>
         {config.shortSemesterNames[semester]}
       </span>
     ))}
