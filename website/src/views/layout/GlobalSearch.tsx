@@ -242,9 +242,7 @@ class GlobalSearch extends Component<Props, State> {
                       [styles.selected]: highlightedIndex === index + 1,
                     })}
                   >
-                    {/* Extra space after module.title to aid screen reader to seperate module
-                     title from semester title */}
-                    <span>{highlight(`${module.moduleCode} ${module.title} `, tokens)}</span>
+                    <span>{highlight(`${module.moduleCode} ${module.title}`, tokens)}</span>
 
                     <SemesterBadge className={styles.semesters} semesters={module.semesters} />
                   </div>
