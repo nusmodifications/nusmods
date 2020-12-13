@@ -2807,10 +2807,10 @@
     jest-diff "^26.0.0"
     pretty-format "^26.0.0"
 
-"@types/jest@26.0.16":
-  version "26.0.16"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.16.tgz#b47abd50f6ed0503f589db8e126fc8eb470cf87c"
-  integrity sha512-Gp12+7tmKCgv9JjtltxUXokohCAEZfpJaEW5tn871SGRp8I+bRWBonQO7vW5NHwnAHe5dd50+Q4zyKuN35i09g==
+"@types/jest@26.0.19":
+  version "26.0.19"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.19.tgz#e6fa1e3def5842ec85045bd5210e9bb8289de790"
+  integrity sha512-jqHoirTG61fee6v6rwbnEuKhpSKih0tuhqeFbCmMmErhtu3BYlOZaXWjffgOstMM4S/3iQD31lI5bGLTrs97yQ==
   dependencies:
     jest-diff "^26.0.0"
     pretty-format "^26.0.0"
@@ -2869,10 +2869,10 @@
   resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.0.tgz#69a23a3ad29caf0097f06eda59b361ee2f0639f6"
   integrity sha1-aaI6OtKcrwCX8G7aWbNh7i8GOfY=
 
-"@types/mousetrap@1.6.4":
-  version "1.6.4"
-  resolved "https://registry.yarnpkg.com/@types/mousetrap/-/mousetrap-1.6.4.tgz#32503197fca4168b10bf251c1d677a9b5b1c2415"
-  integrity sha512-+Y900DGhe+f+4lRwHm9krsKfsiXcbdOhzTsLbytU4MiG8wE9xOw7CFKtgYKfqEAcUdWEGZRyuTxoyFl2Gx6Rdg==
+"@types/mousetrap@1.6.5":
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/@types/mousetrap/-/mousetrap-1.6.5.tgz#e95569aa6273dbe0ed1814f86287547cc06e93c9"
+  integrity sha512-OwVhKFim9Y/MprzCe4I6a59p31pMy8+LrtP6qS7J0kaOxYmW6VVJPBw5NYm+g7nSbgPUz22FvqU1F1hC5YGTfg==
 
 "@types/no-scroll@2.1.0":
   version "2.1.0"
