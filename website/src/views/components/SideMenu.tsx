@@ -1,4 +1,4 @@
-import { memo, FC, useEffect } from 'react';
+import { memo, FC, useEffect, useCallback } from 'react';
 import classnames from 'classnames';
 
 import { Menu, X as Close } from 'react-feather';
@@ -26,16 +26,17 @@ const DEFAULT_CLOSE_ICON = <Close aria-label={CLOSE_MENU_LABEL} />;
 export const SideMenuComponent: FC<Props> = ({
   openIcon = DEFAULT_OPEN_ICON,
   closeIcon = DEFAULT_CLOSE_ICON,
-  ...props
+  isOpen,
+  toggleMenu,
+  children,
 }) => {
   const matchBreakpoint = useMediaQuery(breakpointUp('md'));
 
-  const isSideMenuShown = props.isOpen && !matchBreakpoint;
-
-  const { isOpen, toggleMenu, children } = props;
+  const isSideMenuShown = isOpen && !matchBreakpoint;
 
   useEffect(() => {
     disableScrolling(isSideMenuShown);
+    return () => disableScrolling(false);
   });
 
   return (
