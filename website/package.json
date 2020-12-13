@@ -76,7 +76,7 @@
     "codecov": "3.8.1",
     "compression-webpack-plugin": "7.0.0",
     "connect-history-api-fallback": "1.6.0",
-    "copy-webpack-plugin": "6.3.2",
+    "copy-webpack-plugin": "6.4.0",
     "cross-env": "7.0.3",
     "css-loader": "5.0.1",
     "cssnano": "4.1.10",
@@ -124,10 +124,10 @@
     "terser-webpack-plugin": "5.0.3",
     "typescript": "4.1.2",
     "url-loader": "4.1.1",
-    "webpack": "5.10.0",
+    "webpack": "5.10.1",
     "webpack-cli": "4.2.0",
     "webpack-dev-server": "3.11.0",
-    "webpack-merge": "5.4.0"
+    "webpack-merge": "5.7.0"
   },
   "dependencies": {
     "@material/fab": "0.40.1",
