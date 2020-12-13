@@ -24,13 +24,6 @@ const commonConfig = {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     // We don't use symlinks, so disable for performance
     symlinks: false,
-    // ical-generator imports Node.js core modules, which don't exist in a
-    // browser environment. Tell Webpack to provide empty modules for them so
-    // importing them works.
-    fallback: {
-      fs: false,
-      os: false,
-    },
   },
 
   context: parts.PATHS.src,

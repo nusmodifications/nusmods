@@ -1,4 +1,4 @@
-import { retryImport } from 'utils/error';
+import retryImport from 'utils/retryImport';
 import withVenueLocations from 'views/components/map/withVenueLocations';
 import { Props } from './VenueLocation';
 

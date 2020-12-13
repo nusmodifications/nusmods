@@ -44,7 +44,9 @@ describe(LinkModuleCodesComponent, () => {
 
   function create(content: string, moduleCodes: ModuleCodeMap = {}) {
     const getModule = getModuleCondensed({
-      moduleCodes,
+      moduleBank: {
+        moduleCodes,
+      },
     } as any);
 
     return mount(

@@ -44,7 +44,7 @@ export const LinkModuleCodesComponent: React.FC<Props> = (props) => {
 };
 
 const mapStateToProps = connect((state: State) => ({
-  getModuleCondensed: getModuleCondensed(state.moduleBank),
+  getModuleCondensed: getModuleCondensed(state),
 }));
 
 export default mapStateToProps(LinkModuleCodesComponent);

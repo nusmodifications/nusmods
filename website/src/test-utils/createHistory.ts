@@ -11,17 +11,13 @@ type MatchShape = {
   isExact?: boolean;
 };
 
-// This can also be Location, but no test case use that for now so we leave it
-// out for simplicity
-type HistoryEntry = string;
-
 // eslint-disable-next-line @typescript-eslint/ban-types
 export default function createHistory<T = {}>(
-  initialEntries: HistoryEntry | Readonly<HistoryEntry[]> = '/',
+  initialEntries: string | string[] = '/',
   matchParams: MatchShape = {},
 ): RouteComponentProps<T> {
   const entries = _.castArray(initialEntries);
-  const history = createMemoryHistory({ initialEntries: entries as any });
+  const history = createMemoryHistory({ initialEntries: entries });
   const { params = {}, isExact = true } = matchParams;
 
   const match: Match<T> = {

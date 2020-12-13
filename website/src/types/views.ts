@@ -1,3 +1,4 @@
+import type { QueryObject } from 'json2mq';
 import { Module, ModuleCondensed } from './modules';
 import { ModuleList } from './reducers';
 import { ColorIndex, HoverLesson, Lesson, ModifiableLesson } from './timetables';
@@ -82,3 +83,5 @@ export interface RegPeriodView extends RegPeriod {
   // Augmented for the frontend. The modreg selector maps RegPeriod to this type.
   dismissed: boolean;
 }
+
+export type MediaQuery = string | QueryObject | QueryObject[];

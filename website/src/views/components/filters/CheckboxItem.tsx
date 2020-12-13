@@ -21,33 +21,31 @@ const CheckboxItem: React.FC<Props> = ({
   label,
   showCount,
   onClick,
-}) => {
-  return (
-    <li key={itemKey} className={classnames(styles.label, 'form-check')}>
-      <input
-        id={itemKey}
-        className="form-check-input"
-        type="checkbox"
-        checked={active}
-        onChange={(e) => onClick(e)}
-      />
+}) => (
+  <li key={itemKey} className={classnames(styles.label, 'form-check')}>
+    <input
+      id={itemKey}
+      className="form-check-input"
+      type="checkbox"
+      checked={active}
+      onChange={(e) => onClick(e)}
+    />
 
-      <label
-        htmlFor={itemKey}
-        className={classnames('form-check-label', {
-          [styles.enabled]: !disabled,
-        })}
-      >
-        {label}
-        {showCount && typeof count !== 'undefined' && (
-          <>
-            {NBSP}
-            <span className="text-muted">({count})</span>{' '}
-          </>
-        )}
-      </label>
-    </li>
-  );
-};
+    <label
+      htmlFor={itemKey}
+      className={classnames('form-check-label', {
+        [styles.enabled]: !disabled,
+      })}
+    >
+      {label}
+      {showCount && typeof count !== 'undefined' && (
+        <>
+          {NBSP}
+          <span className="text-muted">({count})</span>{' '}
+        </>
+      )}
+    </label>
+  </li>
+);
 
 export default CheckboxItem;
