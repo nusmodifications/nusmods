@@ -141,7 +141,7 @@
     "classnames": "2.2.6",
     "core-js": "3.8.1",
     "date-fns": "2.16.1",
-    "downshift": "6.0.6",
+    "downshift": "6.0.7",
     "ical-generator": "https://github.com/nusmodifications/ical-generator.git#a2aa62ed",
     "immer": "8.0.0",
     "json2mq": "0.2.0",
