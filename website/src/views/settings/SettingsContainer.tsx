@@ -141,7 +141,6 @@ const SettingsContainer: React.FC<Props> = (props) => {
     </div>
   );
 
-  const { currentThemeId, modRegNotification } = props;
   useScrollToTop();
 
   return (
@@ -174,7 +173,7 @@ const SettingsContainer: React.FC<Props> = (props) => {
             key={theme.id}
             className={styles.themeOption}
             theme={theme}
-            isSelected={currentThemeId === theme.id}
+            isSelected={props.currentThemeId === theme.id}
             onSelectTheme={props.selectTheme}
           />
         ))}
@@ -194,13 +193,13 @@ const SettingsContainer: React.FC<Props> = (props) => {
         </div>
         <div className={styles.toggle}>
           <Toggle
-            isOn={modRegNotification.enabled}
-            onChange={() => props.toggleModRegNotificationGlobally(!modRegNotification.enabled)}
+            isOn={props.modRegNotification.enabled}
+            onChange={() => props.toggleModRegNotificationGlobally(!props.modRegNotification.enabled)}
           />
         </div>
       </div>
 
-      {modRegNotification.enabled && (
+      {props.modRegNotification.enabled && (
         <>
           <div className="row">
             <div className="col-sm-12">
