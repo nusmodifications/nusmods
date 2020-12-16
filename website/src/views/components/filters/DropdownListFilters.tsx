@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { uniq, omit } from 'lodash';
 
 import { Search, ChevronDown } from 'react-feather';
-import makeResponsive, { WithBreakpoint } from 'views/hocs/makeResponsive';
+import useMediaQuery from 'views/hooks/useMediaQuery';
 import { RefinementItem, RefinementDisplayItem } from 'types/views';
 import { highlight } from 'utils/react';
 import { breakpointDown, touchScreenOnly } from 'utils/css';
@@ -14,7 +14,7 @@ import Checklist from './Checklist';
 
 import styles from './styles.scss';
 
-type Props = ListProps & WithBreakpoint;
+type Props = ListProps;
 type DisplayProps = {
   allItems: RefinementDisplayItem[];
   onSelectItem: (selectedItem: string) => void;
@@ -173,9 +173,9 @@ export const DropdownListFiltersComponent: React.FC<Props> = ({
   toggleItem,
   showCount,
   translate,
-  matchBreakpoint,
 }) => {
   const [searchedItems, setSearchedFilters] = useState(selectedItems);
+  const matchBreakpoint = useMediaQuery([breakpointDown('sm'), touchScreenOnly()]);
 
   const onSelectItem = (selectedItem: string) => {
     if (!selectedItem) return;
@@ -211,7 +211,5 @@ export const DropdownListFiltersComponent: React.FC<Props> = ({
   );
 };
 
-export default makeResponsive(DropdownListFiltersComponent, [
-  breakpointDown('sm'),
-  touchScreenOnly(),
-]);
+// export default React.memo(DropdownListFiltersComponent);
+export default DropdownListFiltersComponent;

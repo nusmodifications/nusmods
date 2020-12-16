@@ -2,8 +2,17 @@ import { mount } from 'enzyme';
 
 import { RefinementItem } from 'types/views';
 import { DropdownListFiltersComponent } from './DropdownListFilters';
+import { mockDom, mockDomReset } from 'test-utils/mockDom';
 
 describe(DropdownListFiltersComponent, () => {
+  beforeEach(() => {
+    mockDom();
+  });
+
+  afterEach(() => {
+    mockDomReset();
+  });
+
   const CHECKBOX = '☑';
 
   /* eslint-disable camelcase */
