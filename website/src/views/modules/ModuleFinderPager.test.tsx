@@ -1,8 +1,8 @@
 import { shallow } from 'enzyme';
 import { noop } from 'lodash';
+import { mockWindowMatchMedia, mockDomReset } from 'test-utils/mockDom';
 import ModuleFinderPagerButton from 'views/modules/ModuleFinderPagerButton';
 import { displayPageRange, ModuleFinderPagerComponent } from './ModuleFinderPager';
-import { mockWindowMatchMedia, mockDomReset } from 'test-utils/mockDom';
 
 describe(displayPageRange, () => {
   test('calculate page range correctly', () => {

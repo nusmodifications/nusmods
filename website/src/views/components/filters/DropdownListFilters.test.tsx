@@ -1,8 +1,8 @@
 import { mount } from 'enzyme';
 
 import { RefinementItem } from 'types/views';
-import { DropdownListFiltersComponent } from './DropdownListFilters';
 import { mockDom, mockDomReset } from 'test-utils/mockDom';
+import { DropdownListFiltersComponent } from './DropdownListFilters';
 
 describe(DropdownListFiltersComponent, () => {
   beforeEach(() => {
