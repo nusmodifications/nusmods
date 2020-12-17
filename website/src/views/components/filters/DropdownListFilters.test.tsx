@@ -35,7 +35,6 @@ describe(DropdownListFiltersComponent, () => {
           items={items}
           selectedItems={selectedItems}
           toggleItem={onFilterChange}
-          matchBreakpoint={matchBreakpoint}
           setItems={() => {
             /* do nothing; provide only because setItems must be set */
           }}
