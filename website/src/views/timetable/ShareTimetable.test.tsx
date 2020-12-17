@@ -1,4 +1,3 @@
-import * as React from 'react';
 import axios, { AxiosResponse } from 'axios';
 import { shallow, ShallowWrapper } from 'enzyme';
 

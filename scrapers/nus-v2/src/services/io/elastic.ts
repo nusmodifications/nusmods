@@ -21,7 +21,7 @@ type ModuleSearchBody = {
   };
 };
 
-const INDEX_NAME = 'modules';
+const INDEX_NAME = 'modules_v2';
 
 // Tokenizes a string into an array of digits
 const first_digit_tokenizer = {
@@ -46,7 +46,6 @@ async function createIndex(client: Client): Promise<Client> {
   try {
     await client.indices.create({
       index: INDEX_NAME,
-      include_type_name: false, // TODO: Remove when upgrading to Elasticsearch 7
       body: {
         settings: {
           analysis: {
@@ -63,27 +62,7 @@ async function createIndex(client: Client): Promise<Client> {
             filter: { first_token_limit_filter, thousandizer_filter },
           },
           index: {
-            max_result_window: 20000, // Default limit is 10k, but we have >11k mods
-          },
-        },
-        mappings: {
-          properties: {
-            workload: { type: 'text' },
-            moduleCredit: { type: 'short' },
-            moduleCode: {
-              type: 'text',
-              fields: {
-                keyword: {
-                  type: 'keyword',
-                  ignore_above: 10,
-                },
-                level: {
-                  type: 'text',
-                  analyzer: 'level_analyzer',
-                  fielddata: true, // To allow usage in MultiList on the frontend
-                },
-              },
-            },
+            max_result_window: 20_000, // Default limit is 10k, but we have >11k mods
           },
         },
       },
@@ -98,6 +77,33 @@ async function createIndex(client: Client): Promise<Client> {
       throw e;
     }
   }
+
+  await client.indices.putMapping({
+    index: INDEX_NAME,
+    body: {
+      properties: {
+        workload: { type: 'text' },
+        moduleCredit: { type: 'short' },
+        moduleCode: {
+          type: 'text',
+          fields: {
+            keyword: {
+              type: 'keyword',
+              ignore_above: 10,
+            },
+            level: {
+              type: 'text',
+              analyzer: 'level_analyzer',
+              fielddata: true, // To allow usage in MultiList on the frontend
+            },
+          },
+        },
+        semesterData: {
+          type: 'nested',
+        },
+      },
+    },
+  });
 
   return client;
 }
@@ -121,7 +127,6 @@ export default class ElasticPersist implements Persist {
     await client.delete({
       id: moduleCode,
       index: INDEX_NAME,
-      type: '_doc',
     });
   };
 
@@ -145,8 +150,7 @@ export default class ElasticPersist implements Persist {
 
     const client = await this.client;
     const res = await client.bulk({
-      index: 'modules',
-      type: '_doc', // TODO: Remove when upgrading to Elasticsearch 7
+      index: INDEX_NAME,
       body: bulkBody,
     });
 
@@ -178,13 +182,13 @@ export default class ElasticPersist implements Persist {
   async getModuleCodes() {
     const client = await this.client;
     const { body } = await client.search({
-      index: 'modules',
+      index: INDEX_NAME,
       body: {
         query: {
           match_all: {},
         },
         _source: 'moduleCode',
-        size: 100_000, // Arbitrarily large number to force API to return all results
+        size: 20_000, // Arbitrarily large number to force ES to return all results. Must be <= index.max_result_window
       },
     });
 

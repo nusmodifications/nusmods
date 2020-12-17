@@ -1,6 +1,10 @@
 import produce, { Draft } from 'immer';
 import { keyBy, omit, size, zipObject } from 'lodash';
 
+import type { Actions } from 'types/actions';
+import type { Module } from 'types/modules';
+import type { ModuleBank, ModuleList } from 'types/reducers';
+
 import {
   FETCH_ARCHIVE_MODULE,
   FETCH_MODULE,
@@ -10,11 +14,7 @@ import {
   SET_EXPORTED_DATA,
 } from 'actions/constants';
 import { createMigrate, REHYDRATE } from 'redux-persist';
-import { Module } from 'types/modules';
-import { ModuleBank, ModuleList } from 'types/reducers';
 import { SUCCESS_KEY } from 'middlewares/requests-middleware';
-
-import { Actions } from 'types/actions';
 
 const defaultModuleBankState: ModuleBank = {
   moduleList: [], // List of basic modules data (module code, name, semester)
@@ -127,7 +127,7 @@ export const persistConfig = {
       // FIXME: Remove the next line when _persist is optional again.
       // Cause: https://github.com/rt2zz/redux-persist/pull/919
       // Issue: https://github.com/rt2zz/redux-persist/pull/1170
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
+      // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
       _persist: state?._persist!,
     }),
   }),

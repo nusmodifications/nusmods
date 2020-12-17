@@ -1,4 +1,4 @@
-import React from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { differenceInMilliseconds } from 'date-fns';
 
 import { forceTimer } from 'utils/debug';
@@ -11,10 +11,10 @@ function getCurrentTime() {
  * Hook version of withTimer
  */
 export default function useCurrentTime(intervalInMs: number = 60 * 1000) {
-  const intervalId = React.useRef<number>();
-  const [time, setTime] = React.useState(getCurrentTime());
+  const intervalId = useRef<number>();
+  const [time, setTime] = useState(getCurrentTime());
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Update current time every interval milliseconds
     intervalId.current = window.setInterval(() => {
       setTime(getCurrentTime());

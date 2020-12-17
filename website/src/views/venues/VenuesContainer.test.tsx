@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { shallow } from 'enzyme';
 import qs from 'query-string';
 // eslint-disable-next-line import/no-extraneous-dependencies

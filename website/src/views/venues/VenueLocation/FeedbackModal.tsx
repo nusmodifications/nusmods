@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { PureComponent } from 'react';
 import classnames from 'classnames';
 
 import { VenueLocation } from 'types/venues';
@@ -23,7 +23,7 @@ type State = {
   readonly page: Page;
 };
 
-export default class FeedbackModal extends React.PureComponent<Props, State> {
+export default class FeedbackModal extends PureComponent<Props, State> {
   state: State = {
     page: 'menu',
   };

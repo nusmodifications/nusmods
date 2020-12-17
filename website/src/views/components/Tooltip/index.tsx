@@ -1,6 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 
-import { retryImport } from 'utils/error';
+import retryImport from 'utils/retryImport';
 
 import { Props, TooltipGroupProps } from './Tooltip';
 

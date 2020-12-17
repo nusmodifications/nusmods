@@ -1,5 +1,15 @@
+// Globals injected by Webpack DefinePlugin
+/* eslint-disable no-underscore-dangle */
+declare const __DEV__: boolean;
+declare const __TEST__: boolean;
+declare const DATA_API_BASE_URL: string | undefined;
+declare const VERSION_STR: string | undefined;
+declare const DISPLAY_COMMIT_HASH: string | undefined;
+declare const DEBUG_SERVICE_WORKER: boolean;
+/* eslint-enable no-underscore-dangle */
+
 /**
- * These declarations lets us use Webpack loaders to load non-JS files
+ * The declarations below let us use Webpack loaders to load non-JS files
  */
 
 declare module '*.scss' {

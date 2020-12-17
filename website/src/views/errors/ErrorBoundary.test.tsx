@@ -59,7 +59,8 @@ describe('ErrorBoundary', () => {
   });
 
   test('should show custom error page if provided', () => {
-    const errorPage = jest.fn(() => 'Custom content');
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const errorPage = jest.fn((_error: Error) => 'Custom content');
 
     const wrapper = mount(
       <ErrorBoundary errorPage={errorPage}>

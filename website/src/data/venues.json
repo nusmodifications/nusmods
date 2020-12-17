@@ -239,6 +239,14 @@
       "y": 1.2933361735350462
     }
   },
+  "BIZ2-HSSAU": {
+    "roomName": "Hon Sui Sen Auditorium",
+    "floor": 1,
+    "location": {
+      "x": 103.7746254,
+      "y": 1.2933012
+    }
+  },
   "BIZ1-0203": {
     "roomName": "Seminar Room 2-3",
     "floor": 2,

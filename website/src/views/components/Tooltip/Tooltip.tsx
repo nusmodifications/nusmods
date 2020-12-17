@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import Tippy, { TippyProps, TippySingleton, TippySingletonProps } from '@tippy.js/react';
 import { animateFill } from 'tippy.js'; // eslint-disable-line import/no-extraneous-dependencies
 

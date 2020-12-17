@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import {
+import type {
   Module,
   ModuleCode,
   RawLesson,
@@ -9,7 +9,7 @@ import {
 } from 'types/modules';
 
 import config from 'config';
-import { NBSP } from 'utils/react';
+import { NBSP, noBreak } from 'utils/react';
 import { format } from 'date-fns';
 import { Lesson } from 'types/timetables';
 import { toSingaporeTime } from './timify';
@@ -78,8 +78,16 @@ export function getSemestersOffered(module: Module): Semester[] {
 }
 
 export function renderMCs(moduleCredits: number | string) {
-  const credit = typeof moduleCredits === 'string' ? parseInt(moduleCredits, 10) : moduleCredits;
+  const credit = typeof moduleCredits === 'string' ? parseFloat(moduleCredits) : moduleCredits;
   return `${credit}${NBSP}${credit === 1 ? 'MC' : 'MCs'}`;
+}
+
+export function renderExamDuration(examDuration: number) {
+  const hours = examDuration / 60;
+  if (hours < 1) {
+    return noBreak(`${examDuration} mins`);
+  }
+  return noBreak(`${hours} ${hours === 1 ? 'hr' : 'hrs'}`);
 }
 
 export function subtractAcadYear(acadYear: string): string {

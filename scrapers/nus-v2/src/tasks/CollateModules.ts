@@ -150,10 +150,11 @@ const getModuleInfo = ({
   preclusion,
   corequisite,
   attributes,
-  semesterData: semesterData.map(({ semester, examDate, examDuration }) => ({
+  semesterData: semesterData.map(({ semester, examDate, examDuration, covidZones }) => ({
     semester,
     examDate,
     examDuration,
+    covidZones,
   })),
 });
 

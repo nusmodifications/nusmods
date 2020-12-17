@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { PureComponent } from 'react';
 import Downshift, { ChildrenFunction } from 'downshift';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
@@ -34,7 +34,7 @@ type State = {
   isMacWarningOpen: boolean;
 };
 
-export class ExportMenuComponent extends React.PureComponent<Props, State> {
+export class ExportMenuComponent extends PureComponent<Props, State> {
   state: State = {
     isMacWarningOpen: false,
   };

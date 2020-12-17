@@ -13,7 +13,8 @@ export type Semester = number;
 export type Department = string;
 export type Workload = string | readonly number[];
 export type Venue = string;
-export type Weeks = readonly number[] | WeekRange;
+export type Weeks = NumericWeeks | WeekRange;
+export type NumericWeeks = readonly number[];
 export type WeekRange = {
   // The start and end dates
   start: string;
@@ -69,7 +70,7 @@ export const isWeekRange = (week: Weeks): week is WeekRange => !Array.isArray(we
 
 export const consumeWeeks = <T = void>(
   weeks: Weeks,
-  consumeNumericWeeks: (weeks: number[]) => T,
+  consumeNumericWeeks: (numericWeeks: NumericWeeks) => T,
   consumeWeekRange: (weekRange: WeekRange) => T,
 ): T => {
   if (Array.isArray(weeks)) return consumeNumericWeeks(weeks);

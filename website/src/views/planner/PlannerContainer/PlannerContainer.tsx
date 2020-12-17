@@ -1,9 +1,8 @@
-import React from 'react';
+import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { flatMap, flatten, sortBy, toPairs, values } from 'lodash';
 import { DragDropContext, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 import classnames from 'classnames';
-import { hot } from 'react-hot-loader/root';
 
 import { Module, ModuleCode, Semester } from 'types/modules';
 import { PlannerModulesWithInfo, PlannerModuleInfo, AddModuleData } from 'types/planner';
@@ -66,7 +65,7 @@ type State = {
 
 const TRASH_ID = 'trash';
 
-export class PlannerContainerComponent extends React.PureComponent<Props, State> {
+export class PlannerContainerComponent extends PureComponent<Props, State> {
   state: State = {
     loading: true,
     showSettings: false,
@@ -307,4 +306,4 @@ const PlannerContainer = connect(mapStateToProps, {
   removeModule: removePlannerModule,
 })(PlannerContainerComponent);
 
-export default hot(PlannerContainer);
+export default PlannerContainer;

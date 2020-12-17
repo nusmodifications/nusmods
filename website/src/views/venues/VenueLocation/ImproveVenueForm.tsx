@@ -1,21 +1,39 @@
 import * as React from 'react';
-import { LatLng } from 'leaflet';
-import { Map, Marker, TileLayer, Viewport } from 'react-leaflet';
+import type { LatLng } from 'leaflet';
+import { MapContainer, Marker, TileLayer, useMapEvents } from 'react-leaflet';
 import classnames from 'classnames';
 import axios from 'axios';
 import produce from 'immer';
 
-import { LatLngTuple, Venue, VenueLocation } from 'types/venues';
+import type { LatLngTuple, Venue, VenueLocation } from 'types/venues';
 import config from 'config';
 import { MapPin, ThumbsUp } from 'react-feather';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { markerIcon } from 'views/components/map/icons';
 import ExpandMap from 'views/components/map/ExpandMap';
+import MapViewportChanger from 'views/components/map/MapViewportChanger';
 import { isIOS } from 'bootstrapping/browser';
 
 import mapStyles from 'views/components/map/LocationMap.scss';
 import { captureException } from 'utils/error';
 import styles from './ImproveVenueForm.scss';
+
+/**
+ * Calls `onLocationSelected` whenever the map is dragged or clicked on.
+ *
+ * This component exists as passing `eventHandlers` to `MapContainer` has no
+ * effect. See: https://github.com/PaulLeCam/react-leaflet/issues/779
+ */
+const MapLocationSelector: React.FC<{
+  onLocationSelected: (latlng: LatLng, isFinal: boolean) => void;
+}> = ({ onLocationSelected }) => {
+  const map = useMapEvents({
+    drag: () => onLocationSelected(map.getCenter(), false),
+    dragend: () => onLocationSelected(map.getCenter(), true),
+    click: ({ latlng }) => onLocationSelected(latlng, true),
+  });
+  return null;
+};
 
 type Props = {
   venue: Venue;
@@ -36,9 +54,15 @@ type State = {
   submitted: boolean;
   isMapExpanded: boolean;
   promptUpdateMap: boolean;
-  // viewport is stored as a separate state because viewport may be animated separately
-  // from location
-  viewport: Viewport;
+
+  /**
+   * Viewport center.
+   *
+   * `center` is stored as a separate state because it may be animated
+   * separately from `location`. `center` may not be updated; use
+   * `map.getCenter` if possible.
+   */
+  center: LatLng | LatLngTuple;
 
   error?: Error;
 };
@@ -77,13 +101,8 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
       }
     }
 
-    const viewport = {
-      center: locationInfo.location,
-      zoom: 19,
-    };
-
     this.state = {
-      viewport,
+      center: locationInfo.location,
       reporterEmail: '',
       latlngUpdated: false,
       submitting: false,
@@ -152,7 +171,7 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
         draft.latlngUpdated = true;
 
         if (updateViewport) {
-          draft.viewport.center = latlngTuple;
+          draft.center = latlngTuple;
         }
       }),
     );
@@ -232,7 +251,12 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
             step="1"
             placeholder="eg. 1"
             value={floor}
-            onChange={(evt) => this.setState({ floor: parseInt(evt.target.value, 10) })}
+            onChange={(evt) => {
+              const newFloor = parseInt(evt.target.value, 10);
+              if (!Number.isNaN(newFloor)) {
+                this.setState({ floor: newFloor });
+              }
+            }}
             required
           />
           <small className="form-text text-muted" id="improve-venue-floor-help">
@@ -245,26 +269,15 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
             [mapStyles.expanded]: isMapExpanded,
           })}
         >
-          <Map
-            className={mapStyles.map}
-            viewport={this.state.viewport}
-            maxZoom={19}
-            // Don't update viewport because this is also called when viewport is animated
-            // and updating viewport will cause the
-            onviewportchange={(viewport) => {
-              if (viewport && viewport.center) {
-                this.updateLocation(viewport.center, false);
-              }
-            }}
-            onviewportchanged={(viewport) => {
-              if (viewport) this.setState({ viewport });
-            }}
-            onclick={(evt) => this.updateLocation(evt.latlng)}
-          >
+          <MapContainer className={mapStyles.map} center={this.state.center} zoom={18} maxZoom={18}>
+            <MapViewportChanger center={this.state.center} />
+            <MapLocationSelector onLocationSelected={this.updateLocation} />
             <Marker
               position={location}
               icon={markerIcon}
-              ondragend={(evt) => this.updateLocation(evt.target.getLatLng())}
+              eventHandlers={{
+                dragend: (evt) => this.updateLocation(evt.target.getLatLng()),
+              }}
               draggable
               autoPan
             />
@@ -278,7 +291,7 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
                 onToggleExpand={() => this.setState({ isMapExpanded: !isMapExpanded })}
               />
             )}
-          </Map>
+          </MapContainer>
 
           <select
             className={classnames('form-control', styles.jumpSelect)}

@@ -13,7 +13,7 @@ import { Copy, Mail, Repeat } from 'react-feather';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import LoadingSpinner from 'views/components/LoadingSpinner';
-import { retryImport } from 'utils/error';
+import retryImport from 'utils/retryImport';
 
 import styles from './ShareTimetable.scss';
 

@@ -1,4 +1,4 @@
-import React, { FormEventHandler } from 'react';
+import { FC, FormEventHandler, memo, useCallback, useState } from 'react';
 import { castArray, groupBy } from 'lodash';
 import classnames from 'classnames';
 import produce from 'immer';
@@ -6,7 +6,7 @@ import axios from 'axios';
 import { AlertTriangle } from 'react-feather';
 import * as Sentry from '@sentry/browser';
 
-import {
+import type {
   DepartmentMatch,
   Division,
   FacultyEmail,
@@ -14,7 +14,7 @@ import {
   ModuleCodeMatch,
   ModuleCodePrefixMatch,
 } from 'types/facultyEmail';
-import { Module } from 'types/modules';
+import type { Module } from 'types/modules';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import ExternalLink from 'views/components/ExternalLink';
@@ -108,24 +108,21 @@ function matchModule(module: Module) {
  * Module error reporting component. Posts to a serverless script that then emails the relevant
  * faculty / department with the issue.
  */
-const ReportError = React.memo<Props>(({ module }) => {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [formState, setFormState] = React.useState<FormState>({ type: 'unsubmitted' });
+const ReportError = memo<Props>(({ module }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [formState, setFormState] = useState<FormState>({ type: 'unsubmitted' });
 
   // Causes the error reporting function to email modules@nusmods.com instead.
   // In production, use SET_ERROR_REPORTING_DEBUG(true) to enable debug mode
-  const debug = useGlobalDebugValue(
-    'SET_ERROR_REPORTING_DEBUG',
-    process.env.NODE_ENV !== 'production',
-  );
+  const debug = useGlobalDebugValue('SET_ERROR_REPORTING_DEBUG', __DEV__);
 
-  const [formData, setFormData] = React.useState<ReportErrorForm>(() => ({
+  const [formData, setFormData] = useState<ReportErrorForm>(() => ({
     ...retrieveContactInfo(),
     message: '',
     contactId: matchModule(module)?.id,
   }));
 
-  const updateFormValue = React.useCallback(
+  const updateFormValue = useCallback(
     (key: keyof ReportErrorForm): FormEventHandler => (evt) => {
       const newFormData = produce(formData, (draft) => {
         draft[key] = (evt.target as HTMLInputElement).value;
@@ -141,7 +138,7 @@ const ReportError = React.memo<Props>(({ module }) => {
     [formData],
   );
 
-  const onSubmit = React.useCallback(() => {
+  const onSubmit = useCallback(() => {
     setFormState({ type: 'submitting' });
 
     const { name, replyTo, matricNumber, message, contactId } = formData;
@@ -157,7 +154,7 @@ const ReportError = React.memo<Props>(({ module }) => {
       })
       .then(() => setFormState({ type: 'submitted' }))
       .catch((error) => {
-        Sentry.setExtras(formData);
+        Sentry.setExtras({ ...formData });
         Sentry.captureException(error);
         setFormState({ type: 'error' });
       });
@@ -232,7 +229,7 @@ interface FormContentProps {
   isSubmitting: boolean;
 }
 
-const FormContent: React.FC<FormContentProps> = ({
+const FormContent: FC<FormContentProps> = ({
   formData,
   onSubmit,
   updateFormValue,
@@ -346,7 +343,7 @@ const FormContent: React.FC<FormContentProps> = ({
   );
 };
 
-const ReportErrorWrapper: React.FC<Props> = ({ module }) => (
+const ReportErrorWrapper: FC<Props> = ({ module }) => (
   // Force form state to re-initialize when the module changes
   <ReportError module={module} key={module.moduleCode} />
 );

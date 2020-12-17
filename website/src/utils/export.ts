@@ -1,6 +1,6 @@
 import { Semester } from 'types/modules';
 import { ExportData } from 'types/export';
-import { getSemesterTimetable } from 'selectors/timetables';
+import { getSemesterTimetableColors } from 'selectors/timetables';
 import { State } from 'types/state';
 import { SemTimetableConfig } from 'types/timetables';
 
@@ -9,7 +9,7 @@ export function extractStateForExport(
   timetable: SemTimetableConfig,
   state: State,
 ): ExportData {
-  const { colors } = getSemesterTimetable(semester, state.timetables);
+  const colors = getSemesterTimetableColors(state)(semester);
   const hidden = state.timetables.hidden[semester] || [];
 
   return {

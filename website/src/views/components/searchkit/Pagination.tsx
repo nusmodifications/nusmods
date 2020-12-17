@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { PaginationAccessor, SearchkitComponent, SearchkitComponentProps } from 'searchkit';
 import { clamp, get } from 'lodash';
 
@@ -35,9 +35,7 @@ export default class Pagination extends SearchkitComponent<PaginationProps, {}> 
   }
 
   getTotalPages() {
-    return Math.ceil(
-      get(this.getResults(), 'hits.total', 1) / get(this.getQuery(), 'query.size', 10),
-    );
+    return Math.ceil(this.getHitsCount() / get(this.getQuery(), 'query.size', 10));
   }
 
   onGoToFirst = () => this.setPage(FIRST_PAGE_INDEX);

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { createContext } from 'react';
 
 type MapContextValue = Readonly<{
   toggleMapExpanded: (boolean: boolean) => void;
@@ -13,6 +13,6 @@ const defaultValue: MapContextValue = {
   },
 };
 
-const MapContext = React.createContext<MapContextValue>(defaultValue);
+const MapContext = createContext<MapContextValue>(defaultValue);
 
 export default MapContext;

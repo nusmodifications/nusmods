@@ -1,20 +1,22 @@
-import React from 'react';
-import { SemTimetableConfig, TimetableConfig } from 'types/timetables';
-import { ModuleList, NotificationOptions } from 'types/reducers';
-import { Semester } from 'types/modules';
-import { DARK_MODE, Mode } from 'types/settings';
+import { FC, useCallback, useEffect, useState } from 'react';
+import type { SemTimetableConfig } from 'types/timetables';
+import type { Semester } from 'types/modules';
+import { DARK_MODE } from 'types/settings';
 
 import { Helmet } from 'react-helmet';
-import { NavLink, RouteComponentProps, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { NavLink, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import classnames from 'classnames';
 import { each } from 'lodash';
 
 import weekText from 'utils/weekText';
 import { captureException } from 'utils/error';
 import { openNotification } from 'actions/app';
-import { fetchModuleList } from 'actions/moduleBank';
-import { fetchTimetableModules, setTimetable, validateTimetable } from 'actions/timetables';
+import { fetchModuleList as fetchModuleListAction } from 'actions/moduleBank';
+import {
+  fetchTimetableModules as fetchTimetableModulesAction,
+  validateTimetable,
+} from 'actions/timetables';
 import Footer from 'views/layout/Footer';
 import Navtabs from 'views/layout/Navtabs';
 import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
@@ -25,172 +27,160 @@ import ApiError from 'views/errors/ApiError';
 import { trackPageView } from 'bootstrapping/matomo';
 import { isIOS } from 'bootstrapping/browser';
 import Logo from 'img/nusmods-logo.svg';
-import { State as StoreState } from 'types/state';
+import type { Dispatch } from 'types/redux';
+import type { State } from 'types/state';
+import type { Actions } from 'types/actions';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
 import KeyboardShortcuts from './components/KeyboardShortcuts';
 
 import styles from './AppShell.scss';
 
-type Props = RouteComponentProps & {
-  children: React.ReactNode;
+/**
+ * Fetch module list on mount.
+ */
+function useFetchModuleListAndTimetableModules(): {
+  moduleListError: Error | null;
+  refetchModuleListAndTimetableModules: () => void;
+} {
+  const [moduleListError, setModuleListError] = useState<Error | null>(null);
 
-  // From Redux state
-  moduleList: ModuleList;
-  timetables: TimetableConfig;
-  theme: string;
-  mode: Mode;
-  activeSemester: Semester;
+  const dispatch = useDispatch<Dispatch>();
+  const store = useStore<State, Actions>();
 
-  // From Redux actions
-  fetchModuleList: () => Promise<unknown>; // Typed as unknown because we don't actually need the output
-  fetchTimetableModules: (semTimetableConfig: SemTimetableConfig[]) => Promise<unknown>;
-  setTimetable: (semester: Semester, semTimetableConfig: SemTimetableConfig) => void;
-  validateTimetable: (semester: Semester) => void;
-  openNotification: (str: string, notificationOptions?: NotificationOptions) => void;
-};
+  const fetchModuleList = useCallback(
+    () =>
+      // TODO: This always re-fetch the entire modules list. Consider a better strategy for this
+      dispatch(fetchModuleListAction()).catch((error) => {
+        captureException(error);
+        setModuleListError(error);
+      }),
+    [dispatch],
+  );
 
-type State = {
-  moduleListError?: Error;
-};
+  const fetchTimetableModules = useCallback(
+    function fetchTimetableModulesImpl(timetable: SemTimetableConfig, semester: Semester) {
+      dispatch(fetchTimetableModulesAction([timetable]))
+        .then(() => dispatch(validateTimetable(semester)))
+        .catch((error) => {
+          captureException(error);
+          dispatch(
+            openNotification('Data for some modules failed to load', {
+              action: {
+                text: 'Retry',
+                handler: () => fetchTimetableModulesImpl(timetable, semester),
+              },
+            }),
+          );
+        });
+    },
+    [dispatch],
+  );
 
-export class AppShellComponent extends React.Component<Props, State> {
-  state: State = {};
-
-  componentDidMount() {
-    const { timetables } = this.props;
-
+  const fetchModuleListAndTimetableModules = useCallback(() => {
     // Retrieve module list
-    const moduleList = this.fetchModuleList();
+    const moduleListPromise = fetchModuleList();
 
     // Fetch the module data of the existing modules in the timetable and ensure all
     // lessons are filled
+    const timetables = store.getState().timetables.lessons;
     each(timetables, (timetable, semesterString) => {
       const semester = Number(semesterString);
-      moduleList.then(() => {
+      moduleListPromise.then(() => {
         // Wait for module list to be fetched before trying to fetch timetable modules
         // TODO: There may be a more optimal way to do this
-        this.fetchTimetableModules(timetable, semester);
+        fetchTimetableModules(timetable, semester);
       });
     });
+  }, [fetchModuleList, fetchTimetableModules, store]);
 
-    // Enable Matomo analytics
-    trackPageView(this.props.history);
-  }
+  useEffect(() => fetchModuleListAndTimetableModules(), [fetchModuleListAndTimetableModules]);
 
-  fetchModuleList = () =>
-    // TODO: This always re-fetch the entire modules list. Consider a better strategy for this
-    this.props.fetchModuleList().catch((error) => {
-      captureException(error);
-      this.setState({ moduleListError: error });
-    });
-
-  fetchTimetableModules = (timetable: SemTimetableConfig, semester: Semester) => {
-    this.props
-      .fetchTimetableModules([timetable])
-      .then(() => this.props.validateTimetable(semester))
-      .catch((error) => {
-        captureException(error);
-        this.props.openNotification('Data for some modules failed to load', {
-          action: {
-            text: 'Retry',
-            handler: () => this.fetchTimetableModules(timetable, semester),
-          },
-        });
-      });
+  return {
+    moduleListError,
+    refetchModuleListAndTimetableModules: fetchModuleListAndTimetableModules,
   };
-
-  render() {
-    const isModuleListReady = this.props.moduleList.length;
-    const isDarkMode = this.props.mode === DARK_MODE;
-
-    if (!isModuleListReady && this.state.moduleListError) {
-      return <ApiError dataName="module information" retry={this.fetchModuleList} />;
-    }
-
-    return (
-      <div className="app-container">
-        <Helmet>
-          <body
-            className={classnames(`theme-${this.props.theme}`, {
-              'mode-dark': isDarkMode,
-              'mdc-theme--dark': isDarkMode,
-              'mobile-safari': isIOS,
-            })}
-          />
-        </Helmet>
-
-        <nav className={styles.navbar}>
-          <NavLink className={styles.brand} to="/" title="Home">
-            <Logo className={styles.brandLogo} title="NUSMods" />
-          </NavLink>
-
-          <div className={styles.navRight}>
-            <ErrorBoundary>
-              <GlobalSearchContainer />
-            </ErrorBoundary>
-
-            <div className={styles.weekText}>{weekText}</div>
-          </div>
-        </nav>
-
-        <div className="main-container">
-          <Navtabs />
-
-          <main className="main-content">
-            {isModuleListReady ? (
-              <ErrorBoundary errorPage={() => <ErrorPage showReportDialog />}>
-                {this.props.children}
-              </ErrorBoundary>
-            ) : (
-              <LoadingSpinner />
-            )}
-          </main>
-        </div>
-
-        <ErrorBoundary>
-          <FeedbackModal />
-        </ErrorBoundary>
-
-        <ErrorBoundary>
-          <Notification />
-        </ErrorBoundary>
-
-        <ErrorBoundary>
-          <Footer />
-        </ErrorBoundary>
-
-        <ErrorBoundary>
-          <KeyboardShortcuts />
-        </ErrorBoundary>
-      </div>
-    );
-  }
 }
 
-const mapStateToProps = (state: StoreState) => ({
-  moduleList: state.moduleBank.moduleList,
-  timetables: state.timetables.lessons,
-  theme: state.theme.id,
-  mode: state.settings.mode,
-  activeSemester: state.app.activeSemester,
-});
+const AppShell: FC = ({ children }) => {
+  const {
+    moduleListError,
+    refetchModuleListAndTimetableModules,
+  } = useFetchModuleListAndTimetableModules();
 
-const connectedAppShell = connect(
-  mapStateToProps,
-  {
-    fetchModuleList,
-    fetchTimetableModules,
-    setTimetable,
-    validateTimetable,
-    openNotification,
-  },
-  // TODO: Patch types for Redux for request-middleware
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-)(AppShellComponent as any);
+  // Enable Matomo analytics
+  const history = useHistory();
+  useEffect(() => trackPageView(history), [history]);
 
-// withRouter here is used to ensure re-render when routes change, since
-// connect implements shouldComponentUpdate based purely on props. If it
-// is removed, connect not detect prop changes when route is changed and
-// thus the pages are not re-rendered
-export default withRouter(connectedAppShell);
+  const moduleList = useSelector((state: State) => state.moduleBank.moduleList);
+  const isModuleListReady = moduleList.length;
+
+  const mode = useSelector((state: State) => state.settings.mode);
+  const isDarkMode = mode === DARK_MODE;
+
+  const theme = useSelector((state: State) => state.theme.id);
+
+  if (!isModuleListReady && moduleListError) {
+    return <ApiError dataName="module information" retry={refetchModuleListAndTimetableModules} />;
+  }
+
+  return (
+    <div className="app-container">
+      <Helmet>
+        <body
+          className={classnames(`theme-${theme}`, {
+            'mode-dark': isDarkMode,
+            'mdc-theme--dark': isDarkMode,
+            'mobile-safari': isIOS,
+          })}
+        />
+      </Helmet>
+
+      <nav className={styles.navbar}>
+        <NavLink className={styles.brand} to="/" title="Home">
+          <Logo className={styles.brandLogo} title="NUSMods" />
+        </NavLink>
+
+        <div className={styles.navRight}>
+          <ErrorBoundary>
+            <GlobalSearchContainer />
+          </ErrorBoundary>
+
+          <div className={styles.weekText}>{weekText}</div>
+        </div>
+      </nav>
+
+      <div className="main-container">
+        <Navtabs />
+
+        <main className="main-content">
+          {isModuleListReady ? (
+            <ErrorBoundary errorPage={() => <ErrorPage showReportDialog />}>
+              {children}
+            </ErrorBoundary>
+          ) : (
+            <LoadingSpinner />
+          )}
+        </main>
+      </div>
+
+      <ErrorBoundary>
+        <FeedbackModal />
+      </ErrorBoundary>
+
+      <ErrorBoundary>
+        <Notification />
+      </ErrorBoundary>
+
+      <ErrorBoundary>
+        <Footer />
+      </ErrorBoundary>
+
+      <ErrorBoundary>
+        <KeyboardShortcuts />
+      </ErrorBoundary>
+    </div>
+  );
+};
+
+export default AppShell;

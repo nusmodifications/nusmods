@@ -17,8 +17,6 @@ services:
       - 8081
     environment:
       - NODE_ENV=development
-      - PORT=8080
-      - HOST=0.0.0.0
     user: ${CURRENT_UID:-1000:1000}
     restart: on-failure
   export:

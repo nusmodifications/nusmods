@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 
 import Cloudy from 'img/weather/cloudy.svg';
 import Rain from 'img/weather/rain.svg';

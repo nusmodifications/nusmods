@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+import { memo, useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { State as StoreState } from 'types/state';
 import {
@@ -6,8 +7,6 @@ import {
   RefinementListFilter,
   ResetFilters,
   ResetFiltersDisplayProps,
-  TermsQuery,
-  BoolMustNot,
 } from 'searchkit';
 import { Filter } from 'react-feather';
 
@@ -19,7 +18,7 @@ import FilterContainer from 'views/components/filters/FilterContainer';
 import CheckboxItem from 'views/components/filters/CheckboxItem';
 import DropdownListFilters from 'views/components/filters/DropdownListFilters';
 
-import { getSemesterTimetable } from 'selectors/timetables';
+import { getSemesterTimetableLessons } from 'selectors/timetables';
 import { getSemesterModules } from 'utils/timetables';
 import { getModuleSemesterData } from 'utils/modules';
 
@@ -35,10 +34,14 @@ const EXAM_FILTER_ITEMS: FilterItem[] = [
     label: 'No Exam',
     filter: {
       bool: {
-        // eslint-disable-next-line camelcase
         must_not: {
-          exists: {
-            field: 'semesterData.examDate',
+          nested: {
+            path: 'semesterData',
+            query: {
+              exists: {
+                field: 'semesterData.examDate',
+              },
+            },
           },
         },
       },
@@ -46,38 +49,42 @@ const EXAM_FILTER_ITEMS: FilterItem[] = [
   },
 ];
 
-const ModuleFinderSidebar: React.FC = React.memo(() => {
+const ModuleFinderSidebar: React.FC = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
 
   const selectedModules = useSelector((state: StoreState) => {
     const {
       app: { activeSemester },
       moduleBank: { modules },
-      timetables,
     } = state;
-    const { timetable } = getSemesterTimetable(activeSemester, timetables);
-    const allSemesterModules = getSemesterModules(timetable, modules);
+    const semesterTimetable = getSemesterTimetableLessons(state)(activeSemester);
+    const allSemesterModules = getSemesterModules(semesterTimetable, modules);
     return allSemesterModules.map((module) => getModuleSemesterData(module, activeSemester));
   });
 
-  const generateExamDateClashFilter: () => FilterItem[] = () => {
-    const examDates = selectedModules.map((module) => {
-      return module?.examDate;
-    });
-
-    return [
-      {
-        key: 'no-exam-clash',
-        label: 'No Exam Clash with Currently Selected Modules',
-        filter: BoolMustNot(TermsQuery('semesterData.examDate', examDates)),
+  const examFilters = useMemo(() => {
+    const examDates = selectedModules.map((module) => module?.examDate);
+    const examDateClashFilter = {
+      key: 'no-exam-clash',
+      label: 'No Exam Clash with Currently Selected Modules',
+      filter: {
+        bool: {
+          must_not: {
+            nested: {
+              path: 'semesterData',
+              query: {
+                terms: {
+                  'semesterData.examDate': examDates
+                }
+              }
+            }
+          }
+        }
       },
-    ];
-  };
+    };
 
-  const getExamFilters: () => FilterItem[] = () => {
-    const examDateClashFilter = generateExamDateClashFilter();
-    return EXAM_FILTER_ITEMS.concat(examDateClashFilter);
-  };
+    return [...EXAM_FILTER_ITEMS, examDateClashFilter];
+  }, [selectedModules])
 
   return (
     <SideMenu
@@ -108,6 +115,10 @@ const ModuleFinderSidebar: React.FC = React.memo(() => {
           id="sem"
           title="Offered In"
           field="semesterData.semester"
+          fieldOptions={{
+            type: 'nested',
+            options: { path: 'semesterData' },
+          }}
           operator="OR"
           orderKey="_term"
           orderDirection="asc"
@@ -122,7 +133,7 @@ const ModuleFinderSidebar: React.FC = React.memo(() => {
           itemComponent={CheckboxItem}
         />
 
-        <ChecklistFilter title="Exams" items={getExamFilters()} />
+        <ChecklistFilter title="Exams" items={examFilters} />
 
         <RefinementListFilter
           id="level"
@@ -192,8 +203,6 @@ const ModuleFinderSidebar: React.FC = React.memo(() => {
       </div>
     </SideMenu>
   );
-});
+};
 
-ModuleFinderSidebar.displayName = 'ModuleFinderSidebar';
-
-export default ModuleFinderSidebar;
+export default memo(ModuleFinderSidebar);

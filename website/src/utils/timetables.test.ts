@@ -16,7 +16,7 @@ import _ from 'lodash';
 import { getModuleSemesterData, getModuleTimetable } from 'utils/modules';
 
 import { CS1010S, CS3216, CS4243, PC1222 } from '__mocks__/modules';
-import modulesListJSON from '__mocks__/module-list.json';
+import moduleCodeMapJSON from '__mocks__/module-code-map.json';
 import timetable from '__mocks__/sem-timetable.json';
 import lessonsArray from '__mocks__/lessons-array.json';
 
@@ -54,7 +54,7 @@ import {
 } from './timetables';
 
 // TODO: Fix this later
-const modulesList = modulesListJSON as any;
+const moduleCodeMap = moduleCodeMapJSON as any;
 
 describe(isValidSemester, () => {
   test('semesters 1-4 are valid', () => {
@@ -471,14 +471,14 @@ test('isSameTimetableConfig', () => {
 
 describe(validateTimetableModules, () => {
   test('should leave valid modules untouched', () => {
-    expect(validateTimetableModules({}, modulesList)).toEqual([{}, []]);
+    expect(validateTimetableModules({}, moduleCodeMap)).toEqual([{}, []]);
     expect(
       validateTimetableModules(
         {
           CS1010S: {},
           CS2100: {},
         },
-        modulesList,
+        moduleCodeMap,
       ),
     ).toEqual([{ CS1010S: {}, CS2100: {} }, []]);
   });
@@ -490,7 +490,7 @@ describe(validateTimetableModules, () => {
           DEADBEEF: {},
           CS2100: {},
         },
-        modulesList,
+        moduleCodeMap,
       ),
     ).toEqual([{ CS2100: {} }, ['DEADBEEF']]);
   });

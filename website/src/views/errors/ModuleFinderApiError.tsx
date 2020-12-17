@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import ApiError from './ApiError';
 
 // Should be defined in Searchkit, but it isn't exported.
@@ -8,8 +8,8 @@ type NoHitsErrorDisplayProps = {
   resetSearchFn: () => void;
 };
 
-const ModuleFinderApiError: React.FC<NoHitsErrorDisplayProps> = ({ resetSearchFn }) => {
-  return <ApiError dataName="module information" retry={resetSearchFn} />;
-};
+const ModuleFinderApiError: React.FC<NoHitsErrorDisplayProps> = ({ resetSearchFn }) => (
+  <ApiError dataName="module information" retry={resetSearchFn} />
+);
 
 export default ModuleFinderApiError;
