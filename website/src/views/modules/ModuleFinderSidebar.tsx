@@ -61,7 +61,9 @@ const ModuleFinderSidebar: React.FC = () => {
     } = state;
     const semesterTimetable = getSemesterTimetableLessons(state)(activeSemester);
     const allSemesterModules = getSemesterModules(semesterTimetable, modules);
-    return allSemesterModules.map((module) => getModuleSemesterData(module, activeSemester)).filter(isNotNull);
+    return allSemesterModules
+      .map((module) => getModuleSemesterData(module, activeSemester))
+      .filter(isNotNull);
   });
 
   const examFilters = useMemo(() => {
