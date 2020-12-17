@@ -61,7 +61,7 @@ const ModuleFinderSidebar: React.FC = () => {
     } = state;
     const semesterTimetable = getSemesterTimetableLessons(state)(activeSemester);
     const allSemesterModules = getSemesterModules(semesterTimetable, modules);
-    return allSemesterModules.map((module) => getModuleSemesterData(module, activeSemester));
+    return allSemesterModules.map((module) => getModuleSemesterData(module, activeSemester)).filter(isNotNull);
   });
 
   const examFilters = useMemo(() => {
@@ -76,17 +76,17 @@ const ModuleFinderSidebar: React.FC = () => {
               path: 'semesterData',
               query: {
                 terms: {
-                  'semesterData.examDate': examDates
-                }
-              }
-            }
-          }
-        }
+                  'semesterData.examDate': examDates,
+                },
+              },
+            },
+          },
+        },
       },
     };
 
     return [...EXAM_FILTER_ITEMS, examDateClashFilter];
-  }, [selectedModules])
+  }, [selectedModules]);
 
   return (
     <SideMenu
