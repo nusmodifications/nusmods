@@ -22,6 +22,8 @@ import { getSemesterTimetableLessons } from 'selectors/timetables';
 import { getSemesterModules } from 'utils/timetables';
 import { getModuleSemesterData } from 'utils/modules';
 
+import { isNotNull } from 'utils/null';
+
 import config from 'config';
 import styles from './ModuleFinderSidebar.scss';
 import ChecklistFilter, { FilterItem } from '../components/filters/ChecklistFilter';
