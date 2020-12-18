@@ -63,8 +63,8 @@ const VenueDetailsPaneComponent: FC<Props> = ({
     }
 
     const [venue, availability] = matchedVenues[venueIndex];
-    const [previous] = matchedVenues[venueIndex - 1] || ([] as string[]);
-    const [next] = matchedVenues[venueIndex + 1] || ([] as string[]);
+    const [previous] = matchedVenues[venueIndex - 1] ?? [];
+    const [next] = matchedVenues[venueIndex + 1] ?? [];
     return { venue, availability, next, previous };
   }, [matchedVenues, selectedVenue, venues]);
 
