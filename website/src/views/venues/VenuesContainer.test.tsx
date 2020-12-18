@@ -8,7 +8,6 @@ import type { Venue, VenueInfo } from 'types/venues';
 import { sortVenues } from 'utils/venues';
 import { venuePage } from 'views/routes/paths';
 import { mockDom, mockDomReset, mockWindowMatchMedia } from 'test-utils/mockDom';
-import { modalElementId, modalElementSelector } from 'test-utils/modal';
 import renderWithRouterMatch from 'test-utils/renderWithRouterMatch';
 
 import venueInfo from '__mocks__/venueInformation.json';
@@ -28,17 +27,11 @@ const someError: Partial<AxiosError> = {
 };
 
 function make(selectedVenue: Venue | null = null, search = '') {
-  const rendered = renderWithRouterMatch(
-    <>
-      <VenuesContainerComponent venues={venues} />
-      <div id={modalElementId} />
-    </>,
-    {
-      path: '/venues/:venue?',
-      location: venuePage(selectedVenue) + search,
-    },
-  );
-  ReactModal.setAppElement(modalElementSelector);
+  const rendered = renderWithRouterMatch(<VenuesContainerComponent venues={venues} />, {
+    path: '/venues/:venue?',
+    location: venuePage(selectedVenue) + search,
+  });
+  ReactModal.setAppElement(rendered.view.container as HTMLElement);
   return rendered;
 }
 
