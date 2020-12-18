@@ -207,18 +207,18 @@ describe(VenuesContainerComponent, () => {
       // Set up narrow viewport
       mockWindowMatchMedia({ matches: true });
     });
-
-    test('modal should have a working back button', () => {
+    test('modal should have a back button after navigating to a venue', () => {
       make();
-
       expect(screen.queryByRole('button', { name: 'Back to Venues' })).not.toBeInTheDocument();
-
       userEvent.click(screen.getByRole('link', { name: 'lt2' }));
-      const backButton = screen.getByRole('button', { name: 'Back to Venues' });
-      expect(backButton).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Back to Venues' })).toBeInTheDocument();
+    });
 
-      userEvent.click(backButton);
-      expect(backButton).not.toBeInTheDocument();
+    test('modal back button should navigate back when clicked', () => {
+      const { history } = make('lt2');
+      expect(history.location.pathname).toBe('/venues/lt2'); // Sanity check
+      userEvent.click(screen.getByRole('button', { name: 'Back to Venues' }));
+      expect(history.location.pathname).toBe('/venues');
     });
   });
 });
