@@ -81,6 +81,7 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
         ) as VenueSearchOptions)
       : defaultSearchOptions();
   });
+  const [deferredSearchOptions, setDeferredSearchOptions] = useState(searchOptions);
   const [pristineSearchOptions, setPristineSearchOptions] = useState(() => !isAvailabilityEnabled);
 
   // TODO: Check if this actually does anything useful
@@ -90,15 +91,22 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
 
   const onFindFreeRoomsClicked = useCallback(() => {
     const newIsAvailabilityEnabled = !isAvailabilityEnabled;
+
+    // Only reset search options if the user has never changed it, and if the
+    // search box is being opened. By resetting the option when the box is
+    // opened, the time when the box is opened will be used, instead of the time
+    // when the page is loaded.
+    const shouldResetSearchOptions = pristineSearchOptions && newIsAvailabilityEnabled;
+
     setIsAvailabilityEnabled(newIsAvailabilityEnabled);
+    if (shouldResetSearchOptions) {
+      setSearchOptions(defaultSearchOptions());
+    }
+
     startTransition(() => {
       setDeferredIsAvailabilityEnabled(newIsAvailabilityEnabled);
-      if (pristineSearchOptions && newIsAvailabilityEnabled) {
-        // Only reset search options if the user has never changed it, and if the
-        // search box is being opened. By resetting the option when the box is opened,
-        // the time when the box is opened will be used, instead of the time when the
-        // page is loaded
-        setSearchOptions(defaultSearchOptions());
+      if (shouldResetSearchOptions) {
+        setDeferredSearchOptions(defaultSearchOptions());
       }
     });
   }, [isAvailabilityEnabled, pristineSearchOptions]);
@@ -106,8 +114,10 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
   const onAvailabilityUpdate = useCallback(
     (newSearchOptions: VenueSearchOptions) => {
       if (!isEqual(newSearchOptions, searchOptions)) {
-        setSearchOptions(clampClassDuration(newSearchOptions));
+        const clampedSearchOptions = clampClassDuration(newSearchOptions);
+        setSearchOptions(clampedSearchOptions);
         setPristineSearchOptions(false); // user changed searchOptions
+        startTransition(() => setDeferredSearchOptions(clampedSearchOptions));
       }
     },
     [searchOptions],
@@ -117,15 +127,17 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
     if (!deferredIsAvailabilityEnabled) return undefined;
 
     return {
-      day: searchOptions.day,
-      startTime: convertIndexToTime(searchOptions.time * 2),
-      endTime: convertIndexToTime(2 * (searchOptions.time + searchOptions.duration)),
+      day: deferredSearchOptions.day,
+      startTime: convertIndexToTime(deferredSearchOptions.time * 2),
+      endTime: convertIndexToTime(
+        2 * (deferredSearchOptions.time + deferredSearchOptions.duration),
+      ),
     };
   }, [
     deferredIsAvailabilityEnabled,
-    searchOptions.day,
-    searchOptions.duration,
-    searchOptions.time,
+    deferredSearchOptions.day,
+    deferredSearchOptions.duration,
+    deferredSearchOptions.time,
   ]);
 
   const selectedVenue = useMemo<Venue | undefined>(
@@ -137,7 +149,7 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
   useEffect(() => {
     let query: Partial<Params> = {};
     if (deferredSearchQuery) query.q = deferredSearchQuery;
-    if (deferredIsAvailabilityEnabled) query = { ...query, ...searchOptions };
+    if (deferredIsAvailabilityEnabled) query = { ...query, ...deferredSearchOptions };
     const search = qs.stringify(query);
 
     const pathname = venuePage(selectedVenue);
@@ -156,16 +168,18 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
   }, [
     debouncedHistory,
     deferredIsAvailabilityEnabled,
+    deferredSearchOptions,
     deferredSearchQuery,
     history,
-    searchOptions,
     selectedVenue,
   ]);
 
   const matchedVenues = useMemo(() => {
     const matched = searchVenue(venues, deferredSearchQuery);
-    return deferredIsAvailabilityEnabled ? filterAvailability(matched, searchOptions) : matched;
-  }, [deferredIsAvailabilityEnabled, searchOptions, deferredSearchQuery, venues]);
+    return deferredIsAvailabilityEnabled
+      ? filterAvailability(matched, deferredSearchOptions)
+      : matched;
+  }, [deferredIsAvailabilityEnabled, deferredSearchOptions, deferredSearchQuery, venues]);
   const matchedVenueNames = useMemo(() => matchedVenues.map(([venue]) => venue), [matchedVenues]);
 
   function renderSearch() {
