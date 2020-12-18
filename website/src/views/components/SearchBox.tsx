@@ -118,7 +118,13 @@ const SearchBox: FC<Props> = ({
           <Search className={classnames(styles.leftAccessory, styles.searchIcon)} />
         )}
         {value && (
-          <X className={styles.removeInput} onClick={clearInput} pointerEvents="bounding-box" />
+          <X
+            className={styles.removeInput}
+            onClick={clearInput}
+            pointerEvents="bounding-box"
+            role="button"
+            aria-label="Clear search"
+          />
         )}
         <input
           id="search-box"

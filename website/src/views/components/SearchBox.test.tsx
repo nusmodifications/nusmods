@@ -136,7 +136,7 @@ describe(SearchBox, () => {
         onSearch={mockOnSearch}
       />,
     );
-    const clearButton = screen.getByTestId('react-feather X icon');
+    const clearButton = screen.getByRole('button', { name: 'Clear search' });
     expect(clearButton).toBeInTheDocument();
 
     userEvent.click(clearButton);
