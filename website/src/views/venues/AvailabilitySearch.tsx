@@ -30,7 +30,11 @@ export function defaultSearchOptions(
 }
 
 const AvailabilitySearch: FC<Props> = ({ className, searchOptions, onUpdate }) => {
-  const [handleDayChange, handleTimeChange, handleDurationChange] = useMemo(() => {
+  const [
+    handleDayChange,
+    handleTimeChange,
+    handleDurationChange,
+  ]: ChangeEventHandler<HTMLSelectElement>[] = useMemo(() => {
     function onUpdateInner(
       event: SyntheticEvent<HTMLSelectElement>,
       key: keyof VenueSearchOptions,
@@ -46,7 +50,7 @@ const AvailabilitySearch: FC<Props> = ({ className, searchOptions, onUpdate }) =
       (event) => onUpdateInner(event, 'day'),
       (event) => onUpdateInner(event, 'time'),
       (event) => onUpdateInner(event, 'duration'),
-    ] as ChangeEventHandler<HTMLSelectElement>[];
+    ];
   }, [onUpdate, searchOptions]);
 
   return (
