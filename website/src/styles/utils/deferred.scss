@@ -1,7 +1,7 @@
 // Source: https://reactjs.org/docs/concurrent-mode-patterns.html#delaying-a-pending-indicator
 .deferred {
   visibility: hidden;
-  animation: 0s linear 0.3s forwards makeVisible;
+  animation: 0s linear 0.2s forwards makeVisible;
 
   @keyframes makeVisible {
     to {
