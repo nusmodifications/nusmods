@@ -60,6 +60,8 @@ const SearchBox: FC<Props> = ({
         throttle,
         { leading: false },
       ),
+    // FIXME: If these props change, a new debouncedSearch will be created,
+    // which may cause weird timing bugs.
     [onSearch, throttle],
   );
 
