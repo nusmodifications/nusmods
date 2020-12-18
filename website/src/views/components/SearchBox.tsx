@@ -84,12 +84,10 @@ const SearchBox: FC<Props> = ({
 
   const handleInput: ChangeEventHandler<HTMLInputElement> = useCallback(
     (evt) => {
-      if (evt.target instanceof HTMLInputElement) {
-        const searchTerm = evt.target.value;
-        onChange(searchTerm);
-        isDirty.current = true;
-        debouncedSearch();
-      }
+      const searchTerm = evt.target.value;
+      onChange(searchTerm);
+      isDirty.current = true;
+      debouncedSearch();
     },
     [debouncedSearch, onChange],
   );
