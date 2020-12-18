@@ -1,6 +1,6 @@
 import {
   FC,
-  unstable_useTransition as useTransition,
+  unstable_useDeferredValue as useDeferredValue,
   useCallback,
   useEffect,
   useMemo,
@@ -54,23 +54,15 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
   const location = useLocation();
   const matchParams = useParams<Params>();
 
-  const [startTransition, isPending] = useTransition();
-
   const [searchQuery, setSearchQuery] = useState<string>(() => qs.parse(location.search).q || '');
-  const [deferredSearchQuery, setDeferredSearchQuery] = useState(searchQuery);
-
   const handleSearchChange = useCallback((newSearchQuery: string) => {
     setSearchQuery(newSearchQuery);
-    startTransition(() => setDeferredSearchQuery(newSearchQuery));
   }, []);
 
   const [isAvailabilityEnabled, setIsAvailabilityEnabled] = useState(() => {
     const params = qs.parse(location.search);
     return !!(params.time && params.day && params.duration);
   });
-  const [deferredIsAvailabilityEnabled, setDeferredIsAvailabilityEnabled] = useState(
-    isAvailabilityEnabled,
-  );
 
   const [searchOptions, setSearchOptions] = useState(() => {
     const params = qs.parse(location.search);
@@ -81,8 +73,15 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
         ) as VenueSearchOptions)
       : defaultSearchOptions();
   });
-  const [deferredSearchOptions, setDeferredSearchOptions] = useState(searchOptions);
   const [pristineSearchOptions, setPristineSearchOptions] = useState(() => !isAvailabilityEnabled);
+
+  const deferredSearchQuery = useDeferredValue(searchQuery);
+  const deferredIsAvailabilityEnabled = useDeferredValue(isAvailabilityEnabled);
+  const deferredSearchOptions = useDeferredValue(searchOptions);
+  const isPending =
+    searchQuery !== deferredSearchQuery ||
+    isAvailabilityEnabled !== deferredIsAvailabilityEnabled ||
+    searchOptions !== deferredSearchOptions;
 
   // TODO: Check if this actually does anything useful
   useEffect(() => {
@@ -90,34 +89,21 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
   }, []);
 
   const onFindFreeRoomsClicked = useCallback(() => {
-    const newIsAvailabilityEnabled = !isAvailabilityEnabled;
-
-    // Only reset search options if the user has never changed it, and if the
-    // search box is being opened. By resetting the option when the box is
-    // opened, the time when the box is opened will be used, instead of the time
-    // when the page is loaded.
-    const shouldResetSearchOptions = pristineSearchOptions && newIsAvailabilityEnabled;
-
-    setIsAvailabilityEnabled(newIsAvailabilityEnabled);
-    if (shouldResetSearchOptions) {
+    setIsAvailabilityEnabled(!isAvailabilityEnabled);
+    if (pristineSearchOptions && !isAvailabilityEnabled) {
+      // Only reset search options if the user has never changed it, and if the
+      // search box is being opened. By resetting the option when the box is
+      // opened, the time when the box is opened will be used, instead of the
+      // time when the page is loaded.
       setSearchOptions(defaultSearchOptions());
     }
-
-    startTransition(() => {
-      setDeferredIsAvailabilityEnabled(newIsAvailabilityEnabled);
-      if (shouldResetSearchOptions) {
-        setDeferredSearchOptions(defaultSearchOptions());
-      }
-    });
   }, [isAvailabilityEnabled, pristineSearchOptions]);
 
   const onAvailabilityUpdate = useCallback(
     (newSearchOptions: VenueSearchOptions) => {
       if (!isEqual(newSearchOptions, searchOptions)) {
-        const clampedSearchOptions = clampClassDuration(newSearchOptions);
-        setSearchOptions(clampedSearchOptions);
+        setSearchOptions(clampClassDuration(newSearchOptions));
         setPristineSearchOptions(false); // user changed searchOptions
-        startTransition(() => setDeferredSearchOptions(clampedSearchOptions));
       }
     },
     [searchOptions],
@@ -219,10 +205,7 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
     );
   }
 
-  const disableAvailability = useCallback(() => {
-    setIsAvailabilityEnabled(false);
-    startTransition(() => setDeferredIsAvailabilityEnabled(false));
-  }, []);
+  const disableAvailability = useCallback(() => setIsAvailabilityEnabled(false), []);
   function renderNoResult() {
     const unfilteredCount = size(matchedVenues);
     return (
