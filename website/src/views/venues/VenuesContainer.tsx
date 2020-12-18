@@ -1,6 +1,6 @@
 import {
   FC,
-  unstable_useDeferredValue as useDeferredValue,
+  unstable_useTransition as useTransition,
   useCallback,
   useEffect,
   useMemo,
@@ -21,6 +21,7 @@ import type { Subtract } from 'types/utils';
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import ApiError from 'views/errors/ApiError';
 import Warning from 'views/errors/Warning';
+import LoadingOverlay from 'views/components/LoadingOverlay';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import SearchBox from 'views/components/SearchBox';
 import { Clock } from 'react-feather';
@@ -53,19 +54,23 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
   const location = useLocation();
   const matchParams = useParams<Params>();
 
-  const [
-    /** Value of the controlled search box; updated real-time */
-    searchQuery,
-    setSearchQuery,
-  ] = useState<string>(() => qs.parse(location.search).q || '');
-  /** Actual string to search with; deferred update */
-  const deferredSearchQuery = useDeferredValue(searchQuery);
+  const [startTransition, isPending] = useTransition();
+
+  const [searchQuery, setSearchQuery] = useState<string>(() => qs.parse(location.search).q || '');
+  const [deferredSearchQuery, setDeferredSearchQuery] = useState(searchQuery);
+
+  const handleSearchChange = useCallback((newSearchQuery: string) => {
+    setSearchQuery(newSearchQuery);
+    startTransition(() => setDeferredSearchQuery(newSearchQuery));
+  }, []);
 
   const [isAvailabilityEnabled, setIsAvailabilityEnabled] = useState(() => {
     const params = qs.parse(location.search);
     return !!(params.time && params.day && params.duration);
   });
-  const deferredIsAvailabilityEnabled = useDeferredValue(isAvailabilityEnabled);
+  const [deferredIsAvailabilityEnabled, setDeferredIsAvailabilityEnabled] = useState(
+    isAvailabilityEnabled,
+  );
 
   const [searchOptions, setSearchOptions] = useState(() => {
     const params = qs.parse(location.search);
@@ -84,14 +89,18 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
   }, []);
 
   const onFindFreeRoomsClicked = useCallback(() => {
-    setIsAvailabilityEnabled(!isAvailabilityEnabled);
-    if (pristineSearchOptions && !isAvailabilityEnabled) {
-      // Only reset search options if the user has never changed it, and if the
-      // search box is being opened. By resetting the option when the box is opened,
-      // the time when the box is opened will be used, instead of the time when the
-      // page is loaded
-      setSearchOptions(defaultSearchOptions());
-    }
+    const newIsAvailabilityEnabled = !isAvailabilityEnabled;
+    setIsAvailabilityEnabled(newIsAvailabilityEnabled);
+    startTransition(() => {
+      setDeferredIsAvailabilityEnabled(newIsAvailabilityEnabled);
+      if (pristineSearchOptions && newIsAvailabilityEnabled) {
+        // Only reset search options if the user has never changed it, and if the
+        // search box is being opened. By resetting the option when the box is opened,
+        // the time when the box is opened will be used, instead of the time when the
+        // page is loaded
+        setSearchOptions(defaultSearchOptions());
+      }
+    });
   }, [isAvailabilityEnabled, pristineSearchOptions]);
 
   const onAvailabilityUpdate = useCallback(
@@ -169,7 +178,7 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
           throttle={0}
           value={searchQuery}
           placeholder="e.g. LT27"
-          onChange={setSearchQuery}
+          onChange={handleSearchChange}
         />
 
         <button
@@ -180,12 +189,7 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
           onClick={onFindFreeRoomsClicked}
           type="button"
         >
-          {isAvailabilityEnabled !== deferredIsAvailabilityEnabled ? (
-            <LoadingSpinner className={styles.availabilitySpinner} white={isAvailabilityEnabled} />
-          ) : (
-            <Clock className="svg" />
-          )}{' '}
-          Find free rooms
+          <Clock className="svg" /> Find free rooms
         </button>
 
         {isAvailabilityEnabled && (
@@ -201,7 +205,10 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
     );
   }
 
-  const disableAvailability = useCallback(() => setIsAvailabilityEnabled(false), []);
+  const disableAvailability = useCallback(() => {
+    setIsAvailabilityEnabled(false);
+    startTransition(() => setDeferredIsAvailabilityEnabled(false));
+  }, []);
   function renderNoResult() {
     const unfilteredCount = size(matchedVenues);
     return (
@@ -229,11 +236,15 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
       <div className={styles.venuesList}>
         {renderSearch()}
 
-        {size(matchedVenues) === 0 ? (
-          renderNoResult()
-        ) : (
+        <div className="position-relative">
+          {isPending && (
+            <LoadingOverlay deferred>
+              <LoadingSpinner />
+            </LoadingOverlay>
+          )}
+          {!isPending && size(matchedVenues) === 0 && renderNoResult()}
           <VenueList venues={matchedVenueNames} selectedVenue={selectedVenue} />
-        )}
+        </div>
       </div>
 
       <VenueDetailsPane

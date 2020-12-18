@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type { FC } from 'react';
 import {
   Hits,
   HitsStats,
@@ -12,9 +12,10 @@ import {
 } from 'searchkit';
 import classnames from 'classnames';
 
-import { ElasticSearchResult } from 'types/vendor/elastic-search';
-import { ModuleInformation } from 'types/modules';
+import type { ElasticSearchResult } from 'types/vendor/elastic-search';
+import type { ModuleInformation } from 'types/modules';
 
+import LoadingOverlay from 'views/components/LoadingOverlay';
 import ModuleFinderSidebar from 'views/modules/ModuleFinderSidebar';
 import ModuleSearchBox from 'views/modules/ModuleSearchBox';
 import ModuleFinderNoHits from 'views/errors/ModuleFinderNoHits';
@@ -38,7 +39,7 @@ const searchkit = new SearchkitManager(esHostUrl, {
 
 const pageHead = <Title>Modules</Title>;
 
-const ModuleInformationListComponent: React.FC<HitsListProps> = ({ hits }) => (
+const ModuleInformationListComponent: FC<HitsListProps> = ({ hits }) => (
   <ul className={styles.modulesList}>
     {hits.map((hit) => {
       const result = hit as ElasticSearchResult<ModuleInformation>;
@@ -55,7 +56,7 @@ const ModuleInformationListComponent: React.FC<HitsListProps> = ({ hits }) => (
   </ul>
 );
 
-const ModuleFinderContainer: React.FC = () => (
+const ModuleFinderContainer: FC = () => (
   <div className={classnames(styles.modulesPageContainer, 'page-container')}>
     {pageHead}
     <SearchkitProvider searchkit={searchkit}>
@@ -73,7 +74,7 @@ const ModuleFinderContainer: React.FC = () => (
             />
 
             <LoadingComponent>
-              <div className={styles.loadingOverlay} />
+              <LoadingOverlay />
             </LoadingComponent>
 
             <InitialLoader component={LoadingComponent} />
