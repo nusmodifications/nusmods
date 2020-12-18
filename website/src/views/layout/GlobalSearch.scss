@@ -112,6 +112,7 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
 
 .selectHeader {
   composes: item;
+  flex-direction: row-reverse;
   justify-content: space-between;
   border-bottom: 1px solid var(--gray-lighter);
   font-size: 0.95rem;
@@ -125,13 +126,6 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
       transform: translateX(0.2rem);
     }
   }
-}
-
-.headerRow {
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: space-between;
-  width: 100%;
 }
 
 .headerName {

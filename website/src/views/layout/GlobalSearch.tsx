@@ -224,12 +224,10 @@ class GlobalSearch extends Component<Props, State> {
                     [styles.selected]: highlightedIndex === 0,
                   })}
                 >
-                  <div className={styles.headerRow}>
-                    <span className="btn-svg">
-                      View All <ChevronRight className={styles.svg} />
-                    </span>
-                    <span className={styles.headerName}>Modules</span>
-                  </div>
+                  <span className="btn-svg">
+                    View All <ChevronRight className={styles.svg} />
+                  </span>
+                  <span className={styles.headerName}>Modules</span>
                 </div>
 
                 {modules.map((module, index) => (
@@ -260,12 +258,10 @@ class GlobalSearch extends Component<Props, State> {
                     [styles.selected]: highlightedIndex === venueHeaderIndex,
                   })}
                 >
-                  <div className={styles.headerRow}>
-                    <span className="btn-svg">
-                      View All <ChevronRight className={styles.svg} />
-                    </span>
-                    <span className={styles.headerName}>Venues</span>
-                  </div>
+                  <span className="btn-svg">
+                    View All <ChevronRight className={styles.svg} />
+                  </span>
+                  <span className={styles.headerName}>Venues</span>
                 </div>
 
                 {venues.map((venue, index) => (
