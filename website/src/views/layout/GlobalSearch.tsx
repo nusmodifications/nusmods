@@ -224,7 +224,7 @@ class GlobalSearch extends Component<Props, State> {
                     [styles.selected]: highlightedIndex === 0,
                   })}
                 >
-                  <div className={classnames(styles.headerRow)}>
+                  <div className={styles.headerRow}>
                     <span className="btn-svg">
                       View All <ChevronRight className={styles.svg} />
                     </span>
@@ -260,7 +260,7 @@ class GlobalSearch extends Component<Props, State> {
                     [styles.selected]: highlightedIndex === venueHeaderIndex,
                   })}
                 >
-                  <div className={classnames(styles.headerRow)}>
+                  <div className={styles.headerRow}>
                     <span className="btn-svg">
                       View All <ChevronRight className={styles.svg} />
                     </span>
