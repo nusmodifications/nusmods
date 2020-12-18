@@ -50,15 +50,18 @@ const SearchBox: FC<Props> = ({
     element.blur();
   }, []);
 
-  const debouncedSearch = useMemo(() => {
-    function search() {
-      isDirty.current = false;
-      onSearch();
-    }
-    return debounce(search, throttle, {
-      leading: false,
-    });
-  }, [onSearch, throttle]);
+  const debouncedSearch = useMemo(
+    () =>
+      debounce(
+        () => {
+          isDirty.current = false;
+          onSearch();
+        },
+        throttle,
+        { leading: false },
+      ),
+    [onSearch, throttle],
+  );
 
   const handleFocus = useCallback(() => setIsFocused(true), []);
 
