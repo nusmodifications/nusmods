@@ -1,4 +1,4 @@
-import { memo, FC, useEffect, useCallback } from 'react';
+import { FC, memo, useEffect } from 'react';
 import classnames from 'classnames';
 
 import { Menu, X as Close } from 'react-feather';
