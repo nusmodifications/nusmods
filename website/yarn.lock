@@ -9978,10 +9978,10 @@ react-kawaii@0.17.0:
   dependencies:
     prop-types "^15.6.2"
 
-react-leaflet@3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/react-leaflet/-/react-leaflet-3.0.4.tgz#c855b8e346c400eb72322a1ce0b4d80f800b85ed"
-  integrity sha512-jwke/rxJt3zNIjqD9PnSPqQHQZAhrDph99mYIylz9/OWbYqdw0lBko5ExZUH2k68OldwIyDxQ6D61TuaZi7oGg==
+react-leaflet@3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/react-leaflet/-/react-leaflet-3.0.5.tgz#6b246867e4b08e3bc5960eebee91376785ce578b"
+  integrity sha512-0hJwwRMo5ChY+0nr1yO/UDCT4alIqMgJ7S/HoMBkL65Sr1yJ8eX5lAXk3EkdBUOwxQlMYCduU87pczYmudnlbQ==
   dependencies:
     "@react-leaflet/core" "^1.0.2"
 
