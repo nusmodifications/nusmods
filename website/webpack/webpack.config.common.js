@@ -48,6 +48,10 @@ const commonConfig = {
           // operator, which isn't supported on Mobile Safari <= 11.2.
           // TODO: Remove after we drop support for iOS <= 11.2
           /node_modules\/react-leaflet/,
+          // query-string has had a history of dropping support for browsers, so
+          // we cannot assume that it supports our browser support matrix.
+          // See: https://github.com/nusmodifications/nusmods/pull/1053
+          /node_modules\/query-string/,
         ],
         use: ['babel-loader'],
       },
