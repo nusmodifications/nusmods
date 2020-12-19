@@ -42,7 +42,13 @@ const commonConfig = {
     rules: [
       {
         test: /\.[j|t]sx?$/,
-        include: parts.PATHS.src,
+        include: [
+          parts.PATHS.src,
+          // React Leaflet's MapContainer destructures an object using the ...
+          // operator, which isn't supported on Mobile Safari <= 11.2.
+          // TODO: Remove after we drop support for iOS <= 11.2
+          /node_modules\/react-leaflet/,
+        ],
         use: ['babel-loader'],
       },
     ],
