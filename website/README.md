@@ -34,11 +34,7 @@ To run the development build, simply run:
 $ yarn start
 ```
 
-This will start Webpack dev server, which will automatically rebuild and reload any code and components that you have changed. If your editor or IDE has built in support for ESLint/StyleLint, you can disable them to speed up the build process.
-
-```sh
-$ DISABLE_ESLINT=1 DISABLE_STYLELINT=1 yarn start
-```
+This will start Webpack dev server, which will automatically rebuild and reload any code and components that you have changed.
 
 We recommend the following development tools to help speed up your work
 

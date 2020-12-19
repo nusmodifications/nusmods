@@ -1,8 +1,8 @@
+const childProcess = require('child_process');
 const path = require('path');
 
-const StyleLintPlugin = require('stylelint-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const childProcess = require('child_process');
+
 const { format } = require('date-fns');
 
 const ROOT = path.join(__dirname, '..');
@@ -20,45 +20,6 @@ const PATHS = {
   buildTimetable: path.join(ROOT, 'dist-timetable'),
   fixtures: path.join(ROOT, SRC, '__mocks__'),
 };
-
-/**
- * Lints javascript to make sure code is up to standard.
- *
- * @see https://survivejs.com/webpack/developing/linting/
- */
-exports.lintJavaScript = ({ include, exclude, options }) =>
-  process.env.DISABLE_ESLINT
-    ? {}
-    : {
-        module: {
-          rules: [
-            {
-              test: /\.[j|t]sx?$/,
-              include,
-              exclude,
-              enforce: 'pre',
-
-              use: [{ loader: 'eslint-loader', options }],
-            },
-          ],
-        },
-      };
-
-/**
- * Uses StyleLint to lint CSS
- * @returns {*}
- */
-exports.lintCSS = (options) =>
-  process.env.DISABLE_STYLELINT
-    ? {}
-    : {
-        plugins: [
-          new StyleLintPlugin({
-            context: PATHS.src,
-            ...options,
-          }),
-        ],
-      };
 
 const getCSSConfig = ({ options } = {}) => [
   {

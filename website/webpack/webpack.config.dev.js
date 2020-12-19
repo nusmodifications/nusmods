@@ -84,10 +84,6 @@ const developmentConfig = merge([
       new ReactRefreshWebpackPlugin(),
     ],
   },
-  parts.lintJavaScript({
-    include: parts.PATHS.src,
-  }),
-  parts.lintCSS(),
   parts.loadImages({
     include: parts.PATHS.images,
   }),
