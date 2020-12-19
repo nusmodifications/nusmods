@@ -20,7 +20,7 @@ const config = {
 
         browser: 'Firefox',
         // Latest ESR
-        browserVersion: '60',
+        browserVersion: '78',
       },
     },
 
