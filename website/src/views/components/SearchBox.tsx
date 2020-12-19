@@ -98,6 +98,25 @@ const SearchBox: FC<Props> = ({
     onChange('');
     isDirty.current = true;
     debouncedSearch();
+    // Don't flush debouncedSearch here.
+    //
+    // Reason: Consider a component (e.g. SearchkitSearchBox) that:
+    // 1. Stores the value it received from `onChange` in its component state
+    //    using `setState`, and
+    // 2. Uses `onSearch` to trigger a search using that state.
+    //
+    // If we flush here,
+    // 1. `onChange` will call `setState` with the new search query.
+    // 2. `onSearch` will be called, triggering a search with the component's
+    //    search query state variable. Since React hasn't rendered, this state is
+    //    the *previous* search query, and the component will have triggered a
+    //    search with the previous query.
+    // 3. React renders and updates the component's state with the new query.
+    //    Of course, since the component doesn't know this happened (it requires a
+    //    call to `onSearch`), it won't trigger a search with the new search query.
+    //
+    // We'll thus want to allow the standard deferring behavior to occur, or
+    // perhaps shorten the debouncing to after the next render.
   }, [debouncedSearch, onChange]);
 
   return (
