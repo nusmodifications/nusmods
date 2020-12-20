@@ -19,7 +19,9 @@ export type Props = {
   isLoading?: boolean;
   value: string | null;
   placeholder?: string;
+  /** Called when the search box value changes */
   onChange: (value: string) => void;
+  /** Called when a search should be triggered, potentially debounced by `throttle` milliseconds. */
   onSearch?: () => void;
   onBlur?: () => void;
 };
