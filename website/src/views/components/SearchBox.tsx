@@ -15,7 +15,7 @@ import styles from './SearchBox.scss';
 
 export type Props = {
   className?: string;
-  throttle: number;
+  throttle?: number;
   isLoading?: boolean;
   value: string | null;
   placeholder?: string;

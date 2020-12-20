@@ -172,7 +172,6 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
 
         <SearchBox
           className={styles.searchBox}
-          throttle={0}
           value={searchQuery}
           placeholder="e.g. LT27"
           onChange={setSearchQuery}
