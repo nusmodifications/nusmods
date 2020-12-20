@@ -4569,10 +4569,10 @@ supports-hyperlinks@^2.0.0:
     has-flag "^4.0.0"
     supports-color "^7.0.0"
 
-swagger-ui-dist@3.21.0:
-  version "3.21.0"
-  resolved "https://registry.yarnpkg.com/swagger-ui-dist/-/swagger-ui-dist-3.21.0.tgz#172bdd39d7d2efd4d4998411702ebe562a934631"
-  integrity sha512-bAhzzpujhSIXdzpSI9b9RpvahC556lxcOIXxt1OOtTIasYodpy94gDlanQl4j7xavmi4nhaGiZ9iBcoFO+wHlA==
+swagger-ui-dist@3.38.0:
+  version "3.38.0"
+  resolved "https://registry.yarnpkg.com/swagger-ui-dist/-/swagger-ui-dist-3.38.0.tgz#fd7c6c04f2eb2dbfedd94722aa3148f3bf354cb5"
+  integrity sha512-sselV8VY6f1BBauY9Sdmwz0jVaWTnGuHQWei7BaTpiUrLcoEUdmmK5bKefLXiwq+dx//es2S8mOvUS+tcXDsKg==
 
 symbol-tree@^3.2.4:
   version "3.2.4"
