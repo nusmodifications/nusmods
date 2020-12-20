@@ -271,13 +271,13 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@elastic/elasticsearch@7.9.1":
-  version "7.9.1"
-  resolved "https://registry.yarnpkg.com/@elastic/elasticsearch/-/elasticsearch-7.9.1.tgz#40f1c38e8f70d783851c13be78a7cb346891c15e"
-  integrity sha512-NfPADbm9tRK/4ohpm9+aBtJ8WPKQqQaReyBKT225pi2oKQO1IzRlfM+OPplAvbhoH1efrSj1NKk27L+4BCrzXQ==
+"@elastic/elasticsearch@7.10.0":
+  version "7.10.0"
+  resolved "https://registry.yarnpkg.com/@elastic/elasticsearch/-/elasticsearch-7.10.0.tgz#da105a9c1f14146f9f2cab4e7026cb7949121b8d"
+  integrity sha512-vXtMAQf5/DwqeryQgRriMtnFppJNLc/R7/R0D8E+wG5/kGM5i7mg+Hi7TM4NZEuXgtzZ2a/Nf7aR0vLyrxOK/w==
   dependencies:
     debug "^4.1.1"
-    decompress-response "^4.2.0"
+    hpagent "^0.1.1"
     ms "^2.1.1"
     pump "^3.0.0"
     secure-json-parse "^2.1.0"
@@ -1440,13 +1440,6 @@ decode-uri-component@^0.2.0:
   resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
   integrity sha1-6zkTMzRYd1y4TNGh+uBiEGu4dUU=
 
-decompress-response@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/decompress-response/-/decompress-response-4.2.0.tgz#805ca9d1d3cdf17a03951475ad6cdc93115cec3f"
-  integrity sha512-MHebOkORCgLW1ramLri5vzfR4r7HgXXrVkVr/eaPVRCtYWFUp9hNAuqsBxhpABbpqd7zY2IrjxXfTuaVrW0Z2A==
-  dependencies:
-    mimic-response "^2.0.0"
-
 deep-diff@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/deep-diff/-/deep-diff-1.0.2.tgz#afd3d1f749115be965e89c63edc7abb1506b9c26"
@@ -2231,6 +2224,11 @@ hosted-git-info@^2.1.4:
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.7.1.tgz#97f236977bd6e125408930ff6de3eec6281ec047"
   integrity sha512-7T/BxH19zbcCTa8XkMlbK5lTo1WtgkFi3GvdWEyNuc4Vex7/9Dqbnpsf4JMydcfj9HCg4zUWFTL3Za6lapg5/w==
+
+hpagent@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/hpagent/-/hpagent-0.1.1.tgz#66f67f16e5c7a8b59a068e40c2658c2c749ad5e2"
+  integrity sha512-IxJWQiY0vmEjetHdoE9HZjD4Cx+mYTr25tR7JCxXaiI3QxW0YqYyM11KyZbHufoa/piWhMb2+D3FGpMgmA2cFQ==
 
 html-encoding-sniffer@^2.0.1:
   version "2.0.1"
@@ -3316,11 +3314,6 @@ mimic-fn@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-2.1.0.tgz#7ed2c2ccccaf84d3ffcb7a69b57711fc2083401b"
   integrity sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==
-
-mimic-response@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/mimic-response/-/mimic-response-2.0.0.tgz#996a51c60adf12cb8a87d7fb8ef24c2f3d5ebb46"
-  integrity sha512-8ilDoEapqA4uQ3TwS0jakGONKXVJqpy+RpM+3b7pLdOjghCrEiGp9SRkFbUHAmZW9vdnrENWHjaweIoTIJExSQ==
 
 "minimatch@2 || 3", minimatch@^3.0.4:
   version "3.0.4"
