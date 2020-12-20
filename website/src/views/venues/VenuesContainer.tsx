@@ -55,9 +55,6 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
   const matchParams = useParams<Params>();
 
   const [searchQuery, setSearchQuery] = useState<string>(() => qs.parse(location.search).q || '');
-  const handleSearchChange = useCallback((newSearchQuery: string) => {
-    setSearchQuery(newSearchQuery);
-  }, []);
 
   const [isAvailabilityEnabled, setIsAvailabilityEnabled] = useState(() => {
     const params = qs.parse(location.search);
@@ -178,7 +175,7 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
           throttle={0}
           value={searchQuery}
           placeholder="e.g. LT27"
-          onChange={handleSearchChange}
+          onChange={setSearchQuery}
         />
 
         <button
