@@ -62,7 +62,7 @@
     "promise-queue": "2.2.5",
     "ramda": "0.27.1",
     "romanify": "1.0.0",
-    "yargs": "13.2.1"
+    "yargs": "13.3.2"
   },
   "engines": {
     "node": ">=10"
