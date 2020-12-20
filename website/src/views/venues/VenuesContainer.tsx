@@ -1,4 +1,11 @@
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  FC,
+  unstable_useDeferredValue as useDeferredValue,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import Loadable, { LoadingComponentProps } from 'react-loadable';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -6,7 +13,7 @@ import { Location, locationsAreEqual } from 'history';
 import classnames from 'classnames';
 import axios from 'axios';
 import qs from 'query-string';
-import { isEqual, mapValues, noop, pick, size } from 'lodash';
+import { isEqual, mapValues, pick, size } from 'lodash';
 
 import type { TimePeriod, Venue, VenueDetailList, VenueSearchOptions } from 'types/venues';
 import type { Subtract } from 'types/utils';
@@ -14,6 +21,7 @@ import type { Subtract } from 'types/utils';
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import ApiError from 'views/errors/ApiError';
 import Warning from 'views/errors/Warning';
+import LoadingOverlay from 'views/components/LoadingOverlay';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import SearchBox from 'views/components/SearchBox';
 import { Clock } from 'react-feather';
@@ -46,18 +54,13 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
   const location = useLocation();
   const matchParams = useParams<Params>();
 
-  // Search state
-  const [
-    /** Value of the controlled search box; updated real-time */
-    searchQuery,
-    setSearchQuery,
-  ] = useState<string>(() => qs.parse(location.search).q || '');
-  /** Actual string to search with; deferred update */
-  const deferredSearchQuery = searchQuery; // TODO: Redundant now. Use React.useDeferredValue after we adopt concurrent mode
+  const [searchQuery, setSearchQuery] = useState<string>(() => qs.parse(location.search).q || '');
+
   const [isAvailabilityEnabled, setIsAvailabilityEnabled] = useState(() => {
     const params = qs.parse(location.search);
     return !!(params.time && params.day && params.duration);
   });
+
   const [searchOptions, setSearchOptions] = useState(() => {
     const params = qs.parse(location.search);
     // Extract searchOptions from the query string if they are present
@@ -69,6 +72,14 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
   });
   const [pristineSearchOptions, setPristineSearchOptions] = useState(() => !isAvailabilityEnabled);
 
+  const deferredSearchQuery = useDeferredValue(searchQuery);
+  const deferredIsAvailabilityEnabled = useDeferredValue(isAvailabilityEnabled);
+  const deferredSearchOptions = useDeferredValue(searchOptions);
+  const isPending =
+    searchQuery !== deferredSearchQuery ||
+    isAvailabilityEnabled !== deferredIsAvailabilityEnabled ||
+    searchOptions !== deferredSearchOptions;
+
   // TODO: Check if this actually does anything useful
   useEffect(() => {
     VenueLocation.preload();
@@ -78,9 +89,9 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
     setIsAvailabilityEnabled(!isAvailabilityEnabled);
     if (pristineSearchOptions && !isAvailabilityEnabled) {
       // Only reset search options if the user has never changed it, and if the
-      // search box is being opened. By resetting the option when the box is opened,
-      // the time when the box is opened will be used, instead of the time when the
-      // page is loaded
+      // search box is being opened. By resetting the option when the box is
+      // opened, the time when the box is opened will be used, instead of the
+      // time when the page is loaded.
       setSearchOptions(defaultSearchOptions());
     }
   }, [isAvailabilityEnabled, pristineSearchOptions]);
@@ -96,14 +107,21 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
   );
 
   const highlightPeriod = useMemo<TimePeriod | undefined>(() => {
-    if (!isAvailabilityEnabled) return undefined;
+    if (!deferredIsAvailabilityEnabled) return undefined;
 
     return {
-      day: searchOptions.day,
-      startTime: convertIndexToTime(searchOptions.time * 2),
-      endTime: convertIndexToTime(2 * (searchOptions.time + searchOptions.duration)),
+      day: deferredSearchOptions.day,
+      startTime: convertIndexToTime(deferredSearchOptions.time * 2),
+      endTime: convertIndexToTime(
+        2 * (deferredSearchOptions.time + deferredSearchOptions.duration),
+      ),
     };
-  }, [isAvailabilityEnabled, searchOptions.day, searchOptions.duration, searchOptions.time]);
+  }, [
+    deferredIsAvailabilityEnabled,
+    deferredSearchOptions.day,
+    deferredSearchOptions.duration,
+    deferredSearchOptions.time,
+  ]);
 
   const selectedVenue = useMemo<Venue | undefined>(
     () => (matchParams.venue ? decodeURIComponent(matchParams.venue) : undefined),
@@ -114,7 +132,7 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
   useEffect(() => {
     let query: Partial<Params> = {};
     if (deferredSearchQuery) query.q = deferredSearchQuery;
-    if (isAvailabilityEnabled) query = { ...query, ...searchOptions };
+    if (deferredIsAvailabilityEnabled) query = { ...query, ...deferredSearchOptions };
     const search = qs.stringify(query);
 
     const pathname = venuePage(selectedVenue);
@@ -132,17 +150,19 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
     }
   }, [
     debouncedHistory,
+    deferredIsAvailabilityEnabled,
+    deferredSearchOptions,
     deferredSearchQuery,
     history,
-    isAvailabilityEnabled,
-    searchOptions,
     selectedVenue,
   ]);
 
   const matchedVenues = useMemo(() => {
     const matched = searchVenue(venues, deferredSearchQuery);
-    return isAvailabilityEnabled ? filterAvailability(matched, searchOptions) : matched;
-  }, [isAvailabilityEnabled, searchOptions, deferredSearchQuery, venues]);
+    return deferredIsAvailabilityEnabled
+      ? filterAvailability(matched, deferredSearchOptions)
+      : matched;
+  }, [deferredIsAvailabilityEnabled, deferredSearchOptions, deferredSearchQuery, venues]);
   const matchedVenueNames = useMemo(() => matchedVenues.map(([venue]) => venue), [matchedVenues]);
 
   function renderSearch() {
@@ -152,18 +172,14 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
 
         <SearchBox
           className={styles.searchBox}
-          throttle={0}
-          isLoading={false}
           value={searchQuery}
           placeholder="e.g. LT27"
           onChange={setSearchQuery}
-          onSearch={noop}
         />
 
         <button
           className={classnames(
             'btn btn-block btn-svg',
-            styles.availabilityToggle,
             isAvailabilityEnabled ? 'btn-primary' : 'btn-outline-primary',
           )}
           onClick={onFindFreeRoomsClicked}
@@ -213,11 +229,15 @@ export const VenuesContainerComponent: FC<Props> = ({ venues }) => {
       <div className={styles.venuesList}>
         {renderSearch()}
 
-        {size(matchedVenues) === 0 ? (
-          renderNoResult()
-        ) : (
+        <div className="position-relative">
+          {isPending && (
+            <LoadingOverlay deferred>
+              <LoadingSpinner />
+            </LoadingOverlay>
+          )}
+          {!isPending && size(matchedVenues) === 0 && renderNoResult()}
           <VenueList venues={matchedVenueNames} selectedVenue={selectedVenue} />
-        )}
+        </div>
       </div>
 
       <VenueDetailsPane

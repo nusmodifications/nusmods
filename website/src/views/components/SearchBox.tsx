@@ -15,19 +15,21 @@ import styles from './SearchBox.scss';
 
 export type Props = {
   className?: string;
-  throttle: number;
-  isLoading: boolean;
+  throttle?: number;
+  isLoading?: boolean;
   value: string | null;
   placeholder?: string;
+  /** Called when the search box value changes */
   onChange: (value: string) => void;
-  onSearch: () => void;
+  /** Called when a search should be triggered, potentially debounced by `throttle` milliseconds. */
+  onSearch?: () => void;
   onBlur?: () => void;
 };
 
 const SearchBox: FC<Props> = ({
   className,
   throttle,
-  isLoading,
+  isLoading = false,
   value,
   placeholder,
   onChange,
@@ -55,7 +57,7 @@ const SearchBox: FC<Props> = ({
       debounce(
         () => {
           isDirty.current = false;
-          onSearch();
+          onSearch?.();
         },
         throttle,
         { leading: false },

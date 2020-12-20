@@ -1,6 +1,6 @@
 import { defaultSearchOptions } from 'views/venues/AvailabilitySearch';
 
-describe('defaultSearchOptions', () => {
+describe(defaultSearchOptions, () => {
   test('should the nearest slots during school hours', () => {
     // Monday
     expect(defaultSearchOptions(new Date('2018-01-15T12:30:00'))).toMatchObject({
