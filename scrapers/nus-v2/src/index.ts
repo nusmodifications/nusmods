@@ -32,6 +32,7 @@ function run(fn: (...args: any[]) => Promise<any>) {
 
 const parameters: Record<string, yargs.Options> = {
   sem: {
+    type: 'string',
     choices: Semesters.map(String),
   },
   year: {
