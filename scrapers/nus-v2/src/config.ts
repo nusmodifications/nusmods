@@ -2,25 +2,37 @@ import path from 'path';
 import * as fs from 'fs-extra';
 import { ClientOptions } from '@elastic/elasticsearch';
 
+export type GraphQLConfig = Readonly<{
+  /** URL of our GraphQL API server */
+  url: string;
+
+  token: string;
+}>;
+
 export type Config = Readonly<{
   appKey: string;
   studentKey: string;
 
-  // Base URL for all API requests
+  /** Base URL for all API requests */
   baseUrl: string;
 
-  // Current academic year in the format YYYY/YYYY
+  /** Current academic year in the format YYYY/YYYY */
   academicYear: string;
 
-  // The number of concurrent requests allowed by the API
-  // Any additional requests will be queued
+  /**
+   * The number of concurrent requests allowed by the API Any additional
+   * requests will be queued
+   */
   apiConcurrency: number;
 
-  // Root folder for data
+  /** Root folder for data */
   dataPath: string;
 
-  // Config to connect to elasticsearch
+  /** Config to connect to our Elasticsearch service */
   elasticConfig?: ClientOptions;
+
+  /** URI of our GraphQL API server */
+  graphQLConfig?: GraphQLConfig;
 }>;
 
 const env = fs.readJSONSync(path.join(__dirname, '../env.json'));
@@ -40,6 +52,7 @@ const config: Config = {
   appKey: env.appKey,
   studentKey: env.studentKey,
   elasticConfig: env.elasticConfig,
+  graphQLConfig: env.graphQLConfig,
   baseUrl: addTrailingSlash(env.baseUrl),
   apiConcurrency: env.apiConcurrency || 5,
 
