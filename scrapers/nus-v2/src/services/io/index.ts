@@ -13,6 +13,7 @@ import type { Venue, VenueInfo } from '../../types/venues';
 
 import { getFileSystemWriter } from './fs';
 import ElasticPersist from './elastic';
+import GraphQLPersist from './graphql';
 
 export { getCacheFactory } from './fs';
 export { getFileSystemWriter };
@@ -26,6 +27,7 @@ export class CombinedPersist implements Persist {
   constructor(acadYear: string) {
     this.writers.push(getFileSystemWriter(acadYear));
     this.writers.push(new ElasticPersist());
+    this.writers.push(new GraphQLPersist(acadYear));
   }
 
   async moduleList(data: ModuleCondensed[]) {
