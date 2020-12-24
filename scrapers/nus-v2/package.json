@@ -54,6 +54,8 @@
     "date-fns": "2.16.1",
     "deep-diff": "1.0.2",
     "fs-extra": "9.0.1",
+    "graphql": "15.4.0",
+    "graphql-request": "3.4.0",
     "he": "1.2.0",
     "joi": "17.3.0",
     "lodash": "4.17.20",
