@@ -1,7 +1,7 @@
 import { ClientError, gql, GraphQLClient } from 'graphql-request';
 
 import config from '../../config';
-import type { ModuleCode } from '../../types/modules';
+import type { Module, ModuleCode } from '../../types/modules';
 import type { Persist } from '../../types/persist';
 import { UnknownApiError } from '../../utils/errors';
 
@@ -50,9 +50,11 @@ export default class GraphQLPersist implements Persist {
   // Per year information
   // ///////////////////////////////////////////////////////////
 
-  // Ignore since there's more detailed module info
+  // Ignore since `module` method gets more detailed info
   moduleList = () => Promise.resolve();
   moduleInfo = () => Promise.resolve();
+
+  // Not used by /website
   moduleInformation = () => Promise.resolve();
   moduleAliases = () => Promise.resolve();
   facultyDepartments = () => Promise.resolve();
@@ -113,6 +115,10 @@ export default class GraphQLPersist implements Persist {
     );
   };
 
+  // Not used by /website
+  timetable = () => Promise.resolve();
+  semesterData = () => Promise.resolve();
+
   // ///////////////////////////////////////////////////////////
   // Per semester information
   // ///////////////////////////////////////////////////////////
@@ -123,9 +129,12 @@ export default class GraphQLPersist implements Persist {
     return Promise.resolve();
   }
 
-  // List of venue codes used for searching
-  // Ignore since venueInformation is more useful
+  // Ignore since `venueInformation` gets more detailed info
   venueList = () => Promise.resolve();
+
+  // ///////////////////////////////////////////////////////////
+  // Initialization
+  // ///////////////////////////////////////////////////////////
 
   /**
    * Ensure that the school, the current AY, and all semesters are in the API.
@@ -146,7 +155,7 @@ export default class GraphQLPersist implements Persist {
     try {
       existingAyData = await client.request(
         gql`
-          query ay($schoolShortName: String!, $academicYear: String!) {
+          query AY($schoolShortName: String!, $academicYear: String!) {
             schoolWithShortName(shortName: $schoolShortName) {
               id
               acadYearWithName(name: $academicYear) {
@@ -210,7 +219,7 @@ export default class GraphQLPersist implements Persist {
       };
     }>(
       gql`
-        mutation createSchool($input: CreateSchoolInput!) {
+        mutation CreateSchool($input: CreateSchoolInput!) {
           createSchool(input: $input) {
             school {
               id
@@ -243,7 +252,7 @@ export default class GraphQLPersist implements Persist {
       };
     }>(
       gql`
-        mutation createAcadYear($input: CreateAcadYearInput!) {
+        mutation CreateAcadYear($input: CreateAcadYearInput!) {
           createAcadYear(input: $input) {
             acadYear {
               id
@@ -277,7 +286,7 @@ export default class GraphQLPersist implements Persist {
         };
       }>(
         gql`
-          mutation createSem($input: CreateSemesterInput!) {
+          mutation CreateSem($input: CreateSemesterInput!) {
             createSemester(input: $input) {
               semester {
                 id
