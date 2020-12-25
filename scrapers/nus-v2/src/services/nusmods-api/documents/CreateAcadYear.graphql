@@ -1,0 +1,7 @@
+mutation CreateAcadYear($input: CreateAcadYearInput!) {
+  createAcadYear(input: $input) {
+    acadYear {
+      id
+    }
+  }
+}

@@ -1,0 +1,12 @@
+query QueryAdminInfo($schoolShortName: String!, $academicYear: String!) {
+  schoolWithShortName(shortName: $schoolShortName) {
+    id
+    acadYearWithName(name: $academicYear) {
+      id
+      semesters {
+        id
+        name
+      }
+    }
+  }
+}

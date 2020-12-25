@@ -1,0 +1,8 @@
+mutation CreateSemester($input: CreateSemesterInput!) {
+  createSemester(input: $input) {
+    semester {
+      id
+      name
+    }
+  }
+}

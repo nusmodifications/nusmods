@@ -1,0 +1,10 @@
+query QueryCourseCodes($acadYearId: ID!) {
+  node(id: $acadYearId) {
+    __typename
+    ... on AcadYear {
+      courses {
+        code
+      }
+    }
+  }
+}
