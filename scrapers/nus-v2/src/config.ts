@@ -6,7 +6,21 @@ export type GraphQLConfig = Readonly<{
   /** URL of our GraphQL API server */
   url: string;
 
+  /**
+   * Authorization header contents.
+   *
+   * Should contain a special scraper authorization token.
+   */
   token: string;
+
+  /**
+   * Number of concurrent requests the scraper will make to the NUSMods GraphQL
+   * API. Any additional queries/mutations will be queued.
+   *
+   * We do not want to DOS ourselves, so this should be much lower than what
+   * our server can handle.
+   */
+  concurrency: number;
 }>;
 
 export type Config = Readonly<{
@@ -20,8 +34,8 @@ export type Config = Readonly<{
   academicYear: string;
 
   /**
-   * The number of concurrent requests allowed by the API Any additional
-   * requests will be queued
+   * The number of concurrent requests allowed by the API. Any additional
+   * requests will be queued.
    */
   apiConcurrency: number;
 

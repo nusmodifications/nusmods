@@ -13,6 +13,9 @@ generates:
              * To regenerate this file, run:
              * yarn generate-graphql
              */
+
+            // Manually injected by codegen.yml
+            import type { Headers } from 'graphql-request/dist/types.dom';
       - typescript
       - typescript-operations
       - typescript-graphql-request

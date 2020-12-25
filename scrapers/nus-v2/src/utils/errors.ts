@@ -8,8 +8,7 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Task } from '../types/tasks';
 
 /**
- * Base API error class representing all errors thrown from
- * API methods.
+ * Base API error class representing all errors thrown from NUS API methods.
  */
 export class ApiError extends Error {
   // The original response
@@ -46,6 +45,24 @@ export class AuthError extends ApiError {
   public constructor(message: string) {
     super(message);
     Error.captureStackTrace(this, AuthError);
+    this.name = this.constructor.name;
+  }
+}
+
+/**
+ * Error class representing all errors thrown from NUSMods GraphQL API methods.
+ */
+export class NUSModsApiError extends Error {
+  // The original response
+  public response?: AxiosResponse;
+
+  public requestConfig?: AxiosRequestConfig;
+
+  public originalError?: Error;
+
+  public constructor(message: string) {
+    super(message);
+    Error.captureStackTrace(this, NUSModsApiError);
     this.name = this.constructor.name;
   }
 }

@@ -6,6 +6,8 @@
  * yarn generate-graphql
  */
 
+import type { Headers } from 'graphql-request/dist/types.dom';
+
 import { GraphQLClient } from 'graphql-request';
 import { print } from 'graphql';
 import gql from 'graphql-tag';
