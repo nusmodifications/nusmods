@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import classnames from 'classnames';
 import ScrollSpy from 'react-scrollspy';
 import { kebabCase, map, mapValues, values, sortBy } from 'lodash';
@@ -32,22 +32,22 @@ import useScrollToTop from 'views/hooks/useScrollToTop';
 import styles from './ModulePageContent.scss';
 import ReportError from './ReportError';
 
-export type Props = {
+type Props = {
   module: Module;
   archiveYear?: string;
 };
 
-export const SIDE_MENU_LABELS = {
+const SIDE_MENU_LABELS = {
   details: 'Details',
   prerequisites: 'Prerequisites',
   timetable: 'Timetable',
   reviews: 'Reviews',
 };
 
-export const SIDE_MENU_ITEMS = mapValues(SIDE_MENU_LABELS, kebabCase);
+const SIDE_MENU_ITEMS = mapValues(SIDE_MENU_LABELS, kebabCase);
 
 const ModulePageContent: React.FC<Props> = (props) => {
-  const [isMenuOpen, toggleMenu] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const { module, archiveYear } = props;
   const { moduleCode, title } = module;
@@ -65,6 +65,7 @@ const ModulePageContent: React.FC<Props> = (props) => {
 
   const moduleCodes = [moduleCode];
   if (module.aliases) moduleCodes.push(...module.aliases);
+
   useScrollToTop();
 
   return (
@@ -297,7 +298,7 @@ const ModulePageContent: React.FC<Props> = (props) => {
         </div>
 
         <aside className="col-md-3">
-          <SideMenu isOpen={isMenuOpen} toggleMenu={toggleMenu}>
+          <SideMenu isOpen={isMenuOpen} toggleMenu={setIsMenuOpen}>
             <nav className={styles.sideMenu}>
               <ScrollSpy
                 items={values(SIDE_MENU_ITEMS)}
@@ -306,7 +307,7 @@ const ModulePageContent: React.FC<Props> = (props) => {
               >
                 {map(SIDE_MENU_LABELS, (label, key: keyof typeof SIDE_MENU_LABELS) => (
                   <li key={label}>
-                    <a onClick={() => toggleMenu(false)} href={`#${SIDE_MENU_ITEMS[key]}`}>
+                    <a onClick={() => setIsMenuOpen(false)} href={`#${SIDE_MENU_ITEMS[key]}`}>
                       {label}
                       {key === 'reviews' && <CommentCount {...disqusConfig} />}
                     </a>
@@ -321,4 +322,4 @@ const ModulePageContent: React.FC<Props> = (props) => {
   );
 };
 
-export default ModulePageContent;
+export default memo(ModulePageContent);
