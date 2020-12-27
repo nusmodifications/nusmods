@@ -1,11 +1,19 @@
 import { ClientError, GraphQLClient } from 'graphql-request';
+import { groupBy } from 'lodash';
 import Queue from 'promise-queue';
 
 import config from '../../config';
-import type { Module, ModuleCode } from '../../types/modules';
+import logger from '../logger';
+import type { Module, ModuleCode, RawLesson } from '../../types/modules';
 import type { Persist } from '../../types/persist';
 import { NUSModsApiError } from '../../utils/errors';
-import { getSdk, Sdk, QueryAdminInfoQuery } from '../nusmods-api';
+import {
+  getSdk,
+  Sdk,
+  QueryAdminInfoQuery,
+  UpsertCourseCourseOfferingLessonGroupInput,
+  Day,
+} from '../nusmods-api';
 
 // TODO: Move to config
 const schoolShortName = 'NUS';
@@ -23,6 +31,33 @@ const semesterNumbers = {
   'Special Term I': '3',
   'Special Term II': '4',
 };
+
+// TODO: Move into tasks?
+// TODO: Tests
+function timetableToLessonGroups(
+  timetable: RawLesson[],
+): UpsertCourseCourseOfferingLessonGroupInput[] {
+  // TODO:
+  const groupedLessons = groupBy(timetable, (lesson) => lesson.lessonType + lesson.classNo);
+  return Object.entries(groupedLessons).map(([, lessons]) => ({
+    // type and number are guaranteed to exist since we grouped by them
+    type: lessons[0].lessonType,
+    number: lessons[0].classNo,
+
+    lessons: lessons.map((lesson) => {
+      return {
+        day: Day[lesson.day as never], // Cast to `never` because we don't really know if lesson.day is a `keyof typeof Day`.
+        // TODO: Ensure server strips date from Time
+        startTime: lesson.startTime, // TODO: Do we need to manually convert?
+        endTime: lesson.endTime, // TODO: Do we need to manually convert?
+        weekString: '', // TODO:
+        // weekString: lesson.weeks, // TODO: Turn into array of weeks?
+        size: lesson.size,
+        // TODO: covidZone
+      };
+    }),
+  }));
+}
 
 /* eslint-disable class-methods-use-this */
 export default class GraphQLPersist implements Persist {
@@ -90,30 +125,60 @@ export default class GraphQLPersist implements Persist {
   // ///////////////////////////////////////////////////////////
 
   async module(_moduleCode: ModuleCode, module: Module) {
-    // Sync course
-    const data = await this.callApi((gql) =>
-      gql.UpsertCourse({
-        input: {
-          acadYearId: this.#acadYearId,
-          // Basic info
-          code: module.moduleCode,
-          title: module.title,
-          description: module.description ?? '',
-          credit: module.moduleCredit,
-          // TODO: aliases
-          // TODO: attributes
-          // Requisites
-          prerequisiteString: module.prerequisite,
-          corequisiteString: module.corequisite,
-          preclusionString: module.preclusion,
-          // TODO: Requisite tree?
-        },
-      }),
-    );
-    // TODO: Semester data
-    // TODO: workloadString: mod.workload,
-    // TODO: faculty: mod.faculty,
-    // TODO: department: mod.department,
+    try {
+      await this.callApi((gql) =>
+        // Sync course
+        gql.UpsertCourse({
+          input: {
+            acadYearId: this.#acadYearId,
+            // Basic info
+            code: module.moduleCode,
+            title: module.title,
+
+            // Additional info
+            description: module.description ?? '', // TODO: Make optional on server
+            credit: module.moduleCredit,
+            // TODO: aliases
+            // TODO: attributes
+
+            // Requisites
+            prerequisiteString: module.prerequisite,
+            corequisiteString: module.corequisite,
+            preclusionString: module.preclusion,
+
+            // TODO: Requisite tree?
+
+            // Semester data
+            courseOfferings: module.semesterData.map((semesterData) => ({
+              semesterId: this.#semesterIds[semesterData.semester],
+              // TODO: faculty: module.faculty,
+              department: module.department,
+              // workloadString: module.workload, // TODO: Convert back to workload list? Or have a workload array? I think we should just make a list
+              exam: semesterData.examDate
+                ? {
+                    time: semesterData.examDate,
+                    duration: semesterData.examDuration,
+                  }
+                : null,
+              lessonGroups: timetableToLessonGroups(semesterData.timetable),
+            })),
+          },
+        }),
+      );
+    } catch (err) {
+      if (err instanceof ClientError) {
+        logger.error(
+          {
+            moduleCode: module.moduleCode,
+            err,
+            graphQLResponse: err.response,
+          },
+          'GraphQL error while upserting course',
+        );
+        return;
+      }
+      throw new NUSModsApiError(`Unknown error while upserting module ${module.moduleCode}`, err);
+    }
   }
 
   async getModuleCodes() {

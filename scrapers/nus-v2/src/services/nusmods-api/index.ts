@@ -6,6 +6,7 @@
  * yarn generate-graphql
  */
 
+// Manually injected by codegen.yml
 import type { Headers } from 'graphql-request/dist/types.dom';
 
 import { GraphQLClient } from 'graphql-request';
@@ -204,6 +205,44 @@ export type CourseEdge = {
   cursor: Scalars['Cursor'];
 };
 
+export type UpsertCourseCourseOfferingLessonGroupLessonInput = {
+  day?: Maybe<Day>;
+  startTime?: Maybe<Scalars['Time']>;
+  endTime?: Maybe<Scalars['Time']>;
+  weekString?: Maybe<Scalars['String']>;
+  size?: Maybe<Scalars['Int']>;
+};
+
+export type UpsertCourseCourseOfferingLessonGroupInput = {
+  /** Lesson number */
+  number?: Maybe<Scalars['String']>;
+  /** Lesson type, e.g. lecture, tutorial, etc. */
+  type?: Maybe<Scalars['String']>;
+  /**
+   * N.B.: This will *set* the lesson group's lessons! Be sure to pass in
+   * complete data.
+   */
+  lessons: Array<UpsertCourseCourseOfferingLessonGroupLessonInput>;
+};
+
+export type UpsertCourseCourseOfferingExamInput = {
+  time?: Maybe<Scalars['Time']>;
+  duration?: Maybe<Scalars['Int']>;
+};
+
+export type UpsertCourseCourseOfferingInput = {
+  semesterId: Scalars['ID'];
+  department?: Maybe<Scalars['String']>;
+  workloadString?: Maybe<Scalars['String']>;
+  /** N.B.: Always pass in a value! `null` value = no exam */
+  exam?: Maybe<UpsertCourseCourseOfferingExamInput>;
+  /**
+   * N.B.: This will *set* the course offering's lesson groups! Be sure to pass
+   * in complete data.
+   */
+  lessonGroups: Array<UpsertCourseCourseOfferingLessonGroupInput>;
+};
+
 export type UpsertCourseInput = {
   acadYearId: Scalars['ID'];
   code: Scalars['String'];
@@ -213,6 +252,11 @@ export type UpsertCourseInput = {
   prerequisiteString?: Maybe<Scalars['String']>;
   corequisiteString?: Maybe<Scalars['String']>;
   preclusionString?: Maybe<Scalars['String']>;
+  /**
+   * N.B.: This will *set* the course's course offerings! Be sure to pass in
+   * complete data.
+   */
+  courseOfferings: Array<UpsertCourseCourseOfferingInput>;
 };
 
 export type UpsertCoursePayload = {
@@ -713,7 +757,7 @@ export type UpsertCourseMutationVariables = Exact<{
 
 export type UpsertCourseMutation = { __typename?: 'Mutation' } & {
   upsertCourse: { __typename?: 'UpsertCoursePayload' } & {
-    course?: Maybe<{ __typename?: 'Course' } & Pick<Course, 'code'>>;
+    course?: Maybe<{ __typename?: 'Course' } & Pick<Course, 'id'>>;
   };
 };
 
@@ -782,7 +826,7 @@ export const UpsertCourseDocument = gql`
   mutation UpsertCourse($input: UpsertCourseInput!) {
     upsertCourse(input: $input) {
       course {
-        code
+        id
       }
     }
   }

@@ -5,6 +5,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, max-classes-per-file */
 
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
+import type { GraphQLError } from 'graphql';
 import { Task } from '../types/tasks';
 
 /**
@@ -53,17 +54,14 @@ export class AuthError extends ApiError {
  * Error class representing all errors thrown from NUSMods GraphQL API methods.
  */
 export class NUSModsApiError extends Error {
-  // The original response
-  public response?: AxiosResponse;
-
-  public requestConfig?: AxiosRequestConfig;
-
   public originalError?: Error;
 
-  public constructor(message: string) {
+  public constructor(message: string, originalError?: GraphQLError) {
     super(message);
     Error.captureStackTrace(this, NUSModsApiError);
     this.name = this.constructor.name;
+
+    this.originalError = originalError;
   }
 }
 

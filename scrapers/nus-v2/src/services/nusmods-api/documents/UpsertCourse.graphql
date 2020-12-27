@@ -1,7 +1,7 @@
 mutation UpsertCourse($input: UpsertCourseInput!) {
   upsertCourse(input: $input) {
     course {
-      code
+      id
     }
   }
 }
