@@ -2,7 +2,7 @@ overwrite: true
 schema: '../../../mods4/api_ent/graphql/graph/*.graphql'
 documents: 'src/services/nusmods-api/documents/*.graphql'
 generates:
-  src/services/nusmods-api/index.ts:
+  src/services/nusmods-api/__generated__/client.ts:
     plugins:
       - add:
           content: |
