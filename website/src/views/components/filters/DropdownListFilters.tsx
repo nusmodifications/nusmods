@@ -175,7 +175,6 @@ export const DropdownListFiltersComponent: React.FC<Props> = ({
   translate,
 }) => {
   const [searchedItems, setSearchedFilters] = useState(selectedItems);
-  const matchBreakpoint = useMediaQuery([breakpointDown('sm'), touchScreenOnly()]);
 
   const onSelectItem = (selectedItem: string) => {
     if (!selectedItem) return;
@@ -201,6 +200,8 @@ export const DropdownListFiltersComponent: React.FC<Props> = ({
     placeholder: translate ? translate('placeholder') : '',
   };
 
+  const matchBreakpoint = useMediaQuery([breakpointDown('sm'), touchScreenOnly()]);
+
   const FilterComponent = matchBreakpoint ? MobileFilter : DesktopFilter;
   return (
     <div className={styles.dropdown}>
@@ -212,4 +213,4 @@ export const DropdownListFiltersComponent: React.FC<Props> = ({
 };
 
 // export default React.memo(DropdownListFiltersComponent);
-export default DropdownListFiltersComponent;
+export default React.memo(DropdownListFiltersComponent);

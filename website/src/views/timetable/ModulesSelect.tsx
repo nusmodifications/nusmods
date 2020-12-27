@@ -1,4 +1,4 @@
-import { useState, memo, FC } from 'react';
+import { useState, memo, FC, useCallback, memo } from 'react';
 import { omit } from 'lodash';
 import Downshift, {
   ChildrenFunction,
@@ -31,16 +31,23 @@ type Props = {
   onRemoveModule: (moduleCode: ModuleCode) => void;
 };
 
-export const ModulesSelectComponent: FC<Props> = (props) => {
+export const ModulesSelectComponent: FC<Props> = ({
+  moduleCount,
+  placeholder,
+  disabled,
+  getFilteredModules,
+  onChange,
+  onRemoveModule,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
   const matchBreakpoint = useMediaQuery(breakpointUp('md'));
 
-  const onOuterClick = () => {
+  const onOuterClick = useCallback(() => {
     setIsOpen(false);
     setInputValue(inputValue);
-  };
+  }, [inputValue]);
 
   const onInputValueChange = (
     newInputValue: string,
@@ -52,8 +59,8 @@ export const ModulesSelectComponent: FC<Props> = (props) => {
     setInputValue(newInputValue);
   };
 
-  const onChange = (selectedItem: ModuleCode | null) =>
-    selectedItem && props.onChange(selectedItem);
+  const downShiftOnChange = (selectedItem: ModuleCode | null) =>
+    selectedItem && onChange(selectedItem);
 
   const closeSelect = () => {
     setIsOpen(false);
@@ -98,9 +105,8 @@ export const ModulesSelectComponent: FC<Props> = (props) => {
     getMenuProps,
     highlightedIndex,
   }) => {
-    const { placeholder, disabled, moduleCount } = props;
     const isModalOpen = !matchBreakpoint && isOpen;
-    const results = props.getFilteredModules(inputValue);
+    const results = getFilteredModules(inputValue);
     const showResults = isOpen && results.length > 0;
     const showTip = isModalOpen && !results.length;
     const showNoResultMessage = isOpen && inputValue && !results.length;
@@ -149,7 +155,7 @@ export const ModulesSelectComponent: FC<Props> = (props) => {
                         className={classnames('btn btn-svg btn-sm', styles.actionButton)}
                         aria-label={removeBtnLabel(module.moduleCode)}
                         onClick={() => {
-                          props.onRemoveModule(module.moduleCode);
+                          onRemoveModule(module.moduleCode);
                         }}
                       >
                         <Trash className={styles.actionIcon} />{' '}
@@ -189,14 +195,12 @@ export const ModulesSelectComponent: FC<Props> = (props) => {
     );
   };
 
-  const { disabled } = props;
-
   const downshiftComponent = (
     <Downshift
       isOpen={isOpen}
       onOuterClick={onOuterClick}
       inputValue={inputValue}
-      onChange={onChange}
+      onChange={downShiftOnChange}
       onInputValueChange={onInputValueChange}
       selectedItem={null}
       stateReducer={stateReducer}
@@ -218,7 +222,7 @@ export const ModulesSelectComponent: FC<Props> = (props) => {
         onClick={openSelect}
         disabled={disabled}
       >
-        {props.placeholder}
+        {placeholder}
       </button>
       <Modal
         isOpen={!disabled && isOpen}
