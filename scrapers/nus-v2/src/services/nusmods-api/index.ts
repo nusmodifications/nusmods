@@ -25,10 +25,14 @@ export type Scalars = {
   Int: number;
   Float: number;
   /**
-   * The `Time` scalar type represents a time. The Time appears in a JSON
-   * response as an ISO8601 formatted string.
+   * The `Time` scalar is an extended form of the RFC3339 partial-time format.
+   * After the HH:MM:SS part of the string, an optional fractional part may
+   * appear, consisting of a decimal point followed by one to nine decimal digits.
+   * (RFC3339 admits only one digit after the decimal point).
    */
   Time: string;
+  /** The `Timestamp` scalar type represents an RFC3339 formatted timestamp with timezone. */
+  Timestamp: string;
   Cursor: string;
 };
 
@@ -37,8 +41,8 @@ export type AcadYear = Node & {
   /** The ID of an object */
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
-  createTime?: Maybe<Scalars['Time']>;
-  updateTime?: Maybe<Scalars['Time']>;
+  createTime?: Maybe<Scalars['Timestamp']>;
+  updateTime?: Maybe<Scalars['Timestamp']>;
   school?: Maybe<School>;
   semesters?: Maybe<Array<Maybe<Semester>>>;
   courses?: Maybe<Array<Maybe<Course>>>;
@@ -206,18 +210,18 @@ export type CourseEdge = {
 };
 
 export type UpsertCourseCourseOfferingLessonGroupLessonInput = {
-  day?: Maybe<Day>;
-  startTime?: Maybe<Scalars['Time']>;
-  endTime?: Maybe<Scalars['Time']>;
-  weekString?: Maybe<Scalars['String']>;
+  day: Day;
+  startTime: Scalars['Time'];
+  endTime: Scalars['Time'];
+  weekString: Scalars['String'];
   size?: Maybe<Scalars['Int']>;
 };
 
 export type UpsertCourseCourseOfferingLessonGroupInput = {
   /** Lesson number */
-  number?: Maybe<Scalars['String']>;
+  number: Scalars['String'];
   /** Lesson type, e.g. lecture, tutorial, etc. */
-  type?: Maybe<Scalars['String']>;
+  type: Scalars['String'];
   /**
    * N.B.: This will *set* the lesson group's lessons! Be sure to pass in
    * complete data.
@@ -226,13 +230,13 @@ export type UpsertCourseCourseOfferingLessonGroupInput = {
 };
 
 export type UpsertCourseCourseOfferingExamInput = {
-  time?: Maybe<Scalars['Time']>;
-  duration?: Maybe<Scalars['Int']>;
+  time: Scalars['Time'];
+  duration: Scalars['Int'];
 };
 
 export type UpsertCourseCourseOfferingInput = {
   semesterId: Scalars['ID'];
-  department?: Maybe<Scalars['String']>;
+  department: Scalars['String'];
   workloadString?: Maybe<Scalars['String']>;
   /** N.B.: Always pass in a value! `null` value = no exam */
   exam?: Maybe<UpsertCourseCourseOfferingExamInput>;
@@ -330,7 +334,7 @@ export type ExamTimeslot = Node & {
   __typename?: 'ExamTimeslot';
   /** The ID of an object */
   id: Scalars['ID'];
-  date?: Maybe<Scalars['Time']>;
+  date?: Maybe<Scalars['Timestamp']>;
   duration?: Maybe<Scalars['Int']>;
   exams?: Maybe<Array<Maybe<Exam>>>;
 };
@@ -446,8 +450,8 @@ export type School = Node & {
   id: Scalars['ID'];
   longName?: Maybe<Scalars['String']>;
   shortName?: Maybe<Scalars['String']>;
-  createTime?: Maybe<Scalars['Time']>;
-  updateTime?: Maybe<Scalars['Time']>;
+  createTime?: Maybe<Scalars['Timestamp']>;
+  updateTime?: Maybe<Scalars['Timestamp']>;
   acadYears?: Maybe<Array<Maybe<AcadYear>>>;
   acadYearConnection: AcadYearConnection;
   acadYearWithName?: Maybe<AcadYear>;

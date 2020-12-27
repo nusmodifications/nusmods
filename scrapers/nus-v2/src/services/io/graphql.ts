@@ -4,7 +4,7 @@ import Queue from 'promise-queue';
 
 import config from '../../config';
 import logger from '../logger';
-import type { Module, ModuleCode, RawLesson } from '../../types/modules';
+import type { LessonTime, Module, ModuleCode, RawLesson } from '../../types/modules';
 import type { Persist } from '../../types/persist';
 import { NUSModsApiError } from '../../utils/errors';
 import {
@@ -13,6 +13,7 @@ import {
   QueryAdminInfoQuery,
   UpsertCourseCourseOfferingLessonGroupInput,
   Day,
+  Scalars,
 } from '../nusmods-api';
 
 // TODO: Move to config
@@ -32,6 +33,12 @@ const semesterNumbers = {
   'Special Term II': '4',
 };
 
+function lessonTimeToGraphQLTime(time: LessonTime): Scalars['Time'] {
+  const hour = time.substring(0, 2);
+  const minute = time.substring(2);
+  return `${hour}:${minute}:00`;
+}
+
 // TODO: Move into tasks?
 // TODO: Tests
 function timetableToLessonGroups(
@@ -48,8 +55,8 @@ function timetableToLessonGroups(
       return {
         day: Day[lesson.day as never], // Cast to `never` because we don't really know if lesson.day is a `keyof typeof Day`.
         // TODO: Ensure server strips date from Time
-        startTime: lesson.startTime, // TODO: Do we need to manually convert?
-        endTime: lesson.endTime, // TODO: Do we need to manually convert?
+        startTime: lessonTimeToGraphQLTime(lesson.startTime),
+        endTime: lessonTimeToGraphQLTime(lesson.endTime),
         weekString: '', // TODO:
         // weekString: lesson.weeks, // TODO: Turn into array of weeks?
         size: lesson.size,
@@ -154,12 +161,13 @@ export default class GraphQLPersist implements Persist {
               // TODO: faculty: module.faculty,
               department: module.department,
               // workloadString: module.workload, // TODO: Convert back to workload list? Or have a workload array? I think we should just make a list
-              exam: semesterData.examDate
-                ? {
-                    time: semesterData.examDate,
-                    duration: semesterData.examDuration,
-                  }
-                : null,
+              exam:
+                semesterData.examDate && semesterData.examDuration
+                  ? {
+                      time: semesterData.examDate,
+                      duration: semesterData.examDuration,
+                    }
+                  : null,
               lessonGroups: timetableToLessonGroups(semesterData.timetable),
             })),
           },
