@@ -34,11 +34,7 @@ To run the development build, simply run:
 $ yarn start
 ```
 
-This will start Webpack dev server, which will automatically rebuild and reload any code and components that you have changed. If your editor or IDE has built in support for ESLint/StyleLint, you can disable them to speed up the build process.
-
-```sh
-$ DISABLE_ESLINT=1 DISABLE_STYLELINT=1 yarn start
-```
+This will start Webpack dev server, which will automatically rebuild and reload any code and components that you have changed.
 
 We recommend the following development tools to help speed up your work
 
@@ -297,7 +293,7 @@ $ yarn typecheck
 
 #### End to End testing
 
-We currently have some simple E2E tests set up courtesy of Browserstack using Nightwatch. The purpose of this is mainly to catch major regression in browsers at the older end of our browser support matrix (Safari 9, Edge, Firefox ESR) which can be difficult to test manually.
+We currently have some simple E2E tests set up courtesy of Browserstack using Nightwatch. The purpose of this is mainly to catch major regression in browsers at the older end of our browser support matrix (iOS 11, Safari 11, Edge, Firefox ESR) which can be difficult to test manually.
 
 By default the tests are ran against http://staging.nusmods.com, although they can be configured to run against any host, including localhost if you use [Browserstack's local testing feature](https://www.browserstack.com/local-testing#command-line).
 

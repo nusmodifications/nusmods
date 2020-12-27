@@ -18,21 +18,6 @@ jobs:
 
   nus-scrapers:
     <<: *defaults
-    working_directory: ~/nusmods/scrapers/nus
-    steps:
-      - attach_workspace:
-          at: ~/nusmods
-      - run: yarn --frozen-lockfile --non-interactive
-      - run: yarn lint
-      - run: yarn test --runInBand
-      - run:
-          name: Build scraper
-          environment:
-            NODE_ENV: production
-          command: yarn build:scraper
-
-  nus-scrapers-v2:
-    <<: *defaults
     working_directory: ~/nusmods/scrapers/nus-v2
     steps:
       - attach_workspace:
@@ -114,9 +99,6 @@ workflows:
     jobs:
       - checkout
       - nus-scrapers:
-          requires:
-            - checkout
-      - nus-scrapers-v2:
           requires:
             - checkout
       - nusmoderator:
