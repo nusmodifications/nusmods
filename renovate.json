@@ -92,6 +92,6 @@
       "extends": ["config:js-lib"]
     }
   ],
-  "ignorePaths": ["scrapers/nus", ".nvmrc"],
+  "ignorePaths": [".nvmrc"],
   "prHourlyLimit": 0
 }

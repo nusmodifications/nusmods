@@ -163,11 +163,10 @@ const FaqContainer: React.FC = () => (
     <div className={styles.question} id="white-page">
       <h5>Why do I only see a white page when I open NUSMods?</h5>
       <p>
-        Please update your browser. Although we recommend the latest version of Google Chrome,
-        Firefox, Safari or Edge, we support the latest two versions of these browsers.
-        Unfortunately, we cannot support more browsers or older versions due to our limited
-        resources. If you are using iOS 10 or below, please update your device to iOS 11 or 12, or
-        use another computer to access NUSMods.
+        Please update your browser or use another computer to access NUSMods. Although we recommend
+        the latest version of Google Chrome, Firefox, Safari or Edge, we support the latest two
+        versions of these browsers. Unfortunately, we cannot support more browsers or older versions
+        due to our limited resources.
       </p>
       <p>
         If you are seeing a white page in an up-to-date Chrome, Firefox, Safari or Edge, do contact
