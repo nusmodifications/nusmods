@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { isEqual } from 'lodash';
@@ -59,14 +59,17 @@ type Props = {
   dismissModregNotification: (round: RegPeriod) => void;
 };
 
-const SettingsContainer: React.FC<Props> = (props) => {
+const SettingsContainer: React.FC<Props> = ({
+  currentThemeId,
+  mode,
+  betaTester,
+  loadDisqusManually,
+  modRegNotification,
+  ...props
+}) => {
   const [allowTracking, setAllowTracking] = useState(true);
 
-  useEffect(() => {
-    withTracker((tracker: Tracker) => setAllowTracking(!tracker.isUserOptedOut()));
-  }, []);
-
-  const onToggleTracking = (isTrackingAllowed: boolean) => {
+  const onToggleTracking = useCallback((isTrackingAllowed: boolean) => {
     withTracker((tracker: Tracker) => {
       if (isTrackingAllowed) {
         tracker.forgetUserOptOut();
@@ -76,70 +79,13 @@ const SettingsContainer: React.FC<Props> = (props) => {
 
       setAllowTracking(!tracker.isUserOptedOut());
     });
-  };
+  }, []);
 
-  const renderModRegNotificationRounds = () => {
-    const { modRegNotification } = props;
-    const rounds = getRounds(modRegNotification);
+  useEffect(() => {
+    withTracker((tracker: Tracker) => setAllowTracking(!tracker.isUserOptedOut()));
+  }, [onToggleTracking]);
 
-    return rounds.map((round) => {
-      const roundKey = getModRegRoundKey(round);
-      const isSnoozed = modRegNotification.dismissed.find((dismissed) =>
-        isEqual(dismissed, roundKey),
-      );
-
-      return (
-        <Fragment key={round.type}>
-          <h5>
-            {round.type} {round.name ? `(Round ${round.name})` : ''}
-          </h5>
-          <div className={styles.toggleRow}>
-            <div className={styles.toggleDescription}>
-              <p>
-                {isSnoozed
-                  ? 'You have snoozed reminders until the end of this round'
-                  : 'You can also temporarily snooze the notification until the end of this round.'}
-              </p>
-            </div>
-            <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
-              <button
-                className="btn btn-outline-primary"
-                type="button"
-                onClick={() =>
-                  isSnoozed
-                    ? props.enableModRegNotification(round)
-                    : props.dismissModregNotification(round)
-                }
-              >
-                {isSnoozed ? 'Unsnooze' : 'Snooze'}
-              </button>
-            </div>
-          </div>
-        </Fragment>
-      );
-    });
-  };
-
-  const renderNightModeOption = () => (
-    <div>
-      <h4 id="night-mode">Night Mode</h4>
-      <div className={styles.toggleRow}>
-        <div className={styles.toggleDescription}>
-          <p>
-            Night mode turns the light surfaces of the page dark, creating an experience ideal for
-            the dark. Try it out!
-          </p>
-          <p>
-            Protip: Press <kbd>X</kbd> to toggle modes anywhere on NUSMods.
-          </p>
-        </div>
-        <div className={styles.toggle}>
-          <ModeSelect mode={props.mode} onSelectMode={props.selectMode} />
-        </div>
-      </div>
-      <hr />
-    </div>
-  );
+  const rounds = getRounds(modRegNotification);
 
   useScrollToTop();
 
@@ -154,7 +100,26 @@ const SettingsContainer: React.FC<Props> = (props) => {
       <h1 className={styles.title}>Settings</h1>
       <hr />
 
-      {supportsCSSVariables() && renderNightModeOption()}
+      {supportsCSSVariables() && (
+        <div>
+          <h4 id="night-mode">Night Mode</h4>
+          <div className={styles.toggleRow}>
+            <div className={styles.toggleDescription}>
+              <p>
+                Night mode turns the light surfaces of the page dark, creating an experience ideal
+                for the dark. Try it out!
+              </p>
+              <p>
+                Protip: Press <kbd>X</kbd> to toggle modes anywhere on NUSMods.
+              </p>
+            </div>
+            <div className={styles.toggle}>
+              <ModeSelect mode={mode} onSelectMode={props.selectMode} />
+            </div>
+          </div>
+          <hr />
+        </div>
+      )}
 
       <h4 id="theme">Theme</h4>
 
@@ -173,7 +138,7 @@ const SettingsContainer: React.FC<Props> = (props) => {
             key={theme.id}
             className={styles.themeOption}
             theme={theme}
-            isSelected={props.currentThemeId === theme.id}
+            isSelected={currentThemeId === theme.id}
             onSelectTheme={props.selectTheme}
           />
         ))}
@@ -193,13 +158,13 @@ const SettingsContainer: React.FC<Props> = (props) => {
         </div>
         <div className={styles.toggle}>
           <Toggle
-            isOn={props.modRegNotification.enabled}
-            onChange={() => props.toggleModRegNotificationGlobally(!props.modRegNotification.enabled)}
+            isOn={modRegNotification.enabled}
+            onChange={() => props.toggleModRegNotificationGlobally(!modRegNotification.enabled)}
           />
         </div>
       </div>
 
-      {props.modRegNotification.enabled && (
+      {modRegNotification.enabled && (
         <>
           <div className="row">
             <div className="col-sm-12">
@@ -222,13 +187,48 @@ const SettingsContainer: React.FC<Props> = (props) => {
             </div>
           </div>
 
-          {renderModRegNotificationRounds()}
+          {rounds.map((round) => {
+            const roundKey = getModRegRoundKey(round);
+            const isSnoozed = modRegNotification.dismissed.find((dismissed) =>
+              isEqual(dismissed, roundKey),
+            );
+
+            return (
+              <Fragment key={round.type}>
+                <h5>
+                  {round.type} {round.name ? `(Round ${round.name})` : ''}
+                </h5>
+                <div className={styles.toggleRow}>
+                  <div className={styles.toggleDescription}>
+                    <p>
+                      {isSnoozed
+                        ? 'You have snoozed reminders until the end of this round'
+                        : 'You can also temporarily snooze the notification until the end of this round.'}
+                    </p>
+                  </div>
+                  <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
+                    <button
+                      className="btn btn-outline-primary"
+                      type="button"
+                      onClick={() =>
+                        isSnoozed
+                          ? props.enableModRegNotification(round)
+                          : props.dismissModregNotification(round)
+                      }
+                    >
+                      {isSnoozed ? 'Unsnooze' : 'Snooze'}
+                    </button>
+                  </div>
+                </div>
+              </Fragment>
+            );
+          })}
         </>
       )}
 
       <hr />
 
-      <BetaToggle betaTester={props.betaTester} toggleStates={props.toggleBetaTesting} />
+      <BetaToggle betaTester={betaTester} toggleStates={props.toggleBetaTesting} />
 
       <h4 id="privacy">Privacy</h4>
 
@@ -282,7 +282,7 @@ const SettingsContainer: React.FC<Props> = (props) => {
         <div className="col-md-4 text-right">
           <Toggle
             labels={['Load Manually', 'Always Load']}
-            isOn={props.loadDisqusManually}
+            isOn={loadDisqusManually}
             onChange={props.setLoadDisqusManually}
           />
         </div>

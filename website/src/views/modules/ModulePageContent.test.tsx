@@ -1,5 +1,5 @@
 import { Module } from 'types/modules';
-import { queryAllByAttribute, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 
 /** @var {Module} */
@@ -32,15 +32,11 @@ describe('ModulePageContent', () => {
   });
 
   test('side menu items should appear in the same order in the document', () => {
-    // Custom query that returns all elements containing id attribute
-    const getAllById = queryAllByAttribute.bind(null, 'id');
-
-    const { view } = make();
-
+    make();
     const orderedSideMenuItems = screen
       .getAllByRole('link')
       .map((elem) => elem.textContent?.toLowerCase());
-    const orderedDocumentItems = getAllById(view.container, 'side-menu-items').map((elem) => elem.id);
+    const orderedDocumentItems = screen.getAllByTestId('side-menu-items').map((elem) => elem.id);
     expect(orderedSideMenuItems).toEqual(orderedDocumentItems);
   });
 });

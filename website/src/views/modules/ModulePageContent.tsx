@@ -46,10 +46,9 @@ const SIDE_MENU_LABELS = {
 
 const SIDE_MENU_ITEMS = mapValues(SIDE_MENU_LABELS, kebabCase);
 
-const ModulePageContent: React.FC<Props> = (props) => {
+const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const { module, archiveYear } = props;
   const { moduleCode, title } = module;
 
   const pageTitle = `${moduleCode} ${title}`;
