@@ -16,6 +16,7 @@ const config = require('../src/config/app-config.json');
 
 const IS_CI = !!process.env.CI;
 const IS_NETLIFY = !!process.env.NETLIFY;
+const IS_VERCEL = !!process.env.VERCEL;
 
 const productionConfig = ({ browserWarningPath }) =>
   merge([
@@ -90,7 +91,7 @@ const productionConfig = ({ browserWarningPath }) =>
         new CopyWebpackPlugin({
           patterns: [{ from: 'static', context: parts.PATHS.root }],
         }),
-        IS_CI &&
+        IS_CI && !IS_VERCEL &&
           new PacktrackerPlugin({
             upload: true,
           }),
