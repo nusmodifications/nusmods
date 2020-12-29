@@ -62,12 +62,13 @@ function handleErrors(log, stats) {
 }
 
 /**
- * Write commit hash into `commit-hash.txt` for reference during deployment.
+ * Write commit hash into `commit-hash.txt`, which are used by
+ * scripts/promote-staging.sh and https://launch.nusmods.com.
  */
 async function writeCommitHash() {
   const { commitHash } = parts.appVersion();
   // Sync filename with `scripts/promote-staging.sh`.
-  return fs.writeFile(
+  return fs.outputFile(
     path.join(parts.PATHS.build, 'commit-hash.txt'),
     `${commitHash.slice(0, 7)}\n`,
   );
