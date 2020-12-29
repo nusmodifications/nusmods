@@ -79,10 +79,6 @@ async function buildProd(previousDistFileSizes) {
   try {
     log(chalk.cyan('Creating build...'));
 
-    // Remove dist folders
-    await fs.remove(parts.PATHS.build);
-    log(`${parts.PATHS.build} has been removed`);
-
     // Build the browser warning bundle first so we can pass it to the main bundle
     const browserWarningStats = await runWebpack(browserWarning);
     handleErrors((...args) => console.log('prod (browser-warning):', ...args), browserWarningStats);
@@ -102,8 +98,6 @@ async function buildProd(previousDistFileSizes) {
     log(chalk.green('Compiled successfully.'));
     log('File sizes after gzip:');
     printFileSizesAfterBuild(mainStats, previousDistFileSizes, parts.PATHS.build);
-
-    log(`The ${chalk.cyan(parts.PATHS.build)} folder is ready to be deployed.`);
   } catch (err) {
     printErrors(log, 'Failed to compile prod.', _.castArray(err));
     throw err;
@@ -117,14 +111,11 @@ async function buildTimetableOnly() {
   const log = (...args) => console.log('timetable-only:', ...args);
   try {
     log(chalk.cyan('Creating build...'));
-    await fs.remove(parts.PATHS.buildTimetable);
-    log(`${parts.PATHS.buildTimetable} has been removed`);
 
     const timetableOnlyStats = await runWebpack(timetableOnly);
     handleErrors(log, timetableOnlyStats);
 
     log(chalk.green('Compiled timetable-only successfully.'));
-    log(`The ${chalk.cyan(parts.PATHS.buildTimetable)} folder is ready to be deployed.`);
   } catch (err) {
     printErrors(log, 'Failed to compile timetable-only.', _.castArray(err));
     throw err;
@@ -166,6 +157,10 @@ async function main() {
   // This lets us display how much they changed later.
   const previousDistFileSizes = await measureFileSizesBeforeBuild(parts.PATHS.build);
 
+  // Clear previous build
+  await fs.remove(parts.PATHS.build);
+  console.log(`${parts.PATHS.build} has been removed`);
+
   try {
     await buildFn(previousDistFileSizes);
   } catch (e) {
@@ -175,6 +170,8 @@ async function main() {
   }
 
   await writeCommitHash();
+
+  console.log(`The ${chalk.cyan(parts.PATHS.build)} folder is ready to be deployed.`);
 }
 
 main();

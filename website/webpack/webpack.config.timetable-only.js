@@ -37,12 +37,8 @@ const productionConfig = merge([
     // You can exclude the *.map files from the build during deployment.
     devtool: 'source-map',
     output: {
-      // The build folder.
+      publicPath: parts.TIMETABLE_ONLY_PUBLIC_PATH,
       path: parts.PATHS.buildTimetable,
-      filename: __DEV__ ? '[contenthash].js' : '[chunkhash].js',
-      // This is used for require.ensure. The setup
-      // will work without but this is useful to set.
-      chunkFilename: '[chunkhash].js',
     },
     plugins: [
       new HtmlWebpackPlugin({
