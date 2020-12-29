@@ -1,12 +1,13 @@
-version: 2
+version: 2.1
 
-defaults: &defaults
-  docker:
-    - image: circleci/node:12
+executors:
+  node-executor:
+    docker:
+      - image: circleci/node:12
 
 jobs:
   checkout:
-    <<: *defaults
+    executor: node-executor
     working_directory: ~/nusmods
     steps:
       - checkout
@@ -17,7 +18,7 @@ jobs:
             - .
 
   nus-scrapers:
-    <<: *defaults
+    executor: node-executor
     working_directory: ~/nusmods/scrapers/nus-v2
     steps:
       - attach_workspace:
@@ -32,7 +33,7 @@ jobs:
           command: yarn build
 
   nusmoderator:
-    <<: *defaults
+    executor: node-executor
     working_directory: ~/nusmods/packages/nusmoderator
     steps:
       - attach_workspace:
@@ -48,7 +49,7 @@ jobs:
           path: README.md
 
   website:
-    <<: *defaults
+    executor: node-executor
     working_directory: ~/nusmods/website
     environment:
       NODE_ENV: production
@@ -94,7 +95,6 @@ jobs:
           path: dist
 
 workflows:
-  version: 2
   build_and_test:
     jobs:
       - checkout
