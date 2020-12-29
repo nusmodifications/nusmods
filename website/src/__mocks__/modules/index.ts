@@ -1,4 +1,4 @@
-import { Module } from 'types/modules';
+import type { Module } from 'types/modules';
 
 import ACC2002_JSON from './ACC2002.json';
 import BFS1001_JSON from './BFS1001.json';

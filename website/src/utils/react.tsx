@@ -84,8 +84,7 @@ export function wrapComponentName<T>(Component: React.ComponentType<T>, wrapper:
  * the component is not loaded on initial page load (ie. the element is not in the DOM when
  * the page is initially loaded), but has content that can be linked to via hashes.
  */
-export function scrollToHash() {
-  const { hash } = window.location;
+export function scrollToHash(hash: string) {
   if (hash) {
     const ele = document.getElementById(hash.slice(1)); // Hash string contains the '#' character
     if (ele) {

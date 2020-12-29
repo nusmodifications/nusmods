@@ -158,7 +158,7 @@ class SettingsContainer extends Component<Props, State> {
 
     return (
       <div className={classnames(styles.settingsPage, 'page-container')}>
-        <ScrollToTop onComponentDidMount />
+        <ScrollToTop />
         <Title>Settings</Title>
 
         <Online>

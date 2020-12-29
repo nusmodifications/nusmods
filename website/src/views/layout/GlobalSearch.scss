@@ -25,7 +25,6 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
 
 .icon {
   position: absolute;
-  top: 0.3rem; // For Safari 9
   right: $icon-dist + $container-padding;
   width: $icon-size;
   height: $icon-size;
@@ -112,6 +111,7 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
 
 .selectHeader {
   composes: item;
+  flex-direction: row-reverse;
   justify-content: space-between;
   border-bottom: 1px solid var(--gray-lighter);
   font-size: 0.95rem;

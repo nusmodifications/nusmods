@@ -105,6 +105,7 @@ module.exports = {
   // Mimic the globals we set with Webpack's DefinePlugin
   globals: {
     __DEV__: 'readonly',
+    __TEST__: 'readonly',
     DATA_API_BASE_URL: 'readonly',
     VERSION_STR: 'readonly',
     DISPLAY_COMMIT_HASH: 'readonly',

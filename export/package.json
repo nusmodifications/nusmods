@@ -17,7 +17,7 @@
     "lint": "prettier --write"
   },
   "dependencies": {
-    "@sentry/node": "5.27.6",
+    "@sentry/node": "5.29.2",
     "axios": "0.21.0",
     "bunyan": "1.8.14",
     "fs-extra": "9.0.1",

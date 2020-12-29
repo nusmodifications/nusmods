@@ -23,6 +23,7 @@ const productionConfig = ({ browserWarningPath }) =>
       plugins: [
         new webpack.DefinePlugin({
           __DEV__: false,
+          __TEST__: false,
           DISPLAY_COMMIT_HASH: JSON.stringify(parts.appVersion().commitHash),
           VERSION_STR: JSON.stringify(parts.appVersion().versionStr),
           DEBUG_SERVICE_WORKER: !!process.env.DEBUG_SERVICE_WORKER,
@@ -103,10 +104,6 @@ const productionConfig = ({ browserWarningPath }) =>
           new TerserJsPlugin({
             terserOptions: {
               compress: {
-                // Terser enables arrow functions after Babel transpilation,
-                // which breaks targets that have no support for arrow fns.
-                // When we drop support for Safari 9.1, we can re-enable this.
-                arrows: false,
                 // Two passes yield the most optimal results
                 passes: 2,
               },

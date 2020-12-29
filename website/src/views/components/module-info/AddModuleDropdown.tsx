@@ -120,34 +120,39 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
               </button>
 
               {!!otherSemesters.length && (
-                <button
-                  id={id}
-                  type="button"
-                  className="btn btn-outline-primary dropdown-toggle dropdown-toggle-split"
-                  onClick={() => toggleMenu()}
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded={isOpen}
-                >
-                  <span className="sr-only">Toggle Dropdown</span>
-                </button>
-              )}
-
-              <div className={classnames('dropdown-menu', { show: isOpen })} {...getMenuProps()}>
-                {otherSemesters.map((semester, index) => (
+                <>
                   <button
-                    {...getItemProps({ item: semester })}
+                    id={id}
                     type="button"
-                    key={semester}
-                    className={classnames('dropdown-item', styles.dropdownItem, {
-                      'dropdown-selected': index === highlightedIndex,
-                    })}
-                    onClick={() => this.onSelect(semester)}
+                    className="btn btn-outline-primary dropdown-toggle dropdown-toggle-split"
+                    onClick={() => toggleMenu()}
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded={isOpen}
                   >
-                    {this.buttonLabel(semester)}
+                    <span className="sr-only">Toggle Dropdown</span>
                   </button>
-                ))}
-              </div>
+
+                  <div
+                    className={classnames('dropdown-menu', { show: isOpen })}
+                    {...getMenuProps()}
+                  >
+                    {otherSemesters.map((semester, index) => (
+                      <button
+                        {...getItemProps({ item: semester })}
+                        type="button"
+                        key={semester}
+                        className={classnames('dropdown-item', styles.dropdownItem, {
+                          'dropdown-selected': index === highlightedIndex,
+                        })}
+                        onClick={() => this.onSelect(semester)}
+                      >
+                        {this.buttonLabel(semester)}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
           </div>
         )}

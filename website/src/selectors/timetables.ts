@@ -1,10 +1,11 @@
-import { ModuleCode, Semester } from 'types/modules';
+import { createSelector } from 'reselect';
+
+import type { ModuleCode, Semester } from 'types/modules';
+import type { State } from 'types/state';
+
+import { fetchArchiveRequest } from 'actions/constants';
 import config from 'config';
 import { isOngoing, isSuccess } from 'selectors/requests';
-import { State } from 'types/state';
-import { fetchArchiveRequest } from 'actions/constants';
-import { ColorMapping, TimetablesState } from 'types/reducers';
-import { SemTimetableConfig } from 'types/timetables';
 
 export function isArchiveLoading(state: State, moduleCode: ModuleCode) {
   return config.archiveYears.some((year) =>
@@ -18,14 +19,22 @@ export function availableArchive(state: State, moduleCode: ModuleCode): string[]
   );
 }
 
-// Extract sem timetable and colors for a specific semester from TimetablesState
 const EMPTY_OBJECT = {};
-export function getSemesterTimetable(
-  semester: Semester,
-  state: TimetablesState,
-): { timetable: SemTimetableConfig; colors: ColorMapping } {
-  return {
-    timetable: state.lessons[semester] || EMPTY_OBJECT,
-    colors: state.colors[semester] || EMPTY_OBJECT,
-  };
-}
+
+/**
+ * Extract semester timetable lessons for a specific semester.
+ */
+export const getSemesterTimetableLessons = createSelector(
+  ({ timetables }: State) => timetables.lessons,
+  (lessons) => (semester: Semester | null) =>
+    semester === null ? EMPTY_OBJECT : lessons[semester] ?? EMPTY_OBJECT,
+);
+
+/**
+ * Extract semester timetable colors for a specific semester.
+ */
+export const getSemesterTimetableColors = createSelector(
+  ({ timetables }: State) => timetables.colors,
+  (colors) => (semester: Semester | null) =>
+    semester === null ? EMPTY_OBJECT : colors[semester] ?? EMPTY_OBJECT,
+);

@@ -8,7 +8,7 @@ import { Module, ModuleCode, Semester } from 'types/modules';
 import { AlertTriangle } from 'react-feather';
 import { getModuleSemesterData } from 'utils/modules';
 import { getSemesterModules } from 'utils/timetables';
-import { getSemesterTimetable } from 'selectors/timetables';
+import { getSemesterTimetableLessons } from 'selectors/timetables';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import { State } from 'types/state';
 
@@ -60,7 +60,7 @@ export const ModuleExamClashComponent: React.FC<Props> = ({
 };
 
 export default connect((state: State, ownProps: OwnProps) => {
-  const { timetable } = getSemesterTimetable(ownProps.semester, state.timetables);
+  const timetable = getSemesterTimetableLessons(state)(ownProps.semester);
   const modulesMap = state.moduleBank.modules;
   return { modules: getSemesterModules(timetable, modulesMap) };
 })(React.memo(ModuleExamClashComponent));

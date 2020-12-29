@@ -42,7 +42,7 @@
     },
     {
       "extends": "monorepo:jest",
-      "packagePatterns": ["(jest|enzyme|mock)"],
+      "packagePatterns": ["(jest|enzyme|mock)", "^@testing-library/*"],
       "packageNames": ["identity-obj-proxy"],
       "groupName": "test"
     },
@@ -92,6 +92,6 @@
       "extends": ["config:js-lib"]
     }
   ],
-  "ignorePaths": ["scrapers/nus", ".nvmrc"],
+  "ignorePaths": [".nvmrc"],
   "prHourlyLimit": 0
 }

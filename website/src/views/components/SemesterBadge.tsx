@@ -25,6 +25,7 @@ const SemesterBadge: React.FC<Props> = ({ className, semesters }) => (
         key={semester}
         className={classnames('badge', BADGE_COLOR[semester])}
         title={config.semesterNames[semester]}
+        aria-label={config.semesterNames[semester]}
       >
         {config.shortSemesterNames[semester]}
       </span>

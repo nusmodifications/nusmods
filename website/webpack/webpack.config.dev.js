@@ -17,6 +17,7 @@ const developmentConfig = merge([
     plugins: [
       new webpack.DefinePlugin({
         __DEV__: true,
+        __TEST__: false,
         DISPLAY_COMMIT_HASH: JSON.stringify(parts.appVersion().commitHash),
         VERSION_STR: JSON.stringify(parts.appVersion().versionStr),
         DEBUG_SERVICE_WORKER: !!process.env.DEBUG_SERVICE_WORKER,
@@ -83,10 +84,6 @@ const developmentConfig = merge([
       new ReactRefreshWebpackPlugin(),
     ],
   },
-  parts.lintJavaScript({
-    include: parts.PATHS.src,
-  }),
-  parts.lintCSS(),
   parts.loadImages({
     include: parts.PATHS.images,
   }),

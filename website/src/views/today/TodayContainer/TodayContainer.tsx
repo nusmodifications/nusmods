@@ -28,7 +28,7 @@ import {
 } from 'utils/timetables';
 import { captureException } from 'utils/error';
 import Title from 'views/components/Title';
-import { getSemesterTimetable } from 'selectors/timetables';
+import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
 import ExternalLink from 'views/components/ExternalLink';
 import * as weatherAPI from 'apis/weather';
 import config from 'config';
@@ -349,7 +349,8 @@ export const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
   const lastDay = addDays(ownProps.currentTime, DAYS);
   const weekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(lastDay);
   const semester = semesterNameMap[weekInfo.sem];
-  const { timetable, colors } = getSemesterTimetable(semester, state.timetables);
+  const timetable = getSemesterTimetableLessons(state)(semester);
+  const colors = getSemesterTimetableColors(state)(semester);
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
 
   return {
