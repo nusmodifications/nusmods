@@ -1,13 +1,21 @@
-const fs = require('fs-extra');
-const puppeteer = require('puppeteer');
+import fs from 'fs-extra';
+import puppeteer, { Page } from 'puppeteer';
+import type { Middleware } from 'koa';
 
-const config = require('./config');
-const { getModules } = require('./data');
+import { getModules } from './data';
+import config from './config';
+import type { PageData, State } from './types';
 
 // Arbitrarily high number - just make sure it doesn't clip the timetable
 const VIEWPORT_HEIGHT = 2000;
 
-async function setViewport(page, options = {}) {
+export interface ViewportOptions {
+  pixelRatio?: number;
+  width?: number;
+  height?: number;
+}
+
+async function setViewport(page: Page, options: ViewportOptions = {}) {
   await page.setViewport({
     deviceScaleFactor: options.pixelRatio || 1,
     width: options.width || config.pageWidth,
@@ -15,7 +23,7 @@ async function setViewport(page, options = {}) {
   });
 }
 
-async function launch() {
+export async function launch() {
   const browser = await puppeteer.launch({
     executablePath: config.chromeExecutable,
     devtools: !!process.env.DEVTOOLS,
@@ -40,8 +48,8 @@ async function launch() {
   return browser;
 }
 
-async function openPage(ctx, next) {
-  let page;
+export const openPage: Middleware<State> = async (ctx, next) => {
+  let page: Page;
   try {
     page = await ctx.browser.newPage();
   } catch (e) {
@@ -61,10 +69,10 @@ async function openPage(ctx, next) {
 
   await next();
 
-  ctx.state.page.close();
-}
+  await ctx.state.page.close();
+};
 
-async function injectData(page, data) {
+async function injectData(page: Page, data: PageData) {
   const moduleCodes = Object.keys(data.timetable);
   const modules = await getModules(moduleCodes);
 
@@ -78,10 +86,10 @@ async function injectData(page, data) {
   const appEle = await page.$('#timetable-only');
   if (!appEle) throw new Error('#timetable-only element not found');
 
-  return appEle.boundingBox();
+  return (await appEle.boundingBox()) || undefined;
 }
 
-async function image(page, data, options = {}) {
+export async function image(page: Page, data: PageData, options: ViewportOptions = {}) {
   if (options.pixelRatio || (options.height && options.width)) {
     await setViewport(page, options);
   }
@@ -92,7 +100,7 @@ async function image(page, data, options = {}) {
   });
 }
 
-async function pdf(page, data) {
+export async function pdf(page: Page, data: PageData) {
   await injectData(page, data);
   await page.emulateMediaType('screen');
 
@@ -102,10 +110,3 @@ async function pdf(page, data) {
     landscape: data.theme.timetableOrientation === 'HORIZONTAL',
   });
 }
-
-module.exports = {
-  launch,
-  openPage,
-  image,
-  pdf,
-};

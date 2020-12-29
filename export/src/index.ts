@@ -1,15 +1,15 @@
-const fs = require('fs-extra');
-const Sentry = require('@sentry/node');
-const gracefulShutdown = require('http-graceful-shutdown');
+import fs from 'fs-extra';
+import * as Sentry from '@sentry/node';
+import gracefulShutdown from 'http-graceful-shutdown';
 
-const config = require('./config');
-const app = require('./app');
-const render = require('./render');
+import config from './config';
+import app from './app';
+import * as render from './render';
 
 // Config check
 if (!config.academicYear || !/\d{4}-\d{4}/.test(config.academicYear)) {
   throw new Error(
-    'academicYear is not set - check config.js. ' +
+    'academicYear is not set - check config.ts. ' +
       'This should be in the form of <year>-<year> (e.g. 2019-2020).',
   );
 }
@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === 'production') {
     (!fs.existsSync(config.moduleData) || !fs.lstatSync(config.moduleData).isDirectory())
   ) {
     throw new Error(
-      'moduleData path does not exist or is not a directory - check config.js. ' +
+      'moduleData path does not exist or is not a directory - check config.ts. ' +
         'This should be the path to the api/v2/<academic year>/modules folder.',
     );
   }
@@ -32,7 +32,7 @@ if (process.env.NODE_ENV === 'production') {
     });
   } else {
     // TODO: Replace with Bunyan log?
-    console.error('[WARNING] Sentry DSN is not specified - check config.js');
+    console.error('[WARNING] Sentry DSN is not specified - check config.ts');
   }
 }
 
@@ -50,7 +50,7 @@ render
       app.context.pageContent = await fs.readFile(config.page, 'utf-8');
     }
 
-    const server = app.listen(process.env.PORT || 3000, process.env.HOST);
+    const server = app.listen(Number(process.env.PORT) || 3000, process.env.HOST);
     console.log('Export server started');
 
     gracefulShutdown(server);

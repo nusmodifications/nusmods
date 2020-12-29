@@ -1,15 +1,17 @@
-const Koa = require('koa');
-const Router = require('koa-router');
-const views = require('koa-views');
-const Sentry = require('@sentry/node');
-const _ = require('lodash');
+import Koa from 'koa';
+import Router from 'koa-router';
+import views from 'koa-views';
+import * as Sentry from '@sentry/node';
 
-const render = require('./render');
-const data = require('./data');
-const config = require('./config');
+import _ from 'lodash';
+
+import * as render from './render';
+import * as data from './data';
+import config from './config';
+import type { State } from './types';
 
 // Start router
-const app = new Koa();
+const app = new Koa<State>();
 const router = new Router();
 
 router
@@ -18,7 +20,7 @@ router
     const { height, width } = ctx.query;
 
     // Validate options
-    let options = {
+    let options: render.ViewportOptions = {
       pixelRatio: _.clamp(Number(ctx.query.pixelRatio) || 1, 1, 3),
     };
 
@@ -51,7 +53,7 @@ router
   });
 
 // Error handling
-const errorHandler = async (ctx, next) => {
+const errorHandler: Koa.Middleware<State> = async (ctx, next) => {
   try {
     await next();
 
@@ -91,4 +93,4 @@ app
   .use(router.routes())
   .use(router.allowedMethods());
 
-module.exports = app;
+export default app;

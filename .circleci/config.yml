@@ -47,6 +47,21 @@ jobs:
       - store_artifacts:
           path: README.md
 
+  export:
+    <<: *defaults
+    working_directory: ~/nusmods/export
+    steps:
+      - attach_workspace:
+          at: ~/nusmods
+      - run: yarn --frozen-lockfile --non-interactive
+      - run: yarn prettier --check src
+      - run: yarn build
+      - run:
+          name: Build export service
+          environment:
+            NODE_ENV: production
+          command: yarn build
+
   website:
     <<: *defaults
     working_directory: ~/nusmods/website
@@ -102,6 +117,9 @@ workflows:
           requires:
             - checkout
       - nusmoderator:
+          requires:
+            - checkout
+      - export:
           requires:
             - checkout
       - website:
