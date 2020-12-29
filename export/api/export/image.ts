@@ -56,12 +56,9 @@ const handler: NowApiHandler = async (request, response) => {
 
   // Do the exporting
   const body = await render.pdf(page, data);
-  response
-    .writeHead(200, {
-      'Content-Disposition': 'attachment; filename="My Timetable.pdf"',
-      'Content-Type': 'application/pdf',
-    })
-    .send(body);
+  response.setHeader('Content-Disposition', 'attachment; filename="My Timetable.pdf"');
+  response.setHeader('Content-Type', 'application/pdf');
+  response.status(200).send(body);
 
   await page.close();
 };
