@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  report: packtracker/report@2.3.0
+
 executors:
   node-executor:
     docker:
@@ -89,6 +92,7 @@ jobs:
       - run:
           name: Build web page
           command: yarn build
+      - packtracker/report
       - store_test_results:
           path: reports/junit
       - store_artifacts:
