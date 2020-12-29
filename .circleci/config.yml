@@ -90,8 +90,8 @@ jobs:
             set -e
             yarn test:integration --runInBand
       - run:
-          name: Build web page
-          command: yarn build
+          name: Build
+          command: yarn build all
       - packtracker/report
       - store_test_results:
           path: reports/junit

@@ -1,8 +1,8 @@
 FROM node:12-alpine
 
 RUN apk update && \
-    apk add --no-cache git python build-base && \
-    mkdir -p /home/node/app
+  apk add --no-cache git python build-base && \
+  mkdir -p /home/node/app
 
 WORKDIR /home/node/app/website
 
@@ -22,7 +22,7 @@ COPY ./website/src/ ./src
 
 ARG DATA_API_BASE_URL
 ARG GIT_COMMIT_HASH
-RUN yarn build
+RUN yarn build all
 
 FROM abiosoft/caddy:no-stats
 
