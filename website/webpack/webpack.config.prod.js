@@ -91,7 +91,8 @@ const productionConfig = ({ browserWarningPath }) =>
         new CopyWebpackPlugin({
           patterns: [{ from: 'static', context: parts.PATHS.root }],
         }),
-        IS_CI && !IS_VERCEL &&
+        IS_CI &&
+          !IS_VERCEL &&
           new PacktrackerPlugin({
             upload: true,
           }),
