@@ -2,6 +2,7 @@ import chromium from 'chrome-aws-lambda';
 import type { Page } from 'puppeteer';
 
 import { getModules } from './data';
+import config from './config';
 import type { PageData } from './types';
 
 // Arbitrarily high number - just make sure it doesn't clip the timetable
@@ -14,12 +15,11 @@ export interface ViewportOptions {
 }
 
 async function setViewport(page: Page, options: ViewportOptions = {}) {
-  // TODO:
-  // await page.setViewport({
-  //   deviceScaleFactor: options.pixelRatio || 1,
-  //   width: options.width || config.pageWidth,
-  //   height: options.height || VIEWPORT_HEIGHT,
-  // });
+  await page.setViewport({
+    deviceScaleFactor: options.pixelRatio || 1,
+    width: options.width || config.pageWidth,
+    height: options.height || VIEWPORT_HEIGHT,
+  });
 }
 
 export async function open(url: string) {
@@ -33,6 +33,7 @@ export async function open(url: string) {
 
   const page = await browser.newPage();
   await page.goto(url, { waitUntil: 'load' });
+  await setViewport(page);
 
   return page;
 }

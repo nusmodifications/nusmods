@@ -254,6 +254,11 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.27.tgz#eb3843f15d0ba0986cc7e4d734d2ee8b50709ef8"
   integrity sha512-e9wgeY6gaY21on3ve0xAjgBVjGDWq/xUteK0ujsE53bUoxycMkqfnkUgMt6ffZtykZ5X12Mg3T7Pw4TRCObDKg==
 
+"@types/pug@^2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@types/pug/-/pug-2.0.4.tgz#8772fcd0418e3cd2cc171555d73007415051f4b2"
+  integrity sha1-h3L80EGOPNLMFxVV1zAHQVBR9LI=
+
 "@types/puppeteer@5.4.0":
   version "5.4.0"
   resolved "https://registry.yarnpkg.com/@types/puppeteer/-/puppeteer-5.4.0.tgz#1ef860bd7a9dcf0c4633aac8c0ec21f75b431868"
@@ -286,16 +291,6 @@
   dependencies:
     "@types/node" "*"
 
-"@vercel/build-utils@2.6.1-canary.0":
-  version "2.6.1-canary.0"
-  resolved "https://registry.yarnpkg.com/@vercel/build-utils/-/build-utils-2.6.1-canary.0.tgz#ba549e7817c5a13e9ce271f88db3c3b9432d0d8b"
-  integrity sha512-lwTNPC4xCTeqzdHSsfIzHD5h/SwwcIemA5MDRUVdFEuYyF9X38i5A01ad1l/WedCQDi7IP3Q1IGOJ9g7XKJXOg==
-
-"@vercel/go@1.1.6":
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/@vercel/go/-/go-1.1.6.tgz#45ac3a6bd98a15b8bf1028b8c141a51fd971ac15"
-  integrity sha512-swA2crS08fkPmw4UkR9yjmoL8FOCzuNHLFDqj8oM1V9ni610ibJ7Xk57jI8uyS7bTecQVh8VUxihb+SF0GT+aw==
-
 "@vercel/node@1.8.5":
   version "1.8.5"
   resolved "https://registry.yarnpkg.com/@vercel/node/-/node-1.8.5.tgz#2c8b9532f1bb25734a9964c52973386ed78022d4"
@@ -304,16 +299,6 @@
     "@types/node" "*"
     ts-node "8.9.1"
     typescript "3.9.3"
-
-"@vercel/python@1.2.3":
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/@vercel/python/-/python-1.2.3.tgz#23ebb71c753fe1cc75fe186c89fc0af04c950191"
-  integrity sha512-DJRvL6bmt4m0xrkzSKUbP8mK57YSDdTBWoo0JYyXq/o2golQrv/wQTalbNchd4P8NhVL3mZuk/1JNYuv5u1rKQ==
-
-"@vercel/ruby@1.2.4":
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/@vercel/ruby/-/ruby-1.2.4.tgz#60e0a91d7a1a730a7ecdbc6e095acb95f28f24be"
-  integrity sha512-g19vrrmJ4MTJCRB/bvx8DahIsml1iPn7wsdHf5k3QVN6lT0dlDILSBwpERC4hqzndimaApsmWOfjYtY9/L6+tQ==
 
 abbrev@1:
   version "1.1.1"
@@ -2645,25 +2630,6 @@ universalify@^1.0.0:
   resolved "https://registry.yarnpkg.com/universalify/-/universalify-1.0.0.tgz#b61a1da173e8435b2fe3c67d29b9adf8594bd16d"
   integrity sha512-rb6X1W158d7pRQBg5gkR8uPaSfiids68LTJQYOtEUhoJUWBdaQHsuT/EUduxXYxcrt4r5PJ4fuHW1MHT6p0qug==
 
-update-notifier@4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/update-notifier/-/update-notifier-4.1.0.tgz#4866b98c3bc5b5473c020b1250583628f9a328f3"
-  integrity sha512-w3doE1qtI0/ZmgeoDoARmI5fjDoT93IfKgEGqm26dGUOh8oNpaSTsGNdYRN/SjOuo10jcJGwkEL3mroKzktkew==
-  dependencies:
-    boxen "^4.2.0"
-    chalk "^3.0.0"
-    configstore "^5.0.1"
-    has-yarn "^2.1.0"
-    import-lazy "^2.1.0"
-    is-ci "^2.0.0"
-    is-installed-globally "^0.3.1"
-    is-npm "^4.0.0"
-    is-yarn-global "^0.3.0"
-    latest-version "^5.0.0"
-    pupa "^2.0.1"
-    semver-diff "^3.1.1"
-    xdg-basedir "^4.0.0"
-
 update-notifier@^4.1.0:
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/update-notifier/-/update-notifier-4.1.3.tgz#be86ee13e8ce48fb50043ff72057b5bd598e1ea3"
@@ -2707,18 +2673,6 @@ vary@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
-
-vercel@21.0.1:
-  version "21.0.1"
-  resolved "https://registry.yarnpkg.com/vercel/-/vercel-21.0.1.tgz#85d8052dcdf93f9fc62b6404d3a8cd8b8a1b2874"
-  integrity sha512-N3xS1ydENdtC/i4RrJXg7Z9C0XSA8c0PQSM58WG+TkYY7BvSihv5kLqQHjzj9AXHkaY76bTfEpSLi1kmp0PjnQ==
-  dependencies:
-    "@vercel/build-utils" "2.6.1-canary.0"
-    "@vercel/go" "1.1.6"
-    "@vercel/node" "1.8.5"
-    "@vercel/python" "1.2.3"
-    "@vercel/ruby" "1.2.4"
-    update-notifier "4.1.0"
 
 void-elements@^3.1.0:
   version "3.1.0"

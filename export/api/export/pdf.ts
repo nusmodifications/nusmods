@@ -1,7 +1,6 @@
 import * as Sentry from '@sentry/node';
 import type { NowApiHandler, NowRequest, NowResponse } from '@vercel/node';
 import type { Page } from 'puppeteer';
-import _ from 'lodash';
 
 import * as render from '../../src/render-serverless';
 import config from '../../src/config';
@@ -42,22 +41,6 @@ async function main(request: NowRequest, response: NowResponse) {
     throw new HttpError(422, 'Invalid timetable data', e);
   }
 
-  let options: render.ViewportOptions = {
-    pixelRatio: _.clamp(Number(request.query.pixelRatio) || 1, 1, 3),
-  };
-  const height = Number(request.query.height);
-  const width = Number(request.query.width);
-  if (
-    typeof height !== 'undefined' &&
-    typeof width !== 'undefined' &&
-    !Number.isNaN(height) && // accept floats
-    !Number.isNaN(width) && // accept floats
-    height > 0 &&
-    width > 0
-  ) {
-    options = { ...options, height, width };
-  }
-
   // Prepare browser for export
   const url = config.page;
   let page: Page;
@@ -75,9 +58,9 @@ async function main(request: NowRequest, response: NowResponse) {
   }
 
   // Export
-  const body = await render.image(page, data, options);
-  response.setHeader('Content-Disposition', 'attachment; filename="My Timetable.png"');
-  response.setHeader('Content-Type', 'image/png');
+  const body = await render.pdf(page, data);
+  response.setHeader('Content-Disposition', 'attachment; filename="My Timetable.pdf"');
+  response.setHeader('Content-Type', 'application/pdf');
   response.status(200).send(body);
 
   // Cleanup
