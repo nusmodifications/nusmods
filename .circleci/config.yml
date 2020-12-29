@@ -49,7 +49,7 @@ jobs:
           path: README.md
 
   export:
-    <<: *defaults
+    executor: node-executor
     working_directory: ~/nusmods/export
     steps:
       - attach_workspace:
