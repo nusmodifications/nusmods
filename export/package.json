@@ -11,8 +11,9 @@
     "build": "tsc",
     "nodemon": "nodemon --no-update-notifier -r dotenv/config ./build/index.js",
     "watch": "tsc --watch",
-    "dev": "run-p nodemon watch",
+    "dev:no": "run-p nodemon watch",
     "devtools": "cross-env DEVTOOLS=1 yarn dev",
+    "dev:vercel": "vercel dev",
     "deploy": "rsync -avu --delete-after . ../../nusmods-export && pm2 restart ecosystem.config.js",
     "lint": "prettier --write"
   },
@@ -20,6 +21,7 @@
     "@sentry/node": "5.29.2",
     "axios": "0.21.0",
     "bunyan": "1.8.14",
+    "chrome-aws-lambda": "5.5.0",
     "fs-extra": "9.0.1",
     "http-graceful-shutdown": "2.3.2",
     "koa": "2.13.0",
@@ -28,7 +30,7 @@
     "lodash": "4.17.20",
     "nodemon": "2.0.6",
     "pug": "3.0.0",
-    "puppeteer": "5.5.0"
+    "puppeteer-core": "5.5.0"
   },
   "devDependencies": {
     "@types/fs-extra": "9.0.4",
@@ -38,10 +40,13 @@
     "@types/lodash": "4.14.165",
     "@types/node": "14.14.10",
     "@types/puppeteer": "5.4.0",
+    "@vercel/node": "1.8.5",
     "cross-env": "7.0.2",
     "dotenv": "8.2.0",
     "npm-run-all": "4.1.5",
     "prettier": "2.2.1",
-    "typescript": "4.1.2"
+    "puppeteer": "5.5.0",
+    "typescript": "4.1.2",
+    "vercel": "21.0.1"
   }
 }
