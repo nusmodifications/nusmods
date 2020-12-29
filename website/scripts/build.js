@@ -122,35 +122,18 @@ async function buildTimetableOnly() {
   }
 }
 
-const targets = {
-  prod: buildProd,
-  'timetable-only': buildTimetableOnly,
-
-  async all(previousDistFileSizes) {
-    const results = await Promise.allSettled(
-      Object.entries(targets)
-        .filter(([target]) => target !== 'all')
-        .map(([, buildFn]) => buildFn(previousDistFileSizes)),
-    );
-    const errors = results.filter((r) => r.status === 'rejected').map((r) => r.reason);
-    if (errors.length > 0) {
-      throw errors;
-    }
-  },
-};
+async function buildAll(previousDistFileSizes) {
+  const results = await Promise.allSettled([
+    buildProd(previousDistFileSizes),
+    buildTimetableOnly(),
+  ]);
+  const errors = results.filter((r) => r.status === 'rejected').map((r) => r.reason);
+  if (errors.length > 0) {
+    throw errors;
+  }
+}
 
 async function main() {
-  const args = process.argv.slice(2);
-
-  const targetName = args[0];
-  if (!targetName || !Object.keys(targets).includes(targetName)) {
-    console.error(
-      `Please specify a valid build target. Available options: ${Object.keys(targets).join(', ')}`,
-    );
-    process.exit(1);
-  }
-  const buildFn = targets[targetName];
-
   console.log('Building version', chalk.cyan(parts.appVersion().versionStr));
 
   // First, read the current file sizes in build directory.
@@ -162,7 +145,7 @@ async function main() {
   console.log(`${parts.PATHS.build} has been removed`);
 
   try {
-    await buildFn(previousDistFileSizes);
+    await buildAll(previousDistFileSizes);
   } catch (e) {
     // errors should've been logged by the respective build functions.
     console.log('Build failed.');

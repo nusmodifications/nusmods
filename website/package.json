@@ -17,7 +17,7 @@
     "test:integration": "jest --config jest.integration.config.js",
     "test:watch": "jest --watch",
     "e2e": "nightwatch -e default,safariMobile,safariDesktop,edge",
-    "ci": "cross-env NODE_ENV=production yarn lint && yarn typecheck && yarn test && yarn test:integration && npm rebuild node-sass && yarn build all"
+    "ci": "cross-env NODE_ENV=production yarn lint && yarn typecheck && yarn test && yarn test:integration && npm rebuild node-sass && yarn build"
   },
   "author": "NUSModifications",
   "license": "MIT",

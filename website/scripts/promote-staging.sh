@@ -14,7 +14,7 @@ echo "Promote $FRONTEND_STAGING_DIR to production at $FRONTEND_PROD_DIR."
 
 # Ensure that staging exists
 if [[ ! -d $FRONTEND_STAGING_DIR || ! -d $TIMETABLE_ONLY_STAGING_DIR ]]; then
-  echo "Staging directory does not exist! You should probably run yarn build all first"
+  echo "Staging directory does not exist! You should probably run yarn build first"
   echo "Aborting"
   exit 1
 fi

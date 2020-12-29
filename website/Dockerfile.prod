@@ -22,7 +22,7 @@ COPY ./website/src/ ./src
 
 ARG DATA_API_BASE_URL
 ARG GIT_COMMIT_HASH
-RUN yarn build all
+RUN yarn build
 
 FROM abiosoft/caddy:no-stats
 
