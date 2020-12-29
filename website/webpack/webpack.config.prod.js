@@ -6,7 +6,6 @@ const { merge } = require('webpack-merge');
 const TerserJsPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const PacktrackerPlugin = require('@packtracker/webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 
 const commonConfig = require('./webpack.config.common');
@@ -16,7 +15,6 @@ const config = require('../src/config/app-config.json');
 
 const IS_CI = !!process.env.CI;
 const IS_NETLIFY = !!process.env.NETLIFY;
-const IS_VERCEL = !!process.env.VERCEL;
 
 const productionConfig = ({ browserWarningPath }) =>
   merge([
@@ -91,10 +89,6 @@ const productionConfig = ({ browserWarningPath }) =>
         new CopyWebpackPlugin({
           patterns: [{ from: 'static', context: parts.PATHS.root }],
         }),
-        IS_CI && !IS_VERCEL &&
-          new PacktrackerPlugin({
-            upload: true,
-          }),
         (IS_CI || IS_NETLIFY) &&
           new CopyWebpackPlugin({
             patterns: [{ from: 'static-ci', context: parts.PATHS.root }],
