@@ -55,7 +55,7 @@
     "date-fns": "2.0.0-alpha.27",
     "deep-diff": "1.0.2",
     "fs-extra": "7.0.1",
-    "joi": "14.3.1",
+    "joi": "17.3.0",
     "lodash": "4.17.11",
     "nusmoderator": "3.0.0",
     "oboe": "2.1.5",
