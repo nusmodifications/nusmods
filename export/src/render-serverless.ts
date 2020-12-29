@@ -1,9 +1,8 @@
-import fs from 'fs-extra';
-import chromium, { Page } from 'chrome-aws-lambda';
+import chromium from 'chrome-aws-lambda';
+import type { Page } from 'puppeteer';
 
 import { getModules } from './data';
-import config from './config';
-import type { PageData, State } from './types';
+import type { PageData } from './types';
 
 // Arbitrarily high number - just make sure it doesn't clip the timetable
 const VIEWPORT_HEIGHT = 2000;
@@ -23,19 +22,9 @@ async function setViewport(page: Page, options: ViewportOptions = {}) {
   // });
 }
 
-export async function launch() {
-  const executablePath = await chromium.executablePath;
-  console.log('EXECUTABLE PATH', executablePath);
+export async function open(url: string) {
   const browser = await chromium.puppeteer.launch({
-    // executablePath: config.chromeExecutable,
     // devtools: !!process.env.DEVTOOLS, // TODO: Query string && __DEV__?
-    // args: [
-    //   '--headless',
-    //   '--disable-gpu',
-    //   '--disable-software-rasterizer',
-    //   '--disable-dev-shm-usage',
-    // ],
-
     args: chromium.args,
     defaultViewport: chromium.defaultViewport,
     executablePath: await chromium.executablePath,
@@ -43,23 +32,15 @@ export async function launch() {
   });
 
   const page = await browser.newPage();
+  await page.goto(url, { waitUntil: 'load' });
 
-  // If config.page is local, use setContent. Otherwise connect to the page using goto.
-  if (/^https?:\/\//.test(config.page)) {
-    await page.goto(config.page);
-  } else {
-    const content = await fs.readFile(config.page, 'utf-8');
-    await page.setContent(content);
-  }
-
-  return browser;
+  return page;
 }
 
 async function injectData(page: Page, data: PageData) {
   const moduleCodes = Object.keys(data.timetable);
   const modules = await getModules(moduleCodes);
 
-  // @ts-expect-error
   await page.evaluate(`
     new Promise((resolve) =>
       window.setData(${JSON.stringify(modules)}, ${JSON.stringify(data)}, resolve)
@@ -67,7 +48,6 @@ async function injectData(page: Page, data: PageData) {
   `);
 
   // Calculate element height to get bounding box for screenshot
-  // @ts-expect-error
   const appEle = await page.$('#timetable-only');
   if (!appEle) throw new Error('#timetable-only element not found');
 
@@ -80,7 +60,6 @@ export async function image(page: Page, data: PageData, options: ViewportOptions
   }
 
   const boundingBox = await injectData(page, data);
-  // @ts-expect-error
   return await page.screenshot({
     clip: boundingBox,
   });
@@ -88,10 +67,8 @@ export async function image(page: Page, data: PageData, options: ViewportOptions
 
 export async function pdf(page: Page, data: PageData) {
   await injectData(page, data);
-  // @ts-expect-error
   await page.emulateMediaType('screen');
 
-  // @ts-expect-error
   return await page.pdf({
     printBackground: true,
     format: 'A4',
