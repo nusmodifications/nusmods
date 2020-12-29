@@ -92,6 +92,7 @@ jobs:
       - run:
           name: Build
           command: yarn build all
+      - packtracker/report
       - store_test_results:
           path: reports/junit
       - store_artifacts:
@@ -110,6 +111,3 @@ workflows:
       - website:
           requires:
             - checkout
-      - packtracker/report:
-          project_root: './website'
-          webpack_config: 'webpack/webpack.config.prod.js'
