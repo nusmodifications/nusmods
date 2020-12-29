@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  report: packtracker/report@2.3.0
+  packtracker: packtracker/report@2.3.0
 
 executors:
   node-executor:
