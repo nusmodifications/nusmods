@@ -22,4 +22,7 @@ WORKDIR /home/node/app/export
 
 COPY export/package.json export/yarn.lock ./
 
-CMD yarn && yarn dev --exitcrash
+# Double -- needed as there is currently no way to force Yarn to pass through
+# --, even though this causes Yarn to display its dashDashDeprecation warning.
+# See: https://github.com/yarnpkg/yarn/blob/4df89bc/src/cli/index.js#L202-L228
+CMD yarn && yarn dev -- -- --exitcrash

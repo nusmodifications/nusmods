@@ -1,12 +1,18 @@
+const childProcess = require('child_process');
 const path = require('path');
 
-const StyleLintPlugin = require('stylelint-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const childProcess = require('child_process');
+
 const { format } = require('date-fns');
 
 const ROOT = path.join(__dirname, '..');
 const SRC = 'src';
+const DIST = 'dist';
+
+// Used by Webpack to resolve the path to assets on the client side
+// See: https://webpack.js.org/guides/public-path/
+exports.WEBSITE_PUBLIC_PATH = '/';
+exports.TIMETABLE_ONLY_PUBLIC_PATH = '/timetable-only/';
 
 const PATHS = {
   root: ROOT,
@@ -16,49 +22,10 @@ const PATHS = {
   src: path.join(ROOT, SRC),
   styles: [path.join(ROOT, SRC, 'styles'), path.join(ROOT, 'node_modules')],
   images: path.join(ROOT, SRC, 'img'),
-  build: path.join(ROOT, 'dist'),
-  buildTimetable: path.join(ROOT, 'dist-timetable'),
   fixtures: path.join(ROOT, SRC, '__mocks__'),
+  build: path.join(ROOT, DIST),
+  buildTimetable: path.join(ROOT, DIST, exports.TIMETABLE_ONLY_PUBLIC_PATH),
 };
-
-/**
- * Lints javascript to make sure code is up to standard.
- *
- * @see https://survivejs.com/webpack/developing/linting/
- */
-exports.lintJavaScript = ({ include, exclude, options }) =>
-  process.env.DISABLE_ESLINT
-    ? {}
-    : {
-        module: {
-          rules: [
-            {
-              test: /\.[j|t]sx?$/,
-              include,
-              exclude,
-              enforce: 'pre',
-
-              use: [{ loader: 'eslint-loader', options }],
-            },
-          ],
-        },
-      };
-
-/**
- * Uses StyleLint to lint CSS
- * @returns {*}
- */
-exports.lintCSS = (options) =>
-  process.env.DISABLE_STYLELINT
-    ? {}
-    : {
-        plugins: [
-          new StyleLintPlugin({
-            context: PATHS.src,
-            ...options,
-          }),
-        ],
-      };
 
 const getCSSConfig = ({ options } = {}) => [
   {
@@ -104,8 +71,8 @@ exports.loadCSS = ({ include, exclude, options } = {}) => ({
 exports.productionCSS = ({ options } = {}) => ({
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name].[contenthash:8].css',
-      chunkFilename: '[name].[contenthash:8].css',
+      filename: 'assets/[name].[contenthash:8].css',
+      chunkFilename: 'assets/[name].[contenthash:8].css',
       ignoreOrder: true,
 
       ...options,

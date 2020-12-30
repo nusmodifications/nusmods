@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'Export (Staging)',
-      script: 'app.js',
+      script: 'build/index.js',
 
       // Options reference: https://pm2.io/doc/en/runtime/reference/ecosystem-file/
       autorestart: true,
@@ -15,7 +15,7 @@ module.exports = {
     },
     {
       name: 'Export',
-      script: '../../nusmods-export/app.js',
+      script: '../../nusmods-export/build/index.js',
       cwd: '../../nusmods-export',
 
       // Options reference: https://pm2.io/doc/en/runtime/reference/ecosystem-file/

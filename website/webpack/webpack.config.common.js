@@ -1,9 +1,5 @@
 const parts = require('./webpack.parts');
 
-// Used by Webpack to resolve the path to assets on the client side
-// See: https://webpack.js.org/guides/public-path/
-const publicPath = process.env.PUBLIC_PATH || '/';
-
 const commonConfig = {
   // This tells Webpack where to look for modules. Remember to update the
   // corresponding entry in tsconfig.json if you're updating these
@@ -26,11 +22,17 @@ const commonConfig = {
     symlinks: false,
   },
 
+  entry: 'entry/main',
   context: parts.PATHS.src,
   output: {
-    publicPath,
+    publicPath: parts.WEBSITE_PUBLIC_PATH,
+    // Place all built bundles in an assets folder. Since they should all have
+    // version hashes in their names, they can be easily long-term cached.
     path: parts.PATHS.build,
-    filename: '[name].js',
+    filename: 'assets/[name].[contenthash:8].js',
+    // This is used for require.ensure. The setup
+    // will work without but this is useful to set.
+    chunkFilename: 'assets/[name].[contenthash:8].js',
     pathinfo: false,
   },
   performance: {
@@ -42,7 +44,13 @@ const commonConfig = {
     rules: [
       {
         test: /\.[j|t]sx?$/,
-        include: parts.PATHS.src,
+        include: [
+          parts.PATHS.src,
+          // React Leaflet's MapContainer destructures an object using the ...
+          // operator, which isn't supported on Mobile Safari <= 11.2.
+          // TODO: Remove after we drop support for iOS <= 11.2
+          /node_modules\/react-leaflet/,
+        ],
         use: ['babel-loader'],
       },
     ],
