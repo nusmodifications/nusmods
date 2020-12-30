@@ -41,6 +41,8 @@ services:
       - NODE_ENV=production
       - PORT=8082
       - HOST=0.0.0.0
+      - PAGE=http://website:8081
+      - CHROME_EXECUTABLE=/usr/bin/chromium-browser
     restart: on-failure
     labels:
       - 'traefik.enable=true'

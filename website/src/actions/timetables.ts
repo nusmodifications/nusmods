@@ -181,7 +181,7 @@ export function validateTimetable(semester: Semester) {
 export function fetchTimetableModules(timetables: SemTimetableConfig[]) {
   return (dispatch: Dispatch, getState: GetState) => {
     const moduleCodes = new Set(flatMap(timetables, Object.keys));
-    const validateModule = getModuleCondensed(getState().moduleBank);
+    const validateModule = getModuleCondensed(getState());
 
     return Promise.all(
       Array.from(moduleCodes)

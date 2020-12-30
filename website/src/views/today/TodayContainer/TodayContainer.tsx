@@ -13,7 +13,6 @@ import {
   parseISO,
 } from 'date-fns';
 import produce from 'immer';
-import { hot } from 'react-hot-loader/root';
 
 import { DaysOfWeek } from 'types/modules';
 import { Lesson, ColoredLesson, SemTimetableConfigWithLessons } from 'types/timetables';
@@ -29,7 +28,7 @@ import {
 } from 'utils/timetables';
 import { captureException } from 'utils/error';
 import Title from 'views/components/Title';
-import { getSemesterTimetable } from 'selectors/timetables';
+import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
 import ExternalLink from 'views/components/ExternalLink';
 import * as weatherAPI from 'apis/weather';
 import config from 'config';
@@ -106,12 +105,14 @@ function getDayType(date: Date, weekInfo: AcadWeekInfo): EmptyGroupType {
   }
 }
 
-export const DaySection: React.FC<Readonly<{
-  children: React.ReactNode;
-  date: Date | Date[];
-  offset: number;
-  forecast?: string;
-}>> = (props) => (
+export const DaySection: React.FC<
+  Readonly<{
+    children: React.ReactNode;
+    date: Date | Date[];
+    offset: number;
+    forecast?: string;
+  }>
+> = (props) => (
   <section className={styles.day}>
     <DayHeader date={props.date} offset={props.offset} forecast={props.forecast} />
     {props.children}
@@ -348,7 +349,8 @@ export const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
   const lastDay = addDays(ownProps.currentTime, DAYS);
   const weekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(lastDay);
   const semester = semesterNameMap[weekInfo.sem];
-  const { timetable, colors } = getSemesterTimetable(semester, state.timetables);
+  const timetable = getSemesterTimetableLessons(state)(semester);
+  const colors = getSemesterTimetableColors(state)(semester);
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
 
   return {
@@ -362,4 +364,4 @@ const ConnectedTimetableContainer = connect(mapStateToProps)(TodayContainerCompo
 const TodayContainerWithTimer = withTimer(ConnectedTimetableContainer);
 const ResponsiveTodayContainer = makeResponsive(TodayContainerWithTimer, breakpointUp('lg'));
 
-export default hot(ResponsiveTodayContainer);
+export default ResponsiveTodayContainer;

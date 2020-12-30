@@ -8,7 +8,6 @@ import {
   OnDragStartResponder,
 } from 'react-beautiful-dnd';
 import classnames from 'classnames';
-import { hot } from 'react-hot-loader/root';
 
 import { Module, ModuleCode, Semester } from 'types/modules';
 import { PlannerModulesWithInfo, PlannerModuleInfo, AddModuleData } from 'types/planner';
@@ -340,4 +339,4 @@ const PlannerContainer = connect(mapStateToProps, {
   removeModule: removePlannerModule,
 })(PlannerContainerComponent);
 
-export default hot(PlannerContainer);
+export default PlannerContainer;

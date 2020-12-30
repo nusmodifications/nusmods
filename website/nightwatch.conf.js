@@ -20,15 +20,15 @@ const config = {
 
         browser: 'Firefox',
         // Latest ESR
-        browserVersion: '60',
+        browserVersion: '78',
       },
     },
 
     safariMobile: {
       desiredCapabilities: {
-        device: 'iPhone 7',
+        device: 'iPhone 6',
         realMobile: 'true',
-        os_version: '10.3',
+        os_version: '11.0',
       },
     },
 
@@ -36,13 +36,13 @@ const config = {
       desiredCapabilities: {
         os: 'OS X',
         browser: 'Safari',
-        browserVersion: '9.1',
+        browserVersion: '11.1',
       },
     },
 
     edge: {
       browser: 'Edge',
-      browserVersion: '16.0',
+      browserVersion: '18.0',
     },
   },
 };

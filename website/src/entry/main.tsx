@@ -28,13 +28,16 @@ ReactModal.setAppElement('#app');
 ReactDOM.render(<App store={store} persistor={persistor} />, document.getElementById('app'));
 
 if (
-  (!__DEV__ && 'serviceWorker' in navigator && window.location.protocol === 'https:') ||
+  (!__DEV__ &&
+    !__TEST__ &&
+    'serviceWorker' in navigator &&
+    window.location.protocol === 'https:') ||
   // Allow us to force service worker to be enabled for debugging
   DEBUG_SERVICE_WORKER
 ) {
   registerServiceWorker(store);
 }
 
-if (!__DEV__) {
+if (!__DEV__ && !__TEST__) {
   initializeMamoto();
 }

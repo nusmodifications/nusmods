@@ -1,11 +1,11 @@
 const webpack = require('webpack');
 const path = require('path');
+const { partition } = require('lodash');
+
 const { merge } = require('webpack-merge');
 const TerserJsPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
-const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const PacktrackerPlugin = require('@packtracker/webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 
@@ -23,6 +23,7 @@ const productionConfig = ({ browserWarningPath }) =>
       plugins: [
         new webpack.DefinePlugin({
           __DEV__: false,
+          __TEST__: false,
           DISPLAY_COMMIT_HASH: JSON.stringify(parts.appVersion().commitHash),
           VERSION_STR: JSON.stringify(parts.appVersion().versionStr),
           DEBUG_SERVICE_WORKER: !!process.env.DEBUG_SERVICE_WORKER,
@@ -50,25 +51,36 @@ const productionConfig = ({ browserWarningPath }) =>
       plugins: [
         // SEE: https://medium.com/webpack/brief-introduction-to-scope-hoisting-in-webpack-8435084c171f
         new HtmlWebpackPlugin({
-          template: path.join(parts.PATHS.src, 'index.html'),
+          template: path.join(parts.PATHS.src, 'index.ejs'),
 
-          // Allows us to use InlineChunkHtmlPlugin to embed the runtime entry
-          // point chunk in the HTML itself. See runtimeChunk below.
-          inject: true,
+          // Inject CSS and JS files manually for optimization purposes
+          inject: false,
 
-          // Embed the browser warning code from the browser-warning Webpack bundle
-          browserWarningPath,
-
-          // For use as a variable under htmlWebpackPlugin.options in the template
-          moduleListUrl: nusmods.moduleListUrl(),
-          venuesUrl: nusmods.venuesUrl(config.semester),
-          brandName: config.brandName,
-          description: config.defaultDescription,
-        }),
-        new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime/]),
-        new ScriptExtHtmlWebpackPlugin({
-          inline: /manifest/,
-          preload: /\.js$/,
+          templateParameters: (compilation, assets, assetTags, options) => {
+            const [inlinedJsFiles, loadedJsFiles] = partition(assets.js, (file) =>
+              file.includes('runtime'),
+            );
+            return {
+              // Passthrough parameters
+              // See: https://github.com/jantimon/html-webpack-plugin/blob/master/examples/template-parameters/index.ejs
+              compilation,
+              webpackConfig: compilation.options,
+              htmlWebpackPlugin: {
+                tags: assetTags,
+                files: assets,
+                options,
+              },
+              // Embed the browser warning code from the browser-warning Webpack bundle
+              browserWarningPath,
+              // Other custom parameters
+              loadedJsFiles,
+              inlinedJsFiles,
+              moduleListUrl: nusmods.moduleListUrl(),
+              venuesUrl: nusmods.venuesUrl(config.semester),
+              brandName: config.brandName,
+              description: config.defaultDescription,
+            };
+          },
         }),
         !IS_CI &&
           new CompressionPlugin({
@@ -92,10 +104,6 @@ const productionConfig = ({ browserWarningPath }) =>
           new TerserJsPlugin({
             terserOptions: {
               compress: {
-                // Terser enables arrow functions after Babel transpilation,
-                // which breaks targets that have no support for arrow fns.
-                // When we drop support for Safari 9.1, we can re-enable this.
-                arrows: false,
                 // Two passes yield the most optimal results
                 passes: 2,
               },

@@ -1,0 +1,17 @@
+[
+  { "moduleCode": "ACC2002", "title": "Managerial Accounting", "semesters": [1, 2] },
+  {
+    "moduleCode": "BFS1001",
+    "title": "Personal Development & Career Management",
+    "semesters": [1, 2]
+  },
+  { "moduleCode": "CS1010S", "title": "Programming Methodology", "semesters": [1, 2] },
+  {
+    "moduleCode": "CS3216",
+    "title": "Software Product Engineering for Digital Markets",
+    "semesters": [1]
+  },
+  { "moduleCode": "CS4243", "title": "Computer Vision and Pattern Recognition", "semesters": [1] },
+  { "moduleCode": "GER1000", "title": "Quantitative Reasoning", "semesters": [1, 2] },
+  { "moduleCode": "GES1021", "title": "Natural Heritage of Singapore", "semesters": [1, 2] }
+]

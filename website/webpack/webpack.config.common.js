@@ -24,13 +24,6 @@ const commonConfig = {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     // We don't use symlinks, so disable for performance
     symlinks: false,
-    // ical-generator imports Node.js core modules, which don't exist in a
-    // browser environment. Tell Webpack to provide empty modules for them so
-    // importing them works.
-    fallback: {
-      fs: false,
-      os: false,
-    },
   },
 
   context: parts.PATHS.src,
@@ -49,7 +42,13 @@ const commonConfig = {
     rules: [
       {
         test: /\.[j|t]sx?$/,
-        include: parts.PATHS.src,
+        include: [
+          parts.PATHS.src,
+          // React Leaflet's MapContainer destructures an object using the ...
+          // operator, which isn't supported on Mobile Safari <= 11.2.
+          // TODO: Remove after we drop support for iOS <= 11.2
+          /node_modules\/react-leaflet/,
+        ],
         use: ['babel-loader'],
       },
     ],

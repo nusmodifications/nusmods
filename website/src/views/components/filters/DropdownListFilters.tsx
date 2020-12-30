@@ -131,36 +131,34 @@ const DesktopFilter: React.FC<DisplayProps> = ({
 
           {isOpen && (
             <div className="dropdown-menu show" {...getMenuProps()}>
-              {filteredItems.map(({ key, doc_count: count, selected }, index) => {
-                return (
-                  <div
-                    key={key}
-                    {...getItemProps({
-                      item: key,
-                      className: classnames('dropdown-item form-check', {
-                        'dropdown-selected': index === highlightedIndex,
-                        [styles.enabled]: selected,
-                      }),
-                    })}
-                  >
-                    <input
-                      id={key}
-                      className="form-check-input"
-                      type="checkbox"
-                      defaultChecked={selected}
-                    />
-                    <label htmlFor={key} className={classnames('form-check-label', styles.label)}>
-                      {highlight(key, downshiftInputValue || '')}
-                      {showCount && typeof count !== 'undefined' && (
-                        <>
-                          &nbsp;
-                          <span className="text-muted">({count})</span>
-                        </>
-                      )}
-                    </label>
-                  </div>
-                );
-              })}
+              {filteredItems.map(({ key, doc_count: count, selected }, index) => (
+                <div
+                  key={key}
+                  {...getItemProps({
+                    item: key,
+                    className: classnames('dropdown-item form-check', {
+                      'dropdown-selected': index === highlightedIndex,
+                      [styles.enabled]: selected,
+                    }),
+                  })}
+                >
+                  <input
+                    id={key}
+                    className="form-check-input"
+                    type="checkbox"
+                    defaultChecked={selected}
+                  />
+                  <label htmlFor={key} className={classnames('form-check-label', styles.label)}>
+                    {highlight(key, downshiftInputValue || '')}
+                    {showCount && typeof count !== 'undefined' && (
+                      <>
+                        &nbsp;
+                        <span className="text-muted">({count})</span>
+                      </>
+                    )}
+                  </label>
+                </div>
+              ))}
             </div>
           )}
         </div>

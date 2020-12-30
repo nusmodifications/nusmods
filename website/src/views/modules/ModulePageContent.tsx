@@ -2,7 +2,6 @@ import { Component } from 'react';
 import classnames from 'classnames';
 import ScrollSpy from 'react-scrollspy';
 import { kebabCase, map, mapValues, values, sortBy } from 'lodash';
-import { hot } from 'react-hot-loader/root';
 
 import { Module, NUSModuleAttributes, attributeDescription } from 'types/modules';
 
@@ -82,7 +81,7 @@ class ModulePageContent extends Component<Props, State> {
 
         <Announcements />
 
-        <ScrollToTop onComponentDidMount scrollToHash />
+        <ScrollToTop />
 
         {isArchive && (
           <div className={classnames(styles.archiveWarning, 'alert alert-warning')}>
@@ -241,7 +240,7 @@ class ModulePageContent extends Component<Props, State> {
 
             <section className={styles.section} id="timetable">
               <h2 className={styles.sectionHeading}>Timetable</h2>
-              <LessonTimetable semesterData={module.semesterData} />
+              <LessonTimetable allSemesterData={module.semesterData} />
             </section>
 
             <section className={styles.section} id={SIDE_MENU_ITEMS.reviews}>
@@ -321,4 +320,4 @@ class ModulePageContent extends Component<Props, State> {
   }
 }
 
-export default hot(ModulePageContent);
+export default ModulePageContent;

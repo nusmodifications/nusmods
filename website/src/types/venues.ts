@@ -1,4 +1,4 @@
-import { DayText, EndTime, StartTime, ModuleCode, RawLesson } from './modules';
+import type { DayText, EndTime, StartTime, ModuleCode, RawLesson } from './modules';
 
 export type Venue = string;
 export type VenueList = Venue[];
