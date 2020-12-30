@@ -9,7 +9,7 @@ export type ExportOptions = {
   pixelRatio?: number;
 };
 
-const baseUrl = '/export';
+const baseUrl = 'https://export.nusmods.com/api/export';
 
 function serializeState(
   semester: Semester,
