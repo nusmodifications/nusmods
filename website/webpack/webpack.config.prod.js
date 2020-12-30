@@ -16,6 +16,7 @@ const config = require('../src/config/app-config.json');
 
 const IS_CI = !!process.env.CI;
 const IS_NETLIFY = !!process.env.NETLIFY;
+const IS_VERCEL = !!process.env.VERCEL;
 
 const productionConfig = ({ browserWarningPath }) =>
   merge([
@@ -39,15 +40,6 @@ const productionConfig = ({ browserWarningPath }) =>
       // We generate sourcemaps in production. This is slow but gives good results.
       // You can exclude the *.map files from the build during deployment.
       devtool: 'source-map',
-      entry: 'entry/main',
-      output: {
-        // The build folder.
-        path: parts.PATHS.build,
-        filename: '[name].[contenthash:8].js',
-        // This is used for require.ensure. The setup
-        // will work without but this is useful to set.
-        chunkFilename: '[name].[contenthash:8].js',
-      },
       plugins: [
         // SEE: https://medium.com/webpack/brief-introduction-to-scope-hoisting-in-webpack-8435084c171f
         new HtmlWebpackPlugin({
@@ -91,6 +83,7 @@ const productionConfig = ({ browserWarningPath }) =>
           patterns: [{ from: 'static', context: parts.PATHS.root }],
         }),
         IS_CI &&
+          !IS_VERCEL &&
           new PacktrackerPlugin({
             upload: true,
           }),

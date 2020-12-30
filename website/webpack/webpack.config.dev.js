@@ -31,7 +31,6 @@ const developmentConfig = merge([
     // Use a fast source map for good-enough debugging usage
     // https://webpack.js.org/configuration/devtool/#devtool
     devtool: 'eval-cheap-module-source-map',
-    entry: 'entry/main',
     // Fixes HMR in Webpack 5
     // TODO: Remove once one of these issues are fixed:
     // https://github.com/pmmmwh/react-refresh-webpack-plugin/issues/235
