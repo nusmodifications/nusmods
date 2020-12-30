@@ -21,8 +21,8 @@ import DropdownListFilters from 'views/components/filters/DropdownListFilters';
 import { getSemesterTimetableLessons } from 'selectors/timetables';
 import { getSemesterModules } from 'utils/timetables';
 import { getModuleSemesterData } from 'utils/modules';
-
-import { isNotNull } from 'utils/null';
+import { notNull } from 'types/utils';
+import { shallowCompareArray } from 'utils/array';
 
 import config from 'config';
 import styles from './ModuleFinderSidebar.scss';
@@ -63,14 +63,14 @@ const ModuleFinderSidebar: React.FC = () => {
     const allSemesterModules = getSemesterModules(semesterTimetable, modules);
     return allSemesterModules
       .map((module) => getModuleSemesterData(module, activeSemester))
-      .filter(isNotNull);
-  });
+      .filter(notNull);
+  }, shallowCompareArray);
 
   const examFilters = useMemo(() => {
-    const examDates = selectedModules.map((module) => module?.examDate);
+    const examDates = selectedModules.map((module) => module?.examDate).filter(notNull);
     const examDateClashFilter = {
       key: 'no-exam-clash',
-      label: 'No Exam Clash with Currently Selected Modules',
+      label: 'No Exam Clash',
       filter: {
         bool: {
           must_not: {
