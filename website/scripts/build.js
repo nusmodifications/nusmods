@@ -146,7 +146,7 @@ async function main() {
 
   try {
     await buildAll(previousDistFileSizes);
-  } catch (e) {
+  } catch {
     // errors should've been logged by the respective build functions.
     console.log('Build failed.');
     process.exit(1);
