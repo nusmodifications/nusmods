@@ -21,20 +21,21 @@ function runWebpack(config) {
 
 /**
  * Print out errors.
- * @param {function} log
+ * @param {function} log console.log-compatible function used to print errors
  * @param {string} summary
- * @param {Error[]} errors
+ * @param {Error|Error[]} errorOrErrors
  */
-function printErrors(log, summary, errors) {
+function printErrors(log, summary, errorOrErrors) {
   log(chalk.red(summary));
   log();
+  const errors = _.castArray(errorOrErrors);
   errors.forEach((err, i) => {
     log(err);
     if (i !== errors.length - 1) {
       log();
     }
   });
-  console.log();
+  console.log(); // Use native console.log to force an unprefixed line after the error block
 }
 
 /**
@@ -99,7 +100,7 @@ async function buildProd(previousDistFileSizes) {
     log('File sizes after gzip:');
     printFileSizesAfterBuild(mainStats, previousDistFileSizes, parts.PATHS.build);
   } catch (err) {
-    printErrors(log, 'Failed to compile prod.', _.castArray(err));
+    printErrors(log, 'Failed to compile prod.', err);
     throw err;
   }
 }
@@ -117,7 +118,7 @@ async function buildTimetableOnly() {
 
     log(chalk.green('Compiled timetable-only successfully.'));
   } catch (err) {
-    printErrors(log, 'Failed to compile timetable-only.', _.castArray(err));
+    printErrors(log, 'Failed to compile timetable-only.', err);
     throw err;
   }
 }
