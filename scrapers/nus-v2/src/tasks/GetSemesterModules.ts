@@ -77,7 +77,8 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
           (module) =>
             !!containsNbsps(module.Description) &&
             this.logger.error(
-              `Bad data. Module description for ${module.CatalogNumber} contains non-breaking spaces`,
+              { moduleCode: `${module.Subject}${module.CatalogNumber}` },
+              `${module.Subject}${module.CatalogNumber}: Module description contains non-breaking spaces`,
             ),
         );
 
