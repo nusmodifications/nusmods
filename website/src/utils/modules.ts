@@ -83,11 +83,11 @@ export function renderMCs(moduleCredits: number | string) {
 }
 
 export function renderExamDuration(examDuration: number) {
-  if (examDuration < 60) {
+  if (examDuration < 60 || examDuration % 30 !== 0) {
     return noBreak(`${examDuration} mins`);
   }
-  const hours = (examDuration / 60).toString().substr(0, 5);
-  return noBreak(`${hours} ${hours === '1' ? 'hr' : 'hrs'}`);
+  const hours = examDuration / 60;
+  return noBreak(`${hours} ${hours === 1 ? 'hr' : 'hrs'}`);
 }
 
 export function subtractAcadYear(acadYear: string): string {
