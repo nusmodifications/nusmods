@@ -22,6 +22,8 @@ module.exports = {
     VERSION_STR: '',
     DISPLAY_COMMIT_HASH: '',
     DEBUG_SERVICE_WORKER: false,
+    VERCEL_ENV: '',
+    VERCEL_GIT_COMMIT_REF: '',
   },
   // Allow us to directly use enzyme wrappers for snapshotting
   // Usage: expect(enzyme.shallow(<div/>)).toMatchSnapshot();

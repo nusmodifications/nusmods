@@ -29,6 +29,8 @@ const productionConfig = ({ browserWarningPath }) =>
           VERSION_STR: JSON.stringify(parts.appVersion().versionStr),
           DEBUG_SERVICE_WORKER: !!process.env.DEBUG_SERVICE_WORKER,
           DATA_API_BASE_URL: JSON.stringify(process.env.DATA_API_BASE_URL),
+          VERCEL_ENV: JSON.stringify(process.env.VERCEL_ENV),
+          VERCEL_GIT_COMMIT_REF: JSON.stringify(process.env.VERCEL_GIT_COMMIT_REF),
         }),
       ],
     },
