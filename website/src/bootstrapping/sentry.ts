@@ -1,5 +1,6 @@
 import { get } from 'lodash';
 import * as Sentry from '@sentry/browser';
+import { Integrations } from '@sentry/tracing';
 
 import { isBrowserSupported } from './browser';
 
@@ -23,6 +24,9 @@ if (loadRaven) {
     dsn: 'https://4b4fe71954424fd39ac88a4f889ffe20@sentry.io/213986',
 
     release: VERSION_STR || 'UNKNOWN_RELEASE',
+
+    integrations: [new Integrations.BrowserTracing()],
+    tracesSampleRate: 1.0,
 
     environment: sentryEnv(),
 
