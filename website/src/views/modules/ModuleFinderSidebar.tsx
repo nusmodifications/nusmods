@@ -10,7 +10,7 @@ import {
 } from 'searchkit';
 import { Filter } from 'react-feather';
 
-import { attributeDescription, NUSModuleAttributes } from 'types/modules';
+import { attributeDescription, NUSModuleAttributes, Semester, Semesters } from 'types/modules';
 import { RefinementItem } from 'types/views';
 
 import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
@@ -22,7 +22,6 @@ import { getSemesterTimetableLessons } from 'selectors/timetables';
 import { getSemesterModules } from 'utils/timetables';
 import { getModuleSemesterData } from 'utils/modules';
 import { notNull } from 'types/utils';
-import { shallowCompareArray } from 'utils/array';
 
 import config from 'config';
 import styles from './ModuleFinderSidebar.scss';
@@ -51,44 +50,52 @@ const EXAM_FILTER_ITEMS: FilterItem[] = [
   },
 ];
 
-const ModuleFinderSidebar: React.FC = () => {
-  const [isMenuOpen, setMenuOpen] = useState(false);
-
-  const selectedModules = useSelector((state: StoreState) => {
-    const {
-      app: { activeSemester },
-      moduleBank: { modules },
-    } = state;
-    const semesterTimetable = getSemesterTimetableLessons(state)(activeSemester);
-    const allSemesterModules = getSemesterModules(semesterTimetable, modules);
-    return allSemesterModules
-      .map((module) => getModuleSemesterData(module, activeSemester))
-      .filter(notNull);
-  }, shallowCompareArray);
-
-  const examFilters = useMemo(() => {
-    const examDates = selectedModules.map((module) => module?.examDate).filter(notNull);
-    const examDateClashFilter = {
-      key: 'no-exam-clash',
-      label: 'No Exam Clash',
-      filter: {
-        bool: {
-          must_not: {
-            nested: {
-              path: 'semesterData',
-              query: {
-                terms: {
-                  'semesterData.examDate': examDates,
-                },
+function getExamClashFilter(semester: Semester, examDates: string[]): FilterItem {
+  return {
+    key: `no-exam-clash-${semester}`,
+    label: `No Exam Clash (${config.shortSemesterNames[semester]})`,
+    filter: {
+      bool: {
+        must_not: {
+          nested: {
+            path: 'semesterData',
+            query: {
+              terms: {
+                'semesterData.examDate': examDates,
               },
             },
           },
         },
       },
-    };
+    },
+  };
+}
 
-    return [...EXAM_FILTER_ITEMS, examDateClashFilter];
-  }, [selectedModules]);
+const ModuleFinderSidebar: React.FC = () => {
+  const [isMenuOpen, setMenuOpen] = useState(false);
+
+  const getSemesterTimetable = useSelector(getSemesterTimetableLessons);
+  const allModules = useSelector((state: StoreState) => state.moduleBank.modules);
+
+  const examFilters = useMemo(() => {
+    // Create filters for exam clashes for each semester's timetable
+    // where there are modules with exams in that timetable
+    const semesterExamDates = Semesters.map((semester): [Semester, string[]] | null => {
+      const timetable = getSemesterTimetable(semester);
+      const modules = getSemesterModules(timetable, allModules);
+      const examDates = modules
+        .map((module) => getModuleSemesterData(module, semester)?.examDate)
+        .filter(notNull);
+
+      if (examDates.length === 0) return null;
+      return [semester, examDates];
+    }).filter(notNull);
+
+    return [
+      ...EXAM_FILTER_ITEMS,
+      ...semesterExamDates.map(([semester, examDates]) => getExamClashFilter(semester, examDates)),
+    ];
+  }, [getSemesterTimetable, allModules]);
 
   return (
     <SideMenu
