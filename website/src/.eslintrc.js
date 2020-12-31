@@ -110,5 +110,7 @@ module.exports = {
     VERSION_STR: 'readonly',
     DISPLAY_COMMIT_HASH: 'readonly',
     DEBUG_SERVICE_WORKER: 'readonly',
+    VERCEL_ENV: 'readonly',
+    VERCEL_GIT_COMMIT_REF: 'readonly',
   },
 };
