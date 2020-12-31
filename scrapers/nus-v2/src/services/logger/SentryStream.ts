@@ -39,7 +39,7 @@ function getSentryLevel(record: BunyanRecord): Sentry.Severity {
 }
 
 /**
- * Error deserialiazing function. Bunyan serialize the error to object
+ * Error deserializing function. Bunyan serializes the error to object
  * https://github.com/trentm/node-bunyan/blob/master/lib/bunyan.js#L1089
  * @param  {object} data serialized Bunyan
  * @return {Error}       the deserialiazed error
