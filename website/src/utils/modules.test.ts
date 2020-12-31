@@ -168,6 +168,7 @@ describe(renderExamDuration, () => {
     [45, '45 mins'],
     [60, '1 hr'],
     [90, '1.5 hrs'],
+    [70, '1.166 hrs'],
     [120, '2 hrs'],
     [180, '3 hrs'],
   ])('%s to equal %s', (duration, expected) =>
