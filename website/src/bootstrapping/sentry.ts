@@ -19,7 +19,7 @@ if (loadRaven) {
       return event;
     },
 
-    blacklistUrls: [
+    denyUrls: [
       // Local file system
       /^file:\/\//i,
       // Chrome and Firefox extensions
