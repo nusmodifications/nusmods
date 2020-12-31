@@ -171,6 +171,19 @@ exports.devServer = () => ({
 });
 
 /**
+ * Returns the current Singapore date, but with the time zone changed to the
+ * local machine's. E.g. if it is 1965-08-09 0000hrs SGT, this function
+ * returns 1965-08-09 0000hrs local time.
+ *
+ * Port of `toSingaporeTime` from timify.ts.
+ */
+function singaporeTime() {
+  const SGT_OFFSET = -8 * 60;
+  const localDate = new Date();
+  return new Date(localDate.getTime() + (localDate.getTimezoneOffset() - SGT_OFFSET) * 60 * 1000);
+}
+
+/**
  * Generates an app version string using the git commit hash and current date.
  *
  * @returns Object with keys `commitHash` and `versionStr`.
@@ -186,7 +199,7 @@ exports.appVersion = () => {
   }
   // Version format: <yyyyMMdd date>-<7-char hash substring>
   const versionStr =
-    commitHash && `${format(new Date(), 'yyyyMMdd')}-${commitHash.substring(0, 7)}`;
+    commitHash && `${format(singaporeTime(), 'yyyyMMdd')}-${commitHash.substring(0, 7)}`;
   return { commitHash, versionStr };
 };
 
