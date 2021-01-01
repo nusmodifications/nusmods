@@ -216,10 +216,7 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
             </section>
           </div>
 
-          <section
-            className={styles.section}
-            id={SIDE_MENU_ITEMS.prerequisites}
-          >
+          <section className={styles.section} id={SIDE_MENU_ITEMS.prerequisites}>
             <h2 className={styles.sectionHeading}>Prerequisite Tree</h2>
             <ErrorBoundary>
               <ModuleTree
@@ -230,18 +227,12 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
             </ErrorBoundary>
           </section>
 
-          <section
-            className={styles.section}
-            id={SIDE_MENU_ITEMS.timetable}
-          >
+          <section className={styles.section} id={SIDE_MENU_ITEMS.timetable}>
             <h2 className={styles.sectionHeading}>Timetable</h2>
             <LessonTimetable allSemesterData={module.semesterData} />
           </section>
 
-          <section
-            className={styles.section}
-            id={SIDE_MENU_ITEMS.reviews}
-          >
+          <section className={styles.section} id={SIDE_MENU_ITEMS.reviews}>
             <h2 className={styles.sectionHeading}>Review and Discussion</h2>
             <Online isLive={false}>
               {(isOnline) =>
