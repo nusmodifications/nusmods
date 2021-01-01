@@ -1,7 +1,21 @@
 import { get } from 'lodash';
 import * as Sentry from '@sentry/browser';
+import { Integrations } from '@sentry/tracing';
 
 import { isBrowserSupported } from './browser';
+
+// Decide Sentry environment based on some basic heuristics.
+function sentryEnv(): string | undefined {
+  if (VERCEL_ENV === 'preview') return 'preview';
+  if (VERCEL_ENV === 'production') {
+    if (VERCEL_GIT_COMMIT_REF === 'production') return 'production';
+    if (window.location.host === 'nusmods.com') return 'production';
+    if (VERCEL_GIT_COMMIT_REF === 'master') return 'staging';
+    // Don't expect Vercel production deployments to be made from other
+    // branches.
+  }
+  return 'development';
+}
 
 // Configure Raven - the client for Sentry, which we use to handle errors
 const loadRaven = !__DEV__ && !__TEST__;
@@ -11,6 +25,11 @@ if (loadRaven) {
 
     release: VERSION_STR || 'UNKNOWN_RELEASE',
 
+    integrations: [new Integrations.BrowserTracing()],
+    tracesSampleRate: 1.0,
+
+    environment: sentryEnv(),
+
     beforeSend(event, hint) {
       const message = get(hint, ['originalException', 'message']);
       if (message && message.match(/top\.globals|canvas\.contentDocument/i)) {
@@ -19,7 +38,7 @@ if (loadRaven) {
       return event;
     },
 
-    blacklistUrls: [
+    denyUrls: [
       // Local file system
       /^file:\/\//i,
       // Chrome and Firefox extensions

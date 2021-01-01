@@ -9,7 +9,7 @@ import { VenueLocationMap } from 'types/venues';
 // school sharing a single IP address
 const baseUrl = 'https://github.nusmods.com';
 
-const contributorBlacklist = new Set([
+const ignoredContributors = new Set([
   // Renovate used to report outdated dependencies as a user via the GitHub API,
   // hence we need to filter it out by its GitHub user ID.
   25180681,
@@ -28,7 +28,7 @@ export function getContributors(): Promise<Contributor[]> {
     .get<Contributor[]>(url)
     .then((response) =>
       response.data.filter(
-        (contributor) => contributor.type === 'User' && !contributorBlacklist.has(contributor.id),
+        (contributor) => contributor.type === 'User' && !ignoredContributors.has(contributor.id),
       ),
     );
 }

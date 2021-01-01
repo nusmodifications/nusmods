@@ -314,6 +314,8 @@ LAUNCH_URL="http://localhost:8080" LOCAL_TEST=1 yarn e2e
 
 ### Deployment
 
+**This section is outdated! We're overhauling our deployment processes at the moment. For more up-to-date (but which will also soon be outdated) deployment info, please refer to this [deployment guide](../DEPLOYMENT.md).**
+
 Our staging is served from the `./dist` directory, which is generated using `yarn build`. From there, it can be promoted to production using `yarn promote-staging`. This flow is summarized below:
 
 ```sh

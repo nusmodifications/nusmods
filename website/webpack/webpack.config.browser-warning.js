@@ -11,7 +11,7 @@ module.exports = merge([
 
     output: {
       path: parts.PATHS.build,
-      filename: 'browser-warning.[contenthash].js',
+      filename: 'assets/browser-warning.[contenthash].js',
     },
 
     resolve: {

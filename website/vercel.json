@@ -1,0 +1,17 @@
+{
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=2629800, immutable"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    { "source": "/api(/.*)?", "destination": "https://api.nusmods.com$1", "permanent": false },
+    { "source": "/news(/.*)?", "destination": "https://blog.nusmods.com$1", "permanent": false }
+  ]
+}
