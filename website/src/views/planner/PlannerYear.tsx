@@ -74,7 +74,6 @@ export default class PlannerYear extends PureComponent<Props, State> {
       sortedSemesters = sortedSemesters.filter(([semester]) => +semester <= 2);
     }
 
-
     return (
       <section
         key={year}
@@ -89,6 +88,10 @@ export default class PlannerYear extends PureComponent<Props, State> {
             [styles.hideSemester]:
               yearLongModules.length === 0 && this.props.draggedModuleType !== 'YEAR_LONG',
           })}
+          // hideSemester style used to hide the year-long PlannerSemester component
+          // instead of using a condition.
+          // This is a workaround to prevent an error where the PlannerSemester component
+          // is no longer there to be a drop target for a module.
         >
           <h3 className={styles.semesterHeader}>{getSemesterName('yearLong')}</h3>
           <PlannerSemester
