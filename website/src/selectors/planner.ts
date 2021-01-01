@@ -11,15 +11,12 @@ import config from 'config';
 import { getYearsBetween, subtractAcadYear } from 'utils/modules';
 import {
   checkPrerequisite,
-  EXEMPTION_SEMESTER,
   EXEMPTION_YEAR,
   IBLOCS_SEMESTER,
-  PLAN_TO_TAKE_SEMESTER,
   PLAN_TO_TAKE_YEAR,
-  YEAR_LONG_SEMESTER,
 } from 'utils/planner';
 import { findExamClashes } from 'utils/timetables';
-import { Conflict, PlannerModuleInfo, PlannerModulesWithInfo } from 'types/planner';
+import { Conflict, PlannerModuleInfo, PlannerModulesWithInfo, PlannerModuleSemester } from 'types/planner';
 import placeholders from 'utils/placeholders';
 import { notNull } from 'types/utils';
 import { State } from 'types/state';
@@ -32,7 +29,7 @@ import { ExamClashes } from 'types/views';
 export function filterModuleForSemester(
   modules: PlannerState['modules'],
   year: string,
-  semester: Semester,
+  semester: PlannerModuleSemester,
 ) {
   const moduleTimes = values(modules).filter(
     (module) => module.year === year && module.semester === semester,
@@ -75,13 +72,13 @@ const noInfoConflict = (moduleCodeMap: ModuleCodeMap, customData: CustomModuleDa
 /**
  * Checks if modules are added to semesters in which they are not available
  */
-const semesterConflict = (moduleCodeMap: ModuleCodeMap, semester: Semester) => (
+const semesterConflict = (moduleCodeMap: ModuleCodeMap, semester: PlannerModuleSemester) => (
   moduleCode: ModuleCode,
 ): Conflict | null => {
-  if (semester === YEAR_LONG_SEMESTER) return null;
+  if (isNaN(Number(semester))) return null;
   const moduleCondensed = moduleCodeMap[moduleCode];
   if (!moduleCondensed) return null;
-  if (!moduleCondensed.semesters.includes(semester)) {
+  if (!moduleCondensed.semesters.includes(semester as Semester)) {
     return { type: 'semester', semestersOffered: moduleCondensed.semesters };
   }
 
@@ -159,7 +156,7 @@ export function getPrereqModuleCode(moduleCode: ModuleCode): ModuleCode[] {
 export function mapNonTimetableModules(
   state: State,
   year: string,
-  semester: Semester,
+  semester: PlannerModuleSemester,
 ): PlannerModuleInfo[] {
   const { planner, moduleBank } = state;
   const conflictChecks = [noInfoConflict(moduleBank.moduleCodes, planner.custom)];
@@ -176,10 +173,10 @@ export const getIBLOCs = (state: State): PlannerModuleInfo[] => {
 };
 
 export const getExemptions = (state: State): PlannerModuleInfo[] =>
-  mapNonTimetableModules(state, EXEMPTION_YEAR, EXEMPTION_SEMESTER);
+  mapNonTimetableModules(state, EXEMPTION_YEAR, 'exemption');
 
 export const getPlanToTake = (state: State): PlannerModuleInfo[] =>
-  mapNonTimetableModules(state, PLAN_TO_TAKE_YEAR, PLAN_TO_TAKE_SEMESTER);
+  mapNonTimetableModules(state, PLAN_TO_TAKE_YEAR, 'planToTake');
 
 /**
  * Convert PlannerState into PlannerModulesWithInfo form which is more easily

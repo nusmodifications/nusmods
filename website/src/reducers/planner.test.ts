@@ -1,21 +1,18 @@
 import {
   ADD_PLANNER_MODULE,
   MOVE_PLANNER_MODULE,
-  MOVE_PLANNER_YEAR_LONG_MODULE,
   REMOVE_PLANNER_MODULE,
   SET_PLANNER_MIN_YEAR,
   SET_PLANNER_MAX_YEAR,
   SET_PLANNER_IBLOCS,
   addPlannerModule,
   movePlannerModule,
-  movePlannerYearLongModule,
   removePlannerModule,
   setPlannerMinYear,
   setPlannerMaxYear,
   setPlannerIBLOCs,
 } from 'actions/planner';
 import { PlannerState } from 'types/reducers';
-import { YEAR_LONG_SEMESTER } from 'utils/planner';
 import reducer, { migrateV0toV1, nextId } from './planner';
 
 const defaultState: PlannerState = {
@@ -176,46 +173,6 @@ describe(MOVE_PLANNER_MODULE, () => {
       0: { id: '0', moduleCode: 'CS1010S', year: '2018/2019', semester: 2, index: 1 },
       1: { id: '1', moduleCode: 'CS2030', year: '2018/2019', semester: 2, index: 0 },
       2: { id: '2', moduleCode: 'CS2105', year: '2018/2019', semester: 2, index: 2 },
-    });
-  });
-});
-
-describe(MOVE_PLANNER_YEAR_LONG_MODULE, () => {
-  const initial: PlannerState = {
-    ...defaultState,
-
-    modules: {
-      0: { id: '0', moduleCode: 'CS1010S', year: '2018/2019', semester: 1, index: 0 },
-      1: { id: '1', moduleCode: 'CS2030', year: '2018/2019', semester: 2, index: 1 },
-      2: {
-        id: '2',
-        moduleCode: 'GEQ1917',
-        year: '2018/2019',
-        semester: YEAR_LONG_SEMESTER,
-        index: 0,
-      },
-      3: { id: '3', moduleCode: 'ES1601', year: '2018/2019', semester: 2, index: 0 },
-    },
-  };
-
-  test('should move year long module to year long semester', () => {
-    expect(reducer(initial, movePlannerYearLongModule('2018/2019', 2, 'ES1601')).modules).toEqual({
-      0: { id: '0', moduleCode: 'CS1010S', year: '2018/2019', semester: 1, index: 0 },
-      1: { id: '1', moduleCode: 'CS2030', year: '2018/2019', semester: 2, index: 0 },
-      2: {
-        id: '2',
-        moduleCode: 'GEQ1917',
-        year: '2018/2019',
-        semester: YEAR_LONG_SEMESTER,
-        index: 0,
-      },
-      3: {
-        id: '3',
-        moduleCode: 'ES1601',
-        year: '2018/2019',
-        semester: YEAR_LONG_SEMESTER,
-        index: 1,
-      },
     });
   });
 });

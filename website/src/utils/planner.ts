@@ -1,6 +1,6 @@
 import { flatten, sum } from 'lodash';
-import { ModuleCode, PrereqTree, Semester } from 'types/modules';
-import { PlannerModuleInfo } from 'types/planner';
+import { ModuleCode, ModuleType, PrereqTree } from 'types/modules';
+import { PlannerModuleInfo, PlannerModuleSemester, PlannerSemesterModuleType } from 'types/planner';
 import config from 'config';
 import { assertNever, notNull } from 'types/utils';
 
@@ -8,32 +8,34 @@ import { assertNever, notNull } from 'types/utils';
 // outside the normal planner. "Exemption" modules are coded as -1 year so
 // they can always be used to fulfill prereqs, while "plan to take" modules use
 // 3000 so they can never fulfill prereqs
-export const YEAR_LONG_SEMESTER: Semester = 0;
-
 export const EXEMPTION_YEAR = '-1';
-export const EXEMPTION_SEMESTER: Semester = -1;
-
 export const PLAN_TO_TAKE_YEAR = '3000';
-export const PLAN_TO_TAKE_SEMESTER = -2;
 
 // We assume iBLOCs takes place in special term 1
 export const IBLOCS_SEMESTER = 3;
 
-export const SEMESTER_LONG = 'SEMESTER_LONG';
-export const YEAR_LONG = 'YEAR_LONG';
-
-export function getSemesterName(semester: Semester) {
-  if (semester === EXEMPTION_SEMESTER) {
+export function getSemesterName(semester: PlannerModuleSemester) {
+  if (semester === 'exemption') {
     return 'Exemptions';
   }
-  if (semester === PLAN_TO_TAKE_SEMESTER) {
+  if (semester === 'planToTake') {
     return 'Plan to Take';
   }
-  if (semester === YEAR_LONG_SEMESTER) {
+  if (semester === 'yearLong') {
     return 'Whole Year';
   }
 
   return config.semesterNames[semester];
+}
+
+export function getPlannerSemesterModuleType(semester: PlannerModuleSemester): PlannerSemesterModuleType {
+  if (semester === 'yearLong') {
+    return 'YEAR_LONG';
+  } else if (semester === 'planToTake' || semester === 'exemption') {
+    return 'ALL';
+  } else {
+    return 'SEMESTER_LONG';
+  }
 }
 
 /**
@@ -85,7 +87,7 @@ export function conflictToText(conflict: PrereqTree): string {
 /**
  * Create an unique Droppable ID for each semester of each year
  */
-export function getDroppableId(year: string, semester: Semester): string {
+export function getDroppableId(year: string, semester: PlannerModuleSemester): string {
   return `${year}|${semester}`;
 }
 
@@ -93,9 +95,28 @@ export function getDroppableId(year: string, semester: Semester): string {
  * Extract the acad year and semester from the Droppable ID. The reverse of
  * getDroppableId.
  */
-export function fromDroppableId(id: string): [string, Semester] {
+export function fromDroppableId(id: string): {acadYear: string, semester: PlannerModuleSemester} {
   const [acadYear, semesterString] = id.split('|');
-  return [acadYear, +semesterString];
+  return {
+    acadYear: acadYear,
+    semester: (isNaN(Number(semesterString)) ? semesterString : Number(semesterString)) as PlannerModuleSemester,
+  };
+}
+
+/**
+ * Create an unique Draggable ID for each module code and type
+ */
+export function getDraggableId(moduleCode: ModuleCode, moduleType: ModuleType): string {
+  return `${moduleCode}|${moduleType}`;
+}
+
+/**
+ * Extract the module code and type from the Draggable ID. The reverse of
+ * getDraggableId.
+ */
+export function fromDraggableId(id: string): { moduleCode: ModuleCode, moduleType: ModuleType } {
+  const [moduleCode, moduleType] = id.split('|');
+  return { moduleCode: moduleCode, moduleType: moduleType as ModuleType };
 }
 
 // Create shortened AY labels - eg. 2019/2020 -> 19/20
@@ -144,8 +165,13 @@ export function getTotalMC(
 }
 
 /**
- * Returns whether or not a planner module is year-long
+ * Returns if a planner module is year-long
  */
 export function isYearLong(module: Pick<PlannerModuleInfo, 'moduleInfo' | 'customInfo'>): boolean {
   return module.moduleInfo ? Boolean(module.moduleInfo.attributes?.year) : false;
+}
+
+export function isSemester(plannerSemester: PlannerModuleSemester | string) { 
+  // If plannerSemester is a number, it is a Semester
+  return !isNaN(Number(plannerSemester));
 }

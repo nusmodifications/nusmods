@@ -2,10 +2,10 @@ import { PureComponent } from 'react';
 import classnames from 'classnames';
 import { flatMap, size, sortBy, toPairs, values } from 'lodash';
 
-import { ModuleCode, Semester } from 'types/modules';
-import { AddModuleData, PlannerModuleInfo } from 'types/planner';
+import { ModuleCode, ModuleType, Semester } from 'types/modules';
+import { AddModuleData, PlannerModuleInfo, PlannerModuleSemester } from 'types/planner';
 import config from 'config';
-import { getSemesterName, getTotalMC, YEAR_LONG, YEAR_LONG_SEMESTER } from 'utils/planner';
+import { getSemesterName, getTotalMC, isSemester } from 'utils/planner';
 import { Minus, Plus } from 'react-feather';
 import { renderMCs } from 'utils/modules';
 import PlannerSemester from './PlannerSemester';
@@ -15,7 +15,7 @@ type Props = Readonly<{
   name: string; // eg. iBLOCs, Year 1, etc.
   year: string; // Actual academic year
   semesters: { [semester: string]: PlannerModuleInfo[] };
-  draggedModuleType: string | null;
+  draggedModuleType: ModuleType | null;
 
   addModule: (year: string, semester: Semester, module: AddModuleData) => void;
   removeModule: (id: string) => void;
@@ -66,12 +66,14 @@ export default class PlannerYear extends PureComponent<Props, State> {
     // Only show the toggle if special terms are currently empty
     const showSpecialSemToggle = !this.hasSpecialTermModules();
 
+    const yearLongModules = semesters['yearLong'];
+
     let sortedSemesters = sortBy(toPairs(semesters), ([semester]) => semester);
+    sortedSemesters = sortedSemesters.filter(([semester]) => isSemester(semester));
     if (!showSpecialSem) {
       sortedSemesters = sortedSemesters.filter(([semester]) => +semester <= 2);
     }
-    const [yearLongSemester, yearLongModules] = sortedSemesters[YEAR_LONG_SEMESTER];
-    sortedSemesters = sortedSemesters.filter(([semester]) => +semester > YEAR_LONG_SEMESTER);
+
 
     return (
       <section
@@ -82,16 +84,16 @@ export default class PlannerYear extends PureComponent<Props, State> {
       >
         {this.renderHeader()}
         <div
-          key={yearLongSemester}
+          key={'yearLong'}
           className={classnames({
             [styles.hideSemester]:
-              yearLongModules.length === 0 && this.props.draggedModuleType !== YEAR_LONG,
+              yearLongModules.length === 0 && this.props.draggedModuleType !== 'YEAR_LONG',
           })}
         >
-          <h3 className={styles.semesterHeader}>{getSemesterName(+yearLongSemester)}</h3>
+          <h3 className={styles.semesterHeader}>{getSemesterName('yearLong')}</h3>
           <PlannerSemester
             year={year}
-            semester={+yearLongSemester}
+            semester={'yearLong'}
             modules={yearLongModules}
             className={styles.semesterYearLong}
             addModule={this.props.addModule}

@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 
-import { Semester, ModuleCode } from 'types/modules';
-import { AddModuleData, PlannerModuleInfo } from 'types/planner';
+import { Semester, ModuleCode, ModuleType } from 'types/modules';
+import { AddModuleData, PlannerModuleInfo, PlannerModuleSemester } from 'types/planner';
 import config from 'config';
 import { getExamDate, renderMCs } from 'utils/modules';
 import {
@@ -13,24 +13,20 @@ import {
   getSemesterName,
   getTotalMC,
   isYearLong,
-  SEMESTER_LONG,
-  YEAR_LONG,
-  YEAR_LONG_SEMESTER,
-  PLAN_TO_TAKE_SEMESTER,
-  EXEMPTION_SEMESTER,
 } from 'utils/planner';
 import PlannerModule from './PlannerModule';
 import AddModule from './AddModule';
 import styles from './PlannerSemester.scss';
+import { getPlannerSemesterModuleType as getDroppableType } from '../../utils/planner';
 
 type Props = Readonly<{
   year: string;
-  semester: Semester;
+  semester: PlannerModuleSemester;
   modules: PlannerModuleInfo[];
 
   showModuleMeta?: boolean;
   className?: string;
-  draggedModuleType: string | null;
+  draggedModuleType: ModuleType | null;
 
   addModule: (year: string, semester: Semester, module: AddModuleData) => void;
   removeModule: (id: string) => void;
@@ -75,12 +71,13 @@ const PlannerSemester: React.FC<Props> = ({
       <PlannerModule
         key={id}
         id={id}
-        type={isYearLong(plannerModule) ? YEAR_LONG : SEMESTER_LONG}
+        type={isYearLong(plannerModule) ? 'YEAR_LONG' : 'SEMESTER_LONG'}
         index={index}
         moduleCode={moduleCode}
         placeholder={placeholder}
         moduleTitle={getModuleTitle(plannerModule)}
-        examDate={showExamDate && moduleInfo ? getExamDate(moduleInfo, semester) : null}
+        examDate={showExamDate && moduleInfo ?
+          moduleInfo.semesterData.map(({semester}) => getExamDate(moduleInfo, semester)).filter(Boolean).join('\n') : null}
         moduleCredit={showModuleMeta ? getModuleCredit(plannerModule) : null}
         conflict={conflict}
         semester={semester}
@@ -92,16 +89,11 @@ const PlannerSemester: React.FC<Props> = ({
   };
 
   const droppableId = getDroppableId(year, semester);
-  let droppableType = SEMESTER_LONG;
-  if (semester === YEAR_LONG_SEMESTER) {
-    droppableType = YEAR_LONG;
-  } else if (semester === PLAN_TO_TAKE_SEMESTER || semester === EXEMPTION_SEMESTER) {
-    droppableType = 'DEFAULT';
-  }
+  const droppableType = getDroppableType(semester);
   return (
     <Droppable
       droppableId={droppableId}
-      isDropDisabled={droppableType !== 'DEFAULT' && draggedModuleType !== droppableType}
+      isDropDisabled={droppableType !== 'ALL' && draggedModuleType !== droppableType}
     >
       {(provided, snapshot) => (
         <div
@@ -125,7 +117,7 @@ const PlannerSemester: React.FC<Props> = ({
 
           {showModuleMeta && modules.length > 0 && renderSemesterMeta(modules)}
 
-          {+semester !== YEAR_LONG_SEMESTER && (
+          {semester !== 'yearLong' && (
             <div className={styles.addModule}>
               <AddModule
                 year={year}

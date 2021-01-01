@@ -9,23 +9,20 @@ import {
 } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 
-import { Module, ModuleCode, Semester } from 'types/modules';
-import { PlannerModulesWithInfo, PlannerModuleInfo, AddModuleData } from 'types/planner';
+import { Module, ModuleCode, ModuleType, Semester } from 'types/modules';
+import { PlannerModulesWithInfo, PlannerModuleInfo, PlannerModuleSemester, AddModuleData } from 'types/planner';
 import { MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
 import {
-  EXEMPTION_SEMESTER,
   EXEMPTION_YEAR,
+  fromDraggableId,
   fromDroppableId,
   getTotalMC,
   IBLOCS_SEMESTER,
-  PLAN_TO_TAKE_SEMESTER,
   PLAN_TO_TAKE_YEAR,
-  YEAR_LONG_SEMESTER,
 } from 'utils/planner';
 import {
   addPlannerModule,
   movePlannerModule,
-  movePlannerYearLongModule,
   removePlannerModule,
   setPlaceholderModule,
 } from 'actions/planner';
@@ -55,9 +52,8 @@ export type Props = Readonly<{
   fetchModule: (moduleCode: ModuleCode) => Promise<Module>;
   toggleFeedback: () => void;
 
-  addModule: (year: string, semester: Semester, module: AddModuleData) => void;
-  moveModule: (id: string, year: string, semester: Semester, index: number) => void;
-  moveYearLongModule: (year: string, semester: Semester, moduleCode: ModuleCode) => void;
+  addModule: (year: string, semester: PlannerModuleSemester, module: AddModuleData) => void;
+  moveModule: (id: string, year: string, semester: PlannerModuleSemester, index: number) => void;
   removeModule: (id: string) => void;
   setPlaceholderModule: (id: string, moduleCode: ModuleCode) => void;
 }>;
@@ -69,7 +65,7 @@ type State = {
   readonly showSettings: boolean;
   // Module code is the module being edited. null means the modal is not open
   readonly showCustomModule: ModuleCode | null;
-  readonly draggedModuleType: string | null;
+  readonly draggedModuleType: ModuleType | null;
 };
 
 const TRASH_ID = 'trash';
@@ -100,26 +96,18 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
     ).then(() => this.setState({ loading: false }));
   }
 
-  onAddModule = (year: string, semester: Semester, module: AddModuleData) => {
+  onAddModule = (year: string, semester: PlannerModuleSemester, module: AddModuleData) => {
     if (module.type === 'module') {
       // Extract everything that looks like a module code
       const moduleCodes = module.moduleCode.toUpperCase().match(MODULE_CODE_REGEX);
 
       if (moduleCodes) {
         moduleCodes.forEach((moduleCode) => {
-          if (module.yearLong) {
-            this.props.addModule(year, YEAR_LONG_SEMESTER, {
-              type: 'module',
-              moduleCode,
-              yearLong: module.yearLong,
-            });
-          } else {
-            this.props.addModule(year, semester, {
-              type: 'module',
-              moduleCode,
-              yearLong: module.yearLong,
-            });
-          }
+          this.props.addModule(year, semester, {
+            type: 'module',
+            moduleCode,
+            yearLong: module.yearLong,
+          });
           // TODO: Handle error
           this.props.fetchModule(moduleCode);
         });
@@ -131,9 +119,9 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
 
   onDragStart: OnDragStartResponder = (evt) => {
     const { draggableId } = evt;
-    const type = draggableId.split('|')[1];
+    const { moduleType } = fromDraggableId(draggableId);
 
-    this.setState({ draggedModuleType: type });
+    this.setState({ draggedModuleType: moduleType });
   };
 
   onDropEnd: OnDragEndResponder = (evt) => {
@@ -146,8 +134,8 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
     if (destination.droppableId === TRASH_ID) {
       this.props.removeModule(id);
     } else {
-      const [year, semester] = fromDroppableId(destination.droppableId);
-      this.props.moveModule(id, year, +semester, destination.index);
+      const { acadYear, semester } = fromDroppableId(destination.droppableId);
+      this.props.moveModule(id, acadYear, semester, destination.index);
     }
     this.setState({ draggedModuleType: null });
   };
@@ -258,7 +246,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
               <h2 className={styles.modListHeaders}>Exemptions</h2>
               <PlannerSemester
                 year={EXEMPTION_YEAR}
-                semester={EXEMPTION_SEMESTER}
+                semester={'exemption'}
                 modules={exemptions}
                 showModuleMeta={false}
                 {...commonProps}
@@ -269,7 +257,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
               <h2 className={styles.modListHeaders}>Plan to Take</h2>
               <PlannerSemester
                 year={PLAN_TO_TAKE_YEAR}
-                semester={PLAN_TO_TAKE_SEMESTER}
+                semester={'planToTake'}
                 modules={planToTake}
                 {...commonProps}
               />
@@ -335,7 +323,6 @@ const PlannerContainer = connect(mapStateToProps, {
   setPlaceholderModule,
   addModule: addPlannerModule,
   moveModule: movePlannerModule,
-  moveYearLongModule: movePlannerYearLongModule,
   removeModule: removePlannerModule,
 })(PlannerContainerComponent);
 

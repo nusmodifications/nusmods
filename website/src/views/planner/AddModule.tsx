@@ -3,8 +3,8 @@ import classnames from 'classnames';
 import { map } from 'lodash';
 import { X as Close, Plus } from 'react-feather';
 
-import { ModuleCondensed, Semester } from 'types/modules';
-import { AddModuleData } from 'types/planner';
+import { ModuleCondensed } from 'types/modules';
+import { AddModuleData, PlannerModuleSemester } from 'types/planner';
 import { placeholderGroups } from 'utils/placeholders';
 
 import PlannerModuleSelect from './PlannerModuleSelect';
@@ -12,7 +12,7 @@ import styles from './AddModule.scss';
 
 type Props = Readonly<{
   year: string;
-  semester: Semester;
+  semester: PlannerModuleSemester;
 
   className?: string;
   onAddModule: (module: AddModuleData) => void;

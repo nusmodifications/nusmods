@@ -1,5 +1,5 @@
 import { ModuleCode, Semester } from 'types/modules';
-import { AddModuleData } from 'types/planner';
+import { AddModuleData, PlannerModuleSemester } from 'types/planner';
 import { CustomModule } from 'types/reducers';
 
 export const SET_PLANNER_MIN_YEAR = 'SET_PLANNER_MIN_YEAR' as const;
@@ -27,7 +27,7 @@ export function setPlannerIBLOCs(iblocs: boolean) {
 }
 
 export const ADD_PLANNER_MODULE = 'ADD_PLANNER_MODULE' as const;
-export function addPlannerModule(year: string, semester: Semester, module: AddModuleData) {
+export function addPlannerModule(year: string, semester: PlannerModuleSemester, module: AddModuleData) {
   return {
     type: ADD_PLANNER_MODULE,
     payload: {
@@ -39,7 +39,7 @@ export function addPlannerModule(year: string, semester: Semester, module: AddMo
 }
 
 export const MOVE_PLANNER_MODULE = 'MOVE_PLANNER_MODULE' as const;
-export function movePlannerModule(id: string, year: string, semester: Semester, index: number) {
+export function movePlannerModule(id: string, year: string, semester: PlannerModuleSemester, index: number) {
   return {
     type: MOVE_PLANNER_MODULE,
     payload: {
@@ -47,22 +47,6 @@ export function movePlannerModule(id: string, year: string, semester: Semester, 
       year,
       semester,
       index,
-    },
-  };
-}
-
-export const MOVE_PLANNER_YEAR_LONG_MODULE = 'MOVE_PLANNER_YEAR_LONG_MODULE' as const;
-export function movePlannerYearLongModule(
-  year: string,
-  semester: Semester,
-  moduleCode: ModuleCode,
-) {
-  return {
-    type: MOVE_PLANNER_YEAR_LONG_MODULE,
-    payload: {
-      year,
-      semester,
-      moduleCode,
     },
   };
 }

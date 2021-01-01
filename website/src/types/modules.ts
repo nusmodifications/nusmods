@@ -8,6 +8,7 @@ export type Faculty = string;
 export type LessonTime = StartTime | EndTime;
 export type LessonType = string;
 export type ModuleCode = string;
+export type ModuleType = 'YEAR_LONG' | 'SEMESTER_LONG';
 export type ModuleTitle = string;
 export type Semester = number;
 export type Department = string;

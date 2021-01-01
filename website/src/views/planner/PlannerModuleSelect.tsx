@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 
+import { ModuleCode, ModuleCondensed, Semester } from 'types/modules';
+import { PlannerModuleSemester } from 'types/planner';
 import { State } from 'types/state';
 
-import { ModuleCode, ModuleCondensed, Semester } from 'types/modules';
 import { createSearchPredicate } from 'utils/moduleSearch';
 import { takeUntil } from 'utils/array';
+import { isSemester } from 'utils/planner';
 
 import styles from './PlannerModuleSelect.scss';
 
@@ -22,7 +24,7 @@ type Props = Readonly<{
   onSelect: (module: ModuleCondensed | null) => void;
   onCancel?: () => void;
   onBlur?: () => void;
-  semester?: Semester;
+  semester?: PlannerModuleSemester;
   showOnly?: Set<ModuleCode>;
   filter?: (module: ModuleCondensed) => boolean;
 
@@ -76,8 +78,8 @@ export function PlannerModuleSelectComponent({
       selectedModules = selectedModules.filter(filter);
     }
 
-    if (semester != null) {
-      selectedModules = selectedModules.filter((module) => module.semesters.includes(semester));
+    if (semester && isSemester(semester)) {
+      selectedModules = selectedModules.filter((module) => module.semesters.includes(semester as Semester));
     }
 
     return selectedModules;

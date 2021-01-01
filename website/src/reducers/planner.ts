@@ -5,12 +5,12 @@ import { createMigrate, PersistedState } from 'redux-persist';
 import { PlannerState } from 'types/reducers';
 import { Actions } from 'types/actions';
 import { Semester } from 'types/modules';
+import { PlannerModuleSemester } from 'types/planner';
 
 import {
   ADD_CUSTOM_PLANNER_DATA,
   ADD_PLANNER_MODULE,
   MOVE_PLANNER_MODULE,
-  MOVE_PLANNER_YEAR_LONG_MODULE,
   REMOVE_PLANNER_MODULE,
   SET_PLACEHOLDER_MODULE,
   SET_PLANNER_IBLOCS,
@@ -19,7 +19,6 @@ import {
 } from 'actions/planner';
 import { filterModuleForSemester } from 'selectors/planner';
 import config from 'config';
-import { YEAR_LONG_SEMESTER } from 'utils/planner';
 
 const defaultPlannerState: PlannerState = {
   minYear: config.academicYear,
@@ -47,7 +46,7 @@ export function nextId(modules: PlannerState['modules']): string {
 function getSemesterIds(
   modules: PlannerState['modules'],
   year: string,
-  semester: Semester,
+  semester: PlannerModuleSemester,
   exclude?: string,
 ): string[] {
   const ids = filterModuleForSemester(modules, year, semester).map((module) => module.id);
@@ -120,36 +119,6 @@ export default function planner(
       return produce(state, (draft) => {
         draft.modules[id].year = year;
         draft.modules[id].semester = semester;
-
-        newModuleOrder.forEach((newId, order) => {
-          draft.modules[newId].index = order;
-        });
-
-        oldModuleOrder.forEach((oldId, order) => {
-          draft.modules[oldId].index = order;
-        });
-      });
-    }
-
-    case MOVE_PLANNER_YEAR_LONG_MODULE: {
-      const { payload } = action;
-      const { year, semester, moduleCode } = payload;
-
-      const id = filterModuleForSemester(state.modules, year, semester).find(
-        (module) => module.moduleCode === moduleCode,
-      )?.id;
-      if (id == null) throw new Error('Year long module wrongly detected');
-
-      // Insert the module into its the year long module list and update the location of
-      // all other modules on the list. We exclude the moved module because otherwise
-      // a duplicate will be inserted
-      const newModuleOrder = getSemesterIds(state.modules, year, YEAR_LONG_SEMESTER);
-      newModuleOrder.push(id);
-
-      // Update the index of the old module list
-      const oldModuleOrder = getSemesterIds(state.modules, year, semester, id);
-      return produce(state, (draft) => {
-        draft.modules[id].semester = YEAR_LONG_SEMESTER;
 
         newModuleOrder.forEach((newId, order) => {
           draft.modules[newId].index = order;
