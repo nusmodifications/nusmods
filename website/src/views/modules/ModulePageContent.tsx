@@ -97,7 +97,6 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
         <div className="col-md-9">
           <div
             id={SIDE_MENU_ITEMS.details}
-            data-testid="side-menu-items"
             className={classnames(styles.section, styles.firstSection)}
           >
             <header className={styles.header}>
@@ -220,7 +219,6 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
           <section
             className={styles.section}
             id={SIDE_MENU_ITEMS.prerequisites}
-            data-testid="side-menu-items"
           >
             <h2 className={styles.sectionHeading}>Prerequisite Tree</h2>
             <ErrorBoundary>
@@ -235,7 +233,6 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
           <section
             className={styles.section}
             id={SIDE_MENU_ITEMS.timetable}
-            data-testid="side-menu-items"
           >
             <h2 className={styles.sectionHeading}>Timetable</h2>
             <LessonTimetable allSemesterData={module.semesterData} />
@@ -244,7 +241,6 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
           <section
             className={styles.section}
             id={SIDE_MENU_ITEMS.reviews}
-            data-testid="side-menu-items"
           >
             <h2 className={styles.sectionHeading}>Review and Discussion</h2>
             <Online isLive={false}>

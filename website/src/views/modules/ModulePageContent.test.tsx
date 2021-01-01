@@ -32,11 +32,14 @@ describe('ModulePageContent', () => {
   });
 
   test('side menu items should appear in the same order in the document', () => {
-    make();
-    const orderedSideMenuItems = screen
+    const { view } = make();
+    const { container } = view;
+    const sideMenuItems = screen
       .getAllByRole('link')
       .map((elem) => elem.textContent?.toLowerCase());
-    const orderedDocumentItems = screen.getAllByTestId('side-menu-items').map((elem) => elem.id);
-    expect(orderedSideMenuItems).toEqual(orderedDocumentItems);
+    const documentIds = Array.from(container.querySelectorAll('[id]'))
+      .map((ele) => ele.id)
+      .filter((ele) => sideMenuItems.includes(ele));
+    expect(sideMenuItems).toEqual(documentIds);
   });
 });
