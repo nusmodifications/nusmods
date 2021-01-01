@@ -32,7 +32,7 @@ import useScrollToTop from 'views/hooks/useScrollToTop';
 import styles from './ModulePageContent.scss';
 import ReportError from './ReportError';
 
-type Props = {
+export type Props = {
   module: Module;
   archiveYear?: string;
 };
