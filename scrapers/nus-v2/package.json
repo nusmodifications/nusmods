@@ -51,7 +51,7 @@
     "axios": "0.21.1",
     "bunyan": "1.8.14",
     "chevrotain": "7.0.3",
-    "date-fns": "2.0.0-alpha.27",
+    "date-fns": "2.16.1",
     "deep-diff": "1.0.2",
     "fs-extra": "7.0.1",
     "joi": "14.3.1",
