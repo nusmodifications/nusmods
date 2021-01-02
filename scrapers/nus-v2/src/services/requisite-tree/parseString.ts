@@ -75,7 +75,7 @@ class ReqTreeParser extends EmbeddedActionsParser {
   orExpression: () => PrereqTree;
   andExpression: () => PrereqTree;
   parenthesisExpression: () => PrereqTree;
-  atomicExpression: () => string;
+  atomicExpression: () => PrereqTree;
 
   constructor() {
     super(allTokens, { recoveryEnabled: true });
