@@ -1,11 +1,15 @@
 import axios, { AxiosResponse } from 'axios';
 import { isSameDay, addDays } from 'date-fns';
 
+/** An empty object, i.e. `{}` */
+type EmptyItem = Record<string, undefined>;
+
 export type WeatherResponse<T> = {
   api_info: {
     status: string;
   };
-  items: T[];
+  // API sometimes returns `[{}]` instead of an array of Ts, no idea why
+  items: (T | EmptyItem)[];
 };
 
 type ValidPeriod = {
@@ -71,12 +75,11 @@ export type Forecast = Weather & {
 const API_PREFIX = 'https://api.data.gov.sg/v1/environment';
 const NOWCAST_AREA = 'Queenstown';
 
-function getResponseData<T>(response: AxiosResponse<WeatherResponse<T>>): T {
+function getResponseData<T>(response: AxiosResponse<WeatherResponse<T>>): T | EmptyItem {
   const { data } = response;
   if (data.api_info.status !== 'healthy') {
-    throw new Error(`API returned non-healthy status ${data.api_info.status}`);
+    throw new Error(`Weather API returned non-healthy status ${data.api_info.status}`);
   }
-
   return data.items[0];
 }
 
@@ -84,13 +87,10 @@ export function twoHour(): Promise<string | null> {
   return axios
     .get<WeatherResponse<NowCastItem>>(`${API_PREFIX}/2-hour-weather-forecast`)
     .then((response) => {
-      // 2-hour forecast may return an empty object sometimes, no idea why
       const areaForecast = getResponseData(response).forecasts?.find(
         (forecast) => forecast.area === NOWCAST_AREA,
       );
-
-      if (!areaForecast) return null;
-      return areaForecast.forecast;
+      return areaForecast?.forecast ?? null;
     });
 }
 
@@ -98,17 +98,16 @@ export function tomorrow(): Promise<string | null> {
   return axios
     .get<WeatherResponse<DayCastItem>>(`${API_PREFIX}/24-hour-weather-forecast`)
     .then((response) => {
-      const tomorrowForecast = getResponseData(response).periods.find((period) =>
+      const tomorrowForecast = getResponseData(response).periods?.find((period) =>
         isSameDay(new Date(period.time.start), addDays(new Date(), 1)),
       );
-
       // The forecast for tomorrow may not be available, so this can return null
-      return tomorrowForecast ? tomorrowForecast.regions.west : null;
+      return tomorrowForecast?.regions?.west ?? null;
     });
 }
 
 export function fourDay(): Promise<Forecast[]> {
   return axios
     .get<WeatherResponse<FourDayCastItem>>(`${API_PREFIX}/4-day-weather-forecast`)
-    .then((response) => getResponseData(response).forecasts);
+    .then((response) => getResponseData(response).forecasts ?? []);
 }
