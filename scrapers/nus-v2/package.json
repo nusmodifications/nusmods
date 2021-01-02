@@ -25,7 +25,7 @@
     "@types/oboe": "2.0.29",
     "@types/promise-queue": "2.2.0",
     "@types/ramda": "0.27.34",
-    "@types/yargs": "12.0.9",
+    "@types/yargs": "15.0.12",
     "@types/node": "12.12.6",
     "@typescript-eslint/eslint-plugin": "4.11.1",
     "@typescript-eslint/parser": "4.11.1",
@@ -60,7 +60,7 @@
     "promise-queue": "2.2.5",
     "ramda": "0.27.1",
     "romanify": "1.0.0",
-    "yargs": "13.3.2"
+    "yargs": "16.2.0"
   },
   "engines": {
     "node": ">=10"
