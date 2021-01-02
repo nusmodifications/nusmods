@@ -44,11 +44,6 @@
       background: linear-gradient(to bottom, var(--navtab-shadow), rgba(#000, 0));
       pointer-events: none;
     }
-
-    :global(.no-scroll) & {
-      // position sticky doesn't work with no-scroll is active
-      position: fixed;
-    }
   }
 }
 
