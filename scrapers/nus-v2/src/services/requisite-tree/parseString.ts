@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { createToken, Lexer, Parser, IToken, TokenType } from 'chevrotain';
+import { EmbeddedActionsParser, IToken, Lexer, TokenType, createToken } from 'chevrotain';
 
 import { PrereqTree } from '../../types/modules';
 import { Logger } from '../logger';
@@ -70,7 +70,7 @@ function generateOrBranch(modules: PrereqTree[]) {
  * The code is extremely similar to the following example:
  * @see https://github.com/SAP/chevrotain/blob/master/examples/grammars/calculator/calculator_embedded_actions.js
  */
-class ReqTreeParser extends Parser {
+class ReqTreeParser extends EmbeddedActionsParser {
   parse: () => PrereqTree;
   orExpression: () => PrereqTree;
   andExpression: () => PrereqTree;
@@ -78,7 +78,7 @@ class ReqTreeParser extends Parser {
   atomicExpression: () => string;
 
   constructor() {
-    super(allTokens, { recoveryEnabled: true, outputCst: false });
+    super(allTokens, { recoveryEnabled: true });
 
     this.parse = this.RULE('parse', () => this.SUBRULE(this.andExpression));
 
