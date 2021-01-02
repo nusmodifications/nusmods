@@ -44,13 +44,11 @@
       background: linear-gradient(to bottom, var(--navtab-shadow), rgba(#000, 0));
       pointer-events: none;
     }
-  }
-}
 
-@include media-breakpoint-down(sm) {
-  // position sticky doesn't work with no-scroll is active
-  :global(.no-scroll) .nav {
-    position: fixed;
+    :global(.no-scroll) & {
+      // position sticky doesn't work with no-scroll is active
+      position: fixed;
+    }
   }
 }
 
