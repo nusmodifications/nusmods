@@ -4,8 +4,8 @@
  */
 
 import * as Sentry from '@sentry/node';
-import { each, pick } from 'lodash';
-import { Stream } from 'bunyan';
+import type { Stream } from 'bunyan';
+import { mapValues, pick } from 'lodash';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -42,7 +42,7 @@ function getSentryLevel(record: BunyanRecord): Sentry.Severity {
  * Error deserializing function. Bunyan serializes the error to object
  * https://github.com/trentm/node-bunyan/blob/master/lib/bunyan.js#L1089
  * @param  {object} data serialized Bunyan
- * @return {Error}       the deserialiazed error
+ * @return {Error}       the deserialized error
  */
 function deserializeError(data: any) {
   if (data instanceof Error) return data;
@@ -66,26 +66,15 @@ type StreamConfig = {
 };
 
 export default function getSentryStream(config: StreamConfig = {}): Stream {
-  const tagProps = config.tags || [];
-  const extraProps = config.extra || [];
+  const tagProps = config.tags ?? [];
+  const extraProps = config.extra ?? [];
 
   const stream: any = {
     write(record: BunyanRecord) {
-      const tags = pick(record, tagProps);
-      const extra = pick(record, extraProps);
-      const level = getSentryLevel(record);
-
       Sentry.withScope((scope) => {
-        scope.setLevel(level);
-
-        each(tags, (value, prop) => {
-          scope.setTag(prop, String(value));
-        });
-
-        each(extra, (value, prop) => {
-          scope.setExtra(prop, value || null);
-        });
-
+        scope.setLevel(getSentryLevel(record));
+        scope.setTags(mapValues(pick(record, tagProps), (v) => String(v)));
+        scope.setExtras(mapValues(pick(record, extraProps), (v) => v ?? null));
         if (record.err) {
           scope.setExtra('msg', record.msg);
           Sentry.captureException(deserializeError(record.err));
@@ -93,7 +82,6 @@ export default function getSentryStream(config: StreamConfig = {}): Stream {
           Sentry.captureMessage(record.msg);
         }
       });
-
       return true;
     },
   };

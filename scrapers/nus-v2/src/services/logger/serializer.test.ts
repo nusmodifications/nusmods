@@ -1,3 +1,4 @@
+import type { AxiosRequestConfig } from 'axios';
 import { errorSerializer } from './serializer';
 import { UnknownApiError } from '../../utils/errors';
 import { mockResponse } from '../../utils/test-utils';
@@ -12,7 +13,7 @@ describe(errorSerializer, () => {
       msg: 'The server is on fire',
       data: ['Oh noes!'],
     };
-    const config = {
+    const config: AxiosRequestConfig = {
       url: 'https://example.com/api/test',
       method: 'post',
       data: '{"hello": "world"}',
