@@ -81,20 +81,19 @@ const productionConfig = ({ browserWarningPath }) =>
           new CompressionPlugin({
             test: /\.(js|css|html|json|svg|xml|txt)$/,
           }),
-        // Copy files from static folder over to dist
-        new CopyWebpackPlugin({
-          patterns: [{ from: 'static', context: parts.PATHS.root }],
-        }),
         IS_CI &&
           !IS_VERCEL &&
           new PacktrackerPlugin({
             upload: true,
           }),
-        (IS_CI || IS_NETLIFY) &&
-          !IS_VERCEL_PROD &&
-          new CopyWebpackPlugin({
-            patterns: [{ from: 'static-ci', context: parts.PATHS.root }],
-          }),
+        // Copy files from static folder over to dist
+        new CopyWebpackPlugin({
+          patterns: [
+            (IS_CI || IS_NETLIFY) &&
+              !IS_VERCEL_PROD && { from: 'static-ci', context: parts.PATHS.root },
+            { from: 'static', context: parts.PATHS.root },
+          ].filter(Boolean),
+        }),
       ].filter(Boolean),
       optimization: {
         minimizer: [
