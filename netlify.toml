@@ -1,7 +1,0 @@
-# Netlify configuration to deploy site
-
-[build]
-  base    = "website"
-  publish = "website/dist"
-  command = "npm rebuild node-sass && yarn build"
-  environment = { NODE_VERSION = "lts/dubnium" }
