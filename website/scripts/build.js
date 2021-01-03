@@ -135,6 +135,8 @@ async function buildAll(previousDistFileSizes) {
 }
 
 async function main() {
+  console.log('process.env:', process.env);
+
   console.log('Building version', chalk.cyan(parts.appVersion().versionStr));
 
   // First, read the current file sizes in build directory.
