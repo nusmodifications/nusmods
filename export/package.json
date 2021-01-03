@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@sentry/node": "5.29.2",
-    "axios": "0.21.0",
+    "axios": "0.21.1",
     "bunyan": "1.8.14",
     "chrome-aws-lambda": "5.5.0",
     "fs-extra": "9.0.1",
