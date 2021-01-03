@@ -6,11 +6,18 @@ import { isBrowserSupported } from './browser';
 
 // Decide Sentry environment based on some basic heuristics.
 function sentryEnv(): string | undefined {
+  // Vercel deployments
   if (VERCEL_ENV === 'production') return 'production';
   if (VERCEL_ENV === 'preview') {
     if (VERCEL_GIT_COMMIT_REF === 'master') return 'staging';
     return 'preview';
   }
+  if (VERCEL_ENV === 'development') return 'development';
+
+  // Netlify deployments
+  if (window.location.host.endsWith('.netlify.app')) return 'preview';
+
+  // Others
   return 'development';
 }
 
