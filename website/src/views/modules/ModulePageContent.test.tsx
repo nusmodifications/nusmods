@@ -37,9 +37,10 @@ describe('ModulePageContent', () => {
     const sideMenuItems = screen
       .getAllByRole('link')
       .map((elem) => elem.textContent?.toLowerCase());
+    const sideMenuSet = new Set(sideMenuItems);
     const documentIds = Array.from(container.querySelectorAll('[id]'))
       .map((ele) => ele.id)
-      .filter((ele) => sideMenuItems.includes(ele));
+      .filter((ele) => sideMenuSet.has(ele));
     expect(sideMenuItems).toEqual(documentIds);
   });
 });
