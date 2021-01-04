@@ -144,7 +144,7 @@ async function clientAfterPopulatingAdminInfo(
   return {
     acadYearId,
     semesterIds,
-    callApi<T>(caller: (gql: Sdk) => Promise<T>): Promise<T> {
+    callApi<T>(caller: (sdk: Sdk) => Promise<T>): Promise<T> {
       return queue.add(() => caller(gql));
     },
   };

@@ -16,6 +16,8 @@ generates:
 
             // Manually injected by codegen.yml
             import type { Headers } from 'graphql-request/dist/types.dom';
+
+            /* eslint-disable no-use-before-define */
       - typescript
       - typescript-operations
       - typescript-graphql-request

@@ -21,7 +21,6 @@
     "@graphql-codegen/add": "2.0.2",
     "@graphql-codegen/cli": "1.20.0",
     "@graphql-codegen/introspection": "1.18.1",
-    "@graphql-codegen/typescript": "1.19.0",
     "@graphql-codegen/typescript-graphql-request": "3.0.0",
     "@graphql-codegen/typescript-operations": "1.17.13",
     "@types/bunyan": "1.8.6",
