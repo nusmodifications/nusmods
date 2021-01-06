@@ -151,6 +151,28 @@ describe(cleanModuleInfo, () => {
       moduleCode: 'EL5102',
     });
   });
+
+  test('should decode HTML entities in description', () => {
+    expect(
+      cleanModuleInfo({
+        acadYear: '2020/2021',
+        description: 'These concepts pertain to the structure of &quot;ultimate reality&quot;...',
+        title: 'Metaphysics',
+        department: 'Philosophy',
+        faculty: 'Arts and Social Science',
+        moduleCredit: '4',
+        moduleCode: 'PH2213',
+      }),
+    ).toEqual({
+      acadYear: '2020/2021',
+      description: 'These concepts pertain to the structure of "ultimate reality"...',
+      title: 'Metaphysics',
+      department: 'Philosophy',
+      faculty: 'Arts and Social Science',
+      moduleCredit: '4',
+      moduleCode: 'PH2213',
+    });
+  });
 });
 
 describe(parseWorkload, () => {
