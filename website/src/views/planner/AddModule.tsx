@@ -61,8 +61,8 @@ export default class AddModule extends React.PureComponent<Props, State> {
     if (module) {
       this.props.onAddModule({
         type: 'module',
-        moduleCode: module.moduleCode.trim(),
-        yearLong: Boolean(module.yearLong),
+        moduleCode: module.moduleCode,
+        yearLong: module.yearLong,
       });
     }
 

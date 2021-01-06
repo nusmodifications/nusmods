@@ -98,20 +98,13 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
 
   onAddModule = (year: string, semester: PlannerModuleSemester, module: AddModuleData) => {
     if (module.type === 'module') {
-      // Extract everything that looks like a module code
-      const moduleCodes = module.moduleCode.toUpperCase().match(MODULE_CODE_REGEX);
-
-      if (moduleCodes) {
-        moduleCodes.forEach((moduleCode) => {
-          this.props.addModule(year, semester, {
-            type: 'module',
-            moduleCode,
-            yearLong: module.yearLong,
-          });
-          // TODO: Handle error
-          this.props.fetchModule(moduleCode);
-        });
-      }
+      this.props.addModule(year, semester, {
+        type: 'module',
+        moduleCode: module.moduleCode,
+        yearLong: module.yearLong,
+      });
+      // TODO: Handle error
+      this.props.fetchModule(module.moduleCode);
     } else {
       this.props.addModule(year, semester, module);
     }

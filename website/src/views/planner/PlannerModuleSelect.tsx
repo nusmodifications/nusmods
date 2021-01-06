@@ -12,6 +12,7 @@ import { takeUntil } from 'utils/array';
 import { isSemester } from 'utils/planner';
 
 import styles from './PlannerModuleSelect.scss';
+import { MODULE_CODE_REGEX } from 'utils/modules';
 
 type Props = Readonly<{
   // Input props
@@ -21,7 +22,7 @@ type Props = Readonly<{
   defaultValue?: string;
 
   // For filtering
-  onSelect: (module: ModuleCondensed | null) => void;
+  onSelect: (moduleCode: ModuleCondensed | null) => void;
   onCancel?: () => void;
   onBlur?: () => void;
   semester?: PlannerModuleSemester;
@@ -123,7 +124,17 @@ export function PlannerModuleSelectComponent({
                     } else if (inputValue != null) {
                       // Otherwise we use the input value - this allows the user to
                       // enter multiple
-                      onSelect(modules.find((module) => module.moduleCode === inputValue) ?? null);
+
+                      // Extract everything that looks like a module code
+                      const moduleCodes = inputValue.toUpperCase().match(MODULE_CODE_REGEX);
+
+                      if (moduleCodes) {
+                        moduleCodes.forEach((moduleCode) => {
+                          const module = modules.find((module) => module.moduleCode === moduleCode);
+                          if (module)
+                            onSelect(module);
+                        });
+                      }
                     }
                   }
 
