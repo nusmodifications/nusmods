@@ -54,7 +54,7 @@ export const parseExportData: Middleware<State> = (ctx, next) => {
   return next();
 };
 
-function validateExportData(data: PageData) {
+export function validateExportData(data: PageData) {
   if (!_.isObject(data)) throw new Error('data should be an object');
 
   if (!_.isInteger(data.semester) || data.semester < 1 || data.semester > 4) {

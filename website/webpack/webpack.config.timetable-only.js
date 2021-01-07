@@ -13,7 +13,7 @@ const __DEV__ = process.env.NODE_ENV === 'development';
 
 const source = (file) => path.join('entry/export', file);
 
-const productionConfig = merge([
+const timetableOnlyConfig = merge([
   {
     plugins: [
       new webpack.DefinePlugin({
@@ -23,6 +23,8 @@ const productionConfig = merge([
         VERSION_STR: JSON.stringify(parts.appVersion().versionStr),
         DEBUG_SERVICE_WORKER: !!process.env.DEBUG_SERVICE_WORKER,
         DATA_API_BASE_URL: JSON.stringify(process.env.DATA_API_BASE_URL),
+        VERCEL_ENV: JSON.stringify(process.env.VERCEL_ENV),
+        VERCEL_GIT_COMMIT_REF: JSON.stringify(process.env.VERCEL_GIT_COMMIT_REF),
       }),
     ],
   },
@@ -37,12 +39,8 @@ const productionConfig = merge([
     // You can exclude the *.map files from the build during deployment.
     devtool: 'source-map',
     output: {
-      // The build folder.
+      publicPath: parts.TIMETABLE_ONLY_PUBLIC_PATH,
       path: parts.PATHS.buildTimetable,
-      filename: __DEV__ ? '[contenthash].js' : '[chunkhash].js',
-      // This is used for require.ensure. The setup
-      // will work without but this is useful to set.
-      chunkFilename: '[chunkhash].js',
     },
     plugins: [
       new HtmlWebpackPlugin({
@@ -66,4 +64,4 @@ const productionConfig = merge([
   parts.devServer(),
 ]);
 
-module.exports = productionConfig;
+module.exports = timetableOnlyConfig;

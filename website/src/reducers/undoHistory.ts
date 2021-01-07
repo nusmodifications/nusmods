@@ -7,7 +7,7 @@ import { Actions } from 'types/actions';
 export type UndoHistoryConfig = {
   limit?: number;
   actionsToWatch: string[];
-  whitelist: string[];
+  storedKeyPaths: string[];
 };
 
 // Update undo history using the action and app states
@@ -31,12 +31,12 @@ export function computeUndoStacks<T extends { undoHistory: UndoHistoryState<T> }
   if (config.actionsToWatch.includes(action.type)) {
     // Append actual present to past, and drop history past config.limit
     // Limit only enforced here since undo/redo only shift the history around without adding new history
-    const appendedPast = [...past, pick(previousAppState, config.whitelist)];
+    const appendedPast = [...past, pick(previousAppState, config.storedKeyPaths)];
     const newPast = 'limit' in config ? takeRight(appendedPast, config.limit) : appendedPast;
 
     return {
       past: newPast,
-      present: pick(presentAppState, config.whitelist),
+      present: pick(presentAppState, config.storedKeyPaths),
       future: [],
     };
   }
@@ -105,7 +105,7 @@ export default function createUndoReducer<T extends { undoHistory: UndoHistorySt
     // Applies updatedHistory.present to state if action.type === {UNDO,REDO}
     // Assumes updatedHistory.present is the final present state
     if ((action.type === UNDO || action.type === REDO) && updatedHistory.present) {
-      return mergePresent(updatedState, updatedHistory.present, config.whitelist);
+      return mergePresent(updatedState, updatedHistory.present, config.storedKeyPaths);
     }
     return updatedState;
   };

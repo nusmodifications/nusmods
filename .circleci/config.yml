@@ -56,7 +56,6 @@ jobs:
           at: ~/nusmods
       - run: yarn --frozen-lockfile --non-interactive
       - run: yarn prettier --check src
-      - run: yarn build
       - run:
           name: Build export service
           environment:

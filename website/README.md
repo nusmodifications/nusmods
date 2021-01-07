@@ -307,12 +307,21 @@ yarn e2e
 # Run against deploy preview
 LAUNCH_URL="https://deploy-preview-1024--nusmods.netlify.com" yarn e2e
 
-# Enable local testing
+# Run against local development server
+yarn start              # Start a local development server
 ./BrowserStackLocal --key $BROWSERSTACK_ACCESS_KEY
 LAUNCH_URL="http://localhost:8080" LOCAL_TEST=1 yarn e2e
+
+# Run against local production server
+yarn build              # Build to ./dist directory
+npx serve -s dist       # Start a local server that serves ./dist
+./BrowserStackLocal --key $BROWSERSTACK_ACCESS_KEY
+LAUNCH_URL="http://localhost:5000" LOCAL_TEST=1 yarn e2e
 ```
 
 ### Deployment
+
+**This section is outdated! We're overhauling our deployment processes at the moment. For more up-to-date (but which will also soon be outdated) deployment info, please refer to this [deployment guide](../DEPLOYMENT.md).**
 
 Our staging is served from the `./dist` directory, which is generated using `yarn build`. From there, it can be promoted to production using `yarn promote-staging`. This flow is summarized below:
 
