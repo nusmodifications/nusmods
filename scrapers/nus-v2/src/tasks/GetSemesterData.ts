@@ -94,7 +94,7 @@ export function cleanModuleInfo(module: SemesterModule) {
     cleanedModule.title = titleize(cleanedModule.title);
   }
 
-  if (typeof cleanedModule.description !== 'undefined') {
+  if (cleanedModule.description != null) {
     cleanedModule.description = decodeHTMLEntities(cleanedModule.description);
   }
 
