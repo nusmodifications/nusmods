@@ -163,15 +163,10 @@ describe(cleanModuleInfo, () => {
         moduleCredit: '4',
         moduleCode: 'PH2213',
       }),
-    ).toEqual({
-      acadYear: '2020/2021',
-      description: 'These concepts pertain to the structure of "ultimate reality"...',
-      title: 'Metaphysics',
-      department: 'Philosophy',
-      faculty: 'Arts and Social Science',
-      moduleCredit: '4',
-      moduleCode: 'PH2213',
-    });
+    ).toHaveProperty(
+      'description',
+      'These concepts pertain to the structure of "ultimate reality"...',
+    );
   });
 });
 
