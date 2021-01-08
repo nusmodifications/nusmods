@@ -5,4 +5,5 @@ module.exports = {
   trailingComma: 'all',
   jsxBracketSameLine: false,
   bracketSpacing: true,
+  endOfLine: 'auto',
 };

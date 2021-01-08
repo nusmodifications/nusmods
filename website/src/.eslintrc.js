@@ -35,6 +35,14 @@ module.exports = {
 
         // Can be cleaner to directly assert types in tests
         '@typescript-eslint/no-object-literal-type-assertion': 'off',
+
+        "prettier/prettier": []
+          
+          "error",
+          {
+            "endOfLine": "auto"
+          },
+  ],
       },
     },
 

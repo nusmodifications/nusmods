@@ -33,12 +33,17 @@ export function semesterForTimetablePage(semStr: string | null | undefined): Sem
 }
 
 export function meetupsPage(semester: Semester): string {
-  return `/meetups/${fromSemester[semester]}`
+  return `/meetups/${fromSemester[semester]}`;
 }
 
 export function semesterForMeetupsPage(semStr: string | null | undefined): Semester | null {
   if (!semStr) return null;
   return toSemester[semStr] || null;
+}
+
+export const MEETUPS_SHARE = 'share';
+export function meetupsShare(semester: Semester, lessons: SemTimetableConfig): string {
+  return `${meetupsPage(semester)}/${MEETUPS_SHARE}?${serializeTimetable(lessons)}`;
 }
 
 // Module Code, Module Title -> Module page path

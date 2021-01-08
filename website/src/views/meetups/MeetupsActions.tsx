@@ -4,8 +4,8 @@ import { Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
 
 import { DownloadCloud, Moon, Sidebar, XSquare } from 'react-feather';
-import ShareTimetable from '../timetable/ShareTimetable';
-// import ExportMenu from '../timetable/ExportMenu';
+import ShareTimetable from './ShareTimetable';
+import ExportMenu from './ExportMenu';
 
 import styles from './MeetupsActions.scss';
 
@@ -64,7 +64,7 @@ const MeetupsActions: React.FC<Props> = (props) => (
 
     <div className={styles.buttonGroup} role="group" aria-label="Timetable exporting">
       {/* The component below is used to download timetable. We will integrate this function if we have time to. */}
-      {/* <ExportMenu semester={props.semester} timetable={props.timetable} /> */}
+      <ExportMenu semester={props.semester} timetable={props.timetable} />
 
       <ShareTimetable semester={props.semester} timetable={props.timetable} />
     </div>
