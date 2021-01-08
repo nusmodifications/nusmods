@@ -1,0 +1,29 @@
+@import '~styles/utils/modules-entry';
+
+.container {
+  :global {
+    animation-name: $page-entering-animation;
+  }
+}
+
+.timetableWrapper {
+  composes: scrollable from global;
+  margin-bottom: 1rem;
+
+  @include media-breakpoint-down(sm) {
+    // Maximize the space taken by the timetable by overflowing into the grid gutters
+    margin-right: -($grid-gutter-width / 2);
+    margin-left: -($grid-gutter-width / 2);
+  }
+}
+
+.modulesSelect {
+  composes: col-12 from global;
+  margin-bottom: 1rem;
+}
+
+.moduleTableFooter {
+  padding-top: 0.5rem;
+  margin-top: 1rem;
+  border-top: 1px solid var(--gray-lighter);
+}

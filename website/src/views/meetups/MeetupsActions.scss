@@ -1,0 +1,56 @@
+@import '../timetable/_variables.scss';
+
+$btn-margin: 0.5rem;
+
+.sidebarIcon {
+  composes: svg svg-small from global;
+  transform: rotate(180deg);
+
+  @include vertical-mode {
+    transform: rotate(-90deg);
+  }
+}
+
+.buttonGroup {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-left: -$btn-margin; // Negate childrens' left margins
+
+  > * {
+    flex-grow: 1;
+    margin-bottom: $btn-margin;
+    margin-left: $btn-margin;
+  }
+
+  @include media-breakpoint-up(md) {
+    :global(.btn) {
+      padding: 0.25rem 0.75rem;
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+// Two layout forms:
+//
+// 1. Left and right on one row, with space between two groups
+//   - md and above for horizontal
+//
+// 2. Left and right on 2 rows, full width (fullWidthGroup)
+//   - any size in vertical
+//   - sm and below for horizontal
+@mixin fullWidthGroup {
+  .buttonGroup {
+    width: calc(
+      100% + #{$btn-margin}
+    ); // Make full width and negate the left shifting caused by our margin-left
+  }
+}
+
+:global(.verticalMode) {
+  @include fullWidthGroup;
+}
+
+@include media-breakpoint-down(sm) {
+  @include fullWidthGroup;
+}
