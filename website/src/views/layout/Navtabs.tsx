@@ -2,10 +2,10 @@ import type { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
-import { BookOpen, Calendar, Clock, Heart, Map, Settings, Star, Trello } from 'react-feather';
+import { BookOpen, Calendar, Clock, Heart, Map, Settings, Star, Trello, Users } from 'react-feather';
 
 import ExternalLink from 'views/components/ExternalLink';
-import { timetablePage } from 'views/routes/paths';
+import { timetablePage, meetupPage } from 'views/routes/paths';
 import { preload as preloadToday } from 'views/today/TodayContainer';
 import { preload as preloadVenues } from 'views/venues/VenuesContainer';
 import { preload as preloadContribute } from 'views/contribute/ContributeContainer';
@@ -33,6 +33,10 @@ const Navtabs: FC = () => {
       <NavLink {...tabProps} to={timetablePage(activeSemester)}>
         <Calendar />
         <span className={styles.title}>Timetable</span>
+      </NavLink>
+      <NavLink {...tabProps} to={meetupPage()}>
+        <Users />
+        <span className={styles.title}>Meetup</span>
       </NavLink>
       <NavLink
         {...tabProps}
