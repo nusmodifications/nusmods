@@ -1,12 +1,9 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { connect } from 'react-redux';
-
-import { toggleTimetableOrientation, toggleTitleDisplay } from 'actions/theme';
 import { Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
 
-import { DownloadCloud, Sidebar, XSquare } from 'react-feather';
+import { DownloadCloud, Moon, Sidebar, XSquare } from 'react-feather';
 import ShareTimetable from '../timetable/ShareTimetable';
 // import ExportMenu from '../timetable/ExportMenu';
 
@@ -17,12 +14,11 @@ type Props = {
   timetable: SemTimetableConfig;
 
   isVerticalOrientation: boolean;
-  toggleTimetableOrientation: () => void;
+  toggleTimetableOrientation: React.MouseEventHandler<HTMLButtonElement>;
 
-  // TO DO: Add function to toggle switch view and boolean if needed
-
-  handleImportFromTimetable: () => void;
-  handleReset: () => void;
+  handleSwitchView: React.MouseEventHandler<HTMLButtonElement>;
+  handleImportFromTimetable: React.MouseEventHandler<HTMLButtonElement>;
+  handleReset: React.MouseEventHandler<HTMLButtonElement>;
 };
 
 const MeetupsActions: React.FC<Props> = (props) => (
@@ -51,9 +47,9 @@ const MeetupsActions: React.FC<Props> = (props) => (
       <button
         type="button"
         className={classnames('btn btn-outline-primary btn-svg')}
-        // onClick={}
+        onClick={props.handleSwitchView}
       >
-        {/* I forgot what this button does so someone add an icon here */}
+        <Moon className={styles.sidebarIcon} />
         Switch View
       </button>
       <button
@@ -75,7 +71,4 @@ const MeetupsActions: React.FC<Props> = (props) => (
   </div>
 );
 
-export default connect(null, {
-  toggleTimetableOrientation,
-  toggleTitleDisplay,
-})(MeetupsActions);
+export default MeetupsActions;

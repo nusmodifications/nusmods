@@ -2,7 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
-import { HORIZONTAL, ModulesMap, TimetableOrientation } from 'types/reducers';
+import { HORIZONTAL, VERTICAL, ModulesMap, TimetableOrientation } from 'types/reducers';
 import { Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
 import Title from 'views/components/Title';
@@ -37,6 +37,13 @@ class MeetupsContent extends React.Component<Props, State> {
     isScrolledHorizontally: false,
     // tombstone: null, // Don't need to implement tombstone for deleted users first
     timetableOrientation: HORIZONTAL,
+  };
+
+  toggleTimetableOrientation: React.MouseEventHandler<HTMLButtonElement> = () => {
+    this.setState((prevState) => ({
+      ...prevState,
+      timetableOrientation: prevState.timetableOrientation === HORIZONTAL ? VERTICAL : HORIZONTAL,
+    }));
   };
 
   // Dont need to implement tombstone for deleted users first...
@@ -91,8 +98,13 @@ class MeetupsContent extends React.Component<Props, State> {
                   semester={semester}
                   timetable={this.props.timetable}
                   // TO DO: Add the implementation of the functions for the following:
-                  handleImportFromTimetable={() => console.log("import from timetable")}
-                  handleReset={() => console.log("reset")}
+                  toggleTimetableOrientation={this.toggleTimetableOrientation}
+                  // eslint-disable-next-line no-console
+                  handleSwitchView={() => console.log('switch view')}
+                  // eslint-disable-next-line no-console
+                  handleImportFromTimetable={() => console.log('import from timetable')}
+                  // eslint-disable-next-line no-console
+                  handleReset={() => console.log('reset')}
                 />
               </div>
 
