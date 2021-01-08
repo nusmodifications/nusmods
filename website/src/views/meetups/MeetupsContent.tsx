@@ -96,16 +96,16 @@ class MeetupsContent extends React.Component<Props, State> {
   // resetTombstone = () => this.setState({ tombstone: null });
 
 
-  // removeUser = (userToRemove: string) => {
-  //   // Save the index of the module before removal so the tombstone can be inserted into
-  //   // the correct position
-  //   const index = this.addedModules().findIndex(
-  //     ({ moduleCode }) => moduleCode === userToRemove,
-  //   );
-  //   this.props.removeUser(this.props.semester, userToRemove);
-  //   const moduleWithColor = this.toModuleWithColor(this.addedModules()[index]);
-
-  // };
+  removeUser = (userToRemove: string) => {
+    const newState = this.state.state.others.filter((user)=>!user.name.match(userToRemove));
+    this.setState((state)=>({
+      ...state,
+      state: {
+        ...state.state,
+        others: newState
+      }
+    }));
+  };
 
   // Returns component with table(s) of users
   // eslint-disable-next-line class-methods-use-this
@@ -115,7 +115,7 @@ class MeetupsContent extends React.Component<Props, State> {
       semester={semester}
       users={users}
       horizontalOrientation={horizontalOrientation}
-      onRemoveModule={(string)=> {}}
+      onRemoveModule={this.removeUser}
      />
     );
   }

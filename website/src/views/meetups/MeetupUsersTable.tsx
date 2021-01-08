@@ -42,7 +42,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
         return (
           <div className={styles.moduleActionButtons}>
             <div className="btn-group">
-              <Tooltip content={removeBtnLabel} touch="hold">
+              {!user.name.match('Myself') && (<Tooltip content={removeBtnLabel} touch="hold">
                 <button
                   type="button"
                   className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
@@ -51,7 +51,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
                 >
                   <Trash className={styles.actionIcon} />
                 </button>
-              </Tooltip>
+              </Tooltip>)}
               <Tooltip content={hideBtnLabel} touch="hold">
                 <button
                   type="button"
