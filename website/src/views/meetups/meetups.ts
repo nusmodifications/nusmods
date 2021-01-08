@@ -85,7 +85,7 @@ export function generateUser(settings: UserSettings = defaultUserSettings): User
 export function generateState(): State {
   return {
     user: generateUser(),
-    others: [generateUser()],
+    others: [],
   };
 }
 
@@ -301,18 +301,19 @@ type Drop<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 // type Range<FROM extends number, TO extends number> = Exclude<Enumerate<TO>, Enumerate<FROM>>;
 
 // helper function to generate user object
-export function mapUserObject(color: Color, name: string, timetable: Timetable) : User {
+export function mapUserObject(color: Color, name: string, timetable: Timetable): User {
   return {
     color,
     name,
-    timetable
-  }
+    timetable,
+    hiddenInTimetable: false,
+  };
 }
 
-export function generateNumber(seed : number, max: number) {
-  return seed % max; 
+export function generateNumber(seed: number, max: number) {
+  return seed % max;
 }
 
-export function generateColor(seed: number) : Color {
-  return generateNumber(seed, 8) as Color; 
+export function generateColor(seed: number): Color {
+  return generateNumber(seed, 8) as Color;
 }

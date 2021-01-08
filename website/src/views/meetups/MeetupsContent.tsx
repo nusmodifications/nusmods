@@ -110,15 +110,15 @@ class MeetupsContent extends React.Component<Props, State> {
       return Meetups.convertUserToIsModifiableLessons(this.state.state.user);
     } else {
       const unhiddenOthers = this.state.state.others.filter((user)=>!user.hiddenInTimetable); // To filter out hidden users in others
-    const hideAdjustUser = this.state.state.user.hiddenInTimetable ? {
-      color: this.state.state.user.color,
-      name: this.state.state.user.name,
-      hiddenInTimetable: this.state.state.user.hiddenInTimetable,
-      timetable: generateTimetable(),
-    }: this.state.state.user; // Test if 'Myself' is hidden, code quality can be improved
-    const userLessons = Meetups.mapUserToTimetableArrangement(hideAdjustUser);
-    const othersLessons = unhiddenOthers.map(Meetups.mapUserToTimetableArrangement);
-    return Meetups.combineTimetableArrangements(userLessons, othersLessons);
+      const hideAdjustUser = this.state.state.user.hiddenInTimetable ? {
+        color: this.state.state.user.color,
+        name: this.state.state.user.name,
+        hiddenInTimetable: this.state.state.user.hiddenInTimetable,
+        timetable: generateTimetable(),
+      }: this.state.state.user; // Test if 'Myself' is hidden, code quality can be improved
+      const userLessons = Meetups.mapUserToTimetableArrangement(hideAdjustUser);
+      const othersLessons = unhiddenOthers.map(Meetups.mapUserToTimetableArrangement);
+      return Meetups.combineTimetableArrangements(userLessons, othersLessons);
     }
   }
 

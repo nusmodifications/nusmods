@@ -24,7 +24,7 @@ export type Props = {
     users: User[];
     horizontalOrientation: boolean;
     username: string; //'Myself' by default
-  
+
     // Actions
     selectModuleColor: (semester: Semester, moduleCode: ModuleCode, colorIndex: ColorIndex) => void;
     hideLessonInTimetable: (semester: Semester, name: string) => void;
@@ -35,7 +35,7 @@ export type Props = {
 };
 
 export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
-    
+
     const {semester, users, horizontalOrientation, username} = props;
 
     const renderModuleActions = (user: User) => {
@@ -100,7 +100,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
         </>
       );
     };
-  
+
     return (
       <div className={classnames(styles.modulesTable, elements.moduleTable, 'row')}>
         {users.map((user) => (
@@ -118,7 +118,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
       </div>
     );
   };
-  
+
   export default connect(
     (state: StoreState) => ({ moduleTableOrder: state.settings.moduleTableOrder }),
     {

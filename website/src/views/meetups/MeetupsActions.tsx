@@ -81,7 +81,6 @@ const MeetupsActions: React.FC<Props> = (props) => (
     </div>
 
     <div className={styles.buttonGroup} role="group" aria-label="Timetable exporting">
-      {/* The component below is used to download timetable. We will integrate this function if we have time to. */}
       {!props.isEditing && <ExportMenu semester={props.semester} timetable={props.timetable} />}
 
       {!props.isEditing && <ShareMeetups semester={props.semester} timetable={props.timetableSlots} />}

@@ -87,7 +87,7 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
   };
 
   render() {
-    return <Downshift onSelect={this.onSelect}>{this.renderDropdown}</Downshift>;
+    return <Downshift>{this.renderDropdown}</Downshift>;
   }
 }
 
