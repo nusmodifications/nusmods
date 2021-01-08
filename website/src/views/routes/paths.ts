@@ -26,12 +26,17 @@ export function timetableShare(semester: Semester, timetable: SemTimetableConfig
   return `${timetablePage(semester)}/${TIMETABLE_SHARE}?${serializeTimetable(timetable)}`;
 }
 
-export function meetupPage(): string {
-  return `/meetup`;
-}
-
 // Timetable path -> Semester
 export function semesterForTimetablePage(semStr: string | null | undefined): Semester | null {
+  if (!semStr) return null;
+  return toSemester[semStr] || null;
+}
+
+export function meetupsPage(semester: Semester): string {
+  return `/meetups/${fromSemester[semester]}`
+}
+
+export function semesterForMeetupsPage(semStr: string | null | undefined): Semester | null {
   if (!semStr) return null;
   return toSemester[semStr] || null;
 }

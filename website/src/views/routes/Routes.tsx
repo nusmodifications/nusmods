@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import TimetableContainer from 'views/timetable/TimetableContainer';
+import MeetupsContainer from 'views/meetups/MeetupsContainer'
 import ModulePageContainer from 'views/modules/ModulePageContainer';
 import ModuleArchiveContainer from 'views/modules/ModuleArchiveContainer';
 import ModuleFinderContainer from 'views/modules/ModuleFinderContainer';
@@ -18,14 +19,13 @@ import TodayContainer from 'views/today/TodayContainer';
 import PlannerContainer from 'views/planner/PlannerContainer';
 import TetrisContainer from 'views/tetris/TetrisContainer';
 import ExternalRedirect from './ExternalRedirect';
-import { MeetupContainerComponent } from 'views/meetup/MeetupContainer';
 
 // IMPORTANT: Remember to update any route changes on the sitemap
 const Routes: React.FC = () => (
   <Switch>
     <Redirect exact from="/" to="/timetable" />
     <Route path="/timetable/:semester?/:action?" component={TimetableContainer} />
-    <Route path="/meetup" component={MeetupContainerComponent} />
+    <Route path="/meetups/:semester?" component={MeetupsContainer} />
     <Route exact path="/modules" component={ModuleFinderContainer} />
     <Route path="/modules/:moduleCode/:slug?" component={ModulePageContainer} />
     <Route path="/archive/:moduleCode/:year/:slug?" component={ModuleArchiveContainer} />
