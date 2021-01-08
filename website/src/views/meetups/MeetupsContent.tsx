@@ -107,7 +107,7 @@ class MeetupsContent extends React.Component<Props, State> {
 
   getLessons = (): TimetableArrangement => {
     if (this.state.isEditing) {
-      return Meetups.convertUserToIsModifiableLessons(this.state.state.user);
+      return Meetups.convertUserToIsModifiableLessons(this.state.state.user, this.state.state.user.color);
     } else {
       const unhiddenOthers = this.state.state.others.filter((user)=>!user.hiddenInTimetable); // To filter out hidden users in others
       const hideAdjustUser = this.state.state.user.hiddenInTimetable ? {

@@ -199,13 +199,14 @@ export function handleImportFromTimetable(lessons: TimetableArrangement): (state
 export function convertTimetableDayToIsModifiableLessons(
   timetableDay: TimetableDay,
   dayString: string,
+  color: Color,
 ): ModifiableLesson[] {
   return timetableDay.map((value, index) => {
     if (value === 0) {
       return {
         ...defaultModifiableLesson,
         moduleCode: dayString.slice(0, 3),
-        colorIndex: 0,
+        colorIndex: color,
         startTime: convertTimetableDayIndexToTimeString(index),
         endTime: convertTimetableDayIndexToTimeString(index + 1),
         isAvailable: true,
@@ -218,7 +219,7 @@ export function convertTimetableDayToIsModifiableLessons(
       return {
         ...defaultModifiableLesson,
         moduleCode: dayString.slice(0, 3),
-        colorIndex: 0,
+        colorIndex: color,
         startTime: convertTimetableDayIndexToTimeString(index),
         endTime: convertTimetableDayIndexToTimeString(index + 1),
         isAvailable: false,
@@ -232,9 +233,9 @@ export function convertTimetableDayToIsModifiableLessons(
   });
 }
 
-export function convertUserToIsModifiableLessons(user: User): TimetableArrangement {
+export function convertUserToIsModifiableLessons(user: User, color: Color): TimetableArrangement {
   return _.mapValues(user.timetable, (value, key) => [
-    convertTimetableDayToIsModifiableLessons(value, key),
+    convertTimetableDayToIsModifiableLessons(value, key, color),
   ]);
 }
 
