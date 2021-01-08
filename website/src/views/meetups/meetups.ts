@@ -42,16 +42,8 @@ type Timetable = Readonly<{
   Sunday: TimetableDay;
 }>;
 
-type Days = keyof Timetable;
-// const days: Days[] = [
-//   'Monday',
-//   'Tuesday',
-//   'Wednesday',
-//   'Thursday',
-//   'Friday',
-//   'Saturday',
-//   'Sunday',
-// ];
+export type Days = keyof Timetable;
+const days: Days[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 // type TimetableDayIndex = Range<0, typeof timetableDayLength>;
 type TimetableDayValue = 0 | 1;
@@ -191,16 +183,40 @@ export function handleImportFromTimetable(lessons: TimetableArrangement): (state
       ...state,
       user: {
         ...state.user,
-        timetable: _.mapValues(state.user.timetable, (value, key) => {
-          console.log(key);
-          return updateTimetableDayFromStartEndTuples(value, final[key]);
-        }),
+        timetable: _.mapValues(state.user.timetable, (value, key) =>
+          updateTimetableDayFromStartEndTuples(value, final[key]),
+        ),
       },
     };
   };
 }
 
 // HELPER TYPE FUNCTIONS ==========
+//TO DO: Use decoder to fix the forced type
+export function seralizeTimetable(timetable: Timetable): string {
+  let url = '';
+  Object.keys(timetable).forEach((timetableDay) => {
+    const day = timetableDay as Days;
+    url += `${parseInt(timetable[day].join(''), 2).toString(36)};`;
+  });
+  return url;
+}
+
+//TO DO: Use decoder to fix the forced type
+export function deserializeTimetable(serialized: string): Timetable {
+  const serializedDays = serialized.split(';');
+  const timetable = generateTimetable();
+  Object.keys(timetable).forEach((element) => {
+    const day = element as Days;
+    const timetableDay = timetable[day];
+    const timeslots = parseInt(serializedDays[days.indexOf(day)], 36).toString(2).split('');
+    while (timeslots.length < timetableDayLength) timeslots.unshift('0');
+    for (let i = 0; i <= timetableDayLength; i++) {
+      if (timeslots[i] === '1') timetableDay[i] = switchTimetableDayValue(timetableDay[i]);
+    }
+  });
+  return timetable;
+}
 
 type Drop<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 // type PrependNextNum<A extends Array<unknown>> = A['length'] extends infer T

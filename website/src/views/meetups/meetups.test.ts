@@ -72,3 +72,35 @@ describe('mapDetailsToModifiableLessons', () => {
     ]);
   });
 });
+
+describe('seralizeTimetable', () => {
+  it('Converts timetable into a string for sharing', () => {
+    const timetable = Meetups.generateTimetable();
+    Object.keys(timetable).forEach((days) => {
+      const day = days as Meetups.Days;
+      const timetableDay = timetable[day];
+      [1, 2, 3, 6, 7, 8, 9, 13, 14, 18].forEach((index) => {
+        timetableDay[index] = Meetups.switchTimetableDayValue(timetableDay[index]);
+      });
+    });
+    const url = Meetups.seralizeTimetable(timetable);
+    expect(url).toEqual('4img0;4img0;4img0;4img0;4img0;4img0;4img0;');
+  });
+});
+
+describe('deseralizeTimetable', () => {
+  it('Converts serialized string into timetable', () => {
+    const timetable = Meetups.generateTimetable();
+    Object.keys(timetable).forEach((days) => {
+      const day = days as Meetups.Days;
+      const timetableDay = timetable[day];
+      [1, 2, 3, 6, 7, 8, 9, 13, 14, 18].forEach((index) => {
+        timetableDay[index] = Meetups.switchTimetableDayValue(timetableDay[index]);
+      });
+    });
+    const deseralizedTimetable = Meetups.deserializeTimetable(
+      '4img0;4img0;4img0;4img0;4img0;4img0;4img0;',
+    );
+    expect(deseralizedTimetable).toMatchObject(timetable);
+  });
+});
