@@ -32,6 +32,7 @@ import styles from './MeetupsContent.scss';
 import _ from 'lodash';
 import MeetupUsersTable from './MeetupUsersTable';
 import type { User } from './meetups';
+import { generateTimetable } from './meetups';
 
 
 type OwnProps = {
@@ -107,9 +108,16 @@ class MeetupsContent extends React.Component<Props, State> {
     if (this.state.isEditing) {
       return Meetups.convertUserToIsModifiableLessons(this.state.state.user);
     } else {
-      const userLessons = Meetups.mapUserToTimetableArrangement(this.state.state.user);
-      const othersLessons = this.state.state.others.map(Meetups.mapUserToTimetableArrangement);
-      return Meetups.combineTimetableArrangements(userLessons, othersLessons);
+      const unhiddenOthers = this.state.state.others.filter((user)=>!user.hiddenInTimetable); // To filter out hidden users in others
+    const hideAdjustUser = this.state.state.user.hiddenInTimetable ? {
+      color: this.state.state.user.color,
+      name: this.state.state.user.name,
+      hiddenInTimetable: this.state.state.user.hiddenInTimetable,
+      timetable: generateTimetable(),
+    }: this.state.state.user; // Test if 'Myself' is hidden, code quality can be improved
+    const userLessons = Meetups.mapUserToTimetableArrangement(hideAdjustUser);
+    const othersLessons = unhiddenOthers.map(Meetups.mapUserToTimetableArrangement);
+    return Meetups.combineTimetableArrangements(userLessons, othersLessons);  
     }
   }
 
@@ -135,6 +143,41 @@ class MeetupsContent extends React.Component<Props, State> {
     }));
   };
 
+  toggleHide = (user: User) : User => {
+    const isHiddenUser = user.hiddenInTimetable;
+    return {
+      color: user.color,
+      name: user.name,
+      hiddenInTimetable: !isHiddenUser,
+      timetable: user.timetable,
+    };
+  } //Code quality can be improved.
+
+  toggleHideUser = (userToToggle: string) => {
+    if(userToToggle.match(this.state.state.user.name)) {
+      const isHiddenUser = this.state.state.user.hiddenInTimetable;
+      this.setState((state)=>({
+        ...state,
+        state: {
+          ...state.state,
+          user: {
+            ...state.state.user,
+            hiddenInTimetable: !isHiddenUser,
+          }
+        }
+      }))
+    } else{
+      const newState = this.state.state.others.map((user)=>user.name.match(userToToggle)?this.toggleHide(user):user);
+      this.setState((state)=>({
+        ...state,
+        state: {
+          ...state.state,
+          others: newState
+        }
+      }))
+    }
+  };
+
   // Returns component with table(s) of users
   // eslint-disable-next-line class-methods-use-this
   renderUserSections(semester: Semester, users: User[], horizontalOrientation: boolean) {
@@ -143,7 +186,9 @@ class MeetupsContent extends React.Component<Props, State> {
       semester={semester}
       users={users}
       horizontalOrientation={horizontalOrientation}
+      username={this.state.state.user.name}
       onRemoveModule={this.removeUser}
+      toggleHide={this.toggleHideUser}
      />
     );
   }

@@ -23,18 +23,20 @@ export type Props = {
     semester: Semester;
     users: User[];
     horizontalOrientation: boolean;
+    username: string; //'Myself' by default
   
     // Actions
     selectModuleColor: (semester: Semester, moduleCode: ModuleCode, colorIndex: ColorIndex) => void;
     hideLessonInTimetable: (semester: Semester, name: string) => void;
     showLessonInTimetable: (semester: Semester, name: string) => void;
     onRemoveModule: (name: string) => void;
+    toggleHide: (name: string) => void;
     // resetTombstone: () => void;
 };
 
 export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
     
-    const {semester, users, horizontalOrientation} = props;
+    const {semester, users, horizontalOrientation, username} = props;
 
     const renderModuleActions = (user: User) => {
         const hideBtnLabel = `${user.hiddenInTimetable ? 'Show' : 'Hide'} ${user.name}`;
@@ -42,7 +44,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
         return (
           <div className={styles.moduleActionButtons}>
             <div className="btn-group">
-              {!user.name.match('Myself') && (<Tooltip content={removeBtnLabel} touch="hold">
+                {!user.name.match(username) && (<Tooltip content={removeBtnLabel} touch="hold">
                 <button
                   type="button"
                   className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
@@ -59,9 +61,9 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
                   aria-label={hideBtnLabel}
                   onClick={() => {
                     if (user.hiddenInTimetable) {
-                      props.showLessonInTimetable(semester, user.name);
+                      props.toggleHide(user.name);
                     } else {
-                      props.hideLessonInTimetable(semester, user.name);
+                      props.toggleHide(user.name);
                     }
                   }}
                 >
