@@ -62,6 +62,10 @@ class MeetupsContent extends React.Component<Props, State> {
 
     const isVerticalOrientation = this.state.timetableOrientation !== HORIZONTAL;
 
+    const userLessons = Meetups.mapUserToTimetableArrangement(this.state.state.user)
+    const othersLessons = this.state.state.others.map(Meetups.mapUserToTimetableArrangement)
+    const lessons = Meetups.combineTimetableArrangements(userLessons, othersLessons)
+
     return (
       <div
         className={classnames('page-container', styles.container, {
@@ -83,58 +87,7 @@ class MeetupsContent extends React.Component<Props, State> {
               <Timetable
                 // Need to convert our data structure into lessons for timetable to render
                 // Note: Must include saturday: [] and sunday: [] for timetable to render saturday and sunday
-                lessons={{
-                  Monday: [
-                    [
-                      {
-                        classNo: '',
-                        day: '',
-                        startTime: '0000',
-                        endTime: '2400',
-                        lessonType: '',
-                        venue: '',
-                        weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-                        moduleCode: 'BRYAN',
-                        title: '',
-                        colorIndex: 1,
-                      },
-                    ],
-                    [
-                      {
-                        classNo: '',
-                        day: 'Monday',
-                        startTime: '1100',
-                        endTime: '1300',
-                        lessonType: '',
-                        venue: '',
-                        weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-                        moduleCode: 'ANDREW',
-                        title: '',
-                        colorIndex: 2,
-                      },
-                    ],
-                    [
-                      {
-                        classNo: '',
-                        day: 'Monday',
-                        startTime: '1100',
-                        endTime: '1300',
-                        lessonType: '',
-                        venue: '',
-                        weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-                        moduleCode: 'CHRIS',
-                        title: '',
-                        colorIndex: 3,
-                      },
-                    ],
-                  ],
-                  Tuesday: [],
-                  Wednesday: [],
-                  Thursday: [],
-                  Friday: [],
-                  Saturday: [],
-                  Sunday: [],
-                }}
+                lessons={lessons}
                 isVerticalOrientation={isVerticalOrientation}
                 isScrolledHorizontally={this.state.isScrolledHorizontally}
               />

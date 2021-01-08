@@ -29,7 +29,7 @@ describe('generateUser', () => {
 });
 
 describe('mapTimetableDayToStartEndTuples', () => {
-  it.only('Converts a timetableDay array into an array of start-end tuples', () => {
+  it('Converts a timetableDay array into an array of start-end tuples', () => {
     const timetableDay = Meetups.generateTimetableDay();
     [1, 2, 3, 6, 7, 8, 9, 13, 14, 18].forEach((index) => {
       timetableDay[index] = Meetups.switchTimetableDayValue(timetableDay[index]);
@@ -40,6 +40,35 @@ describe('mapTimetableDayToStartEndTuples', () => {
       [6, 10],
       [13, 15],
       [18, 19],
+    ]);
+  });
+});
+
+describe('mapDetailsToModifiableLessons', () => {
+  it('Converts a name, color and startEndTuple into a ModifiableLesson', () => {
+    const modifiableLesson = Meetups.mapDetailsToModifiableLessons(
+      Meetups.defaultUserSettings.name,
+      Meetups.defaultUserSettings.color,
+      [
+        [1, 2],
+        [13, 15],
+      ],
+    );
+    expect(modifiableLesson).toEqual([
+      {
+        ...Meetups.defaultModifiableLesson,
+        moduleCode: Meetups.defaultUserSettings.name,
+        colorIndex: Meetups.defaultUserSettings.color,
+        startTime: '0100',
+        endTime: '0200',
+      },
+      {
+        ...Meetups.defaultModifiableLesson,
+        moduleCode: Meetups.defaultUserSettings.name,
+        colorIndex: Meetups.defaultUserSettings.color,
+        startTime: '1300',
+        endTime: '1500',
+      },
     ]);
   });
 });
