@@ -105,7 +105,20 @@ class MeetupsContent extends React.Component<Props, State> {
     }));
   }
 
-  getLessons = (): TimetableArrangement => {
+  handleReset: React.MouseEventHandler<HTMLButtonElement> = () => {
+    this.setState((prevState) => ({
+      ...prevState,
+      state: {
+        ...prevState.state,
+        user : {
+          ...prevState.state.user,
+          timetable: generateTimetable()
+        }
+      }
+    }));
+  }
+
+getLessons = (): TimetableArrangement => {
     if (this.state.isEditing) {
       return Meetups.convertUserToIsModifiableLessons(this.state.state.user, this.state.state.user.color);
     } else {
@@ -288,7 +301,7 @@ class MeetupsContent extends React.Component<Props, State> {
                   // eslint-disable-next-line no-console
                   handleSwitchView={() => console.log('switch view')}
                   // eslint-disable-next-line no-console
-                  handleReset={() => console.log('reset')}
+                  handleReset={this.handleReset}
                 />
               </div>
 
