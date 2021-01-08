@@ -35,7 +35,7 @@ import styles from './MeetupsContent.scss';
 
 import _ from 'lodash';
 import MeetupUsersTable from './MeetupUsersTable';
-import type { User, Color } from './meetups';
+import type { User, UserWithIndex, Color } from './meetups';
 import { generateTimetable } from './meetups';
 
 type OwnProps = {
@@ -51,17 +51,12 @@ type Props = OwnProps & {
   modules: ModulesMap;
   timetableWithLessons: SemTimetableConfigWithLessons;
   hiddenInTimetable: ModuleCode[];
-  // timetableOrientation: TimetableOrientation;
-
-  // Actions
-  // undo: () => void;
 };
 
 type State = {
   isScrolledHorizontally: boolean;
   isEditing: boolean;
   isFree: boolean;
-  // tombstone: TombstoneModule | null;
   timetableOrientation: TimetableOrientation;
   state: Meetups.State;
 };
@@ -73,7 +68,7 @@ class MeetupsContent extends React.Component<Props, State> {
     isFree: false,
     // tombstone: null, // Don't need to implement tombstone for deleted users first
     timetableOrientation: HORIZONTAL,
-    state: Meetups.generateState(),
+    state: Meetups.generateState(this.props.importedTimetable),
   };
 
   toggleTimetableOrientation: React.MouseEventHandler<HTMLButtonElement> = () => {
@@ -122,13 +117,13 @@ class MeetupsContent extends React.Component<Props, State> {
       ...prevState,
       state: {
         ...prevState.state,
-        user : {
+        user: {
           ...prevState.state.user,
-          timetable: generateTimetable()
-        }
-      }
+          timetable: generateTimetable(),
+        },
+      },
     }));
-  }
+  };
 
   getLessons = (): TimetableArrangement => {
     if (this.state.isEditing) {
@@ -142,16 +137,16 @@ class MeetupsContent extends React.Component<Props, State> {
       const unhiddenOthers = this.state.state.others.filter((user) => !user.hiddenInTimetable); // To filter out hidden users in others
       const hideAdjustUser = this.state.state.user.hiddenInTimetable
         ? {
-            color: this.state.state.user.color,
-            name: this.state.state.user.name,
-            hiddenInTimetable: this.state.state.user.hiddenInTimetable,
+            ...this.state.state.user,
             timetable: generateTimetable(),
           }
         : this.state.state.user; // Test if 'Myself' is hidden, code quality can be improved
       const userLessons = Meetups.mapUserToTimetableArrangement(hideAdjustUser);
       const othersLessons = unhiddenOthers.map(Meetups.mapUserToTimetableArrangement);
       const allLessons = Meetups.combineTimetableArrangements(userLessons, othersLessons);
-      return _.mapValues(allLessons, (value) => value.filter((modifiableLessons) => modifiableLessons.length > 0))
+      return _.mapValues(allLessons, (value) =>
+        value.filter((modifiableLessons) => modifiableLessons.length > 0),
+      );
     }
   };
 
@@ -168,16 +163,12 @@ class MeetupsContent extends React.Component<Props, State> {
     });
   };
 
-  // Dont need to implement tombstone for deleted users first...
-  // resetTombstone = () => this.setState({ tombstone: null });
-
   toggleColor = (user: User, color: Color): User => {
-    const isHiddenUser = user.hiddenInTimetable;
     return { ...user, color: color };
   };
 
-  selectUserColor = (userToChange: User, color: Color) => {
-    if (userToChange == this.state.state.user) {
+  selectUserColor = (userToChange: UserWithIndex, color: Color) => {
+    if (userToChange.index < 0) {
       this.setState((state) => ({
         ...state,
         state: {
@@ -189,8 +180,8 @@ class MeetupsContent extends React.Component<Props, State> {
         },
       }));
     } else {
-      const newState = this.state.state.others.map((user) =>
-        user == userToChange ? this.toggleColor(user, color) : user,
+      const newState = this.state.state.others.map((user, index) =>
+      index === userToChange.index ? this.toggleColor(user, color) : user,
       );
       this.setState((state) => ({
         ...state,
@@ -202,8 +193,8 @@ class MeetupsContent extends React.Component<Props, State> {
     }
   };
 
-  removeUser = (userToRemove: User) => {
-    const newState = this.state.state.others.filter((user) => user != userToRemove);
+  removeUser = (userToRemove: UserWithIndex) => {
+    const newState = this.state.state.others.filter((user, index) => index != userToRemove.index);
     this.setState((prevstate) => ({
       ...prevstate,
       state: {
@@ -218,8 +209,8 @@ class MeetupsContent extends React.Component<Props, State> {
     return { ...user, hiddenInTimetable: !isHiddenUser };
   };
 
-  toggleHideUser = (userToToggle: User) => {
-    if (userToToggle == this.state.state.user) {
+  toggleHideUser = (userToToggle: UserWithIndex) => {
+    if (userToToggle.index < 0) {
       const isHiddenUser = this.state.state.user.hiddenInTimetable;
       this.setState((state) => ({
         ...state,
@@ -232,8 +223,8 @@ class MeetupsContent extends React.Component<Props, State> {
         },
       }));
     } else {
-      const newState = this.state.state.others.map((user) =>
-        user == userToToggle ? this.toggleHide(user) : user,
+      const newState = this.state.state.others.map((user, index) =>
+        index === userToToggle.index ? this.toggleHide(user) : user,
       );
       this.setState((state) => ({
         ...state,
@@ -245,90 +236,81 @@ class MeetupsContent extends React.Component<Props, State> {
     }
   };
 
-  // Returns component with table(s) of users
-  // eslint-disable-next-line class-methods-use-this
-  renderUserSections(semester: Semester, users: User[], horizontalOrientation: boolean) {
-    return (
-      <MeetupUsersTable
-        semester={semester}
-        users={users}
-        horizontalOrientation={horizontalOrientation}
-        owner={this.state.state.user}
-        onRemoveUser={this.removeUser}
-        toggleHide={this.toggleHideUser}
-        selectUserColor={this.selectUserColor}
-      />
-    );
-  }
+  switchUserEdit = (user: User): User => {
+    const isEditUser = user.isEditing;
+    return { ...user, isEditing: !isEditUser };
+  };
 
-  SharingHeader: React.FC<{
-    semester: Semester;
-    importedTimetable: Meetups.Timetable | null;
-    // setImportedTimetable: (timetable: Meetups.Timetable | null) => void;
-  }> = ({ semester, importedTimetable }) => {
-    const history = useHistory();
-    // const dispatch = useDispatch();
-
-    const clearImportedTimetable = React.useCallback(() => {
-      if (semester) {
-        history.push(meetupsPage(semester)); // TODO: Check that this works
-      }
-    }, [history, semester]);
-
-    const setTimetable = (timetable: Meetups.Timetable) => {
+  toggleUserEdit = (userToToggle: UserWithIndex) => {
+    if (userToToggle.index < 0) {
+      const isEditingUser = this.state.state.user.isEditing;
       this.setState((state) => ({
         ...state,
         state: {
           ...state.state,
           user: {
             ...state.state.user,
-            timetable: timetable,
+            isEditing: !isEditingUser,
           },
         },
       }));
-    };
-
-    const importTimetable = React.useCallback(() => {
-      if (!importedTimetable) {
-        return;
-      }
-      setTimetable(importedTimetable);
-      clearImportedTimetable();
-    }, [clearImportedTimetable, importedTimetable, semester]);
-
-    if (!importedTimetable) {
-      return null;
+    } else {
+      const newState = this.state.state.others.map((user, index) =>
+        index === userToToggle.index ? this.switchUserEdit(user) : user,
+      );
+      this.setState((state) => ({
+        ...state,
+        state: {
+          ...state.state,
+          others: newState,
+        },
+      }));
     }
-    setTimetable(importedTimetable);
-
-    return (
-      <div className={classnames('alert', 'alert-success', styles.importAlert)}>
-        <Repeat />
-
-        <div className={classnames('row', styles.row)}>
-          <div className={classnames('col')}>
-            <h3>This timetable was shared with you</h3>
-            <p>
-              Clicking import will <strong>replace</strong> your saved timetable with the one below.
-            </p>
-          </div>
-
-          <div className={classnames('col-md-auto', styles.actions)}>
-            <button className="btn btn-success" type="button" onClick={importTimetable}>
-              Import
-            </button>
-            <button
-              className="btn btn-outline-primary"
-              type="button"
-              onClick={clearImportedTimetable}
-            >
-              Back to saved timetable
-            </button>
-          </div>
-        </div>
-      </div>
-    );
   };
+
+  onUserEdit = (index: number, name: string) => {
+    if (index < 0) {
+      this.setState((state) => ({
+        ...state,
+        state: {
+          ...state.state,
+          user: {
+            ...state.state.user,
+            name: name,
+            isEditing: false,
+          },
+        },
+      }));
+    } else {
+      const newState = this.state.state.others.map((user, userIndex) =>
+      userIndex == index ? { ...user, name: name, isEditing: false } : user,
+      );
+      this.setState((state) => ({
+        ...state,
+        state: {
+          ...state.state,
+          others: newState,
+        },
+      }));
+    }
+  };
+
+
+  // Returns component with table(s) of users
+  renderUserSections(users: User[], horizontalOrientation: boolean) {
+    return (
+      <MeetupUsersTable
+        users={users}
+        horizontalOrientation={horizontalOrientation}
+        owner={this.state.state.user}
+        onRemoveUser={this.removeUser}
+        toggleHide={this.toggleHideUser}
+        toggleEdit={this.toggleUserEdit}
+        onEditUser={this.onUserEdit}
+        selectUserColor={this.selectUserColor}
+      />
+    );
+  }
 
   render() {
     const { semester } = this.props;
@@ -336,9 +318,6 @@ class MeetupsContent extends React.Component<Props, State> {
     const isVerticalOrientation = this.state.timetableOrientation !== HORIZONTAL;
 
     const lessons = this.getLessons();
-
-    const users = this.state.state.others.slice();
-    users.unshift(this.state.state.user); //combine main user and others
 
     return (
       <div
@@ -349,10 +328,6 @@ class MeetupsContent extends React.Component<Props, State> {
         <Title>Meetups</Title>
 
         <div>
-          <this.SharingHeader
-            semester={semester}
-            importedTimetable={this.props.importedTimetable}
-          />
           {this.props.header}
         </div>
 
@@ -408,7 +383,7 @@ class MeetupsContent extends React.Component<Props, State> {
               </div>
 
               <div className="col-12">
-                {this.renderUserSections(semester, users, !isVerticalOrientation)}
+                {this.renderUserSections(this.state.state.others, !isVerticalOrientation)}
               </div>
             </div>
           </div>

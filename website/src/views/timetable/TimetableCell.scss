@@ -75,6 +75,8 @@ $cell-border-radius: 6px;
 .moduleName {
   font-weight: 600;
   font-size: $font-size-xs;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .weeksSpecial {

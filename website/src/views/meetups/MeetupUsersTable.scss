@@ -10,13 +10,23 @@
 }
 
 .moduleColor {
-  margin-top: 0.1rem;
   margin-right: 0.5rem;
+  display: flex;
+  align-items: center;
 }
 
 .moduleInfo {
   display: table-cell;
-  flex: 1 1 auto;
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  min-height: 50px;
+}
+
+.moduleInfoText {
+  display: flex;
+  flex-grow: 1;
+  padding: 4px;
 }
 
 .moduleInfo.tombstone {
@@ -90,5 +100,20 @@
     display: inline-block;
     width: auto;
     text-align: left;
+  }
+}
+
+.input {
+  composes: form-control from global;
+  text-align: left;
+  white-space: nowrap;
+  padding: 16px;
+
+  &:not(:disabled) {
+    box-shadow: inset 2px 2px 4px rgba(#000, 0.1);
+
+    @include night-mode {
+      box-shadow: inset 2px 2px 4px rgba(#000, 0.9);
+    }
   }
 }

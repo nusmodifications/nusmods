@@ -3,15 +3,7 @@ import classnames from 'classnames';
 import { Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
 import { Timetable } from './meetups';
-import {
-  Book,
-  BookOpen,
-  DownloadCloud,
-  Edit2,
-  Save,
-  Sidebar,
-  XSquare,
-} from 'react-feather';
+import { Book, BookOpen, DownloadCloud, Edit2, Save, Sidebar, XSquare } from 'react-feather';
 import ShareMeetups from './ShareMeetups';
 import ExportMenu from './ExportMenu';
 
@@ -105,7 +97,7 @@ const MeetupsActions: React.FC<Props> = (props) => (
     </div>
 
     <div className={styles.buttonGroup} role="group" aria-label="Timetable exporting">
-      {!props.isEditing && <ExportMenu semester={props.semester} timetable={props.timetable} />}
+      {/* {!props.isEditing && <ExportMenu semester={props.semester} timetable={props.timetable} />} */}
 
       {!props.isEditing && (
         <ShareMeetups semester={props.semester} timetable={props.timetableSlots} />

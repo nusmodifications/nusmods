@@ -1,14 +1,14 @@
 import _ from 'lodash';
 import { ModifiableLesson, TimetableArrangement } from 'types/timetables';
 
-// util file
 // SETTINGS ==========
 export const timetableDayLength = 24;
 const defaultTimetableDayValue: TimetableDayValue = 0;
 export const defaultUserSettings: UserSettings = {
   color: 0,
-  name: 'Myself',
+  name: 'Me',
   hiddenInTimetable: false,
+  isEditing: false,
 };
 export const defaultModifiableLesson: ModifiableLessonSettings = {
   classNo: '',
@@ -25,11 +25,13 @@ export type State = Readonly<{
   others: User[];
 }>;
 
+export type UserWithIndex = User & { index: number };
 export type User = Readonly<{
   color: Color;
   name: string;
   timetable: Timetable;
   hiddenInTimetable: boolean;
+  isEditing: boolean;
 }>; // Need to export type to MeetupsContent and MeetupUsersTable
 export type Color = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
@@ -75,16 +77,19 @@ export function generateTimetable(): Timetable {
   };
 }
 
-export function generateUser(settings: UserSettings = defaultUserSettings): User {
+export function generateUser(
+  timetable: Timetable | null,
+  settings: UserSettings = defaultUserSettings,
+): User {
   return {
     ...settings,
-    timetable: generateTimetable(),
+    timetable: timetable || generateTimetable(),
   };
 }
 
-export function generateState(): State {
+export function generateState(timetable: Timetable | null): State {
   return {
-    user: generateUser(),
+    user: generateUser(timetable),
     others: [],
   };
 }
@@ -336,6 +341,7 @@ export function mapUserObject(color: Color, name: string, timetable: Timetable):
     name,
     timetable,
     hiddenInTimetable: false,
+    isEditing: false,
   };
 }
 

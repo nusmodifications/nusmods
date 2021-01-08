@@ -9,9 +9,12 @@
 
 import { FC, useMemo, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { Redirect, useParams, useLocation } from 'react-router-dom';
+import { Repeat } from 'react-feather';
+import classnames from 'classnames';
+import { Redirect, useParams, useLocation, useHistory } from 'react-router-dom';
 import type { State } from 'types/state';
 import type { Semester } from 'types/modules';
+import type { SemTimetableConfig } from 'types/timetables';
 import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
 import { fillColorMapping } from 'utils/colors';
 import { semesterForMeetupsPage, timetablePage, meetupsPage } from 'views/routes/paths';
@@ -39,6 +42,8 @@ export const MeetupsContainerComponent: FC = () => {
   const location = useLocation();
   const importedTimetable =
     semester && params.action ? deserializeTimetable(location.search) : null;
+  //TODO convert it to needed type
+  // const importedTimetable = importedMeetupTimetable === null ?  : null;
   const filledColors = useMemo(() => fillColorMapping(timetable, colors), [colors, timetable]);
 
   // If semester returns null, we'll direct the user to the home page (same as timetable)
@@ -54,9 +59,7 @@ export const MeetupsContainerComponent: FC = () => {
       colors={filledColors}
       importedTimetable={importedTimetable}
       header={
-        <>
-          <MeetupsHeader semester={semester} />
-        </>
+        <MeetupsHeader semester={semester} />
       }
     />
   );

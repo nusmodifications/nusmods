@@ -198,7 +198,7 @@ export default class ShareMeetups extends React.PureComponent<Props, State> {
             <h3>Share/Sync Your Timetable</h3>
             <p>
               Send this link to your friends to share your available slots to make it easy to find a
-              common time to meet up or to yourself to keep your timetable synced on all devices.
+              common time to meet up.
             </p>
           </div>
 
