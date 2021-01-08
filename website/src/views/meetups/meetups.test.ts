@@ -104,3 +104,11 @@ describe('deseralizeTimetable', () => {
     expect(deseralizedTimetable).toMatchObject(timetable);
   });
 });
+
+describe('generateColor', () => {
+  it('Generates a color number from 0 to 7', () => {
+    const color : Meetups.Color = Meetups.generateColor(Math.floor(Math.random() * 100))
+    expect(color).toBeGreaterThanOrEqual(0)
+    expect(color).toBeLessThanOrEqual(7)
+  })
+})

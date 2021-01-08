@@ -311,10 +311,10 @@ export function mapUserObject(color: Color, name: string, timetable: Timetable):
   };
 }
 
-export function generateNumber(seed: number, max: number) {
-  return seed % max;
+export function generateInteger(seed: number, max: number) {
+  return Math.round(seed % max);
 }
 
 export function generateColor(seed: number): Color {
-  return generateNumber(seed, 8) as Color;
+  return generateInteger(seed, 8) as Color;
 }
