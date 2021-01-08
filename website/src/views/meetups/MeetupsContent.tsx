@@ -1,9 +1,10 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { HORIZONTAL, VERTICAL, ModulesMap, TimetableOrientation } from 'types/reducers';
-import { Semester } from 'types/modules';
-import { SemTimetableConfig } from 'types/timetables';
+import { ColorMapping, HORIZONTAL, VERTICAL, ModulesMap, TimetableOrientation } from 'types/reducers';
+import { Semester, ModuleCode } from 'types/modules';
+import { ColoredLesson, Lesson, SemTimetableConfig, SemTimetableConfigWithLessons } from 'types/timetables';
+import { arrangeLessonsForWeek, hydrateSemTimetableWithLessons, timetableLessonsArray } from 'utils/timetables';
 import Title from 'views/components/Title';
 import { State as StoreState } from 'types/state';
 import * as Meetups from './meetups';
@@ -15,11 +16,14 @@ type OwnProps = {
   header: React.ReactNode;
   semester: Semester;
   timetable: SemTimetableConfig;
+  colors: ColorMapping;
 };
 
 type Props = OwnProps & {
   // From Redux
   modules: ModulesMap;
+  timetableWithLessons: SemTimetableConfigWithLessons;
+  hiddenInTimetable: ModuleCode[];
   // timetableOrientation: TimetableOrientation;
 
   // Actions
@@ -47,6 +51,26 @@ class MeetupsContent extends React.Component<Props, State> {
       timetableOrientation: prevState.timetableOrientation === HORIZONTAL ? VERTICAL : HORIZONTAL,
     }));
   };
+
+  isHiddenInTimetable = (moduleCode: ModuleCode) =>
+    this.props.hiddenInTimetable.includes(moduleCode);
+
+  handleImportFromTimetable: React.MouseEventHandler<HTMLButtonElement> = () => {
+    const timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons)
+      // Do not process hidden modules
+      .filter((lesson) => !this.isHiddenInTimetable(lesson.moduleCode));
+    const coloredTimetableLessons = timetableLessons.map(
+        (lesson: Lesson): ColoredLesson => ({
+          ...lesson,
+          colorIndex: this.props.colors[lesson.moduleCode],
+        }),
+      );
+      const arrangedLessons = arrangeLessonsForWeek(coloredTimetableLessons);
+    this.setState((state) => ({
+        ...state,
+        state: Meetups.handleImportFromTimetable(arrangedLessons)(state.state)
+      }))
+  }
 
   // Dont need to implement tombstone for deleted users first...
   // resetTombstone = () => this.setState({ tombstone: null });
@@ -109,8 +133,7 @@ class MeetupsContent extends React.Component<Props, State> {
                   toggleTimetableOrientation={this.toggleTimetableOrientation}
                   // eslint-disable-next-line no-console
                   handleSwitchView={() => console.log('switch view')}
-                  // eslint-disable-next-line no-console
-                  handleImportFromTimetable={() => console.log('import from timetable')}
+                  handleImportFromTimetable={this.handleImportFromTimetable}
                   // eslint-disable-next-line no-console
                   handleReset={() => console.log('reset')}
                 />
@@ -131,11 +154,15 @@ class MeetupsContent extends React.Component<Props, State> {
 function mapStateToProps(state: StoreState, ownProps: OwnProps) {
   const { semester, timetable } = ownProps;
   const { modules } = state.moduleBank;
+  const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
+  const hiddenInTimetable = state.timetables.hidden[semester] || [];
 
   return {
     semester,
     timetable,
     modules,
+    timetableWithLessons,
+    hiddenInTimetable,
     // Use local state with default horizontal first
     // timetableOrientation: state.theme.timetableOrientation,
   };

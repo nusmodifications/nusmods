@@ -7,11 +7,13 @@
  * More state will come in when we implement save meetup data to local storage.
  */
 
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect, useParams } from 'react-router-dom';
 import type { State } from 'types/state';
 import type { Semester } from 'types/modules';
+import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
+import { fillColorMapping } from 'utils/colors';
 import { semesterForMeetupsPage, timetablePage } from 'views/routes/paths';
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import MeetupsContent from './MeetupsContent';
@@ -30,6 +32,13 @@ const MeetupsHeader: FC<{ semester: Semester }> = ({ semester }) => (
 export const MeetupsContainerComponent: FC = () => {
   const params = useParams<Params>(); // params = "sem-2"
   const semester = semesterForMeetupsPage(params.semester); // semester = 2 <-- Gay function... Why don't just save params.semester as number?
+  const timetable = useSelector(getSemesterTimetableLessons)(semester);
+  const colors = useSelector(getSemesterTimetableColors)(semester);
+
+  const filledColors = useMemo(() => fillColorMapping(timetable, colors), [
+    colors,
+    timetable,
+  ]);
 
   // If semester returns null, we'll direct the user to the home page (same as timetable)
   const activeSemester = useSelector(({ app }: State) => app.activeSemester);
@@ -40,7 +49,8 @@ export const MeetupsContainerComponent: FC = () => {
   return (
     <MeetupsContent
       semester={semester}
-      timetable={{}} // default set to nothing on the meetup table
+      timetable={timetable} // default set to nothing on the meetup table
+      colors={filledColors}
       header={<MeetupsHeader semester={semester} />}
     />
   );

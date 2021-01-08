@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { ModifiableLesson, TimetableArrangement } from 'types/timetables';
 
 // SETTINGS ==========
@@ -41,7 +42,7 @@ type Timetable = Readonly<{
   Sunday: TimetableDay;
 }>;
 
-// type Days = keyof Timetable;
+type Days = keyof Timetable;
 // const days: Days[] = [
 //   'Monday',
 //   'Tuesday',
@@ -129,33 +130,73 @@ export function mapDetailsToModifiableLessons(
   }));
 }
 
+export function mapModifiableLessonsToStartEndTuples(
+  modifiableLessons: ModifiableLesson[],
+): StartEndTuple[] {
+  function convertTimeStringToTimetableDayIndex(timeString: string): number {
+    return parseInt(timeString.slice(0, 2));
+  }
+  return modifiableLessons.map((modifiableLesson) => [
+    convertTimeStringToTimetableDayIndex(modifiableLesson.startTime),
+    convertTimeStringToTimetableDayIndex(modifiableLesson.endTime),
+  ]);
+}
+
 export function mapUserToTimetableArrangement(user: User): TimetableArrangement {
   const { name, color, timetable } = user;
   const transform = (timetableDay: TimetableDay) =>
     mapDetailsToModifiableLessons(name, color, mapTimetableDayToStartEndTuples(timetableDay));
-  return {
-    Monday: [transform(timetable.Monday)],
-    Tuesday: [transform(timetable.Tuesday)],
-    Wednesday: [transform(timetable.Wednesday)],
-    Thursday: [transform(timetable.Thursday)],
-    Friday: [transform(timetable.Friday)],
-    Saturday: [transform(timetable.Saturday)],
-    Sunday: [transform(timetable.Sunday)],
-  };
+  return _.mapValues(timetable, (value) => [transform(value)]);
 }
 
 export function combineTimetableArrangements(
   user: TimetableArrangement,
   others: TimetableArrangement[],
 ): TimetableArrangement {
-  return {
-    Monday: [user.Monday[0], ...others.map((person) => person.Monday[0])],
-    Tuesday: [user.Tuesday[0], ...others.map((person) => person.Tuesday[0])],
-    Wednesday: [user.Wednesday[0], ...others.map((person) => person.Wednesday[0])],
-    Thursday: [user.Thursday[0], ...others.map((person) => person.Thursday[0])],
-    Friday: [user.Friday[0], ...others.map((person) => person.Friday[0])],
-    Saturday: [user.Saturday[0], ...others.map((person) => person.Saturday[0])],
-    Sunday: [user.Sunday[0], ...others.map((person) => person.Sunday[0])],
+  return _.mapValues(user, (value, key) => [value[0], ...others.map((person) => person[key][0])]);
+}
+
+function updateTimetableDayFromStartEndTuples(
+  timetableDay: TimetableDay,
+  startEndTuples: StartEndTuple[],
+): TimetableDay {
+  startEndTuples.forEach((tuple) => {
+    for (let index = tuple[0]; index < tuple[1]; index++) {
+      timetableDay[index] = 1;
+    }
+  });
+  return timetableDay;
+}
+
+export function handleImportFromTimetable(lessons: TimetableArrangement): (state: State) => State {
+  const startEndTuples = _.mapValues(lessons, (day: ModifiableLesson[][]) =>
+    day
+      .map(mapModifiableLessonsToStartEndTuples)
+      .reduce<StartEndTuple[]>((accumulator, current) => accumulator.concat(current), []),
+  );
+
+  const final: { [x: string]: StartEndTuple[] } = {
+    Monday: [],
+    Tuesday: [],
+    Wednesday: [],
+    Thursday: [],
+    Friday: [],
+    Saturday: [],
+    Sunday: [],
+    ...startEndTuples,
+  };
+
+  return (state) => {
+    return {
+      ...state,
+      user: {
+        ...state.user,
+        timetable: _.mapValues(state.user.timetable, (value, key) => {
+          console.log(key);
+          return updateTimetableDayFromStartEndTuples(value, final[key]);
+        }),
+      },
+    };
   };
 }
 
