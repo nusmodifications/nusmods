@@ -101,6 +101,13 @@ export function mapTimetableDayToStartEndTuples(timetableDay: TimetableDay): Sta
   }, []);
 }
 
+function convertTimetableDayIndexToTimeString(timetableDayIndex: number): string {
+  if (timetableDayIndex < 0)
+    throw new Error(`Invalid timetableDayIndex ${timetableDayIndex} encountered.`);
+  if (timetableDayIndex < 10) return `0${timetableDayIndex.toString()}00`;
+  return `${timetableDayIndex.toString()}00`;
+}
+
 type ModifiableLessonSettings = Readonly<
   Drop<ModifiableLesson, 'moduleCode' | 'startTime' | 'endTime' | 'colorIndex'>
 >;
@@ -109,12 +116,6 @@ export function mapDetailsToModifiableLessons(
   color: Color,
   startEndTuples: StartEndTuple[],
 ): ModifiableLesson[] {
-  function convertTimetableDayIndexToTimeString(timetableDayIndex: number): string {
-    if (timetableDayIndex < 0)
-      throw new Error(`Invalid timetableDayIndex ${timetableDayIndex} encountered.`);
-    if (timetableDayIndex < 10) return `0${timetableDayIndex.toString()}00`;
-    return `${timetableDayIndex.toString()}00`;
-  }
   return startEndTuples.map((tuple) => ({
     ...defaultModifiableLesson,
     moduleCode: name,
@@ -124,12 +125,13 @@ export function mapDetailsToModifiableLessons(
   }));
 }
 
+export function convertTimeStringToTimetableDayIndex(timeString: string): number {
+  return parseInt(timeString.slice(0, 2));
+}
+
 export function mapModifiableLessonsToStartEndTuples(
   modifiableLessons: ModifiableLesson[],
 ): StartEndTuple[] {
-  function convertTimeStringToTimetableDayIndex(timeString: string): number {
-    return parseInt(timeString.slice(0, 2));
-  }
   return modifiableLessons.map((modifiableLesson) => [
     convertTimeStringToTimetableDayIndex(modifiableLesson.startTime),
     convertTimeStringToTimetableDayIndex(modifiableLesson.endTime),
@@ -188,6 +190,68 @@ export function handleImportFromTimetable(lessons: TimetableArrangement): (state
         timetable: _.mapValues(state.user.timetable, (value, key) =>
           updateTimetableDayFromStartEndTuples(value, final[key]),
         ),
+      },
+    };
+  };
+}
+
+export function convertTimetableDayToIsModifiableLessons(
+  timetableDay: TimetableDay,
+  dayString: string,
+): ModifiableLesson[] {
+  return timetableDay.map((value, index) => {
+    if (value === 0) {
+      return {
+        ...defaultModifiableLesson,
+        moduleCode: dayString.slice(0, 3),
+        colorIndex: 0,
+        startTime: convertTimetableDayIndexToTimeString(index),
+        endTime: convertTimetableDayIndexToTimeString(index + 1),
+        isAvailable: true,
+        isModifiable: true,
+        weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        lessonType: dayString,
+        classNo: convertTimetableDayIndexToTimeString(index),
+      };
+    } else if (value === 1) {
+      return {
+        ...defaultModifiableLesson,
+        moduleCode: dayString.slice(0, 3),
+        colorIndex: 0,
+        startTime: convertTimetableDayIndexToTimeString(index),
+        endTime: convertTimetableDayIndexToTimeString(index + 1),
+        isAvailable: false,
+        isModifiable: true,
+        weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        lessonType: dayString,
+        classNo: convertTimetableDayIndexToTimeString(index),
+      };
+    }
+    return value;
+  });
+}
+
+export function convertUserToIsModifiableLessons(user: User): TimetableArrangement {
+  return _.mapValues(user.timetable, (value, key) => [
+    convertTimetableDayToIsModifiableLessons(value, key),
+  ]);
+}
+
+export function handleAddTimetableCell(
+  dayString: string,
+  timeString: string,
+): (state: State) => State {
+  const index = convertTimeStringToTimetableDayIndex(timeString);
+  const day = dayString as Days;
+
+  return (state) => {
+    const timetableCopy = { ...state.user.timetable };
+    timetableCopy[day][index] = switchTimetableDayValue(timetableCopy[day][index]);
+    return {
+      ...state,
+      user: {
+        ...state.user,
+        timetable: timetableCopy,
       },
     };
   };

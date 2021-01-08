@@ -12,6 +12,8 @@ import { Semester, ModuleCode } from 'types/modules';
 import {
   ColoredLesson,
   Lesson,
+  ModifiableLesson,
+  TimetableArrangement,
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
 } from 'types/timetables';
@@ -52,6 +54,7 @@ type Props = OwnProps & {
 
 type State = {
   isScrolledHorizontally: boolean;
+  isEditing: boolean;
   // tombstone: TombstoneModule | null;
   timetableOrientation: TimetableOrientation;
   state: Meetups.State;
@@ -60,6 +63,7 @@ type State = {
 class MeetupsContent extends React.Component<Props, State> {
   state: State = {
     isScrolledHorizontally: false,
+    isEditing: false,
     // tombstone: null, // Don't need to implement tombstone for deleted users first
     timetableOrientation: HORIZONTAL,
     state: Meetups.generateState(),
@@ -91,6 +95,30 @@ class MeetupsContent extends React.Component<Props, State> {
       state: Meetups.handleImportFromTimetable(arrangedLessons)(state.state),
     }));
   };
+
+  handleToggleEdit: React.MouseEventHandler<HTMLButtonElement> = () => {
+    this.setState((prevState) => ({
+      ...prevState,
+      isEditing: !prevState.isEditing,
+    }));
+  }
+
+  getLessons = (): TimetableArrangement => {
+    if (this.state.isEditing) {
+      return Meetups.convertUserToIsModifiableLessons(this.state.state.user);
+    } else {
+      const userLessons = Meetups.mapUserToTimetableArrangement(this.state.state.user);
+      const othersLessons = this.state.state.others.map(Meetups.mapUserToTimetableArrangement);
+      return Meetups.combineTimetableArrangements(userLessons, othersLessons);
+    }
+  }
+
+  handleAddTimetableCell = (lesson: ModifiableLesson) => {
+    this.setState((prevState) => ({
+      ...prevState,
+      state: Meetups.handleAddTimetableCell(lesson.lessonType, lesson.classNo)(prevState.state)
+    }))
+  }
 
   // Dont need to implement tombstone for deleted users first...
   // resetTombstone = () => this.setState({ tombstone: null });
@@ -125,9 +153,7 @@ class MeetupsContent extends React.Component<Props, State> {
 
     const isVerticalOrientation = this.state.timetableOrientation !== HORIZONTAL;
 
-    const userLessons = Meetups.mapUserToTimetableArrangement(this.state.state.user);
-    const othersLessons = this.state.state.others.map(Meetups.mapUserToTimetableArrangement);
-    const lessons = Meetups.combineTimetableArrangements(userLessons, othersLessons);
+    const lessons = this.getLessons();
 
     const users = this.state.state.others.slice();
     users.unshift(this.state.state.user);//combine main user and others
@@ -156,6 +182,7 @@ class MeetupsContent extends React.Component<Props, State> {
                 lessons={lessons}
                 isVerticalOrientation={isVerticalOrientation}
                 isScrolledHorizontally={this.state.isScrolledHorizontally}
+                onModifyCell={this.handleAddTimetableCell}
               />
             </div>
           </div>
@@ -174,9 +201,11 @@ class MeetupsContent extends React.Component<Props, State> {
                   timetableSlots={this.state.state.user.timetable}
                   // TO DO: Add the implementation of the functions for the following:
                   toggleTimetableOrientation={this.toggleTimetableOrientation}
+                  isEditing={this.state.isEditing}
+                  handleToggleEdit={this.handleToggleEdit}
+                  handleImportFromTimetable={this.handleImportFromTimetable}
                   // eslint-disable-next-line no-console
                   handleSwitchView={() => console.log('switch view')}
-                  handleImportFromTimetable={this.handleImportFromTimetable}
                   // eslint-disable-next-line no-console
                   handleReset={() => console.log('reset')}
                 />
