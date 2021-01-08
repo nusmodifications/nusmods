@@ -53,7 +53,7 @@ const SharingHeader: FC<{
 
   const importTimetable = useCallback(() => {
     if (!importedTimetable) {
-      return;
+      return null;
     }
     dispatch(setTimetable(semester, importedTimetable, filledColors));
     clearImportedTimetable();

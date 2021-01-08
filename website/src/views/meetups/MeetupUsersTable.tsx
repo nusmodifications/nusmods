@@ -27,8 +27,8 @@ export type Props = {
 };
 
 const MeetupUsersTableComponent: React.FC<Props> = (props) => {
-    
-  const {semester, users, horizontalOrientation, owner} = props;
+
+    const {semester, users, horizontalOrientation, owner} = props;
 
     const renderModuleActions = (user: User) => {
         const hideBtnLabel = `${user.hiddenInTimetable ? 'Show' : 'Hide'} ${user.name}`;
@@ -75,8 +75,10 @@ const MeetupUsersTableComponent: React.FC<Props> = (props) => {
               label={`Change ${user.name} timetable color`}
               color={user.color}
               isHidden={false}
-              onChooseColor={(colorIndex: Color) => {
-                props.selectUserColor(user, colorIndex);
+              onChooseColor={(colorIndex: number) => {
+                if (colorIndex < 0 || colorIndex > 7) throw new Error(`Invalid colorIndex encounteded ${colorIndex}`)
+                const color = colorIndex as Color
+                props.selectUserColor(user, color);
               }}
             />
           </div>

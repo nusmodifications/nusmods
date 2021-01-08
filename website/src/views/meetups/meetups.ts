@@ -196,6 +196,34 @@ export function handleImportFromTimetable(lessons: TimetableArrangement): (state
   };
 }
 
+function checkFreeForOthers(day: Days, index: number, others: User[]): boolean {
+  let free = true;
+  others.forEach((user) => {
+    if (user.timetable[day][index] == 1 && !user.hiddenInTimetable) {
+      free = false;
+    }
+  });
+  return free;
+}
+
+export function switchViewToFree(user: User, others: User[]): TimetableArrangement {
+  const timetable = generateTimetable();
+  Object.keys(timetable).forEach((timetableDay) => {
+    const day = timetableDay as Days;
+    for (let i = 0; i <= timetableDayLength; i++) {
+      if (user.timetable[day][i] == 0 && checkFreeForOthers(day, i, others)) {
+        timetable[day][i] = 1;
+      }
+    }
+  });
+  const freeSlots = {
+    name: '',
+    color: user.color,
+    timetable: timetable,
+  } as User;
+  return mapUserToTimetableArrangement(freeSlots);
+}
+
 export function convertTimetableDayToIsModifiableLessons(
   timetableDay: TimetableDay,
   dayString: string,
