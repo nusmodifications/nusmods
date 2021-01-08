@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { ModifiableLesson, TimetableArrangement } from 'types/timetables';
 
+// util file
 // SETTINGS ==========
 export const timetableDayLength = 24;
 const defaultTimetableDayValue: TimetableDayValue = 0;
@@ -298,3 +299,20 @@ type Drop<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 // }[N extends A['length'] ? 0 : 1];
 // type Enumerate<N extends number> = EnumerateInternal<[], N> extends (infer E)[] ? E : never;
 // type Range<FROM extends number, TO extends number> = Exclude<Enumerate<TO>, Enumerate<FROM>>;
+
+// helper function to generate user object
+export function mapUserObject(color: Color, name: string, timetable: Timetable) : User {
+  return {
+    color,
+    name,
+    timetable
+  }
+}
+
+export function generateNumber(seed : number, max: number) {
+  return seed % max; 
+}
+
+export function generateColor(seed: number) : Color {
+  return generateNumber(seed, 8) as Color; 
+}

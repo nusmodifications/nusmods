@@ -26,6 +26,7 @@ import Title from 'views/components/Title';
 import { State as StoreState } from 'types/state';
 import * as Meetups from './meetups';
 import MeetupsActions from './MeetupsActions';
+import UserMeetupsAdd from './UserMeetupsAdd';
 import Timetable from '../timetable/Timetable';
 import styles from './MeetupsContent.scss';
 
@@ -117,7 +118,7 @@ class MeetupsContent extends React.Component<Props, State> {
     }: this.state.state.user; // Test if 'Myself' is hidden, code quality can be improved
     const userLessons = Meetups.mapUserToTimetableArrangement(hideAdjustUser);
     const othersLessons = unhiddenOthers.map(Meetups.mapUserToTimetableArrangement);
-    return Meetups.combineTimetableArrangements(userLessons, othersLessons);  
+    return Meetups.combineTimetableArrangements(userLessons, othersLessons);
     }
   }
 
@@ -126,6 +127,12 @@ class MeetupsContent extends React.Component<Props, State> {
       ...prevState,
       state: Meetups.handleAddTimetableCell(lesson.lessonType, lesson.classNo)(prevState.state)
     }))
+  }
+
+  handleAddUser = (user : Meetups.User) => {
+    this.setState({
+      state: {...this.state.state, others: [...this.state.state.others, user]}
+    })
   }
 
   // Dont need to implement tombstone for deleted users first...
@@ -256,7 +263,9 @@ class MeetupsContent extends React.Component<Props, State> {
                 />
               </div>
 
-              <div className={styles.modulesSelect}>Look at ModulesSelectContainer component</div>
+              <div className={classnames(styles.userMeetupAdd)}>
+                <UserMeetupsAdd addUser={this.handleAddUser} userNum={this.state.state.others.length + 1} />
+              </div>
 
               <div className="col-12">{this.renderUserSections(semester, users, !isVerticalOrientation)}</div>
             </div>

@@ -34,7 +34,6 @@ export const MeetupsContainerComponent: FC = () => {
   const semester = semesterForMeetupsPage(params.semester); // semester = 2 <-- Gay function... Why don't just save params.semester as number?
   const timetable = useSelector(getSemesterTimetableLessons)(semester);
   const colors = useSelector(getSemesterTimetableColors)(semester);
-  const location = useLocation();
   const filledColors = useMemo(() => fillColorMapping(timetable, colors), [colors, timetable]);
 
   // If semester returns null, we'll direct the user to the home page (same as timetable)
