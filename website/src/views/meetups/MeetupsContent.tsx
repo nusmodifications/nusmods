@@ -79,7 +79,17 @@ class MeetupsContent extends React.Component<Props, State> {
           >
             <div className={styles.timetableWrapper}>
               <Timetable
-                lessons={{}}
+                // Need to convert our data structure into lessons for timetable to render
+                // Note: Must include saturday: [] and sunday: [] for timetable to render saturday and sunday
+                lessons={{
+                  Monday: [],
+                  Tuesday: [],
+                  Wednesday: [],
+                  Thursday: [],
+                  Friday: [],
+                  Saturday: [],
+                  Sunday: [],
+                }}
                 isVerticalOrientation={isVerticalOrientation}
                 isScrolledHorizontally={this.state.isScrolledHorizontally}
               />

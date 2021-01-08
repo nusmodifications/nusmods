@@ -80,6 +80,7 @@ export const SCHOOLDAYS: DayText[] = [
   'Thursday',
   'Friday',
   'Saturday',
+  'Sunday',
 ];
 export const DEFAULT_EARLIEST_TIME: LessonTime = '1000';
 export const DEFAULT_LATEST_TIME: LessonTime = '1800';

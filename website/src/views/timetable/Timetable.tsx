@@ -62,7 +62,7 @@ class Timetable extends React.PureComponent<Props, State> {
 
     const schoolDays = SCHOOLDAYS.filter(
       (day) => day !== 'Saturday' || this.props.lessons.Saturday,
-    );
+    ).filter((day) => day !== 'Sunday' || this.props.lessons.Sunday);
 
     const lessons = flattenDeep<ColoredLesson>(values(this.props.lessons));
     const { startingIndex, endingIndex } = calculateBorderTimings(lessons, highlightPeriod);
