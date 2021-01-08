@@ -1,7 +1,7 @@
 // SETTINGS ==========
-const timetableDayLength = 24;
+export const timetableDayLength = 24;
 const defaultTimetableDayValue: TimetableDayValue = 0;
-const defaultUserSettings: UserSettings = {
+export const defaultUserSettings: UserSettings = {
   color: 0,
   name: 'Myself',
 };
@@ -18,7 +18,7 @@ type User = Readonly<{
   timetable: Timetable;
 }>;
 
-type UserSettings = Drop<User, 'timetable'>;
+export type UserSettings = Drop<User, 'timetable'>;
 
 type Timetable = Readonly<{
   Monday: TimetableDay;
@@ -44,19 +44,19 @@ type Timetable = Readonly<{
 // type TimetableDayIndex = Range<0, typeof timetableDayLength>;
 type TimetableDayValue = 0 | 1;
 type TimetableDay = TimetableDayValue[];
-const defaultTimetableDay: TimetableDay = new Array<TimetableDayValue>(timetableDayLength).fill(
-  defaultTimetableDayValue,
-);
+export const defaultTimetableDay: TimetableDay = new Array<TimetableDayValue>(
+  timetableDayLength,
+).fill(defaultTimetableDayValue);
 
-// function switchTimetableDayValue(currentValue: TimetableDayValue): TimetableDayValue {
-//   return currentValue === 0 ? 1 : 0;
-// }
+export function switchTimetableDayValue(currentValue: TimetableDayValue): TimetableDayValue {
+  return currentValue === 0 ? 1 : 0;
+}
 
-function generateTimetableDay(): TimetableDay {
+export function generateTimetableDay(): TimetableDay {
   return [...defaultTimetableDay];
 }
 
-function generateTimetable(): Timetable {
+export function generateTimetable(): Timetable {
   return {
     Monday: generateTimetableDay(),
     Tuesday: generateTimetableDay(),
@@ -82,10 +82,22 @@ export function generateState(): State {
   };
 }
 
+type StartEndTuple = [number, number];
+export function mapTimetableDayToStartEndTuples(timetableDay: TimetableDay): StartEndTuple[] {
+  return timetableDay.reduce<StartEndTuple[]>((accumulator, currentValue, index) => {
+    if (currentValue === 1) {
+      const previousTuple = accumulator.pop();
+      if (previousTuple == null) return [[index, index + 1]];
+      if (previousTuple[1] === index) return [...accumulator, [previousTuple[0], index + 1]];
+      return [...accumulator, previousTuple, [index, index + 1]];
+    }
+    return accumulator;
+  }, []);
+}
+
 // HELPER TYPE FUNCTIONS ==========
 
 type Drop<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-
 // type PrependNextNum<A extends Array<unknown>> = A['length'] extends infer T
 //   ? ((t: T, ...a: A) => void) extends (...x: infer X) => void
 //     ? X
