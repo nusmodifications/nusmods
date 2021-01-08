@@ -31,7 +31,7 @@ export type User = Readonly<{
   timetable: Timetable;
   hiddenInTimetable: boolean;
 }>; // Need to export type to MeetupsContent and MeetupUsersTable
-type Color = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
+export type Color = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 export type UserSettings = Drop<User, 'timetable'>;
 

@@ -32,7 +32,7 @@ import styles from './MeetupsContent.scss';
 
 import _ from 'lodash';
 import MeetupUsersTable from './MeetupUsersTable';
-import type { User } from './meetups';
+import type { User, Color } from './meetups';
 import { generateTimetable } from './meetups';
 
 
@@ -138,13 +138,44 @@ class MeetupsContent extends React.Component<Props, State> {
   // Dont need to implement tombstone for deleted users first...
   // resetTombstone = () => this.setState({ tombstone: null });
 
+  toggleColor = (user: User, color: Color) : User => {
+    const isHiddenUser = user.hiddenInTimetable;
+    return {...user,
+      color: color,
+    };
+  }
 
-  removeUser = (userToRemove: string) => {
-    const newState = this.state.state.others.filter((user)=>!user.name.match(userToRemove));
-    this.setState((state)=>({
-      ...state,
+  selectUserColor = (userToChange: User, color: Color) => {
+    if(userToChange==this.state.state.user) {
+      this.setState((state)=>({
+        ...state,
+        state: {
+          ...state.state,
+          user: {
+            ...state.state.user,
+            color: color,
+          }
+        }
+      }))
+    } else{
+      const newState = this.state.state.others.map((user)=>user == userToChange?this.toggleColor(user, color):user);
+      this.setState((state)=>({
+        ...state,
+        state: {
+          ...state.state,
+          others: newState
+        }
+      }))
+    }
+  }
+
+
+  removeUser = (userToRemove: User) => {
+    const newState = this.state.state.others.filter((user)=>user != userToRemove);
+    this.setState((prevstate)=>({
+      ...prevstate,
       state: {
-        ...state.state,
+        ...prevstate.state,
         others: newState
       }
     }));
@@ -152,16 +183,13 @@ class MeetupsContent extends React.Component<Props, State> {
 
   toggleHide = (user: User) : User => {
     const isHiddenUser = user.hiddenInTimetable;
-    return {
-      color: user.color,
-      name: user.name,
+    return {...user,
       hiddenInTimetable: !isHiddenUser,
-      timetable: user.timetable,
     };
-  } //Code quality can be improved.
+  }
 
-  toggleHideUser = (userToToggle: string) => {
-    if(userToToggle.match(this.state.state.user.name)) {
+  toggleHideUser = (userToToggle: User) => {
+    if(userToToggle==this.state.state.user) {
       const isHiddenUser = this.state.state.user.hiddenInTimetable;
       this.setState((state)=>({
         ...state,
@@ -174,7 +202,7 @@ class MeetupsContent extends React.Component<Props, State> {
         }
       }))
     } else{
-      const newState = this.state.state.others.map((user)=>user.name.match(userToToggle)?this.toggleHide(user):user);
+      const newState = this.state.state.others.map((user)=>user == userToToggle?this.toggleHide(user):user);
       this.setState((state)=>({
         ...state,
         state: {
@@ -193,9 +221,10 @@ class MeetupsContent extends React.Component<Props, State> {
       semester={semester}
       users={users}
       horizontalOrientation={horizontalOrientation}
-      username={this.state.state.user.name}
-      onRemoveModule={this.removeUser}
+      owner={this.state.state.user}
+      onRemoveUser={this.removeUser}
       toggleHide={this.toggleHideUser}
+      selectUserColor={this.selectUserColor}
      />
     );
   }

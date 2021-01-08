@@ -1,42 +1,34 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 import classnames from 'classnames';
 
 import { ColorIndex } from 'types/timetables';
-import { ModuleCode, Semester } from 'types/modules';
-import { State as StoreState } from 'types/state';
+import { Semester } from 'types/modules';
 
 import ColorPicker from 'views/components/ColorPicker';
 import { Eye, EyeOff, Trash } from 'react-feather';
-import {
-  hideLessonInTimetable,
-  selectModuleColor,
-  showLessonInTimetable,
-} from 'actions/timetables';
+
 import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip';
 
 import styles from './MeetupUsersTable.scss';
-import type { User } from './meetups';
+import type { User, Color } from './meetups';
 
 export type Props = {
     semester: Semester;
     users: User[];
     horizontalOrientation: boolean;
-    username: string; //'Myself' by default
+    owner: User; //'Myself' by default
 
     // Actions
-    selectModuleColor: (semester: Semester, moduleCode: ModuleCode, colorIndex: ColorIndex) => void;
-    hideLessonInTimetable: (semester: Semester, name: string) => void;
-    showLessonInTimetable: (semester: Semester, name: string) => void;
-    onRemoveModule: (name: string) => void;
-    toggleHide: (name: string) => void;
+    selectUserColor: (user: User, colorIndex: Color) => void;
+    onRemoveUser: (user: User) => void;
+    toggleHide: (user: User) => void;
     // resetTombstone: () => void;
 };
 
-export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
-
-    const {semester, users, horizontalOrientation, username} = props;
+const MeetupUsersTableComponent: React.FC<Props> = (props) => {
+    
+  const {semester, users, horizontalOrientation, owner} = props;
 
     const renderModuleActions = (user: User) => {
         const hideBtnLabel = `${user.hiddenInTimetable ? 'Show' : 'Hide'} ${user.name}`;
@@ -44,12 +36,12 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
         return (
           <div className={styles.moduleActionButtons}>
             <div className="btn-group">
-                {!user.name.match(username) && (<Tooltip content={removeBtnLabel} touch="hold">
+                {user!=owner && (<Tooltip content={removeBtnLabel} touch="hold">
                 <button
                   type="button"
                   className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
                   aria-label={removeBtnLabel}
-                  onClick={() => props.onRemoveModule(user.name)}
+                  onClick={() => props.onRemoveUser(user)}
                 >
                   <Trash className={styles.actionIcon} />
                 </button>
@@ -60,11 +52,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
                   className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
                   aria-label={hideBtnLabel}
                   onClick={() => {
-                    if (user.hiddenInTimetable) {
-                      props.toggleHide(user.name);
-                    } else {
-                      props.toggleHide(user.name);
-                    }
+                    props.toggleHide(user);
                   }}
                 >
                   {user.hiddenInTimetable ? (
@@ -80,7 +68,6 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
       };
 
     const renderUser = (user: User) => {
-      // Second row of text consists of the exam date and the MCs
       return (
         <>
           <div className={styles.moduleColor}>
@@ -88,8 +75,8 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
               label={`Change ${user.name} timetable color`}
               color={user.color}
               isHidden={false}
-              onChooseColor={(colorIndex: ColorIndex) => {
-                props.selectModuleColor(semester, user.name, colorIndex);
+              onChooseColor={(colorIndex: Color) => {
+                props.selectUserColor(user, colorIndex);
               }}
             />
           </div>
@@ -119,11 +106,4 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
     );
   };
 
-  export default connect(
-    (state: StoreState) => ({ moduleTableOrder: state.settings.moduleTableOrder }),
-    {
-      selectModuleColor,
-      hideLessonInTimetable,
-      showLessonInTimetable,
-    },
-  )(React.memo(TimetableModulesTableComponent));
+  export default MeetupUsersTableComponent;
