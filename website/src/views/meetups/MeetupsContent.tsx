@@ -27,6 +27,11 @@ import MeetupsActions from './MeetupsActions';
 import Timetable from '../timetable/Timetable';
 import styles from './MeetupsContent.scss';
 
+import _ from 'lodash';
+import MeetupUsersTable from './MeetupUsersTable';
+import type { User } from './meetups';
+
+
 type OwnProps = {
   header: React.ReactNode;
   semester: Semester;
@@ -90,10 +95,29 @@ class MeetupsContent extends React.Component<Props, State> {
   // Dont need to implement tombstone for deleted users first...
   // resetTombstone = () => this.setState({ tombstone: null });
 
+
+  // removeUser = (userToRemove: string) => {
+  //   // Save the index of the module before removal so the tombstone can be inserted into
+  //   // the correct position
+  //   const index = this.addedModules().findIndex(
+  //     ({ moduleCode }) => moduleCode === userToRemove,
+  //   );
+  //   this.props.removeUser(this.props.semester, userToRemove);
+  //   const moduleWithColor = this.toModuleWithColor(this.addedModules()[index]);
+
+  // };
+
   // Returns component with table(s) of users
   // eslint-disable-next-line class-methods-use-this
-  renderUserSections() {
-    return <>Go look at renderModuleSections of TimetableContent.tsx</>;
+  renderUserSections(semester: Semester, users: User[], horizontalOrientation: boolean) {
+    return (
+      <MeetupUsersTable
+      semester={semester}
+      users={users}
+      horizontalOrientation={horizontalOrientation}
+      onRemoveModule={(string)=> {}}
+     />
+    );
   }
 
   render() {
@@ -104,6 +128,9 @@ class MeetupsContent extends React.Component<Props, State> {
     const userLessons = Meetups.mapUserToTimetableArrangement(this.state.state.user);
     const othersLessons = this.state.state.others.map(Meetups.mapUserToTimetableArrangement);
     const lessons = Meetups.combineTimetableArrangements(userLessons, othersLessons);
+
+    const users = this.state.state.others.slice();
+    users.unshift(this.state.state.user);//combine main user and others
 
     return (
       <div
@@ -157,8 +184,7 @@ class MeetupsContent extends React.Component<Props, State> {
 
               <div className={styles.modulesSelect}>Look at ModulesSelectContainer component</div>
 
-              <div className="col-12">{this.renderUserSections()}</div>
-              <div className="col-12">Look at ModulesTableFooter component</div>
+              <div className="col-12">{this.renderUserSections(semester, users, !isVerticalOrientation)}</div>
             </div>
           </div>
         </div>

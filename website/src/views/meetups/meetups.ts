@@ -7,6 +7,7 @@ const defaultTimetableDayValue: TimetableDayValue = 0;
 export const defaultUserSettings: UserSettings = {
   color: 0,
   name: 'Myself',
+  hiddenInTimetable: false,
 };
 export const defaultModifiableLesson: ModifiableLessonSettings = {
   classNo: '',
@@ -27,7 +28,9 @@ export type User = Readonly<{
   color: Color;
   name: string;
   timetable: Timetable;
-}>;
+  hiddenInTimetable: boolean;
+}>; // Need to export type to MeetupsContent and MeetupUsersTable
+
 type Color = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 export type UserSettings = Drop<User, 'timetable'>;
