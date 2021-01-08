@@ -84,7 +84,7 @@ describe('seralizeTimetable', () => {
       });
     });
     const url = Meetups.seralizeTimetable(timetable);
-    expect(url).toEqual('4img0;4img0;4img0;4img0;4img0;4img0;4img0;');
+    expect(url).toEqual('MEETUPS=4IMG0;4IMG0;4IMG0;4IMG0;4IMG0;4IMG0;4IMG0');
   });
 });
 
@@ -99,7 +99,7 @@ describe('deseralizeTimetable', () => {
       });
     });
     const deseralizedTimetable = Meetups.deserializeTimetable(
-      '4img0;4img0;4img0;4img0;4img0;4img0;4img0;',
+      'MEETUPS=4IMG0;4IMG0;4IMG0;4IMG0;4IMG0;4IMG0;4IMG0',
     );
     expect(deseralizedTimetable).toMatchObject(timetable);
   });

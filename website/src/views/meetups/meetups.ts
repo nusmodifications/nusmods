@@ -23,7 +23,7 @@ export type State = Readonly<{
   others: User[];
 }>;
 
-type User = Readonly<{
+export type User = Readonly<{
   color: Color;
   name: string;
   timetable: Timetable;
@@ -32,7 +32,7 @@ type Color = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 export type UserSettings = Drop<User, 'timetable'>;
 
-type Timetable = Readonly<{
+export type Timetable = Readonly<{
   Monday: TimetableDay;
   Tuesday: TimetableDay;
   Wednesday: TimetableDay;
@@ -194,17 +194,19 @@ export function handleImportFromTimetable(lessons: TimetableArrangement): (state
 // HELPER TYPE FUNCTIONS ==========
 //TO DO: Use decoder to fix the forced type
 export function seralizeTimetable(timetable: Timetable): string {
-  let url = '';
+  let url = 'MEETUPS=';
   Object.keys(timetable).forEach((timetableDay) => {
     const day = timetableDay as Days;
-    url += `${parseInt(timetable[day].join(''), 2).toString(36)};`;
+    url += `${parseInt(timetable[day].join(''), 2).toString(36).toUpperCase()};`;
   });
-  return url;
+  return url.slice(0, -1);
 }
 
 //TO DO: Use decoder to fix the forced type
 export function deserializeTimetable(serialized: string): Timetable {
-  const serializedDays = serialized.split(';');
+  const query = serialized.split('=');
+  //TO DO: make sure query[0] is MEETUP else throw error
+  const serializedDays = query[1].split(';');
   const timetable = generateTimetable();
   Object.keys(timetable).forEach((element) => {
     const day = element as Days;

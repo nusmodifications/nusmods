@@ -2,9 +2,9 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
-
+import { Timetable } from './meetups';
 import { DownloadCloud, Moon, Sidebar, XSquare } from 'react-feather';
-import ShareTimetable from './ShareTimetable';
+import ShareMeetups from './ShareMeetups';
 import ExportMenu from './ExportMenu';
 
 import styles from './MeetupsActions.scss';
@@ -12,7 +12,7 @@ import styles from './MeetupsActions.scss';
 type Props = {
   semester: Semester;
   timetable: SemTimetableConfig;
-
+  timetableSlots: Timetable;
   isVerticalOrientation: boolean;
   toggleTimetableOrientation: React.MouseEventHandler<HTMLButtonElement>;
 
@@ -66,7 +66,7 @@ const MeetupsActions: React.FC<Props> = (props) => (
       {/* The component below is used to download timetable. We will integrate this function if we have time to. */}
       <ExportMenu semester={props.semester} timetable={props.timetable} />
 
-      <ShareTimetable semester={props.semester} timetable={props.timetable} />
+      <ShareMeetups semester={props.semester} timetable={props.timetableSlots} />
     </div>
   </div>
 );

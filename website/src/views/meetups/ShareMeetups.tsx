@@ -4,7 +4,7 @@ import qs from 'query-string';
 import axios from 'axios';
 import { QRCodeProps } from 'react-qr-svg';
 
-import { SemTimetableConfig, TimetableArrangement } from 'types/timetables';
+import { Timetable } from './meetups';
 import { Semester } from 'types/modules';
 
 import config from 'config';
@@ -15,7 +15,7 @@ import CloseButton from 'views/components/CloseButton';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import retryImport from 'utils/retryImport';
 
-import styles from './ShareTimetable.scss';
+import styles from './ShareMeetups.scss';
 
 type CopyState = 'NOT_COPIED' | 'COPY_SUCCESS' | 'COPY_FAIL';
 const NOT_COPIED: CopyState = 'NOT_COPIED';
@@ -24,24 +24,20 @@ const COPY_FAIL: CopyState = 'COPY_FAIL';
 
 type Props = {
   semester: Semester;
-  timetable: SemTimetableConfig;
-  lessons: TimetableArrangement;
+  timetable: Timetable;
 };
 
 type State = {
   isOpen: boolean;
   urlCopied: CopyState;
-  shortUrl: string | null;
+  url: string | null;
 };
 
-function shareUrl(semester: Semester, timetable: SemTimetableConfig): string {
+function shareUrl(semester: Semester, timetable: Timetable): string {
   return absolutePath(meetupsShare(semester, timetable));
 }
 
-// So that I don't keep typing 'shortUrl' instead
-export const SHORT_URL_KEY = 'shorturl';
-
-export default class ShareTimetable extends React.PureComponent<Props, State> {
+export default class ShareMeetups extends React.PureComponent<Props, State> {
   // React QR component is lazy loaded for performance
   static QRCode: React.ComponentType<QRCodeProps> | null;
 
@@ -53,51 +49,26 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
   state: State = {
     isOpen: false,
     urlCopied: NOT_COPIED,
-    shortUrl: null,
+    url: null,
   };
 
   componentDidMount() {
-    if (!ShareTimetable.QRCode) {
+    if (!ShareMeetups.QRCode) {
       retryImport(() => import(/* webpackChunkName: "export" */ 'react-qr-svg')).then((module) => {
-        ShareTimetable.QRCode = module.QRCode;
+        ShareMeetups.QRCode = module.QRCode;
         this.forceUpdate();
       });
     }
   }
 
-  loadShortUrl = () => {
+  loadUrl = () => {
     const { semester, timetable } = this.props;
     const url = shareUrl(semester, timetable);
-
-    // Don't do anything if the long URL has not changed
-    if (this.url === url) return;
-
-    const showFullUrl = () => this.setState({ shortUrl: url });
-    this.url = url;
-
-    // Only try to retrieve shortUrl if the user is online
-    if (!navigator.onLine) {
-      showFullUrl();
-      return;
-    }
-
-    this.setState({ shortUrl: null });
-
-    axios
-      .get('/short_url.php', { params: { url }, timeout: 2000 })
-      .then(({ data }) => {
-        if (data[SHORT_URL_KEY]) {
-          this.setState({ shortUrl: data[SHORT_URL_KEY] });
-        } else {
-          showFullUrl();
-        }
-      })
-      // Cannot get short URL - just use long URL instead
-      .catch(showFullUrl);
+    this.setState({ url: url });
   };
 
   openModal = () => {
-    this.loadShortUrl();
+    this.loadUrl();
     this.setState({ isOpen: true });
   };
 
@@ -158,7 +129,7 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
           <div className="col-sm-4">
             <h3 className={styles.shareHeading}>QR Code</h3>
             <div className={styles.qrCode}>
-              {ShareTimetable.QRCode && <ShareTimetable.QRCode value={url} />}
+              {ShareMeetups.QRCode && <ShareMeetups.QRCode value={url} />}
             </div>
           </div>
           <div className="col-sm-4">
@@ -182,7 +153,7 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
             <a
               className="btn btn-outline-primary btn-block"
               href={`https://api.whatsapp.com/send?${qs.stringify({
-                text: `My timetable: ${url}`,
+                text: `My meetup: ${url}`,
               })}`}
               target="_blank"
               rel="noreferrer noopener"
@@ -205,15 +176,15 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { isOpen, shortUrl } = this.state;
+    const { isOpen, url } = this.state;
     return (
       <>
         <button
           type="button"
           className="btn btn-outline-primary btn-svg"
           onClick={this.openModal}
-          onMouseOver={this.loadShortUrl}
-          onFocus={this.loadShortUrl}
+          onMouseOver={this.loadUrl}
+          onFocus={this.loadUrl}
         >
           <Repeat className="svg svg-small" />
           Share/Sync
@@ -226,13 +197,12 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
 
             <h3>Share/Sync Your Timetable</h3>
             <p>
-              Send this link to your friends to share your available slots <br />
-              to make it easy to find a common time to meet up or to yourself to keep your timetable
-              synced on all devices.
+              Send this link to your friends to share your available slots to make it easy to find a
+              common time to meet up or to yourself to keep your timetable synced on all devices.
             </p>
           </div>
 
-          {shortUrl ? this.renderSharing(shortUrl) : <LoadingSpinner />}
+          {url ? this.renderSharing(url) : <LoadingSpinner />}
         </Modal>
       </>
     );

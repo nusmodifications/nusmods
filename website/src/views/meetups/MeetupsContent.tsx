@@ -1,10 +1,25 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { ColorMapping, HORIZONTAL, VERTICAL, ModulesMap, TimetableOrientation } from 'types/reducers';
+import {
+  ColorMapping,
+  HORIZONTAL,
+  VERTICAL,
+  ModulesMap,
+  TimetableOrientation,
+} from 'types/reducers';
 import { Semester, ModuleCode } from 'types/modules';
-import { ColoredLesson, Lesson, SemTimetableConfig, SemTimetableConfigWithLessons } from 'types/timetables';
-import { arrangeLessonsForWeek, hydrateSemTimetableWithLessons, timetableLessonsArray } from 'utils/timetables';
+import {
+  ColoredLesson,
+  Lesson,
+  SemTimetableConfig,
+  SemTimetableConfigWithLessons,
+} from 'types/timetables';
+import {
+  arrangeLessonsForWeek,
+  hydrateSemTimetableWithLessons,
+  timetableLessonsArray,
+} from 'utils/timetables';
 import Title from 'views/components/Title';
 import { State as StoreState } from 'types/state';
 import * as Meetups from './meetups';
@@ -60,17 +75,17 @@ class MeetupsContent extends React.Component<Props, State> {
       // Do not process hidden modules
       .filter((lesson) => !this.isHiddenInTimetable(lesson.moduleCode));
     const coloredTimetableLessons = timetableLessons.map(
-        (lesson: Lesson): ColoredLesson => ({
-          ...lesson,
-          colorIndex: this.props.colors[lesson.moduleCode],
-        }),
-      );
-      const arrangedLessons = arrangeLessonsForWeek(coloredTimetableLessons);
+      (lesson: Lesson): ColoredLesson => ({
+        ...lesson,
+        colorIndex: this.props.colors[lesson.moduleCode],
+      }),
+    );
+    const arrangedLessons = arrangeLessonsForWeek(coloredTimetableLessons);
     this.setState((state) => ({
-        ...state,
-        state: Meetups.handleImportFromTimetable(arrangedLessons)(state.state)
-      }))
-  }
+      ...state,
+      state: Meetups.handleImportFromTimetable(arrangedLessons)(state.state),
+    }));
+  };
 
   // Dont need to implement tombstone for deleted users first...
   // resetTombstone = () => this.setState({ tombstone: null });
@@ -86,9 +101,9 @@ class MeetupsContent extends React.Component<Props, State> {
 
     const isVerticalOrientation = this.state.timetableOrientation !== HORIZONTAL;
 
-    const userLessons = Meetups.mapUserToTimetableArrangement(this.state.state.user)
-    const othersLessons = this.state.state.others.map(Meetups.mapUserToTimetableArrangement)
-    const lessons = Meetups.combineTimetableArrangements(userLessons, othersLessons)
+    const userLessons = Meetups.mapUserToTimetableArrangement(this.state.state.user);
+    const othersLessons = this.state.state.others.map(Meetups.mapUserToTimetableArrangement);
+    const lessons = Meetups.combineTimetableArrangements(userLessons, othersLessons);
 
     return (
       <div
@@ -129,6 +144,7 @@ class MeetupsContent extends React.Component<Props, State> {
                   isVerticalOrientation={isVerticalOrientation}
                   semester={semester}
                   timetable={this.props.timetable}
+                  timetableSlots={this.state.state.user.timetable}
                   // TO DO: Add the implementation of the functions for the following:
                   toggleTimetableOrientation={this.toggleTimetableOrientation}
                   // eslint-disable-next-line no-console

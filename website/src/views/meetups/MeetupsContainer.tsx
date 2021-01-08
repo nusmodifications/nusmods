@@ -9,7 +9,7 @@
 
 import { FC, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { Redirect, useParams } from 'react-router-dom';
+import { Redirect, useParams, useLocation } from 'react-router-dom';
 import type { State } from 'types/state';
 import type { Semester } from 'types/modules';
 import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
@@ -34,11 +34,8 @@ export const MeetupsContainerComponent: FC = () => {
   const semester = semesterForMeetupsPage(params.semester); // semester = 2 <-- Gay function... Why don't just save params.semester as number?
   const timetable = useSelector(getSemesterTimetableLessons)(semester);
   const colors = useSelector(getSemesterTimetableColors)(semester);
-
-  const filledColors = useMemo(() => fillColorMapping(timetable, colors), [
-    colors,
-    timetable,
-  ]);
+  const location = useLocation();
+  const filledColors = useMemo(() => fillColorMapping(timetable, colors), [colors, timetable]);
 
   // If semester returns null, we'll direct the user to the home page (same as timetable)
   const activeSemester = useSelector(({ app }: State) => app.activeSemester);

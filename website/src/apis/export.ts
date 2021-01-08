@@ -17,10 +17,6 @@ function serializeState(
   state: State,
   options: ExportOptions = {},
 ) {
-  console.log({
-    data: JSON.stringify(extractStateForExport(semester, timetable, state)),
-    ...options,
-  });
   return qs.stringify({
     data: JSON.stringify(extractStateForExport(semester, timetable, state)),
     ...options,

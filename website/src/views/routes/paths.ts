@@ -1,6 +1,7 @@
 import { each, kebabCase } from 'lodash';
 import { ModuleTitle, Semester, ModuleCode } from 'types/modules';
 import { Venue } from 'types/venues';
+import { Timetable, seralizeTimetable } from '../meetups/meetups';
 import { SemTimetableConfig } from 'types/timetables';
 import { serializeTimetable } from 'utils/timetables';
 import config from 'config';
@@ -42,8 +43,8 @@ export function semesterForMeetupsPage(semStr: string | null | undefined): Semes
 }
 
 export const MEETUPS_SHARE = 'share';
-export function meetupsShare(semester: Semester, lessons: SemTimetableConfig): string {
-  return `${meetupsPage(semester)}/${MEETUPS_SHARE}?${serializeTimetable(lessons)}`;
+export function meetupsShare(semester: Semester, timetable: Timetable): string {
+  return `${meetupsPage(semester)}/${MEETUPS_SHARE}?${seralizeTimetable(timetable)}`;
 }
 
 // Module Code, Module Title -> Module page path

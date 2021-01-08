@@ -25,7 +25,7 @@ const Routes: React.FC = () => (
   <Switch>
     <Redirect exact from="/" to="/timetable" />
     <Route path="/timetable/:semester?/:action?" component={TimetableContainer} />
-    <Route path="/meetups/:semester/:action?" component={MeetupsContainer} />
+    <Route path="/meetups/:semester?/:action?" component={MeetupsContainer} />
     <Route exact path="/modules" component={ModuleFinderContainer} />
     <Route path="/modules/:moduleCode/:slug?" component={ModulePageContainer} />
     <Route path="/archive/:moduleCode/:year/:slug?" component={ModuleArchiveContainer} />
