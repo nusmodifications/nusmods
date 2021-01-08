@@ -120,6 +120,8 @@ const TimetableCell: React.FC<Props> = (props) => {
     },
   );
 
+  const formattedClassNo = lesson.classNo ? `[${lesson.classNo}]` : '';
+
   return (
     <Cell
       className={className}
@@ -133,7 +135,7 @@ const TimetableCell: React.FC<Props> = (props) => {
       <div className={styles.cellContainer}>
         <div className={styles.moduleName}>{moduleName}</div>
         <div>
-          {LESSON_TYPE_ABBREV[lesson.lessonType]} [{lesson.classNo}]
+          {LESSON_TYPE_ABBREV[lesson.lessonType]} {formattedClassNo}
         </div>
         <div>{lesson.venue.startsWith('E-Learn') ? 'E-Learning' : lesson.venue}</div>
         {weekText && <div>{weekText}</div>}

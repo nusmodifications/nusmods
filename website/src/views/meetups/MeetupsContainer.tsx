@@ -39,10 +39,8 @@ export const MeetupsContainerComponent: FC = () => {
 
   return (
     <MeetupsContent
-      readOnly={false} // readOnly false because user should be able to edit
       semester={semester}
       timetable={{}} // default set to nothing on the meetup table
-      colors={{}} // default set to no colors on the meetup table
       header={<MeetupsHeader semester={semester} />}
     />
   );

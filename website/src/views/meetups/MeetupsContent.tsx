@@ -1,12 +1,12 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-
 import { HORIZONTAL, VERTICAL, ModulesMap, TimetableOrientation } from 'types/reducers';
 import { Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
 import Title from 'views/components/Title';
 import { State as StoreState } from 'types/state';
+import * as Meetups from './meetups';
 import MeetupsActions from './MeetupsActions';
 import Timetable from '../timetable/Timetable';
 import styles from './MeetupsContent.scss';
@@ -23,13 +23,14 @@ type Props = OwnProps & {
   // timetableOrientation: TimetableOrientation;
 
   // Actions
-  undo: () => void;
+  // undo: () => void;
 };
 
 type State = {
   isScrolledHorizontally: boolean;
   // tombstone: TombstoneModule | null;
   timetableOrientation: TimetableOrientation;
+  state: Meetups.State;
 };
 
 class MeetupsContent extends React.Component<Props, State> {
@@ -37,6 +38,7 @@ class MeetupsContent extends React.Component<Props, State> {
     isScrolledHorizontally: false,
     // tombstone: null, // Don't need to implement tombstone for deleted users first
     timetableOrientation: HORIZONTAL,
+    state: Meetups.generateState(),
   };
 
   toggleTimetableOrientation: React.MouseEventHandler<HTMLButtonElement> = () => {
@@ -82,7 +84,50 @@ class MeetupsContent extends React.Component<Props, State> {
                 // Need to convert our data structure into lessons for timetable to render
                 // Note: Must include saturday: [] and sunday: [] for timetable to render saturday and sunday
                 lessons={{
-                  Monday: [],
+                  Monday: [
+                    [
+                      {
+                        classNo: '',
+                        day: '',
+                        startTime: '0000',
+                        endTime: '2400',
+                        lessonType: '',
+                        venue: '',
+                        weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+                        moduleCode: 'BRYAN',
+                        title: '',
+                        colorIndex: 1,
+                      },
+                    ],
+                    [
+                      {
+                        classNo: '',
+                        day: 'Monday',
+                        startTime: '1100',
+                        endTime: '1300',
+                        lessonType: '',
+                        venue: '',
+                        weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+                        moduleCode: 'ANDREW',
+                        title: '',
+                        colorIndex: 2,
+                      },
+                    ],
+                    [
+                      {
+                        classNo: '',
+                        day: 'Monday',
+                        startTime: '1100',
+                        endTime: '1300',
+                        lessonType: '',
+                        venue: '',
+                        weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+                        moduleCode: 'CHRIS',
+                        title: '',
+                        colorIndex: 3,
+                      },
+                    ],
+                  ],
                   Tuesday: [],
                   Wednesday: [],
                   Thursday: [],
