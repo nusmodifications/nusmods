@@ -159,6 +159,7 @@ class TimetableContent extends React.Component<Props, State> {
     this.props.hiddenInTimetable.includes(moduleCode);
 
   modifyCell = (lesson: ModifiableLesson, position: ClientRect) => {
+    console.log(lesson);
     if (lesson.isAvailable) {
       this.props.changeLesson(this.props.semester, lesson);
 

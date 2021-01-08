@@ -1,6 +1,8 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { Repeat } from 'react-feather';
 import {
   ColorMapping,
   HORIZONTAL,
@@ -28,6 +30,7 @@ import * as Meetups from './meetups';
 import MeetupsActions from './MeetupsActions';
 import UserMeetupsAdd from './UserMeetupsAdd';
 import Timetable from '../timetable/Timetable';
+import { meetupsPage } from 'views/routes/paths';
 import styles from './MeetupsContent.scss';
 
 import _ from 'lodash';
@@ -41,6 +44,7 @@ type OwnProps = {
   semester: Semester;
   timetable: SemTimetableConfig;
   colors: ColorMapping;
+  importedTimetable: Meetups.Timetable | null;
 };
 
 type Props = OwnProps & {
@@ -118,7 +122,7 @@ class MeetupsContent extends React.Component<Props, State> {
     }));
   }
 
-getLessons = (): TimetableArrangement => {
+  getLessons = (): TimetableArrangement => {
     if (this.state.isEditing) {
       return Meetups.convertUserToIsModifiableLessons(this.state.state.user, this.state.state.user.color);
     } else {
@@ -242,6 +246,66 @@ getLessons = (): TimetableArrangement => {
     );
   }
 
+  SharingHeader: React.FC<{
+    semester: Semester;
+    importedTimetable: Meetups.Timetable | null;
+    // setImportedTimetable: (timetable: Meetups.Timetable | null) => void;
+  }> = ({ semester, importedTimetable }) => {
+    const history = useHistory();
+    // const dispatch = useDispatch();
+
+    const clearImportedTimetable = React.useCallback(() => {
+      if (semester) {
+        history.push(meetupsPage(semester)); // TODO: Check that this works
+      }
+    }, [history, semester]);
+
+    const setTimetable = (timetable: Meetups.Timetable) => {
+      const stateCopy = { ...this.state.state, timetable: timetable };
+      this.setState((state) => ({ ...state, state: stateCopy }));
+    };
+
+    const importTimetable = React.useCallback(() => {
+      if (!importedTimetable) {
+        return;
+      }
+      setTimetable(importedTimetable);
+      clearImportedTimetable();
+    }, [clearImportedTimetable, importedTimetable, semester]);
+
+    if (!importedTimetable) {
+      return null;
+    }
+
+    return (
+      <div className={classnames('alert', 'alert-success', styles.importAlert)}>
+        <Repeat />
+
+        <div className={classnames('row', styles.row)}>
+          <div className={classnames('col')}>
+            <h3>This timetable was shared with you</h3>
+            <p>
+              Clicking import will <strong>replace</strong> your saved timetable with the one below.
+            </p>
+          </div>
+
+          <div className={classnames('col-md-auto', styles.actions)}>
+            <button className="btn btn-success" type="button" onClick={importTimetable}>
+              Import
+            </button>
+            <button
+              className="btn btn-outline-primary"
+              type="button"
+              onClick={clearImportedTimetable}
+            >
+              Back to saved timetable
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   render() {
     const { semester } = this.props;
 
@@ -260,7 +324,13 @@ getLessons = (): TimetableArrangement => {
       >
         <Title>Meetups</Title>
 
-        <div>{this.props.header}</div>
+        <div>
+          <this.SharingHeader
+            semester={semester}
+            importedTimetable={this.props.importedTimetable}
+          />
+          {this.props.header}
+        </div>
 
         <div className="row">
           <div
