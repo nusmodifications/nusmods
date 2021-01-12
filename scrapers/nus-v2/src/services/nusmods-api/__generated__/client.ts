@@ -9,7 +9,7 @@
 // Manually injected by codegen.yml
 import type { Headers } from 'graphql-request/dist/types.dom';
 
-/* eslint-disable no-use-before-define */
+/* eslint-disable no-use-before-define, no-shadow */
 
 import { GraphQLClient } from 'graphql-request';
 import { print } from 'graphql';
@@ -232,7 +232,7 @@ export type UpsertCourseCourseOfferingLessonGroupInput = {
 };
 
 export type UpsertCourseCourseOfferingExamInput = {
-  time: Scalars['Timestamp'];
+  date: Scalars['Timestamp'];
   duration: Scalars['Int'];
 };
 

@@ -60,7 +60,7 @@ export default class GraphQLPersist implements Persist {
   // Per year information
   // ///////////////////////////////////////////////////////////
 
-  // Ignore since `module` method gets more detailed info
+  // Don't use these since `module` method gets more detailed info
   moduleList = () => Promise.resolve();
   moduleInfo = () => Promise.resolve();
 
@@ -107,7 +107,7 @@ export default class GraphQLPersist implements Persist {
               exam:
                 semesterData.examDate && semesterData.examDuration
                   ? {
-                      time: semesterData.examDate,
+                      date: semesterData.examDate,
                       duration: semesterData.examDuration,
                     }
                   : null,
@@ -140,6 +140,7 @@ export default class GraphQLPersist implements Persist {
       }),
     );
     const ay = data.node;
+    // eslint-disable-next-line no-underscore-dangle
     if (ay?.__typename !== 'AcadYear') {
       throw new NUSModsApiError('Received AY was not an acad year.');
     }
@@ -172,6 +173,6 @@ export default class GraphQLPersist implements Persist {
     return Promise.resolve();
   }
 
-  // Ignore since `venueInformation` gets more detailed info
+  // Don't use this since `venueInformation` gets more detailed info
   venueList = () => Promise.resolve();
 }
