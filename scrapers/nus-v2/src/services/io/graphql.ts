@@ -10,6 +10,7 @@ import {
   UpsertCourseCourseOfferingLessonGroupInput,
   Day,
   Scalars,
+  UpsertCourseInput,
 } from '../nusmods-api/__generated__/client';
 
 function lessonTimeToGraphQLTime(time: LessonTime): Scalars['Time'] {
@@ -18,31 +19,65 @@ function lessonTimeToGraphQLTime(time: LessonTime): Scalars['Time'] {
   return `${hour}:${minute}:00`;
 }
 
-// TODO: Move into tasks?
 // TODO: Tests
 function timetableToLessonGroups(
   timetable: RawLesson[],
 ): UpsertCourseCourseOfferingLessonGroupInput[] {
   // TODO:
   const groupedLessons = groupBy(timetable, (lesson) => lesson.lessonType + lesson.classNo);
-  return Object.entries(groupedLessons).map(([, lessons]) => ({
+  return Object.values(groupedLessons).map((lessons) => ({
     // type and number are guaranteed to exist since we grouped by them
     type: lessons[0].lessonType,
     number: lessons[0].classNo,
 
-    lessons: lessons.map((lesson) => {
-      return {
-        day: Day[lesson.day as never], // Cast to `never` because we don't really know if lesson.day is a `keyof typeof Day`.
-        // TODO: Ensure server strips date from Time
-        startTime: lessonTimeToGraphQLTime(lesson.startTime),
-        endTime: lessonTimeToGraphQLTime(lesson.endTime),
-        weekString: '', // TODO:
-        // weekString: lesson.weeks, // TODO: Turn into array of weeks?
-        size: lesson.size,
-        // TODO: covidZone
-      };
-    }),
+    lessons: lessons.map((lesson) => ({
+      day: Day[lesson.day as never], // Cast to `never` because we don't really know if lesson.day is a `keyof typeof Day`.
+      startTime: lessonTimeToGraphQLTime(lesson.startTime),
+      endTime: lessonTimeToGraphQLTime(lesson.endTime),
+      weekString: '', // TODO:
+      // weekString: lesson.weeks, // TODO: Turn into array of weeks?
+      size: lesson.size,
+      // TODO: covidZone
+    })),
   }));
+}
+
+function moduleToCourseInput(api: NUSModsAPIClient, module: Module): UpsertCourseInput {
+  return {
+    acadYearId: api.acadYearId,
+    // Basic info
+    code: module.moduleCode,
+    title: module.title,
+
+    // Additional info
+    description: module.description ?? '', // TODO: Make optional on server
+    credit: module.moduleCredit,
+    // TODO: aliases
+    // TODO: attributes
+
+    // Requisites
+    prerequisiteString: module.prerequisite,
+    corequisiteString: module.corequisite,
+    preclusionString: module.preclusion,
+
+    // TODO: Requisite tree?
+
+    // Semester data
+    courseOfferings: module.semesterData.map((semesterData) => ({
+      semesterId: api.semesterIds[semesterData.semester],
+      // TODO: faculty: module.faculty,
+      department: module.department,
+      // workloadString: module.workload, // TODO: Convert back to workload list? Or have a workload array? I think we should just make a list
+      exam:
+        semesterData.examDate && semesterData.examDuration
+          ? {
+              date: semesterData.examDate,
+              duration: semesterData.examDuration,
+            }
+          : null,
+      lessonGroups: timetableToLessonGroups(semesterData.timetable),
+    })),
+  };
 }
 
 /* eslint-disable class-methods-use-this */
@@ -77,43 +112,8 @@ export default class GraphQLPersist implements Persist {
     const api = await this.#nusmodsApi;
     try {
       await api.callApi((gql) =>
-        // Sync course
         gql.UpsertCourse({
-          input: {
-            acadYearId: api.acadYearId,
-            // Basic info
-            code: module.moduleCode,
-            title: module.title,
-
-            // Additional info
-            description: module.description ?? '', // TODO: Make optional on server
-            credit: module.moduleCredit,
-            // TODO: aliases
-            // TODO: attributes
-
-            // Requisites
-            prerequisiteString: module.prerequisite,
-            corequisiteString: module.corequisite,
-            preclusionString: module.preclusion,
-
-            // TODO: Requisite tree?
-
-            // Semester data
-            courseOfferings: module.semesterData.map((semesterData) => ({
-              semesterId: api.semesterIds[semesterData.semester],
-              // TODO: faculty: module.faculty,
-              department: module.department,
-              // workloadString: module.workload, // TODO: Convert back to workload list? Or have a workload array? I think we should just make a list
-              exam:
-                semesterData.examDate && semesterData.examDuration
-                  ? {
-                      date: semesterData.examDate,
-                      duration: semesterData.examDuration,
-                    }
-                  : null,
-              lessonGroups: timetableToLessonGroups(semesterData.timetable),
-            })),
-          },
+          input: moduleToCourseInput(api, module),
         }),
       );
     } catch (err) {
