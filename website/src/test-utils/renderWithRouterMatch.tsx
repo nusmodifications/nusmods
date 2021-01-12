@@ -13,7 +13,7 @@ export default function renderWithRouterMatch(
   children: ReactNode,
   {
     path = '/',
-    location,
+    location = '/',
   }: {
     path?: string;
     location?: Parameters<typeof createHistory>[0];
