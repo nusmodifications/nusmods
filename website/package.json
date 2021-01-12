@@ -38,7 +38,7 @@
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
     "@svgr/webpack": "5.5.0",
     "@testing-library/jest-dom": "5.11.8",
-    "@testing-library/react": "11.2.2",
+    "@testing-library/react": "11.2.3",
     "@testing-library/user-event": "12.6.0",
     "@types/classnames": "2.2.11",
     "@types/enzyme": "3.10.8",
