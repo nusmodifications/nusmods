@@ -81,7 +81,7 @@ const productionConfig = ({ browserWarningPath }) =>
               context: parts.PATHS.root,
             },
             NUSMODS_ENV === 'production' && {
-              from: 'static/nusmods.com-only',
+              from: 'static/production-only',
               context: parts.PATHS.root,
             },
           ].filter(Boolean),
