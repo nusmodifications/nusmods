@@ -4,7 +4,8 @@ module.exports = {
   parser: '@typescript-eslint/parser',
 
   parserOptions: {
-    project: './tsconfig.json',
+    tsconfigRootDir: __dirname,
+    project: 'tsconfig.json',
   },
 
   settings: {
@@ -27,11 +28,7 @@ module.exports = {
     node: true,
   },
 
-  plugins: [
-    '@typescript-eslint',
-    'prettier',
-    'import',
-  ],
+  plugins: ['@typescript-eslint', 'prettier', 'import'],
 
   overrides: [
     {
@@ -90,7 +87,10 @@ module.exports = {
 
     'no-continue': 'off',
 
-    'import/no-extraneous-dependencies': ['error', { devDependencies: ['**/*.test.ts', 'src/utils/test-utils.ts'] }],
+    'import/no-extraneous-dependencies': [
+      'error',
+      { devDependencies: ['**/*.test.ts', 'src/utils/test-utils.ts'] },
+    ],
 
     // Makes the code unnecessarily verbose
     '@typescript-eslint/explicit-member-accessibility': 'off',

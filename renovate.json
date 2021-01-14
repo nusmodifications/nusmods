@@ -3,10 +3,10 @@
     "config:base",
     "schedule:weekends",
     "group:babelMonorepo",
+    "group:linters",
     ":automergePr",
-    ":automergeRequireAllStatusChecks",
     ":automergeMinor",
-    ":prConcurrentLimit10",
+    ":prHourlyLimit2",
     ":label(dependencies)",
     ":timezone(Asia/Singapore)"
   ],
@@ -20,25 +20,12 @@
     {
       "description": "Group Webpack-related packages together",
       "packagePatterns": ["-loader$", "webpack"],
-      "excludePackagePatterns": ["react-hot-loader"],
       "groupName": "webpack"
     },
     {
       "description": "Group mapbox packages together",
       "packagePatterns": ["^(leaflet|mapbox)"],
       "groupName": "mapbox"
-    },
-    {
-      "description": "Group eslint packages together",
-      "packagePatterns": ["eslint"],
-      "excludePackageNames": ["eslint-loader"],
-      "groupName": "eslint"
-    },
-    {
-      "description": "Group stylelint packages together",
-      "packagePatterns": ["stylelint"],
-      "excludePackageNames": ["stylelint-webpack-plugin"],
-      "groupName": "stylelint"
     },
     {
       "extends": "monorepo:jest",
@@ -93,5 +80,5 @@
     }
   ],
   "ignorePaths": [".nvmrc"],
-  "prHourlyLimit": 0
+  "prConcurrentLimit": 2
 }
