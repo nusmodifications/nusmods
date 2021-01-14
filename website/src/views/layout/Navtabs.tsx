@@ -55,28 +55,6 @@ const Navtabs: FC = () => {
           <span className={styles.title}>Planner</span>
         </NavLink>
       )}
-      <NavLink {...tabProps} to="/settings">
-        <Settings />
-        <span className={styles.title}>Settings</span>
-      </NavLink>
-      <NavLink
-        {...tabProps}
-        className={classnames(tabProps.className, styles.hiddenOnMobile)}
-        onMouseOver={preloadContribute}
-        onFocus={preloadContribute}
-        to="/contribute"
-      >
-        <Star />
-        <span className={styles.title}>Contribute</span>
-      </NavLink>
-      <div className={styles.divider} />
-      <ExternalLink
-        className={classnames(tabProps.className, styles.hiddenOnMobile)}
-        href="https://nuswhispers.com"
-      >
-        <Heart />
-        <span className={styles.title}>Whispers</span>
-      </ExternalLink>
     </nav>
   );
 };

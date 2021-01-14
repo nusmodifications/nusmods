@@ -34,7 +34,9 @@ import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
 import KeyboardShortcuts from './components/KeyboardShortcuts';
 
-import styles from './AppShell.scss';
+import useMediaQuery from './hooks/useMediaQuery';
+import { breakpointDown } from 'utils/css';
+import Navbar from './layout/Navbar';
 
 /**
  * Fetch module list on mount.
@@ -120,6 +122,8 @@ const AppShell: FC = ({ children }) => {
 
   const theme = useSelector((state: State) => state.theme.id);
 
+  const twoRowNav = useMediaQuery(breakpointDown('sm'));
+
   if (!isModuleListReady && moduleListError) {
     return <ApiError dataName="module information" retry={refetchModuleListAndTimetableModules} />;
   }
@@ -136,23 +140,9 @@ const AppShell: FC = ({ children }) => {
         />
       </Helmet>
 
-      <nav className={styles.navbar}>
-        <NavLink className={styles.brand} to="/" title="Home">
-          <Logo className={styles.brandLogo} title="NUSMods" />
-        </NavLink>
-
-        <div className={styles.navRight}>
-          <ErrorBoundary>
-            <GlobalSearchContainer />
-          </ErrorBoundary>
-
-          <div className={styles.weekText}>{weekText}</div>
-        </div>
-      </nav>
+      <Navbar />
 
       <div className="main-container">
-        <Navtabs />
-
         <main className="main-content">
           {isModuleListReady ? (
             <ErrorBoundary errorPage={() => <ErrorPage showReportDialog />}>

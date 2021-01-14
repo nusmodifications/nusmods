@@ -7,14 +7,11 @@ body,
   // Ensures the page always fill the height of the page. Combined with the
   // flexbox on .app-container, this allows the footer to be aligned to the
   // page bottom when there's insufficient page content
-  height: 100%;
+  min-height: 100vh;
 }
 
 body {
-  padding-top: 4rem;
-
   @include media-breakpoint-down(sm) {
-    padding-top: $navbar-height;
     font-size: 1rem * $sm-font-size-ratio;
   }
 }
@@ -35,29 +32,19 @@ a {
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
     env(safe-area-inset-left);
 
-  @include media-breakpoint-down(sm) {
-    .main-content {
-      padding-top: 1rem;
-    }
+  .main-content {
+    padding-top: 1rem;
   }
 
   @include media-breakpoint-up(md) {
     > nav {
       width: calc(#{$side-nav-width-md} + #{($grid-gutter-width / 2)});
     }
-
-    .main-content {
-      padding-left: $side-nav-width-md;
-    }
   }
 
   @include media-breakpoint-up(xl) {
     > nav {
       width: $side-nav-width-lg;
-    }
-
-    .main-content {
-      padding-left: $side-nav-width-lg;
     }
   }
 }

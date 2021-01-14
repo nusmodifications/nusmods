@@ -5,17 +5,27 @@ $vert-padding: 0.5rem;
 // See: https://github.com/nusmodifications/nusmods/pull/1567
 $logo-vert-padding: 0.875rem;
 
-.navbar {
-  position: fixed;
+.navbarWrapper {
+  position: sticky;
   top: 0;
-  right: 0;
-  left: 0;
   z-index: $navbar-z-index;
+  padding: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
+  background: var(--gray-lightest);
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+
+.topBar {
   display: flex;
   justify-content: space-between;
   height: $navbar-height;
-  padding: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
-  background: var(--gray-lightest);
+  width: 100%;
+}
+
+.bottomBar {
+  position: fixed;
+  top: 0;
 }
 
 .brand {
@@ -28,6 +38,15 @@ $logo-vert-padding: 0.875rem;
 
 .brandLogo {
   width: 100%;
+}
+
+.navLeft {
+  display: flex;
+}
+
+.navCenter {
+  position: relative;
+  top: $navbar-height;
 }
 
 .navRight {
@@ -54,11 +73,21 @@ $logo-vert-padding: 0.875rem;
   }
 }
 
-@include media-breakpoint-down(xs) {
-  .navRight {
-    display: none;
+@include media-breakpoint-down(sm) {
+  .navbarWrapper {
+    top: -$navbar-height;
   }
 
+  .bottomBar {
+    // Allow bar to sit below topBar
+    position: initial;
+    top: unset;
+
+    width: 100%;
+  }
+}
+
+@include media-breakpoint-down(xs) {
   .brand {
     flex: 1;
     padding: $logo-vert-padding 0;

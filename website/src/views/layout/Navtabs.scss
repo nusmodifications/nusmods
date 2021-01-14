@@ -3,33 +3,36 @@
 /*
   For breakpoint-md (tablets), show the links as compact buttons with labels below icons.
   For breakpoint-lg (desktop), show the links as traditional link with icon to the left.
+  TODO: UPDATE COMMENT
 */
 .nav {
-  position: fixed;
-  top: $navbar-height;
-  right: 0;
-  left: 0;
+  // position: fixed;
+  // top: $navbar-height;
   z-index: $navtabs-z-index;
   // See site.scss for width on md and lg sizes
   display: flex;
-  justify-content: space-around;
+  // justify-content: space-around;
+  justify-content: center;
   align-items: stretch;
   height: $navtab-height;
+  margin: 0 auto;
 
-  @include media-breakpoint-up(md) {
-    flex-direction: column;
-    justify-content: flex-start;
-    margin-top: 0.5rem;
-    box-shadow: none;
-  }
+  // @include media-breakpoint-up(md) {
+  //   flex-direction: column;
+  //   justify-content: flex-start;
+  //   margin-top: 0.5rem;
+  //   box-shadow: none;
+  // }
 
-  @include media-breakpoint-up(xl) {
-    margin-top: 1rem;
-  }
+  // @include media-breakpoint-up(xl) {
+  //   margin-top: 1rem;
+  // }
 
   @include media-breakpoint-down(sm) {
     position: sticky;
     top: 0;
+    right: 0;
+    left: 0;
     background-color: var(--body-bg);
 
     // Fake shadow - can't use box shadow because they will appear on top of the
@@ -49,11 +52,13 @@
 
 .link {
   position: relative;
-  flex: 1 0 auto;
+  flex-shrink: 0;
+  flex-basis: auto;
   line-height: 1.6;
   text-align: center;
   color: var(--gray-light);
   transition: color 0.15s;
+  min-width: 6em;
 
   &.linkActive {
     color: theme-color(primary);
@@ -67,21 +72,25 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-grow: 1;
+    min-width: unset;
 
     svg {
       margin-bottom: 0.1rem;
     }
   }
 
-  @include media-breakpoint-up(md) {
-    padding: 0.8rem 0.5rem;
-  }
+  // @include media-breakpoint-up(md) {
+  //   padding: 0.8rem 0.5rem;
+  // }
 
   @include media-breakpoint-up(xl) {
     display: flex;
     align-items: center;
-    padding: 0.8rem 0 0.8rem 2rem;
+    justify-items: center;
+    // padding: 0.8rem 0 0.8rem 2rem;
     text-align: left;
+    min-width: 10em;
   }
 }
 
