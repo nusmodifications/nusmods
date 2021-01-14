@@ -19,7 +19,7 @@ if (NUSMODS_ENV === 'production') {
     release: VERSION_STR || 'UNKNOWN_RELEASE',
 
     integrations: [new Integrations.BrowserTracing()],
-    tracesSampleRate: 1.0,
+    tracesSampleRate: NUSMODS_ENV === 'production' ? 0.2 : 1.0,
 
     environment: sentryEnv(),
 
