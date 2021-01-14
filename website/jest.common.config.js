@@ -15,11 +15,11 @@ module.exports = {
   },
   // Mimic the globals we set with Webpack's DefinePlugin
   globals: {
+    NUSMODS_ENV: 'test',
     DATA_API_BASE_URL: '',
     VERSION_STR: '',
     DISPLAY_COMMIT_HASH: '',
     DEBUG_SERVICE_WORKER: false,
-    NUSMODS_ENV: 'test',
   },
   // Allow us to directly use enzyme wrappers for snapshotting
   // Usage: expect(enzyme.shallow(<div/>)).toMatchSnapshot();

@@ -1,11 +1,5 @@
 // Globals injected by Webpack DefinePlugin
 /* eslint-disable no-underscore-dangle */
-
-declare const DATA_API_BASE_URL: string | undefined;
-declare const VERSION_STR: string | undefined;
-declare const DISPLAY_COMMIT_HASH: string | undefined;
-declare const DEBUG_SERVICE_WORKER: boolean;
-
 /**
  * NUSMods deployment environment.
  *
@@ -24,6 +18,10 @@ declare const DEBUG_SERVICE_WORKER: boolean;
  */
 declare const NUSMODS_ENV: 'development' | 'production' | 'staging' | 'preview' | 'test';
 
+declare const DATA_API_BASE_URL: string | undefined;
+declare const VERSION_STR: string | undefined;
+declare const DISPLAY_COMMIT_HASH: string | undefined;
+declare const DEBUG_SERVICE_WORKER: boolean;
 /* eslint-enable no-underscore-dangle */
 
 /**

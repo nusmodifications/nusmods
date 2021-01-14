@@ -13,17 +13,6 @@ const NUSMODS_ENV = parts.env();
 const source = (file) => path.join('entry/export', file);
 
 const timetableOnlyConfig = merge([
-  {
-    plugins: [
-      new webpack.DefinePlugin({
-        DISPLAY_COMMIT_HASH: JSON.stringify(parts.appVersion().commitHash),
-        VERSION_STR: JSON.stringify(parts.appVersion().versionStr),
-        DEBUG_SERVICE_WORKER: !!process.env.DEBUG_SERVICE_WORKER,
-        DATA_API_BASE_URL: JSON.stringify(process.env.DATA_API_BASE_URL),
-        NUSMODS_ENV: JSON.stringify(NUSMODS_ENV),
-      }),
-    ],
-  },
   commonConfig,
   {
     // Override common's entry point

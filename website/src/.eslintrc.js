@@ -104,10 +104,10 @@ module.exports = {
 
   // Mimic the globals we set with Webpack's DefinePlugin
   globals: {
+    NUSMODS_ENV: 'readonly',
     DATA_API_BASE_URL: 'readonly',
     VERSION_STR: 'readonly',
     DISPLAY_COMMIT_HASH: 'readonly',
     DEBUG_SERVICE_WORKER: 'readonly',
-    NUSMODS_ENV: 'readonly',
   },
 };
