@@ -1,5 +1,3 @@
-const { env } = require('./webpack/webpack.parts');
-
 module.exports = {
   roots: ['<rootDir>/src'],
   moduleDirectories: ['node_modules', '<rootDir>/src'],
@@ -21,7 +19,7 @@ module.exports = {
     VERSION_STR: '',
     DISPLAY_COMMIT_HASH: '',
     DEBUG_SERVICE_WORKER: false,
-    NUSMODS_ENV: env(),
+    NUSMODS_ENV: 'test',
   },
   // Allow us to directly use enzyme wrappers for snapshotting
   // Usage: expect(enzyme.shallow(<div/>)).toMatchSnapshot();
