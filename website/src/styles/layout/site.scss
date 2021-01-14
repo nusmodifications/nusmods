@@ -16,10 +16,6 @@ body {
   @include media-breakpoint-down(sm) {
     padding-top: $navbar-height;
     font-size: 1rem * $sm-font-size-ratio;
-
-    &.no-scroll {
-      padding-top: $navbar-height + $navtab-height;
-    }
   }
 }
 
@@ -36,7 +32,8 @@ a {
 
 .main-container {
   flex: 1 auto;
-  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+    env(safe-area-inset-left);
 
   @include media-breakpoint-down(sm) {
     .main-content {
