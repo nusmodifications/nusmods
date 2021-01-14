@@ -7,31 +7,31 @@ const TerserJsPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const PacktrackerPlugin = require('@packtracker/webpack-plugin');
-const CompressionPlugin = require('compression-webpack-plugin');
 
 const commonConfig = require('./webpack.config.common');
 const parts = require('./webpack.parts');
 const nusmods = require('../src/apis/nusmods');
 const config = require('../src/config/app-config.json');
 
-const IS_CI = !!process.env.CI;
-const IS_NETLIFY = !!process.env.NETLIFY;
-const IS_VERCEL = !!process.env.VERCEL;
-const IS_VERCEL_PROD = IS_VERCEL && process.env.VERCEL_ENV === 'production';
+const NUSMODS_ENV = parts.env();
+
+/**
+ * `true` if we're in the primary CI environment where we run our tests, e.g.
+ * CircleCI. Do not use the `CI` variable as it will be true in hosting
+ * services' build enviroments, e.g. Vercel, Netlify, etc.
+ */
+const IS_PRIMARY_CI = !!process.env.CIRCLE;
 
 const productionConfig = ({ browserWarningPath }) =>
   merge([
     {
       plugins: [
         new webpack.DefinePlugin({
-          __DEV__: false,
-          __TEST__: false,
           DISPLAY_COMMIT_HASH: JSON.stringify(parts.appVersion().commitHash),
           VERSION_STR: JSON.stringify(parts.appVersion().versionStr),
           DEBUG_SERVICE_WORKER: !!process.env.DEBUG_SERVICE_WORKER,
           DATA_API_BASE_URL: JSON.stringify(process.env.DATA_API_BASE_URL),
-          VERCEL_ENV: JSON.stringify(process.env.VERCEL_ENV),
-          VERCEL_GIT_COMMIT_REF: JSON.stringify(process.env.VERCEL_GIT_COMMIT_REF),
+          NUSMODS_ENV: JSON.stringify(NUSMODS_ENV),
         }),
       ],
     },
@@ -77,21 +77,25 @@ const productionConfig = ({ browserWarningPath }) =>
             };
           },
         }),
-        !IS_CI &&
-          new CompressionPlugin({
-            test: /\.(js|css|html|json|svg|xml|txt)$/,
-          }),
-        IS_CI &&
-          !IS_VERCEL &&
+        IS_PRIMARY_CI &&
           new PacktrackerPlugin({
             upload: true,
           }),
         // Copy files from static folder over to dist
         new CopyWebpackPlugin({
           patterns: [
-            (IS_CI || IS_NETLIFY) &&
-              !IS_VERCEL_PROD && { from: 'static-ci', context: parts.PATHS.root },
-            { from: 'static', context: parts.PATHS.root },
+            {
+              from: 'static/base',
+              context: parts.PATHS.root,
+            },
+            (NUSMODS_ENV === 'preview' || NUSMODS_ENV === 'staging') && {
+              from: 'static/preview-and-staging-only',
+              context: parts.PATHS.root,
+            },
+            NUSMODS_ENV === 'production' && {
+              from: 'static/nusmods.com-only',
+              context: parts.PATHS.root,
+            },
           ].filter(Boolean),
         }),
       ].filter(Boolean),
@@ -125,8 +129,6 @@ const productionConfig = ({ browserWarningPath }) =>
       },
     }),
     parts.productionCSS(),
-    // Lint and Typescript type check are not enabled for production because CI has
-    // explicit lint stages
   ]);
 
 module.exports = productionConfig;

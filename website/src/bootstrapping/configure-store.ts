@@ -27,7 +27,7 @@ export default function configureStore(defaultState?: State) {
 
   const middlewares = [ravenMiddleware, thunk, requestsMiddleware];
 
-  if (__DEV__) {
+  if (NUSMODS_ENV === 'development') {
     // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-extraneous-dependencies
     const { createLogger } = require('redux-logger');
     const logger = createLogger({

@@ -4,26 +4,15 @@ import { Integrations } from '@sentry/tracing';
 
 import { isBrowserSupported } from './browser';
 
-// Decide Sentry environment based on some basic heuristics.
-function sentryEnv(): string | undefined {
-  // Vercel deployments
-  if (VERCEL_ENV === 'production') return 'production';
-  if (VERCEL_ENV === 'preview') {
-    if (VERCEL_GIT_COMMIT_REF === 'master') return 'staging';
-    return 'preview';
+function sentryEnv() {
+  if (NUSMODS_ENV === 'test') {
+    throw new Error('Do not load Sentry in tests');
   }
-  if (VERCEL_ENV === 'development') return 'development';
-
-  // Netlify deployments
-  if (window.location.host.endsWith('.netlify.app')) return 'preview';
-
-  // Others
-  return 'development';
+  return NUSMODS_ENV;
 }
 
-// Configure Raven - the client for Sentry, which we use to handle errors
-const loadRaven = !__DEV__ && !__TEST__;
-if (loadRaven) {
+// Configure Sentry client, which we use to handle errors
+if (NUSMODS_ENV === 'production') {
   Sentry.init({
     dsn: 'https://4b4fe71954424fd39ac88a4f889ffe20@sentry.io/213986',
 
