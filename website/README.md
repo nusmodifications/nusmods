@@ -307,9 +307,16 @@ yarn e2e
 # Run against deploy preview
 LAUNCH_URL="https://deploy-preview-1024--nusmods.netlify.com" yarn e2e
 
-# Enable local testing
+# Run against local development server
+yarn start              # Start a local development server
 ./BrowserStackLocal --key $BROWSERSTACK_ACCESS_KEY
 LAUNCH_URL="http://localhost:8080" LOCAL_TEST=1 yarn e2e
+
+# Run against local production server
+yarn build              # Build to ./dist directory
+npx serve -s dist       # Start a local server that serves ./dist
+./BrowserStackLocal --key $BROWSERSTACK_ACCESS_KEY
+LAUNCH_URL="http://localhost:5000" LOCAL_TEST=1 yarn e2e
 ```
 
 ### Deployment

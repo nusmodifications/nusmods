@@ -6,13 +6,10 @@ import { isBrowserSupported } from './browser';
 
 // Decide Sentry environment based on some basic heuristics.
 function sentryEnv(): string | undefined {
-  if (VERCEL_ENV === 'preview') return 'preview';
-  if (VERCEL_ENV === 'production') {
-    if (VERCEL_GIT_COMMIT_REF === 'production') return 'production';
-    if (window.location.host === 'nusmods.com') return 'production';
+  if (VERCEL_ENV === 'production') return 'production';
+  if (VERCEL_ENV === 'preview') {
     if (VERCEL_GIT_COMMIT_REF === 'master') return 'staging';
-    // Don't expect Vercel production deployments to be made from other
-    // branches.
+    return 'preview';
   }
   return 'development';
 }

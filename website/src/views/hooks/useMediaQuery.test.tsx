@@ -3,8 +3,7 @@ import type { MediaQuery } from 'types/views';
 import { act, render } from '@testing-library/react';
 import { breakpointUp } from 'utils/css';
 import { mockDom, mockDomReset, mockWindowMatchMedia } from 'test-utils/mockDom';
-import json2mq from 'json2mq';
-import useMediaQuery from './useMediaQuery';
+import useMediaQuery, { getMedia } from './useMediaQuery';
 
 type Props = {
   mediaQuery: MediaQuery;
@@ -59,11 +58,11 @@ describe(useMediaQuery, () => {
 
     const jsonMediaQuery = breakpointUp('md');
     make(jsonMediaQuery);
-    expect(matchMediaSpy).toHaveBeenLastCalledWith(json2mq(jsonMediaQuery));
+    expect(matchMediaSpy).toHaveBeenLastCalledWith(getMedia(jsonMediaQuery));
 
     const stringMediaQuery = '(min-width: 100px)';
     make(stringMediaQuery);
-    expect(matchMediaSpy).toHaveBeenLastCalledWith(stringMediaQuery);
+    expect(matchMediaSpy).toHaveBeenLastCalledWith(getMedia(stringMediaQuery));
 
     matchMediaSpy.mockRestore();
   });

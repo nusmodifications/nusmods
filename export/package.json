@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@sentry/node": "5.29.2",
-    "axios": "0.21.0",
+    "axios": "0.21.1",
     "bunyan": "1.8.14",
     "chrome-aws-lambda": "5.5.0",
     "fs-extra": "9.0.1",
@@ -32,14 +32,14 @@
     "puppeteer-core": "5.5.0"
   },
   "devDependencies": {
-    "@types/fs-extra": "9.0.4",
+    "@types/fs-extra": "9.0.6",
     "@types/koa": "2.11.6",
     "@types/koa-router": "7.4.1",
     "@types/koa-views": "2.0.4",
     "@types/lodash": "4.14.167",
-    "@types/node": "14.14.10",
+    "@types/node": "14.14.20",
     "@types/pug": "2.0.4",
-    "@types/puppeteer": "5.4.0",
+    "@types/puppeteer": "5.4.2",
     "@vercel/node": "1.8.5",
     "cross-env": "7.0.2",
     "dotenv": "8.2.0",
