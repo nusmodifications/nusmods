@@ -3,6 +3,8 @@
 $gutter: $grid-gutter-width / 2;
 $sticky-top: $navbar-height + 1rem;
 $venue-list-width: 16rem;
+$venue-list-width-xl: 24rem;
+$venue-list-width-xxl: 32rem;
 
 // Layout for venues page is
 // - On md and above - Outlook style two panel UI with the venue list on the left
@@ -48,27 +50,28 @@ $venue-list-width: 16rem;
 
   .venueDetail {
     right: env(safe-area-inset-right);
-    left: calc(env(safe-area-inset-left) + #{$venue-list-width + $side-nav-width-md} + #{$gutter});
+    left: calc(env(safe-area-inset-left) + #{$venue-list-width} + #{$gutter});
     padding: 0 $gutter env(safe-area-inset-bottom) $gutter;
   }
 }
 
 @include media-breakpoint-up(xl) {
+  .venuesList {
+    width: $venue-list-width-xl;
+  }
+
   .venueDetail {
-    left: calc(#{$venue-list-width + $side-nav-width-lg} + #{$gutter});
+    left: calc(env(safe-area-inset-left) + #{$venue-list-width-xl} + #{$gutter});
   }
 }
 
 @media (min-width: 90rem) {
   .venuesList {
-    right: 60rem;
-    left: $side-nav-width-lg;
-    width: auto;
+    width: $venue-list-width-xxl;
   }
 
   .venueDetail {
-    left: auto;
-    width: 60rem;
+    left: calc(env(safe-area-inset-left) + #{$venue-list-width-xxl} + #{$gutter});
   }
 }
 
