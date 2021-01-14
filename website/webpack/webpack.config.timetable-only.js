@@ -34,7 +34,7 @@ const timetableOnlyConfig = merge([
       // TODO: Reenable InlineChunkHtmlPlugin in dev once
       // https://github.com/pmmmwh/react-refresh-webpack-plugin/pull/241 is
       // released. Otherwise website crashes on load.
-      NUSMODS_ENV === 'development' &&
+      NUSMODS_ENV !== 'development' &&
         new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/\.(js|css)$/]),
       NUSMODS_ENV === 'development' && new ReactRefreshWebpackPlugin(),
     ].filter(Boolean),
