@@ -115,8 +115,7 @@ const AppShell: FC = ({ children }) => {
   const isModuleListReady = moduleList.length;
 
   const mode = useSelector((state: State) => state.settings.mode);
-  const osPrefersDarkColorScheme = getOSPrefersDarkColorScheme();
-  const isDarkMode = mode === DARK_MODE || (mode === DEFAULT_MODE && osPrefersDarkColorScheme);
+  const isDarkMode = mode === DARK_MODE || (mode === DEFAULT_MODE && getOSPrefersDarkColorScheme());
 
   const theme = useSelector((state: State) => state.theme.id);
 
