@@ -20,7 +20,7 @@
   --body-bg-transparent: #{rgba($body-bg, 0)};
 
   // Shadows
-  --navtab-shadow: #{rgba(#000, 0.1)};
+  --navbar-shadow: #{rgba(#000, 0.09)};
 
   // Body font color
   --body-color: #{$body-color};
@@ -51,7 +51,7 @@ body.mode-dark {
   --body-bg-transparent: #{rgba($gray-dark, 0)};
 
   // Shadows
-  --navtab-shadow: #{rgba(#000, 0.26)};
+  --navbar-shadow: #{rgba(#000, 0.5)};
 
   // Body font color
   --body-color: #aaa;

@@ -67,7 +67,7 @@ $offset-top: $navbar-height + 1rem;
     transform: translateY($closed-menu-translation);
     transition: transform $animation-duration, box-shadow $animation-duration;
     &.isOpen {
-      box-shadow: 0 -10px 20px var(--navtab-shadow);
+      box-shadow: 0 -10px 20px var(--navbar-shadow);
       transform: translateY(0);
     }
   }

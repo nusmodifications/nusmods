@@ -11,10 +11,21 @@ $logo-vert-padding: 0.875rem;
   z-index: $navbar-z-index;
   padding: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
   background: var(--body-bg);
-  border-bottom: 1px solid var(--gray-lighter);
   display: flex;
   flex-flow: column;
   align-items: center;
+
+  // Fake shadow - don't use box shadow as the sides will be lighter
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: -$navbar-shadow-height;
+    left: 0;
+    height: $navbar-shadow-height;
+    background: linear-gradient(to bottom, var(--navbar-shadow), rgba(#000, 0));
+    pointer-events: none;
+  }
 }
 
 .topBar {
@@ -78,20 +89,6 @@ $logo-vert-padding: 0.875rem;
   .navbarWrapper {
     top: -$navbar-height;
     border-bottom-width: 0;
-
-    // Fake shadow - can't use box shadow because they will appear on top of the
-    // top nav bar
-    // TODO: See if box shadow works now because this shadow is now on the nav bar itself
-    &::after {
-      content: '';
-      position: absolute;
-      right: 0;
-      bottom: -$navtab-shadow-height; // TODO: Rename these vars
-      left: 0;
-      height: $navtab-shadow-height;
-      background: linear-gradient(to bottom, var(--navtab-shadow), rgba(#000, 0));
-      pointer-events: none;
-    }
   }
 
   .bottomBar {
