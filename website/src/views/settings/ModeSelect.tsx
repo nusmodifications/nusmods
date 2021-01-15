@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { Mode, LIGHT_MODE, DARK_MODE } from 'types/settings';
+import { Mode, DEFAULT_MODE, LIGHT_MODE, DARK_MODE } from 'types/settings';
 
 type Props = {
   mode: Mode;
@@ -10,6 +10,10 @@ type Props = {
 type ModeOption = { value: Mode; label: string };
 
 const MODES: ModeOption[] = [
+  {
+    label: 'OS Default',
+    value: DEFAULT_MODE,
+  },
   {
     label: 'On',
     value: DARK_MODE,
