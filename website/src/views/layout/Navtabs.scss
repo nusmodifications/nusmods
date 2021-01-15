@@ -89,13 +89,13 @@ $divider-margin: 0.3rem;
 }
 
 @include media-breakpoint-up(lg) {
-  .link {
-    min-width: 8em;
-  }
+  // .link {
+  //   min-width: 8em;
+  // }
 
-  .title {
-    display: block;
-  }
+  // .title {
+  //   display: block;
+  // }
 
   // .divider {
   //   margin: $divider-margin 1rem $divider-margin 1.4rem;
@@ -104,6 +104,11 @@ $divider-margin: 0.3rem;
 
 @include media-breakpoint-up(xl) {
   .link {
-    min-width: 10em;
+    // min-width: 10em;
+    min-width: 7em;
+  }
+
+  .title {
+    display: block;
   }
 }

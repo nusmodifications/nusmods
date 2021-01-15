@@ -21,46 +21,41 @@ import SemesterBadge from 'views/components/SemesterBadge';
 import styles from './GlobalSearch.scss';
 
 type Props = {
+  isOpen: boolean;
   getResults: (string: string | null) => SearchResult | null;
 
   onSelectVenue: (venue: Venue) => void;
   onSelectModule: (moduleCondensed: ModuleCondensed) => void;
   onSearch: (resultType: ResultType, str: string) => void;
+  open: () => void;
+  close: () => void;
 };
 
 type State = {
-  isOpen: boolean;
   inputValue: string;
 };
 
-const PLACEHOLDER = 'Search modules & venues. Try "GER" or "LT".';
+const PLACEHOLDER = 'Search modules & venues';
 
 class GlobalSearch extends Component<Props, State> {
   input: HTMLInputElement | null = null;
 
   state = {
-    isOpen: false,
     inputValue: '',
   };
 
-  onOpen = () => {
-    this.setState({ isOpen: true });
-  };
-
-  onClose = () => {
-    this.setState({
-      isOpen: false,
-      inputValue: '',
-    });
+  handleClose = () => {
+    this.props.close();
+    this.setState({ inputValue: '' });
 
     if (this.input) this.input.blur();
   };
 
-  onOuterClick = () => {
+  handleOuterClick = () => {
     // Preserve input value (if present) after user clicks outside.
     if (this.state.inputValue) {
+      this.props.open();
       this.setState({
-        isOpen: true,
         // Cannot use prevState as prevState.inputValue will be empty string
         // instead of the (non-empty) this.state.inputValue.
         // eslint-disable-next-line react/no-access-state-in-setstate
@@ -69,15 +64,15 @@ class GlobalSearch extends Component<Props, State> {
 
       if (this.input) this.input.blur();
     } else {
-      this.onClose();
+      this.handleClose();
     }
   };
 
-  onInputValueChange = (newInputValue: string) => {
+  handleInputValueChange = (newInputValue: string) => {
     this.setState({ inputValue: newInputValue });
   };
 
-  onChange = (item: SearchItem | null) => {
+  handleChange = (item: SearchItem | null) => {
     if (item) {
       const { onSelectModule, onSelectVenue, onSearch } = this.props;
 
@@ -96,7 +91,7 @@ class GlobalSearch extends Component<Props, State> {
       }
     }
 
-    this.onClose();
+    this.handleClose();
   };
 
   stateReducer = (state: DownshiftState<SearchItem>, changes: StateChangeOptions<SearchItem>) => {
@@ -134,7 +129,7 @@ class GlobalSearch extends Component<Props, State> {
           }}
           className={classnames(styles.input, { [styles.inputOpen]: isOpen })}
           {...getInputProps({ placeholder: PLACEHOLDER })}
-          onFocus={this.onOpen}
+          onFocus={this.props.open}
         />
       </Fragment>
     );
@@ -286,14 +281,15 @@ class GlobalSearch extends Component<Props, State> {
   };
 
   render() {
-    const { isOpen, inputValue } = this.state;
+    const { inputValue } = this.state;
+    const { isOpen } = this.props;
 
     return (
       <Downshift
         isOpen={isOpen}
-        onOuterClick={this.onOuterClick}
-        onChange={this.onChange}
-        onInputValueChange={this.onInputValueChange}
+        onOuterClick={this.handleOuterClick}
+        onChange={this.handleChange}
+        onInputValueChange={this.handleInputValueChange}
         inputValue={inputValue}
         stateReducer={this.stateReducer}
         /* Hack to force item selection to be empty */

@@ -45,7 +45,7 @@ $logo-vert-padding: 0.875rem;
   // Explicit width so the logo will not expand
   // to occupy the entire navbar
   width: 8.3rem;
-  margin: $logo-vert-padding $grid-gutter-width;
+  margin: $logo-vert-padding $grid-gutter-width/2 $logo-vert-padding $grid-gutter-width;
 }
 
 .brandLogo {
@@ -63,8 +63,6 @@ $logo-vert-padding: 0.875rem;
 
 .navRight {
   display: flex;
-  align-items: center;
-  padding: $vert-padding $grid-gutter-width/2;
 }
 
 .weekText {
@@ -89,6 +87,7 @@ $logo-vert-padding: 0.875rem;
   }
 
   .brand {
+    // display: flex;
     flex: 1;
     margin: $logo-vert-padding 0 $logo-vert-padding $grid-gutter-width/2;
   }

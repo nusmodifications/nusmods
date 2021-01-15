@@ -1,67 +1,59 @@
 @import '~styles/utils/modules-entry';
+
 $icon-size: $font-size-lg;
-$input-width: 2rem;
-$input-width-open: 21rem;
-$input-width-open-lg: 34rem;
+$input-width: 14rem;
+$input-width-lg: 18rem;
+$results-width-open: 21rem;
+$results-width-open-lg: 34rem;
+$container-vertical-margin: 0.3rem;
 $container-padding: 0.5rem;
 $dropdown-height: 40rem;
+
+$container-height: $navbar-height - $container-vertical-margin * 2;
+$internal-padding: ($container-height - $icon-size) / 2;
 
 .container {
   composes: btn-svg from global;
   position: relative;
-  height: 100%;
-  padding-left: $container-padding;
-  margin-left: auto;
   font-size: 0.9rem;
 
-  &:hover .icon {
+  background-color: var(--gray-lightest);
+  border-radius: $container-height / 2;
+  margin: $container-vertical-margin $container-padding;
+
+  border &:hover .icon {
     color: theme-color();
   }
 }
 
-$icon-dist: $input-width-open - $input-width;
-$icon-dist-lg: $input-width-open-lg - $input-width;
-
 .icon {
-  // position: absolute;
-  // right: $icon-dist + $container-padding;
-  // position: relative;
-  // left: 0;
   width: $icon-size;
   height: $icon-size;
-  // transform: translate($icon-dist - 0.25rem);
+  margin: 0 $internal-padding;
   transition: all $desktop-entering-duration $material-deceleration-curve;
 
-  @include media-breakpoint-up(lg) {
-    // right: $icon-dist-lg + $container-padding;
-    // transform: translate($icon-dist-lg - 0.25rem);
+  &.iconOpen {
+    color: theme-color();
   }
 }
 
-.iconOpen {
-  color: theme-color();
-  // transform: translate(0);
-}
-
 .input {
-  $overhang: $icon-size/2; // Extend clickable area to the left of icon
-  $internal-padding: $overhang; // Symmetrical padding around icon
-
   position: relative;
-  opacity: 0;
-  left: -$icon-size - $overhang;
-  padding-left: $icon-size + $overhang + $internal-padding;
-  width: $input-width + $overhang + $internal-padding;
+  width: 0;
   height: 100%;
+  padding: 0;
 
   border: 0;
   font-size: $font-size-s;
   color: var(--body-color);
   background: transparent;
   cursor: pointer;
-  // transform: translate($input-width-open);
-  transition: transform $desktop-entering-duration $material-deceleration-curve,
-    opacity $desktop-entering-duration $material-deceleration-curve 75ms;
+
+  // Because .input is the "button" that opens the search, we extend input to
+  // the left of icon so that it looks like the icon is clickable.
+  $overhang: $icon-size + $internal-padding * 2;
+  padding-left: $overhang;
+  margin-left: -$overhang;
 
   &:focus {
     outline: none;
@@ -70,23 +62,29 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
   }
 }
 
-.openWidth {
-  width: $input-width-open;
+.inputOpen {
+  cursor: auto;
+
+  width: $input-width;
 
   @include media-breakpoint-up(lg) {
-    width: $input-width-open-lg;
+    width: $input-width-lg;
   }
 }
 
-.inputOpen {
-  composes: openWidth;
-  opacity: 1;
-  cursor: auto;
+.resultsWidth {
+  margin-right: $internal-padding;
+  width: $results-width-open;
+
+  @include media-breakpoint-up(lg) {
+    width: $results-width-open-lg;
+  }
 }
 
 .selectListContainer {
   position: absolute;
   top: $navbar-height;
+  left: 0;
   z-index: $module-select-z-index;
   border: $input-btn-border-width solid $input-border-color;
   border-width: 0 $input-btn-border-width $input-btn-border-width;
@@ -104,7 +102,7 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
 }
 
 .item {
-  composes: openWidth;
+  composes: resultsWidth;
   display: flex;
   justify-content: space-between;
   padding: 0.6rem $container-padding;
@@ -155,7 +153,7 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
 }
 
 .noResults {
-  composes: openWidth;
+  composes: resultsWidth;
   text-align: center;
 
   p {
