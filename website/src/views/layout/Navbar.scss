@@ -44,8 +44,8 @@ $logo-vert-padding: 0.875rem;
   display: flex;
   // Explicit width so the logo will not expand
   // to occupy the entire navbar
-  width: 12rem;
-  padding: $logo-vert-padding $grid-gutter-width;
+  width: 8.3rem;
+  margin: $logo-vert-padding $grid-gutter-width;
 }
 
 .brandLogo {
@@ -74,17 +74,6 @@ $logo-vert-padding: 0.875rem;
   text-align: right;
 }
 
-@include media-breakpoint-up(xl) {
-  .brand {
-    // Padding to match navtab left padding
-    padding-left: 2rem;
-  }
-
-  .navRight {
-    padding: $vert-padding $grid-gutter-width/2 $vert-padding 2rem;
-  }
-}
-
 @include media-breakpoint-down(sm) {
   .navbarWrapper {
     top: -$navbar-height;
@@ -98,11 +87,20 @@ $logo-vert-padding: 0.875rem;
 
     width: 100%;
   }
-}
 
-@include media-breakpoint-down(xs) {
   .brand {
     flex: 1;
-    padding: $logo-vert-padding 0;
+    margin: $logo-vert-padding 0 $logo-vert-padding $grid-gutter-width/2;
   }
 }
+
+// @include media-breakpoint-up(xl) {
+// .brand {
+//   // Padding to match navtab left padding
+//   padding-left: 2rem;
+// }
+
+// .navRight {
+//   padding: $vert-padding $grid-gutter-width/2 $vert-padding 2rem;
+// }
+// }

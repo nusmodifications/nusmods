@@ -44,6 +44,10 @@ $divider-margin: 0.3rem;
 
   svg {
     margin-bottom: 0.1rem;
+
+    $icon-size: $font-size-lg; // TODO: Dedupe with GlobalSearch.scss $icon-size
+    width: $icon-size;
+    height: $icon-size;
   }
 }
 
@@ -52,6 +56,13 @@ $divider-margin: 0.3rem;
   font-size: 0.7rem;
   margin-left: 0.4rem;
   font-size: 1rem;
+
+  // TODO: Try this caps alternative
+  // margin-left: 0.5rem;
+  // font-size: 0.85rem;
+  // letter-spacing: 0.07rem;
+  // font-weight: 500;
+  // text-transform: uppercase;
 }
 
 .hiddenOnMobile {

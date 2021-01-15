@@ -10,7 +10,7 @@ $dropdown-height: 40rem;
   composes: btn-svg from global;
   position: relative;
   height: 100%;
-  padding-right: $container-padding;
+  padding-left: $container-padding;
   margin-left: auto;
   font-size: 0.9rem;
 
@@ -23,37 +23,43 @@ $icon-dist: $input-width-open - $input-width;
 $icon-dist-lg: $input-width-open-lg - $input-width;
 
 .icon {
-  position: absolute;
-  right: $icon-dist + $container-padding;
+  // position: absolute;
+  // right: $icon-dist + $container-padding;
+  // position: relative;
+  // left: 0;
   width: $icon-size;
   height: $icon-size;
-  transform: translate($icon-dist - 0.25rem);
+  // transform: translate($icon-dist - 0.25rem);
   transition: all $desktop-entering-duration $material-deceleration-curve;
 
   @include media-breakpoint-up(lg) {
-    right: $icon-dist-lg + $container-padding;
-    transform: translate($icon-dist-lg - 0.25rem);
+    // right: $icon-dist-lg + $container-padding;
+    // transform: translate($icon-dist-lg - 0.25rem);
   }
 }
 
 .iconOpen {
   color: theme-color();
-  transform: translate(0);
+  // transform: translate(0);
 }
 
 .input {
-  position: absolute;
-  right: $input-width-open + $container-padding;
+  $overhang: $icon-size/2; // Extend clickable area to the left of icon
+  $internal-padding: $overhang; // Symmetrical padding around icon
+
+  position: relative;
   opacity: 0;
-  width: $input-width;
+  left: -$icon-size - $overhang;
+  padding-left: $icon-size + $overhang + $internal-padding;
+  width: $input-width + $overhang + $internal-padding;
   height: 100%;
-  padding-left: $input-width;
+
   border: 0;
   font-size: $font-size-s;
   color: var(--body-color);
   background: transparent;
   cursor: pointer;
-  transform: translate($input-width-open);
+  // transform: translate($input-width-open);
   transition: transform $desktop-entering-duration $material-deceleration-curve,
     opacity $desktop-entering-duration $material-deceleration-curve 75ms;
 
@@ -74,16 +80,13 @@ $icon-dist-lg: $input-width-open-lg - $input-width;
 
 .inputOpen {
   composes: openWidth;
-  right: 0;
   opacity: 1;
   cursor: auto;
-  transform: translate(0);
 }
 
 .selectListContainer {
   position: absolute;
-  top: $navbar-height - 0.5rem;
-  right: 0;
+  top: $navbar-height;
   z-index: $module-select-z-index;
   border: $input-btn-border-width solid $input-border-color;
   border-width: 0 $input-btn-border-width $input-btn-border-width;
