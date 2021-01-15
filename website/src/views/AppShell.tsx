@@ -1,13 +1,13 @@
 import { FC, useCallback, useEffect, useState } from 'react';
+import type { SemTimetableConfig } from 'types/timetables';
+import type { Semester } from 'types/modules';
+import { DARK_MODE, DEFAULT_MODE } from 'types/settings';
 
 import { Helmet } from 'react-helmet';
 import { NavLink, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import classnames from 'classnames';
 import { each } from 'lodash';
-import { DARK_MODE } from 'types/settings';
-import type { Semester } from 'types/modules';
-import type { SemTimetableConfig } from 'types/timetables';
 
 import weekText from 'utils/weekText';
 import { captureException } from 'utils/error';
@@ -30,6 +30,7 @@ import Logo from 'img/nusmods-logo.svg';
 import type { Dispatch } from 'types/redux';
 import type { State } from 'types/state';
 import type { Actions } from 'types/actions';
+import { getOSPrefersDarkColorScheme } from 'utils/css';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
 import KeyboardShortcuts from './components/KeyboardShortcuts';
@@ -114,7 +115,8 @@ const AppShell: FC = ({ children }) => {
   const isModuleListReady = moduleList.length;
 
   const mode = useSelector((state: State) => state.settings.mode);
-  const isDarkMode = mode === DARK_MODE;
+  const osPrefersDarkColorScheme = getOSPrefersDarkColorScheme();
+  const isDarkMode = mode === DARK_MODE || (mode === DEFAULT_MODE && osPrefersDarkColorScheme);
 
   const theme = useSelector((state: State) => state.theme.id);
 
