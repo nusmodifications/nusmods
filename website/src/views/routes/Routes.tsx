@@ -17,6 +17,7 @@ import NotFoundPage from 'views/errors/NotFoundPage';
 import TodayContainer from 'views/today/TodayContainer';
 import PlannerContainer from 'views/planner/PlannerContainer';
 import TetrisContainer from 'views/tetris/TetrisContainer';
+import MpeContainer from 'views/mpe/MpeContainer';
 import ExternalRedirect from './ExternalRedirect';
 
 // IMPORTANT: Remember to update any route changes on the sitemap
@@ -39,6 +40,9 @@ const Routes: React.FC = () => (
     <Route path="/team" component={TeamContainer} />
     <Route path="/contributors" component={ContributorsContainer} />
     <Route path="/apps" component={AppsContainer} />
+
+    {/* NUS' requested features routes */}
+    <Route path="/mpe" component={MpeContainer} />
 
     {/* v2 routes */}
     <Redirect from="/venueavailability" to="/venues" />
