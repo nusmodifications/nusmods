@@ -36,3 +36,9 @@ export function supportsCSSVariables() {
   // Safari does not support supports('--var', 'red')
   return CSS.supports && CSS.supports('(--var: red)');
 }
+
+export function getOSPrefersDarkColorScheme() {
+  const userPrefersDark =
+    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  return userPrefersDark;
+}
