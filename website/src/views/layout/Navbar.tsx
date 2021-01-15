@@ -10,15 +10,13 @@ import GlobalSearchContainer from './GlobalSearchContainer';
 import styles from './Navbar.scss';
 import Navtabs from './Navtabs';
 
-const Navbar: FC = ({ children }) => {
+const Navbar: FC = () => {
   return (
     <div className={styles.navbarWrapper}>
       {/* Bottom bar must be above the top bar in HTML, so that top bar can be interacted with. */}
       <nav className={styles.topBar}>
         <div className={styles.navLeft}>
-          <NavLink className={styles.brand} to="/" title="Home">
-            <Logo className={styles.brandLogo} title="NUSMods" />
-          </NavLink>
+          <NavLogo />
           <ErrorBoundary>
             <GlobalSearchContainer />
           </ErrorBoundary>
@@ -36,3 +34,11 @@ const Navbar: FC = ({ children }) => {
 // <div className={styles.weekText}>{weekText}</div>
 
 export default Navbar;
+
+const NavLogo: FC = () => {
+  return (
+    <NavLink className={styles.brand} to="/" title="Home">
+      <Logo className={styles.brandLogo} title="NUSMods" />
+    </NavLink>
+  );
+};
