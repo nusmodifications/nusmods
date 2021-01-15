@@ -37,7 +37,7 @@
     "@packtracker/webpack-plugin": "2.3.0",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
     "@svgr/webpack": "5.5.0",
-    "@testing-library/jest-dom": "5.11.8",
+    "@testing-library/jest-dom": "5.11.9",
     "@testing-library/react": "11.2.3",
     "@testing-library/user-event": "12.6.0",
     "@types/body-scroll-lock": "2.6.1",
