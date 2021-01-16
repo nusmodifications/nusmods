@@ -10,7 +10,8 @@ $container-padding: 0.5rem;
 $dropdown-height: 40rem;
 
 $container-height: $navbar-height - $container-vertical-margin * 2;
-$internal-padding: ($container-height - $icon-size) / 2;
+$corner-radius: $container-height / 2;
+$icon-horizontal-padding: ($container-height - $icon-size) / 2;
 
 .container {
   composes: btn-svg from global;
@@ -18,7 +19,7 @@ $internal-padding: ($container-height - $icon-size) / 2;
   font-size: 0.9rem;
 
   background-color: var(--gray-lightest);
-  border-radius: $container-height / 2;
+  border-radius: $corner-radius;
   margin: $container-vertical-margin $container-padding;
 
   border &:hover .icon {
@@ -29,7 +30,7 @@ $internal-padding: ($container-height - $icon-size) / 2;
 .icon {
   width: $icon-size;
   height: $icon-size;
-  margin: 0 $internal-padding;
+  margin: 0 $icon-horizontal-padding;
   transition: all $desktop-entering-duration $material-deceleration-curve;
 
   &.iconOpen {
@@ -41,19 +42,19 @@ $internal-padding: ($container-height - $icon-size) / 2;
   position: relative;
   width: 0;
   height: 100%;
-  padding: 0;
+  padding-right: 0;
+
+  // Because .input is the "button" that opens the search, we extend input to
+  // the left of icon so that it looks like the icon is clickable.
+  $overhang: $icon-size + $icon-horizontal-padding * 2;
+  padding-left: $overhang;
+  margin-left: -$overhang;
 
   border: 0;
   font-size: $font-size-s;
   color: var(--body-color);
   background: transparent;
   cursor: pointer;
-
-  // Because .input is the "button" that opens the search, we extend input to
-  // the left of icon so that it looks like the icon is clickable.
-  $overhang: $icon-size + $internal-padding * 2;
-  padding-left: $overhang;
-  margin-left: -$overhang;
 
   &:focus {
     outline: none;
@@ -66,6 +67,7 @@ $internal-padding: ($container-height - $icon-size) / 2;
   cursor: auto;
 
   width: $input-width;
+  padding-right: ($corner-radius + $icon-horizontal-padding) / 2;
 
   @include media-breakpoint-up(lg) {
     width: $input-width-lg;
@@ -73,7 +75,7 @@ $internal-padding: ($container-height - $icon-size) / 2;
 }
 
 .resultsWidth {
-  margin-right: $internal-padding;
+  margin-right: $icon-horizontal-padding;
   width: $results-width-open;
 
   @include media-breakpoint-up(lg) {
@@ -84,7 +86,7 @@ $internal-padding: ($container-height - $icon-size) / 2;
 .selectListContainer {
   position: absolute;
   top: $navbar-height;
-  left: 0;
+  right: 0;
   z-index: $module-select-z-index;
   border: $input-btn-border-width solid $input-border-color;
   border-width: 0 $input-btn-border-width $input-btn-border-width;

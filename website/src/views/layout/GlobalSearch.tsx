@@ -20,7 +20,7 @@ import ComponentMap from 'utils/ComponentMap';
 import SemesterBadge from 'views/components/SemesterBadge';
 import styles from './GlobalSearch.scss';
 
-type Props = {
+export type Props = {
   isOpen: boolean;
   getResults: (string: string | null) => SearchResult | null;
 

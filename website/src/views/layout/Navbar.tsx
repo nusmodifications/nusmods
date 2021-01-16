@@ -19,7 +19,9 @@ const Navbar: FC = () => {
       {/* Bottom bar must be above the top bar in HTML, so that top bar can be interacted with. */}
       <nav className={styles.topBar}>
         <div className={styles.navLeft}>
-          {!isSearchOpen && <NavLogo />}
+          <NavLogo />
+        </div>
+        <div className={styles.navRight}>
           <ErrorBoundary>
             <GlobalSearchContainer
               isOpen={isSearchOpen}
@@ -27,9 +29,7 @@ const Navbar: FC = () => {
               close={handleSearchClose}
             />
           </ErrorBoundary>
-        </div>
-        <div className={styles.navRight}>
-          <button>lol</button>
+          {!isSearchOpen && <button>lol</button>}
         </div>
       </nav>
       <div className={styles.bottomBar}>
