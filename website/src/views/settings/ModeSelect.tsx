@@ -11,7 +11,7 @@ type ModeOption = { value: Mode; label: string };
 
 const MODES: ModeOption[] = [
   {
-    label: 'OS Default',
+    label: 'Auto-detect',
     value: DEFAULT_MODE,
   },
   {
