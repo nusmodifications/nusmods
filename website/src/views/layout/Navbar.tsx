@@ -42,7 +42,7 @@ export default Navbar;
 
 const NavLogo: FC = () => {
   return (
-    <NavLink className={styles.brand} to="/" title="Home">
+    <NavLink to="/" title="Home">
       <Logo className={styles.brandLogo} title="NUSMods" />
     </NavLink>
   );
