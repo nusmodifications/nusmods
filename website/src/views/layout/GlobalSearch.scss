@@ -1,10 +1,8 @@
 @import '~styles/utils/modules-entry';
 
 $icon-size: $font-size-lg;
-$input-width: 14rem;
-$input-width-lg: 18rem;
 $results-width-open: 21rem;
-$results-width-open-lg: 34rem;
+$results-width-open-xl: 34rem;
 $container-vertical-margin: 0.3rem;
 $container-padding: 0.5rem;
 $dropdown-height: 40rem;
@@ -24,6 +22,14 @@ $icon-horizontal-padding: ($container-height - $icon-size) / 2;
 
   border &:hover .icon {
     color: theme-color();
+  }
+}
+
+.containerOpen {
+  width: 100%;
+  max-width: $results-width-open;
+  @include media-breakpoint-up(xl) {
+    max-width: $results-width-open-xl;
   }
 }
 
@@ -65,22 +71,8 @@ $icon-horizontal-padding: ($container-height - $icon-size) / 2;
 
 .inputOpen {
   cursor: auto;
-
-  width: $input-width;
+  width: 100%;
   padding-right: ($corner-radius + $icon-horizontal-padding) / 2;
-
-  @include media-breakpoint-up(lg) {
-    width: $input-width-lg;
-  }
-}
-
-.resultsWidth {
-  margin-right: $icon-horizontal-padding;
-  width: $results-width-open;
-
-  @include media-breakpoint-up(lg) {
-    width: $results-width-open-lg;
-  }
 }
 
 .selectListContainer {
@@ -93,6 +85,11 @@ $icon-horizontal-padding: ($container-height - $icon-size) / 2;
   border-radius: 0 0 $btn-border-radius $btn-border-radius;
   color: var(--body-color);
   background: var(--body-bg);
+
+  width: $results-width-open;
+  @include media-breakpoint-up(xl) {
+    width: $results-width-open-xl;
+  }
 }
 
 .selectList {
@@ -104,7 +101,6 @@ $icon-horizontal-padding: ($container-height - $icon-size) / 2;
 }
 
 .item {
-  composes: resultsWidth;
   display: flex;
   justify-content: space-between;
   padding: 0.6rem $container-padding;
@@ -155,7 +151,6 @@ $icon-horizontal-padding: ($container-height - $icon-size) / 2;
 }
 
 .noResults {
-  composes: resultsWidth;
   text-align: center;
 
   p {

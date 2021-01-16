@@ -12,8 +12,7 @@ $logo-vert-padding: 0.875rem;
   padding: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
   background: var(--body-bg);
   display: flex;
-  flex-flow: column;
-  align-items: center;
+  justify-content: space-between;
 
   // Fake shadow - don't use box shadow as the sides will be lighter
   &::after {
@@ -26,18 +25,6 @@ $logo-vert-padding: 0.875rem;
     background: linear-gradient(to bottom, var(--navbar-shadow), rgba(#000, 0));
     pointer-events: none;
   }
-}
-
-.topBar {
-  display: flex;
-  justify-content: space-between;
-  height: $navbar-height;
-  width: 100%;
-}
-
-.bottomBar {
-  position: fixed;
-  top: 0;
 }
 
 .brand {
@@ -53,16 +40,20 @@ $logo-vert-padding: 0.875rem;
 }
 
 .navLeft {
+  height: $navbar-height;
   display: flex;
+  flex: 1 0 0;
 }
 
 .navCenter {
-  position: relative;
-  top: $navbar-height;
+  height: $navbar-height;
 }
 
 .navRight {
+  height: $navbar-height;
   display: flex;
+  flex: 1 0 0;
+  justify-content: flex-end;
 }
 
 .weekText {
@@ -75,19 +66,25 @@ $logo-vert-padding: 0.875rem;
 @include media-breakpoint-down(sm) {
   .navbarWrapper {
     top: -$navbar-height;
-    border-bottom-width: 0;
+    flex-wrap: wrap;
   }
 
-  .bottomBar {
-    // Allow bar to sit below topBar
-    position: initial;
-    top: unset;
+  .navLeft {
+    order: 0;
+    flex: unset;
+  }
 
+  .navCenter {
+    order: 2;
     width: 100%;
   }
 
+  .navRight {
+    order: 1;
+    flex: unset;
+  }
+
   .brand {
-    // display: flex;
     flex: 1;
     margin: $logo-vert-padding 0 $logo-vert-padding $grid-gutter-width/2;
   }

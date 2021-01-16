@@ -139,7 +139,11 @@ class GlobalSearch extends Component<Props, State> {
 
     // 1. Search is not active - just show the search form
     if (!searchResults || !inputValue || !hasFocus) {
-      return <div className={styles.container}>{searchForm}</div>;
+      return (
+        <div className={classnames(styles.container, { [styles.containerOpen]: isOpen })}>
+          {searchForm}
+        </div>
+      );
     }
 
     const { modules, venues, tokens } = searchResults;
@@ -150,7 +154,7 @@ class GlobalSearch extends Component<Props, State> {
     //    results instead
     if (!hasModules && !hasVenues) {
       return (
-        <div className={styles.container}>
+        <div className={classnames(styles.container, { [styles.containerOpen]: isOpen })}>
           {searchForm}
 
           <div className={styles.selectListContainer}>
@@ -203,7 +207,7 @@ class GlobalSearch extends Component<Props, State> {
 
     // 3. We have results - so show them to the user
     return (
-      <div className={styles.container}>
+      <div className={classnames(styles.container, { [styles.containerOpen]: isOpen })}>
         {searchForm}
 
         {/* Wrap select list in absolute-positioned container to fix macOS Safari scrolling perf */}

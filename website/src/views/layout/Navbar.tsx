@@ -11,31 +11,30 @@ import styles from './Navbar.scss';
 import Navtabs from './Navtabs';
 
 const Navbar: FC = () => {
+  // FIXME: If search is open, if we narrow the viewport such that global seacrh
+  // is disabled, isSearchOpen is stuck in `true`.
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const handleSearchOpen = useCallback(() => setIsSearchOpen(true), []);
   const handleSearchClose = useCallback(() => setIsSearchOpen(false), []);
   return (
-    <div className={styles.navbarWrapper}>
-      {/* Bottom bar must be above the top bar in HTML, so that top bar can be interacted with. */}
-      <nav className={styles.topBar}>
-        <div className={styles.navLeft}>
-          <NavLogo />
-        </div>
-        <div className={styles.navRight}>
-          <ErrorBoundary>
-            <GlobalSearchContainer
-              isOpen={isSearchOpen}
-              open={handleSearchOpen}
-              close={handleSearchClose}
-            />
-          </ErrorBoundary>
-          {!isSearchOpen && <button>lol</button>}
-        </div>
-      </nav>
-      <div className={styles.bottomBar}>
+    <header className={styles.navbarWrapper}>
+      <div className={styles.navLeft}>
+        <NavLogo />
+      </div>
+      <div className={styles.navCenter}>
         <Navtabs />
       </div>
-    </div>
+      <div className={styles.navRight}>
+        <ErrorBoundary>
+          <GlobalSearchContainer
+            isOpen={isSearchOpen}
+            open={handleSearchOpen}
+            close={handleSearchClose}
+          />
+        </ErrorBoundary>
+        {!isSearchOpen && <button>lol</button>}
+      </div>
+    </header>
   );
 };
 
