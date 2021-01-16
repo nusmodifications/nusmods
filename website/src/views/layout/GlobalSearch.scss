@@ -68,7 +68,7 @@ $icon-horizontal-padding: ($container-height - $icon-size) / 2;
   background: transparent;
   cursor: pointer;
 
-  transition: all $desktop-exiting-duration $material-acceleration-curve;
+  transition: opacity $desktop-exiting-duration $material-acceleration-curve;
 
   &:focus {
     outline: none;
