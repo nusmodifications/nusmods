@@ -33,7 +33,7 @@ const KeyboardShortcuts: React.FC = () => {
   const [helpShown, setHelpShown] = useState(false);
   const closeModal = useCallback(() => setHelpShown(false), []);
 
-  const store = useStore();
+  const store = useStore<State>();
   const dispatch = useDispatch();
 
   const history = useHistory();
@@ -103,7 +103,7 @@ const KeyboardShortcuts: React.FC = () => {
 
       // We fetch the current mode from the redux store directly, instead of
       // using useSelector, as useSelector will capture the old stale value
-      const { mode } = (store.getState() as State).settings;
+      const { mode } = store.getState().settings;
 
       dispatch(
         openNotification(`Night mode ${mode === DARK_MODE ? 'on' : 'off'}`, {
@@ -116,7 +116,7 @@ const KeyboardShortcuts: React.FC = () => {
     function notifyThemeChange() {
       // We fetch the current theme id from the redux store directly, instead of
       // using useSelector, as useSelector will capture the old stale value
-      const themeId = (store.getState() as State).theme.id;
+      const themeId = store.getState().theme.id;
       const theme = themes.find((t) => t.id === themeId);
 
       if (theme) {
