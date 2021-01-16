@@ -17,7 +17,7 @@
     "lint": "prettier --write"
   },
   "dependencies": {
-    "@sentry/node": "5.29.2",
+    "@sentry/node": "5.30.0",
     "axios": "0.21.1",
     "bunyan": "1.8.15",
     "chrome-aws-lambda": "5.5.0",
