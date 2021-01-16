@@ -20,7 +20,7 @@ $gutter: 0.75rem;
 
   .schedule {
     position: fixed;
-    left: $side-nav-width-md + $gutter;
+    left: $gutter;
     z-index: 1;
     overflow: auto;
     width: $schedule-width;
@@ -33,21 +33,11 @@ $gutter: 0.75rem;
   .mapContainer {
     position: fixed;
     right: 0;
-    left: $side-nav-width-md + $schedule-width + $gutter;
+    left: $schedule-width + $gutter;
 
     &.expanded {
       z-index: $venue-detail-expanded-z-index;
     }
-  }
-}
-
-@include media-breakpoint-up(xl) {
-  .schedule {
-    left: $side-nav-width-lg + $gutter;
-  }
-
-  .mapContainer {
-    left: $side-nav-width-lg + $schedule-width + $gutter;
   }
 }
 

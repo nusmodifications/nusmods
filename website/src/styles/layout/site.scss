@@ -35,18 +35,6 @@ a {
   .main-content {
     padding-top: 1rem;
   }
-
-  @include media-breakpoint-up(md) {
-    > nav {
-      width: calc(#{$side-nav-width-md} + #{($grid-gutter-width / 2)});
-    }
-  }
-
-  @include media-breakpoint-up(xl) {
-    > nav {
-      width: $side-nav-width-lg;
-    }
-  }
 }
 
 .page-container {

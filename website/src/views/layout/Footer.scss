@@ -2,7 +2,8 @@
 
 .footer {
   composes: text-muted from global;
-  padding: 4rem env(safe-area-inset-right) calc(env(safe-area-inset-bottom) + 4rem) env(safe-area-inset-left);
+  padding: 4rem env(safe-area-inset-right) calc(env(safe-area-inset-bottom) + 4rem)
+    env(safe-area-inset-left);
   margin-top: 4rem;
   font-size: 0.85rem;
   text-align: center;
@@ -25,18 +26,12 @@
 
   .footerContainer {
     padding: 0 15px;
+    margin: auto;
+    max-width: 75rem;
   }
 
   @include media-breakpoint-up(sm) {
     text-align: left;
-  }
-
-  @include media-breakpoint-up(md) {
-    padding-left: calc(env(safe-area-inset-left) + #{$side-nav-width-md});
-  }
-
-  @include media-breakpoint-up(xl) {
-    padding-left: calc(env(safe-area-inset-left) + #{$side-nav-width-lg});
   }
 }
 
