@@ -1,0 +1,10 @@
+$icon-size: $font-size-lg;
+$results-width-open: 21rem;
+$results-width-open-xl: 34rem;
+$container-vertical-margin: 0.3rem;
+$container-horizontal-margin: 0.2rem;
+$dropdown-height: 40rem;
+
+$container-height: $navbar-height - $container-vertical-margin * 2;
+$corner-radius: $container-height / 2;
+$icon-horizontal-padding: ($container-height - $icon-size) / 2;

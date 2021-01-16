@@ -1,0 +1,47 @@
+@import '~styles/utils/modules-entry';
+@import './nav-constants';
+
+.navDropdown {
+  position: relative;
+  display: flex;
+  margin: $container-vertical-margin $container-horizontal-margin;
+}
+
+.toggle {
+  position: relative;
+  font-size: 0.9rem;
+  background-color: var(--gray-lightest);
+  border-radius: $corner-radius;
+  padding: 0;
+
+  width: $container-height;
+
+  border &:hover .icon {
+    color: theme-color();
+  }
+}
+
+.icon {
+  width: $icon-size;
+  height: $icon-size;
+  margin: 0;
+}
+
+.dropdownMenu {
+  width: 16rem;
+  left: auto;
+  right: 0;
+
+  svg {
+    margin-right: 0.2rem;
+    vertical-align: middle;
+  }
+
+  @include media-breakpoint-down(xs) {
+    width: auto;
+  }
+
+  @include media-breakpoint-up(md) {
+    font-size: $font-size-sm;
+  }
+}

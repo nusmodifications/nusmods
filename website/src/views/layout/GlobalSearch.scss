@@ -1,15 +1,5 @@
 @import '~styles/utils/modules-entry';
-
-$icon-size: $font-size-lg;
-$results-width-open: 21rem;
-$results-width-open-xl: 34rem;
-$container-vertical-margin: 0.3rem;
-$container-padding: 0.5rem;
-$dropdown-height: 40rem;
-
-$container-height: $navbar-height - $container-vertical-margin * 2;
-$corner-radius: $container-height / 2;
-$icon-horizontal-padding: ($container-height - $icon-size) / 2;
+@import './nav-constants';
 
 .container {
   composes: btn-svg from global;
@@ -17,7 +7,7 @@ $icon-horizontal-padding: ($container-height - $icon-size) / 2;
   font-size: 0.9rem;
   background-color: var(--gray-lightest);
   border-radius: $corner-radius;
-  margin: $container-vertical-margin $container-padding;
+  margin: $container-vertical-margin $container-horizontal-margin;
 
   width: $container-height;
   transition: all $desktop-exiting-duration $material-acceleration-curve;
@@ -112,7 +102,7 @@ $icon-horizontal-padding: ($container-height - $icon-size) / 2;
 .item {
   display: flex;
   justify-content: space-between;
-  padding: 0.6rem $container-padding;
+  padding: 0.6rem $container-horizontal-margin;
   cursor: pointer;
 }
 

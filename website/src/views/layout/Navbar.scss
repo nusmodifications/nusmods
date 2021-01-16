@@ -50,6 +50,7 @@ $logo-vert-padding: 0.875rem;
   display: flex;
   flex: 1 0 0;
   justify-content: flex-end;
+  padding-right: $grid-gutter-width;
 }
 
 .weekText {
@@ -78,6 +79,7 @@ $logo-vert-padding: 0.875rem;
   .navRight {
     order: 1;
     flex: unset;
+    padding-right: $grid-gutter-width / 2;
   }
 
   .brandLogo {

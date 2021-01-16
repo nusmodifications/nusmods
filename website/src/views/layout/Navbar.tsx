@@ -9,6 +9,7 @@ import GlobalSearchContainer from './GlobalSearchContainer';
 
 import styles from './Navbar.scss';
 import Navtabs from './Navtabs';
+import NavDropdown from './NavDropdown';
 
 const Navbar: FC = () => {
   // FIXME: If search is open, if we narrow the viewport such that global seacrh
@@ -32,7 +33,7 @@ const Navbar: FC = () => {
             close={handleSearchClose}
           />
         </ErrorBoundary>
-        {!isSearchOpen && <button>lol</button>}
+        <NavDropdown />
       </div>
     </header>
   );
