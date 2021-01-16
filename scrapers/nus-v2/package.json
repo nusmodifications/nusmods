@@ -49,7 +49,7 @@
     "@elastic/elasticsearch": "7.10.0",
     "@sentry/node": "5.29.2",
     "axios": "0.21.1",
-    "bunyan": "1.8.14",
+    "bunyan": "1.8.15",
     "chevrotain": "7.1.0",
     "date-fns": "2.16.1",
     "deep-diff": "1.0.2",
