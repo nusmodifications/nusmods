@@ -31,6 +31,7 @@ const Routes: React.FC = () => (
     <Route path="/venues/:venue?" component={VenuesContainer} />
     <Route path="/today" component={TodayContainer} />
     <Route path="/planner" component={PlannerContainer} />
+    <Route path="/mpe" component={MpeContainer} />
     <Route path="/tetris" component={TetrisContainer} />
 
     <Route path="/about" component={AboutContainer} />
@@ -40,9 +41,6 @@ const Routes: React.FC = () => (
     <Route path="/team" component={TeamContainer} />
     <Route path="/contributors" component={ContributorsContainer} />
     <Route path="/apps" component={AppsContainer} />
-
-    {/* NUS' requested features routes */}
-    <Route path="/mpe" component={MpeContainer} />
 
     {/* v2 routes */}
     <Redirect from="/venueavailability" to="/venues" />
