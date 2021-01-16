@@ -16,6 +16,8 @@ $entering-duration: 0.225s;
 $desktop-fullscreen-duration: 0.275s;
 $desktop-exiting-duration: 0.175s;
 $desktop-entering-duration: 0.195s;
+
+// Source: https://github.com/material-components/material-components-web/blob/master/packages/mdc-animation/_animation.scss
 $material-standard-curve: cubic-bezier(0.4, 0, 0.2, 1);
 $material-deceleration-curve: cubic-bezier(0, 0, 0.2, 1);
 $material-acceleration-curve: cubic-bezier(0.4, 0, 1, 1);

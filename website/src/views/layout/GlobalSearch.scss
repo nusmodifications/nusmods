@@ -15,10 +15,17 @@ $icon-horizontal-padding: ($container-height - $icon-size) / 2;
   composes: btn-svg from global;
   position: relative;
   font-size: 0.9rem;
-
   background-color: var(--gray-lightest);
   border-radius: $corner-radius;
   margin: $container-vertical-margin $container-padding;
+
+  width: $container-height;
+  transition: all $desktop-exiting-duration $material-acceleration-curve;
+
+  max-width: $results-width-open;
+  @include media-breakpoint-up(xl) {
+    max-width: $results-width-open-xl;
+  }
 
   border &:hover .icon {
     color: theme-color();
@@ -27,28 +34,27 @@ $icon-horizontal-padding: ($container-height - $icon-size) / 2;
 
 .containerOpen {
   width: 100%;
-  max-width: $results-width-open;
-  @include media-breakpoint-up(xl) {
-    max-width: $results-width-open-xl;
-  }
+  transition: all $desktop-entering-duration $material-deceleration-curve;
 }
 
 .icon {
   width: $icon-size;
   height: $icon-size;
   margin: 0 $icon-horizontal-padding;
-  transition: all $desktop-entering-duration $material-deceleration-curve;
+  transition: all $desktop-exiting-duration $material-acceleration-curve;
 
   &.iconOpen {
     color: theme-color();
+    transition: all $desktop-entering-duration $material-deceleration-curve;
   }
 }
 
 .input {
   position: relative;
-  width: 0;
+  width: 100%;
   height: 100%;
   padding-right: 0;
+  opacity: 0;
 
   // Because .input is the "button" that opens the search, we extend input to
   // the left of icon so that it looks like the icon is clickable.
@@ -62,6 +68,8 @@ $icon-horizontal-padding: ($container-height - $icon-size) / 2;
   background: transparent;
   cursor: pointer;
 
+  transition: all $desktop-exiting-duration $material-acceleration-curve;
+
   &:focus {
     outline: none;
     background: transparent;
@@ -71,8 +79,9 @@ $icon-horizontal-padding: ($container-height - $icon-size) / 2;
 
 .inputOpen {
   cursor: auto;
-  width: 100%;
   padding-right: ($corner-radius + $icon-horizontal-padding) / 2;
+  opacity: 1;
+  transition: none;
 }
 
 .selectListContainer {
