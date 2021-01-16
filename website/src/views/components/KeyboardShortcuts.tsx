@@ -1,6 +1,6 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useStore } from 'react-redux';
 import Mousetrap from 'mousetrap';
 import { groupBy, map } from 'lodash';
 
@@ -33,8 +33,7 @@ const KeyboardShortcuts: React.FC = () => {
   const [helpShown, setHelpShown] = useState(false);
   const closeModal = useCallback(() => setHelpShown(false), []);
 
-  const mode = useSelector(({ settings }: State) => settings.mode);
-  const themeId = useSelector(({ theme }: State) => theme.id);
+  const store = useStore();
   const dispatch = useDispatch();
 
   const history = useHistory();
@@ -102,6 +101,10 @@ const KeyboardShortcuts: React.FC = () => {
     bind('x', APPEARANCE, 'Toggle Night Mode', () => {
       dispatch(toggleMode());
 
+      // We fetch the current mode from the redux store directly, instead of
+      // using useSelector, as useSelector will capture the old stale value
+      const { mode } = (store.getState() as State).settings;
+
       dispatch(
         openNotification(`Night mode ${mode === DARK_MODE ? 'on' : 'off'}`, {
           overwritable: true,
@@ -111,7 +114,11 @@ const KeyboardShortcuts: React.FC = () => {
 
     // Cycle through themes
     function notifyThemeChange() {
+      // We fetch the current theme id from the redux store directly, instead of
+      // using useSelector, as useSelector will capture the old stale value
+      const themeId = (store.getState() as State).theme.id;
       const theme = themes.find((t) => t.id === themeId);
+
       if (theme) {
         dispatch(
           openNotification(`Theme switched to ${theme.name}`, {
@@ -141,7 +148,7 @@ const KeyboardShortcuts: React.FC = () => {
       shortcuts.current.forEach(({ key }) => Mousetrap.unbind(key));
       shortcuts.current = [];
     };
-  }, [dispatch, helpShown, mode, history, themeId]);
+  }, [dispatch, helpShown, history, store]);
 
   function renderShortcut(shortcut: Shortcut): React.ReactNode {
     if (typeof shortcut === 'string') {
