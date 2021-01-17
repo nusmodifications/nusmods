@@ -35,7 +35,7 @@ type State = {
   inputValue: string;
 };
 
-const PLACEHOLDER = 'Search modules & venues';
+const PLACEHOLDER = 'Search NUSMods';
 
 class GlobalSearch extends Component<Props, State> {
   input: HTMLInputElement | null = null;
@@ -118,7 +118,7 @@ class GlobalSearch extends Component<Props, State> {
     // selection to be lost
     const searchForm = (
       <Fragment key="search">
-        <Search className={classnames(styles.icon, { [styles.iconOpen]: isOpen })} />
+        <Search className={styles.icon} />
         <label className="sr-only" {...getLabelProps()}>
           {PLACEHOLDER}
         </label>
