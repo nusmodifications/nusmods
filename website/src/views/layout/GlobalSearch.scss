@@ -74,7 +74,7 @@
 
 .selectListContainer {
   position: absolute;
-  top: $navbar-height;
+  top: $navbar-height - $container-vertical-margin;
   right: 0;
   z-index: $module-select-z-index;
   border: $input-btn-border-width solid $input-border-color;
