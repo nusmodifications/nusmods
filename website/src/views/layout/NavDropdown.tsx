@@ -1,7 +1,14 @@
 import classnames from 'classnames';
 import { useCombobox } from 'downshift';
 import type { FC } from 'react';
-import { ChevronDown, Heart, Settings, Star, Trello } from 'react-feather';
+import {
+  ChevronDown,
+  ExternalLink as ExternalLinkIcon,
+  Heart,
+  Settings,
+  Star,
+  Trello,
+} from 'react-feather';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
@@ -28,7 +35,7 @@ const NavDropdown: FC = () => {
         type="button"
         onClick={() => toggleMenu()}
       >
-        <ChevronDown className={classnames(styles.icon)} />
+        <ChevronDown className={classnames(styles.buttonIcon)} />
       </button>
 
       <div
@@ -44,8 +51,11 @@ const NavDropdown: FC = () => {
                 })}
                 to="/planner"
               >
-                <Trello />
-                <span className={styles.title}>Planner</span>
+                <span className={styles.itemContents}>
+                  <Trello className={styles.leftIcon} />
+                  <span className={styles.title}>Planner</span>
+                  <span className={classnames('badge badge-info', styles.rightContent)}>Beta</span>
+                </span>
               </NavLink>
               <div className={classnames(styles.hiddenOnMobile, 'dropdown-divider')} />
             </div>
@@ -59,7 +69,7 @@ const NavDropdown: FC = () => {
             to="/settings"
           >
             <span className={styles.itemContents}>
-              <Settings />
+              <Settings className={styles.leftIcon} />
               <span className={styles.title}>Settings</span>
             </span>
           </NavLink>
@@ -74,7 +84,7 @@ const NavDropdown: FC = () => {
             to="/contribute"
           >
             <span className={styles.itemContents}>
-              <Star />
+              <Star className={styles.leftIcon} />
               <span className={styles.title}>Contribute</span>
             </span>
           </NavLink>
@@ -88,8 +98,11 @@ const NavDropdown: FC = () => {
             })}
           >
             <span className={styles.itemContents}>
-              <Heart />
+              <Heart className={styles.leftIcon} />
               <span className={styles.title}>Whispers</span>
+              <ExternalLinkIcon
+                className={classnames(styles.rightContent, styles.rightContentIcon)}
+              />
             </span>
           </ExternalLink>
         </div>

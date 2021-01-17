@@ -21,7 +21,7 @@
   }
 }
 
-.icon {
+.buttonIcon {
   width: $icon-size;
   height: $icon-size;
   margin: 0;
@@ -33,24 +33,32 @@
   right: 0;
   padding: 0.4rem;
 
-  svg {
-    margin-right: 0.4rem;
-    vertical-align: middle;
-    width: $icon-size;
-    height: $icon-size;
+  .item {
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+
+    .itemContents {
+      display: flex;
+      align-items: center;
+
+      .leftIcon {
+        margin-right: 0.4rem;
+        width: $icon-size;
+        height: $icon-size;
+      }
+
+      .rightContent {
+        margin-left: auto;
+
+        &.rightContentIcon {
+          width: $icon-size * 0.75;
+          height: $icon-size * 0.75;
+        }
+      }
+    }
   }
 
   @include media-breakpoint-up(md) {
     font-size: $font-size-sm;
   }
-}
-
-.item {
-  padding: 0.375rem 0.75rem;
-  border-radius: 0.25rem;
-}
-
-.itemContents {
-  display: flex;
-  align-items: center;
 }
