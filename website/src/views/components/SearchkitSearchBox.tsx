@@ -8,6 +8,7 @@ import classnames from 'classnames';
 
 import elements from 'views/elements';
 import SearchBox from 'views/components/SearchBox';
+import styles from './SearchkitSearchBox.scss';
 
 // The default URL query string key used for the search term
 const DEFAULT_SEARCH_QUERY_KEY = 'q';
@@ -99,7 +100,7 @@ export default class SearchkitSearchBox extends SearchkitComponent<Props, State>
     if (!this.queryAccessor()) return null;
     return (
       <SearchBox
-        className={classnames(elements.moduleFinderSearchBox, 'search-panel')}
+        className={classnames(styles.searchBox, elements.moduleFinderSearchBox)}
         throttle={this.props.throttle}
         useInstantSearch
         isLoading={this.isLoading()}
