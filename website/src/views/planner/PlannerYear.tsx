@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { flatMap, size, sortBy, toPairs, values } from 'lodash';
 
 import { ModuleCode, ModuleType, Semester } from 'types/modules';
-import { AddModuleData, PlannerModuleInfo, PlannerModuleSemester } from 'types/planner';
+import { AddModuleData, PlannerModuleInfo } from 'types/planner';
 import config from 'config';
 import { getSemesterName, getTotalMC, isSemester } from 'utils/planner';
 import { Minus, Plus } from 'react-feather';
@@ -66,7 +66,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
     // Only show the toggle if special terms are currently empty
     const showSpecialSemToggle = !this.hasSpecialTermModules();
 
-    const yearLongModules = semesters['yearLong'];
+    const yearLongModules = semesters.yearLong;
 
     let sortedSemesters = sortBy(toPairs(semesters), ([semester]) => semester);
     sortedSemesters = sortedSemesters.filter(([semester]) => isSemester(semester));
@@ -83,7 +83,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
       >
         {this.renderHeader()}
         <div
-          key={'yearLong'}
+          key="yearLong"
           className={classnames({
             [styles.hideSemester]:
               yearLongModules.length === 0 && this.props.draggedModuleType !== 'YEAR_LONG',
@@ -96,7 +96,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
           <h3 className={styles.semesterHeader}>{getSemesterName('yearLong')}</h3>
           <PlannerSemester
             year={year}
-            semester={'yearLong'}
+            semester="yearLong"
             modules={yearLongModules}
             className={styles.semesterYearLong}
             addModule={this.props.addModule}

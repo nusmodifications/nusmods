@@ -162,7 +162,11 @@ const PlannerModule = memo<Props>((props) => {
           filter={placeholder.filter}
           defaultValue={moduleCode}
           className={styles.placeholderInput}
-          semester={plannerSemester && isSemester(plannerSemester) ? plannerSemester as Semester : undefined}
+          semester={
+            plannerSemester && isSemester(plannerSemester)
+              ? (plannerSemester as Semester)
+              : undefined
+          }
         />
       </form>
     );

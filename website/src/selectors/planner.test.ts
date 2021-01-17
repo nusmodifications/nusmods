@@ -45,7 +45,6 @@ describe(getAcadYearModules, () => {
 
   test('should add semesters for empty years', () => {
     const emptyYear = {
-      [0]: [],
       [1]: [],
       [2]: [],
       [3]: [],

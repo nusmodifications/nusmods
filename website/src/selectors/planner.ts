@@ -13,10 +13,16 @@ import {
   checkPrerequisite,
   EXEMPTION_YEAR,
   IBLOCS_SEMESTER,
+  isSemester,
   PLAN_TO_TAKE_YEAR,
 } from 'utils/planner';
 import { findExamClashes } from 'utils/timetables';
-import { Conflict, PlannerModuleInfo, PlannerModulesWithInfo, PlannerModuleSemester } from 'types/planner';
+import {
+  Conflict,
+  PlannerModuleInfo,
+  PlannerModulesWithInfo,
+  PlannerModuleSemester,
+} from 'types/planner';
 import placeholders from 'utils/placeholders';
 import { notNull } from 'types/utils';
 import { State } from 'types/state';
@@ -75,7 +81,7 @@ const noInfoConflict = (moduleCodeMap: ModuleCodeMap, customData: CustomModuleDa
 const semesterConflict = (moduleCodeMap: ModuleCodeMap, semester: PlannerModuleSemester) => (
   moduleCode: ModuleCode,
 ): Conflict | null => {
-  if (isNaN(Number(semester))) return null;
+  if (!isSemester(semester)) return null;
   const moduleCondensed = moduleCodeMap[moduleCode];
   if (!moduleCondensed) return null;
   if (!moduleCondensed.semesters.includes(semester as Semester)) {
@@ -199,22 +205,37 @@ export function getAcadYearModules(state: State): PlannerModulesWithInfo {
 
   // Same type as PlannerModulesWithInfo, but writable so we can build it here
   const modules: { [year: string]: { [semester: string]: PlannerModuleInfo[] } } = {};
+
+  // Year-long semester is put at the front to prevent semester 1, 2 modules from fulfilling
+  // a year-long module's prerequisites. Checks are implemented in planner to prevent year-
+  // long modules from counting to semester 1, 2 modules' prerequisites.
+  const plannerSemesters: PlannerModuleSemester[] = ['yearLong', ...Semesters];
   years.forEach((year) => {
     modules[year] = {};
 
-    Semesters.forEach((semester) => {
+    let yearLongModuleTimes: PlannerTime[];
+
+    plannerSemesters.forEach((semester) => {
       const moduleTimes = filterModuleForSemester(planner.modules, year, semester);
 
+      if (semester === 'yearLong') {
+        yearLongModuleTimes = filterModuleForSemester(planner.modules, year, 'yearLong');
+      }
+
       // Only check for exam clashes for modules in the current year
+
+      // Do not calculate clashes for year-long modules, as this will
+      // be calculated by semester 1, 2 modules later in the for loop
+      // anyway
       let clashes = {};
-      if (year === config.academicYear) {
+      if (year === config.academicYear && isSemester(semester)) {
         const semesterModules = moduleTimes
           .map((moduleTime) => moduleTime.moduleCode)
           .filter(notNull)
           .map((moduleCode) => moduleBank.modules[moduleCode])
           .filter(notNull);
 
-        clashes = findExamClashes(semesterModules, semester);
+        clashes = findExamClashes(semesterModules, semester as Semester);
       }
 
       const conflictChecks = [
@@ -229,10 +250,22 @@ export function getAcadYearModules(state: State): PlannerModulesWithInfo {
       );
 
       // Add taken modules to set of modules taken for prerequisite calculation
-      moduleTimes.forEach((moduleTime) => {
-        if (!moduleTime.moduleCode) return;
-        getPrereqModuleCode(moduleTime.moduleCode).forEach((prereq) => modulesTaken.add(prereq));
-      });
+      // Do not add year-long semester. It will be added later below, when semester 2 modules
+      // are added
+      if (semester !== 'yearLong') {
+        moduleTimes.forEach((moduleTime) => {
+          if (!moduleTime.moduleCode) return;
+          getPrereqModuleCode(moduleTime.moduleCode).forEach((prereq) => modulesTaken.add(prereq));
+        });
+      }
+
+      // If the semester is 2, then add the year-long modules as well to the list of fulfilled prerequisites
+      if (semester === 2) {
+        yearLongModuleTimes.forEach((moduleTime) => {
+          if (!moduleTime.moduleCode) return;
+          getPrereqModuleCode(moduleTime.moduleCode).forEach((prereq) => modulesTaken.add(prereq));
+        });
+      }
     });
   });
 

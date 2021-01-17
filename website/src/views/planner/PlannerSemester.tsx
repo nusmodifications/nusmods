@@ -13,11 +13,11 @@ import {
   getSemesterName,
   getTotalMC,
   isYearLong,
+  getPlannerSemesterModuleType as getDroppableType,
 } from 'utils/planner';
 import PlannerModule from './PlannerModule';
 import AddModule from './AddModule';
 import styles from './PlannerSemester.scss';
-import { getPlannerSemesterModuleType as getDroppableType } from '../../utils/planner';
 
 type Props = Readonly<{
   year: string;
@@ -76,8 +76,14 @@ const PlannerSemester: React.FC<Props> = ({
         moduleCode={moduleCode}
         placeholder={placeholder}
         moduleTitle={getModuleTitle(plannerModule)}
-        examDate={showExamDate && moduleInfo ?
-          moduleInfo.semesterData.map(({semester}) => getExamDate(moduleInfo, semester)).filter(Boolean).join('\n') : null}
+        examDate={
+          showExamDate && moduleInfo
+            ? moduleInfo.semesterData
+                .map((semesterData) => getExamDate(moduleInfo, semesterData.semester))
+                .filter(Boolean)
+                .join('\n')
+            : null
+        }
         moduleCredit={showModuleMeta ? getModuleCredit(plannerModule) : null}
         conflict={conflict}
         semester={semester}

@@ -9,9 +9,14 @@ import {
 } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 
-import { Module, ModuleCode, ModuleType, Semester } from 'types/modules';
-import { PlannerModulesWithInfo, PlannerModuleInfo, PlannerModuleSemester, AddModuleData } from 'types/planner';
-import { MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
+import { Module, ModuleCode, ModuleType } from 'types/modules';
+import {
+  PlannerModulesWithInfo,
+  PlannerModuleInfo,
+  PlannerModuleSemester,
+  AddModuleData,
+} from 'types/planner';
+import { renderMCs, subtractAcadYear } from 'utils/modules';
 import {
   EXEMPTION_YEAR,
   fromDraggableId,
@@ -239,7 +244,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
               <h2 className={styles.modListHeaders}>Exemptions</h2>
               <PlannerSemester
                 year={EXEMPTION_YEAR}
-                semester={'exemption'}
+                semester="exemption"
                 modules={exemptions}
                 showModuleMeta={false}
                 {...commonProps}
@@ -250,7 +255,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
               <h2 className={styles.modListHeaders}>Plan to Take</h2>
               <PlannerSemester
                 year={PLAN_TO_TAKE_YEAR}
-                semester={'planToTake'}
+                semester="planToTake"
                 modules={planToTake}
                 {...commonProps}
               />

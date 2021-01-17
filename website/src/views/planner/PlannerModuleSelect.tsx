@@ -11,8 +11,8 @@ import { createSearchPredicate } from 'utils/moduleSearch';
 import { takeUntil } from 'utils/array';
 import { isSemester } from 'utils/planner';
 
-import styles from './PlannerModuleSelect.scss';
 import { MODULE_CODE_REGEX } from 'utils/modules';
+import styles from './PlannerModuleSelect.scss';
 
 type Props = Readonly<{
   // Input props
@@ -80,7 +80,9 @@ export function PlannerModuleSelectComponent({
     }
 
     if (semester && isSemester(semester)) {
-      selectedModules = selectedModules.filter((module) => module.semesters.includes(semester as Semester));
+      selectedModules = selectedModules.filter((module) =>
+        module.semesters.includes(semester as Semester),
+      );
     }
 
     return selectedModules;
@@ -130,9 +132,8 @@ export function PlannerModuleSelectComponent({
 
                       if (moduleCodes) {
                         moduleCodes.forEach((moduleCode) => {
-                          const module = modules.find((module) => module.moduleCode === moduleCode);
-                          if (module)
-                            onSelect(module);
+                          const module = modules.find((m) => m.moduleCode === moduleCode);
+                          if (module) onSelect(module);
                         });
                       }
                     }

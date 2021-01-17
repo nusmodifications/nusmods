@@ -28,14 +28,16 @@ export function getSemesterName(semester: PlannerModuleSemester) {
   return config.semesterNames[semester];
 }
 
-export function getPlannerSemesterModuleType(semester: PlannerModuleSemester): PlannerSemesterModuleType {
+export function getPlannerSemesterModuleType(
+  semester: PlannerModuleSemester,
+): PlannerSemesterModuleType {
   if (semester === 'yearLong') {
     return 'YEAR_LONG';
-  } else if (semester === 'planToTake' || semester === 'exemption') {
-    return 'ALL';
-  } else {
-    return 'SEMESTER_LONG';
   }
+  if (semester === 'planToTake' || semester === 'exemption') {
+    return 'ALL';
+  }
+  return 'SEMESTER_LONG';
 }
 
 /**
@@ -95,11 +97,13 @@ export function getDroppableId(year: string, semester: PlannerModuleSemester): s
  * Extract the acad year and semester from the Droppable ID. The reverse of
  * getDroppableId.
  */
-export function fromDroppableId(id: string): {acadYear: string, semester: PlannerModuleSemester} {
+export function fromDroppableId(id: string): { acadYear: string; semester: PlannerModuleSemester } {
   const [acadYear, semesterString] = id.split('|');
   return {
-    acadYear: acadYear,
-    semester: (isNaN(Number(semesterString)) ? semesterString : Number(semesterString)) as PlannerModuleSemester,
+    acadYear,
+    semester: (!isSemester(semesterString)
+      ? semesterString
+      : Number(semesterString)) as PlannerModuleSemester,
   };
 }
 
@@ -114,9 +118,9 @@ export function getDraggableId(moduleCode: ModuleCode, moduleType: ModuleType): 
  * Extract the module code and type from the Draggable ID. The reverse of
  * getDraggableId.
  */
-export function fromDraggableId(id: string): { moduleCode: ModuleCode, moduleType: ModuleType } {
+export function fromDraggableId(id: string): { moduleCode: ModuleCode; moduleType: ModuleType } {
   const [moduleCode, moduleType] = id.split('|');
-  return { moduleCode: moduleCode, moduleType: moduleType as ModuleType };
+  return { moduleCode, moduleType: moduleType as ModuleType };
 }
 
 // Create shortened AY labels - eg. 2019/2020 -> 19/20
@@ -171,7 +175,7 @@ export function isYearLong(module: Pick<PlannerModuleInfo, 'moduleInfo' | 'custo
   return module.moduleInfo ? Boolean(module.moduleInfo.attributes?.year) : false;
 }
 
-export function isSemester(plannerSemester: PlannerModuleSemester | string) { 
+export function isSemester(plannerSemester: PlannerModuleSemester | string) {
   // If plannerSemester is a number, it is a Semester
-  return !isNaN(Number(plannerSemester));
+  return !Number.isNaN(Number(plannerSemester));
 }
