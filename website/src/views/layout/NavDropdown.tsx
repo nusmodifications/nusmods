@@ -57,8 +57,8 @@ const NavDropdown: FC = () => {
                   <span className={classnames('badge badge-info', styles.rightContent)}>Beta</span>
                 </span>
               </NavLink>
-              <div className={classnames(styles.hiddenOnMobile, 'dropdown-divider')} />
             </div>
+            <div className={classnames(styles.hiddenOnMobile, 'dropdown-divider')} />
           </>
         )}
         <div {...getItemProps({ item: undefined, index: counter.count + 1 })}>
