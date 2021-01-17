@@ -1,78 +1,101 @@
 import classnames from 'classnames';
-import Downshift, { ChildrenFunction } from 'downshift';
-import React, { FC, useCallback } from 'react';
-import { ChevronDown, Heart, Settings, Star } from 'react-feather';
+import { useCombobox } from 'downshift';
+import type { FC } from 'react';
+import { ChevronDown, Heart, Settings, Star, Trello } from 'react-feather';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 import ExternalLink from 'views/components/ExternalLink';
 import { preload as preloadContribute } from 'views/contribute/ContributeContainer';
+import type { State } from 'types/state';
 import { Counter } from 'utils/react';
 
 import styles from './NavDropdown.scss';
-import navtabsStyles from './Navtabs.scss';
-
-const tabProps = {
-  className: classnames(navtabsStyles.link, 'dropdown-item'),
-  activeClassName: navtabsStyles.linkActive,
-};
 
 const NavDropdown: FC = () => {
-  const renderDropdown = useCallback<ChildrenFunction<never>>(
-    ({ isOpen, getItemProps, getMenuProps, toggleMenu, highlightedIndex }) => {
-      const counter = new Counter();
+  const beta = useSelector(({ settings }: State) => settings.beta);
 
-      return (
-        <div className={styles.navDropdown}>
-          <button
-            className={classnames(styles.toggle, 'btn btn-svg')}
-            type="button"
-            onClick={() => toggleMenu()}
-          >
-            <ChevronDown className={classnames(styles.icon)} />
-          </button>
-
-          <div
-            className={classnames('dropdown-menu', styles.dropdownMenu, { show: isOpen })}
-            {...getMenuProps()}
-          >
-            <NavLink
-              className={classnames('dropdown-item', {
-                'dropdown-selected': counter.matches(highlightedIndex),
-              })}
-              to="/settings"
-            >
-              <Settings />
-              <span className={styles.title}>Settings</span>
-            </NavLink>
-            <NavLink
-              className={classnames('dropdown-item', {
-                'dropdown-selected': counter.matches(highlightedIndex),
-              })}
-              onMouseOver={preloadContribute}
-              onFocus={preloadContribute}
-              to="/contribute"
-            >
-              <Star />
-              <span className={styles.title}>Contribute</span>
-            </NavLink>
-            <div className="dropdown-divider" />
-            <ExternalLink
-              href="https://nuswhispers.com"
-              className={classnames('dropdown-item', {
-                'dropdown-selected': counter.matches(highlightedIndex),
-              })}
-            >
-              <Heart />
-              <span className={styles.title}>Whispers</span>
-            </ExternalLink>
-          </div>
-        </div>
-      );
-    },
-    [],
+  const { isOpen, getItemProps, getMenuProps, toggleMenu, highlightedIndex } = useCombobox<unknown>(
+    { items: [] },
   );
 
-  return <Downshift>{renderDropdown}</Downshift>;
+  const counter = new Counter();
+
+  return (
+    <div className={styles.navDropdown}>
+      <button
+        className={classnames(styles.toggle, 'btn btn-svg')}
+        type="button"
+        onClick={() => toggleMenu()}
+      >
+        <ChevronDown className={classnames(styles.icon)} />
+      </button>
+
+      <div
+        className={classnames('dropdown-menu', styles.dropdownMenu, { show: isOpen })}
+        {...getMenuProps()}
+      >
+        {beta && (
+          <>
+            <div {...getItemProps({ item: undefined, index: counter.count + 1 })}>
+              <NavLink
+                className={classnames(styles.item, styles.hiddenOnMobile, 'dropdown-item', {
+                  'dropdown-selected': counter.matches(highlightedIndex),
+                })}
+                to="/planner"
+              >
+                <Trello />
+                <span className={styles.title}>Planner</span>
+              </NavLink>
+              <div className={classnames(styles.hiddenOnMobile, 'dropdown-divider')} />
+            </div>
+          </>
+        )}
+        <div {...getItemProps({ item: undefined, index: counter.count + 1 })}>
+          <NavLink
+            className={classnames(styles.item, 'dropdown-item', {
+              'dropdown-selected': counter.matches(highlightedIndex),
+            })}
+            to="/settings"
+          >
+            <span className={styles.itemContents}>
+              <Settings />
+              <span className={styles.title}>Settings</span>
+            </span>
+          </NavLink>
+        </div>
+        <div {...getItemProps({ item: undefined, index: counter.count + 1 })}>
+          <NavLink
+            className={classnames(styles.item, 'dropdown-item', {
+              'dropdown-selected': counter.matches(highlightedIndex),
+            })}
+            onMouseOver={preloadContribute}
+            onFocus={preloadContribute}
+            to="/contribute"
+          >
+            <span className={styles.itemContents}>
+              <Star />
+              <span className={styles.title}>Contribute</span>
+            </span>
+          </NavLink>
+        </div>
+        <div className="dropdown-divider" />
+        <div {...getItemProps({ item: undefined, index: counter.count + 1 })}>
+          <ExternalLink
+            href="https://nuswhispers.com"
+            className={classnames(styles.item, 'dropdown-item', {
+              'dropdown-selected': counter.matches(highlightedIndex),
+            })}
+          >
+            <span className={styles.itemContents}>
+              <Heart />
+              <span className={styles.title}>Whispers</span>
+            </span>
+          </ExternalLink>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default NavDropdown;

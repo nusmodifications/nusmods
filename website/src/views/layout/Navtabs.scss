@@ -1,4 +1,5 @@
 @import '~styles/utils/modules-entry.scss';
+@import './nav-constants';
 
 $divider-margin: 0.3rem;
 
@@ -23,7 +24,7 @@ $divider-margin: 0.3rem;
   align-items: center;
   flex-grow: 1;
   color: var(--gray-light);
-  min-width: 4rem;
+  width: 4rem;
   margin: 0 0.2rem;
   border-top: 0.2rem solid transparent;
   border-bottom: 0.2rem solid transparent;
@@ -44,8 +45,8 @@ $divider-margin: 0.3rem;
 
   svg {
     margin-bottom: 0.1rem;
+    flex: 0 0 auto;
 
-    $icon-size: $font-size-lg; // TODO: Dedupe with GlobalSearch.scss $icon-size
     width: $icon-size;
     height: $icon-size;
   }
@@ -71,40 +72,14 @@ $divider-margin: 0.3rem;
   }
 }
 
-// TODO: To be resurrected in dropdown
-// .divider {
-//   $size: 70%;
-
-//   composes: hiddenOnMobile;
-//   opacity: 0.6;
-//   flex: 0 0 1px;
-//   margin: $divider-margin ((100% - $size) / 2) 0;
-//   background: var(--gray-lighter);
-// }
-
 @include media-breakpoint-down(sm) {
   .link {
     min-width: unset;
   }
 }
 
-@include media-breakpoint-up(lg) {
-  // .link {
-  //   min-width: 8em;
-  // }
-
-  // .title {
-  //   display: block;
-  // }
-
-  // .divider {
-  //   margin: $divider-margin 1rem $divider-margin 1.4rem;
-  // }
-}
-
 @include media-breakpoint-up(xl) {
   .link {
-    // min-width: 10em;
     min-width: 7em;
   }
 

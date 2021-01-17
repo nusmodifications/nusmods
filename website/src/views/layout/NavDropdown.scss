@@ -31,17 +31,26 @@
   width: 16rem;
   left: auto;
   right: 0;
+  padding: 0.4rem;
 
   svg {
-    margin-right: 0.2rem;
+    margin-right: 0.4rem;
     vertical-align: middle;
-  }
-
-  @include media-breakpoint-down(xs) {
-    width: auto;
+    width: $icon-size;
+    height: $icon-size;
   }
 
   @include media-breakpoint-up(md) {
     font-size: $font-size-sm;
   }
+}
+
+.item {
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.25rem;
+}
+
+.itemContents {
+  display: flex;
+  align-items: center;
 }
