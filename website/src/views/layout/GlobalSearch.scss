@@ -5,7 +5,6 @@
   composes: btn-svg from global;
   position: relative;
   font-size: 0.9rem;
-  background-color: var(--gray-lightest);
   border-radius: $corner-radius;
   margin: $container-vertical-margin $container-horizontal-margin;
 
@@ -13,30 +12,25 @@
   transition: all $desktop-exiting-duration $material-acceleration-curve;
 
   max-width: $results-width-open;
+
   @include media-breakpoint-up(xl) {
     max-width: $results-width-open-xl;
   }
 
-  border &:hover .icon {
-    color: theme-color();
+  &.containerOpen {
+    width: 100%;
+    transition: all $desktop-entering-duration $material-deceleration-curve;
   }
-}
 
-.containerOpen {
-  width: 100%;
-  transition: all $desktop-entering-duration $material-deceleration-curve;
+  &:hover:not(.containerOpen) {
+    background-color: var(--gray-lightest);
+  }
 }
 
 .icon {
   width: $icon-size;
   height: $icon-size;
   margin: 0 $icon-horizontal-padding;
-  transition: all $desktop-exiting-duration $material-acceleration-curve;
-
-  &.iconOpen {
-    color: theme-color();
-    transition: all $desktop-entering-duration $material-deceleration-curve;
-  }
 }
 
 .input {
@@ -45,6 +39,7 @@
   height: 100%;
   padding-right: 0;
   opacity: 0;
+  border-radius: $corner-radius;
 
   // Because .input is the "button" that opens the search, we extend input to
   // the left of icon so that it looks like the icon is clickable.
@@ -60,18 +55,21 @@
 
   transition: opacity $desktop-exiting-duration $material-acceleration-curve;
 
-  &:focus {
-    outline: none;
-    background: transparent;
-    box-shadow: none;
-  }
-}
+  &.inputOpen {
+    cursor: auto;
+    padding-right: ($corner-radius + $icon-horizontal-padding) / 2;
+    opacity: 1;
+    transition: none;
+    border: $input-border-width solid $input-border-color;
+    -webkit-appearance: none;
 
-.inputOpen {
-  cursor: auto;
-  padding-right: ($corner-radius + $icon-horizontal-padding) / 2;
-  opacity: 1;
-  transition: none;
+    &:focus {
+      outline: 0;
+      color: $input-focus-color;
+      border-color: $input-focus-border-color;
+      box-shadow: $input-focus-box-shadow;
+    }
+  }
 }
 
 .selectListContainer {

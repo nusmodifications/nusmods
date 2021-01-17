@@ -10,14 +10,14 @@
 .toggle {
   position: relative;
   font-size: 0.9rem;
-  background-color: var(--gray-lightest);
   border-radius: $corner-radius;
   padding: 0;
 
   width: $container-height;
 
-  border &:hover .icon {
-    color: theme-color();
+  &:hover,
+  &:focus {
+    background-color: var(--gray-lightest);
   }
 }
 
