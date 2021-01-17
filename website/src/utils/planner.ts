@@ -171,7 +171,7 @@ export function isYearLong(module: Pick<PlannerModuleInfo, 'moduleInfo' | 'custo
   return module.moduleInfo ? Boolean(module.moduleInfo.attributes?.year) : false;
 }
 
-export function isSemester(plannerSemester: PlannerModuleSemester | string) { 
+export function isSemester(plannerSemester: PlannerModuleSemester): plannerSemester is Semester { 
   // If plannerSemester is a number, it is a Semester
   return !isNaN(Number(plannerSemester));
 }
