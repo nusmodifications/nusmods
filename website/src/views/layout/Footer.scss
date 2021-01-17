@@ -2,6 +2,7 @@
 
 .footer {
   composes: text-muted from global;
+  padding: 4rem 0 4rem 0; // For Microsoft Edge 18
   padding: 4rem env(safe-area-inset-right) calc(env(safe-area-inset-bottom) + 4rem)
     env(safe-area-inset-left);
   margin-top: 4rem;

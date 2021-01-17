@@ -9,6 +9,7 @@ $logo-vert-padding: 0.875rem;
   position: sticky;
   top: 0;
   z-index: $navbar-z-index;
+  padding: 0; // For Microsoft Edge 18
   padding: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
   background: var(--body-bg);
   display: flex;

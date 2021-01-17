@@ -42,6 +42,7 @@ $venue-list-width-xxl: 32rem;
 
   .venuesList {
     width: $venue-list-width;
+    padding-bottom: 0; // For Microsoft Edge 18
     padding-bottom: env(safe-area-inset-bottom);
     border-right: 1px solid var(--gray-lighter);
 
@@ -49,8 +50,11 @@ $venue-list-width-xxl: 32rem;
   }
 
   .venueDetail {
+    right: 0; // For Microsoft Edge 18
     right: env(safe-area-inset-right);
+    left: calc(#{$venue-list-width} + #{$gutter}); // For Microsoft Edge 18
     left: calc(env(safe-area-inset-left) + #{$venue-list-width} + #{$gutter});
+    padding: 0 $gutter 0 $gutter; // For Microsoft Edge 18
     padding: 0 $gutter env(safe-area-inset-bottom) $gutter;
   }
 }

@@ -29,6 +29,7 @@ a {
 
 .main-container {
   flex: 1 auto;
+  padding: 0; // For Microsoft Edge 18
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
     env(safe-area-inset-left);
 
