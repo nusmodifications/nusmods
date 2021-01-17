@@ -78,7 +78,7 @@ $divider-margin: 0.3rem;
   }
 }
 
-@include media-breakpoint-up(xl) {
+@include media-breakpoint-up(lg) {
   .link {
     min-width: 7em;
   }
