@@ -66,12 +66,6 @@ $divider-margin: 0.3rem;
   // text-transform: uppercase;
 }
 
-.hiddenOnMobile {
-  @include media-breakpoint-down(sm) {
-    display: none;
-  }
-}
-
 @include media-breakpoint-down(sm) {
   .link {
     min-width: unset;
