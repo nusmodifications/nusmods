@@ -62,17 +62,44 @@
         &.rightContentIcon {
           width: $icon-size * 0.75;
           height: $icon-size * 0.75;
+          color: var(--gray-light);
         }
       }
     }
 
     &:hover {
       color: var(--body-color);
+
+      .itemContents {
+        .rightContent {
+          &.rightContentIcon {
+            color: unset;
+          }
+        }
+      }
+    }
+
+    &:focus {
+      .itemContents {
+        .rightContent {
+          &.rightContentIcon {
+            color: unset;
+          }
+        }
+      }
     }
 
     &:active {
       color: $dropdown-link-active-color;
       background-color: theme-color(primary);
+
+      .itemContents {
+        .rightContent {
+          &.rightContentIcon {
+            color: unset;
+          }
+        }
+      }
     }
   }
 

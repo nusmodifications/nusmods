@@ -3,6 +3,7 @@ import Downshift, { ChildrenFunction } from 'downshift';
 import type { FC } from 'react';
 import {
   ChevronDown,
+  Droplet,
   ExternalLink as ExternalLinkIcon,
   Heart,
   Settings,
@@ -75,10 +76,19 @@ const NavDropdown: FC = () => {
             </span>
           </NavLink>
           <div className="dropdown-divider" />
+          <ExternalLink {...itemProps} href="https://nusbusiness.com">
+            <span className={styles.itemContents}>
+              <Droplet className={styles.leftIcon} />
+              <span className={styles.title}>NUS Business</span>
+              <ExternalLinkIcon
+                className={classnames(styles.rightContent, styles.rightContentIcon)}
+              />
+            </span>
+          </ExternalLink>
           <ExternalLink {...itemProps} href="https://nuswhispers.com">
             <span className={styles.itemContents}>
               <Heart className={styles.leftIcon} />
-              <span className={styles.title}>Whispers</span>
+              <span className={styles.title}>NUSWhispers</span>
               <ExternalLinkIcon
                 className={classnames(styles.rightContent, styles.rightContentIcon)}
               />
