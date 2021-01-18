@@ -2,10 +2,10 @@ import classnames from 'classnames';
 import Downshift, { ChildrenFunction } from 'downshift';
 import type { FC } from 'react';
 import {
-  ChevronDown,
   Droplet,
   ExternalLink as ExternalLinkIcon,
   Heart,
+  Menu,
   Settings,
   Star,
   Trello,
@@ -39,7 +39,7 @@ const NavDropdown: FC = () => {
           type="button"
           onClick={() => toggleMenu()}
         >
-          <ChevronDown className={classnames(styles.buttonIcon)} />
+          <Menu className={classnames(styles.buttonIcon)} />
         </button>
 
         <div
