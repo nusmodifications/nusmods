@@ -1,29 +1,29 @@
 @import '~styles/utils/modules-entry';
 
 .pageContainer {
-    composes: page-container from global;
-    height: 100%;
-  
-    :global {
-      animation-name: $page-entering-animation;
-    }
-  }
+  composes: page-container from global;
+  height: 100%;
 
-.header{
-    padding: 0 0 1rem;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid var(--gray-lighter);
-    h2{
-        margin-bottom: 0.5rem;
-        font-weight: bold;
-    }
-    h4{
-        margin-bottom: 0.5rem;
-        font-weight: bold;
-    }
+  :global {
+    animation-name: $page-entering-animation;
+  }
 }
 
-.subtitle{
-    padding-top: 1rem;
+.header {
+  padding: 0 0 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--gray-lighter);
+  h2 {
+    margin-bottom: 0.5rem;
     font-weight: bold;
+  }
+  h4 {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+  }
+}
+
+.subtitle {
+  padding-top: 1rem;
+  font-weight: bold;
 }
