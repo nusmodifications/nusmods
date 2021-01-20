@@ -14,11 +14,13 @@ const MpeContainer: React.FC<Props> = () => (
       <h4 className={styles.subtitle}>Overview</h4>
 
       <p>
-        The Module Preference Exercise (MPE) is a project initiated by NUS to better understand students’ demand for specific modules. 
-        Students who have completed this exercise <strong>will receive tie-breaker benefit</strong> during the ModReg period.
+        The Module Preference Exercise (MPE) is a project initiated by NUS to better understand
+        students’ demand for specific modules. Students who have completed this exercise{' '}
+        <strong>will receive tie-breaker benefit</strong> during the ModReg period.
       </p>
       <p>
-        Do take note that this is only a planning exercise; <strong>it does not enroll you in the modules.</strong>
+        Do take note that this is only a planning exercise;{' '}
+        <strong>it does not enroll you in the modules.</strong>
       </p>
     </div>
   </div>
