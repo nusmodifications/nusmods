@@ -1,4 +1,4 @@
-import mpe from '../../libs/mpe'
+import mpe from '../lib/mpe'
 
 const allowedMethods = {
   GET: 'GET',
