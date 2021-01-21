@@ -1,5 +1,5 @@
 /* eslint-disable arrow-body-style */
-import { FC, useCallback, useState } from 'react';
+import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import ErrorBoundary from 'views/errors/ErrorBoundary';
@@ -12,26 +12,19 @@ import Navtabs from './Navtabs';
 import NavDropdown from './NavDropdown';
 
 const Navbar: FC = () => {
-  // FIXME: If search is open, if we narrow the viewport such that global seacrh
-  // is disabled, isSearchOpen is stuck in `true`.
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const handleSearchOpen = useCallback(() => setIsSearchOpen(true), []);
-  const handleSearchClose = useCallback(() => setIsSearchOpen(false), []);
   return (
     <header className={styles.navbarWrapper}>
       <div className={styles.navLeft}>
-        <NavLogo />
+        <NavLink to="/" title="Home">
+          <Logo className={styles.brandLogo} title="NUSMods" />
+        </NavLink>
       </div>
       <div className={styles.navCenter}>
         <Navtabs />
       </div>
       <div className={styles.navRight}>
         <ErrorBoundary>
-          <GlobalSearchContainer
-            isOpen={isSearchOpen}
-            open={handleSearchOpen}
-            close={handleSearchClose}
-          />
+          <GlobalSearchContainer />
         </ErrorBoundary>
         <NavDropdown />
       </div>
@@ -40,11 +33,3 @@ const Navbar: FC = () => {
 };
 
 export default Navbar;
-
-const NavLogo: FC = () => {
-  return (
-    <NavLink to="/" title="Home">
-      <Logo className={styles.brandLogo} title="NUSMods" />
-    </NavLink>
-  );
-};

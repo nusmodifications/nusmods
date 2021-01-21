@@ -5,26 +5,9 @@
   composes: btn-svg from global;
   position: relative;
   font-size: 0.9rem;
-  border-radius: $corner-radius;
   margin: $container-vertical-margin $container-horizontal-margin;
-
-  width: $container-height;
-  transition: all $desktop-exiting-duration $material-acceleration-curve;
-
+  width: 100%;
   max-width: $results-width-open;
-
-  @include media-breakpoint-up(xl) {
-    max-width: $results-width-open-xl;
-  }
-
-  &.containerOpen {
-    width: 100%;
-    transition: all $desktop-entering-duration $material-deceleration-curve;
-  }
-
-  &:hover:not(.containerOpen) {
-    background-color: var(--gray-lightest);
-  }
 }
 
 .icon {
@@ -35,41 +18,17 @@
 }
 
 .input {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  padding-right: 0;
-  opacity: 0;
+  font-size: $font-size-s;
+  background: transparent;
   border-radius: $corner-radius;
 
-  // Because .input is the "button" that opens the search, we extend input to
-  // the left of icon so that it looks like the icon is clickable.
+  // Extend input to the left of icon so that the icon is clickable.
   $overhang: $icon-size + $icon-horizontal-padding * 2;
   padding-left: $overhang;
   margin-left: -$overhang;
 
-  border: 0;
-  font-size: $font-size-s;
-  color: var(--body-color);
-  background: transparent;
-  cursor: pointer;
-
-  transition: opacity $desktop-exiting-duration $material-acceleration-curve;
-
-  &.inputOpen {
-    cursor: auto;
-    padding-right: ($corner-radius + $icon-horizontal-padding) / 2;
-    opacity: 1;
-    transition: none;
-    border: $input-border-width solid $input-border-color;
-    -webkit-appearance: none;
-
-    &:focus {
-      outline: 0;
-      color: $input-focus-color;
-      border-color: $input-focus-border-color;
-      box-shadow: $input-focus-box-shadow;
-    }
+  &:focus {
+    background: transparent;
   }
 }
 
@@ -83,11 +42,7 @@
   border-radius: 0 0 $btn-border-radius $btn-border-radius;
   color: var(--body-color);
   background: var(--body-bg);
-
   width: $results-width-open;
-  @include media-breakpoint-up(xl) {
-    width: $results-width-open-xl;
-  }
 }
 
 .selectList {
@@ -131,7 +86,6 @@
 .svg {
   width: 1.1rem;
   height: 1.1rem;
-  transition: $entering-duration transform $material-standard-curve;
 }
 
 .option {

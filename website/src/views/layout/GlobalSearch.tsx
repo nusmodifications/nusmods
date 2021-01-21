@@ -21,14 +21,11 @@ import SemesterBadge from 'views/components/SemesterBadge';
 import styles from './GlobalSearch.scss';
 
 export type Props = {
-  isOpen: boolean;
   getResults: (string: string | null) => SearchResult | null;
 
   onSelectVenue: (venue: Venue) => void;
   onSelectModule: (moduleCondensed: ModuleCondensed) => void;
   onSearch: (resultType: ResultType, str: string) => void;
-  open: () => void;
-  close: () => void;
 };
 
 type State = {
@@ -45,7 +42,6 @@ class GlobalSearch extends Component<Props, State> {
   };
 
   handleClose = () => {
-    this.props.close();
     this.setState({ inputValue: '' });
 
     if (this.input) this.input.blur();
@@ -54,7 +50,6 @@ class GlobalSearch extends Component<Props, State> {
   handleOuterClick = () => {
     // Preserve input value (if present) after user clicks outside.
     if (this.state.inputValue) {
-      this.props.open();
       this.setState({
         // Cannot use prevState as prevState.inputValue will be empty string
         // instead of the (non-empty) this.state.inputValue.
@@ -110,7 +105,6 @@ class GlobalSearch extends Component<Props, State> {
     getInputProps,
     getItemProps,
     getMenuProps,
-    isOpen,
     inputValue,
     highlightedIndex,
   }) => {
@@ -127,9 +121,8 @@ class GlobalSearch extends Component<Props, State> {
             this.input = r;
             ComponentMap.globalSearchInput = r;
           }}
-          className={classnames(styles.input, { [styles.inputOpen]: isOpen })}
+          className={classnames('form-control', styles.input)}
           {...getInputProps({ placeholder: PLACEHOLDER })}
-          onFocus={this.props.open}
         />
       </Fragment>
     );
@@ -139,11 +132,7 @@ class GlobalSearch extends Component<Props, State> {
 
     // 1. Search is not active - just show the search form
     if (!searchResults || !inputValue || !hasFocus) {
-      return (
-        <div className={classnames(styles.container, { [styles.containerOpen]: isOpen })}>
-          {searchForm}
-        </div>
-      );
+      return <div className={styles.container}>{searchForm}</div>;
     }
 
     const { modules, venues, tokens } = searchResults;
@@ -154,7 +143,7 @@ class GlobalSearch extends Component<Props, State> {
     //    results instead
     if (!hasModules && !hasVenues) {
       return (
-        <div className={classnames(styles.container, { [styles.containerOpen]: isOpen })}>
+        <div className={styles.container}>
           {searchForm}
 
           <div className={styles.selectListContainer}>
@@ -207,7 +196,7 @@ class GlobalSearch extends Component<Props, State> {
 
     // 3. We have results - so show them to the user
     return (
-      <div className={classnames(styles.container, { [styles.containerOpen]: isOpen })}>
+      <div className={styles.container}>
         {searchForm}
 
         {/* Wrap select list in absolute-positioned container to fix macOS Safari scrolling perf */}
@@ -286,11 +275,9 @@ class GlobalSearch extends Component<Props, State> {
 
   render() {
     const { inputValue } = this.state;
-    const { isOpen } = this.props;
 
     return (
       <Downshift
-        isOpen={isOpen}
         onOuterClick={this.handleOuterClick}
         onChange={this.handleChange}
         onInputValueChange={this.handleInputValueChange}

@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import useMediaQuery from 'views/hooks/useMediaQuery';
-import GlobalSearch, { Props as GlobalSearchProps } from 'views/layout/GlobalSearch';
+import GlobalSearch from 'views/layout/GlobalSearch';
 import { modulePage, venuePage } from 'views/routes/paths';
 
 import { ResultType, SearchResult, VENUE_RESULT } from 'types/views';
@@ -20,9 +20,7 @@ const RESULTS_LIMIT = 10;
 const LONG_LIST_LIMIT = 70;
 const MIN_INPUT_LENGTH = 2;
 
-type Props = Pick<GlobalSearchProps, 'isOpen' | 'open' | 'close'>;
-
-const GlobalSearchContainer: FC<Props> = ({ ...globalSearchPassthroughProps }) => {
+const GlobalSearchContainer: FC = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchVenueList());
@@ -104,7 +102,6 @@ const GlobalSearchContainer: FC<Props> = ({ ...globalSearchPassthroughProps }) =
       onSelectModule={onSelectModule}
       onSelectVenue={onSelectVenue}
       onSearch={onSearch}
-      {...globalSearchPassthroughProps}
     />
   );
 };
