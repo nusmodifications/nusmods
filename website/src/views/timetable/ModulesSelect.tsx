@@ -31,7 +31,7 @@ type Props = {
   onRemoveModule: (moduleCode: ModuleCode) => void;
 };
 
-export const ModulesSelectComponent: FC<Props> = ({
+const ModulesSelect: FC<Props> = ({
   moduleCount,
   placeholder,
   disabled,
@@ -232,4 +232,4 @@ export const ModulesSelectComponent: FC<Props> = ({
   );
 };
 
-export default ModulesSelectComponent;
+export default ModulesSelect;

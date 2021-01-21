@@ -2,7 +2,7 @@ import { mount, shallow } from 'enzyme';
 import { mockWindowMatchMedia, mockDomReset } from 'test-utils/mockDom';
 import Downshift from 'downshift';
 import Modal from 'views/components/Modal';
-import { ModulesSelectComponent } from './ModulesSelect';
+import ModulesSelect from './ModulesSelect';
 
 const modules = [
   {
@@ -31,7 +31,7 @@ const commonProps = {
   onRemoveModule: jest.fn(),
 };
 
-describe(ModulesSelectComponent, () => {
+describe(ModulesSelect, () => {
   beforeAll(() => {
     mockWindowMatchMedia({ matches: true });
   });
@@ -41,7 +41,7 @@ describe(ModulesSelectComponent, () => {
   });
 
   it('should show results on input value change', () => {
-    const wrapper = mount(<ModulesSelectComponent {...commonProps} />);
+    const wrapper = mount(<ModulesSelect {...commonProps} />);
     const input = wrapper.find('input');
     input.simulate('focus');
     expect(wrapper.find('li')).toHaveLength(0);
@@ -52,7 +52,7 @@ describe(ModulesSelectComponent, () => {
   });
 
   it('should indicate module is added', () => {
-    const wrapper = mount(<ModulesSelectComponent {...commonProps} />);
+    const wrapper = mount(<ModulesSelect {...commonProps} />);
     const input = wrapper.find('input');
     input.simulate('focus');
     input.simulate('change', { target: { value: 'T' } });
@@ -62,7 +62,7 @@ describe(ModulesSelectComponent, () => {
   });
 
   it('should call onChange when module is selected', () => {
-    const wrapper = mount(<ModulesSelectComponent {...commonProps} />);
+    const wrapper = mount(<ModulesSelect {...commonProps} />);
     const input = wrapper.find('input');
     input.simulate('focus');
     input.simulate('change', { target: { value: 'T' } });
@@ -79,12 +79,12 @@ describe(ModulesSelectComponent, () => {
     });
 
     it('should render modal', () => {
-      const wrapper = shallow(<ModulesSelectComponent {...commonProps} />);
+      const wrapper = shallow(<ModulesSelect {...commonProps} />);
       expect(wrapper.find(Modal).exists()).toBeTruthy();
     });
 
     it('should open modal and downshift when clicked', () => {
-      const wrapper = shallow(<ModulesSelectComponent {...commonProps} />);
+      const wrapper = shallow(<ModulesSelect {...commonProps} />);
       wrapper.find('button').simulate('click');
       const modal = wrapper.find(Modal);
       const downshift = wrapper.find(Downshift);
@@ -93,21 +93,21 @@ describe(ModulesSelectComponent, () => {
     });
 
     it('should not open modal when button is disabled', () => {
-      const wrapper = shallow(<ModulesSelectComponent {...commonProps} disabled />);
+      const wrapper = shallow(<ModulesSelect {...commonProps} disabled />);
       wrapper.find('button').simulate('click');
       const modal = wrapper.find(Modal).shallow();
       expect(modal.prop('isOpen')).toBe(false);
     });
 
     it('should show tip when it opens', () => {
-      const wrapper = shallow(<ModulesSelectComponent {...commonProps} />);
+      const wrapper = shallow(<ModulesSelect {...commonProps} />);
       wrapper.find('button').simulate('click');
       const downshift = wrapper.find(Downshift).shallow();
       expect(downshift.find('.tip')).toHaveLength(1);
     });
 
     it('should show tips when there are no results', () => {
-      const wrapper = shallow(<ModulesSelectComponent {...commonProps} />);
+      const wrapper = shallow(<ModulesSelect {...commonProps} />);
       wrapper.find('button').simulate('click');
       const input = wrapper.find(Downshift).shallow().find('input');
       input.simulate('focus');
@@ -123,13 +123,13 @@ describe(ModulesSelectComponent, () => {
     });
 
     it('should render not modal but downshift instead', () => {
-      const wrapper = shallow(<ModulesSelectComponent {...commonProps} />);
+      const wrapper = shallow(<ModulesSelect {...commonProps} />);
       expect(wrapper.find(Modal).exists()).toBeFalsy();
       expect(wrapper.find(Downshift).exists()).toBeTruthy();
     });
 
     it('should toggle menu depending on focus', () => {
-      const wrapper = shallow(<ModulesSelectComponent {...commonProps} />);
+      const wrapper = shallow(<ModulesSelect {...commonProps} />);
       const downshift = wrapper.find(Downshift).shallow();
       // TODO: Check if this is correct
       downshift.find('input').prop('onFocus')!({} as any);
@@ -139,14 +139,14 @@ describe(ModulesSelectComponent, () => {
     });
     it('should not toggle menu when disabled', () => {
       // shallow's simulate just calls onFocus
-      const wrapper = mount(<ModulesSelectComponent {...commonProps} disabled />);
+      const wrapper = mount(<ModulesSelect {...commonProps} disabled />);
       const downshift = wrapper.find(Downshift);
       downshift.find('input').simulate('focus');
       expect(downshift.prop('isOpen')).toBe(false);
     });
 
     it('should show tip when there are no results', () => {
-      const wrapper = shallow(<ModulesSelectComponent {...commonProps} />);
+      const wrapper = shallow(<ModulesSelect {...commonProps} />);
       const input = wrapper.find(Downshift).shallow().find('input');
       input.simulate('focus');
       input.simulate('change', { target: { value: '%' } });
