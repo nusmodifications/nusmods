@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useState, useRef } from 'react';
+import { FC, memo, useRef, useState } from 'react';
 import Downshift, { DownshiftState, StateChangeOptions } from 'downshift';
 import { ListProps } from 'searchkit';
 import classnames from 'classnames';
@@ -23,12 +22,7 @@ type DisplayProps = {
 };
 
 // Use a native select for mobile devices
-const MobileFilter: React.FC<DisplayProps> = ({
-  allItems,
-  onSelectItem,
-  showCount,
-  placeholder,
-}) => (
+const MobileFilter: FC<DisplayProps> = ({ allItems, onSelectItem, showCount, placeholder }) => (
   <select
     className="form-control"
     onChange={(evt) => {
@@ -49,12 +43,7 @@ const MobileFilter: React.FC<DisplayProps> = ({
 );
 
 // Use a search-select combo dropdown on desktop
-const DesktopFilter: React.FC<DisplayProps> = ({
-  allItems,
-  onSelectItem,
-  showCount,
-  placeholder,
-}) => {
+const DesktopFilter: FC<DisplayProps> = ({ allItems, onSelectItem, showCount, placeholder }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const searchInput = useRef<HTMLInputElement>(null);
@@ -167,7 +156,7 @@ const DesktopFilter: React.FC<DisplayProps> = ({
   );
 };
 
-export const DropdownListFiltersComponent: React.FC<Props> = ({
+export const DropdownListFiltersComponent: FC<Props> = ({
   items,
   selectedItems,
   toggleItem,
@@ -200,9 +189,9 @@ export const DropdownListFiltersComponent: React.FC<Props> = ({
     placeholder: translate ? translate('placeholder') : '',
   };
 
-  const matchBreakpoint = useMediaQuery([breakpointDown('sm'), touchScreenOnly()]);
+  const isMobile = useMediaQuery([breakpointDown('sm'), touchScreenOnly()]);
 
-  const FilterComponent = matchBreakpoint ? MobileFilter : DesktopFilter;
+  const FilterComponent = isMobile ? MobileFilter : DesktopFilter;
   return (
     <div className={styles.dropdown}>
       <FilterComponent {...displayProps} />
@@ -212,5 +201,4 @@ export const DropdownListFiltersComponent: React.FC<Props> = ({
   );
 };
 
-// export default React.memo(DropdownListFiltersComponent);
-export default React.memo(DropdownListFiltersComponent);
+export default memo(DropdownListFiltersComponent);

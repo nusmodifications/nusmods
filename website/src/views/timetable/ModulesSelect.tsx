@@ -1,4 +1,4 @@
-import { useState, FC, useCallback, memo } from 'react';
+import { FC, memo, useCallback, useState } from 'react';
 import { omit } from 'lodash';
 import Downshift, {
   ChildrenFunction,

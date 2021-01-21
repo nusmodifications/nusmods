@@ -39,7 +39,7 @@ const MOBILE = true;
 
 describe(ModuleFinderPagerComponent, () => {
   beforeAll(() => {
-    mockWindowMatchMedia({ matches: DESKTOP });
+    mockWindowMatchMedia();
   });
 
   afterAll(() => {
@@ -78,7 +78,7 @@ describe(ModuleFinderPagerComponent, () => {
       expect(onDesktop.find(ModuleFinderPagerButton)).toHaveLength(5);
     });
 
-    test('should respond to clicks on buttons on desktop', () => {
+    test('should respond to clicks on buttons', () => {
       const props = {
         ...defaultProps,
         onGoToFirst: jest.fn(),
@@ -108,7 +108,7 @@ describe(ModuleFinderPagerComponent, () => {
       expect(onMobile.find(ModuleFinderPagerButton)).toHaveLength(4);
     });
 
-    test('should respond to clicks on buttons on mobile', () => {
+    test('should respond to clicks on buttons', () => {
       const props = {
         ...defaultProps,
         onGoToFirst: jest.fn(),
