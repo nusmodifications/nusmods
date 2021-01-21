@@ -23,7 +23,7 @@ export default function persistReducer<S>(
     {
       key,
       storage,
-      debug: __DEV__,
+      debug: NUSMODS_ENV === 'development',
       ...options,
     },
     reducer,

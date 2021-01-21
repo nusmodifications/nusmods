@@ -28,8 +28,7 @@ ReactModal.setAppElement('#app');
 ReactDOM.render(<App store={store} persistor={persistor} />, document.getElementById('app'));
 
 if (
-  (!__DEV__ &&
-    !__TEST__ &&
+  ((NUSMODS_ENV === 'preview' || NUSMODS_ENV === 'staging' || NUSMODS_ENV === 'production') &&
     'serviceWorker' in navigator &&
     window.location.protocol === 'https:') ||
   // Allow us to force service worker to be enabled for debugging
@@ -38,6 +37,6 @@ if (
   registerServiceWorker(store);
 }
 
-if (!__DEV__ && !__TEST__) {
+if (NUSMODS_ENV === 'production') {
   initializeMamoto();
 }

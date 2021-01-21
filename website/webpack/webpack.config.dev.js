@@ -13,20 +13,6 @@ const nusmods = require('../src/apis/nusmods');
 const config = require('../src/config/app-config.json');
 
 const developmentConfig = merge([
-  {
-    plugins: [
-      new webpack.DefinePlugin({
-        __DEV__: true,
-        __TEST__: false,
-        DISPLAY_COMMIT_HASH: JSON.stringify(parts.appVersion().commitHash),
-        VERSION_STR: JSON.stringify(parts.appVersion().versionStr),
-        DEBUG_SERVICE_WORKER: !!process.env.DEBUG_SERVICE_WORKER,
-        DATA_API_BASE_URL: JSON.stringify(process.env.DATA_API_BASE_URL),
-        VERCEL_ENV: JSON.stringify(process.env.VERCEL_ENV),
-        VERCEL_GIT_COMMIT_REF: JSON.stringify(process.env.VERCEL_GIT_COMMIT_REF),
-      }),
-    ],
-  },
   commonConfig,
   {
     mode: 'development',
@@ -74,9 +60,7 @@ const developmentConfig = merge([
       }),
       // Copy files from static folder over (in-memory)
       new CopyWebpackPlugin({
-        patterns: [
-          { from: 'static', context: parts.PATHS.root, globOptions: { ignore: ['short_url.php'] } },
-        ],
+        patterns: [{ from: 'static/base', context: parts.PATHS.root }],
       }),
       // Ignore node_modules so CPU usage with poll watching drops significantly.
       new webpack.WatchIgnorePlugin({

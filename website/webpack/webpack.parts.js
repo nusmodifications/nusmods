@@ -203,4 +203,27 @@ exports.appVersion = () => {
   return { commitHash, versionStr };
 };
 
+/**
+ * Decide NUSMods environment based on some basic heuristics.
+ *
+ * @returns {typeof NUSMODS_ENV} The NUSMods environment. For more information,
+ * see the docstring for the `NUSMODS_ENV` global variable.
+ */
+exports.env = () => {
+  if (process.env.NODE_ENV === 'test') return 'test';
+
+  // Vercel deployments
+  if (process.env.VERCEL_ENV === 'production') return 'production';
+  if (process.env.VERCEL_ENV === 'preview') {
+    if (process.env.VERCEL_GIT_COMMIT_REF === 'master') return 'staging';
+    return 'preview';
+  }
+
+  // CI builds, if ever ran (e.g. if build artifacts are uploaded to Netlify), are previews
+  if (process.env.NODE_ENV === 'production' && process.env.CI) return 'preview';
+
+  // Others
+  return 'development';
+};
+
 exports.PATHS = PATHS;
