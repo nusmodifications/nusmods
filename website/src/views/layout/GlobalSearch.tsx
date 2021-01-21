@@ -41,12 +41,6 @@ class GlobalSearch extends Component<Props, State> {
     inputValue: '',
   };
 
-  handleClose = () => {
-    this.setState({ inputValue: '' });
-
-    if (this.input) this.input.blur();
-  };
-
   handleOuterClick = () => {
     // Preserve input value (if present) after user clicks outside.
     if (this.state.inputValue) {
@@ -56,11 +50,8 @@ class GlobalSearch extends Component<Props, State> {
         // eslint-disable-next-line react/no-access-state-in-setstate
         inputValue: this.state.inputValue,
       });
-
-      if (this.input) this.input.blur();
-    } else {
-      this.handleClose();
     }
+    this.input?.blur();
   };
 
   handleInputValueChange = (newInputValue: string) => {
@@ -86,7 +77,7 @@ class GlobalSearch extends Component<Props, State> {
       }
     }
 
-    this.handleClose();
+    this.input?.blur();
   };
 
   stateReducer = (state: DownshiftState<SearchItem>, changes: StateChangeOptions<SearchItem>) => {
@@ -101,6 +92,7 @@ class GlobalSearch extends Component<Props, State> {
   // Downshift attaches label for us, so we can ignore ESLint here
   /* eslint-disable jsx-a11y/label-has-for */
   renderDropdown: ChildrenFunction<SearchItem> = ({
+    isOpen,
     getLabelProps,
     getInputProps,
     getItemProps,
@@ -128,10 +120,9 @@ class GlobalSearch extends Component<Props, State> {
     );
 
     const searchResults = this.props.getResults(inputValue);
-    const hasFocus = document.activeElement === this.input;
 
     // 1. Search is not active - just show the search form
-    if (!searchResults || !inputValue || !hasFocus) {
+    if (!isOpen || !searchResults || !inputValue) {
       return <div className={styles.container}>{searchForm}</div>;
     }
 
