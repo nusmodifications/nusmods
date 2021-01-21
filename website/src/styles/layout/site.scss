@@ -10,27 +10,12 @@ body,
   height: 100%;
 }
 
-// Disables the above rule on iOS 9 - on Mobile Safari 9 the browser takes 100% to
-// be 100% of the viewport only, which means the page becomes unscrollerable and the
-// footer appears at the bottom of the page with no scrolling
-// See https://solvit.io/bcf61b6 for the hack
-@supports (overflow: -webkit-marquee) and (justify-content: inherit) {
-  html,
-  body {
-    height: auto;
-  }
-}
-
 body {
   padding-top: 4rem;
 
   @include media-breakpoint-down(sm) {
     padding-top: $navbar-height;
     font-size: 1rem * $sm-font-size-ratio;
-
-    &.no-scroll {
-      padding-top: $navbar-height + $navtab-height;
-    }
   }
 }
 
@@ -47,7 +32,9 @@ a {
 
 .main-container {
   flex: 1 auto;
-  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  padding: 0; // For Microsoft Edge 18
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+    env(safe-area-inset-left);
 
   @include media-breakpoint-down(sm) {
     .main-content {

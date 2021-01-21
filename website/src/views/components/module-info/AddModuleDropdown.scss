@@ -11,6 +11,7 @@
 
   :global(.dropdown-toggle.dropdown-toggle-split) {
     width: 2rem;
+    border-left: none;
 
     @include media-breakpoint-down(sm) {
       // Long selector for specificity

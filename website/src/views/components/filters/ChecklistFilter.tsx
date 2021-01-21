@@ -18,24 +18,22 @@ interface ChecklistFilterProps {
 }
 
 const ChecklistFilter = memo<ChecklistFilterProps>(
-  ({ title, items, disabled = false, showCount = true }) => {
-    return (
-      <FilterContainer title={title} disabled={disabled}>
-        <ul className="list-unstyled">
-          {items.map(({ key, filter, label }) => (
-            <CheckboxItemFilter
-              key={key}
-              id={key}
-              filter={filter}
-              label={label}
-              showCount={showCount}
-              disabled={disabled}
-            />
-          ))}
-        </ul>
-      </FilterContainer>
-    );
-  },
+  ({ title, items, disabled = false, showCount = true }) => (
+    <FilterContainer title={title} disabled={disabled}>
+      <ul className="list-unstyled">
+        {items.map(({ key, filter, label }) => (
+          <CheckboxItemFilter
+            key={key}
+            id={key}
+            filter={filter}
+            label={label}
+            showCount={showCount}
+            disabled={disabled}
+          />
+        ))}
+      </ul>
+    </FilterContainer>
+  ),
 );
 
 ChecklistFilter.displayName = 'ChecklistFilter';

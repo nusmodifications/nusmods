@@ -1,7 +1,8 @@
 import { shallow } from 'enzyme';
 import { noop } from 'lodash';
+import { mockWindowMatchMedia, mockDomReset } from 'test-utils/mockDom';
 import ModuleFinderPagerButton from 'views/modules/ModuleFinderPagerButton';
-import { displayPageRange, ModuleFinderPagerComponent } from './ModuleFinderPager';
+import ModuleFinderPager, { displayPageRange } from './ModuleFinderPager';
 
 describe(displayPageRange, () => {
   test('calculate page range correctly', () => {
@@ -33,9 +34,17 @@ describe(displayPageRange, () => {
   });
 });
 
-describe(ModuleFinderPagerComponent, () => {
-  const DESKTOP = false;
-  const MOBILE = true;
+const DESKTOP = false;
+const MOBILE = true;
+
+describe('ModuleFinderPager', () => {
+  beforeAll(() => {
+    mockWindowMatchMedia();
+  });
+
+  afterAll(() => {
+    mockDomReset();
+  });
 
   const defaultProps = {
     selectedPage: 1,
@@ -45,66 +54,73 @@ describe(ModuleFinderPagerComponent, () => {
     onGoToPage: noop,
     onGoToNext: noop,
     onGoToLast: noop,
-    matchBreakpoint: DESKTOP,
   };
 
   test('should not render if totalNumPages <= 0', () => {
-    const zeroPagesPager = shallow(
-      <ModuleFinderPagerComponent {...defaultProps} totalNumPages={0} />,
-    );
+    const zeroPagesPager = shallow(<ModuleFinderPager {...defaultProps} totalNumPages={0} />);
     expect(zeroPagesPager.type()).toEqual(null);
 
-    const negativePagesPager = shallow(
-      <ModuleFinderPagerComponent {...defaultProps} totalNumPages={-1} />,
-    );
+    const negativePagesPager = shallow(<ModuleFinderPager {...defaultProps} totalNumPages={-1} />);
     expect(negativePagesPager.type()).toEqual(null);
   });
 
-  test('should contain pager buttons', () => {
-    const onDesktop = shallow(<ModuleFinderPagerComponent {...defaultProps} />);
-    expect(onDesktop.find(ModuleFinderPagerButton)).toHaveLength(5);
+  describe('when on desktop', () => {
+    beforeAll(() => {
+      mockWindowMatchMedia({ matches: DESKTOP });
+    });
 
-    const onMobile = shallow(<ModuleFinderPagerComponent {...defaultProps} matchBreakpoint />);
-    expect(onMobile.find(ModuleFinderPagerButton)).toHaveLength(4);
+    test('should contain pager buttons', () => {
+      const onDesktop = shallow(<ModuleFinderPager {...defaultProps} />);
+      expect(onDesktop.find(ModuleFinderPagerButton)).toHaveLength(5);
+    });
+
+    test('should respond to clicks on buttons', () => {
+      const props = {
+        ...defaultProps,
+        onGoToFirst: jest.fn(),
+        onGoToPrevious: jest.fn(),
+        onGoToPage: jest.fn(),
+        onGoToNext: jest.fn(),
+        onGoToLast: jest.fn(),
+      };
+
+      const actual = shallow(<ModuleFinderPager {...props} />);
+      actual.find(ModuleFinderPagerButton).forEach((n) => n.simulate('click'));
+      expect(props.onGoToFirst).toHaveBeenCalled();
+      expect(props.onGoToPrevious).toHaveBeenCalled();
+      expect(props.onGoToPage).toHaveBeenCalledWith(1);
+      expect(props.onGoToNext).toHaveBeenCalled();
+      expect(props.onGoToLast).toHaveBeenCalled();
+    });
   });
 
-  test('should respond to clicks on buttons on desktop', () => {
-    const props = {
-      ...defaultProps,
-      onGoToFirst: jest.fn(),
-      onGoToPrevious: jest.fn(),
-      onGoToPage: jest.fn(),
-      onGoToNext: jest.fn(),
-      onGoToLast: jest.fn(),
-      matchBreakpoint: DESKTOP,
-    };
+  describe('when on mobile', () => {
+    beforeAll(() => {
+      mockWindowMatchMedia({ matches: MOBILE });
+    });
 
-    const actual = shallow(<ModuleFinderPagerComponent {...props} />);
-    actual.find(ModuleFinderPagerButton).forEach((n) => n.simulate('click'));
-    expect(props.onGoToFirst).toHaveBeenCalled();
-    expect(props.onGoToPrevious).toHaveBeenCalled();
-    expect(props.onGoToPage).toHaveBeenCalledWith(1);
-    expect(props.onGoToNext).toHaveBeenCalled();
-    expect(props.onGoToLast).toHaveBeenCalled();
-  });
+    test('should contain pager buttons', () => {
+      const onMobile = shallow(<ModuleFinderPager {...defaultProps} />);
+      expect(onMobile.find(ModuleFinderPagerButton)).toHaveLength(4);
+    });
 
-  test('should respond to clicks on buttons on mobile', () => {
-    const props = {
-      ...defaultProps,
-      onGoToFirst: jest.fn(),
-      onGoToPrevious: jest.fn(),
-      onGoToPage: jest.fn(),
-      onGoToNext: jest.fn(),
-      onGoToLast: jest.fn(),
-      matchBreakpoint: MOBILE,
-    };
+    test('should respond to clicks on buttons', () => {
+      const props = {
+        ...defaultProps,
+        onGoToFirst: jest.fn(),
+        onGoToPrevious: jest.fn(),
+        onGoToPage: jest.fn(),
+        onGoToNext: jest.fn(),
+        onGoToLast: jest.fn(),
+      };
 
-    const actual = shallow(<ModuleFinderPagerComponent {...props} />);
-    actual.find(ModuleFinderPagerButton).forEach((n) => n.simulate('click'));
-    expect(props.onGoToFirst).toHaveBeenCalled();
-    expect(props.onGoToPrevious).toHaveBeenCalled();
-    expect(props.onGoToPage).not.toHaveBeenCalled(); // No page buttons
-    expect(props.onGoToNext).toHaveBeenCalled();
-    expect(props.onGoToLast).toHaveBeenCalled();
+      const actual = shallow(<ModuleFinderPager {...props} />);
+      actual.find(ModuleFinderPagerButton).forEach((n) => n.simulate('click'));
+      expect(props.onGoToFirst).toHaveBeenCalled();
+      expect(props.onGoToPrevious).toHaveBeenCalled();
+      expect(props.onGoToPage).not.toHaveBeenCalled(); // No page buttons
+      expect(props.onGoToNext).toHaveBeenCalled();
+      expect(props.onGoToLast).toHaveBeenCalled();
+    });
   });
 });

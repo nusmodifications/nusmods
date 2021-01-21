@@ -1,0 +1,26 @@
+@import '~styles/utils/modules-entry';
+
+.searchBox {
+  position: sticky;
+  top: $navbar-height;
+  z-index: $module-finder-search-z-index-md;
+  padding: 0 0 1rem;
+  background: linear-gradient(
+    to bottom,
+    var(--body-bg) calc(100% - 1rem),
+    var(--body-bg-transparent)
+  );
+
+  @include media-breakpoint-down(sm) {
+    z-index: $module-finder-search-z-index-sm;
+    padding: 0 0 $navtab-shadow-height;
+    margin: -1rem (-$grid-gutter-width / 2) 0;
+    border-top: 1px solid var(--gray-lighter);
+    background: linear-gradient(
+      to bottom,
+      var(--body-bg) calc(100% - #{$navtab-shadow-height}),
+      var(--navtab-shadow) calc(100% - #{$navtab-shadow-height}),
+      rgba(#000, 0)
+    );
+  }
+}

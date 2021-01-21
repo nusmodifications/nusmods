@@ -1,6 +1,0 @@
-Header set Access-Control-Allow-Origin "*"
-
-RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} -f
-RewriteCond %{QUERY_STRING} callback=
-RewriteRule .+\.json$ jsonp.php [L]

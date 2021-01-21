@@ -34,11 +34,7 @@ To run the development build, simply run:
 $ yarn start
 ```
 
-This will start Webpack dev server, which will automatically rebuild and reload any code and components that you have changed. If your editor or IDE has built in support for ESLint/StyleLint, you can disable them to speed up the build process.
-
-```sh
-$ DISABLE_ESLINT=1 DISABLE_STYLELINT=1 yarn start
-```
+This will start Webpack dev server, which will automatically rebuild and reload any code and components that you have changed.
 
 We recommend the following development tools to help speed up your work
 
@@ -297,7 +293,7 @@ $ yarn typecheck
 
 #### End to End testing
 
-We currently have some simple E2E tests set up courtesy of Browserstack using Nightwatch. The purpose of this is mainly to catch major regression in browsers at the older end of our browser support matrix (Safari 9, Edge, Firefox ESR) which can be difficult to test manually.
+We currently have some simple E2E tests set up courtesy of Browserstack using Nightwatch. The purpose of this is mainly to catch major regression in browsers at the older end of our browser support matrix (iOS 11, Safari 11, Edge, Firefox ESR) which can be difficult to test manually.
 
 By default the tests are ran against http://staging.nusmods.com, although they can be configured to run against any host, including localhost if you use [Browserstack's local testing feature](https://www.browserstack.com/local-testing#command-line).
 
@@ -311,12 +307,21 @@ yarn e2e
 # Run against deploy preview
 LAUNCH_URL="https://deploy-preview-1024--nusmods.netlify.com" yarn e2e
 
-# Enable local testing
+# Run against local development server
+yarn start              # Start a local development server
 ./BrowserStackLocal --key $BROWSERSTACK_ACCESS_KEY
 LAUNCH_URL="http://localhost:8080" LOCAL_TEST=1 yarn e2e
+
+# Run against local production server
+yarn build              # Build to ./dist directory
+npx serve -s dist       # Start a local server that serves ./dist
+./BrowserStackLocal --key $BROWSERSTACK_ACCESS_KEY
+LAUNCH_URL="http://localhost:5000" LOCAL_TEST=1 yarn e2e
 ```
 
 ### Deployment
+
+**This section is outdated! We're overhauling our deployment processes at the moment. For more up-to-date (but which will also soon be outdated) deployment info, please refer to this [deployment guide](../DEPLOYMENT.md).**
 
 Our staging is served from the `./dist` directory, which is generated using `yarn build`. From there, it can be promoted to production using `yarn promote-staging`. This flow is summarized below:
 

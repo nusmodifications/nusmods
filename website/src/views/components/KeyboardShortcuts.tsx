@@ -1,31 +1,19 @@
-import * as React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useStore } from 'react-redux';
 import Mousetrap from 'mousetrap';
 import { groupBy, map } from 'lodash';
 
-import { Mode, ThemeId, DARK_MODE } from 'types/settings';
-import { Actions } from 'types/actions';
+import { DARK_MODE } from 'types/settings';
 import themes from 'data/themes.json';
 import { cycleTheme, toggleTimetableOrientation } from 'actions/theme';
 import { openNotification } from 'actions/app';
 import { toggleMode } from 'actions/settings';
 import { intersperse } from 'utils/array';
 import ComponentMap from 'utils/ComponentMap';
-import { State as StoreState } from 'types/state';
+import type { State } from 'types/state';
 import Modal from './Modal';
 import styles from './KeyboardShortcuts.scss';
-
-type Props = RouteComponentProps & {
-  dispatch: Dispatch<Actions>;
-  theme: ThemeId;
-  mode: Mode;
-};
-
-type State = {
-  helpShown: boolean;
-};
 
 type Section = 'Appearance' | 'Navigation' | 'Timetable';
 const APPEARANCE: Section = 'Appearance';
@@ -41,38 +29,51 @@ type KeyBinding = {
 
 const THEME_NOTIFICATION_TIMEOUT = 1000;
 
-export class KeyboardShortcutsComponent extends React.PureComponent<Props, State> {
-  state = {
-    helpShown: false,
-  };
+const KeyboardShortcuts: React.FC = () => {
+  const [helpShown, setHelpShown] = useState(false);
+  const closeModal = useCallback(() => setHelpShown(false), []);
 
-  shortcuts: KeyBinding[] = [];
+  const store = useStore<State>();
+  const dispatch = useDispatch();
 
-  componentDidMount() {
-    const { dispatch, history } = this.props;
+  const history = useHistory();
+
+  // NB: Because this is a ref, updates to `shortcuts` will not trigger a render.
+  const shortcuts = useRef<KeyBinding[]>([]);
+
+  useEffect(() => {
+    function bind(
+      key: Shortcut,
+      section: Section,
+      description: string,
+      action: (e: Event) => void,
+    ) {
+      shortcuts.current.push({ key, description, section });
+      Mousetrap.bind(key, action);
+    }
 
     // Navigation
-    this.bind('y', NAVIGATION, 'Go to today', () => {
+    bind('y', NAVIGATION, 'Go to today', () => {
       history.push('/today');
     });
 
-    this.bind('t', NAVIGATION, 'Go to timetable', () => {
+    bind('t', NAVIGATION, 'Go to timetable', () => {
       history.push('/timetable');
     });
 
-    this.bind('m', NAVIGATION, 'Go to module finder', () => {
+    bind('m', NAVIGATION, 'Go to module finder', () => {
       history.push('/modules');
     });
 
-    this.bind('v', NAVIGATION, 'Go to venues page', () => {
+    bind('v', NAVIGATION, 'Go to venues page', () => {
       history.push('/venues');
     });
 
-    this.bind('s', NAVIGATION, 'Go to settings', () => {
+    bind('s', NAVIGATION, 'Go to settings', () => {
       history.push('/settings');
     });
 
-    this.bind('/', NAVIGATION, 'Open global search', (e) => {
+    bind('/', NAVIGATION, 'Open global search', (e) => {
       if (ComponentMap.globalSearchInput) {
         ComponentMap.globalSearchInput.focus();
 
@@ -81,16 +82,14 @@ export class KeyboardShortcutsComponent extends React.PureComponent<Props, State
       }
     });
 
-    this.bind('?', NAVIGATION, 'Show this help', () =>
-      this.setState((state) => ({ helpShown: !state.helpShown })),
-    );
+    bind('?', NAVIGATION, 'Show this help', () => setHelpShown(!helpShown));
 
     // Timetable shortcuts
-    this.bind('o', TIMETABLE, 'Switch timetable orientation', () => {
+    bind('o', TIMETABLE, 'Switch timetable orientation', () => {
       dispatch(toggleTimetableOrientation());
     });
 
-    this.bind('d', TIMETABLE, 'Open download timetable menu', () => {
+    bind('d', TIMETABLE, 'Open download timetable menu', () => {
       const button = ComponentMap.downloadButton;
       if (button) {
         button.focus();
@@ -99,101 +98,91 @@ export class KeyboardShortcutsComponent extends React.PureComponent<Props, State
     });
 
     // Toggle night mode
-    this.bind('x', APPEARANCE, 'Toggle Night Mode', () => {
-      this.props.dispatch(toggleMode());
+    bind('x', APPEARANCE, 'Toggle Night Mode', () => {
+      dispatch(toggleMode());
+
+      // We fetch the current mode from the redux store directly, instead of
+      // using useSelector, as useSelector will capture the old stale value
+      const { mode } = store.getState().settings;
 
       dispatch(
-        openNotification(`Night mode ${this.props.mode === DARK_MODE ? 'on' : 'off'}`, {
+        openNotification(`Night mode ${mode === DARK_MODE ? 'on' : 'off'}`, {
           overwritable: true,
         }),
       );
     });
 
     // Cycle through themes
-    this.bind('z', APPEARANCE, 'Previous Theme', () => {
+    function notifyThemeChange() {
+      // We fetch the current theme id from the redux store directly, instead of
+      // using useSelector, as useSelector will capture the old stale value
+      const themeId = store.getState().theme.id;
+      const theme = themes.find((t) => t.id === themeId);
+
+      if (theme) {
+        dispatch(
+          openNotification(`Theme switched to ${theme.name}`, {
+            timeout: THEME_NOTIFICATION_TIMEOUT,
+            overwritable: true,
+          }),
+        );
+      }
+    }
+
+    bind('z', APPEARANCE, 'Previous Theme', () => {
       dispatch(cycleTheme(-1));
-      this.notifyThemeChange();
+      notifyThemeChange();
     });
 
-    this.bind('c', APPEARANCE, 'Next Theme', () => {
+    bind('c', APPEARANCE, 'Next Theme', () => {
       dispatch(cycleTheme(1));
-      this.notifyThemeChange();
+      notifyThemeChange();
     });
 
     // ???
     Mousetrap.bind('up up down down left right left right b a', () => {
       history.push('/tetris');
     });
-  }
 
-  closeModal = () => this.setState({ helpShown: false });
+    return () => {
+      shortcuts.current.forEach(({ key }) => Mousetrap.unbind(key));
+      shortcuts.current = [];
+    };
+  }, [dispatch, helpShown, history, store]);
 
-  bind(key: Shortcut, section: Section, description: string, action: (e: Event) => void) {
-    this.shortcuts.push({ key, description, section });
-
-    Mousetrap.bind(key, action);
-  }
-
-  notifyThemeChange() {
-    const themeId = this.props.theme;
-    const theme = themes.find((t) => t.id === themeId);
-
-    if (theme) {
-      this.props.dispatch(
-        openNotification(`Theme switched to ${theme.name}`, {
-          timeout: THEME_NOTIFICATION_TIMEOUT,
-          overwritable: true,
-        }),
-      );
-    }
-  }
-
-  renderShortcut = (shortcut: Shortcut): React.ReactNode => {
+  function renderShortcut(shortcut: Shortcut): React.ReactNode {
     if (typeof shortcut === 'string') {
       const capitalized = shortcut.replace(/\b([a-z])/, (c) => c.toUpperCase());
       return <kbd key={shortcut}>{capitalized}</kbd>;
     }
-
-    return intersperse(shortcut.map(this.renderShortcut), ' or ');
-  };
-
-  render() {
-    const sections = groupBy(this.shortcuts, (shortcut) => shortcut.section);
-
-    return (
-      <Modal
-        isOpen={this.state.helpShown}
-        onRequestClose={this.closeModal}
-        className={styles.modal}
-        animate
-      >
-        <h2>Keyboard shortcuts</h2>
-
-        <table className="table table-sm">
-          {map(sections, (shortcuts, heading) => (
-            <tbody key={heading}>
-              <tr>
-                <th aria-label="Key column" />
-                <th>{heading}</th>
-              </tr>
-
-              {shortcuts.map((shortcut) => (
-                <tr key={shortcut.description}>
-                  <td className={styles.key}>{this.renderShortcut(shortcut.key)}</td>
-                  <td>{shortcut.description}</td>
-                </tr>
-              ))}
-            </tbody>
-          ))}
-        </table>
-      </Modal>
-    );
+    return intersperse(shortcut.map(renderShortcut), ' or ');
   }
-}
 
-const KeyboardShortcutsConnected = connect((state: StoreState) => ({
-  mode: state.settings.mode,
-  theme: state.theme.id,
-}))(KeyboardShortcutsComponent);
+  const sections = groupBy(shortcuts.current, (shortcut) => shortcut.section);
 
-export default withRouter(KeyboardShortcutsConnected);
+  return (
+    <Modal isOpen={helpShown} onRequestClose={closeModal} className={styles.modal} animate>
+      <h2>Keyboard shortcuts</h2>
+
+      <table className="table table-sm">
+        {map(sections, (shortcutsInSection, heading) => (
+          <tbody key={heading}>
+            <tr>
+              <th aria-label="Key column" />
+              <th>{heading}</th>
+            </tr>
+
+            {shortcutsInSection.map((shortcut) => (
+              <tr key={shortcut.description}>
+                <td className={styles.key}>{renderShortcut(shortcut.key)}</td>
+                <td>{shortcut.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        ))}
+      </table>
+    </Modal>
+  );
+};
+
+export default memo(KeyboardShortcuts);

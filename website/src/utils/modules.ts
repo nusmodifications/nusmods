@@ -83,10 +83,10 @@ export function renderMCs(moduleCredits: number | string) {
 }
 
 export function renderExamDuration(examDuration: number) {
-  const hours = examDuration / 60;
-  if (hours < 1) {
+  if (examDuration < 60 || examDuration % 30 !== 0) {
     return noBreak(`${examDuration} mins`);
   }
+  const hours = examDuration / 60;
   return noBreak(`${hours} ${hours === 1 ? 'hr' : 'hrs'}`);
 }
 

@@ -1,8 +1,6 @@
+const webpack = require('webpack');
+const path = require('path');
 const parts = require('./webpack.parts');
-
-// Used by Webpack to resolve the path to assets on the client side
-// See: https://webpack.js.org/guides/public-path/
-const publicPath = process.env.PUBLIC_PATH || '/';
 
 const commonConfig = {
   // This tells Webpack where to look for modules. Remember to update the
@@ -24,20 +22,19 @@ const commonConfig = {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     // We don't use symlinks, so disable for performance
     symlinks: false,
-    // ical-generator imports Node.js core modules, which don't exist in a
-    // browser environment. Tell Webpack to provide empty modules for them so
-    // importing them works.
-    fallback: {
-      fs: false,
-      os: false,
-    },
   },
 
+  entry: 'entry/main',
   context: parts.PATHS.src,
   output: {
-    publicPath,
+    publicPath: parts.WEBSITE_PUBLIC_PATH,
+    // Place all built bundles in an assets folder. Since they should all have
+    // version hashes in their names, they can be easily long-term cached.
     path: parts.PATHS.build,
-    filename: '[name].js',
+    filename: 'assets/[name].[contenthash:8].js',
+    // This is used for require.ensure. The setup
+    // will work without but this is useful to set.
+    chunkFilename: 'assets/[name].[contenthash:8].js',
     pathinfo: false,
   },
   performance: {
@@ -45,11 +42,32 @@ const commonConfig = {
     hints: false,
   },
 
+  plugins: [
+    new webpack.DefinePlugin({
+      NUSMODS_ENV: JSON.stringify(parts.env()),
+      DISPLAY_COMMIT_HASH: JSON.stringify(parts.appVersion().commitHash),
+      VERSION_STR: JSON.stringify(parts.appVersion().versionStr),
+      DEBUG_SERVICE_WORKER: !!process.env.DEBUG_SERVICE_WORKER,
+      DATA_API_BASE_URL: JSON.stringify(process.env.DATA_API_BASE_URL),
+    }),
+  ],
+
   module: {
     rules: [
       {
         test: /\.[j|t]sx?$/,
-        include: parts.PATHS.src,
+        include: [
+          parts.PATHS.src,
+          // React Leaflet's MapContainer and withPane destructures an object using the ...
+          // operator, which isn't supported on Mobile Safari <= 11.2 and Microsoft Edge 18.
+          // TODO: Remove after we drop support for iOS <= 11.2 and Microsoft Edge 18.
+          path.join(parts.PATHS.root, parts.PATHS.node, 'react-leaflet'),
+          path.join(parts.PATHS.root, parts.PATHS.node, '@react-leaflet'),
+          // query-string has had a history of dropping support for browsers, so
+          // we cannot assume that it supports our browser support matrix.
+          // See: https://github.com/nusmodifications/nusmods/pull/1053
+          path.join(parts.PATHS.root, parts.PATHS.node, 'query-string'),
+        ],
         use: ['babel-loader'],
       },
     ],

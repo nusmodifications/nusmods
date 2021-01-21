@@ -32,16 +32,14 @@ const buildQuery = (query: string, options: Record<string, string | string[]>) =
   },
 });
 
-const ModuleSearchBox: React.FC<Props> = ({ id }) => {
-  return (
-    <SearchkitSearchBox
-      id={id}
-      throttle={300}
-      queryFields={['moduleCode^10', 'title^3', 'description']}
-      queryBuilder={buildQuery}
-      placeholder="Module code, names and descriptions"
-    />
-  );
-};
+const ModuleSearchBox: React.FC<Props> = ({ id }) => (
+  <SearchkitSearchBox
+    id={id}
+    throttle={300}
+    queryFields={['moduleCode^10', 'title^3', 'description']}
+    queryBuilder={buildQuery}
+    placeholder="Module code, names and descriptions"
+  />
+);
 
 export default ModuleSearchBox;
