@@ -444,7 +444,7 @@ export function serializeTimetable(timetable: SemTimetableConfig): string {
 }
 
 export function deserializeTimetable(serialized: string): SemTimetableConfig {
-  const params: Record<string, string> = qs.parse(serialized);
+  const params = qs.parse(serialized);
   return mapValues(params, parseModuleConfig);
 }
 

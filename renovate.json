@@ -65,14 +65,7 @@
       "groupName": "definitelyTyped"
     }
   ],
-  "ignoreDeps": [
-    "query-string",
-    "@types/query-string",
-    "@material/snackbar",
-    "@material/fab",
-    "puppeteer",
-    "searchkit"
-  ],
+  "ignoreDeps": ["@material/snackbar", "@material/fab", "puppeteer", "searchkit"],
   "pathRules": [
     {
       "paths": ["packages/**"],

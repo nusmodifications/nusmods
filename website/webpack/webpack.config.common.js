@@ -63,6 +63,10 @@ const commonConfig = {
           // TODO: Remove after we drop support for iOS <= 11.2 and Microsoft Edge 18.
           path.join(parts.PATHS.root, parts.PATHS.node, 'react-leaflet'),
           path.join(parts.PATHS.root, parts.PATHS.node, '@react-leaflet'),
+          // query-string has had a history of dropping support for browsers, so
+          // we cannot assume that it supports our browser support matrix.
+          // See: https://github.com/nusmodifications/nusmods/pull/1053
+          path.join(parts.PATHS.root, parts.PATHS.node, 'query-string'),
         ],
         use: ['babel-loader'],
       },
