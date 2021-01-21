@@ -1,12 +1,11 @@
-import * as React from 'react';
-import { useState, useRef } from 'react';
+import { FC, useRef, useState } from 'react';
 import Downshift, { DownshiftState, StateChangeOptions } from 'downshift';
 import { ListProps } from 'searchkit';
 import classnames from 'classnames';
 import { uniq, omit } from 'lodash';
 
 import { Search, ChevronDown } from 'react-feather';
-import makeResponsive, { WithBreakpoint } from 'views/hocs/makeResponsive';
+import useMediaQuery from 'views/hooks/useMediaQuery';
 import { RefinementItem, RefinementDisplayItem } from 'types/views';
 import { highlight } from 'utils/react';
 import { breakpointDown, touchScreenOnly } from 'utils/css';
@@ -14,7 +13,7 @@ import Checklist from './Checklist';
 
 import styles from './styles.scss';
 
-type Props = ListProps & WithBreakpoint;
+type Props = ListProps;
 type DisplayProps = {
   allItems: RefinementDisplayItem[];
   onSelectItem: (selectedItem: string) => void;
@@ -23,12 +22,7 @@ type DisplayProps = {
 };
 
 // Use a native select for mobile devices
-const MobileFilter: React.FC<DisplayProps> = ({
-  allItems,
-  onSelectItem,
-  showCount,
-  placeholder,
-}) => (
+const MobileFilter: FC<DisplayProps> = ({ allItems, onSelectItem, showCount, placeholder }) => (
   <select
     className="form-control"
     onChange={(evt) => {
@@ -49,12 +43,7 @@ const MobileFilter: React.FC<DisplayProps> = ({
 );
 
 // Use a search-select combo dropdown on desktop
-const DesktopFilter: React.FC<DisplayProps> = ({
-  allItems,
-  onSelectItem,
-  showCount,
-  placeholder,
-}) => {
+const DesktopFilter: FC<DisplayProps> = ({ allItems, onSelectItem, showCount, placeholder }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const searchInput = useRef<HTMLInputElement>(null);
@@ -167,13 +156,12 @@ const DesktopFilter: React.FC<DisplayProps> = ({
   );
 };
 
-export const DropdownListFiltersComponent: React.FC<Props> = ({
+const DropdownListFilters: FC<Props> = ({
   items,
   selectedItems,
   toggleItem,
   showCount,
   translate,
-  matchBreakpoint,
 }) => {
   const [searchedItems, setSearchedFilters] = useState(selectedItems);
 
@@ -201,7 +189,9 @@ export const DropdownListFiltersComponent: React.FC<Props> = ({
     placeholder: translate ? translate('placeholder') : '',
   };
 
-  const FilterComponent = matchBreakpoint ? MobileFilter : DesktopFilter;
+  const isMobile = useMediaQuery([breakpointDown('sm'), touchScreenOnly()]);
+
+  const FilterComponent = isMobile ? MobileFilter : DesktopFilter;
   return (
     <div className={styles.dropdown}>
       <FilterComponent {...displayProps} />
@@ -211,7 +201,4 @@ export const DropdownListFiltersComponent: React.FC<Props> = ({
   );
 };
 
-export default makeResponsive(DropdownListFiltersComponent, [
-  breakpointDown('sm'),
-  touchScreenOnly(),
-]);
+export default DropdownListFilters;

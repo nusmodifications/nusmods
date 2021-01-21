@@ -1,9 +1,18 @@
 import { mount } from 'enzyme';
 
 import { RefinementItem } from 'types/views';
-import { DropdownListFiltersComponent } from './DropdownListFilters';
+import { mockDom, mockDomReset } from 'test-utils/mockDom';
+import DropdownListFilters from './DropdownListFilters';
 
-describe(DropdownListFiltersComponent, () => {
+describe(DropdownListFilters, () => {
+  beforeEach(() => {
+    mockDom();
+  });
+
+  afterEach(() => {
+    mockDomReset();
+  });
+
   const CHECKBOX = '☑';
 
   /* eslint-disable camelcase */
@@ -15,18 +24,17 @@ describe(DropdownListFiltersComponent, () => {
   ];
   /* eslint-enable */
 
-  function make(items: RefinementItem[], selectedItems: string[], matchBreakpoint = false) {
+  function make(items: RefinementItem[], selectedItems: string[]) {
     const onFilterChange = jest.fn();
 
     return {
       onFilterChange,
 
       wrapper: mount(
-        <DropdownListFiltersComponent
+        <DropdownListFilters
           items={items}
           selectedItems={selectedItems}
           toggleItem={onFilterChange}
-          matchBreakpoint={matchBreakpoint}
           setItems={() => {
             /* do nothing; provide only because setItems must be set */
           }}
@@ -38,7 +46,7 @@ describe(DropdownListFiltersComponent, () => {
   // TODO: Write some sort of adaptor that reads off both <select> and <Downshift>
   //       to ensure values in both match
   test('use native <select> element on mobile', () => {
-    const { wrapper } = make(allItems, [], true);
+    const { wrapper } = make(allItems, []);
 
     expect(wrapper.find('select').exists()).toBe(true);
     expect(wrapper.find('option')).toHaveLength(allItems.length + 1); // 1 extra placeholder
@@ -47,7 +55,7 @@ describe(DropdownListFiltersComponent, () => {
   });
 
   test('change value when <select> value changes', () => {
-    const { wrapper, onFilterChange } = make(allItems, [], true);
+    const { wrapper, onFilterChange } = make(allItems, []);
 
     // Simulate selecting an <option> in the <select>
     const { key: firstItemKey } = allItems[0];
@@ -69,7 +77,7 @@ describe(DropdownListFiltersComponent, () => {
 
   test('render a list of previously selected items outside the <select>', () => {
     const { key: firstItemKey } = allItems[0];
-    const { wrapper, onFilterChange } = make(allItems, [firstItemKey], true);
+    const { wrapper, onFilterChange } = make(allItems, [firstItemKey]);
 
     // Should render the item in the checklist outside
     const checklist1 = wrapper.find('ul.list-unstyled input');
