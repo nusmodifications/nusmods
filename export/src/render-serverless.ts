@@ -24,7 +24,7 @@ async function setViewport(page: Page, options: ViewportOptions = {}) {
 
 export async function open(url: string) {
   const browser = await chromium.puppeteer.launch({
-    // devtools: !!process.env.DEVTOOLS, // TODO: Query string && __DEV__?
+    // devtools: !!process.env.DEVTOOLS, // TODO: Query string && NODE_ENV === 'development'?
     args: chromium.args,
     defaultViewport: chromium.defaultViewport,
     executablePath: await chromium.executablePath,

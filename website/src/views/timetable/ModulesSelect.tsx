@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { omit } from 'lodash';
 import Downshift, {
   ChildrenFunction,
@@ -13,7 +13,7 @@ import { ModuleSelectList } from 'types/reducers';
 import { ModuleCode } from 'types/modules';
 
 import { breakpointUp } from 'utils/css';
-import makeResponsive from 'views/hocs/makeResponsive';
+import useMediaQuery from 'views/hooks/useMediaQuery';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import elements from 'views/elements';
@@ -24,7 +24,6 @@ import styles from './ModulesSelect.scss';
 type Props = {
   moduleCount: number;
   placeholder: string;
-  matchBreakpoint: boolean;
   disabled?: boolean;
 
   getFilteredModules: (string: string | null) => ModuleSelectList;
@@ -32,91 +31,79 @@ type Props = {
   onRemoveModule: (moduleCode: ModuleCode) => void;
 };
 
-type State = {
-  isOpen: boolean;
-  inputValue: string;
-};
+const ModulesSelect: FC<Props> = ({
+  moduleCount,
+  placeholder,
+  disabled,
+  getFilteredModules,
+  onChange,
+  onRemoveModule,
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [inputValue, setInputValue] = useState('');
 
-export class ModulesSelectComponent extends Component<Props, State> {
-  state = {
-    isOpen: false,
-    inputValue: '',
-  };
+  const matchBreakpoint = useMediaQuery(breakpointUp('md'));
 
-  onOuterClick = () => {
-    this.setState({
-      isOpen: false,
-      // Cannot use prevState as prevState.inputValue will be empty string
-      // instead of the (possibly non-empty) this.state.inputValue.
-      // eslint-disable-next-line react/no-access-state-in-setstate
-      inputValue: this.state.inputValue,
-    });
-  };
+  const openSelect = useCallback(() => setIsOpen(true), []);
+  const closeSelect = useCallback(() => setIsOpen(false), []);
+  const closeSelectAndEmptyInput = useCallback(() => {
+    closeSelect();
+    setInputValue('');
+  }, [closeSelect]);
 
-  onInputValueChange = (
-    inputValue: string,
-    stateAndHelpers: ControllerStateAndHelpers<ModuleCode>,
-  ) => {
-    // Don't clear input on item select
-    if (stateAndHelpers.selectedItem) return;
+  const handleInputValueChange = useCallback(
+    (newInputValue: string, stateAndHelpers: ControllerStateAndHelpers<ModuleCode>) => {
+      // Don't clear input on item select
+      if (stateAndHelpers.selectedItem) return;
 
-    this.setState({
-      inputValue,
-    });
-  };
+      setInputValue(newInputValue);
+    },
+    [],
+  );
 
-  onChange = (selectedItem: ModuleCode | null) => selectedItem && this.props.onChange(selectedItem);
+  const handleDownshiftChange = useCallback(
+    (selectedItem: ModuleCode | null) => selectedItem && onChange(selectedItem),
+    [onChange],
+  );
 
-  closeSelect = () => {
-    this.setState({
-      isOpen: false,
-      inputValue: '',
-    });
-  };
+  const stateReducer = useCallback(
+    (state: DownshiftState<ModuleCode>, changes: StateChangeOptions<ModuleCode>) => {
+      switch (changes.type) {
+        case Downshift.stateChangeTypes.blurInput:
+          if (state.inputValue) return {}; // remain open on iOS
+          closeSelectAndEmptyInput();
 
-  openSelect = () =>
-    this.setState({
-      isOpen: true,
-    });
+          return changes;
 
-  stateReducer = (state: DownshiftState<ModuleCode>, changes: StateChangeOptions<ModuleCode>) => {
-    switch (changes.type) {
-      case Downshift.stateChangeTypes.blurInput:
-        if (state.inputValue) return {}; // remain open on iOS
-        this.closeSelect();
+        case Downshift.stateChangeTypes.keyDownEnter:
+        case Downshift.stateChangeTypes.clickItem:
+          // Don't reset isOpen, inputValue and highlightedIndex when item is selected
+          return omit(changes, ['isOpen', 'inputValue', 'highlightedIndex']);
 
-        return changes;
+        case Downshift.stateChangeTypes.mouseUp:
+          // TODO: Uncomment when we upgrade to Downshift v3
+          // case Downshift.stateChangeTypes.touchEnd:
+          // Retain input on blur
+          return omit(changes, 'inputValue');
 
-      case Downshift.stateChangeTypes.keyDownEnter:
-      case Downshift.stateChangeTypes.clickItem:
-        // Don't reset isOpen, inputValue and highlightedIndex when item is selected
-        return omit(changes, ['isOpen', 'inputValue', 'highlightedIndex']);
-
-      case Downshift.stateChangeTypes.mouseUp:
-        // TODO: Uncomment when we upgrade to Downshift v3
-        // case Downshift.stateChangeTypes.touchEnd:
-        // Retain input on blur
-        return omit(changes, 'inputValue');
-
-      default:
-        return changes;
-    }
-  };
+        default:
+          return changes;
+      }
+    },
+    [closeSelectAndEmptyInput],
+  );
 
   // downshift attaches label for us; autofocus only applies to modal
   /* eslint-disable jsx-a11y/label-has-for, jsx-a11y/no-autofocus */
-  renderDropdown: ChildrenFunction<ModuleCode> = ({
+  const renderDropdown: ChildrenFunction<ModuleCode> = ({
     getLabelProps,
     getInputProps,
     getItemProps,
     getMenuProps,
-    isOpen,
-    inputValue,
     highlightedIndex,
   }) => {
-    const { placeholder, disabled, moduleCount } = this.props;
-    const isModalOpen = !this.props.matchBreakpoint && isOpen;
-    const results = this.props.getFilteredModules(inputValue);
+    const isModalOpen = !matchBreakpoint && isOpen;
+    const results = getFilteredModules(inputValue);
     const showResults = isOpen && results.length > 0;
     const showTip = isModalOpen && !results.length;
     const showNoResultMessage = isOpen && inputValue && !results.length;
@@ -135,10 +122,10 @@ export class ModulesSelectComponent extends Component<Props, State> {
             placeholder,
             // no onBlur as that means people can't click menu items as
             // input has lost focus, see 'onOuterClick' instead
-            onFocus: this.openSelect,
+            onFocus: openSelect,
           })}
         />
-        {isModalOpen && <CloseButton className={styles.close} onClick={this.closeSelect} />}
+        {isModalOpen && <CloseButton className={styles.close} onClick={closeSelectAndEmptyInput} />}
         {showResults && (
           <ol className={styles.selectList} {...getMenuProps()}>
             {results.map((module, index) => (
@@ -165,7 +152,7 @@ export class ModulesSelectComponent extends Component<Props, State> {
                         className={classnames('btn btn-svg btn-sm', styles.actionButton)}
                         aria-label={removeBtnLabel(module.moduleCode)}
                         onClick={() => {
-                          this.props.onRemoveModule(module.moduleCode);
+                          onRemoveModule(module.moduleCode);
                         }}
                       >
                         <Trash className={styles.actionIcon} />{' '}
@@ -205,51 +192,46 @@ export class ModulesSelectComponent extends Component<Props, State> {
     );
   };
 
-  render() {
-    const { isOpen } = this.state;
-    const { matchBreakpoint, disabled } = this.props;
+  const downshiftComponent = (
+    <Downshift
+      isOpen={isOpen}
+      onOuterClick={closeSelect}
+      inputValue={inputValue}
+      onChange={handleDownshiftChange}
+      onInputValueChange={handleInputValueChange}
+      selectedItem={null}
+      stateReducer={stateReducer}
+      defaultHighlightedIndex={0}
+    >
+      {renderDropdown}
+    </Downshift>
+  );
 
-    const downshiftComponent = (
-      <Downshift
-        isOpen={isOpen}
-        onOuterClick={this.onOuterClick}
-        inputValue={this.state.inputValue}
-        onChange={this.onChange}
-        onInputValueChange={this.onInputValueChange}
-        selectedItem={null}
-        stateReducer={this.stateReducer}
-        defaultHighlightedIndex={0}
-      >
-        {this.renderDropdown}
-      </Downshift>
-    );
-
-    if (matchBreakpoint) {
-      return downshiftComponent;
-    }
-
-    return (
-      <>
-        <button
-          type="button"
-          className={classnames(styles.input, elements.addModuleInput)}
-          onClick={this.openSelect}
-          disabled={disabled}
-        >
-          {this.props.placeholder}
-        </button>
-        <Modal
-          isOpen={!disabled && isOpen}
-          onRequestClose={this.closeSelect}
-          className={styles.modal}
-          shouldCloseOnOverlayClick={false}
-          fullscreen
-        >
-          {downshiftComponent}
-        </Modal>
-      </>
-    );
+  if (matchBreakpoint) {
+    return downshiftComponent;
   }
-}
 
-export default makeResponsive(ModulesSelectComponent, breakpointUp('md'));
+  return (
+    <>
+      <button
+        type="button"
+        className={classnames(styles.input, elements.addModuleInput)}
+        onClick={openSelect}
+        disabled={disabled}
+      >
+        {placeholder}
+      </button>
+      <Modal
+        isOpen={!disabled && isOpen}
+        onRequestClose={closeSelectAndEmptyInput}
+        className={styles.modal}
+        shouldCloseOnOverlayClick={false}
+        fullscreen
+      >
+        {downshiftComponent}
+      </Modal>
+    </>
+  );
+};
+
+export default ModulesSelect;
