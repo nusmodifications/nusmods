@@ -1,4 +1,4 @@
-import { FC, memo, useRef, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import Downshift, { DownshiftState, StateChangeOptions } from 'downshift';
 import { ListProps } from 'searchkit';
 import classnames from 'classnames';
@@ -201,4 +201,4 @@ const DropdownListFilters: FC<Props> = ({
   );
 };
 
-export default memo(DropdownListFilters);
+export default DropdownListFilters;

@@ -4,7 +4,7 @@ import { RefinementItem } from 'types/views';
 import { mockDom, mockDomReset } from 'test-utils/mockDom';
 import DropdownListFilters from './DropdownListFilters';
 
-describe('DropdownListFilters', () => {
+describe(DropdownListFilters, () => {
   beforeEach(() => {
     mockDom();
   });
