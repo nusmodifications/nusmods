@@ -1,5 +1,5 @@
+const webpack = require('webpack');
 const path = require('path');
-
 const parts = require('./webpack.parts');
 
 const commonConfig = {
@@ -41,6 +41,16 @@ const commonConfig = {
     // Disable performance hints since we use our own size reporter
     hints: false,
   },
+
+  plugins: [
+    new webpack.DefinePlugin({
+      NUSMODS_ENV: JSON.stringify(parts.env()),
+      DISPLAY_COMMIT_HASH: JSON.stringify(parts.appVersion().commitHash),
+      VERSION_STR: JSON.stringify(parts.appVersion().versionStr),
+      DEBUG_SERVICE_WORKER: !!process.env.DEBUG_SERVICE_WORKER,
+      DATA_API_BASE_URL: JSON.stringify(process.env.DATA_API_BASE_URL),
+    }),
+  ],
 
   module: {
     rules: [
