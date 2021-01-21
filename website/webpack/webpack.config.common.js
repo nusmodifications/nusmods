@@ -56,7 +56,7 @@ const commonConfig = {
           // query-string has had a history of dropping support for browsers, so
           // we cannot assume that it supports our browser support matrix.
           // See: https://github.com/nusmodifications/nusmods/pull/1053
-          /node_modules\/query-string/,
+          path.join(parts.PATHS.root, parts.PATHS.node, 'query-string'),
         ],
         use: ['babel-loader'],
       },
