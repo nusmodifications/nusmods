@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const path = require('path');
 const parts = require('./webpack.parts');
 
 const commonConfig = {
@@ -57,10 +58,11 @@ const commonConfig = {
         test: /\.[j|t]sx?$/,
         include: [
           parts.PATHS.src,
-          // React Leaflet's MapContainer destructures an object using the ...
-          // operator, which isn't supported on Mobile Safari <= 11.2.
-          // TODO: Remove after we drop support for iOS <= 11.2
-          /node_modules\/react-leaflet/,
+          // React Leaflet's MapContainer and withPane destructures an object using the ...
+          // operator, which isn't supported on Mobile Safari <= 11.2 and Microsoft Edge 18.
+          // TODO: Remove after we drop support for iOS <= 11.2 and Microsoft Edge 18.
+          path.join(parts.PATHS.root, parts.PATHS.node, 'react-leaflet'),
+          path.join(parts.PATHS.root, parts.PATHS.node, '@react-leaflet'),
         ],
         use: ['babel-loader'],
       },

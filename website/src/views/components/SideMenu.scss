@@ -1,4 +1,4 @@
-@import "~styles/utils/modules-entry";
+@import '~styles/utils/modules-entry';
 
 $header-margin-top: 1rem;
 $animation-duration: 0.3s;
@@ -60,7 +60,7 @@ $offset-top: $navbar-height + 1rem;
     $closed-menu-translation: calc(100% + 120px);
 
     width: 100%;
-    padding: 1rem 0 3rem;
+    padding: 3rem 0 3rem;
     background: var(--body-bg);
 
     // Entry/exit animation
