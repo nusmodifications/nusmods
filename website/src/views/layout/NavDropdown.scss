@@ -17,6 +17,8 @@
   border-radius: $corner-radius;
   padding: 0;
 
+  // Ensure .toggle is a circle by setting width. Its height should already be
+  // equal to $container-height.
   width: $container-height;
 
   &:hover {

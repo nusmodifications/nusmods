@@ -65,6 +65,7 @@ $venue-list-width-xxl: 32rem;
   }
 
   .venueDetail {
+    left: calc(#{$venue-list-width-xl} + #{$gutter}); // For Microsoft Edge 18
     left: calc(env(safe-area-inset-left) + #{$venue-list-width-xl} + #{$gutter});
   }
 }
@@ -75,6 +76,7 @@ $venue-list-width-xxl: 32rem;
   }
 
   .venueDetail {
+    left: calc(#{$venue-list-width-xxl} + #{$gutter}); // For Microsoft Edge 18
     left: calc(env(safe-area-inset-left) + #{$venue-list-width-xxl} + #{$gutter});
   }
 }

@@ -20,7 +20,7 @@ import ComponentMap from 'utils/ComponentMap';
 import SemesterBadge from 'views/components/SemesterBadge';
 import styles from './GlobalSearch.scss';
 
-export type Props = {
+type Props = {
   getResults: (string: string | null) => SearchResult | null;
 
   onSelectVenue: (venue: Venue) => void;

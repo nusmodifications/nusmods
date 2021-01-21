@@ -1,6 +1,5 @@
 @import '~styles/utils/modules-entry.scss';
 
-$vert-padding: 0.5rem;
 // Keep padding at whole number, 0.875rem = 14px
 // See: https://github.com/nusmodifications/nusmods/pull/1567
 $logo-vert-padding: 0.875rem;
@@ -88,9 +87,3 @@ $logo-vert-padding: 0.875rem;
     width: 9rem; // Eyeballed number
   }
 }
-
-// @include media-breakpoint-up(xl) {
-// .navRight {
-//   padding: $vert-padding $grid-gutter-width/2 $vert-padding 2rem;
-// }
-// }

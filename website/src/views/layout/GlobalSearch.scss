@@ -1,5 +1,8 @@
-@import '~styles/utils/modules-entry';
 @import './nav-constants';
+
+$results-width-open: 21rem;
+$dropdown-height: 40rem;
+$icon-horizontal-padding: ($container-height - $icon-size) / 2;
 
 .container {
   composes: btn-svg from global;
