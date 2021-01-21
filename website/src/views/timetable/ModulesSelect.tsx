@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { omit } from 'lodash';
 import Downshift, {
   ChildrenFunction,
@@ -232,4 +232,4 @@ export const ModulesSelectComponent: FC<Props> = ({
   );
 };
 
-export default memo(ModulesSelectComponent);
+export default ModulesSelectComponent;
