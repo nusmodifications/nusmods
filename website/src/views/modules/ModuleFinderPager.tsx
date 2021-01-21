@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FC, memo } from 'react';
 import classnames from 'classnames';
 import { range } from 'lodash';
 
@@ -28,7 +28,7 @@ export function displayPageRange(
   return { firstPageNum, lastPageNum };
 }
 
-const ModuleFinderPager: React.FC<PagerProps> = ({
+const ModuleFinderPager: FC<PagerProps> = ({
   selectedPage,
   totalNumPages,
   onGoToFirst,
@@ -104,4 +104,4 @@ const ModuleFinderPager: React.FC<PagerProps> = ({
   );
 };
 
-export default React.memo(ModuleFinderPager);
+export default memo(ModuleFinderPager);
