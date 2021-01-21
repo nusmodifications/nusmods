@@ -28,7 +28,7 @@ export function displayPageRange(
   return { firstPageNum, lastPageNum };
 }
 
-export const ModuleFinderPagerComponent: React.FC<PagerProps> = ({
+const ModuleFinderPager: React.FC<PagerProps> = ({
   selectedPage,
   totalNumPages,
   onGoToFirst,
@@ -104,4 +104,4 @@ export const ModuleFinderPagerComponent: React.FC<PagerProps> = ({
   );
 };
 
-export default React.memo(ModuleFinderPagerComponent);
+export default React.memo(ModuleFinderPager);

@@ -2,9 +2,9 @@ import { mount } from 'enzyme';
 
 import { RefinementItem } from 'types/views';
 import { mockDom, mockDomReset } from 'test-utils/mockDom';
-import { DropdownListFiltersComponent } from './DropdownListFilters';
+import DropdownListFilters from './DropdownListFilters';
 
-describe(DropdownListFiltersComponent, () => {
+describe('DropdownListFilters', () => {
   beforeEach(() => {
     mockDom();
   });
@@ -31,7 +31,7 @@ describe(DropdownListFiltersComponent, () => {
       onFilterChange,
 
       wrapper: mount(
-        <DropdownListFiltersComponent
+        <DropdownListFilters
           items={items}
           selectedItems={selectedItems}
           toggleItem={onFilterChange}

@@ -156,7 +156,7 @@ const DesktopFilter: FC<DisplayProps> = ({ allItems, onSelectItem, showCount, pl
   );
 };
 
-export const DropdownListFiltersComponent: FC<Props> = ({
+const DropdownListFilters: FC<Props> = ({
   items,
   selectedItems,
   toggleItem,
@@ -201,4 +201,4 @@ export const DropdownListFiltersComponent: FC<Props> = ({
   );
 };
 
-export default memo(DropdownListFiltersComponent);
+export default memo(DropdownListFilters);

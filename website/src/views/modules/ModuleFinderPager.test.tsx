@@ -2,7 +2,7 @@ import { shallow } from 'enzyme';
 import { noop } from 'lodash';
 import { mockWindowMatchMedia, mockDomReset } from 'test-utils/mockDom';
 import ModuleFinderPagerButton from 'views/modules/ModuleFinderPagerButton';
-import { displayPageRange, ModuleFinderPagerComponent } from './ModuleFinderPager';
+import ModuleFinderPager, { displayPageRange } from './ModuleFinderPager';
 
 describe(displayPageRange, () => {
   test('calculate page range correctly', () => {
@@ -37,7 +37,7 @@ describe(displayPageRange, () => {
 const DESKTOP = false;
 const MOBILE = true;
 
-describe(ModuleFinderPagerComponent, () => {
+describe('ModuleFinderPager', () => {
   beforeAll(() => {
     mockWindowMatchMedia();
   });
@@ -57,14 +57,10 @@ describe(ModuleFinderPagerComponent, () => {
   };
 
   test('should not render if totalNumPages <= 0', () => {
-    const zeroPagesPager = shallow(
-      <ModuleFinderPagerComponent {...defaultProps} totalNumPages={0} />,
-    );
+    const zeroPagesPager = shallow(<ModuleFinderPager {...defaultProps} totalNumPages={0} />);
     expect(zeroPagesPager.type()).toEqual(null);
 
-    const negativePagesPager = shallow(
-      <ModuleFinderPagerComponent {...defaultProps} totalNumPages={-1} />,
-    );
+    const negativePagesPager = shallow(<ModuleFinderPager {...defaultProps} totalNumPages={-1} />);
     expect(negativePagesPager.type()).toEqual(null);
   });
 
@@ -74,7 +70,7 @@ describe(ModuleFinderPagerComponent, () => {
     });
 
     test('should contain pager buttons', () => {
-      const onDesktop = shallow(<ModuleFinderPagerComponent {...defaultProps} />);
+      const onDesktop = shallow(<ModuleFinderPager {...defaultProps} />);
       expect(onDesktop.find(ModuleFinderPagerButton)).toHaveLength(5);
     });
 
@@ -88,7 +84,7 @@ describe(ModuleFinderPagerComponent, () => {
         onGoToLast: jest.fn(),
       };
 
-      const actual = shallow(<ModuleFinderPagerComponent {...props} />);
+      const actual = shallow(<ModuleFinderPager {...props} />);
       actual.find(ModuleFinderPagerButton).forEach((n) => n.simulate('click'));
       expect(props.onGoToFirst).toHaveBeenCalled();
       expect(props.onGoToPrevious).toHaveBeenCalled();
@@ -104,7 +100,7 @@ describe(ModuleFinderPagerComponent, () => {
     });
 
     test('should contain pager buttons', () => {
-      const onMobile = shallow(<ModuleFinderPagerComponent {...defaultProps} />);
+      const onMobile = shallow(<ModuleFinderPager {...defaultProps} />);
       expect(onMobile.find(ModuleFinderPagerButton)).toHaveLength(4);
     });
 
@@ -118,7 +114,7 @@ describe(ModuleFinderPagerComponent, () => {
         onGoToLast: jest.fn(),
       };
 
-      const actual = shallow(<ModuleFinderPagerComponent {...props} />);
+      const actual = shallow(<ModuleFinderPager {...props} />);
       actual.find(ModuleFinderPagerButton).forEach((n) => n.simulate('click'));
       expect(props.onGoToFirst).toHaveBeenCalled();
       expect(props.onGoToPrevious).toHaveBeenCalled();
