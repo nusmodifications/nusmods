@@ -102,7 +102,6 @@ export default class SearchkitSearchBox extends SearchkitComponent<Props, State>
       <SearchBox
         className={classnames(styles.searchBox, elements.moduleFinderSearchBox)}
         throttle={this.props.throttle}
-        useInstantSearch
         isLoading={this.isLoading()}
         value={this.getValue()}
         placeholder={this.props.placeholder}

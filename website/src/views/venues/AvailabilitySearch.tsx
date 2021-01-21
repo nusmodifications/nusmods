@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { ChangeEventHandler, FC, memo, SyntheticEvent, useMemo } from 'react';
 import classnames from 'classnames';
 import { range } from 'lodash';
 
@@ -19,32 +19,39 @@ const CLASS_START_HOURS = range(FIRST_CLASS_HOUR, LAST_CLASS_HOUR + 1);
 export function defaultSearchOptions(
   now: Date = new Date(), // Used for tests only
 ): VenueSearchOptions {
-  // Set day of week - if it is not a school day, then set to Monday (0)
-  const day = getDayIndex(now) === 6 ? 0 : getDayIndex(now);
-
-  // Set time - if the current time is outside class hours, set it to the
-  // time of the earliest lesson
-  const time = Math.max(getCurrentHours(now), FIRST_CLASS_HOUR);
-
   return {
-    time,
-    day,
+    // Set day of week - if it is not a school day, then set to Monday (0)
+    day: getDayIndex(now) === 6 ? 0 : getDayIndex(now),
+    // Set time - if the current time is outside class hours, set it to the
+    // time of the earliest lesson
+    time: Math.max(getCurrentHours(now), FIRST_CLASS_HOUR),
     duration: 1,
   };
 }
 
-const AvailabilitySearch = React.memo<Props>(({ className, searchOptions, onUpdate }) => {
-  const onUpdateInner = (
-    event: React.SyntheticEvent<HTMLSelectElement>,
-    key: keyof VenueSearchOptions,
-  ) => {
-    if (typeof event.currentTarget.value !== 'undefined') {
-      onUpdate({
-        ...searchOptions,
-        [key]: +event.currentTarget.value,
-      });
+const AvailabilitySearch: FC<Props> = ({ className, searchOptions, onUpdate }) => {
+  const [
+    handleDayChange,
+    handleTimeChange,
+    handleDurationChange,
+  ]: ChangeEventHandler<HTMLSelectElement>[] = useMemo(() => {
+    function onUpdateInner(
+      event: SyntheticEvent<HTMLSelectElement>,
+      key: keyof VenueSearchOptions,
+    ) {
+      if (typeof event.currentTarget.value !== 'undefined') {
+        onUpdate({
+          ...searchOptions,
+          [key]: +event.currentTarget.value,
+        });
+      }
     }
-  };
+    return [
+      (event) => onUpdateInner(event, 'day'),
+      (event) => onUpdateInner(event, 'time'),
+      (event) => onUpdateInner(event, 'duration'),
+    ];
+  }, [onUpdate, searchOptions]);
 
   return (
     <div className={classnames(className, styles.search)}>
@@ -54,7 +61,7 @@ const AvailabilitySearch = React.memo<Props>(({ className, searchOptions, onUpda
           id="venue-day"
           className="form-control"
           value={searchOptions.day}
-          onChange={(evt) => onUpdateInner(evt, 'day')}
+          onChange={handleDayChange}
         >
           {SCHOOLDAYS.map((name, day) => (
             <option key={day} value={day}>
@@ -70,7 +77,7 @@ const AvailabilitySearch = React.memo<Props>(({ className, searchOptions, onUpda
           id="venue-time"
           className="form-control"
           value={searchOptions.time}
-          onChange={(evt) => onUpdateInner(evt, 'time')}
+          onChange={handleTimeChange}
         >
           {CLASS_START_HOURS.map((hour) => (
             <option key={hour} value={hour}>
@@ -86,7 +93,7 @@ const AvailabilitySearch = React.memo<Props>(({ className, searchOptions, onUpda
           id="venue-duration"
           className="form-control"
           value={searchOptions.duration}
-          onChange={(evt) => onUpdateInner(evt, 'duration')}
+          onChange={handleDurationChange}
         >
           {range(1, LAST_CLASS_HOUR + 3 - searchOptions.time).map((hour) => (
             <option key={hour} value={hour}>
@@ -97,6 +104,6 @@ const AvailabilitySearch = React.memo<Props>(({ className, searchOptions, onUpda
       </div>
     </div>
   );
-});
+};
 
-export default AvailabilitySearch;
+export default memo(AvailabilitySearch);

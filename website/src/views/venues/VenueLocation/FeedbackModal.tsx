@@ -1,7 +1,8 @@
-import { PureComponent } from 'react';
+import { FC, useCallback, useState } from 'react';
 import classnames from 'classnames';
 
-import { VenueLocation } from 'types/venues';
+import type { VenueLocation } from 'types/venues';
+
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import ExternalLink from 'views/components/ExternalLink';
@@ -19,22 +20,19 @@ type Props = {
   readonly existingLocation: VenueLocation | null;
 };
 
-type State = {
-  readonly page: Page;
-};
+const FeedbackModal: FC<Props> = ({ venue, isOpen, onRequestClose, existingLocation }) => {
+  const [page, setPage] = useState<Page>('menu');
 
-export default class FeedbackModal extends PureComponent<Props, State> {
-  state: State = {
-    page: 'menu',
-  };
+  const handleRequestClose = useCallback(() => {
+    setPage('menu');
+    onRequestClose();
+  }, [onRequestClose]);
 
-  onRequestClose = () => {
-    this.setState({ page: 'menu' });
-    this.props.onRequestClose();
-  };
+  const goToForm = useCallback(() => setPage('form'), []);
+  const goToMenu = useCallback(() => setPage('menu'), []);
 
-  renderPage() {
-    switch (this.state.page) {
+  function renderPage() {
+    switch (page) {
       case 'menu':
         return (
           <div className={classnames('row flex-fill text-center', styles.feedback)}>
@@ -45,19 +43,15 @@ export default class FeedbackModal extends PureComponent<Props, State> {
               >
                 <MapIcon />
                 <h3>Problem with map data</h3>
-                <p>eg. incorrect building outline, missing walkways</p>
+                <p>e.g. incorrect building outline, missing walkways</p>
               </ExternalLink>
             </div>
 
             <div className="col-sm-6">
-              <button
-                type="button"
-                className="btn btn-outline-secondary"
-                onClick={() => this.setState({ page: 'form' })}
-              >
+              <button type="button" className="btn btn-outline-secondary" onClick={goToForm}>
                 <MapPin />
                 <h3>Problem with venue data</h3>
-                <p>eg. incorrect room name, floor, location of the map pin</p>
+                <p>e.g. incorrect room name, floor, location of the map pin</p>
               </button>
             </div>
           </div>
@@ -65,27 +59,21 @@ export default class FeedbackModal extends PureComponent<Props, State> {
 
       case 'form':
         return (
-          <ImproveVenueForm
-            venue={this.props.venue}
-            existingLocation={this.props.existingLocation}
-            onBack={() => this.setState({ page: 'menu' })}
-          />
+          <ImproveVenueForm venue={venue} existingLocation={existingLocation} onBack={goToMenu} />
         );
 
       default:
-        throw new Error(`Unknown page ${this.state.page}`);
+        throw new Error(`Unknown page ${page}`);
     }
   }
 
-  render() {
-    const { isOpen } = this.props;
+  return (
+    <Modal isOpen={isOpen} onRequestClose={handleRequestClose} animate>
+      <CloseButton onClick={handleRequestClose} />
+      <h2 className={styles.feedbackTitle}>Improve {venue}</h2>
+      {renderPage()}
+    </Modal>
+  );
+};
 
-    return (
-      <Modal isOpen={isOpen} onRequestClose={this.onRequestClose} animate>
-        <CloseButton onClick={this.onRequestClose} />
-        <h2 className={styles.feedbackTitle}>Improve {this.props.venue}</h2>
-        {this.renderPage()}
-      </Modal>
-    );
-  }
-}
+export default FeedbackModal;
