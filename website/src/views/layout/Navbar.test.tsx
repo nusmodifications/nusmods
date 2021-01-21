@@ -10,6 +10,14 @@ import { initAction } from 'test-utils/redux';
 
 import Navbar from './Navbar';
 
+jest.mock('nusmoderator', () => ({
+  academicCalendar: {
+    getAcadWeekInfo: jest.fn(() => ({
+      year: '10/11',
+    })),
+  },
+}));
+
 const relevantStoreContents = {
   app: { activeSemester: 1 },
   settings: { beta: false },
@@ -56,6 +64,8 @@ describe(Navbar, () => {
         "Contribute",
         "NUS Business",
         "NUSWhispers",
+        "AY2010/11 Calendar",
+        "AY2011/12 Calendar",
       ]
     `);
   });
@@ -74,6 +84,8 @@ describe(Navbar, () => {
         "Contribute",
         "NUS Business",
         "NUSWhispers",
+        "AY2010/11 Calendar",
+        "AY2011/12 Calendar",
       ]
     `);
   });
