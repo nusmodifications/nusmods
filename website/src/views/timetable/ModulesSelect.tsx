@@ -44,57 +44,52 @@ export const ModulesSelectComponent: FC<Props> = ({
 
   const matchBreakpoint = useMediaQuery(breakpointUp('md'));
 
-  const onOuterClick = useCallback(() => {
-    setIsOpen(false);
-    setInputValue(inputValue);
-  }, [inputValue]);
+  const openSelect = useCallback(() => setIsOpen(true), []);
+  const closeSelect = useCallback(() => setIsOpen(false), []);
+  const closeSelectAndEmptyInput = useCallback(() => {
+    closeSelect();
+    setInputValue('');
+  }, [closeSelect]);
 
-  const onInputValueChange = (
-    newInputValue: string,
-    stateAndHelpers: ControllerStateAndHelpers<ModuleCode>,
-  ) => {
-    // Don't clear input on item select
-    if (stateAndHelpers.selectedItem) return;
+  const handleInputValueChange = useCallback(
+    (newInputValue: string, stateAndHelpers: ControllerStateAndHelpers<ModuleCode>) => {
+      // Don't clear input on item select
+      if (stateAndHelpers.selectedItem) return;
 
-    setInputValue(newInputValue);
-  };
+      setInputValue(newInputValue);
+    },
+    [],
+  );
 
-  const downShiftOnChange = (selectedItem: ModuleCode | null) =>
+  const handleDownshiftChange = (selectedItem: ModuleCode | null) =>
     selectedItem && onChange(selectedItem);
 
-  const closeSelect = () => {
-    setIsOpen(false);
-    setInputValue('');
-  };
+  const stateReducer = useCallback(
+    (state: DownshiftState<ModuleCode>, changes: StateChangeOptions<ModuleCode>) => {
+      switch (changes.type) {
+        case Downshift.stateChangeTypes.blurInput:
+          if (state.inputValue) return {}; // remain open on iOS
+          closeSelectAndEmptyInput();
 
-  const openSelect = () => setIsOpen(true);
+          return changes;
 
-  const stateReducer = (
-    state: DownshiftState<ModuleCode>,
-    changes: StateChangeOptions<ModuleCode>,
-  ) => {
-    switch (changes.type) {
-      case Downshift.stateChangeTypes.blurInput:
-        if (state.inputValue) return {}; // remain open on iOS
-        closeSelect();
+        case Downshift.stateChangeTypes.keyDownEnter:
+        case Downshift.stateChangeTypes.clickItem:
+          // Don't reset isOpen, inputValue and highlightedIndex when item is selected
+          return omit(changes, ['isOpen', 'inputValue', 'highlightedIndex']);
 
-        return changes;
+        case Downshift.stateChangeTypes.mouseUp:
+          // TODO: Uncomment when we upgrade to Downshift v3
+          // case Downshift.stateChangeTypes.touchEnd:
+          // Retain input on blur
+          return omit(changes, 'inputValue');
 
-      case Downshift.stateChangeTypes.keyDownEnter:
-      case Downshift.stateChangeTypes.clickItem:
-        // Don't reset isOpen, inputValue and highlightedIndex when item is selected
-        return omit(changes, ['isOpen', 'inputValue', 'highlightedIndex']);
-
-      case Downshift.stateChangeTypes.mouseUp:
-        // TODO: Uncomment when we upgrade to Downshift v3
-        // case Downshift.stateChangeTypes.touchEnd:
-        // Retain input on blur
-        return omit(changes, 'inputValue');
-
-      default:
-        return changes;
-    }
-  };
+        default:
+          return changes;
+      }
+    },
+    [closeSelectAndEmptyInput],
+  );
 
   // downshift attaches label for us; autofocus only applies to modal
   /* eslint-disable jsx-a11y/label-has-for, jsx-a11y/no-autofocus */
@@ -128,7 +123,7 @@ export const ModulesSelectComponent: FC<Props> = ({
             onFocus: openSelect,
           })}
         />
-        {isModalOpen && <CloseButton className={styles.close} onClick={closeSelect} />}
+        {isModalOpen && <CloseButton className={styles.close} onClick={closeSelectAndEmptyInput} />}
         {showResults && (
           <ol className={styles.selectList} {...getMenuProps()}>
             {results.map((module, index) => (
@@ -198,10 +193,10 @@ export const ModulesSelectComponent: FC<Props> = ({
   const downshiftComponent = (
     <Downshift
       isOpen={isOpen}
-      onOuterClick={onOuterClick}
+      onOuterClick={closeSelect}
       inputValue={inputValue}
-      onChange={downShiftOnChange}
-      onInputValueChange={onInputValueChange}
+      onChange={handleDownshiftChange}
+      onInputValueChange={handleInputValueChange}
       selectedItem={null}
       stateReducer={stateReducer}
       defaultHighlightedIndex={0}
@@ -226,7 +221,7 @@ export const ModulesSelectComponent: FC<Props> = ({
       </button>
       <Modal
         isOpen={!disabled && isOpen}
-        onRequestClose={closeSelect}
+        onRequestClose={closeSelectAndEmptyInput}
         className={styles.modal}
         shouldCloseOnOverlayClick={false}
         fullscreen
