@@ -61,8 +61,10 @@ const ModulesSelect: FC<Props> = ({
     [],
   );
 
-  const handleDownshiftChange = (selectedItem: ModuleCode | null) =>
-    selectedItem && onChange(selectedItem);
+  const handleDownshiftChange = useCallback(
+    (selectedItem: ModuleCode | null) => selectedItem && onChange(selectedItem),
+    [onChange],
+  );
 
   const stateReducer = useCallback(
     (state: DownshiftState<ModuleCode>, changes: StateChangeOptions<ModuleCode>) => {
