@@ -27,6 +27,7 @@
 
   // Shade of grays
   --gray: #{$gray};
+  --gray-mid: #{$gray-mid};
   --gray-light: #{$gray-light};
   --gray-lighter: #{$gray-lighter};
   --gray-lightest: #{$gray-lightest};
@@ -58,6 +59,7 @@ body.mode-dark {
 
   // Shade of grays
   --gray: #aaa;
+  --gray-mid: #7d7d7d;
   --gray-light: #666;
   --gray-lighter: #474747;
   --gray-lightest: #292929;
