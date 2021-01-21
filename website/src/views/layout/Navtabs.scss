@@ -3,13 +3,7 @@
 
 $divider-margin: 0.3rem;
 
-/*
-  For breakpoint-md (tablets), show the links as compact buttons with labels below icons.
-  For breakpoint-lg (desktop), show the links as traditional link with icon to the left.
-  TODO: UPDATE COMMENT
-*/
 .nav {
-  // z-index: $navtabs-z-index; // TODO: Remove from main z-index list if no longer neeedd
   display: flex;
   justify-content: center;
   align-items: stretch;
@@ -57,13 +51,6 @@ $divider-margin: 0.3rem;
   font-size: 0.7rem;
   margin-left: 0.4rem;
   font-size: 1rem;
-
-  // TODO: Try this caps alternative
-  // margin-left: 0.5rem;
-  // font-size: 0.85rem;
-  // letter-spacing: 0.07rem;
-  // font-weight: 500;
-  // text-transform: uppercase;
 }
 
 @include media-breakpoint-down(sm) {
