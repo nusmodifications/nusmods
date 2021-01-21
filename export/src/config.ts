@@ -1,8 +1,8 @@
-module.exports = {
+export default {
   academicYear: process.env.ACADEMIC_YEAR,
 
   // Width of the page in pixels
-  pageWidth: process.env.PAGE_WIDTH || 1024,
+  pageWidth: Number(process.env.PAGE_WIDTH) || 1024,
 
   // Path to the Chrome executable - for Puppeteer 0.13, use Chrome 64.
   // If left blank this will use the version of Chromium that comes with Puppeteer
@@ -13,7 +13,7 @@ module.exports = {
   // for production
   // If set to a URL, the page will be loaded instead - use localhost:8081 in
   // development with Webpack hot reload server
-  page: process.env.PAGE,
+  page: process.env.PAGE!,
 
   // Path to a folder containing module data. If null, during development the
   // NUSMods API will be used instead. In production leaving this as null will

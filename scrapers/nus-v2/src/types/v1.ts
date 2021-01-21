@@ -7,23 +7,12 @@ type DayText = string; // E.g. "Monday", "Tuesday"
 type Department = string;
 type StartTime = string; // E.g. "1400"
 type EndTime = string; // E.g. "1500"
-type Faculty = string;
 type LessonType = string; // E.g. "Lecture", "Tutorial"
-type LessonTime = StartTime | EndTime;
 type ModuleCode = string; // E.g. "CS3216"
 type ModuleTitle = string;
 type Semester = number; // E.g. 1/2/3/4. 3 and 4 means special sem i and ii.
 type WeekText = string; // E.g. "Every Week", "Odd Week"
 type Venue = string;
-
-// Auxiliary data types
-type Day = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
-
-type Time = 'Morning' | 'Afternoon' | 'Evening';
-
-type ModuleLevel = 1 | 2 | 3 | 4 | 5 | 6 | 8;
-
-type WorkloadComponent = 'Lecture' | 'Tutorial' | 'Laboratory' | 'Project' | 'Preparation';
 
 // RawLesson is a lesson time slot obtained from the API.
 // Usually ModuleCode and ModuleTitle has to be injected in before using in the timetable.

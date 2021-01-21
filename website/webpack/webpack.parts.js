@@ -7,6 +7,12 @@ const { format } = require('date-fns');
 
 const ROOT = path.join(__dirname, '..');
 const SRC = 'src';
+const DIST = 'dist';
+
+// Used by Webpack to resolve the path to assets on the client side
+// See: https://webpack.js.org/guides/public-path/
+exports.WEBSITE_PUBLIC_PATH = '/';
+exports.TIMETABLE_ONLY_PUBLIC_PATH = '/timetable-only/';
 
 const PATHS = {
   root: ROOT,
@@ -16,9 +22,9 @@ const PATHS = {
   src: path.join(ROOT, SRC),
   styles: [path.join(ROOT, SRC, 'styles'), path.join(ROOT, 'node_modules')],
   images: path.join(ROOT, SRC, 'img'),
-  build: path.join(ROOT, 'dist'),
-  buildTimetable: path.join(ROOT, 'dist-timetable'),
   fixtures: path.join(ROOT, SRC, '__mocks__'),
+  build: path.join(ROOT, DIST),
+  buildTimetable: path.join(ROOT, DIST, exports.TIMETABLE_ONLY_PUBLIC_PATH),
 };
 
 const getCSSConfig = ({ options } = {}) => [
@@ -65,8 +71,8 @@ exports.loadCSS = ({ include, exclude, options } = {}) => ({
 exports.productionCSS = ({ options } = {}) => ({
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name].[contenthash:8].css',
-      chunkFilename: '[name].[contenthash:8].css',
+      filename: 'assets/[name].[contenthash:8].css',
+      chunkFilename: 'assets/[name].[contenthash:8].css',
       ignoreOrder: true,
 
       ...options,
@@ -165,6 +171,19 @@ exports.devServer = () => ({
 });
 
 /**
+ * Returns the current Singapore date, but with the time zone changed to the
+ * local machine's. E.g. if it is 1965-08-09 0000hrs SGT, this function
+ * returns 1965-08-09 0000hrs local time.
+ *
+ * Port of `toSingaporeTime` from timify.ts.
+ */
+function singaporeTime() {
+  const SGT_OFFSET = -8 * 60;
+  const localDate = new Date();
+  return new Date(localDate.getTime() + (localDate.getTimezoneOffset() - SGT_OFFSET) * 60 * 1000);
+}
+
+/**
  * Generates an app version string using the git commit hash and current date.
  *
  * @returns Object with keys `commitHash` and `versionStr`.
@@ -180,8 +199,31 @@ exports.appVersion = () => {
   }
   // Version format: <yyyyMMdd date>-<7-char hash substring>
   const versionStr =
-    commitHash && `${format(new Date(), 'yyyyMMdd')}-${commitHash.substring(0, 7)}`;
+    commitHash && `${format(singaporeTime(), 'yyyyMMdd')}-${commitHash.substring(0, 7)}`;
   return { commitHash, versionStr };
+};
+
+/**
+ * Decide NUSMods environment based on some basic heuristics.
+ *
+ * @returns {typeof NUSMODS_ENV} The NUSMods environment. For more information,
+ * see the docstring for the `NUSMODS_ENV` global variable.
+ */
+exports.env = () => {
+  if (process.env.NODE_ENV === 'test') return 'test';
+
+  // Vercel deployments
+  if (process.env.VERCEL_ENV === 'production') return 'production';
+  if (process.env.VERCEL_ENV === 'preview') {
+    if (process.env.VERCEL_GIT_COMMIT_REF === 'master') return 'staging';
+    return 'preview';
+  }
+
+  // CI builds, if ever ran (e.g. if build artifacts are uploaded to Netlify), are previews
+  if (process.env.NODE_ENV === 'production' && process.env.CI) return 'preview';
+
+  // Others
+  return 'development';
 };
 
 exports.PATHS = PATHS;

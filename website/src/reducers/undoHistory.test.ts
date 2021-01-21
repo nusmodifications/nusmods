@@ -48,7 +48,7 @@ const mutatedState = produce(state, (draft) => {
 
 const config: UndoHistoryConfig = {
   actionsToWatch: [WATCHED_ACTION],
-  whitelist: ['data.toMutate.numbers', 'data.toMutate.string'],
+  storedKeyPaths: ['data.toMutate.numbers', 'data.toMutate.string'],
 };
 
 describe('#computeUndoStacks()', () => {
@@ -76,17 +76,17 @@ describe('#computeUndoStacks()', () => {
     expect(hist0.past).toHaveLength(0);
     expect(hist0.present).toBeUndefined(); // Present did not exist
     expect(hist1.past).toHaveLength(1);
-    expect(hist1.past[0]).toEqual(pick(state, config.whitelist));
+    expect(hist1.past[0]).toEqual(pick(state, config.storedKeyPaths));
 
     // Set new present
-    const present1 = pick(mutatedState, config.whitelist);
+    const present1 = pick(mutatedState, config.storedKeyPaths);
     expect(hist1.present).toEqual(present1);
-    expect(hist1.present).not.toEqual(pick(state, config.whitelist)); // Just make sure both states are different
+    expect(hist1.present).not.toEqual(pick(state, config.storedKeyPaths)); // Just make sure both states are different
 
     // Add present to past if present exists
     expect(hist2.past).toHaveLength(2);
     expect(hist2.past[1]).toEqual(present1);
-    expect(hist2.present).toEqual(pick(state, config.whitelist));
+    expect(hist2.present).toEqual(pick(state, config.storedKeyPaths));
   });
 
   test('should undo', () => {

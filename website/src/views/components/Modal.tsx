@@ -1,55 +1,62 @@
-import * as React from 'react';
+import { FC, useCallback, useLayoutEffect, useState } from 'react';
 import ReactModal, { Props as ModalProps } from 'react-modal';
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import classnames from 'classnames';
 
-import disableScrolling from 'utils/disableScrolling';
 import styles from './Modal.scss';
 
 type Props = ModalProps & {
   isOpen: boolean;
   overlayClassName?: string;
   className?: string;
-  children?: React.ReactNode;
-  fullscreen: boolean;
+  fullscreen?: boolean;
   animate?: boolean;
 };
 
-export default class Modal extends React.Component<Props> {
-  static defaultProps = {
-    fullscreen: false,
-  };
+const Modal: FC<Props> = ({
+  isOpen,
+  overlayClassName,
+  className,
+  fullscreen = false,
+  animate,
+  children,
+  ...otherModalProps
+}) => {
+  // Because ReactModal's contentRef is only provided after all effects have
+  // executed, in order for `Modal` to react to the setting/unsetting of
+  // `contentRef`, `contentRef` needs to be stored in component state, even if
+  // this causes additional renders.
+  const [modalContent, setModalContent] = useState<HTMLDivElement | undefined>();
+  const contentRefCallback = useCallback((node) => setModalContent(node), []);
 
-  componentDidMount() {
-    disableScrolling(this.props.isOpen);
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    if (this.props.isOpen !== prevProps.isOpen) {
-      disableScrolling(this.props.isOpen);
+  // Disable body scrolling if modal is open, but allow modal to scroll.
+  useLayoutEffect(() => {
+    if (!modalContent) {
+      return undefined;
     }
-  }
+    if (isOpen) {
+      disableBodyScroll(modalContent);
+      return () => enableBodyScroll(modalContent);
+    }
+    enableBodyScroll(modalContent);
+    return undefined;
+  }, [isOpen, modalContent]);
 
-  componentWillUnmount() {
-    // Ensure disableScrolling is disabled if the component is
-    // unmounted without the modal closing
-    disableScrolling(false);
-  }
+  return (
+    <ReactModal
+      overlayClassName={classnames(styles.overlay, overlayClassName)}
+      className={classnames(styles.modal, className, {
+        [styles.fullscreen]: fullscreen,
+        [styles.animated]: animate,
+      })}
+      closeTimeoutMS={animate ? 150 : 0}
+      isOpen={isOpen}
+      contentRef={contentRefCallback}
+      {...otherModalProps}
+    >
+      {children}
+    </ReactModal>
+  );
+};
 
-  render() {
-    const { className, overlayClassName, children, fullscreen, animate, ...rest } = this.props;
-
-    return (
-      <ReactModal
-        overlayClassName={classnames(styles.overlay, overlayClassName)}
-        className={classnames(styles.modal, className, {
-          [styles.fullscreen]: fullscreen,
-          [styles.animated]: animate,
-        })}
-        closeTimeoutMS={animate ? 150 : 0}
-        {...rest}
-      >
-        {children}
-      </ReactModal>
-    );
-  }
-}
+export default Modal;

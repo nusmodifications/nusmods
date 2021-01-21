@@ -1,9 +1,9 @@
-import { FC, memo, useEffect } from 'react';
+import { FC, memo, useLayoutEffect, useRef } from 'react';
 import classnames from 'classnames';
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
 import { Menu, X as Close } from 'react-feather';
 import useMediaQuery from 'views/hooks/useMediaQuery';
-import disableScrolling from 'utils/disableScrolling';
 import { breakpointUp } from 'utils/css';
 import Fab from './Fab';
 
@@ -31,13 +31,22 @@ export const SideMenuComponent: FC<Props> = ({
   children,
 }) => {
   const matchBreakpoint = useMediaQuery(breakpointUp('md'));
-
   const isSideMenuShown = isOpen && !matchBreakpoint;
 
-  useEffect(() => {
-    disableScrolling(isSideMenuShown);
-    return () => disableScrolling(false);
-  });
+  // Disable body scrolling if side menu is open, but allow side menu to scroll.
+  const scrollableRef = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const scrollable = scrollableRef.current;
+    if (!scrollable) {
+      return undefined;
+    }
+    if (isSideMenuShown) {
+      disableBodyScroll(scrollable);
+      return () => enableBodyScroll(scrollable);
+    }
+    enableBodyScroll(scrollable);
+    return undefined;
+  }, [isSideMenuShown]);
 
   return (
     <>
@@ -54,13 +63,18 @@ export const SideMenuComponent: FC<Props> = ({
       {/* boundaryContainer defines the top and bottom boundaries which sideMenu can extend to */}
       <div className={styles.boundaryContainer}>
         {/*
-            sideMenu is the scrollable menu element. On mobile, it expands
-            from the bottom of the screen to the top boundary of the
-            container; i.e. if the menu's content is shorter than the
-            container, it'll appear as a little action sheet rising from the
-            bottom of the screen.
-          */}
-        <div className={classnames(styles.sideMenu, { [styles.isOpen]: isOpen })}>{children}</div>
+          sideMenu is the scrollable menu element. On mobile, it expands
+          from the bottom of the screen to the top boundary of the
+          container; i.e. if the menu's content is shorter than the
+          container, it'll appear as a little action sheet rising from the
+          bottom of the screen.
+        */}
+        <div
+          className={classnames(styles.sideMenu, { [styles.isOpen]: isOpen })}
+          ref={scrollableRef}
+        >
+          {children}
+        </div>
       </div>
     </>
   );

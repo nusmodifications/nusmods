@@ -21,7 +21,7 @@ import GetSemesterTimetable from './GetSemesterTimetable';
 import GetSemesterModules from './GetSemesterModules';
 import { fromTermCode } from '../utils/api';
 import { validateSemester } from '../services/validation';
-import { removeEmptyValues, titleize, trimValues } from '../utils/data';
+import { removeEmptyValues, titleize, trimValues, decodeHTMLEntities } from '../utils/data';
 import { difference } from '../utils/set';
 import { Logger } from '../services/logger';
 
@@ -84,6 +84,7 @@ export function mapAttributes(
  * - Remove empty fields and fields with text like 'nil'
  * - Trim whitespace from module title, description and other text fields
  * - Properly capitalize ALL CAPS title
+ * - Decode HTML entities in description such as '&224;' to 'à'
  */
 export function cleanModuleInfo(module: SemesterModule) {
   let cleanedModule = module;
@@ -91,6 +92,10 @@ export function cleanModuleInfo(module: SemesterModule) {
   // Title case module title if it is all uppercase
   if (cleanedModule.title === cleanedModule.title.toUpperCase()) {
     cleanedModule.title = titleize(cleanedModule.title);
+  }
+
+  if (cleanedModule.description != null) {
+    cleanedModule.description = decodeHTMLEntities(cleanedModule.description);
   }
 
   // Remove empty values like 'nil' and empty strings for keys that allow them

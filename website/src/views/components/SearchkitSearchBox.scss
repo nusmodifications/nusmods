@@ -1,4 +1,6 @@
-.search-panel {
+@import '~styles/utils/modules-entry';
+
+.searchBox {
   position: sticky;
   top: $navbar-height;
   z-index: $module-finder-search-z-index-md;
@@ -21,12 +23,4 @@
       rgba(#000, 0)
     );
   }
-}
-
-.no-scroll .search-panel {
-  position: fixed;
-  top: $navbar-height;
-  right: 0;
-  left: 0;
-  margin: 0;
 }
