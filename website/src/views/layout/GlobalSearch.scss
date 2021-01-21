@@ -7,10 +7,10 @@ $icon-horizontal-padding: ($container-height - $icon-size) / 2;
 .container {
   composes: btn-svg from global;
   position: relative;
-  font-size: 0.9rem;
-  margin: $container-vertical-margin $container-horizontal-margin;
   width: 100%;
   max-width: $results-width-open;
+  margin: $container-vertical-margin $container-horizontal-margin;
+  font-size: 0.9rem;
 }
 
 .icon {
@@ -21,14 +21,14 @@ $icon-horizontal-padding: ($container-height - $icon-size) / 2;
 }
 
 .input {
-  font-size: $font-size-s;
-  background: transparent;
-  border-radius: $corner-radius;
-
   // Extend input to the left of icon so that the icon is clickable.
   $overhang: $icon-size + $icon-horizontal-padding * 2;
+
   padding-left: $overhang;
   margin-left: -$overhang;
+  border-radius: $corner-radius;
+  font-size: $font-size-s;
+  background: transparent;
 
   &:focus {
     background: transparent;
@@ -40,12 +40,12 @@ $icon-horizontal-padding: ($container-height - $icon-size) / 2;
   top: $navbar-height - $container-vertical-margin;
   right: 0;
   z-index: $module-select-z-index;
+  width: $results-width-open;
   border: $input-btn-border-width solid $input-border-color;
   border-width: 0 $input-btn-border-width $input-btn-border-width;
   border-radius: 0 0 $btn-border-radius $btn-border-radius;
   color: var(--body-color);
   background: var(--body-bg);
-  width: $results-width-open;
 }
 
 .selectList {

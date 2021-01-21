@@ -13,13 +13,12 @@
 
 .toggle {
   position: relative;
-  font-size: 0.9rem;
-  border-radius: $corner-radius;
-  padding: 0;
-
   // Ensure .toggle is a circle by setting width. Its height should already be
   // equal to $container-height.
   width: $container-height;
+  padding: 0;
+  border-radius: $corner-radius;
+  font-size: 0.9rem;
 
   &:hover {
     background-color: var(--gray-lightest);
@@ -38,9 +37,9 @@
 }
 
 .dropdownMenu {
-  width: 16rem;
-  left: auto;
   right: 0;
+  left: auto;
+  width: 16rem;
   padding: 0.4rem;
 
   .item {
@@ -52,9 +51,9 @@
       align-items: center;
 
       .leftIcon {
-        margin-right: 0.4rem;
         width: $icon-size;
         height: $icon-size;
+        margin-right: 0.4rem;
       }
 
       .rightContent {

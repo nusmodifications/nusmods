@@ -26,9 +26,9 @@
   }
 
   .footerContainer {
+    max-width: 75rem;
     padding: 0 15px;
     margin: auto;
-    max-width: 75rem;
   }
 
   @include media-breakpoint-up(sm) {

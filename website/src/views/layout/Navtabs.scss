@@ -9,23 +9,22 @@
 }
 
 .link {
-  line-height: 1.6;
   display: flex;
+  flex-grow: 1;
   justify-content: center;
   align-items: center;
-  flex-grow: 1;
-  color: var(--gray-mid);
   width: 4rem;
   margin: 0 0.2rem;
   border-top: 0.2rem solid transparent;
   border-bottom: 0.2rem solid transparent;
-
+  line-height: 1.6;
+  color: var(--gray-mid);
   transition: color $desktop-entering-duration $material-deceleration-curve,
     border-bottom-color $desktop-entering-duration $material-deceleration-curve;
 
   &.linkActive {
-    color: theme-color(primary);
     border-bottom-color: theme-color(primary);
+    color: theme-color(primary);
   }
 
   &:hover {
@@ -35,18 +34,17 @@
   }
 
   svg {
-    margin-bottom: 0.1rem;
     flex: 0 0 auto;
-
     width: $icon-size;
     height: $icon-size;
+    margin-bottom: 0.1rem;
   }
 }
 
 .title {
   display: none;
-  font-size: 0.7rem;
   margin-left: 0.4rem;
+  font-size: 0.7rem;
   font-size: 1rem;
 }
 
