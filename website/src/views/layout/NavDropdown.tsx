@@ -16,6 +16,7 @@ import { NavLink } from 'react-router-dom';
 import ExternalLink from 'views/components/ExternalLink';
 import { preload as preloadContribute } from 'views/contribute/ContributeContainer';
 import type { State } from 'types/state';
+import weekText from 'utils/weekText';
 
 import styles from './NavDropdown.scss';
 
@@ -29,7 +30,7 @@ const NavDropdown: FC = () => {
     closeMenu,
   }) => {
     const itemProps = {
-      className: classnames(styles.item, 'dropdown-item'),
+      className: classnames(styles.item, styles.selectable, 'dropdown-item'),
       onClick: () => closeMenu(),
     };
     return (
@@ -94,6 +95,8 @@ const NavDropdown: FC = () => {
               />
             </span>
           </ExternalLink>
+          <div className="dropdown-divider" />
+          <div className={styles.item}>{weekText}</div>
         </div>
       </div>
     );

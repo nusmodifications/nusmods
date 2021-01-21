@@ -41,9 +41,13 @@
   left: auto;
   width: 16rem;
   padding: 0.4rem;
+  color: var(--body-color);
 
   .item {
     padding: 0.375rem 0.75rem;
+  }
+
+  .selectable {
     border-radius: 0.25rem;
 
     .itemContents {
