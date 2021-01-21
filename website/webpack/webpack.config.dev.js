@@ -22,6 +22,8 @@ const developmentConfig = merge([
         VERSION_STR: JSON.stringify(parts.appVersion().versionStr),
         DEBUG_SERVICE_WORKER: !!process.env.DEBUG_SERVICE_WORKER,
         DATA_API_BASE_URL: JSON.stringify(process.env.DATA_API_BASE_URL),
+        VERCEL_ENV: JSON.stringify(process.env.VERCEL_ENV),
+        VERCEL_GIT_COMMIT_REF: JSON.stringify(process.env.VERCEL_GIT_COMMIT_REF),
       }),
     ],
   },
@@ -31,7 +33,6 @@ const developmentConfig = merge([
     // Use a fast source map for good-enough debugging usage
     // https://webpack.js.org/configuration/devtool/#devtool
     devtool: 'eval-cheap-module-source-map',
-    entry: 'entry/main',
     // Fixes HMR in Webpack 5
     // TODO: Remove once one of these issues are fixed:
     // https://github.com/pmmmwh/react-refresh-webpack-plugin/issues/235
@@ -84,10 +85,6 @@ const developmentConfig = merge([
       new ReactRefreshWebpackPlugin(),
     ],
   },
-  parts.lintJavaScript({
-    include: parts.PATHS.src,
-  }),
-  parts.lintCSS(),
   parts.loadImages({
     include: parts.PATHS.images,
   }),

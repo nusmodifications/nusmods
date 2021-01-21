@@ -3,14 +3,16 @@ import { useMemo } from 'react';
 import { Subscription, useSubscription } from 'use-subscription';
 import json2mq from 'json2mq';
 
+export function getMedia(mediaQuery: MediaQuery): string {
+  return typeof mediaQuery === 'string' ? mediaQuery : json2mq(mediaQuery);
+}
+
 /**
  * To be used together with utilities in css.ts.
  * @returns Whether `mediaQuery` is/are matched.
  */
 export default function useMediaQuery(mediaQuery: MediaQuery) {
-  const media = useMemo(() => (typeof mediaQuery === 'string' ? mediaQuery : json2mq(mediaQuery)), [
-    mediaQuery,
-  ]);
+  const media = useMemo(() => getMedia(mediaQuery), [mediaQuery]);
 
   const subscription = useMemo<Subscription<boolean>>(
     () => ({

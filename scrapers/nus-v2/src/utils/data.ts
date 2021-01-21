@@ -3,6 +3,7 @@
  */
 
 import { uniq, trim, groupBy, values } from 'lodash';
+import { decode } from 'he';
 import { VenueLesson } from '../types/venues';
 import {
   DayText,
@@ -44,6 +45,10 @@ export function titleize(string: string) {
   });
 
   return capitalized;
+}
+
+export function decodeHTMLEntities(string: string) {
+  return decode(string);
 }
 
 /**

@@ -7,6 +7,7 @@ const {
   measureFileSizesBeforeBuild,
   printFileSizesAfterBuild,
 } = require('react-dev-utils/FileSizeReporter');
+const _ = require('lodash');
 
 const production = require('../webpack/webpack.config.prod');
 const timetableOnly = require('../webpack/webpack.config.timetable-only');
@@ -18,20 +19,33 @@ function runWebpack(config) {
   return util.promisify(compiler.run).call(compiler);
 }
 
-// Print out errors
-function printErrors(summary, errors) {
-  console.log(chalk.red(summary));
-  console.log();
-  errors.forEach((err) => {
-    console.log(err);
-    console.log();
+/**
+ * Print out errors.
+ * @param {function} log console.log-compatible function used to print errors
+ * @param {string} summary
+ * @param {Error|Error[]} errorOrErrors
+ */
+function printErrors(log, summary, errorOrErrors) {
+  log(chalk.red(summary));
+  log();
+  const errors = _.castArray(errorOrErrors);
+  errors.forEach((err, i) => {
+    log(err);
+    if (i !== errors.length - 1) {
+      log();
+    }
   });
+  console.log(); // Use native console.log to force an unprefixed line after the error block
 }
 
-function handleErrors(stats) {
+/**
+ * @param {function} log
+ * @param {webpack.Stats} stats
+ */
+function handleErrors(log, stats) {
   if (stats.hasErrors()) {
-    printErrors('Failed to compile.', stats.compilation.errors);
-    process.exit(1);
+    printErrors(log, 'Failed to compile.', stats.compilation.errors);
+    throw stats.compilation.errors;
   }
 
   const statsJson = stats.toJson({
@@ -40,27 +54,35 @@ function handleErrors(stats) {
 
   if (process.env.CI && statsJson.warnings.length) {
     printErrors(
+      log,
       'Failed to compile. When process.env.CI = true, warnings are treated as failures. Most CI servers set this automatically.',
       stats.compilation.warnings,
     );
-    process.exit(1);
+    throw stats.compilation.errors;
   }
 }
 
-// Create the production build and print the deployment instructions.
-async function build(previousFileSizes) {
-  console.log('Building version', chalk.cyan(parts.appVersion().versionStr));
-  console.log(chalk.cyan('Creating an optimized production build...'));
-  console.log();
+/**
+ * Write commit hash into `commit-hash.txt`, which are used by
+ * scripts/promote-staging.sh and https://launch.nusmods.com.
+ */
+async function writeCommitHash() {
+  const { commitHash } = parts.appVersion();
+  // Sync filename with `scripts/promote-staging.sh`.
+  return fs.outputFile(
+    path.join(parts.PATHS.build, 'commit-hash.txt'),
+    `${commitHash.slice(0, 7)}\n`,
+  );
+}
 
+async function buildProd(previousDistFileSizes) {
+  const log = (...args) => console.log('prod:', ...args);
   try {
-    // Remove dist folders
-    fs.removeSync(parts.PATHS.build);
-    console.log(`${parts.PATHS.build} has been removed`);
+    log(chalk.cyan('Creating build...'));
 
     // Build the browser warning bundle first so we can pass it to the main bundle
     const browserWarningStats = await runWebpack(browserWarning);
-    handleErrors(browserWarningStats);
+    handleErrors((...args) => console.log('prod (browser-warning):', ...args), browserWarningStats);
 
     // The browser warning bundle should only have one JS file which includes both the JS and CSS
     // for the browser warning. We pass this to the main site's Webpack config so it can be loaded
@@ -72,45 +94,68 @@ async function build(previousFileSizes) {
 
     // Build the main website bundle
     const mainStats = await runWebpack(production({ browserWarningPath }));
-    handleErrors(mainStats);
+    handleErrors(log, mainStats);
 
-    console.log(chalk.green('Compiled successfully.'));
-    console.log();
-
-    console.log('File sizes after gzip:');
-    console.log();
-    printFileSizesAfterBuild(mainStats, previousFileSizes, parts.PATHS.build);
-    console.log();
-
-    console.log(`The ${chalk.cyan(parts.PATHS.build)} folder is ready to be deployed.`);
-    console.log();
-
-    // Build the timetable-only build for the export service
-    console.log(chalk.cyan('Creating timetable-only build...'));
-    fs.removeSync(parts.PATHS.buildTimetable);
-    console.log(`${parts.PATHS.buildTimetable} has been removed`);
-    console.log();
-
-    const timetableOnlyStats = await runWebpack(timetableOnly);
-    handleErrors(timetableOnlyStats);
-
-    console.log(chalk.green('Compiled successfully.'));
-    console.log();
+    log(chalk.green('Compiled successfully.'));
+    log('File sizes after gzip:');
+    printFileSizesAfterBuild(mainStats, previousDistFileSizes, parts.PATHS.build);
   } catch (err) {
-    printErrors('Failed to compile.', [err]);
-    process.exit(1);
+    printErrors(log, 'Failed to compile prod.', err);
+    throw err;
   }
 }
 
-// Write commit hash into `commit-hash.txt` for reference during deployment.
-function writeCommitHash() {
-  const { commitHash } = parts.appVersion();
-  // Sync filename with `scripts/promote-staging.sh`.
-  fs.writeFileSync(path.join(parts.PATHS.build, 'commit-hash.txt'), `${commitHash.slice(0, 7)}\n`);
+/**
+ * Build the timetable-only build for the export service.
+ */
+async function buildTimetableOnly() {
+  const log = (...args) => console.log('timetable-only:', ...args);
+  try {
+    log(chalk.cyan('Creating build...'));
+
+    const timetableOnlyStats = await runWebpack(timetableOnly);
+    handleErrors(log, timetableOnlyStats);
+
+    log(chalk.green('Compiled timetable-only successfully.'));
+  } catch (err) {
+    printErrors(log, 'Failed to compile timetable-only.', err);
+    throw err;
+  }
 }
 
-// First, read the current file sizes in build directory.
-// This lets us display how much they changed later.
-measureFileSizesBeforeBuild(parts.PATHS.build)
-  .then((previousFileSizes) => build(previousFileSizes))
-  .then(writeCommitHash);
+async function buildAll(previousDistFileSizes) {
+  const results = await Promise.allSettled([
+    buildProd(previousDistFileSizes),
+    buildTimetableOnly(),
+  ]);
+  const errors = results.filter((r) => r.status === 'rejected').map((r) => r.reason);
+  if (errors.length > 0) {
+    throw errors;
+  }
+}
+
+async function main() {
+  console.log('Building version', chalk.cyan(parts.appVersion().versionStr));
+
+  // First, read the current file sizes in build directory.
+  // This lets us display how much they changed later.
+  const previousDistFileSizes = await measureFileSizesBeforeBuild(parts.PATHS.build);
+
+  // Clear previous build
+  await fs.remove(parts.PATHS.build);
+  console.log(`${parts.PATHS.build} has been removed`);
+
+  try {
+    await buildAll(previousDistFileSizes);
+  } catch {
+    // errors should've been logged by the respective build functions.
+    console.log('Build failed.');
+    process.exit(1);
+  }
+
+  await writeCommitHash();
+
+  console.log(`The ${chalk.cyan(parts.PATHS.build)} folder is ready to be deployed.`);
+}
+
+main();

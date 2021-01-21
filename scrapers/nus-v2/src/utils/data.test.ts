@@ -9,6 +9,7 @@ import {
   removeEmptyValues,
   titleize,
   trimValues,
+  decodeHTMLEntities,
   ZWSP,
 } from './data';
 
@@ -32,6 +33,14 @@ describe(titleize, () => {
   test('should not change abbreviations', () => {
     expect(titleize('NUS world cup 2019')).toEqual('NUS World Cup 2019');
     expect(titleize('NUS-MIT lab for excellence 2019')).toEqual('NUS-MIT Lab For Excellence 2019');
+  });
+});
+
+describe(decodeHTMLEntities, () => {
+  test('should decode HTML entities', () => {
+    expect(
+      decodeHTMLEntities('&amp; Schr&#246;dinger cried, &quot;Oh l&#224; l&#224;!&quot;'),
+    ).toEqual('& Schrödinger cried, "Oh là là!"');
   });
 });
 
