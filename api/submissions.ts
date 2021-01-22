@@ -30,10 +30,14 @@ const submissionHandler = async (req, res) => {
 
 const handleGet = async (req, res) => {
   try {
-    const submission = await getSubmissionById('lmao')
+    const submission = await getSubmissionById(req.user.accountName)
     res.json(submission)
   } catch (err) {
-    // TODO: Identify error type and throw relevant error.
+    if (err.response.status === 404) {
+      return res.status(404).json({
+        message: 'No MPE submission found for requesting user'
+      })
+    }
     throw err
   }
 }
