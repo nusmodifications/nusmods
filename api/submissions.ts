@@ -1,6 +1,7 @@
 import { getSubmissionById, createSubmission } from '../mpe'
-import rescue from '../utils/rescue'
 import { verifyLogin } from '../auth'
+import rescue from '../utils/rescue'
+import handleMethodNotFound from '../utils/methodNotFound'
 
 const allowedMethods = {
   GET: 'GET',
@@ -51,17 +52,6 @@ const handlePost = async (req, res) => {
   }
 }
 
-const handleDefault = async (req, res) => {
-  try {
-    const allowHeaderValue =
-      Object.keys(allowedMethods).reduce((acc, method) => `${acc}, ${method}`)
-    res.setHeader('Allow', allowHeaderValue)
-    res.status(405).json({
-      message: 'Method not allowed'
-    })
-  } catch (err) {
-    throw err
-  }
-}
+const handleDefault = handleMethodNotFound(allowedMethods)
 
 export default rescue(verifyLogin(submissionHandler))
