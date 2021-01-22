@@ -4,7 +4,12 @@ import * as fs from 'fs'
 import { auth } from '../config'
 
 const samlifyErrors = {
-  assertionExpired: 'ERR_SUBJECT_UNCONFIRMED'
+  assertionExpired: 'ERR_SUBJECT_UNCONFIRMED',
+  invalidAssertion: 'ERR_EXCEPTION_VALIDATE_XML'
+}
+
+const errors = {
+  noTokenSupplied: 'ERR_NO_TOKEN_SUPPLIED'
 }
 
 const samlRespAttributes = {
@@ -31,10 +36,24 @@ export const createLoginURL = () => {
 
 export const authenticate = async req => {
   try {
+    const tokenProvided = req.headers.authorization || (req.body && req.body.SAMLResponse)
+    if (!tokenProvided) {
+      throw new Error(errors.noTokenSupplied)
+    }
+
+    let requestToProcess = req
+    if (req.headers.authorization) {
+      requestToProcess = {
+        body: {
+          SAMLResponse: req.headers.authorization
+        }
+      }
+    }
+
     const {
       samlContent,
       extract: { attributes } 
-    } = await sp.parseLoginResponse(idp, 'post', req)
+    } = await sp.parseLoginResponse(idp, 'post', requestToProcess)
 
     const loginData = {
       token: samlContent
@@ -57,11 +76,20 @@ export const verifyLogin = next => async (req, res) => {
     delete req.user.token
     return await next(req, res)
   } catch (err) {
-    if (err === samlifyErrors.assertionExpired) {
-      return res.status(401).json({
-        message: 'Token has expired, please login again'
-      })
+    let errResp = {
+      message: ''
     }
-    throw err
+
+    if (err === samlifyErrors.assertionExpired) {
+      errResp.message = 'Token has expired, please login again'
+    } else if (err === samlifyErrors.invalidAssertion) {
+      errResp.message = 'Invalid token supplied'
+    } else if (err.message === errors.noTokenSupplied) {
+      errResp.message = 'No token is supplied'
+    } else {
+      throw err
+    }
+
+    return res.status(401).json(errResp)
   }
 }
