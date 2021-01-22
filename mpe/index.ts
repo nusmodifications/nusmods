@@ -29,7 +29,6 @@ export const createSubmission = async (userId, preferences) => {
 
     const errors = validatePreferences(preferences)
     if (errors.length > 0) {
-      console.log(errors)
       throw new Error('MPE preferences is supplied in an invalid format')
     }
 
