@@ -35,7 +35,7 @@ const handleGet = async (req, res) => {
   } catch (err) {
     if (err.response.status === 404) {
       return res.status(404).json({
-        message: 'No MPE submission found for requesting user'
+        message: 'No MPE preferences are found for requesting user'
       })
     }
     throw err
@@ -44,9 +44,7 @@ const handleGet = async (req, res) => {
 
 const handlePost = async (req, res) => {
   try {
-    // TODO: Obtain and validate data from request.
-    const data = { content: 'Nine' }
-    await createSubmission('lmao', data)
+    await createSubmission(req.user.accountName, req.body)
     res.json({
       message: 'Your MPE preferences are successfully recorded'
     })
