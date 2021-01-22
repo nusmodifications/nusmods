@@ -1,4 +1,6 @@
-import mpe from '../lib/mpe'
+import { getSubmissionById, createSubmission } from '../mpe'
+import rescue from '../utils/rescue'
+import { verifyLogin } from '../auth'
 
 const allowedMethods = {
   GET: 'GET',
@@ -6,7 +8,7 @@ const allowedMethods = {
   PUT: 'PUT'
 }
 
-export default async (req, res) => {
+const submissionHandler = async (req, res) => {
   try {
     switch (req.method) {
       case allowedMethods.GET:
@@ -21,15 +23,13 @@ export default async (req, res) => {
         break
     }
   } catch (err) {
-    return res.status(500).json({
-      message: 'An unexpected error occurred'
-    })
+    throw err
   }
 }
 
 const handleGet = async (req, res) => {
   try {
-    const submission = await mpe.getById('lmao')
+    const submission = await getSubmissionById('lmao')
     res.json(submission)
   } catch (err) {
     // TODO: Identify error type and throw relevant error.
@@ -41,7 +41,7 @@ const handlePost = async (req, res) => {
   try {
     // TODO: Obtain and validate data from request.
     const data = { content: 'Nine' }
-    await mpe.create('lmao', data)
+    await createSubmission('lmao', data)
     res.json({
       message: 'Your MPE preferences are successfully recorded'
     })
@@ -63,3 +63,5 @@ const handleDefault = async (req, res) => {
     throw err
   }
 }
+
+export default rescue(verifyLogin(submissionHandler))
