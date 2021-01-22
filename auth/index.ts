@@ -60,7 +60,7 @@ export const authenticate = async req => {
       relayState: null
     }
 
-    if (req.body.RelayState) {
+    if (req.body && req.body.RelayState) {
       loginData.relayState = req.body.RelayState
     }
 
@@ -77,8 +77,11 @@ export const authenticate = async req => {
 export const verifyLogin = next => async (req, res) => {
   try {
     const loginData = await authenticate(req)
+
     req.user = { ...loginData }
     delete req.user.token
+    delete req.user.relayState
+
     return await next(req, res)
   } catch (err) {
     let errResp = {
