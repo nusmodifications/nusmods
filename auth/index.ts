@@ -56,7 +56,12 @@ export const authenticate = async req => {
     } = await sp.parseLoginResponse(idp, 'post', requestToProcess)
 
     const loginData = {
-      token: samlContent
+      token: samlContent,
+      relayState: null
+    }
+
+    if (req.body.RelayState) {
+      loginData.relayState = req.body.RelayState
     }
 
     for (let attr of Object.keys(samlRespAttributes)) {
