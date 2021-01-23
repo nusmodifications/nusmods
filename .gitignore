@@ -120,5 +120,7 @@ dist
 
 # Certificates and Keys
 *.cer
+*.crt
 *.jks
+*.pem
 *.xml
