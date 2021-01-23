@@ -51,12 +51,12 @@ export const authenticate = async req => {
     }
 
     const {
-      samlContent,
+      // samlContent,
       extract: { attributes } 
     } = await sp.parseLoginResponse(idp, 'post', requestToProcess)
 
     const loginData = {
-      token: samlContent,
+      token: requestToProcess.body.SAMLResponse,
       relayState: null
     }
 
