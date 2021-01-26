@@ -13,7 +13,7 @@ mark {
 // Dropdown menu
 .dropdown-menu {
   width: 100%;
-  padding: 0.1rem 0;
+  color: var(--body-color);
   box-shadow: 0 2px 6px rgba(#000, 0.25);
 
   @include scrollable-y;
@@ -24,17 +24,18 @@ mark {
 }
 
 .dropdown-item {
+  border-radius: 0.25rem;
   color: var(--body-color);
   cursor: pointer;
 
   &:hover,
   &:focus,
   &.dropdown-selected {
-    color: theme-color();
+    color: var(--body-color);
     background: var(--gray-lightest);
   }
 
-  &.dropdown-selected:active {
+  &:active {
     color: #fff;
     background: theme-color();
   }
@@ -46,6 +47,11 @@ mark {
     &.dropdown-selected {
       background: rgba(theme-color('danger'), 0.2);
     }
+
+    &:active {
+      color: #fff;
+      background: theme-color();
+    }
   }
 
   @include touchscreen-only {
@@ -53,11 +59,6 @@ mark {
 
     padding-top: $touch-horizontal-padding;
     padding-bottom: $touch-horizontal-padding;
-    border-bottom: 1px solid var(--gray-lighter);
-
-    &:last-child {
-      border-bottom: 0;
-    }
   }
 }
 

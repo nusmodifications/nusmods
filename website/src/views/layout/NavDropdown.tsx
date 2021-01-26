@@ -36,7 +36,7 @@ const NavDropdown: FC = () => {
     closeMenu,
   }) => {
     const itemProps = {
-      className: classnames(styles.item, styles.selectable, 'dropdown-item'),
+      className: classnames(styles.item, 'dropdown-item'),
       onClick: () => closeMenu(),
     };
     return (
@@ -56,20 +56,16 @@ const NavDropdown: FC = () => {
           {beta && (
             <>
               <NavLink {...itemProps} to="/planner">
-                <span className={styles.itemContents}>
-                  <Trello className={styles.leftIcon} />
-                  <span className={styles.title}>Planner</span>
-                  <span className={classnames('badge badge-info', styles.rightContent)}>Beta</span>
-                </span>
+                <Trello className={styles.leftIcon} />
+                <span className={styles.title}>Planner</span>
+                <span className={classnames('badge badge-info', styles.rightContent)}>Beta</span>
               </NavLink>
               <div className="dropdown-divider" />
             </>
           )}
           <NavLink {...itemProps} to="/settings">
-            <span className={styles.itemContents}>
-              <Settings className={styles.leftIcon} />
-              <span className={styles.title}>Settings</span>
-            </span>
+            <Settings className={styles.leftIcon} />
+            <span className={styles.title}>Settings</span>
           </NavLink>
           <NavLink
             {...itemProps}
@@ -77,45 +73,37 @@ const NavDropdown: FC = () => {
             onFocus={preloadContribute}
             to="/contribute"
           >
-            <span className={styles.itemContents}>
-              <Star className={styles.leftIcon} />
-              <span className={styles.title}>Contribute</span>
-            </span>
+            <Star className={styles.leftIcon} />
+            <span className={styles.title}>Contribute</span>
           </NavLink>
           <div className="dropdown-divider" />
           <ExternalLink {...itemProps} href="https://nusbusiness.com">
-            <span className={styles.itemContents}>
-              <Droplet className={styles.leftIcon} />
-              <span className={styles.title}>NUS Business</span>
-              <ExternalLinkIcon
-                className={classnames(styles.rightContent, styles.rightContentIcon)}
-              />
-            </span>
+            <Droplet className={styles.leftIcon} />
+            <span className={styles.title}>NUS Business</span>
+            <ExternalLinkIcon
+              className={classnames(styles.rightContent, styles.rightContentIcon)}
+            />
           </ExternalLink>
           <ExternalLink {...itemProps} href="https://nuswhispers.com">
-            <span className={styles.itemContents}>
-              <Heart className={styles.leftIcon} />
-              <span className={styles.title}>NUSWhispers</span>
-              <ExternalLinkIcon
-                className={classnames(styles.rightContent, styles.rightContentIcon)}
-              />
-            </span>
+            <Heart className={styles.leftIcon} />
+            <span className={styles.title}>NUSWhispers</span>
+            <ExternalLinkIcon
+              className={classnames(styles.rightContent, styles.rightContentIcon)}
+            />
           </ExternalLink>
           <div className="dropdown-divider" />
-          <div className={styles.item}>{weekText}</div>
+          <div className="dropdown-header">{weekText}</div>
           <ExternalLink
             {...itemProps}
             href={`https://nus.edu.sg/registrar/docs/info/calendar/ay20${baseYearNumber}-20${
               baseYearNumber + 1
             }.pdf`}
           >
-            <span className={styles.itemContents}>
-              <Calendar className={styles.leftIcon} />
-              <span className={styles.title}>Academic Calendar</span>
-              <ExternalLinkIcon
-                className={classnames(styles.rightContent, styles.rightContentIcon)}
-              />
-            </span>
+            <Calendar className={styles.leftIcon} />
+            <span className={styles.title}>Academic Calendar</span>
+            <ExternalLinkIcon
+              className={classnames(styles.rightContent, styles.rightContentIcon)}
+            />
           </ExternalLink>
         </div>
       </div>
