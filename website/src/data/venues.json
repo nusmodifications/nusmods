@@ -3981,10 +3981,10 @@
   },
   "SDE4-EXR1-2": {
     "roomName": "SDE4-EXR1-2",
-    "floor": 1,
+    "floor": 4,
     "location": {
-      "x": 103.77037927508357,
-      "y": 1.296862409348664
+      "x": 103.77050131559373,
+      "y": 1.2966676219094895
     }
   },
   "SDE2-MEZZ": {
@@ -4425,6 +4425,86 @@
     "location": {
       "x": 103.77431601454474,
       "y": 1.2932838742247788
+    }
+  },
+  "Interaction": {
+    "roomName": "Interaction",
+    "floor": 2,
+    "location": {
+      "x": 103.77761185169221,
+      "y": 1.291363565499891
+    }
+  },
+  "SDE2-ER1": {
+    "roomName": "SDE2-ER1",
+    "floor": 2,
+    "location": {
+      "x": 103.77110938763377,
+      "y": 1.2972611323538517
+    }
+  },
+  "SDE4-GIS1-2": {
+    "roomName": "GIS Lab",
+    "floor": 2,
+    "location": {
+      "x": 103.77035648909613,
+      "y": 1.2967945473983356
+    }
+  },
+  "SDE1-SR5-6": {
+    "roomName": "Seminar Room 5",
+    "floor": 1,
+    "location": {
+      "x": 103.7706401792259,
+      "y": 1.2973688336414937
+    }
+  },
+  "SDE4-EXR-1": {
+    "roomName": "SDE4-EXR-1",
+    "floor": 4,
+    "location": {
+      "x": 103.77057641744615,
+      "y": 1.296705163219649
+    }
+  },
+  "UTSRC-DS": {
+    "roomName": "Utown Dance Studio",
+    "floor": 1,
+    "location": {
+      "x": 103.77211460270571,
+      "y": 1.304857488157069
+    }
+  },
+  "YSTCM-RS": {
+    "roomName": "Recording Studio",
+    "floor": 1,
+    "location": {
+      "x": 103.77294451463969,
+      "y": 1.3021768032122787
+    }
+  },
+  "SDE2_ER4-5": {
+    "roomName": "SDE2_ER4-5",
+    "floor": 3,
+    "location": {
+      "x": 103.77113599837479,
+      "y": 1.2973040363708734
+    }
+  },
+  "SDE1-CL2": {
+    "roomName": "Computer Lab 2",
+    "floor": 4,
+    "location": {
+      "x": 103.77066264844744,
+      "y": 1.297379656961974
+    }
+  },
+  "SDE1-CL3": {
+    "roomName": "Computer Lab 3",
+    "floor": 5,
+    "location": {
+      "x": 103.77063805848886,
+      "y": 1.2973165688964943
     }
   }
 }
