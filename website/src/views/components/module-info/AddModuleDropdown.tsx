@@ -142,12 +142,14 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
                         {...getItemProps({ item: semester })}
                         type="button"
                         key={semester}
-                        className={classnames('dropdown-item', styles.dropdownItem, {
+                        className={classnames('dropdown-item', {
                           'dropdown-selected': index === highlightedIndex,
                         })}
                         onClick={() => this.onSelect(semester)}
                       >
-                        {this.buttonLabel(semester)}
+                        <span className={styles.dropdownItemContents}>
+                          {this.buttonLabel(semester)}
+                        </span>
                       </button>
                     ))}
                   </div>
