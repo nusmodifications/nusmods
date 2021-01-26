@@ -125,7 +125,7 @@ const DesktopFilter: FC<DisplayProps> = ({ allItems, onSelectItem, showCount, pl
                   key={key}
                   {...getItemProps({
                     item: key,
-                    className: classnames('dropdown-item form-check', {
+                    className: classnames('dropdown-item form-check', styles.formCheckItem, {
                       'dropdown-selected': index === highlightedIndex,
                       [styles.enabled]: selected,
                     }),
