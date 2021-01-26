@@ -2,7 +2,7 @@ import { Component, Fragment } from 'react';
 import { omit, stubString } from 'lodash';
 import Downshift, { ChildrenFunction, DownshiftState, StateChangeOptions } from 'downshift';
 import classnames from 'classnames';
-import { ChevronRight, HelpCircle as Help, Search } from 'react-feather';
+import { BookOpen, ChevronRight, HelpCircle as Help, Map, Search } from 'react-feather';
 
 import { highlight } from 'utils/react';
 import { ModuleCondensed } from 'types/modules';
@@ -137,8 +137,11 @@ class GlobalSearch extends Component<Props, State> {
         <div className={styles.container}>
           {searchForm}
 
-          <div className={styles.selectListContainer}>
-            <div className={styles.selectList}>
+          {/* Wrap select list in absolute-positioned container to fix macOS Safari scrolling perf */}
+          <div
+            className={classnames('dropdown-menu', styles.selectListContainer, { show: isOpen })}
+          >
+            <div className={styles.selectList} {...getMenuProps()}>
               <div className={styles.noResults}>
                 <Help />
                 <p>
@@ -191,22 +194,25 @@ class GlobalSearch extends Component<Props, State> {
         {searchForm}
 
         {/* Wrap select list in absolute-positioned container to fix macOS Safari scrolling perf */}
-        <div className={styles.selectListContainer}>
+        <div className={classnames('dropdown-menu', styles.selectListContainer, { show: isOpen })}>
           <div className={styles.selectList} {...getMenuProps()}>
             {hasModules && (
               <>
-                <div
-                  {...getItemProps({
-                    item: { type: SEARCH_RESULT, result: MODULE_RESULT, term: inputValue },
-                  })}
-                  className={classnames(styles.selectHeader, {
-                    [styles.selected]: highlightedIndex === 0,
-                  })}
-                >
-                  <span className="btn-svg">
+                <div className={styles.selectHeader}>
+                  <span
+                    className={classnames(styles.headerAction, 'btn-svg', {
+                      [styles.selected]: highlightedIndex === 0,
+                    })}
+                    {...getItemProps({
+                      item: { type: SEARCH_RESULT, result: MODULE_RESULT, term: inputValue },
+                    })}
+                  >
                     View All <ChevronRight className={styles.svg} />
                   </span>
-                  <span className={styles.headerName}>Modules</span>
+                  <span className={styles.headerTitle}>
+                    <BookOpen className={styles.headerIcon} />
+                    <span className={styles.headerName}>Modules</span>
+                  </span>
                 </div>
 
                 {modules.map((module, index) => (
@@ -219,7 +225,9 @@ class GlobalSearch extends Component<Props, State> {
                       [styles.selected]: highlightedIndex === index + 1,
                     })}
                   >
-                    <span>{highlight(`${module.moduleCode} ${module.title}`, tokens)}</span>
+                    <span className={styles.title}>
+                      {highlight(`${module.moduleCode} ${module.title}`, tokens)}
+                    </span>
 
                     <SemesterBadge className={styles.semesters} semesters={module.semesters} />
                   </div>
@@ -227,20 +235,25 @@ class GlobalSearch extends Component<Props, State> {
               </>
             )}
 
+            {hasModules && hasVenues && <div className="dropdown-divider" />}
+
             {hasVenues && (
               <>
-                <div
-                  {...getItemProps({
-                    item: { type: SEARCH_RESULT, result: VENUE_RESULT, term: inputValue },
-                  })}
-                  className={classnames(styles.selectHeader, {
-                    [styles.selected]: highlightedIndex === venueHeaderIndex,
-                  })}
-                >
-                  <span className="btn-svg">
+                <div className={styles.selectHeader}>
+                  <span
+                    className={classnames(styles.headerAction, 'btn-svg', {
+                      [styles.selected]: highlightedIndex === venueHeaderIndex,
+                    })}
+                    {...getItemProps({
+                      item: { type: SEARCH_RESULT, result: VENUE_RESULT, term: inputValue },
+                    })}
+                  >
                     View All <ChevronRight className={styles.svg} />
                   </span>
-                  <span className={styles.headerName}>Venues</span>
+                  <span className={styles.headerTitle}>
+                    <Map className={styles.headerIcon} />
+                    <span className={styles.headerName}>Venues</span>
+                  </span>
                 </div>
 
                 {venues.map((venue, index) => (

@@ -2,7 +2,7 @@
 
 $results-width-open: 21rem;
 $dropdown-height: 40rem;
-$icon-horizontal-padding: ($container-height - $icon-size) / 2;
+$icon-horizontal-padding: ($container-height - $navbar-icon-size) / 2;
 
 .container {
   composes: btn-svg from global;
@@ -10,19 +10,18 @@ $icon-horizontal-padding: ($container-height - $icon-size) / 2;
   width: 100%;
   max-width: $results-width-open;
   margin: $container-vertical-margin $container-horizontal-margin;
-  font-size: 0.9rem;
 }
 
 .icon {
-  width: $icon-size;
-  height: $icon-size;
+  width: $navbar-icon-size;
+  height: $navbar-icon-size;
   margin: 0 $icon-horizontal-padding;
   color: var(--gray-mid);
 }
 
 .input {
   // Extend input to the left of icon so that the icon is clickable.
-  $overhang: $icon-size + $icon-horizontal-padding * 2;
+  $overhang: $navbar-icon-size + $icon-horizontal-padding * 2;
 
   padding-left: $overhang;
   margin-left: -$overhang;
@@ -36,39 +35,46 @@ $icon-horizontal-padding: ($container-height - $icon-size) / 2;
 }
 
 .selectListContainer {
-  position: absolute;
-  top: $navbar-height - $container-vertical-margin;
   right: 0;
-  z-index: $module-select-z-index;
+  left: auto;
   width: $results-width-open;
-  border: $input-btn-border-width solid $input-border-color;
-  border-width: 0 $input-btn-border-width $input-btn-border-width;
-  border-radius: 0 0 $btn-border-radius $btn-border-radius;
+  padding: 0; // Don't interfere with child .selectList's padding
+  margin-top: $container-vertical-margin;
+  font-size: $font-size-sm;
   color: var(--body-color);
-  background: var(--body-bg);
 }
 
 .selectList {
-  composes: list-unstyled scrollable-y from global;
-  max-height: $dropdown-height;
-  @media (max-height: $dropdown-height + 5rem) {
-    max-height: calc(90vh - #{$navbar-height});
+  composes: scrollable-y from global;
+  // Prevent dropdown (including its bottom shadow) from going below the screen's bottom edge.
+  // Use Min instead of min to use CSS's min instead of Sass's, which doesn't
+  // accept a calc-ed value as a parameter.
+  // See: https://css-tricks.com/when-sass-and-new-css-features-collide/#the-solution
+  // stylelint-disable-next-line function-name-case
+  max-height: Min(calc(100vh - #{$navbar-height} - 6px), $dropdown-height);
+  padding: 0 0.4rem 0.4rem 0.4rem;
+
+  :global(.dropdown-divider) {
+    margin-bottom: 0.1rem;
   }
 }
 
-.item {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.6rem $container-horizontal-margin;
-  cursor: pointer;
-}
-
 .selectHeader {
-  composes: item;
+  position: sticky;
+  top: 0;
+  display: flex;
   flex-direction: row-reverse;
   justify-content: space-between;
-  border-bottom: 1px solid var(--gray-lighter);
+  align-items: center;
+  padding: 0.4rem 0 0.4rem 0.75rem;
   font-size: 0.95rem;
+  background-color: var(--body-bg);
+  font-weight: bold;
+}
+
+.headerAction {
+  composes: dropdown-item from global;
+  width: unset;
 
   &.selected {
     > :global(.btn-svg) {
@@ -81,28 +87,43 @@ $icon-horizontal-padding: ($container-height - $icon-size) / 2;
   }
 }
 
-.headerName {
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+.headerTitle {
+  display: flex;
+  align-items: center;
+
+  .headerName {
+    font-weight: bold;
+  }
+
+  .headerIcon {
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-right: 0.4rem;
+  }
 }
 
 .svg {
   width: 1.1rem;
   height: 1.1rem;
+  transition: $entering-duration transform $material-standard-curve;
 }
 
 .option {
-  composes: item;
+  composes: dropdown-item from global;
 
-  &.selected {
-    color: theme-color();
-    background: var(--gray-lightest);
-  }
-
-  .semesters {
-    flex: 0 0 auto;
+  .title {
     margin-right: 0.4rem;
+    white-space: break-spaces;
   }
+}
+
+.semesters {
+  composes: dropdown-item-right-content from global;
+  flex: 0 0 auto;
+}
+
+.selected {
+  background-color: var(--gray-lightest);
 }
 
 .noResults {

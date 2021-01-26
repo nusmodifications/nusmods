@@ -5,10 +5,6 @@
   position: relative;
   display: flex;
   margin: $container-vertical-margin $container-horizontal-margin;
-
-  :global(.dropdown-divider) {
-    border-top-color: var(--gray-lighter);
-  }
 }
 
 .toggle {
