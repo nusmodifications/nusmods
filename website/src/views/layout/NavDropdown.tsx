@@ -40,7 +40,7 @@ const NavDropdown: FC = () => {
       onClick: () => closeMenu(),
     };
     return (
-      <div className={styles.navDropdown}>
+      <div className={styles.container}>
         <button
           className={classnames(styles.toggle, 'btn btn-svg')}
           type="button"
@@ -111,25 +111,7 @@ const NavDropdown: FC = () => {
           >
             <span className={styles.itemContents}>
               <Calendar className={styles.leftIcon} />
-              <span className={styles.title}>
-                AY20{baseYearNumber}/{baseYearNumber + 1} Calendar
-              </span>
-              <ExternalLinkIcon
-                className={classnames(styles.rightContent, styles.rightContentIcon)}
-              />
-            </span>
-          </ExternalLink>
-          <ExternalLink
-            {...itemProps}
-            href={`https://nus.edu.sg/registrar/docs/info/calendar/ay20${baseYearNumber + 1}-20${
-              baseYearNumber + 2
-            }.pdf`}
-          >
-            <span className={styles.itemContents}>
-              <Calendar className={styles.leftIcon} />
-              <span className={styles.title}>
-                AY20{baseYearNumber + 1}/{baseYearNumber + 2} Calendar
-              </span>
+              <span className={styles.title}>Academic Calendar</span>
               <ExternalLinkIcon
                 className={classnames(styles.rightContent, styles.rightContentIcon)}
               />

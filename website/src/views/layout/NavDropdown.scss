@@ -1,7 +1,7 @@
 @import '~styles/utils/modules-entry';
 @import './nav-constants';
 
-.navDropdown {
+.container {
   position: relative;
   display: flex;
   margin: $container-vertical-margin $container-horizontal-margin;
@@ -40,7 +40,10 @@
   right: 0;
   left: auto;
   width: 16rem;
+  // Prevent dropdown (including its bottom shadow) from going below the screen's bottom edge.
+  max-height: calc(100vh - #{$navbar-height} - 0.5rem);
   padding: 0.4rem;
+  margin-top: $container-vertical-margin;
   color: var(--body-color);
 
   .item {
