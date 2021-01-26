@@ -112,7 +112,6 @@ $icon-horizontal-padding: ($container-height - $navbar-icon-size) / 2;
   composes: dropdown-item from global;
 
   .title {
-    margin-right: 0.4rem;
     white-space: break-spaces;
   }
 }
