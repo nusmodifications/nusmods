@@ -30,8 +30,8 @@
 }
 
 .buttonIcon {
-  width: $icon-size;
-  height: $icon-size;
+  width: $navbar-icon-size;
+  height: $navbar-icon-size;
   margin: 0;
   color: var(--gray-mid);
 }
@@ -46,36 +46,5 @@
 
   @include media-breakpoint-up(md) {
     font-size: $font-size-sm;
-  }
-}
-
-.item {
-  display: flex;
-  align-items: center;
-
-  .leftIcon {
-    width: $icon-size;
-    height: $icon-size;
-    margin-right: 0.4rem;
-  }
-
-  .rightContent {
-    margin-left: auto;
-
-    &.rightContentIcon {
-      width: $icon-size * 0.75;
-      height: $icon-size * 0.75;
-      color: var(--gray-mid);
-    }
-  }
-
-  &:hover,
-  &:focus,
-  &:active {
-    .rightContent {
-      &.rightContentIcon {
-        color: unset;
-      }
-    }
   }
 }

@@ -92,7 +92,8 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
               })}
               {...getItemProps({ item: IMAGE })}
             >
-              <Image className="svg svg-small" /> Image (.png)
+              <Image className="dropdown-item-left-icon" />
+              Image (.png)
             </a>
 
             <a
@@ -102,7 +103,8 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
               })}
               {...getItemProps({ item: PDF })}
             >
-              <FileText className="svg svg-small" /> PDF (.pdf)
+              <FileText className="dropdown-item-left-icon" />
+              PDF (.pdf)
             </a>
           </Online>
 
@@ -114,10 +116,12 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
               type="button"
               {...getItemProps({ item: CALENDAR })}
             >
-              <Calendar className="svg svg-small" />
-              iCalendar File (.ics)
-              <br />
-              (For Google Calendar / Outlook)
+              <Calendar className="dropdown-item-left-icon" />
+              <span>
+                iCalendar File (.ics)
+                <br />
+                (For Google Calendar / Outlook)
+              </span>
             </button>
           )}
         </div>

@@ -24,9 +24,42 @@ mark {
 }
 
 .dropdown-item {
+  $icon-size: $font-size-base;
+
+  display: flex;
+  align-items: flex-start;
   border-radius: 0.25rem;
   color: var(--body-color);
   cursor: pointer;
+
+  .dropdown-item-left-icon {
+    flex: 0 0 auto;
+    width: $icon-size;
+    height: $icon-size;
+    margin-top: 0.14rem;
+    margin-right: 0.4rem;
+  }
+
+  .dropdown-item-right-content {
+    align-self: center;
+    margin-left: auto;
+
+    &.dropdown-item-right-content-icon {
+      width: $icon-size * 0.75;
+      height: $icon-size * 0.75;
+      color: var(--gray-mid);
+    }
+  }
+
+  &:hover,
+  &:focus,
+  &:active {
+    .dropdown-item-right-content {
+      &.dropdown-item-right-content-icon {
+        color: unset;
+      }
+    }
+  }
 
   &:hover,
   &:focus,

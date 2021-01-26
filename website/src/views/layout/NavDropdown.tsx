@@ -36,7 +36,7 @@ const NavDropdown: FC = () => {
     closeMenu,
   }) => {
     const itemProps = {
-      className: classnames(styles.item, 'dropdown-item'),
+      className: 'dropdown-item',
       onClick: () => closeMenu(),
     };
     return (
@@ -56,16 +56,16 @@ const NavDropdown: FC = () => {
           {beta && (
             <>
               <NavLink {...itemProps} to="/planner">
-                <Trello className={styles.leftIcon} />
-                <span className={styles.title}>Planner</span>
-                <span className={classnames('badge badge-info', styles.rightContent)}>Beta</span>
+                <Trello className="dropdown-item-left-icon" />
+                <span>Planner</span>
+                <span className="badge badge-info dropdown-item-right-content">Beta</span>
               </NavLink>
               <div className="dropdown-divider" />
             </>
           )}
           <NavLink {...itemProps} to="/settings">
-            <Settings className={styles.leftIcon} />
-            <span className={styles.title}>Settings</span>
+            <Settings className="dropdown-item-left-icon" />
+            <span>Settings</span>
           </NavLink>
           <NavLink
             {...itemProps}
@@ -73,23 +73,19 @@ const NavDropdown: FC = () => {
             onFocus={preloadContribute}
             to="/contribute"
           >
-            <Star className={styles.leftIcon} />
-            <span className={styles.title}>Contribute</span>
+            <Star className="dropdown-item-left-icon" />
+            <span>Contribute</span>
           </NavLink>
           <div className="dropdown-divider" />
           <ExternalLink {...itemProps} href="https://nusbusiness.com">
-            <Droplet className={styles.leftIcon} />
-            <span className={styles.title}>NUS Business</span>
-            <ExternalLinkIcon
-              className={classnames(styles.rightContent, styles.rightContentIcon)}
-            />
+            <Droplet className="dropdown-item-left-icon" />
+            <span>NUS Business</span>
+            <ExternalLinkIcon className="dropdown-item-right-content dropdown-item-right-content-icon" />
           </ExternalLink>
           <ExternalLink {...itemProps} href="https://nuswhispers.com">
-            <Heart className={styles.leftIcon} />
-            <span className={styles.title}>NUSWhispers</span>
-            <ExternalLinkIcon
-              className={classnames(styles.rightContent, styles.rightContentIcon)}
-            />
+            <Heart className="dropdown-item-left-icon" />
+            <span>NUSWhispers</span>
+            <ExternalLinkIcon className="dropdown-item-right-content dropdown-item-right-content-icon" />
           </ExternalLink>
           <div className="dropdown-divider" />
           <div className="dropdown-header">{weekText}</div>
@@ -99,11 +95,9 @@ const NavDropdown: FC = () => {
               baseYearNumber + 1
             }.pdf`}
           >
-            <Calendar className={styles.leftIcon} />
-            <span className={styles.title}>Academic Calendar</span>
-            <ExternalLinkIcon
-              className={classnames(styles.rightContent, styles.rightContentIcon)}
-            />
+            <Calendar className="dropdown-item-left-icon" />
+            <span>Academic Calendar</span>
+            <ExternalLinkIcon className="dropdown-item-right-content dropdown-item-right-content-icon" />
           </ExternalLink>
         </div>
       </div>

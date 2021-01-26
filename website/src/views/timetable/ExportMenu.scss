@@ -14,11 +14,6 @@
   .dropdownMenu {
     width: 16rem;
 
-    svg {
-      margin-right: 0.2rem;
-      vertical-align: middle;
-    }
-
     @include media-breakpoint-down(xs) {
       width: auto;
     }
