@@ -93,6 +93,7 @@ class GlobalSearch extends Component<Props, State> {
   /* eslint-disable jsx-a11y/label-has-for */
   renderDropdown: ChildrenFunction<SearchItem> = ({
     isOpen,
+    openMenu,
     getLabelProps,
     getInputProps,
     getItemProps,
@@ -114,6 +115,7 @@ class GlobalSearch extends Component<Props, State> {
             ComponentMap.globalSearchInput = r;
           }}
           className={classnames('form-control', styles.input)}
+          onFocus={() => openMenu()}
           {...getInputProps({ placeholder: PLACEHOLDER })}
         />
       </Fragment>
