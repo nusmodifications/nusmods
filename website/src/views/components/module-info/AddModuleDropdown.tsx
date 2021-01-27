@@ -134,7 +134,7 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
                   </button>
 
                   <div
-                    className={classnames('dropdown-menu', { show: isOpen })}
+                    className={classnames('dropdown-menu', styles.dropdownMenu, { show: isOpen })}
                     {...getMenuProps()}
                   >
                     {otherSemesters.map((semester, index) => (

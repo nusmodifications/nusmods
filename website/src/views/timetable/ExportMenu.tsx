@@ -120,7 +120,7 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
               <span>
                 iCalendar File (.ics)
                 <br />
-                (For Google Calendar / Outlook)
+                (For Google Calendar/Outlook)
               </span>
             </button>
           )}

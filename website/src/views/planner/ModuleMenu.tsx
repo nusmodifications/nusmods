@@ -44,10 +44,7 @@ const ModuleMenu = memo((props: Props) => {
           >
             <ChevronDown />
           </button>
-          <div
-            className={classnames(styles.menu, 'dropdown-menu', { show: isOpen })}
-            {...getMenuProps()}
-          >
+          <div className={classnames('dropdown-menu', { show: isOpen })} {...getMenuProps()}>
             {menuItems.map(({ label, className }, itemIndex) => (
               <button
                 type="button"

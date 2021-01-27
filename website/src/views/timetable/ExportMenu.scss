@@ -12,12 +12,6 @@
   }
 
   .dropdownMenu {
-    width: 16rem;
-
-    @include media-breakpoint-down(xs) {
-      width: auto;
-    }
-
     @include media-breakpoint-up(md) {
       font-size: $font-size-sm;
     }
