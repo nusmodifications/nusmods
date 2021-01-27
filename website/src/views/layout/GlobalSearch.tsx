@@ -201,7 +201,12 @@ class GlobalSearch extends Component<Props, State> {
             {hasModules && (
               <>
                 <div className={styles.selectHeader}>
+                  <span className={styles.headerTitle}>
+                    <BookOpen className={styles.headerIcon} />
+                    <span className={styles.headerName}>Modules</span>
+                  </span>
                   <span
+                    aria-label="View All Modules"
                     className={classnames(styles.headerAction, 'btn-svg', {
                       [styles.selected]: highlightedIndex === 0,
                     })}
@@ -210,10 +215,6 @@ class GlobalSearch extends Component<Props, State> {
                     })}
                   >
                     View All <ChevronRight className={styles.svg} />
-                  </span>
-                  <span className={styles.headerTitle}>
-                    <BookOpen className={styles.headerIcon} />
-                    <span className={styles.headerName}>Modules</span>
                   </span>
                 </div>
 
@@ -242,7 +243,12 @@ class GlobalSearch extends Component<Props, State> {
             {hasVenues && (
               <>
                 <div className={styles.selectHeader}>
+                  <span className={styles.headerTitle}>
+                    <Map className={styles.headerIcon} />
+                    <span className={styles.headerName}>Venues</span>
+                  </span>
                   <span
+                    aria-label="View All Venues"
                     className={classnames(styles.headerAction, 'btn-svg', {
                       [styles.selected]: highlightedIndex === venueHeaderIndex,
                     })}
@@ -251,10 +257,6 @@ class GlobalSearch extends Component<Props, State> {
                     })}
                   >
                     View All <ChevronRight className={styles.svg} />
-                  </span>
-                  <span className={styles.headerTitle}>
-                    <Map className={styles.headerIcon} />
-                    <span className={styles.headerName}>Venues</span>
                   </span>
                 </div>
 
