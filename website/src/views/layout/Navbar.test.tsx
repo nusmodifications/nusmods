@@ -64,8 +64,7 @@ describe(Navbar, () => {
         "Contribute",
         "NUS Business",
         "NUSWhispers",
-        "AY2010/11 Calendar",
-        "AY2011/12 Calendar",
+        "Academic Calendar",
       ]
     `);
   });
@@ -84,8 +83,7 @@ describe(Navbar, () => {
         "Contribute",
         "NUS Business",
         "NUSWhispers",
-        "AY2010/11 Calendar",
-        "AY2011/12 Calendar",
+        "Academic Calendar",
       ]
     `);
   });
