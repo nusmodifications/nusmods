@@ -83,7 +83,7 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
     this.setState({ shortUrl: null });
 
     axios
-      .get('/short_url.php', { params: { url }, timeout: 2000 })
+      .get('/api/shorturl', { params: { url }, timeout: 2000 })
       .then(({ data }) => {
         if (data[SHORT_URL_KEY]) {
           this.setState({ shortUrl: data[SHORT_URL_KEY] });
