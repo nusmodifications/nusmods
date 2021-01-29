@@ -123,6 +123,7 @@
     "webpack-merge": "5.7.3"
   },
   "dependencies": {
+    "@authenio/samlify-node-xmllint": "^2.0.0",
     "@material/fab": "0.40.1",
     "@material/snackbar": "0.40.1",
     "@sentry/browser": "6.0.2",
@@ -164,6 +165,7 @@
     "redux-persist": "6.0.0",
     "redux-thunk": "2.3.0",
     "reselect": "4.0.0",
+    "samlify": "^2.7.6",
     "searchkit": "2.4.1-alpha.5",
     "use-subscription": "1.5.1"
   },

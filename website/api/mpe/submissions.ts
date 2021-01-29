@@ -1,13 +1,13 @@
-import type { VercelApiHandler } from "@vercel/node";
-import { getSubmissionById, createSubmission } from "serverless/mpe";
-import { User, verifyLogin } from "serverless/nus-auth";
-import rescue from "serverless/utils/rescue";
-import handleMethodNotFound from "serverless/utils/methodNotFound";
+import type { VercelApiHandler } from '@vercel/node';
+import { getSubmissionById, createSubmission } from '../../src/serverless/mpe';
+import { User, verifyLogin } from '../../src/serverless/nus-auth';
+import rescue from '../../src/serverless/utils/rescue';
+import handleMethodNotFound from '../../src/serverless/utils/methodNotFound';
 
 const allowedMethods = {
-  GET: "GET",
-  POST: "POST",
-  PUT: "PUT",
+  GET: 'GET',
+  POST: 'POST',
+  PUT: 'PUT',
 };
 
 const handleGet: VercelApiHandler = async (req, res) => {
@@ -18,7 +18,7 @@ const handleGet: VercelApiHandler = async (req, res) => {
   } catch (err) {
     if (err.response.status === 404) {
       res.status(404).json({
-        message: "No MPE preferences are found for requesting user",
+        message: 'No MPE preferences are found for requesting user',
       });
     } else {
       throw err;
@@ -33,7 +33,7 @@ const handlePost: VercelApiHandler = async (req, res) => {
     const user = (req as any).user as User;
     await createSubmission(user.accountName, req.body);
     res.json({
-      message: "Your MPE preferences are successfully recorded",
+      message: 'Your MPE preferences are successfully recorded',
     });
   } catch (err) {
     throw err;

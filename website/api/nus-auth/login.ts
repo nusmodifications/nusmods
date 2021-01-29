@@ -1,14 +1,14 @@
-import type { VercelApiHandler } from "@vercel/node";
-import { authenticate } from "serverless/nus-auth";
-import rescue from "serverless/utils/rescue";
-import handleMethodNotFound from "serverless/utils/methodNotFound";
+import type { VercelApiHandler } from '@vercel/node';
+import { authenticate } from '../../src/serverless/nus-auth';
+import rescue from '../../src/serverless/utils/rescue';
+import handleMethodNotFound from '../../src/serverless/utils/methodNotFound';
 
 const errors = {
-  noRelayState: "ERR_NO_RELAY_STATE",
+  noRelayState: 'ERR_NO_RELAY_STATE',
 };
 
 const allowedMethods = {
-  POST: "POST",
+  POST: 'POST',
 };
 
 const handlePost: VercelApiHandler = async (req, res) => {
@@ -19,16 +19,17 @@ const handlePost: VercelApiHandler = async (req, res) => {
     }
 
     const userURL = new URL(relayState);
-    userURL.searchParams.append("token", token);
+    userURL.searchParams.append('token', token);
 
     res.redirect(userURL.toString());
   } catch (err) {
     if (err.message === errors.noRelayState) {
-      return res.json({
-        message: "Relay state not found in request",
+      res.json({
+        message: 'Relay state not found in request',
       });
+    } else {
+      throw err;
     }
-    throw err;
   }
 };
 
