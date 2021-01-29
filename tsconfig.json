@@ -49,6 +49,7 @@
     "auth",
     "mpe",
     "utils",
+    "config.ts",
     ".eslintrc.js",
   ]
 }
