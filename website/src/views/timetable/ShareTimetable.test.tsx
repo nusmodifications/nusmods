@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { shallow, ShallowWrapper } from 'enzyme';
 
+import { enableShortUrl } from 'featureFlags';
 import { waitFor } from 'test-utils/async';
 import Modal from 'views/components/Modal';
 import LoadingSpinner from 'views/components/LoadingSpinner';
@@ -51,48 +52,58 @@ describe('ShareTimetable', () => {
 
     openModal(wrapper);
     expect(wrapper.find(Modal).exists()).toBe(true);
-    expect(mockAxios.get).toHaveBeenCalledTimes(1);
+    if (enableShortUrl) {
+      expect(mockAxios.get).toHaveBeenCalledTimes(1);
+    } else {
+      expect(mockAxios.get).toHaveBeenCalledTimes(0);
+    }
   });
 
-  test('should cache short URL from the API', () => {
-    const wrapper = shallow(<ShareTimetable semester={1} timetable={timetable} />);
+  if (enableShortUrl) {
+    test('should cache short URL from the API', () => {
+      const wrapper = shallow(<ShareTimetable semester={1} timetable={timetable} />);
 
-    // Open, close and open the modal again
-    openModal(wrapper);
-    closeModal(wrapper);
-    openModal(wrapper);
+      // Open, close and open the modal again
+      openModal(wrapper);
+      closeModal(wrapper);
+      openModal(wrapper);
 
-    // The second open should not cause a second call
-    expect(mockAxios.get).toHaveBeenCalledTimes(1);
-    closeModal(wrapper);
+      // The second open should not cause a second call
+      expect(mockAxios.get).toHaveBeenCalledTimes(1);
+      closeModal(wrapper);
 
-    // Changing the timetable should cause opening the modal to trigger another API call
-    wrapper.setProps({ timetable: { CS3216: { Lecture: '1' } } });
-    expect(mockAxios.get).toHaveBeenCalledTimes(1);
-    openModal(wrapper);
-    expect(mockAxios.get).toHaveBeenCalledTimes(2);
-    closeModal(wrapper);
+      // Changing the timetable should cause opening the modal to trigger another API call
+      wrapper.setProps({ timetable: { CS3216: { Lecture: '1' } } });
+      expect(mockAxios.get).toHaveBeenCalledTimes(1);
+      openModal(wrapper);
+      expect(mockAxios.get).toHaveBeenCalledTimes(2);
+      closeModal(wrapper);
 
-    // Changing the semester should also trigger another API call
-    wrapper.setProps({ semester: 2 });
-    expect(mockAxios.get).toHaveBeenCalledTimes(2);
-    openModal(wrapper);
-    expect(mockAxios.get).toHaveBeenCalledTimes(3);
-  });
+      // Changing the semester should also trigger another API call
+      wrapper.setProps({ semester: 2 });
+      expect(mockAxios.get).toHaveBeenCalledTimes(2);
+      openModal(wrapper);
+      expect(mockAxios.get).toHaveBeenCalledTimes(3);
+    });
 
-  test('should show spinner when loading', () => {
-    const wrapper = shallow(<ShareTimetable semester={1} timetable={timetable} />);
+    test('should show spinner when loading', () => {
+      const wrapper = shallow(<ShareTimetable semester={1} timetable={timetable} />);
 
-    openModal(wrapper);
-    expect(wrapper.find(LoadingSpinner).exists()).toBe(true);
-  });
+      openModal(wrapper);
+      expect(wrapper.find(LoadingSpinner).exists()).toBe(true);
+    });
+  }
 
   test('should display shortUrl if available', async () => {
     const wrapper = shallow(<ShareTimetable semester={1} timetable={timetable} />);
 
     await openAndWait(wrapper);
 
-    expect(wrapper.find('input').prop('value')).toEqual(MOCK_SHORTURL);
+    if (enableShortUrl) {
+      expect(wrapper.find('input').prop('value')).toEqual(MOCK_SHORTURL);
+    } else {
+      expect(wrapper.find('input').prop('value')).toBeTruthy();
+    }
   });
 
   test('should display long URL if data is corrupted', async () => {
