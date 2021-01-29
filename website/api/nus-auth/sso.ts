@@ -1,14 +1,14 @@
-import type { VercelApiHandler } from '@vercel/node';
-import { createLoginURL } from '../../auth';
-import rescue from '../../utils/rescue';
-import handleMethodNotFound from '../../utils/methodNotFound';
+import type { VercelApiHandler } from "@vercel/node";
+import { createLoginURL } from "serverless/nus-auth";
+import rescue from "serverless/utils/rescue";
+import handleMethodNotFound from "serverless/utils/methodNotFound";
 
 const errors = {
-  noOrigin: 'ERR_NO_ORIGIN',
+  noOrigin: "ERR_NO_ORIGIN",
 };
 
 const allowedMethods = {
-  GET: 'GET',
+  GET: "GET",
 };
 
 const handleGet: VercelApiHandler = async (req, res) => {
@@ -18,13 +18,16 @@ const handleGet: VercelApiHandler = async (req, res) => {
     }
 
     const ssoLoginURL = new URL(createLoginURL());
-    ssoLoginURL.searchParams.append('RelayState', req.headers.referer || req.headers.origin);
+    ssoLoginURL.searchParams.append(
+      "RelayState",
+      req.headers.referer || req.headers.origin
+    );
 
     res.redirect(ssoLoginURL.toString());
   } catch (err) {
     if (err.message === errors.noOrigin) {
       return res.json({
-        message: 'Request needs an origin',
+        message: "Request needs an origin",
       });
     }
     throw err;
