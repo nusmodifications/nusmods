@@ -45,9 +45,11 @@
   // webpack, scripts and root js files are not really typechecked, but @typescript-eslint/parser needs them
   // to be specified for the linter to work
   "include": [
+    "api",
     "src",
     "webpack",
     "scripts",
+    ".eslintrc.js",
     "src/.eslintrc.js",
     "webpack/.eslintrc.js",
     "scripts/.eslintrc.js"
