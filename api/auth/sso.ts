@@ -18,7 +18,7 @@ const handleGet: VercelApiHandler = async (req, res) => {
     }
 
     const ssoLoginURL = new URL(createLoginURL());
-    ssoLoginURL.searchParams.append('RelayState', req.headers.origin);
+    ssoLoginURL.searchParams.append('RelayState', req.headers.referer || req.headers.origin);
 
     res.redirect(ssoLoginURL.toString());
   } catch (err) {
