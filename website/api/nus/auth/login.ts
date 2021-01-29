@@ -1,7 +1,7 @@
 import type { VercelApiHandler } from '@vercel/node';
-import { authenticate } from '../../src/serverless/nus-auth';
-import rescue from '../../src/serverless/utils/rescue';
-import handleMethodNotFound from '../../src/serverless/utils/methodNotFound';
+import { authenticate } from '../../../src/serverless/nus-auth';
+import rescue from '../../../src/serverless/utils/rescue';
+import handleMethodNotFound from '../../../src/serverless/utils/methodNotFound';
 
 const errors = {
   noRelayState: 'ERR_NO_RELAY_STATE',

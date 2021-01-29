@@ -1,8 +1,8 @@
 import type { VercelApiHandler } from '@vercel/node';
-import { getSubmissionById, createSubmission } from '../../src/serverless/mpe';
-import { User, verifyLogin } from '../../src/serverless/nus-auth';
-import rescue from '../../src/serverless/utils/rescue';
-import handleMethodNotFound from '../../src/serverless/utils/methodNotFound';
+import { getSubmissionById, createSubmission } from '../../../src/serverless/mpe';
+import { User, verifyLogin } from '../../../src/serverless/nus-auth';
+import rescue from '../../../src/serverless/utils/rescue';
+import handleMethodNotFound from '../../../src/serverless/utils/methodNotFound';
 
 const allowedMethods = {
   GET: 'GET',

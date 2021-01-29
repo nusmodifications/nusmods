@@ -1,7 +1,7 @@
 import type { VercelApiHandler } from '@vercel/node';
-import { createLoginURL } from '../../src/serverless/nus-auth';
-import rescue from '../../src/serverless/utils/rescue';
-import handleMethodNotFound from '../../src/serverless/utils/methodNotFound';
+import { createLoginURL } from '../../../src/serverless/nus-auth';
+import rescue from '../../../src/serverless/utils/rescue';
+import handleMethodNotFound from '../../../src/serverless/utils/methodNotFound';
 
 const errors = {
   noOrigin: 'ERR_NO_ORIGIN',
