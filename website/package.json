@@ -125,9 +125,9 @@
   "dependencies": {
     "@material/fab": "0.40.1",
     "@material/snackbar": "0.40.1",
-    "@sentry/browser": "5.30.0",
+    "@sentry/browser": "6.0.2",
     "@sentry/node": "6.0.2",
-    "@sentry/tracing": "5.30.0",
+    "@sentry/tracing": "6.0.2",
     "@tippy.js/react": "3.1.1",
     "axios": "0.21.1",
     "body-scroll-lock": "3.1.5",
