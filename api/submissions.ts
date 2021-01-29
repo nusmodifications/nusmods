@@ -1,5 +1,6 @@
+import type { VercelApiHandler } from '@vercel/node';
 import { getSubmissionById, createSubmission } from '../mpe';
-import { verifyLogin } from '../auth';
+import { User, verifyLogin } from '../auth';
 import rescue from '../utils/rescue';
 import handleMethodNotFound from '../utils/methodNotFound';
 
@@ -9,51 +10,48 @@ const allowedMethods = {
   PUT: 'PUT',
 };
 
-const submissionHandler = async (req, res) => {
+const handleGet: VercelApiHandler = async (req, res) => {
   try {
-    switch (req.method) {
-      case allowedMethods.GET:
-        await handleGet(req, res);
-        break;
-      case allowedMethods.POST:
-      case allowedMethods.PUT:
-        await handlePost(req, res);
-        break;
-      default:
-        await handleDefault(req, res);
-        break;
-    }
-  } catch (err) {
-    throw err;
-  }
-};
-
-const handleGet = async (req, res) => {
-  try {
-    const submission = await getSubmissionById(req.user.accountName);
+    const user = (req as any).user as User;
+    const submission = await getSubmissionById(user.accountName);
     res.json(submission);
   } catch (err) {
     if (err.response.status === 404) {
-      return res.status(404).json({
+      res.status(404).json({
         message: 'No MPE preferences are found for requesting user',
       });
+    } else {
+      throw err;
     }
-    throw err;
   }
 };
 
-const handlePost = async (req, res) => {
+const handlePost: VercelApiHandler = async (req, res) => {
+  // TODO: Identify error type in the catch block and throw relevant error.
+  // eslint-disable-next-line no-useless-catch
   try {
-    await createSubmission(req.user.accountName, req.body);
+    const user = (req as any).user as User;
+    await createSubmission(user.accountName, req.body);
     res.json({
       message: 'Your MPE preferences are successfully recorded',
     });
   } catch (err) {
-    // TODO: Identify error type and throw relevant error.
     throw err;
   }
 };
 
-const handleDefault = handleMethodNotFound(allowedMethods);
+const handleDefault = handleMethodNotFound(Object.keys(allowedMethods));
+
+const submissionHandler: VercelApiHandler = (req, res) => {
+  switch (req.method) {
+    case allowedMethods.GET:
+      return handleGet(req, res);
+    case allowedMethods.POST:
+    case allowedMethods.PUT:
+      return handlePost(req, res);
+    default:
+      return handleDefault(req, res);
+  }
+};
 
 export default rescue(verifyLogin(submissionHandler));

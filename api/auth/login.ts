@@ -1,3 +1,4 @@
+import type { VercelApiHandler } from '@vercel/node';
 import { authenticate } from '../../auth';
 import rescue from '../../utils/rescue';
 import handleMethodNotFound from '../../utils/methodNotFound';
@@ -10,22 +11,7 @@ const allowedMethods = {
   POST: 'POST',
 };
 
-const loginHandler = async (req, res) => {
-  try {
-    switch (req.method) {
-      case allowedMethods.POST:
-        await handlePost(req, res);
-        break;
-      default:
-        await handleDefault(req, res);
-        break;
-    }
-  } catch (err) {
-    throw err;
-  }
-};
-
-const handlePost = async (req, res) => {
+const handlePost: VercelApiHandler = async (req, res) => {
   try {
     const { token, relayState } = await authenticate(req);
     if (!relayState) {
@@ -46,6 +32,15 @@ const handlePost = async (req, res) => {
   }
 };
 
-const handleDefault = handleMethodNotFound(allowedMethods);
+const handleDefault = handleMethodNotFound(Object.keys(allowedMethods));
+
+const loginHandler: VercelApiHandler = async (req, res) => {
+  switch (req.method) {
+    case allowedMethods.POST:
+      return handlePost(req, res);
+    default:
+      return handleDefault(req, res);
+  }
+};
 
 export default rescue(loginHandler);

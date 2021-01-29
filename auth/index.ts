@@ -1,6 +1,9 @@
-import * as samlify from 'samlify';
 import * as validator from '@authenio/samlify-node-xmllint';
+import type { VercelApiHandler, VercelRequest } from '@vercel/node';
 import * as fs from 'fs';
+import _ from 'lodash';
+import * as samlify from 'samlify';
+import type { ESamlHttpRequest } from 'samlify/types/src/entity';
 import { auth } from '../config';
 
 const samlifyErrors = {
@@ -12,7 +15,12 @@ const errors = {
   noTokenSupplied: 'ERR_NO_TOKEN_SUPPLIED',
 };
 
-const samlRespAttributes = {
+export type User = {
+  accountName: string;
+  upn: string;
+  email: string;
+};
+const samlRespAttributes: { [key in keyof User]: string } = {
   accountName: 'http://schemas.nus.edu.sg/ws/2015/07/identity/claims/SamAccountName',
   upn: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn',
   email: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',
@@ -34,55 +42,45 @@ export const createLoginURL = () => {
   return context;
 };
 
-export const authenticate = async (req) => {
-  try {
-    const tokenProvided = req.headers.authorization || (req.body && req.body.SAMLResponse);
-    if (!tokenProvided) {
-      throw new Error(errors.noTokenSupplied);
-    }
-
-    let requestToProcess = req;
-    if (req.headers.authorization) {
-      requestToProcess = {
-        body: {
-          SAMLResponse: req.headers.authorization,
-        },
-      };
-    }
-
-    const {
-      // samlContent,
-      extract: { attributes },
-    } = await sp.parseLoginResponse(idp, 'post', requestToProcess);
-
-    const loginData = {
-      token: requestToProcess.body.SAMLResponse,
-      relayState: null,
-    };
-
-    if (req.body && req.body.RelayState) {
-      loginData.relayState = req.body.RelayState;
-    }
-
-    for (const attr of Object.keys(samlRespAttributes)) {
-      loginData[attr] = attributes[samlRespAttributes[attr]];
-    }
-
-    return loginData;
-  } catch (err) {
-    throw err;
+export const authenticate = async (req: VercelRequest) => {
+  const tokenProvided = req.headers.authorization || req.body?.SAMLResponse;
+  if (!tokenProvided) {
+    throw new Error(errors.noTokenSupplied);
   }
+
+  const requestToProcess: ESamlHttpRequest = {
+    body: {
+      SAMLResponse: req.body?.SAMLResponse ?? req.headers.authorization,
+    },
+  };
+
+  const {
+    // samlContent,
+    extract: { attributes },
+  } = await sp.parseLoginResponse(idp, 'post', requestToProcess);
+
+  const user: User = _.mapValues(
+    samlRespAttributes,
+    (samlAttributeKey) => attributes[samlAttributeKey],
+  );
+
+  const relayState = req.body?.RelayState ?? null;
+
+  const loginData = {
+    token: requestToProcess.body.SAMLResponse,
+    relayState,
+    user,
+  };
+  return loginData;
 };
 
-export const verifyLogin = (next) => async (req, res) => {
+export const verifyLogin = (next: VercelApiHandler): VercelApiHandler => async (req, res) => {
   try {
-    const loginData = await authenticate(req);
-
-    req.user = { ...loginData };
-    delete req.user.token;
-    delete req.user.relayState;
-
-    return await next(req, res);
+    const { user } = await authenticate(req);
+    // TODO: Augment VercelApiHandler's request with a user object, or find
+    // another way to provide the user object.
+    // eslint-disable-next-line no-param-reassign
+    (req as any).user = user;
   } catch (err) {
     const errResp = {
       message: '',
@@ -100,4 +98,6 @@ export const verifyLogin = (next) => async (req, res) => {
 
     return res.status(401).json(errResp);
   }
+
+  return next(req, res);
 };

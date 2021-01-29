@@ -1,3 +1,4 @@
+import type { VercelApiHandler } from '@vercel/node';
 import { createLoginURL } from '../../auth';
 import rescue from '../../utils/rescue';
 import handleMethodNotFound from '../../utils/methodNotFound';
@@ -10,22 +11,7 @@ const allowedMethods = {
   GET: 'GET',
 };
 
-const ssoHandler = async (req, res) => {
-  try {
-    switch (req.method) {
-      case allowedMethods.GET:
-        await handleGet(req, res);
-        break;
-      default:
-        await handleDefault(req, res);
-        break;
-    }
-  } catch (err) {
-    throw err;
-  }
-};
-
-const handleGet = async (req, res) => {
+const handleGet: VercelApiHandler = async (req, res) => {
   try {
     if (!req.headers.origin) {
       throw new Error(errors.noOrigin);
@@ -45,6 +31,15 @@ const handleGet = async (req, res) => {
   }
 };
 
-const handleDefault = handleMethodNotFound(allowedMethods);
+const handleDefault = handleMethodNotFound(Object.keys(allowedMethods));
+
+const ssoHandler: VercelApiHandler = (req, res) => {
+  switch (req.method) {
+    case allowedMethods.GET:
+      return handleGet(req, res);
+    default:
+      return handleDefault(req, res);
+  }
+};
 
 export default rescue(ssoHandler);
