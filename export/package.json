@@ -21,7 +21,7 @@
     "axios": "0.21.1",
     "bunyan": "1.8.15",
     "chrome-aws-lambda": "5.5.0",
-    "fs-extra": "9.0.1",
+    "fs-extra": "9.1.0",
     "http-graceful-shutdown": "2.3.2",
     "koa": "2.13.1",
     "koa-router": "10.0.0",
