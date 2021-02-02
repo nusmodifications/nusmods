@@ -1,4 +1,5 @@
 import styles from './MpeContainer.scss';
+import MpeFormContainer from './form/MpeFormContainer';
 
 type Props = {
   placeholder: true; // Remove this when new props are added.
@@ -23,6 +24,7 @@ const MpeContainer: React.FC<Props> = () => (
         <strong>it does not enroll you in the modules.</strong>
       </p>
     </div>
+    <MpeFormContainer />
   </div>
 );
 

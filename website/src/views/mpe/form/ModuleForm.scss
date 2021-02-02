@@ -1,0 +1,28 @@
+.mc {
+  grid-area: mc;
+  word-wrap: break-word;
+  text-align: end;
+  font-weight: bold;
+}
+.module {
+  grid-area: module;
+  font-weight: bold;
+}
+.rank {
+  grid-area: rank;
+  text-align: left;
+  font-weight: bold;
+}
+
+.headerTitle {
+  border-bottom: 1px solid var(--gray-lighter);
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: 'rank module mc';
+  border-bottom: 1px solid var(--gray-lighter);
+}
+
+.container {
+  padding-top: 1rem;
+}
