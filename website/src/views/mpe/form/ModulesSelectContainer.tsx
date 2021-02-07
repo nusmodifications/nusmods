@@ -13,14 +13,14 @@ import { State as StoreState } from 'types/state';
 import ModulesSelect from './ModulesSelect';
 
 type OwnProps = {
-  timetable: SemTimetableConfig;
+  timetable?: SemTimetableConfig;
   semester: Semester;
 };
 
 type Props = OwnProps & {
-  moduleList: ModuleSelectList;
-  addModule: (semester: Semester, moduleCode: ModuleCode) => void;
-  removeModule: (moduleCode: ModuleCode) => void;
+  moduleList?: ModuleSelectList;
+  addModule?: (semester: Semester, moduleCode: ModuleCode) => void;
+  removeModule?: (moduleCode: ModuleCode) => void;
   popNotification: () => void;
 };
 
@@ -33,13 +33,13 @@ const RESULTS_LIMIT = 500;
 class ModulesSelectContainer extends Component<Props> {
   onChange = (moduleCode: ModuleCode) => {
     this.props.popNotification();
-    this.props.addModule(this.props.semester, moduleCode);
+    // this.props.addModule(this.props.semester, moduleCode);
   };
 
   getFilteredModules = (inputValue: string | null) => {
     if (!inputValue) return [];
     const predicate = createSearchPredicate(inputValue);
-    const results = this.props.moduleList.filter(predicate);
+    const results = this.props.moduleList!.filter(predicate);
     return sortModules(inputValue, results.slice(0, RESULTS_LIMIT));
   };
 
@@ -49,13 +49,13 @@ class ModulesSelectContainer extends Component<Props> {
         {(isOnline) => (
           <ModulesSelect
             getFilteredModules={this.getFilteredModules}
-            moduleCount={this.props.moduleList.length}
+            moduleCount={this.props.moduleList!.length}
             onChange={this.onChange}
             placeholder={
               isOnline ? 'Add module to timetable' : 'You need to be online to add modules'
             }
             disabled={!isOnline}
-            onRemoveModule={this.props.removeModule}
+            onRemoveModule={() => null} // {this.props.removeModule}
           />
         )}
       </Online>
@@ -65,7 +65,7 @@ class ModulesSelectContainer extends Component<Props> {
 
 function mapStateToProps(state: StoreState, ownProps: OwnProps) {
   const { semester, timetable } = ownProps;
-  const moduleList = getSemModuleSelectList(state, semester, timetable);
+  const moduleList = state.moduleBank.moduleList; // getSemModuleSelectList(state, semester, timetable);
 
   return {
     semester,
