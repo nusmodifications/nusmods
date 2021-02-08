@@ -18,8 +18,7 @@ const mpe = axios.create({
  * @returns array      Details of the module from the NUSMods API
  */
 async function fetchModuleDetails(moduleCode) {
-    const moduleDetails = await axios.get(NUSModsApi.moduleDetailsUrl(moduleCode));
-    return moduleDetails
+    return await axios.get(NUSModsApi.moduleDetailsUrl(moduleCode));
 }
 
 /**
@@ -30,10 +29,9 @@ async function fetchModuleDetails(moduleCode) {
 export async function getSSOLink() {
     try {
         const res = await mpe.get(SSO_PATH)
-        return res['data']
+        return res.request.responseURL
     } catch(err) {
         throw new Error(err.response.data.message);
-        console.log(err)
     }
 }
 
@@ -53,24 +51,18 @@ export async function getSSOLink() {
 export async function getMPEPreference() {
     try {
         const res = await mpe.get(MPE_PATH)
-        const formattedPreferences = []
-        for (const index in res['data']['preferences']) {
-            const preference = res['data']['preferences'][index]
+        const rawPreferences = res.data.preferences
 
-            const moduleCode = preference["moduleCode"]
-            const moduleDetails = await fetchModuleDetails(moduleCode)
-
-            const formattedPreference = {}
-            formattedPreference['moduleTitle'] = moduleDetails['data']['title']
-            formattedPreference['moduleCode'] = moduleCode
-            formattedPreference['moduleCredits'] = moduleDetails['data']['moduleCredit']
-            formattedPreferences.push(formattedPreference)
-        }
-        return formattedPreferences        
+        // Fetch module details from NUSMods API
+        const modules = await Promise.all(rawPreferences.map(p => fetchModuleDetails(p.moduleCode)))
+        return modules.map(m => ({
+            modulesTitle:  m.data.title,
+            moduleCode:    m.data.moduleCode,
+            moduleCredits: m.data.moduleCredit
+        }))    
     } catch(err) {
         // User has no existing MPE preferences
         if (err.response.status == 404) {
-            console.log("404 Error hit")
             return []
         }
         throw new Error(err.response.data.message);
@@ -81,12 +73,15 @@ export async function getMPEPreference() {
  * Makes a PUT request to update students MPE preference
  * @param preferences  array of module preferences to replace current MPE preferences
  */
-export async function updateMPEPreference(preferences) {
+export async function updateMPEPreference(rawPreferences) {
     try {
-        console.log(preferences)
-       preferences.map(preference => delete preference['moduleTitle'])
+        const preferences = rawPreferences.map(p => ({
+            moduleCode: p.moduleCode,
+            moduleType: p.moduleType,
+            credits: p.credits
+        }))
         const res = await mpe.put(MPE_PATH, preferences)
-        return res
+        return res.data.message
     } catch(err) {
         throw new Error(err.response.data.message)
     }
