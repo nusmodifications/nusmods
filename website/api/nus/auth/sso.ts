@@ -36,7 +36,7 @@ const handleGet: Handler = async (req, res) => {
 };
 
 const routeHandlers: RouteHandlers = {
-  POST: handleGet,
+  GET: handleGet,
 };
 
 export default Router(routeHandlers, defaultFallback, defaultRescue(true));
