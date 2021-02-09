@@ -1,17 +1,17 @@
-import type { VercelApiHandler } from '@vercel/node';
-import { authenticate } from '../../../src/serverless/nus-auth';
-import rescue from '../../../src/serverless/utils/rescue';
-import handleMethodNotFound from '../../../src/serverless/utils/methodNotFound';
+import { authenticate } from "../../../src/serverless/nus-auth";
+import {
+  Router,
+  defaultFallback,
+  defaultRescue,
+  Handler,
+  RouteHandlers,
+} from "../../../src/serverless/router";
 
 const errors = {
-  noRelayState: 'ERR_NO_RELAY_STATE',
+  noRelayState: "ERR_NO_RELAY_STATE",
 };
 
-const allowedMethods = {
-  POST: 'POST',
-};
-
-const handlePost: VercelApiHandler = async (req, res) => {
+const handlePost: Handler = async (req, res) => {
   try {
     const { token, relayState } = await authenticate(req);
     if (!relayState) {
@@ -19,13 +19,13 @@ const handlePost: VercelApiHandler = async (req, res) => {
     }
 
     const userURL = new URL(relayState);
-    userURL.searchParams.append('token', token);
+    userURL.searchParams.append("token", token);
 
     res.redirect(userURL.toString());
   } catch (err) {
     if (err.message === errors.noRelayState) {
       res.json({
-        message: 'Relay state not found in request',
+        message: "Relay state not found in request",
       });
     } else {
       throw err;
@@ -33,15 +33,8 @@ const handlePost: VercelApiHandler = async (req, res) => {
   }
 };
 
-const handleDefault = handleMethodNotFound(Object.keys(allowedMethods));
-
-const loginHandler: VercelApiHandler = async (req, res) => {
-  switch (req.method) {
-    case allowedMethods.POST:
-      return handlePost(req, res);
-    default:
-      return handleDefault(req, res);
-  }
+const routeHandlers: RouteHandlers = {
+  POST: handlePost,
 };
 
-export default rescue(loginHandler);
+export default Router(routeHandlers, defaultFallback, defaultRescue(true));
