@@ -1,12 +1,11 @@
-import type {
-  NowRequest,
-  NowResponse,
-  VercelApiHandler
-} from "@vercel/node";
+import type { VercelRequest, VercelResponse } from "@vercel/node";
 
-export type Request = NowRequest;
-export type Response = NowResponse;
-export type Handler = VercelApiHandler;
+export type Request = VercelRequest;
+export type Response = VercelResponse;
+export type Handler = (
+  req: VercelRequest,
+  res: VercelResponse
+) => Promise<void>;
 
 export type RouteHandlers = {
   GET?: Handler;
@@ -27,8 +26,11 @@ export const Router = (
 ): Handler => async (req: Request, res: Response): Promise<void> => {
   try {
     const handler = getHandlerByMethod(routeHandlers, req.method);
-    if (handler === undefined) return fallback(routeHandlers)(req, res);
-    return handler(req, res);
+    if (handler === undefined) {
+      await fallback(routeHandlers)(req, res);
+      return;
+    }
+    await handler(req, res);
   } catch (err) {
     return rescue(err)(req, res);
   }
@@ -41,10 +43,13 @@ export const defaultFallback = (routeHandlers: RouteHandlers) => async (
   try {
     const allowedMethods = Object.entries(routeHandlers).reduce(
       (acc, [method, handler]) =>
-        handler !== undefined ? `${acc}, ${method}` : acc,
+        handler !== undefined
+          ? acc === ""
+            ? method
+            : `${acc}, ${method}`
+          : acc,
       ""
     );
-
     res.setHeader("Allow", allowedMethods);
     res.status(405).json({
       message: "Method not allowed",
