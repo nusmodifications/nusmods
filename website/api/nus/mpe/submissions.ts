@@ -1,8 +1,8 @@
+import { User, verifyLogin } from "../../../src/serverless/nus-auth";
 import {
   getSubmissionById,
   createSubmission,
 } from "../../../src/serverless/mpe";
-import { User, verifyLogin } from "../../../src/serverless/nus-auth";
 import {
   Router,
   defaultFallback,

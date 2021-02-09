@@ -1,17 +1,17 @@
-import * as validator from '@authenio/samlify-node-xmllint';
-import type { VercelApiHandler, VercelRequest } from '@vercel/node';
-import * as fs from 'fs';
-import _ from 'lodash';
-import * as samlify from 'samlify';
-import type { ESamlHttpRequest } from 'samlify/types/src/entity';
+import * as validator from "@authenio/samlify-node-xmllint";
+import type { VercelApiHandler, VercelRequest } from "@vercel/node";
+import * as fs from "fs";
+import _ from "lodash";
+import * as samlify from "samlify";
+import type { ESamlHttpRequest } from "samlify/types/src/entity";
 
 const samlifyErrors = {
-  assertionExpired: 'ERR_SUBJECT_UNCONFIRMED',
-  invalidAssertion: 'ERR_EXCEPTION_VALIDATE_XML',
+  assertionExpired: "ERR_SUBJECT_UNCONFIRMED",
+  invalidAssertion: "ERR_EXCEPTION_VALIDATE_XML",
 };
 
 const errors = {
-  noTokenSupplied: 'ERR_NO_TOKEN_SUPPLIED',
+  noTokenSupplied: "ERR_NO_TOKEN_SUPPLIED",
 };
 
 export type User = {
@@ -20,16 +20,17 @@ export type User = {
   email: string;
 };
 const samlRespAttributes: { [key in keyof User]: string } = {
-  accountName: 'http://schemas.nus.edu.sg/ws/2015/07/identity/claims/SamAccountName',
-  upn: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn',
-  email: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',
+  accountName:
+    "http://schemas.nus.edu.sg/ws/2015/07/identity/claims/SamAccountName",
+  upn: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn",
+  email: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",
 };
 
 samlify.setSchemaValidator(validator);
 
 const idp = samlify.IdentityProvider({
   metadata: `${
-    process.env.NUS_EXCHANGE_URL || 'https://vafs.nus.edu.sg'
+    process.env.NUS_EXCHANGE_URL || "https://vafs.nus.edu.sg"
   }/federationmetadata/2007-06/federationmetadata.xml`,
 });
 
@@ -39,7 +40,7 @@ const sp = samlify.ServiceProvider({
 });
 
 export const createLoginURL = () => {
-  const { context } = sp.createLoginRequest(idp, 'redirect');
+  const { context } = sp.createLoginRequest(idp, "redirect");
   return context;
 };
 
@@ -58,11 +59,11 @@ export const authenticate = async (req: VercelRequest) => {
   const {
     // samlContent,
     extract: { attributes },
-  } = await sp.parseLoginResponse(idp, 'post', requestToProcess);
+  } = await sp.parseLoginResponse(idp, "post", requestToProcess);
 
   const user: User = _.mapValues(
     samlRespAttributes,
-    (samlAttributeKey) => attributes[samlAttributeKey],
+    (samlAttributeKey) => attributes[samlAttributeKey]
   );
 
   const relayState = req.body?.RelayState ?? null;
@@ -75,7 +76,10 @@ export const authenticate = async (req: VercelRequest) => {
   return loginData;
 };
 
-export const verifyLogin = (next: VercelApiHandler): VercelApiHandler => async (req, res) => {
+export const verifyLogin = (next: VercelApiHandler): VercelApiHandler => async (
+  req,
+  res
+) => {
   try {
     const { user } = await authenticate(req);
     // TODO: Augment VercelApiHandler's request with a user object, or find
@@ -84,15 +88,15 @@ export const verifyLogin = (next: VercelApiHandler): VercelApiHandler => async (
     (req as any).user = user;
   } catch (err) {
     const errResp = {
-      message: '',
+      message: "",
     };
 
     if (err === samlifyErrors.assertionExpired) {
-      errResp.message = 'Token has expired, please login again';
+      errResp.message = "Token has expired, please login again";
     } else if (err === samlifyErrors.invalidAssertion) {
-      errResp.message = 'Invalid token supplied';
+      errResp.message = "Invalid token supplied";
     } else if (err.message === errors.noTokenSupplied) {
-      errResp.message = 'No token is supplied';
+      errResp.message = "No token is supplied";
     } else {
       throw err;
     }
