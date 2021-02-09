@@ -1,5 +1,5 @@
 import * as validator from "@authenio/samlify-node-xmllint";
-import type { VercelApiHandler, VercelRequest } from "@vercel/node";
+import type { Handler, Request } from "./router";
 import * as fs from "fs";
 import _ from "lodash";
 import * as samlify from "samlify";
@@ -44,7 +44,7 @@ export const createLoginURL = () => {
   return context;
 };
 
-export const authenticate = async (req: VercelRequest) => {
+export const authenticate = async (req: Request) => {
   const tokenProvided = req.headers.authorization || req.body?.SAMLResponse;
   if (!tokenProvided) {
     throw new Error(errors.noTokenSupplied);
@@ -76,10 +76,10 @@ export const authenticate = async (req: VercelRequest) => {
   return loginData;
 };
 
-export const verifyLogin = (next: VercelApiHandler): VercelApiHandler => async (
+export const verifyLogin = (next: Handler): Handler => async (
   req,
   res
-) => {
+): Promise<void> => {
   try {
     const { user } = await authenticate(req);
     // TODO: Augment VercelApiHandler's request with a user object, or find
@@ -101,7 +101,8 @@ export const verifyLogin = (next: VercelApiHandler): VercelApiHandler => async (
       throw err;
     }
 
-    return res.status(401).json(errResp);
+    res.status(401).json(errResp);
+    return;
   }
 
   return next(req, res);
