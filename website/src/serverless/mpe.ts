@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios from "axios";
 
-const moduleTypes = ['01', '02', '03', '04'] as const;
+const moduleTypes = ["01", "02", "03", "04"] as const;
 
 type Choice = {
   moduleCode: string;
@@ -12,9 +12,9 @@ type Choice = {
 const vfsEndpoint = process.env.NUS_VFS_MPE_ENDPOINT;
 
 const defaultHeaders = {
-  'X-API-KEY': process.env.NUS_VFS_MPE_API_KEY,
-  'X-FileUpload-API': process.env.NUS_VFS_MPE_FILEUPLOAD_API,
-  'X-APP-API': process.env.NUS_VFS_MPE_APP_API,
+  "X-API-KEY": process.env.NUS_VFS_MPE_API_KEY,
+  "X-FileUpload-API": process.env.NUS_VFS_MPE_FILEUPLOAD_API,
+  "X-APP-API": process.env.NUS_VFS_MPE_APP_API,
 };
 
 const defaultHttpConfig = {
@@ -27,24 +27,28 @@ export const getSubmissionById = async (userId: string) => {
   return resp.data;
 };
 
-const isEmptyString = (str: string): boolean => str.trim() === '';
-const isBetweenRangeString = (str: string, start: number, end: number): boolean => {
+const isEmptyString = (str: string): boolean => str.trim() === "";
+const isBetweenRangeString = (
+  str: string,
+  start: number,
+  end: number
+): boolean => {
   if (str.length < start || str.length > end) return false;
   return true;
 };
 
 const validateChoice = (choice: Partial<Choice> | null): choice is Choice => {
-  if (typeof choice !== 'object' || choice === null) {
-    throw new Error('MPE choice should be an object');
+  if (typeof choice !== "object" || choice === null) {
+    throw new Error("MPE choice should be an object");
   }
 
   if (
-    typeof choice.moduleCode !== 'string' ||
+    typeof choice.moduleCode !== "string" ||
     isEmptyString(choice.moduleCode) ||
     !isBetweenRangeString(choice.moduleCode, 1, 18)
   ) {
     throw new Error(
-      'Please ensure that the module code is a string between 1 to 18 characters long',
+      "Please ensure that the module code is a string between 1 to 18 characters long"
     );
   }
 
@@ -54,12 +58,19 @@ const validateChoice = (choice: Partial<Choice> | null): choice is Choice => {
   // }
 
   if (!moduleTypes.find((type) => type === choice.moduleType)) {
-    const validModuleTypesStr = moduleTypes.reduce((acc, type) => `${acc}, "${type}"`, '');
-    throw new Error(`Please ensure that the module type is either ${validModuleTypesStr}`);
+    const validModuleTypesStr = moduleTypes.reduce(
+      (acc, type) => `${acc}, "${type}"`,
+      ""
+    );
+    throw new Error(
+      `Please ensure that the module type is either ${validModuleTypesStr}`
+    );
   }
 
-  if (typeof choice.credits !== 'number' || choice.credits < 0) {
-    throw new Error('Please ensure that the module credits is an integer that is at least zero');
+  if (typeof choice.credits !== "number" || choice.credits < 0) {
+    throw new Error(
+      "Please ensure that the module credits is an integer that is at least zero"
+    );
   }
 
   return true;
@@ -67,19 +78,28 @@ const validateChoice = (choice: Partial<Choice> | null): choice is Choice => {
 
 const validatePreferences = (preferences: unknown): preferences is Choice[] => {
   if (!Array.isArray(preferences)) {
-    throw new Error('MPE preferences should be an array');
+    throw new Error("MPE preferences should be an array");
   }
   preferences.forEach((choice) => validateChoice(choice));
   return true;
 };
 
-export const createSubmission = async (userId: unknown, preferences: unknown) => {
-  if (typeof userId !== 'string' || isEmptyString(userId) || !isBetweenRangeString(userId, 1, 30)) {
-    throw new Error('Supplied User ID needs to be between 1 to 30 characters long');
+export const createSubmission = async (
+  userId: unknown,
+  preferences: unknown
+) => {
+  if (
+    typeof userId !== "string" ||
+    isEmptyString(userId) ||
+    !isBetweenRangeString(userId, 1, 30)
+  ) {
+    throw new Error(
+      "Supplied User ID needs to be between 1 to 30 characters long"
+    );
   }
 
   if (!validatePreferences(preferences)) {
-    throw new Error('MPE preferences is supplied in an invalid format');
+    throw new Error("MPE preferences is supplied in an invalid format");
   }
 
   const submission = {
