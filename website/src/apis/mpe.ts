@@ -25,6 +25,10 @@ const setToken = (token: string): void => {
   return storage.setItem(TOKEN_STORAGE_KEY, token);
 };
 
+const removeToken = (): void => {
+  return storage.removeItem(TOKEN_STORAGE_KEY);
+};
+
 const mpe = axios.create({
   baseURL: `${NUSMODS_ENV === 'development'
     ? 'http://localhost:3000'
@@ -41,6 +45,7 @@ mpe.interceptors.response.use(
   (resp) => resp,
   (err) => {
     if (err?.response?.status === 401) {
+      removeToken();
       return Promise.reject(ERR_SESSION_EXPIRED);
     }
     return Promise.reject(err);
