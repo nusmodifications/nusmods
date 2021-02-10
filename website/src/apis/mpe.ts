@@ -47,7 +47,10 @@ mpe.interceptors.response.use(
   }
 );
 
-export const useHandleLogin = (location: Location, history: History): void => {
+export const useProcessLogin = (
+  location: Location,
+  history: History
+): boolean => {
   const params = new URLSearchParams(location.search);
   const token = params.get(TOKEN_URL_QUERY);
   useEffect(() => {
@@ -59,11 +62,10 @@ export const useHandleLogin = (location: Location, history: History): void => {
       });
     }
   });
+  return getToken() !== null;
 };
 
-export const isLoggedIn = () => getToken() !== null;
-
-const fetchModuleDetails = async (moduleCode: ModuleCode) => {
+export const fetchModuleDetails = async (moduleCode: ModuleCode): Promise<Module> => {
   try {
     const resp = await axios.get<Module>(
       NUSModsApi.moduleDetailsUrl(moduleCode)
@@ -83,19 +85,21 @@ export const getSSOLink = async (): Promise<string> => {
   }
 };
 
-export const getMPEPreferences = async () => {
+export const getMpePreferences = async (): Promise<MpePreference[]> => {
   try {
     const resp = await mpe.get(MPE_PATH);
     const rawPreferences = resp.data.preferences;
-
     // @ts-ignore
+    const moduleTypes = rawPreferences.map((p) => ({ type: p.moduleType }));
     const modules = await Promise.all<Module>(
+      // @ts-ignore
       rawPreferences.map((p) => fetchModuleDetails(p.moduleCode))
     );
-    return modules.map((m) => ({
-      modulesTitle: m.title,
+    return modules.map<MpePreference>((m, index) => ({
+      moduleTitle: m.title,
       moduleCode: m.moduleCode,
-      moduleCredits: m.moduleCredit,
+      moduleType: moduleTypes[index],
+      moduleCredits: parseInt(m.moduleCredit),
     }));
   } catch (err) {
     // User has no existing MPE preferences
@@ -106,7 +110,7 @@ export const getMPEPreferences = async () => {
   }
 };
 
-export const updateMPEPreferences = async (
+export const updateMpePreferences = async (
   preferences: MpePreference[]
 ): Promise<string> => {
   try {
