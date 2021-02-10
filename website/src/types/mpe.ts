@@ -23,7 +23,7 @@ export type ModuleType =
   | UnrestrictedElective;
 
 export type MpePreference = {
-  moduleTitle: ModuleTitle;
+  moduleTitle?: ModuleTitle;
   moduleCode: ModuleCode;
   moduleType: ModuleType;
   moduleCredits: number;

@@ -116,7 +116,7 @@ export const updateMpePreferences = async (
   try {
     const submission = preferences.map((p) => ({
       moduleCode: p.moduleCode,
-      moduleType: p.moduleType,
+      moduleType: p.moduleType.type,
       credits: p.moduleCredits,
     }));
     const resp = await mpe.put(MPE_PATH, submission);
