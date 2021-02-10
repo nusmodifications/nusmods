@@ -7,7 +7,6 @@ import { SemTimetableConfig } from 'types/timetables';
 
 import Online from 'views/components/Online';
 import { popNotification } from 'actions/app';
-import { getSemModuleSelectList } from 'selectors/moduleBank';
 import { createSearchPredicate, sortModules } from 'utils/moduleSearch';
 import { State as StoreState } from 'types/state';
 import ModulesSelect from './ModulesSelect';
@@ -19,7 +18,7 @@ type OwnProps = {
 
 type Props = OwnProps & {
   moduleList?: ModuleSelectList;
-  addModule?: (semester: Semester, moduleCode: ModuleCode) => void;
+  addModule: (moduleCode: ModuleCode) => void;
   removeModule?: (moduleCode: ModuleCode) => void;
   popNotification: () => void;
 };
@@ -33,7 +32,7 @@ const RESULTS_LIMIT = 500;
 class ModulesSelectContainer extends Component<Props> {
   onChange = (moduleCode: ModuleCode) => {
     this.props.popNotification();
-    // this.props.addModule(this.props.semester, moduleCode);
+    this.props.addModule(moduleCode);
   };
 
   getFilteredModules = (inputValue: string | null) => {
@@ -52,7 +51,9 @@ class ModulesSelectContainer extends Component<Props> {
             moduleCount={this.props.moduleList!.length}
             onChange={this.onChange}
             placeholder={
-              isOnline ? 'Add module to timetable' : 'You need to be online to add modules'
+              isOnline
+                ? 'Add module to the preference list'
+                : 'You need to be online to add modules'
             }
             disabled={!isOnline}
             onRemoveModule={() => null} // {this.props.removeModule}
@@ -65,8 +66,7 @@ class ModulesSelectContainer extends Component<Props> {
 
 function mapStateToProps(state: StoreState, ownProps: OwnProps) {
   const { semester, timetable } = ownProps;
-  const moduleList = state.moduleBank.moduleList; // getSemModuleSelectList(state, semester, timetable);
-
+  const { moduleList } = state.moduleBank;
   return {
     semester,
     moduleList,

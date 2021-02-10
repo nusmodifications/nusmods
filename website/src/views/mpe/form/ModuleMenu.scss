@@ -1,0 +1,15 @@
+.menu {
+  width: 14rem;
+}
+
+.menuBtn {
+  position: sticky;
+  z-index: 1;
+  margin: -0.3rem -0.3rem 0 0;
+
+  :global(.close) {
+    float: none;
+    color: #6f6f6f;
+    font-size: 16px;
+  }
+}
