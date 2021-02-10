@@ -23,3 +23,6 @@ export function announcementKey(key: string | null) {
 export const MODTRIS_SCORES = 'modtris-scores';
 
 export const CONTACT_INFO = 'contact-info';
+
+// Used by MPE
+export const NUS_AUTH_TOKEN = 'nus-auth-token';

@@ -36,4 +36,24 @@
 .Status {
   margin-top: 0.5rem;
   text-align: end;
+  float: right;
+}
+
+.rankContainer {
+  margin-top: 2.5rem;
+  align-self: center;
+}
+
+.cardContainer {
+  padding-right: 0px;
+  display: flex;
+  flex-direction: row;
+  max-width: inherit;
+}
+
+.droppableContainer {
+  padding-right: 0px;
+  display: flex;
+  flex-direction: row;
+  max-width: inherit;
 }

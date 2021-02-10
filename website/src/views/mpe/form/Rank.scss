@@ -1,11 +1,17 @@
 .rank {
-  padding: 0.5rem 1rem 0.5rem 1rem;
+  padding: 0.5rem 0.9rem 0.5rem 0.9rem;
   margin: 0rem 1.5rem 0rem 0rem;
   width: fit-content;
-  height: fit-content;
+  min-height: fit-content;
   align-self: center;
   border-radius: 0.35rem;
   border: 2px solid #ff5138;
   font-weight: bold;
   color: #ff5138;
+}
+
+@media only screen and (max-width: 576px) {
+  .rank {
+    padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+  }
 }
