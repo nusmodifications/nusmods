@@ -1,31 +1,30 @@
-import { ModuleCode } from './modules';
+import { ModuleTitle, ModuleCode } from './modules';
 
-interface EssentialMajor {
-  kind: '01';
+export interface EssentialMajor {
+  type: "01"
 }
 
-interface EssentialSecondMajor {
-  kind: '02';
+export interface EssentialSecondMajor {
+  type: "02"
 }
 
-interface Elective {
-  kind: '03';
+export interface Elective {
+  type: "03"
 }
 
-interface UnrestrictedElective {
-  kind: '04';
+export interface UnrestrictedElective {
+  type: "04"
 }
 
 export type ModuleType =
   | EssentialMajor
   | EssentialSecondMajor
   | Elective
-  | UnrestrictedElective
-  | null;
+  | UnrestrictedElective;
 
-export type Preference = {
-  moduleTitle: string;
+export type MpePreference = {
+  moduleTitle?: ModuleTitle;
   moduleCode: ModuleCode;
   moduleType: ModuleType;
-  moduleCredits: string;
+  moduleCredits: number;
 };
