@@ -39,7 +39,7 @@ mpe.interceptors.response.use(
       return Promise.reject(ERR_SESSION_EXPIRED);
     }
     return Promise.reject(err);
-  }
+  },
 );
 
 export const useProcessLogin = (location: Location, history: History): boolean => {
@@ -77,7 +77,7 @@ export const getMpePreferences = async (): Promise<MpePreference[]> => {
     const modules = await Promise.all<Module>(
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      rawPreferences.map((p) => fetchModuleDetails(p.moduleCode))
+      rawPreferences.map((p) => fetchModuleDetails(p.moduleCode)),
     );
     return modules.map<MpePreference>((m, index) => ({
       moduleTitle: m.title,

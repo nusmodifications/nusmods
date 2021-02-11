@@ -56,7 +56,7 @@ const ModuleForm: React.FC<Props> = (props) => {
   };
 
   async function addModule(moduleCode: ModuleCode) {
-    if (preferences.find(p => p.moduleCode === moduleCode)) return;
+    if (preferences.find((p) => p.moduleCode === moduleCode)) return;
     setIsUpdating(true);
     const previousPreferences = [...preferences];
     try {
