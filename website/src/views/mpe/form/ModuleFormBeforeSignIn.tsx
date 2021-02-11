@@ -6,23 +6,21 @@ type Props = {
   onLogin: () => Promise<void>;
 };
 
-const ModuleFormBeforeSignIn: React.FC<Props> = (prop) => {
-  return (
-    <div className={classnames(styles.container, 'col-md-6')}>
-      <div className={styles.image}>
-        <img src={mpePlaceholder} alt="Timetable" />
-      </div>
-      <h4>Start Module Preference Exercise</h4>
-      <p>Select your modules and we will automatically save your changes</p>
-      <button
-        type="button"
-        className={classnames('btn btn-outline-primary btn-svg')}
-        onClick={prop.onLogin}
-      >
-        Sign In With NUS
-      </button>
+const ModuleFormBeforeSignIn: React.FC<Props> = (prop) => (
+  <div className={classnames(styles.container, 'col-md-6')}>
+    <div className={styles.image}>
+      <img src={mpePlaceholder} alt="Timetable" />
     </div>
-  );
-};
+    <h4>Start Module Preference Exercise</h4>
+    <p>Select your modules and we will automatically save your changes</p>
+    <button
+      type="button"
+      className={classnames('btn btn-outline-primary btn-svg')}
+      onClick={prop.onLogin}
+    >
+      Sign In With NUS
+    </button>
+  </div>
+);
 
 export default ModuleFormBeforeSignIn;

@@ -1,6 +1,6 @@
+import type { MpePreference } from 'types/mpe';
 import ModuleFormBeforeSignIn from './ModuleFormBeforeSignIn';
 import ModuleForm from './ModuleForm';
-import type { MpePreference } from 'types/mpe';
 
 type Props = {
   isLoggedIn: boolean;
@@ -9,19 +9,17 @@ type Props = {
   updatePreferences: (preferences: MpePreference[]) => Promise<string>;
 };
 
-const MpeForm: React.FC<Props> = (props) => {
-  return (
-    <div>
-      {props.isLoggedIn ? (
-        <ModuleForm
-          getPreferences={props.getPreferences}
-          updatePreferences={props.updatePreferences}
-        />
-      ) : (
-          <ModuleFormBeforeSignIn onLogin={props.onLogin} />
-        )}
-    </div>
-  );
-};
+const MpeForm: React.FC<Props> = (props) => (
+  <div>
+    {props.isLoggedIn ? (
+      <ModuleForm
+        getPreferences={props.getPreferences}
+        updatePreferences={props.updatePreferences}
+      />
+    ) : (
+      <ModuleFormBeforeSignIn onLogin={props.onLogin} />
+    )}
+  </div>
+);
 
 export default MpeForm;
