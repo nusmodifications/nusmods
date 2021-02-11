@@ -1,11 +1,21 @@
-@import '~styles/utils/modules-entry.scss';
-
 .side {
-  //padding-left: 1.25rem;
   grid-area: side;
-  align-content: space-around;
-  justify-items: center;
-  justify-content: center;
+  align-self: center;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration-line: #c0c0c0;
+}
+.text {
+  margin-top: 0.3rem;
+  padding: 0.1rem 0.5rem 0.1rem 0.5rem;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+  background-color: #c0c0c0;
+  border-radius: 0.35rem;
+  color: white;
 }
 .modulecode {
   padding-left: 0.5rem;
@@ -47,12 +57,12 @@
   height: fit-content;
   display: grid;
   min-width: 50%;
-  max-width: 373px;
-  grid-template-columns: 1fr 5fr 1fr 1fr;
+  max-width: 600px;
+  grid-template-columns: 1fr 5fr 1fr 1.2fr;
   grid-template-rows: auto;
   grid-template-areas:
     '. modulecode . mc'
-    'side moduletitle moduletitle .'
+    'side moduletitle moduletitle mc'
     '. moduletype moduletype moduletype';
 }
 
@@ -60,56 +70,4 @@
   margin-top: 2rem;
   display: flex;
   flex-direction: row;
-}
-
-.rank {
-  padding: 0.5rem 1rem 0.5rem 1rem;
-  margin: 0rem 1.5rem 0rem 0rem;
-  width: fit-content;
-  height: fit-content;
-  align-self: center;
-  border-radius: 0.35rem;
-  border: 2px solid #ff5138;
-  font-weight: bold;
-  color: #ff5138;
-}
-
-.image {
-  align-self: center;
-  padding: 0.5rem 1rem 0.5rem 1rem;
-  width: 100%;
-  height: 100%;
-}
-@media only screen and (max-width: 576px) {
-  .trash {
-    width: 2rem !important;
-    height: 2rem !important;
-    padding: 0 !important;
-  }
-
-  .moduleAction {
-    margin-left: 0;
-  }
-  .image {
-    padding: 0.5rem 1rem 0.5rem 1rem;
-    width: inherit;
-    height: inherit;
-  }
-}
-
-.trash {
-  width: 4rem;
-  height: 4rem;
-  opacity: 0.6;
-  align-self: center;
-  padding: 0.5rem 1rem 0.5rem 1rem;
-}
-
-.moduleAction {
-  border: 0;
-  margin-left: 1rem;
-  padding: 0;
-  align-self: center;
-  height: fit-content;
-  width: fit-content;
 }

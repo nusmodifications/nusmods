@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import type { MpePreference } from 'types/mpe';
 import classnames from 'classnames';
@@ -15,7 +15,7 @@ import {
 const MpeContainer: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const isLoggedInOnLoad = useProcessLogin(useLocation(), useHistory());
-  useEffect(() => {
+  useLayoutEffect(() => {
     setIsLoggedIn(isLoggedInOnLoad);
   }, [isLoggedInOnLoad]);
 

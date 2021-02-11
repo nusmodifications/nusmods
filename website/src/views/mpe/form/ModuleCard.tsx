@@ -1,12 +1,12 @@
 import type { MpePreference, ModuleType } from 'types/mpe';
 import type { ModuleCode } from 'types/modules';
-import classnames from 'classnames';
-import Tooltip from 'views/components/Tooltip';
-import { Trash } from 'react-feather';
 import ModuleMenu from './ModuleMenu';
+import DeleteButton from './DeleteButton';
+import ModuletypeMenu from './ModuletypeMenu';
 import styles from './ModuleCard.scss';
 
 type Props = {
+  rank: number;
   preference: MpePreference;
   removeModule: (moduleCodeToRemove: string) => Promise<void>;
   updateModuleType: (moduleCode: ModuleCode, moduleType: ModuleType) => Promise<void>;
@@ -17,29 +17,28 @@ const ModuleCard: React.FC<Props> = (props) => {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <div className={styles.side}>
-          <img className={styles.image} src="https://i.ibb.co/48FtBq1/doticon.png" alt="dots" />
-        </div>
+        <div className={styles.side}>{props.rank + 1}</div>
         <div className={styles.modulecode}>{props.preference.moduleCode}</div>
         <div className={styles.moduletitle}>{props.preference.moduleTitle}</div>
-        <div className={styles.mc}>{props.preference.moduleCredits} MC</div>
+        <div className={styles.mc}>
+          <DeleteButton
+            label={removeBtnLabel}
+            removeModule={props.removeModule}
+            moduleCode={props.preference.moduleCode}
+          />
+          <p className={styles.text}>{props.preference.moduleCredits} MC </p>
+        </div>
         <div className={styles.moduletype}>
-          <ModuleMenu
+          {/* <ModuleMenu
+            moduleCode={props.preference.moduleCode}
+            updateModuleType={props.updateModuleType}
+          /> */}
+          <ModuletypeMenu
             moduleCode={props.preference.moduleCode}
             updateModuleType={props.updateModuleType}
           />
         </div>
       </div>
-      <Tooltip content={removeBtnLabel} touch="hold">
-        <button
-          type="button"
-          className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
-          aria-label={removeBtnLabel}
-          onClick={() => props.removeModule(props.preference.moduleCode)}
-        >
-          <Trash className={styles.trash} />
-        </button>
-      </Tooltip>
     </div>
   );
 };

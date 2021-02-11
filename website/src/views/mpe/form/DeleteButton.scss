@@ -1,0 +1,24 @@
+.delete {
+  padding: 0.2rem;
+  margin: -1.4rem -1rem 0 0;
+  width: fit-content;
+  height: fit-content;
+  border-radius: 0.35rem;
+  border: 1px solid var(--gray-lighter);
+  background-color: white;
+  font-weight: bold;
+  float: right;
+  color: 1px solid var(--gray-lighter);
+}
+.x {
+  width: 1rem;
+  height: 1rem;
+  margin-left: 0.04rem;
+  opacity: 0.6;
+}
+
+@media only screen and (max-width: 576px) {
+  .delete {
+    margin: -1.6rem -1rem 0 0;
+  }
+}

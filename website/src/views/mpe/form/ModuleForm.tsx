@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { Draggable, DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import type { ModuleType, MpePreference } from 'types/mpe';
 import { ModuleCode } from 'types/modules';
+import LoadingSpinner from 'views/components/LoadingSpinner';
 import { fetchModuleDetails } from '../../../apis/mpe';
 import styles from './ModuleForm.scss';
 import ModuleCard from './ModuleCard';
 import ModulesSelectContainer from './ModulesSelectContainer';
-import Rank from './Rank';
 
 type Props = {
   getPreferences: () => Promise<MpePreference[]>;
@@ -122,9 +122,9 @@ const ModuleForm: React.FC<Props> = (props) => {
           {`${preferences.reduce<number>((acc, p) => acc + p.moduleCredits, 0)} MCs Selected`}
         </div>
       </div>
-      <div className={styles.DragDropContainer}>
+      <div>
         {isInitialLoad ? (
-          <h1>Loading...</h1>
+          <LoadingSpinner />
         ) : (
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="droppable">
@@ -132,9 +132,6 @@ const ModuleForm: React.FC<Props> = (props) => {
                 <div {...provided.droppableProps} ref={provided.innerRef}>
                   {preferences.map((preference, index) => (
                     <div key={index} className={styles.droppableContainer}>
-                      <div className={styles.rankContainer}>
-                        <Rank rankNumber={index + 1} />
-                      </div>
                       <Draggable
                         key={preference.moduleCode}
                         draggableId={preference.moduleCode}
@@ -148,6 +145,7 @@ const ModuleForm: React.FC<Props> = (props) => {
                             {...innerProvided.dragHandleProps}
                           >
                             <ModuleCard
+                              rank={index}
                               preference={preference}
                               removeModule={removeModule}
                               updateModuleType={updateModuleType}

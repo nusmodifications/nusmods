@@ -6,6 +6,7 @@
 }
 .module {
   grid-area: module;
+  text-align: left;
   font-weight: bold;
 }
 .rank {
@@ -37,11 +38,6 @@
   margin-top: 0.5rem;
   text-align: end;
   float: right;
-}
-
-.rankContainer {
-  margin-top: 2.5rem;
-  align-self: center;
 }
 
 .cardContainer {
