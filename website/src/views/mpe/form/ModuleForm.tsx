@@ -22,7 +22,6 @@ const ModuleForm: React.FC<Props> = (props) => {
   const [preferences, setPreferences] = useState<MpePreference[]>([]);
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(false);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
-  const [totalMC, setTotalMC] = useState<number>(0);
 
   useEffect(() => {
     setIsInitialLoad(true);
