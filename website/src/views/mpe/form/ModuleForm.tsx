@@ -6,7 +6,7 @@ import {
   DropResult,
 } from 'react-beautiful-dnd';
 import { fetchModuleDetails } from '../../../apis/mpe';
-import { MpePreference } from 'types/mpe';
+import type { ModuleType, MpePreference } from 'types/mpe';
 import { ModuleCode } from 'types/modules';
 import styles from './ModuleForm.scss';
 import ModuleCard from './ModuleCard';
@@ -66,6 +66,7 @@ const ModuleForm: React.FC<Props> = (props) => {
   };
 
   async function addModule(moduleCode: ModuleCode) {
+    if (preferences.find(p => p.moduleCode === moduleCode)) return;
     setIsUpdating(true);
     const previousPreferences = [...preferences];
     try {
@@ -96,6 +97,31 @@ const ModuleForm: React.FC<Props> = (props) => {
     const previousPreferences = [...preferences];
     const updatedPreferences = preferences.filter(
       (p) => p.moduleCode !== moduleCode
+    );
+    setPreferences(updatedPreferences);
+    try {
+      await props.updatePreferences(updatedPreferences);
+    } catch (err) {
+      setPreferences(previousPreferences);
+      console.log(err);
+    } finally {
+      setIsUpdating(false);
+    }
+  }
+
+  async function updateModuleType(
+    moduleCode: ModuleCode,
+    moduleType: ModuleType
+  ) {
+    if (!preferences.find((p) => p.moduleCode === moduleCode)) return;
+    setIsUpdating(true);
+    const previousPreferences = [...preferences];
+    const updatedPreferences = preferences.reduce<MpePreference[]>(
+      (acc, p) => [
+        ...acc,
+        p.moduleCode === moduleCode ? { ...p, moduleType: moduleType } : p,
+      ],
+      []
     );
     setPreferences(updatedPreferences);
     try {
@@ -146,13 +172,9 @@ const ModuleForm: React.FC<Props> = (props) => {
                               {...innerProvided.dragHandleProps}
                             >
                               <ModuleCard
-                                preference={{
-                                  moduleTitle: preference.moduleTitle,
-                                  moduleCode: preference.moduleCode,
-                                  moduleType: preference.moduleType,
-                                  moduleCredits: preference.moduleCredits,
-                                }}
+                                preference={preference}
                                 removeModule={removeModule}
+                                updateModuleType={updateModuleType}
                               />
                             </div>
                           )}
