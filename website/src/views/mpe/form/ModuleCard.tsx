@@ -9,10 +9,7 @@ import styles from './ModuleCard.scss';
 type Props = {
   preference: MpePreference;
   removeModule: (moduleCodeToRemove: string) => Promise<void>;
-  updateModuleType: (
-    moduleCode: ModuleCode,
-    moduleType: ModuleType
-  ) => Promise<void>;
+  updateModuleType: (moduleCode: ModuleCode, moduleType: ModuleType) => Promise<void>;
 };
 
 const ModuleCard: React.FC<Props> = (props) => {
@@ -21,11 +18,7 @@ const ModuleCard: React.FC<Props> = (props) => {
     <div className={styles.container}>
       <div className={styles.card}>
         <div className={styles.side}>
-          <img
-            className={styles.image}
-            src="https://i.ibb.co/48FtBq1/doticon.png"
-            alt="dots"
-          />
+          <img className={styles.image} src="https://i.ibb.co/48FtBq1/doticon.png" alt="dots" />
         </div>
         <div className={styles.modulecode}>{props.preference.moduleCode}</div>
         <div className={styles.moduletitle}>{props.preference.moduleTitle}</div>
@@ -40,10 +33,7 @@ const ModuleCard: React.FC<Props> = (props) => {
       <Tooltip content={removeBtnLabel} touch="hold">
         <button
           type="button"
-          className={classnames(
-            'btn btn-outline-secondary btn-svg',
-            styles.moduleAction
-          )}
+          className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
           aria-label={removeBtnLabel}
           onClick={() => props.removeModule(props.preference.moduleCode)}
         >

@@ -1,4 +1,4 @@
-import type { MpePreference, ModuleType, EssentialMajor } from 'types/mpe';
+import type { ModuleType } from 'types/mpe';
 import type { ModuleCode } from 'types/modules';
 import { memo } from 'react';
 import Downshift from 'downshift';
@@ -8,10 +8,7 @@ import styles from './ModuleMenu.scss';
 
 type Props = {
   readonly moduleCode: ModuleCode;
-  readonly updateModuleType: (
-    moduleCode: ModuleCode,
-    moduleType: ModuleType
-  ) => Promise<void>;
+  readonly updateModuleType: (moduleCode: ModuleCode, moduleType: ModuleType) => Promise<void>;
 };
 
 type ModuleTypeOptions = {
@@ -50,13 +47,7 @@ const ModuleMenu = memo((props: Props) => {
         });
       }}
     >
-      {({
-        getItemProps,
-        getMenuProps,
-        highlightedIndex,
-        isOpen,
-        toggleMenu,
-      }) => (
+      {({ getItemProps, getMenuProps, highlightedIndex, isOpen, toggleMenu }) => (
         <div className={styles.menuBtn}>
           <button
             className={classnames('btn close')}
