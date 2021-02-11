@@ -1,4 +1,5 @@
-import { MpePreference } from 'types/mpe';
+import type { MpePreference, ModuleType } from 'types/mpe';
+import type { ModuleCode } from 'types/modules';
 import classnames from 'classnames';
 import Tooltip from 'views/components/Tooltip';
 import { Trash } from 'react-feather';
@@ -8,6 +9,10 @@ import styles from './ModuleCard.scss';
 type Props = {
   preference: MpePreference;
   removeModule: (moduleCodeToRemove: string) => Promise<void>;
+  updateModuleType: (
+    moduleCode: ModuleCode,
+    moduleType: ModuleType
+  ) => Promise<void>;
 };
 
 const ModuleCard: React.FC<Props> = (props) => {
@@ -26,7 +31,10 @@ const ModuleCard: React.FC<Props> = (props) => {
         <div className={styles.moduletitle}>{props.preference.moduleTitle}</div>
         <div className={styles.mc}>{props.preference.moduleCredits} MC</div>
         <div className={styles.moduletype}>
-          <ModuleMenu removeModule={() => null} editCustomData={() => null} />
+          <ModuleMenu
+            moduleCode={props.preference.moduleCode}
+            updateModuleType={props.updateModuleType}
+          />
         </div>
       </div>
       <Tooltip content={removeBtnLabel} touch="hold">
