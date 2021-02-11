@@ -1,28 +1,65 @@
 import { useEffect, useState } from 'react';
-import { Draggable, DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import { Preference } from 'types/mpe';
+import {
+  Draggable,
+  DragDropContext,
+  Droppable,
+  DropResult,
+} from 'react-beautiful-dnd';
+import { fetchModuleDetails } from '../../../apis/mpe';
+import { MpePreference } from 'types/mpe';
 import { ModuleCode } from 'types/modules';
-import { fetchModuleDetails, getMPEPreference, updateMPEPreference } from 'apis/mpe';
-import classnames from 'classnames';
 import styles from './ModuleForm.scss';
 import ModuleCard from './ModuleCard';
 import ModulesSelectContainer from './ModulesSelectContainer';
 import Rank from './Rank';
 
 type Props = {
-  placeholder?: boolean; // Remove this when new props are added.
+  getPreferences: () => Promise<MpePreference[]>;
+  updatePreferences: (preferences: MpePreference[]) => Promise<string>;
 };
 
 const ModuleForm: React.FC<Props> = (props) => {
-  // TODO: Fetch preferences from server with useEffect.
-  const [preferences, setPreferences] = useState<Preference[]>([]);
+  const [preferences, setPreferences] = useState<MpePreference[]>([]);
+  const [isInitialLoad, setIsInitialLoad] = useState<boolean>(false);
+  const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const [totalMC, setTotalMC] = useState<number>(0);
-  const onDragEnd = (result: DropResult): void => {
+
+  useEffect(() => {
+    setIsInitialLoad(true);
+    props
+      .getPreferences()
+      .then((result) => {
+        setPreferences(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setIsInitialLoad(false);
+      });
+  }, []);
+
+  const onDragEnd = async (result: DropResult): Promise<void> => {
     if (!result.destination) return;
-    setPreferences(reorder(preferences, result.source.index, result.destination.index));
+    setIsUpdating(true);
+    const previousPreferences = [...preferences];
+    const updatedPreferences = reorder(
+      preferences,
+      result.source.index,
+      result.destination.index
+    );
+    setPreferences(updatedPreferences);
+    try {
+      await props.updatePreferences(updatedPreferences);
+    } catch (err) {
+      setPreferences(previousPreferences);
+      console.log(err);
+    } finally {
+      setIsUpdating(false);
+    }
   };
 
-  const reorder = (items: Array<Preference>, startIndex: number, endIndex: number) => {
+  const reorder = (items: any[], startIndex: number, endIndex: number) => {
     const result = [...items];
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
@@ -30,34 +67,45 @@ const ModuleForm: React.FC<Props> = (props) => {
   };
 
   async function addModule(moduleCode: ModuleCode) {
-    // Call the getUpdatePreference here
-    const moduleInformation = await fetchModuleDetails(moduleCode);
+    setIsUpdating(true);
+    const previousPreferences = [...preferences];
     try {
-      const additionalPreference: Preference = {
-        moduleTitle: moduleInformation.title,
-        moduleCode: moduleInformation.moduleCode,
-        moduleType: null,
-        moduleCredits: moduleInformation.moduleCredit,
-      };
-      const newPreferences: Preference[] = [...preferences, additionalPreference];
-      setPreferences(newPreferences);
-      setTotalMC(totalMC + parseInt(additionalPreference.moduleCredits, 16));
+      const moduleInfo = await fetchModuleDetails(moduleCode);
+      const updatedPreferences: MpePreference[] = [
+        ...preferences,
+        {
+          moduleTitle: moduleInfo.title,
+          moduleCode: moduleCode,
+          moduleType: {
+            type: '01',
+          },
+          moduleCredits: parseInt(moduleInfo.moduleCredit),
+        },
+      ];
+      setPreferences(updatedPreferences);
+      await props.updatePreferences(updatedPreferences);
     } catch (err) {
+      setPreferences(previousPreferences);
       console.log(err);
+    } finally {
+      setIsUpdating(false);
     }
   }
 
-  async function removeModule(moduleCodeToRemove: ModuleCode) {
-    // Call the getUpdatePreference here
+  async function removeModule(moduleCode: ModuleCode) {
+    setIsUpdating(true);
+    const previousPreferences = [...preferences];
+    const updatedPreferences = preferences.filter(
+      (p) => p.moduleCode !== moduleCode
+    );
+    setPreferences(updatedPreferences);
     try {
-      const moduleToRemove = preferences.filter((c) => c.moduleCode === moduleCodeToRemove)[0];
-      const updatedPreferences: Preference[] = preferences.filter(
-        (c) => c.moduleCode !== moduleCodeToRemove,
-      );
-      setPreferences(updatedPreferences);
-      setTotalMC(totalMC - parseInt(moduleToRemove.moduleCredits, 16));
+      await props.updatePreferences(updatedPreferences);
     } catch (err) {
+      setPreferences(previousPreferences);
       console.log(err);
+    } finally {
+      setIsUpdating(false);
     }
   }
 
@@ -67,53 +115,64 @@ const ModuleForm: React.FC<Props> = (props) => {
         <div className={styles.rank}>Rank</div>
         <div className={styles.module}>Module</div>
         <div className={styles.mc}>
-          {totalMC > 1 ? `${totalMC} MCs Selected` : `${totalMC} MC Selected`}
+          {`${preferences.reduce<number>(
+            (acc, p) => acc + p.moduleCredits,
+            0
+          )} MCs Selected`}
         </div>
       </div>
       <div className={styles.DragDropContainer}>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="droppable">
-            {(provided) => (
-              <div {...provided.droppableProps} ref={provided.innerRef}>
-                {preferences.map((preference, index) => (
-                  <div key={index} className={styles.droppableContainer}>
-                    <div className={styles.rankContainer}>
-                      <Rank rankNumber={index + 1} />
-                    </div>
-                    <Draggable
-                      key={preference.moduleCode}
-                      draggableId={preference.moduleCode}
-                      index={index}
-                    >
-                      {(innerProvided) => (
-                        <div
-                          ref={innerProvided.innerRef}
-                          className={styles.cardContainer}
-                          {...innerProvided.draggableProps}
-                          {...innerProvided.dragHandleProps}
-                        >
-                          <ModuleCard
-                            Preference={{
-                              moduleTitle: preference.moduleTitle,
-                              moduleCode: preference.moduleCode,
-                              moduleType: preference.moduleType,
-                              moduleCredits: preference.moduleCredits,
-                            }}
-                            removeModule={removeModule}
-                          />
+        {isInitialLoad ? (
+          <h1>Loading...</h1>
+        ) : (
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable droppableId="droppable">
+                {(provided) => (
+                  <div {...provided.droppableProps} ref={provided.innerRef}>
+                    {preferences.map((preference, index) => (
+                      <div key={index} className={styles.droppableContainer}>
+                        <div className={styles.rankContainer}>
+                          <Rank rankNumber={index + 1} />
                         </div>
-                      )}
-                    </Draggable>
+                        <Draggable
+                          key={preference.moduleCode}
+                          draggableId={preference.moduleCode}
+                          index={index}
+                        >
+                          {(innerProvided) => (
+                            <div
+                              ref={innerProvided.innerRef}
+                              className={styles.cardContainer}
+                              {...innerProvided.draggableProps}
+                              {...innerProvided.dragHandleProps}
+                            >
+                              <ModuleCard
+                                preference={{
+                                  moduleTitle: preference.moduleTitle,
+                                  moduleCode: preference.moduleCode,
+                                  moduleType: preference.moduleType,
+                                  moduleCredits: preference.moduleCredits,
+                                }}
+                                removeModule={removeModule}
+                              />
+                            </div>
+                          )}
+                        </Draggable>
+                      </div>
+                    ))}
+                    {provided.placeholder}
                   </div>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+                )}
+              </Droppable>
+            </DragDropContext>
+          )}
       </div>
       <div className={styles.SelectContainer}>
-        <ModulesSelectContainer semester={2021} removeModule={removeModule} addModule={addModule} />
+        <ModulesSelectContainer
+          semester={2021}
+          removeModule={removeModule}
+          addModule={addModule}
+        />
       </div>
       <p className={styles.Status}>All changes are saved</p>
     </div>
