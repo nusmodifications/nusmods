@@ -40,6 +40,11 @@
   font-weight: bold;
   word-wrap: break-word;
 }
+@media only screen and (max-width: 576px) {
+  .text {
+    font-size: 14px;
+  }
+}
 .moduletype {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;

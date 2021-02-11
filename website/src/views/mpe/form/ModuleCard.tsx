@@ -1,6 +1,6 @@
 import type { MpePreference, ModuleType } from 'types/mpe';
 import type { ModuleCode } from 'types/modules';
-import ModuleMenu from './ModuleMenu';
+// import ModuleMenu from './ModuleMenu';
 import DeleteButton from './DeleteButton';
 import ModuletypeMenu from './ModuletypeMenu';
 import styles from './ModuleCard.scss';
@@ -36,6 +36,7 @@ const ModuleCard: React.FC<Props> = (props) => {
           <ModuletypeMenu
             moduleCode={props.preference.moduleCode}
             updateModuleType={props.updateModuleType}
+            type={props.preference.moduleType.type}
           />
         </div>
       </div>

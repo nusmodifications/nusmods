@@ -10,6 +10,8 @@
   float: none;
 }
 
-.items {
-  border-radius: 2px;
+@media only screen and (max-width: 576px) {
+  .menu {
+    font-size: 14px;
+  }
 }

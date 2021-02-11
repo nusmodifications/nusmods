@@ -165,7 +165,7 @@ const ModuleForm: React.FC<Props> = (props) => {
       <div className={styles.SelectContainer}>
         <ModulesSelectContainer semester={2021} removeModule={removeModule} addModule={addModule} />
       </div>
-      <p className={styles.Status}>All changes are saved</p>
+      <p className={styles.Status}>{isUpdating ? 'Saving...' : 'All changes are saved'} </p>
     </div>
   );
 };

@@ -6,6 +6,7 @@ import styles from './ModuletypeMenu.scss';
 type Props = {
   readonly moduleCode: ModuleCode;
   readonly updateModuleType: (moduleCode: ModuleCode, moduleType: ModuleType) => Promise<void>;
+  readonly type: string;
 };
 
 const ModuletypeMenu: React.FC<Props> = (props) => {
@@ -14,12 +15,11 @@ const ModuletypeMenu: React.FC<Props> = (props) => {
     props.updateModuleType(props.moduleCode, modType);
   }
   return (
-    <div className={styles.wrapper}>
+    <div>
       <select
-        defaultValue="00"
-        name="Module Type"
+        value={props.type}
         className={classnames('btn close', styles.menu)}
-        onClick={handleChange}
+        onChange={handleChange}
       >
         <option className="dropdown-item" value="00">
           Module Type
