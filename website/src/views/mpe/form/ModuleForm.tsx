@@ -26,7 +26,9 @@ const ModuleForm: React.FC<Props> = (props) => {
         setPreferences(result);
       })
       .catch((err) => {
-        // console.log(err)
+        // this is a temporary fix
+        // eslint-disable-next-line no-console
+        console.log(err);
       })
       .finally(() => {
         setIsInitialLoad(false);
@@ -163,7 +165,12 @@ const ModuleForm: React.FC<Props> = (props) => {
         )}
       </div>
       <div className={styles.SelectContainer}>
-        <ModulesSelectContainer semester={2021} removeModule={removeModule} addModule={addModule} />
+        <ModulesSelectContainer
+          preferences={preferences}
+          semester={2021}
+          removeModule={removeModule}
+          addModule={addModule}
+        />
       </div>
       <p className={styles.Status}>{isUpdating ? 'Saving...' : 'All changes are saved'} </p>
     </div>

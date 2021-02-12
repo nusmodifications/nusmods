@@ -1,29 +1,38 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { ModuleSelectList } from 'types/reducers';
+import { ModuleSelectList, ModuleSelectListItem } from 'types/reducers';
 import { ModuleCode, Semester } from 'types/modules';
-import { SemTimetableConfig } from 'types/timetables';
+import type { MpePreference } from 'types/mpe';
 
 import Online from 'views/components/Online';
-import { popNotification } from 'actions/app';
 import { createSearchPredicate, sortModules } from 'utils/moduleSearch';
 import { State as StoreState } from 'types/state';
 import ModulesSelect from './ModulesSelect';
 
 type OwnProps = {
-  timetable?: SemTimetableConfig;
   semester: Semester;
 };
 
 type Props = OwnProps & {
+  preferences: MpePreference[];
   moduleList?: ModuleSelectList;
   addModule: (moduleCode: ModuleCode) => void;
-  removeModule?: (moduleCode: ModuleCode) => void;
-  popNotification: () => void;
+  removeModule: (moduleCode: ModuleCode) => Promise<void>;
 };
 
 const RESULTS_LIMIT = 500;
+
+function isModuleinPreference(preferences: MpePreference[], moduleCode: ModuleCode) {
+  return preferences.reduce<boolean>((acc, curr) => acc || curr.moduleCode === moduleCode, false);
+}
+function makeModuleList(state: StoreState, props: Props): ModuleSelectListItem[] {
+  return state.moduleBank.moduleList.map((module) => ({
+    ...module,
+    isAdded: isModuleinPreference(props.preferences, module.moduleCode),
+    isAdding: false,
+  }));
+}
 
 /**
  * Container for modules select
@@ -31,13 +40,13 @@ const RESULTS_LIMIT = 500;
  */
 class ModulesSelectContainer extends Component<Props> {
   onChange = (moduleCode: ModuleCode) => {
-    this.props.popNotification();
     this.props.addModule(moduleCode);
   };
 
   getFilteredModules = (inputValue: string | null) => {
     if (!inputValue) return [];
     const predicate = createSearchPredicate(inputValue);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const results = this.props.moduleList!.filter(predicate);
     return sortModules(inputValue, results.slice(0, RESULTS_LIMIT));
   };
@@ -48,6 +57,7 @@ class ModulesSelectContainer extends Component<Props> {
         {(isOnline) => (
           <ModulesSelect
             getFilteredModules={this.getFilteredModules}
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             moduleCount={this.props.moduleList!.length}
             onChange={this.onChange}
             placeholder={
@@ -56,7 +66,7 @@ class ModulesSelectContainer extends Component<Props> {
                 : 'You need to be online to add modules'
             }
             disabled={!isOnline}
-            onRemoveModule={() => null} // {this.props.removeModule}
+            onRemoveModule={this.props.removeModule}
           />
         )}
       </Online>
@@ -64,15 +74,6 @@ class ModulesSelectContainer extends Component<Props> {
   }
 }
 
-function mapStateToProps(state: StoreState, ownProps: OwnProps) {
-  const { semester, timetable } = ownProps;
-  const { moduleList } = state.moduleBank;
-  return {
-    semester,
-    moduleList,
-  };
-}
-
-export default connect(mapStateToProps, {
-  popNotification,
-})(ModulesSelectContainer);
+export default connect((state: StoreState, props: Props) => ({
+  moduleList: makeModuleList(state, props),
+}))(ModulesSelectContainer);

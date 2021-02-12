@@ -29,7 +29,7 @@ type Props = {
 
   getFilteredModules: (string: string | null) => ModuleSelectList;
   onChange: (moduleCode: ModuleCode) => void;
-  onRemoveModule: (moduleCode: ModuleCode) => void;
+  onRemoveModule: (moduleCode: ModuleCode) => Promise<void>;
 };
 
 type State = {

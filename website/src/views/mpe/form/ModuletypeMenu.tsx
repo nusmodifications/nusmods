@@ -10,6 +10,7 @@ type Props = {
 };
 
 const ModuletypeMenu: React.FC<Props> = (props) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function handleChange(e: any) {
     const modType = { type: e.target.value };
     props.updateModuleType(props.moduleCode, modType);
@@ -21,9 +22,6 @@ const ModuletypeMenu: React.FC<Props> = (props) => {
         className={classnames('btn close', styles.menu)}
         onChange={handleChange}
       >
-        <option className="dropdown-item" value="00">
-          Module Type
-        </option>
         <option className="dropdown-item" value="01">
           Essential (Major)
         </option>
