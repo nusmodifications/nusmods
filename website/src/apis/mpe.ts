@@ -22,8 +22,7 @@ const setToken = (token: string): void => storage.setItem(TOKEN_STORAGE_KEY, tok
 const removeToken = (): void => storage.removeItem(TOKEN_STORAGE_KEY);
 
 const mpe = axios.create({
-  // baseURL: 'https://nusmods.com/api/nus',
-  baseURL: 'https://auth-test.bingquan.vercel.app/api/nus',
+  baseURL: 'https://nusmods.com/api/nus',
 });
 
 mpe.interceptors.request.use((config) => {
