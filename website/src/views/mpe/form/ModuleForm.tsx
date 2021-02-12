@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Draggable, DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import classnames from 'classnames';
 import type { ModuleType, MpePreference } from 'types/mpe';
 import { ModuleCode } from 'types/modules';
 import LoadingSpinner from 'views/components/LoadingSpinner';
-import Modal from 'views/components/Modal';
-import { ERR_SESSION_EXPIRED, fetchModuleDetails } from '../../../apis/mpe';
+import { fetchModuleDetails } from '../../../apis/mpe';
 import styles from './ModuleForm.scss';
 import ModuleCard from './ModuleCard';
 import ModulesSelectContainer from './ModulesSelectContainer';
@@ -19,7 +17,6 @@ const ModuleForm: React.FC<Props> = (props) => {
   const [preferences, setPreferences] = useState<MpePreference[]>([]);
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(false);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
-  const [isSessionExpired, setIsSessionExpired] = useState<boolean>(false);
 
   useEffect(() => {
     setIsInitialLoad(true);
@@ -29,9 +26,7 @@ const ModuleForm: React.FC<Props> = (props) => {
         setPreferences(result);
       })
       .catch((err) => {
-        if (err === ERR_SESSION_EXPIRED) {
-          setIsSessionExpired(true);
-        }
+        // console.log(err)
       })
       .finally(() => {
         setIsInitialLoad(false);
@@ -48,9 +43,6 @@ const ModuleForm: React.FC<Props> = (props) => {
       await props.updatePreferences(updatedPreferences);
     } catch (err) {
       setPreferences(previousPreferences);
-      if (err === ERR_SESSION_EXPIRED) {
-        setIsSessionExpired(true);
-      }
     } finally {
       setIsUpdating(false);
     }
@@ -84,9 +76,6 @@ const ModuleForm: React.FC<Props> = (props) => {
       await props.updatePreferences(updatedPreferences);
     } catch (err) {
       setPreferences(previousPreferences);
-      if (err === ERR_SESSION_EXPIRED) {
-        setIsSessionExpired(true);
-      }
     } finally {
       setIsUpdating(false);
     }
@@ -101,9 +90,6 @@ const ModuleForm: React.FC<Props> = (props) => {
       await props.updatePreferences(updatedPreferences);
     } catch (err) {
       setPreferences(previousPreferences);
-      if (err === ERR_SESSION_EXPIRED) {
-        setIsSessionExpired(true);
-      }
     } finally {
       setIsUpdating(false);
     }
@@ -122,9 +108,6 @@ const ModuleForm: React.FC<Props> = (props) => {
       await props.updatePreferences(updatedPreferences);
     } catch (err) {
       setPreferences(previousPreferences);
-      if (err === ERR_SESSION_EXPIRED) {
-        setIsSessionExpired(true);
-      }
     } finally {
       setIsUpdating(false);
     }
@@ -183,22 +166,6 @@ const ModuleForm: React.FC<Props> = (props) => {
         <ModulesSelectContainer semester={2021} removeModule={removeModule} addModule={addModule} />
       </div>
       <p className={styles.Status}>{isUpdating ? 'Saving...' : 'All changes are saved'} </p>
-      <Modal
-        isOpen={isSessionExpired}
-        onRequestClose={() => setIsSessionExpired(false)}
-        shouldCloseOnOverlayClick={false}
-        animate
-      >
-        Your session has expired. Please sign in again!
-        <br /> <br />
-        <button
-          type="button"
-          className={classnames('btn btn-outline-primary btn-svg', styles.ErrorButton)}
-          onClick={() => setIsSessionExpired(false)}
-        >
-          Ok
-        </button>
-      </Modal>
     </div>
   );
 };

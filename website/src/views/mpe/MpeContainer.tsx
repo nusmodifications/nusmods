@@ -2,6 +2,7 @@ import { useLayoutEffect, useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import type { MpePreference } from 'types/mpe';
 import classnames from 'classnames';
+import Modal from 'views/components/Modal';
 import MpeFormContainer from './form/MpeFormContainer';
 import styles from './MpeContainer.scss';
 import {
@@ -15,6 +16,8 @@ import {
 const MpeContainer: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const isLoggedInOnLoad = useProcessLogin(useLocation(), useHistory());
+  const [isSessionExpired, setIsSessionExpired] = useState<boolean>(false);
+
   useLayoutEffect(() => {
     setIsLoggedIn(isLoggedInOnLoad);
   }, [isLoggedInOnLoad]);
@@ -29,6 +32,7 @@ const MpeContainer: React.FC = () => {
     } catch (err) {
       if (err === ERR_SESSION_EXPIRED) {
         setIsLoggedIn(false);
+        setIsSessionExpired(true);
       }
       throw err;
     }
@@ -40,6 +44,7 @@ const MpeContainer: React.FC = () => {
     } catch (err) {
       if (err === ERR_SESSION_EXPIRED) {
         setIsLoggedIn(false);
+        setIsSessionExpired(true);
       }
       throw err;
     }
@@ -69,6 +74,22 @@ const MpeContainer: React.FC = () => {
           getPreferences={getPreferences}
           updatePreferences={updatePreferences}
         />
+        <Modal
+          isOpen={isSessionExpired}
+          onRequestClose={() => setIsSessionExpired(false)}
+          shouldCloseOnOverlayClick={false}
+          animate
+        >
+          Your session has expired. Please sign in again!
+          <br /> <br />
+          <button
+            type="button"
+            className={classnames('btn btn-outline-primary btn-svg', styles.ErrorButton)}
+            onClick={() => setIsSessionExpired(false)}
+          >
+            Ok
+          </button>
+        </Modal>
       </div>
     </div>
   );
