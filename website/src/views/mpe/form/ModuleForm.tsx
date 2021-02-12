@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { Draggable, DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import type { ModuleType, MpePreference } from 'types/mpe';
 import { ModuleCode } from 'types/modules';
@@ -18,7 +18,7 @@ const ModuleForm: React.FC<Props> = (props) => {
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(false);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setIsInitialLoad(true);
     props
       .getPreferences()
