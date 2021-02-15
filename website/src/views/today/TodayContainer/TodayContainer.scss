@@ -1,7 +1,7 @@
 @import '~styles/utils/modules-entry';
 
 $schedule-width: 25rem;
-$gutter: 0.75rem;
+$gutter: 0.9375rem; // 15px; aligns with $grid-gutter-width / 2.
 
 .todayPage {
   composes: page-container from global;

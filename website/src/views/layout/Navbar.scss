@@ -30,14 +30,12 @@ $logo-vert-padding: 0.875rem;
 .brandLogo {
   // Explicit width so the logo will not expand
   // to occupy the entire navbar
-  width: 11rem; // Eyeballed number
+  max-width: 11rem; // Eyeballed number
   height: 100%;
-  padding: $logo-vert-padding $grid-gutter-width/2 $logo-vert-padding $grid-gutter-width;
+  padding: $logo-vert-padding $grid-gutter-width/2 $logo-vert-padding $grid-gutter-width/2;
 }
 
 .navLeft {
-  display: flex;
-  flex: 1 0 0;
   height: $navbar-height;
 }
 
@@ -50,7 +48,7 @@ $logo-vert-padding: 0.875rem;
   flex: 1 0 0;
   justify-content: flex-end;
   height: $navbar-height;
-  padding-right: $grid-gutter-width;
+  padding-right: $grid-gutter-width / 2;
 }
 
 .weekText {
@@ -67,7 +65,6 @@ $logo-vert-padding: 0.875rem;
   }
 
   .navLeft {
-    flex: unset;
     order: 0;
   }
 
