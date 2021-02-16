@@ -99,6 +99,8 @@ export type NUSModuleAttributes = Partial<{
   ism: boolean; // Independent study
   urop: boolean; // Undergraduate Research Opportunities Program
   fyp: boolean; // Honours / Final Year Project
+  mpes1: boolean; // Included in Semester 1's Module Preference Exercise
+  mpes2: boolean; // Included in Semester 2's Module Preference Exercise
 }>;
 
 // Information for a module for a particular academic year.

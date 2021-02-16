@@ -47,6 +47,7 @@ export type ModuleAcademicGroup = Readonly<{
 // ISM - Independent Study Module
 // HFYP - Honours/Final Year Project (value is 'HT', not 'YES' like the other attributes)
 // GRDY - GD modules eligible for SU
+// MPE - Module is included in a particular semester's MPE. Value is 'S1' (sem 1), 'S2', or 'S1&2' (both sem 1 and 2)
 export type ModuleAttributeEntry = Readonly<{
   CourseAttributeValue: string;
   CourseAttribute: string;
