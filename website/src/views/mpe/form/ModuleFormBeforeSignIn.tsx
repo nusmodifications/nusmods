@@ -15,7 +15,7 @@ const ModuleFormBeforeSignIn: React.FC<Props> = (prop) => (
     <p>Select your modules and we will automatically save your changes</p>
     <button
       type="button"
-      className={classnames('btn btn-outline-primary btn-svg')}
+      className='btn btn-outline-primary btn-svg'
       onClick={prop.onLogin}
     >
       Sign In With NUS
