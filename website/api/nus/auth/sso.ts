@@ -8,23 +8,23 @@ import {
 } from '../../../src/serverless/handler';
 
 const errors = {
-  noOrigin: 'ERR_NO_ORIGIN',
+  noReferer: 'ERR_NO_REFERER',
 };
 
 const handleGet: Handler = async (req, res) => {
   try {
-    if (!req.headers.origin) {
-      throw new Error(errors.noOrigin);
+    if (!req.headers.referer) {
+      throw new Error(errors.noReferer);
     }
 
     const ssoLoginURL = new URL(createLoginURL());
-    ssoLoginURL.searchParams.append('RelayState', req.headers.referer || req.headers.origin);
+    ssoLoginURL.searchParams.append('RelayState', req.headers.referer);
 
     res.send(ssoLoginURL.toString());
   } catch (err) {
-    if (err.message === errors.noOrigin) {
+    if (err.message === errors.noReferer) {
       res.json({
-        message: 'Request needs an origin',
+        message: 'Request needs a referer',
       });
     } else {
       throw err;
