@@ -17,7 +17,7 @@ type ModuleTypeOptions = {
   className?: string;
 };
 
-const ModuleMenu = memo((props: Props) => {
+const ModuleMenu = (props: Props) => {
   const menuItems: ModuleTypeOptions[] = [
     {
       label: 'Essential Major',
@@ -83,6 +83,6 @@ const ModuleMenu = memo((props: Props) => {
       )}
     </Downshift>
   );
-});
+};
 
-export default ModuleMenu;
+export default memo(ModuleMenu);
