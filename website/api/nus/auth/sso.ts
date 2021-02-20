@@ -1,14 +1,14 @@
-import { createLoginURL } from "../../../src/serverless/nus-auth";
+import { createLoginURL } from '../../../src/serverless/nus-auth';
 import {
-  Router,
+  createRouteHandler,
   defaultFallback,
   defaultRescue,
   Handler,
-  RouteHandlers,
-} from "../../../src/serverless/router";
+  MethodHandlers,
+} from '../../../src/serverless/handler';
 
 const errors = {
-  noOrigin: "ERR_NO_ORIGIN",
+  noOrigin: 'ERR_NO_ORIGIN',
 };
 
 const handleGet: Handler = async (req, res) => {
@@ -18,16 +18,13 @@ const handleGet: Handler = async (req, res) => {
     }
 
     const ssoLoginURL = new URL(createLoginURL());
-    ssoLoginURL.searchParams.append(
-      "RelayState",
-      req.headers.referer || req.headers.origin
-    );
+    ssoLoginURL.searchParams.append('RelayState', req.headers.referer || req.headers.origin);
 
     res.redirect(ssoLoginURL.toString());
   } catch (err) {
     if (err.message === errors.noOrigin) {
       res.json({
-        message: "Request needs an origin",
+        message: 'Request needs an origin',
       });
     } else {
       throw err;
@@ -35,8 +32,8 @@ const handleGet: Handler = async (req, res) => {
   }
 };
 
-const routeHandlers: RouteHandlers = {
+const methodHandlers: MethodHandlers = {
   GET: handleGet,
 };
 
-export default Router(routeHandlers, defaultFallback, defaultRescue(true));
+export default createRouteHandler(methodHandlers, defaultFallback, defaultRescue(true));
