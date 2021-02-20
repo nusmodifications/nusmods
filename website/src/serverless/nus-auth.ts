@@ -35,9 +35,11 @@ const sp = samlify.ServiceProvider({
   encPrivateKey: process.env.NUS_EXCHANGE_SP_PRIVATE_KEY,
 });
 
-export const createLoginURL = () => {
+export const createLoginURL = (relayState = '') => {
   const { context } = sp.createLoginRequest(idp, 'redirect');
-  return context;
+  const ssoLoginURL = new URL(context);
+  ssoLoginURL.searchParams.append('RelayState', relayState);
+  return ssoLoginURL.toString();
 };
 
 export const authenticate = async (req: Request) => {
