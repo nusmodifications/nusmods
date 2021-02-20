@@ -1,27 +1,23 @@
 .mc {
-  grid-area: mc;
+  display: flex;
   white-space: nowrap;
-  text-align: end;
   font-weight: bold;
 }
 .module {
-  grid-area: module;
-  text-align: left;
+  display: flex;
   font-weight: bold;
+  flex: 2;
 }
 .rank {
-  grid-area: rank;
-  text-align: left;
+  display: flex;
   font-weight: bold;
+  flex: 1;
 }
 
 .headerTitle {
   border-bottom: 1px solid var(--gray-lighter);
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-  grid-template-rows: 1fr;
-  grid-template-areas: 'rank module mc';
-  border-bottom: 1px solid var(--gray-lighter);
+  justify-content: space-between;
+  display: flex;
 }
 
 .container {
