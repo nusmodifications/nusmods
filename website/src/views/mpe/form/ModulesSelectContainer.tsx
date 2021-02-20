@@ -12,11 +12,11 @@ import ModulesSelect from './ModulesSelect';
 
 type OwnProps = {
   semester: Semester;
+  moduleList: ModuleSelectList;
 };
 
 type Props = OwnProps & {
   preferences: MpePreference[];
-  moduleList?: ModuleSelectList;
   addModule: (moduleCode: ModuleCode) => void;
   removeModule: (moduleCode: ModuleCode) => Promise<void>;
 };
@@ -46,8 +46,7 @@ class ModulesSelectContainer extends Component<Props> {
   getFilteredModules = (inputValue: string | null) => {
     if (!inputValue) return [];
     const predicate = createSearchPredicate(inputValue);
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const results = this.props.moduleList!.filter(predicate);
+    const results = this.props.moduleList.filter(predicate);
     return sortModules(inputValue, results.slice(0, RESULTS_LIMIT));
   };
 
@@ -57,8 +56,7 @@ class ModulesSelectContainer extends Component<Props> {
         {(isOnline) => (
           <ModulesSelect
             getFilteredModules={this.getFilteredModules}
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            moduleCount={this.props.moduleList!.length}
+            moduleCount={this.props.moduleList.length}
             onChange={this.onChange}
             placeholder={
               isOnline
