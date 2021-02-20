@@ -1,77 +1,95 @@
 .side {
-  grid-area: side;
+  padding: 1rem 1.5rem 1rem 1.5rem;
   align-self: center;
-  text-align: center;
-  vertical-align: middle;
   font-size: 18px;
   font-weight: bold;
   text-decoration-line: #c0c0c0;
 }
-.text {
-  margin-top: 0.3rem;
-  padding: 0.1rem 0.5rem 0.1rem 0.5rem;
-  font-size: 15px;
-  font-weight: bold;
-  text-align: center;
-  background-color: #c0c0c0;
-  border-radius: 0.35rem;
-  color: white;
-}
 .modulecode {
   padding-left: 0.5rem;
   padding-top: 0.5rem;
-  grid-area: modulecode;
   font-weight: bold;
-  border-left: 1px solid var(--gray-lighter);
   word-wrap: break-word;
 }
 .moduletitle {
   padding: 0rem 0.5rem 0.5rem 0.5rem;
-  grid-area: moduletitle;
-  word-wrap: break-word;
-  max-width: 30ch;
-  border-left: 1px solid var(--gray-lighter);
 }
+
+.mctext {
+  padding: 0.1rem 0.5rem 0.1rem 0.5rem;
+  font-size: 15px;
+  margin-bottom: 0rem;
+  font-weight: bold;
+  background-color: #c0c0c0;
+  border-radius: 0.35rem;
+  color: white;
+}
+
 .mc {
-  padding-top: 0.5rem;
-  padding-right: 0.5rem;
-  grid-area: mc;
+  align-self: center;
+  align-content: center;
   font-weight: bold;
   white-space: nowrap;
 }
-@media only screen and (max-width: 576px) {
-  .text {
-    font-size: 14px;
-  }
-}
 .moduletype {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  grid-area: moduletype;
-  text-align: center;
-  background-color: #f3f5f8;
-  border-left: 1px solid var(--gray-lighter);
-  border-top: 1px solid var(--gray-lighter);
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
+  align-self: center;
+  width: 100%;
+  flex: 1;
 }
 
 .card {
-  background-color: #fff;
+  width: 100%;
   border-radius: 0.35rem;
   border: 1px solid var(--gray-lighter);
   height: fit-content;
-  display: grid;
-  min-width: 50%;
-  max-width: 600px;
-  grid-template-columns: 1fr 5fr 1fr 1.2fr;
-  grid-template-rows: auto;
-  grid-template-areas:
-    '. modulecode . mc'
-    'side moduletitle moduletitle mc'
-    '. moduletype moduletype moduletype';
+  display: flex;
+  flex-direction: row;
+  margin-top: 2rem;
+}
+
+.moduleinfocontainer {
+  display: flex;
+  align-self: center;
+  flex-direction: column;
+}
+
+.modulecontainer {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: space-between;
+  min-width: 335px;
+  flex: 2;
 }
 
 .container {
-  margin-top: 2rem;
   display: flex;
+  padding-left: 0.5rem;
+  justify-content: space-between;
+  width: 100%;
+  border-left: 1px solid var(--gray-lighter);
   flex-direction: row;
+}
+
+@media only screen and (max-width: 768px) {
+  .text {
+    font-size: 14px;
+  }
+  .modulecontainer {
+    min-width: 0px;
+  }
+
+  .container {
+    flex-direction: column;
+    padding-left: 0rem;
+  }
+  .moduletype {
+    padding-right: 0rem;
+    padding-left: 0.5rem;
+  }
+
+  .mc {
+    align-self: flex-start;
+    padding-top: 0.5rem;
+  }
 }

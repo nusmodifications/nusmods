@@ -13,11 +13,7 @@ const ModuleFormBeforeSignIn: React.FC<Props> = (prop) => (
     </div>
     <h4>Start Module Preference Exercise</h4>
     <p>Select your modules and we will automatically save your changes</p>
-    <button
-      type="button"
-      className='btn btn-outline-primary btn-svg'
-      onClick={prop.onLogin}
-    >
+    <button type="button" className="btn btn-outline-primary btn-svg" onClick={prop.onLogin}>
       Sign In With NUS
     </button>
   </div>

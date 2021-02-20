@@ -33,11 +33,7 @@
   border-top: 1px solid var(--gray-lighter);
   padding-top: 2rem;
 }
-@media only screen and (max-width: 576px) {
-  .Status {
-    text-align: center !important;
-  }
-}
+
 .Status {
   margin-top: 0.5rem;
   text-align: end;
@@ -46,6 +42,7 @@
 .cardContainer {
   padding-right: 0px;
   display: flex;
+  width: 100%;
   flex-direction: row;
   max-width: inherit;
 }
@@ -59,4 +56,10 @@
 
 .ErrorButton {
   float: right;
+}
+
+@media only screen and (max-width: 576px) {
+  .Status {
+    text-align: center;
+  }
 }

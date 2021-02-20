@@ -1,6 +1,7 @@
 .delete {
   padding: 0.2rem;
-  margin: -1.4rem -1rem 0 0;
+  margin: 0.5rem;
+  align-self: center;
   width: fit-content;
   height: fit-content;
   border-radius: 0.35rem;
@@ -15,4 +16,11 @@
   height: 1rem;
   margin-left: 0.04rem;
   opacity: 0.6;
+}
+
+@media only screen and (max-width: 768px) {
+  .delete {
+    margin: -1rem -0.7rem 0rem 0rem;
+    align-self: unset;
+  }
 }

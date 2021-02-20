@@ -15,18 +15,17 @@ type Props = {
 const ModuleCard: React.FC<Props> = (props) => {
   const removeBtnLabel = `Remove ${props.preference.moduleCode} from the list of preferences`;
   return (
-    <div className={styles.container}>
-      <div className={styles.card}>
-        <div className={styles.side}>{props.rank + 1}</div>
-        <div className={styles.modulecode}>{props.preference.moduleCode}</div>
-        <div className={styles.moduletitle}>{props.preference.moduleTitle}</div>
-        <div className={styles.mc}>
-          <DeleteButton
-            label={removeBtnLabel}
-            removeModule={props.removeModule}
-            moduleCode={props.preference.moduleCode}
-          />
-          <p className={styles.text}>{props.preference.moduleCredits} MC </p>
+    <div className={styles.card}>
+      <div className={styles.side}>{props.rank + 1}</div>
+      <div className={styles.container}>
+        <div className={styles.modulecontainer}>
+          <div className={styles.moduleinfocontainer}>
+            <div className={styles.modulecode}>{props.preference.moduleCode}</div>
+            <div className={styles.moduletitle}>{props.preference.moduleTitle}</div>
+          </div>
+          <div className={styles.mc}>
+            <p className={styles.mctext}>{props.preference.moduleCredits} MC </p>
+          </div>
         </div>
         <div className={styles.moduletype}>
           {/* <ModuleMenu
@@ -40,6 +39,11 @@ const ModuleCard: React.FC<Props> = (props) => {
           />
         </div>
       </div>
+      <DeleteButton
+        label={removeBtnLabel}
+        removeModule={props.removeModule}
+        moduleCode={props.preference.moduleCode}
+      />
     </div>
   );
 };

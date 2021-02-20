@@ -54,19 +54,27 @@ const MpeContainer: React.FC = () => {
     <div className={styles.pageContainer}>
       <div className={classnames(styles.innerContainer, 'col-md-8')}>
         <header className={styles.header}>
-          <h2>Module Preference Exercise</h2>
+          <h2>Module Planning Exercise</h2>
           <h4>AY2021/2022 - Semester 2</h4>
         </header>
         <h4 className={styles.subtitle}>Overview</h4>
 
         <p>
-          The Module Preference Exercise (MPE) is a project initiated by NUS to better understand
-          students’ demand for specific modules. Students who have completed this exercise{' '}
-          <strong>will receive tie-breaker benefit</strong> during the ModReg period.
+          The Module Planning Exercise (MPE) is a project initiated by NUS to better understand
+          students’ demand for specific modules (as decided by the Module Host Departments) and
+          facilitate the Departments in their resource and timetable planning.
         </p>
         <p>
-          Do take note that this is only a planning exercise;{' '}
-          <strong>it does not enroll you in the modules.</strong>
+          All current undergraduate and graduate students can{' '}
+          <strong>select up to 7 modules per semester.</strong> Do note that there are no validation
+          checks for this MPE (i.e. no timetable clash/requisite checks). Information collected here
+          is <strong>solely for planning purposes </strong> and there is no guarantee that you will
+          be allocated the selected modules during the ModReg Exercise.
+        </p>
+        <p>
+          Participation in the MPE will be used as <strong>one of the tie-breakers</strong> during
+          the ModReg Exercise, in cases where the demand exceeds the available quota and students
+          have the same Priority Score for a particular module.
         </p>
         <MpeFormContainer
           isLoggedIn={isLoggedIn}

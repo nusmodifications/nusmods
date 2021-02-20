@@ -18,9 +18,9 @@ type Props = {
 
 const ModuleForm: React.FC<Props> = (props) => {
   const [preferences, setPreferences] = useState<MpePreference[]>([]);
-  const [isInitialLoad, setIsInitialLoad] = useState<boolean>(false);
-  const [isUpdating, setIsUpdating] = useState<boolean>(false);
-  const [isSevenMods, setIsSevenMods] = useState<boolean>(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [isSevenMods, setIsSevenMods] = useState(false);
 
   useLayoutEffect(() => {
     setIsInitialLoad(true);
