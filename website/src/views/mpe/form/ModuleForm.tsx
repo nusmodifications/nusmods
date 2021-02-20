@@ -1,4 +1,5 @@
 import { useLayoutEffect, useState } from 'react';
+import sumBy from 'lodash/sumBy';
 import { Draggable, DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import type { ModuleType, MpePreference } from 'types/mpe';
 import { ModuleCode } from 'types/modules';
@@ -127,9 +128,7 @@ const ModuleForm: React.FC<Props> = (props) => {
       <div className={styles.headerTitle}>
         <div className={styles.rank}>Rank</div>
         <div className={styles.module}>Module</div>
-        <div className={styles.mc}>
-          {sumBy(preferences, (p) => p.moduleCredits)} MCs Selected
-        </div>
+        <div className={styles.mc}>{sumBy(preferences, (p) => p.moduleCredits)} MCs Selected</div>
       </div>
       <div>
         {isInitialLoad ? (
@@ -173,6 +172,7 @@ const ModuleForm: React.FC<Props> = (props) => {
       </div>
       <div className={styles.SelectContainer}>
         <ModulesSelectContainer
+          moduleList={[]}
           preferences={preferences}
           semester={2021}
           removeModule={removeModule}
@@ -186,7 +186,7 @@ const ModuleForm: React.FC<Props> = (props) => {
         shouldCloseOnOverlayClick={false}
         animate
       >
-        You are unable to add more than 7 mods in this exercise.
+        You are unable to add more than 7 modules in this exercise.
         <br /> <br />
         <button
           type="button"

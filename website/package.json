@@ -144,7 +144,7 @@
     "json2mq": "0.2.0",
     "leaflet": "1.7.1",
     "leaflet-gesture-handling": "1.2.1",
-    "lodash": "4.17.20",
+    "lodash": "^4.17.21",
     "mousetrap": "1.6.5",
     "nusmoderator": "3.0.0",
     "query-string": "6.13.8",
