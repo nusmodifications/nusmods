@@ -3,6 +3,8 @@ import { Draggable, DragDropContext, Droppable, DropResult } from 'react-beautif
 import type { ModuleType, MpePreference } from 'types/mpe';
 import { ModuleCode } from 'types/modules';
 import LoadingSpinner from 'views/components/LoadingSpinner';
+import Modal from 'views/components/Modal';
+import classnames from 'classnames';
 import { fetchModuleDetails } from '../../../apis/mpe';
 import styles from './ModuleForm.scss';
 import ModuleCard from './ModuleCard';
@@ -17,6 +19,7 @@ const ModuleForm: React.FC<Props> = (props) => {
   const [preferences, setPreferences] = useState<MpePreference[]>([]);
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(false);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
+  const [isSevenMods, setIsSevenMods] = useState<boolean>(false);
 
   useLayoutEffect(() => {
     setIsInitialLoad(true);
@@ -59,6 +62,10 @@ const ModuleForm: React.FC<Props> = (props) => {
 
   async function addModule(moduleCode: ModuleCode) {
     if (preferences.find((p) => p.moduleCode === moduleCode)) return;
+    if (preferences.length === 7) {
+      setIsSevenMods(true);
+      return;
+    }
     setIsUpdating(true);
     const previousPreferences = [...preferences];
     try {
@@ -173,6 +180,22 @@ const ModuleForm: React.FC<Props> = (props) => {
         />
       </div>
       <p className={styles.Status}>{isUpdating ? 'Saving...' : 'All changes are saved'} </p>
+      <Modal
+        isOpen={isSevenMods}
+        onRequestClose={() => setIsSevenMods(false)}
+        shouldCloseOnOverlayClick={false}
+        animate
+      >
+        You are unable to add more than 7 mods in this exercise.
+        <br /> <br />
+        <button
+          type="button"
+          className={classnames('btn btn-outline-primary btn-svg', styles.ErrorButton)}
+          onClick={() => setIsSevenMods(false)}
+        >
+          Ok
+        </button>
+      </Modal>
     </div>
   );
 };

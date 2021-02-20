@@ -26,8 +26,7 @@
   word-wrap: break-word;
 }
 .moduletitle {
-  padding-left: 0.5rem;
-  padding-bottom: 0.5rem;
+  padding: 0rem 0.5rem 0.5rem 0.5rem;
   grid-area: moduletitle;
   word-wrap: break-word;
   max-width: 30ch;
@@ -38,7 +37,7 @@
   padding-right: 0.5rem;
   grid-area: mc;
   font-weight: bold;
-  word-wrap: break-word;
+  white-space: nowrap;
 }
 @media only screen and (max-width: 576px) {
   .text {

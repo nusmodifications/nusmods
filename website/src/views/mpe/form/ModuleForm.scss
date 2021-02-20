@@ -1,6 +1,6 @@
 .mc {
   grid-area: mc;
-  word-wrap: break-word;
+  white-space: nowrap;
   text-align: end;
   font-weight: bold;
 }
@@ -33,11 +33,14 @@
   border-top: 1px solid var(--gray-lighter);
   padding-top: 2rem;
 }
-
+@media only screen and (max-width: 576px) {
+  .Status {
+    text-align: center !important;
+  }
+}
 .Status {
   margin-top: 0.5rem;
   text-align: end;
-  float: right;
 }
 
 .cardContainer {
