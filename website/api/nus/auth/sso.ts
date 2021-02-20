@@ -17,10 +17,7 @@ const handleGet: Handler = async (req, res) => {
       throw new Error(errors.noReferer);
     }
 
-    const ssoLoginURL = new URL(createLoginURL());
-    ssoLoginURL.searchParams.append('RelayState', req.headers.referer);
-
-    res.send(ssoLoginURL.toString());
+    res.send(createLoginURL(req.headers.referer));
   } catch (err) {
     if (err.message === errors.noReferer) {
       res.json({
