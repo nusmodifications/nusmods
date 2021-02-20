@@ -56,7 +56,6 @@ export const authenticate = async (req: Request) => {
   };
 
   const {
-    // samlContent,
     extract: { attributes },
   } = await sp.parseLoginResponse(idp, 'post', requestToProcess);
 
