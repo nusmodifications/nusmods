@@ -20,7 +20,7 @@ const handleGet: Handler = async (req, res) => {
     const ssoLoginURL = new URL(createLoginURL());
     ssoLoginURL.searchParams.append('RelayState', req.headers.referer || req.headers.origin);
 
-    res.redirect(ssoLoginURL.toString());
+    res.send(ssoLoginURL.toString());
   } catch (err) {
     if (err.message === errors.noOrigin) {
       res.json({
