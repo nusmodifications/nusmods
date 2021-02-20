@@ -9,7 +9,7 @@ type Props = {
 const ModuleFormBeforeSignIn: React.FC<Props> = (prop) => (
   <div className={classnames(styles.container, 'col-md-6')}>
     <div className={styles.image}>
-      <img src={mpePlaceholder} alt="Timetable" />
+      <img src={mpePlaceholder} alt="" />
     </div>
     <h4>Start Module Preference Exercise</h4>
     <p>Select your modules and we will automatically save your changes</p>
