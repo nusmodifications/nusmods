@@ -128,7 +128,7 @@ const ModuleForm: React.FC<Props> = (props) => {
         <div className={styles.rank}>Rank</div>
         <div className={styles.module}>Module</div>
         <div className={styles.mc}>
-          {`${preferences.reduce<number>((acc, p) => acc + p.moduleCredits, 0)} MCs Selected`}
+          {sumBy(preferences, (p) => p.moduleCredits)} MCs Selected
         </div>
       </div>
       <div>
