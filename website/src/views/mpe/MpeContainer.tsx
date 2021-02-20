@@ -14,9 +14,9 @@ import {
 } from '../../apis/mpe';
 
 const MpeContainer: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const isLoggedInOnLoad = useProcessLogin(useLocation(), useHistory());
-  const [isSessionExpired, setIsSessionExpired] = useState<boolean>(false);
+  const [isSessionExpired, setIsSessionExpired] = useState(false);
 
   useLayoutEffect(() => {
     setIsLoggedIn(isLoggedInOnLoad);
