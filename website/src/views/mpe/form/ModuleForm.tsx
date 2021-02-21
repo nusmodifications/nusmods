@@ -109,9 +109,8 @@ const ModuleForm: React.FC<Props> = (props) => {
     if (!preferences.find((p) => p.moduleCode === moduleCode)) return;
     setIsUpdating(true);
     const previousPreferences = [...preferences];
-    const updatedPreferences = preferences.reduce<MpePreference[]>(
-      (acc, p) => [...acc, p.moduleCode === moduleCode ? { ...p, moduleType } : p],
-      [],
+    const updatedPreferences = preferences.map(
+      (p) => p.moduleCode === moduleCode ? { ...p, moduleType } : p,
     );
     setPreferences(updatedPreferences);
     try {
