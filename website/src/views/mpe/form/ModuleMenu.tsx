@@ -58,7 +58,7 @@ const ModuleMenu = (props: Props) => {
             aria-expanded={isOpen}
           >
             Module Type
-            <ChevronDown color="#6f6f6f" />
+            <ChevronDown className={styles.chevronStyle} />
           </button>
           <div
             className={classnames(styles.menu, 'dropdown-menu', {
