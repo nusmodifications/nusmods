@@ -5,6 +5,7 @@ import { Location, History } from 'history';
 import NUSModsApi from './nusmods';
 import { MpePreference } from '../types/mpe';
 import type { Module, ModuleCode } from '../types/modules';
+import { NUS_AUTH_TOKEN } from '../storage/keys';
 
 type MpePreferencesResponse = {
   nusExchangeId: string;
@@ -17,18 +18,17 @@ type MpePreferencesResponse = {
 
 const SSO_PATH = '/auth/sso';
 const MPE_PATH = '/mpe/submissions';
-const TOKEN_STORAGE_KEY = 'nus-auth-token';
 const TOKEN_URL_QUERY = 'token';
 
 export const ERR_SESSION_EXPIRED = new Error('User session has expired, please login again');
 
 const storage = getLocalStorage();
 
-const getToken = (): string | null => storage.getItem(TOKEN_STORAGE_KEY);
+const getToken = (): string | null => storage.getItem(NUS_AUTH_TOKEN);
 
-const setToken = (token: string): void => storage.setItem(TOKEN_STORAGE_KEY, token);
+const setToken = (token: string): void => storage.setItem(NUS_AUTH_TOKEN, token);
 
-const removeToken = (): void => storage.removeItem(TOKEN_STORAGE_KEY);
+const removeToken = (): void => storage.removeItem(NUS_AUTH_TOKEN);
 
 const mpe = axios.create({
   baseURL: '/api/nus',
