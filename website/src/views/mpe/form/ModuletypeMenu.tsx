@@ -12,7 +12,7 @@ type Props = {
   readonly type: MpePreference['moduleType'];
 };
 
-const ModuletypeMenu: React.FC<Props> = (props) => (
+const ModuleTypeMenu: React.FC<Props> = (props) => (
   <div>
     <select
       value={props.type}
@@ -23,7 +23,11 @@ const ModuletypeMenu: React.FC<Props> = (props) => (
       }}
     >
       {Object.entries(MODULE_TYPES).map(([moduleTypeCode, { label }]) => (
-        <option className="dropdown-item" value={moduleTypeCode}>
+        <option
+          key={props.moduleCode + moduleTypeCode}
+          className="dropdown-item"
+          value={moduleTypeCode}
+        >
           {label}
         </option>
       ))}
@@ -31,4 +35,4 @@ const ModuletypeMenu: React.FC<Props> = (props) => (
   </div>
 );
 
-export default ModuletypeMenu;
+export default ModuleTypeMenu;
