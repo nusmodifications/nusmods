@@ -15,6 +15,7 @@ import {
 
 const MpeContainer: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isGettingSSOLink, setIsGettingSSOLink] = useState(false);
   const isLoggedInOnLoad = useProcessLogin(useLocation(), useHistory());
   const [isSessionExpired, setIsSessionExpired] = useState(false);
 
@@ -23,7 +24,14 @@ const MpeContainer: React.FC = () => {
   }, [isLoggedInOnLoad]);
 
   const onLogin = async (): Promise<void> => {
-    window.location.href = await getSSOLink();
+    try {
+      setIsGettingSSOLink(true);
+      window.location.href = await getSSOLink();
+    } catch (err) {
+      setIsLoggedIn(false);
+    } finally {
+      setIsGettingSSOLink(false);
+    }
   };
 
   const getPreferences = async (): Promise<MpePreference[]> => {
@@ -78,6 +86,7 @@ const MpeContainer: React.FC = () => {
         </p>
         <MpeFormContainer
           isLoggedIn={isLoggedIn}
+          isLoggingIn={isGettingSSOLink}
           onLogin={onLogin}
           getPreferences={getPreferences}
           updatePreferences={updatePreferences}
