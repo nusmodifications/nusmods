@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import getLocalStorage from 'storage/localStorage';
 import { Location, History } from 'history';
 import NUSModsApi from './nusmods';
@@ -54,7 +54,7 @@ mpe.interceptors.response.use(
 export const useProcessLogin = (location: Location, history: History): boolean => {
   const params = new URLSearchParams(location.search);
   const token = params.get(TOKEN_URL_QUERY);
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (token !== null) {
       setToken(token);
       params.delete(TOKEN_URL_QUERY);
