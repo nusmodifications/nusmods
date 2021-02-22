@@ -4,8 +4,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as samlify from 'samlify';
 import type { ESamlHttpRequest } from 'samlify/types/src/entity';
-import axios from 'axios';
-import deasync from 'deasync';
 import type { Handler, Request } from './handler';
 
 const samlifyErrors = {
@@ -30,15 +28,8 @@ const samlRespAttributes: { [key in keyof User]: string } = {
 
 samlify.setSchemaValidator(validator);
 
-const httpGetSync = deasync((url: string, callback) => {
-  axios
-    .get(url)
-    .then((resp) => callback(null, resp.data))
-    .catch((err) => callback(err, null));
-});
-
 const idp = samlify.IdentityProvider({
-  metadata: httpGetSync(process.env.NUS_EXCHANGE_URL),
+  metadata: fs.readFileSync(path.join(__dirname, './FederationMetadata.xml')),
 });
 
 const sp = samlify.ServiceProvider({
