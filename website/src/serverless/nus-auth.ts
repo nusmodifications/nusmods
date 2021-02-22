@@ -44,16 +44,19 @@ export const createLoginURL = (relayState = '') => {
 };
 
 export const authenticate = async (req: Request) => {
-  const tokenProvided = req.headers.authorization || req.body?.SAMLResponse;
+  const tokenProvided = req.headers.authorization || (req.body && req.body.SAMLResponse);
   if (!tokenProvided) {
     throw new Error(errors.noTokenSupplied);
   }
 
-  const requestToProcess: ESamlHttpRequest = {
-    body: {
-      SAMLResponse: req.body?.SAMLResponse ?? req.headers.authorization,
-    },
-  };
+  let requestToProcess: ESamlHttpRequest = req;
+  if (req.headers.authorization) {
+    requestToProcess = {
+      body: {
+        SAMLResponse: req.headers.authorization,
+      },
+    };
+  }
 
   const {
     extract: { attributes },
@@ -64,13 +67,17 @@ export const authenticate = async (req: Request) => {
     (samlAttributeKey) => attributes[samlAttributeKey],
   );
 
-  const relayState = req.body?.RelayState ?? null;
+  let relayState = null;
+  if (req.body && req.body.relayState) {
+    relayState = req.body.relayState;
+  }
 
   const loginData = {
     token: requestToProcess.body.SAMLResponse,
     relayState,
     user,
   };
+
   return loginData;
 };
 
