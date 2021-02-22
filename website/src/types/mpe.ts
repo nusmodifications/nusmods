@@ -1,26 +1,27 @@
 import { ModuleTitle, ModuleCode } from './modules';
 
-export interface EssentialMajor {
-  type: '01';
-}
-
-export interface EssentialSecondMajor {
-  type: '02';
-}
-
-export interface Elective {
-  type: '03';
-}
-
-export interface UnrestrictedElective {
-  type: '04';
-}
-
-export type ModuleType = EssentialMajor | EssentialSecondMajor | Elective | UnrestrictedElective;
-
 export type MpePreference = {
   moduleTitle?: ModuleTitle;
   moduleCode: ModuleCode;
-  moduleType: ModuleType;
+  moduleType: '01' | '02' | '03' | '04';
   moduleCredits: number;
+};
+
+interface ModuleTypeInfo {
+  label: string;
+}
+
+export const MODULE_TYPES: Record<MpePreference['moduleType'], ModuleTypeInfo> = {
+  '01': {
+    label: 'Essential Major',
+  },
+  '02': {
+    label: 'Essential Second Major',
+  },
+  '03': {
+    label: 'Elective',
+  },
+  '04': {
+    label: 'Unrestricted Elective',
+  },
 };
