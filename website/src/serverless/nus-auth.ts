@@ -30,6 +30,7 @@ samlify.setSchemaValidator(validator);
 
 const idp = samlify.IdentityProvider({
   metadata: fs.readFileSync(path.join(__dirname, './FederationMetadata.xml')),
+  isAssertionEncrypted: true,
 });
 
 const sp = samlify.ServiceProvider({
