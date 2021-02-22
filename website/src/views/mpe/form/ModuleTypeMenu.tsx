@@ -1,7 +1,7 @@
 import { MpePreference, MODULE_TYPES } from 'types/mpe';
 import type { ModuleCode } from 'types/modules';
 import classnames from 'classnames';
-import styles from './ModuletypeMenu.scss';
+import styles from './ModuleTypeMenu.scss';
 
 type Props = {
   readonly moduleCode: ModuleCode;
