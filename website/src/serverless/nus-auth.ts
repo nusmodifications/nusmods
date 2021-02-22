@@ -70,8 +70,8 @@ export const authenticate = async (req: Request) => {
   );
 
   let relayState = null;
-  if (req.body && req.body.relayState) {
-    relayState = req.body.relayState;
+  if (req.body && req.body.RelayState) {
+    relayState = req.body.RelayState;
   }
 
   const loginData = {
