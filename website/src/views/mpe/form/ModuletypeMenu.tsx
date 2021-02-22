@@ -1,42 +1,34 @@
-import type { ModuleType } from 'types/mpe';
+import { MpePreference, MODULE_TYPES } from 'types/mpe';
 import type { ModuleCode } from 'types/modules';
 import classnames from 'classnames';
 import styles from './ModuletypeMenu.scss';
 
 type Props = {
   readonly moduleCode: ModuleCode;
-  readonly updateModuleType: (moduleCode: ModuleCode, moduleType: ModuleType) => Promise<void>;
-  readonly type: string;
+  readonly updateModuleType: (
+    moduleCode: ModuleCode,
+    moduleType: MpePreference['moduleType'],
+  ) => Promise<void>;
+  readonly type: MpePreference['moduleType'];
 };
 
-const ModuletypeMenu: React.FC<Props> = (props) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function handleChange(e: any) {
-    const modType = { type: e.target.value };
-    props.updateModuleType(props.moduleCode, modType);
-  }
-  return (
-    <div>
-      <select
-        value={props.type}
-        className={classnames('btn close', styles.menu)}
-        onChange={handleChange}
-      >
-        <option className="dropdown-item" value="01">
-          Essential (Major)
+const ModuletypeMenu: React.FC<Props> = (props) => (
+  <div>
+    <select
+      value={props.type}
+      className={classnames('btn close', styles.menu)}
+      onChange={(e) => {
+        const modType = e.target.value as MpePreference['moduleType'];
+        props.updateModuleType(props.moduleCode, modType);
+      }}
+    >
+      {Object.entries(MODULE_TYPES).map(([moduleTypeCode, { label }]) => (
+        <option className="dropdown-item" value={moduleTypeCode}>
+          {label}
         </option>
-        <option className="dropdown-item" value="02">
-          Essential (Second Major)
-        </option>
-        <option className="dropdown-item" value="03">
-          Elective
-        </option>
-        <option className="dropdown-item" value="04">
-          Unrestricted Elective
-        </option>
-      </select>
-    </div>
-  );
-};
+      ))}
+    </select>
+  </div>
+);
 
 export default ModuletypeMenu;

@@ -1,4 +1,4 @@
-import type { MpePreference, ModuleType } from 'types/mpe';
+import type { MpePreference } from 'types/mpe';
 import type { ModuleCode } from 'types/modules';
 // import ModuleMenu from './ModuleMenu';
 import DeleteButton from './DeleteButton';
@@ -9,7 +9,10 @@ type Props = {
   rank: number;
   preference: MpePreference;
   removeModule: (moduleCodeToRemove: string) => Promise<void>;
-  updateModuleType: (moduleCode: ModuleCode, moduleType: ModuleType) => Promise<void>;
+  updateModuleType: (
+    moduleCode: ModuleCode,
+    moduleType: MpePreference['moduleType'],
+  ) => Promise<void>;
 };
 
 const ModuleCard: React.FC<Props> = (props) => {
@@ -34,8 +37,8 @@ const ModuleCard: React.FC<Props> = (props) => {
           /> */}
           <ModuletypeMenu
             moduleCode={props.preference.moduleCode}
+            type={props.preference.moduleType}
             updateModuleType={props.updateModuleType}
-            type={props.preference.moduleType.type}
           />
         </div>
       </div>

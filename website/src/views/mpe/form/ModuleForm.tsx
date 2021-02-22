@@ -1,7 +1,7 @@
 import { useLayoutEffect, useState } from 'react';
 import sumBy from 'lodash/sumBy';
 import { Draggable, DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import type { ModuleType, MpePreference } from 'types/mpe';
+import { MpePreference, MODULE_TYPES } from 'types/mpe';
 import { ModuleCode } from 'types/modules';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import Modal from 'views/components/Modal';
@@ -76,9 +76,7 @@ const ModuleForm: React.FC<Props> = (props) => {
         {
           moduleTitle: moduleInfo.title,
           moduleCode,
-          moduleType: {
-            type: '01',
-          },
+          moduleType: (Object.keys(MODULE_TYPES) as Array<MpePreference['moduleType']>)[0],
           moduleCredits: parseInt(moduleInfo.moduleCredit, 10),
         },
       ];
@@ -105,12 +103,12 @@ const ModuleForm: React.FC<Props> = (props) => {
     }
   }
 
-  async function updateModuleType(moduleCode: ModuleCode, moduleType: ModuleType) {
+  async function updateModuleType(moduleCode: ModuleCode, moduleType: MpePreference['moduleType']) {
     if (!preferences.find((p) => p.moduleCode === moduleCode)) return;
     setIsUpdating(true);
     const previousPreferences = [...preferences];
-    const updatedPreferences = preferences.map(
-      (p) => p.moduleCode === moduleCode ? { ...p, moduleType } : p,
+    const updatedPreferences = preferences.map((p) =>
+      p.moduleCode === moduleCode ? { ...p, moduleType } : p,
     );
     setPreferences(updatedPreferences);
     try {
