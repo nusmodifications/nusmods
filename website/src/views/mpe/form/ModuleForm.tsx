@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import sumBy from 'lodash/sumBy';
 import { Draggable, DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { MpePreference, MODULE_TYPES } from 'types/mpe';
@@ -59,10 +59,10 @@ const ModuleForm: React.FC<Props> = (props) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [hitMaxModsLimit, setHitMaxModsLimit] = useState(false);
 
-  useLayoutEffect(() => {
+  const { getPreferences } = props;
+  useEffect(() => {
     setIsInitialLoad(true);
-    props
-      .getPreferences()
+    getPreferences()
       .then((result) => {
         setPreferences(result);
       })
@@ -74,7 +74,7 @@ const ModuleForm: React.FC<Props> = (props) => {
       .finally(() => {
         setIsInitialLoad(false);
       });
-  }, [props]);
+  }, [getPreferences]);
 
   const onDragEnd = async (result: DropResult): Promise<void> =>
     new Promise((resolve) => {
