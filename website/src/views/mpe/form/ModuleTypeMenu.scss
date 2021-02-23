@@ -1,12 +1,12 @@
 .menu {
+  width: 100%;
   padding: 0.2rem;
   border-radius: 0.35rem;
-  width: 100%;
-  background-color: #f4f5f9 !important;
   font-weight: bold;
   font-size: 16px;
-  color: #6f6f6f;
   text-align: left;
+  color: #6f6f6f;
+  background-color: #f4f5f9 !important;
 }
 
 @media only screen and (max-width: 576px) {

@@ -1,23 +1,23 @@
 .mc {
   display: flex;
-  white-space: nowrap;
   font-weight: bold;
+  white-space: nowrap;
 }
 .module {
   display: flex;
-  font-weight: bold;
   flex: 2;
+  font-weight: bold;
 }
 .rank {
   display: flex;
-  font-weight: bold;
   flex: 1;
+  font-weight: bold;
 }
 
 .headerTitle {
-  border-bottom: 1px solid var(--gray-lighter);
-  justify-content: space-between;
   display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--gray-lighter);
 }
 
 .container {
@@ -25,9 +25,9 @@
 }
 
 .SelectContainer {
+  padding-top: 2rem;
   margin-top: 2rem;
   border-top: 1px solid var(--gray-lighter);
-  padding-top: 2rem;
 }
 
 .Status {
@@ -36,18 +36,18 @@
 }
 
 .cardContainer {
-  padding-right: 0px;
   display: flex;
-  width: 100%;
   flex-direction: row;
+  width: 100%;
   max-width: inherit;
+  padding-right: 0;
 }
 
 .droppableContainer {
-  padding-right: 0px;
   display: flex;
   flex-direction: row;
   max-width: inherit;
+  padding-right: 0;
 }
 
 .ErrorButton {

@@ -1,73 +1,73 @@
 .side {
-  padding: 1rem 1.5rem 1rem 1.5rem;
   align-self: center;
-  font-size: 18px;
+  padding: 1rem 1.5rem 1rem 1.5rem;
   font-weight: bold;
+  font-size: 18px;
   text-decoration-line: #c0c0c0;
 }
 .modulecode {
-  padding-left: 0.5rem;
   padding-top: 0.5rem;
+  padding-left: 0.5rem;
   font-weight: bold;
   word-wrap: break-word;
 }
 .moduletitle {
-  padding: 0rem 0.5rem 0.5rem 0.5rem;
+  padding: 0 0.5rem 0.5rem 0.5rem;
 }
 
 .mctext {
   padding: 0.1rem 0.5rem 0.1rem 0.5rem;
-  font-size: 15px;
-  margin-bottom: 0rem;
-  font-weight: bold;
-  background-color: #c0c0c0;
+  margin-bottom: 0;
   border-radius: 0.35rem;
+  font-weight: bold;
+  font-size: 15px;
   color: white;
+  background-color: #c0c0c0;
 }
 
 .mc {
-  align-self: center;
   align-content: center;
+  align-self: center;
   font-weight: bold;
   white-space: nowrap;
 }
 .moduletype {
-  padding: 0.5rem 0.5rem 0.5rem 1rem;
+  flex: 1;
   align-self: center;
   width: 100%;
-  flex: 1;
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
 }
 
 .card {
-  width: 100%;
-  border-radius: 0.35rem;
-  border: 1px solid var(--gray-lighter);
-  height: fit-content;
   display: flex;
   flex-direction: row;
+  width: 100%;
+  height: fit-content;
   margin-top: 2rem;
+  border: 1px solid var(--gray-lighter);
+  border-radius: 0.35rem;
 }
 
 .moduleinfocontainer {
   display: flex;
-  align-self: center;
   flex-direction: column;
+  align-self: center;
 }
 
 .modulecontainer {
   display: inline-flex;
+  flex: 2;
   flex-direction: row;
   justify-content: space-between;
-  flex: 2;
 }
 
 .container {
   display: flex;
-  padding-left: 0.5rem;
+  flex-direction: row;
   justify-content: space-between;
   width: 100%;
+  padding-left: 0.5rem;
   border-left: 1px solid var(--gray-lighter);
-  flex-direction: row;
 }
 
 @media only screen and (max-width: 768px) {
@@ -75,15 +75,15 @@
     font-size: 14px;
   }
   .modulecontainer {
-    min-width: 0px;
+    min-width: 0;
   }
 
   .container {
     flex-direction: column;
-    padding-left: 0rem;
+    padding-left: 0;
   }
   .moduletype {
-    padding-right: 0rem;
+    padding-right: 0;
     padding-left: 0.5rem;
   }
 

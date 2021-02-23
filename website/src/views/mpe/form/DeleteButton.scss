@@ -1,26 +1,26 @@
 .delete {
-  padding: 0.2rem;
-  margin: 0.5rem;
+  float: right;
   align-self: center;
   width: fit-content;
   height: fit-content;
-  border-radius: 0.35rem;
+  padding: 0.2rem;
+  margin: 0.5rem;
   border: 1px solid var(--gray-lighter);
-  background-color: white;
+  border-radius: 0.35rem;
   font-weight: bold;
-  float: right;
   color: 1px solid var(--gray-lighter);
+  background-color: white;
 }
 .x {
+  opacity: 0.6;
   width: 1rem;
   height: 1rem;
   margin-left: 0.04rem;
-  opacity: 0.6;
 }
 
 @media only screen and (max-width: 768px) {
   .delete {
-    margin: -1rem -0.7rem 0rem 0rem;
     align-self: unset;
+    margin: -1rem -0.7rem 0 0;
   }
 }
