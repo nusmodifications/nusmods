@@ -138,6 +138,10 @@ export type ModuleCondensed = Readonly<{
   moduleCode: ModuleCode;
   title: ModuleTitle;
   semesters: number[];
+  // Flag that marks if module is included in Semester 1's Module Preference Exercise
+  mpes1: boolean;
+  // Flag that marks if module is included in Semester 2's Module Preference Exercise
+  mpes2: boolean;
 }>;
 
 // This format is returned from the module information endpoint

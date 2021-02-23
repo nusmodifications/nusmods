@@ -118,10 +118,15 @@ const getModuleCondensed = ({
   moduleCode,
   title,
   semesterData,
+  attributes,
 }: ModuleWithoutTree): ModuleCondensed => ({
   moduleCode,
   title,
   semesters: semesterData.map((semester) => semester.semester),
+  // Flag that marks if module is included in Semester 1's Module Preference Exercise
+  mpes1: attributes?.mpes1 ?? false,
+  // Flag that marks if module is included in Semester 2's Module Preference Exercise
+  mpes2: attributes?.mpes2 ?? false,
 });
 
 // Avoid using _.pick here because it is not type safe
