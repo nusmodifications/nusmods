@@ -23,40 +23,45 @@ const MpeContainer: React.FC = () => {
     setIsLoggedIn(isLoggedInOnLoad);
   }, [isLoggedInOnLoad]);
 
-  const onLogin = async (): Promise<void> => {
-    try {
-      setIsGettingSSOLink(true);
-      window.location.href = await getSSOLink();
-    } catch (err) {
-      setIsLoggedIn(false);
-    } finally {
-      setIsGettingSSOLink(false);
-    }
+  const onLogin = (): Promise<void> => {
+    setIsGettingSSOLink(true);
+    return getSSOLink()
+      .then((ssoLink) => {
+        window.location.href = ssoLink;
+      })
+      .catch(() => {
+        setIsLoggedIn(false);
+      })
+      .finally(() => {
+        setIsGettingSSOLink(false);
+      });
   };
 
-  const getPreferences = async (): Promise<MpePreference[]> => {
-    try {
-      return await getMpePreferences();
-    } catch (err) {
-      if (err instanceof MpeSessionExpiredError) {
-        setIsLoggedIn(false);
-        setIsSessionExpired(true);
-      }
-      throw err;
-    }
-  };
+  const getPreferences = (): Promise<MpePreference[]> =>
+    new Promise((resolve, reject) => {
+      getMpePreferences()
+        .then((preferences) => resolve(preferences))
+        .catch((err) => {
+          if (err instanceof MpeSessionExpiredError) {
+            setIsLoggedIn(false);
+            setIsSessionExpired(true);
+          }
+          return reject(err);
+        });
+    });
 
-  const updatePreferences = async (preferences: MpePreference[]): Promise<string> => {
-    try {
-      return await updateMpePreferences(preferences);
-    } catch (err) {
-      if (err instanceof MpeSessionExpiredError) {
-        setIsLoggedIn(false);
-        setIsSessionExpired(true);
-      }
-      throw err;
-    }
-  };
+  const updatePreferences = (preferences: MpePreference[]): Promise<string> =>
+    new Promise((resolve, reject) => {
+      updateMpePreferences(preferences)
+        .then((msg) => resolve(msg))
+        .catch((err) => {
+          if (err instanceof MpeSessionExpiredError) {
+            setIsLoggedIn(false);
+            setIsSessionExpired(true);
+          }
+          return reject(err);
+        });
+    });
 
   return (
     <div className={styles.pageContainer}>
