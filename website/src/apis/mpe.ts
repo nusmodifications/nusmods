@@ -51,18 +51,16 @@ mpe.interceptors.response.use(
   },
 );
 
-export const useProcessLogin = (location: Location, history: History): boolean => {
+export const getLoginState = (location: Location, history: History): boolean => {
   const params = new URLSearchParams(location.search);
   const token = params.get(TOKEN_URL_QUERY);
-  useEffect(() => {
-    if (token !== null) {
-      setToken(token);
-      params.delete(TOKEN_URL_QUERY);
-      history.replace({
-        search: params.toString(),
-      });
-    }
-  });
+  if (token !== null) {
+    setToken(token);
+    params.delete(TOKEN_URL_QUERY);
+    history.replace({
+      search: params.toString(),
+    });
+  }
   return getToken() !== null;
 };
 

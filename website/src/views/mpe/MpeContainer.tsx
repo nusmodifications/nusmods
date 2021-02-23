@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import type { MpePreference } from 'types/mpe';
 import classnames from 'classnames';
@@ -6,7 +6,7 @@ import Modal from 'views/components/Modal';
 import MpeFormContainer from './form/MpeFormContainer';
 import styles from './MpeContainer.scss';
 import {
-  useProcessLogin,
+  getLoginState,
   getSSOLink,
   getMpePreferences,
   updateMpePreferences,
@@ -14,23 +14,15 @@ import {
 } from '../../apis/mpe';
 
 const MpeContainer: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isGettingSSOLink, setIsGettingSSOLink] = useState(false);
   const [isSessionExpired, setIsSessionExpired] = useState(false);
-  const isLoggedInOnLoad = useProcessLogin(useLocation(), useHistory());
-
-  useEffect(() => {
-    setIsLoggedIn(isLoggedInOnLoad);
-  }, [isLoggedInOnLoad]);
+  const isLoggedIn = getLoginState(useLocation(), useHistory());
 
   const onLogin = (): Promise<void> => {
     setIsGettingSSOLink(true);
     return getSSOLink()
       .then((ssoLink) => {
         window.location.href = ssoLink;
-      })
-      .catch(() => {
-        setIsLoggedIn(false);
       })
       .finally(() => {
         setIsGettingSSOLink(false);
@@ -43,7 +35,6 @@ const MpeContainer: React.FC = () => {
         .then((preferences) => resolve(preferences))
         .catch((err) => {
           if (err instanceof MpeSessionExpiredError) {
-            setIsLoggedIn(false);
             setIsSessionExpired(true);
           }
           return reject(err);
@@ -56,7 +47,6 @@ const MpeContainer: React.FC = () => {
         .then((msg) => resolve(msg))
         .catch((err) => {
           if (err instanceof MpeSessionExpiredError) {
-            setIsLoggedIn(false);
             setIsSessionExpired(true);
           }
           return reject(err);
