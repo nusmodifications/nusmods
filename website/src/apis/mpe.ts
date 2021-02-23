@@ -67,7 +67,12 @@ export const fetchModuleDetails = (moduleCode: ModuleCode): Promise<Module> =>
   axios.get<Module>(NUSModsApi.moduleDetailsUrl(moduleCode)).then((resp) => resp.data);
 
 export const getSSOLink = (): Promise<string> =>
-  mpe.get(SSO_PATH).then((resp) => resp.request.responseURL);
+  new Promise((resolve, reject) => {
+    mpe
+      .get(SSO_PATH)
+      .then((resp) => resolve(resp.data))
+      .catch((err) => reject(err));
+  });
 
 export const getMpePreferences = (): Promise<MpePreference[]> => {
   let responsePreferences: MpePreferencesResponse['preferences'] = [];
