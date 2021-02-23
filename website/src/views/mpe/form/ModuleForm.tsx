@@ -13,36 +13,36 @@ import ModulesSelectContainer from './ModulesSelectContainer';
 
 const initProcessLastRequest = () => {
   let isProcessing = false;
-  let nextOperation: (() => Promise<void>) | null = null;
+  let nextOperation: (() => Promise<unknown>) | null = null;
 
-  const processLastRequest = (operation: () => Promise<void>): Promise<void> =>
-    new Promise((resolve) => {
-      if (isProcessing) {
-        nextOperation = operation;
-        resolve();
-      } else {
-        isProcessing = true;
-        operation()
-          .then(() => {
-            isProcessing = false;
-            if (nextOperation !== null) {
-              const toExecute = nextOperation;
-              nextOperation = null;
-              return processLastRequest(toExecute);
-            }
-            return resolve();
-          })
-          .catch(() => {
-            isProcessing = false;
-            if (nextOperation === null) {
-              return processLastRequest(operation);
-            }
+  const processLastRequest = (operation: () => Promise<unknown>, onEnd: () => void) => {
+    if (isProcessing) {
+      nextOperation = operation;
+    } else {
+      isProcessing = true;
+      operation()
+        .then(() => {
+          isProcessing = false;
+          if (nextOperation !== null) {
             const toExecute = nextOperation;
             nextOperation = null;
-            return processLastRequest(toExecute);
-          });
-      }
-    });
+            processLastRequest(toExecute, onEnd);
+          } else {
+            onEnd();
+          }
+        })
+        .catch(() => {
+          isProcessing = false;
+          if (nextOperation === null) {
+            processLastRequest(operation, onEnd);
+          } else {
+            const toExecute = nextOperation;
+            nextOperation = null;
+            processLastRequest(toExecute, onEnd);
+          }
+        });
+    }
+  };
   return processLastRequest;
 };
 
@@ -57,7 +57,7 @@ const ModuleForm: React.FC<Props> = (props) => {
   const [preferences, setPreferences] = useState<MpePreference[]>([]);
   const [isInitialLoad, setIsInitialLoad] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
-  const [isSevenMods, setIsSevenMods] = useState(false);
+  const [hitMaxModsLimit, setHitMaxModsLimit] = useState(false);
 
   useLayoutEffect(() => {
     setIsInitialLoad(true);
@@ -76,20 +76,22 @@ const ModuleForm: React.FC<Props> = (props) => {
       });
   }, [props]);
 
-  const onDragEnd = async (result: DropResult): Promise<void> => {
-    if (!result.destination) return;
-    setIsUpdating(true);
-    const previousPreferences = [...preferences];
-    const updatedPreferences = reorder(preferences, result.source.index, result.destination.index);
-    setPreferences(updatedPreferences);
-    try {
-      await props.updatePreferences(updatedPreferences);
-    } catch (err) {
-      setPreferences(previousPreferences);
-    } finally {
-      setIsUpdating(false);
-    }
-  };
+  const onDragEnd = async (result: DropResult): Promise<void> =>
+    new Promise((resolve) => {
+      if (!result.destination) return;
+      setIsUpdating(true);
+      const updatedPreferences = reorder(
+        preferences,
+        result.source.index,
+        result.destination.index,
+      );
+      setPreferences(updatedPreferences);
+      processLastRequest(
+        () => props.updatePreferences(updatedPreferences),
+        () => setIsUpdating(false),
+      );
+      resolve();
+    });
 
   const reorder = (items: MpePreference[], startIndex: number, endIndex: number) => {
     const result = [...items];
@@ -98,64 +100,62 @@ const ModuleForm: React.FC<Props> = (props) => {
     return result;
   };
 
-  async function addModule(moduleCode: ModuleCode) {
-    if (preferences.find((p) => p.moduleCode === moduleCode)) return;
-    if (preferences.length === 7) {
-      setIsSevenMods(true);
-      return;
-    }
-    setIsUpdating(true);
-    const previousPreferences = [...preferences];
-    try {
-      const moduleInfo = await fetchModuleDetails(moduleCode);
-      const updatedPreferences: MpePreference[] = [
-        ...preferences,
-        {
-          moduleTitle: moduleInfo.title,
-          moduleCode,
-          moduleType: (Object.keys(MODULE_TYPES) as Array<MpePreference['moduleType']>)[0],
-          moduleCredits: parseInt(moduleInfo.moduleCredit, 10),
-        },
-      ];
+  const addModule = (moduleCode: ModuleCode): Promise<void> =>
+    new Promise((resolve) => {
+      if (preferences.find((p) => p.moduleCode === moduleCode)) return;
+      if (preferences.length === 7) {
+        setHitMaxModsLimit(true);
+        return;
+      }
+      setIsUpdating(true);
+      fetchModuleDetails(moduleCode).then((moduleInfo) => {
+        const updatedPreferences: MpePreference[] = [
+          ...preferences,
+          {
+            moduleTitle: moduleInfo.title,
+            moduleCode,
+            moduleType: (Object.keys(MODULE_TYPES) as Array<MpePreference['moduleType']>)[0],
+            moduleCredits: parseInt(moduleInfo.moduleCredit, 10),
+          },
+        ];
+        setPreferences(updatedPreferences);
+        processLastRequest(
+          () => props.updatePreferences(updatedPreferences),
+          () => setIsUpdating(false),
+        );
+        resolve();
+      });
+    });
+
+  const removeModule = (moduleCode: ModuleCode): Promise<void> =>
+    new Promise((resolve) => {
+      setIsUpdating(true);
+      const updatedPreferences = preferences.filter((p) => p.moduleCode !== moduleCode);
       setPreferences(updatedPreferences);
-      await props.updatePreferences(updatedPreferences);
-    } catch (err) {
-      setPreferences(previousPreferences);
-    } finally {
-      setIsUpdating(false);
-    }
-  }
+      processLastRequest(
+        () => props.updatePreferences(updatedPreferences),
+        () => setIsUpdating(false),
+      );
+      resolve();
+    });
 
-  async function removeModule(moduleCode: ModuleCode) {
-    setIsUpdating(true);
-    const previousPreferences = [...preferences];
-    const updatedPreferences = preferences.filter((p) => p.moduleCode !== moduleCode);
-    setPreferences(updatedPreferences);
-    try {
-      await props.updatePreferences(updatedPreferences);
-    } catch (err) {
-      setPreferences(previousPreferences);
-    } finally {
-      setIsUpdating(false);
-    }
-  }
-
-  async function updateModuleType(moduleCode: ModuleCode, moduleType: MpePreference['moduleType']) {
-    if (!preferences.find((p) => p.moduleCode === moduleCode)) return;
-    setIsUpdating(true);
-    const previousPreferences = [...preferences];
-    const updatedPreferences = preferences.map((p) =>
-      p.moduleCode === moduleCode ? { ...p, moduleType } : p,
-    );
-    setPreferences(updatedPreferences);
-    try {
-      await props.updatePreferences(updatedPreferences);
-    } catch (err) {
-      setPreferences(previousPreferences);
-    } finally {
-      setIsUpdating(false);
-    }
-  }
+  const updateModuleType = (
+    moduleCode: ModuleCode,
+    moduleType: MpePreference['moduleType'],
+  ): Promise<void> =>
+    new Promise((resolve) => {
+      if (!preferences.find((p) => p.moduleCode === moduleCode)) return;
+      setIsUpdating(true);
+      const updatedPreferences = preferences.map((p) =>
+        p.moduleCode === moduleCode ? { ...p, moduleType } : p,
+      );
+      setPreferences(updatedPreferences);
+      processLastRequest(
+        () => props.updatePreferences(updatedPreferences),
+        () => setIsUpdating(false),
+      );
+      resolve();
+    });
 
   return (
     <div>
@@ -215,8 +215,8 @@ const ModuleForm: React.FC<Props> = (props) => {
       </div>
       <p className={styles.Status}>{isUpdating ? 'Saving...' : 'All changes are saved'} </p>
       <Modal
-        isOpen={isSevenMods}
-        onRequestClose={() => setIsSevenMods(false)}
+        isOpen={hitMaxModsLimit}
+        onRequestClose={() => setHitMaxModsLimit(false)}
         shouldCloseOnOverlayClick={false}
         animate
       >
@@ -225,7 +225,7 @@ const ModuleForm: React.FC<Props> = (props) => {
         <button
           type="button"
           className={classnames('btn btn-outline-primary btn-svg', styles.ErrorButton)}
-          onClick={() => setIsSevenMods(false)}
+          onClick={() => setHitMaxModsLimit(false)}
         >
           Ok
         </button>
