@@ -54,6 +54,13 @@ const attributeMap: { [attribute: string]: keyof NUSModuleAttributes } = {
   LABB: 'lab',
   ISM: 'ism',
   HFYP: 'fyp',
+  // MPE handled separately as it maps to multiple attributes
+};
+
+const mpeValueMap: { [attribute: string]: (keyof NUSModuleAttributes)[] } = {
+  S1: ['mpes1'],
+  S2: ['mpes2'],
+  'S1&S2': ['mpes1', 'mpes2'],
 };
 
 export function mapAttributes(
@@ -63,6 +70,21 @@ export function mapAttributes(
   const nusAttributes: NUSModuleAttributes = {};
 
   for (const entry of attributes) {
+    if (entry.CourseAttribute === 'MPE') {
+      const mappedAttributes = mpeValueMap[entry.CourseAttributeValue];
+      if (!mappedAttributes) {
+        logger.warn(
+          { value: entry.CourseAttributeValue, key: entry.CourseAttribute },
+          'Non-standard course attribute value',
+        );
+      } else {
+        for (const attr of mappedAttributes) {
+          nusAttributes[attr] = true;
+        }
+      }
+      continue;
+    }
+
     if (!attributeMap[entry.CourseAttribute]) continue;
 
     if (entry.CourseAttributeValue === 'YES' || entry.CourseAttributeValue === 'HT') {
