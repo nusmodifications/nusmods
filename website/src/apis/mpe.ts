@@ -16,11 +16,11 @@ type MpePreferencesResponse = {
   }>;
 };
 
+export class MpeSessionExpiredError extends Error {}
+
 const SSO_PATH = '/auth/sso';
 const MPE_PATH = '/mpe/submissions';
 const TOKEN_URL_QUERY = 'token';
-
-export const ERR_SESSION_EXPIRED = new Error('User session has expired, please login again');
 
 const storage = getLocalStorage();
 
@@ -45,7 +45,7 @@ mpe.interceptors.response.use(
   (err) => {
     if (err?.response?.status === 401) {
       removeToken();
-      return Promise.reject(ERR_SESSION_EXPIRED);
+      return Promise.reject(new MpeSessionExpiredError());
     }
     return Promise.reject(err);
   },

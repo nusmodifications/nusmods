@@ -10,7 +10,7 @@ import {
   getSSOLink,
   getMpePreferences,
   updateMpePreferences,
-  ERR_SESSION_EXPIRED,
+  MpeSessionExpiredError,
 } from '../../apis/mpe';
 
 const MpeContainer: React.FC = () => {
@@ -38,7 +38,7 @@ const MpeContainer: React.FC = () => {
     try {
       return await getMpePreferences();
     } catch (err) {
-      if (err === ERR_SESSION_EXPIRED) {
+      if (err instanceof MpeSessionExpiredError) {
         setIsLoggedIn(false);
         setIsSessionExpired(true);
       }
@@ -50,7 +50,7 @@ const MpeContainer: React.FC = () => {
     try {
       return await updateMpePreferences(preferences);
     } catch (err) {
-      if (err === ERR_SESSION_EXPIRED) {
+      if (err instanceof MpeSessionExpiredError) {
         setIsLoggedIn(false);
         setIsSessionExpired(true);
       }
