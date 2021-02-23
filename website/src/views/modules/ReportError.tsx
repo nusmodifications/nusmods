@@ -114,7 +114,7 @@ const ReportError = memo<Props>(({ module }) => {
 
   // Causes the error reporting function to email modules@nusmods.com instead.
   // In production, use SET_ERROR_REPORTING_DEBUG(true) to enable debug mode
-  const debug = useGlobalDebugValue('SET_ERROR_REPORTING_DEBUG', __DEV__);
+  const debug = useGlobalDebugValue('SET_ERROR_REPORTING_DEBUG', NUSMODS_ENV === 'development');
 
   const [formData, setFormData] = useState<ReportErrorForm>(() => ({
     ...retrieveContactInfo(),

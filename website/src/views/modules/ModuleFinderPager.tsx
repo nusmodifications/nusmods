@@ -1,9 +1,9 @@
-import * as React from 'react';
+import { FC, memo } from 'react';
 import classnames from 'classnames';
 import { range } from 'lodash';
 
 import { breakpointDown } from 'utils/css';
-import makeResponsive from 'views/hocs/makeResponsive';
+import useMediaQuery from 'views/hooks/useMediaQuery';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'react-feather';
 import { PagerProps, FIRST_PAGE_INDEX } from 'views/components/searchkit/Pagination';
 import ModuleFinderPagerButton from 'views/modules/ModuleFinderPagerButton';
@@ -28,11 +28,7 @@ export function displayPageRange(
   return { firstPageNum, lastPageNum };
 }
 
-type Props = PagerProps & {
-  readonly matchBreakpoint: boolean;
-};
-
-export const ModuleFinderPagerComponent: React.FC<Props> = ({
+const ModuleFinderPager: FC<PagerProps> = ({
   selectedPage,
   totalNumPages,
   onGoToFirst,
@@ -40,8 +36,9 @@ export const ModuleFinderPagerComponent: React.FC<Props> = ({
   onGoToPage,
   onGoToNext,
   onGoToLast,
-  matchBreakpoint,
 }) => {
+  const matchBreakpoint = useMediaQuery(breakpointDown('md'));
+
   if (totalNumPages <= 0) return null;
 
   function renderDesktopPages() {
@@ -107,5 +104,4 @@ export const ModuleFinderPagerComponent: React.FC<Props> = ({
   );
 };
 
-const ModuleFinderPager = makeResponsive(ModuleFinderPagerComponent, breakpointDown('md'));
-export default ModuleFinderPager;
+export default memo(ModuleFinderPager);

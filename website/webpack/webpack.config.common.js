@@ -1,5 +1,5 @@
+const webpack = require('webpack');
 const path = require('path');
-
 const parts = require('./webpack.parts');
 
 const commonConfig = {
@@ -42,6 +42,16 @@ const commonConfig = {
     hints: false,
   },
 
+  plugins: [
+    new webpack.DefinePlugin({
+      NUSMODS_ENV: JSON.stringify(parts.env()),
+      DISPLAY_COMMIT_HASH: JSON.stringify(parts.appVersion().commitHash),
+      VERSION_STR: JSON.stringify(parts.appVersion().versionStr),
+      DEBUG_SERVICE_WORKER: !!process.env.DEBUG_SERVICE_WORKER,
+      DATA_API_BASE_URL: JSON.stringify(process.env.DATA_API_BASE_URL),
+    }),
+  ],
+
   module: {
     rules: [
       {
@@ -53,6 +63,10 @@ const commonConfig = {
           // TODO: Remove after we drop support for iOS <= 11.2 and Microsoft Edge 18.
           path.join(parts.PATHS.root, parts.PATHS.node, 'react-leaflet'),
           path.join(parts.PATHS.root, parts.PATHS.node, '@react-leaflet'),
+          // query-string has had a history of dropping support for browsers, so
+          // we cannot assume that it supports our browser support matrix.
+          // See: https://github.com/nusmodifications/nusmods/pull/1053
+          path.join(parts.PATHS.root, parts.PATHS.node, 'query-string'),
         ],
         use: ['babel-loader'],
       },

@@ -15,15 +15,11 @@ module.exports = {
   },
   // Mimic the globals we set with Webpack's DefinePlugin
   globals: {
-    // Default to development
-    __DEV__: process.env.NODE_ENV === 'development',
-    __TEST__: process.env.NODE_ENV === 'test',
+    NUSMODS_ENV: 'test',
     DATA_API_BASE_URL: '',
     VERSION_STR: '',
     DISPLAY_COMMIT_HASH: '',
     DEBUG_SERVICE_WORKER: false,
-    VERCEL_ENV: '',
-    VERCEL_GIT_COMMIT_REF: '',
   },
   // Allow us to directly use enzyme wrappers for snapshotting
   // Usage: expect(enzyme.shallow(<div/>)).toMatchSnapshot();
