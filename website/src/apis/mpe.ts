@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useEffect } from 'react';
 import getLocalStorage from 'storage/localStorage';
 import { Location, History } from 'history';
 import NUSModsApi from './nusmods';
