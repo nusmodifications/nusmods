@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" validUntil="2021-02-03T08:46:42Z" cacheDuration="PT604800S" entityID="https://nusmods.com">
+  <md:SPSSODescriptor AuthnRequestsSigned="false" WantAssertionsSigned="false" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <md:KeyDescriptor use="signing">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data>
+          <ds:X509Certificate>MIICajCCAdOgAwIBAgIBADANBgkqhkiG9w0BAQ0FADBRMQswCQYDVQQGEwJzZzESMBAGA1UECAwJU2luZ2Fwb3JlMRAwDgYDVQQKDAdOVVNNb2RzMRwwGgYDVQQDDBNodHRwczovL251c21vZHMuY29tMCAXDTIxMDIwMTA4MzE0N1oYDzIxMjEwMTA4MDgzMTQ3WjBRMQswCQYDVQQGEwJzZzESMBAGA1UECAwJU2luZ2Fwb3JlMRAwDgYDVQQKDAdOVVNNb2RzMRwwGgYDVQQDDBNodHRwczovL251c21vZHMuY29tMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDsUyFzxVrM8jDE8nmb+SEwo64rKvVAxO37W/AXsGIih/2j2ijl+WyGqHN8uDcPZi5hkyFaJ4t2tfdWn1cK1HdUQ1IO2YdKNv3ZvotU1wPoEa3uj6LMb+uOkNIIHM2Lep+E7KCAmZfP3tTAejuD0skHS90DAbV3rl70zkRH7PlbwIDAQABo1AwTjAdBgNVHQ4EFgQUUvQmIWw/43xDFkxbwnQ2D32oFLEwHwYDVR0jBBgwFoAUUvQmIWw/43xDFkxbwnQ2D32oFLEwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQ0FAAOBgQBs+6TosV25k/KIWTPGiNbCBBUTIEiy5SKUPx4e6WsTNSC91dlDlnwiV4Feag4v9RlanOLJI11XFibaw+SPQ1nUvpnfeKf4sU0jIzjoRHzFfd7VpirT5Uy5pmXZ4J01SGGP28PJ/wioxsnIDWe1HVJFbkMzlIBN3Mg/0pwwTJeZ0w==</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:KeyDescriptor use="encryption">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data>
+          <ds:X509Certificate>MIICajCCAdOgAwIBAgIBADANBgkqhkiG9w0BAQ0FADBRMQswCQYDVQQGEwJzZzESMBAGA1UECAwJU2luZ2Fwb3JlMRAwDgYDVQQKDAdOVVNNb2RzMRwwGgYDVQQDDBNodHRwczovL251c21vZHMuY29tMCAXDTIxMDIwMTA4MzE0N1oYDzIxMjEwMTA4MDgzMTQ3WjBRMQswCQYDVQQGEwJzZzESMBAGA1UECAwJU2luZ2Fwb3JlMRAwDgYDVQQKDAdOVVNNb2RzMRwwGgYDVQQDDBNodHRwczovL251c21vZHMuY29tMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDsUyFzxVrM8jDE8nmb+SEwo64rKvVAxO37W/AXsGIih/2j2ijl+WyGqHN8uDcPZi5hkyFaJ4t2tfdWn1cK1HdUQ1IO2YdKNv3ZvotU1wPoEa3uj6LMb+uOkNIIHM2Lep+E7KCAmZfP3tTAejuD0skHS90DAbV3rl70zkRH7PlbwIDAQABo1AwTjAdBgNVHQ4EFgQUUvQmIWw/43xDFkxbwnQ2D32oFLEwHwYDVR0jBBgwFoAUUvQmIWw/43xDFkxbwnQ2D32oFLEwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQ0FAAOBgQBs+6TosV25k/KIWTPGiNbCBBUTIEiy5SKUPx4e6WsTNSC91dlDlnwiV4Feag4v9RlanOLJI11XFibaw+SPQ1nUvpnfeKf4sU0jIzjoRHzFfd7VpirT5Uy5pmXZ4J01SGGP28PJ/wioxsnIDWe1HVJFbkMzlIBN3Mg/0pwwTJeZ0w==</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat>
+    <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://nusmods.com/api/nus/auth/login" index="1"/>
+  </md:SPSSODescriptor>
+</md:EntityDescriptor>
