@@ -11,6 +11,43 @@ import styles from './ModuleForm.scss';
 import ModuleCard from './ModuleCard';
 import ModulesSelectContainer from './ModulesSelectContainer';
 
+const initProcessLastRequest = () => {
+  let isProcessing = false;
+  let nextOperation: (() => Promise<void>) | null = null;
+
+  const processLastRequest = (operation: () => Promise<void>): Promise<void> =>
+    new Promise((resolve) => {
+      if (isProcessing) {
+        nextOperation = operation;
+        resolve();
+      } else {
+        isProcessing = true;
+        operation()
+          .then(() => {
+            isProcessing = false;
+            if (nextOperation !== null) {
+              const toExecute = nextOperation;
+              nextOperation = null;
+              return processLastRequest(toExecute);
+            }
+            return resolve();
+          })
+          .catch(() => {
+            isProcessing = false;
+            if (nextOperation === null) {
+              return processLastRequest(operation);
+            }
+            const toExecute = nextOperation;
+            nextOperation = null;
+            return processLastRequest(toExecute);
+          });
+      }
+    });
+  return processLastRequest;
+};
+
+const processLastRequest = initProcessLastRequest();
+
 type Props = {
   getPreferences: () => Promise<MpePreference[]>;
   updatePreferences: (preferences: MpePreference[]) => Promise<string>;
