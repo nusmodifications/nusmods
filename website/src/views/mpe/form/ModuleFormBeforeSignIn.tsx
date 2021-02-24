@@ -11,7 +11,7 @@ const ModuleFormBeforeSignIn: React.FC<Props> = (props) => (
     <div className={styles.image}>
       <img src={mpePlaceholder} alt="" />
     </div>
-    <h4>Start Module Preference Exercise</h4>
+    <h4>Start Module Planning Exercise</h4>
     <p>Select your modules and we will automatically save your changes</p>
     <button
       type="button"
