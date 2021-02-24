@@ -95,7 +95,7 @@ const ModuleForm: React.FC<Props> = ({ getPreferences, updatePreferences }) => {
   };
 
   const addModule = (moduleCode: ModuleCode) => {
-    if (preferences.find((p) => p.moduleCode === moduleCode)) return;
+    if (preferences.some((p) => p.moduleCode === moduleCode)) return;
     if (preferences.length === 7) {
       setHitMaxModsLimit(true);
       return;
@@ -130,7 +130,7 @@ const ModuleForm: React.FC<Props> = ({ getPreferences, updatePreferences }) => {
   };
 
   const updateModuleType = (moduleCode: ModuleCode, moduleType: MpePreference['moduleType']) => {
-    if (!preferences.find((p) => p.moduleCode === moduleCode)) return;
+    if (!preferences.some((p) => p.moduleCode === moduleCode)) return;
     setIsUpdating(true);
     const updatedPreferences = preferences.map((p) =>
       p.moduleCode === moduleCode ? { ...p, moduleType } : p,
@@ -163,6 +163,7 @@ const ModuleForm: React.FC<Props> = ({ getPreferences, updatePreferences }) => {
                         key={preference.moduleCode}
                         draggableId={preference.moduleCode}
                         index={index}
+                        isDragDisabled={isUpdating}
                       >
                         {(innerProvided) => (
                           <div
