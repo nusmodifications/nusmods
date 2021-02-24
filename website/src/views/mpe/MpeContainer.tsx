@@ -1,10 +1,8 @@
 import { useCallback, useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import type { MpePreference } from 'types/mpe';
 import classnames from 'classnames';
 import Modal from 'views/components/Modal';
-import MpeFormContainer from './form/MpeFormContainer';
-import styles from './MpeContainer.scss';
+import type { MpePreference } from 'types/mpe';
 import {
   getLoginState,
   getSSOLink,
@@ -12,6 +10,9 @@ import {
   updateMpePreferences,
   MpeSessionExpiredError,
 } from '../../apis/mpe';
+import ModuleFormBeforeSignIn from './form/ModuleFormBeforeSignIn';
+import ModuleFormContainer from './form/ModuleFormContainer';
+import styles from './MpeContainer.scss';
 
 const MpeContainer: React.FC = () => {
   const [isGettingSSOLink, setIsGettingSSOLink] = useState(false);
@@ -71,13 +72,13 @@ const MpeContainer: React.FC = () => {
           the ModReg Exercise, in cases where the demand exceeds the available quota and students
           have the same Priority Score for a particular module.
         </p>
-        <MpeFormContainer
-          isLoggedIn={isLoggedIn}
-          isLoggingIn={isGettingSSOLink}
-          onLogin={onLogin}
-          getPreferences={getPreferences}
-          updatePreferences={updatePreferences}
-        />
+        <div>
+          {isLoggedIn ? (
+            <ModuleFormContainer getPreferences={getPreferences} updatePreferences={updatePreferences} />
+          ) : (
+            <ModuleFormBeforeSignIn onLogin={onLogin} isLoggingIn={isGettingSSOLink} />
+          )}
+        </div>
         <Modal
           isOpen={isSessionExpired}
           onRequestClose={() => setIsSessionExpired(false)}
