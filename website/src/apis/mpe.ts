@@ -1,6 +1,7 @@
 import axios from 'axios';
 import getLocalStorage from 'storage/localStorage';
 import { Location, History } from 'history';
+import { produce } from 'immer';
 import NUSModsApi from './nusmods';
 import { MpePreference } from '../types/mpe';
 import type { Module, ModuleCode } from '../types/modules';
@@ -33,11 +34,11 @@ const mpe = axios.create({
   baseURL: '/api/nus',
 });
 
-mpe.interceptors.request.use((config) => {
-  const updatedConfig = { ...config };
-  updatedConfig.headers.Authorization = getToken();
-  return updatedConfig;
-});
+mpe.interceptors.request.use(
+  produce((draft) => {
+    draft.headers.Authorization = getToken();
+  }),
+);
 
 mpe.interceptors.response.use(
   (resp) => resp,
