@@ -205,9 +205,7 @@ const ModuleForm: React.FC<Props> = ({ getPreferences, updatePreferences }) => {
       </div>
       <div className={styles.SelectContainer}>
         <ModulesSelectContainer
-          moduleList={[]}
           preferences={preferences}
-          semester={2021}
           removeModule={removeModule}
           addModule={addModule}
         />

@@ -1,7 +1,7 @@
-import { Component } from 'react';
-import { connect } from 'react-redux';
+import { useMemo, useCallback } from 'react';
+import { useSelector } from 'react-redux';
 
-import { ModuleSelectList, ModuleSelectListItem } from 'types/reducers';
+import { ModuleList, ModuleSelectList, ModuleSelectListItem } from 'types/reducers';
 import { ModuleCode, Semester } from 'types/modules';
 import type { MpePreference } from 'types/mpe';
 
@@ -10,12 +10,7 @@ import { createSearchPredicate, sortModules } from 'utils/moduleSearch';
 import { State as StoreState } from 'types/state';
 import ModulesSelect from './ModulesSelect';
 
-type OwnProps = {
-  semester: Semester;
-  moduleList: ModuleSelectList;
-};
-
-type Props = OwnProps & {
+type Props = {
   preferences: MpePreference[];
   addModule: (moduleCode: ModuleCode) => void;
   removeModule: (moduleCode: ModuleCode) => Promise<void>;
@@ -26,10 +21,13 @@ const RESULTS_LIMIT = 500;
 function isModuleInPreference(preferences: MpePreference[], moduleCode: ModuleCode) {
   return preferences.some((preference) => preference.moduleCode === moduleCode);
 }
-function makeModuleList(state: StoreState, props: Props): ModuleSelectListItem[] {
-  return state.moduleBank.moduleList.map((module) => ({
+function makeModuleList(
+  moduleList: ModuleList,
+  preferences: MpePreference[],
+): ModuleSelectListItem[] {
+  return moduleList.map((module) => ({
     ...module,
-    isAdded: isModuleInPreference(props.preferences, module.moduleCode),
+    isAdded: isModuleInPreference(preferences, module.moduleCode),
     isAdding: false,
   }));
 }
@@ -38,40 +36,39 @@ function makeModuleList(state: StoreState, props: Props): ModuleSelectListItem[]
  * Container for modules select
  * Governs the module filtering logic and non-select related logic such as notification.
  */
-class ModulesSelectContainer extends Component<Props> {
-  onChange = (moduleCode: ModuleCode) => {
-    this.props.addModule(moduleCode);
-  };
+function ModulesSelectContainer(props: Props) {
+  const unfilteredModuleList = useSelector((state: StoreState) => state.moduleBank.moduleList);
+  const moduleList = useMemo(() => makeModuleList(unfilteredModuleList, props.preferences), [
+    unfilteredModuleList,
+    props.preferences,
+  ]);
 
-  getFilteredModules = (inputValue: string | null) => {
-    if (!inputValue) return [];
-    const predicate = createSearchPredicate(inputValue);
-    const results = this.props.moduleList.filter(predicate);
-    return sortModules(inputValue, results.slice(0, RESULTS_LIMIT));
-  };
+  const getFilteredModules = useCallback(
+    (inputValue: string | null) => {
+      if (!inputValue) return [];
+      const predicate = createSearchPredicate(inputValue);
+      const results = moduleList.filter(predicate);
+      return sortModules(inputValue, results.slice(0, RESULTS_LIMIT));
+    },
+    [moduleList],
+  );
 
-  render() {
-    return (
-      <Online>
-        {(isOnline) => (
-          <ModulesSelect
-            getFilteredModules={this.getFilteredModules}
-            moduleCount={this.props.moduleList.length}
-            onChange={this.onChange}
-            placeholder={
-              isOnline
-                ? 'Add module to the preference list'
-                : 'You need to be online to add modules'
-            }
-            disabled={!isOnline}
-            onRemoveModule={this.props.removeModule}
-          />
-        )}
-      </Online>
-    );
-  }
+  return (
+    <Online>
+      {(isOnline) => (
+        <ModulesSelect
+          getFilteredModules={getFilteredModules}
+          moduleCount={moduleList.length}
+          onChange={props.addModule}
+          placeholder={
+            isOnline ? 'Add module to the preference list' : 'You need to be online to add modules'
+          }
+          disabled={!isOnline}
+          onRemoveModule={props.removeModule}
+        />
+      )}
+    </Online>
+  );
 }
 
-export default connect((state: StoreState, props: Props) => ({
-  moduleList: makeModuleList(state, props),
-}))(ModulesSelectContainer);
+export default ModulesSelectContainer;
