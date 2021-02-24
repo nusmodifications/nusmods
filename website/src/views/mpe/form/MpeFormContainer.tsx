@@ -5,20 +5,23 @@ import ModuleForm from './ModuleForm';
 type Props = {
   isLoggedIn: boolean;
   isLoggingIn: boolean;
-  onLogin: () => Promise<void>;
+  onLogin: () => void;
   getPreferences: () => Promise<MpePreference[]>;
   updatePreferences: (preferences: MpePreference[]) => Promise<string>;
 };
 
-const MpeForm: React.FC<Props> = (props) => (
+const MpeForm: React.FC<Props> = ({
+  isLoggedIn,
+  isLoggingIn,
+  onLogin,
+  getPreferences,
+  updatePreferences,
+}) => (
   <div>
-    {props.isLoggedIn ? (
-      <ModuleForm
-        getPreferences={props.getPreferences}
-        updatePreferences={props.updatePreferences}
-      />
+    {isLoggedIn ? (
+      <ModuleForm getPreferences={getPreferences} updatePreferences={updatePreferences} />
     ) : (
-      <ModuleFormBeforeSignIn onLogin={props.onLogin} isLoggingIn={props.isLoggingIn} />
+      <ModuleFormBeforeSignIn onLogin={onLogin} isLoggingIn={isLoggingIn} />
     )}
   </div>
 );

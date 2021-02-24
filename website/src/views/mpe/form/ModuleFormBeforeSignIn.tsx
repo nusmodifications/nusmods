@@ -2,11 +2,11 @@ import mpePlaceholder from 'img/mpe-placeholder.png';
 import styles from './ModuleFormBeforeSignIn.scss';
 
 type Props = {
-  onLogin: () => Promise<void>;
+  onLogin: () => void;
   isLoggingIn: boolean;
 };
 
-const ModuleFormBeforeSignIn: React.FC<Props> = (props) => (
+const ModuleFormBeforeSignIn: React.FC<Props> = ({ onLogin, isLoggingIn }) => (
   <div className={styles.container}>
     <div className={styles.image}>
       <img src={mpePlaceholder} alt="" />
@@ -16,10 +16,10 @@ const ModuleFormBeforeSignIn: React.FC<Props> = (props) => (
     <button
       type="button"
       className="btn btn-outline-primary btn-svg"
-      onClick={props.onLogin}
-      disabled={props.isLoggingIn}
+      onClick={onLogin}
+      disabled={isLoggingIn}
     >
-      {props.isLoggingIn ? 'Redirecting...' : 'Sign In With NUS'}
+      {isLoggingIn ? 'Redirecting...' : 'Sign In With NUS'}
     </button>
   </div>
 );

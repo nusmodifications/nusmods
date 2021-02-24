@@ -8,26 +8,22 @@ type Props = {
   readonly updateModuleType: (
     moduleCode: ModuleCode,
     moduleType: MpePreference['moduleType'],
-  ) => Promise<void>;
-  readonly type: MpePreference['moduleType'];
+  ) => void;
+  readonly moduleType: MpePreference['moduleType'];
 };
 
-const ModuleTypeMenu: React.FC<Props> = (props) => (
+const ModuleTypeMenu: React.FC<Props> = ({ moduleCode, updateModuleType, moduleType }) => (
   <div>
     <select
-      value={props.type}
+      value={moduleType}
       className={classnames('btn close', styles.menu)}
       onChange={(e) => {
         const modType = e.target.value as MpePreference['moduleType'];
-        props.updateModuleType(props.moduleCode, modType);
+        updateModuleType(moduleCode, modType);
       }}
     >
       {Object.entries(MODULE_TYPES).map(([moduleTypeCode, { label }]) => (
-        <option
-          key={props.moduleCode + moduleTypeCode}
-          className="dropdown-item"
-          value={moduleTypeCode}
-        >
+        <option key={moduleCode + moduleTypeCode} className="dropdown-item" value={moduleTypeCode}>
           {label}
         </option>
       ))}

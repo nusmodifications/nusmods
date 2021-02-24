@@ -53,13 +53,12 @@ type Props = {
   updatePreferences: (preferences: MpePreference[]) => Promise<string>;
 };
 
-const ModuleForm: React.FC<Props> = (props) => {
+const ModuleForm: React.FC<Props> = ({ getPreferences, updatePreferences }) => {
   const [preferences, setPreferences] = useState<MpePreference[]>([]);
   const [isInitialLoad, setIsInitialLoad] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [hitMaxModsLimit, setHitMaxModsLimit] = useState(false);
 
-  const { getPreferences } = props;
   useEffect(() => {
     setIsInitialLoad(true);
     getPreferences()
@@ -87,7 +86,7 @@ const ModuleForm: React.FC<Props> = (props) => {
       );
       setPreferences(updatedPreferences);
       processLastRequest(
-        () => props.updatePreferences(updatedPreferences),
+        () => updatePreferences(updatedPreferences),
         () => setIsUpdating(false),
       );
       resolve();
@@ -120,7 +119,7 @@ const ModuleForm: React.FC<Props> = (props) => {
         ];
         setPreferences(updatedPreferences);
         processLastRequest(
-          () => props.updatePreferences(updatedPreferences),
+          () => updatePreferences(updatedPreferences),
           () => setIsUpdating(false),
         );
         resolve();
@@ -133,7 +132,7 @@ const ModuleForm: React.FC<Props> = (props) => {
       const updatedPreferences = preferences.filter((p) => p.moduleCode !== moduleCode);
       setPreferences(updatedPreferences);
       processLastRequest(
-        () => props.updatePreferences(updatedPreferences),
+        () => updatePreferences(updatedPreferences),
         () => setIsUpdating(false),
       );
       resolve();
@@ -151,7 +150,7 @@ const ModuleForm: React.FC<Props> = (props) => {
       );
       setPreferences(updatedPreferences);
       processLastRequest(
-        () => props.updatePreferences(updatedPreferences),
+        () => updatePreferences(updatedPreferences),
         () => setIsUpdating(false),
       );
       resolve();
@@ -233,4 +232,5 @@ const ModuleForm: React.FC<Props> = (props) => {
     </div>
   );
 };
+
 export default ModuleForm;
