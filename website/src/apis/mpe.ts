@@ -4,7 +4,7 @@ import getLocalStorage from 'storage/localStorage';
 import { Location, History } from 'history';
 import { produce } from 'immer';
 import NUSModsApi from './nusmods';
-import { MpePreference } from '../types/mpe';
+import { MpePreference, MpeModule } from '../types/mpe';
 import type { Module, ModuleCode } from '../types/modules';
 import { NUS_AUTH_TOKEN } from '../storage/keys';
 
@@ -64,6 +64,9 @@ export const getLoginState = (location: Location, history: History): boolean => 
   }
   return getToken() !== null;
 };
+
+export const fetchMpeModuleList = (): Promise<MpeModule[]> =>
+  axios.get<MpeModule[]>(NUSModsApi.mpeModuleListUrl()).then((resp) => resp.data);
 
 export const fetchModuleDetails = (moduleCode: ModuleCode): Promise<Module> =>
   axios.get<Module>(NUSModsApi.moduleDetailsUrl(moduleCode)).then((resp) => resp.data);

@@ -1,9 +1,9 @@
 import { useMemo, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 
-import { ModuleList, ModuleSelectListItem } from 'types/reducers';
-import { ModuleCode } from 'types/modules';
-import type { MpePreference } from 'types/mpe';
+import type { ModuleList, ModuleSelectListItem } from 'types/reducers';
+import type { ModuleCode } from 'types/modules';
+import type { MpePreference, MpeModule } from 'types/mpe';
 
 import Online from 'views/components/Online';
 import { createSearchPredicate, sortModules } from 'utils/moduleSearch';
@@ -12,24 +12,30 @@ import ModulesSelect from './ModulesSelect';
 
 type Props = {
   preferences: MpePreference[];
+  mpeModuleList: MpeModule[];
   addModule: (moduleCode: ModuleCode) => void;
   removeModule: (moduleCode: ModuleCode) => void;
 };
 
 const RESULTS_LIMIT = 500;
 
-function isModuleInPreference(preferences: MpePreference[], moduleCode: ModuleCode) {
-  return preferences.some((preference) => preference.moduleCode === moduleCode);
-}
 function makeModuleList(
   moduleList: ModuleList,
+  mpeModuleList: MpeModule[],
   preferences: MpePreference[],
 ): ModuleSelectListItem[] {
-  return moduleList.map((module) => ({
-    ...module,
-    isAdded: isModuleInPreference(preferences, module.moduleCode),
-    isAdding: false,
-  }));
+  const s1MpeModuleCodes = new Set(
+    mpeModuleList.filter((mod) => mod.inS1MPE).map((mod) => mod.moduleCode),
+  );
+  const preferenceModuleCodes = new Set(preferences.map((preference) => preference.moduleCode));
+
+  return moduleList
+    .filter((module) => s1MpeModuleCodes.has(module.moduleCode))
+    .map((module) => ({
+      ...module,
+      isAdded: preferenceModuleCodes.has(module.moduleCode),
+      isAdding: false,
+    }));
 }
 
 /**
@@ -38,10 +44,10 @@ function makeModuleList(
  */
 function ModulesSelectContainer(props: Props) {
   const unfilteredModuleList = useSelector((state: StoreState) => state.moduleBank.moduleList);
-  const moduleList = useMemo(() => makeModuleList(unfilteredModuleList, props.preferences), [
-    unfilteredModuleList,
-    props.preferences,
-  ]);
+  const moduleList = useMemo(
+    () => makeModuleList(unfilteredModuleList, props.mpeModuleList, props.preferences),
+    [unfilteredModuleList, props.mpeModuleList, props.preferences],
+  );
 
   const getFilteredModules = useCallback(
     (inputValue: string | null) => {

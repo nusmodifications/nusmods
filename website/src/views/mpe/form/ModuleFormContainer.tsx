@@ -1,5 +1,6 @@
+import { fetchMpeModuleList } from 'apis/mpe';
 import { useEffect, useState } from 'react';
-import type { MpePreference } from 'types/mpe';
+import type { MpePreference, MpeModule } from 'types/mpe';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 
 import ModuleForm from './ModuleForm';
@@ -12,13 +13,16 @@ type Props = {
 const MpeFormContainer: React.FC<Props> = ({ getPreferences, updatePreferences }) => {
   const [isInitialLoad, setIsInitialLoad] = useState(false);
   const [preferences, setPreferences] = useState<MpePreference[]>([]);
+  const [mpeModuleList, setMpeModuleList] = useState<MpeModule[]>([]);
 
-  // fetch preferences
+  // fetch mpe modules and preferences
   useEffect(() => {
     setIsInitialLoad(true);
-    getPreferences()
-      .then((result) => {
-        setPreferences(result);
+
+    Promise.all([fetchMpeModuleList(), getPreferences()])
+      .then((data) => {
+        setMpeModuleList(data[0]);
+        setPreferences(data[1]);
       })
       .catch((err) => {
         // this is a temporary fix
@@ -34,6 +38,12 @@ const MpeFormContainer: React.FC<Props> = ({ getPreferences, updatePreferences }
     return <LoadingSpinner />;
   }
 
-  return <ModuleForm initialPreferences={preferences} updatePreferences={updatePreferences} />;
+  return (
+    <ModuleForm
+      initialPreferences={preferences}
+      mpeModuleList={mpeModuleList}
+      updatePreferences={updatePreferences}
+    />
+  );
 };
 export default MpeFormContainer;

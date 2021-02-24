@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import sumBy from 'lodash/sumBy';
 import { Draggable, DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import { MpePreference, MODULE_TYPES } from 'types/mpe';
+import { MpePreference, MpeModule, MODULE_TYPES } from 'types/mpe';
 import { ModuleCode } from 'types/modules';
 import Modal from 'views/components/Modal';
 import classnames from 'classnames';
@@ -56,10 +56,11 @@ function reorder<T>(items: T[], startIndex: number, endIndex: number) {
 
 type Props = {
   initialPreferences: MpePreference[];
+  mpeModuleList: MpeModule[];
   updatePreferences: (preferences: MpePreference[]) => Promise<string>;
 };
 
-const ModuleForm: React.FC<Props> = ({ initialPreferences, updatePreferences }) => {
+const ModuleForm: React.FC<Props> = ({ initialPreferences, mpeModuleList, updatePreferences }) => {
   const [preferences, setPreferences] = useState<MpePreference[]>(initialPreferences);
   const [isUpdating, setIsUpdating] = useState(false);
   const [hitMaxModsLimit, setHitMaxModsLimit] = useState(false);
@@ -170,6 +171,7 @@ const ModuleForm: React.FC<Props> = ({ initialPreferences, updatePreferences }) 
       <div className={styles.SelectContainer}>
         <ModulesSelectContainer
           preferences={preferences}
+          mpeModuleList={mpeModuleList}
           removeModule={removeModule}
           addModule={addModule}
         />

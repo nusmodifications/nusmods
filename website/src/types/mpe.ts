@@ -7,6 +7,12 @@ export type MpePreference = {
   moduleCredits: number;
 };
 
+export type MpeModule = {
+  moduleCode: ModuleCode;
+  inS1MPE: boolean;
+  inS2MPE: boolean;
+};
+
 interface ModuleTypeInfo {
   label: string;
 }
