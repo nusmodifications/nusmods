@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import sumBy from 'lodash/sumBy';
 import { Draggable, DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { MpePreference, MODULE_TYPES } from 'types/mpe';
 import { ModuleCode } from 'types/modules';
-import LoadingSpinner from 'views/components/LoadingSpinner';
 import Modal from 'views/components/Modal';
 import classnames from 'classnames';
 import { fetchModuleDetails } from '../../../apis/mpe';
@@ -56,32 +55,14 @@ function reorder<T>(items: T[], startIndex: number, endIndex: number) {
 }
 
 type Props = {
-  getPreferences: () => Promise<MpePreference[]>;
+  initialPreferences: MpePreference[];
   updatePreferences: (preferences: MpePreference[]) => Promise<string>;
 };
 
-const ModuleForm: React.FC<Props> = ({ getPreferences, updatePreferences }) => {
-  const [preferences, setPreferences] = useState<MpePreference[]>([]);
-  const [isInitialLoad, setIsInitialLoad] = useState(false);
+const ModuleForm: React.FC<Props> = ({ initialPreferences, updatePreferences }) => {
+  const [preferences, setPreferences] = useState<MpePreference[]>(initialPreferences);
   const [isUpdating, setIsUpdating] = useState(false);
   const [hitMaxModsLimit, setHitMaxModsLimit] = useState(false);
-
-  // fetch preferences
-  useEffect(() => {
-    setIsInitialLoad(true);
-    getPreferences()
-      .then((result) => {
-        setPreferences(result);
-      })
-      .catch((err) => {
-        // this is a temporary fix
-        // eslint-disable-next-line no-console
-        console.log(err);
-      })
-      .finally(() => {
-        setIsInitialLoad(false);
-      });
-  }, [getPreferences]);
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
@@ -150,45 +131,41 @@ const ModuleForm: React.FC<Props> = ({ getPreferences, updatePreferences }) => {
         <div className={styles.mc}>{sumBy(preferences, (p) => p.moduleCredits)} MCs Selected</div>
       </div>
       <div>
-        {isInitialLoad ? (
-          <LoadingSpinner />
-        ) : (
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="droppable">
-              {(provided) => (
-                <div {...provided.droppableProps} ref={provided.innerRef}>
-                  {preferences.map((preference, index) => (
-                    <div key={index} className={styles.droppableContainer}>
-                      <Draggable
-                        key={preference.moduleCode}
-                        draggableId={preference.moduleCode}
-                        index={index}
-                        isDragDisabled={isUpdating}
-                      >
-                        {(innerProvided) => (
-                          <div
-                            ref={innerProvided.innerRef}
-                            className={styles.cardContainer}
-                            {...innerProvided.draggableProps}
-                            {...innerProvided.dragHandleProps}
-                          >
-                            <ModuleCard
-                              rank={index}
-                              preference={preference}
-                              removeModule={removeModule}
-                              updateModuleType={updateModuleType}
-                            />
-                          </div>
-                        )}
-                      </Draggable>
-                    </div>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
-        )}
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="droppable">
+            {(provided) => (
+              <div {...provided.droppableProps} ref={provided.innerRef}>
+                {preferences.map((preference, index) => (
+                  <div key={index} className={styles.droppableContainer}>
+                    <Draggable
+                      key={preference.moduleCode}
+                      draggableId={preference.moduleCode}
+                      index={index}
+                      isDragDisabled={isUpdating}
+                    >
+                      {(innerProvided) => (
+                        <div
+                          ref={innerProvided.innerRef}
+                          className={styles.cardContainer}
+                          {...innerProvided.draggableProps}
+                          {...innerProvided.dragHandleProps}
+                        >
+                          <ModuleCard
+                            rank={index}
+                            preference={preference}
+                            removeModule={removeModule}
+                            updateModuleType={updateModuleType}
+                          />
+                        </div>
+                      )}
+                    </Draggable>
+                  </div>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
       </div>
       <div className={styles.SelectContainer}>
         <ModulesSelectContainer
