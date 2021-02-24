@@ -68,12 +68,7 @@ export const fetchModuleDetails = (moduleCode: ModuleCode): Promise<Module> =>
   axios.get<Module>(NUSModsApi.moduleDetailsUrl(moduleCode)).then((resp) => resp.data);
 
 export const getSSOLink = (): Promise<string> =>
-  new Promise((resolve, reject) => {
-    mpe
-      .get(SSO_PATH)
-      .then((resp) => resolve(resp.data))
-      .catch((err) => reject(err));
-  });
+  mpe.get(SSO_PATH).then((resp) => resp.request.responseURL);
 
 export const getMpePreferences = (): Promise<MpePreference[]> => {
   let responsePreferences: MpePreferencesResponse['preferences'] = [];
@@ -83,15 +78,14 @@ export const getMpePreferences = (): Promise<MpePreference[]> => {
       responsePreferences = resp.data.preferences;
       return Promise.all<Module>(responsePreferences.map((p) => fetchModuleDetails(p.moduleCode)));
     })
-    .then((modules) => {
-      const moduleTypes = responsePreferences.map((p) => p.moduleType);
-      return modules.map<MpePreference>((m, index) => ({
+    .then((modules) =>
+      modules.map<MpePreference>((m, index) => ({
         moduleTitle: m.title,
         moduleCode: m.moduleCode,
-        moduleType: moduleTypes[index],
+        moduleType: responsePreferences[index].moduleType,
         moduleCredits: parseInt(m.moduleCredit, 10),
-      }));
-    })
+      })),
+    )
     .catch((err) => {
       // User has no existing MPE preferences
       if (err?.response?.status === 404) {

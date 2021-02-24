@@ -30,27 +30,19 @@ const MpeContainer: React.FC = () => {
   };
 
   const getPreferences = (): Promise<MpePreference[]> =>
-    new Promise((resolve, reject) => {
-      getMpePreferences()
-        .then((preferences) => resolve(preferences))
-        .catch((err) => {
-          if (err instanceof MpeSessionExpiredError) {
-            setIsSessionExpired(true);
-          }
-          return reject(err);
-        });
+    getMpePreferences().catch((err) => {
+      if (err instanceof MpeSessionExpiredError) {
+        setIsSessionExpired(true);
+      }
+      throw err;
     });
 
   const updatePreferences = (preferences: MpePreference[]): Promise<string> =>
-    new Promise((resolve, reject) => {
-      updateMpePreferences(preferences)
-        .then((msg) => resolve(msg))
-        .catch((err) => {
-          if (err instanceof MpeSessionExpiredError) {
-            setIsSessionExpired(true);
-          }
-          return reject(err);
-        });
+    updateMpePreferences(preferences).catch((err) => {
+      if (err instanceof MpeSessionExpiredError) {
+        setIsSessionExpired(true);
+      }
+      throw err;
     });
 
   return (
