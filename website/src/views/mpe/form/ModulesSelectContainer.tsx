@@ -23,13 +23,13 @@ type Props = OwnProps & {
 
 const RESULTS_LIMIT = 500;
 
-function isModuleinPreference(preferences: MpePreference[], moduleCode: ModuleCode) {
-  return preferences.reduce<boolean>((acc, curr) => acc || curr.moduleCode === moduleCode, false);
+function isModuleInPreference(preferences: MpePreference[], moduleCode: ModuleCode) {
+  return preferences.some((preference) => preference.moduleCode === moduleCode);
 }
 function makeModuleList(state: StoreState, props: Props): ModuleSelectListItem[] {
   return state.moduleBank.moduleList.map((module) => ({
     ...module,
-    isAdded: isModuleinPreference(props.preferences, module.moduleCode),
+    isAdded: isModuleInPreference(props.preferences, module.moduleCode),
     isAdding: false,
   }));
 }
