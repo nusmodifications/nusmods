@@ -1,5 +1,6 @@
 import axios from 'axios';
 import getLocalStorage from 'storage/localStorage';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Location, History } from 'history';
 import { produce } from 'immer';
 import NUSModsApi from './nusmods';
