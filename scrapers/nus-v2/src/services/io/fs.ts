@@ -21,6 +21,7 @@ import { Venue, VenueInfo } from '../../types/venues';
 import { Cache, Persist } from '../../types/persist';
 import config from '../../config';
 import { CacheExpiredError } from '../../utils/errors';
+import { MPEModule } from 'types/mpe';
 
 const defaultExpiry = 24 * 60; // 1 day
 
@@ -100,6 +101,10 @@ export function getFileSystemWriter(academicYear: string): Persist {
     // List of partial module info for module finder
     moduleInfo: (data: ModuleInformation[]) =>
       fs.outputJSON(path.join(yearRoot, 'moduleInfo.json'), data, writeOptions),
+
+    // List of modules that are participating in NUS's module planning exercise (MPE)
+    mpeModules: (data: MPEModule[]) =>
+      fs.outputJSON(path.join(yearRoot, 'mpeModules.json'), data, writeOptions),
 
     // DEPRECATED. TODO: Remove after AY19/20 starts.
     // List of partial module info for module finder

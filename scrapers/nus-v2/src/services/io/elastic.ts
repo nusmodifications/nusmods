@@ -211,6 +211,10 @@ export default class ElasticPersist implements Persist {
     return Promise.resolve();
   }
 
+  mpeModules() {
+    return Promise.resolve();
+  }
+
   semesterData() {
     return Promise.resolve();
   }

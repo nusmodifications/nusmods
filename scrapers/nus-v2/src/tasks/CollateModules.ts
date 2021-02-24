@@ -9,6 +9,7 @@ import {
   SemesterModuleData,
 } from '../types/mapper';
 import { Module, ModuleCode, ModuleCondensed, ModuleInformation } from '../types/modules';
+import { MPEModule } from '../types/mpe';
 
 import BaseTask from './BaseTask';
 import config from '../config';
@@ -16,6 +17,7 @@ import { Logger } from '../services/logger';
 import generatePrereqTree from '../services/requisite-tree';
 import { union } from '../utils/set';
 import { isModuleOffered } from '../utils/data';
+import { isModuleInMPE } from '../utils/mpe';
 
 interface Input {
   semesterData: SemesterModuleData[][];
@@ -118,15 +120,16 @@ const getModuleCondensed = ({
   moduleCode,
   title,
   semesterData,
-  attributes,
 }: ModuleWithoutTree): ModuleCondensed => ({
   moduleCode,
   title,
   semesters: semesterData.map((semester) => semester.semester),
-  // Flag that marks if module is included in Semester 1's Module Preference Exercise
-  mpes1: attributes?.mpes1 ?? false,
-  // Flag that marks if module is included in Semester 2's Module Preference Exercise
-  mpes2: attributes?.mpes2 ?? false,
+});
+
+const getModuleMPEParticipation = ({ moduleCode, attributes }: ModuleWithoutTree): MPEModule => ({
+  moduleCode,
+  inS1MPE: attributes?.mpes1,
+  inS2MPE: attributes?.mpes2,
 });
 
 // Avoid using _.pick here because it is not type safe
@@ -212,10 +215,17 @@ export default class CollateModules extends BaseTask implements Task<Input, Outp
     // Save condensed versions of the same information for searching. For module list we only save
     // offered modules so that they don't go into the add module dropdown
     const moduleCondensed = modules.filter(isModuleOffered).map(getModuleCondensed);
+
+    const mpeModules = modules
+      .filter(isModuleOffered)
+      .filter(isModuleInMPE)
+      .map(getModuleMPEParticipation);
+
     const moduleInfo = modules.map(getModuleInfo);
 
     await Promise.all([
       this.io.moduleList(moduleCondensed),
+      this.io.mpeModules(moduleInfo),
       this.io.moduleInfo(moduleInfo),
       this.io.moduleAliases(combinedAliases),
     ]);
