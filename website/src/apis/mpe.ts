@@ -68,7 +68,12 @@ export const getLoginState = (location: Location, history: History): boolean => 
 export const fetchModuleDetails = (moduleCode: ModuleCode): Promise<Module> =>
   axios.get<Module>(NUSModsApi.moduleDetailsUrl(moduleCode)).then((resp) => resp.data);
 
-export const getSSOLink = (): Promise<string> => mpe.get(SSO_PATH).then((resp) => resp.data);
+export const getSSOLink = (): Promise<string> =>
+  mpe
+    .get(SSO_PATH, {
+      params: { callback: window.location.href },
+    })
+    .then((resp) => resp.data);
 
 export const getMpePreferences = (): Promise<MpePreference[]> => {
   let responsePreferences: MpePreferencesResponse['preferences'] = [];
