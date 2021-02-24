@@ -7,6 +7,7 @@
 import * as fs from 'fs-extra';
 import path from 'path';
 
+import type { MPEModule } from '../../types/mpe';
 import {
   Aliases,
   Module,
@@ -21,7 +22,6 @@ import { Venue, VenueInfo } from '../../types/venues';
 import { Cache, Persist } from '../../types/persist';
 import config from '../../config';
 import { CacheExpiredError } from '../../utils/errors';
-import type { MPEModule } from 'types/mpe';
 
 const defaultExpiry = 24 * 60; // 1 day
 
