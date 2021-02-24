@@ -76,6 +76,15 @@ class NUSModsApi {
   static facultyDepartmentsUrl(academicYear = config.academicYear) {
     return `${NUSModsApi.baseUrl(academicYear)}/facultyDepartments.json`;
   }
+
+  /**
+   * List of modules available for MPE for the entire acad year.
+   * @param {string} academicYear
+   * @returns {string}
+   */
+  static mpeModuleListUrl(academicYear = config.academicYear) {
+    return `${NUSModsApi.baseUrl(academicYear)}/mpeModules.json`;
+  }
 }
 
 module.exports = NUSModsApi;
