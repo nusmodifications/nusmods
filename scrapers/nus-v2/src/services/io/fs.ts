@@ -21,7 +21,7 @@ import { Venue, VenueInfo } from '../../types/venues';
 import { Cache, Persist } from '../../types/persist';
 import config from '../../config';
 import { CacheExpiredError } from '../../utils/errors';
-import { MPEModule } from 'types/mpe';
+import type { MPEModule } from 'types/mpe';
 
 const defaultExpiry = 24 * 60; // 1 day
 

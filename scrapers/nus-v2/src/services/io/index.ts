@@ -9,7 +9,7 @@ import type {
   Semester,
   SemesterData,
 } from '../../types/modules';
-import { MPEModule } from '../../types/mpe';
+import type { MPEModule } from '../../types/mpe';
 import type { Venue, VenueInfo } from '../../types/venues';
 
 import { getFileSystemWriter } from './fs';

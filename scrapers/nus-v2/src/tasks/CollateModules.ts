@@ -9,7 +9,7 @@ import {
   SemesterModuleData,
 } from '../types/mapper';
 import { Module, ModuleCode, ModuleCondensed, ModuleInformation } from '../types/modules';
-import { MPEModule } from '../types/mpe';
+import type { MPEModule } from '../types/mpe';
 
 import BaseTask from './BaseTask';
 import config from '../config';
@@ -225,7 +225,7 @@ export default class CollateModules extends BaseTask implements Task<Input, Outp
 
     await Promise.all([
       this.io.moduleList(moduleCondensed),
-      this.io.mpeModules(moduleInfo),
+      this.io.mpeModules(mpeModules),
       this.io.moduleInfo(moduleInfo),
       this.io.moduleAliases(combinedAliases),
     ]);

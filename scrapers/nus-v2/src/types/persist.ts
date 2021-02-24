@@ -8,7 +8,7 @@ import {
   Semester,
   SemesterData,
 } from './modules';
-import { MPEModule } from './mpe';
+import type { MPEModule } from './mpe';
 import { Venue, VenueInfo } from './venues';
 
 /**
