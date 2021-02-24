@@ -1,8 +1,8 @@
 import { useMemo, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 
-import { ModuleList, ModuleSelectList, ModuleSelectListItem } from 'types/reducers';
-import { ModuleCode, Semester } from 'types/modules';
+import { ModuleList, ModuleSelectListItem } from 'types/reducers';
+import { ModuleCode } from 'types/modules';
 import type { MpePreference } from 'types/mpe';
 
 import Online from 'views/components/Online';
@@ -13,7 +13,7 @@ import ModulesSelect from './ModulesSelect';
 type Props = {
   preferences: MpePreference[];
   addModule: (moduleCode: ModuleCode) => void;
-  removeModule: (moduleCode: ModuleCode) => Promise<void>;
+  removeModule: (moduleCode: ModuleCode) => void;
 };
 
 const RESULTS_LIMIT = 500;

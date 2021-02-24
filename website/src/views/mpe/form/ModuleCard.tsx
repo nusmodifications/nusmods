@@ -8,10 +8,7 @@ type Props = {
   rank: number;
   preference: MpePreference;
   removeModule: (moduleCodeToRemove: string) => void;
-  updateModuleType: (
-    moduleCode: ModuleCode,
-    moduleType: MpePreference['moduleType'],
-  ) => Promise<void>;
+  updateModuleType: (moduleCode: ModuleCode, moduleType: MpePreference['moduleType']) => void;
 };
 
 const ModuleCard: React.FC<Props> = ({ rank, preference, removeModule, updateModuleType }) => (

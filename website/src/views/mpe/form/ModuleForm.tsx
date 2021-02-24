@@ -48,6 +48,13 @@ const initProcessLastRequest = () => {
 
 const processLastRequest = initProcessLastRequest();
 
+function reorder<T>(items: T[], startIndex: number, endIndex: number) {
+  const result = [...items];
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+  return result;
+}
+
 type Props = {
   getPreferences: () => Promise<MpePreference[]>;
   updatePreferences: (preferences: MpePreference[]) => Promise<string>;
@@ -59,6 +66,7 @@ const ModuleForm: React.FC<Props> = ({ getPreferences, updatePreferences }) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [hitMaxModsLimit, setHitMaxModsLimit] = useState(false);
 
+  // fetch preferences
   useEffect(() => {
     setIsInitialLoad(true);
     getPreferences()
@@ -75,86 +83,64 @@ const ModuleForm: React.FC<Props> = ({ getPreferences, updatePreferences }) => {
       });
   }, [getPreferences]);
 
-  const onDragEnd = async (result: DropResult): Promise<void> =>
-    new Promise((resolve) => {
-      if (!result.destination) return;
-      setIsUpdating(true);
-      const updatedPreferences = reorder(
-        preferences,
-        result.source.index,
-        result.destination.index,
-      );
-      setPreferences(updatedPreferences);
-      processLastRequest(
-        () => updatePreferences(updatedPreferences),
-        () => setIsUpdating(false),
-      );
-      resolve();
-    });
-
-  const reorder = (items: MpePreference[], startIndex: number, endIndex: number) => {
-    const result = [...items];
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-    return result;
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+    setIsUpdating(true);
+    const updatedPreferences = reorder(preferences, result.source.index, result.destination.index);
+    setPreferences(updatedPreferences);
+    processLastRequest(
+      () => updatePreferences(updatedPreferences),
+      () => setIsUpdating(false),
+    );
   };
 
-  const addModule = (moduleCode: ModuleCode): Promise<void> =>
-    new Promise((resolve) => {
-      if (preferences.find((p) => p.moduleCode === moduleCode)) return;
-      if (preferences.length === 7) {
-        setHitMaxModsLimit(true);
-        return;
-      }
-      setIsUpdating(true);
-      fetchModuleDetails(moduleCode).then((moduleInfo) => {
-        const updatedPreferences: MpePreference[] = [
-          ...preferences,
-          {
-            moduleTitle: moduleInfo.title,
-            moduleCode,
-            moduleType: (Object.keys(MODULE_TYPES) as Array<MpePreference['moduleType']>)[0],
-            moduleCredits: parseInt(moduleInfo.moduleCredit, 10),
-          },
-        ];
-        setPreferences(updatedPreferences);
-        processLastRequest(
-          () => updatePreferences(updatedPreferences),
-          () => setIsUpdating(false),
-        );
-        resolve();
-      });
-    });
-
-  const removeModule = (moduleCode: ModuleCode): Promise<void> =>
-    new Promise((resolve) => {
-      setIsUpdating(true);
-      const updatedPreferences = preferences.filter((p) => p.moduleCode !== moduleCode);
+  const addModule = (moduleCode: ModuleCode) => {
+    if (preferences.find((p) => p.moduleCode === moduleCode)) return;
+    if (preferences.length === 7) {
+      setHitMaxModsLimit(true);
+      return;
+    }
+    setIsUpdating(true);
+    fetchModuleDetails(moduleCode).then((moduleInfo) => {
+      const updatedPreferences: MpePreference[] = [
+        ...preferences,
+        {
+          moduleTitle: moduleInfo.title,
+          moduleCode,
+          moduleType: (Object.keys(MODULE_TYPES) as Array<MpePreference['moduleType']>)[0],
+          moduleCredits: parseInt(moduleInfo.moduleCredit, 10),
+        },
+      ];
       setPreferences(updatedPreferences);
       processLastRequest(
         () => updatePreferences(updatedPreferences),
         () => setIsUpdating(false),
       );
-      resolve();
     });
+  };
 
-  const updateModuleType = (
-    moduleCode: ModuleCode,
-    moduleType: MpePreference['moduleType'],
-  ): Promise<void> =>
-    new Promise((resolve) => {
-      if (!preferences.find((p) => p.moduleCode === moduleCode)) return;
-      setIsUpdating(true);
-      const updatedPreferences = preferences.map((p) =>
-        p.moduleCode === moduleCode ? { ...p, moduleType } : p,
-      );
-      setPreferences(updatedPreferences);
-      processLastRequest(
-        () => updatePreferences(updatedPreferences),
-        () => setIsUpdating(false),
-      );
-      resolve();
-    });
+  const removeModule = (moduleCode: ModuleCode) => {
+    setIsUpdating(true);
+    const updatedPreferences = preferences.filter((p) => p.moduleCode !== moduleCode);
+    setPreferences(updatedPreferences);
+    processLastRequest(
+      () => updatePreferences(updatedPreferences),
+      () => setIsUpdating(false),
+    );
+  };
+
+  const updateModuleType = (moduleCode: ModuleCode, moduleType: MpePreference['moduleType']) => {
+    if (!preferences.find((p) => p.moduleCode === moduleCode)) return;
+    setIsUpdating(true);
+    const updatedPreferences = preferences.map((p) =>
+      p.moduleCode === moduleCode ? { ...p, moduleType } : p,
+    );
+    setPreferences(updatedPreferences);
+    processLastRequest(
+      () => updatePreferences(updatedPreferences),
+      () => setIsUpdating(false),
+    );
+  };
 
   return (
     <div>
