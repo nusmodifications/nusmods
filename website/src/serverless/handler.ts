@@ -2,7 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 export type Request = VercelRequest;
 export type Response = VercelResponse;
-export type Handler = (req: VercelRequest, res: VercelResponse) => Promise<void>;
+export type Handler = (req: VercelRequest, res: VercelResponse) => void | Promise<void>;
 
 export type MethodHandlers = {
   GET?: Handler;
@@ -16,13 +16,25 @@ export type MethodHandlers = {
   PATCH?: Handler;
 };
 
+const handleOptions: Handler = (_req, res) => {
+  res.send(200);
+};
+
 export const createRouteHandler = (
   methodHandlers: MethodHandlers,
   fallback: (mh: MethodHandlers) => Handler,
   rescue: (err: Error) => Handler,
 ): Handler => async (req: Request, res: Response): Promise<void> => {
   try {
-    const handler = getHandlerByMethod(methodHandlers, req.method);
+    const handler = getHandlerByMethod(
+      {
+        // HACK: Just insert an OPTIONS handler here to enable CORS for all our
+        // serverless functions.
+        OPTIONS: handleOptions,
+        ...methodHandlers,
+      },
+      req.method,
+    );
     if (handler === undefined) {
       await fallback(methodHandlers)(req, res);
       return;

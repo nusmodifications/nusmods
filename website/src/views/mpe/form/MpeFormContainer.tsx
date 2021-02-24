@@ -10,7 +10,7 @@ type Props = {
   updatePreferences: (preferences: MpePreference[]) => Promise<string>;
 };
 
-const MpeForm: React.FC<Props> = ({
+const MpeFormContainer: React.FC<Props> = ({
   isLoggedIn,
   isLoggingIn,
   onLogin,
@@ -26,4 +26,4 @@ const MpeForm: React.FC<Props> = ({
   </div>
 );
 
-export default MpeForm;
+export default MpeFormContainer;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import type { MpePreference } from 'types/mpe';
 import classnames from 'classnames';
@@ -18,7 +18,7 @@ const MpeContainer: React.FC = () => {
   const [isSessionExpired, setIsSessionExpired] = useState(false);
   const isLoggedIn = getLoginState(useLocation(), useHistory());
 
-  const onLogin = (): Promise<void> => {
+  const onLogin = useCallback(() => {
     setIsGettingSSOLink(true);
     return getSSOLink()
       .then((ssoLink) => {
@@ -27,7 +27,7 @@ const MpeContainer: React.FC = () => {
       .finally(() => {
         setIsGettingSSOLink(false);
       });
-  };
+  }, []);
 
   const getPreferences = (): Promise<MpePreference[]> =>
     getMpePreferences().catch((err) => {
