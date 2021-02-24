@@ -16,8 +16,8 @@ import styles from './MpeContainer.scss';
 
 const MpeContainer: React.FC = () => {
   const [isGettingSSOLink, setIsGettingSSOLink] = useState(false);
-  const [isSessionExpired, setIsSessionExpired] = useState(false);
-  const isLoggedIn = getLoginState(useLocation(), useHistory());
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(getLoginState(useLocation(), useHistory()));
 
   const onLogin = useCallback(() => {
     setIsGettingSSOLink(true);
@@ -33,7 +33,8 @@ const MpeContainer: React.FC = () => {
   const getPreferences = (): Promise<MpePreference[]> =>
     getMpePreferences().catch((err) => {
       if (err instanceof MpeSessionExpiredError) {
-        setIsSessionExpired(true);
+        setIsModalOpen(true);
+        setIsLoggedIn(false);
       }
       throw err;
     });
@@ -41,7 +42,8 @@ const MpeContainer: React.FC = () => {
   const updatePreferences = (preferences: MpePreference[]): Promise<string> =>
     updateMpePreferences(preferences).catch((err) => {
       if (err instanceof MpeSessionExpiredError) {
-        setIsSessionExpired(true);
+        setIsModalOpen(true);
+        setIsLoggedIn(false);
       }
       throw err;
     });
@@ -74,14 +76,17 @@ const MpeContainer: React.FC = () => {
         </p>
         <div>
           {isLoggedIn ? (
-            <ModuleFormContainer getPreferences={getPreferences} updatePreferences={updatePreferences} />
+            <ModuleFormContainer
+              getPreferences={getPreferences}
+              updatePreferences={updatePreferences}
+            />
           ) : (
             <ModuleFormBeforeSignIn onLogin={onLogin} isLoggingIn={isGettingSSOLink} />
           )}
         </div>
         <Modal
-          isOpen={isSessionExpired}
-          onRequestClose={() => setIsSessionExpired(false)}
+          isOpen={isModalOpen}
+          onRequestClose={() => setIsModalOpen(false)}
           shouldCloseOnOverlayClick={false}
           animate
         >
@@ -90,7 +95,7 @@ const MpeContainer: React.FC = () => {
           <button
             type="button"
             className={classnames('btn btn-outline-primary btn-svg', styles.ErrorButton)}
-            onClick={() => setIsSessionExpired(false)}
+            onClick={() => setIsModalOpen(false)}
           >
             Ok
           </button>
