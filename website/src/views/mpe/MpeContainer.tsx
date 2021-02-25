@@ -11,7 +11,7 @@ import {
   MpeSessionExpiredError,
 } from '../../apis/mpe';
 import ModuleFormBeforeSignIn from './form/ModuleFormBeforeSignIn';
-import ModuleFormContainer from './form/ModuleFormContainer';
+import MpeFormContainer from './form/MpeFormContainer';
 import styles from './MpeContainer.scss';
 
 const MpeContainer: React.FC = () => {
@@ -76,7 +76,7 @@ const MpeContainer: React.FC = () => {
         </p>
         <div>
           {isLoggedIn ? (
-            <ModuleFormContainer
+            <MpeFormContainer
               getPreferences={getPreferences}
               updatePreferences={updatePreferences}
             />
@@ -90,8 +90,7 @@ const MpeContainer: React.FC = () => {
           shouldCloseOnOverlayClick={false}
           animate
         >
-          Your session has expired. Please sign in again!
-          <br /> <br />
+          <p>Your session has expired. Please sign in again!</p>
           <button
             type="button"
             className={classnames('btn btn-outline-primary btn-svg', styles.ErrorButton)}
