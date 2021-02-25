@@ -70,7 +70,7 @@ export const getSSOLink = (): Promise<string> =>
     })
     .then((resp) => resp.data);
 
-export const getMpePreferences = (): Promise<MpeSubmission> => {
+export const getMpeSubmission = (): Promise<MpeSubmission> => {
   let submission: MpeSubmission;
   return mpe
     .get<MpeSubmission>(MPE_PATH)
@@ -90,7 +90,7 @@ export const getMpePreferences = (): Promise<MpeSubmission> => {
     }));
 };
 
-export const updateMpePreferences = (submission: MpeSubmission): Promise<void> => {
+export const updateMpeSubmission = (submission: MpeSubmission): Promise<void> => {
   if (submission.intendedMCs < 0) {
     throw new Error('Intended amount of MCs to take cannot be less than 0');
   }

@@ -2,12 +2,12 @@ import { useCallback, useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import classnames from 'classnames';
 import Modal from 'views/components/Modal';
-import type { MpePreference } from 'types/mpe';
+import type { MpeSubmission } from 'types/mpe';
 import {
   getLoginState,
   getSSOLink,
-  getMpePreferences,
-  updateMpePreferences,
+  getMpeSubmission,
+  updateMpeSubmission,
   MpeSessionExpiredError,
 } from '../../apis/mpe';
 import { MAX_MODULES, MPE_AY, MPE_SEMESTER } from './constants';
@@ -31,8 +31,8 @@ const MpeContainer: React.FC = () => {
       });
   }, []);
 
-  const getPreferences = (): Promise<MpePreference[]> =>
-    getMpePreferences().catch((err) => {
+  const getSubmission = (): Promise<MpeSubmission> =>
+    getMpeSubmission().catch((err) => {
       if (err instanceof MpeSessionExpiredError) {
         setIsModalOpen(true);
         setIsLoggedIn(false);
@@ -40,8 +40,8 @@ const MpeContainer: React.FC = () => {
       throw err;
     });
 
-  const updatePreferences = (preferences: MpePreference[]): Promise<void> =>
-    updateMpePreferences(preferences).catch((err) => {
+  const updateSubmission = (submission: MpeSubmission): Promise<void> =>
+    updateMpeSubmission(submission).catch((err) => {
       if (err instanceof MpeSessionExpiredError) {
         setIsModalOpen(true);
         setIsLoggedIn(false);
@@ -85,7 +85,7 @@ const MpeContainer: React.FC = () => {
       </p>
       <div>
         {isLoggedIn ? (
-          <MpeFormContainer getPreferences={getPreferences} updatePreferences={updatePreferences} />
+          <MpeFormContainer getSubmission={getSubmission} updateSubmission={updateSubmission} />
         ) : (
           <ModuleFormBeforeSignIn onLogin={onLogin} isLoggingIn={isGettingSSOLink} />
         )}
