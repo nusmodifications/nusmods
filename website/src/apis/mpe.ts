@@ -4,18 +4,9 @@ import getLocalStorage from 'storage/localStorage';
 import { Location, History } from 'history';
 import { produce } from 'immer';
 import NUSModsApi from './nusmods';
-import { MpePreference, MpeModule } from '../types/mpe';
+import { MpeSubmission, MpePreference, MpeModule } from '../types/mpe';
 import type { Module, ModuleCode } from '../types/modules';
 import { NUS_AUTH_TOKEN } from '../storage/keys';
-
-type MpePreferencesResponse = {
-  nusExchangeId: string;
-  preferences: Array<{
-    rank: number;
-    moduleCode: ModuleCode;
-    moduleType: MpePreference['moduleType'];
-  }>;
-};
 
 export class MpeSessionExpiredError extends Error {}
 
@@ -79,36 +70,29 @@ export const getSSOLink = (): Promise<string> =>
     })
     .then((resp) => resp.data);
 
-export const getMpePreferences = (): Promise<MpePreference[]> => {
-  let responsePreferences: MpePreferencesResponse['preferences'] = [];
+export const getMpePreferences = (): Promise<MpeSubmission> => {
+  let submission: MpeSubmission;
   return mpe
-    .get<MpePreferencesResponse>(MPE_PATH)
+    .get<MpeSubmission>(MPE_PATH)
     .then((resp) => {
-      responsePreferences = resp.data.preferences;
-      return Promise.all<Module>(responsePreferences.map((p) => fetchModuleDetails(p.moduleCode)));
+      submission = resp.data;
+      return Promise.all<Module>(
+        submission.preferences.map((p) => fetchModuleDetails(p.moduleCode)),
+      );
     })
-    .then((modules) =>
-      modules.map<MpePreference>((m, index) => ({
+    .then((modules) => ({
+      ...submission,
+      preferences: modules.map<MpePreference>((m, index) => ({
         moduleTitle: m.title,
         moduleCode: m.moduleCode,
-        moduleType: responsePreferences[index].moduleType,
-        moduleCredits: parseInt(m.moduleCredit, 10),
+        moduleType: submission.preferences[index].moduleType,
       })),
-    )
-    .catch((err) => {
-      // User has no existing MPE preferences
-      if (err?.response?.status === 404) {
-        return [];
-      }
-      throw err;
-    });
+    }));
 };
 
-export const updateMpePreferences = (preferences: MpePreference[]): Promise<void> => {
-  const submission = preferences.map((p) => ({
-    moduleCode: p.moduleCode,
-    moduleType: p.moduleType,
-    credits: p.moduleCredits,
-  }));
+export const updateMpePreferences = (submission: MpeSubmission): Promise<void> => {
+  if (submission.intendedMCs < 0) {
+    throw new Error('Intended amount of MCs to take cannot be less than 0');
+  }
   return mpe.put(MPE_PATH, submission);
 };
