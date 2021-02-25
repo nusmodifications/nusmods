@@ -21,7 +21,7 @@ export type User = {
   email: string;
 };
 const samlRespAttributes: { [key in keyof User]: string } = {
-  accountName: 'http://schemas.nus.edu.sg/ws/2015/07/identity/claims/SamAccountName',
+  accountName: 'http://schemas.nus.edu.sg/ws/2015/07/identity/claims/samaccountname',
   upn: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn',
   email: 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',
 };
