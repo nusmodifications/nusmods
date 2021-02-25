@@ -126,8 +126,15 @@ const getModuleCondensed = ({
   semesters: semesterData.map((semester) => semester.semester),
 });
 
-const getModuleMPEParticipation = ({ moduleCode, attributes }: ModuleWithoutTree): MPEModule => ({
+const getModuleMPEParticipation = ({
+  title,
   moduleCode,
+  moduleCredit,
+  attributes,
+}: ModuleWithoutTree): MPEModule => ({
+  title,
+  moduleCode,
+  moduleCredit,
   inS1MPE: attributes?.mpes1,
   inS2MPE: attributes?.mpes2,
 });
