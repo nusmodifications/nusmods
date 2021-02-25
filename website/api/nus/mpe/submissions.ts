@@ -1,5 +1,6 @@
 import { User, verifyLogin } from '../../../src/serverless/nus-auth';
 import { getSubmissionById, createSubmission } from '../../../src/serverless/mpe';
+import type { MpeSubmission } from '../../../src/types/mpe';
 import {
   createRouteHandler,
   defaultFallback,
@@ -11,12 +12,18 @@ import {
 const handleGet: Handler = async (req, res) => {
   try {
     const user = (req as any).user as User;
-    const submission = await getSubmissionById(user.accountName);
-    res.json(submission);
+    const existingSubmission = await getSubmissionById(user.accountName);
+    delete existingSubmission.nusExchangeId;
+    existingSubmission.preferences = existingSubmission.preferences.map((p) => ({
+      moduleCode: p.moduleCode,
+      moduleType: p.moduleType,
+    }));
+    res.json(existingSubmission);
   } catch (err) {
     if (err.response.status === 404) {
-      res.status(404).json({
-        message: 'No MPE preferences are found for requesting user',
+      res.json(<MpeSubmission>{
+        intendedMCs: 0,
+        preferences: [],
       });
     } else {
       throw err;
