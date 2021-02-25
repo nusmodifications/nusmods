@@ -67,12 +67,19 @@ const MpeContainer: React.FC = () => {
           facilitate the Departments in their resource and timetable planning.
         </p>
         <p>
-          All current undergraduate and graduate students can{' '}
-          <strong>select up to {MAX_MODULES} modules per semester.</strong> Do note that there are
-          no validation checks for this MPE (i.e. no timetable clash/requisite checks). Information
-          collected here is <strong>solely for planning purposes </strong> and there is no guarantee
-          that you will be allocated the selected modules during the ModReg Exercise.
+          For this round of exercise, please{' '}
+          <strong>
+            {' '}
+            indicate the module(s) you would like to read for Semester {MPE_SEMESTER} of AY{MPE_AY}{' '}
+            (maximum of {MAX_MODULES} modules)
+          </strong>{' '}
+          and the <strong>type of degree requirement</strong> each module is being used for. Do note
+          that there are no validation checks for this MPE (i.e. no timetable clash/requisite
+          checks). Information collected here is <strong>solely for planning purposes </strong> and
+          there is no guarantee that you will be allocated the selected modules during the ModReg
+          Exercise.
         </p>
+        <p>The MPE for this round will be from 1 Mar to 14 Mar 2021.</p>
         <p>
           Participation in the MPE will be used as <strong>one of the tie-breakers</strong> during
           the ModReg Exercise, in cases where the demand exceeds the available quota and students
