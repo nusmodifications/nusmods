@@ -66,6 +66,7 @@ export const getLoginState = (location: Location, history: History): boolean => 
 };
 
 export const fetchMpeModuleList = (): Promise<MpeModule[]> =>
+  // TODO: Check with NUS if we should use MPE_AY here instead
   axios.get<MpeModule[]>(NUSModsApi.mpeModuleListUrl()).then((resp) => resp.data);
 
 export const fetchModuleDetails = (moduleCode: ModuleCode): Promise<Module> =>

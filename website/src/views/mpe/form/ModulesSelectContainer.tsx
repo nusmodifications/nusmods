@@ -8,6 +8,7 @@ import type { MpePreference, MpeModule } from 'types/mpe';
 import Online from 'views/components/Online';
 import { createSearchPredicate, sortModules } from 'utils/moduleSearch';
 import { State as StoreState } from 'types/state';
+import { MPE_SEMESTER } from '../constants';
 import ModulesSelect from './ModulesSelect';
 
 type Props = {
@@ -24,13 +25,15 @@ function makeModuleList(
   mpeModuleList: MpeModule[],
   preferences: MpePreference[],
 ): ModuleSelectListItem[] {
-  const s1MpeModuleCodes = new Set(
-    mpeModuleList.filter((mod) => mod.inS1MPE).map((mod) => mod.moduleCode),
+  const mpeModuleCodes = new Set(
+    mpeModuleList
+      .filter((mod) => (MPE_SEMESTER === 1 ? mod.inS1MPE : mod.inS2MPE))
+      .map((mod) => mod.moduleCode),
   );
   const preferenceModuleCodes = new Set(preferences.map((preference) => preference.moduleCode));
 
   return moduleList
-    .filter((module) => s1MpeModuleCodes.has(module.moduleCode))
+    .filter((module) => mpeModuleCodes.has(module.moduleCode))
     .map((module) => ({
       ...module,
       isAdded: preferenceModuleCodes.has(module.moduleCode),

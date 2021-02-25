@@ -6,6 +6,7 @@ import { ModuleCode } from 'types/modules';
 import Modal from 'views/components/Modal';
 import classnames from 'classnames';
 import { fetchModuleDetails } from '../../../apis/mpe';
+import { MAX_MODULES } from '../constants';
 import UpdatePreferenceQueue from '../UpdatePreferenceQueue';
 import styles from './ModuleForm.scss';
 import ModuleCard from './ModuleCard';
@@ -45,7 +46,6 @@ const ModuleForm: React.FC<Props> = ({
       .catch((e) => {
         setUpdateError(e);
       })
-      .catch()
       .finally(() => {
         setIsUpdating(false);
       });
@@ -58,7 +58,7 @@ const ModuleForm: React.FC<Props> = ({
 
   const addModule = (moduleCode: ModuleCode) => {
     if (preferences.some((p) => p.moduleCode === moduleCode)) return;
-    if (preferences.length === 7) {
+    if (preferences.length === MAX_MODULES) {
       setHitMaxModsLimit(true);
       return;
     }
@@ -169,7 +169,7 @@ const ModuleForm: React.FC<Props> = ({
         shouldCloseOnOverlayClick={false}
         animate
       >
-        You are unable to add more than 7 modules in this exercise.
+        You are unable to add more than {MAX_MODULES} modules in this exercise.
         <br /> <br />
         <button
           type="button"

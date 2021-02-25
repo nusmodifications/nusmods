@@ -10,6 +10,7 @@ import {
   updateMpePreferences,
   MpeSessionExpiredError,
 } from '../../apis/mpe';
+import { MAX_MODULES, MPE_AY, MPE_SEMESTER } from './constants';
 import ModuleFormBeforeSignIn from './form/ModuleFormBeforeSignIn';
 import MpeFormContainer from './form/MpeFormContainer';
 import styles from './MpeContainer.scss';
@@ -53,8 +54,9 @@ const MpeContainer: React.FC = () => {
       <div className={classnames(styles.innerContainer, 'col-md-8')}>
         <header className={styles.header}>
           <h1>Module Planning Exercise</h1>
-          <h4>AY2021/2022 - Semester 2</h4>
+          <h4>For AY{MPE_AY} - Semester {MPE_SEMESTER}</h4>
         </header>
+
         <h4 className={styles.subtitle}>Overview</h4>
 
         <p>
@@ -64,10 +66,10 @@ const MpeContainer: React.FC = () => {
         </p>
         <p>
           All current undergraduate and graduate students can{' '}
-          <strong>select up to 7 modules per semester.</strong> Do note that there are no validation
-          checks for this MPE (i.e. no timetable clash/requisite checks). Information collected here
-          is <strong>solely for planning purposes </strong> and there is no guarantee that you will
-          be allocated the selected modules during the ModReg Exercise.
+          <strong>select up to {MAX_MODULES} modules per semester.</strong> Do note that there are
+          no validation checks for this MPE (i.e. no timetable clash/requisite checks). Information
+          collected here is <strong>solely for planning purposes </strong> and there is no guarantee
+          that you will be allocated the selected modules during the ModReg Exercise.
         </p>
         <p>
           Participation in the MPE will be used as <strong>one of the tie-breakers</strong> during
