@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react';
-import { sumBy } from 'lodash';
 import { Draggable, DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { MpePreference, MpeModule } from 'types/mpe';
 import { ModuleCode } from 'types/modules';
@@ -120,7 +119,7 @@ const ModuleForm: React.FC<Props> = ({
       <div className={styles.headerTitle}>
         <div className={styles.rank}>Rank</div>
         <div className={styles.module}>Module</div>
-        <div className={styles.mc}>{sumBy(preferences, (p) => p.moduleCredits)} MCs Selected</div>
+        <div className={styles.moduleCount}>{7 - preferences.length} Modules Left</div>
       </div>
       <div>
         <DragDropContext onDragEnd={onDragEnd}>

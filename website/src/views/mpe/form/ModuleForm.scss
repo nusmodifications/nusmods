@@ -1,4 +1,6 @@
-.mc {
+@import '~styles/utils/modules-entry.scss';
+
+.moduleCount {
   display: flex;
   font-weight: bold;
   white-space: nowrap;
@@ -79,7 +81,7 @@
   margin-top: 1rem;
 }
 
-@media only screen and (max-width: 576px) {
+@include media-breakpoint-down(xs) {
   .status {
     text-align: center;
   }
