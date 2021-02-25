@@ -32,16 +32,20 @@ const ModuleForm: React.FC<Props> = ({
   const [preferences, setPreferences] = useState<MpePreference[]>(initialPreferences);
   const [isUpdating, setIsUpdating] = useState(false);
   const [hitMaxModsLimit, setHitMaxModsLimit] = useState(false);
+  const [updateError, setUpdateError] = useState<Error>();
   const updatePreferenceQueue = useRef(new UpdatePreferenceQueue(rawUpdatePreferences)).current;
 
   const updatePreferences = (newPreferences: MpePreference[]) => {
     setIsUpdating(true);
+    setUpdateError(undefined);
+
     setPreferences(newPreferences);
     updatePreferenceQueue
       .update(newPreferences)
-      .catch(() => {
-        // TODO
+      .catch((e) => {
+        setUpdateError(e);
       })
+      .catch()
       .finally(() => {
         setIsUpdating(false);
       });
@@ -83,6 +87,28 @@ const ModuleForm: React.FC<Props> = ({
       preferences.map((p) => (p.moduleCode === moduleCode ? { ...p, moduleType } : p)),
     );
   };
+
+  let status;
+  if (updateError) {
+    status = (
+      <p className={classnames('text-danger', styles.Status)}>
+        Changes could not be saved.{' '}
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={() => {
+            updatePreferences(preferences);
+          }}
+        >
+          Retry saving changes
+        </button>
+      </p>
+    );
+  } else if (isUpdating) {
+    status = <p className={styles.Status}>Saving...</p>;
+  } else {
+    status = <p className={classnames('text-primary', styles.Status)}>All changes are saved</p>;
+  }
 
   return (
     <div>
@@ -136,7 +162,7 @@ const ModuleForm: React.FC<Props> = ({
           addModule={addModule}
         />
       </div>
-      <p className={styles.Status}>{isUpdating ? 'Saving...' : 'All changes are saved'} </p>
+      {status}
       <Modal
         isOpen={hitMaxModsLimit}
         onRequestClose={() => setHitMaxModsLimit(false)}
