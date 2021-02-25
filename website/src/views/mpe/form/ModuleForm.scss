@@ -3,15 +3,21 @@
   font-weight: bold;
   white-space: nowrap;
 }
+
 .module {
   display: flex;
   flex: 2;
   font-weight: bold;
 }
+
 .rank {
   display: flex;
   flex: 1;
   font-weight: bold;
+}
+
+.card {
+  margin-top: 2rem;
 }
 
 .headerTitle {
@@ -24,13 +30,13 @@
   padding-top: 1rem;
 }
 
-.SelectContainer {
-  padding-top: 2rem;
-  margin-top: 2rem;
+.selectContainer {
+  padding-top: 1rem;
+  margin: 1.5rem 0;
   border-top: 1px solid var(--gray-lighter);
 }
 
-.Status {
+.status {
   margin-top: 0.5rem;
   text-align: end;
 }
@@ -50,12 +56,17 @@
   padding-right: 0;
 }
 
-.ErrorButton {
-  float: right;
+.maxModulesError {
+  padding: 1rem 0;
+  margin: 1rem 0;
+  border-bottom: 1px solid var(--gray-lighter);
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-align: center;
 }
 
 @media only screen and (max-width: 576px) {
-  .Status {
+  .status {
     text-align: center;
   }
 }

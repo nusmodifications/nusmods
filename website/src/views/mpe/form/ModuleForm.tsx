@@ -1,9 +1,8 @@
 import { useRef, useState } from 'react';
-import sumBy from 'lodash/sumBy';
+import { sumBy } from 'lodash';
 import { Draggable, DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { MpePreference, MpeModule } from 'types/mpe';
 import { ModuleCode } from 'types/modules';
-import Modal from 'views/components/Modal';
 import classnames from 'classnames';
 import { fetchModuleDetails } from '../../../apis/mpe';
 import { MAX_MODULES } from '../constants';
@@ -32,7 +31,6 @@ const ModuleForm: React.FC<Props> = ({
 }) => {
   const [preferences, setPreferences] = useState<MpePreference[]>(initialPreferences);
   const [isUpdating, setIsUpdating] = useState(false);
-  const [hitMaxModsLimit, setHitMaxModsLimit] = useState(false);
   const [updateError, setUpdateError] = useState<Error>();
   const updatePreferenceQueue = useRef(new UpdatePreferenceQueue(rawUpdatePreferences)).current;
 
@@ -57,9 +55,7 @@ const ModuleForm: React.FC<Props> = ({
   };
 
   const addModule = (moduleCode: ModuleCode) => {
-    if (preferences.some((p) => p.moduleCode === moduleCode)) return;
-    if (preferences.length === MAX_MODULES) {
-      setHitMaxModsLimit(true);
+    if (preferences.length >= MAX_MODULES || preferences.some((p) => p.moduleCode === moduleCode)) {
       return;
     }
 
@@ -142,6 +138,7 @@ const ModuleForm: React.FC<Props> = ({
                             preference={preference}
                             removeModule={removeModule}
                             updateModuleType={updateModuleType}
+                            className={styles.card}
                           />
                         </div>
                       )}
@@ -154,31 +151,23 @@ const ModuleForm: React.FC<Props> = ({
           </Droppable>
         </DragDropContext>
       </div>
-      <div className={styles.SelectContainer}>
-        <ModulesSelectContainer
-          preferences={preferences}
-          mpeModuleList={mpeModuleList}
-          removeModule={removeModule}
-          addModule={addModule}
-        />
+      {preferences.length < MAX_MODULES ? (
+      <div className={styles.selectContainer}>
+
+          <ModulesSelectContainer
+            preferences={preferences}
+            mpeModuleList={mpeModuleList}
+            removeModule={removeModule}
+            addModule={addModule}
+          />
+
       </div>
+      ) : (
+        <p className={styles.maxModulesError}>
+          Maximum of {MAX_MODULES} modules selected. Remove a module from the list to add more.
+        </p>
+      )}
       {status}
-      <Modal
-        isOpen={hitMaxModsLimit}
-        onRequestClose={() => setHitMaxModsLimit(false)}
-        shouldCloseOnOverlayClick={false}
-        animate
-      >
-        You are unable to add more than {MAX_MODULES} modules in this exercise.
-        <br /> <br />
-        <button
-          type="button"
-          className={classnames('btn btn-outline-primary btn-svg', styles.ErrorButton)}
-          onClick={() => setHitMaxModsLimit(false)}
-        >
-          Ok
-        </button>
-      </Modal>
     </div>
   );
 };

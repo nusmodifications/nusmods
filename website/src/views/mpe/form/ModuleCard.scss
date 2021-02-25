@@ -1,6 +1,16 @@
 @import '~styles/utils/modules-entry.scss';
 
-.side {
+.card {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: fit-content;
+  border: 1px solid var(--gray-lighter);
+  border-radius: 0.35rem;
+  background: var(--body-bg);
+}
+
+.rank {
   align-self: center;
   padding: 0 1.5rem;
   font-weight: bold;
@@ -13,12 +23,10 @@
   word-wrap: break-word;
 }
 
-
 .mc {
   align-self: center;
   padding: 0.1rem 0.5rem;
   border-radius: 0.35rem;
-  font-weight: bold;
   font-weight: bold;
   font-size: 1rem;
   white-space: nowrap;
@@ -31,17 +39,6 @@
   align-self: center;
   width: 100%;
   padding: 0.5rem 0.5rem 0.5rem 1rem;
-}
-
-.card {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: fit-content;
-  margin-top: 2rem;
-  border: 1px solid var(--gray-lighter);
-  border-radius: 0.35rem;
-  background: var(--body-bg);
 }
 
 .moduleInfoContainer {

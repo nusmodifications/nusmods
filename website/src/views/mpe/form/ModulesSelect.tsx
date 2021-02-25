@@ -120,7 +120,7 @@ export class ModulesSelectComponent extends Component<Props, State> {
     const showResults = isOpen && results.length > 0;
     const showTip = isModalOpen && !results.length;
     const showNoResultMessage = isOpen && inputValue && !results.length;
-    const removeBtnLabel = (moduleCode: ModuleCode) => `Remove ${moduleCode} from timetable`;
+    const removeBtnLabel = (moduleCode: ModuleCode) => `Remove ${moduleCode} from MPE preferences`;
 
     return (
       <div className={styles.container}>
