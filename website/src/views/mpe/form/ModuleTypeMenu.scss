@@ -5,8 +5,8 @@
   font-size: 1rem;
 }
 
-@include media-breakpoint-down(xs) {
+@include media-breakpoint-down(sm) {
   .menu {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
 }
