@@ -87,7 +87,7 @@ const ModuleForm: React.FC<Props> = ({
   let status;
   if (updateError) {
     status = (
-      <p className={classnames('text-danger', styles.Status)}>
+      <p className={classnames(styles.status, 'text-danger')}>
         Changes could not be saved.{' '}
         <button
           type="button"
@@ -96,18 +96,27 @@ const ModuleForm: React.FC<Props> = ({
             updatePreferences(preferences);
           }}
         >
-          Retry saving changes
+          Retry Saving Changes
         </button>
       </p>
     );
   } else if (isUpdating) {
-    status = <p className={styles.Status}>Saving...</p>;
+    status = <p className={styles.status}>Saving...</p>;
   } else {
-    status = <p className={classnames('text-primary', styles.Status)}>All changes are saved</p>;
+    status = <p className={classnames('text-primary', styles.status)}>All changes are saved</p>;
   }
 
   return (
-    <div>
+    <div className={styles.formContainer}>
+      <div className={styles.mcTextField}>
+        <p className={styles.textLabel}>
+          Please indicate how many MCs you are planning to pursue in this semester (by default, 20
+          MCs) :
+        </p>
+        <div className="col-xs-1">
+          <input type="text" className="form-control" placeholder="20" />
+        </div>
+      </div>
       <div className={styles.headerTitle}>
         <div className={styles.rank}>Rank</div>
         <div className={styles.module}>Module</div>

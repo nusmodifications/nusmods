@@ -31,13 +31,10 @@
 }
 
 .selectContainer {
-  padding-top: 1rem;
   margin: 1.5rem 0;
-  border-top: 1px solid var(--gray-lighter);
 }
 
 .status {
-  margin-top: 0.5rem;
   text-align: end;
 }
 
@@ -63,6 +60,23 @@
   font-weight: bold;
   font-size: 1.1rem;
   text-align: center;
+}
+
+.mcTextField {
+  display: flex;
+  padding: 2rem 0 2rem 0;
+  border-top: 1px solid var(--gray-lighter);
+}
+
+.textLabel {
+  align-self: center;
+  margin-right: 1rem;
+  margin-bottom: 0;
+}
+
+.formContainer {
+  padding-top: 1rem;
+  margin-top: 1rem;
 }
 
 @media only screen and (max-width: 576px) {
