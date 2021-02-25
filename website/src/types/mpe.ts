@@ -1,10 +1,16 @@
 import { ModuleTitle, ModuleCode } from './modules';
 
 export type MpePreference = {
+  rank?: number;
   moduleTitle?: ModuleTitle;
   moduleCode: ModuleCode;
   moduleType: '01' | '02' | '03' | '04';
-  moduleCredits: number;
+};
+
+export type MpeSubmission = {
+  nusExchangeId?: string;
+  intendedMCs: number;
+  preferences: Array<MpePreference>;
 };
 
 export type MpeModule = {
