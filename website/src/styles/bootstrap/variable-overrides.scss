@@ -1,12 +1,12 @@
 // Override the default bootstrap variables in this file.
 
 // Colors
-$gray-dark:                 #222324;
-$gray:                      #69707a;
-$gray-mid:                  #848490;
-$gray-light:                #aeb1b5;
-$gray-lighter:              #d3d6db;
-$gray-lightest:             #f3f5f8;
+$gray-dark: #222324;
+$gray: #69707a;
+$gray-mid: #848490;
+$gray-light: #aeb1b5;
+$gray-lighter: #d3d6db;
+$gray-lightest: #f3f5f8;
 
 $primary: #ff5138;
 $danger: #b71c1c;
@@ -20,26 +20,26 @@ $dark: $gray-dark;
 $body-color: $gray;
 
 // Typography
-$font-size-xlg:   2rem !default;
-$font-size-s:     0.85rem !default;
-$font-size-xs:    0.75rem !default;
-$font-size-xxs:   0.65rem !default;
+$font-size-xlg: 2rem !default;
+$font-size-s: 0.85rem !default;
+$font-size-xs: 0.75rem !default;
+$font-size-xxs: 0.65rem !default;
 
 // Fonts
-$headings-margin-bottom:    1rem;
+$headings-margin-bottom: 1rem;
 
 // Form states and alerts
-$state-success-text:        #fff;
-$state-success-bg:          theme-color('success');
+$state-success-text: #fff;
+$state-success-bg: theme-color('success');
 
-$state-info-text:           #fff;
-$state-info-bg:             theme-color('info');
+$state-info-text: #fff;
+$state-info-bg: theme-color('info');
 
-$state-warning-text:        #fff;
-$state-warning-bg:          theme-color('warning');
+$state-warning-text: #fff;
+$state-warning-bg: theme-color('warning');
 
-$state-danger-text:         #fff;
-$state-danger-bg:           theme-color('danger');
+$state-danger-text: #fff;
+$state-danger-bg: theme-color('danger');
 
 // Element styles
 $mark-bg: transparent;
@@ -56,8 +56,15 @@ $input-focus-color: var(--body-color);
 $input-focus-border-color: $primary;
 $input-disabled-bg: var(--body-bg);
 
-$dropdown-border-color: var(--gray-lighter);
+$dropdown-padding-x: 0.4rem;
+$dropdown-padding-y: $dropdown-padding-x;
 $dropdown-bg: var(--body-bg);
+$dropdown-border-color: var(--gray-lighter);
+$dropdown-divider-bg: var(--gray-lighter);
+$dropdown-item-padding-y: 0.375rem;
+$dropdown-item-padding-x: 0.75rem;
+$dropdown-header-color: var(--gray-mid);
+$dropdown-header-padding: $dropdown-item-padding-y $dropdown-item-padding-x;
 
 $mark-padding: 0;
 

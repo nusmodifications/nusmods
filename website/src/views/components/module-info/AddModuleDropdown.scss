@@ -1,4 +1,4 @@
-@import "~styles/utils/modules-entry";
+@import '~styles/utils/modules-entry';
 
 .buttonGroup {
   :global(.btn) {
@@ -20,15 +20,20 @@
   }
 }
 
-.dropdownItem {
-  text-align: center;
-  white-space: normal;
+.dropdownMenu {
+  width: 100%;
 
-  br {
-    display: none;
-  }
+  .dropdownItemContents {
+    width: 100%;
+    text-align: center;
+    white-space: normal;
 
-  strong {
-    font-size: 1em;
+    br {
+      display: none;
+    }
+
+    strong {
+      font-size: 1em;
+    }
   }
 }

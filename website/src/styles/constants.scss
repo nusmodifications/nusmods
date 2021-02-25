@@ -4,12 +4,7 @@
 $navbar-height: 3rem;
 $navtab-height: 3rem;
 
-$side-nav-width-md: 4rem;
-$side-nav-width-lg: 10rem;
-
-$navtab-shadow-height: 0.8rem;
-$navtab-shadow-color: rgba(#000, 0.1);
-$navtab-shadow-color-night: rgba(#000, 0.7);
+$navbar-shadow-height: 0.2rem;
 
 // Type
 $sm-font-size-ratio: 0.875;
@@ -21,6 +16,8 @@ $entering-duration: 0.225s;
 $desktop-fullscreen-duration: 0.275s;
 $desktop-exiting-duration: 0.175s;
 $desktop-entering-duration: 0.195s;
+
+// Source: https://github.com/material-components/material-components-web/blob/master/packages/mdc-animation/_animation.scss
 $material-standard-curve: cubic-bezier(0.4, 0, 0.2, 1);
 $material-deceleration-curve: cubic-bezier(0, 0, 0.2, 1);
 $material-acceleration-curve: cubic-bezier(0.4, 0, 1, 1);
@@ -53,7 +50,7 @@ $nusmods-theme-colors: (
     #95aec7,
     #ae95c7,
     #c795ae,
-    #c79595
+    #c79595,
   ),
   chalk: (
     #fb9fb1,
@@ -63,7 +60,7 @@ $nusmods-theme-colors: (
     #12cfc0,
     #6fc2ef,
     #e1a3ee,
-    #deaf8f
+    #deaf8f,
   ),
   eighties: (
     #f2777a,
@@ -73,7 +70,7 @@ $nusmods-theme-colors: (
     #6cc,
     #69c,
     #c9c,
-    #d27b53
+    #d27b53,
   ),
   google: (
     #cc342b,
@@ -83,7 +80,7 @@ $nusmods-theme-colors: (
     #3971ed,
     #79a4f9,
     #a36ac7,
-    #ec9998
+    #ec9998,
   ),
   mocha: (
     #cb6077,
@@ -93,7 +90,7 @@ $nusmods-theme-colors: (
     #7bbda4,
     #8ab3b5,
     #a89bb9,
-    #bb9584
+    #bb9584,
   ),
   monokai: (
     #f92672,
@@ -103,7 +100,7 @@ $nusmods-theme-colors: (
     #a1efe4,
     #66d9ef,
     #ae81ff,
-    #c63
+    #c63,
   ),
   ocean: (
     #bf616a,
@@ -113,7 +110,7 @@ $nusmods-theme-colors: (
     #96b5b4,
     #8fa1b3,
     #b48ead,
-    #ab7967
+    #ab7967,
   ),
   oceanic-next: (
     #ec5f67,
@@ -123,7 +120,7 @@ $nusmods-theme-colors: (
     #5fb3b3,
     #69c,
     #c594c5,
-    #ab7967
+    #ab7967,
   ),
   paraiso: (
     #ef6155,
@@ -133,7 +130,7 @@ $nusmods-theme-colors: (
     #5bc4bf,
     #06b6ef,
     #815ba4,
-    #e96ba8
+    #e96ba8,
   ),
   railscasts: (
     #da4939,
@@ -143,7 +140,7 @@ $nusmods-theme-colors: (
     #519f50,
     #6d9cbe,
     #b6b3eb,
-    #bc9458
+    #bc9458,
   ),
   tomorrow: (
     #c66,
@@ -153,7 +150,7 @@ $nusmods-theme-colors: (
     #8abeb7,
     #81a2be,
     #b294bb,
-    #a3685a
+    #a3685a,
   ),
   twilight: (
     #cf6a4c,
@@ -163,7 +160,7 @@ $nusmods-theme-colors: (
     #afc4db,
     #7587a6,
     #9b859d,
-    #9b703f
+    #9b703f,
   ),
 );
 
@@ -173,9 +170,7 @@ $snackbar-z-index: 2500;
 $sentry-z-index: 2000;
 $modal-z-index: 1500;
 $module-select-z-index: 960;
-$module-finder-search-z-index-sm: 950;
 $venue-detail-expanded-z-index: 920;
-$navtabs-z-index: 900;
 $navbar-z-index: 890;
 $module-finder-search-z-index-md: 850;
 $zindex-dropdown: 820; // Bootstrap override

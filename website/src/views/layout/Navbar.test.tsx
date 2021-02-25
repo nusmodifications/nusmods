@@ -5,9 +5,18 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import reducers from 'reducers';
+import { mockDom, mockDomReset } from 'test-utils/mockDom';
 import { initAction } from 'test-utils/redux';
 
-import Navtabs from './Navtabs';
+import Navbar from './Navbar';
+
+jest.mock('nusmoderator', () => ({
+  academicCalendar: {
+    getAcadWeekInfo: jest.fn(() => ({
+      year: '10/11',
+    })),
+  },
+}));
 
 const relevantStoreContents = {
   app: { activeSemester: 1 },
@@ -27,40 +36,54 @@ function make(storeOverrides: Partial<typeof relevantStoreContents> = {}) {
   render(
     <MemoryRouter>
       <Provider store={store}>
-        <Navtabs />,
+        <Navbar />,
       </Provider>
     </MemoryRouter>,
   );
 }
 
-describe(Navtabs, () => {
-  test('should render into nav element', () => {
+describe(Navbar, () => {
+  beforeEach(() => {
+    mockDom();
+  });
+
+  afterEach(() => {
+    mockDomReset();
+  });
+
+  test('should render nav links', () => {
     make();
     expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
       Array [
+        "",
         "Today",
         "Timetable",
         "Modules",
         "Venues",
         "Settings",
         "Contribute",
-        "Whispers",
+        "NUS Business",
+        "NUSWhispers",
+        "Academic Calendar",
       ]
     `);
   });
 
-  test('should show beta tabs if beta is true', () => {
+  test('should show beta nav links if beta is true', () => {
     make({ settings: { beta: true } });
     expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
       Array [
+        "",
         "Today",
         "Timetable",
         "Modules",
         "Venues",
-        "Planner",
+        "PlannerBeta",
         "Settings",
         "Contribute",
-        "Whispers",
+        "NUS Business",
+        "NUSWhispers",
+        "Academic Calendar",
       ]
     `);
   });

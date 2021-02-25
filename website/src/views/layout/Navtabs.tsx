@@ -1,14 +1,11 @@
 import type { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import classnames from 'classnames';
-import { BookOpen, Calendar, Clock, Heart, Map, Settings, Star, Trello } from 'react-feather';
+import { BookOpen, Calendar, Clock, Map } from 'react-feather';
 
-import ExternalLink from 'views/components/ExternalLink';
 import { timetablePage } from 'views/routes/paths';
 import { preload as preloadToday } from 'views/today/TodayContainer';
 import { preload as preloadVenues } from 'views/venues/VenuesContainer';
-import { preload as preloadContribute } from 'views/contribute/ContributeContainer';
 import type { State } from 'types/state';
 
 import styles from './Navtabs.scss';
@@ -17,7 +14,6 @@ export const NAVTAB_HEIGHT = 48;
 
 const Navtabs: FC = () => {
   const activeSemester = useSelector(({ app }: State) => app.activeSemester);
-  const beta = useSelector(({ settings }: State) => settings.beta);
 
   const tabProps = {
     className: styles.link,
@@ -45,38 +41,6 @@ const Navtabs: FC = () => {
         <Map />
         <span className={styles.title}>Venues</span>
       </NavLink>
-      {beta && (
-        <NavLink
-          {...tabProps}
-          className={classnames(tabProps.className, styles.hiddenOnMobile)}
-          to="/planner"
-        >
-          <Trello />
-          <span className={styles.title}>Planner</span>
-        </NavLink>
-      )}
-      <NavLink {...tabProps} to="/settings">
-        <Settings />
-        <span className={styles.title}>Settings</span>
-      </NavLink>
-      <NavLink
-        {...tabProps}
-        className={classnames(tabProps.className, styles.hiddenOnMobile)}
-        onMouseOver={preloadContribute}
-        onFocus={preloadContribute}
-        to="/contribute"
-      >
-        <Star />
-        <span className={styles.title}>Contribute</span>
-      </NavLink>
-      <div className={styles.divider} />
-      <ExternalLink
-        className={classnames(tabProps.className, styles.hiddenOnMobile)}
-        href="https://nuswhispers.com"
-      >
-        <Heart />
-        <span className={styles.title}>Whispers</span>
-      </ExternalLink>
     </nav>
   );
 };

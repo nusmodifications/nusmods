@@ -12,14 +12,12 @@
   );
 
   @include media-breakpoint-down(sm) {
-    z-index: $module-finder-search-z-index-sm;
-    padding: 0 0 $navtab-shadow-height;
+    padding: 0 0 $navbar-shadow-height;
     margin: -1rem (-$grid-gutter-width / 2) 0;
-    border-top: 1px solid var(--gray-lighter);
     background: linear-gradient(
       to bottom,
-      var(--body-bg) calc(100% - #{$navtab-shadow-height}),
-      var(--navtab-shadow) calc(100% - #{$navtab-shadow-height}),
+      var(--body-bg) calc(100% - #{$navbar-shadow-height}),
+      var(--navbar-shadow) calc(100% - #{$navbar-shadow-height}),
       rgba(#000, 0)
     );
   }

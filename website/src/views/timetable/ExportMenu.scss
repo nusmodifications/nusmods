@@ -12,17 +12,6 @@
   }
 
   .dropdownMenu {
-    width: 16rem;
-
-    svg {
-      margin-right: 0.2rem;
-      vertical-align: middle;
-    }
-
-    @include media-breakpoint-down(xs) {
-      width: auto;
-    }
-
     @include media-breakpoint-up(md) {
       font-size: $font-size-sm;
     }

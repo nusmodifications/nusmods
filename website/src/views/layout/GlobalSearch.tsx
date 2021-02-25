@@ -2,7 +2,7 @@ import { Component, Fragment } from 'react';
 import { omit, stubString } from 'lodash';
 import Downshift, { ChildrenFunction, DownshiftState, StateChangeOptions } from 'downshift';
 import classnames from 'classnames';
-import { ChevronRight, HelpCircle as Help, Search } from 'react-feather';
+import { BookOpen, ChevronRight, HelpCircle as Help, Map, Search } from 'react-feather';
 
 import { highlight } from 'utils/react';
 import { ModuleCondensed } from 'types/modules';
@@ -29,55 +29,36 @@ type Props = {
 };
 
 type State = {
-  isOpen: boolean;
   inputValue: string;
 };
 
-const PLACEHOLDER = 'Search modules & venues. Try "GER" or "LT".';
+const PLACEHOLDER = 'Search NUSMods';
 
 class GlobalSearch extends Component<Props, State> {
   input: HTMLInputElement | null = null;
 
   state = {
-    isOpen: false,
     inputValue: '',
   };
 
-  onOpen = () => {
-    this.setState({ isOpen: true });
-  };
-
-  onClose = () => {
-    this.setState({
-      isOpen: false,
-      inputValue: '',
-    });
-
-    if (this.input) this.input.blur();
-  };
-
-  onOuterClick = () => {
+  handleOuterClick = () => {
     // Preserve input value (if present) after user clicks outside.
     if (this.state.inputValue) {
       this.setState({
-        isOpen: true,
         // Cannot use prevState as prevState.inputValue will be empty string
         // instead of the (non-empty) this.state.inputValue.
         // eslint-disable-next-line react/no-access-state-in-setstate
         inputValue: this.state.inputValue,
       });
-
-      if (this.input) this.input.blur();
-    } else {
-      this.onClose();
     }
+    this.input?.blur();
   };
 
-  onInputValueChange = (newInputValue: string) => {
+  handleInputValueChange = (newInputValue: string) => {
     this.setState({ inputValue: newInputValue });
   };
 
-  onChange = (item: SearchItem | null) => {
+  handleChange = (item: SearchItem | null) => {
     if (item) {
       const { onSelectModule, onSelectVenue, onSearch } = this.props;
 
@@ -96,7 +77,7 @@ class GlobalSearch extends Component<Props, State> {
       }
     }
 
-    this.onClose();
+    this.input?.blur();
   };
 
   stateReducer = (state: DownshiftState<SearchItem>, changes: StateChangeOptions<SearchItem>) => {
@@ -111,11 +92,12 @@ class GlobalSearch extends Component<Props, State> {
   // Downshift attaches label for us, so we can ignore ESLint here
   /* eslint-disable jsx-a11y/label-has-for */
   renderDropdown: ChildrenFunction<SearchItem> = ({
+    isOpen,
+    openMenu,
     getLabelProps,
     getInputProps,
     getItemProps,
     getMenuProps,
-    isOpen,
     inputValue,
     highlightedIndex,
   }) => {
@@ -123,7 +105,7 @@ class GlobalSearch extends Component<Props, State> {
     // selection to be lost
     const searchForm = (
       <Fragment key="search">
-        <Search className={classnames(styles.icon, { [styles.iconOpen]: isOpen })} />
+        <Search className={styles.icon} />
         <label className="sr-only" {...getLabelProps()}>
           {PLACEHOLDER}
         </label>
@@ -132,18 +114,17 @@ class GlobalSearch extends Component<Props, State> {
             this.input = r;
             ComponentMap.globalSearchInput = r;
           }}
-          className={classnames(styles.input, { [styles.inputOpen]: isOpen })}
+          className={classnames('form-control', styles.input)}
+          onFocus={() => openMenu()}
           {...getInputProps({ placeholder: PLACEHOLDER })}
-          onFocus={this.onOpen}
         />
       </Fragment>
     );
 
     const searchResults = this.props.getResults(inputValue);
-    const hasFocus = document.activeElement === this.input;
 
     // 1. Search is not active - just show the search form
-    if (!searchResults || !inputValue || !hasFocus) {
+    if (!isOpen || !searchResults || !inputValue) {
       return <div className={styles.container}>{searchForm}</div>;
     }
 
@@ -158,8 +139,11 @@ class GlobalSearch extends Component<Props, State> {
         <div className={styles.container}>
           {searchForm}
 
-          <div className={styles.selectListContainer}>
-            <div className={styles.selectList}>
+          {/* Wrap select list in absolute-positioned container to fix macOS Safari scrolling perf */}
+          <div
+            className={classnames('dropdown-menu', styles.selectListContainer, { show: isOpen })}
+          >
+            <div className={styles.selectList} {...getMenuProps()}>
               <div className={styles.noResults}>
                 <Help />
                 <p>
@@ -212,22 +196,26 @@ class GlobalSearch extends Component<Props, State> {
         {searchForm}
 
         {/* Wrap select list in absolute-positioned container to fix macOS Safari scrolling perf */}
-        <div className={styles.selectListContainer}>
+        <div className={classnames('dropdown-menu', styles.selectListContainer, { show: isOpen })}>
           <div className={styles.selectList} {...getMenuProps()}>
             {hasModules && (
               <>
-                <div
-                  {...getItemProps({
-                    item: { type: SEARCH_RESULT, result: MODULE_RESULT, term: inputValue },
-                  })}
-                  className={classnames(styles.selectHeader, {
-                    [styles.selected]: highlightedIndex === 0,
-                  })}
-                >
-                  <span className="btn-svg">
+                <div className={styles.selectHeader}>
+                  <span className={styles.headerTitle}>
+                    <BookOpen className={styles.headerIcon} />
+                    <span className={styles.headerName}>Modules</span>
+                  </span>
+                  <span
+                    aria-label="View All Modules"
+                    className={classnames(styles.headerAction, 'btn-svg', {
+                      [styles.selected]: highlightedIndex === 0,
+                    })}
+                    {...getItemProps({
+                      item: { type: SEARCH_RESULT, result: MODULE_RESULT, term: inputValue },
+                    })}
+                  >
                     View All <ChevronRight className={styles.svg} />
                   </span>
-                  <span className={styles.headerName}>Modules</span>
                 </div>
 
                 {modules.map((module, index) => (
@@ -240,7 +228,9 @@ class GlobalSearch extends Component<Props, State> {
                       [styles.selected]: highlightedIndex === index + 1,
                     })}
                   >
-                    <span>{highlight(`${module.moduleCode} ${module.title}`, tokens)}</span>
+                    <span className={styles.title}>
+                      {highlight(`${module.moduleCode} ${module.title}`, tokens)}
+                    </span>
 
                     <SemesterBadge className={styles.semesters} semesters={module.semesters} />
                   </div>
@@ -248,20 +238,26 @@ class GlobalSearch extends Component<Props, State> {
               </>
             )}
 
+            {hasModules && hasVenues && <div className="dropdown-divider" />}
+
             {hasVenues && (
               <>
-                <div
-                  {...getItemProps({
-                    item: { type: SEARCH_RESULT, result: VENUE_RESULT, term: inputValue },
-                  })}
-                  className={classnames(styles.selectHeader, {
-                    [styles.selected]: highlightedIndex === venueHeaderIndex,
-                  })}
-                >
-                  <span className="btn-svg">
+                <div className={styles.selectHeader}>
+                  <span className={styles.headerTitle}>
+                    <Map className={styles.headerIcon} />
+                    <span className={styles.headerName}>Venues</span>
+                  </span>
+                  <span
+                    aria-label="View All Venues"
+                    className={classnames(styles.headerAction, 'btn-svg', {
+                      [styles.selected]: highlightedIndex === venueHeaderIndex,
+                    })}
+                    {...getItemProps({
+                      item: { type: SEARCH_RESULT, result: VENUE_RESULT, term: inputValue },
+                    })}
+                  >
                     View All <ChevronRight className={styles.svg} />
                   </span>
-                  <span className={styles.headerName}>Venues</span>
                 </div>
 
                 {venues.map((venue, index) => (
@@ -286,14 +282,13 @@ class GlobalSearch extends Component<Props, State> {
   };
 
   render() {
-    const { isOpen, inputValue } = this.state;
+    const { inputValue } = this.state;
 
     return (
       <Downshift
-        isOpen={isOpen}
-        onOuterClick={this.onOuterClick}
-        onChange={this.onChange}
-        onInputValueChange={this.onInputValueChange}
+        onOuterClick={this.handleOuterClick}
+        onChange={this.handleChange}
+        onInputValueChange={this.handleInputValueChange}
         inputValue={inputValue}
         stateReducer={this.stateReducer}
         /* Hack to force item selection to be empty */

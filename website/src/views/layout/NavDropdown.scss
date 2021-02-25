@@ -1,0 +1,46 @@
+@import '~styles/utils/modules-entry';
+@import './nav-constants';
+
+.container {
+  position: relative;
+  display: flex;
+  margin: $container-vertical-margin $container-horizontal-margin;
+}
+
+.toggle {
+  position: relative;
+  // Ensure .toggle is a circle by setting width. Its height should already be
+  // equal to $container-height.
+  width: $container-height;
+  padding: 0;
+  border-radius: $corner-radius;
+  font-size: 0.9rem;
+
+  &:hover {
+    background-color: var(--gray-lightest);
+  }
+
+  &:focus {
+    border-color: theme-color(primary);
+  }
+}
+
+.buttonIcon {
+  width: $navbar-icon-size;
+  height: $navbar-icon-size;
+  margin: 0;
+  color: var(--gray-mid);
+}
+
+.dropdownMenu {
+  right: 0;
+  left: auto;
+  width: 16rem;
+  // Prevent dropdown (including its bottom shadow) from going below the screen's bottom edge.
+  max-height: calc(100vh - #{$navbar-height} - 6px);
+  margin-top: $container-vertical-margin;
+
+  @include media-breakpoint-up(md) {
+    font-size: $font-size-sm;
+  }
+}

@@ -3,7 +3,8 @@
 .footer {
   composes: text-muted from global;
   padding: 4rem 0 4rem 0; // For Microsoft Edge 18
-  padding: 4rem env(safe-area-inset-right) calc(env(safe-area-inset-bottom) + 4rem) env(safe-area-inset-left);
+  padding: 4rem env(safe-area-inset-right) calc(env(safe-area-inset-bottom) + 4rem)
+    env(safe-area-inset-left);
   margin-top: 4rem;
   font-size: 0.85rem;
   text-align: center;
@@ -25,21 +26,13 @@
   }
 
   .footerContainer {
+    max-width: 75rem;
     padding: 0 15px;
+    margin: auto;
   }
 
   @include media-breakpoint-up(sm) {
     text-align: left;
-  }
-
-  @include media-breakpoint-up(md) {
-    padding-left: #{$side-nav-width-md}; // For Microsoft Edge 18
-    padding-left: calc(env(safe-area-inset-left) + #{$side-nav-width-md});
-  }
-
-  @include media-breakpoint-up(xl) {
-    padding-left: #{$side-nav-width-lg}; // For Microsoft Edge 18
-    padding-left: calc(env(safe-area-inset-left) + #{$side-nav-width-lg});
   }
 }
 

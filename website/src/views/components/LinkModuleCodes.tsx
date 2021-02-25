@@ -29,7 +29,8 @@ export const LinkModuleCodesComponent: React.FC<Props> = (props) => {
 
     const tooltip = (
       <>
-        {module.title} <SemesterBadge className={styles.semesters} semesters={module.semesters} />{' '}
+        {module.title}
+        <SemesterBadge className={styles.semesters} semesters={module.semesters} />
       </>
     );
 

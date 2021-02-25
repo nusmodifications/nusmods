@@ -1,0 +1,8 @@
+@import '~styles/utils/modules-entry';
+
+$navbar-icon-size: $font-size-lg;
+$container-vertical-margin: 0.3rem;
+$container-horizontal-margin: 0.2rem;
+
+$container-height: $navbar-height - $container-vertical-margin * 2;
+$corner-radius: $container-height / 2;

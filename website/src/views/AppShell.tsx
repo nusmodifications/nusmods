@@ -4,12 +4,11 @@ import type { Semester } from 'types/modules';
 import { DARK_MODE } from 'types/settings';
 
 import { Helmet } from 'react-helmet';
-import { NavLink, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import classnames from 'classnames';
 import { each } from 'lodash';
 
-import weekText from 'utils/weekText';
 import { captureException } from 'utils/error';
 import { openNotification } from 'actions/app';
 import { fetchModuleList as fetchModuleListAction } from 'actions/moduleBank';
@@ -18,23 +17,19 @@ import {
   validateTimetable,
 } from 'actions/timetables';
 import Footer from 'views/layout/Footer';
-import Navtabs from 'views/layout/Navtabs';
-import GlobalSearchContainer from 'views/layout/GlobalSearchContainer';
+import Navbar from 'views/layout/Navbar';
 import Notification from 'views/components/notfications/Notification';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ErrorPage from 'views/errors/ErrorPage';
 import ApiError from 'views/errors/ApiError';
 import { trackPageView } from 'bootstrapping/matomo';
 import { isIOS } from 'bootstrapping/browser';
-import Logo from 'img/nusmods-logo.svg';
 import type { Dispatch } from 'types/redux';
 import type { State } from 'types/state';
 import type { Actions } from 'types/actions';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
 import KeyboardShortcuts from './components/KeyboardShortcuts';
-
-import styles from './AppShell.scss';
 
 /**
  * Fetch module list on mount.
@@ -136,23 +131,9 @@ const AppShell: FC = ({ children }) => {
         />
       </Helmet>
 
-      <nav className={styles.navbar}>
-        <NavLink className={styles.brand} to="/" title="Home">
-          <Logo className={styles.brandLogo} title="NUSMods" />
-        </NavLink>
-
-        <div className={styles.navRight}>
-          <ErrorBoundary>
-            <GlobalSearchContainer />
-          </ErrorBoundary>
-
-          <div className={styles.weekText}>{weekText}</div>
-        </div>
-      </nav>
+      <Navbar />
 
       <div className="main-container">
-        <Navtabs />
-
         <main className="main-content">
           {isModuleListReady ? (
             <ErrorBoundary errorPage={() => <ErrorPage showReportDialog />}>
