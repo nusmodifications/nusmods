@@ -7,7 +7,7 @@ import ModuleForm from './ModuleForm';
 
 type Props = {
   getPreferences: () => Promise<MpePreference[]>;
-  updatePreferences: (preferences: MpePreference[]) => Promise<string>;
+  updatePreferences: (preferences: MpePreference[]) => Promise<void>;
 };
 
 const MpeFormContainer: React.FC<Props> = ({ getPreferences, updatePreferences }) => {

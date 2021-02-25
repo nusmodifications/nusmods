@@ -40,7 +40,7 @@ const MpeContainer: React.FC = () => {
       throw err;
     });
 
-  const updatePreferences = (preferences: MpePreference[]): Promise<string> =>
+  const updatePreferences = (preferences: MpePreference[]): Promise<void> =>
     updateMpePreferences(preferences).catch((err) => {
       if (err instanceof MpeSessionExpiredError) {
         setIsModalOpen(true);
@@ -54,7 +54,9 @@ const MpeContainer: React.FC = () => {
       <div className={classnames(styles.innerContainer, 'col-md-8')}>
         <header className={styles.header}>
           <h1>Module Planning Exercise</h1>
-          <h4>For AY{MPE_AY} - Semester {MPE_SEMESTER}</h4>
+          <h4>
+            For AY{MPE_AY} - Semester {MPE_SEMESTER}
+          </h4>
         </header>
 
         <h4 className={styles.subtitle}>Overview</h4>

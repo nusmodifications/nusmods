@@ -104,11 +104,11 @@ export const getMpePreferences = (): Promise<MpePreference[]> => {
     });
 };
 
-export const updateMpePreferences = (preferences: MpePreference[]): Promise<string> => {
+export const updateMpePreferences = (preferences: MpePreference[]): Promise<void> => {
   const submission = preferences.map((p) => ({
     moduleCode: p.moduleCode,
     moduleType: p.moduleType,
     credits: p.moduleCredits,
   }));
-  return mpe.put(MPE_PATH, submission).then((resp) => resp.data.message);
+  return mpe.put(MPE_PATH, submission);
 };
