@@ -152,16 +152,14 @@ const ModuleForm: React.FC<Props> = ({
         </DragDropContext>
       </div>
       {preferences.length < MAX_MODULES ? (
-      <div className={styles.selectContainer}>
-
+        <div className={styles.selectContainer}>
           <ModulesSelectContainer
             preferences={preferences}
             mpeModuleList={mpeModuleList}
             removeModule={removeModule}
             addModule={addModule}
           />
-
-      </div>
+        </div>
       ) : (
         <p className={styles.maxModulesError}>
           Maximum of {MAX_MODULES} modules selected. Remove a module from the list to add more.
