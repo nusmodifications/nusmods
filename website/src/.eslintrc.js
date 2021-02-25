@@ -57,8 +57,6 @@ module.exports = {
     {
       files: ['**/*.d.ts'],
       rules: {
-        // ESLint triggers this on declared constructors, which is useless
-        'no-useless-constructor': 'off',
         // Also triggering incorrectly in some type declarations
         '@typescript-eslint/no-unused-vars': 'off',
       },
@@ -85,6 +83,9 @@ module.exports = {
     // Use @typescript-eslint to catch this
     'default-case': 'off',
     '@typescript-eslint/switch-exhaustiveness-check': 'error',
+
+    'no-useless-constructor': 'off',
+    '@typescript-eslint/no-useless-constructor': ['error'],
 
     // Doesn't work with TypeScript
     'no-use-before-define': 'off',
