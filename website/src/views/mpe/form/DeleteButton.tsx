@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { useCallback, MouseEventHandler } from 'react';
+import { useCallback } from 'react';
 import { X } from 'react-feather';
 import Tooltip from 'views/components/Tooltip';
 import styles from './DeleteButton.scss';
@@ -11,10 +11,7 @@ type Props = {
 };
 
 const DeleteButton: React.FC<Props> = ({ label, removeModule, moduleCode }) => {
-  const handleClick = useCallback<MouseEventHandler<HTMLButtonElement>>(
-    () => removeModule(moduleCode),
-    [moduleCode, removeModule],
-  );
+  const handleClick = useCallback(() => removeModule(moduleCode), [moduleCode, removeModule]);
   return (
     <Tooltip content={label} touch="hold">
       <button

@@ -51,7 +51,7 @@ const MpeContainer: React.FC = () => {
 
   return (
     <div className={styles.pageContainer}>
-      <div className={classnames(styles.innerContainer, 'col-md-8')}>
+      <div className={classnames(styles.innerContainer, 'col-md-12 col-lg-10')}>
         <header className={styles.header}>
           <h1>Module Planning Exercise</h1>
           <h4>

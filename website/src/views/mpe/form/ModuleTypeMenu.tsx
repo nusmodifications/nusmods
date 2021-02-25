@@ -13,22 +13,20 @@ type Props = {
 };
 
 const ModuleTypeMenu: React.FC<Props> = ({ moduleCode, updateModuleType, moduleType }) => (
-  <div>
-    <select
-      value={moduleType}
-      className={classnames('btn close', styles.menu)}
-      onChange={(e) => {
-        const modType = e.target.value as MpePreference['moduleType'];
-        updateModuleType(moduleCode, modType);
-      }}
-    >
-      {Object.entries(MODULE_TYPES).map(([moduleTypeCode, { label }]) => (
-        <option key={moduleCode + moduleTypeCode} className="dropdown-item" value={moduleTypeCode}>
-          {label}
-        </option>
-      ))}
-    </select>
-  </div>
+  <select
+    value={moduleType}
+    className={classnames('form-control', styles.menu)}
+    onChange={(e) => {
+      const modType = e.target.value as MpePreference['moduleType'];
+      updateModuleType(moduleCode, modType);
+    }}
+  >
+    {Object.entries(MODULE_TYPES).map(([moduleTypeCode, { label }]) => (
+      <option key={moduleCode + moduleTypeCode} className="dropdown-item" value={moduleTypeCode}>
+        {label}
+      </option>
+    ))}
+  </select>
 );
 
 export default ModuleTypeMenu;

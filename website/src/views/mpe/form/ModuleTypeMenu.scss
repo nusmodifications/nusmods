@@ -1,16 +1,12 @@
+@import '~styles/utils/modules-entry.scss';
+
 .menu {
-  width: 100%;
-  padding: 0.2rem;
-  border-radius: 0.35rem;
   font-weight: bold;
-  font-size: 16px;
-  text-align: left;
-  color: #6f6f6f;
-  background-color: #f4f5f9 !important;
+  font-size: 1rem;
 }
 
-@media only screen and (max-width: 576px) {
+@include media-breakpoint-down(xs) {
   .menu {
-    font-size: 14px;
+    font-size: 0.8rem;
   }
 }

@@ -15,16 +15,14 @@ const ModuleCard: React.FC<Props> = ({ rank, preference, removeModule, updateMod
   <div className={styles.card}>
     <div className={styles.side}>{rank + 1}</div>
     <div className={styles.container}>
-      <div className={styles.modulecontainer}>
-        <div className={styles.moduleinfocontainer}>
-          <div className={styles.modulecode}>{preference.moduleCode}</div>
+      <div className={styles.moduleContainer}>
+        <div className={styles.moduleInfoContainer}>
+          <div className={styles.moduleCode}>{preference.moduleCode}</div>
           <div className={styles.moduletitle}>{preference.moduleTitle}</div>
         </div>
-        <div className={styles.mc}>
-          <p className={styles.mctext}>{preference.moduleCredits} MC </p>
-        </div>
+        <div className={styles.mc}>{preference.moduleCredits} MC</div>
       </div>
-      <div className={styles.moduletype}>
+      <div className={styles.moduleType}>
         <ModuleTypeMenu
           moduleCode={preference.moduleCode}
           moduleType={preference.moduleType}
@@ -33,7 +31,7 @@ const ModuleCard: React.FC<Props> = ({ rank, preference, removeModule, updateMod
       </div>
     </div>
     <DeleteButton
-      label={`Remove ${preference.moduleCode} from the list of preferences`}
+      label={`Remove ${preference.moduleCode}`}
       removeModule={removeModule}
       moduleCode={preference.moduleCode}
     />
