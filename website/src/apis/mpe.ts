@@ -86,6 +86,7 @@ export const getMpeSubmission = (): Promise<MpeSubmission> => {
         moduleTitle: m.title,
         moduleCode: m.moduleCode,
         moduleType: submission.preferences[index].moduleType,
+        moduleCredits: parseInt(m.moduleCredit, 10),
       })),
     }));
 };
