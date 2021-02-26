@@ -109,5 +109,5 @@ export const featureFlagEnablerMiddleware = (next: Handler): Handler => async (
     res.status(404).end();
     return;
   }
-  return next(req, res);
+  next(req, res);
 };
