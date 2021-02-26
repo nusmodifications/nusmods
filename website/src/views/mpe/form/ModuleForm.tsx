@@ -157,7 +157,9 @@ const ModuleForm: React.FC<Props> = ({
       <div className={styles.headerTitle}>
         <div className={styles.rank}>Rank</div>
         <div className={styles.module}>Module</div>
-        <div className={styles.moduleCount}>{7 - preferences.length} Modules Left</div>
+        <div className={styles.moduleCount}>
+          {preferences.length} / {MAX_MODULES} Modules Selected
+        </div>
       </div>
       <div>
         <DragDropContext onDragEnd={onDragEnd}>
