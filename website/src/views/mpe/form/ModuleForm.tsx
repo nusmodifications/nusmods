@@ -65,7 +65,6 @@ const ModuleForm: React.FC<Props> = ({
       return;
     }
 
-    setIsUpdating(true);
     fetchModuleDetails(moduleCode).then((moduleInfo) => {
       updateSubmission({
         intendedMCs,
