@@ -172,7 +172,6 @@ const ModuleForm: React.FC<Props> = ({
                       key={preference.moduleCode}
                       draggableId={preference.moduleCode}
                       index={index}
-                      isDragDisabled={isUpdating}
                     >
                       {(innerProvided) => (
                         <div
