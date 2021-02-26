@@ -138,8 +138,7 @@ const ModuleForm: React.FC<Props> = ({
     <div className={styles.formContainer}>
       <div className={styles.mcTextField}>
         <p className={styles.textLabel}>
-          Please indicate how many MCs you are planning to pursue in this semester (by default, 20
-          MCs) :
+          Please indicate how many MCs you are planning to pursue in this semester:
         </p>
         <div className="col-xs-1">
           <input
