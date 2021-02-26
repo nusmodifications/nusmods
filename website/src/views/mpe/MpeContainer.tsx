@@ -86,10 +86,7 @@ const MpeContainer: React.FC = () => {
         </p>
         <div>
           {isLoggedIn ? (
-            <MpeFormContainer
-              getPreferences={getPreferences}
-              updatePreferences={updatePreferences}
-            />
+            <MpeFormContainer getSubmission={getSubmission} updateSubmission={updateSubmission} />
           ) : (
             <ModuleFormBeforeSignIn onLogin={onLogin} isLoggingIn={isGettingSSOLink} />
           )}
