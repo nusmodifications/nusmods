@@ -65,7 +65,6 @@ const ModuleForm: React.FC<Props> = ({
       return;
     }
 
-    setIsUpdating(true);
     fetchModuleDetails(moduleCode).then((moduleInfo) => {
       updateSubmission({
         intendedMCs,
@@ -75,6 +74,7 @@ const ModuleForm: React.FC<Props> = ({
             moduleTitle: moduleInfo.title,
             moduleCode,
             moduleType: '01',
+            moduleCredits: parseInt(moduleInfo.moduleCredit, 10),
           },
         ],
       });

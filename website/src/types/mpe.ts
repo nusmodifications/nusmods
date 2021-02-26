@@ -3,6 +3,7 @@ import { ModuleTitle, ModuleCode } from './modules';
 export type MpePreference = {
   rank?: number;
   moduleTitle?: ModuleTitle;
+  moduleCredits?: number;
   moduleCode: ModuleCode;
   moduleType: '01' | '02' | '03' | '04';
 };
