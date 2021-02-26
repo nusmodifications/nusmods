@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { enableMpe } from 'featureFlags';
-import type { Handler } from './handler';
+import { enableMpe } from '../featureFlags';
 import { MpeSubmission, MpePreference, MODULE_TYPES } from '../types/mpe';
+import type { Handler } from './handler';
 
 const vfsEndpoint = process.env.NUS_VFS_MPE_ENDPOINT;
 const defaultHeaders = {
