@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react';
 import { Draggable, DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import { MpePreference, MpeModule } from 'types/mpe';
+import { MpeSubmission, MpePreference, MpeModule } from 'types/mpe';
 import { ModuleCode } from 'types/modules';
 import classnames from 'classnames';
 import { fetchModuleDetails } from '../../../apis/mpe';
 import { MAX_MODULES } from '../constants';
-import UpdatePreferenceQueue from '../UpdatePreferenceQueue';
+import UpdateSubmissionQueue from '../UpdateSubmissionQueue';
 import styles from './ModuleForm.scss';
 import ModuleCard from './ModuleCard';
 import ModulesSelectContainer from './ModulesSelectContainer';
@@ -18,28 +18,32 @@ function reorder<T>(items: T[], startIndex: number, endIndex: number) {
 }
 
 type Props = {
-  initialPreferences: MpePreference[];
+  initialSubmission: MpeSubmission;
   mpeModuleList: MpeModule[];
-  updatePreferences: (preferences: MpePreference[]) => Promise<void>;
+  updateSubmission: (submission: MpeSubmission) => Promise<void>;
 };
 
 const ModuleForm: React.FC<Props> = ({
-  initialPreferences,
+  initialSubmission,
   mpeModuleList,
-  updatePreferences: rawUpdatePreferences,
+  updateSubmission: rawUpdateSubmission,
 }) => {
-  const [preferences, setPreferences] = useState<MpePreference[]>(initialPreferences);
+  const [intendedMCs, setintendedMCs] = useState<MpeSubmission['intendedMCs']>(
+    initialSubmission.intendedMCs,
+  );
+  const [preferences, setPreferences] = useState<MpePreference[]>(initialSubmission.preferences);
   const [isUpdating, setIsUpdating] = useState(false);
   const [updateError, setUpdateError] = useState<Error>();
-  const updatePreferenceQueue = useRef(new UpdatePreferenceQueue(rawUpdatePreferences)).current;
+  const updateSubmissionQueue = useRef(new UpdateSubmissionQueue(rawUpdateSubmission)).current;
 
-  const updatePreferences = (newPreferences: MpePreference[]) => {
+  const updateSubmission = (newSubmission: MpeSubmission) => {
     setIsUpdating(true);
     setUpdateError(undefined);
 
-    setPreferences(newPreferences);
-    updatePreferenceQueue
-      .update(newPreferences)
+    setintendedMCs(newSubmission.intendedMCs);
+    setPreferences([...newSubmission.preferences]);
+    updateSubmissionQueue
+      .update(newSubmission)
       .catch((e) => {
         setUpdateError(e);
       })
@@ -50,7 +54,10 @@ const ModuleForm: React.FC<Props> = ({
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
-    updatePreferences(reorder(preferences, result.source.index, result.destination.index));
+    updateSubmission({
+      intendedMCs,
+      preferences: reorder(preferences, result.source.index, result.destination.index),
+    });
   };
 
   const addModule = (moduleCode: ModuleCode) => {
@@ -60,27 +67,46 @@ const ModuleForm: React.FC<Props> = ({
 
     setIsUpdating(true);
     fetchModuleDetails(moduleCode).then((moduleInfo) => {
-      updatePreferences([
-        ...preferences,
-        {
-          moduleTitle: moduleInfo.title,
-          moduleCode,
-          moduleType: '01',
-          moduleCredits: parseFloat(moduleInfo.moduleCredit),
-        },
-      ]);
+      updateSubmission({
+        intendedMCs,
+        preferences: [
+          ...preferences,
+          {
+            moduleTitle: moduleInfo.title,
+            moduleCode,
+            moduleType: '01',
+          },
+        ],
+      });
     });
   };
 
   const removeModule = (moduleCode: ModuleCode) => {
-    updatePreferences(preferences.filter((p) => p.moduleCode !== moduleCode));
+    updateSubmission({
+      intendedMCs,
+      preferences: preferences.filter((p) => p.moduleCode !== moduleCode),
+    });
   };
 
   const updateModuleType = (moduleCode: ModuleCode, moduleType: MpePreference['moduleType']) => {
     if (!preferences.some((p) => p.moduleCode === moduleCode)) return;
-    updatePreferences(
-      preferences.map((p) => (p.moduleCode === moduleCode ? { ...p, moduleType } : p)),
-    );
+    updateSubmission({
+      intendedMCs,
+      preferences: preferences.map((p) => (p.moduleCode === moduleCode ? { ...p, moduleType } : p)),
+    });
+  };
+  
+  // TODO: Remove leading/padded zero for the intended MCs to take field.
+  const updateIntendedMCs = (moduleCredits: number) => {
+    if (Number.isNaN(moduleCredits)) {
+      setintendedMCs(0);
+      return;
+    }
+    setintendedMCs(moduleCredits);
+    updateSubmission({
+      intendedMCs: moduleCredits,
+      preferences: [...preferences],
+    });
   };
 
   let status;
@@ -92,7 +118,10 @@ const ModuleForm: React.FC<Props> = ({
           type="button"
           className="btn btn-primary"
           onClick={() => {
-            updatePreferences(preferences);
+            updateSubmission({
+              intendedMCs,
+              preferences,
+            });
           }}
         >
           Retry Saving Changes
@@ -113,13 +142,24 @@ const ModuleForm: React.FC<Props> = ({
           MCs) :
         </p>
         <div className="col-xs-1">
-          <input type="text" className="form-control" placeholder="20" />
+          <input
+            type="number"
+            min="0"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            className="form-control"
+            placeholder="20"
+            value={intendedMCs}
+            onChange={(e) => updateIntendedMCs(parseInt(e.target.value, 10))}
+          />
         </div>
       </div>
       <div className={styles.headerTitle}>
         <div className={styles.rank}>Rank</div>
         <div className={styles.module}>Module</div>
-        <div className={styles.moduleCount}>{7 - preferences.length} Modules Left</div>
+        <div className={styles.moduleCount}>
+          {preferences.length} / {MAX_MODULES} Modules Selected
+        </div>
       </div>
       <div>
         <DragDropContext onDragEnd={onDragEnd}>

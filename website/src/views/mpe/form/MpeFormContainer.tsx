@@ -1,28 +1,31 @@
 import { fetchMpeModuleList } from 'apis/mpe';
 import { useEffect, useState } from 'react';
-import type { MpePreference, MpeModule } from 'types/mpe';
+import type { MpeSubmission, MpeModule } from 'types/mpe';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 
 import ModuleForm from './ModuleForm';
 
 type Props = {
-  getPreferences: () => Promise<MpePreference[]>;
-  updatePreferences: (preferences: MpePreference[]) => Promise<void>;
+  getSubmission: () => Promise<MpeSubmission>;
+  updateSubmission: (submission: MpeSubmission) => Promise<void>;
 };
 
-const MpeFormContainer: React.FC<Props> = ({ getPreferences, updatePreferences }) => {
+const MpeFormContainer: React.FC<Props> = ({ getSubmission, updateSubmission }) => {
   const [isInitialLoad, setIsInitialLoad] = useState(false);
-  const [preferences, setPreferences] = useState<MpePreference[]>([]);
+  const [submission, setSubmission] = useState<MpeSubmission>({
+    intendedMCs: 0,
+    preferences: [],
+  });
   const [mpeModuleList, setMpeModuleList] = useState<MpeModule[]>([]);
 
   // fetch mpe modules and preferences
   useEffect(() => {
     setIsInitialLoad(true);
 
-    Promise.all([fetchMpeModuleList(), getPreferences()])
+    Promise.all([fetchMpeModuleList(), getSubmission()])
       .then((data) => {
         setMpeModuleList(data[0]);
-        setPreferences(data[1]);
+        setSubmission(data[1]);
       })
       .catch((err) => {
         // this is a temporary fix
@@ -32,7 +35,7 @@ const MpeFormContainer: React.FC<Props> = ({ getPreferences, updatePreferences }
       .finally(() => {
         setIsInitialLoad(false);
       });
-  }, [getPreferences]);
+  }, [getSubmission]);
 
   if (isInitialLoad) {
     return <LoadingSpinner />;
@@ -40,9 +43,9 @@ const MpeFormContainer: React.FC<Props> = ({ getPreferences, updatePreferences }
 
   return (
     <ModuleForm
-      initialPreferences={preferences}
+      initialSubmission={submission}
       mpeModuleList={mpeModuleList}
-      updatePreferences={updatePreferences}
+      updateSubmission={updateSubmission}
     />
   );
 };

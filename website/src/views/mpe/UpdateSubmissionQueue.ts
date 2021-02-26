@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import PQueue, { Queue } from 'p-queue';
-import { MpePreference } from '../../types/mpe';
+import { MpeSubmission } from '../../types/mpe';
 
 class SingleItemQueue<Element> implements Queue<Element, void> {
   private item: Element | undefined;
@@ -24,7 +24,7 @@ class SingleItemQueue<Element> implements Queue<Element, void> {
   }
 }
 
-export default class UpdatePreferenceQueue {
+export default class UpdateSubmissionQueue {
   private lastError: Error | undefined;
 
   private queue = new PQueue<SingleItemQueue<() => Promise<unknown>>>({
@@ -32,11 +32,11 @@ export default class UpdatePreferenceQueue {
     concurrency: 1,
   });
 
-  constructor(private readonly updatePreference: (preferences: MpePreference[]) => Promise<void>) {}
+  constructor(private readonly updateSubmission: (submission: MpeSubmission) => Promise<void>) {}
 
-  update(preferences: MpePreference[]) {
+  update(submission: MpeSubmission) {
     this.queue.add(() =>
-      this.updatePreference(preferences).then(
+      this.updateSubmission(submission).then(
         () => {
           this.lastError = undefined;
         },
