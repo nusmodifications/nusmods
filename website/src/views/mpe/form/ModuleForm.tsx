@@ -95,6 +95,19 @@ const ModuleForm: React.FC<Props> = ({
       preferences: preferences.map((p) => (p.moduleCode === moduleCode ? { ...p, moduleType } : p)),
     });
   };
+  
+  // TODO: Remove leading/padded zero for the intended MCs to take field.
+  const updateIntendedMCs = (moduleCredits: number) => {
+    if (Number.isNaN(moduleCredits)) {
+      setintendedMCs(0);
+      return;
+    }
+    setintendedMCs(moduleCredits);
+    updateSubmission({
+      intendedMCs: moduleCredits,
+      preferences: [...preferences],
+    });
+  };
 
   let status;
   if (updateError) {
@@ -129,7 +142,16 @@ const ModuleForm: React.FC<Props> = ({
           MCs) :
         </p>
         <div className="col-xs-1">
-          <input type="text" className="form-control" placeholder="20" />
+          <input
+            type="number"
+            min="0"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            className="form-control"
+            placeholder="20"
+            value={intendedMCs}
+            onChange={(e) => updateIntendedMCs(parseInt(e.target.value, 10))}
+          />
         </div>
       </div>
       <div className={styles.headerTitle}>
