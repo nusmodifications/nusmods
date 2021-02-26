@@ -103,7 +103,7 @@ const MpeContainer: React.FC = () => {
             className={classnames('btn btn-outline-primary btn-svg', styles.ErrorButton)}
             onClick={() => setIsModalOpen(false)}
           >
-            Ok
+            OK
           </button>
         </Modal>
       </div>
