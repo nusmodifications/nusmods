@@ -95,7 +95,7 @@ const ModuleForm: React.FC<Props> = ({
       preferences: preferences.map((p) => (p.moduleCode === moduleCode ? { ...p, moduleType } : p)),
     });
   };
-  
+
   // TODO: Remove leading/padded zero for the intended MCs to take field.
   const updateIntendedMCs = (moduleCredits: number) => {
     if (Number.isNaN(moduleCredits)) {
