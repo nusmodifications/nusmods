@@ -59,8 +59,12 @@
 
 .buttons {
   display: flex;
-  flex: 0 0;
+  flex: 0 0 auto;
   align-items: center;
+
+  @include media-breakpoint-down(xs) {
+    flex: 0 0;
+  }
 }
 
 .backgroundIcon {

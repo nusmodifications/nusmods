@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { enableMpe } from 'featureFlags';
+import type { Handler } from './handler';
 import { MpeSubmission, MpePreference, MODULE_TYPES } from '../types/mpe';
 
 const vfsEndpoint = process.env.NUS_VFS_MPE_ENDPOINT;
@@ -98,3 +100,14 @@ const validatePreferences = (preferences: MpePreference[]): boolean =>
     (preference) =>
       !isEmptyString(preference.moduleCode) && isBetweenRangeString(preference.moduleCode, 1, 18),
   );
+
+export const featureFlagEnablerMiddleware = (next: Handler): Handler => async (
+  req,
+  res,
+): Promise<void> => {
+  if (!enableMpe) {
+    res.status(404).end();
+    return;
+  }
+  return next(req, res);
+};

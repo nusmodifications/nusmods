@@ -1,5 +1,9 @@
 import { User, verifyLogin } from '../../../src/serverless/nus-auth';
-import { getSubmissionById, createSubmission } from '../../../src/serverless/mpe';
+import {
+  createSubmission,
+  featureFlagEnablerMiddleware,
+  getSubmissionById,
+} from '../../../src/serverless/mpe';
 import type { MpeSubmission } from '../../../src/types/mpe';
 import {
   createRouteHandler,
@@ -46,9 +50,9 @@ const handlePost: Handler = async (req, res) => {
 };
 
 const methodHandlers: MethodHandlers = {
-  GET: verifyLogin(handleGet),
-  POST: verifyLogin(handlePost),
-  PUT: verifyLogin(handlePost),
+  GET: featureFlagEnablerMiddleware(verifyLogin(handleGet)),
+  POST: featureFlagEnablerMiddleware(verifyLogin(handlePost)),
+  PUT: featureFlagEnablerMiddleware(verifyLogin(handlePost)),
 };
 
 export default createRouteHandler(methodHandlers, defaultFallback, defaultRescue(true));
