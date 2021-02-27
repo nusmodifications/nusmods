@@ -51,9 +51,11 @@ const Announcements = memo(() => {
       <div className={styles.body}>
         <h3>Module Planning Exercise for AY2021/22 Semester 1 Now Open!</h3>
         <p className={styles.bodyElement}>
-          From March 1st-14th, use our MPE form to pick modules you plan to read. NUS departments
-          will be better able to plan resources and module timetables with this information.
+          From 1st-14th March, use our MPE form to pick modules you're thinking of reading in
+          Semester 1. While this isn't ModReg, your participation in MPE will help NUS to plan
+          resources and module timetables.
         </p>
+        <p className={styles.bodyElement}>All the best for your midterms! You got this 💪</p>
       </div>
 
       <div className={styles.buttons}>
