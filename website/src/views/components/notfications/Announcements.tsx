@@ -45,7 +45,13 @@ const Announcements = memo(() => {
   }
 
   return (
-    <div className={classnames('alert alert-primary no-export', styles.announcement)}>
+    <div
+      className={classnames(
+        'alert alert-primary no-export',
+        styles.announcement,
+        styles.wrapButtons,
+      )}
+    >
       <Target className={styles.backgroundIcon} />
 
       <div className={styles.body}>
