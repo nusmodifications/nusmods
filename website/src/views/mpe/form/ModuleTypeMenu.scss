@@ -1,0 +1,12 @@
+@import '~styles/utils/modules-entry.scss';
+
+.menu {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+@include media-breakpoint-down(sm) {
+  .menu {
+    font-size: 0.9rem;
+  }
+}

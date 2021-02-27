@@ -21,7 +21,7 @@ const handlePost: Handler = async (req, res) => {
     const userURL = new URL(relayState);
     userURL.searchParams.append('token', token);
 
-    res.redirect(userURL.toString());
+    res.redirect(301, userURL.toString());
   } catch (err) {
     if (err.message === errors.noRelayState) {
       res.json({

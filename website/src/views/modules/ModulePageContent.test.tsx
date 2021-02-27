@@ -34,13 +34,20 @@ describe('ModulePageContent', () => {
   test('side menu items should appear in the same order in the document', () => {
     const { view } = make();
     const { container } = view;
+
     const sideMenuItems = screen
       .getAllByRole('link')
-      .map((elem) => elem.textContent?.toLowerCase());
+      // We only want to match intra-page navigation, not links to outside the page
+      .filter((elem) => (elem as HTMLAnchorElement).href?.startsWith('#'))
+      .map((elem) => (elem as HTMLAnchorElement).href.slice(1));
+
     const sideMenuSet = new Set(sideMenuItems);
     const documentIds = Array.from(container.querySelectorAll('[id]'))
       .map((ele) => ele.id)
       .filter((ele) => sideMenuSet.has(ele));
+
+    // We are explicitly checking that all nav items have a matching element to navigate to, and the nav
+    // items appear in the same order in the page as the element it navigates to
     expect(sideMenuItems).toEqual(documentIds);
   });
 });

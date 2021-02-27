@@ -8,6 +8,7 @@ import {
   Semester,
   SemesterData,
 } from './modules';
+import type { MPEModule } from './mpe';
 import { Venue, VenueInfo } from './venues';
 
 /**
@@ -19,6 +20,9 @@ export interface Persist {
 
   // List of partial module info for module finder
   moduleInfo: (data: ModuleInformation[]) => Promise<void>;
+
+  // List of MPE module info for NUS's module planning exercise
+  mpeModules: (data: MPEModule[]) => Promise<void>;
 
   // DEPRECATED. TODO: Remove after AY19/20 starts.
   // List of partial module info for module finder

@@ -2,8 +2,19 @@ import type { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
-import { BookOpen, Calendar, Clock, Heart, Map, Settings, Star, Trello } from 'react-feather';
+import {
+  BookOpen,
+  Calendar,
+  Clock,
+  Heart,
+  Map,
+  Settings,
+  Star,
+  Target,
+  Trello,
+} from 'react-feather';
 
+import { enableMpe } from 'featureFlags';
 import ExternalLink from 'views/components/ExternalLink';
 import { timetablePage } from 'views/routes/paths';
 import { preload as preloadToday } from 'views/today/TodayContainer';
@@ -41,6 +52,12 @@ const Navtabs: FC = () => {
         <BookOpen />
         <span className={styles.title}>Modules</span>
       </NavLink>
+      {enableMpe && (
+        <NavLink {...tabProps} to="/mpe">
+          <Target />
+          <span className={styles.title}>MPE</span>
+        </NavLink>
+      )}
       <NavLink {...tabProps} to="/venues" onMouseOver={preloadVenues} onFocus={preloadVenues}>
         <Map />
         <span className={styles.title}>Venues</span>

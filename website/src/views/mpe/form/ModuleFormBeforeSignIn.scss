@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 3rem;
+  margin-top: 2rem;
+  border-top: 1px solid var(--gray-lighter);
+  h4 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    text-align: center;
+  }
+  p {
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+}

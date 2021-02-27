@@ -6,3 +6,6 @@
  * - https://github.com/nusmodifications/nusmods/pull/3212
  */
 export const enableShortUrl = false;
+
+/** Enable Module Planning Exercise */
+export const enableMpe = true;

@@ -1,7 +1,9 @@
 import { memo, useState, useCallback } from 'react';
 import classnames from 'classnames';
-import { Sun } from 'react-feather';
+import { Target } from 'react-feather';
+import { Link } from 'react-router-dom';
 
+import { enableMpe } from 'featureFlags';
 import storage from 'storage';
 import { announcementKey } from 'storage/keys';
 import CloseButton from 'views/components/CloseButton';
@@ -10,7 +12,7 @@ import styles from './Announcements.scss';
 /**
  * If false, hides announcement.
  */
-const enableAnnouncements = false;
+const enableAnnouncements = enableMpe;
 
 /**
  * Unique key for the current announcement. If the announcement is not
@@ -24,7 +26,7 @@ const enableAnnouncements = false;
  * - 'ay201819-new-data' - AY2018/19 data is available
  * - 'ay201819-s2-new-data' - S2 data available
  */
-const key = announcementKey('ay202021-new-data');
+const key = announcementKey(null);
 
 const Announcements = memo(() => {
   const [isOpen, setIsOpen] = useState(() => {
@@ -43,22 +45,31 @@ const Announcements = memo(() => {
   }
 
   return (
-    <div className={classnames('alert alert-success no-export', styles.announcement)}>
-      <Sun className={styles.backgroundIcon} />
+    <div
+      className={classnames(
+        'alert alert-primary no-export',
+        styles.announcement,
+        styles.wrapButtons,
+      )}
+    >
+      <Target className={styles.backgroundIcon} />
 
       <div className={styles.body}>
-        <h3>AY2020/21 module information is available!</h3>
-        <p className={styles.bodyElement}>Happy new academic year! Please note:</p>
-        <ul className={styles.bodyElement}>
-          <li>Class timetables are subject to changes.</li>
-          <li>
-            Due to the evolving COVID-19 situation, only Semester 1 examination timetables are
-            available.
-          </li>
-        </ul>
+        <h3>Module Planning Exercise for AY2021/22 Semester 1 Now Open!</h3>
+        <p className={styles.bodyElement}>
+          From 1st-14th March, use our MPE form to pick modules you're thinking of reading in
+          Semester 1. While this isn't ModReg, your participation in MPE will help NUS to plan
+          resources and module timetables.
+        </p>
+        <p className={styles.bodyElement}>All the best for your midterms! You got this 💪</p>
       </div>
 
-      {key && <CloseButton onClick={dismiss} />}
+      <div className={styles.buttons}>
+        <Link to="/mpe" className="btn btn-primary">
+          Plan now!
+        </Link>
+        {key && <CloseButton onClick={dismiss} />}
+      </div>
     </div>
   );
 });

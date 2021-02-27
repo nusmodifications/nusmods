@@ -1,0 +1,72 @@
+@import '~styles/utils/modules-entry.scss';
+@import "./constants";
+
+.headerTitle {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--gray-lighter);
+  font-weight: bold;
+  white-space: nowrap;
+
+  .module {
+    flex: 1 1 auto;
+  }
+
+  .rank {
+    flex: 0 0 ($rank-width + 1rem);
+  }
+}
+
+.card {
+  margin-top: 2rem;
+}
+
+.selectContainer {
+  margin: 1.5rem 0;
+}
+
+.status {
+  text-align: end;
+}
+
+.cardContainer {
+  width: 100%;
+}
+
+.droppableContainer {
+  display: flex;
+}
+
+.maxModulesError {
+  padding: 1rem 0;
+  margin: 1rem 0;
+  border-bottom: 1px solid var(--gray-lighter);
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.mcTextField {
+  align-items: center;
+  padding: 2rem 0;
+  border-top: 1px solid var(--gray-lighter);
+}
+
+.formContainer {
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+@include media-breakpoint-down(xs) {
+  .headerTitle {
+    flex: 0 0 ($rank-width + 0.5rem);
+  }
+
+  .mcTextField input {
+    margin-top: 0.5rem
+  }
+
+  .status {
+    text-align: center;
+  }
+}
