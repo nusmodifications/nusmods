@@ -26,7 +26,7 @@ const ModuleCard: React.FC<Props> = ({
       <div className={styles.moduleContainer}>
         <div className={styles.moduleInfoContainer}>
           <div className={styles.moduleCode}>{preference.moduleCode}</div>
-          <div className={styles.moduletitle}>{preference.moduleTitle}</div>
+          <div>{preference.moduleTitle}</div>
         </div>
         <div className={styles.mc}>{preference.moduleCredits} MC</div>
       </div>

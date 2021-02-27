@@ -52,74 +52,68 @@ const MpeContainer: React.FC = () => {
 
   return (
     <div className={styles.pageContainer}>
-      <div className={classnames(styles.innerContainer, 'col-md-12 col-lg-9')}>
-        <header className={styles.header}>
-          <h1>Module Planning Exercise</h1>
-          <h4>
-            For AY{MPE_AY} - Semester {MPE_SEMESTER}
-          </h4>
-        </header>
+      <header className={styles.header}>
+        <h1>Module Planning Exercise</h1>
+        <h4>
+          For AY{MPE_AY} - Semester {MPE_SEMESTER}
+        </h4>
+      </header>
 
-        <h4 className={styles.subtitle}>Overview</h4>
-        <p>
-          The Module Planning Exercise (MPE) is a project initiated by NUS to better understand
-          students’ demand for specific modules (as decided by the Module Host Departments) and
-          facilitate the Departments in their resource and timetable planning.
-        </p>
-        {enableMpe ? (
-          <>
-            <p>
-              For this round of exercise, please{' '}
-              <strong>
-                {' '}
-                indicate the module(s) you would like to read for Semester {MPE_SEMESTER} of AY
-                {MPE_AY} (maximum of {MAX_MODULES} modules)
-              </strong>{' '}
-              and the <strong>type of degree requirement</strong> each module is being used for. Do
-              note that there are no validation checks for this MPE (i.e. no timetable
-              clash/requisite checks). Information collected here is{' '}
-              <strong>solely for planning purposes </strong> and there is no guarantee that you will
-              be allocated the selected modules during the ModReg Exercise.
-            </p>
-            <p>The MPE for this round will be from 1 Mar to 14 Mar 2021.</p>
-            <p>
-              Participation in the MPE will be used as <strong>one of the tie-breakers</strong>{' '}
-              during the ModReg Exercise, in cases where the demand exceeds the available quota and
-              students have the same Priority Score for a particular module.
-            </p>
-            <div>
-              {isLoggedIn ? (
-                <MpeFormContainer
-                  getSubmission={getSubmission}
-                  updateSubmission={updateSubmission}
-                />
-              ) : (
-                <ModuleFormBeforeSignIn onLogin={onLogin} isLoggingIn={isGettingSSOLink} />
-              )}
-            </div>
-            <Modal
-              isOpen={isModalOpen}
-              onRequestClose={() => setIsModalOpen(false)}
-              shouldCloseOnOverlayClick={false}
-              animate
+      <h4 className={styles.subtitle}>Overview</h4>
+      <p>
+        The Module Planning Exercise (MPE) is a project initiated by NUS to better understand
+        students’ demand for specific modules (as decided by the Module Host Departments) and
+        facilitate the Departments in their resource and timetable planning.
+      </p>
+      {enableMpe ? (
+        <>
+          <p>
+            For this round of exercise, please{' '}
+            <strong>
+              indicate the module(s) you would like to read for Semester {MPE_SEMESTER} of AY
+              {MPE_AY} (maximum of {MAX_MODULES} modules)
+            </strong>{' '}
+            and the <strong>type of degree requirement</strong> each module is being used for. Do
+            note that there are no validation checks for this MPE (i.e. no timetable clash/requisite
+            checks). Information collected here is <strong>solely for planning purposes </strong>{' '}
+            and there is no guarantee that you will be allocated the selected modules during the
+            ModReg Exercise.
+          </p>
+          <p>The MPE for this round will be from 1 Mar to 14 Mar 2021.</p>
+          <p>
+            Participation in the MPE will be used as <strong>one of the tie-breakers</strong> during
+            the ModReg Exercise, in cases where the demand exceeds the available quota and students
+            have the same Priority Score for a particular module.
+          </p>
+          <div>
+            {isLoggedIn ? (
+              <MpeFormContainer getSubmission={getSubmission} updateSubmission={updateSubmission} />
+            ) : (
+              <ModuleFormBeforeSignIn onLogin={onLogin} isLoggingIn={isGettingSSOLink} />
+            )}
+          </div>
+          <Modal
+            isOpen={isModalOpen}
+            onRequestClose={() => setIsModalOpen(false)}
+            shouldCloseOnOverlayClick={false}
+            animate
+          >
+            <p>Your session has expired. Please sign in again!</p>
+            <button
+              type="button"
+              className={classnames('btn btn-outline-primary btn-svg', styles.ErrorButton)}
+              onClick={() => setIsModalOpen(false)}
             >
-              <p>Your session has expired. Please sign in again!</p>
-              <button
-                type="button"
-                className={classnames('btn btn-outline-primary btn-svg', styles.ErrorButton)}
-                onClick={() => setIsModalOpen(false)}
-              >
-                OK
-              </button>
-            </Modal>
-          </>
-        ) : (
-          <>
-            <hr />
-            <div>MPE is not open.</div>
-          </>
-        )}
-      </div>
+              OK
+            </button>
+          </Modal>
+        </>
+      ) : (
+        <>
+          <hr />
+          <div>MPE is not open.</div>
+        </>
+      )}
     </div>
   );
 };

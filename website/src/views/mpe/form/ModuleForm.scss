@@ -42,16 +42,13 @@
 
 .cardContainer {
   display: flex;
-  flex-direction: row;
   width: 100%;
-  max-width: inherit;
   padding-right: 0;
 }
 
 .droppableContainer {
   display: flex;
   flex-direction: row;
-  max-width: inherit;
   padding-right: 0;
 }
 
@@ -76,6 +73,10 @@
 }
 
 @include media-breakpoint-down(xs) {
+  .mcTextField input {
+    margin-top: 0.5rem
+  }
+
   .status {
     text-align: center;
   }
