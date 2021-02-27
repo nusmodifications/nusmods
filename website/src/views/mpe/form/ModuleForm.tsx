@@ -1,14 +1,16 @@
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Draggable, DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import { MpeSubmission, MpePreference, MpeModule } from 'types/mpe';
-import { ModuleCode } from 'types/modules';
 import classnames from 'classnames';
-import { fetchModuleDetails } from '../../../apis/mpe';
-import { MAX_MODULES } from '../constants';
+
+import type { MpeSubmission, MpePreference, MpeModule } from 'types/mpe';
+import type { ModuleCode } from 'types/modules';
+
+import { MAX_MODULES, MPE_SEMESTER } from '../constants';
 import UpdateSubmissionQueue from '../UpdateSubmissionQueue';
-import styles from './ModuleForm.scss';
 import ModuleCard from './ModuleCard';
 import ModulesSelectContainer from './ModulesSelectContainer';
+
+import styles from './ModuleForm.scss';
 
 function reorder<T>(items: T[], startIndex: number, endIndex: number) {
   const result = [...items];
@@ -28,7 +30,7 @@ const ModuleForm: React.FC<Props> = ({
   mpeModuleList,
   updateSubmission: rawUpdateSubmission,
 }) => {
-  const [intendedMCs, setintendedMCs] = useState<MpeSubmission['intendedMCs']>(
+  const [intendedMCs, setIntendedMCs] = useState<MpeSubmission['intendedMCs']>(
     initialSubmission.intendedMCs,
   );
   const [preferences, setPreferences] = useState<MpePreference[]>(initialSubmission.preferences);
@@ -36,12 +38,24 @@ const ModuleForm: React.FC<Props> = ({
   const [updateError, setUpdateError] = useState<Error>();
   const updateSubmissionQueue = useRef(new UpdateSubmissionQueue(rawUpdateSubmission)).current;
 
+  const moduleSelectList = useMemo(() => {
+    const selectedModules = new Set(preferences.map((preference) => preference.moduleCode));
+    const semesterProperty = MPE_SEMESTER === 1 ? 'inS1MPE' : 'inS2MPE';
+    return mpeModuleList
+      .filter((module) => module[semesterProperty])
+      .map((module) => ({
+        ...module,
+        isAdding: false,
+        isAdded: selectedModules.has(module.moduleCode),
+      }));
+  }, [preferences, mpeModuleList]);
+
   const updateSubmission = (newSubmission: MpeSubmission) => {
     setIsUpdating(true);
     setUpdateError(undefined);
 
-    setintendedMCs(newSubmission.intendedMCs);
-    setPreferences([...newSubmission.preferences]);
+    setIntendedMCs(newSubmission.intendedMCs);
+    setPreferences(newSubmission.preferences);
     updateSubmissionQueue
       .update(newSubmission)
       .catch((e) => {
@@ -65,19 +79,22 @@ const ModuleForm: React.FC<Props> = ({
       return;
     }
 
-    fetchModuleDetails(moduleCode).then((moduleInfo) => {
-      updateSubmission({
-        intendedMCs,
-        preferences: [
-          ...preferences,
-          {
-            moduleTitle: moduleInfo.title,
-            moduleCode,
-            moduleType: '01',
-            moduleCredits: parseInt(moduleInfo.moduleCredit, 10),
-          },
-        ],
-      });
+    const selectedModule = mpeModuleList.find((module) => module.moduleCode === moduleCode);
+    if (selectedModule == null) {
+      return;
+    }
+
+    updateSubmission({
+      intendedMCs,
+      preferences: [
+        ...preferences,
+        {
+          moduleTitle: selectedModule.title,
+          moduleCode,
+          moduleType: '01',
+          moduleCredits: parseFloat(selectedModule.moduleCredit),
+        },
+      ],
     });
   };
 
@@ -99,13 +116,12 @@ const ModuleForm: React.FC<Props> = ({
   // TODO: Remove leading/padded zero for the intended MCs to take field.
   const updateIntendedMCs = (moduleCredits: number) => {
     if (Number.isNaN(moduleCredits)) {
-      setintendedMCs(0);
       return;
     }
-    setintendedMCs(moduleCredits);
+
     updateSubmission({
       intendedMCs: moduleCredits,
-      preferences: [...preferences],
+      preferences,
     });
   };
 
@@ -136,23 +152,21 @@ const ModuleForm: React.FC<Props> = ({
 
   return (
     <div className={styles.formContainer}>
-      <div className={styles.mcTextField}>
-        <p className={styles.textLabel}>
-          Please indicate how many MCs you are planning to pursue in this semester:
-        </p>
-        <div className="col-xs-1">
+      <label className={classnames('row', styles.mcTextField)}>
+        <div className="col-sm-8">
+          Please indicate how many MCs you are planning to pursue this semester:
+        </div>
+        <div className="col-sm-4">
           <input
             type="number"
             min="0"
             inputMode="numeric"
-            pattern="[0-9]*"
             className="form-control"
-            placeholder="20"
             value={intendedMCs}
             onChange={(e) => updateIntendedMCs(parseInt(e.target.value, 10))}
           />
         </div>
-      </div>
+      </label>
       <div className={styles.headerTitle}>
         <div className={styles.rank}>Rank</div>
         <div className={styles.module}>Module</div>
@@ -200,8 +214,7 @@ const ModuleForm: React.FC<Props> = ({
       {preferences.length < MAX_MODULES ? (
         <div className={styles.selectContainer}>
           <ModulesSelectContainer
-            preferences={preferences}
-            mpeModuleList={mpeModuleList}
+            moduleList={moduleSelectList}
             removeModule={removeModule}
             addModule={addModule}
           />

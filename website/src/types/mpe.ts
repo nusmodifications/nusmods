@@ -15,9 +15,11 @@ export type MpeSubmission = {
 };
 
 export type MpeModule = {
+  title: ModuleTitle;
   moduleCode: ModuleCode;
-  inS1MPE: boolean;
-  inS2MPE: boolean;
+  moduleCredit: string;
+  inS1MPE?: boolean;
+  inS2MPE?: boolean;
 };
 
 interface ModuleTypeInfo {

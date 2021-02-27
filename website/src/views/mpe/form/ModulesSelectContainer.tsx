@@ -1,57 +1,25 @@
-import { useMemo, useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import { useCallback } from 'react';
 
-import type { ModuleList, ModuleSelectListItem } from 'types/reducers';
+import type { ModuleSelectList } from 'types/reducers';
 import type { ModuleCode } from 'types/modules';
-import type { MpePreference, MpeModule } from 'types/mpe';
 
 import Online from 'views/components/Online';
 import { createSearchPredicate, sortModules } from 'utils/moduleSearch';
-import { State as StoreState } from 'types/state';
-import { MPE_SEMESTER } from '../constants';
 import ModulesSelect from './ModulesSelect';
 
 type Props = {
-  preferences: MpePreference[];
-  mpeModuleList: MpeModule[];
+  moduleList: ModuleSelectList;
   addModule: (moduleCode: ModuleCode) => void;
   removeModule: (moduleCode: ModuleCode) => void;
 };
 
 const RESULTS_LIMIT = 500;
 
-function makeModuleList(
-  moduleList: ModuleList,
-  mpeModuleList: MpeModule[],
-  preferences: MpePreference[],
-): ModuleSelectListItem[] {
-  const mpeModuleCodes = new Set(
-    mpeModuleList
-      .filter((mod) => (MPE_SEMESTER === 1 ? mod.inS1MPE : mod.inS2MPE))
-      .map((mod) => mod.moduleCode),
-  );
-  const preferenceModuleCodes = new Set(preferences.map((preference) => preference.moduleCode));
-
-  return moduleList
-    .filter((module) => mpeModuleCodes.has(module.moduleCode))
-    .map((module) => ({
-      ...module,
-      isAdded: preferenceModuleCodes.has(module.moduleCode),
-      isAdding: false,
-    }));
-}
-
 /**
  * Container for modules select
  * Governs the module filtering logic and non-select related logic such as notification.
  */
-function ModulesSelectContainer(props: Props) {
-  const unfilteredModuleList = useSelector((state: StoreState) => state.moduleBank.moduleList);
-  const moduleList = useMemo(
-    () => makeModuleList(unfilteredModuleList, props.mpeModuleList, props.preferences),
-    [unfilteredModuleList, props.mpeModuleList, props.preferences],
-  );
-
+function ModulesSelectContainer({ moduleList, addModule, removeModule }: Props) {
   const getFilteredModules = useCallback(
     (inputValue: string | null) => {
       if (!inputValue) return [];
@@ -68,12 +36,12 @@ function ModulesSelectContainer(props: Props) {
         <ModulesSelect
           getFilteredModules={getFilteredModules}
           moduleCount={moduleList.length}
-          onChange={props.addModule}
+          onChange={addModule}
           placeholder={
             isOnline ? 'Add module to the preference list' : 'You need to be online to add modules'
           }
           disabled={!isOnline}
-          onRemoveModule={props.removeModule}
+          onRemoveModule={removeModule}
         />
       )}
     </Online>
