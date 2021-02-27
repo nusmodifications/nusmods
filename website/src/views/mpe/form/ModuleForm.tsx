@@ -22,26 +22,24 @@ function reorder<T>(items: T[], startIndex: number, endIndex: number) {
 }
 
 type Props = {
-  initialSubmission: MpeSubmission;
+  submission: MpeSubmission;
   mpeModuleList: MpeModule[];
   updateSubmission: (submission: MpeSubmission) => Promise<void>;
 };
 
 const ModuleForm: React.FC<Props> = ({
-  initialSubmission,
+  submission,
   mpeModuleList,
   updateSubmission: rawUpdateSubmission,
 }) => {
-  const [intendedMCs, setIntendedMCs] = useState<MpeSubmission['intendedMCs']>(
-    initialSubmission.intendedMCs,
-  );
-  const [preferences, setPreferences] = useState<MpePreference[]>(initialSubmission.preferences);
   const [isUpdating, setIsUpdating] = useState(false);
   const [updateError, setUpdateError] = useState<Error>();
   const updateSubmissionQueue = useRef(new UpdateSubmissionQueue(rawUpdateSubmission)).current;
 
   const moduleSelectList = useMemo(() => {
-    const selectedModules = new Set(preferences.map((preference) => preference.moduleCode));
+    const selectedModules = new Set(
+      submission.preferences.map((preference) => preference.moduleCode),
+    );
     const semesterProperty = MPE_SEMESTER === 1 ? 'inS1MPE' : 'inS2MPE';
     return mpeModuleList
       .filter((module) => module[semesterProperty])
@@ -50,14 +48,12 @@ const ModuleForm: React.FC<Props> = ({
         isAdding: false,
         isAdded: selectedModules.has(module.moduleCode),
       }));
-  }, [preferences, mpeModuleList]);
+  }, [submission, mpeModuleList]);
 
   const updateSubmission = (newSubmission: MpeSubmission) => {
     setIsUpdating(true);
     setUpdateError(undefined);
 
-    setIntendedMCs(newSubmission.intendedMCs);
-    setPreferences(newSubmission.preferences);
     updateSubmissionQueue
       .update(newSubmission)
       .catch((e) => {
@@ -71,13 +67,16 @@ const ModuleForm: React.FC<Props> = ({
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
     updateSubmission({
-      intendedMCs,
-      preferences: reorder(preferences, result.source.index, result.destination.index),
+      ...submission,
+      preferences: reorder(submission.preferences, result.source.index, result.destination.index),
     });
   };
 
   const addModule = (moduleCode: ModuleCode) => {
-    if (preferences.length >= MAX_MODULES || preferences.some((p) => p.moduleCode === moduleCode)) {
+    if (
+      submission.preferences.length >= MAX_MODULES ||
+      submission.preferences.some((p) => p.moduleCode === moduleCode)
+    ) {
       return;
     }
 
@@ -87,9 +86,9 @@ const ModuleForm: React.FC<Props> = ({
     }
 
     updateSubmission({
-      intendedMCs,
+      ...submission,
       preferences: [
-        ...preferences,
+        ...submission.preferences,
         {
           moduleTitle: selectedModule.title,
           moduleCode,
@@ -102,16 +101,18 @@ const ModuleForm: React.FC<Props> = ({
 
   const removeModule = (moduleCode: ModuleCode) => {
     updateSubmission({
-      intendedMCs,
-      preferences: preferences.filter((p) => p.moduleCode !== moduleCode),
+      ...submission,
+      preferences: submission.preferences.filter((p) => p.moduleCode !== moduleCode),
     });
   };
 
   const updateModuleType = (moduleCode: ModuleCode, moduleType: MpePreference['moduleType']) => {
-    if (!preferences.some((p) => p.moduleCode === moduleCode)) return;
+    if (!submission.preferences.some((p) => p.moduleCode === moduleCode)) return;
     updateSubmission({
-      intendedMCs,
-      preferences: preferences.map((p) => (p.moduleCode === moduleCode ? { ...p, moduleType } : p)),
+      ...submission,
+      preferences: submission.preferences.map((p) =>
+        p.moduleCode === moduleCode ? { ...p, moduleType } : p,
+      ),
     });
   };
 
@@ -122,8 +123,8 @@ const ModuleForm: React.FC<Props> = ({
     }
 
     updateSubmission({
+      ...submission,
       intendedMCs: moduleCredits,
-      preferences,
     });
   };
 
@@ -136,10 +137,7 @@ const ModuleForm: React.FC<Props> = ({
           type="button"
           className="btn btn-primary"
           onClick={() => {
-            updateSubmission({
-              intendedMCs,
-              preferences,
-            });
+            updateSubmission(submission);
           }}
         >
           Retry Saving Changes
@@ -164,7 +162,7 @@ const ModuleForm: React.FC<Props> = ({
             min="0"
             inputMode="numeric"
             className="form-control"
-            value={intendedMCs}
+            value={submission.intendedMCs}
             onChange={(e) => updateIntendedMCs(parseInt(e.target.value, 10))}
           />
         </div>
@@ -173,7 +171,7 @@ const ModuleForm: React.FC<Props> = ({
         <div className={styles.rank}>Rank</div>
         <div className={styles.module}>Module</div>
         <div className={styles.moduleCount}>
-          {preferences.length} / {MAX_MODULES} Modules Selected
+          {submission.preferences.length} / {MAX_MODULES} Modules Selected
         </div>
       </div>
       <div>
@@ -181,7 +179,7 @@ const ModuleForm: React.FC<Props> = ({
           <Droppable droppableId="droppable">
             {(provided) => (
               <div {...provided.droppableProps} ref={provided.innerRef}>
-                {preferences.map((preference, index) => (
+                {submission.preferences.map((preference, index) => (
                   <div key={index} className={styles.droppableContainer}>
                     <Draggable
                       key={preference.moduleCode}
@@ -213,7 +211,7 @@ const ModuleForm: React.FC<Props> = ({
           </Droppable>
         </DragDropContext>
       </div>
-      {preferences.length < MAX_MODULES ? (
+      {submission.preferences.length < MAX_MODULES ? (
         <div className={styles.selectContainer}>
           <ModulesSelectContainer
             moduleList={moduleSelectList}

@@ -1,10 +1,8 @@
 import axios from 'axios';
 import getLocalStorage from 'storage/localStorage';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Location, History } from 'history';
 import { produce } from 'immer';
 import NUSModsApi from './nusmods';
-import { MpeSubmission, MpePreference, MpeModule } from '../types/mpe';
+import { MpeSubmission, MpeModule } from '../types/mpe';
 import type { Module, ModuleCode } from '../types/modules';
 import { NUS_AUTH_TOKEN } from '../storage/keys';
 
@@ -16,9 +14,9 @@ const TOKEN_URL_QUERY = 'token';
 
 const storage = getLocalStorage();
 
-const getToken = (): string | null => storage.getItem(NUS_AUTH_TOKEN);
+export const getTokenFromStorage = (): string | null => storage.getItem(NUS_AUTH_TOKEN);
 
-const setToken = (token: string): void => storage.setItem(NUS_AUTH_TOKEN, token);
+export const setToken = (token: string): void => storage.setItem(NUS_AUTH_TOKEN, token);
 
 const removeToken = (): void => storage.removeItem(NUS_AUTH_TOKEN);
 
@@ -28,7 +26,7 @@ const mpe = axios.create({
 
 mpe.interceptors.request.use(
   produce((draft) => {
-    draft.headers.Authorization = getToken();
+    draft.headers.Authorization = getTokenFromStorage();
   }),
 );
 
@@ -43,18 +41,10 @@ mpe.interceptors.response.use(
   },
 );
 
-export const getLoginState = (location: Location, history: History): boolean => {
-  const params = new URLSearchParams(location.search);
-  const token = params.get(TOKEN_URL_QUERY);
-  if (token !== null) {
-    setToken(token);
-    params.delete(TOKEN_URL_QUERY);
-    history.replace({
-      search: params.toString(),
-    });
-  }
-  return getToken() !== null;
-};
+export function getTokenFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get(TOKEN_URL_QUERY);
+}
 
 export const fetchMpeModuleList = (): Promise<MpeModule[]> =>
   // TODO: Check with NUS if we should use MPE_AY here instead
@@ -70,26 +60,8 @@ export const getSSOLink = (): Promise<string> =>
     })
     .then((resp) => resp.data);
 
-export const getMpeSubmission = (): Promise<MpeSubmission> => {
-  let submission: MpeSubmission;
-  return mpe
-    .get<MpeSubmission>(MPE_PATH)
-    .then((resp) => {
-      submission = resp.data;
-      return Promise.all<Module>(
-        submission.preferences.map((p) => fetchModuleDetails(p.moduleCode)),
-      );
-    })
-    .then((modules) => ({
-      ...submission,
-      preferences: modules.map<MpePreference>((m, index) => ({
-        moduleTitle: m.title,
-        moduleCode: m.moduleCode,
-        moduleType: submission.preferences[index].moduleType,
-        moduleCredits: parseInt(m.moduleCredit, 10),
-      })),
-    }));
-};
+export const getMpeSubmission = (): Promise<MpeSubmission> =>
+  mpe.get<MpeSubmission>(MPE_PATH).then((resp) => resp.data);
 
 export const updateMpeSubmission = (submission: MpeSubmission): Promise<void> => {
   if (submission.intendedMCs < 0) {

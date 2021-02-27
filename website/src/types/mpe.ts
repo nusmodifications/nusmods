@@ -11,7 +11,7 @@ export type MpePreference = {
 export type MpeSubmission = {
   nusExchangeId?: string;
   intendedMCs: number;
-  preferences: Array<MpePreference>;
+  preferences: MpePreference[];
 };
 
 export type MpeModule = {
