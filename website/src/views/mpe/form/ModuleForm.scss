@@ -1,35 +1,24 @@
 @import '~styles/utils/modules-entry.scss';
-
-.moduleCount {
-  display: flex;
-  font-weight: bold;
-  white-space: nowrap;
-}
-
-.module {
-  display: flex;
-  flex: 2;
-  font-weight: bold;
-}
-
-.rank {
-  display: flex;
-  flex: 1;
-  font-weight: bold;
-}
-
-.card {
-  margin-top: 2rem;
-}
+@import "./constants";
 
 .headerTitle {
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid var(--gray-lighter);
+  font-weight: bold;
+  white-space: nowrap;
+
+  .module {
+    flex: 1 1 auto;
+  }
+
+  .rank {
+    flex: 0 0 ($rank-width + 1rem);
+  }
 }
 
-.container {
-  padding-top: 1rem;
+.card {
+  margin-top: 2rem;
 }
 
 .selectContainer {
@@ -41,15 +30,11 @@
 }
 
 .cardContainer {
-  display: flex;
   width: 100%;
-  padding-right: 0;
 }
 
 .droppableContainer {
   display: flex;
-  flex-direction: row;
-  padding-right: 0;
 }
 
 .maxModulesError {
@@ -73,6 +58,10 @@
 }
 
 @include media-breakpoint-down(xs) {
+  .headerTitle {
+    flex: 0 0 ($rank-width + 0.5rem);
+  }
+
   .mcTextField input {
     margin-top: 0.5rem
   }
