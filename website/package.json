@@ -147,6 +147,7 @@
     "lodash": "4.17.20",
     "mousetrap": "1.6.5",
     "nusmoderator": "3.0.0",
+    "p-queue": "6.6.2",
     "query-string": "6.13.8",
     "react": "17.0.1",
     "react-beautiful-dnd": "13.0.0",
