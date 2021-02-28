@@ -115,8 +115,12 @@ const ModuleForm: React.FC<Props> = ({
     });
   };
 
+  // TODO: Remove leading/padded zero for the intended MCs to take field.
   const updateIntendedMCs = (moduleCredits: number) => {
-    if (Number.isNaN(moduleCredits)) return;
+    if (Number.isNaN(moduleCredits)) {
+      return;
+    }
+
     updateSubmission({
       intendedMCs: moduleCredits,
       preferences,
@@ -160,7 +164,7 @@ const ModuleForm: React.FC<Props> = ({
             min="0"
             inputMode="numeric"
             className="form-control"
-            defaultValue={intendedMCs}
+            value={intendedMCs}
             onChange={(e) => updateIntendedMCs(parseInt(e.target.value, 10))}
           />
         </div>
