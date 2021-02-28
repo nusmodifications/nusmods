@@ -156,8 +156,7 @@ const ModuleForm: React.FC<Props> = ({
     <div className={styles.formContainer}>
       <label className={classnames('row', styles.mcTextField)}>
         <div className="col-sm-8">
-          Intended number of MCs (Note that this does not affect how many modules you can select in
-          this exercise) :
+          Intended number of MCs (does not affect how many modules you can select):
         </div>
         <div className="col-sm-4">
           <input
