@@ -35,6 +35,9 @@ const ModuleForm: React.FC<Props> = ({
   const [intendedMCs, setIntendedMCs] = useState<MpeSubmission['intendedMCs']>(
     initialSubmission.intendedMCs,
   );
+  const [intendedMCsInput, setIntendedMCsInput] = useState<string>(
+    initialSubmission.intendedMCs.toString(),
+  );
   const [preferences, setPreferences] = useState<MpePreference[]>(initialSubmission.preferences);
   const [isUpdating, setIsUpdating] = useState(false);
   const [updateError, setUpdateError] = useState<Error>();
@@ -115,12 +118,8 @@ const ModuleForm: React.FC<Props> = ({
     });
   };
 
-  // TODO: Remove leading/padded zero for the intended MCs to take field.
   const updateIntendedMCs = (moduleCredits: number) => {
-    if (Number.isNaN(moduleCredits)) {
-      return;
-    }
-
+    if (Number.isNaN(moduleCredits)) return;
     updateSubmission({
       intendedMCs: moduleCredits,
       preferences,
@@ -164,8 +163,14 @@ const ModuleForm: React.FC<Props> = ({
             min="0"
             inputMode="numeric"
             className="form-control"
-            value={intendedMCs}
-            onChange={(e) => updateIntendedMCs(parseInt(e.target.value, 10))}
+            value={intendedMCsInput}
+            onChange={(e) => {
+              setIntendedMCsInput(e.target.value);
+              const moduleCredits = parseInt(e.target.value, 10);
+              if (Number.isNaN(moduleCredits)) return;
+              updateIntendedMCs(moduleCredits);
+            }}
+            onBlur={() => setIntendedMCsInput(intendedMCs.toString())}
           />
         </div>
       </label>
