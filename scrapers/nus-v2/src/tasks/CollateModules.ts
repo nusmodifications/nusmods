@@ -9,7 +9,6 @@ import {
   SemesterModuleData,
 } from '../types/mapper';
 import { Module, ModuleCode, ModuleCondensed, ModuleInformation } from '../types/modules';
-import type { MPEModule } from '../types/mpe';
 
 import BaseTask from './BaseTask';
 import config from '../config';
@@ -17,7 +16,6 @@ import { Logger } from '../services/logger';
 import generatePrereqTree from '../services/requisite-tree';
 import { union } from '../utils/set';
 import { isModuleOffered } from '../utils/data';
-import { isModuleInMPE } from '../utils/mpe';
 
 interface Input {
   semesterData: SemesterModuleData[][];
@@ -126,19 +124,6 @@ const getModuleCondensed = ({
   semesters: semesterData.map((semester) => semester.semester),
 });
 
-const getModuleMPEParticipation = ({
-  title,
-  moduleCode,
-  moduleCredit,
-  attributes,
-}: ModuleWithoutTree): MPEModule => ({
-  title,
-  moduleCode,
-  moduleCredit,
-  inS1MPE: attributes?.mpes1,
-  inS2MPE: attributes?.mpes2,
-});
-
 // Avoid using _.pick here because it is not type safe
 const getModuleInfo = ({
   moduleCode,
@@ -222,17 +207,10 @@ export default class CollateModules extends BaseTask implements Task<Input, Outp
     // Save condensed versions of the same information for searching. For module list we only save
     // offered modules so that they don't go into the add module dropdown
     const moduleCondensed = modules.filter(isModuleOffered).map(getModuleCondensed);
-
-    const mpeModules = modules
-      .filter(isModuleOffered)
-      .filter(isModuleInMPE)
-      .map(getModuleMPEParticipation);
-
     const moduleInfo = modules.map(getModuleInfo);
 
     await Promise.all([
       this.io.moduleList(moduleCondensed),
-      this.io.mpeModules(mpeModules),
       this.io.moduleInfo(moduleInfo),
       this.io.moduleAliases(combinedAliases),
     ]);

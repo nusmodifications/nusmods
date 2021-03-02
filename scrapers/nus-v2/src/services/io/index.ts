@@ -9,7 +9,6 @@ import type {
   Semester,
   SemesterData,
 } from '../../types/modules';
-import type { MPEModule } from '../../types/mpe';
 import type { Venue, VenueInfo } from '../../types/venues';
 
 import { getFileSystemWriter } from './fs';
@@ -35,10 +34,6 @@ export class CombinedPersist implements Persist {
 
   async moduleInfo(data: ModuleInformation[]) {
     await Promise.all(this.writers.map((writer) => writer.moduleInfo(data)));
-  }
-
-  async mpeModules(data: MPEModule[]) {
-    await Promise.all(this.writers.map((writer) => writer.mpeModules(data)));
   }
 
   async moduleInformation(data: ModuleInformation[]) {
