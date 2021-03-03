@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { enableMpe } from 'featureFlags';
 import Modal from 'views/components/Modal';
 import type { MpeSubmission } from 'types/mpe';
+import ExternalLink from 'views/components/ExternalLink';
 import {
   getLoginState,
   getSSOLink,
@@ -84,6 +85,13 @@ const MpeContainer: React.FC = () => {
             Participation in the MPE will be used as <strong>one of the tie-breakers</strong> during
             the ModReg Exercise, in cases where the demand exceeds the available quota and students
             have the same Priority Score for a particular module.
+          </p>
+          <p>
+            For further questions, please refer to this{' '}
+            <ExternalLink href="https://www.nus.edu.sg/registrar/docs/info/mpe/MPE-FAQs.pdf">
+              FAQ
+            </ExternalLink>{' '}
+            provided by NUS Registrar's Office.
           </p>
           <div>
             {isLoggedIn ? (
