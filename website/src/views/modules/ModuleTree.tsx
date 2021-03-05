@@ -17,7 +17,7 @@ type Props = {
 interface TreeDisplay {
   layer: number;
   node: PrereqTree;
-  isPrereq?: boolean;
+  isDependent?: boolean;
 }
 
 const formatConditional = (name: string) => (name === 'or' ? 'one of' : 'all of');
@@ -38,7 +38,7 @@ const Branch: React.FC<{ nodes: PrereqTree[]; layer: number }> = (props) => (
 );
 
 const Tree: React.FC<TreeDisplay> = (props) => {
-  const { layer, node, isPrereq } = props;
+  const { layer, node, isDependent } = props;
 
   const isConditional = typeof node !== 'string';
   const name = nodeName(node);
@@ -49,7 +49,7 @@ const Tree: React.FC<TreeDisplay> = (props) => {
         className={classnames(styles.node, {
           [`hoverable color-${layer}`]: !isConditional,
           [styles.conditional]: isConditional,
-          [styles.prereqNode]: isPrereq,
+          [styles.dependentNode]: isDependent,
         })}
       >
         {isConditional ? (
@@ -76,14 +76,14 @@ const ModuleTree: React.FC<Props> = (props) => {
               {fulfillRequirements.map((fulfilledModule) => (
                 <li
                   key={fulfilledModule}
-                  className={classnames(styles.branch, styles.prereqBranch)}
+                  className={classnames(styles.branch, styles.dependentBranch)}
                 >
-                  <Tree layer={0} node={fulfilledModule} isPrereq />
+                  <Tree layer={0} node={fulfilledModule} isDependent />
                 </li>
               ))}
             </ul>
 
-            <div className={classnames(styles.node, styles.conditional)}>needs</div>
+            <div className={classnames(styles.node, styles.conditional)}>unlocks</div>
           </>
         )}
 
