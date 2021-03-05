@@ -20,7 +20,7 @@ interface TreeDisplay {
   isDependent?: boolean;
 }
 
-const formatConditional = (name: string) => (name === 'or' ? 'one of' : 'all of');
+const formatConditional = (name: string) => (name === 'or' ? 'take one' : 'take all');
 
 const nodeName = (node: PrereqTree) => (typeof node === 'string' ? node : Object.keys(node)[0]);
 
