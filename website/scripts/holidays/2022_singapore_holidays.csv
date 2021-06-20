@@ -1,0 +1,12 @@
+Date,Name,Day,Observance,Observance Strategy
+2022-01-01,New Year's Day,Saturday,2022-01-01,actual_day
+2022-02-01,Chinese New Year Day 1,Tuesday,2022-02-01,actual_day
+2022-02-02,Chinese New Year Day 2,Wednesday,2022-02-02,actual_day
+2022-04-15,Good Friday,Friday,2022-04-15,actual_day
+2022-05-01,Labour Day,Sunday,2022-05-01,next_tuesday
+2022-05-02,Hari Raya Puasa,Monday,2022-05-02,actual_day
+2022-05-15,Vesak Day,Sunday,2022-05-16,next_monday
+2022-07-09,Hari Raya Haji,Saturday,2022-07-09,actual_day
+2022-08-09,National Day,Tuesday,2022-08-09,actual_day
+2022-10-24,Deepavali,Monday,2022-10-24,actual_day
+2022-12-25,Christmas Day,Sunday,2022-12-26,next_monday

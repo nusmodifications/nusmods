@@ -50,6 +50,18 @@ Array [
       "type": "FETCH_ARCHIVE_MODULE",
     },
   ],
+  Array [
+    Object {
+      "meta": Object {
+        "API_REQUEST": "FETCH_ARCHIVE_MODULE_CS1010S_2020/2021",
+        "academicYear": "2020/2021",
+      },
+      "payload": Object {
+        "url": "test://MOCK_MOD_DETAILS_URL/CS1010S/2020/2021",
+      },
+      "type": "FETCH_ARCHIVE_MODULE",
+    },
+  ],
 ]
 `;
 
