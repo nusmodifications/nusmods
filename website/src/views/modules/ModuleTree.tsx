@@ -20,7 +20,7 @@ interface TreeDisplay {
   isPrereq?: boolean;
 }
 
-const formatConditional = (name: string) => (name === 'or' ? 'one of' : 'all of');
+const formatConditional = (name: string) => (name === 'or' ? 'any' : 'all');
 
 const nodeName = (node: PrereqTree) => (typeof node === 'string' ? node : Object.keys(node)[0]);
 
@@ -42,6 +42,7 @@ const Tree: React.FC<TreeDisplay> = (props) => {
 
   const isConditional = typeof node !== 'string';
   const name = nodeName(node);
+  const isConditionalAllOf = name === 'and';
 
   return (
     <>
@@ -51,6 +52,7 @@ const Tree: React.FC<TreeDisplay> = (props) => {
           [`hoverable color-${layer}`]: !isConditional,
           [styles.conditional]: isConditional,
           [styles.prereqNode]: isPrereq,
+          [styles.allOf]: isConditionalAllOf,
         })}
       >
         {isConditional ? (
@@ -66,8 +68,6 @@ const Tree: React.FC<TreeDisplay> = (props) => {
 const ModuleTree: React.FC<Props> = (props) => {
   const { fulfillRequirements, prereqTree, moduleCode } = props;
 
-  console.log(prereqTree);
-
   return (
     <>
       <div className={styles.container}>
@@ -82,10 +82,10 @@ const ModuleTree: React.FC<Props> = (props) => {
           </li>
         </ul>
 
-        <div className={classnames(styles.node, styles.conditional)}>needs</div>
-
         {fulfillRequirements && fulfillRequirements.length > 0 && (
           <>
+            <div className={classnames(styles.node, styles.conditional)}>is needed for</div>
+
             <ul className={styles.prereqTree}>
               {fulfillRequirements.map((fulfilledModule) => (
                 <li
