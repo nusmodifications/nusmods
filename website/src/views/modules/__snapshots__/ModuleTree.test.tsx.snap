@@ -6,90 +6,23 @@ Array [
     class="container"
   >
     <ul
-      class="prereqTree"
-    >
-      <li
-        class="branch prereqBranch"
-      >
-        <div
-          class="node hoverable color-0 prereqNode"
-        >
-          <mockedlink
-            class="link"
-          >
-            CS5242
-          </mockedlink>
-        </div>
-      </li>
-      <li
-        class="branch prereqBranch"
-      >
-        <div
-          class="node hoverable color-0 prereqNode"
-        >
-          <mockedlink
-            class="link"
-          >
-            CS5339
-          </mockedlink>
-        </div>
-      </li>
-      <li
-        class="branch prereqBranch"
-      >
-        <div
-          class="node hoverable color-0 prereqNode"
-        >
-          <mockedlink
-            class="link"
-          >
-            CS6281
-          </mockedlink>
-        </div>
-      </li>
-    </ul>
-    <div
-      class="node conditional"
-    >
-      needs
-    </div>
-    <ul
       class="tree root"
     >
       <li
         class="branch"
       >
-        <div
-          class="node hoverable color-1"
-        >
-          <mockedlink
-            class="link"
-          >
-            CS3244
-          </mockedlink>
-        </div>
         <ul
           class="tree"
         >
           <li
             class="branch"
           >
-            <div
-              class="node conditional"
-            >
-              all of
-            </div>
             <ul
               class="tree"
             >
               <li
                 class="branch"
               >
-                <div
-                  class="node conditional"
-                >
-                  one of
-                </div>
                 <ul
                   class="tree"
                 >
@@ -146,15 +79,15 @@ Array [
                     </div>
                   </li>
                 </ul>
+                <div
+                  class="node conditional"
+                >
+                  any
+                </div>
               </li>
               <li
                 class="branch"
               >
-                <div
-                  class="node conditional"
-                >
-                  one of
-                </div>
                 <ul
                   class="tree"
                 >
@@ -237,15 +170,15 @@ Array [
                     </div>
                   </li>
                 </ul>
+                <div
+                  class="node conditional"
+                >
+                  any
+                </div>
               </li>
               <li
                 class="branch"
               >
-                <div
-                  class="node conditional"
-                >
-                  one of
-                </div>
                 <ul
                   class="tree"
                 >
@@ -289,15 +222,15 @@ Array [
                     </div>
                   </li>
                 </ul>
+                <div
+                  class="node conditional"
+                >
+                  any
+                </div>
               </li>
               <li
                 class="branch"
               >
-                <div
-                  class="node conditional"
-                >
-                  one of
-                </div>
                 <ul
                   class="tree"
                 >
@@ -341,10 +274,85 @@ Array [
                     </div>
                   </li>
                 </ul>
+                <div
+                  class="node conditional"
+                >
+                  any
+                </div>
               </li>
             </ul>
+            <div
+              class="node conditional allOf"
+            >
+              all
+            </div>
           </li>
         </ul>
+      </li>
+    </ul>
+    <ul
+      class="tree root"
+    >
+      <li
+        class="branch"
+      >
+        <div
+          class="node hoverable color-1"
+        >
+          <mockedlink
+            class="link"
+          >
+            CS3244
+          </mockedlink>
+        </div>
+      </li>
+    </ul>
+    <div
+      class="node conditional"
+    >
+      is needed for
+    </div>
+    <ul
+      class="prereqTree"
+    >
+      <li
+        class="branch prereqBranch"
+      >
+        <div
+          class="node hoverable color-0 prereqNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            CS5242
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch prereqBranch"
+      >
+        <div
+          class="node hoverable color-0 prereqNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            CS5339
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch prereqBranch"
+      >
+        <div
+          class="node hoverable color-0 prereqNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            CS6281
+          </mockedlink>
+        </div>
       </li>
     </ul>
   </div>,
@@ -361,6 +369,35 @@ Array [
   <div
     class="container"
   >
+    <ul
+      class="tree root"
+    >
+      <li
+        class="branch"
+      />
+    </ul>
+    <ul
+      class="tree root"
+    >
+      <li
+        class="branch"
+      >
+        <div
+          class="node hoverable color-1"
+        >
+          <mockedlink
+            class="link"
+          >
+            ACC1002
+          </mockedlink>
+        </div>
+      </li>
+    </ul>
+    <div
+      class="node conditional"
+    >
+      is needed for
+    </div>
     <ul
       class="prereqTree"
     >
@@ -543,28 +580,6 @@ Array [
             class="link"
           >
             FIN4115
-          </mockedlink>
-        </div>
-      </li>
-    </ul>
-    <div
-      class="node conditional"
-    >
-      needs
-    </div>
-    <ul
-      class="tree root"
-    >
-      <li
-        class="branch"
-      >
-        <div
-          class="node hoverable color-1"
-        >
-          <mockedlink
-            class="link"
-          >
-            ACC1002
           </mockedlink>
         </div>
       </li>
