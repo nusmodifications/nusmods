@@ -42,12 +42,12 @@ $connector-size: 0.75rem;
   justify-content: center;
   align-items: center;
   padding: 0.125rem 0.25rem;
-  margin: 0 0 1px $connector-size;
+  margin: 0 $connector-size 1px $connector-size;
   border-radius: $btn-border-radius;
 
-  &::before {
-    top: 50%;
-    left: -$connector-size;
+  &::after {
+    bottom: 50%;
+    right: -$connector-size;
     width: $connector-size;
     height: 1px;
   }
@@ -64,6 +64,7 @@ $connector-size: 0.75rem;
 }
 
 .node::before,
+.node::after,
 .conditional::after,
 .branch::before,
 .branch::after {
@@ -77,9 +78,9 @@ $connector-size: 0.75rem;
   margin-right: $connector-size;
   border: 0;
 
-  &::after {
-    top: 50%;
-    right: -$connector-size;
+  &::before {
+    bottom: 50%;
+    left: -$connector-size;
     width: $connector-size;
     height: 1px;
   }
@@ -92,7 +93,7 @@ $connector-size: 0.75rem;
 
   &::before,
   &::after {
-    left: 0;
+    right: 0;
     width: 1px;
     height: 50%;
   }
@@ -114,16 +115,18 @@ $connector-size: 0.75rem;
 .prereqBranch {
   &::before,
   &::after {
-    right: 0;
+    right: auto;
     left: auto;
   }
 }
 
 .prereqNode {
-  margin: 0 $connector-size 1px 0;
+  margin: 0 0 1px $connector-size;
 
-  &::before {
-    right: -$connector-size;
-    left: auto;
+  &::after {
+    bottom: 50%;
+    left: -$connector-size;
+    width: $connector-size;
+    height: 1px;
   }
 }

@@ -45,6 +45,7 @@ const Tree: React.FC<TreeDisplay> = (props) => {
 
   return (
     <>
+      {isConditional && <Branch nodes={unwrapLayer(node)} layer={layer + 1} />}
       <div
         className={classnames(styles.node, {
           [`hoverable color-${layer}`]: !isConditional,
@@ -58,8 +59,6 @@ const Tree: React.FC<TreeDisplay> = (props) => {
           <LinkModuleCodes className={styles.link}>{name}</LinkModuleCodes>
         )}
       </div>
-
-      {isConditional && <Branch nodes={unwrapLayer(node)} layer={layer + 1} />}
     </>
   );
 };
@@ -67,9 +66,24 @@ const Tree: React.FC<TreeDisplay> = (props) => {
 const ModuleTree: React.FC<Props> = (props) => {
   const { fulfillRequirements, prereqTree, moduleCode } = props;
 
+  console.log(prereqTree);
+
   return (
     <>
       <div className={styles.container}>
+        <ul className={classnames(styles.tree, styles.root)}>
+          <li className={classnames(styles.branch)}>
+            {prereqTree && <Branch nodes={[prereqTree]} layer={2} />}
+          </li>
+        </ul>
+        <ul className={classnames(styles.tree, styles.root)}>
+          <li className={classnames(styles.branch)}>
+            <Tree layer={1} node={moduleCode} />
+          </li>
+        </ul>
+
+        <div className={classnames(styles.node, styles.conditional)}>needs</div>
+
         {fulfillRequirements && fulfillRequirements.length > 0 && (
           <>
             <ul className={styles.prereqTree}>
@@ -82,18 +96,8 @@ const ModuleTree: React.FC<Props> = (props) => {
                 </li>
               ))}
             </ul>
-
-            <div className={classnames(styles.node, styles.conditional)}>needs</div>
           </>
         )}
-
-        <ul className={classnames(styles.tree, styles.root)}>
-          <li className={classnames(styles.branch)}>
-            <Tree layer={1} node={moduleCode} />
-
-            {prereqTree && <Branch nodes={[prereqTree]} layer={2} />}
-          </li>
-        </ul>
       </div>
 
       <p className="alert alert-warning">
