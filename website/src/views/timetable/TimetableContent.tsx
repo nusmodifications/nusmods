@@ -52,7 +52,7 @@ import TimetableModulesTable from './TimetableModulesTable';
 import ExamCalendar from './ExamCalendar';
 import ModulesTableFooter from './ModulesTableFooter';
 import styles from './TimetableContent.scss';
-import TimetableOptimizer from './TimetableOptimizer'
+import TimetableOptimizer from '../optimizer/TimetableOptimizer'
 
 type ModifiedCell = {
   className: string;
@@ -427,7 +427,13 @@ class TimetableContent extends React.Component<Props, State> {
                 {this.renderModuleSections(addedModules, !isVerticalOrientation)}
               </div>
               <div className="col-12">
-                {this.props.isOptimizerShown && <TimetableOptimizer />}
+                {this.props.isOptimizerShown && (
+                  <TimetableOptimizer
+                    semester={semester}
+                    timetable={this.props.timetable}
+                    modules={modules}
+                   />
+                )}
               </div>
               <div className="col-12">
                 <ModulesTableFooter modules={addedModules} semester={semester} />
