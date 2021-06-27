@@ -90,7 +90,7 @@ const ModuleFinderContainer: React.FC = () => (
             <NoHits
               suggestionsField="title"
               component={ModuleFinderNoHits}
-              errorComponent={ModuleFinderApiError}
+              errorComponent={<ModuleFinderApiError searchkit={searchkit} />}
             />
           </div>
 
