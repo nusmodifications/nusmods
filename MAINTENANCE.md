@@ -15,7 +15,11 @@ Create a new issue on GitHub with this checklist after the finals every semester
 - [ ] Deploy! :tada: :tada:
 - [ ] Monitor Sentry and Messenger for issues
 
+Reference PRs: [PR #3286](https://github.com/nusmodifications/nusmods/pull/3286) and [PR #3287](https://github.com/nusmodifications/nusmods/pull/3287)
+
 ## Every Semester
 
 - [ ] Update semester in `website/src/config/app-config.json`
 - [ ] In `app-config.json`, add semester to `examAvailability` to indicate exam information is available for the semester
+- [ ] Update the ModReg schedule in `website/src/data/modreg-schedule-ayXXXX-semXX.json`, and point to the new version in `website/src/config/index.ts`  
+      Reference PR: [PR #2764](https://github.com/nusmodifications/nusmods/pull/2764)
