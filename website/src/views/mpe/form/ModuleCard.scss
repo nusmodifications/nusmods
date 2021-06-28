@@ -1,0 +1,94 @@
+@import '~styles/utils/modules-entry.scss';
+@import "./constants";
+
+.card {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: fit-content;
+  border: 1px solid var(--gray-lighter);
+  border-radius: 0.35rem;
+  background: var(--body-bg);
+}
+
+.rank {
+  flex: 0 0 $rank-width;
+  align-self: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.moduleCode {
+  margin-bottom: 0.1rem;
+  font-weight: bold;
+  word-wrap: break-word;
+}
+
+.mc {
+  align-self: center;
+  padding: 0.1rem 0.5rem;
+  border-radius: 0.35rem;
+  font-weight: bold;
+  font-size: 1rem;
+  white-space: nowrap;
+  color: var(--body-bg);
+  background-color: var(--gray-light);
+}
+
+.moduleType {
+  flex: 1;
+  align-self: center;
+  width: 100%;
+  padding: 0.5rem 1rem;
+}
+
+.moduleInfoContainer {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  margin: 0.5rem;
+}
+
+.moduleContainer {
+  display: inline-flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  padding-left: 0.5rem;
+  border-left: 1px solid var(--gray-lighter);
+}
+
+@include media-breakpoint-down(sm) {
+  .text {
+    font-size: 0.8rem;
+  }
+
+  .moduleContainer {
+    min-width: 0;
+  }
+
+  .container {
+    flex-direction: column;
+    align-self: center;
+    padding-left: 0;
+  }
+
+  .moduleType {
+    padding-right: 0;
+    padding-left: 0.5rem;
+  }
+
+  .mc {
+    align-self: flex-start;
+    margin: 0.5rem 0.5rem 0 0;
+    font-size: 0.9rem;
+  }
+}

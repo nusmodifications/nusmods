@@ -100,6 +100,8 @@ type AttributeMap = {
   ism: boolean; // Independent study
   urop: boolean; // Undergraduate Research Opportunities Program
   fyp: boolean; // Honours / Final Year Project
+  mpes1: boolean; // Included in Semester 1's Module Planning Exercise
+  mpes2: boolean; // Included in Semester 2's Module Planning Exercise
 };
 
 export type NUSModuleAttributes = Partial<AttributeMap>;
@@ -114,6 +116,8 @@ export const attributeDescription: { [key in keyof AttributeMap]: string } = {
   ism: 'Independent study module',
   urop: 'Undergraduate Research Opportunities Program',
   fyp: 'Honours / Final Year Project',
+  mpes1: "Included in Semester 1's Module Planning Exercise",
+  mpes2: "Included in Semester 2's Module Planning Exercise",
 };
 
 // RawLesson is a lesson time slot obtained from the API.

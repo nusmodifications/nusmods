@@ -1,0 +1,122 @@
+@import '~styles/utils/modules-entry';
+
+$input-height: 2.75rem;
+$module-list-height: 13.5rem;
+$item-padding-vertical: 0.6rem;
+
+.container {
+  position: relative;
+}
+
+.input {
+  composes: form-control from global;
+  text-align: left;
+  white-space: nowrap;
+
+  &:global(.form-control) {
+    height: $input-height;
+  }
+
+  &:not(:disabled) {
+    box-shadow: inset 2px 2px 4px rgba(#000, 0.1);
+
+    @include night-mode {
+      box-shadow: inset 2px 2px 4px rgba(#000, 0.9);
+    }
+  }
+}
+
+.modal {
+  // Fix the input to the top of the modal. This resolves an iOS bug
+  // where the input is moved out of view by the keyboard that opens
+  // due to input autofocus
+  .selectList {
+    margin-top: $input-height;
+  }
+
+  .close {
+    position: fixed;
+  }
+
+  .input {
+    position: fixed;
+    top: 0;
+    border-width: 0 0 1px;
+    border-radius: 0;
+    box-shadow: none;
+
+    // Damn specificity
+    @include night-mode {
+      box-shadow: none;
+    }
+  }
+}
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  width: $input-height;
+  height: $input-height;
+}
+
+.selectList {
+  composes: scrollable-y list-unstyled from global;
+  max-height: calc(100% - #{$input-height});
+  // Background color so that elements behind this won't peek through for iOS overscroll
+  background: var(--body-bg);
+}
+
+@include media-breakpoint-up(md) {
+  .selectList,
+  .tip {
+    position: absolute;
+    top: $input-height;
+    right: 0;
+    left: 0;
+    z-index: $module-select-z-index;
+    max-height: $module-list-height;
+    border: $input-btn-border-width solid $input-border-color;
+    border-width: 0 $input-btn-border-width $input-btn-border-width;
+    border-radius: 0 0 $btn-border-radius $btn-border-radius;
+  }
+}
+
+.item,
+.tip {
+  width: 100%;
+  padding: $item-padding-vertical 0.5rem;
+  font-size: 0.9rem;
+  color: var(--body-color);
+  background: var(--body-bg);
+}
+
+.option {
+  composes: item;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.optionSelected {
+  color: $link-hover-color;
+  background: var(--gray-lightest);
+}
+
+.optionDisabled {
+  color: var(--gray-light);
+  cursor: default;
+}
+
+.actionIcon {
+  composes: svg-small from global;
+}
+
+.optionActions {
+  display: flex;
+  align-items: center;
+  margin: -$item-padding-vertical 0;
+}

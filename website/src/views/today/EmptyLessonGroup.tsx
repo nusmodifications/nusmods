@@ -60,7 +60,7 @@ function renderType(type: EmptyGroupType) {
       return (
         <>
           <ParkIcon />
-          <p>It&apos; recess week!</p>
+          <p>It&apos;s recess week!</p>
         </>
       );
 
