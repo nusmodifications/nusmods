@@ -36,13 +36,14 @@ export class Z3Manager {
   static completedStage1Solve: boolean; // Need to complete week-solving before timetable-solving
 
   static initZ3(callbacks: Z3Callbacks) {
+    console.log("Starting to initialize Z3...")
     Z3Manager.callbacks = callbacks;
     Z3Manager.resetBuffers();
     Z3Manager.completedStage1Solve = false;
     // Set up worker if it's not set up
     if (!Z3Manager.worker) {
       Z3Manager.worker = new Z3Worker();
-      // Z3Manager.worker.onmessage = Z3Manager.receiveWorkerMessage;
+      Z3Manager.worker.onmessage = Z3Manager.receiveWorkerMessage;
     }
     Z3Manager.managerPostMessage(Z3MessageKind.INIT, '');
   }
@@ -74,6 +75,7 @@ export class Z3Manager {
     switch (message.kind) {
       case Z3MessageKind.INITIALIZED:
         // Call the initialization callback
+        console.log("Manager initialized Z3!")
         Z3Manager.callbacks.onZ3Initialized();
         break;
       // case Z3MessageKind.PRINT:
