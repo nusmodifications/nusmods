@@ -1,4 +1,4 @@
-export enum MessageKind {
+export enum Z3MessageKind {
   // Request to init
   INIT = 'INIT',
   // Z3 initialized
@@ -16,9 +16,9 @@ export enum MessageKind {
 }
 
 /**
- * Message to be sent back and forth between a Z3 worker and any controlling React components
+ * Message to be sent back and forth between a Z3 worker and any callers
  * */
 export interface Z3Message {
-  kind: MessageKind;
+  kind: Z3MessageKind;
   msg: string;
 }
