@@ -1,0 +1,71 @@
+@import '~styles/utils/modules-entry';
+
+:global(.page-container).constraintsArea {
+  // max-width: 60rem;
+  // margin-left: 0;
+
+  :global {
+    animation-name: $page-entering-animation;
+  }
+
+  hr {
+    clear: both;
+  }
+
+  h4 {
+    margin-top: 2rem;
+  }
+
+  // Styles nested for specificity
+  .toggleRow {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    .toggleDescription {
+      flex: 1 1 auto;
+      max-width: 35em;
+    }
+
+    .toggle {
+      display: flex;
+      flex: 0 0 auto;
+      flex-direction: column;
+      align-items: flex-end;
+      width: auto;
+      margin-left: 1rem;
+    }
+  }
+}
+
+.title {
+  margin: 1rem 0 0;
+  font-size: $font-size-xlg;
+}
+
+.preview {
+  position: relative;
+  clear: both;
+  overflow-y: hidden;
+  height: 13.8rem;
+  margin: 1rem 0 2rem;
+}
+
+.themeOption {
+  // See utils/themes.scss - used as a specificity override
+  composes: theme-option from global;
+  float: left;
+  width: 25%;
+  margin-bottom: 0.4rem;
+  color: var(--body-color);
+  background: none;
+
+  @include media-breakpoint-down('sm') {
+    width: 50%;
+  }
+}
+
+.betaToggle {
+  margin-bottom: 1rem;
+}

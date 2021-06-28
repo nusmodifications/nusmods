@@ -1,33 +1,86 @@
 import * as React from 'react';
-import {
-  SemTimetableConfig,
-} from 'types/timetables';
+import classnames from 'classnames';
+import { SemTimetableConfig } from 'types/timetables';
 import { Module, ModuleCode, Semester } from 'types/modules';
-import { ModulesMap } from 'types/reducers'
+import { ModulesMap } from 'types/reducers';
 import Toggle from 'views/components/Toggle';
+import styles from './OptimizerConstraints.scss';
+// (evt) => props.setModRegScheduleType(evt.target.value as ScheduleType)
+//                 {SCHEDULE_TYPES.map((type) => (
+// <option value={type} key={type}>
+//   {type}
+// </option>
+const OptimizerConstraints: React.FC = () => (
+  <>
+    <div className={classnames(styles.constraintsArea, 'page-container')}>
+      <h4> Constraints </h4>
 
-        //     <div>
-        //     <h4 id="beta">NUSMods Beta</h4>
+      <div>
+        <div className="row">
+          <div className="col-sm-12">
+            <h5>Lesson Start/End Times</h5>
+          </div>
 
-        //     <div className={styles.toggleRow}>
-        //     <div className={styles.toggleDescription}>
-        //     <p>Help us improve NUSMods by testing new features and providing feedback.</p>
-        //     {testDescriptions}
-        // </div>
+          <div className="col-sm-8">
+            <p>Earliest Lesson Start Time</p>
+          </div>
+          <div className="col-sm-4">
+            <select className="form-control" onChange={() => 1} />
+          </div>
 
-        //     <div className={styles.toggle}>
-        //     <Toggle className={styles.betaToggle} isOn={betaTester} onChange={toggleStates} />
-        // </div>
-        //     </div>
+          <div className="col-sm-8">
+            <p>Latest Lesson End Time</p>
+          </div>
+          <div className="col-sm-4">
+            <select className="form-control" onChange={() => 1} />
+          </div>
 
-        //     <hr />
-        //     </div>
-export const OptimizerConstraints: React.FC = () => {
-    return (
-        <>
-            <h4> Constraints </h4>
-        </>
-    );
-}
+          <div className="col-sm-8">
+            <p>Enable Constraint?</p>
+          </div>
+          <div className="col-sm-4">
+            <Toggle className={styles.betaToggle} isOn onChange={() => 1} />
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-sm-12">
+            <h5>Free Days</h5>
+          </div>
+
+          <div className="col-sm-8">
+            <p>Number of Free Days</p>
+          </div>
+          <div className="col-sm-4">
+            <select className="form-control" onChange={() => 1} />
+          </div>
+
+          <div className="col-sm-8">
+            <p>Enable Constraint?</p>
+          </div>
+          <div className="col-sm-4">
+            <Toggle className={styles.betaToggle} isOn onChange={() => 1} />
+          </div>
+
+          <div className="col-sm-8">
+            <p>Specific Free Days</p>
+          </div>
+          <div className="col-sm-4">
+            <select className="form-control" onChange={() => 1} />
+          </div>
+
+          <div className="col-sm-8">
+            <p>Enable Constraint?</p>
+          </div>
+          <div className="col-sm-4">
+            <Toggle className={styles.betaToggle} isOn onChange={() => 1} />
+          </div>
+        </div>
+
+        <hr />
+      </div>
+    </div>
+  </>
+);
 
 export default OptimizerConstraints;

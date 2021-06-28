@@ -1,27 +1,23 @@
 import * as React from 'react';
-import {
-  SemTimetableConfig,
-} from 'types/timetables';
+import { SemTimetableConfig } from 'types/timetables';
 import { Module, ModuleCode, Semester } from 'types/modules';
-import { ModulesMap } from 'types/reducers'
-import OptimizerConstraints from './OptimizerConstraints'
+import { ModulesMap } from 'types/reducers';
+import OptimizerConstraints from './OptimizerConstraints';
 
 type OwnProps = {
   semester: Semester;
   timetable: SemTimetableConfig;
-  modules: ModulesMap
+  modules: ModulesMap;
 };
 
-
-export const TimetableOptimizer: React.FC<OwnProps> = ({semester, timetable, modules}) => {
-  const moduleCodes = Object.keys(timetable)
-  console.log(moduleCodes)
+const TimetableOptimizer: React.FC<OwnProps> = ({ semester, timetable, modules }) => {
+  const moduleCodes = Object.keys(timetable);
   return (
     <>
-          <hr/>
-          <OptimizerConstraints/>
+      <hr />
+      <OptimizerConstraints />
     </>
   );
-}
+};
 
 export default TimetableOptimizer;

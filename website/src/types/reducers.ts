@@ -88,7 +88,6 @@ export type OptimizerState = Readonly<{
   isOptimizerShown: boolean;
 }>;
 
-
 /* settings */
 export type ModRegRoundKey = { type: RegPeriodType; name?: string };
 

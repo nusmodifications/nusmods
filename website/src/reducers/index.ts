@@ -8,7 +8,7 @@ import { Actions } from 'types/actions';
 import requests from './requests';
 import app from './app';
 import createUndoReducer from './undoHistory';
-import optimizer from './optimizer'
+import optimizer from './optimizer';
 
 // Persisted reducers
 import moduleBankReducer, { persistConfig as moduleBankPersistConfig } from './moduleBank';

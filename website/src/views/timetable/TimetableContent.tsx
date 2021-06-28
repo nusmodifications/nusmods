@@ -52,7 +52,7 @@ import TimetableModulesTable from './TimetableModulesTable';
 import ExamCalendar from './ExamCalendar';
 import ModulesTableFooter from './ModulesTableFooter';
 import styles from './TimetableContent.scss';
-import TimetableOptimizer from '../optimizer/TimetableOptimizer'
+import TimetableOptimizer from '../optimizer/TimetableOptimizer';
 
 type ModifiedCell = {
   className: string;
@@ -432,7 +432,7 @@ class TimetableContent extends React.Component<Props, State> {
                     semester={semester}
                     timetable={this.props.timetable}
                     modules={modules}
-                   />
+                  />
                 )}
               </div>
               <div className="col-12">
