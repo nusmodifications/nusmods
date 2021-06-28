@@ -14,7 +14,10 @@ type OwnProps = {
 };
 
 const TimetableOptimizer: React.FC<OwnProps> = ({ semester, timetable, modules }) => {
-  const onZ3Initialized = () => console.log('Initialized!');
+  const onZ3Initialized = () => {
+    console.log('Initialized!');
+    alert("Temp alert: Z3 initialized!")
+  }
   const onSmtlib2InputCreated = (s: string) => console.log(`OnSmtlib2: ${s}`);
   const onOutput = (s: string) => console.log(`OnOutput: ${s}`);
   const onTimetableOutput = (timetable: any) => console.log(`Timetable: ${timetable}`);
