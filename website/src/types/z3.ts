@@ -27,9 +27,9 @@ export interface Z3Message {
  * Callbacks from the Z3 Manager
  * */
 export interface Z3Callbacks {
-    onZ3Initialized: any;
-    onSmtlib2InputCreated(s: string): any;
-    onOutput(s: string): any;
-    // onTimetableOutput(timetable: TimetableOutput): any;
-    onTimetableOutput(timetable: any): any;
+  onZ3Initialized: any;
+  onSmtlib2InputCreated(s: string): any;
+  onOutput(s: string): any;
+  // onTimetableOutput(timetable: TimetableOutput): any;
+  onTimetableOutput(timetable: any): any;
 }
