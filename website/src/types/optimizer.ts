@@ -1,5 +1,57 @@
+// Intermediate types used to contain timetable information relevant to the optimizer
+import { mapValues, groupBy } from 'lodash'
+import { Module, RawLesson } from 'types/modules'
+import { SemTimetableConfig } from 'types/timetables'
+
+// {module id}__{lesson type}__{lesson id} e.g., CS3203__Lecture__1
+export type UniqueLessonID = string;
+export type Z3LessonID = number;
+
+/**
+ * Main input format into the optimizer layers
+ * */
+export type OptimizerInput = {
+  moduleInfo: ModuleInfoWithConstraints[];
+  constraints: GlobalConstraints;
+}
+
+
+/**
+ * Callbacks to communicate with the caller of TimetableOptimizer
+ * */
+export interface OptimizerCallbacks {
+  onOptimizerInitialized: any;
+  onSmtlib2InputCreated(s: string): any;
+  onOutput(s: string): any;
+  // onTimetableOutput(timetable: TimetableOutput): any;
+  onTimetableOutput(timetable: OptimizerOutput): any;
+}
+
+/**
+ * Final timetable output to the optimizer caller
+ * */
+export type OptimizerOutput = SemTimetableConfig;
+
+/**
+ * Modules for optimizer to consider.
+ *  required is a constraint indicating if the module can be dropped to fulfil other constraints
+ * */
+export type ModuleInfoWithConstraints = {
+  mod: Module;
+  required: boolean;
+  lessonsGrouped: LessonsByGroupsByClassNo
+}
+
+// Mapping between lesson types -> classNo -> lessons.
+//  We have to take one classNo of each lessonType, so this indicates all the slots to be filled
+//    per classNo per lessonType
+export type LessonsByGroupsByClassNo = {
+    [lessonType: string]: { [classNo: string]: readonly RawLesson[] };
+}
+
+
 // User-selected constraints to pass to optimizer
-export interface GlobalConstraintsList {
+export interface GlobalConstraints {
   // Min/max number of MCs + whether the constraint is active
   workloadActive: boolean;
   minWorkload: number;
@@ -24,8 +76,38 @@ export interface GlobalConstraintsList {
   preferCompactTimetable: boolean;
 }
 
+/**
+ * Defs for communicating between Optimizer <-> WebWorker <-> WASM wrapper
+ * */
+export enum Z3MessageKind {
+  // Request to init
+  INIT = 'INIT',
+  // Z3 initialized
+  INITIALIZED = 'INITIALIZED',
+  // Run the optimizer
+  OPTIMIZE = 'OPTIMIZE',
+  // Print output
+  PRINT = 'PRINT',
+  // Error
+  ERR = 'ERR',
+  // Z3 finished runnung
+  EXIT = 'EXIT',
+  // Z3 aborted
+  ABORT = 'ABORT',
+}
+
+/**
+ * Message to be sent back and forth between a Z3 webworker and any callers
+ * */
+export interface Z3Message {
+  kind: Z3MessageKind;
+  msg: string;
+}
+
+
+
 // TODO Shouldn't be here
-export const defaultConstraints: GlobalConstraintsList = {
+export const defaultConstraints: GlobalConstraints = {
   workloadActive: false,
   minWorkload: 0,
   maxWorkload: 30,
@@ -42,3 +124,21 @@ export const defaultConstraints: GlobalConstraintsList = {
   timeConstraintActive: false,
   preferCompactTimetable: false,
 };
+
+
+/**
+ * TODO move to utils
+ * Transforms a module's lessons into a mapping from
+ *  lessonType ==> (classNo ==> list of lessons)
+ * The optimizer cares that a classNo contains all the slots that should be filled.
+ * */
+export function lessonByGroupsByClassNo(lessons: readonly RawLesson[]): LessonsByGroupsByClassNo {
+  const lessonByGroups: { [lessonType: string]: readonly RawLesson[] } = groupBy(
+    lessons,
+    (lesson) => lesson.lessonType,
+  );
+  const lessonByGroupsByClassNo = mapValues(lessonByGroups, (lessonsOfSamelessonType: readonly RawLesson[]) =>
+    groupBy(lessonsOfSamelessonType, (lesson) => lesson.classNo),
+  );
+  return lessonByGroupsByClassNo;
+}

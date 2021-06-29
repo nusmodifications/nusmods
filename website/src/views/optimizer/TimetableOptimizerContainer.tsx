@@ -4,8 +4,8 @@ import { SemTimetableConfig } from 'types/timetables';
 import { Module, ModuleCode, Semester } from 'types/modules';
 import { ModulesMap } from 'types/reducers';
 import OptimizerConstraints from './OptimizerConstraints';
-import { Z3Manager } from '../../utils/z3Manager';
-import { Z3Callbacks } from '../../types/z3';
+import { TimetableOptimizer } from 'utils/optimizer/timetableOptimizer';
+import { OptimizerOutput, OptimizerCallbacks } from 'types/optimizer';
 
 type OwnProps = {
   semester: Semester;
@@ -13,16 +13,16 @@ type OwnProps = {
   modules: ModulesMap;
 };
 
-const TimetableOptimizer: React.FC<OwnProps> = ({ semester, timetable, modules }) => {
-  const onZ3Initialized = () => {
+const TimetableOptimizerContainer: React.FC<OwnProps> = ({ semester, timetable, modules }) => {
+  const onOptimizerInitialized = () => {
     console.log('Initialized!');
-    alert("Temp alert: Z3 initialized!")
+    alert("Temp alert: Z3 Optimizer initialized!")
   }
   const onSmtlib2InputCreated = (s: string) => console.log(`OnSmtlib2: ${s}`);
   const onOutput = (s: string) => console.log(`OnOutput: ${s}`);
-  const onTimetableOutput = (timetable: any) => console.log(`Timetable: ${timetable}`);
-  const callbacks: Z3Callbacks = {
-    onZ3Initialized,
+  const onTimetableOutput = (timetable: OptimizerOutput) => console.log(`Timetable: ${timetable}`);
+  const callbacks: OptimizerCallbacks = {
+    onOptimizerInitialized,
     onSmtlib2InputCreated,
     onOutput,
     onTimetableOutput,
@@ -31,7 +31,7 @@ const TimetableOptimizer: React.FC<OwnProps> = ({ semester, timetable, modules }
   function runOptimizer() {
     const moduleCodes = Object.keys(timetable);
     console.log(moduleCodes);
-    Z3Manager.initZ3(callbacks);
+    TimetableOptimizer.initOptimizer(callbacks);
   }
 
   return (
@@ -49,4 +49,4 @@ const TimetableOptimizer: React.FC<OwnProps> = ({ semester, timetable, modules }
   );
 };
 
-export default TimetableOptimizer;
+export default TimetableOptimizerContainer;

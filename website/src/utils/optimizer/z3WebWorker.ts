@@ -3,7 +3,7 @@
  * Imports the emscripten wrapper file z3w.js (must be accessible on the server).
  * After import, initializes the Z3 solver, which may require downloading z3w.wasm from the server.
  * */
-import { Z3Message, Z3MessageKind } from '../types/z3';
+import { Z3Message, Z3MessageKind } from 'types/optimizer';
 
 // Only one solver instance
 let solver: any = null;
