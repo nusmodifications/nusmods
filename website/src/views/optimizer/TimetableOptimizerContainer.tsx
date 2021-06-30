@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { TrendingUp } from 'react-feather';
-import { SemTimetableConfig } from 'types/timetables';
+import { SemTimetableConfig, ModuleLessonConfig } from 'types/timetables';
 import { Module, ModuleCode, Semester, SemesterData, RawLesson } from 'types/modules';
 import { ModulesMap } from 'types/reducers';
 import { TimetableOptimizer } from 'utils/optimizer/timetableOptimizer';
+import { useDispatch } from 'react-redux';
 import {
   OptimizerInput,
   OptimizerOutput,
@@ -13,6 +14,7 @@ import {
   GlobalConstraints,
   defaultConstraints,
 } from 'types/optimizer';
+import { setTimetable, setLessonConfig } from 'actions/timetables';
 import OptimizerConstraints from './OptimizerConstraints';
 
 type OwnProps = {
@@ -22,6 +24,8 @@ type OwnProps = {
 };
 
 const TimetableOptimizerContainer: React.FC<OwnProps> = ({ semester, timetable, modules }) => {
+  const dispatch = useDispatch();
+
   const onOptimizerInitialized = () => {
     console.log('Optimizer Initialized!');
     runOptimizer();
@@ -30,9 +34,23 @@ const TimetableOptimizerContainer: React.FC<OwnProps> = ({ semester, timetable, 
   const onOutput = (s: string) => {
     console.log(`OnOutput:\n${s}`);
   };
-  const onTimetableOutput = (timetable: OptimizerOutput) => {
-    console.log(`Timetable:`);
-    console.log(timetable);
+  const onTimetableOutput = (optimizerOutput: OptimizerOutput) => {
+    console.log(`optimizerOutput:`);
+    console.log(optimizerOutput);
+
+    if (optimizerOutput.isSat) {
+      // Have to get the color map here to use this
+      // dispatch(setTimetable(semester, optimizerOutput.timetable));
+
+      // Maybe this looks more interesting :)
+      Object.keys(optimizerOutput.timetable).forEach((moduleCode: string) => {
+        const modLessonConfig: ModuleLessonConfig = optimizerOutput.timetable[moduleCode];
+        dispatch(setLessonConfig(semester, moduleCode, modLessonConfig));
+      });
+    } else {
+      // TODO do something proper if it's not sat
+      alert('No timetable found!');
+    }
   };
   const callbacks: OptimizerCallbacks = {
     onOptimizerInitialized,
