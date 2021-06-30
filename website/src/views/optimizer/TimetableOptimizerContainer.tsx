@@ -3,9 +3,9 @@ import { TrendingUp } from 'react-feather';
 import { SemTimetableConfig } from 'types/timetables';
 import { Module, ModuleCode, Semester } from 'types/modules';
 import { ModulesMap } from 'types/reducers';
-import OptimizerConstraints from './OptimizerConstraints';
 import { TimetableOptimizer } from 'utils/optimizer/timetableOptimizer';
 import { OptimizerOutput, OptimizerCallbacks } from 'types/optimizer';
+import OptimizerConstraints from './OptimizerConstraints';
 
 type OwnProps = {
   semester: Semester;
@@ -16,8 +16,8 @@ type OwnProps = {
 const TimetableOptimizerContainer: React.FC<OwnProps> = ({ semester, timetable, modules }) => {
   const onOptimizerInitialized = () => {
     console.log('Initialized!');
-    alert("Temp alert: Z3 Optimizer initialized!")
-  }
+    alert('Temp alert: Z3 Optimizer initialized!');
+  };
   const onSmtlib2InputCreated = (s: string) => console.log(`OnSmtlib2: ${s}`);
   const onOutput = (s: string) => console.log(`OnOutput: ${s}`);
   const onTimetableOutput = (timetable: OptimizerOutput) => console.log(`Timetable: ${timetable}`);

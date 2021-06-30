@@ -1,16 +1,22 @@
 // import { TimetableOutput, TimetableSmtlib2Converter } from './timetable_to_smtlib2';
-import { OptimizerInputSmtlibConverter } from 'utils/optimizer/converter'
-import { OptimizerInput, OptimizerCallbacks, Z3Message, Z3MessageKind } from 'types/optimizer';
+import { OptimizerInputSmtlibConverter } from 'utils/optimizer/converter';
+import {
+  OptimizerInput,
+  OptimizerOutput,
+  OptimizerCallbacks,
+  Z3Message,
+  Z3MessageKind,
+} from 'types/optimizer';
 import Z3WebWorker from 'worker-loader!utils/optimizer/z3WebWorker';
 
 import {
-    DAYS,
-    HOURS_PER_DAY,
-    DAY_START_HOUR,
-    DAY_END_HOUR,
-    NUM_WEEKS,
-    HOURS_PER_WEEK,
-} from 'utils/optimizer/constants'
+  DAYS,
+  HOURS_PER_DAY,
+  DAY_START_HOUR,
+  DAY_END_HOUR,
+  NUM_WEEKS,
+  HOURS_PER_WEEK,
+} from 'utils/optimizer/constants';
 /**
  * The TimetableOptimizer takes a generic timetable as input and manages the lifecycle of running the
  * Z3 system to find a timetable solution.
@@ -20,16 +26,23 @@ import {
  * */
 export class TimetableOptimizer {
   static optInput: OptimizerInput;
+
   static converter: OptimizerInputSmtlibConverter;
+
   static smtString: string;
+
   static callbacks: OptimizerCallbacks;
+
   static printBuffer: string;
+
   static errBuffer: string;
+
   static worker?: Z3WebWorker = null;
+
   static completedStage1Solve: boolean; // Need to complete week-solving before timetable-solving
 
   static initOptimizer(callbacks: OptimizerCallbacks) {
-    console.log("Starting to initialize Z3...")
+    console.log('Starting to initialize Z3...');
     TimetableOptimizer.callbacks = callbacks;
     TimetableOptimizer.resetBuffers();
     TimetableOptimizer.completedStage1Solve = false;
@@ -45,21 +58,22 @@ export class TimetableOptimizer {
    * Register a generic timetable a set of callbacks to be called for different states in the Z3 solver lifecycle
    * */
   static loadTimetable(optInput: OptimizerInput) {
-      console.log('Loaded optimizer input');
-      console.log(optInput);
-      TimetableOptimizer.optInput = optInput;
-      TimetableOptimizer.converter = new OptimizerInputSmtlibConverter(
-          TimetableOptimizer.optInput,
-          NUM_WEEKS * HOURS_PER_WEEK * 2, // Number of "half-hour" slots
-          DAY_START_HOUR, // Start at 0800 (8 am)
-          DAY_END_HOUR /// End at 2200 (10 pm)
-      );
+    console.log('Loaded optimizer input');
+    console.log(optInput);
+    TimetableOptimizer.optInput = optInput;
+    TimetableOptimizer.converter = new OptimizerInputSmtlibConverter(
+      TimetableOptimizer.optInput,
+      NUM_WEEKS * HOURS_PER_WEEK * 2, // Number of "half-hour" slots
+      DAY_START_HOUR, // Start at 0800 (8 am)
+      DAY_END_HOUR, /// End at 2200 (10 pm)
+    );
   }
 
   static solve() {
-      TimetableOptimizer.resetBuffers();
-      const weekSolveStr = TimetableOptimizer.converter.generateWeekSolveSmtLib2String();
-      TimetableOptimizer.managerPostMessage(Z3MessageKind.OPTIMIZE, weekSolveStr);
+    TimetableOptimizer.resetBuffers();
+    // TODO handle errors from this generation
+    const weekSolveStr = TimetableOptimizer.converter.generateWeekSolveSmtLib2String();
+    TimetableOptimizer.managerPostMessage(Z3MessageKind.OPTIMIZE, weekSolveStr);
   }
 
   static receiveWorkerMessage(e: any) {
@@ -68,61 +82,63 @@ export class TimetableOptimizer {
     switch (message.kind) {
       case Z3MessageKind.INITIALIZED:
         // Call the initialization callback
-        console.log("Manager initialized Z3!")
+        console.log('Manager initialized Z3!');
         TimetableOptimizer.callbacks.onOptimizerInitialized();
         break;
-      // case Z3MessageKind.PRINT:
-      //     TimetableOptimizer.printBuffer += message.msg + '\n';
-      //     break;
-      // case Z3MessageKind.ERR:
-      //     TimetableOptimizer.errBuffer += message.msg + '\n';
-      //     break;
-      // case Z3MessageKind.EXIT:
-      //     // Z3 Initialization exit
-      //     console.log('Z3 messages on exit: ');
-      //     if (TimetableOptimizer.printBuffer === '' && TimetableOptimizer.errBuffer === '') {
-      //         console.log('Premature exit - Z3 was initializing (this is normal)');
-      //         return; // Premature exit (probably initialization)
-      //     }
+      case Z3MessageKind.PRINT:
+        TimetableOptimizer.printBuffer += `${message.msg}\n`;
+        break;
+      case Z3MessageKind.ERR:
+        TimetableOptimizer.errBuffer += `${message.msg}\n`;
+        break;
+      case Z3MessageKind.EXIT:
+        // Z3 Initialization exit
+        console.log('Z3 messages on exit: ');
+        if (TimetableOptimizer.printBuffer === '' && TimetableOptimizer.errBuffer === '') {
+          console.log('Premature exit - Z3 was initializing (this is normal)');
+          return; // Premature exit (probably initialization)
+        }
 
-      //     // Print buffers generically
-      //     if (TimetableOptimizer.printBuffer !== '') {
-      //         console.log(TimetableOptimizer.printBuffer);
-      //     }
-      //     if (TimetableOptimizer.errBuffer !== '') {
-      //         console.error(TimetableOptimizer.errBuffer);
-      //     }
+        // Print buffers generically
+        if (TimetableOptimizer.printBuffer !== '') {
+          console.log(TimetableOptimizer.printBuffer);
+        }
+        if (TimetableOptimizer.errBuffer !== '') {
+          console.error(TimetableOptimizer.errBuffer);
+        }
 
-      //     if (!TimetableOptimizer.completedStage1Solve) {
-      //         // Indicate that next time we call this callback, we have the timetable result
-      //         TimetableOptimizer.completedStage1Solve = true;
-      //         // Update the converter with the week-solve result
-      //         // TODO: enable
-      //         TimetableOptimizer.conv.update_z3_weeksolve_output(TimetableOptimizer.printBuffer);
-      //         // Generate the SMTLIB2 string based on the week-solve:w
-      //         TimetableOptimizer.smtString = TimetableOptimizer.conv.generateTimetableSolveSmtLib2String();
-      //         // Run callback to update the generated smtlib2 string
-      //         TimetableOptimizer.callbacks.onSmtlib2InputCreated(TimetableOptimizer.smtString);
-      //         // Reset state for our next optimization run
-      //         TimetableOptimizer.resetBuffers();
-      //         // Two stage solve: first solve for the week constraints, then solve for the actual timetable
-      //         TimetableOptimizer.managerPostMessage(Z3MessageKind.OPTIMIZE, TimetableOptimizer.smtString);
-      //     } else {
-      //         // Reset solve state
-      //         TimetableOptimizer.completedStage1Solve = false;
-      //         // Deal with real solve state
-      //         // Call the output callback
-      //         TimetableOptimizer.callbacks.onOutput(
-      //             TimetableOptimizer.printBuffer + '\n' + TimetableOptimizer.errBuffer
-      //         );
-      //         // Process the output text we just got from the Z3 solver
-      //         const timetable: TimetableOutput = TimetableOptimizer.conv.z3_output_to_timetable(
-      //             TimetableOptimizer.printBuffer
-      //         );
-      //         TimetableOptimizer.callbacks.onTimetableOutput(timetable);
-      //     }
-
-      //     break;
+        if (!TimetableOptimizer.completedStage1Solve) {
+          // Indicate that next time we call this callback, we have the timetable result
+          TimetableOptimizer.completedStage1Solve = true;
+          // Update the converter with the week-solve result
+          // TODO: enable
+          TimetableOptimizer.converter.updateZ3WeeksolveOutput(TimetableOptimizer.printBuffer);
+          // Generate the SMTLIB2 string based on the week-solve:w
+          TimetableOptimizer.smtString = TimetableOptimizer.converter.generateTimetableSolveSmtLib2String();
+          // Run callback to update the generated smtlib2 string
+          TimetableOptimizer.callbacks.onSmtlib2InputCreated(TimetableOptimizer.smtString);
+          // Reset state for our next optimization run
+          TimetableOptimizer.resetBuffers();
+          // Two stage solve: first solve for the week constraints, then solve for the actual timetable
+          TimetableOptimizer.managerPostMessage(
+            Z3MessageKind.OPTIMIZE,
+            TimetableOptimizer.smtString,
+          );
+        } else {
+          // Reset solve state
+          TimetableOptimizer.completedStage1Solve = false;
+          // Deal with real solve state
+          // Call the output callback
+          TimetableOptimizer.callbacks.onOutput(
+            `${TimetableOptimizer.printBuffer}\n${TimetableOptimizer.errBuffer}`,
+          );
+          // Process the output text we just got from the Z3 solver
+          const timetable: OptimizerOutput = TimetableOptimizer.converter.z3OutputToTimetable(
+            TimetableOptimizer.printBuffer,
+          );
+          TimetableOptimizer.callbacks.onTimetableOutput(timetable);
+        }
+        break;
       default:
         break;
     }

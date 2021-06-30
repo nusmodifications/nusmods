@@ -46,13 +46,13 @@ import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ModRegNotification from 'views/components/notfications/ModRegNotification';
 import { State as StoreState } from 'types/state';
 import { TombstoneModule } from 'types/views';
+import TimetableOptimizerContainer from 'views/optimizer/TimetableOptimizerContainer';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
 import ExamCalendar from './ExamCalendar';
 import ModulesTableFooter from './ModulesTableFooter';
 import styles from './TimetableContent.scss';
-import TimetableOptimizerContainer from 'views/optimizer/TimetableOptimizerContainer';
 
 type ModifiedCell = {
   className: string;
