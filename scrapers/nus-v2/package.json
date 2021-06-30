@@ -27,7 +27,7 @@
     "@types/oboe": "2.0.29",
     "@types/promise-queue": "2.2.0",
     "@types/ramda": "0.27.36",
-    "@types/yargs": "15.0.13",
+    "@types/yargs": "17.0.0",
     "@typescript-eslint/eslint-plugin": "4.18.0",
     "@typescript-eslint/parser": "4.18.0",
     "eslint": "7.22.0",
