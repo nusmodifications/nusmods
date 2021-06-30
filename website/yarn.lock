@@ -10742,6 +10742,10 @@ smart-buffer@^1.0.13:
   resolved "https://registry.yarnpkg.com/smart-buffer/-/smart-buffer-1.1.15.tgz#7f114b5b65fab3e2a35aa775bb12f0d1c649bf16"
   integrity sha1-fxFLW2X6s+KjWqd1uxLw0cZJvxY=
 
+"smtlib-ext@https://github.com/frizensami/smtlib-ext#8560b4702ee1187667f83bf891bebdf047e3639d":
+  version "1.0.0"
+  resolved "https://github.com/frizensami/smtlib-ext#8560b4702ee1187667f83bf891bebdf047e3639d"
+
 snapdragon-node@^2.0.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/snapdragon-node/-/snapdragon-node-2.1.1.tgz#6c175f86ff14bdb0724563e8f3c1b021a286853b"

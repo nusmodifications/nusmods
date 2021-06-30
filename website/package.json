@@ -169,6 +169,7 @@
     "samlify": "^2.7.6",
     "searchkit": "2.4.1-alpha.5",
     "sexpr-plus": "^7.0.0",
+    "smtlib-ext": "https://github.com/frizensami/smtlib-ext#8560b4702ee1187667f83bf891bebdf047e3639d",
     "use-subscription": "1.5.1",
     "worker-loader": "^3.0.8"
   },
