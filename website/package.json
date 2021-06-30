@@ -168,6 +168,7 @@
     "reselect": "4.0.0",
     "samlify": "^2.7.6",
     "searchkit": "2.4.1-alpha.5",
+    "sexpr-plus": "^7.0.0",
     "use-subscription": "1.5.1",
     "worker-loader": "^3.0.8"
   },

@@ -10634,6 +10634,11 @@ setprototypeof@1.1.1:
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.1.1.tgz#7e95acb24aa92f5885e0abef5ba131330d4ae683"
   integrity sha512-JvdAWfbXeIGaZ9cILp38HntZSFSo3mWg6xGcJJsd+d4aRMOqauag1C63dJfDw7OaMYwEbHMOxEZ1lqVRYP2OAw==
 
+sexpr-plus@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/sexpr-plus/-/sexpr-plus-7.0.0.tgz#3ec5830ee5ae85f2d3a625856968f7641c9c8c9f"
+  integrity sha1-PsWDDuWuhfLTpiWFaWj3ZBycjJ8=
+
 sha.js@^2.4.0, sha.js@^2.4.8:
   version "2.4.11"
   resolved "https://registry.yarnpkg.com/sha.js/-/sha.js-2.4.11.tgz#37a5cf0b81ecbc6943de109ba2960d1b26584ae7"
