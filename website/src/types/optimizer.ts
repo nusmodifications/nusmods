@@ -19,7 +19,7 @@ export type OptimizerInput = {
  * Callbacks to communicate with the caller of TimetableOptimizer
  * */
 export interface OptimizerCallbacks {
-  onOptimizerInitialized: void;
+  onOptimizerInitialized(): void;
   onSmtlib2InputCreated(s: string): void;
   onOutput(s: string): void;
   onTimetableOutput(timetable: OptimizerOutput): void;
