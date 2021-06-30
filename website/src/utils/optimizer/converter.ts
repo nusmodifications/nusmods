@@ -19,6 +19,7 @@ import {
 } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
 import { Z3WeekSolver } from 'utils/optimizer/z3WeekSolver';
+import { LESSON_TYPE_ABBREV, LESSON_ABBREV_TYPE } from 'utils/timetables';
 import {
   Z3TimetableSolver,
   UNASSIGNED,
@@ -100,7 +101,11 @@ export class OptimizerInputSmtlibConverter {
               modInfo.lessonsGrouped[lessonType],
             );
             classNos_of_lessontype.forEach((lessonName: string, lessonidx: number) => {
-              const key = [modInfo.mod.moduleCode, lessonType, lessonName].join('__');
+              const key = this.lessonInfoToZ3Varname(
+                modInfo.mod.moduleCode,
+                lessonType,
+                lessonName,
+              );
               // eslint-disable-next-line no-bitwise
               this.whoIdTable[key] = (moduleidx << 20) | (lessontypeidx << 10) | lessonidx;
             });
@@ -126,7 +131,6 @@ export class OptimizerInputSmtlibConverter {
       Object.keys(modInfo.lessonsGrouped).forEach((lessonType: string) => {
         const lessonsForLessontype: LessonsForLessonType = modInfo.lessonsGrouped[lessonType];
         Object.keys(lessonsForLessontype).forEach((classNo: string) => {
-          // const key = [mod.module_id, lessonType, lesson.lesson_id].join("__");
           const lessons: readonly RawLesson[] = lessonsForLessontype[classNo];
           lessons
             .map((l: RawLesson) => l.weeks)
@@ -351,7 +355,7 @@ export class OptimizerInputSmtlibConverter {
           // throw new Error(`Undefined assignment for variable_assignments[${key}] = ${variable_assignments[key]}`)
         }
         console.log(`For z3 t${halfhouridx}, offset: ${offset}, day: ${day}, week: ${week}`);
-        const lessonDetails = assignment.split('__');
+        const lessonDetails = this.z3VarnameToLessonInfo(assignment);
         nestObject(lessons, lessonDetails);
       }
     });
@@ -377,11 +381,11 @@ export class OptimizerInputSmtlibConverter {
     Object.keys(lessonsForLessonType).forEach((classNo: string) => {
       const lessonsForClassNo: readonly RawLesson[] = lessonsForLessonType[classNo];
       // TODO abstract out key generation to function
-      const key: string = [
+      const key: string = this.lessonInfoToZ3Varname(
         moduleCode,
         lessonsForClassNo[0].lessonType,
         lessonsForClassNo[0].classNo,
-      ].join('__');
+      );
       const whoId: Z3LessonID = this.whoIdTable[key];
       const startEndTimes: Array<[number, number]> = [];
       // A classNo can have multiple lessons with different startEndTimes (e.g., lecture classNo 01 on Monday and Friday)
@@ -549,7 +553,7 @@ export class OptimizerInputSmtlibConverter {
    * */
   hhmmToZ3Time(time: string, day: DayText = 'Monday', week = 0): number {
     const hour = parseInt(time.substring(0, 2), 10);
-    const minuteOffset = parseInt(time.substring(2), 10) ==- 0 ? 0 : 1;
+    const minuteOffset = parseInt(time.substring(2), 10) == -0 ? 0 : 1;
     // We assume lessons within start to end hour each day
     if (hour < this.startHour || hour > this.endHour) {
       throw new Error(
@@ -597,6 +601,25 @@ export class OptimizerInputSmtlibConverter {
    * */
   idxToDayStr(idx: number): string {
     return IDX_DAYS[idx];
+  }
+
+  /**
+   * Converts a module, lesson type, and class number for a lesson
+   *  into a variable name that z3 can use. We have to get the abbreviated name
+   *  since
+   * */
+  lessonInfoToZ3Varname(moduleCode: string, lessonType: string, classNo: string): string {
+    const lessonTypeAbbrev = LESSON_TYPE_ABBREV[lessonType];
+    return [moduleCode, lessonTypeAbbrev, classNo].join('__');
+  }
+
+  /**
+   * Recovers lesson info from z3 variable name
+   * */
+  z3VarnameToLessonInfo(z3Varname: string): [string, string, string] {
+    const [moduleCode, lessonTypeAbbrev, classNo] = z3Varname.split('__');
+    const lessonType = LESSON_ABBREV_TYPE[lessonTypeAbbrev];
+    return [moduleCode, lessonType, classNo];
   }
 }
 

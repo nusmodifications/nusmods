@@ -57,7 +57,7 @@ export class TimetableOptimizer {
   /**
    * Register a generic timetable a set of callbacks to be called for different states in the Z3 solver lifecycle
    * */
-  static loadTimetable(optInput: OptimizerInput) {
+  static loadInput(optInput: OptimizerInput) {
     console.log('Loaded optimizer input');
     console.log(optInput);
     TimetableOptimizer.optInput = optInput;

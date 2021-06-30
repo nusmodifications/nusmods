@@ -54,6 +54,7 @@ import { getModuleSemesterData, getModuleTimetable } from './modules';
 import { deltas } from './array';
 
 type lessonTypeAbbrev = { [lessonType: string]: string };
+// Note: timetable optimizer depends on these abbreviations having no spaces
 export const LESSON_TYPE_ABBREV: lessonTypeAbbrev = {
   'Design Lecture': 'DLEC',
   Laboratory: 'LAB',
