@@ -16,30 +16,34 @@ const SIM_VARNAME = 'weeks_to_simulate';
 export class Z3WeekSolver {
   solver: any; // For the actual constraints
 
-  num_weeks: number; // Defines bitvec sizes
+  nuWeeks: number; // Defines bitvec sizes
 
   zero: string;
 
   one: string;
 
-  constructor(num_weeks: number) {
+  constructor(numWeeks: number) {
     this.solver = new smt.BaseSolver('QF_ALL_SUPPORTED');
-    this.num_weeks = num_weeks;
-    this.zero = this._generateZero();
-    this.one = this._generateOne();
-    this.solver.add(this._generateDecl(SIM_VARNAME)); // Add in our required "sim" variable
-    this.solver.add(this._generatePopcnt()); // Add in the variable definition for popcount for this weeksize
+    this.nuWeeks = numWeeks;
+    this.zero = this.generateZero();
+    this.one = this.generateOne();
+    this.solver.add(this.generateDecl(SIM_VARNAME)); // Add in our required "sim" variable
+    this.solver.add(this.generatePopcnt()); // Add in the variable definition for popcount for this weeksize
   }
 
-  addWeeks(weeks: Array<number>, id_str: string) {
-    const values = new Array(this.num_weeks).fill(0);
-    weeks.forEach((week: number) => (values[week - 1] = 1));
-    this._declareConstraint(values, id_str);
+  addWeeks(weeks: Array<number>, idStr: string) {
+    const values = new Array(this.nuWeeks).fill(0);
+    weeks.forEach((week: number) => {
+      values[week - 1] = 1;
+    });
+    this.declareConstraint(values, idStr);
   }
 
   generateSmtlib2String(): string {
     let constraintStr = '';
-    this.solver.forEachStatement((stmt: string) => (constraintStr += `${stmt}\n`));
+    this.solver.forEachStatement((stmt: string) => {
+      constraintStr += `${stmt}\n`;
+    });
     constraintStr = constraintStr.substring(constraintStr.indexOf('\n') + 1);
     const minimizeStr = `(minimize (popCount13 ${SIM_VARNAME}))\n`;
     // The string that executes the solver and retrives the final model and objectives
@@ -53,20 +57,20 @@ export class Z3WeekSolver {
   /**
    * Utils
    * */
-  _declareConstraint(values: Array<number>, id_str: string) {
-    const bv = this._generateBitvec(values);
-    this.solver.add(this._generateDecl(id_str));
-    this.solver.assert(smt.Eq(id_str, bv));
-    this.solver.assert(smt.NEq(smt.BVAnd(id_str, SIM_VARNAME), this.zero));
+  declareConstraint(values: Array<number>, idStr: string) {
+    const bv = this.generateBitvec(values);
+    this.solver.add(this.generateDecl(idStr));
+    this.solver.assert(smt.Eq(idStr, bv));
+    this.solver.assert(smt.NEq(smt.BVAnd(idStr, SIM_VARNAME), this.zero));
     // (assert (not (= (bvand x sim) zerovec)))
   }
 
-  _generateDecl(varname: string): any {
-    return smt.DeclareFun(varname, [], `(_ BitVec ${this.num_weeks})`);
+  generateDecl(varname: string): any {
+    return smt.DeclareFun(varname, [], `(_ BitVec ${this.nuWeeks})`);
   }
 
-  _generateBitvec(values: Array<number>) {
-    if (values.length !== this.num_weeks) {
+  generateBitvec(values: Array<number>) {
+    if (values.length !== this.nuWeeks) {
       throw new Error(
         'Programming error: the values array passed to this function must be consistent with the SMT Sort used (BitVec num_weeks)',
       );
@@ -75,23 +79,23 @@ export class Z3WeekSolver {
     return str;
   }
 
-  _generatePopcnt() {
-    const line1 = `(define-fun popCount13 ((x (_ BitVec ${this.num_weeks}))) (_ BitVec ${this.num_weeks})\n(bvadd\n`;
+  generatePopcnt() {
+    const line1 = `(define-fun popCount13 ((x (_ BitVec ${this.nuWeeks}))) (_ BitVec ${this.nuWeeks})\n(bvadd\n`;
     let ites = '';
-    for (let i = 0; i < this.num_weeks; i++) {
+    for (let i = 0; i < this.nuWeeks; i++) {
       ites += `(ite (= #b1 ((_ extract ${i} ${i}) x)) ${this.one} ${this.zero})\n`;
     }
     const end = `))`;
     return line1 + ites + end;
   }
 
-  _generateZero() {
-    return this._generateBitvec(new Array(this.num_weeks).fill(0));
+  generateZero() {
+    return this.generateBitvec(new Array(this.nuWeeks).fill(0));
   }
 
-  _generateOne() {
-    const arr = new Array(this.num_weeks).fill(0);
+  generateOne() {
+    const arr = new Array(this.nuWeeks).fill(0);
     arr[arr.length - 1] = 1;
-    return this._generateBitvec(arr);
+    return this.generateBitvec(arr);
   }
 }

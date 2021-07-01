@@ -7,16 +7,7 @@ import {
   OptimizerOutput,
   LessonsForLessonType,
 } from 'types/optimizer';
-import {
-  StartTime,
-  EndTime,
-  LessonTime,
-  DayText,
-  RawLesson,
-  Weeks,
-  NumericWeeks,
-  isWeekRange,
-} from 'types/modules';
+import { LessonTime, DayText, RawLesson, Weeks, NumericWeeks, isWeekRange } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
 import { Z3WeekSolver } from 'utils/optimizer/z3WeekSolver';
 import { LESSON_TYPE_ABBREV, LESSON_ABBREV_TYPE } from 'utils/timetables';
@@ -94,23 +85,15 @@ export class OptimizerInputSmtlibConverter {
    * */
   populateWhoIdTable() {
     this.optimizerInput.moduleInfo.forEach(
-      (modInfo: ModuleInfoWithConstraints, moduleidx: number, _) => {
-        Object.keys(modInfo.lessonsGrouped).forEach(
-          (lessonType: string, lessontypeidx: number, _) => {
-            const classNos_of_lessontype: string[] = Object.keys(
-              modInfo.lessonsGrouped[lessonType],
-            );
-            classNos_of_lessontype.forEach((lessonName: string, lessonidx: number) => {
-              const key = this.lessonInfoToZ3Varname(
-                modInfo.mod.moduleCode,
-                lessonType,
-                lessonName,
-              );
-              // eslint-disable-next-line no-bitwise
-              this.whoIdTable[key] = (moduleidx << 20) | (lessontypeidx << 10) | lessonidx;
-            });
-          },
-        );
+      (modInfo: ModuleInfoWithConstraints, moduleidx: number) => {
+        Object.keys(modInfo.lessonsGrouped).forEach((lessonType: string, lessontypeidx: number) => {
+          const classNosOfLessontype: string[] = Object.keys(modInfo.lessonsGrouped[lessonType]);
+          classNosOfLessontype.forEach((lessonName: string, lessonidx: number) => {
+            const key = this.lessonInfoToZ3Varname(modInfo.mod.moduleCode, lessonType, lessonName);
+            // eslint-disable-next-line no-bitwise
+            this.whoIdTable[key] = (moduleidx << 20) | (lessontypeidx << 10) | lessonidx;
+          });
+        });
       },
     );
     this.reverseWhoIdTable = invert(this.whoIdTable);
@@ -140,13 +123,14 @@ export class OptimizerInputSmtlibConverter {
               // We can't put arrays in sets, so have to stringify.
               if (isWeekRange(weeks)) {
                 console.error(
-                  'At least one lesson has a WeekRange (not just normal Week array) in module ${modInfo}',
+                  `At least one lesson has a WeekRange (not just normal Week array) in module ${modInfo}`,
                 );
-                return '';
+              } else {
+                // No WeekRange, can treat as normal weeks
+                const weeksJson = JSON.stringify(weeks);
+                uniqueWeeks.add(weeksJson);
+                console.log(weeksJson);
               }
-              const weeksJson = JSON.stringify(weeks);
-              uniqueWeeks.add(weeksJson);
-              console.log(weeksJson);
             });
         });
       });
@@ -184,7 +168,7 @@ export class OptimizerInputSmtlibConverter {
     // Ignore "#b" in string
     const binary = binstring.substring(2);
     // Create list of weeks that we should simulate
-    binary.split('').forEach((c: any, idx: number) => {
+    binary.split('').forEach((c: string, idx: number) => {
       if (c === '1') this.weeksToSimulate.add(idx + 1);
     });
     console.log(`WEEKS TO SIMULATE ${Array.from(this.weeksToSimulate).join(',')}`);
@@ -219,22 +203,22 @@ export class OptimizerInputSmtlibConverter {
     // Workload constraints
     if (this.optimizerInput.constraints.workloadActive) {
       // Non-compulsory modules make up the if-then-else
-      const optional_workloads: Array<[string, number]> = this.optimizerInput.moduleInfo
+      const optionalWorkloads: Array<[string, number]> = this.optimizerInput.moduleInfo
         .filter((modInfo: ModuleInfoWithConstraints) => !modInfo.required)
         .map((modInfo: ModuleInfoWithConstraints) => [
           modInfo.mod.moduleCode,
-          parseInt(modInfo.mod.moduleCredit),
+          parseInt(modInfo.mod.moduleCredit, 10),
         ]);
       // Compulsory modules make up the baseline workload
-      const compulsory_workload_sum: number = this.optimizerInput.moduleInfo
+      const compulsoryWorkloadSum: number = this.optimizerInput.moduleInfo
         .filter((modInfo: ModuleInfoWithConstraints) => modInfo.required)
-        .map((modInfo: ModuleInfoWithConstraints) => parseInt(modInfo.mod.moduleCredit))
+        .map((modInfo: ModuleInfoWithConstraints) => parseInt(modInfo.mod.moduleCredit, 10))
         .reduce((a, n) => a + Number(n), 0);
-      console.log(compulsory_workload_sum);
+      console.log(compulsoryWorkloadSum);
       // Indicate that each boolean selector from the loop above has a cost if chosen
       this.z3tt.setBooleanSelectorCosts(
-        optional_workloads,
-        compulsory_workload_sum,
+        optionalWorkloads,
+        compulsoryWorkloadSum,
         this.optimizerInput.constraints.minWorkload,
         this.optimizerInput.constraints.maxWorkload,
       );
@@ -307,10 +291,10 @@ export class OptimizerInputSmtlibConverter {
     const isSat = parsedExpr[0].content === 'sat'; // parsed_expr[0] === {type: "atom", content: "sat", location: {…}}
     if (!isSat) return { isSat: false, timetable: {} }; // Nothing to do here
 
-    const variable_assignments_exprs = parsedExpr[1].content; // parsed_expr[1] === {type: "list", content: Array(19), location: {…}}
-    variable_assignments_exprs.shift(); // Removes first "model" expr: {type: "atom", content: "model", location: {…}}
+    const variableAssignmentsExprs = parsedExpr[1].content; // parsed_expr[1] === {type: "list", content: Array(19), location: {…}}
+    variableAssignmentsExprs.shift(); // Removes first "model" expr: {type: "atom", content: "model", location: {…}}
     const variableAssignments: Record<string, number> = {};
-    variable_assignments_exprs.forEach((expr: any) => {
+    variableAssignmentsExprs.forEach((expr) => {
       // Example expr: {type: "list", content: Array(5), location: {…}}
       // Inside Array(5):
       /*  0: {type: "atom", content: "define-fun", location: {…}}
@@ -321,14 +305,14 @@ export class OptimizerInputSmtlibConverter {
           */
       // We assume all model returns values have this structure, and are assigning varnames to ints
       const varName: string = expr.content[1].content;
-      const varValueExpr: any = expr.content[4].content;
+      const varValueExpr = expr.content[4].content;
       let varValue = -2;
       // Var_value could be an integer or an expression where the second element is the value of a negative number
       // console.log(var_value_expr)
       if (typeof varValueExpr === 'string') {
-        varValue = parseInt(varValueExpr);
+        varValue = parseInt(varValueExpr, 10);
       } else {
-        varValue = -1 * parseInt(varValueExpr[1].content);
+        varValue = -1 * parseInt(varValueExpr[1].content, 10);
       }
 
       variableAssignments[varName] = varValue;
@@ -345,7 +329,7 @@ export class OptimizerInputSmtlibConverter {
       // Hour assignment
       if (key.startsWith('t')) {
         const keySplit = key.split('_')[0];
-        const halfhouridx = parseInt(keySplit.substr(1));
+        const halfhouridx = parseInt(keySplit.substr(1), 10);
         const [offset, day, week] = this.z3TimeToGenericTime(halfhouridx);
         const val = variableAssignments[key];
         if (val === UNASSIGNED) return; // Un-assigned slot
@@ -393,21 +377,21 @@ export class OptimizerInputSmtlibConverter {
         // If no week calculation, run everything as every week
         // TODO evaluate if this branch is even necessary anymore
         if (this.weeksToSimulate.size === 0) {
-          const start_time = this.hhmmToZ3Time(lesson.startTime, lesson.day);
-          const end_time = this.hhmmToZ3Time(lesson.endTime, lesson.day);
-          startEndTimes.push([start_time, end_time]);
+          const startTime = this.hhmmToZ3Time(lesson.startTime, lesson.day);
+          const endTime = this.hhmmToZ3Time(lesson.endTime, lesson.day);
+          startEndTimes.push([startTime, endTime]);
         } else {
           // Only add start-end times for lessons on the weeks that we are actively simulating
-          const weeks_for_lesson = lesson.weeks as NumericWeeks;
-          const weeks_to_sim = weeks_for_lesson.filter((week: number) =>
+          const weeksForLesson = lesson.weeks as NumericWeeks;
+          const weeksToSim = weeksForLesson.filter((week: number) =>
             this.weeksToSimulate.has(week),
           );
           // For each week that we need to simulate, calculate the time constraints
-          for (const week of weeks_to_sim) {
+          for (const week of weeksToSim) {
             console.log(`Simulating week ${week}`);
-            const start_time = this.hhmmToZ3Time(lesson.startTime, lesson.day, week - 1);
-            const end_time = this.hhmmToZ3Time(lesson.endTime, lesson.day, week - 1);
-            startEndTimes.push([start_time, end_time]);
+            const startTime = this.hhmmToZ3Time(lesson.startTime, lesson.day, week - 1);
+            const endTime = this.hhmmToZ3Time(lesson.endTime, lesson.day, week - 1);
+            startEndTimes.push([startTime, endTime]);
           }
         }
       });
@@ -448,17 +432,17 @@ export class OptimizerInputSmtlibConverter {
         console.log(`Start offset: ${startOffset}, endOffset: ${endOffset}`);
       }
 
-      const start_end_idxs: Array<[number, number]> = [];
+      const startEndIdxs: Array<[number, number]> = [];
       for (const week of Array.from(this.weeksToSimulate)) {
         // Generate the slot constraints for each day
         const startidx =
           (week - 1) * (HOURS_PER_WEEK * 2) + day * (HOURS_PER_DAY * 2) + startOffset;
         const endidx = startidx + (endOffset - startOffset);
-        start_end_idxs.push([startidx, endidx]);
+        startEndIdxs.push([startidx, endidx]);
       }
 
       const sc: SlotConstraint = {
-        startEndTimes: start_end_idxs,
+        startEndTimes: startEndIdxs,
         whoId,
         whoIdString: name,
       };
@@ -489,17 +473,17 @@ export class OptimizerInputSmtlibConverter {
       // Do this for every week that we have to simulate
       for (const week of Array.from(this.weeksToSimulate)) {
         const startidx = (week - 1) * (HOURS_PER_WEEK * 2) + day * (HOURS_PER_DAY * 2);
-        const startidx_endidx = startidx + startOffset;
-        if (startidx_endidx - startidx > 0) {
-          startEndTimes.push([startidx, startidx_endidx]);
+        const startidxEndidx = startidx + startOffset;
+        if (startidxEndidx - startidx > 0) {
+          startEndTimes.push([startidx, startidxEndidx]);
         }
 
         const endidx = startidx + HOURS_PER_DAY * 2;
-        const endidx_startidx = startidx + endOffset;
-        if (endidx_startidx - endidx > 0) {
-          startEndTimes.push([startidx, startidx_endidx]);
+        const endidxStartidx = startidx + endOffset;
+        if (endidxStartidx - endidx > 0) {
+          startEndTimes.push([startidx, startidxEndidx]);
         }
-        startEndTimes.push([endidx_startidx, endidx]);
+        startEndTimes.push([endidxStartidx, endidx]);
       }
     }
 
@@ -551,26 +535,23 @@ export class OptimizerInputSmtlibConverter {
    * There are defined start and end times to reduce the number of variables in Z3.
    *  No point having vars to represent midnight to 8am if no classes are there, same for evening.
    * */
-  hhmmToZ3Time(time: string, day: DayText = 'Monday', week = 0): number {
+  hhmmToZ3Time(time: LessonTime, day: DayText = 'Monday', week = 0): number {
     const hour = parseInt(time.substring(0, 2), 10);
-    const minuteOffset = parseInt(time.substring(2), 10) == -0 ? 0 : 1;
+    const minuteOffset = parseInt(time.substring(2), 10) === 0 ? 0 : 1;
     // We assume lessons within start to end hour each day
     if (hour < this.startHour || hour > this.endHour) {
       throw new Error(
         `Lesson either starts before start_hour ${hour} < ${this.startHour} or ends after end_hour ${hour} > ${this.endHour}`,
       );
     } else {
-      const hour_index = hour - this.startHour;
-      const day_index = this.dayStrToIdx(day);
+      const hourIndex = hour - this.startHour;
+      const dayIndex = this.dayStrToIdx(day);
       // hour_index * 2 (since we count half-hours)
       // + half_hour_addon since we offset by 1 unit if it's a half hour
       // + number of hours in a day * 2 to get number of half-hours
       // + number of weeks offset from the "base week"
       const idx =
-        hour_index * 2 +
-        minuteOffset +
-        day_index * (HOURS_PER_DAY * 2) +
-        week * (HOURS_PER_WEEK * 2);
+        hourIndex * 2 + minuteOffset + dayIndex * (HOURS_PER_DAY * 2) + week * (HOURS_PER_WEEK * 2);
       return idx;
     }
   }
@@ -578,14 +559,13 @@ export class OptimizerInputSmtlibConverter {
   /*
     Conversion from times like 0 --> (1, 0) (1st slot of the day 0-indexed, Monday)
   */
-  z3TimeToGenericTime(z3_time: number): [number, number, number] {
+  z3TimeToGenericTime(z3Time: number): [number, number, number] {
     // Day is easy: each day has(self.end_hour - self.start_hour) * 2) slots
-
     // If there are 60 slots per week, and we are at slot 70, we're 10 slots into the current week
-    const week = Math.floor(z3_time / (HOURS_PER_WEEK * 2));
-    const z3_time_week = z3_time % (HOURS_PER_WEEK * 2);
-    const day = Math.floor(z3_time_week / (HOURS_PER_DAY * 2));
-    const offset = z3_time_week % (HOURS_PER_DAY * 2);
+    const week = Math.floor(z3Time / (HOURS_PER_WEEK * 2));
+    const z3TimeWeek = z3Time % (HOURS_PER_WEEK * 2);
+    const day = Math.floor(z3TimeWeek / (HOURS_PER_DAY * 2));
+    const offset = z3TimeWeek % (HOURS_PER_DAY * 2);
     return [offset, day, week];
   }
 
@@ -626,17 +606,18 @@ export class OptimizerInputSmtlibConverter {
 // Assign an array of properties to an object - creating nested levels
 // E.g., nestObject({}, [a, b, c]) ==> {a: {b: c}}
 // TODO extract to file
-export function nestObject(obj: any, keyPath: Array<any>) {
+export function nestObject(obj, keyPath) {
+  let curObj = obj;
   const value = keyPath[keyPath.length - 1];
   const lastKeyIndex = Math.max(0, keyPath.length - 2);
   for (let i = 0; i < lastKeyIndex; ++i) {
     const key = keyPath[i];
-    if (!(key in obj)) {
-      obj[key] = {};
+    if (!(key in curObj)) {
+      curObj[key] = {};
     }
-    obj = obj[key];
+    curObj = curObj[key];
   }
-  obj[keyPath[lastKeyIndex]] = value;
+  curObj[keyPath[lastKeyIndex]] = value;
 }
 
 /** *
@@ -660,9 +641,9 @@ ids.next(); // 'ac'
  *
  * */
 export class StringIdGenerator {
-  chars: any;
+  chars: string;
 
-  nextId: any;
+  nextId: number[];
 
   constructor(chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ') {
     this.chars = chars;
@@ -680,7 +661,8 @@ export class StringIdGenerator {
 
   increment() {
     for (let i = 0; i < this.nextId.length; i++) {
-      const val = ++this.nextId[i];
+      this.nextId[i] += 1;
+      const val = this.nextId[i];
       if (val >= this.chars.length) {
         this.nextId[i] = 0;
       } else {

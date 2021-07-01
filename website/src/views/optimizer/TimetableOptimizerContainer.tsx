@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { TrendingUp } from 'react-feather';
 import { SemTimetableConfig, ModuleLessonConfig } from 'types/timetables';
-import { Module, ModuleCode, Semester, SemesterData, RawLesson } from 'types/modules';
+import { Module, Semester, SemesterData, RawLesson } from 'types/modules';
 import { ModulesMap } from 'types/reducers';
 import { TimetableOptimizer } from 'utils/optimizer/timetableOptimizer';
 import { useDispatch } from 'react-redux';
@@ -14,7 +14,7 @@ import {
   GlobalConstraints,
   defaultConstraints,
 } from 'types/optimizer';
-import { setTimetable, setLessonConfig } from 'actions/timetables';
+import { setLessonConfig } from 'actions/timetables';
 import OptimizerConstraints from './OptimizerConstraints';
 
 type OwnProps = {
@@ -71,9 +71,12 @@ const TimetableOptimizerContainer: React.FC<OwnProps> = ({ semester, timetable, 
         const mod: Module = modules[moduleCode];
         const required = true; // TODO change this based on UI
         // Should be assured that the semester data is inside the module data
-        const allLessons: readonly RawLesson[] = mod.semesterData.find(
+        const allLessons: readonly RawLesson[] | undefined = mod.semesterData.find(
           (v: SemesterData) => v.semester === semester,
-        )!.timetable;
+        )?.timetable;
+        if (!allLessons) {
+          throw new Error(`Cannot find semester ${semester} data for mod ${mod.moduleCode}`);
+        }
         const lessonsGrouped = lessonByGroupsByClassNo(allLessons);
         return { mod, required, lessonsGrouped };
       },

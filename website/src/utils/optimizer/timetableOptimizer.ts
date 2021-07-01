@@ -9,14 +9,7 @@ import {
 } from 'types/optimizer';
 import Z3WebWorker from 'worker-loader!utils/optimizer/z3WebWorker';
 
-import {
-  DAYS,
-  HOURS_PER_DAY,
-  DAY_START_HOUR,
-  DAY_END_HOUR,
-  NUM_WEEKS,
-  HOURS_PER_WEEK,
-} from 'utils/optimizer/constants';
+import { DAY_START_HOUR, DAY_END_HOUR, NUM_WEEKS, HOURS_PER_WEEK } from 'utils/optimizer/constants';
 /**
  * The TimetableOptimizer takes a generic timetable as input and manages the lifecycle of running the
  * Z3 system to find a timetable solution.

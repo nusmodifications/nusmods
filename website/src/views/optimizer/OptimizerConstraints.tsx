@@ -1,8 +1,5 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { SemTimetableConfig } from 'types/timetables';
-import { Module, ModuleCode, Semester } from 'types/modules';
-import { ModulesMap } from 'types/reducers';
 import Toggle from 'views/components/Toggle';
 import styles from './OptimizerConstraints.scss';
 // (evt) => props.setModRegScheduleType(evt.target.value as ScheduleType)

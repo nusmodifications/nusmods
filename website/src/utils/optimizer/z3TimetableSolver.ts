@@ -13,35 +13,35 @@ export const BOOLVAR_ASSIGNED_WEIGHT = 100000;
 export class Z3TimetableSolver {
   timevars: Array<string>; // ["t0", "t1", ....]
 
-  assigned_intvars_possiblevalues: Record<string, Set<number>>; // What allowed values can each time val have
+  assignedIntvarsPossiblevalues: Record<string, Set<number>>; // What allowed values can each time val have
 
-  bool_selectors_set: Set<string>; // Basically module names e.g, CS3203, to select or de-select a module
+  boolSelectorsSet: Set<string>; // Basically module names e.g, CS3203, to select or de-select a module
 
-  variables_solver: any; // Just for variables assignment - hack to get the variables assignment ABOVE the constraints
+  variablesSolver: any; // Just for variables assignment - hack to get the variables assignment ABOVE the constraints
 
   solver: any; // For the actual constraints
 
-  constrain_compactness: boolean; // whether we want all classes to be right after each other as much as possible
+  constrainCompactness: boolean; // whether we want all classes to be right after each other as much as possible
 
-  constructor(total_time_units: number, time_unit_names?: Array<string>) {
+  constructor(totalTimeUnits: number, timeUnitNames?: Array<string>) {
     // Create time variable names based on just the raw time unit, or pass in a list of strings to be appended to the raw time hours
-    if (time_unit_names !== undefined) {
-      if (time_unit_names.length !== total_time_units) {
+    if (timeUnitNames !== undefined) {
+      if (timeUnitNames.length !== totalTimeUnits) {
         throw new Error('Size of time_unit_names array must be equal to total_time_units!');
       } else {
         this.timevars = Array.from(
-          new Array(total_time_units),
-          (_: number, i: number) => `t${i}_${time_unit_names[i]}`,
+          new Array(totalTimeUnits),
+          (_: number, i: number) => `t${i}_${timeUnitNames[i]}`,
         );
       }
     } else {
-      this.timevars = Array.from(new Array(total_time_units), (_: number, i: number) => `t${i}`);
+      this.timevars = Array.from(new Array(totalTimeUnits), (_: number, i: number) => `t${i}`);
     }
-    this.assigned_intvars_possiblevalues = {};
-    this.bool_selectors_set = new Set();
-    this.variables_solver = new smt.BaseSolver('QF_ALL_SUPPORTED');
+    this.assignedIntvarsPossiblevalues = {};
+    this.boolSelectorsSet = new Set();
+    this.variablesSolver = new smt.BaseSolver('QF_ALL_SUPPORTED');
     this.solver = new smt.BaseSolver('QF_ALL_SUPPORTED');
-    this.constrain_compactness = false;
+    this.constrainCompactness = false;
   }
 
   /**
@@ -49,8 +49,8 @@ export class Z3TimetableSolver {
    *  Set all time values in the range to a fixed ID.
    * */
   // add_hard_constraint(slot: SlotConstraint) {
-  //     slot.start_end_times.forEach(([start_time, end_time], _) => {
-  //         for (let i = start_time; i < end_time; i++) {
+  //     slot.start_endTimes.forEach(([startTime, endTime], _) => {
+  //         for (let i = startTime; i < endTime; i++) {
   //             const timevar = this.timevars[i];
   //             // Constraint this slot
   //             this.solver.assert(smt.Eq(timevar, slot.who_id));
@@ -85,62 +85,63 @@ export class Z3TimetableSolver {
      * */
   addSlotConstraintsFulfilOnlyOne(
     slots: Array<SlotConstraint>,
-    boolean_selector?: string,
-    chain_constraints = false,
+    booleanSelector?: string,
+    chainConstraints = false,
   ) {
     // If we are selecting between who_ids 0, 1024, and 2048, the selector variable will be named SL_0_1024_2048
-    const selector_var = `SL_${slots.map((slot) => slot.whoIdString).join('_')}`;
+    const selectorVar = `SL_${slots.map((slot) => slot.whoIdString).join('_')}`;
 
     // Indicate that we need to declare this later as an unconstrained variable (but we constrain it here instead)
-    this.add_possible_values_to_variable(selector_var);
+    this.addPossibleValuesToVariable(selectorVar);
 
     // Create a list of constraints for the possible values the selector can take
     // With same example, we have SL_0_1024_2048 == 0 OR SL_0_1024_2048 == 1024 OR SL_0_1024_2048 == 2048
-    const selector_var_possible_values = slots.map((slot) => smt.Eq(selector_var, slot.whoId));
+    const selectorVarPossibleValues = slots.map((slot) => smt.Eq(selectorVar, slot.whoId));
 
     // We indicate with the boolean selector that options are selected ONLY IF the boolean selector is true
-    if (boolean_selector !== undefined) {
-      const selector = `OPT_${boolean_selector}`; // Ensure we have an OPT prefix to indicate an optional mod
-      this.bool_selectors_set.add(selector); // Make sure we declare the selector later
+    if (booleanSelector !== undefined) {
+      const selector = `OPT_${booleanSelector}`; // Ensure we have an OPT prefix to indicate an optional mod
+      this.boolSelectorsSet.add(selector); // Make sure we declare the selector later
       // Asserts that IF the boolean selector is true, then all the possible values it can take must have at least 1 true (functionally only 1)
-      this.solver.assert(smt.Eq(selector, smt.Or(...selector_var_possible_values)));
+      this.solver.assert(smt.Eq(selector, smt.Or(...selectorVarPossibleValues)));
     } else {
       // Asserts unconditionally that the selector must take one of the possible values
-      this.solver.assert(smt.Or(...selector_var_possible_values));
+      this.solver.assert(smt.Or(...selectorVarPossibleValues));
     }
 
     // Now, for each slot, create a double implication (equality) between the selector value and each of the constrained hours
     const constraints: Array<any> = slots
       .map((slot) => {
         // Holds all the constraints, assuming this slotconstraint is selected
-        const slot_requirements: Array<any> = [];
-        slot.startEndTimes.forEach(([start_time, end_time]) => {
+        const slotRequirements: Array<any> = [];
+        slot.startEndTimes.forEach(([startTime, endTime]) => {
           // Create a constraint to be "who_id" for all the start and end times in the slot constraint
           // If we said: for this slot, time slots h1 and h2 need to be = ID 1024, then
           // h1 == 1024
           // h2 == 1024
-          for (let i = start_time; i < end_time; i++) {
+          for (let i = startTime; i < endTime; i++) {
             const timevar = this.timevars[i];
             // Make sure we declare this timevar since we use it
-            this.add_possible_values_to_variable(timevar, [slot.whoId, UNASSIGNED]);
+            this.addPossibleValuesToVariable(timevar, [slot.whoId, UNASSIGNED]);
             // For this seletion, constraint the timevar to the who_id requested\
             // Assert individually that if a selector is selector, that hour must be selected to it, and vice versa
-            slot_requirements.push(
-              smt.Eq(smt.Eq(selector_var, slot.whoId), smt.Eq(timevar, slot.whoId)),
+            slotRequirements.push(
+              smt.Eq(smt.Eq(selectorVar, slot.whoId), smt.Eq(timevar, slot.whoId)),
             );
           }
         });
-        return slot_requirements;
+        return slotRequirements;
       })
       .flat(); // Flatten in case we return multiple constraints per slot
 
     // Decide what to do with the constraint
-    if (chain_constraints) {
+    if (chainConstraints) {
       // If chaining, return and let caller decide
       return constraints;
     }
     // If not chaining, assert them all now
     constraints.forEach((constraint: any) => this.solver.assert(constraint));
+    return [];
   }
 
   /**
@@ -161,43 +162,43 @@ export class Z3TimetableSolver {
    *  ((_ pbeq N 1 1) SL_somename SL_somename2)
    * */
   addSlotConstraintsFulfilExactlyN(slots: Array<SlotConstraint>, n: number) {
-    const selector_var_list: Array<string> = [];
+    const selectorVarList: Array<string> = [];
 
     // Now, for each slot, create a double implication (equality) between the selector value and each of the constrained hours
     const constraints: Array<any> = slots
       .map((slot) => {
         // Holds all the constraints, assuming this slotconstraint is selected
-        const slot_requirements: Array<any> = [];
+        const slotRequirements: Array<any> = [];
         // Create a selector variable for this (SLKB = Selector for K-out-of-N, boolean)
-        const selector_var = `SLKB_${slot.whoIdString}`;
-        selector_var_list.push(selector_var);
-        slot.startEndTimes.forEach(([start_time, end_time]) => {
+        const selectorVar = `SLKB_${slot.whoIdString}`;
+        selectorVarList.push(selectorVar);
+        slot.startEndTimes.forEach(([startTime, endTime]) => {
           // Create a constraint to be "who_id" for all the start and end times in the slot constraint
           // If we said: for this slot, time slots h1 and h2 need to be = ID 1024, then
           // h1 == 1024
           // h2 == 1024
-          for (let i = start_time; i < end_time; i++) {
+          for (let i = startTime; i < endTime; i++) {
             const timevar = this.timevars[i];
             // Make sure we declare this timevar since we use it
-            this.add_possible_values_to_variable(timevar, [slot.whoId, UNASSIGNED]);
+            this.addPossibleValuesToVariable(timevar, [slot.whoId, UNASSIGNED]);
             // For this seletion, constraint the timevar to the who_id requested\
             // Assert individually that if the boolean selector is true (selected), that hour must be selected to it, and vice versa
-            slot_requirements.push(smt.Eq(selector_var, smt.Eq(timevar, slot.whoId)));
+            slotRequirements.push(smt.Eq(selectorVar, smt.Eq(timevar, slot.whoId)));
           }
         });
-        return slot_requirements;
+        return slotRequirements;
       })
       .flat(); // Flatten in case we return multiple constraints per slot
 
     // Ensures we declare the selector later
-    selector_var_list.forEach((selector: string) => this.bool_selectors_set.add(selector));
+    selectorVarList.forEach((selector: string) => this.boolSelectorsSet.add(selector));
 
     // Assert all the constraints that relate the selector variable to the selected constrains
     constraints.forEach((constraint: any) => this.solver.assert(constraint));
 
     // Assert a K-out-of-N constraint for the selector variables
-    const k_of_n = smt.PbEq(selector_var_list, new Array(selector_var_list.length).fill(1), n);
-    this.solver.assert(k_of_n);
+    const kOfN = smt.PbEq(selectorVarList, new Array(selectorVarList.length).fill(1), n);
+    this.solver.assert(kOfN);
   }
 
   /**
@@ -205,27 +206,27 @@ export class Z3TimetableSolver {
    * */
   setBooleanSelectorCosts(
     workloads: Array<[string, number]>,
-    base_workload: number,
+    baseWorkload: number,
     minWorkload: number,
     maxWorkload: number,
   ) {
     // Create a variable for the cost of the boolean selectors, add it to declarations list
-    const workload_sum_name = 'workloadsum';
-    this.assigned_intvars_possiblevalues[workload_sum_name] = new Set();
+    const workloadSumName = 'workloadsum';
+    this.assignedIntvarsPossiblevalues[workloadSumName] = new Set();
 
-    const terms = [base_workload];
+    const terms = [baseWorkload];
     workloads.forEach(([varname, workload]) => {
       // Make sure varname is declared
       const fullvarname = `OPT_${varname}`;
-      this.bool_selectors_set.add(fullvarname);
+      this.boolSelectorsSet.add(fullvarname);
       terms.push(smt.If(fullvarname, workload, 0));
     });
     const sumOfTerms = smt.Sum(...terms);
-    this.solver.assert(smt.Eq(workload_sum_name, sumOfTerms));
+    this.solver.assert(smt.Eq(workloadSumName, sumOfTerms));
 
     // Assert that the workload should be >= than the minimum workload and <= the maximum workload
-    this.solver.assert(smt.GEq(workload_sum_name, minWorkload));
-    this.solver.assert(smt.LEq(workload_sum_name, maxWorkload));
+    this.solver.assert(smt.GEq(workloadSumName, minWorkload));
+    this.solver.assert(smt.LEq(workloadSumName, maxWorkload));
   }
 
   /**
@@ -235,7 +236,7 @@ export class Z3TimetableSolver {
    *  Here, we just set a flag, since this must be done at the end after all variables are assigned
    * */
   addCompactnessConstraint() {
-    this.constrain_compactness = true;
+    this.constrainCompactness = true;
   }
 
   /**
@@ -243,25 +244,25 @@ export class Z3TimetableSolver {
    * */
   addNegativevalueSlotConstraintToNConsecutive(slot: SlotConstraint, n: number) {
     // Holds all the constraints, assuming this slotconstraint is selected
-    const slot_requirements: Array<any> = [];
+    const slotRequirements: Array<any> = [];
     // We only care about first slotconstraint slot, multiple slots are meaningless here
-    const [start_time, end_time] = slot.startEndTimes[0];
-    // Take the start_time --> end_time range as windows of size n
-    for (let start_t = start_time; start_t < end_time - n + 1; start_t++) {
+    const [startTime, endTime] = slot.startEndTimes[0];
+    // Take the startTime --> endTime range as windows of size n
+    for (let startT = startTime; startT < endTime - n + 1; startT += 1) {
       // For each window, we need to assert that ALL of the hours are unassigned
       // Then we OR across all windows
-      const window_requirements: Array<any> = [];
+      const windowRequirements: Array<any> = [];
       for (let i = 0; i < n; i++) {
-        const timevar = this.timevars[start_t + i];
+        const timevar = this.timevars[startT + i];
         // Make sure we declare this timevar since we use it, at least allow it to be unassigned (negative)
-        this.add_possible_values_to_variable(timevar, [UNASSIGNED]);
+        this.addPossibleValuesToVariable(timevar, [UNASSIGNED]);
         // Assert that the slot is < 0 (either UNASSIGNED / FREE / etc)
-        window_requirements.push(smt.LEq(timevar, -1));
+        windowRequirements.push(smt.LEq(timevar, -1));
       }
-      slot_requirements.push(smt.And(...window_requirements));
+      slotRequirements.push(smt.And(...windowRequirements));
     }
-    const final_requirements = smt.Or(...slot_requirements);
-    this.solver.assert(final_requirements);
+    const finalRequirements = smt.Or(...slotRequirements);
+    this.solver.assert(finalRequirements);
     // Assert a K-out-of-N constraint for the selector variables
     // const k_of_n = smt.PbGe(slot_requirements, new Array(slot_requirements.length).fill(1), n)
     // this.solver.assert(k_of_n);
@@ -272,13 +273,13 @@ export class Z3TimetableSolver {
    * They can be constrained to have a certain set of values.
    * If not constrained, the set will be empty
    * */
-  add_possible_values_to_variable(varname: string, values: Array<number> = []) {
-    if (this.assigned_intvars_possiblevalues[varname] === undefined) {
+  addPossibleValuesToVariable(varname: string, values: Array<number> = []) {
+    if (this.assignedIntvarsPossiblevalues[varname] === undefined) {
       // Make sure we at least have the UNASSIGNED possible value for the var
-      this.assigned_intvars_possiblevalues[varname] = new Set(values);
+      this.assignedIntvarsPossiblevalues[varname] = new Set(values);
     } else {
       // No set union. have to add each val independently
-      values.forEach((val: number) => this.assigned_intvars_possiblevalues[varname].add(val));
+      values.forEach((val: number) => this.assignedIntvarsPossiblevalues[varname].add(val));
     }
   }
 
@@ -287,32 +288,32 @@ export class Z3TimetableSolver {
    * */
   generateSmtlib2String(randomize = true): string {
     // Declare all the boolean vars
-    this.bool_selectors_set.forEach((boolvar: string) => {
-      this.variables_solver.add(smt.DeclareFun(boolvar, [], 'Bool'));
+    this.boolSelectorsSet.forEach((boolvar: string) => {
+      this.variablesSolver.add(smt.DeclareFun(boolvar, [], 'Bool'));
       // this.variables_solver.add(smt.AssertSoft(boolvar, BOOLVAR_ASSIGNED_WEIGHT, 'defaultval'));
     });
 
     // For each variable that we use, we need to generate an indicate that it's an integer
     // We also need to assert-soft that each variable should be UNASSIGNED if possible
-    Object.keys(this.assigned_intvars_possiblevalues).forEach((varname: string) => {
+    Object.keys(this.assignedIntvarsPossiblevalues).forEach((varname: string) => {
       // Declare variable
-      this.variables_solver.add(smt.DeclareFun(varname, [], 'Int'));
+      this.variablesSolver.add(smt.DeclareFun(varname, [], 'Int'));
 
       // Constrain the possible values of the var if the set is nonempty
-      const var_values: Set<number> = this.assigned_intvars_possiblevalues[varname];
-      if (var_values.size > 0) {
+      const varValues: Set<number> = this.assignedIntvarsPossiblevalues[varname];
+      if (varValues.size > 0) {
         // [(= t1 7) (= t1 8) (= t1 9)...]
-        const possible_vals_eq = Array.from(var_values).map((val: number) => smt.Eq(varname, val));
+        const possibleValsEq = Array.from(varValues).map((val: number) => smt.Eq(varname, val));
         // Statement that var can take all these values
-        const all_possible_vals_or = smt.Or(...possible_vals_eq);
-        this.solver.assert(all_possible_vals_or);
+        const allPossibleValsOr = smt.Or(...possibleValsEq);
+        this.solver.assert(allPossibleValsOr);
       }
       // this.variables_solver.add.smt.AssertSoft(smt.Eq(timevar, UNASSIGNED), VAR_UNASSIGNED_WEIGHT, 'defaultval'));
     });
 
-    if (this.constrain_compactness) {
+    if (this.constrainCompactness) {
       // Now that all variables are declared, add the constraint-compactness soft asserts
-      Object.keys(this.assigned_intvars_possiblevalues).forEach((varname: string) => {
+      Object.keys(this.assignedIntvarsPossiblevalues).forEach((varname: string) => {
         // For each variable that is assigned to a mod (who_id > 0), find the next variable that could possibly be assigned,
         // and assert-soft that it IS assigned
 
@@ -320,29 +321,29 @@ export class Z3TimetableSolver {
         if (!varname.startsWith('t')) return;
 
         // Get the timeslot ID (e.g., 2044)
-        let var_id = parseInt(varname.split('_')[0].substring(1));
+        let varId = parseInt(varname.split('_')[0].substring(1));
 
         // Find the next variable after this one. If it doesn't exist, return
-        if (var_id + 1 >= this.timevars.length) return;
-        var_id++;
-        const next_var_name = this.timevars[var_id];
-        if (!(next_var_name in this.assigned_intvars_possiblevalues)) return;
-        if (next_var_name === undefined || next_var_name === '') return;
+        if (varId + 1 >= this.timevars.length) return;
+        varId += 1;
+        const nextVarName = this.timevars[varId];
+        if (!(nextVarName in this.assignedIntvarsPossiblevalues)) return;
+        if (nextVarName === undefined || nextVarName === '') return;
 
         // If the current var is assigned to a mod, we assert-soft that
         //  the next one is either the same mod (continuation of slot), or a different mod immediately
-        const assert_soft_nextvar_assigned = smt.AssertSoft(
+        const assertSoftNextvarAssigned = smt.AssertSoft(
           smt.Eq(
             smt.GEq(varname, 0),
             smt.Or(
-              smt.Eq(next_var_name, varname),
-              smt.And(smt.NEq(next_var_name, varname), smt.GEq(next_var_name, 0)),
+              smt.Eq(nextVarName, varname),
+              smt.And(smt.NEq(nextVarName, varname), smt.GEq(nextVarName, 0)),
             ),
           ),
           1,
           'nextvar',
         );
-        this.solver.add(assert_soft_nextvar_assigned);
+        this.solver.add(assertSoftNextvarAssigned);
       });
     }
 
@@ -358,7 +359,7 @@ export class Z3TimetableSolver {
     // }
 
     let variablesStr = '';
-    this.variables_solver.forEachStatement((stmt: string) => (variablesStr += `${stmt}\n`));
+    this.variablesSolver.forEachStatement((stmt: string) => (variablesStr += `${stmt}\n`));
     variablesStr = variablesStr.substring(variablesStr.indexOf('\n') + 1);
 
     let constraintStr = '';

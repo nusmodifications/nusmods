@@ -15,7 +15,8 @@ function startZ3() {
   const ctx: any = self as any;
   // Imports all names from z3w.js (includes Z3, etc)
   ctx.importScripts(`${ctx.location.origin}/z3w.js`);
-  // @ts-ignore
+  // TODO give vendor types to Z3?
+  // @ts-ignore Z3 doesn't have any types for now
   solver = Z3({
     ENVIRONMENT: 'WORKER', // Setup for a WebWorker environemtn
     onRuntimeInitialized,
