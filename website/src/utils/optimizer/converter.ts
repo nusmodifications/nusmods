@@ -203,7 +203,7 @@ export class OptimizerInputSmtlibConverter {
     });
 
     // Workload constraints
-    if (this.optimizerInput.constraints.workloadActive) {
+    if (this.optimizerInput.constraints.isWorkloadActive) {
       // Non-compulsory modules make up the if-then-else
       const optionalWorkloads: Array<[string, number]> = this.optimizerInput.moduleInfo
         .filter((modInfo: ModuleInfoWithConstraints) => !modInfo.required)
@@ -228,11 +228,11 @@ export class OptimizerInputSmtlibConverter {
 
     // Add requirements for free day: this ensures that we won't get SAT unless an entire day is free
     if (
-      this.optimizerInput.constraints.freeDayActive ||
-      this.optimizerInput.constraints.specificFreeDaysActive
+      this.optimizerInput.constraints.isFreeDayActive ||
+      this.optimizerInput.constraints.isSpecificFreeDaysActive
     ) {
       const slotConstraints: Array<SlotConstraint> = this.generateFreeDaySlotconstraints();
-      if (this.optimizerInput.constraints.freeDayActive) {
+      if (this.optimizerInput.constraints.isFreeDayActive) {
         // We fulfil K out of N possible free days based on user selection
         // this.z3tt.add_constraints_fulfil_only_one(slotConstraints);
         this.z3tt.addSlotConstraintsFulfilExactlyN(
@@ -240,7 +240,7 @@ export class OptimizerInputSmtlibConverter {
           this.optimizerInput.constraints.numRequiredFreeDays,
         );
       }
-      if (this.optimizerInput.constraints.specificFreeDaysActive) {
+      if (this.optimizerInput.constraints.isSpecificFreeDaysActive) {
         // We ensure that the days specified are free
         // Assume that the free day slot constraints are in order of day-of-week
         this.optimizerInput.constraints.specificFreeDays.forEach((freeday: string) => {
@@ -252,12 +252,12 @@ export class OptimizerInputSmtlibConverter {
     }
 
     // Keep all mods close together
-    if (this.optimizerInput.constraints.preferCompactTimetable) {
+    if (this.optimizerInput.constraints.isPreferCompactTimetable) {
       this.z3tt.addCompactnessConstraint();
     }
 
     // Allow lunch hours
-    if (this.optimizerInput.constraints.lunchBreakActive) {
+    if (this.optimizerInput.constraints.isLunchBreakActive) {
       const slotConstraints: Array<SlotConstraint> = this.generateLunchBreakSlotconstraints();
       slotConstraints.forEach((sc: SlotConstraint) => {
         this.z3tt.addNegativevalueSlotConstraintToNConsecutive(
@@ -268,7 +268,7 @@ export class OptimizerInputSmtlibConverter {
     }
 
     // Start / end too late in the day constraint
-    if (this.optimizerInput.constraints.timeConstraintActive) {
+    if (this.optimizerInput.constraints.isTimeConstraintActive) {
       const slotConstraint:
         | SlotConstraint
         | undefined = this.generateTimeconstraintSlotconstraint();
@@ -427,7 +427,7 @@ export class OptimizerInputSmtlibConverter {
 
       let startOffset = 0;
       let endOffset = HOURS_PER_DAY * 2;
-      if (this.optimizerInput.constraints.timeConstraintActive) {
+      if (this.optimizerInput.constraints.isTimeConstraintActive) {
         startOffset = this.hhmmToZ3Time(this.optimizerInput.constraints.startTime);
         endOffset = this.hhmmToZ3Time(this.optimizerInput.constraints.endTime);
         console.log(`Start offset: ${startOffset}, endOffset: ${endOffset}`);
