@@ -7,9 +7,11 @@ import {
   Z3Message,
   Z3MessageKind,
 } from 'types/optimizer';
-import Z3WebWorker from 'worker-loader!utils/optimizer/z3WebWorker';
-
 import { DAY_START_HOUR, DAY_END_HOUR, NUM_WEEKS, HOURS_PER_WEEK } from 'utils/optimizer/constants';
+// ts extension is necessary from webpack documentation for worker-loader
+// eslint-disable-next-line import/extensions
+import WebpackWorker from './z3WebWorker.worker.ts';
+
 /**
  * The TimetableOptimizer takes a generic timetable as input and manages the lifecycle of running the
  * Z3 system to find a timetable solution.
@@ -30,7 +32,7 @@ export class TimetableOptimizer {
 
   static errBuffer: string;
 
-  static worker?: Z3WebWorker = null;
+  static worker: WebpackWorker;
 
   static completedStage1Solve: boolean; // Need to complete week-solving before timetable-solving
 
@@ -41,7 +43,7 @@ export class TimetableOptimizer {
     TimetableOptimizer.completedStage1Solve = false;
     // Set up worker if it's not set up
     if (!TimetableOptimizer.worker) {
-      TimetableOptimizer.worker = new Z3WebWorker();
+      TimetableOptimizer.worker = new WebpackWorker();
       TimetableOptimizer.worker.onmessage = TimetableOptimizer.receiveWorkerMessage;
     }
     TimetableOptimizer.managerPostMessage(Z3MessageKind.INIT, '');
