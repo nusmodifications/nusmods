@@ -3,7 +3,7 @@
  * Imports the emscripten wrapper file z3w.js (must be accessible on the server).
  * After import, initializes the Z3 solver, which may require downloading z3w.wasm from the server.
  * */
-import { Z3Message, Z3MessageKind } from 'types/optimizer';
+import { Z3WorkerMessage, Z3WorkerMessageKind } from 'types/optimizer';
 
 // Only one solver instance
 let solver = null;
@@ -23,13 +23,13 @@ function startZ3() {
     ENVIRONMENT: 'WORKER', // Setup for a WebWorker environemtn
     onRuntimeInitialized,
     print(message: string) {
-      postMessage(Z3MessageKind.PRINT, message);
+      postMessage(Z3WorkerMessageKind.PRINT, message);
     },
     printErr(message: string) {
-      postMessage(Z3MessageKind.ERR, message);
+      postMessage(Z3WorkerMessageKind.ERR, message);
     },
     postRun() {
-      postMessage(Z3MessageKind.EXIT, '');
+      postMessage(Z3WorkerMessageKind.EXIT, '');
     },
   });
 }
@@ -38,14 +38,14 @@ function startZ3() {
  * Send a message to the worker caller that we have initialized the Z3 system
  * */
 function onRuntimeInitialized() {
-  postMessage(Z3MessageKind.INITIALIZED, '');
+  postMessage(Z3WorkerMessageKind.INITIALIZED, '');
 }
 
 /**
  * Generic function to post a message back to the caller of this worker
  * */
-function postMessage(kind: Z3MessageKind, msg: string) {
-  const message: Z3Message = { kind, msg };
+function postMessage(kind: Z3WorkerMessageKind, msg: string) {
+  const message: Z3WorkerMessage = { kind, msg };
   ctx.postMessage(message);
 }
 
@@ -59,7 +59,7 @@ function runZ3(input: string) {
   // Finally, runs the solver. The print / printErr function will be called as required
   solver.callMain(args);
   // Run when the solver is done
-  postMessage(Z3MessageKind.EXIT, '');
+  postMessage(Z3WorkerMessageKind.EXIT, '');
 }
 
 /**
@@ -68,12 +68,12 @@ function runZ3(input: string) {
 ctx.addEventListener(
   'message',
   (e) => {
-    const message: Z3Message = e.data;
+    const message: Z3WorkerMessage = e.data;
     switch (message.kind) {
-      case Z3MessageKind.INIT:
+      case Z3WorkerMessageKind.INIT:
         startZ3();
         break;
-      case Z3MessageKind.OPTIMIZE:
+      case Z3WorkerMessageKind.OPTIMIZE:
         runZ3(message.msg);
         break;
       default:

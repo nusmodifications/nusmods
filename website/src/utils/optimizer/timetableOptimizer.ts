@@ -4,8 +4,8 @@ import {
   OptimizerInput,
   OptimizerOutput,
   OptimizerCallbacks,
-  Z3Message,
-  Z3MessageKind,
+  Z3WorkerMessage,
+  Z3WorkerMessageKind,
 } from 'types/optimizer';
 import { DAY_START_HOUR, DAY_END_HOUR, NUM_WEEKS, HOURS_PER_WEEK } from 'utils/optimizer/constants';
 // ts extension is necessary from webpack documentation for worker-loader
@@ -46,7 +46,7 @@ export class TimetableOptimizer {
       TimetableOptimizer.worker = new WebpackWorker();
       TimetableOptimizer.worker.onmessage = TimetableOptimizer.receiveWorkerMessage;
     }
-    TimetableOptimizer.managerPostMessage(Z3MessageKind.INIT, '');
+    TimetableOptimizer.managerPostMessage(Z3WorkerMessageKind.INIT, '');
   }
 
   /**
@@ -68,25 +68,25 @@ export class TimetableOptimizer {
     TimetableOptimizer.resetBuffers();
     // TODO handle errors from this generation
     const weekSolveStr = TimetableOptimizer.converter.generateWeekSolveSmtLib2String();
-    TimetableOptimizer.managerPostMessage(Z3MessageKind.OPTIMIZE, weekSolveStr);
+    TimetableOptimizer.managerPostMessage(Z3WorkerMessageKind.OPTIMIZE, weekSolveStr);
   }
 
   static receiveWorkerMessage(e) {
-    const message: Z3Message = e.data;
+    const message: Z3WorkerMessage = e.data;
     // console.log("Kind: %s, Message: %s", message.kind, message.msg)
     switch (message.kind) {
-      case Z3MessageKind.INITIALIZED:
+      case Z3WorkerMessageKind.INITIALIZED:
         // Call the initialization callback
         console.log('Manager initialized Z3!');
         TimetableOptimizer.callbacks.onOptimizerInitialized();
         break;
-      case Z3MessageKind.PRINT:
+      case Z3WorkerMessageKind.PRINT:
         TimetableOptimizer.printBuffer += `${message.msg}\n`;
         break;
-      case Z3MessageKind.ERR:
+      case Z3WorkerMessageKind.ERR:
         TimetableOptimizer.errBuffer += `${message.msg}\n`;
         break;
-      case Z3MessageKind.EXIT:
+      case Z3WorkerMessageKind.EXIT:
         // Z3 Initialization exit
         console.log('Z3 messages on exit: ');
         if (TimetableOptimizer.printBuffer === '' && TimetableOptimizer.errBuffer === '') {
@@ -116,7 +116,7 @@ export class TimetableOptimizer {
           TimetableOptimizer.resetBuffers();
           // Two stage solve: first solve for the week constraints, then solve for the actual timetable
           TimetableOptimizer.managerPostMessage(
-            Z3MessageKind.OPTIMIZE,
+            Z3WorkerMessageKind.OPTIMIZE,
             TimetableOptimizer.smtString,
           );
         } else {
@@ -142,8 +142,8 @@ export class TimetableOptimizer {
   /**
    * Generically post a message to the worker
    * */
-  static managerPostMessage(kind: Z3MessageKind, msg: string) {
-    const message: Z3Message = { kind, msg };
+  static managerPostMessage(kind: Z3WorkerMessageKind, msg: string) {
+    const message: Z3WorkerMessage = { kind, msg };
     TimetableOptimizer.worker.postMessage(message);
   }
 

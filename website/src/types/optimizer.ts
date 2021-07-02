@@ -91,7 +91,7 @@ export interface GlobalConstraints {
  * */
 // Need to disable since there's an eslint bug with enums
 // eslint-disable-next-line no-shadow
-export enum Z3MessageKind {
+export enum Z3WorkerMessageKind {
   // Request to init
   INIT = 'INIT',
   // Z3 initialized
@@ -111,8 +111,8 @@ export enum Z3MessageKind {
 /**
  * Message to be sent back and forth between a Z3 webworker and any callers
  * */
-export interface Z3Message {
-  kind: Z3MessageKind;
+export interface Z3WorkerMessage {
+  kind: Z3WorkerMessageKind;
   msg: string;
 }
 
