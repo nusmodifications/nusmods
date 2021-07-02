@@ -6,17 +6,19 @@
 import { Z3Message, Z3MessageKind } from 'types/optimizer';
 
 // Only one solver instance
-let solver: any = null;
+let solver = null;
+
+// Context variable from self, removes self error
+// eslint-disable-next-line no-restricted-globals
+const ctx = self;
 
 /**
  * Initializes the Z3 system and sends a mesage back when the runtime is initialized
  * */
 function startZ3() {
-  const ctx: any = self as any;
   // Imports all names from z3w.js (includes Z3, etc)
   ctx.importScripts(`${ctx.location.origin}/z3w.js`);
   // TODO give vendor types to Z3?
-  // @ts-ignore Z3 doesn't have any types for now
   solver = Z3({
     ENVIRONMENT: 'WORKER', // Setup for a WebWorker environemtn
     onRuntimeInitialized,
@@ -43,7 +45,6 @@ function onRuntimeInitialized() {
  * Generic function to post a message back to the caller of this worker
  * */
 function postMessage(kind: Z3MessageKind, msg: string) {
-  const ctx: any = self as any;
   const message: Z3Message = { kind, msg };
   ctx.postMessage(message);
 }
@@ -64,7 +65,7 @@ function runZ3(input: string) {
 /**
  * Main handler for all incoming messages
  * */
-self.addEventListener(
+ctx.addEventListener(
   'message',
   (e) => {
     const message: Z3Message = e.data;
