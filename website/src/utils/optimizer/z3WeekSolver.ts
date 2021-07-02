@@ -1,4 +1,4 @@
-const smt = require('smtlib-ext');
+import * as smt from 'smtlib-ext';
 
 const SIM_VARNAME = 'weeks_to_simulate';
 /**

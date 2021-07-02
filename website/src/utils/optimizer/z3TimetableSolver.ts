@@ -1,7 +1,7 @@
 // TODO convert to import explicitly
 import { SlotConstraint } from 'types/optimizer';
 
-const smt = require('smtlib-ext');
+import * as smt from 'smtlib-ext';
 
 // Constants for who_id values that are not modules
 export const UNASSIGNED = -1;
@@ -321,7 +321,7 @@ export class Z3TimetableSolver {
         if (!varname.startsWith('t')) return;
 
         // Get the timeslot ID (e.g., 2044)
-        let varId = parseInt(varname.split('_')[0].substring(1));
+        let varId = parseInt(varname.split('_')[0].substring(1), 10);
 
         // Find the next variable after this one. If it doesn't exist, return
         if (varId + 1 >= this.timevars.length) return;
@@ -359,11 +359,15 @@ export class Z3TimetableSolver {
     // }
 
     let variablesStr = '';
-    this.variablesSolver.forEachStatement((stmt: string) => (variablesStr += `${stmt}\n`));
+    this.variablesSolver.forEachStatement((stmt: string) => {
+      variablesStr += `${stmt}\n`;
+    });
     variablesStr = variablesStr.substring(variablesStr.indexOf('\n') + 1);
 
     let constraintStr = '';
-    this.solver.forEachStatement((stmt: string) => (constraintStr += `${stmt}\n`));
+    this.solver.forEachStatement((stmt: string) => {
+      constraintStr += `${stmt}\n`;
+    });
     constraintStr = constraintStr.substring(constraintStr.indexOf('\n') + 1);
 
     // Makes solver output random

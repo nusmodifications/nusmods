@@ -89,6 +89,8 @@ export interface GlobalConstraints {
 /**
  * Defs for communicating between Optimizer <-> WebWorker <-> WASM wrapper
  * */
+// Need to disable since there's an eslint bug with enums
+// eslint-disable-next-line no-shadow
 export enum Z3MessageKind {
   // Request to init
   INIT = 'INIT',
@@ -144,10 +146,10 @@ export function lessonByGroupsByClassNo(lessons: readonly RawLesson[]): LessonsB
     lessons,
     (lesson) => lesson.lessonType,
   );
-  const lessonByGroupsByClassNo = mapValues(
+  const lessonByGroupsByClassNumber = mapValues(
     lessonByGroups,
     (lessonsOfSamelessonType: readonly RawLesson[]) =>
       groupBy(lessonsOfSamelessonType, (lesson) => lesson.classNo),
   );
-  return lessonByGroupsByClassNo;
+  return lessonByGroupsByClassNumber;
 }

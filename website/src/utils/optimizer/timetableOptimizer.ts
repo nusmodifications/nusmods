@@ -69,7 +69,7 @@ export class TimetableOptimizer {
     TimetableOptimizer.managerPostMessage(Z3MessageKind.OPTIMIZE, weekSolveStr);
   }
 
-  static receiveWorkerMessage(e: any) {
+  static receiveWorkerMessage(e) {
     const message: Z3Message = e.data;
     // console.log("Kind: %s, Message: %s", message.kind, message.msg)
     switch (message.kind) {

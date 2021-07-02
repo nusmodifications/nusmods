@@ -26,6 +26,8 @@ import {
   HOURS_PER_WEEK,
   NUM_WEEKS,
 } from 'utils/optimizer/constants';
+import StringIdGenerator from 'utils/optimizer/stringIdGenerator';
+import { parse } from 'sexpr-plus';
 /**
  * Converts to and from the high-level module/lesson input data to the optimizer
  *  and SMTLIB2 code used in Z3.
@@ -66,8 +68,8 @@ export class OptimizerInputSmtlibConverter {
     const timeStrVals: Array<string> = Array.from(
       new Array(totalHalfHourSlots),
       (_: number, i: number) => {
-        const [offset, day, week] = this.z3TimeToGenericTime(i);
-        const dayOfWeek = this.idxToDayStr(day);
+        const [offset, day, week] = z3TimeToGenericTime(i);
+        const dayOfWeek = idxToDayStr(day);
         const hour: number = Math.floor(offset / 2) + this.startHour;
         const hourStr: string = hour < 10 ? `0${hour.toString()}` : hour.toString();
         const minuteStr: string = offset % 2 === 0 ? '00' : '30';
@@ -89,7 +91,7 @@ export class OptimizerInputSmtlibConverter {
         Object.keys(modInfo.lessonsGrouped).forEach((lessonType: string, lessontypeidx: number) => {
           const classNosOfLessontype: string[] = Object.keys(modInfo.lessonsGrouped[lessonType]);
           classNosOfLessontype.forEach((lessonName: string, lessonidx: number) => {
-            const key = this.lessonInfoToZ3Varname(modInfo.mod.moduleCode, lessonType, lessonName);
+            const key = lessonInfoToZ3Varname(modInfo.mod.moduleCode, lessonType, lessonName);
             // eslint-disable-next-line no-bitwise
             this.whoIdTable[key] = (moduleidx << 20) | (lessontypeidx << 10) | lessonidx;
           });
@@ -242,7 +244,7 @@ export class OptimizerInputSmtlibConverter {
         // We ensure that the days specified are free
         // Assume that the free day slot constraints are in order of day-of-week
         this.optimizerInput.constraints.specificFreeDays.forEach((freeday: string) => {
-          const dayIdx = this.dayStrToIdx(freeday);
+          const dayIdx = dayStrToIdx(freeday);
           const dayFreedayConstraints = slotConstraints[dayIdx];
           this.z3tt.addSlotConstraintsFulfilOnlyOne([dayFreedayConstraints]);
         });
@@ -285,7 +287,6 @@ export class OptimizerInputSmtlibConverter {
    * */
   z3OutputToTimetable(z3Output: string): OptimizerOutput {
     // TODO replace by imports
-    const { parse } = require('sexpr-plus');
     const parsedExpr = parse(z3Output);
     // console.log(parsed_expr)
     const isSat = parsedExpr[0].content === 'sat'; // parsed_expr[0] === {type: "atom", content: "sat", location: {…}}
@@ -330,7 +331,7 @@ export class OptimizerInputSmtlibConverter {
       if (key.startsWith('t')) {
         const keySplit = key.split('_')[0];
         const halfhouridx = parseInt(keySplit.substr(1), 10);
-        const [offset, day, week] = this.z3TimeToGenericTime(halfhouridx);
+        const [offset, day, week] = z3TimeToGenericTime(halfhouridx);
         const val = variableAssignments[key];
         if (val === UNASSIGNED) return; // Un-assigned slot
         const assignment: string = this.reverseWhoIdTable[val];
@@ -339,7 +340,7 @@ export class OptimizerInputSmtlibConverter {
           // throw new Error(`Undefined assignment for variable_assignments[${key}] = ${variable_assignments[key]}`)
         }
         console.log(`For z3 t${halfhouridx}, offset: ${offset}, day: ${day}, week: ${week}`);
-        const lessonDetails = this.z3VarnameToLessonInfo(assignment);
+        const lessonDetails = z3VarnameToLessonInfo(assignment);
         nestObject(lessons, lessonDetails);
       }
     });
@@ -365,7 +366,7 @@ export class OptimizerInputSmtlibConverter {
     Object.keys(lessonsForLessonType).forEach((classNo: string) => {
       const lessonsForClassNo: readonly RawLesson[] = lessonsForLessonType[classNo];
       // TODO abstract out key generation to function
-      const key: string = this.lessonInfoToZ3Varname(
+      const key: string = lessonInfoToZ3Varname(
         moduleCode,
         lessonsForClassNo[0].lessonType,
         lessonsForClassNo[0].classNo,
@@ -387,12 +388,12 @@ export class OptimizerInputSmtlibConverter {
             this.weeksToSimulate.has(week),
           );
           // For each week that we need to simulate, calculate the time constraints
-          for (const week of weeksToSim) {
-            console.log(`Simulating week ${week}`);
+          weeksToSim.forEach((week: number) => {
+            // console.log(`Simulating week ${week}`);
             const startTime = this.hhmmToZ3Time(lesson.startTime, lesson.day, week - 1);
             const endTime = this.hhmmToZ3Time(lesson.endTime, lesson.day, week - 1);
             startEndTimes.push([startTime, endTime]);
-          }
+          });
         }
       });
       const sc: SlotConstraint = {
@@ -417,7 +418,7 @@ export class OptimizerInputSmtlibConverter {
     // For each day of the week, add a slot constraint blocking out the whole day
     // Free Saturday is too easy, remove it
     for (let day = 0; day < DAYS - 1; day++) {
-      const name = `FREE_${this.idxToDayStr(day)}`; // Timeslots for this day will be named FREE_monday for e.g,
+      const name = `FREE_${idxToDayStr(day)}`; // Timeslots for this day will be named FREE_monday for e.g,
       const whoId = FREE - day; // FREE == -2, so we generate a separate whoId for each day by subtracting
 
       // To display the results in the table we need to map the whoId and reverse tables
@@ -433,13 +434,13 @@ export class OptimizerInputSmtlibConverter {
       }
 
       const startEndIdxs: Array<[number, number]> = [];
-      for (const week of Array.from(this.weeksToSimulate)) {
+      Array.from(this.weeksToSimulate).forEach((week: number) => {
         // Generate the slot constraints for each day
         const startidx =
           (week - 1) * (HOURS_PER_WEEK * 2) + day * (HOURS_PER_DAY * 2) + startOffset;
         const endidx = startidx + (endOffset - startOffset);
         startEndIdxs.push([startidx, endidx]);
-      }
+      });
 
       const sc: SlotConstraint = {
         startEndTimes: startEndIdxs,
@@ -465,13 +466,12 @@ export class OptimizerInputSmtlibConverter {
     const startOffset = this.hhmmToZ3Time(this.optimizerInput.constraints.startTime);
     const endOffset = this.hhmmToZ3Time(this.optimizerInput.constraints.endTime);
     if (startOffset === 0 && endOffset - startOffset === HOURS_PER_DAY * 2) return undefined;
-
     // For each day of the week, add a slot constraint blocking out hours before and after our ideal timings
     for (let day = 0; day < DAYS; day++) {
       // Compute the two time windows necessary to block off start and end of day
       // Start-of-day time starts at the initial index of the day, up until the offset
       // Do this for every week that we have to simulate
-      for (const week of Array.from(this.weeksToSimulate)) {
+      Array.from(this.weeksToSimulate).forEach((week: number) => {
         const startidx = (week - 1) * (HOURS_PER_WEEK * 2) + day * (HOURS_PER_DAY * 2);
         const startidxEndidx = startidx + startOffset;
         if (startidxEndidx - startidx > 0) {
@@ -484,7 +484,7 @@ export class OptimizerInputSmtlibConverter {
           startEndTimes.push([startidx, startidxEndidx]);
         }
         startEndTimes.push([endidxStartidx, endidx]);
-      }
+      });
     }
 
     const sc: SlotConstraint = {
@@ -511,7 +511,7 @@ export class OptimizerInputSmtlibConverter {
     // For each day of the week, add a slot constraint blocking out hours before and after our ideal timings
     for (let day = 0; day < DAYS; day++) {
       // Compute the lunch break window for each day and week
-      for (const week of Array.from(this.weeksToSimulate)) {
+      Array.from(this.weeksToSimulate).forEach((week: number) => {
         const baseidx = (week - 1) * (HOURS_PER_WEEK * 2) + day * (HOURS_PER_DAY * 2);
         const startidx = baseidx + startOffset;
         const endidx = baseidx + endOffset;
@@ -521,7 +521,7 @@ export class OptimizerInputSmtlibConverter {
           whoIdString: 'UNASSIGNED',
         };
         scs.push(sc);
-      }
+      });
     }
 
     console.log('Slotconstraints for lunchbreak');
@@ -545,7 +545,7 @@ export class OptimizerInputSmtlibConverter {
       );
     } else {
       const hourIndex = hour - this.startHour;
-      const dayIndex = this.dayStrToIdx(day);
+      const dayIndex = dayStrToIdx(day);
       // hour_index * 2 (since we count half-hours)
       // + half_hour_addon since we offset by 1 unit if it's a half hour
       // + number of hours in a day * 2 to get number of half-hours
@@ -555,52 +555,52 @@ export class OptimizerInputSmtlibConverter {
       return idx;
     }
   }
+}
 
-  /*
+/*
     Conversion from times like 0 --> (1, 0) (1st slot of the day 0-indexed, Monday)
   */
-  z3TimeToGenericTime(z3Time: number): [number, number, number] {
-    // Day is easy: each day has(self.end_hour - self.start_hour) * 2) slots
-    // If there are 60 slots per week, and we are at slot 70, we're 10 slots into the current week
-    const week = Math.floor(z3Time / (HOURS_PER_WEEK * 2));
-    const z3TimeWeek = z3Time % (HOURS_PER_WEEK * 2);
-    const day = Math.floor(z3TimeWeek / (HOURS_PER_DAY * 2));
-    const offset = z3TimeWeek % (HOURS_PER_DAY * 2);
-    return [offset, day, week];
-  }
+function z3TimeToGenericTime(z3Time: number): [number, number, number] {
+  // Day is easy: each day has(self.end_hour - self.start_hour) * 2) slots
+  // If there are 60 slots per week, and we are at slot 70, we're 10 slots into the current week
+  const week = Math.floor(z3Time / (HOURS_PER_WEEK * 2));
+  const z3TimeWeek = z3Time % (HOURS_PER_WEEK * 2);
+  const day = Math.floor(z3TimeWeek / (HOURS_PER_DAY * 2));
+  const offset = z3TimeWeek % (HOURS_PER_DAY * 2);
+  return [offset, day, week];
+}
 
-  /**
-   * Simple conversion of string into a monday-index-0 number
-   * */
-  dayStrToIdx(day: string): number {
-    return DAY_IDXS[day.toLowerCase()];
-  }
+/**
+ * Simple conversion of string into a monday-index-0 number
+ * */
+function dayStrToIdx(day: string): number {
+  return DAY_IDXS[day.toLowerCase()];
+}
 
-  /**
-   * Simple conversion of string into a monday-index-0 number
-   * */
-  idxToDayStr(idx: number): string {
-    return IDX_DAYS[idx];
-  }
+/**
+ * Simple conversion of string into a monday-index-0 number
+ * */
+function idxToDayStr(idx: number): string {
+  return IDX_DAYS[idx];
+}
 
-  /**
-   * Converts a module, lesson type, and class number for a lesson
-   *  into a variable name that z3 can use. We have to get the abbreviated name
-   *  since
-   * */
-  lessonInfoToZ3Varname(moduleCode: string, lessonType: string, classNo: string): string {
-    const lessonTypeAbbrev = LESSON_TYPE_ABBREV[lessonType];
-    return [moduleCode, lessonTypeAbbrev, classNo].join('__');
-  }
+/**
+ * Converts a module, lesson type, and class number for a lesson
+ *  into a variable name that z3 can use. We have to get the abbreviated name
+ *  since
+ * */
+function lessonInfoToZ3Varname(moduleCode: string, lessonType: string, classNo: string): string {
+  const lessonTypeAbbrev = LESSON_TYPE_ABBREV[lessonType];
+  return [moduleCode, lessonTypeAbbrev, classNo].join('__');
+}
 
-  /**
-   * Recovers lesson info from z3 variable name
-   * */
-  z3VarnameToLessonInfo(z3Varname: string): [string, string, string] {
-    const [moduleCode, lessonTypeAbbrev, classNo] = z3Varname.split('__');
-    const lessonType = LESSON_ABBREV_TYPE[lessonTypeAbbrev];
-    return [moduleCode, lessonType, classNo];
-  }
+/**
+ * Recovers lesson info from z3 variable name
+ * */
+function z3VarnameToLessonInfo(z3Varname: string): [string, string, string] {
+  const [moduleCode, lessonTypeAbbrev, classNo] = z3Varname.split('__');
+  const lessonType = LESSON_ABBREV_TYPE[lessonTypeAbbrev];
+  return [moduleCode, lessonType, classNo];
 }
 
 // Assign an array of properties to an object - creating nested levels
@@ -618,63 +618,4 @@ export function nestObject(obj, keyPath) {
     curObj = curObj[key];
   }
   curObj[keyPath[lastKeyIndex]] = value;
-}
-
-/** *
- * Usage:
- * const ids = new StringIdGenerator();
-
-ids.next(); // 'a'
-ids.next(); // 'b'
-ids.next(); // 'c'
-
-// ...
-ids.next(); // 'z'
-ids.next(); // 'A'
-ids.next(); // 'B'
-
-// ...
-ids.next(); // 'Z'
-ids.next(); // 'aa'
-ids.next(); // 'ab'
-ids.next(); // 'ac'
- *
- * */
-export class StringIdGenerator {
-  chars: string;
-
-  nextId: number[];
-
-  constructor(chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ') {
-    this.chars = chars;
-    this.nextId = [0];
-  }
-
-  next() {
-    const r = [];
-    for (const char of this.nextId) {
-      r.unshift(this.chars[char]);
-    }
-    this.increment();
-    return r.join('');
-  }
-
-  increment() {
-    for (let i = 0; i < this.nextId.length; i++) {
-      this.nextId[i] += 1;
-      const val = this.nextId[i];
-      if (val >= this.chars.length) {
-        this.nextId[i] = 0;
-      } else {
-        return;
-      }
-    }
-    this.nextId.push(0);
-  }
-
-  *[Symbol.iterator]() {
-    while (true) {
-      yield this.next();
-    }
-  }
 }
