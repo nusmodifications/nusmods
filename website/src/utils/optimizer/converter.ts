@@ -606,7 +606,7 @@ function z3VarnameToLessonInfo(z3Varname: string): [string, string, string] {
 // Assign an array of properties to an object - creating nested levels
 // E.g., nestObject({}, [a, b, c]) ==> {a: {b: c}}
 // TODO extract to file
-export function nestObject(obj, keyPath) {
+function nestObject(obj, keyPath) {
   let curObj = obj;
   const value = keyPath[keyPath.length - 1];
   const lastKeyIndex = Math.max(0, keyPath.length - 2);
