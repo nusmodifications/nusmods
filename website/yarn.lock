@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@authenio/samlify-node-xmllint@^2.0.0":
+"@authenio/samlify-node-xmllint@2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@authenio/samlify-node-xmllint/-/samlify-node-xmllint-2.0.0.tgz#74bf7dc540506a25e842ae72d492afec627b3a6d"
   integrity sha512-V9cQ0CHqu3JwOmbSecGPUnzIES5kHxD00FEZKnWh90ksQUJG5/TscV2r9XLbKp7MlRMOSUfWxecM35xPSLFdSg==
@@ -10405,7 +10405,7 @@ safe-regex@^1.1.0:
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
-samlify@^2.7.6:
+samlify@2.7.6:
   version "2.7.6"
   resolved "https://registry.yarnpkg.com/samlify/-/samlify-2.7.6.tgz#dfbdd839558bca5c07a752970a2b679cbe2db3d9"
   integrity sha512-yYB5jAr+vss9mkZfYmDwQmKE5nAUmEhSTa+qBK0dX/XYLhP8gTQtspvWx2bZUIvB3Alq6bWdPh1PvbaWdpokAA==
