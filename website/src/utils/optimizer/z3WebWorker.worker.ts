@@ -12,7 +12,9 @@ import { Z3WorkerMessage, Z3WorkerMessageKind } from 'types/optimizer';
 declare let self: DedicatedWorkerGlobalScope;
 
 // Only one solver instance
-let solver = null;
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore No types for Z3 WASM
+let solver: any = null;
 
 // Context variable from self, removes self error
 // eslint-disable-next-line no-restricted-globals
@@ -25,6 +27,8 @@ function startZ3() {
   // Imports all names from z3w.js (includes Z3, etc)
   ctx.importScripts(`${ctx.location.origin}/z3w.js`);
   // TODO give vendor types to Z3?
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore No types for Z3 WASM
   solver = Z3({
     ENVIRONMENT: 'WORKER', // Setup for a WebWorker environemtn
     onRuntimeInitialized,
