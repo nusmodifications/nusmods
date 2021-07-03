@@ -163,23 +163,22 @@ describe('addSlotConstraintsFulfilExactlyN', () => {
   });
 });
 
-
 describe('setBooleanSelectorCosts', () => {
   test('generates expected smtlib2 string when setting basic workload costs', () => {
-  const z3ts = new Z3TimetableSolver(4);
+    const z3ts = new Z3TimetableSolver(4);
     const boolSelectorCosts: WorkloadCost[] = [
-        {
-            varname: "v1",
-            cost: 10
-        },
-        {
-            varname: "v2",
-            cost: 1
-        }
-    ]
+      {
+        varname: 'v1',
+        cost: 10,
+      },
+      {
+        varname: 'v2',
+        cost: 1,
+      },
+    ];
     const baseCost = 20;
     const minCost = 1;
-      const maxCost = 45;
+    const maxCost = 45;
     z3ts.setBooleanSelectorCosts(boolSelectorCosts, baseCost, minCost, maxCost);
     const expected = `(declare-fun ${SELECTOR_OPTIONAL_PREFIX}v1 () Bool)
 (declare-fun ${SELECTOR_OPTIONAL_PREFIX}v2 () Bool)
@@ -196,6 +195,5 @@ describe('setBooleanSelectorCosts', () => {
     // Turn off randomization so that the generated string is also deterministic
     const actual = z3ts.generateSmtlib2String(false);
     expect(actual).toEqual(expected);
-
   });
 });

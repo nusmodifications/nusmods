@@ -66,8 +66,8 @@ export interface SlotConstraint {
  * Indicating that a varname (boolean selector) has a cost attached to it if it is chosen.
  */
 export interface WorkloadCost {
-  varname: string,
-  cost: number
+  varname: string;
+  cost: number;
 }
 
 // User-selected constraints to pass to optimizer

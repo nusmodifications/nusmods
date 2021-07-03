@@ -219,7 +219,7 @@ export class Z3TimetableSolver {
     this.assignedIntvarsPossiblevalues[workloadSumName] = new Set();
 
     const terms: smt.SNode[] = [baseCost];
-    workloads.forEach(({varname, cost}) => {
+    workloads.forEach(({ varname, cost }) => {
       // Make sure varname is declared
       const fullvarname = `${SELECTOR_OPTIONAL_PREFIX}${varname}`;
       this.boolSelectorsSet.add(fullvarname);

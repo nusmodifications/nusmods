@@ -204,12 +204,10 @@ export class OptimizerInputSmtlibConverter {
       // Non-compulsory modules make up the if-then-else
       const optionalWorkloads: Array<WorkloadCost> = this.optimizerInput.moduleInfo
         .filter((modInfo: ModuleInfoWithConstraints) => !modInfo.required)
-        .map((modInfo: ModuleInfoWithConstraints) => {
-          return {
-            varname: modInfo.mod.moduleCode,
-            cost: parseInt(modInfo.mod.moduleCredit, 10),
-          }
-        });
+        .map((modInfo: ModuleInfoWithConstraints) => ({
+          varname: modInfo.mod.moduleCode,
+          cost: parseInt(modInfo.mod.moduleCredit, 10),
+        }));
       // Compulsory modules make up the baseline workload
       const compulsoryWorkloadSum: number = this.optimizerInput.moduleInfo
         .filter((modInfo: ModuleInfoWithConstraints) => modInfo.required)

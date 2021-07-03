@@ -12,8 +12,7 @@ import { Z3WorkerMessage, Z3WorkerMessageKind } from 'types/optimizer';
 declare let self: DedicatedWorkerGlobalScope;
 
 // Only one solver instance
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore No types for Z3 WASM
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let solver: any = null;
 
 // Context variable from self, removes self error
