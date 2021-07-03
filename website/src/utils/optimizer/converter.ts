@@ -6,6 +6,7 @@ import {
   SlotConstraint,
   OptimizerOutput,
   LessonsForLessonType,
+  WorkloadCost,
 } from 'types/optimizer';
 import { LessonTime, DayText, RawLesson, Weeks, NumericWeeks, isWeekRange } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
@@ -201,12 +202,14 @@ export class OptimizerInputSmtlibConverter {
     // Workload constraints
     if (this.optimizerInput.constraints.isWorkloadActive) {
       // Non-compulsory modules make up the if-then-else
-      const optionalWorkloads: Array<[string, number]> = this.optimizerInput.moduleInfo
+      const optionalWorkloads: Array<WorkloadCost> = this.optimizerInput.moduleInfo
         .filter((modInfo: ModuleInfoWithConstraints) => !modInfo.required)
-        .map((modInfo: ModuleInfoWithConstraints) => [
-          modInfo.mod.moduleCode,
-          parseInt(modInfo.mod.moduleCredit, 10),
-        ]);
+        .map((modInfo: ModuleInfoWithConstraints) => {
+          return {
+            varname: modInfo.mod.moduleCode,
+            cost: parseInt(modInfo.mod.moduleCredit, 10),
+          }
+        });
       // Compulsory modules make up the baseline workload
       const compulsoryWorkloadSum: number = this.optimizerInput.moduleInfo
         .filter((modInfo: ModuleInfoWithConstraints) => modInfo.required)

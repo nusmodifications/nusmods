@@ -1,5 +1,5 @@
 // TODO convert to import explicitly
-import { SlotConstraint } from 'types/optimizer';
+import { SlotConstraint, WorkloadCost } from 'types/optimizer';
 
 import * as smt from 'smtlib-ext';
 
@@ -209,28 +209,28 @@ export class Z3TimetableSolver {
    * TODO: naming-wise, make this sound more generic? This seems leaky through the naming but it's not.
    * */
   setBooleanSelectorCosts(
-    workloads: [string, number][],
-    baseWorkload: number, // Base cost so far (modelling the credits from compulsory modules)
-    minWorkload: number, // Minimium workload to satisfy constraints (min modular credits)
-    maxWorkload: number, // Maximum workload to satisfy constraints (max modular credits)
+    workloads: WorkloadCost[],
+    baseCost: number, // Base cost so far (modelling the credits from compulsory modules)
+    minCost: number, // Minimium workload to satisfy constraints (min modular credits)
+    maxCost: number, // Maximum workload to satisfy constraints (max modular credits)
   ) {
     // Create a variable for the cost of the boolean selectors, add it to declarations list
     const workloadSumName = 'workloadsum';
     this.assignedIntvarsPossiblevalues[workloadSumName] = new Set();
 
-    const terms: smt.SNode[] = [baseWorkload];
-    workloads.forEach(([varname, workload]) => {
+    const terms: smt.SNode[] = [baseCost];
+    workloads.forEach(({varname, cost}) => {
       // Make sure varname is declared
       const fullvarname = `${SELECTOR_OPTIONAL_PREFIX}${varname}`;
       this.boolSelectorsSet.add(fullvarname);
-      terms.push(smt.If(fullvarname, workload, 0));
+      terms.push(smt.If(fullvarname, cost, 0));
     });
     const sumOfTerms = smt.Sum(...terms);
     this.solver.assert(smt.Eq(workloadSumName, sumOfTerms));
 
     // Assert that the workload should be >= than the minimum workload and <= the maximum workload
-    this.solver.assert(smt.GEq(workloadSumName, minWorkload));
-    this.solver.assert(smt.LEq(workloadSumName, maxWorkload));
+    this.solver.assert(smt.GEq(workloadSumName, minCost));
+    this.solver.assert(smt.LEq(workloadSumName, maxCost));
   }
 
   /**

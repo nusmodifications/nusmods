@@ -52,12 +52,22 @@ export type LessonsByGroupsByClassNo = {
 
 export type LessonsForLessonType = { [classNo: string]: readonly RawLesson[] };
 
-// A list of times that are assigned to a particular owner (e.g., a lesson)
-// Fundamental type to indicate that a particular block of time should be reserved if a owner id is chosen
+/*
+ * A list of times that are assigned to a particular owner (e.g., a lesson)
+ * Used throughout optimizer to indicate that a particular block of time should be reserved if a owner id is chosen
+ */
 export interface SlotConstraint {
   startEndTimes: Array<[number, number]>; // Array of start and end times as integers
   ownerId: number; // Numeric ID of owner, since we will encode this as an integer constraint
   ownerString: string; // string representing the owner: user-interpretable, used for varnames
+}
+
+/*
+ * Indicating that a varname (boolean selector) has a cost attached to it if it is chosen.
+ */
+export interface WorkloadCost {
+  varname: string,
+  cost: number
 }
 
 // User-selected constraints to pass to optimizer

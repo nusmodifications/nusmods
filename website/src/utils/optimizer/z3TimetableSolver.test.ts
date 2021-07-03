@@ -4,7 +4,7 @@ import {
   SELECTOR_FULFIL_N_PREFIX,
   SELECTOR_OPTIONAL_PREFIX,
 } from 'utils/optimizer/z3TimetableSolver';
-import { SlotConstraint } from 'types/optimizer';
+import { SlotConstraint, WorkloadCost } from 'types/optimizer';
 
 describe('constructor', () => {
   test('constructs initial time arrays list as expected', () => {
@@ -160,5 +160,42 @@ describe('addSlotConstraintsFulfilExactlyN', () => {
   test('errors when asked to choosing more than the passed slots', () => {
     const z3ts = new Z3TimetableSolver(4);
     expect(() => z3ts.addSlotConstraintsFulfilExactlyN([sc, sc2, sc3], 7)).toThrow();
+  });
+});
+
+
+describe('setBooleanSelectorCosts', () => {
+  test('generates expected smtlib2 string when setting basic workload costs', () => {
+  const z3ts = new Z3TimetableSolver(4);
+    const boolSelectorCosts: WorkloadCost[] = [
+        {
+            varname: "v1",
+            cost: 10
+        },
+        {
+            varname: "v2",
+            cost: 1
+        }
+    ]
+    const baseCost = 20;
+    const minCost = 1;
+      const maxCost = 45;
+    z3ts.setBooleanSelectorCosts(boolSelectorCosts, baseCost, minCost, maxCost);
+    const expected = `(declare-fun ${SELECTOR_OPTIONAL_PREFIX}v1 () Bool)
+(declare-fun ${SELECTOR_OPTIONAL_PREFIX}v2 () Bool)
+(declare-fun workloadsum () Int)
+(assert (= workloadsum (+ ${baseCost} (ite ${SELECTOR_OPTIONAL_PREFIX}v1 10 0) (ite ${SELECTOR_OPTIONAL_PREFIX}v2 1 0))))
+(assert (>= workloadsum ${minCost}))
+(assert (<= workloadsum ${maxCost}))
+(declare-fun BUGFIX_VAR_DONTASK () Int)
+(assert-soft (= BUGFIX_VAR_DONTASK 10))
+(check-sat)
+(get-model)
+(get-objectives)
+(exit)`;
+    // Turn off randomization so that the generated string is also deterministic
+    const actual = z3ts.generateSmtlib2String(false);
+    expect(actual).toEqual(expected);
+
   });
 });
