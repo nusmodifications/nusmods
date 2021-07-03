@@ -4,7 +4,7 @@ import { Module, RawLesson, StartTime, EndTime } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
 
 // {module id}__{lesson type}__{lesson id} e.g., CS3203__Lecture__1
-export type UniqueLessonID = string;
+export type UniqueLessonString = string;
 export type Z3LessonID = number;
 
 /**
@@ -52,12 +52,12 @@ export type LessonsByGroupsByClassNo = {
 
 export type LessonsForLessonType = { [classNo: string]: readonly RawLesson[] };
 
-// A list of times that are assigned to a particular who_id
-// Fundamental type to indicate that a particular block of time should be reserved if a who_id is chosen
+// A list of times that are assigned to a particular owner (e.g., a lesson)
+// Fundamental type to indicate that a particular block of time should be reserved if a owner id is chosen
 export interface SlotConstraint {
   startEndTimes: Array<[number, number]>; // Array of start and end times as integers
-  whoId: number; //
-  whoIdString: string; // string representing the who_id number as a user-interpretable string
+  ownerId: number; // Numeric ID of owner, since we will encode this as an integer constraint
+  ownerString: string; // string representing the owner: user-interpretable, used for varnames
 }
 
 // User-selected constraints to pass to optimizer

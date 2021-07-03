@@ -3,7 +3,7 @@ import { SlotConstraint } from 'types/optimizer';
 
 import * as smt from 'smtlib-ext';
 
-// Constants for who_id values that are not modules
+// Constants for owner id values that are not lessons
 export const UNASSIGNED = -1;
 export const FREE = -2;
 export const TOOEARLY_LATE = -20;
@@ -11,18 +11,24 @@ export const VAR_UNASSIGNED_WEIGHT = 1;
 export const BOOLVAR_ASSIGNED_WEIGHT = 100000;
 
 export class Z3TimetableSolver {
-  timevars: Array<string>; // ["t0", "t1", ....]
+  timevars: Array<string>; // ["t0", "t1", ....] representing all possible half-hour slots
 
   assignedIntvarsPossiblevalues: Record<string, Set<number>>; // What allowed values can each time val have
 
   boolSelectorsSet: Set<string>; // Basically module names e.g, CS3203, to select or de-select a module
 
-  variablesSolver: any; // Just for variables assignment - hack to get the variables assignment ABOVE the constraints
+  variablesSolver: smt.BaseSolver; // Just for variables assignment - hack to get the variables assignment ABOVE the constraints
 
-  solver: any; // For the actual constraints
+  solver: smt.BaseSolver; // For the actual constraints
 
   constrainCompactness: boolean; // whether we want all classes to be right after each other as much as possible
 
+  /**
+   * Initializes the solvers and all the time variables representing each half-hour slot.
+   * These don't have to be half-hours, the solver treats them generically as discrete time units.
+   * Callers can also specify the name of each time unit in case t0, t1, etc, is too undescriptive.
+   * Generally, this is now called with the day of the week, actual hour and minute, and the week number (for ease of reading)
+   * */
   constructor(totalTimeUnits: number, timeUnitNames?: Array<string>) {
     // Create time variable names based on just the raw time unit, or pass in a list of strings to be appended to the raw time hours
     if (timeUnitNames !== undefined) {
@@ -45,24 +51,9 @@ export class Z3TimetableSolver {
   }
 
   /**
-   *  Indicate that a block of time cannot be used for anything else.
-   *  Set all time values in the range to a fixed ID.
-   * */
-  // add_hard_constraint(slot: SlotConstraint) {
-  //     slot.start_endTimes.forEach(([startTime, endTime], _) => {
-  //         for (let i = startTime; i < endTime; i++) {
-  //             const timevar = this.timevars[i];
-  //             // Constraint this slot
-  //             this.solver.assert(smt.Eq(timevar, slot.who_id));
-  //             // Add the var we just assigned to the set so that we can generate the types / constraints later
-  //             this.assigned_vars_set.add(timevar);
-  //         }
-  //     });
-  // }
-
-  /**
      *  Add a list of constraint options, exactly one of which has to be satisfied.
-        We create the slot constraints for each (AND of all non-free timeslots now).
+        If a single constraint is passed in, it will definitely be satisfied.
+
         To ensure that only one SlotConstraint is selected, we need to create a new variable that represent this selection:
 
         v1: (SL78 = 7 or SL78 = 8) and (SL78 = 7 => (.. slot constraints for id 7 ..)) ...
@@ -85,18 +76,17 @@ export class Z3TimetableSolver {
      * */
   addSlotConstraintsFulfilOnlyOne(
     slots: Array<SlotConstraint>,
-    booleanSelector?: string,
-    chainConstraints = false,
+    booleanSelector?: string
   ) {
-    // If we are selecting between who_ids 0, 1024, and 2048, the selector variable will be named SL_0_1024_2048
-    const selectorVar = `SL_${slots.map((slot) => slot.whoIdString).join('_')}`;
+    // If we are selecting between owner ids 0, 1024, and 2048, the selector variable will be named SL_0_1024_2048
+    const selectorVar = `SL_${slots.map((slot) => slot.ownerString).join('_')}`;
 
     // Indicate that we need to declare this later as an unconstrained variable (but we constrain it here instead)
     this.addPossibleValuesToVariable(selectorVar);
 
     // Create a list of constraints for the possible values the selector can take
     // With same example, we have SL_0_1024_2048 == 0 OR SL_0_1024_2048 == 1024 OR SL_0_1024_2048 == 2048
-    const selectorVarPossibleValues = slots.map((slot) => smt.Eq(selectorVar, slot.whoId));
+    const selectorVarPossibleValues = slots.map((slot) => smt.Eq(selectorVar, slot.ownerId));
 
     // We indicate with the boolean selector that options are selected ONLY IF the boolean selector is true
     if (booleanSelector !== undefined) {
@@ -115,18 +105,18 @@ export class Z3TimetableSolver {
         // Holds all the constraints, assuming this slotconstraint is selected
         const slotRequirements: Array<any> = [];
         slot.startEndTimes.forEach(([startTime, endTime]) => {
-          // Create a constraint to be "who_id" for all the start and end times in the slot constraint
+          // Create a constraint to be "owner id" for all the start and end times in the slot constraint
           // If we said: for this slot, time slots h1 and h2 need to be = ID 1024, then
           // h1 == 1024
           // h2 == 1024
           for (let i = startTime; i < endTime; i++) {
             const timevar = this.timevars[i];
             // Make sure we declare this timevar since we use it
-            this.addPossibleValuesToVariable(timevar, [slot.whoId, UNASSIGNED]);
-            // For this seletion, constraint the timevar to the who_id requested\
+            this.addPossibleValuesToVariable(timevar, [slot.ownerId, UNASSIGNED]);
+            // For this seletion, constraint the timevar to the owner id requested
             // Assert individually that if a selector is selector, that hour must be selected to it, and vice versa
             slotRequirements.push(
-              smt.Eq(smt.Eq(selectorVar, slot.whoId), smt.Eq(timevar, slot.whoId)),
+              smt.Eq(smt.Eq(selectorVar, slot.ownerId), smt.Eq(timevar, slot.ownerId)),
             );
           }
         });
@@ -134,14 +124,8 @@ export class Z3TimetableSolver {
       })
       .flat(); // Flatten in case we return multiple constraints per slot
 
-    // Decide what to do with the constraint
-    if (chainConstraints) {
-      // If chaining, return and let caller decide
-      return constraints;
-    }
-    // If not chaining, assert them all now
+    // Assert all built-up constraints now
     constraints.forEach((constraint: any) => this.solver.assert(constraint));
-    return [];
   }
 
   /**
@@ -170,20 +154,20 @@ export class Z3TimetableSolver {
         // Holds all the constraints, assuming this slotconstraint is selected
         const slotRequirements: Array<any> = [];
         // Create a selector variable for this (SLKB = Selector for K-out-of-N, boolean)
-        const selectorVar = `SLKB_${slot.whoIdString}`;
+        const selectorVar = `SLKB_${slot.ownerString}`;
         selectorVarList.push(selectorVar);
         slot.startEndTimes.forEach(([startTime, endTime]) => {
-          // Create a constraint to be "who_id" for all the start and end times in the slot constraint
+          // Create a constraint to be owner id for all the start and end times in the slot constraint
           // If we said: for this slot, time slots h1 and h2 need to be = ID 1024, then
           // h1 == 1024
           // h2 == 1024
           for (let i = startTime; i < endTime; i++) {
             const timevar = this.timevars[i];
             // Make sure we declare this timevar since we use it
-            this.addPossibleValuesToVariable(timevar, [slot.whoId, UNASSIGNED]);
-            // For this seletion, constraint the timevar to the who_id requested\
+            this.addPossibleValuesToVariable(timevar, [slot.ownerId, UNASSIGNED]);
+            // For this seletion, constraint the timevar to the owner id requested\
             // Assert individually that if the boolean selector is true (selected), that hour must be selected to it, and vice versa
-            slotRequirements.push(smt.Eq(selectorVar, smt.Eq(timevar, slot.whoId)));
+            slotRequirements.push(smt.Eq(selectorVar, smt.Eq(timevar, slot.ownerId)));
           }
         });
         return slotRequirements;
@@ -230,8 +214,8 @@ export class Z3TimetableSolver {
   }
 
   /**
-   * Bit hacky since it requires knowing our WHO_ID constraint format, but basically:
-   *  If a slot is assigned to a who_id > 0 (meaning not UNASSIGNED / FREE / etc)
+   * Bit hacky since it requires knowing our owner id constraint format, but basically:
+   *  If a slot is assigned to a owner id > 0 (meaning not UNASSIGNED / FREE / etc)
    *      Then: (assert-soft) that the NEXT slot is also assigned > 0
    *  Here, we just set a flag, since this must be done at the end after all variables are assigned
    * */
@@ -314,7 +298,7 @@ export class Z3TimetableSolver {
     if (this.constrainCompactness) {
       // Now that all variables are declared, add the constraint-compactness soft asserts
       Object.keys(this.assignedIntvarsPossiblevalues).forEach((varname: string) => {
-        // For each variable that is assigned to a mod (who_id > 0), find the next variable that could possibly be assigned,
+        // For each variable that is assigned to a mod (owner id > 0), find the next variable that could possibly be assigned,
         // and assert-soft that it IS assigned
 
         // We only care about time slot vars

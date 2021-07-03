@@ -1,6 +1,6 @@
 import {
   OptimizerInput,
-  UniqueLessonID,
+  UniqueLessonString,
   Z3LessonID,
   ModuleInfoWithConstraints,
   SlotConstraint,
@@ -44,9 +44,9 @@ export class OptimizerInputSmtlibConverter {
 
   // These store the mapping between strings that we understand (module + lessontype + lessonid) and Z3 integers
   // TODO change name
-  whoIdTable: Record<UniqueLessonID, Z3LessonID>; // string in both cases is {module id}__{lesson type}__{lesson id}
+  stringToOwnerIdTable: Record<UniqueLessonString, Z3LessonID>; // string in both cases is {module id}__{lesson type}__{lesson id}
 
-  reverseWhoIdTable: Record<Z3LessonID, UniqueLessonID>;
+  ownerIdToStringTable: Record<Z3LessonID, UniqueLessonString>;
 
   weeksToSimulate: Set<number>; // Each number in here is one week to simulate
 
@@ -59,9 +59,9 @@ export class OptimizerInputSmtlibConverter {
     this.optimizerInput = optimizerInput;
     this.startHour = dayStartHour;
     this.endHour = dayEndHour;
-    this.whoIdTable = {};
-    this.reverseWhoIdTable = {};
-    this.populateWhoIdTable();
+    this.stringToOwnerIdTable = {};
+    this.ownerIdToStringTable = {};
+    this.populateOwnerIdTables();
 
     // User-parseable names for Z3 to name each variable representing (week, day, hour, minute)
     const timeStrVals: Array<string> = Array.from(
@@ -84,7 +84,7 @@ export class OptimizerInputSmtlibConverter {
    * Every lesson slot (unique combination of module - lessontype - lessonid) needs to have an integer representation to
    * let the solver use integer constraints. Create the tables to transform between string and integer representations.
    * */
-  populateWhoIdTable() {
+  populateOwnerIdTables() {
     this.optimizerInput.moduleInfo.forEach(
       (modInfo: ModuleInfoWithConstraints, moduleidx: number) => {
         Object.keys(modInfo.lessonsGrouped).forEach((lessonType: string, lessontypeidx: number) => {
@@ -92,14 +92,12 @@ export class OptimizerInputSmtlibConverter {
           classNosOfLessontype.forEach((lessonName: string, lessonidx: number) => {
             const key = lessonInfoToZ3Varname(modInfo.mod.moduleCode, lessonType, lessonName);
             // eslint-disable-next-line no-bitwise
-            this.whoIdTable[key] = (moduleidx << 20) | (lessontypeidx << 10) | lessonidx;
+            this.stringToOwnerIdTable[key] = (moduleidx << 20) | (lessontypeidx << 10) | lessonidx;
           });
         });
       },
     );
-    this.reverseWhoIdTable = invert(this.whoIdTable);
-    // console.log(this.who_id_table);
-    // console.log(this.reverse_who_id_table);
+    this.ownerIdToStringTable = invert(this.stringToOwnerIdTable);
   }
 
   /**
@@ -332,7 +330,7 @@ export class OptimizerInputSmtlibConverter {
         const [offset, day, week] = z3TimeToGenericTime(halfhouridx);
         const val = variableAssignments[key];
         if (val === UNASSIGNED) return; // Un-assigned slot
-        const assignment: string = this.reverseWhoIdTable[val];
+        const assignment: string = this.ownerIdToStringTable[val];
         if (assignment === undefined) {
           return;
           // throw new Error(`Undefined assignment for variable_assignments[${key}] = ${variable_assignments[key]}`)
@@ -369,7 +367,7 @@ export class OptimizerInputSmtlibConverter {
         lessonsForClassNo[0].lessonType,
         lessonsForClassNo[0].classNo,
       );
-      const whoId: Z3LessonID = this.whoIdTable[key];
+      const ownerId: Z3LessonID = this.stringToOwnerIdTable[key];
       const startEndTimes: Array<[number, number]> = [];
       // A classNo can have multiple lessons with different startEndTimes (e.g., lecture classNo 01 on Monday and Friday)
       lessonsForClassNo.forEach((lesson: RawLesson) => {
@@ -396,8 +394,8 @@ export class OptimizerInputSmtlibConverter {
       });
       const sc: SlotConstraint = {
         startEndTimes,
-        whoId,
-        whoIdString: key,
+        ownerId,
+        ownerString: key,
       };
       scs.push(sc);
     });
@@ -417,11 +415,11 @@ export class OptimizerInputSmtlibConverter {
     // Free Saturday is too easy, remove it
     for (let day = 0; day < DAYS - 1; day++) {
       const name = `FREE_${idxToDayStr(day)}`; // Timeslots for this day will be named FREE_monday for e.g,
-      const whoId = FREE - day; // FREE == -2, so we generate a separate whoId for each day by subtracting
+      const ownerId = FREE - day; // FREE == -2, so we generate a separate ownerid for each day by subtracting
 
-      // To display the results in the table we need to map the whoId and reverse tables
-      this.whoIdTable[name] = whoId;
-      this.reverseWhoIdTable[whoId] = name;
+      // To display the results in the table we need to map the owner ID and reverse tables
+      this.stringToOwnerIdTable[name] = ownerId;
+      this.ownerIdToStringTable[ownerId] = name;
 
       let startOffset = 0;
       let endOffset = HOURS_PER_DAY * 2;
@@ -442,8 +440,8 @@ export class OptimizerInputSmtlibConverter {
 
       const sc: SlotConstraint = {
         startEndTimes: startEndIdxs,
-        whoId,
-        whoIdString: name,
+        ownerId,
+        ownerString: name,
       };
       scs.push(sc);
     }
@@ -456,9 +454,9 @@ export class OptimizerInputSmtlibConverter {
   generateTimeconstraintSlotconstraint(): SlotConstraint | undefined {
     const startEndTimes: Array<[number, number]> = [];
     const name = 'TOO_EARLY_OR_LATE';
-    const whoId = TOOEARLY_LATE;
-    this.whoIdTable[name] = whoId;
-    this.reverseWhoIdTable[whoId] = name;
+    const ownerId = TOOEARLY_LATE;
+    this.stringToOwnerIdTable[name] = ownerId;
+    this.ownerIdToStringTable[ownerId] = name;
 
     // Not even constraining any of the day, ignore
     const startOffset = this.hhmmToZ3Time(this.optimizerInput.constraints.startTime);
@@ -487,8 +485,8 @@ export class OptimizerInputSmtlibConverter {
 
     const sc: SlotConstraint = {
       startEndTimes,
-      whoId,
-      whoIdString: name,
+      ownerId,
+      ownerString: name,
     };
     console.log('Slotconstraints for timeconstraint');
     console.log(sc);
@@ -515,8 +513,8 @@ export class OptimizerInputSmtlibConverter {
         const endidx = baseidx + endOffset;
         const sc: SlotConstraint = {
           startEndTimes: [[startidx, endidx]],
-          whoId: UNASSIGNED,
-          whoIdString: 'UNASSIGNED',
+          ownerId: UNASSIGNED,
+          ownerString: 'UNASSIGNED',
         };
         scs.push(sc);
       });
