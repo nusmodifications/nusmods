@@ -69,7 +69,7 @@ export class Z3WeekSolver {
    * */
   generateSmtlib2String(): string {
     let constraintStr = '';
-    this.solver.forEachStatement((stmt: string) => {
+    this.solver.forEachStatement((stmt: smt.SNode) => {
       constraintStr += `${stmt}\n`;
     });
     constraintStr = constraintStr.substring(constraintStr.indexOf('\n') + 1);

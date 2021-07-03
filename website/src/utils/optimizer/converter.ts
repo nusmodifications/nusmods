@@ -605,8 +605,9 @@ function z3VarnameToLessonInfo(z3Varname: string): [string, string, string] {
 
 // Assign an array of properties to an object - creating nested levels
 // E.g., nestObject({}, [a, b, c]) ==> {a: {b: c}}
-// TODO extract to file
-function nestObject(obj, keyPath) {
+// TODO extract to file?
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function nestObject(obj: any, keyPath: any) {
   let curObj = obj;
   const value = keyPath[keyPath.length - 1];
   const lastKeyIndex = Math.max(0, keyPath.length - 2);

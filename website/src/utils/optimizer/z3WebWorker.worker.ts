@@ -1,9 +1,17 @@
+/// <reference no-default-lib="true"/>
+/// <reference lib="ES2015" />
+/// <reference lib="webworker" />
+
+// Default type of `self` is `WorkerGlobalScope & typeof globalThis`
+// https://github.com/microsoft/TypeScript/issues/14877
 /**
  * WebWorker script to run and communicate with the Z3 Solver (z3w.wasm).
  * Imports the emscripten wrapper file z3w.js (must be accessible on the server).
  * After import, initializes the Z3 solver, which may require downloading z3w.wasm from the server.
  * */
 import { Z3WorkerMessage, Z3WorkerMessageKind } from 'types/optimizer';
+
+declare let self: DedicatedWorkerGlobalScope;
 
 // Only one solver instance
 let solver = null;
