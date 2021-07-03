@@ -10,6 +10,11 @@ export const TOOEARLY_LATE = -20;
 export const VAR_UNASSIGNED_WEIGHT = 1;
 export const BOOLVAR_ASSIGNED_WEIGHT = 100000;
 
+// Prefixes
+export const SELECTOR_PREFIX = 'SL_';
+export const SELECTOR_FULFIL_N_PREFIX = 'SLKB_';
+export const SELECTOR_OPTIONAL_PREFIX = 'OPT_';
+
 export class Z3TimetableSolver {
   timevars: string[]; // ["t0", "t1", ....] representing all possible half-hour slots
 
@@ -81,7 +86,7 @@ export class Z3TimetableSolver {
      * */
   addSlotConstraintsFulfilOnlyOne(slots: SlotConstraint[], booleanSelector?: string) {
     // If we are selecting between owner ids 0, 1024, and 2048, the selector variable will be named SL_0_1024_2048
-    const selectorVar = `SL_${slots.map((slot) => slot.ownerString).join('_')}`;
+    const selectorVar = `${SELECTOR_PREFIX}${slots.map((slot) => slot.ownerString).join('_')}`;
 
     // Indicate that we need to declare this later as an unconstrained variable (but we constrain it here instead)
     this.addPossibleValuesToVariable(selectorVar);
@@ -94,7 +99,7 @@ export class Z3TimetableSolver {
 
     // We indicate with the boolean selector that options are selected ONLY IF the boolean selector is true
     if (booleanSelector !== undefined) {
-      const selector = `OPT_${booleanSelector}`; // Ensure we have an OPT prefix to indicate an optional mod
+      const selector = `${SELECTOR_OPTIONAL_PREFIX}${booleanSelector}`; // Ensure we have an OPT prefix to indicate an optional mod
       this.boolSelectorsSet.add(selector); // Make sure we declare the selector later
       // Asserts that IF the boolean selector is true, then all the possible values it can take must have at least 1 true (functionally only 1)
       this.solver.assert(smt.Eq(selector, smt.Or(...selectorVarPossibleValues)));
@@ -109,6 +114,8 @@ export class Z3TimetableSolver {
         // Holds all the constraints, assuming this slotconstraint is selected
         const slotRequirements: smt.SNode[] = [];
         slot.startEndTimes.forEach(([startTime, endTime]) => {
+          if (this.isSlotConstraintTimeInvalid(startTime, endTime))
+            throw new Error(`Slot ${slot} time invalid: ${startTime}, ${endTime}`);
           // Create a constraint to be "owner id" for all the start and end times in the slot constraint
           // If we said: for this slot, time slots t1 and t2 need to be = ID 1024, then
           // t1 == 1024
@@ -153,6 +160,10 @@ export class Z3TimetableSolver {
    * */
   addSlotConstraintsFulfilExactlyN(slots: SlotConstraint[], n: number) {
     const selectorVarList: string[] = [];
+    if (n < 0 || n > slots.length)
+      throw new Error(
+        `Selected either too small or too large n (= ${n}) for ${slots.length} slots`,
+      );
 
     // Now, for each slot, create a double implication (equality) between the selector value and each of the constrained hours
     const constraints: smt.SNode[] = slots
@@ -160,9 +171,11 @@ export class Z3TimetableSolver {
         // Holds all the constraints, assuming this slotconstraint is selected
         const slotRequirements: smt.SNode[] = [];
         // Create a selector variable for this (SLKB = Selector for K-out-of-N, boolean)
-        const selectorVar = `SLKB_${slot.ownerString}`;
+        const selectorVar = `${SELECTOR_FULFIL_N_PREFIX}${slot.ownerString}`;
         selectorVarList.push(selectorVar);
         slot.startEndTimes.forEach(([startTime, endTime]) => {
+          if (this.isSlotConstraintTimeInvalid(startTime, endTime))
+            throw new Error(`Slot ${slot} time invalid: ${startTime}, ${endTime}`);
           // Create a constraint to be owner id for all the start and end times in the slot constraint
           // If we said: for this slot, time slots h1 and h2 need to be = ID 1024, then
           // h1 == 1024
@@ -208,7 +221,7 @@ export class Z3TimetableSolver {
     const terms: smt.SNode[] = [baseWorkload];
     workloads.forEach(([varname, workload]) => {
       // Make sure varname is declared
-      const fullvarname = `OPT_${varname}`;
+      const fullvarname = `${SELECTOR_OPTIONAL_PREFIX}${varname}`;
       this.boolSelectorsSet.add(fullvarname);
       terms.push(smt.If(fullvarname, workload, 0));
     });
@@ -273,6 +286,15 @@ export class Z3TimetableSolver {
       // No set union. have to add each val independently
       values.forEach((val: number) => this.assignedIntvarsPossiblevalues[varname].add(val));
     }
+  }
+
+  isSlotConstraintTimeInvalid(startTime: number, endTime: number) {
+    return (
+      startTime < 0 ||
+      startTime > this.timevars.length - 1 ||
+      endTime < 0 ||
+      endTime > this.timevars.length - 1
+    );
   }
 
   /**
