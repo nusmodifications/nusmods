@@ -50,7 +50,7 @@
     "@sentry/node": "5.30.0",
     "axios": "0.21.1",
     "bunyan": "1.8.15",
-    "chevrotain": "7.1.0",
+    "chevrotain": "7.1.2",
     "date-fns": "2.16.1",
     "deep-diff": "1.0.2",
     "fs-extra": "9.1.0",
