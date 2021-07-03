@@ -91,7 +91,7 @@ export class Z3TimetableSolver {
 
     // Create a list of constraints for the possible values the selector can take
     // With same example, we have SL_0_1024_2048 == 0 OR SL_0_1024_2048 == 1024 OR SL_0_1024_2048 == 2048
-    const selectorVarPossibleValues: smt.SExpr[] = slots.map((slot) => smt.Eq(selectorVar, slot.ownerId));
+    const selectorVarPossibleValues: smt.SNode[] = slots.map((slot) => smt.Eq(selectorVar, slot.ownerId));
 
     // We indicate with the boolean selector that options are selected ONLY IF the boolean selector is true
     if (booleanSelector !== undefined) {
@@ -105,10 +105,10 @@ export class Z3TimetableSolver {
     }
 
     // Now, for each slot, create a double implication (equality) between the selector value and each of the constrained hours
-    const constraints: smt.SExpr[] = slots
+    const constraints: smt.SNode[] = slots
       .map((slot) => {
         // Holds all the constraints, assuming this slotconstraint is selected
-        const slotRequirements: smt.SExpr[] = [];
+        const slotRequirements: smt.SNode[] = [];
         slot.startEndTimes.forEach(([startTime, endTime]) => {
           // Create a constraint to be "owner id" for all the start and end times in the slot constraint
           // If we said: for this slot, time slots t1 and t2 need to be = ID 1024, then
@@ -156,10 +156,10 @@ export class Z3TimetableSolver {
     const selectorVarList: string[] = [];
 
     // Now, for each slot, create a double implication (equality) between the selector value and each of the constrained hours
-    const constraints: smt.SExpr[] = slots
+    const constraints: smt.SNode[] = slots
       .map((slot) => {
         // Holds all the constraints, assuming this slotconstraint is selected
-        const slotRequirements: smt.SExpr[] = [];
+        const slotRequirements: smt.SNode[] = [];
         // Create a selector variable for this (SLKB = Selector for K-out-of-N, boolean)
         const selectorVar = `SLKB_${slot.ownerString}`;
         selectorVarList.push(selectorVar);
@@ -206,7 +206,7 @@ export class Z3TimetableSolver {
     const workloadSumName = 'workloadsum';
     this.assignedIntvarsPossiblevalues[workloadSumName] = new Set();
 
-    const terms = [baseWorkload];
+    const terms: smt.SNode[] = [baseWorkload];
     workloads.forEach(([varname, workload]) => {
       // Make sure varname is declared
       const fullvarname = `OPT_${varname}`;
@@ -239,14 +239,14 @@ export class Z3TimetableSolver {
    * */
   addNegativevalueSlotConstraintToNConsecutive(slot: SlotConstraint, n: number) {
     // Holds all the constraints, assuming this slotconstraint is selected
-    const slotRequirements: smt.SExpr[] = [];
+    const slotRequirements: smt.SNode[] = [];
     // We only care about first slotconstraint slot, multiple slots are meaningless here
     const [startTime, endTime] = slot.startEndTimes[0];
     // Take the startTime --> endTime range as windows of size n
     for (let startT = startTime; startT < endTime - n + 1; startT += 1) {
       // For each window, we need to assert that ALL of the hours are unassigned
       // Then we OR across all windows
-      const windowRequirements: smt.SExpr[] = [];
+      const windowRequirements: smt.SNode[] = [];
       for (let i = 0; i < n; i++) {
         const timevar = this.timevars[startT + i];
         // Make sure we declare this timevar since we use it, at least allow it to be unassigned (negative)
@@ -346,13 +346,13 @@ export class Z3TimetableSolver {
     }
 
     let variablesStr = '';
-    this.variablesSolver.forEachStatement((stmt: string) => {
+    this.variablesSolver.forEachStatement((stmt: smt.SNode) => {
       variablesStr += `${stmt}\n`;
     });
     variablesStr = variablesStr.substring(variablesStr.indexOf('\n') + 1);
 
     let constraintStr = '';
-    this.solver.forEachStatement((stmt: string) => {
+    this.solver.forEachStatement((stmt: smt.SNode) => {
       constraintStr += `${stmt}\n`;
     });
     constraintStr = constraintStr.substring(constraintStr.indexOf('\n') + 1);
