@@ -26,7 +26,7 @@ import {
   HOURS_PER_WEEK,
   NUM_WEEKS,
 } from 'utils/optimizer/constants';
-import { parse } from 'sexpr-plus';
+import { parse, Expr, ExprNode } from 'sexpr-plus';
 /**
  * Converts to and from the high-level module/lesson input data to the optimizer
  *  and SMTLIB2 code used in Z3.
@@ -43,7 +43,6 @@ export class OptimizerInputSmtlibConverter {
   endHour: number; // e.g., 22 for 10 pm
 
   // These store the mapping between strings that we understand (module + lessontype + lessonid) and Z3 integers
-  // TODO change name
   stringToOwnerIdTable: Record<UniqueLessonString, Z3LessonID>; // string in both cases is {module id}__{lesson type}__{lesson id}
 
   ownerIdToStringTable: Record<Z3LessonID, UniqueLessonString>;
@@ -282,13 +281,17 @@ export class OptimizerInputSmtlibConverter {
    *  Convert the string output by the Z3 solver into an output that the caller can understand
    * */
   z3OutputToTimetable(z3Output: string): OptimizerOutput {
-    // TODO replace by imports
-    const parsedExpr = parse(z3Output);
+    const parsedExpr: Expr = parse(z3Output);
     // console.log(parsed_expr)
-    const isSat = parsedExpr[0].content === 'sat'; // parsed_expr[0] === {type: "atom", content: "sat", location: {…}}
+
+    // We know from smt output that the first line is an ExprNode and not a raw string
+    // parsed_expr[0] === {type: "atom", content: "sat", location: {…}}
+    const firstLine: ExprNode = parsedExpr[0] as ExprNode;
+    const isSat: boolean = firstLine.content === 'sat';
     if (!isSat) return { isSat: false, timetable: {} }; // Nothing to do here
 
-    const variableAssignmentsExprs = parsedExpr[1].content; // parsed_expr[1] === {type: "list", content: Array(19), location: {…}}
+    // parsed_expr[1] === {type: "list", content: Array(19), location: {…}}
+    const variableAssignmentsExprs: ExprNode[] = (parsedExpr[1] as ExprNode).content as ExprNode[];
     variableAssignmentsExprs.shift(); // Removes first "model" expr: {type: "atom", content: "model", location: {…}}
     const variableAssignments: Record<string, number> = {};
     variableAssignmentsExprs.forEach((expr) => {
@@ -301,15 +304,15 @@ export class OptimizerInputSmtlibConverter {
               4: {type: "atom", content: "1024", location: {…}}
           */
       // We assume all model returns values have this structure, and are assigning varnames to ints
-      const varName: string = expr.content[1].content;
-      const varValueExpr = expr.content[4].content;
+      const varName: string = (expr.content[1] as ExprNode).content as string;
+      const varValueExpr = ((expr as ExprNode).content[4] as ExprNode).content;
       let varValue = -2;
       // Var_value could be an integer or an expression where the second element is the value of a negative number
       // console.log(var_value_expr)
       if (typeof varValueExpr === 'string') {
         varValue = parseInt(varValueExpr, 10);
       } else {
-        varValue = -1 * parseInt(varValueExpr[1].content, 10);
+        varValue = -1 * parseInt((varValueExpr[1] as ExprNode).content as string, 10);
       }
 
       variableAssignments[varName] = varValue;

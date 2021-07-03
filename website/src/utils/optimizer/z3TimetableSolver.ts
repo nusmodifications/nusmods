@@ -79,19 +79,18 @@ export class Z3TimetableSolver {
                 - Otherwise, the solver just puts some random number there, which can be another slot value, or even unassigned
      *
      * */
-  addSlotConstraintsFulfilOnlyOne(
-    slots: SlotConstraint[],
-    booleanSelector?: string
-  ) {
+  addSlotConstraintsFulfilOnlyOne(slots: SlotConstraint[], booleanSelector?: string) {
     // If we are selecting between owner ids 0, 1024, and 2048, the selector variable will be named SL_0_1024_2048
-    const selectorVar: string = `SL_${slots.map((slot) => slot.ownerString).join('_')}`;
+    const selectorVar = `SL_${slots.map((slot) => slot.ownerString).join('_')}`;
 
     // Indicate that we need to declare this later as an unconstrained variable (but we constrain it here instead)
     this.addPossibleValuesToVariable(selectorVar);
 
     // Create a list of constraints for the possible values the selector can take
     // With same example, we have SL_0_1024_2048 == 0 OR SL_0_1024_2048 == 1024 OR SL_0_1024_2048 == 2048
-    const selectorVarPossibleValues: smt.SNode[] = slots.map((slot) => smt.Eq(selectorVar, slot.ownerId));
+    const selectorVarPossibleValues: smt.SNode[] = slots.map((slot) =>
+      smt.Eq(selectorVar, slot.ownerId),
+    );
 
     // We indicate with the boolean selector that options are selected ONLY IF the boolean selector is true
     if (booleanSelector !== undefined) {
@@ -284,7 +283,7 @@ export class Z3TimetableSolver {
    *  This is necessary due to some obscure bugs within the Z3 wasm (something to do with pthreads that don't exist in WASM)
    * Removes the first line (QF_ALL_SUPPORTED) from the output SMTLIB2 text
    * */
-  generateSmtlib2String(randomize: boolean = true): string {
+  generateSmtlib2String(randomize = true): string {
     // Declare all the boolean vars
     this.boolSelectorsSet.forEach((boolvar: string) => {
       this.variablesSolver.add(smt.DeclareFun(boolvar, [], 'Bool'));
