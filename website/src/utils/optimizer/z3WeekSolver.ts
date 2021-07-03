@@ -30,7 +30,7 @@ const OUTPUT_WEEKS_TO_SIMULATE_VARNAME = 'weeks_to_simulate';
  *  Then, we ask the solver to minimize the number of 1s in the output bitvector so that we simulate the min number of weeks.
  * */
 export class Z3WeekSolver {
-  solver: any; // For the actual constraints
+  solver: smt.BaseSolver; // For the actual constraints
 
   numWeeks: number; // Defines bitvec sizes
 
@@ -78,7 +78,7 @@ export class Z3WeekSolver {
     const solveStr = `(check-sat)\n(get-value (${OUTPUT_WEEKS_TO_SIMULATE_VARNAME}))\n(exit)`;
     // Overall SMTLIB2 string to return
     const finalStr = constraintStr + minimizeStr + solveStr;
-    console.log(finalStr);
+    // console.log(finalStr);
     return finalStr;
   }
 

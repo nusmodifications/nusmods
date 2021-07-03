@@ -22,14 +22,14 @@ const OptimizerConstraints: React.FC = () => (
             <p>Earliest Lesson Start Time</p>
           </div>
           <div className="col-sm-4">
-            <select className="form-control" onChange={() => 1} />
+            <select className="form-control" aria-label="lesson-start" onChange={() => 1} />
           </div>
 
           <div className="col-sm-8">
             <p>Latest Lesson End Time</p>
           </div>
           <div className="col-sm-4">
-            <select className="form-control" onChange={() => 1} />
+            <select className="form-control" aria-label="lesson-end" onChange={() => 1} />
           </div>
 
           <div className="col-sm-8">
@@ -49,7 +49,7 @@ const OptimizerConstraints: React.FC = () => (
             <p>Number of Free Days</p>
           </div>
           <div className="col-sm-4">
-            <select className="form-control" onChange={() => 1} />
+            <select className="form-control" aria-label="num-free-days" onChange={() => 1} />
           </div>
 
           <div className="col-sm-8">
@@ -63,7 +63,7 @@ const OptimizerConstraints: React.FC = () => (
             <p>Specific Free Days</p>
           </div>
           <div className="col-sm-4">
-            <select className="form-control" onChange={() => 1} />
+            <select className="form-control" aria-label="specific-free-days" onChange={() => 1} />
           </div>
 
           <div className="col-sm-8">

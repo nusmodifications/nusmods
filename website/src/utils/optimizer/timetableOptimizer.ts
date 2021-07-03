@@ -37,7 +37,7 @@ export class TimetableOptimizer {
   static completedStage1Solve: boolean; // Need to complete week-solving before timetable-solving
 
   static initOptimizer(callbacks: OptimizerCallbacks) {
-    console.log('Starting to initialize Z3...');
+    // console.log('Starting to initialize Z3...');
     TimetableOptimizer.callbacks = callbacks;
     TimetableOptimizer.resetBuffers();
     TimetableOptimizer.completedStage1Solve = false;
@@ -53,8 +53,8 @@ export class TimetableOptimizer {
    * Register a generic timetable a set of callbacks to be called for different states in the Z3 solver lifecycle
    * */
   static loadInput(optInput: OptimizerInput) {
-    console.log('Loaded optimizer input');
-    console.log(optInput);
+    // console.log('Loaded optimizer input');
+    // console.log(optInput);
     TimetableOptimizer.optInput = optInput;
     TimetableOptimizer.converter = new OptimizerInputSmtlibConverter(
       TimetableOptimizer.optInput,
@@ -77,7 +77,7 @@ export class TimetableOptimizer {
     switch (message.kind) {
       case Z3WorkerMessageKind.INITIALIZED:
         // Call the initialization callback
-        console.log('Manager initialized Z3!');
+        // console.log('Manager initialized Z3!');
         TimetableOptimizer.callbacks.onOptimizerInitialized();
         break;
       case Z3WorkerMessageKind.PRINT:
@@ -88,18 +88,18 @@ export class TimetableOptimizer {
         break;
       case Z3WorkerMessageKind.EXIT:
         // Z3 Initialization exit
-        console.log('Z3 messages on exit: ');
+        // console.log('Z3 messages on exit: ');
         if (TimetableOptimizer.printBuffer === '' && TimetableOptimizer.errBuffer === '') {
-          console.log('Premature exit - Z3 was initializing (this is normal)');
+          // console.log('Premature exit - Z3 was initializing (this is normal)');
           return; // Premature exit (probably initialization)
         }
 
         // Print buffers generically
         if (TimetableOptimizer.printBuffer !== '') {
-          console.log(TimetableOptimizer.printBuffer);
+          // console.log(TimetableOptimizer.printBuffer);
         }
         if (TimetableOptimizer.errBuffer !== '') {
-          console.error(TimetableOptimizer.errBuffer);
+          // console.error(TimetableOptimizer.errBuffer);
         }
 
         if (!TimetableOptimizer.completedStage1Solve) {

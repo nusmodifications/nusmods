@@ -120,14 +120,15 @@ export class OptimizerInputSmtlibConverter {
               // in the Set above. This makes solving the weeks problem easier.
               // We can't put arrays in sets, so have to stringify.
               if (isWeekRange(weeks)) {
-                console.error(
-                  `At least one lesson has a WeekRange (not just normal Week array) in module ${modInfo}`,
-                );
+                // TODO: Error output
+                // console.error(
+                //   `At least one lesson has a WeekRange (not just normal Week array) in module ${modInfo}`,
+                // );
               } else {
                 // No WeekRange, can treat as normal weeks
                 const weeksJson = JSON.stringify(weeks);
                 uniqueWeeks.add(weeksJson);
-                console.log(weeksJson);
+                // console.log(weeksJson);
               }
             });
         });
@@ -168,7 +169,7 @@ export class OptimizerInputSmtlibConverter {
     binary.split('').forEach((c: string, idx: number) => {
       if (c === '1') this.weeksToSimulate.add(idx + 1);
     });
-    console.log(`WEEKS TO SIMULATE ${Array.from(this.weeksToSimulate).join(',')}`);
+    // console.log(`WEEKS TO SIMULATE [${Array.from(this.weeksToSimulate).join(',')}]`);
   }
 
   /**
@@ -211,7 +212,7 @@ export class OptimizerInputSmtlibConverter {
         .filter((modInfo: ModuleInfoWithConstraints) => modInfo.required)
         .map((modInfo: ModuleInfoWithConstraints) => parseInt(modInfo.mod.moduleCredit, 10))
         .reduce((a, n) => a + Number(n), 0);
-      console.log(compulsoryWorkloadSum);
+      // console.log(compulsoryWorkloadSum);
       // Indicate that each boolean selector from the loop above has a cost if chosen
       this.z3tt.setBooleanSelectorCosts(
         optionalWorkloads,
@@ -317,7 +318,7 @@ export class OptimizerInputSmtlibConverter {
 
       variableAssignments[varName] = varValue;
     });
-    console.log(variableAssignments);
+    // console.log(variableAssignments);
 
     // Lessons chosen in the end
     // Raw inputs will be of the form [LSM1301, Lecture, 1]  [LSM1301, Tutorial, 03B]
@@ -328,9 +329,9 @@ export class OptimizerInputSmtlibConverter {
     Object.keys(variableAssignments).forEach((key: string) => {
       // Hour assignment
       if (key.startsWith('t')) {
-        const keySplit = key.split('_')[0];
-        const halfhouridx = parseInt(keySplit.substr(1), 10);
-        const [offset, day, week] = z3TimeToGenericTime(halfhouridx);
+        // const keySplit = key.split('_')[0];
+        // const halfhouridx = parseInt(keySplit.substr(1), 10);
+        // const [offset, day, week] = z3TimeToGenericTime(halfhouridx);
         const val = variableAssignments[key];
         if (val === UNASSIGNED) return; // Un-assigned slot
         const assignment: string = this.ownerIdToStringTable[val];
@@ -338,13 +339,13 @@ export class OptimizerInputSmtlibConverter {
           return;
           // throw new Error(`Undefined assignment for variable_assignments[${key}] = ${variable_assignments[key]}`)
         }
-        console.log(`For z3 t${halfhouridx}, offset: ${offset}, day: ${day}, week: ${week}`);
+        // console.log(`For z3 t${halfhouridx}, offset: ${offset}, day: ${day}, week: ${week}`);
         const lessonDetails = z3VarnameToLessonInfo(assignment);
         nestObject(lessons, lessonDetails);
       }
     });
 
-    console.log(lessons);
+    // console.log(lessons);
     const output: OptimizerOutput = {
       isSat,
       timetable: lessons,
@@ -402,7 +403,7 @@ export class OptimizerInputSmtlibConverter {
       };
       scs.push(sc);
     });
-    console.log(scs);
+    // console.log(scs);
     return scs;
   }
 
@@ -429,7 +430,7 @@ export class OptimizerInputSmtlibConverter {
       if (this.optimizerInput.constraints.isTimeConstraintActive) {
         startOffset = this.hhmmToZ3Time(this.optimizerInput.constraints.startTime);
         endOffset = this.hhmmToZ3Time(this.optimizerInput.constraints.endTime);
-        console.log(`Start offset: ${startOffset}, endOffset: ${endOffset}`);
+        // console.log(`Start offset: ${startOffset}, endOffset: ${endOffset}`);
       }
 
       const startEndIdxs: Array<[number, number]> = [];
@@ -491,8 +492,8 @@ export class OptimizerInputSmtlibConverter {
       ownerId,
       ownerString: name,
     };
-    console.log('Slotconstraints for timeconstraint');
-    console.log(sc);
+    // console.log('Slotconstraints for timeconstraint');
+    // console.log(sc);
     return sc;
   }
 
@@ -523,8 +524,8 @@ export class OptimizerInputSmtlibConverter {
       });
     }
 
-    console.log('Slotconstraints for lunchbreak');
-    console.log(scs);
+    // console.log('Slotconstraints for lunchbreak');
+    // console.log(scs);
     return scs;
   }
 

@@ -27,16 +27,18 @@ const TimetableOptimizerContainer: React.FC<OwnProps> = ({ semester, timetable, 
   const dispatch = useDispatch();
 
   const onOptimizerInitialized = () => {
-    console.log('Optimizer Initialized!');
+    // console.log('Optimizer Initialized!');
     runOptimizer();
   };
-  const onSmtlib2InputCreated = (s: string) => console.log(`OnSmtlib2: ${s}`);
-  const onOutput = (s: string) => {
-    console.log(`OnOutput:\n${s}`);
+  // const onSmtlib2InputCreated = (s: string) => console.log(`OnSmtlib2: ${s}`);
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  const onSmtlib2InputCreated = () => {};
+  const onOutput = () => {
+    // console.log(`OnOutput:\n${s}`);
   };
   const onTimetableOutput = (optimizerOutput: OptimizerOutput) => {
-    console.log(`optimizerOutput:`);
-    console.log(optimizerOutput);
+    // console.log(`optimizerOutput:`);
+    // console.log(optimizerOutput);
 
     if (optimizerOutput.isSat) {
       // Have to get the color map here to use this
@@ -49,7 +51,7 @@ const TimetableOptimizerContainer: React.FC<OwnProps> = ({ semester, timetable, 
       });
     } else {
       // TODO do something proper if it's not sat
-      alert('No timetable found!');
+      // alert('No timetable found!');
     }
   };
   const callbacks: OptimizerCallbacks = {
@@ -60,8 +62,8 @@ const TimetableOptimizerContainer: React.FC<OwnProps> = ({ semester, timetable, 
   };
 
   function initAndRunOptimizer() {
-    const moduleCodes = Object.keys(timetable);
-    console.log(moduleCodes);
+    // const moduleCodes = Object.keys(timetable);
+    // console.log(moduleCodes);
     TimetableOptimizer.initOptimizer(callbacks);
   }
 

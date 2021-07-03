@@ -129,7 +129,7 @@ export class Z3TimetableSolver {
       .flat(); // Flatten in case we return multiple constraints per slot
 
     // Assert all built-up constraints now
-    constraints.forEach((constraint: any) => this.solver.assert(constraint));
+    constraints.forEach((constraint: smt.SNode) => this.solver.assert(constraint));
   }
 
   /**
@@ -184,7 +184,7 @@ export class Z3TimetableSolver {
     selectorVarList.forEach((selector: string) => this.boolSelectorsSet.add(selector));
 
     // Assert all the constraints that relate the selector variable to the selected constrains
-    constraints.forEach((constraint: any) => this.solver.assert(constraint));
+    constraints.forEach((constraint: smt.SNode) => this.solver.assert(constraint));
 
     // Assert a K-out-of-N constraint for the selector variables
     const kOfN: smt.SExpr = smt.PbEq(selectorVarList, new Array(selectorVarList.length).fill(1), n);
