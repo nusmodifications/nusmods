@@ -26,7 +26,6 @@ import {
   HOURS_PER_WEEK,
   NUM_WEEKS,
 } from 'utils/optimizer/constants';
-import StringIdGenerator from 'utils/optimizer/stringIdGenerator';
 import { parse } from 'sexpr-plus';
 /**
  * Converts to and from the high-level module/lesson input data to the optimizer
@@ -139,11 +138,10 @@ export class OptimizerInputSmtlibConverter {
     });
 
     // Add each unique week list to solver to generate solve string
-    const ids = new StringIdGenerator();
-    uniqueWeeks.forEach((uniqueWeek: string) => {
+    Array.from(uniqueWeeks).forEach((uniqueWeek: string, idx: number) => {
       // Reminder: this was necessary to keep the set of unique weeks as small as possible
       const uniqueWeekArr = JSON.parse(uniqueWeek);
-      weekSolver.addWeeks(uniqueWeekArr, ids.next());
+      weekSolver.addWeeks(uniqueWeekArr, `uniqueWeekId_${idx}`);
     });
 
     return weekSolver.generateSmtlib2String();
