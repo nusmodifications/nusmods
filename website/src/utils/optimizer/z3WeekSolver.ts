@@ -142,7 +142,7 @@ export class Z3WeekSolver {
   }
 
   /**
-   * Generates a bitvector of all ones
+   * Generates a bitvector representing the number 1
    * */
   generateOne(): string {
     const arr = new Array(this.numWeeks).fill(0);
