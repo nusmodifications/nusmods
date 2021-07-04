@@ -120,6 +120,44 @@ describe('receiveWorkerMessage', () => {
     expect(TimetableOptimizer.printBuffer).toEqual('');
     TimetableOptimizer.receiveWorkerMessage(msg);
     expect(TimetableOptimizer.printBuffer).toEqual(`${messageData.msg}\n`);
+    expect(TimetableOptimizer.errBuffer).toEqual('');
+  });
+
+  it('should add to the stderr buffer when it receives an error message', () => {
+    TimetableOptimizer.initOptimizer(callbacks);
+    // Send initialized message
+    const messageData: Z3WorkerMessage = { kind: Z3WorkerMessageKind.ERR, msg: 'someData' };
+    const msg: MessageEvent = new MessageEvent('placeholderType', {
+      data: messageData,
+      lastEventId: 'placeholder',
+      origin: 'placeholder',
+      ports: [],
+      source: null,
+    });
+    expect(TimetableOptimizer.errBuffer).toEqual('');
+    TimetableOptimizer.receiveWorkerMessage(msg);
+    expect(TimetableOptimizer.errBuffer).toEqual(`${messageData.msg}\n`);
+    expect(TimetableOptimizer.printBuffer).toEqual('');
+  });
+
+  it('should not do anything if an unknown message type is passed', () => {
+    TimetableOptimizer.initOptimizer(callbacks);
+    // Send initialized message
+    const messageData: Z3WorkerMessage = { kind: Z3WorkerMessageKind.ABORT, msg: 'someData' };
+    const msg: MessageEvent = new MessageEvent('placeholderType', {
+      data: messageData,
+      lastEventId: 'placeholder',
+      origin: 'placeholder',
+      ports: [],
+      source: null,
+    });
+
+    TimetableOptimizer.receiveWorkerMessage(msg);
+    expect(TimetableOptimizer.printBuffer).toEqual('');
+    expect(TimetableOptimizer.errBuffer).toEqual('');
+    expect(callbacks.onSmtlib2InputCreated).not.toBeCalled();
+    expect(callbacks.onSmtLib2ResultOutput).not.toBeCalled();
+    expect(callbacks.onTimetableOutput).not.toBeCalled();
   });
 
   it('should return without calling any callbacks if the buffers are empty', () => {
