@@ -11,6 +11,7 @@ export const VAR_UNASSIGNED_WEIGHT = 1;
 export const BOOLVAR_ASSIGNED_WEIGHT = 100000;
 
 // Prefixes
+export const TIMEVAR_PREFIX = 't';
 export const SELECTOR_PREFIX = 'SL_';
 export const SELECTOR_FULFIL_N_PREFIX = 'SLKB_';
 export const SELECTOR_OPTIONAL_PREFIX = 'OPT_';
@@ -42,11 +43,14 @@ export class Z3TimetableSolver {
       } else {
         this.timevars = Array.from(
           new Array(totalTimeUnits),
-          (_: number, i: number) => `t${i}_${timeUnitNames[i]}`,
+          (_: number, i: number) => `${TIMEVAR_PREFIX}${i}_${timeUnitNames[i]}`,
         );
       }
     } else {
-      this.timevars = Array.from(new Array(totalTimeUnits), (_: number, i: number) => `t${i}`);
+      this.timevars = Array.from(
+        new Array(totalTimeUnits),
+        (_: number, i: number) => `${TIMEVAR_PREFIX}${i}`,
+      );
     }
     this.assignedIntvarsPossiblevalues = {};
     this.boolSelectorsSet = new Set();
@@ -254,6 +258,8 @@ export class Z3TimetableSolver {
     const slotRequirements: smt.SNode[] = [];
     // We only care about first slotconstraint slot, multiple slots are meaningless here
     const [startTime, endTime] = slot.startEndTimes[0];
+    if (this.isSlotConstraintTimeInvalid(startTime, endTime))
+      throw new Error(`Slot ${slot} time invalid: ${startTime}, ${endTime}`);
     // Take the startTime --> endTime range as windows of size n
     for (let startT = startTime; startT < endTime - n + 1; startT += 1) {
       // For each window, we need to assert that ALL of the hours are unassigned
