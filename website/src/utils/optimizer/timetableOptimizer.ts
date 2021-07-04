@@ -124,7 +124,7 @@ export class TimetableOptimizer {
           TimetableOptimizer.completedStage1Solve = false;
           // Deal with real solve state
           // Call the output callback
-          TimetableOptimizer.callbacks.onOutput(
+          TimetableOptimizer.callbacks.onSmtLib2ResultOutput(
             `${TimetableOptimizer.printBuffer}\n${TimetableOptimizer.errBuffer}`,
           );
           // Process the output text we just got from the Z3 solver

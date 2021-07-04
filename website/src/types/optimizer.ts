@@ -21,7 +21,7 @@ export type OptimizerInput = {
 export interface OptimizerCallbacks {
   onOptimizerInitialized(): void;
   onSmtlib2InputCreated(s: string): void;
-  onOutput(s: string): void;
+  onSmtLib2ResultOutput(s: string): void;
   onTimetableOutput(timetable: OptimizerOutput): void;
 }
 

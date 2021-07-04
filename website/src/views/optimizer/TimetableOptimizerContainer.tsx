@@ -33,7 +33,7 @@ const TimetableOptimizerContainer: React.FC<OwnProps> = ({ semester, timetable, 
   // const onSmtlib2InputCreated = (s: string) => console.log(`OnSmtlib2: ${s}`);
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   const onSmtlib2InputCreated = () => {};
-  const onOutput = () => {
+  const onSmtLib2ResultOutput = () => {
     // console.log(`OnOutput:\n${s}`);
   };
   const onTimetableOutput = (optimizerOutput: OptimizerOutput) => {
@@ -57,7 +57,7 @@ const TimetableOptimizerContainer: React.FC<OwnProps> = ({ semester, timetable, 
   const callbacks: OptimizerCallbacks = {
     onOptimizerInitialized,
     onSmtlib2InputCreated,
-    onOutput,
+    onSmtLib2ResultOutput,
     onTimetableOutput,
   };
 
