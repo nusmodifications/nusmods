@@ -1,16 +1,16 @@
 import { Z3WeekSolver } from 'utils/optimizer/z3WeekSolver';
 
-test('should generate 1-vector correctly', () => {
+it('should generate 1-vector correctly', () => {
   const solver = new Z3WeekSolver(3);
   expect(solver.generateOne()).toEqual('#b001');
 });
 
-test('should generate 0-vector correctly', () => {
+it('should generate 0-vector correctly', () => {
   const solver = new Z3WeekSolver(3);
   expect(solver.generateZero()).toEqual('#b000');
 });
 
-test('should generate 3-week popCnt correctly', () => {
+it('should generate 3-week popCnt correctly', () => {
   const solver = new Z3WeekSolver(3);
   expect(solver.generatePopcnt()).toEqual(`(define-fun popCount13 ((x (_ BitVec 3))) (_ BitVec 3)
 (bvadd
@@ -20,29 +20,29 @@ test('should generate 3-week popCnt correctly', () => {
 ))`);
 });
 
-test('should generate 3-week bitvec correctly', () => {
+it('should generate 3-week bitvec correctly', () => {
   const solver = new Z3WeekSolver(3);
   expect(solver.generateBitvec([0, 1, 0])).toEqual('#b010');
 });
 
-test('should error when 3-week bitvec is too small', () => {
+it('should error when 3-week bitvec is too small', () => {
   const solver = new Z3WeekSolver(3);
   expect(() => solver.generateBitvec([0, 1])).toThrow(Error);
 });
 
-test('should error when 3-week bitvec is too large', () => {
+it('should error when 3-week bitvec is too large', () => {
   const solver = new Z3WeekSolver(3);
   expect(() => solver.generateBitvec([0, 1, 0, 1])).toThrow(Error);
 });
 
-test('should declare bitvec for 3-week case correctly', () => {
+it('should declare bitvec for 3-week case correctly', () => {
   const solver = new Z3WeekSolver(3);
   expect(solver.generateDecl('testvar').toString()).toEqual(
     '(declare-fun testvar () (_ BitVec 3))',
   );
 });
 
-test('should create 6 week solver string correctly (manually generated smtlib code from external tools)', () => {
+it('should create 6 week solver string correctly (manually generated smtlib code from external tools)', () => {
   // Y M D H M (10:30)
   const solver = new Z3WeekSolver(6);
   solver.addWeeks([2, 4, 6], 'x');

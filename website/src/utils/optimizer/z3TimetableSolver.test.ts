@@ -7,21 +7,21 @@ import {
 import { SlotConstraint, WorkloadCost } from 'types/optimizer';
 
 describe('constructor', () => {
-  test('constructs initial time arrays list as expected', () => {
+  it('constructs initial time arrays list as expected', () => {
     const z3ts = new Z3TimetableSolver(4);
     expect(z3ts.timevars).toEqual(['t0', 't1', 't2', 't3']);
   });
 
-  test('constructs initial time arrays list with string variables', () => {
+  it('constructs initial time arrays list with string variables', () => {
     const z3ts = new Z3TimetableSolver(4, ['h0', 'h1', 'h2', 'h3']);
     expect(z3ts.timevars).toEqual(['t0_h0', 't1_h1', 't2_h2', 't3_h3']);
   });
 
-  test('errors when too many variable names are passed', () => {
+  it('errors when too many variable names are passed', () => {
     expect(() => new Z3TimetableSolver(2, ['h0', 'h1', 'h2'])).toThrow();
   });
 
-  test('errors when too few variable names are passed', () => {
+  it('errors when too few variable names are passed', () => {
     expect(() => new Z3TimetableSolver(2, ['h0'])).toThrow();
   });
 });
@@ -49,7 +49,7 @@ const scErrorLarger: SlotConstraint = {
 };
 
 describe('addSlotConstraintsFulfilOnlyOne', () => {
-  test('generates expected smtlib2 string when choosing between one of two slots', () => {
+  it('generates expected smtlib2 string when choosing between one of two slots', () => {
     const z3ts = new Z3TimetableSolver(4);
     z3ts.addSlotConstraintsFulfilOnlyOne([sc, sc2]);
 
@@ -73,7 +73,7 @@ describe('addSlotConstraintsFulfilOnlyOne', () => {
     expect(actual).toEqual(expected);
   });
 
-  test('generates expected smtlib2 string when choosing between one of two slots with an extra boolean variable', () => {
+  it('generates expected smtlib2 string when choosing between one of two slots with an extra boolean variable', () => {
     const z3ts = new Z3TimetableSolver(4);
 
     const boolVar = 'booleanSelector';
@@ -100,12 +100,12 @@ describe('addSlotConstraintsFulfilOnlyOne', () => {
     expect(actual).toEqual(expected);
   });
 
-  test('errors when slotConstraint when too small a time value is passed', () => {
+  it('errors when slotConstraint when too small a time value is passed', () => {
     const z3ts = new Z3TimetableSolver(4);
     expect(() => z3ts.addSlotConstraintsFulfilOnlyOne([sc2, scErrorSmaller])).toThrow();
   });
 
-  test('errors when slotConstraint when too large a time value is passed', () => {
+  it('errors when slotConstraint when too large a time value is passed', () => {
     const z3ts = new Z3TimetableSolver(4);
     expect(() => z3ts.addSlotConstraintsFulfilOnlyOne([sc2, scErrorLarger])).toThrow();
   });
@@ -117,7 +117,7 @@ const sc3: SlotConstraint = {
   ownerString: '9',
 }; // ID 7 assigned to slots 0 and 1
 describe('addSlotConstraintsFulfilExactlyN', () => {
-  test('generates expected smtlib2 string when choosing between two of three slots', () => {
+  it('generates expected smtlib2 string when choosing between two of three slots', () => {
     const z3ts = new Z3TimetableSolver(4);
     z3ts.addSlotConstraintsFulfilExactlyN([sc, sc2, sc3], 2);
     // Expect
@@ -143,28 +143,28 @@ describe('addSlotConstraintsFulfilExactlyN', () => {
     expect(actual).toEqual(expected);
   });
 
-  test('errors when slotConstraint when too small a time value is passed', () => {
+  it('errors when slotConstraint when too small a time value is passed', () => {
     const z3ts = new Z3TimetableSolver(4);
     expect(() => z3ts.addSlotConstraintsFulfilExactlyN([sc2, scErrorSmaller], 1)).toThrow();
   });
 
-  test('errors when slotConstraint when too large a time value is passed', () => {
+  it('errors when slotConstraint when too large a time value is passed', () => {
     const z3ts = new Z3TimetableSolver(4);
     expect(() => z3ts.addSlotConstraintsFulfilExactlyN([sc2, scErrorLarger], 1)).toThrow();
   });
 
-  test('errors when asked to choosing less than 0 slots', () => {
+  it('errors when asked to choosing less than 0 slots', () => {
     const z3ts = new Z3TimetableSolver(4);
     expect(() => z3ts.addSlotConstraintsFulfilExactlyN([sc, sc2, sc3], -1)).toThrow();
   });
-  test('errors when asked to choosing more than the passed slots', () => {
+  it('errors when asked to choosing more than the passed slots', () => {
     const z3ts = new Z3TimetableSolver(4);
     expect(() => z3ts.addSlotConstraintsFulfilExactlyN([sc, sc2, sc3], 7)).toThrow();
   });
 });
 
 describe('setBooleanSelectorCosts', () => {
-  test('generates expected smtlib2 string when setting basic workload costs', () => {
+  it('generates expected smtlib2 string when setting basic workload costs', () => {
     const z3ts = new Z3TimetableSolver(4);
     const boolSelectorCosts: WorkloadCost[] = [
       {
@@ -202,7 +202,7 @@ describe('setBooleanSelectorCosts', () => {
 });
 
 describe('addNegativevalueSlotConstraintToNConsecutive', () => {
-  test('generates expected smtlib2 string when asking for 2 consecutive slots out of a 3 slot period', () => {
+  it('generates expected smtlib2 string when asking for 2 consecutive slots out of a 3 slot period', () => {
     const z3ts = new Z3TimetableSolver(4);
     const scConsec: SlotConstraint = {
       startEndTimes: [[0, 3]],
@@ -231,19 +231,19 @@ describe('addNegativevalueSlotConstraintToNConsecutive', () => {
     expect(actual).toEqual(expected);
   });
 
-  test('errors when slotConstraint when too small a time value is passed', () => {
+  it('errors when slotConstraint when too small a time value is passed', () => {
     const z3ts = new Z3TimetableSolver(4);
     expect(() => z3ts.addNegativevalueSlotConstraintToNConsecutive(scErrorSmaller, 1)).toThrow();
   });
 
-  test('errors when slotConstraint when too large a time value is passed', () => {
+  it('errors when slotConstraint when too large a time value is passed', () => {
     const z3ts = new Z3TimetableSolver(4);
     expect(() => z3ts.addNegativevalueSlotConstraintToNConsecutive(scErrorLarger, 1)).toThrow();
   });
 });
 
 describe('addCompactnessConstraint', () => {
-  test('generates expected smtlib2 string when constraining compactness for all adjacent modules', () => {
+  it('generates expected smtlib2 string when constraining compactness for all adjacent modules', () => {
     const z3ts = new Z3TimetableSolver(4);
     // sc1: [0, 1], scMiddle: [1, 2], sc2: [2, 3]
     // We will say that sc1 and scMiddle are in a "choose only 1" scenario
@@ -283,7 +283,7 @@ describe('addCompactnessConstraint', () => {
     const actual = z3ts.generateSmtlib2String(false);
     expect(actual).toEqual(expected);
   });
-  test('generates expected smtlib2 string without compactness clauses when no modules are adjacent', () => {
+  it('generates expected smtlib2 string without compactness clauses when no modules are adjacent', () => {
     const z3ts = new Z3TimetableSolver(4);
     z3ts.addSlotConstraintsFulfilOnlyOne([sc]);
     z3ts.addSlotConstraintsFulfilOnlyOne([sc2]);
@@ -311,7 +311,7 @@ describe('addCompactnessConstraint', () => {
   });
 });
 
-test('randomness option generates string containing the options that enforce randomness', () => {
+it('randomness option generates string containing the options that enforce randomness', () => {
   const z3ts = new Z3TimetableSolver(4);
   const actual = z3ts.generateSmtlib2String(true);
   const randomPart1 = '(set-option :auto_config false)';
