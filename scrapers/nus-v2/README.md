@@ -49,7 +49,7 @@ We use ElasticSearch for our module search page. For local development it is not
 Run these through `yarn scrape` in production or `yarn dev` in development piped through `yarn bunyan` for formatting - eg. `yarn dev test | yarn bunyan`. You can also run `yarn dev help` to see a list of all commands.
 
 - `test` - run some simple API requests to check you have set everything up correctly
-- `department` - download department and faculty codes
+- `departments` - download department and faculty codes
 - `semester [sem]` - download module and timetable data for the given semester
 - `venue [sem]` - collate venue data into the shape needed by the frontend
 - `combine` - combine the module data for all four semesters together
