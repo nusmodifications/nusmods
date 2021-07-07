@@ -201,6 +201,12 @@ export const activityLessonType: Record<string, LessonType> = {
   ...unrecognizedLessonTypes,
 };
 
+export const modulesToAvoidMerging = new Set<string>([
+  'Programming Methodology',
+  'Data Structures and Algorithms',
+  'Graduate Research Seminar',
+]);
+
 export function isModuleOffered(module: {
   semesterData: (SemesterData | SemesterDataCondensed)[];
 }): boolean {
