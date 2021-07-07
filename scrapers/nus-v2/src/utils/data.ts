@@ -201,6 +201,14 @@ export const activityLessonType: Record<string, LessonType> = {
   ...unrecognizedLessonTypes,
 };
 
+/**
+ * In COVID-19 times, there were many classes that had the same venues (E-Learn_A,
+ * E-Learn_B, E-Learn_C). This confused our algorithm to merge dual-coded modules
+ * and created lots of false positives for module aliases. This avoid-list specifies
+ * the names of the modules that should not be aliased with each other.
+ *
+ * See https://github.com/nusmodifications/nusmods/pull/3322
+ */
 export const modulesToAvoidMerging = new Set<string>([
   'Programming Methodology',
   'Data Structures and Algorithms',
