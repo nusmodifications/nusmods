@@ -210,7 +210,11 @@ export const activityLessonType: Record<string, LessonType> = {
  * See https://github.com/nusmodifications/nusmods/pull/3322
  */
 export const modulesToAvoidMerging = new Set<string>([
+  // Excluding Discrete Structures also excludes TIC1201 on top of CS1231/S, but
+  // should not be a huge problem since TIC1201 is a distinctly different module.
+  'Discrete Structures',
   'Programming Methodology',
+  'Programming Methodology II',
   'Data Structures and Algorithms',
   'Graduate Research Seminar',
 ]);
