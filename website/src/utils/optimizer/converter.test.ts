@@ -3,20 +3,15 @@ import { Z3WeekSolver } from 'utils/optimizer/z3WeekSolver';
 import { Z3TimetableSolver } from 'utils/optimizer/z3TimetableSolver';
 import {
   OptimizerInput,
-  OptimizerCallbacks,
-  Z3WorkerMessage,
-  Z3WorkerMessageKind,
   ModuleInfoWithConstraints,
-  LessonsByGroupsByClassNo,
-  LessonsForLessonType,
   defaultConstraints,
   lessonByGroupsByClassNo,
   GlobalConstraints,
   SlotConstraint,
 } from 'types/optimizer';
-import { Module, RawLesson } from 'types/modules';
-import { getModuleSemesterData, getModuleTimetable } from 'utils/modules';
-import { CS1010S, CS3216, GES1021, BFS1001 } from '__mocks__/modules';
+import { RawLesson } from 'types/modules';
+import { getModuleTimetable } from 'utils/modules';
+import { CS3216, GES1021, BFS1001 } from '__mocks__/modules';
 
 // Directly mock the converter functions, allows us to track them
 const mockAddWeeks = jest.fn();
@@ -66,11 +61,11 @@ const emptyOptimizerInput: OptimizerInput = {
   moduleInfo: emptyModuleInfo,
   constraints: defaultConstraints,
 };
-const modCS1010S: ModuleInfoWithConstraints = {
-  mod: CS1010S,
-  required: true,
-  lessonsGrouped: lessonByGroupsByClassNo(getModuleTimetable(CS1010S, 1)),
-};
+// const modCS1010S: ModuleInfoWithConstraints = {
+//   mod: CS1010S,
+//   required: true,
+//   lessonsGrouped: lessonByGroupsByClassNo(getModuleTimetable(CS1010S, 1)),
+// };
 const modCS3216: ModuleInfoWithConstraints = {
   mod: CS3216,
   required: true,
@@ -91,10 +86,10 @@ const cs3216onlyOptimizerInput: OptimizerInput = {
   moduleInfo: [modCS3216],
   constraints: defaultConstraints,
 };
-const ges1021onlyOptimizerInput: OptimizerInput = {
-  moduleInfo: [modGES1021],
-  constraints: defaultConstraints,
-};
+// const ges1021onlyOptimizerInput: OptimizerInput = {
+//   moduleInfo: [modGES1021],
+//   constraints: defaultConstraints,
+// };
 const ges1021cs3216OptimizerInput: OptimizerInput = {
   moduleInfo: [modCS3216, modGES1021],
   constraints: defaultConstraints,
@@ -329,18 +324,18 @@ describe('generateLunchBreakSlotconstraints', () => {
 
 const lessonTimeErrConstraintStart: GlobalConstraints = {
   ...defaultConstraints,
-  earliestLessonStartTime: "0000"
+  earliestLessonStartTime: '0000',
 };
 const lessonTimeErrConstraintEnd: GlobalConstraints = {
   ...defaultConstraints,
-  earliestLessonStartTime: "0200",
-  latestLessonEndTime: "0100"
+  earliestLessonStartTime: '0200',
+  latestLessonEndTime: '0100',
 };
-const lessonTimeConstraint: GlobalConstraints = {
-  ...defaultConstraints,
-  earliestLessonStartTime: "0100",
-  latestLessonEndTime: "0200"
-};
+// const lessonTimeConstraint: GlobalConstraints = {
+//   ...defaultConstraints,
+//   earliestLessonStartTime: '0100',
+//   latestLessonEndTime: '0200',
+// };
 describe('generateTimeconstraintSlotconstraint', () => {
   it('errors when the lesson constraint start / end times are impossible', () => {
     let conv = new OptimizerInputSmtlibConverter(
