@@ -84,8 +84,8 @@ export interface GlobalConstraints {
   specificFreeDays: Array<string>;
   // When lessons should start and end + whether the constraint is active
   isTimeConstraintActive: boolean;
-  startTime: StartTime;
-  endTime: EndTime;
+  earliestLessonStartTime: StartTime;
+  latestLessonEndTime: EndTime;
   // The hours where a lunch break should be allocated,
   //  how many half-hour slots to allocate, and whether the constraint is active
   isLunchBreakActive: boolean;
@@ -135,8 +135,8 @@ export const defaultConstraints: GlobalConstraints = {
   numRequiredFreeDays: 1,
   isSpecificFreeDaysActive: false,
   specificFreeDays: [],
-  startTime: '0800',
-  endTime: '2200',
+  earliestLessonStartTime: '0800',
+  latestLessonEndTime: '2200',
   lunchStart: '1100',
   lunchEnd: '1500',
   lunchHalfHours: 2,

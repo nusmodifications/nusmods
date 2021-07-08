@@ -56,6 +56,11 @@ export class OptimizerInputSmtlibConverter {
     dayStartHour: number,
     dayEndHour: number,
   ) {
+    if (dayStartHour >= dayEndHour)
+      throw new Error(`Unexpected: start hour ${dayStartHour} >= end hour ${dayEndHour}`);
+    if (totalHalfHourSlots <= 0)
+      throw new Error(`Unexpected: half hour slots ${totalHalfHourSlots} <= 0`);
+
     this.optimizerInput = optimizerInput;
     this.startHour = dayStartHour;
     this.endHour = dayEndHour;
@@ -125,6 +130,9 @@ export class OptimizerInputSmtlibConverter {
                 // console.error(
                 //   `At least one lesson has a WeekRange (not just normal Week array) in module ${modInfo}`,
                 // );
+                throw new Error(
+                  `WeekRange unsupported: Mod ${modInfo.mod} has at least 1 lesson in lessons ${lessons} with WeekRange`,
+                );
               } else {
                 // No WeekRange, can treat as normal weeks
                 const weeksJson = JSON.stringify(weeks);
@@ -429,8 +437,8 @@ export class OptimizerInputSmtlibConverter {
       let startOffset = 0;
       let endOffset = HOURS_PER_DAY * 2;
       if (this.optimizerInput.constraints.isTimeConstraintActive) {
-        startOffset = this.hhmmToZ3Time(this.optimizerInput.constraints.startTime);
-        endOffset = this.hhmmToZ3Time(this.optimizerInput.constraints.endTime);
+        startOffset = this.hhmmToZ3Time(this.optimizerInput.constraints.earliestLessonStartTime);
+        endOffset = this.hhmmToZ3Time(this.optimizerInput.constraints.latestLessonEndTime);
         // console.log(`Start offset: ${startOffset}, endOffset: ${endOffset}`);
       }
 
@@ -464,8 +472,8 @@ export class OptimizerInputSmtlibConverter {
     this.ownerIdToStringTable[ownerId] = name;
 
     // Not even constraining any of the day, ignore
-    const startOffset = this.hhmmToZ3Time(this.optimizerInput.constraints.startTime);
-    const endOffset = this.hhmmToZ3Time(this.optimizerInput.constraints.endTime);
+    const startOffset = this.hhmmToZ3Time(this.optimizerInput.constraints.earliestLessonStartTime);
+    const endOffset = this.hhmmToZ3Time(this.optimizerInput.constraints.latestLessonEndTime);
     if (startOffset === 0 && endOffset - startOffset === HOURS_PER_DAY * 2) return undefined;
     // For each day of the week, add a slot constraint blocking out hours before and after our ideal timings
     for (let day = 0; day < DAYS; day++) {
@@ -499,7 +507,7 @@ export class OptimizerInputSmtlibConverter {
   }
 
   /**
-   * Generates a single slot constraint representing time blocked off for too-early / too-late in the day for classes.
+   * Generates a set of slotconstraints representing the times that could be blocked off for lunch.
    * */
   generateLunchBreakSlotconstraints(): Array<SlotConstraint> {
     const scs: Array<SlotConstraint> = [];
@@ -507,7 +515,8 @@ export class OptimizerInputSmtlibConverter {
     // Calculate offsets within the day
     const startOffset = this.hhmmToZ3Time(this.optimizerInput.constraints.lunchStart);
     const endOffset = this.hhmmToZ3Time(this.optimizerInput.constraints.lunchEnd);
-    if (startOffset >= endOffset) return [];
+    if (startOffset >= endOffset || startOffset < 0)
+      throw new Error(`Either startOffset ${startOffset} < 0 or >= endOffset ${endOffset}!`);
 
     // For each day of the week, add a slot constraint blocking out hours before and after our ideal timings
     for (let day = 0; day < DAYS; day++) {
@@ -540,13 +549,18 @@ export class OptimizerInputSmtlibConverter {
     const hour = parseInt(time.substring(0, 2), 10);
     const minuteOffset = parseInt(time.substring(2), 10) === 0 ? 0 : 1;
     // We assume lessons within start to end hour each day
-    if (hour < this.startHour || hour > this.endHour) {
+    if (
+      hour < this.startHour ||
+      hour > this.endHour ||
+      (hour === this.endHour && minuteOffset === 1)
+    ) {
       throw new Error(
-        `Lesson either starts before start_hour ${hour} < ${this.startHour} or ends after end_hour ${hour} > ${this.endHour}`,
+        `Lesson either starts before start_hour ${hour} < ${this.startHour} or ends after end_hour ${hour}`,
       );
     } else {
       const hourIndex = hour - this.startHour;
       const dayIndex = dayStrToIdx(day);
+      if (dayIndex === undefined) throw new Error(`Day ${day} is not a valid day string!`);
       // hour_index * 2 (since we count half-hours)
       // + half_hour_addon since we offset by 1 unit if it's a half hour
       // + number of hours in a day * 2 to get number of half-hours
