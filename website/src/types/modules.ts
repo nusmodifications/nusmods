@@ -39,6 +39,16 @@ export type Day =
   | 'Saturday'
   | 'Sunday';
 
+export const Days: readonly Day[] = [
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday',
+];
+
 export const WorkingDays: readonly Day[] = [
   'Monday',
   'Tuesday',
