@@ -29,6 +29,41 @@
   }
 }
 
+.relative{
+  position:relative;
+}
+
+.buttonLeft {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0;
+  margin-top: -5px;
+  border: 0;
+  @include media-breakpoint-down(sm) {
+    display:none;
+  }
+}
+
+.buttonRight {
+  position: absolute;
+  top: 0;
+  right: 0%;
+  padding: 0;
+  margin-top: -5px;
+  border: 0;
+  @include media-breakpoint-down(sm) {
+    display:none;
+  }
+}
+
+.svg {
+  display: inline-block;
+  width: 1.1rem;
+  margin-left: -5px;
+  border: 0;
+}
+
 .time {
   transform: translateX(-50%);
 
