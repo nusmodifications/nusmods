@@ -30,6 +30,19 @@ yarn add nusmoderator
     -   [Parameters](#parameters-4)
 -   [getExamWeek](#getexamweek)
     -   [Parameters](#parameters-5)
+-   [WeekType](#weektype)
+-   [Semester](#semester)
+-   [AcadYear](#acadyear)
+    -   [year](#year)
+    -   [startDate](#startdate)
+-   [AcadWeek](#acadweek)
+    -   [weekType](#weektype-1)
+    -   [weekNumber](#weeknumber)
+-   [AcadWeekInfo](#acadweekinfo)
+    -   [year](#year-1)
+    -   [sem](#sem)
+    -   [type](#type)
+    -   [num](#num)
 
 ### getAcadYearStartDate
 
@@ -38,7 +51,7 @@ Assumes Week 0 begins on the first Monday of August.
 
 #### Parameters
 
--   `acadYear`  the academic year. E.g. "18/19"
+-   `acadYear` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the academic year. E.g. "18/19"
 
 Returns **[Date](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)** Start date of the academic year
 
@@ -50,7 +63,7 @@ Takes in a Date and returns an object of acad year and start date for that year.
 
 -   `date` **[Date](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)** 
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** acadYearObject - { year: "15/16", startDate: Date }
+Returns **[AcadYear](#acadyear)** acadYearObject - { year: "15/16", startDate: Date }
 
 ### getAcadSem
 
@@ -67,7 +80,7 @@ Expects a week number of a year.
 acadWeekNumber(3)
 ```
 
-Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** semester - "Semester 1"
+Returns **([Semester](#semester) | null)** semester - "Semester 1"
 
 ### getAcadWeekName
 
@@ -84,30 +97,124 @@ Expects a week number of a semester.
 acadWeekNumber(3)
 ```
 
-Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** semester - "Recess" | "Reading" | "Examination"
+Returns **([AcadWeek](#acadweek) | null)** week e.g. Recess, Reading, Examination
 
 ### getAcadWeekInfo
 
-Computes the current academic week and return in an object of acad date components
+Computes the current academic week and return an object of acad date components.
 
 #### Parameters
 
 -   `date` **[Date](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)** 
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** {
-  year: "15/16",
-  sem: 'Semester 1'|'Semester 2'|'Special Term I'|'Special Term II',
-  type: 'Instructional'|'Reading'|'Examination'|'Recess'|'Vacation'|'Orientation',
-  num: <weekNum>
-}
+Returns **[AcadWeekInfo](#acadweekinfo)** object containing acad week information
 
 ### getExamWeek
 
-Get the first day of the exam week for the given semester
+Get the first day of the exam week for the given semester.
 
 #### Parameters
 
 -   `year` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
 -   `semester` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
-Returns **[Date](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)** 
+Returns **([Date](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date) | null)** date of the first day of the semester's exam week
+
+### WeekType
+
+The type of an academic week.
+
+Type: (`"Instructional"` \| `"Reading"` \| `"Examination"` \| `"Recess"` \| `"Vacation"` \| `"Orientation"`)
+
+### Semester
+
+One of the four NUS semesters.
+
+Type: (`"Semester 1"` \| `"Semester 2"` \| `"Special Term I"` \| `"Special Term II"`)
+
+### AcadYear
+
+An academic year.
+
+#### year
+
+Short string name of an academic year, e.g.  "AY2020/2021" → "20/21".
+
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+#### startDate
+
+Date of the the first weekday of Week 0 of this academic year.
+
+Type: [Date](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
+
+### AcadWeek
+
+An academic week.
+
+#### weekType
+
+Type of this academic week.
+
+Type: [WeekType](#weektype)
+
+#### weekNumber
+
+This `AcadWeek` is the `weekNumber`-th week with this academic week type
+in the semester. `null` if the semester has exactly 1 week of this type.
+Examples below:
+
+-   Instructional week 1: `weekNumber` = 1
+-   Instructional week 13: `weekNumber` = 13
+-   Examination week 2: `weekNumber` = 2
+-   Examination week 2: `weekNumber` = 2
+-   Recess week: `weekNumber` = `null`, since there's only 1 recess week in
+    the semester.
+
+Type: ([number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number) | null)
+
+### AcadWeekInfo
+
+Encapsulates information about an academic week.
+
+#### year
+
+Short string name of the academic year this week is in.
+
+E.g. "AY2020/2021" → "20/21".
+
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+#### sem
+
+Semester that this academic week is in.
+
+Type: ([Semester](#semester) | null)
+
+#### type
+
+Type of this academic week.
+
+Type: ([WeekType](#weektype) | null)
+
+#### num
+
+-   **See: getAcadWeekInfo
+    **
+
+This `AcadWeek` is the `weekNumber`-th week with this academic week type
+in the semester. `null` if the semester has exactly 1 week of this type.
+Examples below:
+
+-   Instructional week 1: `weekNumber` = 1
+-   Instructional week 13: `weekNumber` = 13
+-   Examination week 2: `weekNumber` = 2
+-   Examination week 2: `weekNumber` = 2
+-   Recess week: `weekNumber` = `null`, since there's only 1 recess week in
+    the semester.
+-   Orientation week: `weekNumber` = `null`
+-   Vacation week 3: `weekNumber` = 3
+-   Vacation week `null`: a vacation week's `weekNumber` can be null in very
+    rare cases.
+
+Type: ([number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number) | null)
