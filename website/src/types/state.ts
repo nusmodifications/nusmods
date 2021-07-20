@@ -4,6 +4,7 @@ import {
   Requests,
   SettingsState,
   ThemeState,
+  OptimizerState,
   TimetablesState,
   UndoHistoryState,
   VenueBank,
@@ -17,6 +18,7 @@ export type State = {
   timetables: TimetablesState;
   app: AppState;
   theme: ThemeState;
+  optimizer: OptimizerState;
   settings: SettingsState;
   planner: PlannerState;
   undoHistory: UndoHistoryState<State>;

@@ -11599,6 +11599,11 @@ setprototypeof@1.1.1:
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.1.1.tgz#7e95acb24aa92f5885e0abef5ba131330d4ae683"
   integrity sha512-JvdAWfbXeIGaZ9cILp38HntZSFSo3mWg6xGcJJsd+d4aRMOqauag1C63dJfDw7OaMYwEbHMOxEZ1lqVRYP2OAw==
 
+sexpr-plus@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/sexpr-plus/-/sexpr-plus-7.0.0.tgz#3ec5830ee5ae85f2d3a625856968f7641c9c8c9f"
+  integrity sha1-PsWDDuWuhfLTpiWFaWj3ZBycjJ8=
+
 sha.js@^2.4.0, sha.js@^2.4.8:
   version "2.4.11"
   resolved "https://registry.yarnpkg.com/sha.js/-/sha.js-2.4.11.tgz#37a5cf0b81ecbc6943de109ba2960d1b26584ae7"
@@ -11701,6 +11706,11 @@ smart-buffer@^1.0.13:
   version "1.1.15"
   resolved "https://registry.yarnpkg.com/smart-buffer/-/smart-buffer-1.1.15.tgz#7f114b5b65fab3e2a35aa775bb12f0d1c649bf16"
   integrity sha1-fxFLW2X6s+KjWqd1uxLw0cZJvxY=
+
+smtlib-ext@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/smtlib-ext/-/smtlib-ext-1.0.0.tgz#396aae4d88521721761a3bc10a09cd8c1a87a42b"
+  integrity sha512-juyvJizsDBbUUlhrOLqYZTE78pXpxPruqapfxMdrtvV5Fm7pnzdW6HQg4fRfjbUy/6xI8oIDqCthUri+MiyMyA==
 
 snapdragon-node@^2.0.1:
   version "2.1.1"
@@ -13274,6 +13284,14 @@ wordwrap@~0.0.2:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-0.0.3.tgz#a3d5da6cd5c0bc0008d37234bbaf1bed63059107"
   integrity sha1-o9XabNXAvAAI03I0u68b7WMFkQc=
+
+worker-loader@^3.0.8:
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/worker-loader/-/worker-loader-3.0.8.tgz#5fc5cda4a3d3163d9c274a4e3a811ce8b60dbb37"
+  integrity sha512-XQyQkIFeRVC7f7uRhFdNMe/iJOdO6zxAaR3EWbDp45v3mDhrTi+++oswKNxShUNjPC/1xUp5DB29YKLhFo129g==
+  dependencies:
+    loader-utils "^2.0.0"
+    schema-utils "^3.0.0"
 
 worker-rpc@^0.1.0:
   version "0.1.1"

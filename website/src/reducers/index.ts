@@ -8,6 +8,7 @@ import { Actions } from 'types/actions';
 import requests from './requests';
 import app from './app';
 import createUndoReducer from './undoHistory';
+import optimizer from './optimizer';
 
 // Persisted reducers
 import moduleBankReducer, { persistConfig as moduleBankPersistConfig } from './moduleBank';
@@ -41,6 +42,7 @@ export default function reducers(state: State = defaultState, action: Actions): 
     requests: requests(state.requests, action),
     timetables: timetables(state.timetables, action),
     app: app(state.app, action),
+    optimizer: optimizer(state.optimizer, action),
     theme: theme(state.theme, action),
     settings: settings(state.settings, action),
     planner: planner(state.planner, action),

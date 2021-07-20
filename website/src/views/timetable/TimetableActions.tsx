@@ -3,10 +3,11 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 
 import { toggleTimetableOrientation, toggleTitleDisplay } from 'actions/theme';
+import { toggleOptimizerDisplay } from 'actions/optimizer';
 import { Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
 
-import { Calendar, Grid, Sidebar, Type } from 'react-feather';
+import { Calendar, Cpu, Grid, Sidebar, Type } from 'react-feather';
 import elements from 'views/elements';
 import config from 'config';
 import ShareTimetable from './ShareTimetable';
@@ -26,6 +27,9 @@ type Props = {
 
   showExamCalendar: boolean;
   toggleExamCalendar: () => void;
+
+  isOptimizerEnabled: boolean;
+  toggleOptimizerDisplay: () => void;
 };
 
 const TimetableActions: React.FC<Props> = (props) => (
@@ -78,6 +82,15 @@ const TimetableActions: React.FC<Props> = (props) => (
           )}
         </button>
       )}
+      <button
+        type="button"
+        className={classnames('btn btn-outline-primary btn-svg')}
+        onClick={props.toggleOptimizerDisplay}
+        disabled={props.showExamCalendar}
+      >
+        <Cpu className={styles.sidebarIcon} />
+        {props.isOptimizerEnabled ? 'Hide Optimizer' : 'Show Optimizer'}
+      </button>
     </div>
 
     <div className={styles.buttonGroup} role="group" aria-label="Timetable exporting">
@@ -91,4 +104,5 @@ const TimetableActions: React.FC<Props> = (props) => (
 export default connect(null, {
   toggleTimetableOrientation,
   toggleTitleDisplay,
+  toggleOptimizerDisplay,
 })(TimetableActions);
