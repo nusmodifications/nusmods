@@ -31,9 +31,10 @@ exports[`ModuleFinderApiError should render 1`] = `
         Module search might be having issues at the moment. 😟
       </strong>
       <p>
-        If it isn't working, please try the module search
+        We are currently facing issues with our search services vendor and we are actively trying to resolve them. If the module search page isn't working, please use the general search function
          
-        on the top right corner of the page instead.
+        (the magnifying glass) 
+        on the top right corner of the page to search for modules instead.
       </p>
       <div>
         <button
@@ -79,9 +80,10 @@ exports[`ModuleFinderApiError should render with url 1`] = `
         Module search might be having issues at the moment. 😟
       </strong>
       <p>
-        If it isn't working, please try the module search
+        We are currently facing issues with our search services vendor and we are actively trying to resolve them. If the module search page isn't working, please use the general search function
          
-        on the top right corner of the page instead.
+        (the magnifying glass) 
+        on the top right corner of the page to search for modules instead.
       </p>
       <div>
         <button

@@ -53,9 +53,13 @@ export default class ApiError extends React.PureComponent<Props> {
             <>
               <strong>Module search might be having issues at the moment. 😟</strong>
               <p>
-                If it isn't working, please try the module search{' '}
-                {window.innerWidth < breakpointUp('md').minWidth && 'on a desktop browser '}on the
-                top right corner of the page instead.
+                We are currently facing issues with our search services vendor and we are actively
+                trying to resolve them. If the module search page isn't working, please use the
+                general search function{' '}
+                {window.innerWidth < breakpointUp('md').minWidth
+                  ? '(on a desktop browser) '
+                  : '(the magnifying glass) '}
+                on the top right corner of the page to search for modules instead.
               </p>
             </>
           )}
