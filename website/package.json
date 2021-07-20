@@ -172,5 +172,8 @@
   },
   "browserslist": [
     "extends browserslist-config-nusmods"
-  ]
+  ],
+  "engines": {
+    "node": ">=12"
+  }
 }
