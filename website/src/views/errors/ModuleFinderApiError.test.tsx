@@ -29,6 +29,7 @@ describe(ModuleFinderApiError, () => {
     expect(container).toMatchSnapshot();
   });
 
+  // TODO: Tech Debt - Check if this test can correctly perform an assertion on `history`
   test('should have unchanged url when search is retried', async () => {
     const { history, view } = renderWithRouterMatch(
       <ModuleFinderApiError searchkit={searchkit} />,

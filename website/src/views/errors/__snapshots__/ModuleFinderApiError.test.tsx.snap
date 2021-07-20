@@ -27,6 +27,14 @@ exports[`ModuleFinderApiError should render 1`] = `
       <p>
         This could be because your device is offline or NUSMods is down :(
       </p>
+      <strong>
+        Module search might be having issues at the moment. 😟
+      </strong>
+      <p>
+        If it isn't working, please try the module search
+         
+        on the top right corner of the page instead.
+      </p>
       <div>
         <button
           class="btn btn-primary btn-lg"
@@ -66,6 +74,14 @@ exports[`ModuleFinderApiError should render with url 1`] = `
       </h1>
       <p>
         This could be because your device is offline or NUSMods is down :(
+      </p>
+      <strong>
+        Module search might be having issues at the moment. 😟
+      </strong>
+      <p>
+        If it isn't working, please try the module search
+         
+        on the top right corner of the page instead.
       </p>
       <div>
         <button
