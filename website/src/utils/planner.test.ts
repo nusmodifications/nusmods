@@ -1,5 +1,5 @@
 import { Semester } from 'types/modules';
-import { CS1010S } from '__mocks__/modules';
+import { CS1010S, GEQ1917 } from '__mocks__/modules';
 
 import {
   acadYearLabel,
@@ -8,6 +8,7 @@ import {
   fromDroppableId,
   getDroppableId,
   getTotalMC,
+  isYearLong,
 } from 'utils/planner';
 
 describe(checkPrerequisite, () => {
@@ -88,5 +89,15 @@ describe(getTotalMC, () => {
 
   test('should merge module credit from module info and custom info', () => {
     expect(getTotalMC([{ customInfo: { moduleCredit: 6 } }, { moduleInfo: CS1010S }])).toEqual(10);
+  });
+});
+
+describe(isYearLong, () => {
+  test('should return false for semester-long module', () => {
+    expect(isYearLong({ moduleInfo: CS1010S })).toEqual(false);
+  });
+
+  test('should return true for year-long module', () => {
+    expect(isYearLong({ moduleInfo: GEQ1917 })).toEqual(true);
   });
 });

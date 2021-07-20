@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import classnames from 'classnames';
 
-import { ModuleCode, ModuleTitle, Semester } from 'types/modules';
-import { Conflict, PlannerPlaceholder } from 'types/planner';
+import { ModuleCode, ModuleCondensed, ModuleTitle, ModuleType, Semester } from 'types/modules';
+import { Conflict, PlannerModuleSemester, PlannerPlaceholder } from 'types/planner';
 import config from 'config';
 import { renderMCs } from 'utils/modules';
-import { conflictToText } from 'utils/planner';
+import { conflictToText, getDraggableId, isSemester } from 'utils/planner';
 import { toSingaporeTime } from 'utils/timify';
 import { AlertTriangle, ChevronDown } from 'react-feather';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
@@ -26,11 +26,12 @@ type Props = Readonly<{
   moduleCode?: ModuleCode;
   placeholder?: PlannerPlaceholder;
   conflict?: Conflict | null;
-  semester?: Semester;
+  semester?: PlannerModuleSemester;
 
   // For draggable
   id: string;
   index: number;
+  type: ModuleType;
 
   // Actions
   removeModule: (id: string) => void;
@@ -122,7 +123,7 @@ const PlannerModule = memo<Props>((props) => {
   };
 
   const renderPlaceholderForm = () => {
-    const { placeholder, moduleCode, moduleTitle, semester } = props;
+    const { placeholder, moduleCode, moduleTitle, semester: plannerSemester } = props;
 
     if (!placeholder) return null;
 
@@ -148,9 +149,9 @@ const PlannerModule = memo<Props>((props) => {
     return (
       <form>
         <PlannerModuleSelect
-          onSelect={(newModuleCode: ModuleCode | null) => {
-            if (newModuleCode) {
-              props.setPlaceholderModule(props.id, newModuleCode);
+          onSelect={(module: ModuleCondensed | null) => {
+            if (module) {
+              props.setPlaceholderModule(props.id, module.moduleCode);
             }
 
             setEditingPlaceholder(false);
@@ -161,16 +162,20 @@ const PlannerModule = memo<Props>((props) => {
           filter={placeholder.filter}
           defaultValue={moduleCode}
           className={styles.placeholderInput}
-          semester={semester}
+          semester={
+            plannerSemester && isSemester(plannerSemester)
+              ? (plannerSemester as Semester)
+              : undefined
+          }
         />
       </form>
     );
   };
 
-  const { id, placeholder, moduleCode, moduleTitle, index, conflict } = props;
+  const { id, placeholder, moduleCode, moduleTitle, index, conflict, type } = props;
 
   return (
-    <Draggable key={moduleCode} draggableId={id} index={index}>
+    <Draggable key={moduleCode} draggableId={getDraggableId(id, type)} index={index}>
       {(provided, snapshot) => (
         <div
           ref={provided.innerRef}

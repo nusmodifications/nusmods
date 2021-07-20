@@ -12,6 +12,7 @@ import {
   Semester,
 } from './modules';
 import { VenueList } from './venues';
+import { PlannerModuleSemester } from './planner';
 
 /* app.js */
 export type NotificationOptions = {
@@ -134,7 +135,7 @@ export type PlannerTime = {
 
   // The year, semester and zero-indexed position of the module in the planner
   year: string;
-  semester: Semester;
+  semester: PlannerModuleSemester;
   index: number;
 
   // Technically this should be { moduleCode } | { moduleCode?, placeholderId }

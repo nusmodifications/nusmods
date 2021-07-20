@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 
-import { Semester, ModuleCode } from 'types/modules';
-import { AddModuleData, PlannerModuleInfo } from 'types/planner';
+import { Semester, ModuleCode, ModuleType } from 'types/modules';
+import { AddModuleData, PlannerModuleInfo, PlannerModuleSemester } from 'types/planner';
 import config from 'config';
 import { getExamDate, renderMCs } from 'utils/modules';
 import {
@@ -12,6 +12,8 @@ import {
   getModuleTitle,
   getSemesterName,
   getTotalMC,
+  isYearLong,
+  getPlannerSemesterModuleType as getDroppableType,
 } from 'utils/planner';
 import PlannerModule from './PlannerModule';
 import AddModule from './AddModule';
@@ -19,11 +21,12 @@ import styles from './PlannerSemester.scss';
 
 type Props = Readonly<{
   year: string;
-  semester: Semester;
+  semester: PlannerModuleSemester;
   modules: PlannerModuleInfo[];
 
   showModuleMeta?: boolean;
   className?: string;
+  draggedModuleType: ModuleType | null;
 
   addModule: (year: string, semester: Semester, module: AddModuleData) => void;
   removeModule: (id: string) => void;
@@ -53,6 +56,7 @@ const PlannerSemester: React.FC<Props> = ({
   modules,
   showModuleMeta = true,
   className,
+  draggedModuleType,
   addModule,
   removeModule,
   addCustomData,
@@ -67,11 +71,19 @@ const PlannerSemester: React.FC<Props> = ({
       <PlannerModule
         key={id}
         id={id}
+        type={isYearLong(plannerModule) ? 'YEAR_LONG' : 'SEMESTER_LONG'}
         index={index}
         moduleCode={moduleCode}
         placeholder={placeholder}
         moduleTitle={getModuleTitle(plannerModule)}
-        examDate={showExamDate && moduleInfo ? getExamDate(moduleInfo, semester) : null}
+        examDate={
+          showExamDate && moduleInfo
+            ? moduleInfo.semesterData
+                .map((semesterData) => getExamDate(moduleInfo, semesterData.semester))
+                .filter(Boolean)
+                .join('\n')
+            : null
+        }
         moduleCredit={showModuleMeta ? getModuleCredit(plannerModule) : null}
         conflict={conflict}
         semester={semester}
@@ -83,14 +95,18 @@ const PlannerSemester: React.FC<Props> = ({
   };
 
   const droppableId = getDroppableId(year, semester);
-
+  const droppableType = getDroppableType(semester);
   return (
-    <Droppable droppableId={droppableId}>
+    <Droppable
+      droppableId={droppableId}
+      isDropDisabled={droppableType !== 'ALL' && draggedModuleType !== droppableType}
+    >
       {(provided, snapshot) => (
         <div
           className={classnames(styles.semester, className, {
             [styles.emptyList]: modules.length === 0,
             [styles.dragOver]: snapshot.isDraggingOver,
+            [styles.yearLong]: semester === 0,
           })}
           ref={provided.innerRef}
           {...provided.droppableProps}
@@ -107,13 +123,15 @@ const PlannerSemester: React.FC<Props> = ({
 
           {showModuleMeta && modules.length > 0 && renderSemesterMeta(modules)}
 
-          <div className={styles.addModule}>
-            <AddModule
-              year={year}
-              semester={semester}
-              onAddModule={(module) => addModule(year, +semester, module)}
-            />
-          </div>
+          {semester !== 'yearLong' && (
+            <div className={styles.addModule}>
+              <AddModule
+                year={year}
+                semester={semester}
+                onAddModule={(module) => addModule(year, +semester, module)}
+              />
+            </div>
+          )}
         </div>
       )}
     </Droppable>
