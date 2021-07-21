@@ -57,6 +57,14 @@
   }
 }
 
+.announcementLink {
+  color: #31818d;
+
+  &:hover {
+    color: #07272c;
+  }
+}
+
 .buttons {
   display: flex;
   flex: 0 0 auto;
