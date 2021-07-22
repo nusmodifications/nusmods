@@ -3,6 +3,26 @@ import { normalize } from './normalizeString';
 /* eslint-disable max-len */
 
 describe(normalize, () => {
+  it('removes GCE prerequisites 1', () => {
+    const testString =
+      'GCE ‘A’ Level or H2 Mathematics or H2 Further Mathematics or MA1301 or MA1301FC or MA1301X';
+    const expected = 'MA1301 or MA1301FC or MA1301X';
+    expect(normalize(testString)).toBe(expected);
+  });
+
+  it('removes GCE prerequisites 2', () => {
+    const testString = 'CS3240 and (MA1301 or A-level / H2 Mathematics)';
+    const expected = 'CS3240 and (MA1301)';
+    expect(normalize(testString)).toBe(expected);
+  });
+
+  // Edge case that currently isn't handled.
+  it('removes GCE prerequisites 3', () => {
+    const testString = 'MA1301 or GCE ‘A’ Level or MA1301FC';
+    const expected = 'MA1301MA1301FC';
+    expect(normalize(testString)).toBe(expected);
+  });
+
   it('converts commas to delimiter or', () => {
     const testString =
       'ACC1002 Financial Accounting, BSP1004 Legal Environment of Business, FIN2004 Finance';
