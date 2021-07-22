@@ -106,9 +106,12 @@ function removeModuleTitles(string: string): string {
   return result;
 }
 
-const gceRegex = /\b[\s]*(?:and|or)?\b[\s]*((GCE\D+)|(H[1-3]\D+)|([A|O][\W*][level]+))\b[\s]*(?:and|or)?/g;
+const gceRegex = /((GCE\D+)|(H[1-3]\D+)|([A|O][\W*][level]+))\b[\s]*(?:and|or)?/g;
 function removeGCEPrerequisites(string: string): string {
-  return string.replace(gceRegex, '');
+  const trailingAndOrRegex = /(( and | or )\s*)(?:\W*)$/g;
+  return string
+    .replace(gceRegex, '')
+    .replace(trailingAndOrRegex, (match, p) => match.replace(p, ''));
 }
 
 const replaceBrackets = (str: string) => str.replace(/[{[<]/g, '(').replace(/[}\]>]/g, ')');

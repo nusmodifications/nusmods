@@ -16,10 +16,9 @@ describe(normalize, () => {
     expect(normalize(testString)).toBe(expected);
   });
 
-  // Edge case that currently isn't handled.
   it('removes GCE prerequisites 3', () => {
     const testString = 'MA1301 or GCE ‘A’ Level or MA1301FC';
-    const expected = 'MA1301MA1301FC';
+    const expected = 'MA1301 or MA1301FC';
     expect(normalize(testString)).toBe(expected);
   });
 
