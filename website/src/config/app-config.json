@@ -3,7 +3,7 @@
   "defaultDescription": "NUSMods is a timetable builder and knowledge platform, providing students with a better way to plan their school timetable and useful module-related information that are community-driven.",
   "academicYear": "2021/2022",
   "apiBaseUrl": "https://api.nusmods.com",
-  "elasticsearchBaseUrl": "https://382c4d616054428291bc86fdf4001a6e.ap-southeast-1.aws.found.io:9243",
+  "elasticsearchBaseUrl": "https://nusmods-search.es.ap-southeast-1.aws.found.io:9243",
   "semester": 1,
   "disqusShortname": "nusmods-prod",
   "venueFeedbackApi": "https://mediumdeviation.lib.id/nusmods-venue-github-hook@0.0.8/",
