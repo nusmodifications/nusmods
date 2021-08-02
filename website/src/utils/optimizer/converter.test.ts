@@ -86,13 +86,10 @@ const cs3216onlyOptimizerInput: OptimizerInput = {
   moduleInfo: [modCS3216],
   constraints: defaultConstraints,
 };
-<<<<<<< HEAD
-=======
 // const ges1021onlyOptimizerInput: OptimizerInput = {
 //   moduleInfo: [modGES1021],
 //   constraints: defaultConstraints,
 // };
->>>>>>> 2e75c66fdf470ab46b398c59279feb90998ffe55
 const ges1021cs3216OptimizerInput: OptimizerInput = {
   moduleInfo: [modCS3216, modGES1021],
   constraints: defaultConstraints,
