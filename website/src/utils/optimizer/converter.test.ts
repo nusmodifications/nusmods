@@ -61,6 +61,11 @@ const emptyOptimizerInput: OptimizerInput = {
   moduleInfo: emptyModuleInfo,
   constraints: defaultConstraints,
 };
+// const modCS1010S: ModuleInfoWithConstraints = {
+//   mod: CS1010S,
+//   required: true,
+//   lessonsGrouped: lessonByGroupsByClassNo(getModuleTimetable(CS1010S, 1)),
+// };
 const modCS3216: ModuleInfoWithConstraints = {
   mod: CS3216,
   required: true,
@@ -81,6 +86,13 @@ const cs3216onlyOptimizerInput: OptimizerInput = {
   moduleInfo: [modCS3216],
   constraints: defaultConstraints,
 };
+<<<<<<< HEAD
+=======
+// const ges1021onlyOptimizerInput: OptimizerInput = {
+//   moduleInfo: [modGES1021],
+//   constraints: defaultConstraints,
+// };
+>>>>>>> 2e75c66fdf470ab46b398c59279feb90998ffe55
 const ges1021cs3216OptimizerInput: OptimizerInput = {
   moduleInfo: [modCS3216, modGES1021],
   constraints: defaultConstraints,

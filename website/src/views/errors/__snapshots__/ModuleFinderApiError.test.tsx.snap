@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModuleFinderApiError should render 1`] = `
+<div>
+  <div>
+    <div
+      class="container"
+    >
+      <div
+        class="header"
+      >
+        <div
+          data-testid="RandomKawaii component"
+        />
+      </div>
+      <h1
+        class="h3 header"
+      >
+        <span
+          class="expr"
+        >
+          Oh no...
+        </span>
+         
+        We can't load the module information
+      </h1>
+      <p>
+        This could be because your device is offline or NUSMods is down :(
+      </p>
+      <strong>
+        Module search might be having issues at the moment. 😟
+      </strong>
+      <p>
+        If it isn't working, please try the module search
+         
+        on the top right corner of the page instead.
+      </p>
+      <div>
+        <button
+          class="btn btn-primary btn-lg"
+          type="button"
+        >
+          Click to try again
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ModuleFinderApiError should render with url 1`] = `
+<div>
+  <div>
+    <div
+      class="container"
+    >
+      <div
+        class="header"
+      >
+        <div
+          data-testid="RandomKawaii component"
+        />
+      </div>
+      <h1
+        class="h3 header"
+      >
+        <span
+          class="expr"
+        >
+          Oh no...
+        </span>
+         
+        We can't load the module information
+      </h1>
+      <p>
+        This could be because your device is offline or NUSMods is down :(
+      </p>
+      <strong>
+        Module search might be having issues at the moment. 😟
+      </strong>
+      <p>
+        If it isn't working, please try the module search
+         
+        on the top right corner of the page instead.
+      </p>
+      <div>
+        <button
+          class="btn btn-primary btn-lg"
+          type="button"
+        >
+          Click to try again
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

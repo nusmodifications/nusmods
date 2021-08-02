@@ -17,6 +17,7 @@ const enableAnnouncements = true;
  * dismissible, set the key to null. Otherwise, set it to a string.
  *
  * Previous keys:
+ * - 'ay202122-2107-search-outage' - Module search outage apology
  * - 'ay202122-new-data' - AY2021/22 data is available
  * - 'ay202021-new-data' - AY2020/21 data is available
  * - 'ay201920-new-data' - AY2019/20 data is available

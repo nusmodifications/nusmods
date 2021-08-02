@@ -1310,10 +1310,10 @@ char-regex@^1.0.2:
   resolved "https://registry.yarnpkg.com/char-regex/-/char-regex-1.0.2.tgz#d744358226217f981ed58f479b1d6bcc29545dcf"
   integrity sha512-kWWXztvZ5SBQV+eRgKFeh8q5sLuZY2+8WUIzlxWVTg+oGwY14qylx1KbKzHd8P6ZYkAg0xyIDU9JMHhyJMZ1jw==
 
-chevrotain@7.1.0:
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/chevrotain/-/chevrotain-7.1.0.tgz#a88d437e9950f66a452c3a575b764a01d0c8f189"
-  integrity sha512-msTqYIGb+8z4UpNxliBlowlfFJtBQjTSdnOWgMD/llcE5cQHDbFMjHGdCMJSsPG/Op89c6/ERCmYku4UHDhHVA==
+chevrotain@7.1.2:
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/chevrotain/-/chevrotain-7.1.2.tgz#40e634c0b74fcb552118bf67f42f5820b84881fd"
+  integrity sha512-9bQsXVQ7UAvzMs7iUBBJ9Yv//exOy7bIR3PByOEk4M64vIE/LsiOiX7VIkMF/vEMlrSStwsaE884Bp9CpjtC5g==
   dependencies:
     regexp-to-ast "0.5.0"
 

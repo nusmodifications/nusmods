@@ -32,7 +32,8 @@ function run(fn: (...args: any[]) => Promise<any>) {
 
 const parameters: Record<string, yargs.Options> = {
   sem: {
-    choices: Semesters.map(String),
+    type: 'number',
+    choices: Semesters,
   },
   year: {
     type: 'string',
@@ -65,7 +66,7 @@ yargs
     handler: run(({ year }) => new GetFacultyDepartment(year).run()),
   })
   .command({
-    command: 'semester [year] <sem>',
+    command: 'semester <sem> [year]',
     describe: 'download all data for the given semester',
     builder: {
       sem: parameters.sem,
