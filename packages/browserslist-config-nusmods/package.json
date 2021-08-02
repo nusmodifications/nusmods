@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "axios": "0.21.1",
-    "browserslist": "4.16.5",
+    "browserslist": "4.16.6",
     "fs-extra": "9.1.0",
     "lodash": "4.17.21",
     "prettier": "2.2.1"
