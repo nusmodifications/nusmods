@@ -3,23 +3,51 @@ import { normalize } from './normalizeString';
 /* eslint-disable max-len */
 
 describe(normalize, () => {
-  it('removes GCE prerequisites 1', () => {
-    const testString =
-      'GCE ‘A’ Level or H2 Mathematics or H2 Further Mathematics or MA1301 or MA1301FC or MA1301X';
-    const expected = 'MA1301 or MA1301FC or MA1301X';
-    expect(normalize(testString)).toBe(expected);
+  describe.each([
+    { testString: 'MA1301 or O-level', expected: 'MA1301' },
+    { testString: 'CS3240 and (A-level or MA1301)', expected: 'CS3240 and (MA1301)' },
+  ])('removes A/O level prerequisites', ({ testString, expected }) => {
+    test(`return value should be ${expected}`, () => {
+      expect(normalize(testString)).toBe(expected);
+    });
   });
 
-  it('removes GCE prerequisites 2', () => {
-    const testString = 'CS3240 and (MA1301 or A-level / H2 Mathematics)';
-    const expected = 'CS3240 and (MA1301)';
-    expect(normalize(testString)).toBe(expected);
+  describe.each([
+    { testString: 'MA1301 or GCE ‘O’ Level or MA1301FC', expected: 'MA1301 or MA1301FC' },
+    { testString: 'GCE ‘A’ Level Mathematics or MA1301 or MA1301X', expected: 'MA1301 or MA1301X' },
+  ])('removes GCE ‘A’/‘O’ Level prerequisites', ({ testString, expected }) => {
+    test(`return value should be ${expected}`, () => {
+      expect(normalize(testString)).toBe(expected);
+    });
   });
 
-  it('removes GCE prerequisites 3', () => {
-    const testString = 'MA1301 or GCE ‘A’ Level or MA1301FC';
-    const expected = 'MA1301 or MA1301FC';
-    expect(normalize(testString)).toBe(expected);
+  describe.each([
+    { testString: 'MA1301 or H1 Mathematics', expected: 'MA1301' },
+    { testString: 'H2 Further Mathematics or MA1301', expected: 'MA1301' },
+    {
+      testString: 'CS3240 and (MA1301 or H3 Further Mathematics)',
+      expected: 'CS3240 and (MA1301)',
+    },
+  ])('removes H1/H2/H3 subject prerequisites', ({ testString, expected }) => {
+    test(`return value should be ${expected}`, () => {
+      expect(normalize(testString)).toBe(expected);
+    });
+  });
+
+  describe.each([
+    {
+      testString:
+        'GCE ‘A’ Level or H2 Mathematics or H2 Further Mathematics or MA1301 or MA1301FC or MA1301X',
+      expected: 'MA1301 or MA1301FC or MA1301X',
+    },
+    {
+      testString: 'CS3240 and (MA1301 or A-level / H2 Mathematics)',
+      expected: 'CS3240 and (MA1301)',
+    },
+  ])('remove all GCE prerequisites', ({ testString, expected }) => {
+    test(`return value should be ${expected}`, () => {
+      expect(normalize(testString)).toBe(expected);
+    });
   });
 
   it('converts commas to delimiter or', () => {

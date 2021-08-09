@@ -106,9 +106,9 @@ function removeModuleTitles(string: string): string {
   return result;
 }
 
-const gceRegex = /((GCE\D+)|(H[1-3]\D+)|([A|O][\W*][level]+))\b[\s]*(?:and|or)?/g;
+const gceRegex = /((GCE\s‘[AO]’\sLevel\s*([A-Z]\w+\s*)?)|(H[1-3]\s([A-Z]\w+\s*)+)|([AO]-level\s*))((and|or)\s)?/g;
 function removeGCEPrerequisites(string: string): string {
-  const trailingAndOrRegex = /(( and | or )\s*)(?:\W*)$/g;
+  const trailingAndOrRegex = /(( and| or)\s*)(?:\)?)$/g;
   return string
     .replace(gceRegex, '')
     .replace(trailingAndOrRegex, (match, p) => match.replace(p, ''));
@@ -133,7 +133,7 @@ export const normalize = R.pipe(
   replaceBrackets,
   fixBrackets,
   replaceOperators,
-  R.compose(removeGCEPrerequisites, removeModuleTitles),
+  R.compose(removeModuleTitles, removeGCEPrerequisites),
   normalizeWhitespace,
 );
 
