@@ -10,7 +10,27 @@ import {
   DEFAULT_EARLIEST_TIME,
   DEFAULT_LATEST_TIME,
   parseDate,
+  getLessonTimeHours,
+  getLessonTimeMinutes,
 } from './timify';
+
+describe('getLessonTimeHours', () => {
+  test('calculates hours correctly', () => {
+    for (let hour = 0; hour < 24; hour += 1) {
+      const time = `${hour.toString().padStart(2, '0')}00`;
+      expect(getLessonTimeHours(time)).toBe(hour);
+    }
+  });
+});
+
+describe('getLessonTimeMinutes', () => {
+  test('calculates hours correctly', () => {
+    for (let minute = 0; minute < 60; minute += 1) {
+      const time = `00${minute.toString().padStart(2, '0')}`;
+      expect(getLessonTimeMinutes(time)).toBe(minute);
+    }
+  });
+});
 
 describe('convertTimeToIndex', () => {
   test('convert time string to index', () => {

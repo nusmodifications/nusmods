@@ -5,6 +5,7 @@ import { addDays, addMinutes, addWeeks, isValid } from 'date-fns';
 import {
   consumeWeeks,
   EndTime,
+  LessonTime,
   Module,
   NumericWeeks,
   RawLesson,
@@ -17,7 +18,7 @@ import { SemTimetableConfigWithLessons } from 'types/timetables';
 import config from 'config';
 import academicCalendar from 'data/academic-calendar';
 import { getModuleSemesterData } from 'utils/modules';
-import { parseDate } from './timify';
+import { getLessonTimeHours, getLessonTimeMinutes, parseDate } from './timify';
 
 const SG_UTC_TIME_DIFF_MS = 8 * 60 * 60 * 1000;
 export const RECESS_WEEK = -1;
@@ -34,8 +35,8 @@ function dayIndex(weekday: string) {
 /**
  * Parse out the hour component from a time string in the format of hhmm
  */
-export function getTimeHour(time: string) {
-  return parseInt(time.slice(0, 2), 10) + parseInt(time.slice(2), 10) / 60;
+export function getTimeHour(time: LessonTime) {
+  return getLessonTimeHours(time) + getLessonTimeMinutes(time) / 60;
 }
 
 function addLessonOffset(date: Date, hourOffset: number): Date {
