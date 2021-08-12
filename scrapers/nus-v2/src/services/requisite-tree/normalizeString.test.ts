@@ -3,50 +3,43 @@ import { normalize } from './normalizeString';
 /* eslint-disable max-len */
 
 describe(normalize, () => {
-  describe.each([
-    { testString: 'MA1301 or O-level', expected: 'MA1301' },
-    { testString: 'CS3240 and (A-level or MA1301)', expected: 'CS3240 and (MA1301)' },
-  ])('removes A/O level prerequisites', ({ testString, expected }) => {
-    test(`return value should be ${expected}`, () => {
-      expect(normalize(testString)).toBe(expected);
+  describe('removes A/O level prerequisites', () => {
+    test.each([
+      ['MA1301 or O-level', 'MA1301'],
+      ['CS3240 and (A-level or MA1301)', 'CS3240 and (MA1301)'],
+    ])('"%s" should be normalized to "%s"', (input: string, expected: string) => {
+      expect(normalize(input)).toBe(expected);
     });
   });
 
-  describe.each([
-    { testString: 'MA1301 or GCE ‘O’ Level or MA1301FC', expected: 'MA1301 or MA1301FC' },
-    { testString: 'GCE ‘A’ Level Mathematics or MA1301 or MA1301X', expected: 'MA1301 or MA1301X' },
-  ])('removes GCE ‘A’/‘O’ Level prerequisites', ({ testString, expected }) => {
-    test(`return value should be ${expected}`, () => {
-      expect(normalize(testString)).toBe(expected);
+  describe('removes GCE ‘A’/‘O’ Level prerequisites', () => {
+    test.each([
+      ['MA1301 or GCE ‘O’ Level or MA1301FC', 'MA1301 or MA1301FC'],
+      ['GCE ‘A’ Level Mathematics or MA1301 or MA1301X', 'MA1301 or MA1301X'],
+    ])('"%s" should be normalized to "%s"', (input: string, expected: string) => {
+      expect(normalize(input)).toBe(expected);
     });
   });
 
-  describe.each([
-    { testString: 'MA1301 or H1 Mathematics', expected: 'MA1301' },
-    { testString: 'H2 Further Mathematics or MA1301', expected: 'MA1301' },
-    {
-      testString: 'CS3240 and (MA1301 or H3 Further Mathematics)',
-      expected: 'CS3240 and (MA1301)',
-    },
-  ])('removes H1/H2/H3 subject prerequisites', ({ testString, expected }) => {
-    test(`return value should be ${expected}`, () => {
-      expect(normalize(testString)).toBe(expected);
+  describe('removes H1/H2/H3 subject prerequisites', () => {
+    test.each([
+      ['MA1301 or H1 Mathematics', 'MA1301'],
+      ['H2 Further Mathematics or MA1301', 'MA1301'],
+      ['CS3240 and (MA1301 or H3 Further Mathematics)', 'CS3240 and (MA1301)'],
+    ])('"%s" should be normalized to "%s"', (input: string, expected: string) => {
+      expect(normalize(input)).toBe(expected);
     });
   });
 
-  describe.each([
-    {
-      testString:
+  describe('removes all GCE prerequisites', () => {
+    test.each([
+      [
         'GCE ‘A’ Level or H2 Mathematics or H2 Further Mathematics or MA1301 or MA1301FC or MA1301X',
-      expected: 'MA1301 or MA1301FC or MA1301X',
-    },
-    {
-      testString: 'CS3240 and (MA1301 or A-level / H2 Mathematics)',
-      expected: 'CS3240 and (MA1301)',
-    },
-  ])('remove all GCE prerequisites', ({ testString, expected }) => {
-    test(`return value should be ${expected}`, () => {
-      expect(normalize(testString)).toBe(expected);
+        'MA1301 or MA1301FC or MA1301X',
+      ],
+      ['CS3240 and (MA1301 or A-level / H2 Mathematics)', 'CS3240 and (MA1301)'],
+    ])('"%s" should be normalized to "%s"', (input: string, expected: string) => {
+      expect(normalize(input)).toBe(expected);
     });
   });
 
