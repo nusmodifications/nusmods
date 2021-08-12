@@ -106,11 +106,13 @@ function removeModuleTitles(string: string): string {
   return result;
 }
 
-const gceRegex = /((GCE\s‘[AO]’\sLevel\s*([A-Z]\w+\s*)?)|(H[1-3]\s([A-Z]\w+\s*)+)|([AO]-level\s*))((and|or)\s)?/g;
+const gceRegex = /((GCE\s+)?[‘'"]?[AO][’'"]?(\s+|-)(level)\s*(\w+\s*)?)((and|or)\s+)?/gi;
+const jcSubjectsRegex = /(H[1-3]\s+([A-Z]\w+\s*)+)((and|or)\s+)?/g;
 function removeGCEPrerequisites(string: string): string {
   const trailingAndOrRegex = /(( and| or)\s*)(?:\)?)$/g;
   return string
     .replace(gceRegex, '')
+    .replace(jcSubjectsRegex, '')
     .replace(trailingAndOrRegex, (match, p) => match.replace(p, ''));
 }
 
