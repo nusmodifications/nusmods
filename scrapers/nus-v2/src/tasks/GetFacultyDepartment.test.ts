@@ -12,6 +12,9 @@ describe(cleanNames, () => {
   test('should expand abbreviations', () => {
     expect(cleanNames('Sci Eng Mgmt')).toEqual('Science Engineering Management');
     expect(cleanNames('Arts & Social Sciences')).toEqual('Arts and Social Sciences');
+    expect(cleanNames('Coll. of Humanities & Sciences')).toEqual(
+      'College of Humanities and Sciences',
+    );
   });
 
   test('should not double expand', () => {

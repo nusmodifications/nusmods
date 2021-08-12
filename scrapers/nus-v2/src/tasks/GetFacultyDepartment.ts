@@ -22,10 +22,12 @@ const abbreviationMap = {
   Grad: 'Graduate',
   DO: "Dean's Office",
   Stud: 'Studies',
+  'Coll.': 'College',
 };
 
 const abbreviationRegex = map(abbreviationMap, (expanded, abbr): [RegExp, string] => [
-  new RegExp(`\\b${escapeRegExp(abbr)}\\b`, 'gi'),
+  // (?!\S) instead of \b because \b (word boundary) doesn't account for the . in "Coll."
+  new RegExp(`\\b${escapeRegExp(abbr)}(?!\\S)`, 'gi'),
   expanded,
 ]);
 
