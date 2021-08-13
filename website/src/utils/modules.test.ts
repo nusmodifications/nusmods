@@ -109,7 +109,7 @@ test('getExamDate should return the correct exam date if it exists', () => {
 
 test('getExamDuration should return the correct exam duration if it exists', () => {
   expect(getExamDuration(CS1010S, 1)).toBe(120);
-  expect(getExamDuration(CS3216, 2)).toBeFalsy();
+  expect(getExamDuration(CS3216, 2)).toBe(null);
 });
 
 test('getFormattedModuleExamDate should return the correctly formatted exam timing if it exists', () => {

@@ -14,18 +14,14 @@ import {
 import { TimePeriod } from 'types/venues';
 import { Lesson } from 'types/timetables';
 
-const HOURS_START_INDEX = 0;
-const MINUTES_START_INDEX = 2;
-const DECIMAL_RADIX = 10;
-
 const SGT_OFFSET = -8 * 60;
 
 export function getLessonTimeHours(time: LessonTime): number {
-  return parseInt(time.substring(HOURS_START_INDEX, MINUTES_START_INDEX), DECIMAL_RADIX);
+  return parseInt(time.substring(0, 2), 10);
 }
 
 export function getLessonTimeMinutes(time: LessonTime): number {
-  return parseInt(time.substring(MINUTES_START_INDEX), DECIMAL_RADIX);
+  return parseInt(time.substring(2), 10);
 }
 
 // Converts a 24-hour format time string to an index.

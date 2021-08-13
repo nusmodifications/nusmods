@@ -16,19 +16,17 @@ import {
 
 describe('getLessonTimeHours', () => {
   test('calculates hours correctly', () => {
-    for (let hour = 0; hour < 24; hour += 1) {
-      const time = `${hour.toString().padStart(2, '0')}00`;
-      expect(getLessonTimeHours(time)).toBe(hour);
-    }
+    expect(getLessonTimeHours('0059')).toBe(0);
+    expect(getLessonTimeHours('0100')).toBe(1);
+    expect(getLessonTimeHours('2300')).toBe(23);
   });
 });
 
 describe('getLessonTimeMinutes', () => {
-  test('calculates hours correctly', () => {
-    for (let minute = 0; minute < 60; minute += 1) {
-      const time = `00${minute.toString().padStart(2, '0')}`;
-      expect(getLessonTimeMinutes(time)).toBe(minute);
-    }
+  test('calculates minutes correctly', () => {
+    expect(getLessonTimeMinutes('0000')).toBe(0);
+    expect(getLessonTimeMinutes('0001')).toBe(1);
+    expect(getLessonTimeMinutes('0059')).toBe(59);
   });
 });
 
