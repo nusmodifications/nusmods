@@ -9,6 +9,7 @@
 .timetableWrapper {
   composes: scrollable from global;
   margin-bottom: 1rem;
+  overscroll-behavior: none;
 
   @include media-breakpoint-down(sm) {
     // Maximize the space taken by the timetable by overflowing into the grid gutters
