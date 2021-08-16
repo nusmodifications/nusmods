@@ -10,7 +10,25 @@ import {
   DEFAULT_EARLIEST_TIME,
   DEFAULT_LATEST_TIME,
   parseDate,
+  getLessonTimeHours,
+  getLessonTimeMinutes,
 } from './timify';
+
+describe('getLessonTimeHours', () => {
+  test('calculates hours correctly', () => {
+    expect(getLessonTimeHours('0059')).toBe(0);
+    expect(getLessonTimeHours('0100')).toBe(1);
+    expect(getLessonTimeHours('2300')).toBe(23);
+  });
+});
+
+describe('getLessonTimeMinutes', () => {
+  test('calculates minutes correctly', () => {
+    expect(getLessonTimeMinutes('0000')).toBe(0);
+    expect(getLessonTimeMinutes('0001')).toBe(1);
+    expect(getLessonTimeMinutes('0059')).toBe(59);
+  });
+});
 
 describe('convertTimeToIndex', () => {
   test('convert time string to index', () => {
