@@ -3,6 +3,46 @@ import { normalize } from './normalizeString';
 /* eslint-disable max-len */
 
 describe(normalize, () => {
+  describe('removes A/O level prerequisites', () => {
+    test.each([
+      ['MA1301 or O-level', 'MA1301'],
+      ['CS3240 and (A-level or MA1301)', 'CS3240 and (MA1301)'],
+    ])('"%s" should be normalized to "%s"', (input: string, expected: string) => {
+      expect(normalize(input)).toBe(expected);
+    });
+  });
+
+  describe('removes GCE ‘A’/‘O’ Level prerequisites', () => {
+    test.each([
+      ['MA1301 or GCE ‘O’ Level or MA1301FC', 'MA1301 or MA1301FC'],
+      ['GCE ‘A’ Level Mathematics or MA1301 or MA1301X', 'MA1301 or MA1301X'],
+    ])('"%s" should be normalized to "%s"', (input: string, expected: string) => {
+      expect(normalize(input)).toBe(expected);
+    });
+  });
+
+  describe('removes H1/H2/H3 subject prerequisites', () => {
+    test.each([
+      ['MA1301 or H1 Mathematics', 'MA1301'],
+      ['H2 Further Mathematics or MA1301', 'MA1301'],
+      ['CS3240 and (MA1301 or H3 Further Mathematics)', 'CS3240 and (MA1301)'],
+    ])('"%s" should be normalized to "%s"', (input: string, expected: string) => {
+      expect(normalize(input)).toBe(expected);
+    });
+  });
+
+  describe('removes all GCE prerequisites', () => {
+    test.each([
+      [
+        'GCE ‘A’ Level or H2 Mathematics or H2 Further Mathematics or MA1301 or MA1301FC or MA1301X',
+        'MA1301 or MA1301FC or MA1301X',
+      ],
+      ['CS3240 and (MA1301 or A-level / H2 Mathematics)', 'CS3240 and (MA1301)'],
+    ])('"%s" should be normalized to "%s"', (input: string, expected: string) => {
+      expect(normalize(input)).toBe(expected);
+    });
+  });
+
   it('converts commas to delimiter or', () => {
     const testString =
       'ACC1002 Financial Accounting, BSP1004 Legal Environment of Business, FIN2004 Finance';

@@ -40,10 +40,6 @@ const RESTRICTED_KEYWORDS = [
   'Grade',
   'At least a B-',
   'Honours eligibility requirements',
-  // no A-level modules
-  'A-level',
-  'H1 ',
-  'H2 ',
   // requirement by mc cannot be represented
   'MC',
   // 4 out of 5 requirement cannot be represented
