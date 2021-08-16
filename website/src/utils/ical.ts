@@ -5,6 +5,7 @@ import { addDays, addMinutes, addWeeks, isValid } from 'date-fns';
 import {
   consumeWeeks,
   EndTime,
+  LessonTime,
   Module,
   NumericWeeks,
   RawLesson,
@@ -16,8 +17,8 @@ import { SemTimetableConfigWithLessons } from 'types/timetables';
 
 import config from 'config';
 import academicCalendar from 'data/academic-calendar';
-import { getModuleSemesterData } from 'utils/modules';
-import { parseDate } from './timify';
+import { getExamDate, getExamDuration } from 'utils/modules';
+import { getLessonTimeHours, getLessonTimeMinutes, parseDate } from './timify';
 
 const SG_UTC_TIME_DIFF_MS = 8 * 60 * 60 * 1000;
 export const RECESS_WEEK = -1;
@@ -34,8 +35,8 @@ function dayIndex(weekday: string) {
 /**
  * Parse out the hour component from a time string in the format of hhmm
  */
-export function getTimeHour(time: string) {
-  return parseInt(time.slice(0, 2), 10) + parseInt(time.slice(2), 10) / 60;
+export function getTimeHour(time: LessonTime) {
+  return getLessonTimeHours(time) + getLessonTimeMinutes(time) / 60;
 }
 
 function addLessonOffset(date: Date, hourOffset: number): Date {
@@ -43,10 +44,7 @@ function addLessonOffset(date: Date, hourOffset: number): Date {
 }
 
 export function iCalEventForExam(module: Module, semester: Semester): EventOption | null {
-  const semesterData = getModuleSemesterData(module, semester);
-  if (!semesterData) return null;
-
-  const { examDate, examDuration } = semesterData;
+  const examDate = getExamDate(module, semester);
   if (!examDate) return null;
 
   const start = new Date(examDate);
@@ -54,7 +52,7 @@ export function iCalEventForExam(module: Module, semester: Semester): EventOptio
 
   return {
     start,
-    end: addMinutes(start, examDuration || DEFAULT_EXAM_DURATION),
+    end: addMinutes(start, getExamDuration(module, semester) || DEFAULT_EXAM_DURATION),
     summary: `${module.moduleCode} Exam`,
     description: module.title,
   };

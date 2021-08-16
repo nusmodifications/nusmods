@@ -57,6 +57,10 @@ export function getExamDate(module: Module, semester: Semester): string | null {
   return _.get(getModuleSemesterData(module, semester), 'examDate') || null;
 }
 
+export function getExamDuration(module: Module, semester: Semester): number | null {
+  return _.get(getModuleSemesterData(module, semester), 'examDuration') || null;
+}
+
 export function getFormattedExamDate(module: Module, semester: Semester): string {
   const examDate = getExamDate(module, semester);
   return formatExamDate(examDate);

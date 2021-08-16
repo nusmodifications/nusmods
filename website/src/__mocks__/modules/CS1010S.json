@@ -12,6 +12,7 @@
     {
       "semester": 2,
       "examDate": "2018-05-07T17:00+0800",
+      "examDuration": 120,
       "timetable": [
         {
           "classNo": "1",
@@ -405,6 +406,7 @@
     {
       "semester": 1,
       "examDate": "2017-11-29T17:00+0800",
+      "examDuration": 120,
       "timetable": [
         {
           "classNo": "1",
