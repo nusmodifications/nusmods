@@ -85,7 +85,7 @@
   },
   {
     "name": "E-Liang Tan",
-    "description": "Makers gotta make. Incoming Software Engineer @ Ironclad, Ex-Software Engineer Intern @ Facebook",
+    "description": "Makers gotta make. Software Engineer @ Ironclad, Ex-Software Engineer Intern @ Facebook",
     "active": true,
     "link": "https://www.eliangtan.com/",
     "gravatar": "3064783701c7bb1b4451c79318e1b536",
@@ -94,5 +94,17 @@
     "twitter": "taneliang",
     "github": "taneliang",
     "linkedin": "taneliang"
+  },
+  {
+    "name": "Christopher Goh",
+    "description": "I like coffee, code, and having fun. Year 3 computer science undergraduate @ NUS. Ex-Software Engineer Intern @ Indeed",
+    "active": true,
+    "link": "https://christopher.sg/",
+    "gravatar": "a21f562ee28e29a28093dd9d1bf0af34",
+    "gravatarAlt": "Christopher Goh",
+    "facebook": "chrisgzf",
+    "twitter": "chrisgzf",
+    "github": "chrisgzf",
+    "linkedin": "chrisgzf"
   }
 ]
