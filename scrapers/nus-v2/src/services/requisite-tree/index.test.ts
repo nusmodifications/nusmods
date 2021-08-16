@@ -1,4 +1,4 @@
-import { insertRequisiteTree, PrereqTreeMap } from './index';
+import generatePrereqTree, { insertRequisiteTree, PrereqTreeMap } from './index';
 import { Module, ModuleCode } from '../../types/modules';
 
 describe(insertRequisiteTree, () => {
@@ -47,5 +47,53 @@ describe(insertRequisiteTree, () => {
     for (const module of insertRequisiteTree(modules, prereqs)) {
       expect(module).toHaveProperty('fulfillRequirements', ['CS3235']);
     }
+  });
+});
+
+describe(generatePrereqTree, () => {
+  it('generates the prereq tree of modules with GCE A level prerequisites correctly', async () => {
+    const cs3240 = {
+      acadYear: '2021/2022',
+      description: 'This module aims to expose students to the human-centered principles...',
+      faculty: 'Computing',
+      department: 'Computer Science',
+      title: 'Interaction Design for Virtual and Augmented Reality',
+      workload: [2, 0, 2, 4, 2],
+      prerequisite: 'CS3240 and (MA1301 or A-level / H2 Mathematics)',
+      moduleCredit: '4',
+      moduleCode: 'CS4240',
+      semesterData: [],
+    };
+
+    const ma2001 = {
+      acadYear: '2021/2022',
+      description: 'This module is a first course in linear algebra.  Fundamental...',
+      faculty: 'Science',
+      department: 'Mathematics',
+      title: 'Linear Algebra I',
+      workload: [3, 1, 1, 0, 6],
+      prerequisite:
+        'GCE ‘A’ Level or H2 Mathematics or H2 Further Mathematics or MA1301 or MA1301FC or MA1301X',
+      moduleCredit: '4',
+      moduleCode: 'MA2001',
+      semesterData: [],
+    };
+
+    const modules = [cs3240, ma2001];
+    const modulesWithPrereqTree = [
+      {
+        ...cs3240,
+        prereqTree: {
+          and: ['CS3240', 'MA1301'],
+        },
+      },
+      {
+        ...ma2001,
+        prereqTree: {
+          or: ['MA1301', 'MA1301FC', 'MA1301X'],
+        },
+      },
+    ];
+    expect(await generatePrereqTree(modules)).toStrictEqual(modulesWithPrereqTree);
   });
 });
