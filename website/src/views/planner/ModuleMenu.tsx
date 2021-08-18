@@ -1,5 +1,5 @@
 import { memo, useRef, useState } from 'react';
-import Downshift, { DownshiftProps, StateChangeOptions } from 'downshift';
+import Downshift, { StateChangeOptions } from 'downshift';
 import classnames from 'classnames';
 
 import { ChevronDown } from 'react-feather';
@@ -18,14 +18,16 @@ type MenuItem = {
 
 const ModuleMenu = memo((props: Props) => {
   const [isVisible, setIsVisible] = useState<boolean>(true);
-  const myRef = useRef<DownshiftProps>(null);
+  const myRef = useRef<Downshift<string>>(null);
 
   const menuItems: MenuItem[] = [
     { label: 'Edit MC and Title', action: props.editCustomData },
     { label: 'Remove', action: props.removeModule, className: 'dropdown-item-danger' },
   ];
 
-  const adjustVisitibility = (options: StateChangeOptions) => {
+  const adjustVisitibility = (options: StateChangeOptions<string>) => {
+    // Only enable toggle when isOpen value changes
+    // when the toggle button is pressed.
     if (options && options.isOpen !== undefined) {
       toggleVisibility();
     }
@@ -35,7 +37,9 @@ const ModuleMenu = memo((props: Props) => {
     if (!myRef.current) {
       return;
     }
-    const elem = document.getElementById(myRef.current.getMenuProps().id);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const elem = document.getElementById((myRef.current as any).getMenuProps().id);
 
     if (!elem) {
       return;
