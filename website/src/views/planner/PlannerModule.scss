@@ -40,7 +40,15 @@
   }
 }
 
-.menu {
+.menuLeft {
+  left: auto;
+  right: 0;
+  width: 12rem;
+}
+
+.menuRight {
+  left: 0;
+  right: auto;
   width: 12rem;
 }
 

@@ -1,5 +1,5 @@
-import { memo } from 'react';
-import Downshift from 'downshift';
+import { memo, useRef, useState } from 'react';
+import Downshift, { DownshiftProps, StateChangeOptions } from 'downshift';
 import classnames from 'classnames';
 
 import { ChevronDown } from 'react-feather';
@@ -17,13 +17,40 @@ type MenuItem = {
 };
 
 const ModuleMenu = memo((props: Props) => {
+  const [isVisible, setIsVisible] = useState<boolean>(true);
+  const myRef = useRef<DownshiftProps>(null);
+
   const menuItems: MenuItem[] = [
     { label: 'Edit MC and Title', action: props.editCustomData },
     { label: 'Remove', action: props.removeModule, className: 'dropdown-item-danger' },
   ];
 
+  const adjustVisitibility = (options: StateChangeOptions) => {
+    if (options && options.isOpen !== undefined) {
+      toggleVisibility();
+    }
+  };
+
+  const toggleVisibility = () => {
+    if (!myRef.current) {
+      return;
+    }
+    const elem = document.getElementById(myRef.current.getMenuProps().id);
+
+    if (!elem) {
+      return;
+    }
+
+    const coords = elem.getBoundingClientRect();
+    setIsVisible(coords.right <= window.innerWidth);
+  };
+
+  window.addEventListener('resize', toggleVisibility);
+
   return (
     <Downshift
+      ref={myRef}
+      onUserAction={adjustVisitibility}
       onSelect={(item) => {
         menuItems.forEach(({ label, action }) => {
           if (item === label) {
@@ -37,7 +64,10 @@ const ModuleMenu = memo((props: Props) => {
           <button
             className={classnames('btn close')}
             type="button"
-            onClick={() => toggleMenu()}
+            onClick={() => {
+              toggleMenu();
+              toggleVisibility();
+            }}
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded={isOpen}
@@ -45,7 +75,9 @@ const ModuleMenu = memo((props: Props) => {
             <ChevronDown />
           </button>
           <div
-            className={classnames(styles.menu, 'dropdown-menu', { show: isOpen })}
+            className={classnames(isVisible ? styles.menuRight : styles.menuLeft, 'dropdown-menu', {
+              show: isOpen,
+            })}
             {...getMenuProps()}
           >
             {menuItems.map(({ label, className }, itemIndex) => (
