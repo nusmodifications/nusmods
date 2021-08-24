@@ -40,17 +40,20 @@
   }
 }
 
-.menuLeft {
-  right: 0;
-  left: auto;
+.menu {
   width: 12rem;
+
+  &.menuLeft {
+    right: 0;
+    left: auto;
+  }
+
+  &.menuRight {
+    right: auto;
+    left: 0;
+  }
 }
 
-.menuRight {
-  right: auto;
-  left: 0;
-  width: 12rem;
-}
 
 .menuBtn {
   position: relative;

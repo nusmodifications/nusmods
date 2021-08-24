@@ -1,5 +1,5 @@
-import { memo, useRef, useState } from 'react';
-import Downshift, { StateChangeOptions } from 'downshift';
+import { memo, useLayoutEffect, useRef, useState } from 'react';
+import Downshift from 'downshift';
 import classnames from 'classnames';
 
 import { ChevronDown } from 'react-feather';
@@ -17,44 +17,28 @@ type MenuItem = {
 };
 
 const ModuleMenu = memo((props: Props) => {
-  const [isVisible, setIsVisible] = useState<boolean>(true);
-  const myRef = useRef<Downshift<string>>(null);
+  const [isMenuOverflowing, setMenuOverflowing] = useState<boolean>(false);
+  const [hasRendered, setHasRendered] = useState<boolean>(false);
+  const myRef = useRef<HTMLDivElement>(null);
 
   const menuItems: MenuItem[] = [
     { label: 'Edit MC and Title', action: props.editCustomData },
     { label: 'Remove', action: props.removeModule, className: 'dropdown-item-danger' },
   ];
 
-  const adjustVisitibility = (options: StateChangeOptions<string>) => {
-    // Only enable toggle when isOpen value changes
-    // when the toggle button is pressed.
-    if (options && options.isOpen !== undefined) {
-      toggleVisibility();
-    }
-  };
-
-  const toggleVisibility = () => {
-    if (!myRef.current) {
+  useLayoutEffect(() => {
+    if (myRef.current === null) {
       return;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const elem = document.getElementById((myRef.current as any).getMenuProps().id);
+    const rect = myRef.current.getBoundingClientRect();
+    setMenuOverflowing(rect.right <= window.innerWidth);
+  }, [hasRendered, myRef]);
 
-    if (!elem) {
-      return;
-    }
-
-    const coords = elem.getBoundingClientRect();
-    setIsVisible(coords.right <= window.innerWidth);
-  };
-
-  window.addEventListener('resize', toggleVisibility);
+  const toggleRender = () => setHasRendered(!hasRendered);
 
   return (
     <Downshift
-      ref={myRef}
-      onUserAction={adjustVisitibility}
       onSelect={(item) => {
         menuItems.forEach(({ label, action }) => {
           if (item === label) {
@@ -70,7 +54,7 @@ const ModuleMenu = memo((props: Props) => {
             type="button"
             onClick={() => {
               toggleMenu();
-              toggleVisibility();
+              toggleRender();
             }}
             data-toggle="dropdown"
             aria-haspopup="true"
@@ -79,10 +63,13 @@ const ModuleMenu = memo((props: Props) => {
             <ChevronDown />
           </button>
           <div
-            className={classnames(isVisible ? styles.menuRight : styles.menuLeft, 'dropdown-menu', {
-              show: isOpen,
-            })}
-            {...getMenuProps()}
+            className={classnames(
+              styles.menu,
+              'dropdown-menu',
+              { show: isOpen },
+              isMenuOverflowing ? styles.menuRight : styles.menuLeft,
+            )}
+            {...getMenuProps({ ref: myRef })}
           >
             {menuItems.map(({ label, className }, itemIndex) => (
               <button
