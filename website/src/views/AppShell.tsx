@@ -134,6 +134,11 @@ const AppShell: FC = ({ children }) => {
             'mobile-safari': isIOS,
           })}
         />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4984084888641317"
+          crossorigin="anonymous"
+        ></script>
       </Helmet>
 
       <nav className={styles.navbar}>
