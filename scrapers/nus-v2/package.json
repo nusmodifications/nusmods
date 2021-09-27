@@ -48,7 +48,7 @@
   "dependencies": {
     "@elastic/elasticsearch": "7.10.0",
     "@sentry/node": "5.30.0",
-    "axios": "0.21.1",
+    "axios": "0.21.2",
     "bunyan": "1.8.15",
     "chevrotain": "7.1.2",
     "date-fns": "2.16.1",
