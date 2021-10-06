@@ -57,9 +57,12 @@
 
     .dayNameText {
       // On small screens, display the day names vertically
+      display: flex;
+      justify-content: center;
       width: 0.6rem;
       font-size: $font-size-s;
       line-height: 1.1;
+      text-align: center;
       word-break: break-all;
     }
   }
