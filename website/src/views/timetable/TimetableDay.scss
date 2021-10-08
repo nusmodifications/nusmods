@@ -1,5 +1,7 @@
 @import './_variables.scss';
 
+$btn-inner-border-radius: calc(#{$btn-border-radius} - 1px);
+
 .day {
   position: relative;
   display: flex;
@@ -8,16 +10,29 @@
   border-bottom: $timetable-border;
 
   &:first-child {
+    > .currentDay {
+      border-top-left-radius: $btn-inner-border-radius;
+      border-top-right-radius: $btn-inner-border-radius;
+    }
     > .dayName {
       border-top-left-radius: $btn-border-radius;
+    }
+    > .dayRows {
+      border-top-right-radius: $btn-inner-border-radius;
     }
   }
 
   &:last-child {
     border-bottom: 0;
-
+    > .currentDay {
+      border-bottom-left-radius: $btn-inner-border-radius;
+      border-bottom-right-radius: $btn-inner-border-radius;
+    }
     > .dayName {
       border-bottom-left-radius: $btn-border-radius;
+    }
+    > .dayRows {
+      border-bottom-right-radius: $btn-inner-border-radius;
     }
   }
 
