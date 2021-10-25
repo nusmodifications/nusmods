@@ -39,7 +39,7 @@ This will start Webpack dev server, which will automatically rebuild and reload 
 We recommend the following development tools to help speed up your work
 
 - React Developer Tools ([Chrome](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi), [Firefox](https://addons.mozilla.org/firefox/addon/react-devtools/))
-- [Redux DevTools](http://extension.remotedev.io/#installation)
+- [Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd)
 - [Firefox Developer Edition](https://www.mozilla.org/en-US/firefox/developer/)
 
 ### Writing styles

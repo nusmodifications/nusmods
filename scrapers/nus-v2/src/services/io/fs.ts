@@ -7,6 +7,7 @@
 import * as fs from 'fs-extra';
 import path from 'path';
 
+import type { MPEModule } from '../../types/mpe';
 import {
   Aliases,
   Module,
@@ -100,6 +101,10 @@ export function getFileSystemWriter(academicYear: string): Persist {
     // List of partial module info for module finder
     moduleInfo: (data: ModuleInformation[]) =>
       fs.outputJSON(path.join(yearRoot, 'moduleInfo.json'), data, writeOptions),
+
+    // List of modules that are participating in NUS's module planning exercise (MPE)
+    mpeModules: (data: MPEModule[]) =>
+      fs.outputJSON(path.join(yearRoot, 'mpeModules.json'), data, writeOptions),
 
     // DEPRECATED. TODO: Remove after AY19/20 starts.
     // List of partial module info for module finder
