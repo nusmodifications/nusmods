@@ -635,7 +635,9 @@ components:
           type: 'string'
           example: 'CS2100'
         semesterData:
-          $ref: '#/components/schemas/SemesterData'
+          type: 'array'
+          items:
+            $ref: '#/components/schemas/SemesterData'
         prereqTree:
           $ref: '#/components/schemas/PrereqTree'
         fulfillRequirements:

@@ -8,4 +8,4 @@
 export const enableShortUrl = false;
 
 /** Enable Module Planning Exercise */
-export const enableMpe = true;
+export const enableMpe = false;
