@@ -1,8 +1,8 @@
 import { memo, useLayoutEffect, useRef, useState } from 'react';
-import Downshift from 'downshift';
-import classnames from 'classnames';
 
 import { ChevronDown } from 'react-feather';
+import Downshift from 'downshift';
+import classnames from 'classnames';
 import styles from './PlannerModule.scss';
 
 type Props = {
@@ -35,7 +35,7 @@ const ModuleMenu = memo((props: Props) => {
     setMenuOverflowing(rect.right <= window.innerWidth);
   }, [hasRendered, myRef]);
 
-  const toggleRender = () => setHasRendered(!hasRendered);
+  const toggleRender = () => setHasRendered((hasRendered) => !hasRendered);
 
   return (
     <Downshift
