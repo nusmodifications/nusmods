@@ -207,6 +207,9 @@ export type Module = {
   prereqTree?: PrereqTree;
   fulfillRequirements?: readonly ModuleCode[];
 
+  // Flag for Custom Modules
+  isCustom?: boolean; 
+
   // Meta
   timestamp: number;
 };

@@ -75,6 +75,7 @@ type Props = OwnProps & {
   timetableOrientation: TimetableOrientation;
   showTitle: boolean;
   hiddenInTimetable: ModuleCode[];
+  customModules: Module[];
 
   // Actions
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
@@ -209,13 +210,15 @@ class TimetableContent extends React.Component<Props, State> {
     hiddenInTimetable: this.isHiddenInTimetable(module.moduleCode),
   });
 
+  isCustomModule = (module: Module) => module.isCustom;
+
   renderModuleTable = (
     modules: Module[],
     horizontalOrientation: boolean,
     tombstone: TombstoneModule | null = null,
   ) => (
     <TimetableModulesTable
-      modules={modules.map(this.toModuleWithColor)}
+      modules={modules.map(this.toModuleWithColor).filter(m => !this.isCustomModule(m))}
       horizontalOrientation={horizontalOrientation}
       semester={this.props.semester}
       onRemoveModule={this.removeModule}
@@ -439,6 +442,7 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
   const { modules } = state.moduleBank;
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
   const hiddenInTimetable = state.timetables.hidden[semester] || [];
+  const customModules = state.timetables.custom[semester] || [];
 
   return {
     semester,
@@ -449,6 +453,7 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
     timetableOrientation: state.theme.timetableOrientation,
     showTitle: state.theme.showTitle,
     hiddenInTimetable,
+    customModules, 
   };
 }
 
