@@ -210,15 +210,13 @@ class TimetableContent extends React.Component<Props, State> {
     hiddenInTimetable: this.isHiddenInTimetable(module.moduleCode),
   });
 
-  isCustomModule = (module: Module) => module.isCustom;
-
   renderModuleTable = (
     modules: Module[],
     horizontalOrientation: boolean,
     tombstone: TombstoneModule | null = null,
   ) => (
     <TimetableModulesTable
-      modules={modules.map(this.toModuleWithColor).filter(m => !this.isCustomModule(m))}
+      modules={modules.map(this.toModuleWithColor)}
       horizontalOrientation={horizontalOrientation}
       semester={this.props.semester}
       onRemoveModule={this.removeModule}
