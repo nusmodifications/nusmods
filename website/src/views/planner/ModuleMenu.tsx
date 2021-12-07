@@ -35,7 +35,7 @@ const ModuleMenu = memo((props: Props) => {
     setMenuOverflowing(rect.right <= window.innerWidth);
   }, [hasRendered, myRef]);
 
-  const toggleRender = () => setHasRendered((hasRendered) => !hasRendered);
+  const toggleRender = () => setHasRendered((hasAlreadyRendered) => !hasAlreadyRendered);
 
   return (
     <Downshift
