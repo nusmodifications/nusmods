@@ -216,6 +216,7 @@ class TimetableContent extends React.Component<Props, State> {
     tombstone: TombstoneModule | null = null,
   ) => (
     <TimetableModulesTable
+      addModule={this.addModule}
       modules={modules.map(this.toModuleWithColor)}
       horizontalOrientation={horizontalOrientation}
       semester={this.props.semester}
@@ -451,7 +452,7 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
     timetableOrientation: state.theme.timetableOrientation,
     showTitle: state.theme.showTitle,
     hiddenInTimetable,
-    customModules, 
+    customModules,
   };
 }
 

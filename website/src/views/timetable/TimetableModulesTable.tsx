@@ -29,6 +29,7 @@ import config from 'config';
 import styles from './TimetableModulesTable.scss';
 import ModuleTombstone from './ModuleTombstone';
 import { moduleOrders } from './ModulesTableFooter';
+import CustomModuleSelect from './CustomModuleSelect';
 
 export type Props = {
   semester: Semester;
@@ -39,6 +40,7 @@ export type Props = {
   tombstone: TombstoneModule | null; // Placeholder for a deleted module
 
   // Actions
+  addModule: (semester: Semester, moduleCode: ModuleCode) => void;
   selectModuleColor: (semester: Semester, moduleCode: ModuleCode, colorIndex: ColorIndex) => void;
   hideLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   showLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
@@ -144,20 +146,23 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
   modules = sortBy(modules, (module) => moduleOrders[moduleTableOrder].orderBy(module, semester));
 
   return (
-    <div className={classnames(styles.modulesTable, elements.moduleTable, 'row')}>
-      {modules.map((module) => (
-        <div
-          className={classnames(
-            styles.modulesTableRow,
-            'col-sm-6',
-            horizontalOrientation ? 'col-lg-4' : 'col-md-12',
-          )}
-          key={module.moduleCode}
-        >
-          {renderModule(module)}
-        </div>
-      ))}
-    </div>
+    <>
+      <CustomModuleSelect semester={props.semester} />
+      <div className={classnames(styles.modulesTable, elements.moduleTable, 'row')}>
+        {modules.map((module) => (
+          <div
+            className={classnames(
+              styles.modulesTableRow,
+              'col-sm-6',
+              horizontalOrientation ? 'col-lg-4' : 'col-md-12',
+            )}
+            key={module.moduleCode}
+          >
+            {renderModule(module)}
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
 

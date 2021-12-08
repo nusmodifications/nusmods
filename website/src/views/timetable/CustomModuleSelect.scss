@@ -1,0 +1,68 @@
+@import "~styles/utils/modules-entry.scss";
+
+.select {
+  padding-bottom: 0.5em;
+}
+
+.header {
+  text-align: center;
+
+  svg {
+    width: 5rem;
+    height: 5rem;
+    color: theme-color(success);
+  }
+
+  h3 {
+    margin-bottom: 0.4rem;
+    font-weight: $font-weight-bold;
+    font-size: 1.4rem;
+  }
+
+  .inputRow {
+    display: flex;
+    text-align: left;
+
+    .inputColumnSmall {
+      width: 33%;
+        padding-top: 0.5em; 
+      padding-right: 10%;
+
+      label {
+        font-style: bold;
+      }
+    }
+
+    .inputColumn {
+        width: 45%;
+        padding-top: 0.5em; 
+        padding-right: 10%;
+
+        label {
+            font-style: bold;
+        }
+    }
+
+    .inputColumnLarge {
+        width: 70%;
+        padding-top: 0.5em; 
+        padding-right: 10%;
+
+        label {
+            font-style: bold;
+        }
+    }
+
+    .buttonColumn {
+        padding-top: 0.5em;
+        margin-left: auto;
+    }
+  }
+
+  @include media-breakpoint-down(sm) {
+    br {
+      display: none;
+    }
+  }
+}
+
