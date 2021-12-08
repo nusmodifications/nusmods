@@ -17,6 +17,8 @@ import type {
 import retryImport from 'utils/retryImport';
 import classNames from 'classnames';
 import styles from './CustomModuleSelect.scss';
+import TimetableCell from './TimetableCell';
+import { ColoredLesson, Lesson } from 'types/timetables';
 
 type Props = {
   semester: Semester;
@@ -68,13 +70,57 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
       isOpen: false,
     });
 
+    customLesson: ColoredLesson = {
+      moduleCode: "CS1101S", 
+      title: "Programming", 
+      classNo: "01",
+      day: "Monday",
+      startTime: "08:00",
+      endTime: "08:00",
+      lessonType: "Lecture", 
+      venue: "Behind", 
+      weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+      colorIndex: 2, 
+    }
+
+  renderModulePreview() {
+    return (
+      <div className={styles.row}>
+      <div className={styles.column}>
+        <label htmlFor="custom-preview"> With Title </label>
+        <TimetableCell
+          key="custom-preview"
+          style={undefined}
+          lesson={this.customLesson}
+          showTitle={true}
+          hoverLesson={undefined}
+          onHover={() => {}}
+          transparent={false}
+        />
+      </div>
+      <div className={styles.column}>
+        <label htmlFor="custom-preview"> Without Title </label>
+        <TimetableCell
+          key="custom-preview"
+          style={undefined}
+          lesson={this.customLesson}
+          showTitle={false}
+          hoverLesson={undefined}
+          onHover={() => {}}
+          transparent={false}
+        />
+      </div>
+    </div>
+    );
+  }
+
   renderInputFields() {
     const { moduleCode, title, lessonType, venue, day, startTime, endTime } = this.state;
 
     return (
       <>
-        <div className={styles.inputRow}>
-          <div className={styles.inputColumn}>
+        <div className={styles.row}>
+          <div className={styles.column}>
             <label htmlFor="moduleCode">Module Code</label>
             <input
               ref={this.inputElements[0]}
@@ -84,7 +130,7 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
               required
             />
           </div>
-          <div className={styles.inputColumn}>
+          <div className={styles.column}>
             <label htmlFor="title">Title</label>
             <input
               ref={this.inputElements[1]}
@@ -95,8 +141,8 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
             />
           </div>
         </div>
-        <div className={styles.inputRow}>
-          <div className={styles.inputColumnLarge}>
+        <div className={styles.row}>
+          <div className={styles.columnLarge}>
             <label htmlFor="lessonType">Lesson Type</label>
             <input
               ref={this.inputElements[2]}
@@ -107,8 +153,8 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
             />
           </div>
         </div>
-        <div className={styles.inputRow}>
-          <div className={styles.inputColumnLarge}>
+        <div className={styles.row}>
+          <div className={styles.columnLarge}>
             <label htmlFor="venue">Venue</label>
             <input
               ref={this.inputElements[3]}
@@ -119,8 +165,8 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
             />
           </div>
         </div>
-        <div className={styles.inputRow}>
-          <div className={styles.inputColumnSmall}>
+        <div className={styles.row}>
+          <div className={styles.columnSmall}>
             <label htmlFor="day">Day</label>
             <input
               ref={this.inputElements[4]}
@@ -130,7 +176,7 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
               required
             />
           </div>
-          <div className={styles.inputColumnSmall}>
+          <div className={styles.columnSmall}>
             <label htmlFor="startTime">Start Time</label>
             <input
               ref={this.inputElements[5]}
@@ -140,7 +186,7 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
               required
             />
           </div>
-          <div className={styles.inputColumnSmall}>
+          <div className={styles.columnSmall}>
             <label htmlFor="endTime">End Time</label>
             <input
               ref={this.inputElements[6]}
@@ -151,7 +197,7 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
             />
           </div>
         </div>
-        <div className={styles.inputRow}>
+        <div className={styles.row}>
           <div className={styles.buttonColumn}>
             <button
               type="button"
@@ -192,6 +238,7 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
               For DYOM students, teaching assistants, etc. who just need that one special slot on
               your timetable, we got you covered!
             </p>
+            {this.renderModulePreview()}
             {this.renderInputFields()}
           </div>
         </Modal>
@@ -199,16 +246,3 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
     );
   }
 }
-
-/*
-<div className={styles.inputColumn}>
-<label htmlFor="input-mc">Subject</label>
-  <input
-    ref={this.inputElements[0]}
-    id="input-mc"
-    className="form-control"
-    defaultValue={this.state["moduleCode"] || ''}
-    required
-  />
-</div>
-*/

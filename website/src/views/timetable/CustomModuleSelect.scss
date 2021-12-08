@@ -19,11 +19,11 @@
     font-size: 1.4rem;
   }
 
-  .inputRow {
+  .row {
     display: flex;
     text-align: left;
 
-    .inputColumnSmall {
+    .columnSmall {
       width: 33%;
         padding-top: 0.5em; 
       padding-right: 10%;
@@ -33,7 +33,7 @@
       }
     }
 
-    .inputColumn {
+    .column {
         width: 45%;
         padding-top: 0.5em; 
         padding-right: 10%;
@@ -43,7 +43,7 @@
         }
     }
 
-    .inputColumnLarge {
+    .columnLarge {
         width: 70%;
         padding-top: 0.5em; 
         padding-right: 10%;
@@ -54,7 +54,7 @@
     }
 
     .buttonColumn {
-        padding-top: 0.5em;
+        padding-top: 1em;
         margin-left: auto;
     }
   }
