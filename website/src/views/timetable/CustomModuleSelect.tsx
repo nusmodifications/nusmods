@@ -17,6 +17,7 @@ import {
 import styles from './CustomModuleSelect.scss';
 import TimetableCell from './TimetableCell';
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
+import { Lesson, ModifiableLesson } from 'types/timetables';
 
 export type Props = {
   addCustomModule: (moduleCode: ModuleCode, module: Module) => void; 
@@ -24,13 +25,7 @@ export type Props = {
 
 type State = {
   isOpen: boolean;
-  moduleCode: ModuleCode;
-  title: ModuleTitle;
-  lessonType: LessonType;
-  venue: Venue;
-  day: Day;
-  startTime: StartTime;
-  endTime: EndTime;
+  lessonData: Lesson; 
 };
 
 export default class CustomModulesSelect extends React.PureComponent<Props, State> {
@@ -38,17 +33,24 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
 
   state: State = {
     isOpen: false,
-    moduleCode: "", 
-    title: "", 
-    lessonType: "Lecture", 
-    venue: "", 
-    day: "Monday", 
-    startTime: "0800", 
-    endTime: "0900"
+    lessonData: {
+      moduleCode: "", 
+      title: "", 
+      lessonType: "Lecture", 
+      venue: "E", 
+      day: "Monday", 
+      startTime: "0800", 
+      endTime: "0900", 
+      classNo: "01", 
+      weeks: [], 
+    }
   };
 
-  setStateField = (event: any) => {
-    const newState: any = { [event.target.name]: event.target.value };
+  setLessonState = (event: any) => {
+    const newState: any = { lessonData: { 
+      ...this.state.lessonData, 
+      [event.target.name]: event.target.value 
+    }};
     this.setState(newState);
   }
 
@@ -61,18 +63,16 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
       isOpen: false,
     });
 
-  getLessonDetails = () => {
+  getLessonDetails = (): ModifiableLesson => {
     return {
-      ...this.state, 
-      classNo: "01", 
-      weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+      ...this.state.lessonData, 
       colorIndex: 0, 
     }
   }
 
   submitModule() {
     const module: Module = {
-      ...this.state,
+      ...this.state.lessonData, 
       isCustom: true,
       acadYear: '',
       moduleCredit: '0',
@@ -81,14 +81,13 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
       semesterData: [],
       timestamp: 0, 
     }
-    console.log("a");
     
-    this.props.addCustomModule(this.state.moduleCode, module)
+    this.props.addCustomModule(module.moduleCode, module)
   }
 
   renderLessonTypes() {
     return (
-      <select name={"lessonType"} id={"select-lessonType"} onChange={this.setStateField}>
+      <select name={"lessonType"} id={"select-lessonType"} onChange={this.setLessonState}>
         {Object.keys(LESSON_TYPE_ABBREV).map((lessonType: string) => {
           return <option key={lessonType} value={lessonType}>{lessonType}</option>; 
         })}
@@ -98,7 +97,7 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
 
   renderWorkingDays() {
     return (
-      <select name={"day"} id={"select-day"} onChange={this.setStateField}>
+      <select name={"day"} id={"select-day"} onChange={this.setLessonState}>
         {LessonDays.map((day: string) => {
           return <option key={day} value={day}>{day}</option>; 
         })}
@@ -112,7 +111,7 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
     const timeslots = Array.from({length: numberOfTimeSlots}, (_, i) => i + 1);
 
     return (
-      <select name={field} id={`select-${field}`} onChange={this.setStateField}>
+      <select name={field} id={`select-${field}`} onChange={this.setLessonState}>
         {timeslots.map((timeslot: number) => {
           timeslot = ((minTimeInHalfHours + timeslot) * 30);
           const hourString = Math.floor(timeslot / 60).toString().padStart(2, '0') 
@@ -156,7 +155,7 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
   }
 
   renderInputFields() {
-    const { moduleCode, title, lessonType, venue, day, startTime, endTime } = this.state;
+    const { moduleCode, title, venue} = this.state.lessonData;
 
     return (
       <>
@@ -165,7 +164,7 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
             <label htmlFor="select-moduleCode">Module Code</label>
             <input
               name="moduleCode"
-              onChange={this.setStateField}
+              onChange={this.setLessonState}
               id="select-moduleCode"
               className="form-control"
               defaultValue={moduleCode || ''}
@@ -176,7 +175,7 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
             <label htmlFor="select-title">Title</label>
             <input
               name="title"
-              onChange={this.setStateField}
+              onChange={this.setLessonState}
               id="select-title"
               className="form-control"
               defaultValue={title || ''}
@@ -196,7 +195,7 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
             <label htmlFor="select-venue">Venue</label>
             <input
               name="venue"
-              onChange={this.setStateField}
+              onChange={this.setLessonState}
               id="select-venue"
               className="form-control"
               defaultValue={venue || ''}
