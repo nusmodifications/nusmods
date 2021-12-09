@@ -284,6 +284,8 @@ class TimetableContent extends React.Component<Props, State> {
       readOnly,
     } = this.props;
 
+    console.log(colors); 
+
     const { showExamCalendar } = this.state;
 
     let timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons)
@@ -444,7 +446,7 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
   const { modules } = state.moduleBank;
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
   const hiddenInTimetable = state.timetables.hidden[semester] || [];
-  const customModules = Object.values(state.timetables.custom[semester]) || [];
+  const customModules = state.timetables.custom[semester] ? Object.values(state.timetables.custom[semester]) : [];
 
   return {
     semester,

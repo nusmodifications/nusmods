@@ -136,8 +136,6 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
   const { semester, tombstone, horizontalOrientation, moduleTableOrder } = props;
   let { modules } = props;
 
-  console.log(modules);
-
   // tombstone contains the data for the last deleted module. We insert it back
   // so that it gets sorted into its original location, then in renderModule()
   // takes care of rendering the tombstone

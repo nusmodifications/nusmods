@@ -130,6 +130,8 @@ function semColors(state: ColorMapping = defaultSemColorMap, action: Actions): C
   const moduleCode = get(action, 'payload.moduleCode');
   if (!moduleCode) return state;
 
+  console.log(state, action, moduleCode);
+
   switch (action.type) {
     case ADD_MODULE:
     case ADD_CUSTOM_MODULE:

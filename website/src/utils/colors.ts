@@ -54,13 +54,16 @@ export function colorLessonsByKey<T>(
 export function fillColorMapping(
   timetable: SemTimetableConfig,
   original: ColorMapping,
+  customModules: ModuleCode[],
 ): ColorMapping {
   const colorMap: ColorMapping = {};
   const colorsUsed: ColorIndex[] = [];
   const withoutColors: ModuleCode[] = [];
 
+  const moduleCodes = Object.keys(timetable).concat(customModules);
+
   // Collect a list of all colors used and all modules without colors
-  Object.keys(timetable).forEach((moduleCode) => {
+  moduleCodes.forEach((moduleCode) => {
     if (moduleCode in original) {
       colorMap[moduleCode] = original[moduleCode];
       colorsUsed.push(Number(original[moduleCode]));
