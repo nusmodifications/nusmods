@@ -8,6 +8,7 @@ import {
   EndTime,
   LessonDays,
   LessonType,
+  Module,
   ModuleCode,
   ModuleTitle,
   Semester,
@@ -18,20 +19,24 @@ import styles from './CustomModuleSelect.scss';
 import TimetableCell from './TimetableCell';
 import { ColoredLesson } from 'types/timetables';
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
+import { addCustomModule } from 'actions/timetables';
+import { connect } from 'react-redux';
 
-type Props = {
+export type Props = {
   semester: Semester;
+
+  addCustomModule: (semester: Semester, moduleCode: ModuleCode, module: Module) => void; 
 };
 
 type State = {
   isOpen: boolean;
-  moduleCode?: ModuleCode;
-  title?: ModuleTitle;
-  lessonType?: LessonType;
-  venue?: Venue;
-  day?: Day;
-  startTime?: StartTime;
-  endTime?: EndTime;
+  moduleCode: ModuleCode;
+  title: ModuleTitle;
+  lessonType: LessonType;
+  venue: Venue;
+  day: Day;
+  startTime: StartTime;
+  endTime: EndTime;
 };
 
 export default class CustomModulesSelect extends React.PureComponent<Props, State> {
@@ -39,7 +44,10 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
 
   state: State = {
     isOpen: false,
+    moduleCode: "", 
+    title: "", 
     lessonType: "LEC", 
+    venue: "", 
     day: "Monday", 
     startTime: "0800", 
     endTime: "0900"
@@ -73,6 +81,19 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
     }
 
   submitModule() {
+    const module: Module = {
+      ...this.state,
+      isCustom: true,
+      acadYear: '',
+      moduleCredit: '',
+      department: '',
+      faculty: '',
+      semesterData: [],
+      timestamp: 0
+    }
+    console.log("a");
+    
+    this.props.addCustomModule(this.props.semester, this.state.moduleCode, module)
   }
 
   renderLessonTypes() {
@@ -215,7 +236,7 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
             <button
               type="button"
               className="btn btn-outline-primary btn-svg"
-              onClick={() => {}}
+              onClick={(e) => this.submitModule()}
               onMouseOver={() => {}}
               onFocus={() => {}}
             >
@@ -258,4 +279,8 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
       </div>
     );
   }
+}
+
+function mapStateToProps() {
+  return {};
 }

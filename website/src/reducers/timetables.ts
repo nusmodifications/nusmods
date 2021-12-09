@@ -176,6 +176,8 @@ function semCustomModules(state: ModulesMap = defaultCustomModulesState, action:
     return state;
   }
 
+  console.log(action);
+
   switch (action.type) {
     case ADD_CUSTOM_MODULE:
     case MODIFY_CUSTOM_MODULE:
@@ -218,6 +220,9 @@ function timetables(
       });
     }
 
+    case ADD_CUSTOM_MODULE:
+    case MODIFY_CUSTOM_MODULE: 
+    case DELETE_CUSTOM_MODULE:
     case ADD_MODULE:
     case REMOVE_MODULE:
     case SELECT_MODULE_COLOR:
@@ -225,17 +230,15 @@ function timetables(
     case SET_LESSON_CONFIG:
     case HIDE_LESSON_IN_TIMETABLE:
     case SHOW_LESSON_IN_TIMETABLE:
-    case ADD_CUSTOM_MODULE:
-    case MODIFY_CUSTOM_MODULE: 
-    case DELETE_CUSTOM_MODULE:
     {
       const { semester } = action.payload;
+      console.log(state.custom);
 
       return produce(state, (draft) => {
         draft.lessons[semester] = semTimetable(draft.lessons[semester], action);
         draft.colors[semester] = semColors(state.colors[semester], action);
         draft.hidden[semester] = semHiddenModules(state.hidden[semester], action);
-        draft.custom[semester] = semCustomModules(state.custom[semester], action); 
+        draft.custom[semester] = semCustomModules(state.custom[semester], action);
       });
     }
 

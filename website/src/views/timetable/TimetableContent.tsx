@@ -15,6 +15,7 @@ import {
 } from 'types/timetables';
 
 import {
+  addCustomModule,
   addModule,
   cancelModifyLesson,
   changeLesson,
@@ -78,6 +79,7 @@ type Props = OwnProps & {
 
   // Actions
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
+  addCustomModule: (semester: Semester, moduleCode: ModuleCode, module: Module) => void; 
   removeModule: (semester: Semester, moduleCode: ModuleCode) => void;
   modifyLesson: (lesson: Lesson) => void;
   changeLesson: (semester: Semester, lesson: Lesson) => void;
@@ -216,6 +218,7 @@ class TimetableContent extends React.Component<Props, State> {
   ) => (
     <TimetableModulesTable
       addModule={this.addModule}
+      addCustomModule={this.props.addCustomModule}
       modules={modules.map(this.toModuleWithColor)}
       horizontalOrientation={horizontalOrientation}
       semester={this.props.semester}
@@ -456,6 +459,7 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
 
 export default connect(mapStateToProps, {
   addModule,
+  addCustomModule, 
   removeModule,
   modifyLesson,
   changeLesson,

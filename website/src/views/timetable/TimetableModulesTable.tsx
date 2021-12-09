@@ -7,7 +7,7 @@ import produce from 'immer';
 
 import { ModuleWithColor, TombstoneModule } from 'types/views';
 import { ColorIndex } from 'types/timetables';
-import { ModuleCode, Semester } from 'types/modules';
+import { Module, ModuleCode, Semester } from 'types/modules';
 import { State as StoreState } from 'types/state';
 import { ModuleTableOrder } from 'types/reducers';
 
@@ -41,6 +41,7 @@ export type Props = {
 
   // Actions
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
+  addCustomModule: (semester: Semester, moduleCode: ModuleCode, module: Module) => void; 
   selectModuleColor: (semester: Semester, moduleCode: ModuleCode, colorIndex: ColorIndex) => void;
   hideLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   showLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
@@ -147,7 +148,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
 
   return (
     <>
-      <CustomModuleSelect semester={props.semester} />
+      <CustomModuleSelect semester={props.semester} addCustomModule={props.addCustomModule} />
       <div className={classnames(styles.modulesTable, elements.moduleTable, 'row')}>
         {modules.map((module) => (
           <div
