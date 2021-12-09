@@ -5,7 +5,7 @@ import { createMigrate } from 'redux-persist';
 import { PersistConfig } from 'storage/persistReducer';
 import { ModuleCode } from 'types/modules';
 import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
-import { ColorMapping, TimetablesState } from 'types/reducers';
+import { ColorMapping, ModulesMap, TimetablesState } from 'types/reducers';
 
 import config from 'config';
 import {
@@ -169,6 +169,27 @@ function semHiddenModules(state = defaultHiddenState, action: Actions) {
   }
 }
 
+// Map of semester to ModulesMap for custom modules
+const defaultCustomModulesState: ModulesMap = {};
+function semCustomModules(state: ModulesMap = defaultCustomModulesState, action: Actions): ModulesMap {
+  if (!action.payload) {
+    return state;
+  }
+
+  switch (action.type) {
+    case ADD_CUSTOM_MODULE:
+    case MODIFY_CUSTOM_MODULE:
+      return {
+        ...state,
+        [action.payload.moduleCode]: action.payload.module,
+      };
+    case DELETE_CUSTOM_MODULE:
+      return omit(state, [action.payload.moduleCode]);
+    default:
+      return state;
+  }
+}
+
 export const defaultTimetableState: TimetablesState = {
   lessons: {},
   colors: {},
@@ -214,7 +235,7 @@ function timetables(
         draft.lessons[semester] = semTimetable(draft.lessons[semester], action);
         draft.colors[semester] = semColors(state.colors[semester], action);
         draft.hidden[semester] = semHiddenModules(state.hidden[semester], action);
-        draft.custom[semester] = {}; 
+        draft.custom[semester] = semCustomModules(state.custom[semester], action); 
       });
     }
 

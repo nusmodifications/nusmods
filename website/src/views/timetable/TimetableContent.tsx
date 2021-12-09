@@ -75,7 +75,6 @@ type Props = OwnProps & {
   timetableOrientation: TimetableOrientation;
   showTitle: boolean;
   hiddenInTimetable: ModuleCode[];
-  customModules: Module[];
 
   // Actions
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
@@ -441,18 +440,17 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
   const { modules } = state.moduleBank;
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
   const hiddenInTimetable = state.timetables.hidden[semester] || [];
-  const customModules = state.timetables.custom[semester] || [];
+  const customModules = state.timetables.custom[semester] || {};
 
   return {
     semester,
     timetable,
     timetableWithLessons,
-    modules,
+    modules:  Object.assign({}, customModules, modules), 
     activeLesson: state.app.activeLesson,
     timetableOrientation: state.theme.timetableOrientation,
     showTitle: state.theme.showTitle,
     hiddenInTimetable,
-    customModules,
   };
 }
 

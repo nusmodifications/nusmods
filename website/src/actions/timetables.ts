@@ -224,11 +224,12 @@ export function showLessonInTimetable(semester: Semester, moduleCode: ModuleCode
 }
 
 export const ADD_CUSTOM_MODULE = 'ADD_CUSTOM_MODULE' as const; 
-export function addCustomModule(semester: Semester, module: Module) {
+export function addCustomModule(semester: Semester, moduleCode: ModuleCode, module: Module) {
   return {
     type: ADD_CUSTOM_MODULE, 
     payload: {
       semester, 
+      moduleCode, 
       module
     }
   };
