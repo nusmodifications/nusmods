@@ -11,22 +11,15 @@ import {
   Module,
   ModuleCode,
   ModuleTitle,
-  Semester,
   StartTime,
   Venue,
 } from 'types/modules';
 import styles from './CustomModuleSelect.scss';
 import TimetableCell from './TimetableCell';
-import { ColoredLesson } from 'types/timetables';
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
-import { addCustomModule } from 'actions/timetables';
-import { connect } from 'react-redux';
-import { getNewColor } from 'utils/colors';
 
 export type Props = {
-  semester: Semester;
-
-  addCustomModule: (semester: Semester, moduleCode: ModuleCode, module: Module) => void; 
+  addCustomModule: (moduleCode: ModuleCode, module: Module) => void; 
 };
 
 type State = {
@@ -82,15 +75,15 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
       ...this.state,
       isCustom: true,
       acadYear: '',
-      moduleCredit: '',
+      moduleCredit: '0',
       department: '',
       faculty: '',
       semesterData: [],
-      timestamp: 0
+      timestamp: 0, 
     }
     console.log("a");
     
-    this.props.addCustomModule(this.props.semester, this.state.moduleCode, module)
+    this.props.addCustomModule(this.state.moduleCode, module)
   }
 
   renderLessonTypes() {

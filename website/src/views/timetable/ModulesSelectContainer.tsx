@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { ModuleSelectList } from 'types/reducers';
-import { ModuleCode, Semester } from 'types/modules';
+import { Module, ModuleCode, Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
 
 import Online from 'views/components/Online';
@@ -20,6 +20,7 @@ type OwnProps = {
 type Props = OwnProps & {
   moduleList: ModuleSelectList;
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
+  addCustomModule: (semester: Semester, moduleCode: ModuleCode, module: Module) => void; 
   removeModule: (moduleCode: ModuleCode) => void;
   popNotification: () => void;
 };
@@ -34,6 +35,10 @@ class ModulesSelectContainer extends Component<Props> {
   onChange = (moduleCode: ModuleCode) => {
     this.props.popNotification();
     this.props.addModule(this.props.semester, moduleCode);
+  };
+
+  addCustomModule = (moduleCode: ModuleCode, module: Module) => {
+    this.props.addCustomModule(this.props.semester, moduleCode, module);
   };
 
   getFilteredModules = (inputValue: string | null) => {
@@ -51,6 +56,7 @@ class ModulesSelectContainer extends Component<Props> {
             getFilteredModules={this.getFilteredModules}
             moduleCount={this.props.moduleList.length}
             onChange={this.onChange}
+            addCustomModule={this.addCustomModule}
             placeholder={
               isOnline ? 'Add module to timetable' : 'You need to be online to add modules'
             }

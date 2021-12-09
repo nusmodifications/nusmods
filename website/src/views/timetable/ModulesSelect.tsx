@@ -10,7 +10,7 @@ import classnames from 'classnames';
 import { Trash } from 'react-feather';
 
 import { ModuleSelectList } from 'types/reducers';
-import { ModuleCode } from 'types/modules';
+import { Module, ModuleCode, Semester } from 'types/modules';
 
 import { breakpointUp } from 'utils/css';
 import useMediaQuery from 'views/hooks/useMediaQuery';
@@ -20,12 +20,14 @@ import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip';
 
 import styles from './ModulesSelect.scss';
+import CustomModuleSelect from './CustomModuleSelect';
 
 type Props = {
   moduleCount: number;
   placeholder: string;
   disabled?: boolean;
 
+  addCustomModule: (moduleCode: ModuleCode, module: Module) => void; 
   getFilteredModules: (string: string | null) => ModuleSelectList;
   onChange: (moduleCode: ModuleCode) => void;
   onRemoveModule: (moduleCode: ModuleCode) => void;
@@ -38,6 +40,7 @@ const ModulesSelect: FC<Props> = ({
   getFilteredModules,
   onChange,
   onRemoveModule,
+  addCustomModule,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
@@ -125,6 +128,8 @@ const ModulesSelect: FC<Props> = ({
             onFocus: openSelect,
           })}
         />
+        <br/>
+        <CustomModuleSelect addCustomModule={addCustomModule} />
         {isModalOpen && <CloseButton className={styles.close} onClick={closeSelectAndEmptyInput} />}
         {showResults && (
           <ol className={styles.selectList} {...getMenuProps()}>

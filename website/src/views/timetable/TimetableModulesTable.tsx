@@ -41,11 +41,11 @@ export type Props = {
 
   // Actions
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
-  addCustomModule: (semester: Semester, moduleCode: ModuleCode, module: Module) => void; 
   selectModuleColor: (semester: Semester, moduleCode: ModuleCode, colorIndex: ColorIndex) => void;
   hideLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   showLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   onRemoveModule: (moduleCode: ModuleCode) => void;
+  onRemoveCustomModule: (moduleCode: ModuleCode) => void;
   resetTombstone: () => void;
 };
 
@@ -55,6 +55,14 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
     const removeBtnLabel = `Remove ${module.moduleCode} from timetable`;
     const { semester } = props;
 
+    const removeModule = (moduleCode: ModuleCode, isCustom: boolean | undefined) => {
+      if (isCustom) {
+        props.onRemoveCustomModule(moduleCode);
+      } else {
+        props.onRemoveModule(moduleCode);
+      }
+    }
+
     return (
       <div className={styles.moduleActionButtons}>
         <div className="btn-group">
@@ -63,7 +71,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
               type="button"
               className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
               aria-label={removeBtnLabel}
-              onClick={() => props.onRemoveModule(module.moduleCode)}
+              onClick={() => removeModule(module.moduleCode, module.isCustom)}
             >
               <Trash className={styles.actionIcon} />
             </button>
@@ -95,6 +103,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
 
   const renderModule = (module: ModuleWithColor) => {
     const { semester, readOnly, tombstone, resetTombstone } = props;
+    console.log(module.isCustom);
 
     if (tombstone && tombstone.moduleCode === module.moduleCode) {
       return <ModuleTombstone module={module} resetTombstone={resetTombstone} />;
@@ -102,7 +111,9 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
 
     // Second row of text consists of the exam date and the MCs
     const secondRowText = [renderMCs(module.moduleCredit)];
-    if (config.examAvailabilitySet.has(semester)) {
+    if (module.isCustom) {
+      secondRowText[0] = "Custom Module";
+    } else if (config.examAvailabilitySet.has(semester)) {
       secondRowText.unshift(
         getExamDate(module, semester)
           ? `Exam: ${getFormattedExamDate(module, semester)}`
@@ -148,7 +159,6 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
 
   return (
     <>
-      <CustomModuleSelect semester={props.semester} addCustomModule={props.addCustomModule} />
       <div className={classnames(styles.modulesTable, elements.moduleTable, 'row')}>
         {modules.map((module) => (
           <div

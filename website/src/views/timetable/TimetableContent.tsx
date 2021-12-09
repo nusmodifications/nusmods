@@ -19,6 +19,7 @@ import {
   addModule,
   cancelModifyLesson,
   changeLesson,
+  deleteCustomModule,
   modifyLesson,
   removeModule,
 } from 'actions/timetables';
@@ -80,7 +81,8 @@ type Props = OwnProps & {
 
   // Actions
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
-  addCustomModule: (semester: Semester, moduleCode: ModuleCode, module: Module) => void; 
+  addCustomModule: (semester: Semester, moduleCode: ModuleCode, module: Module) => void;
+  deleteCustomModule: (semester: Semester, moduleCode: ModuleCode) => void; 
   removeModule: (semester: Semester, moduleCode: ModuleCode) => void;
   modifyLesson: (lesson: Lesson) => void;
   changeLesson: (semester: Semester, lesson: Lesson) => void;
@@ -185,6 +187,11 @@ class TimetableContent extends React.Component<Props, State> {
     this.resetTombstone();
   };
 
+  addCustomModule = (semester: Semester, moduleCode: ModuleCode, module: Module) => {
+    this.props.addCustomModule(semester, moduleCode, module);
+    this.resetTombstone();
+  }
+
   removeModule = (moduleCodeToRemove: ModuleCode) => {
     // Save the index of the module before removal so the tombstone can be inserted into
     // the correct position
@@ -198,11 +205,27 @@ class TimetableContent extends React.Component<Props, State> {
     this.setState({ tombstone: { ...moduleWithColor, index } });
   };
 
+  removeCustomModule = (moduleCodeToRemove: ModuleCode) => {
+    // Save the index of the module before removal so the tombstone can be inserted into
+    // the correct position
+    const index = this.addedModules().findIndex(
+      ({ moduleCode }) => moduleCode === moduleCodeToRemove,
+    );
+    console.log(index);
+    this.props.deleteCustomModule(this.props.semester, moduleCodeToRemove);
+    const moduleWithColor = this.toModuleWithColor(this.addedModules()[index]);
+    console.log(moduleWithColor);
+
+    // A tombstone is displayed in place of a deleted module
+    this.setState({ tombstone: { ...moduleWithColor, index } });
+  };
+
   resetTombstone = () => this.setState({ tombstone: null });
 
   // Returns modules currently in the timetable
   addedModules(): Module[] {
-    const modules = getSemesterModules(this.props.timetableWithLessons, this.props.modules);
+    const modules = getSemesterModules(this.props.timetableWithLessons, this.props.modules)
+      .concat(this.props.customModules);
     return _.sortBy(modules, (module: Module) => getExamDate(module, this.props.semester));
   }
 
@@ -219,11 +242,11 @@ class TimetableContent extends React.Component<Props, State> {
   ) => (
     <TimetableModulesTable
       addModule={this.addModule}
-      addCustomModule={this.props.addCustomModule}
       modules={modules.map(this.toModuleWithColor)}
       horizontalOrientation={horizontalOrientation}
       semester={this.props.semester}
       onRemoveModule={this.removeModule}
+      onRemoveCustomModule={this.removeCustomModule}
       readOnly={this.props.readOnly}
       tombstone={tombstone}
       resetTombstone={this.resetTombstone}
@@ -422,13 +445,14 @@ class TimetableContent extends React.Component<Props, State> {
                     semester={semester}
                     timetable={this.props.timetable}
                     addModule={this.addModule}
+                    addCustomModule={this.addCustomModule}
                     removeModule={this.removeModule}
                   />
                 )}
               </div>
 
               <div className="col-12">
-                {this.renderModuleSections(addedModules.concat(this.props.customModules), !isVerticalOrientation)}
+                {this.renderModuleSections(addedModules, !isVerticalOrientation)}
               </div>
               <div className="col-12">
                 <ModulesTableFooter modules={addedModules} semester={semester} />
@@ -464,6 +488,7 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
 export default connect(mapStateToProps, {
   addModule,
   addCustomModule, 
+  deleteCustomModule, 
   removeModule,
   modifyLesson,
   changeLesson,
