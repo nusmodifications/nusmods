@@ -3,10 +3,10 @@ import * as React from 'react';
 import CloseButton from 'views/components/CloseButton';
 import Modal from 'views/components/Modal';
 import { PlusCircle } from 'react-feather';
-import type { QRCodeProps } from 'react-qr-svg';
-import type {
+import {
   Day,
   EndTime,
+  LessonDays,
   LessonType,
   ModuleCode,
   ModuleTitle,
@@ -14,11 +14,10 @@ import type {
   StartTime,
   Venue,
 } from 'types/modules';
-import retryImport from 'utils/retryImport';
-import classNames from 'classnames';
 import styles from './CustomModuleSelect.scss';
 import TimetableCell from './TimetableCell';
-import { ColoredLesson, Lesson } from 'types/timetables';
+import { ColoredLesson } from 'types/timetables';
+import { LESSON_TYPE_ABBREV } from 'utils/timetables';
 
 type Props = {
   semester: Semester;
@@ -36,29 +35,19 @@ type State = {
 };
 
 export default class CustomModulesSelect extends React.PureComponent<Props, State> {
-  // React QR component is lazy loaded for performance
-  static QRCode: React.ComponentType<QRCodeProps> | null;
-
-  inputElements = Array(7).fill(React.createRef<HTMLInputElement>());
-
   fields = ['moduleCode', 'title', 'lessonType', 'venue', 'day', 'startTime', 'endTime'];
-
-  // Save a copy of the current URL to detect when URL changes
-  url: string | null = null;
-
-  urlInput = React.createRef<HTMLInputElement>();
 
   state: State = {
     isOpen: false,
+    lessonType: "LEC", 
+    day: "Monday", 
+    startTime: "0800", 
+    endTime: "0900"
   };
 
-  componentDidMount() {
-    if (!CustomModulesSelect.QRCode) {
-      retryImport(() => import(/* webpackChunkName: "export" */ 'react-qr-svg')).then((module) => {
-        CustomModulesSelect.QRCode = module.QRCode;
-        this.forceUpdate();
-      });
-    }
+  setStateField = (event: any) => {
+    const newState: any = { [event.target.name]: event.target.value };
+    this.setState(newState);
   }
 
   openModal = () => {
@@ -75,13 +64,54 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
       title: "Programming", 
       classNo: "01",
       day: "Monday",
-      startTime: "08:00",
-      endTime: "08:00",
+      startTime: "0800",
+      endTime: "0800",
       lessonType: "Lecture", 
       venue: "Behind", 
       weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       colorIndex: 2, 
     }
+
+  submitModule() {
+  }
+
+  renderLessonTypes() {
+    return (
+      <select name={"lessonType"} id={"select-lessonType"} onChange={this.setStateField}>
+        {Object.keys(LESSON_TYPE_ABBREV).map((lessonType: string) => {
+          return <option key={lessonType} value={lessonType}>{lessonType}</option>; 
+        })}
+    </select>
+    );
+  }
+
+  renderWorkingDays() {
+    return (
+      <select name={"day"} id={"select-day"} onChange={this.setStateField}>
+        {LessonDays.map((day: string) => {
+          return <option key={day} value={day}>{day}</option>; 
+        })}
+    </select>
+    );
+  }
+
+  renderTimeRanges(field: string) {
+    const minTimeInHalfHours = 15;
+    const numberOfTimeSlots = 28;
+    const timeslots = Array.from({length: numberOfTimeSlots}, (_, i) => i + 1);
+
+    return (
+      <select name={field} id={`select-${field}`} onChange={this.setStateField}>
+        {timeslots.map((timeslot: number) => {
+          timeslot = ((minTimeInHalfHours + timeslot) * 30);
+          const hourString = Math.floor(timeslot / 60).toString().padStart(2, '0') 
+          const minuteString = (timeslot % 60).toString().padStart(2, '0');
+          const timeString = hourString + minuteString;
+          return <option key={`${field}-${timeString}`} value={timeString}>{timeString}</option>; 
+        })}
+    </select>
+    )
+  }
 
   renderModulePreview() {
     return (
@@ -99,9 +129,9 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
         />
       </div>
       <div className={styles.column}>
-        <label htmlFor="custom-preview"> Without Title </label>
+        <label htmlFor="custom-preview-no-title"> Without Title </label>
         <TimetableCell
-          key="custom-preview"
+          key="custom-preview-no-title"
           style={undefined}
           lesson={this.customLesson}
           showTitle={false}
@@ -121,20 +151,22 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
       <>
         <div className={styles.row}>
           <div className={styles.column}>
-            <label htmlFor="moduleCode">Module Code</label>
+            <label htmlFor="select-moduleCode">Module Code</label>
             <input
-              ref={this.inputElements[0]}
-              id="moduleCode"
+              name="moduleCode"
+              onChange={this.setStateField}
+              id="select-moduleCode"
               className="form-control"
               defaultValue={moduleCode || ''}
               required
             />
           </div>
           <div className={styles.column}>
-            <label htmlFor="title">Title</label>
+            <label htmlFor="select-title">Title</label>
             <input
-              ref={this.inputElements[1]}
-              id="title"
+              name="title"
+              onChange={this.setStateField}
+              id="select-title"
               className="form-control"
               defaultValue={title || ''}
               required
@@ -143,22 +175,18 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
         </div>
         <div className={styles.row}>
           <div className={styles.columnLarge}>
-            <label htmlFor="lessonType">Lesson Type</label>
-            <input
-              ref={this.inputElements[2]}
-              id="lessonType"
-              className="form-control"
-              defaultValue={lessonType || ''}
-              required
-            />
+            <label htmlFor="select-lessonType">Lesson Type</label>
+            <br/>
+            {this.renderLessonTypes()}
           </div>
         </div>
         <div className={styles.row}>
           <div className={styles.columnLarge}>
-            <label htmlFor="venue">Venue</label>
+            <label htmlFor="select-venue">Venue</label>
             <input
-              ref={this.inputElements[3]}
-              id="venue"
+              name="venue"
+              onChange={this.setStateField}
+              id="select-venue"
               className="form-control"
               defaultValue={venue || ''}
               required
@@ -167,34 +195,19 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
         </div>
         <div className={styles.row}>
           <div className={styles.columnSmall}>
-            <label htmlFor="day">Day</label>
-            <input
-              ref={this.inputElements[4]}
-              id="day"
-              className="form-control"
-              defaultValue={day || ''}
-              required
-            />
+            <label htmlFor="select-day">Day</label>
+            <br />
+            {this.renderWorkingDays()}
           </div>
           <div className={styles.columnSmall}>
-            <label htmlFor="startTime">Start Time</label>
-            <input
-              ref={this.inputElements[5]}
-              id="startTime"
-              className="form-control"
-              defaultValue={startTime || ''}
-              required
-            />
+            <label htmlFor="select-startTime">Start Time</label>
+            <br/>
+            {this.renderTimeRanges("startTime")}
           </div>
           <div className={styles.columnSmall}>
-            <label htmlFor="endTime">End Time</label>
-            <input
-              ref={this.inputElements[6]}
-              id="endTime"
-              className="form-control"
-              defaultValue={endTime || ''}
-              required
-            />
+            <label htmlFor="select-endTime">End Time</label>
+            <br/>
+            {this.renderTimeRanges("endTime")}
           </div>
         </div>
         <div className={styles.row}>
@@ -202,7 +215,7 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
             <button
               type="button"
               className="btn btn-outline-primary btn-svg"
-              onClick={this.closeModal}
+              onClick={() => {}}
               onMouseOver={() => {}}
               onFocus={() => {}}
             >
