@@ -21,6 +21,7 @@ import { ColoredLesson } from 'types/timetables';
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
 import { addCustomModule } from 'actions/timetables';
 import { connect } from 'react-redux';
+import { getNewColor } from 'utils/colors';
 
 export type Props = {
   semester: Semester;
@@ -46,7 +47,7 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
     isOpen: false,
     moduleCode: "", 
     title: "", 
-    lessonType: "LEC", 
+    lessonType: "Lecture", 
     venue: "", 
     day: "Monday", 
     startTime: "0800", 
@@ -67,18 +68,14 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
       isOpen: false,
     });
 
-    customLesson: ColoredLesson = {
-      moduleCode: "CS1101S", 
-      title: "Programming", 
-      classNo: "01",
-      day: "Monday",
-      startTime: "0800",
-      endTime: "0800",
-      lessonType: "Lecture", 
-      venue: "Behind", 
-      weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-      colorIndex: 2, 
+  getLessonDetails = () => {
+    return {
+      ...this.state, 
+      classNo: "01", 
+      weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+      colorIndex: 0, 
     }
+  }
 
   submitModule() {
     const module: Module = {
@@ -142,7 +139,7 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
         <TimetableCell
           key="custom-preview"
           style={undefined}
-          lesson={this.customLesson}
+          lesson={this.getLessonDetails()}
           showTitle={true}
           hoverLesson={undefined}
           onHover={() => {}}
@@ -154,7 +151,7 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
         <TimetableCell
           key="custom-preview-no-title"
           style={undefined}
-          lesson={this.customLesson}
+          lesson={this.getLessonDetails()}
           showTitle={false}
           hoverLesson={undefined}
           onHover={() => {}}

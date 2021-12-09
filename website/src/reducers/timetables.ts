@@ -132,12 +132,14 @@ function semColors(state: ColorMapping = defaultSemColorMap, action: Actions): C
 
   switch (action.type) {
     case ADD_MODULE:
+    case ADD_CUSTOM_MODULE:
       return {
         ...state,
         [moduleCode]: getNewColor(values(state)),
       };
 
     case REMOVE_MODULE:
+    case DELETE_CUSTOM_MODULE:
       return omit(state, moduleCode);
 
     case SELECT_MODULE_COLOR:

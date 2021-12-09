@@ -76,6 +76,7 @@ type Props = OwnProps & {
   timetableOrientation: TimetableOrientation;
   showTitle: boolean;
   hiddenInTimetable: ModuleCode[];
+  customModules: Module[];
 
   // Actions
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
@@ -425,7 +426,7 @@ class TimetableContent extends React.Component<Props, State> {
               </div>
 
               <div className="col-12">
-                {this.renderModuleSections(addedModules, !isVerticalOrientation)}
+                {this.renderModuleSections(addedModules.concat(this.props.customModules), !isVerticalOrientation)}
               </div>
               <div className="col-12">
                 <ModulesTableFooter modules={addedModules} semester={semester} />
@@ -443,13 +444,14 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
   const { modules } = state.moduleBank;
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
   const hiddenInTimetable = state.timetables.hidden[semester] || [];
-  const customModules = state.timetables.custom[semester] || {};
+  const customModules = Object.values(state.timetables.custom[semester]) || [];
 
   return {
     semester,
     timetable,
     timetableWithLessons,
-    modules:  Object.assign({}, customModules, modules), 
+    modules,
+    customModules, 
     activeLesson: state.app.activeLesson,
     timetableOrientation: state.theme.timetableOrientation,
     showTitle: state.theme.showTitle,
