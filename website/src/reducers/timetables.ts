@@ -9,9 +9,12 @@ import { ColorMapping, TimetablesState } from 'types/reducers';
 
 import config from 'config';
 import {
+  ADD_CUSTOM_MODULE,
   ADD_MODULE,
   CHANGE_LESSON,
+  DELETE_CUSTOM_MODULE,
   HIDE_LESSON_IN_TIMETABLE,
+  MODIFY_CUSTOM_MODULE,
   REMOVE_MODULE,
   SELECT_MODULE_COLOR,
   SET_LESSON_CONFIG,
@@ -172,6 +175,7 @@ export const defaultTimetableState: TimetablesState = {
   hidden: {},
   academicYear: config.academicYear,
   archive: {},
+  custom: {}, 
 };
 
 function timetables(
@@ -199,13 +203,18 @@ function timetables(
     case CHANGE_LESSON:
     case SET_LESSON_CONFIG:
     case HIDE_LESSON_IN_TIMETABLE:
-    case SHOW_LESSON_IN_TIMETABLE: {
+    case SHOW_LESSON_IN_TIMETABLE:
+    case ADD_CUSTOM_MODULE:
+    case MODIFY_CUSTOM_MODULE: 
+    case DELETE_CUSTOM_MODULE:
+    {
       const { semester } = action.payload;
 
       return produce(state, (draft) => {
         draft.lessons[semester] = semTimetable(draft.lessons[semester], action);
         draft.colors[semester] = semColors(state.colors[semester], action);
         draft.hidden[semester] = semHiddenModules(state.hidden[semester], action);
+        draft.custom[semester] = {}; 
       });
     }
 
