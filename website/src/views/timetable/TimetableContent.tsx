@@ -348,8 +348,6 @@ class TimetableContent extends React.Component<Props, State> {
     );
 
     const arrangedLessons = arrangeLessonsForWeek(coloredTimetableLessons);
-
-    console.log(arrangedLessons);
     const arrangedLessonsWithModifiableFlag: TimetableArrangement = _.mapValues(
       arrangedLessons,
       (dayRows) =>
