@@ -135,7 +135,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
         </div>
         <div className={styles.moduleInfo}>
           {!readOnly && renderModuleActions(module)}
-          <Link to={modulePage(module.moduleCode, module.title)}>
+          <Link to={module.isCustom ? "#" : modulePage(module.moduleCode, module.title)}>
             {module.moduleCode} {module.title}
           </Link>
           <div className={styles.moduleExam}>{intersperse(secondRowText, BULLET_NBSP)}</div>
