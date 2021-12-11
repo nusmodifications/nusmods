@@ -4,20 +4,14 @@ import CloseButton from 'views/components/CloseButton';
 import Modal from 'views/components/Modal';
 import { PlusCircle } from 'react-feather';
 import {
-  Day,
-  EndTime,
   LessonDays,
-  LessonType,
   Module,
   ModuleCode,
-  ModuleTitle,
-  StartTime,
-  Venue,
 } from 'types/modules';
 import styles from './CustomModuleSelect.scss';
 import TimetableCell from './TimetableCell';
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
-import { CustomLesson, Lesson, ModifiableLesson } from 'types/timetables';
+import { Lesson, ModifiableLesson } from 'types/timetables';
 
 export type Props = {
   addCustomModule: (moduleCode: ModuleCode, module: Module, lesson: Lesson) => void; 
@@ -271,8 +265,4 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
       </div>
     );
   }
-}
-
-function mapStateToProps() {
-  return {};
 }
