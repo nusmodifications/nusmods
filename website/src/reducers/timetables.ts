@@ -4,8 +4,8 @@ import { createMigrate } from 'redux-persist';
 
 import { PersistConfig } from 'storage/persistReducer';
 import { ModuleCode } from 'types/modules';
-import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
-import { ColorMapping, ModulesMap, TimetablesState } from 'types/reducers';
+import { CustomLesson, ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
+import { ColorMapping, CustomModuleData, ModulesMap, TimetablesState } from 'types/reducers';
 
 import config from 'config';
 import {
@@ -130,8 +130,6 @@ function semColors(state: ColorMapping = defaultSemColorMap, action: Actions): C
   const moduleCode = get(action, 'payload.moduleCode');
   if (!moduleCode) return state;
 
-  console.log(state, action, moduleCode);
-
   switch (action.type) {
     case ADD_MODULE:
     case ADD_CUSTOM_MODULE:
@@ -174,20 +172,21 @@ function semHiddenModules(state = defaultHiddenState, action: Actions) {
 }
 
 // Map of semester to ModulesMap for custom modules
-const defaultCustomModulesState: ModulesMap = {};
-function semCustomModules(state: ModulesMap = defaultCustomModulesState, action: Actions): ModulesMap {
+const defaultCustomModulesState: CustomModuleData = {};
+function semCustomModules(state: CustomModuleData = defaultCustomModulesState, action: Actions): CustomModuleData {
   if (!action.payload) {
     return state;
   }
-
-  console.log(action);
 
   switch (action.type) {
     case ADD_CUSTOM_MODULE:
     case MODIFY_CUSTOM_MODULE:
       return {
         ...state,
-        [action.payload.moduleCode]: action.payload.module,
+        [action.payload.moduleCode]: {
+          module: action.payload.module, 
+          lesson: action.payload.lesson, 
+        }, 
       };
     case DELETE_CUSTOM_MODULE:
       return omit(state, [action.payload.moduleCode]);
@@ -236,7 +235,6 @@ function timetables(
     case SHOW_LESSON_IN_TIMETABLE:
     {
       const { semester } = action.payload;
-      console.log(state.custom);
 
       return produce(state, (draft) => {
         draft.lessons[semester] = semTimetable(draft.lessons[semester], action);

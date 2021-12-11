@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { ModuleSelectList } from 'types/reducers';
 import { Module, ModuleCode, Semester } from 'types/modules';
-import { SemTimetableConfig } from 'types/timetables';
+import { Lesson, SemTimetableConfig } from 'types/timetables';
 
 import Online from 'views/components/Online';
 import { popNotification } from 'actions/app';
@@ -20,7 +20,7 @@ type OwnProps = {
 type Props = OwnProps & {
   moduleList: ModuleSelectList;
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
-  addCustomModule: (semester: Semester, moduleCode: ModuleCode, module: Module) => void; 
+  addCustomModule: (semester: Semester, moduleCode: ModuleCode, module: Module, lesson: Lesson) => void; 
   removeModule: (moduleCode: ModuleCode) => void;
   popNotification: () => void;
 };
@@ -37,8 +37,8 @@ class ModulesSelectContainer extends Component<Props> {
     this.props.addModule(this.props.semester, moduleCode);
   };
 
-  addCustomModule = (moduleCode: ModuleCode, module: Module) => {
-    this.props.addCustomModule(this.props.semester, moduleCode, module);
+  addCustomModule = (moduleCode: ModuleCode, module: Module, lesson: Lesson) => {
+    this.props.addCustomModule(this.props.semester, moduleCode, module, lesson);
   };
 
   getFilteredModules = (inputValue: string | null) => {

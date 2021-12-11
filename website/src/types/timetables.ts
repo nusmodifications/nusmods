@@ -1,4 +1,4 @@
-import { ClassNo, LessonType, ModuleCode, ModuleTitle, RawLesson } from './modules';
+import { ClassNo, LessonType, Module, ModuleCode, ModuleTitle, RawLesson } from './modules';
 
 //  ModuleLessonConfig is a mapping of lessonType to ClassNo for a module.
 export type ModuleLessonConfig = {
@@ -19,6 +19,12 @@ export type Lesson = RawLesson & {
 export type ColoredLesson = Lesson & {
   colorIndex: ColorIndex;
 };
+
+// For Custom lessons 
+export type CustomLesson = {
+  module: Module, 
+  lesson: Lesson, 
+}
 
 type Modifiable = {
   isModifiable?: boolean;

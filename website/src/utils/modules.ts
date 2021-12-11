@@ -26,6 +26,10 @@ export function getModuleSemesterData(
   module: Module,
   semester: Semester,
 ): SemesterData | undefined {
+  console.log(module);
+  if (module.isCustom) {
+    return undefined;
+  }
   return module.semesterData.find((semData: SemesterData) => semData.semester === semester);
 }
 

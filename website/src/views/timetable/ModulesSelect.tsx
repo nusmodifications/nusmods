@@ -21,13 +21,14 @@ import Tooltip from 'views/components/Tooltip';
 
 import styles from './ModulesSelect.scss';
 import CustomModuleSelect from './CustomModuleSelect';
+import { Lesson } from 'types/timetables';
 
 type Props = {
   moduleCount: number;
   placeholder: string;
   disabled?: boolean;
 
-  addCustomModule: (moduleCode: ModuleCode, module: Module) => void; 
+  addCustomModule: (moduleCode: ModuleCode, module: Module, lesson: Lesson) => void; 
   getFilteredModules: (string: string | null) => ModuleSelectList;
   onChange: (moduleCode: ModuleCode) => void;
   onRemoveModule: (moduleCode: ModuleCode) => void;

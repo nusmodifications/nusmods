@@ -17,10 +17,10 @@ import {
 import styles from './CustomModuleSelect.scss';
 import TimetableCell from './TimetableCell';
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
-import { Lesson, ModifiableLesson } from 'types/timetables';
+import { CustomLesson, Lesson, ModifiableLesson } from 'types/timetables';
 
 export type Props = {
-  addCustomModule: (moduleCode: ModuleCode, module: Module) => void; 
+  addCustomModule: (moduleCode: ModuleCode, module: Module, lesson: Lesson) => void; 
 };
 
 type State = {
@@ -71,18 +71,21 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
   }
 
   submitModule() {
+    const { moduleCode, title } = this.state.lessonData; 
+
     const module: Module = {
-      ...this.state.lessonData, 
+      moduleCode: moduleCode, 
+      title: title, 
       isCustom: true,
       acadYear: '',
       moduleCredit: '0',
       department: '',
       faculty: '',
       semesterData: [],
-      timestamp: 0, 
+      timestamp: 0,
     }
-    
-    this.props.addCustomModule(module.moduleCode, module)
+
+    this.props.addCustomModule(module.moduleCode, module, this.state.lessonData);
   }
 
   renderLessonTypes() {
