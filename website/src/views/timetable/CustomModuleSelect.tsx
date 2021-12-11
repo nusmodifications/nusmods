@@ -36,13 +36,13 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
     lessonData: {
       moduleCode: "", 
       title: "", 
-      lessonType: "Lecture", 
-      venue: "E", 
+      lessonType: "Design Lecture", 
+      venue: "", 
       day: "Monday", 
       startTime: "0800", 
       endTime: "0900", 
       classNo: "01", 
-      weeks: [], 
+      weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], 
     }
   };
 
