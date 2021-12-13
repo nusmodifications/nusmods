@@ -140,7 +140,7 @@
     "date-fns": "2.16.1",
     "downshift": "6.0.15",
     "ical-generator": "https://github.com/nusmodifications/ical-generator.git#a2aa62ed",
-    "immer": "8.0.4",
+    "immer": "9.0.6",
     "json2mq": "0.2.0",
     "leaflet": "1.7.1",
     "leaflet-gesture-handling": "1.2.1",
