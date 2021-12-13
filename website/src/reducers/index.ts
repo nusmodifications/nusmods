@@ -1,4 +1,4 @@
-import { REMOVE_MODULE, SET_TIMETABLE } from 'actions/timetables';
+import { DELETE_CUSTOM_MODULE, REMOVE_MODULE, SET_TIMETABLE } from 'actions/timetables';
 
 import persistReducer from 'storage/persistReducer';
 import { State } from 'types/state';
@@ -29,8 +29,8 @@ const planner = persistReducer('planner', plannerReducer, plannerPersistConfig);
 const defaultState = ({} as unknown) as State;
 const undoReducer = createUndoReducer<State>({
   limit: 1,
-  actionsToWatch: [REMOVE_MODULE, SET_TIMETABLE],
-  storedKeyPaths: ['timetables', 'theme.colors'],
+  actionsToWatch: [REMOVE_MODULE, SET_TIMETABLE, DELETE_CUSTOM_MODULE],
+  storedKeyPaths: ['timetables', 'theme.colors', 'custom'],
 });
 
 export default function reducers(state: State = defaultState, action: Actions): State {
