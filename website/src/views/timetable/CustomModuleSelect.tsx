@@ -88,8 +88,10 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
   }
 
   renderLessonTypes() {
+    const { lessonType } = this.state.lessonData; 
+
     return (
-      <select name={"lessonType"} id={"select-lessonType"} onChange={this.setLessonState}>
+      <select name={"lessonType"} id={"select-lessonType"} onChange={this.setLessonState} value={lessonType}>
         {Object.keys(LESSON_TYPE_ABBREV).map((lessonType: string) => {
           return <option key={lessonType} value={lessonType}>{lessonType}</option>; 
         })}
@@ -98,8 +100,10 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
   }
 
   renderWorkingDays() {
+    const { lessonType } = this.state.lessonData; 
+
     return (
-      <select name={"day"} id={"select-day"} onChange={this.setLessonState}>
+      <select name={"day"} id={"select-day"} onChange={this.setLessonState} value={lessonType}>
         {LessonDays.map((day: string) => {
           return <option key={day} value={day}>{day}</option>; 
         })}
@@ -110,10 +114,12 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
   renderTimeRanges(field: string) {
     const minTimeInHalfHours = 15;
     const numberOfTimeSlots = 28;
+
+    const value = (field === "startTime" ? this.state.lessonData.startTime : this.state.lessonData.endTime);
     const timeslots = Array.from({length: numberOfTimeSlots}, (_, i) => i + 1);
 
     return (
-      <select name={field} id={`select-${field}`} onChange={this.setLessonState}>
+      <select name={field} id={`select-${field}`} onChange={this.setLessonState} value={value}>
         {timeslots.map((timeslot: number) => {
           timeslot = ((minTimeInHalfHours + timeslot) * 30);
           const hourString = Math.floor(timeslot / 60).toString().padStart(2, '0') 

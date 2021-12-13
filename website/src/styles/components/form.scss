@@ -4,3 +4,11 @@ input.form-control::placeholder {
   // Default browser placeholder color is dark enough that it can be confused with normal values
   color: var(--gray-light);
 }
+
+input.form-control:disabled {
+  // Bootstrap adds a weird text shadow on focus, not entirely sure why
+  text-shadow: none;
+  // Default browser placeholder color is dark enough that it can be confused with normal values
+  color: var(--gray-light);
+  background-color: lightgrey;
+}
