@@ -6,13 +6,13 @@ import { sortBy } from 'lodash';
 import produce from 'immer';
 
 import { ModuleWithColor, TombstoneModule } from 'types/views';
-import { ColorIndex } from 'types/timetables';
+import { ColorIndex, Lesson } from 'types/timetables';
 import { Module, ModuleCode, Semester } from 'types/modules';
 import { State as StoreState } from 'types/state';
 import { ModuleTableOrder } from 'types/reducers';
 
 import ColorPicker from 'views/components/ColorPicker';
-import { Eye, EyeOff, Trash } from 'react-feather';
+import { Edit, Eye, EyeOff, Trash } from 'react-feather';
 import {
   hideLessonInTimetable,
   selectModuleColor,
@@ -29,7 +29,8 @@ import config from 'config';
 import styles from './TimetableModulesTable.scss';
 import ModuleTombstone from './ModuleTombstone';
 import { moduleOrders } from './ModulesTableFooter';
-import CustomModuleSelect from './CustomModuleSelect';
+import Modal from 'views/components/Modal';
+import CustomModuleEdit from './CustomModuleEdit';
 
 export type Props = {
   semester: Semester;
@@ -37,6 +38,7 @@ export type Props = {
   horizontalOrientation: boolean;
   moduleTableOrder: ModuleTableOrder;
   modules: ModuleWithColor[];
+  customLessons: Lesson[];
   tombstone: TombstoneModule | null; // Placeholder for a deleted module
 
   // Actions
@@ -46,6 +48,7 @@ export type Props = {
   showLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   onRemoveModule: (moduleCode: ModuleCode) => void;
   onRemoveCustomModule: (moduleCode: ModuleCode) => void;
+  editCustomModule: (moduleCodeToEdit: ModuleCode, module: Module, lesson: Lesson) => void; 
   resetTombstone: () => void;
 };
 
@@ -53,6 +56,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
   const renderModuleActions = (module: ModuleWithColor) => {
     const hideBtnLabel = `${module.hiddenInTimetable ? 'Show' : 'Hide'} ${module.moduleCode}`;
     const removeBtnLabel = `Remove ${module.moduleCode} from timetable`;
+    const editBtnLabel = `Edit Custom Module`;
     const { semester } = props;
 
     const removeModule = (moduleCode: ModuleCode, isCustom: boolean | undefined) => {
@@ -63,9 +67,23 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
       }
     }
 
+    const customLesson = (module: ModuleWithColor) => {
+      return props.customLessons.find(lesson => lesson.moduleCode === module.moduleCode);
+    }
+
     return (
       <div className={styles.moduleActionButtons}>
         <div className="btn-group">
+          {
+            module.isCustom && (
+              <CustomModuleEdit 
+                lesson={customLesson(module)}
+                editCustomModule={props.editCustomModule} 
+                moduleActionStyle={styles.moduleAction}  
+                actionIconStyle={styles.actionIcon}
+              />
+            )
+          }
           <Tooltip content={removeBtnLabel} touch="hold">
             <button
               type="button"

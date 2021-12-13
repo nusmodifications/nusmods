@@ -21,6 +21,7 @@ import {
   cancelModifyLesson,
   changeLesson,
   deleteCustomModule,
+  modifyCustomModule,
   modifyLesson,
   removeModule,
 } from 'actions/timetables';
@@ -84,6 +85,7 @@ type Props = OwnProps & {
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
   addCustomModule: (semester: Semester, moduleCode: ModuleCode, module: Module, lesson: Lesson) => void;
   deleteCustomModule: (semester: Semester, moduleCode: ModuleCode) => void; 
+  modifyCustomModule: (semester: Semester, moduleCode: ModuleCode, module: Module, lesson: Lesson) => void;
   removeModule: (semester: Semester, moduleCode: ModuleCode) => void;
   modifyLesson: (lesson: Lesson) => void;
   changeLesson: (semester: Semester, lesson: Lesson) => void;
@@ -219,6 +221,10 @@ class TimetableContent extends React.Component<Props, State> {
     this.setState({ tombstone: { ...moduleWithColor, index } });
   };
 
+  editCustomModule = (moduleCodeToEdit: ModuleCode, module: Module, lesson: Lesson) => {
+    this.props.modifyCustomModule(this.props.semester, moduleCodeToEdit, module, lesson);
+  };
+
   resetTombstone = () => this.setState({ tombstone: null });
 
   // Returns modules currently in the timetable
@@ -242,10 +248,12 @@ class TimetableContent extends React.Component<Props, State> {
     <TimetableModulesTable
       addModule={this.addModule}
       modules={modules.map(this.toModuleWithColor)}
+      customLessons={Object.values(this.props.customModules).map(x => x.lesson)}
       horizontalOrientation={horizontalOrientation}
       semester={this.props.semester}
       onRemoveModule={this.removeModule}
       onRemoveCustomModule={this.removeCustomModule}
+      editCustomModule={this.editCustomModule}
       readOnly={this.props.readOnly}
       tombstone={tombstone}
       resetTombstone={this.resetTombstone}
@@ -487,6 +495,7 @@ export default connect(mapStateToProps, {
   addModule,
   addCustomModule, 
   deleteCustomModule, 
+  modifyCustomModule, 
   removeModule,
   modifyLesson,
   changeLesson,
