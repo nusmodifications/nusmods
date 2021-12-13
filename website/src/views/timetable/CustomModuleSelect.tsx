@@ -22,22 +22,24 @@ type State = {
   lessonData: Lesson; 
 };
 
+const defaultLessonState: Lesson = {
+  moduleCode: "", 
+  title: "", 
+  lessonType: "Design Lecture", 
+  venue: "", 
+  day: "Monday", 
+  startTime: "0800", 
+  endTime: "0900", 
+  classNo: "01", 
+  weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], 
+};
+
 export default class CustomModulesSelect extends React.PureComponent<Props, State> {
   fields = ['moduleCode', 'title', 'lessonType', 'venue', 'day', 'startTime', 'endTime'];
 
   state: State = {
     isOpen: false,
-    lessonData: {
-      moduleCode: "", 
-      title: "", 
-      lessonType: "Design Lecture", 
-      venue: "", 
-      day: "Monday", 
-      startTime: "0800", 
-      endTime: "0900", 
-      classNo: "01", 
-      weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], 
-    }
+    lessonData: defaultLessonState, 
   };
 
   setLessonState = (event: any) => {
@@ -80,6 +82,9 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
     }
 
     this.props.addCustomModule(module.moduleCode, module, this.state.lessonData);
+    this.setState({
+      lessonData: defaultLessonState, 
+    });
   }
 
   renderLessonTypes() {
