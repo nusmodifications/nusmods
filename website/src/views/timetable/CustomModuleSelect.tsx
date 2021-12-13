@@ -100,10 +100,10 @@ export default class CustomModulesSelect extends React.PureComponent<Props, Stat
   }
 
   renderWorkingDays() {
-    const { lessonType } = this.state.lessonData; 
+    const { day } = this.state.lessonData; 
 
     return (
-      <select name={"day"} id={"select-day"} onChange={this.setLessonState} value={lessonType}>
+      <select name={"day"} id={"select-day"} onChange={this.setLessonState} value={day}>
         {LessonDays.map((day: string) => {
           return <option key={day} value={day}>{day}</option>; 
         })}
