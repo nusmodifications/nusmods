@@ -7,11 +7,14 @@ import { TimetableModulesTableComponent, Props } from './TimetableModulesTable';
 import styles from './TimetableModulesTable.scss';
 
 function make(props: Partial<Props> = {}) {
+  const addModule = jest.fn();
+  const editCustomModule = jest.fn();
   const selectModuleColor = jest.fn();
   const onRemoveModule = jest.fn();
   const hideLessonInTimetable = jest.fn();
   const showLessonInTimetable = jest.fn();
   const resetTombstone = jest.fn();
+  const onRemoveCustomModule = jest.fn();
 
   const wrapper = shallow(
     <TimetableModulesTableComponent
@@ -21,11 +24,15 @@ function make(props: Partial<Props> = {}) {
       moduleTableOrder="exam"
       modules={[]}
       tombstone={null}
+      addModule={addModule}
+      editCustomModule={editCustomModule}
       selectModuleColor={selectModuleColor}
       hideLessonInTimetable={hideLessonInTimetable}
       showLessonInTimetable={showLessonInTimetable}
       onRemoveModule={onRemoveModule}
+      onRemoveCustomModule={onRemoveCustomModule}
       resetTombstone={resetTombstone}
+      customLessons={[]}
       {...props}
     />,
   );
