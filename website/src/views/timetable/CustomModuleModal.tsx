@@ -11,6 +11,7 @@ import styles from './CustomModuleModal.scss';
 import TimetableCell from './TimetableCell';
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
 import { Lesson, ModifiableLesson } from 'types/timetables';
+import { appendCustomIdentifier, removeCustomIdentifier } from 'utils/custom';
 
 export type Props = {
   customLessonData?: Lesson; 
@@ -42,7 +43,12 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
   fields = ['moduleCode', 'title', 'lessonType', 'venue', 'day', 'startTime', 'endTime'];
 
   state: State = {
-    lessonData: this.props.customLessonData || defaultLessonState, 
+    lessonData: {
+      ...this.props.customLessonData || defaultLessonState,
+      moduleCode: this.props.customLessonData ? 
+        removeCustomIdentifier(this.props.customLessonData.moduleCode)
+        : ''
+    } 
   };
 
   setLessonState = (event: any) => {
@@ -61,11 +67,18 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
   }
 
   submitModule() {
-    const { moduleCode, title } = this.state.lessonData; 
+    const { moduleCode, title } = this.state.lessonData;
     const { isEdit, handleCustomModule, customLessonData } = this.props;
 
+    const customModuleCode = appendCustomIdentifier(moduleCode);
+
+    const submittedLessonData = {
+      ...this.state.lessonData, 
+      moduleCode: customModuleCode
+    };
+
     const module: Module = {
-      moduleCode: moduleCode, 
+      moduleCode: customModuleCode, 
       title: title, 
       isCustom: true,
       acadYear: '',
@@ -77,9 +90,9 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     }
 
     if (isEdit) {
-        handleCustomModule!(customLessonData!.moduleCode, module, this.state.lessonData);
+        handleCustomModule!(customLessonData!.moduleCode, module, submittedLessonData);
     } else {
-        handleCustomModule!(module.moduleCode, module, this.state.lessonData);
+        handleCustomModule!(module.moduleCode, module, submittedLessonData);
         this.setState({
           lessonData: defaultLessonState, 
         });

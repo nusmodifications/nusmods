@@ -31,6 +31,7 @@ import ModuleTombstone from './ModuleTombstone';
 import { moduleOrders } from './ModulesTableFooter';
 import Modal from 'views/components/Modal';
 import CustomModuleEdit from './CustomModuleEdit';
+import { removeCustomIdentifier } from 'utils/custom';
 
 export type Props = {
   semester: Semester;
@@ -54,9 +55,12 @@ export type Props = {
 
 export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
   const renderModuleActions = (module: ModuleWithColor) => {
-    const hideBtnLabel = `${module.hiddenInTimetable ? 'Show' : 'Hide'} ${module.moduleCode}`;
-    const removeBtnLabel = `Remove ${module.moduleCode} from timetable`;
-    const editBtnLabel = `Edit Custom Module`;
+    const actualModuleCode = module.isCustom 
+      ? removeCustomIdentifier(module.moduleCode) 
+      : module.moduleCode;
+
+    const hideBtnLabel = `${module.hiddenInTimetable ? 'Show' : 'Hide'} ${actualModuleCode}`;
+    const removeBtnLabel = `Remove ${actualModuleCode} from timetable`;
     const { semester } = props;
 
     const removeModule = (moduleCode: ModuleCode, isCustom: boolean | undefined) => {
@@ -121,7 +125,9 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
 
   const renderModule = (module: ModuleWithColor) => {
     const { semester, readOnly, tombstone, resetTombstone } = props;
-    console.log(module.isCustom);
+    const actualModuleCode = module.isCustom 
+      ? removeCustomIdentifier(module.moduleCode) 
+      : module.moduleCode;
 
     if (tombstone && tombstone.moduleCode === module.moduleCode) {
       return <ModuleTombstone module={module} resetTombstone={resetTombstone} />;
@@ -143,7 +149,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
       <>
         <div className={styles.moduleColor}>
           <ColorPicker
-            label={`Change ${module.moduleCode} timetable color`}
+            label={`Change ${actualModuleCode} timetable color`}
             color={module.colorIndex}
             isHidden={module.hiddenInTimetable}
             onChooseColor={(colorIndex: ColorIndex) => {
@@ -154,7 +160,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
         <div className={styles.moduleInfo}>
           {!readOnly && renderModuleActions(module)}
           <Link to={module.isCustom ? "#" : modulePage(module.moduleCode, module.title)}>
-            {module.moduleCode} {module.title}
+            {actualModuleCode} {module.title}
           </Link>
           <div className={styles.moduleExam}>{intersperse(secondRowText, BULLET_NBSP)}</div>
         </div>
