@@ -11,7 +11,7 @@ import styles from './CustomModuleModal.scss';
 import TimetableCell from './TimetableCell';
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
 import { Lesson, ModifiableLesson } from 'types/timetables';
-import { appendCustomIdentifier, removeCustomIdentifier } from 'utils/custom';
+import { appendCustomIdentifier, cretaeCustomModule, removeCustomIdentifier } from 'utils/custom';
 
 export type Props = {
   customLessonData?: Lesson; 
@@ -77,17 +77,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
       moduleCode: customModuleCode
     };
 
-    const module: Module = {
-      moduleCode: customModuleCode, 
-      title: title, 
-      isCustom: true,
-      acadYear: '',
-      moduleCredit: '0',
-      department: '',
-      faculty: '',
-      semesterData: [],
-      timestamp: 0,
-    }
+    const module: Module = cretaeCustomModule(customModuleCode, title);
 
     if (isEdit) {
         handleCustomModule!(customLessonData!.moduleCode, module, submittedLessonData);
