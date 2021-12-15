@@ -48,7 +48,7 @@ export default class CustomModuleSelect extends React.PureComponent<Props, State
         </button>
 
         <CustomModuleModal 
-          addCustomModule={this.props.addCustomModule}
+          handleCustomModule={this.props.addCustomModule}
           closeModal={this.closeModal}
           isOpen={isOpen}
           isEdit={false}

@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import CloseButton from 'views/components/CloseButton';
 import Modal from 'views/components/Modal';
-import { PlusCircle } from 'react-feather';
 import {
   LessonDays,
   Module,
@@ -16,10 +15,9 @@ import { Lesson, ModifiableLesson } from 'types/timetables';
 export type Props = {
   customLessonData?: Lesson; 
   isOpen: boolean; 
-  isEdit: boolean; 
+  isEdit: boolean;  
 
-  addCustomModule?: (moduleCode: ModuleCode, module: Module, lesson: Lesson) => void; 
-  editCustomModule?: (moduleCode: ModuleCode, module: Module, lesson: Lesson) => void; 
+  handleCustomModule: (moduleCode: ModuleCode, module: Module, lesson: Lesson) => void; 
   closeModal: () => void;
 };
 
@@ -63,6 +61,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
 
   submitModule() {
     const { moduleCode, title } = this.state.lessonData; 
+    const { isEdit, handleCustomModule, customLessonData } = this.props;
 
     const module: Module = {
       moduleCode: moduleCode, 
@@ -76,10 +75,10 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
       timestamp: 0,
     }
 
-    if (this.props.isEdit) {
-        this.props.editCustomModule!(module.moduleCode, module, this.state.lessonData);
+    if (isEdit) {
+        handleCustomModule!(customLessonData!.moduleCode, module, this.state.lessonData);
     } else {
-        this.props.addCustomModule!(module.moduleCode, module, this.state.lessonData);
+        handleCustomModule!(module.moduleCode, module, this.state.lessonData);
         this.setState({
           lessonData: defaultLessonState, 
         });

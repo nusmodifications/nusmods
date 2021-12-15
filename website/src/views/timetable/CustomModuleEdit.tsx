@@ -43,7 +43,7 @@ export default class CustomModuleEdit extends React.PureComponent<Props, State> 
     return (
       <>
         <CustomModuleModal 
-          editCustomModule={this.props.editCustomModule}
+          handleCustomModule={this.props.editCustomModule}
           closeModal={this.closeModal}
           isOpen={isOpen}
           isEdit={true}
