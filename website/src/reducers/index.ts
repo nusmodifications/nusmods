@@ -30,7 +30,7 @@ const defaultState = ({} as unknown) as State;
 const undoReducer = createUndoReducer<State>({
   limit: 1,
   actionsToWatch: [REMOVE_MODULE, SET_TIMETABLE, DELETE_CUSTOM_MODULE],
-  storedKeyPaths: ['timetables', 'theme.colors', 'custom'],
+  storedKeyPaths: ['timetables', 'theme.colors'],
 });
 
 export default function reducers(state: State = defaultState, action: Actions): State {
