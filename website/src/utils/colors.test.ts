@@ -89,7 +89,7 @@ describe(fillColorMapping, () => {
       fillColorMapping(
         { CS1010S: {}, CS3216: {} },
         { CS1010S: 0, CS3216: 1, CS1101S: 1, CS2105: 0, CS1231: 2 },
-        [], 
+        [],
       ),
     ).toEqual({
       CS1010S: 0,
