@@ -28,7 +28,7 @@ type Props = {
   placeholder: string;
   disabled?: boolean;
 
-  addCustomModule: (moduleCode: ModuleCode, module: Module, lesson: Lesson) => void;
+  addCustomModule: (moduleCode: ModuleCode, lesson: Lesson) => void;
   getFilteredModules: (string: string | null) => ModuleSelectList;
   onChange: (moduleCode: ModuleCode) => void;
   onRemoveModule: (moduleCode: ModuleCode) => void;

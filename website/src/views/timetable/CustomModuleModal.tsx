@@ -15,7 +15,7 @@ export type Props = {
   isOpen: boolean;
   isEdit: boolean;
 
-  handleCustomModule: (moduleCode: ModuleCode, module: Module, lesson: Lesson) => void;
+  handleCustomModule: (oldModuleCode: ModuleCode, moduleCode: ModuleCode, lesson: Lesson) => void;
   closeModal: () => void;
 };
 
@@ -112,12 +112,10 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
       moduleCode: customModuleCode,
     };
 
-    const module: Module = cretaeCustomModule(customModuleCode, title);
-
     if (isEdit) {
-      handleCustomModule!(customLessonData!.moduleCode, module, submittedLessonData);
+      handleCustomModule!(customLessonData!.moduleCode, submittedLessonData.moduleCode, submittedLessonData);
     } else {
-      handleCustomModule!(module.moduleCode, module, submittedLessonData);
+      handleCustomModule!(submittedLessonData.moduleCode, submittedLessonData.moduleCode, submittedLessonData);
       this.setState({
         lessonData: defaultLessonState,
       });

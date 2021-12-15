@@ -23,7 +23,6 @@ type Props = OwnProps & {
   addCustomModule: (
     semester: Semester,
     moduleCode: ModuleCode,
-    module: Module,
     lesson: Lesson,
   ) => void;
   removeModule: (moduleCode: ModuleCode) => void;
@@ -42,8 +41,8 @@ class ModulesSelectContainer extends Component<Props> {
     this.props.addModule(this.props.semester, moduleCode);
   };
 
-  addCustomModule = (moduleCode: ModuleCode, module: Module, lesson: Lesson) => {
-    this.props.addCustomModule(this.props.semester, moduleCode, module, lesson);
+  addCustomModule = (moduleCode: ModuleCode, lesson: Lesson) => {
+    this.props.addCustomModule(this.props.semester, moduleCode, lesson);
   };
 
   getFilteredModules = (inputValue: string | null) => {

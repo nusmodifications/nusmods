@@ -11,7 +11,7 @@ export type Props = {
   moduleActionStyle: string;
   actionIconStyle: string;
 
-  editCustomModule: (moduleCode: ModuleCode, module: Module, lesson: Lesson) => void;
+  editCustomModule: (oldModuleCode: ModuleCode, newModuleCode: ModuleCode, lesson: Lesson) => void;
 };
 
 type State = {

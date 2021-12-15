@@ -49,7 +49,7 @@ export type Props = {
   showLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   onRemoveModule: (moduleCode: ModuleCode) => void;
   onRemoveCustomModule: (moduleCode: ModuleCode) => void;
-  editCustomModule: (moduleCodeToEdit: ModuleCode, module: Module, lesson: Lesson) => void;
+  editCustomModule: (oldModuleCode: ModuleCode, newModuleCode: ModuleCode, lesson: Lesson) => void;
   resetTombstone: () => void;
 };
 
