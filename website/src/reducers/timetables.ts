@@ -5,7 +5,7 @@ import { createMigrate } from 'redux-persist';
 import { PersistConfig } from 'storage/persistReducer';
 import { ModuleCode } from 'types/modules';
 import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
-import { ColorMapping, CustomModuleData, TimetablesState } from 'types/reducers';
+import { ColorMapping, CustomModuleLessonData, TimetablesState } from 'types/reducers';
 
 import config from 'config';
 import {
@@ -172,11 +172,11 @@ function semHiddenModules(state = defaultHiddenState, action: Actions) {
 }
 
 // Map of semester to ModulesMap for custom modules
-const defaultCustomModulesState: CustomModuleData = {};
+const defaultCustomModulesState: CustomModuleLessonData = {};
 function semCustomModules(
-  state: CustomModuleData = defaultCustomModulesState,
+  state: CustomModuleLessonData = defaultCustomModulesState,
   action: Actions,
-): CustomModuleData {
+): CustomModuleLessonData {
   if (!action.payload) {
     return state;
   }

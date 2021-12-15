@@ -5,8 +5,7 @@ import _ from 'lodash';
 
 import {
   ColorMapping,
-  CustomModuleData,
-  CustomModulesMap,
+  CustomModuleLessonData,
   HORIZONTAL,
   ModulesMap,
   TimetableOrientation,
@@ -86,7 +85,7 @@ type Props = OwnProps & {
   timetableOrientation: TimetableOrientation;
   showTitle: boolean;
   hiddenInTimetable: ModuleCode[];
-  customModules: CustomModuleData;
+  customModules: CustomModuleLessonData;
 
   // Actions
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;

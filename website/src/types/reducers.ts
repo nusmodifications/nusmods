@@ -112,7 +112,7 @@ export type SettingsState = {
 export type ColorMapping = { [moduleCode: string]: ColorIndex };
 export type SemesterColorMap = { [semester: string]: ColorMapping };
 export type HiddenModulesMap = { [semester: string]: ModuleCode[] };
-export type CustomModulesMap = { [semester: string]: CustomModuleData };
+export type CustomModulesMap = { [semester: string]: CustomModuleLessonData };
 
 export type TimetablesState = {
   readonly lessons: TimetableConfig;
@@ -155,6 +155,10 @@ export type CustomModule = {
 };
 
 export type CustomModuleData = {
+  [moduleCode: string]: CustomModule;
+};
+
+export type CustomModuleLessonData = {
   [moduleCode: string]: CustomModuleLesson;
 };
 

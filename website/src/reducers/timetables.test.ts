@@ -207,6 +207,7 @@ describe('stateReconciler', () => {
     },
     academicYear: config.academicYear,
     archive: oldArchive,
+    customModules: {}, 
   };
 
   const { stateReconciler } = persistConfig;
