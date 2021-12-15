@@ -33,7 +33,7 @@ const defaultLessonState: Lesson = {
   day: 'Monday',
   startTime: '0800',
   endTime: '0900',
-  classNo: '01',
+  classNo: '',
   isCustom: true,
   weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
 };
@@ -81,7 +81,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
   });
 
   getValidatioNErrors = (): string[] => {
-    const { moduleCode, title, venue, startTime, endTime } = this.state.lessonData;
+    const { moduleCode, title, venue, startTime, endTime, classNo } = this.state.lessonData;
     const errors: string[] = [];
 
     if (moduleCode.length === 0) {
@@ -90,6 +90,10 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
 
     if (title.length === 0) {
       errors.push('Please Enter a Title.');
+    }
+
+    if (classNo.length === 0) {
+      errors.push('Please Enter a Class Number.');
     }
 
     if (venue.length === 0) {
@@ -204,7 +208,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
       >
         {timeslots.map((timeslot: number) => {
           const timeMinutes = (minTimeInHalfHours + timeslot) * 30;
-          const hourString = Math.floor(timeslot / 60)
+          const hourString = Math.floor(timeMinutes / 60)
             .toString()
             .padStart(2, '0');
           const minuteString = (timeMinutes % 60).toString().padStart(2, '0');
@@ -251,7 +255,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
   }
 
   renderInputFields() {
-    const { moduleCode, title, venue } = this.state.lessonData;
+    const { moduleCode, title, venue, classNo } = this.state.lessonData;
 
     return (
       <>
@@ -280,6 +284,17 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
           </div>
         </div>
         <div className={styles.row}>
+        <div className={styles.columnSmall}>
+            <label htmlFor="select-classNo">Class Number</label>
+            <input
+              name="classNo"
+              onChange={(e) => this.setLessonStateViaInput(e)}
+              id="select-classNo"
+              className="form-control"
+              defaultValue={classNo || ''}
+              required
+            />
+          </div>
           <div className={styles.columnLarge}>
             <label htmlFor="select-lessonType">Lesson Type</label>
             <br />

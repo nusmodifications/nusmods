@@ -137,6 +137,7 @@ export type RawLesson = Readonly<{
 }>;
 
 export type CustomLesson = {
+  classNo: ClassNo;
   day: DayText;
   startTime: StartTime;
   endTime: EndTime;
