@@ -10,7 +10,7 @@ import classnames from 'classnames';
 import { Trash } from 'react-feather';
 
 import { ModuleSelectList } from 'types/reducers';
-import { Module, ModuleCode, Semester } from 'types/modules';
+import { ModuleCode } from 'types/modules';
 
 import { breakpointUp } from 'utils/css';
 import useMediaQuery from 'views/hooks/useMediaQuery';

@@ -1,5 +1,4 @@
 import { Module } from 'types/modules';
-import { CustomModuleData } from 'types/reducers';
 import { CustomModuleLesson, Lesson } from 'types/timetables';
 
 const CUSTOM_IDENTIFIER = 'custom=';
@@ -28,8 +27,8 @@ export function cretaeCustomModule(customModuleCode: string, title: string): Mod
 
 export function createLesson(customModuleData: CustomModuleLesson): Lesson {
   return {
-    ...customModuleData, 
-    classNo: "", 
-    weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], 
-  }
+    ...customModuleData,
+    classNo: '',
+    weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+  };
 }

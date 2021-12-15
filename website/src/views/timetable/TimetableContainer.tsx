@@ -146,7 +146,9 @@ export const TimetableContainerComponent: FC = () => {
   const modules = useSelector(({ moduleBank }: State) => moduleBank.modules);
   const activeSemester = useSelector(({ app }: State) => app.activeSemester);
   const customModules = useSelector(({ timetables }: State) =>
-    timetables.customModules[activeSemester] ? Object.keys(timetables.customModules[activeSemester]) : [],
+    timetables.customModules[activeSemester]
+      ? Object.keys(timetables.customModules[activeSemester])
+      : [],
   );
 
   const location = useLocation();

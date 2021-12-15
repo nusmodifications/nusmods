@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Edit } from 'react-feather';
-import { Module, ModuleCode } from 'types/modules';
+import { ModuleCode } from 'types/modules';
 import { Lesson } from 'types/timetables';
 import Tooltip from 'views/components/Tooltip';
 import classnames from 'classnames';

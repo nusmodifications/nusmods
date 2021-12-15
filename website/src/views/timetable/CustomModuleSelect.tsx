@@ -30,20 +30,14 @@ export default class CustomModuleSelect extends React.PureComponent<Props, State
 
   handleCustomModule = (oldModuleCode: ModuleCode, moduleCode: ModuleCode, lesson: Lesson) => {
     this.props.addCustomModule(moduleCode, lesson);
-  }
+  };
 
   render() {
     const { isOpen } = this.state;
 
     return (
       <div className={styles.select}>
-        <button
-          type="button"
-          className="btn btn-outline-primary btn-svg"
-          onClick={this.openModal}
-          onMouseOver={() => {}}
-          onFocus={() => {}}
-        >
+        <button type="button" className="btn btn-outline-primary btn-svg" onClick={this.openModal}>
           <PlusCircle className="svg svg-small" />
           Add Custom Module
         </button>

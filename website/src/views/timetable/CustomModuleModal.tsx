@@ -2,11 +2,12 @@ import * as React from 'react';
 
 import CloseButton from 'views/components/CloseButton';
 import Modal from 'views/components/Modal';
-import { LessonDays, Module, ModuleCode } from 'types/modules';
+import { LessonDays, ModuleCode } from 'types/modules';
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
 import { Lesson, ModifiableLesson } from 'types/timetables';
-import { appendCustomIdentifier, cretaeCustomModule, removeCustomIdentifier } from 'utils/custom';
+import { appendCustomIdentifier, removeCustomIdentifier } from 'utils/custom';
 import { getLessonTimeHours, getLessonTimeMinutes } from 'utils/timify';
+import { noop } from 'lodash';
 import TimetableCell from './TimetableCell';
 import styles from './CustomModuleModal.scss';
 
@@ -50,14 +51,28 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     isSubmitting: false,
   };
 
-  setLessonState = (event: any) => {
-    const newState: any = {
+  setLessonStateViaInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newState: State = {
+      ...this.state,
       lessonData: {
         ...this.state.lessonData,
         [event.target.name]: event.target.value,
       },
     };
     this.setState(newState);
+    return null;
+  };
+
+  setLessonStateViaSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newState: State = {
+      ...this.state,
+      lessonData: {
+        ...this.state.lessonData,
+        [event.target.name]: event.target.value,
+      },
+    };
+    this.setState(newState);
+    return null;
   };
 
   getLessonDetails = (): ModifiableLesson => ({
@@ -69,15 +84,15 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     const { moduleCode, title, venue, startTime, endTime } = this.state.lessonData;
     const errors: string[] = [];
 
-    if (moduleCode.length == 0) {
+    if (moduleCode.length === 0) {
       errors.push('Please Enter a Module Code.');
     }
 
-    if (title.length == 0) {
+    if (title.length === 0) {
       errors.push('Please Enter a Title.');
     }
 
-    if (venue.length == 0) {
+    if (venue.length === 0) {
       errors.push('Please Enter a Venue.');
     }
 
@@ -102,7 +117,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
       return;
     }
 
-    const { moduleCode, title } = this.state.lessonData;
+    const { moduleCode } = this.state.lessonData;
     const { isEdit, handleCustomModule, customLessonData } = this.props;
 
     const customModuleCode = appendCustomIdentifier(moduleCode);
@@ -113,9 +128,17 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     };
 
     if (isEdit) {
-      handleCustomModule!(customLessonData!.moduleCode, submittedLessonData.moduleCode, submittedLessonData);
+      handleCustomModule(
+        customLessonData ? customLessonData.moduleCode : '',
+        submittedLessonData.moduleCode,
+        submittedLessonData,
+      );
     } else {
-      handleCustomModule!(submittedLessonData.moduleCode, submittedLessonData.moduleCode, submittedLessonData);
+      handleCustomModule(
+        submittedLessonData.moduleCode,
+        submittedLessonData.moduleCode,
+        submittedLessonData,
+      );
       this.setState({
         lessonData: defaultLessonState,
       });
@@ -133,12 +156,12 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
       <select
         name="lessonType"
         id="select-lessonType"
-        onChange={this.setLessonState}
+        onChange={(e) => this.setLessonStateViaSelect(e)}
         value={lessonType}
       >
-        {Object.keys(LESSON_TYPE_ABBREV).map((lessonType: string) => (
-          <option key={lessonType} value={lessonType}>
-            {lessonType}
+        {Object.keys(LESSON_TYPE_ABBREV).map((lesson: string) => (
+          <option key={lesson} value={lesson}>
+            {lesson}
           </option>
         ))}
       </select>
@@ -149,10 +172,15 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     const { day } = this.state.lessonData;
 
     return (
-      <select name="day" id="select-day" onChange={this.setLessonState} value={day}>
-        {LessonDays.map((day: string) => (
-          <option key={day} value={day}>
-            {day}
+      <select
+        name="day"
+        id="select-day"
+        onChange={(e) => this.setLessonStateViaSelect(e)}
+        value={day}
+      >
+        {LessonDays.map((lessonDay: string) => (
+          <option key={lessonDay} value={lessonDay}>
+            {lessonDay}
           </option>
         ))}
       </select>
@@ -168,13 +196,18 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     const timeslots = Array.from({ length: numberOfTimeSlots }, (_, i) => i + 1);
 
     return (
-      <select name={field} id={`select-${field}`} onChange={this.setLessonState} value={value}>
+      <select
+        name={field}
+        id={`select-${field}`}
+        onChange={(e) => this.setLessonStateViaSelect(e)}
+        value={value}
+      >
         {timeslots.map((timeslot: number) => {
-          timeslot = (minTimeInHalfHours + timeslot) * 30;
+          const timeMinutes = (minTimeInHalfHours + timeslot) * 30;
           const hourString = Math.floor(timeslot / 60)
             .toString()
             .padStart(2, '0');
-          const minuteString = (timeslot % 60).toString().padStart(2, '0');
+          const minuteString = (timeMinutes % 60).toString().padStart(2, '0');
           const timeString = hourString + minuteString;
           return (
             <option key={`${field}-${timeString}`} value={timeString}>
@@ -197,7 +230,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
             lesson={this.getLessonDetails()}
             showTitle
             hoverLesson={undefined}
-            onHover={() => {}}
+            onHover={noop}
             transparent={false}
           />
         </div>
@@ -209,7 +242,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
             lesson={this.getLessonDetails()}
             showTitle={false}
             hoverLesson={undefined}
-            onHover={() => {}}
+            onHover={noop}
             transparent={false}
           />
         </div>
@@ -227,7 +260,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
             <label htmlFor="select-moduleCode">Module Code</label>
             <input
               name="moduleCode"
-              onChange={this.setLessonState}
+              onChange={(e) => this.setLessonStateViaInput(e)}
               id="select-moduleCode"
               className="form-control"
               defaultValue={moduleCode || ''}
@@ -238,7 +271,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
             <label htmlFor="select-title">Title</label>
             <input
               name="title"
-              onChange={this.setLessonState}
+              onChange={(e) => this.setLessonStateViaInput(e)}
               id="select-title"
               className="form-control"
               defaultValue={title || ''}
@@ -258,7 +291,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
             <label htmlFor="select-venue">Venue</label>
             <input
               name="venue"
-              onChange={this.setLessonState}
+              onChange={(e) => this.setLessonStateViaInput(e)}
               id="select-venue"
               className="form-control"
               defaultValue={venue || ''}
@@ -288,9 +321,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
             <button
               type="button"
               className="btn btn-outline-primary btn-svg"
-              onClick={(e) => this.submitModule()}
-              onMouseOver={() => {}}
-              onFocus={() => {}}
+              onClick={() => this.submitModule()}
             >
               {this.props.isEdit ? <>Edit Custom Module</> : <>Add Custom Module</>}
             </button>

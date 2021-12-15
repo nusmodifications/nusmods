@@ -1,4 +1,3 @@
-import { Module } from 'types/modules';
 import { appendCustomIdentifier, removeCustomIdentifier, cretaeCustomModule } from './custom';
 
 test('appendCustomIdentifier should return the proper custom module code', () => {

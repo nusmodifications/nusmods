@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { ModuleSelectList } from 'types/reducers';
-import { Module, ModuleCode, Semester } from 'types/modules';
+import { ModuleCode, Semester } from 'types/modules';
 import { Lesson, SemTimetableConfig } from 'types/timetables';
 
 import Online from 'views/components/Online';
@@ -20,11 +20,7 @@ type OwnProps = {
 type Props = OwnProps & {
   moduleList: ModuleSelectList;
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
-  addCustomModule: (
-    semester: Semester,
-    moduleCode: ModuleCode,
-    lesson: Lesson,
-  ) => void;
+  addCustomModule: (semester: Semester, moduleCode: ModuleCode, lesson: Lesson) => void;
   removeModule: (moduleCode: ModuleCode) => void;
   popNotification: () => void;
 };

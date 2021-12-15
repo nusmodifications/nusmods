@@ -142,7 +142,7 @@ export type CustomLesson = {
   endTime: EndTime;
   lessonType: LessonType;
   venue: Venue;
-}
+};
 
 // Semester-specific information of a module.
 export type SemesterData = {

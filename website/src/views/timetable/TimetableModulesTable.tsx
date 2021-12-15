@@ -7,12 +7,12 @@ import produce from 'immer';
 
 import { ModuleWithColor, TombstoneModule } from 'types/views';
 import { ColorIndex, Lesson } from 'types/timetables';
-import { Module, ModuleCode, Semester } from 'types/modules';
+import { ModuleCode, Semester } from 'types/modules';
 import { State as StoreState } from 'types/state';
 import { ModuleTableOrder } from 'types/reducers';
 
 import ColorPicker from 'views/components/ColorPicker';
-import { Edit, Eye, EyeOff, Trash } from 'react-feather';
+import { Eye, EyeOff, Trash } from 'react-feather';
 import {
   hideLessonInTimetable,
   selectModuleColor,
@@ -26,7 +26,6 @@ import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip';
 import config from 'config';
 
-import Modal from 'views/components/Modal';
 import { removeCustomIdentifier } from 'utils/custom';
 import styles from './TimetableModulesTable.scss';
 import ModuleTombstone from './ModuleTombstone';
@@ -71,8 +70,8 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
       }
     };
 
-    const customLesson = (module: ModuleWithColor) =>
-      props.customLessons.find((lesson) => lesson.moduleCode === module.moduleCode);
+    const customLesson = (customModule: ModuleWithColor) =>
+      props.customLessons.find((lesson) => lesson.moduleCode === customModule.moduleCode);
 
     return (
       <div className={styles.moduleActionButtons}>
@@ -156,7 +155,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
         </div>
         <div className={styles.moduleInfo}>
           {!readOnly && renderModuleActions(module)}
-          <Link to={module.isCustom ? '#' : modulePage(module.moduleCode, module.title)}>
+          <Link to={module.isCustom ? '/' : modulePage(module.moduleCode, module.title)}>
             {actualModuleCode} {module.title}
           </Link>
           <div className={styles.moduleExam}>{intersperse(secondRowText, BULLET_NBSP)}</div>

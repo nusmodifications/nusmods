@@ -1,9 +1,15 @@
 import { each, flatMap } from 'lodash';
 
-import type { Lesson, ColorIndex, ModuleLessonConfig, SemTimetableConfig, CustomModuleLesson } from 'types/timetables';
+import type {
+  Lesson,
+  ColorIndex,
+  ModuleLessonConfig,
+  SemTimetableConfig,
+  CustomModuleLesson,
+} from 'types/timetables';
 import type { Dispatch, GetState } from 'types/redux';
 import type { ColorMapping } from 'types/reducers';
-import type { ClassNo, CustomLesson, LessonType, Module, ModuleCode, Semester } from 'types/modules';
+import type { ClassNo, LessonType, Module, ModuleCode, Semester } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
 import { openNotification } from 'actions/app';
@@ -242,7 +248,7 @@ export function addCustomModule(
 export const MODIFY_CUSTOM_MODULE = 'MODIFY_CUSTOM_MODULE' as const;
 export function modifyCustomModule(
   semester: Semester,
-  oldModuleCode: ModuleCode, 
+  oldModuleCode: ModuleCode,
   moduleCode: ModuleCode,
   lesson: CustomModuleLesson,
 ) {
