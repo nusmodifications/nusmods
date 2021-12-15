@@ -237,7 +237,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
               onMouseOver={() => {}}
               onFocus={() => {}}
             >
-              {this.props.isEdit ? <>Add Custom Module</> : <>Edit Custom Module</>}
+              {this.props.isEdit ? <>Edit Custom Module</> : <>Add Custom Module</>}
             </button>
           </div>
         </div>
@@ -250,7 +250,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     <Modal isOpen={this.props.isOpen} onRequestClose={this.props.closeModal} animate>
         <CloseButton absolutePositioned onClick={this.props.closeModal} />
         <div className={styles.header}>
-        <h3>{this.props.isEdit ? <>Add a Custom Module</> : <>Edit Custom Module</>}</h3>
+        <h3>{this.props.isEdit ? <>Edit Custom Module</> : <>Add a Custom Module</>}</h3>
         <p>
             For DYOM students, teaching assistants, etc. who just need that one special slot on
             your timetable, we got you covered!
