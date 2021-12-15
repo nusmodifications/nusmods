@@ -242,6 +242,7 @@ export function addCustomModule(
 export const MODIFY_CUSTOM_MODULE = 'MODIFY_CUSTOM_MODULE' as const;
 export function modifyCustomModule(
   semester: Semester,
+  oldModuleCode: ModuleCode, 
   moduleCode: ModuleCode,
   lesson: CustomModuleLesson,
 ) {
@@ -249,6 +250,7 @@ export function modifyCustomModule(
     type: MODIFY_CUSTOM_MODULE,
     payload: {
       semester,
+      oldModuleCode,
       moduleCode,
       lesson,
     },

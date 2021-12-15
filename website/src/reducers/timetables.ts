@@ -189,7 +189,7 @@ function semCustomModules(
       };
     case MODIFY_CUSTOM_MODULE:
       return {
-        ...omit(state, [action.payload.moduleCode]),
+        ...omit(state, [action.payload.oldModuleCode]),
         [action.payload.moduleCode]: action.payload.lesson,
       };
     case DELETE_CUSTOM_MODULE:
