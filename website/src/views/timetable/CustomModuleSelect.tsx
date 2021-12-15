@@ -17,7 +17,7 @@ type State = {
   isOpen: boolean;
 };
 
-export default class CustomModulesSelect extends React.PureComponent<Props, State> {
+export default class CustomModuleSelect extends React.PureComponent<Props, State> {
   state: State = {
     isOpen: false,
   };
