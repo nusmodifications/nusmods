@@ -12,6 +12,7 @@ import TimetableCell from './TimetableCell';
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
 import { Lesson, ModifiableLesson } from 'types/timetables';
 import { appendCustomIdentifier, cretaeCustomModule, removeCustomIdentifier } from 'utils/custom';
+import { getLessonTimeHours, getLessonTimeMinutes } from 'utils/timify';
 
 export type Props = {
   customLessonData?: Lesson; 
@@ -24,6 +25,7 @@ export type Props = {
 
 type State = {
   lessonData: Lesson; 
+  isSubmitting: boolean; 
 };
 
 const defaultLessonState: Lesson = {
@@ -48,7 +50,8 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
       moduleCode: this.props.customLessonData ? 
         removeCustomIdentifier(this.props.customLessonData.moduleCode)
         : ''
-    } 
+    }, 
+    isSubmitting: false
   };
 
   setLessonState = (event: any) => {
@@ -66,7 +69,43 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     }
   }
 
+  getValidatioNErrors = (): string[] => {
+    const { moduleCode, title, venue, startTime, endTime } = this.state.lessonData ;
+    const errors: string[] = [];
+    
+    if (moduleCode.length == 0) {
+      errors.push("Please Enter a Module Code.");
+    }
+
+    if (title.length == 0) {
+      errors.push("Please Enter a Title.");
+    }
+
+    if (venue.length == 0) {
+      errors.push("Please Enter a Venue.");
+    }
+
+    const timeDifferenceInMinutes = 
+      (getLessonTimeHours(endTime) - getLessonTimeHours(startTime)) * 60 
+      + (getLessonTimeMinutes(endTime) - getLessonTimeMinutes(startTime));
+
+    if (timeDifferenceInMinutes < 60) {
+      errors.push("Start and End Time must be at least 1 hour apart.");
+    }
+
+    return errors; 
+  }
+
   submitModule() {
+    const errors = this.getValidatioNErrors();
+
+    if (errors.length > 0) {
+      this.setState({
+        isSubmitting: true, 
+      });
+      return; 
+    }
+
     const { moduleCode, title } = this.state.lessonData;
     const { isEdit, handleCustomModule, customLessonData } = this.props;
 
@@ -88,6 +127,9 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
         });
     }
     this.props.closeModal();
+    this.setState({
+      isSubmitting: false
+    });
   }
 
   renderLessonTypes() {
@@ -248,7 +290,21 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     );
   }
 
+  renderErrors() {
+    const errors = this.getValidatioNErrors();
+
+    return (
+        <div className="alert alert-danger">
+          {errors.map(error => 
+            (<>{error}<br/></>)
+          )}
+        </div>
+      ) 
+  }
+
   render() {
+    const { isSubmitting } = this.state;  
+
     return (
     <Modal isOpen={this.props.isOpen} onRequestClose={this.props.closeModal} animate>
         <CloseButton absolutePositioned onClick={this.props.closeModal} />
@@ -258,6 +314,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
             For DYOM students, teaching assistants, etc. who just need that one special slot on
             your timetable, we got you covered!
         </p>
+        {isSubmitting && this.renderErrors()}
         {this.renderModulePreview()}
         {this.renderInputFields()}
         </div>
