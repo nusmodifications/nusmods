@@ -34,6 +34,7 @@ const defaultLessonState: Lesson = {
   startTime: "0800", 
   endTime: "0900", 
   classNo: "01", 
+  isCustom: true, 
   weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], 
 };
 

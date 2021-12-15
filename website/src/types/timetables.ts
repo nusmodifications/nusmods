@@ -14,6 +14,7 @@ export type SemTimetableConfig = {
 export type Lesson = RawLesson & {
   moduleCode: ModuleCode;
   title: ModuleTitle;
+  isCustom?: boolean; 
 };
 
 export type ColoredLesson = Lesson & {
