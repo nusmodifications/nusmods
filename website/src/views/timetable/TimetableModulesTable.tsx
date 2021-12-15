@@ -26,12 +26,12 @@ import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip';
 import config from 'config';
 
+import Modal from 'views/components/Modal';
+import { removeCustomIdentifier } from 'utils/custom';
 import styles from './TimetableModulesTable.scss';
 import ModuleTombstone from './ModuleTombstone';
 import { moduleOrders } from './ModulesTableFooter';
-import Modal from 'views/components/Modal';
 import CustomModuleEdit from './CustomModuleEdit';
-import { removeCustomIdentifier } from 'utils/custom';
 
 export type Props = {
   semester: Semester;
@@ -49,14 +49,14 @@ export type Props = {
   showLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   onRemoveModule: (moduleCode: ModuleCode) => void;
   onRemoveCustomModule: (moduleCode: ModuleCode) => void;
-  editCustomModule: (moduleCodeToEdit: ModuleCode, module: Module, lesson: Lesson) => void; 
+  editCustomModule: (moduleCodeToEdit: ModuleCode, module: Module, lesson: Lesson) => void;
   resetTombstone: () => void;
 };
 
 export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
   const renderModuleActions = (module: ModuleWithColor) => {
-    const actualModuleCode = module.isCustom 
-      ? removeCustomIdentifier(module.moduleCode) 
+    const actualModuleCode = module.isCustom
+      ? removeCustomIdentifier(module.moduleCode)
       : module.moduleCode;
 
     const hideBtnLabel = `${module.hiddenInTimetable ? 'Show' : 'Hide'} ${actualModuleCode}`;
@@ -69,25 +69,22 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
       } else {
         props.onRemoveModule(moduleCode);
       }
-    }
+    };
 
-    const customLesson = (module: ModuleWithColor) => {
-      return props.customLessons.find(lesson => lesson.moduleCode === module.moduleCode);
-    }
+    const customLesson = (module: ModuleWithColor) =>
+      props.customLessons.find((lesson) => lesson.moduleCode === module.moduleCode);
 
     return (
       <div className={styles.moduleActionButtons}>
         <div className="btn-group">
-          {
-            module.isCustom && (
-              <CustomModuleEdit 
-                lesson={customLesson(module)}
-                editCustomModule={props.editCustomModule} 
-                moduleActionStyle={styles.moduleAction}  
-                actionIconStyle={styles.actionIcon}
-              />
-            )
-          }
+          {module.isCustom && (
+            <CustomModuleEdit
+              lesson={customLesson(module)}
+              editCustomModule={props.editCustomModule}
+              moduleActionStyle={styles.moduleAction}
+              actionIconStyle={styles.actionIcon}
+            />
+          )}
           <Tooltip content={removeBtnLabel} touch="hold">
             <button
               type="button"
@@ -125,8 +122,8 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
 
   const renderModule = (module: ModuleWithColor) => {
     const { semester, readOnly, tombstone, resetTombstone } = props;
-    const actualModuleCode = module.isCustom 
-      ? removeCustomIdentifier(module.moduleCode) 
+    const actualModuleCode = module.isCustom
+      ? removeCustomIdentifier(module.moduleCode)
       : module.moduleCode;
 
     if (tombstone && tombstone.moduleCode === module.moduleCode) {
@@ -136,7 +133,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
     // Second row of text consists of the exam date and the MCs
     const secondRowText = [renderMCs(module.moduleCredit)];
     if (module.isCustom) {
-      secondRowText[0] = "Custom Module";
+      secondRowText[0] = 'Custom Module';
     } else if (config.examAvailabilitySet.has(semester)) {
       secondRowText.unshift(
         getExamDate(module, semester)
@@ -159,7 +156,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
         </div>
         <div className={styles.moduleInfo}>
           {!readOnly && renderModuleActions(module)}
-          <Link to={module.isCustom ? "#" : modulePage(module.moduleCode, module.title)}>
+          <Link to={module.isCustom ? '#' : modulePage(module.moduleCode, module.title)}>
             {actualModuleCode} {module.title}
           </Link>
           <div className={styles.moduleExam}>{intersperse(secondRowText, BULLET_NBSP)}</div>

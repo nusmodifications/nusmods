@@ -1,16 +1,13 @@
 import * as React from 'react';
 
 import { PlusCircle } from 'react-feather';
-import {
-  Module,
-  ModuleCode,
-} from 'types/modules';
-import styles from './CustomModuleSelect.scss';
+import { Module, ModuleCode } from 'types/modules';
 import { Lesson } from 'types/timetables';
+import styles from './CustomModuleSelect.scss';
 import CustomModuleModal from './CustomModuleModal';
 
 export type Props = {
-  addCustomModule: (moduleCode: ModuleCode, module: Module, lesson: Lesson) => void; 
+  addCustomModule: (moduleCode: ModuleCode, module: Module, lesson: Lesson) => void;
 };
 
 type State = {
@@ -47,7 +44,7 @@ export default class CustomModuleSelect extends React.PureComponent<Props, State
           Add Custom Module
         </button>
 
-        <CustomModuleModal 
+        <CustomModuleModal
           handleCustomModule={this.props.addCustomModule}
           closeModal={this.closeModal}
           isOpen={isOpen}

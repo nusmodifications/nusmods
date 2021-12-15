@@ -14,18 +14,18 @@ export type SemTimetableConfig = {
 export type Lesson = RawLesson & {
   moduleCode: ModuleCode;
   title: ModuleTitle;
-  isCustom?: boolean; 
+  isCustom?: boolean;
 };
 
 export type ColoredLesson = Lesson & {
   colorIndex: ColorIndex;
 };
 
-// For Custom lessons 
+// For Custom lessons
 export type CustomLesson = {
-  module: Module, 
-  lesson: Lesson, 
-}
+  module: Module;
+  lesson: Lesson;
+};
 
 type Modifiable = {
   isModifiable?: boolean;

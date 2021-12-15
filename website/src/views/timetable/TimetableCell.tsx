@@ -16,8 +16,8 @@ import {
 } from 'utils/timetables';
 import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip/Tooltip';
-import styles from './TimetableCell.scss';
 import { removeCustomIdentifier } from 'utils/custom';
+import styles from './TimetableCell.scss';
 
 type Props = {
   showTitle: boolean;
@@ -89,8 +89,8 @@ function formatWeekRange(weekRange: WeekRange) {
 const TimetableCell: React.FC<Props> = (props) => {
   const { lesson, showTitle, onClick, onHover, hoverLesson, transparent } = props;
 
-  const moduleCode = lesson.isCustom 
-    ? removeCustomIdentifier(lesson.moduleCode) 
+  const moduleCode = lesson.isCustom
+    ? removeCustomIdentifier(lesson.moduleCode)
     : lesson.moduleCode;
   const moduleName = showTitle ? `${moduleCode} ${lesson.title}` : moduleCode;
   const Cell = props.onClick ? 'button' : 'div';

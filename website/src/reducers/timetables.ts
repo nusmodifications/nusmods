@@ -173,7 +173,10 @@ function semHiddenModules(state = defaultHiddenState, action: Actions) {
 
 // Map of semester to ModulesMap for custom modules
 const defaultCustomModulesState: CustomModuleData = {};
-function semCustomModules(state: CustomModuleData = defaultCustomModulesState, action: Actions): CustomModuleData {
+function semCustomModules(
+  state: CustomModuleData = defaultCustomModulesState,
+  action: Actions,
+): CustomModuleData {
   if (!action.payload) {
     return state;
   }
@@ -183,17 +186,17 @@ function semCustomModules(state: CustomModuleData = defaultCustomModulesState, a
       return {
         ...state,
         [action.payload.moduleCode]: {
-          module: action.payload.module, 
-          lesson: action.payload.lesson, 
-        }, 
+          module: action.payload.module,
+          lesson: action.payload.lesson,
+        },
       };
     case MODIFY_CUSTOM_MODULE:
       return {
         ...omit(state, [action.payload.moduleCode]),
         [action.payload.module.moduleCode]: {
-          module: action.payload.module, 
-          lesson: action.payload.lesson, 
-        }, 
+          module: action.payload.module,
+          lesson: action.payload.lesson,
+        },
       };
     case DELETE_CUSTOM_MODULE:
       return omit(state, [action.payload.moduleCode]);
@@ -208,7 +211,7 @@ export const defaultTimetableState: TimetablesState = {
   hidden: {},
   academicYear: config.academicYear,
   archive: {},
-  custom: {}, 
+  custom: {},
 };
 
 function timetables(
@@ -231,7 +234,7 @@ function timetables(
     }
 
     case ADD_CUSTOM_MODULE:
-    case MODIFY_CUSTOM_MODULE: 
+    case MODIFY_CUSTOM_MODULE:
     case DELETE_CUSTOM_MODULE:
     case ADD_MODULE:
     case REMOVE_MODULE:
@@ -239,8 +242,7 @@ function timetables(
     case CHANGE_LESSON:
     case SET_LESSON_CONFIG:
     case HIDE_LESSON_IN_TIMETABLE:
-    case SHOW_LESSON_IN_TIMETABLE:
-    {
+    case SHOW_LESSON_IN_TIMETABLE: {
       const { semester } = action.payload;
 
       return produce(state, (draft) => {

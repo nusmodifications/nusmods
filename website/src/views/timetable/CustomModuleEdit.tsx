@@ -1,20 +1,17 @@
 import * as React from 'react';
 import { Edit } from 'react-feather';
-import {
-  Module,
-  ModuleCode,
-} from 'types/modules';
+import { Module, ModuleCode } from 'types/modules';
 import { Lesson } from 'types/timetables';
 import Tooltip from 'views/components/Tooltip';
 import classnames from 'classnames';
 import CustomModuleModal from './CustomModuleModal';
 
 export type Props = {
-  lesson: Lesson | undefined; 
-  moduleActionStyle: string; 
-  actionIconStyle: string; 
+  lesson: Lesson | undefined;
+  moduleActionStyle: string;
+  actionIconStyle: string;
 
-  editCustomModule: (moduleCode: ModuleCode, module: Module, lesson: Lesson) => void; 
+  editCustomModule: (moduleCode: ModuleCode, module: Module, lesson: Lesson) => void;
 };
 
 type State = {
@@ -42,23 +39,25 @@ export default class CustomModuleEdit extends React.PureComponent<Props, State> 
 
     return (
       <>
-        <CustomModuleModal 
+        <CustomModuleModal
           handleCustomModule={this.props.editCustomModule}
           closeModal={this.closeModal}
           isOpen={isOpen}
-          isEdit={true}
+          isEdit
           customLessonData={this.props.lesson}
         />
-      <Tooltip content={"Edit Custom Module"} touch="hold">
-        <button
-          type="button"
-          className={classnames('btn btn-outline-secondary btn-svg', this.props.moduleActionStyle)}
-          aria-label={"Edit Custom Module"}
-          onClick={this.openModal}
-        >
-          <Edit className={this.props.actionIconStyle} />  
-        </button>
-        
+        <Tooltip content="Edit Custom Module" touch="hold">
+          <button
+            type="button"
+            className={classnames(
+              'btn btn-outline-secondary btn-svg',
+              this.props.moduleActionStyle,
+            )}
+            aria-label="Edit Custom Module"
+            onClick={this.openModal}
+          >
+            <Edit className={this.props.actionIconStyle} />
+          </button>
         </Tooltip>
       </>
     );

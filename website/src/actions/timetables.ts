@@ -223,40 +223,50 @@ export function showLessonInTimetable(semester: Semester, moduleCode: ModuleCode
   };
 }
 
-export const ADD_CUSTOM_MODULE = 'ADD_CUSTOM_MODULE' as const; 
-export function addCustomModule(semester: Semester, moduleCode: ModuleCode, module: Module, lesson: Lesson) {
+export const ADD_CUSTOM_MODULE = 'ADD_CUSTOM_MODULE' as const;
+export function addCustomModule(
+  semester: Semester,
+  moduleCode: ModuleCode,
+  module: Module,
+  lesson: Lesson,
+) {
   return {
-    type: ADD_CUSTOM_MODULE, 
+    type: ADD_CUSTOM_MODULE,
     payload: {
-      semester, 
-      moduleCode, 
-      module, 
-      lesson
-    }
-  };
-}
-
-export const MODIFY_CUSTOM_MODULE = 'MODIFY_CUSTOM_MODULE' as const; 
-export function modifyCustomModule(semester: Semester, moduleCode: ModuleCode, module: Module, lesson: Lesson) {
-  return {
-    type: MODIFY_CUSTOM_MODULE, 
-    payload: {
-      semester, 
-      moduleCode, 
+      semester,
+      moduleCode,
       module,
-      lesson
-    }
+      lesson,
+    },
   };
 }
 
-export const DELETE_CUSTOM_MODULE = 'DELETE_CUSTOM_MODULE' as const; 
+export const MODIFY_CUSTOM_MODULE = 'MODIFY_CUSTOM_MODULE' as const;
+export function modifyCustomModule(
+  semester: Semester,
+  moduleCode: ModuleCode,
+  module: Module,
+  lesson: Lesson,
+) {
+  return {
+    type: MODIFY_CUSTOM_MODULE,
+    payload: {
+      semester,
+      moduleCode,
+      module,
+      lesson,
+    },
+  };
+}
+
+export const DELETE_CUSTOM_MODULE = 'DELETE_CUSTOM_MODULE' as const;
 export function deleteCustomModule(semester: Semester, moduleCode: ModuleCode) {
   return {
-    type: DELETE_CUSTOM_MODULE, 
+    type: DELETE_CUSTOM_MODULE,
     payload: {
-      semester, 
-      moduleCode, 
-      module
-    }
+      semester,
+      moduleCode,
+      module,
+    },
   };
 }

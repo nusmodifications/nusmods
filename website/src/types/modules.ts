@@ -39,13 +39,7 @@ export type Day =
   | 'Saturday'
   | 'Sunday';
 
-export const LessonDays: readonly Day[] = [
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-]
+export const LessonDays: readonly Day[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
 export const WorkingDays: readonly Day[] = [
   'Monday',
@@ -216,7 +210,7 @@ export type Module = {
   fulfillRequirements?: readonly ModuleCode[];
 
   // Flag for Custom Modules
-  isCustom?: boolean; 
+  isCustom?: boolean;
 
   // Meta
   timestamp: number;

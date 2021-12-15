@@ -20,7 +20,12 @@ type OwnProps = {
 type Props = OwnProps & {
   moduleList: ModuleSelectList;
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
-  addCustomModule: (semester: Semester, moduleCode: ModuleCode, module: Module, lesson: Lesson) => void; 
+  addCustomModule: (
+    semester: Semester,
+    moduleCode: ModuleCode,
+    module: Module,
+    lesson: Lesson,
+  ) => void;
   removeModule: (moduleCode: ModuleCode) => void;
   popNotification: () => void;
 };
