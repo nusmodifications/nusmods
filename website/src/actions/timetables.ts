@@ -1,9 +1,9 @@
 import { each, flatMap } from 'lodash';
 
-import type { Lesson, ColorIndex, ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
+import type { Lesson, ColorIndex, ModuleLessonConfig, SemTimetableConfig, CustomModuleLesson } from 'types/timetables';
 import type { Dispatch, GetState } from 'types/redux';
 import type { ColorMapping } from 'types/reducers';
-import type { ClassNo, LessonType, Module, ModuleCode, Semester } from 'types/modules';
+import type { ClassNo, CustomLesson, LessonType, Module, ModuleCode, Semester } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
 import { openNotification } from 'actions/app';
@@ -227,15 +227,13 @@ export const ADD_CUSTOM_MODULE = 'ADD_CUSTOM_MODULE' as const;
 export function addCustomModule(
   semester: Semester,
   moduleCode: ModuleCode,
-  module: Module,
-  lesson: Lesson,
+  lesson: CustomModuleLesson,
 ) {
   return {
     type: ADD_CUSTOM_MODULE,
     payload: {
       semester,
       moduleCode,
-      module,
       lesson,
     },
   };
@@ -245,15 +243,13 @@ export const MODIFY_CUSTOM_MODULE = 'MODIFY_CUSTOM_MODULE' as const;
 export function modifyCustomModule(
   semester: Semester,
   moduleCode: ModuleCode,
-  module: Module,
-  lesson: Lesson,
+  lesson: CustomModuleLesson,
 ) {
   return {
     type: MODIFY_CUSTOM_MODULE,
     payload: {
       semester,
       moduleCode,
-      module,
       lesson,
     },
   };
@@ -266,7 +262,6 @@ export function deleteCustomModule(semester: Semester, moduleCode: ModuleCode) {
     payload: {
       semester,
       moduleCode,
-      module,
     },
   };
 }

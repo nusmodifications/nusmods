@@ -136,6 +136,14 @@ export type RawLesson = Readonly<{
   weeks: Weeks;
 }>;
 
+export type CustomLesson = {
+  day: DayText;
+  startTime: StartTime;
+  endTime: EndTime;
+  lessonType: LessonType;
+  venue: Venue;
+}
+
 // Semester-specific information of a module.
 export type SemesterData = {
   semester: Semester;
