@@ -22,7 +22,7 @@ export type ColoredLesson = Lesson & {
 };
 
 // For Custom lessons
-export type CustomLesson = {
+export type CustomModuleLesson = {
   module: Module;
   lesson: Lesson;
 };

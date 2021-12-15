@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 import { RegPeriodType, ScheduleType } from 'config';
 
 import { Mode } from './settings';
-import { ColorIndex, CustomLesson, Lesson, TimetableConfig } from './timetables';
+import { ColorIndex, CustomModuleLesson, Lesson, TimetableConfig } from './timetables';
 import {
   Faculty,
   Module,
@@ -119,7 +119,7 @@ export type TimetablesState = {
   readonly colors: SemesterColorMap;
   readonly hidden: HiddenModulesMap;
   readonly academicYear: string;
-  readonly custom: CustomModulesMap;
+  readonly customModules: CustomModulesMap;
   // Mapping of academic year to old timetable config
   readonly archive: { [key: string]: TimetableConfig };
 };
@@ -155,7 +155,7 @@ export type CustomModule = {
 };
 
 export type CustomModuleData = {
-  [moduleCode: string]: CustomLesson;
+  [moduleCode: string]: CustomModuleLesson;
 };
 
 // Mapping modules to when they will be taken

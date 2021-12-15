@@ -4,8 +4,8 @@ import { createMigrate } from 'redux-persist';
 
 import { PersistConfig } from 'storage/persistReducer';
 import { ModuleCode } from 'types/modules';
-import { CustomLesson, ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
-import { ColorMapping, CustomModuleData, ModulesMap, TimetablesState } from 'types/reducers';
+import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
+import { ColorMapping, CustomModuleData, TimetablesState } from 'types/reducers';
 
 import config from 'config';
 import {
@@ -211,7 +211,7 @@ export const defaultTimetableState: TimetablesState = {
   hidden: {},
   academicYear: config.academicYear,
   archive: {},
-  custom: {},
+  customModules: {},
 };
 
 function timetables(
@@ -249,7 +249,7 @@ function timetables(
         draft.lessons[semester] = semTimetable(draft.lessons[semester], action);
         draft.colors[semester] = semColors(state.colors[semester], action);
         draft.hidden[semester] = semHiddenModules(state.hidden[semester], action);
-        draft.custom[semester] = semCustomModules(state.custom[semester], action);
+        draft.customModules[semester] = semCustomModules(state.customModules[semester], action);
       });
     }
 

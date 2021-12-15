@@ -14,7 +14,7 @@ import {
 import { Module, ModuleCode, Semester } from 'types/modules';
 import {
   ColoredLesson,
-  CustomLesson,
+  CustomModuleLesson,
   Lesson,
   ModifiableLesson,
   SemTimetableConfig,
@@ -253,7 +253,7 @@ class TimetableContent extends React.Component<Props, State> {
   addedModules(): Module[] {
     const modules = getSemesterModules(this.props.timetableWithLessons, this.props.modules).concat(
       Object.values(this.props.customModules).map(
-        (customModule: CustomLesson) => customModule.module,
+        (customModule: CustomModuleLesson) => customModule.module,
       ),
     );
     return _.sortBy(modules, (module: Module) => getExamDate(module, this.props.semester));
@@ -502,7 +502,7 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
   const { modules } = state.moduleBank;
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
   const hiddenInTimetable = state.timetables.hidden[semester] || [];
-  const customModules = state.timetables.custom[semester] || {};
+  const customModules = state.timetables.customModules[semester] || {};
 
   return {
     semester,
