@@ -284,7 +284,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
           </div>
         </div>
         <div className={styles.row}>
-        <div className={styles.columnSmall}>
+          <div className={styles.columnSmall}>
             <label htmlFor="select-classNo">Class Number</label>
             <input
               name="classNo"
