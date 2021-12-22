@@ -26,12 +26,12 @@ export function setPlannerIBLOCs(iblocs: boolean) {
   };
 }
 
-export const SET_PREREQUISITES_CHECK = "SET_PREREQUISITES_CHECK" as const; 
+export const SET_PREREQUISITES_CHECK = 'SET_PREREQUISITES_CHECK' as const;
 export function setPrerequisitesCheck(prereqsCheck: boolean) {
   return {
-    type: SET_PREREQUISITES_CHECK, 
+    type: SET_PREREQUISITES_CHECK,
     payload: prereqsCheck,
-  }
+  };
 }
 
 export const ADD_PLANNER_MODULE = 'ADD_PLANNER_MODULE' as const;

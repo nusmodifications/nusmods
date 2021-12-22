@@ -5,7 +5,12 @@ import classnames from 'classnames';
 import config from 'config';
 import { getYearsBetween, offsetAcadYear } from 'utils/modules';
 import { acadYearLabel } from 'utils/planner';
-import { setPlannerIBLOCs, setPlannerMaxYear, setPlannerMinYear, setPrerequisitesCheck } from 'actions/planner';
+import {
+  setPlannerIBLOCs,
+  setPlannerMaxYear,
+  setPlannerMinYear,
+  setPrerequisitesCheck,
+} from 'actions/planner';
 import ExternalLink from 'views/components/ExternalLink';
 import Toggle from 'views/components/Toggle';
 import { State } from 'types/state';
@@ -15,13 +20,13 @@ type Props = {
   readonly minYear: string;
   readonly maxYear: string;
   readonly iblocs: boolean;
-  readonly prereqsCheck: boolean; 
+  readonly prereqsCheck: boolean;
 
   // Actions
   readonly setMinYear: (str: string) => void;
   readonly setMaxYear: (str: string) => void;
   readonly setIBLOCs: (boolean: boolean) => void;
-  readonly setPrereqsCheck: (boolean: boolean) => void; 
+  readonly setPrereqsCheck: (boolean: boolean) => void;
 };
 
 const MIN_YEARS = -5; // Studying year 6
@@ -129,15 +134,12 @@ export const PlannerSettingsComponent: React.FC<Props> = (props) => {
           <h2 className={styles.label}>Toggle Prerequisites Check</h2>
 
           <p>
-            By toggling this off, it becomes your responsibility to check 
-            that prerequisites of the modules you are taking are enforced. 
+            By toggling this off, it becomes your responsibility to check that prerequisites of the
+            modules you are taking are enforced.
           </p>
         </div>
 
-        <Toggle
-          isOn={props.prereqsCheck}
-          onChange={(checked) => props.setPrereqsCheck(checked)}
-        />
+        <Toggle isOn={props.prereqsCheck} onChange={(checked) => props.setPrereqsCheck(checked)} />
       </section>
     </div>
   );
@@ -154,7 +156,7 @@ const PlannerSettings = connect(
     setMaxYear: setPlannerMaxYear,
     setMinYear: setPlannerMinYear,
     setIBLOCs: setPlannerIBLOCs,
-    setPrereqsCheck: setPrerequisitesCheck, 
+    setPrereqsCheck: setPrerequisitesCheck,
   },
 )(PlannerSettingsComponent);
 

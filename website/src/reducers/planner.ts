@@ -24,7 +24,7 @@ const defaultPlannerState: PlannerState = {
   minYear: config.academicYear,
   maxYear: config.academicYear,
   iblocs: false,
-  prereqsCheck: true, 
+  prereqsCheck: true,
 
   modules: {},
   custom: {},
