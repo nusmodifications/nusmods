@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import config from 'config';
 import { getYearsBetween, offsetAcadYear } from 'utils/modules';
 import { acadYearLabel } from 'utils/planner';
-import { setPlannerIBLOCs, setPlannerMaxYear, setPlannerMinYear } from 'actions/planner';
+import { setPlannerIBLOCs, setPlannerMaxYear, setPlannerMinYear, setPrerequisitesCheck } from 'actions/planner';
 import ExternalLink from 'views/components/ExternalLink';
 import Toggle from 'views/components/Toggle';
 import { State } from 'types/state';
@@ -15,11 +15,13 @@ type Props = {
   readonly minYear: string;
   readonly maxYear: string;
   readonly iblocs: boolean;
+  readonly prereqsCheck: boolean; 
 
   // Actions
   readonly setMinYear: (str: string) => void;
   readonly setMaxYear: (str: string) => void;
   readonly setIBLOCs: (boolean: boolean) => void;
+  readonly setPrereqsCheck: (boolean: boolean) => void; 
 };
 
 const MIN_YEARS = -5; // Studying year 6
@@ -111,7 +113,7 @@ export const PlannerSettingsComponent: React.FC<Props> = (props) => {
 
           <p>
             <ExternalLink href="http://www.nus.edu.sg/ibloc/iBLOC.html">iBLOCs</ExternalLink> is a
-            program that allow full-time NSmen to read some modules before matriculating.
+            program that allows full-time NSmen to read some modules before matriculating.
           </p>
         </div>
 
@@ -119,6 +121,22 @@ export const PlannerSettingsComponent: React.FC<Props> = (props) => {
           labels={TOGGLE_LABELS}
           isOn={props.iblocs}
           onChange={(checked) => props.setIBLOCs(checked)}
+        />
+      </section>
+
+      <section className={styles.toggleSection}>
+        <div>
+          <h2 className={styles.label}>Toggle Prerequisites Check</h2>
+
+          <p>
+            By toggling this off, it becomes your responsibility to check 
+            that prerequisites of the modules you are taking are enforced. 
+          </p>
+        </div>
+
+        <Toggle
+          isOn={props.prereqsCheck}
+          onChange={(checked) => props.setPrereqsCheck(checked)}
         />
       </section>
     </div>
@@ -130,11 +148,13 @@ const PlannerSettings = connect(
     minYear: state.planner.minYear,
     maxYear: state.planner.maxYear,
     iblocs: state.planner.iblocs,
+    prereqsCheck: state.planner.prereqsCheck,
   }),
   {
     setMaxYear: setPlannerMaxYear,
     setMinYear: setPlannerMinYear,
     setIBLOCs: setPlannerIBLOCs,
+    setPrereqsCheck: setPrerequisitesCheck, 
   },
 )(PlannerSettingsComponent);
 
