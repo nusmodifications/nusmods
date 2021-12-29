@@ -41,8 +41,9 @@ module.exports = (api) => {
 
     // Deviate from spec, but Object.defineProperty is expensive
     // See https://github.com/facebook/create-react-app/issues/4263
-    privateFieldsAsProperties: false,
-    setPublicClassFields: false,
+    // Using assignment also reduces the generated code size
+    privateFieldsAsProperties: true,
+    setPublicClassFields: true,
   };
 
   if (IS_DEV) {
