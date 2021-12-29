@@ -33,20 +33,17 @@ module.exports = (api) => {
     ],
   ];
 
-  const plugins = [
-    'babel-plugin-lodash',
-    '@babel/plugin-syntax-dynamic-import',
+  const plugins = ['babel-plugin-lodash'];
+
+  const assumptions = {
+    // Assumes document.all doesn't exist to reduce the generated code size
+    noDocumentAll: true,
+
     // Deviate from spec, but Object.defineProperty is expensive
     // See https://github.com/facebook/create-react-app/issues/4263
-    ['@babel/plugin-proposal-class-properties', { loose: true }],
-    // Let's assume document.all doesn't exist to reduce the generated code size
-    ['@babel/plugin-proposal-optional-chaining', { loose: true }],
-    ['@babel/plugin-proposal-nullish-coalescing-operator', { loose: true }],
-  ];
-
-  if (IS_DEV || IS_PROD) {
-    plugins.push(['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }]);
-  }
+    privateFieldsAsProperties: false,
+    setPublicClassFields: false,
+  };
 
   if (IS_DEV) {
     plugins.push('react-refresh/babel');
@@ -67,6 +64,7 @@ module.exports = (api) => {
   }
 
   return {
+    assumptions,
     sourceType: 'unambiguous',
     presets,
     plugins,
