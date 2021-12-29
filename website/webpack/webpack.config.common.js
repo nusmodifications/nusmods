@@ -55,6 +55,10 @@ const commonConfig = {
   module: {
     rules: [
       {
+        test: /\.worker\.ts$/,
+        loader: 'worker-loader',
+      },
+      {
         test: /\.[j|t]sx?$/,
         include: [
           parts.PATHS.src,

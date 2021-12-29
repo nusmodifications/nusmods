@@ -46,6 +46,7 @@ import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ModRegNotification from 'views/components/notfications/ModRegNotification';
 import { State as StoreState } from 'types/state';
 import { TombstoneModule } from 'types/views';
+import TimetableOptimizerContainer from 'views/optimizer/TimetableOptimizerContainer';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
@@ -75,6 +76,7 @@ type Props = OwnProps & {
   timetableOrientation: TimetableOrientation;
   showTitle: boolean;
   hiddenInTimetable: ModuleCode[];
+  isOptimizerShown: boolean;
 
   // Actions
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
@@ -406,6 +408,7 @@ class TimetableContent extends React.Component<Props, State> {
                   timetable={this.props.timetable}
                   showExamCalendar={showExamCalendar}
                   toggleExamCalendar={() => this.setState({ showExamCalendar: !showExamCalendar })}
+                  isOptimizerEnabled={this.props.isOptimizerShown}
                 />
               </div>
 
@@ -424,6 +427,15 @@ class TimetableContent extends React.Component<Props, State> {
                 {this.renderModuleSections(addedModules, !isVerticalOrientation)}
               </div>
               <div className="col-12">
+                {this.props.isOptimizerShown && (
+                  <TimetableOptimizerContainer
+                    semester={semester}
+                    timetable={this.props.timetable}
+                    modules={modules}
+                  />
+                )}
+              </div>
+              <div className="col-12">
                 <ModulesTableFooter modules={addedModules} semester={semester} />
               </div>
             </div>
@@ -437,6 +449,7 @@ class TimetableContent extends React.Component<Props, State> {
 function mapStateToProps(state: StoreState, ownProps: OwnProps) {
   const { semester, timetable } = ownProps;
   const { modules } = state.moduleBank;
+  const { isOptimizerShown } = state.optimizer;
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
   const hiddenInTimetable = state.timetables.hidden[semester] || [];
 
@@ -449,6 +462,7 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
     timetableOrientation: state.theme.timetableOrientation,
     showTitle: state.theme.showTitle,
     hiddenInTimetable,
+    isOptimizerShown,
   };
 }
 
