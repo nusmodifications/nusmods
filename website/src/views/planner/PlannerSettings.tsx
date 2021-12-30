@@ -134,8 +134,9 @@ export const PlannerSettingsComponent: React.FC<Props> = (props) => {
           <h2 className={styles.label}>Toggle Prerequisites Check</h2>
 
           <p>
-            By toggling this off, it becomes your responsibility to check that prerequisites of the
-            modules you are taking are enforced.
+          Prerequisite checking for some modules might be inaccurate, giving planner warnings. 
+          Toggling this off removes these checks. Please ensure that you manually check that the 
+          prerequisites for the modules you would like to take are sufficiently met.
           </p>
         </div>
 
