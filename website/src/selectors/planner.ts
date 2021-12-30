@@ -51,10 +51,9 @@ export function filterModuleForSemester(
 /**
  * Checks if a module has unfulfilled prereqs
  */
-const prereqConflict = (
-  modulesMap: ModulesMap,
-  modulesTaken: Set<ModuleCode>,
-) => (moduleCode: ModuleCode): Conflict | null => {
+const prereqConflict = (modulesMap: ModulesMap, modulesTaken: Set<ModuleCode>) => (
+  moduleCode: ModuleCode,
+): Conflict | null => {
   const prereqs = get(modulesMap, [moduleCode, 'prereqTree']);
   if (!prereqs) return null;
 
