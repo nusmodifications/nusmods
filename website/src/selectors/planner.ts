@@ -54,10 +54,7 @@ export function filterModuleForSemester(
 const prereqConflict = (
   modulesMap: ModulesMap,
   modulesTaken: Set<ModuleCode>,
-  enforcePrereqsCheck: boolean,
 ) => (moduleCode: ModuleCode): Conflict | null => {
-  if (!enforcePrereqsCheck) return null;
-
   const prereqs = get(modulesMap, [moduleCode, 'prereqTree']);
   if (!prereqs) return null;
 
@@ -224,10 +221,13 @@ export function getAcadYearModules(state: State): PlannerModulesWithInfo {
 
       const conflictChecks = [
         noInfoConflict(moduleBank.moduleCodes, planner.custom),
-        prereqConflict(moduleBank.modules, modulesTaken, planner.prereqsCheck),
         semesterConflict(moduleBank.moduleCodes, semester),
         examConflict(clashes),
       ];
+
+      if (planner.prereqsCheck) {
+        conflictChecks.push(prereqConflict(moduleBank.modules, modulesTaken));
+      }
 
       modules[year][semester] = moduleTimes.map((moduleCode) =>
         mapModuleToInfo(moduleCode, moduleBank.modules, planner.custom, conflictChecks),
