@@ -21,7 +21,7 @@ const defaultState: PlannerState = {
   minYear: '2017/2018',
   maxYear: '2018/2019',
   iblocs: false,
-  prereqsCheck: true,
+  ignorePrereqCheck: false,
   modules: {},
   custom: {},
 };
@@ -81,10 +81,10 @@ describe(SET_PLANNER_IBLOCS, () => {
 });
 
 describe(SET_PREREQUISITES_CHECK, () => {
-  test('should set prereqsCheck status', () => {
-    expect(reducer(defaultState, setPrerequisitesCheck(false))).toEqual({
+  test('should set ignorePrereqCheck status', () => {
+    expect(reducer(defaultState, setPrerequisitesCheck(true))).toEqual({
       ...defaultState,
-      prereqsCheck: false,
+      ignorePrereqCheck: true,
     });
   });
 });

@@ -24,7 +24,7 @@ const defaultPlannerState: PlannerState = {
   minYear: config.academicYear,
   maxYear: config.academicYear,
   iblocs: false,
-  prereqsCheck: true,
+  ignorePrereqCheck: false,
 
   modules: {},
   custom: {},
@@ -78,7 +78,7 @@ export default function planner(
       return { ...state, iblocs: action.payload };
 
     case SET_PREREQUISITES_CHECK:
-      return { ...state, prereqsCheck: action.payload };
+      return { ...state, ignorePrereqCheck: action.payload };
 
     case ADD_PLANNER_MODULE: {
       const { payload } = action;

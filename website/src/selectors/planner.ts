@@ -224,7 +224,7 @@ export function getAcadYearModules(state: State): PlannerModulesWithInfo {
         examConflict(clashes),
       ];
 
-      if (planner.prereqsCheck) {
+      if (!planner.ignorePrereqCheck) {
         conflictChecks.push(prereqConflict(moduleBank.modules, modulesTaken));
       }
 

@@ -16,7 +16,7 @@ const defaultState: PlannerState = {
   minYear: '2018/2019',
   maxYear: '2018/2019',
   iblocs: false,
-  prereqsCheck: true,
+  ignorePrereqCheck: false,
   modules: {},
   custom: {},
 };

@@ -20,7 +20,7 @@ type Props = {
   readonly minYear: string;
   readonly maxYear: string;
   readonly iblocs: boolean;
-  readonly prereqsCheck: boolean;
+  readonly ignorePrereqCheck: boolean;
 
   // Actions
   readonly setMinYear: (str: string) => void;
@@ -140,7 +140,7 @@ export const PlannerSettingsComponent: React.FC<Props> = (props) => {
           </p>
         </div>
 
-        <Toggle isOn={props.prereqsCheck} onChange={(checked) => props.setPrereqsCheck(checked)} />
+        <Toggle isOn={props.ignorePrereqCheck} onChange={(checked) => props.setPrereqsCheck(checked)} />
       </section>
     </div>
   );
@@ -151,7 +151,7 @@ const PlannerSettings = connect(
     minYear: state.planner.minYear,
     maxYear: state.planner.maxYear,
     iblocs: state.planner.iblocs,
-    prereqsCheck: state.planner.prereqsCheck,
+    ignorePrereqCheck: state.planner.ignorePrereqCheck,
   }),
   {
     setMaxYear: setPlannerMaxYear,
