@@ -140,7 +140,7 @@ export const PlannerSettingsComponent: React.FC<Props> = (props) => {
           </p>
         </div>
 
-        <Toggle isOn={props.ignorePrereqCheck} onChange={(checked) => props.setPrereqsCheck(checked)} />
+        <Toggle isOn={props.ignorePrereqCheck} onChange={(checked)=>props.setPrereqsCheck(checked)} />
       </section>
     </div>
   );
