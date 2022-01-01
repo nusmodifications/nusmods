@@ -20,7 +20,7 @@ type Props = {
   readonly minYear: string;
   readonly maxYear: string;
   readonly iblocs: boolean;
-  readonly ignorePrereqCheck: boolean;
+  readonly ignorePrereqCheck?: boolean;
 
   // Actions
   readonly setMinYear: (str: string) => void;
