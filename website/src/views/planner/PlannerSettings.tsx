@@ -9,7 +9,7 @@ import {
   setPlannerIBLOCs,
   setPlannerMaxYear,
   setPlannerMinYear,
-  setPrerequisitesCheck,
+  setIgnorePrerequisitesCheck,
 } from 'actions/planner';
 import ExternalLink from 'views/components/ExternalLink';
 import Toggle from 'views/components/Toggle';
@@ -160,7 +160,7 @@ const PlannerSettings = connect(
     setMaxYear: setPlannerMaxYear,
     setMinYear: setPlannerMinYear,
     setIBLOCs: setPlannerIBLOCs,
-    setPrereqsCheck: setPrerequisitesCheck,
+    setPrereqsCheck: setIgnorePrerequisitesCheck,
   },
 )(PlannerSettingsComponent);
 

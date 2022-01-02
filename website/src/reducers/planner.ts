@@ -15,7 +15,7 @@ import {
   SET_PLANNER_IBLOCS,
   SET_PLANNER_MAX_YEAR,
   SET_PLANNER_MIN_YEAR,
-  SET_PREREQUISITES_CHECK,
+  SET_IGNORE_PREREQUISITES_CHECK,
 } from 'actions/planner';
 import { filterModuleForSemester } from 'selectors/planner';
 import config from 'config';
@@ -77,7 +77,7 @@ export default function planner(
     case SET_PLANNER_IBLOCS:
       return { ...state, iblocs: action.payload };
 
-    case SET_PREREQUISITES_CHECK:
+    case SET_IGNORE_PREREQUISITES_CHECK:
       return { ...state, ignorePrereqCheck: action.payload };
 
     case ADD_PLANNER_MODULE: {

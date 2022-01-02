@@ -5,14 +5,14 @@ import {
   SET_PLANNER_MIN_YEAR,
   SET_PLANNER_MAX_YEAR,
   SET_PLANNER_IBLOCS,
-  SET_PREREQUISITES_CHECK,
+  SET_IGNORE_PREREQUISITES_CHECK,
   addPlannerModule,
   movePlannerModule,
   removePlannerModule,
   setPlannerMinYear,
   setPlannerMaxYear,
   setPlannerIBLOCs,
-  setPrerequisitesCheck,
+  setIgnorePrerequisitesCheck,
 } from 'actions/planner';
 import { PlannerState } from 'types/reducers';
 import reducer, { migrateV0toV1, nextId } from './planner';
@@ -80,9 +80,9 @@ describe(SET_PLANNER_IBLOCS, () => {
   });
 });
 
-describe(SET_PREREQUISITES_CHECK, () => {
+describe(SET_IGNORE_PREREQUISITES_CHECK, () => {
   test('should set ignorePrereqCheck status', () => {
-    expect(reducer(defaultState, setPrerequisitesCheck(true))).toEqual({
+    expect(reducer(defaultState, setIgnorePrerequisitesCheck(true))).toEqual({
       ...defaultState,
       ignorePrereqCheck: true,
     });
