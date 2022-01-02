@@ -131,12 +131,15 @@ export const PlannerSettingsComponent: React.FC<Props> = (props) => {
 
       <section className={styles.toggleSection}>
         <div>
-          <h2 className={styles.label}>Toggle Prerequisites Check</h2>
+          <h2 className={styles.label}>Ignore Prerequisite Checking</h2>
 
           <p>
             Prerequisite checking for some modules might be inaccurate, giving planner warnings.
-            Toggling this off removes these checks. Please ensure that you manually check that the
-            prerequisites for the modules you would like to take are sufficiently met.
+            Turning this on removes these checks entirely.
+          </p>
+          <p>
+            Please ensure that you manually check that the prerequisites for the modules you would
+            like to take are sufficiently met.
           </p>
         </div>
 
