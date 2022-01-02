@@ -161,6 +161,7 @@ export type PlannerState = Readonly<{
   minYear: string;
   maxYear: string;
   iblocs: boolean;
+  ignorePrereqCheck?: boolean; // To turn checking of prerequisites on/off
 
   modules: { [id: string]: PlannerTime };
   custom: CustomModuleData;
