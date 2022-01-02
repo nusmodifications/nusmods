@@ -42,7 +42,18 @@
 
 .menu {
   width: 12rem;
+
+  &.menuLeft {
+    right: 0;
+    left: auto;
+  }
+
+  &.menuRight {
+    right: auto;
+    left: 0;
+  }
 }
+
 
 .menuBtn {
   position: relative;
