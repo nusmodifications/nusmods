@@ -60,6 +60,9 @@ export const FooterComponent: React.FC<Props> = (props) => {
             <ExternalLink href="https://api.nusmods.com/v2">API</ExternalLink>
           </li>
           <li>
+            <ExternalLink href="https://telenus.nusmods.com">TeleNUS</ExternalLink>
+          </li>
+          <li>
             <Link to="/apps">Apps</Link>
           </li>
           <li>
