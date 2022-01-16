@@ -6,10 +6,14 @@ import {
   SET_TIMETABLE,
   setLessonConfig,
   showLessonInTimetable,
+  addCustomModule,
+  modifyCustomModule,
+  deleteCustomModule,
 } from 'actions/timetables';
 import { TimetablesState } from 'types/reducers';
 import config from 'config';
 import { PersistConfig } from 'redux-persist/es/types';
+import { CustomModuleLesson } from 'types/timetables';
 
 const initialState = defaultTimetableState;
 
@@ -112,6 +116,69 @@ describe('hidden module reducer', () => {
         [1]: [],
         [2]: ['CS1010S'],
       },
+    });
+  });
+});
+
+describe('custom modules reducer', () => {
+  const lesson: CustomModuleLesson = {
+    classNo: '01',
+    day: 'Monday',
+    startTime: '0800',
+    endTime: '0900',
+    lessonType: 'Lecture',
+    venue: 'COM1-0330',
+    moduleCode: 'CS1101S',
+    title: 'Programming Methodology',
+    isCustom: true,
+  };
+  test('should allow new custom modules', () => {
+    expect(reducer(initialState, addCustomModule(1, 'CS1101S', lesson))).toMatchObject({
+      customModules: {
+        '1': {
+          CS1101S: lesson,
+        },
+      },
+    });
+  });
+
+  test('should allow changing of custom modules', () => {
+    expect(
+      reducer(
+        {
+          ...initialState,
+          customModules: {
+            '1': {
+              CS1101S: lesson,
+            },
+          },
+        },
+        modifyCustomModule(1, 'CS1101S', 'CS2030', lesson),
+      ),
+    ).toMatchObject({
+      customModules: {
+        '1': {
+          CS2030: lesson,
+        },
+      },
+    });
+  });
+
+  test('should allow changing of custom modules', () => {
+    expect(
+      reducer(
+        {
+          ...initialState,
+          customModules: {
+            '1': {
+              CS1101S: lesson,
+            },
+          },
+        },
+        deleteCustomModule(1, 'CS1101S'),
+      ),
+    ).toMatchObject({
+      customModules: {},
     });
   });
 });
