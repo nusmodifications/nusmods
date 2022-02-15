@@ -80,10 +80,6 @@ All projects and packages in this repository are [MIT licensed](LICENSE).
 
 [![](misc/browserstack-logo.png)][browserstack]
 
-[Zoho][zoho] has kindly given us individual email accounts. Zoho Mail is a secure and reliable email solution, tailor-made for an organization's communication needs. With enhanced collaboration features, it's not just an inbox… [it's more](https://www.zoho.com/workplace/).
-
-[![](misc/zoho-logo.png)][zoho]
-
 [1Password] lets us manage our account passwords, identities and keys as a team securely and efficiently.
 
 [![](misc/1password-logo.png)](1password)
@@ -93,6 +89,5 @@ All projects and packages in this repository are [MIT licensed](LICENSE).
 [![](misc/netlify-logo.png)](netlify)
 
 [browserstack]: https://www.browserstack.com/
-[zoho]: https://www.zoho.com/
 [1password]: https://1password.com/
 [netlify]: https://www.netlify.com
