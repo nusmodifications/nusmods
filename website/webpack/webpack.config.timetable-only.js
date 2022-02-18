@@ -28,6 +28,7 @@ const timetableOnlyConfig = merge([
     },
     plugins: [
       new HtmlWebpackPlugin({
+        scriptLoading: 'blocking',
         template: path.join(parts.PATHS.src, source('index.html')),
         inject: true,
       }),

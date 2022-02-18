@@ -220,10 +220,13 @@ export function getAcadYearModules(state: State): PlannerModulesWithInfo {
 
       const conflictChecks = [
         noInfoConflict(moduleBank.moduleCodes, planner.custom),
-        prereqConflict(moduleBank.modules, modulesTaken),
         semesterConflict(moduleBank.moduleCodes, semester),
         examConflict(clashes),
       ];
+
+      if (!planner.ignorePrereqCheck) {
+        conflictChecks.push(prereqConflict(moduleBank.modules, modulesTaken));
+      }
 
       modules[year][semester] = moduleTimes.map((moduleCode) =>
         mapModuleToInfo(moduleCode, moduleBank.modules, planner.custom, conflictChecks),
