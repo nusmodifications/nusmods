@@ -80,7 +80,7 @@ const MpeContainer: React.FC = () => {
             and there is no guarantee that you will be allocated the selected modules during the
             ModReg Exercise.
           </p>
-          <p>The MPE for this round will be from 11 Oct to 25 Oct 2021.</p>
+          <p>The MPE for this round will be from 7 Mar to 11 Mar 2022.</p>
           <p>
             Participation in the MPE will be used as <strong>one of the tie-breakers</strong> during
             the ModReg Exercise, in cases where the demand exceeds the available quota and students
