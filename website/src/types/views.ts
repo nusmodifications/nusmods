@@ -76,7 +76,8 @@ export type EmptyGroupType =
   | 'weekend'
   | 'holiday'
   | 'recess'
-  | 'reading';
+  | 'reading'
+  | 'examination';
 
 /* views/notifications/ModRegNotification */
 export interface RegPeriodView extends RegPeriod {
