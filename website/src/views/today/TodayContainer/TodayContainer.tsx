@@ -89,8 +89,9 @@ const DAYS = 7;
 function getDayType(date: Date, weekInfo: AcadWeekInfo): EmptyGroupType {
   switch (weekInfo.type) {
     case 'Reading':
-    case 'Examination':
       return 'reading';
+    case 'Examination':
+      return 'examination';
     case 'Orientation':
       return 'orientation';
     case 'Recess':
