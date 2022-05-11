@@ -1,6 +1,6 @@
 import { memo, useState, useCallback } from 'react';
 import classnames from 'classnames';
-import { Info } from 'react-feather';
+import { Heart } from 'react-feather';
 
 import storage from 'storage';
 import { announcementKey } from 'storage/keys';
@@ -10,7 +10,7 @@ import styles from './Announcements.scss';
 /**
  * If false, hides announcement.
  */
-const enableAnnouncements = true;
+const enableAnnouncements = false;
 
 /**
  * Unique key for the current announcement. If the announcement is not
@@ -28,7 +28,7 @@ const enableAnnouncements = true;
  * - 'ay201819-new-data' - AY2018/19 data is available
  * - 'ay201819-s2-new-data' - S2 data available
  */
-const key = announcementKey('vercel-migration-120522');
+const key = announcementKey('ay202122-new-data');
 
 const Announcements = memo(() => {
   const [isOpen, setIsOpen] = useState(() => {
@@ -49,18 +49,18 @@ const Announcements = memo(() => {
   return (
     <div
       className={classnames(
-        'alert alert-info no-export',
+        'alert alert-success no-export',
         styles.announcement,
         // styles.wrapButtons, // Uncomment if needed
       )}
     >
-      <Info className={styles.backgroundIcon} />
+      <Heart className={styles.backgroundIcon} />
 
       <div className={styles.body}>
-        <h3>Scheduled maintenance on 12 May 2022 &ndash; 12am to 4am</h3>
+        <h3>AY2021/22 modules now available!</h3>
         <p className={styles.bodyElement}>
-          NUSMods will be undergoing a scheduled maintenance on Thursday 12 May 2022, from 12am to
-          4am. NUSMods might be intermittently accessible or might be down during this time period.
+          NUSMods now has AY2021/22 module information available. The data is accurate but subject
+          to changes. Happy new academic year!
         </p>
       </div>
 
