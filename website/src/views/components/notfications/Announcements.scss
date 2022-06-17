@@ -41,6 +41,11 @@
 
     .bodyElement {
       margin-bottom: 0.4rem;
+
+      ul {
+        padding-top: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
     }
 
     .bodyElement:last-child {

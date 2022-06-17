@@ -44,7 +44,7 @@ const config: Config = {
   apiConcurrency: env.apiConcurrency || 5,
 
   // Other config
-  academicYear: '2021/2022',
+  academicYear: '2022/2023',
   dataPath: path.resolve(__dirname, '../data'),
 };
 
