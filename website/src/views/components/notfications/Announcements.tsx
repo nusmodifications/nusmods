@@ -73,7 +73,7 @@ const Announcements = memo(() => {
           </ul>
         </p> */}
         <p className={styles.bodyElement}>
-          The previous issue with module data for a few departments have been resolved. If there are
+          The previous issue with module data for a few departments has been resolved. If there are
           any discrepencies with module data, please contact your respective faculty's office. Happy
           new academic year!
         </p>
