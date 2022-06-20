@@ -59,11 +59,11 @@ const Announcements = memo(() => {
 
       <div className={styles.body}>
         <h3>AY2022/23 modules now available!</h3>
-        {/* <p className={styles.bodyElement}>
+        <p className={styles.bodyElement}>
           NUSMods now has AY2021/22 module information available. The data is accurate but subject
           to changes.
-        </p> */}
-        <p className={styles.bodyElement}>
+        </p>
+        {/* <p className={styles.bodyElement}>
           Due to broken data provided to us by NUS, Modules from these departments will not appear
           on NUSMods for now.
           <ul>
@@ -71,10 +71,11 @@ const Announcements = memo(() => {
             <li>SoC Dean's Office</li>
             <li>Communications and New Media</li>
           </ul>
-        </p>
+        </p> */}
         <p className={styles.bodyElement}>
-          If there are any discrepencies with module data, please contact your respective faculty's
-          office. Happy new academic year!
+          The previous issue with module data for a few departments have been resolved. If there are
+          any discrepencies with module data, please contact your respective faculty's office. Happy
+          new academic year!
         </p>
       </div>
 
