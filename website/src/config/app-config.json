@@ -6,8 +6,8 @@
   "elasticsearchBaseUrl": "https://nusmods-search.es.ap-southeast-1.aws.found.io:9243",
   "semester": 1,
   "disqusShortname": "nusmods-prod",
-  "venueFeedbackApi": "https://mediumdeviation.lib.id/nusmods-venue-github-hook@0.0.8/",
-  "moduleErrorApi": "https://mediumdeviation.lib.id/nusmods-module-error-reporting@0.0.7/",
+  "venueFeedbackApi": "https://0-0-9--nusmods-venue-github-hook.mediumdeviation.autocode.gg/",
+  "moduleErrorApi": "https://0-0-7--nusmods-module-error-reporting.mediumdeviation.autocode.gg/",
   "archiveYears": ["2016/2017", "2017/2018", "2018/2019", "2019/2020", "2020/2021", "2021/2022"],
   "examAvailability": [1, 2, 3, 4],
   "semesterNames": {
