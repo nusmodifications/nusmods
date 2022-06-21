@@ -60,7 +60,7 @@ const Announcements = memo(() => {
       <div className={styles.body}>
         <h3>AY2022/23 modules now available!</h3>
         <p className={styles.bodyElement}>
-          NUSMods now has AY2021/22 module information available. The data is accurate but subject
+          NUSMods now has AY2022/23 module information available. The data is accurate but subject
           to changes.
         </p>
         {/* <p className={styles.bodyElement}>
