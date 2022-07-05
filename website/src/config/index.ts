@@ -42,6 +42,15 @@ export type Config = {
 
   semesterNames: { [semester: string]: string };
   shortSemesterNames: { [semester: string]: string };
+
+  /*
+   * Toggle to show a notice for ST2 modules to refer to NUS's timetable.
+   * Added because ModReg Round 0 (next AY data) overlaps with ST2 (prev AY)
+   * data, and NUSMods rotates complete AYs.
+   */
+  showSt2ExamTimetable: boolean;
+  st2ExamTimetableUrl: string;
+
   archiveYears: string[];
   examAvailability: Semester[];
   examAvailabilitySet: Set<Semester>;

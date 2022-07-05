@@ -46,6 +46,12 @@ const SIDE_MENU_LABELS = {
 
 const SIDE_MENU_ITEMS = mapValues(SIDE_MENU_LABELS, kebabCase);
 
+const prevAYShortName = config.archiveYears
+  .slice(-1)?.[0]
+  ?.split('/')
+  ?.map((x) => x.substring(2, 4))
+  ?.join('/');
+
 const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -202,6 +208,29 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
                     />
                   </div>
                 ))}
+
+                {/* Added because ST2 exams rely on previous AY's data due to
+                  ModReg R0, which is difficult for us to get, so we show a
+                  link instead. */}
+                {config.showSt2ExamTimetable &&
+                  module.semesterData.find((semester) => semester.semester === 4) && (
+                    <div className={styles.exam}>
+                      <h3 className={styles.descriptionHeading}>
+                        AY{prevAYShortName} Special Term II Exam
+                      </h3>
+                      <p>
+                        Please visit{' '}
+                        <a
+                          href={config.st2ExamTimetableUrl}
+                          target="_blank"
+                          rel="noopener noreferrer nofollow"
+                        >
+                          the exam timetable
+                        </a>{' '}
+                        instead.
+                      </p>
+                    </div>
+                  )}
 
                 {!isArchive && offered && (
                   <div className={styles.addToTimetable}>
