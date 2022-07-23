@@ -36,8 +36,8 @@ export const CustomModuleFormComponent: React.FC<Props> = (props) => {
     const inputTitleCurrent = inputTitle.current;
     const title = inputTitleCurrent && inputTitleCurrent.value;
 
-    // Module credit is required
-    if (moduleCredit == null) return;
+    // Module credit is required, module credit cannot be negative
+    if (moduleCredit == null || parseInt(moduleCredit, 10) < 0) return;
 
     props.addCustomModule(props.moduleCode, {
       moduleCredit: +moduleCredit,
