@@ -3,6 +3,7 @@ import { Component } from 'react';
 import { ModuleCode, Semester, SemesterDataCondensed } from 'types/modules';
 
 import { getFirstAvailableSemester } from 'utils/modules';
+import config from 'config';
 import SemesterPicker from './SemesterPicker';
 import ModuleExamClash from './ModuleExamClash';
 import ModuleExamInfo from './ModuleExamInfo';
@@ -54,6 +55,33 @@ export default class ModuleSemesterInfo extends Component<Props, State> {
             <section className={styles.moduleExam}>
               <h4>Exam</h4>
               <ModuleExamInfo semesterData={semester} />
+
+              {/* Added because ST2 exams rely on previous AY's data due to
+              ModReg R0, which is difficult for us to get, so we show a link instead. */}
+              {config.showSt2ExamTimetable && semester.semester === 4 && (
+                <>
+                  <h4 className={styles.specialTermExam}>
+                    AY
+                    {config.archiveYears
+                      .slice(-1)?.[0]
+                      ?.split('/')
+                      ?.map((x) => x.substring(2, 4))
+                      ?.join('/')}{' '}
+                    Exam
+                  </h4>
+                  <p>
+                    Please visit{' '}
+                    <a
+                      href={config.st2ExamTimetableUrl}
+                      target="_blank"
+                      rel="noopener noreferrer nofollow"
+                    >
+                      the exam timetable
+                    </a>{' '}
+                    instead.
+                  </p>
+                </>
+              )}
 
               <ModuleExamClash
                 semester={semester.semester}
