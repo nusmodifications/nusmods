@@ -10,7 +10,7 @@ import styles from './Announcements.scss';
 /**
  * If false, hides announcement.
  */
-const enableAnnouncements = true;
+const enableAnnouncements = false;
 
 /**
  * Unique key for the current announcement. If the announcement is not

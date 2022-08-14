@@ -22,7 +22,7 @@
     "3": "ST I",
     "4": "ST II"
   },
-  "showSt2ExamTimetable": true,
+  "showSt2ExamTimetable": false,
   "st2ExamTimetableUrl": "https://myportal.nus.edu.sg/studentportal/academics/all/special-term-part-2.html",
   "contact": {
     "blog": "https://blog.nusmods.com",
