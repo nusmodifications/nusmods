@@ -82,6 +82,7 @@ export const CustomModuleFormComponent: React.FC<Props> = (props) => {
             className="form-control"
             defaultValue={moduleCredit ? String(moduleCredit) : ''}
             required
+            min="0"
           />
         </div>
         <div className="col-md-9">
