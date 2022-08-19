@@ -68,7 +68,15 @@ function renderType(type: EmptyGroupType) {
       return (
         <>
           <BooksIcon />
-          <p>Time to study for your exams!</p>
+          <p>It's reading week!</p>
+        </>
+      );
+
+    case 'examination':
+      return (
+        <>
+          <BooksIcon />
+          <p>It's examination week. Hang in there!</p>
         </>
       );
 

@@ -1,15 +1,13 @@
-import * as React from 'react';
+import React from 'react';
+import { SearchkitManager } from 'searchkit';
 import ApiError from './ApiError';
 
-// Should be defined in Searchkit, but it isn't exported.
-// https://github.com/searchkit/searchkit/blob/016c899c97f72ea3ad5afc017345e41c9003172a/packages/searchkit/src/components/search/hits/src/NoHitsErrorDisplay.tsx#L6
-// import { NoHitsErrorDisplayProps } from 'searchkit';
-type NoHitsErrorDisplayProps = {
-  resetSearchFn: () => void;
+type ModuleFinderApiErrorProps = {
+  searchkit: SearchkitManager;
 };
 
-const ModuleFinderApiError: React.FC<NoHitsErrorDisplayProps> = ({ resetSearchFn }) => (
-  <ApiError dataName="module information" retry={resetSearchFn} />
+const ModuleFinderApiError: React.FC<ModuleFinderApiErrorProps> = ({ searchkit }) => (
+  <ApiError dataName="module information" retry={() => searchkit.reloadSearch()} />
 );
 
 export default ModuleFinderApiError;

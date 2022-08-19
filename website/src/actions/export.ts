@@ -42,7 +42,7 @@ export function downloadAsIcal(semester: Semester) {
           events,
         });
 
-        const blob = new Blob([cal.toString()], { type: 'text/plain' });
+        const blob = new Blob([cal.toString()], { type: 'text/calendar' });
         downloadUrl(blob, 'nusmods_calendar.ics');
       })
       .catch(captureException);

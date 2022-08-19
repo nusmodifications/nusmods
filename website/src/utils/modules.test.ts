@@ -15,6 +15,7 @@ import {
   subtractAcadYear,
   isGraduateModule,
   renderExamDuration,
+  getExamDuration,
 } from 'utils/modules';
 import { noBreak } from 'utils/react';
 
@@ -101,9 +102,14 @@ test('formatExamDate should format an exam date string correctly', () => {
   expect(formatExamDate('2016-01-03T00:01:00.000Z')).toBe('03-Jan-2016 8:01 AM');
 });
 
-test('getModuleExamDate should return the correct exam date if it exists', () => {
+test('getExamDate should return the correct exam date if it exists', () => {
   expect(getExamDate(CS1010S, 1)).toBe('2017-11-29T17:00+0800');
   expect(getExamDate(CS3216, 2)).toBeFalsy();
+});
+
+test('getExamDuration should return the correct exam duration if it exists', () => {
+  expect(getExamDuration(CS1010S, 1)).toBe(120);
+  expect(getExamDuration(CS3216, 2)).toBe(null);
 });
 
 test('getFormattedModuleExamDate should return the correctly formatted exam timing if it exists', () => {

@@ -19,7 +19,7 @@ import { toSingaporeTime } from './timify';
 // CS1010FC - 2 chars, 4 digits, 2 chars
 // CS2014R  - 2 chars, 4 digits, 1 char
 // BMA 5001 - 3 chars, space, 4 digits
-export const MODULE_CODE_REGEX = /\b(\w{2,3}\s*\d{4}\w{0,3})\b/g;
+export const MODULE_CODE_REGEX = /\b(\w{2,4}\s*\d{4}\w{0,3})\b/g;
 
 // Returns semester specific details such as exam date and timetable.
 export function getModuleSemesterData(
@@ -55,6 +55,10 @@ export function formatExamDate(examDate: string | null | undefined): string {
 
 export function getExamDate(module: Module, semester: Semester): string | null {
   return _.get(getModuleSemesterData(module, semester), 'examDate') || null;
+}
+
+export function getExamDuration(module: Module, semester: Semester): number | null {
+  return _.get(getModuleSemesterData(module, semester), 'examDuration') || null;
 }
 
 export function getFormattedExamDate(module: Module, semester: Semester): string {

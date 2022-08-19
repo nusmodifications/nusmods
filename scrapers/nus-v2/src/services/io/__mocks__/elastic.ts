@@ -7,6 +7,8 @@ export default class MockedElasticPersist implements Persist {
 
   moduleInformation = () => Promise.resolve();
 
+  mpeModules = () => Promise.resolve();
+
   moduleAliases = () => Promise.resolve();
 
   facultyDepartments = () => Promise.resolve();

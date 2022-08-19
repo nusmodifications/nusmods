@@ -102,7 +102,9 @@ export const verifyLogin = (next: Handler): Handler => async (req, res): Promise
     } else if (err.message === errors.noTokenSupplied) {
       errResp.message = 'No token is supplied';
     } else {
-      throw err;
+      errResp.message = 'Invalid authentication, please login again';
+      // eslint-disable-next-line no-console
+      console.error(err);
     }
 
     res.status(401).json(errResp);

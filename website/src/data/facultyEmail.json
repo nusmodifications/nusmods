@@ -381,7 +381,7 @@
   {
     "id": "phy_ug",
     "label": "Physics (Undergrad)",
-    "email": "phybox3@nus.edu.sg",
+    "email": "physngwl@nus.edu.sg",
     "match": {
       "type": "department",
       "department": "Physics",
