@@ -1,8 +1,8 @@
 @import './_variables.scss';
+@import './Timetable.scss';
 
 $cell-padding: 0.3rem;
 $cell-opacity: 0.5;
-$cell-border-radius: 0.25em;
 
 .baseCell {
   // Flex to ensure cell content sticks to top, because browsers tend to
@@ -45,7 +45,7 @@ $cell-border-radius: 0.25em;
 }
 
 .clickable {
-  border-radius: $cell-border-radius;
+  border-radius: $timetable-border-radius;
   cursor: pointer;
 }
 
