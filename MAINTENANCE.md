@@ -21,5 +21,5 @@ Reference PRs: [PR #3286](https://github.com/nusmodifications/nusmods/pull/3286)
 
 - [ ] Update semester in `website/src/config/app-config.json`
 - [ ] In `app-config.json`, add semester to `examAvailability` to indicate exam information is available for the semester
-- [ ] Update the ModReg schedule in `website/src/data/modreg-schedule-ayXXXX-semXX.json`, and point to the new version in `website/src/config/index.ts`  
+- [ ] Update the ModReg schedule in `website/src/data/modreg-schedule.json`, and make sure the correct version is pointed to in `website/src/config/index.ts`  
        - Reference PR: [PR #2764](https://github.com/nusmodifications/nusmods/pull/2764)
