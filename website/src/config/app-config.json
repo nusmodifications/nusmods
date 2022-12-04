@@ -4,7 +4,7 @@
   "academicYear": "2022/2023",
   "apiBaseUrl": "https://api.nusmods.com",
   "elasticsearchBaseUrl": "https://nusmods-search.es.ap-southeast-1.aws.found.io:9243",
-  "semester": 1,
+  "semester": 2,
   "disqusShortname": "nusmods-prod",
   "venueFeedbackApi": "https://0-0-9--nusmods-venue-github-hook.mediumdeviation.autocode.gg/",
   "moduleErrorApi": "https://0-0-7--nusmods-module-error-reporting.mediumdeviation.autocode.gg/",
