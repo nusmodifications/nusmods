@@ -62,15 +62,19 @@ export type ModuleInfo = Readonly<{
   CourseId: string; // Internal ID used to connect dual-coded modules
   CourseOfferNumber: string; // Usually 1, can be 2 or more for dual-coded modules
   Preclusion: string;
+  PreclusionRule: string;
 
   PrintCatalog: 'Y' | 'N';
   YearLong: 'Y' | 'N';
 
   CourseTitle: string;
   CoRequisite: string;
+  CoRequisiteRule: string;
   Description: string;
   ModularCredit: string;
   PreRequisite: string;
+  PreRequisiteRule: string;
+  PreRequisiteAdvisory: string;
   Subject: string; // The letter prefix part of the module code
   CatalogNumber: string; // The number and suffix part of the module code
 
