@@ -37,6 +37,8 @@ const moduleInfoData: { [semester: string]: ModuleInfo[] } = {
       CourseId: '000479',
       CourseOfferNumber: '1',
       Preclusion: 'CS1104 or Students from Department of ECE',
+      PreclusionRule:
+        'PROGRAM_TYPES IF_IN Undergraduate Degree\nTHEN\nPROGRAMS MUST_NOT_BE_IN (1) 0604CPEHON,0604ELEHON,2001CEGHON',
       AcademicGroup: {
         Code: '003',
         Description: '',
@@ -45,6 +47,7 @@ const moduleInfoData: { [semester: string]: ModuleInfo[] } = {
       PrintCatalog: 'Y',
       YearLong: 'N',
       CoRequisite: '',
+      CoRequisiteRule: '',
       CatalogNumber: '2100',
       Description:
         'The objective of this module is to familiarise students with the fundamentals of computing devices. Through this module students will understand the basics of data representation, and how the various parts of a computer work, separately and with each other. This allows students to understand the issues in computing devices, and how these issues affect the implementation of solutions. Topics covered include data representation systems, combinational and sequential circuit design techniques, assembly language, processor execution cycles, pipelining, memory hierarchy and input/output systems.',
@@ -56,6 +59,9 @@ const moduleInfoData: { [semester: string]: ModuleInfo[] } = {
       ],
       ModularCredit: '4',
       PreRequisite: 'CS1010 or its equivalent',
+      PreRequisiteRule:
+        'PROGRAM_TYPES IF_IN Undergraduate Degree\nTHEN\n(\n\tCOURSES (1) YSC1212:D,CS1010:D,CS1010J:D,CS1010E:D,CS1010S:D,CS1010FC:D,CS1010X:D,CS1101:D,CS1101S:D\n)',
+      PreRequisiteAdvisory: '',
       Subject: 'CS',
     },
   ],
@@ -71,6 +77,8 @@ const moduleInfoData: { [semester: string]: ModuleInfo[] } = {
       CourseId: '000479',
       CourseOfferNumber: '1',
       Preclusion: 'CS1104 or Students from Department of ECE',
+      PreclusionRule:
+        'PROGRAM_TYPES IF_IN Undergraduate Degree\nTHEN\nPROGRAMS MUST_NOT_BE_IN (1) 0604CPEHON,0604ELEHON,2001CEGHON',
       AcademicGroup: {
         Code: '003',
         Description: '',
@@ -79,6 +87,7 @@ const moduleInfoData: { [semester: string]: ModuleInfo[] } = {
       PrintCatalog: 'Y',
       YearLong: 'N',
       CoRequisite: '',
+      CoRequisiteRule: '',
       CatalogNumber: '2100',
       Description:
         'The objective of this module is to familiarise students with the fundamentals of computing devices. Through this module students will understand the basics of data representation, and how the various parts of a computer work, separately and with each other. This allows students to understand the issues in computing devices, and how these issues affect the implementation of solutions. Topics covered include data representation systems, combinational and sequential circuit design techniques, assembly language, processor execution cycles, pipelining, memory hierarchy and input/output systems.',
@@ -90,6 +99,9 @@ const moduleInfoData: { [semester: string]: ModuleInfo[] } = {
       ],
       ModularCredit: '4',
       PreRequisite: 'CS1010 or its equivalent',
+      PreRequisiteRule:
+        'PROGRAM_TYPES IF_IN Undergraduate Degree\nTHEN\n(\n\tCOURSES (1) YSC1212:D,CS1010:D,CS1010J:D,CS1010E:D,CS1010S:D,CS1010FC:D,CS1010X:D,CS1101:D,CS1101S:D\n)',
+      PreRequisiteAdvisory: '',
       Subject: 'CS',
     },
   ],
