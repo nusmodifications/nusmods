@@ -125,41 +125,41 @@ describe('lesson reducer', () => {
           lessons: {
             [1]: {
               CS1010S: {
-                Lecture: '1',
-                Recitation: '2',
+                Lecture: ['1'],
+                Recitation: ['2'],
               },
               CS3216: {
-                Lecture: '1',
+                Lecture: ['1'],
               },
             },
             [2]: {
               CS3217: {
-                Lecture: '1',
+                Lecture: ['1'],
               },
             },
           },
         },
         setLessonConfig(1, 'CS1010S', {
-          Lecture: '2',
-          Recitation: '3',
-          Tutorial: '4',
+          Lecture: ['2'],
+          Recitation: ['3'],
+          Tutorial: ['4'],
         }),
       ),
     ).toMatchObject({
       lessons: {
         [1]: {
           CS1010S: {
-            Lecture: '2',
-            Recitation: '3',
-            Tutorial: '4',
+            Lecture: ['2'],
+            Recitation: ['3'],
+            Tutorial: ['4'],
           },
           CS3216: {
-            Lecture: '1',
+            Lecture: ['1'],
           },
         },
         [2]: {
           CS3217: {
-            Lecture: '1',
+            Lecture: ['1'],
           },
         },
       },
@@ -172,7 +172,7 @@ describe('stateReconciler', () => {
     '2015/2016': {
       [1]: {
         GET1006: {
-          Lecture: '1',
+          Lecture: ['1'],
         },
       },
     },
@@ -181,13 +181,13 @@ describe('stateReconciler', () => {
   const oldLessons = {
     [1]: {
       CS1010S: {
-        Lecture: '1',
-        Recitation: '2',
+        Lecture: ['1'],
+        Recitation: ['2'],
       },
     },
     [2]: {
       CS3217: {
-        Lecture: '1',
+        Lecture: ['1'],
       },
     },
   };
