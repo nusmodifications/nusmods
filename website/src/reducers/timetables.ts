@@ -82,7 +82,7 @@ function moduleLessonConfig(
       if (!(classNo && lessonType)) return state;
       return {
         ...state,
-        [lessonType]: classNo,
+        [lessonType]: [classNo],
       };
     }
     case SET_LESSON_CONFIG:
