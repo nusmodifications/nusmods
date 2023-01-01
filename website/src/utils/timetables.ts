@@ -104,8 +104,9 @@ export function randomModuleLessonConfig(lessons: readonly RawLesson[]): ModuleL
 
   return mapValues(
     lessonByGroupsByClassNo,
-    (group: { [classNo: string]: readonly RawLesson[] }) =>
-      [(first(sample(group)) as RawLesson).classNo],
+    (group: { [classNo: string]: readonly RawLesson[] }) => [
+      (first(sample(group)) as RawLesson).classNo,
+    ],
   );
 }
 
@@ -126,7 +127,8 @@ export function hydrateSemTimetableWithLessons(
         const lessons = getModuleTimetable(module, semester);
         const newLessons = lessons.filter(
           (lesson: RawLesson): boolean =>
-            lesson.lessonType === lessonType && classNos.some((classNo) => classNo === lesson.classNo),
+            lesson.lessonType === lessonType &&
+            classNos.some((classNo) => classNo === lesson.classNo),
         );
 
         const timetableLessons: Lesson[] = newLessons.map(
@@ -338,7 +340,9 @@ export function validateModuleLessons(
     // - classNo is not valid anymore (ie. the class was removed)
     //
     // If a lesson type is removed, then it simply won't be copied over
-    const filteredClasses = classNo.filter((classNum) => lessons.some((lesson) => lesson.classNo === classNum));
+    const filteredClasses = classNo.filter((classNum) =>
+      lessons.some((lesson) => lesson.classNo === classNum),
+    );
     if (filteredClasses.length === 0) {
       validatedLessonConfig[lessonType] = [lessons[0].classNo];
       updatedLessonTypes.push(lessonType);
@@ -363,7 +367,9 @@ export function getSemesterModules(
 function serializeModuleConfig(config: ModuleLessonConfig): string {
   // eg. { Lecture: 1, Laboratory: 2, Laboratory: 3 } => LEC=1,LAB=2;3
   return map(config, (classNo, lessonType) =>
-    [LESSON_TYPE_ABBREV[lessonType], encodeURIComponent(classNo.join(SAME_LESSON_SEP))].join(LESSON_TYPE_SEP),
+    [LESSON_TYPE_ABBREV[lessonType], encodeURIComponent(classNo.join(SAME_LESSON_SEP))].join(
+      LESSON_TYPE_SEP,
+    ),
   ).join(LESSON_SEP);
 }
 
