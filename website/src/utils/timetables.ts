@@ -340,10 +340,10 @@ export function validateModuleLessons(
     // - classNo is not valid anymore (ie. the class was removed)
     //
     // If a lesson type is removed, then it simply won't be copied over
-    const filteredClasses = classNo.filter((classNum) =>
+    const filteredClasses = classNo && classNo.filter((classNum) =>
       lessons.some((lesson) => lesson.classNo === classNum),
     );
-    if (filteredClasses.length === 0) {
+    if (!classNo || filteredClasses.length === 0) {
       validatedLessonConfig[lessonType] = [lessons[0].classNo];
       updatedLessonTypes.push(lessonType);
     } else {

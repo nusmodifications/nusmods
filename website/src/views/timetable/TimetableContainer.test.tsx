@@ -114,7 +114,7 @@ describe(TimetableContainerComponent, () => {
 
   test('should eventually display imported timetable if there is one', async () => {
     const semester = 1;
-    const importedTimetable = { [moduleCodeThatCanBeLoaded]: { Lecture: '1' } };
+    const importedTimetable = { [moduleCodeThatCanBeLoaded]: { Lecture: ['1'] } };
     const location = timetableShare(semester, importedTimetable);
     make(location);
 
@@ -133,7 +133,7 @@ describe(TimetableContainerComponent, () => {
 
   test('should ignore invalid modules in imported timetable', () => {
     const semester = 1;
-    const importedTimetable = { TRUMP2020: { Lecture: '1' } };
+    const importedTimetable = { TRUMP2020: { Lecture: ['1'] } };
     const location = timetableShare(semester, importedTimetable);
     make(location);
 
@@ -156,7 +156,7 @@ describe(TimetableContainerComponent, () => {
     store.dispatch({ type: SUCCESS_KEY(FETCH_MODULE), payload: CS3216 });
 
     // Populate mock timetable
-    const timetable = { CS1010S: { Lecture: '1' }, CS3216: { Lecture: '1' } };
+    const timetable = { CS1010S: { Lecture: ['1'] }, CS3216: { Lecture: ['1'] } };
     store.dispatch(setTimetable(semester, timetable));
 
     // Expect nothing to be fetched as timetable exists in `moduleBank`.
