@@ -178,7 +178,9 @@ $venue-detail-expanded-z-index: 920;
 $navtabs-z-index: 900;
 $navbar-z-index: 890;
 $module-finder-search-z-index-md: 850;
-$zindex-dropdown: 820; // Bootstrap override
+
+// navtabs and navbar should never overlap the dropdown
+$zindex-dropdown: 910; // Bootstrap override
 $fab-z-index: 800;
 $venue-map-z-index: 760;
 $venue-detail-z-index: 750;
