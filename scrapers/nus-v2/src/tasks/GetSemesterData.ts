@@ -124,6 +124,7 @@ export function cleanModuleInfo(module: SemesterModule) {
   // to be nullable
   cleanedModule = removeEmptyValues(cleanedModule, [
     'workload',
+    'gradingBasisDescription',
     'prerequisite',
     'prerequisiteRule',
     'prerequisiteAdvisory',
@@ -184,6 +185,7 @@ const mapModuleInfo = (
     AcademicGroup,
     CourseTitle,
     WorkLoadHours,
+    GradingBasisDesc,
     Preclusion,
     PreclusionRule,
     PreRequisite,
@@ -211,6 +213,7 @@ const mapModuleInfo = (
     department: departmentMap[AcademicOrganisation.Code],
     faculty: facultyMap[AcademicGroup.Code],
     workload: parseWorkload(WorkLoadHours),
+    gradingBasisDescription: GradingBasisDesc,
     prerequisite: PreRequisite,
     prerequisiteRule: PreRequisiteRule,
     prerequisiteAdvisory: PreRequisiteAdvisory,
