@@ -197,8 +197,12 @@ export type Module = {
 
   // Requsites
   prerequisite?: string;
+  prerequisiteRule?: string;
+  prerequisiteAdvisory?: string;
   corequisite?: string;
+  corequisiteRule?: string;
   preclusion?: string;
+  preclusionRule?: string;
 
   // Semester data
   semesterData: readonly SemesterData[];
