@@ -201,6 +201,10 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
               </div>
 
               <div className="col-sm-4">
+                <div className={styles.gradingBasisDescription}>
+                  <h3 className={styles.descriptionHeading}>Grading Basis</h3>
+                  <p>{module.gradingBasisDescription ?? 'Information not available.'}</p>
+                </div>
                 {sortBy(module.semesterData, (semester) => semester.semester).map((semester) => (
                   <div key={semester.semester} className={styles.exam}>
                     <h3 className={styles.descriptionHeading}>
