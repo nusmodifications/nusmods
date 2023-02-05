@@ -66,6 +66,7 @@ export type ModuleInfo = Readonly<{
 
   PrintCatalog: 'Y' | 'N';
   YearLong: 'Y' | 'N';
+  GradingBasisDesc: string;
 
   CourseTitle: string;
   CoRequisite: string;
