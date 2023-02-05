@@ -194,6 +194,7 @@ export type Module = {
   workload?: Workload;
   aliases?: ModuleCode[];
   attributes?: NUSModuleAttributes;
+  gradingBasisDescription?: string;
 
   // Requsites
   prerequisite?: string;
