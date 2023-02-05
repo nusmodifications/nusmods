@@ -146,6 +146,15 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
                     </>
                   )}
 
+                  {module.prerequisiteAdvisory && (
+                    <>
+                      <dt>Prerequisite Advisory</dt>
+                      <dd>
+                        <LinkModuleCodes>{module.prerequisiteAdvisory}</LinkModuleCodes>
+                      </dd>
+                    </>
+                  )}
+
                   {module.corequisite && (
                     <>
                       <dt>Corequisite</dt>
