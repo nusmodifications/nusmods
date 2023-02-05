@@ -7,6 +7,7 @@
   "department": "Computer Science",
   "faculty": "Computing",
   "workload": [3, 1, 1, 3, 2],
+  "gradingBasisDescription": "Graded",
   "prerequisite": "CS1010 or its equivalent",
   "prerequisiteRule": "PROGRAM_TYPES IF_IN Undergraduate Degree\nTHEN\n(\n\tCOURSES (1) YSC1212:D,CS1010:D,CS1010J:D,CS1010E:D,CS1010S:D,CS1010FC:D,CS1010X:D,CS1101:D,CS1101S:D\n)",
   "moduleCredit": "4",
