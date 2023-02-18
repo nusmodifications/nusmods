@@ -10,7 +10,7 @@ import { ColorIndex } from 'types/timetables';
 import { ModuleCode, Semester } from 'types/modules';
 import { State as StoreState } from 'types/state';
 import { ModuleTableOrder } from 'types/reducers';
-
+import { customiseLesson } from 'actions/timetables';
 import ColorPicker from 'views/components/ColorPicker';
 import { Eye, EyeOff, Trash, Tool } from 'react-feather';
 import {
@@ -44,6 +44,7 @@ export type Props = {
   showLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   onRemoveModule: (moduleCode: ModuleCode) => void;
   resetTombstone: () => void;
+  customiseLesson: (semester: Semester, moduleCode: ModuleCode) => void;
 };
 
 export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
@@ -92,7 +93,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
               className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
               aria-label={customBtnLabel}
               onClick={() => {
-                // trigger redux state to edit module
+                props.customiseLesson(semester, module.moduleCode);
               }}
             >
               <Tool className={styles.actionIcon}/>
@@ -180,5 +181,6 @@ export default connect(
     selectModuleColor,
     hideLessonInTimetable,
     showLessonInTimetable,
+    customiseLesson,
   },
 )(React.memo(TimetableModulesTableComponent));
