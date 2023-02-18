@@ -51,6 +51,7 @@ export type NotificationData = { readonly message: string } & NotificationOption
 export type AppState = {
   readonly activeSemester: Semester;
   readonly activeLesson: Lesson | null;
+  readonly customiseModule: ModuleCode | null;
   readonly isOnline: boolean;
   readonly isFeedbackModalOpen: boolean;
   readonly notifications: NotificationData[];

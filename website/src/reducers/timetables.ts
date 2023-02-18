@@ -11,12 +11,15 @@ import config from 'config';
 import {
   ADD_MODULE,
   CHANGE_LESSON,
+  ADD_LESSON,
+  REMOVE_LESSON,
   HIDE_LESSON_IN_TIMETABLE,
   REMOVE_MODULE,
   SELECT_MODULE_COLOR,
   SET_LESSON_CONFIG,
   SET_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
+  CUSTOMISE_MODULE,
 } from 'actions/timetables';
 import { getNewColor } from 'utils/colors';
 import { SET_EXPORTED_DATA } from 'actions/constants';
@@ -123,7 +126,22 @@ function moduleLessonConfig(
     }
     case SET_LESSON_CONFIG:
       return action.payload.lessonConfig;
-
+    case ADD_LESSON: {
+      const { classNo, lessonType } = action.payload;
+      if (!(classNo && lessonType)) return state;
+      return {
+        ...state,
+        [lessonType]: [...state.lessonType, classNo],
+      };
+    }
+    case REMOVE_LESSON: {
+      const { classNo, lessonType } = action.payload;
+      if (!(classNo && lessonType)) return state;
+      return {
+        ...state,
+        [lessonType]: state.lessonType.filter(lesson => lesson !== classNo),
+      };
+    }
     default:
       return state;
   }

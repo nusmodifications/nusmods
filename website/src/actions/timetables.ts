@@ -90,6 +90,18 @@ export function modifyLesson(activeLesson: Lesson) {
   };
 }
 
+
+export const CUSTOMISE_MODULE = 'CUSTOMISE_LESSON' as const;
+export function customiseLesson(semester: Semester, moduleCode: ModuleCode) {
+  return {
+    type: CUSTOMISE_MODULE,
+    payload: {
+      semester,
+      moduleCode,
+    },
+  };
+}
+
 export const CHANGE_LESSON = 'CHANGE_LESSON' as const;
 export function setLesson(
   semester: Semester,
@@ -99,6 +111,42 @@ export function setLesson(
 ) {
   return {
     type: CHANGE_LESSON,
+    payload: {
+      semester,
+      moduleCode,
+      lessonType,
+      classNo,
+    },
+  };
+}
+
+export const ADD_LESSON = 'ADD_LESSON' as const;
+export function addLesson(
+  semester: Semester,
+  moduleCode: ModuleCode,
+  lessonType: LessonType,
+  classNo: ClassNo,
+) {
+  return {
+    type: ADD_LESSON,
+    payload: {
+      semester,
+      moduleCode,
+      lessonType,
+      classNo,
+    },
+  };
+}
+
+export const REMOVE_LESSON = 'REMOVE_LESSON' as const;
+export function removeLesson(
+  semester: Semester,
+  moduleCode: ModuleCode,
+  lessonType: LessonType,
+  classNo: ClassNo,
+) {
+  return {
+    type: REMOVE_LESSON,
     payload: {
       semester,
       moduleCode,
