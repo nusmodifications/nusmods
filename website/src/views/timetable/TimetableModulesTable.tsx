@@ -12,7 +12,7 @@ import { State as StoreState } from 'types/state';
 import { ModuleTableOrder } from 'types/reducers';
 
 import ColorPicker from 'views/components/ColorPicker';
-import { Eye, EyeOff, Trash } from 'react-feather';
+import { Eye, EyeOff, Trash, Tool } from 'react-feather';
 import {
   hideLessonInTimetable,
   selectModuleColor,
@@ -50,6 +50,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
   const renderModuleActions = (module: ModuleWithColor) => {
     const hideBtnLabel = `${module.hiddenInTimetable ? 'Show' : 'Hide'} ${module.moduleCode}`;
     const removeBtnLabel = `Remove ${module.moduleCode} from timetable`;
+    const customBtnLabel = `Customise ${module.moduleCode} in timetable`;
     const { semester } = props;
 
     return (
@@ -83,6 +84,18 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
               ) : (
                 <EyeOff className={styles.actionIcon} />
               )}
+            </button>
+          </Tooltip>
+          <Tooltip content={customBtnLabel} touch="hold">
+            <button
+              type="button"
+              className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
+              aria-label={customBtnLabel}
+              onClick={() => {
+                // trigger redux state to edit module
+              }}
+            >
+              <Tool className={styles.actionIcon}/>
             </button>
           </Tooltip>
         </div>
