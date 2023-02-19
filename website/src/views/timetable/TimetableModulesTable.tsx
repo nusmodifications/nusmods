@@ -93,6 +93,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
               className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
               aria-label={customBtnLabel}
               onClick={() => {
+                // TODO: add modal for warning 
                 props.customiseLesson(semester, module.moduleCode);
               }}
             >

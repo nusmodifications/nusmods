@@ -38,3 +38,8 @@ export const getSemesterTimetableColors = createSelector(
   (colors) => (semester: Semester | null) =>
     semester === null ? EMPTY_OBJECT : colors[semester] ?? EMPTY_OBJECT,
 );
+
+export const getCustomisingLesson = createSelector(
+  ({ app }: State) => app.customiseModule,
+  (customiseModule) => customiseModule ?? null,
+)

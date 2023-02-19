@@ -19,7 +19,6 @@ import {
   SET_LESSON_CONFIG,
   SET_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
-  CUSTOMISE_MODULE,
 } from 'actions/timetables';
 import { getNewColor } from 'utils/colors';
 import { SET_EXPORTED_DATA } from 'actions/constants';
@@ -131,7 +130,7 @@ function moduleLessonConfig(
       if (!(classNo && lessonType)) return state;
       return {
         ...state,
-        [lessonType]: [...state.lessonType, classNo],
+        [lessonType]: [...state[lessonType], classNo],
       };
     }
     case REMOVE_LESSON: {
@@ -139,7 +138,7 @@ function moduleLessonConfig(
       if (!(classNo && lessonType)) return state;
       return {
         ...state,
-        [lessonType]: state.lessonType.filter(lesson => lesson !== classNo),
+        [lessonType]: state[lessonType].filter(lesson => lesson !== classNo),
       };
     }
     default:
@@ -165,6 +164,8 @@ function semTimetable(
     case REMOVE_MODULE:
       return omit(state, [moduleCode]);
     case CHANGE_LESSON:
+    case ADD_LESSON:
+    case REMOVE_LESSON:
     case SET_LESSON_CONFIG:
       return {
         ...state,
@@ -251,6 +252,8 @@ function timetables(
     case REMOVE_MODULE:
     case SELECT_MODULE_COLOR:
     case CHANGE_LESSON:
+    case ADD_LESSON:
+    case REMOVE_LESSON:
     case SET_LESSON_CONFIG:
     case HIDE_LESSON_IN_TIMETABLE:
     case SHOW_LESSON_IN_TIMETABLE: {
