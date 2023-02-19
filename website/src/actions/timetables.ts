@@ -120,6 +120,28 @@ export function setLesson(
   };
 }
 
+export const ADD_CUSTOM_MODULE = 'ADD_CUSTOM_MODULE' as const;
+export function addCustomModule(semester: Semester, moduleCode: ModuleCode) {
+  return {
+    type: ADD_CUSTOM_MODULE,
+    payload: {
+      semester,
+      moduleCode,
+    },
+  };
+}
+
+export const REMOVE_CUSTOM_MODULE = 'REMOVE_CUSTOM_MODULE' as const;
+export function removeCustomModule(semester: Semester, moduleCode: ModuleCode) {
+  return {
+    type: REMOVE_CUSTOM_MODULE,
+    payload: {
+      semester,
+      moduleCode,
+    },
+  };
+}
+
 export const ADD_LESSON = 'ADD_LESSON' as const;
 export function addLesson(
   semester: Semester,

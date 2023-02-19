@@ -10,7 +10,7 @@ import { ColorIndex } from 'types/timetables';
 import { ModuleCode, Semester } from 'types/modules';
 import { State as StoreState } from 'types/state';
 import { ModuleTableOrder } from 'types/reducers';
-import { customiseLesson } from 'actions/timetables';
+import { customiseLesson, addCustomModule, removeCustomModule } from 'actions/timetables';
 import ColorPicker from 'views/components/ColorPicker';
 import { Eye, EyeOff, Trash, Tool, Check } from 'react-feather';
 import {
@@ -44,6 +44,8 @@ export type Props = {
   hideLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   showLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   onRemoveModule: (moduleCode: ModuleCode) => void;
+  addCustomModule: (semester: Semester, moduleCode: ModuleCode) => void;
+  removeCustomModule: (semester: Semester, moduleCode: ModuleCode) => void;
   resetTombstone: () => void;
   customiseLesson: (semester: Semester, moduleCode: ModuleCode) => void;
 };
@@ -77,7 +79,10 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
               type="button"
               className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
               aria-label={removeBtnLabel}
-              onClick={() => props.onRemoveModule(module.moduleCode)}
+              onClick={() => {
+                props.onRemoveModule(module.moduleCode);
+                props.removeCustomModule(semester, module.moduleCode);
+              }}
             >
               <Trash className={styles.actionIcon} />
             </button>
@@ -109,6 +114,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
               aria-label={customBtnLabel}
               onClick={() => {
                 // TODO: add modal for warning 
+                props.addCustomModule(semester, module.moduleCode);
                 props.customiseLesson(semester, module.moduleCode);
               }}
             >
@@ -200,5 +206,7 @@ export default connect(
     hideLessonInTimetable,
     showLessonInTimetable,
     customiseLesson,
+    addCustomModule,
+    removeCustomModule,
   },
 )(React.memo(TimetableModulesTableComponent));

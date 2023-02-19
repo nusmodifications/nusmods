@@ -113,6 +113,7 @@ export type SettingsState = {
 export type ColorMapping = { [moduleCode: string]: ColorIndex };
 export type SemesterColorMap = { [semester: string]: ColorMapping };
 export type HiddenModulesMap = { [semester: string]: ModuleCode[] };
+export type CustomisedModulesMap = { [semester: string]: ModuleCode[] };
 
 export type TimetablesState = {
   readonly lessons: TimetableConfig;
@@ -121,6 +122,7 @@ export type TimetablesState = {
   readonly academicYear: string;
   // Mapping of academic year to old timetable config
   readonly archive: { [key: string]: TimetableConfig };
+  readonly customisedModules: CustomisedModulesMap;
 };
 
 /* venueBank.js */
