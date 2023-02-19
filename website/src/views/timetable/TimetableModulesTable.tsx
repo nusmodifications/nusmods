@@ -37,7 +37,7 @@ export type Props = {
   moduleTableOrder: ModuleTableOrder;
   modules: ModuleWithColor[];
   tombstone: TombstoneModule | null; // Placeholder for a deleted module
-  customiseModule: ModuleCode | null;
+  customiseModule: ModuleCode;
 
   // Actions
   selectModuleColor: (semester: Semester, moduleCode: ModuleCode, colorIndex: ColorIndex) => void;
@@ -112,6 +112,8 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
               type="button"
               className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
               aria-label={customBtnLabel}
+              disabled={props.customiseModule !== "" && props.customiseModule != module.moduleCode}
+              hidden={props.customiseModule !== "" && props.customiseModule != module.moduleCode}
               onClick={() => {
                 // TODO: add modal for warning 
                 props.addCustomModule(semester, module.moduleCode);
