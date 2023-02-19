@@ -12,7 +12,7 @@ import { State as StoreState } from 'types/state';
 import { ModuleTableOrder } from 'types/reducers';
 import { customiseLesson } from 'actions/timetables';
 import ColorPicker from 'views/components/ColorPicker';
-import { Eye, EyeOff, Trash, Tool } from 'react-feather';
+import { Eye, EyeOff, Trash, Tool, Check } from 'react-feather';
 import {
   hideLessonInTimetable,
   selectModuleColor,
@@ -37,6 +37,7 @@ export type Props = {
   moduleTableOrder: ModuleTableOrder;
   modules: ModuleWithColor[];
   tombstone: TombstoneModule | null; // Placeholder for a deleted module
+  customiseModule: ModuleCode | null;
 
   // Actions
   selectModuleColor: (semester: Semester, moduleCode: ModuleCode, colorIndex: ColorIndex) => void;
@@ -52,11 +53,25 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
     const hideBtnLabel = `${module.hiddenInTimetable ? 'Show' : 'Hide'} ${module.moduleCode}`;
     const removeBtnLabel = `Remove ${module.moduleCode} from timetable`;
     const customBtnLabel = `Customise ${module.moduleCode} in timetable`;
+    const doneBtnLabel = `Done customising ${module.moduleCode} in timetable`;
     const { semester } = props;
 
     return (
       <div className={styles.moduleActionButtons}>
-        <div className="btn-group">
+        {props.customiseModule == module.moduleCode 
+          ? <Tooltip content={doneBtnLabel} touch="hold">
+            <button
+              type="button"
+              className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
+              aria-label={removeBtnLabel}
+              onClick={() => {
+                props.customiseLesson(semester, "");
+              }}
+            >
+              <Check className={styles.actionIcon} />
+            </button>
+          </Tooltip>
+          : <div className="btn-group">
           <Tooltip content={removeBtnLabel} touch="hold">
             <button
               type="button"
@@ -100,7 +115,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
               <Tool className={styles.actionIcon}/>
             </button>
           </Tooltip>
-        </div>
+        </div>}
       </div>
     );
   };
@@ -177,7 +192,9 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
 };
 
 export default connect(
-  (state: StoreState) => ({ moduleTableOrder: state.settings.moduleTableOrder }),
+  (state: StoreState) => ({
+    moduleTableOrder: state.settings.moduleTableOrder,
+    customiseModule: state.app.customiseModule}),
   {
     selectModuleColor,
     hideLessonInTimetable,
