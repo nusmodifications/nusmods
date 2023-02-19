@@ -4,7 +4,7 @@ import { isEqual } from 'lodash';
 import { addWeeks, format, parseISO } from 'date-fns';
 import NUSModerator, { AcadWeekInfo } from 'nusmoderator';
 
-import { consumeWeeks, WeekRange } from 'types/modules';
+import { consumeWeeks, ModuleCode, WeekRange } from 'types/modules';
 import { HoverLesson, ModifiableLesson } from 'types/timetables';
 import { OnHoverCell } from 'types/views';
 
@@ -26,6 +26,7 @@ type Props = {
   onClick?: (position: ClientRect) => void;
   hoverLesson?: HoverLesson | null;
   transparent: boolean;
+  customisedModules?: ModuleCode[];
 };
 
 const lessonDateFormat = 'MMM dd';
@@ -131,7 +132,7 @@ const TimetableCell: React.FC<Props> = (props) => {
       {...conditionalProps}
     >
       <div className={styles.cellContainer}>
-        <div className={styles.moduleName}>{moduleName}</div>
+        <div className={styles.moduleName}>{moduleName}{props.customisedModules && props.customisedModules.includes(lesson.moduleCode)?' (TA)':null}</div>
         <div>
           {LESSON_TYPE_ABBREV[lesson.lessonType]} [{lesson.classNo}]
         </div>

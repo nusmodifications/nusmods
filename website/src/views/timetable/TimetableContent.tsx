@@ -74,7 +74,8 @@ type Props = OwnProps & {
   timetableWithLessons: SemTimetableConfigWithLessons;
   modules: ModulesMap;
   activeLesson: Lesson | null;
-  customiseModule: ModuleCode | null;
+  customiseModule: ModuleCode;
+  customisedModules: ModuleCode[];
   timetableOrientation: TimetableOrientation;
   showTitle: boolean;
   hiddenInTimetable: ModuleCode[];
@@ -427,6 +428,7 @@ class TimetableContent extends React.Component<Props, State> {
                   isScrolledHorizontally={this.state.isScrolledHorizontally}
                   showTitle={isShowingTitle}
                   onModifyCell={this.modifyCell}
+                  customisedModules={this.props.customisedModules}
                 />
               </div>
             )}
@@ -487,6 +489,7 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
     modules,
     activeLesson: state.app.activeLesson,
     customiseModule: state.app.customiseModule,
+    customisedModules: state.timetables.customisedModules[semester],
     timetableOrientation: state.theme.timetableOrientation,
     showTitle: state.theme.showTitle,
     hiddenInTimetable,

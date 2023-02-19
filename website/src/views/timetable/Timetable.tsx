@@ -19,6 +19,7 @@ import { TimePeriod } from 'types/venues';
 import styles from './Timetable.scss';
 import TimetableTimings from './TimetableTimings';
 import TimetableDay from './TimetableDay';
+import { ModuleCode } from 'types/modules';
 
 type Props = TimerData & {
   lessons: TimetableArrangement;
@@ -29,6 +30,7 @@ type Props = TimerData & {
   showTitle?: boolean;
   onModifyCell?: OnModifyCell;
   highlightPeriod?: TimePeriod;
+  customisedModules?: ModuleCode[];
 };
 
 type State = {
@@ -108,6 +110,7 @@ class Timetable extends React.PureComponent<Props, State> {
                 highlightPeriod={
                   highlightPeriod && index === highlightPeriod.day ? highlightPeriod : undefined
                 }
+                customisedModules={this.props.customisedModules}
               />
             ))}
           </ol>
