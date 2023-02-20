@@ -132,7 +132,7 @@ const TimetableCell: React.FC<Props> = (props) => {
       {...conditionalProps}
     >
       <div className={styles.cellContainer}>
-        <div className={styles.moduleName}>{moduleName}{props.customisedModules && props.customisedModules.includes(lesson.moduleCode)?' (TA)':null}</div>
+        <div className={styles.moduleName}>{moduleName}{props.customisedModules && props.customisedModules.includes(lesson.moduleCode)?'*':null}</div>
         <div>
           {LESSON_TYPE_ABBREV[lesson.lessonType]} [{lesson.classNo}]
         </div>

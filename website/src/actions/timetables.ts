@@ -108,6 +108,7 @@ export function setLesson(
   moduleCode: ModuleCode,
   lessonType: LessonType,
   classNo: ClassNo,
+  activeLesson: ClassNo
 ) {
   return {
     type: CHANGE_LESSON,
@@ -116,6 +117,7 @@ export function setLesson(
       moduleCode,
       lessonType,
       classNo,
+      activeLesson
     },
   };
 }
@@ -178,8 +180,8 @@ export function removeLesson(
   };
 }
 
-export function changeLesson(semester: Semester, lesson: Lesson) {
-  return setLesson(semester, lesson.moduleCode, lesson.lessonType, lesson.classNo);
+export function changeLesson(semester: Semester, lesson: Lesson, activeLesson: ClassNo) {
+  return setLesson(semester, lesson.moduleCode, lesson.lessonType, lesson.classNo, activeLesson);
 }
 
 export const SET_LESSON_CONFIG = 'SET_LESSON_CONFIG' as const;

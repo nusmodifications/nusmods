@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { sortBy } from 'lodash';
@@ -8,7 +8,7 @@ import produce from 'immer';
 import { ModuleWithColor, TombstoneModule } from 'types/views';
 import { ColorIndex } from 'types/timetables';
 import { ModuleCode, Semester } from 'types/modules';
-import { State as StoreState } from 'types/state';
+import { State, State as StoreState } from 'types/state';
 import { ModuleTableOrder } from 'types/reducers';
 import { customiseLesson, addCustomModule, removeCustomModule } from 'actions/timetables';
 import ColorPicker from 'views/components/ColorPicker';
@@ -51,6 +51,7 @@ export type Props = {
 };
 
 export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
+  const beta = useSelector(({ settings }: State) => settings.beta);
   const renderModuleActions = (module: ModuleWithColor) => {
     const hideBtnLabel = `${module.hiddenInTimetable ? 'Show' : 'Hide'} ${module.moduleCode}`;
     const removeBtnLabel = `Remove ${module.moduleCode} from timetable`;
@@ -107,7 +108,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
               )}
             </button>
           </Tooltip>
-          <Tooltip content={customBtnLabel} touch="hold">
+          {beta && <Tooltip content={customBtnLabel} touch="hold">
             <button
               type="button"
               className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
@@ -122,7 +123,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
             >
               <Tool className={styles.actionIcon}/>
             </button>
-          </Tooltip>
+          </Tooltip>}
         </div>}
       </div>
     );

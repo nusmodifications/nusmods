@@ -84,7 +84,7 @@ type Props = OwnProps & {
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
   removeModule: (semester: Semester, moduleCode: ModuleCode) => void;
   modifyLesson: (lesson: Lesson) => void;
-  changeLesson: (semester: Semester, lesson: Lesson) => void;
+  changeLesson: (semester: Semester, lesson: Lesson, activeLesson: ClassNo) => void;
   cancelModifyLesson: () => void;
   undo: () => void;
   addLesson: (semester: Semester, moduleCode: ModuleCode, lessonType: LessonType, classNo: ClassNo) => void;
@@ -177,7 +177,7 @@ class TimetableContent extends React.Component<Props, State> {
         this.props.removeLesson(this.props.semester, lesson.moduleCode, lesson.lessonType, lesson.classNo);
       }
     } else if (lesson.isAvailable) {
-      this.props.changeLesson(this.props.semester, lesson);
+      this.props.changeLesson(this.props.semester, lesson, this.props.activeLesson!.classNo);
 
       resetScrollPosition();
     } else if (lesson.isActive) {

@@ -122,7 +122,7 @@ function moduleLessonConfig(
       if (!(classNo && lessonType)) return state;
       return {
         ...state,
-        [lessonType]: [classNo],
+        [lessonType]: [...state[lessonType].filter(lesson => lesson !== action.payload.activeLesson), action.payload.classNo],
       };
     }
     case SET_LESSON_CONFIG:
