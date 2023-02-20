@@ -146,6 +146,15 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
                     </>
                   )}
 
+                  {module.prerequisiteAdvisory && (
+                    <>
+                      <dt>Prerequisite Advisory</dt>
+                      <dd>
+                        <LinkModuleCodes>{module.prerequisiteAdvisory}</LinkModuleCodes>
+                      </dd>
+                    </>
+                  )}
+
                   {module.corequisite && (
                     <>
                       <dt>Corequisite</dt>
@@ -192,6 +201,10 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
               </div>
 
               <div className="col-sm-4">
+                <div className={styles.gradingBasisDescription}>
+                  <h3 className={styles.descriptionHeading}>Grading Basis</h3>
+                  <p>{module.gradingBasisDescription ?? 'Information not available.'}</p>
+                </div>
                 {sortBy(module.semesterData, (semester) => semester.semester).map((semester) => (
                   <div key={semester.semester} className={styles.exam}>
                     <h3 className={styles.descriptionHeading}>
@@ -245,7 +258,10 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
             </section>
           </div>
 
-          <section className={styles.section} id={SIDE_MENU_ITEMS.prerequisites}>
+          {/* Disabled for now because a new parser needs to be written to
+          process the new updated requisite string. */}
+
+          {/* <section className={styles.section} id={SIDE_MENU_ITEMS.prerequisites}>
             <h2 className={styles.sectionHeading}>Prerequisite Tree</h2>
             <ErrorBoundary>
               <ModuleTree
@@ -254,6 +270,14 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
                 fulfillRequirements={module.fulfillRequirements}
               />
             </ErrorBoundary>
+          </section> */}
+
+          <section className={styles.section} id={SIDE_MENU_ITEMS.prerequisites}>
+            <h2 className={styles.sectionHeading}>Prerequisite Tree</h2>
+            <p>
+              The prerequisite tree is now being improved to support the new (and more accurate)
+              prerequisite information provided by NUS. It will be back soon!
+            </p>
           </section>
 
           <section className={styles.section} id={SIDE_MENU_ITEMS.timetable}>
