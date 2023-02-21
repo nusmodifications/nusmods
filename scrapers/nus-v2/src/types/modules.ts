@@ -119,11 +119,16 @@ export type Module = {
   workload?: Workload;
   aliases?: ModuleCode[];
   attributes?: NUSModuleAttributes;
+  gradingBasisDescription?: string;
 
   // Requsites
   prerequisite?: string;
+  prerequisiteRule?: string;
+  prerequisiteAdvisory?: string;
   corequisite?: string;
+  corequisiteRule?: string;
   preclusion?: string;
+  preclusionRule?: string;
 
   // Semester data
   semesterData: SemesterData[];

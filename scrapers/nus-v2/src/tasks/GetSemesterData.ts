@@ -124,9 +124,14 @@ export function cleanModuleInfo(module: SemesterModule) {
   // to be nullable
   cleanedModule = removeEmptyValues(cleanedModule, [
     'workload',
+    'gradingBasisDescription',
     'prerequisite',
+    'prerequisiteRule',
+    'prerequisiteAdvisory',
     'corequisite',
+    'corequisiteRule',
     'preclusion',
+    'preclusionRule',
   ]);
 
   // Remove whitespace from some string values
@@ -180,9 +185,14 @@ const mapModuleInfo = (
     AcademicGroup,
     CourseTitle,
     WorkLoadHours,
+    GradingBasisDesc,
     Preclusion,
+    PreclusionRule,
     PreRequisite,
+    PreRequisiteRule,
+    PreRequisiteAdvisory,
     CoRequisite,
+    CoRequisiteRule,
     ModularCredit,
     Description,
     Subject,
@@ -197,13 +207,18 @@ const mapModuleInfo = (
   return {
     acadYear: AcadYear,
     preclusion: Preclusion,
+    preclusionRule: PreclusionRule,
     description: Description,
     title: CourseTitle,
     department: departmentMap[AcademicOrganisation.Code],
     faculty: facultyMap[AcademicGroup.Code],
     workload: parseWorkload(WorkLoadHours),
+    gradingBasisDescription: GradingBasisDesc,
     prerequisite: PreRequisite,
+    prerequisiteRule: PreRequisiteRule,
+    prerequisiteAdvisory: PreRequisiteAdvisory,
     corequisite: CoRequisite,
+    corequisiteRule: CoRequisiteRule,
     moduleCredit: ModularCredit,
     moduleCode: Subject + CatalogNumber,
     attributes: mapAttributes(ModuleAttributes, logger),
