@@ -2,7 +2,7 @@
   "name": "nusmods-mpe-scraper",
   "version": "1.0.0",
   "description": "NUSMods scraper for NUS Module Planning Exercise (MPE)",
-  "author": "Christopher Goh",
+  "author": "Christopher Goh <chris@nusmods.com>",
   "license": "MIT",
   "main": "src/index.ts",
   "repository": "https://github.com/nusmodifications/nusmods",
@@ -15,8 +15,8 @@
     "typescript": "^4.9.5"
   },
   "scripts": {
-    "scrape": "node build/index.js",
-    "dev": "yarn build && node build/index.js",
+    "scrape": "node build/src/index.js",
+    "dev": "yarn build && node build/src/index.js",
     "build": "tsc",
     "lint": "tsc && yarn lint:code",
     "lint:code": "eslint --ext .js,.ts src"
