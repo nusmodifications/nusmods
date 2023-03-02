@@ -44,11 +44,13 @@ type GetDepartmentsResponseData = {
   Description: string;
 };
 
+// Set everything to optional because we cannot trust the API to be consistent
 type Module = {
   CourseTitle?: string;
   ModularCredit?: string;
   Subject?: string;
   CatalogNumber?: string;
+  PrintCatalog?: string;
   ModuleAttributes?: {
     CourseAttribute: string;
     CourseAttributeValue: string;
@@ -104,8 +106,14 @@ const scraper = async () => {
         !module.ModularCredit ||
         !module.Subject ||
         !module.CatalogNumber ||
-        !module.ModuleAttributes
+        !module.ModuleAttributes ||
+        !module.PrintCatalog
       ) {
+        continue;
+      }
+
+      // Filter out hidden modules
+      if (module.PrintCatalog !== 'Y') {
         continue;
       }
 
@@ -148,8 +156,8 @@ const scraper = async () => {
   }
 
   console.log(`Collated ${collatedMpeModules.length} modules.`);
-  const DATA_DIR = path.join(__dirname, '../data');
-  const OLD_DATA_DIR = path.join(__dirname, '../data/old');
+  const DATA_DIR = path.join(__dirname, '../../data');
+  const OLD_DATA_DIR = path.join(DATA_DIR, '/old');
   if (!fs.existsSync(DATA_DIR)) {
     fs.mkdirSync(DATA_DIR);
   }
