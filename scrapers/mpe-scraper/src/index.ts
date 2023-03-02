@@ -78,7 +78,7 @@ const scraper = async () => {
   );
   const departmentsData = getDepartmentsResponse.data.data;
 
-  const collatedMpeModules: MPEModule[] = [];
+  const collatedMpeModulesMap = new Map<string, MPEModule>();
   console.log(`Total departments: ${departmentsData.length}`);
   let i = 0;
 
@@ -122,6 +122,12 @@ const scraper = async () => {
 
       const moduleTitle = module.CourseTitle;
       const moduleCode = `${module.Subject}${module.CatalogNumber}`;
+
+      // Filter duplicate modules
+      if (collatedMpeModulesMap.has(moduleCode)) {
+        continue;
+      }
+
       const moduleCredit = module.ModularCredit;
       const mpeAttribute = module.ModuleAttributes.find(
         (attribute) => attribute.CourseAttribute === 'MPE',
@@ -154,9 +160,11 @@ const scraper = async () => {
           );
           break;
       }
-      collatedMpeModules.push(mpeModuleToAdd);
+      collatedMpeModulesMap.set(moduleCode, mpeModuleToAdd);
     }
   }
+
+  const collatedMpeModules = Array.from(collatedMpeModulesMap.values());
 
   console.log(`Collated ${collatedMpeModules.length} modules.`);
   const DATA_DIR = path.join(__dirname, '../../data');
