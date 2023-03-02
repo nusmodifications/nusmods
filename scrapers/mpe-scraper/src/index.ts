@@ -1,6 +1,7 @@
 import axios from 'axios';
 import env from '../env.json';
 import fs from 'fs';
+import path from 'path';
 
 // Configure this!
 const term = '2310';
@@ -13,6 +14,23 @@ axios.defaults.headers.common = {
   'X-STUDENT-API': env['studentKey'],
   'X-APP-API': env['appKey'],
 };
+
+function getTimestampForFilename(): string {
+  function pad2(n: number): string {
+    return n < 10 ? '0' + n : String(n);
+  }
+
+  const date = new Date();
+
+  return (
+    date.getFullYear().toString() +
+    pad2(date.getMonth() + 1) +
+    pad2(date.getDate()) +
+    pad2(date.getHours()) +
+    pad2(date.getMinutes()) +
+    pad2(date.getSeconds())
+  );
+}
 
 type ApiResponse<T> = {
   msg: string;
@@ -130,8 +148,20 @@ const scraper = async () => {
   }
 
   console.log(`Collated ${collatedMpeModules.length} modules.`);
-  // Write to a file with dd-mm-yyyy-hh-mm-ss.json
-  fs.writeFileSync('mpeModules.json', JSON.stringify(collatedMpeModules));
+  const DATA_DIR = path.join(__dirname, '../data');
+  const OLD_DATA_DIR = path.join(__dirname, '../data/old');
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR);
+  }
+  if (!fs.existsSync(OLD_DATA_DIR)) {
+    fs.mkdirSync(OLD_DATA_DIR);
+  }
+
+  fs.writeFileSync(path.join(DATA_DIR, 'mpeModules.json'), JSON.stringify(collatedMpeModules));
+  fs.writeFileSync(
+    path.join(OLD_DATA_DIR, `mpeModules-${getTimestampForFilename()}.json`),
+    JSON.stringify(collatedMpeModules),
+  );
   console.log(`Wrote ${collatedMpeModules.length} modules to mpeModules.json.`);
   console.log('Done!');
 };
