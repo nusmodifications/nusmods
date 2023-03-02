@@ -6,8 +6,8 @@ import path from 'path';
 // Configure this!
 const term = '2310';
 // Sanity check to see if there are at least this many modules before overwriting mpeModules.json
-// The last time I ran this fully there were 10092 modules
-const threshold = 7000;
+// The last time I ran this fully there were 3418 modules
+const threshold = 1500;
 
 const baseUrl = env['baseUrl'].endsWith('/') ? env['baseUrl'].slice(0, -1) : env['baseUrl'];
 
