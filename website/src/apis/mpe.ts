@@ -58,7 +58,7 @@ export const getLoginState = (location: Location, history: History): boolean => 
 
 export const fetchMpeModuleList = (): Promise<MpeModule[]> =>
   // Using MPE_AY instead to fetch from the respective AY's scraper
-  axios.get<MpeModule[]>(NUSModsApi.mpeModuleListUrl(MPE_AY)).then((resp) => resp.data);
+  axios.get<MpeModule[]>(NUSModsApi.mpeModuleListUrl()).then((resp) => resp.data);
 
 export const getSSOLink = (): Promise<string> =>
   mpe
