@@ -5,6 +5,9 @@ import path from 'path';
 
 // Configure this!
 const term = '2310';
+// Sanity check to see if there are at least this many modules before overwriting mpeModules.json
+// The last time I ran this fully there were 10092 modules
+const threshold = 7000;
 
 const baseUrl = env['baseUrl'].endsWith('/') ? env['baseUrl'].slice(0, -1) : env['baseUrl'];
 
@@ -165,12 +168,17 @@ const scraper = async () => {
     fs.mkdirSync(OLD_DATA_DIR);
   }
 
-  fs.writeFileSync(path.join(DATA_DIR, 'mpeModules.json'), JSON.stringify(collatedMpeModules));
-  fs.writeFileSync(
-    path.join(OLD_DATA_DIR, `mpeModules-${getTimestampForFilename()}.json`),
-    JSON.stringify(collatedMpeModules),
-  );
-  console.log(`Wrote ${collatedMpeModules.length} modules to mpeModules.json.`);
+  if (collatedMpeModules.length >= threshold) {
+    fs.writeFileSync(path.join(DATA_DIR, 'mpeModules.json'), JSON.stringify(collatedMpeModules));
+    console.log(`Wrote ${collatedMpeModules.length} modules to mpeModules.json.`);
+  } else {
+    console.log(
+      `Not writing to mpeModules.json because the number of modules ${collatedMpeModules.length} is less than the threshold of ${threshold}.`,
+    );
+  }
+  const archiveFilename = `mpeModules-${getTimestampForFilename()}.json`;
+  fs.writeFileSync(path.join(OLD_DATA_DIR, archiveFilename), JSON.stringify(collatedMpeModules));
+  console.log(`Wrote ${collatedMpeModules.length} modules to archive ${archiveFilename}.`);
   console.log('Done!');
 };
 
