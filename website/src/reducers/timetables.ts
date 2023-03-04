@@ -1,10 +1,10 @@
 import { get, omit, values } from 'lodash';
 import produce from 'immer';
-import { createMigrate } from 'redux-persist';
+import { createMigrate, PersistedState } from 'redux-persist';
 
 import { PersistConfig } from 'storage/persistReducer';
 import { ModuleCode } from 'types/modules';
-import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
+import { ModuleLessonConfig, SemTimetableConfig, TimetableConfig } from 'types/timetables';
 import { ColorMapping, TimetablesState } from 'types/reducers';
 
 import config from 'config';
@@ -22,6 +22,46 @@ import { getNewColor } from 'utils/colors';
 import { SET_EXPORTED_DATA } from 'actions/constants';
 import { Actions } from '../types/actions';
 
+// Migration from state V1 -> V2
+type TimetableStateV1 = Omit<TimetablesState, 'lessons'> & {
+  lessons: { [semester: string]: {[moduleCode: string]: {[lessonType: string]: string}} };
+};
+export function migrateV1toV2(
+  oldState: TimetableStateV1 & PersistedState,
+): TimetablesState & PersistedState {
+  let newLessons: TimetableConfig = {};
+  const oldLessons = oldState.lessons;
+  
+  for (const semester in oldLessons) {
+    for (const moduleCode in oldLessons[semester]) {
+      // Create a new object with the new type
+      const newSemester: {[moduleCode: string]: {[lessonType: string]: string[]}} = {
+        [moduleCode]: {}
+      };
+  
+      for (const lessonType in oldLessons[semester][moduleCode]) {
+        // Convert the string value to an array of strings
+        const lessonValue = oldLessons[semester][moduleCode][lessonType];
+        const lessonArray = [lessonValue];
+  
+        // Add the array to the new object
+        newSemester[moduleCode][lessonType] = lessonArray;
+      }
+  
+      // Add the new object to the new object with the new type
+      if (!newLessons[semester]) {
+        newLessons[semester] = {};
+      }
+      Object.assign(newLessons[semester], newSemester);
+    }
+  }
+
+  return {
+    ...oldState,
+    lessons: newLessons,
+  };
+}
+
 export const persistConfig = {
   /* eslint-disable no-useless-computed-key */
   migrate: createMigrate({
@@ -34,9 +74,10 @@ export const persistConfig = {
       // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
       _persist: state?._persist!,
     }),
+    [2]: migrateV1toV2 as any,
   }),
   /* eslint-enable */
-  version: 1,
+  version: 2,
 
   // Our own state reconciler archives old timetables if the acad year is different,
   // otherwise use the persisted timetable state
