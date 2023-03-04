@@ -1,4 +1,4 @@
-import reducer, { defaultTimetableState, persistConfig } from 'reducers/timetables';
+import reducer, { defaultTimetableState, migrateV1toV2, persistConfig } from 'reducers/timetables';
 import {
   ADD_MODULE,
   hideLessonInTimetable,
@@ -237,5 +237,58 @@ describe('stateReconciler', () => {
         '2016/2017': oldLessons,
       },
     });
+  });
+});
+
+describe('redux schema migration', () => {
+  const reduxDataV1 = {
+    lessons: {
+      [1]: {
+        CS1010S: {
+          Lecture: '1',
+          Recitation: '2',
+        },
+      },
+      [2]: {
+        CS3217: {
+          Lecture: '1',
+        },
+      },
+    },
+    colors: {},
+    hidden: {},
+    academicYear: '2022/2023',
+    archive: {},
+    _persist: {
+      version: 2,
+      rehydrated: false,
+    },
+  };
+
+  const reduxDataV2 = {
+    lessons: {
+      [1]: {
+        CS1010S: {
+          Lecture: ['1'],
+          Recitation: ['2'],
+        },
+      },
+      [2]: {
+        CS3217: {
+          Lecture: ['1'],
+        },
+      },
+    },
+    colors: {},
+    hidden: {},
+    academicYear: '2022/2023',
+    archive: {},
+    _persist: {
+      version: 2,
+      rehydrated: false,
+    },
+  };
+  test('should migrate from V1 to V2', () => {
+    expect(migrateV1toV2(reduxDataV1)).toEqual(reduxDataV2);
   });
 });
