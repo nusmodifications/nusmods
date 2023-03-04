@@ -24,25 +24,25 @@ import { Actions } from '../types/actions';
 
 // Migration from state V1 -> V2
 type TimetableStateV1 = Omit<TimetablesState, 'lessons'> & {
-  lessons: { [semester: string]: {[moduleCode: string]: {[lessonType: string]: string}} };
+  lessons: { [semester: string]: { [moduleCode: string]: { [lessonType: string]: string } } };
 };
 export function migrateV1toV2(
   oldState: TimetableStateV1 & PersistedState,
 ): TimetablesState & PersistedState {
   const newLessons: TimetableConfig = {};
   const oldLessons = oldState.lessons;
-  
+
   Object.entries(oldLessons).forEach(([semester, modules]) => {
     Object.entries(modules).forEach(([moduleCode, lessons]) => {
-      const newSemester: {[moduleCode: string]: {[lessonType: string]: string[]}} = {
-        [moduleCode]: {}
+      const newSemester: { [moduleCode: string]: { [lessonType: string]: string[] } } = {
+        [moduleCode]: {},
       };
-  
+
       Object.entries(lessons).forEach(([lessonType, lessonValue]) => {
         const lessonArray = [lessonValue];
         newSemester[moduleCode][lessonType] = lessonArray;
       });
-  
+
       if (!newLessons[semester]) {
         newLessons[semester] = {};
       }
@@ -68,6 +68,8 @@ export const persistConfig = {
       // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
       _persist: state?._persist!,
     }),
+    // Same as planner.ts
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [2]: migrateV1toV2 as any,
   }),
   /* eslint-enable */
