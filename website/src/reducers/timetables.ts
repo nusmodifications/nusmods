@@ -42,7 +42,6 @@ export function migrateV1toV2(
         const lessonArray = [lessonValue];
         newSemester[moduleCode][lessonType] = lessonArray;
       });
-
       if (!newLessons[semester]) {
         newLessons[semester] = {};
       }
