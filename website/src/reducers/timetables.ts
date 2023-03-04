@@ -29,32 +29,26 @@ type TimetableStateV1 = Omit<TimetablesState, 'lessons'> & {
 export function migrateV1toV2(
   oldState: TimetableStateV1 & PersistedState,
 ): TimetablesState & PersistedState {
-  let newLessons: TimetableConfig = {};
+  const newLessons: TimetableConfig = {};
   const oldLessons = oldState.lessons;
   
-  for (const semester in oldLessons) {
-    for (const moduleCode in oldLessons[semester]) {
-      // Create a new object with the new type
+  Object.entries(oldLessons).forEach(([semester, modules]) => {
+    Object.entries(modules).forEach(([moduleCode, lessons]) => {
       const newSemester: {[moduleCode: string]: {[lessonType: string]: string[]}} = {
         [moduleCode]: {}
       };
   
-      for (const lessonType in oldLessons[semester][moduleCode]) {
-        // Convert the string value to an array of strings
-        const lessonValue = oldLessons[semester][moduleCode][lessonType];
+      Object.entries(lessons).forEach(([lessonType, lessonValue]) => {
         const lessonArray = [lessonValue];
-  
-        // Add the array to the new object
         newSemester[moduleCode][lessonType] = lessonArray;
-      }
+      });
   
-      // Add the new object to the new object with the new type
       if (!newLessons[semester]) {
         newLessons[semester] = {};
       }
       Object.assign(newLessons[semester], newSemester);
-    }
-  }
+    });
+  });
 
   return {
     ...oldState,
