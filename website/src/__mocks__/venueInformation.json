@@ -914,5 +914,141 @@
       "classes": [],
       "availability": {}
     }
+  ],
+  "AS6-0333": [
+    {
+      "day": "Monday",
+      "classes": [
+        {
+          "classNo": "1",
+          "startTime": "1800",
+          "endTime": "2100",
+          "weeks": [2, 3, 4, 5, 6, 7, 8],
+          "day": "Monday",
+          "lessonType": "Seminar-Style Module Class",
+          "size": 20,
+          "moduleCode": "CSA6880"
+        }
+      ],
+      "availability": {
+        "1800": "occupied",
+        "1830": "occupied",
+        "1900": "occupied",
+        "1930": "occupied",
+        "2000": "occupied",
+        "2030": "occupied"
+      }
+    },
+    {
+      "day": "Wednesday",
+      "classes": [
+        {
+          "classNo": "1",
+          "startTime": "1800",
+          "endTime": "2100",
+          "weeks": [2, 3, 4, 5, 6, 7, 8],
+          "day": "Wednesday",
+          "lessonType": "Seminar-Style Module Class",
+          "size": 20,
+          "moduleCode": "CSA6880"
+        },
+        {
+          "classNo": "W2",
+          "startTime": "1600",
+          "endTime": "1800",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Wednesday",
+          "lessonType": "Tutorial",
+          "size": 12,
+          "moduleCode": "GET1008/​GEX1005"
+        }
+      ],
+      "availability": {
+        "1600": "occupied",
+        "1630": "occupied",
+        "1700": "occupied",
+        "1730": "occupied",
+        "1800": "occupied",
+        "1830": "occupied",
+        "1900": "occupied",
+        "1930": "occupied",
+        "2000": "occupied",
+        "2030": "occupied"
+      }
+    },
+    {
+      "day": "Thursday",
+      "classes": [
+        {
+          "classNo": "1",
+          "startTime": "1800",
+          "endTime": "2100",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Thursday",
+          "lessonType": "Seminar-Style Module Class",
+          "size": 15,
+          "moduleCode": "NM6103"
+        }
+      ],
+      "availability": {
+        "1800": "occupied",
+        "1830": "occupied",
+        "1900": "occupied",
+        "1930": "occupied",
+        "2000": "occupied",
+        "2030": "occupied"
+      }
+    },
+    {
+      "day": "Tuesday",
+      "classes": [
+        {
+          "classNo": "W12",
+          "startTime": "0800",
+          "endTime": "1000",
+          "weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Tuesday",
+          "lessonType": "Tutorial",
+          "size": 12,
+          "moduleCode": "GET1008/​GEX1005"
+        },
+        {
+          "classNo": "W4",
+          "startTime": "1000",
+          "endTime": "1200",
+          "weeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Tuesday",
+          "lessonType": "Tutorial",
+          "size": 12,
+          "moduleCode": "GET1008/​GEX1005"
+        },
+        {
+          "classNo": "1",
+          "startTime": "1800",
+          "endTime": "2100",
+          "weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+          "day": "Tuesday",
+          "lessonType": "Seminar-Style Module Class",
+          "size": 10,
+          "moduleCode": "NM6770/​CSA6770"
+        }
+      ],
+      "availability": {
+        "1000": "occupied",
+        "1030": "occupied",
+        "1100": "occupied",
+        "1130": "occupied",
+        "1800": "occupied",
+        "1830": "occupied",
+        "1900": "occupied",
+        "1930": "occupied",
+        "2000": "occupied",
+        "2030": "occupied",
+        "0800": "occupied",
+        "0830": "occupied",
+        "0900": "occupied",
+        "0930": "occupied"
+      }
+    }
   ]
 }
