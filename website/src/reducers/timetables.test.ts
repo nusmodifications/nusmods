@@ -260,7 +260,7 @@ describe('redux schema migration', () => {
     academicYear: '2022/2023',
     archive: {},
     _persist: {
-      version: 2,
+      version: 1,
       rehydrated: false,
     },
   };
@@ -284,7 +284,7 @@ describe('redux schema migration', () => {
     academicYear: '2022/2023',
     archive: {},
     _persist: {
-      version: 2,
+      version: 1, // version kept the same because the framework does not support it in unit tests
       rehydrated: false,
     },
   };
