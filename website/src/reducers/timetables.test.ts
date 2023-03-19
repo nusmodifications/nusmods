@@ -1,4 +1,4 @@
-import reducer, { defaultTimetableState, persistConfig } from 'reducers/timetables';
+import reducer, { defaultTimetableState, migrateV1toV2, persistConfig } from 'reducers/timetables';
 import {
   ADD_MODULE,
   hideLessonInTimetable,
@@ -125,41 +125,41 @@ describe('lesson reducer', () => {
           lessons: {
             [1]: {
               CS1010S: {
-                Lecture: '1',
-                Recitation: '2',
+                Lecture: ['1'],
+                Recitation: ['2'],
               },
               CS3216: {
-                Lecture: '1',
+                Lecture: ['1'],
               },
             },
             [2]: {
               CS3217: {
-                Lecture: '1',
+                Lecture: ['1'],
               },
             },
           },
         },
         setLessonConfig(1, 'CS1010S', {
-          Lecture: '2',
-          Recitation: '3',
-          Tutorial: '4',
+          Lecture: ['2'],
+          Recitation: ['3'],
+          Tutorial: ['4'],
         }),
       ),
     ).toMatchObject({
       lessons: {
         [1]: {
           CS1010S: {
-            Lecture: '2',
-            Recitation: '3',
-            Tutorial: '4',
+            Lecture: ['2'],
+            Recitation: ['3'],
+            Tutorial: ['4'],
           },
           CS3216: {
-            Lecture: '1',
+            Lecture: ['1'],
           },
         },
         [2]: {
           CS3217: {
-            Lecture: '1',
+            Lecture: ['1'],
           },
         },
       },
@@ -172,7 +172,7 @@ describe('stateReconciler', () => {
     '2015/2016': {
       [1]: {
         GET1006: {
-          Lecture: '1',
+          Lecture: ['1'],
         },
       },
     },
@@ -181,13 +181,13 @@ describe('stateReconciler', () => {
   const oldLessons = {
     [1]: {
       CS1010S: {
-        Lecture: '1',
-        Recitation: '2',
+        Lecture: ['1'],
+        Recitation: ['2'],
       },
     },
     [2]: {
       CS3217: {
-        Lecture: '1',
+        Lecture: ['1'],
       },
     },
   };
@@ -237,5 +237,58 @@ describe('stateReconciler', () => {
         '2016/2017': oldLessons,
       },
     });
+  });
+});
+
+describe('redux schema migration', () => {
+  const reduxDataV1 = {
+    lessons: {
+      [1]: {
+        CS1010S: {
+          Lecture: '1',
+          Recitation: '2',
+        },
+      },
+      [2]: {
+        CS3217: {
+          Lecture: '1',
+        },
+      },
+    },
+    colors: {},
+    hidden: {},
+    academicYear: '2022/2023',
+    archive: {},
+    _persist: {
+      version: 1,
+      rehydrated: false,
+    },
+  };
+
+  const reduxDataV2 = {
+    lessons: {
+      [1]: {
+        CS1010S: {
+          Lecture: ['1'],
+          Recitation: ['2'],
+        },
+      },
+      [2]: {
+        CS3217: {
+          Lecture: ['1'],
+        },
+      },
+    },
+    colors: {},
+    hidden: {},
+    academicYear: '2022/2023',
+    archive: {},
+    _persist: {
+      version: 1, // version kept the same because the framework does not support it in unit tests
+      rehydrated: false,
+    },
+  };
+  test('should migrate from V1 to V2', () => {
+    expect(migrateV1toV2(reduxDataV1)).toEqual(reduxDataV2);
   });
 });

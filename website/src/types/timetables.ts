@@ -2,7 +2,7 @@ import { ClassNo, LessonType, ModuleCode, ModuleTitle, RawLesson } from './modul
 
 //  ModuleLessonConfig is a mapping of lessonType to ClassNo for a module.
 export type ModuleLessonConfig = {
-  [lessonType: string]: ClassNo;
+  [lessonType: string]: ClassNo[];
 };
 
 // SemTimetableConfig is the timetable data for each semester.
