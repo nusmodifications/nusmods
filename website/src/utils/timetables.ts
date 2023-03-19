@@ -76,6 +76,7 @@ export const LESSON_ABBREV_TYPE: { [key: string]: LessonType } = invert(LESSON_T
 // See: https://stackoverflow.com/a/31300627
 export const LESSON_TYPE_SEP = ':';
 export const LESSON_SEP = ',';
+export const SAME_LESSON_SEP = ';';
 
 const EMPTY_OBJECT = {};
 
@@ -103,8 +104,9 @@ export function randomModuleLessonConfig(lessons: readonly RawLesson[]): ModuleL
 
   return mapValues(
     lessonByGroupsByClassNo,
-    (group: { [classNo: string]: readonly RawLesson[] }) =>
+    (group: { [classNo: string]: readonly RawLesson[] }) => [
       (first(sample(group)) as RawLesson).classNo,
+    ],
   );
 }
 
@@ -121,11 +123,12 @@ export function hydrateSemTimetableWithLessons(
       if (!module) return EMPTY_OBJECT;
 
       // TODO: Split this part into a smaller function: hydrateModuleConfigWithLessons.
-      return mapValues(moduleLessonConfig, (classNo: ClassNo, lessonType: LessonType) => {
+      return mapValues(moduleLessonConfig, (classNos: ClassNo[], lessonType: LessonType) => {
         const lessons = getModuleTimetable(module, semester);
         const newLessons = lessons.filter(
           (lesson: RawLesson): boolean =>
-            lesson.lessonType === lessonType && lesson.classNo === classNo,
+            lesson.lessonType === lessonType &&
+            classNos.some((classNo) => classNo === lesson.classNo),
         );
 
         const timetableLessons: Lesson[] = newLessons.map(
@@ -337,11 +340,14 @@ export function validateModuleLessons(
     // - classNo is not valid anymore (ie. the class was removed)
     //
     // If a lesson type is removed, then it simply won't be copied over
-    if (!lessons.some((lesson) => lesson.classNo === classNo)) {
-      validatedLessonConfig[lessonType] = lessons[0].classNo;
+    const filteredClasses =
+      classNo &&
+      classNo.filter((classNum) => lessons.some((lesson) => lesson.classNo === classNum));
+    if (!classNo || filteredClasses.length === 0) {
+      validatedLessonConfig[lessonType] = [lessons[0].classNo];
       updatedLessonTypes.push(lessonType);
     } else {
-      validatedLessonConfig[lessonType] = classNo;
+      validatedLessonConfig[lessonType] = filteredClasses;
     }
   });
 
@@ -359,9 +365,11 @@ export function getSemesterModules(
 }
 
 function serializeModuleConfig(config: ModuleLessonConfig): string {
-  // eg. { Lecture: 1, Laboratory: 2 } => LEC=1,LAB=2
+  // eg. { Lecture: 1, Laboratory: 2, Laboratory: 3 } => LEC=1,LAB=2;3
   return map(config, (classNo, lessonType) =>
-    [LESSON_TYPE_ABBREV[lessonType], encodeURIComponent(classNo)].join(LESSON_TYPE_SEP),
+    [LESSON_TYPE_ABBREV[lessonType], encodeURIComponent(classNo.join(SAME_LESSON_SEP))].join(
+      LESSON_TYPE_SEP,
+    ),
   ).join(LESSON_SEP);
 }
 
@@ -375,7 +383,7 @@ function parseModuleConfig(serialized: string | string[] | null): ModuleLessonCo
       const lessonType = LESSON_ABBREV_TYPE[lessonTypeAbbr];
       // Ignore unparsable/invalid keys
       if (!lessonType) return;
-      config[lessonType] = classNo;
+      config[lessonType] = classNo.split(SAME_LESSON_SEP);
     });
   });
 
