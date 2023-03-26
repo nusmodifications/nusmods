@@ -130,7 +130,7 @@
     "@sentry/node": "6.0.2",
     "@sentry/tracing": "6.0.2",
     "@tippy.js/react": "3.1.1",
-    "axios": "0.21.1",
+    "axios": "0.21.2",
     "body-scroll-lock": "3.1.5",
     "bootstrap": "4.5.3",
     "bowser": "2.11.0",
