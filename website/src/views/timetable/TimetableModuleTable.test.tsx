@@ -3,9 +3,9 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import { CS1010S, CS3216, CS4243 } from '__mocks__/modules';
 import { addColors } from 'test-utils/theme';
 
+import * as redux from 'react-redux';
 import { TimetableModulesTableComponent, Props } from './TimetableModulesTable';
 import styles from './TimetableModulesTable.scss';
-import * as redux from 'react-redux'
 
 function make(props: Partial<Props> = {}) {
   const selectModuleColor = jest.fn();
@@ -17,8 +17,8 @@ function make(props: Partial<Props> = {}) {
   const addCustomModule = jest.fn();
   const removeCustomModule = jest.fn();
 
-  const beta = jest.spyOn(redux, 'useSelector')
-  beta.mockReturnValue(false)
+  const beta = jest.spyOn(redux, 'useSelector');
+  beta.mockReturnValue(false);
 
   const wrapper = shallow(
     <TimetableModulesTableComponent
@@ -34,11 +34,11 @@ function make(props: Partial<Props> = {}) {
       onRemoveModule={onRemoveModule}
       resetTombstone={resetTombstone}
       customiseLesson={customiseLesson}
-      customiseModule=''
+      customiseModule=""
       addCustomModule={addCustomModule}
       removeCustomModule={removeCustomModule}
       {...props}
-    />
+    />,
   );
 
   return {

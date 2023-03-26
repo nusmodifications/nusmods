@@ -42,4 +42,4 @@ export const getSemesterTimetableColors = createSelector(
 export const getCustomisingLesson = createSelector(
   ({ app }: State) => app.customiseModule,
   (customiseModule) => customiseModule ?? null,
-)
+);

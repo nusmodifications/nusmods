@@ -4,9 +4,9 @@ import { HoverLesson, ModifiableLesson } from 'types/timetables';
 import { OnHoverCell, OnModifyCell } from 'types/views';
 
 import { convertTimeToIndex } from 'utils/timify';
+import { ModuleCode } from 'types/modules';
 import styles from './TimetableRow.scss';
 import TimetableCell from './TimetableCell';
-import { ModuleCode } from 'types/modules';
 
 type Props = {
   verticalMode: boolean;

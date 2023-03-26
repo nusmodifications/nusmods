@@ -16,10 +16,10 @@ import elements from 'views/elements';
 import withTimer, { TimerData } from 'views/hocs/withTimer';
 
 import { TimePeriod } from 'types/venues';
+import { ModuleCode } from 'types/modules';
 import styles from './Timetable.scss';
 import TimetableTimings from './TimetableTimings';
 import TimetableDay from './TimetableDay';
-import { ModuleCode } from 'types/modules';
 
 type Props = TimerData & {
   lessons: TimetableArrangement;

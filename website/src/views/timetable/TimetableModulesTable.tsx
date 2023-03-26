@@ -10,14 +10,17 @@ import { ColorIndex } from 'types/timetables';
 import { ModuleCode, Semester } from 'types/modules';
 import { State, State as StoreState } from 'types/state';
 import { ModuleTableOrder } from 'types/reducers';
-import { customiseLesson, addCustomModule, removeCustomModule } from 'actions/timetables';
-import ColorPicker from 'views/components/ColorPicker';
-import { Eye, EyeOff, Trash, Tool, Check } from 'react-feather';
 import {
+  customiseLesson,
+  addCustomModule,
+  removeCustomModule,
   hideLessonInTimetable,
   selectModuleColor,
   showLessonInTimetable,
 } from 'actions/timetables';
+import ColorPicker from 'views/components/ColorPicker';
+import { Eye, EyeOff, Trash, Tool, Check } from 'react-feather';
+
 import { getExamDate, getFormattedExamDate, renderMCs } from 'utils/modules';
 import { intersperse } from 'utils/array';
 import { BULLET_NBSP } from 'utils/react';
@@ -61,70 +64,78 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
 
     return (
       <div className={styles.moduleActionButtons}>
-        {props.customiseModule == module.moduleCode 
-          ? <Tooltip content={doneBtnLabel} touch="hold">
+        {props.customiseModule === module.moduleCode ? (
+          <Tooltip content={doneBtnLabel} touch="hold">
             <button
               type="button"
               className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
               aria-label={removeBtnLabel}
               onClick={() => {
-                props.customiseLesson(semester, "");
+                props.customiseLesson(semester, '');
               }}
             >
               <Check className={styles.actionIcon} />
             </button>
           </Tooltip>
-          : <div className="btn-group">
-          <Tooltip content={removeBtnLabel} touch="hold">
-            <button
-              type="button"
-              className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
-              aria-label={removeBtnLabel}
-              onClick={() => {
-                props.onRemoveModule(module.moduleCode);
-                props.removeCustomModule(semester, module.moduleCode);
-              }}
-            >
-              <Trash className={styles.actionIcon} />
-            </button>
-          </Tooltip>
-          <Tooltip content={hideBtnLabel} touch="hold">
-            <button
-              type="button"
-              className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
-              aria-label={hideBtnLabel}
-              onClick={() => {
-                if (module.hiddenInTimetable) {
-                  props.showLessonInTimetable(semester, module.moduleCode);
-                } else {
-                  props.hideLessonInTimetable(semester, module.moduleCode);
-                }
-              }}
-            >
-              {module.hiddenInTimetable ? (
-                <Eye className={styles.actionIcon} />
-              ) : (
-                <EyeOff className={styles.actionIcon} />
-              )}
-            </button>
-          </Tooltip>
-          {beta && <Tooltip content={customBtnLabel} touch="hold">
-            <button
-              type="button"
-              className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
-              aria-label={customBtnLabel}
-              disabled={props.customiseModule !== "" && props.customiseModule != module.moduleCode}
-              hidden={props.customiseModule !== "" && props.customiseModule != module.moduleCode}
-              onClick={() => {
-                // TODO: add modal for warning 
-                props.addCustomModule(semester, module.moduleCode);
-                props.customiseLesson(semester, module.moduleCode);
-              }}
-            >
-              <Tool className={styles.actionIcon}/>
-            </button>
-          </Tooltip>}
-        </div>}
+        ) : (
+          <div className="btn-group">
+            <Tooltip content={removeBtnLabel} touch="hold">
+              <button
+                type="button"
+                className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
+                aria-label={removeBtnLabel}
+                onClick={() => {
+                  props.onRemoveModule(module.moduleCode);
+                  props.removeCustomModule(semester, module.moduleCode);
+                }}
+              >
+                <Trash className={styles.actionIcon} />
+              </button>
+            </Tooltip>
+            <Tooltip content={hideBtnLabel} touch="hold">
+              <button
+                type="button"
+                className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
+                aria-label={hideBtnLabel}
+                onClick={() => {
+                  if (module.hiddenInTimetable) {
+                    props.showLessonInTimetable(semester, module.moduleCode);
+                  } else {
+                    props.hideLessonInTimetable(semester, module.moduleCode);
+                  }
+                }}
+              >
+                {module.hiddenInTimetable ? (
+                  <Eye className={styles.actionIcon} />
+                ) : (
+                  <EyeOff className={styles.actionIcon} />
+                )}
+              </button>
+            </Tooltip>
+            {beta && (
+              <Tooltip content={customBtnLabel} touch="hold">
+                <button
+                  type="button"
+                  className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
+                  aria-label={customBtnLabel}
+                  disabled={
+                    props.customiseModule !== '' && props.customiseModule !== module.moduleCode
+                  }
+                  hidden={
+                    props.customiseModule !== '' && props.customiseModule !== module.moduleCode
+                  }
+                  onClick={() => {
+                    // TODO: add modal for warning
+                    props.addCustomModule(semester, module.moduleCode);
+                    props.customiseLesson(semester, module.moduleCode);
+                  }}
+                >
+                  <Tool className={styles.actionIcon} />
+                </button>
+              </Tooltip>
+            )}
+          </div>
+        )}
       </div>
     );
   };
@@ -203,7 +214,8 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
 export default connect(
   (state: StoreState) => ({
     moduleTableOrder: state.settings.moduleTableOrder,
-    customiseModule: state.app.customiseModule}),
+    customiseModule: state.app.customiseModule,
+  }),
   {
     selectModuleColor,
     hideLessonInTimetable,

@@ -6,11 +6,11 @@ import { OnHoverCell, OnModifyCell } from 'types/views';
 import { convertTimeToIndex } from 'utils/timify';
 
 import { TimePeriod } from 'types/venues';
+import { ModuleCode } from 'types/modules';
 import styles from './TimetableDay.scss';
 import TimetableRow from './TimetableRow';
 import CurrentTimeIndicator from './CurrentTimeIndicator';
 import TimetableHighlight from './TimetableHighlight';
-import { ModuleCode } from 'types/modules';
 
 type Props = {
   day: string;

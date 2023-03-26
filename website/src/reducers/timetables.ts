@@ -20,7 +20,7 @@ import {
   SET_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
   ADD_CUSTOM_MODULE,
-  REMOVE_CUSTOM_MODULE
+  REMOVE_CUSTOM_MODULE,
 } from 'actions/timetables';
 import { getNewColor } from 'utils/colors';
 import { SET_EXPORTED_DATA } from 'actions/constants';
@@ -122,7 +122,10 @@ function moduleLessonConfig(
       if (!(classNo && lessonType)) return state;
       return {
         ...state,
-        [lessonType]: [...state[lessonType].filter(lesson => lesson !== action.payload.activeLesson), action.payload.classNo],
+        [lessonType]: [
+          ...state[lessonType].filter((lesson) => lesson !== action.payload.activeLesson),
+          action.payload.classNo,
+        ],
       };
     }
     case SET_LESSON_CONFIG:
@@ -140,7 +143,7 @@ function moduleLessonConfig(
       if (!(classNo && lessonType)) return state;
       return {
         ...state,
-        [lessonType]: state[lessonType].filter(lesson => lesson !== classNo),
+        [lessonType]: state[lessonType].filter((lesson) => lesson !== classNo),
       };
     }
     default:
@@ -277,16 +280,19 @@ function timetables(
     case REMOVE_LESSON:
     case SET_LESSON_CONFIG:
     case HIDE_LESSON_IN_TIMETABLE:
-    case SHOW_LESSON_IN_TIMETABLE: 
+    case SHOW_LESSON_IN_TIMETABLE:
     case ADD_CUSTOM_MODULE:
-    case REMOVE_CUSTOM_MODULE:{
+    case REMOVE_CUSTOM_MODULE: {
       const { semester } = action.payload;
 
       return produce(state, (draft) => {
         draft.lessons[semester] = semTimetable(draft.lessons[semester], action);
         draft.colors[semester] = semColors(state.colors[semester], action);
         draft.hidden[semester] = semHiddenModules(state.hidden[semester], action);
-        draft.customisedModules[semester] = customisedModules(state.customisedModules[semester], action);
+        draft.customisedModules[semester] = customisedModules(
+          state.customisedModules[semester],
+          action,
+        );
       });
     }
 

@@ -3,7 +3,12 @@ import { Actions } from 'types/actions';
 import config from 'config';
 
 import { forceRefreshPrompt } from 'utils/debug';
-import { MODIFY_LESSON, CHANGE_LESSON, CANCEL_MODIFY_LESSON, CUSTOMISE_MODULE } from 'actions/timetables';
+import {
+  MODIFY_LESSON,
+  CHANGE_LESSON,
+  CANCEL_MODIFY_LESSON,
+  CUSTOMISE_MODULE,
+} from 'actions/timetables';
 import { SELECT_SEMESTER } from 'actions/settings';
 import {
   OPEN_NOTIFICATION,
@@ -18,7 +23,7 @@ const defaultAppState = (): AppState => ({
   activeSemester: config.semester,
   // The lesson being modified on the timetable.
   activeLesson: null,
-  customiseModule: "",
+  customiseModule: '',
   isOnline: navigator.onLine,
   isFeedbackModalOpen: false,
   promptRefresh: forceRefreshPrompt(),

@@ -87,8 +87,18 @@ type Props = OwnProps & {
   changeLesson: (semester: Semester, lesson: Lesson, activeLesson: ClassNo) => void;
   cancelModifyLesson: () => void;
   undo: () => void;
-  addLesson: (semester: Semester, moduleCode: ModuleCode, lessonType: LessonType, classNo: ClassNo) => void;
-  removeLesson: (semester: Semester, moduleCode: ModuleCode, lessonType: LessonType, classNo: ClassNo) => void;
+  addLesson: (
+    semester: Semester,
+    moduleCode: ModuleCode,
+    lessonType: LessonType,
+    classNo: ClassNo,
+  ) => void;
+  removeLesson: (
+    semester: Semester,
+    moduleCode: ModuleCode,
+    lessonType: LessonType,
+    classNo: ClassNo,
+  ) => void;
 };
 
 type State = {
@@ -170,14 +180,23 @@ class TimetableContent extends React.Component<Props, State> {
         position,
         className: getLessonIdentifier(lesson),
       };
-      console.log(lesson);
       if (lesson.isAvailable) {
-        this.props.addLesson(this.props.semester, lesson.moduleCode, lesson.lessonType, lesson.classNo);
+        this.props.addLesson(
+          this.props.semester,
+          lesson.moduleCode,
+          lesson.lessonType,
+          lesson.classNo,
+        );
       } else if (lesson.isActive) {
-        this.props.removeLesson(this.props.semester, lesson.moduleCode, lesson.lessonType, lesson.classNo);
+        this.props.removeLesson(
+          this.props.semester,
+          lesson.moduleCode,
+          lesson.lessonType,
+          lesson.classNo,
+        );
       }
-    } else if (lesson.isAvailable) {
-      this.props.changeLesson(this.props.semester, lesson, this.props.activeLesson!.classNo);
+    } else if (lesson.isAvailable && this.props.activeLesson) {
+      this.props.changeLesson(this.props.semester, lesson, this.props.activeLesson.classNo);
 
       resetScrollPosition();
     } else if (lesson.isActive) {
@@ -303,21 +322,26 @@ class TimetableContent extends React.Component<Props, State> {
       .filter((lesson) => !this.isHiddenInTimetable(lesson.moduleCode));
 
     if (this.props.customiseModule) {
-      const activeLessons = timetableLessons.filter((lesson) => lesson.moduleCode === this.props.customiseModule,);
+      const activeLessons = timetableLessons.filter(
+        (lesson) => lesson.moduleCode === this.props.customiseModule,
+      );
       timetableLessons = timetableLessons.filter(
         (lesson) => lesson.moduleCode !== this.props.customiseModule,
       );
 
       const module = modules[this.props.customiseModule];
-      let moduleTimetable = getModuleTimetable(module, semester);
+      const moduleTimetable = getModuleTimetable(module, semester);
       moduleTimetable.forEach((lesson) => {
-        const isActiveLesson = activeLessons.filter((timetableLesson) => 
-        timetableLesson.classNo == lesson.classNo && timetableLesson.lessonType == lesson.lessonType
-        ).length > 0
+        const isActiveLesson =
+          activeLessons.filter(
+            (timetableLesson) =>
+              timetableLesson.classNo === lesson.classNo &&
+              timetableLesson.lessonType === lesson.lessonType,
+          ).length > 0;
         const modifiableLesson: Lesson & { isActive?: boolean; isAvailable?: boolean } = {
           ...lesson,
           // Inject module code in
-          moduleCode: this.props.customiseModule!,
+          moduleCode: this.props.customiseModule,
           title: module.title,
           isAvailable: !isActiveLesson,
           isActive: isActiveLesson,
@@ -369,8 +393,7 @@ class TimetableContent extends React.Component<Props, State> {
 
             return {
               ...lesson,
-              isModifiable:
-                this.props.customiseModule
+              isModifiable: this.props.customiseModule
                 ? true
                 : !readOnly && areOtherClassesAvailable(moduleTimetable, lesson.lessonType),
             };
