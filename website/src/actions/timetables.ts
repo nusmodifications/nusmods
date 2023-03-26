@@ -90,7 +90,6 @@ export function modifyLesson(activeLesson: Lesson) {
   };
 }
 
-
 export const CUSTOMISE_MODULE = 'CUSTOMISE_LESSON' as const;
 export function customiseLesson(semester: Semester, moduleCode: ModuleCode) {
   return {
@@ -108,7 +107,7 @@ export function setLesson(
   moduleCode: ModuleCode,
   lessonType: LessonType,
   classNo: ClassNo,
-  activeLesson: ClassNo
+  activeLesson: ClassNo,
 ) {
   return {
     type: CHANGE_LESSON,
@@ -117,7 +116,7 @@ export function setLesson(
       moduleCode,
       lessonType,
       classNo,
-      activeLesson
+      activeLesson,
     },
   };
 }
@@ -238,8 +237,12 @@ export function validateTimetable(semester: Semester) {
       if (!module) return;
 
       // If the module is customised, we do not validate it
-      if (timetables.customisedModules[semester].includes(moduleCode)) {
-        return
+      if (
+        timetables.customisedModules &&
+        timetables.customisedModules[semester] &&
+        timetables.customisedModules[semester].includes(moduleCode)
+      ) {
+        return;
       }
       const [validatedLessonConfig, changedLessonTypes] = validateModuleLessons(
         semester,

@@ -67,6 +67,7 @@ test('reducers should set export data state', () => {
         PC1222: 2,
       },
     },
+    customisedModules: {},
     hidden: { [1]: ['PC1222'] },
     academicYear: expect.any(String),
     archive: {},
