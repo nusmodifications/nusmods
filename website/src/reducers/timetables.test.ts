@@ -207,6 +207,7 @@ describe('stateReconciler', () => {
     },
     academicYear: config.academicYear,
     archive: oldArchive,
+    customisedModules: {},
   };
 
   const { stateReconciler } = persistConfig;
@@ -259,6 +260,7 @@ describe('redux schema migration', () => {
     hidden: {},
     academicYear: '2022/2023',
     archive: {},
+    customisedModules: {},
     _persist: {
       version: 1,
       rehydrated: false,
@@ -283,6 +285,7 @@ describe('redux schema migration', () => {
     hidden: {},
     academicYear: '2022/2023',
     archive: {},
+    customisedModules: {},
     _persist: {
       version: 1, // version kept the same because the framework does not support it in unit tests
       rehydrated: false,
