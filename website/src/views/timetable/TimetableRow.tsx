@@ -4,6 +4,7 @@ import { HoverLesson, ModifiableLesson } from 'types/timetables';
 import { OnHoverCell, OnModifyCell } from 'types/views';
 
 import { convertTimeToIndex } from 'utils/timify';
+import { ModuleCode } from 'types/modules';
 import styles from './TimetableRow.scss';
 import TimetableCell from './TimetableCell';
 
@@ -16,6 +17,7 @@ type Props = {
   hoverLesson?: HoverLesson | null;
   onCellHover: OnHoverCell;
   onModifyCell?: OnModifyCell;
+  customisedModules?: ModuleCode[];
 };
 
 /**
@@ -70,6 +72,7 @@ const TimetableRow: React.FC<Props> = (props) => {
             hoverLesson={props.hoverLesson}
             onHover={props.onCellHover}
             transparent={lesson.startTime === lesson.endTime}
+            customisedModules={props.customisedModules}
             {...conditionalProps}
           />
         );

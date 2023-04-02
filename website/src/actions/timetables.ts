@@ -90,15 +90,68 @@ export function modifyLesson(activeLesson: Lesson) {
   };
 }
 
+export const CUSTOMISE_MODULE = 'CUSTOMISE_LESSON' as const;
+export function customiseLesson(semester: Semester, moduleCode: ModuleCode) {
+  return {
+    type: CUSTOMISE_MODULE,
+    payload: {
+      semester,
+      moduleCode,
+    },
+  };
+}
+
 export const CHANGE_LESSON = 'CHANGE_LESSON' as const;
 export function setLesson(
   semester: Semester,
   moduleCode: ModuleCode,
   lessonType: LessonType,
   classNo: ClassNo,
+  activeLesson: ClassNo,
 ) {
   return {
     type: CHANGE_LESSON,
+    payload: {
+      semester,
+      moduleCode,
+      lessonType,
+      classNo,
+      activeLesson,
+    },
+  };
+}
+
+export const ADD_CUSTOM_MODULE = 'ADD_CUSTOM_MODULE' as const;
+export function addCustomModule(semester: Semester, moduleCode: ModuleCode) {
+  return {
+    type: ADD_CUSTOM_MODULE,
+    payload: {
+      semester,
+      moduleCode,
+    },
+  };
+}
+
+export const REMOVE_CUSTOM_MODULE = 'REMOVE_CUSTOM_MODULE' as const;
+export function removeCustomModule(semester: Semester, moduleCode: ModuleCode) {
+  return {
+    type: REMOVE_CUSTOM_MODULE,
+    payload: {
+      semester,
+      moduleCode,
+    },
+  };
+}
+
+export const ADD_LESSON = 'ADD_LESSON' as const;
+export function addLesson(
+  semester: Semester,
+  moduleCode: ModuleCode,
+  lessonType: LessonType,
+  classNo: ClassNo,
+) {
+  return {
+    type: ADD_LESSON,
     payload: {
       semester,
       moduleCode,
@@ -108,8 +161,26 @@ export function setLesson(
   };
 }
 
-export function changeLesson(semester: Semester, lesson: Lesson) {
-  return setLesson(semester, lesson.moduleCode, lesson.lessonType, lesson.classNo);
+export const REMOVE_LESSON = 'REMOVE_LESSON' as const;
+export function removeLesson(
+  semester: Semester,
+  moduleCode: ModuleCode,
+  lessonType: LessonType,
+  classNo: ClassNo,
+) {
+  return {
+    type: REMOVE_LESSON,
+    payload: {
+      semester,
+      moduleCode,
+      lessonType,
+      classNo,
+    },
+  };
+}
+
+export function changeLesson(semester: Semester, lesson: Lesson, activeLesson: ClassNo) {
+  return setLesson(semester, lesson.moduleCode, lesson.lessonType, lesson.classNo, activeLesson);
 }
 
 export const SET_LESSON_CONFIG = 'SET_LESSON_CONFIG' as const;
@@ -165,6 +236,14 @@ export function validateTimetable(semester: Semester) {
       const module = moduleBank.modules[moduleCode];
       if (!module) return;
 
+      // If the module is customised, we do not validate it
+      if (
+        timetables.customisedModules &&
+        timetables.customisedModules[semester] &&
+        timetables.customisedModules[semester].includes(moduleCode)
+      ) {
+        return;
+      }
       const [validatedLessonConfig, changedLessonTypes] = validateModuleLessons(
         semester,
         lessonConfig,
