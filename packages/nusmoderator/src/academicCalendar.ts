@@ -7,7 +7,7 @@ import { WeekType, Semester, AcadYear, AcadWeek, AcadWeekInfo } from './types';
  * Returns a Date object of the first weekday of Week 0 of that academic year.
  * Assumes Week 0 begins on the first Monday of August.
  * @param acadYear the academic year. E.g. "18/19"
- * @return {Date} Start date of the academic year
+ * @return Start date of the academic year
  */
 export function getAcadYearStartDate(acadYear: string): Date {
   const shortYear = acadYear.split('/')[0];
@@ -32,8 +32,8 @@ const special2 = 'Special Term II';
 
 /**
  * Takes in a Date and returns an object of acad year and start date for that year.
- * @param  {Date} date
- * @return {Object} acadYearObject - { year: "15/16", startDate: Date }
+ * @param  date
+ * @return acadYearObject - { year: "15/16", startDate: Date }
  */
 export function getAcadYear(date: Date): AcadYear {
   const shortYear = getYear(date) % 100;
@@ -56,8 +56,8 @@ export function getAcadYear(date: Date): AcadYear {
 /**
  * Computes the current academic semester.
  * Expects a week number of a year.
- * @param  {number} acadWeekNumber
- * @return {string} semester - "Semester 1"
+ * @param  acadWeekNumber
+ * @return semester - "Semester 1"
  * @example acadWeekNumber(3)
  */
 export function getAcadSem(acadWeekNumber: number): Semester | null {
@@ -84,8 +84,8 @@ export function getAcadSem(acadWeekNumber: number): Semester | null {
 /**
  * Computes the current academic week of the semester
  * Expects a week number of a semester.
- * @param  {number} acadWeekNumber
- * @return {string} semester - "Recess" | "Reading" | "Examination"
+ * @param  acadWeekNumber
+ * @return week e.g. Recess, Reading, Examination
  * @example acadWeekNumber(3)
  */
 export function getAcadWeekName(acadWeekNumber: number): AcadWeek | null {
@@ -127,15 +127,9 @@ export function getAcadWeekName(acadWeekNumber: number): AcadWeek | null {
 }
 
 /**
- * Computes the current academic week and return in an object of acad date components
- * @param  {Date} date
- * @return {Object}
- * {
- *   year: "15/16",
- *   sem: 'Semester 1'|'Semester 2'|'Special Sem 1'|'Special Sem 2',
- *   type: 'Instructional'|'Reading'|'Examination'|'Recess'|'Vacation'|'Orientation',
- *   num: <weekNum>
- * }
+ * Computes the current academic week and return an object of acad date components.
+ * @param  date
+ * @return object containing acad week information
  */
 export function getAcadWeekInfo(date: Date): AcadWeekInfo {
   const currentAcad = getAcadYear(date);
@@ -195,10 +189,10 @@ export function getAcadWeekInfo(date: Date): AcadWeekInfo {
 }
 
 /**
- * Get the first day of the exam week for the given semester
- * @param {string} year
- * @param {number} semester
- * @returns {Date}
+ * Get the first day of the exam week for the given semester.
+ * @param   year
+ * @param   semester
+ * @returns date of the first day of the semester's exam week
  */
 export function getExamWeek(year: string, semester: number): Date | null {
   const startDate = getAcadYearStartDate(year);
