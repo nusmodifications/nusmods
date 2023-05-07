@@ -36,7 +36,7 @@ test('modifyLesson should return lesson payload', () => {
 test('changeLesson should return updated information to change lesson', () => {
   const semester: Semester = 1;
   const lesson: Lesson = lessons[1];
-  expect(actions.changeLesson(semester, lesson, lesson.classNo)).toMatchSnapshot();
+  expect(actions.changeLesson(semester, lesson)).toMatchSnapshot();
 });
 
 test('cancelModifyLesson should not have payload', () => {

@@ -20,7 +20,6 @@ const appInitialState: AppState = {
   isFeedbackModalOpen: false,
   promptRefresh: false,
   notifications: [],
-  customiseModule: '',
 };
 const appHasSemesterTwoState: AppState = { ...appInitialState, activeSemester: anotherSemester };
 const appHasActiveLessonState: AppState = { ...appInitialState, activeLesson: lesson };
@@ -56,7 +55,7 @@ test('app should set active lesson', () => {
 });
 
 test('app should accept lesson change and unset active lesson', () => {
-  const action = changeLesson(semester, lesson, lesson.classNo);
+  const action = changeLesson(semester, lesson);
   const nextState: AppState = reducer(appInitialState, action);
 
   expect(nextState).toEqual(appInitialState);
