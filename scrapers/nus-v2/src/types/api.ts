@@ -69,6 +69,7 @@ export type ModuleInfo = Readonly<{
   GradingBasisDesc: string;
 
   CourseTitle: string;
+  AdditionalInformation: string;
   CoRequisite: string;
   CoRequisiteRule: string;
   Description: string;
