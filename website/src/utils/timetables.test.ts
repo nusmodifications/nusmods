@@ -85,9 +85,9 @@ test('hydrateSemTimetableWithLessons should replace ClassNo with lessons', () =>
   const modules: ModulesMap = { [moduleCode]: CS1010S };
   const config: SemTimetableConfig = {
     [moduleCode]: {
-      Tutorial: ['8'],
-      Recitation: ['4'],
-      Lecture: ['1'],
+      Tutorial: '8',
+      Recitation: '4',
+      Lecture: '1',
     },
   };
 
@@ -385,15 +385,15 @@ test('timetable serialization/deserialization', () => {
     {},
     { CS1010S: {} },
     {
-      GER1000: { Tutorial: ['B01'] },
+      GER1000: { Tutorial: 'B01' },
     },
     {
-      CS2104: { Lecture: ['1'], Tutorial: ['2'] },
-      CS2105: { Lecture: ['1'], Tutorial: ['1'] },
-      CS2107: { Lecture: ['1'], Tutorial: ['8'] },
-      CS4212: { Lecture: ['1'], Tutorial: ['1'] },
-      CS4243: { Laboratory: ['2'], Lecture: ['1'] },
-      GER1000: { Tutorial: ['B01'] },
+      CS2104: { Lecture: '1', Tutorial: '2' },
+      CS2105: { Lecture: '1', Tutorial: '1' },
+      CS2107: { Lecture: '1', Tutorial: '8' },
+      CS4212: { Lecture: '1', Tutorial: '1' },
+      CS4243: { Laboratory: '2', Lecture: '1' },
+      GER1000: { Tutorial: 'B01' },
     },
   ];
 
@@ -406,8 +406,8 @@ test('deserializing edge cases', () => {
   // Duplicate module code
   expect(deserializeTimetable('CS1010S=LEC:01&CS1010S=REC:11')).toEqual({
     CS1010S: {
-      Lecture: ['01'],
-      Recitation: ['11'],
+      Lecture: '01',
+      Recitation: '11',
     },
   });
 
@@ -416,7 +416,7 @@ test('deserializing edge cases', () => {
     CS1010S: {},
     CS3217: {},
     CS2105: {
-      Lecture: ['1'],
+      Lecture: '1',
     },
   });
 });
@@ -428,8 +428,8 @@ test('isSameTimetableConfig', () => {
   // Change lessonType order
   expect(
     isSameTimetableConfig(
-      { CS2104: { Tutorial: ['1'], Lecture: ['2'] } },
-      { CS2104: { Lecture: ['2'], Tutorial: ['1'] } },
+      { CS2104: { Tutorial: '1', Lecture: '2' } },
+      { CS2104: { Lecture: '2', Tutorial: '1' } },
     ),
   ).toBe(true);
 
@@ -437,12 +437,12 @@ test('isSameTimetableConfig', () => {
   expect(
     isSameTimetableConfig(
       {
-        CS2104: { Lecture: ['1'], Tutorial: ['2'] },
-        CS2105: { Lecture: ['1'], Tutorial: ['1'] },
+        CS2104: { Lecture: '1', Tutorial: '2' },
+        CS2105: { Lecture: '1', Tutorial: '1' },
       },
       {
-        CS2105: { Lecture: ['1'], Tutorial: ['1'] },
-        CS2104: { Lecture: ['1'], Tutorial: ['2'] },
+        CS2105: { Lecture: '1', Tutorial: '1' },
+        CS2104: { Lecture: '1', Tutorial: '2' },
       },
     ),
   ).toBe(true);
@@ -450,8 +450,8 @@ test('isSameTimetableConfig', () => {
   // Different values
   expect(
     isSameTimetableConfig(
-      { CS2104: { Lecture: ['1'], Tutorial: ['2'] } },
-      { CS2104: { Lecture: ['2'], Tutorial: ['1'] } },
+      { CS2104: { Lecture: '1', Tutorial: '2' } },
+      { CS2104: { Lecture: '2', Tutorial: '1' } },
     ),
   ).toBe(false);
 
@@ -459,11 +459,11 @@ test('isSameTimetableConfig', () => {
   expect(
     isSameTimetableConfig(
       {
-        CS2104: { Tutorial: ['1'], Lecture: ['2'] },
+        CS2104: { Tutorial: '1', Lecture: '2' },
       },
       {
-        CS2104: { Tutorial: ['1'], Lecture: ['2'] },
-        CS2105: { Lecture: ['1'], Tutorial: ['1'] },
+        CS2104: { Tutorial: '1', Lecture: '2' },
+        CS2105: { Lecture: '1', Tutorial: '1' },
       },
     ),
   ).toBe(false);
@@ -499,9 +499,9 @@ describe(validateTimetableModules, () => {
 describe('validateModuleLessons', () => {
   const semester: Semester = 1;
   const lessons: ModuleLessonConfig = {
-    Lecture: ['1'],
-    Recitation: ['10'],
-    Tutorial: ['11'],
+    Lecture: '1',
+    Recitation: '10',
+    Tutorial: '11',
   };
 
   test('should leave valid lessons untouched', () => {
@@ -514,7 +514,7 @@ describe('validateModuleLessons', () => {
         semester,
         {
           ...lessons,
-          Laboratory: ['2'], // CS1010S has no lab
+          Laboratory: '2', // CS1010S has no lab
         },
         CS1010S,
       ),
@@ -527,7 +527,7 @@ describe('validateModuleLessons', () => {
         semester,
         {
           ...lessons,
-          Lecture: ['2'], // CS1010S has no Lecture 2
+          Lecture: '2', // CS1010S has no Lecture 2
         },
         CS1010S,
       ),
@@ -539,15 +539,15 @@ describe('validateModuleLessons', () => {
       validateModuleLessons(
         semester,
         {
-          Tutorial: ['10'],
+          Tutorial: '10',
         },
         CS1010S,
       ),
     ).toEqual([
       {
-        Lecture: ['1'],
-        Recitation: ['1'],
-        Tutorial: ['10'],
+        Lecture: '1',
+        Recitation: '1',
+        Tutorial: '10',
       },
       ['Lecture', 'Recitation'],
     ]);
