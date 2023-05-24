@@ -195,6 +195,7 @@ export type Module = {
   aliases?: ModuleCode[];
   attributes?: NUSModuleAttributes;
   gradingBasisDescription?: string;
+  additionalInformation?: string;
 
   // Requsites
   prerequisite?: string;

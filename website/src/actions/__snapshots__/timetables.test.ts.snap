@@ -10,7 +10,6 @@ Object {
 exports[`changeLesson should return updated information to change lesson 1`] = `
 Object {
   "payload": Object {
-    "activeLesson": "1",
     "classNo": "1",
     "lessonType": "Recitation",
     "moduleCode": "CS1010S",

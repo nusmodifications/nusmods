@@ -185,6 +185,7 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
                             </li>
                           ))}
                         </ul>
+                        {module.additionalInformation && <p>{module.additionalInformation}</p>}
                       </dd>
                     </>
                   )}

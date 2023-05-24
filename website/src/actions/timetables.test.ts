@@ -36,7 +36,7 @@ test('modifyLesson should return lesson payload', () => {
 test('changeLesson should return updated information to change lesson', () => {
   const semester: Semester = 1;
   const lesson: Lesson = lessons[1];
-  expect(actions.changeLesson(semester, lesson, lesson.classNo)).toMatchSnapshot();
+  expect(actions.changeLesson(semester, lesson)).toMatchSnapshot();
 });
 
 test('cancelModifyLesson should not have payload', () => {
@@ -60,9 +60,9 @@ describe('fillTimetableBlanks', () => {
   test('do nothing if timetable is already full', () => {
     const timetable = {
       CS1010S: {
-        Lecture: ['1'],
-        Tutorial: ['1'],
-        Recitation: ['1'],
+        Lecture: '1',
+        Tutorial: '1',
+        Recitation: '1',
       },
     };
 
@@ -76,8 +76,8 @@ describe('fillTimetableBlanks', () => {
   test('fill missing lessons with randomly generated modules', () => {
     const timetable = {
       CS1010S: {
-        Lecture: ['1'],
-        Tutorial: ['1'],
+        Lecture: '1',
+        Tutorial: '1',
       },
       CS3216: {},
     };
@@ -95,9 +95,9 @@ describe('fillTimetableBlanks', () => {
         semester,
         moduleCode: 'CS1010S',
         lessonConfig: {
-          Lecture: ['1'],
-          Tutorial: ['1'],
-          Recitation: expect.any(Array),
+          Lecture: '1',
+          Tutorial: '1',
+          Recitation: expect.any(String),
         },
       },
     });
@@ -108,7 +108,7 @@ describe('fillTimetableBlanks', () => {
         semester,
         moduleCode: 'CS3216',
         lessonConfig: {
-          Lecture: ['1'],
+          Lecture: '1',
         },
       },
     });

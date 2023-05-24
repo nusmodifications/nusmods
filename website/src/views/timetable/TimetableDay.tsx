@@ -6,7 +6,6 @@ import { OnHoverCell, OnModifyCell } from 'types/views';
 import { convertTimeToIndex } from 'utils/timify';
 
 import { TimePeriod } from 'types/venues';
-import { ModuleCode } from 'types/modules';
 import styles from './TimetableDay.scss';
 import TimetableRow from './TimetableRow';
 import CurrentTimeIndicator from './CurrentTimeIndicator';
@@ -26,7 +25,6 @@ type Props = {
   onCellHover: OnHoverCell;
   onModifyCell?: OnModifyCell;
   highlightPeriod?: TimePeriod;
-  customisedModules?: ModuleCode[];
 };
 
 // Height of timetable per hour in vertical mode
@@ -89,7 +87,6 @@ const TimetableDay: React.FC<Props> = (props) => {
             onModifyCell={props.onModifyCell}
             hoverLesson={props.hoverLesson}
             onCellHover={props.onCellHover}
-            customisedModules={props.customisedModules}
           />
         ))}
 
