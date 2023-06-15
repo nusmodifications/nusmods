@@ -49,7 +49,7 @@ const ModulesTableFooter: React.FC<Props> = (props) => {
         <hr />
       </div>
       <div className="col">
-        Total Module Credits: <strong>{renderMCs(totalMCs)}</strong>
+        Total Units: <strong>{renderMCs(totalMCs)}</strong>
       </div>
       <div className={classnames(styles.moduleOrder, 'col no-export')}>
         <label htmlFor="moduleOrder">Order</label>

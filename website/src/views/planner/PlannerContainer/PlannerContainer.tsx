@@ -141,7 +141,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
     return (
       <header className={styles.header}>
         <h1>
-          Module Planner{' '}
+          Course Planner{' '}
           <button
             className="btn btn-sm btn-outline-success"
             type="button"

@@ -68,7 +68,7 @@ const ModuleFinderContainer: React.FC = () => (
           <div>
             <HitsStats
               component={({ hitsCount }: HitsStatsDisplayProps) => (
-                <div className={styles.modulePageDivider}>{hitsCount} modules found</div>
+                <div className={styles.modulePageDivider}>{hitsCount} courses found</div>
               )}
             />
 

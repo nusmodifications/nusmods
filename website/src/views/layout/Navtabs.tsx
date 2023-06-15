@@ -47,7 +47,7 @@ const Navtabs: FC = () => {
       </NavLink>
       <NavLink
         {...tabProps}
-        to={{ pathname: '/modules', search: '?sem[0]=1&sem[1]=2&sem[2]=3&sem[3]=4' }}
+        to={{ pathname: '/courses', search: '?sem[0]=1&sem[1]=2&sem[2]=3&sem[3]=4' }}
       >
         <BookOpen />
         <span className={styles.title}>Courses</span>

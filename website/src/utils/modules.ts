@@ -83,7 +83,7 @@ export function getSemestersOffered(module: Module): Semester[] {
 
 export function renderMCs(moduleCredits: number | string) {
   const credit = typeof moduleCredits === 'string' ? parseFloat(moduleCredits) : moduleCredits;
-  return `${credit}${NBSP}${credit === 1 ? 'MC' : 'MCs'}`;
+  return `${credit}${NBSP}${credit === 1 ? 'Unit' : 'Units'}`;
 }
 
 export function renderExamDuration(examDuration: number) {

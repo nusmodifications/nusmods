@@ -45,7 +45,7 @@ const ModuleFinderItem: React.FC<Props> = ({ module, highlight = {} }) => (
             {intersperse(
               [
                 <span key="department">{module.department}</span>,
-                <span key="mc">{module.moduleCredit} MCs</span>,
+                <span key="mc">{module.moduleCredit} Units</span>,
               ],
               BULLET,
             )}

@@ -62,7 +62,7 @@ const KeyboardShortcuts: React.FC = () => {
     });
 
     bind('m', NAVIGATION, 'Go to course finder', () => {
-      history.push('/modules');
+      history.push('/courses');
     });
 
     bind('v', NAVIGATION, 'Go to venues page', () => {

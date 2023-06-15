@@ -297,21 +297,21 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
                         <h3>Hi There!</h3>
                         <p>
                           We would like to encourage everyone who enjoyed using NUSMods to
-                          contribute back to the community by writing reviews for modules that you
+                          contribute back to the community by writing reviews for courses that you
                           have taken before. Your efforts will go a long way in building up a
                           vibrant and rich NUS community.
                         </p>
                         <strong>Please note:</strong>
                         <ol className={styles.modReviewDescription}>
                           <li>
-                            Because the experience of each module will differ according to the
-                            professor teaching the module, at the start of your review, please state
-                            the semester taken and the name of the professor who taught the module
+                            Because the experience of each course will differ according to the
+                            professor teaching the course, at the start of your review, please state
+                            the semester taken and the name of the professor who taught the course
                             in that semester.
                           </li>
                           <li>
                             Other students will read your review to get an idea of what taking the
-                            module will be like. If you'd like to give feedback about the module to
+                            course will be like. If you'd like to give feedback about the course to
                             NUS, please use the official Student Feedback system as NUS does not
                             monitor these reviews.
                           </li>

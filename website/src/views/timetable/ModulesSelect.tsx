@@ -179,7 +179,7 @@ const ModulesSelect: FC<Props> = ({
         )}
         {showNoResultMessage && (
           <div className={styles.tip}>
-            No modules found for{' '}
+            No courses found for{' '}
             <strong>
               &quot;
               {inputValue}
