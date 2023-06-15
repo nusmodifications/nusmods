@@ -153,7 +153,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
 
         <div className={styles.headerRight}>
           <p className={styles.moduleStats}>
-            {count} {count === 1 ? 'module' : 'modules'} / {renderMCs(credits)}
+            {count} {count === 1 ? 'course' : 'courses'} / {renderMCs(credits)}
           </p>
 
           <button

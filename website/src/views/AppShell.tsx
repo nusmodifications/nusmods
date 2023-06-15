@@ -65,7 +65,7 @@ function useFetchModuleListAndTimetableModules(): {
         .catch((error) => {
           captureException(error);
           dispatch(
-            openNotification('Data for some modules failed to load', {
+            openNotification('Data for some courses failed to load', {
               action: {
                 text: 'Retry',
                 handler: () => fetchTimetableModulesImpl(timetable, semester),
@@ -121,7 +121,7 @@ const AppShell: FC = ({ children }) => {
   const theme = useSelector((state: State) => state.theme.id);
 
   if (!isModuleListReady && moduleListError) {
-    return <ApiError dataName="module information" retry={refetchModuleListAndTimetableModules} />;
+    return <ApiError dataName="course information" retry={refetchModuleListAndTimetableModules} />;
   }
 
   return (

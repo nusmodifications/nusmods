@@ -61,7 +61,7 @@ const KeyboardShortcuts: React.FC = () => {
       history.push('/timetable');
     });
 
-    bind('m', NAVIGATION, 'Go to module finder', () => {
+    bind('m', NAVIGATION, 'Go to course finder', () => {
       history.push('/modules');
     });
 

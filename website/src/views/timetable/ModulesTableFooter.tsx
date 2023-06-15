@@ -22,8 +22,8 @@ export const moduleOrders: { [moduleTableOrder: string]: ModuleOrder } = {
     label: 'Exam Date',
     orderBy: (module: Module, semester: Semester) => getExamDate(module, semester) || '',
   },
-  mc: { label: 'Module Credits', orderBy: (module: Module) => parseFloat(module.moduleCredit) },
-  code: { label: 'Module Code', orderBy: (module: Module) => module.moduleCode },
+  mc: { label: 'Course Credits', orderBy: (module: Module) => parseFloat(module.moduleCredit) },
+  code: { label: 'Course Code', orderBy: (module: Module) => module.moduleCode },
 };
 
 type Props = {

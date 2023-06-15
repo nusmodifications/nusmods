@@ -136,7 +136,7 @@ const PlannerModule = memo<Props>((props) => {
             })}
             onClick={() => setEditingPlaceholder(true)}
           >
-            {moduleCode || 'Select Module'} <ChevronDown />
+            {moduleCode || 'Select Course'} <ChevronDown />
           </button>{' '}
           {moduleCode && moduleTitle && (
             <Link to={modulePage(moduleCode, moduleTitle)}>{moduleTitle}</Link>

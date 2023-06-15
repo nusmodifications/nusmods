@@ -66,7 +66,7 @@ const ModuleFinderPager: FC<PagerProps> = ({
   }
 
   return (
-    <nav aria-label="Module search result pagination">
+    <nav aria-label="Course search result pagination">
       <ul className={classnames('pagination justify-content-center', styles.paginationList)}>
         <ModuleFinderPagerButton
           tooltipTitle="First page"

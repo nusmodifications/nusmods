@@ -99,7 +99,7 @@ export const ModuleArchiveContainerComponent: FC = () => {
   // If there is an error but module data can still be found, we assume module has
   // been loaded at some point, so we just show that instead
   if (error && !module) {
-    return <ApiError dataName="module information" retry={fetchModuleForDisplay} />;
+    return <ApiError dataName="course information" retry={fetchModuleForDisplay} />;
   }
 
   // Redirect to canonical URL

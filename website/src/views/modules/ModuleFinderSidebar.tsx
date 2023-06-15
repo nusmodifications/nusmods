@@ -108,7 +108,7 @@ const ModuleFinderSidebar: React.FC = () => {
 
         <NumericRefinementListFilter
           id="mcs"
-          title="MCs"
+          title="Units"
           field="moduleCredit"
           multiselect
           options={[

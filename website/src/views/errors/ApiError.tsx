@@ -49,7 +49,7 @@ export default class ApiError extends React.PureComponent<Props> {
 
           <p>This could be because your device is offline or NUSMods is down :(</p>
           {/* TODO: Remove hacky message after we figure out what is wrong with Elastic Search. */}
-          {dataName === 'module information' && (
+          {dataName === 'course information' && (
             <>
               <strong>Module search might be having issues at the moment. 😟</strong>
               <p>
