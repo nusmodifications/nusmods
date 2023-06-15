@@ -93,7 +93,7 @@ describe(ModuleArchiveContainerComponent, () => {
     make();
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
     // Expect module information to be displayed
-    expect(await screen.findByText(/This module introduces/)).toBeInTheDocument();
+    expect(await screen.findByText(/This course introduces/)).toBeInTheDocument();
     // Expect component to fetch
     expect(mockAxiosRequest).toBeCalled();
   });
@@ -101,6 +101,6 @@ describe(ModuleArchiveContainerComponent, () => {
   test('should show error if module fetch failed', async () => {
     mockAxiosRequest.mockRejectedValue(someOtherError);
     make();
-    expect(await screen.findByText(/can't load the module information/)).toBeInTheDocument();
+    expect(await screen.findByText(/can't load the course information/)).toBeInTheDocument();
   });
 });

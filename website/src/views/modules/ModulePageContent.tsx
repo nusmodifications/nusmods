@@ -63,7 +63,7 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
   const offered = isOffered(module);
 
   const disqusConfig = {
-    url: `https://nusmods.com/modules/${moduleCode}/reviews`,
+    url: `https://nusmods.com/courses/${moduleCode}/reviews`,
     identifier: moduleCode,
     title: pageTitle,
   };
