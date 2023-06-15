@@ -176,7 +176,7 @@ const ModuleForm: React.FC<Props> = ({
       </label>
       <div className={styles.headerTitle}>
         <div className={styles.rank}>Rank</div>
-        <div className={styles.module}>Module</div>
+        <div className={styles.module}>Course</div>
         <div className={styles.moduleCount}>
           {preferences.length} / {MAX_MODULES} Modules Selected
         </div>

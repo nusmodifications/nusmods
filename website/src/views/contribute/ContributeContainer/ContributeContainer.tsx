@@ -69,7 +69,7 @@ const ContributeContainer: FC<Props> = ({ modules, beta, ...props }) => {
         <section>
           <header>
             <ReviewIcon />
-            <h3>Write Module Reviews</h3>
+            <h3>Write Course Reviews</h3>
           </header>
 
           <p>

@@ -227,7 +227,7 @@ class GlobalSearch extends Component<Props, State> {
                   <span className="btn-svg">
                     View All <ChevronRight className={styles.svg} />
                   </span>
-                  <span className={styles.headerName}>Modules</span>
+                  <span className={styles.headerName}>Courses</span>
                 </div>
 
                 {modules.map((module, index) => (

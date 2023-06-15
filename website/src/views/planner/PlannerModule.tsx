@@ -91,7 +91,7 @@ const PlannerModule = memo<Props>((props) => {
           <>
             <div className={styles.conflictHeader}>
               <AlertTriangle className={styles.warningIcon} />
-              <p>These modules may need to be taken first</p>
+              <p>These courses may need to be taken first</p>
             </div>
 
             <ul className={styles.prereqs}>

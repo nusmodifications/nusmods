@@ -74,7 +74,7 @@ export const CustomModuleFormComponent: React.FC<Props> = (props) => {
 
       <div className="form-row">
         <div className="col-md-3">
-          <label htmlFor="input-mc">Module Credits</label>
+          <label htmlFor="input-mc">Units</label>
           <input
             ref={inputModuleCredit}
             id="input-mc"

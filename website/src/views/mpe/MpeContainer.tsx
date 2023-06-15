@@ -54,7 +54,7 @@ const MpeContainer: React.FC = () => {
   return (
     <div className={styles.pageContainer}>
       <header className={styles.header}>
-        <h1>Module Planning Exercise</h1>
+        <h1>Course Planning Exercise</h1>
         <h4>
           For AY{MPE_AY} - Semester {MPE_SEMESTER}
         </h4>

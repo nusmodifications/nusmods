@@ -51,7 +51,7 @@ export default class ApiError extends React.PureComponent<Props> {
           {/* TODO: Remove hacky message after we figure out what is wrong with Elastic Search. */}
           {dataName === 'course information' && (
             <>
-              <strong>Module search might be having issues at the moment. 😟</strong>
+              <strong>Course search might be having issues at the moment. 😟</strong>
               <p>
                 If it isn't working, please try the module search{' '}
                 {window.innerWidth < breakpointUp('md').minWidth && 'on a desktop browser '}on the

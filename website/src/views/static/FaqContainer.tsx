@@ -28,7 +28,7 @@ const FaqContainer: React.FC = () => (
         <a href="#mistakes">Can you update the exam date?</a>
       </li>
       <li>
-        <a href="#mistakes">Can you add this module?</a>
+        <a href="#mistakes">Can you add this course?</a>
       </li>
       <li>
         <a href="#mistakes">When will semester X data be available?</a>
@@ -64,7 +64,7 @@ const FaqContainer: React.FC = () => (
       <ul>
         <li>There is a missing lecture or tutorial slot.</li>
         <li>The exam date is wrong.</li>
-        <li>You cannot find a module.</li>
+        <li>You cannot find a course.</li>
         <li>Semester X data is not available.</li>
         <li>
           You cannot add a module in semester X but your faculty says it is available in that
@@ -73,7 +73,7 @@ const FaqContainer: React.FC = () => (
       </ul>
       <p>Please ensure the following:</p>
       <ol>
-        <li>You are sure that the module should exist or that the data on NUSMods is wrong.</li>
+        <li>You are sure that the course should exist or that the data on NUSMods is wrong.</li>
         <li>You have waited one day and the error is still present.</li>
         <li>You have refreshed NUSMods after step 2.</li>
       </ol>
