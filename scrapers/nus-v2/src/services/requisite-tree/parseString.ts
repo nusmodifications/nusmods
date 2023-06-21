@@ -156,9 +156,16 @@ const IrrelevantWord = createToken({
   group: Lexer.SKIPPED,
 });
 
+// TODO: decide how to parse course names with grades, whether to separate
+// the characters or have a regex match the whole thing.
 const allTokens = [
+  WhiteSpace,
   ProgramTypes,
   Programs,
+  IfIn,
+  MustBeIn,
+  IfNotIn,
+  MustNotBeIn,
   PlanTypes,
   CohortYears,
   SubjectYears,
@@ -168,15 +175,10 @@ const allTokens = [
   Subjects,
   Units,
   Gpa,
-  IfIn,
-  MustBeIn,
-  IfNotIn,
-  MustNotBeIn,
   Equal,
   Then,
   Percent,
   Colon,
-  WhiteSpace,
   Module,
   And,
   Or,
