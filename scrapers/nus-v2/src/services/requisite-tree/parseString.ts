@@ -13,6 +13,110 @@ import { AND_OR_REGEX, MODULE_REGEX, OPERATORS } from './constants';
  * Library used for lexing/parsing is Chevrotain:
  * https://github.com/SAP/chevrotain
  */
+
+// New Entities
+
+const ProgramTypes = createToken({
+  name: 'ProgramTypes',
+  pattern: 'PROGRAM_TYPES',
+});
+
+const Programs = createToken({
+  name: 'Programs',
+  pattern: 'PROGRAMS',
+});
+
+const PlanTypes = createToken({
+  name: 'PlanTypes',
+  pattern: 'PLAN_TYPES',
+});
+
+const CohortYears = createToken({
+  name: 'CohortYears',
+  pattern: 'COHORT_YEARS',
+});
+
+const SubjectYears = createToken({
+  name: 'SubjectYears',
+  pattern: 'SUBJECT_YEARS',
+});
+
+const Special = createToken({
+  name: 'Special',
+  pattern: 'SPECIAL',
+});
+
+const AcadLevel = createToken({
+  name: 'AcadLevel',
+  pattern: 'ACAD_LEVEL',
+});
+
+const Courses = createToken({
+  name: 'Courses',
+  pattern: 'COURSES',
+});
+
+const Subjects = createToken({
+  name: 'Subjects',
+  pattern: 'SUBJECTS',
+});
+
+const Units = createToken({
+  name: 'Units',
+  pattern: 'UNITS',
+});
+
+const Gpa = createToken({
+  name: 'Gpa',
+  pattern: 'GPA',
+});
+
+// Conditionals
+
+const IfIn = createToken({
+  name: 'IfIn',
+  pattern: 'IF_IN',
+});
+
+const MustBeIn = createToken({
+  name: 'MustBeIn',
+  pattern: 'MUST_BE_IN',
+});
+
+const IfNotIn = createToken({
+  name: 'IfNotIn',
+  pattern: 'IF_NOT_IN',
+});
+
+const MustNotBeIn = createToken({
+  name: 'MustNotBeIn',
+  pattern: 'MUST_NOT_BE_IN',
+});
+
+// Operators
+
+const Equal = createToken({
+  name: 'Equal',
+  pattern: '=',
+});
+
+const Then = createToken({
+  name: 'Then',
+  pattern: 'THEN',
+});
+
+// Wildcard e.g. NM1%:D means any module starting with NM1 i.e. NM1k mods
+const Percent = createToken({
+  name: 'Percent',
+  pattern: '%',
+});
+
+// Grade of e.g. NM1234:D means complete NM1234 with grade of at least D
+const Colon = createToken({
+  name: 'Colon',
+  pattern: ':',
+});
+
 const Module = createToken({
   name: 'Module',
   pattern: MODULE_REGEX,
@@ -20,12 +124,12 @@ const Module = createToken({
 
 const And = createToken({
   name: 'And',
-  pattern: 'and',
+  pattern: 'AND',
 });
 
 const Or = createToken({
   name: 'Or',
-  pattern: 'or',
+  pattern: 'OR',
 });
 
 const LeftBracket = createToken({
@@ -52,7 +156,34 @@ const IrrelevantWord = createToken({
   group: Lexer.SKIPPED,
 });
 
-const allTokens = [WhiteSpace, Module, And, Or, LeftBracket, RightBracket, IrrelevantWord];
+const allTokens = [
+  ProgramTypes,
+  Programs,
+  PlanTypes,
+  CohortYears,
+  SubjectYears,
+  Special,
+  AcadLevel,
+  Courses,
+  Subjects,
+  Units,
+  Gpa,
+  IfIn,
+  MustBeIn,
+  IfNotIn,
+  MustNotBeIn,
+  Equal,
+  Then,
+  Percent,
+  Colon,
+  WhiteSpace,
+  Module,
+  And,
+  Or,
+  LeftBracket,
+  RightBracket,
+  IrrelevantWord,
+];
 const ReqTreeLexer = new Lexer(allTokens);
 
 function generateAndBranch(modules: PrereqTree[]) {
