@@ -35,7 +35,7 @@ const FaqContainer: React.FC = () => (
       </li>
       <li>
         <a href="#mistakes">
-          Why can&apos;t I add this module in semester X? My faculty says that it is available in
+          Why can&apos;t I add this course in semester X? My faculty says that it is available in
           semester X.
         </a>
       </li>
@@ -67,7 +67,7 @@ const FaqContainer: React.FC = () => (
         <li>You cannot find a course.</li>
         <li>Semester X data is not available.</li>
         <li>
-          You cannot add a module in semester X but your faculty says it is available in that
+          You cannot add a course in semester X but your faculty says it is available in that
           semester.
         </li>
       </ul>
@@ -79,8 +79,8 @@ const FaqContainer: React.FC = () => (
       </ol>
       <p>
         After you have done all the above and the error persists, please use the "Report Error"
-        button on the module page to report an issue to the module's department or faculty. If the
-        department or faculty for this module cannot be found on this list, please refer to ModReg's
+        button on the course page to report an issue to the course's department or faculty. If the
+        department or faculty for this course cannot be found on this list, please refer to ModReg's
         contact list for{' '}
         <ExternalLink href="http://www.nus.edu.sg/ModReg/docs/UGFac_Contacts.pdf">
           undergraduate
@@ -144,8 +144,8 @@ const FaqContainer: React.FC = () => (
       <p>
         Starting in AY18/19 Special Term I, NUSMods will become the university&apos;s official
         timetable planner. However, apart from that, we are unaffiliated with NUS. NUSMods certainly
-        does not make decisions regarding your curriculum, module availability and module timetable.
-        If you have questions regarding your curriculum, module registration, LumiNUS, or anything
+        does not make decisions regarding your curriculum, course availability and course timetable.
+        If you have questions regarding your curriculum, course registration, Canvas, or anything
         unrelated to NUSMods, please either contact your faculty or just{' '}
         <ExternalLink href="https://www.google.com/">Google</ExternalLink> it.
       </p>

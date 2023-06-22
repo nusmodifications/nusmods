@@ -73,9 +73,9 @@ const ContributeContainer: FC<Props> = ({ modules, beta, ...props }) => {
           </header>
 
           <p>
-            Help your fellow students make better choices when planning their module by leaving your
-            honest opinions on modules you have taken before. Here are all of the modules you have
-            taken this year:
+            Help your fellow students make better choices when planning their courses by leaving
+            your honest opinions on courses you have taken before. Here are all of the courses you
+            have taken this year:
           </p>
 
           <div className={styles.writeReviews}>
