@@ -74,6 +74,18 @@ Array [
       "type": "FETCH_ARCHIVE_MODULE",
     },
   ],
+  Array [
+    Object {
+      "meta": Object {
+        "API_REQUEST": "FETCH_ARCHIVE_MODULE_CS1010S_2022/2023",
+        "academicYear": "2022/2023",
+      },
+      "payload": Object {
+        "url": "test://MOCK_MOD_DETAILS_URL/CS1010S/2022/2023",
+      },
+      "type": "FETCH_ARCHIVE_MODULE",
+    },
+  ],
 ]
 `;
 

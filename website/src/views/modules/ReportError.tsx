@@ -296,12 +296,12 @@ const FormContent: FC<FormContentProps> = ({
 
         <p className="form-text text-muted">
           If the department or faculty for this module cannot be found on this list, please refer to
-          ModReg's contact list for{' '}
-          <ExternalLink href="http://www.nus.edu.sg/ModReg/docs/UGFac_Contacts.pdf">
+          CourseReg's contact list for{' '}
+          <ExternalLink href="https://www.nus.edu.sg/coursereg/docs/UGFac_Contacts.pdf">
             undergraduate
           </ExternalLink>{' '}
           or{' '}
-          <ExternalLink href="http://www.nus.edu.sg/ModReg/docs/GDFac_Contacts.pdf">
+          <ExternalLink href="https://www.nus.edu.sg/coursereg/docs/GDFac_Contacts.pdf">
             graduate
           </ExternalLink>{' '}
           students.
