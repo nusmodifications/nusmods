@@ -108,14 +108,14 @@ const ModuleFinderSidebar: React.FC = () => {
 
         <NumericRefinementListFilter
           id="mcs"
-          title="MCs"
+          title="Units"
           field="moduleCredit"
           multiselect
           options={[
-            { title: '0-3 MC', to: 4 },
-            { title: '4 MC', from: 4, to: 5 },
-            { title: '5-8 MC', from: 5, to: 9 },
-            { title: 'More than 8 MC', from: 9 },
+            { title: '0-3 Units', to: 4 },
+            { title: '4 Units', from: 4, to: 5 },
+            { title: '5-8 Units', from: 5, to: 9 },
+            { title: 'More than 8 Units', from: 9 },
           ]}
           containerComponent={FilterContainer}
           itemComponent={CheckboxItem}

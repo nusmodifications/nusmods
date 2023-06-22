@@ -39,29 +39,29 @@ describe(Navtabs, () => {
     make();
     if (enableMpe) {
       expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
-      Array [
-        "Today",
-        "Timetable",
-        "Modules",
-        "MPE",
-        "Venues",
-        "Settings",
-        "Contribute",
-        "Whispers",
-      ]
-    `);
+              Array [
+                "Today",
+                "Timetable",
+                "Modules",
+                "MPE",
+                "Venues",
+                "Settings",
+                "Contribute",
+                "Whispers",
+              ]
+          `);
     } else {
       expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
-      Array [
-        "Today",
-        "Timetable",
-        "Modules",
-        "Venues",
-        "Settings",
-        "Contribute",
-        "Whispers",
-      ]
-    `);
+        Array [
+          "Today",
+          "Timetable",
+          "Courses",
+          "Venues",
+          "Settings",
+          "Contribute",
+          "Whispers",
+        ]
+      `);
     }
   });
 
@@ -69,31 +69,31 @@ describe(Navtabs, () => {
     make({ settings: { beta: true } });
     if (enableMpe) {
       expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
-      Array [
-        "Today",
-        "Timetable",
-        "Modules",
-        "MPE",
-        "Venues",
-        "Planner",
-        "Settings",
-        "Contribute",
-        "Whispers",
-      ]
-    `);
+              Array [
+                "Today",
+                "Timetable",
+                "Modules",
+                "MPE",
+                "Venues",
+                "Planner",
+                "Settings",
+                "Contribute",
+                "Whispers",
+              ]
+          `);
     } else {
       expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
-      Array [
-        "Today",
-        "Timetable",
-        "Modules",
-        "Venues",
-        "Planner",
-        "Settings",
-        "Contribute",
-        "Whispers",
-      ]
-    `);
+        Array [
+          "Today",
+          "Timetable",
+          "Courses",
+          "Venues",
+          "Planner",
+          "Settings",
+          "Contribute",
+          "Whispers",
+        ]
+      `);
     }
   });
 });

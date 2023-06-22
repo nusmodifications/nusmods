@@ -22,8 +22,8 @@ export const moduleOrders: { [moduleTableOrder: string]: ModuleOrder } = {
     label: 'Exam Date',
     orderBy: (module: Module, semester: Semester) => getExamDate(module, semester) || '',
   },
-  mc: { label: 'Module Credits', orderBy: (module: Module) => parseFloat(module.moduleCredit) },
-  code: { label: 'Module Code', orderBy: (module: Module) => module.moduleCode },
+  mc: { label: 'Course Credits', orderBy: (module: Module) => parseFloat(module.moduleCredit) },
+  code: { label: 'Course Code', orderBy: (module: Module) => module.moduleCode },
 };
 
 type Props = {
@@ -49,7 +49,7 @@ const ModulesTableFooter: React.FC<Props> = (props) => {
         <hr />
       </div>
       <div className="col">
-        Total Module Credits: <strong>{renderMCs(totalMCs)}</strong>
+        Total Units: <strong>{renderMCs(totalMCs)}</strong>
       </div>
       <div className={classnames(styles.moduleOrder, 'col no-export')}>
         <label htmlFor="moduleOrder">Order</label>

@@ -8,10 +8,10 @@ import modRegData from 'data/modreg-schedule.json';
 import appConfig from './app-config.json';
 
 export const regPeriods = [
-  'Select Modules',
+  'Select Courses',
   'Select Tutorials / Labs',
   'Add / Swap Tutorials',
-  'Submit Module Requests',
+  'Submit Course Requests',
 ] as const;
 export type RegPeriodType = typeof regPeriods[number];
 

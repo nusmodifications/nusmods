@@ -44,7 +44,7 @@ const GlobalSearchContainer: FC = () => {
   const onSearch = useCallback(
     (type: ResultType, query: string) => {
       // TODO: Move this into a proper function
-      const path = type === VENUE_RESULT ? '/venues' : '/modules';
+      const path = type === VENUE_RESULT ? '/venues' : '/courses';
       history.push(`${path}?q=${encodeURIComponent(query)}`);
     },
     [history],

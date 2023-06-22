@@ -34,7 +34,7 @@ export function semesterForTimetablePage(semStr: string | null | undefined): Sem
 
 // Module Code, Module Title -> Module page path
 export function modulePage(moduleCode: ModuleCode, moduleTitle?: ModuleTitle | null): string {
-  return `/modules/${moduleCode}/${kebabCase(moduleTitle || '')}`;
+  return `/courses/${moduleCode}/${kebabCase(moduleTitle || '')}`;
 }
 
 export function moduleArchive(

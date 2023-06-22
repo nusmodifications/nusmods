@@ -157,15 +157,15 @@ describe(getFirstAvailableSemester, () => {
 describe(renderMCs, () => {
   it.each<[string | number, string]>([
     // Plural
-    [0, '0 MCs'],
-    ['0', '0 MCs'],
-    [5, '5 MCs'],
-    ['5', '5 MCs'],
-    ['0.5', '0.5 MCs'],
+    [0, '0 Units'],
+    ['0', '0 Units'],
+    [5, '5 Units'],
+    ['5', '5 Units'],
+    ['0.5', '0.5 Units'],
 
     // Singular
-    [1, '1 MC'],
-    ['1', '1 MC'],
+    [1, '1 Unit'],
+    ['1', '1 Unit'],
   ])('%s to equal %s', (mc, expected) => expect(renderMCs(mc)).toEqual(noBreak(expected)));
 });
 

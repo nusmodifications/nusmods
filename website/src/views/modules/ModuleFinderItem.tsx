@@ -45,7 +45,7 @@ const ModuleFinderItem: React.FC<Props> = ({ module, highlight = {} }) => (
             {intersperse(
               [
                 <span key="department">{module.department}</span>,
-                <span key="mc">{module.moduleCredit} MCs</span>,
+                <span key="mc">{module.moduleCredit} Units</span>,
               ],
               BULLET,
             )}
@@ -94,7 +94,7 @@ const ModuleFinderItem: React.FC<Props> = ({ module, highlight = {} }) => (
         ) : (
           <div className={classnames(styles.notOffered, 'alert alert-warning')}>
             <Archive className={styles.archiveIcon} />
-            <p>This module is not offered this year</p>
+            <p>This course is not offered this year</p>
           </div>
         )}
         {module.workload && <ModuleWorkload workload={module.workload} />}

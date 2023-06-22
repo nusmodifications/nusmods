@@ -47,7 +47,7 @@ export class ModuleNotFoundPageComponent extends PureComponent<Props> {
 
     return (
       <div className={styles.container}>
-        <Title>Module Not Found</Title>
+        <Title>Course Not Found</Title>
 
         {this.props.availableArchive.length ? (
           <>
@@ -77,7 +77,7 @@ export class ModuleNotFoundPageComponent extends PureComponent<Props> {
             <p>
               Otherwise, if this is not what you are looking for,{' '}
               <Link to="/">go back to nusmods.com</Link> or{' '}
-              <Link to="/modules">try the module finder</Link>.
+              <Link to="/courses">try the course finder</Link>.
             </p>
           </>
         ) : (

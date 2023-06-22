@@ -100,7 +100,7 @@ describe('GlobalSearchContainer', () => {
     userEvent.type(getByRole('textbox'), '1 ');
     expect(getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
       Array [
-        "View All Modules",
+        "View All Courses",
         "AA1010 TestSem 1",
         "AB1010 TestSem 1",
         "AC1010 TestSem 1",
@@ -161,7 +161,7 @@ describe('GlobalSearchContainer', () => {
     userEvent.type(getByRole('textbox'), '1 ');
     expect(getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
       Array [
-        "View All Modules",
+        "View All Courses",
         "AA1010 TestSem 1",
         "AB1010 TestSem 1",
         "AC1010 TestSem 1",
@@ -182,7 +182,7 @@ describe('GlobalSearchContainer', () => {
     userEvent.type(getByRole('textbox'), 'AA');
     expect(getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
       Array [
-        "View All Modules",
+        "View All Courses",
         "AA1010 TestSem 1",
         "View All Venues",
         "AA-1",
@@ -198,7 +198,7 @@ describe('GlobalSearchContainer', () => {
     userEvent.type(getByRole('textbox'), '1010');
     expect(getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
       Array [
-        "View All Modules",
+        "View All Courses",
         "AA1010 TestSem 1",
         "AB1010 TestSem 1",
         "AC1010 TestSem 1",

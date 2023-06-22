@@ -52,7 +52,7 @@ class ModulesSelectContainer extends Component<Props> {
             moduleCount={this.props.moduleList.length}
             onChange={this.onChange}
             placeholder={
-              isOnline ? 'Add module to timetable' : 'You need to be online to add modules'
+              isOnline ? 'Add course to timetable' : 'You need to be online to add courses'
             }
             disabled={!isOnline}
             onRemoveModule={this.props.removeModule}

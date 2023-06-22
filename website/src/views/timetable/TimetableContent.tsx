@@ -237,7 +237,7 @@ class TimetableContent extends React.Component<Props, State> {
       return (
         <div className="row">
           <div className="col-sm-12">
-            <p className="text-sm-center">No modules added.</p>
+            <p className="text-sm-center">No courses added.</p>
           </div>
         </div>
       );

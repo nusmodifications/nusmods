@@ -22,13 +22,13 @@ exports[`ModuleFinderApiError should render 1`] = `
           Oh no...
         </span>
          
-        We can't load the module information
+        We can't load the course information
       </h1>
       <p>
         This could be because your device is offline or NUSMods is down :(
       </p>
       <strong>
-        Module search might be having issues at the moment. 😟
+        Course search might be having issues at the moment. 😟
       </strong>
       <p>
         If it isn't working, please try the module search
@@ -70,13 +70,13 @@ exports[`ModuleFinderApiError should render with url 1`] = `
           Oh no...
         </span>
          
-        We can't load the module information
+        We can't load the course information
       </h1>
       <p>
         This could be because your device is offline or NUSMods is down :(
       </p>
       <strong>
-        Module search might be having issues at the moment. 😟
+        Course search might be having issues at the moment. 😟
       </strong>
       <p>
         If it isn't working, please try the module search

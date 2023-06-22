@@ -141,7 +141,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
     return (
       <header className={styles.header}>
         <h1>
-          Module Planner{' '}
+          Course Planner{' '}
           <button
             className="btn btn-sm btn-outline-success"
             type="button"
@@ -153,7 +153,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
 
         <div className={styles.headerRight}>
           <p className={styles.moduleStats}>
-            {count} {count === 1 ? 'module' : 'modules'} / {renderMCs(credits)}
+            {count} {count === 1 ? 'course' : 'courses'} / {renderMCs(credits)}
           </p>
 
           <button
@@ -192,7 +192,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
 
     return (
       <div className={styles.pageContainer}>
-        <Title>Module Planner</Title>
+        <Title>Course Planner</Title>
 
         {this.renderHeader()}
 
@@ -254,7 +254,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
                 >
                   <div className={styles.trashMessage}>
                     <Trash />
-                    <p>Drop modules here to remove them</p>
+                    <p>Drop courses here to remove them</p>
                   </div>
                   {provided.placeholder}
                 </div>

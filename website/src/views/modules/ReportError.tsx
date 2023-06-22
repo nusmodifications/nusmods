@@ -323,7 +323,7 @@ const FormContent: FC<FormContentProps> = ({
       </div>
 
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-message">Describe in detail the issues with the module</label>
+        <label htmlFor="report-error-message">Describe in detail the issues with the course</label>
         <textarea
           id="report-error-message"
           className="form-control"

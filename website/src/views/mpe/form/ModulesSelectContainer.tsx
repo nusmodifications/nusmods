@@ -38,7 +38,7 @@ function ModulesSelectContainer({ moduleList, addModule, removeModule }: Props) 
           moduleCount={moduleList.length}
           onChange={addModule}
           placeholder={
-            isOnline ? 'Add module to the preference list' : 'You need to be online to add modules'
+            isOnline ? 'Add course to the preference list' : 'You need to be online to add courses'
           }
           disabled={!isOnline}
           onRemoveModule={removeModule}

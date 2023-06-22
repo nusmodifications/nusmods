@@ -37,7 +37,7 @@ function renderSemesterMeta(plannerModules: PlannerModuleInfo[]) {
   return (
     <div className={styles.semesterMeta}>
       <p>
-        {plannerModules.length} {plannerModules.length === 1 ? 'module' : 'modules'}
+        {plannerModules.length} {plannerModules.length === 1 ? 'course' : 'courses'}
       </p>
       <p>{renderMCs(moduleCredits)}</p>
     </div>
