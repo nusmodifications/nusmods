@@ -27,6 +27,10 @@ const Routes: React.FC = () => (
     <Route path="/timetable/:semester?/:action?" component={TimetableContainer} />
     <Route exact path="/courses" component={ModuleFinderContainer} />
     <Route path="/courses/:moduleCode/:slug?" component={ModulePageContainer} />
+    {/* TODO: Remove the following legacy routes in the future after the new routes get indexed */}
+    <Route exact path="/modules" component={ModuleFinderContainer} />
+    <Route path="/modules/:moduleCode/:slug?" component={ModulePageContainer} />
+    {/* END LEGACY ROUTES */}
     <Route path="/archive/:moduleCode/:year/:slug?" component={ModuleArchiveContainer} />
     <Route path="/venues/:venue?" component={VenuesContainer} />
     <Route path="/today" component={TodayContainer} />
