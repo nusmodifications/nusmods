@@ -13,7 +13,7 @@ const relativeUrls = [
   '',
 
   // Basic pages
-  'modules',
+  'courses',
   'venues',
 
   // Static pages
@@ -37,7 +37,7 @@ const addDynamicPages = async (urls) => {
   const venues = _.uniq([...venues1, ...venues2]);
 
   modules.forEach((module) => {
-    urls.push(`modules/${module.moduleCode}/${_.kebabCase(module.title)}`);
+    urls.push(`courses/${module.moduleCode}/${_.kebabCase(module.title)}`);
   });
 
   venues.forEach((venue) => {
