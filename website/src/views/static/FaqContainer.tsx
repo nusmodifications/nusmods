@@ -80,13 +80,13 @@ const FaqContainer: React.FC = () => (
       <p>
         After you have done all the above and the error persists, please use the "Report Error"
         button on the course page to report an issue to the course's department or faculty. If the
-        department or faculty for this course cannot be found on this list, please refer to ModReg's
-        contact list for{' '}
-        <ExternalLink href="http://www.nus.edu.sg/ModReg/docs/UGFac_Contacts.pdf">
+        department or faculty for this course cannot be found on this list, please refer to
+        CourseReg's contact list for{' '}
+        <ExternalLink href="https://www.nus.edu.sg/coursereg/docs/UGFac_Contacts.pdf">
           undergraduate
         </ExternalLink>{' '}
         or{' '}
-        <ExternalLink href="http://www.nus.edu.sg/ModReg/docs/GDFac_Contacts.pdf">
+        <ExternalLink href="https://www.nus.edu.sg/coursereg/docs/GDFac_Contacts.pdf">
           graduate
         </ExternalLink>{' '}
         students.
