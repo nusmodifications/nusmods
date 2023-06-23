@@ -27,7 +27,8 @@ const Routes: React.FC = () => (
     <Route path="/timetable/:semester?/:action?" component={TimetableContainer} />
     <Route exact path="/courses" component={ModuleFinderContainer} />
     <Route path="/courses/:moduleCode/:slug?" component={ModulePageContainer} />
-    {/* TODO: Remove the following legacy routes in the future after the new routes get indexed */}
+    {/* Legacy Routes: Consider removal in the future, but otherwise */}
+    {/* redirecting old hyperlinks to the same page makes sense as well. */}
     <Route exact path="/modules" component={ModuleFinderContainer} />
     <Route path="/modules/:moduleCode/:slug?" component={ModulePageContainer} />
     {/* END LEGACY ROUTES */}
