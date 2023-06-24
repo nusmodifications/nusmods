@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 
 import { toggleTimetableOrientation, toggleTitleDisplay } from 'actions/theme';
-import { Semester } from 'types/modules';
+import { ModuleCode, Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
 
 import { Calendar, Grid, Sidebar, Type } from 'react-feather';
@@ -26,6 +26,8 @@ type Props = {
 
   showExamCalendar: boolean;
   toggleExamCalendar: () => void;
+
+  hiddenInTimetable: ModuleCode[];
 };
 
 const TimetableActions: React.FC<Props> = (props) => (
@@ -83,7 +85,11 @@ const TimetableActions: React.FC<Props> = (props) => (
     <div className={styles.buttonGroup} role="group" aria-label="Timetable exporting">
       <ExportMenu semester={props.semester} timetable={props.timetable} />
 
-      <ShareTimetable semester={props.semester} timetable={props.timetable} />
+      <ShareTimetable
+        semester={props.semester}
+        timetable={props.timetable}
+        hiddenInTimetable={props.hiddenInTimetable}
+      />
     </div>
   </div>
 );

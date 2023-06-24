@@ -277,6 +277,7 @@ class TimetableContent extends React.Component<Props, State> {
       timetableOrientation,
       showTitle,
       readOnly,
+      hiddenInTimetable,
     } = this.props;
 
     const { showExamCalendar } = this.state;
@@ -406,6 +407,7 @@ class TimetableContent extends React.Component<Props, State> {
                   timetable={this.props.timetable}
                   showExamCalendar={showExamCalendar}
                   toggleExamCalendar={() => this.setState({ showExamCalendar: !showExamCalendar })}
+                  hiddenInTimetable={hiddenInTimetable}
                 />
               </div>
 

@@ -6,7 +6,7 @@ import { Copy, Mail, Repeat } from 'react-feather';
 import type { QRCodeProps } from 'react-qr-svg';
 
 import type { SemTimetableConfig } from 'types/timetables';
-import type { Semester } from 'types/modules';
+import type { ModuleCode, Semester } from 'types/modules';
 
 import config from 'config';
 import { enableShortUrl } from 'featureFlags';
@@ -26,6 +26,7 @@ const COPY_FAIL: CopyState = 'COPY_FAIL';
 type Props = {
   semester: Semester;
   timetable: SemTimetableConfig;
+  hiddenInTimetable: ModuleCode[];
 };
 
 type State = {
@@ -34,8 +35,12 @@ type State = {
   shortUrl: string | null;
 };
 
-function shareUrl(semester: Semester, timetable: SemTimetableConfig): string {
-  return absolutePath(timetableShare(semester, timetable));
+function shareUrl(
+  semester: Semester,
+  timetable: SemTimetableConfig,
+  hiddenInTimetable: ModuleCode[],
+): string {
+  return absolutePath(timetableShare(semester, timetable, hiddenInTimetable));
 }
 
 // So that I don't keep typing 'shortUrl' instead
@@ -66,8 +71,8 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
   }
 
   loadShortUrl = () => {
-    const { semester, timetable } = this.props;
-    const url = shareUrl(semester, timetable);
+    const { semester, timetable, hiddenInTimetable } = this.props;
+    const url = shareUrl(semester, timetable, hiddenInTimetable);
 
     // Don't do anything if the long URL has not changed
     if (this.url === url) return;
