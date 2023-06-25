@@ -156,9 +156,7 @@ export const TimetableContainerComponent: FC = () => {
     semester && params.action ? deserializeTimetable(location.search) : null,
   );
 
-  const [importedHidden, setImportedHidden] = useState(() =>
-    semester && params.action ? deserializeHidden(location.search) : [],
-  );
+  const importedHidden = semester && params.action ? deserializeHidden(location.search) : [];
 
   const dispatch = useDispatch();
   useEffect(() => {
