@@ -115,7 +115,7 @@ describe(TimetableContainerComponent, () => {
   test('should eventually display imported timetable if there is one', async () => {
     const semester = 1;
     const importedTimetable = { [moduleCodeThatCanBeLoaded]: { Lecture: '1' } };
-    const location = timetableShare(semester, importedTimetable);
+    const location = timetableShare(semester, importedTimetable, []);
     make(location);
 
     // Expect spinner when loading modules
@@ -134,7 +134,7 @@ describe(TimetableContainerComponent, () => {
   test('should ignore invalid modules in imported timetable', () => {
     const semester = 1;
     const importedTimetable = { TRUMP2020: { Lecture: '1' } };
-    const location = timetableShare(semester, importedTimetable);
+    const location = timetableShare(semester, importedTimetable, []);
     make(location);
 
     // Expect nothing to be fetched and the invalid module to be ignored

@@ -65,7 +65,12 @@ describe('color reducers', () => {
     expect(
       reducer(initialState, {
         type: SET_TIMETABLE,
-        payload: { semester: 1, timetable: { CS1010S: {} }, colors: { CS1010S: 0 } },
+        payload: {
+          semester: 1,
+          timetable: { CS1010S: {} },
+          colors: { CS1010S: 0 },
+          hiddenModules: [],
+        },
       }).colors[1],
     ).toEqual({
       CS1010S: 0,
