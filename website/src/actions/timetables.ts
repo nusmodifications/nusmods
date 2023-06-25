@@ -18,6 +18,8 @@ import { getModuleTimetable } from 'utils/modules';
 // Actions that should not be used directly outside of thunks
 export const SET_TIMETABLE = 'SET_TIMETABLE' as const;
 export const ADD_MODULE = 'ADD_MODULE' as const;
+export const SET_HIDDEN_IMPORTED = 'SET_HIDDEN_IMPORTED' as const;
+export const HIDDEN_IMPORTED_SEM = -1 as const;
 export const Internal = {
   setTimetable(
     semester: Semester,
@@ -38,6 +40,12 @@ export const Internal = {
         moduleCode,
         moduleLessonConfig,
       },
+    };
+  },
+  setHiddenFromImport(hiddenModules: ModuleCode[]) {
+    return {
+      type: SET_HIDDEN_IMPORTED,
+      payload: { semester: HIDDEN_IMPORTED_SEM, hiddenModules },
     };
   },
 };
@@ -188,6 +196,12 @@ export function fetchTimetableModules(timetables: SemTimetableConfig[]) {
         .filter(validateModule)
         .map((moduleCode) => dispatch(fetchModule(moduleCode))),
     );
+  };
+}
+
+export function setHiddenImported(hiddenModules: ModuleCode[]) {
+  return (dispatch: Dispatch, getState: GetState) => {
+    dispatch(Internal.setHiddenFromImport(hiddenModules));
   };
 }
 

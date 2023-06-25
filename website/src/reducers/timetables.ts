@@ -14,6 +14,7 @@ import {
   HIDE_LESSON_IN_TIMETABLE,
   REMOVE_MODULE,
   SELECT_MODULE_COLOR,
+  SET_HIDDEN_IMPORTED,
   SET_LESSON_CONFIG,
   SET_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
@@ -218,6 +219,13 @@ function timetables(
         colors: { [semester]: colors },
         hidden: { [semester]: hidden },
       };
+    }
+
+    case SET_HIDDEN_IMPORTED: {
+      const { semester, hiddenModules } = action.payload;
+      return produce(state, (draft) => {
+        draft.hidden[semester] = hiddenModules;
+      });
     }
 
     default:

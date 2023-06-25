@@ -448,6 +448,13 @@ export function deserializeTimetable(serialized: string): SemTimetableConfig {
   return mapValues(params, parseModuleConfig);
 }
 
+export function deserializeHidden(serialized: string): ModuleCode[] {
+  const params = qs.parse(serialized);
+  if (!params.hidden) return [];
+  // hidden key will only appear once at most.
+  return (params.hidden as string).split(',');
+}
+
 export function isSameTimetableConfig(t1: SemTimetableConfig, t2: SemTimetableConfig): boolean {
   return isEqual(t1, t2);
 }

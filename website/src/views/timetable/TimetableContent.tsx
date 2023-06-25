@@ -437,10 +437,21 @@ class TimetableContent extends React.Component<Props, State> {
 }
 
 function mapStateToProps(state: StoreState, ownProps: OwnProps) {
-  const { semester, timetable } = ownProps;
+  const { semester, timetable, readOnly } = ownProps;
   const { modules } = state.moduleBank;
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
-  const hiddenInTimetable = state.timetables.hidden[semester] || [];
+
+  // if readonly, it means we are viewing someone else's timetable.
+  // Check to see if there are any hidden modules
+  // key: hidden in the state
+  let hiddenInTimetable: string[] = [];
+  if (readOnly) {
+    if (state.timetables.hidden['import'] && state.timetables.hidden['import'].length) {
+      hiddenInTimetable = state.timetables.hidden['import'];
+    }
+  } else if (state.timetables.hidden[semester]) {
+    hiddenInTimetable = state.timetables.hidden[semester];
+  }
 
   return {
     semester,
