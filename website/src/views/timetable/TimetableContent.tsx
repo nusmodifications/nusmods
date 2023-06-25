@@ -18,6 +18,7 @@ import {
   addModule,
   cancelModifyLesson,
   changeLesson,
+  HIDDEN_IMPORTED_SEM,
   modifyLesson,
   removeModule,
 } from 'actions/timetables';
@@ -446,8 +447,11 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
   // key: hidden in the state
   let hiddenInTimetable: string[] = [];
   if (readOnly) {
-    if (state.timetables.hidden['import'] && state.timetables.hidden['import'].length) {
-      hiddenInTimetable = state.timetables.hidden['import'];
+    if (
+      state.timetables.hidden[HIDDEN_IMPORTED_SEM] &&
+      state.timetables.hidden[HIDDEN_IMPORTED_SEM].length
+    ) {
+      hiddenInTimetable = state.timetables.hidden[HIDDEN_IMPORTED_SEM];
     }
   } else if (state.timetables.hidden[semester]) {
     hiddenInTimetable = state.timetables.hidden[semester];
