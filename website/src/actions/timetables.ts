@@ -43,12 +43,6 @@ export const Internal = {
       },
     };
   },
-  setHiddenFromImport(hiddenModules: ModuleCode[]) {
-    return {
-      type: SET_HIDDEN_IMPORTED,
-      payload: { semester: HIDDEN_IMPORTED_SEM, hiddenModules },
-    };
-  },
 };
 
 export function addModule(semester: Semester, moduleCode: ModuleCode) {
@@ -149,7 +143,6 @@ export function setTimetable(
   semester: Semester,
   timetable?: SemTimetableConfig,
   colors?: ColorMapping,
-  hiddenModules?: ModuleCode[],
 ) {
   return (dispatch: Dispatch, getState: GetState) => {
     let validatedTimetable = timetable;
@@ -157,7 +150,14 @@ export function setTimetable(
       [validatedTimetable] = validateTimetableModules(timetable, getState().moduleBank.moduleCodes);
     }
 
-    return dispatch(Internal.setTimetable(semester, validatedTimetable, colors, hiddenModules));
+    return dispatch(
+      Internal.setTimetable(
+        semester,
+        validatedTimetable,
+        colors,
+        getState().timetables.hidden[HIDDEN_IMPORTED_SEM] || [],
+      ),
+    );
   };
 }
 
@@ -201,9 +201,16 @@ export function fetchTimetableModules(timetables: SemTimetableConfig[]) {
   };
 }
 
-export function setHiddenImported(hiddenModules: ModuleCode[]) {
+export function setHiddenModulesFromImport(hiddenModules: ModuleCode[]) {
   return (dispatch: Dispatch, getState: GetState) => {
-    dispatch(Internal.setHiddenFromImport(hiddenModules));
+    return dispatch(setHiddenImported(hiddenModules));
+  };
+}
+
+export function setHiddenImported(hiddenModules: ModuleCode[]) {
+  return {
+    type: SET_HIDDEN_IMPORTED,
+    payload: { semester: HIDDEN_IMPORTED_SEM, hiddenModules },
   };
 }
 

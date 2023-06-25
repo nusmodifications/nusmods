@@ -135,4 +135,24 @@ describe('ShareTimetable', () => {
 
     expect(wrapper.find('input').prop('value')).toBeTruthy();
   });
+
+  test('should not include hidden key if there are no hidden modules', async () => {
+    const wrapper = shallow(
+      <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} />,
+    );
+
+    await openAndWait(wrapper);
+
+    expect(wrapper.find('input').prop('value')).not.toContain('hidden');
+  });
+
+  test('should include hidden key if there are hidden modules', async () => {
+    const wrapper = shallow(
+      <ShareTimetable semester={1} timetable={timetable} hiddenModules={['CS1010S', 'CS1231S']} />,
+    );
+
+    await openAndWait(wrapper);
+
+    expect(wrapper.find('input').prop('value')).toContain('hidden=CS1010S,CS1231S');
+  });
 });

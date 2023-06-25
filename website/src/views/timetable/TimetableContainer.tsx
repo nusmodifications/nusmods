@@ -11,7 +11,11 @@ import type { SemTimetableConfig } from 'types/timetables';
 
 import { selectSemester } from 'actions/settings';
 import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
-import { fetchTimetableModules, setHiddenImported, setTimetable } from 'actions/timetables';
+import {
+  fetchTimetableModules,
+  setHiddenModulesFromImport,
+  setTimetable,
+} from 'actions/timetables';
 import { openNotification } from 'actions/app';
 import { undo } from 'actions/undoHistory';
 import { getModuleCondensed } from 'selectors/moduleBank';
@@ -56,7 +60,7 @@ const SharingHeader: FC<{
     if (!importedTimetable) {
       return;
     }
-    dispatch(setTimetable(semester, importedTimetable, filledColors, hiddenModules));
+    dispatch(setTimetable(semester, importedTimetable, filledColors));
     clearImportedTimetable();
     dispatch(
       openNotification('Timetable imported', {
@@ -165,7 +169,7 @@ export const TimetableContainerComponent: FC = () => {
 
   useEffect(() => {
     if (importedHidden) {
-      dispatch(setHiddenImported(importedHidden));
+      dispatch(setHiddenModulesFromImport(importedHidden));
     }
   }, [dispatch, importedHidden]);
 

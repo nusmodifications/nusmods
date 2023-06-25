@@ -114,7 +114,9 @@ describe(TimetableContainerComponent, () => {
 
   test('should eventually display imported timetable if there is one', async () => {
     const semester = 1;
-    const importedTimetable = { [moduleCodeThatCanBeLoaded]: { Lecture: '1' } };
+    const importedTimetable = {
+      [moduleCodeThatCanBeLoaded]: { 'Sectional Teaching': 'A1' }, // BFS1001 doesn't have Lecture, only SectionalTeaching
+    };
     const location = timetableShare(semester, importedTimetable, []);
     make(location);
 
@@ -129,6 +131,31 @@ describe(TimetableContainerComponent, () => {
 
     // Expect correct network calls to be made
     expect(mockAxiosRequest).toHaveBeenCalledTimes(1);
+
+    // expect there to be a rendered timetable cell (Sectional Teaching)
+    expect(screen.getByText(/SEC/)).toBeInTheDocument();
+  });
+
+  test('should eventually display imported timetable without any modules loaded', async () => {
+    const semester = 1;
+    const importedTimetable = { [moduleCodeThatCanBeLoaded]: { 'Sectional Teaching': 'A1' } };
+    const location = timetableShare(semester, importedTimetable, [moduleCodeThatCanBeLoaded]);
+    make(location);
+
+    // Expect spinner when loading modules
+    expect(screen.getByText(/Loading/)).toBeInTheDocument();
+
+    // Expect import header to be present
+    expect(await screen.findByRole('button', { name: 'Import' })).toBeInTheDocument();
+
+    // Expect imported module info to be displayed
+    expect(screen.getByText(/Personal Development & Career Management/)).toBeInTheDocument();
+
+    // Expect correct network calls to be made
+    expect(mockAxiosRequest).toHaveBeenCalledTimes(1);
+
+    // expect there to not be a rendered timetable cell (Sectional Teaching)
+    expect(screen.queryByText(/SEC/)).not.toBeInTheDocument();
   });
 
   test('should ignore invalid modules in imported timetable', () => {
