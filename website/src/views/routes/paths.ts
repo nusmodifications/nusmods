@@ -28,7 +28,7 @@ export function timetableShare(
   hiddenModules: ModuleCode[],
 ): string {
   // convert the list of hidden modules to a string, if there are any
-  let serializedHidden = hiddenModules.length === 0 ? '' : `&hidden=${hiddenModules.join(',')}`;
+  const serializedHidden = hiddenModules.length === 0 ? '' : `&hidden=${hiddenModules.join(',')}`;
   return `${timetablePage(semester)}/${TIMETABLE_SHARE}?${serializeTimetable(
     timetable,
   )}${serializedHidden}`;

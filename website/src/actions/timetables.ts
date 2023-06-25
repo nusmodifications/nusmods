@@ -202,9 +202,7 @@ export function fetchTimetableModules(timetables: SemTimetableConfig[]) {
 }
 
 export function setHiddenModulesFromImport(hiddenModules: ModuleCode[]) {
-  return (dispatch: Dispatch, getState: GetState) => {
-    return dispatch(setHiddenImported(hiddenModules));
-  };
+  return (dispatch: Dispatch) => dispatch(setHiddenImported(hiddenModules));
 }
 
 export function setHiddenImported(hiddenModules: ModuleCode[]) {

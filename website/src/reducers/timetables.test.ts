@@ -8,7 +8,6 @@ import {
   showLessonInTimetable,
   setHiddenImported,
   HIDDEN_IMPORTED_SEM,
-  setTimetable,
   Internal,
 } from 'actions/timetables';
 import { TimetablesState } from 'types/reducers';

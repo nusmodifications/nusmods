@@ -44,8 +44,7 @@ const SharingHeader: FC<{
   filledColors: ColorMapping;
   importedTimetable: SemTimetableConfig | null;
   setImportedTimetable: (timetable: SemTimetableConfig | null) => void;
-  hiddenModules: ModuleCode[];
-}> = ({ semester, filledColors, importedTimetable, setImportedTimetable, hiddenModules }) => {
+}> = ({ semester, filledColors, importedTimetable, setImportedTimetable }) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -72,7 +71,7 @@ const SharingHeader: FC<{
         },
       }),
     );
-  }, [clearImportedTimetable, dispatch, filledColors, importedTimetable, semester, hiddenModules]);
+  }, [clearImportedTimetable, dispatch, filledColors, importedTimetable, semester]);
 
   if (!importedTimetable) {
     return null;
@@ -156,7 +155,10 @@ export const TimetableContainerComponent: FC = () => {
     semester && params.action ? deserializeTimetable(location.search) : null,
   );
 
-  const importedHidden = semester && params.action ? deserializeHidden(location.search) : [];
+  const importedHidden = useMemo(
+    () => (semester && params.action ? deserializeHidden(location.search) : []),
+    [semester, params.action, location.search],
+  );
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -217,7 +219,6 @@ export const TimetableContainerComponent: FC = () => {
             filledColors={filledColors}
             importedTimetable={importedTimetable}
             setImportedTimetable={setImportedTimetable}
-            hiddenModules={importedHidden}
           />
           <TimetableHeader semester={semester} readOnly={readOnly} />
         </>
