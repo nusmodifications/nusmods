@@ -26,7 +26,7 @@ const COPY_FAIL: CopyState = 'COPY_FAIL';
 type Props = {
   semester: Semester;
   timetable: SemTimetableConfig;
-  hiddenInTimetable: ModuleCode[];
+  hiddenModules: ModuleCode[];
 };
 
 type State = {
@@ -38,9 +38,9 @@ type State = {
 function shareUrl(
   semester: Semester,
   timetable: SemTimetableConfig,
-  hiddenInTimetable: ModuleCode[],
+  hiddenModules: ModuleCode[],
 ): string {
-  return absolutePath(timetableShare(semester, timetable, hiddenInTimetable));
+  return absolutePath(timetableShare(semester, timetable, hiddenModules));
 }
 
 // So that I don't keep typing 'shortUrl' instead
@@ -71,8 +71,8 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
   }
 
   loadShortUrl = () => {
-    const { semester, timetable, hiddenInTimetable } = this.props;
-    const url = shareUrl(semester, timetable, hiddenInTimetable);
+    const { semester, timetable, hiddenModules } = this.props;
+    const url = shareUrl(semester, timetable, hiddenModules);
 
     // Don't do anything if the long URL has not changed
     if (this.url === url) return;

@@ -27,7 +27,7 @@ type Props = {
   showExamCalendar: boolean;
   toggleExamCalendar: () => void;
 
-  hiddenInTimetable: ModuleCode[];
+  hiddenModules: ModuleCode[];
 };
 
 const TimetableActions: React.FC<Props> = (props) => (
@@ -88,7 +88,7 @@ const TimetableActions: React.FC<Props> = (props) => (
       <ShareTimetable
         semester={props.semester}
         timetable={props.timetable}
-        hiddenInTimetable={props.hiddenInTimetable}
+        hiddenModules={props.hiddenModules}
       />
     </div>
   </div>
