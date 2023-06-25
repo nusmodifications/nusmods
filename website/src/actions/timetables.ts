@@ -25,10 +25,11 @@ export const Internal = {
     semester: Semester,
     timetable: SemTimetableConfig | undefined,
     colors?: ColorMapping,
+    hiddenModules?: ModuleCode[],
   ) {
     return {
       type: SET_TIMETABLE,
-      payload: { semester, timetable, colors },
+      payload: { semester, timetable, colors, hiddenModules },
     };
   },
 
@@ -148,6 +149,7 @@ export function setTimetable(
   semester: Semester,
   timetable?: SemTimetableConfig,
   colors?: ColorMapping,
+  hiddenModules?: ModuleCode[],
 ) {
   return (dispatch: Dispatch, getState: GetState) => {
     let validatedTimetable = timetable;
@@ -155,7 +157,7 @@ export function setTimetable(
       [validatedTimetable] = validateTimetableModules(timetable, getState().moduleBank.moduleCodes);
     }
 
-    return dispatch(Internal.setTimetable(semester, validatedTimetable, colors));
+    return dispatch(Internal.setTimetable(semester, validatedTimetable, colors, hiddenModules));
   };
 }
 

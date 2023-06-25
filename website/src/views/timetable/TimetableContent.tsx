@@ -444,7 +444,7 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
 
   // if readonly, it means we are viewing someone else's timetable.
   // Check to see if there are any hidden modules
-  // key: hidden in the state
+  // key: HIDDEN_IMPORTED_SEM in the state
   let hiddenInTimetable: string[] = [];
   if (readOnly) {
     if (

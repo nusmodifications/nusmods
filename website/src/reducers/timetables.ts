@@ -11,6 +11,7 @@ import config from 'config';
 import {
   ADD_MODULE,
   CHANGE_LESSON,
+  HIDDEN_IMPORTED_SEM,
   HIDE_LESSON_IN_TIMETABLE,
   REMOVE_MODULE,
   SELECT_MODULE_COLOR,
@@ -186,11 +187,15 @@ function timetables(
 
   switch (action.type) {
     case SET_TIMETABLE: {
-      const { semester, timetable, colors } = action.payload;
+      const { semester, timetable, colors, hiddenModules } = action.payload;
 
       return produce(state, (draft) => {
         draft.lessons[semester] = timetable || defaultSemTimetableConfig;
         draft.colors[semester] = colors || {};
+        draft.hidden[semester] = hiddenModules || [];
+
+        // remove the old hidden imported modules
+        delete draft.hidden[HIDDEN_IMPORTED_SEM];
       });
     }
 
