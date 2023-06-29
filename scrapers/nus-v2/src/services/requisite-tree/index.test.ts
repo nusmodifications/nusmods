@@ -63,6 +63,9 @@ describe(generatePrereqTree, () => {
       moduleCredit: '4',
       moduleCode: 'CS4240',
       semesterData: [],
+      prereqTree: {
+        'and': ['CS3240', 'MA1301']
+      },
     };
 
     const ma2001 = {
@@ -77,6 +80,9 @@ describe(generatePrereqTree, () => {
       moduleCredit: '4',
       moduleCode: 'MA2001',
       semesterData: [],
+      prereqTree: {
+        'or': ['MA1301', 'MA1301FC', 'MA1301X']
+      },      
     };
 
     const modules = [cs3240, ma2001];
