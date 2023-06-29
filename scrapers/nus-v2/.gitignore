@@ -4,11 +4,3 @@
 /coverage/
 /data/
 *.log
-
-src/services/requisite-tree/antlr4/NusMods.interp linguist-generated=true
-src/services/requisite-tree/antlr4/NusMods.tokens linguist-generated=true
-src/services/requisite-tree/antlr4/NusModsLexer.interp linguist-generated=true
-src/services/requisite-tree/antlr4/NusModsLexer.tokens linguist-generated=true
-src/services/requisite-tree/antlr4/NusModsLexer.ts linguist-generated=true
-src/services/requisite-tree/antlr4/NusModsParser.ts linguist-generated=true
-src/services/requisite-tree/antlr4/NusModsVisitor.ts linguist-generated=true
