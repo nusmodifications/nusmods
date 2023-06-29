@@ -1,110 +1,127 @@
 import parseString from './parseString';
-import { normalize } from './normalizeString';
 import { mockLogger } from '../../utils/test-utils';
+import { PrereqTree } from 'types/modules';
 
 /* eslint-disable max-len */
 
 // integration tests, normalize + parse
 const logger = mockLogger();
-const parse = (string: string) => parseString(normalize(string), logger);
+const parse = (string: string) => parseString(string, logger);
 
 describe(parseString, () => {
-  it('parses query "(1) either BSP1005 or EC1301 and (2) either DSC2008 or EC2303")', () => {
-    const result = {
-      and: [
+  it('parses basic undergrad modules)', () => {
+    const result: PrereqTree = "BMF5322";
+    expect(parse(
+      `
+        PROGRAMME_TYPES IF_IN Graduate Degree Coursework
+        THEN
+        (
+          MODULES (1) BMF5322
+        )
+      `
+    )).toEqual(result);
+  });
+
+  it('parses basic undergrad with multiple modules)', () => {
+    const result: PrereqTree = {"nOf": [1, ["PH2110:D", "GEM2006:D", "GET1028:D"]]};
+    expect(parse(
+      `
+      PROGRAMME_TYPES IF_IN Undergraduate Degree
+      THEN
+      (
+        MODULES (1) PH2110:D,GEM2006:D,GET1028:D
+      )
+      `
+    )).toEqual(result);
+  });
+
+  it('parses complex undergrad with multiple modules and simplifies tree)', () => {
+    const result: PrereqTree = {"or": [
+      {"nOf": [7, ["PH%:D", "GET1029:D"]]},
+      {"or": [
         {
-          or: ['BSP1005', 'EC1301'],
+          "nOf": [7, ["EU%:D", "LAF%:D", "LAG%:D", "AH2202:D", "AH3204:D", "AR2221:D", "AR2222:D", "AR2225:D", "EC3371:D", "EC3376:D", "EC3377:D", "EC4377:D", "EL4200:D", "EN2201:D", "EN3266:D", "EN3267:D", "EN3268:D", "EN4224:D", "EN4271:D", "HY2210:D", "HY2249:D", "HY2259:D", "HY2262:D", "HY4230:D", "PH2206:D", "PH2207:D", "PH2222:D", "PH3213:D", "PH3222:D", "PH4206:D", "PH4207:D", "PH4209:D", "PH4210:D", "PH4213:D", "PH4261:D", "PH4262:D", "PS3258:D", "PS3267:D", "PS3880B:D", "PS3880C:D", "PS3880H:D", "PS4201:D", "PS4213:D", "PS4217D:D", "PS4217E:D", "PS4217F:D", "PS4231:D", "PS4311:D", "PS4882B:D", "PS4883B:D", "SC4213:D", "TS2231:D", "TS2239:D", "TS3231:D"]]
         },
         {
-          or: ['DSC2008', 'EC2303'],
-        },
-      ],
-    };
-    expect(parse('(1) either BSP1005 or EC1301 and (2) either DSC2008 or EC2303')).toEqual(result);
+          "nOf": [7, ["EU%:D", "LAF%:D", "LAG%:D", "LAS%:D", "AH2202:D", "AH3204:D", "AR2221:D", "AR2222:D", "AR2225:D", "EC3371:D", "EC3376:D", "EC3377:D", "EC4377:D", "EL4200:D", "EN2201:D", "EN3266:D", "EN3267:D", "EN3268:D", "EN4224:D", "EN4271:D", "HY2210:D", "HY2249:D", "HY2259:D", "HY2262:D", "HY4230:D", "PH2206:D", "PH2207:D", "PH2222:D", "PH3213:D", "PH3222:D", "PH4206:D", "PH4207:D", "PH4209:D", "PH4210:D", "PH4213:D", "PH4261:D", "PH4262:D", "PS3258:D", "PS3267:D", "PS3880B:D", "PS3880C:D", "PS3880H:D", "PS4201:D", "PS4213:D", "PS4217D:D", "PS4217E:D", "PS4217F:D", "PS4231:D", "PS4311:D", "PS4882B:D", "PS4883B:D", "SC4213:D", "TS2231:D", "TS2239:D", "TS3231:D"]]
+        }
+      ]}
+    ]};
+    expect(parse(
+      `
+      PROGRAMME_TYPES IF_IN Undergraduate Degree
+      THEN
+      (
+        UNITS (80)
+        AND
+        (
+          MODULES (7) PH%:D,GET1029:D
+          OR
+          (
+            COHORT_YEARS MUST_BE_IN E:2014
+            AND
+            MODULES (7) EU%:D,LAF%:D,LAG%:D,AH2202:D,AH3204:D,AR2221:D,AR2222:D,AR2225:D,EC3371:D,EC3376:D,EC3377:D,EC4377:D,EL4200:D,EN2201:D,EN3266:D,EN3267:D,EN3268:D,EN4224:D,EN4271:D,HY2210:D,HY2249:D,HY2259:D,HY2262:D,HY4230:D,PH2206:D,PH2207:D,PH2222:D,PH3213:D,PH3222:D,PH4206:D,PH4207:D,PH4209:D,PH4210:D,PH4213:D,PH4261:D,PH4262:D,PS3258:D,PS3267:D,PS3880B:D,PS3880C:D,PS3880H:D,PS4201:D,PS4213:D,PS4217D:D,PS4217E:D,PS4217F:D,PS4231:D,PS4311:D,PS4882B:D,PS4883B:D,SC4213:D,TS2231:D,TS2239:D,TS3231:D
+          )
+          OR
+          (
+            COHORT_YEARS MUST_BE_IN S:2015
+            AND
+            MODULES (7) EU%:D,LAF%:D,LAG%:D,LAS%:D,AH2202:D,AH3204:D,AR2221:D,AR2222:D,AR2225:D,EC3371:D,EC3376:D,EC3377:D,EC4377:D,EL4200:D,EN2201:D,EN3266:D,EN3267:D,EN3268:D,EN4224:D,EN4271:D,HY2210:D,HY2249:D,HY2259:D,HY2262:D,HY4230:D,PH2206:D,PH2207:D,PH2222:D,PH3213:D,PH3222:D,PH4206:D,PH4207:D,PH4209:D,PH4210:D,PH4213:D,PH4261:D,PH4262:D,PS3258:D,PS3267:D,PS3880B:D,PS3880C:D,PS3880H:D,PS4201:D,PS4213:D,PS4217D:D,PS4217E:D,PS4217F:D,PS4231:D,PS4311:D,PS4882B:D,PS4883B:D,SC4213:D,TS2231:D,TS2239:D,TS3231:D
+          )
+        )
+        AND
+        (
+          (
+            COHORT_YEARS MUST_BE_IN S:2012
+            AND
+            CAP (3.2)
+          )
+          OR
+          SPECIAL MUST_BE_IN "ACAD_LEVEL=4"
+        )
+      )
+      `
+    )).toEqual(result);
   });
 
-  it('parses query "CS1010 Programming Methodology or its equivalent, and BT1101")', () => {
-    const result = {
-      and: ['CS1010', 'BT1101'],
-    };
-    expect(parse('CS1010 Programming Methodology or its equivalent, and BT1101')).toEqual(result);
+  it('parses complex undergrad with multiple modules and subjects)', () => {
+    const result: PrereqTree = {"nOf": [1,
+      ["CH1%:D", "CL1%:D", "CH21%:D", "CL21%:D", "CH222%:D", "CH224%:D", "CH225%:D", "CH227%:D", "CH322%:D", "CH323%:D", "CH324%:D", "CH325%:D", "CH326%:D", "CH327%:D", "CH38%:D", "CL220%:D", "CL226%:D", "CL320%:D", "CL321%:D", "CL31%:D", "CL228%:D", "CL328%:D", "TRA%:D", "INT%:D"]
+    ]};
+    expect(parse(
+      `
+      PROGRAMME_TYPES IF_IN Undergraduate Degree
+      THEN
+      (
+        SUBJECTS (1) P111:6,21162:6,P1111:6,M1111:6,21111:6,PHC:6
+        OR
+        MODULES (1) CH1%:D,CL1%:D,CH21%:D,CL21%:D,CH222%:D,CH224%:D,CH225%:D,CH227%:D,CH322%:D,CH323%:D,CH324%:D,CH325%:D,CH326%:D,CH327%:D,CH38%:D,CL220%:D,CL226%:D,CL320%:D,CL321%:D,CL31%:D,CL228%:D,CL328%:D,TRA%:D,INT%:D
+      )
+      `
+    )).toEqual(result);
   });
 
-  it('parses query "CE2112 or CE4 standing or higher")', () => {
-    expect(parse('CE2112 or CE4 standing or higher')).toEqual('CE2112');
+  it('parses undergrad with special acad levels)', () => {
+    const result: PrereqTree = {"nOf": [7,
+      ["NM%:D"]
+    ]};
+    expect(parse(
+      `
+      PROGRAMME_TYPES IF_IN Undergraduate Degree
+      THEN
+      (
+        UNITS (80)
+        AND
+        MODULES (7) NM%:D
+        AND
+        (
+          CAP (3.2)
+          OR
+          SPECIAL MUST_BE_IN "ACAD_LEVEL=4"
+        )
+      )
+      `
+    )).toEqual(result);
   });
 
-  it('parses query "(1) CE2112 or (2)CE4444 standing or higher")', () => {
-    const result = {
-      or: ['CE2112', 'CE4444'],
-    };
-    expect(parse('(1) CE2112 or (2)CE4444 standing or higher')).toEqual(result);
-  });
-
-  it('parses query "CM2101, CM2142 and CM2192")', () => {
-    const result = {
-      and: ['CM2101', 'CM2142', 'CM2192'],
-    };
-    expect(parse('CM2101, CM2142 and CM2192')).toEqual(result);
-  });
-
-  it('parses query "ES1000 and/or ES1102/ES1103")', () => {
-    const result = {
-      or: ['ES1000', 'ES1102', 'ES1103'],
-    };
-    expect(parse('ES1000 and/or ES1102/ES1103')).toEqual(result);
-  });
-
-  it('parses query "(Undergraduate physics and mathematics AND Electronics materials courses) OR EE2004: Semiconductor Devices OR EE3406: Microelectronic Materials OR EE3431C: Microelectronics Materials & Devices")', () => {
-    const result = {
-      or: ['EE2004', 'EE3406', 'EE3431C'],
-    };
-    expect(
-      parse(
-        '(Undergraduate physics and mathematics AND Electronics materials courses) OR EE2004: Semiconductor Devices OR EE3406: Microelectronic Materials OR EE3431C: Microelectronics Materials & Devices',
-      ),
-    ).toEqual(result);
-  });
-
-  it('parses query "(1) EN1101E or GEK1000, and (2) EN majors")', () => {
-    const result = {
-      or: ['EN1101E', 'GEK1000'],
-    };
-    expect(parse('(1) EN1101E or GEK1000, and (2) EN majors')).toEqual(result);
-  });
-
-  it('parses query "(IS2101 Business and Technical or CS2101 or their equivalents) and (CS2103/CS2103T or IS2150 E-Business Design and Implementation or BT2101 IT and Decision Making)")', () => {
-    const result = {
-      and: [
-        {
-          or: ['IS2101', 'CS2101'],
-        },
-        {
-          or: ['CS2103', 'CS2103T', 'IS2150', 'BT2101'],
-        },
-      ],
-    };
-    expect(
-      parse(
-        '(IS2101 Business and Technical or CS2101 or their equivalents) and (CS2103/CS2103T or IS2150 E-Business Design and Implementation or BT2101 IT and Decision Making)',
-      ),
-    ).toEqual(result);
-  });
-
-  it('parses "((CS2010 or its equivalent) or CS2020 or (CS2040 or its equivalent))\nand (MA1100 or (CS1231 or its equivalent))"', () => {
-    expect(
-      parse(
-        '((CS2010 or its equivalent) or CS2020 or (CS2040 or its equivalent)) and (MA1100 or (CS1231 or its equivalent))',
-      ),
-    ).toEqual({
-      and: [
-        {
-          or: ['CS2010', 'CS2020', 'CS2040'],
-        },
-        {
-          or: ['MA1100', 'CS1231'],
-        },
-      ],
-    });
-  });
 });

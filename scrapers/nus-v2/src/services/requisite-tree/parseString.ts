@@ -1,229 +1,110 @@
 import * as R from 'ramda';
-import { EmbeddedActionsParser, IToken, Lexer, TokenType, createToken } from 'chevrotain';
 
+import { NusModsLexer, NusModsVisitor } from './antlr4';
 import { PrereqTree } from '../../types/modules';
 import { Logger } from '../logger';
-import { AND_OR_REGEX, MODULE_REGEX, OPERATORS } from './constants';
-
-/**
- * Parses the string to build a tree of requirements for the module.
- * First it goes through a lexer to generate tokens, then a parser to build
- * the tree.
- *
- * Library used for lexing/parsing is Chevrotain:
- * https://github.com/SAP/chevrotain
- */
-const Module = createToken({
-  name: 'Module',
-  pattern: MODULE_REGEX,
-});
-
-const And = createToken({
-  name: 'And',
-  pattern: 'and',
-});
-
-const Or = createToken({
-  name: 'Or',
-  pattern: 'or',
-});
-
-const LeftBracket = createToken({
-  name: 'LeftBracket',
-  pattern: /\(/,
-});
-
-const RightBracket = createToken({
-  name: 'RightBracket',
-  pattern: /\)/,
-});
-
-const WhiteSpace = createToken({
-  name: 'Whitespace',
-  pattern: /\s+/,
-  group: Lexer.SKIPPED,
-  // eslint-disable-next-line camelcase
-  line_breaks: true,
-});
-
-const IrrelevantWord = createToken({
-  name: 'IrrelevantWord',
-  pattern: /[^\s()]+/,
-  group: Lexer.SKIPPED,
-});
-
-const allTokens = [WhiteSpace, Module, And, Or, LeftBracket, RightBracket, IrrelevantWord];
-const ReqTreeLexer = new Lexer(allTokens);
+import {NusModsParser, BinopContext, CompoundContext, Course_itemsContext, CoursesContext, OpContext, OverallContext, PrereqContext, PrimitiveContext, ProgramsContext } from './antlr4/NusModsParser';
+import { CharStreams, BufferedTokenStream, ParserRuleContext } from 'antlr4ts';
+import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor'
 
 function generateAndBranch(modules: PrereqTree[]) {
   const children = R.uniq(modules);
-  return { and: children };
+  return children.length === 1 ? children[0] : { and: children };
 }
 
 function generateOrBranch(modules: PrereqTree[]) {
   const children = R.uniq(modules);
-  return { or: children };
+  return children.length === 1 ? children[0] : { or: children };
 }
 
 /**
- * ReqTreeParser, works to parse string and tokenize the product.
- * The code is extremely similar to the following example:
- * @see https://github.com/SAP/chevrotain/blob/master/examples/grammars/calculator/calculator_embedded_actions.js
+ * ReqTreeVisitor, implements the visitor design pattern using
+ * the auto generated visitor from ANTLR4.
  */
-class ReqTreeParser extends EmbeddedActionsParser {
-  parse: () => PrereqTree;
-  orExpression: () => PrereqTree;
-  andExpression: () => PrereqTree;
-  parenthesisExpression: () => PrereqTree;
-  atomicExpression: () => PrereqTree;
-
+class ReqTreeVisitor extends AbstractParseTreeVisitor<PrereqTree> implements NusModsVisitor<PrereqTree> {
+  errors: Error[]
   constructor() {
-    super(allTokens, { recoveryEnabled: true });
-
-    this.parse = this.RULE('parse', () => this.SUBRULE(this.andExpression));
-
-    // And has the lowest precedence thus it is first in the rule chain (think +- in math)
-    // The precedence of binary expressions is determined by
-    // how far down the Parse Tree the binary expression appears.
-    this.andExpression = this.RULE('andExpression', () => {
-      const value = [];
-
-      value.push(this.SUBRULE(this.orExpression));
-      this.MANY(() => {
-        this.CONSUME(And);
-        // the index "2" in SUBRULE2 is needed to
-        // identify the unique position in the grammar during runtime
-        value.push(this.SUBRULE2(this.orExpression));
-      });
-
-      return value.length === 1 ? value[0] : generateAndBranch(value);
-    });
-
-    // Or has the higher precedence (think */ in math)
-    this.orExpression = this.RULE('orExpression', () => {
-      const value = [];
-
-      value.push(this.SUBRULE(this.atomicExpression));
-
-      this.MANY(() => {
-        this.CONSUME(Or);
-        value.push(this.SUBRULE2(this.atomicExpression));
-      });
-
-      return value.length === 1 ? value[0] : generateOrBranch(value);
-    });
-
-    this.atomicExpression = this.RULE('atomicExpression', () =>
-      this.OR({
-        DEF: [
-          { ALT: () => this.SUBRULE(this.parenthesisExpression) },
-          { ALT: () => this.CONSUME(Module).image },
-        ],
-        ERR_MSG: 'a module or parenthesis expression',
-      }),
-    );
-
-    // parenthesisExpression has the highest precedence and thus it appears
-    // in the "lowest" leaf in the expression ParseTree.
-    this.parenthesisExpression = this.RULE('parenthesisExpression', () => {
-      this.CONSUME(LeftBracket);
-      const expValue = this.SUBRULE(this.parse);
-      this.CONSUME(RightBracket);
-      return expValue;
-    });
-
-    // very important to call this after all the rules have been defined.
-    // otherwise the parser may not work correctly as it will lack information
-    // derived during the self analysis phase.
-    this.performSelfAnalysis();
+    super();
+    this.errors = [];
   }
 
-  // avoids inserting module literals as these can have multiple(and infinite) semantic values
-  // eslint-disable-next-line class-methods-use-this
-  canTokenTypeBeInsertedInRecovery(tokClass: TokenType) {
-    return tokClass !== Module;
+  protected defaultResult(): PrereqTree {
+      return "";
   }
-}
 
-// removes unneeded `or` and `and` operators, recursively while noting brackets
-export function cleanOperators(tokens: IToken[]) {
-  const output: IToken[] = [];
-  let temp: IToken[] = [];
-  let bracketsCount = 0;
+  visitWithSingularAlternative(ctx: ParserRuleContext, rule: string): PrereqTree {
+    if (ctx.children === undefined) {
+      return ""
+    }
+    // This can have either 0 children (ie all empty and filtered out)
+    // Or 1 child (ie one subrule is populated)
+    const result = ctx.children.map(child => child.accept(this)).filter(n => n !== '');
+    if (result.length != 0 && result.length !== 1) {
+      this.errors.push(new Error(`${rule} has children != 0/1 which is impossible ${result}`));
+    }
+    return result.length === 0 ? '' : result[0] as PrereqTree;
+  }
 
-  tokens.forEach((token) => {
-    const { image } = token;
 
-    if (bracketsCount === 0 && image !== '(' && image !== ')') {
-      output.push(token);
+  // @ts-ignore
+  visitOverall?: ((ctx: OverallContext) => PrereqTree) | undefined = (ctx) => {
+    return ctx?.compound()?.accept(this);
+  }
+
+  visitCompound?: ((ctx: CompoundContext) => PrereqTree) | undefined = (ctx) => {
+    return this.visitWithSingularAlternative(ctx, "compound");
+  }
+
+  // @ts-ignore
+  visitBinop?: ((ctx: BinopContext) => PrereqTree) | undefined = (ctx) => {
+    const lhs = ctx?.op()?.accept(this);
+    const rhs = ctx?.compound()?.accept(this);
+    const boolOp = ctx?.boolean_expr()?.text;
+    if (lhs === undefined || rhs === undefined) {
+      this.errors.push(new Error(`visitBinop bad lhs/rhs: lhs:${lhs} rhs:${rhs}`))
       return;
     }
-
-    temp.push(token);
-    if (image === '(') {
-      bracketsCount += 1;
-    } else if (image === ')') {
-      bracketsCount -= 1;
-
-      if (bracketsCount === 0) {
-        // recursive clean within parenthesis, unnests one layer
-        const cleaned = cleanOperators(temp.slice(1, -1));
-        if (cleaned.length) {
-          // Length check means this is fine
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          output.push(R.head(temp)!, ...cleaned, R.last(temp)!);
-        }
-        temp = [];
-      }
+    // Simplifying the tree
+    if (lhs === '' && rhs === '') {
+      return '';
+    } else if (lhs === '') {
+      return rhs;
+    } else if (rhs == '') {
+      return lhs;
     }
-  });
-
-  const findFirstRelevant = R.findIndex(
-    (token: IToken) => MODULE_REGEX.test(token.image) || token.image === '(',
-  );
-  const findLastRelevant = R.findLastIndex(
-    (token: IToken) => MODULE_REGEX.test(token.image) || token.image === ')',
-  );
-
-  const processedTokens = output.slice(findFirstRelevant(output), findLastRelevant(output) + 1);
-
-  const removedDuplicates = processedTokens.filter((item, pos, arr) => {
-    // always keep the first and last element
-    if (pos === 0 || pos === arr.length - 1) return true;
-
-    // then check if each element is different than the one before it
-    return !(AND_OR_REGEX.test(item.image) && AND_OR_REGEX.test(arr[pos + 1].image));
-  });
-
-  const moduleTokens = [];
-  // Falsy value if array does not contain unique conjunction
-  // Need token to inject later on when it is missing between two modules
-  const singularConjunction = removedDuplicates.reduce(
-    (acc: IToken | null | false, token: IToken) => {
-      const { image } = token;
-      if (image === 'and' || image === 'or') {
-        if (!acc) return token;
-        if (acc.image !== image) return false;
-      }
-      return acc;
-    },
-    null,
-  );
-
-  // Fill in missing values with conjunction found
-  for (let i = 0; i < removedDuplicates.length; i++) {
-    const token = removedDuplicates[i];
-    const nextToken = removedDuplicates[i + 1];
-    const isModule = MODULE_REGEX.test(token.image);
-    const isAnotherModule = nextToken && MODULE_REGEX.test(nextToken.image);
-
-    moduleTokens.push(token);
-    if (singularConjunction && isModule && isAnotherModule) {
-      moduleTokens.push(singularConjunction);
+    switch(boolOp) {
+      case 'AND':
+        return generateAndBranch([lhs, rhs]);
+      case 'OR':
+        return generateOrBranch([lhs, rhs]);
+      default:
+        this.errors.push(new Error(`visitBinop unkown Binop type: ${boolOp}`))
+        return;
     }
   }
 
-  return moduleTokens;
+  visitOp?: ((ctx: OpContext) => PrereqTree) | undefined = (ctx) => {
+    return this.visitWithSingularAlternative(ctx, "op");
+  }
+
+  visitPrimitive?: ((ctx: PrimitiveContext) => PrereqTree) | undefined = (ctx) => {
+    return this.visitWithSingularAlternative(ctx, "primitive");
+  }
+
+  visitPrereq?: ((ctx: PrereqContext) => PrereqTree) | undefined = (ctx) => {
+    return this.visitWithSingularAlternative(ctx, "prereq");
+  }
+
+  visitCourses?: ((ctx: CoursesContext) => PrereqTree) | undefined = (ctx) => {
+    const n = parseInt(ctx.contains_number().NUMBER().text, 10);
+    const courses = ctx.course_items().PROGRAMS_VALUE().map(node => node.text);
+    return courses.length === 1 && n === 1 ? courses[0] : {nOf: [n, courses]};
+  }
+
+  visitCourse_items?: ((ctx: Course_itemsContext) => PrereqTree) | undefined = (ctx) => {
+    return generateAndBranch(ctx.PROGRAMS_VALUE().map(node => node.text));
+  }
+
 }
 
 /**
@@ -231,48 +112,19 @@ export function cleanOperators(tokens: IToken[]) {
  * @see __tests__/genReqTree.test.js
  */
 export default function parseString(prerequisite: string, logger: Logger): PrereqTree | null {
-  const findModules = R.match(new RegExp(MODULE_REGEX, 'g'));
-  const moduleMatches = findModules(prerequisite);
+  const chars = CharStreams.fromString(Buffer.from(prerequisite, 'utf-8').toString());
+  const lexer = new NusModsLexer(chars);
+  // console.log(lexer.getAllTokens())
+  const tokens = new BufferedTokenStream(lexer);
+  // console.log(tokens.getText());
+  const parser = new NusModsParser(tokens);
+  const tree = parser.overall();
 
-  if (moduleMatches.length === 0) {
-    return null;
+  const visitor = new ReqTreeVisitor();
+  const result = tree.accept(visitor);
+  if (visitor.errors.length > 0) {
+    console.log(visitor.errors)
+    logger.info({ prerequisite, errors: visitor.errors }, 'Encountered parsing errors');
   }
-
-  if (moduleMatches.length === 1) {
-    // e.g. 'CS1010' or 'CS1010 Introduction to Computer Science'
-    return moduleMatches[0];
-  }
-
-  if (!prerequisite.includes(OPERATORS.or) && !prerequisite.includes(OPERATORS.and)) {
-    // e.g. 'CS1010 CS1231 Some module title'
-    return generateOrBranch(moduleMatches);
-  }
-
-  if (!prerequisite.includes(OPERATORS.or)) {
-    // e.g. 'CS1010 and CS1231'
-    return generateAndBranch(moduleMatches);
-  }
-
-  if (!prerequisite.includes(OPERATORS.and)) {
-    // e.g. 'CS1010 or CS1231'
-    return generateOrBranch(moduleMatches);
-  }
-
-  // check that all brackets are fully enclosed
-  if (R.match(/\(/g, prerequisite).length !== R.match(/\)/g, prerequisite).length) {
-    logger.info({ prerequisite }, 'Brackets do not self enclose');
-  }
-
-  const lexingResult = ReqTreeLexer.tokenize(prerequisite);
-  const tokens = cleanOperators(lexingResult.tokens);
-
-  const parser = new ReqTreeParser();
-  parser.input = tokens;
-  const result = parser.parse();
-
-  if (parser.errors.length > 0) {
-    logger.info({ prerequisite, errors: parser.errors }, 'Encountered parsing errors');
-  }
-
   return result;
 }
