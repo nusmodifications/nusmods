@@ -44,8 +44,6 @@ describe(parseString, () => {
       or: [
         { nOf: [7, ['PH%:D', 'GET1029:D']] },
         {
-          or: [
-            {
               nOf: [
                 7,
                 [
@@ -165,9 +163,7 @@ describe(parseString, () => {
                   'TS2231:D',
                   'TS2239:D',
                   'TS3231:D',
-                ],
               ],
-            },
           ],
         },
       ],
@@ -296,6 +292,46 @@ describe(parseString, () => {
       parse(
         `
         PROGRAM_TYPES IF_IN Undergraduate Degree\nTHEN\n(\n\tCOURSES (1) YSC1212:D,CS1010:D,CS1010J:D,CS1010E:D,CS1010S:D,CS1010FC:D,CS1010X:D,CS1101:D,CS1101S:D\n)
+      `,
+      ),
+    ).toEqual(result);
+  });
+
+  it('parses undergrad and simplifies nested disjunctions of courses', () => {
+    const result: PrereqTree = {
+      or: [
+        "AA%:D",
+        "BB%:D",
+        "CC%:D",
+        "DD%:D",
+        "EE%:D",
+        "FF%:D",
+        "GG%:D",
+        "HH%:D",
+        "II%:D",
+        "JJ%:D",
+      ]
+    };
+    expect(
+      parse(
+        `
+        PROGRAMME_TYPES IF_IN Undergraduate Degree
+        THEN
+        (
+          UNITS (80)
+          AND
+          MODULES (1) AA%:D,BB%:D,CC%:D
+          OR
+          (
+            MODULES (1) DD%:D,EE%:D,FF%:D
+            OR
+            (
+              MODULES (1) GG%:D,HH%:D,II%:D
+              OR
+              MODULES (1) JJ%:D
+            )
+          )
+        )
       `,
       ),
     ).toEqual(result);

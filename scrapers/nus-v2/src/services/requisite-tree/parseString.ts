@@ -16,8 +16,18 @@ function generateAndBranch(modules: PrereqTree[]) {
 }
 
 function generateOrBranch(modules: PrereqTree[]) {
-  const children = R.uniq(modules);
-  return children.length === 1 ? children[0] : { or: children };
+  const children: PrereqTree[] = R.uniq(modules);
+  // Simplifying the expression:
+  if (children.length === 1) {
+    return children[0];
+  }
+  // Ignore because TS doesn't recognise Object.hasOwnProperty is a type guard.
+  // @ts-ignore
+  const result = children.flatMap(child => child.hasOwnProperty('or') ? child.or : child);
+  if (result.length === 1) {
+    return result[0];
+  }
+  return {or: result}
 }
 
 /**
