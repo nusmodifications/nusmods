@@ -1,6 +1,6 @@
 grammar NusMods;
 options {
-	language=TypeScript;
+	language = TypeScript;
 }
 
 overall: | program_types THEN compound EOF;
@@ -8,13 +8,9 @@ overall: | program_types THEN compound EOF;
 program_types:
 	PROGRAM_TYPES (IF_IN | must_be_in) PROGRAM_TYPES_VALUE;
 
-compound:
-	| '(' compound ')'
-    | binop
-	| op;
+compound: | '(' compound ')' | binop | op;
 
-binop: 
-    | op boolean_expr compound;
+binop: | op boolean_expr compound;
 
 boolean_expr: AND | OR;
 
@@ -27,19 +23,25 @@ primitive:
 	| subject_years
 	| special
 	| prereq
-    | coreq;
+	| coreq;
 
-programs:
-	PROGRAMS programs_condition programs_values;
+programs: PROGRAMS programs_condition programs_values;
 
-programs_condition: IF_IN | IF_NOT_IN | must_be_in | must_not_be_in;
+programs_condition:
+	IF_IN
+	| IF_NOT_IN
+	| must_be_in
+	| must_not_be_in;
 
 programs_values: PROGRAMS_VALUE (COMMA PROGRAMS_VALUE)*;
 
-plan_types:
-	PLAN_TYPES plan_types_condition programs_values;
+plan_types: PLAN_TYPES plan_types_condition programs_values;
 
-plan_types_condition: IF_IN | IF_NOT_IN | must_be_in | must_not_be_in;
+plan_types_condition:
+	IF_IN
+	| IF_NOT_IN
+	| must_be_in
+	| must_not_be_in;
 
 cohort_years:
 	COHORT_YEARS (
@@ -51,20 +53,21 @@ cohort_years:
 
 subject_years: SUBJECT_YEARS IF_IN YEARS YEARS;
 
-special:
-	SPECIAL special_condition '"' SPECIAL_VALUE '"';
+special: SPECIAL special_condition '"' SPECIAL_VALUE '"';
 
-special_condition: IF_IN | IF_NOT_IN | must_be_in | must_not_be_in;
+special_condition:
+	IF_IN
+	| IF_NOT_IN
+	| must_be_in
+	| must_not_be_in;
 
 prereq:
-    | courses
+	| courses
 	| SUBJECTS contains_number programs_values
 	| UNITS contains_number
 	| GPA contains_number;
 
-coreq:
-    | COREQUISITE '(' courses ')'
-    | COREQUISITE courses;
+coreq: | COREQUISITE '(' courses ')' | COREQUISITE courses;
 
 courses: COURSES contains_number course_items;
 
@@ -146,5 +149,4 @@ PROGRAMS_VALUE: ID;
 fragment ID: [0-9a-zA-Z_%:]+;
 
 WS: [ \n\t\r]+ -> skip;
-
 
