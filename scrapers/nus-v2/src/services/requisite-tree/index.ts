@@ -6,7 +6,6 @@ import rootLogger, { Logger } from '../logger';
 
 import { MODULE_REGEX, OPERATORS_REGEX } from './constants';
 import parseString from './parseString';
-import normalizeString from './normalizeString';
 import { flattenTree } from './tree';
 
 /**
@@ -55,7 +54,7 @@ function parse(data: ModuleWithoutTree[], subLogger: Logger): PrereqTreeMap {
   const results: PrereqTreeMap = {};
 
   for (const module of data) {
-    const { moduleCode, prerequisite: value } = module;
+    const { moduleCode, prerequisiteRule: value } = module;
 
     if (
       // Filter out empty values
@@ -66,11 +65,10 @@ function parse(data: ModuleWithoutTree[], subLogger: Logger): PrereqTreeMap {
       // has some requirements that cannot be parsed as a tree
       !RESTRICTED_KEYWORDS.some((keyword) => value.includes(keyword))
     ) {
-      // Sanitize, then parse the value
-      const normalizedValue = normalizeString(value, moduleCode);
+
       const moduleLog = subLogger.child({ moduleCode });
 
-      const parsedValue = parseString(normalizedValue, moduleLog);
+      const parsedValue = parseString(value, moduleLog);
 
       if (parsedValue) {
         results[module.moduleCode] = parsedValue;

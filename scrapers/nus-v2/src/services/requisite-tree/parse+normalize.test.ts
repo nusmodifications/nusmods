@@ -25,7 +25,7 @@ describe(parseString, () => {
   });
 
   it('parses basic undergrad with multiple modules)', () => {
-    const result: PrereqTree = { nOf: [1, ['PH2110:D', 'GEM2006:D', 'GET1028:D']] };
+    const result: PrereqTree = { or: ['PH2110:D', 'GEM2006:D', 'GET1028:D'] };
     expect(
       parse(
         `
@@ -213,34 +213,31 @@ describe(parseString, () => {
 
   it('parses complex undergrad with multiple modules and subjects)', () => {
     const result: PrereqTree = {
-      nOf: [
-        1,
-        [
-          'CH1%:D',
-          'CL1%:D',
-          'CH21%:D',
-          'CL21%:D',
-          'CH222%:D',
-          'CH224%:D',
-          'CH225%:D',
-          'CH227%:D',
-          'CH322%:D',
-          'CH323%:D',
-          'CH324%:D',
-          'CH325%:D',
-          'CH326%:D',
-          'CH327%:D',
-          'CH38%:D',
-          'CL220%:D',
-          'CL226%:D',
-          'CL320%:D',
-          'CL321%:D',
-          'CL31%:D',
-          'CL228%:D',
-          'CL328%:D',
-          'TRA%:D',
-          'INT%:D',
-        ],
+      or: [
+        'CH1%:D',
+        'CL1%:D',
+        'CH21%:D',
+        'CL21%:D',
+        'CH222%:D',
+        'CH224%:D',
+        'CH225%:D',
+        'CH227%:D',
+        'CH322%:D',
+        'CH323%:D',
+        'CH324%:D',
+        'CH325%:D',
+        'CH326%:D',
+        'CH327%:D',
+        'CH38%:D',
+        'CL220%:D',
+        'CL226%:D',
+        'CL320%:D',
+        'CL321%:D',
+        'CL31%:D',
+        'CL228%:D',
+        'CL328%:D',
+        'TRA%:D',
+        'INT%:D',
       ],
     };
     expect(
@@ -276,6 +273,29 @@ describe(parseString, () => {
           SPECIAL MUST_BE_IN "ACAD_LEVEL=4"
         )
       )
+      `,
+      ),
+    ).toEqual(result);
+  });
+
+  it('parses undergrad with courses', () => {
+    const result: PrereqTree = {
+      or: [
+        "YSC1212:D",
+        "CS1010:D",
+        "CS1010J:D",
+        "CS1010E:D",
+        "CS1010S:D",
+        "CS1010FC:D",
+        "CS1010X:D",
+        "CS1101:D",
+        "CS1101S:D",
+      ]
+    };
+    expect(
+      parse(
+        `
+        PROGRAM_TYPES IF_IN Undergraduate Degree\nTHEN\n(\n\tCOURSES (1) YSC1212:D,CS1010:D,CS1010J:D,CS1010E:D,CS1010S:D,CS1010FC:D,CS1010X:D,CS1101:D,CS1101S:D\n)
       `,
       ),
     ).toEqual(result);
