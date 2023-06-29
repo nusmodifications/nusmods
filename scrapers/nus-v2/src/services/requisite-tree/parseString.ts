@@ -11,8 +11,20 @@ import { CharStreams, BufferedTokenStream, ParserRuleContext } from 'antlr4ts';
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor'
 
 function generateAndBranch(modules: PrereqTree[]) {
-  const children = R.uniq(modules);
-  return children.length === 1 ? children[0] : { and: children };
+  const children: PrereqTree[] = R.uniq(modules);
+  // Simplifying the expression
+  if (children.length === 1) {
+    return children[0];
+  }
+
+  // Simplify conjunction
+  // Ignore because TS doesn't recognise Object.hasOwnProperty is a type guard.
+  // @ts-ignore
+  const result = children.flatMap(child => child.hasOwnProperty('and') ? child.and : child);
+  if (result.length === 1) {
+    return result[0];
+  }
+  return {and: result}
 }
 
 function generateOrBranch(modules: PrereqTree[]) {
@@ -21,6 +33,7 @@ function generateOrBranch(modules: PrereqTree[]) {
   if (children.length === 1) {
     return children[0];
   }
+  // Simplify disjunction
   // Ignore because TS doesn't recognise Object.hasOwnProperty is a type guard.
   // @ts-ignore
   const result = children.flatMap(child => child.hasOwnProperty('or') ? child.or : child);
