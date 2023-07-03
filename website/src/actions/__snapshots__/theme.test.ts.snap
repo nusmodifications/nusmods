@@ -1,28 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`theme should dispatch a cycle of theme 1`] = `
-Object {
+{
   "payload": 1,
   "type": "CYCLE_THEME",
 }
 `;
 
 exports[`theme should dispatch a cycle of theme 2`] = `
-Object {
+{
   "payload": -1,
   "type": "CYCLE_THEME",
 }
 `;
 
 exports[`theme should dispatch a select of theme 1`] = `
-Object {
+{
   "payload": "test",
   "type": "SELECT_THEME",
 }
 `;
 
 exports[`theme should dispatch a toggle of timetable orientation 1`] = `
-Object {
+{
   "payload": null,
   "type": "TOGGLE_TIMETABLE_ORIENTATION",
 }
