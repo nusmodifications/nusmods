@@ -23,7 +23,7 @@
     "@types/he": "1.1.1",
     "@types/lodash": "4.14.170",
     "@types/mock-fs": "4.13.0",
-    "@types/node": "16.18.38",
+    "@types/node": "18.16.19",
     "@types/oboe": "2.0.29",
     "@types/promise-queue": "2.2.0",
     "@types/ramda": "0.27.36",
