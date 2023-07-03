@@ -52,7 +52,7 @@ describe(Navtabs, () => {
           `);
     } else {
       expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
-        Array [
+        [
           "Today",
           "Timetable",
           "Courses",
@@ -83,7 +83,7 @@ describe(Navtabs, () => {
           `);
     } else {
       expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
-        Array [
+        [
           "Today",
           "Timetable",
           "Courses",
