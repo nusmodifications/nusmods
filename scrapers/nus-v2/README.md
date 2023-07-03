@@ -6,7 +6,7 @@ This folder contains the scraper which produces our [v2 API data][api-v2] from i
 
 ## Getting Started
 
-Node LTS is required. We use Node 12 in production.
+Node LTS is required. We use Node 16 in production.
 
 Use `yarn` to install dependencies, then set up `env.json` with all the necessary keys and API base URL, then run the test script to check the setup is okay.
 
