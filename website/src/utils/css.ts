@@ -28,8 +28,8 @@ export function breakpointUp(size: Breakpoint) {
   return { minWidth: breakpoints[size] } satisfies QueryObject;
 }
 
-export function touchScreenOnly(): QueryObject {
-  return { pointer: 'coarse' };
+export function touchScreenOnly() {
+  return { pointer: 'coarse' } satisfies QueryObject;
 }
 
 export function supportsCSSVariables() {

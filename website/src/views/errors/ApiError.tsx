@@ -57,8 +57,8 @@ export default class ApiError extends React.PureComponent<Props> {
               <strong>Course search might be having issues at the moment. 😟</strong>
               <p>
                 If it isn't working, please try the module search{' '}
-                {isNarrowViewport && 'on a desktop browser '}on the
-                top right corner of the page instead.
+                {isNarrowViewport && 'on a desktop browser '}on the top right corner of the page
+                instead.
               </p>
             </>
           )}
