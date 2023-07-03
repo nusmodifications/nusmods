@@ -144,7 +144,7 @@ export default function normalizeString(string: string, moduleCode: ModuleCode):
   const moduleWithoutPostfix = moduleCode.slice(
     0,
     // Strings are arrays, dammit
-    R.findLastIndex(R.test(/\d/), (moduleCode as unknown) as string[]) + 1,
+    R.findLastIndex(R.test(/\d/), moduleCode as unknown as string[]) + 1,
   );
   const moduleRegex = new RegExp(`\\b${moduleWithoutPostfix}(?:[A-Z]|[A-Z]R)?\\b`, 'g');
   const preprocessed = string.replace(moduleRegex, '');

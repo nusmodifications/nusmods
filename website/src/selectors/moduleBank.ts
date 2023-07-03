@@ -13,8 +13,9 @@ import { getRequestModuleCode } from '../actions/constants';
 export type ModuleCondensedGetter = (moduleCode: ModuleCode) => ModuleCondensed | undefined;
 export const getModuleCondensed = createSelector(
   ({ moduleBank }: State) => moduleBank.moduleCodes,
-  (moduleCodes: ModuleCodeMap): ModuleCondensedGetter => (moduleCode: ModuleCode) =>
-    moduleCodes[moduleCode],
+  (moduleCodes: ModuleCodeMap): ModuleCondensedGetter =>
+    (moduleCode: ModuleCode) =>
+      moduleCodes[moduleCode],
 );
 
 export function getAllPendingModules(state: State): ModuleCode[] {

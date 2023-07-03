@@ -269,15 +269,8 @@ class TimetableContent extends React.Component<Props, State> {
   }
 
   render() {
-    const {
-      semester,
-      modules,
-      colors,
-      activeLesson,
-      timetableOrientation,
-      showTitle,
-      readOnly,
-    } = this.props;
+    const { semester, modules, colors, activeLesson, timetableOrientation, showTitle, readOnly } =
+      this.props;
 
     const { showExamCalendar } = this.state;
 
