@@ -39,6 +39,8 @@ export type Day =
   | 'Saturday'
   | 'Sunday';
 
+export const LessonDays: readonly Day[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+
 export const WorkingDays: readonly Day[] = [
   'Monday',
   'Tuesday',
@@ -134,6 +136,15 @@ export type RawLesson = Readonly<{
   weeks: Weeks;
 }>;
 
+export type CustomLesson = {
+  classNo: ClassNo;
+  day: DayText;
+  startTime: StartTime;
+  endTime: EndTime;
+  lessonType: LessonType;
+  venue: Venue;
+};
+
 // Semester-specific information of a module.
 export type SemesterData = {
   semester: Semester;
@@ -212,6 +223,9 @@ export type Module = {
   // Requisites
   prereqTree?: PrereqTree;
   fulfillRequirements?: readonly ModuleCode[];
+
+  // Flag for Custom Modules
+  isCustom?: boolean;
 
   // Meta
   timestamp: number;
