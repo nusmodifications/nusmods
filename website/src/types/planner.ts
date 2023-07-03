@@ -1,8 +1,8 @@
-import { Module, ModuleCode, Semester, PrereqTree, ModuleCondensed } from './modules';
+import { Module, ModuleCode, ModuleType, Semester, PrereqTree, ModuleCondensed } from './modules';
 import { CustomModule } from './reducers';
 
 export type AddModuleData =
-  | { type: 'module'; moduleCode: ModuleCode }
+  | { type: 'module'; moduleCode: ModuleCode; yearLong?: boolean }
   | { type: 'placeholder'; placeholderId: string };
 
 export interface PlannerPlaceholder {
@@ -29,6 +29,10 @@ export type SemesterConflict = {
 export type NoInfo = {
   type: 'noInfo';
 };
+
+export type PlannerModuleSemester = Semester | 'yearLong' | 'exemption' | 'planToTake';
+
+export type PlannerSemesterModuleType = ModuleType | 'ALL';
 
 export type Conflict = PrereqConflict | ExamConflict | SemesterConflict | NoInfo;
 

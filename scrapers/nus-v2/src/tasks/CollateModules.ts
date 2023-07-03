@@ -120,10 +120,12 @@ const getModuleCondensed = ({
   moduleCode,
   title,
   semesterData,
+  attributes,
 }: ModuleWithoutTree): ModuleCondensed => ({
   moduleCode,
   title,
   semesters: semesterData.map((semester) => semester.semester),
+  yearLong: Boolean(attributes.year),
 });
 
 const getModuleMPEParticipation = ({

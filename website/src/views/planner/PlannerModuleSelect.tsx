@@ -3,12 +3,15 @@ import { connect } from 'react-redux';
 import Downshift from 'downshift';
 import classnames from 'classnames';
 
+import { ModuleCode, ModuleCondensed, Semester } from 'types/modules';
+import { PlannerModuleSemester } from 'types/planner';
 import { State } from 'types/state';
 
-import { ModuleCode, ModuleCondensed, Semester } from 'types/modules';
 import { createSearchPredicate } from 'utils/moduleSearch';
 import { takeUntil } from 'utils/array';
+import { isSemester } from 'utils/planner';
 
+import { MODULE_CODE_REGEX } from 'utils/modules';
 import styles from './PlannerModuleSelect.scss';
 
 type Props = Readonly<{
@@ -19,10 +22,10 @@ type Props = Readonly<{
   defaultValue?: string;
 
   // For filtering
-  onSelect: (moduleCode: ModuleCode | null) => void;
+  onSelect: (moduleCode: ModuleCondensed | null) => void;
   onCancel?: () => void;
   onBlur?: () => void;
-  semester?: Semester;
+  semester?: PlannerModuleSemester;
   showOnly?: Set<ModuleCode>;
   filter?: (module: ModuleCondensed) => boolean;
 
@@ -76,8 +79,10 @@ export function PlannerModuleSelectComponent({
       selectedModules = selectedModules.filter(filter);
     }
 
-    if (semester != null) {
-      selectedModules = selectedModules.filter((module) => module.semesters.includes(semester));
+    if (semester && isSemester(semester)) {
+      selectedModules = selectedModules.filter((module) =>
+        module.semesters.includes(semester as Semester),
+      );
     }
 
     return selectedModules;
@@ -121,7 +126,16 @@ export function PlannerModuleSelectComponent({
                     } else if (inputValue != null) {
                       // Otherwise we use the input value - this allows the user to
                       // enter multiple
-                      onSelect(inputValue);
+
+                      // Extract everything that looks like a module code
+                      const moduleCodes = inputValue.toUpperCase().match(MODULE_CODE_REGEX);
+
+                      if (moduleCodes) {
+                        moduleCodes.forEach((moduleCode) => {
+                          const module = modules.find((m) => m.moduleCode === moduleCode);
+                          if (module) onSelect(module);
+                        });
+                      }
                     }
                   }
 
@@ -148,7 +162,7 @@ export function PlannerModuleSelectComponent({
                   <li
                     {...getItemProps({
                       key: module.moduleCode,
-                      item: module.moduleCode,
+                      item: module,
                       className: classnames({
                         [styles.highlightItem]: index === highlightedIndex,
                       }),

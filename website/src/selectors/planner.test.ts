@@ -83,6 +83,7 @@ describe(getAcadYearModules, () => {
       ),
     ).toEqual({
       '2018/2019': {
+        [0]: [],
         [1]: expectModuleCodes(['CS1010S']),
         [2]: [],
         [3]: [],
@@ -101,6 +102,7 @@ describe(getAcadYearModules, () => {
       ),
     ).toEqual({
       '2018/2019': {
+        [0]: [],
         [1]: [],
         [2]: [],
         [3]: expectModuleCodes(['CS1010X']),
@@ -123,6 +125,7 @@ describe(getAcadYearModules, () => {
       ),
     ).toEqual({
       '2018/2019': {
+        [0]: [],
         [1]: expectModuleCodes(['MA1521', 'CS1010S', 'MA1101R']),
         [2]: [],
         [3]: [],

@@ -5,6 +5,7 @@ import { createMigrate, PersistedState } from 'redux-persist';
 import { PlannerState } from 'types/reducers';
 import { Actions } from 'types/actions';
 import { Semester } from 'types/modules';
+import { PlannerModuleSemester } from 'types/planner';
 
 import {
   ADD_CUSTOM_PLANNER_DATA,
@@ -47,7 +48,7 @@ export function nextId(modules: PlannerState['modules']): string {
 function getSemesterIds(
   modules: PlannerState['modules'],
   year: string,
-  semester: Semester,
+  semester: PlannerModuleSemester,
   exclude?: string,
 ): string[] {
   const ids = filterModuleForSemester(modules, year, semester).map((module) => module.id);

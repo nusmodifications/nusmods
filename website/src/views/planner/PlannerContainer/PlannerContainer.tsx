@@ -1,19 +1,28 @@
 import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { flatMap, flatten, sortBy, toPairs, values } from 'lodash';
-import { DragDropContext, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
+import {
+  DragDropContext,
+  Droppable,
+  OnDragEndResponder,
+  OnDragStartResponder,
+} from 'react-beautiful-dnd';
 import classnames from 'classnames';
 
-import { Module, ModuleCode, Semester } from 'types/modules';
-import { PlannerModulesWithInfo, PlannerModuleInfo, AddModuleData } from 'types/planner';
-import { MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
+import { Module, ModuleCode, ModuleType } from 'types/modules';
 import {
-  EXEMPTION_SEMESTER,
+  PlannerModulesWithInfo,
+  PlannerModuleInfo,
+  PlannerModuleSemester,
+  AddModuleData,
+} from 'types/planner';
+import { renderMCs, subtractAcadYear } from 'utils/modules';
+import {
   EXEMPTION_YEAR,
+  fromDraggableId,
   fromDroppableId,
   getTotalMC,
   IBLOCS_SEMESTER,
-  PLAN_TO_TAKE_SEMESTER,
   PLAN_TO_TAKE_YEAR,
 } from 'utils/planner';
 import {
@@ -48,8 +57,8 @@ export type Props = Readonly<{
   fetchModule: (moduleCode: ModuleCode) => Promise<Module>;
   toggleFeedback: () => void;
 
-  addModule: (year: string, semester: Semester, module: AddModuleData) => void;
-  moveModule: (id: string, year: string, semester: Semester, index: number) => void;
+  addModule: (year: string, semester: PlannerModuleSemester, module: AddModuleData) => void;
+  moveModule: (id: string, year: string, semester: PlannerModuleSemester, index: number) => void;
   removeModule: (id: string) => void;
   setPlaceholderModule: (id: string, moduleCode: ModuleCode) => void;
 }>;
@@ -61,6 +70,7 @@ type State = {
   readonly showSettings: boolean;
   // Module code is the module being edited. null means the modal is not open
   readonly showCustomModule: ModuleCode | null;
+  readonly draggedModuleType: ModuleType | null;
 };
 
 const TRASH_ID = 'trash';
@@ -70,6 +80,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
     loading: true,
     showSettings: false,
     showCustomModule: null,
+    draggedModuleType: null,
   };
 
   componentDidMount() {
@@ -90,35 +101,41 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
     ).then(() => this.setState({ loading: false }));
   }
 
-  onAddModule = (year: string, semester: Semester, module: AddModuleData) => {
+  onAddModule = (year: string, semester: PlannerModuleSemester, module: AddModuleData) => {
     if (module.type === 'module') {
-      // Extract everything that looks like a module code
-      const moduleCodes = module.moduleCode.toUpperCase().match(MODULE_CODE_REGEX);
-
-      if (moduleCodes) {
-        moduleCodes.forEach((moduleCode) => {
-          this.props.addModule(year, semester, { type: 'module', moduleCode });
-          // TODO: Handle error
-          this.props.fetchModule(moduleCode);
-        });
-      }
+      this.props.addModule(year, semester, {
+        type: 'module',
+        moduleCode: module.moduleCode,
+        yearLong: module.yearLong,
+      });
+      // TODO: Handle error
+      this.props.fetchModule(module.moduleCode);
     } else {
       this.props.addModule(year, semester, module);
     }
   };
 
+  onDragStart: OnDragStartResponder = (evt) => {
+    const { draggableId } = evt;
+    const { moduleType } = fromDraggableId(draggableId);
+
+    this.setState({ draggedModuleType: moduleType });
+  };
+
   onDropEnd: OnDragEndResponder = (evt) => {
     const { destination, draggableId } = evt;
+    const id = draggableId.split('|')[0];
 
     // No destination = drag and drop cancelled / dropped on invalid target
     if (!destination) return;
 
     if (destination.droppableId === TRASH_ID) {
-      this.props.removeModule(draggableId);
+      this.props.removeModule(id);
     } else {
-      const [year, semester] = fromDroppableId(destination.droppableId);
-      this.props.moveModule(draggableId, year, +semester, destination.index);
+      const { acadYear, semester } = fromDroppableId(destination.droppableId);
+      this.props.moveModule(id, acadYear, semester, destination.index);
     }
+    this.setState({ draggedModuleType: null });
   };
 
   onAddCustomData = (moduleCode: ModuleCode) =>
@@ -188,6 +205,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
       addCustomData: this.onAddCustomData,
       setPlaceholderModule: this.onSetPlaceholderModule,
       removeModule: this.props.removeModule,
+      draggedModuleType: this.state.draggedModuleType,
     };
 
     return (
@@ -196,7 +214,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
 
         {this.renderHeader()}
 
-        <DragDropContext onDragEnd={this.onDropEnd}>
+        <DragDropContext onDragStart={this.onDragStart} onDragEnd={this.onDropEnd}>
           <div className={styles.yearWrapper}>
             {iblocs && (
               <section>
@@ -226,7 +244,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
               <h2 className={styles.modListHeaders}>Exemptions</h2>
               <PlannerSemester
                 year={EXEMPTION_YEAR}
-                semester={EXEMPTION_SEMESTER}
+                semester="exemption"
                 modules={exemptions}
                 showModuleMeta={false}
                 {...commonProps}
@@ -237,7 +255,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
               <h2 className={styles.modListHeaders}>Plan to Take</h2>
               <PlannerSemester
                 year={PLAN_TO_TAKE_YEAR}
-                semester={PLAN_TO_TAKE_SEMESTER}
+                semester="planToTake"
                 modules={planToTake}
                 {...commonProps}
               />
