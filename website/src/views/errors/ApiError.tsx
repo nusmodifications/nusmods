@@ -34,6 +34,9 @@ export default class ApiError extends React.PureComponent<Props> {
     const { retry, dataName } = this.props;
     const message = dataName ? `We can't load the ${dataName}` : "We can't connect to NUSMods";
 
+    const { minWidth } = breakpointUp('md');
+    const isNarrowViewport = typeof minWidth === 'number' ? window.innerWidth < minWidth : false;
+
     return (
       <div>
         <Title>Oh no...</Title>
@@ -54,7 +57,7 @@ export default class ApiError extends React.PureComponent<Props> {
               <strong>Course search might be having issues at the moment. 😟</strong>
               <p>
                 If it isn't working, please try the module search{' '}
-                {window.innerWidth < breakpointUp('md').minWidth && 'on a desktop browser '}on the
+                {isNarrowViewport && 'on a desktop browser '}on the
                 top right corner of the page instead.
               </p>
             </>

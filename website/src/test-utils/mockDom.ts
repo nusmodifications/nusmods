@@ -25,7 +25,6 @@ export function mockDom() {
 export function mockDomReset() {
   window.scrollTo = nativeScrollTo;
 
-  // @ts-expect-error We insist
   window.performance = nativePerformance;
 
   window.matchMedia = nativeMatchMedia;
