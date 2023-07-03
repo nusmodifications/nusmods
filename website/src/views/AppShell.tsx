@@ -103,10 +103,8 @@ function useFetchModuleListAndTimetableModules(): {
 }
 
 const AppShell: FC = ({ children }) => {
-  const {
-    moduleListError,
-    refetchModuleListAndTimetableModules,
-  } = useFetchModuleListAndTimetableModules();
+  const { moduleListError, refetchModuleListAndTimetableModules } =
+    useFetchModuleListAndTimetableModules();
 
   // Enable Matomo analytics
   const history = useHistory();

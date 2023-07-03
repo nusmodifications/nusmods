@@ -51,7 +51,7 @@ interface PersistedContactInfo {
   matricNumber: string;
 }
 
-const groupedByMatcherType = (groupBy(facultyEmails, (config) => config.match.type) as unknown) as {
+const groupedByMatcherType = groupBy(facultyEmails, (config) => config.match.type) as unknown as {
   moduleCode: FacultyEmail<ModuleCodeMatch>[];
   modulePrefix: FacultyEmail<ModuleCodePrefixMatch>[];
   faculty: FacultyEmail<FacultyMatch>[];
@@ -123,18 +123,19 @@ const ReportError = memo<Props>(({ module }) => {
   }));
 
   const updateFormValue = useCallback(
-    (key: keyof ReportErrorForm): FormEventHandler => (evt) => {
-      const newFormData = produce(formData, (draft) => {
-        draft[key] = (evt.target as HTMLInputElement).value;
-      });
+    (key: keyof ReportErrorForm): FormEventHandler =>
+      (evt) => {
+        const newFormData = produce(formData, (draft) => {
+          draft[key] = (evt.target as HTMLInputElement).value;
+        });
 
-      setFormData(newFormData);
-      persistContactInfo({
-        name: newFormData.name,
-        replyTo: newFormData.replyTo,
-        matricNumber: newFormData.matricNumber,
-      });
-    },
+        setFormData(newFormData);
+        persistContactInfo({
+          name: newFormData.name,
+          replyTo: newFormData.replyTo,
+          matricNumber: newFormData.matricNumber,
+        });
+      },
     [formData],
   );
 

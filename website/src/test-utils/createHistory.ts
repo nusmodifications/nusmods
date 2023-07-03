@@ -22,7 +22,7 @@ export default function createHistory<T = {}>(
 
   const match: Match<T> = {
     // Not strictly type safe, but it's good enough for tests
-    params: (params as unknown) as T,
+    params: params as unknown as T,
     isExact,
     path: entries[0],
     url: entries[0],
