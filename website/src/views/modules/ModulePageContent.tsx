@@ -11,7 +11,6 @@ import { intersperse } from 'utils/array';
 import { BULLET } from 'utils/react';
 import { NAVTAB_HEIGHT } from 'views/layout/Navtabs';
 
-import ModuleTree from 'views/modules/ModuleTree';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import CommentCount from 'views/components/disqus/CommentCount';
 import DisqusComments from 'views/components/disqus/DisqusComments';
@@ -26,7 +25,6 @@ import AddModuleDropdown from 'views/components/module-info/AddModuleDropdown';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
 import { Archive, Check } from 'react-feather';
-import ErrorBoundary from 'views/errors/ErrorBoundary';
 
 import useScrollToTop from 'views/hooks/useScrollToTop';
 import styles from './ModulePageContent.scss';

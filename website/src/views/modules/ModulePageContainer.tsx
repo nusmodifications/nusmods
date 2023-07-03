@@ -43,10 +43,8 @@ const getPropsFromMatch = (match: Match<Params>) => ({
  * - Loaded: Both requests are successfully loaded
  */
 export const ModulePageContainerComponent: FC = () => {
-  const [
-    ModulePageContent,
-    setModulePageContent,
-  ] = useState<ComponentType<ModulePageContentProps> | null>(null);
+  const [ModulePageContent, setModulePageContent] =
+    useState<ComponentType<ModulePageContentProps> | null>(null);
   const [error, setError] = useState<Error | undefined>();
 
   const dispatch = useDispatch<Dispatch>();

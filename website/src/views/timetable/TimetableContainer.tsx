@@ -172,10 +172,10 @@ export const TimetableContainerComponent: FC = () => {
   }, [getModule, importedTimetable, modules, timetable]);
 
   const displayedTimetable = importedTimetable || timetable;
-  const filledColors = useMemo(() => fillColorMapping(displayedTimetable, colors), [
-    colors,
-    displayedTimetable,
-  ]);
+  const filledColors = useMemo(
+    () => fillColorMapping(displayedTimetable, colors),
+    [colors, displayedTimetable],
+  );
   const readOnly = displayedTimetable === importedTimetable;
 
   useScrollToTop();

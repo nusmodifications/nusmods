@@ -48,14 +48,8 @@ export default class SearchkitSearchBox extends SearchkitComponent<Props, State>
   }
 
   defineAccessor() {
-    const {
-      id,
-      prefixQueryFields,
-      queryFields,
-      queryBuilder,
-      queryOptions,
-      prefixQueryOptions,
-    } = this.props;
+    const { id, prefixQueryFields, queryFields, queryBuilder, queryOptions, prefixQueryOptions } =
+      this.props;
     return new QueryAccessor(id || DEFAULT_SEARCH_QUERY_KEY, {
       prefixQueryFields,
       prefixQueryOptions: { ...prefixQueryOptions },
