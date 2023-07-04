@@ -140,7 +140,7 @@ class ReqTreeVisitor extends AbstractParseTreeVisitor<PrereqTree> implements Nus
 
 /**
  * Parses the prerequisite string to produce the tokenized form.
- * @see __tests__/genReqTree.test.js
+ * @see __tests__/parseString.test.js
  */
 export default function parseString(prerequisite: string, logger: Logger): PrereqTree | null {
   const chars = CharStreams.fromString(prerequisite);
