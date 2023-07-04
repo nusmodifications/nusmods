@@ -127,7 +127,7 @@ class ReqTreeVisitor extends AbstractParseTreeVisitor<PrereqTree> implements Nus
     if (n === 1) {
       // If there's only 1 course required, and many courses are allowed, then it's
       // same as OR of them all.
-      return courses.length === 1 ? courses[0] : generateOrBranch(courses);
+      return  generateOrBranch(courses);
     }
     return { nOf: [n, courses] };
   }
@@ -143,7 +143,7 @@ class ReqTreeVisitor extends AbstractParseTreeVisitor<PrereqTree> implements Nus
  * @see __tests__/genReqTree.test.js
  */
 export default function parseString(prerequisite: string, logger: Logger): PrereqTree | null {
-  const chars = CharStreams.fromString(Buffer.from(prerequisite, 'utf-8').toString());
+  const chars = CharStreams.fromString(prerequisite);
   const lexer = new NusModsLexer(chars);
   // console.log(lexer.getAllTokens())
   const tokens = new BufferedTokenStream(lexer);
