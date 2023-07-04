@@ -8,7 +8,12 @@ module.exports = (api) => {
   const IS_TEST = api.env('test');
 
   const presets = [
-    '@babel/preset-typescript',
+    [
+      '@babel/preset-typescript',
+      {
+        allowDeclareFields: true,
+      },
+    ],
     [
       '@babel/preset-env',
       {
