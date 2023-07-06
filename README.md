@@ -2,7 +2,7 @@
 
 Welcome to [NUSMods](https://nusmods.com), the open-source college course catalogue, module search, and timetable builder for the National University of Singapore!
 
-[![Screenshot of light mode NUSMods](misc/timetable-light.png#gh-light-mode-only)![Screenshot of dark mode NUSMods](misc/timetable-dark.png#gh-dark-mode-only)](https://nusmods.com)
+![Screenshot of light mode NUSMods](misc/timetable-light.png#gh-light-mode-only)![Screenshot of dark mode NUSMods](misc/timetable-dark.png#gh-dark-mode-only)
 
 We are a passionate team of students and alumni dedicated to enhancing school life through technology. With NUSMods, we assist over 30,000 students every semester in planning their timetables and finding the best modules to take.
 
