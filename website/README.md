@@ -18,7 +18,7 @@ Don't know where to start? First, read our repository [contribution guide](../CO
 
 ## Getting Started
 
-Install [Node 16 LTS](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/en/docs/install) then run the following command:
+Install [Node 18 LTS](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/en/docs/install) then run the following command:
 
 ```sh
 $ yarn
