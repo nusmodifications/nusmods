@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, compose, Store } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
 import { setAutoFreeze } from 'immer';
@@ -44,11 +44,7 @@ export default function configureStore(defaultState?: State) {
 
   const storeEnhancer = applyMiddleware(...middlewares);
 
-  const store: Store<State, any> = createStore(
-    rootReducer,
-    defaultState,
-    composeEnhancers(storeEnhancer),
-  );
+  const store = createStore(rootReducer, defaultState, composeEnhancers(storeEnhancer));
 
   if (module.hot) {
     // Enable webpack hot module replacement for reducers

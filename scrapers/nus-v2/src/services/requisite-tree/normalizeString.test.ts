@@ -2,7 +2,7 @@ import { normalize } from './normalizeString';
 
 /* eslint-disable max-len */
 
-describe(normalize, () => {
+describe(normalize.name, () => {
   describe('removes A/O level prerequisites', () => {
     test.each([
       ['MA1301 or O-level', 'MA1301'],

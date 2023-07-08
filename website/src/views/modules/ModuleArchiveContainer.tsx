@@ -40,10 +40,8 @@ function getPropsFromMatch(match: Match<Params>) {
  * API returns 404, while this page doesn't.
  */
 export const ModuleArchiveContainerComponent: FC = () => {
-  const [
-    ModulePageContent,
-    setModulePageContent,
-  ] = useState<ComponentType<ModulePageContentProps> | null>(null);
+  const [ModulePageContent, setModulePageContent] =
+    useState<ComponentType<ModulePageContentProps> | null>(null);
   const [error, setError] = useState<Error | undefined>();
 
   const dispatch = useDispatch<Dispatch>();

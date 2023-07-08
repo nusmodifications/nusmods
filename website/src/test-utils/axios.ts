@@ -1,4 +1,4 @@
-import { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosHeaders, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import httpStatus from 'http-status';
 
 /**
@@ -8,7 +8,7 @@ export function mockResponse<T>(
   data: T,
   additionalFields: {
     headers?: { [name: string]: string };
-    config?: Partial<AxiosRequestConfig>;
+    config?: InternalAxiosRequestConfig<T>;
     request?: any;
     status?: number;
     statusText?: string;
@@ -24,7 +24,9 @@ export function mockResponse<T>(
       statusText ||
       (status != null ? (httpStatus[String(status) as keyof typeof httpStatus] as string) : 'OK'),
     headers: headers || {},
-    config: config || {},
+    config: config || {
+      headers: new AxiosHeaders(),
+    },
     request: request || {},
   };
 }

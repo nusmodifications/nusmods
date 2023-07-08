@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosHeaders, AxiosResponse } from 'axios';
 import produce from 'immer';
 
 import type { Semester } from 'types/modules';
@@ -34,7 +34,9 @@ const bfs1001Response: AxiosResponse = {
   status: 200,
   statusText: 'Ok',
   headers: {},
-  config: {},
+  config: {
+    headers: new AxiosHeaders(),
+  },
 };
 
 const relevantStoreContents = {

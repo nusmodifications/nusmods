@@ -36,7 +36,7 @@ export function createSearchPredicate(
 }
 
 export function sortModules<
-  T extends { readonly moduleCode: ModuleCode; readonly title: ModuleTitle }
+  T extends { readonly moduleCode: ModuleCode; readonly title: ModuleTitle },
 >(searchTerm: string, modules: T[]): T[] {
   const searchRegexes = tokenize(searchTerm).map(regexify);
 

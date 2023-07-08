@@ -103,12 +103,12 @@ yargs
       const semesterData = [];
 
       for (const semester of Semesters) {
-        const semesterAliases = await new CollateVenues(semester, year).aliasCache.read().catch(
-          (e): Aliases => {
+        const semesterAliases = await new CollateVenues(semester, year).aliasCache
+          .read()
+          .catch((e): Aliases => {
             logger.warn(e, `No module alias info available for ${semester}`);
             return {};
-          },
-        );
+          });
         aliases.push(mapValues(semesterAliases, (moduleCodes) => new Set(moduleCodes)));
 
         const modules = await new GetSemesterData(semester, year).outputCache.read().catch((e) => {
