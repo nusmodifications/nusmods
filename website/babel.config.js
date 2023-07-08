@@ -7,13 +7,9 @@ module.exports = (api) => {
   const IS_DEV = api.env('development');
   const IS_TEST = api.env('test');
 
+  // Presets are evaluated last-to-first, while plugins are evaluated first-to-last
+  // This means the TS preset must come last to enable language transformation first
   const presets = [
-    [
-      '@babel/preset-typescript',
-      {
-        allowDeclareFields: true,
-      },
-    ],
     [
       '@babel/preset-env',
       {
@@ -34,6 +30,12 @@ module.exports = (api) => {
         // TODO: Remove in Babel 8, when this will be the default option
         // See: https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#manual-babel-setup
         runtime: 'automatic',
+      },
+    ],
+    [
+      '@babel/preset-typescript',
+      {
+        allowDeclareFields: true,
       },
     ],
   ];
