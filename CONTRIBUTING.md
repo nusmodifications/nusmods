@@ -59,7 +59,7 @@ If you decide to fix an issue, please be sure to check the comment thread in cas
 
 If somebody claims an issue but doesn't follow up for more than two weeks, it's fine to take over it but you should still leave a comment.
 
-## Submit a Pull Request
+### Submit a Pull Request
 
 The core team is monitoring for pull requests. We will review your pull request and either merge it, request changes to it, or close it with an explanation.
 
