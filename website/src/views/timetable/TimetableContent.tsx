@@ -277,6 +277,7 @@ class TimetableContent extends React.Component<Props, State> {
       timetableOrientation,
       showTitle,
       readOnly,
+      hiddenInTimetable,
     } = this.props;
 
     const { showExamCalendar } = this.state;
@@ -427,7 +428,7 @@ class TimetableContent extends React.Component<Props, State> {
                 <ModulesTableFooter
                   modules={addedModules}
                   semester={semester}
-                  hiddenInTimetable={this.props.hiddenInTimetable}
+                  hiddenInTimetable={hiddenInTimetable}
                 />
               </div>
             </div>
