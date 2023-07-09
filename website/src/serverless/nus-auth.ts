@@ -83,33 +83,35 @@ export const authenticate = async (req: Request) => {
   return loginData;
 };
 
-export const verifyLogin = (next: Handler): Handler => async (req, res): Promise<void> => {
-  try {
-    const { user } = await authenticate(req);
-    // TODO: Augment VercelApiHandler's request with a user object, or find
-    // another way to provide the user object.
-    // eslint-disable-next-line no-param-reassign, @typescript-eslint/no-explicit-any
-    (req as any).user = user;
-  } catch (err) {
-    const errResp = {
-      message: '',
-    };
+export const verifyLogin =
+  (next: Handler): Handler =>
+  async (req, res): Promise<void> => {
+    try {
+      const { user } = await authenticate(req);
+      // TODO: Augment VercelApiHandler's request with a user object, or find
+      // another way to provide the user object.
+      // eslint-disable-next-line no-param-reassign, @typescript-eslint/no-explicit-any
+      (req as any).user = user;
+    } catch (err) {
+      const errResp = {
+        message: '',
+      };
 
-    if (err === samlifyErrors.assertionExpired) {
-      errResp.message = 'Token has expired, please login again';
-    } else if (err === samlifyErrors.invalidAssertion) {
-      errResp.message = 'Invalid token supplied';
-    } else if (err.message === errors.noTokenSupplied) {
-      errResp.message = 'No token is supplied';
-    } else {
-      errResp.message = 'Invalid authentication, please login again';
-      // eslint-disable-next-line no-console
-      console.error(err);
+      if (err === samlifyErrors.assertionExpired) {
+        errResp.message = 'Token has expired, please login again';
+      } else if (err === samlifyErrors.invalidAssertion) {
+        errResp.message = 'Invalid token supplied';
+      } else if (err.message === errors.noTokenSupplied) {
+        errResp.message = 'No token is supplied';
+      } else {
+        errResp.message = 'Invalid authentication, please login again';
+        // eslint-disable-next-line no-console
+        console.error(err);
+      }
+
+      res.status(401).json(errResp);
+      return;
     }
 
-    res.status(401).json(errResp);
-    return;
-  }
-
-  await next(req, res);
-};
+    await next(req, res);
+  };

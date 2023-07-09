@@ -12,10 +12,10 @@ import ExamCalendar, { getTimeSegment } from './ExamCalendar';
 import styles from './ExamCalendar.scss';
 
 const TR_PER_WEEK = 4;
-const modulesWithColor = (mockModules.map((module, i) => ({
+const modulesWithColor = mockModules.map((module, i) => ({
   ...module,
   colorIndex: i,
-})) as unknown) as ModuleWithColor[];
+})) as unknown as ModuleWithColor[];
 
 function make(modules: ModuleWithColor[] = [], semester: Semester = 1) {
   return mount(
@@ -44,7 +44,7 @@ function make(modules: ModuleWithColor[] = [], semester: Semester = 1) {
 //  - CS3216:  No exams
 describe(ExamCalendar, () => {
   test('only show Saturday if there is a Saturday exam', () => {
-    const withSaturdayExams = make([(GER1000 as unknown) as ModuleWithColor]);
+    const withSaturdayExams = make([GER1000 as unknown as ModuleWithColor]);
     const withoutSaturdayExams = make(modulesWithColor);
 
     expect(withSaturdayExams.find('thead th')).toHaveLength(6);
@@ -78,7 +78,7 @@ describe(ExamCalendar, () => {
   });
 
   test('show modules outside the two week exam period', () => {
-    const wrapper = make([(GER1000 as unknown) as ModuleWithColor]);
+    const wrapper = make([GER1000 as unknown as ModuleWithColor]);
 
     expect(wrapper.find(Link)).toHaveLength(1);
     expect(wrapper.find('tbody tr')).toHaveLength(TR_PER_WEEK);

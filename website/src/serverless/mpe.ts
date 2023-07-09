@@ -101,13 +101,12 @@ const validatePreferences = (preferences: MpePreference[]): boolean =>
       !isEmptyString(preference.moduleCode) && isBetweenRangeString(preference.moduleCode, 1, 18),
   );
 
-export const featureFlagEnablerMiddleware = (next: Handler): Handler => async (
-  req,
-  res,
-): Promise<void> => {
-  if (!enableMpe) {
-    res.status(404).end();
-    return;
-  }
-  next(req, res);
-};
+export const featureFlagEnablerMiddleware =
+  (next: Handler): Handler =>
+  async (req, res): Promise<void> => {
+    if (!enableMpe) {
+      res.status(404).end();
+      return;
+    }
+    next(req, res);
+  };
