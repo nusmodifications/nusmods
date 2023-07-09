@@ -18,7 +18,7 @@ describe(getRounds, () => {
   });
 
   const mockTime = (now: Date | string) => {
-    ((forceTimer as unknown) as jest.MockInstance<Date | null, []>).mockReturnValue(new Date(now));
+    (forceTimer as unknown as jest.MockInstance<Date | null, []>).mockReturnValue(new Date(now));
   };
 
   const DEFAULT_SCHEDULE = {

@@ -131,9 +131,10 @@ export function mergeModules(classes: VenueLesson[], modules: ModuleCode[]): Ven
     });
 }
 
-export function mergeDualCodedModules(
-  classes: VenueLesson[],
-): { lessons: VenueLesson[]; aliases: ModuleAliases } {
+export function mergeDualCodedModules(classes: VenueLesson[]): {
+  lessons: VenueLesson[];
+  aliases: ModuleAliases;
+} {
   // Repeatedly merge lessons that occupy the same space in the timetable
   let mergedModules = classes;
   let duplicateModules = getDuplicateModules(mergedModules);

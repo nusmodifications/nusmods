@@ -13,10 +13,10 @@ export const regPeriods = [
   'Add / Swap Tutorials',
   'Submit Course Requests',
 ] as const;
-export type RegPeriodType = typeof regPeriods[number];
+export type RegPeriodType = (typeof regPeriods)[number];
 
 export const SCHEDULE_TYPES = ['Undergraduate', 'Graduate'] as const;
-export type ScheduleType = typeof SCHEDULE_TYPES[number];
+export type ScheduleType = (typeof SCHEDULE_TYPES)[number];
 
 export type RegPeriod = {
   type: RegPeriodType;
@@ -71,7 +71,7 @@ export type Config = {
   modRegSchedule: { [type in ScheduleType]: RegPeriod[] };
 };
 
-export function convertModRegDates(roundData: typeof modRegData[ScheduleType]): RegPeriod[] {
+export function convertModRegDates(roundData: (typeof modRegData)[ScheduleType]): RegPeriod[] {
   return roundData.map((data) => ({
     ...data,
     type: data.type as RegPeriodType,

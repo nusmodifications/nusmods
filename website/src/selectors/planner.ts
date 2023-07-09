@@ -51,57 +51,59 @@ export function filterModuleForSemester(
 /**
  * Checks if a module has unfulfilled prereqs
  */
-const prereqConflict = (modulesMap: ModulesMap, modulesTaken: Set<ModuleCode>) => (
-  moduleCode: ModuleCode,
-): Conflict | null => {
-  const prereqs = get(modulesMap, [moduleCode, 'prereqTree']);
-  if (!prereqs) return null;
+const prereqConflict =
+  (modulesMap: ModulesMap, modulesTaken: Set<ModuleCode>) =>
+  (moduleCode: ModuleCode): Conflict | null => {
+    const prereqs = get(modulesMap, [moduleCode, 'prereqTree']);
+    if (!prereqs) return null;
 
-  const unfulfilledPrereqs = checkPrerequisite(modulesTaken, prereqs);
-  if (!unfulfilledPrereqs || !unfulfilledPrereqs.length) return null;
+    const unfulfilledPrereqs = checkPrerequisite(modulesTaken, prereqs);
+    if (!unfulfilledPrereqs || !unfulfilledPrereqs.length) return null;
 
-  return { type: 'prereq', unfulfilledPrereqs };
-};
+    return { type: 'prereq', unfulfilledPrereqs };
+  };
 
 /**
  * Checks if a module exists in our data
  */
-const noInfoConflict = (moduleCodeMap: ModuleCodeMap, customData: CustomModuleData) => (
-  moduleCode: ModuleCode,
-): Conflict | null =>
-  moduleCodeMap[moduleCode] || customData[moduleCode] ? null : { type: 'noInfo' };
+const noInfoConflict =
+  (moduleCodeMap: ModuleCodeMap, customData: CustomModuleData) =>
+  (moduleCode: ModuleCode): Conflict | null =>
+    moduleCodeMap[moduleCode] || customData[moduleCode] ? null : { type: 'noInfo' };
 
 /**
  * Checks if modules are added to semesters in which they are not available
  */
-const semesterConflict = (moduleCodeMap: ModuleCodeMap, semester: Semester) => (
-  moduleCode: ModuleCode,
-): Conflict | null => {
-  const moduleCondensed = moduleCodeMap[moduleCode];
-  if (!moduleCondensed) return null;
-  if (!moduleCondensed.semesters.includes(semester)) {
-    return { type: 'semester', semestersOffered: moduleCondensed.semesters };
-  }
+const semesterConflict =
+  (moduleCodeMap: ModuleCodeMap, semester: Semester) =>
+  (moduleCode: ModuleCode): Conflict | null => {
+    const moduleCondensed = moduleCodeMap[moduleCode];
+    if (!moduleCondensed) return null;
+    if (!moduleCondensed.semesters.includes(semester)) {
+      return { type: 'semester', semestersOffered: moduleCondensed.semesters };
+    }
 
-  return null;
-};
+    return null;
+  };
 
 /**
  * Checks if there are exam clashes. The clashes come from the caller since the exam clash function
  * calculates clashes for all modules in one semester, so it would be wasteful to rerun the exam
  * clash function for every call to this function.
  */
-const examConflict = (clashes: ExamClashes) => (moduleCode: ModuleCode): Conflict | null => {
-  const clash = values(clashes).find((modules) =>
-    Boolean(modules.find((module) => module.moduleCode === moduleCode)),
-  );
+const examConflict =
+  (clashes: ExamClashes) =>
+  (moduleCode: ModuleCode): Conflict | null => {
+    const clash = values(clashes).find((modules) =>
+      Boolean(modules.find((module) => module.moduleCode === moduleCode)),
+    );
 
-  if (clash) {
-    return { type: 'exam', conflictModules: clash.map((module) => module.moduleCode) };
-  }
+    if (clash) {
+      return { type: 'exam', conflictModules: clash.map((module) => module.moduleCode) };
+    }
 
-  return null;
-};
+    return null;
+  };
 
 function mapModuleToInfo(
   module: PlannerTime,
