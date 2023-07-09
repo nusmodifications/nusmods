@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { map, sumBy } from 'lodash';
+import { filter, map, sumBy } from 'lodash';
 import { connect } from 'react-redux';
 
 import { ModuleTableOrder } from 'types/reducers';
@@ -30,13 +30,17 @@ type Props = {
   semester: Semester;
   moduleTableOrder: ModuleTableOrder;
   modules: Module[];
+  hiddenInTimetable: string[];
 
   setModuleTableOrder: (moduleTableOrder: ModuleTableOrder) => void;
 };
 
 const ModulesTableFooter: React.FC<Props> = (props) => {
   const totalMCs = sumBy(props.modules, (module) => parseFloat(module.moduleCredit));
-
+  const hiddenMCs = sumBy(
+    filter(props.modules, (module) => !props.hiddenInTimetable.includes(module.moduleCode)),
+    (module) => parseFloat(module.moduleCredit),
+  );
   return (
     <div className={classnames(styles.footer, 'row align-items-center')}>
       <div className="col-12">
@@ -49,8 +53,14 @@ const ModulesTableFooter: React.FC<Props> = (props) => {
         <hr />
       </div>
       <div className="col">
-        Total Units: <strong>{renderMCs(totalMCs)}</strong>
+        <div>
+          Active Units: <strong>{renderMCs(hiddenMCs)}</strong>
+        </div>
+        <div>
+          Total Units: <strong>{renderMCs(totalMCs)}</strong>
+        </div>
       </div>
+
       <div className={classnames(styles.moduleOrder, 'col no-export')}>
         <label htmlFor="moduleOrder">Order</label>
         <select
