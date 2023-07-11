@@ -65,7 +65,7 @@ const Announcements = memo(() => {
           to changes.
         </p>
         <p className={styles.bodyElement}>
-          If there are any discrepencies with course data, please contact your respective faculty's
+          If there are any discrepancies with course data, please contact your respective faculty's
           office. Happy new academic year!
         </p>
       </div>
