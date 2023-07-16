@@ -4,6 +4,7 @@ $connector-size: 0.75rem;
 
 .container {
   display: flex;
+  flex-direction: row-reverse;
   overflow-y: auto;
   align-items: center;
   // Leave some space for the tooltip
@@ -42,12 +43,12 @@ $connector-size: 0.75rem;
   justify-content: center;
   align-items: center;
   padding: 0.125rem 0.25rem;
-  margin: 0 0 1px $connector-size;
+  margin: 0 $connector-size 1px 0;
   border-radius: $btn-border-radius;
 
   &::before {
     top: 50%;
-    left: -$connector-size;
+    right: -$connector-size;
     width: $connector-size;
     height: 1px;
   }
@@ -75,11 +76,12 @@ $connector-size: 0.75rem;
 .conditional {
   flex: 0 0 auto;
   margin-right: $connector-size;
+  margin-left: $connector-size;
   border: 0;
 
   &::after {
     top: 50%;
-    right: -$connector-size;
+    left: -$connector-size;
     width: $connector-size;
     height: 1px;
   }
@@ -88,11 +90,12 @@ $connector-size: 0.75rem;
 .branch {
   position: relative;
   display: flex;
+  flex-direction: row-reverse;
   align-items: center;
 
   &::before,
   &::after {
-    left: 0;
+    right: 0;
     width: 1px;
     height: 50%;
   }
@@ -111,19 +114,19 @@ $connector-size: 0.75rem;
   }
 }
 
-.prereqBranch {
+.dependentBranch {
   &::before,
   &::after {
-    right: 0;
-    left: auto;
+    left: 0;
+    right: auto;
   }
 }
 
-.prereqNode {
-  margin: 0 $connector-size 1px 0;
+.dependentNode {
+  margin: 0 0 1px $connector-size;
 
   &::before {
-    right: -$connector-size;
-    left: auto;
+    left: -$connector-size;
+    right: auto;
   }
 }
