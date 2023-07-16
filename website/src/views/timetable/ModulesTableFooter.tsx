@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { filter, map, sumBy } from 'lodash';
+import { map, sumBy } from 'lodash';
 import { connect } from 'react-redux';
 
 import { ModuleTableOrder } from 'types/reducers';
@@ -37,10 +37,10 @@ type Props = {
 
 const ModulesTableFooter: React.FC<Props> = (props) => {
   const totalMCs = sumBy(props.modules, (module) => parseFloat(module.moduleCredit));
-  const hiddenMCs = sumBy(
-    filter(props.modules, (module) => !props.hiddenInTimetable.includes(module.moduleCode)),
-    (module) => parseFloat(module.moduleCredit),
-  );
+  const hiddenMCs = props.modules
+    .filter((module) => !props.hiddenInTimetable.includes(module.moduleCode))
+    .reduce((acc, module) => acc + parseFloat(module.moduleCredit), 0);
+
   return (
     <div className={classnames(styles.footer, 'row align-items-center')}>
       <div className="col-12">
@@ -60,7 +60,6 @@ const ModulesTableFooter: React.FC<Props> = (props) => {
           Total Units: <strong>{renderMCs(totalMCs)}</strong>
         </div>
       </div>
-
       <div className={classnames(styles.moduleOrder, 'col no-export')}>
         <label htmlFor="moduleOrder">Order</label>
         <select
