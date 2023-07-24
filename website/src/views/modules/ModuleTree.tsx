@@ -44,14 +44,14 @@ const nodeName = (node: PrereqTree) => {
   if (name.includes(GRADE_REQUIREMENT_SEPARATOR)) {
     const [moduleName, requiredGrade] = name.split(GRADE_REQUIREMENT_SEPARATOR);
     if (requiredGrade !== PASSING_GRADE) {
-      name = `${moduleName} (grade of at least ${requiredGrade})`;
+      name = `${moduleName} (minimally ${requiredGrade})`;
     } else {
       name = moduleName;
     }
   }
   if (name.includes(MODULE_NAME_WILDCARD)) {
     const [beforeWildcard, afterWildcard] = name.split(MODULE_NAME_WILDCARD);
-    name = `course that starts with "${beforeWildcard}" ${afterWildcard}`;
+    name = `course starting with '${beforeWildcard}' ${afterWildcard}`;
   }
   return name.trim();
 };
