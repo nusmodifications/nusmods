@@ -522,7 +522,7 @@ THEN
 
   // Too complex, this says IF CPE degree then xyz course, else IF postgrad then abc course.
   it('cannot parse alternate degree', () => {
-    const result = ""
+    const result = null
     expect(
       parse(
         `
@@ -531,5 +531,6 @@ THEN
       ),
     ).toEqual(result);
   });
+
 
 });

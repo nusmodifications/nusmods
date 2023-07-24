@@ -1,5 +1,7 @@
 grammar NusMods;
-
+options {
+	language = TypeScript;
+}
 
 overall: | program_types THEN compound EOF
          | compound EOF;

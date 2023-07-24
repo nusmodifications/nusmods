@@ -24,7 +24,7 @@ function generateAndBranch(modules: PrereqTree[]) {
   if (result.length === 1) {
     return result[0];
   }
-  return {and: result}
+  return { and: result }
 }
 
 function generateOrBranch(modules: PrereqTree[]) {
@@ -40,7 +40,7 @@ function generateOrBranch(modules: PrereqTree[]) {
   if (result.length === 1) {
     return result[0];
   }
-  return {or: result}
+  return { or: result }
 }
 
 /**
@@ -133,7 +133,7 @@ class ReqTreeVisitor extends AbstractParseTreeVisitor<PrereqTree> implements Nus
     if (n === 1) {
       // If there's only 1 course required, and many courses are allowed, then it's
       // same as OR of them all.
-      return  generateOrBranch(courses);
+      return generateOrBranch(courses);
     }
     return { nOf: [n, courses] };
   }
@@ -151,16 +151,20 @@ class ReqTreeVisitor extends AbstractParseTreeVisitor<PrereqTree> implements Nus
 export default function parseString(prerequisite: string, logger: Logger): PrereqTree | null {
   const chars = CharStreams.fromString(prerequisite);
   const lexer = new NusModsLexer(chars);
-  // console.log(lexer.getAllTokens())
   const tokens = new BufferedTokenStream(lexer);
-  // console.log(tokens.getText());
   const parser = new NusModsParser(tokens);
+  const errors: string[] = [];
+  parser.addErrorListener({syntaxError: (...args) => errors.push(args[4])});
   const tree = parser.overall();
-
+  if (errors.length > 0) {
+    logger.info({ prerequisite, errors: errors }, 'ANTLR encountered parsing errors');
+    return null;
+  }
   const visitor = new ReqTreeVisitor();
   const result = tree.accept(visitor);
   if (visitor.errors.length > 0) {
-    logger.info({ prerequisite, errors: visitor.errors }, 'Encountered parsing errors');
+    logger.info({ prerequisite, errors: visitor.errors }, 'Prereq tree visitor encountered parsing errors');
+    return null;
   }
   return result;
 }
