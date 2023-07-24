@@ -351,7 +351,23 @@ Array [
   <p
     class="alert alert-warning"
   >
-    The prerequisite tree is displayed for visualization purposes and may not be accurate. Viewers are encouraged to double check details.
+    This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite text above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
+    <a
+      href="https://github.com/nusmodifications/nusmods/issues/new/choose"
+      rel="noopener noreferrer nofollow"
+      target="_blank"
+    >
+      our repository
+    </a>
+     or send an email to 
+    <a
+      href="mailto:bugs@nusmods.com"
+      rel="noopener noreferrer nofollow"
+      target="_blank"
+    >
+      bugs@nusmods.com
+    </a>
+    .
   </p>,
 ]
 `;
@@ -573,7 +589,23 @@ Array [
   <p
     class="alert alert-warning"
   >
-    The prerequisite tree is displayed for visualization purposes and may not be accurate. Viewers are encouraged to double check details.
+    This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite text above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
+    <a
+      href="https://github.com/nusmodifications/nusmods/issues/new/choose"
+      rel="noopener noreferrer nofollow"
+      target="_blank"
+    >
+      our repository
+    </a>
+     or send an email to 
+    <a
+      href="mailto:bugs@nusmods.com"
+      rel="noopener noreferrer nofollow"
+      target="_blank"
+    >
+      bugs@nusmods.com
+    </a>
+    .
   </p>,
 ]
 `;
