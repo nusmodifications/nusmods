@@ -83,6 +83,11 @@ export function conflictToText(conflict: PrereqTree): string {
     return conflict.and.map(conflictToText).join(' and ');
   }
 
+  if ('nOf' in conflict) {
+    const [n, conflicts] = conflict.nOf;
+    return `require ${n} of ${conflicts.map(conflictToText).join(', ')}`;
+  }
+
   return assertNever(conflict);
 }
 
