@@ -388,4 +388,59 @@ describe(parseString, () => {
       ),
     ).toEqual(result);
   });
+  it('parses binops with parentheses on both sides', () => {
+    const result: PrereqTree = {
+      and: [
+        {
+          or: [
+            "FIN3102%:D",
+            "QF3101:D",
+          ]
+        },
+        {
+          or: [
+            "DSC2008:D",
+            "DSC1007%:D",
+            "CS1010:D",
+            "CS1101:D",
+          ]
+        },
+      ]
+    };
+    expect(
+      parse(
+        `
+PROGRAM_TYPES IF_IN Undergraduate Degree
+THEN
+(
+        (
+                (
+                        (
+                                PROGRAMS MUST_BE_IN (1) 0200ACCHON,0200BBAHON
+                                AND
+                                SPECIAL MUST_BE_IN "ACAD_LEVEL=4"
+                        )
+                )
+                OR
+                (
+                        (
+                                PROGRAMS MUST_BE_IN (1) 0200ACCHON,0200BBAHON
+                                AND
+                                SPECIAL MUST_BE_IN "ACAD_LEVEL=3"
+                        )
+                        AND
+                        GPA (3.2)
+                )
+        )
+        AND
+        COURSES (1) FIN3102%:D,QF3101:D
+        AND
+        COURSES (1) DSC2008:D,DSC1007%:D,CS1010:D,CS1101:D
+        AND
+        COHORT_YEARS MUST_BE_IN E:2016
+)
+      `,
+      ),
+    ).toEqual(result);
+  });
 });

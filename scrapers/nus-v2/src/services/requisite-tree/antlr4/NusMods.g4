@@ -14,7 +14,7 @@ binop: | op boolean_expr compound;
 
 boolean_expr: AND | OR;
 
-op: '(' binop ')' | primitive;
+op: '(' compound ')' | primitive;
 
 primitive:
 	| programs
@@ -149,4 +149,3 @@ PROGRAMS_VALUE: ID;
 fragment ID: [0-9a-zA-Z_%:]+;
 
 WS: [ \n\t\r]+ -> skip;
-
