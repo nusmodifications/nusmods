@@ -49,7 +49,7 @@ cohort_years:
 		| IF_NOT_IN
 		| must_be_in
 		| must_not_be_in
-	) YEARS;
+	) YEARS (THEN compound)?;
 
 subject_years: SUBJECT_YEARS IF_IN YEARS YEARS;
 

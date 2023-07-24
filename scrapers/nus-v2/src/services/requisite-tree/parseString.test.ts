@@ -443,4 +443,23 @@ THEN
       ),
     ).toEqual(result);
   });
+  it('allows cohort years as predicate (optional)', () => {
+    const result: PrereqTree = {
+      or: [
+        "GEA1000N:D",
+        "ST1131:D",
+        "DSA1101:D",
+        "IE1111R:D",
+        "DSE1101:D",
+        "BT1101:D"
+      ]
+    };
+    expect(
+      parse(
+        `
+        PROGRAM_TYPES IF_IN Undergraduate Degree THEN ( COHORT_YEARS IF_IN S:2022 THEN COURSES (1) GEA1000N:D , ST1131:D , DSA1101:D , IE1111R:D , DSE1101:D , BT1101:D )
+      `,
+      ),
+    ).toEqual(result);
+  });
 });
