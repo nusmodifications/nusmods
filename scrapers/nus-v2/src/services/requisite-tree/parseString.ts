@@ -122,8 +122,14 @@ class ReqTreeVisitor extends AbstractParseTreeVisitor<PrereqTree> implements Nus
   }
 
   visitCourses?: ((ctx: CoursesContext) => PrereqTree) | undefined = (ctx) => {
-    const n = parseInt(ctx.contains_number().NUMBER().text, 10);
     const courses = ctx.course_items().PROGRAMS_VALUE().map(node => node.text);
+    const courseCount = ctx.contains_number();
+    // According to NUS documentation, if there is no course count, then ALL the
+    // courses are required.
+    if (courseCount === undefined) {
+      return generateAndBranch(courses)
+    }
+    const n = parseInt(courseCount.NUMBER().text, 10);
     if (n === 1) {
       // If there's only 1 course required, and many courses are allowed, then it's
       // same as OR of them all.

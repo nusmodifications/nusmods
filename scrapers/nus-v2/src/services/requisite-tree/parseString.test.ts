@@ -462,4 +462,16 @@ THEN
       ),
     ).toEqual(result);
   });
+
+  // According to NUS docs, this means ALL courses are required.
+  it('allows omitted courses count', () => {
+    const result: PrereqTree = "NTW%:D";
+    expect(
+      parse(
+        `
+        PROGRAM_TYPES IF_IN Undergraduate Degree THEN ( COHORT_YEARS IF_IN S:2022 THEN COURSES NTW%:D )
+      `,
+      ),
+    ).toEqual(result);
+  });
 });

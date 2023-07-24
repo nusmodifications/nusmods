@@ -69,7 +69,7 @@ prereq:
 
 coreq: | COREQUISITE '(' courses ')' | COREQUISITE courses;
 
-courses: COURSES contains_number course_items;
+courses: COURSES contains_number? course_items;
 
 course_items: PROGRAMS_VALUE (COMMA PROGRAMS_VALUE)*;
 
