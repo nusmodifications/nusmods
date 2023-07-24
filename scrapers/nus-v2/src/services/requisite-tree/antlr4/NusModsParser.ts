@@ -89,7 +89,7 @@ export class NusModsParser extends Parser {
 
 	private static readonly _LITERAL_NAMES: Array<string | undefined> = [
 		undefined, "','", "'('", "')'", "'IF_IN'", "'MUST_BE_IN'", "'IF_NOT_IN'", 
-		"'MUST_NOT_BE_IN'", "'THEN'", "'AND'", "'OR'", undefined, undefined, "'PROGRAMS'", 
+		"'MUST_NOT_BE_IN'", "'THEN'", "'AND'", "'OR'", undefined, undefined, undefined, 
 		undefined, "'COHORT_YEARS'", "'SUBJECT_YEARS'", "'SPECIAL'", undefined, 
 		undefined, "'SUBJECTS'", "'UNITS'", undefined, "'COREQUISITE'", "'\"'",
 	];
@@ -130,31 +130,53 @@ export class NusModsParser extends Parser {
 	public overall(): OverallContext {
 		let _localctx: OverallContext = new OverallContext(this._ctx, this.state);
 		this.enterRule(_localctx, 0, NusModsParser.RULE_overall);
+		let _la: number;
 		try {
-			this.state = 52;
+			this.state = 59;
 			this._errHandler.sync(this);
-			switch (this._input.LA(1)) {
-			case NusModsParser.EOF:
+			switch ( this.interpreter.adaptivePredict(this._input, 1, this._ctx) ) {
+			case 1:
 				this.enterOuterAlt(_localctx, 1);
 				// tslint:disable-next-line:no-empty
 				{
 				}
 				break;
-			case NusModsParser.PROGRAM_TYPES:
+
+			case 2:
 				this.enterOuterAlt(_localctx, 2);
 				{
 				this.state = 47;
 				this.program_types();
-				this.state = 48;
-				this.match(NusModsParser.THEN);
-				this.state = 49;
-				this.compound();
 				this.state = 50;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === NusModsParser.AND) {
+					{
+					this.state = 48;
+					this.match(NusModsParser.AND);
+					this.state = 49;
+					this.program_types();
+					}
+				}
+
+				this.state = 52;
+				this.match(NusModsParser.THEN);
+				this.state = 53;
+				this.compound();
+				this.state = 54;
 				this.match(NusModsParser.EOF);
 				}
 				break;
-			default:
-				throw new NoViableAltException(this);
+
+			case 3:
+				this.enterOuterAlt(_localctx, 3);
+				{
+				this.state = 56;
+				this.compound();
+				this.state = 57;
+				this.match(NusModsParser.EOF);
+				}
+				break;
 			}
 		}
 		catch (re) {
@@ -178,27 +200,27 @@ export class NusModsParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 54;
+			this.state = 61;
 			this.match(NusModsParser.PROGRAM_TYPES);
-			this.state = 57;
+			this.state = 64;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case NusModsParser.IF_IN:
 				{
-				this.state = 55;
+				this.state = 62;
 				this.match(NusModsParser.IF_IN);
 				}
 				break;
 			case NusModsParser.MUST_BE_IN:
 				{
-				this.state = 56;
+				this.state = 63;
 				this.must_be_in();
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
 			}
-			this.state = 59;
+			this.state = 66;
 			this.match(NusModsParser.PROGRAM_TYPES_VALUE);
 			}
 		}
@@ -221,9 +243,9 @@ export class NusModsParser extends Parser {
 		let _localctx: CompoundContext = new CompoundContext(this._ctx, this.state);
 		this.enterRule(_localctx, 4, NusModsParser.RULE_compound);
 		try {
-			this.state = 68;
+			this.state = 75;
 			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 2, this._ctx) ) {
+			switch ( this.interpreter.adaptivePredict(this._input, 3, this._ctx) ) {
 			case 1:
 				this.enterOuterAlt(_localctx, 1);
 				// tslint:disable-next-line:no-empty
@@ -234,11 +256,11 @@ export class NusModsParser extends Parser {
 			case 2:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 62;
+				this.state = 69;
 				this.match(NusModsParser.LPAREN);
-				this.state = 63;
+				this.state = 70;
 				this.compound();
-				this.state = 64;
+				this.state = 71;
 				this.match(NusModsParser.RPAREN);
 				}
 				break;
@@ -246,7 +268,7 @@ export class NusModsParser extends Parser {
 			case 3:
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 66;
+				this.state = 73;
 				this.binop();
 				}
 				break;
@@ -254,7 +276,7 @@ export class NusModsParser extends Parser {
 			case 4:
 				this.enterOuterAlt(_localctx, 4);
 				{
-				this.state = 67;
+				this.state = 74;
 				this.op();
 				}
 				break;
@@ -279,9 +301,9 @@ export class NusModsParser extends Parser {
 		let _localctx: BinopContext = new BinopContext(this._ctx, this.state);
 		this.enterRule(_localctx, 6, NusModsParser.RULE_binop);
 		try {
-			this.state = 75;
+			this.state = 82;
 			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 3, this._ctx) ) {
+			switch ( this.interpreter.adaptivePredict(this._input, 4, this._ctx) ) {
 			case 1:
 				this.enterOuterAlt(_localctx, 1);
 				// tslint:disable-next-line:no-empty
@@ -292,11 +314,11 @@ export class NusModsParser extends Parser {
 			case 2:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 71;
+				this.state = 78;
 				this.op();
-				this.state = 72;
+				this.state = 79;
 				this.boolean_expr();
-				this.state = 73;
+				this.state = 80;
 				this.compound();
 				}
 				break;
@@ -324,7 +346,7 @@ export class NusModsParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 77;
+			this.state = 84;
 			_la = this._input.LA(1);
 			if (!(_la === NusModsParser.AND || _la === NusModsParser.OR)) {
 			this._errHandler.recoverInline(this);
@@ -357,17 +379,17 @@ export class NusModsParser extends Parser {
 		let _localctx: OpContext = new OpContext(this._ctx, this.state);
 		this.enterRule(_localctx, 10, NusModsParser.RULE_op);
 		try {
-			this.state = 84;
+			this.state = 91;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case NusModsParser.LPAREN:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 79;
+				this.state = 86;
 				this.match(NusModsParser.LPAREN);
-				this.state = 80;
+				this.state = 87;
 				this.compound();
-				this.state = 81;
+				this.state = 88;
 				this.match(NusModsParser.RPAREN);
 				}
 				break;
@@ -387,7 +409,7 @@ export class NusModsParser extends Parser {
 			case NusModsParser.COREQUISITE:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 83;
+				this.state = 90;
 				this.primitive();
 				}
 				break;
@@ -414,9 +436,9 @@ export class NusModsParser extends Parser {
 		let _localctx: PrimitiveContext = new PrimitiveContext(this._ctx, this.state);
 		this.enterRule(_localctx, 12, NusModsParser.RULE_primitive);
 		try {
-			this.state = 94;
+			this.state = 101;
 			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 5, this._ctx) ) {
+			switch ( this.interpreter.adaptivePredict(this._input, 6, this._ctx) ) {
 			case 1:
 				this.enterOuterAlt(_localctx, 1);
 				// tslint:disable-next-line:no-empty
@@ -427,7 +449,7 @@ export class NusModsParser extends Parser {
 			case 2:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 87;
+				this.state = 94;
 				this.programs();
 				}
 				break;
@@ -435,7 +457,7 @@ export class NusModsParser extends Parser {
 			case 3:
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 88;
+				this.state = 95;
 				this.plan_types();
 				}
 				break;
@@ -443,7 +465,7 @@ export class NusModsParser extends Parser {
 			case 4:
 				this.enterOuterAlt(_localctx, 4);
 				{
-				this.state = 89;
+				this.state = 96;
 				this.cohort_years();
 				}
 				break;
@@ -451,7 +473,7 @@ export class NusModsParser extends Parser {
 			case 5:
 				this.enterOuterAlt(_localctx, 5);
 				{
-				this.state = 90;
+				this.state = 97;
 				this.subject_years();
 				}
 				break;
@@ -459,7 +481,7 @@ export class NusModsParser extends Parser {
 			case 6:
 				this.enterOuterAlt(_localctx, 6);
 				{
-				this.state = 91;
+				this.state = 98;
 				this.special();
 				}
 				break;
@@ -467,7 +489,7 @@ export class NusModsParser extends Parser {
 			case 7:
 				this.enterOuterAlt(_localctx, 7);
 				{
-				this.state = 92;
+				this.state = 99;
 				this.prereq();
 				}
 				break;
@@ -475,7 +497,7 @@ export class NusModsParser extends Parser {
 			case 8:
 				this.enterOuterAlt(_localctx, 8);
 				{
-				this.state = 93;
+				this.state = 100;
 				this.coreq();
 				}
 				break;
@@ -499,15 +521,28 @@ export class NusModsParser extends Parser {
 	public programs(): ProgramsContext {
 		let _localctx: ProgramsContext = new ProgramsContext(this._ctx, this.state);
 		this.enterRule(_localctx, 14, NusModsParser.RULE_programs);
+		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 96;
+			this.state = 103;
 			this.match(NusModsParser.PROGRAMS);
-			this.state = 97;
+			this.state = 104;
 			this.programs_condition();
-			this.state = 98;
+			this.state = 105;
 			this.programs_values();
+			this.state = 108;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === NusModsParser.THEN) {
+				{
+				this.state = 106;
+				this.match(NusModsParser.THEN);
+				this.state = 107;
+				this.compound();
+				}
+			}
+
 			}
 		}
 		catch (re) {
@@ -529,34 +564,34 @@ export class NusModsParser extends Parser {
 		let _localctx: Programs_conditionContext = new Programs_conditionContext(this._ctx, this.state);
 		this.enterRule(_localctx, 16, NusModsParser.RULE_programs_condition);
 		try {
-			this.state = 104;
+			this.state = 114;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case NusModsParser.IF_IN:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 100;
+				this.state = 110;
 				this.match(NusModsParser.IF_IN);
 				}
 				break;
 			case NusModsParser.IF_NOT_IN:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 101;
+				this.state = 111;
 				this.match(NusModsParser.IF_NOT_IN);
 				}
 				break;
 			case NusModsParser.MUST_BE_IN:
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 102;
+				this.state = 112;
 				this.must_be_in();
 				}
 				break;
 			case NusModsParser.MUST_NOT_BE_IN:
 				this.enterOuterAlt(_localctx, 4);
 				{
-				this.state = 103;
+				this.state = 113;
 				this.must_not_be_in();
 				}
 				break;
@@ -586,21 +621,21 @@ export class NusModsParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 106;
+			this.state = 116;
 			this.match(NusModsParser.PROGRAMS_VALUE);
-			this.state = 111;
+			this.state = 121;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			while (_la === NusModsParser.COMMA) {
 				{
 				{
-				this.state = 107;
+				this.state = 117;
 				this.match(NusModsParser.COMMA);
-				this.state = 108;
+				this.state = 118;
 				this.match(NusModsParser.PROGRAMS_VALUE);
 				}
 				}
-				this.state = 113;
+				this.state = 123;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
@@ -624,15 +659,28 @@ export class NusModsParser extends Parser {
 	public plan_types(): Plan_typesContext {
 		let _localctx: Plan_typesContext = new Plan_typesContext(this._ctx, this.state);
 		this.enterRule(_localctx, 20, NusModsParser.RULE_plan_types);
+		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 114;
+			this.state = 124;
 			this.match(NusModsParser.PLAN_TYPES);
-			this.state = 115;
+			this.state = 125;
 			this.plan_types_condition();
-			this.state = 116;
+			this.state = 126;
 			this.programs_values();
+			this.state = 129;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === NusModsParser.THEN) {
+				{
+				this.state = 127;
+				this.match(NusModsParser.THEN);
+				this.state = 128;
+				this.compound();
+				}
+			}
+
 			}
 		}
 		catch (re) {
@@ -654,34 +702,34 @@ export class NusModsParser extends Parser {
 		let _localctx: Plan_types_conditionContext = new Plan_types_conditionContext(this._ctx, this.state);
 		this.enterRule(_localctx, 22, NusModsParser.RULE_plan_types_condition);
 		try {
-			this.state = 122;
+			this.state = 135;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case NusModsParser.IF_IN:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 118;
+				this.state = 131;
 				this.match(NusModsParser.IF_IN);
 				}
 				break;
 			case NusModsParser.IF_NOT_IN:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 119;
+				this.state = 132;
 				this.match(NusModsParser.IF_NOT_IN);
 				}
 				break;
 			case NusModsParser.MUST_BE_IN:
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 120;
+				this.state = 133;
 				this.must_be_in();
 				}
 				break;
 			case NusModsParser.MUST_NOT_BE_IN:
 				this.enterOuterAlt(_localctx, 4);
 				{
-				this.state = 121;
+				this.state = 134;
 				this.must_not_be_in();
 				}
 				break;
@@ -711,48 +759,58 @@ export class NusModsParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 124;
+			this.state = 137;
 			this.match(NusModsParser.COHORT_YEARS);
-			this.state = 129;
+			this.state = 142;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case NusModsParser.IF_IN:
 				{
-				this.state = 125;
+				this.state = 138;
 				this.match(NusModsParser.IF_IN);
 				}
 				break;
 			case NusModsParser.IF_NOT_IN:
 				{
-				this.state = 126;
+				this.state = 139;
 				this.match(NusModsParser.IF_NOT_IN);
 				}
 				break;
 			case NusModsParser.MUST_BE_IN:
 				{
-				this.state = 127;
+				this.state = 140;
 				this.must_be_in();
 				}
 				break;
 			case NusModsParser.MUST_NOT_BE_IN:
 				{
-				this.state = 128;
+				this.state = 141;
 				this.must_not_be_in();
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
 			}
-			this.state = 131;
+			this.state = 144;
 			this.match(NusModsParser.YEARS);
-			this.state = 134;
+			this.state = 146;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === NusModsParser.YEARS) {
+				{
+				this.state = 145;
+				this.match(NusModsParser.YEARS);
+				}
+			}
+
+			this.state = 150;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === NusModsParser.THEN) {
 				{
-				this.state = 132;
+				this.state = 148;
 				this.match(NusModsParser.THEN);
-				this.state = 133;
+				this.state = 149;
 				this.compound();
 				}
 			}
@@ -777,17 +835,26 @@ export class NusModsParser extends Parser {
 	public subject_years(): Subject_yearsContext {
 		let _localctx: Subject_yearsContext = new Subject_yearsContext(this._ctx, this.state);
 		this.enterRule(_localctx, 26, NusModsParser.RULE_subject_years);
+		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 136;
+			this.state = 152;
 			this.match(NusModsParser.SUBJECT_YEARS);
-			this.state = 137;
+			this.state = 153;
 			this.match(NusModsParser.IF_IN);
-			this.state = 138;
+			this.state = 154;
 			this.match(NusModsParser.YEARS);
-			this.state = 139;
-			this.match(NusModsParser.YEARS);
+			this.state = 156;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === NusModsParser.YEARS) {
+				{
+				this.state = 155;
+				this.match(NusModsParser.YEARS);
+				}
+			}
+
 			}
 		}
 		catch (re) {
@@ -811,15 +878,15 @@ export class NusModsParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 141;
+			this.state = 158;
 			this.match(NusModsParser.SPECIAL);
-			this.state = 142;
+			this.state = 159;
 			this.special_condition();
-			this.state = 143;
+			this.state = 160;
 			this.match(NusModsParser.QUOTE);
-			this.state = 144;
+			this.state = 161;
 			this.match(NusModsParser.SPECIAL_VALUE);
-			this.state = 145;
+			this.state = 162;
 			this.match(NusModsParser.QUOTE);
 			}
 		}
@@ -842,34 +909,34 @@ export class NusModsParser extends Parser {
 		let _localctx: Special_conditionContext = new Special_conditionContext(this._ctx, this.state);
 		this.enterRule(_localctx, 30, NusModsParser.RULE_special_condition);
 		try {
-			this.state = 151;
+			this.state = 168;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case NusModsParser.IF_IN:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 147;
+				this.state = 164;
 				this.match(NusModsParser.IF_IN);
 				}
 				break;
 			case NusModsParser.IF_NOT_IN:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 148;
+				this.state = 165;
 				this.match(NusModsParser.IF_NOT_IN);
 				}
 				break;
 			case NusModsParser.MUST_BE_IN:
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 149;
+				this.state = 166;
 				this.must_be_in();
 				}
 				break;
 			case NusModsParser.MUST_NOT_BE_IN:
 				this.enterOuterAlt(_localctx, 4);
 				{
-				this.state = 150;
+				this.state = 167;
 				this.must_not_be_in();
 				}
 				break;
@@ -895,8 +962,9 @@ export class NusModsParser extends Parser {
 	public prereq(): PrereqContext {
 		let _localctx: PrereqContext = new PrereqContext(this._ctx, this.state);
 		this.enterRule(_localctx, 32, NusModsParser.RULE_prereq);
+		let _la: number;
 		try {
-			this.state = 163;
+			this.state = 181;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case NusModsParser.EOF:
@@ -911,36 +979,44 @@ export class NusModsParser extends Parser {
 			case NusModsParser.COURSES:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 154;
+				this.state = 171;
 				this.courses();
 				}
 				break;
 			case NusModsParser.SUBJECTS:
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 155;
+				this.state = 172;
 				this.match(NusModsParser.SUBJECTS);
-				this.state = 156;
-				this.contains_number();
-				this.state = 157;
+				this.state = 174;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				if (_la === NusModsParser.LPAREN) {
+					{
+					this.state = 173;
+					this.contains_number();
+					}
+				}
+
+				this.state = 176;
 				this.programs_values();
 				}
 				break;
 			case NusModsParser.UNITS:
 				this.enterOuterAlt(_localctx, 4);
 				{
-				this.state = 159;
+				this.state = 177;
 				this.match(NusModsParser.UNITS);
-				this.state = 160;
+				this.state = 178;
 				this.contains_number();
 				}
 				break;
 			case NusModsParser.GPA:
 				this.enterOuterAlt(_localctx, 5);
 				{
-				this.state = 161;
+				this.state = 179;
 				this.match(NusModsParser.GPA);
-				this.state = 162;
+				this.state = 180;
 				this.contains_number();
 				}
 				break;
@@ -967,9 +1043,9 @@ export class NusModsParser extends Parser {
 		let _localctx: CoreqContext = new CoreqContext(this._ctx, this.state);
 		this.enterRule(_localctx, 34, NusModsParser.RULE_coreq);
 		try {
-			this.state = 173;
+			this.state = 191;
 			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 13, this._ctx) ) {
+			switch ( this.interpreter.adaptivePredict(this._input, 19, this._ctx) ) {
 			case 1:
 				this.enterOuterAlt(_localctx, 1);
 				// tslint:disable-next-line:no-empty
@@ -980,13 +1056,13 @@ export class NusModsParser extends Parser {
 			case 2:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 166;
+				this.state = 184;
 				this.match(NusModsParser.COREQUISITE);
-				this.state = 167;
+				this.state = 185;
 				this.match(NusModsParser.LPAREN);
-				this.state = 168;
+				this.state = 186;
 				this.courses();
-				this.state = 169;
+				this.state = 187;
 				this.match(NusModsParser.RPAREN);
 				}
 				break;
@@ -994,9 +1070,9 @@ export class NusModsParser extends Parser {
 			case 3:
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 171;
+				this.state = 189;
 				this.match(NusModsParser.COREQUISITE);
-				this.state = 172;
+				this.state = 190;
 				this.courses();
 				}
 				break;
@@ -1024,19 +1100,19 @@ export class NusModsParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 175;
+			this.state = 193;
 			this.match(NusModsParser.COURSES);
-			this.state = 177;
+			this.state = 195;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === NusModsParser.LPAREN) {
 				{
-				this.state = 176;
+				this.state = 194;
 				this.contains_number();
 				}
 			}
 
-			this.state = 179;
+			this.state = 197;
 			this.course_items();
 			}
 		}
@@ -1062,21 +1138,21 @@ export class NusModsParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 181;
+			this.state = 199;
 			this.match(NusModsParser.PROGRAMS_VALUE);
-			this.state = 186;
+			this.state = 204;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			while (_la === NusModsParser.COMMA) {
 				{
 				{
-				this.state = 182;
+				this.state = 200;
 				this.match(NusModsParser.COMMA);
-				this.state = 183;
+				this.state = 201;
 				this.match(NusModsParser.PROGRAMS_VALUE);
 				}
 				}
-				this.state = 188;
+				this.state = 206;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
@@ -1104,14 +1180,14 @@ export class NusModsParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 189;
+			this.state = 207;
 			this.match(NusModsParser.MUST_BE_IN);
-			this.state = 191;
+			this.state = 209;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === NusModsParser.LPAREN) {
 				{
-				this.state = 190;
+				this.state = 208;
 				this.contains_number();
 				}
 			}
@@ -1140,14 +1216,14 @@ export class NusModsParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 193;
+			this.state = 211;
 			this.match(NusModsParser.MUST_NOT_BE_IN);
-			this.state = 195;
+			this.state = 213;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === NusModsParser.LPAREN) {
 				{
-				this.state = 194;
+				this.state = 212;
 				this.contains_number();
 				}
 			}
@@ -1175,11 +1251,11 @@ export class NusModsParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 197;
+			this.state = 215;
 			this.match(NusModsParser.LPAREN);
-			this.state = 198;
+			this.state = 216;
 			this.match(NusModsParser.NUMBER);
-			this.state = 199;
+			this.state = 217;
 			this.match(NusModsParser.RPAREN);
 			}
 		}
@@ -1199,95 +1275,105 @@ export class NusModsParser extends Parser {
 	}
 
 	public static readonly _serializedATN: string =
-		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x1E\xCC\x04\x02" +
+		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x1E\xDE\x04\x02" +
 		"\t\x02\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07" +
 		"\t\x07\x04\b\t\b\x04\t\t\t\x04\n\t\n\x04\v\t\v\x04\f\t\f\x04\r\t\r\x04" +
 		"\x0E\t\x0E\x04\x0F\t\x0F\x04\x10\t\x10\x04\x11\t\x11\x04\x12\t\x12\x04" +
 		"\x13\t\x13\x04\x14\t\x14\x04\x15\t\x15\x04\x16\t\x16\x04\x17\t\x17\x04" +
-		"\x18\t\x18\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x05\x027\n" +
-		"\x02\x03\x03\x03\x03\x03\x03\x05\x03<\n\x03\x03\x03\x03\x03\x03\x04\x03" +
-		"\x04\x03\x04\x03\x04\x03\x04\x03\x04\x03\x04\x05\x04G\n\x04\x03\x05\x03" +
-		"\x05\x03\x05\x03\x05\x03\x05\x05\x05N\n\x05\x03\x06\x03\x06\x03\x07\x03" +
-		"\x07\x03\x07\x03\x07\x03\x07\x05\x07W\n\x07\x03\b\x03\b\x03\b\x03\b\x03" +
-		"\b\x03\b\x03\b\x03\b\x05\ba\n\b\x03\t\x03\t\x03\t\x03\t\x03\n\x03\n\x03" +
-		"\n\x03\n\x05\nk\n\n\x03\v\x03\v\x03\v\x07\vp\n\v\f\v\x0E\vs\v\v\x03\f" +
-		"\x03\f\x03\f\x03\f\x03\r\x03\r\x03\r\x03\r\x05\r}\n\r\x03\x0E\x03\x0E" +
-		"\x03\x0E\x03\x0E\x03\x0E\x05\x0E\x84\n\x0E\x03\x0E\x03\x0E\x03\x0E\x05" +
-		"\x0E\x89\n\x0E\x03\x0F\x03\x0F\x03\x0F\x03\x0F\x03\x0F\x03\x10\x03\x10" +
-		"\x03\x10\x03\x10\x03\x10\x03\x10\x03\x11\x03\x11\x03\x11\x03\x11\x05\x11" +
-		"\x9A\n\x11\x03\x12\x03\x12\x03\x12\x03\x12\x03\x12\x03\x12\x03\x12\x03" +
-		"\x12\x03\x12\x03\x12\x05\x12\xA6\n\x12\x03\x13\x03\x13\x03\x13\x03\x13" +
-		"\x03\x13\x03\x13\x03\x13\x03\x13\x05\x13\xB0\n\x13\x03\x14\x03\x14\x05" +
-		"\x14\xB4\n\x14\x03\x14\x03\x14\x03\x15\x03\x15\x03\x15\x07\x15\xBB\n\x15" +
-		"\f\x15\x0E\x15\xBE\v\x15\x03\x16\x03\x16\x05\x16\xC2\n\x16\x03\x17\x03" +
-		"\x17\x05\x17\xC6\n\x17\x03\x18\x03\x18\x03\x18\x03\x18\x03\x18\x02\x02" +
+		"\x18\t\x18\x03\x02\x03\x02\x03\x02\x03\x02\x05\x025\n\x02\x03\x02\x03" +
+		"\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x05\x02>\n\x02\x03\x03\x03" +
+		"\x03\x03\x03\x05\x03C\n\x03\x03\x03\x03\x03\x03\x04\x03\x04\x03\x04\x03" +
+		"\x04\x03\x04\x03\x04\x03\x04\x05\x04N\n\x04\x03\x05\x03\x05\x03\x05\x03" +
+		"\x05\x03\x05\x05\x05U\n\x05\x03\x06\x03\x06\x03\x07\x03\x07\x03\x07\x03" +
+		"\x07\x03\x07\x05\x07^\n\x07\x03\b\x03\b\x03\b\x03\b\x03\b\x03\b\x03\b" +
+		"\x03\b\x05\bh\n\b\x03\t\x03\t\x03\t\x03\t\x03\t\x05\to\n\t\x03\n\x03\n" +
+		"\x03\n\x03\n\x05\nu\n\n\x03\v\x03\v\x03\v\x07\vz\n\v\f\v\x0E\v}\v\v\x03" +
+		"\f\x03\f\x03\f\x03\f\x03\f\x05\f\x84\n\f\x03\r\x03\r\x03\r\x03\r\x05\r" +
+		"\x8A\n\r\x03\x0E\x03\x0E\x03\x0E\x03\x0E\x03\x0E\x05\x0E\x91\n\x0E\x03" +
+		"\x0E\x03\x0E\x05\x0E\x95\n\x0E\x03\x0E\x03\x0E\x05\x0E\x99\n\x0E\x03\x0F" +
+		"\x03\x0F\x03\x0F\x03\x0F\x05\x0F\x9F\n\x0F\x03\x10\x03\x10\x03\x10\x03" +
+		"\x10\x03\x10\x03\x10\x03\x11\x03\x11\x03\x11\x03\x11\x05\x11\xAB\n\x11" +
+		"\x03\x12\x03\x12\x03\x12\x03\x12\x05\x12\xB1\n\x12\x03\x12\x03\x12\x03" +
+		"\x12\x03\x12\x03\x12\x05\x12\xB8\n\x12\x03\x13\x03\x13\x03\x13\x03\x13" +
+		"\x03\x13\x03\x13\x03\x13\x03\x13\x05\x13\xC2\n\x13\x03\x14\x03\x14\x05" +
+		"\x14\xC6\n\x14\x03\x14\x03\x14\x03\x15\x03\x15\x03\x15\x07\x15\xCD\n\x15" +
+		"\f\x15\x0E\x15\xD0\v\x15\x03\x16\x03\x16\x05\x16\xD4\n\x16\x03\x17\x03" +
+		"\x17\x05\x17\xD8\n\x17\x03\x18\x03\x18\x03\x18\x03\x18\x03\x18\x02\x02" +
 		"\x02\x19\x02\x02\x04\x02\x06\x02\b\x02\n\x02\f\x02\x0E\x02\x10\x02\x12" +
 		"\x02\x14\x02\x16\x02\x18\x02\x1A\x02\x1C\x02\x1E\x02 \x02\"\x02$\x02&" +
-		"\x02(\x02*\x02,\x02.\x02\x02\x03\x03\x02\v\f\x02\xDA\x026\x03\x02\x02" +
-		"\x02\x048\x03\x02\x02\x02\x06F\x03\x02\x02\x02\bM\x03\x02\x02\x02\nO\x03" +
-		"\x02\x02\x02\fV\x03\x02\x02\x02\x0E`\x03\x02\x02\x02\x10b\x03\x02\x02" +
-		"\x02\x12j\x03\x02\x02\x02\x14l\x03\x02\x02\x02\x16t\x03\x02\x02\x02\x18" +
-		"|\x03\x02\x02\x02\x1A~\x03\x02\x02\x02\x1C\x8A\x03\x02\x02\x02\x1E\x8F" +
-		"\x03\x02\x02\x02 \x99\x03\x02\x02\x02\"\xA5\x03\x02\x02\x02$\xAF\x03\x02" +
-		"\x02\x02&\xB1\x03\x02\x02\x02(\xB7\x03\x02\x02\x02*\xBF\x03\x02\x02\x02" +
-		",\xC3\x03\x02\x02\x02.\xC7\x03\x02\x02\x0207\x03\x02\x02\x0212\x05\x04" +
-		"\x03\x0223\x07\n\x02\x0234\x05\x06\x04\x0245\x07\x02\x02\x0357\x03\x02" +
-		"\x02\x0260\x03\x02\x02\x0261\x03\x02\x02\x027\x03\x03\x02\x02\x028;\x07" +
-		"\r\x02\x029<\x07\x06\x02\x02:<\x05*\x16\x02;9\x03\x02\x02\x02;:\x03\x02" +
-		"\x02\x02<=\x03\x02\x02\x02=>\x07\x0E\x02\x02>\x05\x03\x02\x02\x02?G\x03" +
-		"\x02\x02\x02@A\x07\x04\x02\x02AB\x05\x06\x04\x02BC\x07\x05\x02\x02CG\x03" +
-		"\x02\x02\x02DG\x05\b\x05\x02EG\x05\f\x07\x02F?\x03\x02\x02\x02F@\x03\x02" +
-		"\x02\x02FD\x03\x02\x02\x02FE\x03\x02\x02\x02G\x07\x03\x02\x02\x02HN\x03" +
-		"\x02\x02\x02IJ\x05\f\x07\x02JK\x05\n\x06\x02KL\x05\x06\x04\x02LN\x03\x02" +
-		"\x02\x02MH\x03\x02\x02\x02MI\x03\x02\x02\x02N\t\x03\x02\x02\x02OP\t\x02" +
-		"\x02\x02P\v\x03\x02\x02\x02QR\x07\x04\x02\x02RS\x05\x06\x04\x02ST\x07" +
-		"\x05\x02\x02TW\x03\x02\x02\x02UW\x05\x0E\b\x02VQ\x03\x02\x02\x02VU\x03" +
-		"\x02\x02\x02W\r\x03\x02\x02\x02Xa\x03\x02\x02\x02Ya\x05\x10\t\x02Za\x05" +
-		"\x16\f\x02[a\x05\x1A\x0E\x02\\a\x05\x1C\x0F\x02]a\x05\x1E\x10\x02^a\x05" +
-		"\"\x12\x02_a\x05$\x13\x02`X\x03\x02\x02\x02`Y\x03\x02\x02\x02`Z\x03\x02" +
-		"\x02\x02`[\x03\x02\x02\x02`\\\x03\x02\x02\x02`]\x03\x02\x02\x02`^\x03" +
-		"\x02\x02\x02`_\x03\x02\x02\x02a\x0F\x03\x02\x02\x02bc\x07\x0F\x02\x02" +
-		"cd\x05\x12\n\x02de\x05\x14\v\x02e\x11\x03\x02\x02\x02fk\x07\x06\x02\x02" +
-		"gk\x07\b\x02\x02hk\x05*\x16\x02ik\x05,\x17\x02jf\x03\x02\x02\x02jg\x03" +
-		"\x02\x02\x02jh\x03\x02\x02\x02ji\x03\x02\x02\x02k\x13\x03\x02\x02\x02" +
-		"lq\x07\x1D\x02\x02mn\x07\x03\x02\x02np\x07\x1D\x02\x02om\x03\x02\x02\x02" +
-		"ps\x03\x02\x02\x02qo\x03\x02\x02\x02qr\x03\x02\x02\x02r\x15\x03\x02\x02" +
-		"\x02sq\x03\x02\x02\x02tu\x07\x10\x02\x02uv\x05\x18\r\x02vw\x05\x14\v\x02" +
-		"w\x17\x03\x02\x02\x02x}\x07\x06\x02\x02y}\x07\b\x02\x02z}\x05*\x16\x02" +
-		"{}\x05,\x17\x02|x\x03\x02\x02\x02|y\x03\x02\x02\x02|z\x03\x02\x02\x02" +
-		"|{\x03\x02\x02\x02}\x19\x03\x02\x02\x02~\x83\x07\x11\x02\x02\x7F\x84\x07" +
-		"\x06\x02\x02\x80\x84\x07\b\x02\x02\x81\x84\x05*\x16\x02\x82\x84\x05,\x17" +
-		"\x02\x83\x7F\x03\x02\x02\x02\x83\x80\x03\x02\x02\x02\x83\x81\x03\x02\x02" +
-		"\x02\x83\x82\x03\x02\x02\x02\x84\x85\x03\x02\x02\x02\x85\x88\x07\x1C\x02" +
-		"\x02\x86\x87\x07\n\x02\x02\x87\x89\x05\x06\x04\x02\x88\x86\x03\x02\x02" +
-		"\x02\x88\x89\x03\x02\x02\x02\x89\x1B\x03\x02\x02\x02\x8A\x8B\x07\x12\x02" +
-		"\x02\x8B\x8C\x07\x06\x02\x02\x8C\x8D\x07\x1C\x02\x02\x8D\x8E\x07\x1C\x02" +
-		"\x02\x8E\x1D\x03\x02\x02\x02\x8F\x90\x07\x13\x02\x02\x90\x91\x05 \x11" +
-		"\x02\x91\x92\x07\x1A\x02\x02\x92\x93\x07\x14\x02\x02\x93\x94\x07\x1A\x02" +
-		"\x02\x94\x1F\x03\x02\x02\x02\x95\x9A\x07\x06\x02\x02\x96\x9A\x07\b\x02" +
-		"\x02\x97\x9A\x05*\x16\x02\x98\x9A\x05,\x17\x02\x99\x95\x03\x02\x02\x02" +
-		"\x99\x96\x03\x02\x02\x02\x99\x97\x03\x02\x02\x02\x99\x98\x03\x02\x02\x02" +
-		"\x9A!\x03\x02\x02\x02\x9B\xA6\x03\x02\x02\x02\x9C\xA6\x05&\x14\x02\x9D" +
-		"\x9E\x07\x16\x02\x02\x9E\x9F\x05.\x18\x02\x9F\xA0\x05\x14\v\x02\xA0\xA6" +
-		"\x03\x02\x02\x02\xA1\xA2\x07\x17\x02\x02\xA2\xA6\x05.\x18\x02\xA3\xA4" +
-		"\x07\x18\x02\x02\xA4\xA6\x05.\x18\x02\xA5\x9B\x03\x02\x02\x02\xA5\x9C" +
-		"\x03\x02\x02\x02\xA5\x9D\x03\x02\x02\x02\xA5\xA1\x03\x02\x02\x02\xA5\xA3" +
-		"\x03\x02\x02\x02\xA6#\x03\x02\x02\x02\xA7\xB0\x03\x02\x02\x02\xA8\xA9" +
-		"\x07\x19\x02\x02\xA9\xAA\x07\x04\x02\x02\xAA\xAB\x05&\x14\x02\xAB\xAC" +
-		"\x07\x05\x02\x02\xAC\xB0\x03\x02\x02\x02\xAD\xAE\x07\x19\x02\x02\xAE\xB0" +
-		"\x05&\x14\x02\xAF\xA7\x03\x02\x02\x02\xAF\xA8\x03\x02\x02\x02\xAF\xAD" +
-		"\x03\x02\x02\x02\xB0%\x03\x02\x02\x02\xB1\xB3\x07\x15\x02\x02\xB2\xB4" +
-		"\x05.\x18\x02\xB3\xB2\x03\x02\x02\x02\xB3\xB4\x03\x02\x02\x02\xB4\xB5" +
-		"\x03\x02\x02\x02\xB5\xB6\x05(\x15\x02\xB6\'\x03\x02\x02\x02\xB7\xBC\x07" +
-		"\x1D\x02\x02\xB8\xB9\x07\x03\x02\x02\xB9\xBB\x07\x1D\x02\x02\xBA\xB8\x03" +
-		"\x02\x02\x02\xBB\xBE\x03\x02\x02\x02\xBC\xBA\x03\x02\x02\x02\xBC\xBD\x03" +
-		"\x02\x02\x02\xBD)\x03\x02\x02\x02\xBE\xBC\x03\x02\x02\x02\xBF\xC1\x07" +
-		"\x07\x02\x02\xC0\xC2\x05.\x18\x02\xC1\xC0\x03\x02\x02\x02\xC1\xC2\x03" +
-		"\x02\x02\x02\xC2+\x03\x02\x02\x02\xC3\xC5\x07\t\x02\x02\xC4\xC6\x05.\x18" +
-		"\x02\xC5\xC4\x03\x02\x02\x02\xC5\xC6\x03\x02\x02\x02\xC6-\x03\x02\x02" +
-		"\x02\xC7\xC8\x07\x04\x02\x02\xC8\xC9\x07\x1B\x02\x02\xC9\xCA\x07\x05\x02" +
-		"\x02\xCA/\x03\x02\x02\x02\x146;FMV`jq|\x83\x88\x99\xA5\xAF\xB3\xBC\xC1" +
-		"\xC5";
+		"\x02(\x02*\x02,\x02.\x02\x02\x03\x03\x02\v\f\x02\xF3\x02=\x03\x02\x02" +
+		"\x02\x04?\x03\x02\x02\x02\x06M\x03\x02\x02\x02\bT\x03\x02\x02\x02\nV\x03" +
+		"\x02\x02\x02\f]\x03\x02\x02\x02\x0Eg\x03\x02\x02\x02\x10i\x03\x02\x02" +
+		"\x02\x12t\x03\x02\x02\x02\x14v\x03\x02\x02\x02\x16~\x03\x02\x02\x02\x18" +
+		"\x89\x03\x02\x02\x02\x1A\x8B\x03\x02\x02\x02\x1C\x9A\x03\x02\x02\x02\x1E" +
+		"\xA0\x03\x02\x02\x02 \xAA\x03\x02\x02\x02\"\xB7\x03\x02\x02\x02$\xC1\x03" +
+		"\x02\x02\x02&\xC3\x03\x02\x02\x02(\xC9\x03\x02\x02\x02*\xD1\x03\x02\x02" +
+		"\x02,\xD5\x03\x02\x02\x02.\xD9\x03\x02\x02\x020>\x03\x02\x02\x0214\x05" +
+		"\x04\x03\x0223\x07\v\x02\x0235\x05\x04\x03\x0242\x03\x02\x02\x0245\x03" +
+		"\x02\x02\x0256\x03\x02\x02\x0267\x07\n\x02\x0278\x05\x06\x04\x0289\x07" +
+		"\x02\x02\x039>\x03\x02\x02\x02:;\x05\x06\x04\x02;<\x07\x02\x02\x03<>\x03" +
+		"\x02\x02\x02=0\x03\x02\x02\x02=1\x03\x02\x02\x02=:\x03\x02\x02\x02>\x03" +
+		"\x03\x02\x02\x02?B\x07\r\x02\x02@C\x07\x06\x02\x02AC\x05*\x16\x02B@\x03" +
+		"\x02\x02\x02BA\x03\x02\x02\x02CD\x03\x02\x02\x02DE\x07\x0E\x02\x02E\x05" +
+		"\x03\x02\x02\x02FN\x03\x02\x02\x02GH\x07\x04\x02\x02HI\x05\x06\x04\x02" +
+		"IJ\x07\x05\x02\x02JN\x03\x02\x02\x02KN\x05\b\x05\x02LN\x05\f\x07\x02M" +
+		"F\x03\x02\x02\x02MG\x03\x02\x02\x02MK\x03\x02\x02\x02ML\x03\x02\x02\x02" +
+		"N\x07\x03\x02\x02\x02OU\x03\x02\x02\x02PQ\x05\f\x07\x02QR\x05\n\x06\x02" +
+		"RS\x05\x06\x04\x02SU\x03\x02\x02\x02TO\x03\x02\x02\x02TP\x03\x02\x02\x02" +
+		"U\t\x03\x02\x02\x02VW\t\x02\x02\x02W\v\x03\x02\x02\x02XY\x07\x04\x02\x02" +
+		"YZ\x05\x06\x04\x02Z[\x07\x05\x02\x02[^\x03\x02\x02\x02\\^\x05\x0E\b\x02" +
+		"]X\x03\x02\x02\x02]\\\x03\x02\x02\x02^\r\x03\x02\x02\x02_h\x03\x02\x02" +
+		"\x02`h\x05\x10\t\x02ah\x05\x16\f\x02bh\x05\x1A\x0E\x02ch\x05\x1C\x0F\x02" +
+		"dh\x05\x1E\x10\x02eh\x05\"\x12\x02fh\x05$\x13\x02g_\x03\x02\x02\x02g`" +
+		"\x03\x02\x02\x02ga\x03\x02\x02\x02gb\x03\x02\x02\x02gc\x03\x02\x02\x02" +
+		"gd\x03\x02\x02\x02ge\x03\x02\x02\x02gf\x03\x02\x02\x02h\x0F\x03\x02\x02" +
+		"\x02ij\x07\x0F\x02\x02jk\x05\x12\n\x02kn\x05\x14\v\x02lm\x07\n\x02\x02" +
+		"mo\x05\x06\x04\x02nl\x03\x02\x02\x02no\x03\x02\x02\x02o\x11\x03\x02\x02" +
+		"\x02pu\x07\x06\x02\x02qu\x07\b\x02\x02ru\x05*\x16\x02su\x05,\x17\x02t" +
+		"p\x03\x02\x02\x02tq\x03\x02\x02\x02tr\x03\x02\x02\x02ts\x03\x02\x02\x02" +
+		"u\x13\x03\x02\x02\x02v{\x07\x1D\x02\x02wx\x07\x03\x02\x02xz\x07\x1D\x02" +
+		"\x02yw\x03\x02\x02\x02z}\x03\x02\x02\x02{y\x03\x02\x02\x02{|\x03\x02\x02" +
+		"\x02|\x15\x03\x02\x02\x02}{\x03\x02\x02\x02~\x7F\x07\x10\x02\x02\x7F\x80" +
+		"\x05\x18\r\x02\x80\x83\x05\x14\v\x02\x81\x82\x07\n\x02\x02\x82\x84\x05" +
+		"\x06\x04\x02\x83\x81\x03\x02\x02\x02\x83\x84\x03\x02\x02\x02\x84\x17\x03" +
+		"\x02\x02\x02\x85\x8A\x07\x06\x02\x02\x86\x8A\x07\b\x02\x02\x87\x8A\x05" +
+		"*\x16\x02\x88\x8A\x05,\x17\x02\x89\x85\x03\x02\x02\x02\x89\x86\x03\x02" +
+		"\x02\x02\x89\x87\x03\x02\x02\x02\x89\x88\x03\x02\x02\x02\x8A\x19\x03\x02" +
+		"\x02\x02\x8B\x90\x07\x11\x02\x02\x8C\x91\x07\x06\x02\x02\x8D\x91\x07\b" +
+		"\x02\x02\x8E\x91\x05*\x16\x02\x8F\x91\x05,\x17\x02\x90\x8C\x03\x02\x02" +
+		"\x02\x90\x8D\x03\x02\x02\x02\x90\x8E\x03\x02\x02\x02\x90\x8F\x03\x02\x02" +
+		"\x02\x91\x92\x03\x02\x02\x02\x92\x94\x07\x1C\x02\x02\x93\x95\x07\x1C\x02" +
+		"\x02\x94\x93\x03\x02\x02\x02\x94\x95\x03\x02\x02\x02\x95\x98\x03\x02\x02" +
+		"\x02\x96\x97\x07\n\x02\x02\x97\x99\x05\x06\x04\x02\x98\x96\x03\x02\x02" +
+		"\x02\x98\x99\x03\x02\x02\x02\x99\x1B\x03\x02\x02\x02\x9A\x9B\x07\x12\x02" +
+		"\x02\x9B\x9C\x07\x06\x02\x02\x9C\x9E\x07\x1C\x02\x02\x9D\x9F\x07\x1C\x02" +
+		"\x02\x9E\x9D\x03\x02\x02\x02\x9E\x9F\x03\x02\x02\x02\x9F\x1D\x03\x02\x02" +
+		"\x02\xA0\xA1\x07\x13\x02\x02\xA1\xA2\x05 \x11\x02\xA2\xA3\x07\x1A\x02" +
+		"\x02\xA3\xA4\x07\x14\x02\x02\xA4\xA5\x07\x1A\x02\x02\xA5\x1F\x03\x02\x02" +
+		"\x02\xA6\xAB\x07\x06\x02\x02\xA7\xAB\x07\b\x02\x02\xA8\xAB\x05*\x16\x02" +
+		"\xA9\xAB\x05,\x17\x02\xAA\xA6\x03\x02\x02\x02\xAA\xA7\x03\x02\x02\x02" +
+		"\xAA\xA8\x03\x02\x02\x02\xAA\xA9\x03\x02\x02\x02\xAB!\x03\x02\x02\x02" +
+		"\xAC\xB8\x03\x02\x02\x02\xAD\xB8\x05&\x14\x02\xAE\xB0\x07\x16\x02\x02" +
+		"\xAF\xB1\x05.\x18\x02\xB0\xAF\x03\x02\x02\x02\xB0\xB1\x03\x02\x02\x02" +
+		"\xB1\xB2\x03\x02\x02\x02\xB2\xB8\x05\x14\v\x02\xB3\xB4\x07\x17\x02\x02" +
+		"\xB4\xB8\x05.\x18\x02\xB5\xB6\x07\x18\x02\x02\xB6\xB8\x05.\x18\x02\xB7" +
+		"\xAC\x03\x02\x02\x02\xB7\xAD\x03\x02\x02\x02\xB7\xAE\x03\x02\x02\x02\xB7" +
+		"\xB3\x03\x02\x02\x02\xB7\xB5\x03\x02\x02\x02\xB8#\x03\x02\x02\x02\xB9" +
+		"\xC2\x03\x02\x02\x02\xBA\xBB\x07\x19\x02\x02\xBB\xBC\x07\x04\x02\x02\xBC" +
+		"\xBD\x05&\x14\x02\xBD\xBE\x07\x05\x02\x02\xBE\xC2\x03\x02\x02\x02\xBF" +
+		"\xC0\x07\x19\x02\x02\xC0\xC2\x05&\x14\x02\xC1\xB9\x03\x02\x02\x02\xC1" +
+		"\xBA\x03\x02\x02\x02\xC1\xBF\x03\x02\x02\x02\xC2%\x03\x02\x02\x02\xC3" +
+		"\xC5\x07\x15\x02\x02\xC4\xC6\x05.\x18\x02\xC5\xC4\x03\x02\x02\x02\xC5" +
+		"\xC6\x03\x02\x02\x02\xC6\xC7\x03\x02\x02\x02\xC7\xC8\x05(\x15\x02\xC8" +
+		"\'\x03\x02\x02\x02\xC9\xCE\x07\x1D\x02\x02\xCA\xCB\x07\x03\x02\x02\xCB" +
+		"\xCD\x07\x1D\x02\x02\xCC\xCA\x03\x02\x02\x02\xCD\xD0\x03\x02\x02\x02\xCE" +
+		"\xCC\x03\x02\x02\x02\xCE\xCF\x03\x02\x02\x02\xCF)\x03\x02\x02\x02\xD0" +
+		"\xCE\x03\x02\x02\x02\xD1\xD3\x07\x07\x02\x02\xD2\xD4\x05.\x18\x02\xD3" +
+		"\xD2\x03\x02\x02\x02\xD3\xD4\x03\x02\x02\x02\xD4+\x03\x02\x02\x02\xD5" +
+		"\xD7\x07\t\x02\x02\xD6\xD8\x05.\x18\x02\xD7\xD6\x03\x02\x02\x02\xD7\xD8" +
+		"\x03\x02\x02\x02\xD8-\x03\x02\x02\x02\xD9\xDA\x07\x04\x02\x02\xDA\xDB" +
+		"\x07\x1B\x02\x02\xDB\xDC\x07\x05\x02\x02\xDC/\x03\x02\x02\x02\x1A4=BM" +
+		"T]gnt{\x83\x89\x90\x94\x98\x9E\xAA\xB0\xB7\xC1\xC5\xCE\xD3\xD7";
 	public static __ATN: ATN;
 	public static get _ATN(): ATN {
 		if (!NusModsParser.__ATN) {
@@ -1300,14 +1386,21 @@ export class NusModsParser extends Parser {
 }
 
 export class OverallContext extends ParserRuleContext {
-	public program_types(): Program_typesContext | undefined {
-		return this.tryGetRuleContext(0, Program_typesContext);
+	public program_types(): Program_typesContext[];
+	public program_types(i: number): Program_typesContext;
+	public program_types(i?: number): Program_typesContext | Program_typesContext[] {
+		if (i === undefined) {
+			return this.getRuleContexts(Program_typesContext);
+		} else {
+			return this.getRuleContext(i, Program_typesContext);
+		}
 	}
 	public THEN(): TerminalNode | undefined { return this.tryGetToken(NusModsParser.THEN, 0); }
 	public compound(): CompoundContext | undefined {
 		return this.tryGetRuleContext(0, CompoundContext);
 	}
 	public EOF(): TerminalNode | undefined { return this.tryGetToken(NusModsParser.EOF, 0); }
+	public AND(): TerminalNode | undefined { return this.tryGetToken(NusModsParser.AND, 0); }
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
@@ -1491,6 +1584,10 @@ export class ProgramsContext extends ParserRuleContext {
 	public programs_values(): Programs_valuesContext {
 		return this.getRuleContext(0, Programs_valuesContext);
 	}
+	public THEN(): TerminalNode | undefined { return this.tryGetToken(NusModsParser.THEN, 0); }
+	public compound(): CompoundContext | undefined {
+		return this.tryGetRuleContext(0, CompoundContext);
+	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
@@ -1575,6 +1672,10 @@ export class Plan_typesContext extends ParserRuleContext {
 	public programs_values(): Programs_valuesContext {
 		return this.getRuleContext(0, Programs_valuesContext);
 	}
+	public THEN(): TerminalNode | undefined { return this.tryGetToken(NusModsParser.THEN, 0); }
+	public compound(): CompoundContext | undefined {
+		return this.tryGetRuleContext(0, CompoundContext);
+	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
@@ -1618,7 +1719,15 @@ export class Plan_types_conditionContext extends ParserRuleContext {
 
 export class Cohort_yearsContext extends ParserRuleContext {
 	public COHORT_YEARS(): TerminalNode { return this.getToken(NusModsParser.COHORT_YEARS, 0); }
-	public YEARS(): TerminalNode { return this.getToken(NusModsParser.YEARS, 0); }
+	public YEARS(): TerminalNode[];
+	public YEARS(i: number): TerminalNode;
+	public YEARS(i?: number): TerminalNode | TerminalNode[] {
+		if (i === undefined) {
+			return this.getTokens(NusModsParser.YEARS);
+		} else {
+			return this.getToken(NusModsParser.YEARS, i);
+		}
+	}
 	public IF_IN(): TerminalNode | undefined { return this.tryGetToken(NusModsParser.IF_IN, 0); }
 	public IF_NOT_IN(): TerminalNode | undefined { return this.tryGetToken(NusModsParser.IF_NOT_IN, 0); }
 	public must_be_in(): Must_be_inContext | undefined {
@@ -1736,11 +1845,11 @@ export class PrereqContext extends ParserRuleContext {
 		return this.tryGetRuleContext(0, CoursesContext);
 	}
 	public SUBJECTS(): TerminalNode | undefined { return this.tryGetToken(NusModsParser.SUBJECTS, 0); }
-	public contains_number(): Contains_numberContext | undefined {
-		return this.tryGetRuleContext(0, Contains_numberContext);
-	}
 	public programs_values(): Programs_valuesContext | undefined {
 		return this.tryGetRuleContext(0, Programs_valuesContext);
+	}
+	public contains_number(): Contains_numberContext | undefined {
+		return this.tryGetRuleContext(0, Contains_numberContext);
 	}
 	public UNITS(): TerminalNode | undefined { return this.tryGetToken(NusModsParser.UNITS, 0); }
 	public GPA(): TerminalNode | undefined { return this.tryGetToken(NusModsParser.GPA, 0); }

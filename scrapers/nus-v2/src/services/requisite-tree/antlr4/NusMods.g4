@@ -1,9 +1,8 @@
 grammar NusMods;
-options {
-	language = TypeScript;
-}
 
-overall: | program_types THEN compound EOF;
+
+overall: | program_types THEN compound EOF
+         | compound EOF;
 
 program_types:
 	PROGRAM_TYPES (IF_IN | must_be_in) PROGRAM_TYPES_VALUE;
@@ -11,6 +10,7 @@ program_types:
 compound: | '(' compound ')' | binop | op;
 
 binop: | op boolean_expr compound;
+    
 
 boolean_expr: AND | OR;
 
@@ -25,7 +25,7 @@ primitive:
 	| prereq
 	| coreq;
 
-programs: PROGRAMS programs_condition programs_values;
+programs: PROGRAMS programs_condition programs_values (THEN compound)?;
 
 programs_condition:
 	IF_IN
@@ -35,7 +35,7 @@ programs_condition:
 
 programs_values: PROGRAMS_VALUE (COMMA PROGRAMS_VALUE)*;
 
-plan_types: PLAN_TYPES plan_types_condition programs_values;
+plan_types: PLAN_TYPES plan_types_condition programs_values (THEN compound)?;
 
 plan_types_condition:
 	IF_IN
@@ -49,9 +49,9 @@ cohort_years:
 		| IF_NOT_IN
 		| must_be_in
 		| must_not_be_in
-	) YEARS (THEN compound)?;
+	) YEARS YEARS? (THEN compound)?;
 
-subject_years: SUBJECT_YEARS IF_IN YEARS YEARS;
+subject_years: SUBJECT_YEARS IF_IN YEARS YEARS?;
 
 special: SPECIAL special_condition '"' SPECIAL_VALUE '"';
 
@@ -63,7 +63,7 @@ special_condition:
 
 prereq:
 	| courses
-	| SUBJECTS contains_number programs_values
+	| SUBJECTS contains_number? programs_values
 	| UNITS contains_number
 	| GPA contains_number;
 
@@ -101,16 +101,22 @@ OR: 'OR';
 PROGRAM_TYPES: 'PROGRAM_TYPES' | 'PROGRAMME_TYPES';
 PROGRAM_TYPES_VALUE:
 	'Undergraduate Degree'
+	| 'UNDERGRADUATE DEGREE'
 	| 'Graduate Degree Coursework'
+	| 'GRADUATE DEGREE COURSEWORK'
 	| 'Graduate Degree Research'
+	| 'GRADUATE DEGREE RESEARCH'
 	| 'CPE (Certificate)';
 
-PROGRAMS: 'PROGRAMS';
+PROGRAMS: 'PROGRAMS' | 'SPECIAL_PROGRAMME';
 
 PLAN_TYPES:
 	'Minor'
+	| 'MINOR'
 	| '2nd Major'
+	| '2ND_MAJOR'
 	| 'Specialisation'
+	| 'SPECIALISATION'
 	| 'Special Programme'
 	| 'Track';
 COHORT_YEARS: 'COHORT_YEARS';
@@ -129,7 +135,8 @@ SPECIAL_VALUE:
 	| 'ACAD_LEVEL=2-3-4'
 	| 'ACAD_LEVEL=3'
 	| 'ACAD_LEVEL=3-4'
-	| 'ACAD_LEVEL=4';
+	| 'ACAD_LEVEL=4'
+	| 'SUBJECT_LEVEL=H2';
 
 // Prerequisite
 
@@ -144,8 +151,10 @@ COREQUISITE: 'COREQUISITE';
 // General
 QUOTE: '"';
 NUMBER: [0-9.]+;
-YEARS: [SE] [:] [ ]? ID;
+YEARS: [SE] [:] ID;
 PROGRAMS_VALUE: ID;
-fragment ID: [0-9a-zA-Z_%:]+;
+
+// Grades can contain + or -, e.g. B+/B-
+fragment ID: [0-9a-zA-Z_%:/+-]+;
 
 WS: [ \n\t\r]+ -> skip;

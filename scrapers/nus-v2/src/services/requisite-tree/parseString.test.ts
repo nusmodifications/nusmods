@@ -474,4 +474,62 @@ THEN
       ),
     ).toEqual(result);
   });
+
+  // According to NUS docs, this means ALL subjects are required.
+  // Also SPECIAL_PROGRAMME is undocumented by NUS, so best effort here...
+  it('allows omitted subjects count an undocumented SPECIAL_PROGRAMME type', () => {
+    const result: PrereqTree = "";
+    expect(
+      parse(
+        `
+          PROGRAM_TYPES IF_IN Undergraduate Degree THEN SUBJECTS EP:N AND SPECIAL_PROGRAMME MUST_BE_IN (1) 1501TMBSPL , 1502ANGSPL , 1503RC4SPL , 1503R4RSPL
+        `,
+      ),
+    ).toEqual(result);
+  });
+
+  it('undocumented 2ND_MAJOR plan type', () => {
+    const result: PrereqTree = { "nOf": [9, ["YCC1111:CS", "YCC1113:CS", "YCC1121:CS", "YCC1131:C", "YCC1112:C", "YCC1114:C", "YCC2121:C", "YCC1122:CS", "YCC2137:C"]] };
+    expect(
+      parse(
+        `
+          PROGRAM_TYPES IF_IN Undergraduate Degree THEN (COURSES (9) YCC1111:CS, YCC1113:CS, YCC1121:CS, YCC1131:C, YCC1112:C, YCC1114:C, YCC2121:C, YCC1122:CS, YCC2137:C AND 2ND_MAJOR MUST_BE_IN (1) 1700YLAHON)
+        `,
+      ),
+    ).toEqual(result);
+  });
+
+  it('parses standalone courses', () => {
+    const result: PrereqTree = {
+      "and": [
+        "LSM2251:D",
+        {
+          or: [
+            "LSM3272:D",
+            "ENV2101:D",
+          ]
+        }
+      ]
+    };
+    expect(
+      parse(
+        `
+          COURSES LSM2251:D AND COURSES (1) LSM3272:D, ENV2101:D
+        `,
+      ),
+    ).toEqual(result);
+  });
+
+  // Too complex, this says IF CPE degree then xyz course, else IF postgrad then abc course.
+  it('cannot parse alternate degree', () => {
+    const result = ""
+    expect(
+      parse(
+        `
+          (PROGRAM_TYPES IF_IN CPE (Certificate) THEN (COURSES (1) IT5003:D)) OR (PROGRAM_TYPES IF_IN Graduate Degree Coursework THEN COURSES (1) IT5003:D)
+        `
+      ),
+    ).toEqual(result);
+  });
+
 });
