@@ -27,9 +27,9 @@ import Title from 'views/components/Title';
 import { Archive, Check } from 'react-feather';
 
 import useScrollToTop from 'views/hooks/useScrollToTop';
+import ErrorBoundary from 'views/errors/ErrorBoundary';
 import styles from './ModulePageContent.scss';
 import ReportError from './ReportError';
-import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ModuleTree from './ModuleTree';
 
 export type Props = {
