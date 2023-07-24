@@ -3,8 +3,7 @@ options {
 	language = TypeScript;
 }
 
-overall: | program_types THEN compound EOF
-         | compound EOF;
+overall: | program_types THEN compound EOF | compound EOF;
 
 program_types:
 	PROGRAM_TYPES (IF_IN | must_be_in) PROGRAM_TYPES_VALUE;
@@ -12,13 +11,13 @@ program_types:
 compound: | '(' compound ')' | binop | op;
 
 binop: | op boolean_expr compound;
-    
 
 boolean_expr: AND | OR;
 
 op: '(' compound ')' | primitive;
 
 primitive:
+	| program_types
 	| programs
 	| plan_types
 	| cohort_years
@@ -27,7 +26,8 @@ primitive:
 	| prereq
 	| coreq;
 
-programs: PROGRAMS programs_condition programs_values (THEN compound)?;
+programs:
+	PROGRAMS programs_condition programs_values (THEN compound)?;
 
 programs_condition:
 	IF_IN
@@ -37,7 +37,10 @@ programs_condition:
 
 programs_values: PROGRAMS_VALUE (COMMA PROGRAMS_VALUE)*;
 
-plan_types: PLAN_TYPES plan_types_condition programs_values (THEN compound)?;
+plan_types:
+	PLAN_TYPES plan_types_condition programs_values (
+		THEN compound
+	)?;
 
 plan_types_condition:
 	IF_IN

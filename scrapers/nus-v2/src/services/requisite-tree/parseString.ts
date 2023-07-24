@@ -6,7 +6,7 @@ import * as R from 'ramda';
 import { NusModsLexer, NusModsVisitor } from './antlr4';
 import { PrereqTree } from '../../types/modules';
 import { Logger } from '../logger';
-import { NusModsParser, BinopContext, CompoundContext, Course_itemsContext, CoursesContext, OpContext, OverallContext, PrereqContext, PrimitiveContext, ProgramsContext } from './antlr4/NusModsParser';
+import { NusModsParser, BinopContext, CompoundContext, Course_itemsContext, CoursesContext, OpContext, OverallContext, PrereqContext, PrimitiveContext, ProgramsContext, Cohort_yearsContext, Program_typesContext } from './antlr4/NusModsParser';
 import { CharStreams, BufferedTokenStream, ParserRuleContext } from 'antlr4ts';
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor'
 
@@ -49,9 +49,12 @@ function generateOrBranch(modules: PrereqTree[]) {
  */
 class ReqTreeVisitor extends AbstractParseTreeVisitor<PrereqTree> implements NusModsVisitor<PrereqTree> {
   errors: Error[]
+  // If any of these are seen more than once, bail, because the prereq tree is too complex.
+  specialVisited: { programType: number}
   constructor() {
     super();
     this.errors = [];
+    this.specialVisited = { programType: 0 }
   }
 
   protected defaultResult(): PrereqTree {
@@ -67,6 +70,7 @@ class ReqTreeVisitor extends AbstractParseTreeVisitor<PrereqTree> implements Nus
     const result = ctx.children.map(child => child.accept(this)).filter(n => n !== '');
     if (result.length !== 0 && result.length !== 1) {
       this.errors.push(new Error(`${rule} has children != 0/1 which is impossible ${result}`));
+      return ""
     }
     return result.length === 0 ? '' : result[0] as PrereqTree;
   }
@@ -127,7 +131,7 @@ class ReqTreeVisitor extends AbstractParseTreeVisitor<PrereqTree> implements Nus
     // According to NUS documentation, if there is no course count, then ALL the
     // courses are required.
     if (courseCount === undefined) {
-      return generateAndBranch(courses)
+      return generateAndBranch(courses);
     }
     const n = parseInt(courseCount.NUMBER().text, 10);
     if (n === 1) {
@@ -142,6 +146,19 @@ class ReqTreeVisitor extends AbstractParseTreeVisitor<PrereqTree> implements Nus
     return generateAndBranch(ctx.PROGRAMS_VALUE().map(node => node.text));
   }
 
+  // Special values
+
+  // @ts-ignore
+
+  // @ts-ignore
+  visitProgram_types?: ((ctx: Program_typesContext) => PrereqTree) | undefined = (ctx) => {
+    this.specialVisited.programType++;
+    if (this.specialVisited.programType > 1) {
+      this.errors.push(new Error("Visitor saw too many program types"));
+      return "";
+    }
+    return "";
+  }
 }
 
 /**
@@ -154,7 +171,7 @@ export default function parseString(prerequisite: string, logger: Logger): Prere
   const tokens = new BufferedTokenStream(lexer);
   const parser = new NusModsParser(tokens);
   const errors: string[] = [];
-  parser.addErrorListener({syntaxError: (...args) => errors.push(args[4])});
+  parser.addErrorListener({ syntaxError: (...args) => errors.push(args[4]) });
   const tree = parser.overall();
   if (errors.length > 0) {
     logger.info({ prerequisite, errors: errors }, 'ANTLR encountered parsing errors');

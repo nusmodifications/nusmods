@@ -520,6 +520,17 @@ THEN
     ).toEqual(result);
   });
 
+  it('can parse bare program types with conjunction', () => {
+    const result = ""
+    expect(
+      parse(
+        `
+        PROGRAM_TYPES MUST_BE_IN Undergraduate Degree AND COHORT_YEARS MUST_BE_IN S:2021 THEN (PROGRAMS MUST_BE_IN 1003QFNHON AND SPECIAL MUST_BE_IN "ACAD_LEVEL=3-4")
+        `
+      ),
+    ).toEqual(result);
+  });
+
   // Too complex, this says IF CPE degree then xyz course, else IF postgrad then abc course.
   it('cannot parse alternate degree', () => {
     const result = null
@@ -531,6 +542,31 @@ THEN
       ),
     ).toEqual(result);
   });
+
+  it('cannot parse alternate program types', () => {
+    const result = null
+    expect(
+      parse(
+        `
+        PROGRAM_TYPES IF_IN Undergraduate Degree THEN ( UNITS (80) AND COHORT_YEARS MUST_BE_IN E:2019/20 AND COURSES (7) SE%:D OR COURSES (7) PS%:D OR COURSES (7) GL%:D AND GPA (3.2) OR SPECIAL MUST_BE_IN "ACAD_LEVEL=4" ) OR PROGRAM_TYPES IF_IN Undergraduate Degree THEN ( UNITS (80) AND COHORT_YEARS MUST_BE_IN S:2020/21 E:2020/21 AND COURSES (7) SE%:D OR COURSES (7) PS%:D AND GPA (3.2) OR SPECIAL MUST_BE_IN "ACAD_LEVEL=4" )
+        `
+      ),
+    ).toEqual(result);
+  })
+
+  it('cannot parse invalid stuff', () => {
+    const result = null
+    expect(
+      parse(
+        `
+        PROGRAM_TYPES IF_IN Undergraduate Degree THEN
+          ((UNITS (80) AND GPA (3.2)) OR SPECIAL MUST_BE_IN "ACAD_LEVEL=4")
+          AND ((COHORT_YEARS MUST_BE_IN E:2019 AND (COURSES (7) PS1%:D, PS2%:D, PS3%:D, PS4%:D OR COURSES (7) GL%:D))
+          OR (COHORT_YEARS MUST_BE_IN S:2020 AND COHORT_YEARS MUST_BE_IN E:2020 (COURSES (7) PS1%:D, PS2%:D, PS3%:D, PS4%:D)))
+        `
+      ),
+    ).toEqual(result);
+  })
 
 
 });
