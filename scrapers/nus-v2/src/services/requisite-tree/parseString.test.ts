@@ -531,6 +531,22 @@ THEN
     ).toEqual(result);
   });
 
+  it('can parse multiple program types in one PROGRAM_TYPE', () => {
+    const result = {
+      or: [
+        "PL3102:D",
+        "PL3232:D",
+      ]
+    }
+    expect(
+      parse(
+        `
+        PROGRAM_TYPES IF_IN Undergraduate Degree, Graduate Degree Research, Graduate Degree Coursework THEN (COURSES (1) PL3102:D, PL3232:D)
+        `
+      ),
+    ).toEqual(result);
+  })
+
   // Too complex, this says IF CPE degree then xyz course, else IF postgrad then abc course.
   it('cannot parse alternate degree', () => {
     const result = null

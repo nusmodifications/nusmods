@@ -6,7 +6,9 @@ options {
 overall: | program_types THEN compound EOF | compound EOF;
 
 program_types:
-	PROGRAM_TYPES (IF_IN | must_be_in) PROGRAM_TYPES_VALUE;
+	PROGRAM_TYPES (IF_IN | must_be_in) PROGRAM_TYPES_VALUE (
+		COMMA PROGRAM_TYPES_VALUE
+	)*;
 
 compound: | '(' compound ')' | binop | op;
 
