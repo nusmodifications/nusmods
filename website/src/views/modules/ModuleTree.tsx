@@ -40,7 +40,7 @@ const nodeName = (node: PrereqTree) => {
     const [beforeWildcard, afterWildcard] = name.split(MODULE_NAME_WILDCARD);
     name = `course that starts with "${beforeWildcard}" ${afterWildcard}`;
   }
-  return name;
+  return name.trim();
 };
 
 const unwrapLayer = (node: PrereqTree) =>
