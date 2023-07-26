@@ -9,7 +9,7 @@ import {
   TimetableDayFormat,
 } from 'types/timetables';
 import { LessonType, RawLesson, Semester, Weeks } from 'types/modules';
-import { ModulesMap } from 'types/reducers';
+import { ColorMapping, ModulesMap } from 'types/reducers';
 
 import _ from 'lodash';
 
@@ -34,6 +34,8 @@ import {
   arrangeLessonsForWeek,
   arrangeLessonsWithinDay,
   deserializeTimetable,
+  deserializeTimetableColors,
+  deserializeTimetableThemeId,
   doLessonsOverlap,
   findExamClashes,
   formatNumericWeeks,
@@ -399,6 +401,69 @@ test('timetable serialization/deserialization', () => {
 
   configs.forEach((config) => {
     expect(deserializeTimetable(serializeTimetable(config))).toEqual(config);
+  });
+});
+
+test('timetable serialization/deserialization with colors', () => {
+  const configs: SemTimetableConfig[] = [
+    {},
+    { CS1010S: {} },
+    {
+      GER1000: { Tutorial: 'B01' },
+    },
+    {
+      CS2104: { Lecture: '1', Tutorial: '2' },
+      CS2105: { Lecture: '1', Tutorial: '1' },
+      CS2107: { Lecture: '1', Tutorial: '8' },
+      CS4212: { Lecture: '1', Tutorial: '1' },
+      CS4243: { Laboratory: '2', Lecture: '1' },
+      GER1000: { Tutorial: 'B01' },
+    },
+  ];
+
+  const emptyColors: ColorMapping = {};
+  const colorMapping: ColorMapping = {
+    CS1010S: 0,
+    GER1000: 1,
+    CS2104: 2,
+  };
+
+  configs.forEach((config) => {
+    // if mod config is not present, no color mapping is serialized
+    const colors = Object.fromEntries(Object.entries(colorMapping).filter((color) => {
+      const [moduleCode, _] = color;
+      return moduleCode in config;
+    }));
+    // no color mapping should result in null
+    const expectedColors = _.isEqual(colors, emptyColors) ? null : colors;
+
+    expect(deserializeTimetable(serializeTimetable(config, colors))).toEqual(config);
+    expect(deserializeTimetableColors(serializeTimetable(config, colors))).toEqual(expectedColors);
+  });
+});
+
+test('timetable serialization/deserialization with theme', () => {
+  const configs: SemTimetableConfig[] = [
+    {},
+    { CS1010S: {} },
+    {
+      GER1000: { Tutorial: 'B01' },
+    },
+    {
+      CS2104: { Lecture: '1', Tutorial: '2' },
+      CS2105: { Lecture: '1', Tutorial: '1' },
+      CS2107: { Lecture: '1', Tutorial: '8' },
+      CS4212: { Lecture: '1', Tutorial: '1' },
+      CS4243: { Laboratory: '2', Lecture: '1' },
+      GER1000: { Tutorial: 'B01' },
+    },
+  ];
+
+  const themeId = "monokai";
+
+  configs.forEach((config) => {
+    expect(deserializeTimetable(serializeTimetable(config, null, themeId))).toEqual(config);
+    expect(deserializeTimetableThemeId(serializeTimetable(config, null, themeId))).toEqual(themeId);
   });
 });
 

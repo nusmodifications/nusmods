@@ -21,6 +21,7 @@ import { BFS1001, CS1010S, CS3216 } from '__mocks__/modules';
 import modulesList from '__mocks__/moduleList.json';
 
 import { TimetableContainerComponent } from './TimetableContainer';
+import { ColorMapping } from 'types/reducers';
 
 /**
  * A module that exists in our mock `moduleList` but which is also *not*
@@ -144,6 +145,28 @@ describe(TimetableContainerComponent, () => {
 
     // Expect import header to still be present
     expect(screen.getByRole('button', { name: 'Import' })).toBeInTheDocument();
+  });
+
+  test('should set colors from imported colors if provided', async () => {
+    const semester = 1;
+    const importedTimetable = { TRUMP2020: { Lecture: '1' }, CS1010S: { Tutorial: '2' } };
+    const importedColors: ColorMapping = { TRUMP2020: 3, CS1010S: 5 };
+    const location = timetableShare(semester, importedTimetable, importedColors);
+    const { store } = make(location);
+
+    const state = store.getState();
+    expect(state.timetables.colors[semester.toString()]).toEqual(importedColors);
+  });
+
+  test('should set theme from imported theme if there is one', async () => {
+    const semester = 1;
+    const importedTimetable = { TRUMP2020: { Lecture: '1' } };
+    const importedThemeId = "monokai";
+    const location = timetableShare(semester, importedTimetable, null, importedThemeId);
+    const { store } = make(location);
+
+    const state = store.getState();
+    expect(state.theme.id).toEqual(importedThemeId);
   });
 
   test('should display saved timetable when there is no imported timetable', () => {
