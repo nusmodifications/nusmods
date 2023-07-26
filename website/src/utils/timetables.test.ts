@@ -430,11 +430,10 @@ test('timetable serialization/deserialization with colors', () => {
 
   configs.forEach((config) => {
     // if mod config is not present, no color mapping is serialized
-    const colors = Object.fromEntries(Object.entries(colorMapping).filter((color) => {
-      const [moduleCode, _] = color;
-      return moduleCode in config;
-    }));
-    // no color mapping should result in null
+    const colors = Object.fromEntries(
+      Object.entries(colorMapping).filter(([moduleCode]) => moduleCode in config),
+    );
+    // empty color mapping should return null
     const expectedColors = _.isEqual(colors, emptyColors) ? null : colors;
 
     expect(deserializeTimetable(serializeTimetable(config, colors))).toEqual(config);
@@ -459,7 +458,7 @@ test('timetable serialization/deserialization with theme', () => {
     },
   ];
 
-  const themeId = "monokai";
+  const themeId = 'monokai';
 
   configs.forEach((config) => {
     expect(deserializeTimetable(serializeTimetable(config, null, themeId))).toEqual(config);

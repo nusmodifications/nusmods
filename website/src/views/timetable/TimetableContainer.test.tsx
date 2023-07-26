@@ -20,8 +20,8 @@ import { timetablePage, timetableShare } from 'views/routes/paths';
 import { BFS1001, CS1010S, CS3216 } from '__mocks__/modules';
 import modulesList from '__mocks__/moduleList.json';
 
-import { TimetableContainerComponent } from './TimetableContainer';
 import { ColorMapping } from 'types/reducers';
+import { TimetableContainerComponent } from './TimetableContainer';
 
 /**
  * A module that exists in our mock `moduleList` but which is also *not*
@@ -161,7 +161,7 @@ describe(TimetableContainerComponent, () => {
   test('should set theme from imported theme if there is one', async () => {
     const semester = 1;
     const importedTimetable = { TRUMP2020: { Lecture: '1' } };
-    const importedThemeId = "monokai";
+    const importedThemeId = 'monokai';
     const location = timetableShare(semester, importedTimetable, null, importedThemeId);
     const { store } = make(location);
 

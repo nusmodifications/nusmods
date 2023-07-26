@@ -16,7 +16,11 @@ import { openNotification } from 'actions/app';
 import { undo } from 'actions/undoHistory';
 import { selectTheme } from 'actions/theme';
 import { getModuleCondensed } from 'selectors/moduleBank';
-import { deserializeTimetable, deserializeTimetableColors, deserializeTimetableThemeId } from 'utils/timetables';
+import {
+  deserializeTimetable,
+  deserializeTimetableColors,
+  deserializeTimetableThemeId,
+} from 'utils/timetables';
 import { fillColorMapping } from 'utils/colors';
 import { semesterForTimetablePage, TIMETABLE_SHARE, timetablePage } from 'views/routes/paths';
 import deferComponentRender from 'views/hocs/deferComponentRender';
@@ -151,24 +155,24 @@ export const TimetableContainerComponent: FC = () => {
   const [importedTimetable, setImportedTimetable] = useState(() =>
     semester && params.action ? deserializeTimetable(location.search) : null,
   );
-  const importedColors = deserializeTimetableColors(location.search);
-  const importedThemeId = deserializeTimetableThemeId(location.search);
 
   const dispatch = useDispatch();
   useEffect(() => {
     if (importedTimetable) {
       dispatch(fetchTimetableModules([importedTimetable]));
     }
+    const importedColors = deserializeTimetableColors(location.search);
     if (semester && importedColors) {
       Object.entries(importedColors).forEach((colorMapping: [string, ColorIndex]) => {
         const [moduleCode, colorIndex] = colorMapping;
         dispatch(selectModuleColor(semester, moduleCode, colorIndex));
       });
     }
+    const importedThemeId = deserializeTimetableThemeId(location.search);
     if (semester && importedThemeId) {
       dispatch(selectTheme(importedThemeId));
     }
-  }, [dispatch, importedTimetable]);
+  }, [dispatch, importedTimetable, semester, location]);
 
   const isLoading = useMemo(() => {
     // Check that all modules are fully loaded into the ModuleBank

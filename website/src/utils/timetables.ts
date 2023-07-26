@@ -447,16 +447,21 @@ export function formatNumericWeeks(weeks: NumericWeeks): string | null {
 //   CS2107: { Lecture: '1', Tutorial: '8', Color: 4 },
 // }
 // => CS2104=LEC:1,TUT:2,COL:3&CS2107=LEC:1,TUT:8,COL:4
-export function serializeTimetable(timetable: SemTimetableConfig, colors?: ColorMapping | null, themeId?: ThemeId | null): string {
-  const timetableModuleParams = Object.fromEntries(Object.entries(timetable)
-    .map((module: [string, ModuleLessonConfig]) => {
+export function serializeTimetable(
+  timetable: SemTimetableConfig,
+  colors?: ColorMapping | null,
+  themeId?: ThemeId | null,
+): string {
+  const timetableModuleParams = Object.fromEntries(
+    Object.entries(timetable).map((module) => {
       const [moduleCode, moduleLessonConfig] = module;
       const moduleParams: { [param: string]: string | ColorIndex } = { ...moduleLessonConfig };
       if (colors && moduleCode in colors) {
         moduleParams[COLOR_PARAM] = colors[moduleCode];
       }
       return [moduleCode, moduleParams];
-    }));
+    }),
+  );
   const timetableParams = {
     ...mapValues(timetableModuleParams, serializeModuleConfig),
     ...((themeId && { [THEME_PARAM]: themeId }) || EMPTY_OBJECT),
@@ -468,11 +473,9 @@ export function serializeTimetable(timetable: SemTimetableConfig, colors?: Color
 // Extracts module configs from query string
 export function deserializeTimetable(serialized: string): SemTimetableConfig {
   const params = qs.parse(serialized);
-  const moduleParams = Object.fromEntries(Object.entries(params)
-    .filter((param) => {
-      const [paramName, _] = param;
-      return paramName !== THEME_PARAM;
-    }));
+  const moduleParams = Object.fromEntries(
+    Object.entries(params).filter(([paramName]) => paramName !== THEME_PARAM),
+  );
   return mapValues(moduleParams, parseModuleConfig);
 }
 
@@ -493,7 +496,6 @@ export function deserializeTimetableColors(serialized: string): ColorMapping | n
         });
       });
     });
-  console.log(colorMapping)
   if (isEqual(colorMapping, EMPTY_OBJECT)) return null;
   return colorMapping;
 }

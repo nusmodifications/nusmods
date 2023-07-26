@@ -24,8 +24,17 @@ export function timetablePage(semester: Semester): string {
 }
 
 export const TIMETABLE_SHARE = 'share';
-export function timetableShare(semester: Semester, timetable: SemTimetableConfig, colors?: ColorMapping | null, themeId?: ThemeId | null): string {
-  return `${timetablePage(semester)}/${TIMETABLE_SHARE}?${serializeTimetable(timetable, colors, themeId)}`;
+export function timetableShare(
+  semester: Semester,
+  timetable: SemTimetableConfig,
+  colors?: ColorMapping | null,
+  themeId?: ThemeId | null,
+): string {
+  return `${timetablePage(semester)}/${TIMETABLE_SHARE}?${serializeTimetable(
+    timetable,
+    colors,
+    themeId,
+  )}`;
 }
 
 // Timetable path -> Semester

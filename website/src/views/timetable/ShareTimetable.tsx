@@ -38,7 +38,12 @@ type State = {
   shortUrl: string | null;
 };
 
-function shareUrl(semester: Semester, timetable: SemTimetableConfig, colors?: ColorMapping | null, themeId?: ThemeId | null): string {
+function shareUrl(
+  semester: Semester,
+  timetable: SemTimetableConfig,
+  colors?: ColorMapping | null,
+  themeId?: ThemeId | null,
+): string {
   return absolutePath(timetableShare(semester, timetable, colors, themeId));
 }
 
