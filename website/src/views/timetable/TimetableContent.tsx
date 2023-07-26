@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 import { ColorMapping, HORIZONTAL, ModulesMap, TimetableOrientation } from 'types/reducers';
 import { Module, ModuleCode, Semester } from 'types/modules';
+import { ThemeId } from 'types/settings';
 import {
   ColoredLesson,
   Lesson,
@@ -74,6 +75,7 @@ type Props = OwnProps & {
   activeLesson: Lesson | null;
   timetableOrientation: TimetableOrientation;
   showTitle: boolean;
+  themeId?: ThemeId;
   hiddenInTimetable: ModuleCode[];
 
   // Actions
@@ -269,7 +271,7 @@ class TimetableContent extends React.Component<Props, State> {
   }
 
   render() {
-    const { semester, modules, colors, activeLesson, timetableOrientation, showTitle, readOnly } =
+    const { semester, modules, colors, activeLesson, timetableOrientation, showTitle, themeId, readOnly } =
       this.props;
 
     const { showExamCalendar } = this.state;
@@ -397,6 +399,8 @@ class TimetableContent extends React.Component<Props, State> {
                   showTitle={isShowingTitle}
                   semester={semester}
                   timetable={this.props.timetable}
+                  colors={colors}
+                  themeId={themeId}
                   showExamCalendar={showExamCalendar}
                   toggleExamCalendar={() => this.setState({ showExamCalendar: !showExamCalendar })}
                 />
@@ -441,6 +445,7 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
     activeLesson: state.app.activeLesson,
     timetableOrientation: state.theme.timetableOrientation,
     showTitle: state.theme.showTitle,
+    themeId: state.theme.id,
     hiddenInTimetable,
   };
 }

@@ -7,15 +7,16 @@ import classnames from 'classnames';
 import type { ModuleCode, Semester } from 'types/modules';
 import type { ColorMapping } from 'types/reducers';
 import type { State } from 'types/state';
-import type { SemTimetableConfig } from 'types/timetables';
+import type { SemTimetableConfig, ColorIndex } from 'types/timetables';
 
 import { selectSemester } from 'actions/settings';
 import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
-import { fetchTimetableModules, setTimetable } from 'actions/timetables';
+import { fetchTimetableModules, selectModuleColor, setTimetable } from 'actions/timetables';
 import { openNotification } from 'actions/app';
 import { undo } from 'actions/undoHistory';
+import { selectTheme } from 'actions/theme';
 import { getModuleCondensed } from 'selectors/moduleBank';
-import { deserializeTimetable } from 'utils/timetables';
+import { deserializeTimetable, deserializeTimetableColors, deserializeTimetableThemeId } from 'utils/timetables';
 import { fillColorMapping } from 'utils/colors';
 import { semesterForTimetablePage, TIMETABLE_SHARE, timetablePage } from 'views/routes/paths';
 import deferComponentRender from 'views/hocs/deferComponentRender';
@@ -150,11 +151,22 @@ export const TimetableContainerComponent: FC = () => {
   const [importedTimetable, setImportedTimetable] = useState(() =>
     semester && params.action ? deserializeTimetable(location.search) : null,
   );
+  const importedColors = deserializeTimetableColors(location.search);
+  const importedThemeId = deserializeTimetableThemeId(location.search);
 
   const dispatch = useDispatch();
   useEffect(() => {
     if (importedTimetable) {
       dispatch(fetchTimetableModules([importedTimetable]));
+    }
+    if (semester && importedColors) {
+      Object.entries(importedColors).forEach((colorMapping: [string, ColorIndex]) => {
+        const [moduleCode, colorIndex] = colorMapping;
+        dispatch(selectModuleColor(semester, moduleCode, colorIndex));
+      });
+    }
+    if (semester && importedThemeId) {
+      dispatch(selectTheme(importedThemeId));
     }
   }, [dispatch, importedTimetable]);
 
