@@ -6,7 +6,6 @@ import { ChevronRight, HelpCircle as Help, Search } from 'react-feather';
 
 import { highlight } from 'utils/react';
 import { ModuleCondensed } from 'types/modules';
-import { Venue } from 'types/venues';
 import {
   MODULE_RESULT,
   ResultType,
@@ -18,14 +17,12 @@ import {
 
 import ComponentMap from 'utils/ComponentMap';
 import SemesterBadge from 'views/components/SemesterBadge';
+import { Link } from 'react-router-dom';
+import { modulePage, venuePage } from 'views/routes/paths';
 import styles from './GlobalSearch.scss';
 
 type Props = {
   getResults: (string: string | null) => SearchResult | null;
-
-  onSelectVenue: (venue: Venue) => void;
-  onSelectModule: (moduleCondensed: ModuleCondensed) => void;
-  onSearch: (resultType: ResultType, str: string) => void;
 };
 
 type State = {
@@ -77,26 +74,10 @@ class GlobalSearch extends Component<Props, State> {
     this.setState({ inputValue: newInputValue });
   };
 
-  onChange = (item: SearchItem | null) => {
-    if (item) {
-      const { onSelectModule, onSelectVenue, onSearch } = this.props;
-
-      switch (item.type) {
-        case VENUE_RESULT:
-          onSelectVenue(item.venue);
-          break;
-
-        case MODULE_RESULT:
-          onSelectModule(item.module);
-          break;
-
-        case SEARCH_RESULT:
-          onSearch(item.type, item.term);
-          break;
-      }
-    }
-
-    this.onClose();
+  getSearchPageUrls = (type: ResultType, query: string) => {
+    // TODO: Move this into a proper function
+    const path = type === VENUE_RESULT ? '/venues' : '/courses';
+    return `${path}?q=${encodeURIComponent(query)}`;
   };
 
   stateReducer = (state: DownshiftState<SearchItem>, changes: StateChangeOptions<SearchItem>) => {
@@ -216,10 +197,11 @@ class GlobalSearch extends Component<Props, State> {
           <div className={styles.selectList} {...getMenuProps()}>
             {hasModules && (
               <>
-                <div
+                <Link
                   {...getItemProps({
                     item: { type: SEARCH_RESULT, result: MODULE_RESULT, term: inputValue },
                   })}
+                  to={this.getSearchPageUrls(MODULE_RESULT, inputValue)}
                   className={classnames(styles.selectHeader, {
                     [styles.selected]: highlightedIndex === 0,
                   })}
@@ -228,14 +210,15 @@ class GlobalSearch extends Component<Props, State> {
                     View All <ChevronRight className={styles.svg} />
                   </span>
                   <span className={styles.headerName}>Courses</span>
-                </div>
+                </Link>
 
-                {modules.map((module, index) => (
-                  <div
+                {modules.map((module: ModuleCondensed, index) => (
+                  <Link
                     {...getItemProps({
                       key: module.moduleCode,
                       item: { type: MODULE_RESULT, module },
                     })}
+                    to={modulePage(module.moduleCode, module.title)}
                     className={classnames(styles.option, {
                       [styles.selected]: highlightedIndex === index + 1,
                     })}
@@ -243,17 +226,18 @@ class GlobalSearch extends Component<Props, State> {
                     <span>{highlight(`${module.moduleCode} ${module.title}`, tokens)}</span>
 
                     <SemesterBadge className={styles.semesters} semesters={module.semesters} />
-                  </div>
+                  </Link>
                 ))}
               </>
             )}
 
             {hasVenues && (
               <>
-                <div
+                <Link
                   {...getItemProps({
                     item: { type: SEARCH_RESULT, result: VENUE_RESULT, term: inputValue },
                   })}
+                  to={this.getSearchPageUrls(VENUE_RESULT, inputValue)}
                   className={classnames(styles.selectHeader, {
                     [styles.selected]: highlightedIndex === venueHeaderIndex,
                   })}
@@ -262,20 +246,21 @@ class GlobalSearch extends Component<Props, State> {
                     View All <ChevronRight className={styles.svg} />
                   </span>
                   <span className={styles.headerName}>Venues</span>
-                </div>
+                </Link>
 
                 {venues.map((venue, index) => (
-                  <div
+                  <Link
                     {...getItemProps({
                       key: venue,
                       item: { type: VENUE_RESULT, venue },
                     })}
+                    to={venuePage(venue)}
                     className={classnames(styles.option, {
                       [styles.selected]: highlightedIndex === venueItemOffset + index,
                     })}
                   >
                     <span>{highlight(venue, tokens)}</span>
-                  </div>
+                  </Link>
                 ))}
               </>
             )}
@@ -292,7 +277,6 @@ class GlobalSearch extends Component<Props, State> {
       <Downshift
         isOpen={isOpen}
         onOuterClick={this.onOuterClick}
-        onChange={this.onChange}
         onInputValueChange={this.onInputValueChange}
         inputValue={inputValue}
         stateReducer={this.stateReducer}
