@@ -41,7 +41,7 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: Actions)
         ...state,
         ...precomputeFromModuleList(action.payload),
         moduleList: action.payload,
-        apiLastUpdatedTimestamp: action.meta && action.meta.responseHeaders['last-modified'],
+        apiLastUpdatedTimestamp: action.meta?.responseHeaders['last-modified'] || null,
       };
 
     case SUCCESS_KEY(FETCH_MODULE):

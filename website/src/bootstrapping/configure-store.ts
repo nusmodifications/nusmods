@@ -14,7 +14,7 @@ import type { Actions } from 'types/actions';
 
 // For redux-devtools-extensions - see
 // https://github.com/zalmoxisus/redux-devtools-extension
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers: typeof compose = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 // immer uses Object.freeze on returned state objects, which is incompatible with
 // redux-persist. See https://github.com/rt2zz/redux-persist/issues/747
@@ -44,6 +44,7 @@ export default function configureStore(defaultState?: State) {
 
   const storeEnhancer = applyMiddleware(...middlewares);
 
+  // @ts-expect-error Argument of type 'State | undefined' is not assignable to parameter
   const store = createStore(rootReducer, defaultState, composeEnhancers(storeEnhancer));
 
   if (module.hot) {
