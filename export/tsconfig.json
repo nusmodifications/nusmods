@@ -3,6 +3,7 @@
     "outDir": "build",
     "esModuleInterop": true,
     "strict": true,
-    "useUnknownInCatchVariables": false
+    "useUnknownInCatchVariables": false,
+    "skipLibCheck": true
   }
 }

@@ -43,6 +43,7 @@ export async function getModules(moduleCodes: string[]) {
 export const parseExportData: Middleware<State> = (ctx, next) => {
   if (ctx.query.data) {
     try {
+      // @ts-expect-error: type string[] is not assignable to type string
       const data = JSON.parse(ctx.query.data);
       validateExportData(data);
       ctx.state.data = data;
