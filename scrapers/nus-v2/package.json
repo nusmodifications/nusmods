@@ -14,7 +14,8 @@
     "lint": "tsc --noEmit && yarn lint:code",
     "lint:code": "eslint --ext .js,.ts src",
     "test": "jest --coverage",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "antlr4ts": "antlr4ts -no-listener -visitor src/services/requisite-tree/antlr4/NusMods.g4 -o src/services/requisite-tree/antlr4/"
   },
   "devDependencies": {
     "@types/bunyan": "1.8.6",
@@ -31,6 +32,7 @@
     "@types/yargs": "17.0.0",
     "@typescript-eslint/eslint-plugin": "5.60.1",
     "@typescript-eslint/parser": "5.60.1",
+    "antlr4ts-cli": "^0.5.0-alpha.4",
     "eslint": "7.22.0",
     "eslint-config-airbnb-base": "14.2.1",
     "eslint-config-prettier": "7.2.0",
@@ -49,9 +51,9 @@
   "dependencies": {
     "@elastic/elasticsearch": "7.10.0",
     "@sentry/node": "5.30.0",
+    "antlr4ts": "^0.5.0-alpha.4",
     "axios": "0.21.2",
     "bunyan": "1.8.15",
-    "chevrotain": "7.1.2",
     "date-fns": "2.16.1",
     "deep-diff": "1.0.2",
     "fs-extra": "9.1.0",

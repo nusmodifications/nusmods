@@ -801,6 +801,18 @@
       "examDuration": 120
     }
   ],
-  "prereqTree": "CS1010",
+  "prereqTree": {
+    "or": [
+      "YSC1212:D",
+      "CS1010:D",
+      "CS1010J:D",
+      "CS1010E:D",
+      "CS1010S:D",
+      "CS1010FC:D",
+      "CS1010X:D",
+      "CS1101:D",
+      "CS1101S:D"
+    ]
+  },
   "fulfillRequirements": ["CS2106", "CS3210"]
 }
