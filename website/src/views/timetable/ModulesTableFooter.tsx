@@ -54,7 +54,7 @@ const ModulesTableFooter: React.FC<Props> = (props) => {
       </div>
       <div className="col">
         <div>
-          Active Units: <strong>{renderMCs(hiddenMCs)}</strong>
+          Active Units: <strong>{renderMCs(shownMCs)}</strong>
         </div>
         <div>
           Total Units: <strong>{renderMCs(totalMCs)}</strong>
