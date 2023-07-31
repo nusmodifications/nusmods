@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { ChevronRight, HelpCircle as Help, Search } from 'react-feather';
 
 import { highlight } from 'utils/react';
-import { ModuleCondensed } from 'types/modules';
+import { ModuleCondensed, Venue } from 'types/modules';
 import {
   MODULE_RESULT,
   ResultType,
@@ -23,6 +23,10 @@ import styles from './GlobalSearch.scss';
 
 type Props = {
   getResults: (string: string | null) => SearchResult | null;
+
+  onSelectVenue: (venue: Venue) => void;
+  onSelectModule: (moduleCondensed: ModuleCondensed) => void;
+  onSearch: (resultType: ResultType, str: string) => void;
 };
 
 type State = {
@@ -72,6 +76,28 @@ class GlobalSearch extends Component<Props, State> {
 
   onInputValueChange = (newInputValue: string) => {
     this.setState({ inputValue: newInputValue });
+  };
+
+  onChange = (item: SearchItem | null) => {
+    if (item) {
+      const { onSelectModule, onSelectVenue, onSearch } = this.props;
+
+      switch (item.type) {
+        case VENUE_RESULT:
+          onSelectVenue(item.venue);
+          break;
+
+        case MODULE_RESULT:
+          onSelectModule(item.module);
+          break;
+
+        case SEARCH_RESULT:
+          onSearch(item.type, item.term);
+          break;
+      }
+    }
+
+    this.onClose();
   };
 
   getSearchPageUrls = (type: ResultType, query: string) => {
@@ -277,6 +303,7 @@ class GlobalSearch extends Component<Props, State> {
       <Downshift
         isOpen={isOpen}
         onOuterClick={this.onOuterClick}
+        onChange={this.onChange}
         onInputValueChange={this.onInputValueChange}
         inputValue={inputValue}
         stateReducer={this.stateReducer}
