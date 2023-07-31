@@ -37,9 +37,10 @@ type Props = {
 
 const ModulesTableFooter: React.FC<Props> = (props) => {
   const totalMCs = sumBy(props.modules, (module) => parseFloat(module.moduleCredit));
-  const shownMCs = props.modules
-    .filter((module) => !props.hiddenInTimetable.includes(module.moduleCode))
-    .reduce((acc, module) => acc + parseFloat(module.moduleCredit), 0);
+  const shownMCs = sumBy(
+    props.modules.filter((module) => !props.hiddenInTimetable.includes(module.moduleCode)),
+    (module) => parseFloat(module.moduleCredit),
+  );
 
   return (
     <div className={classnames(styles.footer, 'row align-items-center')}>
