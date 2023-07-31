@@ -53,9 +53,11 @@ const ModulesTableFooter: React.FC<Props> = (props) => {
         <hr />
       </div>
       <div className="col">
-        <div>
-          Active Units: <strong>{renderMCs(shownMCs)}</strong>
-        </div>
+        {shownMCs !== totalMCs && (
+          <div>
+            Active Units: <strong>{renderMCs(shownMCs)}</strong>
+          </div>
+        )}
         <div>
           Total Units: <strong>{renderMCs(totalMCs)}</strong>
         </div>
