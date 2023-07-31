@@ -44,7 +44,7 @@ We recommend the following development tools to help speed up your work
 
 ### Writing styles
 
-We uses [CSS Modules][css-modules] to structure styles. This means that with the exception of a few global styles, styles for each component lives beside their source files (see [colocation](#colocation)). This allows us to write short, semantic names for styles without worrying about collision.
+We use [CSS Modules][css-modules] to structure styles. This means that except for a few global styles, styles for each component lives beside their source files (see [colocation](#colocation)). This allows us to write short, semantic names for styles without worrying about collision.
 
 ```scss
 // MyComponent.scss
@@ -66,7 +66,7 @@ import "~styles/utils/modules-entry"; // Import variables, mixins
 }
 ```
 
-```ts
+```tsx
 // MyComponent.tsx
 import styles from './MyComponent.scss';
 
@@ -86,7 +86,7 @@ Currently CSS variables are used only for colors that change under night mode.
 
 Prefer SVG when possible. SVG images are usually smaller and more flexible. `.svg` files are loaded using [SVGR][svgr] as React components - this means you can add classnames, inline styles and other SVG attributes to the component loaded. SVGR also automatically optimizes the image.
 
-```js
+```tsx
 import CloudyIcon from 'img/weather/cloudy.svg';
 
 const cloud = <CloudyIcon className={styles.myIcon} />;
@@ -94,7 +94,7 @@ const cloud = <CloudyIcon className={styles.myIcon} />;
 
 PNG, JPEG and GIF files will be loaded using `url-loader` and can be imported as a string representing the URL of the asset after bundling. In production files smaller than 15kb will be converted into data URL
 
-```js
+```tsx
 import partyParrot from 'img/gif/partyparrot.gif';
 
 const danceParty = <img src={partyParrot} alt=":partyparrot:" />;
@@ -102,7 +102,7 @@ const danceParty = <img src={partyParrot} alt=":partyparrot:" />;
 
 To load SVG as files using `url-loader` instead, add the `?url` resource query to the end of the path.
 
-```js
+```ts
 import { Icon } from 'leaflet';
 // eslint-disable-next-line import/extensions
 import marker from 'img/marker.svg?url';
@@ -127,7 +127,7 @@ To write an action that makes a request, simple call and return the result from 
 
 **Example**
 
-```js
+```ts
 import { requestAction } from 'actions/requests';
 
 export const FETCH_DATA = 'FETCH_DATA';
@@ -144,7 +144,7 @@ Components should dispatch the action to fetch data. The dispatch function retur
 
 **Example**
 
-```js
+```tsx
 import { fetchData } from 'actions/example';
 
 type Props = {
@@ -164,7 +164,7 @@ class MyComponent extends React.Component<Props, State> {
   componentDidMount() {
     this.props.fetchData()
       .then(data => this.setState({ data }))
-      .catch(error => this.setState({ error });
+      .catch(error => this.setState({ error }));
   }
 
   render() {
@@ -213,7 +213,7 @@ export function exampleBank(state: ExampleBank, action: FSA): ExampleBank {
 
 **Component example**
 
-```ts
+```tsx
 type Props = {
   myData: MyData | null,
   fetchData: () => Promise<MyData>,
@@ -226,7 +226,7 @@ type State = {
 class MyComponent extends React.Component<Props, State> {
   componentDidMount() {
     this.props.fetchData()
-      .catch(error => this.setState({ error });
+      .catch(error => this.setState({ error }));
   }
 
   render() {
