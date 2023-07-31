@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware, compose, PreloadedState } from 'redux';
 import { persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
 import { setAutoFreeze } from 'immer';
@@ -44,8 +44,12 @@ export default function configureStore(defaultState?: State) {
 
   const storeEnhancer = applyMiddleware(...middlewares);
 
-  // @ts-expect-error Argument of type 'State | undefined' is not assignable to parameter
-  const store = createStore(rootReducer, defaultState, composeEnhancers(storeEnhancer));
+  const store = createStore(
+    rootReducer,
+    // Redux typings does not seem to allow non-JSON serialized values in PreloadedState so this needs to be casted
+    defaultState as PreloadedState<State> | undefined,
+    composeEnhancers(storeEnhancer),
+  );
 
   if (module.hot) {
     // Enable webpack hot module replacement for reducers
