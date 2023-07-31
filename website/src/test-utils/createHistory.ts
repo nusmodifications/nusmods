@@ -12,7 +12,7 @@ type MatchShape = {
 };
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export default function createHistory<T = {}>(
+export default function createHistory<T extends { [K in keyof T]?: string | undefined } = {}>(
   initialEntries: string | string[] = '/',
   matchParams: MatchShape = {},
 ): RouteComponentProps<T> {
