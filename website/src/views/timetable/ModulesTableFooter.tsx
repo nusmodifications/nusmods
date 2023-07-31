@@ -37,7 +37,7 @@ type Props = {
 
 const ModulesTableFooter: React.FC<Props> = (props) => {
   const totalMCs = sumBy(props.modules, (module) => parseFloat(module.moduleCredit));
-  const hiddenMCs = props.modules
+  const shownMCs = props.modules
     .filter((module) => !props.hiddenInTimetable.includes(module.moduleCode))
     .reduce((acc, module) => acc + parseFloat(module.moduleCredit), 0);
 
