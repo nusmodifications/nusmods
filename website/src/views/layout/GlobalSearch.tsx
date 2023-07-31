@@ -92,7 +92,7 @@ class GlobalSearch extends Component<Props, State> {
           break;
 
         case SEARCH_RESULT:
-          onSearch(item.type, item.term);
+          onSearch(item.result, item.term);
           break;
       }
     }
