@@ -244,14 +244,29 @@ export function areOtherClassesAvailable(
   return Object.keys(groupBy(lessonTypeGroups[lessonType], (lesson) => lesson.classNo)).length > 1;
 }
 
+
+//Creates a string key with examDate and Duration, Separated by an underscore _
+export function getExamDateOnly(module: Module, semester: Semester): String | undefined {
+  const examDateTime = get(getModuleSemesterData(module, semester), 'examDate'); //String
+  return examDateTime?.slice(0,10)
+}
+
+
 // Find all exam clashes between modules in semester
 // Returns object associating exam dates with the modules clashing on those dates
 export function findExamClashes(modules: Module[], semester: Semester): ExamClashes {
-  const groupedModules = groupBy(modules, (module) =>
-    get(getModuleSemesterData(module, semester), 'examDate'),
+  const groupedModules = groupBy(modules, (module) => 
+    get(getModuleSemesterData(module, semester), 'examDate')
   );
+  const groupedModules2 = groupBy(modules, (module) => 
+    getExamDateOnly(module, semester)
+  );
+
+  console.log(groupedModules2)
   delete groupedModules.undefined; // Remove modules without exams
   return omitBy(groupedModules, (mods) => mods.length === 1); // Remove non-clashing mods
+  //For modules with the same exam date, we check within each group whether the exam time intervals clash.
+  //If so, then we add the clashed mods (if any) into the return dictionary
 }
 
 export function isLessonAvailable(
