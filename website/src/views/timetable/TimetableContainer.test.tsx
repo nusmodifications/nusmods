@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import axios, { AxiosHeaders, AxiosResponse } from 'axios';
 import produce from 'immer';
@@ -150,26 +150,21 @@ describe(TimetableContainerComponent, () => {
     expect(screen.getByRole('button', { name: 'Import' })).toBeInTheDocument();
   });
 
-  test('should set colors from imported colors if provided', async () => {
+  test('should set colors from imported colors and theme if provided', async () => {
     const semester = 1;
     const importedTimetable = { TRUMP2020: { Lecture: '1' }, CS1010S: { Tutorial: '2' } };
     const importedColors: ColorMapping = { TRUMP2020: 3, CS1010S: 5 };
-    const location = timetableShare(semester, importedTimetable, importedColors);
-    const { store } = make(location);
-
-    const state = store.getState();
-    expect(state.timetables.colors[semester.toString()]).toEqual(importedColors);
-  });
-
-  test('should set theme from imported theme if there is one', async () => {
-    const semester = 1;
-    const importedTimetable = { TRUMP2020: { Lecture: '1' } };
     const importedThemeId = 'monokai';
-    const location = timetableShare(semester, importedTimetable, null, importedThemeId);
+    const location = timetableShare(semester, importedTimetable, importedColors, importedThemeId);
     const { store } = make(location);
 
-    const state = store.getState();
-    expect(state.theme.id).toEqual(importedThemeId);
+    // wait for button to load
+    waitFor(() => screen.findByRole('button', { name: 'Import' })).then((importButton) => {
+      expect(fireEvent(importButton, new MouseEvent('click'))).toBe(true);
+      const state = store.getState();
+      expect(state.timetables.colors[semester.toString()]).toEqual(importedColors);
+      expect(state.theme.id).toEqual(importedThemeId);
+    });
   });
 
   test('should display saved timetable when there is no imported timetable', () => {

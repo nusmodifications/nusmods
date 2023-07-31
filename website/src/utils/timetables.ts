@@ -16,6 +16,7 @@ import {
   omitBy,
   partition,
   pick,
+  pickBy,
   range,
   sample,
   values,
@@ -38,6 +39,7 @@ import {
   ColoredLesson,
   ColorIndex,
   HoverLesson,
+  ImportedTimetableConfig,
   Lesson,
   ModuleLessonConfig,
   SemTimetableConfig,
@@ -449,39 +451,45 @@ export function formatNumericWeeks(weeks: NumericWeeks): string | null {
 // => CS2104=LEC:1,TUT:2,COL:3&CS2107=LEC:1,TUT:8,COL:4
 export function serializeTimetable(
   timetable: SemTimetableConfig,
-  colors?: ColorMapping | null,
-  themeId?: ThemeId | null,
+  colors?: ColorMapping,
+  themeId?: ThemeId,
 ): string {
   const timetableModuleParams = Object.fromEntries(
     Object.entries(timetable).map((module) => {
       const [moduleCode, moduleLessonConfig] = module;
       const moduleParams: { [param: string]: string | ColorIndex } = { ...moduleLessonConfig };
-      if (colors && moduleCode in colors) {
+      if (colors?.[moduleCode] != null) {
         moduleParams[COLOR_PARAM] = colors[moduleCode];
       }
       return [moduleCode, moduleParams];
     }),
   );
-  const timetableParams = {
-    ...mapValues(timetableModuleParams, serializeModuleConfig),
-    ...((themeId && { [THEME_PARAM]: themeId }) || EMPTY_OBJECT),
-  };
+  const timetableParams = mapValues(timetableModuleParams, serializeModuleConfig);
+  if (themeId != null) {
+    timetableParams[THEME_PARAM] = themeId;
+  }
   // We are using query string safe characters, so this encoding is unnecessary
   return qs.stringify(timetableParams, { encode: false });
 }
 
-// Extracts module configs from query string
-export function deserializeTimetable(serialized: string): SemTimetableConfig {
+export function deserializeTimetable(serialized: string): ImportedTimetableConfig {
   const params = qs.parse(serialized);
-  const moduleParams = Object.fromEntries(
-    Object.entries(params).filter(([paramName]) => paramName !== THEME_PARAM),
-  );
+  const timetable = {
+    config: deserializeModuleConfigs(params),
+    colors: deserializeTimetableColors(params),
+    themeId: deserializeTimetableThemeId(params),
+  };
+  return timetable;
+}
+
+// Extracts module configs from query string
+function deserializeModuleConfigs(params: qs.ParsedQuery<string>): SemTimetableConfig {
+  const moduleParams = pickBy(params, (paramvalue, paramName) => paramName !== THEME_PARAM);
   return mapValues(moduleParams, parseModuleConfig);
 }
 
 // Extracts color mapping from query string
-export function deserializeTimetableColors(serialized: string): ColorMapping | null {
-  const params = qs.parse(serialized);
+export function deserializeTimetableColors(params: qs.ParsedQuery<string>): ColorMapping | null {
   const colorMapping: ColorMapping = {};
   Object.keys(params)
     .filter((param) => param !== THEME_PARAM)
@@ -496,13 +504,12 @@ export function deserializeTimetableColors(serialized: string): ColorMapping | n
         });
       });
     });
-  if (isEqual(colorMapping, EMPTY_OBJECT)) return null;
+  if (isEmpty(colorMapping)) return null;
   return colorMapping;
 }
 
 // Extracts themeId from query string
-export function deserializeTimetableThemeId(serialized: string): ThemeId | null {
-  const params = qs.parse(serialized);
+export function deserializeTimetableThemeId(params: qs.ParsedQuery<string>): ThemeId | null {
   if (!params || !(THEME_PARAM in params)) return null;
   return params[THEME_PARAM] as ThemeId;
 }

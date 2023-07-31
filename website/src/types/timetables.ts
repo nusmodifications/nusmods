@@ -1,4 +1,6 @@
-import { ClassNo, LessonType, ModuleCode, ModuleTitle, RawLesson } from './modules';
+import type { ColorMapping } from 'types/reducers';
+import type { ThemeId } from 'types/settings';
+import type { ClassNo, LessonType, ModuleCode, ModuleTitle, RawLesson } from './modules';
 
 //  ModuleLessonConfig is a mapping of lessonType to ClassNo for a module.
 export type ModuleLessonConfig = {
@@ -8,6 +10,13 @@ export type ModuleLessonConfig = {
 // SemTimetableConfig is the timetable data for each semester.
 export type SemTimetableConfig = {
   [moduleCode: string]: ModuleLessonConfig;
+};
+
+// ImportedTimetableConfig is a mapping of a deserialized timetable
+export type ImportedTimetableConfig = {
+  config: SemTimetableConfig;
+  colors: ColorMapping | null;
+  themeId: ThemeId | null;
 };
 
 //  ModuleLessonConfigWithLessons is a mapping of lessonType to an array of Lessons for a module.

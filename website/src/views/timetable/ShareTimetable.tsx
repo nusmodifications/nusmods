@@ -41,8 +41,8 @@ type State = {
 function shareUrl(
   semester: Semester,
   timetable: SemTimetableConfig,
-  colors?: ColorMapping | null,
-  themeId?: ThemeId | null,
+  colors?: ColorMapping,
+  themeId?: ThemeId,
 ): string {
   return absolutePath(timetableShare(semester, timetable, colors, themeId));
 }

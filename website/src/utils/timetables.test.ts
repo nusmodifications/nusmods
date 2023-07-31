@@ -34,8 +34,6 @@ import {
   arrangeLessonsForWeek,
   arrangeLessonsWithinDay,
   deserializeTimetable,
-  deserializeTimetableColors,
-  deserializeTimetableThemeId,
   doLessonsOverlap,
   findExamClashes,
   formatNumericWeeks,
@@ -382,7 +380,7 @@ test('findExamClashes should return empty object if exams do not clash', () => {
   expect(examClashes).toEqual({});
 });
 
-test('timetable serialization/deserialization', () => {
+describe('timetable serialization/deserialization', () => {
   const configs: SemTimetableConfig[] = [
     {},
     { CS1010S: {} },
@@ -399,76 +397,39 @@ test('timetable serialization/deserialization', () => {
     },
   ];
 
-  configs.forEach((config) => {
-    expect(deserializeTimetable(serializeTimetable(config))).toEqual(config);
+  test.each(configs)('lessons config serialization/deserialization', (config) => {
+    const importedTimetable = deserializeTimetable(serializeTimetable(config));
+    expect(importedTimetable.config).toEqual(config);
   });
-});
 
-test('timetable serialization/deserialization with colors', () => {
-  const configs: SemTimetableConfig[] = [
-    {},
-    { CS1010S: {} },
-    {
-      GER1000: { Tutorial: 'B01' },
-    },
-    {
-      CS2104: { Lecture: '1', Tutorial: '2' },
-      CS2105: { Lecture: '1', Tutorial: '1' },
-      CS2107: { Lecture: '1', Tutorial: '8' },
-      CS4212: { Lecture: '1', Tutorial: '1' },
-      CS4243: { Laboratory: '2', Lecture: '1' },
-      GER1000: { Tutorial: 'B01' },
-    },
-  ];
-
-  const emptyColors: ColorMapping = {};
   const colorMapping: ColorMapping = {
     CS1010S: 0,
     GER1000: 1,
     CS2104: 2,
   };
 
-  configs.forEach((config) => {
+  test.each(configs)('serialization/deserialization with colors', (config) => {
     // if mod config is not present, no color mapping is serialized
-    const colors = Object.fromEntries(
-      Object.entries(colorMapping).filter(([moduleCode]) => moduleCode in config),
-    );
+    const colors = _.pickBy(colorMapping, (colorIndex, moduleCode) => moduleCode in config);
     // empty color mapping should return null
-    const expectedColors = _.isEqual(colors, emptyColors) ? null : colors;
+    const expectedColors = _.isEmpty(colors) ? null : colors;
 
-    expect(deserializeTimetable(serializeTimetable(config, colors))).toEqual(config);
-    expect(deserializeTimetableColors(serializeTimetable(config, colors))).toEqual(expectedColors);
+    const importedTimetable = deserializeTimetable(serializeTimetable(config, colors));
+    expect(importedTimetable.config).toEqual(config);
+    expect(importedTimetable.colors).toEqual(expectedColors);
   });
-});
-
-test('timetable serialization/deserialization with theme', () => {
-  const configs: SemTimetableConfig[] = [
-    {},
-    { CS1010S: {} },
-    {
-      GER1000: { Tutorial: 'B01' },
-    },
-    {
-      CS2104: { Lecture: '1', Tutorial: '2' },
-      CS2105: { Lecture: '1', Tutorial: '1' },
-      CS2107: { Lecture: '1', Tutorial: '8' },
-      CS4212: { Lecture: '1', Tutorial: '1' },
-      CS4243: { Laboratory: '2', Lecture: '1' },
-      GER1000: { Tutorial: 'B01' },
-    },
-  ];
 
   const themeId = 'monokai';
-
-  configs.forEach((config) => {
-    expect(deserializeTimetable(serializeTimetable(config, null, themeId))).toEqual(config);
-    expect(deserializeTimetableThemeId(serializeTimetable(config, null, themeId))).toEqual(themeId);
+  test.each(configs)('serialization/deserialization with theme', (config) => {
+    const importedTimetable = deserializeTimetable(serializeTimetable(config, undefined, themeId));
+    expect(importedTimetable.config).toEqual(config);
+    expect(importedTimetable.themeId).toEqual(themeId);
   });
 });
 
 test('deserializing edge cases', () => {
   // Duplicate module code
-  expect(deserializeTimetable('CS1010S=LEC:01&CS1010S=REC:11')).toEqual({
+  expect(deserializeTimetable('CS1010S=LEC:01&CS1010S=REC:11').config).toEqual({
     CS1010S: {
       Lecture: '01',
       Recitation: '11',
@@ -476,7 +437,7 @@ test('deserializing edge cases', () => {
   });
 
   // No lessons
-  expect(deserializeTimetable('CS1010S&CS3217&CS2105=LEC:1')).toEqual({
+  expect(deserializeTimetable('CS1010S&CS3217&CS2105=LEC:1').config).toEqual({
     CS1010S: {},
     CS3217: {},
     CS2105: {
