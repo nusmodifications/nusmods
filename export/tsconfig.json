@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
+    "outDir": "build",
     "esModuleInterop": true,
     "strict": true,
-    "outDir": "build"
+    "useUnknownInCatchVariables": false,
+    "skipLibCheck": true
   }
 }
