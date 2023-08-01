@@ -5,15 +5,8 @@ import classnames from 'classnames';
 import { ChevronRight, HelpCircle as Help, Search } from 'react-feather';
 
 import { highlight } from 'utils/react';
-import { ModuleCondensed, Venue } from 'types/modules';
-import {
-  MODULE_RESULT,
-  ResultType,
-  SEARCH_RESULT,
-  SearchItem,
-  SearchResult,
-  VENUE_RESULT,
-} from 'types/views';
+import { ModuleCondensed } from 'types/modules';
+import { MODULE_RESULT, SEARCH_RESULT, SearchItem, SearchResult, VENUE_RESULT } from 'types/views';
 
 import ComponentMap from 'utils/ComponentMap';
 import SemesterBadge from 'views/components/SemesterBadge';
@@ -23,10 +16,7 @@ import styles from './GlobalSearch.scss';
 
 type Props = {
   getResults: (string: string | null) => SearchResult | null;
-
-  onSelectVenue: (venue: Venue) => void;
-  onSelectModule: (moduleCondensed: ModuleCondensed) => void;
-  onSearch: (resultType: ResultType, str: string) => void;
+  pushUrlRoute: (url: string) => void;
 };
 
 type State = {
@@ -35,6 +25,25 @@ type State = {
 };
 
 const PLACEHOLDER = 'Search modules & venues. Try "GER" or "LT".';
+
+const getSearchUrl = (item: SearchItem) => {
+  switch (item.type) {
+    case VENUE_RESULT:
+      return venuePage(item.venue);
+
+    case MODULE_RESULT:
+      return modulePage(item.module.moduleCode);
+
+    case SEARCH_RESULT: {
+      // TODO: Move this into a proper function
+      const path = item.result === VENUE_RESULT ? '/venues' : '/courses';
+      return `${path}?q=${encodeURIComponent(item.term)}`;
+    }
+
+    default:
+      throw Error(`Unknown item type: ${item}`);
+  }
+};
 
 class GlobalSearch extends Component<Props, State> {
   input: HTMLInputElement | null = null;
@@ -80,30 +89,10 @@ class GlobalSearch extends Component<Props, State> {
 
   onChange = (item: SearchItem | null) => {
     if (item) {
-      const { onSelectModule, onSelectVenue, onSearch } = this.props;
-
-      switch (item.type) {
-        case VENUE_RESULT:
-          onSelectVenue(item.venue);
-          break;
-
-        case MODULE_RESULT:
-          onSelectModule(item.module);
-          break;
-
-        case SEARCH_RESULT:
-          onSearch(item.result, item.term);
-          break;
-      }
+      this.props.pushUrlRoute(getSearchUrl(item));
     }
 
     this.onClose();
-  };
-
-  getSearchPageUrls = (type: ResultType, query: string) => {
-    // TODO: Move this into a proper function
-    const path = type === VENUE_RESULT ? '/venues' : '/courses';
-    return `${path}?q=${encodeURIComponent(query)}`;
   };
 
   stateReducer = (state: DownshiftState<SearchItem>, changes: StateChangeOptions<SearchItem>) => {
@@ -227,7 +216,11 @@ class GlobalSearch extends Component<Props, State> {
                   {...getItemProps({
                     item: { type: SEARCH_RESULT, result: MODULE_RESULT, term: inputValue },
                   })}
-                  to={this.getSearchPageUrls(MODULE_RESULT, inputValue)}
+                  to={getSearchUrl({
+                    type: SEARCH_RESULT,
+                    result: MODULE_RESULT,
+                    term: inputValue,
+                  })}
                   className={classnames(styles.selectHeader, {
                     [styles.selected]: highlightedIndex === 0,
                   })}
@@ -244,7 +237,7 @@ class GlobalSearch extends Component<Props, State> {
                       key: module.moduleCode,
                       item: { type: MODULE_RESULT, module },
                     })}
-                    to={modulePage(module.moduleCode, module.title)}
+                    to={getSearchUrl({ type: MODULE_RESULT, module })}
                     className={classnames(styles.option, {
                       [styles.selected]: highlightedIndex === index + 1,
                     })}
@@ -263,7 +256,11 @@ class GlobalSearch extends Component<Props, State> {
                   {...getItemProps({
                     item: { type: SEARCH_RESULT, result: VENUE_RESULT, term: inputValue },
                   })}
-                  to={this.getSearchPageUrls(VENUE_RESULT, inputValue)}
+                  to={getSearchUrl({
+                    type: SEARCH_RESULT,
+                    result: VENUE_RESULT,
+                    term: inputValue,
+                  })}
                   className={classnames(styles.selectHeader, {
                     [styles.selected]: highlightedIndex === venueHeaderIndex,
                   })}
@@ -280,7 +277,7 @@ class GlobalSearch extends Component<Props, State> {
                       key: venue,
                       item: { type: VENUE_RESULT, venue },
                     })}
-                    to={venuePage(venue)}
+                    to={getSearchUrl({ type: VENUE_RESULT, venue })}
                     className={classnames(styles.option, {
                       [styles.selected]: highlightedIndex === venueItemOffset + index,
                     })}
