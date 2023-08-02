@@ -2,6 +2,8 @@ import { each, kebabCase } from 'lodash';
 import { ModuleTitle, Semester, ModuleCode } from 'types/modules';
 import { Venue } from 'types/venues';
 import { SemTimetableConfig } from 'types/timetables';
+import { ColorMapping } from 'types/reducers';
+import { ThemeId } from 'types/settings';
 import { serializeTimetable } from 'utils/timetables';
 import config from 'config';
 
@@ -22,8 +24,17 @@ export function timetablePage(semester: Semester): string {
 }
 
 export const TIMETABLE_SHARE = 'share';
-export function timetableShare(semester: Semester, timetable: SemTimetableConfig): string {
-  return `${timetablePage(semester)}/${TIMETABLE_SHARE}?${serializeTimetable(timetable)}`;
+export function timetableShare(
+  semester: Semester,
+  timetable: SemTimetableConfig,
+  colors?: ColorMapping,
+  themeId?: ThemeId,
+): string {
+  return `${timetablePage(semester)}/${TIMETABLE_SHARE}?${serializeTimetable(
+    timetable,
+    colors,
+    themeId,
+  )}`;
 }
 
 // Timetable path -> Semester

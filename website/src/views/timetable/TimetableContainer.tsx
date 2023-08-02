@@ -7,13 +7,14 @@ import classnames from 'classnames';
 import type { ModuleCode, Semester } from 'types/modules';
 import type { ColorMapping } from 'types/reducers';
 import type { State } from 'types/state';
-import type { SemTimetableConfig } from 'types/timetables';
+import type { SemTimetableConfig, ImportedTimetableConfig } from 'types/timetables';
 
 import { selectSemester } from 'actions/settings';
 import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
 import { fetchTimetableModules, setTimetable } from 'actions/timetables';
 import { openNotification } from 'actions/app';
 import { undo } from 'actions/undoHistory';
+import { selectTheme } from 'actions/theme';
 import { getModuleCondensed } from 'selectors/moduleBank';
 import { deserializeTimetable } from 'utils/timetables';
 import { fillColorMapping } from 'utils/colors';
@@ -38,9 +39,9 @@ type Params = {
 const SharingHeader: FC<{
   semester: Semester;
   filledColors: ColorMapping;
-  importedTimetable: SemTimetableConfig | null;
+  importedTimetableConfig: ImportedTimetableConfig | null;
   setImportedTimetable: (timetable: SemTimetableConfig | null) => void;
-}> = ({ semester, filledColors, importedTimetable, setImportedTimetable }) => {
+}> = ({ semester, filledColors, importedTimetableConfig, setImportedTimetable }) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -52,11 +53,15 @@ const SharingHeader: FC<{
   }, [history, semester, setImportedTimetable]);
 
   const importTimetable = useCallback(() => {
-    if (!importedTimetable) {
+    if (!importedTimetableConfig) {
       return;
     }
-    dispatch(setTimetable(semester, importedTimetable, filledColors));
+    const { config, colors, themeId } = importedTimetableConfig;
+    dispatch(setTimetable(semester, config, colors || filledColors));
     clearImportedTimetable();
+    if (themeId) {
+      dispatch(selectTheme(themeId));
+    }
     dispatch(
       openNotification('Timetable imported', {
         timeout: 12000,
@@ -67,9 +72,9 @@ const SharingHeader: FC<{
         },
       }),
     );
-  }, [clearImportedTimetable, dispatch, filledColors, importedTimetable, semester]);
+  }, [clearImportedTimetable, dispatch, filledColors, importedTimetableConfig, semester]);
 
-  if (!importedTimetable) {
+  if (!importedTimetableConfig) {
     return null;
   }
 
@@ -147,8 +152,10 @@ export const TimetableContainerComponent: FC = () => {
   const activeSemester = useSelector(({ app }: State) => app.activeSemester);
 
   const location = useLocation();
-  const [importedTimetable, setImportedTimetable] = useState(() =>
-    semester && params.action ? deserializeTimetable(location.search) : null,
+  const importedTimetableConfig =
+    semester && params.action ? deserializeTimetable(location.search) : null;
+  const [importedTimetable, setImportedTimetable] = useState(
+    importedTimetableConfig?.config || null,
   );
 
   const dispatch = useDispatch();
@@ -202,7 +209,7 @@ export const TimetableContainerComponent: FC = () => {
           <SharingHeader
             semester={semester}
             filledColors={filledColors}
-            importedTimetable={importedTimetable}
+            importedTimetableConfig={importedTimetableConfig}
             setImportedTimetable={setImportedTimetable}
           />
           <TimetableHeader semester={semester} readOnly={readOnly} />

@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { toggleTimetableOrientation, toggleTitleDisplay } from 'actions/theme';
 import { Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
+import { ColorMapping } from 'types/reducers';
+import { ThemeId } from 'types/settings';
 
 import { Calendar, Grid, Sidebar, Type } from 'react-feather';
 import elements from 'views/elements';
@@ -17,6 +19,8 @@ import styles from './TimetableActions.scss';
 type Props = {
   semester: Semester;
   timetable: SemTimetableConfig;
+  colors?: ColorMapping;
+  themeId?: ThemeId;
 
   isVerticalOrientation: boolean;
   toggleTimetableOrientation: () => void;
@@ -83,7 +87,12 @@ const TimetableActions: React.FC<Props> = (props) => (
     <div className={styles.buttonGroup} role="group" aria-label="Timetable exporting">
       <ExportMenu semester={props.semester} timetable={props.timetable} />
 
-      <ShareTimetable semester={props.semester} timetable={props.timetable} />
+      <ShareTimetable
+        semester={props.semester}
+        timetable={props.timetable}
+        colors={props.colors}
+        themeId={props.themeId}
+      />
     </div>
   </div>
 );

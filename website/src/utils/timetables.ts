@@ -16,6 +16,7 @@ import {
   omitBy,
   partition,
   pick,
+  pickBy,
   range,
   sample,
   values,
@@ -36,7 +37,9 @@ import {
 
 import {
   ColoredLesson,
+  ColorIndex,
   HoverLesson,
+  ImportedTimetableConfig,
   Lesson,
   ModuleLessonConfig,
   SemTimetableConfig,
@@ -46,8 +49,9 @@ import {
   TimetableDayFormat,
 } from 'types/timetables';
 
-import { ModuleCodeMap, ModulesMap } from 'types/reducers';
+import { ColorMapping, ModuleCodeMap, ModulesMap } from 'types/reducers';
 import { ExamClashes } from 'types/views';
+import { ThemeId } from 'types/settings';
 
 import { getTimeAsDate } from './timify';
 import { getModuleSemesterData, getModuleTimetable } from './modules';
@@ -72,10 +76,17 @@ export const LESSON_TYPE_ABBREV: lessonTypeAbbrev = {
 // Reverse lookup map of LESSON_TYPE_ABBREV
 export const LESSON_ABBREV_TYPE: { [key: string]: LessonType } = invert(LESSON_TYPE_ABBREV);
 
+const COLOR_PARAM = 'Color';
+const QUERY_PARAM_ABBREV: { [key: string]: string } = {
+  ...LESSON_TYPE_ABBREV,
+  [COLOR_PARAM]: 'COL',
+};
+const THEME_PARAM = 'THEME';
+
 // Used for module config serialization - these must be query string safe
 // See: https://stackoverflow.com/a/31300627
-export const LESSON_TYPE_SEP = ':';
-export const LESSON_SEP = ',';
+export const QUERY_PARAM_VALUE_SEP = ':';
+export const QUERY_PARAM_SEP = ',';
 
 const EMPTY_OBJECT = {};
 
@@ -358,11 +369,11 @@ export function getSemesterModules(
   return values(pick(modules, Object.keys(timetable)));
 }
 
-function serializeModuleConfig(config: ModuleLessonConfig): string {
-  // eg. { Lecture: 1, Laboratory: 2 } => LEC=1,LAB=2
-  return map(config, (classNo, lessonType) =>
-    [LESSON_TYPE_ABBREV[lessonType], encodeURIComponent(classNo)].join(LESSON_TYPE_SEP),
-  ).join(LESSON_SEP);
+function serializeModuleConfig(config: { [paramName: string]: string | ColorIndex }): string {
+  // eg. { Lecture: 1, Laboratory: 2, Color: 3 } => LEC=1,LAB=2,COL=3
+  return map(config, (paramValue, paramName) =>
+    [QUERY_PARAM_ABBREV[paramName], encodeURIComponent(paramValue)].join(QUERY_PARAM_VALUE_SEP),
+  ).join(QUERY_PARAM_SEP);
 }
 
 function parseModuleConfig(serialized: string | string[] | null): ModuleLessonConfig {
@@ -370,8 +381,8 @@ function parseModuleConfig(serialized: string | string[] | null): ModuleLessonCo
   if (!serialized) return config;
 
   castArray(serialized).forEach((serializedModule) => {
-    serializedModule.split(LESSON_SEP).forEach((lesson) => {
-      const [lessonTypeAbbr, classNo] = lesson.split(LESSON_TYPE_SEP);
+    serializedModule.split(QUERY_PARAM_SEP).forEach((lesson) => {
+      const [lessonTypeAbbr, classNo] = lesson.split(QUERY_PARAM_VALUE_SEP);
       const lessonType = LESSON_ABBREV_TYPE[lessonTypeAbbr];
       // Ignore unparsable/invalid keys
       if (!lessonType) return;
@@ -434,18 +445,73 @@ export function formatNumericWeeks(weeks: NumericWeeks): string | null {
 // Converts a timetable config to query string
 // eg:
 // {
-//   CS2104: { Lecture: '1', Tutorial: '2' },
-//   CS2107: { Lecture: '1', Tutorial: '8' },
+//   CS2104: { Lecture: '1', Tutorial: '2', Color: 3 },
+//   CS2107: { Lecture: '1', Tutorial: '8', Color: 4 },
 // }
-// => CS2104=LEC:1,Tut:2&CS2107=LEC:1,Tut:8
-export function serializeTimetable(timetable: SemTimetableConfig): string {
+// => CS2104=LEC:1,TUT:2,COL:3&CS2107=LEC:1,TUT:8,COL:4
+export function serializeTimetable(
+  timetable: SemTimetableConfig,
+  colors?: ColorMapping,
+  themeId?: ThemeId,
+): string {
+  const timetableModuleParams = Object.fromEntries(
+    Object.entries(timetable).map((module) => {
+      const [moduleCode, moduleLessonConfig] = module;
+      const moduleParams: { [param: string]: string | ColorIndex } = { ...moduleLessonConfig };
+      if (colors?.[moduleCode] != null) {
+        moduleParams[COLOR_PARAM] = colors[moduleCode];
+      }
+      return [moduleCode, moduleParams];
+    }),
+  );
+  const timetableParams = mapValues(timetableModuleParams, serializeModuleConfig);
+  if (themeId != null) {
+    timetableParams[THEME_PARAM] = themeId;
+  }
   // We are using query string safe characters, so this encoding is unnecessary
-  return qs.stringify(mapValues(timetable, serializeModuleConfig), { encode: false });
+  return qs.stringify(timetableParams, { encode: false });
 }
 
-export function deserializeTimetable(serialized: string): SemTimetableConfig {
+export function deserializeTimetable(serialized: string): ImportedTimetableConfig {
   const params = qs.parse(serialized);
-  return mapValues(params, parseModuleConfig);
+  const timetable = {
+    config: deserializeModuleConfigs(params),
+    colors: deserializeTimetableColors(params),
+    themeId: deserializeTimetableThemeId(params),
+  };
+  return timetable;
+}
+
+// Extracts module configs from query string
+function deserializeModuleConfigs(params: qs.ParsedQuery<string>): SemTimetableConfig {
+  const moduleParams = pickBy(params, (paramvalue, paramName) => paramName !== THEME_PARAM);
+  return mapValues(moduleParams, parseModuleConfig);
+}
+
+// Extracts color mapping from query string
+export function deserializeTimetableColors(params: qs.ParsedQuery<string>): ColorMapping | null {
+  const colorMapping: ColorMapping = {};
+  Object.keys(params)
+    .filter((param) => param !== THEME_PARAM)
+    .forEach((moduleCode) => {
+      castArray(params[moduleCode]).forEach((serializedModule) => {
+        if (!serializedModule) return;
+        serializedModule.split(QUERY_PARAM_SEP).forEach((param) => {
+          const [paramName, paramValue] = param.split(QUERY_PARAM_VALUE_SEP);
+          if (paramName === QUERY_PARAM_ABBREV[COLOR_PARAM]) {
+            colorMapping[moduleCode] = parseInt(paramValue, 10);
+          }
+        });
+      });
+    });
+  if (isEmpty(colorMapping)) return null;
+  return colorMapping;
+}
+
+// Extracts themeId from query string
+export function deserializeTimetableThemeId(params: qs.ParsedQuery<string>): ThemeId | null {
+  if (!params || !(THEME_PARAM in params)) return null;
+  return params[THEME_PARAM] as ThemeId;
 }
 
 export function isSameTimetableConfig(t1: SemTimetableConfig, t2: SemTimetableConfig): boolean {

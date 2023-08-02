@@ -9,7 +9,7 @@ import {
   TimetableDayFormat,
 } from 'types/timetables';
 import { LessonType, RawLesson, Semester, Weeks } from 'types/modules';
-import { ModulesMap } from 'types/reducers';
+import { ColorMapping, ModulesMap } from 'types/reducers';
 
 import _ from 'lodash';
 
@@ -380,7 +380,7 @@ test('findExamClashes should return empty object if exams do not clash', () => {
   expect(examClashes).toEqual({});
 });
 
-test('timetable serialization/deserialization', () => {
+describe('timetable serialization/deserialization', () => {
   const configs: SemTimetableConfig[] = [
     {},
     { CS1010S: {} },
@@ -397,14 +397,39 @@ test('timetable serialization/deserialization', () => {
     },
   ];
 
-  configs.forEach((config) => {
-    expect(deserializeTimetable(serializeTimetable(config))).toEqual(config);
+  test.each(configs)('lessons config serialization/deserialization', (config) => {
+    const importedTimetable = deserializeTimetable(serializeTimetable(config));
+    expect(importedTimetable.config).toEqual(config);
+  });
+
+  const colorMapping: ColorMapping = {
+    CS1010S: 0,
+    GER1000: 1,
+    CS2104: 2,
+  };
+
+  test.each(configs)('serialization/deserialization with colors', (config) => {
+    // if mod config is not present, no color mapping is serialized
+    const colors = _.pickBy(colorMapping, (colorIndex, moduleCode) => moduleCode in config);
+    // empty color mapping should return null
+    const expectedColors = _.isEmpty(colors) ? null : colors;
+
+    const importedTimetable = deserializeTimetable(serializeTimetable(config, colors));
+    expect(importedTimetable.config).toEqual(config);
+    expect(importedTimetable.colors).toEqual(expectedColors);
+  });
+
+  const themeId = 'monokai';
+  test.each(configs)('serialization/deserialization with theme', (config) => {
+    const importedTimetable = deserializeTimetable(serializeTimetable(config, undefined, themeId));
+    expect(importedTimetable.config).toEqual(config);
+    expect(importedTimetable.themeId).toEqual(themeId);
   });
 });
 
 test('deserializing edge cases', () => {
   // Duplicate module code
-  expect(deserializeTimetable('CS1010S=LEC:01&CS1010S=REC:11')).toEqual({
+  expect(deserializeTimetable('CS1010S=LEC:01&CS1010S=REC:11').config).toEqual({
     CS1010S: {
       Lecture: '01',
       Recitation: '11',
@@ -412,7 +437,7 @@ test('deserializing edge cases', () => {
   });
 
   // No lessons
-  expect(deserializeTimetable('CS1010S&CS3217&CS2105=LEC:1')).toEqual({
+  expect(deserializeTimetable('CS1010S&CS3217&CS2105=LEC:1').config).toEqual({
     CS1010S: {},
     CS3217: {},
     CS2105: {

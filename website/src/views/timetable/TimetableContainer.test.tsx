@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import axios, { AxiosHeaders, AxiosResponse } from 'axios';
 import produce from 'immer';
@@ -21,6 +21,7 @@ import { timetablePage, timetableShare } from 'views/routes/paths';
 import { BFS1001, CS1010S, CS3216 } from '__mocks__/modules';
 import modulesList from '__mocks__/moduleList.json';
 
+import { ColorMapping } from 'types/reducers';
 import { TimetableContainerComponent } from './TimetableContainer';
 
 /**
@@ -147,6 +148,23 @@ describe(TimetableContainerComponent, () => {
 
     // Expect import header to still be present
     expect(screen.getByRole('button', { name: 'Import' })).toBeInTheDocument();
+  });
+
+  test('should set colors from imported colors and theme if provided', async () => {
+    const semester = 1;
+    const importedTimetable = { TRUMP2020: { Lecture: '1' }, CS1010S: { Tutorial: '2' } };
+    const importedColors: ColorMapping = { TRUMP2020: 3, CS1010S: 5 };
+    const importedThemeId = 'monokai';
+    const location = timetableShare(semester, importedTimetable, importedColors, importedThemeId);
+    const { store } = make(location);
+
+    // wait for button to load
+    waitFor(() => screen.findByRole('button', { name: 'Import' })).then((importButton) => {
+      expect(fireEvent(importButton, new MouseEvent('click'))).toBe(true);
+      const state = store.getState();
+      expect(state.timetables.colors[semester.toString()]).toEqual(importedColors);
+      expect(state.theme.id).toEqual(importedThemeId);
+    });
   });
 
   test('should display saved timetable when there is no imported timetable', () => {
