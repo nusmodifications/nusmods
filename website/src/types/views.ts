@@ -11,7 +11,7 @@ export type ComponentMap = {
 };
 
 /* layout/GlobalSearch */
-export type ResultType = 'VENUE' | 'MODULE' | 'SEARCH';
+export type SearchResultType = 'VENUE' | 'MODULE';
 export const VENUE_RESULT = 'VENUE';
 export const MODULE_RESULT = 'MODULE';
 export const SEARCH_RESULT = 'SEARCH';
@@ -25,7 +25,7 @@ export type SearchResult = {
 export type SearchItem =
   | { readonly type: 'VENUE'; readonly venue: Venue }
   | { readonly type: 'MODULE'; readonly module: ModuleCondensed }
-  | { readonly type: 'SEARCH'; readonly result: 'MODULE' | 'VENUE'; readonly term: string };
+  | { readonly type: 'SEARCH'; readonly result: SearchResultType; readonly term: string };
 
 /* browse/ModuleFinderContainer */
 export type RefinementItem = { key: string; doc_count?: number; missing?: boolean };
