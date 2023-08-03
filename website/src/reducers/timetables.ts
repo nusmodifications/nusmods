@@ -131,7 +131,7 @@ function semColors(state: ColorMapping = defaultSemColorMap, action: Actions): C
     case ADD_MODULE:
       return {
         ...state,
-        [moduleCode]: getNewColor(values(state)),
+        [moduleCode]: getNewColor(values(state), action.payload.numOfColors),
       };
 
     case REMOVE_MODULE:

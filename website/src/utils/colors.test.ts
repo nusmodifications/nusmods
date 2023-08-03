@@ -3,18 +3,23 @@ import { range, uniq, without } from 'lodash';
 import { ColorMapping } from 'types/reducers';
 import { ColorIndex, Lesson, SemTimetableConfig } from 'types/timetables';
 
-import { colorLessonsByKey, fillColorMapping, getNewColor, NUM_DIFFERENT_COLORS } from './colors';
+import { colorLessonsByKey, fillColorMapping, getNewColor } from './colors';
+
+// use 8 different colors for testing
+const NUM_DIFFERENT_COLORS = 8;
 
 describe(getNewColor, () => {
   test('it should get color without randomization', () => {
     // When there are no current colors
-    expect(getNewColor([], false)).toBe(0);
+    expect(getNewColor([], NUM_DIFFERENT_COLORS, false)).toBe(0);
     // When there are colors that have not been picked
-    expect(getNewColor([0, 1], false)).toBe(2);
+    expect(getNewColor([0, 1], NUM_DIFFERENT_COLORS, false)).toBe(2);
     // When all the colors have been picked once
-    expect(getNewColor(range(NUM_DIFFERENT_COLORS), false)).toBe(0);
+    expect(getNewColor(range(NUM_DIFFERENT_COLORS), NUM_DIFFERENT_COLORS, false)).toBe(0);
     // When all the colors have been picked once or more
-    expect(getNewColor([...range(NUM_DIFFERENT_COLORS), 0, 1], false)).toBe(2);
+    expect(getNewColor([...range(NUM_DIFFERENT_COLORS), 0, 1], NUM_DIFFERENT_COLORS, false)).toBe(
+      2,
+    );
   });
 
   test('it should get random color', () => {
@@ -23,7 +28,7 @@ describe(getNewColor, () => {
     // in [0, NUM_DIFFERENT_COLORS] AND not in unexpectedColors
     function expectValidIndex(unexpectedColors: ColorIndex[], currentColors: ColorIndex[]) {
       expect(without(range(NUM_DIFFERENT_COLORS), ...unexpectedColors)).toContain(
-        getNewColor(currentColors, true),
+        getNewColor(currentColors, NUM_DIFFERENT_COLORS, true),
       );
     }
 
@@ -61,7 +66,7 @@ describe(colorLessonsByKey, () => {
       lessons.push(newLesson);
     });
 
-    const coloredLessons = colorLessonsByKey(lessons, 'venue');
+    const coloredLessons = colorLessonsByKey(lessons, 'venue', NUM_DIFFERENT_COLORS);
 
     range(NUM_DIFFERENT_COLORS * 2).forEach((i) => {
       const coloredLesson = coloredLessons[i];
@@ -75,12 +80,17 @@ describe(colorLessonsByKey, () => {
 
 describe(fillColorMapping, () => {
   test('should return color map with colors for all modules', () => {
-    expect(Object.keys(fillColorMapping({ CS1010S: {}, CS3216: {} }, {}))).toEqual([
-      'CS1010S',
-      'CS3216',
-    ]);
+    expect(
+      Object.keys(fillColorMapping({ CS1010S: {}, CS3216: {} }, {}, NUM_DIFFERENT_COLORS)),
+    ).toEqual(['CS1010S', 'CS3216']);
 
-    expect(fillColorMapping({ CS1010S: {}, CS3216: {} }, { CS1010S: 0, CS3216: 1 })).toEqual({
+    expect(
+      fillColorMapping(
+        { CS1010S: {}, CS3216: {} },
+        { CS1010S: 0, CS3216: 1 },
+        NUM_DIFFERENT_COLORS,
+      ),
+    ).toEqual({
       CS1010S: 0,
       CS3216: 1,
     });
@@ -89,13 +99,20 @@ describe(fillColorMapping, () => {
       fillColorMapping(
         { CS1010S: {}, CS3216: {} },
         { CS1010S: 0, CS3216: 1, CS1101S: 1, CS2105: 0, CS1231: 2 },
+        NUM_DIFFERENT_COLORS,
       ),
     ).toEqual({
       CS1010S: 0,
       CS3216: 1,
     });
 
-    expect(fillColorMapping({ CS1010S: {}, CS3216: {} }, { CS1010S: 0, CS3216: 0 })).toEqual({
+    expect(
+      fillColorMapping(
+        { CS1010S: {}, CS3216: {} },
+        { CS1010S: 0, CS3216: 0 },
+        NUM_DIFFERENT_COLORS,
+      ),
+    ).toEqual({
       CS1010S: 0,
       CS3216: 0,
     });
@@ -114,7 +131,7 @@ describe(fillColorMapping, () => {
     };
 
     const uniqueColors = (timetable: SemTimetableConfig, colors: ColorMapping) =>
-      uniq(Object.values(fillColorMapping(timetable, colors)));
+      uniq(Object.values(fillColorMapping(timetable, colors, NUM_DIFFERENT_COLORS)));
 
     expect(uniqueColors(FILLED_TIMETABLE, {})).toHaveLength(8);
     expect(uniqueColors(FILLED_TIMETABLE, { CS3216: 1, CS1101S: 0 })).toHaveLength(8);

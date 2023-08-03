@@ -11,6 +11,9 @@ import { TimetablesState } from 'types/reducers';
 import config from 'config';
 import { PersistConfig } from 'redux-persist/es/types';
 
+// use 8 different colors for testing
+const NUM_DIFFERENT_COLORS = 8;
+
 const initialState = defaultTimetableState;
 
 jest.mock('config');
@@ -25,6 +28,7 @@ describe('color reducers', () => {
           semester: 1,
           moduleCode: 'CS1010S',
           moduleLessonConfig: {},
+          numOfColors: NUM_DIFFERENT_COLORS,
         },
       }).colors,
     ).toHaveProperty('1.CS1010S');
@@ -36,6 +40,7 @@ describe('color reducers', () => {
           semester: 2,
           moduleCode: 'CS3216',
           moduleLessonConfig: {},
+          numOfColors: NUM_DIFFERENT_COLORS,
         },
       }).colors,
     ).toHaveProperty('2.CS3216');

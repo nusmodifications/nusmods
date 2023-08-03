@@ -25,13 +25,8 @@ $theme-option-gap: 0.7rem;
 }
 
 .colorList {
-  $number-colors: 8;
-
   .colorItem {
-    $size: 100% / $number-colors;
-
     display: inline-block;
-    width: $size;
-    padding-bottom: $size;
+    padding-bottom: 12.5%;
   }
 }

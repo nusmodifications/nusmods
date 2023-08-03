@@ -1,7 +1,9 @@
 import { FC, memo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import type { SemesterData } from 'types/modules';
+import { State } from 'types/state';
 import type { Lesson } from 'types/timetables';
 
 import Timetable from 'views/timetable/Timetable';
@@ -14,6 +16,7 @@ import styles from './LessonTimetable.scss';
 
 const SemesterLessonTimetable: FC<{ semesterData?: SemesterData }> = ({ semesterData }) => {
   const history = useHistory();
+  const theme = useSelector((state: State) => state.theme);
 
   if (!semesterData?.timetable) {
     return <p>Timetable info not available</p>;
@@ -25,7 +28,7 @@ const SemesterLessonTimetable: FC<{ semesterData?: SemesterData }> = ({ semester
     title: '',
     isModifiable: !!lesson.venue,
   }));
-  const coloredLessons = colorLessonsByKey(lessons, 'lessonType');
+  const coloredLessons = colorLessonsByKey(lessons, 'lessonType', theme.numOfColors);
   const arrangedLessons = arrangeLessonsForWeek(coloredLessons);
 
   return (

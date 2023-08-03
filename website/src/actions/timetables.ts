@@ -30,13 +30,19 @@ export const Internal = {
     };
   },
 
-  addModule(semester: Semester, moduleCode: ModuleCode, moduleLessonConfig: ModuleLessonConfig) {
+  addModule(
+    semester: Semester,
+    moduleCode: ModuleCode,
+    moduleLessonConfig: ModuleLessonConfig,
+    numOfColors: number,
+  ) {
     return {
       type: ADD_MODULE,
       payload: {
         semester,
         moduleCode,
         moduleLessonConfig,
+        numOfColors,
       },
     };
   },
@@ -64,8 +70,9 @@ export function addModule(semester: Semester, moduleCode: ModuleCode) {
 
       const lessons = getModuleTimetable(module, semester);
       const moduleLessonConfig = randomModuleLessonConfig(lessons);
+      const numOfColors = getState().theme.numOfColors;
 
-      dispatch(Internal.addModule(semester, moduleCode, moduleLessonConfig));
+      dispatch(Internal.addModule(semester, moduleCode, moduleLessonConfig, numOfColors));
     });
 }
 

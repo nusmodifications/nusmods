@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { isEqual } from 'lodash';
 
-import { Mode, ThemeId } from 'types/settings';
+import { Mode } from 'types/settings';
 import { Tracker } from 'types/vendor/piwik';
 import { ModRegNotificationSettings } from 'types/reducers';
+import { Theme } from 'types/settings';
 import { State as StoreState } from 'types/state';
 import { RegPeriod, SCHEDULE_TYPES, ScheduleType } from 'config';
 
@@ -47,7 +48,7 @@ type Props = {
   loadDisqusManually: boolean;
   modRegNotification: ModRegNotificationSettings;
 
-  selectTheme: (theme: ThemeId) => void;
+  selectTheme: (theme: Theme) => void;
   selectMode: (mode: Mode) => void;
 
   toggleBetaTesting: () => void;

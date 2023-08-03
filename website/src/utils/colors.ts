@@ -4,21 +4,24 @@ import { ColorIndex, SemTimetableConfig } from 'types/timetables';
 import { ColorMapping } from 'types/reducers';
 import { ModuleCode } from 'types/modules';
 
-export const NUM_DIFFERENT_COLORS = 8;
-
-function generateInitialColors(): ColorIndex[] {
-  return range(NUM_DIFFERENT_COLORS);
+function generateInitialColors(numOfColors: number): ColorIndex[] {
+  console.log(numOfColors);
+  return range(numOfColors);
 }
 
 // Returns a new index that is not present in the current color index.
-// If there are more than NUM_DIFFERENT_COLORS modules already present,
+// If there are more than numOfColors modules already present,
 // will try to balance the color distribution if randomize === true.
-export function getNewColor(currentColors: ColorIndex[], randomize = true): ColorIndex {
-  let availableColors = generateInitialColors();
+export function getNewColor(
+  currentColors: ColorIndex[],
+  numOfColors: number,
+  randomize = true,
+): ColorIndex {
+  let availableColors = generateInitialColors(numOfColors);
   currentColors.forEach((index: ColorIndex) => {
     availableColors = without(availableColors, index);
     if (availableColors.length === 0) {
-      availableColors = generateInitialColors();
+      availableColors = generateInitialColors(numOfColors);
     }
   });
 
@@ -34,13 +37,14 @@ export function getNewColor(currentColors: ColorIndex[], randomize = true): Colo
 export function colorLessonsByKey<T>(
   lessons: T[],
   key: keyof T,
+  numOfColors: number,
 ): (T & { colorIndex: ColorIndex })[] {
   const colorMap = new Map();
 
   return lessons.map((lesson) => {
     let colorIndex = colorMap.get(lesson[key]);
     if (!colorMap.has(lesson[key])) {
-      colorIndex = getNewColor(Array.from(colorMap.values()), false);
+      colorIndex = getNewColor(Array.from(colorMap.values()), numOfColors, false);
       colorMap.set(lesson[key], colorIndex);
     }
 
@@ -54,6 +58,7 @@ export function colorLessonsByKey<T>(
 export function fillColorMapping(
   timetable: SemTimetableConfig,
   original: ColorMapping,
+  numOfColors: number,
 ): ColorMapping {
   const colorMap: ColorMapping = {};
   const colorsUsed: ColorIndex[] = [];
@@ -71,7 +76,7 @@ export function fillColorMapping(
 
   // Assign the modules without colors
   withoutColors.forEach((moduleCode) => {
-    const color = getNewColor(colorsUsed, false);
+    const color = getNewColor(colorsUsed, numOfColors, false);
     colorMap[moduleCode] = color;
     colorsUsed.push(color);
   });
