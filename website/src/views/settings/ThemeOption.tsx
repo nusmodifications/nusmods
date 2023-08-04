@@ -33,9 +33,9 @@ const ThemeOption: React.FC<Props> = (props) => {
             key={index}
             className={classnames(styles.colorItem, `color-${index}`)}
             style={{
-              width: 100 / theme.numOfColors + '%',
+              width: `${100 / theme.numOfColors}%`,
             }}
-          ></li>
+          />
         ))}
       </ul>
     </button>

@@ -29,7 +29,7 @@ export default class TimetableOnly extends Component<Props, State> {
 
   render() {
     const { store } = this.props;
-    const theme = store.getState().theme;
+    const { theme } = store.getState();
 
     const { semester, timetable, colors } = this.state;
     const timetableColors = fillColorMapping(timetable, colors, theme.numOfColors);

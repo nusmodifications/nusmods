@@ -70,7 +70,7 @@ export function addModule(semester: Semester, moduleCode: ModuleCode) {
 
       const lessons = getModuleTimetable(module, semester);
       const moduleLessonConfig = randomModuleLessonConfig(lessons);
-      const numOfColors = getState().theme.numOfColors;
+      const { numOfColors } = getState().theme;
 
       dispatch(Internal.addModule(semester, moduleCode, moduleLessonConfig, numOfColors));
     });

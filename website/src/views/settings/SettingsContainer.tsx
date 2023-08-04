@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { isEqual } from 'lodash';
 
-import { Mode } from 'types/settings';
+import { Mode, Theme } from 'types/settings';
 import { Tracker } from 'types/vendor/piwik';
 import { ModRegNotificationSettings } from 'types/reducers';
-import { Theme } from 'types/settings';
+
 import { State as StoreState } from 'types/state';
 import { RegPeriod, SCHEDULE_TYPES, ScheduleType } from 'config';
 

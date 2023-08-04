@@ -1,4 +1,5 @@
 import { Theme } from 'types/settings';
+
 export const SELECT_THEME = 'SELECT_THEME' as const;
 export function selectTheme(theme: Theme) {
   return {

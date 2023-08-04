@@ -145,6 +145,7 @@ export const TimetableContainerComponent: FC = () => {
   const getModule = useSelector(getModuleCondensed);
   const modules = useSelector(({ moduleBank }: State) => moduleBank.modules);
   const activeSemester = useSelector(({ app }: State) => app.activeSemester);
+  const theme = useSelector((state: State) => state.theme);
 
   const location = useLocation();
   const [importedTimetable, setImportedTimetable] = useState(() =>
@@ -173,7 +174,7 @@ export const TimetableContainerComponent: FC = () => {
 
   const displayedTimetable = importedTimetable || timetable;
   const filledColors = useMemo(
-    () => fillColorMapping(displayedTimetable, colors),
+    () => fillColorMapping(displayedTimetable, colors, theme.numOfColors),
     [colors, displayedTimetable],
   );
   const readOnly = displayedTimetable === importedTimetable;
