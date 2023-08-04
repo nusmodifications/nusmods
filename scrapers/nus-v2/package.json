@@ -23,7 +23,7 @@
     "@types/fs-extra": "9.0.6",
     "@types/he": "1.1.1",
     "@types/jest": "^29.5.2",
-    "@types/lodash": "4.14.170",
+    "@types/lodash": "4.14.196",
     "@types/mock-fs": "4.13.0",
     "@types/node": "18.16.19",
     "@types/oboe": "2.0.29",
