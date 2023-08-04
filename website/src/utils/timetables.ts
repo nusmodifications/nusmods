@@ -245,10 +245,23 @@ export function areOtherClassesAvailable(
 }
 
 
-//Creates a string key with examDate and Duration, Separated by an underscore _
+// Creates a key using only the exam date string (without time)
 export function getExamDateOnly(module: Module, semester: Semester): String | undefined {
   const examDateTime = get(getModuleSemesterData(module, semester), 'examDate'); //String
   return examDateTime?.slice(0,10)
+}
+
+// Checks if two modules are clashing based on their start time and duration
+export function isClashing(module1: Module, module2: Module, semester: Semester): Boolean {
+  const module1Start = new Date(<string>get(getModuleSemesterData(module1, semester), "examDate")).getTime();
+  const module2Start = new Date(<string>get(getModuleSemesterData(module2, semester), "examDate")).getTime();
+  const module1Duration = <number>get(getModuleSemesterData(module1, semester), "examDuration") * 60 * 1000;
+  const module2Duration = <number>get(getModuleSemesterData(module2, semester), "examDuration") * 60 * 1000;
+  const module1End = module1Start + module1Duration;
+  const module2End = module2Start + module2Duration;
+
+  return ((module1Start <= module2Start) && (module2Start <= module1End)) ||
+  ((module1Start <= module2End) && (module2End <= module1End))  
 }
 
 
@@ -262,8 +275,9 @@ export function findExamClashes(modules: Module[], semester: Semester): ExamClas
     getExamDateOnly(module, semester)
   );
 
-  console.log(groupedModules2)
+  //console.log(groupedModules2)
   delete groupedModules.undefined; // Remove modules without exams
+  console.log(omitBy(groupedModules, (mods) => mods.length === 1))
   return omitBy(groupedModules, (mods) => mods.length === 1); // Remove non-clashing mods
   //For modules with the same exam date, we check within each group whether the exam time intervals clash.
   //If so, then we add the clashed mods (if any) into the return dictionary
