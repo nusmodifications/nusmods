@@ -58,7 +58,7 @@ if (
       </div>
     `;
   const container = document.createElement('div');
-  container.className = styles.browserWarning;
+  container.className = styles.browserWarning!;
   container.innerHTML = template;
   document.body.appendChild(container);
 

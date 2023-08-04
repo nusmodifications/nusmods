@@ -331,7 +331,7 @@ describe(getAcadYearModules, () => {
     };
 
     const result = getAcadYearModules(state);
-    const [cs2020, cs3216] = result['2018/2019'][1];
+    const [cs2020, cs3216] = result['2018/2019']![1]!;
 
     expect(cs2020).toMatchObject({
       moduleCode: 'CS2020',

@@ -202,7 +202,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
               <section>
                 <h2 className={styles.modListHeaders}>iBLOCs</h2>
                 <PlannerSemester
-                  year={subtractAcadYear(sortedModules[0][0])}
+                  year={subtractAcadYear(sortedModules[0]![0])}
                   semester={IBLOCS_SEMESTER}
                   modules={iblocsModules}
                   {...commonProps}
@@ -249,7 +249,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                   className={classnames(styles.trash, {
-                    [styles.dragOver]: snapshot.isDraggingOver,
+                    [styles.dragOver!]: snapshot.isDraggingOver,
                   })}
                 >
                   <div className={styles.trashMessage}>

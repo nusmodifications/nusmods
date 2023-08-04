@@ -189,7 +189,7 @@ class TimetableContent extends React.Component<Props, State> {
       ({ moduleCode }) => moduleCode === moduleCodeToRemove,
     );
     this.props.removeModule(this.props.semester, moduleCodeToRemove);
-    const moduleWithColor = this.toModuleWithColor(this.addedModules()[index]);
+    const moduleWithColor = this.toModuleWithColor(this.addedModules()[index]!);
 
     // A tombstone is displayed in place of a deleted module
     this.setState({ tombstone: { ...moduleWithColor, index } });
@@ -205,7 +205,7 @@ class TimetableContent extends React.Component<Props, State> {
 
   toModuleWithColor = (module: Module) => ({
     ...module,
-    colorIndex: this.props.colors[module.moduleCode],
+    colorIndex: this.props.colors[module.moduleCode]!,
     hiddenInTimetable: this.isHiddenInTimetable(module.moduleCode),
   });
 
@@ -257,7 +257,7 @@ class TimetableContent extends React.Component<Props, State> {
                   <p>
                     Clash on <strong>{formatExamDate(clashDate)}</strong>
                   </p>
-                  {this.renderModuleTable(clashes[clashDate], horizontalOrientation)}
+                  {this.renderModuleTable(clashes[clashDate]!, horizontalOrientation)}
                 </div>
               ))}
             <hr />
@@ -293,7 +293,7 @@ class TimetableContent extends React.Component<Props, State> {
         (lesson) => !areLessonsSameClass(lesson, activeLesson),
       );
 
-      const module = modules[moduleCode];
+      const module = modules[moduleCode]!;
       const moduleTimetable = getModuleTimetable(module, semester);
       lessonsForLessonType(moduleTimetable, activeLesson.lessonType).forEach((lesson) => {
         const modifiableLesson: Lesson & { isActive?: boolean; isAvailable?: boolean } = {
@@ -316,7 +316,7 @@ class TimetableContent extends React.Component<Props, State> {
     const coloredTimetableLessons = timetableLessons.map(
       (lesson: Lesson): ColoredLesson => ({
         ...lesson,
-        colorIndex: colors[lesson.moduleCode],
+        colorIndex: colors[lesson.moduleCode]!,
       }),
     );
 
@@ -326,7 +326,7 @@ class TimetableContent extends React.Component<Props, State> {
       (dayRows) =>
         dayRows.map((row) =>
           row.map((lesson) => {
-            const module: Module = modules[lesson.moduleCode];
+            const module: Module = modules[lesson.moduleCode]!;
             const moduleTimetable = getModuleTimetable(module, semester);
 
             return {
@@ -372,7 +372,7 @@ class TimetableContent extends React.Component<Props, State> {
                 semester={semester}
                 modules={addedModules.map((module) => ({
                   ...module,
-                  colorIndex: this.props.colors[module.moduleCode],
+                  colorIndex: colors[module.moduleCode]!,
                   hiddenInTimetable: this.isHiddenInTimetable(module.moduleCode),
                 }))}
               />

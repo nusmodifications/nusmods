@@ -17,7 +17,7 @@ type ModuleOrder = {
   orderBy: (module: Module, semester: Semester) => string | number;
 };
 
-export const moduleOrders: { [moduleTableOrder: string]: ModuleOrder } = {
+export const moduleOrders: Record<ModuleTableOrder, ModuleOrder> = {
   exam: {
     label: 'Exam Date',
     orderBy: (module: Module, semester: Semester) => getExamDate(module, semester) || '',

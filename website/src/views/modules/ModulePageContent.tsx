@@ -331,7 +331,7 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
             <nav className={styles.sideMenu}>
               <ScrollSpy
                 items={values(SIDE_MENU_ITEMS)}
-                currentClassName={styles.activeMenuItem}
+                currentClassName={styles.activeMenuItem!}
                 offset={-NAVTAB_HEIGHT}
               >
                 {map(SIDE_MENU_LABELS, (label, key: keyof typeof SIDE_MENU_LABELS) => (

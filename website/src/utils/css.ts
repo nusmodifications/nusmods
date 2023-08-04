@@ -15,7 +15,7 @@ function nextBreakpoint(size: Breakpoint): number | undefined {
   const breakpointEntries = Object.entries(breakpoints);
   const nextBreakpointIndex =
     breakpointEntries.findIndex(([breakpoint]) => breakpoint === size) + 1;
-  return breakpointEntries[nextBreakpointIndex][1];
+  return breakpointEntries[nextBreakpointIndex]![1];
 }
 
 export function breakpointDown(size: Breakpoint): QueryObject {

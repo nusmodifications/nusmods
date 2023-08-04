@@ -23,10 +23,10 @@ export function getNewColor(currentColors: ColorIndex[], randomize = true): Colo
   });
 
   if (randomize) {
-    return sample(availableColors) ?? availableColors[0];
+    return sample(availableColors) ?? availableColors[0]!;
   }
 
-  return availableColors[0];
+  return availableColors[0]!;
 }
 
 // Color lessons by a certain property of every lesson
@@ -62,7 +62,7 @@ export function fillColorMapping(
   // Collect a list of all colors used and all modules without colors
   Object.keys(timetable).forEach((moduleCode) => {
     if (moduleCode in original) {
-      colorMap[moduleCode] = original[moduleCode];
+      colorMap[moduleCode] = original[moduleCode]!;
       colorsUsed.push(Number(original[moduleCode]));
     } else {
       withoutColors.push(moduleCode);

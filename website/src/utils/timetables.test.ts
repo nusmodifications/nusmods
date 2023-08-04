@@ -96,9 +96,9 @@ test('hydrateSemTimetableWithLessons should replace ClassNo with lessons', () =>
     modules,
     sem,
   );
-  expect(configWithLessons[moduleCode].Tutorial[0].classNo).toBe('8');
-  expect(configWithLessons[moduleCode].Recitation[0].classNo).toBe('4');
-  expect(configWithLessons[moduleCode].Lecture[0].classNo).toBe('1');
+  expect(configWithLessons[moduleCode]!.Tutorial?.[0]!.classNo).toBe('8');
+  expect(configWithLessons[moduleCode]!.Recitation?.[0]!.classNo).toBe('4');
+  expect(configWithLessons[moduleCode]!.Lecture?.[0]!.classNo).toBe('1');
 });
 
 test('lessonsForLessonType should return all lessons belonging to a particular lessonType', () => {
@@ -128,10 +128,10 @@ test('timetableLessonsArray should return a flat array of lessons', () => {
 test('groupLessonsByDay should group lessons by DayText', () => {
   const lessons: ColoredLesson[] = lessonsArray;
   const lessonsGroupedByDay: TimetableDayFormat = groupLessonsByDay(lessons);
-  expect(lessonsGroupedByDay.Monday.length).toBe(2);
-  expect(lessonsGroupedByDay.Tuesday.length).toBe(1);
-  expect(lessonsGroupedByDay.Wednesday.length).toBe(1);
-  expect(lessonsGroupedByDay.Thursday.length).toBe(2);
+  expect(lessonsGroupedByDay.Monday!.length).toBe(2);
+  expect(lessonsGroupedByDay.Tuesday!.length).toBe(1);
+  expect(lessonsGroupedByDay.Wednesday!.length).toBe(1);
+  expect(lessonsGroupedByDay.Thursday!.length).toBe(2);
 });
 
 test('doLessonsOverlap should correctly determine if two lessons overlap', () => {
@@ -273,7 +273,7 @@ test('arrangeLessonsForWeek', () => {
       createGenericColoredLesson('Monday', '1400', '1500'),
     ]),
   );
-  expect(arrangement0.Monday.length).toBe(1);
+  expect(arrangement0!.Monday!.length).toBe(1);
 
   const arrangement1: TimetableArrangement = arrangeLessonsForWeek(
     _.shuffle([
@@ -284,8 +284,8 @@ test('arrangeLessonsForWeek', () => {
       createGenericColoredLesson('Tuesday', '1400', '1500'),
     ]),
   );
-  expect(arrangement1.Monday.length).toBe(1);
-  expect(arrangement1.Tuesday.length).toBe(2);
+  expect(arrangement1.Monday!.length).toBe(1);
+  expect(arrangement1.Tuesday!.length).toBe(2);
 
   const arrangement2: TimetableArrangement = arrangeLessonsForWeek(
     _.shuffle([
@@ -296,8 +296,8 @@ test('arrangeLessonsForWeek', () => {
       createGenericColoredLesson('Tuesday', '1600', '1800'),
     ]),
   );
-  expect(arrangement2.Monday.length).toBe(1);
-  expect(arrangement2.Tuesday.length).toBe(1);
+  expect(arrangement2.Monday!.length).toBe(1);
+  expect(arrangement2.Tuesday!.length).toBe(1);
 
   const arrangement3: TimetableArrangement = arrangeLessonsForWeek(
     _.shuffle([
@@ -306,9 +306,9 @@ test('arrangeLessonsForWeek', () => {
       createGenericColoredLesson('Wednesday', '1000', '1300'),
     ]),
   );
-  expect(arrangement3.Monday.length).toBe(1);
-  expect(arrangement3.Tuesday.length).toBe(1);
-  expect(arrangement3.Wednesday.length).toBe(1);
+  expect(arrangement3.Monday!.length).toBe(1);
+  expect(arrangement3.Tuesday!.length).toBe(1);
+  expect(arrangement3.Wednesday!.length).toBe(1);
 
   const arrangement4: TimetableArrangement = arrangeLessonsForWeek(
     _.shuffle([
@@ -318,9 +318,9 @@ test('arrangeLessonsForWeek', () => {
       createGenericColoredLesson('Wednesday', '1000', '1300'),
     ]),
   );
-  expect(arrangement4.Monday.length).toBe(1);
-  expect(arrangement4.Tuesday.length).toBe(1);
-  expect(arrangement4.Wednesday.length).toBe(1);
+  expect(arrangement4.Monday!.length).toBe(1);
+  expect(arrangement4.Tuesday!.length).toBe(1);
+  expect(arrangement4.Wednesday!.length).toBe(1);
 
   const arrangement5: TimetableArrangement = arrangeLessonsForWeek(
     _.shuffle([
@@ -332,9 +332,9 @@ test('arrangeLessonsForWeek', () => {
       createGenericColoredLesson('Wednesday', '1100', '1400'),
     ]),
   );
-  expect(arrangement5.Monday.length).toBe(1);
-  expect(arrangement5.Tuesday.length).toBe(2);
-  expect(arrangement5.Wednesday.length).toBe(2);
+  expect(arrangement5.Monday!.length).toBe(1);
+  expect(arrangement5.Tuesday!.length).toBe(2);
+  expect(arrangement5.Wednesday!.length).toBe(2);
 });
 
 test('areOtherClassesAvailable', () => {

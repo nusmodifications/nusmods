@@ -59,7 +59,7 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: Actions)
         modules: {
           ...state.modules,
           [action.payload]: {
-            ...state.modules[action.payload],
+            ...state.modules[action.payload]!,
             timestamp: Date.now(),
           },
         },
@@ -85,8 +85,7 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: Actions)
         if (!draft.moduleArchive[module.moduleCode]) {
           draft.moduleArchive[module.moduleCode] = {};
         }
-
-        draft.moduleArchive[module.moduleCode][meta.academicYear] = module;
+        draft.moduleArchive[module.moduleCode]![meta.academicYear] = module;
       });
     }
 

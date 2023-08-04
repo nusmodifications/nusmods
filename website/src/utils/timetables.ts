@@ -117,7 +117,7 @@ export function hydrateSemTimetableWithLessons(
   return mapValues(
     semTimetableConfig,
     (moduleLessonConfig: ModuleLessonConfig, moduleCode: ModuleCode) => {
-      const module: Module = modules[moduleCode];
+      const module: Module | undefined = modules[moduleCode];
       if (!module) return EMPTY_OBJECT;
 
       // TODO: Split this part into a smaller function: hydrateModuleConfigWithLessons.
@@ -196,7 +196,7 @@ export function arrangeLessonsWithinDay(lessons: ColoredLesson[]): TimetableDayA
   });
   sortedLessons.forEach((lesson: ColoredLesson) => {
     for (let i = 0; i < rows.length; i++) {
-      const rowLessons: ColoredLesson[] = rows[i];
+      const rowLessons: ColoredLesson[] = rows[i]!;
       const previousLesson = last(rowLessons);
       if (!previousLesson || !doLessonsOverlap(previousLesson, lesson)) {
         // Lesson does not overlap with any Lesson in the row. Add it to row.
@@ -327,7 +327,7 @@ export function validateModuleLessons(
   const lessonsByType = groupBy(validLessons, (lesson) => lesson.lessonType);
 
   each(lessonsByType, (lessons: RawLesson[], lessonType: LessonType) => {
-    const classNo = lessonConfig[lessonType];
+    const classNo = lessonConfig[lessonType]!;
 
     // Check that the lesson exists and is valid. If it is not, insert a random
     // valid lesson. This covers both
@@ -338,7 +338,7 @@ export function validateModuleLessons(
     //
     // If a lesson type is removed, then it simply won't be copied over
     if (!lessons.some((lesson) => lesson.classNo === classNo)) {
-      validatedLessonConfig[lessonType] = lessons[0].classNo;
+      validatedLessonConfig[lessonType] = lessons[0]!.classNo;
       updatedLessonTypes.push(lessonType);
     } else {
       validatedLessonConfig[lessonType] = classNo;
@@ -372,10 +372,10 @@ function parseModuleConfig(serialized: string | string[] | null): ModuleLessonCo
   castArray(serialized).forEach((serializedModule) => {
     serializedModule.split(LESSON_SEP).forEach((lesson) => {
       const [lessonTypeAbbr, classNo] = lesson.split(LESSON_TYPE_SEP);
-      const lessonType = LESSON_ABBREV_TYPE[lessonTypeAbbr];
+      const lessonType = lessonTypeAbbr ? LESSON_ABBREV_TYPE[lessonTypeAbbr] : undefined;
       // Ignore unparsable/invalid keys
       if (!lessonType) return;
-      config[lessonType] = classNo;
+      config[lessonType] = classNo!;
     });
   });
 
@@ -397,13 +397,13 @@ export function formatNumericWeeks(weeks: NumericWeeks): string | null {
   // Check for odd / even weeks. There are more odd weeks then even weeks, so we have to split
   // the length check.
   if (deltas(weeks).every((d) => d === 2)) {
-    if (weeks[0] % 2 === 0 && weeks.length >= 6) return 'Even Weeks';
-    if (weeks[0] % 2 === 1 && weeks.length >= 7) return 'Odd Weeks';
+    if (weeks.length >= 6 && weeks[0]! % 2 === 0) return 'Even Weeks';
+    if (weeks.length >= 7 && weeks[0]! % 2 === 1) return 'Odd Weeks';
   }
 
   // Merge consecutive
   const processed: (number | string)[] = [];
-  let start = weeks[0];
+  let start = weeks[0]!;
   let end = start;
 
   const mergeConsecutive = () => {

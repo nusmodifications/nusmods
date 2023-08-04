@@ -37,11 +37,11 @@ const ColorPicker = memo<Props>((props) => {
             title: label,
           })}
           className={classnames('btn btn-block hoverable', `color-${color}`, styles.moduleColor, {
-            [styles.hidden]: isHidden,
+            [styles.hidden!]: isHidden,
           })}
         />
         <div
-          className={classnames(styles.palette, { [styles.isClosed]: !isOpen })}
+          className={classnames(styles.palette, { [styles.isClosed!]: !isOpen })}
           {...getMenuProps()}
         >
           {_.range(NUM_DIFFERENT_COLORS).map((index: ColorIndex) => (
@@ -50,7 +50,7 @@ const ColorPicker = memo<Props>((props) => {
               {...getItemProps({ item: index })}
               key={index}
               className={classnames(styles.option, `color-${index}`, {
-                [styles.selected]: index === color,
+                [styles.selected!]: index === color,
               })}
             />
           ))}

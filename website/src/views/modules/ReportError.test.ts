@@ -25,7 +25,7 @@ describe('facultyEmails', () => {
 
     const configByCode = _.groupBy(facultyEmails, (config) => config.email);
     _.each(configByCode, (config) => {
-      if (expectedDuplicates.has(config[0].email)) return;
+      if (expectedDuplicates.has(config[0]!.email)) return;
 
       expect(config).toHaveLength(1);
     });

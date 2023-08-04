@@ -4,7 +4,7 @@ import { range } from 'lodash';
 import { isSameDay, addDays } from 'date-fns';
 
 import { ModuleWithColor, ModuleWithExamTime, TIME_SEGMENTS } from 'types/views';
-import { formatExamDate } from 'utils/modules';
+import { formatExamDateToDateTime } from 'utils/modules';
 import { modulePage } from 'views/routes/paths';
 import useCurrentTime from 'views/hooks/useCurrentTime';
 
@@ -21,7 +21,7 @@ type Props = {
 };
 
 function getExamDate(date: Date): string {
-  return formatExamDate(date.toISOString()).split(' ')[0];
+  return formatExamDateToDateTime(date.toISOString())[0];
 }
 
 const ExamModule: React.FC<{ module: ModuleWithColor }> = ({ module }) => (
@@ -79,9 +79,9 @@ const ExamWeekComponent: React.FC<Props> = (props) => {
 
         return (
           <td className={styles.day} key={date.getTime()}>
-            {!!modulesAtThisTime.length && (
+            {modulesAtThisTime.length !== 0 && (
               <>
-                <h4>{modulesAtThisTime[0].time}</h4>
+                <h4>{modulesAtThisTime[0]!.time}</h4>
                 {modulesAtThisTime.map(({ module }) => (
                   <ExamModule key={module.moduleCode} module={module} />
                 ))}

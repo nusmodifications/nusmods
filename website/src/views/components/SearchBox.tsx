@@ -97,7 +97,7 @@ export default class SearchBox extends React.PureComponent<Props, State> {
     return (
       <div
         className={classnames(this.props.className, {
-          [styles.searchBoxFocused]: this.state.isFocused,
+          [styles.searchBoxFocused!]: this.state.isFocused,
         })}
       >
         <label htmlFor="search-box" className="sr-only">

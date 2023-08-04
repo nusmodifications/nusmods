@@ -45,7 +45,7 @@ const DayHeader: React.FC<Props> = (props) => {
     <header className={styles.header}>
       <h2>
         <div>
-          <HeaderDate offset={props.offset}>{dates[0]}</HeaderDate>
+          <HeaderDate offset={props.offset}>{dates[0]!}</HeaderDate>
         </div>
         {dates.length > 1 && lastDate && (
           <>

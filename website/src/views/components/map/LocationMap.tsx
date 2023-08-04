@@ -41,7 +41,7 @@ const LocationMap: FC<Props> = ({ position, className, height }) => {
   return (
     <div
       style={style}
-      className={classnames(styles.mapWrapper, className, { [styles.expanded]: isExpanded })}
+      className={classnames(styles.mapWrapper, className, { [styles.expanded!]: isExpanded })}
     >
       <ExternalLink
         href={`https://www.google.com/maps/search/?api=1&query=${googleMapQuery}`}

@@ -70,7 +70,7 @@ export const SideMenuComponent: FC<Props> = ({
           bottom of the screen.
         */}
         <div
-          className={classnames(styles.sideMenu, { [styles.isOpen]: isOpen })}
+          className={classnames(styles.sideMenu, { [styles.isOpen!]: isOpen })}
           ref={scrollableRef}
         >
           {children}

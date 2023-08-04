@@ -80,7 +80,7 @@ function getResponseData<T>(response: AxiosResponse<WeatherResponse<T>>): T | Em
   if (data.api_info.status !== 'healthy') {
     throw new Error(`Weather API returned non-healthy status ${data.api_info.status}`);
   }
-  return data.items[0];
+  return data.items[0] ?? {};
 }
 
 export function twoHour(): Promise<string | null> {

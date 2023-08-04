@@ -12,7 +12,7 @@ import { Lesson } from 'types/timetables';
 
 const semester: Semester = 1;
 const anotherSemester: Semester = 2;
-const lesson: Lesson = lessons[0];
+const lesson: Lesson = lessons[0]!;
 const appInitialState: AppState = {
   activeSemester: semester,
   activeLesson: null,
@@ -47,7 +47,7 @@ test('app should instantiate active lesson', () => {
 });
 
 test('app should set active lesson', () => {
-  const anotherLesson: Lesson = lessons[1];
+  const anotherLesson: Lesson = lessons[1]!;
   const action = modifyLesson(anotherLesson);
   const nextState: AppState = reducer(appHasActiveLessonState, action);
 

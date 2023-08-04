@@ -20,8 +20,8 @@ import styles from './VenueDetails.scss';
 
 type Props = {
   venue: Venue;
-  previous?: Venue | null;
-  next?: Venue | null;
+  previous?: Venue;
+  next?: Venue;
   availability: DayAvailability[];
   highlightPeriod?: TimePeriod;
 };

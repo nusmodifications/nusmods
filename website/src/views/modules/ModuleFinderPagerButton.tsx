@@ -23,7 +23,7 @@ const ModuleFinderPagerButton: React.FC<Props> = ({
     <button
       type="button"
       className={classnames('btn', styles.pagerButton, {
-        [styles.active]: active,
+        [styles.active!]: active,
       })}
       disabled={disabled}
       onClick={onClick}

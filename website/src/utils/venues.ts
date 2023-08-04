@@ -54,7 +54,7 @@ export function filterAvailability(
 
     // Check that all half-hour slots within the time requested are vacant
     for (let i = 0; i < duration * 2; i++) {
-      const timeString = padStart(String(start + hourDifference[i]), 4, '0');
+      const timeString = padStart(String(start + hourDifference[i]!), 4, '0');
       if (dayAvailability.availability[timeString] === OCCUPIED) {
         return false;
       }

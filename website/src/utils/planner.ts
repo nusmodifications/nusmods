@@ -39,7 +39,7 @@ export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: PrereqTree) 
   function walkTree(fragment: PrereqTree): PrereqTree[] | null {
     if (typeof fragment === 'string') {
       if (fragment.includes(GRADE_REQUIREMENT_SEPARATOR)) {
-        const [module] = fragment.split(GRADE_REQUIREMENT_SEPARATOR);
+        const module = fragment.split(GRADE_REQUIREMENT_SEPARATOR)[0]!;
         return moduleSet.has(module) ? null : [module];
       }
       return moduleSet.has(fragment) ? null : [fragment];
@@ -103,8 +103,10 @@ export function getDroppableId(year: string, semester: Semester): string {
  * getDroppableId.
  */
 export function fromDroppableId(id: string): [string, Semester] {
-  const [acadYear, semesterString] = id.split('|');
-  return [acadYear, +semesterString];
+  const items = id.split('|');
+  const acadYear = items[0]!;
+  const semesterStr = items[1]!;
+  return [acadYear, +semesterStr];
 }
 
 // Create shortened AY labels - eg. 2019/2020 -> 19/20

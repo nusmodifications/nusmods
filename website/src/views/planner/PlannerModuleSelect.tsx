@@ -150,7 +150,7 @@ export function PlannerModuleSelectComponent({
                       key: module.moduleCode,
                       item: module.moduleCode,
                       className: classnames({
-                        [styles.highlightItem]: index === highlightedIndex,
+                        [styles.highlightItem!]: index === highlightedIndex,
                       }),
                     })}
                   >

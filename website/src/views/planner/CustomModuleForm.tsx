@@ -123,8 +123,8 @@ export const CustomModuleFormComponent: React.FC<Props> = (props) => {
 
 const CustomModuleForm = connect(
   (state: StoreState, ownProps: OwnProps) => ({
-    customInfo: state.planner.custom[ownProps.moduleCode],
-    moduleInfo: state.moduleBank.modules[ownProps.moduleCode],
+    customInfo: state.planner.custom[ownProps.moduleCode] ?? null,
+    moduleInfo: state.moduleBank.modules[ownProps.moduleCode] ?? null,
   }),
   {
     addCustomModule,

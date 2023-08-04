@@ -89,8 +89,8 @@ const PlannerSemester: React.FC<Props> = ({
       {(provided, snapshot) => (
         <div
           className={classnames(styles.semester, className, {
-            [styles.emptyList]: modules.length === 0,
-            [styles.dragOver]: snapshot.isDraggingOver,
+            [styles.emptyList!]: modules.length === 0,
+            [styles.dragOver!]: snapshot.isDraggingOver,
           })}
           ref={provided.innerRef}
           {...provided.droppableProps}

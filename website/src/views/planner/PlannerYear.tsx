@@ -74,7 +74,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
       <section
         key={year}
         className={classnames(styles.year, {
-          [styles.currentYear]: year === config.academicYear,
+          [styles.currentYear!]: year === config.academicYear,
         })}
       >
         {this.renderHeader()}

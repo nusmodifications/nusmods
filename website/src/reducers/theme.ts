@@ -39,7 +39,7 @@ function theme(state: ThemeState = defaultThemeState, action: Actions): ThemeSta
       const newThemeIndex =
         (themeIds.indexOf(state.id) + themeIds.length + action.payload) % themeIds.length;
 
-      return setTheme(themeIds[newThemeIndex]);
+      return setTheme(themeIds[newThemeIndex]!);
     }
     case TOGGLE_TIMETABLE_ORIENTATION:
       return {

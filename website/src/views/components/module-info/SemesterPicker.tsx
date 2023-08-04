@@ -68,7 +68,7 @@ const SemesterPicker: FC<Props> = ({
   };
 
   const semesterMapObtained = semesterMap();
-  const selected = selectedSemester ? semesterNames()[selectedSemester] : null;
+  const selected = selectedSemester ? semesterNames()[selectedSemester] : undefined;
 
   return (
     <ButtonGroupSelector

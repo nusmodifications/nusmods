@@ -42,19 +42,15 @@ export function sortModules<
 
   return sortBy(modules, (module) => {
     let sum = 0;
-    for (let i = 0; i < searchRegexes.length; i++) {
-      if (
-        searchRegexes[i].test(module.moduleCode) ||
-        searchRegexes[i].test(module.moduleCode.replace(/\D+/, ''))
-      ) {
+    for (const regex of searchRegexes) {
+      if (regex.test(module.moduleCode) || regex.test(module.moduleCode.replace(/\D+/, ''))) {
         sum += 1;
-      } else if (searchRegexes[i].test(module.title)) {
+      } else if (regex.test(module.title)) {
         sum += 2;
       } else {
         sum += 3;
       }
     }
-
     return sum;
   });
 }

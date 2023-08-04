@@ -6,8 +6,8 @@ import reducer, { defaultThemeState, themeIds } from 'reducers/theme';
 const themeInitialState: ThemeState = defaultThemeState;
 const googleTheme = 'google';
 const themeWithEighties: ThemeState = { ...themeInitialState, id: googleTheme };
-const themeWithFirstTheme: ThemeState = { ...themeInitialState, id: themeIds[0] };
-const themeWithLastTheme: ThemeState = { ...themeInitialState, id: themeIds[themeIds.length - 1] };
+const themeWithFirstTheme: ThemeState = { ...themeInitialState, id: themeIds[0]! };
+const themeWithLastTheme: ThemeState = { ...themeInitialState, id: themeIds[themeIds.length - 1]! };
 const themeWithVerticalOrientation: ThemeState = {
   ...themeInitialState,
   timetableOrientation: VERTICAL,

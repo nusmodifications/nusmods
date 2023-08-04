@@ -34,7 +34,7 @@ const CheckboxItem: React.FC<Props> = ({
     <label
       htmlFor={itemKey}
       className={classnames('form-check-label', {
-        [styles.enabled]: !disabled,
+        [styles.enabled!]: !disabled,
       })}
     >
       {label}

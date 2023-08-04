@@ -31,7 +31,7 @@ export class UnmappedVenuesComponent extends PureComponent<Props, State> {
 
     const [mappedVenues, unmappedVenues] = partition(
       venueList,
-      (venue) => venueLocations[venue] && venueLocations[venue].location,
+      (venue) => venueLocations[venue] && venueLocations[venue]?.location,
     );
     const percentMapped = (mappedVenues.length / venueList.length) * 100;
     const percentText = `${percentMapped.toFixed(1)}%`;
@@ -67,7 +67,7 @@ export class UnmappedVenuesComponent extends PureComponent<Props, State> {
 
             <div
               className={classnames({
-                [styles.hidden]: !expanded,
+                [styles.hidden!]: !expanded,
               })}
             >
               <VenueList venues={unmappedVenues} linkProps={{ target: '_blank' }} />
