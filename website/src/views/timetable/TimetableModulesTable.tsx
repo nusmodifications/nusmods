@@ -41,6 +41,7 @@ export type Props = {
   modules: ModuleWithColor[];
   tombstone: TombstoneModule | null; // Placeholder for a deleted module
   customiseModule: ModuleCode;
+  customisedModules: ModuleCode[];
 
   // Actions
   selectModuleColor: (semester: Semester, moduleCode: ModuleCode, colorIndex: ColorIndex) => void;
@@ -135,7 +136,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
   };
 
   const renderModule = (module: ModuleWithColor) => {
-    const { semester, readOnly, tombstone, resetTombstone } = props;
+    const { semester, readOnly, tombstone, resetTombstone, customisedModules } = props;
 
     if (tombstone && tombstone.moduleCode === module.moduleCode) {
       return <ModuleTombstone module={module} resetTombstone={resetTombstone} />;
@@ -167,6 +168,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
           {!readOnly && renderModuleActions(module)}
           <Link to={modulePage(module.moduleCode, module.title)}>
             {module.moduleCode} {module.title}
+            {customisedModules.includes(module.moduleCode) && '*'}
           </Link>
           <div className={styles.moduleExam}>{intersperse(secondRowText, BULLET_NBSP)}</div>
         </div>
