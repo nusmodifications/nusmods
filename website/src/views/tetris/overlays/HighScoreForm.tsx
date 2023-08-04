@@ -16,7 +16,7 @@ type State = {
 };
 
 export default class HighScoreForm extends React.PureComponent<Props, State> {
-  state = {
+  override state = {
     name: '',
     submitted: false,
   };
@@ -58,7 +58,7 @@ export default class HighScoreForm extends React.PureComponent<Props, State> {
     );
   }
 
-  render() {
+  override render() {
     const entries = getScoreData();
     const { score } = this.props;
 

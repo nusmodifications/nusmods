@@ -19,7 +19,7 @@ type State = {
  * by forcing a remount after each game via the key prop
  */
 class TetrisContainer extends React.PureComponent<Props, State> {
-  state = {
+  override state = {
     game: 0,
   };
 
@@ -27,7 +27,7 @@ class TetrisContainer extends React.PureComponent<Props, State> {
     this.setState((state) => ({ game: state.game + 1 }));
   };
 
-  render() {
+  override render() {
     const { TetrisGame } = this.props;
     // Force a re-mount of the component, resetting its state by changing its key
     return <TetrisGame resetGame={this.onResetGame} key={this.state.game} />;

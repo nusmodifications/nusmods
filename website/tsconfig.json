@@ -28,7 +28,7 @@
     "strict": true /* Enable all strict type-checking options. */,
     "allowUnusedLabels": false,
     "allowUnreachableCode": false,
-    // "noImplicitOverride": true,
+    "noImplicitOverride": true,
     "noImplicitReturns": true,
     // "noPropertyAccessFromIndexSignature": true,
     // "noUncheckedIndexedAccess": true,

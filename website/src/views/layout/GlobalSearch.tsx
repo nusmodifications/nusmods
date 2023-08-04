@@ -38,7 +38,7 @@ const PLACEHOLDER = 'Search modules & venues. Try "GER" or "LT".';
 class GlobalSearch extends Component<Props, State> {
   input: HTMLInputElement | null = null;
 
-  state = {
+  override state = {
     isOpen: false,
     inputValue: '',
   };
@@ -285,7 +285,7 @@ class GlobalSearch extends Component<Props, State> {
     );
   };
 
-  render() {
+  override render() {
     const { isOpen, inputValue } = this.state;
 
     return (

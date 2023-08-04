@@ -35,7 +35,7 @@ type State = {
 };
 
 export class ExportMenuComponent extends PureComponent<Props, State> {
-  state: State = {
+  override state: State = {
     isMacWarningOpen: false,
   };
 
@@ -144,7 +144,7 @@ export class ExportMenuComponent extends PureComponent<Props, State> {
     );
   };
 
-  render() {
+  override render() {
     return <Downshift onSelect={this.onSelect}>{this.renderDropdown}</Downshift>;
   }
 }
