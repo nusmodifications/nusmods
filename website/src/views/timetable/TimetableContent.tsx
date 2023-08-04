@@ -509,6 +509,7 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
   const { semester, timetable } = ownProps;
   const { modules } = state.moduleBank;
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
+  // TODO(zwliew): fix the type signature of state.timetables.hidden[semester]
   const hiddenInTimetable = state.timetables.hidden[semester] || [];
 
   return {
@@ -518,7 +519,7 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
     modules,
     activeLesson: state.app.activeLesson,
     customiseModule: state.app.customiseModule,
-    customisedModules: state.timetables.customisedModules[semester],
+    customisedModules: state.timetables.customisedModules[semester] ?? [],
     timetableOrientation: state.theme.timetableOrientation,
     showTitle: state.theme.showTitle,
     hiddenInTimetable,

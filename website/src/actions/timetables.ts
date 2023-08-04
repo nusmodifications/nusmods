@@ -236,14 +236,9 @@ export function validateTimetable(semester: Semester) {
       const module = moduleBank.modules[moduleCode];
       if (!module) return;
 
-      // If the module is customised, we do not validate it
-      if (
-        timetables.customisedModules &&
-        timetables.customisedModules[semester] &&
-        timetables.customisedModules[semester].includes(moduleCode)
-      ) {
-        return;
-      }
+      // Do not validate customised modules.
+      if (timetables.customisedModules[semester]?.includes(moduleCode)) return;
+
       const [validatedLessonConfig, changedLessonTypes] = validateModuleLessons(
         semester,
         lessonConfig,

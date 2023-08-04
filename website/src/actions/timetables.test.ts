@@ -53,12 +53,13 @@ describe('fillTimetableBlanks', () => {
   const moduleBank = { modules: { CS1010S, CS3216 } };
   const timetablesState = (semester: Semester, timetable: SemTimetableConfig) => ({
     lessons: { [semester]: timetable },
+    customisedModules: { [semester]: [] },
   });
   const semester = 1;
   const action = actions.validateTimetable(semester);
 
   test('do nothing if timetable is already full', () => {
-    const timetable = {
+    const timetable: SemTimetableConfig = {
       CS1010S: {
         Lecture: ['1'],
         Tutorial: ['1'],
@@ -66,6 +67,7 @@ describe('fillTimetableBlanks', () => {
       },
     };
 
+    // TODO(zwliew): Correctly type all the `state: any` declarations in this function and the rest of the codebase.
     const state: any = { timetables: timetablesState(semester, timetable), moduleBank };
     const dispatch = jest.fn();
     action(dispatch, () => state);
@@ -74,7 +76,7 @@ describe('fillTimetableBlanks', () => {
   });
 
   test('fill missing lessons with randomly generated modules', () => {
-    const timetable = {
+    const timetable: SemTimetableConfig = {
       CS1010S: {
         Lecture: ['1'],
         Tutorial: ['1'],
