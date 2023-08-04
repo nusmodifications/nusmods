@@ -26,7 +26,7 @@ const handleGet: Handler = async (req, res) => {
 
     res.send(createLoginURL(callback));
   } catch (err) {
-    if (err.message === errors.noCallbackUrl) {
+    if (err instanceof Error && err.message === errors.noCallbackUrl) {
       res.json({
         message: 'Request needs a referer',
       });

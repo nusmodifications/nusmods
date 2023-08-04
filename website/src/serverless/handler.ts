@@ -43,7 +43,12 @@ export const createRouteHandler =
       }
       await handler(req, res);
     } catch (err) {
-      rescue(err)(req, res);
+      if (err instanceof Error) {
+        rescue(err)(req, res);
+      } else {
+        throw err;
+      }
+
     }
   };
 

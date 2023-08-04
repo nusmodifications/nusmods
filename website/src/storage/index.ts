@@ -22,7 +22,11 @@ function setItem(key: string, value: unknown) {
       // Ignore error
     }
 
-    captureException(e, { usedSpace });
+    if (e instanceof Error) {
+      captureException(e, { usedSpace });
+    } else {
+      throw e;
+    }
   }
 }
 
@@ -35,7 +39,11 @@ function getItem(key: string): unknown {
     }
     return undefined;
   } catch (e) {
-    captureException(e);
+    if (e instanceof Error) {
+      captureException(e);
+    } else {
+      throw e;
+    }
     return value;
   }
 }
@@ -44,7 +52,11 @@ function removeItem(key: string) {
   try {
     getLocalStorage().removeItem(key);
   } catch (e) {
-    captureException(e);
+    if (e instanceof Error) {
+      captureException(e);
+    } else {
+      throw e;
+    }
   }
 }
 

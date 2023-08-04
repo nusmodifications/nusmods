@@ -13,7 +13,7 @@ export async function retry<T>(
     // Be sure to await before returning!
     return await fn();
   } catch (err) {
-    if (retries <= 0 || !shouldRetry(err)) {
+    if (!(err instanceof Error) || retries <= 0 || !shouldRetry(err)) {
       throw err;
     }
     return retry(retries - 1, fn, shouldRetry);
