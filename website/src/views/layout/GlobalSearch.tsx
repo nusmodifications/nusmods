@@ -9,7 +9,7 @@ import { ModuleCondensed } from 'types/modules';
 import { Venue } from 'types/venues';
 import {
   MODULE_RESULT,
-  ResultType,
+  SearchResultType,
   SEARCH_RESULT,
   SearchItem,
   SearchResult,
@@ -25,7 +25,7 @@ type Props = {
 
   onSelectVenue: (venue: Venue) => void;
   onSelectModule: (moduleCondensed: ModuleCondensed) => void;
-  onSearch: (resultType: ResultType, str: string) => void;
+  onSearch: (type: SearchResultType, query: string) => void;
 };
 
 type State = {
@@ -91,7 +91,7 @@ class GlobalSearch extends Component<Props, State> {
           break;
 
         case SEARCH_RESULT:
-          onSearch(item.type, item.term);
+          onSearch(item.result, item.term);
           break;
       }
     }

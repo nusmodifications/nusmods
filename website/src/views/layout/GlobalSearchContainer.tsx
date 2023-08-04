@@ -10,7 +10,7 @@ import useMediaQuery from 'views/hooks/useMediaQuery';
 import GlobalSearch from 'views/layout/GlobalSearch';
 import { modulePage, venuePage } from 'views/routes/paths';
 
-import { ResultType, SearchResult, VENUE_RESULT } from 'types/views';
+import { SearchResultType, SearchResult, VENUE_RESULT } from 'types/views';
 import { fetchVenueList } from 'actions/venueBank';
 import { createSearchPredicate, regexify, sortModules, tokenize } from 'utils/moduleSearch';
 import { breakpointUp } from 'utils/css';
@@ -42,7 +42,7 @@ const GlobalSearchContainer: FC = () => {
   );
 
   const onSearch = useCallback(
-    (type: ResultType, query: string) => {
+    (type: SearchResultType, query: string) => {
       // TODO: Move this into a proper function
       const path = type === VENUE_RESULT ? '/venues' : '/courses';
       history.push(`${path}?q=${encodeURIComponent(query)}`);

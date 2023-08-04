@@ -30,12 +30,17 @@ type Props = {
   semester: Semester;
   moduleTableOrder: ModuleTableOrder;
   modules: Module[];
+  hiddenInTimetable: string[];
 
   setModuleTableOrder: (moduleTableOrder: ModuleTableOrder) => void;
 };
 
 const ModulesTableFooter: React.FC<Props> = (props) => {
   const totalMCs = sumBy(props.modules, (module) => parseFloat(module.moduleCredit));
+  const shownMCs = sumBy(
+    props.modules.filter((module) => !props.hiddenInTimetable.includes(module.moduleCode)),
+    (module) => parseFloat(module.moduleCredit),
+  );
 
   return (
     <div className={classnames(styles.footer, 'row align-items-center')}>
@@ -49,7 +54,14 @@ const ModulesTableFooter: React.FC<Props> = (props) => {
         <hr />
       </div>
       <div className="col">
-        Total Units: <strong>{renderMCs(totalMCs)}</strong>
+        {shownMCs !== totalMCs && (
+          <div>
+            Active Units: <strong>{renderMCs(shownMCs)}</strong>
+          </div>
+        )}
+        <div>
+          Total Units: <strong>{renderMCs(totalMCs)}</strong>
+        </div>
       </div>
       <div className={classnames(styles.moduleOrder, 'col no-export')}>
         <label htmlFor="moduleOrder">Order</label>

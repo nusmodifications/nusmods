@@ -26,4 +26,9 @@ declare global {
     // Allows debugging
     [debugHooks: DEBUG_HOOK_NAMES]: (newValue: any) => void;
   }
+
+  interface Navigator {
+    // https://microsoft.github.io/PowerBI-JavaScript/interfaces/_node_modules_typedoc_node_modules_typescript_lib_lib_dom_d_.msfilesaver.html#mssaveoropenblob
+    msSaveOrOpenBlob?: (blob: any, defaultName?: string) => boolean;
+  }
 }
