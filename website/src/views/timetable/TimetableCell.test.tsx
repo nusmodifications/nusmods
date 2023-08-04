@@ -38,7 +38,9 @@ function make(additionalProps: Partial<Props> = {}) {
   return {
     onClick,
     onHover: props.onHover,
-    wrapper: shallow(<TimetableCell onClick={onClick} lesson={DEFAULT_LESSON} {...props} />),
+    wrapper: shallow(
+      <TimetableCell onClick={onClick} lesson={DEFAULT_LESSON} {...props} customisedModules={[]} />,
+    ),
   };
 }
 

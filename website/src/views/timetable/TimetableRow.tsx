@@ -17,7 +17,7 @@ type Props = {
   hoverLesson?: HoverLesson | null;
   onCellHover: OnHoverCell;
   onModifyCell?: OnModifyCell;
-  customisedModules?: ModuleCode[];
+  customisedModules: ModuleCode[];
 };
 
 /**

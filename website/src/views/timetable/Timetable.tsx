@@ -30,7 +30,7 @@ type Props = TimerData & {
   showTitle?: boolean;
   onModifyCell?: OnModifyCell;
   highlightPeriod?: TimePeriod;
-  customisedModules?: ModuleCode[];
+  customisedModules: ModuleCode[];
 };
 
 type State = {

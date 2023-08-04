@@ -26,7 +26,7 @@ type Props = {
   onCellHover: OnHoverCell;
   onModifyCell?: OnModifyCell;
   highlightPeriod?: TimePeriod;
-  customisedModules?: ModuleCode[];
+  customisedModules: ModuleCode[];
 };
 
 // Height of timetable per hour in vertical mode

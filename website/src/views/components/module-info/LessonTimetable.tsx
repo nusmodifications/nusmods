@@ -32,6 +32,7 @@ const SemesterLessonTimetable: FC<{ semesterData?: SemesterData }> = ({ semester
     <Timetable
       lessons={arrangedLessons}
       onModifyCell={(lesson: Lesson) => history.push(venuePage(lesson.venue))}
+      customisedModules={[]}
     />
   );
 };

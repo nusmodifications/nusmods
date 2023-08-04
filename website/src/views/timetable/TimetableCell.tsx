@@ -26,7 +26,7 @@ type Props = {
   onClick?: (position: ClientRect) => void;
   hoverLesson?: HoverLesson | null;
   transparent: boolean;
-  customisedModules?: ModuleCode[];
+  customisedModules: ModuleCode[];
 };
 
 const lessonDateFormat = 'MMM dd';
@@ -87,7 +87,8 @@ function formatWeekRange(weekRange: WeekRange) {
  * might explore other representations e.g. grouped lessons
  */
 const TimetableCell: React.FC<Props> = (props) => {
-  const { lesson, showTitle, onClick, onHover, hoverLesson, transparent } = props;
+  const { lesson, showTitle, onClick, onHover, hoverLesson, transparent, customisedModules } =
+    props;
 
   const moduleName = showTitle ? `${lesson.moduleCode} ${lesson.title}` : lesson.moduleCode;
   const Cell = props.onClick ? 'button' : 'div';
@@ -134,9 +135,7 @@ const TimetableCell: React.FC<Props> = (props) => {
       <div className={styles.cellContainer}>
         <div className={styles.moduleName}>
           {moduleName}
-          {props.customisedModules && props.customisedModules.includes(lesson.moduleCode)
-            ? '*'
-            : null}
+          {customisedModules.includes(lesson.moduleCode) && '*'}
         </div>
         <div>
           {LESSON_TYPE_ABBREV[lesson.lessonType]} [{lesson.classNo}]

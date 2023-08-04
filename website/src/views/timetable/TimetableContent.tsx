@@ -258,6 +258,7 @@ class TimetableContent extends React.Component<Props, State> {
       readOnly={this.props.readOnly}
       tombstone={tombstone}
       resetTombstone={this.resetTombstone}
+      customisedModules={this.props.customisedModules}
     />
   );
 
@@ -339,7 +340,7 @@ class TimetableContent extends React.Component<Props, State> {
               timetableLesson.classNo === lesson.classNo &&
               timetableLesson.lessonType === lesson.lessonType,
           ).length > 0;
-        const modifiableLesson: Lesson & { isActive?: boolean; isAvailable?: boolean } = {
+        const modifiableLesson: Lesson & { isActive: boolean; isAvailable: boolean } = {
           ...lesson,
           // Inject module code in
           moduleCode: this.props.customiseModule,

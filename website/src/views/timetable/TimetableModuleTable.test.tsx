@@ -35,6 +35,7 @@ function make(props: Partial<Props> = {}) {
       resetTombstone={resetTombstone}
       customiseLesson={customiseLesson}
       customiseModule=""
+      customisedModules={[]}
       addCustomModule={addCustomModule}
       removeCustomModule={removeCustomModule}
       {...props}

@@ -70,9 +70,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
               type="button"
               className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
               aria-label={removeBtnLabel}
-              onClick={() => {
-                props.customiseLesson(semester, '');
-              }}
+              onClick={() => props.customiseLesson(semester, '')}
             >
               <Check className={styles.actionIcon} />
             </button>
@@ -118,12 +116,8 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
                   type="button"
                   className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
                   aria-label={customBtnLabel}
-                  disabled={
-                    props.customiseModule !== '' && props.customiseModule !== module.moduleCode
-                  }
-                  hidden={
-                    props.customiseModule !== '' && props.customiseModule !== module.moduleCode
-                  }
+                  disabled={!!props.customiseModule && props.customiseModule !== module.moduleCode}
+                  hidden={!!props.customiseModule && props.customiseModule !== module.moduleCode}
                   onClick={() => {
                     // TODO: add modal for warning
                     props.addCustomModule(semester, module.moduleCode);

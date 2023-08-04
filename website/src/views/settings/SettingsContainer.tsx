@@ -129,7 +129,7 @@ const SettingsContainer: React.FC<Props> = ({
       </p>
 
       <div className={styles.preview}>
-        <Timetable lessons={previewTimetable} />
+        <Timetable lessons={previewTimetable} customisedModules={[]} />
       </div>
 
       <div>
