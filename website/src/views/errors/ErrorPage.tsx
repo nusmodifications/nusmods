@@ -55,7 +55,7 @@ const ErrorPage: React.FC<Props> = ({ error, showReportDialog, showRefresh = tru
           <button
             type="button"
             className="btn btn-primary"
-            onClick={() => window.location.reload(true)}
+            onClick={() => window.location.reload()}
           >
             Refresh
           </button>
