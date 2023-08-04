@@ -97,7 +97,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
     VenueLocation.preload();
   }
 
-  componentDidUpdate(prevProps: Props, prevState: State) {
+  componentDidUpdate(_prevProps: Props, prevState: State) {
     // Update URL if any of these props have changed
     const { searchOptions, searchTerm, isAvailabilityEnabled } = this.state;
 

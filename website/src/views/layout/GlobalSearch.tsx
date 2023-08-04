@@ -99,7 +99,7 @@ class GlobalSearch extends Component<Props, State> {
     this.onClose();
   };
 
-  stateReducer = (state: DownshiftState<SearchItem>, changes: StateChangeOptions<SearchItem>) => {
+  stateReducer = (_state: DownshiftState<SearchItem>, changes: StateChangeOptions<SearchItem>) => {
     switch (changes.type) {
       case Downshift.stateChangeTypes.blurInput:
         return omit(changes, 'inputValue');

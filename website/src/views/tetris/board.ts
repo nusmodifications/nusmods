@@ -156,7 +156,7 @@ function pushPieceInBounds(draft: Piece) {
   let dx = 0;
   let dy = 0;
 
-  iteratePiece(draft, (tile, col, row) => {
+  iteratePiece(draft, (_tile, col, row) => {
     if (col < 0) dx = Math.max(dx, -col);
     if (row >= ROWS) dy = Math.min(dy, ROWS - row - 1);
     if (col >= COLUMNS) dx = Math.min(dx, COLUMNS - col - 1);
@@ -209,7 +209,7 @@ export function placePieceOnBoard(board: Board, ...pieces: Piece[]): Board {
 export function isPieceInBounds(piece: Piece) {
   let isValid = true;
 
-  iteratePiece(piece, (tile, col, row) => {
+  iteratePiece(piece, (_tile, col, row) => {
     // row < 0 is not checked because pieces begin above the board, so those are
     // valid locations
     if (row >= ROWS || col < 0 || col >= COLUMNS) {
@@ -226,7 +226,7 @@ export function isPiecePositionValid(board: Board, piece: Piece) {
   let isValid = true;
 
   // Check for intersection with existing blocks on the board
-  iteratePiece(piece, (tile, col, row) => {
+  iteratePiece(piece, (_tile, col, row) => {
     if (board[col][row]) {
       isValid = false;
       return false;
