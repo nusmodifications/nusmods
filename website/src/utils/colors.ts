@@ -5,7 +5,6 @@ import { ColorMapping } from 'types/reducers';
 import { ModuleCode } from 'types/modules';
 
 function generateInitialColors(numOfColors: number): ColorIndex[] {
-  console.log(numOfColors);
   return range(numOfColors);
 }
 

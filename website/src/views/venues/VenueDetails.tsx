@@ -35,7 +35,7 @@ const VenueDetailsComponent: FC<Props> = ({
   availability,
   highlightPeriod,
 }) => {
-  const theme = useSelector((state: State) => state.theme);
+  const numOfColors = useSelector(({ theme }: State) => theme.numOfColors);
 
   const arrangedLessons = useMemo(() => {
     const lessons: Lesson[] = flatMap(availability, (day) => day.classes).map((venueLesson) => ({
@@ -44,9 +44,9 @@ const VenueDetailsComponent: FC<Props> = ({
       isModifiable: true,
       venue: '',
     }));
-    const coloredLessons = colorLessonsByKey(lessons, 'moduleCode', theme.numOfColors);
+    const coloredLessons = colorLessonsByKey(lessons, 'moduleCode', numOfColors);
     return arrangeLessonsForWeek(coloredLessons);
-  }, [availability]);
+  }, [availability, numOfColors]);
 
   const history = useHistory();
   const navigateToLesson = useCallback(
