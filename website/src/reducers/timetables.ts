@@ -5,7 +5,7 @@ import { createMigrate, PersistedState } from 'redux-persist';
 import { PersistConfig } from 'storage/persistReducer';
 import { ModuleCode } from 'types/modules';
 import { ModuleLessonConfig, SemTimetableConfig, TimetableConfig } from 'types/timetables';
-import { ColorMapping, TimetablesState } from 'types/reducers';
+import { ColorMapping, CustomisedModulesMap, TimetablesState } from 'types/reducers';
 
 import config from 'config';
 import {
@@ -27,7 +27,7 @@ import { SET_EXPORTED_DATA } from 'actions/constants';
 import { Actions } from '../types/actions';
 
 // Migration from state V1 -> V2
-type TimetableStateV1 = Omit<TimetablesState, 'lessons'> & {
+type TimetableStateV1 = Omit<TimetablesState, 'lessons' | 'customisedModules'> & {
   lessons: { [semester: string]: { [moduleCode: string]: { [lessonType: string]: string } } };
 };
 export function migrateV1toV2(
@@ -35,8 +35,11 @@ export function migrateV1toV2(
 ): TimetablesState & PersistedState {
   const newLessons: TimetableConfig = {};
   const oldLessons = oldState.lessons;
+  const newCustomisedModules: CustomisedModulesMap = {};
 
   Object.entries(oldLessons).forEach(([semester, modules]) => {
+    newCustomisedModules[semester] = [];
+
     Object.entries(modules).forEach(([moduleCode, lessons]) => {
       const newSemester: { [moduleCode: string]: { [lessonType: string]: string[] } } = {
         [moduleCode]: {},
@@ -56,6 +59,7 @@ export function migrateV1toV2(
   return {
     ...oldState,
     lessons: newLessons,
+    customisedModules: newCustomisedModules,
   };
 }
 
