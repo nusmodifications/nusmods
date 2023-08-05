@@ -18,9 +18,9 @@
   },
   "dependencies": {
     "@sentry/node": "5.30.0",
+    "@sparticuz/chromium": "92.0.0",
     "axios": "0.21.2",
     "bunyan": "1.8.15",
-    "chrome-aws-lambda": "10.1.0",
     "fs-extra": "9.1.0",
     "http-graceful-shutdown": "2.3.2",
     "koa": "2.13.1",
