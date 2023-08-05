@@ -91,7 +91,7 @@
     "eslint-plugin-react-hooks": "4.2.0",
     "fast-json-stable-stringify": "2.1.0",
     "fs-extra": "9.1.0",
-    "graceful-fs": "4.2.6",
+    "graceful-fs": "4.2.11",
     "html-webpack-plugin": "5.5.0",
     "http-status": "1.5.0",
     "icalendar": "0.7.1",
