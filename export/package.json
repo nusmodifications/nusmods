@@ -37,7 +37,7 @@
     "@types/koa-router": "7.4.4",
     "@types/koa-views": "2.0.4",
     "@types/lodash": "4.14.196",
-    "@types/node": "18.17.2",
+    "@types/node": "18.17.3",
     "@types/pug": "2.0.6",
     "@types/puppeteer": "^5.4.7",
     "@vercel/node": "1.9.0",
