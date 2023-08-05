@@ -1,5 +1,5 @@
 import fs from 'fs-extra';
-import puppeteer, { Page } from 'puppeteer';
+import puppeteer, { Page } from 'puppeteer-core';
 import type { Middleware } from 'koa';
 
 import { getModules } from './data';
@@ -106,7 +106,7 @@ export async function pdf(page: Page, data: PageData) {
 
   return await page.pdf({
     printBackground: true,
-    format: 'A4',
+    format: 'a4',
     landscape: data.theme.timetableOrientation === 'HORIZONTAL',
   });
 }
