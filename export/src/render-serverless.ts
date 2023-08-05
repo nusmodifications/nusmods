@@ -1,4 +1,4 @@
-import chromium from '@sparticuz/chromium-min';
+import chromium from '@sparticuz/chromium';
 import puppeteer, { Page } from 'puppeteer-core';
 
 import { getModules } from './data';
@@ -27,9 +27,7 @@ export async function open(url: string) {
     // devtools: !!process.env.DEVTOOLS, // TODO: Query string && NODE_ENV === 'development'?
     args: chromium.args,
     defaultViewport: chromium.defaultViewport,
-    executablePath: await chromium.executablePath(
-      'https://github.com/Sparticuz/chromium/releases/download/v115.0.0/chromium-v115.0.0-pack.tar',
-    ),
+    executablePath: await chromium.executablePath(),
     headless: chromium.headless,
   });
 
