@@ -1,5 +1,5 @@
 import fs from 'fs-extra';
-import puppeteer, { Page } from 'puppeteer-core';
+import puppeteer, { Page } from 'puppeteer';
 import type { Middleware } from 'koa';
 
 import { getModules } from './data';

@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/node';
 import type { NowApiHandler, NowRequest, NowResponse } from '@vercel/node';
-import type { Page } from 'puppeteer-core';
+import type { Page } from 'puppeteer';
 
 import * as render from './render-serverless';
 import config from './config';
