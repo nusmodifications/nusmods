@@ -1,5 +1,5 @@
 import chromium from 'chrome-aws-lambda';
-import type { Page } from 'puppeteer';
+import type { Page } from 'puppeteer-core';
 
 import { getModules } from './data';
 import config from './config';
@@ -72,7 +72,7 @@ export async function pdf(page: Page, data: PageData) {
 
   return await page.pdf({
     printBackground: true,
-    format: 'A4',
+    format: 'a4',
     landscape: data.theme.timetableOrientation === 'HORIZONTAL',
   });
 }
