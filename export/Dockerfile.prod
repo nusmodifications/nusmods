@@ -28,4 +28,4 @@ RUN yarn build
 # Run everything after as non-privileged user.
 USER node
 
-CMD node ./build/index.js
+CMD node ./build/src/index.js
