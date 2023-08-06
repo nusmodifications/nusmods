@@ -2,10 +2,15 @@ import { ThemeState, VERTICAL } from 'types/reducers';
 
 import * as actions from 'actions/theme';
 import reducer, { defaultThemeState, themeIds } from 'reducers/theme';
+import { Theme } from 'types/settings';
 
 const themeInitialState: ThemeState = defaultThemeState;
-const googleTheme = 'google';
-const themeWithEighties: ThemeState = { ...themeInitialState, id: googleTheme };
+const googleTheme: Theme = {
+  id: 'google',
+  name: 'Google',
+  numOfColors: 8,
+};
+const themeWithEighties: ThemeState = { ...themeInitialState, id: googleTheme.id };
 const themeWithFirstTheme: ThemeState = { ...themeInitialState, id: themeIds[0] };
 const themeWithLastTheme: ThemeState = { ...themeInitialState, id: themeIds[themeIds.length - 1] };
 const themeWithVerticalOrientation: ThemeState = {

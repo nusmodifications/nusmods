@@ -30,6 +30,7 @@ const exportData: ExportData = {
   hidden: ['PC1222'],
   theme: {
     id: 'google',
+    numOfColors: 8,
     timetableOrientation: VERTICAL,
     showTitle: true,
   },
@@ -83,6 +84,7 @@ test('reducers should set export data state', () => {
 
   expect(state.theme).toEqual({
     id: 'google',
+    numOfColors: 8,
     timetableOrientation: VERTICAL,
     showTitle: true,
   });
