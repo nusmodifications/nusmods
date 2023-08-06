@@ -43,6 +43,15 @@ export function replaceWithNode(
   );
 }
 
+export function replaceAllWithNode(
+  str: string,
+  regex: RegExp,
+  replacement: (match: string, index: number) => React.ReactNode,
+): React.ReactElement {
+  const matches = str.match(regex);
+  return <>{matches?.length ? replacement(matches[0], 0) : str}</>;
+}
+
 export function highlight(str: string, search: string | string[], Tag = 'mark'): React.ReactNode {
   const terms = castArray(search).filter(Boolean);
   if (!terms.length) return str;
