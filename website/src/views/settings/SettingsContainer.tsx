@@ -142,7 +142,7 @@ const SettingsContainer: React.FC<Props> = ({
             className={styles.themeOption}
             theme={theme}
             isSelected={currentThemeId === theme.id}
-            onSelectTheme={(theme) => {
+            onSelectTheme={() => {
               props.selectTheme(theme);
               props.reassignAllModulesColor(theme.numOfColors);
             }}

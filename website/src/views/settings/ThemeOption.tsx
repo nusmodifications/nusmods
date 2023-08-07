@@ -9,7 +9,7 @@ import styles from './ThemeOption.scss';
 type Props = {
   theme: Theme;
   isSelected: boolean;
-  onSelectTheme: (theme: Theme) => void;
+  onSelectTheme: () => void;
   className?: string;
 };
 
@@ -22,9 +22,7 @@ const ThemeOption: React.FC<Props> = (props) => {
       className={classnames(className, styles.option, `theme-${theme.id}`, {
         [styles.isSelected]: isSelected,
       })}
-      onClick={() => {
-        onSelectTheme(theme);
-      }}
+      onClick={onSelectTheme}
     >
       <div>
         <small>{theme.name}</small>
