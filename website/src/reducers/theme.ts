@@ -35,6 +35,7 @@ function theme(state: ThemeState = defaultThemeState, action: Actions): ThemeSta
 
   switch (action.type) {
     case SELECT_THEME:
+      // Reassign all modules' color when changing theme
       return setTheme(action.payload);
 
     case CYCLE_THEME: {

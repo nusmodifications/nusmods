@@ -12,6 +12,7 @@ import { RegPeriod, SCHEDULE_TYPES, ScheduleType } from 'config';
 
 import availableThemes from 'data/themes.json';
 import { selectTheme } from 'actions/theme';
+import { reassignAllModulesColor } from 'actions/timetables';
 import {
   dismissModregNotification,
   enableModRegNotification,
@@ -50,6 +51,7 @@ type Props = {
 
   selectTheme: (theme: Theme) => void;
   selectMode: (mode: Mode) => void;
+  reassignAllModulesColor: (numOfColors: number) => void;
 
   toggleBetaTesting: () => void;
   setLoadDisqusManually: (status: boolean) => void;
@@ -140,7 +142,10 @@ const SettingsContainer: React.FC<Props> = ({
             className={styles.themeOption}
             theme={theme}
             isSelected={currentThemeId === theme.id}
-            onSelectTheme={props.selectTheme}
+            onSelectTheme={(theme) => {
+              props.selectTheme(theme);
+              props.reassignAllModulesColor(theme.numOfColors);
+            }}
           />
         ))}
       </div>
@@ -306,6 +311,7 @@ const connectedSettings = connect(mapStateToProps, {
   selectTheme,
   selectFaculty,
   selectMode,
+  reassignAllModulesColor,
   toggleBetaTesting,
   setLoadDisqusManually,
   toggleModRegNotificationGlobally,

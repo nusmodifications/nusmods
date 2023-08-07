@@ -214,6 +214,16 @@ export function selectModuleColor(
   };
 }
 
+export const REASSIGN_ALL_MODULES_COLOR = 'REASSIGN_ALL_MODULES_COLOR' as const;
+export function reassignAllModulesColor(numOfColors: number) {
+  return {
+    type: REASSIGN_ALL_MODULES_COLOR,
+    payload: {
+      numOfColors,
+    },
+  };
+}
+
 export const HIDE_LESSON_IN_TIMETABLE = 'HIDE_LESSON_IN_TIMETABLE' as const;
 export function hideLessonInTimetable(semester: Semester, moduleCode: ModuleCode) {
   return {
