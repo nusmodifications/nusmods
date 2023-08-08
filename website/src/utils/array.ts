@@ -42,7 +42,3 @@ export function deltas(numbers: readonly number[]): number[] {
 
   return result;
 }
-
-export function shallowCompareArray<T>(a: readonly T[], b: readonly T[]): boolean {
-  return a.length === b.length && a.every((module, i) => module === b[i]);
-}
