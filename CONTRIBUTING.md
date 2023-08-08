@@ -35,7 +35,7 @@ Tip: Pick an area you're interested in, and just focus on it. It is not necessar
 
 ## Development Tools
 
-You should have [Node.js](https://nodejs.org/) version 12 or above (use Node 12 LTS or `lts/erbium` if possible) and [Yarn](https://yarnpkg.com/en/) version 1.2.0 or above. We recommend using [nvm](https://github.com/creationix/nvm) to manage your Node versions.
+You should have [Node.js](https://nodejs.org/) version 18 or above (use Node 18 LTS or `lts/hydrogen` if possible) and [Yarn](https://yarnpkg.com/en/) version 1.2.0 or above. We recommend using [fnm](https://github.com/Schniz/fnm) to manage your Node versions.
 
 ## Proposing a Change
 
@@ -51,7 +51,7 @@ We practice trunk-based development and do deployments from the `master` branch,
 
 Working on your first Pull Request? You can learn how from this free video series:
 
-[How to Contribute to an Open Source Project on GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github)
+[How to Contribute to an Open Source Project on GitHub](https://app.egghead.io/playlists/how-to-contribute-to-an-open-source-project-on-github)
 
 To help you get your feet wet and get you familiar with our contribution process, we have a list of [good first issues](https://github.com/nusmodifications/nusmods/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) that contain bugs/enhancements that have a relatively limited scope. This is a great place to get started.
 
@@ -59,7 +59,7 @@ If you decide to fix an issue, please be sure to check the comment thread in cas
 
 If somebody claims an issue but doesn't follow up for more than two weeks, it's fine to take over it but you should still leave a comment.
 
-## Submit a Pull Request
+### Submit a Pull Request
 
 The core team is monitoring for pull requests. We will review your pull request and either merge it, request changes to it, or close it with an explanation.
 

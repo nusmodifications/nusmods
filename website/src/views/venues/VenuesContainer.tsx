@@ -72,13 +72,16 @@ export class VenuesContainerComponent extends Component<Props, State> {
     // Extract searchOptions from the query string if they are present
     const isAvailabilityEnabled = !!(params.time && params.day && params.duration);
     const searchOptions = isAvailabilityEnabled
-      ? (mapValues(pick(params, ['time', 'day', 'duration']), (i) =>
-          parseInt(i, 10),
-        ) as VenueSearchOptions)
+      ? (mapValues(pick(params, ['time', 'day', 'duration']), (i) => {
+          if (!i) return NaN;
+          if (Array.isArray(i)) return parseInt(i[0], 10);
+          return parseInt(i, 10);
+        }) as VenueSearchOptions)
       : defaultSearchOptions();
 
     this.history = new HistoryDebouncer(history);
-    const searchTerm = params.q || '';
+    let searchTerm = params.q || '';
+    if (Array.isArray(searchTerm)) [searchTerm] = searchTerm;
     this.state = {
       searchOptions,
       isAvailabilityEnabled,
@@ -90,11 +93,11 @@ export class VenuesContainerComponent extends Component<Props, State> {
     };
   }
 
-  componentDidMount() {
+  override componentDidMount() {
     VenueLocation.preload();
   }
 
-  componentDidUpdate(prevProps: Props, prevState: State) {
+  override componentDidUpdate(_prevProps: Props, prevState: State) {
     // Update URL if any of these props have changed
     const { searchOptions, searchTerm, isAvailabilityEnabled } = this.state;
 
@@ -295,7 +298,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
     );
   }
 
-  render() {
+  override render() {
     const selectedVenue = this.selectedVenue();
     const { searchTerm, isAvailabilityEnabled, isMapExpanded, searchOptions } = this.state;
     const { venues } = this.props;

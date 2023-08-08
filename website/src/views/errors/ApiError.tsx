@@ -3,6 +3,8 @@ import classnames from 'classnames';
 
 import RandomKawaii from 'views/components/RandomKawaii';
 import Title from 'views/components/Title';
+import { breakpointUp } from 'utils/css';
+
 import styles from './ErrorPage.scss';
 
 type Props = {
@@ -12,13 +14,13 @@ type Props = {
 };
 
 export default class ApiError extends React.PureComponent<Props> {
-  componentDidMount() {
+  override componentDidMount() {
     if (!navigator.onLine) {
       window.addEventListener('online', this.onlineListener);
     }
   }
 
-  componentWillUnmount() {
+  override componentWillUnmount() {
     window.removeEventListener('online', this.onlineListener);
   }
 
@@ -28,7 +30,7 @@ export default class ApiError extends React.PureComponent<Props> {
     }
   };
 
-  render() {
+  override render() {
     const { retry, dataName } = this.props;
     const message = dataName ? `We can't load the ${dataName}` : "We can't connect to NUSMods";
 
@@ -46,6 +48,17 @@ export default class ApiError extends React.PureComponent<Props> {
           </h1>
 
           <p>This could be because your device is offline or NUSMods is down :(</p>
+          {/* TODO: Remove hacky message after we figure out what is wrong with Elastic Search. */}
+          {dataName === 'course information' && (
+            <>
+              <strong>Course search might be having issues at the moment. 😟</strong>
+              <p>
+                If it isn't working, please try the module search{' '}
+                {window.innerWidth < breakpointUp('md').minWidth && 'on a desktop browser '}on the
+                top right corner of the page instead.
+              </p>
+            </>
+          )}
 
           {retry && (
             <div>

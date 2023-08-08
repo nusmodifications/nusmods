@@ -4,8 +4,8 @@
  */
 
 import * as Sentry from '@sentry/node';
-import { each, pick } from 'lodash';
-import { Stream } from 'bunyan';
+import type { WriteFn } from 'bunyan';
+import { mapValues, pick } from 'lodash';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -39,10 +39,10 @@ function getSentryLevel(record: BunyanRecord): Sentry.Severity {
 }
 
 /**
- * Error deserialiazing function. Bunyan serialize the error to object
+ * Error deserializing function. Bunyan serializes the error to object
  * https://github.com/trentm/node-bunyan/blob/master/lib/bunyan.js#L1089
  * @param  {object} data serialized Bunyan
- * @return {Error}       the deserialiazed error
+ * @return {Error}       the deserialized error
  */
 function deserializeError(data: any) {
   if (data instanceof Error) return data;
@@ -65,27 +65,16 @@ type StreamConfig = {
   extra?: string[];
 };
 
-export default function getSentryStream(config: StreamConfig = {}): Stream {
-  const tagProps = config.tags || [];
-  const extraProps = config.extra || [];
-
-  const stream: any = {
-    write(record: BunyanRecord) {
-      const tags = pick(record, tagProps);
-      const extra = pick(record, extraProps);
-      const level = getSentryLevel(record);
-
+export default function getSentryStream(config: StreamConfig = {}): WriteFn {
+  const tagProps = config.tags ?? [];
+  const extraProps = config.extra ?? [];
+  return {
+    write(obj: object) {
+      const record = obj as BunyanRecord;
       Sentry.withScope((scope) => {
-        scope.setLevel(level);
-
-        each(tags, (value, prop) => {
-          scope.setTag(prop, String(value));
-        });
-
-        each(extra, (value, prop) => {
-          scope.setExtra(prop, value || null);
-        });
-
+        scope.setLevel(getSentryLevel(record));
+        scope.setTags(mapValues(pick(record, tagProps), (v) => String(v)));
+        scope.setExtras(mapValues(pick(record, extraProps), (v) => v ?? null));
         if (record.err) {
           scope.setExtra('msg', record.msg);
           Sentry.captureException(deserializeError(record.err));
@@ -93,10 +82,7 @@ export default function getSentryStream(config: StreamConfig = {}): Stream {
           Sentry.captureMessage(record.msg);
         }
       });
-
       return true;
     },
   };
-
-  return stream;
 }

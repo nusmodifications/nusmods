@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosHeaders, AxiosResponse } from 'axios';
 
 import configureStore from 'bootstrapping/configure-store';
 import reducers from 'reducers';
@@ -19,7 +19,9 @@ const cs1010sResponse: AxiosResponse = {
   status: 200,
   statusText: 'Ok',
   headers: {},
-  config: {},
+  config: {
+    headers: new AxiosHeaders(),
+  },
 };
 
 const notFoundError: Partial<AxiosError> = {
@@ -28,7 +30,9 @@ const notFoundError: Partial<AxiosError> = {
     status: 404,
     statusText: 'Not found',
     headers: {},
-    config: {},
+    config: {
+      headers: new AxiosHeaders(),
+    },
   },
 };
 
@@ -38,7 +42,9 @@ const someOtherError: Partial<AxiosError> = {
     status: 500,
     statusText: 'Test error',
     headers: {},
-    config: {},
+    config: {
+      headers: new AxiosHeaders(),
+    },
   },
 };
 
@@ -93,7 +99,7 @@ describe(ModuleArchiveContainerComponent, () => {
     make();
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
     // Expect module information to be displayed
-    expect(await screen.findByText(/This module introduces/)).toBeInTheDocument();
+    expect(await screen.findByText(/This course introduces/)).toBeInTheDocument();
     // Expect component to fetch
     expect(mockAxiosRequest).toBeCalled();
   });
@@ -101,6 +107,6 @@ describe(ModuleArchiveContainerComponent, () => {
   test('should show error if module fetch failed', async () => {
     mockAxiosRequest.mockRejectedValue(someOtherError);
     make();
-    expect(await screen.findByText(/can't load the module information/)).toBeInTheDocument();
+    expect(await screen.findByText(/can't load the course information/)).toBeInTheDocument();
   });
 });

@@ -178,13 +178,15 @@ $venue-detail-expanded-z-index: 920;
 $navtabs-z-index: 900;
 $navbar-z-index: 890;
 $module-finder-search-z-index-md: 850;
-$zindex-dropdown: 820; // Bootstrap override
+
+// navtabs and navbar should never overlap the dropdown
+$modreg-notification-z-index: 970;
+$zindex-dropdown: 910; // Bootstrap override
 $fab-z-index: 800;
 $venue-map-z-index: 760;
 $venue-detail-z-index: 750;
 $side-menu-z-index: 700;
 $side-menu-overlay-z-index: 690;
-$modreg-notification-z-index: 500;
 $timetable-warning-z-index: 200;
 $timetable-scolled-day-z-index: 120;
 $timetable-selected-cell-z-index: 110;

@@ -9,6 +9,8 @@
 .timetableWrapper {
   composes: scrollable from global;
   margin-bottom: 1rem;
+  // Disable horizontal overscroll only to prevent navigating to previous page
+  overscroll-behavior-x: none;
 
   @include media-breakpoint-down(sm) {
     // Maximize the space taken by the timetable by overflowing into the grid gutters

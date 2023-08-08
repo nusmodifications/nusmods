@@ -17,6 +17,7 @@ import NotFoundPage from 'views/errors/NotFoundPage';
 import TodayContainer from 'views/today/TodayContainer';
 import PlannerContainer from 'views/planner/PlannerContainer';
 import TetrisContainer from 'views/tetris/TetrisContainer';
+import MpeContainer from 'views/mpe/MpeContainer';
 import ExternalRedirect from './ExternalRedirect';
 
 // IMPORTANT: Remember to update any route changes on the sitemap
@@ -24,12 +25,18 @@ const Routes: React.FC = () => (
   <Switch>
     <Redirect exact from="/" to="/timetable" />
     <Route path="/timetable/:semester?/:action?" component={TimetableContainer} />
+    <Route exact path="/courses" component={ModuleFinderContainer} />
+    <Route path="/courses/:moduleCode/:slug?" component={ModulePageContainer} />
+    {/* Legacy Routes: Consider removal in the future, but otherwise */}
+    {/* redirecting old hyperlinks to the same page makes sense as well. */}
     <Route exact path="/modules" component={ModuleFinderContainer} />
     <Route path="/modules/:moduleCode/:slug?" component={ModulePageContainer} />
+    {/* END LEGACY ROUTES */}
     <Route path="/archive/:moduleCode/:year/:slug?" component={ModuleArchiveContainer} />
     <Route path="/venues/:venue?" component={VenuesContainer} />
     <Route path="/today" component={TodayContainer} />
     <Route path="/planner" component={PlannerContainer} />
+    <Route path="/mpe" component={MpeContainer} />
     <Route path="/tetris" component={TetrisContainer} />
 
     <Route path="/about" component={AboutContainer} />

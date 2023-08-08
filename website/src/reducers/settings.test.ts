@@ -28,9 +28,9 @@ const settingsWithFaculty: SettingsState = { ...initialState, faculty };
 const settingsWithDarkMode: SettingsState = { ...initialState, mode: DARK_MODE };
 const settingsWithDismissedNotifications: SettingsState = produce(initialState, (draft) => {
   draft.modRegNotification.dismissed = [
-    { type: 'Select Modules', name: '1' },
+    { type: 'Select Courses', name: '1' },
     { type: 'Add / Swap Tutorials', name: '' },
-    { type: 'Select Modules', name: '2' },
+    { type: 'Select Courses', name: '2' },
   ];
 });
 
@@ -111,7 +111,7 @@ describe('modRegNotification settings', () => {
     expect(
       reducer(
         settingsWithDismissedNotifications,
-        actions.dismissModregNotification({ type: 'Select Modules', name: '1' } as RegPeriod),
+        actions.dismissModregNotification({ type: 'Select Courses', name: '1' } as RegPeriod),
       ).modRegNotification.dismissed,
     ).toEqual(settingsWithDismissedNotifications.modRegNotification.dismissed);
 
@@ -126,13 +126,13 @@ describe('modRegNotification settings', () => {
     expect(
       reducer(
         settingsWithDismissedNotifications,
-        actions.dismissModregNotification({ type: 'Select Modules', name: '3' } as RegPeriod),
+        actions.dismissModregNotification({ type: 'Select Courses', name: '3' } as RegPeriod),
       ).modRegNotification.dismissed,
     ).toEqual([
-      { type: 'Select Modules', name: '1' },
+      { type: 'Select Courses', name: '1' },
       { type: 'Add / Swap Tutorials', name: '' },
-      { type: 'Select Modules', name: '2' },
-      { type: 'Select Modules', name: '3' },
+      { type: 'Select Courses', name: '2' },
+      { type: 'Select Courses', name: '3' },
     ]);
   });
 
@@ -141,9 +141,9 @@ describe('modRegNotification settings', () => {
       reducer(
         reducer(
           initialState,
-          actions.dismissModregNotification({ type: 'Select Modules', name: '1' } as RegPeriod),
+          actions.dismissModregNotification({ type: 'Select Courses', name: '1' } as RegPeriod),
         ),
-        actions.enableModRegNotification({ type: 'Select Modules', name: '1' } as RegPeriod),
+        actions.enableModRegNotification({ type: 'Select Courses', name: '1' } as RegPeriod),
       ).modRegNotification.dismissed,
     ).toEqual([]);
   });

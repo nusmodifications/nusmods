@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import configureStore from 'bootstrapping/configure-store';
+import { enableMpe } from 'featureFlags';
 import produce from 'immer';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -36,32 +37,63 @@ function make(storeOverrides: Partial<typeof relevantStoreContents> = {}) {
 describe(Navtabs, () => {
   test('should render into nav element', () => {
     make();
-    expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
-      Array [
-        "Today",
-        "Timetable",
-        "Modules",
-        "Venues",
-        "Settings",
-        "Contribute",
-        "Whispers",
-      ]
-    `);
+    if (enableMpe) {
+      expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
+              Array [
+                "Today",
+                "Timetable",
+                "Modules",
+                "MPE",
+                "Venues",
+                "Settings",
+                "Contribute",
+                "Whispers",
+              ]
+          `);
+    } else {
+      expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
+        [
+          "Today",
+          "Timetable",
+          "Courses",
+          "Venues",
+          "Settings",
+          "Contribute",
+          "Whispers",
+        ]
+      `);
+    }
   });
 
   test('should show beta tabs if beta is true', () => {
     make({ settings: { beta: true } });
-    expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
-      Array [
-        "Today",
-        "Timetable",
-        "Modules",
-        "Venues",
-        "Planner",
-        "Settings",
-        "Contribute",
-        "Whispers",
-      ]
-    `);
+    if (enableMpe) {
+      expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
+              Array [
+                "Today",
+                "Timetable",
+                "Modules",
+                "MPE",
+                "Venues",
+                "Planner",
+                "Settings",
+                "Contribute",
+                "Whispers",
+              ]
+          `);
+    } else {
+      expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
+        [
+          "Today",
+          "Timetable",
+          "Courses",
+          "Venues",
+          "Planner",
+          "Settings",
+          "Contribute",
+          "Whispers",
+        ]
+      `);
+    }
   });
 });

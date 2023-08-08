@@ -3,7 +3,7 @@ version: 2.1
 executors:
   node-executor:
     docker:
-      - image: circleci/node:12
+      - image: cimg/node:18.16
 
 jobs:
   checkout:
@@ -56,7 +56,6 @@ jobs:
           at: ~/nusmods
       - run: yarn --frozen-lockfile --non-interactive
       - run: yarn prettier --check src
-      - run: yarn build
       - run:
           name: Build export service
           environment:

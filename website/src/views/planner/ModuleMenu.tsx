@@ -1,8 +1,8 @@
-import { memo } from 'react';
-import Downshift from 'downshift';
-import classnames from 'classnames';
+import { memo, useLayoutEffect, useRef, useState } from 'react';
 
 import { ChevronDown } from 'react-feather';
+import Downshift from 'downshift';
+import classnames from 'classnames';
 import styles from './PlannerModule.scss';
 
 type Props = {
@@ -17,10 +17,25 @@ type MenuItem = {
 };
 
 const ModuleMenu = memo((props: Props) => {
+  const [isMenuOverflowing, setMenuOverflowing] = useState<boolean>(false);
+  const [hasRendered, setHasRendered] = useState<boolean>(false);
+  const myRef = useRef<HTMLDivElement>(null);
+
   const menuItems: MenuItem[] = [
-    { label: 'Edit MC and Title', action: props.editCustomData },
+    { label: 'Edit Unit and Title', action: props.editCustomData },
     { label: 'Remove', action: props.removeModule, className: 'dropdown-item-danger' },
   ];
+
+  useLayoutEffect(() => {
+    if (myRef.current === null) {
+      return;
+    }
+
+    const rect = myRef.current.getBoundingClientRect();
+    setMenuOverflowing(rect.right <= window.innerWidth);
+  }, [hasRendered, myRef]);
+
+  const toggleRender = () => setHasRendered((hasAlreadyRendered) => !hasAlreadyRendered);
 
   return (
     <Downshift
@@ -37,7 +52,10 @@ const ModuleMenu = memo((props: Props) => {
           <button
             className={classnames('btn close')}
             type="button"
-            onClick={() => toggleMenu()}
+            onClick={() => {
+              toggleMenu();
+              toggleRender();
+            }}
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded={isOpen}
@@ -45,8 +63,13 @@ const ModuleMenu = memo((props: Props) => {
             <ChevronDown />
           </button>
           <div
-            className={classnames(styles.menu, 'dropdown-menu', { show: isOpen })}
-            {...getMenuProps()}
+            className={classnames(
+              styles.menu,
+              'dropdown-menu',
+              { show: isOpen },
+              isMenuOverflowing ? styles.menuRight : styles.menuLeft,
+            )}
+            {...getMenuProps({ ref: myRef })}
           >
             {menuItems.map(({ label, className }, itemIndex) => (
               <button

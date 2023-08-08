@@ -3,6 +3,8 @@ module.exports = {
   moduleDirectories: ['node_modules', '<rootDir>/src'],
   moduleFileExtensions: ['jsx', 'js', 'ts', 'tsx'],
   setupFilesAfterEnv: ['<rootDir>/scripts/test.js'],
+  // Jest 27 changes the default test env to 'node', which doesn't expose DOM APIs
+  testEnvironment: 'jsdom',
   moduleNameMapper: {
     // Mock non JS files as strings
     '\\.(?:jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
@@ -15,9 +17,7 @@ module.exports = {
   },
   // Mimic the globals we set with Webpack's DefinePlugin
   globals: {
-    // Default to development
-    __DEV__: process.env.NODE_ENV === 'development',
-    __TEST__: process.env.NODE_ENV === 'test',
+    NUSMODS_ENV: 'test',
     DATA_API_BASE_URL: '',
     VERSION_STR: '',
     DISPLAY_COMMIT_HASH: '',

@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosHeaders, AxiosResponse } from 'axios';
 
 import configureStore from 'bootstrapping/configure-store';
 import reducers from 'reducers';
@@ -19,7 +19,9 @@ const cs1010sResponse: AxiosResponse = {
   status: 200,
   statusText: 'Ok',
   headers: {},
-  config: {},
+  config: {
+    headers: new AxiosHeaders(),
+  },
 };
 
 const notFoundError: Partial<AxiosError> = {
@@ -28,7 +30,9 @@ const notFoundError: Partial<AxiosError> = {
     status: 404,
     statusText: 'Not found',
     headers: {},
-    config: {},
+    config: {
+      headers: new AxiosHeaders(),
+    },
   },
 };
 
@@ -38,11 +42,13 @@ const someOtherError: Partial<AxiosError> = {
     status: 500,
     statusText: 'Test error',
     headers: {},
-    config: {},
+    config: {
+      headers: new AxiosHeaders(),
+    },
   },
 };
 
-const CANONICAL = '/modules/CS1010S/programming-methodology';
+const CANONICAL = '/courses/CS1010S/programming-methodology';
 
 const initialState = reducers(undefined, initAction());
 
@@ -54,7 +60,7 @@ function make(location: string = CANONICAL) {
       <ModulePageContainerComponent />
     </Provider>,
     {
-      path: '/modules/:moduleCode/:slug?',
+      path: '/courses/:moduleCode/:slug?',
       location,
     },
   );
@@ -75,15 +81,15 @@ describe(ModulePageContainerComponent, () => {
 
   test('should show 404 page when the module code does not exist', async () => {
     mockAxiosRequest.mockRejectedValue(notFoundError);
-    make('/modules/CS1234');
+    make('/courses/CS1234');
     expect(await screen.findByText(/module CS1234 not found/)).toBeInTheDocument();
   });
 
   test('should redirect to canonical URL', async () => {
     mockAxiosRequest.mockResolvedValue(cs1010sResponse);
-    const { history } = make('/modules/CS1010S');
+    const { history } = make('/courses/CS1010S');
     await waitFor(() =>
-      expect(history.location.pathname).toBe('/modules/CS1010S/programming-methodology'),
+      expect(history.location.pathname).toBe('/courses/CS1010S/programming-methodology'),
     );
   });
 
@@ -93,7 +99,7 @@ describe(ModulePageContainerComponent, () => {
     make();
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
     // Expect module information to be displayed
-    expect(await screen.findByText(/This module introduces/)).toBeInTheDocument();
+    expect(await screen.findByText(/This course introduces/)).toBeInTheDocument();
     // Expect component to fetch
     expect(mockAxiosRequest).toBeCalled();
   });
@@ -101,6 +107,6 @@ describe(ModulePageContainerComponent, () => {
   test('should show error if module fetch failed', async () => {
     mockAxiosRequest.mockRejectedValue(someOtherError);
     make();
-    expect(await screen.findByText(/can't load the module information/)).toBeInTheDocument();
+    expect(await screen.findByText(/can't load the course information/)).toBeInTheDocument();
   });
 });

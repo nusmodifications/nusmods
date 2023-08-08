@@ -1,5 +1,5 @@
-import chromium from 'chrome-aws-lambda';
-import type { Page } from 'puppeteer';
+import chromium from '@sparticuz/chromium';
+import puppeteer, { Page } from 'puppeteer-core';
 
 import { getModules } from './data';
 import config from './config';
@@ -23,8 +23,8 @@ async function setViewport(page: Page, options: ViewportOptions = {}) {
 }
 
 export async function open(url: string) {
-  const browser = await chromium.puppeteer.launch({
-    // devtools: !!process.env.DEVTOOLS, // TODO: Query string && __DEV__?
+  const browser = await puppeteer.launch({
+    // devtools: !!process.env.DEVTOOLS, // TODO: Query string && NODE_ENV === 'development'?
     args: chromium.args,
     defaultViewport: chromium.defaultViewport,
     executablePath: await chromium.executablePath,
@@ -72,7 +72,7 @@ export async function pdf(page: Page, data: PageData) {
 
   return await page.pdf({
     printBackground: true,
-    format: 'A4',
+    format: 'a4',
     landscape: data.theme.timetableOrientation === 'HORIZONTAL',
   });
 }

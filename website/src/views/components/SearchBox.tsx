@@ -92,7 +92,7 @@ export default class SearchBox extends React.PureComponent<Props, State> {
     );
   }
 
-  render() {
+  override render() {
     const { value, placeholder, isLoading } = this.props;
     return (
       <div

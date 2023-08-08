@@ -35,6 +35,7 @@ describe(sortVenues, () => {
 
   test('sort venues using natual sorting', () => {
     expect(venues.map(([venue]) => venue)).toEqual([
+      'AS6-0333',
       'CQT/SR0622',
       'LT1',
       'lt2',
@@ -61,7 +62,7 @@ describe('searchVenue()', () => {
 
     expect(searchVenue(venues, 'T1')).toEqual(getVenues('LT1', 'LT17'));
 
-    expect(searchVenue(venues, '0')).toEqual(getVenues('S11-0302', 'CQT/SR0622'));
+    expect(searchVenue(venues, '0')).toEqual(getVenues('AS6-0333', 'S11-0302', 'CQT/SR0622'));
 
     // Non-existent venue
     expect(searchVenue(venues, 'cofeve')).toEqual([]);
@@ -122,6 +123,16 @@ describe(filterAvailability, () => {
 
     expect(availableVenues).toHaveLength(1);
     expect(availableVenues[0][0]).toEqual('LT1');
+  });
+
+  test("should not return venues that are excluded from 'find free rooms' feature", () => {
+    const availableVenues = filterAvailability(venues, {
+      day: 0,
+      time: 9,
+      duration: 1,
+    });
+
+    expect(availableVenues.some((allVenues) => allVenues[0] === 'AS6-0333')).toBe(false);
   });
 });
 

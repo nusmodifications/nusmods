@@ -1,6 +1,6 @@
 import { memo, useState, useCallback } from 'react';
 import classnames from 'classnames';
-import { Sun } from 'react-feather';
+import { Heart } from 'react-feather';
 
 import storage from 'storage';
 import { announcementKey } from 'storage/keys';
@@ -10,13 +10,19 @@ import styles from './Announcements.scss';
 /**
  * If false, hides announcement.
  */
-const enableAnnouncements = false;
+const enableAnnouncements = true;
 
 /**
  * Unique key for the current announcement. If the announcement is not
  * dismissible, set the key to null. Otherwise, set it to a string.
  *
  * Previous keys:
+ * - 'ay202324-new-data' - AY2023/24 data is available
+ * - 'ay202223-new-data' - AY2022/23 data is available
+ * - 'vercel-migration-120522' - Announcement for possible outage for
+ *                               migration out of Vercel team plan
+ * - 'ay202122-2107-search-outage' - Module search outage apology
+ * - 'ay202122-new-data' - AY2021/22 data is available
  * - 'ay202021-new-data' - AY2020/21 data is available
  * - 'ay201920-new-data' - AY2019/20 data is available
  * - 'nusmods-is-official' - NUSMods switch to official APIs
@@ -24,7 +30,7 @@ const enableAnnouncements = false;
  * - 'ay201819-new-data' - AY2018/19 data is available
  * - 'ay201819-s2-new-data' - S2 data available
  */
-const key = announcementKey('ay202021-new-data');
+const key = announcementKey('ay202324-new-data');
 
 const Announcements = memo(() => {
   const [isOpen, setIsOpen] = useState(() => {
@@ -43,22 +49,28 @@ const Announcements = memo(() => {
   }
 
   return (
-    <div className={classnames('alert alert-success no-export', styles.announcement)}>
-      <Sun className={styles.backgroundIcon} />
+    <div
+      className={classnames(
+        'alert alert-success no-export',
+        styles.announcement,
+        // styles.wrapButtons, // Uncomment if needed
+      )}
+    >
+      <Heart className={styles.backgroundIcon} />
 
       <div className={styles.body}>
-        <h3>AY2020/21 module information is available!</h3>
-        <p className={styles.bodyElement}>Happy new academic year! Please note:</p>
-        <ul className={styles.bodyElement}>
-          <li>Class timetables are subject to changes.</li>
-          <li>
-            Due to the evolving COVID-19 situation, only Semester 1 examination timetables are
-            available.
-          </li>
-        </ul>
+        <h3>AY2023/24 courses now available!</h3>
+        <p className={styles.bodyElement}>
+          NUSMods now has AY2023/24 course information available. The data is accurate but subject
+          to changes.
+        </p>
+        <p className={styles.bodyElement}>
+          If there are any discrepancies with course data, please contact your respective faculty's
+          office. Happy new academic year!
+        </p>
       </div>
 
-      {key && <CloseButton onClick={dismiss} />}
+      <div className={styles.buttons}>{key && <CloseButton onClick={dismiss} />}</div>
     </div>
   );
 });

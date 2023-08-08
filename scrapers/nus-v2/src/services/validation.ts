@@ -19,12 +19,16 @@ const lessonSchema = Joi.object({
   end_time: Joi.string().not(Joi.ref('start_time')),
   eventdate: Joi.string().isoDate(),
 
-  activity: Joi.string().only(Object.keys(activityLessonType)),
+  activity: Joi.string()
+    .allow(...Object.keys(activityLessonType))
+    .only(),
 
   modgrp: Joi.string(),
 
   // Assume lessons on Sunday are invalid
-  day: Joi.string().only(Object.keys(dayTextMap)),
+  day: Joi.string()
+    .allow(...Object.keys(dayTextMap))
+    .only(),
 
   numweeks: Joi.number().integer().greater(0),
 
@@ -33,7 +37,7 @@ const lessonSchema = Joi.object({
 });
 
 export function validateLesson(lesson: TimetableLesson, logger: Logger = rootLogger) {
-  const result = Joi.validate(lesson, lessonSchema, {
+  const result = lessonSchema.validate(lesson, {
     presence: 'required',
     allowUnknown: true,
     // Don't abort early so we can log all errors
@@ -52,7 +56,7 @@ const examSchema = Joi.object({
 });
 
 export function validateExam(exam: ModuleExam, logger: Logger = rootLogger) {
-  const result = Joi.validate(exam, examSchema, {
+  const result = examSchema.validate(exam, {
     presence: 'required',
     allowUnknown: true,
     // Don't abort early so we can log all errors
@@ -63,8 +67,11 @@ export function validateExam(exam: ModuleExam, logger: Logger = rootLogger) {
   return !result.error;
 }
 
-const semesterSchema = Joi.number().only(Semesters);
+const semesterSchema = Joi.number()
+  .allow(...Semesters)
+  .only();
+
 export function validateSemester(semester: string | Semester) {
-  const result = Joi.validate(+semester, semesterSchema, { presence: 'required' });
+  const result = semesterSchema.validate(+semester, { presence: 'required' });
   return !result.error;
 }

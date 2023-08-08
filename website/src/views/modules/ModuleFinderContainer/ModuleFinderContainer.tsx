@@ -36,7 +36,7 @@ const searchkit = new SearchkitManager(esHostUrl, {
   searchUrlPath: '_search?track_total_hits=true',
 });
 
-const pageHead = <Title>Modules</Title>;
+const pageHead = <Title>Courses</Title>;
 
 const ModuleInformationListComponent: React.FC<HitsListProps> = ({ hits }) => (
   <ul className={styles.modulesList}>
@@ -61,14 +61,14 @@ const ModuleFinderContainer: React.FC = () => (
     <SearchkitProvider searchkit={searchkit}>
       <div className="row">
         <div className="col">
-          <h1 className="sr-only">Module Finder</h1>
+          <h1 className="sr-only">Course Finder</h1>
 
           <ModuleSearchBox id="q" />
 
           <div>
             <HitsStats
               component={({ hitsCount }: HitsStatsDisplayProps) => (
-                <div className={styles.modulePageDivider}>{hitsCount} modules found</div>
+                <div className={styles.modulePageDivider}>{hitsCount} courses found</div>
               )}
             />
 
@@ -90,7 +90,7 @@ const ModuleFinderContainer: React.FC = () => (
             <NoHits
               suggestionsField="title"
               component={ModuleFinderNoHits}
-              errorComponent={ModuleFinderApiError}
+              errorComponent={<ModuleFinderApiError searchkit={searchkit} />}
             />
           </div>
 

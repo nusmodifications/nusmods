@@ -1,15 +1,16 @@
 import * as React from 'react';
+import axios from 'axios';
 import classnames from 'classnames';
 import qs from 'query-string';
-import axios from 'axios';
-import { QRCodeProps } from 'react-qr-svg';
+import { Copy, Mail, Repeat } from 'react-feather';
+import type { QRCodeProps } from 'react-qr-svg';
 
-import { SemTimetableConfig } from 'types/timetables';
-import { Semester } from 'types/modules';
+import type { SemTimetableConfig } from 'types/timetables';
+import type { Semester } from 'types/modules';
 
 import config from 'config';
+import { enableShortUrl } from 'featureFlags';
 import { absolutePath, timetableShare } from 'views/routes/paths';
-import { Copy, Mail, Repeat } from 'react-feather';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import LoadingSpinner from 'views/components/LoadingSpinner';
@@ -49,13 +50,13 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
 
   urlInput = React.createRef<HTMLInputElement>();
 
-  state: State = {
+  override state: State = {
     isOpen: false,
     urlCopied: NOT_COPIED,
     shortUrl: null,
   };
 
-  componentDidMount() {
+  override componentDidMount() {
     if (!ShareTimetable.QRCode) {
       retryImport(() => import(/* webpackChunkName: "export" */ 'react-qr-svg')).then((module) => {
         ShareTimetable.QRCode = module.QRCode;
@@ -82,17 +83,21 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
 
     this.setState({ shortUrl: null });
 
-    axios
-      .get('/short_url.php', { params: { url }, timeout: 2000 })
-      .then(({ data }) => {
-        if (data[SHORT_URL_KEY]) {
-          this.setState({ shortUrl: data[SHORT_URL_KEY] });
-        } else {
-          showFullUrl();
-        }
-      })
-      // Cannot get short URL - just use long URL instead
-      .catch(showFullUrl);
+    if (enableShortUrl) {
+      axios
+        .get('/api/shorturl', { params: { url }, timeout: 8000 })
+        .then(({ data }) => {
+          if (data[SHORT_URL_KEY]) {
+            this.setState({ shortUrl: data[SHORT_URL_KEY] });
+          } else {
+            showFullUrl();
+          }
+        })
+        // Cannot get short URL - just use long URL instead
+        .catch(showFullUrl);
+    } else {
+      showFullUrl();
+    }
   };
 
   openModal = () => {
@@ -203,7 +208,7 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
     );
   }
 
-  render() {
+  override render() {
     const { isOpen, shortUrl } = this.state;
 
     return (

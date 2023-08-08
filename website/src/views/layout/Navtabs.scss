@@ -47,19 +47,12 @@
   }
 }
 
-@include media-breakpoint-down(sm) {
-  // position sticky doesn't work with no-scroll is active
-  :global(.no-scroll) .nav {
-    position: fixed;
-  }
-}
-
 .link {
   position: relative;
   flex: 1 0 auto;
   line-height: 1.6;
   text-align: center;
-  color: var(--gray-light);
+  color: var(--gray-mid);
   transition: color 0.15s;
 
   &.linkActive {

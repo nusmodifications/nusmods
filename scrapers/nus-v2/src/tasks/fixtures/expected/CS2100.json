@@ -1,12 +1,16 @@
 {
   "acadYear": "2018/2019",
   "preclusion": "CS1104 or Students from Department of ECE",
+  "preclusionRule": "PROGRAM_TYPES IF_IN Undergraduate Degree\nTHEN\nPROGRAMS MUST_NOT_BE_IN (1) 0604CPEHON,0604ELEHON,2001CEGHON",
   "description": "The objective of this module is to familiarise students with the fundamentals of computing devices. Through this module students will understand the basics of data representation, and how the various parts of a computer work, separately and with each other. This allows students to understand the issues in computing devices, and how these issues affect the implementation of solutions. Topics covered include data representation systems, combinational and sequential circuit design techniques, assembly language, processor execution cycles, pipelining, memory hierarchy and input/output systems.",
   "title": "Computer Organisation",
   "department": "Computer Science",
   "faculty": "Computing",
   "workload": [3, 1, 1, 3, 2],
+  "gradingBasisDescription": "Graded",
+  "additionalInformation": "Some additional information",
   "prerequisite": "CS1010 or its equivalent",
+  "prerequisiteRule": "PROGRAM_TYPES IF_IN Undergraduate Degree\nTHEN\n(\n\tCOURSES (1) YSC1212:D,CS1010:D,CS1010J:D,CS1010E:D,CS1010S:D,CS1010FC:D,CS1010X:D,CS1101:D,CS1101S:D\n)",
   "moduleCredit": "4",
   "moduleCode": "CS2100",
   "semesterData": [
@@ -797,6 +801,18 @@
       "examDuration": 120
     }
   ],
-  "prereqTree": "CS1010",
+  "prereqTree": {
+    "or": [
+      "YSC1212:D",
+      "CS1010:D",
+      "CS1010J:D",
+      "CS1010E:D",
+      "CS1010S:D",
+      "CS1010FC:D",
+      "CS1010X:D",
+      "CS1101:D",
+      "CS1101S:D"
+    ]
+  },
   "fulfillRequirements": ["CS2106", "CS3210"]
 }

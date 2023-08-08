@@ -89,8 +89,9 @@ const DAYS = 7;
 function getDayType(date: Date, weekInfo: AcadWeekInfo): EmptyGroupType {
   switch (weekInfo.type) {
     case 'Reading':
-    case 'Examination':
       return 'reading';
+    case 'Examination':
+      return 'examination';
     case 'Orientation':
       return 'orientation';
     case 'Recess':
@@ -119,13 +120,13 @@ export const DaySection: React.FC<
   </section>
 );
 export class TodayContainerComponent extends React.PureComponent<Props, State> {
-  state: State = {
+  override state: State = {
     weather: {},
     openLesson: null,
     isMapExpanded: false,
   };
 
-  componentDidMount() {
+  override componentDidMount() {
     weatherAPI
       .twoHour()
       .then((weather) => {
@@ -312,7 +313,7 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
     );
   }
 
-  render() {
+  override render() {
     return (
       <div className={styles.todayPage}>
         <Title>Today</Title>

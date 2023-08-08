@@ -19,13 +19,13 @@ export default function persistReducer<S>(
     Exclude<keyof PersistConfig<S>, keyof { key: string; storage: Record<string, unknown> }>
   > = {},
 ) {
-  return (basePersistReducer<S, Actions>(
+  return basePersistReducer<S, Actions>(
     {
       key,
       storage,
-      debug: __DEV__,
+      debug: NUSMODS_ENV === 'development',
       ...options,
     },
     reducer,
-  ) as unknown) as Reducer<S, Actions>; // We'll pretend the persist keys don't exist - the base reducers shouldn't access them anyway
+  ) as unknown as Reducer<S, Actions>; // We'll pretend the persist keys don't exist - the base reducers shouldn't access them anyway
 }

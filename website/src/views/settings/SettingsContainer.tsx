@@ -1,4 +1,4 @@
-import { Component, Fragment } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { isEqual } from 'lodash';
@@ -21,7 +21,6 @@ import {
   toggleBetaTesting,
   toggleModRegNotificationGlobally,
 } from 'actions/settings';
-import ScrollToTop from 'views/components/ScrollToTop';
 import Timetable from 'views/timetable/Timetable';
 import Title from 'views/components/Title';
 import deferComponentRender from 'views/hocs/deferComponentRender';
@@ -33,6 +32,7 @@ import Toggle from 'views/components/Toggle';
 import ModRegNotification from 'views/components/notfications/ModRegNotification';
 import { getModRegRoundKey, getRounds } from 'selectors/modreg';
 
+import useScrollToTop from 'views/hooks/useScrollToTop';
 import ThemeOption from './ThemeOption';
 import ModeSelect from './ModeSelect';
 import previewTimetable from './previewTimetable';
@@ -59,261 +59,239 @@ type Props = {
   dismissModregNotification: (round: RegPeriod) => void;
 };
 
-type State = {
-  allowTracking: boolean;
-};
+const SettingsContainer: React.FC<Props> = ({
+  currentThemeId,
+  mode,
+  betaTester,
+  loadDisqusManually,
+  modRegNotification,
+  ...props
+}) => {
+  const [allowTracking, setAllowTracking] = useState(true);
 
-class SettingsContainer extends Component<Props, State> {
-  state = {
-    allowTracking: true,
-  };
-
-  componentDidMount() {
-    withTracker((tracker: Tracker) =>
-      this.setState({
-        allowTracking: !tracker.isUserOptedOut(),
-      }),
-    );
-  }
-
-  onToggleTracking = (allowTracking: boolean) => {
+  const onToggleTracking = useCallback((isTrackingAllowed: boolean) => {
     withTracker((tracker: Tracker) => {
-      if (allowTracking) {
+      if (isTrackingAllowed) {
         tracker.forgetUserOptOut();
       } else {
         tracker.optUserOut();
       }
 
-      this.setState({ allowTracking: !tracker.isUserOptedOut() });
+      setAllowTracking(!tracker.isUserOptedOut());
     });
-  };
+  }, []);
 
-  renderModRegNotificationRounds() {
-    const { modRegNotification } = this.props;
-    const rounds = getRounds(modRegNotification);
+  useEffect(() => {
+    withTracker((tracker: Tracker) => setAllowTracking(!tracker.isUserOptedOut()));
+  }, [onToggleTracking]);
 
-    return rounds.map((round) => {
-      const roundKey = getModRegRoundKey(round);
-      const isSnoozed = modRegNotification.dismissed.find((dismissed) =>
-        isEqual(dismissed, roundKey),
-      );
+  const rounds = getRounds(modRegNotification);
 
-      return (
-        <Fragment key={round.type}>
-          <h5>
-            {round.type} {round.name ? `(Round ${round.name})` : ''}
-          </h5>
+  useScrollToTop();
+
+  return (
+    <div className={classnames(styles.settingsPage, 'page-container')}>
+      <Title>Settings</Title>
+
+      <Online>
+        <RefreshPrompt />
+      </Online>
+
+      <h1 className={styles.title}>Settings</h1>
+      <hr />
+
+      {supportsCSSVariables() && (
+        <div>
+          <h4 id="night-mode">Night Mode</h4>
           <div className={styles.toggleRow}>
             <div className={styles.toggleDescription}>
               <p>
-                {isSnoozed
-                  ? 'You have snoozed reminders until the end of this round'
-                  : 'You can also temporarily snooze the notification until the end of this round.'}
+                Night mode turns the light surfaces of the page dark, creating an experience ideal
+                for the dark. Try it out!
+              </p>
+              <p>
+                Protip: Press <kbd>X</kbd> to toggle modes anywhere on NUSMods.
               </p>
             </div>
-            <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
-              <button
-                className="btn btn-outline-primary"
-                type="button"
-                onClick={() =>
-                  isSnoozed
-                    ? this.props.enableModRegNotification(round)
-                    : this.props.dismissModregNotification(round)
-                }
-              >
-                {isSnoozed ? 'Unsnooze' : 'Snooze'}
-              </button>
+            <div className={styles.toggle}>
+              <ModeSelect mode={mode} onSelectMode={props.selectMode} />
             </div>
           </div>
-        </Fragment>
-      );
-    });
-  }
+          <hr />
+        </div>
+      )}
 
-  renderNightModeOption() {
-    return (
+      <h4 id="theme">Theme</h4>
+
+      <p>Liven up your timetable with different color schemes!</p>
+      <p>
+        Protip: Press <kbd>Z</kbd>/<kbd>C</kbd> to cycle through the themes anywhere on NUSMods.
+      </p>
+
+      <div className={styles.preview}>
+        <Timetable lessons={previewTimetable} />
+      </div>
+
       <div>
-        <h4 id="night-mode">Night Mode</h4>
-        <div className={styles.toggleRow}>
-          <div className={styles.toggleDescription}>
-            <p>
-              Night mode turns the light surfaces of the page dark, creating an experience ideal for
-              the dark. Try it out!
-            </p>
-            <p>
-              Protip: Press <kbd>X</kbd> to toggle modes anywhere on NUSMods.
-            </p>
-          </div>
-          <div className={styles.toggle}>
-            <ModeSelect mode={this.props.mode} onSelectMode={this.props.selectMode} />
-          </div>
-        </div>
-        <hr />
+        {availableThemes.map((theme) => (
+          <ThemeOption
+            key={theme.id}
+            className={styles.themeOption}
+            theme={theme}
+            isSelected={currentThemeId === theme.id}
+            onSelectTheme={props.selectTheme}
+          />
+        ))}
       </div>
-    );
-  }
 
-  render() {
-    const { currentThemeId, modRegNotification } = this.props;
+      <hr />
 
-    return (
-      <div className={classnames(styles.settingsPage, 'page-container')}>
-        <ScrollToTop />
-        <Title>Settings</Title>
+      <h4 id="modreg">CourseReg Reminder</h4>
 
-        <Online>
-          <RefreshPrompt />
-        </Online>
+      <div className={styles.notificationPreview}>
+        <ModRegNotification dismissible />
+      </div>
 
-        <h1 className={styles.title}>Settings</h1>
-        <hr />
-
-        {supportsCSSVariables() && this.renderNightModeOption()}
-
-        <h4 id="theme">Theme</h4>
-
-        <p>Liven up your timetable with different color schemes!</p>
-        <p>
-          Protip: Press <kbd>Z</kbd>/<kbd>C</kbd> to cycle through the themes anywhere on NUSMods.
-        </p>
-
-        <div className={styles.preview}>
-          <Timetable lessons={previewTimetable} />
+      <div className={styles.toggleRow}>
+        <div className={styles.toggleDescription}>
+          <p>
+            You can get a reminder about when CourseReg rounds starts with a small notification.
+          </p>
         </div>
-
-        <div>
-          {availableThemes.map((theme) => (
-            <ThemeOption
-              key={theme.id}
-              className={styles.themeOption}
-              theme={theme}
-              isSelected={currentThemeId === theme.id}
-              onSelectTheme={this.props.selectTheme}
-            />
-          ))}
+        <div className={styles.toggle}>
+          <Toggle
+            isOn={modRegNotification.enabled}
+            onChange={() => props.toggleModRegNotificationGlobally(!modRegNotification.enabled)}
+          />
         </div>
+      </div>
 
-        <hr />
-
-        <h4 id="modreg">ModReg Reminder</h4>
-
-        <div className={styles.notificationPreview}>
-          <ModRegNotification dismissible />
-        </div>
-
-        <div className={styles.toggleRow}>
-          <div className={styles.toggleDescription}>
-            <p>You can get a reminder about when ModReg rounds starts with a small notification.</p>
-          </div>
-          <div className={styles.toggle}>
-            <Toggle
-              isOn={modRegNotification.enabled}
-              onChange={() =>
-                this.props.toggleModRegNotificationGlobally(!modRegNotification.enabled)
-              }
-            />
-          </div>
-        </div>
-
-        {modRegNotification.enabled && (
-          <>
-            <div className="row">
-              <div className="col-sm-12">
-                <h5>Course</h5>
-              </div>
-              <div className="col-sm-8">
-                <p>Choose your course so we can show you the appropriate ModReg schedule</p>
-              </div>
-              <div className="col-sm-4">
-                <select
-                  className="form-control"
-                  onChange={(evt) =>
-                    this.props.setModRegScheduleType(evt.target.value as ScheduleType)
-                  }
-                >
-                  {SCHEDULE_TYPES.map((type) => (
-                    <option value={type} key={type}>
-                      {type}
-                    </option>
-                  ))}
-                </select>
-              </div>
+      {modRegNotification.enabled && (
+        <>
+          <div className="row">
+            <div className="col-sm-12">
+              <h5>Course Type</h5>
             </div>
-
-            {this.renderModRegNotificationRounds()}
-          </>
-        )}
-
-        <hr />
-
-        <BetaToggle
-          betaTester={this.props.betaTester}
-          toggleStates={this.props.toggleBetaTesting}
-        />
-
-        <h4 id="privacy">Privacy</h4>
-
-        <div className="row">
-          <div className="col-md-8">
-            <p>
-              We collect anonymous, aggregated usage information on NUSMods - think of it as a
-              survey to tells us which browsers to support and what features are popular. If you opt
-              out, we could end up removing features that you use since we won&apos;t know if anyone
-              is using them.
-            </p>
-            <p>
-              We do not use this information for advertising, or share this information with
-              anybody. You can see the data we collect at{' '}
-              <ExternalLink href="https://analytics.nusmods.com/">
-                analytics.nusmods.com
-              </ExternalLink>
-              .
-            </p>
+            <div className="col-sm-8">
+              <p>Choose your course type so we can show you the appropriate CourseReg schedule</p>
+            </div>
+            <div className="col-sm-4">
+              <select
+                className="form-control"
+                onChange={(evt) => props.setModRegScheduleType(evt.target.value as ScheduleType)}
+              >
+                {SCHEDULE_TYPES.map((type) => (
+                  <option value={type} key={type}>
+                    {type}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
-          <div className="col-md-4">
-            {navigator.doNotTrack === '1' ? (
-              <div className="alert alert-warning">
-                You have enabled{' '}
-                <ExternalLink href="https://en.wikipedia.org/wiki/Do_Not_Track">
-                  do not track
-                </ExternalLink>{' '}
-                in your browser, so you will not be tracked until that option is disabled.
-              </div>
-            ) : (
-              <div className="text-right">
-                <Toggle
-                  labels={['Allow', 'Opt out']}
-                  isOn={this.state.allowTracking}
-                  onChange={this.onToggleTracking}
-                />
-              </div>
-            )}
-          </div>
+          {rounds.map((round) => {
+            const roundKey = getModRegRoundKey(round);
+            const isSnoozed = modRegNotification.dismissed.find((dismissed) =>
+              isEqual(dismissed, roundKey),
+            );
+
+            return (
+              <Fragment key={round.type}>
+                <h5>
+                  {round.type} {round.name ? `(Round ${round.name})` : ''}
+                </h5>
+                <div className={styles.toggleRow}>
+                  <div className={styles.toggleDescription}>
+                    <p>
+                      {isSnoozed
+                        ? 'You have snoozed reminders until the end of this round'
+                        : 'You can also temporarily snooze the notification until the end of this round.'}
+                    </p>
+                  </div>
+                  <div className={classnames('col-sm-4 offset-sm-1', styles.toggle)}>
+                    <button
+                      className="btn btn-outline-primary"
+                      type="button"
+                      onClick={() =>
+                        isSnoozed
+                          ? props.enableModRegNotification(round)
+                          : props.dismissModregNotification(round)
+                      }
+                    >
+                      {isSnoozed ? 'Unsnooze' : 'Snooze'}
+                    </button>
+                  </div>
+                </div>
+              </Fragment>
+            );
+          })}
+        </>
+      )}
+
+      <hr />
+
+      <BetaToggle betaTester={betaTester} toggleStates={props.toggleBetaTesting} />
+
+      <h4 id="privacy">Privacy</h4>
+
+      <div className="row">
+        <div className="col-md-8">
+          <p>
+            We collect anonymous, aggregated usage information on NUSMods - think of it as a survey
+            to tells us which browsers to support and what features are popular. If you opt out, we
+            could end up removing features that you use since we won&apos;t know if anyone is using
+            them.
+          </p>
+          <p>
+            We do not use this information for advertising, or share this information with anybody.
+            You can see the data we collect at{' '}
+            <ExternalLink href="https://analytics.nusmods.com/">analytics.nusmods.com</ExternalLink>
+            .
+          </p>
         </div>
 
-        <br />
-
-        <div className="row">
-          <div className="col-md-8">
-            <p>
-              We use Disqus for comments. Disqus may load its own tracking code which we cannot
-              control. To improve privacy you may opt to load Disqus only when you wish to see or
-              read the comments.
-            </p>
-          </div>
-          <div className="col-md-4 text-right">
-            <Toggle
-              labels={['Load Manually', 'Always Load']}
-              isOn={this.props.loadDisqusManually}
-              onChange={this.props.setLoadDisqusManually}
-            />
-          </div>
+        <div className="col-md-4">
+          {navigator.doNotTrack === '1' ? (
+            <div className="alert alert-warning">
+              You have enabled{' '}
+              <ExternalLink href="https://en.wikipedia.org/wiki/Do_Not_Track">
+                do not track
+              </ExternalLink>{' '}
+              in your browser, so you will not be tracked until that option is disabled.
+            </div>
+          ) : (
+            <div className="text-right">
+              <Toggle
+                labels={['Allow', 'Opt out']}
+                isOn={allowTracking}
+                onChange={onToggleTracking}
+              />
+            </div>
+          )}
         </div>
       </div>
-    );
-  }
-}
+
+      <br />
+
+      <div className="row">
+        <div className="col-md-8">
+          <p>
+            We use Disqus for comments. Disqus may load its own tracking code which we cannot
+            control. To improve privacy you may opt to load Disqus only when you wish to see or read
+            the comments.
+          </p>
+        </div>
+        <div className="col-md-4 text-right">
+          <Toggle
+            labels={['Load Manually', 'Always Load']}
+            isOn={loadDisqusManually}
+            onChange={props.setLoadDisqusManually}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const mapStateToProps = (state: StoreState) => ({
   mode: state.settings.mode,

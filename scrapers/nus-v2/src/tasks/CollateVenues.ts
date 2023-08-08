@@ -9,7 +9,7 @@ import { Cache } from '../types/persist';
 import BaseTask from './BaseTask';
 import config from '../config';
 import { getTimeRange } from '../utils/time';
-import { mergeDualCodedModules } from '../utils/data';
+import { mergeDualCodedModules, modulesToAvoidMerging } from '../utils/data';
 import { union } from '../utils/set';
 
 /**
@@ -120,9 +120,10 @@ export default class CollateVenues extends BaseTask implements Task<Input, Outpu
         // Merge the alias mappings
         for (const [moduleCode, alias] of entries(aliases)) {
           // Only add the modules as alias if they have the same title
+          // and are not part of the avoid-list
           const title = moduleCodeToTitle[moduleCode];
           const filteredAliases = Array.from(alias).filter(
-            (module) => title === moduleCodeToTitle[module],
+            (module) => !modulesToAvoidMerging.has(title) && title === moduleCodeToTitle[module],
           );
 
           if (filteredAliases.length) {

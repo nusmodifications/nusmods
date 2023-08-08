@@ -63,7 +63,7 @@ const SharingHeader: FC<{
         overwritable: true,
         action: {
           text: 'Undo',
-          handler: () => dispatch(undo) as never,
+          handler: () => dispatch(undo()) as never,
         },
       }),
     );
@@ -172,10 +172,10 @@ export const TimetableContainerComponent: FC = () => {
   }, [getModule, importedTimetable, modules, timetable]);
 
   const displayedTimetable = importedTimetable || timetable;
-  const filledColors = useMemo(() => fillColorMapping(displayedTimetable, colors), [
-    colors,
-    displayedTimetable,
-  ]);
+  const filledColors = useMemo(
+    () => fillColorMapping(displayedTimetable, colors),
+    [colors, displayedTimetable],
+  );
   const readOnly = displayedTimetable === importedTimetable;
 
   useScrollToTop();

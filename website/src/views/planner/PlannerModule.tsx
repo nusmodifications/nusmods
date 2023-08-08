@@ -91,7 +91,7 @@ const PlannerModule = memo<Props>((props) => {
           <>
             <div className={styles.conflictHeader}>
               <AlertTriangle className={styles.warningIcon} />
-              <p>These modules may need to be taken first</p>
+              <p>These courses may need to be taken first</p>
             </div>
 
             <ul className={styles.prereqs}>
@@ -136,7 +136,7 @@ const PlannerModule = memo<Props>((props) => {
             })}
             onClick={() => setEditingPlaceholder(true)}
           >
-            {moduleCode || 'Select Module'} <ChevronDown />
+            {moduleCode || 'Select Course'} <ChevronDown />
           </button>{' '}
           {moduleCode && moduleTitle && (
             <Link to={modulePage(moduleCode, moduleTitle)}>{moduleTitle}</Link>

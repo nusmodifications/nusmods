@@ -2,7 +2,7 @@ import { modulePage, timetablePage, semesterForTimetablePage, venuePage } from '
 
 test('modulePagePath should generate route correctly', () => {
   expect(modulePage('CS1010S', 'Programming Methodology')).toBe(
-    '/modules/CS1010S/programming-methodology',
+    '/courses/CS1010S/programming-methodology',
   );
 });
 

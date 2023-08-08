@@ -27,7 +27,7 @@ type State = {
 };
 
 export default class PlannerYear extends PureComponent<Props, State> {
-  state = {
+  override state = {
     // Always display Special Terms I and II if either one has modules
     showSpecialSem: this.hasSpecialTermModules(),
   };
@@ -50,7 +50,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
         </h2>
         <div className={styles.yearMeta}>
           <p>
-            {count} {count === 1 ? 'module' : 'modules'}
+            {count} {count === 1 ? 'course' : 'courses'}
           </p>
           <p>{renderMCs(credits)}</p>
         </div>
@@ -58,7 +58,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
     );
   }
 
-  render() {
+  override render() {
     const { year, semesters } = this.props;
     const { showSpecialSem } = this.state;
 

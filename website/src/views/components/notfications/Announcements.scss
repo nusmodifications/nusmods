@@ -41,6 +41,11 @@
 
     .bodyElement {
       margin-bottom: 0.4rem;
+
+      ul {
+        padding-top: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
     }
 
     .bodyElement:last-child {
@@ -59,8 +64,12 @@
 
 .buttons {
   display: flex;
-  flex: 0 0;
+  flex: 0 0 auto;
   align-items: center;
+
+  @include media-breakpoint-down(xs) {
+    flex: 0 0;
+  }
 }
 
 .backgroundIcon {

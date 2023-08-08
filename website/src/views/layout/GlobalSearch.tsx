@@ -9,7 +9,7 @@ import { ModuleCondensed } from 'types/modules';
 import { Venue } from 'types/venues';
 import {
   MODULE_RESULT,
-  ResultType,
+  SearchResultType,
   SEARCH_RESULT,
   SearchItem,
   SearchResult,
@@ -25,7 +25,7 @@ type Props = {
 
   onSelectVenue: (venue: Venue) => void;
   onSelectModule: (moduleCondensed: ModuleCondensed) => void;
-  onSearch: (resultType: ResultType, str: string) => void;
+  onSearch: (type: SearchResultType, query: string) => void;
 };
 
 type State = {
@@ -38,7 +38,7 @@ const PLACEHOLDER = 'Search modules & venues. Try "GER" or "LT".';
 class GlobalSearch extends Component<Props, State> {
   input: HTMLInputElement | null = null;
 
-  state = {
+  override state = {
     isOpen: false,
     inputValue: '',
   };
@@ -91,7 +91,7 @@ class GlobalSearch extends Component<Props, State> {
           break;
 
         case SEARCH_RESULT:
-          onSearch(item.type, item.term);
+          onSearch(item.result, item.term);
           break;
       }
     }
@@ -99,7 +99,7 @@ class GlobalSearch extends Component<Props, State> {
     this.onClose();
   };
 
-  stateReducer = (state: DownshiftState<SearchItem>, changes: StateChangeOptions<SearchItem>) => {
+  stateReducer = (_state: DownshiftState<SearchItem>, changes: StateChangeOptions<SearchItem>) => {
     switch (changes.type) {
       case Downshift.stateChangeTypes.blurInput:
         return omit(changes, 'inputValue');
@@ -227,7 +227,7 @@ class GlobalSearch extends Component<Props, State> {
                   <span className="btn-svg">
                     View All <ChevronRight className={styles.svg} />
                   </span>
-                  <span className={styles.headerName}>Modules</span>
+                  <span className={styles.headerName}>Courses</span>
                 </div>
 
                 {modules.map((module, index) => (
@@ -285,7 +285,7 @@ class GlobalSearch extends Component<Props, State> {
     );
   };
 
-  render() {
+  override render() {
     const { isOpen, inputValue } = this.state;
 
     return (

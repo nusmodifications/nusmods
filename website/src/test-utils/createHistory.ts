@@ -12,7 +12,7 @@ type MatchShape = {
 };
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export default function createHistory<T = {}>(
+export default function createHistory<T extends { [K in keyof T]?: string | undefined } = {}>(
   initialEntries: string | string[] = '/',
   matchParams: MatchShape = {},
 ): RouteComponentProps<T> {
@@ -22,7 +22,7 @@ export default function createHistory<T = {}>(
 
   const match: Match<T> = {
     // Not strictly type safe, but it's good enough for tests
-    params: (params as unknown) as T,
+    params: params as unknown as T,
     isExact,
     path: entries[0],
     url: entries[0],

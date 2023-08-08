@@ -21,7 +21,7 @@ import GetSemesterTimetable from './GetSemesterTimetable';
 import GetSemesterModules from './GetSemesterModules';
 import { fromTermCode } from '../utils/api';
 import { validateSemester } from '../services/validation';
-import { removeEmptyValues, titleize, trimValues } from '../utils/data';
+import { removeEmptyValues, titleize, trimValues, decodeHTMLEntities } from '../utils/data';
 import { difference } from '../utils/set';
 import { Logger } from '../services/logger';
 
@@ -54,6 +54,13 @@ const attributeMap: { [attribute: string]: keyof NUSModuleAttributes } = {
   LABB: 'lab',
   ISM: 'ism',
   HFYP: 'fyp',
+  // MPE handled separately as it maps to multiple attributes
+};
+
+const mpeValueMap: { [attribute: string]: (keyof NUSModuleAttributes)[] } = {
+  S1: ['mpes1'],
+  S2: ['mpes2'],
+  'S1&S2': ['mpes1', 'mpes2'],
 };
 
 export function mapAttributes(
@@ -63,6 +70,21 @@ export function mapAttributes(
   const nusAttributes: NUSModuleAttributes = {};
 
   for (const entry of attributes) {
+    if (entry.CourseAttribute === 'MPE') {
+      const mappedAttributes = mpeValueMap[entry.CourseAttributeValue];
+      if (!mappedAttributes) {
+        logger.warn(
+          { value: entry.CourseAttributeValue, key: entry.CourseAttribute },
+          'Non-standard course attribute value',
+        );
+      } else {
+        for (const attr of mappedAttributes) {
+          nusAttributes[attr] = true;
+        }
+      }
+      continue;
+    }
+
     if (!attributeMap[entry.CourseAttribute]) continue;
 
     if (entry.CourseAttributeValue === 'YES' || entry.CourseAttributeValue === 'HT') {
@@ -84,6 +106,7 @@ export function mapAttributes(
  * - Remove empty fields and fields with text like 'nil'
  * - Trim whitespace from module title, description and other text fields
  * - Properly capitalize ALL CAPS title
+ * - Decode HTML entities in description such as '&224;' to 'à'
  */
 export function cleanModuleInfo(module: SemesterModule) {
   let cleanedModule = module;
@@ -93,13 +116,22 @@ export function cleanModuleInfo(module: SemesterModule) {
     cleanedModule.title = titleize(cleanedModule.title);
   }
 
+  if (cleanedModule.description != null) {
+    cleanedModule.description = decodeHTMLEntities(cleanedModule.description);
+  }
+
   // Remove empty values like 'nil' and empty strings for keys that allow them
   // to be nullable
   cleanedModule = removeEmptyValues(cleanedModule, [
     'workload',
+    'gradingBasisDescription',
     'prerequisite',
+    'prerequisiteRule',
+    'prerequisiteAdvisory',
     'corequisite',
+    'corequisiteRule',
     'preclusion',
+    'preclusionRule',
   ]);
 
   // Remove whitespace from some string values
@@ -152,10 +184,16 @@ const mapModuleInfo = (
     AcademicOrganisation,
     AcademicGroup,
     CourseTitle,
+    AdditionalInformation,
     WorkLoadHours,
+    GradingBasisDesc,
     Preclusion,
+    PreclusionRule,
     PreRequisite,
+    PreRequisiteRule,
+    PreRequisiteAdvisory,
     CoRequisite,
+    CoRequisiteRule,
     ModularCredit,
     Description,
     Subject,
@@ -170,13 +208,19 @@ const mapModuleInfo = (
   return {
     acadYear: AcadYear,
     preclusion: Preclusion,
+    preclusionRule: PreclusionRule,
     description: Description,
     title: CourseTitle,
+    additionalInformation: AdditionalInformation,
     department: departmentMap[AcademicOrganisation.Code],
     faculty: facultyMap[AcademicGroup.Code],
     workload: parseWorkload(WorkLoadHours),
+    gradingBasisDescription: GradingBasisDesc,
     prerequisite: PreRequisite,
+    prerequisiteRule: PreRequisiteRule,
+    prerequisiteAdvisory: PreRequisiteAdvisory,
     corequisite: CoRequisite,
+    corequisiteRule: CoRequisiteRule,
     moduleCredit: ModularCredit,
     moduleCode: Subject + CatalogNumber,
     attributes: mapAttributes(ModuleAttributes, logger),

@@ -47,6 +47,7 @@ export type ModuleAcademicGroup = Readonly<{
 // ISM - Independent Study Module
 // HFYP - Honours/Final Year Project (value is 'HT', not 'YES' like the other attributes)
 // GRDY - GD modules eligible for SU
+// MPE - Module is included in a particular semester's MPE. Value is 'S1' (sem 1), 'S2', or 'S1&2' (both sem 1 and 2)
 export type ModuleAttributeEntry = Readonly<{
   CourseAttributeValue: string;
   CourseAttribute: string;
@@ -61,15 +62,21 @@ export type ModuleInfo = Readonly<{
   CourseId: string; // Internal ID used to connect dual-coded modules
   CourseOfferNumber: string; // Usually 1, can be 2 or more for dual-coded modules
   Preclusion: string;
+  PreclusionRule: string;
 
   PrintCatalog: 'Y' | 'N';
   YearLong: 'Y' | 'N';
+  GradingBasisDesc: string;
 
   CourseTitle: string;
+  AdditionalInformation: string;
   CoRequisite: string;
+  CoRequisiteRule: string;
   Description: string;
   ModularCredit: string;
   PreRequisite: string;
+  PreRequisiteRule: string;
+  PreRequisiteAdvisory: string;
   Subject: string; // The letter prefix part of the module code
   CatalogNumber: string; // The number and suffix part of the module code
 

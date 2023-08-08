@@ -15,6 +15,7 @@ import {
   subtractAcadYear,
   isGraduateModule,
   renderExamDuration,
+  getExamDuration,
 } from 'utils/modules';
 import { noBreak } from 'utils/react';
 
@@ -101,9 +102,14 @@ test('formatExamDate should format an exam date string correctly', () => {
   expect(formatExamDate('2016-01-03T00:01:00.000Z')).toBe('03-Jan-2016 8:01 AM');
 });
 
-test('getModuleExamDate should return the correct exam date if it exists', () => {
+test('getExamDate should return the correct exam date if it exists', () => {
   expect(getExamDate(CS1010S, 1)).toBe('2017-11-29T17:00+0800');
   expect(getExamDate(CS3216, 2)).toBeFalsy();
+});
+
+test('getExamDuration should return the correct exam duration if it exists', () => {
+  expect(getExamDuration(CS1010S, 1)).toBe(120);
+  expect(getExamDuration(CS3216, 2)).toBe(null);
 });
 
 test('getFormattedModuleExamDate should return the correctly formatted exam timing if it exists', () => {
@@ -151,15 +157,15 @@ describe(getFirstAvailableSemester, () => {
 describe(renderMCs, () => {
   it.each<[string | number, string]>([
     // Plural
-    [0, '0 MCs'],
-    ['0', '0 MCs'],
-    [5, '5 MCs'],
-    ['5', '5 MCs'],
-    ['0.5', '0.5 MCs'],
+    [0, '0 Units'],
+    ['0', '0 Units'],
+    [5, '5 Units'],
+    ['5', '5 Units'],
+    ['0.5', '0.5 Units'],
 
     // Singular
-    [1, '1 MC'],
-    ['1', '1 MC'],
+    [1, '1 Unit'],
+    ['1', '1 Unit'],
   ])('%s to equal %s', (mc, expected) => expect(renderMCs(mc)).toEqual(noBreak(expected)));
 });
 
@@ -168,6 +174,7 @@ describe(renderExamDuration, () => {
     [45, '45 mins'],
     [60, '1 hr'],
     [90, '1.5 hrs'],
+    [70, '70 mins'],
     [120, '2 hrs'],
     [180, '3 hrs'],
   ])('%s to equal %s', (duration, expected) =>

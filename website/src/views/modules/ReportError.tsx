@@ -51,7 +51,7 @@ interface PersistedContactInfo {
   matricNumber: string;
 }
 
-const groupedByMatcherType = (groupBy(facultyEmails, (config) => config.match.type) as unknown) as {
+const groupedByMatcherType = groupBy(facultyEmails, (config) => config.match.type) as unknown as {
   moduleCode: FacultyEmail<ModuleCodeMatch>[];
   modulePrefix: FacultyEmail<ModuleCodePrefixMatch>[];
   faculty: FacultyEmail<FacultyMatch>[];
@@ -114,7 +114,7 @@ const ReportError = memo<Props>(({ module }) => {
 
   // Causes the error reporting function to email modules@nusmods.com instead.
   // In production, use SET_ERROR_REPORTING_DEBUG(true) to enable debug mode
-  const debug = useGlobalDebugValue('SET_ERROR_REPORTING_DEBUG', __DEV__);
+  const debug = useGlobalDebugValue('SET_ERROR_REPORTING_DEBUG', NUSMODS_ENV === 'development');
 
   const [formData, setFormData] = useState<ReportErrorForm>(() => ({
     ...retrieveContactInfo(),
@@ -123,18 +123,19 @@ const ReportError = memo<Props>(({ module }) => {
   }));
 
   const updateFormValue = useCallback(
-    (key: keyof ReportErrorForm): FormEventHandler => (evt) => {
-      const newFormData = produce(formData, (draft) => {
-        draft[key] = (evt.target as HTMLInputElement).value;
-      });
+    (key: keyof ReportErrorForm): FormEventHandler =>
+      (evt) => {
+        const newFormData = produce(formData, (draft) => {
+          draft[key] = (evt.target as HTMLInputElement).value;
+        });
 
-      setFormData(newFormData);
-      persistContactInfo({
-        name: newFormData.name,
-        replyTo: newFormData.replyTo,
-        matricNumber: newFormData.matricNumber,
-      });
-    },
+        setFormData(newFormData);
+        persistContactInfo({
+          name: newFormData.name,
+          replyTo: newFormData.replyTo,
+          matricNumber: newFormData.matricNumber,
+        });
+      },
     [formData],
   );
 
@@ -296,12 +297,12 @@ const FormContent: FC<FormContentProps> = ({
 
         <p className="form-text text-muted">
           If the department or faculty for this module cannot be found on this list, please refer to
-          ModReg's contact list for{' '}
-          <ExternalLink href="http://www.nus.edu.sg/ModReg/docs/UGFac_Contacts.pdf">
+          CourseReg's contact list for{' '}
+          <ExternalLink href="https://www.nus.edu.sg/coursereg/docs/UGFac_Contacts.pdf">
             undergraduate
           </ExternalLink>{' '}
           or{' '}
-          <ExternalLink href="http://www.nus.edu.sg/ModReg/docs/GDFac_Contacts.pdf">
+          <ExternalLink href="https://www.nus.edu.sg/coursereg/docs/GDFac_Contacts.pdf">
             graduate
           </ExternalLink>{' '}
           students.
@@ -323,7 +324,7 @@ const FormContent: FC<FormContentProps> = ({
       </div>
 
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-message">Describe in detail the issues with the module</label>
+        <label htmlFor="report-error-message">Describe in detail the issues with the course</label>
         <textarea
           id="report-error-message"
           className="form-control"

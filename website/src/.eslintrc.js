@@ -57,8 +57,6 @@ module.exports = {
     {
       files: ['**/*.d.ts'],
       rules: {
-        // ESLint triggers this on declared constructors, which is useless
-        'no-useless-constructor': 'off',
         // Also triggering incorrectly in some type declarations
         '@typescript-eslint/no-unused-vars': 'off',
       },
@@ -86,6 +84,9 @@ module.exports = {
     'default-case': 'off',
     '@typescript-eslint/switch-exhaustiveness-check': 'error',
 
+    'no-useless-constructor': 'off',
+    '@typescript-eslint/no-useless-constructor': ['error'],
+
     // Doesn't work with TypeScript
     'no-use-before-define': 'off',
 
@@ -104,8 +105,7 @@ module.exports = {
 
   // Mimic the globals we set with Webpack's DefinePlugin
   globals: {
-    __DEV__: 'readonly',
-    __TEST__: 'readonly',
+    NUSMODS_ENV: 'readonly',
     DATA_API_BASE_URL: 'readonly',
     VERSION_STR: 'readonly',
     DISPLAY_COMMIT_HASH: 'readonly',

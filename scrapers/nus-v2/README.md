@@ -6,7 +6,7 @@ This folder contains the scraper which produces our [v2 API data][api-v2] from i
 
 ## Getting Started
 
-Node LTS is required. We use Node 12 in production.
+Node LTS is required. We use Node 18 in production.
 
 Use `yarn` to install dependencies, then set up `env.json` with all the necessary keys and API base URL, then run the test script to check the setup is okay.
 
@@ -49,7 +49,7 @@ We use ElasticSearch for our module search page. For local development it is not
 Run these through `yarn scrape` in production or `yarn dev` in development piped through `yarn bunyan` for formatting - eg. `yarn dev test | yarn bunyan`. You can also run `yarn dev help` to see a list of all commands.
 
 - `test` - run some simple API requests to check you have set everything up correctly
-- `department` - download department and faculty codes
+- `departments` - download department and faculty codes
 - `semester [sem]` - download module and timetable data for the given semester
 - `venue [sem]` - collate venue data into the shape needed by the frontend
 - `combine` - combine the module data for all four semesters together

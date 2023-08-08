@@ -7,8 +7,9 @@ module.exports = (api) => {
   const IS_DEV = api.env('development');
   const IS_TEST = api.env('test');
 
+  // Presets are evaluated last-to-first, while plugins are evaluated first-to-last
+  // This means the TS preset must come last to enable language transformation first
   const presets = [
-    '@babel/preset-typescript',
     [
       '@babel/preset-env',
       {
@@ -31,22 +32,26 @@ module.exports = (api) => {
         runtime: 'automatic',
       },
     ],
+    [
+      '@babel/preset-typescript',
+      {
+        allowDeclareFields: true,
+      },
+    ],
   ];
 
-  const plugins = [
-    'babel-plugin-lodash',
-    '@babel/plugin-syntax-dynamic-import',
+  const plugins = ['babel-plugin-lodash'];
+
+  const assumptions = {
+    // Assumes document.all doesn't exist to reduce the generated code size
+    noDocumentAll: true,
+
     // Deviate from spec, but Object.defineProperty is expensive
     // See https://github.com/facebook/create-react-app/issues/4263
-    ['@babel/plugin-proposal-class-properties', { loose: true }],
-    // Let's assume document.all doesn't exist to reduce the generated code size
-    ['@babel/plugin-proposal-optional-chaining', { loose: true }],
-    ['@babel/plugin-proposal-nullish-coalescing-operator', { loose: true }],
-  ];
-
-  if (IS_DEV || IS_PROD) {
-    plugins.push(['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }]);
-  }
+    // Using assignment also reduces the generated code size
+    privateFieldsAsProperties: true,
+    setPublicClassFields: true,
+  };
 
   if (IS_DEV) {
     plugins.push('react-refresh/babel');
@@ -67,6 +72,7 @@ module.exports = (api) => {
   }
 
   return {
+    assumptions,
     sourceType: 'unambiguous',
     presets,
     plugins,

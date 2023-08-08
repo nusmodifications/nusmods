@@ -26,11 +26,11 @@ const settings = persistReducer('settings', settingsReducer, settingsPersistConf
 const planner = persistReducer('planner', plannerReducer, plannerPersistConfig);
 
 // State default is delegated to its child reducers.
-const defaultState = ({} as unknown) as State;
+const defaultState = {} as unknown as State;
 const undoReducer = createUndoReducer<State>({
   limit: 1,
   actionsToWatch: [REMOVE_MODULE, SET_TIMETABLE],
-  whitelist: ['timetables', 'theme.colors'],
+  storedKeyPaths: ['timetables', 'theme.colors'],
 });
 
 export default function reducers(state: State = defaultState, action: Actions): State {

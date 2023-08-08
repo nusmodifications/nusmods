@@ -20,17 +20,56 @@ interface TreeDisplay {
   isPrereq?: boolean;
 }
 
-const formatConditional = (name: string) => (name === 'or' ? 'one of' : 'all of');
+const GRADE_REQUIREMENT_SEPARATOR = ':';
+const MODULE_NAME_WILDCARD = '%';
+const PASSING_GRADE = 'D';
 
-const nodeName = (node: PrereqTree) => (typeof node === 'string' ? node : Object.keys(node)[0]);
+const formatConditional = (node: PrereqTree) => {
+  if (typeof node === 'string') return node;
+  if ('nOf' in node) {
+    const requiredNum = node.nOf[0];
+    return `at least ${requiredNum} of`;
+  }
+  if ('or' in node) {
+    return 'one of';
+  }
+  return 'all of';
+};
 
-const unwrapLayer = (node: PrereqTree) =>
-  typeof node === 'string' ? [node] : flatten(values(node).filter(notNull));
+const nodeName = (node: PrereqTree) => {
+  if (typeof node !== 'string') {
+    return Object.keys(node)[0];
+  }
+  let name = node;
+  if (name.includes(GRADE_REQUIREMENT_SEPARATOR)) {
+    const [moduleName, requiredGrade] = name.split(GRADE_REQUIREMENT_SEPARATOR);
+    if (requiredGrade !== PASSING_GRADE) {
+      name = `${moduleName} (minimally ${requiredGrade})`;
+    } else {
+      name = moduleName;
+    }
+  }
+  if (name.includes(MODULE_NAME_WILDCARD)) {
+    const [beforeWildcard, afterWildcard] = name.split(MODULE_NAME_WILDCARD);
+    name = `course starting with '${beforeWildcard}' ${afterWildcard}`;
+  }
+  return name.trim();
+};
+
+const unwrapLayer = (node: PrereqTree) => {
+  if (typeof node === 'string') {
+    return [node];
+  }
+  if ('nOf' in node) {
+    return node.nOf[1];
+  }
+  return flatten(values(node).filter(notNull));
+};
 
 const Branch: React.FC<{ nodes: PrereqTree[]; layer: number }> = (props) => (
   <ul className={styles.tree}>
-    {props.nodes.map((child) => (
-      <li className={styles.branch} key={nodeName(child)}>
+    {props.nodes.map((child, idx) => (
+      <li className={styles.branch} key={typeof child === 'string' ? nodeName(child) : idx}>
         <Tree node={child} layer={props.layer} />
       </li>
     ))}
@@ -53,7 +92,7 @@ const Tree: React.FC<TreeDisplay> = (props) => {
         })}
       >
         {isConditional ? (
-          formatConditional(name)
+          formatConditional(node)
         ) : (
           <LinkModuleCodes className={styles.link}>{name}</LinkModuleCodes>
         )}
@@ -96,9 +135,27 @@ const ModuleTree: React.FC<Props> = (props) => {
         </ul>
       </div>
 
-      <p className="alert alert-warning">
+      {/* <p className="alert alert-warning">
         The prerequisite tree is displayed for visualization purposes and may not be accurate.
         Viewers are encouraged to double check details.
+      </p> */}
+
+      <p className="alert alert-warning">
+        This new version of the prerequisite tree is being tested and may not be accurate. Viewers
+        are encouraged to double check details with the prerequisite text above. To report bugs with
+        the new tree, please post a bug report on GitHub (preferred) at{' '}
+        <a
+          href="https://github.com/nusmodifications/nusmods/issues/new/choose"
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        >
+          our repository
+        </a>{' '}
+        or send an email to{' '}
+        <a href="mailto:bugs@nusmods.com" target="_blank" rel="noopener noreferrer nofollow">
+          bugs@nusmods.com
+        </a>
+        .
       </p>
     </>
   );

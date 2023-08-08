@@ -4,7 +4,7 @@
   "acadYear": "2017/2018",
   "department": "Computer Science",
   "faculty": "Computing",
-  "description": "This module introduces the fundamental concepts of problem solving by computing and programming using an imperative programming language. It is the first and foremost introductory course to computing and is equivalent to CS1010 and CS1010E Programming Methodology. Topics covered include problem solving by computing, writing pseudo-codes, basic problem formulation and problem solving, program development, coding, testing and debugging, fundamental programming constructs (variables, types, expressions, assignments, functions, control structures, etc.), fundamental data structures: arrays, strings and structures, simple file processing, and basic recursion. This module is appropriate for FoS students.",
+  "description": "This course introduces the fundamental concepts of problem solving by computing and programming using an imperative programming language. It is the first and foremost introductory course to computing and is equivalent to CS1010 and CS1010E Programming Methodology. Topics covered include problem solving by computing, writing pseudo-codes, basic problem formulation and problem solving, program development, coding, testing and debugging, fundamental programming constructs (variables, types, expressions, assignments, functions, control structures, etc.), fundamental data structures: arrays, strings and structures, simple file processing, and basic recursion. This course is appropriate for FoS students.",
   "moduleCredit": "4",
   "workload": [2, 1, 1, 3, 3],
   "preclusion": "CG1101, CS1010, CS1010E, CS1010FC, CS1101, CS1101C, CS1101S",
@@ -12,6 +12,7 @@
     {
       "semester": 2,
       "examDate": "2018-05-07T17:00+0800",
+      "examDuration": 120,
       "timetable": [
         {
           "classNo": "1",
@@ -405,6 +406,7 @@
     {
       "semester": 1,
       "examDate": "2017-11-29T17:00+0800",
+      "examDuration": 120,
       "timetable": [
         {
           "classNo": "1",

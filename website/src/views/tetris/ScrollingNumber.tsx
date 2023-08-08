@@ -20,7 +20,7 @@ type State = {
 export default class ScrollingNumber extends PureComponent<Props, State> {
   isAnimating = false;
 
-  state = {
+  override state = {
     currentValue: this.props.children,
   };
 
@@ -28,7 +28,7 @@ export default class ScrollingNumber extends PureComponent<Props, State> {
     tagName: 'span',
   };
 
-  componentDidUpdate(prevProps: Props) {
+  override componentDidUpdate(prevProps: Props) {
     if (prevProps.value !== this.state.currentValue && !this.isAnimating) {
       window.requestAnimationFrame(this.onNextFrame);
     }
@@ -58,7 +58,7 @@ export default class ScrollingNumber extends PureComponent<Props, State> {
     window.requestAnimationFrame(this.onNextFrame);
   };
 
-  render() {
+  override render() {
     // Children is ignored since that represents the actual value
     const { children, tagName, ...otherProps } = this.props;
     return createElement(tagName, otherProps, children);
