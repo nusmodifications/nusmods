@@ -410,7 +410,7 @@ describe('timetable serialization/deserialization', () => {
 
   test.each(configs)('serialization/deserialization with colors', (config) => {
     // if mod config is not present, no color mapping is serialized
-    const colors = _.pickBy(colorMapping, (colorIndex, moduleCode) => moduleCode in config);
+    const colors = _.pickBy(colorMapping, (_colorIndex, moduleCode) => moduleCode in config);
     // empty color mapping should return null
     const expectedColors = _.isEmpty(colors) ? null : colors;
 

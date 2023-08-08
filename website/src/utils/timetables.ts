@@ -484,7 +484,7 @@ export function deserializeTimetable(serialized: string): ImportedTimetableConfi
 
 // Extracts module configs from query string
 function deserializeModuleConfigs(params: qs.ParsedQuery<string>): SemTimetableConfig {
-  const moduleParams = pickBy(params, (paramvalue, paramName) => paramName !== THEME_PARAM);
+  const moduleParams = pickBy(params, (_paramvalue, paramName) => paramName !== THEME_PARAM);
   return mapValues(moduleParams, parseModuleConfig);
 }
 
