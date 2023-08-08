@@ -23,7 +23,7 @@ const handlePost: Handler = async (req, res) => {
 
     res.redirect(301, userURL.toString());
   } catch (err) {
-    if (err instanceof Error && err.message === errors.noRelayState) {
+    if (err.message === errors.noRelayState) {
       res.json({
         message: 'Relay state not found in request',
       });

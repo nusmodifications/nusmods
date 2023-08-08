@@ -38,7 +38,6 @@ export default class HistoryDebouncer<HistoryLocationState = LocationState> {
         // Ignore Safari's history.replaceState() rate limit error.
         // See https://github.com/nusmodifications/nusmods/issues/763
         if (
-          e instanceof Error &&
           e.name === 'SecurityError' &&
           e.message.includes('Attempt to use history.replaceState()')
         ) {

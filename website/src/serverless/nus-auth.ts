@@ -101,7 +101,7 @@ export const verifyLogin =
         errResp.message = 'Token has expired, please login again';
       } else if (err === samlifyErrors.invalidAssertion) {
         errResp.message = 'Invalid token supplied';
-      } else if (err instanceof Error && err.message === errors.noTokenSupplied) {
+      } else if (err.message === errors.noTokenSupplied) {
         errResp.message = 'No token is supplied';
       } else {
         errResp.message = 'Invalid authentication, please login again';
