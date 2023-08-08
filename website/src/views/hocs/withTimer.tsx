@@ -20,11 +20,11 @@ function withTimer<Props extends TimerData>(
 
     static displayName = wrapComponentName(WrappedComponent, withTimer.name);
 
-    state: TimerData = {
+    override state: TimerData = {
       currentTime: getCurrentTime(),
     };
 
-    componentDidMount() {
+    override componentDidMount() {
       this.intervalId = window.setInterval(
         () => this.setState({ currentTime: getCurrentTime() }),
         intervalInMs,
@@ -32,7 +32,7 @@ function withTimer<Props extends TimerData>(
       document.addEventListener('visibilitychange', this.onPageVisibilityChange);
     }
 
-    componentWillUnmount() {
+    override componentWillUnmount() {
       clearInterval(this.intervalId);
       document.removeEventListener('visibilitychange', this.onPageVisibilityChange);
     }
@@ -51,7 +51,7 @@ function withTimer<Props extends TimerData>(
       }
     };
 
-    render() {
+    override render() {
       // TODO: remove as Props hack as defined in:
       // https://github.com/Microsoft/TypeScript/issues/28938#issuecomment-450636046
       return <WrappedComponent {...this.state} {...(this.props as Props)} />;

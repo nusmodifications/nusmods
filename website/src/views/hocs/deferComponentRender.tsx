@@ -18,15 +18,15 @@ function deferComponentRender<Props>(
   return class extends React.Component<Props, State> {
     static displayName = wrapComponentName(WrappedComponent, deferComponentRender.name);
 
-    state = {
+    override state = {
       shouldRender: false,
     };
 
-    componentDidMount() {
+    override componentDidMount() {
       defer(() => this.setState({ shouldRender: true }));
     }
 
-    render() {
+    override render() {
       return this.state.shouldRender && <WrappedComponent {...this.props} />;
     }
   };

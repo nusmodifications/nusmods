@@ -27,15 +27,15 @@ type State = {
 const SCRIPT_ID = 'dsq-embed-scr';
 
 class DisqusComments extends PureComponent<Props, State> {
-  state = {
+  override state = {
     allowDisqus: false,
   };
 
-  componentDidMount() {
+  override componentDidMount() {
     this.loadInstance();
   }
 
-  componentDidUpdate(prevProps: Props) {
+  override componentDidUpdate(prevProps: Props) {
     // Wait a bit for the page colors to change before reloading instance
     // 2 second delay is found empirically, and is longer than necessary to
     // account for lag in slower user agents
@@ -83,7 +83,7 @@ class DisqusComments extends PureComponent<Props, State> {
     };
   }
 
-  render() {
+  override render() {
     if (this.props.loadDisqusManually && !this.state.allowDisqus) {
       return (
         <div className="text-center">

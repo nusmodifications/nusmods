@@ -59,13 +59,13 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
 
   urlInput = React.createRef<HTMLInputElement>();
 
-  state: State = {
+  override state: State = {
     isOpen: false,
     urlCopied: NOT_COPIED,
     shortUrl: null,
   };
 
-  componentDidMount() {
+  override componentDidMount() {
     if (!ShareTimetable.QRCode) {
       retryImport(() => import(/* webpackChunkName: "export" */ 'react-qr-svg')).then((module) => {
         ShareTimetable.QRCode = module.QRCode;
@@ -217,7 +217,7 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
     );
   }
 
-  render() {
+  override render() {
     const { isOpen, shortUrl } = this.state;
 
     return (

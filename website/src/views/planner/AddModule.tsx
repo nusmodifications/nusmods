@@ -38,7 +38,7 @@ const placeholderOptions = map(placeholderGroups, (placeholderMap, group) => (
 ));
 
 export default class AddModule extends React.PureComponent<Props, State> {
-  state = {
+  override state = {
     isOpen: false,
   };
 
@@ -72,7 +72,7 @@ export default class AddModule extends React.PureComponent<Props, State> {
     this.setState({ isOpen: false });
   };
 
-  render() {
+  override render() {
     if (!this.state.isOpen) {
       return (
         <div className={this.props.className}>

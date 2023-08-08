@@ -14,13 +14,13 @@ type Props = {
 };
 
 export default class ApiError extends React.PureComponent<Props> {
-  componentDidMount() {
+  override componentDidMount() {
     if (!navigator.onLine) {
       window.addEventListener('online', this.onlineListener);
     }
   }
 
-  componentWillUnmount() {
+  override componentWillUnmount() {
     window.removeEventListener('online', this.onlineListener);
   }
 
@@ -30,7 +30,7 @@ export default class ApiError extends React.PureComponent<Props> {
     }
   };
 
-  render() {
+  override render() {
     const { retry, dataName } = this.props;
     const message = dataName ? `We can't load the ${dataName}` : "We can't connect to NUSMods";
 

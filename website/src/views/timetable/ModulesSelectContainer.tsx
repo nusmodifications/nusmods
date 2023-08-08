@@ -43,7 +43,7 @@ class ModulesSelectContainer extends Component<Props> {
     return sortModules(inputValue, results.slice(0, RESULTS_LIMIT));
   };
 
-  render() {
+  override render() {
     return (
       <Online>
         {(isOnline) => (

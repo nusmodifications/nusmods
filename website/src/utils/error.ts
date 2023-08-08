@@ -3,7 +3,7 @@ import { each, size } from 'lodash';
 
 export function captureException(error: Error, extra: { [key: string]: unknown } = {}) {
   Sentry.withScope((scope) => {
-    each(extra, (data, key) => {
+    each(extra, (_data, key) => {
       scope.setExtra(key, extra[key]);
     });
 

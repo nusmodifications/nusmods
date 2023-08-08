@@ -93,7 +93,7 @@ export default class ExamCalendar extends PureComponent<Props> {
     return modulesWithExams;
   }
 
-  render() {
+  override render() {
     const [firstDayOfExams, weekCount] = this.getExamCalendar();
 
     if (!weekCount) {
