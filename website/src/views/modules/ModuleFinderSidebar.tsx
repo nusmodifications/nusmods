@@ -29,7 +29,7 @@ import ChecklistFilter, { FilterItem } from '../components/filters/ChecklistFilt
 
 const RESET_FILTER_OPTIONS = { filter: true };
 
-const EXAM_FILTER_ITEMS: FilterItem[] = [
+const STATIC_EXAM_FILTER_ITEMS: FilterItem[] = [
   {
     key: 'no-exam',
     label: 'No Exam',
@@ -80,21 +80,15 @@ const ModuleFinderSidebar: React.FC = () => {
   const examFilters = useMemo(() => {
     // Create filters for exam clashes for each semester's timetable
     // where there are modules with exams in that timetable
-    const semesterExamDates = Semesters.map((semester): [Semester, string[]] | null => {
+    const examClashFilters = Semesters.map((semester): FilterItem | null => {
       const timetable = getSemesterTimetable(semester);
       const modules = getSemesterModules(timetable, allModules);
       const examDates = modules
         .map((module) => getModuleSemesterData(module, semester)?.examDate)
         .filter(notNull);
-
-      if (examDates.length === 0) return null;
-      return [semester, examDates];
+      return examDates.length ? getExamClashFilter(semester, examDates) : null;
     }).filter(notNull);
-
-    return [
-      ...EXAM_FILTER_ITEMS,
-      ...semesterExamDates.map(([semester, examDates]) => getExamClashFilter(semester, examDates)),
-    ];
+    return [...STATIC_EXAM_FILTER_ITEMS, ...examClashFilters];
   }, [getSemesterTimetable, allModules]);
 
   return (
@@ -122,6 +116,7 @@ const ModuleFinderSidebar: React.FC = () => {
             }
           />
         </header>
+
         <RefinementListFilter
           id="sem"
           title="Offered In"
