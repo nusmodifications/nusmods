@@ -23,7 +23,7 @@ function downloadUrl(blob: Blob, filename: string) {
 export const SUPPORTS_DOWNLOAD = 'download' in document.createElement('a');
 
 export function downloadAsIcal(semester: Semester) {
-  return (dispatch: Dispatch, getState: GetState) => {
+  return (_dispatch: Dispatch, getState: GetState) => {
     Promise.all([
       retryImport(() => import(/* webpackChunkName: "export" */ 'ical-generator')),
       retryImport(() => import(/* webpackChunkName: "export" */ 'utils/ical')),

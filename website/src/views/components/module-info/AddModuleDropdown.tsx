@@ -48,7 +48,7 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
     return null;
   }
 
-  state: State = {
+  override state: State = {
     loading: null,
   };
 
@@ -88,7 +88,7 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
       .sort();
   }
 
-  render() {
+  override render() {
     const { block, className, module } = this.props;
 
     const defaultSemester = getFirstAvailableSemester(module.semesterData);

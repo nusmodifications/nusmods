@@ -66,13 +66,13 @@ type State = {
 const TRASH_ID = 'trash';
 
 export class PlannerContainerComponent extends PureComponent<Props, State> {
-  state: State = {
+  override state: State = {
     loading: true,
     showSettings: false,
     showCustomModule: null,
   };
 
-  componentDidMount() {
+  override componentDidMount() {
     // TODO: Handle error
     const modules = [
       ...flatten(flatMap(this.props.modules, values)),
@@ -168,7 +168,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
     );
   }
 
-  render() {
+  override render() {
     // Don't render anything on initial load because every fetched module will
     // cause a re-render, which kills performance
     if (this.state.loading) {

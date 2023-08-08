@@ -25,7 +25,7 @@ type State = {
 };
 
 export default class VenueLocation extends PureComponent<Props, State> {
-  state: State = {
+  override state: State = {
     isFeedbackModalOpen: false,
   };
 
@@ -57,7 +57,7 @@ export default class VenueLocation extends PureComponent<Props, State> {
     );
   }
 
-  render() {
+  override render() {
     const { venue, venueLocations } = this.props;
     const location = venueLocations[venue];
 
