@@ -269,8 +269,16 @@ class TimetableContent extends React.Component<Props, State> {
   }
 
   render() {
-    const { semester, modules, colors, activeLesson, timetableOrientation, showTitle, readOnly } =
-      this.props;
+    const {
+      semester,
+      modules,
+      colors,
+      activeLesson,
+      timetableOrientation,
+      showTitle,
+      readOnly,
+      hiddenInTimetable,
+    } = this.props;
 
     const { showExamCalendar } = this.state;
 
@@ -417,7 +425,11 @@ class TimetableContent extends React.Component<Props, State> {
                 {this.renderModuleSections(addedModules, !isVerticalOrientation)}
               </div>
               <div className="col-12">
-                <ModulesTableFooter modules={addedModules} semester={semester} />
+                <ModulesTableFooter
+                  modules={addedModules}
+                  semester={semester}
+                  hiddenInTimetable={hiddenInTimetable}
+                />
               </div>
             </div>
           </div>

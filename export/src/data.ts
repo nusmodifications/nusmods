@@ -43,6 +43,9 @@ export async function getModules(moduleCodes: string[]) {
 export const parseExportData: Middleware<State> = (ctx, next) => {
   if (ctx.query.data) {
     try {
+      if (typeof ctx.query.data !== 'string') {
+        throw new Error(`Expected query.data to be string, got ${typeof ctx.query.data}`);
+      }
       const data = JSON.parse(ctx.query.data);
       validateExportData(data);
       ctx.state.data = data;
