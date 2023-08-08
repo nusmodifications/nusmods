@@ -27,19 +27,24 @@ type State = {
 const PLACEHOLDER = 'Search modules & venues. Try "GER" or "LT".';
 
 const getSearchUrl = (item: SearchItem) => {
+  let searchUrl: string;
   switch (item.type) {
     case VENUE_RESULT:
-      return venuePage(item.venue);
+      searchUrl = venuePage(item.venue);
+      break;
 
     case MODULE_RESULT:
-      return modulePage(item.module.moduleCode);
+      searchUrl = modulePage(item.module.moduleCode);
+      break;
 
     case SEARCH_RESULT: {
       // TODO: Move this into a proper function
       const path = item.result === VENUE_RESULT ? '/venues' : '/courses';
-      return `${path}?q=${encodeURIComponent(item.term)}`;
+      searchUrl = `${path}?q=${encodeURIComponent(item.term)}`;
+      break;
     }
   }
+  return searchUrl;
 };
 
 class GlobalSearch extends Component<Props, State> {
