@@ -50,7 +50,7 @@ const getSearchUrl = (item: SearchItem) => {
 class GlobalSearch extends Component<Props, State> {
   input: HTMLInputElement | null = null;
 
-  state = {
+  override state = {
     isOpen: false,
     inputValue: '',
   };
@@ -97,7 +97,7 @@ class GlobalSearch extends Component<Props, State> {
     this.onClose();
   };
 
-  stateReducer = (state: DownshiftState<SearchItem>, changes: StateChangeOptions<SearchItem>) => {
+  stateReducer = (_state: DownshiftState<SearchItem>, changes: StateChangeOptions<SearchItem>) => {
     switch (changes.type) {
       case Downshift.stateChangeTypes.blurInput:
         return omit(changes, 'inputValue');
@@ -295,7 +295,7 @@ class GlobalSearch extends Component<Props, State> {
     );
   };
 
-  render() {
+  override render() {
     const { isOpen, inputValue } = this.state;
 
     return (

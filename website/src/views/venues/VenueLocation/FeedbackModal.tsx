@@ -24,7 +24,7 @@ type State = {
 };
 
 export default class FeedbackModal extends PureComponent<Props, State> {
-  state: State = {
+  override state: State = {
     page: 'menu',
   };
 
@@ -77,7 +77,7 @@ export default class FeedbackModal extends PureComponent<Props, State> {
     }
   }
 
-  render() {
+  override render() {
     const { isOpen } = this.props;
 
     return (

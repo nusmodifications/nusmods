@@ -38,7 +38,7 @@ type State = {
 };
 
 export class ModulesSelectComponent extends Component<Props, State> {
-  state = {
+  override state = {
     isOpen: false,
     inputValue: '',
   };
@@ -205,7 +205,7 @@ export class ModulesSelectComponent extends Component<Props, State> {
     );
   };
 
-  render() {
+  override render() {
     const { isOpen } = this.state;
     const { matchBreakpoint, disabled } = this.props;
 

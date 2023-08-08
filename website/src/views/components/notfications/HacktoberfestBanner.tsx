@@ -17,7 +17,7 @@ type State = {
 const today = new Date();
 
 export default class HacktoberfestBanner extends PureComponent<Props, State> {
-  state: State = {
+  override state: State = {
     isOpen: !storage.getItem(HACKTOBERFEST) && (today.getMonth() === 9 || today.getMonth() === 10),
   };
 
@@ -26,7 +26,7 @@ export default class HacktoberfestBanner extends PureComponent<Props, State> {
     this.setState({ isOpen: false });
   };
 
-  render() {
+  override render() {
     if (!this.state.isOpen) return null;
 
     return (
