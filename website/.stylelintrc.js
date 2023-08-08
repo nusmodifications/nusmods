@@ -1,5 +1,9 @@
 module.exports = {
-  extends: ['stylelint-config-standard', 'stylelint-config-prettier'],
+  extends: [
+    'stylelint-config-standard',
+    'stylelint-config-standard-scss',
+    'stylelint-stylistic/config',
+  ],
   plugins: ['stylelint-order'],
   // plugins: ['stylelint-order'],
   defaultSeverity: process.env.NODE_ENV === 'production' ? 'error' : 'warning',

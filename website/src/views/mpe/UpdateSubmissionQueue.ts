@@ -32,6 +32,7 @@ export default class UpdateSubmissionQueue {
     concurrency: 1,
   });
 
+  // eslint-disable-next-line no-empty-function
   constructor(private readonly updateSubmission: (submission: MpeSubmission) => Promise<void>) {}
 
   update(submission: MpeSubmission) {

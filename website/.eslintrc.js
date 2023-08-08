@@ -9,9 +9,9 @@ module.exports = {
   },
 
   root: true,
-  extends: ['airbnb', 'prettier', 'prettier/react'],
+  extends: ['airbnb', 'airbnb/hooks', 'plugin:prettier/recommended'],
 
-  plugins: ['@typescript-eslint', 'prettier', 'import', 'jsx-a11y', 'react', 'react-hooks'],
+  plugins: ['@typescript-eslint', 'import', 'jsx-a11y', 'react', 'react-hooks'],
 
   settings: {
     'import/resolver': {
