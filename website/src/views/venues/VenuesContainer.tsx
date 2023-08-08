@@ -74,13 +74,14 @@ export class VenuesContainerComponent extends Component<Props, State> {
     const searchOptions = isAvailabilityEnabled
       ? (mapValues(pick(params, ['time', 'day', 'duration']), (i) => {
           if (!i) return NaN;
-          if (Array.isArray(i)) return i.length ? parseInt(i[0]!, 10) : NaN;
+          if (Array.isArray(i)) return parseInt(i[0], 10);
           return parseInt(i, 10);
         }) as VenueSearchOptions)
       : defaultSearchOptions();
 
     this.history = new HistoryDebouncer(history);
-    const searchTerm = Array.isArray(params.q) ? params.q[0]! : params.q ?? '';
+    let searchTerm = params.q || '';
+    if (Array.isArray(searchTerm)) [searchTerm] = searchTerm;
     this.state = {
       searchOptions,
       isAvailabilityEnabled,
@@ -282,9 +283,9 @@ export class VenuesContainerComponent extends Component<Props, State> {
       );
     }
 
-    const [venue, availability] = matchedVenues[venueIndex]!;
-    const previous = matchedVenues[venueIndex - 1]?.[0];
-    const next = matchedVenues[venueIndex + 1]?.[0];
+    const [venue, availability] = matchedVenues[venueIndex];
+    const [previous] = matchedVenues[venueIndex - 1] || ([] as string[]);
+    const [next] = matchedVenues[venueIndex + 1] || ([] as string[]);
 
     return (
       <VenueDetails
@@ -347,7 +348,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
             <>
               <div
                 className={classnames(styles.venueDetail, {
-                  [styles.mapExpanded!]: isMapExpanded,
+                  [styles.mapExpanded]: isMapExpanded,
                 })}
               >
                 {selectedVenue == null ? (

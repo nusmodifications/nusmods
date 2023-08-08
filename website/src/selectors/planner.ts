@@ -129,7 +129,7 @@ function mapModuleToInfo(
     // Only continue checking until the first conflict is found
     let index = 0;
     while (!moduleInfo.conflict && index < conflictChecks.length) {
-      moduleInfo.conflict = conflictChecks[index]!(moduleCode);
+      moduleInfo.conflict = conflictChecks[index](moduleCode);
       index += 1;
     }
 
@@ -147,7 +147,7 @@ export function getPrereqModuleCode(moduleCode: ModuleCode): ModuleCode[] {
   // Also try to match the non-variant version (without the suffix alphabets)
   // of the module code
   const match = /([A-Z]+\d+)[A-Z]+$/gi.exec(moduleCode);
-  if (match) moduleCodes.push(match[1]!);
+  if (match) moduleCodes.push(match[1]);
 
   return moduleCodes;
 }
@@ -230,7 +230,7 @@ export function getAcadYearModules(state: State): PlannerModulesWithInfo {
         conflictChecks.push(prereqConflict(moduleBank.modules, modulesTaken));
       }
 
-      modules[year]![semester] = moduleTimes.map((moduleCode) =>
+      modules[year][semester] = moduleTimes.map((moduleCode) =>
         mapModuleToInfo(moduleCode, moduleBank.modules, planner.custom, conflictChecks),
       );
 

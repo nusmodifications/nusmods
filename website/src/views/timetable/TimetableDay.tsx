@@ -68,7 +68,7 @@ const TimetableDay: React.FC<Props> = (props) => {
     <li className={styles.day}>
       <div
         className={classnames(styles.dayName, {
-          [styles.dayNameScrolled!]: props.isScrolledHorizontally,
+          [styles.dayNameScrolled]: props.isScrolledHorizontally,
         })}
       >
         <span className={styles.dayNameText}>{props.day.substring(0, 3)}</span>

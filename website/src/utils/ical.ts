@@ -176,7 +176,7 @@ export default function iCalForTimetable(
   moduleData: { [moduleCode: string]: Module },
   academicYear: string = config.academicYear,
 ): EventOption[] {
-  const [year, month, day] = academicCalendar[academicYear]![semester]!.start;
+  const [year, month, day] = academicCalendar[academicYear][semester].start;
   // 'month - 1' because JS months are zero indexed
   const firstDayOfSchool = new Date(Date.UTC(year, month - 1, day) - SG_UTC_TIME_DIFF_MS);
   const events: EventOption[] = [];
@@ -184,13 +184,11 @@ export default function iCalForTimetable(
   _.each(timetable, (lessonConfig, moduleCode) => {
     _.each(lessonConfig, (lessons) => {
       lessons.forEach((lesson) => {
-        events.push(
-          iCalEventForLesson(lesson, moduleData[moduleCode]!, semester, firstDayOfSchool),
-        );
+        events.push(iCalEventForLesson(lesson, moduleData[moduleCode], semester, firstDayOfSchool));
       });
     });
 
-    const examEvent = iCalEventForExam(moduleData[moduleCode]!, semester);
+    const examEvent = iCalEventForExam(moduleData[moduleCode], semester);
     if (examEvent) events.push(examEvent);
   });
 

@@ -46,8 +46,8 @@ const Modal: FC<Props> = ({
     <ReactModal
       overlayClassName={classnames(styles.overlay, overlayClassName)}
       className={classnames(styles.modal, className, {
-        [styles.fullscreen!]: fullscreen,
-        [styles.animated!]: animate,
+        [styles.fullscreen]: fullscreen,
+        [styles.animated]: animate,
       })}
       closeTimeoutMS={animate ? 150 : 0}
       isOpen={isOpen}

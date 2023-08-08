@@ -1,4 +1,4 @@
-import { get } from 'lodash';
+import _ from 'lodash';
 import type {
   Module,
   ModuleCode,
@@ -31,7 +31,7 @@ export function getModuleSemesterData(
 
 // Returns a flat array of lessons of a module for the corresponding semester.
 export function getModuleTimetable(module: Module, semester: Semester): readonly RawLesson[] {
-  return get(getModuleSemesterData(module, semester), 'timetable', []);
+  return _.get(getModuleSemesterData(module, semester), 'timetable', []);
 }
 
 // Do these two lessons belong to the same class?
@@ -46,7 +46,6 @@ export function areLessonsSameClass(lesson1: Lesson, lesson2: Lesson): boolean {
 /**
  * Convert exam in ISO format to 12-hour date/time format.
  */
-// TODO(zwliew): refactor this to be more strict with types
 export function formatExamDate(examDate: string | null | undefined): string {
   if (!examDate) return 'No Exam';
 
@@ -54,22 +53,12 @@ export function formatExamDate(examDate: string | null | undefined): string {
   return format(localDate, 'dd-MMM-yyyy p');
 }
 
-export function formatExamDateToDateTime(examDate: string): [string, string] {
-  const localDate = toSingaporeTime(examDate);
-  const dateTimeStr = format(localDate, 'dd-MMM-yyyy p');
-  const fstSpaceIdx = dateTimeStr.indexOf(' ');
-  const date = dateTimeStr.slice(0, fstSpaceIdx);
-  const time = dateTimeStr.slice(fstSpaceIdx + 1);
-  return [date, time];
-}
-
-// TODO(zwliew): refactor these two functions to return undefined
 export function getExamDate(module: Module, semester: Semester): string | null {
-  return get(getModuleSemesterData(module, semester), 'examDate') ?? null;
+  return _.get(getModuleSemesterData(module, semester), 'examDate') || null;
 }
 
 export function getExamDuration(module: Module, semester: Semester): number | null {
-  return get(getModuleSemesterData(module, semester), 'examDuration') ?? null;
+  return _.get(getModuleSemesterData(module, semester), 'examDuration') || null;
 }
 
 export function getFormattedExamDate(module: Module, semester: Semester): string {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { get, minBy, range } from 'lodash';
-import NUSModerator, { AcadWeekInfo, Semester } from 'nusmoderator';
+import NUSModerator, { AcadWeekInfo } from 'nusmoderator';
 import classnames from 'classnames';
 import {
   addDays,
@@ -14,7 +14,7 @@ import {
 } from 'date-fns';
 import produce from 'immer';
 
-import { mapIndexToDayOfWeek } from 'types/modules';
+import { DaysOfWeek } from 'types/modules';
 import { Lesson, ColoredLesson, SemTimetableConfigWithLessons } from 'types/timetables';
 import { ColorMapping } from 'types/reducers';
 import { EmptyGroupType, SelectedLesson } from 'types/views';
@@ -50,17 +50,11 @@ import styles from './TodayContainer.scss';
 const EMPTY_LESSONS: ColoredLesson[] = [];
 
 // Map the semester property from AcadWeekInfo to semester number
-const mapSemesterNameToNumber = (name: Semester): number => {
-  switch (name) {
-    case 'Semester 1':
-      return 1;
-    case 'Semester 2':
-      return 2;
-    case 'Special Sem 1':
-      return 3;
-    case 'Special Sem 2':
-      return 4;
-  }
+const semesterNameMap: Record<string, number> = {
+  'Semester 1': 1,
+  'Semester 2': 2,
+  'Special Sem 1': 3,
+  'Special Sem 2': 4,
 };
 
 export type OwnProps = TimerData;
@@ -188,7 +182,7 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
     const coloredTimetableLessons = timetableLessons.map(
       (lesson: Lesson): ColoredLesson => ({
         ...lesson,
-        colorIndex: colors[lesson.moduleCode]!,
+        colorIndex: colors[lesson.moduleCode],
       }),
     );
 
@@ -227,7 +221,7 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
 
     range(DAYS).forEach((day) => {
       const date = addDays(currentTime, day);
-      const dayOfWeek = mapIndexToDayOfWeek(getDayIndex(date));
+      const dayOfWeek = DaysOfWeek[getDayIndex(date)];
       const weekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(date);
       const lessons = get(groupedLessons, dayOfWeek, EMPTY_LESSONS).filter((lesson) =>
         isLessonAvailable(lesson, date, weekInfo),
@@ -338,7 +332,7 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
             <MapContext.Provider value={{ toggleMapExpanded: this.onToggleMapExpanded }}>
               <div
                 className={classnames(styles.mapContainer, {
-                  [styles.expanded!]: this.state.isMapExpanded,
+                  [styles.expanded]: this.state.isMapExpanded,
                 })}
               >
                 <EventMap venue={this.state.openLesson && this.state.openLesson.lesson.venue} />
@@ -355,7 +349,7 @@ export const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
   const { modules } = state.moduleBank;
   const lastDay = addDays(ownProps.currentTime, DAYS);
   const weekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(lastDay);
-  const semester = mapSemesterNameToNumber(weekInfo.sem);
+  const semester = semesterNameMap[weekInfo.sem];
   const timetable = getSemesterTimetableLessons(state)(semester);
   const colors = getSemesterTimetableColors(state)(semester);
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);

@@ -67,9 +67,8 @@ type State = {
   error?: Error;
 };
 
-const centralLibraryLocation: LatLngTuple = [1.2966113099432135, 103.77322643995288];
 const wellKnownLocations: Record<string, LatLngTuple> = {
-  'Central Library': centralLibraryLocation,
+  'Central Library': [1.2966113099432135, 103.77322643995288],
   UTown: [1.304448761575499, 103.77278119325639],
   Science: [1.2964893900409042, 103.78065884113312],
   Engineering: [1.3002873614041492, 103.77067700028421],
@@ -86,7 +85,7 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
     const locationInfo = {
       roomName: '',
       floor: 1,
-      location: centralLibraryLocation,
+      location: wellKnownLocations['Central Library'],
     };
 
     // Make sure we copy only non-null values into the new location
@@ -267,7 +266,7 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
 
         <div
           className={classnames('col-sm-12', mapStyles.mapWrapper, {
-            [mapStyles.expanded!]: isMapExpanded,
+            [mapStyles.expanded]: isMapExpanded,
           })}
         >
           <MapContainer className={mapStyles.map} center={this.state.center} zoom={18} maxZoom={18}>
@@ -308,8 +307,8 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
 
           <small
             className={classnames(styles.instructions, {
-              [styles.moved!]: this.state.latlngUpdated,
-              [styles.shake!]: this.state.promptUpdateMap,
+              [styles.moved]: this.state.latlngUpdated,
+              [styles.shake]: this.state.promptUpdateMap,
             })}
           >
             Move marker or map so that marker is pointing to {this.props.venue}

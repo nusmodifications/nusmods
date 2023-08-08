@@ -58,7 +58,7 @@ describe(DropdownListFilters, () => {
     const { wrapper, onFilterChange } = make(allItems, []);
 
     // Simulate selecting an <option> in the <select>
-    const { key: firstItemKey } = allItems[0]!;
+    const { key: firstItemKey } = allItems[0];
     wrapper.find('select').simulate('change', { target: { value: firstItemKey } });
     expect(onFilterChange.mock.calls.length).toEqual(1);
     const [[toggledKey]] = onFilterChange.mock.calls;
@@ -76,7 +76,7 @@ describe(DropdownListFilters, () => {
   });
 
   test('render a list of previously selected items outside the <select>', () => {
-    const { key: firstItemKey } = allItems[0]!;
+    const { key: firstItemKey } = allItems[0];
     const { wrapper, onFilterChange } = make(allItems, [firstItemKey]);
 
     // Should render the item in the checklist outside

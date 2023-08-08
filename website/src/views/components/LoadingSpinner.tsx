@@ -11,8 +11,8 @@ type Props = {
 const LoadingSpinner: React.FC<Props> = ({ small, white, className }) => (
   <div
     className={classnames(styles.loader, className, {
-      [styles.small!]: small,
-      [styles.white!]: white,
+      [styles.small]: small,
+      [styles.white]: white,
     })}
   >
     <span className="sr-only">Loading...</span>

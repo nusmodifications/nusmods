@@ -58,7 +58,7 @@ function formatWeekRange(weekRange: WeekRange) {
   const table = (
     <div className={styles.classes}>
       <h5>Classes</h5>
-      <ol className={classnames({ [styles.twoColumn!]: weekRange.weeks.length > 6 })}>
+      <ol className={classnames({ [styles.twoColumn]: weekRange.weeks.length > 6 })}>
         {weekRange.weeks.map((week) => {
           const date = addWeeks(start, week - 1);
           const weekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(date);
@@ -110,11 +110,11 @@ const TimetableCell: React.FC<Props> = (props) => {
     transparent ? styles.transparentCell : [styles.coloredCell, `color-${lesson.colorIndex}`],
     {
       hoverable: !!onClick,
-      [styles.clickable!]: !!onClick,
-      [styles.available!]: lesson.isAvailable,
-      [styles.active!]: lesson.isActive,
+      [styles.clickable]: !!onClick,
+      [styles.available]: lesson.isAvailable,
+      [styles.active]: lesson.isActive,
       // Local hover style for the timetable planner timetable,
-      [styles.hover!]: isHoveredOver,
+      [styles.hover]: isHoveredOver,
       // Global hover style for module page timetable
       hover: isHoveredOver,
     },

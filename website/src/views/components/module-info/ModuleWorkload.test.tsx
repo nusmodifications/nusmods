@@ -11,11 +11,11 @@ function make(workload: Workload) {
 
 // Get the component name from anything that represents a component
 function extractComponent(node: ShallowWrapper): string {
-  if (node.hasClass(styles.moduleWorkloadComponent!)) {
+  if (node.hasClass(styles.moduleWorkloadComponent)) {
     return extractComponent(node.find('h5').first());
   }
 
-  if (node.hasClass(styles.moduleWorkloadBlocks!)) {
+  if (node.hasClass(styles.moduleWorkloadBlocks)) {
     return extractComponent(node.children().first());
   }
 

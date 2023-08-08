@@ -95,7 +95,7 @@ function renderPiece(tiles: Board) {
       showTitle={false}
       isScrolledHorizontally={false}
       startingIndex={INITIAL_ROW_INDEX}
-      endingIndex={INITIAL_ROW_INDEX + tiles[0]!.length}
+      endingIndex={INITIAL_ROW_INDEX + tiles[0].length}
       isCurrentDay={false}
       currentTimeIndicatorStyle={DISPLAY_NONE}
       hoverLesson={null}
@@ -130,9 +130,7 @@ export default class TetrisGame extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    const shuffled = shuffle(PIECES);
-    const currentPiece = shuffled[0]!;
-    const nextPieces = shuffled.slice(1);
+    const [currentPiece, ...nextPieces] = shuffle(PIECES);
 
     this.state = {
       status: NOT_STARTED,
@@ -394,7 +392,7 @@ export default class TetrisGame extends PureComponent<Props, State> {
 
   override render() {
     const { score, linesCleared, board, currentPiece, nextPieces, holdPiece, canHold } = this.state;
-    const nextPiece = nextPieces[0]!;
+    const nextPiece = nextPieces[0];
 
     const previewPiece = dropPiece(board, recolorPiece(currentPiece, PREVIEW_COLOR));
     const boardWithPiece = placePieceOnBoard(board, previewPiece, currentPiece);
@@ -437,7 +435,7 @@ export default class TetrisGame extends PureComponent<Props, State> {
             {holdPiece ? (
               <div
                 className={classnames(styles.piecePreview, {
-                  [styles.holdUnavailable!]: !canHold,
+                  [styles.holdUnavailable]: !canHold,
                 })}
               >
                 {renderPiece(holdPiece.tiles)}

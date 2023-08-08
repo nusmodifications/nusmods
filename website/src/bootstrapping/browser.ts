@@ -50,9 +50,7 @@ export function browserlistToBowser(browserlist: string[]): Bowser.Parser.checkT
   };
 
   browserlist.forEach((browserlistItem) => {
-    const items = browserlistItem.split(/\s+/g);
-    const browserName = items[0]!;
-    const versions = items[1]!;
+    const [browserName, versions] = browserlistItem.split(/\s+/g);
 
     const { browser, platform } = parseBrowser(browserName);
     const minVersion = parseVersion(versions);

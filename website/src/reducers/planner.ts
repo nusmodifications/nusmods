@@ -114,22 +114,22 @@ export default function planner(
       // If the module is moved from another year / semester, then we also need
       // to update the index of the old module list
       let oldModuleOrder: string[] = [];
-      const { year: oldYear, semester: oldSemester } = state.modules[id]!;
+      const { year: oldYear, semester: oldSemester } = state.modules[id];
       if (oldYear !== year || oldSemester !== semester) {
         oldModuleOrder = getSemesterIds(state.modules, oldYear, oldSemester, id);
       }
 
       // Update the index of all affected modules
       return produce(state, (draft) => {
-        draft.modules[id]!.year = year;
-        draft.modules[id]!.semester = semester;
+        draft.modules[id].year = year;
+        draft.modules[id].semester = semester;
 
         newModuleOrder.forEach((newId, order) => {
-          draft.modules[newId]!.index = order;
+          draft.modules[newId].index = order;
         });
 
         oldModuleOrder.forEach((oldId, order) => {
-          draft.modules[oldId]!.index = order;
+          draft.modules[oldId].index = order;
         });
       });
     }
@@ -146,7 +146,7 @@ export default function planner(
 
     case SET_PLACEHOLDER_MODULE:
       return produce(state, (draft) => {
-        draft.modules[action.payload.id]!.moduleCode = action.payload.moduleCode;
+        draft.modules[action.payload.id].moduleCode = action.payload.moduleCode;
       });
 
     default:

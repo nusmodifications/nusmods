@@ -20,13 +20,10 @@ export function forceElasticsearchHost() {
 
 // Force the current date/time to some value for components that use the
 // global timer HOC
-export function forceTimer(): Date | null {
+export function forceTimer() {
   let dateString = getParams().date;
   if (!dateString) return null;
-  if (Array.isArray(dateString)) {
-    if (dateString.length === 0) return null;
-    dateString = dateString[0]!;
-  }
+  if (Array.isArray(dateString)) [dateString] = dateString;
 
   const date = new Date(dateString);
   if (Number.isNaN(date.getTime())) return null;

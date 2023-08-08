@@ -52,7 +52,6 @@ export type TimetableDayFormat = {
 export type TimetableDayArrangement = ModifiableLesson[][];
 
 // TimetableArrangement is the arrangement of lessons on the timetable for a week.
-// TODO(zwliew): convert this to a Record
 export type TimetableArrangement = {
   [dayText: string]: TimetableDayArrangement;
 };

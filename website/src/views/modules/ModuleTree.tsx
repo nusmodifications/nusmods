@@ -36,9 +36,9 @@ const formatConditional = (node: PrereqTree) => {
   return 'all of';
 };
 
-const nodeName = (node: PrereqTree): string => {
+const nodeName = (node: PrereqTree) => {
   if (typeof node !== 'string') {
-    return Object.keys(node)[0] ?? '';
+    return Object.keys(node)[0];
   }
   let name = node;
   if (name.includes(GRADE_REQUIREMENT_SEPARATOR)) {
@@ -46,7 +46,7 @@ const nodeName = (node: PrereqTree): string => {
     if (requiredGrade !== PASSING_GRADE) {
       name = `${moduleName} (minimally ${requiredGrade})`;
     } else {
-      name = moduleName ?? '';
+      name = moduleName;
     }
   }
   if (name.includes(MODULE_NAME_WILDCARD)) {
@@ -87,8 +87,8 @@ const Tree: React.FC<TreeDisplay> = (props) => {
       <div
         className={classnames(styles.node, {
           [`hoverable color-${layer}`]: !isConditional,
-          [styles.conditional!]: isConditional,
-          [styles.prereqNode!]: isPrereq,
+          [styles.conditional]: isConditional,
+          [styles.prereqNode]: isPrereq,
         })}
       >
         {isConditional ? (

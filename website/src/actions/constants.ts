@@ -21,7 +21,7 @@ export function fetchModuleRequest(moduleCode: ModuleCode) {
 
 export function getRequestModuleCode(key: string): ModuleCode | null {
   const parts = key.split('/');
-  if (parts.length === 2 && parts[0] === FETCH_MODULE) return parts[1]!;
+  if (parts.length === 2 && parts[0] === FETCH_MODULE) return parts[1];
   return null;
 }
 

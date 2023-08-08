@@ -122,7 +122,7 @@ describe(filterAvailability, () => {
     );
 
     expect(availableVenues).toHaveLength(1);
-    expect(availableVenues[0]![0]).toEqual('LT1');
+    expect(availableVenues[0][0]).toEqual('LT1');
   });
 
   test("should not return venues that are excluded from 'find free rooms' feature", () => {

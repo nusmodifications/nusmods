@@ -6,7 +6,7 @@ export type Props = {
   attrs?: { [choice: string]: React.ButtonHTMLAttributes<HTMLButtonElement> };
   classNames?: { [choice: string]: string[] };
   size?: string;
-  selectedChoice?: string;
+  selectedChoice: string | null;
   onChoiceSelect: (str: string) => void;
   ariaLabel?: string;
 };

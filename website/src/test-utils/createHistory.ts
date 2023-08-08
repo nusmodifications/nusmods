@@ -4,7 +4,7 @@ import type { RouteComponentProps, match as Match } from 'react-router-dom';
 // version desync between the version depended on by react-router-dom
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createMemoryHistory } from 'history';
-import { castArray } from 'lodash';
+import _ from 'lodash';
 
 type MatchShape = {
   params?: { [key: string]: string | null | undefined };
@@ -16,7 +16,7 @@ export default function createHistory<T extends { [K in keyof T]?: string | unde
   initialEntries: string | string[] = '/',
   matchParams: MatchShape = {},
 ): RouteComponentProps<T> {
-  const entries = castArray(initialEntries);
+  const entries = _.castArray(initialEntries);
   const history = createMemoryHistory({ initialEntries: entries });
   const { params = {}, isExact = true } = matchParams;
 
@@ -24,8 +24,8 @@ export default function createHistory<T extends { [K in keyof T]?: string | unde
     // Not strictly type safe, but it's good enough for tests
     params: params as unknown as T,
     isExact,
-    path: entries[0]!,
-    url: entries[0]!,
+    path: entries[0],
+    url: entries[0],
   };
 
   return {

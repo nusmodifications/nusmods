@@ -123,7 +123,7 @@ class GlobalSearch extends Component<Props, State> {
     // selection to be lost
     const searchForm = (
       <Fragment key="search">
-        <Search className={classnames(styles.icon, { [styles.iconOpen!]: isOpen })} />
+        <Search className={classnames(styles.icon, { [styles.iconOpen]: isOpen })} />
         <label className="sr-only" {...getLabelProps()}>
           {PLACEHOLDER}
         </label>
@@ -132,7 +132,7 @@ class GlobalSearch extends Component<Props, State> {
             this.input = r;
             ComponentMap.globalSearchInput = r;
           }}
-          className={classnames(styles.input, { [styles.inputOpen!]: isOpen })}
+          className={classnames(styles.input, { [styles.inputOpen]: isOpen })}
           {...getInputProps({ placeholder: PLACEHOLDER })}
           onFocus={this.onOpen}
         />
@@ -177,7 +177,7 @@ class GlobalSearch extends Component<Props, State> {
                       item: { type: SEARCH_RESULT, result: MODULE_RESULT, term: inputValue },
                     })}
                     className={classnames('btn btn-inline', {
-                      [styles.selected!]: highlightedIndex === 0,
+                      [styles.selected]: highlightedIndex === 0,
                     })}
                     type="button"
                   >
@@ -189,7 +189,7 @@ class GlobalSearch extends Component<Props, State> {
                       item: { type: SEARCH_RESULT, result: VENUE_RESULT, term: inputValue },
                     })}
                     className={classnames('btn btn-inline', {
-                      [styles.selected!]: highlightedIndex === 1,
+                      [styles.selected]: highlightedIndex === 1,
                     })}
                     type="button"
                   >
@@ -221,7 +221,7 @@ class GlobalSearch extends Component<Props, State> {
                     item: { type: SEARCH_RESULT, result: MODULE_RESULT, term: inputValue },
                   })}
                   className={classnames(styles.selectHeader, {
-                    [styles.selected!]: highlightedIndex === 0,
+                    [styles.selected]: highlightedIndex === 0,
                   })}
                 >
                   <span className="btn-svg">
@@ -237,7 +237,7 @@ class GlobalSearch extends Component<Props, State> {
                       item: { type: MODULE_RESULT, module },
                     })}
                     className={classnames(styles.option, {
-                      [styles.selected!]: highlightedIndex === index + 1,
+                      [styles.selected]: highlightedIndex === index + 1,
                     })}
                   >
                     <span>{highlight(`${module.moduleCode} ${module.title}`, tokens)}</span>
@@ -255,7 +255,7 @@ class GlobalSearch extends Component<Props, State> {
                     item: { type: SEARCH_RESULT, result: VENUE_RESULT, term: inputValue },
                   })}
                   className={classnames(styles.selectHeader, {
-                    [styles.selected!]: highlightedIndex === venueHeaderIndex,
+                    [styles.selected]: highlightedIndex === venueHeaderIndex,
                   })}
                 >
                   <span className="btn-svg">
@@ -271,7 +271,7 @@ class GlobalSearch extends Component<Props, State> {
                       item: { type: VENUE_RESULT, venue },
                     })}
                     className={classnames(styles.option, {
-                      [styles.selected!]: highlightedIndex === venueItemOffset + index,
+                      [styles.selected]: highlightedIndex === venueItemOffset + index,
                     })}
                   >
                     <span>{highlight(venue, tokens)}</span>

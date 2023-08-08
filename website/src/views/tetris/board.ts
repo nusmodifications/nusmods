@@ -1,7 +1,7 @@
 import { findLastIndex, min, range, zip } from 'lodash';
 import produce from 'immer';
 
-import { DayOfWeekIndex, DaysOfWeek, mapIndexToDayOfWeek } from 'types/modules';
+import { DaysOfWeek } from 'types/modules';
 import {
   ColoredLesson,
   ColorIndex,
@@ -10,7 +10,6 @@ import {
 } from 'types/timetables';
 import { notNull } from 'types/utils';
 import { convertIndexToTime } from 'utils/timify';
-import { WritableDraft } from 'immer/dist/types/types-external';
 
 export const ROWS = 20;
 export const COLUMNS = 9;
@@ -122,7 +121,7 @@ function iterateBoard(
   let continueIterating = true;
 
   for (let col = 0; col < board.length; col++) {
-    const column = board[col]!;
+    const column = board[col];
 
     for (let row = 0; row < column.length; row++) {
       const tile = column[row];
@@ -171,10 +170,10 @@ export function rotatePieceRight(piece: Piece): Piece {
   if (piece.tiles.length === 0) return piece;
 
   return produce(piece, (draft) => {
-    const newTiles: (WritableDraft<Square> | null)[][] = [];
+    const newTiles = [];
     // When turning rightwards, the last row becomes the first column
-    for (let row = draft.tiles[0]!.length - 1; row >= 0; row--) {
-      newTiles.push(draft.tiles.map((column) => column[row] ?? null));
+    for (let row = draft.tiles[0].length - 1; row >= 0; row--) {
+      newTiles.push(draft.tiles.map((column) => column[row]));
     }
     draft.tiles = newTiles;
 
@@ -186,10 +185,10 @@ export function rotatePieceLeft(piece: Piece): Piece {
   if (piece.tiles.length === 0) return piece;
 
   return produce(piece, (draft) => {
-    const newTiles: (WritableDraft<Square> | null)[][] = [];
+    const newTiles = [];
     // When turning leftwards the first row becomes the first column reversed
-    for (let row = 0; row < draft.tiles[0]!.length; row++) {
-      newTiles.push(draft.tiles.map((column) => column[row] ?? null).reverse());
+    for (let row = 0; row < draft.tiles[0].length; row++) {
+      newTiles.push(draft.tiles.map((column) => column[row]).reverse());
     }
     draft.tiles = newTiles;
 
@@ -201,7 +200,7 @@ export function placePieceOnBoard(board: Board, ...pieces: Piece[]): Board {
   return produce(board, (draft) => {
     pieces.forEach((piece) => {
       iteratePiece(piece, (tile: Square, col: number, row: number) => {
-        draft[col]![row] = tile;
+        draft[col][row] = tile;
       });
     });
   });
@@ -228,7 +227,7 @@ export function isPiecePositionValid(board: Board, piece: Piece) {
 
   // Check for intersection with existing blocks on the board
   iteratePiece(piece, (_tile, col, row) => {
-    if (board[col]![row]) {
+    if (board[col][row]) {
       isValid = false;
       return false;
     }
@@ -324,9 +323,9 @@ export function boardToTimetableArrangement(board: Board): TimetableArrangement 
   });
 
   iterateBoard(board, (tile, col, row) => {
-    const day = mapIndexToDayOfWeek((Math.floor(col / 3) + 1) as DayOfWeekIndex);
+    const day = DaysOfWeek[Math.floor(col / 3) + 1];
     const dayColumn = col % 3;
-    timetable[day]![dayColumn]!.push(createLessonSquare(tile.color, row + 1));
+    timetable[day][dayColumn].push(createLessonSquare(tile.color, row + 1));
   });
 
   return timetable;

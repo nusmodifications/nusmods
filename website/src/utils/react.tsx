@@ -31,7 +31,7 @@ export function replaceWithNode(
   // This allows us to replace the even position elements with components.
   // However, if the string starts with a match, then the first element will be a match
   // so we add in an empty string to pad matches to even positions
-  if (parts.length !== 0 && regex.test(parts[0]!)) parts.unshift('');
+  if (parts.length && regex.test(parts[0])) parts.unshift('');
 
   return (
     <>

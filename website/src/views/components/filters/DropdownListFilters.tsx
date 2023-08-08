@@ -99,7 +99,7 @@ const DesktopFilter: FC<DisplayProps> = ({ allItems, onSelectItem, showCount, pl
         <div className="dropdown">
           <div
             className={classnames(styles.searchWrapper, {
-              [styles.focused!]: isFocused,
+              [styles.focused]: isFocused,
             })}
           >
             <Search className={styles.searchIcon} onClick={focusInput} />
@@ -127,7 +127,7 @@ const DesktopFilter: FC<DisplayProps> = ({ allItems, onSelectItem, showCount, pl
                     item: key,
                     className: classnames('dropdown-item form-check', {
                       'dropdown-selected': index === highlightedIndex,
-                      [styles.enabled!]: selected,
+                      [styles.enabled]: selected,
                     }),
                   })}
                 >

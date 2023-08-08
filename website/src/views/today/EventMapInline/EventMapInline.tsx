@@ -24,7 +24,7 @@ const EventMapInline: React.FunctionComponent<Props> = ({
   toggleOpen,
   venueLocations,
 }) => {
-  const venueLocation: VenueLocation | undefined = venueLocations[venue];
+  const venueLocation: VenueLocation = venueLocations[venue];
   if (!venueLocation || !venueLocation.location) {
     return null;
   }

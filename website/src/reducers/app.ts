@@ -63,7 +63,7 @@ function app(state: AppState = defaultAppState(), action: Actions): AppState {
       if (state.notifications.length) {
         // If the ONLY notification in the queue can be discarded, we replace
         // it with the current one
-        if (state.notifications.length === 1 && state.notifications[0]!.overwritable) {
+        if (state.notifications.length === 1 && state.notifications[0].overwritable) {
           return {
             ...state,
             notifications: [action.payload],

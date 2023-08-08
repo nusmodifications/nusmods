@@ -132,7 +132,7 @@ const PlannerModule = memo<Props>((props) => {
           <button
             type="button"
             className={classnames('btn btn-sm btn-svg', styles.placeholderSelect, {
-              [styles.empty!]: !moduleCode,
+              [styles.empty]: !moduleCode,
             })}
             onClick={() => setEditingPlaceholder(true)}
           >
@@ -175,9 +175,9 @@ const PlannerModule = memo<Props>((props) => {
         <div
           ref={provided.innerRef}
           className={classnames(styles.module, {
-            [styles.warning!]: conflict,
-            [styles.isDragging!]: snapshot.isDragging,
-            [styles.placeholder!]: placeholder && !moduleCode,
+            [styles.warning]: conflict,
+            [styles.isDragging]: snapshot.isDragging,
+            [styles.placeholder]: placeholder && !moduleCode,
           })}
           {...provided.draggableProps}
           {...provided.dragHandleProps}

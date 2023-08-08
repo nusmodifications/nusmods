@@ -4,10 +4,10 @@ import { groupBy, range } from 'lodash';
 import classnames from 'classnames';
 import { addDays } from 'date-fns';
 
-import { DayOfWeekIndex, Semester, mapIndexToDayOfWeek } from 'types/modules';
+import { Semester, WorkingDays } from 'types/modules';
 import { ModuleWithColor, ModuleWithExamTime, TimeSegment } from 'types/views';
 import config from 'config';
-import { formatExamDateToDateTime, getExamDate } from 'utils/modules';
+import { formatExamDate, getExamDate } from 'utils/modules';
 import { toSingaporeTime } from 'utils/timify';
 import elements from 'views/elements';
 import ExamWeek from './ExamWeek';
@@ -78,7 +78,9 @@ export default class ExamCalendar extends PureComponent<Props> {
       const dateTime = getExamDate(module, semester);
       if (!dateTime) return;
 
-      const [date, time] = formatExamDateToDateTime(dateTime);
+      const [date, ...timeParts] = formatExamDate(dateTime).split(' ');
+      const time = timeParts.join(' ');
+
       modulesWithExams.push({
         module,
         dateTime,
@@ -112,7 +114,7 @@ export default class ExamCalendar extends PureComponent<Props> {
     const daysWithExams = Math.max(
       5,
       ...modulesWithExams.map((module) => toSingaporeTime(module.dateTime).getDay()),
-    ) as DayOfWeekIndex;
+    );
 
     const modulesByExamDate = groupBy(modulesWithExams, (module) => module.date);
 
@@ -128,9 +130,9 @@ export default class ExamCalendar extends PureComponent<Props> {
         <table>
           <thead>
             <tr>
-              {(range(daysWithExams) as DayOfWeekIndex[]).map((day) => (
+              {range(daysWithExams).map((day) => (
                 <th key={day} className={styles.dayName}>
-                  {mapIndexToDayOfWeek(day).slice(0, 3)}
+                  {WorkingDays[day].slice(0, 3)}
                 </th>
               ))}
             </tr>

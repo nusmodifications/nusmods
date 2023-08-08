@@ -67,7 +67,7 @@ describe(ModulesSelect, () => {
     input.simulate('focus');
     input.simulate('change', { target: { value: 'T' } });
     wrapper.find('li').first().simulate('click');
-    expect(commonProps.onChange).toHaveBeenCalledWith(modules[0]!.moduleCode);
+    expect(commonProps.onChange).toHaveBeenCalledWith(modules[0].moduleCode);
     // remain open
     const downShift = wrapper.find(Downshift);
     expect(downShift.prop('isOpen')).toBe(true);

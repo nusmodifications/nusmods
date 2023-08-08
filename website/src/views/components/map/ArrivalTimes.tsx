@@ -16,9 +16,9 @@ type Props = BusTiming & {
  * Extract the route name from the start of a string
  */
 const routes = ['A1', 'A2', 'B1', 'B2', 'C', 'D1', 'D2', 'BTC1', 'BTC2'];
-export function extractRoute(route: string): string | null {
-  for (const cur of routes) {
-    if (route.startsWith(cur)) return cur;
+export function extractRoute(route: string) {
+  for (let i = 0; i < routes.length; i++) {
+    if (route.startsWith(routes[i])) return routes[i];
   }
   return null;
 }
@@ -93,7 +93,7 @@ export const ArrivalTimes = memo<Props>((props: Props) => {
       <button
         type="button"
         className={classnames('btn btn-sm btn-link btn-svg', styles.refreshBtn, {
-          [styles.isLoading!]: props.isLoading,
+          [styles.isLoading]: props.isLoading,
         })}
         disabled={props.isLoading}
         onClick={() => props.reload(props.code)}

@@ -6,10 +6,10 @@ import styles from './SemesterBadge.scss';
 
 /* eslint-disable no-useless-computed-key */
 const BADGE_COLOR: { [semester: number]: string } = {
-  [1]: styles.sem1!,
-  [2]: styles.sem2!,
-  [3]: styles.sem3!,
-  [4]: styles.sem4!,
+  [1]: styles.sem1,
+  [2]: styles.sem2,
+  [3]: styles.sem3,
+  [4]: styles.sem4,
 };
 /* eslint-enable */
 

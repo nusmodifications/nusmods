@@ -103,7 +103,7 @@ const ModuleWorkload = React.memo<Props>(({ workload }) => {
 
                 <div
                   className={classnames(styles.moduleWorkloadBlocks, {
-                    [styles.blocksFixed!]: Math.ceil(hours) > ROW_MAX,
+                    [styles.blocksFixed]: Math.ceil(hours) > ROW_MAX,
                   })}
                 >
                   {workloadBlocks(component, hours)}

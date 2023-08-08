@@ -16,8 +16,8 @@ function reorder<T>(items: T[], startIndex: number, endIndex: number) {
   if (startIndex === endIndex) return items;
 
   const result = [...items];
-  const removed = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed[0]!);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
   return result;
 }
 

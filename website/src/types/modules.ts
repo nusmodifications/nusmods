@@ -52,29 +52,7 @@ export const WorkingDays: readonly Day[] = [
   'Saturday',
 ];
 
-// TODO(zwliew): Replace uses of this with the switch case below.
 export const DaysOfWeek: readonly Day[] = [...WorkingDays, 'Sunday'];
-
-export type DayOfWeekIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
-
-export const mapIndexToDayOfWeek = (index: DayOfWeekIndex): Day => {
-  switch (index) {
-    case 0:
-      return 'Monday';
-    case 1:
-      return 'Tuesday';
-    case 2:
-      return 'Wednesday';
-    case 3:
-      return 'Thursday';
-    case 4:
-      return 'Friday';
-    case 5:
-      return 'Saturday';
-    case 6:
-      return 'Sunday';
-  }
-};
 
 export const Semesters: readonly Semester[] = [1, 2, 3, 4];
 

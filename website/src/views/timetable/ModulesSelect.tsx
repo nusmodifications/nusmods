@@ -137,8 +137,8 @@ const ModulesSelect: FC<Props> = ({
                   disabled: module.isAdded || module.isAdding,
                 })}
                 className={classnames(styles.option, {
-                  [styles.optionDisabled!]: module.isAdded || module.isAdding,
-                  [styles.optionSelected!]: highlightedIndex === index,
+                  [styles.optionDisabled]: module.isAdded || module.isAdding,
+                  [styles.optionSelected]: highlightedIndex === index,
                 })}
               >
                 {/* Using interpolated string instead of JSX because of iOS Safari

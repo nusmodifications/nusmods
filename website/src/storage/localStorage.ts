@@ -15,7 +15,7 @@ export function createLocalStorageShim(): Storage {
     },
 
     key(index: number) {
-      return Object.keys(storage.privData)[index] ?? null;
+      return Object.keys(storage.privData)[index];
     },
 
     clear() {
@@ -27,7 +27,7 @@ export function createLocalStorageShim(): Storage {
     },
 
     getItem(key: string) {
-      return storage.privData[key] ?? null;
+      return storage.privData[key] || null;
     },
 
     removeItem: (key: string) => delete storage.privData[key],

@@ -45,7 +45,7 @@ export const Internal = {
 export function addModule(semester: Semester, moduleCode: ModuleCode) {
   return (dispatch: Dispatch, getState: GetState) =>
     dispatch(fetchModule(moduleCode)).then(() => {
-      const module: Module | undefined = getState().moduleBank.modules[moduleCode];
+      const module: Module = getState().moduleBank.modules[moduleCode];
 
       if (!module) {
         dispatch(

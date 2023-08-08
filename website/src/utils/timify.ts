@@ -1,4 +1,4 @@
-import { DayOfWeekIndex, DayText, LessonTime } from 'types/modules';
+import { DayText, LessonTime } from 'types/modules';
 import {
   format,
   getHours,
@@ -140,12 +140,8 @@ export function getCurrentMinutes(
 }
 
 // Monday = 0, Friday = 4, Sunday = 6
-export function getDayIndex(date: Date = new Date()): DayOfWeekIndex {
-  const idx = getISODay(date) - 1;
-  if (idx !== 0 && idx !== 1 && idx !== 2 && idx !== 3 && idx !== 4 && idx !== 5 && idx !== 6) {
-    throw new Error(`Invalid day index ${idx}`);
-  }
-  return idx;
+export function getDayIndex(date: Date = new Date()): number {
+  return getISODay(date) - 1;
 }
 
 /**

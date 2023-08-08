@@ -21,7 +21,7 @@ const ThemeOption: React.FC<Props> = (props) => {
     <button
       type="button"
       className={classnames(className, styles.option, `theme-${theme.id}`, {
-        [styles.isSelected!]: isSelected,
+        [styles.isSelected]: isSelected,
       })}
       onClick={() => onSelectTheme(theme.id)}
     >

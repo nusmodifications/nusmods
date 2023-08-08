@@ -65,7 +65,7 @@ describe(LinkModuleCodesComponent, () => {
 
     const moduleEntries = entries(testModules);
     links.forEach((a, index) => {
-      const code = moduleEntries[index]![0];
+      const [code] = moduleEntries[index];
       expect(a.text().replace(' ', '')).toEqual(code);
       expect(a.prop('to')).toContain(code);
     });

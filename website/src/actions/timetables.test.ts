@@ -29,13 +29,13 @@ test('removeLesson should return information to remove module', () => {
 });
 
 test('modifyLesson should return lesson payload', () => {
-  const activeLesson: Lesson = lessons[0]!;
+  const activeLesson: Lesson = lessons[0];
   expect(actions.modifyLesson(activeLesson)).toMatchSnapshot();
 });
 
 test('changeLesson should return updated information to change lesson', () => {
   const semester: Semester = 1;
-  const lesson: Lesson = lessons[1]!;
+  const lesson: Lesson = lessons[1];
   expect(actions.changeLesson(semester, lesson)).toMatchSnapshot();
 });
 

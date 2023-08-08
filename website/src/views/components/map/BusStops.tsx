@@ -86,11 +86,9 @@ export default class BusStops extends PureComponent<Props, State> {
   refreshBusTiming = (code: string) => {
     this.setState((state) =>
       produce(state, (draft) => {
-        const busTiming = draft.busTimings[code];
-        if (!busTiming) throw new Error(`Unrecognized bus stop ${code}`);
-        busTiming.isLoading = true;
+        draft.busTimings[code].isLoading = true;
         // Reset error when reloading so the error message will disappear
-        busTiming.error = null;
+        draft.busTimings[code].error = null;
       }),
     );
 
@@ -98,20 +96,16 @@ export default class BusStops extends PureComponent<Props, State> {
       .then((timings) =>
         this.setState((state) =>
           produce(state, (draft) => {
-            const busTiming = draft.busTimings[code];
-            if (!busTiming) throw new Error(`Unrecognized bus stop ${code}`);
-            busTiming.timings = timings;
-            busTiming.isLoading = false;
+            draft.busTimings[code].timings = timings;
+            draft.busTimings[code].isLoading = false;
           }),
         ),
       )
       .catch((error) =>
         this.setState((state) =>
           produce(state, (draft) => {
-            const busTiming = draft.busTimings[code];
-            if (!busTiming) throw new Error(`Unrecognized bus stop ${code}`);
-            busTiming.error = error;
-            busTiming.isLoading = false;
+            draft.busTimings[code].error = error;
+            draft.busTimings[code].isLoading = false;
           }),
         ),
       );
@@ -127,12 +121,12 @@ export default class BusStops extends PureComponent<Props, State> {
           // The hit area is an invisible circle that covers the original
           // OSM bus stop so that it is clickable
           const hitAreaClass = classnames(styles.hitArea, {
-            [styles.editing!]: allowEditing,
+            [styles.editing]: allowEditing,
           });
 
           // Routes are displayed to the left or right of the hit area
           const routeWrapperClass = classnames(styles.routeWrapper, {
-            [styles.left!]: stop.displayRoutesLeft,
+            [styles.left]: stop.displayRoutesLeft,
           });
 
           const routeIndicators = stop.routes.map(
@@ -173,7 +167,7 @@ export default class BusStops extends PureComponent<Props, State> {
                   name={stop.name}
                   code={stop.code}
                   reload={this.refreshBusTiming}
-                  {...busTimings[stop.code]!}
+                  {...busTimings[stop.code]}
                 />
               </Popup>
             </Marker>
