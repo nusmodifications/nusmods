@@ -39,9 +39,6 @@ const getSearchUrl = (item: SearchItem) => {
       const path = item.result === VENUE_RESULT ? '/venues' : '/courses';
       return `${path}?q=${encodeURIComponent(item.term)}`;
     }
-
-    default:
-      throw Error(`Unknown item type: ${item}`);
   }
 };
 
