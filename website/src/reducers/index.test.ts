@@ -42,7 +42,7 @@ const exportData: ExportData = {
 jest.mock(
   'storage/persistReducer',
   <T>() =>
-    (key: string, reducer: T) =>
+    (_key: string, reducer: T) =>
       reducer,
 );
 

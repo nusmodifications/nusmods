@@ -93,11 +93,11 @@ export class VenuesContainerComponent extends Component<Props, State> {
     };
   }
 
-  componentDidMount() {
+  override componentDidMount() {
     VenueLocation.preload();
   }
 
-  componentDidUpdate(prevProps: Props, prevState: State) {
+  override componentDidUpdate(_prevProps: Props, prevState: State) {
     // Update URL if any of these props have changed
     const { searchOptions, searchTerm, isAvailabilityEnabled } = this.state;
 
@@ -298,7 +298,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
     );
   }
 
-  render() {
+  override render() {
     const selectedVenue = this.selectedVenue();
     const { searchTerm, isAvailabilityEnabled, isMapExpanded, searchOptions } = this.state;
     const { venues } = this.props;

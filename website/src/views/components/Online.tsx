@@ -14,13 +14,13 @@ export class OnlineComponent extends React.Component<Props> {
     isLive: true,
   };
 
-  shouldComponentUpdate(nextProps: Props) {
+  override shouldComponentUpdate(nextProps: Props) {
     // Do not rerender if the component is not live and the only thing
     // that has changed is the online status
     return nextProps.isLive || nextProps.children !== this.props.children;
   }
 
-  render() {
+  override render() {
     const { children, isOnline } = this.props;
 
     if (typeof children === 'function') {

@@ -17,11 +17,11 @@ export default class ErrorBoundary extends React.Component<Props, State> {
     errorPage: () => null,
   };
 
-  state: State = {
+  override state: State = {
     error: null,
   };
 
-  componentDidCatch(error: Error, info: React.ErrorInfo) {
+  override componentDidCatch(error: Error, info: React.ErrorInfo) {
     this.setState({ error });
 
     if (this.props.captureError) {
@@ -29,7 +29,7 @@ export default class ErrorBoundary extends React.Component<Props, State> {
     }
   }
 
-  render() {
+  override render() {
     const { error } = this.state;
 
     if (error) {

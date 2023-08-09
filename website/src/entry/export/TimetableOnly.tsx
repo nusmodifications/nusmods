@@ -21,13 +21,13 @@ type State = {
 };
 
 export default class TimetableOnly extends Component<Props, State> {
-  state = {
+  override state = {
     semester: 1,
     timetable: {},
     colors: {},
   };
 
-  render() {
+  override render() {
     const { store } = this.props;
     const { theme } = store.getState();
 

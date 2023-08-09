@@ -177,7 +177,7 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
     );
   };
 
-  render() {
+  override render() {
     const { location, reporterEmail, floor, roomName, isMapExpanded } = this.state;
 
     if (this.state.submitted) {
