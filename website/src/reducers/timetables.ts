@@ -34,26 +34,20 @@ export function migrateV1toV2(
   oldState: TimetableStateV1 & PersistedState,
 ): TimetablesState & PersistedState {
   const newLessons: TimetableConfig = {};
-  const oldLessons = oldState.lessons;
   const newCustomisedModules: CustomisedModulesMap = {};
 
-  Object.entries(oldLessons).forEach(([semester, modules]) => {
+  Object.entries(oldState.lessons).forEach(([semester, modules]) => {
     newCustomisedModules[semester] = [];
 
+    // Migrate existing lessons to V2 format.
+    const newSemester: SemTimetableConfig = {};
     Object.entries(modules).forEach(([moduleCode, lessons]) => {
-      const newSemester: { [moduleCode: string]: { [lessonType: string]: string[] } } = {
-        [moduleCode]: {},
-      };
-
-      Object.entries(lessons).forEach(([lessonType, lessonValue]) => {
-        const lessonArray = [lessonValue];
-        newSemester[moduleCode][lessonType] = lessonArray;
+      newSemester[moduleCode] = {};
+      Object.entries(lessons).forEach(([type, classNum]) => {
+        newSemester[moduleCode][type] = [classNum];
       });
-      if (!newLessons[semester]) {
-        newLessons[semester] = {};
-      }
-      Object.assign(newLessons[semester], newSemester);
     });
+    newLessons[semester] = newSemester;
   });
 
   return {
@@ -123,7 +117,7 @@ function moduleLessonConfig(
   switch (action.type) {
     case CHANGE_LESSON: {
       const { classNo, lessonType } = action.payload;
-      if (!(classNo && lessonType)) return state;
+      if (!classNo || !lessonType) return state;
       return {
         ...state,
         [lessonType]: [
@@ -136,7 +130,7 @@ function moduleLessonConfig(
       return action.payload.lessonConfig;
     case ADD_LESSON: {
       const { classNo, lessonType } = action.payload;
-      if (!(classNo && lessonType)) return state;
+      if (!classNo || !lessonType) return state;
       return {
         ...state,
         [lessonType]: [...state[lessonType], classNo],
@@ -144,7 +138,7 @@ function moduleLessonConfig(
     }
     case REMOVE_LESSON: {
       const { classNo, lessonType } = action.payload;
-      if (!(classNo && lessonType)) return state;
+      if (!classNo || !lessonType) return state;
       return {
         ...state,
         [lessonType]: state[lessonType].filter((lesson) => lesson !== classNo),
