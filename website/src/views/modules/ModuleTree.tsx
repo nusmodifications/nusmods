@@ -44,14 +44,14 @@ const nodeName = (node: PrereqTree) => {
   if (name.includes(GRADE_REQUIREMENT_SEPARATOR)) {
     const [moduleName, requiredGrade] = name.split(GRADE_REQUIREMENT_SEPARATOR);
     if (requiredGrade !== PASSING_GRADE) {
-      name = `Minimally ${requiredGrade} for ${moduleName}`;
+      name = `${moduleName} (minimally ${requiredGrade})`;
     } else {
       name = moduleName;
     }
   }
   if (name.includes(MODULE_NAME_WILDCARD)) {
     const [beforeWildcard, afterWildcard] = name.split(MODULE_NAME_WILDCARD);
-    name = `Course starting with "${beforeWildcard}" ${afterWildcard}`;
+    name = `course starting with '${beforeWildcard}' ${afterWildcard}`;
   }
   return name.trim();
 };
@@ -82,31 +82,24 @@ const Tree: React.FC<TreeDisplay> = (props) => {
   const isConditional = typeof node !== 'string';
   const name = nodeName(node);
 
-  if (isConditional) {
-    return (
-      <>
-        <div
-          className={classnames(styles.node, styles.conditional, {
-            [styles.prereqNode]: isPrereq,
-          })}
-        >
-          {formatConditional(node)}
-        </div>
-        <Branch nodes={unwrapLayer(node)} layer={layer + 1} />
-      </>
-    );
-  }
-
   return (
-    <div
-      className={classnames(styles.node, `hoverable color-${layer}`, {
-        [styles.prereqNode]: isPrereq,
-      })}
-    >
-      <LinkModuleCodes className={styles.link} treatAsSingleMatch>
-        {name}
-      </LinkModuleCodes>
-    </div>
+    <>
+      <div
+        className={classnames(styles.node, {
+          [`hoverable color-${layer}`]: !isConditional,
+          [styles.conditional]: isConditional,
+          [styles.prereqNode]: isPrereq,
+        })}
+      >
+        {isConditional ? (
+          formatConditional(node)
+        ) : (
+          <LinkModuleCodes className={styles.link}>{name}</LinkModuleCodes>
+        )}
+      </div>
+
+      {isConditional && <Branch nodes={unwrapLayer(node)} layer={layer + 1} />}
+    </>
   );
 };
 
