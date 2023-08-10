@@ -41,7 +41,7 @@ $connector-size: 0.75rem;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0.25rem 0.5rem;
+  padding: 0.125rem 0.25rem;
   margin: 0 0 1px $connector-size;
   border-radius: $btn-border-radius;
 
@@ -51,6 +51,10 @@ $connector-size: 0.75rem;
     width: $connector-size;
     height: 1px;
   }
+}
+
+.moduleNode {
+  min-width: 5rem;
 }
 
 .prefix {
