@@ -36,24 +36,27 @@ const formatConditional = (node: PrereqTree) => {
   return 'all of';
 };
 
-const nodeName = (node: PrereqTree) => {
+type NodeName = { prefix?: string; name: string };
+const nodeName = (node: PrereqTree): NodeName => {
   if (typeof node !== 'string') {
-    return Object.keys(node)[0];
+    return { name: Object.keys(node)[0] };
   }
-  let name = node;
-  if (name.includes(GRADE_REQUIREMENT_SEPARATOR)) {
-    const [moduleName, requiredGrade] = name.split(GRADE_REQUIREMENT_SEPARATOR);
+  const res: NodeName = { name: node };
+  if (res.name.includes(GRADE_REQUIREMENT_SEPARATOR)) {
+    const [moduleName, requiredGrade] = res.name.split(GRADE_REQUIREMENT_SEPARATOR);
     if (requiredGrade !== PASSING_GRADE) {
-      name = `${moduleName} (minimally ${requiredGrade})`;
-    } else {
-      name = moduleName;
+      res.prefix = `Minimally ${requiredGrade} for`;
     }
+    res.name = moduleName;
   }
-  if (name.includes(MODULE_NAME_WILDCARD)) {
-    const [beforeWildcard, afterWildcard] = name.split(MODULE_NAME_WILDCARD);
-    name = `course starting with '${beforeWildcard}' ${afterWildcard}`;
+  if (res.name.includes(MODULE_NAME_WILDCARD)) {
+    const [beforeWildcard, afterWildcard] = res.name.split(MODULE_NAME_WILDCARD);
+    res.prefix = 'Course starting with';
+    res.name = `"${beforeWildcard}" ${afterWildcard}`;
   }
-  return name.trim();
+  res.prefix?.trim();
+  res.name.trim();
+  return res;
 };
 
 const unwrapLayer = (node: PrereqTree) => {
@@ -69,7 +72,7 @@ const unwrapLayer = (node: PrereqTree) => {
 const Branch: React.FC<{ nodes: PrereqTree[]; layer: number }> = (props) => (
   <ul className={styles.tree}>
     {props.nodes.map((child, idx) => (
-      <li className={styles.branch} key={typeof child === 'string' ? nodeName(child) : idx}>
+      <li className={styles.branch} key={typeof child === 'string' ? nodeName(child).name : idx}>
         <Tree node={child} layer={props.layer} />
       </li>
     ))}
@@ -80,26 +83,32 @@ const Tree: React.FC<TreeDisplay> = (props) => {
   const { layer, node, isPrereq } = props;
 
   const isConditional = typeof node !== 'string';
-  const name = nodeName(node);
+  const { prefix, name } = nodeName(node);
+
+  if (isConditional) {
+    return (
+      <>
+        <div
+          className={classnames(styles.node, styles.conditional, {
+            [styles.prereqNode]: isPrereq,
+          })}
+        >
+          {formatConditional(node)}
+        </div>
+        <Branch nodes={unwrapLayer(node)} layer={layer + 1} />
+      </>
+    );
+  }
 
   return (
-    <>
-      <div
-        className={classnames(styles.node, {
-          [`hoverable color-${layer}`]: !isConditional,
-          [styles.conditional]: isConditional,
-          [styles.prereqNode]: isPrereq,
-        })}
-      >
-        {isConditional ? (
-          formatConditional(node)
-        ) : (
-          <LinkModuleCodes className={styles.link}>{name}</LinkModuleCodes>
-        )}
-      </div>
-
-      {isConditional && <Branch nodes={unwrapLayer(node)} layer={layer + 1} />}
-    </>
+    <div
+      className={classnames(styles.node, `hoverable color-${layer}`, {
+        [styles.prereqNode]: isPrereq,
+      })}
+    >
+      <span className={styles.prefix}>{prefix}</span>
+      <LinkModuleCodes className={styles.link}>{name}</LinkModuleCodes>
+    </div>
   );
 };
 
