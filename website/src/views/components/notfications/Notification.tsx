@@ -18,7 +18,7 @@ type State = {
   actionClicked: boolean;
 };
 
-const ACTIVE_CLASSNAME = 'mdc-snackbar--active';
+const ACTIVE_CLASSNAME = 'mdc-snackbar--open';
 const DEFAULT_TIMEOUT = 2750;
 const TRANSITION_DURATION = 250;
 
@@ -140,12 +140,12 @@ export class NotificationComponent extends React.Component<Props, State> {
     const { message, action } = shownNotification;
     return (
       <>
-        <div className="mdc-snackbar__text">{message}</div>
+        <div className="mdc-snackbar__label">{message}</div>
         {action && (
-          <div className="mdc-snackbar__action-wrapper">
+          <div className="mdc-snackbar__actions">
             <button
               type="button"
-              className="mdc-snackbar__action-button"
+              className="mdc-snackbar__action"
               onClick={() => {
                 this.setState({ actionClicked: true });
                 const { handler } = action;
@@ -154,7 +154,7 @@ export class NotificationComponent extends React.Component<Props, State> {
                 this.props.popNotification();
               }}
             >
-              {action.text}
+              <span className="mdc-button__label">{action.text}</span>
             </button>
           </div>
         )}
@@ -176,7 +176,9 @@ export class NotificationComponent extends React.Component<Props, State> {
         onTransitionEnd={this.onTransitionEnd}
         ref={this.element}
       >
-        {this.renderNotificationContent()}
+        <div className="mdc-snackbar__surface" role="status" aria-relevant="additions">
+          {this.renderNotificationContent()}
+        </div>
       </div>
     );
   }
