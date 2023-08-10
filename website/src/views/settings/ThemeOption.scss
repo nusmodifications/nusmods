@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @import '~styles/utils/modules-entry';
 
 $theme-selected-bg-color: var(--gray-lighter);
@@ -28,7 +30,7 @@ $theme-option-gap: 0.7rem;
   $number-colors: 8;
 
   .colorItem {
-    $size: 100% / $number-colors;
+    $size: math.div(100%, $number-colors);
 
     display: inline-block;
     width: $size;

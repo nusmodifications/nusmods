@@ -34,11 +34,11 @@ $logo-vert-padding: 0.875rem;
 .navRight {
   display: flex;
   align-items: center;
-  padding: $vert-padding $grid-gutter-width/2;
+  padding: $vert-padding $grid-gutter-width*0.5;
 }
 
 .weekText {
-  padding-left: $grid-gutter-width/2;
+  padding-left: $grid-gutter-width*0.5;
   font-size: $font-size-xs;
   line-height: 1.15;
   text-align: right;
@@ -51,7 +51,7 @@ $logo-vert-padding: 0.875rem;
   }
 
   .navRight {
-    padding: $vert-padding $grid-gutter-width/2 $vert-padding 2rem;
+    padding: $vert-padding $grid-gutter-width*0.5 $vert-padding 2rem;
   }
 }
 
