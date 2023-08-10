@@ -106,7 +106,7 @@ const Tree: React.FC<TreeDisplay> = (props) => {
         [styles.prereqNode]: isPrereq,
       })}
     >
-      <span className={styles.prefix}>{prefix}</span>
+      {prefix && <span className={styles.prefix}>{prefix}</span>}
       <LinkModuleCodes className={styles.link}>{name}</LinkModuleCodes>
     </div>
   );
