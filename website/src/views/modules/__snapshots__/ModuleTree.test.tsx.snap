@@ -12,7 +12,7 @@ exports[`ModuleTree should render prereq tree of module: CS3244 1`] = `
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -25,7 +25,7 @@ exports[`ModuleTree should render prereq tree of module: CS3244 1`] = `
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -38,7 +38,7 @@ exports[`ModuleTree should render prereq tree of module: CS3244 1`] = `
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -60,7 +60,7 @@ exports[`ModuleTree should render prereq tree of module: CS3244 1`] = `
         class="branch"
       >
         <div
-          class="node hoverable color-1"
+          class="node moduleNode hoverable color-1"
         >
           <mockedlink
             class="link"
@@ -97,7 +97,7 @@ exports[`ModuleTree should render prereq tree of module: CS3244 1`] = `
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -110,7 +110,7 @@ exports[`ModuleTree should render prereq tree of module: CS3244 1`] = `
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -123,7 +123,7 @@ exports[`ModuleTree should render prereq tree of module: CS3244 1`] = `
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -136,7 +136,7 @@ exports[`ModuleTree should render prereq tree of module: CS3244 1`] = `
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -162,7 +162,7 @@ exports[`ModuleTree should render prereq tree of module: CS3244 1`] = `
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -175,7 +175,7 @@ exports[`ModuleTree should render prereq tree of module: CS3244 1`] = `
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -188,7 +188,7 @@ exports[`ModuleTree should render prereq tree of module: CS3244 1`] = `
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -201,7 +201,7 @@ exports[`ModuleTree should render prereq tree of module: CS3244 1`] = `
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -214,7 +214,7 @@ exports[`ModuleTree should render prereq tree of module: CS3244 1`] = `
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -227,7 +227,7 @@ exports[`ModuleTree should render prereq tree of module: CS3244 1`] = `
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -253,7 +253,7 @@ exports[`ModuleTree should render prereq tree of module: CS3244 1`] = `
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -266,7 +266,7 @@ exports[`ModuleTree should render prereq tree of module: CS3244 1`] = `
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -279,7 +279,7 @@ exports[`ModuleTree should render prereq tree of module: CS3244 1`] = `
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -305,7 +305,7 @@ exports[`ModuleTree should render prereq tree of module: CS3244 1`] = `
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -318,7 +318,7 @@ exports[`ModuleTree should render prereq tree of module: CS3244 1`] = `
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -331,7 +331,7 @@ exports[`ModuleTree should render prereq tree of module: CS3244 1`] = `
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -384,7 +384,7 @@ exports[`ModuleTree should render requirements fulfilled tree of module: ACC1002
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -397,7 +397,7 @@ exports[`ModuleTree should render requirements fulfilled tree of module: ACC1002
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -410,7 +410,7 @@ exports[`ModuleTree should render requirements fulfilled tree of module: ACC1002
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -423,7 +423,7 @@ exports[`ModuleTree should render requirements fulfilled tree of module: ACC1002
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -436,7 +436,7 @@ exports[`ModuleTree should render requirements fulfilled tree of module: ACC1002
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -449,7 +449,7 @@ exports[`ModuleTree should render requirements fulfilled tree of module: ACC1002
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -462,7 +462,7 @@ exports[`ModuleTree should render requirements fulfilled tree of module: ACC1002
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -475,7 +475,7 @@ exports[`ModuleTree should render requirements fulfilled tree of module: ACC1002
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -488,7 +488,7 @@ exports[`ModuleTree should render requirements fulfilled tree of module: ACC1002
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -501,7 +501,7 @@ exports[`ModuleTree should render requirements fulfilled tree of module: ACC1002
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -514,7 +514,7 @@ exports[`ModuleTree should render requirements fulfilled tree of module: ACC1002
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -527,7 +527,7 @@ exports[`ModuleTree should render requirements fulfilled tree of module: ACC1002
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -540,7 +540,7 @@ exports[`ModuleTree should render requirements fulfilled tree of module: ACC1002
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -553,7 +553,7 @@ exports[`ModuleTree should render requirements fulfilled tree of module: ACC1002
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -575,7 +575,7 @@ exports[`ModuleTree should render requirements fulfilled tree of module: ACC1002
         class="branch"
       >
         <div
-          class="node hoverable color-1"
+          class="node moduleNode hoverable color-1"
         >
           <mockedlink
             class="link"
