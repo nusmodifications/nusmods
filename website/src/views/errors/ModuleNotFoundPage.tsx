@@ -29,7 +29,7 @@ type Props = OwnProps & {
 export class ModuleNotFoundPageComponent extends PureComponent<Props> {
   override componentDidMount() {
     Sentry.withScope(() => {
-      Sentry.captureMessage('404 - Course Not Found');
+      Sentry.captureMessage('404 - Module Not Found');
     });
 
     // If we think this is a module, try checking for archived modules
