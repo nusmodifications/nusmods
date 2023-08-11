@@ -1,0 +1,131 @@
+@import "./_variables.scss";
+@import '~styles/utils/modules-entry';
+
+$input-height: 2.75rem;
+$module-list-height: 13.5rem;
+$item-padding-vertical: 0.6rem;
+$btn-margin: 0.5rem;
+
+
+.titleIcon {
+  composes: svg svg-small from global;
+}
+
+.input {
+  composes: form-control from global;
+  width: 100%;
+  text-align: left;
+  white-space: nowrap;
+
+  &:not(:disabled) {
+    box-shadow: inset 2px 2px 4px rgba(#000, 0.1);
+
+    @include night-mode {
+      box-shadow: inset 2px 2px 4px rgba(#000, 0.9);
+    }
+  }
+}
+
+.submitBtn {
+  margin-top: 1rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-left: -$btn-margin; // Negate childrens' left margins
+
+  > * {
+    flex: 0 1 calc(33.333% - 1rem);
+    flex-grow: 1;
+    margin-bottom: $btn-margin;
+    margin-left: $btn-margin;
+  }
+
+  @include media-breakpoint-down(sm) {
+    > * {
+      flex: 0 1 calc(50% - 1rem);
+    }
+  }
+  
+  @include media-breakpoint-down(xs) {
+    > * {
+      flex: 0 1 100%;
+    }
+  }
+
+  @include media-breakpoint-up(md) {
+    :global(.btn) {
+      padding: 0.25rem 0.75rem;
+      //font-size: $font-size-sm;
+    }
+  }
+
+  @include vertical-mode {
+    @include media-breakpoint-down(lg) {
+      > * {
+        flex: 0 1 calc(50% - 1rem);
+      }
+    }
+  }
+
+}
+
+// Two layout forms:
+//
+// 1. Left and right on one row, with space between two groups
+//   - md and above for horizontal
+//
+// 2. Left and right on 2 rows, full width (fullWidthGroup)
+//   - any size in vertical
+//   - sm and below for horizontal
+@mixin fullWidthGroup {
+  .buttonGroup {
+    width: calc(100% + #{$btn-margin}); // Make full width and negate the left shifting caused by our margin-left
+  }
+}
+
+:global(.verticalMode) {
+  @include fullWidthGroup;
+}
+
+@include media-breakpoint-down(sm) {
+  @include fullWidthGroup;
+}
+
+.search {
+  label {
+    margin-bottom: 0;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-s;
+  }
+
+  :global(.form-group) {
+    margin-bottom: 0;
+  }
+}
+
+.label {
+  margin: 0;
+  font-size: $font-size-xs;
+
+  &,
+  label,
+  input {
+    cursor: pointer;
+  }
+
+  &.enabled {
+    font-weight: bold;
+    color: theme-color();
+  }
+
+  :global(.text-muted) {
+    font-weight: normal;
+  }
+
+  @include touchscreen-only {
+    font-size: $font-size-sm;
+  }
+}

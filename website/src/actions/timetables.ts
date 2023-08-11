@@ -18,6 +18,7 @@ import { getModuleTimetable } from 'utils/modules';
 // Actions that should not be used directly outside of thunks
 export const SET_TIMETABLE = 'SET_TIMETABLE' as const;
 export const ADD_MODULE = 'ADD_MODULE' as const;
+export const ADD_CUSTOM_MODULE = 'ADD_CUSTOM_MODULE' as const;
 export const Internal = {
   setTimetable(
     semester: Semester,
@@ -40,13 +41,29 @@ export const Internal = {
       },
     };
   },
+
+  addCustomModule(
+    semester: Semester,
+    moduleCode: ModuleCode,
+    moduleLessonConfig: ModuleLessonConfig,
+    module: Module,
+  ) {
+    return {
+      type: ADD_CUSTOM_MODULE,
+      payload: {
+        semester,
+        moduleCode,
+        moduleLessonConfig,
+        module,
+      },
+    };
+  },
 };
 
 export function addModule(semester: Semester, moduleCode: ModuleCode) {
   return (dispatch: Dispatch, getState: GetState) =>
     dispatch(fetchModule(moduleCode)).then(() => {
       const module: Module = getState().moduleBank.modules[moduleCode];
-
       if (!module) {
         dispatch(
           openNotification(`Cannot load ${moduleCode}`, {
@@ -67,6 +84,47 @@ export function addModule(semester: Semester, moduleCode: ModuleCode) {
 
       dispatch(Internal.addModule(semester, moduleCode, moduleLessonConfig));
     });
+}
+
+export function addCustomModule(semester: Semester, moduleCode: ModuleCode, module: Module) {
+  return (dispatch: Function, getState: GetState) => {
+    const { modules } = getState().moduleBank;
+    if (Object.keys(modules).includes(moduleCode)) {
+      if (modules[moduleCode].title !== module.title) {
+        dispatch(
+          openNotification(`Module ${moduleCode.slice(0, -1)} exist with a different title`, {
+            action: {
+              text: '',
+              handler: () => dispatch(addCustomModule(semester, moduleCode, module)),
+            },
+          }),
+        );
+        return;
+      }
+    }
+
+    let customModule = module;
+
+    if (Object.keys(modules).includes(moduleCode)) {
+      const storedModule = modules[moduleCode];
+      const selectedSemester = getState().app.activeSemester;
+      const modifiedCurrentSemesterData = storedModule.semesterData.map((currentSemesterData) =>
+        currentSemesterData.semester === selectedSemester
+          ? {
+              ...currentSemesterData,
+              timetable: [
+                ...currentSemesterData.timetable,
+                customModule.semesterData[0].timetable[0],
+              ],
+            }
+          : currentSemesterData,
+      );
+      customModule = { ...storedModule, semesterData: modifiedCurrentSemesterData };
+    }
+    const lessons = getModuleTimetable(customModule, semester);
+    const moduleLessonConfig = randomModuleLessonConfig(lessons);
+    dispatch(Internal.addCustomModule(semester, moduleCode, moduleLessonConfig, customModule));
+  };
 }
 
 export const REMOVE_MODULE = 'REMOVE_MODULE' as const;

@@ -13,6 +13,7 @@ import {
   UPDATE_MODULE_TIMESTAMP,
   SET_EXPORTED_DATA,
 } from 'actions/constants';
+import { ADD_CUSTOM_MODULE } from 'actions/timetables';
 import { createMigrate, REHYDRATE } from 'redux-persist';
 import { SUCCESS_KEY } from 'middlewares/requests-middleware';
 
@@ -50,6 +51,15 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: Actions)
         modules: {
           ...state.modules,
           [action.payload.moduleCode]: { ...action.payload, timestamp: Date.now() },
+        },
+      };
+
+    case ADD_CUSTOM_MODULE:
+      return {
+        ...state,
+        modules: {
+          ...state.modules,
+          [action.payload.moduleCode]: { ...action.payload.module, timestamp: Date.now() },
         },
       };
 

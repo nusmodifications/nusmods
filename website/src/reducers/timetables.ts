@@ -10,6 +10,7 @@ import { ColorMapping, TimetablesState } from 'types/reducers';
 import config from 'config';
 import {
   ADD_MODULE,
+  ADD_CUSTOM_MODULE,
   CHANGE_LESSON,
   HIDE_LESSON_IN_TIMETABLE,
   REMOVE_MODULE,
@@ -104,6 +105,7 @@ function semTimetable(
 
   switch (action.type) {
     case ADD_MODULE:
+    case ADD_CUSTOM_MODULE:
       return {
         ...state,
         [moduleCode]: action.payload.moduleLessonConfig,
@@ -129,6 +131,7 @@ function semColors(state: ColorMapping = defaultSemColorMap, action: Actions): C
 
   switch (action.type) {
     case ADD_MODULE:
+    case ADD_CUSTOM_MODULE:
       return {
         ...state,
         [moduleCode]: getNewColor(values(state)),
@@ -154,7 +157,6 @@ function semHiddenModules(state = defaultHiddenState, action: Actions) {
   if (!action.payload) {
     return state;
   }
-
   switch (action.type) {
     case HIDE_LESSON_IN_TIMETABLE:
       return [action.payload.moduleCode, ...state];
@@ -194,6 +196,7 @@ function timetables(
     }
 
     case ADD_MODULE:
+    case ADD_CUSTOM_MODULE:
     case REMOVE_MODULE:
     case SELECT_MODULE_COLOR:
     case CHANGE_LESSON:
@@ -201,7 +204,6 @@ function timetables(
     case HIDE_LESSON_IN_TIMETABLE:
     case SHOW_LESSON_IN_TIMETABLE: {
       const { semester } = action.payload;
-
       return produce(state, (draft) => {
         draft.lessons[semester] = semTimetable(draft.lessons[semester], action);
         draft.colors[semester] = semColors(state.colors[semester], action);
