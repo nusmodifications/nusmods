@@ -179,7 +179,7 @@ class GlobalSearch extends Component<Props, State> {
                     })}
                     type="button"
                   >
-                    modules
+                    courses
                   </button>{' '}
                   or{' '}
                   <button

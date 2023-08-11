@@ -185,7 +185,7 @@ const ReportError = memo<Props>(({ module }) => {
           up to 24 hours for information to be updated before reporting any issues.
         </p>
         <p>
-          This form will send an email about this module to the faculty. If you think the issue is a
+          This form will send an email about this course to the faculty. If you think the issue is a
           bug in NUSMods, please email <a href="mailto:bugs@nusmods.com">bugs@nusmods.com</a>{' '}
           instead.
         </p>
@@ -273,7 +273,7 @@ const FormContent: FC<FormContentProps> = ({
       </div>
 
       <div className="form-group col-sm-12">
-        <label htmlFor="report-error-faculty">Department/faculty offering the module</label>
+        <label htmlFor="report-error-faculty">Department/faculty offering the course</label>
         <select
           className="form-control"
           id="report-error-faculty"
@@ -296,7 +296,7 @@ const FormContent: FC<FormContentProps> = ({
         )}
 
         <p className="form-text text-muted">
-          If the department or faculty for this module cannot be found on this list, please refer to
+          If the department or faculty for this course cannot be found on this list, please refer to
           CourseReg's contact list for{' '}
           <ExternalLink href="https://www.nus.edu.sg/coursereg/docs/UGFac_Contacts.pdf">
             undergraduate
