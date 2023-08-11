@@ -294,25 +294,33 @@ export function findExamClashes(modules: Module[], semester: Semester): ExamClas
 
   delete groupedModules.undefined; // Remove modules without exams
   const clashes = omitBy(groupedModules, (mods) => mods.length === 1); // Remove non-clashing mods
+  console.log(clashes);
+
 
   // Additional checks for exams with non-identical start times
   const groupedModules2 = groupBy(modules, (module) => 
     getExamDateOnly(module, semester)
   );
 
-  console.log(groupedModules2); // -> {examDate: modules[]}
   delete groupedModules2.undefined;
-  
+
   // O(n^2) brute force algorithm to check clashes for modules within same day.
   for (const ed in groupedModules2) {
     const sameDayMods = groupedModules2[ed];
     
     for (var i = 0; i < sameDayMods.length; i++) {
         for (var j = i; j < sameDayMods.length; j++) {
+          
           // For modules with the same exam date, we check within each group whether the exam time intervals clash.
           if (intervalClash(sameDayMods[i], sameDayMods[j], semester)) {
           // If clash, get earlier start date and append both modules to the dictionary via key
             const key = getEarlierTime(sameDayMods[i], sameDayMods[j], semester);
+
+            if (!(key in clashes)) {
+              const modList: Module[] = [];
+              clashes[key] = modList;
+            }
+
             if (!clashes[key].includes(sameDayMods[i])) {clashes[key].push(sameDayMods[i])};
             if (!clashes[key].includes(sameDayMods[j])) {clashes[key].push(sameDayMods[j])};
           }
