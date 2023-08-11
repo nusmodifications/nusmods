@@ -101,7 +101,7 @@ export class AddModuleDropdownComponent extends PureComponent<Props, State> {
         {({ getLabelProps, getItemProps, isOpen, toggleMenu, highlightedIndex, getMenuProps }) => (
           <div>
             <label {...getLabelProps({ htmlFor: id })} className="sr-only">
-              Add module to timetable
+              Add course to timetable
             </label>
 
             <div

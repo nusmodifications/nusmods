@@ -57,7 +57,7 @@ const PlannerModule = memo<Props>((props) => {
           <div className={styles.conflictHeader}>
             <AlertTriangle className={styles.warningIcon} />
             <p>
-              No data on this module.{' '}
+              No data on this course.{' '}
               <button type="button" className="btn btn-link btn-inline" onClick={editCustomData}>
                 Add data
               </button>
