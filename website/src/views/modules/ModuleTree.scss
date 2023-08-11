@@ -54,10 +54,11 @@ $connector-size: 0.75rem;
 }
 
 .moduleNode {
-  min-width: 5rem;
+  min-width: 4.5rem;
 }
 
 .prefix {
+  white-space: nowrap;
   font-size: 0.75rem;
 }
 
