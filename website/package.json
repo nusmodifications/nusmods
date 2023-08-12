@@ -137,7 +137,7 @@
     "bowser": "2.11.0",
     "browserslist-config-nusmods": "file:../packages/browserslist-config-nusmods",
     "classnames": "2.3.2",
-    "core-js": "3.8.2",
+    "core-js": "3.32.0",
     "date-fns": "2.16.1",
     "downshift": "6.0.15",
     "ical-generator": "https://github.com/nusmodifications/ical-generator.git#a2aa62ed",
