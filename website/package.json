@@ -48,7 +48,7 @@
     "@types/lodash": "4.14.197",
     "@types/mousetrap": "1.6.11",
     "@types/no-scroll": "2.1.0",
-    "@types/react": "17.0.63",
+    "@types/react": "17.0.64",
     "@types/react-beautiful-dnd": "13.1.4",
     "@types/react-dom": "17.0.20",
     "@types/react-helmet": "6.1.6",
