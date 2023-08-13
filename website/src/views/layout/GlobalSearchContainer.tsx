@@ -1,8 +1,7 @@
-import type { State } from 'types/state';
-
 import { FC, memo, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import type { State } from 'types/state';
 
 import useMediaQuery from 'views/hooks/useMediaQuery';
 import GlobalSearch from 'views/layout/GlobalSearch';

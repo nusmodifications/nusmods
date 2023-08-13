@@ -277,16 +277,16 @@ describe(parseString, () => {
   it('parses undergrad with courses', () => {
     const result: PrereqTree = {
       or: [
-        "YSC1212:D",
-        "CS1010:D",
-        "CS1010J:D",
-        "CS1010E:D",
-        "CS1010S:D",
-        "CS1010FC:D",
-        "CS1010X:D",
-        "CS1101:D",
-        "CS1101S:D",
-      ]
+        'YSC1212:D',
+        'CS1010:D',
+        'CS1010J:D',
+        'CS1010E:D',
+        'CS1010S:D',
+        'CS1010FC:D',
+        'CS1010X:D',
+        'CS1101:D',
+        'CS1101S:D',
+      ],
     };
     expect(
       parse(
@@ -300,17 +300,17 @@ describe(parseString, () => {
   it('parses undergrad and simplifies nested disjunctions of courses', () => {
     const result: PrereqTree = {
       or: [
-        "AA%:D",
-        "BB%:D",
-        "CC%:D",
-        "DD%:D",
-        "EE%:D",
-        "FF%:D",
-        "GG%:D",
-        "HH%:D",
-        "II%:D",
-        "JJ%:D",
-      ]
+        'AA%:D',
+        'BB%:D',
+        'CC%:D',
+        'DD%:D',
+        'EE%:D',
+        'FF%:D',
+        'GG%:D',
+        'HH%:D',
+        'II%:D',
+        'JJ%:D',
+      ],
     };
     expect(
       parse(
@@ -341,28 +341,16 @@ describe(parseString, () => {
     const result: PrereqTree = {
       and: [
         {
-          or: [
-            "AA%:D",
-            "BB%:D",
-            "CC%:D",
-          ]
+          or: ['AA%:D', 'BB%:D', 'CC%:D'],
         },
         {
-          or: [
-            "DD%:D",
-            "EE%:D",
-            "FF%:D",
-          ]
+          or: ['DD%:D', 'EE%:D', 'FF%:D'],
         },
         {
-          or: [
-            "GG%:D",
-            "HH%:D",
-            "II%:D",
-          ]
+          or: ['GG%:D', 'HH%:D', 'II%:D'],
         },
-        "JJ%:D",
-      ]
+        'JJ%:D',
+      ],
     };
     expect(
       parse(
@@ -392,20 +380,12 @@ describe(parseString, () => {
     const result: PrereqTree = {
       and: [
         {
-          or: [
-            "FIN3102%:D",
-            "QF3101:D",
-          ]
+          or: ['FIN3102%:D', 'QF3101:D'],
         },
         {
-          or: [
-            "DSC2008:D",
-            "DSC1007%:D",
-            "CS1010:D",
-            "CS1101:D",
-          ]
+          or: ['DSC2008:D', 'DSC1007%:D', 'CS1010:D', 'CS1101:D'],
         },
-      ]
+      ],
     };
     expect(
       parse(
@@ -445,14 +425,7 @@ THEN
   });
   it('allows cohort years as predicate (optional)', () => {
     const result: PrereqTree = {
-      or: [
-        "GEA1000N:D",
-        "ST1131:D",
-        "DSA1101:D",
-        "IE1111R:D",
-        "DSE1101:D",
-        "BT1101:D"
-      ]
+      or: ['GEA1000N:D', 'ST1131:D', 'DSA1101:D', 'IE1111R:D', 'DSE1101:D', 'BT1101:D'],
     };
     expect(
       parse(
@@ -465,7 +438,7 @@ THEN
 
   // According to NUS docs, this means ALL courses are required.
   it('allows omitted courses count', () => {
-    const result: PrereqTree = "NTW%:D";
+    const result: PrereqTree = 'NTW%:D';
     expect(
       parse(
         `
@@ -478,7 +451,7 @@ THEN
   // According to NUS docs, this means ALL subjects are required.
   // Also SPECIAL_PROGRAMME is undocumented by NUS, so best effort here...
   it('allows omitted subjects count an undocumented SPECIAL_PROGRAMME type', () => {
-    const result: PrereqTree = "";
+    const result: PrereqTree = '';
     expect(
       parse(
         `
@@ -489,7 +462,22 @@ THEN
   });
 
   it('undocumented 2ND_MAJOR plan type', () => {
-    const result: PrereqTree = { "nOf": [9, ["YCC1111:CS", "YCC1113:CS", "YCC1121:CS", "YCC1131:C", "YCC1112:C", "YCC1114:C", "YCC2121:C", "YCC1122:CS", "YCC2137:C"]] };
+    const result: PrereqTree = {
+      nOf: [
+        9,
+        [
+          'YCC1111:CS',
+          'YCC1113:CS',
+          'YCC1121:CS',
+          'YCC1131:C',
+          'YCC1112:C',
+          'YCC1114:C',
+          'YCC2121:C',
+          'YCC1122:CS',
+          'YCC2137:C',
+        ],
+      ],
+    };
     expect(
       parse(
         `
@@ -501,15 +489,12 @@ THEN
 
   it('parses standalone courses', () => {
     const result: PrereqTree = {
-      "and": [
-        "LSM2251:D",
+      and: [
+        'LSM2251:D',
         {
-          or: [
-            "LSM3272:D",
-            "ENV2101:D",
-          ]
-        }
-      ]
+          or: ['LSM3272:D', 'ENV2101:D'],
+        },
+      ],
     };
     expect(
       parse(
@@ -521,57 +506,54 @@ THEN
   });
 
   it('can parse bare program types with conjunction', () => {
-    const result = ""
+    const result = '';
     expect(
       parse(
         `
         PROGRAM_TYPES MUST_BE_IN Undergraduate Degree AND COHORT_YEARS MUST_BE_IN S:2021 THEN (PROGRAMS MUST_BE_IN 1003QFNHON AND SPECIAL MUST_BE_IN "ACAD_LEVEL=3-4")
-        `
+        `,
       ),
     ).toEqual(result);
   });
 
   it('can parse multiple program types in one PROGRAM_TYPE', () => {
     const result = {
-      or: [
-        "PL3102:D",
-        "PL3232:D",
-      ]
-    }
+      or: ['PL3102:D', 'PL3232:D'],
+    };
     expect(
       parse(
         `
         PROGRAM_TYPES IF_IN Undergraduate Degree, Graduate Degree Research, Graduate Degree Coursework THEN (COURSES (1) PL3102:D, PL3232:D)
-        `
+        `,
       ),
     ).toEqual(result);
-  })
+  });
 
   // Too complex, this says IF CPE degree then xyz course, else IF postgrad then abc course.
   it('cannot parse alternate degree', () => {
-    const result = null
+    const result = null;
     expect(
       parse(
         `
           (PROGRAM_TYPES IF_IN CPE (Certificate) THEN (COURSES (1) IT5003:D)) OR (PROGRAM_TYPES IF_IN Graduate Degree Coursework THEN COURSES (1) IT5003:D)
-        `
+        `,
       ),
     ).toEqual(result);
   });
 
   it('cannot parse alternate program types', () => {
-    const result = null
+    const result = null;
     expect(
       parse(
         `
         PROGRAM_TYPES IF_IN Undergraduate Degree THEN ( UNITS (80) AND COHORT_YEARS MUST_BE_IN E:2019/20 AND COURSES (7) SE%:D OR COURSES (7) PS%:D OR COURSES (7) GL%:D AND GPA (3.2) OR SPECIAL MUST_BE_IN "ACAD_LEVEL=4" ) OR PROGRAM_TYPES IF_IN Undergraduate Degree THEN ( UNITS (80) AND COHORT_YEARS MUST_BE_IN S:2020/21 E:2020/21 AND COURSES (7) SE%:D OR COURSES (7) PS%:D AND GPA (3.2) OR SPECIAL MUST_BE_IN "ACAD_LEVEL=4" )
-        `
+        `,
       ),
     ).toEqual(result);
-  })
+  });
 
   it('cannot parse invalid stuff', () => {
-    const result = null
+    const result = null;
     expect(
       parse(
         `
@@ -579,10 +561,8 @@ THEN
           ((UNITS (80) AND GPA (3.2)) OR SPECIAL MUST_BE_IN "ACAD_LEVEL=4")
           AND ((COHORT_YEARS MUST_BE_IN E:2019 AND (COURSES (7) PS1%:D, PS2%:D, PS3%:D, PS4%:D OR COURSES (7) GL%:D))
           OR (COHORT_YEARS MUST_BE_IN S:2020 AND COHORT_YEARS MUST_BE_IN E:2020 (COURSES (7) PS1%:D, PS2%:D, PS3%:D, PS4%:D)))
-        `
+        `,
       ),
     ).toEqual(result);
-  })
-
-
+  });
 });

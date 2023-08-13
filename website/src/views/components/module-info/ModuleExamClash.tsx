@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { get } from 'lodash';
 
+import { AlertTriangle } from 'react-feather';
 import { Module, ModuleCode, Semester } from 'types/modules';
 
-import { AlertTriangle } from 'react-feather';
 import { getModuleSemesterData } from 'utils/modules';
 import { getSemesterModules } from 'utils/timetables';
 import { getSemesterTimetableLessons } from 'selectors/timetables';

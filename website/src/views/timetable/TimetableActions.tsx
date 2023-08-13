@@ -2,11 +2,11 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
+import { Calendar, Grid, Sidebar, Type } from 'react-feather';
 import { toggleTimetableOrientation, toggleTitleDisplay } from 'actions/theme';
 import { Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
 
-import { Calendar, Grid, Sidebar, Type } from 'react-feather';
 import elements from 'views/elements';
 import config from 'config';
 import ShareTimetable from './ShareTimetable';

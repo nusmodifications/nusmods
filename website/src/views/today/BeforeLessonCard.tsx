@@ -3,9 +3,9 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
+import { differenceInHours, formatDistanceStrict } from 'date-fns';
 import { Lesson } from 'types/timetables';
 import { getStartTimeAsDate } from 'utils/timetables';
-import { differenceInHours, formatDistanceStrict } from 'date-fns';
 import { venuePage } from 'views/routes/paths';
 import styles from './BeforeLessonCard.scss';
 import cardStyles from './DayEvents.scss';

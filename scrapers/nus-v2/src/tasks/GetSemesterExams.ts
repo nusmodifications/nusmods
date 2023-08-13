@@ -1,6 +1,6 @@
+import { strict as assert } from 'assert';
 import { parse } from 'date-fns';
 import { keyBy, mapValues, partition } from 'lodash';
-import { strict as assert } from 'assert';
 
 import { ModuleExam } from '../types/api';
 import { ExamInfo, ExamInfoMap } from '../types/mapper';

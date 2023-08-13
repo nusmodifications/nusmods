@@ -1,3 +1,4 @@
+import { PersistConfig } from 'redux-persist/es/types';
 import reducer, { defaultTimetableState, persistConfig } from 'reducers/timetables';
 import {
   ADD_MODULE,
@@ -9,7 +10,6 @@ import {
 } from 'actions/timetables';
 import { TimetablesState } from 'types/reducers';
 import config from 'config';
-import { PersistConfig } from 'redux-persist/es/types';
 
 const initialState = defaultTimetableState;
 

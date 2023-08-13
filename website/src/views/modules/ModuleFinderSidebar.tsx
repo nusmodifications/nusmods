@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { memo, useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { State as StoreState } from 'types/state';
 import {
   NumericRefinementListFilter,
   RefinementListFilter,
@@ -9,6 +8,7 @@ import {
   ResetFiltersDisplayProps,
 } from 'searchkit';
 import { Filter } from 'react-feather';
+import { State as StoreState } from 'types/state';
 
 import { attributeDescription, NUSModuleAttributes, Semester, Semesters } from 'types/modules';
 import { RefinementItem } from 'types/views';

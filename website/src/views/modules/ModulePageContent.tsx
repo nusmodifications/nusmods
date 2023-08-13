@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import ScrollSpy from 'react-scrollspy';
 import { kebabCase, map, mapValues, values, sortBy } from 'lodash';
 
+import { Archive, Check } from 'react-feather';
 import { Module, NUSModuleAttributes, attributeDescription } from 'types/modules';
 
 import config from 'config';
@@ -24,7 +25,6 @@ import ModuleExamInfo from 'views/components/module-info/ModuleExamInfo';
 import AddModuleDropdown from 'views/components/module-info/AddModuleDropdown';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
-import { Archive, Check } from 'react-feather';
 
 import useScrollToTop from 'views/hooks/useScrollToTop';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
