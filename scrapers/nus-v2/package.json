@@ -63,7 +63,7 @@
     "nusmoderator": "3.0.0",
     "oboe": "2.1.5",
     "promise-queue": "2.2.5",
-    "ramda": "0.27.1",
+    "ramda": "0.29.0",
     "romanify": "1.0.0",
     "yargs": "16.2.0"
   },
