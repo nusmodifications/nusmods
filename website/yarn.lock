@@ -11191,10 +11191,10 @@ react-is@^18.0.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
-react-kawaii@0.17.0:
-  version "0.17.0"
-  resolved "https://registry.yarnpkg.com/react-kawaii/-/react-kawaii-0.17.0.tgz#18ba11979c32e5932ffc78fb4042898b3a0d4a64"
-  integrity sha512-BP2FCZC5IH2P3bXBAdoikMapRQEBu4ncLW5P2TKZjDYfsaq3kiSbU8DXqIH7UDWpAdI5ofhWJ62F6LqKD5TLFQ==
+react-kawaii@0.18.0:
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/react-kawaii/-/react-kawaii-0.18.0.tgz#bc95c6b1f76acfcaca83fcc6a4790e10beb821db"
+  integrity sha512-/+WLnb2sNyqpfE8wurxZRtx2NkypZWHU6XMphj0yo2nvUFm1BX7MD7o+L+gAwkD7UJvfBDtzFP9a+CmIXkge3A==
   dependencies:
     prop-types "^15.6.2"
 
