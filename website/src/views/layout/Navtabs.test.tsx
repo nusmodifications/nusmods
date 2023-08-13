@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
-import configureStore from 'bootstrapping/configure-store';
-import { enableMpe } from 'featureFlags';
 import produce from 'immer';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
+import { enableMpe } from 'featureFlags';
+import configureStore from 'bootstrapping/configure-store';
 import reducers from 'reducers';
 import { initAction } from 'test-utils/redux';
 

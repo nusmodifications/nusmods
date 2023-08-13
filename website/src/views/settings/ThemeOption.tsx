@@ -1,8 +1,7 @@
-import { Theme } from 'types/settings';
-
 import * as React from 'react';
 import { range } from 'lodash';
 import classnames from 'classnames';
+import { Theme } from 'types/settings';
 
 import styles from './ThemeOption.scss';
 

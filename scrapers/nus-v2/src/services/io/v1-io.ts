@@ -1,5 +1,5 @@
-import * as fs from 'fs-extra';
 import path from 'path';
+import * as fs from 'fs-extra';
 import config from '../../config';
 
 export default class V1DataReader {

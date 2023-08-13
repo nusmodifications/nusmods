@@ -1,11 +1,11 @@
-import { DisqusConfig } from 'types/views';
 import { PureComponent } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
+import { MessageSquare } from 'react-feather';
 import { Mode } from 'types/settings';
 import config from 'config';
-import { MessageSquare } from 'react-feather';
+import { DisqusConfig } from 'types/views';
 import insertScript from 'utils/insertScript';
 import { getScriptErrorHandler } from 'utils/error';
 import { State as StoreState } from 'types/state';

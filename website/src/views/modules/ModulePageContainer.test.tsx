@@ -82,7 +82,7 @@ describe(ModulePageContainerComponent, () => {
   test('should show 404 page when the module code does not exist', async () => {
     mockAxiosRequest.mockRejectedValue(notFoundError);
     make('/courses/CS1234');
-    expect(await screen.findByText(/module CS1234 not found/)).toBeInTheDocument();
+    expect(await screen.findByText(/course CS1234 not found/)).toBeInTheDocument();
   });
 
   test('should redirect to canonical URL', async () => {

@@ -47,7 +47,7 @@ const ModulesTableFooter: React.FC<Props> = (props) => {
       <div className="col-12">
         {!config.examAvailabilitySet.has(props.semester) && (
           <div className="alert alert-warning">
-            Exam dates are not available for this semester yet. Module combinations may not be
+            Exam dates are not available for this semester yet. Course combinations may not be
             available due to conflicting exams.
           </div>
         )}

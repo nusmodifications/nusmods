@@ -1,4 +1,3 @@
-import { DayText, LessonTime } from 'types/modules';
 import {
   format,
   getHours,
@@ -11,6 +10,7 @@ import {
   setSeconds,
   startOfDay,
 } from 'date-fns';
+import { DayText, LessonTime } from 'types/modules';
 import { TimePeriod } from 'types/venues';
 import { Lesson } from 'types/timetables';
 

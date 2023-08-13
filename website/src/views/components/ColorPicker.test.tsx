@@ -1,12 +1,12 @@
-import configureStore from 'bootstrapping/configure-store';
 import { mount, ReactWrapper } from 'enzyme';
-import ColorPicker from 'views/components/ColorPicker';
+import { PropsWithChildren } from 'react';
+import { Provider } from 'react-redux';
+import reducers from 'reducers';
 import { ColorIndex } from 'types/timetables';
 import { expectColor } from 'test-utils/theme';
 import { initAction } from 'test-utils/redux';
-import { Provider } from 'react-redux';
-import { PropsWithChildren } from 'react';
-import reducers from 'reducers';
+import configureStore from 'bootstrapping/configure-store';
+import ColorPicker from 'views/components/ColorPicker';
 
 import styles from './ColorPicker.scss';
 

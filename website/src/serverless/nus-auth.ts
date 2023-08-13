@@ -1,7 +1,7 @@
-import * as validator from '@authenio/samlify-node-xmllint';
-import _ from 'lodash';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as validator from '@authenio/samlify-node-xmllint';
+import _ from 'lodash';
 import * as samlify from 'samlify';
 import type { ESamlHttpRequest } from 'samlify/types/src/entity';
 import type { Handler, Request } from './handler';

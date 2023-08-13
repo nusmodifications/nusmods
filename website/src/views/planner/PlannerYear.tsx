@@ -2,11 +2,11 @@ import { PureComponent } from 'react';
 import classnames from 'classnames';
 import { flatMap, size, sortBy, toPairs, values } from 'lodash';
 
+import { Minus, Plus } from 'react-feather';
 import { ModuleCode, Semester } from 'types/modules';
 import { AddModuleData, PlannerModuleInfo } from 'types/planner';
 import config from 'config';
 import { getSemesterName, getTotalMC } from 'utils/planner';
-import { Minus, Plus } from 'react-feather';
 import { renderMCs } from 'utils/modules';
 import PlannerSemester from './PlannerSemester';
 import styles from './PlannerYear.scss';

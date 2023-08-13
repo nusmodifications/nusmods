@@ -1,4 +1,4 @@
-import { entries, uniq } from 'lodash';
+import { entries } from 'lodash';
 
 import { Module, ModuleCode, PrereqTree } from '../../types/modules';
 import { ModuleWithoutTree } from '../../types/mapper';
