@@ -21,7 +21,6 @@ import {
   modifyLesson,
   removeModule,
 } from 'actions/timetables';
-import { undo } from 'actions/undoHistory';
 import {
   areLessonsSameClass,
   formatExamDate,
@@ -82,7 +81,6 @@ type Props = OwnProps & {
   modifyLesson: (lesson: Lesson) => void;
   changeLesson: (semester: Semester, lesson: Lesson) => void;
   cancelModifyLesson: () => void;
-  undo: () => void;
 };
 
 type State = {
@@ -463,5 +461,4 @@ export default connect(mapStateToProps, {
   modifyLesson,
   changeLesson,
   cancelModifyLesson,
-  undo,
 })(TimetableContent);

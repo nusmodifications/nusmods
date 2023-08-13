@@ -8,7 +8,6 @@ import { breakpointUp } from 'utils/css';
 import styles from './ErrorPage.scss';
 
 type Props = {
-  children?: React.ReactNode;
   retry?: () => void;
   dataName?: string;
 };
