@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import { Mail, Layers, GitHub } from 'react-feather';
 import { toggleFeedback } from 'actions/app';
 import config from 'config';
 
-import { Mail, Layers, GitHub } from 'react-feather';
 import ExternalLink from 'views/components/ExternalLink';
 
 import StaticPage from './StaticPage';

@@ -4,13 +4,13 @@ import Downshift, { ChildrenFunction, DownshiftState, StateChangeOptions } from 
 import classnames from 'classnames';
 import { ChevronRight, HelpCircle as Help, Search } from 'react-feather';
 
+import { Link } from 'react-router-dom';
 import { highlight } from 'utils/react';
 import { ModuleCondensed } from 'types/modules';
 import { MODULE_RESULT, SEARCH_RESULT, SearchItem, SearchResult, VENUE_RESULT } from 'types/views';
 
 import ComponentMap from 'utils/ComponentMap';
 import SemesterBadge from 'views/components/SemesterBadge';
-import { Link } from 'react-router-dom';
 import { modulePage, venuePage } from 'views/routes/paths';
 import styles from './GlobalSearch.scss';
 

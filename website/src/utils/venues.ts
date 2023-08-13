@@ -1,6 +1,6 @@
-import { VenueInfo, VenueSearchOptions, VenueDetailList, OCCUPIED } from 'types/venues';
 import { range, entries, padStart, clamp } from 'lodash';
 import produce from 'immer';
+import { VenueInfo, VenueSearchOptions, VenueDetailList, OCCUPIED } from 'types/venues';
 
 import excludedRooms from 'data/excludedFreeRooms';
 import { tokenize } from './moduleSearch';

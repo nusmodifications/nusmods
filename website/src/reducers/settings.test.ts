@@ -1,5 +1,5 @@
-import { SettingsState } from 'types/reducers';
 import produce from 'immer';
+import { SettingsState } from 'types/reducers';
 
 import * as actions from 'actions/settings';
 import reducer from 'reducers/settings';
