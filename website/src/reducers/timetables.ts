@@ -149,13 +149,12 @@ function semColors(state: ColorMapping = defaultSemColorMap, action: Actions): C
   }
 }
 
-function recolor(state: SemesterColorMap, numOfColors: number): SemesterColorMap {
+function recolor(curSemesterColorMap: SemesterColorMap, numOfColors: number): SemesterColorMap {
   const newSemesterColorMap: SemesterColorMap = {};
-  Object.keys(state).forEach((semester) => {
-    const colorMapping = state[semester];
+  Object.entries(curSemesterColorMap).forEach(([semester, colorMapping]) => {
     const newColorMapping: ColorMapping = {};
-    Object.keys(colorMapping).forEach((moduleCode) => {
-      newColorMapping[moduleCode] = colorMapping[moduleCode] % numOfColors;
+    Object.entries(colorMapping).forEach(([moduleCode, colorIndex]) => {
+      newColorMapping[moduleCode] = colorIndex % numOfColors;
     });
     newSemesterColorMap[semester] = newColorMapping;
   });
@@ -196,6 +195,7 @@ function timetables(
   if (!action.payload) {
     return state;
   }
+
   switch (action.type) {
     case SET_TIMETABLE: {
       const { semester, timetable, colors } = action.payload;
