@@ -1,26 +1,61 @@
 import { get, omit, values } from 'lodash';
 import produce from 'immer';
-import { createMigrate } from 'redux-persist';
+import { createMigrate, PersistedState } from 'redux-persist';
 
 import { PersistConfig } from 'storage/persistReducer';
 import { ModuleCode } from 'types/modules';
-import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
-import { ColorMapping, TimetablesState } from 'types/reducers';
+import { ModuleLessonConfig, SemTimetableConfig, TimetableConfig } from 'types/timetables';
+import { ColorMapping, CustomisedModulesMap, TimetablesState } from 'types/reducers';
 
 import config from 'config';
 import {
   ADD_MODULE,
   CHANGE_LESSON,
+  ADD_LESSON,
+  REMOVE_LESSON,
   HIDE_LESSON_IN_TIMETABLE,
   REMOVE_MODULE,
   SELECT_MODULE_COLOR,
   SET_LESSON_CONFIG,
   SET_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
+  ADD_CUSTOM_MODULE,
+  REMOVE_CUSTOM_MODULE,
 } from 'actions/timetables';
 import { getNewColor } from 'utils/colors';
 import { SET_EXPORTED_DATA } from 'actions/constants';
 import { Actions } from '../types/actions';
+
+// Migration from state V1 -> V2
+type TimetableStateV1 = Omit<TimetablesState, 'lessons' | 'customisedModules'> & {
+  lessons: { [semester: string]: { [moduleCode: string]: { [lessonType: string]: string } } };
+};
+export function migrateV1toV2(
+  oldState: TimetableStateV1 & PersistedState,
+): TimetablesState & PersistedState {
+  const newLessons: TimetableConfig = {};
+  const newCustomisedModules: CustomisedModulesMap = {};
+
+  Object.entries(oldState.lessons).forEach(([semester, modules]) => {
+    newCustomisedModules[semester] = [];
+
+    // Migrate existing lessons to V2 format.
+    const newSemester: SemTimetableConfig = {};
+    Object.entries(modules).forEach(([moduleCode, lessons]) => {
+      newSemester[moduleCode] = {};
+      Object.entries(lessons).forEach(([type, classNum]) => {
+        newSemester[moduleCode][type] = [classNum];
+      });
+    });
+    newLessons[semester] = newSemester;
+  });
+
+  return {
+    ...oldState,
+    lessons: newLessons,
+    customisedModules: newCustomisedModules,
+  };
+}
 
 export const persistConfig = {
   /* eslint-disable no-useless-computed-key */
@@ -34,9 +69,12 @@ export const persistConfig = {
       // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
       _persist: state?._persist!,
     }),
+    // Same as planner.ts
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [2]: migrateV1toV2 as any,
   }),
   /* eslint-enable */
-  version: 1,
+  version: 2,
 
   // Our own state reconciler archives old timetables if the acad year is different,
   // otherwise use the persisted timetable state
@@ -79,15 +117,33 @@ function moduleLessonConfig(
   switch (action.type) {
     case CHANGE_LESSON: {
       const { classNo, lessonType } = action.payload;
-      if (!(classNo && lessonType)) return state;
+      if (!classNo || !lessonType) return state;
       return {
         ...state,
-        [lessonType]: classNo,
+        [lessonType]: [
+          ...state[lessonType].filter((lesson) => lesson !== action.payload.activeLesson),
+          action.payload.classNo,
+        ],
       };
     }
     case SET_LESSON_CONFIG:
       return action.payload.lessonConfig;
-
+    case ADD_LESSON: {
+      const { classNo, lessonType } = action.payload;
+      if (!classNo || !lessonType) return state;
+      return {
+        ...state,
+        [lessonType]: [...state[lessonType], classNo],
+      };
+    }
+    case REMOVE_LESSON: {
+      const { classNo, lessonType } = action.payload;
+      if (!classNo || !lessonType) return state;
+      return {
+        ...state,
+        [lessonType]: state[lessonType].filter((lesson) => lesson !== classNo),
+      };
+    }
     default:
       return state;
   }
@@ -111,6 +167,8 @@ function semTimetable(
     case REMOVE_MODULE:
       return omit(state, [moduleCode]);
     case CHANGE_LESSON:
+    case ADD_LESSON:
+    case REMOVE_LESSON:
     case SET_LESSON_CONFIG:
       return {
         ...state,
@@ -166,12 +224,31 @@ function semHiddenModules(state = defaultHiddenState, action: Actions) {
   }
 }
 
+// Map of CustomisedModules
+const defaultCustomisedModulesState: ModuleCode[] = [];
+function customisedModules(state = defaultCustomisedModulesState, action: Actions) {
+  if (!action.payload) {
+    return state;
+  }
+
+  switch (action.type) {
+    case ADD_CUSTOM_MODULE:
+      if (state.includes(action.payload.moduleCode)) return state;
+      return [...state, action.payload.moduleCode];
+    case REMOVE_CUSTOM_MODULE:
+      return state.filter((c) => c !== action.payload.moduleCode);
+    default:
+      return state;
+  }
+}
+
 export const defaultTimetableState: TimetablesState = {
   lessons: {},
   colors: {},
   hidden: {},
   academicYear: config.academicYear,
   archive: {},
+  customisedModules: {},
 };
 
 function timetables(
@@ -197,15 +274,23 @@ function timetables(
     case REMOVE_MODULE:
     case SELECT_MODULE_COLOR:
     case CHANGE_LESSON:
+    case ADD_LESSON:
+    case REMOVE_LESSON:
     case SET_LESSON_CONFIG:
     case HIDE_LESSON_IN_TIMETABLE:
-    case SHOW_LESSON_IN_TIMETABLE: {
+    case SHOW_LESSON_IN_TIMETABLE:
+    case ADD_CUSTOM_MODULE:
+    case REMOVE_CUSTOM_MODULE: {
       const { semester } = action.payload;
 
       return produce(state, (draft) => {
         draft.lessons[semester] = semTimetable(draft.lessons[semester], action);
         draft.colors[semester] = semColors(state.colors[semester], action);
         draft.hidden[semester] = semHiddenModules(state.hidden[semester], action);
+        draft.customisedModules[semester] = customisedModules(
+          state.customisedModules[semester],
+          action,
+        );
       });
     }
 

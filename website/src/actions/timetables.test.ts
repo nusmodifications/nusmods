@@ -36,7 +36,7 @@ test('modifyLesson should return lesson payload', () => {
 test('changeLesson should return updated information to change lesson', () => {
   const semester: Semester = 1;
   const lesson: Lesson = lessons[1];
-  expect(actions.changeLesson(semester, lesson)).toMatchSnapshot();
+  expect(actions.changeLesson(semester, lesson, lesson.classNo)).toMatchSnapshot();
 });
 
 test('cancelModifyLesson should not have payload', () => {
@@ -53,19 +53,21 @@ describe('fillTimetableBlanks', () => {
   const moduleBank = { modules: { CS1010S, CS3216 } };
   const timetablesState = (semester: Semester, timetable: SemTimetableConfig) => ({
     lessons: { [semester]: timetable },
+    customisedModules: { [semester]: [] },
   });
   const semester = 1;
   const action = actions.validateTimetable(semester);
 
   test('do nothing if timetable is already full', () => {
-    const timetable = {
+    const timetable: SemTimetableConfig = {
       CS1010S: {
-        Lecture: '1',
-        Tutorial: '1',
-        Recitation: '1',
+        Lecture: ['1'],
+        Tutorial: ['1'],
+        Recitation: ['1'],
       },
     };
 
+    // TODO(zwliew): Correctly type all the `state: any` declarations in this function and the rest of the codebase.
     const state: any = { timetables: timetablesState(semester, timetable), moduleBank };
     const dispatch = jest.fn();
     action(dispatch, () => state);
@@ -74,10 +76,10 @@ describe('fillTimetableBlanks', () => {
   });
 
   test('fill missing lessons with randomly generated modules', () => {
-    const timetable = {
+    const timetable: SemTimetableConfig = {
       CS1010S: {
-        Lecture: '1',
-        Tutorial: '1',
+        Lecture: ['1'],
+        Tutorial: ['1'],
       },
       CS3216: {},
     };
@@ -95,9 +97,9 @@ describe('fillTimetableBlanks', () => {
         semester,
         moduleCode: 'CS1010S',
         lessonConfig: {
-          Lecture: '1',
-          Tutorial: '1',
-          Recitation: expect.any(String),
+          Lecture: ['1'],
+          Tutorial: ['1'],
+          Recitation: expect.any(Array),
         },
       },
     });
@@ -108,7 +110,7 @@ describe('fillTimetableBlanks', () => {
         semester,
         moduleCode: 'CS3216',
         lessonConfig: {
-          Lecture: '1',
+          Lecture: ['1'],
         },
       },
     });

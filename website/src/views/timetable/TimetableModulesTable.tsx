@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { sortBy } from 'lodash';
@@ -8,16 +8,19 @@ import produce from 'immer';
 import { ModuleWithColor, TombstoneModule } from 'types/views';
 import { ColorIndex } from 'types/timetables';
 import { ModuleCode, Semester } from 'types/modules';
-import { State as StoreState } from 'types/state';
+import { State, State as StoreState } from 'types/state';
 import { ModuleTableOrder } from 'types/reducers';
-
-import ColorPicker from 'views/components/ColorPicker';
-import { Eye, EyeOff, Trash } from 'react-feather';
 import {
+  customiseLesson,
+  addCustomModule,
+  removeCustomModule,
   hideLessonInTimetable,
   selectModuleColor,
   showLessonInTimetable,
 } from 'actions/timetables';
+import ColorPicker from 'views/components/ColorPicker';
+import { Eye, EyeOff, Trash, Tool, Check } from 'react-feather';
+
 import { getExamDate, getFormattedExamDate, renderMCs } from 'utils/modules';
 import { intersperse } from 'utils/array';
 import { BULLET_NBSP } from 'utils/react';
@@ -37,61 +40,103 @@ export type Props = {
   moduleTableOrder: ModuleTableOrder;
   modules: ModuleWithColor[];
   tombstone: TombstoneModule | null; // Placeholder for a deleted module
+  customiseModule: ModuleCode;
+  customisedModules: ModuleCode[];
 
   // Actions
   selectModuleColor: (semester: Semester, moduleCode: ModuleCode, colorIndex: ColorIndex) => void;
   hideLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   showLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   onRemoveModule: (moduleCode: ModuleCode) => void;
+  addCustomModule: (semester: Semester, moduleCode: ModuleCode) => void;
+  removeCustomModule: (semester: Semester, moduleCode: ModuleCode) => void;
   resetTombstone: () => void;
+  customiseLesson: (semester: Semester, moduleCode: ModuleCode) => void;
 };
 
 export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
+  const beta = useSelector(({ settings }: State) => settings.beta);
   const renderModuleActions = (module: ModuleWithColor) => {
     const hideBtnLabel = `${module.hiddenInTimetable ? 'Show' : 'Hide'} ${module.moduleCode}`;
     const removeBtnLabel = `Remove ${module.moduleCode} from timetable`;
+    const customBtnLabel = `Customise ${module.moduleCode} in timetable`;
+    const doneBtnLabel = `Done customising ${module.moduleCode} in timetable`;
     const { semester } = props;
 
     return (
       <div className={styles.moduleActionButtons}>
-        <div className="btn-group">
-          <Tooltip content={removeBtnLabel} touch="hold">
+        {props.customiseModule === module.moduleCode ? (
+          <Tooltip content={doneBtnLabel} touch="hold">
             <button
               type="button"
               className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
               aria-label={removeBtnLabel}
-              onClick={() => props.onRemoveModule(module.moduleCode)}
+              onClick={() => props.customiseLesson(semester, '')}
             >
-              <Trash className={styles.actionIcon} />
+              <Check className={styles.actionIcon} />
             </button>
           </Tooltip>
-          <Tooltip content={hideBtnLabel} touch="hold">
-            <button
-              type="button"
-              className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
-              aria-label={hideBtnLabel}
-              onClick={() => {
-                if (module.hiddenInTimetable) {
-                  props.showLessonInTimetable(semester, module.moduleCode);
-                } else {
-                  props.hideLessonInTimetable(semester, module.moduleCode);
-                }
-              }}
-            >
-              {module.hiddenInTimetable ? (
-                <Eye className={styles.actionIcon} />
-              ) : (
-                <EyeOff className={styles.actionIcon} />
-              )}
-            </button>
-          </Tooltip>
-        </div>
+        ) : (
+          <div className="btn-group">
+            <Tooltip content={removeBtnLabel} touch="hold">
+              <button
+                type="button"
+                className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
+                aria-label={removeBtnLabel}
+                onClick={() => {
+                  props.onRemoveModule(module.moduleCode);
+                  props.removeCustomModule(semester, module.moduleCode);
+                }}
+              >
+                <Trash className={styles.actionIcon} />
+              </button>
+            </Tooltip>
+            <Tooltip content={hideBtnLabel} touch="hold">
+              <button
+                type="button"
+                className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
+                aria-label={hideBtnLabel}
+                onClick={() => {
+                  if (module.hiddenInTimetable) {
+                    props.showLessonInTimetable(semester, module.moduleCode);
+                  } else {
+                    props.hideLessonInTimetable(semester, module.moduleCode);
+                  }
+                }}
+              >
+                {module.hiddenInTimetable ? (
+                  <Eye className={styles.actionIcon} />
+                ) : (
+                  <EyeOff className={styles.actionIcon} />
+                )}
+              </button>
+            </Tooltip>
+            {beta && (
+              <Tooltip content={customBtnLabel} touch="hold">
+                <button
+                  type="button"
+                  className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
+                  aria-label={customBtnLabel}
+                  disabled={!!props.customiseModule && props.customiseModule !== module.moduleCode}
+                  hidden={!!props.customiseModule && props.customiseModule !== module.moduleCode}
+                  onClick={() => {
+                    // TODO: add modal for warning
+                    props.addCustomModule(semester, module.moduleCode);
+                    props.customiseLesson(semester, module.moduleCode);
+                  }}
+                >
+                  <Tool className={styles.actionIcon} />
+                </button>
+              </Tooltip>
+            )}
+          </div>
+        )}
       </div>
     );
   };
 
   const renderModule = (module: ModuleWithColor) => {
-    const { semester, readOnly, tombstone, resetTombstone } = props;
+    const { semester, readOnly, tombstone, resetTombstone, customisedModules } = props;
 
     if (tombstone && tombstone.moduleCode === module.moduleCode) {
       return <ModuleTombstone module={module} resetTombstone={resetTombstone} />;
@@ -123,6 +168,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
           {!readOnly && renderModuleActions(module)}
           <Link to={modulePage(module.moduleCode, module.title)}>
             {module.moduleCode} {module.title}
+            {customisedModules.includes(module.moduleCode) && '*'}
           </Link>
           <div className={styles.moduleExam}>{intersperse(secondRowText, BULLET_NBSP)}</div>
         </div>
@@ -162,10 +208,16 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
 };
 
 export default connect(
-  (state: StoreState) => ({ moduleTableOrder: state.settings.moduleTableOrder }),
+  (state: StoreState) => ({
+    moduleTableOrder: state.settings.moduleTableOrder,
+    customiseModule: state.app.customiseModule,
+  }),
   {
     selectModuleColor,
     hideLessonInTimetable,
     showLessonInTimetable,
+    customiseLesson,
+    addCustomModule,
+    removeCustomModule,
   },
 )(React.memo(TimetableModulesTableComponent));

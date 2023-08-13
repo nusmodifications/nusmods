@@ -4,7 +4,10 @@ import ExternalLink from 'views/components/ExternalLink';
 import config from 'config';
 import styles from './SettingsContainer.scss';
 
-export const currentTests = ['Course planner: plan courses in future semesters'];
+export const currentTests = [
+  'Course planner: plan courses in future semesters',
+  'TA view: customise the visibility of courses in your timetable',
+];
 
 type Props = {
   betaTester: boolean;

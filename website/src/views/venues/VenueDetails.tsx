@@ -92,6 +92,7 @@ const VenueDetailsComponent: FC<Props> = ({
           highlightPeriod={highlightPeriod}
           isVerticalOrientation={narrowViewport}
           onModifyCell={navigateToLesson}
+          customisedModules={[]}
         />
       </div>
     </>

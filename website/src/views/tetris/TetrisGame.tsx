@@ -101,6 +101,7 @@ function renderPiece(tiles: Board) {
       hoverLesson={null}
       onModifyCell={noop}
       onCellHover={noop}
+      customisedModules={[]}
     />
   );
 }
@@ -407,7 +408,7 @@ export default class TetrisGame extends PureComponent<Props, State> {
 
         <div className={styles.game}>
           {this.renderOverlay()}
-          <Timetable lessons={lessons} isVerticalOrientation />
+          <Timetable lessons={lessons} isVerticalOrientation customisedModules={[]} />
         </div>
 
         <div className={styles.sidebar}>
