@@ -13,7 +13,6 @@ export type Dispatch = ThunkDispatch<State, undefined, Actions> & RequestsDispat
  */
 export type ExtractActionShape<ActionCreators extends Record<string, unknown>> = Exclude<
   // Get return types for all exported functions
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ReturnType<Extract<Values<ActionCreators>, AnyFunction>>,
   // Exclude thunks from redux-thunk
   AnyFunction

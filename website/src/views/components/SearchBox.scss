@@ -73,7 +73,7 @@
   }
 
   .leftAccessory {
-    left: $grid-gutter-width / 2;
+    left: $grid-gutter-width * 0.5;
 
     &.searchIcon {
       width: 1rem;

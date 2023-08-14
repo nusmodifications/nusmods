@@ -15,13 +15,13 @@ type DefaultMeta = {};
 export type RequestAction<Type extends string, Meta = DefaultMeta> = {
   type: ActionType<Type, typeof REQUEST>;
   payload: AxiosRequestConfig;
-  meta: Meta;
+  meta?: Meta;
 };
 
 export type SuccessAction<Type extends string, Response, Meta = DefaultMeta> = {
   type: ActionType<Type, typeof SUCCESS>;
   payload: Response;
-  meta: Meta & {
+  meta?: Meta & {
     requestStatus: typeof SUCCESS;
     responseHeaders: { [header: string]: string };
   };
@@ -30,7 +30,7 @@ export type SuccessAction<Type extends string, Response, Meta = DefaultMeta> = {
 export type FailureAction<Type extends string, Meta = DefaultMeta> = {
   type: ActionType<Type, typeof FAILURE>;
   payload: Error;
-  meta: Meta & {
+  meta?: Meta & {
     requestStatus: typeof FAILURE;
   };
 };

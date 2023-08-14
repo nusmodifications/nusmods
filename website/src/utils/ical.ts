@@ -83,7 +83,7 @@ function calculateStartEnd(date: Date, startTime: StartTime, endTime: EndTime) {
 
 export function calculateNumericWeek(
   lesson: RawLesson,
-  semester: Semester,
+  _semester: Semester,
   weeks: NumericWeeks,
   firstDayOfSchool: Date,
 ): EventOption {
@@ -108,7 +108,7 @@ export function calculateNumericWeek(
 
 export function calculateWeekRange(
   lesson: RawLesson,
-  semester: Semester,
+  _semester: Semester,
   weekRange: WeekRange,
 ): EventOption {
   const rangeStart = parseDate(weekRange.start);

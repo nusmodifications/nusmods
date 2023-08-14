@@ -35,7 +35,7 @@ Tip: Pick an area you're interested in, and just focus on it. It is not necessar
 
 ## Development Tools
 
-You should have [Node.js](https://nodejs.org/) version 16 or above (use Node 16 LTS or `lts/gallium` if possible) and [Yarn](https://yarnpkg.com/en/) version 1.2.0 or above. We recommend using [fnm](https://github.com/Schniz/fnm) to manage your Node versions.
+You should have [Node.js](https://nodejs.org/) version 18 or above (use Node 18 LTS or `lts/hydrogen` if possible) and [Yarn](https://yarnpkg.com/en/) version 1.2.0 or above. We recommend using [fnm](https://github.com/Schniz/fnm) to manage your Node versions.
 
 ## Proposing a Change
 

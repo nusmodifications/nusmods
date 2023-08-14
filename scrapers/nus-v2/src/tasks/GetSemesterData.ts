@@ -1,5 +1,5 @@
-import { each, fromPairs, keyBy, isEmpty } from 'lodash';
 import { strict as assert } from 'assert';
+import { each, fromPairs, keyBy, isEmpty } from 'lodash';
 
 import type { AcademicGrp, AcademicOrg, ModuleAttributeEntry, ModuleInfo } from '../types/api';
 import type {

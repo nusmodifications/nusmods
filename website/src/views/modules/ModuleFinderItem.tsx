@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 
+import { Archive } from 'react-feather';
 import { ModuleInformation } from 'types/modules';
 import { ElasticSearchResult } from 'types/vendor/elastic-search';
 
@@ -9,7 +10,6 @@ import { modulePage } from 'views/routes/paths';
 import ModuleSemesterInfo from 'views/components/module-info/ModuleSemesterInfo';
 import ModuleWorkload from 'views/components/module-info/ModuleWorkload';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
-import { Archive } from 'react-feather';
 import { BULLET } from 'utils/react';
 import { intersperse } from 'utils/array';
 import { mergeModuleHighlight } from 'utils/elasticSearch';

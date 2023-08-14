@@ -1,16 +1,12 @@
-import type { ModuleCondensed } from 'types/modules';
-import type { Venue } from 'types/venues';
-import type { State } from 'types/state';
-
 import { FC, memo, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import type { State } from 'types/state';
 
 import useMediaQuery from 'views/hooks/useMediaQuery';
 import GlobalSearch from 'views/layout/GlobalSearch';
-import { modulePage, venuePage } from 'views/routes/paths';
 
-import { ResultType, SearchResult, VENUE_RESULT } from 'types/views';
+import { SearchResult } from 'types/views';
 import { fetchVenueList } from 'actions/venueBank';
 import { createSearchPredicate, regexify, sortModules, tokenize } from 'utils/moduleSearch';
 import { breakpointUp } from 'utils/css';
@@ -27,28 +23,6 @@ const GlobalSearchContainer: FC = () => {
   }, [dispatch]);
 
   const history = useHistory();
-  const onSelectModule = useCallback(
-    (module: ModuleCondensed) => {
-      history.push(modulePage(module.moduleCode, module.title));
-    },
-    [history],
-  );
-
-  const onSelectVenue = useCallback(
-    (venue: Venue) => {
-      history.push(venuePage(venue));
-    },
-    [history],
-  );
-
-  const onSearch = useCallback(
-    (type: ResultType, query: string) => {
-      // TODO: Move this into a proper function
-      const path = type === VENUE_RESULT ? '/venues' : '/courses';
-      history.push(`${path}?q=${encodeURIComponent(query)}`);
-    },
-    [history],
-  );
 
   const moduleList = useSelector(({ moduleBank }: State) => moduleBank.moduleList);
   const venueList = useSelector(({ venueBank }: State) => venueBank.venueList);
@@ -96,14 +70,7 @@ const GlobalSearchContainer: FC = () => {
   const matchedBreakpoint = useMediaQuery(breakpointUp('md'));
 
   if (!matchedBreakpoint) return null;
-  return (
-    <GlobalSearch
-      getResults={getResults}
-      onSelectModule={onSelectModule}
-      onSelectVenue={onSelectVenue}
-      onSearch={onSearch}
-    />
-  );
+  return <GlobalSearch getResults={getResults} pushUrlRoute={history.push} />;
 };
 
 export default memo(GlobalSearchContainer);

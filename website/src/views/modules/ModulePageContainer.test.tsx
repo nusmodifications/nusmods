@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosHeaders, AxiosResponse } from 'axios';
 
 import configureStore from 'bootstrapping/configure-store';
 import reducers from 'reducers';
@@ -19,7 +19,9 @@ const cs1010sResponse: AxiosResponse = {
   status: 200,
   statusText: 'Ok',
   headers: {},
-  config: {},
+  config: {
+    headers: new AxiosHeaders(),
+  },
 };
 
 const notFoundError: Partial<AxiosError> = {
@@ -28,7 +30,9 @@ const notFoundError: Partial<AxiosError> = {
     status: 404,
     statusText: 'Not found',
     headers: {},
-    config: {},
+    config: {
+      headers: new AxiosHeaders(),
+    },
   },
 };
 
@@ -38,7 +42,9 @@ const someOtherError: Partial<AxiosError> = {
     status: 500,
     statusText: 'Test error',
     headers: {},
-    config: {},
+    config: {
+      headers: new AxiosHeaders(),
+    },
   },
 };
 
@@ -76,7 +82,7 @@ describe(ModulePageContainerComponent, () => {
   test('should show 404 page when the module code does not exist', async () => {
     mockAxiosRequest.mockRejectedValue(notFoundError);
     make('/courses/CS1234');
-    expect(await screen.findByText(/module CS1234 not found/)).toBeInTheDocument();
+    expect(await screen.findByText(/course CS1234 not found/)).toBeInTheDocument();
   });
 
   test('should redirect to canonical URL', async () => {

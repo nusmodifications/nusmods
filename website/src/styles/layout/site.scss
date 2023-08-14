@@ -44,7 +44,7 @@ a {
 
   @include media-breakpoint-up(md) {
     > nav {
-      width: calc(#{$side-nav-width-md} + #{($grid-gutter-width / 2)});
+      width: calc(#{$side-nav-width-md} + #{($grid-gutter-width * 0.5)});
     }
 
     .main-content {

@@ -59,7 +59,7 @@ const SemesterPicker: FC<Props> = ({
       if (!semesterMapObtained[name]) {
         attrs[name] = {
           disabled: true,
-          title: `This module is not available in ${name}`,
+          title: `This course is not available in ${name}`,
         };
       }
     });

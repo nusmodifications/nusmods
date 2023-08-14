@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import classnames from 'classnames';
 
+import { AlertTriangle, ChevronDown } from 'react-feather';
 import { ModuleCode, ModuleTitle, Semester } from 'types/modules';
 import { Conflict, PlannerPlaceholder } from 'types/planner';
 import config from 'config';
 import { renderMCs } from 'utils/modules';
 import { conflictToText } from 'utils/planner';
 import { toSingaporeTime } from 'utils/timify';
-import { AlertTriangle, ChevronDown } from 'react-feather';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import { modulePage } from 'views/routes/paths';
 
@@ -57,7 +57,7 @@ const PlannerModule = memo<Props>((props) => {
           <div className={styles.conflictHeader}>
             <AlertTriangle className={styles.warningIcon} />
             <p>
-              No data on this module.{' '}
+              No data on this course.{' '}
               <button type="button" className="btn btn-link btn-inline" onClick={editCustomData}>
                 Add data
               </button>

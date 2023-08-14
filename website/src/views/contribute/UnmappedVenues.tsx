@@ -21,11 +21,11 @@ type State = {
 };
 
 export class UnmappedVenuesComponent extends PureComponent<Props, State> {
-  state = {
+  override state = {
     expanded: false,
   };
 
-  render() {
+  override render() {
     const { venueList, venueLocations } = this.props;
     const { expanded } = this.state;
 

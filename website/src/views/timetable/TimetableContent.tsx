@@ -22,7 +22,6 @@ import {
   modifyLesson,
   removeModule,
 } from 'actions/timetables';
-import { undo } from 'actions/undoHistory';
 import {
   areLessonsSameClass,
   formatExamDate,
@@ -83,7 +82,6 @@ type Props = OwnProps & {
   modifyLesson: (lesson: Lesson) => void;
   changeLesson: (semester: Semester, lesson: Lesson) => void;
   cancelModifyLesson: () => void;
-  undo: () => void;
 };
 
 type State = {
@@ -117,7 +115,7 @@ function maintainScrollPosition(container: HTMLElement, modifiedCell: ModifiedCe
 }
 
 class TimetableContent extends React.Component<Props, State> {
-  state: State = {
+  override state: State = {
     isScrolledHorizontally: false,
     showExamCalendar: false,
     tombstone: null,
@@ -127,7 +125,7 @@ class TimetableContent extends React.Component<Props, State> {
 
   modifiedCell: ModifiedCell | null = null;
 
-  componentDidUpdate() {
+  override componentDidUpdate() {
     if (this.modifiedCell && this.timetableRef.current) {
       maintainScrollPosition(this.timetableRef.current, this.modifiedCell);
 
@@ -135,7 +133,7 @@ class TimetableContent extends React.Component<Props, State> {
     }
   }
 
-  componentWillUnmount() {
+  override componentWillUnmount() {
     this.cancelModifyLesson();
   }
 
@@ -269,7 +267,7 @@ class TimetableContent extends React.Component<Props, State> {
     );
   }
 
-  render() {
+  override render() {
     const {
       semester,
       modules,
@@ -427,7 +425,11 @@ class TimetableContent extends React.Component<Props, State> {
                 {this.renderModuleSections(addedModules, !isVerticalOrientation)}
               </div>
               <div className="col-12">
-                <ModulesTableFooter modules={addedModules} semester={semester} />
+                <ModulesTableFooter
+                  modules={addedModules}
+                  semester={semester}
+                  hiddenInTimetable={hiddenInTimetable}
+                />
               </div>
             </div>
           </div>
@@ -475,5 +477,4 @@ export default connect(mapStateToProps, {
   modifyLesson,
   changeLesson,
   cancelModifyLesson,
-  undo,
 })(TimetableContent);

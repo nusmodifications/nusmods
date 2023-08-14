@@ -1,7 +1,7 @@
-const axios = require('axios');
-const _ = require('lodash');
 const path = require('path');
 const fs = require('fs');
+const axios = require('axios');
+const _ = require('lodash');
 
 const VENUES_PATH = path.join(__dirname, '../src/data/venues.json');
 

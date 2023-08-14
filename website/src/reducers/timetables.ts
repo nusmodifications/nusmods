@@ -45,7 +45,7 @@ export const persistConfig = {
   stateReconciler: (
     inbound: TimetablesState,
     original: TimetablesState,
-    reduced: TimetablesState,
+    _reduced: TimetablesState,
     { debug }: PersistConfig<TimetablesState>,
   ): TimetablesState => {
     if (inbound.academicYear === original.academicYear) {

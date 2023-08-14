@@ -4,6 +4,7 @@ import { flatMap, flatten, sortBy, toPairs, values } from 'lodash';
 import { DragDropContext, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 
+import { Settings, Trash } from 'react-feather';
 import { Module, ModuleCode, Semester } from 'types/modules';
 import { PlannerModulesWithInfo, PlannerModuleInfo, AddModuleData } from 'types/planner';
 import { MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
@@ -25,7 +26,6 @@ import {
 import { toggleFeedback } from 'actions/app';
 import { fetchModule } from 'actions/moduleBank';
 import { getAcadYearModules, getExemptions, getIBLOCs, getPlanToTake } from 'selectors/planner';
-import { Settings, Trash } from 'react-feather';
 import Title from 'views/components/Title';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import Modal from 'views/components/Modal';
@@ -66,13 +66,13 @@ type State = {
 const TRASH_ID = 'trash';
 
 export class PlannerContainerComponent extends PureComponent<Props, State> {
-  state: State = {
+  override state: State = {
     loading: true,
     showSettings: false,
     showCustomModule: null,
   };
 
-  componentDidMount() {
+  override componentDidMount() {
     // TODO: Handle error
     const modules = [
       ...flatten(flatMap(this.props.modules, values)),
@@ -168,7 +168,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
     );
   }
 
-  render() {
+  override render() {
     // Don't render anything on initial load because every fetched module will
     // cause a re-render, which kills performance
     if (this.state.loading) {

@@ -8,7 +8,6 @@ import Online from 'views/components/Online';
 import styles from './ErrorPage.scss';
 
 type Props = {
-  children?: React.ReactNode;
   error?: string;
   showReportDialog?: boolean;
   showRefresh?: boolean;
@@ -55,7 +54,7 @@ const ErrorPage: React.FC<Props> = ({ error, showReportDialog, showRefresh = tru
           <button
             type="button"
             className="btn btn-primary"
-            onClick={() => window.location.reload(true)}
+            onClick={() => window.location.reload()}
           >
             Refresh
           </button>

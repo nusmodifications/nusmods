@@ -67,7 +67,7 @@ const SharingHeader: FC<{
         overwritable: true,
         action: {
           text: 'Undo',
-          handler: () => dispatch(undo) as never,
+          handler: () => dispatch(undo()) as never,
         },
       }),
     );

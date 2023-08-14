@@ -7,6 +7,7 @@ import produce from 'immer';
 import qs from 'query-string';
 import { isEqual, mapValues, pick, size } from 'lodash';
 
+import { Clock, Map } from 'react-feather';
 import type { TimePeriod, Venue, VenueDetailList, VenueSearchOptions } from 'types/venues';
 import type { Subtract } from 'types/utils';
 import type { WithBreakpoint } from 'views/hocs/makeResponsive';
@@ -16,7 +17,6 @@ import ApiError from 'views/errors/ApiError';
 import Warning from 'views/errors/Warning';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import SearchBox from 'views/components/SearchBox';
-import { Clock, Map } from 'react-feather';
 import { venuePage } from 'views/routes/paths';
 import Modal from 'views/components/Modal';
 import Title from 'views/components/Title';
@@ -93,11 +93,11 @@ export class VenuesContainerComponent extends Component<Props, State> {
     };
   }
 
-  componentDidMount() {
+  override componentDidMount() {
     VenueLocation.preload();
   }
 
-  componentDidUpdate(prevProps: Props, prevState: State) {
+  override componentDidUpdate(_prevProps: Props, prevState: State) {
     // Update URL if any of these props have changed
     const { searchOptions, searchTerm, isAvailabilityEnabled } = this.state;
 
@@ -298,7 +298,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
     );
   }
 
-  render() {
+  override render() {
     const selectedVenue = this.selectedVenue();
     const { searchTerm, isAvailabilityEnabled, isMapExpanded, searchOptions } = this.state;
     const { venues } = this.props;

@@ -1,7 +1,7 @@
-const _ = require('lodash');
 const path = require('path');
-const fs = require('graceful-fs');
 const { URL } = require('url');
+const _ = require('lodash');
+const fs = require('graceful-fs');
 const axios = require('axios');
 const api = require('../src/apis/nusmods');
 

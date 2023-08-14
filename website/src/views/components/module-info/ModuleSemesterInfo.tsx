@@ -35,7 +35,7 @@ export default class ModuleSemesterInfo extends Component<Props, State> {
     return this.props.semesters.find((data) => data.semester === this.state.selected);
   }
 
-  render() {
+  override render() {
     const semester = this.selectedSemester();
     const semesters = this.props.semesters.map((data) => data.semester);
 

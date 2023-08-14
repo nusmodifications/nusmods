@@ -6,7 +6,7 @@
   "elasticsearchBaseUrl": "https://nusmods-search.es.ap-southeast-1.aws.found.io:9243",
   "semester": 1,
   "disqusShortname": "nusmods-prod",
-  "venueFeedbackApi": "https://0-0-9--nusmods-venue-github-hook.mediumdeviation.autocode.gg/",
+  "venueFeedbackApi": "https://dev--nusmods-venue-github-hook--zwliew.autocode.dev/",
   "moduleErrorApi": "https://0-0-7--nusmods-module-error-reporting.mediumdeviation.autocode.gg/",
   "archiveYears": [
     "2016/2017",

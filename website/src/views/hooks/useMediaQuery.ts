@@ -1,7 +1,7 @@
-import type { MediaQuery } from 'types/views';
 import { useMemo } from 'react';
 import { Subscription, useSubscription } from 'use-subscription';
 import json2mq from 'json2mq';
+import type { MediaQuery } from 'types/views';
 
 export function getMedia(mediaQuery: MediaQuery): string {
   return typeof mediaQuery === 'string' ? mediaQuery : json2mq(mediaQuery);

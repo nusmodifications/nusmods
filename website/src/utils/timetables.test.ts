@@ -1,4 +1,6 @@
 import NUSModerator from 'nusmoderator';
+import _ from 'lodash';
+import { parseISO } from 'date-fns';
 import {
   ColoredLesson,
   ModuleLessonConfig,
@@ -10,8 +12,6 @@ import {
 } from 'types/timetables';
 import { LessonType, RawLesson, Semester, Weeks } from 'types/modules';
 import { ModulesMap } from 'types/reducers';
-
-import _ from 'lodash';
 
 import { getModuleSemesterData, getModuleTimetable } from 'utils/modules';
 
@@ -28,7 +28,6 @@ import {
   ODD_WEEK,
 } from 'test-utils/timetable';
 
-import { parseISO } from 'date-fns';
 import {
   areOtherClassesAvailable,
   arrangeLessonsForWeek,

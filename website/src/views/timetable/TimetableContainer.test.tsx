@@ -1,9 +1,10 @@
 import { screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosHeaders, AxiosResponse } from 'axios';
 import produce from 'immer';
 
 import type { Semester } from 'types/modules';
+import type { Dispatch } from 'types/redux';
 
 import { FETCH_MODULE, FETCH_MODULE_LIST } from 'actions/constants';
 import { setTimetable } from 'actions/timetables';
@@ -34,7 +35,9 @@ const bfs1001Response: AxiosResponse = {
   status: 200,
   statusText: 'Ok',
   headers: {},
-  config: {},
+  config: {
+    headers: new AxiosHeaders(),
+  },
 };
 
 const relevantStoreContents = {
@@ -184,7 +187,7 @@ describe(TimetableContainerComponent, () => {
 
     // Populate mock timetable
     const timetable = { CS1010S: { Lecture: '1' }, CS3216: { Lecture: '1' } };
-    store.dispatch(setTimetable(semester, timetable));
+    (store.dispatch as Dispatch)(setTimetable(semester, timetable));
 
     // Expect nothing to be fetched as timetable exists in `moduleBank`.
     expect(screen.queryByText(/Loading/)).not.toBeInTheDocument();
