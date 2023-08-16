@@ -6,7 +6,7 @@
   "elasticsearchBaseUrl": "https://nusmods-search.es.ap-southeast-1.aws.found.io:9243",
   "semester": 1,
   "disqusShortname": "nusmods-prod",
-  "venueFeedbackApi": "https://dev--nusmods-venue-github-hook--zwliew.autocode.dev/",
+  "venueFeedbackApi": "https://nusmods-website-git-zwliew-fixvercel-serverless-fns-mods-bot.vercel.app/api/report-venue",
   "moduleErrorApi": "https://0-0-7--nusmods-module-error-reporting.mediumdeviation.autocode.gg/",
   "archiveYears": [
     "2016/2017",
