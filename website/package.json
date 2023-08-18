@@ -10,7 +10,7 @@
     "rsync:export": "rsync -avu --delete-after dist-timetable/",
     "promote-staging": "bash scripts/promote-staging.sh",
     "typecheck": "tsc --noEmit",
-    "lint": "run-p lint:**",
+    "lint": "run-p \"lint:**\"",
     "lint:code": "eslint --ext .js,.ts,.tsx api scripts src webpack",
     "lint:styles": "stylelint \"src/**/*.scss\" --syntax scss",
     "test": "jest --coverage",
