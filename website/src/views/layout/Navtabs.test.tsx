@@ -39,17 +39,17 @@ describe(Navtabs, () => {
     make();
     if (enableMpe) {
       expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
-              Array [
-                "Today",
-                "Timetable",
-                "Modules",
-                "MPE",
-                "Venues",
-                "Settings",
-                "Contribute",
-                "Whispers",
-              ]
-          `);
+        [
+          "Today",
+          "Timetable",
+          "Courses",
+          "CPEx",
+          "Venues",
+          "Settings",
+          "Contribute",
+          "Whispers",
+        ]
+      `);
     } else {
       expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
         [
@@ -69,18 +69,18 @@ describe(Navtabs, () => {
     make({ settings: { beta: true } });
     if (enableMpe) {
       expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
-              Array [
-                "Today",
-                "Timetable",
-                "Modules",
-                "MPE",
-                "Venues",
-                "Planner",
-                "Settings",
-                "Contribute",
-                "Whispers",
-              ]
-          `);
+        [
+          "Today",
+          "Timetable",
+          "Courses",
+          "CPEx",
+          "Venues",
+          "Planner",
+          "Settings",
+          "Contribute",
+          "Whispers",
+        ]
+      `);
     } else {
       expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
         [
