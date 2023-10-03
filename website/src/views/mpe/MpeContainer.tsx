@@ -62,8 +62,8 @@ const MpeContainer: React.FC = () => {
 
       <h4 className={styles.subtitle}>Overview</h4>
       <p>
-        The Module Planning Exercise (MPE) is a project initiated by NUS to better understand
-        students’ demand for specific modules (as decided by the Module Host Departments) and
+        The Course Planning Exercise (CPEx) is a project initiated by NUS to better understand
+        students’ demand for specific modules (as decided by the Course Host Departments) and
         facilitate the Departments in their resource and timetable planning.
       </p>
       {enableMpe ? (
@@ -72,19 +72,19 @@ const MpeContainer: React.FC = () => {
             For this round of exercise, please{' '}
             <strong>
               indicate the module(s) you would like to read for Semester {MPE_SEMESTER} of AY
-              {MPE_AY} (maximum of {MAX_MODULES} modules)
+              {MPE_AY} (maximum of {MAX_MODULES} courses)
             </strong>{' '}
-            and the <strong>type of degree requirement</strong> each module is being used for. Do
-            note that there are no validation checks for this MPE (i.e. no timetable clash/requisite
-            checks). Information collected here is <strong>solely for planning purposes </strong>{' '}
-            and there is no guarantee that you will be allocated the selected modules during the
-            ModReg Exercise.
+            and the <strong>type of degree requirement</strong> each course is being used for. Do
+            note that there are no validation checks for this CPEx (i.e. no timetable
+            clash/requisite checks). Information collected here is{' '}
+            <strong>solely for planning purposes </strong> and there is no guarantee that you will
+            be allocated the selected modules during the CourseReg Exercise.
           </p>
-          <p>The MPE for this round will be from 06 Mar to 10 Mar 2023.</p>
+          <p>The CPEx for this round will be from 16 Oct to 20 Oct 2023.</p>
           <p>
-            Participation in the MPE will be used as <strong>one of the tie-breakers</strong> during
-            the ModReg Exercise, in cases where the demand exceeds the available quota and students
-            have the same Priority Score for a particular module.
+            Participation in the CPEx will be used as <strong>one of the tie-breakers</strong>{' '}
+            during the CourseReg Exercise, in cases where the demand exceeds the available quota and
+            students have the same Priority Score for a particular module.
           </p>
           <p>
             For further questions, please refer to this{' '}
@@ -119,7 +119,7 @@ const MpeContainer: React.FC = () => {
       ) : (
         <>
           <hr />
-          <div>MPE is not open.</div>
+          <div>CPEx is not open.</div>
         </>
       )}
     </div>
