@@ -63,7 +63,7 @@ const MpeContainer: React.FC = () => {
       <h4 className={styles.subtitle}>Overview</h4>
       <p>
         The Course Planning Exercise (CPEx) is a project initiated by NUS to better understand
-        students’ demand for specific modules (as decided by the Course Host Departments) and
+        students’ demand for specific courses (as decided by the Course Host Departments) and
         facilitate the Departments in their resource and timetable planning.
       </p>
       {enableMpe ? (
@@ -71,14 +71,14 @@ const MpeContainer: React.FC = () => {
           <p>
             For this round of exercise, please{' '}
             <strong>
-              indicate the module(s) you would like to read for Semester {MPE_SEMESTER} of AY
+              indicate the course(s) you would like to read for Semester {MPE_SEMESTER} of AY
               {MPE_AY} (maximum of {MAX_MODULES} courses)
             </strong>{' '}
             and the <strong>type of degree requirement</strong> each course is being used for. Do
             note that there are no validation checks for this CPEx (i.e. no timetable
             clash/requisite checks). Information collected here is{' '}
             <strong>solely for planning purposes </strong> and there is no guarantee that you will
-            be allocated the selected modules during the CourseReg Exercise.
+            be allocated the selected courses during the CourseReg Exercise.
           </p>
           <p>The CPEx for this round will be from 16 Oct to 20 Oct 2023.</p>
           <p>
