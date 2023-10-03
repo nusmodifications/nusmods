@@ -53,9 +53,9 @@ const Navtabs: FC = () => {
         <span className={styles.title}>Courses</span>
       </NavLink>
       {enableMpe && (
-        <NavLink {...tabProps} to="/mpe">
+        <NavLink {...tabProps} to="/cpex">
           <Target />
-          <span className={styles.title}>MPE</span>
+          <span className={styles.title}>CPEx</span>
         </NavLink>
       )}
       <NavLink {...tabProps} to="/venues" onMouseOver={preloadVenues} onFocus={preloadVenues}>

@@ -178,7 +178,7 @@ const ModuleForm: React.FC<Props> = ({
         <div className={styles.rank}>Rank</div>
         <div className={styles.module}>Course</div>
         <div className={styles.moduleCount}>
-          {preferences.length} / {MAX_MODULES} Modules Selected
+          {preferences.length} / {MAX_MODULES} Courses Selected
         </div>
       </div>
       <div>
@@ -228,7 +228,7 @@ const ModuleForm: React.FC<Props> = ({
         </div>
       ) : (
         <p className={styles.maxModulesError}>
-          Maximum of {MAX_MODULES} modules selected. Remove a module from the list to add more.
+          Maximum of {MAX_MODULES} courses selected. Remove a course from the list to add more.
         </p>
       )}
       {status}
