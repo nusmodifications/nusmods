@@ -3,7 +3,7 @@
 module.exports = {
   apps: [
     {
-      name: 'MPE Scraper',
+      name: 'CPEx Scraper',
       script: 'scripts/run.sh',
 
       instances: 1,
