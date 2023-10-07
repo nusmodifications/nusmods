@@ -1,7 +1,7 @@
 {
-  "name": "nusmods-mpe-scraper",
+  "name": "nusmods-cpex-scraper",
   "version": "1.0.0",
-  "description": "NUSMods scraper for NUS Module Planning Exercise (MPE)",
+  "description": "NUSMods scraper for NUS Course Planning Exercise (CPEx)",
   "author": "Christopher Goh <chris@nusmods.com>",
   "license": "MIT",
   "main": "src/index.ts",
