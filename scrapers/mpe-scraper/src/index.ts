@@ -1,11 +1,13 @@
 import axios from 'axios';
-import env from '../env.json';
 import fs from 'fs';
 import path from 'path';
 
+import env from '../env.json';
+
 // Configure this!
 const term = '2310';
-// Sanity check to see if there are at least this many modules before overwriting mpeModules.json
+
+// Sanity check to see if there are at least this many modules before overwriting cpexModules.json
 // The last time I ran this fully there were 3418 modules
 const threshold = 1500;
 
@@ -60,15 +62,15 @@ type Module = {
   }[];
 };
 
-export type MPEModule = {
+export type CPExModule = {
   title: string;
   moduleCode: string;
   moduleCredit: string;
-  inS1MPE?: boolean;
-  inS2MPE?: boolean;
+  inS1CPEx?: boolean;
+  inS2CPEx?: boolean;
 };
 
-const scraper = async () => {
+async function scraper() {
   const getDepartmentsResponse = await axios.post<ApiResponse<GetDepartmentsResponseData[]>>(
     `${baseUrl}/config/get-acadorg`,
     {
@@ -77,14 +79,15 @@ const scraper = async () => {
     },
   );
   const departmentsData = getDepartmentsResponse.data.data;
-
-  const collatedMpeModulesMap = new Map<string, MPEModule>();
   console.log(`Total departments: ${departmentsData.length}`);
-  let i = 0;
 
-  for (const department of departmentsData) {
+  const collatedCPExModulesMap = new Map<string, CPExModule>();
+
+  for (let i = 0; i < departmentsData.length; i++) {
+    const department = departmentsData[i];
+
     console.log(
-      `[${++i}/${departmentsData.length}] Fetching modules for ${
+      `[${i + 1}/${departmentsData.length}] Fetching modules for ${
         department.Description
       } with acadorg: ${department.AcademicOrganisation}...`,
     );
@@ -124,70 +127,73 @@ const scraper = async () => {
       const moduleCode = `${module.Subject}${module.CatalogNumber}`;
 
       // Filter duplicate modules
-      if (collatedMpeModulesMap.has(moduleCode)) {
+      if (collatedCPExModulesMap.has(moduleCode)) {
         continue;
       }
 
       const moduleCredit = module.ModularCredit;
-      const mpeAttribute = module.ModuleAttributes.find(
-        (attribute) => attribute.CourseAttribute === 'MPE',
+      const cpexAttribute = module.ModuleAttributes.find(
+        (attribute) => attribute.CourseAttribute === 'MPE', // this still isn't changed to CPEx
       );
 
-      if (!mpeAttribute) {
+      if (!cpexAttribute) {
         continue;
       }
 
-      const mpeModuleToAdd: MPEModule = {
+      const cpexModuleToAdd: CPExModule = {
         title: moduleTitle,
         moduleCode,
         moduleCredit,
       };
 
-      switch (mpeAttribute.CourseAttributeValue) {
+      switch (cpexAttribute.CourseAttributeValue) {
         case 'S1':
-          mpeModuleToAdd.inS1MPE = true;
+          cpexModuleToAdd.inS1CPEx = true;
           break;
         case 'S2':
-          mpeModuleToAdd.inS2MPE = true;
+          cpexModuleToAdd.inS2CPEx = true;
           break;
         case 'S1&S2':
-          mpeModuleToAdd.inS1MPE = true;
-          mpeModuleToAdd.inS2MPE = true;
+          cpexModuleToAdd.inS1CPEx = true;
+          cpexModuleToAdd.inS2CPEx = true;
           break;
         default:
           console.log(
-            `Unknown MPE attribute value: ${mpeAttribute.CourseAttributeValue} for ${moduleCode} ${moduleTitle}`,
+            `Unknown CPEx attribute value: ${cpexAttribute.CourseAttributeValue} for ${moduleCode} ${moduleTitle}`,
           );
           break;
       }
-      collatedMpeModulesMap.set(moduleCode, mpeModuleToAdd);
+      collatedCPExModulesMap.set(moduleCode, cpexModuleToAdd);
     }
   }
 
-  const collatedMpeModules = Array.from(collatedMpeModulesMap.values());
+  const collatedCPExModules = Array.from(collatedCPExModulesMap.values());
+  console.log(`Collated ${collatedCPExModules.length} modules.`);
 
-  console.log(`Collated ${collatedMpeModules.length} modules.`);
   const DATA_DIR = path.join(__dirname, '../../data');
-  const OLD_DATA_DIR = path.join(DATA_DIR, '/old');
   if (!fs.existsSync(DATA_DIR)) {
     fs.mkdirSync(DATA_DIR);
   }
+  const OLD_DATA_DIR = path.join(DATA_DIR, '/old');
   if (!fs.existsSync(OLD_DATA_DIR)) {
     fs.mkdirSync(OLD_DATA_DIR);
   }
 
-  if (collatedMpeModules.length >= threshold) {
-    fs.writeFileSync(path.join(DATA_DIR, 'mpeModules.json'), JSON.stringify(collatedMpeModules));
-    console.log(`Wrote ${collatedMpeModules.length} modules to mpeModules.json.`);
+  if (collatedCPExModules.length >= threshold) {
+    fs.writeFileSync(path.join(DATA_DIR, 'cpexModules.json'), JSON.stringify(collatedCPExModules));
+    console.log(`Wrote ${collatedCPExModules.length} modules to cpexModules.json.`);
   } else {
     console.log(
-      `Not writing to mpeModules.json because the number of modules ${collatedMpeModules.length} is less than the threshold of ${threshold}.`,
+      `Not writing to cpexModules.json because the number of modules ${collatedCPExModules.length} is less than the threshold of ${threshold}.`,
     );
   }
-  const archiveFilename = `mpeModules-${getTimestampForFilename()}.json`;
-  fs.writeFileSync(path.join(OLD_DATA_DIR, archiveFilename), JSON.stringify(collatedMpeModules));
-  console.log(`Wrote ${collatedMpeModules.length} modules to archive ${archiveFilename}.`);
-  console.log('Done!');
-};
 
-scraper();
+  const archiveFilename = `cpexModules-${getTimestampForFilename()}.json`;
+  fs.writeFileSync(path.join(OLD_DATA_DIR, archiveFilename), JSON.stringify(collatedCPExModules));
+  console.log(`Wrote ${collatedCPExModules.length} modules to archive ${archiveFilename}.`);
+  console.log('Done!');
+}
+
+scraper().catch((error) => {
+  console.error(`Failed to scrape: ${error}`);
+});
