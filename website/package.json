@@ -3,9 +3,9 @@
   "version": "3.0.0-alpha",
   "description": "NUSMods v3",
   "scripts": {
-    "start": "cross-env NODE_ENV=development webpack serve --config webpack/webpack.config.dev.js",
+    "start": "cross-env NODE_ENV=development NODE_OPTIONS= --openssl-legacy-provider webpack serve --config webpack/webpack.config.dev.js",
     "start:export": "cross-env NODE_ENV=development OPEN_BROWSER=0 webpack serve --config webpack/webpack.config.timetable-only.js --port 8081",
-    "build": "cross-env NODE_ENV=production node scripts/build",
+    "build": "cross-env NODE_ENV=production NODE_OPTIONS=--openssl-legacy-provider node scripts/build",
     "rsync": "rsync -avu dist/",
     "rsync:export": "rsync -avu --delete-after dist-timetable/",
     "promote-staging": "bash scripts/promote-staging.sh",
