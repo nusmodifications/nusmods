@@ -35,7 +35,7 @@ const idp = samlify.IdentityProvider({
 
 const sp = samlify.ServiceProvider({
   metadata: fs.readFileSync(path.join(__dirname, './sp.xml')),
-  encPrivateKey: process.env.NUS_EXCHANGE_SP_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+  encPrivateKey: process.env.NUS_EXCHANGE_SP_PRIVATE_KEY,
 });
 
 export const createLoginURL = (relayState = '') => {
