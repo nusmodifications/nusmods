@@ -82,7 +82,7 @@ class NUSModsApi {
    * @returns {string}
    */
   static mpeModuleListUrl() {
-    return `${NUSModsApi.baseUrl('')}mpeModules.json`;
+    return `${NUSModsApi.baseUrl('')}cpexModules.json`;
   }
 }
 
