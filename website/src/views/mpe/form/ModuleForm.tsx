@@ -45,7 +45,7 @@ const ModuleForm: React.FC<Props> = ({
 
   const moduleSelectList = useMemo(() => {
     const selectedModules = new Set(preferences.map((preference) => preference.moduleCode));
-    const semesterProperty = MPE_SEMESTER === 1 ? 'inS1MPE' : 'inS2MPE';
+    const semesterProperty = MPE_SEMESTER === 1 ? 'inS1CPEx' : 'inS2CPEx';
     return mpeModuleList
       .filter((module) => module[semesterProperty])
       .map((module) => ({
