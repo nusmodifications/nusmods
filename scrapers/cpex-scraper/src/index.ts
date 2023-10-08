@@ -4,7 +4,12 @@ import path from 'path';
 
 import env from '../env.json';
 
+<<<<<<< HEAD
 const TERM = '2320';
+=======
+// Configure this!
+const term = '2310';
+>>>>>>> 23919f73 (feat(cpex): add standalone scraper (#3622))
 
 // Sanity check to see if there are at least this many modules before overwriting cpexModules.json
 // The last time I ran this fully there were 3418 modules
@@ -93,7 +98,11 @@ async function scraper() {
 
     const getModulesResponse = await axios.post<ApiResponse<Module[]>>(`${baseUrl}/module`, {
       acadorg: department.AcademicOrganisation,
+<<<<<<< HEAD
       term: TERM,
+=======
+      term,
+>>>>>>> 23919f73 (feat(cpex): add standalone scraper (#3622))
     });
 
     if (getModulesResponse.data.code !== FETCH_OK) {
