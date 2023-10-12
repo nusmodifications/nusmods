@@ -88,7 +88,7 @@ const MpeContainer: React.FC = () => {
           </p>
           <p>
             For further questions, please refer to this{' '}
-            <ExternalLink href="https://www.nus.edu.sg/registrar/docs/info/mpe/MPE-FAQs.pdf">
+            <ExternalLink href="https://www.nus.edu.sg/registrar/docs/info/cpex/cpex-faqs.pdf">
               FAQ
             </ExternalLink>{' '}
             provided by NUS Registrar's Office.
