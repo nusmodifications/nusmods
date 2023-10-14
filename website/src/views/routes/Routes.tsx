@@ -36,7 +36,7 @@ const Routes: React.FC = () => (
     <Route path="/venues/:venue?" component={VenuesContainer} />
     <Route path="/today" component={TodayContainer} />
     <Route path="/planner" component={PlannerContainer} />
-    <Route path="/mpe" component={MpeContainer} />
+    <Route path="/cpex" component={MpeContainer} />
     <Route path="/tetris" component={TetrisContainer} />
 
     <Route path="/about" component={AboutContainer} />
