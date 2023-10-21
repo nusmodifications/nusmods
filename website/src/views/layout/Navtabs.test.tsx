@@ -3,7 +3,7 @@ import produce from 'immer';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
-import { enableMpe } from 'featureFlags';
+import { enableCPEx } from 'featureFlags';
 import configureStore from 'bootstrapping/configure-store';
 import reducers from 'reducers';
 import { initAction } from 'test-utils/redux';
@@ -37,7 +37,7 @@ function make(storeOverrides: Partial<typeof relevantStoreContents> = {}) {
 describe(Navtabs, () => {
   test('should render into nav element', () => {
     make();
-    if (enableMpe) {
+    if (enableCPEx) {
       expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
         [
           "Today",
@@ -67,7 +67,7 @@ describe(Navtabs, () => {
 
   test('should show beta tabs if beta is true', () => {
     make({ settings: { beta: true } });
-    if (enableMpe) {
+    if (enableCPEx) {
       expect(screen.getAllByRole('link').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
         [
           "Today",
