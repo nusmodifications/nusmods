@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import classnames from 'classnames';
-import { enableMpe } from 'featureFlags';
+import { enableCPEx } from 'featureFlags';
 import Modal from 'views/components/Modal';
 import type { MpeSubmission } from 'types/mpe';
 import ExternalLink from 'views/components/ExternalLink';
@@ -66,7 +66,7 @@ const MpeContainer: React.FC = () => {
         students’ demand for specific courses (as decided by the Course Host Departments) and
         facilitate the Departments in their resource and timetable planning.
       </p>
-      {enableMpe ? (
+      {enableCPEx ? (
         <>
           <p>
             For this round of exercise, please{' '}
