@@ -34,6 +34,21 @@ export default class PlannerYear extends PureComponent<Props, State> {
     currentYearCardRef: createRef<HTMLDivElement>(),
   };
 
+  override componentDidMount() {
+    if (this.props.year !== config.academicYear) {
+      return;
+    }
+    const currentYearCard = this.state.currentYearCardRef.current;
+    const parentContainer = currentYearCard?.parentElement;
+    if (!currentYearCard || !parentContainer) {
+      return;
+    }
+    parentContainer.scrollTo({
+      left: currentYearCard.offsetLeft - parentContainer.offsetLeft,
+      behavior: 'smooth',
+    });
+  }
+
   hasSpecialTermModules() {
     const { semesters } = this.props;
     return size(semesters[3]) > 0 || size(semesters[4]) > 0;
@@ -58,21 +73,6 @@ export default class PlannerYear extends PureComponent<Props, State> {
         </div>
       </header>
     );
-  }
-
-  override componentDidMount() {
-    if (this.props.year !== config.academicYear) {
-      return;
-    }
-    const currentYearCard = this.state.currentYearCardRef.current;
-    const parentContainer = currentYearCard?.parentElement;
-    if (!currentYearCard || !parentContainer) {
-      return;
-    }
-    parentContainer.scrollTo({
-      left: currentYearCard.offsetLeft - parentContainer.offsetLeft,
-      behavior: 'smooth',
-    });
   }
 
   override render() {
