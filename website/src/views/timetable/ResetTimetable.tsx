@@ -2,7 +2,7 @@ import * as React from 'react';
 import axios from 'axios';
 import classnames from 'classnames';
 import qs from 'query-string';
-import { Mail, XSquare } from 'react-feather';
+import { X, XSquare } from 'react-feather';
 import type { QRCodeProps } from 'react-qr-svg';
 
 import type { SemTimetableConfig } from 'types/timetables';
@@ -55,9 +55,9 @@ export default class ResetTimetable extends React.PureComponent<Props, State> {
     return (
       <div>
             <a
-              className="btn btn-outline-primary btn-block btn-svg"
+              className="btn btn-outline-primary btn-block btn-svg" onClick={this.closeModal}
             >
-              <Mail className="svg" /> Yes, Reset My Timetable 
+              <X className="svg"/> Yes, Reset My Timetable 
             </a>
       </div>
     );
