@@ -9,6 +9,7 @@ import { SemTimetableConfig } from 'types/timetables';
 
 import elements from 'views/elements';
 import config from 'config';
+import ResetTimetable from './ResetTimetable';
 import ShareTimetable from './ShareTimetable';
 import ExportMenu from './ExportMenu';
 
@@ -81,8 +82,8 @@ const TimetableActions: React.FC<Props> = (props) => (
     </div>
 
     <div className={styles.buttonGroup} role="group" aria-label="Timetable exporting">
+      <ResetTimetable semester={props.semester} timetable={props.timetable} />
       <ExportMenu semester={props.semester} timetable={props.timetable} />
-
       <ShareTimetable semester={props.semester} timetable={props.timetable} />
     </div>
   </div>
