@@ -1,14 +1,9 @@
 import * as React from 'react';
-import axios from 'axios';
-import classnames from 'classnames';
-import qs from 'query-string';
 import { X, XSquare } from 'react-feather';
-import type { QRCodeProps } from 'react-qr-svg';
 
 import type { SemTimetableConfig } from 'types/timetables';
-import type { Semester } from 'types/modules';
+import type { Semester, ModuleCode} from 'types/modules';
 
-import config from 'config';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 
@@ -18,6 +13,8 @@ import styles from './ShareTimetable.scss';
 type Props = {
   semester: Semester;
   timetable: SemTimetableConfig;
+
+  removeModule: (moduleCode: ModuleCode) => void;
 };
 
 type State = {
@@ -25,37 +22,39 @@ type State = {
 };
 
 
-
-// So that I don't keep typing 'shortUrl' instead
-export const SHORT_URL_KEY = 'shorturl';
-
 export default class ResetTimetable extends React.PureComponent<Props, State> {
-
 
   override state: State = {
     isOpen: false
   };
 
 
-
-
   openModal = () => {
     this.setState({ isOpen: true });
   };
 
-  closeModal = () =>
-    this.setState({
-      isOpen: false
-    });
-
+  closeModal = () =>   
+  this.setState({
+    isOpen: false
+  });
 
   renderSharing() {
-    const { semester } = this.props;
+    const { timetable, removeModule } = this.props;
+
+    const removeAllModules = (timetable: SemTimetableConfig) => {
+      const moduleCodes = Object.keys(timetable);
+    
+      for (const key in moduleCodes) {
+        console.log(moduleCodes[key]);
+        this.props.removeModule(moduleCodes[key]);
+      }
+        this.closeModal;
+    }
 
     return (
       <div>
             <a
-              className="btn btn-outline-primary btn-block btn-svg" onClick={this.closeModal}
+              className="btn btn-outline-primary btn-block btn-svg" onClick={() => removeAllModules(this.props.timetable)}
             >
               <X className="svg"/> Yes, Reset My Timetable 
             </a>
