@@ -278,7 +278,8 @@ class TimetableContent extends React.Component<Props, State> {
       hiddenInTimetable,
     } = this.props;
 
-    const { showExamCalendar } = this.state;
+    const { showExamCalendar, tombstone } = this.state;
+    const resetTombstone = () => this.setState({ tombstone: null });
 
     let timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons)
       // Do not process hidden modules
@@ -405,6 +406,7 @@ class TimetableContent extends React.Component<Props, State> {
                   timetable={this.props.timetable}
                   showExamCalendar={showExamCalendar}
                   removeModule={this.removeModule}
+                  resetTombstone={resetTombstone}
                   toggleExamCalendar={() => this.setState({ showExamCalendar: !showExamCalendar })}
                 />
               </div>
