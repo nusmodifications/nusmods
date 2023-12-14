@@ -15,6 +15,7 @@ type Props = {
   timetable: SemTimetableConfig;
 
   removeModule: (moduleCode: ModuleCode) => void;
+  resetTombstone: () => void;
 };
 
 type State = {
@@ -38,16 +39,16 @@ export default class ResetTimetable extends React.PureComponent<Props, State> {
     isOpen: false
   });
 
-  renderSharing() {
-    const { timetable, removeModule } = this.props;
+  renderReset() {
+    const { timetable, removeModule, resetTombstone } = this.props;
 
     const removeAllModules = (timetable: SemTimetableConfig) => {
       const moduleCodes = Object.keys(timetable);
     
       for (const key in moduleCodes) {
-        console.log(moduleCodes[key]);
         this.props.removeModule(moduleCodes[key]);
       }
+        this.props.resetTombstone();
         this.closeModal;
     }
 
@@ -88,7 +89,7 @@ export default class ResetTimetable extends React.PureComponent<Props, State> {
             </p>
           </div>
 
-          {this.renderSharing()}
+          {this.renderReset()}
         </Modal>
       </>
     );
