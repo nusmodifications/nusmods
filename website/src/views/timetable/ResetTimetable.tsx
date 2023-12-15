@@ -40,7 +40,6 @@ export default class ResetTimetable extends React.PureComponent<Props, State> {
   });
 
   renderReset() {
-    const { timetable, removeModule, resetTombstone } = this.props;
 
     const removeAllModules = (timetable: SemTimetableConfig) => {
       const moduleCodes = Object.keys(timetable);
@@ -49,7 +48,9 @@ export default class ResetTimetable extends React.PureComponent<Props, State> {
         this.props.removeModule(moduleCodes[key]);
       }
         this.props.resetTombstone();
-        this.closeModal;
+        console.log(this.state);
+        this.closeModal();
+        console.log(this.state);
     }
 
     return (

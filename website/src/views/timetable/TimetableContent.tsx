@@ -278,7 +278,7 @@ class TimetableContent extends React.Component<Props, State> {
       hiddenInTimetable,
     } = this.props;
 
-    const { showExamCalendar, tombstone } = this.state;
+    const { showExamCalendar } = this.state;
     const resetTombstone = () => this.setState({ tombstone: null });
 
     let timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons)
