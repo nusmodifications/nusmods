@@ -13,6 +13,7 @@ import {
   CHANGE_LESSON,
   HIDE_LESSON_IN_TIMETABLE,
   REMOVE_MODULE,
+  RESET_MODULES,
   SELECT_MODULE_COLOR,
   SET_LESSON_CONFIG,
   SET_TIMETABLE,
@@ -100,7 +101,14 @@ function semTimetable(
   action: Actions,
 ): SemTimetableConfig {
   const moduleCode = get(action, 'payload.moduleCode');
-  if (!moduleCode) return state;
+  if (!moduleCode) {
+
+    if(action.type === RESET_MODULES) {
+      return defaultSemTimetableConfig;
+    }
+
+    return state;
+  }
 
   switch (action.type) {
     case ADD_MODULE:
@@ -195,6 +203,7 @@ function timetables(
 
     case ADD_MODULE:
     case REMOVE_MODULE:
+    case RESET_MODULES:
     case SELECT_MODULE_COLOR:
     case CHANGE_LESSON:
     case SET_LESSON_CONFIG:

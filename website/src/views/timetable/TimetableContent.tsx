@@ -20,6 +20,7 @@ import {
   changeLesson,
   modifyLesson,
   removeModule,
+  resetModules,
 } from 'actions/timetables';
 import {
   areLessonsSameClass,
@@ -78,6 +79,7 @@ type Props = OwnProps & {
   // Actions
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
   removeModule: (semester: Semester, moduleCode: ModuleCode) => void;
+  resetModules: (semester: Semester) => void;
   modifyLesson: (lesson: Lesson) => void;
   changeLesson: (semester: Semester, lesson: Lesson) => void;
   cancelModifyLesson: () => void;
@@ -192,6 +194,10 @@ class TimetableContent extends React.Component<Props, State> {
     // A tombstone is displayed in place of a deleted module
     this.setState({ tombstone: { ...moduleWithColor, index } });
   };
+
+  resetModules = () => {
+    this.props.resetModules(this.props.semester);
+  }
 
   resetTombstone = () => this.setState({ tombstone: null });
 
@@ -405,7 +411,7 @@ class TimetableContent extends React.Component<Props, State> {
                   semester={semester}
                   timetable={this.props.timetable}
                   showExamCalendar={showExamCalendar}
-                  removeModule={this.removeModule}
+                  resetModules={this.resetModules}
                   resetTombstone={resetTombstone}
                   toggleExamCalendar={() => this.setState({ showExamCalendar: !showExamCalendar })}
                 />
@@ -461,6 +467,7 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
 export default connect(mapStateToProps, {
   addModule,
   removeModule,
+  resetModules,
   modifyLesson,
   changeLesson,
   cancelModifyLesson,
