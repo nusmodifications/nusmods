@@ -1,8 +1,5 @@
 import * as React from 'react';
-import { X, XSquare } from 'react-feather';
-
-import type { SemTimetableConfig } from 'types/timetables';
-import type { Semester, ModuleCode} from 'types/modules';
+import {  XSquare } from 'react-feather';
 
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
@@ -11,10 +8,7 @@ import styles from './ShareTimetable.scss';
 
 
 type Props = {
-  semester: Semester;
-  timetable: SemTimetableConfig;
-
-  removeModule: (moduleCode: ModuleCode) => void;
+  resetModules: () => void;
   resetTombstone: () => void;
 };
 
@@ -41,26 +35,27 @@ export default class ResetTimetable extends React.PureComponent<Props, State> {
 
   renderReset() {
 
-    const removeAllModules = (timetable: SemTimetableConfig) => {
-      const moduleCodes = Object.keys(timetable);
+    const resetTimetable = () => {
+      this.props.resetModules();
+      
+      // const moduleCodes = Object.keys(timetable);
     
-      for (const key in moduleCodes) {
-        this.props.removeModule(moduleCodes[key]);
-      }
+      // for (const key in moduleCodes) {
+      //   this.props.removeModule(moduleCodes[key]);
+      // }
         this.props.resetTombstone();
-        console.log(this.state);
         this.closeModal();
-        console.log(this.state);
     }
 
     return (
-      <div>
-            <a
-              className="btn btn-outline-primary btn-block btn-svg" onClick={() => removeAllModules(this.props.timetable)}
+            <button
+            type="button"
+            className="btn btn-outline-primary btn-block"
+            onClick={() => resetTimetable()}
             >
-              <X className="svg"/> Yes, Reset My Timetable 
-            </a>
-      </div>
+              Yes, Reset My Timetable 
+            </button>
+
     );
   }
 

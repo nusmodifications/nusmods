@@ -6,7 +6,6 @@ import { Calendar, Grid, Sidebar, Type } from 'react-feather';
 import { toggleTimetableOrientation, toggleTitleDisplay } from 'actions/theme';
 import { Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
-import { ModuleCode } from 'types/modules';
 
 import elements from 'views/elements';
 import config from 'config';
@@ -29,7 +28,7 @@ type Props = {
   showExamCalendar: boolean;
   toggleExamCalendar: () => void;
 
-  removeModule: (moduleCode: ModuleCode) => void;
+  resetModules: () => void;
   resetTombstone: () => void;
 };
 
@@ -88,9 +87,12 @@ const TimetableActions: React.FC<Props> = (props) => (
     </div>
 
     <div className={styles.buttonGroup} role="group" aria-label="Timetable exporting">
-      <ResetTimetable semester={props.semester} timetable={props.timetable} removeModule={props.removeModule} resetTombstone={props.resetTombstone}/>
       <ExportMenu semester={props.semester} timetable={props.timetable} />
-      <ShareTimetable semester={props.semester} timetable={props.timetable} />
+      <ShareTimetable semester={props.semester} timetable={props.timetable} />{' '}
+      <ResetTimetable
+        resetModules={props.resetModules}
+        resetTombstone={props.resetTombstone}
+      />
     </div>
   </div>
 );

@@ -80,6 +80,11 @@ export function removeModule(semester: Semester, moduleCode: ModuleCode) {
   };
 }
 
+export const RESET_MODULES = 'RESET_MODULES' as const;
+export const resetModules = (semester: Semester) => ({ type: RESET_MODULES, payload: {
+  semester
+} });
+
 export const MODIFY_LESSON = 'MODIFY_LESSON' as const;
 export function modifyLesson(activeLesson: Lesson) {
   return {
