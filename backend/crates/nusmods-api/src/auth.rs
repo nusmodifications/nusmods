@@ -86,7 +86,14 @@ async fn get_login_url(Query(query): Query<GetLogin>) -> Result<impl IntoRespons
     }
 }
 
-/// Routes for authentication
+/// # Routes for authentication
+///
+/// These routes are nested under `/auth` in the API.
+/// They currently dispatch all auth requests to the Vercel serverless functions,
+/// that we have written and deployed in TypeScript for the CPEx.
+///
+/// This is to reduce the complexity of the auth portions for this backend for now.
+/// Ideally, we should be able to handle SAML auth (IdP and SP) within Rust in the future.
 pub fn auth_routes() -> Router {
     Router::new()
         .route("/user", get(get_user))
