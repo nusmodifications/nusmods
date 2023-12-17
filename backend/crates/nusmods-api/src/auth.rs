@@ -11,10 +11,8 @@ use url::Url;
 const ALLOWED_CALLBACK_DOMAINS: [&str; 4] =
     ["nusmods.com", "nuscourses.com", "modsn.us", "localhost"];
 
-const USER_DETAILS_ENDPOINT: &str =
-    "https://nusmods-website-git-chris-add-user-endpoint-mods-bot.vercel.app/api/nus/auth/user";
-const SSO_LINK_ENDPOINT: &str =
-    "https://nusmods-website-git-chris-add-user-endpoint-mods-bot.vercel.app/api/nus/auth/sso";
+const USER_DETAILS_ENDPOINT: &str = "https://nusmods.com/api/nus/auth/user";
+const SSO_LINK_ENDPOINT: &str = "https://nusmods.com/api/nus/auth/sso";
 
 fn is_valid_callback_url(callback_url: &str) -> bool {
     let url = match Url::parse(callback_url) {
@@ -111,4 +109,49 @@ struct GetLogin {
 #[derive(Deserialize)]
 struct GetUser {
     token: Option<String>,
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_is_valid_callback_url_canonical() {
+        assert!(is_valid_callback_url("http://nusmods.com"));
+        assert!(is_valid_callback_url("http://nusmods.com/some/path"));
+        assert!(is_valid_callback_url("http://nuscourses.com"));
+        assert!(is_valid_callback_url("http://nuscourses.com/some/path"));
+        assert!(is_valid_callback_url("http://modsn.us"));
+        assert!(is_valid_callback_url("http://modsn.us/some/path"));
+        assert!(is_valid_callback_url("http://localhost:3000"));
+        assert!(is_valid_callback_url("http://localhost:3000/some/path"));
+    }
+
+    #[test]
+    fn test_is_valid_callback_url_subdomain() {
+        assert!(is_valid_callback_url("http://api.nusmods.com"));
+        assert!(is_valid_callback_url("http://api.nusmods.com/some/path"));
+        assert!(is_valid_callback_url("http://api.nuscourses.com"));
+        assert!(is_valid_callback_url("http://api.nuscourses.com/some/path"));
+        assert!(is_valid_callback_url("http://api.modsn.us"));
+        assert!(is_valid_callback_url("http://api.modsn.us/some/path"));
+        assert!(is_valid_callback_url("http://api.localhost:3000"));
+        assert!(is_valid_callback_url("http://api.localhost:3000/some/path"));
+    }
+
+    #[test]
+    fn test_is_valid_callback_url_malicious_domain() {
+        assert!(!is_valid_callback_url("http://maliciousnusmods.com"));
+        assert!(!is_valid_callback_url(
+            "http://maliciousnusmods.com/some/path"
+        ));
+        assert!(!is_valid_callback_url("http://api.maliciousnusmods.com"));
+        assert!(!is_valid_callback_url(
+            "http://api.maliciousnusmods.com/some/path"
+        ));
+        assert!(!is_valid_callback_url("http://nusmods.com.malicious.com"));
+        assert!(!is_valid_callback_url(
+            "http://nusmods.com.malicious.com/some/path"
+        ));
+    }
 }
