@@ -46,7 +46,9 @@ export const createLoginURL = (relayState = '') => {
 };
 
 export const authenticate = async (req: Request) => {
-  const tokenProvided = req.headers.authorization || (req.body && req.body.SAMLResponse);
+  const tokenProvided =
+    req.headers.authorization ||
+    (req.body && req.body.SAMLResponse);
   if (!tokenProvided) {
     throw new Error(errors.noTokenSupplied);
   }
