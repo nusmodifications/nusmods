@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "backend"
+name = "nusmods-api"
 version = "0.1.0"
