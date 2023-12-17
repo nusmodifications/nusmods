@@ -17,8 +17,10 @@ ahash = { version = "0.8.6", features = ["serde"] }
 anyhow = "1.0.75"
 axum = "0.7.2"
 clap = { version = "4.4.11", features = ["derive", "env"] }
+reqwest = { version = "0.11.22", features = ["json"] }
 serde = { version = "1.0.193", features = ["derive", "rc"] }
 thiserror = "1.0.51"
 tower = "0.4.13"
 tokio = { version = "1.35.0", features = ["full"] }
 tracing-subscriber = "0.3.18"
+url = "2.5.0"
