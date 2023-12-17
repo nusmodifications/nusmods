@@ -8,8 +8,8 @@ import {
 } from '../../../src/serverless/handler';
 
 const handleGet: Handler = async (req, res) => {
-    const { user } = await authenticate(req);
-    res.json(user);
+  const { user } = await authenticate(req);
+  res.json(user);
 };
 
 const methodHandlers: MethodHandlers = {
