@@ -17,7 +17,6 @@ ahash = { version = "0.8.6", features = ["serde"] }
 anyhow = "1.0.75"
 axum = "0.7.2"
 clap = { version = "4.4.11", features = ["derive", "env"] }
-samael = { version = "0.0.14", features = ["xmlsec"] }
 serde = { version = "1.0.193", features = ["derive", "rc"] }
 thiserror = "1.0.51"
 tower = "0.4.13"
