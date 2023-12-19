@@ -48,9 +48,7 @@ export default class ResetTimetable extends React.PureComponent<Props, State> {
         this.props.removeModule(moduleCodes[key]);
       }
         this.props.resetTombstone();
-        console.log(this.state);
         this.closeModal();
-        console.log(this.state);
     }
 
     return (
@@ -58,7 +56,7 @@ export default class ResetTimetable extends React.PureComponent<Props, State> {
             <a
               className="btn btn-outline-primary btn-block btn-svg" onClick={() => removeAllModules(this.props.timetable)}
             >
-              <X className="svg"/> Yes, Reset My Timetable 
+              Yes, Reset My Timetable 
             </a>
       </div>
     );

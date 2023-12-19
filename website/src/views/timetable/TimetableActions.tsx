@@ -88,9 +88,9 @@ const TimetableActions: React.FC<Props> = (props) => (
     </div>
 
     <div className={styles.buttonGroup} role="group" aria-label="Timetable exporting">
-      <ResetTimetable semester={props.semester} timetable={props.timetable} removeModule={props.removeModule} resetTombstone={props.resetTombstone}/>
       <ExportMenu semester={props.semester} timetable={props.timetable} />
       <ShareTimetable semester={props.semester} timetable={props.timetable} />
+      <ResetTimetable semester={props.semester} timetable={props.timetable} removeModule={props.removeModule} resetTombstone={props.resetTombstone}/>
     </div>
   </div>
 );
