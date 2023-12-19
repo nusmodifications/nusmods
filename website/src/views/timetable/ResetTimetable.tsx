@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { X, XSquare } from 'react-feather';
+import { XSquare } from 'react-feather';
 
 import type { SemTimetableConfig } from 'types/timetables';
 import type { Semester, ModuleCode} from 'types/modules';
