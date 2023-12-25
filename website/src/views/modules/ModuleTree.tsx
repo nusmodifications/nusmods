@@ -14,15 +14,18 @@ import styles from './ModuleTree.scss';
 
 type Props = {
   moduleCode: ModuleCode;
-  getModuleCondensed: (moduleCode: ModuleCode) => ModuleCondensed | undefined;
   fulfillRequirements?: readonly ModuleCode[];
   prereqTree?: PrereqTree;
+  
+  getModuleCondensed: (moduleCode: ModuleCode) => ModuleCondensed | undefined;
 };
 
 interface TreeDisplay {
   layer: number;
   node: PrereqTree;
   isPrereq?: boolean;
+
+  getModuleCondensed: (moduleCode: ModuleCode) => ModuleCondensed | undefined;
 }
 
 const GRADE_REQUIREMENT_SEPARATOR = ':';
@@ -41,7 +44,11 @@ const formatConditional = (node: PrereqTree) => {
   return 'all of';
 };
 
-type NodeName = { prefix?: string; name: string };
+type NodeName = { 
+  prefix?: string; 
+  name: string 
+
+};
 const nodeName = (node: PrereqTree): NodeName => {
   if (typeof node !== 'string') {
     return { name: Object.keys(node)[0] };
@@ -75,11 +82,11 @@ const unwrapLayer = (node: PrereqTree) => {
 };
 
 
-const Branch: React.FC<{ nodes: PrereqTree[]; layer: number }> = (props) => (
+const Branch: React.FC<{ nodes: PrereqTree[]; layer: number; getModuleCondensed: (moduleCode: ModuleCode) => ModuleCondensed | undefined;}> = (props) => (
   <ul className={styles.tree}>
     {props.nodes.map((child, idx) => (
       <li className={styles.branch} key={typeof child === 'string' ? nodeName(child).name : idx}>
-        <Tree node={child} layer={props.layer} />
+        <Tree node={child} layer={props.layer} getModuleCondensed={props.getModuleCondensed}/>
       </li>
     ))}
   </ul>
@@ -101,16 +108,16 @@ const Tree: React.FC<TreeDisplay> = (props) => {
         >
           {formatConditional(node)}
         </div>
-        <Branch nodes={unwrapLayer(node)} layer={layer + 1} />
+        <Branch nodes={unwrapLayer(node)} layer={layer + 1} getModuleCondensed={props.getModuleCondensed}/>
       </>
     );
   }
 
   // Use Redux Selector to check if module name still exists in database
-  const moduleDeprecated = false;
-  
-  // If Module is deprecated then we grey out, remove color classname
-  if (moduleDeprecated) {
+  const moduleActive = props.getModuleCondensed(name);
+  console.log(moduleActive)
+  // If Module is deprecated (undefined) then we grey out, remove color classname
+  if (!moduleActive) {
     return (
     <div
       className={classnames(styles.node, styles.moduleNode, {
@@ -138,13 +145,7 @@ const Tree: React.FC<TreeDisplay> = (props) => {
 
 const ModuleTree: React.FC<Props> = (props) => {
   const { fulfillRequirements, prereqTree, moduleCode } = props;
-  
-  const moduleDeprecated = props.getModuleCondensed("CS1010X");
-  console.log(moduleDeprecated);
-  // pass the getModuleCondensed function signature into Tree.
-  // Then Tree should be able to call and get the module info into the  
-
-
+  //console.log(props.getModuleCondensed("CS1010X"))
 
   return (
     <>
@@ -157,7 +158,7 @@ const ModuleTree: React.FC<Props> = (props) => {
                   key={fulfilledModule}
                   className={classnames(styles.branch, styles.prereqBranch)}
                 >
-                  <Tree layer={0} node={fulfilledModule} isPrereq />
+                  <Tree layer={0} node={fulfilledModule} isPrereq getModuleCondensed={props.getModuleCondensed}/>
                 </li>
               ))}
             </ul>
@@ -168,9 +169,9 @@ const ModuleTree: React.FC<Props> = (props) => {
 
         <ul className={classnames(styles.tree, styles.root)}>
           <li className={classnames(styles.branch)}>
-            <Tree layer={1} node={moduleCode} />
+            <Tree layer={1} node={moduleCode} getModuleCondensed={props.getModuleCondensed}/>
 
-            {prereqTree && <Branch nodes={[prereqTree]} layer={2} />}
+            {prereqTree && <Branch nodes={[prereqTree]} layer={2} getModuleCondensed={props.getModuleCondensed}/>}
           </li>
         </ul>
       </div>
