@@ -113,10 +113,10 @@ const Tree: React.FC<TreeDisplay> = (props) => {
     );
   }
 
-  // Use Redux Selector to check if module name still exists in database
+  // Check if module name still exists in database
   const moduleActive = props.getModuleCondensed(name);
-  console.log(moduleActive)
-  // If Module is deprecated (undefined) then we grey out, remove color classname
+
+  // If module is deprecated (undefined) then we grey out, remove color classname
   if (!moduleActive) {
     return (
     <div
@@ -145,7 +145,6 @@ const Tree: React.FC<TreeDisplay> = (props) => {
 
 const ModuleTree: React.FC<Props> = (props) => {
   const { fulfillRequirements, prereqTree, moduleCode } = props;
-  //console.log(props.getModuleCondensed("CS1010X"))
 
   return (
     <>
