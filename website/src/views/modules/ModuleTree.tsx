@@ -1,15 +1,20 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { flatten, values } from 'lodash';
-import LinkModuleCodes from 'views/components/LinkModuleCodes';
+import { connect } from 'react-redux';
 
-import { ModuleCode, PrereqTree } from 'types/modules';
+import { getModuleCondensed } from 'selectors/moduleBank';
 
+import { ModuleCode, PrereqTree, ModuleCondensed } from 'types/modules';
+import { State } from 'types/state';
 import { notNull } from 'types/utils';
+
+import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import styles from './ModuleTree.scss';
 
 type Props = {
   moduleCode: ModuleCode;
+  getModuleCondensed: (moduleCode: ModuleCode) => ModuleCondensed | undefined;
   fulfillRequirements?: readonly ModuleCode[];
   prereqTree?: PrereqTree;
 };
@@ -69,6 +74,7 @@ const unwrapLayer = (node: PrereqTree) => {
   return flatten(values(node).filter(notNull));
 };
 
+
 const Branch: React.FC<{ nodes: PrereqTree[]; layer: number }> = (props) => (
   <ul className={styles.tree}>
     {props.nodes.map((child, idx) => (
@@ -100,6 +106,24 @@ const Tree: React.FC<TreeDisplay> = (props) => {
     );
   }
 
+  // Use Redux Selector to check if module name still exists in database
+  const moduleDeprecated = false;
+  
+  // If Module is deprecated then we grey out, remove color classname
+  if (moduleDeprecated) {
+    return (
+    <div
+      className={classnames(styles.node, styles.moduleNode, {
+        [styles.prereqNode]: isPrereq,
+      })}
+    >
+      {prefix && <span className={styles.prefix}>{prefix}</span>}
+      <LinkModuleCodes className={styles.link}>{name}</LinkModuleCodes>
+    </div>
+
+    )
+
+  }
   return (
     <div
       className={classnames(styles.node, styles.moduleNode, `hoverable color-${layer}`, {
@@ -114,6 +138,13 @@ const Tree: React.FC<TreeDisplay> = (props) => {
 
 const ModuleTree: React.FC<Props> = (props) => {
   const { fulfillRequirements, prereqTree, moduleCode } = props;
+  
+  const moduleDeprecated = props.getModuleCondensed("CS1010X");
+  console.log(moduleDeprecated);
+  // pass the getModuleCondensed function signature into Tree.
+  // Then Tree should be able to call and get the module info into the  
+
+
 
   return (
     <>
@@ -170,4 +201,9 @@ const ModuleTree: React.FC<Props> = (props) => {
   );
 };
 
-export default ModuleTree;
+const mapStateToProps = connect((state: State) => ({
+  getModuleCondensed: getModuleCondensed(state),
+}));
+
+export default mapStateToProps(ModuleTree);
+
