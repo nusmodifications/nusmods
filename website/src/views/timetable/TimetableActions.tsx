@@ -28,11 +28,8 @@ type Props = {
   showExamCalendar: boolean;
   toggleExamCalendar: () => void;
 
-  resetModules: () => void;
-  resetTombstone: () => void;
+  resetTimetable: () => void;
 };
-
-
 
 const TimetableActions: React.FC<Props> = (props) => (
   <div
@@ -88,11 +85,8 @@ const TimetableActions: React.FC<Props> = (props) => (
 
     <div className={styles.buttonGroup} role="group" aria-label="Timetable exporting">
       <ExportMenu semester={props.semester} timetable={props.timetable} />
-      <ShareTimetable semester={props.semester} timetable={props.timetable} />{' '}
-      <ResetTimetable
-        resetModules={props.resetModules}
-        resetTombstone={props.resetTombstone}
-      />
+      <ShareTimetable semester={props.semester} timetable={props.timetable} />
+      <ResetTimetable resetTimetable={props.resetTimetable} />
     </div>
   </div>
 );

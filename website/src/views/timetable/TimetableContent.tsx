@@ -20,7 +20,7 @@ import {
   changeLesson,
   modifyLesson,
   removeModule,
-  resetModules,
+  resetTimetable,
 } from 'actions/timetables';
 import {
   areLessonsSameClass,
@@ -79,7 +79,7 @@ type Props = OwnProps & {
   // Actions
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
   removeModule: (semester: Semester, moduleCode: ModuleCode) => void;
-  resetModules: (semester: Semester) => void;
+  resetTimetable: (semester: Semester) => void;
   modifyLesson: (lesson: Lesson) => void;
   changeLesson: (semester: Semester, lesson: Lesson) => void;
   cancelModifyLesson: () => void;
@@ -195,9 +195,9 @@ class TimetableContent extends React.Component<Props, State> {
     this.setState({ tombstone: { ...moduleWithColor, index } });
   };
 
-  resetModules = () => {
-    this.props.resetModules(this.props.semester);
-  }
+  resetTimetable = () => {
+    this.props.resetTimetable(this.props.semester);
+  };
 
   resetTombstone = () => this.setState({ tombstone: null });
 
@@ -285,7 +285,6 @@ class TimetableContent extends React.Component<Props, State> {
     } = this.props;
 
     const { showExamCalendar } = this.state;
-    const resetTombstone = () => this.setState({ tombstone: null });
 
     let timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons)
       // Do not process hidden modules
@@ -301,7 +300,10 @@ class TimetableContent extends React.Component<Props, State> {
       const module = modules[moduleCode];
       const moduleTimetable = getModuleTimetable(module, semester);
       lessonsForLessonType(moduleTimetable, activeLesson.lessonType).forEach((lesson) => {
-        const modifiableLesson: Lesson & { isActive?: boolean; isAvailable?: boolean } = {
+        const modifiableLesson: Lesson & {
+          isActive?: boolean;
+          isAvailable?: boolean;
+        } = {
           ...lesson,
           // Inject module code in
           moduleCode,
@@ -411,8 +413,7 @@ class TimetableContent extends React.Component<Props, State> {
                   semester={semester}
                   timetable={this.props.timetable}
                   showExamCalendar={showExamCalendar}
-                  resetModules={this.resetModules}
-                  resetTombstone={resetTombstone}
+                  resetTimetable={this.resetTimetable}
                   toggleExamCalendar={() => this.setState({ showExamCalendar: !showExamCalendar })}
                 />
               </div>
@@ -467,7 +468,7 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
 export default connect(mapStateToProps, {
   addModule,
   removeModule,
-  resetModules,
+  resetTimetable,
   modifyLesson,
   changeLesson,
   cancelModifyLesson,
