@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "react-styled-carousel": "^0.5.1",
+    "swiper": "^11.0.5"
+  }
+}

@@ -7,6 +7,9 @@ import { announcementKey } from 'storage/keys';
 import CloseButton from 'views/components/CloseButton';
 import styles from './Announcements.scss';
 
+import Slider from 'react-styled-carousel';
+
+
 /**
  * If false, hides announcement.
  */
@@ -39,14 +42,14 @@ const Announcements = memo(() => {
     return true;
   });
 
-  const dismiss = useCallback(() => {
-    if (key) storage.setItem(key, true);
-    setIsOpen(false);
-  }, []);
+  // const dismiss = useCallback(() => {
+  //   if (key) storage.setItem(key, true);
+  //   setIsOpen(false);
+  // }, []);
 
-  if (!isOpen) {
-    return null;
-  }
+  // if (!isOpen) {
+  //   return null;
+  // }
 
   return (
     <div
@@ -59,18 +62,23 @@ const Announcements = memo(() => {
       <Heart className={styles.backgroundIcon} />
 
       <div className={styles.body}>
-        <h3>AY2023/24 courses now available!</h3>
+        <h3>Requirement 1</h3>
         <p className={styles.bodyElement}>
-          NUSMods now has AY2023/24 course information available. The data is accurate but subject
-          to changes.
+          Find a mod that starts at 1200 MON, ends at 1400 MON.
         </p>
         <p className={styles.bodyElement}>
-          If there are any discrepancies with course data, please contact your respective faculty's
-          office. Happy new academic year!
+          Gud luck!
         </p>
+        <Slider>
+    <h1>1</h1>
+    <h1>2</h1>
+    <h1>3</h1>
+    <h1>4</h1>
+    <h1>5</h1>
+  </Slider>
       </div>
 
-      <div className={styles.buttons}>{key && <CloseButton onClick={dismiss} />}</div>
+      {/* <div className={styles.buttons}>{key && <CloseButton onClick={dismiss} />}</div> */}
     </div>
   );
 });
