@@ -7,9 +7,6 @@ import { announcementKey } from 'storage/keys';
 import CloseButton from 'views/components/CloseButton';
 import styles from './Announcements.scss';
 
-import Slider from 'react-styled-carousel';
-
-
 /**
  * If false, hides announcement.
  */
@@ -63,19 +60,8 @@ const Announcements = memo(() => {
 
       <div className={styles.body}>
         <h3>Requirement 1</h3>
-        <p className={styles.bodyElement}>
-          Find a mod that starts at 1200 MON, ends at 1400 MON.
-        </p>
-        <p className={styles.bodyElement}>
-          Gud luck!
-        </p>
-        <Slider>
-    <h1>1</h1>
-    <h1>2</h1>
-    <h1>3</h1>
-    <h1>4</h1>
-    <h1>5</h1>
-  </Slider>
+        <p className={styles.bodyElement}>Find a mod that starts at 1200 MON, ends at 1400 MON.</p>
+        <p className={styles.bodyElement}>Gud luck!</p>
       </div>
 
       {/* <div className={styles.buttons}>{key && <CloseButton onClick={dismiss} />}</div> */}
