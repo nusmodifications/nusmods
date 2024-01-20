@@ -1,0 +1,82 @@
+@import '~styles/utils/modules-entry';
+
+.calendarWrapper {
+  composes: scrollable from global;
+  margin-bottom: 1rem;
+
+  table {
+    width: 100%;
+  }
+}
+
+.day,
+.dayName,
+.dayDate {
+  width: 16.6666%;
+  padding: 0 0.25rem;
+  border: 1px solid var(--gray-lighter);
+  border-width: 0 1px 0 0;
+  vertical-align: top;
+
+  &:last-child {
+    border-right: 0;
+  }
+}
+
+.dayName {
+  min-width: 7rem;
+  padding-bottom: 0;
+  font-weight: normal;
+  font-size: $font-size-sm;
+  color: var(--gray-light);
+}
+
+.dayDate {
+  padding-top: 0;
+  padding-bottom: 0;
+  border-top-width: 1px;
+  font-weight: normal;
+
+  tr:first-child & {
+    border-top: 0;
+  }
+}
+
+.day {
+  h4 {
+    opacity: 0.8;
+    margin-bottom: 0.2rem;
+    font-size: $font-size-sm;
+    text-align: center;
+  }
+
+  a {
+    display: block;
+    overflow: hidden;
+    padding: 0.3rem 0.3rem 0.5rem 0.3rem;
+    margin-bottom: 0.5rem;
+    border-bottom-width: 0.3rem;
+    border-bottom-style: solid;
+    font-size: $font-size-sm;
+  }
+
+  .moduleCode {
+    font-weight: $font-weight-bold;
+  }
+
+  .moduleTitle {
+    font-size: $font-size-xs;
+    line-height: 1.1;
+  }
+}
+
+.noExams {
+  composes: h4 text-center from global;
+  padding: 1.5rem 0;
+}
+
+.todayBadge {
+  composes: badge badge-primary from global;
+  margin-left: 0.4rem;
+  vertical-align: text-bottom;
+}

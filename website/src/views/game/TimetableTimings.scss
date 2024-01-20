@@ -1,0 +1,41 @@
+@import './_variables.scss';
+
+.timings {
+  display: flex;
+  justify-content: space-between;
+  margin-left: $timetable-day-h-size;
+  font-weight: 600;
+  font-size: $font-size-s;
+
+  @include media-breakpoint-down(sm) {
+    margin-left: $timetable-day-h-size-sm;
+  }
+
+  @include vertical-mode {
+    position: sticky;
+    left: 0;
+    z-index: $timetable-timing-z-index;
+    flex: 0 0 auto;
+    flex-direction: column;
+    padding: 0;
+    margin: $timetable-day-v-size 0 0 0;
+    text-align: right;
+    background: var(--body-bg-70);
+    pointer-events: none;
+
+    @include media-breakpoint-up(sm) {
+      padding-right: 0.25rem;
+    }
+  }
+}
+
+.time {
+  transform: translateX(-50%);
+
+  @include vertical-mode {
+    display: inline-block;
+    padding: 0.1rem 0.2rem;
+    background: var(--body-bg-70);
+    transform: translateY(-50%);
+  }
+}

@@ -1,0 +1,105 @@
+@import './_variables.scss';
+
+.day {
+  position: relative;
+  display: flex;
+  flex: 1 0 auto;
+  min-height: $timetable-row-height;
+  border-bottom: $timetable-border;
+
+  &:first-child {
+    > .dayName {
+      border-top-left-radius: $btn-border-radius;
+    }
+  }
+
+  &:last-child {
+    border-bottom: 0;
+
+    > .dayName {
+      border-bottom-left-radius: $btn-border-radius;
+    }
+  }
+
+  @include vertical-mode {
+    flex-direction: column;
+    border-bottom: 0;
+    border-left: $timetable-border;
+
+    &:first-child {
+      border-left: 0;
+    }
+  }
+}
+
+.dayName {
+  position: sticky;
+  left: 0;
+  z-index: $timetable-day-z-index;
+  display: flex;
+  flex: 0 0 $timetable-day-h-size;
+  justify-content: center;
+  align-items: center;
+  border: $timetable-border;
+  border-width: 0 1px;
+  font-weight: 600;
+  font-size: $font-size-s;
+  text-transform: uppercase;
+  background: var(--body-bg);
+
+  &.dayNameScrolled {
+    z-index: $timetable-scolled-day-z-index;
+  }
+
+  @include media-breakpoint-down(sm) {
+    overflow: hidden;
+    flex: 0 0 $timetable-day-h-size-sm;
+
+    .dayNameText {
+      // On small screens, display the day names vertically
+      display: flex;
+      justify-content: center;
+      width: 0.6rem;
+      font-size: $font-size-s;
+      line-height: 1.1;
+      text-align: center;
+      word-break: break-all;
+    }
+  }
+
+  @include vertical-mode {
+    z-index: auto; // Reset z-index to prevent modules from clipping header
+    flex: 0 0 $timetable-day-v-size;
+    border: 0;
+
+    .dayNameText {
+      width: auto;
+      writing-mode: horizontal-tb;
+    }
+  }
+}
+
+.dayRows {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: $timetable-row-height;
+  padding-bottom: 0.3rem;
+  background: linear-gradient(to right, var(--gray-lightest) 50%, transparent 50%);
+
+  @include vertical-mode {
+    flex-direction: row;
+    padding: 0 0 0 1px;
+    background: linear-gradient(to bottom, var(--gray-lightest) 50%, transparent 50%);
+  }
+}
+
+.currentDay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(#777, 0.15);
+}

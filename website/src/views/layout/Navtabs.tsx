@@ -17,7 +17,7 @@ import {
 
 import { enableCPEx } from 'featureFlags';
 import ExternalLink from 'views/components/ExternalLink';
-import { timetablePage } from 'views/routes/paths';
+import { timetablePage, gamePage } from 'views/routes/paths';
 import { preload as preloadToday } from 'views/today/TodayContainer';
 import { preload as preloadVenues } from 'views/venues/VenuesContainer';
 import { preload as preloadContribute } from 'views/contribute/ContributeContainer';
@@ -95,7 +95,7 @@ const Navtabs: FC = () => {
         <Heart />
         <span className={styles.title}>Whispers</span>
       </ExternalLink>
-      <NavLink className={classnames(tabProps.className)} to={timetablePage(5)}>
+      <NavLink className={classnames(tabProps.className)} to={gamePage(activeSemester)}>
         <Zap />
         <span className={styles.title}>GET REKT</span>
       </NavLink>

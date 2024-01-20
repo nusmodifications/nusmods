@@ -1,0 +1,111 @@
+@import './_variables.scss';
+
+$cell-padding: 0.3rem;
+$cell-opacity: 0.5;
+$cell-border-radius: 6px;
+
+.baseCell {
+  // Flex to ensure cell content sticks to top, because browsers tend to
+  // vertical align middle button content
+  z-index: $timetable-cell-z-index;
+  display: flex;
+  flex-direction: column;
+  padding: $cell-padding;
+  font-size: $font-size-xxs;
+  line-height: 0.85rem;
+  text-align: left;
+  transition: background-color $desktop-entering-duration $material-deceleration-curve;
+  animation-duration: $desktop-entering-duration;
+
+  &:hover,
+  &:focus {
+    outline: none;
+  }
+
+  @include vertical-mode {
+    position: absolute;
+    width: 100%;
+  }
+}
+
+.coloredCell {
+  border-width: 0 0 0.2rem;
+  border-style: solid;
+}
+
+.transparentCell {
+  border-width: 0 0 0 0;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.cellContainer {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}
+
+.clickable {
+  border-radius: $cell-border-radius;
+  cursor: pointer;
+}
+
+.available {
+  opacity: $cell-opacity;
+
+  :global {
+    animation-name: zoomIn;
+  }
+
+  &:hover,
+  &.hover {
+    opacity: 1;
+  }
+}
+
+.active {
+  z-index: $timetable-selected-cell-z-index;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+
+  :global {
+    animation-name: pulse;
+  }
+}
+
+.moduleName {
+  font-weight: 600;
+  font-size: $font-size-xs;
+}
+
+.weeksSpecial {
+  border-bottom: 1px dotted;
+
+  &::after {
+    content: '*';
+  }
+}
+
+.classes {
+  font-size: 0.75rem;
+
+  h5 {
+    margin: 0 0 0.1rem;
+    font-weight: bold;
+    font-size: 0.85rem;
+  }
+
+  ol {
+    padding: 0;
+    margin: 0 0 0 1.5rem;
+    text-align: left;
+
+    &.twoColumn {
+      column-count: 2;
+      column-gap: 2rem;
+    }
+  }
+
+  .weekInfo {
+    opacity: 0.6;
+  }
+}

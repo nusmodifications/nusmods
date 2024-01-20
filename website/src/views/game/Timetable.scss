@@ -1,0 +1,32 @@
+@import './_variables.scss';
+
+$timetable-min-width: $timetable-row-height * 16;
+
+.container {
+  min-width: $timetable-min-width;
+  background: var(--body-bg); // For timetable export
+
+  @include media-breakpoint-down(sm) {
+    padding-right: $timetable-right-padding;
+  }
+
+  @include vertical-mode {
+    display: flex;
+    min-width: 0; // Edge fallback
+    min-width: fit-content;
+  }
+}
+
+.days {
+  composes: list-unstyled from global;
+  margin: 0;
+  border: $timetable-border;
+  border-left-width: 0;
+  border-radius: $btn-border-radius;
+
+  @include vertical-mode {
+    display: flex;
+    flex: 1 0 auto;
+    border-left-width: 1px;
+  }
+}

@@ -1,0 +1,47 @@
+@import './_variables.scss';
+
+$circle-diameter: 0.5rem;
+$line-width: 0.1rem;
+
+.currentTimeIndicator {
+  position: absolute;
+  z-index: $timetable-current-time-indicator-z-index;
+  width: 0;
+  height: 100%;
+  background: none;
+
+  &:hover {
+    opacity: 0.2;
+  }
+}
+
+:global(.verticalMode) .currentTimeIndicator {
+  width: 100%;
+  height: 0;
+}
+
+.circularPart {
+  position: absolute;
+  top: -$circle-diameter * 0.5;
+  left: -$circle-diameter * 0.5;
+  width: $circle-diameter;
+  height: $circle-diameter;
+  border-radius: 50%;
+  background: theme-color();
+}
+
+.linePart {
+  position: relative;
+  top: 0;
+  left: -$line-width * 0.5;
+  width: $line-width;
+  height: 100%;
+  background: theme-color();
+}
+
+:global(.verticalMode) .linePart {
+  top: -$line-width * 0.5;
+  left: 0;
+  width: 100%;
+  height: $line-width;
+}

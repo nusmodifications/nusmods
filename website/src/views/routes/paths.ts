@@ -21,6 +21,10 @@ export function timetablePage(semester: Semester): string {
   return `/timetable/${fromSemester[semester]}`;
 }
 
+export function gamePage(semester: Semester): string {
+  return `/game/${fromSemester[semester]}`;
+}
+
 export const TIMETABLE_SHARE = 'share';
 export function timetableShare(semester: Semester, timetable: SemTimetableConfig): string {
   return `${timetablePage(semester)}/${TIMETABLE_SHARE}?${serializeTimetable(timetable)}`;

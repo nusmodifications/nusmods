@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
+import GameContainer from 'views/game/TimetableContainer';
 import TimetableContainer from 'views/timetable/TimetableContainer';
 import ModulePageContainer from 'views/modules/ModulePageContainer';
 import ModuleArchiveContainer from 'views/modules/ModuleArchiveContainer';
@@ -25,6 +26,7 @@ const Routes: React.FC = () => (
   <Switch>
     <Redirect exact from="/" to="/timetable" />
     <Route path="/timetable/:semester?/:action?" component={TimetableContainer} />
+    <Route path="/game/:semester?/:action?" component={GameContainer} />
     <Route exact path="/courses" component={ModuleFinderContainer} />
     <Route path="/courses/:moduleCode/:slug?" component={ModulePageContainer} />
     {/* Legacy Routes: Consider removal in the future, but otherwise */}
