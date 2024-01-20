@@ -12,6 +12,7 @@ import {
   Star,
   Target,
   Trello,
+  Zap,
 } from 'react-feather';
 
 import { enableCPEx } from 'featureFlags';
@@ -94,6 +95,10 @@ const Navtabs: FC = () => {
         <Heart />
         <span className={styles.title}>Whispers</span>
       </ExternalLink>
+      <NavLink className={classnames(tabProps.className)} to={timetablePage(5)}>
+        <Zap />
+        <span className={styles.title}>GET REKT</span>
+      </NavLink>
     </nav>
   );
 };

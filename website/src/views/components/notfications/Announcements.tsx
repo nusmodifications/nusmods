@@ -39,14 +39,14 @@ const Announcements = memo(() => {
     return true;
   });
 
-  const dismiss = useCallback(() => {
-    if (key) storage.setItem(key, true);
-    setIsOpen(false);
-  }, []);
+  // const dismiss = useCallback(() => {
+  //   if (key) storage.setItem(key, true);
+  //   setIsOpen(false);
+  // }, []);
 
-  if (!isOpen) {
-    return null;
-  }
+  // if (!isOpen) {
+  //   return null;
+  // }
 
   return (
     <div
@@ -59,18 +59,12 @@ const Announcements = memo(() => {
       <Heart className={styles.backgroundIcon} />
 
       <div className={styles.body}>
-        <h3>AY2023/24 courses now available!</h3>
-        <p className={styles.bodyElement}>
-          NUSMods now has AY2023/24 course information available. The data is accurate but subject
-          to changes.
-        </p>
-        <p className={styles.bodyElement}>
-          If there are any discrepancies with course data, please contact your respective faculty's
-          office. Happy new academic year!
-        </p>
+        <h3>Requirement 1</h3>
+        <p className={styles.bodyElement}>Find a mod that starts at 1200 MON, ends at 1400 MON.</p>
+        <p className={styles.bodyElement}>Gud luck!</p>
       </div>
 
-      <div className={styles.buttons}>{key && <CloseButton onClick={dismiss} />}</div>
+      {/* <div className={styles.buttons}>{key && <CloseButton onClick={dismiss} />}</div> */}
     </div>
   );
 });
