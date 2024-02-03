@@ -117,30 +117,21 @@ const Tree: React.FC<TreeDisplay> = (props) => {
   const moduleActive = props.getModuleCondensed(name);
 
   // If module is deprecated (undefined) then we grey out, remove color classname
-  if (!moduleActive) {
-    return (
-    <div
-      className={classnames(styles.node, styles.moduleNode, {
-        [styles.prereqNode]: isPrereq,
-      })}
-    >
-      {prefix && <span className={styles.prefix}>{prefix}</span>}
-      <LinkModuleCodes className={styles.link}>{name}</LinkModuleCodes>
-    </div>
 
-    )
-
-  }
   return (
     <div
-      className={classnames(styles.node, styles.moduleNode, `hoverable color-${layer}`, {
+      className={classnames(styles.node, styles.moduleNode, {
+        [`hoverable color-${layer}`]: !!moduleActive,
         [styles.prereqNode]: isPrereq,
       })}
     >
       {prefix && <span className={styles.prefix}>{prefix}</span>}
       <LinkModuleCodes className={styles.link}>{name}</LinkModuleCodes>
     </div>
+
   );
+
+  
 };
 
 const ModuleTree: React.FC<Props> = (props) => {
