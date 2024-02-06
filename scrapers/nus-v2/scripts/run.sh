@@ -8,6 +8,9 @@ date
 cd "$(dirname "$0")"
 cd ..
 
+# Print to Node version for logs
+echo "Running on Node version: $(node --version)"
+
 # Build the scraper
 rm -rf build
 yarn build
