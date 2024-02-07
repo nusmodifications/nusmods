@@ -38,7 +38,7 @@ $connector-size: 0.75rem;
 .node {
   position: relative;
   display: flex;
-  flex: 0 1 5rem;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 0.125rem 0.25rem;
@@ -51,6 +51,15 @@ $connector-size: 0.75rem;
     width: $connector-size;
     height: 1px;
   }
+}
+
+.moduleNode {
+  min-width: 4.5rem;
+}
+
+.prefix {
+  font-size: 0.75rem;
+  white-space: nowrap;
 }
 
 .link {

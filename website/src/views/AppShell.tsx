@@ -1,13 +1,13 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import type { SemTimetableConfig } from 'types/timetables';
-import type { Semester } from 'types/modules';
-import { DARK_MODE } from 'types/settings';
 
 import { Helmet } from 'react-helmet';
 import { NavLink, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import classnames from 'classnames';
 import { each } from 'lodash';
+import { DARK_MODE } from 'types/settings';
+import type { Semester } from 'types/modules';
+import type { SemTimetableConfig } from 'types/timetables';
 
 import weekText from 'utils/weekText';
 import { captureException } from 'utils/error';

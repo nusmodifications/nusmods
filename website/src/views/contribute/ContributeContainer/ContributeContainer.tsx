@@ -4,13 +4,13 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { flatten, map, mapValues, values } from 'lodash';
 
+import { DollarSign, Zap } from 'react-feather';
 import type { ModuleCondensed } from 'types/modules';
 import type { State as StoreState } from 'types/state';
 
 import { toggleFeedback } from 'actions/app';
 import { toggleBetaTesting } from 'actions/settings';
 import { modulePage } from 'views/routes/paths';
-import { DollarSign, Zap } from 'react-feather';
 import ExternalLink from 'views/components/ExternalLink';
 import Title from 'views/components/Title';
 import { FeedbackButtons } from 'views/components/FeedbackModal';

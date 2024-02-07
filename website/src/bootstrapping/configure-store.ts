@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, compose, Store } from 'redux';
+import { createStore, applyMiddleware, compose, PreloadedState } from 'redux';
 import { persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
 import { setAutoFreeze } from 'immer';
@@ -14,7 +14,7 @@ import type { Actions } from 'types/actions';
 
 // For redux-devtools-extensions - see
 // https://github.com/zalmoxisus/redux-devtools-extension
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers: typeof compose = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 // immer uses Object.freeze on returned state objects, which is incompatible with
 // redux-persist. See https://github.com/rt2zz/redux-persist/issues/747
@@ -44,9 +44,10 @@ export default function configureStore(defaultState?: State) {
 
   const storeEnhancer = applyMiddleware(...middlewares);
 
-  const store: Store<State, any> = createStore(
+  const store = createStore(
     rootReducer,
-    defaultState,
+    // Redux typings does not seem to allow non-JSON serialized values in PreloadedState so this needs to be casted
+    defaultState as PreloadedState<State> | undefined,
     composeEnhancers(storeEnhancer),
   );
 

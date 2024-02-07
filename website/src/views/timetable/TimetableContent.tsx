@@ -20,8 +20,8 @@ import {
   changeLesson,
   modifyLesson,
   removeModule,
+  resetTimetable,
 } from 'actions/timetables';
-import { undo } from 'actions/undoHistory';
 import {
   areLessonsSameClass,
   formatExamDate,
@@ -79,10 +79,10 @@ type Props = OwnProps & {
   // Actions
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
   removeModule: (semester: Semester, moduleCode: ModuleCode) => void;
+  resetTimetable: (semester: Semester) => void;
   modifyLesson: (lesson: Lesson) => void;
   changeLesson: (semester: Semester, lesson: Lesson) => void;
   cancelModifyLesson: () => void;
-  undo: () => void;
 };
 
 type State = {
@@ -116,7 +116,7 @@ function maintainScrollPosition(container: HTMLElement, modifiedCell: ModifiedCe
 }
 
 class TimetableContent extends React.Component<Props, State> {
-  state: State = {
+  override state: State = {
     isScrolledHorizontally: false,
     showExamCalendar: false,
     tombstone: null,
@@ -126,7 +126,7 @@ class TimetableContent extends React.Component<Props, State> {
 
   modifiedCell: ModifiedCell | null = null;
 
-  componentDidUpdate() {
+  override componentDidUpdate() {
     if (this.modifiedCell && this.timetableRef.current) {
       maintainScrollPosition(this.timetableRef.current, this.modifiedCell);
 
@@ -134,7 +134,7 @@ class TimetableContent extends React.Component<Props, State> {
     }
   }
 
-  componentWillUnmount() {
+  override componentWillUnmount() {
     this.cancelModifyLesson();
   }
 
@@ -193,6 +193,10 @@ class TimetableContent extends React.Component<Props, State> {
 
     // A tombstone is displayed in place of a deleted module
     this.setState({ tombstone: { ...moduleWithColor, index } });
+  };
+
+  resetTimetable = () => {
+    this.props.resetTimetable(this.props.semester);
   };
 
   resetTombstone = () => this.setState({ tombstone: null });
@@ -268,9 +272,17 @@ class TimetableContent extends React.Component<Props, State> {
     );
   }
 
-  render() {
-    const { semester, modules, colors, activeLesson, timetableOrientation, showTitle, readOnly } =
-      this.props;
+  override render() {
+    const {
+      semester,
+      modules,
+      colors,
+      activeLesson,
+      timetableOrientation,
+      showTitle,
+      readOnly,
+      hiddenInTimetable,
+    } = this.props;
 
     const { showExamCalendar } = this.state;
 
@@ -288,7 +300,10 @@ class TimetableContent extends React.Component<Props, State> {
       const module = modules[moduleCode];
       const moduleTimetable = getModuleTimetable(module, semester);
       lessonsForLessonType(moduleTimetable, activeLesson.lessonType).forEach((lesson) => {
-        const modifiableLesson: Lesson & { isActive?: boolean; isAvailable?: boolean } = {
+        const modifiableLesson: Lesson & {
+          isActive?: boolean;
+          isAvailable?: boolean;
+        } = {
           ...lesson,
           // Inject module code in
           moduleCode,
@@ -398,6 +413,7 @@ class TimetableContent extends React.Component<Props, State> {
                   semester={semester}
                   timetable={this.props.timetable}
                   showExamCalendar={showExamCalendar}
+                  resetTimetable={this.resetTimetable}
                   toggleExamCalendar={() => this.setState({ showExamCalendar: !showExamCalendar })}
                 />
               </div>
@@ -417,7 +433,11 @@ class TimetableContent extends React.Component<Props, State> {
                 {this.renderModuleSections(addedModules, !isVerticalOrientation)}
               </div>
               <div className="col-12">
-                <ModulesTableFooter modules={addedModules} semester={semester} />
+                <ModulesTableFooter
+                  modules={addedModules}
+                  semester={semester}
+                  hiddenInTimetable={hiddenInTimetable}
+                />
               </div>
             </div>
           </div>
@@ -448,8 +468,8 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
 export default connect(mapStateToProps, {
   addModule,
   removeModule,
+  resetTimetable,
   modifyLesson,
   changeLesson,
   cancelModifyLesson,
-  undo,
 })(TimetableContent);

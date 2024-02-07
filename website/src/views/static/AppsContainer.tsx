@@ -48,14 +48,14 @@ const AppEntry: React.FC<AppEntryProps> = ({ app }) => (
 const title = 'Apps';
 
 class AppsContainer extends React.Component<Props, State> {
-  state: State = {
+  override state: State = {
     appsData: null,
     isLoading: true,
     isError: false,
     errorMessage: '',
   };
 
-  componentDidMount() {
+  override componentDidMount() {
     axios
       .get(APPS_URL)
       .then((response) => {
@@ -73,7 +73,7 @@ class AppsContainer extends React.Component<Props, State> {
       });
   }
 
-  render() {
+  override render() {
     return (
       <StaticPage title={title}>
         <h2>{title}</h2>

@@ -1,8 +1,7 @@
-import { Theme, ThemeId } from 'types/settings';
-
 import * as React from 'react';
 import { range } from 'lodash';
 import classnames from 'classnames';
+import { Theme, ThemeId } from 'types/settings';
 
 import { NUM_DIFFERENT_COLORS } from 'utils/colors';
 import styles from './ThemeOption.scss';

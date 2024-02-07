@@ -101,7 +101,7 @@ const PlannerSemester: React.FC<Props> = ({
 
           {modules.length === 0 && (
             <p className={styles.emptyListMessage}>
-              Drop module here to add to {getSemesterName(semester)}
+              Drop course here to add to {getSemesterName(semester)}
             </p>
           )}
 

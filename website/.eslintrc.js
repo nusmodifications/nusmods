@@ -84,6 +84,12 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
     'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
 
+    // TODO: Re-enable this rule
+    'react/require-default-props': 'off',
+
+    // This generates too many false-positives.
+    'react/no-unused-prop-types': 'off',
+
     // Unnecessary with JSX transform
     'react/react-in-jsx-scope': 'off',
 

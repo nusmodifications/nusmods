@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ModuleTree should render prereq tree of module: CS3244 1`] = `
-Array [
+[
   <div
     class="container"
   >
@@ -12,7 +12,7 @@ Array [
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -25,7 +25,7 @@ Array [
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -38,7 +38,7 @@ Array [
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -60,7 +60,7 @@ Array [
         class="branch"
       >
         <div
-          class="node hoverable color-1"
+          class="node moduleNode hoverable color-1"
         >
           <mockedlink
             class="link"
@@ -97,7 +97,7 @@ Array [
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -110,7 +110,7 @@ Array [
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -123,7 +123,7 @@ Array [
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -136,7 +136,7 @@ Array [
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -162,7 +162,7 @@ Array [
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -175,7 +175,7 @@ Array [
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -188,7 +188,7 @@ Array [
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -201,7 +201,7 @@ Array [
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -214,7 +214,7 @@ Array [
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -227,7 +227,7 @@ Array [
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -253,7 +253,7 @@ Array [
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -266,7 +266,7 @@ Array [
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -279,7 +279,7 @@ Array [
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -305,7 +305,7 @@ Array [
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -318,7 +318,7 @@ Array [
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -331,7 +331,7 @@ Array [
                     class="branch"
                   >
                     <div
-                      class="node hoverable color-4"
+                      class="node moduleNode hoverable color-4"
                     >
                       <mockedlink
                         class="link"
@@ -351,13 +351,29 @@ Array [
   <p
     class="alert alert-warning"
   >
-    The prerequisite tree is displayed for visualization purposes and may not be accurate. Viewers are encouraged to double check details.
+    This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite text above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
+    <a
+      href="https://github.com/nusmodifications/nusmods/issues/new/choose"
+      rel="noopener noreferrer nofollow"
+      target="_blank"
+    >
+      our repository
+    </a>
+     or send an email to 
+    <a
+      href="mailto:bugs@nusmods.com"
+      rel="noopener noreferrer nofollow"
+      target="_blank"
+    >
+      bugs@nusmods.com
+    </a>
+    .
   </p>,
 ]
 `;
 
 exports[`ModuleTree should render requirements fulfilled tree of module: ACC1002 1`] = `
-Array [
+[
   <div
     class="container"
   >
@@ -368,7 +384,7 @@ Array [
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -381,7 +397,7 @@ Array [
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -394,7 +410,7 @@ Array [
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -407,7 +423,7 @@ Array [
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -420,7 +436,7 @@ Array [
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -433,7 +449,7 @@ Array [
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -446,7 +462,7 @@ Array [
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -459,7 +475,7 @@ Array [
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -472,7 +488,7 @@ Array [
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -485,7 +501,7 @@ Array [
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -498,7 +514,7 @@ Array [
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -511,7 +527,7 @@ Array [
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -524,7 +540,7 @@ Array [
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -537,7 +553,7 @@ Array [
         class="branch prereqBranch"
       >
         <div
-          class="node hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 prereqNode"
         >
           <mockedlink
             class="link"
@@ -559,7 +575,7 @@ Array [
         class="branch"
       >
         <div
-          class="node hoverable color-1"
+          class="node moduleNode hoverable color-1"
         >
           <mockedlink
             class="link"
@@ -573,7 +589,23 @@ Array [
   <p
     class="alert alert-warning"
   >
-    The prerequisite tree is displayed for visualization purposes and may not be accurate. Viewers are encouraged to double check details.
+    This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite text above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
+    <a
+      href="https://github.com/nusmodifications/nusmods/issues/new/choose"
+      rel="noopener noreferrer nofollow"
+      target="_blank"
+    >
+      our repository
+    </a>
+     or send an email to 
+    <a
+      href="mailto:bugs@nusmods.com"
+      rel="noopener noreferrer nofollow"
+      target="_blank"
+    >
+      bugs@nusmods.com
+    </a>
+    .
   </p>,
 ]
 `;

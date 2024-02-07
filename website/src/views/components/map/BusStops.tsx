@@ -55,7 +55,7 @@ export default class BusStops extends PureComponent<Props, State> {
     }
   }
 
-  state = {
+  override state = {
     busStops,
     busTimings: defaultBusTimings,
   };
@@ -111,7 +111,7 @@ export default class BusStops extends PureComponent<Props, State> {
       );
   };
 
-  render() {
+  override render() {
     const allowEditing = allowBusStopEditing();
     const { busTimings } = this.state;
 

@@ -14,6 +14,8 @@ export const EXEMPTION_SEMESTER: Semester = -1;
 export const PLAN_TO_TAKE_YEAR = '3000';
 export const PLAN_TO_TAKE_SEMESTER = -2;
 
+const GRADE_REQUIREMENT_SEPARATOR = ':';
+
 // We assume iBLOCs takes place in special term 1
 export const IBLOCS_SEMESTER = 3;
 
@@ -36,6 +38,10 @@ export function getSemesterName(semester: Semester) {
 export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: PrereqTree) {
   function walkTree(fragment: PrereqTree): PrereqTree[] | null {
     if (typeof fragment === 'string') {
+      if (fragment.includes(GRADE_REQUIREMENT_SEPARATOR)) {
+        const [module] = fragment.split(GRADE_REQUIREMENT_SEPARATOR);
+        return moduleSet.has(module) ? null : [module];
+      }
       return moduleSet.has(fragment) ? null : [fragment];
     }
 
@@ -49,6 +55,12 @@ export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: PrereqTree) 
     if ('and' in fragment) {
       const notFulfilled = fragment.and.map(walkTree).filter(notNull);
       return notFulfilled.length === 0 ? null : flatten(notFulfilled);
+    }
+
+    if ('nOf' in fragment) {
+      const requiredCount = fragment.nOf[0];
+      const fulfilled = fragment.nOf[1].map(walkTree).filter((x) => x === null);
+      return fulfilled.length >= requiredCount ? null : [fragment];
     }
 
     return assertNever(fragment);
@@ -69,6 +81,11 @@ export function conflictToText(conflict: PrereqTree): string {
 
   if ('and' in conflict) {
     return conflict.and.map(conflictToText).join(' and ');
+  }
+
+  if ('nOf' in conflict) {
+    const [n, conflicts] = conflict.nOf;
+    return `require ${n} of ${conflicts.map(conflictToText).join(', ')}`;
   }
 
   return assertNever(conflict);

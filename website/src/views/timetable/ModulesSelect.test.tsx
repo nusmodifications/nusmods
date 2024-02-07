@@ -1,6 +1,6 @@
 import { mount, shallow } from 'enzyme';
-import { mockWindowMatchMedia, mockDomReset } from 'test-utils/mockDom';
 import Downshift from 'downshift';
+import { mockWindowMatchMedia, mockDomReset } from 'test-utils/mockDom';
 import Modal from 'views/components/Modal';
 import ModulesSelect from './ModulesSelect';
 

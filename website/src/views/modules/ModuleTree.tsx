@@ -20,17 +20,59 @@ interface TreeDisplay {
   isPrereq?: boolean;
 }
 
-const formatConditional = (name: string) => (name === 'or' ? 'one of' : 'all of');
+const GRADE_REQUIREMENT_SEPARATOR = ':';
+const MODULE_NAME_WILDCARD = '%';
+const PASSING_GRADE = 'D';
 
-const nodeName = (node: PrereqTree) => (typeof node === 'string' ? node : Object.keys(node)[0]);
+const formatConditional = (node: PrereqTree) => {
+  if (typeof node === 'string') return node;
+  if ('nOf' in node) {
+    const requiredNum = node.nOf[0];
+    return `at least ${requiredNum} of`;
+  }
+  if ('or' in node) {
+    return 'one of';
+  }
+  return 'all of';
+};
 
-const unwrapLayer = (node: PrereqTree) =>
-  typeof node === 'string' ? [node] : flatten(values(node).filter(notNull));
+type NodeName = { prefix?: string; name: string };
+const nodeName = (node: PrereqTree): NodeName => {
+  if (typeof node !== 'string') {
+    return { name: Object.keys(node)[0] };
+  }
+  const res: NodeName = { name: node };
+  if (res.name.includes(GRADE_REQUIREMENT_SEPARATOR)) {
+    const [moduleName, requiredGrade] = res.name.split(GRADE_REQUIREMENT_SEPARATOR);
+    if (requiredGrade !== PASSING_GRADE) {
+      res.prefix = `Minimally ${requiredGrade} for`;
+    }
+    res.name = moduleName;
+  }
+  if (res.name.includes(MODULE_NAME_WILDCARD)) {
+    const [beforeWildcard, afterWildcard] = res.name.split(MODULE_NAME_WILDCARD);
+    res.prefix = 'Course starting with';
+    res.name = `"${beforeWildcard}" ${afterWildcard}`;
+  }
+  res.prefix?.trim();
+  res.name.trim();
+  return res;
+};
+
+const unwrapLayer = (node: PrereqTree) => {
+  if (typeof node === 'string') {
+    return [node];
+  }
+  if ('nOf' in node) {
+    return node.nOf[1];
+  }
+  return flatten(values(node).filter(notNull));
+};
 
 const Branch: React.FC<{ nodes: PrereqTree[]; layer: number }> = (props) => (
   <ul className={styles.tree}>
-    {props.nodes.map((child) => (
-      <li className={styles.branch} key={nodeName(child)}>
+    {props.nodes.map((child, idx) => (
+      <li className={styles.branch} key={typeof child === 'string' ? nodeName(child).name : idx}>
         <Tree node={child} layer={props.layer} />
       </li>
     ))}
@@ -41,26 +83,32 @@ const Tree: React.FC<TreeDisplay> = (props) => {
   const { layer, node, isPrereq } = props;
 
   const isConditional = typeof node !== 'string';
-  const name = nodeName(node);
+  const { prefix, name } = nodeName(node);
+
+  if (isConditional) {
+    return (
+      <>
+        <div
+          className={classnames(styles.node, styles.conditional, {
+            [styles.prereqNode]: isPrereq,
+          })}
+        >
+          {formatConditional(node)}
+        </div>
+        <Branch nodes={unwrapLayer(node)} layer={layer + 1} />
+      </>
+    );
+  }
 
   return (
-    <>
-      <div
-        className={classnames(styles.node, {
-          [`hoverable color-${layer}`]: !isConditional,
-          [styles.conditional]: isConditional,
-          [styles.prereqNode]: isPrereq,
-        })}
-      >
-        {isConditional ? (
-          formatConditional(name)
-        ) : (
-          <LinkModuleCodes className={styles.link}>{name}</LinkModuleCodes>
-        )}
-      </div>
-
-      {isConditional && <Branch nodes={unwrapLayer(node)} layer={layer + 1} />}
-    </>
+    <div
+      className={classnames(styles.node, styles.moduleNode, `hoverable color-${layer}`, {
+        [styles.prereqNode]: isPrereq,
+      })}
+    >
+      {prefix && <span className={styles.prefix}>{prefix}</span>}
+      <LinkModuleCodes className={styles.link}>{name}</LinkModuleCodes>
+    </div>
   );
 };
 
@@ -96,9 +144,27 @@ const ModuleTree: React.FC<Props> = (props) => {
         </ul>
       </div>
 
-      <p className="alert alert-warning">
+      {/* <p className="alert alert-warning">
         The prerequisite tree is displayed for visualization purposes and may not be accurate.
         Viewers are encouraged to double check details.
+      </p> */}
+
+      <p className="alert alert-warning">
+        This new version of the prerequisite tree is being tested and may not be accurate. Viewers
+        are encouraged to double check details with the prerequisite text above. To report bugs with
+        the new tree, please post a bug report on GitHub (preferred) at{' '}
+        <a
+          href="https://github.com/nusmodifications/nusmods/issues/new/choose"
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        >
+          our repository
+        </a>{' '}
+        or send an email to{' '}
+        <a href="mailto:bugs@nusmods.com" target="_blank" rel="noopener noreferrer nofollow">
+          bugs@nusmods.com
+        </a>
+        .
       </p>
     </>
   );

@@ -1,6 +1,7 @@
 import produce, { Draft } from 'immer';
 import { keyBy, omit, size, zipObject } from 'lodash';
 
+import { createMigrate, REHYDRATE } from 'redux-persist';
 import type { Actions } from 'types/actions';
 import type { Module } from 'types/modules';
 import type { ModuleBank, ModuleList } from 'types/reducers';
@@ -13,7 +14,6 @@ import {
   UPDATE_MODULE_TIMESTAMP,
   SET_EXPORTED_DATA,
 } from 'actions/constants';
-import { createMigrate, REHYDRATE } from 'redux-persist';
 import { SUCCESS_KEY } from 'middlewares/requests-middleware';
 
 const defaultModuleBankState: ModuleBank = {
@@ -41,7 +41,7 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: Actions)
         ...state,
         ...precomputeFromModuleList(action.payload),
         moduleList: action.payload,
-        apiLastUpdatedTimestamp: action.meta && action.meta.responseHeaders['last-modified'],
+        apiLastUpdatedTimestamp: action.meta?.responseHeaders['last-modified'] || null,
       };
 
     case SUCCESS_KEY(FETCH_MODULE):

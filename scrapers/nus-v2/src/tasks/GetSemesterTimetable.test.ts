@@ -55,8 +55,8 @@ describe(GetSemesterTimetable, () => {
     const timetable = await task.run();
 
     expect(timetable.CN4205E).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "classNo": "1",
           "covidZone": "A",
           "day": "Wednesday",
@@ -65,12 +65,12 @@ describe(GetSemesterTimetable, () => {
           "size": 30,
           "startTime": "1800",
           "venue": "E5-03-23",
-          "weeks": Object {
+          "weeks": {
             "end": "2018-11-21",
             "start": "2018-08-15",
           },
         },
-        Object {
+        {
           "classNo": "1",
           "covidZone": "A",
           "day": "Wednesday",
@@ -79,7 +79,7 @@ describe(GetSemesterTimetable, () => {
           "size": 30,
           "startTime": "2030",
           "venue": "E5-03-23",
-          "weeks": Object {
+          "weeks": {
             "end": "2018-11-21",
             "start": "2018-08-15",
           },
@@ -94,8 +94,8 @@ describe(GetSemesterTimetable, () => {
     const timetable = await task.run();
 
     expect(timetable.CS4238).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "classNo": "1",
           "covidZone": "A",
           "day": "Monday",
@@ -104,7 +104,7 @@ describe(GetSemesterTimetable, () => {
           "size": 40,
           "startTime": "1830",
           "venue": "COM1-B113",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -120,7 +120,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "2",
           "covidZone": "A",
           "day": "Tuesday",
@@ -129,7 +129,7 @@ describe(GetSemesterTimetable, () => {
           "size": 40,
           "startTime": "1830",
           "venue": "COM1-B113",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -145,7 +145,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "2",
           "covidZone": "A",
           "day": "Tuesday",
@@ -154,7 +154,7 @@ describe(GetSemesterTimetable, () => {
           "size": 40,
           "startTime": "2030",
           "venue": "COM1-B113",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -170,7 +170,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "1",
           "covidZone": "A",
           "day": "Monday",
@@ -179,7 +179,7 @@ describe(GetSemesterTimetable, () => {
           "size": 40,
           "startTime": "2030",
           "venue": "COM1-B113",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -204,8 +204,8 @@ describe(GetSemesterTimetable, () => {
     const task = createTask(MA2213Timetable);
     const timetable = await task.run();
     expect(timetable.MA2213).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "classNo": "1",
           "covidZone": "A",
           "day": "Wednesday",
@@ -214,7 +214,7 @@ describe(GetSemesterTimetable, () => {
           "size": 232,
           "startTime": "1000",
           "venue": "LT33",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -230,7 +230,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "1",
           "covidZone": "A",
           "day": "Monday",
@@ -239,7 +239,7 @@ describe(GetSemesterTimetable, () => {
           "size": 232,
           "startTime": "0800",
           "venue": "LT34",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -255,7 +255,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "2",
           "covidZone": "A",
           "day": "Monday",
@@ -264,7 +264,7 @@ describe(GetSemesterTimetable, () => {
           "size": 30,
           "startTime": "1700",
           "venue": "S17-0304",
-          "weeks": Array [
+          "weeks": [
             3,
             5,
             7,
@@ -272,7 +272,7 @@ describe(GetSemesterTimetable, () => {
             11,
           ],
         },
-        Object {
+        {
           "classNo": "1",
           "covidZone": "A",
           "day": "Tuesday",
@@ -281,7 +281,7 @@ describe(GetSemesterTimetable, () => {
           "size": 30,
           "startTime": "1100",
           "venue": "S17-0404",
-          "weeks": Array [
+          "weeks": [
             4,
             6,
             8,
@@ -289,7 +289,7 @@ describe(GetSemesterTimetable, () => {
             12,
           ],
         },
-        Object {
+        {
           "classNo": "4",
           "covidZone": "A",
           "day": "Wednesday",
@@ -298,7 +298,7 @@ describe(GetSemesterTimetable, () => {
           "size": 30,
           "startTime": "1400",
           "venue": "S17-0404",
-          "weeks": Array [
+          "weeks": [
             4,
             6,
             8,
@@ -306,7 +306,7 @@ describe(GetSemesterTimetable, () => {
             12,
           ],
         },
-        Object {
+        {
           "classNo": "2",
           "covidZone": "A",
           "day": "Monday",
@@ -315,7 +315,7 @@ describe(GetSemesterTimetable, () => {
           "size": 30,
           "startTime": "1700",
           "venue": "S17-0404",
-          "weeks": Array [
+          "weeks": [
             4,
             6,
             8,
@@ -323,7 +323,7 @@ describe(GetSemesterTimetable, () => {
             12,
           ],
         },
-        Object {
+        {
           "classNo": "1",
           "covidZone": "A",
           "day": "Tuesday",
@@ -332,7 +332,7 @@ describe(GetSemesterTimetable, () => {
           "size": 30,
           "startTime": "1100",
           "venue": "S17-0304",
-          "weeks": Array [
+          "weeks": [
             3,
             5,
             7,
@@ -340,7 +340,7 @@ describe(GetSemesterTimetable, () => {
             11,
           ],
         },
-        Object {
+        {
           "classNo": "3",
           "covidZone": "A",
           "day": "Tuesday",
@@ -349,7 +349,7 @@ describe(GetSemesterTimetable, () => {
           "size": 30,
           "startTime": "1600",
           "venue": "S17-0304",
-          "weeks": Array [
+          "weeks": [
             3,
             5,
             7,
@@ -357,7 +357,7 @@ describe(GetSemesterTimetable, () => {
             11,
           ],
         },
-        Object {
+        {
           "classNo": "3",
           "covidZone": "A",
           "day": "Tuesday",
@@ -366,7 +366,7 @@ describe(GetSemesterTimetable, () => {
           "size": 30,
           "startTime": "1600",
           "venue": "S17-0611",
-          "weeks": Array [
+          "weeks": [
             4,
             6,
             8,
@@ -374,7 +374,7 @@ describe(GetSemesterTimetable, () => {
             12,
           ],
         },
-        Object {
+        {
           "classNo": "4",
           "covidZone": "A",
           "day": "Wednesday",
@@ -383,7 +383,7 @@ describe(GetSemesterTimetable, () => {
           "size": 30,
           "startTime": "1400",
           "venue": "S17-0304",
-          "weeks": Array [
+          "weeks": [
             3,
             5,
             7,
@@ -401,8 +401,8 @@ describe(GetSemesterTimetable, () => {
     const timetable = await task.run();
 
     expect(timetable.CS2100).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "classNo": "2",
           "covidZone": "A",
           "day": "Wednesday",
@@ -411,7 +411,7 @@ describe(GetSemesterTimetable, () => {
           "size": 200,
           "startTime": "1500",
           "venue": "I3-AUD",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -427,7 +427,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "13",
           "covidZone": "A",
           "day": "Wednesday",
@@ -436,7 +436,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1000",
           "venue": "COM1-0207",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -452,7 +452,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "14",
           "covidZone": "A",
           "day": "Tuesday",
@@ -461,7 +461,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1100",
           "venue": "COM1-0209",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -477,7 +477,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "01",
           "covidZone": "A",
           "day": "Wednesday",
@@ -486,7 +486,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1100",
           "venue": "COM1-0207",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -502,7 +502,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "12",
           "covidZone": "A",
           "day": "Thursday",
@@ -511,7 +511,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1700",
           "venue": "COM1-0207",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -527,7 +527,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "15",
           "covidZone": "A",
           "day": "Friday",
@@ -536,7 +536,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "0800",
           "venue": "COM1-0209",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -552,7 +552,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "17",
           "covidZone": "A",
           "day": "Wednesday",
@@ -561,7 +561,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1300",
           "venue": "COM1-0209",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -577,7 +577,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "18",
           "covidZone": "A",
           "day": "Friday",
@@ -586,7 +586,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1300",
           "venue": "COM1-0209",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -602,7 +602,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "19",
           "covidZone": "A",
           "day": "Friday",
@@ -611,7 +611,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1400",
           "venue": "COM1-0209",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -627,7 +627,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "20",
           "covidZone": "A",
           "day": "Friday",
@@ -636,7 +636,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1500",
           "venue": "COM1-0209",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -652,7 +652,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "05",
           "covidZone": "A",
           "day": "Friday",
@@ -661,7 +661,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1100",
           "venue": "COM1-0209",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -677,7 +677,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "02",
           "covidZone": "A",
           "day": "Friday",
@@ -686,7 +686,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "0900",
           "venue": "COM1-0209",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -702,7 +702,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "16",
           "covidZone": "A",
           "day": "Wednesday",
@@ -711,7 +711,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1200",
           "venue": "COM1-0209",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -727,7 +727,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "2",
           "covidZone": "A",
           "day": "Monday",
@@ -736,7 +736,7 @@ describe(GetSemesterTimetable, () => {
           "size": 200,
           "startTime": "1000",
           "venue": "I3-AUD",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -752,7 +752,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "1",
           "covidZone": "A",
           "day": "Wednesday",
@@ -761,7 +761,7 @@ describe(GetSemesterTimetable, () => {
           "size": 200,
           "startTime": "1400",
           "venue": "I3-AUD",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -777,7 +777,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "1",
           "covidZone": "A",
           "day": "Tuesday",
@@ -786,7 +786,7 @@ describe(GetSemesterTimetable, () => {
           "size": 200,
           "startTime": "1600",
           "venue": "I3-AUD",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -802,7 +802,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "11",
           "covidZone": "A",
           "day": "Monday",
@@ -811,7 +811,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1500",
           "venue": "COM1-0203",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -827,7 +827,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "10",
           "covidZone": "A",
           "day": "Tuesday",
@@ -836,7 +836,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "0900",
           "venue": "COM1-0201",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -852,7 +852,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "13",
           "covidZone": "A",
           "day": "Thursday",
@@ -861,7 +861,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1000",
           "venue": "COM1-0113",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -877,7 +877,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "19",
           "covidZone": "A",
           "day": "Thursday",
@@ -886,7 +886,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1600",
           "venue": "COM1-0113",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -902,7 +902,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "06",
           "covidZone": "A",
           "day": "Friday",
@@ -911,7 +911,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1200",
           "venue": "COM1-0209",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -927,7 +927,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "04",
           "covidZone": "A",
           "day": "Wednesday",
@@ -936,7 +936,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1100",
           "venue": "COM1-0201",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -952,7 +952,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "09",
           "covidZone": "A",
           "day": "Monday",
@@ -961,7 +961,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1600",
           "venue": "COM1-0113",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -977,7 +977,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "20",
           "covidZone": "A",
           "day": "Thursday",
@@ -986,7 +986,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1700",
           "venue": "COM1-0113",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -1002,7 +1002,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "03",
           "covidZone": "A",
           "day": "Tuesday",
@@ -1011,7 +1011,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1000",
           "venue": "COM1-0207",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -1027,7 +1027,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "05",
           "covidZone": "A",
           "day": "Monday",
@@ -1036,7 +1036,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1200",
           "venue": "COM1-0113",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -1052,7 +1052,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "06",
           "covidZone": "A",
           "day": "Monday",
@@ -1061,7 +1061,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1300",
           "venue": "COM1-0113",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -1077,7 +1077,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "07",
           "covidZone": "A",
           "day": "Monday",
@@ -1086,7 +1086,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1400",
           "venue": "COM1-0113",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -1102,7 +1102,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "08",
           "covidZone": "A",
           "day": "Monday",
@@ -1111,7 +1111,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1500",
           "venue": "COM1-0113",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -1127,7 +1127,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "08",
           "covidZone": "A",
           "day": "Monday",
@@ -1136,7 +1136,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1200",
           "venue": "COM1-0207",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -1152,7 +1152,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "02",
           "covidZone": "A",
           "day": "Monday",
@@ -1161,7 +1161,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "0900",
           "venue": "COM1-0113",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -1177,7 +1177,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "03",
           "covidZone": "A",
           "day": "Monday",
@@ -1186,7 +1186,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1000",
           "venue": "COM1-0113",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -1202,7 +1202,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "04",
           "covidZone": "A",
           "day": "Monday",
@@ -1211,7 +1211,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1100",
           "venue": "COM1-0113",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -1227,7 +1227,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "16",
           "covidZone": "A",
           "day": "Thursday",
@@ -1236,7 +1236,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1300",
           "venue": "COM1-0113",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -1252,7 +1252,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "17",
           "covidZone": "A",
           "day": "Thursday",
@@ -1261,7 +1261,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1400",
           "venue": "COM1-0113",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -1277,7 +1277,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "18",
           "covidZone": "A",
           "day": "Thursday",
@@ -1286,7 +1286,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1500",
           "venue": "COM1-0113",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -1302,7 +1302,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "10",
           "covidZone": "A",
           "day": "Monday",
@@ -1311,7 +1311,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1700",
           "venue": "COM1-0113",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -1327,7 +1327,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "11",
           "covidZone": "A",
           "day": "Thursday",
@@ -1336,7 +1336,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "0800",
           "venue": "COM1-0113",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -1352,7 +1352,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "12",
           "covidZone": "A",
           "day": "Thursday",
@@ -1361,7 +1361,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "0900",
           "venue": "COM1-0113",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -1377,7 +1377,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "14",
           "covidZone": "A",
           "day": "Thursday",
@@ -1386,7 +1386,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1100",
           "venue": "COM1-0113",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -1402,7 +1402,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "15",
           "covidZone": "A",
           "day": "Thursday",
@@ -1411,7 +1411,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1200",
           "venue": "COM1-0113",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -1427,7 +1427,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "07",
           "covidZone": "A",
           "day": "Tuesday",
@@ -1436,7 +1436,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1300",
           "venue": "COM1-0209",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -1452,7 +1452,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "09",
           "covidZone": "A",
           "day": "Monday",
@@ -1461,7 +1461,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "1600",
           "venue": "COM1-0203",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -1477,7 +1477,7 @@ describe(GetSemesterTimetable, () => {
             13,
           ],
         },
-        Object {
+        {
           "classNo": "01",
           "covidZone": "A",
           "day": "Monday",
@@ -1486,7 +1486,7 @@ describe(GetSemesterTimetable, () => {
           "size": 20,
           "startTime": "0800",
           "venue": "COM1-0113",
-          "weeks": Array [
+          "weeks": [
             1,
             2,
             3,
@@ -1512,9 +1512,9 @@ describe(GetSemesterTimetable, () => {
     const output = await task.run();
 
     expect(output).toMatchInlineSnapshot(`
-      Object {
-        "CS1010X": Array [
-          Object {
+      {
+        "CS1010X": [
+          {
             "classNo": "1",
             "covidZone": "A",
             "day": "Thursday",
@@ -1523,12 +1523,12 @@ describe(GetSemesterTimetable, () => {
             "size": 48,
             "startTime": "0900",
             "venue": "SR_LT19",
-            "weeks": Object {
+            "weeks": {
               "end": "2019-06-20",
               "start": "2019-01-17",
             },
           },
-          Object {
+          {
             "classNo": "2",
             "covidZone": "A",
             "day": "Thursday",
@@ -1537,12 +1537,12 @@ describe(GetSemesterTimetable, () => {
             "size": 48,
             "startTime": "1200",
             "venue": "SR_LT19",
-            "weeks": Object {
+            "weeks": {
               "end": "2019-06-20",
               "start": "2019-01-17",
             },
           },
-          Object {
+          {
             "classNo": "01",
             "covidZone": "A",
             "day": "Thursday",
@@ -1551,12 +1551,12 @@ describe(GetSemesterTimetable, () => {
             "size": 20,
             "startTime": "1000",
             "venue": "SR_LT19",
-            "weeks": Object {
+            "weeks": {
               "end": "2019-06-20",
               "start": "2019-01-17",
             },
           },
-          Object {
+          {
             "classNo": "02",
             "covidZone": "A",
             "day": "Thursday",
@@ -1565,12 +1565,12 @@ describe(GetSemesterTimetable, () => {
             "size": 20,
             "startTime": "1100",
             "venue": "SR_LT19",
-            "weeks": Object {
+            "weeks": {
               "end": "2019-06-20",
               "start": "2019-01-17",
             },
           },
-          Object {
+          {
             "classNo": "03",
             "covidZone": "A",
             "day": "Thursday",
@@ -1579,12 +1579,12 @@ describe(GetSemesterTimetable, () => {
             "size": 20,
             "startTime": "1300",
             "venue": "SR_LT19",
-            "weeks": Object {
+            "weeks": {
               "end": "2019-06-20",
               "start": "2019-01-17",
             },
           },
-          Object {
+          {
             "classNo": "04",
             "covidZone": "A",
             "day": "Thursday",
@@ -1593,7 +1593,7 @@ describe(GetSemesterTimetable, () => {
             "size": 20,
             "startTime": "1400",
             "venue": "SR_LT19",
-            "weeks": Object {
+            "weeks": {
               "end": "2019-06-20",
               "start": "2019-01-17",
             },
@@ -1610,9 +1610,9 @@ describe(GetSemesterTimetable, () => {
     const output = await task.run();
 
     expect(output).toMatchInlineSnapshot(`
-      Object {
-        "RE5001": Array [
-          Object {
+      {
+        "RE5001": [
+          {
             "classNo": "1",
             "covidZone": "Unknown",
             "day": "Tuesday",
@@ -1621,12 +1621,12 @@ describe(GetSemesterTimetable, () => {
             "size": 60,
             "startTime": "0900",
             "venue": "SDE-423",
-            "weeks": Object {
+            "weeks": {
               "end": "2018-08-07",
               "start": "2018-08-07",
             },
           },
-          Object {
+          {
             "classNo": "1",
             "covidZone": "Unknown",
             "day": "Wednesday",
@@ -1635,12 +1635,12 @@ describe(GetSemesterTimetable, () => {
             "size": 60,
             "startTime": "0900",
             "venue": "SDE-423",
-            "weeks": Object {
+            "weeks": {
               "end": "2018-08-08",
               "start": "2018-08-08",
             },
           },
-          Object {
+          {
             "classNo": "1",
             "covidZone": "Unknown",
             "day": "Monday",
@@ -1649,12 +1649,12 @@ describe(GetSemesterTimetable, () => {
             "size": 60,
             "startTime": "0900",
             "venue": "SDE-423",
-            "weeks": Object {
+            "weeks": {
               "end": "2018-08-06",
               "start": "2018-08-06",
             },
           },
-          Object {
+          {
             "classNo": "1",
             "covidZone": "Unknown",
             "day": "Friday",
@@ -1663,12 +1663,12 @@ describe(GetSemesterTimetable, () => {
             "size": 60,
             "startTime": "0900",
             "venue": "SDE-423",
-            "weeks": Object {
+            "weeks": {
               "end": "2018-08-10",
               "start": "2018-08-10",
             },
           },
-          Object {
+          {
             "classNo": "1",
             "covidZone": "Unknown",
             "day": "Saturday",
@@ -1677,7 +1677,7 @@ describe(GetSemesterTimetable, () => {
             "size": 60,
             "startTime": "0900",
             "venue": "SDE-423",
-            "weeks": Object {
+            "weeks": {
               "end": "2018-08-11",
               "start": "2018-08-11",
             },

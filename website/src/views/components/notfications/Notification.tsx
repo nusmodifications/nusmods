@@ -65,14 +65,14 @@ export class NotificationComponent extends React.Component<Props, State> {
     };
   }
 
-  shouldComponentUpdate(nextProps: Props, nextState: State) {
+  override shouldComponentUpdate(nextProps: Props, nextState: State) {
     return (
       nextProps.notifications[0] !== this.state.shownNotification ||
       nextState.isOpen !== this.state.isOpen
     );
   }
 
-  componentDidUpdate() {
+  override componentDidUpdate() {
     const { notifications } = this.props;
     const { shownNotification, isOpen, actionClicked } = this.state;
 
@@ -162,7 +162,7 @@ export class NotificationComponent extends React.Component<Props, State> {
     );
   }
 
-  render() {
+  override render() {
     const { shownNotification, isOpen } = this.state;
 
     return (

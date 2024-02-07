@@ -40,7 +40,7 @@ export function mockLogger(): Logger {
 /**
  * Check the two objects have the same properties
  */
-export function expectSameKeys<T>(actual: T, expected: T) {
+export function expectSameKeys<T extends Record<string, never>>(actual: T, expected: T) {
   expect(Object.keys(actual).sort()).toEqual(Object.keys(expected).sort());
 }
 

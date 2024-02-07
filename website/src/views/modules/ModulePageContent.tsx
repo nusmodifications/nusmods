@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import ScrollSpy from 'react-scrollspy';
 import { kebabCase, map, mapValues, values, sortBy } from 'lodash';
 
+import { Archive, Check } from 'react-feather';
 import { Module, NUSModuleAttributes, attributeDescription } from 'types/modules';
 
 import config from 'config';
@@ -24,11 +25,12 @@ import ModuleExamInfo from 'views/components/module-info/ModuleExamInfo';
 import AddModuleDropdown from 'views/components/module-info/AddModuleDropdown';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
-import { Archive, Check } from 'react-feather';
 
 import useScrollToTop from 'views/hooks/useScrollToTop';
+import ErrorBoundary from 'views/errors/ErrorBoundary';
 import styles from './ModulePageContent.scss';
 import ReportError from './ReportError';
+import ModuleTree from './ModuleTree';
 
 export type Props = {
   module: Module;
@@ -81,7 +83,7 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
         <div className={classnames(styles.archiveWarning, 'alert alert-warning')}>
           <Archive className={styles.archiveIcon} />
           <p>
-            You are looking at archived information of this module from academic year{' '}
+            You are looking at archived information of this course from academic year{' '}
             <strong>{archiveYear}</strong>. Information on this page may be out of date.
           </p>
         </div>
@@ -91,8 +93,8 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
         <div className={classnames(styles.archiveWarning, 'alert alert-warning')}>
           <Archive className={styles.archiveIcon} />
           <p>
-            This module is not offered in this academic year. You may use this information to map
-            exchange modules or to see modules that were previously or may be offered in the future.
+            This course is not offered in this academic year. You may use this information to map
+            exchange courses or to see courses that were previously or may be offered in the future.
           </p>
         </div>
       )}
@@ -257,10 +259,7 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
             </section>
           </div>
 
-          {/* Disabled for now because a new parser needs to be written to
-          process the new updated requisite string. */}
-
-          {/* <section className={styles.section} id={SIDE_MENU_ITEMS.prerequisites}>
+          <section className={styles.section} id={SIDE_MENU_ITEMS.prerequisites}>
             <h2 className={styles.sectionHeading}>Prerequisite Tree</h2>
             <ErrorBoundary>
               <ModuleTree
@@ -269,14 +268,6 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
                 fulfillRequirements={module.fulfillRequirements}
               />
             </ErrorBoundary>
-          </section> */}
-
-          <section className={styles.section} id={SIDE_MENU_ITEMS.prerequisites}>
-            <h2 className={styles.sectionHeading}>Prerequisite Tree</h2>
-            <p>
-              The prerequisite tree is now being improved to support the new (and more accurate)
-              prerequisite information provided by NUS. It will be back soon!
-            </p>
           </section>
 
           <section className={styles.section} id={SIDE_MENU_ITEMS.timetable}>
