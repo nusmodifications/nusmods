@@ -244,91 +244,150 @@ export function areOtherClassesAvailable(
   return Object.keys(groupBy(lessonTypeGroups[lessonType], (lesson) => lesson.classNo)).length > 1;
 }
 
-
 // Creates a key using only the exam date string (without time)
-export function getExamDateOnly(module: Module, semester: Semester): String | undefined {
-  const examDateTime = get(getModuleSemesterData(module, semester), 'examDate'); //String
-  return examDateTime?.slice(0,10)
+export function getExamDateOnly(module: Module, semester: Semester): string | undefined {
+  const examDateTime = get(getModuleSemesterData(module, semester), 'examDate'); // string
+  return examDateTime?.slice(0, 10);
 }
 
 // Check if two modules with different start time are clashing based on their durations
-export function intervalClash(module1: Module, module2: Module, semester: Semester): Boolean {
+export function intervalClash(module1: Module, module2: Module, semester: Semester): boolean {
+  const module1Start = new Date(
+    <string>get(getModuleSemesterData(module1, semester), 'examDate'),
+  ).getTime();
+  const module2Start = new Date(
+    <string>get(getModuleSemesterData(module2, semester), 'examDate'),
+  ).getTime();
 
-  const module1Start = new Date(<string>get(getModuleSemesterData(module1, semester), "examDate")).getTime();
-  const module2Start = new Date(<string>get(getModuleSemesterData(module2, semester), "examDate")).getTime();
-  
-  if (module1Start == module2Start) return false; 
+  if (module1Start === module2Start) return false;
   // Identical starting time is already accounted for by previous check in findExamClashes
 
-  const module1Duration = <number>get(getModuleSemesterData(module1, semester), "examDuration") * 60 * 1000;
-  const module2Duration = <number>get(getModuleSemesterData(module2, semester), "examDuration") * 60 * 1000;
-  
+  const module1Duration =
+    <number>get(getModuleSemesterData(module1, semester), 'examDuration') * 60 * 1000;
+  const module2Duration =
+    <number>get(getModuleSemesterData(module2, semester), 'examDuration') * 60 * 1000;
+
   const module1End = module1Start + module1Duration;
   const module2End = module2Start + module2Duration;
 
-  return ((module1Start <= module2Start) && (module2Start <= module1End)) ||
-  ((module1Start <= module2End) && (module2End <= module1End))  
+  return (
+    (module1Start <= module2Start && module2Start <= module1End) ||
+    (module1Start <= module2End && module2End <= module1End)
+  );
 }
 
 // For 2 modules with non-identical exam times that clash, we take the earlier start time
 // Workaround for now since clash message only highlights one date/time.
 export function getEarlierTime(module1: Module, module2: Module, semester: Semester): string {
-  const module1Start = new Date(<string>get(getModuleSemesterData(module1, semester), "examDate")).getTime();
-  const module2Start = new Date(<string>get(getModuleSemesterData(module2, semester), "examDate")).getTime();
+  const module1Start = new Date(
+    <string>get(getModuleSemesterData(module1, semester), 'examDate'),
+  ).getTime();
+  const module2Start = new Date(
+    <string>get(getModuleSemesterData(module2, semester), 'examDate'),
+  ).getTime();
 
-  if (module1Start < module2Start) { 
-    return <string>get(getModuleSemesterData(module1, semester), "examDate");
-  } else {
-    return <string>get(getModuleSemesterData(module2, semester), "examDate");
+  if (module1Start < module2Start) {
+    return <string>get(getModuleSemesterData(module1, semester), 'examDate');
   }
 
+  return <string>get(getModuleSemesterData(module2, semester), 'examDate');
 }
 
+export function getModuleExamStartTime(module: Module, semester: Semester): number {
+  return new Date(<string>get(getModuleSemesterData(module, semester), 'examDate')).getTime();
+}
+
+export function getModuleExamEndTime(module: Module, semester: Semester): number {
+  const start = new Date(
+    <string>get(getModuleSemesterData(module, semester), 'examDate'),
+  ).getTime();
+  const duration = <number>get(getModuleSemesterData(module, semester), 'examDuration');
+  return start + duration * 60 * 1000;
+}
 
 // Find all exam clashes between modules in semester
 // Returns object associating exam dates with the modules clashing on those dates
 export function findExamClashes(modules: Module[], semester: Semester): ExamClashes {
-  const groupedModules = groupBy(modules, (module) => 
-    get(getModuleSemesterData(module, semester), 'examDate')
+  const groupedModules = groupBy(modules, (module) =>
+    get(getModuleSemesterData(module, semester), 'examDate'),
   );
 
   delete groupedModules.undefined; // Remove modules without exams
   const clashes = omitBy(groupedModules, (mods) => mods.length === 1); // Remove non-clashing mods
-  console.log(clashes);
 
+  console.log(clashes, 'CLASHES1');
 
   // Additional checks for exams with non-identical start times
-  const groupedModules2 = groupBy(modules, (module) => 
-    getExamDateOnly(module, semester)
-  );
+  const groupedModules2 = groupBy(modules, (module) => getExamDateOnly(module, semester));
 
   delete groupedModules2.undefined;
 
-  // O(n^2) brute force algorithm to check clashes for modules within same day.
-  for (const ed in groupedModules2) {
-    const sameDayMods = groupedModules2[ed];
-    
-    for (var i = 0; i < sameDayMods.length; i++) {
-        for (var j = i; j < sameDayMods.length; j++) {
-          
-          // For modules with the same exam date, we check within each group whether the exam time intervals clash.
-          if (intervalClash(sameDayMods[i], sameDayMods[j], semester)) {
-          // If clash, get earlier start date and append both modules to the dictionary via key
-            const key = getEarlierTime(sameDayMods[i], sameDayMods[j], semester);
+  // O(n lg n ) interval clash algorithm where you sort the start and end times and check for overlaps
+  for (const examDate in groupedModules2) {
+    const sameDayMods: Module[] = groupedModules2[examDate];
 
-            if (!(key in clashes)) {
-              const modList: Module[] = [];
-              clashes[key] = modList;
-            }
+    // sort sameDayMods by exam start time
+    sameDayMods.sort((a, b) => {
+      const aStart = new Date(
+        <string>get(getModuleSemesterData(a, semester), 'examDate'),
+      ).getTime();
+      const bStart = new Date(
+        <string>get(getModuleSemesterData(b, semester), 'examDate'),
+      ).getTime();
 
-            if (!clashes[key].includes(sameDayMods[i])) {clashes[key].push(sameDayMods[i])};
-            if (!clashes[key].includes(sameDayMods[j])) {clashes[key].push(sameDayMods[j])};
-          }
+      // secondary key is end time
+      const aEnd =
+        aStart + <number>get(getModuleSemesterData(a, semester), 'examDuration') * 60 * 1000;
+      const bEnd =
+        bStart + <number>get(getModuleSemesterData(b, semester), 'examDuration') * 60 * 1000;
+
+      if (aStart === bStart) {
+        return aEnd - bEnd;
+      }
+
+      return aStart - bStart;
+    });
+
+    let rightPointer = 1;
+
+    for (let leftPointer = 0; leftPointer < sameDayMods.length; leftPointer++) {
+      console.log(leftPointer, rightPointer, 'POINTERS')
+
+      while (
+        rightPointer < sameDayMods.length &&
+        getModuleExamEndTime(sameDayMods[leftPointer], semester) >=
+          getModuleExamStartTime(sameDayMods[rightPointer], semester)
+      ) {
+        console.log(leftPointer, rightPointer, 'POINTERS')
+
+        const key = <string>(
+          get(getModuleSemesterData(sameDayMods[rightPointer], semester), 'examDate')
+        );
+
+        if (!(key in clashes)) {
+          const modList: Module[] = [];
+          clashes[key] = modList;
         }
+
+        if (!clashes[key].includes(sameDayMods[leftPointer])) {
+          clashes[key].push(sameDayMods[leftPointer]);
+        }
+        if (!clashes[key].includes(sameDayMods[rightPointer])) {
+          clashes[key].push(sameDayMods[rightPointer]);
+        }
+
+        rightPointer++;
+      }
+
+      leftPointer++;
+      if (leftPointer === rightPointer) {
+        rightPointer++;
+      }
     }
   }
 
-  return clashes; 
+  console.log(clashes, 'CLASHES2');
+  return clashes;
 }
 
 export function isLessonAvailable(
