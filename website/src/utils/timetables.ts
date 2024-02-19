@@ -13,7 +13,6 @@ import {
   last,
   map,
   mapValues,
-  omitBy,
   partition,
   pick,
   range,
@@ -50,7 +49,7 @@ import { ModuleCodeMap, ModulesMap } from 'types/reducers';
 import { ExamClashes } from 'types/views';
 
 import { getTimeAsDate } from './timify';
-import { getModuleSemesterData, getModuleTimetable } from './modules';
+import { getModuleSemesterData, getModuleTimetable, getExamDate, getExamDuration } from './modules';
 import { deltas } from './array';
 
 type lessonTypeAbbrev = { [lessonType: string]: string };
@@ -246,7 +245,7 @@ export function areOtherClassesAvailable(
 
 // Creates a key using only the exam date string (without time)
 export function getExamDateOnly(module: Module, semester: Semester): string | undefined {
-  const examDateTime = get(getModuleSemesterData(module, semester), 'examDate'); // string
+  const examDateTime = getExamDate(module, semester); // string
   return examDateTime?.slice(0, 10);
 }
 
@@ -293,100 +292,101 @@ export function getEarlierTime(module1: Module, module2: Module, semester: Semes
   return <string>get(getModuleSemesterData(module2, semester), 'examDate');
 }
 
-export function getModuleExamStartTime(module: Module, semester: Semester): number {
-  return new Date(<string>get(getModuleSemesterData(module, semester), 'examDate')).getTime();
+export function getValidExamStartTimeAsEpoch(module: Module, semester: Semester): number {
+  const startTimeString = getExamDate(module, semester);
+  if (startTimeString === null) {
+    throw new Error('Courses tested for clashes must have exam dates and durations!');
+  }
+  return new Date(startTimeString).getTime();
 }
 
-export function getModuleExamEndTime(module: Module, semester: Semester): number {
-  const start = new Date(
-    <string>get(getModuleSemesterData(module, semester), 'examDate'),
-  ).getTime();
-  const duration = <number>get(getModuleSemesterData(module, semester), 'examDuration');
-  return start + duration * 60 * 1000;
+export function getValidExamEndTimeAsEpoch(module: Module, semester: Semester): number {
+  const duration = getExamDuration(module, semester);
+  if (duration === null) {
+    throw new Error('Courses tested for clashes must have exam dates and durations!');
+  }
+  const startEpoch = getValidExamStartTimeAsEpoch(module, semester);
+  return startEpoch + duration * 60 * 1000;
 }
 
 // Find all exam clashes between modules in semester
 // Returns object associating exam dates with the modules clashing on those dates
 export function findExamClashes(modules: Module[], semester: Semester): ExamClashes {
-  const groupedModules = groupBy(modules, (module) =>
-    get(getModuleSemesterData(module, semester), 'examDate'),
+  // Filter away modules without exam dates or exam durations
+  const filteredModules = modules.filter(
+    (module) =>
+      getExamDate(module, semester) !== null && getExamDuration(module, semester) !== null,
   );
 
-  delete groupedModules.undefined; // Remove modules without exams
-  const clashes = omitBy(groupedModules, (mods) => mods.length === 1); // Remove non-clashing mods
+  const groupedModules = groupBy(filteredModules, (module) => getExamDateOnly(module, semester));
 
-  console.log(clashes, 'CLASHES1');
+  const clashes: ExamClashes = {};
 
-  // Additional checks for exams with non-identical start times
-  const groupedModules2 = groupBy(modules, (module) => getExamDateOnly(module, semester));
-
-  delete groupedModules2.undefined;
-
-  // O(n lg n ) interval clash algorithm where you sort the start and end times and check for overlaps
-  for (const examDate in groupedModules2) {
-    const sameDayMods: Module[] = groupedModules2[examDate];
-
-    // sort sameDayMods by exam start time
+  Object.values(groupedModules).forEach((sameDayMods) => {
+    // Sort sameDayMods by exam start time
     sameDayMods.sort((a, b) => {
-      const aStart = new Date(
-        <string>get(getModuleSemesterData(a, semester), 'examDate'),
-      ).getTime();
-      const bStart = new Date(
-        <string>get(getModuleSemesterData(b, semester), 'examDate'),
-      ).getTime();
+      const aStartEpoch = getValidExamStartTimeAsEpoch(a, semester);
+      const bStartEpoch = getValidExamStartTimeAsEpoch(b, semester);
 
-      // secondary key is end time
-      const aEnd =
-        aStart + <number>get(getModuleSemesterData(a, semester), 'examDuration') * 60 * 1000;
-      const bEnd =
-        bStart + <number>get(getModuleSemesterData(b, semester), 'examDuration') * 60 * 1000;
+      // Use end time as secondary key
+      const aEndEpoch = getValidExamEndTimeAsEpoch(a, semester);
+      const bEndEpoch = getValidExamEndTimeAsEpoch(b, semester);
 
-      if (aStart === bStart) {
-        return aEnd - bEnd;
+      if (aStartEpoch === bStartEpoch) {
+        return aEndEpoch - bEndEpoch;
       }
 
-      return aStart - bStart;
+      return aStartEpoch - bStartEpoch;
     });
 
-    let rightPointer = 1;
+    // Initialize an empty list to hold the groups of overlapping intervals
+    // Each group will itself be a list of intervals
+    const overlappingGroups: Module[][] = [];
 
-    for (let leftPointer = 0; leftPointer < sameDayMods.length; leftPointer++) {
-      console.log(leftPointer, rightPointer, 'POINTERS')
+    let currentOverlapEnd = getValidExamEndTimeAsEpoch(sameDayMods[0], semester);
+    let currentOverlappingMods: Module[] = [sameDayMods[0]];
 
-      while (
-        rightPointer < sameDayMods.length &&
-        getModuleExamEndTime(sameDayMods[leftPointer], semester) >=
-          getModuleExamStartTime(sameDayMods[rightPointer], semester)
-      ) {
-        console.log(leftPointer, rightPointer, 'POINTERS')
-
-        const key = <string>(
-          get(getModuleSemesterData(sameDayMods[rightPointer], semester), 'examDate')
-        );
-
-        if (!(key in clashes)) {
-          const modList: Module[] = [];
-          clashes[key] = modList;
+    for (let courseIdx = 1; courseIdx < sameDayMods.length; courseIdx++) {
+      if (getValidExamStartTimeAsEpoch(sameDayMods[courseIdx], semester) < currentOverlapEnd) {
+        currentOverlappingMods.push(sameDayMods[courseIdx]);
+      } else {
+        // The current course does not overlap with the current group, so we reset
+        // the current group and start a new one
+        if (currentOverlappingMods.length > 1) {
+          // If the current group has more than one module, we add it to the list of clashes
+          overlappingGroups.push(currentOverlappingMods);
         }
-
-        if (!clashes[key].includes(sameDayMods[leftPointer])) {
-          clashes[key].push(sameDayMods[leftPointer]);
-        }
-        if (!clashes[key].includes(sameDayMods[rightPointer])) {
-          clashes[key].push(sameDayMods[rightPointer]);
-        }
-
-        rightPointer++;
-      }
-
-      leftPointer++;
-      if (leftPointer === rightPointer) {
-        rightPointer++;
+        currentOverlapEnd = getValidExamEndTimeAsEpoch(sameDayMods[courseIdx], semester);
+        currentOverlappingMods = [sameDayMods[courseIdx]];
       }
     }
-  }
 
-  console.log(clashes, 'CLASHES2');
+    // Add the last group to the list of clashes if applicable
+    if (currentOverlappingMods.length > 1) {
+      overlappingGroups.push(currentOverlappingMods);
+    }
+
+    for (let i = 0; i < overlappingGroups.length; i++) {
+      const group = overlappingGroups[i];
+
+      // Displayed clashing date and time, which is the start time of the last module in the group
+      const clashingDateTime = getExamDate(group[group.length - 1], semester);
+
+      if (clashingDateTime === null) {
+        throw new Error('Courses tested for clashes must have exam dates and durations!');
+      }
+
+      for (let j = 0; j < group.length; j++) {
+        const mod = group[j];
+        if (!clashes[clashingDateTime]) {
+          clashes[clashingDateTime] = [mod];
+        } else {
+          clashes[clashingDateTime].push(mod);
+        }
+      }
+    }
+  });
+
   return clashes;
 }
 
