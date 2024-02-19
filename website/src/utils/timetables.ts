@@ -245,53 +245,12 @@ export function areOtherClassesAvailable(
 
 // Creates a key using only the exam date string (without time)
 export function getExamDateOnly(module: Module, semester: Semester): string | undefined {
-  const examDateTime = getExamDate(module, semester); // string
+  const examDateTime = getExamDate(module, semester);
   return examDateTime?.slice(0, 10);
 }
 
-// Check if two modules with different start time are clashing based on their durations
-export function intervalClash(module1: Module, module2: Module, semester: Semester): boolean {
-  const module1Start = new Date(
-    <string>get(getModuleSemesterData(module1, semester), 'examDate'),
-  ).getTime();
-  const module2Start = new Date(
-    <string>get(getModuleSemesterData(module2, semester), 'examDate'),
-  ).getTime();
-
-  if (module1Start === module2Start) return false;
-  // Identical starting time is already accounted for by previous check in findExamClashes
-
-  const module1Duration =
-    <number>get(getModuleSemesterData(module1, semester), 'examDuration') * 60 * 1000;
-  const module2Duration =
-    <number>get(getModuleSemesterData(module2, semester), 'examDuration') * 60 * 1000;
-
-  const module1End = module1Start + module1Duration;
-  const module2End = module2Start + module2Duration;
-
-  return (
-    (module1Start <= module2Start && module2Start <= module1End) ||
-    (module1Start <= module2End && module2End <= module1End)
-  );
-}
-
-// For 2 modules with non-identical exam times that clash, we take the earlier start time
-// Workaround for now since clash message only highlights one date/time.
-export function getEarlierTime(module1: Module, module2: Module, semester: Semester): string {
-  const module1Start = new Date(
-    <string>get(getModuleSemesterData(module1, semester), 'examDate'),
-  ).getTime();
-  const module2Start = new Date(
-    <string>get(getModuleSemesterData(module2, semester), 'examDate'),
-  ).getTime();
-
-  if (module1Start < module2Start) {
-    return <string>get(getModuleSemesterData(module1, semester), 'examDate');
-  }
-
-  return <string>get(getModuleSemesterData(module2, semester), 'examDate');
-}
-
+// Returns the start time of the exam as an epoch time (number). Throws an error if the module
+// does not have an exam date.
 export function getValidExamStartTimeAsEpoch(module: Module, semester: Semester): number {
   const startTimeString = getExamDate(module, semester);
   if (startTimeString === null) {
@@ -300,6 +259,8 @@ export function getValidExamStartTimeAsEpoch(module: Module, semester: Semester)
   return new Date(startTimeString).getTime();
 }
 
+// Returns the end time of the exam as an epoch time (number). Throws an error if the module
+// does not have an exam date or duration.
 export function getValidExamEndTimeAsEpoch(module: Module, semester: Semester): number {
   const duration = getExamDuration(module, semester);
   if (duration === null) {
