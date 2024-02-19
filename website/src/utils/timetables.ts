@@ -5,7 +5,6 @@ import {
   each,
   first,
   flatMapDeep,
-  get,
   groupBy,
   invert,
   isEmpty,
@@ -49,7 +48,7 @@ import { ModuleCodeMap, ModulesMap } from 'types/reducers';
 import { ExamClashes } from 'types/views';
 
 import { getTimeAsDate } from './timify';
-import { getModuleSemesterData, getModuleTimetable, getExamDate, getExamDuration } from './modules';
+import { getModuleTimetable, getExamDate, getExamDuration } from './modules';
 import { deltas } from './array';
 
 type lessonTypeAbbrev = { [lessonType: string]: string };
