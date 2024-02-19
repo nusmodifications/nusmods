@@ -303,12 +303,12 @@ export function findExamClashes(modules: Module[], semester: Semester): ExamClas
     // Each group will itself be a list of intervals
     const overlappingGroups: Module[][] = [];
 
-    let currentOverlapEnd = getValidExamEndTimeAsEpoch(sameDayMods[0], semester);
-    let currentOverlappingMods: Module[] = [sameDayMods[0]];
+    let currentOverlapEnd = 0;
+    let currentOverlappingMods: Module[] = [];
 
-    for (let courseIdx = 1; courseIdx < sameDayMods.length; courseIdx++) {
-      if (getValidExamStartTimeAsEpoch(sameDayMods[courseIdx], semester) < currentOverlapEnd) {
-        currentOverlappingMods.push(sameDayMods[courseIdx]);
+    sameDayMods.forEach((mod, modIndex) => {
+      if (modIndex > 0 && getValidExamStartTimeAsEpoch(mod, semester) < currentOverlapEnd) {
+        currentOverlappingMods.push(mod);
       } else {
         // The current course does not overlap with the current group, so we reset
         // the current group and start a new one
@@ -316,19 +316,17 @@ export function findExamClashes(modules: Module[], semester: Semester): ExamClas
           // If the current group has more than one module, we add it to the list of clashes
           overlappingGroups.push(currentOverlappingMods);
         }
-        currentOverlapEnd = getValidExamEndTimeAsEpoch(sameDayMods[courseIdx], semester);
-        currentOverlappingMods = [sameDayMods[courseIdx]];
+        currentOverlapEnd = getValidExamEndTimeAsEpoch(mod, semester);
+        currentOverlappingMods = [mod];
       }
-    }
+    });
 
     // Add the last group to the list of clashes if applicable
     if (currentOverlappingMods.length > 1) {
       overlappingGroups.push(currentOverlappingMods);
     }
 
-    for (let i = 0; i < overlappingGroups.length; i++) {
-      const group = overlappingGroups[i];
-
+    overlappingGroups.forEach((group) => {
       // Displayed clashing date and time, which is the start time of the last module in the group
       const clashingDateTime = getExamDate(group[group.length - 1], semester);
 
@@ -336,15 +334,15 @@ export function findExamClashes(modules: Module[], semester: Semester): ExamClas
         throw new Error('Courses tested for clashes must have exam dates and durations!');
       }
 
-      for (let j = 0; j < group.length; j++) {
-        const mod = group[j];
+      // Populate the clashes object to be returned
+      group.forEach((mod) => {
         if (!clashes[clashingDateTime]) {
           clashes[clashingDateTime] = [mod];
         } else {
           clashes[clashingDateTime].push(mod);
         }
-      }
-    }
+      });
+    });
   });
 
   return clashes;
