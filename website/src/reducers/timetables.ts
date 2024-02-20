@@ -5,7 +5,7 @@ import { createMigrate } from 'redux-persist';
 import { PersistConfig } from 'storage/persistReducer';
 import { ModuleCode } from 'types/modules';
 import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
-import { ColorMapping, TimetablesState } from 'types/reducers';
+import { ColorMapping, SemesterColorMap, TimetablesState } from 'types/reducers';
 
 import config from 'config';
 import {
@@ -15,6 +15,7 @@ import {
   REMOVE_MODULE,
   RESET_TIMETABLE,
   SELECT_MODULE_COLOR,
+  REASSIGN_ALL_MODULES_COLOR,
   SET_LESSON_CONFIG,
   SET_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
@@ -132,7 +133,7 @@ function semColors(state: ColorMapping = DEFAULT_SEM_COLOR_MAP, action: Actions)
     case ADD_MODULE:
       return {
         ...state,
-        [moduleCode]: getNewColor(values(state)),
+        [moduleCode]: getNewColor(values(state), action.payload.numOfColors),
       };
 
     case REMOVE_MODULE:
@@ -147,6 +148,18 @@ function semColors(state: ColorMapping = DEFAULT_SEM_COLOR_MAP, action: Actions)
     default:
       return state;
   }
+}
+
+function recolor(curSemesterColorMap: SemesterColorMap, numOfColors: number): SemesterColorMap {
+  const newSemesterColorMap: SemesterColorMap = {};
+  Object.entries(curSemesterColorMap).forEach(([semester, colorMapping]) => {
+    const newColorMapping: ColorMapping = {};
+    Object.entries(colorMapping).forEach(([moduleCode, colorIndex]) => {
+      newColorMapping[moduleCode] = colorIndex % numOfColors;
+    });
+    newSemesterColorMap[semester] = newColorMapping;
+  });
+  return newSemesterColorMap;
 }
 
 // Map of semester to list of hidden modules
@@ -230,6 +243,11 @@ function timetables(
         hidden: { [semester]: hidden },
       };
     }
+    case REASSIGN_ALL_MODULES_COLOR:
+      return {
+        ...state,
+        colors: recolor(state.colors, action.payload.numOfColors),
+      };
 
     default:
       return state;

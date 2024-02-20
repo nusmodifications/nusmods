@@ -15,31 +15,34 @@ import { DIMENSIONS, withTracker } from 'bootstrapping/matomo';
 export const defaultThemeState: ThemeState = {
   // Available themes are defined in `themes.scss`
   id: 'eighties',
+  numOfColors: 8,
   timetableOrientation: HORIZONTAL,
   showTitle: false,
 };
 export const themeIds = themes.map((obj: Theme) => obj.id);
 
 function theme(state: ThemeState = defaultThemeState, action: Actions): ThemeState {
-  function setTheme(newTheme: string): ThemeState {
+  function setTheme(newTheme: Theme): ThemeState {
     // Update theme analytics info
-    withTracker((tracker) => tracker.setCustomDimension(DIMENSIONS.theme, newTheme));
+    withTracker((tracker) => tracker.setCustomDimension(DIMENSIONS.theme, newTheme.id));
 
     return {
       ...state,
-      id: newTheme,
+      id: newTheme.id,
+      numOfColors: newTheme.numOfColors,
     };
   }
 
   switch (action.type) {
     case SELECT_THEME:
+      // Reassign all modules' color when changing theme
       return setTheme(action.payload);
 
     case CYCLE_THEME: {
       const newThemeIndex =
         (themeIds.indexOf(state.id) + themeIds.length + action.payload) % themeIds.length;
 
-      return setTheme(themeIds[newThemeIndex]);
+      return setTheme(themes[newThemeIndex]);
     }
     case TOGGLE_TIMETABLE_ORIENTATION:
       return {

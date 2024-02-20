@@ -1,16 +1,31 @@
 import { mount, ReactWrapper } from 'enzyme';
-import ColorPicker from 'views/components/ColorPicker';
+import { PropsWithChildren } from 'react';
+import { Provider } from 'react-redux';
+import reducers from 'reducers';
 import { ColorIndex } from 'types/timetables';
 import { expectColor } from 'test-utils/theme';
+import { initAction } from 'test-utils/redux';
+import configureStore from 'bootstrapping/configure-store';
+import ColorPicker from 'views/components/ColorPicker';
 
 import styles from './ColorPicker.scss';
 
 function makeColorPicker(color: ColorIndex = 0) {
   const onChooseColor = jest.fn();
+  const initialState = reducers(undefined, initAction());
+  const { store } = configureStore(initialState);
+
+  const ProviderWrapper = ({ children }: PropsWithChildren<Record<never, any>>) => (
+    <Provider store={store}>{children}</Provider>
+  );
+
   return {
     onChooseColor,
     wrapper: mount(
       <ColorPicker label="" color={color} onChooseColor={onChooseColor} isHidden={false} />,
+      {
+        wrappingComponent: ProviderWrapper,
+      },
     ),
   };
 }
