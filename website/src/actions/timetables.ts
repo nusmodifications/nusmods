@@ -1,6 +1,6 @@
 import { each, flatMap } from 'lodash';
 
-import type { Lesson, ColorIndex, ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
+import type { ColorIndex, Lesson, ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import type { Dispatch, GetState } from 'types/redux';
 import type { ColorMapping } from 'types/reducers';
 import type { ClassNo, LessonType, Module, ModuleCode, Semester } from 'types/modules';
@@ -79,6 +79,16 @@ export function removeModule(semester: Semester, moduleCode: ModuleCode) {
     payload: {
       semester,
       moduleCode,
+    },
+  };
+}
+
+export const RESET_TIMETABLE = 'RESET_TIMETABLE' as const;
+export function resetTimetable(semester: Semester) {
+  return {
+    type: RESET_TIMETABLE,
+    payload: {
+      semester,
     },
   };
 }

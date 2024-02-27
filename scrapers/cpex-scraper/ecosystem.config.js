@@ -3,7 +3,7 @@
 module.exports = {
   apps: [
     {
-      name: 'NUS Scraper v2',
+      name: 'CPEx Scraper',
       script: 'scripts/run.sh',
 
       instances: 1,
@@ -16,7 +16,6 @@ module.exports = {
 
       env: {
         NODE_ENV: 'production',
-        _: '/home/ubuntu/.nvm/versions/node/v18.14.2/bin/pm2',
       },
     },
   ],

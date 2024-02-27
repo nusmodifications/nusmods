@@ -21,6 +21,7 @@ import {
   HIDDEN_IMPORTED_SEM,
   modifyLesson,
   removeModule,
+  resetTimetable,
 } from 'actions/timetables';
 import {
   areLessonsSameClass,
@@ -79,6 +80,7 @@ type Props = OwnProps & {
   // Actions
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
   removeModule: (semester: Semester, moduleCode: ModuleCode) => void;
+  resetTimetable: (semester: Semester) => void;
   modifyLesson: (lesson: Lesson) => void;
   changeLesson: (semester: Semester, lesson: Lesson) => void;
   cancelModifyLesson: () => void;
@@ -194,6 +196,10 @@ class TimetableContent extends React.Component<Props, State> {
     this.setState({ tombstone: { ...moduleWithColor, index } });
   };
 
+  resetTimetable = () => {
+    this.props.resetTimetable(this.props.semester);
+  };
+
   resetTombstone = () => this.setState({ tombstone: null });
 
   // Returns modules currently in the timetable
@@ -295,7 +301,10 @@ class TimetableContent extends React.Component<Props, State> {
       const module = modules[moduleCode];
       const moduleTimetable = getModuleTimetable(module, semester);
       lessonsForLessonType(moduleTimetable, activeLesson.lessonType).forEach((lesson) => {
-        const modifiableLesson: Lesson & { isActive?: boolean; isAvailable?: boolean } = {
+        const modifiableLesson: Lesson & {
+          isActive?: boolean;
+          isAvailable?: boolean;
+        } = {
           ...lesson,
           // Inject module code in
           moduleCode,
@@ -405,6 +414,7 @@ class TimetableContent extends React.Component<Props, State> {
                   semester={semester}
                   timetable={this.props.timetable}
                   showExamCalendar={showExamCalendar}
+                  resetTimetable={this.resetTimetable}
                   toggleExamCalendar={() => this.setState({ showExamCalendar: !showExamCalendar })}
                   hiddenModules={hiddenInTimetable}
                 />
@@ -474,6 +484,7 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
 export default connect(mapStateToProps, {
   addModule,
   removeModule,
+  resetTimetable,
   modifyLesson,
   changeLesson,
   cancelModifyLesson,
