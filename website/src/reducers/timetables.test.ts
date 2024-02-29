@@ -254,7 +254,7 @@ describe('import timetable', () => {
       [HIDDEN_IMPORTED_SEM]: ['CS1101S', 'CS1231S'],
     });
 
-    // should change hidden modules when a new set of modules is imported
+    // Should change hidden modules when a new set of modules is imported
     expect(
       reducer(
         {
