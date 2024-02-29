@@ -454,20 +454,9 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
   const { modules } = state.moduleBank;
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
 
-  // if readonly, it means we are viewing someone else's timetable.
-  // Check to see if there are any hidden modules
-  // key: HIDDEN_IMPORTED_SEM in the state
-  let hiddenInTimetable: string[] = [];
-  if (readOnly) {
-    if (
-      state.timetables.hidden[HIDDEN_IMPORTED_SEM] &&
-      state.timetables.hidden[HIDDEN_IMPORTED_SEM].length
-    ) {
-      hiddenInTimetable = state.timetables.hidden[HIDDEN_IMPORTED_SEM];
-    }
-  } else if (state.timetables.hidden[semester]) {
-    hiddenInTimetable = state.timetables.hidden[semester];
-  }
+  // Determine the key to check for hidden modules based on readOnly status
+  const hiddenModulesKey = readOnly ? HIDDEN_IMPORTED_SEM : semester;
+  const hiddenInTimetable = state.timetables.hidden[hiddenModulesKey] || [];
 
   return {
     semester,

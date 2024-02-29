@@ -27,11 +27,14 @@ export function timetableShare(
   timetable: SemTimetableConfig,
   hiddenModules: ModuleCode[],
 ): string {
-  // convert the list of hidden modules to a string, if there are any
+  // Convert the list of hidden modules to a comma-separated string, if there are any
   const serializedHidden = hiddenModules.length === 0 ? '' : `&hidden=${hiddenModules.join(',')}`;
-  return `${timetablePage(semester)}/${TIMETABLE_SHARE}?${serializeTimetable(
-    timetable,
-  )}${serializedHidden}`;
+
+  return (
+    `${timetablePage(semester)}/${TIMETABLE_SHARE}` +
+    `?${serializeTimetable(timetable)}` +
+    `${serializedHidden}`
+  );
 }
 
 // Timetable path -> Semester

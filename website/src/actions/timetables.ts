@@ -19,7 +19,7 @@ import { getModuleTimetable } from 'utils/modules';
 export const SET_TIMETABLE = 'SET_TIMETABLE' as const;
 export const ADD_MODULE = 'ADD_MODULE' as const;
 export const SET_HIDDEN_IMPORTED = 'SET_HIDDEN_IMPORTED' as const;
-export const HIDDEN_IMPORTED_SEM = -1 as const;
+export const HIDDEN_IMPORTED_SEM = 'HIDDEN_IMPORTED_SEM' as const;
 export const Internal = {
   setTimetable(
     semester: Semester,

@@ -195,7 +195,7 @@ function timetables(
         draft.colors[semester] = colors || {};
         draft.hidden[semester] = hiddenModules || [];
 
-        // remove the old hidden imported modules
+        // Remove the old hidden imported modules
         delete draft.hidden[HIDDEN_IMPORTED_SEM];
       });
     }

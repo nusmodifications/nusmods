@@ -135,7 +135,7 @@ describe(TimetableContainerComponent, () => {
     // Expect correct network calls to be made
     expect(mockAxiosRequest).toHaveBeenCalledTimes(1);
 
-    // expect there to be a rendered timetable cell (Sectional Teaching)
+    // Expect there to be a rendered timetable cell (Sectional Teaching)
     expect(screen.getByText(/SEC/)).toBeInTheDocument();
   });
 
@@ -157,7 +157,7 @@ describe(TimetableContainerComponent, () => {
     // Expect correct network calls to be made
     expect(mockAxiosRequest).toHaveBeenCalledTimes(1);
 
-    // expect there to not be a rendered timetable cell (Sectional Teaching)
+    // Expect there to not be a rendered timetable cell (Sectional Teaching)
     expect(screen.queryByText(/SEC/)).not.toBeInTheDocument();
   });
 

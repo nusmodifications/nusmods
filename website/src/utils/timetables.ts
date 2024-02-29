@@ -545,8 +545,9 @@ export function deserializeTimetable(serialized: string): SemTimetableConfig {
 export function deserializeHidden(serialized: string): ModuleCode[] {
   const params = qs.parse(serialized);
   if (!params.hidden) return [];
-  // hidden key will only appear once at most.
-  return (params.hidden as string).split(',');
+  // If user manually enters multiple hidden query keys, use latest one
+  const hidden = Array.isArray(params.hidden) ? last(params.hidden) : params.hidden;
+  return (hidden as string).split(',');
 }
 
 export function isSameTimetableConfig(t1: SemTimetableConfig, t2: SemTimetableConfig): boolean {
