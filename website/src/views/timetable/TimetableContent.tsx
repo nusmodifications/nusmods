@@ -18,6 +18,7 @@ import {
   addModule,
   cancelModifyLesson,
   changeLesson,
+  HIDDEN_IMPORTED_SEM,
   modifyLesson,
   removeModule,
   resetTimetable,
@@ -415,6 +416,7 @@ class TimetableContent extends React.Component<Props, State> {
                   showExamCalendar={showExamCalendar}
                   resetTimetable={this.resetTimetable}
                   toggleExamCalendar={() => this.setState({ showExamCalendar: !showExamCalendar })}
+                  hiddenModules={hiddenInTimetable}
                 />
               </div>
 
@@ -448,10 +450,13 @@ class TimetableContent extends React.Component<Props, State> {
 }
 
 function mapStateToProps(state: StoreState, ownProps: OwnProps) {
-  const { semester, timetable } = ownProps;
+  const { semester, timetable, readOnly } = ownProps;
   const { modules } = state.moduleBank;
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
-  const hiddenInTimetable = state.timetables.hidden[semester] || [];
+
+  // Determine the key to check for hidden modules based on readOnly status
+  const hiddenModulesKey = readOnly ? HIDDEN_IMPORTED_SEM : semester;
+  const hiddenInTimetable = state.timetables.hidden[hiddenModulesKey] || [];
 
   return {
     semester,

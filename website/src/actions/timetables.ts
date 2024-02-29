@@ -18,15 +18,18 @@ import { getModuleTimetable } from 'utils/modules';
 // Actions that should not be used directly outside of thunks
 export const SET_TIMETABLE = 'SET_TIMETABLE' as const;
 export const ADD_MODULE = 'ADD_MODULE' as const;
+export const SET_HIDDEN_IMPORTED = 'SET_HIDDEN_IMPORTED' as const;
+export const HIDDEN_IMPORTED_SEM = 'HIDDEN_IMPORTED_SEM' as const;
 export const Internal = {
   setTimetable(
     semester: Semester,
     timetable: SemTimetableConfig | undefined,
     colors?: ColorMapping,
+    hiddenModules?: ModuleCode[],
   ) {
     return {
       type: SET_TIMETABLE,
-      payload: { semester, timetable, colors },
+      payload: { semester, timetable, colors, hiddenModules },
     };
   },
 
@@ -157,7 +160,14 @@ export function setTimetable(
       [validatedTimetable] = validateTimetableModules(timetable, getState().moduleBank.moduleCodes);
     }
 
-    return dispatch(Internal.setTimetable(semester, validatedTimetable, colors));
+    return dispatch(
+      Internal.setTimetable(
+        semester,
+        validatedTimetable,
+        colors,
+        getState().timetables.hidden[HIDDEN_IMPORTED_SEM] || [],
+      ),
+    );
   };
 }
 
@@ -198,6 +208,17 @@ export function fetchTimetableModules(timetables: SemTimetableConfig[]) {
         .filter(validateModule)
         .map((moduleCode) => dispatch(fetchModule(moduleCode))),
     );
+  };
+}
+
+export function setHiddenModulesFromImport(hiddenModules: ModuleCode[]) {
+  return (dispatch: Dispatch) => dispatch(setHiddenImported(hiddenModules));
+}
+
+export function setHiddenImported(hiddenModules: ModuleCode[]) {
+  return {
+    type: SET_HIDDEN_IMPORTED,
+    payload: { semester: HIDDEN_IMPORTED_SEM, hiddenModules },
   };
 }
 
