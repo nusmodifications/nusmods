@@ -16,7 +16,7 @@ type Props = {
   moduleCode: ModuleCode;
   fulfillRequirements?: readonly ModuleCode[];
   prereqTree?: PrereqTree;
-  
+
   getModuleCondensed: (moduleCode: ModuleCode) => ModuleCondensed | undefined;
 };
 
@@ -44,10 +44,9 @@ const formatConditional = (node: PrereqTree) => {
   return 'all of';
 };
 
-type NodeName = { 
-  prefix?: string; 
-  name: string 
-
+type NodeName = {
+  prefix?: string;
+  name: string;
 };
 const nodeName = (node: PrereqTree): NodeName => {
   if (typeof node !== 'string') {
@@ -81,12 +80,15 @@ const unwrapLayer = (node: PrereqTree) => {
   return flatten(values(node).filter(notNull));
 };
 
-
-const Branch: React.FC<{ nodes: PrereqTree[]; layer: number; getModuleCondensed: (moduleCode: ModuleCode) => ModuleCondensed | undefined;}> = (props) => (
+const Branch: React.FC<{
+  nodes: PrereqTree[];
+  layer: number;
+  getModuleCondensed: (moduleCode: ModuleCode) => ModuleCondensed | undefined;
+}> = (props) => (
   <ul className={styles.tree}>
     {props.nodes.map((child, idx) => (
       <li className={styles.branch} key={typeof child === 'string' ? nodeName(child).name : idx}>
-        <Tree node={child} layer={props.layer} getModuleCondensed={props.getModuleCondensed}/>
+        <Tree node={child} layer={props.layer} getModuleCondensed={props.getModuleCondensed} />
       </li>
     ))}
   </ul>
@@ -108,7 +110,11 @@ const Tree: React.FC<TreeDisplay> = (props) => {
         >
           {formatConditional(node)}
         </div>
-        <Branch nodes={unwrapLayer(node)} layer={layer + 1} getModuleCondensed={props.getModuleCondensed}/>
+        <Branch
+          nodes={unwrapLayer(node)}
+          layer={layer + 1}
+          getModuleCondensed={props.getModuleCondensed}
+        />
       </>
     );
   }
@@ -128,10 +134,7 @@ const Tree: React.FC<TreeDisplay> = (props) => {
       {prefix && <span className={styles.prefix}>{prefix}</span>}
       <LinkModuleCodes className={styles.link}>{name}</LinkModuleCodes>
     </div>
-
   );
-
-  
 };
 
 const ModuleTree: React.FC<Props> = (props) => {
@@ -148,7 +151,12 @@ const ModuleTree: React.FC<Props> = (props) => {
                   key={fulfilledModule}
                   className={classnames(styles.branch, styles.prereqBranch)}
                 >
-                  <Tree layer={0} node={fulfilledModule} isPrereq getModuleCondensed={props.getModuleCondensed}/>
+                  <Tree
+                    layer={0}
+                    node={fulfilledModule}
+                    isPrereq
+                    getModuleCondensed={props.getModuleCondensed}
+                  />
                 </li>
               ))}
             </ul>
@@ -159,9 +167,15 @@ const ModuleTree: React.FC<Props> = (props) => {
 
         <ul className={classnames(styles.tree, styles.root)}>
           <li className={classnames(styles.branch)}>
-            <Tree layer={1} node={moduleCode} getModuleCondensed={props.getModuleCondensed}/>
+            <Tree layer={1} node={moduleCode} getModuleCondensed={props.getModuleCondensed} />
 
-            {prereqTree && <Branch nodes={[prereqTree]} layer={2} getModuleCondensed={props.getModuleCondensed}/>}
+            {prereqTree && (
+              <Branch
+                nodes={[prereqTree]}
+                layer={2}
+                getModuleCondensed={props.getModuleCondensed}
+              />
+            )}
           </li>
         </ul>
       </div>
@@ -197,4 +211,3 @@ const mapStateToProps = connect((state: State) => ({
 }));
 
 export default mapStateToProps(ModuleTree);
-
