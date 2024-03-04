@@ -1,23 +1,31 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { flatten, values } from 'lodash';
-import LinkModuleCodes from 'views/components/LinkModuleCodes';
+import { connect } from 'react-redux';
 
-import { ModuleCode, PrereqTree } from 'types/modules';
+import { getModuleCondensed } from 'selectors/moduleBank';
 
+import { ModuleCode, PrereqTree, ModuleCondensed } from 'types/modules';
+import { State } from 'types/state';
 import { notNull } from 'types/utils';
+
+import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import styles from './ModuleTree.scss';
 
 type Props = {
   moduleCode: ModuleCode;
   fulfillRequirements?: readonly ModuleCode[];
   prereqTree?: PrereqTree;
+
+  getModuleCondensed: (moduleCode: ModuleCode) => ModuleCondensed | undefined;
 };
 
 interface TreeDisplay {
   layer: number;
   node: PrereqTree;
   isPrereq?: boolean;
+
+  getModuleCondensed: (moduleCode: ModuleCode) => ModuleCondensed | undefined;
 }
 
 const GRADE_REQUIREMENT_SEPARATOR = ':';
@@ -36,7 +44,10 @@ const formatConditional = (node: PrereqTree) => {
   return 'all of';
 };
 
-type NodeName = { prefix?: string; name: string };
+type NodeName = {
+  prefix?: string;
+  name: string;
+};
 const nodeName = (node: PrereqTree): NodeName => {
   if (typeof node !== 'string') {
     return { name: Object.keys(node)[0] };
@@ -69,11 +80,15 @@ const unwrapLayer = (node: PrereqTree) => {
   return flatten(values(node).filter(notNull));
 };
 
-const Branch: React.FC<{ nodes: PrereqTree[]; layer: number }> = (props) => (
+const Branch: React.FC<{
+  nodes: PrereqTree[];
+  layer: number;
+  getModuleCondensed: (moduleCode: ModuleCode) => ModuleCondensed | undefined;
+}> = (props) => (
   <ul className={styles.tree}>
     {props.nodes.map((child, idx) => (
       <li className={styles.branch} key={typeof child === 'string' ? nodeName(child).name : idx}>
-        <Tree node={child} layer={props.layer} />
+        <Tree node={child} layer={props.layer} getModuleCondensed={props.getModuleCondensed} />
       </li>
     ))}
   </ul>
@@ -95,14 +110,24 @@ const Tree: React.FC<TreeDisplay> = (props) => {
         >
           {formatConditional(node)}
         </div>
-        <Branch nodes={unwrapLayer(node)} layer={layer + 1} />
+        <Branch
+          nodes={unwrapLayer(node)}
+          layer={layer + 1}
+          getModuleCondensed={props.getModuleCondensed}
+        />
       </>
     );
   }
 
+  // Check if module name still exists in database
+  const moduleActive = props.getModuleCondensed(name);
+
+  // If module is deprecated (undefined) then we grey out, remove color classname
+
   return (
     <div
-      className={classnames(styles.node, styles.moduleNode, `hoverable color-${layer}`, {
+      className={classnames(styles.node, styles.moduleNode, {
+        [`hoverable color-${layer}`]: !!moduleActive,
         [styles.prereqNode]: isPrereq,
       })}
     >
@@ -112,7 +137,7 @@ const Tree: React.FC<TreeDisplay> = (props) => {
   );
 };
 
-const ModuleTree: React.FC<Props> = (props) => {
+export const ModuleTreeComponent: React.FC<Props> = (props) => {
   const { fulfillRequirements, prereqTree, moduleCode } = props;
 
   return (
@@ -126,7 +151,12 @@ const ModuleTree: React.FC<Props> = (props) => {
                   key={fulfilledModule}
                   className={classnames(styles.branch, styles.prereqBranch)}
                 >
-                  <Tree layer={0} node={fulfilledModule} isPrereq />
+                  <Tree
+                    layer={0}
+                    node={fulfilledModule}
+                    isPrereq
+                    getModuleCondensed={props.getModuleCondensed}
+                  />
                 </li>
               ))}
             </ul>
@@ -137,9 +167,15 @@ const ModuleTree: React.FC<Props> = (props) => {
 
         <ul className={classnames(styles.tree, styles.root)}>
           <li className={classnames(styles.branch)}>
-            <Tree layer={1} node={moduleCode} />
+            <Tree layer={1} node={moduleCode} getModuleCondensed={props.getModuleCondensed} />
 
-            {prereqTree && <Branch nodes={[prereqTree]} layer={2} />}
+            {prereqTree && (
+              <Branch
+                nodes={[prereqTree]}
+                layer={2}
+                getModuleCondensed={props.getModuleCondensed}
+              />
+            )}
           </li>
         </ul>
       </div>
@@ -170,4 +206,8 @@ const ModuleTree: React.FC<Props> = (props) => {
   );
 };
 
-export default ModuleTree;
+const mapStateToProps = connect((state: State) => ({
+  getModuleCondensed: getModuleCondensed(state),
+}));
+
+export default mapStateToProps(ModuleTreeComponent);
