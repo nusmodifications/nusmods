@@ -137,7 +137,7 @@ const Tree: React.FC<TreeDisplay> = (props) => {
   );
 };
 
-const ModuleTree: React.FC<Props> = (props) => {
+export const ModuleTreeComponent: React.FC<Props> = (props) => {
   const { fulfillRequirements, prereqTree, moduleCode } = props;
 
   return (
@@ -210,4 +210,4 @@ const mapStateToProps = connect((state: State) => ({
   getModuleCondensed: getModuleCondensed(state),
 }));
 
-export default mapStateToProps(ModuleTree);
+export default mapStateToProps(ModuleTreeComponent);

@@ -1,14 +1,17 @@
 import { render } from 'enzyme';
 
-import ModuleTree from './ModuleTree';
+import { getModuleCondensed } from 'selectors/moduleBank';
+import { ModuleCondensed } from 'types/modules';
+import { ModuleTreeComponent } from './ModuleTree';
 
 jest.mock('views/components/LinkModuleCodes', () => 'mockedlink');
 
-describe(ModuleTree, () => {
+describe(ModuleTreeComponent, () => {
   test('should render requirements fulfilled tree of module', () => {
     const component = render(
-      <ModuleTree
+      <ModuleTreeComponent
         moduleCode="ACC1002"
+        getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: {} } } as any)}
         fulfillRequirements={[
           'ACC1006',
           'ACC2002',
@@ -33,8 +36,9 @@ describe(ModuleTree, () => {
 
   test('should render prereq tree of module', () => {
     const component = render(
-      <ModuleTree
+      <ModuleTreeComponent
         moduleCode="CS3244"
+        getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: {} } } as any)}
         fulfillRequirements={['CS5242', 'CS5339', 'CS6281']}
         prereqTree={{
           and: [
