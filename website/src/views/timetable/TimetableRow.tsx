@@ -40,7 +40,7 @@ const TimetableRow: React.FC<Props> = (props) => {
         const startIndex = convertTimeToIndex(lesson.startTime);
         const endIndex = convertTimeToIndex(lesson.endTime);
 
-        const size = endIndex - startIndex;
+        const size = Math.max(endIndex - startIndex, 2);
 
         const dirStyle = verticalMode ? 'top' : 'marginLeft';
         const sizeStyle = verticalMode ? 'height' : 'width';
