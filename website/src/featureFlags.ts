@@ -8,4 +8,4 @@
 export const enableShortUrl = false;
 
 /** Enable Course Planning Exercise */
-export const enableCPEx = false;
+export const enableCPEx = true;
