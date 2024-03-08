@@ -66,6 +66,8 @@ $sticky-top: $navbar-height;
 }
 
 .details {
+  overflow-wrap: break-word;
+
   dt,
   h4 {
     font-weight: bold;
