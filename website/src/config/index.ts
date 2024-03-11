@@ -12,6 +12,7 @@ export const regPeriods = [
   'Select Tutorials / Labs',
   'Add / Swap Tutorials',
   'Submit Course Requests',
+  'Course Planning Exercise (CPEx)',
 ] as const;
 export type RegPeriodType = (typeof regPeriods)[number];
 
