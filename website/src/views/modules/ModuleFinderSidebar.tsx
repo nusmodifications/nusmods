@@ -142,6 +142,17 @@ const ModuleFinderSidebar: React.FC = () => {
         <ChecklistFilter title="Exams" items={examFilters} />
 
         <RefinementListFilter
+          id="grading"
+          title="Grading Basis"
+          field="gradingBasisDescription.keyword"
+          operator="OR"
+          orderKey="_term"
+          orderDirection="asc"
+          containerComponent={FilterContainer}
+          itemComponent={CheckboxItem}
+        />
+
+        <RefinementListFilter
           id="level"
           title="Level"
           field="moduleCode.level"
