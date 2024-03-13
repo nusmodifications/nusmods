@@ -153,6 +153,7 @@ const getModuleInfo = ({
   corequisite,
   semesterData,
   attributes,
+  gradingBasisDescription,
 }: ModuleWithoutTree): ModuleInformation => ({
   moduleCode,
   title,
@@ -165,6 +166,7 @@ const getModuleInfo = ({
   preclusion,
   corequisite,
   attributes,
+  gradingBasisDescription,
   semesterData: semesterData.map(({ semester, examDate, examDuration, covidZones }) => ({
     semester,
     examDate,
