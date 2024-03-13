@@ -5,6 +5,7 @@ import { enableCPEx } from 'featureFlags';
 import Modal from 'views/components/Modal';
 import type { MpeSubmission } from 'types/mpe';
 import ExternalLink from 'views/components/ExternalLink';
+import config from 'config';
 import {
   getLoginState,
   getSSOLink,
@@ -21,6 +22,15 @@ const MpeContainer: React.FC = () => {
   const [isGettingSSOLink, setIsGettingSSOLink] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(getLoginState(useLocation(), useHistory()));
+
+  const ugCPEx = config.modRegSchedule.Undergraduate.find(
+    ({ type: t }) => t === 'Course Planning Exercise (CPEx)',
+  );
+  const gdCPEx = config.modRegSchedule.Graduate.find(
+    ({ type: t }) => t === 'Course Planning Exercise (CPEx)',
+  );
+  const hasCPEx = ugCPEx && gdCPEx;
+  const sameTime = hasCPEx && ugCPEx.startDate.getTime() === gdCPEx.startDate.getTime();
 
   const onLogin = useCallback(() => {
     setIsGettingSSOLink(true);
@@ -119,7 +129,21 @@ const MpeContainer: React.FC = () => {
       ) : (
         <>
           <hr />
-          <div>CPEx is not open.</div>
+          {hasCPEx &&
+            (sameTime ? (
+              <p>
+                <strong>CPEx will open on:</strong> {ugCPEx.start}
+              </p>
+            ) : (
+              <div>
+                <p>
+                  <strong>Undergraduate CPEx will open on:</strong> {ugCPEx.start}
+                </p>
+                <p>
+                  <strong>Graduate CPEx will open on:</strong> {gdCPEx.start}
+                </p>
+              </div>
+            ))}
         </>
       )}
     </div>

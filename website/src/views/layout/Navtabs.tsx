@@ -14,7 +14,7 @@ import {
   Trello,
 } from 'react-feather';
 
-import { enableCPEx } from 'featureFlags';
+import { showCPExTab } from 'featureFlags';
 import ExternalLink from 'views/components/ExternalLink';
 import { timetablePage } from 'views/routes/paths';
 import { preload as preloadToday } from 'views/today/TodayContainer';
@@ -52,7 +52,7 @@ const Navtabs: FC = () => {
         <BookOpen />
         <span className={styles.title}>Courses</span>
       </NavLink>
-      {enableCPEx && (
+      {showCPExTab && (
         <NavLink {...tabProps} to="/cpex">
           <Target />
           <span className={styles.title}>CPEx</span>
