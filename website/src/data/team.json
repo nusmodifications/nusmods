@@ -106,5 +106,17 @@
     "twitter": "chrisgzf",
     "github": "chrisgzf",
     "linkedin": "chrisgzf"
+  },
+  {
+    "name": "Wong Kok Rui",
+    "description": "Kok Rui is a CS undergraduate whose specific interests within computing seem to change every year or so.",
+    "active": true,
+    "link": "https://kokruiwo.ng/",
+    "gravatar": "7acde926ae46e7a9533715a387260c7a8677d648c2677a8f6ff97e9b6e02a49b",
+    "gravatarAlt": "Wong Kok Rui",
+    "facebook": "kokrui",
+    "twitter": "wongkokrui",
+    "github": "kokrui",
+    "linkedin": "kokrui"
   }
 ]
