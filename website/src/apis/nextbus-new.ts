@@ -2,7 +2,8 @@ const baseURL = 'https://nusmods.com'; // TODO: wait until we have an api proxy
 
 export const getStopTimings = async (
   stop: string,
-  setState: (state: ShuttleServiceResult) => void,
+  callback?: (data: any) => void,
+  error?: (e: any) => void,
 ) => {
   if (!stop) return;
   const API_AUTH = ''; // TODO: wait until we have an api proxy
@@ -15,8 +16,9 @@ export const getStopTimings = async (
     });
     const data = await response.json();
     // console.log(data);
-    setState(data.ShuttleServiceResult);
+    if (callback) callback(data.ShuttleServiceResult);
   } catch (e) {
-    console.error(e);
+    // console.error(e);
+    if (error) error(e);
   }
 };

@@ -60,7 +60,7 @@ function ServiceSchedule(props: { timing?: NUSShuttle; title: string }) {
 
 function StopServiceDetails(props: {
   service: ISBService;
-  timings?: NUSShuttle[];
+  timings?: NUSShuttle[] | string;
   currentStop: ISBStop;
   selectedService: string | null;
   setSelectedService: (service: string | null) => void;
@@ -282,10 +282,29 @@ function StopServiceDetails(props: {
             </div>
           )}
           <div className={styles.divider} />
-          <div className={styles.serviceUpcoming}>
-            {arriveTiming && <ServiceSchedule timing={arriveTiming} title="Arrivals" />}
-            {departTiming && <ServiceSchedule timing={departTiming} title="Departures" />}
-          </div>
+          {
+            //  if the service is not running, show the next time it will run
+            !departTiming && !arriveTiming ? (
+              <div className={styles.serviceSchedule}>
+                {/*  if is error show error msg */}
+                {timings === 'error' ? (
+                  <div className={classNames(styles.upcomingBuses, styles.none)}>
+                    Error fetching bus timings
+                  </div>
+                ) : (
+                  <div className={classNames(styles.upcomingBuses, styles.none)}>
+                    No upcoming departures
+                  </div>
+                )}
+              </div>
+            ) : (
+              //  if the service is running, show the next few buses
+              <div className={styles.serviceUpcoming}>
+                {arriveTiming && <ServiceSchedule timing={arriveTiming} title="Arrivals" />}
+                {departTiming && <ServiceSchedule timing={departTiming} title="Departures" />}
+              </div>
+            )
+          }
         </div>
       )}
     </div>
@@ -333,77 +352,125 @@ function StopDetails(props: Props) {
   const { stop } = props;
   const setSelectedServiceMap = props.setSelectedService;
   const stopDetails = isbStops.find((s) => s.name === stop);
-  const [selectedStopTiming, setSelectedStopTiming] = useState<ShuttleServiceResult | null>(null);
+  const [selectedStopTiming, setSelectedStopTiming] = useState<
+    ShuttleServiceResult | 'error' | 'loading'
+  >('loading');
   const [selectedService, setSelectedService] = useState<string | null>(null);
 
   useEffect(() => {
     if (!stop) return;
-    getStopTimings(stop, setSelectedStopTiming);
+    setSelectedStopTiming('loading');
+    getStopTimings(
+      stop,
+      (data) => {
+        setSelectedStopTiming(data);
+      },
+      (error) => {
+        console.error(error);
+        setSelectedStopTiming('error');
+      },
+    );
   }, [stop]);
 
   useEffect(() => {
     if (selectedService) {
-      // console.log('selectedService', selectedService);
       setSelectedServiceMap(isbServices.find((s) => s.name === selectedService) || isbServices[0]);
     }
-  }, [selectedService]);
+  }, [selectedService, setSelectedServiceMap]);
 
-  if (!stopDetails) return <div>Stop not found</div>;
+  const incoming = useMemo(() => {
+    if (stopDetails === undefined) return null;
 
-  // console.log(selectedStopTiming);
+    const nusShuttles = stopDetails.shuttles
+      .filter((shuttle) => shuttle.routeid)
+      .filter(
+        (shuttle, index, self) => index === self.findIndex((s) => s.routeid === shuttle.routeid),
+      )
+      .sort((a, b) => a.name.localeCompare(b.name));
 
-  const { ShortName, LongName, shuttles } = stopDetails;
-  const nusShuttles = shuttles
-    .filter((shuttle) => shuttle.routeid)
-    .filter(
-      (shuttle, index, self) => index === self.findIndex((s) => s.routeid === shuttle.routeid),
-    )
-    .sort((a, b) => a.name.localeCompare(b.name));
-  // console.log('shuttles', stopDetails);
+    if (selectedStopTiming === 'loading' || selectedStopTiming === 'error') {
+      return {
+        services: nusShuttles,
+        buses: [],
+        buses_grouped: [],
+      };
+    }
 
-  const incomingBuses: {
-    service: ISBService;
-    arrivingInSeconds: number;
-    plate: string;
-  }[] = [];
-  nusShuttles.forEach((shuttle) => {
-    const serviceDetail = isbServices.find((s) => s.id === shuttle.name.toLocaleLowerCase());
-    if (!serviceDetail) return;
-    const isEnd = stopDetails.name === serviceDetail.stops[serviceDetail.stops.length - 1];
-    const serviceShuttles = selectedStopTiming?.shuttles.filter(
-      (s) => s.name === shuttle.name,
-    ) as NUSShuttle[];
-    const timings = getDepartAndArriveTiming(serviceShuttles, isEnd);
-    const timing = timings.departTiming;
+    const incomingBuses: {
+      service: ISBService;
+      arrivingInSeconds: number;
+      plate: string;
+    }[] = [];
+    nusShuttles.forEach((shuttle) => {
+      const serviceDetail = isbServices.find((s) => s.id === shuttle.name.toLocaleLowerCase());
+      if (!serviceDetail) return;
+      const isEnd = stopDetails.name === serviceDetail.stops[serviceDetail.stops.length - 1];
+      const serviceShuttles = selectedStopTiming?.shuttles.filter(
+        (s) => s.name === shuttle.name,
+      ) as NUSShuttle[];
+      const timings = getDepartAndArriveTiming(serviceShuttles, isEnd);
+      const timing = timings.departTiming;
 
-    timing?._etas?.forEach((eta) => {
-      incomingBuses.push({
-        service: serviceDetail,
-        arrivingInSeconds: eta.eta_s,
-        plate: eta.plate,
+      timing?._etas?.forEach((eta) => {
+        incomingBuses.push({
+          service: serviceDetail,
+          arrivingInSeconds: eta.eta_s,
+          plate: eta.plate,
+        });
       });
     });
-  });
-  incomingBuses.sort((a, b) => a.arrivingInSeconds - b.arrivingInSeconds);
-  incomingBuses.splice(4);
-  const incomingBusGroups = incomingBuses.reduce((acc, bus) => {
-    const shownTime = getShownArrivalTime(bus.arrivingInSeconds);
-    const newAcc = { ...acc };
-    if (!newAcc[shownTime]) newAcc[shownTime] = [];
-    newAcc[shownTime].push(bus);
-    return newAcc;
-  }, {} as Record<string, typeof incomingBuses>);
+    incomingBuses.sort((a, b) => a.arrivingInSeconds - b.arrivingInSeconds);
+    incomingBuses.splice(4);
+    const incomingBusGroups = incomingBuses.reduce((acc, bus) => {
+      const shownTime = getShownArrivalTime(bus.arrivingInSeconds);
+      const newAcc = { ...acc };
+      if (!newAcc[shownTime]) newAcc[shownTime] = [];
+      newAcc[shownTime].push(bus);
+      return newAcc;
+    }, {} as Record<string, typeof incomingBuses>);
 
-  const publicShuttles = shuttles
-    .filter((shuttle) => shuttle.name.startsWith('PUB:'))
-    .map(
-      (shuttle) =>
-        ({
-          ...selectedStopTiming?.shuttles?.find((s) => s.name === shuttle.name),
+    return {
+      services: nusShuttles,
+      buses: incomingBuses,
+      buses_grouped: incomingBusGroups,
+    };
+  }, [selectedStopTiming, stopDetails]);
+
+  const incomingPublic = useMemo(() => {
+    if (stopDetails === undefined) return null;
+    const { shuttles } = stopDetails;
+
+    return shuttles
+      .filter((shuttle) => shuttle.name.startsWith('PUB:'))
+      .map((shuttle) => {
+        let st = {
           number: parseInt(shuttle.name.replace('PUB:', ''), 10),
-        } as PublicShuttle),
-    )
-    .sort((a, b) => a.number - b.number);
+        } as PublicShuttle;
+        if (selectedStopTiming !== 'loading' && selectedStopTiming !== 'error') {
+          st = {
+            ...selectedStopTiming?.shuttles?.find((s) => s.name === shuttle.name),
+            number: parseInt(shuttle.name.replace('PUB:', ''), 10),
+          } as PublicShuttle;
+        }
+        return st;
+      })
+      .sort((a, b) => a.number - b.number);
+  }, [selectedStopTiming, stopDetails]);
+
+  if (!stopDetails || !incoming || !incomingPublic) return <div>Stop not found</div>;
+
+  const { ShortName, LongName } = stopDetails;
+
+  // const publicShuttles = shuttles
+  //   .filter((shuttle) => shuttle.name.startsWith('PUB:'))
+  //   .map(
+  //     (shuttle) =>
+  //       ({
+  //         ...selectedStopTiming?.shuttles?.find((s) => s.name === shuttle.name),
+  //         number: parseInt(shuttle.name.replace('PUB:', ''), 10),
+  //       } as PublicShuttle),
+  //   )
+  //   .sort((a, b) => a.number - b.number);
 
   return (
     <div>
@@ -413,8 +480,8 @@ function StopDetails(props: Props) {
 
       <div className={styles.incomingBusesWrapper}>
         <ol className={styles.incomingBuses}>
-          {Object.entries(incomingBusGroups).length ? (
-            Object.entries(incomingBusGroups).map(([time, buses], i) => (
+          {Object.entries(incoming.buses_grouped).length ? (
+            Object.entries(incoming.buses_grouped).map(([time, buses], i) => (
               <Fragment key={`${time} ${stopDetails.name}`}>
                 {i > 0 && <ChevronRight className={styles.chevron} />}
                 <li className={styles.serviceWithChevron}>
@@ -440,17 +507,28 @@ function StopDetails(props: Props) {
             ))
           ) : (
             <span className={classNames(styles.noIncoming, 'text-muted')}>
-              No upcoming buses today
+              {/* No upcoming buses today */}
+              {/* if there is an error fetching, show an error msg */}
+              {selectedStopTiming === 'error'
+                ? 'Error fetching bus timings'
+                : 'No upcoming buses today'}
             </span>
           )}
         </ol>
       </div>
 
-      {nusShuttles.map((shuttle) => {
+      {incoming.services.map((shuttle) => {
         const service = isbServices.find((s) => s.id === shuttle.name.toLocaleLowerCase());
-        const timings = selectedStopTiming?.shuttles.filter(
-          (s) => s.name === shuttle.name,
-        ) as NUSShuttle[];
+        let timings;
+        if (selectedStopTiming === 'loading') {
+          timings = 'loading';
+        } else if (selectedStopTiming === 'error') {
+          timings = 'error';
+        } else {
+          timings = selectedStopTiming?.shuttles.filter(
+            (s) => s.name === shuttle.name,
+          ) as NUSShuttle[];
+        }
         if (!service) return <Fragment key={shuttle.name} />;
         return (
           <StopServiceDetails
@@ -463,7 +541,7 @@ function StopDetails(props: Props) {
           />
         );
       })}
-      {publicShuttles.map((shuttle) => (
+      {incomingPublic.map((shuttle) => (
         <PublicBusDetails service={shuttle} />
       ))}
     </div>
