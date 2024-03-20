@@ -7,6 +7,7 @@ interface ShuttleServiceResult {
   shuttles: Shuttle[];
   caption: string;
 }
+
 type NUSShuttle = {
   passengers: string;
   name: string;

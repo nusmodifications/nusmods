@@ -1,60 +1,22 @@
-import axios from 'axios';
-import { BusStop } from 'types/buses';
+const baseURL = 'https://nusmods.com'; // TODO: wait until we have an api proxy
 
-import { NextBus, NextBusTime, NextBusTimings } from 'types/venues';
-
-const baseUrl = 'https://nnextbus.nus.edu.sg';
-
-interface ShuttleServiceResult {
-  caption: string;
-  name: string;
-  shuttles: Shuttle[];
-}
-
-interface Shuttle {
-  arrivalTime: string;
-  name: string;
-  nextArrivalTime: string;
-  nextPassengers: string;
-  passengers: string;
-}
-
-function convertArrivalTime(arrivalTime: string): NextBusTime {
-  const numericTime = +arrivalTime;
-  if (!Number.isNaN(numericTime)) return numericTime;
-  if (arrivalTime === 'Arr' || arrivalTime === '-') return arrivalTime;
-  throw new Error(`Unknown arrival time ${arrivalTime}`);
-}
-
-export function getStops(): Promise<BusStop[]> {
-  const url = `${baseUrl}/BusStops`;
-  return axios
-    .get(url, {
+export const getStopTimings = async (
+  stop: string,
+  setState: (state: ShuttleServiceResult) => void,
+) => {
+  if (!stop) return;
+  const API_AUTH = ''; // TODO: wait until we have an api proxy
+  try {
+    const response = await fetch(`${baseURL}/ShuttleService?busstopname=${stop}`, {
       headers: {
-        Authorization: process.env?.NEXTBUS_API_AUTH || '',
+        authorization: API_AUTH,
+        accept: 'application/json',
       },
-    })
-    .then((response) => response.data.BusStopsResult.busstops);
-}
-
-export function nextBus(code: string): Promise<any> {
-  const url = `${baseUrl}/arrival`;
-  return axios
-    .get<{
-      ShuttleServiceResult: ShuttleServiceResult;
-    }>(url, { params: { busstopname: code } })
-    .then((response) => {
-      const shuttles: NextBusTimings = {};
-
-      response.data.ShuttleServiceResult.shuttles.forEach((arrival: Shuttle) => {
-        const timing: NextBus = {
-          arrivalTime: convertArrivalTime(arrival.arrivalTime),
-          nextArrivalTime: convertArrivalTime(arrival.nextArrivalTime),
-        };
-
-        shuttles[arrival.name] = timing;
-      });
-
-      return shuttles;
     });
-}
+    const data = await response.json();
+    // console.log(data);
+    setState(data.ShuttleServiceResult);
+  } catch (e) {
+    console.error(e);
+  }
+};
