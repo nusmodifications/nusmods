@@ -68,15 +68,25 @@ function getExamClashFilter(semester: Semester, examTimings: ExamTiming[]): Filt
     endTime.setMinutes(endTime.getMinutes() + duration);
     return endTime.toISOString();
   };
-  // Map each exam to an Elasticsearch range query.
-  // Exam2 clashes with exam1 when (exam2.start < exam1.end) && (exam2.end > exam1.start)
-  const clashRanges = examTimings.map((exam) => ({
+  // For each exam1, map it to an Elasticsearch query that will return True
+  // if another exam clashes with exam1. For example, exam2 clashes (i.e. overlaps)
+  // with exam1 iff (exam2.start < exam1.end) && (exam2.end > exam1.start)
+  const clashRanges = examTimings.map((exam1) => ({
     bool: {
       must: {
         range: {
           'semesterData.examDate': {
-            gte: exam.start,  // TODO find a way to subtract semesterData.duration
-            lt: getEndTime(exam.start, exam.duration),
+            lt: getEndTime(exam1.start, exam1.duration),
+          },
+        },
+        script: {
+          script: {
+            source: `doc.containsKey['semesterData.examDate'] && 
+              doc.containsKey['semesterData.examDuration'] && 
+              ZonedDateTime.parse(doc['semesterData.examDate'].value).plusMinutes(doc['semesterData.examDuration].value).isAfter(ZonedDateTime.parse(params.exam1start))`,
+            params: {
+              exam1start: exam1.start,
+            },
           },
         },
       },
