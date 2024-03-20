@@ -63,3 +63,33 @@ export const getServiceStatus = (period: 'term' | 'vacation' = 'term') => {
   });
   return serviceStatuses;
 };
+
+export const getArrivalTime = (eta: number) => {
+  const date = new Date();
+  date.setSeconds(date.getSeconds() + eta);
+  return date;
+};
+
+export const getShownArrivalTime = (eta: number, forceTime = false) => {
+  const date = getArrivalTime(eta);
+  if (!forceTime && eta < 60 * 60) {
+    if (eta < 60) return 'Arriving';
+    return `${Math.floor(eta / 60)} mins`;
+  }
+  return date.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+    // time in SGT
+    timeZone: 'Asia/Singapore',
+  });
+};
+
+export const getDepartAndArriveTiming = (timings = [] as NUSShuttle[], isEnd: boolean) => {
+  if (isEnd) {
+    const departTiming = timings.find((t) => t.busstopcode.endsWith('-S'));
+    const arriveTiming = timings.find((t) => t.busstopcode.endsWith('-E')) || timings[0];
+    return { departTiming, arriveTiming };
+  }
+  return { departTiming: timings[0], arriveTiming: undefined };
+};

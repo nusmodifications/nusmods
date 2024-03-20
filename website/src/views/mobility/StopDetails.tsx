@@ -5,6 +5,8 @@ import { Fragment, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { ChevronDown, ChevronRight, ChevronUp, ExternalLink, MoreVertical } from 'react-feather';
 import { current } from 'immer';
+import { getDepartAndArriveTiming, getShownArrivalTime } from 'utils/mobility';
+import { getStopTimings } from 'apis/nextbus-new';
 import isbServicesJSON from '../../data/isb-services.json';
 import isbStopsJSON from '../../data/isb-stops.json';
 import publicBusJSON from '../../data/public-bus.json';
@@ -15,59 +17,9 @@ const isbServices = isbServicesJSON as ISBService[];
 const isbStops = isbStopsJSON as ISBStop[];
 const publicBus = publicBusJSON as Record<number, string>;
 
-const baseURL = 'https://nusmods.com'; // TODO: wait until we have an api proxy
-
 type Props = {
   stop: string;
   setSelectedService: (service: ISBService) => void;
-};
-
-const getArrivalTime = (eta: number) => {
-  const date = new Date();
-  date.setSeconds(date.getSeconds() + eta);
-  return date;
-};
-
-const getShownArrivalTime = (eta: number, forceTime = false) => {
-  const date = getArrivalTime(eta);
-  if (!forceTime && eta < 60 * 60) {
-    if (eta < 60) return 'Arriving';
-    return `${Math.floor(eta / 60)} mins`;
-  }
-  return date.toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-    // time in SGT
-    timeZone: 'Asia/Singapore',
-  });
-};
-
-const getStopTimings = async (stop: string, setState: (state: ShuttleServiceResult) => void) => {
-  if (!stop) return;
-  const API_AUTH = ''; // TODO: wait until we have an api proxy
-  try {
-    const response = await fetch(`${baseURL}/ShuttleService?busstopname=${stop}`, {
-      headers: {
-        authorization: API_AUTH,
-        accept: 'application/json',
-      },
-    });
-    const data = await response.json();
-    // console.log(data);
-    setState(data.ShuttleServiceResult);
-  } catch (e) {
-    console.error(e);
-  }
-};
-
-const getDepartAndArriveTiming = (timings = [] as NUSShuttle[], isEnd: boolean) => {
-  if (isEnd) {
-    const departTiming = timings.find((t) => t.busstopcode.endsWith('-S'));
-    const arriveTiming = timings.find((t) => t.busstopcode.endsWith('-E')) || timings[0];
-    return { departTiming, arriveTiming };
-  }
-  return { departTiming: timings[0], arriveTiming: undefined };
 };
 
 function ServiceStop(props: { stop: ISBStop; className?: string }) {
@@ -418,7 +370,9 @@ function StopDetails(props: Props) {
     const serviceDetail = isbServices.find((s) => s.id === shuttle.name.toLocaleLowerCase());
     if (!serviceDetail) return;
     const isEnd = stopDetails.name === serviceDetail.stops[serviceDetail.stops.length - 1];
-    const serviceShuttles = selectedStopTiming?.shuttles.filter((s) => s.name === shuttle.name);
+    const serviceShuttles = selectedStopTiming?.shuttles.filter(
+      (s) => s.name === shuttle.name,
+    ) as NUSShuttle[];
     const timings = getDepartAndArriveTiming(serviceShuttles, isEnd);
     const timing = timings.departTiming;
 
@@ -433,15 +387,12 @@ function StopDetails(props: Props) {
   incomingBuses.sort((a, b) => a.arrivingInSeconds - b.arrivingInSeconds);
   incomingBuses.splice(4);
   const incomingBusGroups = incomingBuses.reduce((acc, bus) => {
-    // above but avoid param-reassign error
     const shownTime = getShownArrivalTime(bus.arrivingInSeconds);
-    // console.log('bus', bus, shownTime, bus.service.name);
     const newAcc = { ...acc };
     if (!newAcc[shownTime]) newAcc[shownTime] = [];
     newAcc[shownTime].push(bus);
     return newAcc;
   }, {} as Record<string, typeof incomingBuses>);
-  // console.log('IBG', incomingBusGroups);
 
   const publicShuttles = shuttles
     .filter((shuttle) => shuttle.name.startsWith('PUB:'))
@@ -497,7 +448,9 @@ function StopDetails(props: Props) {
 
       {nusShuttles.map((shuttle) => {
         const service = isbServices.find((s) => s.id === shuttle.name.toLocaleLowerCase());
-        const timings = selectedStopTiming?.shuttles.filter((s) => s.name === shuttle.name);
+        const timings = selectedStopTiming?.shuttles.filter(
+          (s) => s.name === shuttle.name,
+        ) as NUSShuttle[];
         if (!service) return <Fragment key={shuttle.name} />;
         return (
           <StopServiceDetails
