@@ -136,5 +136,16 @@
     "gravatarAlt": "Liew Zhao Wei",
     "github": "zwliew",
     "linkedin": "zwliew"
+  },
+  {
+    "name": "Alissa",
+    "description": "Coding on the weekdays, swimming on the weekends...",
+    "active": true,
+    "link": "https://www.github.com/alissayarmantho",
+    "gravatar": "734d1659aa15ece4532e39008f4d9fc0745d852e60c9f966330d20db078d4711",
+    "gravatarAlt": "Alissa",
+    "twitter": "yarmantho",
+    "github": "alissayarmantho",
+    "linkedin": "alissayarmantho"
   }
 ]
