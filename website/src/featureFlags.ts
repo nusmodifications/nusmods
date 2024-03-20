@@ -7,5 +7,7 @@
  */
 export const enableShortUrl = false;
 
-/** Enable Module Planning Exercise */
-export const enableMpe = false;
+/** Enable Course Planning Exercise */
+export const enableCPEx = false;
+
+export const showCPExTab = false;

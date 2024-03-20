@@ -12,6 +12,7 @@ export const regPeriods = [
   'Select Tutorials / Labs',
   'Add / Swap Tutorials',
   'Submit Course Requests',
+  'Course Planning Exercise (CPEx)',
 ] as const;
 export type RegPeriodType = (typeof regPeriods)[number];
 
@@ -75,8 +76,8 @@ export function convertModRegDates(roundData: (typeof modRegData)[ScheduleType])
   return roundData.map((data) => ({
     ...data,
     type: data.type as RegPeriodType,
-    start: format(new Date(data.start), 'EEEE do LLLL, haaaa'),
-    end: format(new Date(data.end), 'EEEE do LLLL, haaaa'),
+    start: format(new Date(data.start), 'EEEE do LLLL, h:mm aaaa'),
+    end: format(new Date(data.end), 'EEEE do LLLL, h:mm aaaa'),
     startDate: new Date(data.start),
     endDate: new Date(data.end),
   }));

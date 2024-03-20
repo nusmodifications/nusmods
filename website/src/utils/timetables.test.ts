@@ -15,7 +15,7 @@ import { ModulesMap } from 'types/reducers';
 
 import { getModuleSemesterData, getModuleTimetable } from 'utils/modules';
 
-import { CS1010S, CS3216, CS4243, PC1222 } from '__mocks__/modules';
+import { CS1010S, CS3216, CS4243, PC1222, CS1010A } from '__mocks__/modules';
 import moduleCodeMapJSON from '__mocks__/module-code-map.json';
 import timetable from '__mocks__/sem-timetable.json';
 import lessonsArray from '__mocks__/lessons-array.json';
@@ -377,6 +377,14 @@ test('findExamClashes should return empty object if exams do not clash', () => {
   const sem: Semester = 2;
   const examClashes = findExamClashes([CS1010S, PC1222, CS3216], sem);
   expect(examClashes).toEqual({});
+});
+
+test('findExamClashes should return non-empty object if exams starting at different times clash', () => {
+  const sem: Semester = 1;
+  const examClashes = findExamClashes([CS1010S, CS3216 as any, CS1010A], sem);
+  const examDate = _.get(getModuleSemesterData(CS1010A, sem), 'examDate');
+  if (!examDate) throw new Error('Cannot find ExamDate');
+  expect(examClashes).toEqual({ [examDate]: [CS1010S, CS1010A] });
 });
 
 test('timetable serialization/deserialization', () => {

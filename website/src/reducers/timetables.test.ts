@@ -7,6 +7,9 @@ import {
   SET_TIMETABLE,
   setLessonConfig,
   showLessonInTimetable,
+  setHiddenImported,
+  HIDDEN_IMPORTED_SEM,
+  Internal,
 } from 'actions/timetables';
 import { TimetablesState } from 'types/reducers';
 import config from 'config';
@@ -65,7 +68,12 @@ describe('color reducers', () => {
     expect(
       reducer(initialState, {
         type: SET_TIMETABLE,
-        payload: { semester: 1, timetable: { CS1010S: {} }, colors: { CS1010S: 0 } },
+        payload: {
+          semester: 1,
+          timetable: { CS1010S: {} },
+          colors: { CS1010S: 0 },
+          hiddenModules: [],
+        },
       }).colors[1],
     ).toEqual({
       CS1010S: 0,
@@ -236,6 +244,60 @@ describe('stateReconciler', () => {
         ...oldArchive,
         '2016/2017': oldLessons,
       },
+    });
+  });
+});
+
+describe('import timetable', () => {
+  test('should have hidden modules set when importing hidden', () => {
+    expect(reducer(initialState, setHiddenImported(['CS1101S', 'CS1231S'])).hidden).toMatchObject({
+      [HIDDEN_IMPORTED_SEM]: ['CS1101S', 'CS1231S'],
+    });
+
+    // Should change hidden modules when a new set of modules is imported
+    expect(
+      reducer(
+        {
+          ...initialState,
+          hidden: {
+            [HIDDEN_IMPORTED_SEM]: ['CS1101S', 'CS1231S'],
+          },
+        },
+        setHiddenImported(['CS2100', 'CS2103T']),
+      ).hidden,
+    ).toMatchObject({
+      [HIDDEN_IMPORTED_SEM]: ['CS2100', 'CS2103T'],
+    });
+
+    // should delete hidden modules when there are none
+    expect(
+      reducer(
+        {
+          ...initialState,
+          hidden: {
+            [HIDDEN_IMPORTED_SEM]: ['CS1101S', 'CS1231S'],
+          },
+        },
+        setHiddenImported([]),
+      ).hidden,
+    ).toMatchObject({
+      [HIDDEN_IMPORTED_SEM]: [],
+    });
+  });
+
+  test('should copy over hidden modules when deciding to replace saved timetable', () => {
+    expect(
+      reducer(
+        {
+          ...initialState,
+          hidden: {
+            [HIDDEN_IMPORTED_SEM]: ['CS1101S', 'CS1231S'],
+          },
+        },
+        Internal.setTimetable(1, {}, {}, ['CS1101S', 'CS1231S']),
+      ).hidden,
+    ).toMatchObject({
+      '1': ['CS1101S', 'CS1231S'],
     });
   });
 });

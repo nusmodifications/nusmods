@@ -1,4 +1,10 @@
 {
+  "functions": {
+    "api/**/*.ts": {
+      "excludeFiles": "./tsconfig.json",
+      "includeFiles": "./api/tsconfig.json"
+    }
+  },
   "headers": [
     {
       "source": "/assets/(.*)",

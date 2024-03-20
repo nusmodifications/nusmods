@@ -192,6 +192,17 @@ const ModuleFinderSidebar: React.FC = () => {
         />
 
         <RefinementListFilter
+          id="grading"
+          title="Grading Basis"
+          field="gradingBasisDescription.keyword"
+          operator="OR"
+          orderKey="_term"
+          orderDirection="asc"
+          containerComponent={FilterContainer}
+          itemComponent={CheckboxItem}
+        />
+
+        <RefinementListFilter
           id="attrs"
           title="Others"
           field="moduleAttributes.keyword"

@@ -1,11 +1,11 @@
 import { FC, memo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, NavLink } from 'react-router-dom';
 import { formatDistance } from 'date-fns';
 
 import type { State } from 'types/state';
 
-import config, { RegPeriod } from 'config';
+import config, { RegPeriod, RegPeriodType } from 'config';
 import { dismissModregNotification } from 'actions/settings';
 import { openNotification } from 'actions/app';
 import { getRounds } from 'selectors/modreg';
@@ -38,6 +38,16 @@ const NotificationText: FC<{
     </>
   );
 };
+
+const NotificationLink: FC<{
+  roundType: RegPeriodType;
+  children: React.ReactNode;
+}> = ({ roundType, children }) =>
+  roundType === 'Course Planning Exercise (CPEx)' ? (
+    <NavLink to="/cpex">{children}</NavLink>
+  ) : (
+    <ExternalLink href={MOD_REG_URL}>{children}</ExternalLink>
+  );
 
 const ModRegNotification: FC<{
   // True only on the settings page since we don't want
@@ -77,11 +87,11 @@ const ModRegNotification: FC<{
     <div className={styles.container}>
       {rounds.map((round) => (
         <div className={styles.notificationWrapper} key={round.type}>
-          <ExternalLink href={MOD_REG_URL}>
+          <NotificationLink roundType={round.type}>
             <div className={styles.notification}>
               <NotificationText useLineBreaks round={round} now={forceTimer() || new Date()} />
             </div>
-          </ExternalLink>
+          </NotificationLink>
 
           {!dismissible && <CloseButton className={styles.close} onClick={() => dismiss(round)} />}
         </div>

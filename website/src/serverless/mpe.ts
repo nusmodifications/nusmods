@@ -1,5 +1,5 @@
 import axios, { AxiosHeaders } from 'axios';
-import { enableMpe } from '../featureFlags';
+import { enableCPEx } from '../featureFlags';
 import { MpeSubmission, MpePreference, MODULE_TYPES } from '../types/mpe';
 import type { Handler } from './handler';
 
@@ -104,7 +104,7 @@ const validatePreferences = (preferences: MpePreference[]): boolean =>
 export const featureFlagEnablerMiddleware =
   (next: Handler): Handler =>
   async (req, res): Promise<void> => {
-    if (!enableMpe) {
+    if (!enableCPEx) {
       res.status(404).end();
       return;
     }
