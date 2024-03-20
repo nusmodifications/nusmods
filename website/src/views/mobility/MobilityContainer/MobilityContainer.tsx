@@ -8,7 +8,7 @@ import useScrollToTop from 'views/hooks/useScrollToTop';
 
 import LocationMap from 'views/components/bus-map/LocationMap';
 import NoFooter from 'views/layout/NoFooter';
-import { set } from 'lodash';
+import { getServiceStatus } from 'utils/mobility';
 import styles from './MobilityContainer.scss';
 import ServiceDetails from '../ServiceDetails';
 import ServiceList from '../ServiceList';
@@ -42,64 +42,6 @@ const getRouteSegments = (stops: string[], color: string) => {
   }
 
   return routes;
-};
-
-const timeIsBefore = (a: Date, b: string) => {
-  const parse = (x: string) => parseInt(x, 10);
-  const ta = new Date(0, 0, 0, a.getHours(), a.getMinutes());
-  const tb = new Date(0, 0, 0, ...b.split(':').map(parse));
-  return ta < tb;
-};
-
-const isWithinBlock = (time: Date, block: ScheduleBlock) => {
-  const { from, to } = block;
-  return timeIsBefore(time, to) && !timeIsBefore(time, from);
-};
-
-export { isWithinBlock };
-
-const getServiceStatus = (period: 'term' | 'vacation' = 'vacation') => {
-  const time = new Date();
-  // +12 hrs
-  // time.setHours(time.getHours() + 8 + 24);
-  const serviceStatuses: ServiceStatus[] = isbServices.map((service) => {
-    const todaySchedule = service.schedule[period][time.getDay()];
-    const currentBlock = todaySchedule.find((t) => isWithinBlock(time, t));
-    if (currentBlock) {
-      return {
-        id: service.id,
-        running: true,
-        currentBlock,
-      };
-    }
-
-    let nextBlock;
-    let i = -1;
-
-    while (!nextBlock && i < 7) {
-      i += 1;
-      // if this day has schedule
-      if (service.schedule[period][(time.getDay() + i) % 7].length > 0) {
-        [nextBlock] = service.schedule[period][(time.getDay() + i) % 7];
-      }
-    }
-
-    if (nextBlock) {
-      return {
-        id: service.id,
-        running: false,
-        runningThisPeriod: true,
-        nextDay: (time.getDay() + i) % 7,
-        nextTime: nextBlock.from,
-      };
-    }
-    return {
-      id: service.id,
-      running: false,
-      runningThisPeriod: false,
-    };
-  });
-  return serviceStatuses;
 };
 
 const MobilityContainer = () => {
