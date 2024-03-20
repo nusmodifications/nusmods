@@ -85,7 +85,9 @@ export const getShownArrivalTime = (eta: number, forceTime = false) => {
   });
 };
 
-export const getDepartAndArriveTiming = (timings = [] as NUSShuttle[], isEnd: boolean) => {
+export const getDepartAndArriveTiming = (timings: NUSShuttle[] | string = [], isEnd: boolean) => {
+  if (typeof timings === 'string') return { departTiming: undefined, arriveTiming: undefined };
+
   if (isEnd) {
     const departTiming = timings.find((t) => t.busstopcode.endsWith('-S'));
     const arriveTiming = timings.find((t) => t.busstopcode.endsWith('-E')) || timings[0];
