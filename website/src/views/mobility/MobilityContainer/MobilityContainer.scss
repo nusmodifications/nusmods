@@ -1,0 +1,69 @@
+@import '~styles/utils/modules-entry';
+
+.pageContainer {
+  // composes: page-container from global;
+  // max-width: 40rem;
+  // display: block;
+  min-height: calc(100vh - 6rem);
+  margin-top: -1rem;
+  position: relative;
+  z-index: 1;
+  background: var(--body-bg);
+
+  @media (min-width: 768px) {
+    position: fixed;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    padding-left: 15px;
+    min-height: calc(100vh - 3rem);
+    align-items: stretch;
+    width: calc((100vw - 4rem));
+    height: calc(100vh - 3rem);
+  }
+  @media (min-width: 1200px) {
+    width: calc(100vw - 10rem);
+  }
+
+  .map {
+    flex: 1;
+    min-width: 24rem;
+    overflow: hidden;
+
+    @media (max-width: 768px) {
+      height: 40vh;
+      min-height: 20rem;
+      max-height: 32rem;
+    }
+
+    @media (min-width: 768px) {
+      position: sticky;
+      top: 3rem;
+      height: calc(100vh - 3rem);
+    }
+  }
+
+  .container {
+    min-width: 16rem;
+    flex: 1;
+    padding: 1rem 1.5rem;
+    overflow-y: scroll;
+    max-height: 100%;
+
+    @media (min-width: 768px) {
+      max-width: 20rem;
+    }
+  }
+}
+
+.backButton {
+  padding: 0;
+  margin-left: -0.4rem;
+}
+
+.switchCampusButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 99999999;
+}
