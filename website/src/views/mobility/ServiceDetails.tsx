@@ -4,11 +4,11 @@ import classNames from 'classnames';
 import ButtonGroupSelector from 'views/components/ButtonGroupSelector';
 import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'react-feather';
+import { isWithinBlock } from 'utils/mobility';
 import isbServicesJSON from '../../data/isb-services.json';
 import isbStopsJSON from '../../data/isb-stops.json';
 
 import styles from './ServiceDetails.scss';
-import { isWithinBlock } from './MobilityContainer/MobilityContainer';
 
 const isbServices = isbServicesJSON;
 const isbStops = isbStopsJSON;
