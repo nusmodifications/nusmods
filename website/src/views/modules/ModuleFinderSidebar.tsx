@@ -125,14 +125,14 @@ const ModuleFinderSidebar: React.FC = () => {
     const examClashFilters = Semesters.map((semester): FilterItem | null => {
       const timetable = getSemesterTimetable(semester);
       const modules = getSemesterModules(timetable, allModules);
-      // Filter for modules with non-empty exam timings, and map them to new ExamTiming objects 
+      // Filter for modules with non-empty exam timings, and map them to new ExamTiming objects
       const examTimings = modules.reduce<ExamTiming[]>((result: ExamTiming[], mod: Module) => {
         const data = getModuleSemesterData(mod, semester);
         if (data?.examDate && data?.examDuration) {
           result.push({
             start: data.examDate,
             duration: data.examDuration,
-          })
+          });
         }
         return result;
       }, []);
