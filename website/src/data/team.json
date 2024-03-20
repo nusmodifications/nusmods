@@ -45,7 +45,6 @@
   {
     "name": "Li Kai",
     "description": "Happy to help. Software Engineer @ Quora, Ex-Front End Engineer Intern @ Facebook",
-    "active": true,
     "link": "https://www.github.com/li-kai",
     "gravatar": "3d2bcece0409c7578b2e9d87f0c1b6d7",
     "gravatarAlt": "Li Kai",
@@ -76,7 +75,6 @@
   {
     "name": "Zhang Yi Jiang",
     "description": "Fan of pretty purple pony princesses. Software Engineer @ Ironclad",
-    "active": true,
     "link": "https://meebleforp.com",
     "gravatar": "263859aefe62ee6cc1aa993e8e2293e0",
     "gravatarAlt": "Zhang Yi Jiang",
@@ -86,7 +84,6 @@
   {
     "name": "E-Liang Tan",
     "description": "Makers gotta make. Software Engineer @ Ironclad, Ex-Software Engineer Intern @ Facebook",
-    "active": true,
     "link": "https://www.eliangtan.com/",
     "gravatar": "3064783701c7bb1b4451c79318e1b536",
     "gravatarAlt": "E-Liang Tan",
@@ -109,7 +106,7 @@
   },
   {
     "name": "Wong Kok Rui",
-    "description": "Kok Rui is a CS undergraduate whose specific interests within computing seem to change every year or so.",
+    "description": "Kok Rui is a Year 2 CS undergraduate whose specific interests within computing seem to change every year or so.",
     "active": true,
     "link": "https://kokruiwo.ng/",
     "gravatar": "7acde926ae46e7a9533715a387260c7a8677d648c2677a8f6ff97e9b6e02a49b",
