@@ -174,7 +174,7 @@ export default function iCalForTimetable(
   semester: Semester,
   timetable: SemTimetableConfigWithLessons,
   moduleData: { [moduleCode: string]: Module },
-  hiddenModule: string[],
+  hiddenModules: string[],
   academicYear: string = config.academicYear,
 ): EventOption[] {
   const [year, month, day] = academicCalendar[academicYear][semester].start;
@@ -183,7 +183,7 @@ export default function iCalForTimetable(
   const events: EventOption[] = [];
 
   _.each(timetable, (lessonConfig, moduleCode) => {
-    if (hiddenModule.includes(moduleCode)) return;
+    if (hiddenModules.includes(moduleCode)) return;
 
     _.each(lessonConfig, (lessons) => {
       lessons.forEach((lesson) => {
