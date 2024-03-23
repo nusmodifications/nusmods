@@ -31,11 +31,12 @@ export function downloadAsIcal(semester: Semester) {
       .then(([ical, icalUtils]) => {
         const state = getState();
         const { modules } = state.moduleBank;
+        const hiddenModules: string[] = state.timetables.hidden[semester] || [];
 
         const timetable = getSemesterTimetableLessons(state)(semester);
         const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
 
-        const events = icalUtils.default(semester, timetableWithLessons, modules);
+        const events = icalUtils.default(semester, timetableWithLessons, modules, hiddenModules);
         const cal = ical.default({
           domain: 'nusmods.com',
           prodId: '//NUSMods//NUSMods//EN',
