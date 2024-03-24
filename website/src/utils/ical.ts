@@ -81,6 +81,17 @@ function calculateStartEnd(date: Date, startTime: StartTime, endTime: EndTime) {
   return { start, end };
 }
 
+function calculateLargestInterval(weeks: NumericWeeks) {
+  let largestInterval = 1;
+  for (let i = 0; i < weeks.length - 1; i++) {
+    const diff = weeks[i + 1] - weeks[i];
+    if (diff > largestInterval) {
+      largestInterval = diff;
+    }
+  }
+  return largestInterval - 1;
+}
+
 export function calculateNumericWeek(
   lesson: RawLesson,
   _semester: Semester,
@@ -91,12 +102,21 @@ export function calculateNumericWeek(
   const { start, end } = calculateStartEnd(lessonDay, lesson.startTime, lesson.endTime);
   const excludedWeeks = _.difference([RECESS_WEEK, ...ALL_WEEKS], weeks);
 
+  // Sets interval to 2 for odd and even weeks. Fix for mobile GCal imports.
+  const isAlternate =
+    weeks.every((week) => ODD_WEEKS.includes(week)) ||
+    weeks.every((week) => EVEN_WEEKS.includes(week));
+  const interval = isAlternate ? 2 : 1;
+  const largestInterval = calculateLargestInterval(weeks);
+  const adjCount = largestInterval === interval ? weeks.length : NUM_WEEKS_IN_A_SEM;
+
   return {
     start,
     end,
     repeating: {
+      interval,
       freq: 'WEEKLY',
-      count: NUM_WEEKS_IN_A_SEM,
+      count: adjCount,
       byDay: [lesson.day.slice(0, 2)],
       exclude: [
         ...excludedWeeks.map((week) => datesForAcademicWeeks(start, week)),

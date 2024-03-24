@@ -258,6 +258,7 @@ test('iCalEventForLesson generates correct output', () => {
     description: 'Personal Development & Career Management\nSectional Teaching Group A1',
     location: 'BIZ1-0303',
     repeating: {
+      interval: 1,
       freq: 'WEEKLY',
       count: 14,
       byDay: ['Mo'],
@@ -291,6 +292,7 @@ test('work for half hour lesson offsets', () => {
     description: 'Personal Development & Career Management\nSectional Teaching Group A1',
     location: 'BIZ1-0303',
     repeating: {
+      interval: 1,
       freq: 'WEEKLY',
       count: 14,
       byDay: ['Mo'],
