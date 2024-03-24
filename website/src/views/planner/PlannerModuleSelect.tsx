@@ -8,6 +8,7 @@ import { State } from 'types/state';
 import { ModuleCode, ModuleCondensed, Semester } from 'types/modules';
 import { createSearchPredicate } from 'utils/moduleSearch';
 import { takeUntil } from 'utils/array';
+import { EXEMPTION_SEMESTER, PLAN_TO_TAKE_SEMESTER } from 'utils/planner';
 
 import styles from './PlannerModuleSelect.scss';
 
@@ -76,7 +77,7 @@ export function PlannerModuleSelectComponent({
       selectedModules = selectedModules.filter(filter);
     }
 
-    if (semester != null) {
+    if (semester != null && semester !== PLAN_TO_TAKE_SEMESTER && semester !== EXEMPTION_SEMESTER) {
       selectedModules = selectedModules.filter((module) => module.semesters.includes(semester));
     }
 
