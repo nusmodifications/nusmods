@@ -108,7 +108,8 @@ export function calculateNumericWeek(
     weeks.every((week) => EVEN_WEEKS.includes(week));
   const interval = isAlternate ? 2 : 1;
   const largestInterval = calculateLargestInterval(weeks);
-  const adjCount = largestInterval === interval ? weeks.length : NUM_WEEKS_IN_A_SEM;
+  const splitOverRecess = weeks.some((week) => week <= 6) && weeks.some((week) => week > 6);
+  const adjCount = ((largestInterval === interval) && !splitOverRecess) ? weeks.length : NUM_WEEKS_IN_A_SEM;
 
   return {
     start,

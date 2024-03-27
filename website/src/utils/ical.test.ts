@@ -260,7 +260,7 @@ test('iCalEventForLesson generates correct output', () => {
     repeating: {
       interval: 1,
       freq: 'WEEKLY',
-      count: 14,
+      count: 6,
       byDay: ['Mo'],
       exclude: expect.arrayContaining([]), // Tested in previous tests
     },
