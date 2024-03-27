@@ -174,7 +174,7 @@ describe(calculateNumericWeek, () => {
         new Date('2016-10-31T14:00+0800'), // 12
       ]),
     );
-  });
+  }); 
 
   test('generates exclusions for holidays', () => {
     // 2016 holidays

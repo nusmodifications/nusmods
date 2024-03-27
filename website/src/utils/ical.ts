@@ -92,6 +92,10 @@ function calculateLargestInterval(weeks: NumericWeeks) {
   return largestInterval;
 }
 
+function isSplitOverRecess(weeks: NumericWeeks) {
+  return weeks.some((week) => week <= 6) && weeks.some((week) => week > 6);
+}
+
 export function calculateNumericWeek(
   lesson: RawLesson,
   _semester: Semester,
@@ -108,8 +112,7 @@ export function calculateNumericWeek(
     weeks.every((week) => EVEN_WEEKS.includes(week));
   const interval = isAlternate ? 2 : 1;
   const largestInterval = calculateLargestInterval(weeks);
-  const splitOverRecess = weeks.some((week) => week <= 6) && weeks.some((week) => week > 6);
-  const adjCount = ((largestInterval === interval) && !splitOverRecess) ? weeks.length : NUM_WEEKS_IN_A_SEM;
+  const adjCount = ((largestInterval === interval) && !isSplitOverRecess(weeks)) ? weeks.length : NUM_WEEKS_IN_A_SEM;
 
   return {
     start,
@@ -209,7 +212,7 @@ export default function iCalForTimetable(
     _.each(lessonConfig, (lessons) => {
       lessons.forEach((lesson) => {
         // If the lesson is split across recess week, we need to create two separate events for mobile GCal imports as it does not support exclusion rules.
-        if (lesson.weeks.length < NUM_WEEKS_IN_A_SEM/2) {
+        if (isSplitOverRecess(lesson.weeks) && lesson.weeks.length <= NUM_WEEKS_IN_A_SEM/2) {
           const lessonsFirstHalf = lesson.weeks.slice(0, 6);
           const lessonsSecondHalf = lesson.weeks.slice(6);
           events.push(iCalEventForLesson(lessonsFirstHalf, moduleData[moduleCode], semester, firstDayOfSchool));
