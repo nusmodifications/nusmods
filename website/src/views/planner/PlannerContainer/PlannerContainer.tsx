@@ -140,16 +140,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
 
     return (
       <header className={styles.header}>
-        <h1>
-          Course Planner{' '}
-          <button
-            className="btn btn-sm btn-outline-success"
-            type="button"
-            onClick={this.props.toggleFeedback}
-          >
-            Beta - Send Feedback
-          </button>
-        </h1>
+        <h1>Course Planner</h1>
 
         <div className={styles.headerRight}>
           <p className={styles.moduleStats}>
