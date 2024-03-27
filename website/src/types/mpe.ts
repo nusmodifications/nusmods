@@ -18,8 +18,8 @@ export type MpeModule = {
   title: ModuleTitle;
   moduleCode: ModuleCode;
   moduleCredit: string;
-  inS1MPE?: boolean;
-  inS2MPE?: boolean;
+  inS1CPEx?: boolean;
+  inS2CPEx?: boolean;
 };
 
 interface ModuleTypeInfo {

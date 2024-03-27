@@ -68,7 +68,7 @@ export function setCustomDimensions(dimensions: { [id: number]: string }) {
 }
 
 export function trackPageView(history: History) {
-  history.listen((location, action) => {
+  history.listen((_location, action) => {
     if (action === 'PUSH') {
       // Wait a bit for the page title to update
       setTimeout(() => {

@@ -146,7 +146,7 @@ export default class TetrisGame extends PureComponent<Props, State> {
     };
   }
 
-  componentDidMount() {
+  override componentDidMount() {
     window.addEventListener('resize', this.onResize);
     this.onResize();
     this.onResize.flush();
@@ -157,7 +157,7 @@ export default class TetrisGame extends PureComponent<Props, State> {
     });
   }
 
-  componentWillUnmount() {
+  override componentWillUnmount() {
     window.removeEventListener('resize', this.onResize);
     Mousetrap.reset();
     clearInterval(this.intervalId);
@@ -390,7 +390,7 @@ export default class TetrisGame extends PureComponent<Props, State> {
     }
   }
 
-  render() {
+  override render() {
     const { score, linesCleared, board, currentPiece, nextPieces, holdPiece, canHold } = this.state;
     const nextPiece = nextPieces[0];
 

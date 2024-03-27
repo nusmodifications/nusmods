@@ -1,6 +1,6 @@
 import type { FC } from 'react';
-import type { MediaQuery } from 'types/views';
 import { act, render } from '@testing-library/react';
+import type { MediaQuery } from 'types/views';
 import { breakpointUp } from 'utils/css';
 import { mockDom, mockDomReset, mockWindowMatchMedia } from 'test-utils/mockDom';
 import useMediaQuery, { getMedia } from './useMediaQuery';

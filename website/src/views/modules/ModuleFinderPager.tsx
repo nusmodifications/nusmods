@@ -2,9 +2,9 @@ import { FC, memo } from 'react';
 import classnames from 'classnames';
 import { range } from 'lodash';
 
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'react-feather';
 import { breakpointDown } from 'utils/css';
 import useMediaQuery from 'views/hooks/useMediaQuery';
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'react-feather';
 import { PagerProps, FIRST_PAGE_INDEX } from 'views/components/searchkit/Pagination';
 import ModuleFinderPagerButton from 'views/modules/ModuleFinderPagerButton';
 

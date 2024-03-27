@@ -1,6 +1,6 @@
+import _ from 'lodash';
 import { Semester, SemesterData } from 'types/modules';
 
-import _ from 'lodash';
 import {
   addAcadYear,
   areLessonsSameClass,

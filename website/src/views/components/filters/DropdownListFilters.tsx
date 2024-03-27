@@ -62,7 +62,7 @@ const DesktopFilter: FC<DisplayProps> = ({ allItems, onSelectItem, showCount, pl
     }
   };
 
-  const stateReducer = (state: DownshiftState<string>, changes: StateChangeOptions<string>) => {
+  const stateReducer = (_state: DownshiftState<string>, changes: StateChangeOptions<string>) => {
     switch (changes.type) {
       case Downshift.stateChangeTypes.blurInput:
         return omit(changes, 'inputValue');

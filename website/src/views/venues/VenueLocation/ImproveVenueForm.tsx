@@ -5,9 +5,9 @@ import classnames from 'classnames';
 import axios from 'axios';
 import produce from 'immer';
 
+import { MapPin, ThumbsUp } from 'react-feather';
 import type { LatLngTuple, Venue, VenueLocation } from 'types/venues';
 import config from 'config';
-import { MapPin, ThumbsUp } from 'react-feather';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import { markerIcon } from 'views/components/map/icons';
 import ExpandMap from 'views/components/map/ExpandMap';
@@ -177,7 +177,7 @@ export default class ImproveVenueForm extends React.PureComponent<Props, State> 
     );
   };
 
-  render() {
+  override render() {
     const { location, reporterEmail, floor, roomName, isMapExpanded } = this.state;
 
     if (this.state.submitted) {

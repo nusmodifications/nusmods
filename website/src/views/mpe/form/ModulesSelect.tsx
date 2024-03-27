@@ -38,7 +38,7 @@ type State = {
 };
 
 export class ModulesSelectComponent extends Component<Props, State> {
-  state = {
+  override state = {
     isOpen: false,
     inputValue: '',
   };
@@ -120,7 +120,7 @@ export class ModulesSelectComponent extends Component<Props, State> {
     const showResults = isOpen && results.length > 0;
     const showTip = isModalOpen && !results.length;
     const showNoResultMessage = isOpen && inputValue && !results.length;
-    const removeBtnLabel = (moduleCode: ModuleCode) => `Remove ${moduleCode} from MPE preferences`;
+    const removeBtnLabel = (moduleCode: ModuleCode) => `Remove ${moduleCode} from CPEx preferences`;
 
     return (
       <div className={styles.container}>
@@ -187,7 +187,7 @@ export class ModulesSelectComponent extends Component<Props, State> {
         {showTip && (
           <div className={styles.tip}>
             Try &quot;GER1000&quot; or &quot;Quantitative Reasoning&quot;. Searching{' '}
-            <strong>{moduleCount}</strong> modules.
+            <strong>{moduleCount}</strong> courses.
           </div>
         )}
         {showNoResultMessage && (
@@ -205,7 +205,7 @@ export class ModulesSelectComponent extends Component<Props, State> {
     );
   };
 
-  render() {
+  override render() {
     const { isOpen } = this.state;
     const { matchBreakpoint, disabled } = this.props;
 

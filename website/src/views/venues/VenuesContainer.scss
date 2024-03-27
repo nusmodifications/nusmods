@@ -1,6 +1,6 @@
 @import '~styles/utils/modules-entry.scss';
 
-$gutter: $grid-gutter-width / 2;
+$gutter: $grid-gutter-width * 0.5;
 $sticky-top: $navbar-height + 1rem;
 $venue-list-width: 16rem;
 

@@ -49,7 +49,7 @@ export const createRouteHandler =
 
 export const defaultFallback =
   (methodHandlers: MethodHandlers) =>
-  async (req: Request, res: Response): Promise<void> => {
+  async (_req: Request, res: Response): Promise<void> => {
     const allowedMethods = Object.entries(methodHandlers).reduce((acc, [method, handler]) => {
       if (handler !== undefined) {
         if (acc === '') return method;
@@ -66,7 +66,7 @@ export const defaultFallback =
 export const defaultRescue =
   (enableLogging: boolean) =>
   (err: Error) =>
-  async (req: Request, res: Response): Promise<void> => {
+  async (_req: Request, res: Response): Promise<void> => {
     if (enableLogging) {
       // eslint-disable-next-line no-console
       console.error(err);

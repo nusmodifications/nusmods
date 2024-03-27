@@ -26,7 +26,7 @@ export default class Pagination extends SearchkitComponent<PaginationProps, {}> 
   }
 
   // eslint-disable-next-line class-methods-use-this
-  defineAccessor() {
+  override defineAccessor() {
     return new PaginationAccessor('p');
   }
 
@@ -57,7 +57,7 @@ export default class Pagination extends SearchkitComponent<PaginationProps, {}> 
     this.searchkit.performSearch();
   }
 
-  render() {
+  override render() {
     if (!this.paginationAccessor()) return null;
     if (!this.hasHits()) return null;
 

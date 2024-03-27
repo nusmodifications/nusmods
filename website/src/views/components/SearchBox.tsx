@@ -2,8 +2,8 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { debounce } from 'lodash';
 
-import LoadingSpinner from 'views/components/LoadingSpinner';
 import { Search, X } from 'react-feather';
+import LoadingSpinner from 'views/components/LoadingSpinner';
 import styles from './SearchBox.scss';
 
 type Props = {
@@ -92,7 +92,7 @@ export default class SearchBox extends React.PureComponent<Props, State> {
     );
   }
 
-  render() {
+  override render() {
     const { value, placeholder, isLoading } = this.props;
     return (
       <div

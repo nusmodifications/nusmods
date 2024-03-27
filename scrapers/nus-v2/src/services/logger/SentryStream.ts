@@ -4,7 +4,7 @@
  */
 
 import * as Sentry from '@sentry/node';
-import type { Stream } from 'bunyan';
+import type { WriteFn } from 'bunyan';
 import { mapValues, pick } from 'lodash';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -65,12 +65,12 @@ type StreamConfig = {
   extra?: string[];
 };
 
-export default function getSentryStream(config: StreamConfig = {}): Stream {
+export default function getSentryStream(config: StreamConfig = {}): WriteFn {
   const tagProps = config.tags ?? [];
   const extraProps = config.extra ?? [];
-
-  const stream: any = {
-    write(record: BunyanRecord) {
+  return {
+    write(obj: object) {
+      const record = obj as BunyanRecord;
       Sentry.withScope((scope) => {
         scope.setLevel(getSentryLevel(record));
         scope.setTags(mapValues(pick(record, tagProps), (v) => String(v)));
@@ -85,6 +85,4 @@ export default function getSentryStream(config: StreamConfig = {}): Stream {
       return true;
     },
   };
-
-  return stream;
 }

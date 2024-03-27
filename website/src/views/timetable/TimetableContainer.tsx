@@ -11,11 +11,15 @@ import type { SemTimetableConfig } from 'types/timetables';
 
 import { selectSemester } from 'actions/settings';
 import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
-import { fetchTimetableModules, setTimetable } from 'actions/timetables';
+import {
+  fetchTimetableModules,
+  setHiddenModulesFromImport,
+  setTimetable,
+} from 'actions/timetables';
 import { openNotification } from 'actions/app';
 import { undo } from 'actions/undoHistory';
 import { getModuleCondensed } from 'selectors/moduleBank';
-import { deserializeTimetable } from 'utils/timetables';
+import { deserializeHidden, deserializeTimetable } from 'utils/timetables';
 import { fillColorMapping } from 'utils/colors';
 import { semesterForTimetablePage, TIMETABLE_SHARE, timetablePage } from 'views/routes/paths';
 import deferComponentRender from 'views/hocs/deferComponentRender';
@@ -63,7 +67,7 @@ const SharingHeader: FC<{
         overwritable: true,
         action: {
           text: 'Undo',
-          handler: () => dispatch(undo) as never,
+          handler: () => dispatch(undo()) as never,
         },
       }),
     );
@@ -151,12 +155,23 @@ export const TimetableContainerComponent: FC = () => {
     semester && params.action ? deserializeTimetable(location.search) : null,
   );
 
+  const importedHidden = useMemo(
+    () => (semester && params.action ? deserializeHidden(location.search) : []),
+    [semester, params.action, location.search],
+  );
+
   const dispatch = useDispatch();
   useEffect(() => {
     if (importedTimetable) {
       dispatch(fetchTimetableModules([importedTimetable]));
     }
   }, [dispatch, importedTimetable]);
+
+  useEffect(() => {
+    if (importedHidden) {
+      dispatch(setHiddenModulesFromImport(importedHidden));
+    }
+  }, [dispatch, importedHidden]);
 
   const isLoading = useMemo(() => {
     // Check that all modules are fully loaded into the ModuleBank

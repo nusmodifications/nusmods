@@ -4,8 +4,8 @@
  * which is how Tasks primarily save their results to disk.
  */
 
-import * as fs from 'fs-extra';
 import path from 'path';
+import * as fs from 'fs-extra';
 
 import type { MPEModule } from '../../types/mpe';
 import {

@@ -1,6 +1,7 @@
 @import '~styles/utils/modules-entry';
 
 .modulesItem {
+  overflow-wrap: break-word;
   margin-bottom: 3rem;
 
   .modulesTitle {

@@ -1,7 +1,7 @@
-import * as validator from '@authenio/samlify-node-xmllint';
-import _ from 'lodash';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as validator from '@authenio/samlify-node-xmllint';
+import _ from 'lodash';
 import * as samlify from 'samlify';
 import type { ESamlHttpRequest } from 'samlify/types/src/entity';
 import type { Handler, Request } from './handler';
@@ -35,7 +35,7 @@ const idp = samlify.IdentityProvider({
 
 const sp = samlify.ServiceProvider({
   metadata: fs.readFileSync(path.join(__dirname, './sp.xml')),
-  encPrivateKey: process.env.NUS_EXCHANGE_SP_PRIVATE_KEY,
+  encPrivateKey: process.env.NUS_EXCHANGE_SP_PRIVATE_KEY?.replace(/\\n/g, '\n'),
 });
 
 export const createLoginURL = (relayState = '') => {

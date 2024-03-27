@@ -166,6 +166,7 @@ export type ModuleInformation = Readonly<{
   faculty: Faculty;
   workload?: Workload;
   attributes?: NUSModuleAttributes;
+  gradingBasisDescription?: string;
 
   // Requsites
   prerequisite?: string;

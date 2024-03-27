@@ -49,7 +49,7 @@ class Timetable extends React.PureComponent<Props, State> {
     onModifyCell: noop,
   };
 
-  state = {
+  override state = {
     hoverLesson: null,
   };
 
@@ -57,7 +57,7 @@ class Timetable extends React.PureComponent<Props, State> {
     this.setState({ hoverLesson });
   };
 
-  render() {
+  override render() {
     const { highlightPeriod } = this.props;
 
     const schoolDays = SCHOOLDAYS.filter(
