@@ -45,7 +45,6 @@
   {
     "name": "Li Kai",
     "description": "Happy to help. Software Engineer @ Quora, Ex-Front End Engineer Intern @ Facebook",
-    "active": true,
     "link": "https://www.github.com/li-kai",
     "gravatar": "3d2bcece0409c7578b2e9d87f0c1b6d7",
     "gravatarAlt": "Li Kai",
@@ -76,7 +75,6 @@
   {
     "name": "Zhang Yi Jiang",
     "description": "Fan of pretty purple pony princesses. Software Engineer @ Ironclad",
-    "active": true,
     "link": "https://meebleforp.com",
     "gravatar": "263859aefe62ee6cc1aa993e8e2293e0",
     "gravatarAlt": "Zhang Yi Jiang",
@@ -86,7 +84,6 @@
   {
     "name": "E-Liang Tan",
     "description": "Makers gotta make. Software Engineer @ Ironclad, Ex-Software Engineer Intern @ Facebook",
-    "active": true,
     "link": "https://www.eliangtan.com/",
     "gravatar": "3064783701c7bb1b4451c79318e1b536",
     "gravatarAlt": "E-Liang Tan",
@@ -106,5 +103,47 @@
     "twitter": "chrisgzf",
     "github": "chrisgzf",
     "linkedin": "chrisgzf"
+  },
+  {
+    "name": "Wong Kok Rui",
+    "description": "Likes geography trivia, ball sports, and musicals.",
+    "active": true,
+    "link": "https://kokruiwo.ng/",
+    "gravatar": "7acde926ae46e7a9533715a387260c7a8677d648c2677a8f6ff97e9b6e02a49b",
+    "gravatarAlt": "Wong Kok Rui",
+    "github": "kokrui",
+    "linkedin": "kokrui"
+  },
+  {
+    "name": "Ravern Koh",
+    "description": "I enjoy coding, reading, climbing and watching movies!",
+    "active": true,
+    "link": "https://github.com/ravern",
+    "gravatar": "12caf9f1faf78359205cfa178379cb54c675193763b02beb2e18b9b3f5cccef1",
+    "gravatarAlt": "Ravern Koh",
+    "twitter": "ravernkoh",
+    "github": "ravern",
+    "linkedin": "ravern"
+  },
+  {
+    "name": "Liew Zhao Wei",
+    "description": "[object Object]",
+    "active": true,
+    "link": "https://github.com/zwliew",
+    "gravatar": "lalalathisisbogus",
+    "gravatarAlt": "Liew Zhao Wei",
+    "github": "zwliew",
+    "linkedin": "zwliew"
+  },
+  {
+    "name": "Alissa",
+    "description": "Coding on the weekdays, swimming on the weekends...",
+    "active": true,
+    "link": "https://www.github.com/alissayarmantho",
+    "gravatar": "734d1659aa15ece4532e39008f4d9fc0745d852e60c9f966330d20db078d4711",
+    "gravatarAlt": "Alissa",
+    "twitter": "yarmantho",
+    "github": "alissayarmantho",
+    "linkedin": "alissayarmantho"
   }
 ]
