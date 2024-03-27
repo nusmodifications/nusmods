@@ -207,7 +207,15 @@ export default function iCalForTimetable(
 
     _.each(lessonConfig, (lessons) => {
       lessons.forEach((lesson) => {
-        events.push(iCalEventForLesson(lesson, moduleData[moduleCode], semester, firstDayOfSchool));
+        // If the lesson is split across recess week, we need to create two separate events for mobile GCal imports as it does not support exclusion rules.
+        if (lesson.weeks.length < NUM_WEEKS_IN_A_SEM/2) {
+          const lessonsFirstHalf = lesson.weeks.slice(0, 6);
+          const lessonsSecondHalf = lesson.weeks.slice(6);
+          events.push(iCalEventForLesson(lessonsFirstHalf, moduleData[moduleCode], semester, firstDayOfSchool));
+          events.push(iCalEventForLesson(lessonsSecondHalf, moduleData[moduleCode], semester, firstDayOfSchool));          
+        } else {
+          events.push(iCalEventForLesson(lesson, moduleData[moduleCode], semester, firstDayOfSchool));
+        }
       });
     });
 
