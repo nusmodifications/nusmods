@@ -1,8 +1,5 @@
 @import './_variables.scss';
 
-$timetable-min-width: $timetable-row-height * 16;
-$timetable-border-radius: 0.25em;
-
 .container {
   min-width: $timetable-min-width;
   background: var(--body-bg); // For timetable export
