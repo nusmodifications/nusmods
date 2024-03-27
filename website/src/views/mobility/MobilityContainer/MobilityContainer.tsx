@@ -8,7 +8,7 @@ import useScrollToTop from 'views/hooks/useScrollToTop';
 
 import LocationMap from 'views/components/bus-map/LocationMap';
 import NoFooter from 'views/layout/NoFooter';
-import { getServiceStatus } from 'utils/mobility';
+import { getRouteSegments, getServiceStatus } from 'utils/mobility';
 import styles from './MobilityContainer.scss';
 import ServiceDetails from '../ServiceDetails';
 import ServiceList from '../ServiceList';
@@ -27,22 +27,6 @@ const getPropsFromMatch = (match: Match<Params>) => ({
   type: match.params.type,
   slug: match.params.slug,
 });
-
-const getRouteSegments = (stops: string[], color: string) => {
-  const routes = [];
-
-  for (let i = 0; i < stops.length - 1; i++) {
-    const thisStop = stops[i];
-    const nextStop = stops[i + 1];
-    routes.push({
-      start: thisStop,
-      end: nextStop,
-      color,
-    });
-  }
-
-  return routes;
-};
 
 const MobilityContainer = () => {
   useScrollToTop();

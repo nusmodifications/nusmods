@@ -95,3 +95,39 @@ export const getDepartAndArriveTiming = (timings: NUSShuttle[] | string = [], is
   }
   return { departTiming: timings[0], arriveTiming: undefined };
 };
+
+export const getRouteSegments = (stops: string[], color: string) => {
+  const routes = [];
+
+  for (let i = 0; i < stops.length - 1; i++) {
+    const thisStop = stops[i];
+    const nextStop = stops[i + 1];
+    routes.push({
+      start: thisStop,
+      end: nextStop,
+      color,
+    });
+  }
+
+  return routes;
+};
+
+const btcStops = ['CG', 'OTH', 'BG-MRT'];
+
+export const segmentsToClasses = (segments: { start: string; end: string; color: string }[]) =>
+  segments.map(({ start, end, color }) => {
+    const classes = [];
+
+    const relationClassname = `${start}__${end}`;
+    const svgPrefixes = ['KRC_svg__KRC'];
+    if (btcStops.includes(start) || btcStops.includes(end)) {
+      svgPrefixes.push('BTC_svg__BTC');
+    }
+
+    classes.push(`.${svgPrefixes[0]} .${svgPrefixes[0].slice(0, -3)}${relationClassname}`);
+    if (svgPrefixes.length > 1) {
+      classes.push(`.${svgPrefixes[1]} .${svgPrefixes[1].slice(0, -3)}${relationClassname}`);
+    }
+
+    return { classes, color };
+  });

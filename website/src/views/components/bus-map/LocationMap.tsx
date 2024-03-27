@@ -54,7 +54,6 @@ const ViewingBounds = {
 
 const isbServices = isbServicesJson;
 const isbStops = isbStopsJson;
-const btcStops = ['CG', 'OTH', 'BG-MRT'];
 
 // const isbServicesRoutes = isbServices.map((service) =>
 //   getRoutesFromStops(service.stops, service.color),
@@ -128,7 +127,10 @@ function MapFocusSetter({ focusStop }: { focusStop: string | null }) {
     if (focusStop) {
       const stop = isbStops.find((s) => s.name === focusStop);
       if (stop) {
-        map.flyTo([stop.latitude, stop.longitude], 18);
+        map.flyTo([stop.latitude, stop.longitude], 18, {
+          duration: 0.5,
+          easeLinearity: 0.1,
+        });
       }
     }
   }, [focusStop]);
@@ -140,12 +142,13 @@ function MapBoundsSetter({ campus }: { campus: 'KRC' | 'BTC' }) {
   const { coordinates, minZoom, centerpoint } = ViewingBounds[campus];
 
   useEffect(() => {
-    map.flyToBounds(centerpoint, { duration: 2, maxZoom: 15, easeLinearity: 0.1 });
+    const duration = 500;
+    map.flyToBounds(centerpoint, { duration: duration / 1000, maxZoom: 15, easeLinearity: 0.1 });
     // wait until above is done
     setTimeout(() => {
       map.setMaxBounds(coordinates);
       map.setMinZoom(minZoom);
-    }, 2000);
+    }, duration);
   }, [campus]);
   return null;
 }
@@ -169,6 +172,7 @@ const LocationMap: FC<Props> = ({
   // const selectedServiceRoutes = isbServicesRoutes[selectedServiceIndex];
 
   // focus map on stop
+  console.log(!hasSelection, !focusStop);
   return (
     <div className={classnames(styles.mapWrapper, className)}>
       {/* add a button to toggle between different map modes */}
@@ -201,7 +205,7 @@ const LocationMap: FC<Props> = ({
         center={position}
         zoom={zoom || 18}
         maxZoom={18}
-        className={`${styles.map} ${!hasSelection ? 'allRoutes' : ''}`}
+        className={`${styles.map}`}
         maxBoundsViscosity={0.8}
         zoomSnap={0.5}
         zoomDelta={0.5}
@@ -230,6 +234,7 @@ const LocationMap: FC<Props> = ({
               onStopClicked(s);
               setFocusStop(s);
             }}
+            focusStop={focusStop}
           />
         ) : (
           <ISBServices
@@ -238,6 +243,7 @@ const LocationMap: FC<Props> = ({
               onStopClicked(s);
               setFocusStop(s);
             }}
+            focusStop={focusStop}
           />
         )}
 
