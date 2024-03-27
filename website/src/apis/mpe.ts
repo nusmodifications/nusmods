@@ -1,9 +1,8 @@
 import axios from 'axios';
-import getLocalStorage from 'storage/localStorage';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Location, History } from 'history';
 import { produce } from 'immer';
-import { MPE_AY } from 'views/mpe/constants';
+import getLocalStorage from 'storage/localStorage';
 import NUSModsApi from './nusmods';
 import { MpeSubmission, MpeModule } from '../types/mpe';
 import { NUS_AUTH_TOKEN } from '../storage/keys';
@@ -58,7 +57,7 @@ export const getLoginState = (location: Location, history: History): boolean => 
 
 export const fetchMpeModuleList = (): Promise<MpeModule[]> =>
   // Using MPE_AY instead to fetch from the respective AY's scraper
-  axios.get<MpeModule[]>(NUSModsApi.mpeModuleListUrl(MPE_AY)).then((resp) => resp.data);
+  axios.get<MpeModule[]>(NUSModsApi.mpeModuleListUrl()).then((resp) => resp.data);
 
 export const getSSOLink = (): Promise<string> =>
   mpe

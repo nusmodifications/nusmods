@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 
+import { Archive } from 'react-feather';
 import { ModuleInformation } from 'types/modules';
 import { ElasticSearchResult } from 'types/vendor/elastic-search';
 
@@ -9,7 +10,6 @@ import { modulePage } from 'views/routes/paths';
 import ModuleSemesterInfo from 'views/components/module-info/ModuleSemesterInfo';
 import ModuleWorkload from 'views/components/module-info/ModuleWorkload';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
-import { Archive } from 'react-feather';
 import { BULLET } from 'utils/react';
 import { intersperse } from 'utils/array';
 import { mergeModuleHighlight } from 'utils/elasticSearch';
@@ -45,7 +45,7 @@ const ModuleFinderItem: React.FC<Props> = ({ module, highlight = {} }) => (
             {intersperse(
               [
                 <span key="department">{module.department}</span>,
-                <span key="mc">{module.moduleCredit} MCs</span>,
+                <span key="mc">{module.moduleCredit} Units</span>,
               ],
               BULLET,
             )}
@@ -94,7 +94,7 @@ const ModuleFinderItem: React.FC<Props> = ({ module, highlight = {} }) => (
         ) : (
           <div className={classnames(styles.notOffered, 'alert alert-warning')}>
             <Archive className={styles.archiveIcon} />
-            <p>This module is not offered this year</p>
+            <p>This course is not offered this year</p>
           </div>
         )}
         {module.workload && <ModuleWorkload workload={module.workload} />}

@@ -22,7 +22,7 @@ const ModuleMenu = memo((props: Props) => {
   const myRef = useRef<HTMLDivElement>(null);
 
   const menuItems: MenuItem[] = [
-    { label: 'Edit MC and Title', action: props.editCustomData },
+    { label: 'Edit Unit and Title', action: props.editCustomData },
     { label: 'Remove', action: props.removeModule, className: 'dropdown-item-danger' },
   ];
 

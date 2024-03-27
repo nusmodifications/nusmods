@@ -4,6 +4,7 @@ import { flatMap, flatten, sortBy, toPairs, values } from 'lodash';
 import { DragDropContext, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 
+import { Settings, Trash } from 'react-feather';
 import { Module, ModuleCode, Semester } from 'types/modules';
 import { PlannerModulesWithInfo, PlannerModuleInfo, AddModuleData } from 'types/planner';
 import { MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
@@ -25,7 +26,6 @@ import {
 import { toggleFeedback } from 'actions/app';
 import { fetchModule } from 'actions/moduleBank';
 import { getAcadYearModules, getExemptions, getIBLOCs, getPlanToTake } from 'selectors/planner';
-import { Settings, Trash } from 'react-feather';
 import Title from 'views/components/Title';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import Modal from 'views/components/Modal';
@@ -66,13 +66,13 @@ type State = {
 const TRASH_ID = 'trash';
 
 export class PlannerContainerComponent extends PureComponent<Props, State> {
-  state: State = {
+  override state: State = {
     loading: true,
     showSettings: false,
     showCustomModule: null,
   };
 
-  componentDidMount() {
+  override componentDidMount() {
     // TODO: Handle error
     const modules = [
       ...flatten(flatMap(this.props.modules, values)),
@@ -141,7 +141,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
     return (
       <header className={styles.header}>
         <h1>
-          Module Planner{' '}
+          Course Planner{' '}
           <button
             className="btn btn-sm btn-outline-success"
             type="button"
@@ -153,7 +153,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
 
         <div className={styles.headerRight}>
           <p className={styles.moduleStats}>
-            {count} {count === 1 ? 'module' : 'modules'} / {renderMCs(credits)}
+            {count} {count === 1 ? 'course' : 'courses'} / {renderMCs(credits)}
           </p>
 
           <button
@@ -168,7 +168,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
     );
   }
 
-  render() {
+  override render() {
     // Don't render anything on initial load because every fetched module will
     // cause a re-render, which kills performance
     if (this.state.loading) {
@@ -192,7 +192,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
 
     return (
       <div className={styles.pageContainer}>
-        <Title>Module Planner</Title>
+        <Title>Course Planner</Title>
 
         {this.renderHeader()}
 
@@ -254,7 +254,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
                 >
                   <div className={styles.trashMessage}>
                     <Trash />
-                    <p>Drop modules here to remove them</p>
+                    <p>Drop courses here to remove them</p>
                   </div>
                   {provided.placeholder}
                 </div>

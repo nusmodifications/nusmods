@@ -37,7 +37,7 @@ function renderSemesterMeta(plannerModules: PlannerModuleInfo[]) {
   return (
     <div className={styles.semesterMeta}>
       <p>
-        {plannerModules.length} {plannerModules.length === 1 ? 'module' : 'modules'}
+        {plannerModules.length} {plannerModules.length === 1 ? 'course' : 'courses'}
       </p>
       <p>{renderMCs(moduleCredits)}</p>
     </div>
@@ -101,7 +101,7 @@ const PlannerSemester: React.FC<Props> = ({
 
           {modules.length === 0 && (
             <p className={styles.emptyListMessage}>
-              Drop module here to add to {getSemesterName(semester)}
+              Drop course here to add to {getSemesterName(semester)}
             </p>
           )}
 

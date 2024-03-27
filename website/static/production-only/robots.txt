@@ -3,3 +3,4 @@
 sitemap: https://nusmods.com/sitemap.txt
 
 User-agent: *
+Disallow: /timetable-only

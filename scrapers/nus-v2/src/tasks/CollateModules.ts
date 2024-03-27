@@ -135,8 +135,8 @@ const getModuleMPEParticipation = ({
   title,
   moduleCode,
   moduleCredit,
-  inS1MPE: attributes?.mpes1,
-  inS2MPE: attributes?.mpes2,
+  inS1CPEx: attributes?.mpes1,
+  inS2CPEx: attributes?.mpes2,
 });
 
 // Avoid using _.pick here because it is not type safe
@@ -153,6 +153,7 @@ const getModuleInfo = ({
   corequisite,
   semesterData,
   attributes,
+  gradingBasisDescription,
 }: ModuleWithoutTree): ModuleInformation => ({
   moduleCode,
   title,
@@ -165,6 +166,7 @@ const getModuleInfo = ({
   preclusion,
   corequisite,
   attributes,
+  gradingBasisDescription,
   semesterData: semesterData.map(({ semester, examDate, examDuration, covidZones }) => ({
     semester,
     examDate,

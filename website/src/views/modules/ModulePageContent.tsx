@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import ScrollSpy from 'react-scrollspy';
 import { kebabCase, map, mapValues, values, sortBy } from 'lodash';
 
+import { Archive, Check } from 'react-feather';
 import { Module, NUSModuleAttributes, attributeDescription } from 'types/modules';
 
 import config from 'config';
@@ -11,7 +12,6 @@ import { intersperse } from 'utils/array';
 import { BULLET } from 'utils/react';
 import { NAVTAB_HEIGHT } from 'views/layout/Navtabs';
 
-import ModuleTree from 'views/modules/ModuleTree';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import CommentCount from 'views/components/disqus/CommentCount';
 import DisqusComments from 'views/components/disqus/DisqusComments';
@@ -25,12 +25,12 @@ import ModuleExamInfo from 'views/components/module-info/ModuleExamInfo';
 import AddModuleDropdown from 'views/components/module-info/AddModuleDropdown';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
-import { Archive, Check } from 'react-feather';
-import ErrorBoundary from 'views/errors/ErrorBoundary';
 
 import useScrollToTop from 'views/hooks/useScrollToTop';
+import ErrorBoundary from 'views/errors/ErrorBoundary';
 import styles from './ModulePageContent.scss';
 import ReportError from './ReportError';
+import ModuleTree from './ModuleTree';
 
 export type Props = {
   module: Module;
@@ -46,6 +46,12 @@ const SIDE_MENU_LABELS = {
 
 const SIDE_MENU_ITEMS = mapValues(SIDE_MENU_LABELS, kebabCase);
 
+const prevAYShortName = config.archiveYears
+  .slice(-1)?.[0]
+  ?.split('/')
+  ?.map((x) => x.substring(2, 4))
+  ?.join('/');
+
 const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -57,7 +63,7 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
   const offered = isOffered(module);
 
   const disqusConfig = {
-    url: `https://nusmods.com/modules/${moduleCode}/reviews`,
+    url: `https://nusmods.com/courses/${moduleCode}/reviews`,
     identifier: moduleCode,
     title: pageTitle,
   };
@@ -77,7 +83,7 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
         <div className={classnames(styles.archiveWarning, 'alert alert-warning')}>
           <Archive className={styles.archiveIcon} />
           <p>
-            You are looking at archived information of this module from academic year{' '}
+            You are looking at archived information of this course from academic year{' '}
             <strong>{archiveYear}</strong>. Information on this page may be out of date.
           </p>
         </div>
@@ -87,8 +93,8 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
         <div className={classnames(styles.archiveWarning, 'alert alert-warning')}>
           <Archive className={styles.archiveIcon} />
           <p>
-            This module is not offered in this academic year. You may use this information to map
-            exchange modules or to see modules that were previously or may be offered in the future.
+            This course is not offered in this academic year. You may use this information to map
+            exchange courses or to see courses that were previously or may be offered in the future.
           </p>
         </div>
       )}
@@ -140,6 +146,15 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
                     </>
                   )}
 
+                  {module.prerequisiteAdvisory && (
+                    <>
+                      <dt>Prerequisite Advisory</dt>
+                      <dd>
+                        <LinkModuleCodes>{module.prerequisiteAdvisory}</LinkModuleCodes>
+                      </dd>
+                    </>
+                  )}
+
                   {module.corequisite && (
                     <>
                       <dt>Corequisite</dt>
@@ -170,6 +185,7 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
                             </li>
                           ))}
                         </ul>
+                        {module.additionalInformation && <p>{module.additionalInformation}</p>}
                       </dd>
                     </>
                   )}
@@ -186,6 +202,10 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
               </div>
 
               <div className="col-sm-4">
+                <div className={styles.gradingBasisDescription}>
+                  <h3 className={styles.descriptionHeading}>Grading Basis</h3>
+                  <p>{module.gradingBasisDescription ?? 'Information not available.'}</p>
+                </div>
                 {sortBy(module.semesterData, (semester) => semester.semester).map((semester) => (
                   <div key={semester.semester} className={styles.exam}>
                     <h3 className={styles.descriptionHeading}>
@@ -202,6 +222,29 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
                     />
                   </div>
                 ))}
+
+                {/* Added because ST2 exams rely on previous AY's data due to
+                  ModReg R0, which is difficult for us to get, so we show a
+                  link instead. */}
+                {config.showSt2ExamTimetable &&
+                  module.semesterData.find((semester) => semester.semester === 4) && (
+                    <div className={styles.exam}>
+                      <h3 className={styles.descriptionHeading}>
+                        AY{prevAYShortName} Special Term II Exam
+                      </h3>
+                      <p>
+                        Please visit{' '}
+                        <a
+                          href={config.st2ExamTimetableUrl}
+                          target="_blank"
+                          rel="noopener noreferrer nofollow"
+                        >
+                          the exam timetable
+                        </a>{' '}
+                        instead.
+                      </p>
+                    </div>
+                  )}
 
                 {!isArchive && offered && (
                   <div className={styles.addToTimetable}>
@@ -243,21 +286,21 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
                         <h3>Hi There!</h3>
                         <p>
                           We would like to encourage everyone who enjoyed using NUSMods to
-                          contribute back to the community by writing reviews for modules that you
+                          contribute back to the community by writing reviews for courses that you
                           have taken before. Your efforts will go a long way in building up a
                           vibrant and rich NUS community.
                         </p>
                         <strong>Please note:</strong>
                         <ol className={styles.modReviewDescription}>
                           <li>
-                            Because the experience of each module will differ according to the
-                            professor teaching the module, at the start of your review, please state
-                            the semester taken and the name of the professor who taught the module
+                            Because the experience of each course will differ according to the
+                            professor teaching the course, at the start of your review, please state
+                            the semester taken and the name of the professor who taught the course
                             in that semester.
                           </li>
                           <li>
                             Other students will read your review to get an idea of what taking the
-                            module will be like. If you'd like to give feedback about the module to
+                            course will be like. If you'd like to give feedback about the course to
                             NUS, please use the official Student Feedback system as NUS does not
                             monitor these reviews.
                           </li>

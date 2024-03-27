@@ -11,8 +11,8 @@ const ModuleFormBeforeSignIn: React.FC<Props> = ({ onLogin, isLoggingIn }) => (
     <div className={styles.image}>
       <img src={mpePlaceholder} alt="" />
     </div>
-    <h4>Start Module Planning Exercise</h4>
-    <p>Select your modules and we will automatically save your changes</p>
+    <h4>Start Course Planning Exercise</h4>
+    <p>Select your courses and we will automatically save your changes</p>
     <button
       type="button"
       className="btn btn-outline-primary btn-svg"

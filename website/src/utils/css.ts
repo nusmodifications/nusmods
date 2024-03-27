@@ -24,12 +24,12 @@ export function breakpointDown(size: Breakpoint): QueryObject {
   return { maxWidth: nextSize - 1 };
 }
 
-export function breakpointUp(size: Breakpoint): QueryObject {
-  return { minWidth: breakpoints[size] };
+export function breakpointUp(size: Breakpoint) {
+  return { minWidth: breakpoints[size] } satisfies QueryObject;
 }
 
-export function touchScreenOnly(): QueryObject {
-  return { pointer: 'coarse' };
+export function touchScreenOnly() {
+  return { pointer: 'coarse' } satisfies QueryObject;
 }
 
 export function supportsCSSVariables() {

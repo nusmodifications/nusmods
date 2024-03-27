@@ -22,8 +22,8 @@ $line-width: 0.1rem;
 
 .circularPart {
   position: absolute;
-  top: -$circle-diameter / 2;
-  left: -$circle-diameter / 2;
+  top: -$circle-diameter * 0.5;
+  left: -$circle-diameter * 0.5;
   width: $circle-diameter;
   height: $circle-diameter;
   border-radius: 50%;
@@ -33,14 +33,14 @@ $line-width: 0.1rem;
 .linePart {
   position: relative;
   top: 0;
-  left: -$line-width / 2;
+  left: -$line-width * 0.5;
   width: $line-width;
   height: 100%;
   background: theme-color();
 }
 
 :global(.verticalMode) .linePart {
-  top: -$line-width / 2;
+  top: -$line-width * 0.5;
   left: 0;
   width: 100%;
   height: $line-width;

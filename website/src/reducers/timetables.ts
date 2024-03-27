@@ -11,9 +11,12 @@ import config from 'config';
 import {
   ADD_MODULE,
   CHANGE_LESSON,
+  HIDDEN_IMPORTED_SEM,
   HIDE_LESSON_IN_TIMETABLE,
   REMOVE_MODULE,
+  RESET_TIMETABLE,
   SELECT_MODULE_COLOR,
+  SET_HIDDEN_IMPORTED,
   SET_LESSON_CONFIG,
   SET_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
@@ -43,7 +46,7 @@ export const persistConfig = {
   stateReconciler: (
     inbound: TimetablesState,
     original: TimetablesState,
-    reduced: TimetablesState,
+    _reduced: TimetablesState,
     { debug }: PersistConfig<TimetablesState>,
   ): TimetablesState => {
     if (inbound.academicYear === original.academicYear) {
@@ -94,9 +97,9 @@ function moduleLessonConfig(
 }
 
 // Map of ModuleCode to module lesson config.
-const defaultSemTimetableConfig: SemTimetableConfig = {};
+const DEFAULT_SEM_TIMETABLE_CONFIG: SemTimetableConfig = {};
 function semTimetable(
-  state: SemTimetableConfig = defaultSemTimetableConfig,
+  state: SemTimetableConfig = DEFAULT_SEM_TIMETABLE_CONFIG,
   action: Actions,
 ): SemTimetableConfig {
   const moduleCode = get(action, 'payload.moduleCode');
@@ -122,8 +125,8 @@ function semTimetable(
 }
 
 // Map of semester to color mapping
-const defaultSemColorMap = {};
-function semColors(state: ColorMapping = defaultSemColorMap, action: Actions): ColorMapping {
+const DEFAULT_SEM_COLOR_MAP = {};
+function semColors(state: ColorMapping = DEFAULT_SEM_COLOR_MAP, action: Actions): ColorMapping {
   const moduleCode = get(action, 'payload.moduleCode');
   if (!moduleCode) return state;
 
@@ -149,8 +152,8 @@ function semColors(state: ColorMapping = defaultSemColorMap, action: Actions): C
 }
 
 // Map of semester to list of hidden modules
-const defaultHiddenState: ModuleCode[] = [];
-function semHiddenModules(state = defaultHiddenState, action: Actions) {
+const DEFAULT_HIDDEN_STATE: ModuleCode[] = [];
+function semHiddenModules(state = DEFAULT_HIDDEN_STATE, action: Actions) {
   if (!action.payload) {
     return state;
   }
@@ -185,11 +188,25 @@ function timetables(
 
   switch (action.type) {
     case SET_TIMETABLE: {
-      const { semester, timetable, colors } = action.payload;
+      const { semester, timetable, colors, hiddenModules } = action.payload;
 
       return produce(state, (draft) => {
-        draft.lessons[semester] = timetable || defaultSemTimetableConfig;
+        draft.lessons[semester] = timetable || DEFAULT_SEM_TIMETABLE_CONFIG;
         draft.colors[semester] = colors || {};
+        draft.hidden[semester] = hiddenModules || [];
+
+        // Remove the old hidden imported modules
+        delete draft.hidden[HIDDEN_IMPORTED_SEM];
+      });
+    }
+
+    case RESET_TIMETABLE: {
+      const { semester } = action.payload;
+
+      return produce(state, (draft) => {
+        draft.lessons[semester] = DEFAULT_SEM_TIMETABLE_CONFIG;
+        draft.colors[semester] = DEFAULT_SEM_COLOR_MAP;
+        draft.hidden[semester] = DEFAULT_HIDDEN_STATE;
       });
     }
 
@@ -218,6 +235,13 @@ function timetables(
         colors: { [semester]: colors },
         hidden: { [semester]: hidden },
       };
+    }
+
+    case SET_HIDDEN_IMPORTED: {
+      const { semester, hiddenModules } = action.payload;
+      return produce(state, (draft) => {
+        draft.hidden[semester] = hiddenModules;
+      });
     }
 
     default:

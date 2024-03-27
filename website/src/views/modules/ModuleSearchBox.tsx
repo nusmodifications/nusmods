@@ -38,7 +38,7 @@ const ModuleSearchBox: React.FC<Props> = ({ id }) => (
     throttle={300}
     queryFields={['moduleCode^10', 'title^3', 'description']}
     queryBuilder={buildQuery}
-    placeholder="Module code, names and descriptions"
+    placeholder="Course code, names and descriptions"
   />
 );
 

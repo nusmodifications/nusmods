@@ -1,13 +1,13 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import type { SemTimetableConfig } from 'types/timetables';
-import type { Semester } from 'types/modules';
-import { DARK_MODE } from 'types/settings';
 
 import { Helmet } from 'react-helmet';
 import { NavLink, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import classnames from 'classnames';
 import { each } from 'lodash';
+import { DARK_MODE } from 'types/settings';
+import type { Semester } from 'types/modules';
+import type { SemTimetableConfig } from 'types/timetables';
 
 import weekText from 'utils/weekText';
 import { captureException } from 'utils/error';
@@ -65,7 +65,7 @@ function useFetchModuleListAndTimetableModules(): {
         .catch((error) => {
           captureException(error);
           dispatch(
-            openNotification('Data for some modules failed to load', {
+            openNotification('Data for some courses failed to load', {
               action: {
                 text: 'Retry',
                 handler: () => fetchTimetableModulesImpl(timetable, semester),
@@ -103,10 +103,8 @@ function useFetchModuleListAndTimetableModules(): {
 }
 
 const AppShell: FC = ({ children }) => {
-  const {
-    moduleListError,
-    refetchModuleListAndTimetableModules,
-  } = useFetchModuleListAndTimetableModules();
+  const { moduleListError, refetchModuleListAndTimetableModules } =
+    useFetchModuleListAndTimetableModules();
 
   // Enable Matomo analytics
   const history = useHistory();
@@ -121,7 +119,7 @@ const AppShell: FC = ({ children }) => {
   const theme = useSelector((state: State) => state.theme.id);
 
   if (!isModuleListReady && moduleListError) {
-    return <ApiError dataName="module information" retry={refetchModuleListAndTimetableModules} />;
+    return <ApiError dataName="course information" retry={refetchModuleListAndTimetableModules} />;
   }
 
   return (

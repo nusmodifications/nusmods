@@ -1,7 +1,7 @@
 @import '~styles/utils/modules-entry.scss';
 
 $v-padding: 0.6rem;
-$h-padding: $grid-gutter-width / 2;
+$h-padding: $grid-gutter-width * 0.5;
 
 .heading {
   margin-bottom: 0;
@@ -77,7 +77,7 @@ $h-padding: $grid-gutter-width / 2;
 
   .searchWrapper {
     position: relative;
-    margin-right: ($grid-gutter-width / 2);
+    margin-right: ($grid-gutter-width * 0.5);
 
     // To select both the search glass icon and the chevron
     svg {
@@ -139,12 +139,12 @@ $h-padding: $grid-gutter-width / 2;
     }
 
     .searchWrapper {
-      margin: 0 ($grid-gutter-width / 2);
+      margin: 0 ($grid-gutter-width * 0.5);
     }
 
     select {
       width: calc(100% - #{$grid-gutter-width});
-      margin: 0.5rem ($grid-gutter-width / 2);
+      margin: 0.5rem ($grid-gutter-width * 0.5);
     }
   }
 }

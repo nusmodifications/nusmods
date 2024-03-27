@@ -45,7 +45,7 @@ const ModuleForm: React.FC<Props> = ({
 
   const moduleSelectList = useMemo(() => {
     const selectedModules = new Set(preferences.map((preference) => preference.moduleCode));
-    const semesterProperty = MPE_SEMESTER === 1 ? 'inS1MPE' : 'inS2MPE';
+    const semesterProperty = MPE_SEMESTER === 1 ? 'inS1CPEx' : 'inS2CPEx';
     return mpeModuleList
       .filter((module) => module[semesterProperty])
       .map((module) => ({
@@ -155,7 +155,7 @@ const ModuleForm: React.FC<Props> = ({
     <div className={styles.formContainer}>
       <label className={classnames('row', styles.mcTextField)}>
         <div className="col-sm-8">
-          Intended number of MCs (does not affect how many modules you can select):
+          Intended number of units (does not affect how many courses you can select):
         </div>
         <div className="col-sm-4">
           <input
@@ -176,9 +176,9 @@ const ModuleForm: React.FC<Props> = ({
       </label>
       <div className={styles.headerTitle}>
         <div className={styles.rank}>Rank</div>
-        <div className={styles.module}>Module</div>
+        <div className={styles.module}>Course</div>
         <div className={styles.moduleCount}>
-          {preferences.length} / {MAX_MODULES} Modules Selected
+          {preferences.length} / {MAX_MODULES} Courses Selected
         </div>
       </div>
       <div>
@@ -228,7 +228,7 @@ const ModuleForm: React.FC<Props> = ({
         </div>
       ) : (
         <p className={styles.maxModulesError}>
-          Maximum of {MAX_MODULES} modules selected. Remove a module from the list to add more.
+          Maximum of {MAX_MODULES} courses selected. Remove a course from the list to add more.
         </p>
       )}
       {status}

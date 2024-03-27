@@ -30,7 +30,7 @@
     padding-bottom: 4rem;
 
     .filterHeader {
-      padding: $navtab-height ($grid-gutter-width / 2) 0.6rem;
+      padding: $navtab-height ($grid-gutter-width * 0.5) 0.6rem;
 
       h3 {
         margin-bottom: 0;

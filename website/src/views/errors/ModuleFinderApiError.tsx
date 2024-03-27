@@ -7,7 +7,7 @@ type ModuleFinderApiErrorProps = {
 };
 
 const ModuleFinderApiError: React.FC<ModuleFinderApiErrorProps> = ({ searchkit }) => (
-  <ApiError dataName="module information" retry={() => searchkit.reloadSearch()} />
+  <ApiError dataName="course information" retry={() => searchkit.reloadSearch()} />
 );
 
 export default ModuleFinderApiError;

@@ -66,6 +66,8 @@ $sticky-top: $navbar-height;
 }
 
 .details {
+  overflow-wrap: break-word;
+
   dt,
   h4 {
     font-weight: bold;
@@ -109,6 +111,14 @@ $sticky-top: $navbar-height;
 }
 
 .exam {
+  margin-bottom: 1rem;
+
+  p {
+    margin-bottom: 0;
+  }
+}
+
+.gradingBasisDescription {
   margin-bottom: 1rem;
 
   p {

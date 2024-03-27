@@ -14,7 +14,7 @@ import {
   Trello,
 } from 'react-feather';
 
-import { enableMpe } from 'featureFlags';
+import { showCPExTab } from 'featureFlags';
 import ExternalLink from 'views/components/ExternalLink';
 import { timetablePage } from 'views/routes/paths';
 import { preload as preloadToday } from 'views/today/TodayContainer';
@@ -47,15 +47,15 @@ const Navtabs: FC = () => {
       </NavLink>
       <NavLink
         {...tabProps}
-        to={{ pathname: '/modules', search: '?sem[0]=1&sem[1]=2&sem[2]=3&sem[3]=4' }}
+        to={{ pathname: '/courses', search: '?sem[0]=1&sem[1]=2&sem[2]=3&sem[3]=4' }}
       >
         <BookOpen />
-        <span className={styles.title}>Modules</span>
+        <span className={styles.title}>Courses</span>
       </NavLink>
-      {enableMpe && (
-        <NavLink {...tabProps} to="/mpe">
+      {showCPExTab && (
+        <NavLink {...tabProps} to="/cpex">
           <Target />
-          <span className={styles.title}>MPE</span>
+          <span className={styles.title}>CPEx</span>
         </NavLink>
       )}
       <NavLink {...tabProps} to="/venues" onMouseOver={preloadVenues} onFocus={preloadVenues}>

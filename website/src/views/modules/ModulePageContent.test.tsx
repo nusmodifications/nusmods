@@ -1,6 +1,6 @@
-import { Module } from 'types/modules';
 import { screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
+import { Module } from 'types/modules';
 
 /** @var {Module} */
 import { CS1010S } from '__mocks__/modules';

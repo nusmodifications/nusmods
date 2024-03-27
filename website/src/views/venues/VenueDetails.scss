@@ -44,6 +44,6 @@
 
 .location {
   @include media-breakpoint-down(sm) {
-    margin: 0 ($grid-gutter-width / 2);
+    margin: 0 ($grid-gutter-width * 0.5);
   }
 }

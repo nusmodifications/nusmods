@@ -36,8 +36,8 @@ export const CustomModuleFormComponent: React.FC<Props> = (props) => {
     const inputTitleCurrent = inputTitle.current;
     const title = inputTitleCurrent && inputTitleCurrent.value;
 
-    // Module credit is required
-    if (moduleCredit == null) return;
+    // Module credit is required, module credit cannot be negative
+    if (moduleCredit == null || parseInt(moduleCredit, 10) < 0) return;
 
     props.addCustomModule(props.moduleCode, {
       moduleCredit: +moduleCredit,
@@ -74,7 +74,7 @@ export const CustomModuleFormComponent: React.FC<Props> = (props) => {
 
       <div className="form-row">
         <div className="col-md-3">
-          <label htmlFor="input-mc">Module Credits</label>
+          <label htmlFor="input-mc">Units</label>
           <input
             ref={inputModuleCredit}
             id="input-mc"
@@ -82,6 +82,7 @@ export const CustomModuleFormComponent: React.FC<Props> = (props) => {
             className="form-control"
             defaultValue={moduleCredit ? String(moduleCredit) : ''}
             required
+            min="0"
           />
         </div>
         <div className="col-md-9">

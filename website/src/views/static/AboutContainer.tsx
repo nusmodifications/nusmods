@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import { Mail, Layers, GitHub } from 'react-feather';
 import { toggleFeedback } from 'actions/app';
 import config from 'config';
 
-import { Mail, Layers, GitHub } from 'react-feather';
 import ExternalLink from 'views/components/ExternalLink';
 
 import StaticPage from './StaticPage';
@@ -22,8 +22,8 @@ const AboutContainer: React.FC<Props> = (props) => (
       <ExternalLink href="http://benghee.eu/">Beng</ExternalLink> to provide a better way for
       students to plan their school timetables. Over time, more features have been added to improve
       the lives of NUS students. Besides timetable planning, NUSMods also serves as a complete
-      knowledge bank of NUS modules by providing useful module-related information such as
-      community-driven module reviews and discussions.
+      knowledge bank of NUS courses by providing useful course-related information such as
+      community-driven course reviews and discussions.
     </p>
 
     <h3>Goals</h3>

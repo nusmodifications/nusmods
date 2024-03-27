@@ -2,10 +2,10 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 
+import { MessageSquare } from 'react-feather';
 import config from 'config';
 import insertScript from 'utils/insertScript';
 import { getScriptErrorHandler } from 'utils/error';
-import { MessageSquare } from 'react-feather';
 
 import type { State as StoreState } from 'types/state';
 import type { DisqusConfig } from 'types/views';

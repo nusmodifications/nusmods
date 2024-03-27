@@ -1,7 +1,8 @@
-import { VenueInfo, VenueSearchOptions, VenueDetailList, OCCUPIED } from 'types/venues';
 import { range, entries, padStart, clamp } from 'lodash';
 import produce from 'immer';
+import { VenueInfo, VenueSearchOptions, VenueDetailList, OCCUPIED } from 'types/venues';
 
+import excludedRooms from 'data/excludedFreeRooms';
 import { tokenize } from './moduleSearch';
 import { SCHOOLDAYS } from './timify';
 
@@ -40,7 +41,13 @@ export function filterAvailability(
 ): VenueDetailList {
   const { day, time, duration } = options;
 
-  return venues.filter(([, venue]) => {
+  return venues.filter(([venueName, venue]) => {
+    if (excludedRooms.has(venueName)) {
+      // Locations with occasional timetabled lessons where their main purpose
+      // isn't for lessons, and should not be identified as a "Free Room".
+      return false;
+    }
+
     const start = time * 100;
     const dayAvailability = venue.find((availability) => availability.day === SCHOOLDAYS[day]);
     if (!dayAvailability) return true;

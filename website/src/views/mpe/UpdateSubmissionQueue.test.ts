@@ -42,9 +42,15 @@ describe(UpdateSubmissionQueue, () => {
 
     const queue = new UpdateSubmissionQueue(update);
 
-    queue.update(emptySubmission);
-    queue.update(submission);
-    queue.update(emptySubmission);
+    queue.update(emptySubmission).catch(() => {
+      /* ignore */
+    });
+    queue.update(submission).catch(() => {
+      /* ignore */
+    });
+    queue.update(emptySubmission).catch(() => {
+      /* ignore */
+    });
     await expect(
       queue.update({ ...submission, preferences: [preference, preference] }),
     ).rejects.toThrow('2');

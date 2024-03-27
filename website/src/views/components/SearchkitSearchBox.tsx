@@ -47,15 +47,9 @@ export default class SearchkitSearchBox extends SearchkitComponent<Props, State>
     return this.accessor as QueryAccessor;
   }
 
-  defineAccessor() {
-    const {
-      id,
-      prefixQueryFields,
-      queryFields,
-      queryBuilder,
-      queryOptions,
-      prefixQueryOptions,
-    } = this.props;
+  override defineAccessor() {
+    const { id, prefixQueryFields, queryFields, queryBuilder, queryOptions, prefixQueryOptions } =
+      this.props;
     return new QueryAccessor(id || DEFAULT_SEARCH_QUERY_KEY, {
       prefixQueryFields,
       prefixQueryOptions: { ...prefixQueryOptions },
@@ -96,7 +90,7 @@ export default class SearchkitSearchBox extends SearchkitComponent<Props, State>
     this.setState({ input: undefined });
   };
 
-  render() {
+  override render() {
     if (!this.queryAccessor()) return null;
     return (
       <SearchBox

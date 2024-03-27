@@ -10,9 +10,9 @@
 const venueFile = '../src/data/venues.json';
 
 const venues = require(venueFile); // eslint-disable-line import/no-dynamic-require
+const path = require('path');
 const _ = require('lodash');
 const fs = require('fs-extra');
-const path = require('path');
 
 if (process.platform === 'win32') {
   console.warn(

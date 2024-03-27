@@ -18,10 +18,11 @@ import {
   addModule,
   cancelModifyLesson,
   changeLesson,
+  HIDDEN_IMPORTED_SEM,
   modifyLesson,
   removeModule,
+  resetTimetable,
 } from 'actions/timetables';
-import { undo } from 'actions/undoHistory';
 import {
   areLessonsSameClass,
   formatExamDate,
@@ -79,10 +80,10 @@ type Props = OwnProps & {
   // Actions
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
   removeModule: (semester: Semester, moduleCode: ModuleCode) => void;
+  resetTimetable: (semester: Semester) => void;
   modifyLesson: (lesson: Lesson) => void;
   changeLesson: (semester: Semester, lesson: Lesson) => void;
   cancelModifyLesson: () => void;
-  undo: () => void;
 };
 
 type State = {
@@ -116,7 +117,7 @@ function maintainScrollPosition(container: HTMLElement, modifiedCell: ModifiedCe
 }
 
 class TimetableContent extends React.Component<Props, State> {
-  state: State = {
+  override state: State = {
     isScrolledHorizontally: false,
     showExamCalendar: false,
     tombstone: null,
@@ -126,7 +127,7 @@ class TimetableContent extends React.Component<Props, State> {
 
   modifiedCell: ModifiedCell | null = null;
 
-  componentDidUpdate() {
+  override componentDidUpdate() {
     if (this.modifiedCell && this.timetableRef.current) {
       maintainScrollPosition(this.timetableRef.current, this.modifiedCell);
 
@@ -134,7 +135,7 @@ class TimetableContent extends React.Component<Props, State> {
     }
   }
 
-  componentWillUnmount() {
+  override componentWillUnmount() {
     this.cancelModifyLesson();
   }
 
@@ -195,6 +196,10 @@ class TimetableContent extends React.Component<Props, State> {
     this.setState({ tombstone: { ...moduleWithColor, index } });
   };
 
+  resetTimetable = () => {
+    this.props.resetTimetable(this.props.semester);
+  };
+
   resetTombstone = () => this.setState({ tombstone: null });
 
   // Returns modules currently in the timetable
@@ -237,7 +242,7 @@ class TimetableContent extends React.Component<Props, State> {
       return (
         <div className="row">
           <div className="col-sm-12">
-            <p className="text-sm-center">No modules added.</p>
+            <p className="text-sm-center">No courses added.</p>
           </div>
         </div>
       );
@@ -268,7 +273,7 @@ class TimetableContent extends React.Component<Props, State> {
     );
   }
 
-  render() {
+  override render() {
     const {
       semester,
       modules,
@@ -277,6 +282,7 @@ class TimetableContent extends React.Component<Props, State> {
       timetableOrientation,
       showTitle,
       readOnly,
+      hiddenInTimetable,
     } = this.props;
 
     const { showExamCalendar } = this.state;
@@ -295,7 +301,10 @@ class TimetableContent extends React.Component<Props, State> {
       const module = modules[moduleCode];
       const moduleTimetable = getModuleTimetable(module, semester);
       lessonsForLessonType(moduleTimetable, activeLesson.lessonType).forEach((lesson) => {
-        const modifiableLesson: Lesson & { isActive?: boolean; isAvailable?: boolean } = {
+        const modifiableLesson: Lesson & {
+          isActive?: boolean;
+          isAvailable?: boolean;
+        } = {
           ...lesson,
           // Inject module code in
           moduleCode,
@@ -347,7 +356,7 @@ class TimetableContent extends React.Component<Props, State> {
           verticalMode: isVerticalOrientation,
         })}
         onClick={this.cancelModifyLesson}
-        onKeyUp={(e) => e.keyCode === 27 && this.cancelModifyLesson()} // Quit modifying when Esc is pressed
+        onKeyUp={(e) => e.key === 'Escape' && this.cancelModifyLesson()} // Quit modifying when Esc is pressed
       >
         <Title>Timetable</Title>
 
@@ -405,7 +414,9 @@ class TimetableContent extends React.Component<Props, State> {
                   semester={semester}
                   timetable={this.props.timetable}
                   showExamCalendar={showExamCalendar}
+                  resetTimetable={this.resetTimetable}
                   toggleExamCalendar={() => this.setState({ showExamCalendar: !showExamCalendar })}
+                  hiddenModules={hiddenInTimetable}
                 />
               </div>
 
@@ -424,7 +435,11 @@ class TimetableContent extends React.Component<Props, State> {
                 {this.renderModuleSections(addedModules, !isVerticalOrientation)}
               </div>
               <div className="col-12">
-                <ModulesTableFooter modules={addedModules} semester={semester} />
+                <ModulesTableFooter
+                  modules={addedModules}
+                  semester={semester}
+                  hiddenInTimetable={hiddenInTimetable}
+                />
               </div>
             </div>
           </div>
@@ -435,10 +450,13 @@ class TimetableContent extends React.Component<Props, State> {
 }
 
 function mapStateToProps(state: StoreState, ownProps: OwnProps) {
-  const { semester, timetable } = ownProps;
+  const { semester, timetable, readOnly } = ownProps;
   const { modules } = state.moduleBank;
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
-  const hiddenInTimetable = state.timetables.hidden[semester] || [];
+
+  // Determine the key to check for hidden modules based on readOnly status
+  const hiddenModulesKey = readOnly ? HIDDEN_IMPORTED_SEM : semester;
+  const hiddenInTimetable = state.timetables.hidden[hiddenModulesKey] || [];
 
   return {
     semester,
@@ -455,8 +473,8 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
 export default connect(mapStateToProps, {
   addModule,
   removeModule,
+  resetTimetable,
   modifyLesson,
   changeLesson,
   cancelModifyLesson,
-  undo,
 })(TimetableContent);

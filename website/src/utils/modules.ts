@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { format } from 'date-fns';
 import type {
   Module,
   ModuleCode,
@@ -10,7 +11,6 @@ import type {
 
 import config from 'config';
 import { NBSP, noBreak } from 'utils/react';
-import { format } from 'date-fns';
 import { Lesson } from 'types/timetables';
 import { toSingaporeTime } from './timify';
 
@@ -83,7 +83,7 @@ export function getSemestersOffered(module: Module): Semester[] {
 
 export function renderMCs(moduleCredits: number | string) {
   const credit = typeof moduleCredits === 'string' ? parseFloat(moduleCredits) : moduleCredits;
-  return `${credit}${NBSP}${credit === 1 ? 'MC' : 'MCs'}`;
+  return `${credit}${NBSP}${credit === 1 ? 'Unit' : 'Units'}`;
 }
 
 export function renderExamDuration(examDuration: number) {
