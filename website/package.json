@@ -127,6 +127,7 @@
     "@authenio/samlify-node-xmllint": "2.0.0",
     "@material/fab": "0.40.1",
     "@material/snackbar": "0.40.1",
+    "@octokit/rest": "^20.0.2",
     "@sentry/browser": "6.19.7",
     "@sentry/node": "6.19.7",
     "@sentry/tracing": "6.19.7",
