@@ -89,7 +89,7 @@ function calculateLargestInterval(weeks: NumericWeeks) {
       largestInterval = diff;
     }
   }
-  return largestInterval - 1;
+  return largestInterval;
 }
 
 export function calculateNumericWeek(
