@@ -285,16 +285,12 @@ function StopServiceDetails(props: {
           {
             //  if the service is not running, show the next time it will run
             !departTiming && !arriveTiming ? (
-              <div className={styles.serviceSchedule}>
+              <div className={styles.serviceUpcomingError}>
                 {/*  if is error show error msg */}
                 {timings === 'error' ? (
-                  <div className={classNames(styles.upcomingBuses, styles.none)}>
-                    Error fetching bus timings
-                  </div>
+                  <>Error fetching bus timings</>
                 ) : (
-                  <div className={classNames(styles.upcomingBuses, styles.none)}>
-                    No upcoming departures
-                  </div>
+                  <>No upcoming departures</>
                 )}
               </div>
             ) : (

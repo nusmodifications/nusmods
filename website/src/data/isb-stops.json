@@ -23,7 +23,8 @@
         "name": "L",
         "routeid": 90288
       }
-    ]
+    ],
+    "opposite": null
   },
   {
     "caption": "Botanic Gardens MRT",
@@ -41,7 +42,8 @@
         "name": "L",
         "routeid": 90288
       }
-    ]
+    ],
+    "opposite": "CG"
   },
   {
     "caption": "Kent Ridge MRT",
@@ -74,7 +76,8 @@
     "leftLabel": true,
     "collapse": 16,
     "collapseBehavior": "interchange",
-    "collapsePair": "KR-MRT-OPP"
+    "collapsePair": "KR-MRT-OPP",
+    "opposite": "KR-MRT-OPP"
   },
   {
     "caption": "LT 27",
@@ -107,7 +110,8 @@
 
     "collapse": 15.75,
     "collapseBehavior": "interchange",
-    "collapsePair": "S17"
+    "collapsePair": "S17",
+    "opposite": "S17"
   },
   {
     "caption": "University Hall",
@@ -140,7 +144,8 @@
 
     "collapse": 16,
     "collapseBehavior": "interchange",
-    "collapsePair": "UHALL-OPP"
+    "collapsePair": "UHALL-OPP",
+    "opposite": "UHALL-OPP"
   },
   {
     "caption": "Opp University Health Centre",
@@ -173,7 +178,8 @@
     "leftLabel": true,
     "collapse": 16.75,
     "collapseBehavior": "hide",
-    "collapsePair": "UHC"
+    "collapsePair": "UHC",
+    "opposite": "UHC"
   },
   {
     "caption": "University Town",
@@ -203,7 +209,8 @@
         "name": "E",
         "routeid": 90296
       }
-    ]
+    ],
+    "opposite": null
   },
   {
     "caption": "Raffles Hall",
@@ -229,7 +236,8 @@
       }
     ],
     "collapseLabel": 15.75,
-    "leftLabel": true
+    "leftLabel": true,
+    "opposite": "MUSEUM"
   },
   {
     "caption": "Kent Vale",
@@ -252,7 +260,8 @@
         "routeid": 90296
       }
     ],
-    "leftLabel": true
+    "leftLabel": true,
+    "opposite": null
   },
   {
     "caption": "Museum",
@@ -285,7 +294,8 @@
       {
         "name": "PUB:151"
       }
-    ]
+    ],
+    "opposite": "RAFFLES"
   },
   {
     "caption": "Yusof Ishak House",
@@ -320,7 +330,8 @@
     ],
     "collapse": 16,
     "collapseBehavior": "interchange",
-    "collapsePair": "YIH-OPP"
+    "collapsePair": "YIH-OPP",
+    "opposite": "YIH-OPP"
   },
   {
     "caption": "Central Library",
@@ -352,7 +363,8 @@
       {
         "name": "PUB:95"
       }
-    ]
+    ],
+    "opposite": "IT"
   },
   {
     "caption": "LT 13",
@@ -377,7 +389,8 @@
     ],
     "collapse": 15,
     "collapseBehavior": "interchange",
-    "collapsePair": "LT13-OPP"
+    "collapsePair": "LT13-OPP",
+    "opposite": "LT13-OPP"
   },
   {
     "caption": "AS 5",
@@ -403,7 +416,8 @@
     "leftLabel": true,
     "collapse": 15.75,
     "collapseBehavior": "interchange",
-    "collapsePair": "NUSS-OPP"
+    "collapsePair": "NUSS-OPP",
+    "opposite": "NUSS-OPP"
   },
   {
     "caption": "BIZ 2",
@@ -426,7 +440,8 @@
         "routeid": 90292
       }
     ],
-    "leftLabel": true
+    "leftLabel": true,
+    "opposite": "HSSML-OPP"
   },
   {
     "caption": "Prince George's Park",
@@ -453,7 +468,8 @@
         "routeid": 90297
       }
     ],
-    "leftLabel": true
+    "leftLabel": true,
+    "opposite": "PGPR"
   },
   {
     "caption": "College Green",
@@ -495,7 +511,8 @@
       {
         "name": "PUB:67"
       }
-    ]
+    ],
+    "opposite": "BG-MRT"
   },
   {
     "caption": "EA",
@@ -524,7 +541,8 @@
     ],
     "collapse": 16,
     "collapseBehavior": "interchange",
-    "collapsePair": "JP-SCH-16151"
+    "collapsePair": "JP-SCH-16151",
+    "opposite": "JP-SCH-16151"
   },
   {
     "caption": "SDE 3",
@@ -554,7 +572,8 @@
     "collapse": 16,
     "collapseBehavior": "interchange",
     "leftLabel": false,
-    "collapsePair": "SDE3-OPP"
+    "collapsePair": "SDE3-OPP",
+    "opposite": "SDE3-OPP"
   },
   {
     "caption": "Information Technology",
@@ -586,7 +605,8 @@
         "name": "PUB:96"
       }
     ],
-    "leftLabel": true
+    "leftLabel": true,
+    "opposite": "CLB"
   },
   {
     "caption": "Opp Yusof Ishak House",
@@ -621,7 +641,8 @@
     "leftLabel": true,
     "collapse": 16,
     "collapseBehavior": "hide",
-    "collapsePair": "YIH"
+    "collapsePair": "YIH",
+    "opposite": "YIH"
   },
   {
     "caption": "Opp SDE 3",
@@ -648,7 +669,8 @@
     "collapse": 16,
     "collapseBehavior": "hide",
     "leftLabel": true,
-    "collapsePair": "SDE3"
+    "collapsePair": "SDE3",
+    "opposite": "SDE3"
   },
   {
     "caption": "The Japanese Primary School",
@@ -675,7 +697,8 @@
     "collapse": 16,
     "collapseBehavior": "hide",
     "leftLabel": true,
-    "collapsePair": "EA"
+    "collapsePair": "EA",
+    "opposite": "EA"
   },
   {
     "caption": "University Health Centre",
@@ -703,7 +726,8 @@
     ],
     "collapse": 16.75,
     "collapseBehavior": "interchange",
-    "collapsePair": "UHC-OPP"
+    "collapsePair": "UHC-OPP",
+    "opposite": "UHC-OPP"
   },
   {
     "caption": "Opp University Hall",
@@ -732,7 +756,8 @@
     "leftLabel": true,
     "collapse": 16,
     "collapseBehavior": "hide",
-    "collapsePair": "UHALL"
+    "collapsePair": "UHALL",
+    "opposite": "UHALL"
   },
   {
     "caption": "S 17",
@@ -761,7 +786,8 @@
     "leftLabel": true,
     "collapse": 15.75,
     "collapseBehavior": "hide",
-    "collapsePair": "LT27"
+    "collapsePair": "LT27",
+    "opposite": "LT27"
   },
   {
     "caption": "Opp Kent Ridge MRT",
@@ -789,7 +815,8 @@
     ],
     "collapse": 16,
     "collapseBehavior": "hide",
-    "collapsePair": "KR-MRT"
+    "collapsePair": "KR-MRT",
+    "opposite": "KR-MRT"
   },
   {
     "caption": "Prince George's Park Foyer",
@@ -811,7 +838,8 @@
         "name": "K",
         "routeid": 90297
       }
-    ]
+    ],
+    "opposite": "PGP"
   },
   {
     "caption": "COM 3",
@@ -831,7 +859,8 @@
       },
       { "name": "D2", "routeid": 90295 },
       { "name": "D2", "routeid": 90295 }
-    ]
+    ],
+    "opposite": null
   },
   {
     "caption": "Opp HSSML",
@@ -852,7 +881,8 @@
     ],
     "collapse": 14,
     "collapseBehavior": "hide",
-    "collapseLabel": 15
+    "collapseLabel": 15,
+    "opposite": "BIZ2"
   },
   {
     "caption": "Opp NUSS",
@@ -873,7 +903,8 @@
     ],
     "collapse": 15.75,
     "collapseBehavior": "hide",
-    "collapsePair": "AS5"
+    "collapsePair": "AS5",
+    "opposite": "AS5"
   },
   {
     "caption": "Ventus",
@@ -895,7 +926,8 @@
     "leftLabel": true,
     "collapse": 15,
     "collapseBehavior": "hide",
-    "collapsePair": "LT13"
+    "collapsePair": "LT13",
+    "opposite": "LT13"
   },
   {
     "caption": "Kent Ridge Bus Terminal",
@@ -940,7 +972,8 @@
         "name": "PUB:95"
       }
     ],
-    "leftLabel": true
+    "leftLabel": true,
+    "opposite": null
   },
   {
     "caption": "TCOMS",
@@ -955,7 +988,8 @@
         "routeid": 90289
       },
       { "name": "D2", "routeid": 90295 }
-    ]
+    ],
+    "opposite": "TCOMS-OPP"
   },
   {
     "caption": "Opp TCOMS",
@@ -974,6 +1008,7 @@
     "collapse": 16,
     "collapseBehavior": "hide",
     "leftLabel": true,
-    "collapsePair": "TCOMS"
+    "collapsePair": "TCOMS",
+    "opposite": "TCOMS"
   }
 ]

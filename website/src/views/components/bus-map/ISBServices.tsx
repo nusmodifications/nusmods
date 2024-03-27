@@ -1,4 +1,4 @@
-import { PureComponent, useState } from 'react';
+import { PureComponent, useEffect, useState } from 'react';
 import { DivIcon, DragEndEventHandlerFn, LatLngBoundsExpression } from 'leaflet';
 import { Marker, Popup, SVGOverlay, useMapEvents } from 'react-leaflet';
 import classnames from 'classnames';
@@ -11,6 +11,8 @@ import busStopJSON from 'data/bus-stops.json';
 import isbStopJson from 'data/isb-stops.json';
 import { allowBusStopEditing } from 'utils/debug';
 import { nextBus } from 'apis/nextbus';
+import isbServicesJSON from 'data/isb-services.json';
+import { getRouteSegments, segmentsToClasses } from 'utils/mobility';
 import styles from './ISBServices.scss';
 import { ArrivalTimes } from './ArrivalTimes';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -21,7 +23,7 @@ import KRC from './routes/KRC.svg?svgr';
 import BTC from './routes/BTC.svg?svgr';
 
 type Props =
-  | { mapMode: 'all'; onStopClicked: (stop: string | null) => void }
+  | { mapMode: 'all'; onStopClicked: (stop: string | null) => void; focusStop: string | null }
   | {
       mapMode: 'selected';
       selectedSegments: {
@@ -34,6 +36,7 @@ type Props =
         color: string;
       }[];
       onStopClicked: (stop: string | null) => void;
+      focusStop: string | null;
     };
 
 const KRCBounds: LatLngBoundsExpression = [
@@ -46,10 +49,16 @@ const BTCBounds: LatLngBoundsExpression = [
 ];
 
 const btcStops = ['CG', 'OTH', 'BG-MRT'];
+const isbServices = isbServicesJSON;
 
 export default function ISBStops(props: Props) {
   const { mapMode } = props;
   const [currentZoom, setCurrentZoom] = useState(0);
+  const [currentFocusStop, setCurrentFocusStop] = useState<string | null>(null);
+
+  useEffect(() => {
+    setCurrentFocusStop(props.focusStop);
+  }, [props.focusStop]);
 
   const map = useMapEvents({
     zoom: () => {
@@ -60,23 +69,30 @@ export default function ISBStops(props: Props) {
   let selectedSegments: { classes: string[]; color: string }[] = [];
   let selectedStops: { name: string; color: string; subtext?: string }[] = [];
   if (props.mapMode === 'selected') {
-    selectedSegments = props.selectedSegments.map(({ start, end, color }) => {
-      const classes = [];
-
-      const relationClassname = `${start}__${end}`;
-      const svgPrefixes = ['KRC_svg__KRC'];
-      if (btcStops.includes(start) || btcStops.includes(end)) {
-        svgPrefixes.push('BTC_svg__BTC');
-      }
-
-      classes.push(`.${svgPrefixes[0]} .${svgPrefixes[0].slice(0, -3)}${relationClassname}`);
-      if (svgPrefixes.length > 1) {
-        classes.push(`.${svgPrefixes[1]} .${svgPrefixes[1].slice(0, -3)}${relationClassname}`);
-      }
-
-      return { classes, color };
-    });
+    selectedSegments = segmentsToClasses(props.selectedSegments);
     selectedStops = props.selectedStops;
+  } else if (props.mapMode === 'all' && currentFocusStop) {
+    const currentFocusStopDetails = isbStopJson.find((stop) => stop.name === currentFocusStop);
+    if (currentFocusStopDetails) {
+      // get all services passing by this stop
+      const passingServices = currentFocusStopDetails.shuttles
+        .map((service) => {
+          const serviceDetails = isbServices.find((s) => s.name === service.name);
+          if (!serviceDetails) return null;
+          return serviceDetails;
+        })
+        .filter(Boolean) as (typeof isbServices)[number][];
+
+      // for each service, get the route segments, and merge it into selectedSegments
+      // selectedSegments returns an array of segments, so do not use map
+      passingServices.forEach((service) => {
+        selectedSegments = selectedSegments.concat(
+          segmentsToClasses(getRouteSegments(service.stops, '#3087d8')),
+        );
+      });
+
+      // console.log('selectedSegments', selectedSegments);
+    }
   }
 
   return (
@@ -143,11 +159,41 @@ export default function ISBStops(props: Props) {
         );
 
         const isLeft = hasPairAndIsTheOpposite ? !stop.leftLabel : stop.leftLabel;
+        const isFocused = currentFocusStop === stop.name;
+
         // Routes are displayed to the left or right of the hit area
-        const routeWrapperClass = classnames(styles.routeWrapper, isLeft && styles.left);
+        const routeWrapperClass = classnames(
+          styles.routeWrapper,
+          isLeft && styles.left,
+          isFocused && styles.focused,
+        );
         // [styles.left]: stop.displayRoutesLeft,
 
         const routeNameClass = classnames(styles.stopName);
+
+        const subtextHTML = subtext ? `<div class="${styles.subtext}">${subtext}</div>` : '';
+
+        const dedupedShuttles = stop.shuttles.filter(
+          (service, i, arr) => arr.findIndex((s) => s.name === service.name) === i,
+        );
+
+        const services = dedupedShuttles
+          .map((service) => {
+            const serviceDetails = isbServices.find((s) => s.name === service.name);
+            if (!serviceDetails) return null;
+            return serviceDetails;
+          })
+          .filter(Boolean) as (typeof isbServices)[number][];
+        const servicesHTML =
+          mapMode === 'all' && isFocused
+            ? `<div class="${styles.stopServicesList}">${services
+                .map((service) => {
+                  const serviceDetails = isbServices.find((s) => s.name === service.name);
+                  if (!serviceDetails) return null;
+                  return `<div class="${styles.stopService}" style="--svc-color:${serviceDetails.color}">${serviceDetails.name}</div>`;
+                })
+                .join('')}</div>`
+            : '';
 
         const icon = new DivIcon({
           // language=HTML
@@ -163,10 +209,10 @@ export default function ISBStops(props: Props) {
 
              ${
                displayType !== 'no-label'
-                 ? ` <div class="${routeWrapperClass}">
-                <div class="${routeNameClass}">${stop.ShortName}</div>${
-                     subtext ? `<div class="${styles.subtext}">${subtext}</div>` : ''
-                   }
+                 ? `<div class="${routeWrapperClass}">
+                <div class="${routeNameClass} ${isFocused ? styles.focused : ''}">${
+                     stop.ShortName
+                   }</div>${subtextHTML}${servicesHTML}
                 </div>`
                  : ''
              }`,
@@ -184,6 +230,7 @@ export default function ISBStops(props: Props) {
             eventHandlers={{
               click: () => {
                 if (props.onStopClicked) {
+                  // setCurrentFocusStop(stop.name);
                   props.onStopClicked(stop.name);
                   map.flyTo([stop.latitude, stop.longitude], 17);
                 }
@@ -236,20 +283,20 @@ export default function ISBStops(props: Props) {
 
       {/* background */}
       <SVGOverlay bounds={KRCBounds} className="overlay_bg">
-        <KRC className={mapMode === 'all' ? 'allRoutes' : ''} />
+        <KRC className={mapMode === 'all' && !currentFocusStop ? 'allRoutes' : ''} />
       </SVGOverlay>
 
       <SVGOverlay bounds={BTCBounds} className="overlay_bg">
-        <BTC className={mapMode === 'all' ? 'allRoutes' : ''} />
+        <BTC className={mapMode === 'all' && !currentFocusStop ? 'allRoutes' : ''} />
       </SVGOverlay>
 
       {/* foreground */}
       <SVGOverlay bounds={KRCBounds} className="overlay_fg">
-        <KRC className={mapMode === 'all' ? 'allRoutes' : ''} />
+        <KRC className={mapMode === 'all' && !currentFocusStop ? 'allRoutes' : ''} />
       </SVGOverlay>
 
       <SVGOverlay bounds={BTCBounds} className="overlay_fg">
-        <BTC className={mapMode === 'all' ? 'allRoutes' : ''} />
+        <BTC className={mapMode === 'all' && !currentFocusStop ? 'allRoutes' : ''} />
       </SVGOverlay>
     </>
   );
