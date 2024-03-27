@@ -19,7 +19,7 @@
   "dependencies": {
     "@sentry/node": "5.30.0",
     "@sparticuz/chromium": "92.0.0",
-    "axios": "0.27.2",
+    "axios": "0.28.0",
     "bunyan": "1.8.15",
     "fs-extra": "9.1.0",
     "http-graceful-shutdown": "2.4.0",

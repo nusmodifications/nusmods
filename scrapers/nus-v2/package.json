@@ -52,7 +52,7 @@
     "@elastic/elasticsearch": "7.17.12",
     "@sentry/node": "5.30.0",
     "antlr4ts": "^0.5.0-alpha.4",
-    "axios": "0.27.2",
+    "axios": "0.28.0",
     "bunyan": "1.8.15",
     "date-fns": "2.30.0",
     "deep-diff": "1.0.2",
