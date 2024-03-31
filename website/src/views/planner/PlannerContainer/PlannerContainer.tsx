@@ -30,6 +30,7 @@ import Title from 'views/components/Title';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import Modal from 'views/components/Modal';
 import { State as StoreState } from 'types/state';
+import PlannerButton from '../PlannerButton';
 import PlannerSemester from '../PlannerSemester';
 import PlannerYear from '../PlannerYear';
 import PlannerSettings from '../PlannerSettings';
@@ -140,8 +141,8 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
 
     return (
       <header className={styles.header}>
-        <h1>
-          Course Planner{' '}
+        <div className={styles.headerLeft}>
+          <h1>Course Planner </h1>
           <button
             className="btn btn-sm btn-outline-success"
             type="button"
@@ -149,20 +150,17 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
           >
             Beta - Send Feedback
           </button>
-        </h1>
+        </div>
 
         <div className={styles.headerRight}>
-          <p className={styles.moduleStats}>
-            {count} {count === 1 ? 'course' : 'courses'} / {renderMCs(credits)}
-          </p>
+          <div className={styles.moduleStats}>
+            <p>
+              {count} {count === 1 ? 'Course' : 'Courses'}&nbsp;/&nbsp;
+            </p>
+            <p>{renderMCs(credits)}</p>
+          </div>
 
-          <button
-            className="btn btn-svg btn-outline-primary"
-            type="button"
-            onClick={() => this.setState({ showSettings: true })}
-          >
-            <Settings className="svg" /> Settings
-          </button>
+          <PlannerButton onClick={() => this.setState({ showSettings: true })} />
         </div>
       </header>
     );

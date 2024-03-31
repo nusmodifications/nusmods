@@ -14,12 +14,19 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
+  width: 100%;
 
-  h1 {
+  @include scrollable;
+
+  .headerLeft {
     display: flex;
     align-items: center;
     margin: 0;
-    font-size: $font-size-xlg;
+
+    h1 {
+      font-size: $font-size-xlg;
+    }
 
     button {
       margin-left: 1rem;
@@ -33,10 +40,18 @@
   .headerRight {
     display: flex;
     align-items: center;
+    width: 100%;
   }
 
   .moduleStats {
     margin-right: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+    p {
+      white-space: nowrap;
+    }
   }
 }
 
@@ -61,7 +76,8 @@
 .moduleLists {
   display: flex;
   width: 100%;
-  overflow-x: auto;
+
+  @include scrollable;
 }
 
 .modListHeaders {
