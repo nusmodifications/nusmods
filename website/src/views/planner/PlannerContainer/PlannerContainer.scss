@@ -14,10 +14,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
   width: 100%;
-
-  @include scrollable;
+  gap: 1rem;
 
   .headerLeft {
     display: flex;
@@ -44,15 +42,17 @@
   }
 
   .moduleStats {
-    margin-right: 1rem;
     display: flex;
-    flex-wrap: wrap;
     flex-direction: row;
+    flex-wrap: wrap;
+    margin-right: 1rem;
 
     p {
       white-space: nowrap;
     }
   }
+
+  @include scrollable;
 }
 
 .addYearButton {
@@ -88,8 +88,8 @@
 
 .trash {
   opacity: 0.6;
-  min-width: $semester-width;
   width: $semester-width;
+  min-width: $semester-width;
   border: 1px dashed;
   border-radius: 0.4rem;
   text-align: center;
