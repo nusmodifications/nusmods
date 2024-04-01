@@ -12,17 +12,17 @@
 
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   width: 100%;
-  gap: 1rem;
 
   .headerLeft {
     display: flex;
     align-items: center;
+    flex: 3;
     margin: 0;
 
     h1 {
+      margin: 1rem;
       font-size: $font-size-xlg;
     }
 
@@ -38,7 +38,8 @@
   .headerRight {
     display: flex;
     align-items: center;
-    width: 100%;
+    justify-content: right;
+    flex: 2;
   }
 
   .moduleStats {
