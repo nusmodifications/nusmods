@@ -134,6 +134,8 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
 
   closeAddCustomData = () => this.setState({ showCustomModule: null });
 
+  closeSettingsModal = () => this.setState({ showSettings: false });
+
   renderHeader() {
     const modules = [...this.props.iblocsModules, ...flatten(flatMap(this.props.modules, values))];
     const credits = getTotalMC(modules);
@@ -261,12 +263,8 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
           </div>
         </DragDropContext>
 
-        <Modal
-          isOpen={this.state.showSettings}
-          onRequestClose={() => this.setState({ showSettings: false })}
-          animate
-        >
-          <PlannerSettings />
+        <Modal isOpen={this.state.showSettings} onRequestClose={this.closeSettingsModal} animate>
+          <PlannerSettings onCloseButtonClicked={this.closeSettingsModal} />
         </Modal>
 
         <Modal
