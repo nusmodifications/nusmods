@@ -12,7 +12,7 @@ const PlannerSettingsButton: React.FC<Props> = ({ onClick }) => {
 
   return (
     <button className="btn btn-svg btn-outline-primary" type="button" onClick={onClick}>
-      <Settings className="svg" />
+      <Settings className={narrowViewport ? '' : 'svg'} />
       {narrowViewport ? '' : 'Settings'}
     </button>
   );
