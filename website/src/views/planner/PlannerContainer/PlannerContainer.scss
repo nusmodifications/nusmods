@@ -17,8 +17,8 @@
 
   .headerLeft {
     display: flex;
+    flex: 1;
     align-items: center;
-    flex: 3;
     margin: 0;
 
     h1 {
@@ -37,14 +37,12 @@
 
   .headerRight {
     display: flex;
+    justify-content: flex-end;
     align-items: center;
-    justify-content: right;
-    flex: 2;
   }
 
   .moduleStats {
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
     margin-right: 1rem;
 
