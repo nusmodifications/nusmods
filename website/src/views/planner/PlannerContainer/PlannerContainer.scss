@@ -1,5 +1,5 @@
-@import "~styles/utils/modules-entry";
-@import "../variables";
+@import '~styles/utils/modules-entry';
+@import '../variables';
 
 .pageContainer {
   composes: page-container from global;
@@ -93,8 +93,8 @@
   border: 1px dashed;
   border-radius: 0.4rem;
   text-align: center;
-  color: theme-color("danger");
-  background: rgba(theme-color("danger"), 0.1);
+  color: theme-color('danger');
+  background: rgba(theme-color('danger'), 0.1);
 
   &.isDraggingOver {
     opacity: 1;
@@ -102,8 +102,8 @@
 
   @include night-mode {
     opacity: 0.75;
-    color: lighten(theme-color("danger"), 20);
-    background: rgba(lighten(theme-color("danger"), 20), 0.2);
+    color: lighten(theme-color('danger'), 20);
+    background: rgba(lighten(theme-color('danger'), 20), 0.2);
   }
 }
 
