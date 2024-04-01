@@ -30,7 +30,7 @@ import Title from 'views/components/Title';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import Modal from 'views/components/Modal';
 import { State as StoreState } from 'types/state';
-import PlannerButton from '../PlannerButton';
+import PlannerSettingsButton from '../PlannerSettingsButton';
 import PlannerSemester from '../PlannerSemester';
 import PlannerYear from '../PlannerYear';
 import PlannerSettings from '../PlannerSettings';
@@ -160,7 +160,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
             <p>{renderMCs(credits)}</p>
           </div>
 
-          <PlannerButton onClick={() => this.setState({ showSettings: true })} />
+          <PlannerSettingsButton onClick={() => this.setState({ showSettings: true })} />
         </div>
       </header>
     );

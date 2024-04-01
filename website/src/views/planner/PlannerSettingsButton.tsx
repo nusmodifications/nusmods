@@ -1,18 +1,21 @@
+import React from 'react';
 import { Settings } from 'react-feather';
 import { breakpointDown } from 'utils/css';
 import useMediaQuery from 'views/hooks/useMediaQuery';
 
-export type Props = Readonly<{
+type Props = Readonly<{
   onClick: () => void;
 }>;
 
-export default function PlannerButton(props: Props) {
+const PlannerSettingsButton: React.FC<Props> = ({ onClick }) => {
   const narrowViewport = useMediaQuery(breakpointDown('sm'));
 
   return (
-    <button className="btn btn-svg btn-outline-primary" type="button" onClick={props.onClick}>
+    <button className="btn btn-svg btn-outline-primary" type="button" onClick={onClick}>
       <Settings className="svg" />
       {narrowViewport ? '' : 'Settings'}
     </button>
   );
-}
+};
+
+export default PlannerSettingsButton;
