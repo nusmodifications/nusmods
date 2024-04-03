@@ -16,6 +16,7 @@ import ComponentMap from 'utils/ComponentMap';
 import { Counter } from 'utils/react';
 import { State } from 'types/state';
 
+import useColorScheme from 'views/hooks/useColorScheme';
 import styles from './ExportMenu.scss';
 
 type ExportAction = 'CALENDAR' | 'IMAGE' | 'PDF';
@@ -33,6 +34,8 @@ const ExportMenuComponent: React.FC<Props> = ({ semester, timetable }) => {
 
   const dispatch = useDispatch();
   const state = useSelector((storeState: State) => storeState);
+
+  const colorScheme = useColorScheme();
 
   const onSelect = useCallback(
     (item: ExportAction | null) => {
@@ -79,7 +82,13 @@ const ExportMenuComponent: React.FC<Props> = ({ semester, timetable }) => {
           >
             <Online>
               <a
-                href={exportApi.image(semester, timetable, state, window.devicePixelRatio)}
+                href={exportApi.image(
+                  semester,
+                  timetable,
+                  colorScheme,
+                  state,
+                  window.devicePixelRatio,
+                )}
                 className={classnames('dropdown-item', {
                   'dropdown-selected': counter.matches(highlightedIndex),
                 })}
@@ -89,7 +98,7 @@ const ExportMenuComponent: React.FC<Props> = ({ semester, timetable }) => {
               </a>
 
               <a
-                href={exportApi.pdf(semester, timetable, state)}
+                href={exportApi.pdf(semester, timetable, colorScheme, state)}
                 className={classnames('dropdown-item', {
                   'dropdown-selected': counter.matches(highlightedIndex),
                 })}
@@ -132,7 +141,7 @@ const ExportMenuComponent: React.FC<Props> = ({ semester, timetable }) => {
         </div>
       );
     },
-    [isMacWarningOpen, closeMacOSWarningModal, semester, timetable, state],
+    [isMacWarningOpen, closeMacOSWarningModal, semester, timetable, colorScheme, state],
   );
 
   return <Downshift onSelect={onSelect}>{renderDropdown}</Downshift>;

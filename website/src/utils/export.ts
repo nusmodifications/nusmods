@@ -3,10 +3,12 @@ import { ExportData } from 'types/export';
 import { getSemesterTimetableColors } from 'selectors/timetables';
 import { State } from 'types/state';
 import { SemTimetableConfig } from 'types/timetables';
+import { ColorScheme } from 'types/settings';
 
 export function extractStateForExport(
   semester: Semester,
   timetable: SemTimetableConfig,
+  colorScheme: ColorScheme,
   state: State,
 ): ExportData {
   const colors = getSemesterTimetableColors(state)(semester);
@@ -19,7 +21,7 @@ export function extractStateForExport(
     hidden,
     theme: state.theme,
     settings: {
-      colorScheme: state.settings.colorScheme,
+      colorScheme,
     },
   };
 }
