@@ -27,10 +27,3 @@ exports[`settings should dispatch a selection of a color scheme preference 1`] =
   "type": "SELECT_COLOR_SCHEME",
 }
 `;
-
-exports[`settings should dispatch a toggle of a color scheme preference 1`] = `
-{
-  "payload": null,
-  "type": "TOGGLE_COLOR_SCHEME",
-}
-`;
