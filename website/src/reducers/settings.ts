@@ -19,13 +19,10 @@ import {
 } from 'actions/settings';
 import { SET_EXPORTED_DATA } from 'actions/constants';
 import { DIMENSIONS, withTracker } from 'bootstrapping/matomo';
-import {
-  DARK_COLOR_SCHEME_PREFERENCE,
-  LIGHT_COLOR_SCHEME_PREFERENCE,
-  SYSTEM_COLOR_SCHEME_PREFERENCE,
-} from 'types/settings';
+import { SYSTEM_COLOR_SCHEME_PREFERENCE } from 'types/settings';
 import config from 'config';
 import { isRoundDismissed } from 'selectors/modreg';
+import { colorSchemeToPreference } from 'utils/colorScheme';
 
 export const defaultModRegNotificationState = {
   semesterKey: config.getSemesterKey(),
@@ -86,11 +83,14 @@ function settings(state: SettingsState = defaultSettingsState, action: Actions):
         draft.modRegNotification.scheduleType = action.payload;
       });
 
-    case SET_EXPORTED_DATA:
+    case SET_EXPORTED_DATA: {
+      const { colorScheme, ...otherSettings } = action.payload.settings;
       return {
         ...state,
-        ...action.payload.settings,
+        ...otherSettings,
+        colorScheme: colorSchemeToPreference(action.payload.settings.colorScheme),
       };
+    }
 
     case SET_MODULE_TABLE_SORT:
       return {

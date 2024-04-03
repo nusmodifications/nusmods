@@ -4,11 +4,7 @@ import { useDispatch, useStore } from 'react-redux';
 import Mousetrap from 'mousetrap';
 import { groupBy, map } from 'lodash';
 
-import {
-  DARK_COLOR_SCHEME,
-  DARK_COLOR_SCHEME_PREFERENCE,
-  LIGHT_COLOR_SCHEME_PREFERENCE,
-} from 'types/settings';
+import { DARK_COLOR_SCHEME_PREFERENCE } from 'types/settings';
 import themes from 'data/themes.json';
 import { cycleTheme, toggleTimetableOrientation } from 'actions/theme';
 import { openNotification } from 'actions/app';
@@ -17,6 +13,7 @@ import { intersperse } from 'utils/array';
 import ComponentMap from 'utils/ComponentMap';
 import type { State } from 'types/state';
 import useColorScheme from 'views/hooks/useColorScheme';
+import { colorSchemeToPreference } from 'utils/colorScheme';
 import Modal from './Modal';
 import styles from './KeyboardShortcuts.scss';
 
@@ -105,12 +102,8 @@ const KeyboardShortcuts: React.FC = () => {
 
     // Toggle night mode
     bind('x', APPEARANCE, 'Toggle Night Mode', () => {
-      const newColorScheme =
-        colorScheme === DARK_COLOR_SCHEME
-          ? LIGHT_COLOR_SCHEME_PREFERENCE
-          : DARK_COLOR_SCHEME_PREFERENCE;
+      const newColorScheme = colorSchemeToPreference(colorScheme);
       dispatch(selectColorScheme(newColorScheme));
-
       dispatch(
         openNotification(
           `Night mode ${newColorScheme === DARK_COLOR_SCHEME_PREFERENCE ? 'on' : 'off'}`,
