@@ -19,7 +19,7 @@ export function extractStateForExport(
     hidden,
     theme: state.theme,
     settings: {
-      mode: state.settings.mode,
+      colorScheme: state.settings.colorScheme,
     },
   };
 }

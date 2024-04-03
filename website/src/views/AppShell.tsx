@@ -1,7 +1,7 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import type { SemTimetableConfig } from 'types/timetables';
 import type { Semester } from 'types/modules';
-import { DARK_MODE } from 'types/settings';
+import { DARK_COLOR_SCHEME } from 'types/settings';
 
 import { Helmet } from 'react-helmet';
 import { NavLink, useHistory } from 'react-router-dom';
@@ -30,12 +30,12 @@ import Logo from 'img/nusmods-logo.svg';
 import type { Dispatch } from 'types/redux';
 import type { State } from 'types/state';
 import type { Actions } from 'types/actions';
-import { getOSPrefersDarkColorScheme } from 'utils/css';
 import LoadingSpinner from './components/LoadingSpinner';
 import FeedbackModal from './components/FeedbackModal';
 import KeyboardShortcuts from './components/KeyboardShortcuts';
 
 import styles from './AppShell.scss';
+import useColorScheme from './hooks/useColorScheme';
 
 /**
  * Fetch module list on mount.
@@ -114,8 +114,8 @@ const AppShell: FC = ({ children }) => {
   const moduleList = useSelector((state: State) => state.moduleBank.moduleList);
   const isModuleListReady = moduleList.length;
 
-  const mode = useSelector((state: State) => state.settings.mode);
-  const isDarkMode = mode === DARK_MODE;
+  const colorScheme = useColorScheme();
+  const isDarkMode = colorScheme === DARK_COLOR_SCHEME;
 
   const theme = useSelector((state: State) => state.theme.id);
 
