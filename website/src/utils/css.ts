@@ -36,12 +36,3 @@ export function supportsCSSVariables() {
   // Safari does not support supports('--var', 'red')
   return CSS.supports && CSS.supports('(--var: red)');
 }
-
-export function getOSPrefersDarkColorScheme() {
-  // If the user uses a legacy browser that doesn't support matchMedia or
-  // doesn't support the prefers-color-scheme media query, this function returns
-  // false and AppShell will default to light mode
-  const userPrefersDark =
-    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  return userPrefersDark;
-}
