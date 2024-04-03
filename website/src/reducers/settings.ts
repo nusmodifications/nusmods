@@ -9,18 +9,21 @@ import {
   DISMISS_MODREG_NOTIFICATION,
   ENABLE_MODREG_NOTIFICATION,
   SELECT_FACULTY,
-  SELECT_MODE,
+  SELECT_COLOR_SCHEME,
   SELECT_NEW_STUDENT,
   SET_LOAD_DISQUS_MANUALLY,
   SET_MODULE_TABLE_SORT,
   TOGGLE_BETA_TESTING_STATUS,
   TOGGLE_MODREG_NOTIFICATION_GLOBALLY,
-  TOGGLE_MODE,
   SET_MODREG_SCHEDULE_TYPE,
 } from 'actions/settings';
 import { SET_EXPORTED_DATA } from 'actions/constants';
 import { DIMENSIONS, withTracker } from 'bootstrapping/matomo';
-import { SYSTEM_MODE } from 'types/settings';
+import {
+  DARK_COLOR_SCHEME_PREFERENCE,
+  LIGHT_COLOR_SCHEME_PREFERENCE,
+  SYSTEM_COLOR_SCHEME_PREFERENCE,
+} from 'types/settings';
 import config from 'config';
 import { isRoundDismissed } from 'selectors/modreg';
 
@@ -34,7 +37,7 @@ export const defaultModRegNotificationState = {
 const defaultSettingsState: SettingsState = {
   newStudent: false,
   faculty: '',
-  mode: SYSTEM_MODE,
+  colorScheme: SYSTEM_COLOR_SCHEME_PREFERENCE,
   hiddenInTimetable: [],
   modRegNotification: defaultModRegNotificationState,
   moduleTableOrder: 'exam',
@@ -54,16 +57,11 @@ function settings(state: SettingsState = defaultSettingsState, action: Actions):
         ...state,
         faculty: action.payload,
       };
-    case SELECT_MODE:
+    case SELECT_COLOR_SCHEME:
       return {
         ...state,
-        mode: action.payload,
+        colorScheme: action.payload,
       };
-    case TOGGLE_MODE:
-      return {
-        ...state,
-      };
-
     case TOGGLE_MODREG_NOTIFICATION_GLOBALLY:
       return produce(state, (draft) => {
         draft.modRegNotification.enabled = action.payload.enabled;

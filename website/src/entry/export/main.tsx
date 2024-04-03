@@ -7,7 +7,7 @@ import { ExportData } from 'types/export';
 
 import configureStore from 'bootstrapping/configure-store';
 import { setExportedData } from 'actions/export';
-import { DARK_MODE } from 'types/settings';
+import { DARK_COLOR_SCHEME_PREFERENCE } from 'types/settings';
 import { State as StoreState } from 'types/state';
 
 import TimetableOnly from './TimetableOnly';
@@ -32,7 +32,10 @@ window.setData = function setData(modules, data, callback) {
   const { semester, timetable, colors } = data;
 
   if (document.body) {
-    document.body.classList.toggle('mode-dark', data.settings.mode === DARK_MODE);
+    document.body.classList.toggle(
+      'mode-dark',
+      data.settings.mode === DARK_COLOR_SCHEME_PREFERENCE,
+    );
   }
 
   store.dispatch(setExportedData(modules, data));

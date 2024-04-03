@@ -1,40 +1,45 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { Mode, DEFAULT_MODE, LIGHT_MODE, DARK_MODE } from 'types/settings';
+import {
+  ColorSchemePreference,
+  SYSTEM_COLOR_SCHEME_PREFERENCE,
+  LIGHT_COLOR_SCHEME_PREFERENCE,
+  DARK_COLOR_SCHEME_PREFERENCE,
+} from 'types/settings';
 
 type Props = {
-  mode: Mode;
-  onSelectMode: (mode: Mode) => void;
+  colorScheme: ColorSchemePreference;
+  onSelectColorScheme: (mode: ColorSchemePreference) => void;
 };
 
-type ModeOption = { value: Mode; label: string };
+type ModeOption = { value: ColorSchemePreference; label: string };
 
 const MODES: ModeOption[] = [
   {
-    label: 'Auto-detect',
-    value: DEFAULT_MODE,
+    label: 'Auto',
+    value: SYSTEM_COLOR_SCHEME_PREFERENCE,
   },
   {
     label: 'On',
-    value: DARK_MODE,
+    value: DARK_COLOR_SCHEME_PREFERENCE,
   },
   {
     label: 'Off',
-    value: LIGHT_MODE,
+    value: LIGHT_COLOR_SCHEME_PREFERENCE,
   },
 ];
 
-const ModeSelect: React.FC<Props> = ({ mode, onSelectMode }) => (
+const ModeSelect: React.FC<Props> = ({ colorScheme, onSelectColorScheme }) => (
   <div className="btn-group" role="group">
     {MODES.map(({ value, label }) => (
       <button
         type="button"
         key={value}
         className={classnames('btn', {
-          'btn-primary': mode === value,
-          'btn-outline-primary': mode !== value,
+          'btn-primary': colorScheme === value,
+          'btn-outline-primary': colorScheme !== value,
         })}
-        onClick={() => onSelectMode(value)}
+        onClick={() => onSelectColorScheme(value)}
       >
         {label}
       </button>
