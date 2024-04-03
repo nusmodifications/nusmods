@@ -29,6 +29,10 @@ const initialState: SettingsState = {
 const settingsWithNewStudent: SettingsState = { ...initialState, newStudent: true };
 const faculty = 'School of Computing';
 const settingsWithFaculty: SettingsState = { ...initialState, faculty };
+const settingsWithLightMode: SettingsState = {
+  ...initialState,
+  colorScheme: LIGHT_COLOR_SCHEME_PREFERENCE,
+};
 const settingsWithDarkMode: SettingsState = {
   ...initialState,
   colorScheme: DARK_COLOR_SCHEME_PREFERENCE,
@@ -59,14 +63,18 @@ describe('settings', () => {
     expect(nextState).toEqual(settingsWithFaculty);
   });
 
-  test('can select mode', () => {
+  test('can select color scheme', () => {
     const action = actions.selectColorScheme(DARK_COLOR_SCHEME_PREFERENCE);
     const nextState: SettingsState = reducer(initialState, action);
     expect(nextState).toEqual(settingsWithDarkMode);
 
     const action2 = actions.selectColorScheme(LIGHT_COLOR_SCHEME_PREFERENCE);
-    const nextState2: SettingsState = reducer(nextState, action2);
-    expect(nextState2).toEqual(initialState);
+    const nextState2: SettingsState = reducer(initialState, action2);
+    expect(nextState2).toEqual(settingsWithLightMode);
+
+    const action3 = actions.selectColorScheme(SYSTEM_COLOR_SCHEME_PREFERENCE);
+    const nextState3: SettingsState = reducer(nextState, action3);
+    expect(nextState3).toEqual(initialState);
   });
 
   test('set module table order', () => {
