@@ -5,8 +5,8 @@ export type Theme = {
   readonly name: string;
 };
 
-export type Mode = 'DEFAULT' | 'LIGHT' | 'DARK';
+export type Mode = 'SYSTEM' | 'LIGHT' | 'DARK';
 
-export const DEFAULT_MODE: Mode = 'DEFAULT';
+export const SYSTEM_MODE: Mode = 'SYSTEM';
 export const LIGHT_MODE: Mode = 'LIGHT';
 export const DARK_MODE: Mode = 'DARK';

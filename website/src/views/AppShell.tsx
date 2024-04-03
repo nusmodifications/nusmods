@@ -1,7 +1,7 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import type { SemTimetableConfig } from 'types/timetables';
 import type { Semester } from 'types/modules';
-import { DARK_MODE, DEFAULT_MODE } from 'types/settings';
+import { DARK_MODE } from 'types/settings';
 
 import { Helmet } from 'react-helmet';
 import { NavLink, useHistory } from 'react-router-dom';
@@ -115,7 +115,7 @@ const AppShell: FC = ({ children }) => {
   const isModuleListReady = moduleList.length;
 
   const mode = useSelector((state: State) => state.settings.mode);
-  const isDarkMode = mode === DARK_MODE || (mode === DEFAULT_MODE && getOSPrefersDarkColorScheme());
+  const isDarkMode = mode === DARK_MODE;
 
   const theme = useSelector((state: State) => state.theme.id);
 

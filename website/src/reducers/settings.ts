@@ -20,10 +20,9 @@ import {
 } from 'actions/settings';
 import { SET_EXPORTED_DATA } from 'actions/constants';
 import { DIMENSIONS, withTracker } from 'bootstrapping/matomo';
-import { DEFAULT_MODE, DARK_MODE, LIGHT_MODE } from 'types/settings';
+import { SYSTEM_MODE } from 'types/settings';
 import config from 'config';
 import { isRoundDismissed } from 'selectors/modreg';
-import { getOSPrefersDarkColorScheme } from 'utils/css';
 
 export const defaultModRegNotificationState = {
   semesterKey: config.getSemesterKey(),
@@ -35,7 +34,7 @@ export const defaultModRegNotificationState = {
 const defaultSettingsState: SettingsState = {
   newStudent: false,
   faculty: '',
-  mode: DEFAULT_MODE,
+  mode: SYSTEM_MODE,
   hiddenInTimetable: [],
   modRegNotification: defaultModRegNotificationState,
   moduleTableOrder: 'exam',
@@ -63,10 +62,6 @@ function settings(state: SettingsState = defaultSettingsState, action: Actions):
     case TOGGLE_MODE:
       return {
         ...state,
-        mode:
-          state.mode === DARK_MODE || (state.mode === DEFAULT_MODE && getOSPrefersDarkColorScheme())
-            ? LIGHT_MODE
-            : DARK_MODE,
       };
 
     case TOGGLE_MODREG_NOTIFICATION_GLOBALLY:
