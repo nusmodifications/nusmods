@@ -13,7 +13,7 @@ import { intersperse } from 'utils/array';
 import ComponentMap from 'utils/ComponentMap';
 import type { State } from 'types/state';
 import useColorScheme from 'views/hooks/useColorScheme';
-import { colorSchemeToPreference } from 'utils/colorScheme';
+import { colorSchemeToPreference, invertColorScheme } from 'utils/colorScheme';
 import Modal from './Modal';
 import styles from './KeyboardShortcuts.scss';
 
@@ -102,7 +102,7 @@ const KeyboardShortcuts: React.FC = () => {
 
     // Toggle night mode
     bind('x', APPEARANCE, 'Toggle Night Mode', () => {
-      const newColorScheme = colorSchemeToPreference(colorScheme);
+      const newColorScheme = colorSchemeToPreference(invertColorScheme(colorScheme));
       dispatch(selectColorScheme(newColorScheme));
       dispatch(
         openNotification(

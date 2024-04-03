@@ -15,3 +15,13 @@ export function colorSchemeToPreference(colorScheme: ColorScheme) {
       return DARK_COLOR_SCHEME_PREFERENCE;
   }
 }
+
+export function invertColorScheme(colorScheme: ColorScheme) {
+  switch (colorScheme) {
+    case LIGHT_COLOR_SCHEME:
+      return DARK_COLOR_SCHEME;
+    case DARK_COLOR_SCHEME:
+    default:
+      return LIGHT_COLOR_SCHEME;
+  }
+}
