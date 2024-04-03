@@ -1,6 +1,6 @@
 import { SemTimetableConfig } from 'types/timetables';
 import { Semester, ModuleCode } from 'types/modules';
-import { ColorSchemePreference } from 'types/settings';
+import type { ColorScheme } from 'types/settings';
 import { ColorMapping, ThemeState } from 'types/reducers';
 
 export type ExportData = {
@@ -10,6 +10,6 @@ export type ExportData = {
   readonly hidden: ModuleCode[];
   readonly theme: ThemeState;
   readonly settings: {
-    colorScheme: ColorSchemePreference;
+    colorScheme: ColorScheme;
   };
 };
