@@ -4587,6 +4587,22 @@
       "y": 1.2949252184799644
     }
   },
+  "COM3-01-23": {
+    "roomName": "Seminar Room 14",
+    "floor": 1,
+    "location": {
+      "x": 103.7748425,
+      "y": 1.2950386
+    }
+  },
+  "COM3-01-25": {
+    "roomName": "Seminar Room 15",
+    "floor": 1,
+    "location": {
+      "x": 103.7749804,
+      "y": 1.2948523
+    }
+  },
   "COM3-MPH": {
     "roomName": "COM3-MPH",
     "floor": 1,
