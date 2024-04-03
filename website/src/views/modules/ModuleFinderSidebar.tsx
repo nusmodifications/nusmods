@@ -73,23 +73,27 @@ function getExamClashFilter(semester: Semester, examTimings: ExamTiming[]): Filt
   // with exam1 iff (exam2.start < exam1.end) && (exam2.end > exam1.start)
   const clashRanges = examTimings.map((exam1) => ({
     bool: {
-      must: {
-        range: {
-          'semesterData.examDate': {
-            lt: getEndTime(exam1.start, exam1.duration),
-          },
-        },
-        script: {
-          script: {
-            source: `doc.containsKey['semesterData.examDate'] && 
-              doc.containsKey['semesterData.examDuration'] && 
-              ZonedDateTime.parse(doc['semesterData.examDate'].value).plusMinutes(doc['semesterData.examDuration].value).isAfter(ZonedDateTime.parse(params.exam1start))`,
-            params: {
-              exam1start: exam1.start,
+      must: [
+        {
+          range: {
+            'semesterData.examDate': {
+              lt: getEndTime(exam1.start, exam1.duration),
             },
           },
         },
-      },
+        {
+          script: {
+            script: {
+              source: `doc.containsKey('semesterData.examDate') && 
+              doc.containsKey('semesterData.examDuration') && 
+              doc['semesterData.examDate'].value.plusMinutes(doc['semesterData.examDuration'].value).isAfter(ZonedDateTime.parse(params.exam1start))`,
+              params: {
+                exam1start: exam1.start,
+              },
+            },
+          },
+        },
+      ],
     },
   }));
 
