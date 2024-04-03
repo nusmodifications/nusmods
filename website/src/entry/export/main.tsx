@@ -7,7 +7,7 @@ import { ExportData } from 'types/export';
 
 import configureStore from 'bootstrapping/configure-store';
 import { setExportedData } from 'actions/export';
-import { DARK_COLOR_SCHEME, DARK_COLOR_SCHEME_PREFERENCE } from 'types/settings';
+import { DARK_COLOR_SCHEME } from 'types/settings';
 import { State as StoreState } from 'types/state';
 
 import TimetableOnly from './TimetableOnly';

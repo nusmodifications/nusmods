@@ -1,11 +1,9 @@
 import {
   ColorScheme,
-  ColorSchemePreference,
   DARK_COLOR_SCHEME,
   DARK_COLOR_SCHEME_PREFERENCE,
   LIGHT_COLOR_SCHEME,
   LIGHT_COLOR_SCHEME_PREFERENCE,
-  SYSTEM_COLOR_SCHEME_PREFERENCE,
 } from 'types/settings';
 
 export function colorSchemeToPreference(colorScheme: ColorScheme) {
