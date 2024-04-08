@@ -67,3 +67,11 @@
   right: 8px;
   z-index: 99999999;
 }
+
+@media (min-width: 768px) {
+  :root {
+    footer {
+      display: none;
+    }
+  }
+}

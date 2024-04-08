@@ -141,7 +141,6 @@ const MobilityContainer = () => {
           {type === 'stop' && <StopDetails stop={slug} setSelectedService={setSelectedService} />}
         </div>
       </div>
-      <NoFooter />
     </>
   );
 };
