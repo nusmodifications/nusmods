@@ -2,7 +2,7 @@ import Title from 'views/components/Title';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import ButtonGroupSelector from 'views/components/ButtonGroupSelector';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ChevronDown, ChevronUp } from 'react-feather';
 import { isWithinBlock } from 'utils/mobility';
 import isbServicesJSON from '../../data/isb-services.json';
@@ -28,9 +28,8 @@ function ServiceSchedule({
 }) {
   const [expanded, setExpanded] = useState(defaultExpand);
   const currentDay = new Date().getDay() >= 1 && new Date().getDay() <= 5 ? 1 : new Date().getDay();
-
   const [selectedDay, setSelectedDay] = useState(currentDay);
-  const scheduleForDay = schedule[selectedDay];
+  const scheduleForDay = useMemo(() => schedule[selectedDay], [schedule, selectedDay]);
 
   return (
     <div className={styles.schedule}>
@@ -54,13 +53,13 @@ function ServiceSchedule({
       {expanded && (
         <div className={styles.scheduleDetails}>
           <div className={classNames(styles.daySelector, 'form-group')}>
-            {/* <label htmlFor="day-selector">Day</label> */}
             <select
               id="day-selector"
               className="form-control"
               value={selectedDay}
               onChange={(e) => setSelectedDay(parseInt(e.target.value, 10))}
             >
+              {/* for now theres no schedule for individual weekdays, so they're grouped up for convenience */}
               <option value="1">Weekdays</option>
               <option value="6">Saturday</option>
               <option value="0">Sunday & Public Holidays</option>
@@ -98,8 +97,7 @@ function ServiceSchedule({
 
 function ServiceDetails(props: Props) {
   const [selectedTab, setSelectedTab] = useState<'Stops' | 'Schedule'>('Stops');
-  const { service } = props;
-  const serviceDetails = isbServices.find((s) => s.id === service);
+  const serviceDetails = useMemo(() => isbServices.find((s) => s.id === props.service), [props]);
   if (!serviceDetails) return <div>Service not found</div>;
 
   const { name, color, id } = serviceDetails;

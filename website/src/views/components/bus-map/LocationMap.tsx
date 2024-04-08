@@ -1,31 +1,14 @@
-import { FC, useState, useContext, useCallback, memo, useEffect } from 'react';
-import { LatLngBoundsExpression, LatLngBoundsLiteral, LatLngExpression, Map } from 'leaflet';
-import {
-  MapContainer,
-  Marker,
-  Polyline,
-  Popup,
-  SVGOverlay,
-  TileLayer,
-  useMap,
-  useMapEvents,
-} from 'react-leaflet';
+import { FC, memo, useEffect } from 'react';
+import { LatLngBoundsLiteral, LatLngExpression, Map } from 'leaflet';
+import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import { GestureHandling } from 'leaflet-gesture-handling';
 import classnames from 'classnames';
-
-import ExternalLink from 'views/components/ExternalLink';
 import type { LatLngTuple } from 'types/venues';
 
-import isbServicesJson from 'data/isb-services.json';
 import isbStopsJson from 'data/isb-stops.json';
-import ExpandMap from './ExpandMap';
-import MapContext from './MapContext';
-import MapViewportChanger from './MapViewportChanger';
 
 import styles from './LocationMap.scss';
 import ISBServices from './ISBServices';
-
-import { markerIcon } from './icons';
 
 const ViewingBounds = {
   KRC: {
@@ -52,12 +35,7 @@ const ViewingBounds = {
   },
 };
 
-const isbServices = isbServicesJson;
 const isbStops = isbStopsJson;
-
-// const isbServicesRoutes = isbServices.map((service) =>
-//   getRoutesFromStops(service.stops, service.color),
-// );
 
 type Props = {
   readonly position: LatLngTuple;
@@ -83,7 +61,112 @@ type Props = {
 
 Map.addInitHook('addHandler', 'gestureHandling', GestureHandling);
 
-// temporary component made to find latlng from just clicking on the map
+// temporary component for debugging/developing is at the bottom of the file
+
+function MapFocusSetter({ focusStop }: { focusStop: string | null }) {
+  const map = useMap();
+  useEffect(() => {
+    if (focusStop) {
+      const stop = isbStops.find((s) => s.name === focusStop);
+      if (stop) {
+        map.flyTo([stop.latitude, stop.longitude], 18, {
+          duration: 0.5,
+          easeLinearity: 0.1,
+        });
+      }
+    }
+  }, [focusStop, map]);
+  return null;
+}
+
+function MapBoundsSetter({ campus }: { campus: 'KRC' | 'BTC' }) {
+  const map = useMap();
+  const { coordinates, minZoom } = ViewingBounds[campus];
+
+  useEffect(() => {
+    map.setMaxBounds(coordinates);
+    map.setMinZoom(minZoom);
+    const centerbounds = ViewingBounds[campus].centerpoint;
+    const centerpoint: LatLngExpression = [
+      (centerbounds[0][0] + centerbounds[1][0]) / 2,
+      (centerbounds[0][1] + centerbounds[1][1]) / 2,
+    ];
+    map.setView(centerpoint, minZoom, {
+      animate: false,
+    });
+  }, [campus, map, minZoom, coordinates]);
+  return null;
+}
+
+const LocationMap: FC<Props> = ({
+  position,
+  className,
+  zoom,
+  onStopClicked,
+  campus,
+  focusStop,
+  setFocusStop,
+  selectedSegments,
+  selectedStops,
+  children,
+}) => {
+  const hasSelection = selectedSegments || selectedStops;
+
+  return (
+    <div className={classnames(styles.mapWrapper, className)}>
+      <MapContainer
+        center={position}
+        zoom={zoom || 18}
+        maxZoom={18}
+        className={`${styles.map}`}
+        maxBoundsViscosity={0.8}
+        zoomSnap={0.5}
+        zoomDelta={0.5}
+        minZoom={15}
+      >
+        <MapFocusSetter focusStop={focusStop} />
+        <MapBoundsSetter campus={campus} />
+
+        <TileLayer
+          attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          // url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          url="https://b.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
+          className={styles.mapTile}
+        />
+
+        {hasSelection ? (
+          <ISBServices
+            mapMode="selected"
+            selectedSegments={selectedSegments || []}
+            selectedStops={selectedStops || []}
+            onStopClicked={(s) => {
+              onStopClicked(s);
+              setFocusStop(s);
+            }}
+            focusStop={focusStop}
+            campus={campus}
+          />
+        ) : (
+          <ISBServices
+            mapMode="all"
+            onStopClicked={(s) => {
+              onStopClicked(s);
+              setFocusStop(s);
+            }}
+            focusStop={focusStop}
+            campus={campus}
+          />
+        )}
+      </MapContainer>
+      {children}
+    </div>
+  );
+};
+
+export default memo(LocationMap);
+
+// DEBUG/DEV FUNCTIONS
+
 // function LocationMarker() {
 //   const [position, setPosition] = useState(null);
 //   const map = useMapEvents({
@@ -107,160 +190,16 @@ Map.addInitHook('addHandler', 'gestureHandling', GestureHandling);
 //   );
 // }
 
-function Debug() {
-  // const map = useMap();
-  const [currentZoom, setCurrentZoom] = useState(0);
+// function Debug() {
+//   // const map = useMap();
+//   const [currentZoom, setCurrentZoom] = useState(0);
 
-  const map = useMapEvents({
-    zoom: () => {
-      console.log('zoom', map.getZoom());
-      setCurrentZoom(map.getZoom());
-    },
-  });
-  // return null;
-  return <div className={styles.debug}>{`zoom: ${currentZoom}`}</div>;
-}
-
-function MapFocusSetter({ focusStop }: { focusStop: string | null }) {
-  const map = useMap();
-  useEffect(() => {
-    if (focusStop) {
-      const stop = isbStops.find((s) => s.name === focusStop);
-      if (stop) {
-        map.flyTo([stop.latitude, stop.longitude], 18, {
-          duration: 0.5,
-          easeLinearity: 0.1,
-        });
-      }
-    }
-  }, [focusStop]);
-  return null;
-}
-
-function MapBoundsSetter({ campus }: { campus: 'KRC' | 'BTC' }) {
-  const map = useMap();
-  const { coordinates, minZoom } = ViewingBounds[campus];
-
-  useEffect(() => {
-    const duration = 500;
-    // map.flyToBounds(centerpoint, { duration: duration / 1000, maxZoom: 15, easeLinearity: 0.1 });
-    // wait until above is done
-    // setTimeout(() => {
-    map.setMaxBounds(coordinates);
-    map.setMinZoom(minZoom);
-    // center map to centerpoint immediately, without animation
-    const centerbounds = ViewingBounds[campus].centerpoint;
-    const centerpoint: LatLngExpression = [
-      (centerbounds[0][0] + centerbounds[1][0]) / 2,
-      (centerbounds[0][1] + centerbounds[1][1]) / 2,
-    ];
-    map.setView(centerpoint, minZoom, {
-      animate: false,
-    });
-    // }, duration);
-  }, [campus]);
-  return null;
-}
-
-const LocationMap: FC<Props> = ({
-  position,
-  className,
-  zoom,
-  onStopClicked,
-  campus,
-  focusStop,
-  setFocusStop,
-  selectedSegments,
-  selectedStops,
-  children,
-}) => {
-  const hasSelection = selectedSegments || selectedStops;
-
-  // const [selectedServiceIndex, setSelectedServiceIndex] = useState(0);
-  // const selectedService = isbServices[selectedServiceIndex];
-  // const selectedServiceRoutes = isbServicesRoutes[selectedServiceIndex];
-
-  // focus map on stop
-  console.log(!hasSelection, !focusStop);
-  return (
-    <div className={classnames(styles.mapWrapper, className)}>
-      {/* add a button to toggle between different map modes */}
-      {/* <button
-        className={classnames('btn btn-sm btn-primary', '')}
-        onClick={() => {
-          setMapMode(mapMode === 'all' ? 'selected' : 'all');
-        }}
-        type="button"
-      >
-        Toggle map mode
-      </button> */}
-      {/* <ExternalLink
-        href={`https://www.google.com/maps/search/?api=1&query=${googleMapQuery}`}
-        className={classnames('btn btn-sm btn-primary', styles.gmapBtn)}
-      >
-        Open in Google Maps
-      </ExternalLink> */}
-      {/* <button
-        className={classnames('btn btn-sm btn-primary', styles.gmapBtn)}
-        onClick={() => {
-          setSelectedServiceIndex((selectedServiceIndex + 1) % isbServices.length);
-        }}
-        type="button"
-      >
-        Cycle between services
-      </button> */}
-
-      <MapContainer
-        center={position}
-        zoom={zoom || 18}
-        maxZoom={18}
-        className={`${styles.map}`}
-        maxBoundsViscosity={0.8}
-        zoomSnap={0.5}
-        zoomDelta={0.5}
-        minZoom={15}
-      >
-        <MapFocusSetter focusStop={focusStop} />
-        <MapBoundsSetter campus={campus} />
-        {/* <MapViewportChanger center={position} /> */}
-        {/* <Debug /> */}
-
-        {/* <LocationMarker /> */}
-        <TileLayer
-          attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          // url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          url="https://b.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
-          className={styles.mapTile}
-        />
-
-        {/* <BusStops /> */}
-        {hasSelection ? (
-          <ISBServices
-            mapMode="selected"
-            selectedSegments={selectedSegments || []}
-            selectedStops={selectedStops || []}
-            onStopClicked={(s) => {
-              onStopClicked(s);
-              setFocusStop(s);
-            }}
-            focusStop={focusStop}
-          />
-        ) : (
-          <ISBServices
-            mapMode="all"
-            onStopClicked={(s) => {
-              onStopClicked(s);
-              setFocusStop(s);
-            }}
-            focusStop={focusStop}
-          />
-        )}
-
-        {/* <ExpandMap isExpanded={isExpanded} onToggleExpand={toggleMapExpand} /> */}
-      </MapContainer>
-      {children}
-    </div>
-  );
-};
-
-export default memo(LocationMap);
+//   const map = useMapEvents({
+//     zoom: () => {
+//       console.log('zoom', map.getZoom());
+//       setCurrentZoom(map.getZoom());
+//     },
+//   });
+//   // return null;
+//   return <div className={styles.debug}>{`zoom: ${currentZoom}`}</div>;
+// }

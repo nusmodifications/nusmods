@@ -1,20 +1,17 @@
-import { PureComponent, useEffect, useState } from 'react';
-import { DivIcon, DragEndEventHandlerFn, LatLngBoundsExpression } from 'leaflet';
-import { Marker, Popup, SVGOverlay, useMapEvents } from 'react-leaflet';
+import { useEffect, useMemo, useState } from 'react';
+import { DivIcon, LatLngBoundsExpression } from 'leaflet';
+import { Marker, SVGOverlay, useMapEvents } from 'react-leaflet';
 import classnames from 'classnames';
-import produce from 'immer';
 
-// import type { BusStop, BusTiming } from 'types/venues';
-import type { EmptyProps } from 'types/utils';
-
-import busStopJSON from 'data/bus-stops.json';
 import isbStopJson from 'data/isb-stops.json';
-import { allowBusStopEditing } from 'utils/debug';
-import { nextBus } from 'apis/nextbus';
 import isbServicesJSON from 'data/isb-services.json';
 import { getRouteSegments, segmentsToClasses } from 'utils/mobility';
 import styles from './ISBServices.scss';
-import { ArrivalTimes } from './ArrivalTimes';
+
+// these eslint warnings are disabled because we're doing some convoluted svg importing as react components :,)
+// SHOULD be changed into using polyline instead, as that's the correct way to do it
+// but i am but a stupid graphic designer who knows how to use illustrator and not how to use GIS software
+
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import KRC from './routes/KRC.svg?svgr';
@@ -22,8 +19,15 @@ import KRC from './routes/KRC.svg?svgr';
 // @ts-ignore
 import BTC from './routes/BTC.svg?svgr';
 
+const BTCStops = ['CG', 'OTH', 'BG-MRT'];
+
 type Props =
-  | { mapMode: 'all'; onStopClicked: (stop: string | null) => void; focusStop: string | null }
+  | {
+      mapMode: 'all';
+      onStopClicked: (stop: string | null) => void;
+      focusStop: string | null;
+      campus: 'KRC' | 'BTC';
+    }
   | {
       mapMode: 'selected';
       selectedSegments: {
@@ -37,6 +41,7 @@ type Props =
       }[];
       onStopClicked: (stop: string | null) => void;
       focusStop: string | null;
+      campus: 'KRC' | 'BTC';
     };
 
 const KRCBounds: LatLngBoundsExpression = [
@@ -48,7 +53,6 @@ const BTCBounds: LatLngBoundsExpression = [
   [1.3289028289795464, 103.83893751900072],
 ];
 
-const btcStops = ['CG', 'OTH', 'BG-MRT'];
 const isbServices = isbServicesJSON;
 
 export default function ISBStops(props: Props) {
@@ -66,40 +70,46 @@ export default function ISBStops(props: Props) {
     },
   });
 
-  let selectedSegments: { classes: string[]; color: string }[] = [];
-  let selectedStops: { name: string; color: string; subtext?: string }[] = [];
-  if (props.mapMode === 'selected') {
-    selectedSegments = segmentsToClasses(props.selectedSegments);
-    selectedStops = props.selectedStops;
-  } else if (props.mapMode === 'all' && currentFocusStop) {
-    const currentFocusStopDetails = isbStopJson.find((stop) => stop.name === currentFocusStop);
-    if (currentFocusStopDetails) {
-      // get all services passing by this stop
-      const passingServices = currentFocusStopDetails.shuttles
-        .map((service) => {
-          const serviceDetails = isbServices.find((s) => s.name === service.name);
-          if (!serviceDetails) return null;
-          return serviceDetails;
-        })
-        .filter(Boolean) as (typeof isbServices)[number][];
-
-      // for each service, get the route segments, and merge it into selectedSegments
-      // selectedSegments returns an array of segments, so do not use map
-      passingServices.forEach((service) => {
-        selectedSegments = selectedSegments.concat(
-          segmentsToClasses(getRouteSegments(service.stops, '#3087d8')),
-        );
-      });
-
-      // console.log('selectedSegments', selectedSegments);
+  const selection = useMemo(() => {
+    let selectedSegments: { classes: string[]; color: string }[] = [];
+    let selectedStops: { name: string; color: string; subtext?: string }[] = [];
+    if (props.mapMode === 'selected') {
+      selectedSegments = segmentsToClasses(props.selectedSegments);
+      selectedStops = props.selectedStops;
+    } else if (props.mapMode === 'all' && currentFocusStop) {
+      const currentFocusStopDetails = isbStopJson.find((stop) => stop.name === currentFocusStop);
+      if (currentFocusStopDetails) {
+        const passingServices = currentFocusStopDetails.shuttles
+          .map((service) => {
+            const serviceDetails = isbServices.find((s) => s.name === service.name);
+            if (!serviceDetails) return null;
+            return serviceDetails;
+          })
+          .filter(Boolean) as (typeof isbServices)[number][];
+        passingServices.forEach((service) => {
+          selectedSegments = selectedSegments.concat(
+            segmentsToClasses(getRouteSegments(service.stops, '#3087d8')),
+          );
+        });
+      }
     }
-  }
+    return { selectedSegments, selectedStops };
+  }, [props, currentFocusStop]);
+
+  const { selectedSegments, selectedStops } = selection;
 
   return (
     <>
       {isbStopJson.map((stop) => {
         const collapsedStop = currentZoom <= (stop?.collapse || 0);
         if (mapMode === 'all' && collapsedStop && stop?.collapseBehavior === 'hide') {
+          return null;
+        }
+
+        if (
+          (props.campus === 'KRC' && BTCStops.includes(stop.name)) ||
+          (props.campus === 'BTC' && !BTCStops.includes(stop.name))
+        ) {
           return null;
         }
 
@@ -138,7 +148,6 @@ export default function ISBStops(props: Props) {
                 hasPairAndIsTheOpposite = true;
               }
             }
-
             break;
           default:
             break;
@@ -167,7 +176,6 @@ export default function ISBStops(props: Props) {
           isLeft && styles.left,
           isFocused && styles.focused,
         );
-        // [styles.left]: stop.displayRoutesLeft,
 
         const routeNameClass = classnames(styles.stopName);
 
@@ -195,6 +203,7 @@ export default function ISBStops(props: Props) {
                 .join('')}</div>`
             : '';
 
+        // for the love of god if anyone knows a better way that defining RAW HTML
         const icon = new DivIcon({
           // language=HTML
           html: `
@@ -218,8 +227,6 @@ export default function ISBStops(props: Props) {
              }`,
           className: styles.iconWrapper,
           iconSize: [30, 30],
-          // Move the popup a bit higher so it won't cover the bus stop icon
-          popupAnchor: [0, -5],
         });
 
         return (
@@ -230,14 +237,11 @@ export default function ISBStops(props: Props) {
             eventHandlers={{
               click: () => {
                 if (props.onStopClicked) {
-                  // setCurrentFocusStop(stop.name);
                   props.onStopClicked(stop.name);
-                  map.flyTo([stop.latitude, stop.longitude], 17);
+                  map.flyTo([stop.latitude, stop.longitude], 16);
                 }
               },
             }}
-            // draggable={allowEditing}
-            // autoPan={allowEditing}
           />
         );
       })}
@@ -281,7 +285,7 @@ export default function ISBStops(props: Props) {
           .join(' ')}
       </style>
 
-      {/* background */}
+      {/* background (lines' stroke) */}
       <SVGOverlay bounds={KRCBounds} className="overlay_bg">
         <KRC className={mapMode === 'all' && !currentFocusStop ? 'allRoutes' : ''} />
       </SVGOverlay>
@@ -290,7 +294,7 @@ export default function ISBStops(props: Props) {
         <BTC className={mapMode === 'all' && !currentFocusStop ? 'allRoutes' : ''} />
       </SVGOverlay>
 
-      {/* foreground */}
+      {/* foreground (lines fill) */}
       <SVGOverlay bounds={KRCBounds} className="overlay_fg">
         <KRC className={mapMode === 'all' && !currentFocusStop ? 'allRoutes' : ''} />
       </SVGOverlay>
