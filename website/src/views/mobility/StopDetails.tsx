@@ -468,11 +468,42 @@ function StopDetails(props: Props) {
   //   )
   //   .sort((a, b) => a.number - b.number);
 
+  const subtitle = [];
+  if (ShortName !== LongName) {
+    subtitle.push(<span>{LongName}</span>);
+  }
+
+  if (stopDetails.opposite) {
+    const oppositeStop = isbStops.find((s) => s.name === stopDetails.opposite);
+    const oppositeStopName = oppositeStop?.ShortName || stopDetails.opposite;
+    subtitle.push(
+      <span>
+        {
+          // if opposite stop name starts with "Opp", OR this stop name starts with "Opp" and the other one ends in the same, don't show "Opp: "
+          // oppositeStopName.startsWith('Opp') ? '' : 'Opp: '
+          (oppositeStopName.startsWith('Opp') && oppositeStopName.endsWith(ShortName)) ||
+          (ShortName.startsWith('Opp') && oppositeStopName.endsWith(ShortName.replace('Opp ', '')))
+            ? ''
+            : 'Opp: '
+        }{' '}
+        <Link to={`/mobility/stop/${stopDetails.opposite}`}>{oppositeStopName}</Link>
+      </span>,
+    );
+  }
+
   return (
-    <div>
+    <div className={styles.stopDetails}>
       <Title description={`NUS Internal Shuttle Bus ${LongName} Stop`}>{`${ShortName}`}</Title>
       <h1>{ShortName}</h1>
-      {ShortName !== LongName && <h2 className={classNames('h3', styles.fullname)}>{LongName}</h2>}
+      <p>
+        {/* show subtitiles with " • " as the delimiter */}
+        {subtitle.map((s, i) => (
+          <Fragment key={i}>
+            {i > 0 && ' • '}
+            {s}
+          </Fragment>
+        ))}
+      </p>
 
       <div className={styles.incomingBusesWrapper}>
         <ol className={styles.incomingBuses}>
