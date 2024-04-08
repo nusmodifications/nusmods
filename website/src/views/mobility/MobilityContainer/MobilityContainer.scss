@@ -27,7 +27,7 @@
 
   .map {
     flex: 1;
-    min-width: 24rem;
+    min-width: min(100vw, 24rem);
     overflow: hidden;
 
     @media (max-width: 768px) {
