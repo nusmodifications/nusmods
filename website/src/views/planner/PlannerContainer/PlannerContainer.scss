@@ -39,6 +39,18 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
+
+    @include media-breakpoint-down(sm) {
+      .settingsButton {
+        p {
+          @include sr-only;
+        }
+
+        svg {
+          margin-right: 0;
+        }
+      }
+    }
   }
 
   .moduleStats {
