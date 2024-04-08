@@ -1,15 +1,7 @@
 import Title from 'views/components/Title';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-import {
-  AlertTriangle,
-  ArrowRight,
-  Circle,
-  Octagon,
-  Pause,
-  RotateCcw,
-  XOctagon,
-} from 'react-feather';
+import { AlertTriangle, ArrowRight, Circle, Pause, RotateCcw } from 'react-feather';
 import isbServicesJSON from '../../data/isb-services.json';
 import isbStopsJSON from '../../data/isb-stops.json';
 
@@ -23,6 +15,37 @@ type Props = {
 };
 
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+function StatusDisplay(props: { status?: ServiceStatus }) {
+  const status = props.status || { running: false, runningThisPeriod: false };
+  if (status.running) {
+    return (
+      <>
+        <Circle size={12} className={classNames(styles.statusIcon, styles.normal)} />
+        <span className={styles.statusText}>
+          Every {status.currentBlock.interval.join('–')} minutes
+        </span>
+      </>
+    );
+  }
+  if (status.runningThisPeriod) {
+    return (
+      <>
+        <Pause size={12} className={classNames(styles.statusIcon, styles.paused)} />
+        <span className={styles.statusText}>
+          Resumes {status.nextDay === new Date().getDay() ? '' : daysOfWeek[status.nextDay]}{' '}
+          {status.nextTime}
+        </span>
+      </>
+    );
+  }
+  return (
+    <>
+      <AlertTriangle size={12} className={classNames(styles.statusIcon, styles.stopped)} />
+      <span className={styles.statusText}>Vacation break</span>
+    </>
+  );
+}
 
 function ServiceDetails({ serviceStatus }: Props) {
   return (
@@ -43,45 +66,12 @@ function ServiceDetails({ serviceStatus }: Props) {
             circular = true;
           }
 
-          const status = serviceStatus.find((s) => s.id === service.id) || {
+          const status: ServiceStatus = serviceStatus.find((s) => s.id === service.id) || {
+            id: '0',
             running: false,
             runningThisPeriod: false,
           };
 
-          let statusDisplay = <></>;
-          if (status.running) {
-            statusDisplay = (
-              <>
-                <Circle size={12} className={classNames(styles.statusIcon, styles.normal)} />
-                <span className={styles.statusText}>
-                  Every {status.currentBlock.interval.join('–')} minutes
-                </span>
-              </>
-            );
-          } else if (status.runningThisPeriod) {
-            statusDisplay = (
-              <>
-                <Pause size={12} className={classNames(styles.statusIcon, styles.paused)} />
-                <span className={styles.statusText}>
-                  Resumes {status.nextDay === new Date().getDay() ? '' : daysOfWeek[status.nextDay]}{' '}
-                  {status.nextTime}
-                </span>
-              </>
-            );
-          } else {
-            statusDisplay = (
-              <>
-                <AlertTriangle
-                  size={12}
-                  className={classNames(styles.statusIcon, styles.stopped)}
-                />
-                <span className={styles.statusText}>
-                  {/* HARDCODED FOR NOW */}
-                  Vacation break
-                </span>
-              </>
-            );
-          }
           return (
             <li
               key={service.id}
@@ -142,7 +132,7 @@ function ServiceDetails({ serviceStatus }: Props) {
                       [styles.stopped]: !status.running && !status.runningThisPeriod,
                     })}
                   >
-                    {statusDisplay}
+                    <StatusDisplay status={status} />
                   </p>
                 </p>
               </Link>

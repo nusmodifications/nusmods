@@ -3,8 +3,7 @@ import Title from 'views/components/Title';
 import { Link } from 'react-router-dom';
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
-import { ChevronDown, ChevronRight, ChevronUp, ExternalLink, MoreVertical } from 'react-feather';
-import { current } from 'immer';
+import { ChevronDown, ChevronRight, ChevronUp, ExternalLink } from 'react-feather';
 import { getDepartAndArriveTiming, getShownArrivalTime } from 'utils/mobility';
 import { getStopTimings } from 'apis/nextbus-new';
 import isbServicesJSON from '../../data/isb-services.json';
@@ -88,51 +87,70 @@ function StopServiceDetails(props: {
     [selectedService, service.name, setSelectedService],
   );
 
-  const nextBuses: string[] = [];
-  if (departTiming?._etas && departTiming._etas.length > 0) {
-    const nextBusEta = departTiming._etas[0].eta_s;
-    const nextBusArrivalTime = getShownArrivalTime(nextBusEta);
-    nextBuses.push(`${nextBusArrivalTime}`);
+  const nextBuses: string[] = useMemo(() => {
+    const buses: string[] = [];
+    if (departTiming?._etas && departTiming._etas.length > 0) {
+      const nextBusEta = departTiming._etas[0].eta_s;
+      const nextBusArrivalTime = getShownArrivalTime(nextBusEta);
+      buses.push(`${nextBusArrivalTime}`);
 
-    if (departTiming._etas.length > 1) {
-      const secondNextBusEta = departTiming._etas[1].eta_s;
-      const secondNextBusArrivalTime = getShownArrivalTime(secondNextBusEta);
-      nextBuses.push(`${secondNextBusArrivalTime}`);
+      if (departTiming._etas.length > 1) {
+        const secondNextBusEta = departTiming._etas[1].eta_s;
+        const secondNextBusArrivalTime = getShownArrivalTime(secondNextBusEta);
+        buses.push(`${secondNextBusArrivalTime}`);
+      }
     }
-  }
+    return buses;
+  }, [departTiming]);
 
-  const lineStops = service.stops
-    .map((stop) => {
-      const stopDetails = isbStops.find((s) => s.name === stop);
-      if (!stopDetails) return null;
-      return stopDetails;
-    })
-    .filter(Boolean) as ISBStop[];
-
-  const thisStopIndex = lineStops.findIndex((stop) => stop.name === currentStop.name);
-
-  let circular = true;
-  const termini = [lineStops[0]];
-  if (termini[0].name !== lineStops[lineStops.length - 1].name) {
-    // this service is not circular
-    circular = false;
-    termini.push(lineStops[lineStops.length - 1]);
-  }
-
-  const isTerminus = termini.some((terminus) => terminus.name === currentStop.name);
-
-  const immediatePrevStops = lineStops.slice(
-    Math.max(0, thisStopIndex - 1),
-    Math.max(0, thisStopIndex),
+  const lineStops = useMemo(
+    () =>
+      service.stops
+        .map((stop) => {
+          const stopDetails = isbStops.find((s) => s.name === stop);
+          if (!stopDetails) return null;
+          return stopDetails;
+        })
+        .filter(Boolean) as ISBStop[],
+    [service.stops],
   );
-  const prevStops = lineStops.slice(0, Math.max(0, thisStopIndex - 1));
-  const immediateNextStops = lineStops.slice(
-    Math.min(thisStopIndex + 1, lineStops.length),
-    Math.min(thisStopIndex + 4, lineStops.length),
+
+  const thisStopIndex = useMemo(
+    () => lineStops.findIndex((stop) => stop.name === currentStop.name),
+    [lineStops, currentStop.name],
   );
-  const nextStops = lineStops
-    .slice(Math.min(thisStopIndex + 4, lineStops.length), lineStops.length)
-    .filter((stop) => termini.every((terminus) => stop.name !== terminus.name));
+
+  const { circular, termini, isTerminus } = useMemo(() => {
+    let c = true;
+    const t = [lineStops[0]];
+    if (t[0].name !== lineStops[lineStops.length - 1].name) {
+      c = false;
+      t.push(lineStops[lineStops.length - 1]);
+    }
+
+    const i = t.some((terminus) => terminus.name === currentStop.name);
+
+    return { circular: c, termini: t, isTerminus: i };
+  }, [lineStops, currentStop.name]);
+
+  const adjacentStops = useMemo(() => {
+    const immediatePrevStops = lineStops.slice(
+      Math.max(0, thisStopIndex - 1),
+      Math.max(0, thisStopIndex),
+    );
+    const prevStops = lineStops.slice(0, Math.max(0, thisStopIndex - 1));
+    const immediateNextStops = lineStops.slice(
+      Math.min(thisStopIndex + 1, lineStops.length),
+      Math.min(thisStopIndex + 4, lineStops.length),
+    );
+    const nextStops = lineStops
+      .slice(Math.min(thisStopIndex + 4, lineStops.length), lineStops.length)
+      .filter((stop) => termini.every((terminus) => stop.name !== terminus.name));
+
+    return { immediatePrevStops, prevStops, immediateNextStops, nextStops };
+  }, [lineStops, thisStopIndex, termini]);
+
+  const { immediatePrevStops, prevStops, immediateNextStops, nextStops } = adjacentStops;
 
   return (
     <div
@@ -282,25 +300,16 @@ function StopServiceDetails(props: {
             </div>
           )}
           <div className={styles.divider} />
-          {
-            //  if the service is not running, show the next time it will run
-            !departTiming && !arriveTiming ? (
-              <div className={styles.serviceUpcomingError}>
-                {/*  if is error show error msg */}
-                {timings === 'error' ? (
-                  <>Error fetching bus timings</>
-                ) : (
-                  <>No upcoming departures</>
-                )}
-              </div>
-            ) : (
-              //  if the service is running, show the next few buses
-              <div className={styles.serviceUpcoming}>
-                {arriveTiming && <ServiceSchedule timing={arriveTiming} title="Arrivals" />}
-                {departTiming && <ServiceSchedule timing={departTiming} title="Departures" />}
-              </div>
-            )
-          }
+          {!departTiming && !arriveTiming ? (
+            <div className={styles.serviceUpcomingError}>
+              {timings === 'error' ? <>Error fetching bus timings</> : <>No upcoming departures</>}
+            </div>
+          ) : (
+            <div className={styles.serviceUpcoming}>
+              {arriveTiming && <ServiceSchedule timing={arriveTiming} title="Arrivals" />}
+              {departTiming && <ServiceSchedule timing={departTiming} title="Departures" />}
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -362,7 +371,7 @@ function StopDetails(props: Props) {
         setSelectedStopTiming(data);
       },
       (error) => {
-        console.error(error);
+        // console.error(error);
         setSelectedStopTiming('error');
       },
     );
@@ -457,17 +466,6 @@ function StopDetails(props: Props) {
 
   const { ShortName, LongName } = stopDetails;
 
-  // const publicShuttles = shuttles
-  //   .filter((shuttle) => shuttle.name.startsWith('PUB:'))
-  //   .map(
-  //     (shuttle) =>
-  //       ({
-  //         ...selectedStopTiming?.shuttles?.find((s) => s.name === shuttle.name),
-  //         number: parseInt(shuttle.name.replace('PUB:', ''), 10),
-  //       } as PublicShuttle),
-  //   )
-  //   .sort((a, b) => a.number - b.number);
-
   const subtitle = [];
   if (ShortName !== LongName) {
     subtitle.push(<span>{LongName}</span>);
@@ -478,14 +476,10 @@ function StopDetails(props: Props) {
     const oppositeStopName = oppositeStop?.ShortName || stopDetails.opposite;
     subtitle.push(
       <span>
-        {
-          // if opposite stop name starts with "Opp", OR this stop name starts with "Opp" and the other one ends in the same, don't show "Opp: "
-          // oppositeStopName.startsWith('Opp') ? '' : 'Opp: '
-          (oppositeStopName.startsWith('Opp') && oppositeStopName.endsWith(ShortName)) ||
-          (ShortName.startsWith('Opp') && oppositeStopName.endsWith(ShortName.replace('Opp ', '')))
-            ? ''
-            : 'Opp: '
-        }{' '}
+        {(oppositeStopName.startsWith('Opp') && oppositeStopName.endsWith(ShortName)) ||
+        (ShortName.startsWith('Opp') && oppositeStopName.endsWith(ShortName.replace('Opp ', '')))
+          ? ''
+          : 'Opp: '}{' '}
         <Link to={`/mobility/stop/${stopDetails.opposite}`}>{oppositeStopName}</Link>
       </span>,
     );
@@ -496,7 +490,6 @@ function StopDetails(props: Props) {
       <Title description={`NUS Internal Shuttle Bus ${LongName} Stop`}>{`${ShortName}`}</Title>
       <h1>{ShortName}</h1>
       <p>
-        {/* show subtitiles with " • " as the delimiter */}
         {subtitle.map((s, i) => (
           <Fragment key={i}>
             {i > 0 && ' • '}
@@ -534,8 +527,6 @@ function StopDetails(props: Props) {
             ))
           ) : (
             <span className={classNames(styles.noIncoming, 'text-muted')}>
-              {/* No upcoming buses today */}
-              {/* if there is an error fetching, show an error msg */}
               {selectedStopTiming === 'error'
                 ? 'Error fetching bus timings'
                 : 'No upcoming buses today'}
@@ -576,5 +567,3 @@ function StopDetails(props: Props) {
 }
 
 export default StopDetails;
-
-// get the state of the light/dark mode of the page

@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import classnames from 'classnames';
 import { Link, useRouteMatch, match as Match, useHistory } from 'react-router-dom';
 
@@ -10,7 +10,6 @@ import LocationMap from 'views/components/bus-map/LocationMap';
 import NoFooter from 'views/layout/NoFooter';
 import { getRouteSegments, getServiceStatus } from 'utils/mobility';
 import NUSModerator from 'nusmoderator';
-import { setTime } from 'utils/timify';
 import styles from './MobilityContainer.scss';
 import ServiceDetails from '../ServiceDetails';
 import ServiceList from '../ServiceList';
@@ -30,52 +29,50 @@ const getPropsFromMatch = (match: Match<Params>) => ({
   slug: match.params.slug,
 });
 
-const BTCStops = [
-  // college green, oth bldg, and bg mrt
-  'CG',
-  'OTH',
-  'BG-MRT',
-];
+const BTCStops = ['CG', 'OTH', 'BG-MRT'];
 
 const MobilityContainer = () => {
   useScrollToTop();
 
   const history = useHistory();
-
   const match = useRouteMatch<Params>();
   const { type, slug } = getPropsFromMatch(match);
   const [focusStop, setFocusStop] = useState<string | null>(null);
   const [campus, setCampus] = useState<'KRC' | 'BTC'>('KRC');
   const [selectedService, setSelectedService] = useState<ISBService | null>(null);
-
   const [serviceStatus, setServiceStatus] = useState<ServiceStatus[]>([]);
-
   const acadWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(new Date());
-  const busPeriod =
-    acadWeekInfo.sem === 'Semester 1' || acadWeekInfo.sem === 'Semester 2' ? 'term' : 'vacation';
+
+  const busPeriod = useMemo(
+    () =>
+      acadWeekInfo.sem === 'Semester 1' || acadWeekInfo.sem === 'Semester 2' ? 'term' : 'vacation',
+    [acadWeekInfo.sem],
+  );
+
+  const setFocusStopAndCampus = useCallback(
+    (stop: string) => {
+      if (campus === 'KRC' && BTCStops.includes(stop)) {
+        setCampus('BTC');
+      } else if (campus === 'BTC' && !BTCStops.includes(stop)) {
+        setCampus('KRC');
+      }
+      // add a little delay so the map actually animates to the stop
+      setTimeout(() => setFocusStop(stop), 100);
+    },
+    [campus, setCampus, setFocusStop],
+  );
+
   useEffect(() => {
     setServiceStatus(getServiceStatus(busPeriod));
     const interval = setInterval(() => {
       setServiceStatus(getServiceStatus(busPeriod));
     }, 1000 * 60 * 0.25);
     return () => clearInterval(interval);
-  }, []);
+  }, [busPeriod]);
 
-  const setFocusStopAndCampus = (stop: string) => {
-    if (campus === 'KRC' && BTCStops.includes(stop)) {
-      setCampus('BTC');
-    } else if (campus === 'BTC' && !BTCStops.includes(stop)) {
-      setCampus('KRC');
-    }
-    setTimeout(() => setFocusStop(stop), 100);
-    // setFocusStop(stop);
-  };
-
-  // window.scrollTo(0, 0); when type or slug changes
   useEffect(() => {
     window.scrollTo(0, 0);
     if (type === 'stop') {
-      console.log('A');
       setFocusStopAndCampus(slug);
     } else if (type === 'service') {
       const service = isbServices.find((s) => s.id === slug);
@@ -87,16 +84,7 @@ const MobilityContainer = () => {
       setSelectedService(null);
       setFocusStop(null);
     }
-  }, [type, slug]);
-
-  // // if focusStop is in different campus, switch campus
-  // useEffect(() => {
-  //   if (focusStop && campus === 'KRC' && BTCStops.includes(focusStop)) {
-  //     setCampus('BTC');
-  //   } else if (focusStop && campus === 'BTC' && !BTCStops.includes(focusStop)) {
-  //     setCampus('KRC');
-  //   }
-  // }, [focusStop, campus]);
+  }, [type, slug, setFocusStopAndCampus]);
 
   return (
     <>
@@ -136,27 +124,7 @@ const MobilityContainer = () => {
             }),
           })}
         >
-          {/* switch campus button
-           */}
-          <button
-            type="button"
-            className={classnames('btn btn-primary', styles.switchCampusButton)}
-            onClick={() => {
-              setCampus(campus === 'KRC' ? 'BTC' : 'KRC');
-            }}
-          >
-            {campus === 'KRC' ? (
-              <>
-                <ArrowUpRight />
-                BTC
-              </>
-            ) : (
-              <>
-                <ArrowDownLeft />
-                KRC
-              </>
-            )}
-          </button>
+          <CampusToggleButton campus={campus} setCampus={setCampus} type={type} />
         </LocationMap>
         <div className={styles.container}>
           {type && (
@@ -179,3 +147,37 @@ const MobilityContainer = () => {
 };
 
 export default MobilityContainer;
+
+function CampusToggleButton({
+  campus,
+  setCampus,
+  type,
+}: {
+  campus: 'KRC' | 'BTC';
+  setCampus: (c: 'KRC' | 'BTC') => void;
+  type?: 'service' | 'stop';
+}) {
+  if (type === 'stop' || type === 'service') return null;
+
+  return (
+    <button
+      type="button"
+      className={classnames('btn btn-primary', styles.switchCampusButton)}
+      onClick={() => {
+        setCampus(campus === 'KRC' ? 'BTC' : 'KRC');
+      }}
+    >
+      {campus === 'KRC' ? (
+        <>
+          <ArrowUpRight />
+          BTC
+        </>
+      ) : (
+        <>
+          <ArrowDownLeft />
+          KRC
+        </>
+      )}
+    </button>
+  );
+}
