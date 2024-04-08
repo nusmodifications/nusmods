@@ -1,5 +1,5 @@
 import { FC, useState, useContext, useCallback, memo, useEffect } from 'react';
-import { LatLngBoundsExpression, Map } from 'leaflet';
+import { LatLngBoundsExpression, LatLngBoundsLiteral, LatLngExpression, Map } from 'leaflet';
 import {
   MapContainer,
   Marker,
@@ -32,23 +32,23 @@ const ViewingBounds = {
     coordinates: [
       [1.2846, 103.7908],
       [1.3061, 103.7633],
-    ] as LatLngBoundsExpression,
+    ] as LatLngBoundsLiteral,
     minZoom: 15,
     centerpoint: [
       [1.2907, 103.7854],
       [1.3021, 103.7691],
-    ] as LatLngBoundsExpression,
+    ] as LatLngBoundsLiteral,
   },
   BTC: {
     coordinates: [
       [1.3249, 103.8122],
       [1.3164, 103.8226],
-    ] as LatLngBoundsExpression,
+    ] as LatLngBoundsLiteral,
     minZoom: 16.5,
     centerpoint: [
       [1.31874, 103.82009],
       [1.32358, 103.81405],
-    ] as LatLngBoundsExpression,
+    ] as LatLngBoundsLiteral,
   },
 };
 
@@ -139,16 +139,25 @@ function MapFocusSetter({ focusStop }: { focusStop: string | null }) {
 
 function MapBoundsSetter({ campus }: { campus: 'KRC' | 'BTC' }) {
   const map = useMap();
-  const { coordinates, minZoom, centerpoint } = ViewingBounds[campus];
+  const { coordinates, minZoom } = ViewingBounds[campus];
 
   useEffect(() => {
     const duration = 500;
-    map.flyToBounds(centerpoint, { duration: duration / 1000, maxZoom: 15, easeLinearity: 0.1 });
+    // map.flyToBounds(centerpoint, { duration: duration / 1000, maxZoom: 15, easeLinearity: 0.1 });
     // wait until above is done
-    setTimeout(() => {
-      map.setMaxBounds(coordinates);
-      map.setMinZoom(minZoom);
-    }, duration);
+    // setTimeout(() => {
+    map.setMaxBounds(coordinates);
+    map.setMinZoom(minZoom);
+    // center map to centerpoint immediately, without animation
+    const centerbounds = ViewingBounds[campus].centerpoint;
+    const centerpoint: LatLngExpression = [
+      (centerbounds[0][0] + centerbounds[1][0]) / 2,
+      (centerbounds[0][1] + centerbounds[1][1]) / 2,
+    ];
+    map.setView(centerpoint, minZoom, {
+      animate: false,
+    });
+    // }, duration);
   }, [campus]);
   return null;
 }

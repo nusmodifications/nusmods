@@ -9,6 +9,8 @@ import useScrollToTop from 'views/hooks/useScrollToTop';
 import LocationMap from 'views/components/bus-map/LocationMap';
 import NoFooter from 'views/layout/NoFooter';
 import { getRouteSegments, getServiceStatus } from 'utils/mobility';
+import NUSModerator from 'nusmoderator';
+import { setTime } from 'utils/timify';
 import styles from './MobilityContainer.scss';
 import ServiceDetails from '../ServiceDetails';
 import ServiceList from '../ServiceList';
@@ -28,6 +30,13 @@ const getPropsFromMatch = (match: Match<Params>) => ({
   slug: match.params.slug,
 });
 
+const BTCStops = [
+  // college green, oth bldg, and bg mrt
+  'CG',
+  'OTH',
+  'BG-MRT',
+];
+
 const MobilityContainer = () => {
   useScrollToTop();
 
@@ -40,30 +49,54 @@ const MobilityContainer = () => {
   const [selectedService, setSelectedService] = useState<ISBService | null>(null);
 
   const [serviceStatus, setServiceStatus] = useState<ServiceStatus[]>([]);
+
+  const acadWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(new Date());
+  const busPeriod =
+    acadWeekInfo.sem === 'Semester 1' || acadWeekInfo.sem === 'Semester 2' ? 'term' : 'vacation';
   useEffect(() => {
-    setServiceStatus(getServiceStatus());
+    setServiceStatus(getServiceStatus(busPeriod));
     const interval = setInterval(() => {
-      setServiceStatus(getServiceStatus());
+      setServiceStatus(getServiceStatus(busPeriod));
     }, 1000 * 60 * 0.25);
     return () => clearInterval(interval);
   }, []);
+
+  const setFocusStopAndCampus = (stop: string) => {
+    if (campus === 'KRC' && BTCStops.includes(stop)) {
+      setCampus('BTC');
+    } else if (campus === 'BTC' && !BTCStops.includes(stop)) {
+      setCampus('KRC');
+    }
+    setTimeout(() => setFocusStop(stop), 100);
+    // setFocusStop(stop);
+  };
 
   // window.scrollTo(0, 0); when type or slug changes
   useEffect(() => {
     window.scrollTo(0, 0);
     if (type === 'stop') {
-      setFocusStop(slug);
+      console.log('A');
+      setFocusStopAndCampus(slug);
     } else if (type === 'service') {
       const service = isbServices.find((s) => s.id === slug);
       if (service) {
         setSelectedService(service);
-        setFocusStop(service.stops[0]);
+        setFocusStopAndCampus(service.stops[0]);
       }
     } else if (type === undefined) {
       setSelectedService(null);
       setFocusStop(null);
     }
   }, [type, slug]);
+
+  // // if focusStop is in different campus, switch campus
+  // useEffect(() => {
+  //   if (focusStop && campus === 'KRC' && BTCStops.includes(focusStop)) {
+  //     setCampus('BTC');
+  //   } else if (focusStop && campus === 'BTC' && !BTCStops.includes(focusStop)) {
+  //     setCampus('KRC');
+  //   }
+  // }, [focusStop, campus]);
 
   return (
     <>

@@ -66,6 +66,7 @@ interface ISBStop {
   collapseBehavior?: string;
   collapsePair?: string;
   collapseLabel?: undefined;
+  opposite: string | null;
 }
 
 interface ScheduleBlock {
