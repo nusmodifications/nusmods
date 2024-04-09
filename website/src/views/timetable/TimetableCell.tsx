@@ -128,6 +128,7 @@ const TimetableCell: React.FC<Props> = (props) => {
       onTouchStart={() => onHover(getHoverLesson(lesson))}
       onMouseLeave={() => onHover(null)}
       onTouchEnd={() => onHover(null)}
+      autoFocus={lesson.isActive}
       {...conditionalProps}
     >
       <div className={styles.cellContainer}>

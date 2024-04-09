@@ -1,4 +1,4 @@
-import type { Module, Semester } from 'types/modules';
+import type { Module, ModuleCode, Semester } from 'types/modules';
 import type { ExportData } from 'types/export';
 import type { Dispatch, GetState } from 'types/redux';
 import { hydrateSemTimetableWithLessons } from 'utils/timetables';
@@ -31,11 +31,12 @@ export function downloadAsIcal(semester: Semester) {
       .then(([ical, icalUtils]) => {
         const state = getState();
         const { modules } = state.moduleBank;
+        const hiddenModules: ModuleCode[] = state.timetables.hidden[semester] || [];
 
         const timetable = getSemesterTimetableLessons(state)(semester);
         const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
 
-        const events = icalUtils.default(semester, timetableWithLessons, modules);
+        const events = icalUtils.default(semester, timetableWithLessons, modules, hiddenModules);
         const cal = ical.default({
           domain: 'nusmods.com',
           prodId: '//NUSMods//NUSMods//EN',

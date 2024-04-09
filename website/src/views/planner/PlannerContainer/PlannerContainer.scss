@@ -12,14 +12,20 @@
 
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  width: 100%;
+  gap: 1rem;
 
-  h1 {
+  .headerLeft {
     display: flex;
+    flex: 1;
     align-items: center;
     margin: 0;
-    font-size: $font-size-xlg;
+
+    h1 {
+      margin: 1rem;
+      font-size: $font-size-xlg;
+    }
 
     button {
       margin-left: 1rem;
@@ -32,12 +38,21 @@
 
   .headerRight {
     display: flex;
+    justify-content: flex-end;
     align-items: center;
   }
 
   .moduleStats {
+    display: flex;
+    flex-wrap: wrap;
     margin-right: 1rem;
+
+    p {
+      white-space: nowrap;
+    }
   }
+
+  @include scrollable;
 }
 
 .addYearButton {
@@ -60,6 +75,9 @@
 
 .moduleLists {
   display: flex;
+  width: 100%;
+
+  @include scrollable;
 }
 
 .modListHeaders {
@@ -71,6 +89,7 @@
 .trash {
   opacity: 0.6;
   width: $semester-width;
+  min-width: $semester-width;
   border: 1px dashed;
   border-radius: 0.4rem;
   text-align: center;

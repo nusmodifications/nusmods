@@ -25,19 +25,18 @@ const MpeFormContainer: React.FC<Props> = ({ getSubmission, updateSubmission }) 
     Promise.all([fetchMpeModuleList(), getSubmission()])
       .then(([fetchedMpeModuleList, fetchedSubmission]) => {
         setMpeModuleList(fetchedMpeModuleList);
+        const moduleLookup = new Map(
+          fetchedMpeModuleList.map((module) => [module.moduleCode, module]),
+        );
         setSubmission({
           ...fetchedSubmission,
           // Replace data fetched from MPE server with latest data from MPE module list
-          // TODO: Optimize. This does an linear time lookup for each preference
           preferences: fetchedSubmission.preferences.map((preference) => {
-            const mpeModule = fetchedMpeModuleList.find(
-              (m) => m.moduleCode === preference.moduleCode,
-            );
+            const mpeModule = moduleLookup.get(preference.moduleCode);
             if (!mpeModule) return preference;
             return {
               ...preference,
               moduleTitle: mpeModule.title,
-              moduleCode: mpeModule.moduleCode,
               moduleCredits: parseInt(mpeModule.moduleCredit, 10),
             };
           }),

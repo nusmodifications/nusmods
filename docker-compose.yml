@@ -35,7 +35,7 @@ services:
       - website
     init: true
     security_opt:
-      - seccomp="infra/instance/chromium.seccomp.json"
+      - seccomp=infra/instance/chromium.seccomp.json
     environment:
       - NODE_ENV=development
       - PORT=8082

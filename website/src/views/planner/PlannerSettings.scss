@@ -2,8 +2,11 @@
 @import 'variables';
 
 .settings {
+  display: flex;
+  flex-direction: column;
+
   section {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 
     &:last-child {
       margin-bottom: 0;

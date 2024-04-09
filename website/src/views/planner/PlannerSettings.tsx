@@ -13,6 +13,7 @@ import {
 } from 'actions/planner';
 import ExternalLink from 'views/components/ExternalLink';
 import Toggle from 'views/components/Toggle';
+import CloseButton from 'views/components/CloseButton';
 import { State } from 'types/state';
 import styles from './PlannerSettings.scss';
 
@@ -23,6 +24,7 @@ type Props = {
   readonly ignorePrereqCheck?: boolean;
 
   // Actions
+  readonly onCloseButtonClicked: () => void;
   readonly setMinYear: (str: string) => void;
   readonly setMaxYear: (str: string) => void;
   readonly setIBLOCs: (boolean: boolean) => void;
@@ -66,6 +68,9 @@ export const PlannerSettingsComponent: React.FC<Props> = (props) => {
 
   return (
     <div className={styles.settings}>
+      <div className={styles.closeButton}>
+        <CloseButton onClick={props.onCloseButtonClicked} />
+      </div>
       <section>
         <h2 className={styles.label}>Matriculated in</h2>
         <ul className={styles.years}>

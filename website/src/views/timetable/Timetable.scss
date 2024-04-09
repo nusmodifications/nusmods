@@ -1,7 +1,5 @@
 @import './_variables.scss';
 
-$timetable-min-width: $timetable-row-height * 16;
-
 .container {
   min-width: $timetable-min-width;
   background: var(--body-bg); // For timetable export
@@ -22,7 +20,7 @@ $timetable-min-width: $timetable-row-height * 16;
   margin: 0;
   border: $timetable-border;
   border-left-width: 0;
-  border-radius: $btn-border-radius;
+  border-radius: $timetable-border-radius;
 
   @include vertical-mode {
     display: flex;

@@ -7,11 +7,19 @@
   },
   "headers": [
     {
-      "source": "/assets/(.*)",
+      "source": "/(.*)",
       "headers": [
         {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains;"
+        },
+        {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "no-cache, no-store, must-revalidate"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
         }
       ]
     },
