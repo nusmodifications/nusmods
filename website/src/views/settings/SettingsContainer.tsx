@@ -238,9 +238,9 @@ const SettingsContainer: React.FC<Props> = ({
         <div className="col-md-8">
           <p>
             We collect anonymous, aggregated usage information on NUSMods - think of it as a survey
-            that tells us which browsers to support and what features are popular. If you opt out, we
-            could end up removing features that you use since we won&apos;t know if anyone is using
-            them.
+            that tells us which browsers to support and what features are popular. If you opt out,
+            we could end up removing features that you use since we won&apos;t know if anyone is
+            using them.
           </p>
           <p>
             We do not use this information for advertising, or share this information with anybody.
