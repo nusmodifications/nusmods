@@ -484,7 +484,12 @@ function parseModuleConfig(serialized: string | string[] | null): ModuleLessonCo
  * - 1,2,3       => Weeks 1-3
  * - 1,2,3,5,6,7 => Weeks 1-3, 5-7
  */
-export function formatNumericWeeks(weeks: NumericWeeks): string | null {
+export function formatNumericWeeks(unprocessedWeeks: NumericWeeks): string | null {
+  // Ensure list of weeks are unique
+  const weeks = unprocessedWeeks.filter(
+    (value, index) => unprocessedWeeks.indexOf(value) === index,
+  );
+
   if (weeks.length === 13) return null;
   if (weeks.length === 1) return `Week ${weeks[0]}`;
 
@@ -509,7 +514,7 @@ export function formatNumericWeeks(weeks: NumericWeeks): string | null {
   };
 
   weeks.slice(1).forEach((next) => {
-    if (next - end === 1) {
+    if (next - end <= 1) {
       // Consecutive week number - keep going
       end = next;
     } else {

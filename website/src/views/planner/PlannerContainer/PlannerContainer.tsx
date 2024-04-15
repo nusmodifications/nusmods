@@ -4,7 +4,7 @@ import { flatMap, flatten, sortBy, toPairs, values } from 'lodash';
 import { DragDropContext, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 
-import { Settings, Trash } from 'react-feather';
+import { Trash } from 'react-feather';
 import { Module, ModuleCode, Semester } from 'types/modules';
 import { PlannerModulesWithInfo, PlannerModuleInfo, AddModuleData } from 'types/planner';
 import { MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
@@ -30,6 +30,7 @@ import Title from 'views/components/Title';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import Modal from 'views/components/Modal';
 import { State as StoreState } from 'types/state';
+import PlannerSettingsButton from '../PlannerSettingsButton';
 import PlannerSemester from '../PlannerSemester';
 import PlannerYear from '../PlannerYear';
 import PlannerSettings from '../PlannerSettings';
@@ -133,6 +134,8 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
 
   closeAddCustomData = () => this.setState({ showCustomModule: null });
 
+  closeSettingsModal = () => this.setState({ showSettings: false });
+
   renderHeader() {
     const modules = [...this.props.iblocsModules, ...flatten(flatMap(this.props.modules, values))];
     const credits = getTotalMC(modules);
@@ -140,8 +143,8 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
 
     return (
       <header className={styles.header}>
-        <h1>
-          Course Planner{' '}
+        <div className={styles.headerLeft}>
+          <h1>Course Planner </h1>
           <button
             className="btn btn-sm btn-outline-success"
             type="button"
@@ -149,20 +152,17 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
           >
             Beta - Send Feedback
           </button>
-        </h1>
+        </div>
 
         <div className={styles.headerRight}>
-          <p className={styles.moduleStats}>
-            {count} {count === 1 ? 'course' : 'courses'} / {renderMCs(credits)}
-          </p>
+          <div className={styles.moduleStats}>
+            <p>
+              {count} {count === 1 ? 'Course' : 'Courses'}&nbsp;/&nbsp;
+            </p>
+            <p>{renderMCs(credits)}</p>
+          </div>
 
-          <button
-            className="btn btn-svg btn-outline-primary"
-            type="button"
-            onClick={() => this.setState({ showSettings: true })}
-          >
-            <Settings className="svg" /> Settings
-          </button>
+          <PlannerSettingsButton onClick={() => this.setState({ showSettings: true })} />
         </div>
       </header>
     );
@@ -263,12 +263,8 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
           </div>
         </DragDropContext>
 
-        <Modal
-          isOpen={this.state.showSettings}
-          onRequestClose={() => this.setState({ showSettings: false })}
-          animate
-        >
-          <PlannerSettings />
+        <Modal isOpen={this.state.showSettings} onRequestClose={this.closeSettingsModal} animate>
+          <PlannerSettings onCloseButtonClicked={this.closeSettingsModal} />
         </Modal>
 
         <Modal

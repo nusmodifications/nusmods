@@ -50,7 +50,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
         </h2>
         <div className={styles.yearMeta}>
           <p>
-            {count} {count === 1 ? 'course' : 'courses'}
+            {count} {count === 1 ? 'Course' : 'Courses'}
           </p>
           <p>{renderMCs(credits)}</p>
         </div>
