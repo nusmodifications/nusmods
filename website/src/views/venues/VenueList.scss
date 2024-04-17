@@ -59,7 +59,7 @@ $padding-v: 0.5rem;
 
 .subtitle {
   font-size: $font-size-xs;
-  color: $body-color;
+  color: var(--gray);
 }
 
 :global(.btn:hover) .subtitle {
