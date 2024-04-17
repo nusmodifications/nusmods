@@ -4,7 +4,7 @@ import { flatMap, flatten, sortBy, toPairs, values } from 'lodash';
 import { DragDropContext, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 
-import { Trash } from 'react-feather';
+import { Settings, Trash } from 'react-feather';
 import { Module, ModuleCode, Semester } from 'types/modules';
 import { PlannerModulesWithInfo, PlannerModuleInfo, AddModuleData } from 'types/planner';
 import { MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
@@ -30,7 +30,6 @@ import Title from 'views/components/Title';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import Modal from 'views/components/Modal';
 import { State as StoreState } from 'types/state';
-import PlannerSettingsButton from '../PlannerSettingsButton';
 import PlannerSemester from '../PlannerSemester';
 import PlannerYear from '../PlannerYear';
 import PlannerSettings from '../PlannerSettings';
@@ -162,7 +161,14 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
             <p>{renderMCs(credits)}</p>
           </div>
 
-          <PlannerSettingsButton onClick={() => this.setState({ showSettings: true })} />
+          <button
+            className={classnames('btn btn-svg btn-outline-primary', styles.settingsButton)}
+            type="button"
+            onClick={() => this.setState({ showSettings: true })}
+          >
+            <Settings className="svg" />
+            <p>Settings</p>
+          </button>
         </div>
       </header>
     );
