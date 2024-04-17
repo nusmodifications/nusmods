@@ -3,13 +3,14 @@ import classnames from 'classnames';
 import { groupBy, toPairs, sortBy } from 'lodash';
 import { Link, LinkProps } from 'react-router-dom';
 
-import { Venue } from 'types/venues';
+import { Venue, VenueLocationMap } from 'types/venues';
 import { venuePage } from 'views/routes/paths';
 
 import styles from './VenueList.scss';
 
 type Props = {
   venues: Venue[];
+  venueLocations?: VenueLocationMap;
   selectedVenue?: Venue | null;
   linkProps?: Omit<LinkProps, 'to'>;
 };
@@ -40,7 +41,17 @@ const VenueList: React.FC<Props> = (props) => {
                   )}
                   {...props.linkProps}
                 >
-                  {venue}
+                  <div>{venue}</div>
+                  {props.venueLocations && props.venueLocations[venue] ? (
+                    <div
+                      className={classnames(
+                        'font-weight-light d-inline-block text-truncate',
+                        styles.subtitle,
+                      )}
+                    >
+                      {props.venueLocations[venue].roomName}
+                    </div>
+                  ) : null}
                 </Link>
               </li>
             ))}

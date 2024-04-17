@@ -8,7 +8,13 @@ import qs from 'query-string';
 import { isEqual, mapValues, pick, size } from 'lodash';
 
 import { Clock, Map } from 'react-feather';
-import type { TimePeriod, Venue, VenueDetailList, VenueSearchOptions } from 'types/venues';
+import type {
+  TimePeriod,
+  Venue,
+  VenueDetailList,
+  VenueLocationMap,
+  VenueSearchOptions,
+} from 'types/venues';
 import type { Subtract } from 'types/utils';
 import type { WithBreakpoint } from 'views/hocs/makeResponsive';
 
@@ -32,6 +38,7 @@ import { breakpointDown } from 'utils/css';
 import { defer } from 'utils/react';
 import { convertIndexToTime } from 'utils/timify';
 
+import withVenueLocations from 'views/components/map/withVenueLocations';
 import AvailabilitySearch, { defaultSearchOptions } from './AvailabilitySearch';
 import VenueList from './VenueList';
 import VenueDetails from './VenueDetails';
@@ -43,7 +50,7 @@ export type Params = {
   venue: string;
 };
 
-type LoadedProps = { venues: VenueDetailList };
+type LoadedProps = { venues: VenueDetailList; venueLocations: VenueLocationMap };
 type Props = RouteComponentProps<Params> & LoadedProps & WithBreakpoint;
 
 type State = {
@@ -301,9 +308,9 @@ export class VenuesContainerComponent extends Component<Props, State> {
   override render() {
     const selectedVenue = this.selectedVenue();
     const { searchTerm, isAvailabilityEnabled, isMapExpanded, searchOptions } = this.state;
-    const { venues } = this.props;
+    const { venues, venueLocations } = this.props;
 
-    let matchedVenues = searchVenue(venues, searchTerm);
+    let matchedVenues = searchVenue(venues, searchTerm, venueLocations);
     const unfilteredCount = size(matchedVenues);
 
     if (isAvailabilityEnabled) {
@@ -322,6 +329,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
           ) : (
             <VenueList
               venues={matchedVenues.map(([venue]) => venue)}
+              venueLocations={venueLocations}
               selectedVenue={selectedVenue}
             />
           )}
@@ -372,6 +380,9 @@ export class VenuesContainerComponent extends Component<Props, State> {
 // Explicitly declare top level components for React hot reloading to work.
 const ResponsiveVenuesContainer = makeResponsive(VenuesContainerComponent, breakpointDown('sm'));
 const RoutedVenuesContainer = withRouter(ResponsiveVenuesContainer);
+const RoutedVenuesContainerWithLocations = withVenueLocations(() =>
+  Promise.resolve(RoutedVenuesContainer),
+);
 const AsyncVenuesContainer = Loadable.Map<Subtract<Props, LoadedProps>, { venues: AxiosResponse }>({
   loader: {
     venues: () => axios.get(nusmods.venuesUrl(config.semester)),
@@ -388,7 +399,9 @@ const AsyncVenuesContainer = Loadable.Map<Subtract<Props, LoadedProps>, { venues
     return null;
   },
   render(loaded, props) {
-    return <RoutedVenuesContainer venues={sortVenues(loaded.venues.data)} {...props} />;
+    return (
+      <RoutedVenuesContainerWithLocations venues={sortVenues(loaded.venues.data)} {...props} />
+    );
   },
 });
 
