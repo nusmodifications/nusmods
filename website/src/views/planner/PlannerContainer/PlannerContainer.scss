@@ -20,10 +20,9 @@
     display: flex;
     flex: 1;
     align-items: center;
-    margin: 0;
 
     h1 {
-      margin: 1rem;
+      margin: 0.1rem 0;
       font-size: $font-size-xlg;
     }
 
@@ -40,6 +39,18 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
+
+    @include media-breakpoint-down(sm) {
+      .settingsButton {
+        p {
+          @include sr-only;
+        }
+
+        svg {
+          margin-right: 0;
+        }
+      }
+    }
   }
 
   .moduleStats {

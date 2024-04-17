@@ -7,11 +7,31 @@
   },
   "headers": [
     {
-      "source": "/assets/(.*)",
+      "source": "/(.*)",
       "headers": [
         {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains;"
+        },
+        {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "no-cache, no-store, must-revalidate"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Access-Control-Allow-Credentials",
+          "value": "false"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "https://nusmods.com"
+        },
+        {
+          "key": "Content-Security-Policy-Report-Only",
+          "value": "default-src 'self'; script-src 'report-sample' 'self' https://analytics.nusmods.com/piwik.js https://analytics.nusmods.com/matomo.js https://launchpad-wrapper.privacymanager.io/876583a8-81cb-4d63-9d57-50a52a0bd20a/launchpad-liveramp.js https://launchpad.privacymanager.io/latest/launchpad.bundle.js https://nusmods-prod.disqus.com/embed.js https://static.cloudflareinsights.com/beacon.min.js/v84a3a4012de94ce1a686ba8c167c359c1696973893317; style-src 'report-sample' 'self'; object-src 'none'; base-uri 'self'; connect-src 'self' https://analytics.nusmods.com https://api.data.gov.sg https://api.github.com https://api.nusmods.com https://nusmods-search.es.ap-southeast-1.aws.found.io:9243 https://sentry.io; font-src 'self'; frame-src 'self' https://disqus.com https://tempest.services.disqus.com; img-src 'self' https://online.swagger.io https://a.tile.openstreetmap.org https://avatars.githubusercontent.com https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org https://i.ytimg.com https://opencollective.com https://referrer.disqus.com https://www.gravatar.com; manifest-src 'self'; media-src 'self'; report-uri https://csp-report.nusmods.com/report; worker-src 'self';"
         }
       ]
     },
