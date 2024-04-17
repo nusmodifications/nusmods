@@ -6,6 +6,8 @@ import { Link, LinkProps } from 'react-router-dom';
 import { Venue, VenueLocationMap } from 'types/venues';
 import { venuePage } from 'views/routes/paths';
 
+import { highlight } from 'utils/react';
+import { tokenize } from 'utils/moduleSearch';
 import styles from './VenueList.scss';
 
 type Props = {
@@ -13,6 +15,7 @@ type Props = {
   venueLocations?: VenueLocationMap;
   selectedVenue?: Venue | null;
   linkProps?: Omit<LinkProps, 'to'>;
+  query?: string;
 };
 
 const VenueList: React.FC<Props> = (props) => {
@@ -20,6 +23,8 @@ const VenueList: React.FC<Props> = (props) => {
   const physicalVenues = props.venues.filter((venue) => !venue.startsWith('E-Learn'));
   const venueList = groupBy(physicalVenues, (venue) => venue.charAt(0).toUpperCase());
   const sortedVenueList = sortBy(toPairs(venueList), ([key]) => key);
+
+  const tokens = props.query ? tokenize(props.query.toLowerCase()) : [];
 
   return (
     <ul className={styles.venueList}>
@@ -41,7 +46,7 @@ const VenueList: React.FC<Props> = (props) => {
                   )}
                   {...props.linkProps}
                 >
-                  <div>{venue}</div>
+                  <div>{highlight(venue, tokens)}</div>
                   {props.venueLocations && props.venueLocations[venue] ? (
                     <div
                       className={classnames(
@@ -49,7 +54,7 @@ const VenueList: React.FC<Props> = (props) => {
                         styles.subtitle,
                       )}
                     >
-                      {props.venueLocations[venue].roomName}
+                      <span>{highlight(`${props.venueLocations[venue].roomName}`, tokens)}</span>
                     </div>
                   ) : null}
                 </Link>

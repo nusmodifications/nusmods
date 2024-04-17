@@ -331,6 +331,7 @@ export class VenuesContainerComponent extends Component<Props, State> {
               venues={matchedVenues.map(([venue]) => venue)}
               venueLocations={venueLocations}
               selectedVenue={selectedVenue}
+              query={searchTerm}
             />
           )}
         </div>
