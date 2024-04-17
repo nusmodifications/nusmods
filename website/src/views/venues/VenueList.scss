@@ -48,11 +48,24 @@ $padding-v: 0.5rem;
 @supports (display: grid) {
   .subList {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
     grid-gap: 1px;
 
     li {
       margin: 0;
     }
   }
+}
+
+.subtitle {
+  font-size: $font-size-xs;
+  color: $body-color;
+}
+
+:global(.btn:hover) .subtitle {
+  color: white;
+}
+
+:global(.btn-primary) .subtitle {
+  color: white;
 }
