@@ -36,6 +36,7 @@ type Props = Readonly<{
   removeModule: (id: string) => void;
   addCustomData: (moduleCode: ModuleCode) => void;
   setPlaceholderModule: (id: string, moduleCode: ModuleCode) => void;
+  addModuleToTimetable: (semester: Semester, module: ModuleCode) => void;
 }>;
 
 /**
@@ -48,6 +49,11 @@ const PlannerModule = memo<Props>((props) => {
 
   const editCustomData = () => {
     if (props.moduleCode) props.addCustomData(props.moduleCode);
+  };
+
+  const addModuleToTimetable = () => {
+    if (props.semester && props.moduleCode)
+      props.addModuleToTimetable(props.semester, props.moduleCode);
   };
 
   const renderConflict = (conflict: Conflict) => {
@@ -182,7 +188,11 @@ const PlannerModule = memo<Props>((props) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <ModuleMenu removeModule={removeModule} editCustomData={editCustomData} />
+          <ModuleMenu
+            removeModule={removeModule}
+            editCustomData={editCustomData}
+            addModuleToTimetable={addModuleToTimetable}
+          />
 
           <div className={styles.moduleInfo}>
             <div className={styles.moduleName}>

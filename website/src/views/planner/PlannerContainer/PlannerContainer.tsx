@@ -25,6 +25,7 @@ import {
 } from 'actions/planner';
 import { toggleFeedback } from 'actions/app';
 import { fetchModule } from 'actions/moduleBank';
+import { addModule as addModuleToTimetable } from 'actions/timetables';
 import { getAcadYearModules, getExemptions, getIBLOCs, getPlanToTake } from 'selectors/planner';
 import Title from 'views/components/Title';
 import LoadingSpinner from 'views/components/LoadingSpinner';
@@ -52,6 +53,7 @@ export type Props = Readonly<{
   moveModule: (id: string, year: string, semester: Semester, index: number) => void;
   removeModule: (id: string) => void;
   setPlaceholderModule: (id: string, moduleCode: ModuleCode) => void;
+  addModuleToTimetable: (semester: Semester, module: ModuleCode) => void;
 }>;
 
 type SemesterModules = { [semester: string]: PlannerModuleInfo[] };
@@ -131,6 +133,9 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
     this.props.fetchModule(moduleCode);
   };
 
+  onAddModuleToTimetable = (semester: Semester, module: ModuleCode) =>
+    this.props.fetchModule(module).then(() => this.props.addModuleToTimetable(semester, module));
+
   closeAddCustomData = () => this.setState({ showCustomModule: null });
 
   closeSettingsModal = () => this.setState({ showSettings: false });
@@ -194,6 +199,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
       addCustomData: this.onAddCustomData,
       setPlaceholderModule: this.onSetPlaceholderModule,
       removeModule: this.props.removeModule,
+      addModuleToTimetable: this.onAddModuleToTimetable,
     };
 
     return (
@@ -306,6 +312,7 @@ const PlannerContainer = connect(mapStateToProps, {
   addModule: addPlannerModule,
   moveModule: movePlannerModule,
   removeModule: removePlannerModule,
+  addModuleToTimetable,
 })(PlannerContainerComponent);
 
 export default PlannerContainer;
