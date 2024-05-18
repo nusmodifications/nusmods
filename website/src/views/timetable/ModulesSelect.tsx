@@ -77,7 +77,6 @@ const ModulesSelect: FC<Props> = ({
 
         case Downshift.stateChangeTypes.keyDownEnter:
         case Downshift.stateChangeTypes.clickItem:
-          // Don't reset isOpen, inputValue and highlightedIndex when item is selected
           setInputValue('');
           return changes;
 
