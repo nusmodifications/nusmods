@@ -1,13 +1,13 @@
 import { FC, useCallback, useEffect, useState } from 'react';
+import type { SemTimetableConfig } from 'types/timetables';
+import type { Semester } from 'types/modules';
+import { DARK_COLOR_SCHEME } from 'types/settings';
 
 import { Helmet } from 'react-helmet';
 import { NavLink, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import classnames from 'classnames';
 import { each } from 'lodash';
-import { DARK_MODE } from 'types/settings';
-import type { Semester } from 'types/modules';
-import type { SemTimetableConfig } from 'types/timetables';
 
 import weekText from 'utils/weekText';
 import { captureException } from 'utils/error';
@@ -35,6 +35,7 @@ import FeedbackModal from './components/FeedbackModal';
 import KeyboardShortcuts from './components/KeyboardShortcuts';
 
 import styles from './AppShell.scss';
+import useColorScheme from './hooks/useColorScheme';
 
 /**
  * Fetch module list on mount.
@@ -113,8 +114,8 @@ const AppShell: FC = ({ children }) => {
   const moduleList = useSelector((state: State) => state.moduleBank.moduleList);
   const isModuleListReady = moduleList.length;
 
-  const mode = useSelector((state: State) => state.settings.mode);
-  const isDarkMode = mode === DARK_MODE;
+  const colorScheme = useColorScheme();
+  const isDarkMode = colorScheme === DARK_COLOR_SCHEME;
 
   const theme = useSelector((state: State) => state.theme.id);
 
