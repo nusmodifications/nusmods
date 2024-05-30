@@ -2,19 +2,20 @@ import { PureComponent } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
+import { State as StoreState } from 'types/state';
+
 import { Module, Semester } from 'types/modules';
+import { getFirstAvailableSemester } from 'utils/modules';
+
 import { AddModuleData, PlannerModuleInfo } from 'types/planner';
 import { getPlanToTake } from 'selectors/planner';
-
-import { getFirstAvailableSemester } from 'utils/modules';
-import { State as StoreState } from 'types/state';
 import { addPlannerModule, removePlannerModule } from 'actions/planner';
 
 import styles from './SaveModuleButton.scss';
 
 type Props = {
   module: Module;
-  planToTakeModules: PlannerModuleInfo[]; // List of module objects, get moduleCode
+  planToTakeModules: PlannerModuleInfo[];
   className?: string;
   block?: boolean;
 
@@ -79,7 +80,7 @@ export class SaveModuleButtonComponent extends PureComponent<Props, State> {
     }
   }
 
-  buttonLabel(semester: Semester) {
+  buttonLabel() {
     const hasModule = isModuleInPlanToTake(this.props.module, this.props.planToTakeModules);
     return hasModule ? (
       <>
@@ -111,7 +112,7 @@ export class SaveModuleButtonComponent extends PureComponent<Props, State> {
           })}
           onClick={() => this.onSelect(defaultSemester)}
         >
-          {this.buttonLabel(defaultSemester)}
+          {this.buttonLabel()}
         </button>
       </div>
     );
