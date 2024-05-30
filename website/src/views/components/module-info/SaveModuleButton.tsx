@@ -27,13 +27,23 @@ type State = {
 };
 
 function isModuleInPlanToTake(module: Module, planToTakeModules: PlannerModuleInfo[]): boolean {
-  planToTakeModules.forEach((entry) => {
-    if (entry.moduleCode === module.moduleCode) {
+  for (let i = 0; i < planToTakeModules.length; i++) {
+    if (planToTakeModules[i].moduleCode === module.moduleCode) {
       return true;
     }
-  });
+  }
 
   return false;
+}
+
+function getModuleId(module: Module, planToTakeModules: PlannerModuleInfo[]): string {
+  // If duplicate ids, gets the first id.
+  for (let i = 0; i < planToTakeModules.length; i++) {
+    if (planToTakeModules[i].moduleCode === module.moduleCode) {
+      return planToTakeModules[i].id;
+    }
+  }
+  return '0';
 }
 
 export class SaveModuleButtonComponent extends PureComponent<Props, State> {
@@ -52,14 +62,14 @@ export class SaveModuleButtonComponent extends PureComponent<Props, State> {
     loading: null,
   };
 
-  // TODO: Link addPlannerModule and removePlannerModule functions to the button
   onSelect(semester: Semester) {
     const { module, planToTakeModules } = this.props;
     const PLAN_TO_TAKE_YEAR = '3000';
     const PLAN_TO_TAKE_SEMESTER = -2;
 
     if (isModuleInPlanToTake(module, planToTakeModules)) {
-      this.props.removeModule(module.moduleCode);
+      const id = getModuleId(module, planToTakeModules);
+      this.props.removeModule(id);
     } else {
       this.setState({ loading: semester });
       this.props.addModule(PLAN_TO_TAKE_YEAR, PLAN_TO_TAKE_SEMESTER, {
