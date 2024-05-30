@@ -1,45 +1,47 @@
 import { PureComponent } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { get } from 'lodash';
 
-import { Module, ModuleCode, Semester } from 'types/modules';
-import { TimetableConfig } from 'types/timetables';
+import { Module, Semester } from 'types/modules';
+import { AddModuleData, PlannerModuleInfo } from 'types/planner';
+import { getPlanToTake } from 'selectors/planner';
 
-import { addModule, removeModule } from 'actions/timetables';
 import { getFirstAvailableSemester } from 'utils/modules';
 import { State as StoreState } from 'types/state';
+import { addPlannerModule, removePlannerModule } from 'actions/planner';
 
 import styles from './SaveModuleButton.scss';
 
 type Props = {
   module: Module;
-  timetables: TimetableConfig;
+  planToTakeModules: PlannerModuleInfo[]; // List of module objects, get moduleCode
   className?: string;
   block?: boolean;
 
-  addModule: (semester: Semester, moduleCode: ModuleCode) => void;
-  removeModule: (semester: Semester, moduleCode: ModuleCode) => void;
+  addModule: (year: string, semester: Semester, module: AddModuleData) => void;
+  removeModule: (id: string) => void;
 };
 
 type State = {
   loading: Semester | null;
 };
 
-function isModuleOnTimetable(
-  semester: Semester,
-  timetables: TimetableConfig,
-  module: Module,
-): boolean {
-  return !!get(timetables, [String(semester), module.moduleCode]);
+function isModuleInPlanToTake(module: Module, planToTakeModules: PlannerModuleInfo[]): boolean {
+  planToTakeModules.forEach((entry) => {
+    if (entry.moduleCode === module.moduleCode) {
+      return true;
+    }
+  });
+
+  return false;
 }
 
 export class SaveModuleButtonComponent extends PureComponent<Props, State> {
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
-    const { timetables, module } = nextProps;
+    const { planToTakeModules, module } = nextProps;
     const { loading } = prevState;
 
-    if (loading != null && isModuleOnTimetable(loading, timetables, module)) {
+    if (loading != null && isModuleInPlanToTake(module, planToTakeModules)) {
       return { loading: null };
     }
 
@@ -52,18 +54,23 @@ export class SaveModuleButtonComponent extends PureComponent<Props, State> {
 
   // TODO: Link addPlannerModule and removePlannerModule functions to the button
   onSelect(semester: Semester) {
-    const { module, timetables } = this.props;
+    const { module, planToTakeModules } = this.props;
+    const PLAN_TO_TAKE_YEAR = '3000';
+    const PLAN_TO_TAKE_SEMESTER = -2;
 
-    if (isModuleOnTimetable(semester, timetables, module)) {
-      this.props.removeModule(semester, module.moduleCode);
+    if (isModuleInPlanToTake(module, planToTakeModules)) {
+      this.props.removeModule(module.moduleCode);
     } else {
       this.setState({ loading: semester });
-      this.props.addModule(semester, module.moduleCode);
+      this.props.addModule(PLAN_TO_TAKE_YEAR, PLAN_TO_TAKE_SEMESTER, {
+        type: 'module',
+        moduleCode: module.moduleCode,
+      });
     }
   }
 
   buttonLabel(semester: Semester) {
-    const hasModule = isModuleOnTimetable(semester, this.props.timetables, this.props.module);
+    const hasModule = isModuleInPlanToTake(this.props.module, this.props.planToTakeModules);
     return hasModule ? (
       <>
         Remove from <br />
@@ -80,7 +87,6 @@ export class SaveModuleButtonComponent extends PureComponent<Props, State> {
   override render() {
     const { block, className, module } = this.props;
     const defaultSemester = getFirstAvailableSemester(module.semesterData);
-    // const id = `add-to-timetable-${module.moduleCode}`;
 
     return (
       <div
@@ -102,12 +108,11 @@ export class SaveModuleButtonComponent extends PureComponent<Props, State> {
   }
 }
 
-// TODO: Link planToTake redux state to maptoprops, and wrap add/removeplannermodule
 const SaveModuleButtonConnected = connect(
   (state: StoreState) => ({
-    timetables: state.timetables.lessons,
+    planToTakeModules: getPlanToTake(state),
   }),
-  { addModule, removeModule },
+  { addModule: addPlannerModule, removeModule: removePlannerModule },
 )(SaveModuleButtonComponent);
 
 export default SaveModuleButtonConnected;
