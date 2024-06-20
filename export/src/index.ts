@@ -56,7 +56,7 @@ render
     gracefulShutdown(server);
   })
   .catch((e) => {
-    console.error('Cannot start browser:');
+    console.error('Cannot start browserbb:');
     console.error(e);
 
     if (e.message.includes('ERR_CONNECTION_REFUSED')) {

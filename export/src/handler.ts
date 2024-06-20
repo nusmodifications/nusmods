@@ -67,7 +67,7 @@ export function makeExportHandler<T>(
             e,
           );
         }
-        throw new HttpError(500, 'Cannot start browser', e);
+        throw new HttpError(500, 'Cannot start browseraa', e);
       }
 
       // Export
