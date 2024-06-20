@@ -42,6 +42,7 @@ render
   .then(async (browser) => {
     // Attach the page and browser objects to context
     app.context.browser = browser;
+    console.log("AAAAAAAa");
 
     // Attach page content or URL
     if (/^https?:\/\//.test(config.page)) {
@@ -56,6 +57,7 @@ render
     gracefulShutdown(server);
   })
   .catch((e) => {
+    console.log("DUDE")
     console.error('Cannot start browserbb:');
     console.error(e);
 

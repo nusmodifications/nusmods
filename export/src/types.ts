@@ -1,4 +1,4 @@
-import type { Page } from 'puppeteer-core';
+import type { Page } from 'puppeteer';
 
 export type TimetableOrientation = 'HORIZONTAL' | 'VERTICAL';
 

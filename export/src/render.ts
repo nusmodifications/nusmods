@@ -1,5 +1,5 @@
 import fs from 'fs-extra';
-import puppeteer, { Page } from 'puppeteer-core';
+import puppeteer, { Page } from 'puppeteer';
 import type { Middleware } from 'koa';
 
 import { getModules } from './data';
@@ -24,26 +24,38 @@ async function setViewport(page: Page, options: ViewportOptions = {}) {
 }
 
 export async function launch() {
+  console.log("LAUNCH")
   const browser = await puppeteer.launch({
-    executablePath: config.chromeExecutable,
-    devtools: !!process.env.DEVTOOLS,
-    args: [
-      '--headless',
-      '--disable-gpu',
-      '--disable-software-rasterizer',
-      '--disable-dev-shm-usage',
-    ],
+    headless: true
+    // executablePath: config.chromeExecutable,
+    // devtools: !!process.env.DEVTOOLS,
+    // args: [
+    //   // '--headless',
+    //   '--disable-gpu',
+    //   '--disable-software-rasterizer',
+    //   '--disable-dev-shm-usage',
+    // ],
   });
+  console.log("BROWSER")
 
   const page = await browser.newPage();
-
+  console.log("PAGE")
   // If config.page is local, use setContent. Otherwise connect to the page using goto.
   if (/^https?:\/\//.test(config.page)) {
+    console.log("BEFORE GOTO")
     await page.goto(config.page);
   } else {
+    console.log("BEFORE READFILE")
+
     const content = await fs.readFile(config.page, 'utf-8');
+
+    console.log("BEFORE READFILE")
+
     await page.setContent(content);
   }
+
+  console.log("AFTER ALLAT")
+
 
   return browser;
 }

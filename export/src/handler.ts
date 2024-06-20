@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/node';
-import type { NowApiHandler, NowRequest, NowResponse } from '@vercel/node';
-import type { Page } from 'puppeteer-core';
+import type { VercelApiHandler, VercelRequest, VercelResponse } from '@vercel/node';
+import type { Page } from 'puppeteer';
 
 import * as render from './render-serverless';
 import config from './config';
@@ -38,9 +38,9 @@ function setUpSentry() {
  * @returns A Vercel serverless function handler.
  */
 export function makeExportHandler<T>(
-  parseExportData: (request: NowRequest) => T,
-  performExport: (response: NowResponse, page: Page, data: T) => void | Promise<void>,
-): NowApiHandler {
+  parseExportData: (request: VercelRequest) => T,
+  performExport: (response: VercelResponse, page: Page, data: T) => void | Promise<void>,
+): VercelApiHandler {
   return async function handler(request, response) {
     try {
       throwIfAcademicYearNotSet();

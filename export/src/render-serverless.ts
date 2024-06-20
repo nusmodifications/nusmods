@@ -1,5 +1,4 @@
-import chromium from '@sparticuz/chromium';
-import puppeteer, { Page } from 'puppeteer-core';
+import puppeteer, { Page } from 'puppeteer';
 
 import { getModules } from './data';
 import config from './config';
@@ -31,7 +30,7 @@ export async function open(url: string) {
     // devtools: !!process.env.DEVTOOLS, // TODO: Query string && NODE_ENV === 'development'?
     args: chromium.args,
     defaultViewport: chromium.defaultViewport,
-    executablePath: await chromium.executablePath,
+    // executablePath: await chromium.executablePath,
     headless: chromium.headless,
   });
 
