@@ -34,6 +34,7 @@ export async function open(url: string) {
   });
 
   const page = await browser.newPage();
+  console.log("PAGE DONE")
   await page.goto(url, { waitUntil: 'load' , timeout: 10000});
   await setViewport(page);
 
