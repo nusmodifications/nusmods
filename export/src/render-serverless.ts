@@ -1,5 +1,5 @@
 import chromium from '@sparticuz/chromium';
-import puppeteer, { Page } from 'puppeteer';
+import puppeteer, { Page } from 'puppeteer-core';
 
 import { getModules } from './data';
 import config from './config';

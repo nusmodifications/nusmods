@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/node';
 import type { VercelApiHandler, VercelRequest, VercelResponse } from '@vercel/node';
-import type { Page } from 'puppeteer';
+import type { Page } from 'puppeteer-core';
 
 import * as render from './render-serverless';
 import config from './config';
