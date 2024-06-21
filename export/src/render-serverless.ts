@@ -1,3 +1,4 @@
+import chromium from '@sparticuz/chromium';
 import puppeteer, { Page } from 'puppeteer';
 
 import { getModules } from './data';
@@ -22,19 +23,14 @@ async function setViewport(page: Page, options: ViewportOptions = {}) {
 }
 
 export async function open(url: string) {
-  // const executablePath = await chromium.executablePath;
+  const executablePath = await chromium.executablePath;
+  console.log(`Chromium executable path: ${executablePath}`);
 
-  // console.log(`Chromium executable path: ${executablePath}`);
-
+  chromium.setGraphicsMode = false;
   const browser = await puppeteer.launch({
-    // devtools: !!process.env.DEVTOOLS, // TODO: Query string && NODE_ENV === 'development'?
-    headless:true,
-    args: [
-      // '--headless',
-      '--disable-gpu',
-      '--disable-software-rasterizer',
-      '--disable-dev-shm-usage',
-    ],
+    args: chromium.args,
+    executablePath: await chromium.executablePath(),
+    headless: chromium.headless,
   });
 
   const page = await browser.newPage();

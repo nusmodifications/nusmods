@@ -29,7 +29,8 @@
     "lodash": "4.17.21",
     "nodemon": "2.0.22",
     "pug": "3.0.3",
-    "puppeteer": "^22.6.4"
+    "@sparticuz/chromium": "^123.0.0",
+    "puppeteer": "22.6.4"
   },
   "devDependencies": {
     "@types/fs-extra": "9.0.13",
