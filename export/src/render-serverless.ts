@@ -23,13 +23,13 @@ async function setViewport(page: Page, options: ViewportOptions = {}) {
 }
 
 export async function open(url: string) {
-  const executablePath = await chromium.executablePath;
+  const executablePath = await chromium.executablePath();
   console.log(`Chromium executable path: ${executablePath}`);
 
   chromium.setGraphicsMode = false;
   const browser = await puppeteer.launch({
     args: chromium.args,
-    executablePath: await chromium.executablePath(),
+    executablePath: executablePath,
     headless: chromium.headless,
   });
 
