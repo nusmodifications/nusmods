@@ -1,0 +1,9 @@
+AllCops:
+  Exclude:
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'script/**/*'
+    - 'bin/*'
+
+Metrics/LineLength:
+  Max: 100
