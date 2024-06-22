@@ -6,6 +6,7 @@ import ModulePageContainer from 'views/modules/ModulePageContainer';
 import ModuleArchiveContainer from 'views/modules/ModuleArchiveContainer';
 import ModuleFinderContainer from 'views/modules/ModuleFinderContainer';
 import VenuesContainer from 'views/venues/VenuesContainer';
+import MobilityContainer from 'views/mobility/MobilityContainer';
 import SettingsContainer from 'views/settings/SettingsContainer';
 import AboutContainer from 'views/static/AboutContainer';
 import ContributeContainer from 'views/contribute/ContributeContainer';
@@ -34,6 +35,9 @@ const Routes: React.FC = () => (
     {/* END LEGACY ROUTES */}
     <Route path="/archive/:moduleCode/:year/:slug?" component={ModuleArchiveContainer} />
     <Route path="/venues/:venue?" component={VenuesContainer} />
+    <Route path="/mobility/:type(service|stop)/:slug" component={MobilityContainer} />
+    <Route path="/mobility" component={MobilityContainer} />
+
     <Route path="/today" component={TodayContainer} />
     <Route path="/planner" component={PlannerContainer} />
     <Route path="/cpex" component={MpeContainer} />

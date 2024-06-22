@@ -44,38 +44,38 @@ export type VenueLocation = {
 
 export type LatLngTuple = [number, number];
 
-export type BusStop = {
-  location: LatLngTuple;
-  // Human readable name for the stop
-  readonly name: string;
-  // Used for accessing the next bus API. This is called 'name' in the API.
-  readonly code: string;
-  // Bus routes that stops at the bus stop
-  readonly routes: string[];
-  // Whether to show the routes on the left instead of right
-  // to avoid overlapping some other bus stop
-  readonly displayRoutesLeft?: boolean;
-};
+// export type BusStop = {
+//   location: LatLngTuple;
+//   // Human readable name for the stop
+//   readonly name: string;
+//   // Used for accessing the next bus API. This is called 'name' in the API.
+//   readonly code: string;
+//   // Bus routes that stops at the bus stop
+//   readonly routes: string[];
+//   // Whether to show the routes on the left instead of right
+//   // to avoid overlapping some other bus stop
+//   readonly displayRoutesLeft?: boolean;
+// };
 
-export type NextBusTime = number | '-' | 'Arr';
+// export type NextBusTime = number | '-' | 'Arr';
 
-export type NextBus = {
-  readonly arrivalTime: NextBusTime;
-  readonly nextArrivalTime: NextBusTime;
-};
+// export type NextBus = {
+//   readonly arrivalTime: NextBusTime;
+//   readonly nextArrivalTime: NextBusTime;
+// };
 
-export type NextBusTimings = { [route: string]: NextBus };
+// export type NextBusTimings = { [route: string]: NextBus };
 
 // data/venues.json is of this type
 export type VenueLocationMap = { readonly [key: string]: VenueLocation };
 
-export type BusTiming = {
-  // Loading uses a boolean instead of making timings null so that
-  // the old timing can be seen while it is refreshed
-  isLoading: boolean;
-  timings?: NextBusTimings | null;
-  error?: Error | null;
-};
+// export type BusTiming = {
+//   // Loading uses a boolean instead of making timings null so that
+//   // the old timing can be seen while it is refreshed
+//   isLoading: boolean;
+//   timings?: NextBusTimings | null;
+//   error?: Error | null;
+// };
 
 /**
  * Represents a time period in the timetable.
