@@ -6,10 +6,18 @@ import styles from './PlannerModule.scss';
 function makeModuleMenu() {
   const removeModule = jest.fn();
   const editCustomData = jest.fn();
+  const addModuleToTimetable = jest.fn();
   return {
     removeModule,
     editCustomData,
-    wrapper: mount(<ModuleMenu removeModule={removeModule} editCustomData={editCustomData} />),
+    addModuleToTimetable,
+    wrapper: mount(
+      <ModuleMenu
+        removeModule={removeModule}
+        editCustomData={editCustomData}
+        addModuleToTimetable={addModuleToTimetable}
+      />,
+    ),
   };
 }
 
@@ -34,6 +42,14 @@ test('should show dropdown when button is clicked', () => {
   const { wrapper } = makeModuleMenu();
   wrapper.find('button').at(0).simulate('click');
   expect(isExpanded(wrapper).exists()).toBe(true);
+});
+
+test('should show all menu actions', () => {
+  const { wrapper } = makeModuleMenu();
+  wrapper.find('button').at(0).simulate('click');
+  expect(wrapper.text()).toContain('Edit Unit and Title');
+  expect(wrapper.text()).toContain('Add to Timetable');
+  expect(wrapper.text()).toContain('Remove');
 });
 
 test('should fix its overflow given a small window innerwidth', () => {

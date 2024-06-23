@@ -29,6 +29,7 @@ type Props = Readonly<{
   removeModule: (id: string) => void;
   addCustomData: (moduleCode: ModuleCode) => void;
   setPlaceholderModule: (id: string, moduleCode: ModuleCode) => void;
+  addModuleToTimetable: (semester: Semester, module: ModuleCode) => void;
 }>;
 
 function renderSemesterMeta(plannerModules: PlannerModuleInfo[]) {
@@ -57,6 +58,7 @@ const PlannerSemester: React.FC<Props> = ({
   removeModule,
   addCustomData,
   setPlaceholderModule,
+  addModuleToTimetable,
 }) => {
   const renderModule = (plannerModule: PlannerModuleInfo, index: number) => {
     const { id, moduleCode, moduleInfo, conflict, placeholder } = plannerModule;
@@ -77,6 +79,7 @@ const PlannerSemester: React.FC<Props> = ({
         semester={semester}
         removeModule={removeModule}
         addCustomData={addCustomData}
+        addModuleToTimetable={addModuleToTimetable}
         setPlaceholderModule={setPlaceholderModule}
       />
     );

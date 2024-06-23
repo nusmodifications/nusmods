@@ -8,6 +8,7 @@ import styles from './PlannerModule.scss';
 type Props = {
   readonly removeModule: () => void;
   readonly editCustomData: () => void;
+  readonly addModuleToTimetable: () => void;
 };
 
 type MenuItem = {
@@ -23,6 +24,7 @@ const ModuleMenu = memo((props: Props) => {
 
   const menuItems: MenuItem[] = [
     { label: 'Edit Unit and Title', action: props.editCustomData },
+    { label: 'Add to Timetable', action: props.addModuleToTimetable },
     { label: 'Remove', action: props.removeModule, className: 'dropdown-item-danger' },
   ];
 
