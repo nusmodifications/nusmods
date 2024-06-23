@@ -2,8 +2,6 @@ import axios from 'axios';
 import type { VercelApiHandler } from '@vercel/node';
 import { Octokit } from '@octokit/rest';
 
-const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
-
 const codeBlock = (text, lang = '') => `\`\`\`${lang}\n${text}\n\`\`\``;
 
 const unorderedList = (items) => items.map((item) => `- ${item}`).join('\n');
@@ -32,6 +30,7 @@ const toDataList = (data) => {
  * @param {boolean} debug
  */
 const handler: VercelApiHandler = async (request) => {
+  const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
   const {
     venue,
     room,
