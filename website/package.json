@@ -96,7 +96,7 @@
     "icalendar": "0.7.1",
     "identity-obj-proxy": "3.0.0",
     "jest": "29.6.2",
-    "jest-environment-jsdom": "^29.5.0",
+    "jest-environment-jsdom": "^29.7.0",
     "jest-junit": "16.0.0",
     "mini-css-extract-plugin": "1.6.2",
     "nightwatch": "0.9.21",

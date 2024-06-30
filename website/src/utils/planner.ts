@@ -15,6 +15,7 @@ export const PLAN_TO_TAKE_YEAR = '3000';
 export const PLAN_TO_TAKE_SEMESTER = -2;
 
 const GRADE_REQUIREMENT_SEPARATOR = ':';
+const MODULE_WILD_CARD = "%";
 
 // We assume iBLOCs takes place in special term 1
 export const IBLOCS_SEMESTER = 3;
@@ -38,11 +39,20 @@ export function getSemesterName(semester: Semester) {
 export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: PrereqTree) {
   function walkTree(fragment: PrereqTree): PrereqTree[] | null {
     if (typeof fragment === 'string') {
-      if (fragment.includes(GRADE_REQUIREMENT_SEPARATOR)) {
-        const [module] = fragment.split(GRADE_REQUIREMENT_SEPARATOR);
-        return moduleSet.has(module) ? null : [module];
+      const module = fragment.includes(GRADE_REQUIREMENT_SEPARATOR)
+        ? fragment.split(GRADE_REQUIREMENT_SEPARATOR)[0]
+        : fragment;
+      
+      if (module.includes(MODULE_WILD_CARD)) {
+        const [prefix] = module.split(MODULE_WILD_CARD);
+        for (const moduleCode of moduleSet) {
+          if (moduleCode.startsWith(prefix)) {
+            return null;
+          }
+        }
       }
-      return moduleSet.has(fragment) ? null : [fragment];
+      
+      return moduleSet.has(module) ? null : [module];
     }
 
     if ('or' in fragment) {

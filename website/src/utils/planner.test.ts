@@ -11,7 +11,11 @@ import {
 } from 'utils/planner';
 
 describe(checkPrerequisite, () => {
-  const moduleSet = new Set(['CS1010S', 'CS2107', 'CS2105', 'MA1101R', 'MA1521', 'MA2104']);
+  const moduleSet = new Set([
+    'CS1010S', 'CS2107', 'CS2105',
+    'MA1101R', 'MA1521', 'MA2104',
+    'NTW2006', 'UTC1402', 'UTC1702E'
+  ]);
 
   test('should return null if single prerequisite is met', () => {
     expect(checkPrerequisite(moduleSet, 'CS1010S')).toBeNull();
@@ -33,8 +37,30 @@ describe(checkPrerequisite, () => {
     ).toBeNull();
   });
 
+  test('should return null if single wildcard prerequisites is met', () => {
+    expect(checkPrerequisite(moduleSet, 'NTW%')).toBeNull();
+    expect(checkPrerequisite(moduleSet, 'UTC14%')).toBeNull();
+  });
+
+  test('should return null if all wildcard prerequisites are met', () => {
+    // Or operator
+    expect(
+      checkPrerequisite(moduleSet, {
+        or: ['UTC11%', 'UTC14%'],
+      }),
+    ).toBeNull();
+
+    // And operator
+    expect(
+      checkPrerequisite(moduleSet, {
+        and: ['UTC14%', 'UTC1702%'],
+      }),
+    ).toBeNull();
+  });
+
   test('should return module that are not fulfilled', () => {
     expect(checkPrerequisite(moduleSet, 'CS2030')).toEqual(['CS2030']);
+    expect(checkPrerequisite(moduleSet, 'NTW1%')).toEqual(['NTW1%']);
   });
 
   test('should return all modules that are not fulfilled', () => {
@@ -45,6 +71,16 @@ describe(checkPrerequisite, () => {
     ).toEqual([
       {
         or: ['CS2030', 'CS1020'],
+      },
+    ]);
+
+    expect(
+      checkPrerequisite(moduleSet, {
+        or: ['CS20%', 'UTC1700%'],
+      }),
+    ).toEqual([
+      {
+        or: ['CS20%', 'UTC1700%'],
       },
     ]);
   });
