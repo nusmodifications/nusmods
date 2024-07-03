@@ -12,9 +12,15 @@ import {
 
 describe(checkPrerequisite, () => {
   const moduleSet = new Set([
-    'CS1010S', 'CS2107', 'CS2105',
-    'MA1101R', 'MA1521', 'MA2104',
-    'NTW2006', 'UTC1402', 'UTC1702E'
+    'CS1010S',
+    'CS2107',
+    'CS2105',
+    'MA1101R',
+    'MA1521',
+    'MA2104',
+    'NTW2006',
+    'UTC1402',
+    'UTC1702E',
   ]);
 
   test('should return null if single prerequisite is met', () => {
