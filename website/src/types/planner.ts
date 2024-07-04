@@ -30,7 +30,11 @@ export type NoInfo = {
   type: 'noInfo';
 };
 
-export type Conflict = PrereqConflict | ExamConflict | SemesterConflict | NoInfo;
+export type Duplicate = {
+  type: 'duplicate';
+};
+
+export type Conflict = PrereqConflict | ExamConflict | SemesterConflict | NoInfo | Duplicate;
 
 export type PlannerModulesWithInfo = {
   // Mapping acad years to a map of semester to module information object
