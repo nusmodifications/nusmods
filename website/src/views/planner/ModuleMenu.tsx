@@ -6,9 +6,12 @@ import classnames from 'classnames';
 import styles from './PlannerModule.scss';
 
 type Props = {
+  readonly includedInTimetable?: boolean;
+
   readonly removeModule: () => void;
   readonly editCustomData: () => void;
   readonly addModuleToTimetable: () => void;
+  readonly viewSemesterTimetable: () => void;
 };
 
 type MenuItem = {
@@ -24,7 +27,9 @@ const ModuleMenu = memo((props: Props) => {
 
   const menuItems: MenuItem[] = [
     { label: 'Edit Unit and Title', action: props.editCustomData },
-    { label: 'Add to Timetable', action: props.addModuleToTimetable },
+    props.includedInTimetable
+      ? { label: 'View in Timetable', action: props.viewSemesterTimetable }
+      : { label: 'Add to Timetable', action: props.addModuleToTimetable },
     { label: 'Remove', action: props.removeModule, className: 'dropdown-item-danger' },
   ];
 

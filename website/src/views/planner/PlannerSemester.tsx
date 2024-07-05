@@ -13,6 +13,10 @@ import {
   getSemesterName,
   getTotalMC,
 } from 'utils/planner';
+import { useSelector } from 'react-redux';
+import { getSemesterTimetableLessons } from 'selectors/timetables';
+import { useHistory } from 'react-router-dom';
+import { timetablePage } from 'views/routes/paths';
 import PlannerModule from './PlannerModule';
 import AddModule from './AddModule';
 import styles from './PlannerSemester.scss';
@@ -60,10 +64,20 @@ const PlannerSemester: React.FC<Props> = ({
   setPlaceholderModule,
   addModuleToTimetable,
 }) => {
+  const timetable = useSelector(getSemesterTimetableLessons)(semester);
+
+  const history = useHistory();
+  const viewSemesterTimetable = () => {
+    const timetablePath = timetablePage(semester);
+    history.push(timetablePath);
+  };
+
   const renderModule = (plannerModule: PlannerModuleInfo, index: number) => {
     const { id, moduleCode, moduleInfo, conflict, placeholder } = plannerModule;
 
     const showExamDate = showModuleMeta && config.academicYear === year;
+
+    const includedInTimetable = moduleCode !== undefined && moduleCode in timetable;
 
     return (
       <PlannerModule
@@ -77,9 +91,11 @@ const PlannerSemester: React.FC<Props> = ({
         moduleCredit={showModuleMeta ? getModuleCredit(plannerModule) : null}
         conflict={conflict}
         semester={semester}
+        includedInTimetable={includedInTimetable}
         removeModule={removeModule}
         addCustomData={addCustomData}
         addModuleToTimetable={addModuleToTimetable}
+        viewSemesterTimetable={viewSemesterTimetable}
         setPlaceholderModule={setPlaceholderModule}
       />
     );
