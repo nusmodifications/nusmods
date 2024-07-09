@@ -56,6 +56,7 @@ export const LESSON_TYPE_ABBREV: lessonTypeAbbrev = {
   'Design Lecture': 'DLEC',
   Laboratory: 'LAB',
   Lecture: 'LEC',
+  'Packaged Laboratory': 'PLAB',
   'Packaged Lecture': 'PLEC',
   'Packaged Tutorial': 'PTUT',
   Recitation: 'REC',
