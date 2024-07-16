@@ -3,7 +3,7 @@ import ModuleMenu from './ModuleMenu';
 
 import styles from './PlannerModule.scss';
 
-function makeModuleMenu(includedInTimetable: boolean) {
+function makeModuleMenu(isInTimetable: boolean) {
   const removeModule = jest.fn();
   const editCustomData = jest.fn();
   const addModuleToTimetable = jest.fn();
@@ -14,7 +14,7 @@ function makeModuleMenu(includedInTimetable: boolean) {
     addModuleToTimetable,
     wrapper: mount(
       <ModuleMenu
-        includedInTimetable={includedInTimetable}
+        isInTimetable={isInTimetable}
         removeModule={removeModule}
         editCustomData={editCustomData}
         addModuleToTimetable={addModuleToTimetable}

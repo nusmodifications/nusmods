@@ -77,7 +77,7 @@ const PlannerSemester: React.FC<Props> = ({
 
     const showExamDate = showModuleMeta && config.academicYear === year;
 
-    const includedInTimetable = moduleCode !== undefined && moduleCode in timetable;
+    const isInTimetable = moduleCode !== undefined && moduleCode in timetable;
 
     return (
       <PlannerModule
@@ -91,7 +91,7 @@ const PlannerSemester: React.FC<Props> = ({
         moduleCredit={showModuleMeta ? getModuleCredit(plannerModule) : null}
         conflict={conflict}
         semester={semester}
-        includedInTimetable={includedInTimetable}
+        isInTimetable={isInTimetable}
         removeModule={removeModule}
         addCustomData={addCustomData}
         addModuleToTimetable={addModuleToTimetable}

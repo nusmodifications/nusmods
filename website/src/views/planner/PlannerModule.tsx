@@ -27,7 +27,7 @@ type Props = Readonly<{
   placeholder?: PlannerPlaceholder;
   conflict?: Conflict | null;
   semester?: Semester;
-  includedInTimetable?: boolean;
+  isInTimetable?: boolean;
 
   // For draggable
   id: string;
@@ -191,7 +191,7 @@ const PlannerModule = memo<Props>((props) => {
           {...provided.dragHandleProps}
         >
           <ModuleMenu
-            includedInTimetable={props.includedInTimetable}
+            isInTimetable={props.isInTimetable}
             removeModule={removeModule}
             editCustomData={editCustomData}
             addModuleToTimetable={addModuleToTimetable}
