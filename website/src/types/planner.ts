@@ -34,7 +34,12 @@ export type DuplicateConflict = {
   type: 'duplicate';
 };
 
-export type Conflict = PrereqConflict | ExamConflict | SemesterConflict | NoInfo | DuplicateConflict;
+export type Conflict =
+  | PrereqConflict
+  | ExamConflict
+  | SemesterConflict
+  | NoInfo
+  | DuplicateConflict;
 
 export type PlannerModulesWithInfo = {
   // Mapping acad years to a map of semester to module information object
