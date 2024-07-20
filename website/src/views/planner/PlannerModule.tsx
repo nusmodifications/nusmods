@@ -104,6 +104,16 @@ const PlannerModule = memo<Props>((props) => {
           </>
         );
 
+      case 'duplicate':
+        return (
+          <>
+            <div className={styles.conflictHeader}>
+              <AlertTriangle className={styles.warningIcon} />
+              <p>This might be a duplicate of another course in this semester.</p>
+            </div>
+          </>
+        );
+
       default:
         return null;
     }
