@@ -70,6 +70,15 @@ export default class PlannerYear extends PureComponent<Props, State> {
     if (!showSpecialSem) {
       sortedSemesters = sortedSemesters.filter(([semester]) => +semester <= 2);
     }
+    if (year !== config.academicYear) {
+      sortedSemesters = sortedSemesters.map(([semester, modules]) => [
+        semester,
+        modules.map((module: PlannerModuleInfo) => ({
+          ...module,
+          conflict: null,
+        })),
+      ]);
+    }
 
     return (
       <section
