@@ -18,18 +18,19 @@
   },
   "dependencies": {
     "@sentry/node": "5.30.0",
-    "@sparticuz/chromium": "92.0.0",
+    "@sparticuz/chromium": "^123.0.0",
     "axios": "0.27.2",
     "bunyan": "1.8.15",
     "fs-extra": "9.1.0",
     "http-graceful-shutdown": "2.4.0",
+    "joi": "^17.12.3",
     "koa": "2.14.2",
     "koa-router": "10.1.1",
     "koa-views": "6.3.1",
     "lodash": "4.17.21",
     "nodemon": "2.0.22",
-    "pug": "3.0.2",
-    "puppeteer-core": "10.4.0"
+    "pug": "3.0.3",
+    "puppeteer-core": "22.6.4"
   },
   "devDependencies": {
     "@types/fs-extra": "9.0.13",

@@ -12,17 +12,17 @@
 
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   width: 100%;
   gap: 1rem;
 
   .headerLeft {
     display: flex;
+    flex: 1;
     align-items: center;
-    margin: 0;
 
     h1 {
+      margin: 0.1rem 0;
       font-size: $font-size-xlg;
       white-space: nowrap;
       margin: auto;
@@ -39,13 +39,24 @@
 
   .headerRight {
     display: flex;
+    justify-content: flex-end;
     align-items: center;
-    width: 100%;
+
+    @include media-breakpoint-down(sm) {
+      .settingsButton {
+        p {
+          @include sr-only;
+        }
+
+        svg {
+          margin-right: 0;
+        }
+      }
+    }
   }
 
   .moduleStats {
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
     margin-right: 1rem;
 

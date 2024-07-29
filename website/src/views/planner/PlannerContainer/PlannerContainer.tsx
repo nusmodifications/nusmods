@@ -4,7 +4,7 @@ import { flatMap, flatten, sortBy, toPairs, values } from 'lodash';
 import { DragDropContext, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 
-import { Trash } from 'react-feather';
+import { Settings, Trash } from 'react-feather';
 import { Module, ModuleCode, Semester } from 'types/modules';
 import { PlannerModulesWithInfo, PlannerModuleInfo, AddModuleData } from 'types/planner';
 import { MODULE_CODE_REGEX, renderMCs, subtractAcadYear } from 'utils/modules';
@@ -25,12 +25,12 @@ import {
 } from 'actions/planner';
 import { toggleFeedback } from 'actions/app';
 import { fetchModule } from 'actions/moduleBank';
+import { addModule as addModuleToTimetable } from 'actions/timetables';
 import { getAcadYearModules, getExemptions, getIBLOCs, getPlanToTake } from 'selectors/planner';
 import Title from 'views/components/Title';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import Modal from 'views/components/Modal';
 import { State as StoreState } from 'types/state';
-import PlannerSettingsButton from '../PlannerSettingsButton';
 import PlannerSemester from '../PlannerSemester';
 import PlannerYear from '../PlannerYear';
 import PlannerSettings from '../PlannerSettings';
@@ -53,6 +53,7 @@ export type Props = Readonly<{
   moveModule: (id: string, year: string, semester: Semester, index: number) => void;
   removeModule: (id: string) => void;
   setPlaceholderModule: (id: string, moduleCode: ModuleCode) => void;
+  addModuleToTimetable: (semester: Semester, module: ModuleCode) => void;
 }>;
 
 type SemesterModules = { [semester: string]: PlannerModuleInfo[] };
@@ -132,7 +133,12 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
     this.props.fetchModule(moduleCode);
   };
 
+  onAddModuleToTimetable = (semester: Semester, module: ModuleCode) =>
+    this.props.fetchModule(module).then(() => this.props.addModuleToTimetable(semester, module));
+
   closeAddCustomData = () => this.setState({ showCustomModule: null });
+
+  closeSettingsModal = () => this.setState({ showSettings: false });
 
   renderHeader() {
     const modules = [...this.props.iblocsModules, ...flatten(flatMap(this.props.modules, values))];
@@ -153,7 +159,14 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
             <p>{renderMCs(credits)}</p>
           </div>
 
-          <PlannerSettingsButton onClick={() => this.setState({ showSettings: true })} />
+          <button
+            className={classnames('btn btn-svg btn-outline-primary', styles.settingsButton)}
+            type="button"
+            onClick={() => this.setState({ showSettings: true })}
+          >
+            <Settings className="svg" />
+            <p>Settings</p>
+          </button>
         </div>
       </header>
     );
@@ -179,6 +192,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
       addCustomData: this.onAddCustomData,
       setPlaceholderModule: this.onSetPlaceholderModule,
       removeModule: this.props.removeModule,
+      addModuleToTimetable: this.onAddModuleToTimetable,
     };
 
     return (
@@ -254,12 +268,8 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
           </div>
         </DragDropContext>
 
-        <Modal
-          isOpen={this.state.showSettings}
-          onRequestClose={() => this.setState({ showSettings: false })}
-          animate
-        >
-          <PlannerSettings />
+        <Modal isOpen={this.state.showSettings} onRequestClose={this.closeSettingsModal} animate>
+          <PlannerSettings onCloseButtonClicked={this.closeSettingsModal} />
         </Modal>
 
         <Modal
@@ -295,6 +305,7 @@ const PlannerContainer = connect(mapStateToProps, {
   addModule: addPlannerModule,
   moveModule: movePlannerModule,
   removeModule: removePlannerModule,
+  addModuleToTimetable,
 })(PlannerContainerComponent);
 
 export default PlannerContainer;

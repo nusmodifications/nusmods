@@ -1,5 +1,5 @@
 import { Faculty, Semester } from 'types/modules';
-import { Mode } from 'types/settings';
+import { ColorSchemePreference } from 'types/settings';
 import { ModuleTableOrder } from 'types/reducers';
 
 import { RegPeriod, ScheduleType } from 'config';
@@ -29,19 +29,11 @@ export function selectFaculty(faculty: Faculty) {
   };
 }
 
-export const SELECT_MODE = 'SELECT_MODE' as const;
-export function selectMode(mode: Mode) {
+export const SELECT_COLOR_SCHEME = 'SELECT_COLOR_SCHEME' as const;
+export function selectColorScheme(mode: ColorSchemePreference) {
   return {
-    type: SELECT_MODE,
+    type: SELECT_COLOR_SCHEME,
     payload: mode,
-  };
-}
-
-export const TOGGLE_MODE = 'TOGGLE_MODE' as const;
-export function toggleMode() {
-  return {
-    type: TOGGLE_MODE,
-    payload: null,
   };
 }
 

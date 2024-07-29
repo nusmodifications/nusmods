@@ -196,6 +196,7 @@ export const activityLessonType: Record<string, LessonType> = {
   E: 'Seminar-Style Module Class',
   S: 'Sectional Teaching',
   T: 'Tutorial',
+  Y: 'Packaged Laboratory',
   '2': 'Tutorial Type 2',
   '3': 'Tutorial Type 3',
 
