@@ -89,7 +89,7 @@ const PlannerSemester: React.FC<Props> = ({
         moduleTitle={getModuleTitle(plannerModule)}
         examDate={showExamDate && moduleInfo ? getExamDate(moduleInfo, semester) : null}
         moduleCredit={showModuleMeta ? getModuleCredit(plannerModule) : null}
-        conflict={conflict}
+        conflict={year === config.academicYear ? conflict : null}
         semester={semester}
         isInTimetable={isInTimetable}
         removeModule={removeModule}
