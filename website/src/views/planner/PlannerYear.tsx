@@ -1,4 +1,4 @@
-import { PureComponent } from 'react';
+import { PureComponent, Ref, createRef } from 'react';
 import classnames from 'classnames';
 import { flatMap, size, sortBy, toPairs, values } from 'lodash';
 
@@ -25,13 +25,30 @@ type Props = Readonly<{
 
 type State = {
   readonly showSpecialSem: boolean;
+  readonly currentYearCardRef: Ref<HTMLDivElement>;
 };
 
 export default class PlannerYear extends PureComponent<Props, State> {
   override state = {
     // Always display Special Terms I and II if either one has modules
     showSpecialSem: this.hasSpecialTermModules(),
+    currentYearCardRef: createRef<HTMLDivElement>(),
   };
+
+  override componentDidMount() {
+    if (this.props.year !== config.academicYear) {
+      return;
+    }
+    const currentYearCard = this.state.currentYearCardRef.current;
+    const parentContainer = currentYearCard?.parentElement;
+    if (!currentYearCard || !parentContainer) {
+      return;
+    }
+    parentContainer.scrollTo({
+      left: currentYearCard.offsetLeft - parentContainer.offsetLeft,
+      behavior: 'smooth',
+    });
+  }
 
   hasSpecialTermModules() {
     const { semesters } = this.props;
@@ -73,6 +90,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
 
     return (
       <section
+        ref={year === config.academicYear ? this.state.currentYearCardRef : undefined}
         key={year}
         className={classnames(styles.year, {
           [styles.currentYear]: year === config.academicYear,
