@@ -61,12 +61,10 @@ const Navtabs: FC = () => {
         <Map />
         <span className={styles.title}>Venues</span>
       </NavLink>
-
       <NavLink {...tabProps} className={classnames(tabProps.className)} to="/planner">
         <Trello />
         <span className={styles.title}>Planner</span>
       </NavLink>
-
       <NavLink {...tabProps} to="/settings">
         <Settings />
         <span className={styles.title}>Settings</span>
