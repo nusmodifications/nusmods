@@ -7,7 +7,6 @@ import { ArrowDownLeft, ArrowUpRight, ChevronLeft } from 'react-feather';
 import useScrollToTop from 'views/hooks/useScrollToTop';
 
 import LocationMap from 'views/components/bus-map/LocationMap';
-import NoFooter from 'views/layout/NoFooter';
 import { getRouteSegments, getServiceStatus } from 'utils/mobility';
 import NUSModerator from 'nusmoderator';
 import styles from './MobilityContainer.scss';
