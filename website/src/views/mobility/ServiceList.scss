@@ -1,16 +1,16 @@
 .serviceList {
   // remove all list stuff
   list-style: none;
-  margin: 0;
   padding: 0;
+  margin: 0;
 }
 
 .serviceItem {
-  padding: 0.75rem 0;
-  border-top: 1px solid var(--gray-lighter);
   display: flex;
   flex-direction: row;
   align-items: flex-start;
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--gray-lighter);
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
 
@@ -19,42 +19,42 @@
   }
 
   .name {
-    font-weight: 700;
-    font-size: 1rem;
-    background: var(--color);
-    color: white;
-    padding: 0.5rem 0;
-    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 2.5rem;
     height: 2.5rem;
-    text-align: center;
-    border-radius: 0.25rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 0.5rem 0;
+    margin: 0;
     margin-right: 0.25rem;
+    border-radius: 0.25rem;
+    font-weight: 700;
+    font-size: 1rem;
+    text-align: center;
+    color: white;
+    background: var(--color);
   }
 
   .description {
-    font-size: 1rem;
-    padding: 0 0.5rem;
-    color: var(--body-color);
-    margin: 0;
-    flex: 1;
     display: flex;
+    flex: 1;
     flex-direction: column;
+    padding: 0 0.5rem;
+    margin: 0;
+    font-size: 1rem;
+    color: var(--body-color);
 
     .terminals {
       margin: 0;
+      margin-bottom: 0.25rem;
       font-weight: 700;
       line-height: 1.25;
-      margin-bottom: 0.25rem;
 
       .arrow {
-        margin: 0 0.25rem 0 0.3rem;
         display: inline;
-        vertical-align: -2px;
+        margin: 0 0.25rem 0 0.3rem;
         line-height: 0;
+        vertical-align: -2px;
         stroke-width: 3px;
       }
     }
@@ -69,12 +69,12 @@
     }
 
     .status {
-      margin: 0;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--status-color);
       display: flex;
       align-items: center;
+      margin: 0;
+      font-weight: 600;
+      font-size: 0.75rem;
+      color: var(--status-color);
 
       svg.statusIcon {
         margin-right: 0.25rem;

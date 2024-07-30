@@ -15,13 +15,13 @@ $route-colors: (
 @at-root {
   body {
     --map-label: #40456f;
-    --map-bg: #ffffff;
+    --map-bg: #fff;
     --map-deselected: #c3d7ea;
     --map-dark: #40456f;
-    --map-light: #ffffff;
+    --map-light: #fff;
 
     &:global(.mode-dark) {
-      --map-label: #ffffff;
+      --map-label: #fff;
       --map-bg: #282b3f;
       --map-deselected: #384450;
     }
@@ -30,14 +30,15 @@ $route-colors: (
 
 .stopIcon {
   $size: 12px;
-  width: $size;
-  height: $size;
-  border-radius: 999px;
+
   position: absolute;
   top: 9px;
   left: 9px;
-  background: var(--map-deselected);
+  width: $size;
+  height: $size;
   border: solid 1.5px var(--map-bg);
+  border-radius: 999px;
+  background: var(--map-deselected);
   transform: scale(0.6);
   transition: 0.2s ease;
 
@@ -46,9 +47,9 @@ $route-colors: (
   }
 
   &.interchange[data-code] {
-    transform: scale(0.75);
-    background: var(--map-light);
     border: solid 2.5px var(--map-dark);
+    background: var(--map-light);
+    transform: scale(0.75);
   }
 }
 
@@ -56,10 +57,10 @@ $route-colors: (
   $color: #a1c2e1;
 
   .hitArea {
-    opacity: 0;
     position: absolute;
     top: 7px;
     left: 7px;
+    opacity: 0;
     width: 16px;
     height: 16px;
     border-radius: 50%;
@@ -78,9 +79,9 @@ $route-colors: (
     left: calc(100% - 8px);
     // width: 100px;
     width: auto;
+    line-height: 1.3;
     // max-width: none;
     white-space: nowrap;
-    line-height: 1.3;
     pointer-events: none; // So the entire 100px width will not be selectable when there's only one route
 
     &.left {
@@ -99,26 +100,26 @@ $route-colors: (
   }
 
   .stopName {
-    font-size: 0.8rem;
     font-weight: 700;
+    font-size: 0.8rem;
+    //http://owumaro.github.io/text-stroke-generator/
+    text-shadow: var(--map-bg) 1px 0 0, var(--map-bg) 0.540302px 0.841471px 0,
+      var(--map-bg) -0.416147px 0.909297px 0, var(--map-bg) -0.989993px 0.14112px 0,
+      var(--map-bg) -0.653644px -0.756803px 0, var(--map-bg) 0.283662px -0.958924px 0,
+      var(--map-bg) 0.96017px -0.279416px 0;
+    color: var(--map-label);
     // margin-bottom: 0.2rem;
     pointer-events: auto;
-    color: var(--map-label);
-    //http://owumaro.github.io/text-stroke-generator/
-    text-shadow: var(--map-bg) 1px 0px 0px, var(--map-bg) 0.540302px 0.841471px 0px,
-      var(--map-bg) -0.416147px 0.909297px 0px, var(--map-bg) -0.989993px 0.14112px 0px,
-      var(--map-bg) -0.653644px -0.756803px 0px, var(--map-bg) 0.283662px -0.958924px 0px,
-      var(--map-bg) 0.96017px -0.279416px 0px;
   }
 
   .subtext {
-    font-size: 0.75rem;
     font-weight: 700;
+    font-size: 0.75rem;
+    text-shadow: var(--map-bg) 1px 0 0, var(--map-bg) 0.540302px 0.841471px 0,
+      var(--map-bg) -0.416147px 0.909297px 0, var(--map-bg) -0.989993px 0.14112px 0,
+      var(--map-bg) -0.653644px -0.756803px 0, var(--map-bg) 0.283662px -0.958924px 0,
+      var(--map-bg) 0.96017px -0.279416px 0;
     color: var(--gray);
-    text-shadow: var(--map-bg) 1px 0px 0px, var(--map-bg) 0.540302px 0.841471px 0px,
-      var(--map-bg) -0.416147px 0.909297px 0px, var(--map-bg) -0.989993px 0.14112px 0px,
-      var(--map-bg) -0.653644px -0.756803px 0px, var(--map-bg) 0.283662px -0.958924px 0px,
-      var(--map-bg) 0.96017px -0.279416px 0px;
   }
 
   .focused {
@@ -132,12 +133,12 @@ $route-colors: (
     .stopService {
       display: block;
       padding: 0.125rem 0.25rem;
-      background-color: var(--svc-color);
-      color: white;
+      margin-right: 0.25rem;
       border-radius: 0.25rem;
       font-weight: 700;
       font-size: 0.75rem;
-      margin-right: 0.25rem;
+      color: white;
+      background-color: var(--svc-color);
     }
   }
 
@@ -162,8 +163,8 @@ $route-colors: (
   }
   .leaflet-overlay-pane {
     path {
-      vector-effect: non-scaling-stroke;
       fill: none;
+      vector-effect: non-scaling-stroke;
     }
 
     .overlay_bg {
