@@ -29,7 +29,6 @@ export const NAVTAB_HEIGHT = 48;
 
 const Navtabs: FC = () => {
   const activeSemester = useSelector(({ app }: State) => app.activeSemester);
-  const beta = useSelector(({ settings }: State) => settings.beta);
 
   const tabProps = {
     className: styles.link,
@@ -63,20 +62,14 @@ const Navtabs: FC = () => {
         <Map />
         <span className={styles.title}>Venues</span>
       </NavLink>
+      <NavLink {...tabProps} className={classnames(tabProps.className)} to="/planner">
+        <Trello />
+        <span className={styles.title}>Planner</span>
+      </NavLink>
       <NavLink {...tabProps} to="/mobility">
         <Navigation />
         <span className={styles.title}>Mobility</span>
       </NavLink>
-      {beta && (
-        <NavLink
-          {...tabProps}
-          className={classnames(tabProps.className, styles.hiddenOnMobile)}
-          to="/planner"
-        >
-          <Trello />
-          <span className={styles.title}>Planner</span>
-        </NavLink>
-      )}
       <NavLink {...tabProps} to="/settings">
         <Settings />
         <span className={styles.title}>Settings</span>

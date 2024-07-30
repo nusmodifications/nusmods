@@ -27,6 +27,7 @@ type Props = Readonly<{
   placeholder?: PlannerPlaceholder;
   conflict?: Conflict | null;
   semester?: Semester;
+  isInTimetable?: boolean;
 
   // For draggable
   id: string;
@@ -36,6 +37,8 @@ type Props = Readonly<{
   removeModule: (id: string) => void;
   addCustomData: (moduleCode: ModuleCode) => void;
   setPlaceholderModule: (id: string, moduleCode: ModuleCode) => void;
+  addModuleToTimetable: (semester: Semester, module: ModuleCode) => void;
+  viewSemesterTimetable: () => void;
 }>;
 
 /**
@@ -48,6 +51,11 @@ const PlannerModule = memo<Props>((props) => {
 
   const editCustomData = () => {
     if (props.moduleCode) props.addCustomData(props.moduleCode);
+  };
+
+  const addModuleToTimetable = () => {
+    if (props.semester && props.moduleCode)
+      props.addModuleToTimetable(props.semester, props.moduleCode);
   };
 
   const renderConflict = (conflict: Conflict) => {
@@ -101,6 +109,16 @@ const PlannerModule = memo<Props>((props) => {
                 </li>
               ))}
             </ul>
+          </>
+        );
+
+      case 'duplicate':
+        return (
+          <>
+            <div className={styles.conflictHeader}>
+              <AlertTriangle className={styles.warningIcon} />
+              <p>This might be a duplicate of another course in this semester.</p>
+            </div>
           </>
         );
 
@@ -182,7 +200,13 @@ const PlannerModule = memo<Props>((props) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <ModuleMenu removeModule={removeModule} editCustomData={editCustomData} />
+          <ModuleMenu
+            isInTimetable={props.isInTimetable}
+            removeModule={removeModule}
+            editCustomData={editCustomData}
+            addModuleToTimetable={addModuleToTimetable}
+            viewSemesterTimetable={props.viewSemesterTimetable}
+          />
 
           <div className={styles.moduleInfo}>
             <div className={styles.moduleName}>

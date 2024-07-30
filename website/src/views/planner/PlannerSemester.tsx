@@ -13,6 +13,10 @@ import {
   getSemesterName,
   getTotalMC,
 } from 'utils/planner';
+import { useSelector } from 'react-redux';
+import { getSemesterTimetableLessons } from 'selectors/timetables';
+import { useHistory } from 'react-router-dom';
+import { timetablePage } from 'views/routes/paths';
 import PlannerModule from './PlannerModule';
 import AddModule from './AddModule';
 import styles from './PlannerSemester.scss';
@@ -29,6 +33,7 @@ type Props = Readonly<{
   removeModule: (id: string) => void;
   addCustomData: (moduleCode: ModuleCode) => void;
   setPlaceholderModule: (id: string, moduleCode: ModuleCode) => void;
+  addModuleToTimetable: (semester: Semester, module: ModuleCode) => void;
 }>;
 
 function renderSemesterMeta(plannerModules: PlannerModuleInfo[]) {
@@ -57,11 +62,22 @@ const PlannerSemester: React.FC<Props> = ({
   removeModule,
   addCustomData,
   setPlaceholderModule,
+  addModuleToTimetable,
 }) => {
+  const timetable = useSelector(getSemesterTimetableLessons)(semester);
+
+  const history = useHistory();
+  const viewSemesterTimetable = () => {
+    const timetablePath = timetablePage(semester);
+    history.push(timetablePath);
+  };
+
   const renderModule = (plannerModule: PlannerModuleInfo, index: number) => {
     const { id, moduleCode, moduleInfo, conflict, placeholder } = plannerModule;
 
     const showExamDate = showModuleMeta && config.academicYear === year;
+
+    const isInTimetable = moduleCode !== undefined && moduleCode in timetable;
 
     return (
       <PlannerModule
@@ -73,10 +89,13 @@ const PlannerSemester: React.FC<Props> = ({
         moduleTitle={getModuleTitle(plannerModule)}
         examDate={showExamDate && moduleInfo ? getExamDate(moduleInfo, semester) : null}
         moduleCredit={showModuleMeta ? getModuleCredit(plannerModule) : null}
-        conflict={conflict}
+        conflict={year === config.academicYear ? conflict : null}
         semester={semester}
+        isInTimetable={isInTimetable}
         removeModule={removeModule}
         addCustomData={addCustomData}
+        addModuleToTimetable={addModuleToTimetable}
+        viewSemesterTimetable={viewSemesterTimetable}
         setPlaceholderModule={setPlaceholderModule}
       />
     );

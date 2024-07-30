@@ -68,9 +68,7 @@ export const PlannerSettingsComponent: React.FC<Props> = (props) => {
 
   return (
     <div className={styles.settings}>
-      <div className={styles.closeButton}>
-        <CloseButton onClick={props.onCloseButtonClicked} />
-      </div>
+      <CloseButton className={styles.closeButton} onClick={props.onCloseButtonClicked} />
       <section>
         <h2 className={styles.label}>Matriculated in</h2>
         <ul className={styles.years}>

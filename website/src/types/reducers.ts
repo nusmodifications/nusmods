@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { RegPeriodType, ScheduleType } from 'config';
 
-import { Mode } from './settings';
+import { ColorSchemePreference } from './settings';
 import { ColorIndex, Lesson, TimetableConfig } from './timetables';
 import {
   Faculty,
@@ -98,7 +98,7 @@ export type ModuleTableOrder = 'exam' | 'mc' | 'code';
 export type SettingsState = {
   readonly newStudent: boolean;
   readonly faculty: Faculty | null;
-  readonly mode: Mode;
+  readonly colorScheme: ColorSchemePreference;
   readonly hiddenInTimetable: ModuleCode[];
   readonly modRegNotification: ModRegNotificationSettings;
   readonly moduleTableOrder: ModuleTableOrder;

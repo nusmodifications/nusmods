@@ -21,16 +21,9 @@ exports[`settings should dispatch a select of a semester value 1`] = `
 }
 `;
 
-exports[`settings should dispatch a selection of a mode 1`] = `
+exports[`settings should dispatch a selection of a color scheme preference 1`] = `
 {
-  "payload": "LIGHT",
-  "type": "SELECT_MODE",
-}
-`;
-
-exports[`settings should dispatch a toggle of a mode 1`] = `
-{
-  "payload": null,
-  "type": "TOGGLE_MODE",
+  "payload": "LIGHT_COLOR_SCHEME_PREFERENCE",
+  "type": "SELECT_COLOR_SCHEME",
 }
 `;

@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 
 import { MessageSquare } from 'react-feather';
-import { Mode } from 'types/settings';
+import { ColorSchemePreference } from 'types/settings';
 import config from 'config';
 import { DisqusConfig } from 'types/views';
 import insertScript from 'utils/insertScript';
@@ -15,7 +15,7 @@ type Props = DisqusConfig & {
   // Disqus autodetects page background color so that its own font color has
   // enough contrast to be read, but only when the widget is loaded, so we use
   // this to reload the widget after night mode is activated or deactivated
-  mode: Mode;
+  colorScheme: ColorSchemePreference;
 
   loadDisqusManually: boolean;
 };
@@ -39,7 +39,7 @@ class DisqusComments extends PureComponent<Props, State> {
     // Wait a bit for the page colors to change before reloading instance
     // 2 second delay is found empirically, and is longer than necessary to
     // account for lag in slower user agents
-    if (prevProps.mode !== this.props.mode) {
+    if (prevProps.colorScheme !== this.props.colorScheme) {
       setTimeout(this.loadInstance, 2000);
     } else {
       this.loadInstance();
@@ -105,5 +105,5 @@ class DisqusComments extends PureComponent<Props, State> {
 
 export default connect((state: StoreState) => ({
   loadDisqusManually: state.settings.loadDisqusManually,
-  mode: state.settings.mode,
+  colorScheme: state.settings.colorScheme,
 }))(DisqusComments);

@@ -10,6 +10,9 @@ import { State } from 'types/state';
 const CS1010X = clone(CS1010S);
 CS1010X.moduleCode = 'CS1010X';
 
+const CS3216_DUPLICATE = clone(CS3216);
+const CS1010S_DUPLICATE = clone(CS1010S);
+
 /* eslint-disable no-useless-computed-key */
 
 const defaultState: PlannerState = {
@@ -221,6 +224,98 @@ describe(getAcadYearModules, () => {
           type: 'exam',
           conflictModules: ['CS1010X', 'CS1010S'],
         },
+      },
+    ]);
+  });
+
+  test('should return duplicate conflicts', () => {
+    const planner: PlannerState = {
+      ...defaultState,
+      modules: {
+        0: { id: '0', moduleCode: 'CS3216', year: '2018/2019', semester: 1, index: 0 },
+        1: { id: '1', moduleCode: 'CS3216', year: '2018/2019', semester: 1, index: 1 },
+        2: { id: '2', moduleCode: 'CS1010S', year: '2018/2019', semester: 2, index: 0 },
+        3: { id: '3', moduleCode: 'CS1010S', year: '2018/2019', semester: 2, index: 1 },
+      },
+    };
+
+    const moduleBank = {
+      modules: { CS3216, CS3216_DUPLICATE, CS1010S, CS1010S_DUPLICATE },
+      moduleCodes: {
+        CS3216: { semesters: [1] },
+        CS3216_clone: { semesters: [1] },
+        CS1010S: { semesters: [2] },
+        CS1010S_clone: { semesters: [2] },
+      },
+    };
+
+    const state: any = { planner, moduleBank };
+
+    expect(getAcadYearModules(state)).toHaveProperty('2018/2019.1', [
+      {
+        id: '0',
+        moduleCode: 'CS3216',
+        moduleInfo: CS3216,
+        conflict: { type: 'duplicate' },
+      },
+      {
+        id: '1',
+        moduleCode: 'CS3216',
+        moduleInfo: CS3216_DUPLICATE,
+        conflict: { type: 'duplicate' },
+      },
+    ]);
+
+    expect(getAcadYearModules(state)).toHaveProperty('2018/2019.2', [
+      {
+        id: '2',
+        moduleCode: 'CS1010S',
+        moduleInfo: CS1010S,
+        conflict: { type: 'duplicate' },
+      },
+      {
+        id: '3',
+        moduleCode: 'CS1010S',
+        moduleInfo: CS1010S_DUPLICATE,
+        conflict: { type: 'duplicate' },
+      },
+    ]);
+  });
+
+  test('should not have duplicate conflicts for same modules in different semesters', () => {
+    const planner: PlannerState = {
+      ...defaultState,
+      modules: {
+        0: { id: '0', moduleCode: 'CS1010S', year: '2018/2019', semester: 1, index: 0 },
+        1: { id: '1', moduleCode: 'CS1010S', year: '2018/2019', semester: 2, index: 0 },
+      },
+    };
+
+    const moduleBank = {
+      modules: { CS1010S, CS1010S_DUPLICATE },
+      moduleCodes: {
+        CS1010S: { semesters: [1, 2] },
+        CS1010S_clone: { semesters: [1, 2] },
+      },
+    };
+
+    const state: any = { planner, moduleBank };
+
+    expect(getAcadYearModules(state)).toHaveProperty('2018/2019.1', [
+      {
+        id: '0',
+        moduleCode: 'CS1010S',
+        moduleInfo: CS1010S,
+        conflict: null,
+      },
+    ]);
+
+    expect(getAcadYearModules(state)).toHaveProperty('2018/2019.2', [
+      {
+        id: '1',
+        moduleCode: 'CS1010S',
+        moduleInfo: CS1010S_DUPLICATE,
+        conflict: null,
       },
     ]);
   });

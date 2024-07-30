@@ -1,6 +1,12 @@
 import { range, entries, padStart, clamp } from 'lodash';
 import produce from 'immer';
-import { VenueInfo, VenueSearchOptions, VenueDetailList, OCCUPIED } from 'types/venues';
+import {
+  VenueInfo,
+  VenueSearchOptions,
+  VenueDetailList,
+  VenueLocationMap,
+  OCCUPIED,
+} from 'types/venues';
 
 import excludedRooms from 'data/excludedFreeRooms';
 import { tokenize } from './moduleSearch';
@@ -25,13 +31,21 @@ export function sortVenues(venues: VenueInfo): VenueDetailList {
   return entries(venues).sort(([a], [b]) => stringCompare(a, b));
 }
 
-export function searchVenue(venues: VenueDetailList, search: string): VenueDetailList {
-  // Search by name
+export function searchVenue(
+  venues: VenueDetailList,
+  search: string,
+  venueLocations?: VenueLocationMap,
+): VenueDetailList {
+  // Search by venue or room name
   const tokens = tokenize(search.toLowerCase());
 
-  return venues.filter(([name]) => {
-    const lowercaseName = name.toLowerCase();
-    return tokens.every((token) => lowercaseName.includes(token));
+  return venues.filter(([venue]) => {
+    const lowercaseVenueName = venue.toLowerCase();
+    const lowercaseRoomName =
+      venueLocations && venueLocations[venue] ? venueLocations[venue].roomName.toLowerCase() : '';
+    return tokens.every(
+      (token) => lowercaseVenueName.includes(token) || lowercaseRoomName.includes(token),
+    );
   });
 }
 
