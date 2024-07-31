@@ -116,7 +116,7 @@
     "stylelint-config-standard": "20.0.0",
     "stylelint-order": "4.1.0",
     "terser-webpack-plugin": "5.3.9",
-    "typescript": "5.1",
+    "typescript": "5.1.6",
     "url-loader": "4.1.1",
     "webpack": "5.88.2",
     "webpack-cli": "4.10.0",
