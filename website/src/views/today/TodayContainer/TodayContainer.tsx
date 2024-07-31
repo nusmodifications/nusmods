@@ -8,6 +8,7 @@ import {
   differenceInCalendarDays,
   getHours,
   getMinutes,
+  getWeek,
   isSameDay,
   isWeekend,
   parseISO,
@@ -260,6 +261,11 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
     // In lg and above, we use the sidebar to show the map instead
     // of displaying inline inside the lesson, so the opened lesson is always null
     const openLesson = this.props.matchBreakpoint ? null : this.state.openLesson;
+
+    // Filter lessons to include only those where the current week is in the lesson's weeks array.
+    lessons = lessons.filter((lesson) => 
+      lesson.weeks.toString().split(',').map(Number).includes(getWeek(date))
+    );
 
     // If it is a day with no lessons
     if (!lessons.length) {
