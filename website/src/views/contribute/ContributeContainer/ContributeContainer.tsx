@@ -289,6 +289,13 @@ const ContributeContainer: FC<Props> = ({ modules, beta, ...props }) => {
             <h4>Mailing List</h4>
             <p>Subscribe to news and updates</p>
           </ExternalLink>
+          <ExternalLink
+            className="btn btn-outline-primary"
+            href="https://github.com/nusmodifications/nusmods/blob/master/CONTRIBUTING.md#other-open-source-projects"
+          >
+            <h4>Other Open Source Projects</h4>
+            <p>Contribute to other open source projects</p>
+          </ExternalLink>
         </div>
 
         <p>
