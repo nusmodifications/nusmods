@@ -36,7 +36,9 @@ export function getSemesterName(semester: Semester) {
  * been taken. If the requirements are met, null is returned, otherwise an
  * array of unfulfilled requirements is returned.
  */
+
 export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: PrereqTree) {
+  console.log('invoke checking');
   function walkTree(fragment: PrereqTree): PrereqTree[] | null {
     if (typeof fragment === 'string') {
       const module = fragment.includes(GRADE_REQUIREMENT_SEPARATOR)
@@ -44,39 +46,41 @@ export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: PrereqTree) 
         : fragment;
 
       if (module.includes(MODULE_WILD_CARD)) {
-        const [prefix] = module.split(MODULE_WILD_CARD);
-        let hasModule = false;
-        moduleSet.forEach((moduleCode) => {
-          hasModule = hasModule || moduleCode.startsWith(prefix);
-        });
-
-        if (hasModule) {
-          return null;
-        }
+        const prefix = module.split(MODULE_WILD_CARD)[0];
+        return Array.from(moduleSet).some(moduleCode => moduleCode.startsWith(prefix)) ? null : [module];
       }
 
       return moduleSet.has(module) ? null : [module];
     }
 
     if ('or' in fragment) {
-      return fragment.or.every((child) => !!walkTree(child))
-        ? // All return non-null = all unfulfilled
-          [fragment]
-        : null;
+      const results = fragment.or.map(walkTree);
+      return results.some(r => r === null) ? null : [fragment];  // any child returns null means fulfilled
     }
 
     if ('and' in fragment) {
-      const notFulfilled = fragment.and.map(walkTree).filter(notNull);
+      const notFulfilled = fragment.and.map(walkTree).filter(r => r !== null).flat();
       return notFulfilled.length === 0 ? null : flatten(notFulfilled);
     }
 
     if ('nOf' in fragment) {
-      const requiredCount = fragment.nOf[0];
-      const fulfilled = fragment.nOf[1].map(walkTree).filter((x) => x === null);
-      return fulfilled.length >= requiredCount ? null : [fragment];
+      const [requiredCount, options] = fragment.nOf;
+      let fulfilledCount = 0;
+
+      options.forEach(option => {
+        // handle wildcard case separately
+        if (typeof option === 'string' && option.includes(MODULE_WILD_CARD)) {
+          const prefix = option.split(MODULE_WILD_CARD)[0];
+          fulfilledCount += Array.from(moduleSet).filter(moduleCode => moduleCode.startsWith(prefix)).length;
+        } else {
+          fulfilledCount += (walkTree(option) === null ? 1 : 0);
+        }
+      });
+
+      return fulfilledCount >= requiredCount ? null : [fragment];
     }
 
-    return assertNever(fragment);
+    return assertNever(fragment); 
   }
 
   return walkTree(tree);
