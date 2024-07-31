@@ -23,6 +23,16 @@ describe(checkPrerequisite, () => {
     'UTC1702E',
   ]);
 
+  const moduleSet2 = new Set([
+    'LAJ2201',
+    'LAJ2202',
+    'LAJ2203',
+    'JS1101E',
+    'JS2101',
+    'JS2216',
+    'LAJ3201',
+  ]) 
+
   test('should return null if single prerequisite is met', () => {
     expect(checkPrerequisite(moduleSet, 'CS1010S')).toBeNull();
   });
@@ -60,6 +70,54 @@ describe(checkPrerequisite, () => {
     expect(
       checkPrerequisite(moduleSet, {
         and: ['UTC14%', 'UTC1702%'],
+      }),
+    ).toBeNull();
+  });
+
+  test('should return null if all wildcard prerequisites of "nOf" type prerequisite are met', () => {
+    // Or operator
+    expect(
+      checkPrerequisite(moduleSet2, {
+        "and": [
+          {
+            "or": [
+              "LAJ3201:D",
+              "LAJ3203:D"
+            ]
+          },
+          {
+            "or": [
+              {
+                "nOf": [
+                  7,
+                  [
+                    "JS%:D"
+                  ]
+                ]
+              },
+              {
+                "and": [
+                  {
+                    "nOf": [
+                      4,
+                      [
+                        "LAJ%:D"
+                      ]
+                    ]
+                  },
+                  {
+                    "nOf": [
+                      3,
+                      [
+                        "JS%:D"
+                      ]
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       }),
     ).toBeNull();
   });
