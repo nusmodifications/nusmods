@@ -261,6 +261,16 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
     // of displaying inline inside the lesson, so the opened lesson is always null
     const openLesson = this.props.matchBreakpoint ? null : this.state.openLesson;
 
+    // FIlter out lessons that is not running at the current week
+    lessons = lessons.filter((lesson) => {
+      let weeksArray = lesson.weeks.toString().split(',').map((s) => parseInt(s));
+      if (weeksArray.includes(getWeek(date))) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    
     // If it is a day with no lessons
     if (!lessons.length) {
       return <p>You have no lessons today</p>;
