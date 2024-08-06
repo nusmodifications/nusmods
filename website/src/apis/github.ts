@@ -7,10 +7,7 @@ import { VenueLocationMap } from 'types/venues';
 // We proxy https://api.github.com/repos/nusmodifications/nusmods -> https://github.nusmods.com/repo
 // This allows us to cache the response to stop 403 rate limit error caused by the
 // school sharing a single IP address
-
-// As of https://github.com/nusmodifications/nusmods/pull/3655, we will directly use https://api.github.com
-// until https://github.nusmods.com behaviour is separately restored
-const baseUrl = 'https://api.github.com/repos/nusmodifications/nusmods';
+const baseUrl = 'https://github.nusmods.com';
 
 const ignoredContributors = new Set([
   // Renovate used to report outdated dependencies as a user via the GitHub API,
@@ -26,7 +23,7 @@ export function getContributors(): Promise<Contributor[]> {
     per_page: 100,
   });
 
-  const url = `${baseUrl}/contributors?${query}`;
+  const url = `${baseUrl}/repo/contributors?${query}`;
   return axios
     .get<Contributor[]>(url)
     .then((response) =>
@@ -48,8 +45,6 @@ export function getVenueLocations(): Promise<VenueLocationMap> {
     );
   }
 
-  // As of https://github.com/nusmodifications/nusmods/pull/3655, this will always fallback to
-  // use bundled venues until https://github.nusmods.com behaviour is separately restored
   if (memoizedVenuePromise) return memoizedVenuePromise;
   const url = `${baseUrl}/venues`;
   const promise = axios
