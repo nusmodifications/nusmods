@@ -79,6 +79,11 @@ const PlannerSemester: React.FC<Props> = ({
 
     const isInTimetable = moduleCode !== undefined && moduleCode in timetable;
 
+    const displayedConflict =
+      year === config.academicYear || (conflict && ['prereq', 'duplicate'].includes(conflict.type))
+        ? conflict
+        : null;
+
     return (
       <PlannerModule
         key={id}
@@ -89,7 +94,7 @@ const PlannerSemester: React.FC<Props> = ({
         moduleTitle={getModuleTitle(plannerModule)}
         examDate={showExamDate && moduleInfo ? getExamDate(moduleInfo, semester) : null}
         moduleCredit={showModuleMeta ? getModuleCredit(plannerModule) : null}
-        conflict={year === config.academicYear ? conflict : null}
+        conflict={displayedConflict}
         semester={semester}
         isInTimetable={isInTimetable}
         removeModule={removeModule}
