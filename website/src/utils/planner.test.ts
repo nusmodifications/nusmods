@@ -31,7 +31,7 @@ describe(checkPrerequisite, () => {
     'JS2101',
     'JS2216',
     'LAJ3201',
-  ]) 
+  ]);
 
   test('should return null if single prerequisite is met', () => {
     expect(checkPrerequisite(moduleSet, 'CS1010S')).toBeNull();
@@ -78,46 +78,28 @@ describe(checkPrerequisite, () => {
     // Or operator
     expect(
       checkPrerequisite(moduleSet2, {
-        "and": [
+        and: [
           {
-            "or": [
-              "LAJ3201:D",
-              "LAJ3203:D"
-            ]
+            or: ['LAJ3201:D', 'LAJ3203:D'],
           },
           {
-            "or": [
+            or: [
               {
-                "nOf": [
-                  7,
-                  [
-                    "JS%:D"
-                  ]
-                ]
+                nOf: [7, ['JS%:D']],
               },
               {
-                "and": [
+                and: [
                   {
-                    "nOf": [
-                      4,
-                      [
-                        "LAJ%:D"
-                      ]
-                    ]
+                    nOf: [4, ['LAJ%:D']],
                   },
                   {
-                    "nOf": [
-                      3,
-                      [
-                        "JS%:D"
-                      ]
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ]
+                    nOf: [3, ['JS%:D']],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       }),
     ).toBeNull();
   });

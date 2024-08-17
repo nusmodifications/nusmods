@@ -36,9 +36,7 @@ export function getSemesterName(semester: Semester) {
  * been taken. If the requirements are met, null is returned, otherwise an
  * array of unfulfilled requirements is returned.
  */
-
 export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: PrereqTree) {
-  console.log('invoke checking');
   function walkTree(fragment: PrereqTree): PrereqTree[] | null {
     if (typeof fragment === 'string') {
       const module = fragment.includes(GRADE_REQUIREMENT_SEPARATOR)
@@ -47,7 +45,9 @@ export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: PrereqTree) 
 
       if (module.includes(MODULE_WILD_CARD)) {
         const prefix = module.split(MODULE_WILD_CARD)[0];
-        return Array.from(moduleSet).some(moduleCode => moduleCode.startsWith(prefix)) ? null : [module];
+        return Array.from(moduleSet).some((moduleCode) => moduleCode.startsWith(prefix))
+          ? null
+          : [module];
       }
 
       return moduleSet.has(module) ? null : [module];
@@ -55,11 +55,11 @@ export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: PrereqTree) 
 
     if ('or' in fragment) {
       const results = fragment.or.map(walkTree);
-      return results.some(r => r === null) ? null : [fragment];  // any child returns null means fulfilled
+      return results.some((r) => r === null) ? null : [fragment]; // any child returns null means fulfilled
     }
 
     if ('and' in fragment) {
-      const notFulfilled = fragment.and.map(walkTree).filter(r => r !== null).flat();
+      const notFulfilled = fragment.and.map(walkTree).filter(notNull).flat();
       return notFulfilled.length === 0 ? null : flatten(notFulfilled);
     }
 
@@ -67,20 +67,22 @@ export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: PrereqTree) 
       const [requiredCount, options] = fragment.nOf;
       let fulfilledCount = 0;
 
-      options.forEach(option => {
+      options.forEach((option) => {
         // handle wildcard case separately
         if (typeof option === 'string' && option.includes(MODULE_WILD_CARD)) {
           const prefix = option.split(MODULE_WILD_CARD)[0];
-          fulfilledCount += Array.from(moduleSet).filter(moduleCode => moduleCode.startsWith(prefix)).length;
+          fulfilledCount += Array.from(moduleSet).filter((moduleCode) =>
+            moduleCode.startsWith(prefix),
+          ).length;
         } else {
-          fulfilledCount += (walkTree(option) === null ? 1 : 0);
+          fulfilledCount += walkTree(option) === null ? 1 : 0;
         }
       });
 
       return fulfilledCount >= requiredCount ? null : [fragment];
     }
 
-    return assertNever(fragment); 
+    return assertNever(fragment);
   }
 
   return walkTree(tree);
