@@ -105,8 +105,8 @@ describe(checkPrerequisite, () => {
   });
 
   test('should return module that are not fulfilled', () => {
-    expect(checkPrerequisite(moduleSet, 'CS2030')).toEqual([{ nOf: [1, ['CS2030']] }]);
-    expect(checkPrerequisite(moduleSet, 'NTW1%')).toEqual([{ nOf: [1, ['NTW1%']] }]);
+    expect(checkPrerequisite(moduleSet, 'CS2030')).toEqual(['CS2030']);
+    expect(checkPrerequisite(moduleSet, 'NTW1%')).toEqual(['NTW1%']);
   });
 
   test('should return all modules that are not fulfilled', () => {

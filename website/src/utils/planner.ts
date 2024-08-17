@@ -60,9 +60,7 @@ export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: PrereqTree):
       let fulfilledCount = 0;
       options.forEach((opt) => {
         if (typeof opt === 'string') {
-          const module = opt.includes(GRADE_REQUIREMENT_SEPARATOR)
-            ? opt.split(GRADE_REQUIREMENT_SEPARATOR)[0]
-            : opt;
+          const module = opt.split(GRADE_REQUIREMENT_SEPARATOR)[0];
           if (module.includes(MODULE_WILD_CARD)) {
             const [prefix] = module.split(MODULE_WILD_CARD);
             // Assumption: prefixes do not overlap.
@@ -74,7 +72,9 @@ export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: PrereqTree):
         }
         fulfilledCount += +!isEmpty(walkTree(opt));
       });
-      return fulfilledCount >= requiredCount ? [] : [fragment];
+      if (fulfilledCount >= requiredCount) return [];
+      if (requiredCount === 1 && options.length === 1) return [options[0]];
+      return [fragment];
     }
 
     return assertNever(fragment);
@@ -87,26 +87,30 @@ export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: PrereqTree):
  * Converts conflicts into human readable text form
  */
 export function conflictToText(rootConflict: PrereqTree): string {
+  function walkSubtree(conflict: PrereqTree): string {
+    const text = walkTree(conflict);
+    if (typeof conflict === 'string') return text;
+    return `(${text})`;
+  }
   function walkTree(conflict: PrereqTree): string {
-    if (typeof conflict === 'string') return conflict;
+    if (typeof conflict === 'string') return conflict.split(GRADE_REQUIREMENT_SEPARATOR)[0];
 
     if ('or' in conflict) {
-      return `(${conflict.or.map(conflictToText).join(' or ')})`;
+      return `${conflict.or.map(walkSubtree).join(' or ')}`;
     }
 
     if ('and' in conflict) {
-      return `(${conflict.and.map((opt) => `(${conflictToText(opt)})`).join(' and ')})`;
+      return `${conflict.and.map((opt) => `${walkSubtree(opt)}`).join(' and ')}`;
     }
 
     if ('nOf' in conflict) {
       const [n, conflicts] = conflict.nOf;
-      return `require ${n} of ${conflicts.map(conflictToText).join(', ')}`;
+      return `at least ${n} of ${conflicts.map(walkSubtree).join(', ')}`;
     }
 
     return assertNever(conflict);
   }
-  const text = walkTree(rootConflict);
-  return text.startsWith('(') && text.endsWith(')') ? text.slice(1, -1) : text;
+  return walkTree(rootConflict);
 }
 
 /**
