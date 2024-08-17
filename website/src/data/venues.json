@@ -3757,7 +3757,7 @@
   },
   "TC-SR3": {
     "roomName": "Seminar Room 3",
-    "floor": 1,
+    "floor": -1,
     "location": {
       "x": 103.7735061935529,
       "y": 1.3058646900451434
