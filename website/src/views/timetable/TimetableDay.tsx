@@ -3,7 +3,7 @@ import classnames from 'classnames';
 
 import { HoverLesson, TimetableDayArrangement } from 'types/timetables';
 import { OnHoverCell, OnModifyCell } from 'types/views';
-import { convertTimeToIndex } from 'utils/timify';
+import { convertTimeToIndex, NUM_INTERVALS_PER_HOUR } from 'utils/timify';
 
 import { TimePeriod } from 'types/venues';
 import styles from './TimetableDay.scss';
@@ -28,7 +28,7 @@ type Props = {
 };
 
 // Height of timetable per hour in vertical mode
-const VERTICAL_HEIGHT = 2.4;
+const VERTICAL_HEIGHT_PER_HOUR = 4.8;
 
 function calculateLessonStyle(
   period: TimePeriod,
@@ -55,14 +55,15 @@ const TimetableDay: React.FC<Props> = (props) => {
   const { startingIndex, endingIndex, verticalMode, highlightPeriod } = props;
 
   const columns = endingIndex - startingIndex;
-  const size = 100 / (columns / 4);
+  const size = 100 / (columns / (NUM_INTERVALS_PER_HOUR * 2));
 
   const rowStyle: React.CSSProperties = {
     // Firefox defaults the second value (width) to auto if not specified
     backgroundSize: `${size}% ${size}%`,
   };
 
-  if (verticalMode) rowStyle.height = `${VERTICAL_HEIGHT * columns}rem`;
+  if (verticalMode)
+    rowStyle.height = `${(VERTICAL_HEIGHT_PER_HOUR / NUM_INTERVALS_PER_HOUR) * columns}rem`;
 
   return (
     <li className={styles.day}>
