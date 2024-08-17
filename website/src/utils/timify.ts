@@ -37,7 +37,7 @@ export function convertTimeToIndex(time: LessonTime): number {
 
   // TODO: Expose incorrect offsets to user via UI
   // Currently we round up in 15-min blocks, but the actual time is not shown
-  const minuteOffset = Math.floor(minute / INTERVAL_DURATION_MINS);
+  const minuteOffset = Math.round(minute / INTERVAL_DURATION_MINS);
   return hour * NUM_INTERVALS_PER_HOUR + minuteOffset;
 }
 
@@ -108,7 +108,7 @@ export function calculateBorderTimings(
 
   return {
     startingIndex: earliestTime - (earliestTime % NUM_INTERVALS_PER_HOUR), // floor to earliest hour.
-    endingIndex: latestTime + (NUM_INTERVALS_PER_HOUR - (latestTime % NUM_INTERVALS_PER_HOUR)), // ceil to latest hour.
+    endingIndex: Math.ceil(latestTime / NUM_INTERVALS_PER_HOUR) * NUM_INTERVALS_PER_HOUR, // ceil to latest hour.
   };
 }
 
