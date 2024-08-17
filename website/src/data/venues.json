@@ -4587,6 +4587,14 @@
       "y": 1.2949252184799644
     }
   },
+  "COM3-01-22": {
+    "roomName": "Seminar Room 13",
+    "floor": 1,
+    "location": {
+      "x": 103.77473,
+      "y": 1.29501
+    }
+  },
   "COM3-01-23": {
     "roomName": "Seminar Room 14",
     "floor": 1,
@@ -4609,6 +4617,38 @@
     "location": {
       "x": 103.77468,
       "y": 1.29491
+    }
+  },
+  "COM3-02-60": {
+    "roomName": "Seminar Room 21",
+    "floor": 2,
+    "location": {
+      "x": 103.77464,
+      "y": 1.29488
+    }
+  },
+  "COM3-B1-10": {
+    "roomName": "Seminar Room 91 (ALC)",
+    "floor": -1,
+    "location": {
+      "x": 103.77452,
+      "y": 1.29442
+    }
+  },
+  "COM3-B1-11": {
+    "roomName": "Metaverse Foundry",
+    "floor": -1,
+    "location": {
+      "x": 103.77452,
+      "y": 1.29425
+    }
+  },
+  "COM3-01-19": {
+    "roomName": "Makers@SoC",
+    "floor": 1,
+    "location": {
+      "x": 103.77438,
+      "y": 1.29494
     }
   },
   "AS8-0760": {
