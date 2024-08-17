@@ -42,3 +42,11 @@ export function deltas(numbers: readonly number[]): number[] {
 
   return result;
 }
+
+export function count<T>(array: T[], predicate: (t: T) => boolean): number {
+  return array.reduce((sum, item) => sum + +predicate(item), 0);
+}
+
+export function isEmpty<T>(array: T[]): boolean {
+  return array.length === 0;
+}

@@ -1,8 +1,9 @@
-import { flatten, sum } from 'lodash';
+import { sum } from 'lodash';
 import { ModuleCode, PrereqTree, Semester } from 'types/modules';
 import { PlannerModuleInfo } from 'types/planner';
 import config from 'config';
-import { assertNever, notNull } from 'types/utils';
+import { assertNever } from 'types/utils';
+import { count, isEmpty } from './array';
 
 // "Exemption" and "plan to take" modules are special columns used to hold modules
 // outside the normal planner. "Exemption" modules are coded as -1 year so
@@ -33,47 +34,47 @@ export function getSemesterName(semester: Semester) {
 
 /**
  * Check if a prereq tree is fulfilled given a set of modules that have already
- * been taken. If the requirements are met, null is returned, otherwise an
- * array of unfulfilled requirements is returned.
+ * been taken. An array of unfulfilled requirements is returned. An empty array
+ * means that the prereq tree is fulfilled.
  */
-export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: PrereqTree) {
-  function walkTree(fragment: PrereqTree): PrereqTree[] | null {
+export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: PrereqTree): PrereqTree[] {
+  const moduleArray = Array.from(moduleSet);
+
+  function walkTree(fragment: PrereqTree): PrereqTree[] {
     if (typeof fragment === 'string') {
-      const module = fragment.includes(GRADE_REQUIREMENT_SEPARATOR)
-        ? fragment.split(GRADE_REQUIREMENT_SEPARATOR)[0]
-        : fragment;
-
-      if (module.includes(MODULE_WILD_CARD)) {
-        const [prefix] = module.split(MODULE_WILD_CARD);
-        let hasModule = false;
-        moduleSet.forEach((moduleCode) => {
-          hasModule = hasModule || moduleCode.startsWith(prefix);
-        });
-
-        if (hasModule) {
-          return null;
-        }
-      }
-
-      return moduleSet.has(module) ? null : [module];
+      // Parse a module code requirement as an nOf fragment.
+      return walkTree({ nOf: [1, [fragment]] });
     }
 
     if ('or' in fragment) {
-      return fragment.or.every((child) => !!walkTree(child))
-        ? // All return non-null = all unfulfilled
-          [fragment]
-        : null;
+      // All return non-null = all unfulfilled
+      return fragment.or.some((child) => isEmpty(walkTree(child))) ? [] : [fragment];
     }
 
     if ('and' in fragment) {
-      const notFulfilled = fragment.and.map(walkTree).filter(notNull);
-      return notFulfilled.length === 0 ? null : flatten(notFulfilled);
+      return fragment.and.map(walkTree).flat();
     }
 
     if ('nOf' in fragment) {
-      const requiredCount = fragment.nOf[0];
-      const fulfilled = fragment.nOf[1].map(walkTree).filter((x) => x === null);
-      return fulfilled.length >= requiredCount ? null : [fragment];
+      const [requiredCount, options] = fragment.nOf;
+      let fulfilledCount = 0;
+      options.forEach((opt) => {
+        if (typeof opt === 'string') {
+          const module = opt.includes(GRADE_REQUIREMENT_SEPARATOR)
+            ? opt.split(GRADE_REQUIREMENT_SEPARATOR)[0]
+            : opt;
+          if (module.includes(MODULE_WILD_CARD)) {
+            const [prefix] = module.split(MODULE_WILD_CARD);
+            // Assumption: prefixes do not overlap.
+            fulfilledCount += count(moduleArray, (moduleCode) => moduleCode.startsWith(prefix));
+          } else {
+            fulfilledCount += +moduleSet.has(module);
+          }
+          return;
+        }
+        fulfilledCount += +!isEmpty(walkTree(opt));
+      });
+      return fulfilledCount >= requiredCount ? [] : [fragment];
     }
 
     return assertNever(fragment);
@@ -85,23 +86,27 @@ export function checkPrerequisite(moduleSet: Set<ModuleCode>, tree: PrereqTree) 
 /**
  * Converts conflicts into human readable text form
  */
-export function conflictToText(conflict: PrereqTree): string {
-  if (typeof conflict === 'string') return conflict;
+export function conflictToText(rootConflict: PrereqTree): string {
+  function walkTree(conflict: PrereqTree): string {
+    if (typeof conflict === 'string') return conflict;
 
-  if ('or' in conflict) {
-    return conflict.or.map(conflictToText).join(' or ');
+    if ('or' in conflict) {
+      return `(${conflict.or.map(conflictToText).join(' or ')})`;
+    }
+
+    if ('and' in conflict) {
+      return `(${conflict.and.map((opt) => `(${conflictToText(opt)})`).join(' and ')})`;
+    }
+
+    if ('nOf' in conflict) {
+      const [n, conflicts] = conflict.nOf;
+      return `require ${n} of ${conflicts.map(conflictToText).join(', ')}`;
+    }
+
+    return assertNever(conflict);
   }
-
-  if ('and' in conflict) {
-    return conflict.and.map(conflictToText).join(' and ');
-  }
-
-  if ('nOf' in conflict) {
-    const [n, conflicts] = conflict.nOf;
-    return `require ${n} of ${conflicts.map(conflictToText).join(', ')}`;
-  }
-
-  return assertNever(conflict);
+  const text = walkTree(rootConflict);
+  return text.startsWith('(') && text.endsWith(')') ? text.slice(1, -1) : text;
 }
 
 /**
