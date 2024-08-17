@@ -34,7 +34,7 @@ describe(checkPrerequisite, () => {
   ]);
 
   test('should return null if single prerequisite is met', () => {
-    expect(checkPrerequisite(moduleSet, 'CS1010S')).toBeNull();
+    expect(checkPrerequisite(moduleSet, 'CS1010S')).toHaveLength(0);
   });
 
   test('should return null if all prerequisites are met', () => {
@@ -43,19 +43,19 @@ describe(checkPrerequisite, () => {
       checkPrerequisite(moduleSet, {
         or: ['MA1521', 'MA1102'],
       }),
-    ).toBeNull();
+    ).toHaveLength(0);
 
     // And operator
     expect(
       checkPrerequisite(moduleSet, {
         and: ['MA1521', 'MA1101R'],
       }),
-    ).toBeNull();
+    ).toHaveLength(0);
   });
 
   test('should return null if single wildcard prerequisites is met', () => {
-    expect(checkPrerequisite(moduleSet, 'NTW%')).toBeNull();
-    expect(checkPrerequisite(moduleSet, 'UTC14%')).toBeNull();
+    expect(checkPrerequisite(moduleSet, 'NTW%')).toHaveLength(0);
+    expect(checkPrerequisite(moduleSet, 'UTC14%')).toHaveLength(0);
   });
 
   test('should return null if all wildcard prerequisites are met', () => {
@@ -64,14 +64,14 @@ describe(checkPrerequisite, () => {
       checkPrerequisite(moduleSet, {
         or: ['UTC11%', 'UTC14%'],
       }),
-    ).toBeNull();
+    ).toHaveLength(0);
 
     // And operator
     expect(
       checkPrerequisite(moduleSet, {
         and: ['UTC14%', 'UTC1702%'],
       }),
-    ).toBeNull();
+    ).toHaveLength(0);
   });
 
   test('should return null if all wildcard prerequisites of "nOf" type prerequisite are met', () => {
@@ -101,12 +101,12 @@ describe(checkPrerequisite, () => {
           },
         ],
       }),
-    ).toBeNull();
+    ).toHaveLength(0);
   });
 
   test('should return module that are not fulfilled', () => {
-    expect(checkPrerequisite(moduleSet, 'CS2030')).toEqual(['CS2030']);
-    expect(checkPrerequisite(moduleSet, 'NTW1%')).toEqual(['NTW1%']);
+    expect(checkPrerequisite(moduleSet, 'CS2030')).toEqual([{ nOf: [1, ['CS2030']] }]);
+    expect(checkPrerequisite(moduleSet, 'NTW1%')).toEqual([{ nOf: [1, ['NTW1%']] }]);
   });
 
   test('should return all modules that are not fulfilled', () => {
