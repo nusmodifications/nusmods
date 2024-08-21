@@ -18,17 +18,11 @@ type Props = {
 export const FeedbackButtons: React.FC = () => (
   <div>
     <div className={styles.links}>
-      <ExternalLink className={styles.messenger} href={config.contact.messenger}>
-        <Facebook />
-        Messenger
-      </ExternalLink>
       <ExternalLink className={styles.github} href={config.contact.githubRepo}>
-        <GitHub />
-        GitHub
+        <GitHub /> GitHub
       </ExternalLink>
       <ExternalLink className={styles.email} href={`mailto:${config.contact.email}`}>
-        <Mail />
-        Email
+        <Mail /> Email
       </ExternalLink>
     </div>
     <p className="text-muted">
