@@ -45,19 +45,7 @@ export const FooterComponent: React.FC<Props> = (props) => {
             <ExternalLink href={config.contact.githubRepo}>GitHub</ExternalLink>
           </li>
           <li>
-            <ExternalLink href={config.contact.facebook}>Facebook</ExternalLink>
-          </li>
-          <li>
-            <ExternalLink href={config.contact.messenger}>Messenger</ExternalLink>
-          </li>
-          <li>
-            <ExternalLink href={config.contact.twitter}>Twitter</ExternalLink>
-          </li>
-          <li>
             <ExternalLink href={config.contact.telegram}>Telegram</ExternalLink>
-          </li>
-          <li>
-            <ExternalLink href={config.contact.blog}>Blog</ExternalLink>
           </li>
           <li>
             <ExternalLink href="https://api.nusmods.com/v2">API</ExternalLink>
