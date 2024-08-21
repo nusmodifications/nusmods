@@ -99,7 +99,12 @@ const ModuleWorkload = React.memo<Props>(({ workload }) => {
                 className={styles.moduleWorkloadComponent}
                 style={{ width: `${(100 / ROW_MAX) * Math.min(ROW_MAX, Math.ceil(hours))}%` }}
               >
-                <h5 className={textClass(component)}>{workloadLabel(component, hours)}</h5>
+                <h5
+                  className={textClass(component)}
+                  style={{ marginRight: hours % 1 ? '5%' : '0.5rem' }}
+                >
+                  {workloadLabel(component, hours)}
+                </h5>
 
                 <div
                   className={classnames(styles.moduleWorkloadBlocks, {
