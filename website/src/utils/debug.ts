@@ -8,6 +8,10 @@ function getParams() {
   return qs.parse(window.location.search);
 }
 
+function isLocalhost() {
+  return window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+}
+
 // Force the 'new version available' refresh prompt to appear
 export function forceRefreshPrompt() {
   return getParams().refresh === '1';
@@ -40,6 +44,8 @@ export function allowBusStopEditing() {
   return getParams().edit === '1';
 }
 
+// prodVenue query parameter allows the user to use production data instead of local data
+// by default, on localhost, local data will be used
 export function preferRepoVenues() {
-  return getParams().localVenue === '1';
+  return isLocalhost() && getParams().prodVenue !== '1';
 }
