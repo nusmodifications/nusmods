@@ -53,7 +53,7 @@ Working on your first Pull Request? You can learn how from this free video serie
 
 [How to Contribute to an Open Source Project on GitHub](https://app.egghead.io/playlists/how-to-contribute-to-an-open-source-project-on-github)
 
-To help you get your feet wet and get you familiar with our contribution process, we have a list of [good first issues](https://github.com/nusmodifications/nusmods/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) that contain bugs/enhancements that have a relatively limited scope. This is a great place to get started.
+To help you get your feet wet and get you familiar with our contribution process, we have a list of [good first issues](https://github.com/nusmodifications/nusmods/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) that contain bugs/enhancements that have a relatively limited scope. This is a great place to get started. To run the website locally, refer to this [guide](/website/README.md).
 
 If you decide to fix an issue, please be sure to check the comment thread in case somebody is already working on a fix. If nobody is working on it at the moment, please leave a comment stating that you intend to work on it so other people don't accidentally duplicate your effort.
 

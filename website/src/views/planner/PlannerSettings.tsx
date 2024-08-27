@@ -121,7 +121,7 @@ export const PlannerSettingsComponent: React.FC<Props> = (props) => {
 
           <p>
             <ExternalLink href="http://www.nus.edu.sg/ibloc/iBLOC.html">iBLOCs</ExternalLink> is a
-            program that allows full-time NSmen to read some modules before matriculating.
+            program that allows full-time NSmen to read some courses before matriculating.
           </p>
         </div>
 
@@ -137,11 +137,11 @@ export const PlannerSettingsComponent: React.FC<Props> = (props) => {
           <h2 className={styles.label}>Ignore Prerequisite Checking</h2>
 
           <p>
-            Prerequisite checking for some modules might be inaccurate, giving planner warnings.
+            Prerequisite checking for some courses might be inaccurate, giving planner warnings.
             Turning this on removes these checks entirely.
           </p>
           <p>
-            Please ensure that you manually check that the prerequisites for the modules you would
+            Please ensure that you manually check that the prerequisites for the courses you would
             like to take are sufficiently met.
           </p>
         </div>
