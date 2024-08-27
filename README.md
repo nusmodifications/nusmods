@@ -30,7 +30,7 @@ You can reach us through the following channels, listed in order of preference:
 
 - Telegram: https://t.me/nusmods
 - Messenger: https://m.me/nusmods
-- Email: nusmods@googlegroups.com (for security related issues please email mods@nusmods.com instead)
+- Email: mods@nusmods.com
 - Facebook: https://www.facebook.com/nusmods
 - Twitter: https://twitter.com/nusmods
 

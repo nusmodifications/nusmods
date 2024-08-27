@@ -178,7 +178,7 @@ const FaqContainer: React.FC = () => (
       <hr />
       <p>
         Congratulations on making it to the end! If you still want to contact us, you may reach us
-        via email at nusmods&#123;at&#125;googlegroups[dot]com, via{' '}
+        via email at mods&#123;at&#125;nusmods[dot]com or via{' '}
         <ExternalLink href={config.contact.telegram}>Telegram</ExternalLink> or via{' '}
         <ExternalLink href={config.contact.messenger}>Messenger</ExternalLink>. Please allow up to
         90 working days for a reply. We are busy <Link to="/team">students</Link> as well!
