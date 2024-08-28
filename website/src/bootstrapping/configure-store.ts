@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware, compose, PreloadedState } from 'redux';
 import { persistStore } from 'redux-persist';
-import thunk from 'redux-thunk';
+import { thunk } from 'redux-thunk';
 import { setAutoFreeze } from 'immer';
 
 import rootReducer from 'reducers';
