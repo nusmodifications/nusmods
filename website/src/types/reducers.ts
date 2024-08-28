@@ -1,8 +1,7 @@
 import { AxiosError } from 'axios';
 import { RegPeriodType, ScheduleType } from 'config';
-
 import { ColorSchemePreference } from './settings';
-import { ColorIndex, Lesson, TimetableConfig } from './timetables';
+import { ColorIndex, CustomModuleLesson, Lesson, TimetableConfig } from './timetables';
 import {
   Faculty,
   Module,
@@ -112,12 +111,14 @@ export type SettingsState = {
 export type ColorMapping = { [moduleCode: string]: ColorIndex };
 export type SemesterColorMap = { [semester: string]: ColorMapping };
 export type HiddenModulesMap = { [semester: string]: ModuleCode[] };
+export type CustomModulesMap = { [semester: string]: CustomModuleLessonData };
 
 export type TimetablesState = {
   readonly lessons: TimetableConfig;
   readonly colors: SemesterColorMap;
   readonly hidden: HiddenModulesMap;
   readonly academicYear: string;
+  readonly customModules: CustomModulesMap;
   // Mapping of academic year to old timetable config
   readonly archive: { [key: string]: TimetableConfig };
 };
@@ -154,6 +155,10 @@ export type CustomModule = {
 
 export type CustomModuleData = {
   [moduleCode: string]: CustomModule;
+};
+
+export type CustomModuleLessonData = {
+  [moduleCode: string]: CustomModuleLesson;
 };
 
 // Mapping modules to when they will be taken

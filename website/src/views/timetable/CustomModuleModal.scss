@@ -1,0 +1,64 @@
+@import "~styles/utils/modules-entry.scss";
+
+.header {
+  text-align: center;
+
+  svg {
+    width: 5rem;
+    height: 5rem;
+    color: theme-color(success);
+  }
+
+  h3 {
+    margin-bottom: 0.4rem;
+    font-weight: $font-weight-bold;
+    font-size: 1.4rem;
+  }
+
+  .row {
+    display: flex;
+    text-align: left;
+
+    .columnSmall {
+      width: 33%;
+        padding-top: 0.5em; 
+      padding-right: 10%;
+
+      label {
+        font-style: bold;
+      }
+    }
+
+    .column {
+        width: 45%;
+        padding-top: 0.5em; 
+        padding-right: 10%;
+
+        label {
+            font-style: bold;
+        }
+    }
+
+    .columnLarge {
+        width: 70%;
+        padding-top: 0.5em; 
+        padding-right: 10%;
+
+        label {
+            font-style: bold;
+        }
+    }
+
+    .buttonColumn {
+        padding-top: 1em;
+        margin-left: auto;
+    }
+  }
+
+  @include media-breakpoint-down(sm) {
+    br {
+      display: none;
+    }
+  }
+}
+

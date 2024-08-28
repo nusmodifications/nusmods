@@ -5,14 +5,17 @@ import { createMigrate } from 'redux-persist';
 import { PersistConfig } from 'storage/persistReducer';
 import { ModuleCode } from 'types/modules';
 import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
-import { ColorMapping, TimetablesState } from 'types/reducers';
+import { ColorMapping, CustomModuleLessonData, TimetablesState } from 'types/reducers';
 
 import config from 'config';
 import {
+  ADD_CUSTOM_MODULE,
   ADD_MODULE,
   CHANGE_LESSON,
   HIDDEN_IMPORTED_SEM,
+  DELETE_CUSTOM_MODULE,
   HIDE_LESSON_IN_TIMETABLE,
+  MODIFY_CUSTOM_MODULE,
   REMOVE_MODULE,
   RESET_TIMETABLE,
   SELECT_MODULE_COLOR,
@@ -132,12 +135,14 @@ function semColors(state: ColorMapping = DEFAULT_SEM_COLOR_MAP, action: Actions)
 
   switch (action.type) {
     case ADD_MODULE:
+    case ADD_CUSTOM_MODULE:
       return {
         ...state,
         [moduleCode]: getNewColor(values(state)),
       };
 
     case REMOVE_MODULE:
+    case DELETE_CUSTOM_MODULE:
       return omit(state, moduleCode);
 
     case SELECT_MODULE_COLOR:
@@ -169,12 +174,41 @@ function semHiddenModules(state = DEFAULT_HIDDEN_STATE, action: Actions) {
   }
 }
 
+// Map of semester to ModulesMap for custom modules
+const defaultCustomModulesState: CustomModuleLessonData = {};
+function semCustomModules(
+  state: CustomModuleLessonData = defaultCustomModulesState,
+  action: Actions,
+): CustomModuleLessonData {
+  if (!action.payload) {
+    return state;
+  }
+
+  switch (action.type) {
+    case ADD_CUSTOM_MODULE:
+      return {
+        ...state,
+        [action.payload.moduleCode]: action.payload.lesson,
+      };
+    case MODIFY_CUSTOM_MODULE:
+      return {
+        ...omit(state, [action.payload.oldModuleCode]),
+        [action.payload.moduleCode]: action.payload.lesson,
+      };
+    case DELETE_CUSTOM_MODULE:
+      return omit(state, [action.payload.moduleCode]);
+    default:
+      return state;
+  }
+}
+
 export const defaultTimetableState: TimetablesState = {
   lessons: {},
   colors: {},
   hidden: {},
   academicYear: config.academicYear,
   archive: {},
+  customModules: {},
 };
 
 function timetables(
@@ -210,6 +244,9 @@ function timetables(
       });
     }
 
+    case ADD_CUSTOM_MODULE:
+    case MODIFY_CUSTOM_MODULE:
+    case DELETE_CUSTOM_MODULE:
     case ADD_MODULE:
     case REMOVE_MODULE:
     case SELECT_MODULE_COLOR:
@@ -223,6 +260,7 @@ function timetables(
         draft.lessons[semester] = semTimetable(draft.lessons[semester], action);
         draft.colors[semester] = semColors(state.colors[semester], action);
         draft.hidden[semester] = semHiddenModules(state.hidden[semester], action);
+        draft.customModules[semester] = semCustomModules(state.customModules[semester], action);
       });
     }
 

@@ -19,13 +19,16 @@ import CloseButton from 'views/components/CloseButton';
 import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip';
 
+import { Lesson } from 'types/timetables';
 import styles from './ModulesSelect.scss';
+import CustomModuleSelect from './CustomModuleSelect';
 
 type Props = {
   moduleCount: number;
   placeholder: string;
   disabled?: boolean;
 
+  addCustomModule: (moduleCode: ModuleCode, lesson: Lesson) => void;
   getFilteredModules: (string: string | null) => ModuleSelectList;
   onChange: (moduleCode: ModuleCode) => void;
   onRemoveModule: (moduleCode: ModuleCode) => void;
@@ -38,6 +41,7 @@ const ModulesSelect: FC<Props> = ({
   getFilteredModules,
   onChange,
   onRemoveModule,
+  addCustomModule,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
@@ -125,6 +129,8 @@ const ModulesSelect: FC<Props> = ({
             onFocus: openSelect,
           })}
         />
+        <br />
+        <CustomModuleSelect addCustomModule={addCustomModule} />
         {isModalOpen && <CloseButton className={styles.close} onClick={closeSelectAndEmptyInput} />}
         {showResults && (
           <ol className={styles.selectList} {...getMenuProps()}>

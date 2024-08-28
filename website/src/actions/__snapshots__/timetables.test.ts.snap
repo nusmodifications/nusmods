@@ -1,5 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`addCustomModule should add the custom module defined 1`] = `
+Object {
+  "payload": Object {
+    "lesson": Object {
+      "classNo": "01",
+      "day": "Monday",
+      "endTime": "0900",
+      "isCustom": true,
+      "lessonType": "Lecture",
+      "moduleCode": "CS1101S",
+      "startTime": "0800",
+      "title": "Programming Methodology",
+      "venue": "COM1-0330",
+    },
+    "moduleCode": "CS1101S",
+    "semester": 2,
+  },
+  "type": "ADD_CUSTOM_MODULE",
+}
+`;
+
 exports[`cancelModifyLesson should not have payload 1`] = `
 {
   "payload": null,
@@ -16,6 +37,16 @@ exports[`changeLesson should return updated information to change lesson 1`] = `
     "semester": 1,
   },
   "type": "CHANGE_LESSON",
+}
+`;
+
+exports[`deleteCustomModule should modify the custom module 1`] = `
+Object {
+  "payload": Object {
+    "moduleCode": "CS1101S",
+    "semester": 2,
+  },
+  "type": "DELETE_CUSTOM_MODULE",
 }
 `;
 
@@ -44,6 +75,28 @@ exports[`hide/show timetable modules should dispatch a module code for showing 1
     "semester": 1,
   },
   "type": "SHOW_LESSON_IN_TIMETABLE",
+}
+`;
+
+exports[`modifyCustomModule should modify the custom module 1`] = `
+Object {
+  "payload": Object {
+    "lesson": Object {
+      "classNo": "01",
+      "day": "Monday",
+      "endTime": "0900",
+      "isCustom": true,
+      "lessonType": "Lecture",
+      "moduleCode": "CS2030",
+      "startTime": "0800",
+      "title": "Programming Methodology",
+      "venue": "COM1-0330",
+    },
+    "moduleCode": "CS2030",
+    "oldModuleCode": "CS1101S",
+    "semester": 2,
+  },
+  "type": "MODIFY_CUSTOM_MODULE",
 }
 `;
 

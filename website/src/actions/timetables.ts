@@ -1,6 +1,12 @@
 import { each, flatMap } from 'lodash';
 
-import type { ColorIndex, Lesson, ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
+import type {
+  Lesson,
+  ColorIndex,
+  ModuleLessonConfig,
+  SemTimetableConfig,
+  CustomModuleLesson,
+} from 'types/timetables';
 import type { Dispatch, GetState } from 'types/redux';
 import type { ColorMapping } from 'types/reducers';
 import type { ClassNo, LessonType, Module, ModuleCode, Semester } from 'types/modules';
@@ -251,5 +257,50 @@ export function showLessonInTimetable(semester: Semester, moduleCode: ModuleCode
   return {
     type: SHOW_LESSON_IN_TIMETABLE,
     payload: { moduleCode, semester },
+  };
+}
+
+export const ADD_CUSTOM_MODULE = 'ADD_CUSTOM_MODULE' as const;
+export function addCustomModule(
+  semester: Semester,
+  moduleCode: ModuleCode,
+  lesson: CustomModuleLesson,
+) {
+  return {
+    type: ADD_CUSTOM_MODULE,
+    payload: {
+      semester,
+      moduleCode,
+      lesson,
+    },
+  };
+}
+
+export const MODIFY_CUSTOM_MODULE = 'MODIFY_CUSTOM_MODULE' as const;
+export function modifyCustomModule(
+  semester: Semester,
+  oldModuleCode: ModuleCode,
+  moduleCode: ModuleCode,
+  lesson: CustomModuleLesson,
+) {
+  return {
+    type: MODIFY_CUSTOM_MODULE,
+    payload: {
+      semester,
+      oldModuleCode,
+      moduleCode,
+      lesson,
+    },
+  };
+}
+
+export const DELETE_CUSTOM_MODULE = 'DELETE_CUSTOM_MODULE' as const;
+export function deleteCustomModule(semester: Semester, moduleCode: ModuleCode) {
+  return {
+    type: DELETE_CUSTOM_MODULE,
+    payload: {
+      semester,
+      moduleCode,
+    },
   };
 }

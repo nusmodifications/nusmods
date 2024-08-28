@@ -32,7 +32,7 @@ export default class TimetableOnly extends Component<Props, State> {
     const theme = store.getState().theme.id;
 
     const { semester, timetable, colors } = this.state;
-    const timetableColors = fillColorMapping(timetable, colors);
+    const timetableColors = fillColorMapping(timetable, colors, []);
 
     return (
       <MemoryRouter initialEntries={['https://nusmods.com']}>

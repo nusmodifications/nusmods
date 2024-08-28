@@ -24,6 +24,7 @@ const commonProps = {
     if (!inputValue) return [];
     return modules.filter((m) => m.moduleCode.includes(inputValue));
   }),
+  addCustomModule: jest.fn(),
   onChange: jest.fn(),
   moduleCount: 3,
   placeholder: 'test placeholder',
