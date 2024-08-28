@@ -45,7 +45,10 @@ export function allowBusStopEditing() {
 }
 
 // prodVenue query parameter allows the user to use production data instead of local data
-// by default, on localhost, local data will be used
+// By default, on localhost, local data will be used
 export function preferRepoVenues() {
+  // Don't use repo data in jest tests
+  if (process.env.JEST_WORKER_ID !== undefined) return false;
+
   return isLocalhost() && getParams().prodVenue !== '1';
 }
