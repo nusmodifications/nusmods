@@ -32,10 +32,11 @@ export const Internal = {
     timetable: SemTimetableConfig | undefined,
     colors?: ColorMapping,
     hiddenModules?: ModuleCode[],
+    customModules?: Record<ModuleCode, CustomModuleLesson>,
   ) {
     return {
       type: SET_TIMETABLE,
-      payload: { semester, timetable, colors, hiddenModules },
+      payload: { semester, timetable, colors, hiddenModules, customModules },
     };
   },
 

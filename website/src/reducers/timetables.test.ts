@@ -77,6 +77,7 @@ describe('color reducers', () => {
           timetable: { CS1010S: {} },
           colors: { CS1010S: 0 },
           hiddenModules: [],
+          customModules: {},
         },
       }).colors[1],
     ).toEqual({

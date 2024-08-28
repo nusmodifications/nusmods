@@ -40,9 +40,14 @@ export const persistConfig = {
       // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
       _persist: state?._persist!,
     }),
+    [2]: (state) => ({
+      ...state,
+      customModules: {},
+      _persist: state?._persist!,
+    }),
   }),
   /* eslint-enable */
-  version: 1,
+  version: 2,
 
   // Our own state reconciler archives old timetables if the acad year is different,
   // otherwise use the persisted timetable state
@@ -175,9 +180,9 @@ function semHiddenModules(state = DEFAULT_HIDDEN_STATE, action: Actions) {
 }
 
 // Map of semester to ModulesMap for custom modules
-const defaultCustomModulesState: CustomModuleLessonData = {};
+const DEFAULT_CUSTOM_MODULE_STATE: CustomModuleLessonData = {};
 function semCustomModules(
-  state: CustomModuleLessonData = defaultCustomModulesState,
+  state: CustomModuleLessonData = DEFAULT_CUSTOM_MODULE_STATE,
   action: Actions,
 ): CustomModuleLessonData {
   if (!action.payload) {
@@ -222,12 +227,13 @@ function timetables(
 
   switch (action.type) {
     case SET_TIMETABLE: {
-      const { semester, timetable, colors, hiddenModules } = action.payload;
+      const { semester, timetable, colors, hiddenModules, customModules } = action.payload;
 
       return produce(state, (draft) => {
         draft.lessons[semester] = timetable || DEFAULT_SEM_TIMETABLE_CONFIG;
-        draft.colors[semester] = colors || {};
-        draft.hidden[semester] = hiddenModules || [];
+        draft.colors[semester] = colors || DEFAULT_SEM_COLOR_MAP;
+        draft.hidden[semester] = hiddenModules || DEFAULT_HIDDEN_STATE;
+        draft.customModules[semester] = customModules || DEFAULT_CUSTOM_MODULE_STATE;
 
         // Remove the old hidden imported modules
         delete draft.hidden[HIDDEN_IMPORTED_SEM];
@@ -241,6 +247,7 @@ function timetables(
         draft.lessons[semester] = DEFAULT_SEM_TIMETABLE_CONFIG;
         draft.colors[semester] = DEFAULT_SEM_COLOR_MAP;
         draft.hidden[semester] = DEFAULT_HIDDEN_STATE;
+        draft.customModules[semester] = DEFAULT_CUSTOM_MODULE_STATE;
       });
     }
 
