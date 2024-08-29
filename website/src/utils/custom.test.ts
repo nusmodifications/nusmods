@@ -1,4 +1,4 @@
-import { appendCustomIdentifier, removeCustomIdentifier, cretaeCustomModule } from './custom';
+import { appendCustomIdentifier, removeCustomIdentifier, createCustomModule } from './custom';
 
 test('appendCustomIdentifier should return the proper custom module code', () => {
   expect(appendCustomIdentifier('CS2030')).toEqual('custom=CS2030');
@@ -13,7 +13,7 @@ test('removeCustomIdentifier should return the proper module code', () => {
 });
 
 test('cretaeCustomModule should return the proper custom module', () => {
-  const actual = cretaeCustomModule('CS1101S', 'Programming Methodology');
+  const actual = createCustomModule('CS1101S', 'Programming Methodology');
   const expected = {
     moduleCode: 'CS1101S',
     title: 'Programming Methodology',

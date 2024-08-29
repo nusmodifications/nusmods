@@ -1,0 +1,23 @@
+@import '~styles/utils/modules-entry.scss';
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdownMenu {
+  position: fixed;
+  z-index: calc($modal-z-index + 10);
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  bottom: 0;
+  height: fit-content;
+  width: fit-content;
+}
+
+.dropdown-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}

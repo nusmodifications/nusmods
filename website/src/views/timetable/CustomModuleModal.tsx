@@ -2,14 +2,15 @@ import * as React from 'react';
 
 import CloseButton from 'views/components/CloseButton';
 import Modal from 'views/components/Modal';
-import { LessonDays, ModuleCode } from 'types/modules';
+import { ModuleCode } from 'types/modules';
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
 import { Lesson, ModifiableLesson } from 'types/timetables';
 import { appendCustomIdentifier, removeCustomIdentifier } from 'utils/custom';
-import { getLessonTimeHours, getLessonTimeMinutes } from 'utils/timify';
+import { SCHOOLDAYS, getLessonTimeHours, getLessonTimeMinutes } from 'utils/timify';
 import { noop } from 'lodash';
 import TimetableCell from './TimetableCell';
 import styles from './CustomModuleModal.scss';
+import CustomModuleModalDropdown from './CustomModuleModalDropdown';
 
 export type Props = {
   customLessonData?: Lesson;
@@ -25,10 +26,10 @@ type State = {
   isSubmitting: boolean;
 };
 
-const defaultLessonState: Lesson = {
+const DEFAULT_LESSON_STATE: Lesson = {
   moduleCode: '',
   title: '',
-  lessonType: 'Design Lecture',
+  lessonType: '',
   venue: '',
   day: 'Monday',
   startTime: '0800',
@@ -43,7 +44,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
 
   state: State = {
     lessonData: {
-      ...(this.props.customLessonData || defaultLessonState),
+      ...(this.props.customLessonData || DEFAULT_LESSON_STATE),
       moduleCode: this.props.customLessonData
         ? removeCustomIdentifier(this.props.customLessonData.moduleCode)
         : '',
@@ -63,12 +64,12 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     return null;
   };
 
-  setLessonStateViaSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  setLessonStateViaSelect = (key: string, value: string) => {
     const newState: State = {
       ...this.state,
       lessonData: {
         ...this.state.lessonData,
-        [event.target.name]: event.target.value,
+        [key]: value,
       },
     };
     this.setState(newState);
@@ -80,8 +81,9 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     colorIndex: 0,
   });
 
-  getValidatioNErrors = (): string[] => {
-    const { moduleCode, title, venue, startTime, endTime, classNo } = this.state.lessonData;
+  getValidationErrors = (): string[] => {
+    const { moduleCode, title, venue, startTime, endTime, classNo, lessonType } =
+      this.state.lessonData;
     const errors: string[] = [];
 
     if (moduleCode.length === 0) {
@@ -94,6 +96,10 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
 
     if (classNo.length === 0) {
       errors.push('Please Enter a Class Number.');
+    }
+
+    if (lessonType.length === 0) {
+      errors.push('Please Enter a Lesson Type.');
     }
 
     if (venue.length === 0) {
@@ -112,7 +118,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
   };
 
   submitModule() {
-    const errors = this.getValidatioNErrors();
+    const errors = this.getValidationErrors();
 
     if (errors.length > 0) {
       this.setState({
@@ -144,7 +150,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
         submittedLessonData,
       );
       this.setState({
-        lessonData: defaultLessonState,
+        lessonData: DEFAULT_LESSON_STATE,
       });
     }
     this.props.closeModal();
@@ -154,40 +160,23 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
   }
 
   renderLessonTypes() {
-    const { lessonType } = this.state.lessonData;
-
     return (
-      <select
-        name="lessonType"
-        id="select-lessonType"
-        onChange={(e) => this.setLessonStateViaSelect(e)}
-        value={lessonType}
-      >
-        {Object.keys(LESSON_TYPE_ABBREV).map((lesson: string) => (
-          <option key={lesson} value={lesson}>
-            {lesson}
-          </option>
-        ))}
-      </select>
+      <CustomModuleModalDropdown
+        options={Object.keys(LESSON_TYPE_ABBREV)}
+        defaultText="Select Lesson Type"
+        onChange={(v) => this.setLessonStateViaSelect('lessonType', v)}
+      />
     );
   }
 
   renderWorkingDays() {
     const { day } = this.state.lessonData;
-
     return (
-      <select
-        name="day"
-        id="select-day"
-        onChange={(e) => this.setLessonStateViaSelect(e)}
-        value={day}
-      >
-        {LessonDays.map((lessonDay: string) => (
-          <option key={lessonDay} value={lessonDay}>
-            {lessonDay}
-          </option>
-        ))}
-      </select>
+      <CustomModuleModalDropdown
+        options={SCHOOLDAYS.map((day) => day)}
+        defaultSelectedOption={day}
+        onChange={(v) => this.setLessonStateViaSelect('day', v)}
+      />
     );
   }
 
@@ -200,26 +189,19 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     const timeslots = Array.from({ length: numberOfTimeSlots }, (_, i) => i + 1);
 
     return (
-      <select
-        name={field}
-        id={`select-${field}`}
-        onChange={(e) => this.setLessonStateViaSelect(e)}
-        value={value}
-      >
-        {timeslots.map((timeslot: number) => {
+      <CustomModuleModalDropdown
+        options={timeslots.map((timeslot) => {
           const timeMinutes = (minTimeInHalfHours + timeslot) * 30;
           const hourString = Math.floor(timeMinutes / 60)
             .toString()
             .padStart(2, '0');
           const minuteString = (timeMinutes % 60).toString().padStart(2, '0');
           const timeString = hourString + minuteString;
-          return (
-            <option key={`${field}-${timeString}`} value={timeString}>
-              {timeString}
-            </option>
-          );
+          return timeString;
         })}
-      </select>
+        defaultSelectedOption={value}
+        onChange={(v) => this.setLessonStateViaSelect('field', v)}
+      />
     );
   }
 
@@ -347,7 +329,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
   }
 
   renderErrors() {
-    const errors = this.getValidatioNErrors();
+    const errors = this.getValidationErrors();
 
     return (
       <div className="alert alert-danger">

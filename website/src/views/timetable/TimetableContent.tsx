@@ -57,7 +57,7 @@ import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ModRegNotification from 'views/components/notfications/ModRegNotification';
 import { State as StoreState } from 'types/state';
 import { TombstoneModule } from 'types/views';
-import { createLesson, cretaeCustomModule } from 'utils/custom';
+import { createLesson, createCustomModule } from 'utils/custom';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
@@ -248,7 +248,7 @@ class TimetableContent extends React.Component<Props, State> {
   addedModules(): Module[] {
     const modules = getSemesterModules(this.props.timetableWithLessons, this.props.modules).concat(
       Object.values(this.props.customModules).map((customModule: CustomModuleLesson) =>
-        cretaeCustomModule(customModule.moduleCode, customModule.title),
+        createCustomModule(customModule.moduleCode, customModule.title),
       ),
     );
     return _.sortBy(modules, (module: Module) => getExamDate(module, this.props.semester));
@@ -387,7 +387,7 @@ class TimetableContent extends React.Component<Props, State> {
           row.map((lesson) => {
             const module: Module =
               modules[lesson.moduleCode] ||
-              cretaeCustomModule(
+              createCustomModule(
                 customModules[lesson.moduleCode].moduleCode,
                 customModules[lesson.moduleCode].title,
               );

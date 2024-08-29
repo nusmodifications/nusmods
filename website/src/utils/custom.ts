@@ -11,7 +11,7 @@ export function removeCustomIdentifier(customModuleCode: string): string {
   return customModuleCode.replace(CUSTOM_IDENTIFIER, '');
 }
 
-export function cretaeCustomModule(customModuleCode: string, title: string): Module {
+export function createCustomModule(customModuleCode: string, title: string): Module {
   return {
     moduleCode: customModuleCode,
     title,
