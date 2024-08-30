@@ -45,10 +45,10 @@ const CustomModuleModalButtonGroup: React.FC<CustomModuleModalButtonGroupProps> 
         <a className="a" onClick={() => setSelected(options.map(() => true))}>
           Select All
         </a>
-        <a className="a" onClick={() => setSelected(options.map((_, index) => index % 2 == 1))}>
+        <a className="a" onClick={() => setSelected(options.map((_, index) => index % 2 == 0))}>
           Odd Weeks
         </a>
-        <a className="a" onClick={() => setSelected(options.map((_, index) => index % 2 == 0))}>
+        <a className="a" onClick={() => setSelected(options.map((_, index) => index % 2 == 1))}>
           Even Weeks
         </a>
         <a className="a" onClick={() => setSelected(options.map(() => false))}>
