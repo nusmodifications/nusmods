@@ -356,6 +356,10 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
   renderErrors() {
     const errors = this.getValidationErrors();
 
+    if (errors.length === 0) {
+      return null;
+    }
+
     return (
       <div className="alert alert-danger">
         {errors.map((error) => (
