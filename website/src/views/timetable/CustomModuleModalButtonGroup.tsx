@@ -20,25 +20,41 @@ const CustomModuleModalButtonGroup: React.FC<CustomModuleModalButtonGroupProps> 
   }, [selected]);
 
   return (
-    <div className={styles.buttonGroup}>
-      {options.map((option, index) => (
-        <button
-          key={option}
-          className={classNames(
-            'btn',
-            styles.button,
-            selected[index] ? 'btn-primary' : 'btn-outline-primary',
-          )}
-          onClick={() => {
-            // Toggle the option in the selected list
-            const newSelected = [...selected];
-            newSelected[index] = !newSelected[index];
-            setSelected(newSelected);
-          }}
-        >
-          {option}
-        </button>
-      ))}
+    <div className={styles.container}>
+      <div className={styles.buttonGroup}>
+        {options.map((option, index) => (
+          <button
+            key={option}
+            className={classNames(
+              'btn',
+              styles.button,
+              selected[index] ? 'btn-primary' : 'btn-outline-primary',
+            )}
+            onClick={() => {
+              // Toggle the option in the selected list
+              const newSelected = [...selected];
+              newSelected[index] = !newSelected[index];
+              setSelected(newSelected);
+            }}
+          >
+            {option}
+          </button>
+        ))}
+      </div>
+      <p className={styles.shortcuts}>
+        <a className="a" onClick={() => setSelected(options.map(() => true))}>
+          Select All
+        </a>
+        <a className="a" onClick={() => setSelected(options.map((_, index) => index % 2 == 1))}>
+          Odd Weeks
+        </a>
+        <a className="a" onClick={() => setSelected(options.map((_, index) => index % 2 == 0))}>
+          Even Weeks
+        </a>
+        <a className="a" onClick={() => setSelected(options.map(() => false))}>
+          Deselect All
+        </a>
+      </p>
     </div>
   );
 };

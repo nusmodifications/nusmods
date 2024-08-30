@@ -1,29 +1,39 @@
 @import '~styles/utils/modules-entry.scss';
 
-.buttonGroup {
-  display: grid;
-  grid-auto-columns: minmax(0, 1fr);
-  grid-auto-flow: column;
-  gap: 0;
+.container {
+  .buttonGroup {
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    gap: 0;
 
-  .button {
-    width: 100%;
-    margin: 0;
-    padding: 0.3rem 0.1rem;
+    .button {
+      width: 100%;
+      margin: 0;
+      padding: 0.3rem 0.1rem;
 
-    .selected {
-      background-color: $primary;
-      color: white;
+      .selected {
+        background-color: $primary;
+        color: white;
+      }
+
+      &:not(:first-child) {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+
+      &:not(:last-child) {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
     }
+  }
 
-    &:not(:first-child) {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-
-    &:not(:last-child) {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
+  p.shortcuts {
+    margin-top: 0.2rem;
+    a {
+      cursor: pointer;
+      margin: 0 1rem;
     }
   }
 }
