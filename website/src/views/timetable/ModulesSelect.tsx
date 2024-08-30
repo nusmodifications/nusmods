@@ -129,8 +129,6 @@ const ModulesSelect: FC<Props> = ({
             onFocus: openSelect,
           })}
         />
-        <br />
-        <CustomModuleSelect addCustomModule={addCustomModule} />
         {isModalOpen && <CloseButton className={styles.close} onClick={closeSelectAndEmptyInput} />}
         {showResults && (
           <ol className={styles.selectList} {...getMenuProps()}>
@@ -183,6 +181,7 @@ const ModulesSelect: FC<Props> = ({
             <strong>{moduleCount}</strong> modules.
           </div>
         )}
+        <CustomModuleSelect addCustomModule={addCustomModule} />
         {showNoResultMessage && (
           <div className={styles.tip}>
             No courses found for{' '}

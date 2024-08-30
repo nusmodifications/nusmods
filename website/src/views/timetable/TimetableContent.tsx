@@ -13,7 +13,6 @@ import {
 import { Module, ModuleCode, Semester } from 'types/modules';
 import {
   ColoredLesson,
-  CustomModuleLesson,
   Lesson,
   ModifiableLesson,
   SemTimetableConfig,
@@ -57,7 +56,7 @@ import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ModRegNotification from 'views/components/notfications/ModRegNotification';
 import { State as StoreState } from 'types/state';
 import { TombstoneModule } from 'types/views';
-import { createLesson, createCustomModule } from 'utils/custom';
+import { createCustomModule } from 'utils/custom';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
@@ -268,7 +267,7 @@ class TimetableContent extends React.Component<Props, State> {
     <TimetableModulesTable
       addModule={this.addModule}
       modules={modules.map(this.toModuleWithColor)}
-      customLessons={Object.values(this.props.customModules).map((x) => createLesson(x))}
+      customLessons={Object.values(this.props.customModules)}
       horizontalOrientation={horizontalOrientation}
       semester={this.props.semester}
       onRemoveModule={this.removeModule}
@@ -339,7 +338,7 @@ class TimetableContent extends React.Component<Props, State> {
     const { showExamCalendar } = this.state;
 
     let timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons)
-      .concat(Object.values(customModules).map((x) => createLesson(x)))
+      .concat(Object.values(customModules))
       .filter((lesson) => !this.isHiddenInTimetable(lesson.moduleCode));
 
     if (activeLesson) {

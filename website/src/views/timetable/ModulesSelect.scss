@@ -92,6 +92,10 @@ $item-padding-vertical: 0.6rem;
   background: var(--body-bg);
 }
 
+.tip:first-of-type {
+  margin-top: $input-height;
+}
+
 .option {
   composes: item;
   display: flex;

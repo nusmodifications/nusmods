@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import CloseButton from 'views/components/CloseButton';
 import Modal from 'views/components/Modal';
-import { ModuleCode } from 'types/modules';
+import { ModuleCode, NumericWeeks } from 'types/modules';
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
 import { Lesson, ModifiableLesson } from 'types/timetables';
 import { appendCustomIdentifier, removeCustomIdentifier } from 'utils/custom';
@@ -11,9 +11,13 @@ import { noop } from 'lodash';
 import TimetableCell from './TimetableCell';
 import styles from './CustomModuleModal.scss';
 import CustomModuleModalDropdown from './CustomModuleModalDropdown';
+import CustomModuleModalButtonGroup from './CustomModuleModalButtonGroup';
+import classNames from 'classnames';
+import { EVERY_WEEK } from 'test-utils/timetable';
 
 export type Props = {
   customLessonData?: Lesson;
+  semesterWeeks: string[];
   isOpen: boolean;
   isEdit: boolean;
 
@@ -36,13 +40,13 @@ const DEFAULT_LESSON_STATE: Lesson = {
   endTime: '0900',
   classNo: '',
   isCustom: true,
-  weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+  weeks: EVERY_WEEK,
 };
 
 export default class CustomModuleModal extends React.PureComponent<Props, State> {
   fields = ['moduleCode', 'title', 'lessonType', 'venue', 'day', 'startTime', 'endTime'];
 
-  state: State = {
+  override state: State = {
     lessonData: {
       ...(this.props.customLessonData || DEFAULT_LESSON_STATE),
       moduleCode: this.props.customLessonData
@@ -64,7 +68,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     return null;
   };
 
-  setLessonStateViaSelect = (key: string, value: string) => {
+  setLessonStateViaSelect = (key: string, value: string | number[]) => {
     const newState: State = {
       ...this.state,
       lessonData: {
@@ -82,28 +86,32 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
   });
 
   getValidationErrors = (): string[] => {
-    const { moduleCode, title, venue, startTime, endTime, classNo, lessonType } =
+    const { moduleCode, title, venue, startTime, endTime, classNo, lessonType, weeks } =
       this.state.lessonData;
     const errors: string[] = [];
 
     if (moduleCode.length === 0) {
-      errors.push('Please Enter a Module Code.');
+      errors.push('Please enter a Module Code.');
     }
 
     if (title.length === 0) {
-      errors.push('Please Enter a Title.');
+      errors.push('Please enter a Title.');
     }
 
     if (classNo.length === 0) {
-      errors.push('Please Enter a Class Number.');
+      errors.push('Please enter a Class Number.');
     }
 
     if (lessonType.length === 0) {
-      errors.push('Please Enter a Lesson Type.');
+      errors.push('Please enter a Lesson Type.');
     }
 
     if (venue.length === 0) {
-      errors.push('Please Enter a Venue.');
+      errors.push('Please enter a Venue.');
+    }
+
+    if ((weeks as NumericWeeks).length === 0) {
+      errors.push('Please enter Weeks.');
     }
 
     const timeDifferenceInMinutes =
@@ -164,7 +172,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
       <CustomModuleModalDropdown
         options={Object.keys(LESSON_TYPE_ABBREV)}
         defaultText="Select Lesson Type"
-        onChange={(v) => this.setLessonStateViaSelect('lessonType', v)}
+        onChange={(lessonType) => this.setLessonStateViaSelect('lessonType', lessonType)}
       />
     );
   }
@@ -175,7 +183,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
       <CustomModuleModalDropdown
         options={SCHOOLDAYS.map((day) => day)}
         defaultSelectedOption={day}
-        onChange={(v) => this.setLessonStateViaSelect('day', v)}
+        onChange={(day) => this.setLessonStateViaSelect('day', day)}
       />
     );
   }
@@ -200,7 +208,17 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
           return timeString;
         })}
         defaultSelectedOption={value}
-        onChange={(v) => this.setLessonStateViaSelect('field', v)}
+        onChange={(time) => this.setLessonStateViaSelect(field, time)}
+      />
+    );
+  }
+
+  renderWeeks() {
+    return (
+      <CustomModuleModalButtonGroup
+        options={EVERY_WEEK}
+        defaultSelected={EVERY_WEEK.map(() => true)} //Default to all weeks
+        onChange={(weeksNumArr) => this.setLessonStateViaSelect('weeks', weeksNumArr)}
       />
     );
   }
@@ -314,6 +332,13 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
           </div>
         </div>
         <div className={styles.row}>
+          <div className={classNames(styles.weeksContainer, styles.column)}>
+            <label htmlFor="select-weeks">Weeks</label>
+            <br />
+            {this.renderWeeks()}
+          </div>
+        </div>
+        <div className={styles.row}>
           <div className={styles.buttonColumn}>
             <button
               type="button"
@@ -343,7 +368,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     );
   }
 
-  render() {
+  override render() {
     const { isSubmitting } = this.state;
 
     return (

@@ -147,6 +147,7 @@ export type CustomLesson = {
   endTime: EndTime;
   lessonType: LessonType;
   venue: Venue;
+  weeks: Weeks;
 };
 
 // Semester-specific information of a module.
