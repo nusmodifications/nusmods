@@ -42,18 +42,30 @@ const CustomModuleModalButtonGroup: React.FC<CustomModuleModalButtonGroupProps> 
         ))}
       </div>
       <p className={styles.shortcuts}>
-        <a className="a" onClick={() => setSelected(options.map(() => true))}>
-          Select All
-        </a>
-        <a className="a" onClick={() => setSelected(options.map((_, index) => index % 2 == 0))}>
+        <button
+          className="btn btn-outline-primary"
+          onClick={() => setSelected(options.map(() => false))}
+        >
+          None
+        </button>
+        <button
+          className="btn btn-outline-primary"
+          onClick={() => setSelected(options.map(() => true))}
+        >
+          All
+        </button>
+        <button
+          className="btn btn-outline-primary"
+          onClick={() => setSelected(options.map((_, index) => index % 2 == 0))}
+        >
           Odd Weeks
-        </a>
-        <a className="a" onClick={() => setSelected(options.map((_, index) => index % 2 == 1))}>
+        </button>
+        <button
+          className="btn btn-outline-primary"
+          onClick={() => setSelected(options.map((_, index) => index % 2 == 1))}
+        >
           Even Weeks
-        </a>
-        <a className="a" onClick={() => setSelected(options.map(() => false))}>
-          Deselect All
-        </a>
+        </button>
       </p>
     </div>
   );

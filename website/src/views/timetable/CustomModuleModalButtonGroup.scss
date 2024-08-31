@@ -30,10 +30,20 @@
   }
 
   p.shortcuts {
-    margin-top: 0.2rem;
-    a {
-      cursor: pointer;
-      margin: 0 1rem;
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 1;
+
+    :not(:first-child) {
+      margin-left: 0.5rem;
+    }
+
+    :not(:last-child) {
+      margin-right: 0.1rem;
+    }
+
+    button {
+      padding: 0 0.5rem;
     }
   }
 }
