@@ -9,12 +9,12 @@
 
     .button {
       width: 100%;
-      margin: 0;
       padding: 0.3rem 0.1rem;
+      margin: 0;
 
       .selected {
-        background-color: $primary;
         color: white;
+        background-color: $primary;
       }
 
       &:not(:first-child) {
@@ -30,8 +30,8 @@
   }
 
   p.shortcuts {
-    margin-top: 0.5rem;
     display: flex;
+    margin-top: 0.5rem;
     gap: 1;
 
     :not(:first-child) {
