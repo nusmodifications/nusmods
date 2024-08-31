@@ -142,6 +142,7 @@ describe(actions.addCustomModule, () => {
     moduleCode,
     title: 'Programming Methodology',
     isCustom: true,
+    weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
   };
 
   test('should add the custom module defined', () => {
@@ -163,6 +164,7 @@ describe(actions.modifyCustomModule, () => {
     moduleCode: newModuleCode,
     title: 'Programming Methodology',
     isCustom: true,
+    weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
   };
 
   test('should modify the custom module', () => {
