@@ -21,7 +21,7 @@ type State = {
 export default class CustomModuleEdit extends React.PureComponent<Props, State> {
   fields = ['moduleCode', 'title', 'lessonType', 'venue', 'day', 'startTime', 'endTime'];
 
-  state: State = {
+  override state: State = {
     isOpen: false,
   };
 
@@ -34,7 +34,7 @@ export default class CustomModuleEdit extends React.PureComponent<Props, State> 
       isOpen: false,
     });
 
-  render() {
+  override render() {
     const { isOpen } = this.state;
 
     return (

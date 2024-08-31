@@ -17,7 +17,6 @@ import CustomModuleModalButtonGroup from './CustomModuleModalButtonGroup';
 
 export type Props = {
   customLessonData?: Lesson;
-  semesterWeeks: string[];
   isOpen: boolean;
   isEdit: boolean;
 

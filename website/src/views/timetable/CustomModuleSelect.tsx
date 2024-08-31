@@ -15,7 +15,7 @@ type State = {
 };
 
 export default class CustomModuleSelect extends React.PureComponent<Props, State> {
-  state: State = {
+  override state: State = {
     isOpen: false,
   };
 
@@ -28,11 +28,11 @@ export default class CustomModuleSelect extends React.PureComponent<Props, State
       isOpen: false,
     });
 
-  handleCustomModule = (oldModuleCode: ModuleCode, moduleCode: ModuleCode, lesson: Lesson) => {
+  handleCustomModule = (_oldModuleCode: ModuleCode, moduleCode: ModuleCode, lesson: Lesson) => {
     this.props.addCustomModule(moduleCode, lesson);
   };
 
-  render() {
+  override render() {
     const { isOpen } = this.state;
 
     return (

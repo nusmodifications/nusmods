@@ -14,7 +14,7 @@ export type Department = string;
 export type Workload = string | readonly number[];
 export type Venue = string;
 export type Weeks = NumericWeeks | WeekRange;
-export type NumericWeeks = readonly number[];
+export type NumericWeeks = number[];
 export type WeekRange = {
   // The start and end dates
   start: string;

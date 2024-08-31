@@ -13,6 +13,7 @@ import {
 import { Module, ModuleCode, Semester } from 'types/modules';
 import {
   ColoredLesson,
+  CustomModuleLesson,
   Lesson,
   ModifiableLesson,
   SemTimetableConfig,

@@ -140,6 +140,7 @@ describe('custom modules reducer', () => {
     moduleCode: 'CS1101S',
     title: 'Programming Methodology',
     isCustom: true,
+    weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
   };
   test('should allow new custom modules', () => {
     expect(reducer(initialState, addCustomModule(1, 'CS1101S', lesson))).toMatchObject({
