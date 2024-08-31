@@ -54,11 +54,11 @@ const CustomModuleModalDropdown: React.FC<CustomModuleModalDropdownProps> = ({
   return (
     <div className={classNames('dropdown', styles.dropdown)}>
       <button
-        className="btn btn-outline-primary btn-svg"
+        className={classNames('btn', 'btn-outline-primary', 'btn-svg', styles.dropdownButton)}
         {...getToggleButtonProps({ ref: buttonRef })}
       >
         {selectedItem?.length ? selectedItem : defaultText ?? ''}
-        <ChevronDown className="svg svg-small" />
+        <ChevronDown className={classNames('svg', 'svg-small', styles.btnSvg)} />
       </button>
       <ul
         className={classNames('dropdown-menu', styles.dropdownMenu)}

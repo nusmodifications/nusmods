@@ -3,6 +3,15 @@
 .dropdown {
   position: relative;
   display: inline-block;
+
+  .dropdownButton {
+    padding-right: 0.5rem;
+
+    .btnSvg {
+      margin-right: 0;
+      margin-left: 0.5rem;
+    }
+  }
 }
 
 .dropdownMenu {
@@ -14,10 +23,4 @@
   bottom: 0;
   height: fit-content;
   width: fit-content;
-}
-
-.dropdown-item {
-  padding: 8px 12px;
-  cursor: pointer;
-  transition: background-color 0.2s;
 }
