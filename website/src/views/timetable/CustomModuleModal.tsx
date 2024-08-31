@@ -379,11 +379,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
       <Modal isOpen={this.props.isOpen} onRequestClose={this.props.closeModal} animate>
         <CloseButton absolutePositioned onClick={this.props.closeModal} />
         <div className={styles.header}>
-          <h3>{this.props.isEdit ? <>Edit Custom Module</> : <>Add a Custom Module</>}</h3>
-          <p>
-            For DYOM students, teaching assistants, etc. who just need that one special slot on your
-            timetable, we got you covered!
-          </p>
+          <h3>{this.props.isEdit ? <>Edit Custom Module</> : <>Add Custom Module</>}</h3>
           {isSubmitting && this.renderErrors()}
           {this.renderModulePreview()}
           {this.renderInputFields()}
