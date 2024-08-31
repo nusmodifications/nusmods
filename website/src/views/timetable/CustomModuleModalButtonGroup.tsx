@@ -1,6 +1,6 @@
+import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import styles from './CustomModuleModalButtonGroup.scss';
-import classNames from 'classnames';
 
 interface CustomModuleModalButtonGroupProps {
   options: number[];
@@ -17,7 +17,7 @@ const CustomModuleModalButtonGroup: React.FC<CustomModuleModalButtonGroupProps> 
 
   useEffect(() => {
     onChange(options.filter((_, index) => selected[index]));
-  }, [selected]);
+  }, [selected, options, onChange]);
 
   return (
     <div className={styles.container}>
@@ -25,6 +25,7 @@ const CustomModuleModalButtonGroup: React.FC<CustomModuleModalButtonGroupProps> 
         {options.map((option, index) => (
           <button
             key={option}
+            type="button"
             className={classNames(
               'btn',
               styles.button,
@@ -43,26 +44,30 @@ const CustomModuleModalButtonGroup: React.FC<CustomModuleModalButtonGroupProps> 
       </div>
       <p className={styles.shortcuts}>
         <button
+          type="button"
           className="btn btn-outline-primary"
           onClick={() => setSelected(options.map(() => false))}
         >
           None
         </button>
         <button
+          type="button"
           className="btn btn-outline-primary"
           onClick={() => setSelected(options.map(() => true))}
         >
           All
         </button>
         <button
+          type="button"
           className="btn btn-outline-primary"
-          onClick={() => setSelected(options.map((_, index) => index % 2 == 0))}
+          onClick={() => setSelected(options.map((_, index) => index % 2 === 0))}
         >
           Odd Weeks
         </button>
         <button
+          type="button"
           className="btn btn-outline-primary"
-          onClick={() => setSelected(options.map((_, index) => index % 2 == 1))}
+          onClick={() => setSelected(options.map((_, index) => index % 2 === 1))}
         >
           Even Weeks
         </button>

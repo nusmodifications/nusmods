@@ -43,6 +43,7 @@ export const persistConfig = {
     [2]: (state) => ({
       ...state,
       customModules: {},
+      // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
       _persist: state?._persist!,
     }),
   }),

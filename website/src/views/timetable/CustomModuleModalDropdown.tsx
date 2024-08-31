@@ -9,7 +9,7 @@ interface CustomModuleModalDropdownProps {
   options: string[];
   defaultSelectedOption?: string;
   defaultText?: string;
-  onChange: (value: string) => any;
+  onChange: (value: string) => void;
 }
 
 const CustomModuleModalDropdown: React.FC<CustomModuleModalDropdownProps> = ({
@@ -21,9 +21,9 @@ const CustomModuleModalDropdown: React.FC<CustomModuleModalDropdownProps> = ({
   const { isOpen, getToggleButtonProps, getMenuProps, getItemProps, selectedItem } = useSelect({
     items: options,
     selectedItem: defaultSelectedOption,
-    onSelectedItemChange: ({ selectedItem }) => {
-      if (selectedItem) {
-        onChange(selectedItem);
+    onSelectedItemChange: ({ selectedItem: item }) => {
+      if (item) {
+        onChange(item);
       }
     },
   });
@@ -44,16 +44,17 @@ const CustomModuleModalDropdown: React.FC<CustomModuleModalDropdownProps> = ({
   }, [isOpen, buttonRef]);
 
   // Update dropdown position when dropdown is opened or window resized
-  useEffect(updateDropdownPosition, [isOpen, buttonRef]);
+  useEffect(updateDropdownPosition, [isOpen, buttonRef, updateDropdownPosition]);
   useLayoutEffect(() => {
     window.addEventListener('resize', () => {
       updateDropdownPosition();
     });
-  }, []);
+  }, [updateDropdownPosition]);
 
   return (
     <div className={classNames('dropdown', styles.dropdown)}>
       <button
+        type="button"
         className={classNames('btn', 'btn-outline-primary', 'btn-svg', styles.dropdownButton)}
         {...getToggleButtonProps({ ref: buttonRef })}
       >

@@ -8,12 +8,12 @@ import { Lesson, ModifiableLesson } from 'types/timetables';
 import { appendCustomIdentifier, removeCustomIdentifier } from 'utils/custom';
 import { SCHOOLDAYS, getLessonTimeHours, getLessonTimeMinutes } from 'utils/timify';
 import { noop } from 'lodash';
+import classNames from 'classnames';
+import { EVERY_WEEK } from 'test-utils/timetable';
 import TimetableCell from './TimetableCell';
 import styles from './CustomModuleModal.scss';
 import CustomModuleModalDropdown from './CustomModuleModalDropdown';
 import CustomModuleModalButtonGroup from './CustomModuleModalButtonGroup';
-import classNames from 'classnames';
-import { EVERY_WEEK } from 'test-utils/timetable';
 
 export type Props = {
   customLessonData?: Lesson;
@@ -178,11 +178,11 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
   }
 
   renderWorkingDays() {
-    const { day } = this.state.lessonData;
+    const { day: currentDays } = this.state.lessonData;
     return (
       <CustomModuleModalDropdown
         options={SCHOOLDAYS.map((day) => day)}
-        defaultSelectedOption={day}
+        defaultSelectedOption={currentDays}
         onChange={(day) => this.setLessonStateViaSelect('day', day)}
       />
     );
@@ -217,7 +217,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     return (
       <CustomModuleModalButtonGroup
         options={EVERY_WEEK}
-        defaultSelected={EVERY_WEEK.map(() => true)} //Default to all weeks
+        defaultSelected={EVERY_WEEK.map(() => true)} // Default to all weeks
         onChange={(weeksNumArr) => this.setLessonStateViaSelect('weeks', weeksNumArr)}
       />
     );
