@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styles from './CustomModuleModalButtonGroup.scss';
 
 interface CustomModuleModalButtonGroupProps {
@@ -15,9 +15,17 @@ const CustomModuleModalButtonGroup: React.FC<CustomModuleModalButtonGroupProps> 
 }) => {
   const [selected, setSelected] = useState(defaultSelected);
 
-  useEffect(() => {
-    onChange(options.filter((_, index) => selected[index]));
-  }, [selected, options, onChange]);
+  const toggleSelected = useCallback(
+    (index: number) => {
+      // Toggle the option in the selected list
+      const newSelected = [...selected];
+      newSelected[index] = !newSelected[index];
+      setSelected(newSelected);
+
+      onChange(options.filter((_, index) => selected[index]));
+    },
+    [options, selected, onChange],
+  );
 
   return (
     <div className={styles.container}>
@@ -31,12 +39,7 @@ const CustomModuleModalButtonGroup: React.FC<CustomModuleModalButtonGroupProps> 
               styles.button,
               selected[index] ? 'btn-primary' : 'btn-outline-primary',
             )}
-            onClick={() => {
-              // Toggle the option in the selected list
-              const newSelected = [...selected];
-              newSelected[index] = !newSelected[index];
-              setSelected(newSelected);
-            }}
+            onClick={() => toggleSelected(index)}
           >
             {option}
           </button>
