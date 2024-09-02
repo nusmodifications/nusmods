@@ -18,7 +18,12 @@
     "2022/2023",
     "2023/2024"
   ],
-  "examAvailability": [1, 2, 3, 4],
+  "examAvailability": [
+    1,
+    2,
+    3,
+    4
+  ],
   "semesterNames": {
     "1": "Semester 1",
     "2": "Semester 2",
@@ -35,12 +40,13 @@
   "st2ExamTimetableUrl": "https://myportal.nus.edu.sg/studentportal/academics/all/special-term-part-2.html",
   "contact": {
     "blog": "https://blog.nusmods.com",
-    "email": "nusmods@googlegroups.com",
+    "email": "mods@nusmods.com",
     "privateEmail": "mods@nusmods.com",
     "facebook": "https://facebook.com/nusmods",
     "githubOrg": "https://github.com/nusmodifications",
     "githubRepo": "https://github.com/nusmodifications/nusmods",
     "messenger": "https://m.me/nusmods",
-    "twitter": "https://twitter.com/nusmods"
+    "twitter": "https://twitter.com/nusmods",
+    "telegram": "https://t.me/NUSMods"
   }
 }
