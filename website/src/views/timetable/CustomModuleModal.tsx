@@ -118,8 +118,10 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
       (getLessonTimeHours(endTime) - getLessonTimeHours(startTime)) * 60 +
       (getLessonTimeMinutes(endTime) - getLessonTimeMinutes(startTime));
 
-    if (timeDifferenceInMinutes < 60) {
-      errors['time'] = 'Lesson must be at least 1 hour long';
+    if (timeDifferenceInMinutes <= 0) {
+      errors['time'] = 'End time must be after start time';
+    } else if (timeDifferenceInMinutes < 60) {
+      errors['time'] = 'Lesson must be 1h';
     }
 
     return errors;
@@ -188,9 +190,10 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
           const timeString = hourString + minuteString;
           return timeString;
         })}
+        className={styles[field]}
         defaultSelectedOption={value}
         onChange={(time) => this.setLessonStateViaSelect(field, time)}
-        error={errors[field]}
+        error={errors['time']}
       />
     );
   }
@@ -295,15 +298,17 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
               error={errors['day']}
             />
           </div>
-          <div className={styles.columnSmall}>
-            <label htmlFor="select-startTime">Start Time</label>
-            <br />
-            {this.renderTimeRanges('startTime')}
-          </div>
-          <div className={styles.columnSmall}>
-            <label htmlFor="select-endTime">End Time</label>
-            <br />
-            {this.renderTimeRanges('endTime')}
+          <div className={styles.rowTime}>
+            <div className={styles.columnSmall}>
+              <label htmlFor="select-startTime">Start Time</label>
+              <br />
+              {this.renderTimeRanges('startTime')}
+            </div>
+            <div className={styles.columnSmall}>
+              <label htmlFor="select-endTime">End Time</label>
+              <br />
+              {this.renderTimeRanges('endTime')}
+            </div>
           </div>
         </div>
         <div className={styles.row}>

@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import styles from './CustomModuleModalDropdown.scss';
 
 interface CustomModuleModalDropdownProps {
+  className?: string;
   options: string[];
   defaultSelectedOption?: string;
   defaultText?: string;
@@ -14,6 +15,7 @@ interface CustomModuleModalDropdownProps {
 }
 
 const CustomModuleModalDropdown: React.FC<CustomModuleModalDropdownProps> = ({
+  className,
   options,
   defaultSelectedOption,
   defaultText,
@@ -54,7 +56,7 @@ const CustomModuleModalDropdown: React.FC<CustomModuleModalDropdownProps> = ({
   }, [updateDropdownPosition]);
 
   return (
-    <>
+    <div className={className}>
       <div className={classNames('dropdown', styles.dropdown)}>
         <button
           type="button"
@@ -91,7 +93,7 @@ const CustomModuleModalDropdown: React.FC<CustomModuleModalDropdownProps> = ({
         </ul>
       </div>
       <small className={styles.errorLabel}>{error ?? ''}</small>
-    </>
+    </div>
   );
 };
 

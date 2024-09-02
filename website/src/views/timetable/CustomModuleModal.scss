@@ -13,6 +13,31 @@
     display: flex;
     text-align: left;
 
+    .rowTime {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      width: 60%;
+
+      & > .columnSmall {
+        padding-right: 0;
+        position: relative;
+        margin-bottom: 1rem;
+      }
+
+      .startTime > small {
+        left: 0;
+        bottom: 0;
+        transform: translateY(100%);
+        position: absolute;
+        width: max-content;
+      }
+
+      .endTime > small {
+        display: none;
+      }
+    }
+
     .columnSmall {
       width: 33%;
       padding-top: 0.5em;
