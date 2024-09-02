@@ -16,28 +16,24 @@ const CustomModuleModalField: React.FC<CustomModuleModalFieldProps> = ({
   label,
   defaultValue,
   setLessonStateViaInput,
-}) => {
-  return (
-    <>
-      <label htmlFor={'select-' + id}>{label}</label>
-      <input
-        id={'select-' + id}
-        name={id}
-        onChange={(e) => {
-          console.log(e);
-          setLessonStateViaInput(e);
-        }}
-        className={classNames(
-          styles.inputField,
-          'form-control',
-          `${errors[id] ? 'alert alert-danger' : ''}`,
-        )}
-        defaultValue={defaultValue ?? ''}
-        required
-      />
-      <small className={styles.errorLabel}>{errors[id] ?? ''}</small>
-    </>
-  );
-};
-
+}) => (
+  <>
+    <label htmlFor={`select-${id}`}>{label}</label>
+    <input
+      id={`select-${id}`}
+      name={id}
+      onChange={(e) => {
+        setLessonStateViaInput(e);
+      }}
+      className={classNames(
+        styles.inputField,
+        'form-control',
+        `${errors[id] ? 'alert alert-danger' : ''}`,
+      )}
+      defaultValue={defaultValue ?? ''}
+      required
+    />
+    <small className={styles.errorLabel}>{errors[id] ?? ''}</small>
+  </>
+);
 export default CustomModuleModalField;

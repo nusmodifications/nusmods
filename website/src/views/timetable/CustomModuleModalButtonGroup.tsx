@@ -23,19 +23,18 @@ const CustomModuleModalButtonGroup: React.FC<CustomModuleModalButtonGroupProps> 
 
   useEffect(() => {
     updateChange();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
 
-  const toggleSelected = useCallback(
-    (index: number) => {
+  const toggleSelected = useCallback((index: number) => {
+    setSelected((currentSelected) => {
       // Toggle the option in the selected list
-      const newSelected = [...selected];
+      const newSelected = [...currentSelected];
       newSelected[index] = !newSelected[index];
-      setSelected(newSelected);
-
-      updateChange();
-    },
-    [options, selected, onChange],
-  );
+      return newSelected;
+    });
+  }, []);
 
   return (
     <div className={styles.container}>

@@ -91,27 +91,27 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     const errors: Record<string, string> = {};
 
     if (moduleCode.length === 0) {
-      errors['moduleCode'] = 'Module code is required';
+      errors.moduleCode = 'Module code is required';
     }
 
     if (title.length === 0) {
-      errors['title'] = 'Title is required';
+      errors.title = 'Title is required';
     }
 
     if (classNo.length === 0) {
-      errors['classNo'] = 'Class number is required';
+      errors.classNo = 'Class number is required';
     }
 
     if (lessonType.length === 0) {
-      errors['lessonType'] = 'Lesson type is required';
+      errors.lessonType = 'Lesson type is required';
     }
 
     if (venue.length === 0) {
-      errors['venue'] = 'Venue is required';
+      errors.venue = 'Venue is required';
     }
 
     if ((weeks as NumericWeeks).length === 0) {
-      errors['weeks'] = 'Weeks are required. Select all to indicate every week';
+      errors.weeks = 'Weeks are required. Select all to indicate every week';
     }
 
     const timeDifferenceInMinutes =
@@ -119,9 +119,9 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
       (getLessonTimeMinutes(endTime) - getLessonTimeMinutes(startTime));
 
     if (timeDifferenceInMinutes <= 0) {
-      errors['time'] = 'End time must be after start time';
+      errors.time = 'End time must be after start time';
     } else if (timeDifferenceInMinutes < 60) {
-      errors['time'] = 'Lesson must be 1h';
+      errors.time = 'Lesson must be 1h';
     }
 
     return errors;
@@ -193,7 +193,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
         className={styles[field]}
         defaultSelectedOption={value}
         onChange={(time) => this.setLessonStateViaSelect(field, time)}
-        error={errors['time']}
+        error={errors.time}
       />
     );
   }
@@ -272,7 +272,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
               options={Object.keys(LESSON_TYPE_ABBREV)}
               defaultText="Select Lesson Type"
               onChange={(lessonType) => this.setLessonStateViaSelect('lessonType', lessonType)}
-              error={errors['lessonType']}
+              error={errors.lessonType}
             />
           </div>
         </div>
@@ -295,7 +295,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
               options={SCHOOLDAYS.map((d) => d)}
               defaultSelectedOption={day}
               onChange={(d) => this.setLessonStateViaSelect('day', d)}
-              error={errors['day']}
+              error={errors.day}
             />
           </div>
           <div className={styles.rowTime}>
@@ -319,7 +319,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
               options={EVERY_WEEK}
               defaultSelected={EVERY_WEEK.map(() => true)} // Default to all weeks
               onChange={(weeksNumArr) => this.setLessonStateViaSelect('weeks', weeksNumArr)}
-              error={errors['weeks']}
+              error={errors.weeks}
             />
           </div>
         </div>

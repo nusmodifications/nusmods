@@ -20,17 +20,17 @@
       width: 60%;
 
       & > .columnSmall {
-        padding-right: 0;
         position: relative;
+        padding-right: 0;
         margin-bottom: 1rem;
       }
 
       .startTime > small {
-        left: 0;
-        bottom: 0;
-        transform: translateY(100%);
         position: absolute;
+        bottom: 0;
+        left: 0;
         width: max-content;
+        transform: translateY(100%);
       }
 
       .endTime > small {
