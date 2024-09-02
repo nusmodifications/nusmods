@@ -1,19 +1,29 @@
 import classNames from 'classnames';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styles from './CustomModuleModalButtonGroup.scss';
 
 interface CustomModuleModalButtonGroupProps {
   options: number[];
   defaultSelected: boolean[];
   onChange: (selected: number[]) => void;
+  error?: string;
 }
 
 const CustomModuleModalButtonGroup: React.FC<CustomModuleModalButtonGroupProps> = ({
   options,
   defaultSelected,
   onChange,
+  error,
 }) => {
-  const [selected, setSelected] = useState(defaultSelected);
+  const [selected, setSelected] = useState<boolean[]>(defaultSelected);
+
+  const updateChange = useCallback(() => {
+    onChange(options.filter((_, index) => selected[index]));
+  }, [options, selected, onChange]);
+
+  useEffect(() => {
+    updateChange();
+  }, [selected]);
 
   const toggleSelected = useCallback(
     (index: number) => {
@@ -22,7 +32,7 @@ const CustomModuleModalButtonGroup: React.FC<CustomModuleModalButtonGroupProps> 
       newSelected[index] = !newSelected[index];
       setSelected(newSelected);
 
-      onChange(options.filter((_, index) => selected[index]));
+      updateChange();
     },
     [options, selected, onChange],
   );
@@ -75,6 +85,7 @@ const CustomModuleModalButtonGroup: React.FC<CustomModuleModalButtonGroupProps> 
           Even Weeks
         </button>
       </p>
+      <small className={styles.errorLabel}>{error ?? ''}</small>
     </div>
   );
 };

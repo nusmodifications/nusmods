@@ -1,4 +1,6 @@
+import classNames from 'classnames';
 import React, { ChangeEvent } from 'react';
+import styles from './CustomModuleModalField.scss';
 
 interface CustomModuleModalFieldProps {
   id: string;
@@ -25,10 +27,15 @@ const CustomModuleModalField: React.FC<CustomModuleModalFieldProps> = ({
           console.log(e);
           setLessonStateViaInput(e);
         }}
-        className={`form-control ${errors[id] ? 'alert alert-danger' : ''}`}
+        className={classNames(
+          styles.inputField,
+          'form-control',
+          `${errors[id] ? 'alert alert-danger' : ''}`,
+        )}
         defaultValue={defaultValue ?? ''}
         required
       />
+      <small className={styles.errorLabel}>{errors[id] ?? ''}</small>
     </>
   );
 };

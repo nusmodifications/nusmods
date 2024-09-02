@@ -9,6 +9,7 @@ interface CustomModuleModalDropdownProps {
   options: string[];
   defaultSelectedOption?: string;
   defaultText?: string;
+  error?: string;
   onChange: (value: string) => void;
 }
 
@@ -16,6 +17,7 @@ const CustomModuleModalDropdown: React.FC<CustomModuleModalDropdownProps> = ({
   options,
   defaultSelectedOption,
   defaultText,
+  error,
   onChange,
 }) => {
   const { isOpen, getToggleButtonProps, getMenuProps, getItemProps, selectedItem } = useSelect({
@@ -52,35 +54,44 @@ const CustomModuleModalDropdown: React.FC<CustomModuleModalDropdownProps> = ({
   }, [updateDropdownPosition]);
 
   return (
-    <div className={classNames('dropdown', styles.dropdown)}>
-      <button
-        type="button"
-        className={classNames('btn', 'btn-outline-primary', 'btn-svg', styles.dropdownButton)}
-        {...getToggleButtonProps({ ref: buttonRef })}
-      >
-        {selectedItem?.length ? selectedItem : defaultText ?? ''}
-        <ChevronDown className={classNames('svg', 'svg-small', styles.btnSvg)} />
-      </button>
-      <ul
-        className={classNames('dropdown-menu', styles.dropdownMenu)}
-        style={{ ...dropdownStyle, display: isOpen ? 'block' : 'none' }}
-        {...getMenuProps()}
-      >
-        {options.map((option, index) => (
-          <li
-            key={option}
-            {...getItemProps({ item: option, index })}
-            className="dropdown-item"
-            style={{
-              padding: '8px 12px',
-              cursor: 'pointer',
-            }}
-          >
-            {option}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <>
+      <div className={classNames('dropdown', styles.dropdown)}>
+        <button
+          type="button"
+          className={classNames(
+            'btn',
+            'btn-outline-primary',
+            'btn-svg',
+            styles.dropdownButton,
+            error ? 'alert-danger' : '',
+          )}
+          {...getToggleButtonProps({ ref: buttonRef })}
+        >
+          {selectedItem?.length ? selectedItem : defaultText ?? ''}
+          <ChevronDown className={classNames('svg', 'svg-small', styles.btnSvg)} />
+        </button>
+        <ul
+          className={classNames('dropdown-menu', styles.dropdownMenu)}
+          style={{ ...dropdownStyle, display: isOpen ? 'block' : 'none' }}
+          {...getMenuProps()}
+        >
+          {options.map((option, index) => (
+            <li
+              key={option}
+              {...getItemProps({ item: option, index })}
+              className="dropdown-item"
+              style={{
+                padding: '8px 12px',
+                cursor: 'pointer',
+              }}
+            >
+              {option}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <small className={styles.errorLabel}>{error ?? ''}</small>
+    </>
   );
 };
 

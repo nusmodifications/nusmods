@@ -14,6 +14,7 @@ import TimetableCell from './TimetableCell';
 import styles from './CustomModuleModal.scss';
 import CustomModuleModalDropdown from './CustomModuleModalDropdown';
 import CustomModuleModalButtonGroup from './CustomModuleModalButtonGroup';
+import CustomModuleModalField from './CustomModuleModalField';
 
 export type Props = {
   customLessonData?: Lesson;
@@ -84,33 +85,33 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     colorIndex: 0,
   });
 
-  getValidationErrors = (): string[] => {
+  getValidationErrors = (): Record<string, string> => {
     const { moduleCode, title, venue, startTime, endTime, classNo, lessonType, weeks } =
       this.state.lessonData;
-    const errors: string[] = [];
+    const errors: Record<string, string> = {};
 
     if (moduleCode.length === 0) {
-      errors.push('Please enter a Module Code.');
+      errors['moduleCode'] = 'Module code is required';
     }
 
     if (title.length === 0) {
-      errors.push('Please enter a Title.');
+      errors['title'] = 'Title is required';
     }
 
     if (classNo.length === 0) {
-      errors.push('Please enter a Class Number.');
+      errors['classNo'] = 'Class number is required';
     }
 
     if (lessonType.length === 0) {
-      errors.push('Please enter a Lesson Type.');
+      errors['lessonType'] = 'Lesson type is required';
     }
 
     if (venue.length === 0) {
-      errors.push('Please enter a Venue.');
+      errors['venue'] = 'Venue is required';
     }
 
     if ((weeks as NumericWeeks).length === 0) {
-      errors.push('Please enter Weeks.');
+      errors['weeks'] = 'Weeks are required. Select all to indicate every week';
     }
 
     const timeDifferenceInMinutes =
@@ -118,7 +119,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
       (getLessonTimeMinutes(endTime) - getLessonTimeMinutes(startTime));
 
     if (timeDifferenceInMinutes < 60) {
-      errors.push('Start and End Time must be at least 1 hour apart.');
+      errors['time'] = 'Lesson must be at least 1 hour long';
     }
 
     return errors;
@@ -127,7 +128,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
   submitModule() {
     const errors = this.getValidationErrors();
 
-    if (errors.length > 0) {
+    if (Object.keys(errors).length > 0) {
       this.setState({
         isSubmitting: true,
       });
@@ -166,28 +167,9 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     });
   }
 
-  renderLessonTypes() {
-    return (
-      <CustomModuleModalDropdown
-        options={Object.keys(LESSON_TYPE_ABBREV)}
-        defaultText="Select Lesson Type"
-        onChange={(lessonType) => this.setLessonStateViaSelect('lessonType', lessonType)}
-      />
-    );
-  }
-
-  renderWorkingDays() {
-    const { day: currentDays } = this.state.lessonData;
-    return (
-      <CustomModuleModalDropdown
-        options={SCHOOLDAYS.map((day) => day)}
-        defaultSelectedOption={currentDays}
-        onChange={(day) => this.setLessonStateViaSelect('day', day)}
-      />
-    );
-  }
-
   renderTimeRanges(field: string) {
+    const errors = this.state.isSubmitting ? this.getValidationErrors() : {};
+
     const minTimeInHalfHours = 15;
     const numberOfTimeSlots = 28;
 
@@ -208,16 +190,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
         })}
         defaultSelectedOption={value}
         onChange={(time) => this.setLessonStateViaSelect(field, time)}
-      />
-    );
-  }
-
-  renderWeeks() {
-    return (
-      <CustomModuleModalButtonGroup
-        options={EVERY_WEEK}
-        defaultSelected={EVERY_WEEK.map(() => true)} // Default to all weeks
-        onChange={(weeksNumArr) => this.setLessonStateViaSelect('weeks', weeksNumArr)}
+        error={errors[field]}
       />
     );
   }
@@ -254,62 +227,60 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
   }
 
   renderInputFields() {
-    const { moduleCode, title, venue, classNo } = this.state.lessonData;
+    const { moduleCode, title, venue, classNo, day } = this.state.lessonData;
+    const errors = this.state.isSubmitting ? this.getValidationErrors() : {};
 
     return (
       <>
         <div className={styles.row}>
           <div className={styles.column}>
-            <label htmlFor="select-moduleCode">Module Code</label>
-            <input
-              name="moduleCode"
-              onChange={(e) => this.setLessonStateViaInput(e)}
-              id="select-moduleCode"
-              className="form-control"
-              defaultValue={moduleCode || ''}
-              required
+            <CustomModuleModalField
+              id="moduleCode"
+              label="Module Code"
+              errors={errors}
+              defaultValue={moduleCode}
+              setLessonStateViaInput={(e) => this.setLessonStateViaInput(e)}
             />
           </div>
           <div className={styles.column}>
-            <label htmlFor="select-title">Title</label>
-            <input
-              name="title"
-              onChange={(e) => this.setLessonStateViaInput(e)}
-              id="select-title"
-              className="form-control"
-              defaultValue={title || ''}
-              required
+            <CustomModuleModalField
+              id="title"
+              label="Title"
+              errors={errors}
+              defaultValue={title}
+              setLessonStateViaInput={this.setLessonStateViaInput}
             />
           </div>
         </div>
         <div className={styles.row}>
-          <div className={styles.columnSmall}>
-            <label htmlFor="select-classNo">Class Number</label>
-            <input
-              name="classNo"
-              onChange={(e) => this.setLessonStateViaInput(e)}
-              id="select-classNo"
-              className="form-control"
+          <div className={styles.column}>
+            <CustomModuleModalField
+              id="classNo"
+              label="Class Number"
+              errors={errors}
               defaultValue={classNo || ''}
-              required
+              setLessonStateViaInput={this.setLessonStateViaInput}
             />
           </div>
-          <div className={styles.columnLarge}>
+          <div className={styles.column}>
             <label htmlFor="select-lessonType">Lesson Type</label>
             <br />
-            {this.renderLessonTypes()}
+            <CustomModuleModalDropdown
+              options={Object.keys(LESSON_TYPE_ABBREV)}
+              defaultText="Select Lesson Type"
+              onChange={(lessonType) => this.setLessonStateViaSelect('lessonType', lessonType)}
+              error={errors['lessonType']}
+            />
           </div>
         </div>
         <div className={styles.row}>
           <div className={styles.columnLarge}>
-            <label htmlFor="select-venue">Venue</label>
-            <input
-              name="venue"
-              onChange={(e) => this.setLessonStateViaInput(e)}
-              id="select-venue"
-              className="form-control"
+            <CustomModuleModalField
+              id="venue"
+              label="Venue"
+              errors={errors}
               defaultValue={venue || ''}
-              required
+              setLessonStateViaInput={this.setLessonStateViaInput}
             />
           </div>
         </div>
@@ -317,7 +288,12 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
           <div className={styles.columnSmall}>
             <label htmlFor="select-day">Day</label>
             <br />
-            {this.renderWorkingDays()}
+            <CustomModuleModalDropdown
+              options={SCHOOLDAYS.map((d) => d)}
+              defaultSelectedOption={day}
+              onChange={(d) => this.setLessonStateViaSelect('day', d)}
+              error={errors['day']}
+            />
           </div>
           <div className={styles.columnSmall}>
             <label htmlFor="select-startTime">Start Time</label>
@@ -334,7 +310,12 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
           <div className={classNames(styles.weeksContainer, styles.column)}>
             <label htmlFor="select-weeks">Weeks</label>
             <br />
-            {this.renderWeeks()}
+            <CustomModuleModalButtonGroup
+              options={EVERY_WEEK}
+              defaultSelected={EVERY_WEEK.map(() => true)} // Default to all weeks
+              onChange={(weeksNumArr) => this.setLessonStateViaSelect('weeks', weeksNumArr)}
+              error={errors['weeks']}
+            />
           </div>
         </div>
         <div className={styles.row}>
@@ -352,34 +333,12 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     );
   }
 
-  renderErrors() {
-    const errors = this.getValidationErrors();
-
-    if (errors.length === 0) {
-      return null;
-    }
-
-    return (
-      <div className="alert alert-danger">
-        {errors.map((error) => (
-          <>
-            {error}
-            <br />
-          </>
-        ))}
-      </div>
-    );
-  }
-
   override render() {
-    const { isSubmitting } = this.state;
-
     return (
       <Modal isOpen={this.props.isOpen} onRequestClose={this.props.closeModal} animate>
         <CloseButton absolutePositioned onClick={this.props.closeModal} />
         <div className={styles.header}>
           <h3>{this.props.isEdit ? <>Edit Custom Module</> : <>Add Custom Module</>}</h3>
-          {isSubmitting && this.renderErrors()}
           {this.renderModulePreview()}
           {this.renderInputFields()}
         </div>
