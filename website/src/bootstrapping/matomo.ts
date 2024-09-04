@@ -88,8 +88,3 @@ export function useMatomo() {
 
   return matomoCopy;
 }
-
-export function useAddQueuedTasks(action: TrackerAction) {
-  queuedTasks.push(action);
-  return true;
-}
