@@ -26,7 +26,7 @@ import Title from 'views/components/Title';
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import Online from 'views/components/Online';
 import { supportsCSSVariables } from 'utils/css';
-import { withTracker } from 'bootstrapping/matomo';
+import { useMatomo } from 'bootstrapping/matomo';
 import ExternalLink from 'views/components/ExternalLink';
 import Toggle from 'views/components/Toggle';
 import ModRegNotification from 'views/components/notfications/ModRegNotification';
@@ -68,22 +68,25 @@ const SettingsContainer: React.FC<Props> = ({
   ...props
 }) => {
   const [allowTracking, setAllowTracking] = useState(true);
+  const matomo = useMatomo()
 
   const onToggleTracking = useCallback((isTrackingAllowed: boolean) => {
-    withTracker((tracker: Tracker) => {
+    if (matomo !== undefined) {
       if (isTrackingAllowed) {
-        tracker.forgetUserOptOut();
+        matomo.forgetUserOptOut();
       } else {
-        tracker.optUserOut();
+        matomo.optUserOut();
       }
-
-      setAllowTracking(!tracker.isUserOptedOut());
-    });
-  }, []);
+  
+      setAllowTracking(!matomo.isUserOptedOut());
+    }
+  }, [matomo]);
 
   useEffect(() => {
-    withTracker((tracker: Tracker) => setAllowTracking(!tracker.isUserOptedOut()));
-  }, [onToggleTracking]);
+    if (matomo !== undefined) {
+      setAllowTracking(!matomo.isUserOptedOut())
+    }
+  }, [onToggleTracking, matomo]);
 
   const rounds = getRounds(modRegNotification);
 
@@ -263,8 +266,9 @@ const SettingsContainer: React.FC<Props> = ({
             <div className="text-right">
               <Toggle
                 labels={['Allow', 'Opt out']}
-                isOn={allowTracking}
+                isOn={matomo !== undefined ? allowTracking : false}
                 onChange={onToggleTracking}
+                className={matomo === undefined ? "disabled" : ""}
               />
             </div>
           )}
