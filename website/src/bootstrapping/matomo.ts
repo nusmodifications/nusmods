@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import {useState, useEffect} from 'react'
 import { History } from 'history';
 import { each } from 'lodash';
+import { useState, useEffect } from 'react';
 
 import { Tracker } from 'types/vendor/piwik';
 import insertScript from 'utils/insertScript';
@@ -84,7 +84,7 @@ export function useMatomo() {
   const [matomoCopy, setMatomoCopy] = useState<Tracker | undefined>(undefined);
   useEffect(() => {
     setMatomoCopy(matomo);
-  }, [matomo])
+  }, [matomo]);
 
   return matomoCopy;
 }

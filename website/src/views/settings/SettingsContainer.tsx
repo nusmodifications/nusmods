@@ -4,7 +4,6 @@ import classnames from 'classnames';
 import { isEqual } from 'lodash';
 
 import { ColorSchemePreference, ThemeId } from 'types/settings';
-import { Tracker } from 'types/vendor/piwik';
 import { ModRegNotificationSettings } from 'types/reducers';
 import { State as StoreState } from 'types/state';
 import { RegPeriod, SCHEDULE_TYPES, ScheduleType } from 'config';
@@ -68,23 +67,24 @@ const SettingsContainer: React.FC<Props> = ({
   ...props
 }) => {
   const [allowTracking, setAllowTracking] = useState(true);
-  const matomo = useMatomo()
+  const matomo = useMatomo();
 
-  const onToggleTracking = useCallback((isTrackingAllowed: boolean) => {
-    if (matomo !== undefined) {
-      if (isTrackingAllowed) {
-        matomo.forgetUserOptOut();
-      } else {
-        matomo.optUserOut();
+  const onToggleTracking = useCallback(
+    (isTrackingAllowed: boolean) => {
+      if (matomo !== undefined) {
+        if (isTrackingAllowed) {
+          matomo.forgetUserOptOut();
+        } else {
+          matomo.optUserOut();
+        }
+        setAllowTracking(!matomo.isUserOptedOut());
       }
-  
-      setAllowTracking(!matomo.isUserOptedOut());
-    }
-  }, [matomo]);
+    },
+  [matomo]);
 
   useEffect(() => {
     if (matomo !== undefined) {
-      setAllowTracking(!matomo.isUserOptedOut())
+      setAllowTracking(!matomo.isUserOptedOut());
     }
   }, [onToggleTracking, matomo]);
 
@@ -268,7 +268,7 @@ const SettingsContainer: React.FC<Props> = ({
                 labels={['Allow', 'Opt out']}
                 isOn={matomo !== undefined ? allowTracking : false}
                 onChange={onToggleTracking}
-                className={matomo === undefined ? "disabled" : ""}
+                className={matomo === undefined ? 'disabled' : ''}
               />
             </div>
           )}
