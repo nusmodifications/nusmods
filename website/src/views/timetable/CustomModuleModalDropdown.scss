@@ -28,4 +28,17 @@
   height: fit-content;
   padding: 0;
   margin: 0;
+
+  &.open {
+    display: block;
+  }
+
+  &.closed {
+    display: none;
+  }
+
+  .item {
+    padding: 8px 12px;
+    cursor: pointer;
+  }
 }

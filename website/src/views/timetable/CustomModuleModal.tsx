@@ -86,7 +86,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
   });
 
   getValidationErrors = (): Record<string, string> => {
-    const { moduleCode, title, venue, startTime, endTime, classNo, lessonType, weeks } =
+    const { moduleCode, venue, startTime, endTime, classNo, lessonType, weeks } =
       this.state.lessonData;
     const errors: Record<string, string> = {};
 
@@ -94,20 +94,8 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
       errors.moduleCode = 'Module code is required';
     }
 
-    if (title.length === 0) {
-      errors.title = 'Title is required';
-    }
-
     if (classNo.length === 0) {
       errors.classNo = 'Class number is required';
-    }
-
-    if (lessonType.length === 0) {
-      errors.lessonType = 'Lesson type is required';
-    }
-
-    if (venue.length === 0) {
-      errors.venue = 'Venue is required';
     }
 
     if ((weeks as NumericWeeks).length === 0) {
@@ -194,6 +182,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
         defaultSelectedOption={value}
         onChange={(time) => this.setLessonStateViaSelect(field, time)}
         error={errors.time}
+        required
       />
     );
   }
@@ -296,6 +285,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
               defaultSelectedOption={day}
               onChange={(d) => this.setLessonStateViaSelect('day', d)}
               error={errors.day}
+              required
             />
           </div>
           <div className={styles.rowTime}>

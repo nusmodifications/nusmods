@@ -1,5 +1,5 @@
 import { useSelect } from 'downshift';
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ChevronDown } from 'react-feather';
 import classNames from 'classnames';
 
@@ -11,6 +11,7 @@ interface CustomModuleModalDropdownProps {
   defaultSelectedOption?: string;
   defaultText?: string;
   error?: string;
+  required?: boolean;
   onChange: (value: string) => void;
 }
 
@@ -20,13 +21,19 @@ const CustomModuleModalDropdown: React.FC<CustomModuleModalDropdownProps> = ({
   defaultSelectedOption,
   defaultText,
   error,
+  required,
   onChange,
 }) => {
+  const optionsWithBlank = useMemo(
+    () => (required ? options : ['', ...options]),
+    [options, required],
+  );
+
   const { isOpen, getToggleButtonProps, getMenuProps, getItemProps, selectedItem } = useSelect({
-    items: options,
+    items: optionsWithBlank,
     selectedItem: defaultSelectedOption,
     onSelectedItemChange: ({ selectedItem: item }) => {
-      if (item) {
+      if (typeof item === 'string') {
         onChange(item);
       }
     },
@@ -73,21 +80,21 @@ const CustomModuleModalDropdown: React.FC<CustomModuleModalDropdownProps> = ({
           <ChevronDown className={classNames('svg', 'svg-small', styles.btnSvg)} />
         </button>
         <ul
-          className={classNames('dropdown-menu', styles.dropdownMenu)}
-          style={{ ...dropdownStyle, display: isOpen ? 'block' : 'none' }}
+          className={classNames(
+            'dropdown-menu',
+            styles.dropdownMenu,
+            isOpen ? styles.open : styles.closed,
+          )}
+          style={dropdownStyle}
           {...getMenuProps()}
         >
-          {options.map((option, index) => (
+          {optionsWithBlank.map((option, index) => (
             <li
               key={option}
               {...getItemProps({ item: option, index })}
-              className="dropdown-item"
-              style={{
-                padding: '8px 12px',
-                cursor: 'pointer',
-              }}
+              className={classNames('dropdown-item', styles.item)}
             >
-              {option}
+              {option.length ? option : 'None'}
             </li>
           ))}
         </ul>
