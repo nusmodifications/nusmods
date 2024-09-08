@@ -44,6 +44,7 @@ const getCSSConfig = ({ options } = {}) => [
         // @material packages uses '@material' directly as part of their import paths.
         // Without this those imports will not resolve properly
         includePaths: [PATHS.node],
+        quietDeps: true,   //Supress Warnings from dependencies
       },
     },
   },
