@@ -39,22 +39,18 @@ function DisqusComments({
   const isFirstRender = useRef(true);
   const mutationRef = useRef<HTMLDivElement>(null);
   useMutationObserver(mutationRef, (mutations) => {
-    console.log('MUTATION OBSERVED!');
     const disqus = mutationRef.current;
     if (disqus === null) return;
-    console.log('AUTOBOTS ROLL OUT!');
-    mutations.forEach(() => {
-      const iframes = disqus.getElementsByTagName('iframe');
-      console.log(iframes);
-      console.log(JSON.stringify(iframes));
-      if (iframes.length > 1) {
-        const commentsIframe = iframes[1];
-        while (disqus.firstChild) {
-          disqus.removeChild(disqus.firstChild);
-        }
-        disqus.appendChild(commentsIframe);
-      }
-    });
+    const iframes = disqus.getElementsByTagName('iframe');
+    if (iframes.length === 0) return;
+    const iframe = iframes[0];
+    console.log('Iframe:');
+    console.log(iframe);
+    const ads = iframe.getElementsByClassName('ad-content');
+    console.log('Ads:');
+    console.log(ads);
+    if (ads.length === 0) return;
+    iframe.removeChild(ads[0]);
   });
 
   const getDisqusConfig = useCallback(
