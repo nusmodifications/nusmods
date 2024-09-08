@@ -1,4 +1,5 @@
 import { PureComponent, useCallback, useEffect, useRef, useState } from 'react';
+import useMutationObserver from 'beautiful-react-hooks/useMutationObserver';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
@@ -36,6 +37,21 @@ function DisqusComments({
 }: Props): JSX.Element {
   const [allowDisqus, setAllowDisqus] = useState(false);
   const isFirstRender = useRef(true);
+  const mutationRef = useRef<HTMLDivElement>(null);
+  useMutationObserver(mutationRef, (mutations) => {
+    const disqus = mutationRef.current;
+    if (disqus === null) return;
+    mutations.forEach(() => {
+      const iframes = disqus.getElementsByTagName('iframe');
+      if (iframes.length > 1) {
+        const commentsIframe = iframes[1];
+        while (disqus.firstChild) {
+          disqus.removeChild(disqus.firstChild);
+        }
+        disqus.appendChild(commentsIframe);
+      }
+    });
+  });
 
   const getDisqusConfig = useCallback(
     () =>
@@ -104,7 +120,7 @@ function DisqusComments({
     );
   }
 
-  return <div id="disqus_thread" />;
+  return <div id="disqus_thread" ref={mutationRef} />;
 }
 
 class _DisqusComments extends PureComponent<Props, State> {
