@@ -39,10 +39,14 @@ function DisqusComments({
   const isFirstRender = useRef(true);
   const mutationRef = useRef<HTMLDivElement>(null);
   useMutationObserver(mutationRef, (mutations) => {
+    console.log('MUTATION OBSERVED!');
     const disqus = mutationRef.current;
     if (disqus === null) return;
+    console.log('AUTOBOTS ROLL OUT!');
     mutations.forEach(() => {
       const iframes = disqus.getElementsByTagName('iframe');
+      console.log(iframes);
+      console.log(JSON.stringify(iframes));
       if (iframes.length > 1) {
         const commentsIframe = iframes[1];
         while (disqus.firstChild) {
