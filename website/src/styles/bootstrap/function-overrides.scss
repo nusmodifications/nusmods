@@ -1,0 +1,5 @@
+@use 'sass:math';
+
+@function abs($value) {
+  @return math.abs($value);
+}

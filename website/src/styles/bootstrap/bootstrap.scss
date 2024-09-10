@@ -1,6 +1,7 @@
 // We duplicate the _bootstrap.scss so that we only include components we need
 
 // Our own variable overrides
+@import "function-overrides";
 @import "variable-overrides";
 
 // Core variables and mixins
