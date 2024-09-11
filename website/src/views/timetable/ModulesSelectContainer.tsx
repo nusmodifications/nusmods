@@ -62,6 +62,7 @@ class ModulesSelectContainer extends Component<Props> {
             }
             disabled={!isOnline}
             onRemoveModule={this.props.removeModule}
+            semester={this.props.semester}
           />
         )}
       </Online>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Edit } from 'react-feather';
-import { ModuleCode } from 'types/modules';
+import { ModuleCode, Semester } from 'types/modules';
 import { Lesson } from 'types/timetables';
 import Tooltip from 'views/components/Tooltip';
 import classnames from 'classnames';
@@ -10,6 +10,7 @@ export type Props = {
   lesson: Lesson | undefined;
   moduleActionStyle: string;
   actionIconStyle: string;
+  semester: Semester;
 
   editCustomModule: (oldModuleCode: ModuleCode, newModuleCode: ModuleCode, lesson: Lesson) => void;
 };
@@ -45,6 +46,7 @@ export default class CustomModuleEdit extends React.PureComponent<Props, State> 
           isOpen={isOpen}
           isEdit
           customLessonData={this.props.lesson}
+          semester={this.props.semester}
         />
         <Tooltip content="Edit Custom Module" touch="hold">
           <button

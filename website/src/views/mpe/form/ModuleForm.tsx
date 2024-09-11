@@ -224,6 +224,7 @@ const ModuleForm: React.FC<Props> = ({
             moduleList={moduleSelectList}
             removeModule={removeModule}
             addModule={addModule}
+            semester={MPE_SEMESTER}
           />
         </div>
       ) : (

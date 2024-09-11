@@ -10,7 +10,7 @@ import classnames from 'classnames';
 import { Trash } from 'react-feather';
 
 import { ModuleSelectList } from 'types/reducers';
-import { ModuleCode } from 'types/modules';
+import { ModuleCode, Semester } from 'types/modules';
 
 import { breakpointUp } from 'utils/css';
 import useMediaQuery from 'views/hooks/useMediaQuery';
@@ -27,6 +27,7 @@ type Props = {
   moduleCount: number;
   placeholder: string;
   disabled?: boolean;
+  semester: Semester;
 
   addCustomModule: (moduleCode: ModuleCode, lesson: Lesson) => void;
   getFilteredModules: (string: string | null) => ModuleSelectList;
@@ -36,6 +37,7 @@ type Props = {
 
 const ModulesSelect: FC<Props> = ({
   moduleCount,
+  semester,
   placeholder,
   disabled,
   getFilteredModules,
@@ -181,7 +183,7 @@ const ModulesSelect: FC<Props> = ({
             <strong>{moduleCount}</strong> modules.
           </div>
         )}
-        <CustomModuleSelect addCustomModule={addCustomModule} />
+        <CustomModuleSelect addCustomModule={addCustomModule} semester={semester} />
         {showNoResultMessage && (
           <div className={styles.tip}>
             No courses found for{' '}
