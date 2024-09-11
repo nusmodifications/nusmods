@@ -179,7 +179,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     const numberIntervals =
       (24 * 60 - MINIMUM_CUSTOM_MODULE_DURATION_MINUTES) / INTERVAL_IN_MINUTES + 1;
     const timeslotIndices = Array.from({ length: numberIntervals }, (_, i) => i + startIndex);
-    const timeslots = timeslotIndices.map((timeslot) => {
+    let timeslots = timeslotIndices.map((timeslot) => {
       const timeMinutes = timeslot * 30;
       const hourString = Math.floor(timeMinutes / 60)
         .toString()
@@ -188,6 +188,14 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
       const timeString = hourString + minuteString;
       return timeString;
     });
+
+    if (field === 'startTime') {
+      timeslots = timeslots.filter((time) => time < this.state.lessonData.endTime);
+    } else if (field === 'endTime') {
+      timeslots = timeslots.filter((time) => time > this.state.lessonData.startTime);
+    } else {
+      throw new Error('Invalid field');
+    }
 
     if (timeslots[timeslots.length - 1] === '2400') {
       timeslots[timeslots.length - 1] = '2359';
