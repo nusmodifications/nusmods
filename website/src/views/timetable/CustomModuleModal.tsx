@@ -30,6 +30,9 @@ type State = {
   isSubmitting: boolean;
 };
 
+const MINIMUM_CUSTOM_MODULE_DURATION_MINUTES = 60;
+const INTERVAL_IN_MINUTES = 30;
+
 export default class CustomModuleModal extends React.PureComponent<Props, State> {
   fields = ['moduleCode', 'title', 'lessonType', 'venue', 'day', 'startTime', 'endTime'];
 
@@ -94,8 +97,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
   });
 
   getValidationErrors = (): Record<string, string> => {
-    const { moduleCode, venue, startTime, endTime, classNo, lessonType, weeks } =
-      this.state.lessonData;
+    const { moduleCode, startTime, endTime, classNo, weeks } = this.state.lessonData;
     const errors: Record<string, string> = {};
 
     if (moduleCode.length === 0) {
@@ -165,27 +167,35 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     });
   }
 
-  renderTimeRanges(field: string) {
+  renderTimeRanges(field: 'startTime' | 'endTime') {
     const errors = this.state.isSubmitting ? this.getValidationErrors() : {};
-
-    const minTimeInHalfHours = 15;
-    const numberOfTimeSlots = 28;
 
     const value =
       field === 'startTime' ? this.state.lessonData.startTime : this.state.lessonData.endTime;
-    const timeslots = Array.from({ length: numberOfTimeSlots }, (_, i) => i + 1);
+
+    // Generate timeslots in 30 minute intervals
+    const startIndex =
+      field === 'startTime' ? 0 : MINIMUM_CUSTOM_MODULE_DURATION_MINUTES / INTERVAL_IN_MINUTES;
+    const numberIntervals =
+      (24 * 60 - MINIMUM_CUSTOM_MODULE_DURATION_MINUTES) / INTERVAL_IN_MINUTES + 1;
+    const timeslotIndices = Array.from({ length: numberIntervals }, (_, i) => i + startIndex);
+    const timeslots = timeslotIndices.map((timeslot) => {
+      const timeMinutes = timeslot * 30;
+      const hourString = Math.floor(timeMinutes / 60)
+        .toString()
+        .padStart(2, '0');
+      const minuteString = (timeMinutes % 60).toString().padStart(2, '0');
+      const timeString = hourString + minuteString;
+      return timeString;
+    });
+
+    if (timeslots[timeslots.length - 1] === '2400') {
+      timeslots[timeslots.length - 1] = '2359';
+    }
 
     return (
       <CustomModuleModalDropdown
-        options={timeslots.map((timeslot) => {
-          const timeMinutes = (minTimeInHalfHours + timeslot) * 30;
-          const hourString = Math.floor(timeMinutes / 60)
-            .toString()
-            .padStart(2, '0');
-          const minuteString = (timeMinutes % 60).toString().padStart(2, '0');
-          const timeString = hourString + minuteString;
-          return timeString;
-        })}
+        options={timeslots}
         className={styles[field]}
         defaultSelectedOption={value}
         onChange={(time) => this.setLessonStateViaSelect(field, time)}

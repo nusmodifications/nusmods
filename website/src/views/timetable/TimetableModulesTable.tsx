@@ -82,6 +82,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
               editCustomModule={props.editCustomModule}
               moduleActionStyle={styles.moduleAction}
               actionIconStyle={styles.actionIcon}
+              semester={semester}
             />
           )}
           <Tooltip content={removeBtnLabel} touch="hold">
