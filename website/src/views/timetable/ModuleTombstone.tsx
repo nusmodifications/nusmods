@@ -14,7 +14,7 @@ export type Props = {
 
 const ModuleTombstone: React.FC<Props> = (props) => (
   <div className={classnames(styles.moduleInfo, styles.tombstone)}>
-    <span>{removeCustomIdentifier(props.module.moduleCode)} removed</span>
+    <span>{removeCustomIdentifier(props.module.moduleCode, true)} removed</span>
 
     <div className={styles.moduleActionButtons}>
       <button

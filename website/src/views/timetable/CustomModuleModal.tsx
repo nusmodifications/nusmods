@@ -33,16 +33,16 @@ type State = {
 const MINIMUM_CUSTOM_MODULE_DURATION_MINUTES = 60;
 const INTERVAL_IN_MINUTES = 30;
 
+const getPossibleWeeks = (semester: Semester) => {
+  if (!Semesters.includes(semester)) throw new Error('Invalid semester');
+
+  const numberOfWeeks = semester < 3 ? 13 : 6;
+
+  return Array.from({ length: numberOfWeeks }, (_, i) => i + 1);
+};
+
 export default class CustomModuleModal extends React.PureComponent<Props, State> {
   fields = ['moduleCode', 'title', 'lessonType', 'venue', 'day', 'startTime', 'endTime'];
-
-  getPossibleWeeks = () => {
-    if (!Semesters.includes(this.props.semester)) throw new Error('Invalid semester');
-
-    const numberOfWeeks = this.props.semester < 3 ? 13 : 6;
-
-    return Array.from({ length: numberOfWeeks }, (_, i) => i + 1);
-  };
 
   DEFAULT_LESSON_STATE: Lesson = {
     moduleCode: '',
@@ -54,7 +54,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     endTime: '0900',
     classNo: '',
     isCustom: true,
-    weeks: this.getPossibleWeeks(),
+    weeks: getPossibleWeeks(this.props.semester),
   };
 
   override state: State = {
@@ -312,7 +312,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
             <CustomModuleModalDropdown
               options={Object.keys(LESSON_TYPE_ABBREV)}
               defaultText="Select Lesson Type"
-              onChange={(lessonType) => this.setLessonStateViaSelect({ lessonType: lessonType })}
+              onChange={(lessonType) => this.setLessonStateViaSelect({ lessonType })}
               error={errors.lessonType}
               value={this.state.lessonData.lessonType}
             />
@@ -360,8 +360,8 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
             <label htmlFor="select-weeks">Weeks</label>
             <br />
             <CustomModuleModalButtonGroup
-              options={this.getPossibleWeeks()}
-              defaultSelected={this.getPossibleWeeks().map(() => true)} // Default to all weeks
+              options={getPossibleWeeks(this.props.semester)}
+              defaultSelected={getPossibleWeeks(this.props.semester).map(() => true)} // Default to all weeks
               onChange={(weeksNumArr) => this.setLessonStateViaSelect({ weeks: weeksNumArr })}
               error={errors.weeks}
             />

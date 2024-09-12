@@ -120,7 +120,7 @@ describe(TimetableContainerComponent, () => {
     const importedTimetable = {
       [moduleCodeThatCanBeLoaded]: { 'Sectional Teaching': 'A1' }, // BFS1001 doesn't have Lecture, only SectionalTeaching
     };
-    const location = timetableShare(semester, importedTimetable, []);
+    const location = timetableShare(semester, importedTimetable, {}, []);
     make(location);
 
     // Expect spinner when loading modules
@@ -142,7 +142,7 @@ describe(TimetableContainerComponent, () => {
   test('should eventually display imported timetable without any modules loaded', async () => {
     const semester = 1;
     const importedTimetable = { [moduleCodeThatCanBeLoaded]: { 'Sectional Teaching': 'A1' } };
-    const location = timetableShare(semester, importedTimetable, [moduleCodeThatCanBeLoaded]);
+    const location = timetableShare(semester, importedTimetable, {}, [moduleCodeThatCanBeLoaded]);
     make(location);
 
     // Expect spinner when loading modules
@@ -164,7 +164,7 @@ describe(TimetableContainerComponent, () => {
   test('should ignore invalid modules in imported timetable', () => {
     const semester = 1;
     const importedTimetable = { TRUMP2020: { Lecture: '1' } };
-    const location = timetableShare(semester, importedTimetable, []);
+    const location = timetableShare(semester, importedTimetable, {}, []);
     make(location);
 
     // Expect nothing to be fetched and the invalid module to be ignored

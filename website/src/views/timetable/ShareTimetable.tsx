@@ -7,6 +7,7 @@ import type { QRCodeProps } from 'react-qr-svg';
 
 import type { SemTimetableConfig } from 'types/timetables';
 import type { ModuleCode, Semester } from 'types/modules';
+import { CustomModuleLessonData } from 'types/reducers';
 
 import config from 'config';
 import { enableShortUrl } from 'featureFlags';
@@ -17,7 +18,6 @@ import LoadingSpinner from 'views/components/LoadingSpinner';
 import retryImport from 'utils/retryImport';
 
 import styles from './ShareTimetable.scss';
-import { CustomModuleLessonData } from 'types/reducers';
 
 type CopyState = 'NOT_COPIED' | 'COPY_SUCCESS' | 'COPY_FAIL';
 const NOT_COPIED: CopyState = 'NOT_COPIED';

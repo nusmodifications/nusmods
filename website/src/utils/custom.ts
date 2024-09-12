@@ -1,7 +1,6 @@
 import { castArray } from 'lodash';
-import { Module, Weeks, consumeWeeks, isWeekRange } from 'types/modules';
+import { Module, Weeks, consumeWeeks } from 'types/modules';
 import { Lesson } from 'types/timetables';
-import { formatNumericWeeks } from './timetables';
 
 const CUSTOM_IDENTIFIER = 'CUSTOM';
 const PRE_DELIMETER = '\\';
@@ -52,8 +51,11 @@ export function appendCustomIdentifier(moduleCode: string): string {
   return `${CUSTOM_IDENTIFIER}${moduleCode}`;
 }
 
-export function removeCustomIdentifier(customModuleCode: string): string {
-  validateCustomModuleCode(customModuleCode);
+export function removeCustomIdentifier(
+  customModuleCode: string,
+  ignoreValidation?: boolean,
+): string {
+  if (!ignoreValidation) validateCustomModuleCode(customModuleCode);
 
   return customModuleCode.replace(CUSTOM_IDENTIFIER, '');
 }
@@ -76,9 +78,13 @@ function serializeWeeks(weeks: Weeks): string {
   // Custom modules do not support week ranges,
   // only numeric weeks specified using the CustomModuleModalButtonGroup
   return (
-    consumeWeeks(weeks, formatNumericWeeks, () => {
-      throw new Error('Week ranges currently unsupported for custom modules');
-    }) ?? ''
+    consumeWeeks(
+      weeks,
+      (numericWeeks) => numericWeeks.join(','),
+      () => {
+        throw new Error('Week ranges currently unsupported for custom modules');
+      },
+    ) ?? ''
   );
 }
 
@@ -86,7 +92,7 @@ function serializeCustomModule(lesson: Lesson): string {
   validateCustomModuleCode(lesson.moduleCode);
 
   return CUSTOM_MODULE_SHORT_KEY_MAP.map(
-    (key) => (key == 'weeks' ? serializeWeeks(lesson[key]) : escapeDelimeter(lesson[key])) || '',
+    (key) => (key === 'weeks' ? serializeWeeks(lesson[key]) : escapeDelimeter(lesson[key])) || '',
   )
     .map(encodeURIComponent)
     .join(`${PRE_DELIMETER}${CUSTOM_MODULE_KEY_DELIMETER}`);
@@ -100,12 +106,12 @@ export function serializeCustomModuleList(lessons: Lesson[]): string {
 function deserializeWeeks(serialized: string): Weeks {
   const weeks: Weeks = [];
   const parts = serialized.split(',');
-  for (const part of parts) {
+  parts.forEach((part) => {
     const [start, end] = part.split('-').map(Number);
     for (let i = start; i <= end; i++) {
       weeks.push(i);
     }
-  }
+  });
   return weeks;
 }
 

@@ -29,6 +29,7 @@ const commonProps = {
   matchBreakpoint: false,
   disabled: false,
   onRemoveModule: jest.fn(),
+  semester: 1,
 };
 
 describe(ModulesSelectComponent, () => {

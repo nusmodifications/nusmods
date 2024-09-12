@@ -30,6 +30,7 @@ const commonProps = {
   placeholder: 'test placeholder',
   disabled: false,
   onRemoveModule: jest.fn(),
+  semester: 1,
 };
 
 describe(ModulesSelect, () => {

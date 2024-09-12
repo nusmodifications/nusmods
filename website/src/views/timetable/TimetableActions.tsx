@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Calendar, Grid, Sidebar, Type } from 'react-feather';
 import { toggleTimetableOrientation, toggleTitleDisplay } from 'actions/theme';
 import { ModuleCode, Semester } from 'types/modules';
+import { CustomModuleLessonData } from 'types/reducers';
 import { SemTimetableConfig } from 'types/timetables';
 
 import elements from 'views/elements';
@@ -14,7 +15,6 @@ import ShareTimetable from './ShareTimetable';
 import ExportMenu from './ExportMenu';
 
 import styles from './TimetableActions.scss';
-import { CustomModuleLessonData } from 'types/reducers';
 
 type Props = {
   semester: Semester;
