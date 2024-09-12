@@ -12,6 +12,7 @@ interface CustomModuleModalDropdownProps {
   defaultText?: string;
   error?: string;
   required?: boolean;
+  value: string;
   onChange: (value: string) => void;
 }
 
@@ -22,6 +23,7 @@ const CustomModuleModalDropdown: React.FC<CustomModuleModalDropdownProps> = ({
   defaultText,
   error,
   required,
+  value,
   onChange,
 }) => {
   const optionsWithBlank = useMemo(
@@ -31,7 +33,8 @@ const CustomModuleModalDropdown: React.FC<CustomModuleModalDropdownProps> = ({
 
   const { isOpen, getToggleButtonProps, getMenuProps, getItemProps, selectedItem } = useSelect({
     items: optionsWithBlank,
-    selectedItem: defaultSelectedOption,
+    defaultSelectedItem: defaultSelectedOption,
+    selectedItem: value,
     onSelectedItemChange: ({ selectedItem: item }) => {
       if (typeof item === 'string') {
         onChange(item);

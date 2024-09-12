@@ -79,12 +79,12 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     return null;
   };
 
-  setLessonStateViaSelect = (key: string, value: string | number[]) => {
+  setLessonStateViaSelect = (keyValue: { [key: string]: string | number[] }) => {
     const newState: State = {
       ...this.state,
       lessonData: {
         ...this.state.lessonData,
-        [key]: value,
+        ...keyValue,
       },
     };
     this.setState(newState);
@@ -117,10 +117,8 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
       (getLessonTimeHours(endTime) - getLessonTimeHours(startTime)) * 60 +
       (getLessonTimeMinutes(endTime) - getLessonTimeMinutes(startTime));
 
-    if (timeDifferenceInMinutes <= 0) {
-      errors.time = 'End time must be after start time';
-    } else if (timeDifferenceInMinutes < 60) {
-      errors.time = 'Lesson must be 1h';
+    if (timeDifferenceInMinutes < MINIMUM_CUSTOM_MODULE_DURATION_MINUTES) {
+      errors.time = `Lesson must be ${MINIMUM_CUSTOM_MODULE_DURATION_MINUTES} mins or longer`;
     }
 
     return errors;
@@ -175,10 +173,20 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
       field === 'startTime' ? this.state.lessonData.startTime : this.state.lessonData.endTime;
 
     // Generate timeslots in 30 minute intervals
-    const startIndex =
-      field === 'startTime' ? 0 : MINIMUM_CUSTOM_MODULE_DURATION_MINUTES / INTERVAL_IN_MINUTES;
-    const numberIntervals =
+    let startIndex = 0;
+    let numberIntervals =
       (24 * 60 - MINIMUM_CUSTOM_MODULE_DURATION_MINUTES) / INTERVAL_IN_MINUTES + 1;
+    if (field === 'endTime') {
+      const NUMBER_SLOT_MIN_DURATION = MINIMUM_CUSTOM_MODULE_DURATION_MINUTES / INTERVAL_IN_MINUTES;
+      startIndex =
+        (getLessonTimeHours(this.state.lessonData.startTime) * 60 +
+          getLessonTimeMinutes(this.state.lessonData.startTime)) /
+          30 +
+        NUMBER_SLOT_MIN_DURATION;
+
+      numberIntervals -= startIndex - NUMBER_SLOT_MIN_DURATION;
+    }
+
     const timeslotIndices = Array.from({ length: numberIntervals }, (_, i) => i + startIndex);
     let timeslots = timeslotIndices.map((timeslot) => {
       const timeMinutes = timeslot * 30;
@@ -190,12 +198,8 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
       return timeString;
     });
 
-    if (field === 'startTime') {
-      timeslots = timeslots.filter((time) => time < this.state.lessonData.endTime);
-    } else if (field === 'endTime') {
+    if (field === 'endTime') {
       timeslots = timeslots.filter((time) => time > this.state.lessonData.startTime);
-    } else {
-      throw new Error('Invalid field');
     }
 
     if (timeslots[timeslots.length - 1] === '2400') {
@@ -206,8 +210,29 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
       <CustomModuleModalDropdown
         options={timeslots}
         className={styles[field]}
-        defaultSelectedOption={value}
-        onChange={(time) => this.setLessonStateViaSelect(field, time)}
+        defaultSelectedOption={this.DEFAULT_LESSON_STATE[field]}
+        value={value}
+        onChange={(time) => {
+          if (field === 'startTime' && this.state.lessonData.endTime < time) {
+            const hours = getLessonTimeHours(time) + MINIMUM_CUSTOM_MODULE_DURATION_MINUTES / 60;
+            const minutes =
+              getLessonTimeMinutes(time) + (MINIMUM_CUSTOM_MODULE_DURATION_MINUTES % 60);
+
+            let endTime = `${hours.toString().padStart(2, '0')}${minutes
+              .toString()
+              .padStart(2, '0')}`;
+
+            if (endTime === '2400') {
+              endTime = '2359';
+            }
+            this.setLessonStateViaSelect({
+              startTime: time,
+              endTime,
+            });
+          } else {
+            this.setLessonStateViaSelect({ [field]: time });
+          }
+        }}
         error={errors.time}
         required
       />
@@ -246,7 +271,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
   }
 
   renderInputFields() {
-    const { moduleCode, title, venue, classNo, day } = this.state.lessonData;
+    const { moduleCode, title, classNo } = this.state.lessonData;
     const errors = this.state.isSubmitting ? this.getValidationErrors() : {};
 
     return (
@@ -287,8 +312,9 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
             <CustomModuleModalDropdown
               options={Object.keys(LESSON_TYPE_ABBREV)}
               defaultText="Select Lesson Type"
-              onChange={(lessonType) => this.setLessonStateViaSelect('lessonType', lessonType)}
+              onChange={(lessonType) => this.setLessonStateViaSelect({ lessonType: lessonType })}
               error={errors.lessonType}
+              value={this.state.lessonData.lessonType}
             />
           </div>
         </div>
@@ -298,7 +324,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
               id="venue"
               label="Venue"
               errors={errors}
-              defaultValue={venue || ''}
+              defaultValue={this.DEFAULT_LESSON_STATE.venue}
               setLessonStateViaInput={this.setLessonStateViaInput}
             />
           </div>
@@ -309,9 +335,10 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
             <br />
             <CustomModuleModalDropdown
               options={SCHOOLDAYS.map((d) => d)}
-              defaultSelectedOption={day}
-              onChange={(d) => this.setLessonStateViaSelect('day', d)}
+              defaultSelectedOption={this.DEFAULT_LESSON_STATE.day}
+              onChange={(d) => this.setLessonStateViaSelect({ day: d })}
               error={errors.day}
+              value={this.state.lessonData.day}
               required
             />
           </div>
@@ -335,7 +362,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
             <CustomModuleModalButtonGroup
               options={this.getPossibleWeeks()}
               defaultSelected={this.getPossibleWeeks().map(() => true)} // Default to all weeks
-              onChange={(weeksNumArr) => this.setLessonStateViaSelect('weeks', weeksNumArr)}
+              onChange={(weeksNumArr) => this.setLessonStateViaSelect({ weeks: weeksNumArr })}
               error={errors.weeks}
             />
           </div>
