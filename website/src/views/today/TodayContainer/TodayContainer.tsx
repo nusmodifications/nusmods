@@ -347,8 +347,19 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
 
 export const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
   const { modules } = state.moduleBank;
-  const lastDay = addDays(ownProps.currentTime, DAYS);
-  const weekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(lastDay);
+
+  const lastDay = addDays(ownProps.currentTime, DAYS); // current date plus 7 days
+  const todayWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(new Date());
+  const nextWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(lastDay);
+
+  var todaySemester = semesterNameMap[todayWeekInfo.sem];
+  var nextWeekSemester = semesterNameMap[nextWeekInfo.sem];
+
+  // On week -1 of semester 2, the semester should be 2, not 1
+  const weekBeforeSem2 = (todaySemester === 1 && nextWeekSemester === 2);
+  // If it's the week before semester 2, use sem2's week info, otherwise use current date's week info
+  const weekInfo = weekBeforeSem2 ? nextWeekInfo : todayWeekInfo;
+
   const semester = semesterNameMap[weekInfo.sem];
   const timetable = getSemesterTimetableLessons(state)(semester);
   const colors = getSemesterTimetableColors(state)(semester);
