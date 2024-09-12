@@ -1,21 +1,27 @@
-import { appendCustomIdentifier, removeCustomIdentifier, createCustomModule } from './custom';
+import { CustomModuleLessonData } from 'types/reducers';
+import {
+  appendCustomIdentifier,
+  removeCustomIdentifier,
+  createCustomModule,
+  serializeCustomModuleList,
+} from './custom';
 
 test('appendCustomIdentifier should return the proper custom module code', () => {
-  expect(appendCustomIdentifier('CS2030')).toEqual('custom=CS2030');
-  expect(appendCustomIdentifier('custom=CS2030')).toEqual('custom=custom=CS2030');
-  expect(appendCustomIdentifier('')).toEqual('custom=');
+  expect(appendCustomIdentifier('CS2030')).toEqual('CUSTOMCS2030');
+  expect(appendCustomIdentifier('CUSTOMCS2030')).toEqual('CUSTOMCUSTOMCS2030');
+  expect(appendCustomIdentifier('')).toEqual('CUSTOM');
 });
 
 test('removeCustomIdentifier should return the proper module code', () => {
-  expect(removeCustomIdentifier('custom=CS2030')).toEqual('CS2030');
-  expect(removeCustomIdentifier('custom=custom=CS2030')).toEqual('custom=CS2030');
-  expect(removeCustomIdentifier('abc')).toEqual('abc');
+  expect(removeCustomIdentifier('CUSTOMCS2030')).toEqual('CS2030');
+  expect(removeCustomIdentifier('CUSTOMCUSTOMCS2030')).toEqual('CUSTOMCS2030');
+  expect(removeCustomIdentifier('abc')).toThrowError();
 });
 
-test('cretaeCustomModule should return the proper custom module', () => {
+test('createCustomModule should return the proper custom module', () => {
   const actual = createCustomModule('CS1101S', 'Programming Methodology');
   const expected = {
-    moduleCode: 'CS1101S',
+    moduleCode: 'CUSTOMCS1101S',
     title: 'Programming Methodology',
     isCustom: true,
     acadYear: '',
