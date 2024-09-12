@@ -94,6 +94,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
   getLessonDetails = (): ModifiableLesson => ({
     ...this.state.lessonData,
     colorIndex: 0,
+    moduleCode: appendCustomIdentifier(this.state.lessonData.moduleCode),
   });
 
   getValidationErrors = (): Record<string, string> => {

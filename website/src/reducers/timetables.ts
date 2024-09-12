@@ -12,7 +12,7 @@ import {
   ADD_CUSTOM_MODULE,
   ADD_MODULE,
   CHANGE_LESSON,
-  HIDDEN_IMPORTED_SEM,
+  TEMP_IMPORTED_SEM,
   DELETE_CUSTOM_MODULE,
   HIDE_LESSON_IN_TIMETABLE,
   MODIFY_CUSTOM_MODULE,
@@ -23,6 +23,7 @@ import {
   SET_LESSON_CONFIG,
   SET_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
+  SET_CUSTOM_IMPORTED,
 } from 'actions/timetables';
 import { getNewColor } from 'utils/colors';
 import { SET_EXPORTED_DATA } from 'actions/constants';
@@ -237,7 +238,8 @@ function timetables(
         draft.customModules[semester] = customModules || DEFAULT_CUSTOM_MODULE_STATE;
 
         // Remove the old hidden imported modules
-        delete draft.hidden[HIDDEN_IMPORTED_SEM];
+        delete draft.hidden[TEMP_IMPORTED_SEM];
+        delete draft.customModules[TEMP_IMPORTED_SEM];
       });
     }
 
@@ -281,6 +283,13 @@ function timetables(
         colors: { [semester]: colors },
         hidden: { [semester]: hidden },
       };
+    }
+
+    case SET_CUSTOM_IMPORTED: {
+      const { semester, customModules } = action.payload;
+      return produce(state, (draft) => {
+        draft.customModules[semester] = customModules;
+      });
     }
 
     case SET_HIDDEN_IMPORTED: {

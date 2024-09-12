@@ -13,13 +13,14 @@ import { selectSemester } from 'actions/settings';
 import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
 import {
   fetchTimetableModules,
+  setCustomModulesFromImport,
   setHiddenModulesFromImport,
   setTimetable,
 } from 'actions/timetables';
 import { openNotification } from 'actions/app';
 import { undo } from 'actions/undoHistory';
 import { getModuleCondensed } from 'selectors/moduleBank';
-import { deserializeHidden, deserializeTimetable } from 'utils/timetables';
+import { deserializeCustom, deserializeHidden, deserializeTimetable } from 'utils/timetables';
 import { fillColorMapping } from 'utils/colors';
 import { semesterForTimetablePage, TIMETABLE_SHARE, timetablePage } from 'views/routes/paths';
 import deferComponentRender from 'views/hocs/deferComponentRender';
@@ -160,6 +161,11 @@ export const TimetableContainerComponent: FC = () => {
     semester && params.action ? deserializeTimetable(location.search) : null,
   );
 
+  const importedCustom = useMemo(
+    () => (semester && params.action ? deserializeCustom(location.search) : {}),
+    [semester, params.action, location.search],
+  );
+
   const importedHidden = useMemo(
     () => (semester && params.action ? deserializeHidden(location.search) : []),
     [semester, params.action, location.search],
@@ -171,6 +177,12 @@ export const TimetableContainerComponent: FC = () => {
       dispatch(fetchTimetableModules([importedTimetable]));
     }
   }, [dispatch, importedTimetable]);
+
+  useEffect(() => {
+    if (importedCustom) {
+      dispatch(setCustomModulesFromImport(importedCustom));
+    }
+  }, [dispatch, importedCustom]);
 
   useEffect(() => {
     if (importedHidden) {

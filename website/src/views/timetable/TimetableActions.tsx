@@ -14,6 +14,7 @@ import ShareTimetable from './ShareTimetable';
 import ExportMenu from './ExportMenu';
 
 import styles from './TimetableActions.scss';
+import { CustomModuleLessonData } from 'types/reducers';
 
 type Props = {
   semester: Semester;
@@ -29,6 +30,7 @@ type Props = {
   toggleExamCalendar: () => void;
 
   hiddenModules: ModuleCode[];
+  customModules: CustomModuleLessonData;
 
   resetTimetable: () => void;
 };
@@ -91,6 +93,7 @@ const TimetableActions: React.FC<Props> = (props) => (
         semester={props.semester}
         timetable={props.timetable}
         hiddenModules={props.hiddenModules}
+        customModules={props.customModules}
       />
       <ResetTimetable resetTimetable={props.resetTimetable} />
     </div>
