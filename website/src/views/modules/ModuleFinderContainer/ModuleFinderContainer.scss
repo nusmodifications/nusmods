@@ -53,7 +53,7 @@ div.modulesPageContainer {
 }
 
 // Media query for smaller screens
-@media (max-width: 768px) {
+@include media-breakpoint-down(sm) {
   .moduleFinderLayout {
     flex-direction: column;
   }
