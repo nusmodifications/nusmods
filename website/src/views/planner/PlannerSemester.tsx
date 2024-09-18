@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
-import { Plus } from 'react-feather';
+import AddCalendarIcon from 'img/icons/add-calendar.svg';
 import classnames from 'classnames';
 
 import { Semester, ModuleCode } from 'types/modules';
@@ -167,7 +167,7 @@ const PlannerSemester: React.FC<Props> = ({
                   className="btn btn-sm btn-link"
                   onClick={addSemesterToTimetable}
                 >
-                  <Plus />
+                  <AddCalendarIcon />
                   Add Semester to Timetable
                 </button>
               </div>
