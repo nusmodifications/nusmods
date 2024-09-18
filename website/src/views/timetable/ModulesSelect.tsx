@@ -10,26 +10,22 @@ import classnames from 'classnames';
 import { Trash } from 'react-feather';
 
 import { ModuleSelectList } from 'types/reducers';
-import { ModuleCode, Semester } from 'types/modules';
+import { ModuleCode } from 'types/modules';
 
-import { breakpointUp } from 'utils/css';
+import { breakpointDown } from 'utils/css';
 import useMediaQuery from 'views/hooks/useMediaQuery';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip';
 
-import { Lesson } from 'types/timetables';
 import styles from './ModulesSelect.scss';
-import CustomModuleSelect from './CustomModuleSelect';
 
 type Props = {
   moduleCount: number;
   placeholder: string;
   disabled?: boolean;
-  semester: Semester;
 
-  addCustomModule: (moduleCode: ModuleCode, lesson: Lesson) => void;
   getFilteredModules: (string: string | null) => ModuleSelectList;
   onChange: (moduleCode: ModuleCode) => void;
   onRemoveModule: (moduleCode: ModuleCode) => void;
@@ -37,18 +33,16 @@ type Props = {
 
 const ModulesSelect: FC<Props> = ({
   moduleCount,
-  semester,
   placeholder,
   disabled,
   getFilteredModules,
   onChange,
   onRemoveModule,
-  addCustomModule,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
-  const matchBreakpoint = useMediaQuery(breakpointUp('md'));
+  const isMobile = useMediaQuery(breakpointDown('md'));
 
   const openSelect = useCallback(() => setIsOpen(true), []);
   const closeSelect = useCallback(() => setIsOpen(false), []);
@@ -108,7 +102,7 @@ const ModulesSelect: FC<Props> = ({
     getMenuProps,
     highlightedIndex,
   }) => {
-    const isModalOpen = !matchBreakpoint && isOpen;
+    const isModalOpen = isMobile && isOpen;
     const results = getFilteredModules(inputValue);
     const showResults = isOpen && results.length > 0;
     const showTip = isModalOpen && !results.length;
@@ -183,7 +177,6 @@ const ModulesSelect: FC<Props> = ({
             <strong>{moduleCount}</strong> modules.
           </div>
         )}
-        <CustomModuleSelect addCustomModule={addCustomModule} semester={semester} />
         {showNoResultMessage && (
           <div className={styles.tip}>
             No courses found for{' '}
@@ -214,7 +207,7 @@ const ModulesSelect: FC<Props> = ({
     </Downshift>
   );
 
-  if (matchBreakpoint) {
+  if (!isMobile) {
     return downshiftComponent;
   }
 

@@ -6,7 +6,7 @@ import { Calendar, Grid, Sidebar, Type } from 'react-feather';
 import { toggleTimetableOrientation, toggleTitleDisplay } from 'actions/theme';
 import { ModuleCode, Semester } from 'types/modules';
 import { CustomModuleLessonData } from 'types/reducers';
-import { SemTimetableConfig } from 'types/timetables';
+import { Lesson, SemTimetableConfig } from 'types/timetables';
 
 import elements from 'views/elements';
 import config from 'config';
@@ -15,6 +15,7 @@ import ShareTimetable from './ShareTimetable';
 import ExportMenu from './ExportMenu';
 
 import styles from './TimetableActions.scss';
+import CustomModuleSelect from './CustomModuleSelect';
 
 type Props = {
   semester: Semester;
@@ -31,6 +32,8 @@ type Props = {
 
   hiddenModules: ModuleCode[];
   customModules: CustomModuleLessonData;
+
+  addCustomModule: (moduleCode: ModuleCode, lesson: Lesson) => void;
 
   resetTimetable: () => void;
 };
@@ -95,6 +98,7 @@ const TimetableActions: React.FC<Props> = (props) => (
         hiddenModules={props.hiddenModules}
         customModules={props.customModules}
       />
+      <CustomModuleSelect addCustomModule={props.addCustomModule} semester={props.semester} />
       <ResetTimetable resetTimetable={props.resetTimetable} />
     </div>
   </div>

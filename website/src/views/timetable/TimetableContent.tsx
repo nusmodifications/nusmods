@@ -203,8 +203,8 @@ class TimetableContent extends React.Component<Props, State> {
     this.resetTombstone();
   };
 
-  addCustomModule = (semester: Semester, moduleCode: ModuleCode, lesson: Lesson) => {
-    this.props.addCustomModule(semester, moduleCode, lesson);
+  addCustomModule = (moduleCode: ModuleCode, lesson: Lesson) => {
+    this.props.addCustomModule(this.props.semester, moduleCode, lesson);
     this.resetTombstone();
   };
 
@@ -473,6 +473,7 @@ class TimetableContent extends React.Component<Props, State> {
                   resetTimetable={this.resetTimetable}
                   toggleExamCalendar={() => this.setState({ showExamCalendar: !showExamCalendar })}
                   customModules={customModules}
+                  addCustomModule={this.addCustomModule}
                   hiddenModules={hiddenInTimetable}
                 />
               </div>
@@ -483,7 +484,6 @@ class TimetableContent extends React.Component<Props, State> {
                     semester={semester}
                     timetable={this.props.timetable}
                     addModule={this.addModule}
-                    addCustomModule={this.addCustomModule}
                     removeModule={this.removeModule}
                   />
                 )}

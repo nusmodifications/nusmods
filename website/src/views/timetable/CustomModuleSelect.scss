@@ -1,6 +1,5 @@
 @import '~styles/utils/modules-entry.scss';
 
-.select {
-  padding-bottom: 0.5em;
-  margin-top: 1rem;
+.select > button {
+  width: 100%;
 }

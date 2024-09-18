@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { ModuleSelectList } from 'types/reducers';
 import { ModuleCode, Semester } from 'types/modules';
-import { Lesson, SemTimetableConfig } from 'types/timetables';
+import { SemTimetableConfig } from 'types/timetables';
 
 import Online from 'views/components/Online';
 import { popNotification } from 'actions/app';
@@ -20,7 +20,6 @@ type OwnProps = {
 type Props = OwnProps & {
   moduleList: ModuleSelectList;
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
-  addCustomModule: (semester: Semester, moduleCode: ModuleCode, lesson: Lesson) => void;
   removeModule: (moduleCode: ModuleCode) => void;
   popNotification: () => void;
 };
@@ -35,10 +34,6 @@ class ModulesSelectContainer extends Component<Props> {
   onChange = (moduleCode: ModuleCode) => {
     this.props.popNotification();
     this.props.addModule(this.props.semester, moduleCode);
-  };
-
-  addCustomModule = (moduleCode: ModuleCode, lesson: Lesson) => {
-    this.props.addCustomModule(this.props.semester, moduleCode, lesson);
   };
 
   getFilteredModules = (inputValue: string | null) => {
@@ -56,13 +51,11 @@ class ModulesSelectContainer extends Component<Props> {
             getFilteredModules={this.getFilteredModules}
             moduleCount={this.props.moduleList.length}
             onChange={this.onChange}
-            addCustomModule={this.addCustomModule}
             placeholder={
               isOnline ? 'Add course to timetable' : 'You need to be online to add courses'
             }
             disabled={!isOnline}
             onRemoveModule={this.props.removeModule}
-            semester={this.props.semester}
           />
         )}
       </Online>
