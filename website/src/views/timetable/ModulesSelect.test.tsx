@@ -35,7 +35,7 @@ const commonProps = {
 
 describe(ModulesSelect, () => {
   beforeAll(() => {
-    mockWindowMatchMedia({ matches: true });
+    mockWindowMatchMedia({ matches: false });
   });
 
   afterAll(() => {
@@ -75,9 +75,9 @@ describe(ModulesSelect, () => {
     expect(downShift.prop('isOpen')).toBe(true);
   });
 
-  describe('when it does not matchBreakpoint', () => {
+  describe('when it is small screen breakpoint', () => {
     beforeAll(() => {
-      mockWindowMatchMedia({ matches: false });
+      mockWindowMatchMedia({ matches: true });
     });
 
     it('should render modal', () => {
@@ -119,9 +119,9 @@ describe(ModulesSelect, () => {
     });
   });
 
-  describe('when it does matchBreakpoint', () => {
+  describe('when it is medium or large screen breakpoint', () => {
     beforeAll(() => {
-      mockWindowMatchMedia({ matches: true });
+      mockWindowMatchMedia({ matches: false });
     });
 
     it('should render not modal but downshift instead', () => {

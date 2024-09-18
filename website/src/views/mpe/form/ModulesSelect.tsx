@@ -10,7 +10,7 @@ import classnames from 'classnames';
 import { Trash } from 'react-feather';
 
 import { ModuleSelectList } from 'types/reducers';
-import { ModuleCode, Semester } from 'types/modules';
+import { ModuleCode } from 'types/modules';
 
 import { breakpointUp } from 'utils/css';
 import makeResponsive from 'views/hocs/makeResponsive';
@@ -26,7 +26,6 @@ type Props = {
   placeholder: string;
   matchBreakpoint: boolean;
   disabled?: boolean;
-  semester: Semester;
 
   getFilteredModules: (string: string | null) => ModuleSelectList;
   onChange: (moduleCode: ModuleCode) => void;
