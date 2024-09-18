@@ -117,7 +117,8 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
       (getLessonTimeHours(endTime) - getLessonTimeHours(startTime)) * 60 +
       (getLessonTimeMinutes(endTime) - getLessonTimeMinutes(startTime));
 
-    if (timeDifferenceInMinutes < MINIMUM_CUSTOM_MODULE_DURATION_MINUTES) {
+    // -1 to account for n-1 minutes being valid
+    if (timeDifferenceInMinutes < MINIMUM_CUSTOM_MODULE_DURATION_MINUTES - 1) {
       errors.time = `Lesson must be ${MINIMUM_CUSTOM_MODULE_DURATION_MINUTES} mins or longer`;
     }
 
