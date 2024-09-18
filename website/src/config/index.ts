@@ -65,6 +65,7 @@ export type Config = {
     githubRepo: string;
     messenger: string;
     twitter: string;
+    telegram: string;
   };
 
   holidays: Date[];

@@ -36,7 +36,7 @@ import HistoryDebouncer from 'utils/HistoryDebouncer';
 import { clampClassDuration, filterAvailability, searchVenue, sortVenues } from 'utils/venues';
 import { breakpointDown } from 'utils/css';
 import { defer } from 'utils/react';
-import { convertIndexToTime } from 'utils/timify';
+import { convertIndexToTime, NUM_INTERVALS_PER_HOUR } from 'utils/timify';
 
 import withVenueLocations from 'views/components/map/withVenueLocations';
 import AvailabilitySearch, { defaultSearchOptions } from './AvailabilitySearch';
@@ -182,8 +182,10 @@ export class VenuesContainerComponent extends Component<Props, State> {
 
     return {
       day: searchOptions.day,
-      startTime: convertIndexToTime(searchOptions.time * 2),
-      endTime: convertIndexToTime(2 * (searchOptions.time + searchOptions.duration)),
+      startTime: convertIndexToTime(searchOptions.time * NUM_INTERVALS_PER_HOUR),
+      endTime: convertIndexToTime(
+        NUM_INTERVALS_PER_HOUR * (searchOptions.time + searchOptions.duration),
+      ),
     };
   }
 
