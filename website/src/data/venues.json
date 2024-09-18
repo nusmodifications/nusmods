@@ -745,6 +745,14 @@
       "y": 1.2953286800325798
     }
   },
+  "AS4-0328": {
+    "roomName": "Seminar Room",
+    "floor": 3,
+    "location": {
+      "x": 103.77223475074419,
+      "y": 1.2947484959587636
+    }
+  },
   "AS7-0101": {
     "roomName": "Seminar Room",
     "floor": 1,
