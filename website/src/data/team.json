@@ -145,5 +145,15 @@
     "twitter": "yarmantho",
     "github": "alissayarmantho",
     "linkedin": "alissayarmantho"
+  },
+  {
+    "name": "Jonathan Loh",
+    "description": "Builds things, breaks things. Throws frisbees, breaks a leg.",
+    "active": true,
+    "link": "https://jloh02.dev/",
+    "gravatar": "77f7f75dea6cdd6b9371e6a4f7bc2b2f584eb4f39cdc876532d6ac27ffbb8e3a",
+    "gravatarAlt": "Jonathan Loh",
+    "github": "jloh02",
+    "linkedin": "jonathan-loh-junhao"
   }
 ]
