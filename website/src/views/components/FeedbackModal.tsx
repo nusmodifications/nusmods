@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Heart, GitHub, Facebook, Mail } from 'react-feather';
+import { Heart, GitHub, Mail } from 'react-feather';
 
 import config from 'config';
 import { toggleFeedback } from 'actions/app';
@@ -18,10 +18,6 @@ type Props = {
 export const FeedbackButtons: React.FC = () => (
   <div>
     <div className={styles.links}>
-      <ExternalLink className={styles.messenger} href={config.contact.messenger}>
-        <Facebook />
-        Messenger
-      </ExternalLink>
       <ExternalLink className={styles.github} href={config.contact.githubRepo}>
         <GitHub />
         GitHub
