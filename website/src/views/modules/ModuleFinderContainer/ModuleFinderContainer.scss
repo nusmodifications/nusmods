@@ -6,6 +6,22 @@ div.modulesPageContainer {
   animation-name: $page-entering-animation;
 }
 
+.moduleFinderLayout {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 2rem;
+}
+
+.searchResultsColumn {
+  flex: 1;
+  min-width: 0; // Allows the column to shrink below its content size
+}
+
+.sidebarColumn {
+  flex-shrink: 0; // Prevents the sidebar from shrinking
+  width: 300px; // Adjust this width as needed
+}
+
 .modulesList {
   list-style: none;
   padding: 0;
@@ -34,4 +50,16 @@ div.modulesPageContainer {
   left: 0;
   z-index: 100;
   background: var(--body-bg-70);
+}
+
+// Media query for smaller screens
+@include media-breakpoint-down(sm) {
+  .moduleFinderLayout {
+    flex-direction: column;
+  }
+
+  .sidebarColumn {
+    width: 100%;
+    margin-top: 2rem;
+  }
 }
