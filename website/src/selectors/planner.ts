@@ -58,7 +58,7 @@ const prereqConflict =
     if (!prereqs) return null;
 
     const unfulfilledPrereqs = checkPrerequisite(modulesTaken, prereqs);
-    if (!unfulfilledPrereqs || !unfulfilledPrereqs.length) return null;
+    if (!unfulfilledPrereqs.length) return null;
 
     return { type: 'prereq', unfulfilledPrereqs };
   };

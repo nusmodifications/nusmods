@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { range } from 'lodash';
 
-import { convertIndexToTime } from 'utils/timify';
+import { convertIndexToTime, NUM_INTERVALS_PER_HOUR } from 'utils/timify';
 import styles from './TimetableTimings.scss';
 
 type Props = {
@@ -15,11 +15,10 @@ const TimetableTimings: React.FC<Props> = (props) => {
   return (
     <div className={styles.timings}>
       {indices.map((i) => {
+        // Only mark ticks for every hour
+        if (i % NUM_INTERVALS_PER_HOUR !== 0) return null;
+
         const time = convertIndexToTime(i);
-
-        // Only mark even ticks
-        if (i % 2 === 1) return null;
-
         return (
           <time key={time} className={styles.time}>
             {time}

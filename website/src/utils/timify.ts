@@ -24,35 +24,30 @@ export function getLessonTimeMinutes(time: LessonTime): number {
   return parseInt(time.substring(2), 10);
 }
 
+export const INTERVAL_DURATION_MINS = 15;
+export const NUM_INTERVALS_PER_HOUR = 60 / INTERVAL_DURATION_MINS;
+
 // Converts a 24-hour format time string to an index.
 // Each index corresponds to one cell of each timetable row.
 // Each row may not start from index 0, it depends on the config's starting time.
-// 0000 -> 0, 0030 -> 1, 0100 -> 2, ...
+// 0000 -> 0, 0015 -> 1, 0030 -> 2, 0045 -> 3, 0100 -> 4, ..., 2400 -> 96
 export function convertTimeToIndex(time: LessonTime): number {
   const hour = getLessonTimeHours(time);
   const minute = getLessonTimeMinutes(time);
 
   // TODO: Expose incorrect offsets to user via UI
-  // Currently we round up in half hour blocks, but the actual time is not shown
-  let minuteOffset;
-  if (minute === 0) {
-    minuteOffset = 0;
-  } else if (minute <= 30) {
-    minuteOffset = 1;
-  } else {
-    minuteOffset = 2;
-  }
-
-  return hour * 2 + minuteOffset;
+  // Currently we round up in 15-min blocks, but the actual time is not shown
+  const minuteOffset = Math.round(minute / INTERVAL_DURATION_MINS);
+  return hour * NUM_INTERVALS_PER_HOUR + minuteOffset;
 }
 
 // Reverse of convertTimeToIndex.
-// 0 -> 0000, 1 -> 0030, 2 -> 0100, ... , 48 -> 2400
+// 0 -> 0000, 1 -> 0015, 2 -> 0030, 3 -> 0045, 4 -> 0100, ..., 96 -> 2400
 export function convertIndexToTime(index: number): LessonTime {
-  const timeIndex = Math.min(index, 48);
-  const hour: number = Math.floor(timeIndex / 2);
-  const minute: string = timeIndex % 2 === 0 ? '00' : '30';
-  return (hour < 10 ? `0${hour}` : hour.toString()) + minute;
+  const timeIndex = Math.min(index, 24 * NUM_INTERVALS_PER_HOUR);
+  const hour = Math.floor(timeIndex / NUM_INTERVALS_PER_HOUR);
+  const minute = (timeIndex % NUM_INTERVALS_PER_HOUR) * INTERVAL_DURATION_MINS;
+  return `${hour.toString().padStart(2, '0')}${minute.toString().padStart(2, '0')}`;
 }
 
 export function formatHour(hour: number): string {
@@ -112,8 +107,8 @@ export function calculateBorderTimings(
   }
 
   return {
-    startingIndex: earliestTime % 2 === 0 ? earliestTime : earliestTime - 1, // floor to earliest hour.
-    endingIndex: latestTime % 2 === 0 ? latestTime : latestTime + 1, // ceil to latest hour.
+    startingIndex: earliestTime - (earliestTime % NUM_INTERVALS_PER_HOUR), // floor to earliest hour.
+    endingIndex: Math.ceil(latestTime / NUM_INTERVALS_PER_HOUR) * NUM_INTERVALS_PER_HOUR, // ceil to latest hour.
   };
 }
 

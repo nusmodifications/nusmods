@@ -7,6 +7,6 @@
   <Query role="example" searchTerms="Programming Methodology" />
   <Image height="16" width="16" type="image/png">https://nusmods.com/favicon-16x16.png</Image>
   <InputEncoding>UTF-8</InputEncoding>
-  <Contact>nusmods@googlegroups.com</Contact>
+  <Contact>mods@nusmods.com</Contact>
   <moz:SearchForm>https://nusmods.com/modules/</moz:SearchForm>
 </OpenSearchDescription>

@@ -34,22 +34,26 @@ describe('convertTimeToIndex', () => {
   test('convert time string to index', () => {
     for (let hour = 0; hour < 24; hour += 1) {
       const doubleDigitTime: string = `0${hour % 24}`.slice(-2);
-      expect(convertTimeToIndex(`${doubleDigitTime}00`)).toBe(hour * 2);
-      expect(convertTimeToIndex(`${doubleDigitTime}30`)).toBe(hour * 2 + 1);
+      expect(convertTimeToIndex(`${doubleDigitTime}00`)).toBe(hour * 4);
+      expect(convertTimeToIndex(`${doubleDigitTime}15`)).toBe(hour * 4 + 1);
+      expect(convertTimeToIndex(`${doubleDigitTime}30`)).toBe(hour * 4 + 2);
+      expect(convertTimeToIndex(`${doubleDigitTime}45`)).toBe(hour * 4 + 3);
     }
   });
 
   test('convert non-half hour string to index', () => {
     const actual: number = convertTimeToIndex('2359');
-    const expected = 48;
+    const expected = 96;
     expect(actual).toBe(expected);
   });
 
   test('convert time index to string', () => {
     for (let hour = 0; hour < 24; hour += 1) {
       const doubleDigitTime: string = `0${hour % 24}`.slice(-2);
-      expect(convertIndexToTime(hour * 2)).toBe(`${doubleDigitTime}00`);
-      expect(convertIndexToTime(hour * 2 + 1)).toBe(`${doubleDigitTime}30`);
+      expect(convertIndexToTime(hour * 4)).toBe(`${doubleDigitTime}00`);
+      expect(convertIndexToTime(hour * 4 + 1)).toBe(`${doubleDigitTime}15`);
+      expect(convertIndexToTime(hour * 4 + 2)).toBe(`${doubleDigitTime}30`);
+      expect(convertIndexToTime(hour * 4 + 3)).toBe(`${doubleDigitTime}45`);
     }
   });
 });
