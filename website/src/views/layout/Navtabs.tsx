@@ -8,6 +8,7 @@ import {
   Clock,
   Heart,
   Map,
+  Navigation,
   Settings,
   Star,
   Target,
@@ -64,6 +65,10 @@ const Navtabs: FC = () => {
       <NavLink {...tabProps} className={classnames(tabProps.className)} to="/planner">
         <Trello />
         <span className={styles.title}>Planner</span>
+      </NavLink>
+      <NavLink {...tabProps} to="/mobility">
+        <Navigation />
+        <span className={styles.title}>Mobility</span>
       </NavLink>
       <NavLink {...tabProps} to="/settings">
         <Settings />
