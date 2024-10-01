@@ -205,7 +205,7 @@ export const TimetableContainerComponent: FC = () => {
   const displayedCustom = importedCustom || customModules;
 
   const filledColors = useMemo(
-    () => fillColorMapping(displayedTimetable, colors, Object.keys(displayedCustom)),
+    () => fillColorMapping(displayedTimetable, colors, Object.keys(displayedCustom ?? {})),
     [colors, displayedTimetable, displayedCustom],
   );
 

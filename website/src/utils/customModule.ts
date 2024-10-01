@@ -127,9 +127,11 @@ export function serializeCustomModuleList(lessons: Lesson[]): string {
 // converts serialized week range e.g. n1-3,5,7-9 to [1, 2, 3, 5, 7, 8, 9]
 // converts week ranges to object with start, end, weekInterval and weeks
 function deserializeWeeks(serialized: string): Weeks {
-  if (serialized.startsWith('n')) {
+  const type = serialized[0];
+  const serializedWeeks = serialized.slice(1);
+  if (type === 'n') {
     const weeks: Weeks = [];
-    const parts = serialized.split(',');
+    const parts = serializedWeeks.split(',');
     parts.forEach((part) => {
       const [start, end] = part.split('-').map(Number);
       for (let i = start; i <= end; i++) {
@@ -137,8 +139,8 @@ function deserializeWeeks(serialized: string): Weeks {
       }
     });
     return weeks;
-  } else if (serialized.startsWith('d')) {
-    const parts = serialized.slice(1).split('|');
+  } else if (type === 'd') {
+    const parts = serializedWeeks.slice(1).split('|');
     return {
       start: parts[0],
       end: parts[1],
@@ -146,7 +148,7 @@ function deserializeWeeks(serialized: string): Weeks {
       weeks: parts[3] ? parts[3].split(',').map(Number) : undefined,
     } as WeekRange;
   } else {
-    throw new Error(`Invalid week range ${serialized}`);
+    throw new Error(`Invalid week range ${serializedWeeks}`);
   }
 }
 

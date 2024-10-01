@@ -174,6 +174,7 @@ export function setTimetable(
         validatedTimetable,
         colors,
         getState().timetables.hidden[TEMP_IMPORTED_SEM] || [],
+        getState().timetables.customModules[TEMP_IMPORTED_SEM] || [],
       ),
     );
   };
