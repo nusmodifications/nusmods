@@ -150,10 +150,8 @@ export const TimetableContainerComponent: FC = () => {
   const getModule = useSelector(getModuleCondensed);
   const modules = useSelector(({ moduleBank }: State) => moduleBank.modules);
   const activeSemester = useSelector(({ app }: State) => app.activeSemester);
-  const customModules = useSelector(({ timetables }: State) =>
-    timetables.customModules[activeSemester]
-      ? Object.keys(timetables.customModules[activeSemester])
-      : [],
+  const customModules = useSelector(
+    ({ timetables }: State) => timetables.customModules[activeSemester],
   );
 
   const location = useLocation();
@@ -162,7 +160,7 @@ export const TimetableContainerComponent: FC = () => {
   );
 
   const importedCustom = useMemo(
-    () => (semester && params.action ? deserializeCustom(location.search) : {}),
+    () => (semester && params.action ? deserializeCustom(location.search) : null),
     [semester, params.action, location.search],
   );
 
@@ -204,10 +202,11 @@ export const TimetableContainerComponent: FC = () => {
   }, [getModule, importedTimetable, modules, timetable]);
 
   const displayedTimetable = importedTimetable || timetable;
+  const displayedCustom = importedCustom || customModules;
 
   const filledColors = useMemo(
-    () => fillColorMapping(displayedTimetable, colors, customModules),
-    [colors, displayedTimetable, customModules],
+    () => fillColorMapping(displayedTimetable, colors, Object.keys(displayedCustom)),
+    [colors, displayedTimetable, displayedCustom],
   );
 
   const readOnly = displayedTimetable === importedTimetable;

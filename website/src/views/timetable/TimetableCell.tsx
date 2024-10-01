@@ -16,7 +16,7 @@ import {
 } from 'utils/timetables';
 import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip/Tooltip';
-import { removeCustomIdentifier } from 'utils/custom';
+import { removeCustomIdentifier } from 'utils/customModule';
 import styles from './TimetableCell.scss';
 
 type Props = {

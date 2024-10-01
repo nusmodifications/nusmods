@@ -5,7 +5,7 @@ import { SemTimetableConfig } from 'types/timetables';
 import { serializeTimetable } from 'utils/timetables';
 import config from 'config';
 import { CustomModuleLessonData } from 'types/reducers';
-import { serializeCustomModuleList } from 'utils/custom';
+import { serializeCustomModuleList } from 'utils/customModule';
 
 // IMPORTANT: Remember to update any route changes on the sitemap
 

@@ -26,7 +26,7 @@ import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip';
 import config from 'config';
 
-import { removeCustomIdentifier } from 'utils/custom';
+import { removeCustomIdentifier } from 'utils/customModule';
 import styles from './TimetableModulesTable.scss';
 import ModuleTombstone from './ModuleTombstone';
 import { moduleOrders } from './ModulesTableFooter';

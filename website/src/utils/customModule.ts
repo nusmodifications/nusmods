@@ -1,5 +1,5 @@
 import { castArray } from 'lodash';
-import { Module, Weeks, consumeWeeks } from 'types/modules';
+import { Module, WeekRange, Weeks, consumeWeeks } from 'types/modules';
 import { Lesson } from 'types/timetables';
 
 const CUSTOM_IDENTIFIER = 'CUSTOM';
@@ -74,17 +74,39 @@ export function createCustomModule(customModuleCode: string, title: string): Mod
   };
 }
 
+// For numeric weeks, convert to week ranges and prepend with "n", e.g. [1, 2, 3, 5, 7, 8, 9] to n1-3,5,7-9
+// For week ranges, convert object to | separated values prepended with "d"
 function serializeWeeks(weeks: Weeks): string {
-  // Custom modules do not support week ranges,
-  // only numeric weeks specified using the CustomModuleModalButtonGroup
-  return (
-    consumeWeeks(
-      weeks,
-      (numericWeeks) => numericWeeks.join(','),
-      () => {
-        throw new Error('Week ranges currently unsupported for custom modules');
-      },
-    ) ?? ''
+  return consumeWeeks(
+    weeks,
+    (numericWeeks) => {
+      const weekRanges: string[] = [];
+      let start = numericWeeks[0];
+      let end = start;
+      for (let i = 1; i < numericWeeks.length; i++) {
+        if (numericWeeks[i] === end + 1) {
+          end = numericWeeks[i];
+        } else {
+          if (start === end) {
+            weekRanges.push(start.toString());
+          } else {
+            weekRanges.push(`${start}-${end}`);
+          }
+          start = numericWeeks[i];
+          end = start;
+        }
+      }
+      if (start === end) {
+        weekRanges.push(start.toString());
+      } else {
+        weekRanges.push(`${start}-${end}`);
+      }
+      return `n${weekRanges.join(',')}`;
+    },
+    (weekRanges) =>
+      `d${weekRanges.start}|${weekRanges.end}|${weekRanges.weekInterval ?? ''}|${
+        weekRanges.weeks?.join(',') ?? ''
+      }`,
   );
 }
 
@@ -102,17 +124,30 @@ export function serializeCustomModuleList(lessons: Lesson[]): string {
   return lessons.map(serializeCustomModule).join(`${PRE_DELIMETER}${CUSTOM_MODULE_DELIMETER}`);
 }
 
-// converts serialized week range e.g. 1-3,5,7-9 to [1, 2, 3, 5, 7, 8, 9]
+// converts serialized week range e.g. n1-3,5,7-9 to [1, 2, 3, 5, 7, 8, 9]
+// converts week ranges to object with start, end, weekInterval and weeks
 function deserializeWeeks(serialized: string): Weeks {
-  const weeks: Weeks = [];
-  const parts = serialized.split(',');
-  parts.forEach((part) => {
-    const [start, end] = part.split('-').map(Number);
-    for (let i = start; i <= end; i++) {
-      weeks.push(i);
-    }
-  });
-  return weeks;
+  if (serialized.startsWith('n')) {
+    const weeks: Weeks = [];
+    const parts = serialized.split(',');
+    parts.forEach((part) => {
+      const [start, end] = part.split('-').map(Number);
+      for (let i = start; i <= end; i++) {
+        weeks.push(i);
+      }
+    });
+    return weeks;
+  } else if (serialized.startsWith('d')) {
+    const parts = serialized.slice(1).split('|');
+    return {
+      start: parts[0],
+      end: parts[1],
+      weekInterval: parts[2] ? Number(parts[2]) : undefined,
+      weeks: parts[3] ? parts[3].split(',').map(Number) : undefined,
+    } as WeekRange;
+  } else {
+    throw new Error(`Invalid week range ${serialized}`);
+  }
 }
 
 function deserializeCustomModule(serialized: string): Lesson {

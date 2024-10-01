@@ -50,7 +50,7 @@ import { ExamClashes } from 'types/views';
 import { getTimeAsDate } from './timify';
 import { getModuleTimetable, getExamDate, getExamDuration } from './modules';
 import { deltas } from './array';
-import { deserializeCustomModuleList } from './custom';
+import { deserializeCustomModuleList } from './customModule';
 
 type lessonTypeAbbrev = { [lessonType: string]: string };
 export const LESSON_TYPE_ABBREV: lessonTypeAbbrev = {

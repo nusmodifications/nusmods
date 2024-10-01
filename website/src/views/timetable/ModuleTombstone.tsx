@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { undo } from 'actions/undoHistory';
 import { Module } from 'types/modules';
-import { removeCustomIdentifier } from 'utils/custom';
+import { removeCustomIdentifier } from 'utils/customModule';
 import styles from './TimetableModulesTable.scss';
 
 export type Props = {

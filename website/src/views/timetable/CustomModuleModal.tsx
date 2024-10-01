@@ -5,7 +5,7 @@ import Modal from 'views/components/Modal';
 import { ModuleCode, NumericWeeks, Semester, Semesters } from 'types/modules';
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
 import { Lesson, ModifiableLesson } from 'types/timetables';
-import { appendCustomIdentifier, removeCustomIdentifier } from 'utils/custom';
+import { appendCustomIdentifier, removeCustomIdentifier } from 'utils/customModule';
 import { SCHOOLDAYS, getLessonTimeHours, getLessonTimeMinutes } from 'utils/timify';
 import { noop } from 'lodash';
 import classNames from 'classnames';

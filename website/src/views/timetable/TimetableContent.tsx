@@ -57,7 +57,7 @@ import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ModRegNotification from 'views/components/notfications/ModRegNotification';
 import { State as StoreState } from 'types/state';
 import { TombstoneModule } from 'types/views';
-import { createCustomModule } from 'utils/custom';
+import { createCustomModule } from 'utils/customModule';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
