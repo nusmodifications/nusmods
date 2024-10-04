@@ -42,6 +42,7 @@ const isSpecialTerm = (semester: Semester) => semester >= 3;
 const getDefaultWeeks = (semester: Semester): Weeks => {
   if (!isSpecialTerm(semester)) return Array.from({ length: 13 }, (_, i) => i + 1);
 
+  // Convert shortened AY to full e.g. 24/25 to 2024/2025
   const year = NUSModerator.academicCalendar
     .getAcadYear(new Date())
     .year.split('/')
@@ -303,6 +304,8 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
   renderWeekSelector(semester: Semester, weekErrors: string) {
     if (!Semesters.includes(semester)) throw new Error('Invalid semester');
 
+    const { weeks } = this.state.lessonData;
+
     if (!isSpecialTerm(semester)) {
       return (
         <>
@@ -310,7 +313,9 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
           <br />
           <CustomModuleModalButtonGroup
             options={getDefaultWeeks(this.props.semester) as NumericWeeks}
-            defaultSelected={(getDefaultWeeks(this.props.semester) as NumericWeeks).map(() => true)} // Default to all weeks
+            defaultSelected={(getDefaultWeeks(this.props.semester) as NumericWeeks).map((v) =>
+              (weeks as NumericWeeks).includes(v),
+            )} // Default to all weeks
             onChange={(weeksNumArr) => this.setLessonStateViaSelect({ weeks: weeksNumArr })}
             error={weekErrors}
           />
@@ -323,7 +328,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
           <label htmlFor="select-weeks">Weeks</label>
           <br />
           <CustomModuleModalWeekRangeSelector
-            defaultWeekRange={getDefaultWeeks(this.props.semester) as WeekRange}
+            defaultWeekRange={(weeks ? weeks : getDefaultWeeks(this.props.semester)) as WeekRange}
             onChange={(weeks) => this.setLessonStateViaSelect({ weeks })}
             error={weekErrors}
           />

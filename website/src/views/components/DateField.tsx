@@ -20,7 +20,7 @@ const DateField: React.FC<CustomModuleModalWeekRangeSelectorProps> = ({
   onChange,
 }) => {
   const [day, setDay] = useState(getDate(defaultDate).toString());
-  const [month, setMonth] = useState(getMonth(defaultDate).toString());
+  const [month, setMonth] = useState((getMonth(defaultDate) + 1).toString());
   const [year, setYear] = useState(getYear(defaultDate).toString());
 
   const [fullDate, setFullDate] = useState(defaultDate);
@@ -36,7 +36,7 @@ const DateField: React.FC<CustomModuleModalWeekRangeSelectorProps> = ({
       setFullDate(tmpDate);
     } else {
       setDay(getDate(fullDate).toString());
-      setMonth(getMonth(fullDate).toString());
+      setMonth((getMonth(fullDate) + 1).toString());
       setYear(getYear(fullDate).toString());
     }
   }, [day, month, year, fullDate]);
