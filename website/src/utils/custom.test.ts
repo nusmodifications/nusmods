@@ -1,4 +1,4 @@
-import { appendCustomIdentifier, removeCustomIdentifier, createCustomModule } from './custom';
+import { appendCustomIdentifier, removeCustomIdentifier, createCustomModule } from './customModule';
 
 test('appendCustomIdentifier should return the proper custom module code', () => {
   expect(appendCustomIdentifier('CS2030')).toEqual('CUSTOMCS2030');

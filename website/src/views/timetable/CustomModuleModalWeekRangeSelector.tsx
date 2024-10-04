@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React, { useCallback, useEffect, useState } from 'react';
-import styles from './CustomModuleModalWeekRangeSelector.scss';
 import { WeekRange } from 'types/modules';
 import DateField from 'views/components/DateField';
 import { parseISO } from 'date-fns';
+import styles from './CustomModuleModalWeekRangeSelector.scss';
 
 interface CustomModuleModalWeekRangeSelectorProps {
   defaultWeekRange: WeekRange;
@@ -17,6 +17,9 @@ const CustomModuleModalWeekRangeSelector: React.FC<CustomModuleModalWeekRangeSel
   error,
 }) => {
   const [weekRange, setWeekRange] = useState<WeekRange>(defaultWeekRange);
+  const [displayedInterval, setDisplayedInterval] = useState<string>(
+    defaultWeekRange.weekInterval?.toString() ?? '1',
+  );
 
   const updateParent = useCallback(() => {
     onChange(weekRange);
@@ -47,20 +50,21 @@ const CustomModuleModalWeekRangeSelector: React.FC<CustomModuleModalWeekRangeSel
         <div className={classNames(styles.column, styles.intervalInput)}>
           <input
             // Set the default empty string to show 1 week interval
-            onBlur={(e) => {
-              if (weekRange.weekInterval === undefined) e.target.value = '1';
+            onBlur={() => {
+              if (weekRange.weekInterval === undefined) setDisplayedInterval('1');
             }}
             onChange={(e) => {
               if (e.target.value.length === 0) {
                 setWeekRange({ ...weekRange, weekInterval: undefined });
+                setDisplayedInterval('');
               } else if (/^\d+$/.test(e.target.value)) {
-                const value = parseInt(e.target.value);
+                const value = parseInt(e.target.value, 10);
+                setDisplayedInterval(e.target.value);
                 setWeekRange({ ...weekRange, weekInterval: value === 1 ? undefined : value });
               }
             }}
             className="form-control"
-            defaultValue="1"
-            value={weekRange.weekInterval?.toString()}
+            value={displayedInterval}
             required
           />
         </div>

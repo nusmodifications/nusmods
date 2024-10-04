@@ -6,9 +6,9 @@ import React, {
   ChangeEventHandler,
   InputHTMLAttributes,
 } from 'react';
-import styles from './DateField.scss';
 import { getDate, getMonth, getYear, isValid, parse } from 'date-fns';
 import classNames from 'classnames';
+import styles from './DateField.scss';
 
 interface CustomModuleModalWeekRangeSelectorProps {
   defaultDate?: Date;
@@ -44,10 +44,11 @@ const DateField: React.FC<CustomModuleModalWeekRangeSelectorProps> = ({
   // Update parent component when date changes
   useEffect(() => {
     onChange(fullDate);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fullDate]);
 
   const handleDayChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const value = e.target.value;
+    const { value } = e.target;
     if (/^\d{0,2}$/.test(value)) {
       setDay(value);
 
@@ -58,7 +59,7 @@ const DateField: React.FC<CustomModuleModalWeekRangeSelectorProps> = ({
   };
 
   const handleMonthChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const value = e.target.value;
+    const { value } = e.target;
     if (/^\d{0,2}$/.test(value)) {
       setMonth(value);
 
@@ -69,7 +70,7 @@ const DateField: React.FC<CustomModuleModalWeekRangeSelectorProps> = ({
   };
 
   const handleYearChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const value = e.target.value;
+    const { value } = e.target;
     if (/^\d{0,4}$/.test(value)) {
       setYear(value);
     }
@@ -91,6 +92,7 @@ const DateField: React.FC<CustomModuleModalWeekRangeSelectorProps> = ({
     if (numFieldFocus === 0) {
       resetToLastValid();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [numFieldFocus]);
 
   return (

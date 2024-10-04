@@ -10,14 +10,14 @@ import { SCHOOLDAYS, getLessonTimeHours, getLessonTimeMinutes } from 'utils/timi
 import { noop } from 'lodash';
 import classNames from 'classnames';
 import academicCalendarJSON from 'data/academic-calendar';
+import { addWeeks, parse, parseISO } from 'date-fns';
+import NUSModerator from 'nusmoderator';
 import TimetableCell from './TimetableCell';
 import styles from './CustomModuleModal.scss';
 import CustomModuleModalDropdown from './CustomModuleModalDropdown';
 import CustomModuleModalButtonGroup from './CustomModuleModalButtonGroup';
 import CustomModuleModalField from './CustomModuleModalField';
 import CustomModuleModalWeekRangeSelector from './CustomModuleModalWeekRangeSelector';
-import { addWeeks, parse, parseISO } from 'date-fns';
-import NUSModerator from 'nusmoderator';
 
 export type Props = {
   customLessonData?: Lesson;
@@ -46,7 +46,7 @@ const getDefaultWeeks = (semester: Semester): Weeks => {
   const year = NUSModerator.academicCalendar
     .getAcadYear(new Date())
     .year.split('/')
-    .map((x) => '20' + x)
+    .map((x) => `20${x}`)
     .join('/');
 
   const semStart = parse(
@@ -137,10 +137,8 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
       if (end < start) {
         errors.weeks = 'End date must be after start date';
       }
-    } else {
-      if ((weeks as NumericWeeks).length === 0) {
-        errors.weeks = 'Weeks are required. Select all to indicate every week';
-      }
+    } else if ((weeks as NumericWeeks).length === 0) {
+      errors.weeks = 'Weeks are required. Select all to indicate every week';
     }
 
     const timeDifferenceInMinutes =
@@ -321,20 +319,20 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
           />
         </>
       );
-    } else {
-      // Special term displays start/end date with week interval
-      return (
-        <>
-          <label htmlFor="select-weeks">Weeks</label>
-          <br />
-          <CustomModuleModalWeekRangeSelector
-            defaultWeekRange={(weeks ? weeks : getDefaultWeeks(this.props.semester)) as WeekRange}
-            onChange={(weeks) => this.setLessonStateViaSelect({ weeks })}
-            error={weekErrors}
-          />
-        </>
-      );
     }
+
+    // Special term displays start/end date with week interval
+    return (
+      <>
+        <label htmlFor="select-weeks">Weeks</label>
+        <br />
+        <CustomModuleModalWeekRangeSelector
+          defaultWeekRange={(weeks ?? getDefaultWeeks(this.props.semester)) as WeekRange}
+          onChange={(updatedWeeks) => this.setLessonStateViaSelect({ weeks: updatedWeeks })}
+          error={weekErrors}
+        />
+      </>
+    );
   }
 
   renderInputFields() {

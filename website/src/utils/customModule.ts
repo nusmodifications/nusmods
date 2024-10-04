@@ -136,16 +136,18 @@ function deserializeWeeks(serialized: string): Weeks {
       }
     });
     return weeks;
-  } else if (type === 'd') {
+  }
+
+  if (type === 'd') {
     const parts = serializedWeeks.split('|');
     return {
       start: parts[0],
       end: parts[1],
       weekInterval: parts[2] ? Number(parts[2]) : undefined,
     } as WeekRange;
-  } else {
-    throw new Error(`Invalid week range ${serializedWeeks}`);
   }
+
+  throw new Error(`Invalid week range ${serializedWeeks}`);
 }
 
 function deserializeCustomModule(serialized: string): Lesson {
