@@ -1,0 +1,37 @@
+@import '~styles/utils/modules-entry.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+
+  .row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;
+
+    p {
+      margin: 0;
+    }
+
+    input {
+      text-align: center;
+    }
+  }
+
+  .intervalInput {
+    input {
+      width: 3rem;
+    }
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.errorLabel {
+  margin: 0;
+  color: red;
+}

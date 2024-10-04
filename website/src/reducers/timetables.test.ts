@@ -1,4 +1,4 @@
-import { PersistConfig } from 'redux-persist/es/types';
+import config from 'config';
 import reducer, { defaultTimetableState, persistConfig } from 'reducers/timetables';
 import {
   ADD_MODULE,
@@ -8,11 +8,15 @@ import {
   setLessonConfig,
   showLessonInTimetable,
   setHiddenImported,
-  HIDDEN_IMPORTED_SEM,
+  TEMP_IMPORTED_SEM,
   Internal,
+  addCustomModule,
+  modifyCustomModule,
+  deleteCustomModule,
 } from 'actions/timetables';
 import { TimetablesState } from 'types/reducers';
-import config from 'config';
+import { PersistConfig } from 'redux-persist/es/types';
+import { CustomModuleLesson } from 'types/timetables';
 
 const initialState = defaultTimetableState;
 
@@ -73,6 +77,7 @@ describe('color reducers', () => {
           timetable: { CS1010S: {} },
           colors: { CS1010S: 0 },
           hiddenModules: [],
+          customModules: {},
         },
       }).colors[1],
     ).toEqual({
@@ -120,6 +125,70 @@ describe('hidden module reducer', () => {
         [1]: [],
         [2]: ['CS1010S'],
       },
+    });
+  });
+});
+
+describe('custom modules reducer', () => {
+  const lesson: CustomModuleLesson = {
+    classNo: '01',
+    day: 'Monday',
+    startTime: '0800',
+    endTime: '0900',
+    lessonType: 'Lecture',
+    venue: 'COM1-0330',
+    moduleCode: 'CS1101S',
+    title: 'Programming Methodology',
+    isCustom: true,
+    weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+  };
+  test('should allow new custom modules', () => {
+    expect(reducer(initialState, addCustomModule(1, 'CS1101S', lesson))).toMatchObject({
+      customModules: {
+        '1': {
+          CS1101S: lesson,
+        },
+      },
+    });
+  });
+
+  test('should allow changing of custom modules', () => {
+    expect(
+      reducer(
+        {
+          ...initialState,
+          customModules: {
+            '1': {
+              CS1101S: lesson,
+            },
+          },
+        },
+        modifyCustomModule(1, 'CS1101S', 'CS2030', lesson),
+      ),
+    ).toMatchObject({
+      customModules: {
+        '1': {
+          CS2030: lesson,
+        },
+      },
+    });
+  });
+
+  test('should allow changing of custom modules', () => {
+    expect(
+      reducer(
+        {
+          ...initialState,
+          customModules: {
+            '1': {
+              CS1101S: lesson,
+            },
+          },
+        },
+        deleteCustomModule(1, 'CS1101S'),
+      ),
+    ).toMatchObject({
+      customModules: {},
     });
   });
 });
@@ -215,6 +284,7 @@ describe('stateReconciler', () => {
     },
     academicYear: config.academicYear,
     archive: oldArchive,
+    customModules: {},
   };
 
   const { stateReconciler } = persistConfig;
@@ -251,7 +321,7 @@ describe('stateReconciler', () => {
 describe('import timetable', () => {
   test('should have hidden modules set when importing hidden', () => {
     expect(reducer(initialState, setHiddenImported(['CS1101S', 'CS1231S'])).hidden).toMatchObject({
-      [HIDDEN_IMPORTED_SEM]: ['CS1101S', 'CS1231S'],
+      [TEMP_IMPORTED_SEM]: ['CS1101S', 'CS1231S'],
     });
 
     // Should change hidden modules when a new set of modules is imported
@@ -260,13 +330,13 @@ describe('import timetable', () => {
         {
           ...initialState,
           hidden: {
-            [HIDDEN_IMPORTED_SEM]: ['CS1101S', 'CS1231S'],
+            [TEMP_IMPORTED_SEM]: ['CS1101S', 'CS1231S'],
           },
         },
         setHiddenImported(['CS2100', 'CS2103T']),
       ).hidden,
     ).toMatchObject({
-      [HIDDEN_IMPORTED_SEM]: ['CS2100', 'CS2103T'],
+      [TEMP_IMPORTED_SEM]: ['CS2100', 'CS2103T'],
     });
 
     // should delete hidden modules when there are none
@@ -275,13 +345,13 @@ describe('import timetable', () => {
         {
           ...initialState,
           hidden: {
-            [HIDDEN_IMPORTED_SEM]: ['CS1101S', 'CS1231S'],
+            [TEMP_IMPORTED_SEM]: ['CS1101S', 'CS1231S'],
           },
         },
         setHiddenImported([]),
       ).hidden,
     ).toMatchObject({
-      [HIDDEN_IMPORTED_SEM]: [],
+      [TEMP_IMPORTED_SEM]: [],
     });
   });
 
@@ -291,7 +361,7 @@ describe('import timetable', () => {
         {
           ...initialState,
           hidden: {
-            [HIDDEN_IMPORTED_SEM]: ['CS1101S', 'CS1231S'],
+            [TEMP_IMPORTED_SEM]: ['CS1101S', 'CS1231S'],
           },
         },
         Internal.setTimetable(1, {}, {}, ['CS1101S', 'CS1231S']),
