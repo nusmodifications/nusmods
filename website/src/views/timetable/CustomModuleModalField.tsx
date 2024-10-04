@@ -5,9 +5,9 @@ import styles from './CustomModuleModalField.scss';
 interface CustomModuleModalFieldProps {
   id: string;
   defaultValue?: string;
-  label: string;
-  errors: Record<string, string>;
-  setLessonStateViaInput: (e: ChangeEvent<HTMLInputElement>) => void;
+  label?: string;
+  errors?: Record<string, string>;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const CustomModuleModalField: React.FC<CustomModuleModalFieldProps> = ({
@@ -15,25 +15,25 @@ const CustomModuleModalField: React.FC<CustomModuleModalFieldProps> = ({
   errors,
   label,
   defaultValue,
-  setLessonStateViaInput,
+  onChange,
 }) => (
   <>
-    <label htmlFor={`select-${id}`}>{label}</label>
+    {label && <label htmlFor={`select-${id}`}>{label}</label>}
     <input
       id={`select-${id}`}
       name={id}
       onChange={(e) => {
-        setLessonStateViaInput(e);
+        onChange(e);
       }}
       className={classNames(
         styles.inputField,
         'form-control',
-        `${errors[id] ? 'alert alert-danger' : ''}`,
+        `${errors && errors[id] ? 'alert alert-danger' : ''}`,
       )}
       defaultValue={defaultValue ?? ''}
       required
     />
-    <small className={styles.errorLabel}>{errors[id] ?? ''}</small>
+    {errors && <small className={styles.errorLabel}>{errors[id] ?? ''}</small>}
   </>
 );
 export default CustomModuleModalField;

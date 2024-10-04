@@ -103,10 +103,7 @@ function serializeWeeks(weeks: Weeks): string {
       }
       return `n${weekRanges.join(',')}`;
     },
-    (weekRanges) =>
-      `d${weekRanges.start}|${weekRanges.end}|${weekRanges.weekInterval ?? ''}|${
-        weekRanges.weeks?.join(',') ?? ''
-      }`,
+    (weekRanges) => `d${weekRanges.start}|${weekRanges.end}|${weekRanges.weekInterval ?? ''}`,
   );
 }
 
@@ -140,12 +137,11 @@ function deserializeWeeks(serialized: string): Weeks {
     });
     return weeks;
   } else if (type === 'd') {
-    const parts = serializedWeeks.slice(1).split('|');
+    const parts = serializedWeeks.split('|');
     return {
       start: parts[0],
       end: parts[1],
       weekInterval: parts[2] ? Number(parts[2]) : undefined,
-      weeks: parts[3] ? parts[3].split(',').map(Number) : undefined,
     } as WeekRange;
   } else {
     throw new Error(`Invalid week range ${serializedWeeks}`);

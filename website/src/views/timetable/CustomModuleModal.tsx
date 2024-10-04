@@ -2,18 +2,22 @@ import * as React from 'react';
 
 import CloseButton from 'views/components/CloseButton';
 import Modal from 'views/components/Modal';
-import { ModuleCode, NumericWeeks, Semester, Semesters } from 'types/modules';
+import { ModuleCode, NumericWeeks, Semester, Semesters, WeekRange, Weeks } from 'types/modules';
 import { LESSON_TYPE_ABBREV } from 'utils/timetables';
 import { Lesson, ModifiableLesson } from 'types/timetables';
 import { appendCustomIdentifier, removeCustomIdentifier } from 'utils/customModule';
 import { SCHOOLDAYS, getLessonTimeHours, getLessonTimeMinutes } from 'utils/timify';
 import { noop } from 'lodash';
 import classNames from 'classnames';
+import academicCalendarJSON from 'data/academic-calendar';
 import TimetableCell from './TimetableCell';
 import styles from './CustomModuleModal.scss';
 import CustomModuleModalDropdown from './CustomModuleModalDropdown';
 import CustomModuleModalButtonGroup from './CustomModuleModalButtonGroup';
 import CustomModuleModalField from './CustomModuleModalField';
+import CustomModuleModalWeekRangeSelector from './CustomModuleModalWeekRangeSelector';
+import { addWeeks, parse, parseISO } from 'date-fns';
+import NUSModerator from 'nusmoderator';
 
 export type Props = {
   customLessonData?: Lesson;
@@ -33,12 +37,27 @@ type State = {
 const MINIMUM_CUSTOM_MODULE_DURATION_MINUTES = 60;
 const INTERVAL_IN_MINUTES = 30;
 
-const getPossibleWeeks = (semester: Semester) => {
-  if (!Semesters.includes(semester)) throw new Error('Invalid semester');
+const isSpecialTerm = (semester: Semester) => semester >= 3;
 
-  const numberOfWeeks = semester < 3 ? 13 : 6;
+const getDefaultWeeks = (semester: Semester): Weeks => {
+  if (!isSpecialTerm(semester)) return Array.from({ length: 13 }, (_, i) => i + 1);
 
-  return Array.from({ length: numberOfWeeks }, (_, i) => i + 1);
+  const year = NUSModerator.academicCalendar
+    .getAcadYear(new Date())
+    .year.split('/')
+    .map((x) => '20' + x)
+    .join('/');
+
+  const semStart = parse(
+    academicCalendarJSON[year][semester].start.join('-'),
+    'yyyy-MM-dd',
+    new Date(),
+  );
+  const semEnd = addWeeks(semStart, 6);
+  return {
+    start: semStart.toISOString(),
+    end: semEnd.toISOString(),
+  };
 };
 
 export default class CustomModuleModal extends React.PureComponent<Props, State> {
@@ -54,7 +73,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     endTime: '0900',
     classNo: '',
     isCustom: true,
-    weeks: getPossibleWeeks(this.props.semester),
+    weeks: getDefaultWeeks(this.props.semester),
   };
 
   override state: State = {
@@ -79,7 +98,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     return null;
   };
 
-  setLessonStateViaSelect = (keyValue: { [key: string]: string | number[] }) => {
+  setLessonStateViaSelect = (keyValue: { [key: string]: string | Weeks }) => {
     const newState: State = {
       ...this.state,
       lessonData: {
@@ -109,8 +128,18 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
       errors.classNo = 'Class number is required';
     }
 
-    if ((weeks as NumericWeeks).length === 0) {
-      errors.weeks = 'Weeks are required. Select all to indicate every week';
+    if (isSpecialTerm(this.props.semester)) {
+      const weekRange = weeks as WeekRange;
+      const start = parseISO(weekRange.start);
+      const end = parseISO(weekRange.end);
+
+      if (end < start) {
+        errors.weeks = 'End date must be after start date';
+      }
+    } else {
+      if ((weeks as NumericWeeks).length === 0) {
+        errors.weeks = 'Weeks are required. Select all to indicate every week';
+      }
     }
 
     const timeDifferenceInMinutes =
@@ -271,6 +300,38 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     );
   }
 
+  renderWeekSelector(semester: Semester, weekErrors: string) {
+    if (!Semesters.includes(semester)) throw new Error('Invalid semester');
+
+    if (!isSpecialTerm(semester)) {
+      return (
+        <>
+          <label htmlFor="select-weeks">Weeks</label>
+          <br />
+          <CustomModuleModalButtonGroup
+            options={getDefaultWeeks(this.props.semester) as NumericWeeks}
+            defaultSelected={(getDefaultWeeks(this.props.semester) as NumericWeeks).map(() => true)} // Default to all weeks
+            onChange={(weeksNumArr) => this.setLessonStateViaSelect({ weeks: weeksNumArr })}
+            error={weekErrors}
+          />
+        </>
+      );
+    } else {
+      // Special term displays start/end date with week interval
+      return (
+        <>
+          <label htmlFor="select-weeks">Weeks</label>
+          <br />
+          <CustomModuleModalWeekRangeSelector
+            defaultWeekRange={getDefaultWeeks(this.props.semester) as WeekRange}
+            onChange={(weeks) => this.setLessonStateViaSelect({ weeks })}
+            error={weekErrors}
+          />
+        </>
+      );
+    }
+  }
+
   renderInputFields() {
     const { moduleCode, title, classNo } = this.state.lessonData;
     const errors = this.state.isSubmitting ? this.getValidationErrors() : {};
@@ -284,7 +345,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
               label="Module Code"
               errors={errors}
               defaultValue={moduleCode}
-              setLessonStateViaInput={(e) => this.setLessonStateViaInput(e)}
+              onChange={(e) => this.setLessonStateViaInput(e)}
             />
           </div>
           <div className={styles.column}>
@@ -293,7 +354,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
               label="Title"
               errors={errors}
               defaultValue={title}
-              setLessonStateViaInput={this.setLessonStateViaInput}
+              onChange={this.setLessonStateViaInput}
             />
           </div>
         </div>
@@ -304,7 +365,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
               label="Class Number"
               errors={errors}
               defaultValue={classNo || ''}
-              setLessonStateViaInput={this.setLessonStateViaInput}
+              onChange={this.setLessonStateViaInput}
             />
           </div>
           <div className={styles.column}>
@@ -326,7 +387,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
               label="Venue"
               errors={errors}
               defaultValue={this.DEFAULT_LESSON_STATE.venue}
-              setLessonStateViaInput={this.setLessonStateViaInput}
+              onChange={this.setLessonStateViaInput}
             />
           </div>
         </div>
@@ -358,14 +419,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
         </div>
         <div className={styles.row}>
           <div className={classNames(styles.weeksContainer, styles.column)}>
-            <label htmlFor="select-weeks">Weeks</label>
-            <br />
-            <CustomModuleModalButtonGroup
-              options={getPossibleWeeks(this.props.semester)}
-              defaultSelected={getPossibleWeeks(this.props.semester).map(() => true)} // Default to all weeks
-              onChange={(weeksNumArr) => this.setLessonStateViaSelect({ weeks: weeksNumArr })}
-              error={errors.weeks}
-            />
+            {this.renderWeekSelector(this.props.semester, errors.weeks)}
           </div>
         </div>
         <div className={styles.row}>
