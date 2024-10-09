@@ -343,7 +343,7 @@ describe(mapStateToProps, () => {
 
 describe(mapStateToProps, () => {
   test('should use correct semester (test 4)', () => {
-    // On week -1 of special term I, it should be sem2 
+    // On week -1 of special term I, it should be sem2
     const ownProps: any = {
       currentTime: new Date('2025-05-11T00:00:00.000Z'),
     };

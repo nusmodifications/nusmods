@@ -18,7 +18,7 @@ import {
   sample,
   values,
 } from 'lodash';
-import { addDays, min as minDate, parseISO, startOfDay, } from 'date-fns';
+import { addDays, min as minDate, parseISO, startOfDay } from 'date-fns';
 import qs from 'query-string';
 
 import {
