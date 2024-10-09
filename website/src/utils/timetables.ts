@@ -18,7 +18,7 @@ import {
   sample,
   values,
 } from 'lodash';
-import { addDays, min as minDate, parseISO } from 'date-fns';
+import { addDays, min as minDate, parseISO, startOfDay, } from 'date-fns';
 import qs from 'query-string';
 
 import {
@@ -360,7 +360,7 @@ export function isLessonAvailable(
     (weekRange) => {
       const end = minDate([parseISO(weekRange.end), date]);
       for (let current = parseISO(weekRange.start); current <= end; current = addDays(current, 7)) {
-        if (isEqual(current, date)) return true;
+        if (isEqual(current, startOfDay(date))) return true;
       }
 
       return false;
