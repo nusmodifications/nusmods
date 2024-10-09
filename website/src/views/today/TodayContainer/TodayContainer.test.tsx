@@ -251,7 +251,7 @@ describe(TodayContainerComponent, () => {
 });
 
 describe(mapStateToProps, () => {
-  test('should use correct semester', () => {
+  test('should use correct semester (test 1, special case)', () => {
     // On week -1 of sem 2 the semester should be 2, not 1
     const ownProps: any = {
       // Week -1 of sem 2 of AY2018/2019
@@ -278,5 +278,125 @@ describe(mapStateToProps, () => {
 
     // Should return sem 2 timetable, not sem 1
     expect(mapStateToProps(state, ownProps).timetableWithLessons).toHaveProperty('CS1010S');
+  });
+});
+
+describe(mapStateToProps, () => {
+  test('should use correct semester (test 2)', () => {
+    // On week -1 of orientation week, it should be special term II
+    const ownProps: any = {
+      currentTime: new Date('2024-08-04T00:00:00.000Z'),
+    };
+
+    const state: any = {
+      moduleBank: { modules: {} },
+      timetables: {
+        lessons: {
+          [4]: {
+            CS3216: {},
+          },
+          [1]: {
+            CS1010S: {},
+          },
+        },
+        colors: {
+          [4]: COLORS,
+          [1]: COLORS,
+        },
+      },
+    };
+
+    // Should return special term II timetable, not sem 1
+    expect(mapStateToProps(state, ownProps).timetableWithLessons).toHaveProperty('CS3216');
+  });
+});
+
+describe(mapStateToProps, () => {
+  test('should use correct semester (test 3)', () => {
+    // On orientation week, it should be sem1
+    const ownProps: any = {
+      currentTime: new Date('2024-08-05T00:00:00.000Z'),
+    };
+
+    const state: any = {
+      moduleBank: { modules: {} },
+      timetables: {
+        lessons: {
+          [4]: {
+            CS3216: {},
+          },
+          [1]: {
+            CS1010S: {},
+          },
+        },
+        colors: {
+          [4]: COLORS,
+          [1]: COLORS,
+        },
+      },
+    };
+
+    // Should return sem1 timetable
+    expect(mapStateToProps(state, ownProps).timetableWithLessons).toHaveProperty('CS1010S');
+  });
+});
+
+describe(mapStateToProps, () => {
+  test('should use correct semester (test 4)', () => {
+    // On week -1 of special term I, it should be sem2 
+    const ownProps: any = {
+      currentTime: new Date('2025-05-11T00:00:00.000Z'),
+    };
+
+    const state: any = {
+      moduleBank: { modules: {} },
+      timetables: {
+        lessons: {
+          [2]: {
+            CS3216: {},
+          },
+          [3]: {
+            CS1010S: {},
+          },
+        },
+        colors: {
+          [2]: COLORS,
+          [3]: COLORS,
+        },
+      },
+    };
+
+    // Should return sem2 timetable
+    expect(mapStateToProps(state, ownProps).timetableWithLessons).toHaveProperty('CS3216');
+  });
+});
+
+describe(mapStateToProps, () => {
+  test('should use correct semester (test 5)', () => {
+    // On week -1 of special term II, it should be special term I
+    const ownProps: any = {
+      currentTime: new Date('2025-06-22T00:00:00.000Z'),
+    };
+
+    const state: any = {
+      moduleBank: { modules: {} },
+      timetables: {
+        lessons: {
+          [3]: {
+            CS3216: {},
+          },
+          [4]: {
+            CS1010S: {},
+          },
+        },
+        colors: {
+          [3]: COLORS,
+          [4]: COLORS,
+        },
+      },
+    };
+
+    // Should return special term I timetable
+    expect(mapStateToProps(state, ownProps).timetableWithLessons).toHaveProperty('CS3216');
   });
 });

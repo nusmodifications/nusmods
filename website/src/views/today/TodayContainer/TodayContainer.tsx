@@ -53,8 +53,8 @@ const EMPTY_LESSONS: ColoredLesson[] = [];
 const semesterNameMap: Record<string, number> = {
   'Semester 1': 1,
   'Semester 2': 2,
-  'Special Sem 1': 3,
-  'Special Sem 2': 4,
+  'Special Term I': 3,
+  'Special Term II': 4,
 };
 
 export type OwnProps = TimerData;
@@ -349,7 +349,7 @@ export const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
   const { modules } = state.moduleBank;
 
   const lastDay = addDays(ownProps.currentTime, DAYS); // current date plus 7 days
-  const todayWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(new Date());
+  const todayWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(ownProps.currentTime);
   const nextWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(lastDay);
 
   var todaySemester = semesterNameMap[todayWeekInfo.sem];
