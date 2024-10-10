@@ -31,6 +31,7 @@ module.exports = {
           'return',
           'if',
           'else',
+          'use'
         ],
       },
     ],
