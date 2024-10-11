@@ -13,13 +13,14 @@ import { selectSemester } from 'actions/settings';
 import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
 import {
   fetchTimetableModules,
+  setCustomModulesFromImport,
   setHiddenModulesFromImport,
   setTimetable,
 } from 'actions/timetables';
 import { openNotification } from 'actions/app';
 import { undo } from 'actions/undoHistory';
 import { getModuleCondensed } from 'selectors/moduleBank';
-import { deserializeHidden, deserializeTimetable } from 'utils/timetables';
+import { deserializeCustom, deserializeHidden, deserializeTimetable } from 'utils/timetables';
 import { fillColorMapping } from 'utils/colors';
 import { semesterForTimetablePage, TIMETABLE_SHARE, timetablePage } from 'views/routes/paths';
 import deferComponentRender from 'views/hocs/deferComponentRender';
@@ -148,11 +149,19 @@ export const TimetableContainerComponent: FC = () => {
   const colors = useSelector(getSemesterTimetableColors)(semester);
   const getModule = useSelector(getModuleCondensed);
   const modules = useSelector(({ moduleBank }: State) => moduleBank.modules);
+  const customModules = useSelector(
+    ({ timetables }: State) => timetables.customModules[semester ?? ''],
+  );
   const activeSemester = useSelector(({ app }: State) => app.activeSemester);
 
   const location = useLocation();
   const [importedTimetable, setImportedTimetable] = useState(() =>
     semester && params.action ? deserializeTimetable(location.search) : null,
+  );
+
+  const importedCustom = useMemo(
+    () => (semester && params.action ? deserializeCustom(location.search) : null),
+    [semester, params.action, location.search],
   );
 
   const importedHidden = useMemo(
@@ -166,6 +175,12 @@ export const TimetableContainerComponent: FC = () => {
       dispatch(fetchTimetableModules([importedTimetable]));
     }
   }, [dispatch, importedTimetable]);
+
+  useEffect(() => {
+    if (importedCustom) {
+      dispatch(setCustomModulesFromImport(importedCustom));
+    }
+  }, [dispatch, importedCustom]);
 
   useEffect(() => {
     if (importedHidden) {
@@ -187,10 +202,13 @@ export const TimetableContainerComponent: FC = () => {
   }, [getModule, importedTimetable, modules, timetable]);
 
   const displayedTimetable = importedTimetable || timetable;
+  const displayedCustom = importedCustom || customModules;
+
   const filledColors = useMemo(
-    () => fillColorMapping(displayedTimetable, colors),
-    [colors, displayedTimetable],
+    () => fillColorMapping(displayedTimetable, colors, Object.keys(displayedCustom ?? {})),
+    [colors, displayedTimetable, displayedCustom],
   );
+
   const readOnly = displayedTimetable === importedTimetable;
 
   useScrollToTop();
