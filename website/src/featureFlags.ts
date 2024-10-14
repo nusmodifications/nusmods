@@ -10,4 +10,4 @@ export const enableShortUrl = false;
 /** Enable Course Planning Exercise */
 export const enableCPEx = true;
 
-export const showCPExTab = false;
+export const showCPExTab = true;
