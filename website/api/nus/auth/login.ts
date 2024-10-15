@@ -2,7 +2,6 @@ import { authenticate } from '../../../src/serverless/nus-auth';
 import {
   createRouteHandler,
   defaultFallback,
-  defaultRescue,
   Handler,
   MethodHandlers,
 } from '../../../src/serverless/handler';
@@ -33,8 +32,17 @@ const handlePost: Handler = async (req, res) => {
   }
 };
 
+// eslint-disable-next-line no-unused-vars
+const handleError: (error: Error) => Handler = (error) => async (_req, res) => {
+  res.status(500).json({
+    message:
+      'An unexpected error occurred. Please try clearing your browser cache and logging in again. Follow the NUS login page instructions carefully.',
+    error,
+  });
+};
+
 const methodHandlers: MethodHandlers = {
   POST: handlePost,
 };
 
-export default createRouteHandler(methodHandlers, defaultFallback, defaultRescue(true));
+export default createRouteHandler(methodHandlers, defaultFallback, handleError);
