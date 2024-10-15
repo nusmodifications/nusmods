@@ -40,7 +40,7 @@
   "rewrites": [
     {
       "source": "/api(/.*)?",
-      "destination": "https://api.cpex-staging.nusmods.com$1"
+      "destination": "https://cpex-staging.nusmods.com/api$1"
     }
   ],
   "redirects": [
