@@ -33,13 +33,12 @@ const handleGet: Handler = async (req, res) => {
       res.json({
         message: 'Request needs a referer',
       });
-    } else if (err.name === errors.failedSamlLogin) {
+    } else {
       res.json({
         message:
-          'Request failed to login. Login requires NUSID. Please see instructions on NUS VAFS page.',
+          'Request failed to login. Login requires NUSID. Please see instructions on NUS VAFS page. ' +
+          JSON.stringify(err),
       });
-    } else {
-      throw err;
     }
   }
 };
