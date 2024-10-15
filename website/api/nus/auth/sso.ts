@@ -25,17 +25,16 @@ const handleGet: Handler = async (req, res) => {
       throw new Error(errors.noCallbackUrl);
     }
 
-    res.send(
-      'An unexpected error occurred. Please ensure you follow the login instructions on the NUS login page',
-    );
-
-    // res.send(createLoginURL(callback));
+    res.json({ redirect: createLoginURL(callback) });
   } catch (err) {
-    console.log(err);
-
     if (err.message === errors.noCallbackUrl) {
-      res.json({
-        message: 'Request needs a referer',
+      res.status(422).json({
+        error: 'Request needs a referer',
+      });
+    } else {
+      res.status(500).json({
+        message:
+          'An unexpected error occurred. Please clear your browser cache and ensure you follow the login instructions on the NUS login page.',
       });
     }
   }

@@ -59,7 +59,7 @@ export const fetchMpeModuleList = (): Promise<MpeModule[]> =>
   // Using MPE_AY instead to fetch from the respective AY's scraper
   axios.get<MpeModule[]>(NUSModsApi.mpeModuleListUrl()).then((resp) => resp.data);
 
-export const getSSOLink = (): Promise<string> =>
+export const getSSOLink = (): Promise<{ error: string } | { redirect: string }> =>
   mpe
     .get(SSO_PATH, {
       params: { callback: window.location.href },

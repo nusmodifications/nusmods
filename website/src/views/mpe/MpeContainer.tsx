@@ -21,6 +21,7 @@ import styles from './MpeContainer.scss';
 const MpeContainer: React.FC = () => {
   const [isGettingSSOLink, setIsGettingSSOLink] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalErrorMessage, setModalErrorMessage] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(getLoginState(useLocation(), useHistory()));
 
   const ugCPEx = config.modRegSchedule.Undergraduate.find(
@@ -35,8 +36,14 @@ const MpeContainer: React.FC = () => {
   const onLogin = useCallback(() => {
     setIsGettingSSOLink(true);
     return getSSOLink()
-      .then((ssoLink) => {
-        window.location.href = ssoLink;
+      .then((res) => {
+        if ('error' in res) {
+          setModalErrorMessage(res.error);
+          setIsModalOpen(true);
+          setIsLoggedIn(false);
+        } else {
+          window.location.href = res.redirect;
+        }
       })
       .finally(() => {
         setIsGettingSSOLink(false);
@@ -46,6 +53,7 @@ const MpeContainer: React.FC = () => {
   const getSubmission = (): Promise<MpeSubmission> =>
     getMpeSubmission().catch((err) => {
       if (err instanceof MpeSessionExpiredError) {
+        setModalErrorMessage('Your session has expired. Please sign in again!');
         setIsModalOpen(true);
         setIsLoggedIn(false);
       }
@@ -55,6 +63,7 @@ const MpeContainer: React.FC = () => {
   const updateSubmission = (submission: MpeSubmission): Promise<void> =>
     updateMpeSubmission(submission).catch((err) => {
       if (err instanceof MpeSessionExpiredError) {
+        setModalErrorMessage('Your session has expired. Please sign in again!');
         setIsModalOpen(true);
         setIsLoggedIn(false);
       }
@@ -116,7 +125,7 @@ const MpeContainer: React.FC = () => {
             shouldCloseOnOverlayClick={false}
             animate
           >
-            <p>Your session has expired. Please sign in again!</p>
+            <p>{modalErrorMessage}</p>
             <button
               type="button"
               className={classnames('btn btn-outline-primary btn-svg', styles.ErrorButton)}
