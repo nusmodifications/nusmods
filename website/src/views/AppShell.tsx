@@ -1,7 +1,7 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import type { SemTimetableConfig } from 'types/timetables';
 import type { Semester } from 'types/modules';
-import { DARK_MODE } from 'types/settings';
+import { DARK_COLOR_SCHEME } from 'types/settings';
 
 import { Helmet } from 'react-helmet';
 import { NavLink, useHistory } from 'react-router-dom';
@@ -35,6 +35,7 @@ import FeedbackModal from './components/FeedbackModal';
 import KeyboardShortcuts from './components/KeyboardShortcuts';
 
 import styles from './AppShell.scss';
+import useColorScheme from './hooks/useColorScheme';
 
 /**
  * Fetch module list on mount.
@@ -65,7 +66,7 @@ function useFetchModuleListAndTimetableModules(): {
         .catch((error) => {
           captureException(error);
           dispatch(
-            openNotification('Data for some modules failed to load', {
+            openNotification('Data for some courses failed to load', {
               action: {
                 text: 'Retry',
                 handler: () => fetchTimetableModulesImpl(timetable, semester),
@@ -103,10 +104,8 @@ function useFetchModuleListAndTimetableModules(): {
 }
 
 const AppShell: FC = ({ children }) => {
-  const {
-    moduleListError,
-    refetchModuleListAndTimetableModules,
-  } = useFetchModuleListAndTimetableModules();
+  const { moduleListError, refetchModuleListAndTimetableModules } =
+    useFetchModuleListAndTimetableModules();
 
   // Enable Matomo analytics
   const history = useHistory();
@@ -115,13 +114,13 @@ const AppShell: FC = ({ children }) => {
   const moduleList = useSelector((state: State) => state.moduleBank.moduleList);
   const isModuleListReady = moduleList.length;
 
-  const mode = useSelector((state: State) => state.settings.mode);
-  const isDarkMode = mode === DARK_MODE;
+  const colorScheme = useColorScheme();
+  const isDarkMode = colorScheme === DARK_COLOR_SCHEME;
 
   const theme = useSelector((state: State) => state.theme.id);
 
   if (!isModuleListReady && moduleListError) {
-    return <ApiError dataName="module information" retry={refetchModuleListAndTimetableModules} />;
+    return <ApiError dataName="course information" retry={refetchModuleListAndTimetableModules} />;
   }
 
   return (

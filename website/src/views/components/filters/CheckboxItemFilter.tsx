@@ -24,14 +24,14 @@ type State = {};
  * queried items are distinct and mutually exclusive.
  */
 export default class CheckboxItemFilter extends SearchkitComponent<CheckboxItemFilterProps, State> {
-  accessor!: CheckboxFilterAccessor; // This typing is bad - this should really be optional
+  declare accessor: CheckboxFilterAccessor;
 
   static defaultProps = {
     showCount: true,
     disabled: false,
   };
 
-  defineAccessor() {
+  override defineAccessor() {
     const { id, translations, label, filter } = this.props;
     return new CheckboxFilterAccessor(id, {
       id,
@@ -47,7 +47,7 @@ export default class CheckboxItemFilter extends SearchkitComponent<CheckboxItemF
     this.searchkit.performSearch();
   };
 
-  render() {
+  override render() {
     // this.accessor's types are lying. It is in fact optional, but we can't make it that
     // because that would conflict with the parent class's types. Setting this.accessor
     // directly to defineAccessor() also does not work since SearchKit appears to only

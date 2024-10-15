@@ -2,11 +2,11 @@ import { PureComponent } from 'react';
 import classnames from 'classnames';
 import { flatMap, size, sortBy, toPairs, values } from 'lodash';
 
+import { Minus, Plus } from 'react-feather';
 import { ModuleCode, Semester } from 'types/modules';
 import { AddModuleData, PlannerModuleInfo } from 'types/planner';
 import config from 'config';
 import { getSemesterName, getTotalMC } from 'utils/planner';
-import { Minus, Plus } from 'react-feather';
 import { renderMCs } from 'utils/modules';
 import PlannerSemester from './PlannerSemester';
 import styles from './PlannerYear.scss';
@@ -20,6 +20,7 @@ type Props = Readonly<{
   removeModule: (id: string) => void;
   addCustomData: (moduleCode: ModuleCode) => void;
   setPlaceholderModule: (id: string, moduleCode: ModuleCode) => void;
+  addModuleToTimetable: (semester: Semester, module: ModuleCode) => void;
 }>;
 
 type State = {
@@ -27,7 +28,7 @@ type State = {
 };
 
 export default class PlannerYear extends PureComponent<Props, State> {
-  state = {
+  override state = {
     // Always display Special Terms I and II if either one has modules
     showSpecialSem: this.hasSpecialTermModules(),
   };
@@ -50,7 +51,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
         </h2>
         <div className={styles.yearMeta}>
           <p>
-            {count} {count === 1 ? 'module' : 'modules'}
+            {count} {count === 1 ? 'Course' : 'Courses'}
           </p>
           <p>{renderMCs(credits)}</p>
         </div>
@@ -58,7 +59,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
     );
   }
 
-  render() {
+  override render() {
     const { year, semesters } = this.props;
     const { showSpecialSem } = this.state;
 
@@ -92,6 +93,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
                 removeModule={this.props.removeModule}
                 addCustomData={this.props.addCustomData}
                 setPlaceholderModule={this.props.setPlaceholderModule}
+                addModuleToTimetable={this.props.addModuleToTimetable}
               />
             </div>
           ))}

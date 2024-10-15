@@ -1,5 +1,5 @@
 import fs from 'fs-extra';
-import puppeteer, { Page } from 'puppeteer';
+import puppeteer, { Page } from 'puppeteer-core';
 import type { Middleware } from 'koa';
 
 import { getModules } from './data';
@@ -25,14 +25,9 @@ async function setViewport(page: Page, options: ViewportOptions = {}) {
 
 export async function launch() {
   const browser = await puppeteer.launch({
+    headless: true,
     executablePath: config.chromeExecutable,
     devtools: !!process.env.DEVTOOLS,
-    args: [
-      '--headless',
-      '--disable-gpu',
-      '--disable-software-rasterizer',
-      '--disable-dev-shm-usage',
-    ],
   });
 
   const page = await browser.newPage();
@@ -106,7 +101,7 @@ export async function pdf(page: Page, data: PageData) {
 
   return await page.pdf({
     printBackground: true,
-    format: 'A4',
+    format: 'a4',
     landscape: data.theme.timetableOrientation === 'HORIZONTAL',
   });
 }

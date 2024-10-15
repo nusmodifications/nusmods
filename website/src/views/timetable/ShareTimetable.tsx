@@ -6,7 +6,7 @@ import { Copy, Mail, Repeat } from 'react-feather';
 import type { QRCodeProps } from 'react-qr-svg';
 
 import type { SemTimetableConfig } from 'types/timetables';
-import type { Semester } from 'types/modules';
+import type { ModuleCode, Semester } from 'types/modules';
 
 import config from 'config';
 import { enableShortUrl } from 'featureFlags';
@@ -26,6 +26,7 @@ const COPY_FAIL: CopyState = 'COPY_FAIL';
 type Props = {
   semester: Semester;
   timetable: SemTimetableConfig;
+  hiddenModules: ModuleCode[];
 };
 
 type State = {
@@ -34,8 +35,12 @@ type State = {
   shortUrl: string | null;
 };
 
-function shareUrl(semester: Semester, timetable: SemTimetableConfig): string {
-  return absolutePath(timetableShare(semester, timetable));
+function shareUrl(
+  semester: Semester,
+  timetable: SemTimetableConfig,
+  hiddenModules: ModuleCode[],
+): string {
+  return absolutePath(timetableShare(semester, timetable, hiddenModules));
 }
 
 // So that I don't keep typing 'shortUrl' instead
@@ -50,13 +55,13 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
 
   urlInput = React.createRef<HTMLInputElement>();
 
-  state: State = {
+  override state: State = {
     isOpen: false,
     urlCopied: NOT_COPIED,
     shortUrl: null,
   };
 
-  componentDidMount() {
+  override componentDidMount() {
     if (!ShareTimetable.QRCode) {
       retryImport(() => import(/* webpackChunkName: "export" */ 'react-qr-svg')).then((module) => {
         ShareTimetable.QRCode = module.QRCode;
@@ -66,8 +71,8 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
   }
 
   loadShortUrl = () => {
-    const { semester, timetable } = this.props;
-    const url = shareUrl(semester, timetable);
+    const { semester, timetable, hiddenModules } = this.props;
+    const url = shareUrl(semester, timetable, hiddenModules);
 
     // Don't do anything if the long URL has not changed
     if (this.url === url) return;
@@ -208,7 +213,7 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
     );
   }
 
-  render() {
+  override render() {
     const { isOpen, shortUrl } = this.state;
 
     return (

@@ -5,10 +5,10 @@
  * to enforce global concurrency limit on the number of requests made.
  */
 
+import { URL } from 'url';
 import axios from 'axios';
 import oboe from 'oboe';
 import Queue from 'promise-queue';
-import { URL } from 'url';
 
 import type {
   AcademicGrp,

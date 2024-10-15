@@ -1,36 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`settings should dispatch a select of a faculty value 1`] = `
-Object {
+{
   "payload": "Some faculty",
   "type": "SELECT_FACULTY",
 }
 `;
 
 exports[`settings should dispatch a select of a newStudent value 1`] = `
-Object {
+{
   "payload": false,
   "type": "SELECT_NEW_STUDENT",
 }
 `;
 
 exports[`settings should dispatch a select of a semester value 1`] = `
-Object {
+{
   "payload": 1,
   "type": "SELECT_SEMESTER",
 }
 `;
 
-exports[`settings should dispatch a selection of a mode 1`] = `
-Object {
-  "payload": "LIGHT",
-  "type": "SELECT_MODE",
-}
-`;
-
-exports[`settings should dispatch a toggle of a mode 1`] = `
-Object {
-  "payload": null,
-  "type": "TOGGLE_MODE",
+exports[`settings should dispatch a selection of a color scheme preference 1`] = `
+{
+  "payload": "LIGHT_COLOR_SCHEME_PREFERENCE",
+  "type": "SELECT_COLOR_SCHEME",
 }
 `;

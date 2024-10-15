@@ -1,11 +1,11 @@
 import { PureComponent } from 'react';
 import classnames from 'classnames';
 
+import { MapPin, Map as MapIcon } from 'react-feather';
 import { VenueLocation } from 'types/venues';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import ExternalLink from 'views/components/ExternalLink';
-import { MapPin, Map as MapIcon } from 'react-feather';
 
 import ImproveVenueForm from './ImproveVenueForm';
 import styles from './VenueLocation.scss';
@@ -24,7 +24,7 @@ type State = {
 };
 
 export default class FeedbackModal extends PureComponent<Props, State> {
-  state: State = {
+  override state: State = {
     page: 'menu',
   };
 
@@ -77,7 +77,7 @@ export default class FeedbackModal extends PureComponent<Props, State> {
     }
   }
 
-  render() {
+  override render() {
     const { isOpen } = this.props;
 
     return (

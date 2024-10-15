@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import { sortBy } from 'lodash';
 import produce from 'immer';
 
+import { Eye, EyeOff, Trash } from 'react-feather';
 import { ModuleWithColor, TombstoneModule } from 'types/views';
 import { ColorIndex } from 'types/timetables';
 import { ModuleCode, Semester } from 'types/modules';
@@ -12,7 +13,6 @@ import { State as StoreState } from 'types/state';
 import { ModuleTableOrder } from 'types/reducers';
 
 import ColorPicker from 'views/components/ColorPicker';
-import { Eye, EyeOff, Trash } from 'react-feather';
 import {
   hideLessonInTimetable,
   selectModuleColor,
@@ -55,7 +55,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
     return (
       <div className={styles.moduleActionButtons}>
         <div className="btn-group">
-          <Tooltip content={removeBtnLabel} touch="hold">
+          <Tooltip content={removeBtnLabel} touch={['hold', 50]}>
             <button
               type="button"
               className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
@@ -65,7 +65,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
               <Trash className={styles.actionIcon} />
             </button>
           </Tooltip>
-          <Tooltip content={hideBtnLabel} touch="hold">
+          <Tooltip content={hideBtnLabel} touch={['hold', 50]}>
             <button
               type="button"
               className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}

@@ -1,11 +1,11 @@
-import { DisqusConfig } from 'types/views';
 import { PureComponent } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
-import { Mode } from 'types/settings';
-import config from 'config';
 import { MessageSquare } from 'react-feather';
+import { ColorSchemePreference } from 'types/settings';
+import config from 'config';
+import { DisqusConfig } from 'types/views';
 import insertScript from 'utils/insertScript';
 import { getScriptErrorHandler } from 'utils/error';
 import { State as StoreState } from 'types/state';
@@ -15,7 +15,7 @@ type Props = DisqusConfig & {
   // Disqus autodetects page background color so that its own font color has
   // enough contrast to be read, but only when the widget is loaded, so we use
   // this to reload the widget after night mode is activated or deactivated
-  mode: Mode;
+  colorScheme: ColorSchemePreference;
 
   loadDisqusManually: boolean;
 };
@@ -27,19 +27,19 @@ type State = {
 const SCRIPT_ID = 'dsq-embed-scr';
 
 class DisqusComments extends PureComponent<Props, State> {
-  state = {
+  override state = {
     allowDisqus: false,
   };
 
-  componentDidMount() {
+  override componentDidMount() {
     this.loadInstance();
   }
 
-  componentDidUpdate(prevProps: Props) {
+  override componentDidUpdate(prevProps: Props) {
     // Wait a bit for the page colors to change before reloading instance
     // 2 second delay is found empirically, and is longer than necessary to
     // account for lag in slower user agents
-    if (prevProps.mode !== this.props.mode) {
+    if (prevProps.colorScheme !== this.props.colorScheme) {
       setTimeout(this.loadInstance, 2000);
     } else {
       this.loadInstance();
@@ -83,7 +83,7 @@ class DisqusComments extends PureComponent<Props, State> {
     };
   }
 
-  render() {
+  override render() {
     if (this.props.loadDisqusManually && !this.state.allowDisqus) {
       return (
         <div className="text-center">
@@ -105,5 +105,5 @@ class DisqusComments extends PureComponent<Props, State> {
 
 export default connect((state: StoreState) => ({
   loadDisqusManually: state.settings.loadDisqusManually,
-  mode: state.settings.mode,
+  colorScheme: state.settings.colorScheme,
 }))(DisqusComments);

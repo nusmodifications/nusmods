@@ -1,7 +1,7 @@
-const _ = require('lodash');
 const path = require('path');
-const fs = require('graceful-fs');
 const { URL } = require('url');
+const _ = require('lodash');
+const fs = require('graceful-fs');
 const axios = require('axios');
 const api = require('../src/apis/nusmods');
 
@@ -13,7 +13,7 @@ const relativeUrls = [
   '',
 
   // Basic pages
-  'modules',
+  'courses',
   'venues',
 
   // Static pages
@@ -37,7 +37,7 @@ const addDynamicPages = async (urls) => {
   const venues = _.uniq([...venues1, ...venues2]);
 
   modules.forEach((module) => {
-    urls.push(`modules/${module.moduleCode}/${_.kebabCase(module.title)}`);
+    urls.push(`courses/${module.moduleCode}/${_.kebabCase(module.title)}`);
   });
 
   venues.forEach((venue) => {

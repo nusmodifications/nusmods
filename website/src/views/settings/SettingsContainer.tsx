@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { isEqual } from 'lodash';
 
-import { Mode, ThemeId } from 'types/settings';
+import { ColorSchemePreference, ThemeId } from 'types/settings';
 import { Tracker } from 'types/vendor/piwik';
 import { ModRegNotificationSettings } from 'types/reducers';
 import { State as StoreState } from 'types/state';
@@ -15,7 +15,7 @@ import {
   dismissModregNotification,
   enableModRegNotification,
   selectFaculty,
-  selectMode,
+  selectColorScheme,
   setLoadDisqusManually,
   setModRegScheduleType,
   toggleBetaTesting,
@@ -42,13 +42,13 @@ import styles from './SettingsContainer.scss';
 
 type Props = {
   currentThemeId: string;
-  mode: Mode;
+  colorScheme: ColorSchemePreference;
   betaTester: boolean;
   loadDisqusManually: boolean;
   modRegNotification: ModRegNotificationSettings;
 
   selectTheme: (theme: ThemeId) => void;
-  selectMode: (mode: Mode) => void;
+  selectColorScheme: (colorScheme: ColorSchemePreference) => void;
 
   toggleBetaTesting: () => void;
   setLoadDisqusManually: (status: boolean) => void;
@@ -61,7 +61,7 @@ type Props = {
 
 const SettingsContainer: React.FC<Props> = ({
   currentThemeId,
-  mode,
+  colorScheme,
   betaTester,
   loadDisqusManually,
   modRegNotification,
@@ -114,7 +114,7 @@ const SettingsContainer: React.FC<Props> = ({
               </p>
             </div>
             <div className={styles.toggle}>
-              <ModeSelect mode={mode} onSelectMode={props.selectMode} />
+              <ModeSelect colorScheme={colorScheme} onSelectColorScheme={props.selectColorScheme} />
             </div>
           </div>
           <hr />
@@ -146,7 +146,7 @@ const SettingsContainer: React.FC<Props> = ({
 
       <hr />
 
-      <h4 id="modreg">ModReg Reminder</h4>
+      <h4 id="modreg">CourseReg Reminder</h4>
 
       <div className={styles.notificationPreview}>
         <ModRegNotification dismissible />
@@ -154,7 +154,9 @@ const SettingsContainer: React.FC<Props> = ({
 
       <div className={styles.toggleRow}>
         <div className={styles.toggleDescription}>
-          <p>You can get a reminder about when ModReg rounds starts with a small notification.</p>
+          <p>
+            You can get a reminder about when CourseReg rounds starts with a small notification.
+          </p>
         </div>
         <div className={styles.toggle}>
           <Toggle
@@ -168,10 +170,10 @@ const SettingsContainer: React.FC<Props> = ({
         <>
           <div className="row">
             <div className="col-sm-12">
-              <h5>Course</h5>
+              <h5>Course Type</h5>
             </div>
             <div className="col-sm-8">
-              <p>Choose your course so we can show you the appropriate ModReg schedule</p>
+              <p>Choose your course type so we can show you the appropriate CourseReg schedule</p>
             </div>
             <div className="col-sm-4">
               <select
@@ -236,9 +238,9 @@ const SettingsContainer: React.FC<Props> = ({
         <div className="col-md-8">
           <p>
             We collect anonymous, aggregated usage information on NUSMods - think of it as a survey
-            to tells us which browsers to support and what features are popular. If you opt out, we
-            could end up removing features that you use since we won&apos;t know if anyone is using
-            them.
+            that tells us which browsers to support and what features are popular. If you opt out,
+            we could end up removing features that you use since we won&apos;t know if anyone is
+            using them.
           </p>
           <p>
             We do not use this information for advertising, or share this information with anybody.
@@ -292,7 +294,7 @@ const SettingsContainer: React.FC<Props> = ({
 };
 
 const mapStateToProps = (state: StoreState) => ({
-  mode: state.settings.mode,
+  colorScheme: state.settings.colorScheme,
   currentThemeId: state.theme.id,
   betaTester: state.settings.beta || false,
   loadDisqusManually: state.settings.loadDisqusManually,
@@ -302,7 +304,7 @@ const mapStateToProps = (state: StoreState) => ({
 const connectedSettings = connect(mapStateToProps, {
   selectTheme,
   selectFaculty,
-  selectMode,
+  selectColorScheme,
   toggleBetaTesting,
   setLoadDisqusManually,
   toggleModRegNotificationGlobally,

@@ -1,5 +1,5 @@
-import { each, fromPairs, keyBy, isEmpty } from 'lodash';
 import { strict as assert } from 'assert';
+import { each, fromPairs, keyBy, isEmpty } from 'lodash';
 
 import type { AcademicGrp, AcademicOrg, ModuleAttributeEntry, ModuleInfo } from '../types/api';
 import type {
@@ -184,6 +184,7 @@ const mapModuleInfo = (
     AcademicOrganisation,
     AcademicGroup,
     CourseTitle,
+    AdditionalInformation,
     WorkLoadHours,
     GradingBasisDesc,
     Preclusion,
@@ -210,6 +211,7 @@ const mapModuleInfo = (
     preclusionRule: PreclusionRule,
     description: Description,
     title: CourseTitle,
+    additionalInformation: AdditionalInformation,
     department: departmentMap[AcademicOrganisation.Code],
     faculty: facultyMap[AcademicGroup.Code],
     workload: parseWorkload(WorkLoadHours),

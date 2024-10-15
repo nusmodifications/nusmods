@@ -1,12 +1,11 @@
-import type { ModuleList } from 'types/reducers';
-import type { VenueList } from 'types/venues';
-
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import produce from 'immer';
 import { range } from 'lodash';
+import type { VenueList } from 'types/venues';
+import type { ModuleList } from 'types/reducers';
 import configureStore from 'bootstrapping/configure-store';
 import reducers from 'reducers';
 import { initAction } from 'test-utils/redux';
@@ -99,8 +98,8 @@ describe('GlobalSearchContainer', () => {
     // Space is intentional - min chars needed to trigger search is 2, so you need an additional character.
     userEvent.type(getByRole('textbox'), '1 ');
     expect(getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
-      Array [
-        "View All Modules",
+      [
+        "View All Courses",
         "AA1010 TestSem 1",
         "AB1010 TestSem 1",
         "AC1010 TestSem 1",
@@ -122,36 +121,36 @@ describe('GlobalSearchContainer', () => {
     });
     userEvent.type(getByRole('textbox'), '1 ');
     expect(getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
-          Array [
-            "View All Venues",
-            "AA-1",
-            "BB-1",
-            "CC-1",
-            "DD-1",
-            "EE-1",
-            "FF-1",
-            "GG-1",
-            "HH-1",
-            "II-1",
-            "JJ-1",
-            "KK-1",
-            "LL-1",
-            "MM-1",
-            "NN-1",
-            "OO-1",
-            "PP-1",
-            "QQ-1",
-            "RR-1",
-            "SS-1",
-            "TT-1",
-            "UU-1",
-            "VV-1",
-            "WW-1",
-            "XX-1",
-            "YY-1",
-            "ZZ-1",
-          ]
-      `);
+      [
+        "View All Venues",
+        "AA-1",
+        "BB-1",
+        "CC-1",
+        "DD-1",
+        "EE-1",
+        "FF-1",
+        "GG-1",
+        "HH-1",
+        "II-1",
+        "JJ-1",
+        "KK-1",
+        "LL-1",
+        "MM-1",
+        "NN-1",
+        "OO-1",
+        "PP-1",
+        "QQ-1",
+        "RR-1",
+        "SS-1",
+        "TT-1",
+        "UU-1",
+        "VV-1",
+        "WW-1",
+        "XX-1",
+        "YY-1",
+        "ZZ-1",
+      ]
+    `);
   });
 
   test('shows at most 10 choices when there are many modules', () => {
@@ -160,8 +159,8 @@ describe('GlobalSearchContainer', () => {
     });
     userEvent.type(getByRole('textbox'), '1 ');
     expect(getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
-      Array [
-        "View All Modules",
+      [
+        "View All Courses",
         "AA1010 TestSem 1",
         "AB1010 TestSem 1",
         "AC1010 TestSem 1",
@@ -181,8 +180,8 @@ describe('GlobalSearchContainer', () => {
     const { getByRole, getAllByRole } = make();
     userEvent.type(getByRole('textbox'), 'AA');
     expect(getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
-      Array [
-        "View All Modules",
+      [
+        "View All Courses",
         "AA1010 TestSem 1",
         "View All Venues",
         "AA-1",
@@ -197,8 +196,8 @@ describe('GlobalSearchContainer', () => {
 
     userEvent.type(getByRole('textbox'), '1010');
     expect(getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
-      Array [
-        "View All Modules",
+      [
+        "View All Courses",
         "AA1010 TestSem 1",
         "AB1010 TestSem 1",
         "AC1010 TestSem 1",
@@ -280,79 +279,79 @@ describe('GlobalSearchContainer', () => {
 
     userEvent.type(getByRole('textbox'), 'venue');
     expect(getAllByRole('option').map((elem) => elem.textContent)).toMatchInlineSnapshot(`
-          Array [
-            "View All Venues",
-            "Venue 0",
-            "Venue 1",
-            "Venue 2",
-            "Venue 3",
-            "Venue 4",
-            "Venue 5",
-            "Venue 6",
-            "Venue 7",
-            "Venue 8",
-            "Venue 9",
-            "Venue 10",
-            "Venue 11",
-            "Venue 12",
-            "Venue 13",
-            "Venue 14",
-            "Venue 15",
-            "Venue 16",
-            "Venue 17",
-            "Venue 18",
-            "Venue 19",
-            "Venue 20",
-            "Venue 21",
-            "Venue 22",
-            "Venue 23",
-            "Venue 24",
-            "Venue 25",
-            "Venue 26",
-            "Venue 27",
-            "Venue 28",
-            "Venue 29",
-            "Venue 30",
-            "Venue 31",
-            "Venue 32",
-            "Venue 33",
-            "Venue 34",
-            "Venue 35",
-            "Venue 36",
-            "Venue 37",
-            "Venue 38",
-            "Venue 39",
-            "Venue 40",
-            "Venue 41",
-            "Venue 42",
-            "Venue 43",
-            "Venue 44",
-            "Venue 45",
-            "Venue 46",
-            "Venue 47",
-            "Venue 48",
-            "Venue 49",
-            "Venue 50",
-            "Venue 51",
-            "Venue 52",
-            "Venue 53",
-            "Venue 54",
-            "Venue 55",
-            "Venue 56",
-            "Venue 57",
-            "Venue 58",
-            "Venue 59",
-            "Venue 60",
-            "Venue 61",
-            "Venue 62",
-            "Venue 63",
-            "Venue 64",
-            "Venue 65",
-            "Venue 66",
-            "Venue 67",
-            "Venue 68",
-            "Venue 69",
-          ]
-      `);
+      [
+        "View All Venues",
+        "Venue 0",
+        "Venue 1",
+        "Venue 2",
+        "Venue 3",
+        "Venue 4",
+        "Venue 5",
+        "Venue 6",
+        "Venue 7",
+        "Venue 8",
+        "Venue 9",
+        "Venue 10",
+        "Venue 11",
+        "Venue 12",
+        "Venue 13",
+        "Venue 14",
+        "Venue 15",
+        "Venue 16",
+        "Venue 17",
+        "Venue 18",
+        "Venue 19",
+        "Venue 20",
+        "Venue 21",
+        "Venue 22",
+        "Venue 23",
+        "Venue 24",
+        "Venue 25",
+        "Venue 26",
+        "Venue 27",
+        "Venue 28",
+        "Venue 29",
+        "Venue 30",
+        "Venue 31",
+        "Venue 32",
+        "Venue 33",
+        "Venue 34",
+        "Venue 35",
+        "Venue 36",
+        "Venue 37",
+        "Venue 38",
+        "Venue 39",
+        "Venue 40",
+        "Venue 41",
+        "Venue 42",
+        "Venue 43",
+        "Venue 44",
+        "Venue 45",
+        "Venue 46",
+        "Venue 47",
+        "Venue 48",
+        "Venue 49",
+        "Venue 50",
+        "Venue 51",
+        "Venue 52",
+        "Venue 53",
+        "Venue 54",
+        "Venue 55",
+        "Venue 56",
+        "Venue 57",
+        "Venue 58",
+        "Venue 59",
+        "Venue 60",
+        "Venue 61",
+        "Venue 62",
+        "Venue 63",
+        "Venue 64",
+        "Venue 65",
+        "Venue 66",
+        "Venue 67",
+        "Venue 68",
+        "Venue 69",
+      ]
+    `);
   });
 });

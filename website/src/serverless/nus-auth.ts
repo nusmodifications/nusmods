@@ -1,7 +1,7 @@
-import * as validator from '@authenio/samlify-node-xmllint';
-import _ from 'lodash';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as validator from '@authenio/samlify-node-xmllint';
+import _ from 'lodash';
 import * as samlify from 'samlify';
 import type { ESamlHttpRequest } from 'samlify/types/src/entity';
 import type { Handler, Request } from './handler';
@@ -35,7 +35,7 @@ const idp = samlify.IdentityProvider({
 
 const sp = samlify.ServiceProvider({
   metadata: fs.readFileSync(path.join(__dirname, './sp.xml')),
-  encPrivateKey: process.env.NUS_EXCHANGE_SP_PRIVATE_KEY,
+  encPrivateKey: process.env.NUS_EXCHANGE_SP_PRIVATE_KEY?.replace(/\\n/g, '\n'),
 });
 
 export const createLoginURL = (relayState = '') => {
@@ -83,33 +83,35 @@ export const authenticate = async (req: Request) => {
   return loginData;
 };
 
-export const verifyLogin = (next: Handler): Handler => async (req, res): Promise<void> => {
-  try {
-    const { user } = await authenticate(req);
-    // TODO: Augment VercelApiHandler's request with a user object, or find
-    // another way to provide the user object.
-    // eslint-disable-next-line no-param-reassign, @typescript-eslint/no-explicit-any
-    (req as any).user = user;
-  } catch (err) {
-    const errResp = {
-      message: '',
-    };
+export const verifyLogin =
+  (next: Handler): Handler =>
+  async (req, res): Promise<void> => {
+    try {
+      const { user } = await authenticate(req);
+      // TODO: Augment VercelApiHandler's request with a user object, or find
+      // another way to provide the user object.
+      // eslint-disable-next-line no-param-reassign, @typescript-eslint/no-explicit-any
+      (req as any).user = user;
+    } catch (err) {
+      const errResp = {
+        message: '',
+      };
 
-    if (err === samlifyErrors.assertionExpired) {
-      errResp.message = 'Token has expired, please login again';
-    } else if (err === samlifyErrors.invalidAssertion) {
-      errResp.message = 'Invalid token supplied';
-    } else if (err.message === errors.noTokenSupplied) {
-      errResp.message = 'No token is supplied';
-    } else {
-      errResp.message = 'Invalid authentication, please login again';
-      // eslint-disable-next-line no-console
-      console.error(err);
+      if (err === samlifyErrors.assertionExpired) {
+        errResp.message = 'Token has expired, please login again';
+      } else if (err === samlifyErrors.invalidAssertion) {
+        errResp.message = 'Invalid token supplied';
+      } else if (err.message === errors.noTokenSupplied) {
+        errResp.message = 'No token is supplied';
+      } else {
+        errResp.message = 'Invalid authentication, please login again';
+        // eslint-disable-next-line no-console
+        console.error(err);
+      }
+
+      res.status(401).json(errResp);
+      return;
     }
 
-    res.status(401).json(errResp);
-    return;
-  }
-
-  await next(req, res);
-};
+    await next(req, res);
+  };

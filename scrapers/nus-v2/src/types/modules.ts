@@ -31,7 +31,9 @@ export type WeekRange = {
 export type Weeks = number[] | WeekRange;
 
 // Recursive tree of module codes and boolean operators for the prereq tree
-export type PrereqTree = string | { and?: PrereqTree[]; or?: PrereqTree[] };
+export type PrereqTree =
+  | string
+  | { and?: PrereqTree[]; or?: PrereqTree[]; nOf?: [number, PrereqTree[]] };
 
 // Auxiliary data types
 export type Day =
@@ -120,6 +122,7 @@ export type Module = {
   aliases?: ModuleCode[];
   attributes?: NUSModuleAttributes;
   gradingBasisDescription?: string;
+  additionalInformation?: string;
 
   // Requsites
   prerequisite?: string;
@@ -163,6 +166,7 @@ export type ModuleInformation = Readonly<{
   faculty: Faculty;
   workload?: Workload;
   attributes?: NUSModuleAttributes;
+  gradingBasisDescription?: string;
 
   // Requsites
   prerequisite?: string;

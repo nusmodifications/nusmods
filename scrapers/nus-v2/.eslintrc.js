@@ -43,6 +43,8 @@ module.exports = {
     },
   ],
 
+  ignorePatterns: ["**/antlr4/*"],
+
   rules: {
     'prettier/prettier': WARN_IN_DEV,
 

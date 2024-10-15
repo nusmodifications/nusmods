@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { get } from 'lodash';
 
+import { AlertTriangle } from 'react-feather';
 import { Module, ModuleCode, Semester } from 'types/modules';
 
-import { AlertTriangle } from 'react-feather';
 import { getModuleSemesterData } from 'utils/modules';
 import { getSemesterModules } from 'utils/timetables';
 import { getSemesterTimetableLessons } from 'selectors/timetables';
@@ -51,7 +51,7 @@ export const ModuleExamClashComponent: React.FC<Props> = ({
     <div className={classnames('text-danger', styles.alert)}>
       <AlertTriangle className={styles.icon} />
       <p className={styles.warning}>
-        Your {useSingular ? 'module' : 'modules'}{' '}
+        Your {useSingular ? 'course' : 'courses'}{' '}
         <LinkModuleCodes>{clashes.map((module) => module.moduleCode).join(', ')}</LinkModuleCodes>{' '}
         {useSingular ? 'has' : 'have'} exams at the same time
       </p>

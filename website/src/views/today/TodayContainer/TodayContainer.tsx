@@ -120,13 +120,13 @@ export const DaySection: React.FC<
   </section>
 );
 export class TodayContainerComponent extends React.PureComponent<Props, State> {
-  state: State = {
+  override state: State = {
     weather: {},
     openLesson: null,
     isMapExpanded: false,
   };
 
-  componentDidMount() {
+  override componentDidMount() {
     weatherAPI
       .twoHour()
       .then((weather) => {
@@ -313,7 +313,7 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
     );
   }
 
-  render() {
+  override render() {
     return (
       <div className={styles.todayPage}>
         <Title>Today</Title>

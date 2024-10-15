@@ -21,7 +21,7 @@ class RefreshPrompt extends PureComponent<Props, State> {
 
   buttonRef = createRef<HTMLButtonElement>();
 
-  state = {
+  override state = {
     isReloading: false,
   };
 
@@ -37,7 +37,7 @@ class RefreshPrompt extends PureComponent<Props, State> {
     updateServiceWorker();
   };
 
-  render() {
+  override render() {
     if (!this.props.showPrompt) {
       return null;
     }

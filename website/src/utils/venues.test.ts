@@ -1,6 +1,6 @@
 import venueInfo from '__mocks__/venueInformation.json';
-
-import { VenueInfo } from 'types/venues';
+import venueLocationInfo from '__mocks__/venueLocations.json';
+import { VenueInfo, VenueLocationMap } from 'types/venues';
 import {
   searchVenue,
   filterAvailability,
@@ -10,6 +10,8 @@ import {
 } from './venues';
 
 const venues = sortVenues(venueInfo as VenueInfo);
+const venueLocations = venueLocationInfo as VenueLocationMap;
+
 const getVenues = (...names: string[]) => venues.filter(([name]) => names.includes(name));
 
 describe(sortVenues, () => {
@@ -35,6 +37,7 @@ describe(sortVenues, () => {
 
   test('sort venues using natual sorting', () => {
     expect(venues.map(([venue]) => venue)).toEqual([
+      'AS6-0333',
       'CQT/SR0622',
       'LT1',
       'lt2',
@@ -53,15 +56,25 @@ describe('searchVenue()', () => {
     // Exact match
     expect(searchVenue(venues, 'LT17')).toEqual(getVenues('LT17'));
 
+    expect(searchVenue(venues, 'GAMELAN Instrument Room (Studio)', venueLocations)).toEqual(
+      getVenues('AS2-0201'),
+    );
+
     // Case insensitivity
     expect(searchVenue(venues, 'lt17')).toEqual(getVenues('LT17'));
+
+    expect(searchVenue(venues, 'gamelan instrument room (studio)')).toEqual(getVenues('AS2-0201'));
 
     // Partial match
     expect(searchVenue(venues, 'L')).toEqual(getVenues('LT1', 'lt2', 'LT17'));
 
     expect(searchVenue(venues, 'T1')).toEqual(getVenues('LT1', 'LT17'));
 
-    expect(searchVenue(venues, '0')).toEqual(getVenues('S11-0302', 'CQT/SR0622'));
+    expect(searchVenue(venues, '0')).toEqual(getVenues('AS6-0333', 'S11-0302', 'CQT/SR0622'));
+
+    expect(searchVenue(venues, 'honours', venueLocations)).toEqual(
+      getVenues('AS1-0211', 'AS2-0302', 'AS5-0335'),
+    );
 
     // Non-existent venue
     expect(searchVenue(venues, 'cofeve')).toEqual([]);
@@ -122,6 +135,16 @@ describe(filterAvailability, () => {
 
     expect(availableVenues).toHaveLength(1);
     expect(availableVenues[0][0]).toEqual('LT1');
+  });
+
+  test("should not return venues that are excluded from 'find free rooms' feature", () => {
+    const availableVenues = filterAvailability(venues, {
+      day: 0,
+      time: 9,
+      duration: 1,
+    });
+
+    expect(availableVenues.some((allVenues) => allVenues[0] === 'AS6-0333')).toBe(false);
   });
 });
 

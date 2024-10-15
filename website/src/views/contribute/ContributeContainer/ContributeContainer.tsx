@@ -4,13 +4,13 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { flatten, map, mapValues, values } from 'lodash';
 
+import { DollarSign, Zap } from 'react-feather';
 import type { ModuleCondensed } from 'types/modules';
 import type { State as StoreState } from 'types/state';
 
 import { toggleFeedback } from 'actions/app';
 import { toggleBetaTesting } from 'actions/settings';
 import { modulePage } from 'views/routes/paths';
-import { DollarSign, Zap } from 'react-feather';
 import ExternalLink from 'views/components/ExternalLink';
 import Title from 'views/components/Title';
 import { FeedbackButtons } from 'views/components/FeedbackModal';
@@ -69,13 +69,13 @@ const ContributeContainer: FC<Props> = ({ modules, beta, ...props }) => {
         <section>
           <header>
             <ReviewIcon />
-            <h3>Write Module Reviews</h3>
+            <h3>Write Course Reviews</h3>
           </header>
 
           <p>
-            Help your fellow students make better choices when planning their module by leaving your
-            honest opinions on modules you have taken before. Here are all of the modules you have
-            taken this year:
+            Help your fellow students make better choices when planning their courses by leaving
+            your honest opinions on courses you have taken before. Here are all of the courses you
+            have taken this year:
           </p>
 
           <div className={styles.writeReviews}>
@@ -288,6 +288,13 @@ const ContributeContainer: FC<Props> = ({ modules, beta, ...props }) => {
           >
             <h4>Mailing List</h4>
             <p>Subscribe to news and updates</p>
+          </ExternalLink>
+          <ExternalLink
+            className="btn btn-outline-primary"
+            href="https://github.com/nusmodifications/nusmods/blob/master/CONTRIBUTING.md#other-open-source-projects"
+          >
+            <h4>Other Open Source Projects</h4>
+            <p>Contribute to other open source projects</p>
           </ExternalLink>
         </div>
 

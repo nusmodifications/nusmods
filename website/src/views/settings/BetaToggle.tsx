@@ -4,7 +4,7 @@ import ExternalLink from 'views/components/ExternalLink';
 import config from 'config';
 import styles from './SettingsContainer.scss';
 
-export const currentTests = ['Module planner: plan modules in future semesters'];
+export const currentTests = [];
 
 type Props = {
   betaTester: boolean;

@@ -1,63 +1,48 @@
-<h1>
-  <img src="misc/nusmods-logo.svg" alt="NUSMods" width="400" />
-</h1>
+# <img src="misc/nusmods-logo.svg" alt="NUSMods" width="224" />
 
-[![Backers on Open Collective](https://opencollective.com/nusmods/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/nusmods/sponsors/badge.svg)](#sponsors) [![Coverage Status](https://coveralls.io/repos/github/nusmodifications/nusmods/badge.svg?branch=master)](https://coveralls.io/github/nusmodifications/nusmods?branch=master) [![CircleCI Build Status](https://circleci.com/gh/nusmodifications/nusmods.svg?style=shield)](https://circleci.com/gh/nusmodifications/nusmods)
+Welcome to [NUSMods](https://nusmods.com), the open-source college course catalogue, module search, and timetable builder for the National University of Singapore!
 
-NUSMods is the official course catalogue, module search and timetable builder for the National University of Singapore.
+![Screenshot of light mode NUSMods](misc/timetable-light.png#gh-light-mode-only)![Screenshot of dark mode NUSMods](misc/timetable-dark.png#gh-dark-mode-only)
 
-## Structure
+We are a passionate team of students and alumni dedicated to enhancing school life through technology. With NUSMods, we assist over 30,000 students every semester in planning their timetables and finding the best modules to take.
 
-This repository contains all the code that runs NUSMods, and consists of these projects:
+## Usage
 
-- [NUSMods.com website](website)
-- [NUSMods Scrapers](scrapers)
-- [NUSMods Timetable Export Service](export)
-- [`nusmoderator` npm package](packages/nusmoderator)
+For users, you can access our website at [nusmods.com](https://nusmods.com). There's no mobile app, but our website is mobile-friendly and can be pinned to your home screen on Android and iOS.
 
-## Talk to us!
-
-We can be reached via the following methods, in order of preference.
-
-- Telegram: https://t.me/nusmods
-- Messenger: https://m.me/nusmods
-- Email: nusmods@googlegroups.com (for security related issues please email mods@nusmods.com instead)
-- Facebook: https://www.facebook.com/nusmods
-- Twitter: https://twitter.com/nusmods
+If you need to access NUSMods data programmatically, we provide a [public API](https://api.nusmods.com/v2/) for you to retrieve the necessary information. Additionally, if you wish to export your timetables, we offer  [timetable export service](https://export.nusmods.com/) that you can use. Please be considerate and use these services responsibly.
 
 ## Contributing
 
-### Reporting Bugs
+We welcome contributors of all skill levels and backgrounds. Our [contribute page](https://nusmods.com/contribute) goes over the various ways you can contribute to NUSMods for general users.
 
-Found a bug? Before reporting it, check the [issue page](https://github.com/nusmodifications/nusmods/issues) to see if we are aware of it. If not, simply open up the [bug report form](https://github.com/nusmodifications/nusmods/issues/new?template=BUG_REPORT.md) and fill it up.
+For developers and designers, our [contributing guide](/CONTRIBUTING.md) will help first-time contributors get started. For more advanced topics, we have an [architecture overview](/ARCHITECTURE.md) that explains how the various projects in this repository fit together.
 
-### Contributing Guide
+To run the website locally, refer to this [guide](/website/README.md).
 
-Our [contributing guide](CONTRIBUTING.md) will help you get started, regardless of skill level. It explains the project structure and our development process.
+Quite a few of our contributors are students who started contributing to NUSMods with no prior experience. They have since gone on to internships and full-time jobs as software engineers / designers / founders. We are happy to help you get started and learn new skills!
 
-### Good First Issues
+## Community and Support
 
-Want to wet your feet and contribute? We have a list of [good first issues](https://github.com/nusmodifications/nusmods/labels/good%20first%20issue) that contain bugs and small features which have a relatively limited scope. This is a great place to get started.
+### Connect with us
 
+You can reach us through the following channels, listed in order of preference:
 
-### Code of Conduct
+- Telegram: https://t.me/nusmods
+- Messenger: https://m.me/nusmods
+- Email: mods@nusmods.com
+- Facebook: https://www.facebook.com/nusmods
+- Twitter: https://twitter.com/nusmods
 
-We have adopted Facebook's Code of Conduct that we expect project participants to adhere to. Kindly read [the full text](https://code.facebook.com/codeofconduct) to understand what actions will and will not be tolerated.
+### Acknowledgements
 
-### Contributors
+We would like to express our gratitude to all the contributors who have made this project possible. Check out the [list of contributors](https://github.com/nusmodifications/nusmods/graphs/contributors) who have dedicated their time and effort.
 
-This project exists thanks to all the people who contributed.
-<a href="https://github.com/nusmodifications/nusmods/graphs/contributors"><img src="https://opencollective.com/nusmods/contributors.svg?width=890&button=false" /></a>
+### Backers and Sponsors
 
-### Backers
-
-Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/nusmods#backer)]
+We extend our heartfelt thanks to our backers and sponsors. You can [become a backer](https://opencollective.com/nusmods#backer) or [sponsor this project](https://opencollective.com/nusmods#sponsor) and have your logo/profile picture featured with a link to your website.
 
 <a href="https://opencollective.com/nusmods#backers" target="_blank"><img src="https://opencollective.com/nusmods/backers.svg?width=890"></a>
-
-### Sponsors
-
-Support this project by becoming a sponsor. Your logo/profile picture will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/nusmods#sponsor)]
 
 <a href="https://opencollective.com/nusmods/sponsor/0/website" target="_blank"><img src="https://opencollective.com/nusmods/sponsor/0/avatar.svg"></a>
 <a href="https://opencollective.com/nusmods/sponsor/1/website" target="_blank"><img src="https://opencollective.com/nusmods/sponsor/1/avatar.svg"></a>
@@ -78,15 +63,15 @@ All projects and packages in this repository are [MIT licensed](LICENSE).
 
 [BrowserStack][browserstack] lets us ensure NUSMods functions across all browsers and devices by allowing us to test NUSMods on real devices, including Safari on older iPhones and previous versions of browsers.
 
-[![](misc/browserstack-logo.png)][browserstack]
+[<img src="misc/browserstack-logo.png" width="236" />][browserstack]
 
 [1Password] lets us manage our account passwords, identities and keys as a team securely and efficiently.
 
-[![](misc/1password-logo.png)](1password)
+[<img src="misc/1password-logo.png" width="200" />](1password)
 
-[Netlify](netlify) automatically deploys our branches so we can easily test incoming Pull Requests. 
+[Netlify](netlify) automatically deploys our branches so we can easily test incoming Pull Requests.
 
-[![](misc/netlify-logo.png)](netlify)
+[<img src="misc/netlify-logo.png" width="190" />](netlify)
 
 [browserstack]: https://www.browserstack.com/
 [1password]: https://1password.com/

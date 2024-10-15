@@ -1,15 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`cancelModifyLesson should not have payload 1`] = `
-Object {
+{
   "payload": null,
   "type": "CANCEL_MODIFY_LESSON",
 }
 `;
 
 exports[`changeLesson should return updated information to change lesson 1`] = `
-Object {
-  "payload": Object {
+{
+  "payload": {
     "classNo": "1",
     "lessonType": "Recitation",
     "moduleCode": "CS1010S",
@@ -20,16 +20,16 @@ Object {
 `;
 
 exports[`fetchTimetableModules should fetch modules 1`] = `
-Array [
-  Array [
+[
+  [
     [Function],
   ],
 ]
 `;
 
 exports[`hide/show timetable modules should dispatch a module code for hiding 1`] = `
-Object {
-  "payload": Object {
+{
+  "payload": {
     "moduleCode": "CS1010",
     "semester": 1,
   },
@@ -38,8 +38,8 @@ Object {
 `;
 
 exports[`hide/show timetable modules should dispatch a module code for showing 1`] = `
-Object {
-  "payload": Object {
+{
+  "payload": {
     "moduleCode": "CS1020",
     "semester": 1,
   },
@@ -48,9 +48,9 @@ Object {
 `;
 
 exports[`modifyLesson should return lesson payload 1`] = `
-Object {
-  "payload": Object {
-    "activeLesson": Object {
+{
+  "payload": {
+    "activeLesson": {
       "classNo": "1",
       "colorIndex": 0,
       "day": "Wednesday",
@@ -60,7 +60,7 @@ Object {
       "startTime": "1000",
       "title": "Programming Methodology",
       "venue": "LT26",
-      "weeks": Array [
+      "weeks": [
         1,
         2,
         3,
@@ -82,8 +82,8 @@ Object {
 `;
 
 exports[`removeLesson should return information to remove module 1`] = `
-Object {
-  "payload": Object {
+{
+  "payload": {
     "moduleCode": "CS1010",
     "semester": 1,
   },
@@ -92,8 +92,8 @@ Object {
 `;
 
 exports[`select module color should dispatch a select of module color 1`] = `
-Object {
-  "payload": Object {
+{
+  "payload": {
     "colorIndex": 0,
     "moduleCode": "CS1010S",
     "semester": 1,
@@ -103,8 +103,8 @@ Object {
 `;
 
 exports[`select module color should dispatch a select of module color 2`] = `
-Object {
-  "payload": Object {
+{
+  "payload": {
     "colorIndex": 1,
     "moduleCode": "CS3216",
     "semester": 1,

@@ -38,7 +38,7 @@ const placeholderOptions = map(placeholderGroups, (placeholderMap, group) => (
 ));
 
 export default class AddModule extends React.PureComponent<Props, State> {
-  state = {
+  override state = {
     isOpen: false,
   };
 
@@ -72,7 +72,7 @@ export default class AddModule extends React.PureComponent<Props, State> {
     this.setState({ isOpen: false });
   };
 
-  render() {
+  override render() {
     if (!this.state.isOpen) {
       return (
         <div className={this.props.className}>
@@ -82,7 +82,7 @@ export default class AddModule extends React.PureComponent<Props, State> {
             onClick={() => this.setState({ isOpen: true })}
           >
             <Plus />
-            Add Modules
+            Add Courses
           </button>
         </div>
       );
@@ -96,7 +96,7 @@ export default class AddModule extends React.PureComponent<Props, State> {
       <>
         <form onSubmit={this.onSubmit} className={classnames(this.props.className, styles.form)}>
           <label htmlFor={inputId} className="sr-only">
-            Module Code
+            Course Code
           </label>
           <div className="input-group">
             <PlannerModuleSelect
@@ -119,7 +119,7 @@ export default class AddModule extends React.PureComponent<Props, State> {
 
           <div className={styles.actions}>
             <button className={classnames('btn btn-primary')} type="submit">
-              Add module
+              Add Category
             </button>
             <button
               className={classnames(styles.cancel, 'btn btn-svg')}
@@ -130,7 +130,7 @@ export default class AddModule extends React.PureComponent<Props, State> {
               <span className="sr-only">Cancel</span>
             </button>
             <p className={styles.tip}>
-              Tip: You can add multiple module at once, eg. copy from your transcript
+              Tip: You can add multiple courses at once, eg. copy from your transcript
             </p>
           </div>
         </form>

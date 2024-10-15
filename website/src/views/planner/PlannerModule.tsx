@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import classnames from 'classnames';
 
+import { AlertTriangle, ChevronDown } from 'react-feather';
 import { ModuleCode, ModuleTitle, Semester } from 'types/modules';
 import { Conflict, PlannerPlaceholder } from 'types/planner';
 import config from 'config';
 import { renderMCs } from 'utils/modules';
 import { conflictToText } from 'utils/planner';
 import { toSingaporeTime } from 'utils/timify';
-import { AlertTriangle, ChevronDown } from 'react-feather';
 import LinkModuleCodes from 'views/components/LinkModuleCodes';
 import { modulePage } from 'views/routes/paths';
 
@@ -27,6 +27,7 @@ type Props = Readonly<{
   placeholder?: PlannerPlaceholder;
   conflict?: Conflict | null;
   semester?: Semester;
+  isInTimetable?: boolean;
 
   // For draggable
   id: string;
@@ -36,6 +37,8 @@ type Props = Readonly<{
   removeModule: (id: string) => void;
   addCustomData: (moduleCode: ModuleCode) => void;
   setPlaceholderModule: (id: string, moduleCode: ModuleCode) => void;
+  addModuleToTimetable: (semester: Semester, module: ModuleCode) => void;
+  viewSemesterTimetable: () => void;
 }>;
 
 /**
@@ -50,6 +53,11 @@ const PlannerModule = memo<Props>((props) => {
     if (props.moduleCode) props.addCustomData(props.moduleCode);
   };
 
+  const addModuleToTimetable = () => {
+    if (props.semester && props.moduleCode)
+      props.addModuleToTimetable(props.semester, props.moduleCode);
+  };
+
   const renderConflict = (conflict: Conflict) => {
     switch (conflict.type) {
       case 'noInfo':
@@ -57,7 +65,7 @@ const PlannerModule = memo<Props>((props) => {
           <div className={styles.conflictHeader}>
             <AlertTriangle className={styles.warningIcon} />
             <p>
-              No data on this module.{' '}
+              No data on this course.{' '}
               <button type="button" className="btn btn-link btn-inline" onClick={editCustomData}>
                 Add data
               </button>
@@ -91,7 +99,7 @@ const PlannerModule = memo<Props>((props) => {
           <>
             <div className={styles.conflictHeader}>
               <AlertTriangle className={styles.warningIcon} />
-              <p>These modules may need to be taken first</p>
+              <p>These courses may need to be taken first</p>
             </div>
 
             <ul className={styles.prereqs}>
@@ -101,6 +109,16 @@ const PlannerModule = memo<Props>((props) => {
                 </li>
               ))}
             </ul>
+          </>
+        );
+
+      case 'duplicate':
+        return (
+          <>
+            <div className={styles.conflictHeader}>
+              <AlertTriangle className={styles.warningIcon} />
+              <p>This might be a duplicate of another course in this semester.</p>
+            </div>
           </>
         );
 
@@ -136,7 +154,7 @@ const PlannerModule = memo<Props>((props) => {
             })}
             onClick={() => setEditingPlaceholder(true)}
           >
-            {moduleCode || 'Select Module'} <ChevronDown />
+            {moduleCode || 'Select Course'} <ChevronDown />
           </button>{' '}
           {moduleCode && moduleTitle && (
             <Link to={modulePage(moduleCode, moduleTitle)}>{moduleTitle}</Link>
@@ -182,7 +200,13 @@ const PlannerModule = memo<Props>((props) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <ModuleMenu removeModule={removeModule} editCustomData={editCustomData} />
+          <ModuleMenu
+            isInTimetable={props.isInTimetable}
+            removeModule={removeModule}
+            editCustomData={editCustomData}
+            addModuleToTimetable={addModuleToTimetable}
+            viewSemesterTimetable={props.viewSemesterTimetable}
+          />
 
           <div className={styles.moduleInfo}>
             <div className={styles.moduleName}>

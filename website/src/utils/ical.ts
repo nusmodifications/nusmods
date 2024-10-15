@@ -83,7 +83,7 @@ function calculateStartEnd(date: Date, startTime: StartTime, endTime: EndTime) {
 
 export function calculateNumericWeek(
   lesson: RawLesson,
-  semester: Semester,
+  _semester: Semester,
   weeks: NumericWeeks,
   firstDayOfSchool: Date,
 ): EventOption {
@@ -108,7 +108,7 @@ export function calculateNumericWeek(
 
 export function calculateWeekRange(
   lesson: RawLesson,
-  semester: Semester,
+  _semester: Semester,
   weekRange: WeekRange,
 ): EventOption {
   const rangeStart = parseDate(weekRange.start);
@@ -174,6 +174,7 @@ export default function iCalForTimetable(
   semester: Semester,
   timetable: SemTimetableConfigWithLessons,
   moduleData: { [moduleCode: string]: Module },
+  hiddenModules: string[],
   academicYear: string = config.academicYear,
 ): EventOption[] {
   const [year, month, day] = academicCalendar[academicYear][semester].start;
@@ -182,6 +183,8 @@ export default function iCalForTimetable(
   const events: EventOption[] = [];
 
   _.each(timetable, (lessonConfig, moduleCode) => {
+    if (hiddenModules.includes(moduleCode)) return;
+
     _.each(lessonConfig, (lessons) => {
       lessons.forEach((lesson) => {
         events.push(iCalEventForLesson(lesson, moduleData[moduleCode], semester, firstDayOfSchool));

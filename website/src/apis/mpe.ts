@@ -1,9 +1,8 @@
 import axios from 'axios';
-import getLocalStorage from 'storage/localStorage';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Location, History } from 'history';
 import { produce } from 'immer';
-import { MPE_AY } from 'views/mpe/constants';
+import getLocalStorage from 'storage/localStorage';
 import NUSModsApi from './nusmods';
 import { MpeSubmission, MpeModule } from '../types/mpe';
 import { NUS_AUTH_TOKEN } from '../storage/keys';

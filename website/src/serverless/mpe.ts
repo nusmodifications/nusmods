@@ -1,14 +1,14 @@
-import axios from 'axios';
-import { enableMpe } from '../featureFlags';
+import axios, { AxiosHeaders } from 'axios';
+import { enableCPEx } from '../featureFlags';
 import { MpeSubmission, MpePreference, MODULE_TYPES } from '../types/mpe';
 import type { Handler } from './handler';
 
 const vfsEndpoint = process.env.NUS_VFS_MPE_ENDPOINT;
-const defaultHeaders = {
-  'X-API-KEY': process.env.NUS_VFS_MPE_API_KEY,
-  'X-FileUpload-API': process.env.NUS_VFS_MPE_FILEUPLOAD_API,
-  'X-APP-API': process.env.NUS_VFS_MPE_APP_API,
-};
+const defaultHeaders = new AxiosHeaders({
+  'X-API-KEY': process.env.NUS_VFS_MPE_API_KEY ?? null,
+  'X-FileUpload-API': process.env.NUS_VFS_MPE_FILEUPLOAD_API ?? null,
+  'X-APP-API': process.env.NUS_VFS_MPE_APP_API ?? null,
+});
 
 const vfs = axios.create({
   baseURL: vfsEndpoint,
@@ -101,13 +101,12 @@ const validatePreferences = (preferences: MpePreference[]): boolean =>
       !isEmptyString(preference.moduleCode) && isBetweenRangeString(preference.moduleCode, 1, 18),
   );
 
-export const featureFlagEnablerMiddleware = (next: Handler): Handler => async (
-  req,
-  res,
-): Promise<void> => {
-  if (!enableMpe) {
-    res.status(404).end();
-    return;
-  }
-  next(req, res);
-};
+export const featureFlagEnablerMiddleware =
+  (next: Handler): Handler =>
+  async (req, res): Promise<void> => {
+    if (!enableCPEx) {
+      res.status(404).end();
+      return;
+    }
+    next(req, res);
+  };

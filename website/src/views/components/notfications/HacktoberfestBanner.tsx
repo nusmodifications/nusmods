@@ -2,10 +2,10 @@ import { PureComponent } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
+import { Heart } from 'react-feather';
 import type { EmptyProps } from 'types/utils';
 import storage from 'storage';
 import { HACKTOBERFEST } from 'storage/keys';
-import { Heart } from 'react-feather';
 import CloseButton from 'views/components/CloseButton';
 import styles from './Announcements.scss';
 
@@ -17,7 +17,7 @@ type State = {
 const today = new Date();
 
 export default class HacktoberfestBanner extends PureComponent<Props, State> {
-  state: State = {
+  override state: State = {
     isOpen: !storage.getItem(HACKTOBERFEST) && (today.getMonth() === 9 || today.getMonth() === 10),
   };
 
@@ -26,7 +26,7 @@ export default class HacktoberfestBanner extends PureComponent<Props, State> {
     this.setState({ isOpen: false });
   };
 
-  render() {
+  override render() {
     if (!this.state.isOpen) return null;
 
     return (

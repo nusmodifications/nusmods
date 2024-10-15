@@ -3,6 +3,7 @@ import { VERTICAL } from 'types/reducers';
 import reducers from 'reducers';
 import { setExportedData } from 'actions/export';
 import modules from '__mocks__/modules/index';
+import { DARK_COLOR_SCHEME, DARK_COLOR_SCHEME_PREFERENCE } from 'types/settings';
 
 /* eslint-disable no-useless-computed-key */
 
@@ -34,11 +35,16 @@ const exportData: ExportData = {
     showTitle: true,
   },
   settings: {
-    mode: 'DARK',
+    colorScheme: DARK_COLOR_SCHEME,
   },
 };
 
-jest.mock('storage/persistReducer', <T>() => (key: string, reducer: T) => reducer);
+jest.mock(
+  'storage/persistReducer',
+  <T>() =>
+    (_key: string, reducer: T) =>
+      reducer,
+);
 
 test('reducers should set export data state', () => {
   const state = reducers({} as any, setExportedData(modules, exportData));
@@ -73,7 +79,7 @@ test('reducers should set export data state', () => {
   });
 
   expect(state.settings).toMatchObject({
-    mode: 'DARK',
+    colorScheme: DARK_COLOR_SCHEME_PREFERENCE,
   });
 
   expect(state.theme).toEqual({

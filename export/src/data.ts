@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs-extra';
 import axios from 'axios';
 import _ from 'lodash';
+import Joi from 'joi';
 import type { Middleware } from 'koa';
 
 import config from './config';
@@ -43,6 +44,9 @@ export async function getModules(moduleCodes: string[]) {
 export const parseExportData: Middleware<State> = (ctx, next) => {
   if (ctx.query.data) {
     try {
+      if (typeof ctx.query.data !== 'string') {
+        throw new Error(`Expected query.data to be string, got ${typeof ctx.query.data}`);
+      }
       const data = JSON.parse(ctx.query.data);
       validateExportData(data);
       ctx.state.data = data;
@@ -57,20 +61,26 @@ export const parseExportData: Middleware<State> = (ctx, next) => {
 export function validateExportData(data: PageData) {
   if (!_.isObject(data)) throw new Error('data should be an object');
 
-  if (!_.isInteger(data.semester) || data.semester < 1 || data.semester > 4) {
-    throw new Error('Invalid semester');
-  }
+  const timetableSchema = Joi.object().pattern(
+    Joi.string(),
+    Joi.object().pattern(Joi.string(), Joi.string()),
+  );
+  const themeSchema = Joi.object({
+    id: Joi.string(),
+    timetableOrientation: Joi.string().valid('HORIZONTAL', 'VERTICAL'),
+    showTitle: Joi.boolean(),
+  });
+  const pageDataSchema = Joi.object({
+    semester: Joi.number().integer().greater(0).less(5),
+    timetable: timetableSchema,
+    settings: Joi.object({
+      hiddenInTimeTable: Joi.array().items(Joi.string()),
+    }),
+    theme: themeSchema,
+  });
 
-  // TODO: Improve these validation
-  if (!_.isObject(data.timetable)) {
-    throw new Error('Invalid timetable');
-  }
-
-  if (!_.isObject(data.settings)) {
-    throw new Error('Invalid settings');
-  }
-
-  if (!_.isObject(data.theme)) {
-    throw new Error('Invalid theme');
+  const result = pageDataSchema.validate(data, { allowUnknown: true });
+  if (result.error !== undefined) {
+    throw new Error(JSON.stringify(result.error));
   }
 }

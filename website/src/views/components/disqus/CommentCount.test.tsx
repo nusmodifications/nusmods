@@ -10,7 +10,7 @@ jest.mock('utils/insertScript', () => jest.fn());
 );
 
 const disqusConfig = {
-  url: 'https://nusmods.com/modules/CS1010/reviews',
+  url: 'https://nusmods.com/courses/CS1010/reviews',
   identifier: 'CS1010',
   title: 'CS1010 Programming Methodology',
 };

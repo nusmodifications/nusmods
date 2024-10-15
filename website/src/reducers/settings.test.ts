@@ -1,16 +1,20 @@
-import { SettingsState } from 'types/reducers';
 import produce from 'immer';
+import { SettingsState } from 'types/reducers';
 
 import * as actions from 'actions/settings';
 import reducer from 'reducers/settings';
-import { DARK_MODE, LIGHT_MODE } from 'types/settings';
+import {
+  DARK_COLOR_SCHEME_PREFERENCE,
+  LIGHT_COLOR_SCHEME_PREFERENCE,
+  SYSTEM_COLOR_SCHEME_PREFERENCE,
+} from 'types/settings';
 import { initAction, rehydrateAction } from 'test-utils/redux';
 import config, { RegPeriod } from 'config';
 
 const initialState: SettingsState = {
   newStudent: false,
   faculty: '',
-  mode: LIGHT_MODE,
+  colorScheme: SYSTEM_COLOR_SCHEME_PREFERENCE,
   hiddenInTimetable: [],
   modRegNotification: {
     enabled: true,
@@ -25,12 +29,19 @@ const initialState: SettingsState = {
 const settingsWithNewStudent: SettingsState = { ...initialState, newStudent: true };
 const faculty = 'School of Computing';
 const settingsWithFaculty: SettingsState = { ...initialState, faculty };
-const settingsWithDarkMode: SettingsState = { ...initialState, mode: DARK_MODE };
+const settingsWithLightMode: SettingsState = {
+  ...initialState,
+  colorScheme: LIGHT_COLOR_SCHEME_PREFERENCE,
+};
+const settingsWithDarkMode: SettingsState = {
+  ...initialState,
+  colorScheme: DARK_COLOR_SCHEME_PREFERENCE,
+};
 const settingsWithDismissedNotifications: SettingsState = produce(initialState, (draft) => {
   draft.modRegNotification.dismissed = [
-    { type: 'Select Modules', name: '1' },
+    { type: 'Select Courses', name: '1' },
     { type: 'Add / Swap Tutorials', name: '' },
-    { type: 'Select Modules', name: '2' },
+    { type: 'Select Courses', name: '2' },
   ];
 });
 
@@ -52,23 +63,18 @@ describe('settings', () => {
     expect(nextState).toEqual(settingsWithFaculty);
   });
 
-  test('can select mode', () => {
-    const action = actions.selectMode(DARK_MODE);
+  test('can select color scheme', () => {
+    const action = actions.selectColorScheme(DARK_COLOR_SCHEME_PREFERENCE);
     const nextState: SettingsState = reducer(initialState, action);
     expect(nextState).toEqual(settingsWithDarkMode);
 
-    const action2 = actions.selectMode(LIGHT_MODE);
-    const nextState2: SettingsState = reducer(nextState, action2);
-    expect(nextState2).toEqual(initialState);
-  });
+    const action2 = actions.selectColorScheme(LIGHT_COLOR_SCHEME_PREFERENCE);
+    const nextState2: SettingsState = reducer(initialState, action2);
+    expect(nextState2).toEqual(settingsWithLightMode);
 
-  test('can toggle mode', () => {
-    const action = actions.toggleMode();
-    const nextState: SettingsState = reducer(initialState, action);
-    expect(nextState).toEqual(settingsWithDarkMode);
-
-    const nextState2: SettingsState = reducer(nextState, action);
-    expect(nextState2).toEqual(initialState);
+    const action3 = actions.selectColorScheme(SYSTEM_COLOR_SCHEME_PREFERENCE);
+    const nextState3: SettingsState = reducer(nextState, action3);
+    expect(nextState3).toEqual(initialState);
   });
 
   test('set module table order', () => {
@@ -111,7 +117,7 @@ describe('modRegNotification settings', () => {
     expect(
       reducer(
         settingsWithDismissedNotifications,
-        actions.dismissModregNotification({ type: 'Select Modules', name: '1' } as RegPeriod),
+        actions.dismissModregNotification({ type: 'Select Courses', name: '1' } as RegPeriod),
       ).modRegNotification.dismissed,
     ).toEqual(settingsWithDismissedNotifications.modRegNotification.dismissed);
 
@@ -126,13 +132,13 @@ describe('modRegNotification settings', () => {
     expect(
       reducer(
         settingsWithDismissedNotifications,
-        actions.dismissModregNotification({ type: 'Select Modules', name: '3' } as RegPeriod),
+        actions.dismissModregNotification({ type: 'Select Courses', name: '3' } as RegPeriod),
       ).modRegNotification.dismissed,
     ).toEqual([
-      { type: 'Select Modules', name: '1' },
+      { type: 'Select Courses', name: '1' },
       { type: 'Add / Swap Tutorials', name: '' },
-      { type: 'Select Modules', name: '2' },
-      { type: 'Select Modules', name: '3' },
+      { type: 'Select Courses', name: '2' },
+      { type: 'Select Courses', name: '3' },
     ]);
   });
 
@@ -141,9 +147,9 @@ describe('modRegNotification settings', () => {
       reducer(
         reducer(
           initialState,
-          actions.dismissModregNotification({ type: 'Select Modules', name: '1' } as RegPeriod),
+          actions.dismissModregNotification({ type: 'Select Courses', name: '1' } as RegPeriod),
         ),
-        actions.enableModRegNotification({ type: 'Select Modules', name: '1' } as RegPeriod),
+        actions.enableModRegNotification({ type: 'Select Courses', name: '1' } as RegPeriod),
       ).modRegNotification.dismissed,
     ).toEqual([]);
   });

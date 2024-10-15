@@ -27,7 +27,11 @@ export type WeekRange = {
 };
 
 // Recursive tree of module codes and boolean operators for the prereq tree
-export type PrereqTree = string | { and: PrereqTree[] } | { or: PrereqTree[] };
+export type PrereqTree =
+  | string
+  | { and: PrereqTree[] }
+  | { or: PrereqTree[] }
+  | { nOf: [number, PrereqTree[]] };
 
 // Auxiliary data types
 export type Day =
@@ -107,17 +111,17 @@ type AttributeMap = {
 export type NUSModuleAttributes = Partial<AttributeMap>;
 
 export const attributeDescription: { [key in keyof AttributeMap]: string } = {
-  year: 'Year long module',
+  year: 'Year long course',
   su: 'Has S/U option for Undergraduate students only',
   grsu: 'Has S/U option for relevant Graduate (Research) students only',
   ssgf: 'SkillsFuture funded',
   sfs: 'SkillsFuture series',
-  lab: 'Lab based module',
-  ism: 'Independent study module',
+  lab: 'Lab based course',
+  ism: 'Independent study course',
   urop: 'Undergraduate Research Opportunities Program',
   fyp: 'Honours / Final Year Project',
-  mpes1: "Included in Semester 1's Module Planning Exercise",
-  mpes2: "Included in Semester 2's Module Planning Exercise",
+  mpes1: "Included in Semester 1's Course Planning Exercise",
+  mpes2: "Included in Semester 2's Course Planning Exercise",
 };
 
 // RawLesson is a lesson time slot obtained from the API.
@@ -166,6 +170,7 @@ export type ModuleInformation = Readonly<{
   workload?: Workload;
   aliases?: ModuleCode[];
   attributes?: NUSModuleAttributes;
+  gradingBasisDescription?: string;
 
   // Requsites
   prerequisite?: string;
@@ -195,6 +200,7 @@ export type Module = {
   aliases?: ModuleCode[];
   attributes?: NUSModuleAttributes;
   gradingBasisDescription?: string;
+  additionalInformation?: string;
 
   // Requsites
   prerequisite?: string;

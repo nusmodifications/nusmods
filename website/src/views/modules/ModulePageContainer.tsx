@@ -43,10 +43,8 @@ const getPropsFromMatch = (match: Match<Params>) => ({
  * - Loaded: Both requests are successfully loaded
  */
 export const ModulePageContainerComponent: FC = () => {
-  const [
-    ModulePageContent,
-    setModulePageContent,
-  ] = useState<ComponentType<ModulePageContentProps> | null>(null);
+  const [ModulePageContent, setModulePageContent] =
+    useState<ComponentType<ModulePageContentProps> | null>(null);
   const [error, setError] = useState<Error | undefined>();
 
   const dispatch = useDispatch<Dispatch>();
@@ -98,7 +96,7 @@ export const ModulePageContainerComponent: FC = () => {
   // If there is an error but module data can still be found, we assume module has
   // been loaded at some point, so we just show that instead
   if (error && !module) {
-    return <ApiError dataName="module information" retry={fetchModuleForDisplay} />;
+    return <ApiError dataName="course information" retry={fetchModuleForDisplay} />;
   }
 
   // Redirect to canonical URL

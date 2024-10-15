@@ -10,6 +10,8 @@ import {
   getCurrentHours,
   getCurrentMinutes,
   getDayIndex,
+  INTERVAL_DURATION_MINS,
+  NUM_INTERVALS_PER_HOUR,
   SCHOOLDAYS,
 } from 'utils/timify';
 import elements from 'views/elements';
@@ -49,7 +51,7 @@ class Timetable extends React.PureComponent<Props, State> {
     onModifyCell: noop,
   };
 
-  state = {
+  override state = {
     hoverLesson: null,
   };
 
@@ -57,7 +59,7 @@ class Timetable extends React.PureComponent<Props, State> {
     this.setState({ hoverLesson });
   };
 
-  render() {
+  override render() {
     const { highlightPeriod } = this.props;
 
     const schoolDays = SCHOOLDAYS.filter(
@@ -72,10 +74,12 @@ class Timetable extends React.PureComponent<Props, State> {
     const columns = endingIndex - startingIndex;
     const currentHours = getCurrentHours();
     const currentMinutes = getCurrentMinutes();
-    const hoursMarginOffset = ((currentHours * 2 - startingIndex) / columns) * 100;
-    const minutesMarginOffset = (currentMinutes / 30 / columns) * 100;
+    const hoursMarginOffset =
+      ((currentHours * NUM_INTERVALS_PER_HOUR - startingIndex) / columns) * 100;
+    const minutesMarginOffset = (currentMinutes / INTERVAL_DURATION_MINS / columns) * 100;
     const currentTimeIndicatorVisible =
-      currentHours * 2 >= startingIndex && currentHours * 2 < endingIndex;
+      currentHours * NUM_INTERVALS_PER_HOUR >= startingIndex &&
+      currentHours * NUM_INTERVALS_PER_HOUR < endingIndex;
     const dirStyle = this.props.isVerticalOrientation ? 'top' : 'marginLeft';
     const currentTimeIndicatorStyle: React.CSSProperties = {
       [dirStyle]: `${hoursMarginOffset + minutesMarginOffset}%`,
