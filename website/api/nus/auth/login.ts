@@ -32,6 +32,7 @@ const handlePost: Handler = async (req, res) => {
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const handleError: (error: Error) => Handler = (error) => async (_req, res) => {
   res.status(500).json({
     message:
