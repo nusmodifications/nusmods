@@ -31,7 +31,7 @@ const handleGet: Handler = async (req, res) => {
       res.json({
         message: 'Request needs a referer',
       });
-    } else if (err.message === errors.failedSamlLogin) {
+    } else if (err.name === errors.failedSamlLogin) {
       res.json({
         message:
           'Request failed to login. Login requires NUSID. Please see instructions on NUS VAFS page.',
