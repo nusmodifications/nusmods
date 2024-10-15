@@ -25,10 +25,9 @@ const handleGet: Handler = async (req, res) => {
       throw new Error(errors.noCallbackUrl);
     }
 
-    res.json({
-      message:
-        'An unexpected error occurred. Please ensure you follow the login instructions on the NUS login page',
-    });
+    res.send(
+      'An unexpected error occurred. Please ensure you follow the login instructions on the NUS login page',
+    );
 
     // res.send(createLoginURL(callback));
   } catch (err) {
