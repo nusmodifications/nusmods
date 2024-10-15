@@ -25,19 +25,18 @@ const handleGet: Handler = async (req, res) => {
       throw new Error(errors.noCallbackUrl);
     }
 
-    res.send(createLoginURL(callback));
+    res.json({
+      message:
+        'An unexpected error occurred. Please ensure you follow the login instructions on the NUS login page',
+    });
+
+    // res.send(createLoginURL(callback));
   } catch (err) {
     console.log(err);
 
     if (err.message === errors.noCallbackUrl) {
       res.json({
         message: 'Request needs a referer',
-      });
-    } else {
-      res.json({
-        message:
-          'Request failed to login. Login requires NUSID. Please see instructions on NUS VAFS page. ' +
-          JSON.stringify(err),
       });
     }
   }
