@@ -10,8 +10,6 @@ const errors = {
   noRelayState: 'ERR_NO_RELAY_STATE',
 };
 
-const hasMessage = (err: any): err is { message: string } => err.message !== undefined;
-
 const handlePost: Handler = async (req, res) => {
   try {
     const { token, relayState } = await authenticate(req);
@@ -24,7 +22,7 @@ const handlePost: Handler = async (req, res) => {
 
     res.redirect(301, userURL.toString());
   } catch (err) {
-    if (hasMessage(err) && err.message === errors.noRelayState) {
+    if (err.message === errors.noRelayState) {
       res.json({
         message: 'Relay state not found in request',
       });
