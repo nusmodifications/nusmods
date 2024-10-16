@@ -10,6 +10,8 @@ const errors = {
   noRelayState: 'ERR_NO_RELAY_STATE',
 };
 
+const hasMessage = (err: any): err is { message: string } => err.message !== undefined;
+
 const handlePost: Handler = async (req, res) => {
   try {
     const { token, relayState } = await authenticate(req);
@@ -22,7 +24,7 @@ const handlePost: Handler = async (req, res) => {
 
     res.redirect(301, userURL.toString());
   } catch (err) {
-    if (err.message === errors.noRelayState) {
+    if (hasMessage(err) && err.message === errors.noRelayState) {
       res.json({
         message: 'Relay state not found in request',
       });
@@ -36,7 +38,7 @@ const handlePost: Handler = async (req, res) => {
 const handleError: (error: Error) => Handler = (error) => async (_req, res) => {
   res.status(500).json({
     message:
-      'An unexpected error occurred. Please try clearing your browser cache and logging in again. Follow the NUS login page instructions carefully.',
+      'An unexpected error occurred. Please try logging in with your NUSID, in the format nusstu\\e0123456, instead of your email. You can use Incognito mode or clear your cookies to try again.',
     error,
   });
 };
