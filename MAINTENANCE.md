@@ -33,11 +33,15 @@ Reference PRs: [PR #3286](https://github.com/nusmodifications/nusmods/pull/3286)
   - [ ] Add a new entry in the ModReg schedule in `website/src/data/modreg-schedule.json`
     - Reference PR: [PR #3832](https://github.com/nusmodifications/nusmods/pull/3832)
   - [ ] Once merged into `master`, visit https://latest.nusmods.com/cpex and verify that NUS authentication is working
+  - [ ] Deploy latest `master` to `production`
   - [ ] Prepare PR to enable the `showCPExTab` flag in `website/src/featureFlags.ts`
 - During
   - [ ] Enable the `showCPExTab` flag in `website/src/featureFlags.ts`
+  - [ ] Merge into `master`
   - [ ] Deploy latest `master` to `production`
   - [ ] Prepare PR to disable the `enabledCPEx` and `showCPExTab` flags in `website/src/featureFlags.ts`
 - After
-  - [ ] Remove CPEx from the ModReg schedule in `website/src/data/modreg-schedule.json`
   - [ ] Disable the `enabledCPEx` and `showCPExTab` flags in `website/src/featureFlags.ts`
+  - [ ] Remove CPEx from the ModReg schedule in `website/src/data/modreg-schedule.json`
+  - [ ] Merge into `master`
+  - [ ] Deploy latest `master` to `production`
