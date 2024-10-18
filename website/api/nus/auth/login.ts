@@ -35,7 +35,8 @@ const handlePost: Handler = async (req, res) => {
 // eslint-disable-next-line no-unused-vars
 const handleError: (error: Error) => Handler = (error) => async (_req, res) => {
   res.status(500).json({
-    message: 'An unexpected error occurred.',
+    message:
+      'An unexpected error occurred. Please try logging in with your NUSID, in the format nusstu\\e0123456, instead of your email. You can use Incognito mode or clear your cookies to try again.',
     error,
   });
 };
