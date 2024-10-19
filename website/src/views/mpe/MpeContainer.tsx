@@ -90,7 +90,7 @@ const MpeContainer: React.FC = () => {
             <strong>solely for planning purposes </strong> and there is no guarantee that you will
             be allocated the selected courses during the CourseReg Exercise.
           </p>
-          <p>The CPEx for this round will be from 11 Mar to 15 Mar 2024.</p>
+          <p>The CPEx for this round will be from 14 Oct to 18 Oct 2024.</p>
           <p>
             Participation in the CPEx will be used as <strong>one of the tie-breakers</strong>{' '}
             during the CourseReg Exercise, in cases where the demand exceeds the available quota and
