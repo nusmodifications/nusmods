@@ -36,12 +36,12 @@ const formatConditional = (node: PrereqTree) => {
   if (typeof node === 'string') return node;
   if ('nOf' in node) {
     const requiredNum = node.nOf[0];
-    return `at least ${requiredNum} of`;
+    return `take at least ${requiredNum}`;
   }
   if ('or' in node) {
-    return 'one of';
+    return 'take one';
   }
-  return 'all of';
+  return 'take all';
 };
 
 type NodeName = {
@@ -83,12 +83,21 @@ const unwrapLayer = (node: PrereqTree) => {
 const Branch: React.FC<{
   nodes: PrereqTree[];
   layer: number;
+  isPrereq?: boolean;
   getModuleCondensed: (moduleCode: ModuleCode) => ModuleCondensed | undefined;
 }> = (props) => (
   <ul className={styles.tree}>
     {props.nodes.map((child, idx) => (
-      <li className={styles.branch} key={typeof child === 'string' ? nodeName(child).name : idx}>
-        <Tree node={child} layer={props.layer} getModuleCondensed={props.getModuleCondensed} />
+      <li
+        className={classnames(styles.branch, { [styles.prereqBranch]: props.isPrereq })}
+        key={typeof child === 'string' ? nodeName(child).name : idx}
+      >
+        <Tree
+          node={child}
+          layer={props.layer}
+          isPrereq={props.isPrereq}
+          getModuleCondensed={props.getModuleCondensed}
+        />
       </li>
     ))}
   </ul>
@@ -103,18 +112,13 @@ const Tree: React.FC<TreeDisplay> = (props) => {
   if (isConditional) {
     return (
       <>
-        <div
-          className={classnames(styles.node, styles.conditional, {
-            [styles.prereqNode]: isPrereq,
-          })}
-        >
-          {formatConditional(node)}
-        </div>
         <Branch
           nodes={unwrapLayer(node)}
           layer={layer + 1}
+          isPrereq={isPrereq}
           getModuleCondensed={props.getModuleCondensed}
         />
+        <div className={classnames(styles.node, styles.conditional)}>{formatConditional(node)}</div>
       </>
     );
   }
@@ -143,41 +147,36 @@ export const ModuleTreeComponent: React.FC<Props> = (props) => {
   return (
     <>
       <div className={styles.container}>
+        <ul className={classnames(styles.tree, styles.root)}>
+          <li className={classnames(styles.branch)}>
+            {prereqTree && (
+              <Branch
+                nodes={[prereqTree]}
+                layer={2}
+                isPrereq
+                getModuleCondensed={props.getModuleCondensed}
+              />
+            )}
+            <Tree layer={1} node={moduleCode} getModuleCondensed={props.getModuleCondensed} />
+          </li>
+        </ul>
+
         {fulfillRequirements && fulfillRequirements.length > 0 && (
           <>
+            <div className={classnames(styles.node, styles.conditional)}>unlocks</div>
             <ul className={styles.prereqTree}>
               {fulfillRequirements.map((fulfilledModule) => (
-                <li
-                  key={fulfilledModule}
-                  className={classnames(styles.branch, styles.prereqBranch)}
-                >
+                <li key={fulfilledModule} className={classnames(styles.branch)}>
                   <Tree
                     layer={0}
                     node={fulfilledModule}
-                    isPrereq
                     getModuleCondensed={props.getModuleCondensed}
                   />
                 </li>
               ))}
             </ul>
-
-            <div className={classnames(styles.node, styles.conditional)}>needs</div>
           </>
         )}
-
-        <ul className={classnames(styles.tree, styles.root)}>
-          <li className={classnames(styles.branch)}>
-            <Tree layer={1} node={moduleCode} getModuleCondensed={props.getModuleCondensed} />
-
-            {prereqTree && (
-              <Branch
-                nodes={[prereqTree]}
-                layer={2}
-                getModuleCondensed={props.getModuleCondensed}
-              />
-            )}
-          </li>
-        </ul>
       </div>
 
       {/* <p className="alert alert-warning">

@@ -121,6 +121,8 @@ $connector-size: 0.75rem;
 }
 
 .prereqBranch {
+  justify-content: flex-end;
+  
   &::before,
   &::after {
     right: 0;
