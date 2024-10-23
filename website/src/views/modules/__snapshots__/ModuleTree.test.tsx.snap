@@ -640,6 +640,92 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
 ]
 `;
 
+exports[`ModuleTreeComponent should render prereq tree to the right when tree direction is set to right: PC2193 1`] = `
+[
+  <div
+    class="container"
+  >
+    <ul
+      class="prereqTree"
+    >
+      <li
+        class="branch prereqBranch"
+      >
+        <div
+          class="node moduleNode prereqNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            PC3193
+          </mockedlink>
+        </div>
+      </li>
+    </ul>
+    <div
+      class="node conditional"
+    >
+      needs
+    </div>
+    <ul
+      class="tree root"
+    >
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            PC2193
+          </mockedlink>
+        </div>
+        <ul
+          class="tree"
+        >
+          <li
+            class="branch"
+          >
+            <div
+              class="node moduleNode"
+            >
+              <mockedlink
+                class="link"
+              >
+                PC1101
+              </mockedlink>
+            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>,
+  <p
+    class="alert alert-warning"
+  >
+    This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite text above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
+    <a
+      href="https://github.com/nusmodifications/nusmods/issues/new/choose"
+      rel="noopener noreferrer nofollow"
+      target="_blank"
+    >
+      our repository
+    </a>
+     or send an email to 
+    <a
+      href="mailto:bugs@nusmods.com"
+      rel="noopener noreferrer nofollow"
+      target="_blank"
+    >
+      bugs@nusmods.com
+    </a>
+    .
+  </p>,
+]
+`;
+
 exports[`ModuleTreeComponent should render requirements fulfilled tree of module: ACC1002 1`] = `
 [
   <div

@@ -64,6 +64,20 @@ describe(ModuleTreeComponent, () => {
     expect(component).toMatchSnapshot('CS3244');
   });
 
+  test('should render prereq tree to the right when tree direction is set to right', () => {
+    const component = render(
+      <ModuleTreeComponent
+        moduleCode="PC2193"
+        getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: {} } } as any)}
+        prereqTreeOnLeft={false}
+        prereqTree="PC1101"
+        fulfillRequirements={['PC3193']}
+      />,
+    );
+
+    expect(component).toMatchSnapshot('PC2193');
+  });
+
   // Test that modules which are in moduleBank have appropriate colours,
   // and modules that aren't are greyed out
 
