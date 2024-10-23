@@ -25,6 +25,7 @@ const initialState: SettingsState = {
   moduleTableOrder: 'exam',
   loadDisqusManually: false,
   beta: false,
+  prereqTreeOnLeft: true,
 };
 const settingsWithNewStudent: SettingsState = { ...initialState, newStudent: true };
 const faculty = 'School of Computing';
