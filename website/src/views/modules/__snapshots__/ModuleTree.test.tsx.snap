@@ -9,10 +9,10 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
       class="prereqTree"
     >
       <li
-        class="branch prereqBranch"
+        class="branch leftBranch"
       >
         <div
-          class="node moduleNode hoverable color-0 prereqNode"
+          class="node moduleNode hoverable color-0 leftNode"
         >
           <mockedlink
             class="link"
@@ -22,10 +22,10 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
         </div>
       </li>
       <li
-        class="branch prereqBranch"
+        class="branch leftBranch"
       >
         <div
-          class="node moduleNode prereqNode"
+          class="node moduleNode leftNode"
         >
           <mockedlink
             class="link"
@@ -35,10 +35,10 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
         </div>
       </li>
       <li
-        class="branch prereqBranch"
+        class="branch leftBranch"
       >
         <div
-          class="node moduleNode prereqNode"
+          class="node moduleNode leftNode"
         >
           <mockedlink
             class="link"
@@ -277,10 +277,10 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
       class="prereqTree"
     >
       <li
-        class="branch prereqBranch"
+        class="branch leftBranch"
       >
         <div
-          class="node moduleNode prereqNode"
+          class="node moduleNode leftNode"
         >
           <mockedlink
             class="link"
@@ -290,10 +290,10 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
         </div>
       </li>
       <li
-        class="branch prereqBranch"
+        class="branch leftBranch"
       >
         <div
-          class="node moduleNode prereqNode"
+          class="node moduleNode leftNode"
         >
           <mockedlink
             class="link"
@@ -303,10 +303,10 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
         </div>
       </li>
       <li
-        class="branch prereqBranch"
+        class="branch leftBranch"
       >
         <div
-          class="node moduleNode prereqNode"
+          class="node moduleNode leftNode"
         >
           <mockedlink
             class="link"
@@ -649,10 +649,10 @@ exports[`ModuleTreeComponent should render prereq tree to the right when tree di
       class="prereqTree"
     >
       <li
-        class="branch prereqBranch"
+        class="branch leftBranch"
       >
         <div
-          class="node moduleNode prereqNode"
+          class="node moduleNode leftNode"
         >
           <mockedlink
             class="link"
@@ -735,10 +735,10 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
       class="prereqTree"
     >
       <li
-        class="branch prereqBranch"
+        class="branch leftBranch"
       >
         <div
-          class="node moduleNode prereqNode"
+          class="node moduleNode leftNode"
         >
           <mockedlink
             class="link"
@@ -748,10 +748,10 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         </div>
       </li>
       <li
-        class="branch prereqBranch"
+        class="branch leftBranch"
       >
         <div
-          class="node moduleNode prereqNode"
+          class="node moduleNode leftNode"
         >
           <mockedlink
             class="link"
@@ -761,10 +761,10 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         </div>
       </li>
       <li
-        class="branch prereqBranch"
+        class="branch leftBranch"
       >
         <div
-          class="node moduleNode prereqNode"
+          class="node moduleNode leftNode"
         >
           <mockedlink
             class="link"
@@ -774,10 +774,10 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         </div>
       </li>
       <li
-        class="branch prereqBranch"
+        class="branch leftBranch"
       >
         <div
-          class="node moduleNode prereqNode"
+          class="node moduleNode leftNode"
         >
           <mockedlink
             class="link"
@@ -787,10 +787,10 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         </div>
       </li>
       <li
-        class="branch prereqBranch"
+        class="branch leftBranch"
       >
         <div
-          class="node moduleNode prereqNode"
+          class="node moduleNode leftNode"
         >
           <mockedlink
             class="link"
@@ -800,10 +800,10 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         </div>
       </li>
       <li
-        class="branch prereqBranch"
+        class="branch leftBranch"
       >
         <div
-          class="node moduleNode prereqNode"
+          class="node moduleNode leftNode"
         >
           <mockedlink
             class="link"
@@ -813,10 +813,10 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         </div>
       </li>
       <li
-        class="branch prereqBranch"
+        class="branch leftBranch"
       >
         <div
-          class="node moduleNode prereqNode"
+          class="node moduleNode leftNode"
         >
           <mockedlink
             class="link"
@@ -826,10 +826,10 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         </div>
       </li>
       <li
-        class="branch prereqBranch"
+        class="branch leftBranch"
       >
         <div
-          class="node moduleNode prereqNode"
+          class="node moduleNode leftNode"
         >
           <mockedlink
             class="link"
@@ -839,10 +839,10 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         </div>
       </li>
       <li
-        class="branch prereqBranch"
+        class="branch leftBranch"
       >
         <div
-          class="node moduleNode prereqNode"
+          class="node moduleNode leftNode"
         >
           <mockedlink
             class="link"
@@ -852,10 +852,10 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         </div>
       </li>
       <li
-        class="branch prereqBranch"
+        class="branch leftBranch"
       >
         <div
-          class="node moduleNode prereqNode"
+          class="node moduleNode leftNode"
         >
           <mockedlink
             class="link"
@@ -865,10 +865,10 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         </div>
       </li>
       <li
-        class="branch prereqBranch"
+        class="branch leftBranch"
       >
         <div
-          class="node moduleNode prereqNode"
+          class="node moduleNode leftNode"
         >
           <mockedlink
             class="link"
@@ -878,10 +878,10 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         </div>
       </li>
       <li
-        class="branch prereqBranch"
+        class="branch leftBranch"
       >
         <div
-          class="node moduleNode prereqNode"
+          class="node moduleNode leftNode"
         >
           <mockedlink
             class="link"
@@ -891,10 +891,10 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         </div>
       </li>
       <li
-        class="branch prereqBranch"
+        class="branch leftBranch"
       >
         <div
-          class="node moduleNode prereqNode"
+          class="node moduleNode leftNode"
         >
           <mockedlink
             class="link"
@@ -904,10 +904,10 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         </div>
       </li>
       <li
-        class="branch prereqBranch"
+        class="branch leftBranch"
       >
         <div
-          class="node moduleNode prereqNode"
+          class="node moduleNode leftNode"
         >
           <mockedlink
             class="link"

@@ -91,7 +91,7 @@ const Branch: React.FC<{
   <ul className={styles.tree}>
     {props.nodes.map((child, idx) => (
       <li
-        className={classnames(styles.branch, { [styles.prereqBranch]: props.prereqTreeOnLeft })}
+        className={classnames(styles.branch, { [styles.leftBranch]: props.prereqTreeOnLeft })}
         key={typeof child === 'string' ? nodeName(child).name : idx}
       >
         <Tree
@@ -136,7 +136,7 @@ const Tree: React.FC<TreeDisplay> = (props) => {
     <div
       className={classnames(styles.node, styles.moduleNode, {
         [`hoverable color-${layer}`]: !!moduleActive,
-        [styles.prereqNode]: prereqTreeOnLeft,
+        [styles.leftNode]: prereqTreeOnLeft,
       })}
     >
       {prefix && <span className={styles.prefix}>{prefix}</span>}
@@ -155,7 +155,7 @@ export const ModuleTreeComponent: React.FC<Props> = (props) => {
           <ul className={classnames(styles.tree, styles.root)}>
             <li
               className={classnames(styles.branch, {
-                [styles.prereqBranch]: prereqTreeOnLeft,
+                [styles.leftBranch]: prereqTreeOnLeft,
               })}
             >
               <ConditionalReverse reverse={!prereqTreeOnLeft}>
@@ -181,7 +181,7 @@ export const ModuleTreeComponent: React.FC<Props> = (props) => {
                   <li
                     key={fulfilledModule}
                     className={classnames(styles.branch, {
-                      [styles.prereqBranch]: !prereqTreeOnLeft,
+                      [styles.leftBranch]: !prereqTreeOnLeft,
                     })}
                   >
                     <Tree

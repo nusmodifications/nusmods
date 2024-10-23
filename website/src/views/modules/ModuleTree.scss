@@ -121,7 +121,7 @@ $connector-size: 0.75rem;
   }
 }
 
-.prereqBranch {
+.leftBranch {
   justify-content: flex-end;
   
   &::before,
@@ -131,7 +131,7 @@ $connector-size: 0.75rem;
   }
 }
 
-.prereqNode {
+.leftNode {
   margin: 0 $connector-size 1px 0;
 
   &::before {
