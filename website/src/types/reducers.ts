@@ -104,6 +104,7 @@ export type SettingsState = {
   readonly moduleTableOrder: ModuleTableOrder;
   readonly beta?: boolean;
   readonly loadDisqusManually: boolean;
+  readonly prereqTreeOnLeft: boolean;
 };
 
 /* timetables.js */

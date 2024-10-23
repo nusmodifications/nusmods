@@ -12,6 +12,7 @@ describe(ModuleTreeComponent, () => {
       <ModuleTreeComponent
         moduleCode="ACC1002"
         getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: {} } } as any)}
+        prereqTreeOnLeft
         fulfillRequirements={[
           'ACC1006',
           'ACC2002',
@@ -40,6 +41,7 @@ describe(ModuleTreeComponent, () => {
         moduleCode="CS3244"
         getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: {} } } as any)}
         fulfillRequirements={['CS5242', 'CS5339', 'CS6281']}
+        prereqTreeOnLeft
         prereqTree={{
           and: [
             {
@@ -60,6 +62,20 @@ describe(ModuleTreeComponent, () => {
     );
 
     expect(component).toMatchSnapshot('CS3244');
+  });
+
+  test('should render prereq tree to the right when tree direction is set to right', () => {
+    const component = render(
+      <ModuleTreeComponent
+        moduleCode="PC2193"
+        getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: {} } } as any)}
+        prereqTreeOnLeft={false}
+        prereqTree="PC1101"
+        fulfillRequirements={['PC3193']}
+      />,
+    );
+
+    expect(component).toMatchSnapshot('PC2193');
   });
 
   // Test that modules which are in moduleBank have appropriate colours,
@@ -99,6 +115,7 @@ describe(ModuleTreeComponent, () => {
         moduleCode="CS4243"
         getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: testModules } } as any)}
         fulfillRequirements={['CS6240', 'CS3281', 'CS4243R']}
+        prereqTreeOnLeft
         prereqTree={{
           and: [
             {
