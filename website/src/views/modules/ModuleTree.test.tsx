@@ -12,6 +12,7 @@ describe(ModuleTreeComponent, () => {
       <ModuleTreeComponent
         moduleCode="ACC1002"
         getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: {} } } as any)}
+        prereqTreeOnLeft={false}
         fulfillRequirements={[
           'ACC1006',
           'ACC2002',
@@ -40,6 +41,7 @@ describe(ModuleTreeComponent, () => {
         moduleCode="CS3244"
         getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: {} } } as any)}
         fulfillRequirements={['CS5242', 'CS5339', 'CS6281']}
+        prereqTreeOnLeft={false}
         prereqTree={{
           and: [
             {
@@ -99,6 +101,7 @@ describe(ModuleTreeComponent, () => {
         moduleCode="CS4243"
         getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: testModules } } as any)}
         fulfillRequirements={['CS6240', 'CS3281', 'CS4243R']}
+        prereqTreeOnLeft={false}
         prereqTree={{
           and: [
             {
