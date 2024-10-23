@@ -152,7 +152,7 @@ export const ModuleTreeComponent: React.FC<Props> = (props) => {
     <>
       <div className={styles.container}>
         <ConditionalReverse reverse={!prereqTreeOnLeft}>
-          <ul className={classnames(styles.tree, styles.root)}>
+          <ul className={classnames(styles.prereqTree, styles.root)}>
             <li
               className={classnames(styles.branch, {
                 [styles.leftBranch]: prereqTreeOnLeft,
@@ -176,7 +176,7 @@ export const ModuleTreeComponent: React.FC<Props> = (props) => {
               <div className={classnames(styles.node, styles.conditional)}>
                 {prereqTreeOnLeft ? `unlocks` : `needs`}
               </div>
-              <ul className={styles.prereqTree}>
+              <ul className={styles.tree}>
                 {fulfillRequirements.map((fulfilledModule) => (
                   <li
                     key={fulfilledModule}

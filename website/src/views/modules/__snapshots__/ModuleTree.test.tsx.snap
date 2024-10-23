@@ -6,7 +6,7 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
     class="container"
   >
     <ul
-      class="tree root"
+      class="prereqTree root"
     >
       <li
         class="branch leftBranch"
@@ -201,7 +201,7 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
       unlocks
     </div>
     <ul
-      class="prereqTree"
+      class="tree"
     >
       <li
         class="branch"
@@ -274,7 +274,7 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
     class="container"
   >
     <ul
-      class="tree root"
+      class="prereqTree root"
     >
       <li
         class="branch leftBranch"
@@ -573,7 +573,7 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
       unlocks
     </div>
     <ul
-      class="prereqTree"
+      class="tree"
     >
       <li
         class="branch"
@@ -646,7 +646,7 @@ exports[`ModuleTreeComponent should render prereq tree to the right when tree di
     class="container"
   >
     <ul
-      class="prereqTree"
+      class="tree"
     >
       <li
         class="branch leftBranch"
@@ -668,7 +668,7 @@ exports[`ModuleTreeComponent should render prereq tree to the right when tree di
       needs
     </div>
     <ul
-      class="tree root"
+      class="prereqTree root"
     >
       <li
         class="branch"
@@ -732,7 +732,7 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
     class="container"
   >
     <ul
-      class="tree root"
+      class="prereqTree root"
     >
       <li
         class="branch leftBranch"
@@ -754,7 +754,7 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
       unlocks
     </div>
     <ul
-      class="prereqTree"
+      class="tree"
     >
       <li
         class="branch"
