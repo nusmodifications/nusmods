@@ -6,98 +6,31 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
     class="container"
   >
     <ul
-      class="prereqTree"
-    >
-      <li
-        class="branch leftBranch"
-      >
-        <div
-          class="node moduleNode hoverable color-0 leftNode"
-        >
-          <mockedlink
-            class="link"
-          >
-            CS6240
-          </mockedlink>
-        </div>
-      </li>
-      <li
-        class="branch leftBranch"
-      >
-        <div
-          class="node moduleNode leftNode"
-        >
-          <mockedlink
-            class="link"
-          >
-            CS3281
-          </mockedlink>
-        </div>
-      </li>
-      <li
-        class="branch leftBranch"
-      >
-        <div
-          class="node moduleNode leftNode"
-        >
-          <mockedlink
-            class="link"
-          >
-            CS4243R
-          </mockedlink>
-        </div>
-      </li>
-    </ul>
-    <div
-      class="node conditional"
-    >
-      needs
-    </div>
-    <ul
       class="tree root"
     >
       <li
-        class="branch"
+        class="branch leftBranch"
       >
-        <div
-          class="node moduleNode"
-        >
-          <mockedlink
-            class="link"
-          >
-            CS4243
-          </mockedlink>
-        </div>
         <ul
           class="tree"
         >
           <li
-            class="branch"
+            class="branch leftBranch"
           >
-            <div
-              class="node conditional"
-            >
-              all of
-            </div>
             <ul
               class="tree"
             >
               <li
-                class="branch"
+                class="branch leftBranch"
               >
-                <div
-                  class="node conditional"
-                >
-                  one of
-                </div>
                 <ul
                   class="tree"
                 >
                   <li
-                    class="branch"
+                    class="branch leftBranch"
                   >
                     <div
-                      class="node moduleNode"
+                      class="node moduleNode leftNode"
                     >
                       <mockedlink
                         class="link"
@@ -107,10 +40,10 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
                     </div>
                   </li>
                   <li
-                    class="branch"
+                    class="branch leftBranch"
                   >
                     <div
-                      class="node moduleNode hoverable color-4"
+                      class="node moduleNode hoverable color-4 leftNode"
                     >
                       <mockedlink
                         class="link"
@@ -120,10 +53,10 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
                     </div>
                   </li>
                   <li
-                    class="branch"
+                    class="branch leftBranch"
                   >
                     <div
-                      class="node moduleNode"
+                      class="node moduleNode leftNode"
                     >
                       <mockedlink
                         class="link"
@@ -133,32 +66,22 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
                     </div>
                   </li>
                   <li
-                    class="branch"
+                    class="branch leftBranch"
                   >
-                    <div
-                      class="node conditional"
-                    >
-                      all of
-                    </div>
                     <ul
                       class="tree"
                     >
                       <li
-                        class="branch"
+                        class="branch leftBranch"
                       >
-                        <div
-                          class="node conditional"
-                        >
-                          one of
-                        </div>
                         <ul
                           class="tree"
                         >
                           <li
-                            class="branch"
+                            class="branch leftBranch"
                           >
                             <div
-                              class="node moduleNode hoverable color-6"
+                              class="node moduleNode hoverable color-6 leftNode"
                             >
                               <mockedlink
                                 class="link"
@@ -168,10 +91,10 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
                             </div>
                           </li>
                           <li
-                            class="branch"
+                            class="branch leftBranch"
                           >
                             <div
-                              class="node moduleNode"
+                              class="node moduleNode leftNode"
                             >
                               <mockedlink
                                 class="link"
@@ -181,10 +104,10 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
                             </div>
                           </li>
                           <li
-                            class="branch"
+                            class="branch leftBranch"
                           >
                             <div
-                              class="node moduleNode hoverable color-6"
+                              class="node moduleNode hoverable color-6 leftNode"
                             >
                               <mockedlink
                                 class="link"
@@ -194,23 +117,23 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
                             </div>
                           </li>
                         </ul>
-                      </li>
-                      <li
-                        class="branch"
-                      >
                         <div
                           class="node conditional"
                         >
-                          one of
+                          take one
                         </div>
+                      </li>
+                      <li
+                        class="branch leftBranch"
+                      >
                         <ul
                           class="tree"
                         >
                           <li
-                            class="branch"
+                            class="branch leftBranch"
                           >
                             <div
-                              class="node moduleNode hoverable color-6"
+                              class="node moduleNode hoverable color-6 leftNode"
                             >
                               <mockedlink
                                 class="link"
@@ -220,10 +143,10 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
                             </div>
                           </li>
                           <li
-                            class="branch"
+                            class="branch leftBranch"
                           >
                             <div
-                              class="node moduleNode"
+                              class="node moduleNode leftNode"
                             >
                               <mockedlink
                                 class="link"
@@ -233,14 +156,91 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
                             </div>
                           </li>
                         </ul>
+                        <div
+                          class="node conditional"
+                        >
+                          take one
+                        </div>
                       </li>
                     </ul>
+                    <div
+                      class="node conditional"
+                    >
+                      take all
+                    </div>
                   </li>
                 </ul>
+                <div
+                  class="node conditional"
+                >
+                  take one
+                </div>
               </li>
             </ul>
+            <div
+              class="node conditional"
+            >
+              take all
+            </div>
           </li>
         </ul>
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            CS4243
+          </mockedlink>
+        </div>
+      </li>
+    </ul>
+    <div
+      class="node conditional"
+    >
+      unlocks
+    </div>
+    <ul
+      class="prereqTree"
+    >
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode hoverable color-0"
+        >
+          <mockedlink
+            class="link"
+          >
+            CS6240
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            CS3281
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            CS4243R
+          </mockedlink>
+        </div>
       </li>
     </ul>
   </div>,
@@ -274,44 +274,295 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
     class="container"
   >
     <ul
-      class="prereqTree"
+      class="tree root"
     >
       <li
         class="branch leftBranch"
       >
+        <ul
+          class="tree"
+        >
+          <li
+            class="branch leftBranch"
+          >
+            <ul
+              class="tree"
+            >
+              <li
+                class="branch leftBranch"
+              >
+                <ul
+                  class="tree"
+                >
+                  <li
+                    class="branch leftBranch"
+                  >
+                    <div
+                      class="node moduleNode leftNode"
+                    >
+                      <mockedlink
+                        class="link"
+                      >
+                        CS2010
+                      </mockedlink>
+                    </div>
+                  </li>
+                  <li
+                    class="branch leftBranch"
+                  >
+                    <div
+                      class="node moduleNode leftNode"
+                    >
+                      <mockedlink
+                        class="link"
+                      >
+                        CS2020
+                      </mockedlink>
+                    </div>
+                  </li>
+                  <li
+                    class="branch leftBranch"
+                  >
+                    <div
+                      class="node moduleNode leftNode"
+                    >
+                      <mockedlink
+                        class="link"
+                      >
+                        CS2040
+                      </mockedlink>
+                    </div>
+                  </li>
+                  <li
+                    class="branch leftBranch"
+                  >
+                    <div
+                      class="node moduleNode leftNode"
+                    >
+                      <mockedlink
+                        class="link"
+                      >
+                        CS2040C
+                      </mockedlink>
+                    </div>
+                  </li>
+                </ul>
+                <div
+                  class="node conditional"
+                >
+                  take one
+                </div>
+              </li>
+              <li
+                class="branch leftBranch"
+              >
+                <ul
+                  class="tree"
+                >
+                  <li
+                    class="branch leftBranch"
+                  >
+                    <div
+                      class="node moduleNode leftNode"
+                    >
+                      <mockedlink
+                        class="link"
+                      >
+                        ESP1107
+                      </mockedlink>
+                    </div>
+                  </li>
+                  <li
+                    class="branch leftBranch"
+                  >
+                    <div
+                      class="node moduleNode leftNode"
+                    >
+                      <mockedlink
+                        class="link"
+                      >
+                        ESP2107
+                      </mockedlink>
+                    </div>
+                  </li>
+                  <li
+                    class="branch leftBranch"
+                  >
+                    <div
+                      class="node moduleNode leftNode"
+                    >
+                      <mockedlink
+                        class="link"
+                      >
+                        ST1232
+                      </mockedlink>
+                    </div>
+                  </li>
+                  <li
+                    class="branch leftBranch"
+                  >
+                    <div
+                      class="node moduleNode leftNode"
+                    >
+                      <mockedlink
+                        class="link"
+                      >
+                        ST2131
+                      </mockedlink>
+                    </div>
+                  </li>
+                  <li
+                    class="branch leftBranch"
+                  >
+                    <div
+                      class="node moduleNode leftNode"
+                    >
+                      <mockedlink
+                        class="link"
+                      >
+                        ST2132
+                      </mockedlink>
+                    </div>
+                  </li>
+                  <li
+                    class="branch leftBranch"
+                  >
+                    <div
+                      class="node moduleNode leftNode"
+                    >
+                      <mockedlink
+                        class="link"
+                      >
+                        ST2334
+                      </mockedlink>
+                    </div>
+                  </li>
+                </ul>
+                <div
+                  class="node conditional"
+                >
+                  take one
+                </div>
+              </li>
+              <li
+                class="branch leftBranch"
+              >
+                <ul
+                  class="tree"
+                >
+                  <li
+                    class="branch leftBranch"
+                  >
+                    <div
+                      class="node moduleNode leftNode"
+                    >
+                      <mockedlink
+                        class="link"
+                      >
+                        MA1101R
+                      </mockedlink>
+                    </div>
+                  </li>
+                  <li
+                    class="branch leftBranch"
+                  >
+                    <div
+                      class="node moduleNode leftNode"
+                    >
+                      <mockedlink
+                        class="link"
+                      >
+                        MA1311
+                      </mockedlink>
+                    </div>
+                  </li>
+                  <li
+                    class="branch leftBranch"
+                  >
+                    <div
+                      class="node moduleNode leftNode"
+                    >
+                      <mockedlink
+                        class="link"
+                      >
+                        MA1506
+                      </mockedlink>
+                    </div>
+                  </li>
+                </ul>
+                <div
+                  class="node conditional"
+                >
+                  take one
+                </div>
+              </li>
+              <li
+                class="branch leftBranch"
+              >
+                <ul
+                  class="tree"
+                >
+                  <li
+                    class="branch leftBranch"
+                  >
+                    <div
+                      class="node moduleNode leftNode"
+                    >
+                      <mockedlink
+                        class="link"
+                      >
+                        MA1102R
+                      </mockedlink>
+                    </div>
+                  </li>
+                  <li
+                    class="branch leftBranch"
+                  >
+                    <div
+                      class="node moduleNode leftNode"
+                    >
+                      <mockedlink
+                        class="link"
+                      >
+                        MA1505
+                      </mockedlink>
+                    </div>
+                  </li>
+                  <li
+                    class="branch leftBranch"
+                  >
+                    <div
+                      class="node moduleNode leftNode"
+                    >
+                      <mockedlink
+                        class="link"
+                      >
+                        MA1521
+                      </mockedlink>
+                    </div>
+                  </li>
+                </ul>
+                <div
+                  class="node conditional"
+                >
+                  take one
+                </div>
+              </li>
+            </ul>
+            <div
+              class="node conditional"
+            >
+              take all
+            </div>
+          </li>
+        </ul>
         <div
-          class="node moduleNode leftNode"
+          class="node moduleNode"
         >
           <mockedlink
             class="link"
           >
-            CS5242
-          </mockedlink>
-        </div>
-      </li>
-      <li
-        class="branch leftBranch"
-      >
-        <div
-          class="node moduleNode leftNode"
-        >
-          <mockedlink
-            class="link"
-          >
-            CS5339
-          </mockedlink>
-        </div>
-      </li>
-      <li
-        class="branch leftBranch"
-      >
-        <div
-          class="node moduleNode leftNode"
-        >
-          <mockedlink
-            class="link"
-          >
-            CS6281
+            CS3244
           </mockedlink>
         </div>
       </li>
@@ -319,10 +570,10 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
     <div
       class="node conditional"
     >
-      needs
+      unlocks
     </div>
     <ul
-      class="tree root"
+      class="prereqTree"
     >
       <li
         class="branch"
@@ -333,286 +584,35 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
           <mockedlink
             class="link"
           >
-            CS3244
+            CS5242
           </mockedlink>
         </div>
-        <ul
-          class="tree"
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
         >
-          <li
-            class="branch"
+          <mockedlink
+            class="link"
           >
-            <div
-              class="node conditional"
-            >
-              all of
-            </div>
-            <ul
-              class="tree"
-            >
-              <li
-                class="branch"
-              >
-                <div
-                  class="node conditional"
-                >
-                  one of
-                </div>
-                <ul
-                  class="tree"
-                >
-                  <li
-                    class="branch"
-                  >
-                    <div
-                      class="node moduleNode"
-                    >
-                      <mockedlink
-                        class="link"
-                      >
-                        CS2010
-                      </mockedlink>
-                    </div>
-                  </li>
-                  <li
-                    class="branch"
-                  >
-                    <div
-                      class="node moduleNode"
-                    >
-                      <mockedlink
-                        class="link"
-                      >
-                        CS2020
-                      </mockedlink>
-                    </div>
-                  </li>
-                  <li
-                    class="branch"
-                  >
-                    <div
-                      class="node moduleNode"
-                    >
-                      <mockedlink
-                        class="link"
-                      >
-                        CS2040
-                      </mockedlink>
-                    </div>
-                  </li>
-                  <li
-                    class="branch"
-                  >
-                    <div
-                      class="node moduleNode"
-                    >
-                      <mockedlink
-                        class="link"
-                      >
-                        CS2040C
-                      </mockedlink>
-                    </div>
-                  </li>
-                </ul>
-              </li>
-              <li
-                class="branch"
-              >
-                <div
-                  class="node conditional"
-                >
-                  one of
-                </div>
-                <ul
-                  class="tree"
-                >
-                  <li
-                    class="branch"
-                  >
-                    <div
-                      class="node moduleNode"
-                    >
-                      <mockedlink
-                        class="link"
-                      >
-                        ESP1107
-                      </mockedlink>
-                    </div>
-                  </li>
-                  <li
-                    class="branch"
-                  >
-                    <div
-                      class="node moduleNode"
-                    >
-                      <mockedlink
-                        class="link"
-                      >
-                        ESP2107
-                      </mockedlink>
-                    </div>
-                  </li>
-                  <li
-                    class="branch"
-                  >
-                    <div
-                      class="node moduleNode"
-                    >
-                      <mockedlink
-                        class="link"
-                      >
-                        ST1232
-                      </mockedlink>
-                    </div>
-                  </li>
-                  <li
-                    class="branch"
-                  >
-                    <div
-                      class="node moduleNode"
-                    >
-                      <mockedlink
-                        class="link"
-                      >
-                        ST2131
-                      </mockedlink>
-                    </div>
-                  </li>
-                  <li
-                    class="branch"
-                  >
-                    <div
-                      class="node moduleNode"
-                    >
-                      <mockedlink
-                        class="link"
-                      >
-                        ST2132
-                      </mockedlink>
-                    </div>
-                  </li>
-                  <li
-                    class="branch"
-                  >
-                    <div
-                      class="node moduleNode"
-                    >
-                      <mockedlink
-                        class="link"
-                      >
-                        ST2334
-                      </mockedlink>
-                    </div>
-                  </li>
-                </ul>
-              </li>
-              <li
-                class="branch"
-              >
-                <div
-                  class="node conditional"
-                >
-                  one of
-                </div>
-                <ul
-                  class="tree"
-                >
-                  <li
-                    class="branch"
-                  >
-                    <div
-                      class="node moduleNode"
-                    >
-                      <mockedlink
-                        class="link"
-                      >
-                        MA1101R
-                      </mockedlink>
-                    </div>
-                  </li>
-                  <li
-                    class="branch"
-                  >
-                    <div
-                      class="node moduleNode"
-                    >
-                      <mockedlink
-                        class="link"
-                      >
-                        MA1311
-                      </mockedlink>
-                    </div>
-                  </li>
-                  <li
-                    class="branch"
-                  >
-                    <div
-                      class="node moduleNode"
-                    >
-                      <mockedlink
-                        class="link"
-                      >
-                        MA1506
-                      </mockedlink>
-                    </div>
-                  </li>
-                </ul>
-              </li>
-              <li
-                class="branch"
-              >
-                <div
-                  class="node conditional"
-                >
-                  one of
-                </div>
-                <ul
-                  class="tree"
-                >
-                  <li
-                    class="branch"
-                  >
-                    <div
-                      class="node moduleNode"
-                    >
-                      <mockedlink
-                        class="link"
-                      >
-                        MA1102R
-                      </mockedlink>
-                    </div>
-                  </li>
-                  <li
-                    class="branch"
-                  >
-                    <div
-                      class="node moduleNode"
-                    >
-                      <mockedlink
-                        class="link"
-                      >
-                        MA1505
-                      </mockedlink>
-                    </div>
-                  </li>
-                  <li
-                    class="branch"
-                  >
-                    <div
-                      class="node moduleNode"
-                    >
-                      <mockedlink
-                        class="link"
-                      >
-                        MA1521
-                      </mockedlink>
-                    </div>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-        </ul>
+            CS5339
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            CS6281
+          </mockedlink>
+        </div>
       </li>
     </ul>
   </div>,
@@ -732,187 +732,18 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
     class="container"
   >
     <ul
-      class="prereqTree"
+      class="tree root"
     >
       <li
         class="branch leftBranch"
       >
         <div
-          class="node moduleNode leftNode"
+          class="node moduleNode"
         >
           <mockedlink
             class="link"
           >
-            ACC1006
-          </mockedlink>
-        </div>
-      </li>
-      <li
-        class="branch leftBranch"
-      >
-        <div
-          class="node moduleNode leftNode"
-        >
-          <mockedlink
-            class="link"
-          >
-            ACC2002
-          </mockedlink>
-        </div>
-      </li>
-      <li
-        class="branch leftBranch"
-      >
-        <div
-          class="node moduleNode leftNode"
-        >
-          <mockedlink
-            class="link"
-          >
-            ACC3601
-          </mockedlink>
-        </div>
-      </li>
-      <li
-        class="branch leftBranch"
-      >
-        <div
-          class="node moduleNode leftNode"
-        >
-          <mockedlink
-            class="link"
-          >
-            ACC3603
-          </mockedlink>
-        </div>
-      </li>
-      <li
-        class="branch leftBranch"
-      >
-        <div
-          class="node moduleNode leftNode"
-        >
-          <mockedlink
-            class="link"
-          >
-            ACC3605
-          </mockedlink>
-        </div>
-      </li>
-      <li
-        class="branch leftBranch"
-      >
-        <div
-          class="node moduleNode leftNode"
-        >
-          <mockedlink
-            class="link"
-          >
-            ACC3616
-          </mockedlink>
-        </div>
-      </li>
-      <li
-        class="branch leftBranch"
-      >
-        <div
-          class="node moduleNode leftNode"
-        >
-          <mockedlink
-            class="link"
-          >
-            FIN2004
-          </mockedlink>
-        </div>
-      </li>
-      <li
-        class="branch leftBranch"
-      >
-        <div
-          class="node moduleNode leftNode"
-        >
-          <mockedlink
-            class="link"
-          >
-            FIN2004X
-          </mockedlink>
-        </div>
-      </li>
-      <li
-        class="branch leftBranch"
-      >
-        <div
-          class="node moduleNode leftNode"
-        >
-          <mockedlink
-            class="link"
-          >
-            FIN3113
-          </mockedlink>
-        </div>
-      </li>
-      <li
-        class="branch leftBranch"
-      >
-        <div
-          class="node moduleNode leftNode"
-        >
-          <mockedlink
-            class="link"
-          >
-            FIN3130
-          </mockedlink>
-        </div>
-      </li>
-      <li
-        class="branch leftBranch"
-      >
-        <div
-          class="node moduleNode leftNode"
-        >
-          <mockedlink
-            class="link"
-          >
-            IS5116
-          </mockedlink>
-        </div>
-      </li>
-      <li
-        class="branch leftBranch"
-      >
-        <div
-          class="node moduleNode leftNode"
-        >
-          <mockedlink
-            class="link"
-          >
-            ACC3611
-          </mockedlink>
-        </div>
-      </li>
-      <li
-        class="branch leftBranch"
-      >
-        <div
-          class="node moduleNode leftNode"
-        >
-          <mockedlink
-            class="link"
-          >
-            FIN3132
-          </mockedlink>
-        </div>
-      </li>
-      <li
-        class="branch leftBranch"
-      >
-        <div
-          class="node moduleNode leftNode"
-        >
-          <mockedlink
-            class="link"
-          >
-            FIN4115
+            ACC1002
           </mockedlink>
         </div>
       </li>
@@ -920,10 +751,10 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
     <div
       class="node conditional"
     >
-      needs
+      unlocks
     </div>
     <ul
-      class="tree root"
+      class="prereqTree"
     >
       <li
         class="branch"
@@ -934,7 +765,176 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
           <mockedlink
             class="link"
           >
-            ACC1002
+            ACC1006
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            ACC2002
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            ACC3601
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            ACC3603
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            ACC3605
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            ACC3616
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            FIN2004
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            FIN2004X
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            FIN3113
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            FIN3130
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            IS5116
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            ACC3611
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            FIN3132
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            FIN4115
           </mockedlink>
         </div>
       </li>
