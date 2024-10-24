@@ -11,7 +11,7 @@ import ReactModal from 'react-modal';
 
 import configureStore from 'bootstrapping/configure-store';
 import subscribeOnlineEvents from 'bootstrapping/subscribeOnlineEvents';
-import { initializeMamoto } from 'bootstrapping/matomo';
+import { initializeMatomo } from 'bootstrapping/matomo';
 import registerServiceWorker from 'bootstrapping/service-worker-manager';
 
 import 'styles/main.scss';
@@ -38,5 +38,5 @@ if (
 }
 
 if (NUSMODS_ENV === 'production') {
-  initializeMamoto();
+  initializeMatomo();
 }
