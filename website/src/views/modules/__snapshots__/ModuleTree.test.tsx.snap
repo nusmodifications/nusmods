@@ -268,6 +268,248 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
 ]
 `;
 
+exports[`ModuleTreeComponent should render prereq branch with nOf condition: PC2130 1`] = `
+[
+  <div
+    class="container"
+  >
+    <ul
+      class="prereqTree root"
+    >
+      <li
+        class="branch leftBranch"
+      >
+        <ul
+          class="tree"
+        >
+          <li
+            class="branch leftBranch"
+          >
+            <ul
+              class="tree"
+            >
+              <li
+                class="branch leftBranch"
+              >
+                <div
+                  class="node moduleNode leftNode"
+                >
+                  <mockedlink
+                    class="link"
+                  >
+                    PC1101
+                  </mockedlink>
+                </div>
+              </li>
+              <li
+                class="branch leftBranch"
+              >
+                <div
+                  class="node moduleNode leftNode"
+                >
+                  <mockedlink
+                    class="link"
+                  >
+                    PC2174A
+                  </mockedlink>
+                </div>
+              </li>
+            </ul>
+            <div
+              class="node conditional"
+            >
+              take at least 2
+            </div>
+          </li>
+        </ul>
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            PC2130
+          </mockedlink>
+        </div>
+      </li>
+    </ul>
+    <div
+      class="node conditional"
+    >
+      unlocks
+    </div>
+    <ul
+      class="tree"
+    >
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            PC3130
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            PC3232
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            PC3233
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            PC3235
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            PC3246
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            PC3251
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            PC3288
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            PC2135
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            PC3288Q
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            PC3288QR
+          </mockedlink>
+        </div>
+      </li>
+      <li
+        class="branch"
+      >
+        <div
+          class="node moduleNode"
+        >
+          <mockedlink
+            class="link"
+          >
+            PC3288R
+          </mockedlink>
+        </div>
+      </li>
+    </ul>
+  </div>,
+  <p
+    class="alert alert-warning"
+  >
+    This new version of the prerequisite tree is being tested and may not be accurate. Viewers are encouraged to double check details with the prerequisite text above. To report bugs with the new tree, please post a bug report on GitHub (preferred) at 
+    <a
+      href="https://github.com/nusmodifications/nusmods/issues/new/choose"
+      rel="noopener noreferrer nofollow"
+      target="_blank"
+    >
+      our repository
+    </a>
+     or send an email to 
+    <a
+      href="mailto:bugs@nusmods.com"
+      rel="noopener noreferrer nofollow"
+      target="_blank"
+    >
+      bugs@nusmods.com
+    </a>
+    .
+  </p>,
+]
+`;
+
 exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
 [
   <div

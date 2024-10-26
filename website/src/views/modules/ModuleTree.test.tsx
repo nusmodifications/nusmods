@@ -64,6 +64,34 @@ describe(ModuleTreeComponent, () => {
     expect(component).toMatchSnapshot('CS3244');
   });
 
+  test('should render prereq branch with nOf condition', () => {
+    const component = render(
+      <ModuleTreeComponent
+        moduleCode="PC2130"
+        getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: {} } } as any)}
+        fulfillRequirements={[
+          'PC3130',
+          'PC3232',
+          'PC3233',
+          'PC3235',
+          'PC3246',
+          'PC3251',
+          'PC3288',
+          'PC2135',
+          'PC3288Q',
+          'PC3288QR',
+          'PC3288R',
+        ]}
+        prereqTreeOnLeft
+        prereqTree={{
+          nOf: [2, ['PC1101', 'PC2174A']],
+        }}
+      />,
+    );
+
+    expect(component).toMatchSnapshot('PC2130');
+  });
+
   test('should render prereq tree to the right when tree direction is set to right', () => {
     const component = render(
       <ModuleTreeComponent
