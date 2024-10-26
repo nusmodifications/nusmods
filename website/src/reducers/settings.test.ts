@@ -38,6 +38,7 @@ const settingsWithDarkMode: SettingsState = {
   ...initialState,
   colorScheme: DARK_COLOR_SCHEME_PREFERENCE,
 };
+const settingsWithPrereqTreeRight: SettingsState = { ...initialState, prereqTreeOnLeft: false };
 const settingsWithDismissedNotifications: SettingsState = produce(initialState, (draft) => {
   draft.modRegNotification.dismissed = [
     { type: 'Select Courses', name: '1' },
@@ -76,6 +77,16 @@ describe('settings', () => {
     const action3 = actions.selectColorScheme(SYSTEM_COLOR_SCHEME_PREFERENCE);
     const nextState3: SettingsState = reducer(nextState, action3);
     expect(nextState3).toEqual(initialState);
+  });
+
+  test('can toggle prereq tree direction', () => {
+    const action1 = actions.togglePreReqTreeDirection(false);
+    const nextState1: SettingsState = reducer(initialState, action1);
+    expect(nextState1).toEqual(settingsWithPrereqTreeRight);
+
+    const action2 = actions.togglePreReqTreeDirection(true);
+    const nextState2: SettingsState = reducer(nextState1, action2);
+    expect(nextState2).toEqual(initialState);
   });
 
   test('set module table order', () => {
