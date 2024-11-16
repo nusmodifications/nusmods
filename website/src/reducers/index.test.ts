@@ -66,6 +66,7 @@ test('reducers should set export data state', () => {
         },
       },
     },
+    customModules: {},
     colors: {
       [1]: {
         CS3216: 1,

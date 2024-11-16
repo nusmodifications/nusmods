@@ -12,7 +12,7 @@ import { Trash } from 'react-feather';
 import { ModuleSelectList } from 'types/reducers';
 import { ModuleCode } from 'types/modules';
 
-import { breakpointUp } from 'utils/css';
+import { breakpointDown } from 'utils/css';
 import useMediaQuery from 'views/hooks/useMediaQuery';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
@@ -42,7 +42,7 @@ const ModulesSelect: FC<Props> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
-  const matchBreakpoint = useMediaQuery(breakpointUp('md'));
+  const isMobile = useMediaQuery(breakpointDown('md'));
 
   const openSelect = useCallback(() => setIsOpen(true), []);
   const closeSelect = useCallback(() => setIsOpen(false), []);
@@ -102,7 +102,7 @@ const ModulesSelect: FC<Props> = ({
     getMenuProps,
     highlightedIndex,
   }) => {
-    const isModalOpen = !matchBreakpoint && isOpen;
+    const isModalOpen = isMobile && isOpen;
     const results = getFilteredModules(inputValue);
     const showResults = isOpen && results.length > 0;
     const showTip = isModalOpen && !results.length;
@@ -207,7 +207,7 @@ const ModulesSelect: FC<Props> = ({
     </Downshift>
   );
 
-  if (matchBreakpoint) {
+  if (!isMobile) {
     return downshiftComponent;
   }
 
