@@ -7,7 +7,7 @@
   "semester": 1,
   "disqusShortname": "nusmods-prod",
   "venueFeedbackApi": "https://nusmods-venue-github-hook.mods.workers.dev",
-  "moduleErrorApi": "https://0-0-7--nusmods-module-error-reporting.mediumdeviation.autocode.gg/",
+  "moduleErrorApi": "https://nusmods-module-error-reporting.mods.workers.dev",
   "archiveYears": [
     "2016/2017",
     "2017/2018",
