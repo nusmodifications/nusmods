@@ -1,7 +1,7 @@
 import { screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import axios, { AxiosHeaders, AxiosResponse } from 'axios';
-import produce from 'immer';
+import { produce } from 'immer';
 
 import type { Semester } from 'types/modules';
 import type { Dispatch } from 'types/redux';

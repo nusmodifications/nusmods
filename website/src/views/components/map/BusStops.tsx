@@ -2,7 +2,7 @@ import { PureComponent } from 'react';
 import { DivIcon, DragEndEventHandlerFn } from 'leaflet';
 import { Marker, Popup } from 'react-leaflet';
 import classnames from 'classnames';
-import produce from 'immer';
+import { produce } from 'immer';
 
 import type { BusStop, BusTiming } from 'types/venues';
 import type { EmptyProps } from 'types/utils';

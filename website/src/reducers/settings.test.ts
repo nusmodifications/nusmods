@@ -1,4 +1,4 @@
-import produce from 'immer';
+import { produce } from 'immer';
 import { SettingsState } from 'types/reducers';
 
 import * as actions from 'actions/settings';

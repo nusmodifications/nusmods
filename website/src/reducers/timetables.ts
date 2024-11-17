@@ -1,5 +1,5 @@
 import { get, omit, values } from 'lodash';
-import produce from 'immer';
+import { produce } from 'immer';
 import { createMigrate } from 'redux-persist';
 
 import { PersistConfig } from 'storage/persistReducer';

@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
-import produce from 'immer';
+import { produce } from 'immer';
 import { range } from 'lodash';
 import type { VenueList } from 'types/venues';
 import type { ModuleList } from 'types/reducers';
