@@ -7720,7 +7720,7 @@ leaflet-gesture-handling@1.2.2:
   resolved "https://registry.yarnpkg.com/leaflet-gesture-handling/-/leaflet-gesture-handling-1.2.2.tgz#ea10afb94f2d477d77d47beb21e409ed327df07a"
   integrity sha512-Blf5V4PoNphWkzL7Y1qge+Spkd4OCQ2atjwUNhMhLIcjKzPcBH++x/lwOinaR9jSqLWqJ6oKYO8d0XdTffy4hQ==
 
-leaflet-polylineoffset@^1.1.1:
+leaflet-polylineoffset@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/leaflet-polylineoffset/-/leaflet-polylineoffset-1.1.1.tgz#021b717d4f7d462f742c1ac1ac0e83e8eef74615"
   integrity sha512-WcEjAROx9IhIVwSMoFy9p2QBCG9YeuGtJl4ZdunIgj4xbCdTrUkBj8JdonUeCyLPnD2/Vrem/raOPHm5LvebSw==
