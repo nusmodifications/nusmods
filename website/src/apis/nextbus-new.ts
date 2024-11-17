@@ -2,11 +2,12 @@ const baseURL = 'https://nnextbus.nusmods.com'; // TODO: wait until we have an a
 
 export const getStopTimings = async (
   stop: string,
-  callback?: (data: any) => void,
-  error?: (e: any) => void,
+  callback?: (data: ShuttleServiceResult) => void,
+  error?: (e: unknown) => void,
 ) => {
   if (!stop) return;
-  const API_AUTH = ''; // TODO: wait until we have an api proxy
+  // TODO: wait until we have an api proxy
+  // const API_AUTH = '';
   try {
     const headers = {
       // headers: {

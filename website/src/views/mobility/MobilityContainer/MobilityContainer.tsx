@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import classnames from 'classnames';
 import { Link, useRouteMatch, match as Match, useHistory } from 'react-router-dom';
@@ -7,7 +6,6 @@ import { ArrowDownLeft, ArrowUpRight, ChevronLeft } from 'react-feather';
 import useScrollToTop from 'views/hooks/useScrollToTop';
 
 import LocationMap from 'views/components/bus-map/LocationMap';
-import NoFooter from 'views/layout/NoFooter';
 import { getRouteSegments, getServiceStatus } from 'utils/mobility';
 import NUSModerator from 'nusmoderator';
 import styles from './MobilityContainer.scss';

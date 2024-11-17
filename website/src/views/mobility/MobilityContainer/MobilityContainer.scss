@@ -4,31 +4,16 @@
   // composes: page-container from global;
   // max-width: 40rem;
   // display: block;
-  min-height: calc(100vh - 6rem);
-  margin-top: -1rem;
   position: relative;
   z-index: 1;
+  min-height: calc(100vh - 6rem);
+  margin-top: -1rem;
   background: var(--body-bg);
 
-  @media (min-width: 768px) {
-    position: fixed;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    padding-left: 15px;
-    min-height: calc(100vh - 3rem);
-    align-items: stretch;
-    width: calc((100vw - 4rem));
-    height: calc(100vh - 3rem);
-  }
-  @media (min-width: 1200px) {
-    width: calc(100vw - 10rem);
-  }
-
   .map {
+    overflow: hidden;
     flex: 1;
     min-width: min(100vw, 24rem);
-    overflow: hidden;
 
     @media (max-width: 768px) {
       height: 40vh;
@@ -44,15 +29,31 @@
   }
 
   .container {
-    min-width: 16rem;
-    flex: 1;
-    padding: 1rem 1.5rem;
     overflow-y: scroll;
+    flex: 1;
+    min-width: 16rem;
     max-height: 100%;
+    padding: 1rem 1.5rem;
 
     @media (min-width: 768px) {
       max-width: 20rem;
     }
+  }
+
+  @media (min-width: 768px) {
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    width: calc((100vw - 4rem));
+    height: calc(100vh - 3rem);
+    min-height: calc(100vh - 3rem);
+    padding-left: 15px;
+  }
+
+  @media (min-width: 1200px) {
+    width: calc(100vw - 10rem);
   }
 }
 

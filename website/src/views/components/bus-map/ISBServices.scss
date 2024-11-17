@@ -15,13 +15,13 @@ $route-colors: (
 @at-root {
   body {
     --map-label: #40456f;
-    --map-bg: #ffffff;
+    --map-bg: #fff;
     --map-deselected: #c3d7ea;
     --map-dark: #40456f;
-    --map-light: #ffffff;
+    --map-light: #fff;
 
     &:global(.mode-dark) {
-      --map-label: #ffffff;
+      --map-label: #fff;
       --map-bg: #282b3f;
       --map-deselected: #384450;
     }
@@ -30,10 +30,11 @@ $route-colors: (
 
 .stopIcon {
   $size: 12px;
+
+  position: absolute;
   width: $size;
   height: $size;
   border-radius: 999px;
-  position: absolute;
   top: 9px;
   left: 9px;
   background: var(--map-deselected);
@@ -76,12 +77,12 @@ $route-colors: (
     position: absolute;
     top: 6px;
     left: calc(100% - 8px);
-    // width: 100px;
+    // width: 100;
     width: auto;
     // max-width: none;
     white-space: nowrap;
     line-height: 1.3;
-    pointer-events: none; // So the entire 100px width will not be selectable when there's only one route
+    pointer-events: none; // So the entire 100 width will not be selectable when there's only one route
 
     &.left {
       right: calc(100% - 8px);
@@ -105,20 +106,20 @@ $route-colors: (
     pointer-events: auto;
     color: var(--map-label);
     //http://owumaro.github.io/text-stroke-generator/
-    text-shadow: var(--map-bg) 1px 0px 0px, var(--map-bg) 0.540302px 0.841471px 0px,
-      var(--map-bg) -0.416147px 0.909297px 0px, var(--map-bg) -0.989993px 0.14112px 0px,
-      var(--map-bg) -0.653644px -0.756803px 0px, var(--map-bg) 0.283662px -0.958924px 0px,
-      var(--map-bg) 0.96017px -0.279416px 0px;
+    text-shadow: var(--map-bg) 1px 0 0, var(--map-bg) 0.540302px 0.841471px 0,
+      var(--map-bg) -0.416147px 0.909297px 0, var(--map-bg) -0.989993px 0.14112px 0,
+      var(--map-bg) -0.653644px -0.756803px 0, var(--map-bg) 0.283662px -0.958924px 0,
+      var(--map-bg) 0.96017px -0.279416px 0;
   }
 
   .subtext {
     font-size: 0.75rem;
     font-weight: 700;
     color: var(--gray);
-    text-shadow: var(--map-bg) 1px 0px 0px, var(--map-bg) 0.540302px 0.841471px 0px,
-      var(--map-bg) -0.416147px 0.909297px 0px, var(--map-bg) -0.989993px 0.14112px 0px,
-      var(--map-bg) -0.653644px -0.756803px 0px, var(--map-bg) 0.283662px -0.958924px 0px,
-      var(--map-bg) 0.96017px -0.279416px 0px;
+    text-shadow: var(--map-bg) 1px 0 0, var(--map-bg) 0.540302px 0.841471px 0,
+      var(--map-bg) -0.416147px 0.909297px 0, var(--map-bg) -0.989993px 0.14112px 0,
+      var(--map-bg) -0.653644px -0.756803px 0, var(--map-bg) 0.283662px -0.958924px 0,
+      var(--map-bg) 0.96017px -0.279416px 0;
   }
 
   .focused {

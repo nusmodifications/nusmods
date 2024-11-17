@@ -45,7 +45,7 @@ export const getServiceStatus = (period: 'term' | 'vacation' = 'term') => {
       }
     }
 
-    console.log(nextBlock, i, 'service:', service.id);
+    // console.log(nextBlock, i, 'service:', service.id);
     if (nextBlock) {
       return {
         id: service.id,

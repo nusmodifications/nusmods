@@ -1,4 +1,5 @@
-import { FC, memo, useLayoutEffect } from 'react';
+import { memo, useLayoutEffect } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { Maximize, Minimize } from 'react-feather';
 import { useMap } from 'react-leaflet';
 import Tooltip from 'views/components/Tooltip';
@@ -9,7 +10,7 @@ type Props = {
   onToggleExpand: () => void;
 };
 
-const ExpandMap: FC<Props> = ({ isExpanded, onToggleExpand }) => {
+const ExpandMap: FC<PropsWithChildren<Props>> = ({ isExpanded, onToggleExpand }) => {
   const map = useMap();
 
   useLayoutEffect(() => {

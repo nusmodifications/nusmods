@@ -4,7 +4,7 @@ import { entries, sortBy } from 'lodash';
 
 import { RefreshCw as Refresh } from 'react-feather';
 import { BusTiming, NextBus, NextBusTime } from 'types/venues';
-import styles from './BusStops.scss';
+import styles from '../map/BusStops.scss';
 
 type Props = BusTiming & {
   name: string;

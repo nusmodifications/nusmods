@@ -370,7 +370,8 @@ function StopDetails(props: Props) {
       (data) => {
         setSelectedStopTiming(data);
       },
-      (error) => {
+      () => {
+        // TODO: Surface the error.
         // console.error(error);
         setSelectedStopTiming('error');
       },
@@ -507,7 +508,7 @@ function StopDetails(props: Props) {
                 <li className={styles.serviceWithChevron}>
                   <div className={classNames(styles.incomingBus)}>
                     <div className={styles.busNames}>
-                      {buses.map((bus, j) => (
+                      {buses.map((bus) => (
                         <span
                           className={styles.service}
                           style={
