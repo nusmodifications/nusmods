@@ -18,11 +18,12 @@
     "@babel/highlight" "^7.10.4"
 
 "@babel/code-frame@^7.12.13":
-  version "7.24.7"
-  resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.24.7.tgz#882fd9e09e8ee324e496bd040401c6f046ef4465"
-  integrity sha512-BcYH1CVJBO9tvyIZ2jVeXgSIMvGZ2FDRvDdOIVQyuklNKSsx+eppDEBq/g47Ayw+RqNFE+URvOShmf+f/qwAlA==
+  version "7.26.2"
+  resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.26.2.tgz#4b5fab97d33338eff916235055f0ebc21e573a85"
+  integrity sha512-RJlIHRueQgwWitWgF8OdFYGZX328Ax5BCemNGlqHfplnRT9ESi8JkFlvaVYbS+UubVY6dpv87Fs2u5M29iNFVQ==
   dependencies:
-    "@babel/highlight" "^7.24.7"
+    "@babel/helper-validator-identifier" "^7.25.9"
+    js-tokens "^4.0.0"
     picocolors "^1.0.0"
 
 "@babel/code-frame@^7.22.5":
@@ -154,10 +155,15 @@
   resolved "https://registry.yarnpkg.com/@babel/helper-validator-identifier/-/helper-validator-identifier-7.12.11.tgz#c9a1f021917dcb5ccf0d4e453e399022981fc9ed"
   integrity sha512-np/lG3uARFybkoHokJUmf1QfEvRVCPbmQeUQpKow5cQ3xWrV9i3rUHodKDJPQfTVX61qKi+UdYk8kik84n7XOw==
 
-"@babel/helper-validator-identifier@^7.22.5", "@babel/helper-validator-identifier@^7.24.7":
+"@babel/helper-validator-identifier@^7.22.5":
   version "7.24.7"
   resolved "https://registry.yarnpkg.com/@babel/helper-validator-identifier/-/helper-validator-identifier-7.24.7.tgz#75b889cfaf9e35c2aaf42cf0d72c8e91719251db"
   integrity sha512-rR+PBcQ1SMQDDyF6X0wxtG8QyLCgUB0eRAGguqRLfkCA87l7yAP7ehq8SNj96OOGTO8OBV70KhuFYcIkHXOg0w==
+
+"@babel/helper-validator-identifier@^7.24.7", "@babel/helper-validator-identifier@^7.25.9":
+  version "7.25.9"
+  resolved "https://registry.yarnpkg.com/@babel/helper-validator-identifier/-/helper-validator-identifier-7.25.9.tgz#24b64e2c3ec7cd3b3c547729b8d16871f22cbdc7"
+  integrity sha512-Ed61U6XJc3CVRfkERJWDz4dJwKe7iLmmJsbOGu9wSloNSFttHV0I8g6UAgb7qnK5ly5bGLPd4oXZlxCdANBOWQ==
 
 "@babel/helper-validator-option@^7.22.5":
   version "7.22.5"
@@ -182,7 +188,7 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@babel/highlight@^7.22.5", "@babel/highlight@^7.24.7":
+"@babel/highlight@^7.22.5":
   version "7.24.7"
   resolved "https://registry.yarnpkg.com/@babel/highlight/-/highlight-7.24.7.tgz#a05ab1df134b286558aae0ed41e6c5f731bf409d"
   integrity sha512-EStJpq4OuY8xYfhGVXngigBJRWxftKX9ksiGDnmlY3o7B/V7KIAc9X4oiK87uPJSc/vs5L869bem5fhZa8caZw==
@@ -938,9 +944,9 @@
     "@types/istanbul-lib-report" "*"
 
 "@types/jest@^29.5.2":
-  version "29.5.12"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-29.5.12.tgz#7f7dc6eb4cf246d2474ed78744b05d06ce025544"
-  integrity sha512-eDC8bTvT/QhYdxJAulQikueigY5AsdBRH2yDKW3yveW7svY3+DzN84/2NUgkw10RTiJbWqZrTtoGVdYlvFJdLw==
+  version "29.5.14"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-29.5.14.tgz#2b910912fa1d6856cadcd0c1f95af7df1d6049e5"
+  integrity sha512-ZN+4sdnLUbo8EVvVc2ao0GFW6oVrQRPn4K2lglySj7APvSrgzxHiNNK99us4WDMi57xxA2yggblIAMNhXOotLQ==
   dependencies:
     expect "^29.0.0"
     pretty-format "^29.0.0"
@@ -968,16 +974,16 @@
     "@types/node" "*"
 
 "@types/node@*":
-  version "22.5.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.5.0.tgz#10f01fe9465166b4cab72e75f60d8b99d019f958"
-  integrity sha512-DkFrJOe+rfdHTqqMg0bSNlGlQ85hSoh2TPzZyhHsXnMtligRWpxUySiyw8FY14ITt24HVCiQPWxS3KO/QlGmWg==
+  version "22.9.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.9.0.tgz#b7f16e5c3384788542c72dc3d561a7ceae2c0365"
+  integrity sha512-vuyHg81vvWA1Z1ELfvLko2c8f34gyA0zaic0+Rllc5lbCnbSyuvb2Oxpm6TAUAC/2xZN3QGqxBNggD1nNR2AfQ==
   dependencies:
-    undici-types "~6.19.2"
+    undici-types "~6.19.8"
 
-"@types/node@18.19.45":
-  version "18.19.45"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.19.45.tgz#a9ebfe4c316a356be7ca11f753ecb2feda6d6bdf"
-  integrity sha512-VZxPKNNhjKmaC1SUYowuXSRSMGyQGmQjvvA1xE4QZ0xce2kLtEhPDS+kqpCPBZYgqblCLQ2DAjSzmgCM5auvhA==
+"@types/node@18.19.64":
+  version "18.19.64"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.19.64.tgz#122897fb79f2a9ec9c979bded01c11461b2b1478"
+  integrity sha512-955mDqvO2vFf/oL7V3WiUtiz+BugyX8uVbaT2H8oj3+8dRyH2FLiNdowe7eNqRM7IOIZvzDH76EoAT+gwm6aIQ==
   dependencies:
     undici-types "~5.26.4"
 
@@ -993,10 +999,10 @@
   resolved "https://registry.yarnpkg.com/@types/promise-queue/-/promise-queue-2.2.3.tgz#e58e17eaf855db5f6fedc47ac57f85600bf54230"
   integrity sha512-CuEQpGSYKvHr3SQ7C7WkluLg9CFjVORbn8YFRsQ5u6mqGbZVfSOv03ic9t95HtZuMchnlNqnIsQGFOpxqdhjTQ==
 
-"@types/ramda@0.30.1":
-  version "0.30.1"
-  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.30.1.tgz#316257fec12747bb39a2e921df48a9dcb8c164a9"
-  integrity sha512-aoyF/ADPL6N+/NXXfhPWF+Qj6w1Cql59m9wX0Gi15uyF+bpzXeLd63HPdiTDE2bmLXfNcVufsDPKmbfOrOzTBA==
+"@types/ramda@0.30.2":
+  version "0.30.2"
+  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.30.2.tgz#70661b20c1bb969589a551b7134ae75008ffbfb6"
+  integrity sha512-PyzHvjCalm2BRYjAU6nIB3TprYwMNOUY/7P/N8bSzp9W/yM2YrtGtAnnVtaCNSeOZ8DzKyFDvaqQs7LnWwwmBA==
   dependencies:
     types-ramda "^0.30.1"
 
@@ -3606,9 +3612,9 @@ path-type@^4.0.0:
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
 picocolors@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.0.0.tgz#cb5bdc74ff3f51892236eaf79d68bc44564ab81c"
-  integrity sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.1.1.tgz#3d321af3eab939b083c8f929a1d12cda81c26b6b"
+  integrity sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==
 
 picomatch@^2.0.4:
   version "2.2.2"
@@ -4246,7 +4252,7 @@ undici-types@~5.26.4:
   resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-5.26.5.tgz#bcd539893d00b56e964fd2657a4866b221a65617"
   integrity sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==
 
-undici-types@~6.19.2:
+undici-types@~6.19.8:
   version "6.19.8"
   resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-6.19.8.tgz#35111c9d1437ab83a7cdc0abae2f26d88eda0a02"
   integrity sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==
