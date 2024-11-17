@@ -3,7 +3,7 @@ import axios from 'axios';
 import classnames from 'classnames';
 import qs from 'query-string';
 import { Copy, Mail, Repeat } from 'react-feather';
-import type { QRCodeProps } from 'react-qr-svg';
+import type { QRCodeSVG } from 'qrcode.react';
 
 import type { SemTimetableConfig } from 'types/timetables';
 import type { ModuleCode, Semester } from 'types/modules';
@@ -48,7 +48,7 @@ export const SHORT_URL_KEY = 'shorturl';
 
 export default class ShareTimetable extends React.PureComponent<Props, State> {
   // React QR component is lazy loaded for performance
-  static QRCode: React.ComponentType<QRCodeProps> | null;
+  static QRCode: typeof QRCodeSVG | null;
 
   // Save a copy of the current URL to detect when URL changes
   url: string | null = null;
@@ -63,8 +63,8 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
 
   override componentDidMount() {
     if (!ShareTimetable.QRCode) {
-      retryImport(() => import(/* webpackChunkName: "export" */ 'react-qr-svg')).then((module) => {
-        ShareTimetable.QRCode = module.QRCode;
+      retryImport(() => import(/* webpackChunkName: "export" */ 'qrcode.react')).then((module) => {
+        ShareTimetable.QRCode = module.QRCodeSVG;
         this.forceUpdate();
       });
     }
@@ -167,7 +167,7 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
           <div className="col-sm-4">
             <h3 className={styles.shareHeading}>QR Code</h3>
             <div className={styles.qrCode}>
-              {ShareTimetable.QRCode && <ShareTimetable.QRCode value={url} />}
+              {ShareTimetable.QRCode && <ShareTimetable.QRCode size={172} value={url} />}
             </div>
           </div>
           <div className="col-sm-4">
