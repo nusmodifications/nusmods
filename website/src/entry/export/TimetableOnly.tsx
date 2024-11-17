@@ -43,6 +43,7 @@ export default class TimetableOnly extends Component<Props, State> {
               semester={semester}
               timetable={timetable}
               colors={timetableColors}
+              hiddenImportedModules={null}
               readOnly
             />
           </div>

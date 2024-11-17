@@ -26,6 +26,9 @@ subscribeOnlineEvents(store);
 ReactModal.setAppElement('#app');
 
 const container = document.getElementById('app');
+if (!container) {
+  throw new Error('#app element not found');
+}
 const root = createRoot(container);
 root.render(<App store={store} persistor={persistor} />);
 
