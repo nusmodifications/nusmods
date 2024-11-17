@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react';
+import { act, screen, waitFor } from '@testing-library/react';
 import type { RenderOptions } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import axios, { AxiosHeaders, AxiosResponse } from 'axios';
@@ -189,16 +189,19 @@ describe(TimetableContainerComponent, () => {
   test('should display saved timetable when there is no imported timetable', async () => {
     const semester = 1;
     const location = timetablePage(semester);
-    // TODO: Get this test to work with the new createRoot API, i.e. legacyRoot = false.
-    const { store } = make(location, { renderOptions: { legacyRoot: true } });
+    const { store } = make(location);
 
     // Populate moduleBank using "succeeded" requests-middleware requests
-    store.dispatch({ type: SUCCESS_KEY(FETCH_MODULE), payload: CS1010S });
-    store.dispatch({ type: SUCCESS_KEY(FETCH_MODULE), payload: CS3216 });
+    await act(async () => {
+      store.dispatch({ type: SUCCESS_KEY(FETCH_MODULE), payload: CS1010S });
+      store.dispatch({ type: SUCCESS_KEY(FETCH_MODULE), payload: CS3216 });
+    });
 
     // Populate mock timetable
-    const timetable = { CS1010S: { Lecture: '1' }, CS3216: { Lecture: '1' } };
-    (store.dispatch as Dispatch)(setTimetable(semester, timetable));
+    await act(async () => {
+      const timetable = { CS1010S: { Lecture: '1' }, CS3216: { Lecture: '1' } };
+      (store.dispatch as Dispatch)(setTimetable(semester, timetable));
+    });
 
     // Expect nothing to be fetched as timetable exists in `moduleBank`.
     expect(screen.queryByText(/Loading/)).not.toBeInTheDocument();
