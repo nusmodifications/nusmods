@@ -1,5 +1,5 @@
 import { createRef } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Store } from 'redux';
 
 import { Module } from 'types/modules';
@@ -53,7 +53,8 @@ const render = () => {
   const appElement = document.getElementById('app');
   if (!appElement) throw new Error('#app not found');
 
-  ReactDOM.render(<TimetableOnly store={store} ref={timetableRef} />, appElement);
+  const root = createRoot(appElement);
+  root.render(<TimetableOnly store={store} ref={timetableRef} />);
 };
 
 render();

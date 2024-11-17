@@ -6,7 +6,7 @@ import 'bootstrapping/sentry';
 // See: https://github.com/zloirock/core-js/issues/579#issuecomment-504325213
 import 'core-js/es/promise/finally';
 
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import ReactModal from 'react-modal';
 
 import configureStore from 'bootstrapping/configure-store';
@@ -25,7 +25,9 @@ subscribeOnlineEvents(store);
 // Initialize ReactModal
 ReactModal.setAppElement('#app');
 
-ReactDOM.render(<App store={store} persistor={persistor} />, document.getElementById('app'));
+const container = document.getElementById('app');
+const root = createRoot(container);
+root.render(<App store={store} persistor={persistor} />);
 
 if (
   ((NUSMODS_ENV === 'preview' || NUSMODS_ENV === 'staging' || NUSMODS_ENV === 'production') &&
