@@ -1,4 +1,5 @@
 import { screen, waitFor } from '@testing-library/react';
+import type { RenderOptions } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import axios, { AxiosHeaders, AxiosResponse } from 'axios';
 import { produce } from 'immer';
@@ -48,11 +49,17 @@ const relevantStoreContents = {
 
 const initialState = reducers(undefined, initAction());
 
-function make(location: string, storeOverrides: Partial<typeof relevantStoreContents> = {}) {
+function make(
+  location: string,
+  options: {
+    storeOverrides?: Partial<typeof relevantStoreContents>;
+    renderOptions?: Omit<RenderOptions, 'queries'> | undefined;
+  } = {},
+) {
   const { store } = configureStore(
     produce(initialState, (draft) => {
       draft.app.activeSemester =
-        storeOverrides.app?.activeSemester ?? relevantStoreContents.app.activeSemester;
+        options.storeOverrides?.app?.activeSemester ?? relevantStoreContents.app.activeSemester;
     }),
   );
 
@@ -69,6 +76,7 @@ function make(location: string, storeOverrides: Partial<typeof relevantStoreCont
         path: '/timetable/:semester?/:action?',
         location,
       },
+      options.renderOptions,
     ),
   };
 }
@@ -94,7 +102,9 @@ describe(TimetableContainerComponent, () => {
     // Use for-of loop as we `waitFor` must be executed sequentially.
     // eslint-disable-next-line no-restricted-syntax
     for (const semester of semesters) {
-      const { history } = make('/timetable', { app: { activeSemester: semester } });
+      const { history } = make('/timetable', {
+        storeOverrides: { app: { activeSemester: semester } },
+      });
       // eslint-disable-next-line no-await-in-loop
       await waitFor(() => expect(history.location.pathname).toBe(timetablePage(semester)));
     }
@@ -176,10 +186,11 @@ describe(TimetableContainerComponent, () => {
     expect(screen.getByRole('button', { name: 'Import' })).toBeInTheDocument();
   });
 
-  test('should display saved timetable when there is no imported timetable', () => {
+  test('should display saved timetable when there is no imported timetable', async () => {
     const semester = 1;
     const location = timetablePage(semester);
-    const { store } = make(location);
+    // TODO: Get this test to work with the new createRoot API, i.e. legacyRoot = false.
+    const { store } = make(location, { renderOptions: { legacyRoot: true } });
 
     // Populate moduleBank using "succeeded" requests-middleware requests
     store.dispatch({ type: SUCCESS_KEY(FETCH_MODULE), payload: CS1010S });
