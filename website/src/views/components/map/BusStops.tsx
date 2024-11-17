@@ -4,16 +4,16 @@ import { Marker, Popup } from 'react-leaflet';
 import classnames from 'classnames';
 import { produce } from 'immer';
 
-import type { BusStop, BusTiming } from 'types/venues';
+import type { BusTiming, BusStop } from 'types/venues';
 import type { EmptyProps } from 'types/utils';
 
-import busStopJSON from 'data/bus-stops.json';
+import busStopsJSON from 'data/bus-stops.json';
 import { allowBusStopEditing } from 'utils/debug';
 import { nextBus } from 'apis/nextbus';
 import styles from './BusStops.scss';
 import { ArrivalTimes } from './ArrivalTimes';
 
-const busStops = busStopJSON as BusStop[];
+const busStops = busStopsJSON as BusStop[];
 
 type Props = EmptyProps;
 
@@ -28,8 +28,8 @@ type State = {
 
 // By default set all timings to null
 const defaultBusTimings: { [code: string]: BusTiming } = {};
-busStops.forEach((stop: BusStop) => {
-  defaultBusTimings[stop.code] = {
+busStops.forEach((stop) => {
+  defaultBusTimings[stop.name] = {
     isLoading: false,
     timings: null,
     error: null,
@@ -70,12 +70,13 @@ export default class BusStops extends PureComponent<Props, State> {
 
     this.setState((state) =>
       produce(state, (draft) => {
-        const busStop = draft.busStops.find((stop) => stop.code === code);
+        const busStop = draft.busStops.find((stop) => stop.name === code);
         if (!busStop) {
           throw new Error(`Unrecognized bus stop ${code}`);
         }
 
-        busStop.location = [lat, lng];
+        busStop.latitude = lat;
+        busStop.longitude = lng;
       }),
     );
   };
@@ -83,7 +84,7 @@ export default class BusStops extends PureComponent<Props, State> {
   /**
    * Reload the bus arrival timing data for the given bus stop
    */
-  refreshBusTiming = (code: string) => {
+  refreshBusTiming = async (code: string) => {
     this.setState((state) =>
       produce(state, (draft) => {
         draft.busTimings[code].isLoading = true;
@@ -92,23 +93,22 @@ export default class BusStops extends PureComponent<Props, State> {
       }),
     );
 
-    nextBus(code)
-      .then((timings) =>
-        this.setState((state) =>
-          produce(state, (draft) => {
-            draft.busTimings[code].timings = timings;
-            draft.busTimings[code].isLoading = false;
-          }),
-        ),
-      )
-      .catch((error) =>
-        this.setState((state) =>
-          produce(state, (draft) => {
-            draft.busTimings[code].error = error;
-            draft.busTimings[code].isLoading = false;
-          }),
-        ),
+    try {
+      const timings = await nextBus(code);
+      this.setState((state) =>
+        produce(state, (draft) => {
+          draft.busTimings[code].timings = timings;
+          draft.busTimings[code].isLoading = false;
+        }),
       );
+    } catch (error) {
+      this.setState((state) =>
+        produce(state, (draft) => {
+          draft.busTimings[code].error = error;
+          draft.busTimings[code].isLoading = false;
+        }),
+      );
+    }
   };
 
   override render() {
@@ -117,7 +117,7 @@ export default class BusStops extends PureComponent<Props, State> {
 
     return (
       <>
-        {this.state.busStops.map((stop: BusStop) => {
+        {this.state.busStops.map((stop) => {
           // The hit area is an invisible circle that covers the original
           // OSM bus stop so that it is clickable
           const hitAreaClass = classnames(styles.hitArea, {
@@ -126,20 +126,22 @@ export default class BusStops extends PureComponent<Props, State> {
 
           // Routes are displayed to the left or right of the hit area
           const routeWrapperClass = classnames(styles.routeWrapper, {
-            [styles.left]: stop.displayRoutesLeft,
+            [styles.left]: stop.leftLabel,
           });
 
-          const routeIndicators = stop.routes.map(
-            (route) =>
-              `<span class="${classnames(styles.route, styles[`route${route}`])}">${route}</span>`,
+          const routeIndicators = stop.shuttles.map(
+            (shuttle) =>
+              `<span class="${classnames(styles.route, styles[`route${shuttle.name}`])}">${
+                shuttle.name
+              }</span>`,
           );
 
           const icon = new DivIcon({
             // language=HTML
             html: `
               <div
-                title="${stop.name}"
-                data-code="${stop.code}"
+                title="${stop.caption}"
+                data-code="${stop.name}"
                 class="${hitAreaClass}"
               ></div>
               <div class="${routeWrapperClass}">
@@ -153,21 +155,21 @@ export default class BusStops extends PureComponent<Props, State> {
 
           return (
             <Marker
-              key={stop.code}
+              key={stop.name}
               icon={icon}
-              position={stop.location}
+              position={[stop.latitude, stop.longitude]}
               eventHandlers={{
                 dragend: this.onDragEnd,
               }}
               draggable={allowEditing}
               autoPan={allowEditing}
             >
-              <Popup onOpen={() => this.refreshBusTiming(stop.code)}>
+              <Popup>
                 <ArrivalTimes
-                  name={stop.name}
-                  code={stop.code}
+                  name={stop.caption}
+                  code={stop.name}
                   reload={this.refreshBusTiming}
-                  {...busTimings[stop.code]}
+                  {...busTimings[stop.name]}
                 />
               </Popup>
             </Marker>
