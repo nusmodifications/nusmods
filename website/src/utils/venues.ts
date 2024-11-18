@@ -100,3 +100,21 @@ export function floorName(floor: number | string): string {
   const floorNumber = floor < 0 ? `B${-floor}` : floor;
   return `floor ${floorNumber}`;
 }
+
+export function isPublicRoute(name: string): boolean {
+  return name.startsWith('PUB:');
+}
+
+export function extractRouteStyle(name: string): string {
+  if (isPublicRoute(name)) {
+    return 'PUBLIC';
+  }
+  return name;
+}
+
+export function simplifyRouteName(name: string): string {
+  if (isPublicRoute(name)) {
+    return name.substring(4);
+  }
+  return name;
+}

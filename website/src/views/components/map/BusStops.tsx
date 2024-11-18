@@ -7,13 +7,14 @@ import { produce } from 'immer';
 import type { BusTiming, BusStop } from 'types/venues';
 import type { EmptyProps } from 'types/utils';
 
-import busStopsJSON from 'data/bus-stops.json';
+import busStopsJson from 'data/bus-stops.json';
 import { allowBusStopEditing } from 'utils/debug';
 import { nextBus } from 'apis/nextbus';
+import { extractRouteStyle, simplifyRouteName } from 'utils/venues';
 import styles from './BusStops.scss';
 import { ArrivalTimes } from './ArrivalTimes';
 
-const busStops = busStopsJSON as BusStop[];
+const busStops = busStopsJson as BusStop[];
 
 type Props = EmptyProps;
 
@@ -131,9 +132,10 @@ export default class BusStops extends PureComponent<Props, State> {
 
           const routeIndicators = stop.shuttles.map(
             (shuttle) =>
-              `<span class="${classnames(styles.route, styles[`route${shuttle.name}`])}">${
-                shuttle.name
-              }</span>`,
+              `<span class="${classnames(
+                styles.route,
+                styles[`route${extractRouteStyle(shuttle.name)}`],
+              )}">${simplifyRouteName(shuttle.name)}</span>`,
           );
 
           const icon = new DivIcon({

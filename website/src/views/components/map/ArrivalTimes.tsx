@@ -4,6 +4,7 @@ import { entries, sortBy } from 'lodash';
 
 import { RefreshCw as Refresh } from 'react-feather';
 import { BusTiming, NextBus, NextBusTime } from 'types/venues';
+import { simplifyRouteName, extractRouteStyle } from 'utils/venues';
 import styles from './BusStops.scss';
 
 type Props = BusTiming & {
@@ -11,17 +12,6 @@ type Props = BusTiming & {
   code: string;
   reload: (code: string) => void;
 };
-
-/**
- * Extract the route name from the start of a string
- */
-const routes = ['A1', 'A2', 'B1', 'B2', 'C', 'D1', 'D2', 'BTC1', 'BTC2'];
-export function extractRoute(route: string) {
-  for (let i = 0; i < routes.length; i++) {
-    if (route.startsWith(routes[i])) return routes[i];
-  }
-  return null;
-}
 
 /**
  * Adds 'min' to numeric timings and highlight any buses that are arriving
@@ -35,15 +25,6 @@ function renderTiming(time: NextBusTime) {
 
   if (time === 'Arr') return <strong>{time}</strong>;
   return time;
-}
-
-/**
- * Route names with parenthesis in them don't have a space in front of the
- * opening bracket, causing the text to wrap weirdly. This forces the opening
- * paren to always have a space in front of it.
- */
-function fixRouteName(name: string) {
-  return name.replace(/\s?\(/, ' (');
 }
 
 export const ArrivalTimes = memo<Props>((props: Props) => {
@@ -72,15 +53,14 @@ export const ArrivalTimes = memo<Props>((props: Props) => {
       {props.timings && (
         <table className={classnames(styles.timings, 'table table-sm')}>
           <tbody>
-            {timings.map(([routeName, timing]: [string, NextBus]) => {
-              const route = extractRoute(routeName);
-              const className = route
-                ? classnames(styles.routeHeading, styles[`route${route}`])
-                : '';
-
+            {timings.map(([route, timing]: [string, NextBus]) => {
+              const className = classnames(
+                styles.routeHeading,
+                styles[`route${extractRouteStyle(route)}`],
+              );
               return (
-                <tr key={routeName}>
-                  <th className={className}>{fixRouteName(routeName)}</th>
+                <tr key={route}>
+                  <th className={className}>{simplifyRouteName(route)}</th>
                   <td>{renderTiming(timing.arrivalTime)}</td>
                   <td>{renderTiming(timing.nextArrivalTime)}</td>
                 </tr>
@@ -104,3 +84,5 @@ export const ArrivalTimes = memo<Props>((props: Props) => {
     </>
   );
 });
+
+export default ArrivalTimes;
