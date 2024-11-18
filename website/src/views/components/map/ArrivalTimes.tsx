@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import classnames from 'classnames';
 import { entries, sortBy } from 'lodash';
 
@@ -28,16 +28,17 @@ function renderTiming(time: NextBusTime) {
 }
 
 export const ArrivalTimes = memo<Props>((props: Props) => {
-  if (props.error) {
+  const { reload, code, name, error } = props;
+  useEffect(() => {
+    reload(code);
+  }, [reload, code]);
+
+  if (error) {
     return (
       <>
-        <h3 className={styles.heading}>{props.name}</h3>
+        <h3 className={styles.heading}>{name}</h3>
         <p>Error loading arrival times</p>
-        <button
-          type="button"
-          className="btn btn-sm btn-primary"
-          onClick={() => props.reload(props.code)}
-        >
+        <button type="button" className="btn btn-sm btn-primary" onClick={() => reload(code)}>
           Retry
         </button>
       </>
@@ -49,26 +50,24 @@ export const ArrivalTimes = memo<Props>((props: Props) => {
 
   return (
     <>
-      <h3 className={styles.heading}>{props.name}</h3>
-      {props.timings && (
-        <table className={classnames(styles.timings, 'table table-sm')}>
-          <tbody>
-            {timings.map(([route, timing]: [string, NextBus]) => {
-              const className = classnames(
-                styles.routeHeading,
-                styles[`route${extractRouteStyle(route)}`],
-              );
-              return (
-                <tr key={route}>
-                  <th className={className}>{simplifyRouteName(route)}</th>
-                  <td>{renderTiming(timing.arrivalTime)}</td>
-                  <td>{renderTiming(timing.nextArrivalTime)}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      )}
+      <h3 className={styles.heading}>{name}</h3>
+      <table className={classnames(styles.timings, 'table table-sm')}>
+        <tbody>
+          {timings.map(([route, timing]: [string, NextBus]) => {
+            const className = classnames(
+              styles.routeHeading,
+              styles[`route${extractRouteStyle(route)}`],
+            );
+            return (
+              <tr key={route}>
+                <th className={className}>{simplifyRouteName(route)}</th>
+                <td>{renderTiming(timing.arrivalTime)}</td>
+                <td>{renderTiming(timing.nextArrivalTime)}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
 
       <button
         type="button"
