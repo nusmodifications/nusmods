@@ -84,8 +84,8 @@ function getExamClashFilter(semester: Semester, examTimings: ExamTiming[]): Filt
         {
           script: {
             script: {
-              source: `doc.containsKey('semesterData.examDate') && 
-              doc.containsKey('semesterData.examDuration') && 
+              source: `doc.containsKey('semesterData.examDate') &&
+              doc.containsKey('semesterData.examDuration') &&
               doc['semesterData.examDate'].value.plusMinutes(doc['semesterData.examDuration'].value).isAfter(ZonedDateTime.parse(params.exam1start))`,
               params: {
                 exam1start: exam1.start,
@@ -129,17 +129,19 @@ const ModuleFinderSidebar: React.FC = () => {
     const examClashFilters = Semesters.map((semester): FilterItem | null => {
       const timetable = getSemesterTimetable(semester);
       const modules = getSemesterModules(timetable, allModules);
-      // Filter for modules with non-empty exam timings, and map them to new ExamTiming objects
-      const examTimings = modules.reduce<ExamTiming[]>((result: ExamTiming[], mod: Module) => {
-        const data = getModuleSemesterData(mod, semester);
-        if (data?.examDate && data?.examDuration) {
-          result.push({
-            start: data.examDate,
-            duration: data.examDuration,
-          });
-        }
-        return result;
-      }, []);
+      const examTimings: ExamTiming[] = modules
+        .map((mod) => {
+          // Filter for modules with non-empty exam timings, and map them to new ExamTiming objects
+          const data = getModuleSemesterData(mod, semester);
+          if (data?.examDate && data?.examDuration) {
+            return {
+              start: data.examDate,
+              duration: data.examDuration,
+            };
+          }
+          return null;
+        })
+        .filter(notNull);
       return examTimings.length ? getExamClashFilter(semester, examTimings) : null;
     }).filter(notNull);
     return [...STATIC_EXAM_FILTER_ITEMS, ...examClashFilters];
