@@ -10,11 +10,11 @@ import ShareTimetable, { SHORT_URL_KEY } from './ShareTimetable';
 const mockAxios = axios as jest.Mocked<typeof axios>;
 
 describe('ShareTimetable', () => {
-  const MOCK_SHORTURL = 'http://mod.us/short';
+  const MOCK_SHORTURL = 'https://shorten.nusmods.com';
 
   // Mock Axios to stop it from firing API requests
   beforeEach(() => {
-    jest.spyOn(axios, 'get').mockResolvedValue({
+    jest.spyOn(axios, 'put').mockResolvedValue({
       data: { [SHORT_URL_KEY]: MOCK_SHORTURL },
       config: {},
       status: 200,
@@ -24,7 +24,7 @@ describe('ShareTimetable', () => {
   });
 
   afterEach(() => {
-    mockAxios.get.mockRestore();
+    mockAxios.put.mockRestore();
   });
 
   const timetable = {
@@ -50,11 +50,11 @@ describe('ShareTimetable', () => {
     const wrapper = shallow(
       <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} />,
     );
-    expect(mockAxios.get).not.toHaveBeenCalled();
+    expect(mockAxios.put).not.toHaveBeenCalled();
 
     openModal(wrapper);
     expect(wrapper.find(Modal).exists()).toBe(true);
-    expect(mockAxios.get).toHaveBeenCalledTimes(1);
+    expect(mockAxios.put).toHaveBeenCalledTimes(1);
   });
 
   test('should cache short URL from the API', () => {
@@ -68,21 +68,21 @@ describe('ShareTimetable', () => {
     openModal(wrapper);
 
     // The second open should not cause a second call
-    expect(mockAxios.get).toHaveBeenCalledTimes(1);
+    expect(mockAxios.put).toHaveBeenCalledTimes(1);
     closeModal(wrapper);
 
     // Changing the timetable should cause opening the modal to trigger another API call
     wrapper.setProps({ timetable: { CS3216: { Lecture: '1' } } });
-    expect(mockAxios.get).toHaveBeenCalledTimes(1);
+    expect(mockAxios.put).toHaveBeenCalledTimes(1);
     openModal(wrapper);
-    expect(mockAxios.get).toHaveBeenCalledTimes(2);
+    expect(mockAxios.put).toHaveBeenCalledTimes(2);
     closeModal(wrapper);
 
     // Changing the semester should also trigger another API call
     wrapper.setProps({ semester: 2 });
-    expect(mockAxios.get).toHaveBeenCalledTimes(2);
+    expect(mockAxios.put).toHaveBeenCalledTimes(2);
     openModal(wrapper);
-    expect(mockAxios.get).toHaveBeenCalledTimes(3);
+    expect(mockAxios.put).toHaveBeenCalledTimes(3);
   });
 
   test('should show spinner when loading', () => {
@@ -106,7 +106,7 @@ describe('ShareTimetable', () => {
   });
 
   test('should display long URL if data is corrupted', async () => {
-    mockAxios.get.mockResolvedValue({} as AxiosResponse); // No short URL
+    mockAxios.put.mockResolvedValue({} as AxiosResponse); // No short URL
     const wrapper = shallow(
       <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} />,
     );
@@ -118,7 +118,7 @@ describe('ShareTimetable', () => {
   });
 
   test('should display long URL if the endpoint returns an error', async () => {
-    mockAxios.get.mockRejectedValue(new Error());
+    mockAxios.put.mockRejectedValue(new Error());
     const wrapper = shallow(
       <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} />,
     );
@@ -129,7 +129,8 @@ describe('ShareTimetable', () => {
     expect(wrapper.find('input').prop('value')).toBeTruthy();
   });
 
-  test('should not include hidden key if there are no hidden modules', async () => {
+  test('should not include hidden key in long URL if there are no hidden modules', async () => {
+    mockAxios.put.mockResolvedValue({} as AxiosResponse); // No short URL
     const wrapper = shallow(
       <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} />,
     );
@@ -139,7 +140,8 @@ describe('ShareTimetable', () => {
     expect(wrapper.find('input').prop('value')).not.toContain('hidden');
   });
 
-  test('should include hidden key if there are hidden modules', async () => {
+  test('should include hidden key in long URL if there are hidden modules', async () => {
+    mockAxios.put.mockResolvedValue({} as AxiosResponse); // No short URL
     const wrapper = shallow(
       <ShareTimetable semester={1} timetable={timetable} hiddenModules={['CS1010S', 'CS1231S']} />,
     );

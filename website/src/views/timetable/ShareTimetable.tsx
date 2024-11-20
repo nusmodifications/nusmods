@@ -63,7 +63,7 @@ function getToolTipContent(shortUrl: string | null, isFullUrl: boolean, isLoadin
 }
 
 // So that I don't keep typing 'shortUrl' instead
-export const SHORT_URL_KEY = 'shorturl';
+export const SHORT_URL_KEY = 'shortUrl';
 
 export default class ShareTimetable extends React.PureComponent<Props, State> {
   // React QR component is lazy loaded for performance
@@ -110,8 +110,11 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
 
     this.setState({ fullUrl: url, shortUrl: null, isFullUrl: true, isLoading: true });
 
+    const urlURL = new URL(url);
     axios
-      .get('/api/shorturl', { params: { url }, timeout: 8000 })
+      .put('https://shorten.nusmods.com', {
+        longUrl: urlURL.pathname + urlURL.search,
+      })
       .then(({ data }) => {
         if (data[SHORT_URL_KEY]) {
           this.setState({
