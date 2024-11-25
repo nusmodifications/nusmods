@@ -57,7 +57,7 @@ const AboutContainer: React.FC<Props> = (props) => (
         </button>
       </div>
       <div className={classnames('col-lg', styles.btnContainer)}>
-        <ExternalLink href={config.contact.messenger} className="btn btn-primary btn-svg btn-block">
+        <ExternalLink href={config.contact.telegram} className="btn btn-primary btn-svg btn-block">
           <Layers className="svg" />
           We need designers!
         </ExternalLink>

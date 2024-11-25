@@ -1,4 +1,5 @@
-import { FC, useCallback, useLayoutEffect, useState } from 'react';
+import { useCallback, useLayoutEffect, useState } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import ReactModal, { Props as ModalProps } from 'react-modal';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import classnames from 'classnames';
@@ -13,7 +14,7 @@ type Props = ModalProps & {
   animate?: boolean;
 };
 
-const Modal: FC<Props> = ({
+const Modal: FC<PropsWithChildren<Props>> = ({
   isOpen,
   overlayClassName,
   className,
@@ -27,7 +28,7 @@ const Modal: FC<Props> = ({
   // `contentRef`, `contentRef` needs to be stored in component state, even if
   // this causes additional renders.
   const [modalContent, setModalContent] = useState<HTMLDivElement | undefined>();
-  const contentRefCallback = useCallback((node) => setModalContent(node), []);
+  const contentRefCallback = useCallback((node: HTMLDivElement) => setModalContent(node), []);
 
   // Disable body scrolling if modal is open, but allow modal to scroll.
   useLayoutEffect(() => {

@@ -1,4 +1,4 @@
-import produce, { Draft } from 'immer';
+import { produce, Draft } from 'immer';
 import { keyBy, omit, size, zipObject } from 'lodash';
 
 import { createMigrate, REHYDRATE } from 'redux-persist';

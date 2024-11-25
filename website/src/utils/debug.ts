@@ -40,6 +40,11 @@ export function allowBusStopEditing() {
   return getParams().edit === '1';
 }
 
+// By default, we use local venue data in test and development, but use prod data otherwise.
+// We have flags to override these defaults in each case.
 export function preferRepoVenues() {
+  if (NUSMODS_ENV === 'development') {
+    return getParams().prodVenue !== '1';
+  }
   return getParams().localVenue === '1';
 }

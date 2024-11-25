@@ -29,8 +29,8 @@ router
       typeof width !== 'undefined' &&
       !Number.isNaN(height) && // accept floats
       !Number.isNaN(width) && // accept floats
-      height > 0 &&
-      width > 0
+      Number(height) > 0 &&
+      Number(width) > 0
     ) {
       options = {
         ...options,
