@@ -58,7 +58,7 @@ const prereqConflict =
     if (!prereqs) return null;
 
     const unfulfilledPrereqs = checkPrerequisite(modulesTaken, prereqs);
-    if (!unfulfilledPrereqs || !unfulfilledPrereqs.length) return null;
+    if (!unfulfilledPrereqs.length) return null;
 
     return { type: 'prereq', unfulfilledPrereqs };
   };
@@ -104,6 +104,16 @@ const examConflict =
 
     return null;
   };
+
+/**
+ * Checks if there are duplicate modules in one semester
+ */
+const duplicateConflict =
+  (moduleCodeMap: PlannerTime[]) =>
+  (moduleCode: ModuleCode): Conflict | null =>
+    moduleCodeMap.filter((module) => module.moduleCode === moduleCode).length === 1
+      ? null
+      : { type: 'duplicate' };
 
 function mapModuleToInfo(
   module: PlannerTime,
@@ -224,6 +234,7 @@ export function getAcadYearModules(state: State): PlannerModulesWithInfo {
         noInfoConflict(moduleBank.moduleCodes, planner.custom),
         semesterConflict(moduleBank.moduleCodes, semester),
         examConflict(clashes),
+        duplicateConflict(moduleTimes),
       ];
 
       if (!planner.ignorePrereqCheck) {

@@ -11,11 +11,7 @@ import type { SemTimetableConfig } from 'types/timetables';
 
 import { selectSemester } from 'actions/settings';
 import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
-import {
-  fetchTimetableModules,
-  setHiddenModulesFromImport,
-  setTimetable,
-} from 'actions/timetables';
+import { fetchTimetableModules, setTimetable } from 'actions/timetables';
 import { openNotification } from 'actions/app';
 import { undo } from 'actions/undoHistory';
 import { getModuleCondensed } from 'selectors/moduleBank';
@@ -156,7 +152,7 @@ export const TimetableContainerComponent: FC = () => {
   );
 
   const importedHidden = useMemo(
-    () => (semester && params.action ? deserializeHidden(location.search) : []),
+    () => (semester && params.action ? deserializeHidden(location.search) : null),
     [semester, params.action, location.search],
   );
 
@@ -166,12 +162,6 @@ export const TimetableContainerComponent: FC = () => {
       dispatch(fetchTimetableModules([importedTimetable]));
     }
   }, [dispatch, importedTimetable]);
-
-  useEffect(() => {
-    if (importedHidden) {
-      dispatch(setHiddenModulesFromImport(importedHidden));
-    }
-  }, [dispatch, importedHidden]);
 
   const isLoading = useMemo(() => {
     // Check that all modules are fully loaded into the ModuleBank
@@ -211,6 +201,7 @@ export const TimetableContainerComponent: FC = () => {
       key={semester}
       semester={semester}
       timetable={displayedTimetable}
+      hiddenImportedModules={importedHidden}
       colors={filledColors}
       header={
         <>

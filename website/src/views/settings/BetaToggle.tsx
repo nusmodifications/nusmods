@@ -4,7 +4,7 @@ import ExternalLink from 'views/components/ExternalLink';
 import config from 'config';
 import styles from './SettingsContainer.scss';
 
-export const currentTests = ['Course planner: plan courses in future semesters'];
+export const currentTests = [];
 
 type Props = {
   betaTester: boolean;
@@ -47,7 +47,7 @@ const BetaToggle = memo<Props>((props) => {
         <div className={styles.toggle}>
           <Toggle className={styles.betaToggle} isOn={betaTester} onChange={toggleStates} />
           {betaTester && hasTests && (
-            <ExternalLink className="btn btn-success" href={config.contact.messenger}>
+            <ExternalLink className="btn btn-success" href={config.contact.telegram}>
               Leave Feedback
             </ExternalLink>
           )}

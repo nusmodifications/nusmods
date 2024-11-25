@@ -66,6 +66,7 @@ type OwnProps = {
   semester: Semester;
   timetable: SemTimetableConfig;
   colors: ColorMapping;
+  hiddenImportedModules: ModuleCode[] | null;
 };
 
 type Props = OwnProps & {
@@ -356,7 +357,7 @@ class TimetableContent extends React.Component<Props, State> {
           verticalMode: isVerticalOrientation,
         })}
         onClick={this.cancelModifyLesson}
-        onKeyUp={(e) => e.keyCode === 27 && this.cancelModifyLesson()} // Quit modifying when Esc is pressed
+        onKeyUp={(e) => e.key === 'Escape' && this.cancelModifyLesson()} // Quit modifying when Esc is pressed
       >
         <Title>Timetable</Title>
 
@@ -456,7 +457,8 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
 
   // Determine the key to check for hidden modules based on readOnly status
   const hiddenModulesKey = readOnly ? HIDDEN_IMPORTED_SEM : semester;
-  const hiddenInTimetable = state.timetables.hidden[hiddenModulesKey] || [];
+  const hiddenInTimetable =
+    ownProps.hiddenImportedModules ?? (state.timetables.hidden[hiddenModulesKey] || []);
 
   return {
     semester,

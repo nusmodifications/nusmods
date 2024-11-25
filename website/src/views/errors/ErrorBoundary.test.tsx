@@ -18,7 +18,7 @@ jest.mock(
 const error = new Error('Test error');
 
 // Stateless React component which throws error
-const ThrowsError: React.FC<unknown> = (): never => {
+const ThrowsError: React.FC<React.PropsWithChildren> = (): never => {
   throw error;
 };
 

@@ -18,6 +18,8 @@ We welcome contributors of all skill levels and backgrounds. Our [contribute pag
 
 For developers and designers, our [contributing guide](/CONTRIBUTING.md) will help first-time contributors get started. For more advanced topics, we have an [architecture overview](/ARCHITECTURE.md) that explains how the various projects in this repository fit together.
 
+To run the website locally, refer to this [guide](/website/README.md).
+
 Quite a few of our contributors are students who started contributing to NUSMods with no prior experience. They have since gone on to internships and full-time jobs as software engineers / designers / founders. We are happy to help you get started and learn new skills!
 
 ## Community and Support
@@ -28,7 +30,7 @@ You can reach us through the following channels, listed in order of preference:
 
 - Telegram: https://t.me/nusmods
 - Messenger: https://m.me/nusmods
-- Email: nusmods@googlegroups.com (for security related issues please email mods@nusmods.com instead)
+- Email: mods@nusmods.com
 - Facebook: https://www.facebook.com/nusmods
 - Twitter: https://twitter.com/nusmods
 

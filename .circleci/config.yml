@@ -3,7 +3,7 @@ version: 2.1
 executors:
   node-executor:
     docker:
-      - image: cimg/node:18.17
+      - image: cimg/node:18.17.1
 
 jobs:
   checkout:
@@ -92,7 +92,9 @@ jobs:
           command: |
             set -e
             yarn test --runInBand --reporters=default --reporters=jest-junit
-            yarn codecov --disable=gcov -f ./coverage/coverage-final.json
+            if [ "${CIRCLE_BRANCH}" != "master" ] && [ "${CIRCLE_BRANCH}" != "production" ]; then
+              yarn codecov --disable=gcov -f ./coverage/coverage-final.json
+            fi
       - run:
           name: Integration tests
           environment:

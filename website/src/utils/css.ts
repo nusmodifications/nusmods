@@ -28,6 +28,10 @@ export function breakpointUp(size: Breakpoint) {
   return { minWidth: breakpoints[size] } satisfies QueryObject;
 }
 
+export function prefersColorScheme(colorScheme: 'light' | 'dark') {
+  return { prefersColorScheme: colorScheme } satisfies QueryObject;
+}
+
 export function touchScreenOnly() {
   return { pointer: 'coarse' } satisfies QueryObject;
 }

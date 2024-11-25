@@ -25,6 +25,7 @@ import {
 } from 'actions/planner';
 import { toggleFeedback } from 'actions/app';
 import { fetchModule } from 'actions/moduleBank';
+import { addModule as addModuleToTimetable } from 'actions/timetables';
 import { getAcadYearModules, getExemptions, getIBLOCs, getPlanToTake } from 'selectors/planner';
 import Title from 'views/components/Title';
 import LoadingSpinner from 'views/components/LoadingSpinner';
@@ -52,6 +53,7 @@ export type Props = Readonly<{
   moveModule: (id: string, year: string, semester: Semester, index: number) => void;
   removeModule: (id: string) => void;
   setPlaceholderModule: (id: string, moduleCode: ModuleCode) => void;
+  addModuleToTimetable: (semester: Semester, module: ModuleCode) => void;
 }>;
 
 type SemesterModules = { [semester: string]: PlannerModuleInfo[] };
@@ -131,7 +133,12 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
     this.props.fetchModule(moduleCode);
   };
 
+  onAddModuleToTimetable = (semester: Semester, module: ModuleCode) =>
+    this.props.fetchModule(module).then(() => this.props.addModuleToTimetable(semester, module));
+
   closeAddCustomData = () => this.setState({ showCustomModule: null });
+
+  closeSettingsModal = () => this.setState({ showSettings: false });
 
   renderHeader() {
     const modules = [...this.props.iblocsModules, ...flatten(flatMap(this.props.modules, values))];
@@ -140,28 +147,25 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
 
     return (
       <header className={styles.header}>
-        <h1>
-          Course Planner{' '}
-          <button
-            className="btn btn-sm btn-outline-success"
-            type="button"
-            onClick={this.props.toggleFeedback}
-          >
-            Beta - Send Feedback
-          </button>
-        </h1>
+        <div className={styles.headerLeft}>
+          <h1>Course Planner </h1>
+        </div>
 
         <div className={styles.headerRight}>
-          <p className={styles.moduleStats}>
-            {count} {count === 1 ? 'course' : 'courses'} / {renderMCs(credits)}
-          </p>
+          <div className={styles.moduleStats}>
+            <p>
+              {count} {count === 1 ? 'Course' : 'Courses'}&nbsp;/&nbsp;
+            </p>
+            <p>{renderMCs(credits)}</p>
+          </div>
 
           <button
-            className="btn btn-svg btn-outline-primary"
+            className={classnames('btn btn-svg btn-outline-primary', styles.settingsButton)}
             type="button"
             onClick={() => this.setState({ showSettings: true })}
           >
-            <Settings className="svg" /> Settings
+            <Settings className="svg" />
+            <p>Settings</p>
           </button>
         </div>
       </header>
@@ -188,6 +192,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
       addCustomData: this.onAddCustomData,
       setPlaceholderModule: this.onSetPlaceholderModule,
       removeModule: this.props.removeModule,
+      addModuleToTimetable: this.onAddModuleToTimetable,
     };
 
     return (
@@ -263,12 +268,8 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
           </div>
         </DragDropContext>
 
-        <Modal
-          isOpen={this.state.showSettings}
-          onRequestClose={() => this.setState({ showSettings: false })}
-          animate
-        >
-          <PlannerSettings />
+        <Modal isOpen={this.state.showSettings} onRequestClose={this.closeSettingsModal} animate>
+          <PlannerSettings onCloseButtonClicked={this.closeSettingsModal} />
         </Modal>
 
         <Modal
@@ -304,6 +305,7 @@ const PlannerContainer = connect(mapStateToProps, {
   addModule: addPlannerModule,
   moveModule: movePlannerModule,
   removeModule: removePlannerModule,
+  addModuleToTimetable,
 })(PlannerContainerComponent);
 
 export default PlannerContainer;
