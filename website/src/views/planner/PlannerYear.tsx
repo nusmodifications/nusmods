@@ -1,4 +1,4 @@
-import { PureComponent, Ref, createRef } from 'react';
+import { PureComponent, createRef } from 'react';
 import classnames from 'classnames';
 import { flatMap, size, sortBy, toPairs, values } from 'lodash';
 
