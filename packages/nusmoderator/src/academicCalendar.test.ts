@@ -247,6 +247,15 @@ describe('getAcadWeekInfo', () => {
       type: 'Orientation',
       num: null,
     });
+    expect(getAcadWeekInfo(new Date('September 8, 2024'))).toEqual({
+      year: '24/25',
+      sem: 'Semester 1',
+      type: 'Instructional',
+      num: 4,
+    });
+  });
+
+  it('correctly handles week types whose days include the preceding weekend', () => {
     expect(getAcadWeekInfo(new Date('September 21, 2024'))).toEqual({
       year: '24/25',
       sem: 'Semester 1',
@@ -283,7 +292,6 @@ describe('getAcadWeekInfo', () => {
       type: 'Examination',
       num: 1,
     });
-
   });
 });
 
