@@ -46,7 +46,7 @@ describe(ModuleFinderApiError, () => {
       push: jest.fn(),
     };
     const tryAgainButton = getByRole('button');
-    userEvent.click(tryAgainButton);
+    await userEvent.click(tryAgainButton);
     expect(searchkit.history.push).toHaveBeenCalled();
     expect(history.location.pathname).toBe('/modules');
     expect(history.location.search).toBe('?q=GER1000&sem[0]=1&sem[1]=2&sem[2]=3&sem[3]=4');

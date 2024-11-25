@@ -3,7 +3,7 @@ import type { LatLng } from 'leaflet';
 import { MapContainer, Marker, TileLayer, useMapEvents } from 'react-leaflet';
 import classnames from 'classnames';
 import axios from 'axios';
-import produce from 'immer';
+import { produce } from 'immer';
 
 import { MapPin, ThumbsUp } from 'react-feather';
 import type { LatLngTuple, Venue, VenueLocation } from 'types/venues';

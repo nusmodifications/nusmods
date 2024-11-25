@@ -66,6 +66,7 @@ type OwnProps = {
   semester: Semester;
   timetable: SemTimetableConfig;
   colors: ColorMapping;
+  hiddenImportedModules: ModuleCode[] | null;
 };
 
 type Props = OwnProps & {
@@ -456,7 +457,8 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
 
   // Determine the key to check for hidden modules based on readOnly status
   const hiddenModulesKey = readOnly ? HIDDEN_IMPORTED_SEM : semester;
-  const hiddenInTimetable = state.timetables.hidden[hiddenModulesKey] || [];
+  const hiddenInTimetable =
+    ownProps.hiddenImportedModules ?? (state.timetables.hidden[hiddenModulesKey] || []);
 
   return {
     semester,

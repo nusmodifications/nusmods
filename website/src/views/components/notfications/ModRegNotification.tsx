@@ -31,8 +31,8 @@ const NotificationText: FC<{
 
   return (
     <>
-      {isRoundOpen ? 'Current' : 'Next'} <strong>{round.type}</strong>{' '}
-      {round.name ? `(Round ${round.name})` : ''}: {useLineBreaks && <br />}
+      {isRoundOpen ? 'Current' : 'Next'} <strong>{round.type}</strong>
+      {round.name ? ` (Round ${round.name})` : ''}: {useLineBreaks && <br />}
       {isRoundOpen ? ' till' : ' at'} <strong>{isRoundOpen ? round.end : round.start}</strong>
       {useLineBreaks && <br />} ({timeFromNow} from now)
     </>
