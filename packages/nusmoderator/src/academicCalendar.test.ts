@@ -247,6 +247,51 @@ describe('getAcadWeekInfo', () => {
       type: 'Orientation',
       num: null,
     });
+    expect(getAcadWeekInfo(new Date('September 8, 2024'))).toEqual({
+      year: '24/25',
+      sem: 'Semester 1',
+      type: 'Instructional',
+      num: 4,
+    });
+  });
+
+  it('correctly handles week types whose days include the preceding weekend', () => {
+    expect(getAcadWeekInfo(new Date('September 21, 2024'))).toEqual({
+      year: '24/25',
+      sem: 'Semester 1',
+      type: 'Recess',
+      num: null,
+    });
+    expect(getAcadWeekInfo(new Date('November 16, 2024'))).toEqual({
+      year: '24/25',
+      sem: 'Semester 1',
+      type: 'Reading',
+      num: null,
+    });
+    expect(getAcadWeekInfo(new Date('November 23, 2024'))).toEqual({
+      year: '24/25',
+      sem: 'Semester 1',
+      type: 'Examination',
+      num: 1,
+    });
+    expect(getAcadWeekInfo(new Date('February 25, 2025'))).toEqual({
+      year: '24/25',
+      sem: 'Semester 2',
+      type: 'Recess',
+      num: null,
+    });
+    expect(getAcadWeekInfo(new Date('April 19, 2025'))).toEqual({
+      year: '24/25',
+      sem: 'Semester 2',
+      type: 'Reading',
+      num: null,
+    });
+    expect(getAcadWeekInfo(new Date('April 27, 2025'))).toEqual({
+      year: '24/25',
+      sem: 'Semester 2',
+      type: 'Examination',
+      num: 1,
+    });
   });
 });
 
