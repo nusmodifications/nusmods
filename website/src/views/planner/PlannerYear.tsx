@@ -25,29 +25,26 @@ type Props = Readonly<{
 
 type State = {
   readonly showSpecialSem: boolean;
-  readonly currentYearCardRef: Ref<HTMLDivElement>;
 };
 
 export default class PlannerYear extends PureComponent<Props, State> {
+  readonly currentYearCardRef = createRef<HTMLDivElement>();
+
   override state = {
     // Always display Special Terms I and II if either one has modules
     showSpecialSem: this.hasSpecialTermModules(),
-    currentYearCardRef: createRef<HTMLDivElement>(),
   };
 
   override componentDidMount() {
     if (this.props.year !== config.academicYear) {
       return;
     }
-    const currentYearCard = this.state.currentYearCardRef.current;
-    const parentContainer = currentYearCard?.parentElement;
-    if (!currentYearCard || !parentContainer) {
-      return;
+    const currentYearCard = this.currentYearCardRef.current;
+    if (currentYearCard) {
+      currentYearCard.scrollIntoView({
+        inline: 'start',
+      });
     }
-    parentContainer.scrollTo({
-      left: currentYearCard.offsetLeft - parentContainer.offsetLeft,
-      behavior: 'smooth',
-    });
   }
 
   hasSpecialTermModules() {
@@ -90,7 +87,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
 
     return (
       <section
-        ref={year === config.academicYear ? this.state.currentYearCardRef : undefined}
+        ref={year === config.academicYear ? this.currentYearCardRef : undefined}
         key={year}
         className={classnames(styles.year, {
           [styles.currentYear]: year === config.academicYear,
