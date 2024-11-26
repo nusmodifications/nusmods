@@ -1,3 +1,5 @@
+// TODO: This script is outdated and needs work to make it work with the new API.
+
 const path = require('path');
 const axios = require('axios');
 const fs = require('fs-extra');

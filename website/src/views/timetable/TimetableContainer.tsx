@@ -15,7 +15,7 @@ import { fetchTimetableModules, setTimetable } from 'actions/timetables';
 import { openNotification } from 'actions/app';
 import { undo } from 'actions/undoHistory';
 import { getModuleCondensed } from 'selectors/moduleBank';
-import { deserializeTimetable } from 'utils/timetables';
+import { deserializeHidden, deserializeTimetable } from 'utils/timetables';
 import { fillColorMapping } from 'utils/colors';
 import { semesterForTimetablePage, TIMETABLE_SHARE, timetablePage } from 'views/routes/paths';
 import deferComponentRender from 'views/hocs/deferComponentRender';
@@ -152,6 +152,11 @@ export const TimetableContainerComponent: FC = () => {
     semester && params.action ? deserializeTimetable(location.search) : null,
   );
 
+  const importedHidden = useMemo(
+    () => (semester && params.action ? deserializeHidden(location.search) : null),
+    [semester, params.action, location.search],
+  );
+
   const dispatch = useDispatch();
   useEffect(() => {
     if (importedTimetable) {
@@ -197,6 +202,7 @@ export const TimetableContainerComponent: FC = () => {
       key={semester}
       semester={semester}
       timetable={displayedTimetable}
+      hiddenImportedModules={importedHidden}
       colors={filledColors}
       header={
         <>

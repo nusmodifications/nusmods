@@ -1,4 +1,4 @@
-import produce from 'immer';
+import { produce } from 'immer';
 import { pick } from 'lodash';
 
 import { redo, undo } from 'actions/undoHistory';

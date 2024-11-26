@@ -1,6 +1,6 @@
 import { each, flatMap } from 'lodash';
 
-import type { Lesson, ColorIndex, ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
+import type { ColorIndex, Lesson, ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import type { Dispatch, GetState } from 'types/redux';
 import type { ColorMapping } from 'types/reducers';
 import type { ClassNo, LessonType, Module, ModuleCode, Semester } from 'types/modules';
@@ -18,15 +18,18 @@ import { getModuleTimetable } from 'utils/modules';
 // Actions that should not be used directly outside of thunks
 export const SET_TIMETABLE = 'SET_TIMETABLE' as const;
 export const ADD_MODULE = 'ADD_MODULE' as const;
+export const SET_HIDDEN_IMPORTED = 'SET_HIDDEN_IMPORTED' as const;
+export const HIDDEN_IMPORTED_SEM = 'HIDDEN_IMPORTED_SEM' as const;
 export const Internal = {
   setTimetable(
     semester: Semester,
     timetable: SemTimetableConfig | undefined,
     colors?: ColorMapping,
+    hiddenModules?: ModuleCode[],
   ) {
     return {
       type: SET_TIMETABLE,
-      payload: { semester, timetable, colors },
+      payload: { semester, timetable, colors, hiddenModules },
     };
   },
 
@@ -83,6 +86,16 @@ export function removeModule(semester: Semester, moduleCode: ModuleCode) {
     payload: {
       semester,
       moduleCode,
+    },
+  };
+}
+
+export const RESET_TIMETABLE = 'RESET_TIMETABLE' as const;
+export function resetTimetable(semester: Semester) {
+  return {
+    type: RESET_TIMETABLE,
+    payload: {
+      semester,
     },
   };
 }
@@ -154,7 +167,14 @@ export function setTimetable(
       [validatedTimetable] = validateTimetableModules(timetable, getState().moduleBank.moduleCodes);
     }
 
-    return dispatch(Internal.setTimetable(semester, validatedTimetable, colors));
+    return dispatch(
+      Internal.setTimetable(
+        semester,
+        validatedTimetable,
+        colors,
+        getState().timetables.hidden[HIDDEN_IMPORTED_SEM] || [],
+      ),
+    );
   };
 }
 
@@ -195,6 +215,17 @@ export function fetchTimetableModules(timetables: SemTimetableConfig[]) {
         .filter(validateModule)
         .map((moduleCode) => dispatch(fetchModule(moduleCode))),
     );
+  };
+}
+
+export function setHiddenModulesFromImport(hiddenModules: ModuleCode[]) {
+  return (dispatch: Dispatch) => dispatch(setHiddenImported(hiddenModules));
+}
+
+export function setHiddenImported(hiddenModules: ModuleCode[]) {
+  return {
+    type: SET_HIDDEN_IMPORTED,
+    payload: { semester: HIDDEN_IMPORTED_SEM, hiddenModules },
   };
 }
 

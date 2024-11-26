@@ -2,8 +2,13 @@
 @import 'variables';
 
 .settings {
+  .closeButton {
+    margin-top: -10px;
+    margin-right: -5px;
+  }
+
   section {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 
     &:last-child {
       margin-bottom: 0;

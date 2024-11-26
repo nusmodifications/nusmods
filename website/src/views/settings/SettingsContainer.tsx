@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { isEqual } from 'lodash';
 
-import { Mode, Theme } from 'types/settings';
+import { ColorSchemePreference, Theme } from 'types/settings';
 import { Tracker } from 'types/vendor/piwik';
 import { ModRegNotificationSettings } from 'types/reducers';
 
@@ -17,7 +17,7 @@ import {
   dismissModregNotification,
   enableModRegNotification,
   selectFaculty,
-  selectMode,
+  selectColorScheme,
   setLoadDisqusManually,
   setModRegScheduleType,
   toggleBetaTesting,
@@ -44,13 +44,13 @@ import styles from './SettingsContainer.scss';
 
 type Props = {
   currentThemeId: string;
-  mode: Mode;
+  colorScheme: ColorSchemePreference;
   betaTester: boolean;
   loadDisqusManually: boolean;
   modRegNotification: ModRegNotificationSettings;
 
   selectTheme: (theme: Theme) => void;
-  selectMode: (mode: Mode) => void;
+  selectColorScheme: (colorScheme: ColorSchemePreference) => void;
   reassignAllModulesColor: (numOfColors: number) => void;
 
   toggleBetaTesting: () => void;
@@ -64,7 +64,7 @@ type Props = {
 
 const SettingsContainer: React.FC<Props> = ({
   currentThemeId,
-  mode,
+  colorScheme,
   betaTester,
   loadDisqusManually,
   modRegNotification,
@@ -117,7 +117,7 @@ const SettingsContainer: React.FC<Props> = ({
               </p>
             </div>
             <div className={styles.toggle}>
-              <ModeSelect mode={mode} onSelectMode={props.selectMode} />
+              <ModeSelect colorScheme={colorScheme} onSelectColorScheme={props.selectColorScheme} />
             </div>
           </div>
           <hr />
@@ -244,9 +244,9 @@ const SettingsContainer: React.FC<Props> = ({
         <div className="col-md-8">
           <p>
             We collect anonymous, aggregated usage information on NUSMods - think of it as a survey
-            to tells us which browsers to support and what features are popular. If you opt out, we
-            could end up removing features that you use since we won&apos;t know if anyone is using
-            them.
+            that tells us which browsers to support and what features are popular. If you opt out,
+            we could end up removing features that you use since we won&apos;t know if anyone is
+            using them.
           </p>
           <p>
             We do not use this information for advertising, or share this information with anybody.
@@ -300,7 +300,7 @@ const SettingsContainer: React.FC<Props> = ({
 };
 
 const mapStateToProps = (state: StoreState) => ({
-  mode: state.settings.mode,
+  colorScheme: state.settings.colorScheme,
   currentThemeId: state.theme.id,
   betaTester: state.settings.beta || false,
   loadDisqusManually: state.settings.loadDisqusManually,
@@ -310,7 +310,7 @@ const mapStateToProps = (state: StoreState) => ({
 const connectedSettings = connect(mapStateToProps, {
   selectTheme,
   selectFaculty,
-  selectMode,
+  selectColorScheme,
   reassignAllModulesColor,
   toggleBetaTesting,
   setLoadDisqusManually,

@@ -74,7 +74,7 @@ describe(ExamCalendar, () => {
         .find(Link)
         .map((element) => element.find(`.${styles.moduleCode}`).text())
         .sort(),
-    ).toEqual(['ACC2002', 'CS1010S', 'GES1021', 'PC1222']);
+    ).toEqual(['ACC2002', 'CS1010A', 'CS1010S', 'GES1021', 'PC1222']);
   });
 
   test('show modules outside the two week exam period', () => {
@@ -89,7 +89,7 @@ describe(ExamCalendar, () => {
     modules[0].hiddenInTimetable = true;
     const wrapper = make(modules);
 
-    expect(wrapper.find(Link)).toHaveLength(3);
+    expect(wrapper.find(Link)).toHaveLength(4);
   });
 });
 

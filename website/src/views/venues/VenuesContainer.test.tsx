@@ -3,8 +3,9 @@ import qs from 'query-string';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { History } from 'history';
 
-import { Venue, VenueDetailList, VenueInfo } from 'types/venues';
+import { Venue, VenueDetailList, VenueInfo, VenueLocationMap } from 'types/venues';
 import venueInfo from '__mocks__/venueInformation.json';
+import venueLocationInfo from '__mocks__/venueLocations.json';
 import createHistory from 'test-utils/createHistory';
 import { sortVenues } from 'utils/venues';
 import { venuePage } from 'views/routes/paths';
@@ -12,6 +13,7 @@ import VenueDetails from 'views/venues/VenueDetails';
 import { Params, VenuesContainerComponent } from './VenuesContainer';
 
 const venues = sortVenues(venueInfo as VenueInfo);
+const venueLocations = venueLocationInfo as VenueLocationMap;
 
 function createComponent(selectedVenue: Venue | null = null, search = '') {
   const location = venuePage(selectedVenue) + search;
@@ -20,7 +22,14 @@ function createComponent(selectedVenue: Venue | null = null, search = '') {
 
   return {
     history: router.history,
-    wrapper: shallow(<VenuesContainerComponent venues={venues} {...router} matchBreakpoint />),
+    wrapper: shallow(
+      <VenuesContainerComponent
+        venueLocations={venueLocations}
+        venues={venues}
+        {...router}
+        matchBreakpoint
+      />,
+    ),
   };
 }
 

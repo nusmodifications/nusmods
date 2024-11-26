@@ -1,14 +1,17 @@
 import { render } from 'enzyme';
 
-import ModuleTree from './ModuleTree';
+import { getModuleCondensed } from 'selectors/moduleBank';
+import { ModuleCondensed } from 'types/modules';
+import { ModuleTreeComponent } from './ModuleTree';
 
 jest.mock('views/components/LinkModuleCodes', () => 'mockedlink');
 
-describe(ModuleTree, () => {
+describe(ModuleTreeComponent, () => {
   test('should render requirements fulfilled tree of module', () => {
     const component = render(
-      <ModuleTree
+      <ModuleTreeComponent
         moduleCode="ACC1002"
+        getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: {} } } as any)}
         fulfillRequirements={[
           'ACC1006',
           'ACC2002',
@@ -33,8 +36,9 @@ describe(ModuleTree, () => {
 
   test('should render prereq tree of module', () => {
     const component = render(
-      <ModuleTree
+      <ModuleTreeComponent
         moduleCode="CS3244"
+        getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: {} } } as any)}
         fulfillRequirements={['CS5242', 'CS5339', 'CS6281']}
         prereqTree={{
           and: [
@@ -56,5 +60,69 @@ describe(ModuleTree, () => {
     );
 
     expect(component).toMatchSnapshot('CS3244');
+  });
+
+  // Test that modules which are in moduleBank have appropriate colours,
+  // and modules that aren't are greyed out
+
+  const testModules: { [moduleCode: string]: ModuleCondensed } = {
+    CS2040: {
+      moduleCode: 'CS2040',
+      title: 'Data Structures and Algorithms',
+      semesters: [1, 2],
+    },
+    CS2030: {
+      moduleCode: 'CS2030',
+      title: 'Programming Methodology II',
+      semesters: [1, 2],
+    },
+    CS2113T: {
+      moduleCode: 'CS2113T',
+      title: 'Software Engineering & Object-Oriented Programming',
+      semesters: [1, 2],
+    },
+    CS1020E: {
+      moduleCode: 'CS1020E',
+      title: 'Data Structures and Algorithms',
+      semesters: [1, 2],
+    },
+    CS6240: {
+      moduleCode: 'CS6240',
+      title: 'Multimedia Analysis',
+      semesters: [2],
+    },
+  };
+
+  test('should grey out modules that are not in module bank', () => {
+    const component = render(
+      <ModuleTreeComponent
+        moduleCode="CS4243"
+        getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: testModules } } as any)}
+        fulfillRequirements={['CS6240', 'CS3281', 'CS4243R']}
+        prereqTree={{
+          and: [
+            {
+              or: [
+                'CS1020',
+                'CS1020E',
+                'CS2020',
+                {
+                  and: [
+                    {
+                      or: ['CS2030', 'CS2113', 'CS2113T'],
+                    },
+                    {
+                      or: ['CS2040', 'CS2040C'],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        }}
+      />,
+    );
+
+    expect(component).toMatchSnapshot('CS4243');
   });
 });

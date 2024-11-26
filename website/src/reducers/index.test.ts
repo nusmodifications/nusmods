@@ -3,6 +3,7 @@ import { VERTICAL } from 'types/reducers';
 import reducers from 'reducers';
 import { setExportedData } from 'actions/export';
 import modules from '__mocks__/modules/index';
+import { DARK_COLOR_SCHEME, DARK_COLOR_SCHEME_PREFERENCE } from 'types/settings';
 
 /* eslint-disable no-useless-computed-key */
 
@@ -35,7 +36,7 @@ const exportData: ExportData = {
     showTitle: true,
   },
   settings: {
-    mode: 'DARK',
+    colorScheme: DARK_COLOR_SCHEME,
   },
 };
 
@@ -79,7 +80,7 @@ test('reducers should set export data state', () => {
   });
 
   expect(state.settings).toMatchObject({
-    mode: 'DARK',
+    colorScheme: DARK_COLOR_SCHEME_PREFERENCE,
   });
 
   expect(state.theme).toEqual({

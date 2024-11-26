@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+import type { RenderOptions } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { Route, Router } from 'react-router-dom';
 import createHistory from './createHistory';
@@ -18,12 +19,14 @@ export default function renderWithRouterMatch(
     path?: string;
     location?: Parameters<typeof createHistory>[0];
   },
+  renderOptions?: Omit<RenderOptions, 'queries'> | undefined,
 ) {
   const { history } = createHistory(location);
   const view = render(
     <Router history={history}>
       <Route path={path}>{children}</Route>
     </Router>,
+    renderOptions,
   );
   return {
     history,

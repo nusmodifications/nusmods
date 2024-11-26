@@ -38,7 +38,7 @@ const TooltipGroup = React.memo<TooltipGroupProps>(({ children, ...props }) => {
   if (!AsyncTooltipGroup) {
     // cast needed because TooltipGroupProps types children as React.ReactElement which is not
     // compatible with the return type of React.FC, React.ReactElement
-    return children as React.ReactElement;
+    return children;
   }
 
   return <AsyncTooltipGroup {...props}>{children}</AsyncTooltipGroup>;

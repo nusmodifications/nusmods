@@ -32,6 +32,19 @@ $empty-message-height: 6rem;
   margin-top: 0.2rem;
 }
 
+.addSemesterToTimetable {
+  button {
+    padding-left: 0;
+    text-align: left;
+  
+    svg {
+      width: 1.2rem;
+      height: 1.2rem;
+      margin-right: 0.2rem;
+    }
+  }
+}
+
 .emptyListMessage {
   position: absolute;
   top: 0;
