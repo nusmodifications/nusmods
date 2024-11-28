@@ -240,7 +240,11 @@ class TimetableContent extends React.Component<Props, State> {
     const { tombstone } = this.state;
 
     // Separate added modules into sections of clashing modules
-    const clashes = findExamClashes(modules, this.props.semester);
+    const examinableModules = modules.filter(
+      (module) =>
+        !this.isHiddenInTimetable(module.moduleCode) && !this.isTaInTimetable(module.moduleCode),
+    );
+    const clashes = findExamClashes(examinableModules, this.props.semester);
     const nonClashingMods: Module[] = _.difference(modules, _.flatten(_.values(clashes)));
 
     if (_.isEmpty(clashes) && _.isEmpty(nonClashingMods) && !tombstone) {
