@@ -37,6 +37,7 @@ import {
   HoverLesson,
   Lesson,
   ModuleLessonConfig,
+  ModuleLessonConfigWithLessons,
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
   TimetableArrangement,
@@ -119,25 +120,33 @@ export function hydrateSemTimetableWithLessons(
       const module: Module = modules[moduleCode];
       if (!module) return EMPTY_OBJECT;
 
-      // TODO: Split this part into a smaller function: hydrateModuleConfigWithLessons.
-      return mapValues(moduleLessonConfig, (classNo: ClassNo, lessonType: LessonType) => {
-        const lessons = getModuleTimetable(module, semester);
-        const newLessons = lessons.filter(
-          (lesson: RawLesson): boolean =>
-            lesson.lessonType === lessonType && lesson.classNo === classNo,
-        );
-
-        const timetableLessons: Lesson[] = newLessons.map(
-          (lesson: RawLesson): Lesson => ({
-            ...lesson,
-            moduleCode,
-            title: module.title,
-          }),
-        );
-        return timetableLessons;
-      });
+      return hydrateModuleConfigWithLessons(moduleLessonConfig, module, semester);
     },
   );
+}
+
+// Replaces ClassNo in ModuleLessonConfig with Array<Lesson>
+function hydrateModuleConfigWithLessons(
+  moduleLessonConfig: ModuleLessonConfig,
+  module: Module,
+  semester: Semester,
+): ModuleLessonConfigWithLessons {
+  return mapValues(moduleLessonConfig, (classNo: ClassNo, lessonType: LessonType) => {
+    const lessons = getModuleTimetable(module, semester);
+    const newLessons = lessons.filter(
+      (lesson: RawLesson): boolean =>
+        lesson.lessonType === lessonType && lesson.classNo === classNo,
+    );
+
+    const timetableLessons: Lesson[] = newLessons.map(
+      (lesson: RawLesson): Lesson => ({
+        ...lesson,
+        moduleCode: module.moduleCode,
+        title: module.title,
+      }),
+    );
+    return timetableLessons;
+  });
 }
 
 //  Filters a flat array of lessons and returns the lessons corresponding to lessonType.

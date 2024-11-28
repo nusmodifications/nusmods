@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { sortBy } from 'lodash';
 import { produce } from 'immer';
 
-import { Eye, EyeOff, Trash } from 'react-feather';
+import { Book, BookOpen, Eye, EyeOff, Trash } from 'react-feather';
 import { ModuleWithColor, TombstoneModule } from 'types/views';
 import { ColorIndex } from 'types/timetables';
 import { ModuleCode, Semester } from 'types/modules';
@@ -14,9 +14,11 @@ import { ModuleTableOrder } from 'types/reducers';
 
 import ColorPicker from 'views/components/ColorPicker';
 import {
-  hideLessonInTimetable,
   selectModuleColor,
+  hideLessonInTimetable,
   showLessonInTimetable,
+  setTaLessonInTimetable,
+  unsetTaLessonInTimetable,
 } from 'actions/timetables';
 import { getExamDate, getFormattedExamDate, renderMCs } from 'utils/modules';
 import { intersperse } from 'utils/array';
@@ -42,14 +44,19 @@ export type Props = {
   selectModuleColor: (semester: Semester, moduleCode: ModuleCode, colorIndex: ColorIndex) => void;
   hideLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   showLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
+  setTaLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
+  unsetTaLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   onRemoveModule: (moduleCode: ModuleCode) => void;
   resetTombstone: () => void;
 };
 
 export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
   const renderModuleActions = (module: ModuleWithColor) => {
-    const hideBtnLabel = `${module.hiddenInTimetable ? 'Show' : 'Hide'} ${module.moduleCode}`;
     const removeBtnLabel = `Remove ${module.moduleCode} from timetable`;
+    const hideBtnLabel = `${module.hiddenInTimetable ? 'Show' : 'Hide'} ${module.moduleCode}`;
+    const setTaBtnLabel = `Turn ${module.taInTimetable ? 'off' : 'on'} TA mode for ${
+      module.moduleCode
+    }`;
     const { semester } = props;
 
     return (
@@ -82,6 +89,26 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
                 <Eye className={styles.actionIcon} />
               ) : (
                 <EyeOff className={styles.actionIcon} />
+              )}
+            </button>
+          </Tooltip>
+          <Tooltip content={setTaBtnLabel} touch={['hold', 50]}>
+            <button
+              type="button"
+              className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
+              aria-label={setTaBtnLabel}
+              onClick={() => {
+                if (module.taInTimetable) {
+                  props.unsetTaLessonInTimetable(semester, module.moduleCode);
+                } else {
+                  props.setTaLessonInTimetable(semester, module.moduleCode);
+                }
+              }}
+            >
+              {module.taInTimetable ? (
+                <BookOpen className={styles.actionIcon} />
+              ) : (
+                <Book className={styles.actionIcon} />
               )}
             </button>
           </Tooltip>
@@ -167,5 +194,7 @@ export default connect(
     selectModuleColor,
     hideLessonInTimetable,
     showLessonInTimetable,
+    setTaLessonInTimetable,
+    unsetTaLessonInTimetable,
   },
 )(React.memo(TimetableModulesTableComponent));

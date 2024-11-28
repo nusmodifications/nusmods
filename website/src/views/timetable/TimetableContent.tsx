@@ -77,6 +77,7 @@ type Props = OwnProps & {
   timetableOrientation: TimetableOrientation;
   showTitle: boolean;
   hiddenInTimetable: ModuleCode[];
+  taInTimetable: ModuleCode[];
 
   // Actions
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
@@ -160,6 +161,8 @@ class TimetableContent extends React.Component<Props, State> {
   isHiddenInTimetable = (moduleCode: ModuleCode) =>
     this.props.hiddenInTimetable.includes(moduleCode);
 
+  isTaInTimetable = (moduleCode: ModuleCode) => this.props.taInTimetable.includes(moduleCode);
+
   modifyCell = (lesson: ModifiableLesson, position: ClientRect) => {
     if (lesson.isAvailable) {
       this.props.changeLesson(this.props.semester, lesson);
@@ -213,6 +216,7 @@ class TimetableContent extends React.Component<Props, State> {
     ...module,
     colorIndex: this.props.colors[module.moduleCode],
     hiddenInTimetable: this.isHiddenInTimetable(module.moduleCode),
+    taInTimetable: this.isTaInTimetable(module.moduleCode),
   });
 
   renderModuleTable = (
@@ -284,13 +288,19 @@ class TimetableContent extends React.Component<Props, State> {
       showTitle,
       readOnly,
       hiddenInTimetable,
+      taInTimetable,
     } = this.props;
 
     const { showExamCalendar } = this.state;
 
     let timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons)
-      // Do not process hidden modules
-      .filter((lesson) => !this.isHiddenInTimetable(lesson.moduleCode));
+      // Omit all lessons for hidden modules
+      // Omit lectures for TA modules
+      .filter(
+        (lesson) =>
+          !this.isHiddenInTimetable(lesson.moduleCode) &&
+          !(this.isTaInTimetable(lesson.moduleCode) && lesson.lessonType === 'Lecture'),
+      );
 
     if (activeLesson) {
       const { moduleCode } = activeLesson;
@@ -383,6 +393,7 @@ class TimetableContent extends React.Component<Props, State> {
                   ...module,
                   colorIndex: this.props.colors[module.moduleCode],
                   hiddenInTimetable: this.isHiddenInTimetable(module.moduleCode),
+                  taInTimetable: this.isTaInTimetable(module.moduleCode),
                 }))}
               />
             ) : (
@@ -440,6 +451,7 @@ class TimetableContent extends React.Component<Props, State> {
                   modules={addedModules}
                   semester={semester}
                   hiddenInTimetable={hiddenInTimetable}
+                  taInTimetable={taInTimetable}
                 />
               </div>
             </div>
@@ -469,6 +481,7 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
     timetableOrientation: state.theme.timetableOrientation,
     showTitle: state.theme.showTitle,
     hiddenInTimetable,
+    taInTimetable: state.timetables.ta[semester],
   };
 }
 

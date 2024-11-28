@@ -31,6 +31,7 @@ type Props = {
   moduleTableOrder: ModuleTableOrder;
   modules: Module[];
   hiddenInTimetable: string[];
+  taInTimetable: string[];
 
   setModuleTableOrder: (moduleTableOrder: ModuleTableOrder) => void;
 };
@@ -38,7 +39,11 @@ type Props = {
 const ModulesTableFooter: React.FC<Props> = (props) => {
   const totalMCs = sumBy(props.modules, (module) => parseFloat(module.moduleCredit));
   const shownMCs = sumBy(
-    props.modules.filter((module) => !props.hiddenInTimetable.includes(module.moduleCode)),
+    props.modules.filter(
+      (module) =>
+        !props.hiddenInTimetable.includes(module.moduleCode) &&
+        !props.taInTimetable.includes(module.moduleCode),
+    ),
     (module) => parseFloat(module.moduleCredit),
   );
 

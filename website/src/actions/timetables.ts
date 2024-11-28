@@ -26,10 +26,11 @@ export const Internal = {
     timetable: SemTimetableConfig | undefined,
     colors?: ColorMapping,
     hiddenModules?: ModuleCode[],
+    taModules?: ModuleCode[],
   ) {
     return {
       type: SET_TIMETABLE,
-      payload: { semester, timetable, colors, hiddenModules },
+      payload: { semester, timetable, colors, hiddenModules, taModules },
     };
   },
 
@@ -166,6 +167,7 @@ export function setTimetable(
         validatedTimetable,
         colors,
         getState().timetables.hidden[HIDDEN_IMPORTED_SEM] || [],
+        getState().timetables.ta[HIDDEN_IMPORTED_SEM] || [],
       ),
     );
   };
@@ -250,6 +252,22 @@ export const SHOW_LESSON_IN_TIMETABLE = 'SHOW_LESSON_IN_TIMETABLE' as const;
 export function showLessonInTimetable(semester: Semester, moduleCode: ModuleCode) {
   return {
     type: SHOW_LESSON_IN_TIMETABLE,
+    payload: { moduleCode, semester },
+  };
+}
+
+export const SET_TA_LESSON_IN_TIMETABLE = 'SET_TA_LESSON_IN_TIMETABLE' as const;
+export function setTaLessonInTimetable(semester: Semester, moduleCode: ModuleCode) {
+  return {
+    type: SET_TA_LESSON_IN_TIMETABLE,
+    payload: { moduleCode, semester },
+  };
+}
+
+export const UNSET_TA_LESSON_IN_TIMETABLE = 'UNSET_TA_LESSON_IN_TIMETABLE' as const;
+export function unsetTaLessonInTimetable(semester: Semester, moduleCode: ModuleCode) {
+  return {
+    type: UNSET_TA_LESSON_IN_TIMETABLE,
     payload: { moduleCode, semester },
   };
 }

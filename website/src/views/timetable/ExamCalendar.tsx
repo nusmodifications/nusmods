@@ -32,7 +32,9 @@ export function getTimeSegment(time: string): TimeSegment {
 
 export default class ExamCalendar extends PureComponent<Props> {
   getVisibleModules(): ModuleWithColor[] {
-    return this.props.modules.filter((module) => !module.hiddenInTimetable);
+    return this.props.modules.filter(
+      (module) => !module.hiddenInTimetable && !module.taInTimetable,
+    );
   }
 
   // Utility function to get the first day of exams and calculate the number of weeks
