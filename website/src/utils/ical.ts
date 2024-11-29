@@ -175,6 +175,7 @@ export default function iCalForTimetable(
   timetable: SemTimetableConfigWithLessons,
   moduleData: { [moduleCode: string]: Module },
   hiddenModules: string[],
+  taModules: string[],
   academicYear: string = config.academicYear,
 ): EventOption[] {
   const [year, month, day] = academicCalendar[academicYear][semester].start;
@@ -187,9 +188,14 @@ export default function iCalForTimetable(
 
     _.each(lessonConfig, (lessons) => {
       lessons.forEach((lesson) => {
+        if (taModules.includes(moduleCode) && lesson.lessonType === 'Lecture') {
+          return;
+        }
         events.push(iCalEventForLesson(lesson, moduleData[moduleCode], semester, firstDayOfSchool));
       });
     });
+
+    if (taModules.includes(moduleCode)) return;
 
     const examEvent = iCalEventForExam(moduleData[moduleCode], semester);
     if (examEvent) events.push(examEvent);

@@ -27,6 +27,7 @@ type Props = {
   semester: Semester;
   timetable: SemTimetableConfig;
   hiddenModules: ModuleCode[];
+  taModules: ModuleCode[];
 };
 
 type State = {
@@ -42,8 +43,9 @@ function shareUrl(
   semester: Semester,
   timetable: SemTimetableConfig,
   hiddenModules: ModuleCode[],
+  taModules: ModuleCode[],
 ): string {
-  return absolutePath(timetableShare(semester, timetable, hiddenModules));
+  return absolutePath(timetableShare(semester, timetable, hiddenModules, taModules));
 }
 
 function getToolTipContent(shortUrl: string | null, isFullUrl: boolean, isLoading: boolean) {
@@ -93,8 +95,8 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
   }
 
   loadUrl = () => {
-    const { semester, timetable, hiddenModules } = this.props;
-    const url = shareUrl(semester, timetable, hiddenModules);
+    const { semester, timetable, hiddenModules, taModules } = this.props;
+    const url = shareUrl(semester, timetable, hiddenModules, taModules);
 
     // Don't do anything if the long URL has not changed
     if (this.url === url) return;

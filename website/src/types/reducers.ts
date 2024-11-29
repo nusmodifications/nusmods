@@ -118,7 +118,7 @@ export type TimetablesState = {
   readonly lessons: TimetableConfig;
   readonly colors: SemesterColorMap;
   readonly hidden: HiddenModulesMap;
-  readonly ta: HiddenModulesMap;
+  readonly ta: TaModulesMap;
   readonly academicYear: string;
   // Mapping of academic year to old timetable config
   readonly archive: { [key: string]: TimetableConfig };

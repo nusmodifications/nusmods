@@ -8,9 +8,11 @@ import styles from './TimetableModulesTable.scss';
 
 function make(props: Partial<Props> = {}) {
   const selectModuleColor = jest.fn();
-  const onRemoveModule = jest.fn();
   const hideLessonInTimetable = jest.fn();
   const showLessonInTimetable = jest.fn();
+  const setTaLessonInTimetable = jest.fn();
+  const unsetTaLessonInTimetable = jest.fn();
+  const onRemoveModule = jest.fn();
   const resetTombstone = jest.fn();
 
   const wrapper = shallow(
@@ -24,6 +26,8 @@ function make(props: Partial<Props> = {}) {
       selectModuleColor={selectModuleColor}
       hideLessonInTimetable={hideLessonInTimetable}
       showLessonInTimetable={showLessonInTimetable}
+      setTaLessonInTimetable={setTaLessonInTimetable}
+      unsetTaLessonInTimetable={unsetTaLessonInTimetable}
       onRemoveModule={onRemoveModule}
       resetTombstone={resetTombstone}
       {...props}
@@ -72,6 +76,7 @@ describe(TimetableModulesTableComponent, () => {
       index: 1,
       colorIndex: 2,
       hiddenInTimetable: false,
+      taInTimetable: false,
     };
 
     const moduleCodes = getModules(

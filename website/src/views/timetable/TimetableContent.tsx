@@ -18,7 +18,6 @@ import {
   addModule,
   cancelModifyLesson,
   changeLesson,
-  HIDDEN_IMPORTED_SEM,
   modifyLesson,
   removeModule,
   resetTimetable,
@@ -67,6 +66,7 @@ type OwnProps = {
   timetable: SemTimetableConfig;
   colors: ColorMapping;
   hiddenImportedModules: ModuleCode[] | null;
+  taImportedModules: ModuleCode[] | null;
 };
 
 type Props = OwnProps & {
@@ -433,6 +433,7 @@ class TimetableContent extends React.Component<Props, State> {
                   resetTimetable={this.resetTimetable}
                   toggleExamCalendar={() => this.setState({ showExamCalendar: !showExamCalendar })}
                   hiddenModules={hiddenInTimetable}
+                  taModules={taInTimetable}
                 />
               </div>
 
@@ -467,14 +468,13 @@ class TimetableContent extends React.Component<Props, State> {
 }
 
 function mapStateToProps(state: StoreState, ownProps: OwnProps) {
-  const { semester, timetable, readOnly } = ownProps;
+  const { semester, timetable } = ownProps;
   const { modules } = state.moduleBank;
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
 
-  // Determine the key to check for hidden modules based on readOnly status
-  const hiddenModulesKey = readOnly ? HIDDEN_IMPORTED_SEM : semester;
   const hiddenInTimetable =
-    ownProps.hiddenImportedModules ?? (state.timetables.hidden[hiddenModulesKey] || []);
+    ownProps.hiddenImportedModules ?? (state.timetables.hidden[semester] || []);
+  const taInTimetable = ownProps.taImportedModules ?? (state.timetables.ta[semester] || []);
 
   return {
     semester,
@@ -485,7 +485,7 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
     timetableOrientation: state.theme.timetableOrientation,
     showTitle: state.theme.showTitle,
     hiddenInTimetable,
-    taInTimetable: state.timetables.ta[semester],
+    taInTimetable,
   };
 }
 

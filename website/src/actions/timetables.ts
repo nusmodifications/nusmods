@@ -19,7 +19,7 @@ import { getModuleTimetable } from 'utils/modules';
 export const SET_TIMETABLE = 'SET_TIMETABLE' as const;
 export const ADD_MODULE = 'ADD_MODULE' as const;
 export const SET_HIDDEN_IMPORTED = 'SET_HIDDEN_IMPORTED' as const;
-export const HIDDEN_IMPORTED_SEM = 'HIDDEN_IMPORTED_SEM' as const;
+export const SET_TA_IMPORTED = 'SET_TA_IMPORTED' as const;
 export const Internal = {
   setTimetable(
     semester: Semester,
@@ -166,8 +166,8 @@ export function setTimetable(
         semester,
         validatedTimetable,
         colors,
-        getState().timetables.hidden[HIDDEN_IMPORTED_SEM] || [],
-        getState().timetables.ta[HIDDEN_IMPORTED_SEM] || [],
+        getState().timetables.hidden[semester] || [],
+        getState().timetables.ta[semester] || [],
       ),
     );
   };
@@ -213,14 +213,25 @@ export function fetchTimetableModules(timetables: SemTimetableConfig[]) {
   };
 }
 
-export function setHiddenModulesFromImport(hiddenModules: ModuleCode[]) {
-  return (dispatch: Dispatch) => dispatch(setHiddenImported(hiddenModules));
+export function setHiddenModulesFromImport(semester: Semester, hiddenModules: ModuleCode[]) {
+  return (dispatch: Dispatch) => dispatch(setHiddenImported(semester, hiddenModules));
 }
 
-export function setHiddenImported(hiddenModules: ModuleCode[]) {
+export function setHiddenImported(semester: Semester, hiddenModules: ModuleCode[]) {
   return {
     type: SET_HIDDEN_IMPORTED,
-    payload: { semester: HIDDEN_IMPORTED_SEM, hiddenModules },
+    payload: { semester, hiddenModules },
+  };
+}
+
+export function setTaModulesFromImport(semester: Semester, taModules: ModuleCode[]) {
+  return (dispatch: Dispatch) => dispatch(setTaImported(semester, taModules));
+}
+
+export function setTaImported(semester: Semester, taModules: ModuleCode[]) {
+  return {
+    type: SET_TA_IMPORTED,
+    payload: { semester, taModules },
   };
 }
 

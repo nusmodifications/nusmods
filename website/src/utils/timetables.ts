@@ -12,6 +12,7 @@ import {
   last,
   map,
   mapValues,
+  omit,
   partition,
   pick,
   range,
@@ -554,7 +555,11 @@ export function serializeTimetable(timetable: SemTimetableConfig): string {
 
 export function deserializeTimetable(serialized: string): SemTimetableConfig {
   const params = qs.parse(serialized);
-  return mapValues(params, parseModuleConfig);
+  return mapValues(omit(params, ['hidden', 'ta']), parseModuleConfig);
+}
+
+export function serializeHidden(hiddenModules: ModuleCode[]) {
+  return `&hidden=${hiddenModules.join(',')}`;
 }
 
 export function deserializeHidden(serialized: string): ModuleCode[] {
@@ -563,6 +568,18 @@ export function deserializeHidden(serialized: string): ModuleCode[] {
   // If user manually enters multiple hidden query keys, use latest one
   const hidden = Array.isArray(params.hidden) ? last(params.hidden) : params.hidden;
   return (hidden as string).split(',');
+}
+
+export function serializeTa(taModules: ModuleCode[]) {
+  return `&ta=${taModules.join(',')}`;
+}
+
+export function deserializeTa(serialized: string): ModuleCode[] {
+  const params = qs.parse(serialized);
+  if (!params.ta) return [];
+  // If user manually enters multiple TA query keys, use latest one
+  const ta = Array.isArray(params.ta) ? last(params.ta) : params.ta;
+  return (ta as string).split(',');
 }
 
 export function isSameTimetableConfig(t1: SemTimetableConfig, t2: SemTimetableConfig): boolean {

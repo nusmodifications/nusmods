@@ -29,6 +29,7 @@ type Props = {
   toggleExamCalendar: () => void;
 
   hiddenModules: ModuleCode[];
+  taModules: ModuleCode[];
 
   resetTimetable: () => void;
 };
@@ -91,6 +92,7 @@ const TimetableActions: React.FC<Props> = (props) => (
         semester={props.semester}
         timetable={props.timetable}
         hiddenModules={props.hiddenModules}
+        taModules={props.taModules}
       />
       <ResetTimetable resetTimetable={props.resetTimetable} />
     </div>

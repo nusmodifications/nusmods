@@ -11,13 +11,13 @@ import config from 'config';
 import {
   ADD_MODULE,
   CHANGE_LESSON,
-  HIDDEN_IMPORTED_SEM,
   HIDE_LESSON_IN_TIMETABLE,
   REMOVE_MODULE,
   RESET_TIMETABLE,
   SELECT_MODULE_COLOR,
   SET_HIDDEN_IMPORTED,
   SET_LESSON_CONFIG,
+  SET_TA_IMPORTED,
   SET_TA_LESSON_IN_TIMETABLE,
   SET_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
@@ -225,9 +225,6 @@ function timetables(
         draft.colors[semester] = colors || {};
         draft.hidden[semester] = hiddenModules || [];
         draft.ta[semester] = taModules || [];
-
-        // Remove the old hidden imported modules
-        delete draft.hidden[HIDDEN_IMPORTED_SEM];
       });
     }
 
@@ -262,13 +259,14 @@ function timetables(
     }
 
     case SET_EXPORTED_DATA: {
-      const { semester, timetable, colors, hidden } = action.payload;
+      const { semester, timetable, colors, hidden, ta } = action.payload;
 
       return {
         ...state,
         lessons: { [semester]: timetable },
         colors: { [semester]: colors },
         hidden: { [semester]: hidden },
+        ta: { [semester]: ta },
       };
     }
 
@@ -276,6 +274,13 @@ function timetables(
       const { semester, hiddenModules } = action.payload;
       return produce(state, (draft) => {
         draft.hidden[semester] = hiddenModules;
+      });
+    }
+
+    case SET_TA_IMPORTED: {
+      const { semester, taModules } = action.payload;
+      return produce(state, (draft) => {
+        draft.ta[semester] = taModules;
       });
     }
 
