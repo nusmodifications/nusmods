@@ -10,6 +10,18 @@ $arrow-height: 1.5rem;
 
 .container {
   position: relative;
+  border-radius: 0.25rem;
+  border: 1px solid transparent;
+
+  &.hidden {
+    border-color: var(--gray-light);
+    border-style: dashed !important;
+  }
+  
+  &.ta {
+    border-color: var(--gray-light);
+    border-style: solid;
+  }
 }
 
 :global(.btn).moduleColor {
@@ -21,8 +33,11 @@ $arrow-height: 1.5rem;
   border: 0;
 
   &.hidden {
-    border: 1px dashed var(--gray-light);
     background: none;
+  }
+  
+  &.ta {
+    clip-path: polygon(0% 0%, 100% 0%, 0% 100%);
   }
 }
 

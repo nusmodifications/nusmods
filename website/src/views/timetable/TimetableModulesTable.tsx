@@ -141,6 +141,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
             label={`Change ${module.moduleCode} timetable color`}
             color={module.colorIndex}
             isHidden={module.hiddenInTimetable}
+            isTa={module.taInTimetable}
             onChooseColor={(colorIndex: ColorIndex) => {
               props.selectModuleColor(semester, module.moduleCode, colorIndex);
             }}
