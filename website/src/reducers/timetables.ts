@@ -4,7 +4,7 @@ import { createMigrate } from 'redux-persist';
 
 import { PersistConfig } from 'storage/persistReducer';
 import { ModuleCode } from 'types/modules';
-import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
+import { ModuleLessonConfig, SemTimetableConfig, TaModuleConfig } from 'types/timetables';
 import { ColorMapping, TimetablesState } from 'types/reducers';
 
 import config from 'config';
@@ -18,10 +18,10 @@ import {
   SET_HIDDEN_IMPORTED,
   SET_LESSON_CONFIG,
   SET_TA_IMPORTED,
-  SET_TA_LESSON_IN_TIMETABLE,
+  ADD_TA_LESSON_IN_TIMETABLE,
   SET_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
-  UNSET_TA_LESSON_IN_TIMETABLE,
+  REMOVE_TA_LESSON_IN_TIMETABLE,
 } from 'actions/timetables';
 import { getNewColor } from 'utils/colors';
 import { SET_EXPORTED_DATA } from 'actions/constants';
@@ -181,18 +181,34 @@ function semHiddenModules(state = DEFAULT_HIDDEN_STATE, action: Actions) {
 }
 
 // Map of semester to list of TA modules
-const DEFAULT_TA_STATE: ModuleCode[] = [];
+const DEFAULT_TA_STATE: TaModuleConfig = {};
 function semTaModules(state = DEFAULT_TA_STATE, action: Actions) {
   if (!action.payload) {
     return state;
   }
 
   switch (action.type) {
-    case SET_TA_LESSON_IN_TIMETABLE:
-      return [action.payload.moduleCode, ...state];
-    case UNSET_TA_LESSON_IN_TIMETABLE:
-    case REMOVE_MODULE:
-      return state.filter((c) => c !== action.payload.moduleCode);
+    case ADD_TA_LESSON_IN_TIMETABLE: {
+      const { moduleCode, lessonType } = action.payload;
+      if (!(moduleCode && lessonType)) return state;
+      return {
+        ...state,
+        [moduleCode]: [...(state[moduleCode] ?? []), lessonType],
+      };
+    }
+    case REMOVE_TA_LESSON_IN_TIMETABLE: {
+      const { moduleCode, lessonType } = action.payload;
+      if (!(moduleCode && lessonType)) return state;
+      return {
+        ...state,
+        [moduleCode]: (state[moduleCode] ?? []).filter((l) => l !== lessonType),
+      };
+    }
+    case REMOVE_MODULE: {
+      const { moduleCode } = action.payload;
+      if (!moduleCode) return state;
+      return omit(state, moduleCode);
+    }
     default:
       return state;
   }
@@ -224,7 +240,7 @@ function timetables(
         draft.lessons[semester] = timetable || DEFAULT_SEM_TIMETABLE_CONFIG;
         draft.colors[semester] = colors || {};
         draft.hidden[semester] = hiddenModules || [];
-        draft.ta[semester] = taModules || [];
+        draft.ta[semester] = taModules || {};
       });
     }
 
@@ -246,8 +262,8 @@ function timetables(
     case SET_LESSON_CONFIG:
     case HIDE_LESSON_IN_TIMETABLE:
     case SHOW_LESSON_IN_TIMETABLE:
-    case SET_TA_LESSON_IN_TIMETABLE:
-    case UNSET_TA_LESSON_IN_TIMETABLE: {
+    case ADD_TA_LESSON_IN_TIMETABLE:
+    case REMOVE_TA_LESSON_IN_TIMETABLE: {
       const { semester } = action.payload;
 
       return produce(state, (draft) => {

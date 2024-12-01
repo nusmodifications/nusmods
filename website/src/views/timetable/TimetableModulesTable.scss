@@ -53,6 +53,13 @@
   composes: svg-small from global;
 }
 
+.taModuleMenu {
+  right: 0;
+  left: auto;
+  width: fit-content;
+  margin-top: 0.5rem;
+}
+
 .moduleActionButtons {
   float: right;
   margin-left: 0.2rem;

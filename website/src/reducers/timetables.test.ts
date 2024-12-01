@@ -9,8 +9,8 @@ import {
   showLessonInTimetable,
   setHiddenImported,
   Internal,
-  setTaLessonInTimetable,
-  unsetTaLessonInTimetable,
+  addTaLessonInTimetable,
+  removeTaLessonInTimetable,
 } from 'actions/timetables';
 import { TimetablesState } from 'types/reducers';
 import config from 'config';
@@ -74,7 +74,7 @@ describe('color reducers', () => {
           timetable: { CS1010S: {} },
           colors: { CS1010S: 0 },
           hiddenModules: [],
-          taModules: [],
+          taModules: {},
         },
       }).colors[1],
     ).toEqual({
@@ -129,24 +129,29 @@ describe('hidden module reducer', () => {
 describe('TA module reducer', () => {
   const withTaModules: TimetablesState = {
     ...initialState,
-    ta: { [1]: ['CS1010S'], [2]: ['CS1010S'] },
+    ta: { [1]: { CS1010S: ['Tutorial'] }, [2]: { CS1010S: ['Tutorial'] } },
   };
 
   test('should update TA modules', () => {
-    expect(reducer(initialState, setTaLessonInTimetable(1, 'CS3216'))).toHaveProperty('ta.1', [
-      'CS3216',
-    ]);
+    expect(reducer(initialState, addTaLessonInTimetable(1, 'CS3216', 'Tutorial'))).toHaveProperty(
+      'ta.1',
+      { CS3216: ['Tutorial'] },
+    );
 
-    expect(reducer(initialState, unsetTaLessonInTimetable(1, 'CS1010S'))).toMatchObject({
+    expect(
+      reducer(initialState, removeTaLessonInTimetable(1, 'CS1010S', 'Tutorial')),
+    ).toMatchObject({
       ta: {
-        [1]: [],
+        [1]: {},
       },
     });
 
-    expect(reducer(withTaModules, unsetTaLessonInTimetable(1, 'CS1010S'))).toMatchObject({
+    expect(
+      reducer(withTaModules, removeTaLessonInTimetable(1, 'CS1010S', 'Tutorial')),
+    ).toMatchObject({
       ta: {
-        [1]: [],
-        [2]: ['CS1010S'],
+        [1]: {},
+        [2]: { CS1010S: ['Tutorial'] },
       },
     });
   });
@@ -156,14 +161,14 @@ describe('TA module reducer', () => {
       reducer(
         {
           ...initialState,
-          ta: { [1]: ['CS1010S'], [2]: ['CS1010S'] },
+          ta: { [1]: { CS1010S: ['Tutorial'] }, [2]: { CS1010S: ['Tutorial'] } },
         },
         removeModule(1, 'CS1010S'),
       ),
     ).toMatchObject({
       ta: {
-        [1]: [],
-        [2]: ['CS1010S'],
+        [1]: {},
+        [2]: { CS1010S: ['Tutorial'] },
       },
     });
   });

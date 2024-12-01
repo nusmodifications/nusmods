@@ -86,7 +86,7 @@ describe(ExamCalendar, () => {
 
   test('should hide modules which are hidden in timetable', () => {
     const modules = _.cloneDeep(modulesWithColor);
-    modules[0].hiddenInTimetable = true;
+    modules[0].isHiddenInTimetable = true;
     const wrapper = make(modules);
 
     expect(wrapper.find(Link)).toHaveLength(4);
@@ -100,7 +100,7 @@ describe(ExamCalendar, () => {
 
   test('should hide modules which are TA modules in timetable', () => {
     const modules = _.cloneDeep(modulesWithColor);
-    modules[0].taInTimetable = true;
+    modules[0].isTaInTimetable = true;
     const wrapper = make(modules);
 
     expect(wrapper.find(Link)).toHaveLength(4);

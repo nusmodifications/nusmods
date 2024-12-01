@@ -33,7 +33,7 @@ export function getTimeSegment(time: string): TimeSegment {
 export default class ExamCalendar extends PureComponent<Props> {
   getVisibleModules(): ModuleWithColor[] {
     return this.props.modules.filter(
-      (module) => !module.hiddenInTimetable && !module.taInTimetable,
+      (module) => !module.isHiddenInTimetable && !module.isTaInTimetable,
     );
   }
 

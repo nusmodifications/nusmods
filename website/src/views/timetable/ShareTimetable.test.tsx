@@ -48,7 +48,7 @@ describe('ShareTimetable', () => {
 
   test('should load short URL when the modal is opened', () => {
     const wrapper = shallow(
-      <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} taModules={[]} />,
+      <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} taModules={{}} />,
     );
     expect(mockAxios.put).not.toHaveBeenCalled();
 
@@ -59,7 +59,7 @@ describe('ShareTimetable', () => {
 
   test('should cache short URL from the API', () => {
     const wrapper = shallow(
-      <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} taModules={[]} />,
+      <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} taModules={{}} />,
     );
 
     // Open, close and open the modal again
@@ -87,7 +87,7 @@ describe('ShareTimetable', () => {
 
   test('should show spinner when loading', () => {
     const wrapper = shallow(
-      <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} taModules={[]} />,
+      <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} taModules={{}} />,
     );
 
     openModal(wrapper);
@@ -96,7 +96,7 @@ describe('ShareTimetable', () => {
 
   test('should display shortUrl with show original url button if available', async () => {
     const wrapper = shallow(
-      <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} taModules={[]} />,
+      <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} taModules={{}} />,
     );
 
     await openAndWait(wrapper);
@@ -108,7 +108,7 @@ describe('ShareTimetable', () => {
   test('should display long URL if data is corrupted', async () => {
     mockAxios.put.mockResolvedValue({} as AxiosResponse); // No short URL
     const wrapper = shallow(
-      <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} taModules={[]} />,
+      <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} taModules={{}} />,
     );
 
     await openAndWait(wrapper);
@@ -120,7 +120,7 @@ describe('ShareTimetable', () => {
   test('should display long URL if the endpoint returns an error', async () => {
     mockAxios.put.mockRejectedValue(new Error());
     const wrapper = shallow(
-      <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} taModules={[]} />,
+      <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} taModules={{}} />,
     );
 
     await openAndWait(wrapper);
@@ -132,7 +132,7 @@ describe('ShareTimetable', () => {
   test('should not include hidden key in long URL if there are no hidden modules', async () => {
     mockAxios.put.mockResolvedValue({} as AxiosResponse); // No short URL
     const wrapper = shallow(
-      <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} taModules={[]} />,
+      <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} taModules={{}} />,
     );
 
     await openAndWait(wrapper);
@@ -147,7 +147,7 @@ describe('ShareTimetable', () => {
         semester={1}
         timetable={timetable}
         hiddenModules={['CS1010S', 'CS1231S']}
-        taModules={[]}
+        taModules={{}}
       />,
     );
 
@@ -163,18 +163,18 @@ describe('ShareTimetable', () => {
         semester={1}
         timetable={timetable}
         hiddenModules={[]}
-        taModules={['CS1010S', 'CS1231S']}
+        taModules={{ CS1010S: ['Tutorial'], CS1231S: ['Tutorial'] }}
       />,
     );
 
     await openAndWait(wrapper);
 
-    expect(wrapper.find('input').prop('value')).toContain('ta=CS1010S,CS1231S');
+    expect(wrapper.find('input').prop('value')).toContain('ta=CS1010S:TUT,CS1231S:TUT');
   });
 
   test('should change to original url and display shorten url button when clicked on show original url button', async () => {
     const wrapper = shallow(
-      <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} taModules={[]} />,
+      <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} taModules={{}} />,
     );
 
     await openAndWait(wrapper);

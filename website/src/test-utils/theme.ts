@@ -14,13 +14,13 @@ export function expectColor(element: ReactWrapper | ShallowWrapper, color?: Colo
 
 export function addColors(
   modules: Module[],
-  hiddenInTimetable = false,
-  taInTimetable = false,
+  isHiddenInTimetable = false,
+  isTaInTimetable = false,
 ): ModuleWithColor[] {
   return modules.map((module, index) => ({
     ...module,
     colorIndex: index,
-    hiddenInTimetable,
-    taInTimetable,
+    isHiddenInTimetable,
+    isTaInTimetable,
   }));
 }

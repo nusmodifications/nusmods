@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Calendar, Grid, Sidebar, Type } from 'react-feather';
 import { toggleTimetableOrientation, toggleTitleDisplay } from 'actions/theme';
 import { ModuleCode, Semester } from 'types/modules';
-import { SemTimetableConfig } from 'types/timetables';
+import { SemTimetableConfig, TaModuleConfig } from 'types/timetables';
 
 import elements from 'views/elements';
 import config from 'config';
@@ -29,7 +29,7 @@ type Props = {
   toggleExamCalendar: () => void;
 
   hiddenModules: ModuleCode[];
-  taModules: ModuleCode[];
+  taModules: TaModuleConfig;
 
   resetTimetable: () => void;
 };

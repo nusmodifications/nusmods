@@ -1,6 +1,12 @@
 import { each, flatMap } from 'lodash';
 
-import type { ColorIndex, Lesson, ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
+import type {
+  ColorIndex,
+  Lesson,
+  ModuleLessonConfig,
+  SemTimetableConfig,
+  TaModuleConfig,
+} from 'types/timetables';
 import type { Dispatch, GetState } from 'types/redux';
 import type { ColorMapping } from 'types/reducers';
 import type { ClassNo, LessonType, Module, ModuleCode, Semester } from 'types/modules';
@@ -26,7 +32,7 @@ export const Internal = {
     timetable: SemTimetableConfig | undefined,
     colors?: ColorMapping,
     hiddenModules?: ModuleCode[],
-    taModules?: ModuleCode[],
+    taModules?: TaModuleConfig,
   ) {
     return {
       type: SET_TIMETABLE,
@@ -167,7 +173,7 @@ export function setTimetable(
         validatedTimetable,
         colors,
         getState().timetables.hidden[semester] || [],
-        getState().timetables.ta[semester] || [],
+        getState().timetables.ta[semester] || {},
       ),
     );
   };
@@ -224,11 +230,11 @@ export function setHiddenImported(semester: Semester, hiddenModules: ModuleCode[
   };
 }
 
-export function setTaModulesFromImport(semester: Semester, taModules: ModuleCode[]) {
+export function setTaModulesFromImport(semester: Semester, taModules: TaModuleConfig) {
   return (dispatch: Dispatch) => dispatch(setTaImported(semester, taModules));
 }
 
-export function setTaImported(semester: Semester, taModules: ModuleCode[]) {
+export function setTaImported(semester: Semester, taModules: TaModuleConfig) {
   return {
     type: SET_TA_IMPORTED,
     payload: { semester, taModules },
@@ -267,18 +273,26 @@ export function showLessonInTimetable(semester: Semester, moduleCode: ModuleCode
   };
 }
 
-export const SET_TA_LESSON_IN_TIMETABLE = 'SET_TA_LESSON_IN_TIMETABLE' as const;
-export function setTaLessonInTimetable(semester: Semester, moduleCode: ModuleCode) {
+export const ADD_TA_LESSON_IN_TIMETABLE = 'ADD_TA_LESSON_IN_TIMETABLE' as const;
+export function addTaLessonInTimetable(
+  semester: Semester,
+  moduleCode: ModuleCode,
+  lessonType: LessonType,
+) {
   return {
-    type: SET_TA_LESSON_IN_TIMETABLE,
-    payload: { moduleCode, semester },
+    type: ADD_TA_LESSON_IN_TIMETABLE,
+    payload: { moduleCode, lessonType, semester },
   };
 }
 
-export const UNSET_TA_LESSON_IN_TIMETABLE = 'UNSET_TA_LESSON_IN_TIMETABLE' as const;
-export function unsetTaLessonInTimetable(semester: Semester, moduleCode: ModuleCode) {
+export const REMOVE_TA_LESSON_IN_TIMETABLE = 'REMOVE_TA_LESSON_IN_TIMETABLE' as const;
+export function removeTaLessonInTimetable(
+  semester: Semester,
+  moduleCode: ModuleCode,
+  lessonType: LessonType,
+) {
   return {
-    type: UNSET_TA_LESSON_IN_TIMETABLE,
-    payload: { moduleCode, semester },
+    type: REMOVE_TA_LESSON_IN_TIMETABLE,
+    payload: { moduleCode, lessonType, semester },
   };
 }

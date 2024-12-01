@@ -7,13 +7,14 @@ import {
   EndTime,
   LessonTime,
   Module,
+  ModuleCode,
   NumericWeeks,
   RawLesson,
   Semester,
   StartTime,
   WeekRange,
 } from 'types/modules';
-import { SemTimetableConfigWithLessons } from 'types/timetables';
+import { SemTimetableConfigWithLessons, TaModuleConfig } from 'types/timetables';
 
 import config from 'config';
 import academicCalendar from 'data/academic-calendar';
@@ -174,8 +175,8 @@ export default function iCalForTimetable(
   semester: Semester,
   timetable: SemTimetableConfigWithLessons,
   moduleData: { [moduleCode: string]: Module },
-  hiddenModules: string[],
-  taModules: string[],
+  hiddenModules: ModuleCode[],
+  taModules: TaModuleConfig,
   academicYear: string = config.academicYear,
 ): EventOption[] {
   const [year, month, day] = academicCalendar[academicYear][semester].start;
@@ -188,14 +189,14 @@ export default function iCalForTimetable(
 
     _.each(lessonConfig, (lessons) => {
       lessons.forEach((lesson) => {
-        if (taModules.includes(moduleCode) && lesson.lessonType === 'Lecture') {
+        if (moduleCode in taModules && !taModules[moduleCode].includes(lesson.lessonType)) {
           return;
         }
         events.push(iCalEventForLesson(lesson, moduleData[moduleCode], semester, firstDayOfSchool));
       });
     });
 
-    if (taModules.includes(moduleCode)) return;
+    if (moduleCode in taModules) return;
 
     const examEvent = iCalEventForExam(moduleData[moduleCode], semester);
     if (examEvent) events.push(examEvent);
