@@ -248,15 +248,14 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
                   )}
 
                 {!isArchive && offered && (
-                  <div className={styles.addToTimetable}>
-                    <AddModuleDropdown module={module} className="btn-group-sm" block />
-                  </div>
-                )}
-
-                {!isArchive && offered && (
-                  <div className={styles.addToTimetable}>
-                    <SaveModuleButton module={module} className="btn-group-sm" block />
-                  </div>
+                  <>
+                    <div className={styles.addToTimetable}>
+                      <AddModuleDropdown module={module} className="btn-group-sm" block />
+                    </div>
+                    <div className={styles.addToTimetable}>
+                      <SaveModuleButton module={module} className="btn-group-sm" block />
+                    </div>
+                  </>
                 )}
 
                 <p>
