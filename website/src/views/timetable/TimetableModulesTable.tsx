@@ -18,7 +18,13 @@ import {
   selectModuleColor,
   showLessonInTimetable,
 } from 'actions/timetables';
-import { getExamDate, getFormattedExamDate, renderMCs } from 'utils/modules';
+import {
+  getExamDate,
+  getFormattedExamDate,
+  renderMCs,
+  getExamDuration,
+  renderExamDuration,
+} from 'utils/modules';
 import { intersperse } from 'utils/array';
 import { BULLET_NBSP } from 'utils/react';
 import { modulePage } from 'views/routes/paths';
@@ -100,10 +106,15 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
     // Second row of text consists of the exam date and the MCs
     const secondRowText = [renderMCs(module.moduleCredit)];
     if (config.examAvailabilitySet.has(semester)) {
+      const examDuration = getExamDuration(module, semester);
+      const examDate = getExamDate(module, semester);
+
+      if (examDuration) {
+        secondRowText.unshift(renderExamDuration(examDuration));
+      }
+
       secondRowText.unshift(
-        getExamDate(module, semester)
-          ? `Exam: ${getFormattedExamDate(module, semester)}`
-          : 'No Exam',
+        examDate ? `Exam: ${getFormattedExamDate(module, semester)}` : 'No Exam',
       );
     }
 
