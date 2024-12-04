@@ -1,8 +1,8 @@
 import { shallow } from 'enzyme';
 import { noop } from 'lodash';
 
+import { fireEvent, render, screen } from '@testing-library/react';
 import Tooltip from 'views/components/Tooltip';
-
 import ModuleFinderPagerButton from './ModuleFinderPagerButton';
 import styles from './ModuleFinderPagerButton.scss';
 
@@ -13,23 +13,22 @@ describe(ModuleFinderPagerButton, () => {
   };
 
   test('should render inactive and enabled by default', () => {
-    const componentWrapper = shallow(<ModuleFinderPagerButton {...defaultProps} />);
-    expect(componentWrapper.exists('button')).toBe(true);
-    const button = componentWrapper.find('button');
-    expect(button.hasClass(styles.active)).toBe(false);
-    expect(button.prop('disabled')).toBeFalsy();
+    render(<ModuleFinderPagerButton {...defaultProps} />);
+    const button = screen.getByRole('button');
+    expect(button).not.toHaveClass(styles.active);
+    expect(button).not.toBeDisabled();
   });
 
   test('should render active button', () => {
-    const componentWrapper = shallow(<ModuleFinderPagerButton {...defaultProps} active />);
-    const button = componentWrapper.find('button');
-    expect(button.hasClass(styles.active)).toBe(true);
+    render(<ModuleFinderPagerButton {...defaultProps} active />);
+    const button = screen.getByRole('button');
+    expect(button).toHaveClass(styles.active);
   });
 
   test('should render disabled button', () => {
-    const componentWrapper = shallow(<ModuleFinderPagerButton {...defaultProps} disabled />);
-    const button = componentWrapper.find('button');
-    expect(button.prop('disabled')).toBe(true);
+    render(<ModuleFinderPagerButton {...defaultProps} disabled />);
+    const button = screen.getByRole('button');
+    expect(button).toBeDisabled();
   });
 
   test('should only render tooltip in appropriate conditions', () => {
@@ -44,10 +43,9 @@ describe(ModuleFinderPagerButton, () => {
 
   test('should respond to clicks', () => {
     const onClick = jest.fn();
-    const componentWrapper = shallow(
-      <ModuleFinderPagerButton {...defaultProps} onClick={onClick} />,
-    );
-    componentWrapper.find('button').simulate('click');
+    render(<ModuleFinderPagerButton {...defaultProps} onClick={onClick} />);
+    const button = screen.getByRole('button');
+    fireEvent.click(button);
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 });
