@@ -140,17 +140,6 @@ export function getDayIndex(date: Date = new Date()): number {
 }
 
 /**
- * Return a copy of the original Date incremented by the given number of days
- *
- * @deprecated Use addDays from date-fns
- */
-export function daysAfter(startDate: Date, days: number): Date {
-  const d = new Date(startDate.valueOf());
-  d.setUTCDate(d.getUTCDate() + days);
-  return d;
-}
-
-/**
  * Converts a Date object representing an event happening in Singapore time
  * and outputs a new Date object with the local time in SGT. This is useful
  * in conjunction with format from date-fns since it always use local time when

@@ -1,5 +1,5 @@
 import { shallow } from 'enzyme';
-import { daysAfter } from 'utils/timify';
+import { addDays } from 'date-fns';
 import DayHeader, { HeaderDate } from './DayHeader';
 import styles from './DayHeader.scss';
 
@@ -12,10 +12,10 @@ describe(DayHeader, () => {
   });
 
   test('render two date when more than one date is specified', () => {
-    const wrapperOne = shallow(<DayHeader date={[today, daysAfter(today, 1)]} offset={0} />);
+    const wrapperOne = shallow(<DayHeader date={[today, addDays(today, 1)]} offset={0} />);
 
     const wrapperTwo = shallow(
-      <DayHeader date={[today, daysAfter(today, 1), daysAfter(today, 2)]} offset={0} />,
+      <DayHeader date={[today, addDays(today, 1), addDays(today, 2)]} offset={0} />,
     );
 
     expect(wrapperOne.find(HeaderDate)).toHaveLength(2);
@@ -44,30 +44,30 @@ describe(HeaderDate, () => {
 
   test('render date as day of week if offset more than one', () => {
     expect(shallow(<HeaderDate offset={2}>{today}</HeaderDate>)).toMatchInlineSnapshot(`
-<time
-  dateTime="2016-11-23T01:00:00.000Z"
->
-  <span
-    className="date"
-  >
-    23rd November
-  </span>
-   
-  Wednesday
-</time>
-`);
+      <time
+        dateTime="2016-11-23T01:00:00.000Z"
+      >
+        <span
+          className="date"
+        >
+          23rd November
+        </span>
+         
+        Wednesday
+      </time>
+    `);
     expect(shallow(<HeaderDate offset={3}>{today}</HeaderDate>)).toMatchInlineSnapshot(`
-<time
-  dateTime="2016-11-23T01:00:00.000Z"
->
-  <span
-    className="date"
-  >
-    23rd November
-  </span>
-   
-  Wednesday
-</time>
-`);
+      <time
+        dateTime="2016-11-23T01:00:00.000Z"
+      >
+        <span
+          className="date"
+        >
+          23rd November
+        </span>
+         
+        Wednesday
+      </time>
+    `);
   });
 });
