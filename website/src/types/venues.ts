@@ -44,17 +44,26 @@ export type VenueLocation = {
 
 export type LatLngTuple = [number, number];
 
+export type Shuttle = {
+  name: string;
+  routeId: number;
+};
+
 export type BusStop = {
-  location: LatLngTuple;
+  readonly latitude: number;
+  readonly longitude: number;
   // Human readable name for the stop
-  readonly name: string;
+  readonly caption: string;
   // Used for accessing the next bus API. This is called 'name' in the API.
-  readonly code: string;
+  readonly name: string;
+  readonly longName: string;
+  readonly shortName: string;
   // Bus routes that stops at the bus stop
-  readonly routes: string[];
+  readonly shuttles: Shuttle[];
+  readonly opposite: string | null;
   // Whether to show the routes on the left instead of right
   // to avoid overlapping some other bus stop
-  readonly displayRoutesLeft?: boolean;
+  readonly leftLabel?: boolean;
 };
 
 export type NextBusTime = number | '-' | 'Arr';

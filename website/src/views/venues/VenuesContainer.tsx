@@ -3,7 +3,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Loadable, { LoadingComponentProps } from 'react-loadable';
 import classnames from 'classnames';
 import axios, { AxiosResponse } from 'axios';
-import produce from 'immer';
+import { produce } from 'immer';
 import qs from 'query-string';
 import { isEqual, mapValues, pick, size } from 'lodash';
 

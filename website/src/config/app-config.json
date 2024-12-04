@@ -6,8 +6,8 @@
   "elasticsearchBaseUrl": "https://nusmods-search.es.ap-southeast-1.aws.found.io:9243",
   "semester": 1,
   "disqusShortname": "nusmods-prod",
-  "venueFeedbackApi": "https://dev--nusmods-venue-github-hook--zwliew.autocode.dev/",
-  "moduleErrorApi": "https://0-0-7--nusmods-module-error-reporting.mediumdeviation.autocode.gg/",
+  "venueFeedbackApi": "https://nusmods-venue-github-hook.mods.workers.dev",
+  "moduleErrorApi": "https://nusmods-module-error-reporting.mods.workers.dev",
   "archiveYears": [
     "2016/2017",
     "2017/2018",
@@ -45,7 +45,6 @@
     "facebook": "https://facebook.com/nusmods",
     "githubOrg": "https://github.com/nusmodifications",
     "githubRepo": "https://github.com/nusmodifications/nusmods",
-    "messenger": "https://m.me/nusmods",
     "twitter": "https://twitter.com/nusmods",
     "telegram": "https://t.me/NUSMods"
   }

@@ -1,5 +1,5 @@
 import { isEqual } from 'lodash';
-import produce from 'immer';
+import { produce } from 'immer';
 import { REHYDRATE, createMigrate } from 'redux-persist';
 
 import { SettingsState } from 'types/reducers';

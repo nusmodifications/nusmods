@@ -1,4 +1,4 @@
-import produce from 'immer';
+import { produce } from 'immer';
 import { each, max, min, pull } from 'lodash';
 import { createMigrate, PersistedState } from 'redux-persist';
 

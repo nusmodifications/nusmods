@@ -12,7 +12,7 @@ import {
   isWeekend,
   parseISO,
 } from 'date-fns';
-import produce from 'immer';
+import { produce } from 'immer';
 
 import { DaysOfWeek } from 'types/modules';
 import { Lesson, ColoredLesson, SemTimetableConfigWithLessons } from 'types/timetables';

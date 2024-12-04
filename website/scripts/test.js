@@ -1,7 +1,14 @@
-const { configure } = require('enzyme');
-const { setAutoFreeze } = require('immer');
-const Adapter = require('@wojtekmaj/enzyme-adapter-react-17');
-require('@testing-library/jest-dom');
+import Adapter from '@cfaester/enzyme-adapter-react-18';
+import { configure } from 'enzyme';
+import { setAutoFreeze } from 'immer';
+
+import '@testing-library/jest-dom';
+
+import { TextEncoder } from 'util';
+
+Object.defineProperty(global, 'TextEncoder', {
+  value: TextEncoder,
+});
 
 configure({ adapter: new Adapter() });
 
