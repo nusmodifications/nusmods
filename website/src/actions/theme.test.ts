@@ -1,8 +1,13 @@
 import * as actions from 'actions/theme';
+import { Theme } from 'types/settings';
 
 describe('theme', () => {
   test('should dispatch a select of theme', () => {
-    const theme = 'test';
+    const theme: Theme = {
+      id: 'test',
+      name: 'Test',
+      numOfColors: 8,
+    };
     expect(actions.selectTheme(theme)).toMatchSnapshot();
   });
 

@@ -3,14 +3,16 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { isEqual } from 'lodash';
 
-import { ColorSchemePreference, ThemeId } from 'types/settings';
+import { ColorSchemePreference, Theme } from 'types/settings';
 import { Tracker } from 'types/vendor/piwik';
 import { ModRegNotificationSettings } from 'types/reducers';
+
 import { State as StoreState } from 'types/state';
 import { RegPeriod, SCHEDULE_TYPES, ScheduleType } from 'config';
 
 import availableThemes from 'data/themes.json';
 import { selectTheme } from 'actions/theme';
+import { reassignAllModulesColor } from 'actions/timetables';
 import {
   dismissModregNotification,
   enableModRegNotification,
@@ -47,8 +49,9 @@ type Props = {
   loadDisqusManually: boolean;
   modRegNotification: ModRegNotificationSettings;
 
-  selectTheme: (theme: ThemeId) => void;
+  selectTheme: (theme: Theme) => void;
   selectColorScheme: (colorScheme: ColorSchemePreference) => void;
+  reassignAllModulesColor: (numOfColors: number) => void;
 
   toggleBetaTesting: () => void;
   setLoadDisqusManually: (status: boolean) => void;
@@ -139,7 +142,10 @@ const SettingsContainer: React.FC<Props> = ({
             className={styles.themeOption}
             theme={theme}
             isSelected={currentThemeId === theme.id}
-            onSelectTheme={props.selectTheme}
+            onSelectTheme={() => {
+              props.selectTheme(theme);
+              props.reassignAllModulesColor(theme.numOfColors);
+            }}
           />
         ))}
       </div>
@@ -305,6 +311,7 @@ const connectedSettings = connect(mapStateToProps, {
   selectTheme,
   selectFaculty,
   selectColorScheme,
+  reassignAllModulesColor,
   toggleBetaTesting,
   setLoadDisqusManually,
   toggleModRegNotificationGlobally,
