@@ -4,6 +4,7 @@ import {
   difference,
   each,
   first,
+  flatMap,
   flatMapDeep,
   groupBy,
   invert,
@@ -12,6 +13,7 @@ import {
   last,
   map,
   mapValues,
+  omit,
   partition,
   pick,
   range,
@@ -37,8 +39,10 @@ import {
   HoverLesson,
   Lesson,
   ModuleLessonConfig,
+  ModuleLessonConfigWithLessons,
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
+  TaModuleConfig,
   TimetableArrangement,
   TimetableDayArrangement,
   TimetableDayFormat,
@@ -75,6 +79,8 @@ export const LESSON_ABBREV_TYPE: { [key: string]: LessonType } = invert(LESSON_T
 // See: https://stackoverflow.com/a/31300627
 export const LESSON_TYPE_SEP = ':';
 export const LESSON_SEP = ',';
+export const TA_LESSON_TYPE_SEP = ':';
+export const TA_LESSON_SEP = ',';
 
 const EMPTY_OBJECT = {};
 
@@ -119,25 +125,33 @@ export function hydrateSemTimetableWithLessons(
       const module: Module = modules[moduleCode];
       if (!module) return EMPTY_OBJECT;
 
-      // TODO: Split this part into a smaller function: hydrateModuleConfigWithLessons.
-      return mapValues(moduleLessonConfig, (classNo: ClassNo, lessonType: LessonType) => {
-        const lessons = getModuleTimetable(module, semester);
-        const newLessons = lessons.filter(
-          (lesson: RawLesson): boolean =>
-            lesson.lessonType === lessonType && lesson.classNo === classNo,
-        );
-
-        const timetableLessons: Lesson[] = newLessons.map(
-          (lesson: RawLesson): Lesson => ({
-            ...lesson,
-            moduleCode,
-            title: module.title,
-          }),
-        );
-        return timetableLessons;
-      });
+      return hydrateModuleConfigWithLessons(moduleLessonConfig, module, semester);
     },
   );
+}
+
+// Replaces ClassNo in ModuleLessonConfig with Array<Lesson>
+function hydrateModuleConfigWithLessons(
+  moduleLessonConfig: ModuleLessonConfig,
+  module: Module,
+  semester: Semester,
+): ModuleLessonConfigWithLessons {
+  return mapValues(moduleLessonConfig, (classNo: ClassNo, lessonType: LessonType) => {
+    const lessons = getModuleTimetable(module, semester);
+    const newLessons = lessons.filter(
+      (lesson: RawLesson): boolean =>
+        lesson.lessonType === lessonType && lesson.classNo === classNo,
+    );
+
+    const timetableLessons: Lesson[] = newLessons.map(
+      (lesson: RawLesson): Lesson => ({
+        ...lesson,
+        moduleCode: module.moduleCode,
+        title: module.title,
+      }),
+    );
+    return timetableLessons;
+  });
 }
 
 //  Filters a flat array of lessons and returns the lessons corresponding to lessonType.
@@ -454,7 +468,7 @@ export function getSemesterModules(
 }
 
 function serializeModuleConfig(config: ModuleLessonConfig): string {
-  // eg. { Lecture: 1, Laboratory: 2 } => LEC=1,LAB=2
+  // eg. { Lecture: 1, Laboratory: 2 } => LEC:1,LAB:2
   return map(config, (classNo, lessonType) =>
     [LESSON_TYPE_ABBREV[lessonType], encodeURIComponent(classNo)].join(LESSON_TYPE_SEP),
   ).join(LESSON_SEP);
@@ -537,7 +551,7 @@ export function formatNumericWeeks(unprocessedWeeks: NumericWeeks): string | nul
 //   CS2104: { Lecture: '1', Tutorial: '2' },
 //   CS2107: { Lecture: '1', Tutorial: '8' },
 // }
-// => CS2104=LEC:1,Tut:2&CS2107=LEC:1,Tut:8
+// => CS2104=LEC:1,TUT:2&CS2107=LEC:1,TUT:8
 export function serializeTimetable(timetable: SemTimetableConfig): string {
   // We are using query string safe characters, so this encoding is unnecessary
   return qs.stringify(mapValues(timetable, serializeModuleConfig), { encode: false });
@@ -545,7 +559,11 @@ export function serializeTimetable(timetable: SemTimetableConfig): string {
 
 export function deserializeTimetable(serialized: string): SemTimetableConfig {
   const params = qs.parse(serialized);
-  return mapValues(params, parseModuleConfig);
+  return mapValues(omit(params, ['hidden', 'ta']), parseModuleConfig);
+}
+
+export function serializeHidden(hiddenModules: ModuleCode[]) {
+  return `&hidden=${hiddenModules.join(',')}`;
 }
 
 export function deserializeHidden(serialized: string): ModuleCode[] {
@@ -554,6 +572,39 @@ export function deserializeHidden(serialized: string): ModuleCode[] {
   // If user manually enters multiple hidden query keys, use latest one
   const hidden = Array.isArray(params.hidden) ? last(params.hidden) : params.hidden;
   return (hidden as string).split(',');
+}
+
+export function serializeTa(taModules: TaModuleConfig) {
+  // eg:
+  // {
+  //   CS2100: ['Laboratory', 'Tutorial'],
+  //   CS2107: ['Tutorial'],
+  // }
+  // => &ta=CS2100:LAB,CS2100:TUT,CS2107:TUT
+  return `&ta=${flatMap(taModules, (lessonTypes, moduleCode) =>
+    lessonTypes.map(
+      (lessonType) => `${moduleCode}${TA_LESSON_TYPE_SEP}${LESSON_TYPE_ABBREV[lessonType]}`,
+    ),
+  ).join(TA_LESSON_SEP)}`;
+}
+
+export function deserializeTa(serialized: string): TaModuleConfig {
+  const params = qs.parse(serialized);
+  const deserialized: TaModuleConfig = {};
+  if (!params.ta) return deserialized;
+  // If user manually enters multiple TA query keys, use latest one
+  const ta = Array.isArray(params.ta) ? last(params.ta) : params.ta;
+  (ta as string).split(TA_LESSON_SEP).forEach((lesson) => {
+    const [moduleCode, lessonTypeAbbr] = lesson.split(TA_LESSON_TYPE_SEP);
+    if (!(moduleCode in deserialized)) {
+      deserialized[moduleCode] = [];
+    }
+    const lessonType = LESSON_ABBREV_TYPE[lessonTypeAbbr];
+    // Ignore unparsable/invalid keys
+    if (!lessonType) return;
+    deserialized[moduleCode].push(lessonType);
+  });
+  return deserialized;
 }
 
 export function isSameTimetableConfig(t1: SemTimetableConfig, t2: SemTimetableConfig): boolean {

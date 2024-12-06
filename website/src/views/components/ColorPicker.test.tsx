@@ -10,7 +10,13 @@ function makeColorPicker(color: ColorIndex = 0) {
   return {
     onChooseColor,
     wrapper: mount(
-      <ColorPicker label="" color={color} onChooseColor={onChooseColor} isHidden={false} />,
+      <ColorPicker
+        label=""
+        color={color}
+        onChooseColor={onChooseColor}
+        isHidden={false}
+        isTa={false}
+      />,
     ),
   };
 }

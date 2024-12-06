@@ -44,6 +44,7 @@ export default class TimetableOnly extends Component<Props, State> {
               timetable={timetable}
               colors={timetableColors}
               hiddenImportedModules={null}
+              taImportedModules={null}
               readOnly
             />
           </div>
