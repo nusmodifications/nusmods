@@ -23,6 +23,7 @@ import ModuleExamClash from 'views/components/module-info/ModuleExamClash';
 import ModuleWorkload from 'views/components/module-info/ModuleWorkload';
 import ModuleExamInfo from 'views/components/module-info/ModuleExamInfo';
 import AddModuleDropdown from 'views/components/module-info/AddModuleDropdown';
+import SaveModuleButton from 'views/components/module-info/SaveModuleButton';
 import Announcements from 'views/components/notfications/Announcements';
 import Title from 'views/components/Title';
 
@@ -249,6 +250,12 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
                 {!isArchive && offered && (
                   <div className={styles.addToTimetable}>
                     <AddModuleDropdown module={module} className="btn-group-sm" block />
+                  </div>
+                )}
+
+                {!isArchive && offered && (
+                  <div className={styles.addToTimetable}>
+                    <SaveModuleButton module={module} className="btn-group-sm" block />
                   </div>
                 )}
 
