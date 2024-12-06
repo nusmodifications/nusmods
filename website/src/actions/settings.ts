@@ -92,3 +92,11 @@ export function setLoadDisqusManually(status: boolean) {
     payload: status,
   };
 }
+
+export const TOGGLE_PREREQ_TREE_DIRECTION = 'TOGGLE_PREREQ_TREE_DIRECTION' as const;
+export function togglePreReqTreeDirection(status: boolean) {
+  return {
+    type: TOGGLE_PREREQ_TREE_DIRECTION,
+    payload: status,
+  };
+}

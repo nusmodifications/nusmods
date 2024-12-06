@@ -29,6 +29,7 @@ $connector-size: 0.75rem;
 .tree,
 .prereqTree {
   position: relative;
+  flex-shrink: 0;
   list-style: none;
   padding: 0;
   margin: 0.125rem 0;
@@ -120,7 +121,9 @@ $connector-size: 0.75rem;
   }
 }
 
-.prereqBranch {
+.leftBranch {
+  justify-content: flex-end;
+  
   &::before,
   &::after {
     right: 0;
@@ -128,7 +131,7 @@ $connector-size: 0.75rem;
   }
 }
 
-.prereqNode {
+.leftNode {
   margin: 0 $connector-size 1px 0;
 
   &::before {

@@ -16,6 +16,7 @@ import {
   TOGGLE_BETA_TESTING_STATUS,
   TOGGLE_MODREG_NOTIFICATION_GLOBALLY,
   SET_MODREG_SCHEDULE_TYPE,
+  TOGGLE_PREREQ_TREE_DIRECTION,
 } from 'actions/settings';
 import { SET_EXPORTED_DATA } from 'actions/constants';
 import { DIMENSIONS, withTracker } from 'bootstrapping/matomo';
@@ -40,6 +41,7 @@ const defaultSettingsState: SettingsState = {
   moduleTableOrder: 'exam',
   beta: false,
   loadDisqusManually: false,
+  prereqTreeOnLeft: true,
 };
 
 function settings(state: SettingsState = defaultSettingsState, action: Actions): SettingsState {
@@ -112,6 +114,12 @@ function settings(state: SettingsState = defaultSettingsState, action: Actions):
       return {
         ...state,
         loadDisqusManually: action.payload,
+      };
+
+    case TOGGLE_PREREQ_TREE_DIRECTION:
+      return {
+        ...state,
+        prereqTreeOnLeft: action.payload,
       };
 
     case REHYDRATE: {

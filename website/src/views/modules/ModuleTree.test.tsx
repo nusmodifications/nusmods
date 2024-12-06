@@ -12,6 +12,7 @@ describe(ModuleTreeComponent, () => {
       <ModuleTreeComponent
         moduleCode="ACC1002"
         getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: {} } } as any)}
+        prereqTreeOnLeft
         fulfillRequirements={[
           'ACC1006',
           'ACC2002',
@@ -40,6 +41,7 @@ describe(ModuleTreeComponent, () => {
         moduleCode="CS3244"
         getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: {} } } as any)}
         fulfillRequirements={['CS5242', 'CS5339', 'CS6281']}
+        prereqTreeOnLeft
         prereqTree={{
           and: [
             {
@@ -60,6 +62,48 @@ describe(ModuleTreeComponent, () => {
     );
 
     expect(component).toMatchSnapshot('CS3244');
+  });
+
+  test('should render prereq branch with nOf condition', () => {
+    const component = render(
+      <ModuleTreeComponent
+        moduleCode="PC2130"
+        getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: {} } } as any)}
+        fulfillRequirements={[
+          'PC3130',
+          'PC3232',
+          'PC3233',
+          'PC3235',
+          'PC3246',
+          'PC3251',
+          'PC3288',
+          'PC2135',
+          'PC3288Q',
+          'PC3288QR',
+          'PC3288R',
+        ]}
+        prereqTreeOnLeft
+        prereqTree={{
+          nOf: [2, ['PC1101', 'PC2174A']],
+        }}
+      />,
+    );
+
+    expect(component).toMatchSnapshot('PC2130');
+  });
+
+  test('should render prereq tree to the right when tree direction is set to right', () => {
+    const component = render(
+      <ModuleTreeComponent
+        moduleCode="PC2193"
+        getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: {} } } as any)}
+        prereqTreeOnLeft={false}
+        prereqTree="PC1101"
+        fulfillRequirements={['PC3193']}
+      />,
+    );
+
+    expect(component).toMatchSnapshot('PC2193');
   });
 
   // Test that modules which are in moduleBank have appropriate colours,
@@ -99,6 +143,7 @@ describe(ModuleTreeComponent, () => {
         moduleCode="CS4243"
         getModuleCondensed={getModuleCondensed({ moduleBank: { moduleCodes: testModules } } as any)}
         fulfillRequirements={['CS6240', 'CS3281', 'CS4243R']}
+        prereqTreeOnLeft
         prereqTree={{
           and: [
             {
