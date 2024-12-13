@@ -4860,11 +4860,19 @@
     }
   },
   "CLB-04-01H": {
-    "roomName": "Central Library Seminar Room 4th Level",
+    "roomName": "Central Library Seminar Room",
     "floor": 4,
     "location": {
       "x":103.773232,
       "y": 1.296721
+    }
+  },
+  "S16-0208": {
+    "roomName": "S16-0208",
+    "floor": 2,
+    "location": {
+      "x": 103.78025919198991,
+      "y": 1.2968124241027414
     }
   }
 }
