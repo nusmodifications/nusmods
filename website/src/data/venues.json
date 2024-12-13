@@ -4858,5 +4858,13 @@
       "x": 103.77020627260211,
       "y": 1.2986841257807171
     }
+  },
+  "CLB-04-01H": {
+    "roomName": "Central Library Seminar Room 4th Level",
+    "floor": 4,
+    "location": {
+      "x":103.773232,
+      "y": 1.296721
+    }
   }
 }
