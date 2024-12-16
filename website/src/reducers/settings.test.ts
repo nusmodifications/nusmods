@@ -80,11 +80,11 @@ describe('settings', () => {
   });
 
   test('can toggle prereq tree direction', () => {
-    const action1 = actions.togglePreReqTreeDirection(false);
+    const action1 = actions.setPrereqTreeOnLeft(false);
     const nextState1: SettingsState = reducer(initialState, action1);
     expect(nextState1).toEqual(settingsWithPrereqTreeRight);
 
-    const action2 = actions.togglePreReqTreeDirection(true);
+    const action2 = actions.setPrereqTreeOnLeft(true);
     const nextState2: SettingsState = reducer(nextState1, action2);
     expect(nextState2).toEqual(initialState);
   });

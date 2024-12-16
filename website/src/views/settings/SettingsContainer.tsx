@@ -20,7 +20,7 @@ import {
   setModRegScheduleType,
   toggleBetaTesting,
   toggleModRegNotificationGlobally,
-  togglePreReqTreeDirection,
+  setPrereqTreeOnLeft,
 } from 'actions/settings';
 import Timetable from 'views/timetable/Timetable';
 import Title from 'views/components/Title';
@@ -156,8 +156,8 @@ const SettingsContainer: React.FC<Props> = ({
       <div className={styles.toggleRow}>
         <div className={styles.toggleDescription}>
           <p>
-            You can choose whether prequisites for a course will appear to the left or to the right
-            of the prerequisite tree when viewing a course.
+            Course prerequsites appear to the {prereqTreeOnLeft ? 'left' : 'right'} of the course in
+            its prerequisite tree.
           </p>
         </div>
         <div className={styles.toggle}>
@@ -337,7 +337,7 @@ const connectedSettings = connect(mapStateToProps, {
   dismissModregNotification,
   enableModRegNotification,
   setModRegScheduleType,
-  togglePreReqTreeDirection,
+  togglePreReqTreeDirection: setPrereqTreeOnLeft,
 })(SettingsContainer);
 
 export default deferComponentRender(connectedSettings);

@@ -25,7 +25,7 @@ type Props = {
 interface TreeDisplay {
   layer: number;
   node: PrereqTree;
-  prereqTreeOnLeft?: boolean;
+  prereqTreeOnLeft: boolean;
 
   getModuleCondensed: (moduleCode: ModuleCode) => ModuleCondensed | undefined;
 }
@@ -85,7 +85,7 @@ const unwrapLayer = (node: PrereqTree) => {
 const Branch: React.FC<{
   nodes: PrereqTree[];
   layer: number;
-  prereqTreeOnLeft?: boolean;
+  prereqTreeOnLeft: boolean;
   getModuleCondensed: (moduleCode: ModuleCode) => ModuleCondensed | undefined;
 }> = (props) => (
   <ul className={styles.tree}>
@@ -167,7 +167,12 @@ export const ModuleTreeComponent: React.FC<Props> = (props) => {
                     getModuleCondensed={props.getModuleCondensed}
                   />
                 )}
-                <Tree layer={1} node={moduleCode} getModuleCondensed={props.getModuleCondensed} />
+                <Tree
+                  layer={1}
+                  node={moduleCode}
+                  getModuleCondensed={props.getModuleCondensed}
+                  prereqTreeOnLeft={false}
+                />
               </ConditionalReverse>
             </li>
           </ul>

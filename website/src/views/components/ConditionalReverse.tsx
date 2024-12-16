@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import { FC, memo, ReactNode } from 'react';
 
 type Props = {
   children: ReactNode[];
@@ -9,4 +9,4 @@ const ConditionalReverse: FC<Props> = ({ children, reverse }) => (
   <>{reverse ? [...children].reverse() : children}</>
 );
 
-export default ConditionalReverse;
+export default memo(ConditionalReverse);

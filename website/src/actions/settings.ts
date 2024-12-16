@@ -93,10 +93,10 @@ export function setLoadDisqusManually(status: boolean) {
   };
 }
 
-export const TOGGLE_PREREQ_TREE_DIRECTION = 'TOGGLE_PREREQ_TREE_DIRECTION' as const;
-export function togglePreReqTreeDirection(status: boolean) {
+export const SET_PREREQ_TREE_ON_LEFT = 'SET_PREREQ_TREE_ON_LEFT' as const;
+export function setPrereqTreeOnLeft(isOnLeft: boolean) {
   return {
-    type: TOGGLE_PREREQ_TREE_DIRECTION,
-    payload: status,
+    type: SET_PREREQ_TREE_ON_LEFT,
+    payload: isOnLeft,
   };
 }
