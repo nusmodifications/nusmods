@@ -59,17 +59,10 @@ export class SaveModuleButtonComponent extends PureComponent<Props, State> {
           })}
           onClick={() => this.onSelect()}
         >
-          {hasModule ? (
-            <>
-              Remove from <br />
-              <strong>Planner</strong>
-            </>
-          ) : (
-            <>
-              Add to <br />
-              <strong>Planner</strong>
-            </>
-          )}
+          <>
+            {hasModule ? 'Remove from' : 'Add to'} <br />
+            <strong>Planner</strong>
+          </>
         </button>
       </div>
     );
