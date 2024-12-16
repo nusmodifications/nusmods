@@ -128,7 +128,7 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
 
   override componentDidMount() {
     weatherAPI
-      .twoHour()
+      .twoHour(this.props.currentTime)
       .then((weather) => {
         if (!weather) return;
         this.setState((prevState) => ({ weather: { ...prevState.weather, '0': weather } }));
@@ -136,7 +136,7 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
       .catch(captureException);
 
     weatherAPI
-      .tomorrow()
+      .tomorrow(this.props.currentTime)
       .then((weather) => {
         if (!weather) return;
         this.setState((prevState) => ({ weather: { ...prevState.weather, '1': weather } }));
@@ -144,7 +144,7 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
       .catch(captureException);
 
     weatherAPI
-      .fourDay()
+      .fourDay(this.props.currentTime)
       .then((forecasts) => {
         this.setState(
           produce((draft) => {

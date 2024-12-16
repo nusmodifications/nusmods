@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
-import { isSameDay, addDays } from 'date-fns';
+import { format } from 'date-fns';
+import { toSingaporeTime } from 'utils/timify';
 
 /** An empty object, i.e. `{}` */
 type EmptyItem = Record<string, undefined>;
@@ -80,34 +81,34 @@ function getResponseData<T>(response: AxiosResponse<WeatherResponse<T>>): T | Em
   if (data.api_info.status !== 'healthy') {
     throw new Error(`Weather API returned non-healthy status ${data.api_info.status}`);
   }
-  return data.items[0];
+  return data.items[data.items.length - 1];
 }
 
-export function twoHour(): Promise<string | null> {
-  return axios
-    .get<WeatherResponse<NowCastItem>>(`${API_PREFIX}/2-hour-weather-forecast`)
-    .then((response) => {
-      const areaForecast = getResponseData(response).forecasts?.find(
-        (forecast) => forecast.area === NOWCAST_AREA,
-      );
-      return areaForecast?.forecast ?? null;
-    });
+export async function twoHour(date: Date): Promise<string | null> {
+  const dateStr = format(toSingaporeTime(date), `yyyy-MM-dd`);
+  const response = await axios.get<WeatherResponse<NowCastItem>>(
+    `${API_PREFIX}/2-hour-weather-forecast?date=${dateStr}`,
+  );
+  const areaForecast = getResponseData(response).forecasts?.find(
+    (forecast) => forecast.area === NOWCAST_AREA,
+  );
+  return areaForecast?.forecast ?? null;
 }
 
-export function tomorrow(): Promise<string | null> {
-  return axios
-    .get<WeatherResponse<DayCastItem>>(`${API_PREFIX}/24-hour-weather-forecast`)
-    .then((response) => {
-      const tomorrowForecast = getResponseData(response).periods?.find((period) =>
-        isSameDay(new Date(period.time.start), addDays(new Date(), 1)),
-      );
-      // The forecast for tomorrow may not be available, so this can return null
-      return tomorrowForecast?.regions?.west ?? null;
-    });
+export async function tomorrow(date: Date): Promise<string | null> {
+  const dateStr = format(toSingaporeTime(date), `yyyy-MM-dd`);
+  const response = await axios.get<WeatherResponse<DayCastItem>>(
+    `${API_PREFIX}/24-hour-weather-forecast?date=${dateStr}`,
+  );
+  const { periods } = getResponseData(response);
+  const tomorrowForecast = periods?.[periods.length - 1];
+  return tomorrowForecast?.regions?.west ?? null;
 }
 
-export function fourDay(): Promise<Forecast[]> {
-  return axios
-    .get<WeatherResponse<FourDayCastItem>>(`${API_PREFIX}/4-day-weather-forecast`)
-    .then((response) => getResponseData(response).forecasts ?? []);
+export async function fourDay(date: Date): Promise<Forecast[]> {
+  const dateStr = format(toSingaporeTime(date), `yyyy-MM-dd`);
+  const response = await axios.get<WeatherResponse<FourDayCastItem>>(
+    `${API_PREFIX}/4-day-weather-forecast?date=${dateStr}`,
+  );
+  return getResponseData(response).forecasts ?? [];
 }
