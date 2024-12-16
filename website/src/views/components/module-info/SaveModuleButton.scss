@@ -1,5 +1,3 @@
-@import "~styles/utils/modules-entry";
-
 .buttonGroup {
   :global(.btn) {
     line-height: 1.2;
@@ -7,28 +5,5 @@
 
   strong {
     font-size: 1.2em;
-  }
-
-  :global(.dropdown-toggle.dropdown-toggle-split) {
-    width: 2rem;
-    border-left: none;
-
-    @include media-breakpoint-down(sm) {
-      // Long selector for specificity
-      width: 3rem;
-    }
-  }
-}
-
-.dropdownItem {
-  text-align: center;
-  white-space: normal;
-
-  br {
-    display: none;
-  }
-
-  strong {
-    font-size: 1em;
   }
 }
