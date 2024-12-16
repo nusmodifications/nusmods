@@ -1,6 +1,7 @@
 import { ModuleCode, Semester } from 'types/modules';
 import { AddModuleData } from 'types/planner';
 import { CustomModule } from 'types/reducers';
+import { PLAN_TO_TAKE_SEMESTER, PLAN_TO_TAKE_YEAR } from 'utils/planner';
 
 export const SET_PLANNER_MIN_YEAR = 'SET_PLANNER_MIN_YEAR' as const;
 export function setPlannerMinYear(year: string) {
@@ -44,6 +45,13 @@ export function addPlannerModule(year: string, semester: Semester, module: AddMo
       ...module,
     },
   };
+}
+
+export function addPlanToTakeModule(moduleCode: ModuleCode) {
+  return addPlannerModule(PLAN_TO_TAKE_YEAR, PLAN_TO_TAKE_SEMESTER, {
+    type: 'module',
+    moduleCode,
+  });
 }
 
 export const MOVE_PLANNER_MODULE = 'MOVE_PLANNER_MODULE' as const;
