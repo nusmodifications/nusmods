@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 
 import { State as StoreState } from 'types/state';
 
-import { Module, ModuleCode, Semester } from 'types/modules';
-import { getFirstAvailableSemester } from 'utils/modules';
+import { Module, ModuleCode } from 'types/modules';
 
 import { PlannerModuleInfo } from 'types/planner';
 import { getPlanToTake } from 'selectors/planner';
