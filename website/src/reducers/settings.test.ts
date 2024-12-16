@@ -25,7 +25,7 @@ const initialState: SettingsState = {
   moduleTableOrder: 'exam',
   loadDisqusManually: false,
   beta: false,
-  prereqTreeOnLeft: true,
+  prereqTreeOnLeft: false,
 };
 const settingsWithNewStudent: SettingsState = { ...initialState, newStudent: true };
 const faculty = 'School of Computing';
@@ -38,7 +38,6 @@ const settingsWithDarkMode: SettingsState = {
   ...initialState,
   colorScheme: DARK_COLOR_SCHEME_PREFERENCE,
 };
-const settingsWithPrereqTreeRight: SettingsState = { ...initialState, prereqTreeOnLeft: false };
 const settingsWithDismissedNotifications: SettingsState = produce(initialState, (draft) => {
   draft.modRegNotification.dismissed = [
     { type: 'Select Courses', name: '1' },
@@ -80,13 +79,17 @@ describe('settings', () => {
   });
 
   test('can toggle prereq tree direction', () => {
-    const action1 = actions.setPrereqTreeOnLeft(false);
-    const nextState1: SettingsState = reducer(initialState, action1);
-    expect(nextState1).toEqual(settingsWithPrereqTreeRight);
+    const action1 = actions.setPrereqTreeOnLeft(true);
+    const nextState1 = reducer(initialState, action1);
+    expect(nextState1).toEqual({ ...initialState, prereqTreeOnLeft: true });
 
-    const action2 = actions.setPrereqTreeOnLeft(true);
-    const nextState2: SettingsState = reducer(nextState1, action2);
-    expect(nextState2).toEqual(initialState);
+    const action2 = actions.setPrereqTreeOnLeft(false);
+    const nextState2 = reducer(nextState1, action2);
+    expect(nextState2).toEqual({ ...initialState, prereqTreeOnLeft: false });
+
+    const action3 = actions.setPrereqTreeOnLeft(true);
+    const nextState3 = reducer(nextState1, action3);
+    expect(nextState3).toEqual({ ...initialState, prereqTreeOnLeft: true });
   });
 
   test('set module table order', () => {
