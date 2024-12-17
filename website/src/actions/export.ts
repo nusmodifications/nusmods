@@ -5,6 +5,7 @@ import { hydrateSemTimetableWithLessons } from 'utils/timetables';
 import { captureException } from 'utils/error';
 import retryImport from 'utils/retryImport';
 import { getSemesterTimetableLessons } from 'selectors/timetables';
+import { TaModuleConfig } from 'types/timetables';
 import { SET_EXPORTED_DATA } from './constants';
 
 function downloadUrl(blob: Blob, filename: string) {
@@ -32,11 +33,18 @@ export function downloadAsIcal(semester: Semester) {
         const state = getState();
         const { modules } = state.moduleBank;
         const hiddenModules: ModuleCode[] = state.timetables.hidden[semester] || [];
+        const taModules: TaModuleConfig = state.timetables.ta[semester] || {};
 
         const timetable = getSemesterTimetableLessons(state)(semester);
         const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
 
-        const events = icalUtils.default(semester, timetableWithLessons, modules, hiddenModules);
+        const events = icalUtils.default(
+          semester,
+          timetableWithLessons,
+          modules,
+          hiddenModules,
+          taModules,
+        );
         const cal = ical.default({
           domain: 'nusmods.com',
           prodId: '//NUSMods//NUSMods//EN',
