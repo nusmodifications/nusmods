@@ -33,13 +33,19 @@ export const Internal = {
     };
   },
 
-  addModule(semester: Semester, moduleCode: ModuleCode, moduleLessonConfig: ModuleLessonConfig) {
+  addModule(
+    semester: Semester,
+    moduleCode: ModuleCode,
+    moduleLessonConfig: ModuleLessonConfig,
+    numOfColors: number,
+  ) {
     return {
       type: ADD_MODULE,
       payload: {
         semester,
         moduleCode,
         moduleLessonConfig,
+        numOfColors,
       },
     };
   },
@@ -67,8 +73,9 @@ export function addModule(semester: Semester, moduleCode: ModuleCode) {
 
       const lessons = getModuleTimetable(module, semester);
       const moduleLessonConfig = randomModuleLessonConfig(lessons);
+      const { numOfColors } = getState().theme;
 
-      dispatch(Internal.addModule(semester, moduleCode, moduleLessonConfig));
+      dispatch(Internal.addModule(semester, moduleCode, moduleLessonConfig, numOfColors));
     });
 }
 
@@ -234,6 +241,16 @@ export function selectModuleColor(
       semester,
       moduleCode,
       colorIndex,
+    },
+  };
+}
+
+export const REASSIGN_ALL_MODULES_COLOR = 'REASSIGN_ALL_MODULES_COLOR' as const;
+export function reassignAllModulesColor(numOfColors: number) {
+  return {
+    type: REASSIGN_ALL_MODULES_COLOR,
+    payload: {
+      numOfColors,
     },
   };
 }

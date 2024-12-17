@@ -3,9 +3,10 @@ import classnames from 'classnames';
 import Downshift, { ChildrenFunction } from 'downshift';
 import _ from 'lodash';
 
+import { useSelector } from 'react-redux';
+import { State } from 'types/state';
 import { ColorIndex } from 'types/timetables';
 
-import { NUM_DIFFERENT_COLORS } from 'utils/colors';
 import styles from './ColorPicker.scss';
 
 type Props = {
@@ -21,6 +22,8 @@ type Props = {
  * For use in places like changing module colors
  */
 const ColorPicker = memo<Props>((props) => {
+  const theme = useSelector((state: State) => state.theme);
+
   const renderColorPicker: ChildrenFunction<ColorIndex> = ({
     getToggleButtonProps,
     getItemProps,
@@ -44,7 +47,7 @@ const ColorPicker = memo<Props>((props) => {
           className={classnames(styles.palette, { [styles.isClosed]: !isOpen })}
           {...getMenuProps()}
         >
-          {_.range(NUM_DIFFERENT_COLORS).map((index: ColorIndex) => (
+          {_.range(theme.numOfColors).map((index: ColorIndex) => (
             <button
               type="button"
               {...getItemProps({ item: index })}
