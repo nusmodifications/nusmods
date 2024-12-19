@@ -64,8 +64,7 @@ $connector-size: 0.75rem;
 }
 
 .link {
-  display: block;
-  width: 100%;
+  display: inline-block;
   color: currentColor;
 
   &:hover {

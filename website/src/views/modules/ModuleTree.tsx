@@ -140,7 +140,9 @@ const Tree: React.FC<TreeDisplay> = (props) => {
       })}
     >
       {prefix && <span className={styles.prefix}>{prefix}</span>}
-      <LinkModuleCodes className={styles.link}>{name}</LinkModuleCodes>
+      <div>
+        <LinkModuleCodes className={styles.link}>{name}</LinkModuleCodes>
+      </div>
     </div>
   );
 };
