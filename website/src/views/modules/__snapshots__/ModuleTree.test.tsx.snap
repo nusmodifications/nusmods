@@ -32,11 +32,13 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
                     <div
                       class="node moduleNode leftNode"
                     >
-                      <mockedlink
-                        class="link"
-                      >
-                        CS1020
-                      </mockedlink>
+                      <div>
+                        <mockedlink
+                          class="link"
+                        >
+                          CS1020
+                        </mockedlink>
+                      </div>
                     </div>
                   </li>
                   <li
@@ -45,11 +47,13 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
                     <div
                       class="node moduleNode hoverable color-4 leftNode"
                     >
-                      <mockedlink
-                        class="link"
-                      >
-                        CS1020E
-                      </mockedlink>
+                      <div>
+                        <mockedlink
+                          class="link"
+                        >
+                          CS1020E
+                        </mockedlink>
+                      </div>
                     </div>
                   </li>
                   <li
@@ -58,11 +62,13 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
                     <div
                       class="node moduleNode leftNode"
                     >
-                      <mockedlink
-                        class="link"
-                      >
-                        CS2020
-                      </mockedlink>
+                      <div>
+                        <mockedlink
+                          class="link"
+                        >
+                          CS2020
+                        </mockedlink>
+                      </div>
                     </div>
                   </li>
                   <li
@@ -83,11 +89,13 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
                             <div
                               class="node moduleNode hoverable color-6 leftNode"
                             >
-                              <mockedlink
-                                class="link"
-                              >
-                                CS2030
-                              </mockedlink>
+                              <div>
+                                <mockedlink
+                                  class="link"
+                                >
+                                  CS2030
+                                </mockedlink>
+                              </div>
                             </div>
                           </li>
                           <li
@@ -96,11 +104,13 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
                             <div
                               class="node moduleNode leftNode"
                             >
-                              <mockedlink
-                                class="link"
-                              >
-                                CS2113
-                              </mockedlink>
+                              <div>
+                                <mockedlink
+                                  class="link"
+                                >
+                                  CS2113
+                                </mockedlink>
+                              </div>
                             </div>
                           </li>
                           <li
@@ -109,11 +119,13 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
                             <div
                               class="node moduleNode hoverable color-6 leftNode"
                             >
-                              <mockedlink
-                                class="link"
-                              >
-                                CS2113T
-                              </mockedlink>
+                              <div>
+                                <mockedlink
+                                  class="link"
+                                >
+                                  CS2113T
+                                </mockedlink>
+                              </div>
                             </div>
                           </li>
                         </ul>
@@ -135,11 +147,13 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
                             <div
                               class="node moduleNode hoverable color-6 leftNode"
                             >
-                              <mockedlink
-                                class="link"
-                              >
-                                CS2040
-                              </mockedlink>
+                              <div>
+                                <mockedlink
+                                  class="link"
+                                >
+                                  CS2040
+                                </mockedlink>
+                              </div>
                             </div>
                           </li>
                           <li
@@ -148,11 +162,13 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
                             <div
                               class="node moduleNode leftNode"
                             >
-                              <mockedlink
-                                class="link"
-                              >
-                                CS2040C
-                              </mockedlink>
+                              <div>
+                                <mockedlink
+                                  class="link"
+                                >
+                                  CS2040C
+                                </mockedlink>
+                              </div>
                             </div>
                           </li>
                         </ul>
@@ -187,11 +203,13 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            CS4243
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              CS4243
+            </mockedlink>
+          </div>
         </div>
       </li>
     </ul>
@@ -209,11 +227,13 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
         <div
           class="node moduleNode hoverable color-0"
         >
-          <mockedlink
-            class="link"
-          >
-            CS6240
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              CS6240
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -222,11 +242,13 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            CS3281
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              CS3281
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -235,11 +257,13 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            CS4243R
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              CS4243R
+            </mockedlink>
+          </div>
         </div>
       </li>
     </ul>
@@ -294,11 +318,13 @@ exports[`ModuleTreeComponent should render prereq branch with nOf condition: PC2
                 <div
                   class="node moduleNode leftNode"
                 >
-                  <mockedlink
-                    class="link"
-                  >
-                    PC1101
-                  </mockedlink>
+                  <div>
+                    <mockedlink
+                      class="link"
+                    >
+                      PC1101
+                    </mockedlink>
+                  </div>
                 </div>
               </li>
               <li
@@ -307,11 +333,13 @@ exports[`ModuleTreeComponent should render prereq branch with nOf condition: PC2
                 <div
                   class="node moduleNode leftNode"
                 >
-                  <mockedlink
-                    class="link"
-                  >
-                    PC2174A
-                  </mockedlink>
+                  <div>
+                    <mockedlink
+                      class="link"
+                    >
+                      PC2174A
+                    </mockedlink>
+                  </div>
                 </div>
               </li>
             </ul>
@@ -325,11 +353,13 @@ exports[`ModuleTreeComponent should render prereq branch with nOf condition: PC2
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            PC2130
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              PC2130
+            </mockedlink>
+          </div>
         </div>
       </li>
     </ul>
@@ -347,11 +377,13 @@ exports[`ModuleTreeComponent should render prereq branch with nOf condition: PC2
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            PC3130
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              PC3130
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -360,11 +392,13 @@ exports[`ModuleTreeComponent should render prereq branch with nOf condition: PC2
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            PC3232
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              PC3232
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -373,11 +407,13 @@ exports[`ModuleTreeComponent should render prereq branch with nOf condition: PC2
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            PC3233
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              PC3233
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -386,11 +422,13 @@ exports[`ModuleTreeComponent should render prereq branch with nOf condition: PC2
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            PC3235
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              PC3235
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -399,11 +437,13 @@ exports[`ModuleTreeComponent should render prereq branch with nOf condition: PC2
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            PC3246
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              PC3246
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -412,11 +452,13 @@ exports[`ModuleTreeComponent should render prereq branch with nOf condition: PC2
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            PC3251
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              PC3251
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -425,11 +467,13 @@ exports[`ModuleTreeComponent should render prereq branch with nOf condition: PC2
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            PC3288
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              PC3288
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -438,11 +482,13 @@ exports[`ModuleTreeComponent should render prereq branch with nOf condition: PC2
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            PC2135
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              PC2135
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -451,11 +497,13 @@ exports[`ModuleTreeComponent should render prereq branch with nOf condition: PC2
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            PC3288Q
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              PC3288Q
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -464,11 +512,13 @@ exports[`ModuleTreeComponent should render prereq branch with nOf condition: PC2
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            PC3288QR
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              PC3288QR
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -477,11 +527,13 @@ exports[`ModuleTreeComponent should render prereq branch with nOf condition: PC2
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            PC3288R
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              PC3288R
+            </mockedlink>
+          </div>
         </div>
       </li>
     </ul>
@@ -542,11 +594,13 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
                     <div
                       class="node moduleNode leftNode"
                     >
-                      <mockedlink
-                        class="link"
-                      >
-                        CS2010
-                      </mockedlink>
+                      <div>
+                        <mockedlink
+                          class="link"
+                        >
+                          CS2010
+                        </mockedlink>
+                      </div>
                     </div>
                   </li>
                   <li
@@ -555,11 +609,13 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
                     <div
                       class="node moduleNode leftNode"
                     >
-                      <mockedlink
-                        class="link"
-                      >
-                        CS2020
-                      </mockedlink>
+                      <div>
+                        <mockedlink
+                          class="link"
+                        >
+                          CS2020
+                        </mockedlink>
+                      </div>
                     </div>
                   </li>
                   <li
@@ -568,11 +624,13 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
                     <div
                       class="node moduleNode leftNode"
                     >
-                      <mockedlink
-                        class="link"
-                      >
-                        CS2040
-                      </mockedlink>
+                      <div>
+                        <mockedlink
+                          class="link"
+                        >
+                          CS2040
+                        </mockedlink>
+                      </div>
                     </div>
                   </li>
                   <li
@@ -581,102 +639,13 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
                     <div
                       class="node moduleNode leftNode"
                     >
-                      <mockedlink
-                        class="link"
-                      >
-                        CS2040C
-                      </mockedlink>
-                    </div>
-                  </li>
-                </ul>
-                <div
-                  class="node conditional"
-                >
-                  take one
-                </div>
-              </li>
-              <li
-                class="branch leftBranch"
-              >
-                <ul
-                  class="tree"
-                >
-                  <li
-                    class="branch leftBranch"
-                  >
-                    <div
-                      class="node moduleNode leftNode"
-                    >
-                      <mockedlink
-                        class="link"
-                      >
-                        ESP1107
-                      </mockedlink>
-                    </div>
-                  </li>
-                  <li
-                    class="branch leftBranch"
-                  >
-                    <div
-                      class="node moduleNode leftNode"
-                    >
-                      <mockedlink
-                        class="link"
-                      >
-                        ESP2107
-                      </mockedlink>
-                    </div>
-                  </li>
-                  <li
-                    class="branch leftBranch"
-                  >
-                    <div
-                      class="node moduleNode leftNode"
-                    >
-                      <mockedlink
-                        class="link"
-                      >
-                        ST1232
-                      </mockedlink>
-                    </div>
-                  </li>
-                  <li
-                    class="branch leftBranch"
-                  >
-                    <div
-                      class="node moduleNode leftNode"
-                    >
-                      <mockedlink
-                        class="link"
-                      >
-                        ST2131
-                      </mockedlink>
-                    </div>
-                  </li>
-                  <li
-                    class="branch leftBranch"
-                  >
-                    <div
-                      class="node moduleNode leftNode"
-                    >
-                      <mockedlink
-                        class="link"
-                      >
-                        ST2132
-                      </mockedlink>
-                    </div>
-                  </li>
-                  <li
-                    class="branch leftBranch"
-                  >
-                    <div
-                      class="node moduleNode leftNode"
-                    >
-                      <mockedlink
-                        class="link"
-                      >
-                        ST2334
-                      </mockedlink>
+                      <div>
+                        <mockedlink
+                          class="link"
+                        >
+                          CS2040C
+                        </mockedlink>
+                      </div>
                     </div>
                   </li>
                 </ul>
@@ -698,11 +667,13 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
                     <div
                       class="node moduleNode leftNode"
                     >
-                      <mockedlink
-                        class="link"
-                      >
-                        MA1101R
-                      </mockedlink>
+                      <div>
+                        <mockedlink
+                          class="link"
+                        >
+                          ESP1107
+                        </mockedlink>
+                      </div>
                     </div>
                   </li>
                   <li
@@ -711,11 +682,13 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
                     <div
                       class="node moduleNode leftNode"
                     >
-                      <mockedlink
-                        class="link"
-                      >
-                        MA1311
-                      </mockedlink>
+                      <div>
+                        <mockedlink
+                          class="link"
+                        >
+                          ESP2107
+                        </mockedlink>
+                      </div>
                     </div>
                   </li>
                   <li
@@ -724,11 +697,58 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
                     <div
                       class="node moduleNode leftNode"
                     >
-                      <mockedlink
-                        class="link"
-                      >
-                        MA1506
-                      </mockedlink>
+                      <div>
+                        <mockedlink
+                          class="link"
+                        >
+                          ST1232
+                        </mockedlink>
+                      </div>
+                    </div>
+                  </li>
+                  <li
+                    class="branch leftBranch"
+                  >
+                    <div
+                      class="node moduleNode leftNode"
+                    >
+                      <div>
+                        <mockedlink
+                          class="link"
+                        >
+                          ST2131
+                        </mockedlink>
+                      </div>
+                    </div>
+                  </li>
+                  <li
+                    class="branch leftBranch"
+                  >
+                    <div
+                      class="node moduleNode leftNode"
+                    >
+                      <div>
+                        <mockedlink
+                          class="link"
+                        >
+                          ST2132
+                        </mockedlink>
+                      </div>
+                    </div>
+                  </li>
+                  <li
+                    class="branch leftBranch"
+                  >
+                    <div
+                      class="node moduleNode leftNode"
+                    >
+                      <div>
+                        <mockedlink
+                          class="link"
+                        >
+                          ST2334
+                        </mockedlink>
+                      </div>
                     </div>
                   </li>
                 </ul>
@@ -750,11 +770,13 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
                     <div
                       class="node moduleNode leftNode"
                     >
-                      <mockedlink
-                        class="link"
-                      >
-                        MA1102R
-                      </mockedlink>
+                      <div>
+                        <mockedlink
+                          class="link"
+                        >
+                          MA1101R
+                        </mockedlink>
+                      </div>
                     </div>
                   </li>
                   <li
@@ -763,11 +785,13 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
                     <div
                       class="node moduleNode leftNode"
                     >
-                      <mockedlink
-                        class="link"
-                      >
-                        MA1505
-                      </mockedlink>
+                      <div>
+                        <mockedlink
+                          class="link"
+                        >
+                          MA1311
+                        </mockedlink>
+                      </div>
                     </div>
                   </li>
                   <li
@@ -776,11 +800,71 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
                     <div
                       class="node moduleNode leftNode"
                     >
-                      <mockedlink
-                        class="link"
-                      >
-                        MA1521
-                      </mockedlink>
+                      <div>
+                        <mockedlink
+                          class="link"
+                        >
+                          MA1506
+                        </mockedlink>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                <div
+                  class="node conditional"
+                >
+                  take one
+                </div>
+              </li>
+              <li
+                class="branch leftBranch"
+              >
+                <ul
+                  class="tree"
+                >
+                  <li
+                    class="branch leftBranch"
+                  >
+                    <div
+                      class="node moduleNode leftNode"
+                    >
+                      <div>
+                        <mockedlink
+                          class="link"
+                        >
+                          MA1102R
+                        </mockedlink>
+                      </div>
+                    </div>
+                  </li>
+                  <li
+                    class="branch leftBranch"
+                  >
+                    <div
+                      class="node moduleNode leftNode"
+                    >
+                      <div>
+                        <mockedlink
+                          class="link"
+                        >
+                          MA1505
+                        </mockedlink>
+                      </div>
+                    </div>
+                  </li>
+                  <li
+                    class="branch leftBranch"
+                  >
+                    <div
+                      class="node moduleNode leftNode"
+                    >
+                      <div>
+                        <mockedlink
+                          class="link"
+                        >
+                          MA1521
+                        </mockedlink>
+                      </div>
                     </div>
                   </li>
                 </ul>
@@ -801,11 +885,13 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            CS3244
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              CS3244
+            </mockedlink>
+          </div>
         </div>
       </li>
     </ul>
@@ -823,11 +909,13 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            CS5242
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              CS5242
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -836,11 +924,13 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            CS5339
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              CS5339
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -849,11 +939,13 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            CS6281
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              CS6281
+            </mockedlink>
+          </div>
         </div>
       </li>
     </ul>
@@ -896,11 +988,13 @@ exports[`ModuleTreeComponent should render prereq tree to the right when tree di
         <div
           class="node moduleNode leftNode"
         >
-          <mockedlink
-            class="link"
-          >
-            PC3193
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              PC3193
+            </mockedlink>
+          </div>
         </div>
       </li>
     </ul>
@@ -918,11 +1012,13 @@ exports[`ModuleTreeComponent should render prereq tree to the right when tree di
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            PC2193
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              PC2193
+            </mockedlink>
+          </div>
         </div>
         <ul
           class="tree"
@@ -933,11 +1029,13 @@ exports[`ModuleTreeComponent should render prereq tree to the right when tree di
             <div
               class="node moduleNode"
             >
-              <mockedlink
-                class="link"
-              >
-                PC1101
-              </mockedlink>
+              <div>
+                <mockedlink
+                  class="link"
+                >
+                  PC1101
+                </mockedlink>
+              </div>
             </div>
           </li>
         </ul>
@@ -982,11 +1080,13 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            ACC1002
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              ACC1002
+            </mockedlink>
+          </div>
         </div>
       </li>
     </ul>
@@ -1004,11 +1104,13 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            ACC1006
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              ACC1006
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -1017,11 +1119,13 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            ACC2002
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              ACC2002
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -1030,11 +1134,13 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            ACC3601
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              ACC3601
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -1043,11 +1149,13 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            ACC3603
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              ACC3603
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -1056,11 +1164,13 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            ACC3605
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              ACC3605
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -1069,11 +1179,13 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            ACC3616
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              ACC3616
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -1082,11 +1194,13 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            FIN2004
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              FIN2004
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -1095,11 +1209,13 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            FIN2004X
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              FIN2004X
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -1108,11 +1224,13 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            FIN3113
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              FIN3113
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -1121,11 +1239,13 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            FIN3130
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              FIN3130
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -1134,11 +1254,13 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            IS5116
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              IS5116
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -1147,11 +1269,13 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            ACC3611
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              ACC3611
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -1160,11 +1284,13 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            FIN3132
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              FIN3132
+            </mockedlink>
+          </div>
         </div>
       </li>
       <li
@@ -1173,11 +1299,13 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         <div
           class="node moduleNode"
         >
-          <mockedlink
-            class="link"
-          >
-            FIN4115
-          </mockedlink>
+          <div>
+            <mockedlink
+              class="link"
+            >
+              FIN4115
+            </mockedlink>
+          </div>
         </div>
       </li>
     </ul>
