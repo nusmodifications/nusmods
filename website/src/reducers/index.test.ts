@@ -29,6 +29,9 @@ const exportData: ExportData = {
     PC1222: 2,
   },
   hidden: ['PC1222'],
+  ta: {
+    CS1010S: ['Tutorial'],
+  },
   theme: {
     id: 'google',
     timetableOrientation: VERTICAL,
@@ -74,6 +77,11 @@ test('reducers should set export data state', () => {
       },
     },
     hidden: { [1]: ['PC1222'] },
+    ta: {
+      [1]: {
+        CS1010S: ['Tutorial'],
+      },
+    },
     academicYear: expect.any(String),
     archive: {},
   });
