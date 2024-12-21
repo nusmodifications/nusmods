@@ -377,10 +377,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
-"@elastic/elasticsearch@7.17.12":
-  version "7.17.12"
-  resolved "https://registry.yarnpkg.com/@elastic/elasticsearch/-/elasticsearch-7.17.12.tgz#b37f15c8e6a1952ad899e5a9ac3ad0824bf1d0a4"
-  integrity sha512-iypJDSzlnA1dXcw6H77qy0pH1Et8Nrw/TA6UHA7ECjKwZ9iBxZKS3WgOX0KgtL6GWdmTQWhGEha7k+ELVHygjQ==
+"@elastic/elasticsearch@7.17.14":
+  version "7.17.14"
+  resolved "https://registry.yarnpkg.com/@elastic/elasticsearch/-/elasticsearch-7.17.14.tgz#5ffd6d04e2be38b3dba56cf80af4359fc43b7f1f"
+  integrity sha512-6uQ1pVXutwz1Krwooo67W+3K8BwH1ASMh1WoHTpomUzw8EXecXN5lHIJ9EPqTHuv1WqR2LKkSJyagcq0HYUJpg==
   dependencies:
     debug "^4.3.1"
     hpagent "^0.1.1"
