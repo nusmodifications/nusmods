@@ -61,7 +61,7 @@
     "joi": "17.9.2",
     "lodash": "4.17.21",
     "nusmoderator": "3.0.0",
-    "oboe": "2.1.5",
+    "oboe": "2.1.7",
     "promise-queue": "2.2.5",
     "ramda": "0.29.0",
     "romanify": "1.0.0",
