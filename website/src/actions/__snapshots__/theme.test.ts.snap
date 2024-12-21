@@ -16,7 +16,11 @@ exports[`theme should dispatch a cycle of theme 2`] = `
 
 exports[`theme should dispatch a select of theme 1`] = `
 {
-  "payload": "test",
+  "payload": {
+    "id": "test",
+    "name": "Test",
+    "numOfColors": 8,
+  },
   "type": "SELECT_THEME",
 }
 `;

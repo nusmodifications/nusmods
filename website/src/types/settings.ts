@@ -7,6 +7,7 @@ export type ThemeId = string;
 export type Theme = {
   readonly id: ThemeId;
   readonly name: string;
+  readonly numOfColors: number;
 };
 
 /**
