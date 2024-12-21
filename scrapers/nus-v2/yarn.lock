@@ -3510,10 +3510,10 @@ object.values@^1.1.6:
     define-properties "^1.1.4"
     es-abstract "^1.20.4"
 
-oboe@2.1.5:
-  version "2.1.5"
-  resolved "https://registry.yarnpkg.com/oboe/-/oboe-2.1.5.tgz#5554284c543a2266d7a38f17e073821fbde393cd"
-  integrity sha1-VVQoTFQ6ImbXo48X4HOCH73jk80=
+oboe@2.1.7:
+  version "2.1.7"
+  resolved "https://registry.yarnpkg.com/oboe/-/oboe-2.1.7.tgz#14cb69c750757a964c760383e094887822a32947"
+  integrity sha512-Y2oCMU2xgITORaNvIDCvUyn2ZG/5NI19lLjMFThgYzCH+GA/fgYvVcwxAqnZPiMiUrPq64jLzCkBXqKSu/R6MA==
   dependencies:
     http-https "^1.0.0"
 
