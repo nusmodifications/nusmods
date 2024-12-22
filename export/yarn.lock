@@ -270,10 +270,10 @@
     "@types/koa-compose" "*"
     "@types/node" "*"
 
-"@types/lodash@4.14.197":
-  version "4.14.197"
-  resolved "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.197.tgz"
-  integrity sha512-BMVOiWs0uNxHVlHBgzTIqJYmj+PgCo4euloGF+5m4okL3rEYzM2EEv78mw8zWSMM57dM7kVIgJ2QDvwHSoCI5g==
+"@types/lodash@4.17.13":
+  version "4.17.13"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.17.13.tgz#786e2d67cfd95e32862143abe7463a7f90c300eb"
+  integrity sha512-lfx+dftrEZcdBPczf9d0Qv0x+j/rfNCMuC6OcfXmO8gkfeNAY88PgKUbvG56whcN23gc27yenwF6oJZXGFpYxg==
 
 "@types/mime@*":
   version "2.0.1"
