@@ -50,9 +50,9 @@
     "@types/lodash": "4.14.197",
     "@types/mousetrap": "1.6.15",
     "@types/no-scroll": "2.1.2",
-    "@types/react": "18.3.12",
+    "@types/react": "18.3.18",
     "@types/react-beautiful-dnd": "13.1.8",
-    "@types/react-dom": "18.3.1",
+    "@types/react-dom": "18.3.5",
     "@types/react-helmet": "6.1.11",
     "@types/react-kawaii": "0.17.3",
     "@types/react-loadable": "5.5.11",
@@ -106,7 +106,7 @@
     "postcss-loader": "8.1.1",
     "prettier": "2.8.8",
     "react-dev-utils": "11.0.4",
-    "react-refresh": "0.14.0",
+    "react-refresh": "0.16.0",
     "redux-logger": "3.0.6",
     "redux-mock-store": "1.5.5",
     "sass": "1.66.1",
@@ -170,7 +170,7 @@
     "reselect": "4.1.8",
     "samlify": "2.7.7",
     "searchkit": "2.4.1-alpha.5",
-    "use-subscription": "1.8.0"
+    "use-subscription": "1.10.0"
   },
   "browserslist": [
     "extends browserslist-config-nusmods"
