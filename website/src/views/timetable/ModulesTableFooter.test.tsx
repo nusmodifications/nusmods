@@ -1,5 +1,5 @@
 import { BFS1001, CS1010S, CS3216 } from '__mocks__/modules';
-import { TaModuleConfig } from 'types/timetables';
+import { TaModulesConfig } from 'types/timetables';
 import { countShownMCs, countTotalMCs } from './ModulesTableFooter';
 
 describe(countTotalMCs, () => {
@@ -18,7 +18,7 @@ describe(countShownMCs, () => {
 
   it('should not count TA modules', () => {
     const modules = [BFS1001, CS1010S, CS3216];
-    const taInTimetable: TaModuleConfig = {
+    const taInTimetable: TaModulesConfig = {
       [CS1010S.moduleCode]: [],
       [CS3216.moduleCode]: ['Tutorial'],
     };

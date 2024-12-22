@@ -1,7 +1,7 @@
 import { each, isEmpty, kebabCase } from 'lodash';
 import { ModuleTitle, Semester, ModuleCode } from 'types/modules';
 import { Venue } from 'types/venues';
-import { SemTimetableConfig, TaModuleConfig } from 'types/timetables';
+import { SemTimetableConfig, TaModulesConfig } from 'types/timetables';
 import { serializeHidden, serializeTa, serializeTimetable } from 'utils/timetables';
 import config from 'config';
 
@@ -26,7 +26,7 @@ export function timetableShare(
   semester: Semester,
   timetable: SemTimetableConfig,
   hiddenModules: ModuleCode[],
-  taModules: TaModuleConfig,
+  taModules: TaModulesConfig,
 ): string {
   // Convert the list of hidden modules to a comma-separated string, if there are any
   const serializedHidden = hiddenModules.length === 0 ? '' : serializeHidden(hiddenModules);

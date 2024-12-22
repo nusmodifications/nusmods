@@ -17,8 +17,7 @@ import {
   selectModuleColor,
   hideLessonInTimetable,
   showLessonInTimetable,
-  addTaLessonInTimetable,
-  removeTaLessonInTimetable,
+  unsetTaModeInTimetable,
 } from 'actions/timetables';
 import {
   getExamDate,
@@ -51,12 +50,12 @@ export type Props = {
   selectModuleColor: (semester: Semester, moduleCode: ModuleCode, colorIndex: ColorIndex) => void;
   hideLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   showLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
-  addTaLessonInTimetable: (
+  setTaModeInTimetable: (
     semester: Semester,
     moduleCode: ModuleCode,
     lessonType: LessonType,
   ) => void;
-  removeTaLessonInTimetable: (
+  unsetTaModeInTimetable: (
     semester: Semester,
     moduleCode: ModuleCode,
     lessonType: LessonType,
@@ -86,8 +85,8 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
 
     const toggleTaLesson = (lessonType: LessonType, isTa: boolean) =>
       isTa
-        ? props.removeTaLessonInTimetable(semester, module.moduleCode, lessonType)
-        : props.addTaLessonInTimetable(semester, module.moduleCode, lessonType);
+        ? props.unsetTaModeInTimetable(semester, module.moduleCode, lessonType)
+        : props.setTaModeInTimetable(semester, module.moduleCode, lessonType);
 
     const isTaBtnDisabled = isEmpty(module.taInTimetable);
 
@@ -273,7 +272,6 @@ export default connect(
     selectModuleColor,
     hideLessonInTimetable,
     showLessonInTimetable,
-    addTaLessonInTimetable,
-    removeTaLessonInTimetable,
+    unsetTaModeInTimetable,
   },
 )(React.memo(TimetableModulesTableComponent));

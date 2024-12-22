@@ -1,4 +1,4 @@
-import { SemTimetableConfig, TaModuleConfig } from 'types/timetables';
+import { SemTimetableConfig, TaModulesConfig } from 'types/timetables';
 import { Semester, ModuleCode } from 'types/modules';
 import type { ColorScheme } from 'types/settings';
 import { ColorMapping, ThemeState } from 'types/reducers';
@@ -8,7 +8,7 @@ export type ExportData = {
   readonly timetable: SemTimetableConfig;
   readonly colors: ColorMapping;
   readonly hidden: ModuleCode[];
-  readonly ta: TaModuleConfig;
+  readonly ta: TaModulesConfig;
   readonly theme: ThemeState;
   readonly settings: {
     colorScheme: ColorScheme;

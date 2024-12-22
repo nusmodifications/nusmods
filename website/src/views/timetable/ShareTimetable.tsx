@@ -5,7 +5,7 @@ import qs from 'query-string';
 import { Copy, Mail, Maximize2, Minimize2, Repeat } from 'react-feather';
 import type { QRCodeSVG } from 'qrcode.react';
 
-import type { SemTimetableConfig, TaModuleConfig } from 'types/timetables';
+import type { SemTimetableConfig, TaModulesConfig } from 'types/timetables';
 import type { ModuleCode, Semester } from 'types/modules';
 
 import config from 'config';
@@ -27,7 +27,7 @@ type Props = {
   semester: Semester;
   timetable: SemTimetableConfig;
   hiddenModules: ModuleCode[];
-  taModules: TaModuleConfig;
+  taModules: TaModulesConfig;
 };
 
 type State = {
@@ -43,7 +43,7 @@ function shareUrl(
   semester: Semester,
   timetable: SemTimetableConfig,
   hiddenModules: ModuleCode[],
-  taModules: TaModuleConfig,
+  taModules: TaModulesConfig,
 ): string {
   return absolutePath(timetableShare(semester, timetable, hiddenModules, taModules));
 }

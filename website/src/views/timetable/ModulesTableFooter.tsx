@@ -10,7 +10,7 @@ import { State } from 'types/state';
 import { setModuleTableOrder } from 'actions/settings';
 import { getExamDate, renderMCs } from 'utils/modules';
 import config from 'config';
-import { TaModuleConfig } from 'types/timetables';
+import { TaModulesConfig } from 'types/timetables';
 import styles from './TimetableModulesTable.scss';
 
 type ModuleOrder = {
@@ -34,7 +34,7 @@ export function countTotalMCs(modules: Module[]): number {
 export function countShownMCs(
   modules: Module[],
   hiddenInTimetable: ModuleCode[],
-  taInTimetable: TaModuleConfig,
+  taInTimetable: TaModulesConfig,
 ): number {
   return sumBy(
     modules.filter(
@@ -51,7 +51,7 @@ type Props = {
   moduleTableOrder: ModuleTableOrder;
   modules: Module[];
   hiddenInTimetable: ModuleCode[];
-  taInTimetable: TaModuleConfig;
+  taInTimetable: TaModulesConfig;
 
   setModuleTableOrder: (moduleTableOrder: ModuleTableOrder) => void;
 };

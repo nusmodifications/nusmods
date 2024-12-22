@@ -4,7 +4,7 @@ import { createMigrate } from 'redux-persist';
 
 import { PersistConfig } from 'storage/persistReducer';
 import { ModuleCode } from 'types/modules';
-import { ModuleLessonConfig, SemTimetableConfig, TaModuleConfig } from 'types/timetables';
+import { ModuleLessonConfig, SemTimetableConfig, TaModulesConfig } from 'types/timetables';
 import { ColorMapping, TimetablesState } from 'types/reducers';
 
 import config from 'config';
@@ -22,6 +22,7 @@ import {
   SET_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
   REMOVE_TA_LESSON_IN_TIMETABLE,
+  UNSET_TA_MODE_IN_TIMETABLE,
 } from 'actions/timetables';
 import { getNewColor } from 'utils/colors';
 import { SET_EXPORTED_DATA } from 'actions/constants';
@@ -181,7 +182,7 @@ function semHiddenModules(state = DEFAULT_HIDDEN_STATE, action: Actions) {
 }
 
 // Map of semester to list of TA modules
-const DEFAULT_TA_STATE: TaModuleConfig = {};
+const DEFAULT_TA_STATE: TaModulesConfig = {};
 function semTaModules(state = DEFAULT_TA_STATE, action: Actions) {
   if (!action.payload) {
     return state;
@@ -189,19 +190,35 @@ function semTaModules(state = DEFAULT_TA_STATE, action: Actions) {
 
   switch (action.type) {
     case ADD_TA_LESSON_IN_TIMETABLE: {
-      const { moduleCode, lessonType } = action.payload;
-      if (!(moduleCode && lessonType)) return state;
+      const { moduleCode, lessonType, classNo } = action.payload;
+      if (!(moduleCode && lessonType && classNo)) return state;
+      const previousTaModules = state[moduleCode] ?? {};
       return {
         ...state,
-        [moduleCode]: [...(state[moduleCode] ?? []), lessonType],
+        [moduleCode]: {
+          ...previousTaModules,
+          [lessonType]: [...(previousTaModules[lessonType] ?? []), classNo],
+        },
       };
     }
     case REMOVE_TA_LESSON_IN_TIMETABLE: {
+      const { moduleCode, lessonType, classNo } = action.payload;
+      if (!(moduleCode && lessonType && classNo)) return state;
+      const previousTaModules = state[moduleCode] ?? {};
+      return {
+        ...state,
+        [moduleCode]: {
+          ...previousTaModules,
+          [lessonType]: previousTaModules[lessonType].filter((l) => l !== classNo),
+        },
+      };
+    }
+    case UNSET_TA_MODE_IN_TIMETABLE: {
       const { moduleCode, lessonType } = action.payload;
       if (!(moduleCode && lessonType)) return state;
       return {
         ...state,
-        [moduleCode]: (state[moduleCode] ?? []).filter((l) => l !== lessonType),
+        [moduleCode]: omit(state[moduleCode], lessonType),
       };
     }
     case REMOVE_MODULE: {
@@ -263,7 +280,8 @@ function timetables(
     case HIDE_LESSON_IN_TIMETABLE:
     case SHOW_LESSON_IN_TIMETABLE:
     case ADD_TA_LESSON_IN_TIMETABLE:
-    case REMOVE_TA_LESSON_IN_TIMETABLE: {
+    case REMOVE_TA_LESSON_IN_TIMETABLE:
+    case UNSET_TA_MODE_IN_TIMETABLE: {
       const { semester } = action.payload;
 
       return produce(state, (draft) => {

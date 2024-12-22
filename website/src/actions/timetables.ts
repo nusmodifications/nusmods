@@ -5,7 +5,7 @@ import type {
   Lesson,
   ModuleLessonConfig,
   SemTimetableConfig,
-  TaModuleConfig,
+  TaModulesConfig,
 } from 'types/timetables';
 import type { Dispatch, GetState } from 'types/redux';
 import type { ColorMapping } from 'types/reducers';
@@ -32,7 +32,7 @@ export const Internal = {
     timetable: SemTimetableConfig | undefined,
     colors?: ColorMapping,
     hiddenModules?: ModuleCode[],
-    taModules?: TaModuleConfig,
+    taModules?: TaModulesConfig,
   ) {
     return {
       type: SET_TIMETABLE,
@@ -230,11 +230,11 @@ export function setHiddenImported(semester: Semester, hiddenModules: ModuleCode[
   };
 }
 
-export function setTaModulesFromImport(semester: Semester, taModules: TaModuleConfig) {
+export function setTaModulesFromImport(semester: Semester, taModules: TaModulesConfig) {
   return (dispatch: Dispatch) => dispatch(setTaImported(semester, taModules));
 }
 
-export function setTaImported(semester: Semester, taModules: TaModuleConfig) {
+export function setTaImported(semester: Semester, taModules: TaModulesConfig) {
   return {
     type: SET_TA_IMPORTED,
     payload: { semester, taModules },
@@ -278,10 +278,11 @@ export function addTaLessonInTimetable(
   semester: Semester,
   moduleCode: ModuleCode,
   lessonType: LessonType,
+  classNo: ClassNo,
 ) {
   return {
     type: ADD_TA_LESSON_IN_TIMETABLE,
-    payload: { moduleCode, lessonType, semester },
+    payload: { semester, moduleCode, lessonType, classNo },
   };
 }
 
@@ -290,9 +291,22 @@ export function removeTaLessonInTimetable(
   semester: Semester,
   moduleCode: ModuleCode,
   lessonType: LessonType,
+  classNo: ClassNo,
 ) {
   return {
     type: REMOVE_TA_LESSON_IN_TIMETABLE,
-    payload: { moduleCode, lessonType, semester },
+    payload: { semester, moduleCode, lessonType, classNo },
+  };
+}
+
+export const UNSET_TA_MODE_IN_TIMETABLE = 'UNSET_TA_MODE_IN_TIMETABLE' as const;
+export function unsetTaModeInTimetable(
+  semester: Semester,
+  moduleCode: ModuleCode,
+  lessonType: LessonType,
+) {
+  return {
+    type: UNSET_TA_MODE_IN_TIMETABLE,
+    payload: { semester, moduleCode, lessonType },
   };
 }

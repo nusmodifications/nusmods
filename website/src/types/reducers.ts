@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 import { RegPeriodType, ScheduleType } from 'config';
 
 import { ColorSchemePreference } from './settings';
-import { ColorIndex, Lesson, TaModuleConfig, TimetableConfig } from './timetables';
+import { ColorIndex, Lesson, TaModulesConfig, TimetableConfig } from './timetables';
 import {
   Faculty,
   Module,
@@ -113,7 +113,7 @@ export type SettingsState = {
 export type ColorMapping = { [moduleCode: string]: ColorIndex };
 export type SemesterColorMap = { [semester: string]: ColorMapping };
 export type HiddenModulesMap = { [semester: string]: ModuleCode[] };
-export type TaModulesMap = { [semester: string]: TaModuleConfig };
+export type TaModulesMap = { [semester: string]: TaModulesConfig };
 
 export type TimetablesState = {
   readonly lessons: TimetableConfig;

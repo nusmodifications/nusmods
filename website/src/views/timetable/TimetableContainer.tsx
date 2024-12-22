@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import type { ModuleCode, Semester } from 'types/modules';
 import type { ColorMapping } from 'types/reducers';
 import type { State } from 'types/state';
-import type { SemTimetableConfig, TaModuleConfig } from 'types/timetables';
+import type { SemTimetableConfig, TaModulesConfig } from 'types/timetables';
 
 import { selectSemester } from 'actions/settings';
 import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
@@ -45,7 +45,7 @@ const SharingHeader: FC<{
   filledColors: ColorMapping;
   importedTimetable: SemTimetableConfig | null;
   hiddenImportedModules: ModuleCode[] | null;
-  taImportedModules: TaModuleConfig | null;
+  taImportedModules: TaModulesConfig | null;
   setImportedTimetable: (timetable: SemTimetableConfig | null) => void;
 }> = ({
   semester,
