@@ -22,7 +22,7 @@
   "author": "NUSModifications",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "7.25.9",
+    "@babel/cli": "7.26.4",
     "@babel/core": "7.26.0",
     "@babel/plugin-proposal-class-properties": "7.18.6",
     "@babel/plugin-proposal-nullish-coalescing-operator": "7.18.6",
@@ -32,7 +32,7 @@
     "@babel/plugin-transform-react-constant-elements": "7.25.9",
     "@babel/plugin-transform-react-inline-elements": "7.25.9",
     "@babel/preset-env": "7.26.0",
-    "@babel/preset-react": "7.25.9",
+    "@babel/preset-react": "7.26.3",
     "@babel/preset-typescript": "7.26.0",
     "@cfaester/enzyme-adapter-react-18": "0.8.0",
     "@packtracker/webpack-plugin": "2.3.0",
