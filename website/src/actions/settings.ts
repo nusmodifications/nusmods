@@ -92,3 +92,11 @@ export function setLoadDisqusManually(status: boolean) {
     payload: status,
   };
 }
+
+export const SET_PREREQ_TREE_ON_LEFT = 'SET_PREREQ_TREE_ON_LEFT' as const;
+export function setPrereqTreeOnLeft(isOnLeft: boolean) {
+  return {
+    type: SET_PREREQ_TREE_ON_LEFT,
+    payload: isOnLeft,
+  };
+}
