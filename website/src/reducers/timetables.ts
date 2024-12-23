@@ -209,7 +209,7 @@ function semTaModules(state = DEFAULT_TA_STATE, action: Actions) {
         ...state,
         [moduleCode]: {
           ...previousTaModules,
-          [lessonType]: previousTaModules[lessonType].filter((l) => l !== classNo),
+          [lessonType]: (previousTaModules[lessonType] ?? []).filter((l) => l !== classNo),
         },
       };
     }

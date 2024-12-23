@@ -129,17 +129,16 @@ describe('hidden module reducer', () => {
 describe('TA module reducer', () => {
   const withTaModules: TimetablesState = {
     ...initialState,
-    ta: { [1]: { CS1010S: ['Tutorial'] }, [2]: { CS1010S: ['Tutorial'] } },
+    ta: { [1]: { CS1010S: { Tutorial: ['1'] } }, [2]: { CS1010S: { Tutorial: ['1'] } } },
   };
 
   test('should update TA modules', () => {
-    expect(reducer(initialState, addTaLessonInTimetable(1, 'CS3216', 'Tutorial'))).toHaveProperty(
-      'ta.1',
-      { CS3216: ['Tutorial'] },
-    );
+    expect(
+      reducer(initialState, addTaLessonInTimetable(1, 'CS3216', 'Tutorial', '1')),
+    ).toHaveProperty('ta.1', { CS3216: { Tutorial: ['1'] } });
 
     expect(
-      reducer(initialState, removeTaLessonInTimetable(1, 'CS1010S', 'Tutorial')),
+      reducer(initialState, removeTaLessonInTimetable(1, 'CS1010S', 'Tutorial', '1')),
     ).toMatchObject({
       ta: {
         [1]: {},
@@ -147,11 +146,11 @@ describe('TA module reducer', () => {
     });
 
     expect(
-      reducer(withTaModules, removeTaLessonInTimetable(1, 'CS1010S', 'Tutorial')),
+      reducer(withTaModules, removeTaLessonInTimetable(1, 'CS1010S', 'Tutorial', '1')),
     ).toMatchObject({
       ta: {
         [1]: {},
-        [2]: { CS1010S: ['Tutorial'] },
+        [2]: { CS1010S: { Tutorial: ['1'] } },
       },
     });
   });
@@ -161,14 +160,14 @@ describe('TA module reducer', () => {
       reducer(
         {
           ...initialState,
-          ta: { [1]: { CS1010S: ['Tutorial'] }, [2]: { CS1010S: ['Tutorial'] } },
+          ta: { [1]: { CS1010S: { Tutorial: ['1'] } }, [2]: { CS1010S: { Tutorial: ['1'] } } },
         },
         removeModule(1, 'CS1010S'),
       ),
     ).toMatchObject({
       ta: {
         [1]: {},
-        [2]: { CS1010S: ['Tutorial'] },
+        [2]: { CS1010S: { Tutorial: ['1'] } },
       },
     });
   });

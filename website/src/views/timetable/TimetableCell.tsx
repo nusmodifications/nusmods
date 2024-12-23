@@ -142,7 +142,7 @@ const TimetableCell: React.FC<Props> = (props) => {
           {lesson.taInTimetable &&
             isHoveredOver &&
             hoverLesson &&
-            (lesson.isActive ? (
+            (lesson.isActive || !lesson.isOptionInTimetable ? (
               <Minus className={styles.taActionIndicator} />
             ) : (
               <Plus className={styles.taActionIndicator} />

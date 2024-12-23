@@ -327,7 +327,9 @@ describe(iCalForTimetable, () => {
       CS1010S,
       CS3216,
     };
-    const actual = iCalForTimetable(1, mockTimetable, moduleData, [], { CS1010S: ['Tutorial'] });
+    const actual = iCalForTimetable(1, mockTimetable, moduleData, [], {
+      CS1010S: { Tutorial: ['1'] },
+    });
     // 2 lesson types for cs1010s, 1 for cs3216 (1 lecture, 2 recitations and 1 exam for cs1010s will be excluded)
     expect(actual).toHaveLength(3);
   });

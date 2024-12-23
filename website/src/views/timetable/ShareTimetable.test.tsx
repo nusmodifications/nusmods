@@ -163,13 +163,19 @@ describe('ShareTimetable', () => {
         semester={1}
         timetable={timetable}
         hiddenModules={[]}
-        taModules={{ CS1010S: ['Tutorial'], CS1231S: ['Tutorial'] }}
+        taModules={{
+          MA1521: { Tutorial: ['1'] },
+          CS1010S: { Tutorial: ['1'], Laboratory: ['1'] },
+          CS1231S: { Tutorial: ['2', '3'] },
+        }}
       />,
     );
 
     await openAndWait(wrapper);
 
-    expect(wrapper.find('input').prop('value')).toContain('ta=CS1010S:TUT,CS1231S:TUT');
+    expect(wrapper.find('input').prop('value')).toContain(
+      'ta=MA1521(TUT:1);CS1010S(TUT:1,LAB:1);CS1231S(TUT:2,TUT:3)',
+    );
   });
 
   test('should change to original url and display shorten url button when clicked on show original url button', async () => {

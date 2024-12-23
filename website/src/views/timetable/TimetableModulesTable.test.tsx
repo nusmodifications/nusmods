@@ -11,8 +11,8 @@ function make(props: Partial<Props> = {}) {
   const selectModuleColor = jest.fn();
   const hideLessonInTimetable = jest.fn();
   const showLessonInTimetable = jest.fn();
-  const setTaLessonInTimetable = jest.fn();
-  const unsetTaLessonInTimetable = jest.fn();
+  const setTaModeInTimetable = jest.fn();
+  const unsetTaModeInTimetable = jest.fn();
   const onRemoveModule = jest.fn();
   const resetTombstone = jest.fn();
 
@@ -27,8 +27,8 @@ function make(props: Partial<Props> = {}) {
       selectModuleColor={selectModuleColor}
       hideLessonInTimetable={hideLessonInTimetable}
       showLessonInTimetable={showLessonInTimetable}
-      addTaLessonInTimetable={setTaLessonInTimetable}
-      removeTaLessonInTimetable={unsetTaLessonInTimetable}
+      setTaModeInTimetable={setTaModeInTimetable}
+      unsetTaModeInTimetable={unsetTaModeInTimetable}
       onRemoveModule={onRemoveModule}
       resetTombstone={resetTombstone}
       {...props}

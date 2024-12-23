@@ -12,7 +12,6 @@ export type SemTimetableConfig = {
 
 // TaModulesConfig is a mapping of moduleCode to the TA's lesson types.
 export type TaModulesConfig = {
-  // [moduleCode: ModuleCode]: LessonType[];
   [moduleCode: ModuleCode]: TaLessonConfig;
 };
 
@@ -36,6 +35,7 @@ type Modifiable = {
   isModifiable?: boolean;
   isAvailable?: boolean;
   isActive?: boolean;
+  isOptionInTimetable?: boolean;
   colorIndex: ColorIndex;
 };
 
