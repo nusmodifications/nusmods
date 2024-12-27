@@ -1,5 +1,5 @@
 import type { QueryObject } from 'json2mq';
-import { LessonType, Module, ModuleCondensed } from './modules';
+import { Module, ModuleCondensed } from './modules';
 import { ModuleList } from './reducers';
 import { ColorIndex, HoverLesson, Lesson, ModifiableLesson } from './timetables';
 import { Venue, VenueList } from './venues';
@@ -55,10 +55,6 @@ export type ModuleWithColor = Module & {
   colorIndex: ColorIndex;
   isHiddenInTimetable: boolean;
   isTaInTimetable: boolean;
-};
-
-export type ModuleWithTaLessonTypes = ModuleWithColor & {
-  taInTimetable: { [lessonType: LessonType]: boolean };
 };
 
 export type TombstoneModule = ModuleWithColor & {

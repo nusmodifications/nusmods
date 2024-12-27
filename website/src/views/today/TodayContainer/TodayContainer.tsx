@@ -21,7 +21,7 @@ import { EmptyGroupType, SelectedLesson } from 'types/views';
 
 import {
   groupLessonsByDay,
-  hydrateSemTimetableWithLessons,
+  hydrateSemTimetableWithAllLessons,
   isLessonAvailable,
   isLessonOngoing,
   timetableLessonsArray,
@@ -363,7 +363,13 @@ export const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
   const semester = semesterNameMap[weekInfo.sem];
   const timetable = getSemesterTimetableLessons(state)(semester);
   const colors = getSemesterTimetableColors(state)(semester);
-  const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
+  const taModules = state.timetables.ta?.[semester] ?? {};
+  const timetableWithLessons = hydrateSemTimetableWithAllLessons(
+    timetable,
+    taModules,
+    modules,
+    semester,
+  );
 
   return {
     colors,

@@ -12,12 +12,7 @@ export type SemTimetableConfig = {
 
 // TaModulesConfig is a mapping of moduleCode to the TA's lesson types.
 export type TaModulesConfig = {
-  [moduleCode: ModuleCode]: TaLessonConfig;
-};
-
-// TaLessonConfig is a mapping of lessonType to an array of ClassNo
-export type TaLessonConfig = {
-  [lessonType: string]: ClassNo[];
+  [moduleCode: ModuleCode]: [lessonType: LessonType, classNo: ClassNo][];
 };
 
 //  ModuleLessonConfigWithLessons is a mapping of lessonType to an array of Lessons for a module.
@@ -40,6 +35,7 @@ type Modifiable = {
 };
 
 export type ModifiableLesson = ColoredLesson & Modifiable;
+
 //  The array of Lessons must belong to that lessonType.
 export type ModuleLessonConfigWithLessons = {
   [lessonType: string]: Lesson[];

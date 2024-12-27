@@ -164,9 +164,15 @@ describe('ShareTimetable', () => {
         timetable={timetable}
         hiddenModules={[]}
         taModules={{
-          MA1521: { Tutorial: ['1'] },
-          CS1010S: { Tutorial: ['1'], Laboratory: ['1'] },
-          CS1231S: { Tutorial: ['2', '3'] },
+          MA1521: [['Tutorial', '1']],
+          CS1010S: [
+            ['Tutorial', '1'],
+            ['Laboratory', '1'],
+          ],
+          CS1231S: [
+            ['Tutorial', '2'],
+            ['Tutorial', '3'],
+          ],
         }}
       />,
     );

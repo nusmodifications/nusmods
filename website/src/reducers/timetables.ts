@@ -1,4 +1,4 @@
-import { get, omit, values } from 'lodash';
+import { get, isEqual, omit, values } from 'lodash';
 import { produce } from 'immer';
 import { createMigrate } from 'redux-persist';
 
@@ -183,7 +183,7 @@ function semHiddenModules(state = DEFAULT_HIDDEN_STATE, action: Actions) {
 
 // Map of semester to list of TA modules
 const DEFAULT_TA_STATE: TaModulesConfig = {};
-function semTaModules(state = DEFAULT_TA_STATE, action: Actions) {
+function semTaModules(state = DEFAULT_TA_STATE, action: Actions): TaModulesConfig {
   if (!action.payload) {
     return state;
   }
@@ -192,35 +192,22 @@ function semTaModules(state = DEFAULT_TA_STATE, action: Actions) {
     case ADD_TA_LESSON_IN_TIMETABLE: {
       const { moduleCode, lessonType, classNo } = action.payload;
       if (!(moduleCode && lessonType && classNo)) return state;
-      const previousTaModules = state[moduleCode] ?? {};
       return {
         ...state,
-        [moduleCode]: {
-          ...previousTaModules,
-          [lessonType]: [...(previousTaModules[lessonType] ?? []), classNo],
-        },
+        [moduleCode]: [...(state[moduleCode] ?? []), [lessonType, classNo]],
       };
     }
     case REMOVE_TA_LESSON_IN_TIMETABLE: {
       const { moduleCode, lessonType, classNo } = action.payload;
       if (!(moduleCode && lessonType && classNo)) return state;
-      const previousTaModules = state[moduleCode] ?? {};
       return {
         ...state,
-        [moduleCode]: {
-          ...previousTaModules,
-          [lessonType]: (previousTaModules[lessonType] ?? []).filter((l) => l !== classNo),
-        },
+        [moduleCode]: (state[moduleCode] ?? []).filter(
+          (lesson) => !isEqual(lesson, [lessonType, classNo]),
+        ),
       };
     }
-    case UNSET_TA_MODE_IN_TIMETABLE: {
-      const { moduleCode, lessonType } = action.payload;
-      if (!(moduleCode && lessonType)) return state;
-      return {
-        ...state,
-        [moduleCode]: omit(state[moduleCode], lessonType),
-      };
-    }
+    case UNSET_TA_MODE_IN_TIMETABLE:
     case REMOVE_MODULE: {
       const { moduleCode } = action.payload;
       if (!moduleCode) return state;

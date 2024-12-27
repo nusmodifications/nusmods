@@ -235,70 +235,106 @@ describe(calculateWeekRange, () => {
   });
 });
 
-test('iCalEventForLesson generates correct output', () => {
-  const actual: EventOption = iCalEventForLesson(
-    {
-      classNo: 'A1',
-      day: 'Monday',
-      endTime: '1700',
-      lessonType: 'Sectional Teaching',
-      startTime: '1400',
-      venue: 'BIZ1-0303',
-      weeks: [1, 2, 3, 4, 5, 6],
-    },
-    BFS1001 as Module,
-    1,
-    new Date('2016-08-08T00:00+0800'),
-  );
+describe(iCalEventForLesson, () => {
+  test('generates correct output', () => {
+    const actual: EventOption = iCalEventForLesson(
+      {
+        classNo: 'A1',
+        day: 'Monday',
+        endTime: '1700',
+        lessonType: 'Sectional Teaching',
+        startTime: '1400',
+        venue: 'BIZ1-0303',
+        weeks: [1, 2, 3, 4, 5, 6],
+      },
+      BFS1001 as Module,
+      1,
+      new Date('2016-08-08T00:00+0800'),
+    );
 
-  const expected = {
-    start: new Date('2016-08-08T14:00+0800'),
-    end: new Date('2016-08-08T17:00+0800'),
-    summary: 'BFS1001 Sectional Teaching',
-    description: 'Personal Development & Career Management\nSectional Teaching Group A1',
-    location: 'BIZ1-0303',
-    repeating: {
-      freq: 'WEEKLY',
-      count: 14,
-      byDay: ['Mo'],
-      exclude: expect.arrayContaining([]), // Tested in previous tests
-    },
-  };
+    const expected = {
+      start: new Date('2016-08-08T14:00+0800'),
+      end: new Date('2016-08-08T17:00+0800'),
+      summary: 'BFS1001 Sectional Teaching',
+      description: 'Personal Development & Career Management\nSectional Teaching Group A1',
+      location: 'BIZ1-0303',
+      repeating: {
+        freq: 'WEEKLY',
+        count: 14,
+        byDay: ['Mo'],
+        exclude: expect.arrayContaining([]), // Tested in previous tests
+      },
+    };
 
-  expect(actual).toEqual(expected);
-});
+    expect(actual).toEqual(expected);
+  });
 
-test('work for half hour lesson offsets', () => {
-  const actual: EventOption = iCalEventForLesson(
-    {
-      classNo: 'A1',
-      day: 'Monday',
-      endTime: '2030',
-      lessonType: 'Sectional Teaching',
-      startTime: '1830',
-      venue: 'BIZ1-0303',
-      weeks: EVERY_WEEK,
-    },
-    BFS1001 as Module,
-    1,
-    new Date('2016-08-08T00:00+0800'),
-  );
+  test('generates correct output for TA lesson', () => {
+    const actual: EventOption = iCalEventForLesson(
+      {
+        classNo: 'A1',
+        day: 'Monday',
+        endTime: '1700',
+        lessonType: 'Sectional Teaching',
+        startTime: '1400',
+        venue: 'BIZ1-0303',
+        weeks: [1, 2, 3, 4, 5, 6],
+      },
+      BFS1001 as Module,
+      1,
+      new Date('2016-08-08T00:00+0800'),
+      true,
+    );
 
-  const expected = {
-    start: new Date('2016-08-08T18:30+0800'),
-    end: new Date('2016-08-08T20:30+0800'),
-    summary: 'BFS1001 Sectional Teaching',
-    description: 'Personal Development & Career Management\nSectional Teaching Group A1',
-    location: 'BIZ1-0303',
-    repeating: {
-      freq: 'WEEKLY',
-      count: 14,
-      byDay: ['Mo'],
-      exclude: expect.arrayContaining([]), // Tested in previous tests
-    },
-  };
+    const expected = {
+      start: new Date('2016-08-08T14:00+0800'),
+      end: new Date('2016-08-08T17:00+0800'),
+      summary: 'BFS1001 Sectional Teaching (TA)',
+      description: 'Personal Development & Career Management\nSectional Teaching Group A1',
+      location: 'BIZ1-0303',
+      repeating: {
+        freq: 'WEEKLY',
+        count: 14,
+        byDay: ['Mo'],
+        exclude: expect.arrayContaining([]), // Tested in previous tests
+      },
+    };
 
-  expect(actual).toEqual(expected);
+    expect(actual).toEqual(expected);
+  });
+
+  test('work for half hour lesson offsets', () => {
+    const actual: EventOption = iCalEventForLesson(
+      {
+        classNo: 'A1',
+        day: 'Monday',
+        endTime: '2030',
+        lessonType: 'Sectional Teaching',
+        startTime: '1830',
+        venue: 'BIZ1-0303',
+        weeks: EVERY_WEEK,
+      },
+      BFS1001 as Module,
+      1,
+      new Date('2016-08-08T00:00+0800'),
+    );
+
+    const expected = {
+      start: new Date('2016-08-08T18:30+0800'),
+      end: new Date('2016-08-08T20:30+0800'),
+      summary: 'BFS1001 Sectional Teaching',
+      description: 'Personal Development & Career Management\nSectional Teaching Group A1',
+      location: 'BIZ1-0303',
+      repeating: {
+        freq: 'WEEKLY',
+        count: 14,
+        byDay: ['Mo'],
+        exclude: expect.arrayContaining([]), // Tested in previous tests
+      },
+    };
+
+    expect(actual).toEqual(expected);
+  });
 });
 
 describe(iCalForTimetable, () => {
@@ -328,9 +364,9 @@ describe(iCalForTimetable, () => {
       CS3216,
     };
     const actual = iCalForTimetable(1, mockTimetable, moduleData, [], {
-      CS1010S: { Tutorial: ['1'] },
+      CS1010S: [['Tutorial', '1']],
     });
-    // 2 lesson types for cs1010s, 1 for cs3216 (1 lecture, 2 recitations and 1 exam for cs1010s will be excluded)
-    expect(actual).toHaveLength(3);
+    // 5 lesson types for cs1010s, 1 for cs3216 (1 exam for cs1010s will be exluded)
+    expect(actual).toHaveLength(6);
   });
 });

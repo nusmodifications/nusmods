@@ -300,13 +300,9 @@ export function removeTaLessonInTimetable(
 }
 
 export const UNSET_TA_MODE_IN_TIMETABLE = 'UNSET_TA_MODE_IN_TIMETABLE' as const;
-export function unsetTaModeInTimetable(
-  semester: Semester,
-  moduleCode: ModuleCode,
-  lessonType: LessonType,
-) {
+export function unsetTaModeInTimetable(semester: Semester, moduleCode: ModuleCode) {
   return {
     type: UNSET_TA_MODE_IN_TIMETABLE,
-    payload: { semester, moduleCode, lessonType },
+    payload: { semester, moduleCode },
   };
 }

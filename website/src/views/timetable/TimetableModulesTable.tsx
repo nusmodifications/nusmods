@@ -2,13 +2,13 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-import { isEmpty, sortBy } from 'lodash';
+import { sortBy } from 'lodash';
 import { produce } from 'immer';
 
 import { Book, BookOpen, Eye, EyeOff, Trash } from 'react-feather';
-import { ModuleWithColor, ModuleWithTaLessonTypes, TombstoneModule } from 'types/views';
+import { ModuleWithColor, TombstoneModule } from 'types/views';
 import { ColorIndex } from 'types/timetables';
-import { LessonType, ModuleCode, Semester } from 'types/modules';
+import { ModuleCode, Semester } from 'types/modules';
 import { State as StoreState } from 'types/state';
 import { ModuleTableOrder } from 'types/reducers';
 
@@ -33,7 +33,6 @@ import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip';
 import config from 'config';
 
-import Downshift from 'downshift';
 import styles from './TimetableModulesTable.scss';
 import ModuleTombstone from './ModuleTombstone';
 import { moduleOrders } from './ModulesTableFooter';
@@ -43,52 +42,27 @@ export type Props = {
   readOnly: boolean;
   horizontalOrientation: boolean;
   moduleTableOrder: ModuleTableOrder;
-  modules: ModuleWithTaLessonTypes[];
+  modules: ModuleWithColor[];
   tombstone: TombstoneModule | null; // Placeholder for a deleted module
 
   // Actions
   selectModuleColor: (semester: Semester, moduleCode: ModuleCode, colorIndex: ColorIndex) => void;
   hideLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   showLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
-  setTaModeInTimetable: (
-    semester: Semester,
-    moduleCode: ModuleCode,
-    lessonType: LessonType,
-  ) => void;
-  unsetTaModeInTimetable: (
-    semester: Semester,
-    moduleCode: ModuleCode,
-    lessonType: LessonType,
-  ) => void;
+  setTaModeInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
+  unsetTaModeInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   onRemoveModule: (moduleCode: ModuleCode) => void;
   resetTombstone: () => void;
 };
 
-type TaButtonOption = {
-  lessonType: LessonType;
-  isTa: boolean;
-};
-
 export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
-  const renderModuleActions = (module: ModuleWithTaLessonTypes) => {
+  const renderModuleActions = (module: ModuleWithColor) => {
     const removeBtnLabel = `Remove ${module.moduleCode} from timetable`;
     const hideBtnLabel = `${module.isHiddenInTimetable ? 'Show' : 'Hide'} ${module.moduleCode}`;
-    const taBtnLabel = `Configure TA mode for ${module.moduleCode}`;
+    const taBtnLabel = `${module.isTaInTimetable ? 'Disable' : 'Enable'} TA for ${
+      module.moduleCode
+    }`;
     const { semester } = props;
-
-    const taBtnOptions: TaButtonOption[] = Object.entries(module.taInTimetable).map(
-      ([lessonType, isTa]) => ({
-        lessonType,
-        isTa,
-      }),
-    );
-
-    const toggleTaLesson = (lessonType: LessonType, isTa: boolean) =>
-      isTa
-        ? props.unsetTaModeInTimetable(semester, module.moduleCode, lessonType)
-        : props.setTaModeInTimetable(semester, module.moduleCode, lessonType);
-
-    const isTaBtnDisabled = isEmpty(module.taInTimetable);
 
     return (
       <div className={styles.moduleActionButtons}>
@@ -123,73 +97,32 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
               )}
             </button>
           </Tooltip>
-          <Downshift
-            onSelect={(item) => {
-              taBtnOptions.forEach(({ lessonType, isTa }) => {
-                if (item === lessonType) {
-                  toggleTaLesson(lessonType, isTa);
+          <Tooltip content={taBtnLabel} touch={['hold', 50]}>
+            <button
+              type="button"
+              className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
+              aria-label={taBtnLabel}
+              onClick={() => {
+                if (module.isTaInTimetable) {
+                  props.unsetTaModeInTimetable(semester, module.moduleCode);
+                } else {
+                  props.setTaModeInTimetable(semester, module.moduleCode);
                 }
-              });
-            }}
-          >
-            {({
-              getRootProps,
-              getItemProps,
-              getMenuProps,
-              highlightedIndex,
-              isOpen,
-              toggleMenu,
-            }) => (
-              <>
-                <div
-                  className={classnames('dropdown-menu', { show: isOpen }, styles.taModuleMenu)}
-                  {...getMenuProps({})}
-                >
-                  {taBtnOptions.map(({ lessonType, isTa }, itemIndex) => (
-                    <button
-                      type="button"
-                      key={itemIndex}
-                      className={classnames('dropdown-item', {
-                        'dropdown-selected': highlightedIndex === itemIndex,
-                      })}
-                      onClick={(e) => e.stopPropagation()}
-                      {...getItemProps({ item: lessonType })}
-                    >
-                      {isTa ? 'Unset' : 'Set'} TA for {lessonType}
-                    </button>
-                  ))}
-                </div>
-                <Tooltip
-                  {...getRootProps({ refKey: 'innerRef' }, { suppressRefError: true })}
-                  content={taBtnLabel}
-                  touch={['hold', 50]}
-                >
-                  <button
-                    type="button"
-                    className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
-                    aria-label={taBtnLabel}
-                    onClick={() => toggleMenu()}
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded={isOpen}
-                    disabled={isTaBtnDisabled}
-                  >
-                    {module.isTaInTimetable ? (
-                      <BookOpen className={styles.actionIcon} />
-                    ) : (
-                      <Book className={styles.actionIcon} />
-                    )}
-                  </button>
-                </Tooltip>
-              </>
-            )}
-          </Downshift>
+              }}
+            >
+              {module.isTaInTimetable ? (
+                <BookOpen className={styles.actionIcon} />
+              ) : (
+                <Book className={styles.actionIcon} />
+              )}
+            </button>
+          </Tooltip>
         </div>
       </div>
     );
   };
 
-  const renderModule = (module: ModuleWithTaLessonTypes) => {
+  const renderModule = (module: ModuleWithColor) => {
     const { semester, readOnly, tombstone, resetTombstone } = props;
 
     if (tombstone && tombstone.moduleCode === module.moduleCode) {

@@ -13,13 +13,13 @@ $arrow-height: 1.5rem;
   border: 1px solid transparent;
   border-radius: 0.25rem;
 
-  &.hidden {
-    border-style: dashed !important;
-    border-color: var(--gray-light);
-  }
-  
   &.ta {
     border-style: solid;
+    border-color: var(--gray-light);
+  }
+
+  &.hidden {
+    border-style: dashed;
     border-color: var(--gray-light);
   }
 }

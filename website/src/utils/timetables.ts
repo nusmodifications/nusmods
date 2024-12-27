@@ -3,9 +3,11 @@ import {
   castArray,
   difference,
   each,
+  filter,
   first,
   flatMap,
   flatMapDeep,
+  forEach,
   groupBy,
   invert,
   isEmpty,
@@ -114,8 +116,25 @@ export function randomModuleLessonConfig(lessons: readonly RawLesson[]): ModuleL
   );
 }
 
+// Array<Lesson> of normal and TA lessons
+export function hydrateSemTimetableWithAllLessons(
+  semTimetableConfig: SemTimetableConfig,
+  taModules: TaModulesConfig,
+  modules: ModulesMap,
+  semester: Semester,
+): SemTimetableConfigWithLessons {
+  // Add normal lessons without TA lessons
+  // Add TA lessons separately because TA lessons can map multiple classNos to a single lessonType
+  const taModuleCodes = Object.keys(filter(semTimetableConfig, (config) => !isEmpty(config)));
+  const timetableWithoutTaModules = omit(semTimetableConfig, taModuleCodes);
+  return {
+    ...hydrateSemTimetableWithNormalLessons(timetableWithoutTaModules, modules, semester),
+    ...hydrateSemTimetableWithTaLessons(taModules, modules, semester),
+  };
+}
+
 // Replaces ClassNo in SemTimetableConfig with Array<Lesson>
-export function hydrateSemTimetableWithLessons(
+export function hydrateSemTimetableWithNormalLessons(
   semTimetableConfig: SemTimetableConfig,
   modules: ModulesMap,
   semester: Semester,
@@ -127,6 +146,36 @@ export function hydrateSemTimetableWithLessons(
       if (!module) return EMPTY_OBJECT;
 
       return hydrateModuleConfigWithLessons(moduleLessonConfig, module, semester);
+    },
+  );
+}
+
+export function hydrateSemTimetableWithTaLessons(
+  taModules: TaModulesConfig,
+  modules: ModulesMap,
+  semester: Semester,
+): SemTimetableConfigWithLessons {
+  return mapValues(
+    taModules,
+    (lessons: [lessonType: LessonType, classNo: ClassNo][], moduleCode: ModuleCode) => {
+      const module = modules[moduleCode];
+      if (!module) return EMPTY_OBJECT;
+
+      const moduleLessonConfigWithLessons: ModuleLessonConfigWithLessons = {};
+      forEach(lessons, (lesson) => {
+        const [lessonType, classNo] = lesson;
+        const moduleLessonConfig = { [lessonType]: classNo };
+        const moduleConfigWithLessons = hydrateModuleConfigWithLessons(
+          moduleLessonConfig,
+          module,
+          semester,
+        );
+        if (!(lessonType in moduleLessonConfigWithLessons)) {
+          moduleLessonConfigWithLessons[lessonType] = [];
+        }
+        moduleLessonConfigWithLessons[lessonType].push(...moduleConfigWithLessons[lessonType]);
+      });
+      return moduleLessonConfigWithLessons;
     },
   );
 }
@@ -579,14 +628,17 @@ export function serializeTa(taModules: TaModulesConfig) {
   // eg:
   // eg:
   // {
-  //   CS2100: { Tutorial: ['2', '3'], Laboratory: ['1'] },
-  //   CS2107: { Tutorial: ['8'] },
+  //   CS2100: [ ['Tutorial', '2'], ['Tutorial', '3'], ['Laboratory', '1'] ],
+  //   CS2107: [ ['Tutorial', '8'] ],
   // }
   // => &ta=CS2100(TUT:2,TUT:3,LAB:1);CS2107(TUT:8)
-  return `&ta=${flatMap(taModules, (lessonConfig, moduleCode) => {
-    const joinedLessons = flatMap(lessonConfig, (classNos, lessonType) =>
-      classNos.map((classNo) => `${LESSON_TYPE_ABBREV[lessonType]}${TA_LESSON_TYPE_SEP}${classNo}`),
-    ).join(TA_LESSON_SEP);
+  return `&ta=${flatMap(taModules, (lessons, moduleCode) => {
+    const joinedLessons = lessons
+      .map((lesson) => {
+        const [lessonType, classNo] = lesson;
+        return `${LESSON_TYPE_ABBREV[lessonType]}${TA_LESSON_TYPE_SEP}${classNo}`;
+      })
+      .join(TA_LESSON_SEP);
     return `${moduleCode}(${joinedLessons})`;
   }).join(TA_CONFIG_SEP)}`;
 }
@@ -613,17 +665,12 @@ export function deserializeTa(serialized: string): TaModulesConfig {
     lessons.split(TA_LESSON_SEP).forEach((lesson) => {
       const [lessonTypeAbbr, classNo] = lesson.split(TA_LESSON_TYPE_SEP);
       if (!(moduleCode in deserialized)) {
-        deserialized[moduleCode] = {};
+        deserialized[moduleCode] = [];
       }
-
       const lessonType = LESSON_ABBREV_TYPE[lessonTypeAbbr];
-      if (!lessonType) return;
-      if (!(lessonType in deserialized[moduleCode])) {
-        deserialized[moduleCode][lessonType] = [];
-      }
-
       // Ignore unparsable/invalid keys
-      deserialized[moduleCode][lessonType].push(classNo);
+      if (!lessonType) return;
+      deserialized[moduleCode].push([lessonType, classNo]);
     });
   });
   return deserialized;

@@ -1,7 +1,7 @@
 import type { Module, ModuleCode, Semester } from 'types/modules';
 import type { ExportData } from 'types/export';
 import type { Dispatch, GetState } from 'types/redux';
-import { hydrateSemTimetableWithLessons } from 'utils/timetables';
+import { hydrateSemTimetableWithAllLessons } from 'utils/timetables';
 import { captureException } from 'utils/error';
 import retryImport from 'utils/retryImport';
 import { getSemesterTimetableLessons } from 'selectors/timetables';
@@ -36,7 +36,12 @@ export function downloadAsIcal(semester: Semester) {
         const taModules: TaModulesConfig = state.timetables.ta[semester] || {};
 
         const timetable = getSemesterTimetableLessons(state)(semester);
-        const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
+        const timetableWithLessons = hydrateSemTimetableWithAllLessons(
+          timetable,
+          taModules,
+          modules,
+          semester,
+        );
 
         const events = icalUtils.default(
           semester,

@@ -400,3 +400,34 @@ describe(mapStateToProps, () => {
     expect(mapStateToProps(state, ownProps).timetableWithLessons).toHaveProperty('CS3216');
   });
 });
+
+describe(mapStateToProps, () => {
+  test('should work with TA lessons', () => {
+    // On week -1 of sem 2 the semester should be 2, not 1
+    const ownProps: any = {
+      // Week -1 of sem 2 of AY2018/2019
+      currentTime: new Date('2019-01-09T00:00:00.000Z'),
+    };
+
+    const state: any = {
+      moduleBank: { modules: {} },
+      timetables: {
+        lessons: {
+          [1]: {},
+          [2]: {},
+        },
+        colors: {
+          [1]: COLORS,
+          [2]: COLORS,
+        },
+        ta: {
+          [2]: {
+            CS1010S: [['Tutorial', 1]],
+          },
+        },
+      },
+    };
+
+    expect(mapStateToProps(state, ownProps).timetableWithLessons).toHaveProperty('CS1010S');
+  });
+});
