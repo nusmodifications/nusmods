@@ -44,7 +44,7 @@
     "mock-fs": "5.4.1",
     "prettier": "2.8.8",
     "swagger-ui-dist": "4.19.1",
-    "ts-jest": "29.1.1",
+    "ts-jest": "29.2.5",
     "ts-node": "10.9.2",
     "typescript": "5.1.6"
   },
