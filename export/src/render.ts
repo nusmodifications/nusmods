@@ -28,6 +28,7 @@ export async function launch() {
     headless: true,
     executablePath: config.chromeExecutable,
     devtools: !!process.env.DEVTOOLS,
+    args: ['--disable-gpu'],
   });
 
   const page = await browser.newPage();

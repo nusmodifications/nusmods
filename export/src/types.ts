@@ -7,8 +7,12 @@ export interface PageData {
   readonly timetable: {
     [moduleCode: string]: ModuleLessonConfig;
   };
+  readonly hiddenInTimetable: string[];
+  readonly taInTimetable: {
+    [moduleCode: string]: [lessonType: string, classNo: string][];
+  };
   readonly settings: {
-    readonly hiddenInTimetable: string[];
+    colorScheme: 'LIGHT_COLOR_SCHEME' | 'DARK_COLOR_SCHEME';
   };
   readonly theme: {
     id: string;

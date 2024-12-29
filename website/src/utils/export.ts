@@ -13,7 +13,7 @@ export function extractStateForExport(
 ): ExportData {
   const colors = getSemesterTimetableColors(state)(semester);
   const hidden = state.timetables.hidden[semester] || [];
-  const ta = state.timetables.ta[semester] || [];
+  const ta = state.timetables.ta[semester] || {};
 
   return {
     semester,

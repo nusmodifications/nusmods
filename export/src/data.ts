@@ -65,6 +65,10 @@ export function validateExportData(data: PageData) {
     Joi.string(),
     Joi.object().pattern(Joi.string(), Joi.string()),
   );
+  const taModulesConfigSchema = Joi.object().pattern(
+    Joi.string(),
+    Joi.array().length(2).ordered(Joi.string(), Joi.string()),
+  );
   const themeSchema = Joi.object({
     id: Joi.string(),
     timetableOrientation: Joi.string().valid('HORIZONTAL', 'VERTICAL'),
@@ -73,8 +77,10 @@ export function validateExportData(data: PageData) {
   const pageDataSchema = Joi.object({
     semester: Joi.number().integer().greater(0).less(5),
     timetable: timetableSchema,
+    hiddenInTimeTable: Joi.array().items(Joi.string()),
+    taInTimetable: taModulesConfigSchema,
     settings: Joi.object({
-      hiddenInTimeTable: Joi.array().items(Joi.string()),
+      colorScheme: Joi.string().valid('LIGHT_COLOR_SCHEME', 'DARK_COLOR_SCHEME'),
     }),
     theme: themeSchema,
   });
