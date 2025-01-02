@@ -250,6 +250,7 @@ describe(iCalEventForLesson, () => {
       BFS1001 as Module,
       1,
       new Date('2016-08-08T00:00+0800'),
+      false,
     );
 
     const expected = {
@@ -317,6 +318,7 @@ describe(iCalEventForLesson, () => {
       BFS1001 as Module,
       1,
       new Date('2016-08-08T00:00+0800'),
+      false,
     );
 
     const expected = {
@@ -354,7 +356,7 @@ describe(iCalForTimetable, () => {
       CS3216,
     };
     const actual = iCalForTimetable(1, mockTimetable, moduleData, ['CS3216'], {});
-    // 5 lesson types for cs1010s, 1 exam for cs1010s (1 lesson for cs3216 will be exluded)
+    // 5 lesson types for cs1010s, 1 exam for cs1010s (1 lesson for cs3216 will be excluded)
     expect(actual).toHaveLength(6);
   });
 
@@ -366,7 +368,7 @@ describe(iCalForTimetable, () => {
     const actual = iCalForTimetable(1, mockTimetable, moduleData, [], {
       CS1010S: [['Tutorial', '1']],
     });
-    // 5 lesson types for cs1010s, 1 for cs3216 (1 exam for cs1010s will be exluded)
+    // 5 lesson types for cs1010s, 1 for cs3216 (1 exam for cs1010s will be excluded)
     expect(actual).toHaveLength(6);
   });
 });

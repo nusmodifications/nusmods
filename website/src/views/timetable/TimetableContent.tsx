@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import _, { isEmpty } from 'lodash';
+import _, { isEmpty, omit } from 'lodash';
 
 import { ColorMapping, HORIZONTAL, ModulesMap, TimetableOrientation } from 'types/reducers';
 import { ClassNo, LessonType, Module, ModuleCode, Semester } from 'types/modules';
@@ -37,7 +37,8 @@ import {
   findExamClashes,
   getLessonIdentifier,
   getSemesterModules,
-  hydrateSemTimetableWithAllLessons,
+  hydrateSemTimetableWithLessons,
+  hydrateTaModulesConfigWithLessons,
   lessonsForLessonType,
   timetableLessonsArray,
 } from 'utils/timetables';
@@ -535,17 +536,22 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
   const hiddenInTimetable =
     ownProps.hiddenImportedModules ?? (state.timetables.hidden[semester] || []);
   const taInTimetable = ownProps.taImportedModules ?? (state.timetables.ta[semester] || {});
-  const timetableWithLessons = hydrateSemTimetableWithAllLessons(
-    timetable,
+
+  const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
+  const timetableWithTaLessons = hydrateTaModulesConfigWithLessons(
     taInTimetable,
     modules,
     semester,
   );
+  const filteredTimetableWithLessons = {
+    ...omit(timetableWithLessons, Object.keys(timetableWithTaLessons)),
+    ...timetableWithTaLessons,
+  };
 
   return {
     semester,
     timetable,
-    timetableWithLessons,
+    timetableWithLessons: filteredTimetableWithLessons,
     modules,
     activeLesson: state.app.activeLesson,
     timetableOrientation: state.theme.timetableOrientation,

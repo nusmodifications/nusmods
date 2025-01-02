@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { get, minBy, range } from 'lodash';
+import { get, minBy, omit, range } from 'lodash';
 import NUSModerator, { AcadWeekInfo } from 'nusmoderator';
 import classnames from 'classnames';
 import {
@@ -21,7 +21,8 @@ import { EmptyGroupType, SelectedLesson } from 'types/views';
 
 import {
   groupLessonsByDay,
-  hydrateSemTimetableWithAllLessons,
+  hydrateSemTimetableWithLessons,
+  hydrateTaModulesConfigWithLessons,
   isLessonAvailable,
   isLessonOngoing,
   timetableLessonsArray,
@@ -364,16 +365,17 @@ export const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
   const timetable = getSemesterTimetableLessons(state)(semester);
   const colors = getSemesterTimetableColors(state)(semester);
   const taModules = state.timetables.ta?.[semester] ?? {};
-  const timetableWithLessons = hydrateSemTimetableWithAllLessons(
-    timetable,
-    taModules,
-    modules,
-    semester,
-  );
+
+  const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
+  const timetableWithTaLessons = hydrateTaModulesConfigWithLessons(taModules, modules, semester);
+  const filteredTimetableWithLessons = {
+    ...omit(timetableWithLessons, Object.keys(timetableWithTaLessons)),
+    ...timetableWithTaLessons,
+  };
 
   return {
     colors,
-    timetableWithLessons,
+    timetableWithLessons: filteredTimetableWithLessons,
   };
 };
 

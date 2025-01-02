@@ -3,7 +3,6 @@ import {
   castArray,
   difference,
   each,
-  filter,
   first,
   flatMap,
   flatMapDeep,
@@ -116,25 +115,8 @@ export function randomModuleLessonConfig(lessons: readonly RawLesson[]): ModuleL
   );
 }
 
-// Array<Lesson> of normal and TA lessons
-export function hydrateSemTimetableWithAllLessons(
-  semTimetableConfig: SemTimetableConfig,
-  taModules: TaModulesConfig,
-  modules: ModulesMap,
-  semester: Semester,
-): SemTimetableConfigWithLessons {
-  // Add normal lessons without TA lessons
-  // Add TA lessons separately because TA lessons can map multiple classNos to a single lessonType
-  const taModuleCodes = Object.keys(filter(semTimetableConfig, (config) => !isEmpty(config)));
-  const timetableWithoutTaModules = omit(semTimetableConfig, taModuleCodes);
-  return {
-    ...hydrateSemTimetableWithNormalLessons(timetableWithoutTaModules, modules, semester),
-    ...hydrateSemTimetableWithTaLessons(taModules, modules, semester),
-  };
-}
-
 // Replaces ClassNo in SemTimetableConfig with Array<Lesson>
-export function hydrateSemTimetableWithNormalLessons(
+export function hydrateSemTimetableWithLessons(
   semTimetableConfig: SemTimetableConfig,
   modules: ModulesMap,
   semester: Semester,
@@ -150,7 +132,8 @@ export function hydrateSemTimetableWithNormalLessons(
   );
 }
 
-export function hydrateSemTimetableWithTaLessons(
+// Replaces LessonType and ClassNo in TaModulesConfig with Array<Lesson>
+export function hydrateTaModulesConfigWithLessons(
   taModules: TaModulesConfig,
   modules: ModulesMap,
   semester: Semester,

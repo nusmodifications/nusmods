@@ -156,7 +156,7 @@ export function iCalEventForLesson(
   module: Module,
   semester: Semester,
   firstDayOfSchool: Date,
-  isTa?: boolean,
+  isTa: boolean,
 ): EventOption {
   const event = consumeWeeks(
     lesson.weeks,
@@ -188,13 +188,17 @@ export default function iCalForTimetable(
   _.each(timetable, (lessonConfig, moduleCode) => {
     if (hiddenModules.includes(moduleCode)) return;
 
+    const isTa = moduleCode in taModules;
+
     _.each(lessonConfig, (lessons) => {
       lessons.forEach((lesson) => {
-        events.push(iCalEventForLesson(lesson, moduleData[moduleCode], semester, firstDayOfSchool));
+        events.push(
+          iCalEventForLesson(lesson, moduleData[moduleCode], semester, firstDayOfSchool, isTa),
+        );
       });
     });
 
-    if (moduleCode in taModules) return;
+    if (isTa) return;
 
     const examEvent = iCalEventForExam(moduleData[moduleCode], semester);
     if (examEvent) events.push(examEvent);
