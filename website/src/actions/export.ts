@@ -35,8 +35,8 @@ export function downloadAsIcal(semester: Semester) {
       .then(([ical, icalUtils]) => {
         const state = getState();
         const { modules } = state.moduleBank;
-        const hiddenModules: ModuleCode[] = state.timetables.hidden[semester] || [];
-        const taModules: TaModulesConfig = state.timetables.ta[semester] || {};
+        const hiddenModules: ModuleCode[] = state.timetables.hidden[semester] ?? [];
+        const taModules: TaModulesConfig = state.timetables.ta[semester] ?? {};
 
         const timetable = getSemesterTimetableLessons(state)(semester);
         const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
