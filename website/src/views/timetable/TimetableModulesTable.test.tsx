@@ -48,6 +48,10 @@ function getModules(wrapper: ShallowWrapper) {
   return wrapper.find(`.${styles.modulesTableRow}`).map((ele) => ele.key());
 }
 
+function getButtons(wrapper: ShallowWrapper) {
+  return wrapper.find(`.${styles.moduleActionButtons} > .btn-group`);
+}
+
 describe(TimetableModulesTableComponent, () => {
   const modules = addColors([CS1010S, CS3216]);
 
@@ -84,5 +88,20 @@ describe(TimetableModulesTableComponent, () => {
     );
 
     expect(moduleCodes).toEqual(originalOrder);
+  });
+
+  it('should display 3 action buttons', () => {
+    const moduleActionButtons = getButtons(make({ modules }).wrapper);
+    expect(moduleActionButtons.at(0).children()).toHaveLength(3);
+  });
+
+  it('should disable TA button correctly', () => {
+    // TA button is the 3rd button
+    const withDisabledTaButton = getButtons(make({ modules: addColors([CS1010S]) }).wrapper);
+    expect(withDisabledTaButton.at(0).childAt(2).html()).toContain('disabled=""');
+
+    const modulesWithTaAbleModule = addColors([CS1010S], false, false, true);
+    const withoutDisabledTaButton = getButtons(make({ modules: modulesWithTaAbleModule }).wrapper);
+    expect(withoutDisabledTaButton.at(0).childAt(2).html()).not.toContain('disabled=""');
   });
 });
