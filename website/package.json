@@ -47,7 +47,7 @@
     "@types/jest": "29.5.14",
     "@types/json2mq": "0.2.2",
     "@types/leaflet": "1.9.15",
-    "@types/lodash": "4.17.13",
+    "@types/lodash": "4.17.14",
     "@types/mousetrap": "1.6.15",
     "@types/no-scroll": "2.1.2",
     "@types/react": "18.3.18",
