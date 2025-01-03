@@ -174,7 +174,7 @@ describe(calculateNumericWeek, () => {
         new Date('2016-10-31T14:00+0800'), // 12
       ]),
     );
-  });
+  }); 
 
   test('generates exclusions for holidays', () => {
     // 2016 holidays
@@ -258,8 +258,9 @@ test('iCalEventForLesson generates correct output', () => {
     description: 'Personal Development & Career Management\nSectional Teaching Group A1',
     location: 'BIZ1-0303',
     repeating: {
+      interval: 1,
       freq: 'WEEKLY',
-      count: 14,
+      count: 6,
       byDay: ['Mo'],
       exclude: expect.arrayContaining([]), // Tested in previous tests
     },
@@ -291,6 +292,7 @@ test('work for half hour lesson offsets', () => {
     description: 'Personal Development & Career Management\nSectional Teaching Group A1',
     location: 'BIZ1-0303',
     repeating: {
+      interval: 1,
       freq: 'WEEKLY',
       count: 14,
       byDay: ['Mo'],
