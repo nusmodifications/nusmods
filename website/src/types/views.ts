@@ -53,7 +53,8 @@ export const TIME_SEGMENTS = ['Morning', 'Afternoon', 'Evening'];
 
 export type ModuleWithColor = Module & {
   colorIndex: ColorIndex;
-  hiddenInTimetable: boolean;
+  isHiddenInTimetable: boolean;
+  isTaInTimetable: boolean;
 };
 
 export type TombstoneModule = ModuleWithColor & {

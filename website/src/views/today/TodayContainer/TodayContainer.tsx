@@ -22,6 +22,7 @@ import { EmptyGroupType, SelectedLesson } from 'types/views';
 import {
   groupLessonsByDay,
   hydrateSemTimetableWithLessons,
+  hydrateTaModulesConfigWithLessons,
   isLessonAvailable,
   isLessonOngoing,
   timetableLessonsArray,
@@ -32,6 +33,7 @@ import {
   getSemesterTimetableColors,
   getSemesterTimetableHidden,
   getSemesterTimetableLessons,
+  getSemesterTimetableTaLessons,
 } from 'selectors/timetables';
 import ExternalLink from 'views/components/ExternalLink';
 import * as weatherAPI from 'apis/weather';
@@ -65,7 +67,7 @@ export type OwnProps = TimerData;
 
 export type Props = OwnProps &
   Readonly<{
-    visibleTimetableWithLessons: SemTimetableConfigWithLessons;
+    timetableWithLessons: SemTimetableConfigWithLessons;
     colors: ColorMapping;
     matchBreakpoint: boolean;
   }>;
@@ -178,9 +180,9 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
   };
 
   groupLessons() {
-    const { colors, currentTime, visibleTimetableWithLessons } = this.props;
+    const { colors, currentTime, timetableWithLessons } = this.props;
 
-    const timetableLessons: Lesson[] = timetableLessonsArray(visibleTimetableWithLessons);
+    const timetableLessons: Lesson[] = timetableLessonsArray(timetableWithLessons);
 
     // Inject color into module
     const coloredTimetableLessons = timetableLessons.map(
@@ -368,14 +370,20 @@ export const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
   const timetable = getSemesterTimetableLessons(state)(semester);
   const colors = getSemesterTimetableColors(state)(semester);
   const hidden = getSemesterTimetableHidden(state)(semester);
-  const visibleTimetableWithLessons = omit(
+  const ta = getSemesterTimetableTaLessons(state)(semester);
+  const timetableWithLessons = omit(
     hydrateSemTimetableWithLessons(timetable, modules, semester),
     hidden,
   );
+  const timetableWithTaLessons = hydrateTaModulesConfigWithLessons(ta, modules, semester);
+  const filteredTimetableWithLessons = {
+    ...timetableWithLessons,
+    ...timetableWithTaLessons,
+  };
 
   return {
     colors,
-    visibleTimetableWithLessons,
+    timetableWithLessons: filteredTimetableWithLessons,
   };
 };
 

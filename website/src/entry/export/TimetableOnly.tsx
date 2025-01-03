@@ -27,13 +27,14 @@ export default class TimetableOnly extends Component<Props, State> {
     timetable: {},
     colors: {},
     hidden: [],
+    ta: {},
   };
 
   override render() {
     const { store } = this.props;
     const theme = store.getState().theme.id;
 
-    const { semester, timetable, colors, hidden } = this.state;
+    const { semester, timetable, colors, hidden, ta } = this.state;
     const filledColors = fillColorMapping(timetable, colors);
 
     return (
@@ -46,6 +47,7 @@ export default class TimetableOnly extends Component<Props, State> {
               timetable={timetable}
               colors={filledColors}
               hiddenImportedModules={hidden}
+              taImportedModules={ta}
               readOnly
             />
           </div>

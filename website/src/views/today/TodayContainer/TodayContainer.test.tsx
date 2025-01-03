@@ -138,7 +138,7 @@ describe(TodayContainerComponent, () => {
     const componentProps: Props = {
       colors: COLORS,
       matchBreakpoint: false,
-      visibleTimetableWithLessons: LESSONS,
+      timetableWithLessons: LESSONS,
 
       ...props,
     };
@@ -166,7 +166,7 @@ describe(TodayContainerComponent, () => {
 
     const wrapper = make({
       currentTime: now,
-      visibleTimetableWithLessons: {},
+      timetableWithLessons: {},
     });
 
     expect(getLessons(wrapper)).toHaveLength(0);
@@ -277,6 +277,7 @@ describe(mapStateToProps, () => {
         [4]: COLORS,
       },
       hidden: { [2]: ['GEX1015'] },
+      ta: {},
     },
   } as any as State;
 
@@ -288,11 +289,9 @@ describe(mapStateToProps, () => {
     };
 
     // Should return sem 2 timetable, not sem 1
-    expect(mapStateToProps(state, ownProps).visibleTimetableWithLessons).toHaveProperty('CS1010S');
+    expect(mapStateToProps(state, ownProps).timetableWithLessons).toHaveProperty('CS1010S');
     // Should hide "hidden" courses
-    expect(mapStateToProps(state, ownProps).visibleTimetableWithLessons).not.toHaveProperty(
-      'GEX1015',
-    );
+    expect(mapStateToProps(state, ownProps).timetableWithLessons).not.toHaveProperty('GEX1015');
   });
 
   test('should use correct semester (test 2)', () => {
@@ -302,7 +301,7 @@ describe(mapStateToProps, () => {
     };
 
     // Should return special term II timetable, not sem 1
-    expect(mapStateToProps(state, ownProps).visibleTimetableWithLessons).toHaveProperty('CS2040');
+    expect(mapStateToProps(state, ownProps).timetableWithLessons).toHaveProperty('CS2040');
   });
 
   test('should use correct semester (test 3)', () => {
@@ -312,7 +311,7 @@ describe(mapStateToProps, () => {
     };
 
     // Should return sem1 timetable
-    expect(mapStateToProps(state, ownProps).visibleTimetableWithLessons).toHaveProperty('CS3216');
+    expect(mapStateToProps(state, ownProps).timetableWithLessons).toHaveProperty('CS3216');
   });
 
   test('should use correct semester (test 4)', () => {
@@ -322,7 +321,7 @@ describe(mapStateToProps, () => {
     };
 
     // Should return sem2 timetable
-    expect(mapStateToProps(state, ownProps).visibleTimetableWithLessons).toHaveProperty('CS1010S');
+    expect(mapStateToProps(state, ownProps).timetableWithLessons).toHaveProperty('CS1010S');
   });
 
   test('should use correct semester (test 5)', () => {
@@ -332,6 +331,38 @@ describe(mapStateToProps, () => {
     };
 
     // Should return special term I timetable
-    expect(mapStateToProps(state, ownProps).visibleTimetableWithLessons).toHaveProperty('CS1231');
+    expect(mapStateToProps(state, ownProps).timetableWithLessons).toHaveProperty('CS1231');
+  });
+});
+
+describe(mapStateToProps, () => {
+  test('should work with TA lessons', () => {
+    // On week -1 of sem 2 the semester should be 2, not 1
+    const ownProps = {
+      // Week -1 of sem 2 of AY2018/2019
+      currentTime: new Date('2019-01-09T00:00:00.000Z'),
+    };
+
+    const state = {
+      moduleBank: { modules: {} },
+      timetables: {
+        lessons: {
+          [1]: {},
+          [2]: {},
+        },
+        colors: {
+          [1]: COLORS,
+          [2]: COLORS,
+        },
+        hidden: [],
+        ta: {
+          [2]: {
+            CS1010S: [['Tutorial', 1]],
+          },
+        },
+      },
+    } as any as State;
+
+    expect(mapStateToProps(state, ownProps).timetableWithLessons).toHaveProperty('CS1010S');
   });
 });

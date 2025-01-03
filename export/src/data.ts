@@ -65,6 +65,10 @@ export function validateExportData(data: ExportData) {
     Joi.string(),
     Joi.object().pattern(Joi.string(), Joi.string()),
   );
+  const taModulesConfigSchema = Joi.object().pattern(
+    Joi.string(),
+    Joi.array().length(2).ordered(Joi.string(), Joi.string()),
+  );
   const themeSchema = Joi.object({
     id: Joi.string(),
     timetableOrientation: Joi.string().valid('HORIZONTAL', 'VERTICAL'),
@@ -75,6 +79,7 @@ export function validateExportData(data: ExportData) {
     timetable: timetableSchema,
     colors: Joi.object().pattern(Joi.string(), Joi.number().integer().min(0)),
     hidden: Joi.array().items(Joi.string()),
+    ta: taModulesConfigSchema,
     settings: Joi.object({
       colorScheme: Joi.string().valid('LIGHT_COLOR_SCHEME', 'DARK_COLOR_SCHEME'),
     }),
