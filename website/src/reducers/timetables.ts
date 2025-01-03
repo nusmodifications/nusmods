@@ -202,7 +202,7 @@ function semTaModules(state = DEFAULT_TA_STATE, action: Actions): TaModulesConfi
       if (!(moduleCode && lessonType && classNo)) return state;
       return {
         ...state,
-        [moduleCode]: (state[moduleCode] ?? []).filter(
+        [moduleCode]: state[moduleCode]?.filter(
           (lesson) => !isEqual(lesson, [lessonType, classNo]),
         ),
       };
@@ -241,10 +241,10 @@ function timetables(
       const { semester, timetable, colors, hiddenModules, taModules } = action.payload;
 
       return produce(state, (draft) => {
-        draft.lessons[semester] = timetable || DEFAULT_SEM_TIMETABLE_CONFIG;
-        draft.colors[semester] = colors || {};
-        draft.hidden[semester] = hiddenModules || [];
-        draft.ta[semester] = taModules || {};
+        draft.lessons[semester] = timetable ?? DEFAULT_SEM_TIMETABLE_CONFIG;
+        draft.colors[semester] = colors ?? {};
+        draft.hidden[semester] = hiddenModules ?? [];
+        draft.ta[semester] = taModules ?? {};
       });
     }
 

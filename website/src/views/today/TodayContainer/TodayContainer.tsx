@@ -377,7 +377,7 @@ export const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
   );
   const timetableWithTaLessons = hydrateTaModulesConfigWithLessons(ta, modules, semester);
   const filteredTimetableWithLessons = {
-    ...omit(timetableWithLessons, Object.keys(timetableWithTaLessons)),
+    ...timetableWithLessons,
     ...timetableWithTaLessons,
   };
 

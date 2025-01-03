@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import _, { isEmpty, omit } from 'lodash';
+import { sortBy, difference, values, flatten, mapValues, isEmpty } from 'lodash';
 
 import { ColorMapping, HORIZONTAL, ModulesMap, TimetableOrientation } from 'types/reducers';
 import { ClassNo, LessonType, Module, ModuleCode, Semester } from 'types/modules';
@@ -258,7 +258,7 @@ class TimetableContent extends React.Component<Props, State> {
   // Returns modules currently in the timetable
   addedModules(): Module[] {
     const modules = getSemesterModules(this.props.timetableWithLessons, this.props.modules);
-    return _.sortBy(modules, (module: Module) => getExamDate(module, this.props.semester));
+    return sortBy(modules, (module: Module) => getExamDate(module, this.props.semester));
   }
 
   toModuleWithColor = (module: Module): ModuleWithColor => ({
@@ -295,9 +295,9 @@ class TimetableContent extends React.Component<Props, State> {
         !this.isHiddenInTimetable(module.moduleCode) && !this.isTaInTimetable(module.moduleCode),
     );
     const clashes = findExamClashes(examinableModules, this.props.semester);
-    const nonClashingMods: Module[] = _.difference(modules, _.flatten(_.values(clashes)));
+    const nonClashingMods: Module[] = difference(modules, flatten(values(clashes)));
 
-    if (_.isEmpty(clashes) && _.isEmpty(nonClashingMods) && !tombstone) {
+    if (isEmpty(clashes) && isEmpty(nonClashingMods) && !tombstone) {
       return (
         <div className="row">
           <div className="col-sm-12">
@@ -309,7 +309,7 @@ class TimetableContent extends React.Component<Props, State> {
 
     return (
       <>
-        {!_.isEmpty(clashes) && (
+        {!isEmpty(clashes) && (
           <>
             <div className="alert alert-danger">
               Warning! There are clashes in your exam timetable.
@@ -406,7 +406,7 @@ class TimetableContent extends React.Component<Props, State> {
     );
 
     const arrangedLessons = arrangeLessonsForWeek(coloredTimetableLessons);
-    const arrangedLessonsWithModifiableFlag: TimetableArrangement = _.mapValues(
+    const arrangedLessonsWithModifiableFlag: TimetableArrangement = mapValues(
       arrangedLessons,
       (dayRows) =>
         dayRows.map((row) =>
@@ -544,7 +544,7 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
     semester,
   );
   const filteredTimetableWithLessons = {
-    ...omit(timetableWithLessons, Object.keys(timetableWithTaLessons)),
+    ...timetableWithLessons,
     ...timetableWithTaLessons,
   };
 

@@ -9,7 +9,6 @@ import { captureException } from 'utils/error';
 import retryImport from 'utils/retryImport';
 import { getSemesterTimetableLessons } from 'selectors/timetables';
 import { TaModulesConfig } from 'types/timetables';
-import { omit } from 'lodash';
 import { SET_EXPORTED_DATA } from './constants';
 
 function downloadUrl(blob: Blob, filename: string) {
@@ -47,7 +46,7 @@ export function downloadAsIcal(semester: Semester) {
           semester,
         );
         const filteredTimetableWithLessons = {
-          ...omit(timetableWithLessons, Object.keys(timetableWithTaLessons)),
+          ...timetableWithLessons,
           ...timetableWithTaLessons,
         };
 
