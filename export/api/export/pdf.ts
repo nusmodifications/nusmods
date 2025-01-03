@@ -1,9 +1,9 @@
 import { validateExportData } from '../../src/data';
 import { makeExportHandler } from '../../src/handler';
 import * as render from '../../src/render-serverless';
-import type { PageData } from '../../src/types';
+import type { ExportData } from '../../src/types';
 
-const handler = makeExportHandler<PageData>(
+const handler = makeExportHandler<ExportData>(
   (request) => {
     const exportData = JSON.parse(request.query.data as never);
     validateExportData(exportData);

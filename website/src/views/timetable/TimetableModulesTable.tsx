@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { sortBy } from 'lodash';
 import { produce } from 'immer';
 
-import { Eye, EyeOff, Trash } from 'react-feather';
+import { Book, BookOpen, Eye, EyeOff, Trash } from 'react-feather';
 import { ModuleWithColor, TombstoneModule } from 'types/views';
 import { ColorIndex } from 'types/timetables';
 import { ModuleCode, Semester } from 'types/modules';
@@ -14,9 +14,10 @@ import { ModuleTableOrder } from 'types/reducers';
 
 import ColorPicker from 'views/components/ColorPicker';
 import {
-  hideLessonInTimetable,
   selectModuleColor,
+  hideLessonInTimetable,
   showLessonInTimetable,
+  disableTaModeInTimetable,
 } from 'actions/timetables';
 import {
   getExamDate,
@@ -48,14 +49,19 @@ export type Props = {
   selectModuleColor: (semester: Semester, moduleCode: ModuleCode, colorIndex: ColorIndex) => void;
   hideLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   showLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
+  enableTaModeInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
+  disableTaModeInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   onRemoveModule: (moduleCode: ModuleCode) => void;
   resetTombstone: () => void;
 };
 
 export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
   const renderModuleActions = (module: ModuleWithColor) => {
-    const hideBtnLabel = `${module.hiddenInTimetable ? 'Show' : 'Hide'} ${module.moduleCode}`;
     const removeBtnLabel = `Remove ${module.moduleCode} from timetable`;
+    const hideBtnLabel = `${module.isHiddenInTimetable ? 'Show' : 'Hide'} ${module.moduleCode}`;
+    const taBtnLabel = `${module.isTaInTimetable ? 'Disable' : 'Enable'} TA for ${
+      module.moduleCode
+    }`;
     const { semester } = props;
 
     return (
@@ -77,17 +83,37 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
               className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
               aria-label={hideBtnLabel}
               onClick={() => {
-                if (module.hiddenInTimetable) {
+                if (module.isHiddenInTimetable) {
                   props.showLessonInTimetable(semester, module.moduleCode);
                 } else {
                   props.hideLessonInTimetable(semester, module.moduleCode);
                 }
               }}
             >
-              {module.hiddenInTimetable ? (
+              {module.isHiddenInTimetable ? (
                 <Eye className={styles.actionIcon} />
               ) : (
                 <EyeOff className={styles.actionIcon} />
+              )}
+            </button>
+          </Tooltip>
+          <Tooltip content={taBtnLabel} touch={['hold', 50]}>
+            <button
+              type="button"
+              className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
+              aria-label={taBtnLabel}
+              onClick={() => {
+                if (module.isTaInTimetable) {
+                  props.disableTaModeInTimetable(semester, module.moduleCode);
+                } else {
+                  props.enableTaModeInTimetable(semester, module.moduleCode);
+                }
+              }}
+            >
+              {module.isTaInTimetable ? (
+                <BookOpen className={styles.actionIcon} />
+              ) : (
+                <Book className={styles.actionIcon} />
               )}
             </button>
           </Tooltip>
@@ -124,7 +150,8 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
           <ColorPicker
             label={`Change ${module.moduleCode} timetable color`}
             color={module.colorIndex}
-            isHidden={module.hiddenInTimetable}
+            isHidden={module.isHiddenInTimetable}
+            isTa={module.isTaInTimetable}
             onChooseColor={(colorIndex: ColorIndex) => {
               props.selectModuleColor(semester, module.moduleCode, colorIndex);
             }}
@@ -178,5 +205,6 @@ export default connect(
     selectModuleColor,
     hideLessonInTimetable,
     showLessonInTimetable,
+    disableTaModeInTimetable,
   },
 )(React.memo(TimetableModulesTableComponent));

@@ -8,8 +8,9 @@ import {
   setLessonConfig,
   showLessonInTimetable,
   setHiddenImported,
-  HIDDEN_IMPORTED_SEM,
   Internal,
+  addTaLessonInTimetable,
+  removeTaLessonInTimetable,
 } from 'actions/timetables';
 import { TimetablesState } from 'types/reducers';
 import config from 'config';
@@ -73,6 +74,7 @@ describe('color reducers', () => {
           timetable: { CS1010S: {} },
           colors: { CS1010S: 0 },
           hiddenModules: [],
+          taModules: {},
         },
       }).colors[1],
     ).toEqual({
@@ -119,6 +121,53 @@ describe('hidden module reducer', () => {
       hidden: {
         [1]: [],
         [2]: ['CS1010S'],
+      },
+    });
+  });
+});
+
+describe('TA module reducer', () => {
+  const withTaModules: TimetablesState = {
+    ...initialState,
+    ta: { [1]: { CS1010S: [['Tutorial', '1']] }, [2]: { CS1010S: [['Tutorial', '1']] } },
+  };
+
+  test('should update TA modules', () => {
+    expect(
+      reducer(initialState, addTaLessonInTimetable(1, 'CS3216', 'Tutorial', '1')),
+    ).toHaveProperty('ta.1', { CS3216: [['Tutorial', '1']] });
+
+    expect(
+      reducer(initialState, removeTaLessonInTimetable(1, 'CS1010S', 'Tutorial', '1')),
+    ).toMatchObject({
+      ta: {
+        [1]: {},
+      },
+    });
+
+    expect(
+      reducer(withTaModules, removeTaLessonInTimetable(1, 'CS1010S', 'Tutorial', '1')),
+    ).toMatchObject({
+      ta: {
+        [1]: {},
+        [2]: { CS1010S: [['Tutorial', '1']] },
+      },
+    });
+  });
+
+  test('should remove modules from list when modules are removed', () => {
+    expect(
+      reducer(
+        {
+          ...initialState,
+          ta: { [1]: { CS1010S: [['Tutorial', '1']] }, [2]: { CS1010S: [['Tutorial', '1']] } },
+        },
+        removeModule(1, 'CS1010S'),
+      ),
+    ).toMatchObject({
+      ta: {
+        [1]: {},
+        [2]: { CS1010S: [['Tutorial', '1']] },
       },
     });
   });
@@ -213,6 +262,7 @@ describe('stateReconciler', () => {
     hidden: {
       [1]: ['CS1010S'],
     },
+    ta: {},
     academicYear: config.academicYear,
     archive: oldArchive,
   };
@@ -249,53 +299,36 @@ describe('stateReconciler', () => {
 });
 
 describe('import timetable', () => {
+  const stateWithHidden = {
+    ...initialState,
+    hidden: {
+      [1]: ['CS1101S', 'CS1231S'],
+    },
+  };
+
   test('should have hidden modules set when importing hidden', () => {
-    expect(reducer(initialState, setHiddenImported(['CS1101S', 'CS1231S'])).hidden).toMatchObject({
-      [HIDDEN_IMPORTED_SEM]: ['CS1101S', 'CS1231S'],
+    expect(
+      reducer(initialState, setHiddenImported(1, ['CS1101S', 'CS1231S'])).hidden,
+    ).toMatchObject({
+      [1]: ['CS1101S', 'CS1231S'],
     });
 
     // Should change hidden modules when a new set of modules is imported
     expect(
-      reducer(
-        {
-          ...initialState,
-          hidden: {
-            [HIDDEN_IMPORTED_SEM]: ['CS1101S', 'CS1231S'],
-          },
-        },
-        setHiddenImported(['CS2100', 'CS2103T']),
-      ).hidden,
+      reducer(stateWithHidden, setHiddenImported(1, ['CS2100', 'CS2103T'])).hidden,
     ).toMatchObject({
-      [HIDDEN_IMPORTED_SEM]: ['CS2100', 'CS2103T'],
+      [1]: ['CS2100', 'CS2103T'],
     });
 
     // should delete hidden modules when there are none
-    expect(
-      reducer(
-        {
-          ...initialState,
-          hidden: {
-            [HIDDEN_IMPORTED_SEM]: ['CS1101S', 'CS1231S'],
-          },
-        },
-        setHiddenImported([]),
-      ).hidden,
-    ).toMatchObject({
-      [HIDDEN_IMPORTED_SEM]: [],
+    expect(reducer(stateWithHidden, setHiddenImported(1, [])).hidden).toMatchObject({
+      [1]: [],
     });
   });
 
   test('should copy over hidden modules when deciding to replace saved timetable', () => {
     expect(
-      reducer(
-        {
-          ...initialState,
-          hidden: {
-            [HIDDEN_IMPORTED_SEM]: ['CS1101S', 'CS1231S'],
-          },
-        },
-        Internal.setTimetable(1, {}, {}, ['CS1101S', 'CS1231S']),
-      ).hidden,
+      reducer(stateWithHidden, Internal.setTimetable(1, {}, {}, stateWithHidden.hidden[1])).hidden,
     ).toMatchObject({
       '1': ['CS1101S', 'CS1231S'],
     });

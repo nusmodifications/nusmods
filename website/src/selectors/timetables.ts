@@ -38,3 +38,20 @@ export const getSemesterTimetableColors = createSelector(
   (colors) => (semester: Semester | null) =>
     semester === null ? EMPTY_OBJECT : colors[semester] ?? EMPTY_OBJECT,
 );
+
+/**
+ * Extract hidden courses for a specific semester.
+ */
+export const getSemesterTimetableHidden = createSelector(
+  ({ timetables }: State) => timetables.hidden,
+  (hidden) => (semester: Semester | null) => semester === null ? [] : hidden[semester] ?? [],
+);
+
+/**
+ * Extract TA-ed lessons for a specific semester.
+ */
+export const getSemesterTimetableTaLessons = createSelector(
+  ({ timetables }: State) => timetables.ta,
+  (ta) => (semester: Semester | null) =>
+    semester === null ? EMPTY_OBJECT : ta[semester] ?? EMPTY_OBJECT,
+);
