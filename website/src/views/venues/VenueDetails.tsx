@@ -1,10 +1,12 @@
 import { FC, memo, useCallback, useMemo } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { ChevronLeft, ChevronRight } from 'react-feather';
 import classnames from 'classnames';
 import { flatMap } from 'lodash';
 
 import type { DayAvailability, TimePeriod, Venue } from 'types/venues';
+import { State } from 'types/state';
 import type { Lesson } from 'types/timetables';
 
 import { colorLessonsByKey } from 'utils/colors';
@@ -33,6 +35,8 @@ const VenueDetailsComponent: FC<Props> = ({
   availability,
   highlightPeriod,
 }) => {
+  const numOfColors = useSelector(({ theme }: State) => theme.numOfColors);
+
   const arrangedLessons = useMemo(() => {
     const lessons: Lesson[] = flatMap(availability, (day) => day.classes).map((venueLesson) => ({
       ...venueLesson,
@@ -40,9 +44,9 @@ const VenueDetailsComponent: FC<Props> = ({
       isModifiable: true,
       venue: '',
     }));
-    const coloredLessons = colorLessonsByKey(lessons, 'moduleCode');
+    const coloredLessons = colorLessonsByKey(lessons, 'moduleCode', numOfColors);
     return arrangeLessonsForWeek(coloredLessons);
-  }, [availability]);
+  }, [availability, numOfColors]);
 
   const history = useHistory();
   const navigateToLesson = useCallback(

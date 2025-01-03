@@ -1,50 +1,67 @@
 [
   {
     "id": "ashes",
-    "name": " Ashes"
+    "name": " Ashes",
+    "numOfColors": 8
   },
   {
     "id": "chalk",
-    "name": "Chalk"
+    "name": "Chalk",
+    "numOfColors": 8
   },
   {
     "id": "eighties",
-    "name": "Eighties"
+    "name": "Eighties",
+    "numOfColors": 8
   },
   {
     "id": "google",
-    "name": "Google"
+    "name": "Google",
+    "numOfColors": 8
   },
   {
     "id": "mocha",
-    "name": "Mocha"
+    "name": "Mocha",
+    "numOfColors": 8
   },
   {
     "id": "monokai",
-    "name": "Monokai"
+    "name": "Monokai",
+    "numOfColors": 8
   },
   {
     "id": "ocean",
-    "name": "Ocean"
+    "name": "Ocean",
+    "numOfColors": 8
   },
   {
     "id": "oceanic-next",
-    "name": "Oceanic Next"
+    "name": "Oceanic Next",
+    "numOfColors": 8
   },
   {
     "id": "paraiso",
-    "name": "Paraiso"
+    "name": "Paraiso",
+    "numOfColors": 8
   },
   {
     "id": "railscasts",
-    "name": "Railscasts"
+    "name": "Railscasts",
+    "numOfColors": 8
+  },
+  {
+    "id": "tequila",
+    "name": "Tequila",
+    "numOfColors": 10
   },
   {
     "id": "tomorrow",
-    "name": "Tomorrow"
+    "name": "Tomorrow",
+    "numOfColors": 8
   },
   {
     "id": "twilight",
-    "name": "Twilight"
+    "name": "Twilight",
+    "numOfColors": 8
   }
 ]
