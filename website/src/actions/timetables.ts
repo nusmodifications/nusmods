@@ -299,10 +299,10 @@ export function removeTaLessonInTimetable(
   };
 }
 
-export const UNSET_TA_MODE_IN_TIMETABLE = 'UNSET_TA_MODE_IN_TIMETABLE' as const;
-export function unsetTaModeInTimetable(semester: Semester, moduleCode: ModuleCode) {
+export const DISABLE_TA_MODE_IN_TIMETABLE = 'DISABLE_TA_MODE_IN_TIMETABLE' as const;
+export function disableTaModeInTimetable(semester: Semester, moduleCode: ModuleCode) {
   return {
-    type: UNSET_TA_MODE_IN_TIMETABLE,
+    type: DISABLE_TA_MODE_IN_TIMETABLE,
     payload: { semester, moduleCode },
   };
 }

@@ -22,7 +22,7 @@ import {
   SET_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
   REMOVE_TA_LESSON_IN_TIMETABLE,
-  UNSET_TA_MODE_IN_TIMETABLE,
+  DISABLE_TA_MODE_IN_TIMETABLE,
 } from 'actions/timetables';
 import { getNewColor } from 'utils/colors';
 import { SET_EXPORTED_DATA } from 'actions/constants';
@@ -207,7 +207,7 @@ function semTaModules(state = DEFAULT_TA_STATE, action: Actions): TaModulesConfi
         ),
       };
     }
-    case UNSET_TA_MODE_IN_TIMETABLE:
+    case DISABLE_TA_MODE_IN_TIMETABLE:
     case REMOVE_MODULE: {
       const { moduleCode } = action.payload;
       if (!moduleCode) return state;
@@ -268,7 +268,7 @@ function timetables(
     case SHOW_LESSON_IN_TIMETABLE:
     case ADD_TA_LESSON_IN_TIMETABLE:
     case REMOVE_TA_LESSON_IN_TIMETABLE:
-    case UNSET_TA_MODE_IN_TIMETABLE: {
+    case DISABLE_TA_MODE_IN_TIMETABLE: {
       const { semester } = action.payload;
 
       return produce(state, (draft) => {

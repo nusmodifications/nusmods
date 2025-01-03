@@ -281,7 +281,7 @@ class TimetableContent extends React.Component<Props, State> {
       readOnly={this.props.readOnly}
       tombstone={tombstone}
       resetTombstone={this.resetTombstone}
-      setTaModeInTimetable={this.setTaLessonInTimetable}
+      enableTaModeInTimetable={this.setTaLessonInTimetable}
     />
   );
 
