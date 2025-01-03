@@ -177,10 +177,7 @@ class TimetableContent extends React.Component<Props, State> {
   isHiddenInTimetable = (moduleCode: ModuleCode) =>
     this.props.hiddenInTimetable.includes(moduleCode);
 
-  // Check if a module code belongs to a TA module
-  isTaInTimetable = (moduleCode: ModuleCode) =>
-    !isEmpty(this.props.taInTimetable[moduleCode] ?? {}) &&
-    Object.values(this.props.taInTimetable[moduleCode]).some((classNos) => classNos.length > 0);
+  isTaInTimetable = (moduleCode: ModuleCode) => this.props.taInTimetable[moduleCode]?.length > 0;
 
   // Adds current non lecture lessons as TA lessons
   setTaLessonInTimetable = (semester: Semester, moduleCode: ModuleCode) => {
@@ -289,7 +286,8 @@ class TimetableContent extends React.Component<Props, State> {
   renderModuleSections(modules: Module[], horizontalOrientation: boolean) {
     const { tombstone } = this.state;
 
-    // Separate added modules into sections of clashing modules
+    // Separate added modules into sections of clashing modules.
+    // Note: exclude hidden courses and TA-ed courses from exam clash detection.
     const examinableModules = modules.filter(
       (module) =>
         !this.isHiddenInTimetable(module.moduleCode) && !this.isTaInTimetable(module.moduleCode),
@@ -534,8 +532,8 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
   const { modules } = state.moduleBank;
 
   const hiddenInTimetable =
-    ownProps.hiddenImportedModules ?? (state.timetables.hidden[semester] || []);
-  const taInTimetable = ownProps.taImportedModules ?? (state.timetables.ta[semester] || {});
+    ownProps.hiddenImportedModules ?? state.timetables.hidden[semester] ?? [];
+  const taInTimetable = ownProps.taImportedModules ?? state.timetables.ta[semester] ?? {};
 
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
   const timetableWithTaLessons = hydrateTaModulesConfigWithLessons(

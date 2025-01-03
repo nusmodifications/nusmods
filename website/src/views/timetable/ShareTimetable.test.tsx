@@ -180,7 +180,7 @@ describe('ShareTimetable', () => {
     await openAndWait(wrapper);
 
     expect(wrapper.find('input').prop('value')).toContain(
-      'ta=MA1521(TUT:1);CS1010S(TUT:1,LAB:1);CS1231S(TUT:2,TUT:3)',
+      'ta=MA1521(TUT:1),CS1010S(TUT:1,LAB:1),CS1231S(TUT:2,TUT:3)',
     );
   });
 
