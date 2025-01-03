@@ -369,15 +369,6 @@ class TimetableContent extends React.Component<Props, State> {
           title: module.title,
         };
 
-        // Remove lessons that are already included to prevent duplication of TA modules
-        if (
-          timetableLessons.some((existingLesson) =>
-            areLessonsSameClass(modifiableLesson, existingLesson),
-          )
-        ) {
-          return;
-        }
-
         // All lessons added within this block are options to be added in the timetable
         // Except for the activeLesson
         modifiableLesson.isOptionInTimetable = true;
