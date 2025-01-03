@@ -29,7 +29,7 @@ window.store = store;
 // For Puppeteer to import data
 const timetableRef = createRef<TimetableOnly>();
 window.setData = function setData(modules, data, callback) {
-  const { semester, timetable, colors } = data;
+  const { semester, timetable, colors, hidden } = data;
 
   if (document.body) {
     document.body.classList.toggle('mode-dark', data.settings.colorScheme === DARK_COLOR_SCHEME);
@@ -43,6 +43,7 @@ window.setData = function setData(modules, data, callback) {
         semester,
         timetable,
         colors,
+        hidden,
       },
       callback,
     );

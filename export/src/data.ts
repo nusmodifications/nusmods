@@ -6,7 +6,7 @@ import Joi from 'joi';
 import type { Middleware } from 'koa';
 
 import config from './config';
-import type { PageData, State } from './types';
+import type { ExportData, State } from './types';
 
 async function fetchModule(moduleCode: string) {
   const fileName = `${moduleCode}.json`;
@@ -58,7 +58,7 @@ export const parseExportData: Middleware<State> = (ctx, next) => {
   return next();
 };
 
-export function validateExportData(data: PageData) {
+export function validateExportData(data: ExportData) {
   if (!_.isObject(data)) throw new Error('data should be an object');
 
   const timetableSchema = Joi.object().pattern(
@@ -73,8 +73,10 @@ export function validateExportData(data: PageData) {
   const pageDataSchema = Joi.object({
     semester: Joi.number().integer().greater(0).less(5),
     timetable: timetableSchema,
+    colors: Joi.object().pattern(Joi.string(), Joi.number().integer().min(0)),
+    hidden: Joi.array().items(Joi.string()),
     settings: Joi.object({
-      hiddenInTimeTable: Joi.array().items(Joi.string()),
+      colorScheme: Joi.string().valid('LIGHT_COLOR_SCHEME', 'DARK_COLOR_SCHEME'),
     }),
     theme: themeSchema,
   });
