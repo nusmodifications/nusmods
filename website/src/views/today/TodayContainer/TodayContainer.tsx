@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { get, minBy, omit, range } from 'lodash';
+import { get, minBy, range, omit } from 'lodash';
 import NUSModerator, { AcadWeekInfo } from 'nusmoderator';
 import classnames from 'classnames';
 import {
@@ -29,7 +29,12 @@ import {
 } from 'utils/timetables';
 import { captureException } from 'utils/error';
 import Title from 'views/components/Title';
-import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
+import {
+  getSemesterTimetableColors,
+  getSemesterTimetableHidden,
+  getSemesterTimetableLessons,
+  getSemesterTimetableTaLessons,
+} from 'selectors/timetables';
 import ExternalLink from 'views/components/ExternalLink';
 import * as weatherAPI from 'apis/weather';
 import config from 'config';
@@ -175,9 +180,9 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
   };
 
   groupLessons() {
-    const { colors, currentTime } = this.props;
+    const { colors, currentTime, timetableWithLessons } = this.props;
 
-    const timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons);
+    const timetableLessons: Lesson[] = timetableLessonsArray(timetableWithLessons);
 
     // Inject color into module
     const coloredTimetableLessons = timetableLessons.map(
@@ -364,10 +369,13 @@ export const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
   const semester = semesterNameMap[weekInfo.sem];
   const timetable = getSemesterTimetableLessons(state)(semester);
   const colors = getSemesterTimetableColors(state)(semester);
-  const taModules = state.timetables.ta?.[semester] ?? {};
-
-  const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
-  const timetableWithTaLessons = hydrateTaModulesConfigWithLessons(taModules, modules, semester);
+  const hidden = getSemesterTimetableHidden(state)(semester);
+  const ta = getSemesterTimetableTaLessons(state)(semester);
+  const timetableWithLessons = omit(
+    hydrateSemTimetableWithLessons(timetable, modules, semester),
+    hidden,
+  );
+  const timetableWithTaLessons = hydrateTaModulesConfigWithLessons(ta, modules, semester);
   const filteredTimetableWithLessons = {
     ...omit(timetableWithLessons, Object.keys(timetableWithTaLessons)),
     ...timetableWithTaLessons,

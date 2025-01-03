@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
-import { Semester } from 'types/modules';
+import { ModuleCode, Semester } from 'types/modules';
 import { SemTimetableConfig } from 'types/timetables';
 import { fillColorMapping } from 'utils/colors';
 import TimetableContent from 'views/timetable/TimetableContent';
@@ -18,6 +18,7 @@ type State = {
   semester: Semester;
   timetable: SemTimetableConfig;
   colors: ColorMapping;
+  hidden: ModuleCode[];
 };
 
 export default class TimetableOnly extends Component<Props, State> {
@@ -25,14 +26,16 @@ export default class TimetableOnly extends Component<Props, State> {
     semester: 1,
     timetable: {},
     colors: {},
+    hidden: [],
+    ta: {},
   };
 
   override render() {
     const { store } = this.props;
     const theme = store.getState().theme.id;
 
-    const { semester, timetable, colors } = this.state;
-    const timetableColors = fillColorMapping(timetable, colors);
+    const { semester, timetable, colors, hidden, ta } = this.state;
+    const filledColors = fillColorMapping(timetable, colors);
 
     return (
       <MemoryRouter initialEntries={['https://nusmods.com']}>
@@ -42,9 +45,9 @@ export default class TimetableOnly extends Component<Props, State> {
               header={null}
               semester={semester}
               timetable={timetable}
-              colors={timetableColors}
-              hiddenImportedModules={null}
-              taImportedModules={null}
+              colors={filledColors}
+              hiddenImportedModules={hidden}
+              taImportedModules={ta}
               readOnly
             />
           </div>
