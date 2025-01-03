@@ -153,12 +153,17 @@ export function hydrateTaModulesConfigWithLessons(
           module,
           semester,
         );
-        if (!(lessonType in moduleLessonConfigWithLessons)) {
-          moduleLessonConfigWithLessons[lessonType] = [];
-        }
+
         const moduleConfigForLessonType = moduleConfigWithLessons[lessonType].filter(
           (lesson) => lesson.startTime === startTime && lesson.day === day,
         );
+        if (isEmpty(moduleConfigForLessonType)) {
+          return;
+        }
+
+        if (!(lessonType in moduleLessonConfigWithLessons)) {
+          moduleLessonConfigWithLessons[lessonType] = [];
+        }
         moduleLessonConfigWithLessons[lessonType].push(...moduleConfigForLessonType);
       });
       return moduleLessonConfigWithLessons;

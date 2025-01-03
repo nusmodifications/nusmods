@@ -30,7 +30,7 @@ const exportData: ExportData = {
   },
   hidden: ['PC1222'],
   ta: {
-    CS1010S: [['Tutorial', '1']],
+    CS1010S: [['Tutorial', '1', '0900', 'Monday']],
   },
   theme: {
     id: 'google',
@@ -79,7 +79,7 @@ test('reducers should set export data state', () => {
     hidden: { [1]: ['PC1222'] },
     ta: {
       [1]: {
-        CS1010S: [['Tutorial', '1']],
+        CS1010S: [['Tutorial', '1', '0900', 'Monday']],
       },
     },
     academicYear: expect.any(String),

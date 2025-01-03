@@ -108,9 +108,9 @@ test('hydrateTaModulesConfigWithLessons should replace ClassNo with lessons', ()
   const modules: ModulesMap = { [moduleCode]: CS1010S };
   const taModules: TaModulesConfig = {
     [moduleCode]: [
-      ['Tutorial', '1'],
-      ['Tutorial', '8'],
-      ['Recitation', '4'],
+      ['Tutorial', '1', '0900', 'Monday'],
+      ['Tutorial', '8', '1600', 'Monday'],
+      ['Recitation', '4', '1700', 'Thursday'],
     ],
   };
 
@@ -120,8 +120,14 @@ test('hydrateTaModulesConfigWithLessons should replace ClassNo with lessons', ()
     sem,
   );
   expect(configWithLessons[moduleCode].Tutorial[0].classNo).toBe('1');
+  expect(configWithLessons[moduleCode].Tutorial[0].startTime).toBe('0900');
+  expect(configWithLessons[moduleCode].Tutorial[0].day).toBe('Monday');
   expect(configWithLessons[moduleCode].Tutorial[1].classNo).toBe('8');
+  expect(configWithLessons[moduleCode].Tutorial[1].startTime).toBe('1600');
+  expect(configWithLessons[moduleCode].Tutorial[1].day).toBe('Monday');
   expect(configWithLessons[moduleCode].Recitation[0].classNo).toBe('4');
+  expect(configWithLessons[moduleCode].Recitation[0].startTime).toBe('1700');
+  expect(configWithLessons[moduleCode].Recitation[0].day).toBe('Thursday');
   expect(configWithLessons[moduleCode]).not.toHaveProperty('Lecture');
 });
 
