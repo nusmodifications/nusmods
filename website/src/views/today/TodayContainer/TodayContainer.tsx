@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { get, minBy, range } from 'lodash';
+import { get, minBy, range, omit } from 'lodash';
 import NUSModerator, { AcadWeekInfo } from 'nusmoderator';
 import classnames from 'classnames';
 import {
@@ -28,7 +28,11 @@ import {
 } from 'utils/timetables';
 import { captureException } from 'utils/error';
 import Title from 'views/components/Title';
-import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
+import {
+  getSemesterTimetableColors,
+  getSemesterTimetableHidden,
+  getSemesterTimetableLessons,
+} from 'selectors/timetables';
 import ExternalLink from 'views/components/ExternalLink';
 import * as weatherAPI from 'apis/weather';
 import config from 'config';
@@ -61,7 +65,7 @@ export type OwnProps = TimerData;
 
 export type Props = OwnProps &
   Readonly<{
-    timetableWithLessons: SemTimetableConfigWithLessons;
+    visibleTimetableWithLessons: SemTimetableConfigWithLessons;
     colors: ColorMapping;
     matchBreakpoint: boolean;
   }>;
@@ -174,9 +178,9 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
   };
 
   groupLessons() {
-    const { colors, currentTime } = this.props;
+    const { colors, currentTime, visibleTimetableWithLessons } = this.props;
 
-    const timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons);
+    const timetableLessons: Lesson[] = timetableLessonsArray(visibleTimetableWithLessons);
 
     // Inject color into module
     const coloredTimetableLessons = timetableLessons.map(
@@ -363,11 +367,15 @@ export const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
   const semester = semesterNameMap[weekInfo.sem];
   const timetable = getSemesterTimetableLessons(state)(semester);
   const colors = getSemesterTimetableColors(state)(semester);
-  const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
+  const hidden = getSemesterTimetableHidden(state)(semester);
+  const visibleTimetableWithLessons = omit(
+    hydrateSemTimetableWithLessons(timetable, modules, semester),
+    hidden,
+  );
 
   return {
     colors,
-    timetableWithLessons,
+    visibleTimetableWithLessons,
   };
 };
 
