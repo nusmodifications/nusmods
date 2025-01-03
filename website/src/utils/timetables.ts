@@ -142,11 +142,9 @@ export function hydrateTaModulesConfigWithLessons(
       if (!module) return EMPTY_OBJECT;
 
       const moduleLessonConfigWithLessons: ModuleLessonConfigWithLessons = {};
-      forEach(lessons, (lesson) => {
-        const [lessonType, classNo] = lesson;
-        const moduleLessonConfig = { [lessonType]: classNo };
+      forEach(lessons, ([lessonType, classNo]) => {
         const moduleConfigWithLessons = hydrateModuleConfigWithLessons(
-          moduleLessonConfig,
+          { [lessonType]: classNo },
           module,
           semester,
         );
@@ -169,18 +167,13 @@ function hydrateModuleConfigWithLessons(
   return mapValues(moduleLessonConfig, (classNo: ClassNo, lessonType: LessonType) => {
     const lessons = getModuleTimetable(module, semester);
     const newLessons = lessons.filter(
-      (lesson: RawLesson): boolean =>
-        lesson.lessonType === lessonType && lesson.classNo === classNo,
+      (lesson: RawLesson) => lesson.lessonType === lessonType && lesson.classNo === classNo,
     );
-
-    const timetableLessons: Lesson[] = newLessons.map(
-      (lesson: RawLesson): Lesson => ({
-        ...lesson,
-        moduleCode: module.moduleCode,
-        title: module.title,
-      }),
-    );
-    return timetableLessons;
+    return newLessons.map((lesson: RawLesson) => ({
+      ...lesson,
+      moduleCode: module.moduleCode,
+      title: module.title,
+    }));
   });
 }
 
