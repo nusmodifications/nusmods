@@ -15,6 +15,7 @@ import {
   map,
   mapValues,
   omit,
+  omitBy,
   partition,
   pick,
   range,
@@ -27,12 +28,14 @@ import qs from 'query-string';
 import {
   ClassNo,
   consumeWeeks,
+  DayText,
   LessonType,
   Module,
   ModuleCode,
   NumericWeeks,
   RawLesson,
   Semester,
+  StartTime,
 } from 'types/modules';
 
 import {
@@ -137,12 +140,15 @@ export function hydrateTaModulesConfigWithLessons(
 ): SemTimetableConfigWithLessons {
   return mapValues(
     taModules,
-    (lessons: [lessonType: LessonType, classNo: ClassNo][], moduleCode: ModuleCode) => {
+    (
+      lessons: [lessonType: LessonType, classNo: ClassNo, startTime: StartTime, day: DayText][],
+      moduleCode: ModuleCode,
+    ) => {
       const module = modules[moduleCode];
       if (!module) return EMPTY_OBJECT;
 
       const moduleLessonConfigWithLessons: ModuleLessonConfigWithLessons = {};
-      forEach(lessons, ([lessonType, classNo]) => {
+      forEach(lessons, ([lessonType, classNo, startTime, day]) => {
         const moduleConfigWithLessons = hydrateModuleConfigWithLessons(
           { [lessonType]: classNo },
           module,
@@ -151,7 +157,10 @@ export function hydrateTaModulesConfigWithLessons(
         if (!(lessonType in moduleLessonConfigWithLessons)) {
           moduleLessonConfigWithLessons[lessonType] = [];
         }
-        moduleLessonConfigWithLessons[lessonType].push(...moduleConfigWithLessons[lessonType]);
+        const moduleConfigForLessonType = moduleConfigWithLessons[lessonType].filter(
+          (lesson) => lesson.startTime === startTime && lesson.day === day,
+        );
+        moduleLessonConfigWithLessons[lessonType].push(...moduleConfigForLessonType);
       });
       return moduleLessonConfigWithLessons;
     },
@@ -670,9 +679,11 @@ export function isSameLesson(l1: Lesson, l2: Lesson) {
 
 export function getHoverLesson(lesson: Lesson): HoverLesson {
   return {
-    classNo: lesson.classNo,
     moduleCode: lesson.moduleCode,
     lessonType: lesson.lessonType,
+    classNo: lesson.classNo,
+    startTime: lesson.startTime,
+    day: lesson.day,
   };
 }
 
