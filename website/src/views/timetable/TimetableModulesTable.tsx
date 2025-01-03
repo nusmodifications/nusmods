@@ -59,9 +59,9 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
   const renderModuleActions = (module: ModuleWithColor) => {
     const removeBtnLabel = `Remove ${module.moduleCode} from timetable`;
     const hideBtnLabel = `${module.isHiddenInTimetable ? 'Show' : 'Hide'} ${module.moduleCode}`;
-    const taBtnLabel = `${module.isTaInTimetable ? 'Disable' : 'Enable'} TA for ${
-      module.moduleCode
-    }`;
+    const taBtnLabel = module.canTa
+      ? `${module.isTaInTimetable ? 'Disable' : 'Enable'} TA for ${module.moduleCode}`
+      : 'TA mode not available';
     const { semester } = props;
 
     return (
@@ -102,6 +102,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
               type="button"
               className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
               aria-label={taBtnLabel}
+              disabled={!module.canTa}
               onClick={() => {
                 if (module.isTaInTimetable) {
                   props.disableTaModeInTimetable(semester, module.moduleCode);
