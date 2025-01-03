@@ -3,7 +3,6 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import { CS1010S, CS3216, CS4243 } from '__mocks__/modules';
 import { addColors } from 'test-utils/theme';
 
-import { LessonType, Module, ModuleCode } from 'types/modules';
 import { TimetableModulesTableComponent, Props } from './TimetableModulesTable';
 import styles from './TimetableModulesTable.scss';
 
@@ -49,18 +48,8 @@ function getModules(wrapper: ShallowWrapper) {
   return wrapper.find(`.${styles.modulesTableRow}`).map((ele) => ele.key());
 }
 
-function addTaLessonTypes(
-  modules: Module[],
-  taInTimetable: { [moduleCode: ModuleCode]: { [lessonType: LessonType]: boolean } } = {},
-) {
-  return addColors(modules).map((module) => ({
-    ...module,
-    taInTimetable: taInTimetable[module.moduleCode] ?? {},
-  }));
-}
-
 describe(TimetableModulesTableComponent, () => {
-  const modules = addTaLessonTypes([CS1010S, CS3216]);
+  const modules = addColors([CS1010S, CS3216]);
 
   it('should render when empty', () => {
     const { wrapper } = make();
@@ -78,7 +67,7 @@ describe(TimetableModulesTableComponent, () => {
   it('should add tombstone modules back in the correct position', () => {
     // Get the original module order rendering CS1010S, CS4243 and CS3216
     const originalOrder = getModules(
-      make({ modules: addTaLessonTypes([CS1010S, CS4243, CS3216]) }).wrapper,
+      make({ modules: addColors([CS1010S, CS4243, CS3216]) }).wrapper,
     );
 
     // Replace CS4243 with a tombstone and check if it remains in the same place
@@ -91,7 +80,7 @@ describe(TimetableModulesTableComponent, () => {
     };
 
     const moduleCodes = getModules(
-      make({ modules: addTaLessonTypes([CS1010S, CS3216]), tombstone }).wrapper,
+      make({ modules: addColors([CS1010S, CS3216]), tombstone }).wrapper,
     );
 
     expect(moduleCodes).toEqual(originalOrder);

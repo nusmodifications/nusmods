@@ -401,7 +401,7 @@ class TimetableContent extends React.Component<Props, State> {
       (lesson: Lesson): ColoredLesson => ({
         ...lesson,
         colorIndex: colors[lesson.moduleCode],
-        taInTimetable: this.isTaInTimetable(lesson.moduleCode),
+        isTaInTimetable: this.isTaInTimetable(lesson.moduleCode),
       }),
     );
 

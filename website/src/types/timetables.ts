@@ -23,7 +23,7 @@ export type Lesson = RawLesson & {
 
 export type ColoredLesson = Lesson & {
   colorIndex: ColorIndex;
-  taInTimetable?: boolean;
+  isTaInTimetable?: boolean;
 };
 
 type Modifiable = {

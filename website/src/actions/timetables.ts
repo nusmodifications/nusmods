@@ -172,8 +172,8 @@ export function setTimetable(
         semester,
         validatedTimetable,
         colors,
-        getState().timetables.hidden[semester] || [],
-        getState().timetables.ta[semester] || {},
+        getState().timetables.hidden[semester] ?? [],
+        getState().timetables.ta[semester] ?? {},
       ),
     );
   };
