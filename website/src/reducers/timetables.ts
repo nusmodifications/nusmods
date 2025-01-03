@@ -192,6 +192,13 @@ function semTaModules(state = DEFAULT_TA_STATE, action: Actions): TaModulesConfi
     case ADD_TA_LESSON_IN_TIMETABLE: {
       const { moduleCode, lessonType, classNo } = action.payload;
       if (!(moduleCode && lessonType && classNo)) return state;
+      // Prevent duplicate lessons
+      if (moduleCode in state) {
+        const isDuplicate = state[moduleCode].some((lesson) =>
+          isEqual(lesson, [lessonType, classNo]),
+        );
+        if (isDuplicate) return state;
+      }
       return {
         ...state,
         [moduleCode]: [...(state[moduleCode] ?? []), [lessonType, classNo]],

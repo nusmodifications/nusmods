@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { sortBy, difference, values, flatten, mapValues, isEmpty } from 'lodash';
+import { sortBy, difference, values, flatten, mapValues, isEmpty, uniqWith } from 'lodash';
 
 import { ColorMapping, HORIZONTAL, ModulesMap, TimetableOrientation } from 'types/reducers';
 import { ClassNo, LessonType, Module, ModuleCode, Semester } from 'types/modules';
@@ -179,13 +179,15 @@ class TimetableContent extends React.Component<Props, State> {
 
   isTaInTimetable = (moduleCode: ModuleCode) => this.props.taInTimetable[moduleCode]?.length > 0;
 
-  // Adds current non lecture lessons as TA lessons
+  // Adds all current lessons as TA lessons
   setTaLessonInTimetable = (semester: Semester, moduleCode: ModuleCode) => {
-    timetableLessonsArray(this.props.timetableWithLessons)
-      .filter((lesson) => lesson.moduleCode === moduleCode && lesson.lessonType !== 'Lecture')
-      .forEach((lesson) =>
-        this.props.addTaLessonInTimetable(semester, moduleCode, lesson.lessonType, lesson.classNo),
-      );
+    const moduleLessons = timetableLessonsArray(this.props.timetableWithLessons).filter(
+      (lesson) => lesson.moduleCode === moduleCode,
+    );
+    // Deduplicate because some modules add multiple lessons under the same class number (e.g. CS2103T)
+    uniqWith(moduleLessons, areLessonsSameClass).forEach((lesson) =>
+      this.props.addTaLessonInTimetable(semester, moduleCode, lesson.lessonType, lesson.classNo),
+    );
   };
 
   modifyTaCell(lesson: ModifiableLesson) {
@@ -359,7 +361,7 @@ class TimetableContent extends React.Component<Props, State> {
       const module = modules[moduleCode];
       const moduleTimetable = getModuleTimetable(module, semester);
       const lessonOptions = this.isTaInTimetable(moduleCode)
-        ? moduleTimetable.filter((lesson) => lesson.lessonType !== 'Lecture')
+        ? moduleTimetable
         : lessonsForLessonType(moduleTimetable, activeLesson.lessonType);
       lessonOptions.forEach((lesson) => {
         const modifiableLesson: Omit<ModifiableLesson, 'isModifiable' | 'colorIndex'> = {
