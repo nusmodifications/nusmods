@@ -277,6 +277,7 @@ describe(mapStateToProps, () => {
         [4]: COLORS,
       },
       hidden: { [2]: ['GEX1015'] },
+      ta: {},
     },
   } as any as State;
 
@@ -337,12 +338,12 @@ describe(mapStateToProps, () => {
 describe(mapStateToProps, () => {
   test('should work with TA lessons', () => {
     // On week -1 of sem 2 the semester should be 2, not 1
-    const ownProps: any = {
+    const ownProps = {
       // Week -1 of sem 2 of AY2018/2019
       currentTime: new Date('2019-01-09T00:00:00.000Z'),
     };
 
-    const state: any = {
+    const state = {
       moduleBank: { modules: {} },
       timetables: {
         lessons: {
@@ -353,13 +354,14 @@ describe(mapStateToProps, () => {
           [1]: COLORS,
           [2]: COLORS,
         },
+        hidden: [],
         ta: {
           [2]: {
             CS1010S: [['Tutorial', 1]],
           },
         },
       },
-    };
+    } as any as State;
 
     expect(mapStateToProps(state, ownProps).timetableWithLessons).toHaveProperty('CS1010S');
   });
