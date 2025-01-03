@@ -16,7 +16,7 @@ export type ClassNo = string; // E.g. "1", "A"
 export type LessonType = string; // E.g. "Lecture", "Tutorial"
 export type ModuleCode = string; // E.g. "CS3216"
 export type SemTimetableConfig = {
-  [moduleCode: string]: ModuleLessonConfig;
+  [moduleCode: ModuleCode]: ModuleLessonConfig;
 };
 export interface ModuleLessonConfig {
   [lessonType: LessonType]: ClassNo;
