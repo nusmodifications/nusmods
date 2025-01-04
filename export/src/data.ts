@@ -67,7 +67,7 @@ export function validateExportData(data: ExportData) {
   );
   const taModulesConfigSchema = Joi.object().pattern(
     Joi.string(),
-    Joi.array().length(2).ordered(Joi.string(), Joi.string()),
+    Joi.array().items(Joi.array().length(2).ordered(Joi.string(), Joi.string())),
   );
   const themeSchema = Joi.object({
     id: Joi.string(),

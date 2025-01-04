@@ -26,16 +26,17 @@ export type TaModulesConfig = {
 };
 
 // `ExportData` is duplicated from `website/src/types/export.ts`.
-export interface ExportData {
+export type ExportData = {
   readonly semester: Semester;
   readonly timetable: SemTimetableConfig;
   readonly colors: ColorMapping;
   readonly hidden: ModuleCode[];
+  readonly ta: TaModulesConfig;
   readonly theme: ThemeState;
   readonly settings: {
     colorScheme: ColorScheme;
   };
-}
+};
 
 export interface State {
   data: ExportData;
