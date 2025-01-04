@@ -150,6 +150,7 @@ export function isGraduateModule(module: { moduleCode: ModuleCode }): boolean {
 // A module is TA-able if it has at least 1 non-lecture lesson
 export function canTa(modules: ModulesMap, moduleCode: ModuleCode, semester: Semester): boolean {
   const module = modules[moduleCode];
+  if (!module) return false;
   const moduleTimetable = getModuleTimetable(module, semester);
   return moduleTimetable.some((lesson) => lesson.lessonType !== 'Lecture');
 }
