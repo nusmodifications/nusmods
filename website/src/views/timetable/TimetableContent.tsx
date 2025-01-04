@@ -376,6 +376,13 @@ class TimetableContent extends React.Component<Props, State> {
           title: module.title,
         };
 
+        // Prevent multiple versions of the same lesson
+        if (
+          timetableLessons.some((curLesson) => areLessonsSameClass(modifiableLesson, curLesson))
+        ) {
+          return;
+        }
+
         // All lessons added within this block are options to be added in the timetable
         // Except for the activeLesson
         modifiableLesson.isOptionInTimetable = true;
