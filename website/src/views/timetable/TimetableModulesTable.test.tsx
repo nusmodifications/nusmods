@@ -81,6 +81,7 @@ describe(TimetableModulesTableComponent, () => {
       colorIndex: 2,
       isHiddenInTimetable: false,
       isTaInTimetable: false,
+      canTa: false,
     };
 
     const moduleCodes = getModules(
