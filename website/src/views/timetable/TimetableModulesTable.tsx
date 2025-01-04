@@ -97,26 +97,28 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
               )}
             </button>
           </Tooltip>
-          <Tooltip content={taBtnLabel} touch={['hold', 50]}>
-            <button
-              type="button"
-              className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
-              aria-label={taBtnLabel}
-              onClick={() => {
-                if (module.isTaInTimetable) {
-                  props.disableTaModeInTimetable(semester, module.moduleCode);
-                } else {
-                  props.enableTaModeInTimetable(semester, module.moduleCode);
-                }
-              }}
-            >
-              {module.isTaInTimetable ? (
-                <BookOpen className={styles.actionIcon} />
-              ) : (
-                <Book className={styles.actionIcon} />
-              )}
-            </button>
-          </Tooltip>
+          {module.canTa && (
+            <Tooltip content={taBtnLabel} touch={['hold', 50]}>
+              <button
+                type="button"
+                className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
+                aria-label={taBtnLabel}
+                onClick={() => {
+                  if (module.isTaInTimetable) {
+                    props.disableTaModeInTimetable(semester, module.moduleCode);
+                  } else {
+                    props.enableTaModeInTimetable(semester, module.moduleCode);
+                  }
+                }}
+              >
+                {module.isTaInTimetable ? (
+                  <BookOpen className={styles.actionIcon} />
+                ) : (
+                  <Book className={styles.actionIcon} />
+                )}
+              </button>
+            </Tooltip>
+          )}
         </div>
       </div>
     );

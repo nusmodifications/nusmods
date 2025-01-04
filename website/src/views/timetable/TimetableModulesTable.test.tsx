@@ -48,6 +48,10 @@ function getModules(wrapper: ShallowWrapper) {
   return wrapper.find(`.${styles.modulesTableRow}`).map((ele) => ele.key());
 }
 
+function getButtons(wrapper: ShallowWrapper) {
+  return wrapper.find(`.${styles.moduleActionButtons} > .btn-group`);
+}
+
 describe(TimetableModulesTableComponent, () => {
   const modules = addColors([CS1010S, CS3216]);
 
@@ -77,6 +81,7 @@ describe(TimetableModulesTableComponent, () => {
       colorIndex: 2,
       isHiddenInTimetable: false,
       isTaInTimetable: false,
+      canTa: false,
     };
 
     const moduleCodes = getModules(
@@ -84,5 +89,15 @@ describe(TimetableModulesTableComponent, () => {
     );
 
     expect(moduleCodes).toEqual(originalOrder);
+  });
+
+  it('should display buttons correctly', () => {
+    // TA button is the 3rd button
+    const withoutTaButton = getButtons(make({ modules: addColors([CS1010S]) }).wrapper);
+    expect(withoutTaButton.at(0).children()).toHaveLength(2);
+
+    const modulesWithTaAbleModule = addColors([CS1010S], false, false, true);
+    const withTaButton = getButtons(make({ modules: modulesWithTaAbleModule }).wrapper);
+    expect(withTaButton.at(0).children()).toHaveLength(3);
   });
 });
