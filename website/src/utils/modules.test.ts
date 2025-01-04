@@ -16,11 +16,12 @@ import {
   isGraduateModule,
   renderExamDuration,
   getExamDuration,
+  canTa,
 } from 'utils/modules';
 import { noBreak } from 'utils/react';
 
 import { EVERY_WEEK } from 'test-utils/timetable';
-import { CS1010S, CS3216 } from '__mocks__/modules';
+import { CP3880, CS1010S, CS3216 } from '__mocks__/modules';
 import { Lesson } from 'types/timetables';
 
 const mockLesson = _.cloneDeep(CS1010S.semesterData[0].timetable[0]) as Lesson;
@@ -242,5 +243,21 @@ describe(isGraduateModule, () => {
     expect(isGraduateModule({ moduleCode: 'CS3567' })).toEqual(false);
     expect(isGraduateModule({ moduleCode: 'CS1567D' })).toEqual(false);
     expect(isGraduateModule({ moduleCode: 'ACC4999X' })).toEqual(false);
+  });
+});
+
+describe(canTa, () => {
+  const modules = { CP3880, CS1010S, CS3216 };
+
+  it('should return true for modules with non-lecture lessons', () => {
+    expect(canTa(modules, 'CS1010S', 1)).toEqual(true);
+  });
+
+  it('should return false for modules with only lecture lessons', () => {
+    expect(canTa(modules, 'CS3216', 1)).toEqual(false);
+  });
+
+  it('should return false for modules without lessons', () => {
+    expect(canTa(modules, 'CP3880', 1)).toEqual(false);
   });
 });

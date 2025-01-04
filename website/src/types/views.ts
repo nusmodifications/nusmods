@@ -55,7 +55,7 @@ export type ModuleWithColor = Module & {
   colorIndex: ColorIndex;
   isHiddenInTimetable: boolean;
   isTaInTimetable: boolean;
-  canTa?: boolean;
+  canTa: boolean;
 };
 
 export type TombstoneModule = ModuleWithColor & {

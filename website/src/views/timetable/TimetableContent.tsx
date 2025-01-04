@@ -27,6 +27,7 @@ import {
 } from 'actions/timetables';
 import {
   areLessonsSameClass,
+  canTa,
   formatExamDate,
   getExamDate,
   getModuleTimetable,
@@ -181,12 +182,7 @@ class TimetableContent extends React.Component<Props, State> {
 
   canTa = (moduleCode: ModuleCode) => {
     const { semester, modules } = this.props;
-
-    const module = modules[moduleCode];
-    const moduleTimetable = getModuleTimetable(module, semester);
-    return !(
-      isEmpty(moduleTimetable) || moduleTimetable.every((lesson) => lesson.lessonType === 'Lecture')
-    );
+    return canTa(modules, moduleCode, semester);
   };
 
   // Adds current non lecture lessons as TA lessons
@@ -460,6 +456,7 @@ class TimetableContent extends React.Component<Props, State> {
                   colorIndex: this.props.colors[module.moduleCode],
                   isHiddenInTimetable: this.isHiddenInTimetable(module.moduleCode),
                   isTaInTimetable: this.isTaInTimetable(module.moduleCode),
+                  canTa: false,
                 }))}
               />
             ) : (
