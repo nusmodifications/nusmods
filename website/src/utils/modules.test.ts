@@ -260,4 +260,8 @@ describe(canTa, () => {
   it('should return false for modules without lessons', () => {
     expect(canTa(modules, 'CP3880', 1)).toEqual(false);
   });
+
+  it('should return false for unknown modules', () => {
+    expect(canTa(modules, 'ZZ9999', 1)).toEqual(false);
+  });
 });
