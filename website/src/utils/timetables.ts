@@ -27,12 +27,14 @@ import qs from 'query-string';
 import {
   ClassNo,
   consumeWeeks,
+  DayText,
   LessonType,
   Module,
   ModuleCode,
   NumericWeeks,
   RawLesson,
   Semester,
+  StartTime,
 } from 'types/modules';
 
 import {
@@ -52,7 +54,7 @@ import {
 import { ModuleCodeMap, ModulesMap } from 'types/reducers';
 import { ExamClashes } from 'types/views';
 
-import { getTimeAsDate } from './timify';
+import { getTimeAsDate, SCHOOLDAYS } from './timify';
 import { getModuleTimetable, getExamDate, getExamDuration } from './modules';
 import { deltas } from './array';
 
@@ -137,21 +139,32 @@ export function hydrateTaModulesConfigWithLessons(
 ): SemTimetableConfigWithLessons {
   return mapValues(
     taModules,
-    (lessons: [lessonType: LessonType, classNo: ClassNo][], moduleCode: ModuleCode) => {
+    (
+      lessons: [lessonType: LessonType, classNo: ClassNo, startTime: StartTime, day: DayText][],
+      moduleCode: ModuleCode,
+    ) => {
       const module = modules[moduleCode];
       if (!module) return EMPTY_OBJECT;
 
       const moduleLessonConfigWithLessons: ModuleLessonConfigWithLessons = {};
-      forEach(lessons, ([lessonType, classNo]) => {
+      forEach(lessons, ([lessonType, classNo, startTime, day]) => {
         const moduleConfigWithLessons = hydrateModuleConfigWithLessons(
           { [lessonType]: classNo },
           module,
           semester,
         );
+
+        const moduleConfigForLessonType = moduleConfigWithLessons[lessonType].filter(
+          (lesson) => lesson.startTime === startTime && lesson.day === day,
+        );
+        if (isEmpty(moduleConfigForLessonType)) {
+          return;
+        }
+
         if (!(lessonType in moduleLessonConfigWithLessons)) {
           moduleLessonConfigWithLessons[lessonType] = [];
         }
-        moduleLessonConfigWithLessons[lessonType].push(...moduleConfigWithLessons[lessonType]);
+        moduleLessonConfigWithLessons[lessonType].push(...moduleConfigForLessonType);
       });
       return moduleLessonConfigWithLessons;
     },
@@ -600,20 +613,22 @@ export function deserializeHidden(serialized: string): ModuleCode[] {
 
 export function serializeTa(taModules: TaModulesConfig) {
   // eg:
-  // eg:
   // {
-  //   CS2100: [ ['Tutorial', '2'], ['Tutorial', '3'], ['Laboratory', '1'] ],
-  //   CS2107: [ ['Tutorial', '8'] ],
+  //   CS2100: [ ['Laboratory', '30', '1100', 'Monday'], ['Tutorial', '38', '1200', 'Monday'] ],
+  //   CS2103T: [ ['Lecture', 'G12', '0800', 'Thursday'] ],
   // }
-  // => &ta=CS2100(TUT:2,TUT:3,LAB:1);CS2107(TUT:8)
+  // => &ta=CS2100(LAB:30:1100:0,TUT:38:1200:0,LAB:1),CS2103T(LEC:G12:0800:3)
   return `&ta=${flatMap(
     taModules,
     (lessons, moduleCode) =>
       `${moduleCode}(${lessons
-        .map(
-          ([lessonType, classNo]) =>
-            `${LESSON_TYPE_ABBREV[lessonType]}${LESSON_TYPE_SEP}${encodeURIComponent(classNo)}`,
-        )
+        .map(([lessonType, classNo, startTime, day]) => {
+          const dayIndex = SCHOOLDAYS.indexOf(day);
+          const taLessonConfig = [classNo, startTime, dayIndex]
+            .map(encodeURIComponent)
+            .join(LESSON_TYPE_SEP);
+          return `${LESSON_TYPE_ABBREV[lessonType]}${LESSON_TYPE_SEP}${taLessonConfig}`;
+        })
         .join(LESSON_SEP)})`,
   ).join(LESSON_SEP)}`;
 }
@@ -631,7 +646,7 @@ export function deserializeTa(serialized: string): TaModulesConfig {
       return;
     }
 
-    const lessonsMatches = moduleConfig.match(/\((.*)\)/);
+    const lessonsMatches = moduleConfig.match(/\((.*)/);
     if (lessonsMatches === null) {
       return;
     }
@@ -639,14 +654,15 @@ export function deserializeTa(serialized: string): TaModulesConfig {
     const moduleCode = moduleCodeMatches[1];
     const lessons = lessonsMatches[1];
     lessons.split(LESSON_SEP).forEach((lesson) => {
-      const [lessonTypeAbbr, classNo] = lesson.split(LESSON_TYPE_SEP);
+      const [lessonTypeAbbr, classNo, startTime, dayIndex] = lesson.split(LESSON_TYPE_SEP);
       if (!(moduleCode in deserialized)) {
         deserialized[moduleCode] = [];
       }
       const lessonType = LESSON_ABBREV_TYPE[lessonTypeAbbr];
+      const day = SCHOOLDAYS[parseInt(dayIndex, 10)];
       // Ignore unparsable/invalid keys
-      if (!lessonType) return;
-      deserialized[moduleCode].push([lessonType, classNo]);
+      if (!(lessonType && day)) return;
+      deserialized[moduleCode].push([lessonType, classNo, startTime, day]);
     });
   });
   return deserialized;
@@ -670,9 +686,11 @@ export function isSameLesson(l1: Lesson, l2: Lesson) {
 
 export function getHoverLesson(lesson: Lesson): HoverLesson {
   return {
-    classNo: lesson.classNo,
     moduleCode: lesson.moduleCode,
     lessonType: lesson.lessonType,
+    classNo: lesson.classNo,
+    startTime: lesson.startTime,
+    day: lesson.day,
   };
 }
 

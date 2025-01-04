@@ -91,7 +91,11 @@ const TimetableCell: React.FC<Props> = (props) => {
 
   const moduleName = showTitle ? `${lesson.moduleCode} ${lesson.title}` : lesson.moduleCode;
   const Cell = props.onClick ? 'button' : 'div';
-  const isHoveredOver = isEqual(getHoverLesson(lesson), hoverLesson);
+  const isHoveredOver = lesson.isTaInTimetable
+    ? isEqual(getHoverLesson(lesson), hoverLesson)
+    : lesson.moduleCode === hoverLesson?.moduleCode &&
+      lesson.lessonType === hoverLesson.lessonType &&
+      lesson.classNo === hoverLesson.classNo;
 
   const conditionalProps = onClick
     ? {
@@ -140,6 +144,7 @@ const TimetableCell: React.FC<Props> = (props) => {
           </div>
 
           {lesson.isTaInTimetable &&
+            onClick &&
             isHoveredOver &&
             hoverLesson &&
             (lesson.isActive || !lesson.isOptionInTimetable ? (

@@ -49,9 +49,18 @@ export const persistConfig = {
       // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
       _persist: state?._persist!,
     }),
+    3: (state) => ({
+      ...state,
+      ta: {},
+      // FIXME: Remove the next line when _persist is optional again.
+      // Cause: https://github.com/rt2zz/redux-persist/pull/919
+      // Issue: https://github.com/rt2zz/redux-persist/pull/1170
+      // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
+      _persist: state?._persist!,
+    }),
   }),
   /* eslint-enable */
-  version: 2,
+  version: 3,
 
   // Our own state reconciler archives old timetables if the acad year is different,
   // otherwise use the persisted timetable state
@@ -190,20 +199,27 @@ function semTaModules(state = DEFAULT_TA_STATE, action: Actions): TaModulesConfi
 
   switch (action.type) {
     case ADD_TA_LESSON_IN_TIMETABLE: {
-      const { moduleCode, lessonType, classNo } = action.payload;
+      const { moduleCode, lessonType, classNo, startTime, day } = action.payload;
       if (!(moduleCode && lessonType && classNo)) return state;
+      // Prevent duplicate lessons
+      if (moduleCode in state) {
+        const isDuplicate = state[moduleCode].some((existingConfig) =>
+          isEqual(existingConfig, [lessonType, classNo, startTime, day]),
+        );
+        if (isDuplicate) return state;
+      }
       return {
         ...state,
-        [moduleCode]: [...(state[moduleCode] ?? []), [lessonType, classNo]],
+        [moduleCode]: [...(state[moduleCode] ?? []), [lessonType, classNo, startTime, day]],
       };
     }
     case REMOVE_TA_LESSON_IN_TIMETABLE: {
-      const { moduleCode, lessonType, classNo } = action.payload;
+      const { moduleCode, lessonType, classNo, startTime, day } = action.payload;
       if (!(moduleCode && lessonType && classNo)) return state;
       return {
         ...state,
         [moduleCode]: state[moduleCode]?.filter(
-          (lesson) => !isEqual(lesson, [lessonType, classNo]),
+          (lesson) => !isEqual(lesson, [lessonType, classNo, startTime, day]),
         ),
       };
     }

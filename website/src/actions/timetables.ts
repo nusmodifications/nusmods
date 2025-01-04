@@ -9,7 +9,15 @@ import type {
 } from 'types/timetables';
 import type { Dispatch, GetState } from 'types/redux';
 import type { ColorMapping } from 'types/reducers';
-import type { ClassNo, LessonType, Module, ModuleCode, Semester } from 'types/modules';
+import type {
+  ClassNo,
+  DayText,
+  LessonType,
+  Module,
+  ModuleCode,
+  Semester,
+  StartTime,
+} from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
 import { openNotification } from 'actions/app';
@@ -279,10 +287,12 @@ export function addTaLessonInTimetable(
   moduleCode: ModuleCode,
   lessonType: LessonType,
   classNo: ClassNo,
+  startTime: StartTime,
+  day: DayText,
 ) {
   return {
     type: ADD_TA_LESSON_IN_TIMETABLE,
-    payload: { semester, moduleCode, lessonType, classNo },
+    payload: { semester, moduleCode, lessonType, classNo, startTime, day },
   };
 }
 
@@ -292,10 +302,12 @@ export function removeTaLessonInTimetable(
   moduleCode: ModuleCode,
   lessonType: LessonType,
   classNo: ClassNo,
+  startTime: StartTime,
+  day: DayText,
 ) {
   return {
     type: REMOVE_TA_LESSON_IN_TIMETABLE,
-    payload: { semester, moduleCode, lessonType, classNo },
+    payload: { semester, moduleCode, lessonType, classNo, startTime, day },
   };
 }
 
