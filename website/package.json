@@ -42,7 +42,7 @@
     "@testing-library/jest-dom": "6.6.3",
     "@testing-library/react": "16.1.0",
     "@testing-library/user-event": "14.5.2",
-    "@types/body-scroll-lock": "2.6.2",
+    "@types/body-scroll-lock": "3.1.2",
     "@types/enzyme": "3.10.18",
     "@types/jest": "29.5.14",
     "@types/json2mq": "0.2.2",
