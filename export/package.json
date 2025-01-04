@@ -30,7 +30,7 @@
     "lodash": "4.17.21",
     "nodemon": "2.0.22",
     "pug": "3.0.3",
-    "puppeteer-core": "22.6.4"
+    "puppeteer-core": "22.15.0"
   },
   "devDependencies": {
     "@types/fs-extra": "9.0.13",
