@@ -59,9 +59,9 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
   const renderModuleActions = (module: ModuleWithColor) => {
     const removeBtnLabel = `Remove ${module.moduleCode} from timetable`;
     const hideBtnLabel = `${module.isHiddenInTimetable ? 'Show' : 'Hide'} ${module.moduleCode}`;
-    const taBtnLabel = module.canTa
-      ? `${module.isTaInTimetable ? 'Disable' : 'Enable'} TA for ${module.moduleCode}`
-      : 'TA mode not available';
+    const taBtnLabel = `${module.isTaInTimetable ? 'Disable' : 'Enable'} TA for ${
+      module.moduleCode
+    }`;
     const { semester } = props;
 
     return (
@@ -97,27 +97,28 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
               )}
             </button>
           </Tooltip>
-          <Tooltip content={taBtnLabel} touch={['hold', 50]}>
-            <button
-              type="button"
-              className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
-              aria-label={taBtnLabel}
-              disabled={!module.canTa}
-              onClick={() => {
-                if (module.isTaInTimetable) {
-                  props.disableTaModeInTimetable(semester, module.moduleCode);
-                } else {
-                  props.enableTaModeInTimetable(semester, module.moduleCode);
-                }
-              }}
-            >
-              {module.isTaInTimetable ? (
-                <BookOpen className={styles.actionIcon} />
-              ) : (
-                <Book className={styles.actionIcon} />
-              )}
-            </button>
-          </Tooltip>
+          {module.canTa && (
+            <Tooltip content={taBtnLabel} touch={['hold', 50]}>
+              <button
+                type="button"
+                className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
+                aria-label={taBtnLabel}
+                onClick={() => {
+                  if (module.isTaInTimetable) {
+                    props.disableTaModeInTimetable(semester, module.moduleCode);
+                  } else {
+                    props.enableTaModeInTimetable(semester, module.moduleCode);
+                  }
+                }}
+              >
+                {module.isTaInTimetable ? (
+                  <BookOpen className={styles.actionIcon} />
+                ) : (
+                  <Book className={styles.actionIcon} />
+                )}
+              </button>
+            </Tooltip>
+          )}
         </div>
       </div>
     );

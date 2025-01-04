@@ -184,7 +184,9 @@ class TimetableContent extends React.Component<Props, State> {
 
     const module = modules[moduleCode];
     const moduleTimetable = getModuleTimetable(module, semester);
-    return !isEmpty(moduleTimetable);
+    return !(
+      isEmpty(moduleTimetable) || moduleTimetable.every((lesson) => lesson.lessonType === 'Lecture')
+    );
   };
 
   // Adds current non lecture lessons as TA lessons

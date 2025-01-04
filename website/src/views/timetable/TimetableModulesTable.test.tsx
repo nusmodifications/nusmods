@@ -90,18 +90,13 @@ describe(TimetableModulesTableComponent, () => {
     expect(moduleCodes).toEqual(originalOrder);
   });
 
-  it('should display 3 action buttons', () => {
-    const moduleActionButtons = getButtons(make({ modules }).wrapper);
-    expect(moduleActionButtons.at(0).children()).toHaveLength(3);
-  });
-
-  it('should disable TA button correctly', () => {
+  it('should display buttons correctly', () => {
     // TA button is the 3rd button
-    const withDisabledTaButton = getButtons(make({ modules: addColors([CS1010S]) }).wrapper);
-    expect(withDisabledTaButton.at(0).childAt(2).html()).toContain('disabled=""');
+    const withoutTaButton = getButtons(make({ modules: addColors([CS1010S]) }).wrapper);
+    expect(withoutTaButton.at(0).children()).toHaveLength(2);
 
     const modulesWithTaAbleModule = addColors([CS1010S], false, false, true);
-    const withoutDisabledTaButton = getButtons(make({ modules: modulesWithTaAbleModule }).wrapper);
-    expect(withoutDisabledTaButton.at(0).childAt(2).html()).not.toContain('disabled=""');
+    const withTaButton = getButtons(make({ modules: modulesWithTaAbleModule }).wrapper);
+    expect(withTaButton.at(0).children()).toHaveLength(3);
   });
 });
