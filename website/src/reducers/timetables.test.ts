@@ -171,6 +171,17 @@ describe('TA module reducer', () => {
       },
     });
   });
+
+  test('should not add duplicate TA lessons', () => {
+    expect(
+      reducer(withTaModules, addTaLessonInTimetable(1, 'CS1010S', 'Tutorial', '1')),
+    ).toMatchObject({
+      ta: {
+        [1]: { CS1010S: [['Tutorial', '1']] },
+        [2]: { CS1010S: [['Tutorial', '1']] },
+      },
+    });
+  });
 });
 
 describe('lesson reducer', () => {
