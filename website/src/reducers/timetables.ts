@@ -3,7 +3,7 @@ import { produce } from 'immer';
 import { createMigrate } from 'redux-persist';
 
 import { PersistConfig } from 'storage/persistReducer';
-import { ModuleCode } from 'types/modules';
+import { ClassNo, LessonType, ModuleCode } from 'types/modules';
 import { ModuleLessonConfig, SemTimetableConfig, TaModulesConfig } from 'types/timetables';
 import { ColorMapping, TimetablesState } from 'types/reducers';
 
@@ -192,9 +192,13 @@ function semTaModules(state = DEFAULT_TA_STATE, action: Actions): TaModulesConfi
     case ADD_TA_LESSON_IN_TIMETABLE: {
       const { moduleCode, lessonType, classNo } = action.payload;
       if (!(moduleCode && lessonType && classNo)) return state;
+      const newLesson: [LessonType, ClassNo] = [lessonType, classNo];
+      const curLessons = state[moduleCode] ?? [];
+      // Prevent duplicate lessons
+      if (curLessons.some((lesson) => isEqual(lesson, newLesson))) return state;
       return {
         ...state,
-        [moduleCode]: [...(state[moduleCode] ?? []), [lessonType, classNo]],
+        [moduleCode]: [...curLessons, newLesson],
       };
     }
     case REMOVE_TA_LESSON_IN_TIMETABLE: {
