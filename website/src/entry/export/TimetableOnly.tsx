@@ -3,23 +3,16 @@ import { Component } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
-import { ModuleCode, Semester } from 'types/modules';
-import { SemTimetableConfig } from 'types/timetables';
 import { fillColorMapping } from 'utils/colors';
 import TimetableContent from 'views/timetable/TimetableContent';
-import { ColorMapping } from 'types/reducers';
 import { State as StoreState } from 'types/state';
+import { ExportData } from 'types/export';
 
 type Props = {
   store: Store<StoreState>;
 };
 
-type State = {
-  semester: Semester;
-  timetable: SemTimetableConfig;
-  colors: ColorMapping;
-  hidden: ModuleCode[];
-};
+type State = Omit<ExportData, 'theme' | 'settings'>;
 
 export default class TimetableOnly extends Component<Props, State> {
   override state = {
