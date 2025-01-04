@@ -16,11 +16,13 @@ export function addColors(
   modules: Module[],
   isHiddenInTimetable = false,
   isTaInTimetable = false,
+  canTa = false,
 ): ModuleWithColor[] {
   return modules.map((module, index) => ({
     ...module,
     colorIndex: index,
     isHiddenInTimetable,
     isTaInTimetable,
+    canTa,
   }));
 }
