@@ -1,4 +1,12 @@
-import { ClassNo, LessonType, ModuleCode, ModuleTitle, RawLesson } from './modules';
+import {
+  ClassNo,
+  DayText,
+  LessonType,
+  ModuleCode,
+  ModuleTitle,
+  RawLesson,
+  StartTime,
+} from './modules';
 
 //  ModuleLessonConfig is a mapping of lessonType to ClassNo for a module.
 export type ModuleLessonConfig = {
@@ -11,8 +19,14 @@ export type SemTimetableConfig = {
 };
 
 // TaModulesConfig is a mapping of moduleCode to the TA's lesson types.
+// startTime and day are needed since some modules (e.g. CS2103T) map a single classNo to multiple lessons.
 export type TaModulesConfig = {
-  [moduleCode: ModuleCode]: [lessonType: LessonType, classNo: ClassNo][];
+  [moduleCode: ModuleCode]: [
+    lessonType: LessonType,
+    classNo: ClassNo,
+    startTime: StartTime,
+    day: DayText,
+  ][];
 };
 
 //  ModuleLessonConfigWithLessons is a mapping of lessonType to an array of Lessons for a module.
@@ -67,9 +81,11 @@ export type TimetableArrangement = {
 // Represents the lesson which the user is currently hovering over.
 // Used to highlight lessons which have the same classNo
 export type HoverLesson = {
-  readonly classNo: ClassNo;
   readonly moduleCode: ModuleCode;
   readonly lessonType: LessonType;
+  readonly classNo: ClassNo;
+  readonly startTime: StartTime;
+  readonly day: DayText;
 };
 
 export type ColorIndex = number;

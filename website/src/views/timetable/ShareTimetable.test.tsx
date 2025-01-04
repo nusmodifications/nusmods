@@ -164,14 +164,14 @@ describe('ShareTimetable', () => {
         timetable={timetable}
         hiddenModules={[]}
         taModules={{
-          MA1521: [['Tutorial', '1']],
+          MA1521: [['Tutorial', '1', '0800', 'Monday']],
           CS1010S: [
-            ['Tutorial', '1'],
-            ['Laboratory', '1'],
+            ['Tutorial', '1', '0800', 'Tuesday'],
+            ['Laboratory', '1', '1000', 'Wednesday'],
           ],
-          CS1231S: [
-            ['Tutorial', '2'],
-            ['Tutorial', '3'],
+          CS2103T: [
+            ['Lecture', 'G12', '0800', 'Thursday'],
+            ['Lecture', 'G12', '1700', 'Friday'],
           ],
         }}
       />,
@@ -180,7 +180,7 @@ describe('ShareTimetable', () => {
     await openAndWait(wrapper);
 
     expect(wrapper.find('input').prop('value')).toContain(
-      'ta=MA1521(TUT:1),CS1010S(TUT:1,LAB:1),CS1231S(TUT:2,TUT:3)',
+      'ta=MA1521(TUT:1:0800:0),CS1010S(TUT:1:0800:1,LAB:1:1000:2),CS2103T(LEC:G12:0800:3,LEC:G12:1700:4)',
     );
   });
 

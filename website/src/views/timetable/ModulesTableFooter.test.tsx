@@ -20,7 +20,7 @@ describe(countShownMCs, () => {
     const modules = [BFS1001, CS1010S, CS3216];
     const taInTimetable: TaModulesConfig = {
       [CS1010S.moduleCode]: [],
-      [CS3216.moduleCode]: [['Tutorial', '1']],
+      [CS3216.moduleCode]: [['Tutorial', '1', '0900', 'Monday']],
     };
     expect(countShownMCs(modules, [], taInTimetable)).toEqual(4);
   });

@@ -12,9 +12,11 @@ export type ThemeState = Readonly<{
 }>;
 export type ColorScheme = 'LIGHT_COLOR_SCHEME' | 'DARK_COLOR_SCHEME';
 export type Semester = number;
-export type ClassNo = string; // E.g. "1", "A"
-export type LessonType = string; // E.g. "Lecture", "Tutorial"
 export type ModuleCode = string; // E.g. "CS3216"
+export type LessonType = string; // E.g. "Lecture", "Tutorial"
+export type ClassNo = string; // E.g. "1", "A"
+export type StartTime = string;
+export type DayText = string;
 export type SemTimetableConfig = {
   [moduleCode: ModuleCode]: ModuleLessonConfig;
 };
@@ -22,7 +24,12 @@ export interface ModuleLessonConfig {
   [lessonType: LessonType]: ClassNo;
 }
 export type TaModulesConfig = {
-  [moduleCode: ModuleCode]: [lessonType: LessonType, classNo: ClassNo][];
+  [moduleCode: ModuleCode]: [
+    lessonType: LessonType,
+    classNo: ClassNo,
+    startTime: StartTime,
+    day: DayText,
+  ][];
 };
 
 // `ExportData` is duplicated from `website/src/types/export.ts`.

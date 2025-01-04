@@ -65,8 +65,10 @@ describe(TimetableCell, () => {
     const { wrapper } = make({
       hoverLesson: {
         moduleCode: 'CS1010',
-        classNo: '1',
         lessonType: 'Lecture',
+        classNo: '1',
+        startTime: '1000',
+        day: 'Wednesday',
       },
     });
 
@@ -80,8 +82,10 @@ describe(TimetableCell, () => {
     button = make({
       hoverLesson: {
         moduleCode: 'CS1010',
-        classNo: '1',
         lessonType: 'Tutorial',
+        classNo: '1',
+        startTime: '0900',
+        day: 'Monday',
       },
     })
       .wrapper.find('button')
@@ -94,6 +98,8 @@ describe(TimetableCell, () => {
         moduleCode: 'CS1010',
         classNo: '2',
         lessonType: 'Lecture',
+        startTime: '0900',
+        day: 'Monday',
       },
     })
       .wrapper.find('button')
@@ -106,6 +112,8 @@ describe(TimetableCell, () => {
         moduleCode: 'CS1101S',
         classNo: '1',
         lessonType: 'Lecture',
+        startTime: '0900',
+        day: 'Monday',
       },
     })
       .wrapper.find('button')
