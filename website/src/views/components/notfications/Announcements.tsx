@@ -10,7 +10,7 @@ import styles from './Announcements.scss';
 /**
  * If false, hides announcement.
  */
-const enableAnnouncements = true;
+export const enableAnnouncements = true;
 
 /**
  * Unique key for the current announcement. If the announcement is not
@@ -31,7 +31,7 @@ const enableAnnouncements = true;
  * - 'ay201819-new-data' - AY2018/19 data is available
  * - 'ay201819-s2-new-data' - S2 data available
  */
-const key = announcementKey('ay202425-new-data');
+export const key = announcementKey('ay202425-new-data');
 
 const Announcements = memo(() => {
   const [isOpen, setIsOpen] = useState(() => {

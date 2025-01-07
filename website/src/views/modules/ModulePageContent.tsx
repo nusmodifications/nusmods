@@ -258,9 +258,9 @@ const ModulePageContent: React.FC<Props> = ({ module, archiveYear }) => {
                   </>
                 )}
 
-                <p>
+                <div>
                   <ReportError module={module} />
-                </p>
+                </div>
               </div>
             </section>
           </div>
