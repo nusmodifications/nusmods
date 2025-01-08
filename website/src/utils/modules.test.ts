@@ -17,6 +17,7 @@ import {
   renderExamDuration,
   getExamDuration,
   canTa,
+  areLessonsDuplicate,
 } from 'utils/modules';
 import { noBreak } from 'utils/react';
 
@@ -68,8 +69,9 @@ test('areLessonsSameClass should identify identity lessons as same class', () =>
   expect(areLessonsSameClass(mockLesson, deepClonedLesson)).toBe(true);
 });
 
-test('areLessonsSameClass should identify lessons from the same ClassNo but ' +
-  'with different timings as same class',
+test(
+  'areLessonsSameClass should identify lessons from the same ClassNo but ' +
+    'with different timings as same class',
   () => {
     const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'startTime', '0000');
     const otherLesson2: Lesson = lessonWithDifferentProperty(otherLesson, 'endTime', '2300');
@@ -93,12 +95,13 @@ test('areLessonsSameClass should identify lessons with different lessonType as d
 });
 
 
-test('areLessonsDuplicate should identify lessons from the same ClassNo but ' +
-  'with different timings as non duplicates',
+test(
+  'areLessonsDuplicate should identify lessons from the same ClassNo but ' +
+    'with different timings as non duplicates',
   () => {
     const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'startTime', '0000');
     const otherLesson2: Lesson = lessonWithDifferentProperty(otherLesson, 'endTime', '2300');
-    expect(areLessonsSameClass(mockLesson, otherLesson2)).toBe(false);
+    expect(areLessonsDuplicate(mockLesson, otherLesson2)).toBe(false);
   },
 );
 
