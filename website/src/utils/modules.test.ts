@@ -68,9 +68,8 @@ test('areLessonsSameClass should identify identity lessons as same class', () =>
   expect(areLessonsSameClass(mockLesson, deepClonedLesson)).toBe(true);
 });
 
-test(
-  'areLessonsSameClass should identify lessons from the same ClassNo but ' +
-    'with different timings as same class',
+test('areLessonsSameClass should identify lessons from the same ClassNo but ' +
+  'with different timings as same class',
   () => {
     const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'startTime', '0000');
     const otherLesson2: Lesson = lessonWithDifferentProperty(otherLesson, 'endTime', '2300');
@@ -92,6 +91,16 @@ test('areLessonsSameClass should identify lessons with different lessonType as d
   const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'lessonType');
   expect(areLessonsSameClass(mockLesson, otherLesson)).toBe(false);
 });
+
+
+test('areLessonsDuplicate should identify lessons from the same ClassNo but ' +
+  'with different timings as non duplicates',
+  () => {
+    const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'startTime', '0000');
+    const otherLesson2: Lesson = lessonWithDifferentProperty(otherLesson, 'endTime', '2300');
+    expect(areLessonsSameClass(mockLesson, otherLesson2)).toBe(false);
+  },
+);
 
 test('formatExamDate should format an exam date string correctly', () => {
   expect(formatExamDate('2016-11-23T01:00:00.000Z')).toBe('23-Nov-2016 9:00\u00a0AM');

@@ -26,6 +26,7 @@ import {
   resetTimetable,
 } from 'actions/timetables';
 import {
+  areLessonsDuplicate,
   areLessonsSameClass,
   canTa,
   formatExamDate,
@@ -378,7 +379,7 @@ class TimetableContent extends React.Component<Props, State> {
 
         // Prevent multiple versions of the same lesson
         if (
-          timetableLessons.some((curLesson) => areLessonsSameClass(modifiableLesson, curLesson))
+          timetableLessons.some((curLesson) => areLessonsDuplicate(modifiableLesson, curLesson))
         ) {
           return;
         }
