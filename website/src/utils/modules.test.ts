@@ -94,7 +94,6 @@ test('areLessonsSameClass should identify lessons with different lessonType as d
   expect(areLessonsSameClass(mockLesson, otherLesson)).toBe(false);
 });
 
-
 test(
   'areLessonsDuplicate should identify lessons from the same ClassNo but ' +
     'with different timings as non duplicates',
