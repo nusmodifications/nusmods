@@ -99,8 +99,16 @@ test(
     'with different timings as non duplicates',
   () => {
     const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'startTime', '0000');
-    const otherLesson2: Lesson = lessonWithDifferentProperty(otherLesson, 'endTime', '2300');
-    expect(areLessonsDuplicate(mockLesson, otherLesson2)).toBe(false);
+    expect(areLessonsDuplicate(mockLesson, otherLesson)).toBe(false);
+  },
+);
+
+test(
+  'areLessonsDuplicate should identify lessons from the same ClassNo but ' +
+    'with different day as non duplicates',
+  () => {
+    const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'day', 'Monday');
+    expect(areLessonsDuplicate(mockLesson, otherLesson)).toBe(false);
   },
 );
 
