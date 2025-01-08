@@ -17,6 +17,7 @@ import {
   renderExamDuration,
   getExamDuration,
   canTa,
+  areLessonsDuplicate,
 } from 'utils/modules';
 import { noBreak } from 'utils/react';
 
@@ -92,6 +93,24 @@ test('areLessonsSameClass should identify lessons with different lessonType as d
   const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'lessonType');
   expect(areLessonsSameClass(mockLesson, otherLesson)).toBe(false);
 });
+
+test(
+  'areLessonsDuplicate should identify lessons from the same ClassNo but ' +
+    'with different timings as non duplicates',
+  () => {
+    const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'startTime', '0000');
+    expect(areLessonsDuplicate(mockLesson, otherLesson)).toBe(false);
+  },
+);
+
+test(
+  'areLessonsDuplicate should identify lessons from the same ClassNo but ' +
+    'with different day as non duplicates',
+  () => {
+    const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'day', 'Monday');
+    expect(areLessonsDuplicate(mockLesson, otherLesson)).toBe(false);
+  },
+);
 
 test('formatExamDate should format an exam date string correctly', () => {
   expect(formatExamDate('2016-11-23T01:00:00.000Z')).toBe('23-Nov-2016 9:00\u00a0AM');

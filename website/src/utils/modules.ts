@@ -44,6 +44,17 @@ export function areLessonsSameClass(lesson1: Lesson, lesson2: Lesson): boolean {
   );
 }
 
+// Are the two lessons exact duplicates of one another
+export function areLessonsDuplicate(lesson1: Lesson, lesson2: Lesson): boolean {
+  return (
+    lesson1.moduleCode === lesson2.moduleCode &&
+    lesson1.classNo === lesson2.classNo &&
+    lesson1.lessonType === lesson2.lessonType &&
+    lesson1.day === lesson2.day &&
+    lesson1.startTime === lesson2.startTime
+  );
+}
+
 /**
  * Convert exam in ISO format to 12-hour date/time format.
  */
