@@ -80,21 +80,21 @@ describe('ShareTimetable', () => {
     openModal(wrapper);
 
     // The second open should not cause a second call
-    expect(mockAxios.get).toHaveBeenCalledTimes(1);
+    expect(mockAxios.put).toHaveBeenCalledTimes(1);
     closeModal(wrapper);
 
     // Changing the timetable should cause opening the modal to trigger another API call
     wrapper.setProps({ timetable: { CS3216: { Lecture: '1' } } });
-    expect(mockAxios.get).toHaveBeenCalledTimes(1);
+    expect(mockAxios.put).toHaveBeenCalledTimes(1);
     openModal(wrapper);
-    expect(mockAxios.get).toHaveBeenCalledTimes(2);
+    expect(mockAxios.put).toHaveBeenCalledTimes(2);
     closeModal(wrapper);
 
     // Changing the semester should also trigger another API call
     wrapper.setProps({ semester: 2 });
-    expect(mockAxios.get).toHaveBeenCalledTimes(2);
+    expect(mockAxios.put).toHaveBeenCalledTimes(2);
     openModal(wrapper);
-    expect(mockAxios.get).toHaveBeenCalledTimes(3);
+    expect(mockAxios.put).toHaveBeenCalledTimes(3);
   });
 
   test('should show spinner when loading', () => {

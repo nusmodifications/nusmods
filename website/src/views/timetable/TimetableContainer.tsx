@@ -111,6 +111,7 @@ const SharingHeader: FC<{
     hiddenImportedModules,
     taImportedModules,
     semester,
+    customImportedModules,
   ]);
 
   if (!importedTimetable) {

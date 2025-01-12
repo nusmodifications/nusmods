@@ -19,6 +19,7 @@ export default class TimetableOnly extends Component<Props, State> {
     semester: 1,
     timetable: {},
     colors: {},
+    custom: {},
     hidden: [],
     ta: {},
   };
@@ -28,7 +29,7 @@ export default class TimetableOnly extends Component<Props, State> {
     const theme = store.getState().theme.id;
 
     // TODO handle exportable custom modules
-    const { semester, timetable, colors, hidden, ta } = this.state;
+    const { semester, timetable, colors, hidden, ta, custom } = this.state;
     const filledColors = fillColorMapping(timetable, colors, []);
 
     return (
@@ -40,6 +41,7 @@ export default class TimetableOnly extends Component<Props, State> {
               semester={semester}
               timetable={timetable}
               colors={filledColors}
+              customImportedModules={custom}
               hiddenImportedModules={hidden}
               taImportedModules={ta}
               readOnly

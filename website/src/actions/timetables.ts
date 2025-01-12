@@ -1,4 +1,3 @@
-import { CustomModule } from './../types/reducers';
 import { each, flatMap } from 'lodash';
 
 import type {

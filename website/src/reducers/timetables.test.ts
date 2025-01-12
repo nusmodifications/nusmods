@@ -8,7 +8,6 @@ import {
   setLessonConfig,
   showLessonInTimetable,
   setHiddenImported,
-  TEMP_IMPORTED_SEM,
   Internal,
   addCustomModule,
   modifyCustomModule,
@@ -507,18 +506,11 @@ describe('stateReconciler', () => {
 });
 
 describe('import timetable', () => {
-  const stateWithHidden = {
-    ...initialState,
-    hidden: {
-      [1]: ['CS1101S', 'CS1231S'],
-    },
-  };
-
   test('should have hidden modules set when importing hidden', () => {
     expect(
       reducer(initialState, setHiddenImported(1, ['CS1101S', 'CS1231S'])).hidden,
     ).toMatchObject({
-      [TEMP_IMPORTED_SEM]: ['CS1101S', 'CS1231S'],
+      [1]: ['CS1101S', 'CS1231S'],
     });
 
     // Should change hidden modules when a new set of modules is imported
@@ -527,13 +519,13 @@ describe('import timetable', () => {
         {
           ...initialState,
           hidden: {
-            [TEMP_IMPORTED_SEM]: ['CS1101S', 'CS1231S'],
+            [1]: ['CS1101S', 'CS1231S'],
           },
         },
         setHiddenImported(1, ['CS2100', 'CS2103T']),
       ).hidden,
     ).toMatchObject({
-      [TEMP_IMPORTED_SEM]: ['CS2100', 'CS2103T'],
+      [1]: ['CS2100', 'CS2103T'],
     });
 
     // should delete hidden modules when there are none
@@ -542,13 +534,13 @@ describe('import timetable', () => {
         {
           ...initialState,
           hidden: {
-            [TEMP_IMPORTED_SEM]: ['CS1101S', 'CS1231S'],
+            [1]: ['CS1101S', 'CS1231S'],
           },
         },
         setHiddenImported(1, []),
       ).hidden,
     ).toMatchObject({
-      [TEMP_IMPORTED_SEM]: [],
+      [1]: [],
     });
   });
 
@@ -558,7 +550,7 @@ describe('import timetable', () => {
         {
           ...initialState,
           hidden: {
-            [TEMP_IMPORTED_SEM]: ['CS1101S', 'CS1231S'],
+            [1]: ['CS1101S', 'CS1231S'],
           },
         },
         Internal.setTimetable(1, {}, {}, ['CS1101S', 'CS1231S']),
