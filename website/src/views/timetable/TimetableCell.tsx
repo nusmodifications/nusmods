@@ -17,6 +17,7 @@ import {
 import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip/Tooltip';
 import { removeCustomIdentifier } from 'utils/customModule';
+import { Minus, Plus } from 'react-feather';
 import styles from './TimetableCell.scss';
 
 type Props = {
@@ -136,7 +137,21 @@ const TimetableCell: React.FC<Props> = (props) => {
       {...conditionalProps}
     >
       <div className={styles.cellContainer}>
-        <div className={styles.moduleName}>{moduleName}</div>
+        <div className={styles.cellHeaader}>
+          <div className={styles.moduleName}>
+            {moduleName}
+            {lesson.isTaInTimetable && ' (TA)'}
+          </div>
+
+          {lesson.isTaInTimetable &&
+            isHoveredOver &&
+            hoverLesson &&
+            (lesson.isActive || !lesson.isOptionInTimetable ? (
+              <Minus className={styles.taActionIndicator} />
+            ) : (
+              <Plus className={styles.taActionIndicator} />
+            ))}
+        </div>
         <div>
           {LESSON_TYPE_ABBREV[lesson.lessonType]} [{lesson.classNo}]
         </div>

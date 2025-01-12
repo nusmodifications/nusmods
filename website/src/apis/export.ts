@@ -10,6 +10,7 @@ export type ExportOptions = {
   pixelRatio?: number;
 };
 
+// Replace with http://localhost:8080/export when testing export
 const baseUrl = 'https://export.nusmods.com/api/export';
 
 function serializeState(

@@ -5,9 +5,9 @@ import { Repeat } from 'react-feather';
 import classnames from 'classnames';
 
 import type { ModuleCode, Semester } from 'types/modules';
-import type { ColorMapping } from 'types/reducers';
+import type { ColorMapping, CustomModuleLessonData } from 'types/reducers';
 import type { State } from 'types/state';
-import type { SemTimetableConfig } from 'types/timetables';
+import type { SemTimetableConfig, TaModulesConfig } from 'types/timetables';
 
 import { selectSemester } from 'actions/settings';
 import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
@@ -15,12 +15,18 @@ import {
   fetchTimetableModules,
   setCustomModulesFromImport,
   setHiddenModulesFromImport,
+  setTaModulesFromImport,
   setTimetable,
 } from 'actions/timetables';
 import { openNotification } from 'actions/app';
 import { undo } from 'actions/undoHistory';
 import { getModuleCondensed } from 'selectors/moduleBank';
-import { deserializeCustom, deserializeHidden, deserializeTimetable } from 'utils/timetables';
+import {
+  deserializeCustom,
+  deserializeHidden,
+  deserializeTa,
+  deserializeTimetable,
+} from 'utils/timetables';
 import { fillColorMapping } from 'utils/colors';
 import { semesterForTimetablePage, TIMETABLE_SHARE, timetablePage } from 'views/routes/paths';
 import deferComponentRender from 'views/hocs/deferComponentRender';
@@ -44,8 +50,19 @@ const SharingHeader: FC<{
   semester: Semester;
   filledColors: ColorMapping;
   importedTimetable: SemTimetableConfig | null;
+  hiddenImportedModules: ModuleCode[] | null;
+  customImportedModules: CustomModuleLessonData | null;
+  taImportedModules: TaModulesConfig | null;
   setImportedTimetable: (timetable: SemTimetableConfig | null) => void;
-}> = ({ semester, filledColors, importedTimetable, setImportedTimetable }) => {
+}> = ({
+  semester,
+  filledColors,
+  importedTimetable,
+  hiddenImportedModules,
+  customImportedModules,
+  taImportedModules,
+  setImportedTimetable,
+}) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -60,7 +77,21 @@ const SharingHeader: FC<{
     if (!importedTimetable) {
       return;
     }
+
     dispatch(setTimetable(semester, importedTimetable, filledColors));
+
+    if (hiddenImportedModules) {
+      dispatch(setHiddenModulesFromImport(semester, hiddenImportedModules));
+    }
+
+    if (customImportedModules) {
+      dispatch(setCustomModulesFromImport(semester, customImportedModules));
+    }
+
+    if (taImportedModules) {
+      dispatch(setTaModulesFromImport(semester, taImportedModules));
+    }
+
     clearImportedTimetable();
     dispatch(
       openNotification('Timetable imported', {
@@ -72,7 +103,15 @@ const SharingHeader: FC<{
         },
       }),
     );
-  }, [clearImportedTimetable, dispatch, filledColors, importedTimetable, semester]);
+  }, [
+    clearImportedTimetable,
+    dispatch,
+    filledColors,
+    importedTimetable,
+    hiddenImportedModules,
+    taImportedModules,
+    semester,
+  ]);
 
   if (!importedTimetable) {
     return null;
@@ -165,7 +204,12 @@ export const TimetableContainerComponent: FC = () => {
   );
 
   const importedHidden = useMemo(
-    () => (semester && params.action ? deserializeHidden(location.search) : []),
+    () => (semester && params.action ? deserializeHidden(location.search) : null),
+    [semester, params.action, location.search],
+  );
+
+  const importedTa = useMemo(
+    () => (semester && params.action ? deserializeTa(location.search) : null),
     [semester, params.action, location.search],
   );
 
@@ -175,18 +219,6 @@ export const TimetableContainerComponent: FC = () => {
       dispatch(fetchTimetableModules([importedTimetable]));
     }
   }, [dispatch, importedTimetable]);
-
-  useEffect(() => {
-    if (importedCustom) {
-      dispatch(setCustomModulesFromImport(importedCustom));
-    }
-  }, [dispatch, importedCustom]);
-
-  useEffect(() => {
-    if (importedHidden) {
-      dispatch(setHiddenModulesFromImport(importedHidden));
-    }
-  }, [dispatch, importedHidden]);
 
   const isLoading = useMemo(() => {
     // Check that all modules are fully loaded into the ModuleBank
@@ -229,6 +261,9 @@ export const TimetableContainerComponent: FC = () => {
       key={semester}
       semester={semester}
       timetable={displayedTimetable}
+      hiddenImportedModules={importedHidden}
+      customImportedModules={displayedCustom}
+      taImportedModules={importedTa}
       colors={filledColors}
       header={
         <>
@@ -236,6 +271,9 @@ export const TimetableContainerComponent: FC = () => {
             semester={semester}
             filledColors={filledColors}
             importedTimetable={importedTimetable}
+            customImportedModules={importedCustom}
+            hiddenImportedModules={importedHidden}
+            taImportedModules={importedTa}
             setImportedTimetable={setImportedTimetable}
           />
           <TimetableHeader semester={semester} readOnly={readOnly} />

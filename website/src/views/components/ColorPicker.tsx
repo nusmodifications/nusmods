@@ -12,6 +12,7 @@ type Props = {
   label: string;
   color: ColorIndex;
   isHidden: boolean;
+  isTa: boolean;
   onChooseColor: (colorIndex: ColorIndex) => void;
 };
 
@@ -27,10 +28,15 @@ const ColorPicker = memo<Props>((props) => {
     getMenuProps,
     isOpen,
   }) => {
-    const { label, color, isHidden } = props;
+    const { label, color, isHidden, isTa } = props;
 
     return (
-      <div className={styles.container}>
+      <div
+        className={classnames(styles.container, {
+          [styles.hidden]: isHidden,
+          [styles.ta]: isTa,
+        })}
+      >
         <button
           type="button"
           {...getToggleButtonProps({
@@ -38,6 +44,7 @@ const ColorPicker = memo<Props>((props) => {
           })}
           className={classnames('btn btn-block hoverable', `color-${color}`, styles.moduleColor, {
             [styles.hidden]: isHidden,
+            [styles.ta]: isTa,
           })}
         />
         <div

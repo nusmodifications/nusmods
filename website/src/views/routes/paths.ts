@@ -1,8 +1,8 @@
-import { each, kebabCase } from 'lodash';
+import { each, isEmpty, kebabCase } from 'lodash';
 import { ModuleTitle, Semester, ModuleCode } from 'types/modules';
 import { Venue } from 'types/venues';
-import { SemTimetableConfig } from 'types/timetables';
-import { serializeTimetable } from 'utils/timetables';
+import { SemTimetableConfig, TaModulesConfig } from 'types/timetables';
+import { serializeHidden, serializeTa, serializeTimetable } from 'utils/timetables';
 import config from 'config';
 import { CustomModuleLessonData } from 'types/reducers';
 import { serializeCustomModuleList } from 'utils/customModule';
@@ -29,6 +29,7 @@ export function timetableShare(
   timetable: SemTimetableConfig,
   customModules: CustomModuleLessonData,
   hiddenModules: ModuleCode[],
+  taModules: TaModulesConfig,
 ): string {
   const customModulesList = Object.values(customModules);
   const serializedCustom =
@@ -37,13 +38,15 @@ export function timetableShare(
       : `&custom=${encodeURIComponent(serializeCustomModuleList(customModulesList))}`;
 
   // Convert the list of hidden modules to a comma-separated string, if there are any
-  const serializedHidden = hiddenModules.length === 0 ? '' : `&hidden=${hiddenModules.join(',')}`;
+  const serializedHidden = hiddenModules.length === 0 ? '' : serializeHidden(hiddenModules);
+  const serializedTa = isEmpty(taModules) ? '' : serializeTa(taModules);
 
   return (
     `${timetablePage(semester)}/${TIMETABLE_SHARE}` +
     `?${serializeTimetable(timetable)}` +
     `${serializedCustom}` +
-    `${serializedHidden}`
+    `${serializedHidden}` +
+    `${serializedTa}`
   );
 }
 

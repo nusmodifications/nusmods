@@ -1,5 +1,5 @@
 import { findLastIndex, min, range, zip } from 'lodash';
-import produce from 'immer';
+import { produce } from 'immer';
 
 import { DaysOfWeek } from 'types/modules';
 import {

@@ -1,4 +1,4 @@
-@import "~styles/utils/modules-entry";
+@import '~styles/utils/modules-entry';
 
 .content {
   text-align: center;
@@ -41,8 +41,8 @@
       color: #fff;
     }
 
-    &.messenger {
-      $button-bg: #0084ff;
+    &.telegram {
+      $button-bg: #3aa8db;
 
       background: $button-bg;
 

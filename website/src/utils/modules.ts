@@ -12,6 +12,7 @@ import type {
 import config from 'config';
 import { NBSP, noBreak } from 'utils/react';
 import { Lesson } from 'types/timetables';
+import { ModulesMap } from 'types/reducers';
 import { toSingaporeTime } from './timify';
 
 // Look for strings that look like module codes - eg.
@@ -46,6 +47,17 @@ export function areLessonsSameClass(lesson1: Lesson, lesson2: Lesson): boolean {
   );
 }
 
+// Are the two lessons exact duplicates of one another
+export function areLessonsDuplicate(lesson1: Lesson, lesson2: Lesson): boolean {
+  return (
+    lesson1.moduleCode === lesson2.moduleCode &&
+    lesson1.classNo === lesson2.classNo &&
+    lesson1.lessonType === lesson2.lessonType &&
+    lesson1.day === lesson2.day &&
+    lesson1.startTime === lesson2.startTime
+  );
+}
+
 /**
  * Convert exam in ISO format to 12-hour date/time format.
  */
@@ -53,7 +65,10 @@ export function formatExamDate(examDate: string | null | undefined): string {
   if (!examDate) return 'No Exam';
 
   const localDate = toSingaporeTime(examDate);
-  return format(localDate, 'dd-MMM-yyyy p');
+  const localDateString = format(localDate, 'dd-MMM-yyyy');
+  // Use non-breaking space to prevent AM/PM from clipping to the next line
+  const localTimeString = format(localDate, 'p').replace(' ', '\u00a0');
+  return `${localDateString} ${localTimeString}`;
 }
 
 export function getExamDate(module: Module, semester: Semester): string | null {
@@ -144,4 +159,12 @@ export function getYearsBetween(minYear: string, maxYear: string): string[] {
 
 export function isGraduateModule(module: { moduleCode: ModuleCode }): boolean {
   return Boolean(/[A-Z]+(5|6)\d{3}/i.test(module.moduleCode));
+}
+
+// A module is TA-able if it has at least 1 non-lecture lesson
+export function canTa(modules: ModulesMap, moduleCode: ModuleCode, semester: Semester): boolean {
+  const module = modules[moduleCode];
+  if (!module) return false;
+  const moduleTimetable = getModuleTimetable(module, semester);
+  return moduleTimetable.some((lesson) => lesson.lessonType !== 'Lecture');
 }

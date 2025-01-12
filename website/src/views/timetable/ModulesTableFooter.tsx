@@ -1,15 +1,16 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { map, sumBy } from 'lodash';
+import { isEmpty, map, sumBy } from 'lodash';
 import { connect } from 'react-redux';
 
 import { ModuleTableOrder } from 'types/reducers';
-import { Module, Semester } from 'types/modules';
+import { Module, ModuleCode, Semester } from 'types/modules';
 import { State } from 'types/state';
 
 import { setModuleTableOrder } from 'actions/settings';
 import { getExamDate, renderMCs } from 'utils/modules';
 import config from 'config';
+import { TaModulesConfig } from 'types/timetables';
 import styles from './TimetableModulesTable.scss';
 
 type ModuleOrder = {
@@ -26,21 +27,38 @@ export const moduleOrders: { [moduleTableOrder: string]: ModuleOrder } = {
   code: { label: 'Course Code', orderBy: (module: Module) => module.moduleCode },
 };
 
+export function countTotalMCs(modules: Module[]): number {
+  return sumBy(modules, (module) => parseFloat(module.moduleCredit));
+}
+
+export function countShownMCs(
+  modules: Module[],
+  hiddenInTimetable: ModuleCode[],
+  taInTimetable: TaModulesConfig,
+): number {
+  return sumBy(
+    modules.filter(
+      (module) =>
+        !hiddenInTimetable.includes(module.moduleCode) &&
+        isEmpty(taInTimetable[module.moduleCode] ?? []),
+    ),
+    (module) => parseFloat(module.moduleCredit),
+  );
+}
+
 type Props = {
   semester: Semester;
   moduleTableOrder: ModuleTableOrder;
   modules: Module[];
-  hiddenInTimetable: string[];
+  hiddenInTimetable: ModuleCode[];
+  taInTimetable: TaModulesConfig;
 
   setModuleTableOrder: (moduleTableOrder: ModuleTableOrder) => void;
 };
 
 const ModulesTableFooter: React.FC<Props> = (props) => {
-  const totalMCs = sumBy(props.modules, (module) => parseFloat(module.moduleCredit));
-  const shownMCs = sumBy(
-    props.modules.filter((module) => !props.hiddenInTimetable.includes(module.moduleCode)),
-    (module) => parseFloat(module.moduleCredit),
-  );
+  const totalMCs = countTotalMCs(props.modules);
+  const shownMCs = countShownMCs(props.modules, props.hiddenInTimetable, props.taInTimetable);
 
   return (
     <div className={classnames(styles.footer, 'row align-items-center')}>

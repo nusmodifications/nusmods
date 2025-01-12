@@ -1,7 +1,8 @@
+#!/usr/bin/env node
+
 const path = require('path');
 const fs = require('fs');
-const axios = require('axios');
-const _ = require('lodash');
+const last = require('lodash/last');
 
 const VENUES_PATH = path.join(__dirname, '../src/data/venues.json');
 
@@ -40,26 +41,25 @@ function getCodeBlock(body) {
     }
   });
 
-  return _.last(blocks);
+  return last(blocks);
 }
 
 async function downloadIssues() {
   // eslint-disable-next-line import/no-dynamic-require, global-require
   let venues = require(VENUES_PATH);
 
-  const res = await axios.get(ISSUES_URL, {
-    params: {
-      labels: 'venue data',
-      state: 'open',
-      // Apply earlier issues first
-      direction: 'asc',
-    },
+  const url = new URL(ISSUES_URL);
+  url.searchParams.append('labels', 'venue data');
+  url.searchParams.append('state', 'open');
+  url.searchParams.append('direction', 'asc');
+
+  const res = await fetch(url, {
     headers: {
       'user-agent': 'nusmodifications',
     },
   });
 
-  const issues = res.data;
+  const issues = await res.json();
 
   const issuesFound = [];
   issues.forEach((issue) => {

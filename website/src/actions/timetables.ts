@@ -1,11 +1,13 @@
+import { CustomModule } from './../types/reducers';
 import { each, flatMap } from 'lodash';
 
 import type {
-  Lesson,
   ColorIndex,
+  Lesson,
+  CustomModuleLesson,
   ModuleLessonConfig,
   SemTimetableConfig,
-  CustomModuleLesson,
+  TaModulesConfig,
 } from 'types/timetables';
 import type { Dispatch, GetState } from 'types/redux';
 import type { ColorMapping, CustomModuleLessonData } from 'types/reducers';
@@ -26,6 +28,7 @@ export const SET_TIMETABLE = 'SET_TIMETABLE' as const;
 export const ADD_MODULE = 'ADD_MODULE' as const;
 export const SET_CUSTOM_IMPORTED = 'SET_CUSTOM_IMPORTED' as const;
 export const SET_HIDDEN_IMPORTED = 'SET_HIDDEN_IMPORTED' as const;
+export const SET_TA_IMPORTED = 'SET_TA_IMPORTED' as const;
 export const TEMP_IMPORTED_SEM = 'TEMP_IMPORTED_SEM' as const;
 export const Internal = {
   setTimetable(
@@ -34,10 +37,11 @@ export const Internal = {
     colors?: ColorMapping,
     hiddenModules?: ModuleCode[],
     customModules?: Record<ModuleCode, CustomModuleLesson>,
+    taModules?: TaModulesConfig,
   ) {
     return {
       type: SET_TIMETABLE,
-      payload: { semester, timetable, colors, hiddenModules, customModules },
+      payload: { semester, timetable, colors, hiddenModules, customModules, taModules },
     };
   },
 
@@ -175,6 +179,7 @@ export function setTimetable(
         colors,
         getState().timetables.hidden[TEMP_IMPORTED_SEM] || [],
         getState().timetables.customModules[TEMP_IMPORTED_SEM] || [],
+        getState().timetables.ta[semester] ?? {},
       ),
     );
   };
@@ -220,25 +225,39 @@ export function fetchTimetableModules(timetables: SemTimetableConfig[]) {
   };
 }
 
-export function setCustomModulesFromImport(customModules: CustomModuleLessonData) {
-  return (dispatch: Dispatch) => dispatch(setCustomImported(customModules));
+export function setCustomModulesFromImport(
+  semester: Semester,
+  customModules: CustomModuleLessonData,
+) {
+  return (dispatch: Dispatch) => dispatch(setCustomImported(semester, customModules));
 }
 
-export function setCustomImported(customModules: CustomModuleLessonData) {
+export function setCustomImported(semester: Semester, customModules: CustomModuleLessonData) {
   return {
     type: SET_CUSTOM_IMPORTED,
-    payload: { semester: TEMP_IMPORTED_SEM, customModules },
+    payload: { semester, customModules },
   };
 }
 
-export function setHiddenModulesFromImport(hiddenModules: ModuleCode[]) {
-  return (dispatch: Dispatch) => dispatch(setHiddenImported(hiddenModules));
+export function setHiddenModulesFromImport(semester: Semester, hiddenModules: ModuleCode[]) {
+  return (dispatch: Dispatch) => dispatch(setHiddenImported(semester, hiddenModules));
 }
 
-export function setHiddenImported(hiddenModules: ModuleCode[]) {
+export function setHiddenImported(semester: Semester, hiddenModules: ModuleCode[]) {
   return {
     type: SET_HIDDEN_IMPORTED,
-    payload: { semester: TEMP_IMPORTED_SEM, hiddenModules },
+    payload: { semester, hiddenModules },
+  };
+}
+
+export function setTaModulesFromImport(semester: Semester, taModules: TaModulesConfig) {
+  return (dispatch: Dispatch) => dispatch(setTaImported(semester, taModules));
+}
+
+export function setTaImported(semester: Semester, taModules: TaModulesConfig) {
+  return {
+    type: SET_TA_IMPORTED,
+    payload: { semester, taModules },
   };
 }
 
@@ -316,5 +335,38 @@ export function deleteCustomModule(semester: Semester, moduleCode: ModuleCode) {
       semester,
       moduleCode,
     },
+  };
+}
+export const ADD_TA_LESSON_IN_TIMETABLE = 'ADD_TA_LESSON_IN_TIMETABLE' as const;
+export function addTaLessonInTimetable(
+  semester: Semester,
+  moduleCode: ModuleCode,
+  lessonType: LessonType,
+  classNo: ClassNo,
+) {
+  return {
+    type: ADD_TA_LESSON_IN_TIMETABLE,
+    payload: { semester, moduleCode, lessonType, classNo },
+  };
+}
+
+export const REMOVE_TA_LESSON_IN_TIMETABLE = 'REMOVE_TA_LESSON_IN_TIMETABLE' as const;
+export function removeTaLessonInTimetable(
+  semester: Semester,
+  moduleCode: ModuleCode,
+  lessonType: LessonType,
+  classNo: ClassNo,
+) {
+  return {
+    type: REMOVE_TA_LESSON_IN_TIMETABLE,
+    payload: { semester, moduleCode, lessonType, classNo },
+  };
+}
+
+export const DISABLE_TA_MODE_IN_TIMETABLE = 'DISABLE_TA_MODE_IN_TIMETABLE' as const;
+export function disableTaModeInTimetable(semester: Semester, moduleCode: ModuleCode) {
+  return {
+    type: DISABLE_TA_MODE_IN_TIMETABLE,
+    payload: { semester, moduleCode },
   };
 }

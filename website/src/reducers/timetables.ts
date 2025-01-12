@@ -1,10 +1,10 @@
-import { get, omit, values } from 'lodash';
-import produce from 'immer';
+import { get, isEqual, omit, values } from 'lodash';
+import { produce } from 'immer';
 import { createMigrate } from 'redux-persist';
 
 import { PersistConfig } from 'storage/persistReducer';
-import { ModuleCode } from 'types/modules';
-import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
+import { ClassNo, LessonType, ModuleCode } from 'types/modules';
+import { ModuleLessonConfig, SemTimetableConfig, TaModulesConfig } from 'types/timetables';
 import { ColorMapping, CustomModuleLessonData, TimetablesState } from 'types/reducers';
 
 import config from 'config';
@@ -21,9 +21,13 @@ import {
   SELECT_MODULE_COLOR,
   SET_HIDDEN_IMPORTED,
   SET_LESSON_CONFIG,
+  SET_TA_IMPORTED,
+  ADD_TA_LESSON_IN_TIMETABLE,
   SET_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
   SET_CUSTOM_IMPORTED,
+  REMOVE_TA_LESSON_IN_TIMETABLE,
+  DISABLE_TA_MODE_IN_TIMETABLE,
 } from 'actions/timetables';
 import { getNewColor } from 'utils/colors';
 import { SET_EXPORTED_DATA } from 'actions/constants';
@@ -32,7 +36,7 @@ import { Actions } from '../types/actions';
 export const persistConfig = {
   /* eslint-disable no-useless-computed-key */
   migrate: createMigrate({
-    [1]: (state) => ({
+    1: (state) => ({
       ...state,
       archive: {},
       // FIXME: Remove the next line when _persist is optional again.
@@ -41,15 +45,27 @@ export const persistConfig = {
       // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
       _persist: state?._persist!,
     }),
-    [2]: (state) => ({
+    2: (state) => ({
+      ...state,
+      ta: {},
+      // FIXME: Remove the next line when _persist is optional again.
+      // Cause: https://github.com/rt2zz/redux-persist/pull/919
+      // Issue: https://github.com/rt2zz/redux-persist/pull/1170
+      // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
+      _persist: state?._persist!,
+    }),
+    3: (state) => ({
       ...state,
       customModules: {},
+      // FIXME: Remove the next line when _persist is optional again.
+      // Cause: https://github.com/rt2zz/redux-persist/pull/919
+      // Issue: https://github.com/rt2zz/redux-persist/pull/1170
       // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain
       _persist: state?._persist!,
     }),
   }),
   /* eslint-enable */
-  version: 2,
+  version: 3,
 
   // Our own state reconciler archives old timetables if the acad year is different,
   // otherwise use the persisted timetable state
@@ -209,10 +225,52 @@ function semCustomModules(
   }
 }
 
+// Map of semester to list of TA modules
+const DEFAULT_TA_STATE: TaModulesConfig = {};
+function semTaModules(state = DEFAULT_TA_STATE, action: Actions): TaModulesConfig {
+  if (!action.payload) {
+    return state;
+  }
+
+  switch (action.type) {
+    case ADD_TA_LESSON_IN_TIMETABLE: {
+      const { moduleCode, lessonType, classNo } = action.payload;
+      if (!(moduleCode && lessonType && classNo)) return state;
+      const newLesson: [LessonType, ClassNo] = [lessonType, classNo];
+      const curLessons = state[moduleCode] ?? [];
+      // Prevent duplicate lessons
+      if (curLessons.some((lesson) => isEqual(lesson, newLesson))) return state;
+      return {
+        ...state,
+        [moduleCode]: [...curLessons, newLesson],
+      };
+    }
+    case REMOVE_TA_LESSON_IN_TIMETABLE: {
+      const { moduleCode, lessonType, classNo } = action.payload;
+      if (!(moduleCode && lessonType && classNo)) return state;
+      return {
+        ...state,
+        [moduleCode]: state[moduleCode]?.filter(
+          (lesson) => !isEqual(lesson, [lessonType, classNo]),
+        ),
+      };
+    }
+    case DISABLE_TA_MODE_IN_TIMETABLE:
+    case REMOVE_MODULE: {
+      const { moduleCode } = action.payload;
+      if (!moduleCode) return state;
+      return omit(state, moduleCode);
+    }
+    default:
+      return state;
+  }
+}
+
 export const defaultTimetableState: TimetablesState = {
   lessons: {},
   colors: {},
   hidden: {},
+  ta: {},
   academicYear: config.academicYear,
   archive: {},
   customModules: {},
@@ -229,13 +287,15 @@ function timetables(
 
   switch (action.type) {
     case SET_TIMETABLE: {
-      const { semester, timetable, colors, hiddenModules, customModules } = action.payload;
+      const { semester, timetable, colors, hiddenModules, customModules, taModules } =
+        action.payload;
 
       return produce(state, (draft) => {
         draft.lessons[semester] = timetable || DEFAULT_SEM_TIMETABLE_CONFIG;
         draft.colors[semester] = colors || DEFAULT_SEM_COLOR_MAP;
         draft.hidden[semester] = hiddenModules || DEFAULT_HIDDEN_STATE;
         draft.customModules[semester] = customModules || DEFAULT_CUSTOM_MODULE_STATE;
+        draft.ta[semester] = taModules ?? {};
 
         // Remove the old hidden imported modules
         delete draft.hidden[TEMP_IMPORTED_SEM];
@@ -251,6 +311,7 @@ function timetables(
         draft.colors[semester] = DEFAULT_SEM_COLOR_MAP;
         draft.hidden[semester] = DEFAULT_HIDDEN_STATE;
         draft.customModules[semester] = DEFAULT_CUSTOM_MODULE_STATE;
+        draft.ta[semester] = DEFAULT_TA_STATE;
       });
     }
 
@@ -263,7 +324,10 @@ function timetables(
     case CHANGE_LESSON:
     case SET_LESSON_CONFIG:
     case HIDE_LESSON_IN_TIMETABLE:
-    case SHOW_LESSON_IN_TIMETABLE: {
+    case SHOW_LESSON_IN_TIMETABLE:
+    case ADD_TA_LESSON_IN_TIMETABLE:
+    case REMOVE_TA_LESSON_IN_TIMETABLE:
+    case DISABLE_TA_MODE_IN_TIMETABLE: {
       const { semester } = action.payload;
 
       return produce(state, (draft) => {
@@ -271,17 +335,19 @@ function timetables(
         draft.colors[semester] = semColors(state.colors[semester], action);
         draft.hidden[semester] = semHiddenModules(state.hidden[semester], action);
         draft.customModules[semester] = semCustomModules(state.customModules[semester], action);
+        draft.ta[semester] = semTaModules(state.ta[semester], action);
       });
     }
 
     case SET_EXPORTED_DATA: {
-      const { semester, timetable, colors, hidden } = action.payload;
+      const { semester, timetable, colors, hidden, ta } = action.payload;
 
       return {
         ...state,
         lessons: { [semester]: timetable },
         colors: { [semester]: colors },
         hidden: { [semester]: hidden },
+        ta: { [semester]: ta },
       };
     }
 
@@ -296,6 +362,13 @@ function timetables(
       const { semester, hiddenModules } = action.payload;
       return produce(state, (draft) => {
         draft.hidden[semester] = hiddenModules;
+      });
+    }
+
+    case SET_TA_IMPORTED: {
+      const { semester, taModules } = action.payload;
+      return produce(state, (draft) => {
+        draft.ta[semester] = taModules;
       });
     }
 

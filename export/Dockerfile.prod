@@ -1,4 +1,4 @@
-FROM node:12-alpine
+FROM node:18-alpine
 
 # Installs Chromium package.
 RUN apk update && apk upgrade && \

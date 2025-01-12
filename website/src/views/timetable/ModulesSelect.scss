@@ -68,6 +68,15 @@ $item-padding-vertical: 0.6rem;
   background: var(--body-bg);
 }
 
+@include media-breakpoint-up(xs) {
+  .tip {
+    position: absolute;
+    top: $input-height;
+    right: 0;
+    left: 0;
+  }
+}
+
 @include media-breakpoint-up(md) {
   .selectList,
   .tip {

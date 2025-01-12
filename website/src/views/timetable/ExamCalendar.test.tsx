@@ -86,10 +86,30 @@ describe(ExamCalendar, () => {
 
   test('should hide modules which are hidden in timetable', () => {
     const modules = _.cloneDeep(modulesWithColor);
-    modules[0].hiddenInTimetable = true;
+    modules[0].isHiddenInTimetable = true;
     const wrapper = make(modules);
 
     expect(wrapper.find(Link)).toHaveLength(4);
+    expect(
+      wrapper
+        .find(Link)
+        .map((element) => element.find(`.${styles.moduleCode}`).text())
+        .sort(),
+    ).toEqual(['CS1010A', 'CS1010S', 'GES1021', 'PC1222']);
+  });
+
+  test('should hide modules which are TA modules in timetable', () => {
+    const modules = _.cloneDeep(modulesWithColor);
+    modules[0].isTaInTimetable = true;
+    const wrapper = make(modules);
+
+    expect(wrapper.find(Link)).toHaveLength(4);
+    expect(
+      wrapper
+        .find(Link)
+        .map((element) => element.find(`.${styles.moduleCode}`).text())
+        .sort(),
+    ).toEqual(['CS1010A', 'CS1010S', 'GES1021', 'PC1222']);
   });
 });
 

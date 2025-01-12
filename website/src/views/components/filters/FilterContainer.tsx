@@ -3,7 +3,11 @@ import { PanelProps } from 'searchkit';
 
 import styles from './styles.scss';
 
-const FilterContainer: React.FC<PanelProps> = ({ disabled, title, children }) => {
+const FilterContainer: React.FC<React.PropsWithChildren<PanelProps>> = ({
+  disabled,
+  title,
+  children,
+}) => {
   if (disabled) return null;
 
   return (

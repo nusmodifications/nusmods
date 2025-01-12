@@ -47,7 +47,7 @@ const BetaToggle = memo<Props>((props) => {
         <div className={styles.toggle}>
           <Toggle className={styles.betaToggle} isOn={betaTester} onChange={toggleStates} />
           {betaTester && hasTests && (
-            <ExternalLink className="btn btn-success" href={config.contact.messenger}>
+            <ExternalLink className="btn btn-success" href={config.contact.telegram}>
               Leave Feedback
             </ExternalLink>
           )}

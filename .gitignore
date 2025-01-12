@@ -310,3 +310,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/vim,node,linux,macos,emacs,windows,ansible,database,webstorm,visualstudiocode
+
+# asdf versions
+.tool-versions
