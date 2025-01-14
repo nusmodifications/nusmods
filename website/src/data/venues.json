@@ -538,11 +538,11 @@
     }
   },
   "LT6": {
-    "roomName": "Lecture Theatre 6",
-    "floor": 4,
+    "roomName": "LT6",
+    "floor": 1,
     "location": {
-      "x": 103.77196318826034,
-      "y": 1.2987585148416605
+      "x": 103.77176224798251,
+      "y": 1.2989361886515471
     }
   },
   "E1-06-08": {
@@ -4261,10 +4261,10 @@
   },
   "ERC-SR11": {
     "roomName": "ERC-SR11",
-    "floor": 3,
+    "floor": 2,
     "location": {
-      "x": 103.77291262149812,
-      "y": 1.305924051894182
+      "x": 103.77286970615388,
+      "y": 1.3060690211505341
     }
   },
   "S11-0302A": {
@@ -4937,6 +4937,94 @@
     "location": {
       "x": 103.77326933994733,
       "y": 1.296587176242994
+    }
+  },
+  "ERC-SR1": {
+    "roomName": "sr1",
+    "floor": 1,
+    "location": {
+      "x": 103.77312669743297,
+      "y": 1.2957721274702272
+    }
+  },
+  "S4-02LAB": {
+    "roomName": "s4",
+    "floor": 1,
+    "location": {
+      "x": 103.77334722401163,
+      "y": 1.2967802458383009
+    }
+  },
+  "COM4-02-04": {
+    "roomName": "Workstation Lab 3",
+    "floor": 2,
+    "location": {
+      "x": 103.77556549266637,
+      "y": 1.2950533450462423
+    }
+  },
+  "COM4-02-03": {
+    "roomName": "Workstation Lab 1",
+    "floor": 2,
+    "location": {
+      "x": 103.77535338573088,
+      "y": 1.2951643924392995
+    }
+  },
+  "COM4-02-05": {
+    "roomName": "Workstation Lab 2",
+    "floor": 2,
+    "location": {
+      "x": 103.77542120439482,
+      "y": 1.2950158037115926
+    }
+  },
+  "COM4-02-02": {
+    "roomName": "Information Systems and Analytics Teaching Lab 2 (ISA T-Lab 2)",
+    "floor": 2,
+    "location": {
+      "x": 103.7753720409051,
+      "y": 1.2951874212368448
+    }
+  },
+  "COM4-02-01": {
+    "roomName": "Information Systems and Analytics Teaching Lab 1 (ISA T-Lab 1)",
+    "floor": 2,
+    "location": {
+      "x": 103.77522680835014,
+      "y": 1.2951445168566165
+    }
+  },
+  "COM1-0214": {
+    "roomName": "Tutorial Room 12",
+    "floor": 2,
+    "location": {
+      "x": 103.77398306589,
+      "y": 1.294661842529079
+    }
+  },
+  "ERC-SR2": {
+    "roomName": "erc-sr2",
+    "floor": 1,
+    "location": {
+      "x": 103.77321302890779,
+      "y": 1.296661923674858
+    }
+  },
+  "LKY_SR2-1": {
+    "roomName": "SR",
+    "floor": 2,
+    "location": {
+      "x": 103.81760090589525,
+      "y": 1.3189664358274156
+    }
+  },
+  "E2-0307PC4": {
+    "roomName": "e2-0307",
+    "floor": 1,
+    "location": {
+      "x": 103.77321571111682,
+      "y": 1.2965067305739413
     }
   }
 }
