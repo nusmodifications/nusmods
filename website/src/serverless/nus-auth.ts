@@ -15,6 +15,9 @@ const errors = {
   noTokenSupplied: 'ERR_NO_TOKEN_SUPPLIED',
 };
 
+// Domains allowed as callback URLs
+const allowedDomains = ['nusmods.com', 'nuscourses.com', 'modsn.us', 'localhost'];
+
 export type User = {
   accountName: string;
   upn: string;
@@ -43,6 +46,28 @@ export const createLoginURL = (relayState = '') => {
   const ssoLoginURL = new URL(context);
   ssoLoginURL.searchParams.append('RelayState', relayState);
   return ssoLoginURL.toString();
+};
+
+export const isCallbackUrlValid = (callbackUrl: string): boolean => {
+  try {
+    const url = new URL(callbackUrl);
+
+    const validMatch = allowedDomains.some(
+      (allowedDomain) =>
+        url.hostname.endsWith(`.${allowedDomain}`) || url.hostname === allowedDomain,
+    );
+
+    if (!validMatch) {
+      // eslint-disable-next-line no-console
+      console.error('Invalid callback URL given by user:', callbackUrl);
+    }
+
+    return validMatch;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Invalid callback URL:', error);
+    return false;
+  }
 };
 
 export const authenticate = async (req: Request) => {
