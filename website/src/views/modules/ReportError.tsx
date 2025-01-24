@@ -20,10 +20,7 @@ import type { Module } from 'types/modules';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import ExternalLink from 'views/components/ExternalLink';
-import {
-  enableAnnouncements,
-  key as announcementKey,
-} from 'views/components/notfications/Announcements';
+import { isNewCourseDataAnnoucement } from 'views/components/notfications/Announcements';
 import facultyEmails from 'data/facultyEmail';
 import appConfig from 'config';
 import useGlobalDebugValue from '../hooks/useGlobalDebugValue';
@@ -119,8 +116,7 @@ const enhanceReportVisibility =
   isWithinInterval(new Date(), {
     start: addWeeks(roundOneStartDate, -2),
     end: addWeeks(roundOneStartDate, 2),
-  }) ||
-  (enableAnnouncements && announcementKey?.slice(-8, announcementKey.length) === 'new-data');
+  }) || isNewCourseDataAnnoucement();
 
 /**
  * Module error reporting component. Posts to a serverless script that then emails the relevant
@@ -194,7 +190,9 @@ const ReportError = memo<Props>(({ module }) => {
         Report errors
       </button>
       {enhanceReportVisibility && (
-        <p className={styles.infoText}>For issues related to course data, submit a report.</p>
+        <p className={styles.infoText}>
+          For clarifications on how we handle issues, read our <a href="/faq">FAQ</a>.
+        </p>
       )}
 
       <Modal
