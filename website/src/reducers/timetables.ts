@@ -211,12 +211,18 @@ function semCustomModules(
     case ADD_CUSTOM_MODULE:
       return {
         ...state,
-        [action.payload.moduleCode]: action.payload.lesson,
+        [action.payload.moduleCode]: {
+          title: action.payload.title,
+          lessons: action.payload.lessons,
+        },
       };
     case MODIFY_CUSTOM_MODULE:
       return {
         ...omit(state, [action.payload.oldModuleCode]),
-        [action.payload.moduleCode]: action.payload.lesson,
+        [action.payload.moduleCode]: {
+          title: action.payload.title,
+          lessons: action.payload.lessons,
+        },
       };
     case DELETE_CUSTOM_MODULE:
       return omit(state, [action.payload.moduleCode]);

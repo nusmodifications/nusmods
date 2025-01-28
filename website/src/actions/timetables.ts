@@ -3,14 +3,20 @@ import { each, flatMap } from 'lodash';
 import type {
   ColorIndex,
   Lesson,
-  CustomModuleLesson,
   ModuleLessonConfig,
   SemTimetableConfig,
   TaModulesConfig,
 } from 'types/timetables';
 import type { Dispatch, GetState } from 'types/redux';
 import type { ColorMapping, CustomModuleLessonData } from 'types/reducers';
-import type { ClassNo, LessonType, Module, ModuleCode, Semester } from 'types/modules';
+import type {
+  ClassNo,
+  CustomLesson,
+  LessonType,
+  Module,
+  ModuleCode,
+  Semester,
+} from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
 import { openNotification } from 'actions/app';
@@ -35,7 +41,7 @@ export const Internal = {
     timetable: SemTimetableConfig | undefined,
     colors?: ColorMapping,
     hiddenModules?: ModuleCode[],
-    customModules?: Record<ModuleCode, CustomModuleLesson>,
+    customModules?: CustomModuleLessonData,
     taModules?: TaModulesConfig,
   ) {
     return {
@@ -296,14 +302,16 @@ export const ADD_CUSTOM_MODULE = 'ADD_CUSTOM_MODULE' as const;
 export function addCustomModule(
   semester: Semester,
   moduleCode: ModuleCode,
-  lesson: CustomModuleLesson,
+  title: string,
+  lessons: CustomLesson[],
 ) {
   return {
     type: ADD_CUSTOM_MODULE,
     payload: {
       semester,
       moduleCode,
-      lesson,
+      title,
+      lessons,
     },
   };
 }
@@ -313,7 +321,8 @@ export function modifyCustomModule(
   semester: Semester,
   oldModuleCode: ModuleCode,
   moduleCode: ModuleCode,
-  lesson: CustomModuleLesson,
+  title: string,
+  lessons: CustomLesson[],
 ) {
   return {
     type: MODIFY_CUSTOM_MODULE,
@@ -321,7 +330,8 @@ export function modifyCustomModule(
       semester,
       oldModuleCode,
       moduleCode,
-      lesson,
+      title,
+      lessons,
     },
   };
 }

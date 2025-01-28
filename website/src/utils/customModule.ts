@@ -1,15 +1,13 @@
 import { castArray } from 'lodash';
-import { Module, WeekRange, Weeks, consumeWeeks } from 'types/modules';
-import { Lesson } from 'types/timetables';
+import { CustomLesson, Module, ModuleCode, WeekRange, Weeks, consumeWeeks } from 'types/modules';
+import { CustomModuleLessonData } from 'types/reducers';
 
 const CUSTOM_IDENTIFIER = 'CUSTOM';
 const PRE_DELIMETER = '\\';
 const CUSTOM_MODULE_KEY_DELIMETER = ':';
 const CUSTOM_MODULE_DELIMETER = '|';
 
-const CUSTOM_MODULE_SHORT_KEY_MAP: (keyof Lesson)[] = [
-  'moduleCode',
-  'title',
+const CUSTOM_MODULE_SHORT_KEY_MAP: (keyof CustomLesson)[] = [
   'lessonType',
   'classNo',
   'venue',
@@ -18,16 +16,14 @@ const CUSTOM_MODULE_SHORT_KEY_MAP: (keyof Lesson)[] = [
   'endTime',
   'weeks',
 ];
-const CUSTOM_MODULE_SHORT_KEY_TO_INDEX: { [key in keyof Lesson]: number } = {
-  moduleCode: 0,
-  title: 1,
-  lessonType: 2,
-  classNo: 3,
-  venue: 4,
-  day: 5,
-  startTime: 6,
-  endTime: 7,
-  weeks: 8,
+const CUSTOM_MODULE_SHORT_KEY_TO_INDEX: { [key in keyof CustomLesson]: number } = {
+  lessonType: 0,
+  classNo: 1,
+  venue: 2,
+  day: 3,
+  startTime: 4,
+  endTime: 5,
+  weeks: 6,
 };
 
 function escapeDelimeter(str: string | boolean | undefined): string {
@@ -107,9 +103,7 @@ function serializeWeeks(weeks: Weeks): string {
   );
 }
 
-function serializeCustomModule(lesson: Lesson): string {
-  validateCustomModuleCode(lesson.moduleCode);
-
+function serializeCustomModule(lesson: CustomLesson): string {
   return CUSTOM_MODULE_SHORT_KEY_MAP.map(
     (key) => (key === 'weeks' ? serializeWeeks(lesson[key]) : escapeDelimeter(lesson[key])) || '',
   )
@@ -117,8 +111,18 @@ function serializeCustomModule(lesson: Lesson): string {
     .join(`${PRE_DELIMETER}${CUSTOM_MODULE_KEY_DELIMETER}`);
 }
 
-export function serializeCustomModuleList(lessons: Lesson[]): string {
-  return lessons.map(serializeCustomModule).join(`${PRE_DELIMETER}${CUSTOM_MODULE_DELIMETER}`);
+export function serializeCustomModuleList(lessonData: CustomModuleLessonData): string {
+  return Object.entries(lessonData)
+    .map(([moduleCode, { title, lessons }]) => {
+      validateCustomModuleCode(moduleCode);
+
+      return [
+        moduleCode,
+        title,
+        lessons.map(serializeCustomModule).join(`${PRE_DELIMETER}${CUSTOM_MODULE_KEY_DELIMETER}`),
+      ].join(`${PRE_DELIMETER}${CUSTOM_MODULE_KEY_DELIMETER}`);
+    })
+    .join(`${PRE_DELIMETER}${CUSTOM_MODULE_DELIMETER}`);
 }
 
 // converts serialized week range e.g. n1-3,5,7-9 to [1, 2, 3, 5, 7, 8, 9]
@@ -150,7 +154,7 @@ function deserializeWeeks(serialized: string): Weeks {
   throw new Error(`Invalid week range ${serializedWeeks}`);
 }
 
-function deserializeCustomModule(serialized: string): Lesson {
+function deserializeCustomModule(serialized: string): CustomLesson {
   const parts = serialized
     .split(`${PRE_DELIMETER}${CUSTOM_MODULE_KEY_DELIMETER}`)
     .map(decodeURIComponent)
@@ -161,9 +165,7 @@ function deserializeCustomModule(serialized: string): Lesson {
         .replaceAll(`${PRE_DELIMETER}${CUSTOM_MODULE_KEY_DELIMETER}`, CUSTOM_MODULE_KEY_DELIMETER),
     );
 
-  const lesson: Lesson = {
-    moduleCode: parts[CUSTOM_MODULE_SHORT_KEY_TO_INDEX.moduleCode],
-    title: parts[CUSTOM_MODULE_SHORT_KEY_TO_INDEX.title],
+  const lesson: CustomLesson = {
     lessonType: parts[CUSTOM_MODULE_SHORT_KEY_TO_INDEX.lessonType],
     classNo: parts[CUSTOM_MODULE_SHORT_KEY_TO_INDEX.classNo],
     venue: parts[CUSTOM_MODULE_SHORT_KEY_TO_INDEX.venue],
@@ -171,17 +173,26 @@ function deserializeCustomModule(serialized: string): Lesson {
     startTime: parts[CUSTOM_MODULE_SHORT_KEY_TO_INDEX.startTime],
     endTime: parts[CUSTOM_MODULE_SHORT_KEY_TO_INDEX.endTime],
     weeks: deserializeWeeks(parts[CUSTOM_MODULE_SHORT_KEY_TO_INDEX.weeks]),
-    isCustom: true,
   };
 
   return lesson;
 }
 
 // Converts a serialized list of custom modules to an array of Lesson objects
-export function deserializeCustomModuleList(serialized: string | string[] | null): Lesson[] {
-  return castArray(serialized).flatMap((value) =>
-    (value ?? '')
-      .split(`${PRE_DELIMETER}${CUSTOM_MODULE_DELIMETER}`)
-      .flatMap(deserializeCustomModule),
-  );
+export function deserializeCustomModuleList(serialized: string | string[] | null): {
+  moduleCode: ModuleCode;
+  title: string;
+  lessons: CustomLesson[];
+}[] {
+  return [
+    {
+      moduleCode: '',
+      title: '',
+      lessons: castArray(serialized).flatMap((value) =>
+        (value ?? '')
+          .split(`${PRE_DELIMETER}${CUSTOM_MODULE_DELIMETER}`)
+          .flatMap(deserializeCustomModule),
+      ),
+    },
+  ];
 }

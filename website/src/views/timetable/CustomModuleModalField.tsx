@@ -4,7 +4,7 @@ import styles from './CustomModuleModalField.scss';
 
 interface CustomModuleModalFieldProps {
   id: string;
-  defaultValue?: string;
+  value?: string;
   label?: string;
   errors?: Record<string, string>;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -14,7 +14,7 @@ const CustomModuleModalField: React.FC<CustomModuleModalFieldProps> = ({
   id,
   errors,
   label,
-  defaultValue,
+  value,
   onChange,
 }) => (
   <>
@@ -30,7 +30,7 @@ const CustomModuleModalField: React.FC<CustomModuleModalFieldProps> = ({
         'form-control',
         `${errors && errors[id] ? 'alert alert-danger' : ''}`,
       )}
-      defaultValue={defaultValue ?? ''}
+      value={value ?? ''}
       required
     />
     {errors && <small className={styles.errorLabel}>{errors[id] ?? ''}</small>}

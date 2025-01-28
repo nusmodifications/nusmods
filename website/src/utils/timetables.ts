@@ -594,7 +594,10 @@ export function deserializeCustom(serialized: string): CustomModuleLessonData {
   const params = qs.parse(serialized);
   if (!params.custom) return {};
   return Object.fromEntries(
-    deserializeCustomModuleList(params.custom).map((lesson) => [lesson.moduleCode, lesson]),
+    deserializeCustomModuleList(params.custom).map(({ moduleCode, title, lessons }) => [
+      moduleCode,
+      { title, lessons },
+    ]),
   );
 }
 

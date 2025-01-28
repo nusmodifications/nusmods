@@ -10,10 +10,9 @@ import {
   ModulesMap,
   TimetableOrientation,
 } from 'types/reducers';
-import { ClassNo, LessonType, Module, ModuleCode, Semester } from 'types/modules';
+import { ClassNo, CustomLesson, LessonType, Module, ModuleCode, Semester } from 'types/modules';
 import {
   ColoredLesson,
-  CustomModuleLesson,
   Lesson,
   ModifiableLesson,
   SemTimetableConfig,
@@ -62,13 +61,13 @@ import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ModRegNotification from 'views/components/notfications/ModRegNotification';
 import { State as StoreState } from 'types/state';
 import { ModuleWithColor, TombstoneModule } from 'types/views';
-import { createCustomModule } from 'utils/customModule';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
 import ExamCalendar from './ExamCalendar';
 import ModulesTableFooter from './ModulesTableFooter';
 import styles from './TimetableContent.scss';
+import { createCustomModule } from 'utils/customModule';
 
 type ModifiedCell = {
   className: string;
@@ -100,13 +99,19 @@ type Props = OwnProps & {
 
   // Actions
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
-  addCustomModule: (semester: Semester, moduleCode: ModuleCode, lesson: Lesson) => void;
+  addCustomModule: (
+    semester: Semester,
+    moduleCode: ModuleCode,
+    title: string,
+    lessons: CustomLesson[],
+  ) => void;
   deleteCustomModule: (semester: Semester, moduleCode: ModuleCode) => void;
   modifyCustomModule: (
     semester: Semester,
     oldModuleCode: ModuleCode,
     moduleCode: ModuleCode,
-    lesson: Lesson,
+    title: string,
+    lessons: CustomLesson[],
   ) => void;
   removeModule: (semester: Semester, moduleCode: ModuleCode) => void;
   resetTimetable: (semester: Semester) => void;
@@ -261,8 +266,8 @@ class TimetableContent extends React.Component<Props, State> {
     this.resetTombstone();
   };
 
-  addCustomModule = (moduleCode: ModuleCode, lesson: Lesson) => {
-    this.props.addCustomModule(this.props.semester, moduleCode, lesson);
+  addCustomModule = (moduleCode: ModuleCode, title: string, lessons: CustomLesson[]) => {
+    this.props.addCustomModule(this.props.semester, moduleCode, title, lessons);
     this.resetTombstone();
   };
 
@@ -296,8 +301,19 @@ class TimetableContent extends React.Component<Props, State> {
     this.setState({ tombstone: { ...moduleWithColor, index } });
   };
 
-  editCustomModule = (oldModuleCode: ModuleCode, newModuleCode: ModuleCode, lesson: Lesson) => {
-    this.props.modifyCustomModule(this.props.semester, oldModuleCode, newModuleCode, lesson);
+  editCustomModule = (
+    oldModuleCode: ModuleCode,
+    newModuleCode: ModuleCode,
+    title: string,
+    lessons: CustomLesson[],
+  ) => {
+    this.props.modifyCustomModule(
+      this.props.semester,
+      oldModuleCode,
+      newModuleCode,
+      title,
+      lessons,
+    );
   };
 
   resetTombstone = () => this.setState({ tombstone: null });
@@ -305,8 +321,8 @@ class TimetableContent extends React.Component<Props, State> {
   // Returns modules currently in the timetable
   addedModules(): Module[] {
     const modules = getSemesterModules(this.props.timetableWithLessons, this.props.modules).concat(
-      Object.values(this.props.customModules).map((customModule: CustomModuleLesson) =>
-        createCustomModule(customModule.moduleCode, customModule.title),
+      Object.entries(this.props.customModules).map(([moduleCode, { title }]) =>
+        createCustomModule(moduleCode, title),
       ),
     );
     return sortBy(modules, (module: Module) => getExamDate(module, this.props.semester));
@@ -328,7 +344,7 @@ class TimetableContent extends React.Component<Props, State> {
     <TimetableModulesTable
       addModule={this.addModule}
       modules={modules.map(this.toModuleWithColor)}
-      customLessons={Object.values(this.props.customModules)}
+      customModules={this.props.customModules}
       horizontalOrientation={horizontalOrientation}
       semester={this.props.semester}
       onRemoveModule={this.removeModule}
@@ -406,7 +422,11 @@ class TimetableContent extends React.Component<Props, State> {
     const { showExamCalendar } = this.state;
 
     let timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons)
-      .concat(Object.values(customModules))
+      .concat(
+        Object.entries(customModules).flatMap(([moduleCode, { title, lessons }]) =>
+          lessons.map((lesson) => ({ ...lesson, moduleCode, title, isCustom: true })),
+        ),
+      )
       // Omit all lessons for hidden modules
       .filter((lesson) => !this.isHiddenInTimetable(lesson.moduleCode));
 
@@ -469,11 +489,7 @@ class TimetableContent extends React.Component<Props, State> {
         dayRows.map((row) =>
           row.map((lesson) => {
             const module: Module =
-              modules[lesson.moduleCode] ||
-              createCustomModule(
-                customModules[lesson.moduleCode].moduleCode,
-                customModules[lesson.moduleCode].title,
-              );
+              modules[lesson.moduleCode] || createCustomModule(lesson.moduleCode, lesson.title);
             const moduleTimetable = getModuleTimetable(module, semester);
 
             return {

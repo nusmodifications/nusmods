@@ -7,10 +7,10 @@ import { produce } from 'immer';
 
 import { Book, BookOpen, Eye, EyeOff, Trash } from 'react-feather';
 import { ModuleWithColor, TombstoneModule } from 'types/views';
-import { ColorIndex, Lesson } from 'types/timetables';
-import { ModuleCode, Semester } from 'types/modules';
+import { ColorIndex } from 'types/timetables';
+import { CustomLesson, ModuleCode, Semester } from 'types/modules';
 import { State as StoreState } from 'types/state';
-import { ModuleTableOrder } from 'types/reducers';
+import { CustomModuleLessonData, ModuleTableOrder } from 'types/reducers';
 
 import ColorPicker from 'views/components/ColorPicker';
 import {
@@ -33,11 +33,11 @@ import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip';
 import config from 'config';
 
-import { removeCustomIdentifier } from 'utils/customModule';
 import styles from './TimetableModulesTable.scss';
 import ModuleTombstone from './ModuleTombstone';
 import { moduleOrders } from './ModulesTableFooter';
 import CustomModuleEdit from './CustomModuleEdit';
+import { removeCustomIdentifier } from 'utils/customModule';
 
 export type Props = {
   semester: Semester;
@@ -45,7 +45,7 @@ export type Props = {
   horizontalOrientation: boolean;
   moduleTableOrder: ModuleTableOrder;
   modules: ModuleWithColor[];
-  customLessons: Lesson[];
+  customModules: CustomModuleLessonData;
   tombstone: TombstoneModule | null; // Placeholder for a deleted module
 
   // Actions
@@ -57,7 +57,12 @@ export type Props = {
   disableTaModeInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   onRemoveModule: (moduleCode: ModuleCode) => void;
   onRemoveCustomModule: (moduleCode: ModuleCode) => void;
-  editCustomModule: (oldModuleCode: ModuleCode, newModuleCode: ModuleCode, lesson: Lesson) => void;
+  editCustomModule: (
+    oldModuleCode: ModuleCode,
+    newModuleCode: ModuleCode,
+    title: string,
+    lessons: CustomLesson[],
+  ) => void;
   resetTombstone: () => void;
 };
 
@@ -82,15 +87,15 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
       }
     };
 
-    const customLesson = (customModule: ModuleWithColor) =>
-      props.customLessons.find((lesson) => lesson.moduleCode === customModule.moduleCode);
-
     return (
       <div className={styles.moduleActionButtons}>
         <div className="btn-group">
           {module.isCustom && (
             <CustomModuleEdit
-              lesson={customLesson(module)}
+              moduleCode={module.moduleCode}
+              moduleTitle={props.customModules[module.moduleCode].title}
+              customLessons={props.customModules[module.moduleCode].lessons || []}
+              isModuleCodeAdded={(moduleCode) => !!props.customModules[moduleCode]}
               editCustomModule={props.editCustomModule}
               moduleActionStyle={styles.moduleAction}
               actionIconStyle={styles.actionIcon}

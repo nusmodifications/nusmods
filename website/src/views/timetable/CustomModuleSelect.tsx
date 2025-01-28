@@ -1,13 +1,13 @@
 import * as React from 'react';
 
 import { PlusCircle } from 'react-feather';
-import { ModuleCode, Semester } from 'types/modules';
-import { Lesson } from 'types/timetables';
+import { CustomLesson, ModuleCode, Semester } from 'types/modules';
 import styles from './CustomModuleSelect.scss';
 import CustomModuleModal from './CustomModuleModal';
 
 export type Props = {
-  addCustomModule: (moduleCode: ModuleCode, lesson: Lesson) => void;
+  addCustomModule: (moduleCode: ModuleCode, title: string, lessons: CustomLesson[]) => void;
+  isModuleCodeAdded: (moduleCode: ModuleCode) => boolean;
   semester: Semester;
 };
 
@@ -29,8 +29,13 @@ export default class CustomModuleSelect extends React.PureComponent<Props, State
       isOpen: false,
     });
 
-  handleCustomModule = (_oldModuleCode: ModuleCode, moduleCode: ModuleCode, lesson: Lesson) => {
-    this.props.addCustomModule(moduleCode, lesson);
+  handleCustomModule = (
+    _oldModuleCode: ModuleCode,
+    moduleCode: ModuleCode,
+    title: string,
+    lessons: CustomLesson[],
+  ) => {
+    this.props.addCustomModule(moduleCode, title, lessons);
   };
 
   override render() {
@@ -48,6 +53,7 @@ export default class CustomModuleSelect extends React.PureComponent<Props, State
           closeModal={this.closeModal}
           isOpen={isOpen}
           isEdit={false}
+          isModuleCodeAdded={this.props.isModuleCodeAdded}
           semester={this.props.semester}
         />
       </div>

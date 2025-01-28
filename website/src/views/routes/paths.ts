@@ -31,11 +31,10 @@ export function timetableShare(
   hiddenModules: ModuleCode[],
   taModules: TaModulesConfig,
 ): string {
-  const customModulesList = Object.values(customModules);
   const serializedCustom =
-    customModulesList.length === 0
+    Object.keys(customModules).length === 0
       ? ''
-      : `&custom=${encodeURIComponent(serializeCustomModuleList(customModulesList))}`;
+      : `&custom=${encodeURIComponent(serializeCustomModuleList(customModules))}`;
 
   // Convert the list of hidden modules to a comma-separated string, if there are any
   const serializedHidden = hiddenModules.length === 0 ? '' : serializeHidden(hiddenModules);

@@ -1,8 +1,15 @@
 import { AxiosError } from 'axios';
 import { RegPeriodType, ScheduleType } from 'config';
 import { ColorSchemePreference } from './settings';
-import { ColorIndex, Lesson, TaModulesConfig, TimetableConfig } from './timetables';
 import {
+  ColorIndex,
+  CustomModuleLesson,
+  Lesson,
+  TaModulesConfig,
+  TimetableConfig,
+} from './timetables';
+import {
+  CustomLesson,
   Faculty,
   Module,
   ModuleCode,
@@ -161,7 +168,7 @@ export type CustomModuleData = {
 };
 
 export type CustomModuleLessonData = {
-  [moduleCode: string]: Lesson;
+  [moduleCode: string]: { title: string; lessons: CustomLesson[] };
 };
 
 // Mapping modules to when they will be taken
