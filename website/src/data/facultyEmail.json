@@ -62,7 +62,7 @@
   {
     "id": "chs_gd",
     "label": "Chinese Studies (Graduate)",
-    "email": "fasaslhl@nus.edu.sg",
+    "email": "chsma@nus.edu.sg",
     "match": {
       "type": "department",
       "department": "Chinese Studies",
@@ -72,7 +72,7 @@
   {
     "id": "polsci_ug",
     "label": "Political Science (Undergrad)",
-    "email": "polbox2@nus.edu.sg",
+    "email": "polnyjw@nus.edu.sg",
     "match": {
       "type": "department",
       "department": "Political Science",
@@ -82,7 +82,7 @@
   {
     "id": "polsci_gl",
     "label": "Political Science - Global Studies (Undergrad)",
-    "email": "polnyjw@nus.edu.sg",
+    "email": "sypang@nus.edu.sg",
     "match": {
       "type": "modulePrefix",
       "prefix": "GL"
@@ -151,7 +151,7 @@
   {
     "id": "biz_ug",
     "label": "Business (Undergrad)",
-    "email": "biz_modreg@nus.edu.sg",
+    "email": "biz_coursereg@nus.edu.sg",
     "match": {
       "type": "faculty",
       "faculty": "NUS Business School",
@@ -161,7 +161,7 @@
   {
     "id": "arch_ug",
     "label": "Architecture (Undergrad)",
-    "email": "akisec@nus.edu.sg",
+    "email": "neesha84@nus.edu.sg",
     "match": {
       "type": "department",
       "department": "Architecture",
@@ -171,7 +171,7 @@
   {
     "id": "id_ug",
     "label": "Industrial Design (Undergrad)",
-    "email": "didsec@nus.edu.sg",
+    "email": "askid@nus.edu.sg",
     "match": {
       "type": "department",
       "department": "Industrial Design",
@@ -191,7 +191,7 @@
   {
     "id": "re_gd",
     "label": "Real Estate (Grad)",
-    "email": "rstyal@nus.edu.sg",
+    "email": "yvonne.y@nus.edu.sg",
     "match": {
       "type": "department",
       "department": "Real Estate",
@@ -261,7 +261,7 @@
   {
     "id": "esp_ug",
     "label": "Engineering Science Programme (Undergrad)",
-    "email": "espsps@nus.edu.sg",
+    "email": "engscience@nus.edu.sg",
     "match": {
       "type": "department",
       "department": "Engineering Science Programme",
@@ -271,7 +271,7 @@
   {
     "id": "ise_ug",
     "label": "Industrial & Systems Engineering (Undergrad)",
-    "email": "isebox1@nus.edu.sg",
+    "email": "ug_isem@nus.edu.sg",
     "match": {
       "type": "department",
       "department": "Industrial Systems Engineering and Management",
@@ -311,7 +311,7 @@
   {
     "id": "nur_ug",
     "label": "Nursing (Undergrad)",
-    "email": "nurhlm@nus.edu.sg",
+    "email": "terence.seah@nus.edu.sg",
     "match": {
       "type": "department",
       "department": "Alice Lee Center for Nursing Studies",
@@ -371,7 +371,7 @@
   {
     "id": "math_ug",
     "label": "Mathematics (Undergrad)",
-    "email": "matbox3@nus.edu.sg",
+    "email": "askmathug@nus.edu.sg",
     "match": {
       "type": "department",
       "department": "Mathematics",
@@ -401,7 +401,7 @@
   {
     "id": "food_ug",
     "label": "Food Science and Technology (Undergrad)",
-    "email": "chmbox5@nus.edu.sg",
+    "email": "food@nus.edu.sg",
     "match": {
       "type": "modulePrefix",
       "prefix": "FST"
@@ -435,15 +435,17 @@
       "type": "moduleCode",
       "moduleCode": "GMS1000"
     }
-  },  {
+  },
+  {
     "id": "als",
     "label": "ALS1010 & ALS1020",
-    "email": "alsbox1@nus.edu.sg",
+    "email": "qirinros@nus.edu.sg",
     "match": {
       "type": "moduleCode",
       "moduleCode": ["ALS1010", "ALS1020"]
     }
-  },{
+  },
+  {
     "id": "cfg1002",
     "label": "CFG1002",
     "email": "careercatalyst@nus.edu.sg",
@@ -451,7 +453,8 @@
       "type": "moduleCode",
       "moduleCode": "CFG1002"
     }
-  },{
+  },
+  {
     "id": "ger1000",
     "label": "GER1000",
     "email": "qradmin@nus.edu.sg",
@@ -459,7 +462,8 @@
       "type": "moduleCode",
       "moduleCode": "GER1000"
     }
-  },{
+  },
+  {
     "id": "geq1000",
     "label": "GEQ1000",
     "email": "askq@nus.edu.sg",
@@ -471,7 +475,7 @@
   {
     "id": "dent",
     "label": "Dentistry",
-    "email": "denlg@nus.edu.sg",
+    "email": "dencip@nus.edu.sg",
     "match": {
       "type": "faculty",
       "faculty": "Dentistry",
@@ -481,7 +485,7 @@
   {
     "id": "mus_ug",
     "label": "Yong Siew Toh Conservatory of Music (Undergrad)",
-    "email": "musmodules@nus.edu.sg",
+    "email": "ystacad@nus.edu.sg",
     "match": {
       "type": "faculty",
       "faculty": "YST Conservatory of Music",
@@ -491,7 +495,7 @@
   {
     "id": "yale",
     "label": "Yale-NUS College",
-    "email": "appeals@yale-nus.edu.sg",
+    "email": "registry@yale-nus.edu.sg",
     "match": {
       "type": "faculty",
       "faculty": "Yale-NUS College",
@@ -561,7 +565,7 @@
   {
     "id": "ctpclc",
     "label": "Chua Thian Poh Community Leadership Centre",
-    "email": "ctpclc@nus.edu.sg",
+    "email": "marcus@nus.edu.sg",
     "match": {
       "type": "department",
       "department": "Chua Thian Poh Community Leadership Centre",
