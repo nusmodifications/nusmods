@@ -146,7 +146,7 @@ describe(actions.addCustomModule, () => {
   };
 
   test('should add the custom module defined', () => {
-    expect(actions.addCustomModule(semester, moduleCode, lesson)).toMatchSnapshot();
+    expect(actions.addCustomModule(semester, moduleCode, lesson.title, [lesson])).toMatchSnapshot();
   });
 });
 
@@ -169,7 +169,7 @@ describe(actions.modifyCustomModule, () => {
 
   test('should modify the custom module', () => {
     expect(
-      actions.modifyCustomModule(semester, moduleCode, newModuleCode, lesson),
+      actions.modifyCustomModule(semester, moduleCode, newModuleCode, lesson.title, [lesson]),
     ).toMatchSnapshot();
   });
 });

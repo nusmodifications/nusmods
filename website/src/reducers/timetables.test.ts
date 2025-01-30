@@ -145,10 +145,12 @@ describe('custom modules reducer', () => {
     weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
   };
   test('should allow new custom modules', () => {
-    expect(reducer(initialState, addCustomModule(1, 'CS1101S', [lesson]))).toMatchObject({
+    expect(
+      reducer(initialState, addCustomModule(1, 'CS1101S', lesson.title, [lesson])),
+    ).toMatchObject({
       customModules: {
         '1': {
-          CS1101S: lesson,
+          CS1101S: { title: lesson.title, lessons: [lesson] },
         },
       },
     });
@@ -161,16 +163,16 @@ describe('custom modules reducer', () => {
           ...initialState,
           customModules: {
             '1': {
-              CS1101S: [lesson],
+              CS1101S: { title: lesson.title, lessons: [lesson] },
             },
           },
         },
-        modifyCustomModule(1, 'CS1101S', 'CS2030', [lesson]),
+        modifyCustomModule(1, 'CS1101S', 'CS2030', lesson.title, [lesson]),
       ),
     ).toMatchObject({
       customModules: {
         '1': {
-          CS2030: [lesson],
+          CS2030: { title: lesson.title, lessons: [lesson] },
         },
       },
     });
@@ -183,7 +185,7 @@ describe('custom modules reducer', () => {
           ...initialState,
           customModules: {
             '1': {
-              CS1101S: [lesson],
+              CS1101S: { title: lesson.title, lessons: [lesson] },
             },
           },
         },

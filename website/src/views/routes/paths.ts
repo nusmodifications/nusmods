@@ -5,7 +5,7 @@ import { SemTimetableConfig, TaModulesConfig } from 'types/timetables';
 import { serializeHidden, serializeTa, serializeTimetable } from 'utils/timetables';
 import config from 'config';
 import { CustomModuleLessonData } from 'types/reducers';
-import { serializeCustomModuleList } from 'utils/customModule';
+import { CustomModuleSerializer } from 'utils/customModule';
 
 // IMPORTANT: Remember to update any route changes on the sitemap
 
@@ -34,7 +34,9 @@ export function timetableShare(
   const serializedCustom =
     Object.keys(customModules).length === 0
       ? ''
-      : `&custom=${encodeURIComponent(serializeCustomModuleList(customModules))}`;
+      : `&custom=${encodeURIComponent(
+          CustomModuleSerializer.serializeCustomModuleList(customModules),
+        )}`;
 
   // Convert the list of hidden modules to a comma-separated string, if there are any
   const serializedHidden = hiddenModules.length === 0 ? '' : serializeHidden(hiddenModules);

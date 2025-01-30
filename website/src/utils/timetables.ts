@@ -55,7 +55,7 @@ import { ExamClashes } from 'types/views';
 import { getTimeAsDate } from './timify';
 import { getModuleTimetable, getExamDate, getExamDuration } from './modules';
 import { deltas } from './array';
-import { deserializeCustomModuleList } from './customModule';
+import { CustomModuleSerializer } from './customModule';
 
 type lessonTypeAbbrev = { [lessonType: string]: string };
 export const LESSON_TYPE_ABBREV: lessonTypeAbbrev = {
@@ -593,12 +593,7 @@ export function serializeHidden(hiddenModules: ModuleCode[]) {
 export function deserializeCustom(serialized: string): CustomModuleLessonData {
   const params = qs.parse(serialized);
   if (!params.custom) return {};
-  return Object.fromEntries(
-    deserializeCustomModuleList(params.custom).map(({ moduleCode, title, lessons }) => [
-      moduleCode,
-      { title, lessons },
-    ]),
-  );
+  return CustomModuleSerializer.deserializeCustomModuleList(params.custom);
 }
 
 export function deserializeHidden(serialized: string): ModuleCode[] {

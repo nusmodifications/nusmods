@@ -26,6 +26,7 @@ import {
   getExamDuration,
   renderExamDuration,
 } from 'utils/modules';
+import { removeCustomIdentifier } from 'utils/customModule';
 import { intersperse } from 'utils/array';
 import { BULLET_NBSP } from 'utils/react';
 import { modulePage } from 'views/routes/paths';
@@ -37,7 +38,6 @@ import styles from './TimetableModulesTable.scss';
 import ModuleTombstone from './ModuleTombstone';
 import { moduleOrders } from './ModulesTableFooter';
 import CustomModuleEdit from './CustomModuleEdit';
-import { removeCustomIdentifier } from 'utils/customModule';
 
 export type Props = {
   semester: Semester;

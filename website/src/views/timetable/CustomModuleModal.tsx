@@ -106,6 +106,18 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     isSubmitting: false,
   };
 
+  resetState = () => {
+    this.setState({
+      selectedIndex: 0,
+      maxIndex: this.props.customLessonData?.length ?? 1,
+
+      moduleCode: removeCustomIdentifier(this.props.moduleCode ?? '', true),
+      moduleTitle: this.props.moduleTitle ?? '',
+      lessonData: this.props.customLessonData ?? [this.DEFAULT_LESSON_STATE],
+      isSubmitting: false,
+    });
+  };
+
   setModuleCode = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState((prev) => ({ ...prev, moduleCode: event.target.value }));
   };
@@ -175,10 +187,8 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
       }
     }
     // If adding, new code must not already be added
-    else {
-      if (this.props.isModuleCodeAdded(effectiveModuleCode)) {
-        errors.moduleCode = 'Module code is already added';
-      }
+    else if (this.props.isModuleCodeAdded(effectiveModuleCode)) {
+      errors.moduleCode = 'Module code is already added';
     }
 
     if (Object.keys(errors).length > 0) {
@@ -232,7 +242,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
       return;
     }
 
-    const moduleCode = this.state.moduleCode;
+    const { moduleCode } = this.state;
     const { isEdit, handleCustomModule, moduleCode: oldModuleCode } = this.props;
 
     const customModuleCode = appendCustomIdentifier(moduleCode);
@@ -247,13 +257,7 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
     } else {
       handleCustomModule('', customModuleCode, this.state.moduleTitle, this.state.lessonData);
     }
-    this.setState({
-      moduleCode: '',
-      moduleTitle: '',
-      selectedIndex: 0,
-      maxIndex: 1,
-      lessonData: [this.DEFAULT_LESSON_STATE],
-    });
+    this.resetState();
     this.props.closeModal();
     this.setState({
       isSubmitting: false,
@@ -383,21 +387,22 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
           selected={[this.state.selectedIndex + 1]}
           setSelected={(selected) => this.setState({ selectedIndex: selected[0] - 1 })}
           addButtonHandler={() =>
-            this.setState({
-              maxIndex: this.state.maxIndex + 1,
-              lessonData: [...this.state.lessonData, this.DEFAULT_LESSON_STATE],
-            })
+            this.setState((state) => ({
+              selectedIndex: state.maxIndex,
+              maxIndex: state.maxIndex + 1,
+              lessonData: [...state.lessonData, this.DEFAULT_LESSON_STATE],
+            }))
           }
           deleteButtonHandler={() => {
             if (this.state.maxIndex === 1) return;
             const newLessonData = this.state.lessonData.filter(
               (_, i) => i !== this.state.selectedIndex,
             );
-            this.setState({
-              maxIndex: this.state.maxIndex - 1,
+            this.setState((state) => ({
+              selectedIndex: Math.min(state.selectedIndex, state.maxIndex - 2),
+              maxIndex: state.maxIndex - 1,
               lessonData: newLessonData,
-              selectedIndex: Math.min(this.state.selectedIndex, this.state.maxIndex - 2),
-            });
+            }));
           }}
         />
       </>
@@ -416,7 +421,9 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
           <br />
           <CustomModuleModalWeekButtonSelector
             selected={weeks as NumericWeeks}
-            setSelected={(weeks: number[]) => this.setLessonStateViaSelect({ weeks })}
+            setSelected={(selectedWeeks: number[]) =>
+              this.setLessonStateViaSelect({ weeks: selectedWeeks })
+            }
             error={weekErrors}
             options={getDefaultWeeks(this.props.semester) as NumericWeeks}
           />
@@ -554,7 +561,12 @@ export default class CustomModuleModal extends React.PureComponent<Props, State>
 
   override render() {
     return (
-      <Modal isOpen={this.props.isOpen} onRequestClose={this.props.closeModal} animate>
+      <Modal
+        isOpen={this.props.isOpen}
+        onAfterOpen={this.resetState}
+        onRequestClose={this.props.closeModal}
+        animate
+      >
         <CloseButton absolutePositioned onClick={this.props.closeModal} />
         <div className={styles.header}>
           <h3>{this.props.isEdit ? <>Edit Custom Module</> : <>Add Custom Module</>}</h3>

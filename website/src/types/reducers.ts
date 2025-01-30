@@ -1,13 +1,7 @@
 import { AxiosError } from 'axios';
 import { RegPeriodType, ScheduleType } from 'config';
 import { ColorSchemePreference } from './settings';
-import {
-  ColorIndex,
-  CustomModuleLesson,
-  Lesson,
-  TaModulesConfig,
-  TimetableConfig,
-} from './timetables';
+import { ColorIndex, Lesson, TaModulesConfig, TimetableConfig } from './timetables';
 import {
   CustomLesson,
   Faculty,

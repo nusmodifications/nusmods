@@ -20,18 +20,16 @@ const CustomModuleModalButtonGroup: React.FC<CustomModuleModalButtonGroupProps> 
 }) => {
   const toggleSelected = useCallback(
     (option: number) => {
+      // For multi-select, toggle the selected state of the option
       if (isSingleSelect) {
         setSelected([option]);
+      } else if (selected.includes(option)) {
+        setSelected(selected.filter((i) => i !== option));
       } else {
-        // For multi-select, toggle the selected state of the option
-        if (selected.includes(option)) {
-          setSelected(selected.filter((i) => i !== option));
-        } else {
-          setSelected([...selected, option].toSorted((a, b) => a - b));
-        }
+        setSelected([...selected, option].sort((a, b) => a - b));
       }
     },
-    [isSingleSelect, selected],
+    [isSingleSelect, selected, setSelected],
   );
 
   return (

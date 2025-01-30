@@ -3,7 +3,10 @@
 exports[`addCustomModule should add the custom module defined 1`] = `
 {
   "payload": {
-    "lesson": {
+    "lessons": undefined,
+    "moduleCode": "CS1101S",
+    "semester": 2,
+    "title": {
       "classNo": "01",
       "day": "Monday",
       "endTime": "0900",
@@ -29,8 +32,6 @@ exports[`addCustomModule should add the custom module defined 1`] = `
         13,
       ],
     },
-    "moduleCode": "CS1101S",
-    "semester": 2,
   },
   "type": "ADD_CUSTOM_MODULE",
 }
@@ -96,7 +97,11 @@ exports[`hide/show timetable modules should dispatch a module code for showing 1
 exports[`modifyCustomModule should modify the custom module 1`] = `
 {
   "payload": {
-    "lesson": {
+    "lessons": undefined,
+    "moduleCode": "CS2030",
+    "oldModuleCode": "CS1101S",
+    "semester": 2,
+    "title": {
       "classNo": "01",
       "day": "Monday",
       "endTime": "0900",
@@ -122,9 +127,6 @@ exports[`modifyCustomModule should modify the custom module 1`] = `
         13,
       ],
     },
-    "moduleCode": "CS2030",
-    "oldModuleCode": "CS1101S",
-    "semester": 2,
   },
   "type": "MODIFY_CUSTOM_MODULE",
 }

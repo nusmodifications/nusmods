@@ -42,6 +42,7 @@ import {
   getExamDate,
   getModuleTimetable,
 } from 'utils/modules';
+import { createCustomModule } from 'utils/customModule';
 import {
   areOtherClassesAvailable,
   arrangeLessonsForWeek,
@@ -67,7 +68,6 @@ import TimetableModulesTable from './TimetableModulesTable';
 import ExamCalendar from './ExamCalendar';
 import ModulesTableFooter from './ModulesTableFooter';
 import styles from './TimetableContent.scss';
-import { createCustomModule } from 'utils/customModule';
 
 type ModifiedCell = {
   className: string;
