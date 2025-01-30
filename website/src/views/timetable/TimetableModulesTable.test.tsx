@@ -103,7 +103,7 @@ describe(TimetableModulesTableComponent, () => {
     const withoutTaButton = getButtons(make({ modules: addColors([CS1010S]) }).wrapper);
     expect(withoutTaButton.at(0).children()).toHaveLength(2);
 
-    const modulesWithTaAbleModule = addColors([CS1010S], false, false, true);
+    const modulesWithTaAbleModule = addColors([CS1010S], false, false, false, true);
     const withTaButton = getButtons(make({ modules: modulesWithTaAbleModule }).wrapper);
     expect(withTaButton.at(0).children()).toHaveLength(3);
   });
