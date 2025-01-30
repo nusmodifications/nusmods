@@ -24,16 +24,18 @@ const commonProps = {
     if (!inputValue) return [];
     return modules.filter((m) => m.moduleCode.includes(inputValue));
   }),
+  addCustomModule: jest.fn(),
   onChange: jest.fn(),
   moduleCount: 3,
   placeholder: 'test placeholder',
   disabled: false,
   onRemoveModule: jest.fn(),
+  semester: 1,
 };
 
 describe(ModulesSelect, () => {
   beforeAll(() => {
-    mockWindowMatchMedia({ matches: true });
+    mockWindowMatchMedia({ matches: false });
   });
 
   afterAll(() => {
@@ -73,9 +75,9 @@ describe(ModulesSelect, () => {
     expect(downShift.prop('isOpen')).toBe(true);
   });
 
-  describe('when it does not matchBreakpoint', () => {
+  describe('when it is small screen breakpoint', () => {
     beforeAll(() => {
-      mockWindowMatchMedia({ matches: false });
+      mockWindowMatchMedia({ matches: true });
     });
 
     it('should render modal', () => {
@@ -117,9 +119,9 @@ describe(ModulesSelect, () => {
     });
   });
 
-  describe('when it does matchBreakpoint', () => {
+  describe('when it is medium or large screen breakpoint', () => {
     beforeAll(() => {
-      mockWindowMatchMedia({ matches: true });
+      mockWindowMatchMedia({ matches: false });
     });
 
     it('should render not modal but downshift instead', () => {
