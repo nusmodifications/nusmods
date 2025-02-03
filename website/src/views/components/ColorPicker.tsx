@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 import { ColorIndex } from 'types/timetables';
 
-import { NUM_DIFFERENT_COLORS } from 'utils/colors';
+import { TOTAL_COLORS } from 'utils/colors';
 import styles from './ColorPicker.scss';
 
 type Props = {
@@ -51,7 +51,7 @@ const ColorPicker = memo<Props>((props) => {
           className={classnames(styles.palette, { [styles.isClosed]: !isOpen })}
           {...getMenuProps()}
         >
-          {_.range(NUM_DIFFERENT_COLORS).map((index: ColorIndex) => (
+          {_.range(TOTAL_COLORS).map((index: ColorIndex) => (
             <button
               type="button"
               {...getItemProps({ item: index })}
