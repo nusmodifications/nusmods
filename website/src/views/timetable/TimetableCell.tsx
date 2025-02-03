@@ -96,11 +96,11 @@ const TimetableCell: React.FC<Props> = (props) => {
 
   const conditionalProps = onClick
     ? {
-      onClick: (e: React.MouseEvent) => {
-        e.preventDefault();
-        onClick(e.currentTarget.getBoundingClientRect());
-      },
-    }
+        onClick: (e: React.MouseEvent) => {
+          e.preventDefault();
+          onClick(e.currentTarget.getBoundingClientRect());
+        },
+      }
     : {};
 
   const weekText = consumeWeeks<React.ReactNode>(lesson.weeks, formatNumericWeeks, formatWeekRange);
@@ -109,7 +109,9 @@ const TimetableCell: React.FC<Props> = (props) => {
     styles.baseCell,
     getLessonIdentifier(lesson),
     elements.lessons,
-    (transparent || lesson.colorIndex === TRANSPARENT_COLOR_INDEX) ? styles.transparentCell : [styles.coloredCell, `color-${lesson.colorIndex}`],
+    transparent || lesson.colorIndex === TRANSPARENT_COLOR_INDEX
+      ? styles.transparentCell
+      : [styles.coloredCell, `color-${lesson.colorIndex}`],
     {
       hoverable: !!onClick,
       [styles.clickable]: !!onClick,
