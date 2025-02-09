@@ -16,11 +16,11 @@
     }
   },
   "BIZ2-0111": {
-    "roomName": "S - SA1 - 6745",
+    "roomName": "Seminar Room 1-11",
     "floor": 1,
     "location": {
-      "x": 103.77316474914551,
-      "y": 1.29626003050623
+      "x": 103.7755572795868,
+      "y": 1.293219182046886
     }
   },
   "BIZ2-0301": {
@@ -538,11 +538,11 @@
     }
   },
   "LT6": {
-    "roomName": "Lecture Theatre 6",
+    "roomName": "LT6",
     "floor": 4,
     "location": {
-      "x": 103.77196318826034,
-      "y": 1.2987585148416605
+      "x": 103.77195239067079,
+      "y": 1.2987913865798812
     }
   },
   "E1-06-08": {
@@ -4261,10 +4261,10 @@
   },
   "ERC-SR11": {
     "roomName": "ERC-SR11",
-    "floor": 3,
+    "floor": 2,
     "location": {
-      "x": 103.77291262149812,
-      "y": 1.305924051894182
+      "x": 103.77286970615388,
+      "y": 1.3060690211505341
     }
   },
   "S11-0302A": {
@@ -4937,6 +4937,126 @@
     "location": {
       "x": 103.77326933994733,
       "y": 1.296587176242994
+    }
+  },
+  "ERC-SR1": {
+    "roomName": "Seminar room 1",
+    "floor": 2,
+    "location": {
+      "x": 103.77264172478222,
+      "y": 1.306074384174867
+    }
+  },
+  "S4-02LAB": {
+    "roomName": "s4",
+    "floor": 1,
+    "location": {
+      "x": 103.77334722401163,
+      "y": 1.2967802458383009
+    }
+  },
+  "COM4-02-04": {
+    "roomName": "Workstation Lab 3",
+    "floor": 2,
+    "location": {
+      "x": 103.77556549266637,
+      "y": 1.2950533450462423
+    }
+  },
+  "COM4-02-03": {
+    "roomName": "Workstation Lab 1",
+    "floor": 2,
+    "location": {
+      "x": 103.77535338573088,
+      "y": 1.2951643924392995
+    }
+  },
+  "COM4-02-05": {
+    "roomName": "Workstation Lab 2",
+    "floor": 2,
+    "location": {
+      "x": 103.77542120439482,
+      "y": 1.2950158037115926
+    }
+  },
+  "COM4-02-02": {
+    "roomName": "Information Systems and Analytics Teaching Lab 2 (ISA T-Lab 2)",
+    "floor": 2,
+    "location": {
+      "x": 103.7753720409051,
+      "y": 1.2951874212368448
+    }
+  },
+  "COM4-02-01": {
+    "roomName": "Information Systems and Analytics Teaching Lab 1 (ISA T-Lab 1)",
+    "floor": 2,
+    "location": {
+      "x": 103.77522680835014,
+      "y": 1.2951445168566165
+    }
+  },
+  "COM1-0214": {
+    "roomName": "Tutorial Room 12",
+    "floor": 2,
+    "location": {
+      "x": 103.77398306589,
+      "y": 1.294661842529079
+    }
+  },
+  "ERC-SR2": {
+    "roomName": "Seminar room 2",
+    "floor": 2,
+    "location": {
+      "x": 103.77270077494545,
+      "y": 1.3062191858280354
+    }
+  },
+  "LKY_SR2-1": {
+    "roomName": "SR",
+    "floor": 2,
+    "location": {
+      "x": 103.81760090589525,
+      "y": 1.3189664358274156
+    }
+  },
+  "E2-0307PC4": {
+    "roomName": "e2-0307",
+    "floor": 1,
+    "location": {
+      "x": 103.77321571111682,
+      "y": 1.2965067305739413
+    }
+  },
+  "YSTCM-SR1": {
+    "roomName": "YSTCM",
+    "floor": 1,
+    "location": {
+      "x": 103.77324789762498,
+      "y": 1.2966568958207743
+    }
+  },
+  "E-Hybrid_A": {
+    "roomName": "E-hybrid-2",
+    "floor": 1,
+    "location": {
+      "x": 103.77305746078493,
+      "y": 1.2967266153966337
+    }
+  },
+  "E4-04-05": {
+    "roomName": "e4",
+    "floor": 1,
+    "location": {
+      "x": 103.77341151237489,
+      "y": 1.2964262849023314
+    }
+  },
+  "HSS-03-07": {
+    "roomName": "Hss03-07",
+    "floor": 1,
+    "location": {
+      "x": 103.77378165721895,
+      "y": 1.2966408066876127
     }
   }
 }
