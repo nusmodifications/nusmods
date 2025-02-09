@@ -1,0 +1,63 @@
+@import '~styles/utils/modules-entry';
+
+.debug {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999999;
+  padding: 10px;
+  color: black;
+  background: white;
+}
+
+.location {
+  @include media-breakpoint-down(sm) {
+    margin: 0 $grid-gutter-width * 0.5;
+  }
+}
+
+.map {
+  height: 100%;
+}
+
+.gmapBtn {
+  position: absolute;
+  top: $leaflet-control-offset;
+  right: $leaflet-control-offset;
+  z-index: 180;
+}
+
+.mapWrapper {
+  position: relative;
+  // height: 30rem;
+
+  &.expanded {
+    position: fixed;
+    top: $navbar-height;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: $venue-detail-expanded-z-index;
+    height: auto;
+    margin: 0;
+
+    @include media-breakpoint-down(sm) {
+      top: 0;
+    }
+  }
+}
+
+.mapTile {
+  // filter: contrast(70%) brightness(120%) saturate(120%);
+  filter: contrast(35%) brightness(150%) saturate(0%);
+}
+
+:global(.mode-dark) .mapTile {
+  filter: invert(1) contrast(35%) brightness(50%) saturate(0%);
+}
+.covidZoneLabel {
+  font-weight: bold;
+  font-size: 1.6rem;
+  text-shadow: 0 0 2px #000, 0 0 2px #000, 0 0 2px #000;
+  color: #fff;
+}
