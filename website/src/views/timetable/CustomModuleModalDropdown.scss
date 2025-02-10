@@ -1,0 +1,44 @@
+@import '~styles/utils/modules-entry.scss';
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+
+  .dropdownButton {
+    padding-right: 0.5rem;
+
+    .btnSvg {
+      margin-right: 0;
+      margin-left: 0.5rem;
+    }
+  }
+}
+
+.errorLabel {
+  margin: 0;
+  color: red;
+}
+
+.dropdownMenu {
+  position: fixed;
+  bottom: 0;
+  z-index: calc($modal-z-index + 10);
+  list-style-type: none;
+  width: fit-content;
+  height: fit-content;
+  padding: 0;
+  margin: 0;
+
+  &.open {
+    display: block;
+  }
+
+  &.closed {
+    display: none;
+  }
+
+  .item {
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+}
