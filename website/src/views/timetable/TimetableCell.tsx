@@ -144,6 +144,7 @@ const TimetableCell: React.FC<Props> = (props) => {
           </div>
 
           {lesson.isTaInTimetable &&
+            onClick &&
             isHoveredOver &&
             hoverLesson &&
             (lesson.isActive || !lesson.isOptionInTimetable ? (
