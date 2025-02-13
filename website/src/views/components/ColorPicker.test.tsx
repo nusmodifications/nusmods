@@ -83,7 +83,6 @@ test('should allow a falsy color index to be selected', () => {
   expect(onChooseColor).toHaveBeenCalledWith(0);
 });
 
-
 test('should set color to transparent when clicking already selected color', () => {
   const { wrapper, onChooseColor } = makeColorPicker(1);
   findPopup(wrapper).find('button').at(1).simulate('click');
