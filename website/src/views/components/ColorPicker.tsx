@@ -4,8 +4,8 @@ import Downshift, { ChildrenFunction } from 'downshift';
 import _ from 'lodash';
 
 import { ColorIndex } from 'types/timetables';
+import { NUM_DIFFERENT_COLORS, TRANSPARENT_COLOR_INDEX } from 'utils/colors';
 
-import { TOTAL_COLORS } from 'utils/colors';
 import styles from './ColorPicker.scss';
 
 type Props = {
@@ -42,19 +42,24 @@ const ColorPicker = memo<Props>((props) => {
           {...getToggleButtonProps({
             title: label,
           })}
-          className={classnames('btn btn-block hoverable', `color-${color}`, styles.moduleColor, {
-            [styles.hidden]: isHidden,
-            [styles.ta]: isTa,
-          })}
+          className={classnames(
+            'btn btn-block hoverable',
+            color === TRANSPARENT_COLOR_INDEX ? styles.transparentColor : `color-${color}`,
+            styles.moduleColor,
+            {
+              [styles.hidden]: isHidden,
+              [styles.ta]: isTa,
+            },
+          )}
         />
         <div
           className={classnames(styles.palette, { [styles.isClosed]: !isOpen })}
           {...getMenuProps()}
         >
-          {_.range(TOTAL_COLORS).map((index: ColorIndex) => (
+          {_.range(NUM_DIFFERENT_COLORS).map((index: ColorIndex) => (
             <button
               type="button"
-              {...getItemProps({ item: index })}
+              {...getItemProps({ item: index === color ? TRANSPARENT_COLOR_INDEX : index })}
               key={index}
               className={classnames(styles.option, `color-${index}`, {
                 [styles.selected]: index === color,
