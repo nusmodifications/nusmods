@@ -1,6 +1,7 @@
 import { Fragment, useCallback, useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import classnames from 'classnames';
+import { useHistory } from 'react-router-dom';
 import { isEqual } from 'lodash';
 
 import { ColorSchemePreference, ThemeId } from 'types/settings';
@@ -40,6 +41,8 @@ import previewTimetable from './previewTimetable';
 import BetaToggle from './BetaToggle';
 import RefreshPrompt from './RefreshPrompt';
 import styles from './SettingsContainer.scss';
+import { getRandomCourse } from 'utils/randomCoursePicker'; // Import the random course picker function
+
 
 type Props = {
   currentThemeId: string;
@@ -73,6 +76,8 @@ const SettingsContainer: React.FC<Props> = ({
   ...props
 }) => {
   const [allowTracking, setAllowTracking] = useState(true);
+  const history = useHistory();
+
 
   const onToggleTracking = useCallback((isTrackingAllowed: boolean) => {
     withTracker((tracker: Tracker) => {
@@ -93,6 +98,15 @@ const SettingsContainer: React.FC<Props> = ({
   const rounds = getRounds(modRegNotification);
 
   useScrollToTop();
+
+  const handleRandomCourseClick = async () => {
+    const randomCourse = await getRandomCourse(); // Fetch random course from API
+    if (randomCourse && randomCourse.moduleCode) {
+      history.push(`/courses/${randomCourse.moduleCode}`);
+    } else {
+      console.error("No courses available or invalid course");
+    }
+  };
 
   return (
     <div className={classnames(styles.settingsPage, 'page-container')}>
@@ -314,6 +328,12 @@ const SettingsContainer: React.FC<Props> = ({
           />
         </div>
       </div>
+      {/* Add the Random Course Picker Button */}
+        <hr />
+      <h4 id="random-course-picker">Random Course Picker</h4>
+      <button className="btn btn-primary" onClick={handleRandomCourseClick}>
+        Pick a Random Course
+      </button>
     </div>
   );
 };
