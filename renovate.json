@@ -65,7 +65,7 @@
       "groupName": "definitelyTyped"
     }
   ],
-  "ignoreDeps": ["@material/snackbar", "@material/fab", "puppeteer", "searchkit"],
+  "ignoreDeps": ["@material/snackbar", "@material/fab", "puppeteer", "searchkit", "samlify"],
   "pathRules": [
     {
       "paths": ["packages/**"],
