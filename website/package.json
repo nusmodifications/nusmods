@@ -168,7 +168,7 @@
     "redux-persist": "6.0.0",
     "redux-thunk": "2.4.2",
     "reselect": "4.1.8",
-    "samlify": "2.8.11",
+    "samlify": "2.7.7",
     "searchkit": "2.4.1-alpha.5",
     "use-subscription": "1.10.0"
   },
