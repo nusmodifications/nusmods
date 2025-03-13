@@ -5,7 +5,7 @@ import { Repeat } from 'react-feather';
 import classnames from 'classnames';
 
 import type { ModuleCode, Semester } from 'types/modules';
-import type { ColorMapping } from 'types/reducers';
+import type { ColorMapping, CustomModuleLessonData } from 'types/reducers';
 import type { State } from 'types/state';
 import type { SemTimetableConfig, TaModulesConfig } from 'types/timetables';
 
@@ -13,6 +13,7 @@ import { selectSemester } from 'actions/settings';
 import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
 import {
   fetchTimetableModules,
+  setCustomModulesFromImport,
   setHiddenModulesFromImport,
   setTaModulesFromImport,
   setTimetable,
@@ -20,7 +21,12 @@ import {
 import { openNotification } from 'actions/app';
 import { undo } from 'actions/undoHistory';
 import { getModuleCondensed } from 'selectors/moduleBank';
-import { deserializeHidden, deserializeTa, deserializeTimetable } from 'utils/timetables';
+import {
+  deserializeCustom,
+  deserializeHidden,
+  deserializeTa,
+  deserializeTimetable,
+} from 'utils/timetables';
 import { fillColorMapping } from 'utils/colors';
 import { semesterForTimetablePage, TIMETABLE_SHARE, timetablePage } from 'views/routes/paths';
 import deferComponentRender from 'views/hocs/deferComponentRender';
@@ -45,6 +51,7 @@ const SharingHeader: FC<{
   filledColors: ColorMapping;
   importedTimetable: SemTimetableConfig | null;
   hiddenImportedModules: ModuleCode[] | null;
+  customImportedModules: CustomModuleLessonData | null;
   taImportedModules: TaModulesConfig | null;
   setImportedTimetable: (timetable: SemTimetableConfig | null) => void;
 }> = ({
@@ -52,6 +59,7 @@ const SharingHeader: FC<{
   filledColors,
   importedTimetable,
   hiddenImportedModules,
+  customImportedModules,
   taImportedModules,
   setImportedTimetable,
 }) => {
@@ -69,11 +77,17 @@ const SharingHeader: FC<{
     if (!importedTimetable) {
       return;
     }
+
     dispatch(setTimetable(semester, importedTimetable, filledColors));
 
     if (hiddenImportedModules) {
       dispatch(setHiddenModulesFromImport(semester, hiddenImportedModules));
     }
+
+    if (customImportedModules) {
+      dispatch(setCustomModulesFromImport(semester, customImportedModules));
+    }
+
     if (taImportedModules) {
       dispatch(setTaModulesFromImport(semester, taImportedModules));
     }
@@ -97,6 +111,7 @@ const SharingHeader: FC<{
     hiddenImportedModules,
     taImportedModules,
     semester,
+    customImportedModules,
   ]);
 
   if (!importedTimetable) {
@@ -174,11 +189,19 @@ export const TimetableContainerComponent: FC = () => {
   const colors = useSelector(getSemesterTimetableColors)(semester);
   const getModule = useSelector(getModuleCondensed);
   const modules = useSelector(({ moduleBank }: State) => moduleBank.modules);
+  const customModules = useSelector(
+    ({ timetables }: State) => timetables.customModules[semester ?? ''],
+  );
   const activeSemester = useSelector(({ app }: State) => app.activeSemester);
 
   const location = useLocation();
   const [importedTimetable, setImportedTimetable] = useState(() =>
     semester && params.action ? deserializeTimetable(location.search) : null,
+  );
+
+  const importedCustom = useMemo(
+    () => (semester && params.action ? deserializeCustom(location.search) : null),
+    [semester, params.action, location.search],
   );
 
   const importedHidden = useMemo(
@@ -212,10 +235,13 @@ export const TimetableContainerComponent: FC = () => {
   }, [getModule, importedTimetable, modules, timetable]);
 
   const displayedTimetable = importedTimetable || timetable;
+  const displayedCustom = importedCustom || customModules;
+
   const filledColors = useMemo(
-    () => fillColorMapping(displayedTimetable, colors),
-    [colors, displayedTimetable],
+    () => fillColorMapping(displayedTimetable, colors, Object.keys(displayedCustom ?? {})),
+    [colors, displayedTimetable, displayedCustom],
   );
+
   const readOnly = displayedTimetable === importedTimetable;
 
   useScrollToTop();
@@ -237,6 +263,7 @@ export const TimetableContainerComponent: FC = () => {
       semester={semester}
       timetable={displayedTimetable}
       hiddenImportedModules={importedHidden}
+      customImportedModules={displayedCustom}
       taImportedModules={importedTa}
       colors={filledColors}
       header={
@@ -245,6 +272,7 @@ export const TimetableContainerComponent: FC = () => {
             semester={semester}
             filledColors={filledColors}
             importedTimetable={importedTimetable}
+            customImportedModules={importedCustom}
             hiddenImportedModules={importedHidden}
             taImportedModules={importedTa}
             setImportedTimetable={setImportedTimetable}
