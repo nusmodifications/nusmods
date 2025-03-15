@@ -3,4 +3,4 @@
 /** Enable Course Planning Exercise */
 export const enableCPEx = false;
 
-export const showCPExTab = true;
+export const showCPExTab = false;
