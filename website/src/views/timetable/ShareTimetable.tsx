@@ -7,6 +7,7 @@ import type { QRCodeSVG } from 'qrcode.react';
 
 import type { SemTimetableConfig, TaModulesConfig } from 'types/timetables';
 import type { ModuleCode, Semester } from 'types/modules';
+import { CustomModuleLessonData } from 'types/reducers';
 
 import config from 'config';
 import { absolutePath, timetableShare } from 'views/routes/paths';
@@ -26,6 +27,7 @@ const COPY_FAIL: CopyState = 'COPY_FAIL';
 type Props = {
   semester: Semester;
   timetable: SemTimetableConfig;
+  customModules: CustomModuleLessonData;
   hiddenModules: ModuleCode[];
   taModules: TaModulesConfig;
 };
@@ -42,10 +44,11 @@ type State = {
 function shareUrl(
   semester: Semester,
   timetable: SemTimetableConfig,
+  customModules: CustomModuleLessonData,
   hiddenModules: ModuleCode[],
   taModules: TaModulesConfig,
 ): string {
-  return absolutePath(timetableShare(semester, timetable, hiddenModules, taModules));
+  return absolutePath(timetableShare(semester, timetable, customModules, hiddenModules, taModules));
 }
 
 function getToolTipContent(shortUrl: string | null, isFullUrl: boolean, isLoading: boolean) {
@@ -95,8 +98,8 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
   }
 
   loadUrl = () => {
-    const { semester, timetable, hiddenModules, taModules } = this.props;
-    const url = shareUrl(semester, timetable, hiddenModules, taModules);
+    const { semester, timetable, customModules, hiddenModules, taModules } = this.props;
+    const url = shareUrl(semester, timetable, customModules, hiddenModules, taModules);
 
     // Don't do anything if the long URL has not changed
     if (this.url === url) return;
