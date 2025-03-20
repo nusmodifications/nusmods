@@ -16,6 +16,7 @@ import { ElasticSearchResult } from 'types/vendor/elastic-search';
 import { ModuleInformation } from 'types/modules';
 
 import ModuleFinderSidebar from 'views/modules/ModuleFinderSidebar';
+import ModuleRandomButton from 'views/modules/ModuleRandomButton';
 import ModuleSearchBox from 'views/modules/ModuleSearchBox';
 import ModuleFinderNoHits from 'views/errors/ModuleFinderNoHits';
 import ModuleFinderApiError from 'views/errors/ModuleFinderApiError';
@@ -64,6 +65,8 @@ const ModuleFinderContainer: React.FC = () => (
           <h1 className="sr-only">Course Finder</h1>
 
           <ModuleSearchBox id="q" />
+
+          <ModuleRandomButton />
 
           <div>
             <HitsStats
