@@ -14,6 +14,7 @@ import {
   getLessonIdentifier,
   LESSON_TYPE_ABBREV,
 } from 'utils/timetables';
+import { TRANSPARENT_COLOR_INDEX } from 'utils/colors';
 import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip/Tooltip';
 import { Minus, Plus } from 'react-feather';
@@ -108,7 +109,9 @@ const TimetableCell: React.FC<Props> = (props) => {
     styles.baseCell,
     getLessonIdentifier(lesson),
     elements.lessons,
-    transparent ? styles.transparentCell : [styles.coloredCell, `color-${lesson.colorIndex}`],
+    transparent || lesson.colorIndex === TRANSPARENT_COLOR_INDEX
+      ? styles.transparentCell
+      : [styles.coloredCell, `color-${lesson.colorIndex}`],
     {
       hoverable: !!onClick,
       [styles.clickable]: !!onClick,
