@@ -1,0 +1,23 @@
+# See: https://docs.docker.com/compose/rails/
+
+version: '3.7'
+
+services:
+  db:
+    image: postgres:11.2-alpine
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  web:
+    build: .
+    stdin_open: true
+    tty: true
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails server -p 3000 -b '0.0.0.0'"
+    volumes:
+      - .:/nusmods-rails
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+volumes:
+  db_data:
