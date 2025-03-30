@@ -28,13 +28,26 @@ const samlRespAttributes: { [key in keyof User]: string } = {
 
 samlify.setSchemaValidator(validator);
 
+let SP_FILE_PATH;
+let FEDERATION_METADATA_FILE_PATH;
+if (NUSMODS_ENV === 'staging') {
+  SP_FILE_PATH = './sp-latest.xml';
+  FEDERATION_METADATA_FILE_PATH = './FederationMetadata.xml';
+} else if (NUSMODS_ENV === 'production') {
+  SP_FILE_PATH = './sp.xml';
+  FEDERATION_METADATA_FILE_PATH = './FederationMetadata.xml';
+} else {
+  SP_FILE_PATH = './sp-cpex-staging.xml';
+  FEDERATION_METADATA_FILE_PATH = './FederationMetadata-cpex-staging.xml';
+}
+
 const idp = samlify.IdentityProvider({
-  metadata: fs.readFileSync(path.join(__dirname, './FederationMetadata.xml')),
+  metadata: fs.readFileSync(path.join(__dirname, FEDERATION_METADATA_FILE_PATH)),
   isAssertionEncrypted: true,
 });
 
 const sp = samlify.ServiceProvider({
-  metadata: fs.readFileSync(path.join(__dirname, './sp.xml')),
+  metadata: fs.readFileSync(path.join(__dirname, SP_FILE_PATH)),
   encPrivateKey: process.env.NUS_EXCHANGE_SP_PRIVATE_KEY?.replace(/\\n/g, '\n'),
 });
 
