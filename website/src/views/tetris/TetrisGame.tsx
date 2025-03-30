@@ -2,7 +2,7 @@ import { createRef, PureComponent } from 'react';
 import Mousetrap from 'mousetrap';
 import { debounce, noop, shuffle } from 'lodash';
 import classnames from 'classnames';
-import produce, { current, Draft } from 'immer';
+import { produce, current, Draft } from 'immer';
 
 import { ColorIndex } from 'types/timetables';
 import Timetable from 'views/timetable/Timetable';

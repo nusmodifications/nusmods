@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Heart, GitHub, Mail } from 'react-feather';
+import { Heart, GitHub, Mail, Send } from 'react-feather';
 
 import config from 'config';
 import { toggleFeedback } from 'actions/app';
@@ -18,6 +18,10 @@ type Props = {
 export const FeedbackButtons: React.FC = () => (
   <div>
     <div className={styles.links}>
+      <ExternalLink className={styles.telegram} href={config.contact.telegram}>
+        <Send />
+        Telegram
+      </ExternalLink>
       <ExternalLink className={styles.github} href={config.contact.githubRepo}>
         <GitHub />
         GitHub
@@ -48,8 +52,8 @@ export const FeedbackModalComponent: React.FC<Props> = (props) => (
       <Heart className={styles.topIcon} />
       <h1>Let us know what you think!</h1>
       <p>
-        Thank you for your time! You can talk to us on Messenger, file an issue on GitHub, or send
-        us an email.
+        Thank you for your time! You can talk to us on Telegram, file an issue on GitHub, or send us
+        an email.
       </p>
       <FeedbackButtons />
     </div>

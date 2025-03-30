@@ -1,12 +1,15 @@
 @import '~styles/utils/modules-entry';
 
-// Colors from https://material.io/design/color/
 $route-colors: (
-  A: #e53935,
-  B: #8e24aa,
-  C: #1e88e5,
-  D: #558b2f,
-  BTC: #6d4c41,
+  A1: #c10000,
+  A2: #ffcf09,
+  D1: #f9b3fe,
+  D2: #732172,
+  E: #01823b,
+  K: #305597,
+  BTC: #ff9a00,
+  L: #d9d9d9,
+  PUBLIC: #eee,
 );
 
 .iconWrapper {
@@ -56,7 +59,6 @@ $route-colors: (
     font-weight: bold;
     font-size: 9px;
     line-height: 1;
-    color: #fff;
     pointer-events: auto;
   }
 }
@@ -82,7 +84,6 @@ $route-colors: (
 
   .routeHeading {
     vertical-align: middle;
-    color: #fff;
   }
 }
 
@@ -105,37 +106,46 @@ $route-colors: (
 
 // Define a color for each route
 .routeA1 {
-  background: map-get($route-colors, 'A');
+  color: white;
+  background: map-get($route-colors, 'A1');
 }
 
 .routeA2 {
-  background: darken(map-get($route-colors, 'A'), 12);
+  color: black;
+  background: map-get($route-colors, 'A2');
 }
 
-.routeB1 {
-  background: map-get($route-colors, 'B');
+.routeE {
+  color: white;
+  background: map-get($route-colors, 'E');
 }
 
-.routeB2 {
-  background: lighten(map-get($route-colors, 'B'), 15);
-}
-
-.routeC {
-  background: map-get($route-colors, 'C');
+.routeK {
+  color: white;
+  background: map-get($route-colors, 'K');
 }
 
 .routeD1 {
-  background: map-get($route-colors, 'D');
+  color: black;
+  background: map-get($route-colors, 'D1');
 }
 
 .routeD2 {
-  background: lighten(map-get($route-colors, 'D'), 10);
+  color: white;
+  background: map-get($route-colors, 'D2');
 }
 
-.routeBTC1 {
+.routeBTC {
+  color: black;
   background: map-get($route-colors, 'BTC');
 }
 
-.routeBTC2 {
-  background: lighten(map-get($route-colors, 'BTC'), 15);
+.routeL {
+  color: black;
+  background: map-get($route-colors, 'L');
+}
+
+.routePUBLIC {
+  color: black;
+  background: map-get($route-colors, 'PUBLIC');
 }

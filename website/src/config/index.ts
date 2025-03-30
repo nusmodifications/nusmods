@@ -63,7 +63,6 @@ export type Config = {
     facebook: string;
     githubOrg: string;
     githubRepo: string;
-    messenger: string;
     twitter: string;
     telegram: string;
   };

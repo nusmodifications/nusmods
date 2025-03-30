@@ -4,7 +4,7 @@ import path from 'path';
 
 import env from '../env.json';
 
-const TERM = '2420';
+const TERM = '2510';
 
 // Sanity check to see if there are at least this many modules before overwriting cpexModules.json
 // The last time I ran this fully there were 3418 modules

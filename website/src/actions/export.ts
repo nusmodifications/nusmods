@@ -1,10 +1,14 @@
 import type { Module, ModuleCode, Semester } from 'types/modules';
 import type { ExportData } from 'types/export';
 import type { Dispatch, GetState } from 'types/redux';
-import { hydrateSemTimetableWithLessons } from 'utils/timetables';
+import {
+  hydrateSemTimetableWithLessons,
+  hydrateTaModulesConfigWithLessons,
+} from 'utils/timetables';
 import { captureException } from 'utils/error';
 import retryImport from 'utils/retryImport';
 import { getSemesterTimetableLessons } from 'selectors/timetables';
+import { TaModulesConfig } from 'types/timetables';
 import { SET_EXPORTED_DATA } from './constants';
 
 function downloadUrl(blob: Blob, filename: string) {
@@ -31,12 +35,28 @@ export function downloadAsIcal(semester: Semester) {
       .then(([ical, icalUtils]) => {
         const state = getState();
         const { modules } = state.moduleBank;
-        const hiddenModules: ModuleCode[] = state.timetables.hidden[semester] || [];
+        const hiddenModules: ModuleCode[] = state.timetables.hidden[semester] ?? [];
+        const taModules: TaModulesConfig = state.timetables.ta[semester] ?? {};
 
         const timetable = getSemesterTimetableLessons(state)(semester);
         const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
+        const timetableWithTaLessons = hydrateTaModulesConfigWithLessons(
+          taModules,
+          modules,
+          semester,
+        );
+        const filteredTimetableWithLessons = {
+          ...timetableWithLessons,
+          ...timetableWithTaLessons,
+        };
 
-        const events = icalUtils.default(semester, timetableWithLessons, modules, hiddenModules);
+        const events = icalUtils.default(
+          semester,
+          filteredTimetableWithLessons,
+          modules,
+          hiddenModules,
+          taModules,
+        );
         const cal = ical.default({
           domain: 'nusmods.com',
           prodId: '//NUSMods//NUSMods//EN',

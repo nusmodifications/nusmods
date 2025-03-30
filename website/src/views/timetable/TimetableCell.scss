@@ -71,6 +71,13 @@ $cell-opacity: 0.5;
   }
 }
 
+.cellHeaader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+}
+
 .moduleName {
   font-weight: 600;
   font-size: $font-size-xs;
@@ -107,4 +114,9 @@ $cell-opacity: 0.5;
   .weekInfo {
     opacity: 0.6;
   }
+}
+
+.taActionIndicator {
+  height: 0.8rem;
+  margin-right: -0.3rem;
 }

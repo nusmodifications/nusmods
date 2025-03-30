@@ -4,7 +4,9 @@ import {
   difference,
   each,
   first,
+  flatMap,
   flatMapDeep,
+  forEach,
   groupBy,
   invert,
   isEmpty,
@@ -12,13 +14,14 @@ import {
   last,
   map,
   mapValues,
+  omit,
   partition,
   pick,
   range,
   sample,
   values,
 } from 'lodash';
-import { addDays, min as minDate, parseISO } from 'date-fns';
+import { addDays, min as minDate, parseISO, startOfDay } from 'date-fns';
 import qs from 'query-string';
 
 import {
@@ -37,8 +40,10 @@ import {
   HoverLesson,
   Lesson,
   ModuleLessonConfig,
+  ModuleLessonConfigWithLessons,
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
+  TaModulesConfig,
   TimetableArrangement,
   TimetableDayArrangement,
   TimetableDayFormat,
@@ -119,25 +124,57 @@ export function hydrateSemTimetableWithLessons(
       const module: Module = modules[moduleCode];
       if (!module) return EMPTY_OBJECT;
 
-      // TODO: Split this part into a smaller function: hydrateModuleConfigWithLessons.
-      return mapValues(moduleLessonConfig, (classNo: ClassNo, lessonType: LessonType) => {
-        const lessons = getModuleTimetable(module, semester);
-        const newLessons = lessons.filter(
-          (lesson: RawLesson): boolean =>
-            lesson.lessonType === lessonType && lesson.classNo === classNo,
-        );
-
-        const timetableLessons: Lesson[] = newLessons.map(
-          (lesson: RawLesson): Lesson => ({
-            ...lesson,
-            moduleCode,
-            title: module.title,
-          }),
-        );
-        return timetableLessons;
-      });
+      return hydrateModuleConfigWithLessons(moduleLessonConfig, module, semester);
     },
   );
+}
+
+// Replaces LessonType and ClassNo in TaModulesConfig with Array<Lesson>
+export function hydrateTaModulesConfigWithLessons(
+  taModules: TaModulesConfig,
+  modules: ModulesMap,
+  semester: Semester,
+): SemTimetableConfigWithLessons {
+  return mapValues(
+    taModules,
+    (lessons: [lessonType: LessonType, classNo: ClassNo][], moduleCode: ModuleCode) => {
+      const module = modules[moduleCode];
+      if (!module) return EMPTY_OBJECT;
+
+      const moduleLessonConfigWithLessons: ModuleLessonConfigWithLessons = {};
+      forEach(lessons, ([lessonType, classNo]) => {
+        const moduleConfigWithLessons = hydrateModuleConfigWithLessons(
+          { [lessonType]: classNo },
+          module,
+          semester,
+        );
+        if (!(lessonType in moduleLessonConfigWithLessons)) {
+          moduleLessonConfigWithLessons[lessonType] = [];
+        }
+        moduleLessonConfigWithLessons[lessonType].push(...moduleConfigWithLessons[lessonType]);
+      });
+      return moduleLessonConfigWithLessons;
+    },
+  );
+}
+
+// Replaces ClassNo in ModuleLessonConfig with Array<Lesson>
+function hydrateModuleConfigWithLessons(
+  moduleLessonConfig: ModuleLessonConfig,
+  module: Module,
+  semester: Semester,
+): ModuleLessonConfigWithLessons {
+  return mapValues(moduleLessonConfig, (classNo: ClassNo, lessonType: LessonType) => {
+    const lessons = getModuleTimetable(module, semester);
+    const newLessons = lessons.filter(
+      (lesson: RawLesson) => lesson.lessonType === lessonType && lesson.classNo === classNo,
+    );
+    return newLessons.map((lesson: RawLesson) => ({
+      ...lesson,
+      moduleCode: module.moduleCode,
+      title: module.title,
+    }));
+  });
 }
 
 //  Filters a flat array of lessons and returns the lessons corresponding to lessonType.
@@ -360,7 +397,7 @@ export function isLessonAvailable(
     (weekRange) => {
       const end = minDate([parseISO(weekRange.end), date]);
       for (let current = parseISO(weekRange.start); current <= end; current = addDays(current, 7)) {
-        if (isEqual(current, date)) return true;
+        if (isEqual(current, startOfDay(date))) return true;
       }
 
       return false;
@@ -454,7 +491,7 @@ export function getSemesterModules(
 }
 
 function serializeModuleConfig(config: ModuleLessonConfig): string {
-  // eg. { Lecture: 1, Laboratory: 2 } => LEC=1,LAB=2
+  // eg. { Lecture: 1, Laboratory: 2 } => LEC:1,LAB:2
   return map(config, (classNo, lessonType) =>
     [LESSON_TYPE_ABBREV[lessonType], encodeURIComponent(classNo)].join(LESSON_TYPE_SEP),
   ).join(LESSON_SEP);
@@ -537,7 +574,7 @@ export function formatNumericWeeks(unprocessedWeeks: NumericWeeks): string | nul
 //   CS2104: { Lecture: '1', Tutorial: '2' },
 //   CS2107: { Lecture: '1', Tutorial: '8' },
 // }
-// => CS2104=LEC:1,Tut:2&CS2107=LEC:1,Tut:8
+// => CS2104=LEC:1,TUT:2&CS2107=LEC:1,TUT:8
 export function serializeTimetable(timetable: SemTimetableConfig): string {
   // We are using query string safe characters, so this encoding is unnecessary
   return qs.stringify(mapValues(timetable, serializeModuleConfig), { encode: false });
@@ -545,7 +582,11 @@ export function serializeTimetable(timetable: SemTimetableConfig): string {
 
 export function deserializeTimetable(serialized: string): SemTimetableConfig {
   const params = qs.parse(serialized);
-  return mapValues(params, parseModuleConfig);
+  return mapValues(omit(params, ['hidden', 'ta']), parseModuleConfig);
+}
+
+export function serializeHidden(hiddenModules: ModuleCode[]) {
+  return `&hidden=${hiddenModules.join(',')}`;
 }
 
 export function deserializeHidden(serialized: string): ModuleCode[] {
@@ -553,7 +594,62 @@ export function deserializeHidden(serialized: string): ModuleCode[] {
   if (!params.hidden) return [];
   // If user manually enters multiple hidden query keys, use latest one
   const hidden = Array.isArray(params.hidden) ? last(params.hidden) : params.hidden;
-  return (hidden as string).split(',');
+  if (!hidden) return [];
+  return hidden.split(',');
+}
+
+export function serializeTa(taModules: TaModulesConfig) {
+  // eg:
+  // eg:
+  // {
+  //   CS2100: [ ['Tutorial', '2'], ['Tutorial', '3'], ['Laboratory', '1'] ],
+  //   CS2107: [ ['Tutorial', '8'] ],
+  // }
+  // => &ta=CS2100(TUT:2,TUT:3,LAB:1);CS2107(TUT:8)
+  return `&ta=${flatMap(
+    taModules,
+    (lessons, moduleCode) =>
+      `${moduleCode}(${lessons
+        .map(
+          ([lessonType, classNo]) =>
+            `${LESSON_TYPE_ABBREV[lessonType]}${LESSON_TYPE_SEP}${encodeURIComponent(classNo)}`,
+        )
+        .join(LESSON_SEP)})`,
+  ).join(LESSON_SEP)}`;
+}
+
+export function deserializeTa(serialized: string): TaModulesConfig {
+  const params = qs.parse(serialized);
+  const deserialized: TaModulesConfig = {};
+  if (!params.ta) return deserialized;
+  // If user manually enters multiple TA query keys, use latest one
+  const ta = Array.isArray(params.ta) ? last(params.ta) : params.ta;
+  if (!ta) return deserialized;
+  ta.split(`)${LESSON_SEP}`).forEach((moduleConfig) => {
+    const moduleCodeMatches = moduleConfig.match(/(.*)\(/);
+    if (moduleCodeMatches === null) {
+      return;
+    }
+
+    const lessonsMatches = moduleConfig.match(/\((.*)\)/);
+    if (lessonsMatches === null) {
+      return;
+    }
+
+    const moduleCode = moduleCodeMatches[1];
+    const lessons = lessonsMatches[1];
+    lessons.split(LESSON_SEP).forEach((lesson) => {
+      const [lessonTypeAbbr, classNo] = lesson.split(LESSON_TYPE_SEP);
+      if (!(moduleCode in deserialized)) {
+        deserialized[moduleCode] = [];
+      }
+      const lessonType = LESSON_ABBREV_TYPE[lessonTypeAbbr];
+      // Ignore unparsable/invalid keys
+      if (!lessonType) return;
+      deserialized[moduleCode].push([lessonType, classNo]);
+    });
+  });
+  return deserialized;
 }
 
 export function isSameTimetableConfig(t1: SemTimetableConfig, t2: SemTimetableConfig): boolean {

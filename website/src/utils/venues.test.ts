@@ -1,13 +1,19 @@
 import venueInfo from '__mocks__/venueInformation.json';
 import venueLocationInfo from '__mocks__/venueLocations.json';
 import { VenueInfo, VenueLocationMap } from 'types/venues';
+import busRoutesJson from 'data/bus-routes.json';
 import {
   searchVenue,
   filterAvailability,
   sortVenues,
   floorName,
   clampClassDuration,
+  isPublicRoute,
+  extractRouteStyle,
+  simplifyRouteName,
 } from './venues';
+
+const busRoutes = busRoutesJson as string[];
 
 const venues = sortVenues(venueInfo as VenueInfo);
 const venueLocations = venueLocationInfo as VenueLocationMap;
@@ -222,5 +228,47 @@ describe(clampClassDuration, () => {
         time: 20,
       }).duration,
     ).toEqual(4);
+  });
+});
+
+describe(isPublicRoute, () => {
+  it('should return true for public routes', () => {
+    expect(isPublicRoute('PUB:10')).toBe(true);
+    expect(isPublicRoute('PUB:95')).toBe(true);
+    expect(isPublicRoute('PUB:201')).toBe(true);
+  });
+
+  it('should return false for ISB routes', () => {
+    busRoutes.forEach((route) => {
+      expect(isPublicRoute(route)).toBe(false);
+    });
+  });
+});
+
+describe(extractRouteStyle, () => {
+  it('should return PUBLIC for public routes', () => {
+    expect(extractRouteStyle('PUB:10')).toBe('PUBLIC');
+    expect(extractRouteStyle('PUB:95')).toBe('PUBLIC');
+    expect(extractRouteStyle('PUB:201')).toBe('PUBLIC');
+  });
+
+  it('should return the route name for ISB routes', () => {
+    busRoutes.forEach((route) => {
+      expect(extractRouteStyle(route)).toBe(route);
+    });
+  });
+});
+
+describe('simplifyRouteName', () => {
+  it('should remove PUB: prefix for public routes', () => {
+    expect(simplifyRouteName('PUB:10')).toBe('10');
+    expect(simplifyRouteName('PUB:95')).toBe('95');
+    expect(simplifyRouteName('PUB:201')).toBe('201');
+  });
+
+  it('should return the route name for ISB routes', () => {
+    busRoutes.forEach((route) => {
+      expect(simplifyRouteName(route)).toBe(route);
+    });
   });
 });
