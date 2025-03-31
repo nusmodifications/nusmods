@@ -30,15 +30,19 @@ samlify.setSchemaValidator(validator);
 
 let SP_FILE_PATH;
 let FEDERATION_METADATA_FILE_PATH;
-if (NUSMODS_ENV === 'staging') {
-  SP_FILE_PATH = './sp-latest.xml';
-  FEDERATION_METADATA_FILE_PATH = './FederationMetadata.xml';
-} else if (NUSMODS_ENV === 'production') {
+if (process.env.VERCEL_URL === 'nusmods.com') {
   SP_FILE_PATH = './sp.xml';
   FEDERATION_METADATA_FILE_PATH = './FederationMetadata.xml';
-} else {
+} else if (process.env.VERCEL_URL === 'latest.nusmods.com') {
+  SP_FILE_PATH = './sp-latest.xml';
+  FEDERATION_METADATA_FILE_PATH = './FederationMetadata.xml';
+} else if (process.env.VERCEL_URL === 'cpex-staging.nusmods.com') {
   SP_FILE_PATH = './sp-cpex-staging.xml';
   FEDERATION_METADATA_FILE_PATH = './FederationMetadata-cpex-staging.xml';
+} else {
+  throw new Error(
+    'Unknown CPEx environment. Only cpex-staging.nusmods.com, nusmods.com, and latest.nusmods.com are supported.',
+  );
 }
 
 const idp = samlify.IdentityProvider({
