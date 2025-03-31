@@ -706,7 +706,7 @@
     }
   },
   "AS4-0604": {
-    "roomName": "Research Lab (Temp)",
+    "roomName": "Seminar Room",
     "floor": 6,
     "location": {
       "x": 103.77213996573175,
@@ -2090,7 +2090,7 @@
     }
   },
   "AS4-0114": {
-    "roomName": "Computer Lab",
+    "roomName": "Seminar Room",
     "floor": 1,
     "location": {
       "x": 103.77170919462839,
@@ -2098,7 +2098,7 @@
     }
   },
   "AS4-0115": {
-    "roomName": "Computer Lab",
+    "roomName": "Seminar Room",
     "floor": 1,
     "location": {
       "x": 103.77168463079167,
@@ -2106,7 +2106,7 @@
     }
   },
   "AS4-0335": {
-    "roomName": "Honours Room",
+    "roomName": "Seminar Room",
     "floor": 3,
     "location": {
       "x": 103.77177213960896,
@@ -2364,7 +2364,7 @@
     }
   },
   "AS4-B110": {
-    "roomName": "Family Room (Social Work)",
+    "roomName": "Tech Experience (Social Work)",
     "floor": -1,
     "location": {
       "x": 103.77146354144062,
@@ -2372,7 +2372,7 @@
     }
   },
   "AS4-B109": {
-    "roomName": "Observation Room (Social Work)",
+    "roomName": "Social Innovation (Social Work)",
     "floor": -1,
     "location": {
       "x": 103.77152940115755,

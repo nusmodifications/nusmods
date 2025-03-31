@@ -5,6 +5,8 @@ import { produce } from 'immer';
 import axios from 'axios';
 import { AlertTriangle } from 'react-feather';
 import * as Sentry from '@sentry/browser';
+import { addWeeks, isWithinInterval } from 'date-fns';
+import modregData from 'data/modreg-schedule.json';
 
 import type {
   DepartmentMatch,
@@ -18,6 +20,7 @@ import type { Module } from 'types/modules';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import ExternalLink from 'views/components/ExternalLink';
+import { isNewCourseDataAnnoucement } from 'views/components/notfications/Announcements';
 import facultyEmails from 'data/facultyEmail';
 import appConfig from 'config';
 import useGlobalDebugValue from '../hooks/useGlobalDebugValue';
@@ -104,6 +107,17 @@ function matchModule(module: Module) {
   );
 }
 
+const roundOneStartDate = new Date(
+  modregData.Undergraduate.filter(
+    (data) => data.type === 'Select Courses' && data.name === '1',
+  )[0].start,
+);
+const enhanceReportVisibility =
+  isWithinInterval(new Date(), {
+    start: addWeeks(roundOneStartDate, -2),
+    end: addWeeks(roundOneStartDate, 2),
+  }) || isNewCourseDataAnnoucement();
+
 /**
  * Module error reporting component. Posts to a serverless script that then emails the relevant
  * faculty / department with the issue.
@@ -165,12 +179,21 @@ const ReportError = memo<Props>(({ module }) => {
     <>
       <button
         type="button"
-        className={classnames('btn btn-link', styles.button)}
+        className={classnames(
+          'btn',
+          styles.button,
+          enhanceReportVisibility ? ['btn-primary btn-block', styles.enhanceButton] : 'btn-link',
+        )}
         onClick={() => setIsOpen(!isOpen)}
       >
         <AlertTriangle className={styles.icon} />
         Report errors
       </button>
+      {enhanceReportVisibility && (
+        <p className={styles.infoText}>
+          For clarifications on how we handle issues, read our <a href="/faq">FAQ</a>.
+        </p>
+      )}
 
       <Modal
         isOpen={isOpen}
