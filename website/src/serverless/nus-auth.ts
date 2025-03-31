@@ -37,6 +37,9 @@ if (process.env.VERCEL_ENV === 'production') {
   SP_FILE_PATH = './sp-cpex-staging.xml';
   FEDERATION_METADATA_FILE_PATH = './FederationMetadata-cpex-staging.xml';
 }
+SP_FILE_PATH = './sp.xml';
+FEDERATION_METADATA_FILE_PATH = './FederationMetadata.xml';
+
 const idp = samlify.IdentityProvider({
   metadata: fs.readFileSync(path.join(__dirname, FEDERATION_METADATA_FILE_PATH)),
   isAssertionEncrypted: true,
