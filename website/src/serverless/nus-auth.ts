@@ -41,7 +41,7 @@ if (process.env.VERCEL_URL === 'nusmods.com') {
   FEDERATION_METADATA_FILE_PATH = './FederationMetadata-cpex-staging.xml';
 } else {
   throw new Error(
-    'Unknown CPEx environment. Only cpex-staging.nusmods.com, nusmods.com, and latest.nusmods.com are supported.',
+    `Unknown CPEx environment: ${process.env.VERCEL_URL}. Only cpex-staging.nusmods.com, nusmods.com, and latest.nusmods.com are supported.`,
   );
 }
 
