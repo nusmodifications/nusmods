@@ -5,6 +5,7 @@ import { ColorMapping } from 'types/reducers';
 import { ModuleCode } from 'types/modules';
 
 export const NUM_DIFFERENT_COLORS = 8;
+export const TRANSPARENT_COLOR_INDEX = -1;
 
 function generateInitialColors(): ColorIndex[] {
   return range(NUM_DIFFERENT_COLORS);
