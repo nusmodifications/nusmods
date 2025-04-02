@@ -75,12 +75,12 @@ describe(colorLessonsByKey, () => {
 
 describe(fillColorMapping, () => {
   test('should return color map with colors for all modules', () => {
-    expect(Object.keys(fillColorMapping({ CS1010S: {}, CS3216: {} }, {}))).toEqual([
+    expect(Object.keys(fillColorMapping({ CS1010S: {}, CS3216: {} }, {}, []))).toEqual([
       'CS1010S',
       'CS3216',
     ]);
 
-    expect(fillColorMapping({ CS1010S: {}, CS3216: {} }, { CS1010S: 0, CS3216: 1 })).toEqual({
+    expect(fillColorMapping({ CS1010S: {}, CS3216: {} }, { CS1010S: 0, CS3216: 1 }, [])).toEqual({
       CS1010S: 0,
       CS3216: 1,
     });
@@ -89,13 +89,14 @@ describe(fillColorMapping, () => {
       fillColorMapping(
         { CS1010S: {}, CS3216: {} },
         { CS1010S: 0, CS3216: 1, CS1101S: 1, CS2105: 0, CS1231: 2 },
+        [],
       ),
     ).toEqual({
       CS1010S: 0,
       CS3216: 1,
     });
 
-    expect(fillColorMapping({ CS1010S: {}, CS3216: {} }, { CS1010S: 0, CS3216: 0 })).toEqual({
+    expect(fillColorMapping({ CS1010S: {}, CS3216: {} }, { CS1010S: 0, CS3216: 0 }, [])).toEqual({
       CS1010S: 0,
       CS3216: 0,
     });
@@ -114,7 +115,7 @@ describe(fillColorMapping, () => {
     };
 
     const uniqueColors = (timetable: SemTimetableConfig, colors: ColorMapping) =>
-      uniq(Object.values(fillColorMapping(timetable, colors)));
+      uniq(Object.values(fillColorMapping(timetable, colors, [])));
 
     expect(uniqueColors(FILLED_TIMETABLE, {})).toHaveLength(8);
     expect(uniqueColors(FILLED_TIMETABLE, { CS3216: 1, CS1101S: 0 })).toHaveLength(8);

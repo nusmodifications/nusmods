@@ -8,8 +8,15 @@ import type {
   TaModulesConfig,
 } from 'types/timetables';
 import type { Dispatch, GetState } from 'types/redux';
-import type { ColorMapping } from 'types/reducers';
-import type { ClassNo, LessonType, Module, ModuleCode, Semester } from 'types/modules';
+import type { ColorMapping, CustomModuleLessonData } from 'types/reducers';
+import type {
+  ClassNo,
+  CustomLesson,
+  LessonType,
+  Module,
+  ModuleCode,
+  Semester,
+} from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
 import { openNotification } from 'actions/app';
@@ -24,19 +31,22 @@ import { getModuleTimetable } from 'utils/modules';
 // Actions that should not be used directly outside of thunks
 export const SET_TIMETABLE = 'SET_TIMETABLE' as const;
 export const ADD_MODULE = 'ADD_MODULE' as const;
+export const SET_CUSTOM_IMPORTED = 'SET_CUSTOM_IMPORTED' as const;
 export const SET_HIDDEN_IMPORTED = 'SET_HIDDEN_IMPORTED' as const;
 export const SET_TA_IMPORTED = 'SET_TA_IMPORTED' as const;
+export const TEMP_IMPORTED_SEM = 'TEMP_IMPORTED_SEM' as const;
 export const Internal = {
   setTimetable(
     semester: Semester,
     timetable: SemTimetableConfig | undefined,
     colors?: ColorMapping,
     hiddenModules?: ModuleCode[],
+    customModules?: CustomModuleLessonData,
     taModules?: TaModulesConfig,
   ) {
     return {
       type: SET_TIMETABLE,
-      payload: { semester, timetable, colors, hiddenModules, taModules },
+      payload: { semester, timetable, colors, hiddenModules, customModules, taModules },
     };
   },
 
@@ -172,7 +182,8 @@ export function setTimetable(
         semester,
         validatedTimetable,
         colors,
-        getState().timetables.hidden[semester] ?? [],
+        getState().timetables.hidden[TEMP_IMPORTED_SEM] || [],
+        getState().timetables.customModules[TEMP_IMPORTED_SEM] || [],
         getState().timetables.ta[semester] ?? {},
       ),
     );
@@ -216,6 +227,20 @@ export function fetchTimetableModules(timetables: SemTimetableConfig[]) {
         .filter(validateModule)
         .map((moduleCode) => dispatch(fetchModule(moduleCode))),
     );
+  };
+}
+
+export function setCustomModulesFromImport(
+  semester: Semester,
+  customModules: CustomModuleLessonData,
+) {
+  return (dispatch: Dispatch) => dispatch(setCustomImported(semester, customModules));
+}
+
+export function setCustomImported(semester: Semester, customModules: CustomModuleLessonData) {
+  return {
+    type: SET_CUSTOM_IMPORTED,
+    payload: { semester, customModules },
   };
 }
 
@@ -273,6 +298,54 @@ export function showLessonInTimetable(semester: Semester, moduleCode: ModuleCode
   };
 }
 
+export const ADD_CUSTOM_MODULE = 'ADD_CUSTOM_MODULE' as const;
+export function addCustomModule(
+  semester: Semester,
+  moduleCode: ModuleCode,
+  title: string,
+  lessons: CustomLesson[],
+) {
+  return {
+    type: ADD_CUSTOM_MODULE,
+    payload: {
+      semester,
+      moduleCode,
+      title,
+      lessons,
+    },
+  };
+}
+
+export const MODIFY_CUSTOM_MODULE = 'MODIFY_CUSTOM_MODULE' as const;
+export function modifyCustomModule(
+  semester: Semester,
+  oldModuleCode: ModuleCode,
+  moduleCode: ModuleCode,
+  title: string,
+  lessons: CustomLesson[],
+) {
+  return {
+    type: MODIFY_CUSTOM_MODULE,
+    payload: {
+      semester,
+      oldModuleCode,
+      moduleCode,
+      title,
+      lessons,
+    },
+  };
+}
+
+export const DELETE_CUSTOM_MODULE = 'DELETE_CUSTOM_MODULE' as const;
+export function deleteCustomModule(semester: Semester, moduleCode: ModuleCode) {
+  return {
+    type: DELETE_CUSTOM_MODULE,
+    payload: {
+      semester,
+      moduleCode,
+    },
+  };
+}
 export const ADD_TA_LESSON_IN_TIMETABLE = 'ADD_TA_LESSON_IN_TIMETABLE' as const;
 export function addTaLessonInTimetable(
   semester: Semester,
