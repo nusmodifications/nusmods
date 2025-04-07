@@ -7,13 +7,14 @@ import {
   EndTime,
   LessonTime,
   Module,
+  ModuleCode,
   NumericWeeks,
   RawLesson,
   Semester,
   StartTime,
   WeekRange,
 } from 'types/modules';
-import { SemTimetableConfigWithLessons } from 'types/timetables';
+import { SemTimetableConfigWithLessons, TaModulesConfig } from 'types/timetables';
 
 import config from 'config';
 import academicCalendar from 'data/academic-calendar';
@@ -155,6 +156,7 @@ export function iCalEventForLesson(
   module: Module,
   semester: Semester,
   firstDayOfSchool: Date,
+  isTa: boolean,
 ): EventOption {
   const event = consumeWeeks(
     lesson.weeks,
@@ -164,7 +166,7 @@ export function iCalEventForLesson(
 
   return {
     ...event,
-    summary: `${module.moduleCode} ${lesson.lessonType}`,
+    summary: `${module.moduleCode} ${lesson.lessonType}${isTa ? ' (TA)' : ''}`,
     description: `${module.title}\n${lesson.lessonType} Group ${lesson.classNo}`,
     location: lesson.venue,
   };
@@ -174,6 +176,8 @@ export default function iCalForTimetable(
   semester: Semester,
   timetable: SemTimetableConfigWithLessons,
   moduleData: { [moduleCode: string]: Module },
+  hiddenModules: ModuleCode[],
+  taModules: TaModulesConfig,
   academicYear: string = config.academicYear,
 ): EventOption[] {
   const [year, month, day] = academicCalendar[academicYear][semester].start;
@@ -182,11 +186,19 @@ export default function iCalForTimetable(
   const events: EventOption[] = [];
 
   _.each(timetable, (lessonConfig, moduleCode) => {
+    if (hiddenModules.includes(moduleCode)) return;
+
+    const isTa = moduleCode in taModules;
+
     _.each(lessonConfig, (lessons) => {
       lessons.forEach((lesson) => {
-        events.push(iCalEventForLesson(lesson, moduleData[moduleCode], semester, firstDayOfSchool));
+        events.push(
+          iCalEventForLesson(lesson, moduleData[moduleCode], semester, firstDayOfSchool, isTa),
+        );
       });
     });
+
+    if (isTa) return;
 
     const examEvent = iCalEventForExam(moduleData[moduleCode], semester);
     if (examEvent) events.push(examEvent);

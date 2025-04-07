@@ -170,6 +170,7 @@ export type ModuleInformation = Readonly<{
   workload?: Workload;
   aliases?: ModuleCode[];
   attributes?: NUSModuleAttributes;
+  gradingBasisDescription?: string;
 
   // Requsites
   prerequisite?: string;

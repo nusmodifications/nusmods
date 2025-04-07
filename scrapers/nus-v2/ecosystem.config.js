@@ -16,6 +16,7 @@ module.exports = {
 
       env: {
         NODE_ENV: 'production',
+        _: '/home/ubuntu/.nvm/versions/node/v18.14.2/bin/pm2',
       },
     },
   ],

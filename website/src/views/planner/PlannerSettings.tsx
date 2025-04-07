@@ -13,6 +13,7 @@ import {
 } from 'actions/planner';
 import ExternalLink from 'views/components/ExternalLink';
 import Toggle from 'views/components/Toggle';
+import CloseButton from 'views/components/CloseButton';
 import { State } from 'types/state';
 import styles from './PlannerSettings.scss';
 
@@ -23,6 +24,7 @@ type Props = {
   readonly ignorePrereqCheck?: boolean;
 
   // Actions
+  readonly onCloseButtonClicked: () => void;
   readonly setMinYear: (str: string) => void;
   readonly setMaxYear: (str: string) => void;
   readonly setIBLOCs: (boolean: boolean) => void;
@@ -66,6 +68,7 @@ export const PlannerSettingsComponent: React.FC<Props> = (props) => {
 
   return (
     <div className={styles.settings}>
+      <CloseButton className={styles.closeButton} onClick={props.onCloseButtonClicked} />
       <section>
         <h2 className={styles.label}>Matriculated in</h2>
         <ul className={styles.years}>
@@ -118,7 +121,7 @@ export const PlannerSettingsComponent: React.FC<Props> = (props) => {
 
           <p>
             <ExternalLink href="http://www.nus.edu.sg/ibloc/iBLOC.html">iBLOCs</ExternalLink> is a
-            program that allows full-time NSmen to read some modules before matriculating.
+            program that allows full-time NSmen to read some courses before matriculating.
           </p>
         </div>
 
@@ -134,11 +137,11 @@ export const PlannerSettingsComponent: React.FC<Props> = (props) => {
           <h2 className={styles.label}>Ignore Prerequisite Checking</h2>
 
           <p>
-            Prerequisite checking for some modules might be inaccurate, giving planner warnings.
+            Prerequisite checking for some courses might be inaccurate, giving planner warnings.
             Turning this on removes these checks entirely.
           </p>
           <p>
-            Please ensure that you manually check that the prerequisites for the modules you would
+            Please ensure that you manually check that the prerequisites for the courses you would
             like to take are sufficiently met.
           </p>
         </div>

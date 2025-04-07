@@ -4,14 +4,16 @@ import { useDispatch, useStore } from 'react-redux';
 import Mousetrap from 'mousetrap';
 import { groupBy, map } from 'lodash';
 
-import { DARK_MODE } from 'types/settings';
+import { DARK_COLOR_SCHEME_PREFERENCE } from 'types/settings';
 import themes from 'data/themes.json';
 import { cycleTheme, toggleTimetableOrientation } from 'actions/theme';
 import { openNotification } from 'actions/app';
-import { toggleMode } from 'actions/settings';
+import { selectColorScheme } from 'actions/settings';
 import { intersperse } from 'utils/array';
 import ComponentMap from 'utils/ComponentMap';
 import type { State } from 'types/state';
+import useColorScheme from 'views/hooks/useColorScheme';
+import { colorSchemeToPreference, invertColorScheme } from 'utils/colorScheme';
 import Modal from './Modal';
 import styles from './KeyboardShortcuts.scss';
 
@@ -31,6 +33,7 @@ const THEME_NOTIFICATION_TIMEOUT = 1000;
 
 const KeyboardShortcuts: React.FC = () => {
   const [helpShown, setHelpShown] = useState(false);
+  const colorScheme = useColorScheme();
   const closeModal = useCallback(() => setHelpShown(false), []);
 
   const store = useStore<State>();
@@ -99,16 +102,15 @@ const KeyboardShortcuts: React.FC = () => {
 
     // Toggle night mode
     bind('x', APPEARANCE, 'Toggle Night Mode', () => {
-      dispatch(toggleMode());
-
-      // We fetch the current mode from the redux store directly, instead of
-      // using useSelector, as useSelector will capture the old stale value
-      const { mode } = store.getState().settings;
-
+      const newColorScheme = colorSchemeToPreference(invertColorScheme(colorScheme));
+      dispatch(selectColorScheme(newColorScheme));
       dispatch(
-        openNotification(`Night mode ${mode === DARK_MODE ? 'on' : 'off'}`, {
-          overwritable: true,
-        }),
+        openNotification(
+          `Night mode ${newColorScheme === DARK_COLOR_SCHEME_PREFERENCE ? 'on' : 'off'}`,
+          {
+            overwritable: true,
+          },
+        ),
       );
     });
 
@@ -148,7 +150,7 @@ const KeyboardShortcuts: React.FC = () => {
       shortcuts.current.forEach(({ key }) => Mousetrap.unbind(key));
       shortcuts.current = [];
     };
-  }, [dispatch, helpShown, history, store]);
+  }, [dispatch, helpShown, colorScheme, history, store]);
 
   function renderShortcut(shortcut: Shortcut): React.ReactNode {
     if (typeof shortcut === 'string') {

@@ -53,7 +53,7 @@ Working on your first Pull Request? You can learn how from this free video serie
 
 [How to Contribute to an Open Source Project on GitHub](https://app.egghead.io/playlists/how-to-contribute-to-an-open-source-project-on-github)
 
-To help you get your feet wet and get you familiar with our contribution process, we have a list of [good first issues](https://github.com/nusmodifications/nusmods/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) that contain bugs/enhancements that have a relatively limited scope. This is a great place to get started.
+To help you get your feet wet and get you familiar with our contribution process, we have a list of [good first issues](https://github.com/nusmodifications/nusmods/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) that contain bugs/enhancements that have a relatively limited scope. This is a great place to get started. To run the website locally, refer to this [guide](/website/README.md).
 
 If you decide to fix an issue, please be sure to check the comment thread in case somebody is already working on a fix. If nobody is working on it at the moment, please leave a comment stating that you intend to work on it so other people don't accidentally duplicate your effort.
 
@@ -71,6 +71,21 @@ Before submitting a pull request, please make sure the following is done:
 1. Ensure the test suite passes (`yarn test`). Tip: `yarn test:watch` is helpful in development.
 1. Run `yarn run ci` which runs the linting, testing and building steps. This is the command that is run on our CI system. There should not be errors shown. Alternatively, you can run the linting, testing and building step separately via `yarn run lint`, `yarn test` and `yarn run build` respectively.
 1. There might be project-specific contribution details. Please read the README of the respective projects.
+
+## Other Open Source Projects
+
+Contributing to open source projects you enjoy using and want to make better is an amazing way to give back to the community and improve your skills as a developer! Here's a non-exhaustive list of other NUS-related open source projects you might want to get your hands dirty with:
+
+1. [**CourseRekt**](https://github.com/lunaflight/courserekt/) - A tool for visualising past vacancy reports to help you strategise for course registration.
+2. [**NUS Timetable Optimizer**](https://github.com/frizensami/nus-timetable-optimizer) - An application that helps students optimize their timetables for the best possible schedule.
+3. [**LoMiNUS**](https://github.com/Beebeeoii/lominus) - An app which helps Canvas and the now-defunct LumiNUS download their files and keep them in sync.
+4. [**CATcher**](https://github.com/CATcher-org/CATcher/) - An issue management tool for software engineering project teams.
+5. [**MarkBind**](https://github.com/markbind/markbind) - A tool for generating static websites from Markdown documents.
+6. [**PowerPointLabs**](https://github.com/powerpointlabs/powerpointlabs) - A PowerPoint add-in that provides advanced features for creating presentations.
+7. [**RepoSense**](https://github.com/reposense/reposense) - A tool that generates contribution summaries for Git repositories.
+8. [**TEAMMATES**](https://github.com/teammates/teammates) - A feedback management tool for education.
+
+Good luck, and happy hacking!
 
 ### Code of Conduct
 

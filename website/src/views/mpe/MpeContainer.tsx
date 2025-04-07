@@ -5,6 +5,7 @@ import { enableCPEx } from 'featureFlags';
 import Modal from 'views/components/Modal';
 import type { MpeSubmission } from 'types/mpe';
 import ExternalLink from 'views/components/ExternalLink';
+import config from 'config';
 import {
   getLoginState,
   getSSOLink,
@@ -21,6 +22,15 @@ const MpeContainer: React.FC = () => {
   const [isGettingSSOLink, setIsGettingSSOLink] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(getLoginState(useLocation(), useHistory()));
+
+  const ugCPEx = config.modRegSchedule.Undergraduate.find(
+    ({ type: t }) => t === 'Course Planning Exercise (CPEx)',
+  );
+  const gdCPEx = config.modRegSchedule.Graduate.find(
+    ({ type: t }) => t === 'Course Planning Exercise (CPEx)',
+  );
+  const hasCPEx = ugCPEx && gdCPEx;
+  const sameTime = hasCPEx && ugCPEx.startDate.getTime() === gdCPEx.startDate.getTime();
 
   const onLogin = useCallback(() => {
     setIsGettingSSOLink(true);
@@ -80,7 +90,7 @@ const MpeContainer: React.FC = () => {
             <strong>solely for planning purposes </strong> and there is no guarantee that you will
             be allocated the selected courses during the CourseReg Exercise.
           </p>
-          <p>The CPEx for this round will be from 16 Oct to 20 Oct 2023.</p>
+          <p>The CPEx for this round will be from 10 Mar to 14 Mar 2025.</p>
           <p>
             Participation in the CPEx will be used as <strong>one of the tie-breakers</strong>{' '}
             during the CourseReg Exercise, in cases where the demand exceeds the available quota and
@@ -119,7 +129,21 @@ const MpeContainer: React.FC = () => {
       ) : (
         <>
           <hr />
-          <div>CPEx is not open.</div>
+          {hasCPEx &&
+            (sameTime ? (
+              <p>
+                <strong>CPEx will open on:</strong> {ugCPEx.start}
+              </p>
+            ) : (
+              <div>
+                <p>
+                  <strong>Undergraduate CPEx will open on:</strong> {ugCPEx.start}
+                </p>
+                <p>
+                  <strong>Graduate CPEx will open on:</strong> {gdCPEx.start}
+                </p>
+              </div>
+            ))}
         </>
       )}
     </div>

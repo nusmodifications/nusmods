@@ -1,42 +1,55 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { flatten, values } from 'lodash';
-import LinkModuleCodes from 'views/components/LinkModuleCodes';
+import { connect } from 'react-redux';
 
-import { ModuleCode, PrereqTree } from 'types/modules';
+import { getModuleCondensed } from 'selectors/moduleBank';
 
+import { ModuleCode, PrereqTree, ModuleCondensed } from 'types/modules';
+import { State } from 'types/state';
 import { notNull } from 'types/utils';
+
+import LinkModuleCodes from 'views/components/LinkModuleCodes';
+import ConditionalReverse from 'views/components/ConditionalReverse';
 import styles from './ModuleTree.scss';
 
 type Props = {
   moduleCode: ModuleCode;
   fulfillRequirements?: readonly ModuleCode[];
   prereqTree?: PrereqTree;
+  prereqTreeOnLeft: boolean;
+
+  getModuleCondensed: (moduleCode: ModuleCode) => ModuleCondensed | undefined;
 };
 
 interface TreeDisplay {
   layer: number;
   node: PrereqTree;
-  isPrereq?: boolean;
+  prereqTreeOnLeft: boolean;
+
+  getModuleCondensed: (moduleCode: ModuleCode) => ModuleCondensed | undefined;
 }
 
 const GRADE_REQUIREMENT_SEPARATOR = ':';
 const MODULE_NAME_WILDCARD = '%';
 const PASSING_GRADE = 'D';
 
-const formatConditional = (node: PrereqTree) => {
+const formatConditional = (node: PrereqTree, prereqTreeOnLeft?: boolean) => {
   if (typeof node === 'string') return node;
   if ('nOf' in node) {
     const requiredNum = node.nOf[0];
-    return `at least ${requiredNum} of`;
+    return prereqTreeOnLeft ? `take at least ${requiredNum}` : `at least ${requiredNum} of`;
   }
   if ('or' in node) {
-    return 'one of';
+    return prereqTreeOnLeft ? 'take one' : `one of`;
   }
-  return 'all of';
+  return prereqTreeOnLeft ? 'take all' : `all of`;
 };
 
-type NodeName = { prefix?: string; name: string };
+type NodeName = {
+  prefix?: string;
+  name: string;
+};
 const nodeName = (node: PrereqTree): NodeName => {
   if (typeof node !== 'string') {
     return { name: Object.keys(node)[0] };
@@ -69,79 +82,127 @@ const unwrapLayer = (node: PrereqTree) => {
   return flatten(values(node).filter(notNull));
 };
 
-const Branch: React.FC<{ nodes: PrereqTree[]; layer: number }> = (props) => (
+const Branch: React.FC<{
+  nodes: PrereqTree[];
+  layer: number;
+  prereqTreeOnLeft: boolean;
+  getModuleCondensed: (moduleCode: ModuleCode) => ModuleCondensed | undefined;
+}> = (props) => (
   <ul className={styles.tree}>
     {props.nodes.map((child, idx) => (
-      <li className={styles.branch} key={typeof child === 'string' ? nodeName(child).name : idx}>
-        <Tree node={child} layer={props.layer} />
+      <li
+        className={classnames(styles.branch, { [styles.leftBranch]: props.prereqTreeOnLeft })}
+        key={typeof child === 'string' ? nodeName(child).name : idx}
+      >
+        <Tree
+          node={child}
+          layer={props.layer}
+          prereqTreeOnLeft={props.prereqTreeOnLeft}
+          getModuleCondensed={props.getModuleCondensed}
+        />
       </li>
     ))}
   </ul>
 );
 
 const Tree: React.FC<TreeDisplay> = (props) => {
-  const { layer, node, isPrereq } = props;
+  const { layer, node, prereqTreeOnLeft } = props;
 
   const isConditional = typeof node !== 'string';
   const { prefix, name } = nodeName(node);
 
   if (isConditional) {
     return (
-      <>
-        <div
-          className={classnames(styles.node, styles.conditional, {
-            [styles.prereqNode]: isPrereq,
-          })}
-        >
-          {formatConditional(node)}
+      <ConditionalReverse reverse={!prereqTreeOnLeft}>
+        <Branch
+          nodes={unwrapLayer(node)}
+          layer={layer + 1}
+          prereqTreeOnLeft={prereqTreeOnLeft}
+          getModuleCondensed={props.getModuleCondensed}
+        />
+        <div className={classnames(styles.node, styles.conditional)}>
+          {formatConditional(node, prereqTreeOnLeft)}
         </div>
-        <Branch nodes={unwrapLayer(node)} layer={layer + 1} />
-      </>
+      </ConditionalReverse>
     );
   }
 
+  // Check if module name still exists in database
+  const moduleActive = props.getModuleCondensed(name);
+
+  // If module is deprecated (undefined) then we grey out, remove color classname
+
   return (
     <div
-      className={classnames(styles.node, styles.moduleNode, `hoverable color-${layer}`, {
-        [styles.prereqNode]: isPrereq,
+      className={classnames(styles.node, styles.moduleNode, {
+        [`hoverable color-${layer}`]: !!moduleActive,
+        [styles.leftNode]: prereqTreeOnLeft,
       })}
     >
       {prefix && <span className={styles.prefix}>{prefix}</span>}
-      <LinkModuleCodes className={styles.link}>{name}</LinkModuleCodes>
+      <div>
+        <LinkModuleCodes className={styles.link}>{name}</LinkModuleCodes>
+      </div>
     </div>
   );
 };
 
-const ModuleTree: React.FC<Props> = (props) => {
-  const { fulfillRequirements, prereqTree, moduleCode } = props;
+export const ModuleTreeComponent: React.FC<Props> = (props) => {
+  const { fulfillRequirements, prereqTree, moduleCode, prereqTreeOnLeft } = props;
 
   return (
     <>
       <div className={styles.container}>
-        {fulfillRequirements && fulfillRequirements.length > 0 && (
-          <>
-            <ul className={styles.prereqTree}>
-              {fulfillRequirements.map((fulfilledModule) => (
-                <li
-                  key={fulfilledModule}
-                  className={classnames(styles.branch, styles.prereqBranch)}
-                >
-                  <Tree layer={0} node={fulfilledModule} isPrereq />
-                </li>
-              ))}
-            </ul>
-
-            <div className={classnames(styles.node, styles.conditional)}>needs</div>
-          </>
-        )}
-
-        <ul className={classnames(styles.tree, styles.root)}>
-          <li className={classnames(styles.branch)}>
-            <Tree layer={1} node={moduleCode} />
-
-            {prereqTree && <Branch nodes={[prereqTree]} layer={2} />}
-          </li>
-        </ul>
+        <ConditionalReverse reverse={!prereqTreeOnLeft}>
+          <ul className={classnames(styles.prereqTree, styles.root)}>
+            <li
+              className={classnames(styles.branch, {
+                [styles.leftBranch]: prereqTreeOnLeft,
+              })}
+            >
+              <ConditionalReverse reverse={!prereqTreeOnLeft}>
+                {prereqTree && (
+                  <Branch
+                    nodes={[prereqTree]}
+                    layer={2}
+                    prereqTreeOnLeft={prereqTreeOnLeft}
+                    getModuleCondensed={props.getModuleCondensed}
+                  />
+                )}
+                <Tree
+                  layer={1}
+                  node={moduleCode}
+                  getModuleCondensed={props.getModuleCondensed}
+                  prereqTreeOnLeft={false}
+                />
+              </ConditionalReverse>
+            </li>
+          </ul>
+          {fulfillRequirements && fulfillRequirements.length > 0 && (
+            <ConditionalReverse reverse={!prereqTreeOnLeft}>
+              <div className={classnames(styles.node, styles.conditional)}>
+                {prereqTreeOnLeft ? `unlocks` : `needs`}
+              </div>
+              <ul className={styles.tree}>
+                {fulfillRequirements.map((fulfilledModule) => (
+                  <li
+                    key={fulfilledModule}
+                    className={classnames(styles.branch, {
+                      [styles.leftBranch]: !prereqTreeOnLeft,
+                    })}
+                  >
+                    <Tree
+                      layer={0}
+                      node={fulfilledModule}
+                      prereqTreeOnLeft={!prereqTreeOnLeft}
+                      getModuleCondensed={props.getModuleCondensed}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </ConditionalReverse>
+          )}
+        </ConditionalReverse>
       </div>
 
       {/* <p className="alert alert-warning">
@@ -170,4 +231,9 @@ const ModuleTree: React.FC<Props> = (props) => {
   );
 };
 
-export default ModuleTree;
+const mapStateToProps = connect((state: State) => ({
+  getModuleCondensed: getModuleCondensed(state),
+  prereqTreeOnLeft: state.settings.prereqTreeOnLeft,
+}));
+
+export default mapStateToProps(ModuleTreeComponent);

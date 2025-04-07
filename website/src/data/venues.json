@@ -15,6 +15,14 @@
       "y": 1.2939170885884703
     }
   },
+  "BIZ2-0111": {
+    "roomName": "Seminar Room 1-11",
+    "floor": 1,
+    "location": {
+      "x": 103.7755572795868,
+      "y": 1.293219182046886
+    }
+  },
   "BIZ2-0301": {
     "roomName": "Seminar Room 3-1",
     "floor": 3,
@@ -530,11 +538,11 @@
     }
   },
   "LT6": {
-    "roomName": "Lecture Theatre 6",
+    "roomName": "LT6",
     "floor": 4,
     "location": {
-      "x": 103.77196318826034,
-      "y": 1.2987585148416605
+      "x": 103.77195239067079,
+      "y": 1.2987913865798812
     }
   },
   "E1-06-08": {
@@ -698,7 +706,7 @@
     }
   },
   "AS4-0604": {
-    "roomName": "Research Lab (Temp)",
+    "roomName": "Seminar Room",
     "floor": 6,
     "location": {
       "x": 103.77213996573175,
@@ -735,6 +743,14 @@
     "location": {
       "x": 103.7723465065967,
       "y": 1.2953286800325798
+    }
+  },
+  "AS4-0328": {
+    "roomName": "Seminar Room",
+    "floor": 3,
+    "location": {
+      "x": 103.77223475074419,
+      "y": 1.2947484959587636
     }
   },
   "AS7-0101": {
@@ -1113,12 +1129,44 @@
       "y": 1.2948059113590875
     }
   },
+  "AS6-020607": {
+    "roomName": "Seminar Room 4",
+    "floor": 2,
+    "location": {
+      "x": 103.77329156180267,
+      "y": 1.2954018662016364
+    }
+  },
   "AS6-0208": {
-    "roomName": "Discussion Room 5",
+    "roomName": "Tutorial Room 3",
     "floor": 2,
     "location": {
       "x": 103.77331128855921,
       "y": 1.295353329958129
+    }
+  },
+  "AS6-0209": {
+    "roomName": "Tutorial Room 6",
+    "floor": 2,
+    "location": {
+      "x": 103.77326767042369,
+      "y": 1.2953565517788246
+    }
+  },
+  "AS6-0210": {
+    "roomName": "Tutorial Room 4",
+    "floor": 2,
+    "location": {
+      "x": 103.77326160572798,
+      "y": 1.295361335555679
+    }
+  },
+  "AS6-0211": {
+    "roomName": "Tutorial Room 5",
+    "floor": 2,
+    "location": {
+      "x": 103.77317523145778,
+      "y": 1.295558493014907
     }
   },
   "COM1-0208": {
@@ -2042,7 +2090,7 @@
     }
   },
   "AS4-0114": {
-    "roomName": "Computer Lab",
+    "roomName": "Seminar Room",
     "floor": 1,
     "location": {
       "x": 103.77170919462839,
@@ -2050,7 +2098,7 @@
     }
   },
   "AS4-0115": {
-    "roomName": "Computer Lab",
+    "roomName": "Seminar Room",
     "floor": 1,
     "location": {
       "x": 103.77168463079167,
@@ -2058,7 +2106,7 @@
     }
   },
   "AS4-0335": {
-    "roomName": "Honours Room",
+    "roomName": "Seminar Room",
     "floor": 3,
     "location": {
       "x": 103.77177213960896,
@@ -2316,7 +2364,7 @@
     }
   },
   "AS4-B110": {
-    "roomName": "Family Room (Social Work)",
+    "roomName": "Tech Experience (Social Work)",
     "floor": -1,
     "location": {
       "x": 103.77146354144062,
@@ -2324,7 +2372,7 @@
     }
   },
   "AS4-B109": {
-    "roomName": "Observation Room (Social Work)",
+    "roomName": "Social Innovation (Social Work)",
     "floor": -1,
     "location": {
       "x": 103.77152940115755,
@@ -2723,6 +2771,14 @@
       "y": 1.319202
     }
   },
+  "LAW_SR5-1": {
+    "roomName": "LAW_SR5-1",
+    "floor": 1,
+    "location": {
+      "x": 103.77293944358827,
+      "y": 1.2962493044157974
+    }
+  },
   "LAW_ESR": {
     "roomName": "Executive SR",
     "floor": 3,
@@ -2740,11 +2796,11 @@
     }
   },
   "TC-SR4": {
-    "roomName": "Tembusu Seminar Room 4",
+    "roomName": "Seminar Room 4",
     "floor": 1,
     "location": {
-      "x": 103.77345002721997,
-      "y": 1.3058887418233325
+      "x": 103.77343297004701,
+      "y": 1.3058491371422671
     }
   },
   "TP-SR9": {
@@ -3709,7 +3765,7 @@
   },
   "TC-SR3": {
     "roomName": "Seminar Room 3",
-    "floor": 1,
+    "floor": -1,
     "location": {
       "x": 103.7735061935529,
       "y": 1.3058646900451434
@@ -3923,14 +3979,6 @@
       "y": 1.3001422018796116
     }
   },
-  "AS6-0211": {
-    "roomName": "as6-0211",
-    "floor": 2,
-    "location": {
-      "x": 103.77317523145778,
-      "y": 1.295558493014907
-    }
-  },
   "UTSRC-PR1": {
     "roomName": "UTown, SRC, Practice Room 1",
     "floor": 3,
@@ -3959,8 +4007,8 @@
     "roomName": "E-Studio 1",
     "floor": 3,
     "location": {
-      "x": 103.77113163471223,
-      "y": 1.2972089318821012
+      "x": 103.77115309238435,
+      "y": 1.2975203458171671
     }
   },
   "WT-Lab": {
@@ -4075,20 +4123,12 @@
       "y": 1.296882
     }
   },
-  "AS6-0210": {
-    "roomName": "AS6-0210",
-    "floor": 2,
-    "location": {
-      "x": 103.773337,
-      "y": 1.2953469
-    }
-  },
   "SDE2-ES2": {
     "roomName": "E-Studio 2",
     "floor": 3,
     "location": {
-      "x": 103.77117455005647,
-      "y": 1.2973258458294765
+      "x": 103.77126038074493,
+      "y": 1.2974828045191065
     }
   },
   "RC4-SR3": {
@@ -4167,8 +4207,8 @@
     "roomName": "E4-02-06",
     "floor": 2,
     "location": {
-      "x": 103.77178341150285,
-      "y": 1.2986859693257289
+      "x": 103.77275126243624,
+      "y": 1.2982895087516781
     }
   },
   "RVR-SRM02": {
@@ -4212,7 +4252,7 @@
     }
   },
   "AS3-0312": {
-    "roomName": "0314",
+    "roomName": "0312",
     "floor": 3,
     "location": {
       "x": 103.77141864426275,
@@ -4221,10 +4261,10 @@
   },
   "ERC-SR11": {
     "roomName": "ERC-SR11",
-    "floor": 3,
+    "floor": 2,
     "location": {
-      "x": 103.77291262149812,
-      "y": 1.305924051894182
+      "x": 103.77286970615388,
+      "y": 1.3060690211505341
     }
   },
   "S11-0302A": {
@@ -4452,11 +4492,11 @@
     }
   },
   "SDE1-SR5-6": {
-    "roomName": "Seminar Room 5",
-    "floor": 1,
+    "roomName": "SDE1-SR5-6",
+    "floor": 4,
     "location": {
-      "x": 103.7706401792259,
-      "y": 1.2973688336414937
+      "x": 103.77064883708955,
+      "y": 1.297021582811707
     }
   },
   "SDE4-EXR-1": {
@@ -4547,6 +4587,78 @@
       "y": 1.2949252184799644
     }
   },
+  "COM3-01-21": {
+    "roomName": "Seminar Room 12",
+    "floor": 1,
+    "location": {
+      "x": 103.77431055530907,
+      "y": 1.2949252184799644
+    }
+  },
+  "COM3-01-22": {
+    "roomName": "Seminar Room 13",
+    "floor": 1,
+    "location": {
+      "x": 103.77473,
+      "y": 1.29501
+    }
+  },
+  "COM3-01-23": {
+    "roomName": "Seminar Room 14",
+    "floor": 1,
+    "location": {
+      "x": 103.7748425,
+      "y": 1.2950386
+    }
+  },
+  "COM3-01-25": {
+    "roomName": "Seminar Room 15",
+    "floor": 1,
+    "location": {
+      "x": 103.7749804,
+      "y": 1.2948523
+    }
+  },
+  "COM3-MPH": {
+    "roomName": "COM3-MPH",
+    "floor": 1,
+    "location": {
+      "x": 103.77468,
+      "y": 1.29491
+    }
+  },
+  "COM3-02-60": {
+    "roomName": "Seminar Room 21",
+    "floor": 2,
+    "location": {
+      "x": 103.77464,
+      "y": 1.29488
+    }
+  },
+  "COM3-B1-10": {
+    "roomName": "Seminar Room 91 (ALC)",
+    "floor": -1,
+    "location": {
+      "x": 103.77452,
+      "y": 1.29442
+    }
+  },
+  "COM3-B1-11": {
+    "roomName": "Metaverse Foundry",
+    "floor": -1,
+    "location": {
+      "x": 103.77452,
+      "y": 1.29425
+    }
+  },
+  "COM3-01-19": {
+    "roomName": "Makers@SoC",
+    "floor": 1,
+    "location": {
+      "x": 103.77438,
+      "y": 1.29494
+    }
+  },
   "AS8-0760": {
     "roomName": "AS8-0760",
     "floor": 1,
@@ -4563,12 +4675,28 @@
       "y": 1.3035885
     }
   },
+  "SDE3-BARM": {
+    "roomName": "SDE3",
+    "floor": 4,
+    "location": {
+      "x": 103.77049326896669,
+      "y": 1.2977080522991113
+    }
+  },
   "SDE3-LT422": {
     "roomName": "SDE3 LT422",
-    "floor": 1,
+    "floor": 4,
     "location": {
-      "x": 103.77296626567842,
-      "y": 1.2959543369107271
+      "x": 103.77049058675767,
+      "y": 1.2980727391385352
+    }
+  },
+  "SDE3-LT423": {
+    "roomName": "SDE3-LT423",
+    "floor": 4,
+    "location": {
+      "x": 103.77044767141344,
+      "y": 1.298190726045905
     }
   },
   "COM4SR3132": {
@@ -4605,23 +4733,79 @@
   },
   "SDE3-LT424": {
     "roomName": "SDE3-LT424",
-    "floor": 1,
+    "floor": 4,
     "location": {
-      "x": 103.77047181129457,
-      "y": 1.297493530604323
+      "x": 103.77036720514299,
+      "y": 1.298303349906894
     }
   },
   "SDE3-LT421": {
     "roomName": "SDE3-LT421",
-    "floor": 1,
+    "floor": 4,
     "location": {
-      "x": 103.77105620935124,
-      "y": 1.297223428366857
+      "x": 103.77052813768388,
+      "y": 1.2979547522256567
+    }
+  },
+  "HSS-02-02": {
+    "roomName": "HSS-02-02",
+    "floor": 2,
+    "location": {
+      "x": 103.77442878395314,
+      "y": 1.2930296873301574
+    }
+  },
+  "HSS-03-01": {
+    "roomName": "HSS-03-01",
+    "floor": 3,
+    "location": {
+      "x": 103.77442162725283,
+      "y": 1.2930296875756582
+    }
+  },
+  "HSS-03-02": {
+    "roomName": "HSS-03-02",
+    "floor": 3,
+    "location": {
+      "x": 103.7744359406535,
+      "y": 1.2930010845766917
+    }
+  },
+  "HSS-04-01": {
+    "roomName": "HSS-04-01",
+    "floor": 4,
+    "location": {
+      "x": 103.7744359406535,
+      "y": 1.293022536785024
+    }
+  },
+  "HSS-04-02": {
+    "roomName": "HSS-04-02",
+    "floor": 4,
+    "location": {
+      "x": 103.77442162725283,
+      "y": 1.2930118106808897
+    }
+  },
+  "HSS-04-03": {
+    "roomName": "HSS-04-03",
+    "floor": 4,
+    "location": {
+      "x": 103.77443951916746,
+      "y": 1.2930153861580487
+    }
+  },
+  "HSS-04-05": {
+    "roomName": "HSS-04-05",
+    "floor": 4,
+    "location": {
+      "x": 103.77442878395314,
+      "y": 1.2930261119348405
     }
   },
   "HSS-04-07": {
     "roomName": "HSS-04-07",
-    "floor": 1,
+    "floor": 4,
     "location": {
       "x": 103.77300918102264,
       "y": 1.2972253784602343
@@ -4633,6 +4817,246 @@
     "location": {
       "x": 103.77292335033418,
       "y": 1.3022559079426335
+    }
+  },
+  "SDE1-SR2": {
+    "roomName": "SDE1-SR2",
+    "floor": 4,
+    "location": {
+      "x": 103.77047181129457,
+      "y": 1.297118117594622
+    }
+  },
+  "SDE3-SR8": {
+    "roomName": "SDE3-SR8",
+    "floor": 4,
+    "location": {
+      "x": 103.77053886651996,
+      "y": 1.2979118478923348
+    }
+  },
+  "SDE3-LT425": {
+    "roomName": "SDE3-LT425",
+    "floor": 4,
+    "location": {
+      "x": 103.77034574747087,
+      "y": 1.2984266998441307
+    }
+  },
+  "SDE3-LT426": {
+    "roomName": "SDE3-LT426",
+    "floor": 4,
+    "location": {
+      "x": 103.77040369039041,
+      "y": 1.2982871937625622
+    }
+  },
+  "SDE3-LT427": {
+    "roomName": "SDE3-LT427",
+    "floor": 4,
+    "location": {
+      "x": 103.77020627260211,
+      "y": 1.2986841257807171
+    }
+  },
+  "CLB-04-01H": {
+    "roomName": "Central Library Seminar Room",
+    "floor": 4,
+    "location": {
+      "x": 103.773232,
+      "y": 1.296721
+    }
+  },
+  "S16-0208": {
+    "roomName": "S16-0208",
+    "floor": 2,
+    "location": {
+      "x": 103.78025919198991,
+      "y": 1.2968124241027414
+    }
+  },
+  "BIZ2-0511": {
+    "roomName": "BIZ2-0511",
+    "floor": 5,
+    "location": {
+      "x": 103.77527978332216,
+      "y": 1.29319772984022
+    }
+  },
+  "KRH-READRM": {
+    "roomName": "KRH-READRM",
+    "floor": 1,
+    "location": {
+      "x": 103.7747599673325,
+      "y": 1.2915834507684465
+    }
+  },
+  "SDE3-SR6": {
+    "roomName": "SR6",
+    "floor": 2,
+    "location": {
+      "x": 103.77040207386018,
+      "y": 1.2977563196779482
+    }
+  },
+  "SDE3-SR7": {
+    "roomName": "SR7",
+    "floor": 2,
+    "location": {
+      "x": 103.77042084932329,
+      "y": 1.2978421283491335
+    }
+  },
+  "SDE1-SR1": {
+    "roomName": "SDE1-SR1",
+    "floor": 4,
+    "location": {
+      "x": 103.77043426036836,
+      "y": 1.2970805762905946
+    }
+  },
+  "SDE1-SR3": {
+    "roomName": "SDE1-SR3",
+    "floor": 4,
+    "location": {
+      "x": 103.77046376466753,
+      "y": 1.2970591241166123
+    }
+  },
+  "SDE1-SR4": {
+    "roomName": "SDE1-SR4",
+    "floor": 4,
+    "location": {
+      "x": 103.77054423093797,
+      "y": 1.2970269458553014
+    }
+  },
+  "LT35-01-01": {
+    "roomName": "LT35",
+    "floor": 1,
+    "location": {
+      "x": 103.77326933994733,
+      "y": 1.296587176242994
+    }
+  },
+  "ERC-SR1": {
+    "roomName": "Seminar room 1",
+    "floor": 2,
+    "location": {
+      "x": 103.77264172478222,
+      "y": 1.306074384174867
+    }
+  },
+  "S4-02LAB": {
+    "roomName": "s4",
+    "floor": 1,
+    "location": {
+      "x": 103.77334722401163,
+      "y": 1.2967802458383009
+    }
+  },
+  "COM4-02-04": {
+    "roomName": "Workstation Lab 3",
+    "floor": 2,
+    "location": {
+      "x": 103.77556549266637,
+      "y": 1.2950533450462423
+    }
+  },
+  "COM4-02-03": {
+    "roomName": "Workstation Lab 1",
+    "floor": 2,
+    "location": {
+      "x": 103.77535338573088,
+      "y": 1.2951643924392995
+    }
+  },
+  "COM4-02-05": {
+    "roomName": "Workstation Lab 2",
+    "floor": 2,
+    "location": {
+      "x": 103.77542120439482,
+      "y": 1.2950158037115926
+    }
+  },
+  "COM4-02-02": {
+    "roomName": "Information Systems and Analytics Teaching Lab 2 (ISA T-Lab 2)",
+    "floor": 2,
+    "location": {
+      "x": 103.7753720409051,
+      "y": 1.2951874212368448
+    }
+  },
+  "COM4-02-01": {
+    "roomName": "Information Systems and Analytics Teaching Lab 1 (ISA T-Lab 1)",
+    "floor": 2,
+    "location": {
+      "x": 103.77522680835014,
+      "y": 1.2951445168566165
+    }
+  },
+  "COM1-0214": {
+    "roomName": "Tutorial Room 12",
+    "floor": 2,
+    "location": {
+      "x": 103.77398306589,
+      "y": 1.294661842529079
+    }
+  },
+  "ERC-SR2": {
+    "roomName": "Seminar room 2",
+    "floor": 2,
+    "location": {
+      "x": 103.77270077494545,
+      "y": 1.3062191858280354
+    }
+  },
+  "LKY_SR2-1": {
+    "roomName": "SR",
+    "floor": 2,
+    "location": {
+      "x": 103.81760090589525,
+      "y": 1.3189664358274156
+    }
+  },
+  "E2-0307PC4": {
+    "roomName": "e2-0307",
+    "floor": 1,
+    "location": {
+      "x": 103.77321571111682,
+      "y": 1.2965067305739413
+    }
+  },
+  "YSTCM-SR1": {
+    "roomName": "YSTCM",
+    "floor": 1,
+    "location": {
+      "x": 103.77324789762498,
+      "y": 1.2966568958207743
+    }
+  },
+  "E-Hybrid_A": {
+    "roomName": "E-hybrid-2",
+    "floor": 1,
+    "location": {
+      "x": 103.77305746078493,
+      "y": 1.2967266153966337
+    }
+  },
+  "E4-04-05": {
+    "roomName": "e4",
+    "floor": 1,
+    "location": {
+      "x": 103.77341151237489,
+      "y": 1.2964262849023314
+    }
+  },
+  "HSS-03-07": {
+    "roomName": "Hss03-07",
+    "floor": 1,
+    "location": {
+      "x": 103.77378165721895,
+      "y": 1.2966408066876127
     }
   }
 }

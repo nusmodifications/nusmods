@@ -1,8 +1,8 @@
 import { AxiosError } from 'axios';
 import { RegPeriodType, ScheduleType } from 'config';
 
-import { Mode } from './settings';
-import { ColorIndex, Lesson, TimetableConfig } from './timetables';
+import { ColorSchemePreference } from './settings';
+import { ColorIndex, Lesson, TaModulesConfig, TimetableConfig } from './timetables';
 import {
   Faculty,
   Module,
@@ -98,12 +98,13 @@ export type ModuleTableOrder = 'exam' | 'mc' | 'code';
 export type SettingsState = {
   readonly newStudent: boolean;
   readonly faculty: Faculty | null;
-  readonly mode: Mode;
+  readonly colorScheme: ColorSchemePreference;
   readonly hiddenInTimetable: ModuleCode[];
   readonly modRegNotification: ModRegNotificationSettings;
   readonly moduleTableOrder: ModuleTableOrder;
   readonly beta?: boolean;
   readonly loadDisqusManually: boolean;
+  readonly prereqTreeOnLeft: boolean;
 };
 
 /* timetables.js */
@@ -112,11 +113,13 @@ export type SettingsState = {
 export type ColorMapping = { [moduleCode: string]: ColorIndex };
 export type SemesterColorMap = { [semester: string]: ColorMapping };
 export type HiddenModulesMap = { [semester: string]: ModuleCode[] };
+export type TaModulesMap = { [semester: string]: TaModulesConfig };
 
 export type TimetablesState = {
   readonly lessons: TimetableConfig;
   readonly colors: SemesterColorMap;
   readonly hidden: HiddenModulesMap;
+  readonly ta: TaModulesMap;
   readonly academicYear: string;
   // Mapping of academic year to old timetable config
   readonly archive: { [key: string]: TimetableConfig };

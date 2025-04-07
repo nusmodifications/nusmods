@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { NextBus, NextBusTime, NextBusTimings } from 'types/venues';
 
-const baseUrl = 'https://nextbus.nusmods.com';
+const baseUrl = 'https://nnextbus.nusmods.com';
 
 interface ShuttleServiceResult {
   caption: string;
@@ -25,24 +25,18 @@ function convertArrivalTime(arrivalTime: string): NextBusTime {
   throw new Error(`Unknown arrival time ${arrivalTime}`);
 }
 
-export function nextBus(code: string): Promise<NextBusTimings> {
-  const url = `${baseUrl}/arrival`;
-  return axios
-    .get<{
-      ShuttleServiceResult: ShuttleServiceResult;
-    }>(url, { params: { busstopname: code } })
-    .then((response) => {
-      const shuttles: NextBusTimings = {};
-
-      response.data.ShuttleServiceResult.shuttles.forEach((arrival: Shuttle) => {
-        const timing: NextBus = {
-          arrivalTime: convertArrivalTime(arrival.arrivalTime),
-          nextArrivalTime: convertArrivalTime(arrival.nextArrivalTime),
-        };
-
-        shuttles[arrival.name] = timing;
-      });
-
-      return shuttles;
-    });
+export async function nextBus(name: string): Promise<NextBusTimings> {
+  const url = `${baseUrl}/ShuttleService?busstopname=${name}`;
+  const response = await axios.get<{
+    ShuttleServiceResult: ShuttleServiceResult;
+  }>(url, { params: { busstopname: name } });
+  const shuttles: NextBusTimings = {};
+  response.data.ShuttleServiceResult.shuttles.forEach((arrival: Shuttle) => {
+    const timing: NextBus = {
+      arrivalTime: convertArrivalTime(arrival.arrivalTime),
+      nextArrivalTime: convertArrivalTime(arrival.nextArrivalTime),
+    };
+    shuttles[arrival.name] = timing;
+  });
+  return shuttles;
 }

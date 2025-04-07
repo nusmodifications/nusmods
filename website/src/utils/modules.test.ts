@@ -16,11 +16,13 @@ import {
   isGraduateModule,
   renderExamDuration,
   getExamDuration,
+  canTa,
+  areLessonsDuplicate,
 } from 'utils/modules';
 import { noBreak } from 'utils/react';
 
 import { EVERY_WEEK } from 'test-utils/timetable';
-import { CS1010S, CS3216 } from '__mocks__/modules';
+import { CP3880, CS1010S, CS3216 } from '__mocks__/modules';
 import { Lesson } from 'types/timetables';
 
 const mockLesson = _.cloneDeep(CS1010S.semesterData[0].timetable[0]) as Lesson;
@@ -92,14 +94,32 @@ test('areLessonsSameClass should identify lessons with different lessonType as d
   expect(areLessonsSameClass(mockLesson, otherLesson)).toBe(false);
 });
 
+test(
+  'areLessonsDuplicate should identify lessons from the same ClassNo but ' +
+    'with different timings as non duplicates',
+  () => {
+    const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'startTime', '0000');
+    expect(areLessonsDuplicate(mockLesson, otherLesson)).toBe(false);
+  },
+);
+
+test(
+  'areLessonsDuplicate should identify lessons from the same ClassNo but ' +
+    'with different day as non duplicates',
+  () => {
+    const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'day', 'Monday');
+    expect(areLessonsDuplicate(mockLesson, otherLesson)).toBe(false);
+  },
+);
+
 test('formatExamDate should format an exam date string correctly', () => {
-  expect(formatExamDate('2016-11-23T01:00:00.000Z')).toBe('23-Nov-2016 9:00 AM');
-  expect(formatExamDate('2016-01-23T01:00:00.000Z')).toBe('23-Jan-2016 9:00 AM');
-  expect(formatExamDate('2016-11-03T01:00:00.000Z')).toBe('03-Nov-2016 9:00 AM');
-  expect(formatExamDate('2016-11-03T11:00:00.000Z')).toBe('03-Nov-2016 7:00 PM');
-  expect(formatExamDate('2016-11-03T11:30:00.000Z')).toBe('03-Nov-2016 7:30 PM');
-  expect(formatExamDate('2016-11-03T00:30:00.000Z')).toBe('03-Nov-2016 8:30 AM');
-  expect(formatExamDate('2016-01-03T00:01:00.000Z')).toBe('03-Jan-2016 8:01 AM');
+  expect(formatExamDate('2016-11-23T01:00:00.000Z')).toBe('23-Nov-2016 9:00\u00a0AM');
+  expect(formatExamDate('2016-01-23T01:00:00.000Z')).toBe('23-Jan-2016 9:00\u00a0AM');
+  expect(formatExamDate('2016-11-03T01:00:00.000Z')).toBe('03-Nov-2016 9:00\u00a0AM');
+  expect(formatExamDate('2016-11-03T11:00:00.000Z')).toBe('03-Nov-2016 7:00\u00a0PM');
+  expect(formatExamDate('2016-11-03T11:30:00.000Z')).toBe('03-Nov-2016 7:30\u00a0PM');
+  expect(formatExamDate('2016-11-03T00:30:00.000Z')).toBe('03-Nov-2016 8:30\u00a0AM');
+  expect(formatExamDate('2016-01-03T00:01:00.000Z')).toBe('03-Jan-2016 8:01\u00a0AM');
 });
 
 test('getExamDate should return the correct exam date if it exists', () => {
@@ -115,7 +135,7 @@ test('getExamDuration should return the correct exam duration if it exists', () 
 test('getFormattedModuleExamDate should return the correctly formatted exam timing if it exists', () => {
   const sem: Semester = 1;
   const examTime: string = getFormattedExamDate(CS1010S, sem);
-  expect(examTime).toBe('29-Nov-2017 5:00 PM');
+  expect(examTime).toBe('29-Nov-2017 5:00\u00a0PM');
 });
 
 test('getModuleSemExamDate should return "No Exam" if it does not exist', () => {
@@ -242,5 +262,25 @@ describe(isGraduateModule, () => {
     expect(isGraduateModule({ moduleCode: 'CS3567' })).toEqual(false);
     expect(isGraduateModule({ moduleCode: 'CS1567D' })).toEqual(false);
     expect(isGraduateModule({ moduleCode: 'ACC4999X' })).toEqual(false);
+  });
+});
+
+describe(canTa, () => {
+  const modules = { CP3880, CS1010S, CS3216 };
+
+  it('should return true for modules with non-lecture lessons', () => {
+    expect(canTa(modules, 'CS1010S', 1)).toEqual(true);
+  });
+
+  it('should return false for modules with only lecture lessons', () => {
+    expect(canTa(modules, 'CS3216', 1)).toEqual(false);
+  });
+
+  it('should return false for modules without lessons', () => {
+    expect(canTa(modules, 'CP3880', 1)).toEqual(false);
+  });
+
+  it('should return false for unknown modules', () => {
+    expect(canTa(modules, 'ZZ9999', 1)).toEqual(false);
   });
 });

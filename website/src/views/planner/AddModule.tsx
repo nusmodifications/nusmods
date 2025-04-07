@@ -119,7 +119,7 @@ export default class AddModule extends React.PureComponent<Props, State> {
 
           <div className={styles.actions}>
             <button className={classnames('btn btn-primary')} type="submit">
-              Add course
+              Add Category
             </button>
             <button
               className={classnames(styles.cancel, 'btn btn-svg')}

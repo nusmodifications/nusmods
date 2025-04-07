@@ -1,16 +1,20 @@
-import produce from 'immer';
+import { produce } from 'immer';
 import { SettingsState } from 'types/reducers';
 
 import * as actions from 'actions/settings';
 import reducer from 'reducers/settings';
-import { DARK_MODE, LIGHT_MODE } from 'types/settings';
+import {
+  DARK_COLOR_SCHEME_PREFERENCE,
+  LIGHT_COLOR_SCHEME_PREFERENCE,
+  SYSTEM_COLOR_SCHEME_PREFERENCE,
+} from 'types/settings';
 import { initAction, rehydrateAction } from 'test-utils/redux';
 import config, { RegPeriod } from 'config';
 
 const initialState: SettingsState = {
   newStudent: false,
   faculty: '',
-  mode: LIGHT_MODE,
+  colorScheme: SYSTEM_COLOR_SCHEME_PREFERENCE,
   hiddenInTimetable: [],
   modRegNotification: {
     enabled: true,
@@ -21,11 +25,19 @@ const initialState: SettingsState = {
   moduleTableOrder: 'exam',
   loadDisqusManually: false,
   beta: false,
+  prereqTreeOnLeft: false,
 };
 const settingsWithNewStudent: SettingsState = { ...initialState, newStudent: true };
 const faculty = 'School of Computing';
 const settingsWithFaculty: SettingsState = { ...initialState, faculty };
-const settingsWithDarkMode: SettingsState = { ...initialState, mode: DARK_MODE };
+const settingsWithLightMode: SettingsState = {
+  ...initialState,
+  colorScheme: LIGHT_COLOR_SCHEME_PREFERENCE,
+};
+const settingsWithDarkMode: SettingsState = {
+  ...initialState,
+  colorScheme: DARK_COLOR_SCHEME_PREFERENCE,
+};
 const settingsWithDismissedNotifications: SettingsState = produce(initialState, (draft) => {
   draft.modRegNotification.dismissed = [
     { type: 'Select Courses', name: '1' },
@@ -52,23 +64,32 @@ describe('settings', () => {
     expect(nextState).toEqual(settingsWithFaculty);
   });
 
-  test('can select mode', () => {
-    const action = actions.selectMode(DARK_MODE);
+  test('can select color scheme', () => {
+    const action = actions.selectColorScheme(DARK_COLOR_SCHEME_PREFERENCE);
     const nextState: SettingsState = reducer(initialState, action);
     expect(nextState).toEqual(settingsWithDarkMode);
 
-    const action2 = actions.selectMode(LIGHT_MODE);
-    const nextState2: SettingsState = reducer(nextState, action2);
-    expect(nextState2).toEqual(initialState);
+    const action2 = actions.selectColorScheme(LIGHT_COLOR_SCHEME_PREFERENCE);
+    const nextState2: SettingsState = reducer(initialState, action2);
+    expect(nextState2).toEqual(settingsWithLightMode);
+
+    const action3 = actions.selectColorScheme(SYSTEM_COLOR_SCHEME_PREFERENCE);
+    const nextState3: SettingsState = reducer(nextState, action3);
+    expect(nextState3).toEqual(initialState);
   });
 
-  test('can toggle mode', () => {
-    const action = actions.toggleMode();
-    const nextState: SettingsState = reducer(initialState, action);
-    expect(nextState).toEqual(settingsWithDarkMode);
+  test('can toggle prereq tree direction', () => {
+    const action1 = actions.setPrereqTreeOnLeft(true);
+    const nextState1 = reducer(initialState, action1);
+    expect(nextState1).toEqual({ ...initialState, prereqTreeOnLeft: true });
 
-    const nextState2: SettingsState = reducer(nextState, action);
-    expect(nextState2).toEqual(initialState);
+    const action2 = actions.setPrereqTreeOnLeft(false);
+    const nextState2 = reducer(nextState1, action2);
+    expect(nextState2).toEqual({ ...initialState, prereqTreeOnLeft: false });
+
+    const action3 = actions.setPrereqTreeOnLeft(true);
+    const nextState3 = reducer(nextState1, action3);
+    expect(nextState3).toEqual({ ...initialState, prereqTreeOnLeft: true });
   });
 
   test('set module table order', () => {

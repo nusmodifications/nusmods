@@ -1,4 +1,4 @@
-import { PureComponent } from 'react';
+import { PureComponent, createRef } from 'react';
 import classnames from 'classnames';
 import { flatMap, size, sortBy, toPairs, values } from 'lodash';
 
@@ -20,6 +20,7 @@ type Props = Readonly<{
   removeModule: (id: string) => void;
   addCustomData: (moduleCode: ModuleCode) => void;
   setPlaceholderModule: (id: string, moduleCode: ModuleCode) => void;
+  addModuleToTimetable: (semester: Semester, module: ModuleCode) => void;
 }>;
 
 type State = {
@@ -27,10 +28,24 @@ type State = {
 };
 
 export default class PlannerYear extends PureComponent<Props, State> {
+  readonly currentYearCardRef = createRef<HTMLDivElement>();
+
   override state = {
     // Always display Special Terms I and II if either one has modules
     showSpecialSem: this.hasSpecialTermModules(),
   };
+
+  override componentDidMount() {
+    if (this.props.year !== config.academicYear) {
+      return;
+    }
+    const currentYearCard = this.currentYearCardRef.current;
+    if (currentYearCard) {
+      currentYearCard.scrollIntoView({
+        inline: 'start',
+      });
+    }
+  }
 
   hasSpecialTermModules() {
     const { semesters } = this.props;
@@ -50,7 +65,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
         </h2>
         <div className={styles.yearMeta}>
           <p>
-            {count} {count === 1 ? 'course' : 'courses'}
+            {count} {count === 1 ? 'Course' : 'Courses'}
           </p>
           <p>{renderMCs(credits)}</p>
         </div>
@@ -72,6 +87,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
 
     return (
       <section
+        ref={year === config.academicYear ? this.currentYearCardRef : undefined}
         key={year}
         className={classnames(styles.year, {
           [styles.currentYear]: year === config.academicYear,
@@ -92,6 +108,7 @@ export default class PlannerYear extends PureComponent<Props, State> {
                 removeModule={this.props.removeModule}
                 addCustomData={this.props.addCustomData}
                 setPlaceholderModule={this.props.setPlaceholderModule}
+                addModuleToTimetable={this.props.addModuleToTimetable}
               />
             </div>
           ))}

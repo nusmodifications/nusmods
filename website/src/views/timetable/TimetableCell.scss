@@ -2,7 +2,6 @@
 
 $cell-padding: 0.3rem;
 $cell-opacity: 0.5;
-$cell-border-radius: 6px;
 
 .baseCell {
   // Flex to ensure cell content sticks to top, because browsers tend to
@@ -45,7 +44,7 @@ $cell-border-radius: 6px;
 }
 
 .clickable {
-  border-radius: $cell-border-radius;
+  border-radius: $timetable-border-radius;
   cursor: pointer;
 }
 
@@ -70,6 +69,13 @@ $cell-border-radius: 6px;
   :global {
     animation-name: pulse;
   }
+}
+
+.cellHeaader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
 }
 
 .moduleName {
@@ -108,4 +114,9 @@ $cell-border-radius: 6px;
   .weekInfo {
     opacity: 0.6;
   }
+}
+
+.taActionIndicator {
+  height: 0.8rem;
+  margin-right: -0.3rem;
 }

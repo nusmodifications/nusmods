@@ -18,7 +18,8 @@ type State = {
   actionClicked: boolean;
 };
 
-const ACTIVE_CLASSNAME = 'mdc-snackbar--active';
+const ACTIVE_CLASSNAME = 'mdc-snackbar--open';
+const INACTIVE_CLASSNAME = 'mdc-snackbar--closing';
 const DEFAULT_TIMEOUT = 2750;
 const TRANSITION_DURATION = 250;
 
@@ -140,12 +141,14 @@ export class NotificationComponent extends React.Component<Props, State> {
     const { message, action } = shownNotification;
     return (
       <>
-        <div className="mdc-snackbar__text">{message}</div>
+        <div className="mdc-snackbar__label" aria-atomic="false">
+          {message}
+        </div>
         {action && (
-          <div className="mdc-snackbar__action-wrapper">
+          <div className="mdc-snackbar__actions" aria-atomic="true">
             <button
               type="button"
-              className="mdc-snackbar__action-button"
+              className={classnames('mdc-snackbar__action mdc-button', styles.notificationAction)}
               onClick={() => {
                 this.setState({ actionClicked: true });
                 const { handler } = action;
@@ -154,7 +157,8 @@ export class NotificationComponent extends React.Component<Props, State> {
                 this.props.popNotification();
               }}
             >
-              {action.text}
+              <div className="mdc-button__ripple" />
+              <span className="mdc-button__label">{action.text}</span>
             </button>
           </div>
         )}
@@ -169,14 +173,21 @@ export class NotificationComponent extends React.Component<Props, State> {
       <div
         className={classnames('mdc-snackbar', styles.snackbar, {
           [ACTIVE_CLASSNAME]: isOpen,
+          [INACTIVE_CLASSNAME]: !isOpen,
         })}
         aria-live="assertive"
         aria-atomic="true"
         aria-hidden={!!shownNotification}
-        onTransitionEnd={this.onTransitionEnd}
-        ref={this.element}
       >
-        {this.renderNotificationContent()}
+        <div
+          className="mdc-snackbar__surface"
+          role="status"
+          aria-relevant="additions"
+          ref={this.element}
+          onTransitionEnd={this.onTransitionEnd}
+        >
+          {this.renderNotificationContent()}
+        </div>
       </div>
     );
   }

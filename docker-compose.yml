@@ -35,12 +35,12 @@ services:
       - website
     init: true
     security_opt:
-      - seccomp="infra/instance/chromium.seccomp.json"
+      - seccomp=infra/instance/chromium.seccomp.json
     environment:
       - NODE_ENV=development
       - PORT=8082
       - HOST=0.0.0.0
-      - PAGE=http://website:8081
+      - PAGE=http://website:8081/timetable-only/
       - CHROME_EXECUTABLE=/usr/bin/chromium-browser
     user: ${CURRENT_UID:-1000:1000}
     restart: on-failure
