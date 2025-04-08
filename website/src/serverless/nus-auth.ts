@@ -34,7 +34,7 @@ samlify.setSchemaValidator(validator);
 let SP_FILE_PATH;
 let FEDERATION_METADATA_FILE_PATH;
 if (process.env.VERCEL_ENV === 'production') {
-  SP_FILE_PATH = './sp.xml';
+  SP_FILE_PATH = './sp-latest.xml';
   FEDERATION_METADATA_FILE_PATH = './FederationMetadata.xml';
 } else {
   SP_FILE_PATH = './sp-cpex-staging.xml';
