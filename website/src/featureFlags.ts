@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 
 /** Enable Course Planning Exercise */
-export const enableCPEx = false;
+const isProduction = process.env.VERCEL_ENV === 'production';
+export const enableCPEx = !isProduction;
 
-export const showCPExTab = false;
+export const showCPExTab = !isProduction;
