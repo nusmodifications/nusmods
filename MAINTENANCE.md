@@ -31,9 +31,9 @@ Reference PRs: [PR #3286](https://github.com/nusmodifications/nusmods/pull/3286)
   - [ ] Update the displayed dates in `website/src/views/mpe/MpeContainer.tsx` and any new requirements/descriptions
   - [ ] Update dates in the ModReg schedule in `website/src/data/modreg-schedule.json`
   - [ ] Enable the `enabledCPEx` and `showCPExTab` flags in `website/src/featureFlags.ts`
-  - [ ] Push onto `cpex-staging` branch, then visit https://cpex-staging.nusmods.com/cpex and verify that NUS authentication is working
+  - [ ] Push onto `cpex-staging` branch (Ensure synced with `master` branch first), then visit https://cpex-staging.nusmods.com/cpex and verify that NUS authentication is working
 - During
-  - [ ] Merge into `master`
+  - [ ] Merge `cpex-staging` into `master`
   - [ ] Deploy latest `master` to `production`
 - After
   - [ ] Disable the `enabledCPEx` and `showCPExTab` flags in `website/src/featureFlags.ts`
