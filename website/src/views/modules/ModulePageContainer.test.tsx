@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react';
+import { act, screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import axios, { AxiosError, AxiosHeaders, AxiosResponse } from 'axios';
 
@@ -82,6 +82,7 @@ describe(ModulePageContainerComponent, () => {
   test('should show 404 page when the module code does not exist', async () => {
     mockAxiosRequest.mockRejectedValue(notFoundError);
     make('/courses/CS1234');
+    await act(() => Promise.resolve()); // Wait for the react to finish updates
     expect(await screen.findByText(/course CS1234 not found/)).toBeInTheDocument();
   });
 
