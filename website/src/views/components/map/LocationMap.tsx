@@ -55,7 +55,7 @@ const LocationMap: FC<Props> = ({ position, className, height }) => {
 
         <TileLayer
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          url="https://cdn.lima-labs.com/{z}/{x}/{y}.png?api=demo."
         />
 
         <BusStops />
