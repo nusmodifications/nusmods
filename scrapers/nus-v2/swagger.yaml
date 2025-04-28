@@ -478,6 +478,22 @@ components:
               type: 'array'
               items:
                 $ref: '#/components/schemas/PrereqTree'
+        - type: 'object'
+          required:
+            - 'nOf'
+          properties:
+            nOf:
+              type: 'array'
+              minItems: 2
+              maxItems: 2
+              items:
+                - type: 'number'
+                  description: 'Number of prerequisites required'
+                - type: 'array'
+                  items:
+                    $ref: '#/components/schemas/PrereqTree'
+              example: [2, ["CS1010", "CS2100", "CS2103T"]]
+
       example:
         and:
           - or:
