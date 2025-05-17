@@ -6,6 +6,7 @@ import { AcadYear, Semester } from 'types/modules';
 import holidays from 'data/holidays.json';
 import modRegData from 'data/modreg-schedule.json';
 import appConfig from './app-config.json';
+import { enableCPExforProd } from '../featureFlags';
 
 export const regPeriods = [
   'Select Courses',
@@ -70,6 +71,8 @@ export type Config = {
   holidays: Date[];
 
   modRegSchedule: { [type in ScheduleType]: RegPeriod[] };
+
+  enableCPEx: boolean;
 };
 
 export function convertModRegDates(roundData: (typeof modRegData)[ScheduleType]): RegPeriod[] {
@@ -97,6 +100,8 @@ const augmentedConfig: Config = {
    */
   getSemesterKey: (): string =>
     `${augmentedConfig.academicYear} ${augmentedConfig.semesterNames[augmentedConfig.semester]}`,
+
+  enableCPEx: enableCPExforProd || ['staging', 'development'].includes(NUSMODS_ENV),
 };
 
 export default augmentedConfig;
