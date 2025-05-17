@@ -1,7 +1,7 @@
 import axios, { AxiosHeaders } from 'axios';
-import { enableCPEx } from '../featureFlags';
 import { MpeSubmission, MpePreference, MODULE_TYPES } from '../types/mpe';
 import type { Handler } from './handler';
+import config from '../config';
 
 const vfsEndpoint = process.env.NUS_VFS_MPE_ENDPOINT;
 const defaultHeaders = new AxiosHeaders({
@@ -104,7 +104,7 @@ const validatePreferences = (preferences: MpePreference[]): boolean =>
 export const featureFlagEnablerMiddleware =
   (next: Handler): Handler =>
   async (req, res): Promise<void> => {
-    if (!enableCPEx) {
+    if (!config.enableCPEx) {
       res.status(404).end();
       return;
     }

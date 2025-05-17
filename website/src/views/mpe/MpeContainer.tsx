@@ -1,7 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import classnames from 'classnames';
-import { enableCPEx } from 'featureFlags';
 import Modal from 'views/components/Modal';
 import type { MpeSubmission } from 'types/mpe';
 import ExternalLink from 'views/components/ExternalLink';
@@ -31,6 +30,7 @@ const MpeContainer: React.FC = () => {
   );
   const hasCPEx = ugCPEx && gdCPEx;
   const sameTime = hasCPEx && ugCPEx.startDate.getTime() === gdCPEx.startDate.getTime();
+  const { enableCPEx } = config;
 
   const onLogin = useCallback(() => {
     setIsGettingSSOLink(true);
