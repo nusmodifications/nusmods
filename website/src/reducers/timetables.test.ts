@@ -1,4 +1,4 @@
-import { PersistConfig } from 'redux-persist/es/types';
+import config from 'config';
 import reducer, { defaultTimetableState, persistConfig } from 'reducers/timetables';
 import {
   ADD_MODULE,
@@ -9,11 +9,15 @@ import {
   showLessonInTimetable,
   setHiddenImported,
   Internal,
+  addCustomModule,
+  modifyCustomModule,
+  deleteCustomModule,
   addTaLessonInTimetable,
   removeTaLessonInTimetable,
 } from 'actions/timetables';
 import { TimetablesState } from 'types/reducers';
-import config from 'config';
+import { PersistConfig } from 'redux-persist/es/types';
+import { CustomModuleLesson } from 'types/timetables';
 
 const initialState = defaultTimetableState;
 
@@ -74,6 +78,7 @@ describe('color reducers', () => {
           timetable: { CS1010S: {} },
           colors: { CS1010S: 0 },
           hiddenModules: [],
+          customModules: {},
           taModules: {},
         },
       }).colors[1],
@@ -121,6 +126,198 @@ describe('hidden module reducer', () => {
       hidden: {
         [1]: [],
         [2]: ['CS1010S'],
+      },
+    });
+  });
+});
+
+describe('custom modules reducer', () => {
+  const lesson: CustomModuleLesson = {
+    classNo: '01',
+    day: 'Monday',
+    startTime: '0800',
+    endTime: '0900',
+    lessonType: 'Lecture',
+    venue: 'COM1-0330',
+    moduleCode: 'CS1101S',
+    title: 'Programming Methodology',
+    isCustom: true,
+    weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+  };
+  test('should allow new custom modules', () => {
+    expect(
+      reducer(initialState, addCustomModule(1, 'CS1101S', lesson.title, [lesson])),
+    ).toMatchObject({
+      customModules: {
+        '1': {
+          CS1101S: { title: lesson.title, lessons: [lesson] },
+        },
+      },
+    });
+  });
+
+  test('should allow changing of custom modules', () => {
+    expect(
+      reducer(
+        {
+          ...initialState,
+          customModules: {
+            '1': {
+              CS1101S: { title: lesson.title, lessons: [lesson] },
+            },
+          },
+        },
+        modifyCustomModule(1, 'CS1101S', 'CS2030', lesson.title, [lesson]),
+      ),
+    ).toMatchObject({
+      customModules: {
+        '1': {
+          CS2030: { title: lesson.title, lessons: [lesson] },
+        },
+      },
+    });
+  });
+
+  test('should allow changing of custom modules', () => {
+    expect(
+      reducer(
+        {
+          ...initialState,
+          customModules: {
+            '1': {
+              CS1101S: { title: lesson.title, lessons: [lesson] },
+            },
+          },
+        },
+        deleteCustomModule(1, 'CS1101S'),
+      ),
+    ).toMatchObject({
+      customModules: {},
+    });
+  });
+});
+
+describe('lesson reducer', () => {
+  test('should allow lesson config to be set', () => {
+    expect(
+      reducer(
+        {
+          ...initialState,
+          lessons: {
+            [1]: {
+              CS1010S: {
+                Lecture: '1',
+                Recitation: '2',
+              },
+              CS3216: {
+                Lecture: '1',
+              },
+            },
+            [2]: {
+              CS3217: {
+                Lecture: '1',
+              },
+            },
+          },
+        },
+        setLessonConfig(1, 'CS1010S', {
+          Lecture: '2',
+          Recitation: '3',
+          Tutorial: '4',
+        }),
+      ),
+    ).toMatchObject({
+      lessons: {
+        [1]: {
+          CS1010S: {
+            Lecture: '2',
+            Recitation: '3',
+            Tutorial: '4',
+          },
+          CS3216: {
+            Lecture: '1',
+          },
+        },
+        [2]: {
+          CS3217: {
+            Lecture: '1',
+          },
+        },
+      },
+    });
+  });
+});
+
+describe('stateReconciler', () => {
+  const oldArchive = {
+    '2015/2016': {
+      [1]: {
+        GET1006: {
+          Lecture: '1',
+        },
+      },
+    },
+  };
+
+  const oldLessons = {
+    [1]: {
+      CS1010S: {
+        Lecture: '1',
+        Recitation: '2',
+      },
+    },
+    [2]: {
+      CS3217: {
+        Lecture: '1',
+      },
+    },
+  };
+
+  const inbound: TimetablesState = {
+    lessons: oldLessons,
+    colors: {
+      [1]: {
+        CS1010S: 1,
+      },
+      [2]: {
+        CS3217: 2,
+      },
+    },
+    hidden: {
+      [1]: ['CS1010S'],
+    },
+    ta: {},
+    academicYear: config.academicYear,
+    archive: oldArchive,
+    customModules: {},
+  };
+
+  const { stateReconciler } = persistConfig;
+  if (!stateReconciler) {
+    throw new Error('No stateReconciler');
+  }
+
+  const reconcilerPersistConfig = { debug: false } as PersistConfig<TimetablesState>;
+
+  test('should return inbound state when academic year is the same', () => {
+    expect(stateReconciler(inbound, initialState, initialState, reconcilerPersistConfig)).toEqual(
+      inbound,
+    );
+  });
+
+  test('should archive old timetables and clear state when academic year is different', () => {
+    const oldInbound = {
+      ...inbound,
+      academicYear: '2016/2017',
+    };
+
+    expect(
+      stateReconciler(oldInbound, initialState, initialState, reconcilerPersistConfig),
+    ).toEqual({
+      ...initialState,
+      archive: {
+        ...oldArchive,
+        '2016/2017': oldLessons,
       },
     });
   });
@@ -273,6 +470,7 @@ describe('stateReconciler', () => {
     hidden: {
       [1]: ['CS1010S'],
     },
+    customModules: {},
     ta: {},
     academicYear: config.academicYear,
     archive: oldArchive,
@@ -310,13 +508,6 @@ describe('stateReconciler', () => {
 });
 
 describe('import timetable', () => {
-  const stateWithHidden = {
-    ...initialState,
-    hidden: {
-      [1]: ['CS1101S', 'CS1231S'],
-    },
-  };
-
   test('should have hidden modules set when importing hidden', () => {
     expect(
       reducer(initialState, setHiddenImported(1, ['CS1101S', 'CS1231S'])).hidden,
@@ -326,20 +517,46 @@ describe('import timetable', () => {
 
     // Should change hidden modules when a new set of modules is imported
     expect(
-      reducer(stateWithHidden, setHiddenImported(1, ['CS2100', 'CS2103T'])).hidden,
+      reducer(
+        {
+          ...initialState,
+          hidden: {
+            [1]: ['CS1101S', 'CS1231S'],
+          },
+        },
+        setHiddenImported(1, ['CS2100', 'CS2103T']),
+      ).hidden,
     ).toMatchObject({
       [1]: ['CS2100', 'CS2103T'],
     });
 
     // should delete hidden modules when there are none
-    expect(reducer(stateWithHidden, setHiddenImported(1, [])).hidden).toMatchObject({
+    expect(
+      reducer(
+        {
+          ...initialState,
+          hidden: {
+            [1]: ['CS1101S', 'CS1231S'],
+          },
+        },
+        setHiddenImported(1, []),
+      ).hidden,
+    ).toMatchObject({
       [1]: [],
     });
   });
 
   test('should copy over hidden modules when deciding to replace saved timetable', () => {
     expect(
-      reducer(stateWithHidden, Internal.setTimetable(1, {}, {}, stateWithHidden.hidden[1])).hidden,
+      reducer(
+        {
+          ...initialState,
+          hidden: {
+            [1]: ['CS1101S', 'CS1231S'],
+          },
+        },
+        Internal.setTimetable(1, {}, {}, ['CS1101S', 'CS1231S']),
+      ).hidden,
     ).toMatchObject({
       '1': ['CS1101S', 'CS1231S'],
     });

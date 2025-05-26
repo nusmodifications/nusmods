@@ -1,0 +1,56 @@
+@import '~styles/utils/modules-entry.scss';
+
+.container {
+  .buttonGroup {
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    gap: 0;
+
+    .button {
+      width: 100%;
+      padding: 0.3rem 0.1rem;
+      margin: 0;
+
+      .selected {
+        color: white;
+        background-color: $primary;
+      }
+
+      &:not(:first-child) {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+
+      &:not(:last-child) {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+  }
+
+  p.shortcuts {
+    display: flex;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+    gap: 1;
+
+    :not(:first-child) {
+      margin-left: 0.5rem;
+    }
+
+    :not(:last-child) {
+      margin-right: 0.1rem;
+    }
+
+    button {
+      height: fit-content;
+      padding: 0 0.5rem;
+    }
+  }
+}
+
+.errorLabel {
+  margin: 0;
+  color: red;
+}
