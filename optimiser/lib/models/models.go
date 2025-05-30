@@ -6,7 +6,7 @@ type OptimiserRequest struct {
 	FreeDays 	[]string `json:"freeDays"` // Format: ["Monday", "Tuesday"]
 	EarliestTime string  `json:"earliestTime"` // Format: "1504" (HHMM)
 	LatestTime   string  `json:"latestTime"` // Format: "1504" (HHMM)
-	AcadYear     string  `json:"acadYear"` // Format: "2024/2025" (YYYY/YYYY)
+	AcadYear     string  `json:"acadYear"` // Format: "2024-2025" (YYYY/YYYY)
 	AcadSem      int     `json:"acadSem"` // Format: 1 for sem 1, 2 for sem 2
 }
 
