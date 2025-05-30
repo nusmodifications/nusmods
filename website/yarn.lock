@@ -2118,10 +2118,10 @@
     "@types/connect" "*"
     "@types/node" "*"
 
-"@types/body-scroll-lock@2.6.2":
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/@types/body-scroll-lock/-/body-scroll-lock-2.6.2.tgz#ce56d17e1bf8383c08a074733c4e9e536a59ae61"
-  integrity sha512-PhoQPbwPYspXqf7lkwtF7aJzAwL88t+9E/e0b2X84tlHpU8ZuS9UNnLtkT0XhyZJYHpET5qRfIdZ0HBIxuc7HQ==
+"@types/body-scroll-lock@3.1.2":
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/@types/body-scroll-lock/-/body-scroll-lock-3.1.2.tgz#1ae7857d98180dbe6c3b05abbe7ec1fa67b614e3"
+  integrity sha512-ELhtuphE/YbhEcpBf/rIV9Tl3/O0A0gpCVD+oYFSS8bWstHFJUgA4nNw1ZakVlRC38XaQEIsBogUZKWIPBvpfQ==
 
 "@types/bonjour@^3.5.13":
   version "3.5.13"
@@ -2421,12 +2421,12 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-kawaii@0.17.3":
-  version "0.17.3"
-  resolved "https://registry.yarnpkg.com/@types/react-kawaii/-/react-kawaii-0.17.3.tgz#0de33b34d8b4a4bbd49bfb0c22aeb09b5f61a321"
-  integrity sha512-Wt+8x8oKbJN0n4pFcIT0Tgu/MocDUp0D8RbDq4CcQPXVypWghA5EhGoHX+ugjl5axpOHk1WVOdymgpPH4uiXQA==
+"@types/react-kawaii@1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@types/react-kawaii/-/react-kawaii-1.3.0.tgz#b2f0352a4c6171f92e82cd9baf376461547afd46"
+  integrity sha512-lbG8UVES82hcbVKHYmn8yUwpHhUMsb1YbaZEH9iqt65YZpekjEdvsMlgauX7++mBpbiR859uEV+lHJHkxzSzzA==
   dependencies:
-    "@types/react" "*"
+    react-kawaii "*"
 
 "@types/react-loadable@5.5.11":
   version "5.5.11"
@@ -10508,6 +10508,11 @@ react-is@^17.0.1, react-is@^17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
+
+react-kawaii@*:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/react-kawaii/-/react-kawaii-1.6.0.tgz#59f3b674cd44926ea86250e41d5933bd46d53060"
+  integrity sha512-cmz9zzuIEplDIPRrtW9MiQsszVZBRzFYFwfxbArskn+0qMLzTQJPq+6avkVDvvTHI9GzvnMc9HhVCwUq+KpJUg==
 
 react-kawaii@0.18.0:
   version "0.18.0"
