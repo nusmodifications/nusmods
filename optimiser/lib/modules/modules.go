@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/nusmodifications/nusmods/optimiser/lib/models"
 )
@@ -23,13 +24,13 @@ type ModuleSlot struct {
 type Coordinates struct {
 	X float32 `json:"x"`
 	Y float32 `json:"y"`
-} 
+}
 
 type Location struct {
 	Location Coordinates `json:"location"`
 }
 
-func GetAllModuleSlots(optimiserRequest models.OptimiserRequest) (map[string]map[string][]ModuleSlot, error) {
+func GetAllModuleSlots(optimiserRequest models.OptimiserRequest) (map[string]map[string]map[string][]ModuleSlot, error) {
 	// Get all module slots for all modules
 	venues := make(map[string]Location)
 	url := "https://github.nusmods.com/venues"
@@ -47,7 +48,7 @@ func GetAllModuleSlots(optimiserRequest models.OptimiserRequest) (map[string]map
 		return nil, err
 	}
 
-	moduleSlots := make(map[string]map[string][]ModuleSlot)
+	moduleSlots := make(map[string]map[string]map[string][]ModuleSlot)
 	for _, module := range optimiserRequest.Modules {
 		url = fmt.Sprintf("https://api.nusmods.com/v2/%s/modules/%s.json", optimiserRequest.AcadYear, strings.ToUpper(module))
 		res, err := http.Get(url)
@@ -62,8 +63,8 @@ func GetAllModuleSlots(optimiserRequest models.OptimiserRequest) (map[string]map
 		}
 
 		var moduleData struct {
-			SemesterData []struct{
-				Semester int `json:"semester"`
+			SemesterData []struct {
+				Semester  int          `json:"semester"`
 				Timetable []ModuleSlot `json:"timetable"`
 			} `json:"semesterData"`
 		}
@@ -73,69 +74,147 @@ func GetAllModuleSlots(optimiserRequest models.OptimiserRequest) (map[string]map
 		}
 
 		// Store the module slots for the module in map
-		moduleSlots[module] = mergeModuleSlots(moduleData.SemesterData[optimiserRequest.AcadSem-1].Timetable, venues)
+		moduleSlots[module] = mergeAndFilterModuleSlots(moduleData.SemesterData[optimiserRequest.AcadSem-1].Timetable, venues, optimiserRequest, module)
 
 	}
 
 	return moduleSlots, nil
 }
 
-func mergeModuleSlots(timetable []ModuleSlot, venues map[string]Location) map[string][]ModuleSlot {
-	// Lesson Type -> Day -> Start Time -> ModuleSlot	
-	mergedTimetable := make(map[string]map[string]map[string][]ModuleSlot)
+func mergeAndFilterModuleSlots(timetable []ModuleSlot, venues map[string]Location, optimiserRequest models.OptimiserRequest, module string) map[string]map[string][]ModuleSlot {
+
+	recordingsMap := make(map[string]bool, len(optimiserRequest.Recordings))
+	for _, recording := range optimiserRequest.Recordings {
+		recordingsMap[recording] = true
+	}
+
+	freeDaysMap := make(map[string]bool, len(optimiserRequest.FreeDays))
+	for _, freeDay := range optimiserRequest.FreeDays {
+		freeDaysMap[freeDay] = true
+	}
+
+	/*
+	We group by classNo because some slots come as a pair, ie you have to attend both slots to complete the lesson
+	*/
+	
+	// Group slots by lessonType and classNo
+	// Key: "lessonType|classNo", Value: []ModuleSlot
+	classGroups := make(map[string][]ModuleSlot)
 
 	for _, slot := range timetable {
-		/*
-			Some venues do not have location data, so we skip them
-			However, E-Learn_C is a special case, as it is a virtual venue
-		*/
-		
-		if _, ok := mergedTimetable[slot.LessonType]; !ok {
-			mergedTimetable[slot.LessonType] = make(map[string]map[string][]ModuleSlot)
-		}
-		if _, ok := mergedTimetable[slot.LessonType][slot.Day]; !ok {
-			mergedTimetable[slot.LessonType][slot.Day] = make(map[string][]ModuleSlot)
-		}
-		
+		// Skip venues without location data, except E-Learn_C (virtual venue)
 		if slot.Venue != "E-Learn_C" {
-
-			if venues[slot.Venue].Location.X == 0 && venues[slot.Venue].Location.Y == 0 {
+			venueLocation := venues[slot.Venue].Location
+			if venueLocation.X == 0 && venueLocation.Y == 0 {
 				continue
 			}
-	
-			
-			// Avoid adding slots that have the same venue
-			avoid := false
-			for _, existingSlot := range mergedTimetable[slot.LessonType][slot.Day][slot.StartTime] {
-				if extractBuildingName(existingSlot.Venue) == extractBuildingName(slot.Venue) {
-					avoid = true
+		}
+
+		// Add coordinates to slot
+		slot.Coordinates = venues[slot.Venue].Location
+
+		groupKey := slot.LessonType + "|" + slot.ClassNo
+		classGroups[groupKey] = append(classGroups[groupKey], slot)
+	}
+
+	// Validate entire classNo groups - ALL slots in a class must pass conditions
+	validClassGroups := make(map[string][]ModuleSlot)
+
+	for groupKey, slots := range classGroups {
+		lessonType := strings.Split(groupKey, "|")[0]
+		lessonKey := module + " " + lessonType
+		isRecorded := recordingsMap[lessonKey]
+
+		// Check if ALL slots in this class pass the conditions
+		allValid := true
+
+		// Only apply filters to physical lessons
+		if !isRecorded {
+			for _, slot := range slots {
+				// Check free days
+				if freeDaysMap[slot.Day] {
+					allValid = false
+					break
+				}
+
+				// Check time cutoff
+				if slotTimingOutsideCutOff(slot.StartTime, slot.EndTime, optimiserRequest.EarliestTime, optimiserRequest.LatestTime) {
+					allValid = false
 					break
 				}
 			}
-			if avoid {
-				continue
-			}
 		}
 
-
-		// Add coordinates to the slot
-		slot.Coordinates = venues[slot.Venue].Location
-		mergedTimetable[slot.LessonType][slot.Day][slot.StartTime] = append(mergedTimetable[slot.LessonType][slot.Day][slot.StartTime], slot)
-	}
-
-	newTimetable := make(map[string][]ModuleSlot)
-	for lessonType, day := range mergedTimetable {
-		for _, startTime := range day {
-			for _, slots := range startTime {
-				newTimetable[lessonType] = append(newTimetable[lessonType], slots...)
-			}
+		// If all slots in this class are valid, keep the entire class
+		if allValid {
+			validClassGroups[groupKey] = slots
 		}
 	}
 
-	return newTimetable
+	// Now apply building duplicate logic and build final result
+	// Lesson Type -> Class No -> []ModuleSlot
+	mergedTimetable := make(map[string]map[string][]ModuleSlot)
+	seenCombinations := make(map[string]bool)
+
+	for _, slots := range validClassGroups {
+		for _, slot := range slots {
+			lessonKey := module + " " + slot.LessonType
+			isRecorded := recordingsMap[lessonKey]
+
+			// For physical lessons, avoid duplicate buildings at same time
+			if !isRecorded && slot.Venue != "E-Learn_C" {
+				buildingName := extractBuildingName(slot.Venue)
+				combinationKey := slot.LessonType + "|" + slot.Day + "|" + slot.StartTime + "|" + buildingName
+
+				if seenCombinations[combinationKey] {
+					continue
+				}
+				seenCombinations[combinationKey] = true
+			}
+
+			if mergedTimetable[slot.LessonType] == nil {
+				mergedTimetable[slot.LessonType] = make(map[string][]ModuleSlot)
+			}
+
+			mergedTimetable[slot.LessonType][slot.ClassNo] = append(mergedTimetable[slot.LessonType][slot.ClassNo], slot)
+		}
+	}
+
+	return mergedTimetable
 }
+
+
+
+
+
+// Helper functions
 
 func extractBuildingName(key string) string {
 	parts := strings.SplitN(key, "-", 2)
 	return parts[0] // Return the part before '-' or the whole key if '-' is absent
+}
+
+func slotTimingOutsideCutOff(startTime string, endTime string, earliestTime string, latestTime string) bool {
+	startTimeParsed, err := time.Parse("15:04", startTime)
+	if err != nil {
+		return false
+	}
+	endTimeParsed, err := time.Parse("15:04", endTime)
+	if err != nil {
+		return false
+	}
+
+	earliestTimeParsed, err := time.Parse("15:04", earliestTime)
+	if err != nil {
+		return false
+	}
+	latestTimeParsed, err := time.Parse("15:04", latestTime)
+	if err != nil {
+		return false
+	}
+
+	if startTimeParsed.Before(earliestTimeParsed) || endTimeParsed.After(latestTimeParsed) {
+		return true
+	}
+	return false
 }

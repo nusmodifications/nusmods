@@ -2,7 +2,7 @@ package models
 
 type OptimiserRequest struct {
 	Modules 	[]string `json:"modules"` // Format: ["CS1010S", "CS2030S"]
-	Recordings 	[]string `json:"recordings"` // Format: ["CS1010S", "CS2030S"]
+	Recordings 	[]string `json:"recordings"` // Format: ["CS1010S Lecture", "CS2030S Laboratory"]
 	FreeDays 	[]string `json:"freeDays"` // Format: ["Monday", "Tuesday"]
 	EarliestTime string  `json:"earliestTime"` // Format: "1504" (HHMM)
 	LatestTime   string  `json:"latestTime"` // Format: "1504" (HHMM)
