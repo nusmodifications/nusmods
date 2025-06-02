@@ -6,33 +6,16 @@ import (
 	"io"
 	"net/http"
 	"strings"
-	"time"
 
 	"github.com/nusmodifications/nusmods/optimiser/lib/models"
 )
 
-type ModuleSlot struct {
-	ClassNo    string `json:"classNo"`
-	Day        string `json:"day"`
-	EndTime    string `json:"endTime"`
-	LessonType string `json:"lessonType"`
-	StartTime  string `json:"startTime"`
-	Venue      string `json:"venue"`
-	// Weeks      []int  `json:"weeks"`
-	Coordinates Coordinates `json:"coordinates"`
-}
-type Coordinates struct {
-	X float32 `json:"x"`
-	Y float32 `json:"y"`
-}
-
-type Location struct {
-	Location Coordinates `json:"location"`
-}
-
-func GetAllModuleSlots(optimiserRequest models.OptimiserRequest) (map[string]map[string]map[string][]ModuleSlot, error) {
-	// Get all module slots for all modules
-	venues := make(map[string]Location)
+/*
+- Get all module slots that pass conditions in optimiserRequest for all modules.
+- Reduces search space by merging slots of the same lesson type happening at the same day and time and building.
+*/
+func GetAllModuleSlots(optimiserRequest models.OptimiserRequest) (map[string]map[string]map[string][]models.ModuleSlot, error) {
+	venues := make(map[string]models.Location)
 	url := "https://github.nusmods.com/venues"
 	res, err := http.Get(url)
 	if err != nil {
@@ -48,7 +31,7 @@ func GetAllModuleSlots(optimiserRequest models.OptimiserRequest) (map[string]map
 		return nil, err
 	}
 
-	moduleSlots := make(map[string]map[string]map[string][]ModuleSlot)
+	moduleSlots := make(map[string]map[string]map[string][]models.ModuleSlot)
 	for _, module := range optimiserRequest.Modules {
 		url = fmt.Sprintf("https://api.nusmods.com/v2/%s/modules/%s.json", optimiserRequest.AcadYear, strings.ToUpper(module))
 		res, err := http.Get(url)
@@ -64,8 +47,8 @@ func GetAllModuleSlots(optimiserRequest models.OptimiserRequest) (map[string]map
 
 		var moduleData struct {
 			SemesterData []struct {
-				Semester  int          `json:"semester"`
-				Timetable []ModuleSlot `json:"timetable"`
+				Semester  int                 `json:"semester"`
+				Timetable []models.ModuleSlot `json:"timetable"`
 			} `json:"semesterData"`
 		}
 		err = json.Unmarshal(body, &moduleData)
@@ -81,7 +64,7 @@ func GetAllModuleSlots(optimiserRequest models.OptimiserRequest) (map[string]map
 	return moduleSlots, nil
 }
 
-func mergeAndFilterModuleSlots(timetable []ModuleSlot, venues map[string]Location, optimiserRequest models.OptimiserRequest, module string) map[string]map[string][]ModuleSlot {
+func mergeAndFilterModuleSlots(timetable []models.ModuleSlot, venues map[string]models.Location, optimiserRequest models.OptimiserRequest, module string) map[string]map[string][]models.ModuleSlot {
 
 	recordingsMap := make(map[string]bool, len(optimiserRequest.Recordings))
 	for _, recording := range optimiserRequest.Recordings {
@@ -93,14 +76,16 @@ func mergeAndFilterModuleSlots(timetable []ModuleSlot, venues map[string]Locatio
 		freeDaysMap[freeDay] = true
 	}
 
-	/*
-	We group by classNo because some slots come as a pair, ie you have to attend both slots to complete the lesson
-	*/
-	
-	// Group slots by lessonType and classNo
-	// Key: "lessonType|classNo", Value: []ModuleSlot
-	classGroups := make(map[string][]ModuleSlot)
+	earliestMin, _ := models.ParseTimeToMinutes(optimiserRequest.EarliestTime)
+	latestMin, _ := models.ParseTimeToMinutes(optimiserRequest.LatestTime)
 
+	/*
+		We group by classNo because some slots come as a pair, ie you have to attend both slots to complete the lesson
+
+		 Key: "lessonType|classNo", Value: []ModuleSlot
+	*/
+
+	classGroups := make(map[string][]models.ModuleSlot)
 	for _, slot := range timetable {
 		// Skip venues without location data, except E-Learn_C (virtual venue)
 		if slot.Venue != "E-Learn_C" {
@@ -117,15 +102,16 @@ func mergeAndFilterModuleSlots(timetable []ModuleSlot, venues map[string]Locatio
 		classGroups[groupKey] = append(classGroups[groupKey], slot)
 	}
 
-	// Validate entire classNo groups - ALL slots in a class must pass conditions
-	validClassGroups := make(map[string][]ModuleSlot)
+	/*
+		Now validate each classNo group, ie all the lessons for that slot must pass the conditions. For example,
+		MA1521 has 2 Lectures per week, so it must pass the conditions for both lectures.
+	*/
+	validClassGroups := make(map[string][]models.ModuleSlot)
 
 	for groupKey, slots := range classGroups {
 		lessonType := strings.Split(groupKey, "|")[0]
 		lessonKey := module + " " + lessonType
 		isRecorded := recordingsMap[lessonKey]
-
-		// Check if ALL slots in this class pass the conditions
 		allValid := true
 
 		// Only apply filters to physical lessons
@@ -137,8 +123,7 @@ func mergeAndFilterModuleSlots(timetable []ModuleSlot, venues map[string]Locatio
 					break
 				}
 
-				// Check time cutoff
-				if slotTimingOutsideCutOff(slot.StartTime, slot.EndTime, optimiserRequest.EarliestTime, optimiserRequest.LatestTime) {
+				if isSlotOutsideTimeRange(slot, earliestMin, latestMin) {
 					allValid = false
 					break
 				}
@@ -151,9 +136,12 @@ func mergeAndFilterModuleSlots(timetable []ModuleSlot, venues map[string]Locatio
 		}
 	}
 
-	// Now apply building duplicate logic and build final result
-	// Lesson Type -> Class No -> []ModuleSlot
-	mergedTimetable := make(map[string]map[string][]ModuleSlot)
+	/*
+		Now merge all slots of the same lessonType, slot, startTime and building
+		We are doing this to avoid unnecessary calculations & reduce search space
+	*/
+
+	mergedTimetable := make(map[string]map[string][]models.ModuleSlot) // Lesson Type -> Class No -> []ModuleSlot
 	seenCombinations := make(map[string]bool)
 
 	for _, slots := range validClassGroups {
@@ -161,7 +149,6 @@ func mergeAndFilterModuleSlots(timetable []ModuleSlot, venues map[string]Locatio
 			lessonKey := module + " " + slot.LessonType
 			isRecorded := recordingsMap[lessonKey]
 
-			// For physical lessons, avoid duplicate buildings at same time
 			if !isRecorded && slot.Venue != "E-Learn_C" {
 				buildingName := extractBuildingName(slot.Venue)
 				combinationKey := slot.LessonType + "|" + slot.Day + "|" + slot.StartTime + "|" + buildingName
@@ -173,7 +160,7 @@ func mergeAndFilterModuleSlots(timetable []ModuleSlot, venues map[string]Locatio
 			}
 
 			if mergedTimetable[slot.LessonType] == nil {
-				mergedTimetable[slot.LessonType] = make(map[string][]ModuleSlot)
+				mergedTimetable[slot.LessonType] = make(map[string][]models.ModuleSlot)
 			}
 
 			mergedTimetable[slot.LessonType][slot.ClassNo] = append(mergedTimetable[slot.LessonType][slot.ClassNo], slot)
@@ -187,34 +174,30 @@ func mergeAndFilterModuleSlots(timetable []ModuleSlot, venues map[string]Locatio
 
 
 
+
+
+
+
+
 // Helper functions
 
+/*
+Extract the building name from the venue name.
+Returns the part before '-' or the whole key if '-' is absent
+*/
 func extractBuildingName(key string) string {
 	parts := strings.SplitN(key, "-", 2)
-	return parts[0] // Return the part before '-' or the whole key if '-' is absent
+	return parts[0]
 }
 
-func slotTimingOutsideCutOff(startTime string, endTime string, earliestTime string, latestTime string) bool {
-	startTimeParsed, err := time.Parse("15:04", startTime)
-	if err != nil {
-		return false
+/*
+Check if the slot's timing falls outside the specified earliest and latest times
+*/
+func isSlotOutsideTimeRange(slot models.ModuleSlot, earliestMin, latestMin int) bool {
+	startMin, startErr := models.ParseTimeToMinutes(slot.StartTime)
+	endMin, endErr := models.ParseTimeToMinutes(slot.EndTime)
+	if startErr != nil || endErr != nil {
+		return false // If we can't parse the time, don't filter it out
 	}
-	endTimeParsed, err := time.Parse("15:04", endTime)
-	if err != nil {
-		return false
-	}
-
-	earliestTimeParsed, err := time.Parse("15:04", earliestTime)
-	if err != nil {
-		return false
-	}
-	latestTimeParsed, err := time.Parse("15:04", latestTime)
-	if err != nil {
-		return false
-	}
-
-	if startTimeParsed.Before(earliestTimeParsed) || endTimeParsed.After(latestTimeParsed) {
-		return true
-	}
-	return false
+	return startMin < earliestMin || endMin > latestMin
 }
