@@ -1,0 +1,21 @@
+@import '~styles/utils/modules-entry.scss';
+
+.lessonTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-bottom: 3px solid;
+  transition: transform 0.15s ease, filter 0.15s ease;
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+} 
+
+.tag {
+    cursor: pointer;
+}
