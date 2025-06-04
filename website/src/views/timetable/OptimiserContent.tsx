@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Downshift, { ChildrenFunction } from 'downshift';
 import classnames from 'classnames';
-import { Info, Cpu, X } from 'react-feather';
+import { Info, Cpu, X, Zap} from 'react-feather';
 import Tooltip from 'views/components/Tooltip';
 import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
 import { State } from 'types/state';
@@ -10,6 +10,8 @@ import { ColorMapping } from 'types/reducers';
 import { getModuleTimetable } from 'utils/modules';
 import { LessonType, ModuleCode } from 'types/modules';
 import selectStyles from './ModulesSelect.scss'; 
+import { openNotification } from 'actions/app';
+import { useDispatch } from 'react-redux';
 import styles from './OptimiserContent.scss'; 
 
 interface LessonOption {
@@ -20,12 +22,28 @@ interface LessonOption {
   uniqueKey: string;
 }
 
+interface LessonDaysData {
+  uniqueKey: string;
+  moduleCode: ModuleCode;
+  lessonType: LessonType;
+  displayText: string;
+  days: Set<string>;
+}
+
+interface FreeDayConflict {
+  moduleCode: ModuleCode;
+  lessonType: LessonType;
+  displayText: string;
+  conflictingDays: string[];
+}
+
 const OptimiserContent: React.FC = () => {
   const activeSemester = useSelector(({ app }: State) => app.activeSemester);
   const colors: ColorMapping = useSelector(getSemesterTimetableColors)(activeSemester);
   const timetable = useSelector(getSemesterTimetableLessons)(activeSemester);
   const modules = useSelector(({ moduleBank }: State) => moduleBank.modules);
-  
+  const acadYear = useSelector((state : State) => state.timetables.academicYear);
+  const dispatch = useDispatch();
   const [selectedLessons, setSelectedLessons] = useState<LessonOption[]>([]);
   const [selectedFreeDays, setSelectedFreeDays] = useState<Set<string>>(new Set());
   const [earliestTime, setEarliestTime] = useState<string>('08');
@@ -34,6 +52,10 @@ const OptimiserContent: React.FC = () => {
   const [recordedInputValue, setRecordedInputValue] = useState('');
   const [earliestLunchTime, setEarliestLunchTime] = useState<string>('12');
   const [latestLunchTime, setLatestLunchTime] = useState<string>('14');
+  const [isOptimising, setIsOptimising] = useState(false);
+  const [lessonDaysData, setLessonDaysData] = useState<LessonDaysData[]>([]);
+  const [freeDayConflicts, setFreeDayConflicts] = useState<FreeDayConflict[]>([]);
+
 
   // Generate lesson options from current timetable
   const lessonOptions = useMemo(() => {
@@ -66,6 +88,70 @@ const OptimiserContent: React.FC = () => {
     return options;
   }, [timetable, modules, activeSemester, colors]);
 
+
+  useEffect(() => {
+    // For each module and each lesson type that is not recorded, store all the days that lessons happen
+    // so that we can check if the user selects all of those days as free days and throw an error
+    const lessonDays: LessonDaysData[] = [];
+    
+    lessonOptions.forEach(option => {
+      const module = modules[option.moduleCode];
+      if (!module) return;
+      
+      const moduleTimetable = getModuleTimetable(module, activeSemester);
+      const lessonsForType = moduleTimetable.filter(lesson => lesson.lessonType === option.lessonType);
+
+      const days = new Set<string>();
+      lessonsForType.forEach(lesson => {
+        days.add(lesson.day);
+      });
+      
+      lessonDays.push({
+        uniqueKey: option.uniqueKey,
+        moduleCode: option.moduleCode,
+        lessonType: option.lessonType,
+        displayText: option.displayText,
+        days: days
+      });
+    });
+    
+    setLessonDaysData(lessonDays);
+  }, [lessonOptions, modules, activeSemester]);
+
+  // Validate free days against non-recorded lessons
+  useEffect(() => {
+    const selectedKeys = new Set(selectedLessons.map(lesson => lesson.uniqueKey));
+    const conflicts: FreeDayConflict[] = [];
+    
+    // Check each non-recorded lesson
+    lessonDaysData.forEach(lessonData => {
+      // Skip if this lesson is recorded (selected)
+      if (selectedKeys.has(lessonData.uniqueKey)) return;
+      
+      // Check if ALL days for this lesson are selected as free days
+      const lessonDaysArray = Array.from(lessonData.days);
+      const conflictingDays = lessonDaysArray.filter(day => selectedFreeDays.has(day));
+      
+      // If all lesson days are selected as free days, it's a conflict
+      if (conflictingDays.length === lessonDaysArray.length && conflictingDays.length > 0) {
+        conflicts.push({
+          moduleCode: lessonData.moduleCode,
+          lessonType: lessonData.lessonType,
+          displayText: lessonData.displayText,
+          conflictingDays: conflictingDays
+        });
+      }
+    });
+    
+    setFreeDayConflicts(conflicts);
+  }, [selectedFreeDays, lessonDaysData, selectedLessons]);
+
+
+  useEffect(() => {
+    const availableKeys = new Set(lessonOptions.map(option => option.uniqueKey));
+    setSelectedLessons(prev => prev.filter(lesson => availableKeys.has(lesson.uniqueKey)));
+  }, [lessonOptions]);
+
   // Filter options based on input and exclude already selected ones
   const filteredOptions = useMemo(() => {
     if (!recordedInputValue) return [];
@@ -83,18 +169,18 @@ const OptimiserContent: React.FC = () => {
 
   const handleRecordedInputValueChange = useCallback((newInputValue: string) => {
     setRecordedInputValue(newInputValue || '');
-  }, []);
+  }, [lessonOptions]);
 
   const handleLessonSelect = useCallback((option: LessonOption | null) => {
     if (option) {
       setSelectedLessons(prev => [...prev, option]);
       setRecordedInputValue('');
     }
-  }, []);
+  }, [lessonOptions]);
 
   const removeLessonOption = useCallback((uniqueKey: string) => {
     setSelectedLessons(prev => prev.filter(lesson => lesson.uniqueKey !== uniqueKey));
-  }, []);
+  }, [lessonOptions]);
 
   const toggleFreeDay = useCallback((day: string) => {
     setSelectedFreeDays(prev => {
@@ -103,10 +189,48 @@ const OptimiserContent: React.FC = () => {
         newSet.delete(day);
       } else {
         newSet.add(day);
-      }
+      } 
       return newSet;
     });
   }, []);
+
+
+  const optimiseTimetable = async () => {
+    // Check for conflicts before optimizing
+    if (freeDayConflicts.length > 0) {
+      dispatch(openNotification(`Cannot optimize: You have ${freeDayConflicts.length} free day conflict(s). Please resolve them first.`));
+      return;
+    }
+
+    setIsOptimising(true);
+    const modulesList = Object.keys(timetable);
+    const formatTime = (time: string) => time.padStart(2, '0') + '00';
+    const recordings = selectedLessons.map(lesson => lesson.displayText);
+    const acadYearFormatted = acadYear.split("/")[0] + "-" + acadYear.split("/")[1];
+
+    const response = await fetch("https://optimiser-92gl6c4st-thejus-projects-c171061d.vercel.app/api/optimiser", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            modules: modulesList,
+            acadYear: acadYearFormatted,
+            acadSem: activeSemester,
+            freeDays: Array.from(selectedFreeDays),
+            earliestTime: formatTime(earliestTime),
+            latestTime: formatTime(latestTime),
+            recordings: recordings,
+            lunchStart: formatTime(earliestLunchTime),
+            lunchEnd: formatTime(latestLunchTime),
+        })
+    });
+    const data = await response.json();
+    if (data.shareableLink) {
+        window.open(data.shareableLink, '_blank');
+    }
+    setIsOptimising(false);
+  }
 
   const renderDropdown: ChildrenFunction<LessonOption> = ({
     getLabelProps,
@@ -180,13 +304,13 @@ const OptimiserContent: React.FC = () => {
         </div>
         <div style={{ color:"GrayText", fontSize: "0.8rem", display: "flex", flexDirection: "column", gap: "0.1rem", marginTop: "0.5rem"}}>
             <div>
-                Intelligently explores millions of combinations to instantly generate an ideal timetable — tailored to your
+                Intelligently explores millions of combinations to generate an ideal timetable — tailored to your
             </div>
             <div>
                 preferred <b>free days, optimal class timings, comfortable lunch breaks, and minimal travel between classes</b>.
             </div>
         </div>
-        <div style={{ marginTop: "2rem", display: "flex", flexDirection: "column"}}>
+        <div style={{ marginTop: "2rem", display: "flex", flexDirection: "column"}} >
             <div style={{fontSize: "1rem", display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "1rem"}}>
                 Select lessons that are recorded in your timetable
                 <Tooltip 
@@ -299,6 +423,54 @@ const OptimiserContent: React.FC = () => {
                   Friday 
                 </button>
             </div>
+            
+            {/* Free Day Conflicts Display */}
+            {freeDayConflicts.length > 0 && (
+              <div style={{ 
+                marginTop: "1rem", 
+                padding: "1rem", 
+                backgroundColor: "rgba(255, 81, 56, 0.1)", 
+                border: "1px solid rgba(255, 81, 56, 0.3)", 
+                borderRadius: "0.5rem",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem"
+              }}>
+                <div style={{ 
+                  fontSize: "1rem", 
+                  fontWeight: "bold", 
+                  color: "#ff5138",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem"
+                }}>
+                  <X size={20} />
+                  Free Day Conflicts
+                </div>
+                <div style={{ fontSize: "0.9rem", color: "#69707a" }}>
+                  The following lessons require physical attendance on your selected free days:
+                </div>
+                {freeDayConflicts.map((conflict, index) => (
+                  <div key={index} style={{ 
+                    fontSize: "0.9rem", 
+                    color: "#ff5138",
+                    fontWeight: "500",
+                    marginLeft: "1rem"
+                  }}>
+                    • <strong>{conflict.displayText}</strong> happens on: {conflict.conflictingDays.join(', ')}
+                  </div>
+                ))}
+                <div style={{ 
+                  fontSize: "0.8rem", 
+                  color: "#69707a",
+                  fontStyle: "italic",
+                  marginTop: "0.5rem"
+                }}>
+                  Consider marking these lessons as recorded or choosing different free days.
+                </div>
+              </div>
+            )}
+
             <div style={{marginTop: "2rem", display: "flex", flexDirection: "row", gap: "3rem", flexWrap: "wrap"}}>
                 <div style={{display: "flex", flexDirection: "column", gap: "0.5rem", minWidth: "200px"}}>
                     <div style={{fontSize: "1rem", display: "flex", alignItems: "center", gap: "0.5rem"}}>
@@ -314,7 +486,7 @@ const OptimiserContent: React.FC = () => {
                                 width: "5rem", 
                                 padding: "0.25rem 0.75rem",
                                 fontSize: "1rem",
-                                border: "1px solid #ff5138",
+                                border: "1px solid var(--gray-lighter)",
                                 borderRadius: "0.25rem",
                                 backgroundColor: "transparent",
                                 color: "inherit",
@@ -352,7 +524,7 @@ const OptimiserContent: React.FC = () => {
                                 width: "5rem", 
                                 padding: "0.25rem 0.75rem",
                                 fontSize: "1rem",
-                                border: "1px solid #ff5138",
+                                border: "1px solid var(--gray-lighter)",
                                 borderRadius: "0.25rem",
                                 backgroundColor: "transparent",
                                 color: "inherit",
@@ -388,7 +560,7 @@ const OptimiserContent: React.FC = () => {
                     <div style={{display: "flex", flexDirection: "row", alignItems: "center", gap: "0.5rem"}}>
                         <select
                             className="form-select"
-                            style={{width: "5rem", padding: "0.25rem 0.75rem", fontSize: "1rem", border: "1px solid #ff5138", borderRadius: "0.25rem", backgroundColor: "transparent", color: "inherit", outline: "none"}}
+                            style={{width: "5rem", padding: "0.25rem 0.75rem", fontSize: "1rem", border: "1px solid var(--gray-lighter)", borderRadius: "0.25rem", backgroundColor: "transparent", color: "inherit", outline: "none"}}
                             value={earliestLunchTime}
                             onChange={(e) => setEarliestLunchTime(e.target.value)}
                         >
@@ -403,7 +575,7 @@ const OptimiserContent: React.FC = () => {
                         <div style={{fontSize: "1rem", color: "#69707a", margin: "0 1.5rem"}}>to</div>
                         <select
                             className="form-select"
-                            style={{width: "5rem", padding: "0.25rem 0.75rem", fontSize: "1rem", border: "1px solid #ff5138", borderRadius: "0.25rem", backgroundColor: "transparent", color: "inherit", outline: "none"}}
+                            style={{width: "5rem", padding: "0.25rem 0.75rem", fontSize: "1rem", border: "1px solid var(--gray-lighter)", borderRadius: "0.25rem", backgroundColor: "transparent", color: "inherit", outline: "none"}}
                             value={latestLunchTime}
                             onChange={(e) => setLatestLunchTime(e.target.value)}
                         >
@@ -419,8 +591,68 @@ const OptimiserContent: React.FC = () => {
                     
                </div> 
             </div>
-            <div style={{marginTop: "2rem", display: "flex", flexDirection: "row", gap: "3rem", flexWrap: "wrap"}}>
-                    
+            <div style={{marginTop: "2rem", display: "flex", flexDirection: "column"}}>
+                <button 
+                    className={classnames("btn",{
+                        "disabled": isOptimising || freeDayConflicts.length > 0
+                    })}
+                    style={{
+                        width: "fit-content",
+                        padding: "0.75rem 2rem",
+                        fontSize: "1rem",
+                        fontWeight: "bold",
+                        backgroundColor: freeDayConflicts.length > 0 ? "#69707a" : "#ff5138",
+                        color: "var(--body-bg)",
+                        border: "none",
+                        borderRadius: "0.5rem",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                        cursor: freeDayConflicts.length > 0 || isOptimising ? "not-allowed" : "pointer",
+                        transition: "all 0.2s ease",
+                        boxShadow: freeDayConflicts.length > 0 || isOptimising ? "none" : "0 4px 12px rgba(255, 81, 56, 0.3)",
+                    }}
+
+                    onMouseEnter={(e) => {
+                        if (freeDayConflicts.length === 0 && !isOptimising) {
+                            e.currentTarget.style.backgroundColor = "#e04832";
+                            e.currentTarget.style.transform = "translateY(-2px)";
+                            e.currentTarget.style.boxShadow = "0 6px 20px rgba(255, 81, 56, 0.4)";
+                        }
+                    }}
+                    onMouseLeave={(e) => {
+                        if (freeDayConflicts.length === 0 && !isOptimising) {
+                            e.currentTarget.style.backgroundColor = "#ff5138";
+                            e.currentTarget.style.transform = "translateY(0px)";
+                            e.currentTarget.style.boxShadow = "0 4px 12px rgba(255, 81, 56, 0.3)";
+                        }
+                    }}
+                    onMouseDown={(e) => {
+                        if (freeDayConflicts.length === 0 && !isOptimising) {
+                            e.currentTarget.style.transform = "translateY(0px)";
+                        }
+                    }}
+                    onMouseUp={(e) => {
+                        if (freeDayConflicts.length === 0 && !isOptimising) {
+                            e.currentTarget.style.transform = "translateY(-2px)";
+                        }
+                    }}
+                    onClick={() => {
+                        optimiseTimetable();
+                    }}
+                >
+                    {!isOptimising ? <Zap size={20} fill='var(--body-bg)'/> : <span style={{display: "flex", alignItems: "center", gap: "1rem"}}>
+                        {isOptimising && (
+                            <div className={styles.grower}>
+                            </div>
+                        )}
+                    </span>}
+                    {isOptimising ? "Searching and optimising..." : "Optimise Timetable"}
+                </button>
+                <div style={{fontSize: "0.8rem", color: "#69707a", marginTop: "0.5rem", display: "flex", flexDirection: "row", gap: "0.5rem"}}>
+                    <div>estimated time:</div>
+                    <div style={{fontWeight: "bold"}}>5s - 40s</div>
+                </div>
             </div>
         </div>
     </div>

@@ -1,5 +1,24 @@
 @import '~styles/utils/modules-entry.scss';
 
+@keyframes grow {
+  0%, 100% { 
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  50% { 
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+.grower {
+  width: 0.8rem;
+  height: 0.8rem;
+  background-color: var(--body-bg);
+  border-radius: 50%;
+  animation: grow 1s ease-in-out infinite;
+}
+
 .lessonTag {
   display: inline-flex;
   align-items: center;
