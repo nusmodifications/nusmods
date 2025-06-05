@@ -56,7 +56,6 @@ import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
 import ExamCalendar from './ExamCalendar';
 import ModulesTableFooter from './ModulesTableFooter';
-import OptimiserContent from './OptimiserContent';
 import styles from './TimetableContent.scss';
 
 type ModifiedCell = {
@@ -525,9 +524,6 @@ class TimetableContent extends React.Component<Props, State> {
                   hiddenInTimetable={hiddenInTimetable}
                   taInTimetable={taInTimetable}
                 />
-              </div>
-              <div className="col-12">
-                <OptimiserContent />
               </div>
             </div>
           </div>

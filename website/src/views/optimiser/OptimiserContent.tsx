@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import Downshift, { ChildrenFunction } from 'downshift';
 import classnames from 'classnames';
 import { Info, Cpu, X, Zap} from 'react-feather';
 import Tooltip from 'views/components/Tooltip';
@@ -9,10 +8,10 @@ import { State } from 'types/state';
 import { ColorMapping } from 'types/reducers';
 import { getModuleTimetable } from 'utils/modules';
 import { LessonType, ModuleCode } from 'types/modules';
-import selectStyles from './ModulesSelect.scss'; 
 import { openNotification } from 'actions/app';
 import { useDispatch } from 'react-redux';
 import styles from './OptimiserContent.scss'; 
+import config from 'config';
 
 interface LessonOption {
   moduleCode: ModuleCode;
@@ -48,8 +47,6 @@ const OptimiserContent: React.FC = () => {
   const [selectedFreeDays, setSelectedFreeDays] = useState<Set<string>>(new Set());
   const [earliestTime, setEarliestTime] = useState<string>('08');
   const [latestTime, setLatestTime] = useState<string>('19');
-  const [isOpen, setIsOpen] = useState(false);
-  const [recordedInputValue, setRecordedInputValue] = useState('');
   const [earliestLunchTime, setEarliestLunchTime] = useState<string>('12');
   const [latestLunchTime, setLatestLunchTime] = useState<string>('14');
   const [isOptimising, setIsOptimising] = useState(false);
@@ -152,35 +149,15 @@ const OptimiserContent: React.FC = () => {
     setSelectedLessons(prev => prev.filter(lesson => availableKeys.has(lesson.uniqueKey)));
   }, [lessonOptions]);
 
-  // Filter options based on input and exclude already selected ones
-  const filteredOptions = useMemo(() => {
-    if (!recordedInputValue) return [];
+  const toggleLessonSelection = useCallback((option: LessonOption) => {
+    const isSelected = selectedLessons.some(lesson => lesson.uniqueKey === option.uniqueKey);
     
-    const selectedKeys = new Set(selectedLessons.map(lesson => lesson.uniqueKey));
-    
-    return lessonOptions.filter(option => 
-      !selectedKeys.has(option.uniqueKey) &&
-      option.displayText.toLowerCase().includes(recordedInputValue.toLowerCase())
-    );
-  }, [recordedInputValue, lessonOptions, selectedLessons]);
-
-  const openSelect = useCallback(() => setIsOpen(true), []);
-  const closeSelect = useCallback(() => setIsOpen(false), []);
-
-  const handleRecordedInputValueChange = useCallback((newInputValue: string) => {
-    setRecordedInputValue(newInputValue || '');
-  }, [lessonOptions]);
-
-  const handleLessonSelect = useCallback((option: LessonOption | null) => {
-    if (option) {
+    if (isSelected) {
+      setSelectedLessons(prev => prev.filter(lesson => lesson.uniqueKey !== option.uniqueKey));
+    } else {
       setSelectedLessons(prev => [...prev, option]);
-      setRecordedInputValue('');
     }
-  }, [lessonOptions]);
-
-  const removeLessonOption = useCallback((uniqueKey: string) => {
-    setSelectedLessons(prev => prev.filter(lesson => lesson.uniqueKey !== uniqueKey));
-  }, [lessonOptions]);
+  }, [selectedLessons]);
 
   const toggleFreeDay = useCallback((day: string) => {
     setSelectedFreeDays(prev => {
@@ -208,7 +185,7 @@ const OptimiserContent: React.FC = () => {
     const recordings = selectedLessons.map(lesson => lesson.displayText);
     const acadYearFormatted = acadYear.split("/")[0] + "-" + acadYear.split("/")[1];
 
-    const response = await fetch("https://optimiser-92gl6c4st-thejus-projects-c171061d.vercel.app/api/optimiser", {
+    const response = await fetch("https://optimiser-d469zrn5d-thejus-projects-c171061d.vercel.app/api/optimiser", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -232,76 +209,19 @@ const OptimiserContent: React.FC = () => {
     setIsOptimising(false);
   }
 
-  const renderDropdown: ChildrenFunction<LessonOption> = ({
-    getLabelProps,
-    getInputProps,
-    getItemProps,
-    getMenuProps,
-    highlightedIndex,
-  }) => {
-    const showResults = isOpen && filteredOptions.length > 0;
-    const showNoResultMessage = isOpen && recordedInputValue && !filteredOptions.length;
 
-    return (
-      <div className={selectStyles.container}>
-        <label className="sr-only" {...getLabelProps()}>
-          Select recorded lessons
-        </label>
-        <input
-          {...getInputProps({
-            className: classnames(selectStyles.input),
-            placeholder: "Add recorded lessons (e.g., XXXX Lecture)",
-            onFocus: openSelect,
-            style: { fontSize: '1rem' }
-          })}
-        />
-        {showResults && (
-          <ol className={selectStyles.selectList} {...getMenuProps()}>
-            {filteredOptions.map((option, index) => (
-              <li
-                {...getItemProps({
-                  index,
-                  key: option.uniqueKey,
-                  item: option,
-                })}
-                className={classnames(selectStyles.option, {
-                  [selectStyles.optionSelected]: highlightedIndex === index,
-                })}
-              >
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <span 
-                    className={`color-${option.colorIndex}`}
-                    style={{
-                      display: 'inline-block',
-                      width: '16px',
-                      height: '16px',
-                      borderRadius: '25%',
-                      marginRight: '8px',
-                      border: 'none',
-                    }} 
-                  />
-                  {option.displayText}
-                </div>
-              </li>
-            ))}
-          </ol>
-        )}
-        {showNoResultMessage && (
-          <div className={selectStyles.tip}>
-            No lessons found for{' '}
-            <strong>"{recordedInputValue}"</strong>
-          </div>
-        )}
-      </div>
-    );
-  };
 
   return (
     <div style={{ marginTop: "1rem", display: "flex", flexDirection: "column"}}>
-        <div style={{ fontFamily: "monospace", fontSize: "1.2rem", fontWeight: "bold", color:"#ff5138", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+      <div style={{display: "flex", flexDirection: "row",alignItems: "center", justifyContent: "space-between"}}>
+        <div style={{ fontFamily:"monospace", fontSize: "1.2rem", fontWeight: "bold", color:"#ff5138", display: "flex", alignItems: "center", gap: "0.5rem"}}>
           <Cpu size={25} style={{ color: "#ff5138" }} />
           Timetable Optimiser
         </div>
+        <button style={{marginRight: "1rem"}} className="btn btn-sm btn-outline-success" onClick={() => window.open(config.contact.telegram, '_blank')}>
+          Beta - Leave Feedback
+        </button>
+      </div>
         <div style={{ color:"GrayText", fontSize: "0.8rem", display: "flex", flexDirection: "column", gap: "0.1rem", marginTop: "0.5rem"}}>
             <div>
                 Intelligently explores millions of combinations to generate an ideal timetable — tailored to your
@@ -321,55 +241,49 @@ const OptimiserContent: React.FC = () => {
                 </Tooltip>
             </div>
             
-            <Downshift
-              isOpen={isOpen}
-              onOuterClick={closeSelect}
-              inputValue={recordedInputValue}
-              onChange={handleLessonSelect}
-              onInputValueChange={handleRecordedInputValueChange}
-              selectedItem={null}
-            >
-              {renderDropdown}
-            </Downshift>
-
-            {/* Selected Lessons Tags */}
-            {selectedLessons.length > 0 && (
-              <div style={{ marginTop: "1rem" }}>
-                <div style={{ fontSize: "0.9rem", color: "#69707a", marginBottom: "0.5rem" }}>
-                  Selected recorded lessons:
-                </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
-                  {selectedLessons.map((lesson) => (
-                    <span
-                      key={lesson.uniqueKey}
-                      className={`color-${lesson.colorIndex} ${styles.lessonTag} ${styles.tag}`}
-                    >
-                      <div style={{fontWeight: "bold"}}>{lesson.displayText}</div>
-                      <button
-                        type="button"
-                        onClick={() => removeLessonOption(lesson.uniqueKey)}
-                        style={{
-                          background: "none",
-                          border: "none",
-                          cursor: "pointer",
-                          padding: "0.15rem",
-                          display: "flex",
-                          alignItems: "center",
-                          color: "inherit",
-                          opacity: 0.8,
-                        }}
-                        onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
-                        onMouseLeave={(e) => e.currentTarget.style.opacity = '0.8'}
-                      >
-                        <Tooltip content={`Remove ${lesson.displayText}`} placement="top">
-                            <X size={18} />
-                        </Tooltip>
-                      </button>
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
+            {/* Lesson Selection Buttons */}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+              {lessonOptions.map((option) => {
+                const isSelected = selectedLessons.some(lesson => lesson.uniqueKey === option.uniqueKey);
+                return (
+                  <button
+                    key={option.uniqueKey}
+                    type="button"
+                    onClick={() => toggleLessonSelection(option)}
+                    className={`color-${option.colorIndex} ${styles.lessonTag} ${styles.tag}`}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "0.25rem",
+                      padding: "0.5rem 0.5rem",
+                      borderRadius: "0.25rem",
+                      fontSize: "0.8rem",
+                      fontWeight: "500",
+                      borderRight: "none",
+                      borderTop: "none",
+                      borderLeft: "none",
+                      cursor: "pointer",
+                      transition: "all 0.15s ease",
+                      opacity: isSelected ? 1 : 0.6,
+                      filter: isSelected ? "brightness(1)" : "brightness(0.8)",
+                      transform: isSelected ? "scale(1)" : "scale(0.98)",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.opacity = '1';
+                      e.currentTarget.style.filter = 'brightness(1.1)';
+                      e.currentTarget.style.transform = 'scale(1.02)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.opacity = isSelected ? '1' : '0.6';
+                      e.currentTarget.style.filter = isSelected ? 'brightness(1)' : 'brightness(0.8)';
+                      e.currentTarget.style.transform = isSelected ? 'scale(1)' : 'scale(0.98)';
+                    }}
+                  >
+                    <div style={{ fontWeight: "bold" }}>{option.displayText}</div>
+                  </button>
+                );
+              })}
+            </div>
             <div style={{fontSize: "1rem", display: "flex", alignItems: "center", gap: "0.5rem", marginTop: "2rem"}}>
                 Select days you would like to be free
                 <Tooltip content="Chosen days will have no physical classes" placement="right">
@@ -485,12 +399,13 @@ const OptimiserContent: React.FC = () => {
                             style={{
                                 width: "5rem", 
                                 padding: "0.25rem 0.75rem",
-                                fontSize: "1rem",
+                                fontSize: "1.2rem",
                                 border: "1px solid var(--gray-lighter)",
                                 borderRadius: "0.25rem",
                                 backgroundColor: "transparent",
                                 color: "inherit",
-                                outline: "none"
+                                outline: "none",
+                                fontFamily: "monospace"
                             }}
                             value={earliestTime}
                             onChange={(e) => setEarliestTime(e.target.value)}
@@ -523,12 +438,13 @@ const OptimiserContent: React.FC = () => {
                             style={{
                                 width: "5rem", 
                                 padding: "0.25rem 0.75rem",
-                                fontSize: "1rem",
+                                fontSize: "1.2rem",
                                 border: "1px solid var(--gray-lighter)",
                                 borderRadius: "0.25rem",
                                 backgroundColor: "transparent",
                                 color: "inherit",
-                                outline: "none"
+                                outline: "none",
+                                fontFamily: "monospace"
                             }}
                             value={latestTime}
                             onChange={(e) => setLatestTime(e.target.value)}
@@ -560,7 +476,7 @@ const OptimiserContent: React.FC = () => {
                     <div style={{display: "flex", flexDirection: "row", alignItems: "center", gap: "0.5rem"}}>
                         <select
                             className="form-select"
-                            style={{width: "5rem", padding: "0.25rem 0.75rem", fontSize: "1rem", border: "1px solid var(--gray-lighter)", borderRadius: "0.25rem", backgroundColor: "transparent", color: "inherit", outline: "none"}}
+                            style={{width: "5rem", padding: "0.25rem 0.75rem", fontSize: "1.2rem", border: "1px solid var(--gray-lighter)", borderRadius: "0.25rem", backgroundColor: "transparent", color: "inherit", outline: "none", fontFamily: "monospace"}}
                             value={earliestLunchTime}
                             onChange={(e) => setEarliestLunchTime(e.target.value)}
                         >
@@ -575,7 +491,7 @@ const OptimiserContent: React.FC = () => {
                         <div style={{fontSize: "1rem", color: "#69707a", margin: "0 1.5rem"}}>to</div>
                         <select
                             className="form-select"
-                            style={{width: "5rem", padding: "0.25rem 0.75rem", fontSize: "1rem", border: "1px solid var(--gray-lighter)", borderRadius: "0.25rem", backgroundColor: "transparent", color: "inherit", outline: "none"}}
+                            style={{width: "5rem", padding: "0.25rem 0.75rem", fontSize: "1.2rem", border: "1px solid var(--gray-lighter)", borderRadius: "0.25rem", backgroundColor: "transparent", color: "inherit", outline: "none", fontFamily: "monospace"}}
                             value={latestLunchTime}
                             onChange={(e) => setLatestLunchTime(e.target.value)}
                         >
@@ -655,6 +571,7 @@ const OptimiserContent: React.FC = () => {
                 </div>
             </div>
         </div>
+        
     </div>
   );
 };

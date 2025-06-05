@@ -312,6 +312,13 @@ func scoreTimetableState(state models.TimetableState, recordings map[string]bool
 		} else {
 			totalScore += NO_LUNCH_PENALTY // +300
 		}
+
+		// Find largest gap between physical slots
+		largestGap := calculateLargestGap(physicalSlots)
+		// for every hour greater than 2 hours, add 100 to score
+		if largestGap > 120 {
+			totalScore += 100 * float64(largestGap - 120)/60
+		}
 	}
 	// Add walking penalty 
 	totalScore += state.TotalDistance
@@ -319,6 +326,21 @@ func scoreTimetableState(state models.TimetableState, recordings map[string]bool
 	return totalScore
 }
 
+func calculateLargestGap(physicalSlots []models.ModuleSlot) int {
+	largestGap := 0
+
+	for i := 1; i < len(physicalSlots); i++ {
+		prevEnd := physicalSlots[i-1].EndMin
+		currStart := physicalSlots[i].StartMin
+
+		gap := currStart - prevEnd
+		if gap > largestGap {
+			largestGap = gap
+		}
+	}
+
+	return largestGap
+}
 
 // SolveResponse wraps the TimetableState with additional metadata including the shareable link
 type SolveResponse struct {
