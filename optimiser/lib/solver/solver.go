@@ -315,7 +315,7 @@ func scoreTimetableState(state models.TimetableState, recordings map[string]bool
 
 		// Find largest gap between physical slots
 		largestGap := calculateLargestGap(physicalSlots)
-		// for every hour greater than 2 hours, add 100 to score
+		// for every hour greater than 2 hours, ad100 to score
 		if largestGap > 120 {
 			totalScore += 100 * float64(largestGap - 120)/60
 		}
@@ -367,7 +367,7 @@ func Solve(w http.ResponseWriter, req models.OptimiserRequest) {
 	lessonToSlots := make(map[string][][]models.ModuleSlot, len(slots))
 	for module, ltMap := range slots {
 		for lt, groups := range ltMap {
-			key := strings.ToUpper(module) + "|" + strings.ToUpper(lt)
+			key := strings.ToUpper(module) + "|" + lt
 			lessons = append(lessons, key)
 			for _, grp := range groups {
 				lessonToSlots[key] = append(lessonToSlots[key], grp)

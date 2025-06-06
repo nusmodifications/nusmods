@@ -10,6 +10,17 @@ import (
 	"github.com/nusmodifications/nusmods/optimiser/lib/models"
 )
 
+var E_Venues = map[string]bool{
+	"E-Learn_A":  true,
+	"E-Learn_B":  true,
+	"E-Learn_C":  true,
+	"E-Learn_D":  true,
+	"E-Hybrid_A": true,
+	"E-Hybrid_B": true,
+	"E-Hybrid_C": true,
+	"E-Hybrid_D": true,
+}
+
 /*
 - Get all module slots that pass conditions in optimiserRequest for all modules.
 - Reduces search space by merging slots of the same lesson type happening at the same day and time and building.
@@ -88,7 +99,7 @@ func mergeAndFilterModuleSlots(timetable []models.ModuleSlot, venues map[string]
 	classGroups := make(map[string][]models.ModuleSlot)
 	for _, slot := range timetable {
 		// Skip venues without location data, except E-Learn_C (virtual venue)
-		if slot.Venue != "E-Learn_C" {
+		if !E_Venues[slot.Venue] {
 			venueLocation := venues[slot.Venue].Location
 			if venueLocation.X == 0 && venueLocation.Y == 0 {
 				continue
@@ -169,15 +180,6 @@ func mergeAndFilterModuleSlots(timetable []models.ModuleSlot, venues map[string]
 
 	return mergedTimetable
 }
-
-
-
-
-
-
-
-
-
 
 // Helper functions
 

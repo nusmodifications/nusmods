@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import classnames from 'classnames';
-import { Info, Cpu, X, Zap} from 'react-feather';
+import { Info, Cpu, X, Zap, AlertTriangle} from 'react-feather';
 import Tooltip from 'views/components/Tooltip';
 import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
 import { State } from 'types/state';
@@ -52,7 +52,7 @@ const OptimiserContent: React.FC = () => {
   const [isOptimising, setIsOptimising] = useState(false);
   const [lessonDaysData, setLessonDaysData] = useState<LessonDaysData[]>([]);
   const [freeDayConflicts, setFreeDayConflicts] = useState<FreeDayConflict[]>([]);
-
+  const [unAssignedLessons, setUnAssignedLessons] = useState<LessonOption[]>([]);
 
   // Generate lesson options from current timetable
   const lessonOptions = useMemo(() => {
@@ -185,7 +185,7 @@ const OptimiserContent: React.FC = () => {
     const recordings = selectedLessons.map(lesson => lesson.displayText);
     const acadYearFormatted = acadYear.split("/")[0] + "-" + acadYear.split("/")[1];
 
-    const response = await fetch("https://optimiser-d469zrn5d-thejus-projects-c171061d.vercel.app/api/optimiser", {
+    const response = await fetch("https://optimiser-6o61fjzco-thejus-projects-c171061d.vercel.app/api/optimiser", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -204,6 +204,18 @@ const OptimiserContent: React.FC = () => {
     });
     const data = await response.json();
     if (data.shareableLink) {
+        // setUnAssignedLessons(data.unAssignedLessons);
+        const assignedLessons = new Set<string>();
+        data.DaySlots.forEach((day: any) => {
+          day.forEach((slot: any) => {
+            if (slot.LessonKey) {
+              const moduleCode = slot.LessonKey.split("|")[0];
+              const lessonType = slot.LessonKey.split("|")[1];
+              assignedLessons.add(`${moduleCode} ${lessonType}`);
+            }
+          });
+        }); 
+        setUnAssignedLessons(lessonOptions.filter(lesson => !assignedLessons.has(lesson.displayText)));
         window.open(data.shareableLink, '_blank');
     }
     setIsOptimising(false);
@@ -342,6 +354,7 @@ const OptimiserContent: React.FC = () => {
             {freeDayConflicts.length > 0 && (
               <div style={{ 
                 marginTop: "1rem", 
+                marginRight: "1rem",
                 padding: "1rem", 
                 backgroundColor: "rgba(255, 81, 56, 0.1)", 
                 border: "1px solid rgba(255, 81, 56, 0.3)", 
@@ -570,6 +583,104 @@ const OptimiserContent: React.FC = () => {
                     <div style={{fontWeight: "bold"}}>5s - 40s</div>
                 </div>
             </div>
+
+            {/* Unassigned Lessons Disclaimer */}
+            {unAssignedLessons.length > 0 && (
+              <div style={{ 
+                marginTop: "2rem", 
+                marginRight: "1rem",
+                padding: "1.5rem", 
+                backgroundColor: "rgba(255, 193, 7, 0.1)", 
+                border: "1px solid rgba(255, 193, 7, 0.3)", 
+                borderRadius: "0.75rem",
+                display: "flex",
+                flexDirection: "column",
+                gap: "1rem",
+              }}>
+                <div style={{ 
+                  fontSize: "1.1rem", 
+                  fontWeight: "bold", 
+                  color: "#ff8c00",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.75rem"
+                }}>
+                  <AlertTriangle size={24} />
+                  Optimisation Notice
+                </div>
+                
+                <div style={{ 
+                  fontSize: "0.95rem", 
+                  color: "#69707a",
+                  lineHeight: "1.5"
+                }}>
+                  The following lessons couldn't be assigned to your optimised timetable:
+                </div>
+                
+                <div style={{ 
+                  display: "flex", 
+                  flexWrap: "wrap", 
+                  gap: "0.5rem",
+                  marginLeft: "1rem"
+                }}>
+                  {unAssignedLessons.map((lesson, index) => (
+                    <div
+                      key={index}
+                      className={`color-${lesson.colorIndex} ${styles.lessonTag} ${styles.tag}`}
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        padding: "0.4rem 0.8rem",
+                        borderRadius: "0.25rem",
+                        fontSize: "0.85rem",
+                        fontWeight: "bold",
+                        borderRight: "none",
+                        borderTop: "none",
+                        borderLeft: "none",
+                        opacity: 1,
+                        filter: "brightness(0.9)",
+                      }}
+                    >
+                      {lesson.displayText}
+                    </div>
+                  ))}
+                </div>
+                
+                <div style={{ 
+                  fontSize: "0.9rem", 
+                  color: "#69707a",
+                  lineHeight: "1.5",
+                  backgroundColor: "rgba(255, 193, 7, 0.05)",
+                  padding: "1rem",
+                  borderRadius: "0.25rem",
+                  borderLeft: "4px solid rgba(255, 193, 7, 0.4)"
+                }}>
+                  <div style={{ fontWeight: "600", marginBottom: "0.5rem", color: "#ff8c00" }}>
+                    Why did this happen?
+                  </div>
+                  <div style={{ marginBottom: "0.5rem" }}>
+                    • <strong>Venue constraints:</strong> NUSMods may not have complete or accurate venue data for these lessons
+                  </div>
+                  <div style={{ marginBottom: "0.5rem" }}>
+                    • <strong>Scheduling conflicts:</strong> There is no possible way to schedule these lessons with your selected preferences (free days, time ranges, etc.)
+                  </div>
+                  <div>
+                    • <strong>Limited availability:</strong> Some lessons may only be offered at specific times that don't fit your constraints
+                  </div>
+                </div>
+                
+                <div style={{ 
+                  fontSize: "0.85rem", 
+                  color: "#69707a",
+                  fontStyle: "italic",
+                  textAlign: "center",
+                  paddingTop: "0.5rem",
+                  borderTop: "1px solid rgba(255, 193, 7, 0.2)"
+                }}>
+                  You may need to manually add these lessons to your timetable or adjust your optimisation preferences.
+                </div>
+              </div>
+            )}
         </div>
         
     </div>
