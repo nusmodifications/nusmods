@@ -11,7 +11,6 @@ import (
 	"github.com/umahmood/haversine"
 )
 
-
 /*
 Beam Search Algorithm
 https://www.geeksforgeeks.org/introduction-to-beam-search-algorithm/
@@ -23,98 +22,91 @@ func BeamSearch(
 	branchingFactor int,
 	recordings map[string]bool,
 	optimiserRequest models.OptimiserRequest) models.TimetableState {
-		
-		// Parse all ModuleSlot groups once and populate computed fields.
-		for lessonKey, slotGroups := range lessonToSlots {
-			for _, group := range slotGroups {
-				for i := range group {
-					err := group[i].ParseModuleSlotFields(lessonKey)
-					if err != nil {
-						// Skip invalid slots
-						group[i].DayIndex = -1
-					}
+
+	// Parse all ModuleSlot groups once and populate computed fields.
+	for lessonKey, slotGroups := range lessonToSlots {
+		for _, group := range slotGroups {
+			for i := range group {
+				err := group[i].ParseModuleSlotFields(lessonKey)
+				if err != nil {
+					// Skip invalid slots
+					group[i].DayIndex = -1
 				}
 			}
 		}
-		
-		// Initialize beam with one empty state
-		initial := models.TimetableState{
-			Assignments: make(map[string]string),
-		}
-		for d := 0; d < 5; d++ {
-			initial.DaySlots[d] = make([]models.ModuleSlot, 0)
-		}
-		beam := []models.TimetableState{initial}
-		
-		for _, lessonKey := range lessons {
-			var nextBeam []models.TimetableState
-			slotGroups := lessonToSlots[lessonKey]
-			limit := min(len(slotGroups), branchingFactor)
-			
-			for _, state := range beam {
-				for i := 0; i < limit; i++ {
-					group := slotGroups[i]
-					
-					// Filter out invalid slots (DayIndex == -1)
-					validGroup := make([]models.ModuleSlot, 0, len(group))
-					for _, slot := range group {
-						if slot.DayIndex >= 0 && slot.DayIndex < 5 {
-							validGroup = append(validGroup, slot)
-						}
-					}
-					
-					if len(validGroup) == 0 || hasConflict(state, validGroup) {
-						continue
-					}
-					
-					newState := copyState(state)
-					
-					// Store the classNo
-					if len(validGroup) > 0 {
-						newState.Assignments[lessonKey] = validGroup[0].ClassNo
-					}
-					
-					// Track days that change, so we only recalc distance on those days
-					for _, slot := range validGroup {
-						d := slot.DayIndex
-						
-						// Subtract old day distance
-						newState.TotalDistance -= newState.DayDistance[d]
-						
-						// Insert slot in sorted order
-						newState.DaySlots[d] = insertSlotSorted(newState.DaySlots[d], slot)
-						
-						// Recompute day distance
-						nd := calculateDayDistanceScore(newState.DaySlots[d], recordings)
-						newState.DayDistance[d] = nd
-						newState.TotalDistance += nd
-					}
-					
-					nextBeam = append(nextBeam, newState)
-				}
-			}
-			
-			if len(nextBeam) == 0 {
-				// No valid expansions at this depth
-				return models.TimetableState{}
-			}
-			
-			// Sort nextBeam by the new scoring function (lower is better)
-			sort.Slice(nextBeam, func(i, j int) bool {
-				return scoreTimetableState(nextBeam[i], recordings, optimiserRequest) < scoreTimetableState(nextBeam[j], recordings, optimiserRequest)
-			})
-			
-			// Prune to beamWidth
-			if len(nextBeam) > beamWidth {
-				nextBeam = nextBeam[:beamWidth]
-			}
-			
-			beam = nextBeam
-		}
-		
-		return beam[0]
 	}
-	
+
+	initial := models.TimetableState{
+		Assignments: make(map[string]string),
+	}
+	for d := 0; d < 5; d++ {
+		initial.DaySlots[d] = make([]models.ModuleSlot, 0)
+	}
+	beam := []models.TimetableState{initial}
+
+	for _, lessonKey := range lessons {
+		var nextBeam []models.TimetableState
+		slotGroups := lessonToSlots[lessonKey]
+		limit := min(len(slotGroups), branchingFactor)
+
+		for _, state := range beam {
+			for i := 0; i < limit; i++ {
+				group := slotGroups[i]
+
+
+				validGroup := make([]models.ModuleSlot, 0, len(group))
+				for _, slot := range group {
+					if slot.DayIndex >= 0 && slot.DayIndex < 5 {
+						validGroup = append(validGroup, slot)
+					}
+				}
+
+				if len(validGroup) == 0 || hasConflict(state, validGroup) {
+					continue
+				}
+
+				newState := copyState(state)
+
+				if len(validGroup) > 0 {
+					newState.Assignments[lessonKey] = validGroup[0].ClassNo
+				}
+
+				// Track days that change, so we only recalc distance on those days
+				for _, slot := range validGroup {
+					d := slot.DayIndex
+
+					newState.TotalDistance -= newState.DayDistance[d]
+
+					newState.DaySlots[d] = insertSlotSorted(newState.DaySlots[d], slot)
+
+					nd := calculateDayDistanceScore(newState.DaySlots[d], recordings)
+					newState.DayDistance[d] = nd
+					newState.TotalDistance += nd
+				}
+
+				nextBeam = append(nextBeam, newState)
+			}
+		}
+
+		if len(nextBeam) == 0 {
+			return models.TimetableState{}
+		}
+
+		sort.Slice(nextBeam, func(i, j int) bool {
+			return scoreTimetableState(nextBeam[i], recordings, optimiserRequest) < scoreTimetableState(nextBeam[j], recordings, optimiserRequest)
+		})
+
+		// Prune to beamWidth
+		if len(nextBeam) > beamWidth {
+			nextBeam = nextBeam[:beamWidth]
+		}
+
+		beam = nextBeam
+	}
+
+	return beam[0]
+}
+
 // insertSlotSorted inserts newSlot into daySlots (sorted by StartMin) and returns the new slice.
 func insertSlotSorted(daySlots []models.ModuleSlot, newSlot models.ModuleSlot) []models.ModuleSlot {
 	left, right := 0, len(daySlots)
@@ -142,6 +134,7 @@ func isLessonRecorded(lessonKey string, recordings map[string]bool) bool {
 	requestFormat := parts[0] + " " + parts[1]
 	return recordings[requestFormat]
 }
+
 
 // calculateDayDistanceScore computes walking penalty for consecutive slots using haversine distance
 func calculateDayDistanceScore(daySlots []models.ModuleSlot, recordings map[string]bool) float64 {
@@ -171,6 +164,7 @@ func calculateDayDistanceScore(daySlots []models.ModuleSlot, recordings map[stri
 		_, km := haversine.Distance(prevCoord, currCoord)
 
 		// Apply walking penalty formula - higher distances = higher penalty
+		// A linear penalty applied. Change if a better heuristic is found. Works as of 6/6/2025.
 		penalty := (10.0 / MAX_WALK_DISTANCE) * km
 		totalPenalty += penalty
 	}
@@ -231,7 +225,6 @@ func getPhysicalSlotsSorted(daySlots []models.ModuleSlot, recordings map[string]
 		return sorted[i].StartMin < sorted[j].StartMin
 	})
 
-	// Filter out recorded lessons
 	physicalSlots := make([]models.ModuleSlot, 0, len(sorted))
 	for _, slot := range sorted {
 		if !isLessonRecorded(slot.LessonKey, recordings) {
@@ -249,7 +242,7 @@ func calculateLunchGap(physicalSlots []models.ModuleSlot, optimiserRequest model
 	}
 
 	LUNCH_START, _ := models.ParseTimeToMinutes(optimiserRequest.LunchStart) // 12:00 PM
-	LUNCH_END, _   := models.ParseTimeToMinutes(optimiserRequest.LunchEnd) // 2:00 PM
+	LUNCH_END, _ := models.ParseTimeToMinutes(optimiserRequest.LunchEnd)     // 2:00 PM
 
 	bestGap := 0
 
@@ -289,8 +282,10 @@ func calculateLunchGap(physicalSlots []models.ModuleSlot, optimiserRequest model
 	return bestGap
 }
 
-// scoreTimetableState assigns a heuristic score to a complete timetable state.
-// Lower score means a better (more preferred) timetable.
+/*
+	scoreTimetableState assigns a heuristic score to a complete timetable state.
+	Lower score means a better (more preferred) timetable.
+*/
 func scoreTimetableState(state models.TimetableState, recordings map[string]bool, optimiserRequest models.OptimiserRequest) float64 {
 	const (
 		LUNCH_BONUS      = -300.0
@@ -317,10 +312,11 @@ func scoreTimetableState(state models.TimetableState, recordings map[string]bool
 		largestGap := calculateLargestGap(physicalSlots)
 		// for every hour greater than 2 hours, ad100 to score
 		if largestGap > 120 {
-			totalScore += 100 * float64(largestGap - 120)/60
+			totalScore += 100 * float64(largestGap-120) / 60
 		}
 	}
-	// Add walking penalty 
+
+	// Add penalty for walking distance
 	totalScore += state.TotalDistance
 
 	return totalScore
@@ -342,13 +338,11 @@ func calculateLargestGap(physicalSlots []models.ModuleSlot) int {
 	return largestGap
 }
 
-// SolveResponse wraps the TimetableState with additional metadata including the shareable link
 type SolveResponse struct {
 	models.TimetableState
 	ShareableLink string `json:"shareableLink"`
 }
-	
-// Solve is the HTTP handler that reads an OptimiserRequest, runs BeamSearch, and writes JSON.
+
 func Solve(w http.ResponseWriter, req models.OptimiserRequest) {
 	slots, err := modules.GetAllModuleSlots(req)
 	if err != nil {
@@ -356,13 +350,11 @@ func Solve(w http.ResponseWriter, req models.OptimiserRequest) {
 		return
 	}
 
-	// Build recordings map for fast lookup
 	recordings := make(map[string]bool, len(req.Recordings))
 	for _, recording := range req.Recordings {
 		recordings[recording] = true
 	}
 
-	// Build lesson keys and their slot groups
 	var lessons []string
 	lessonToSlots := make(map[string][][]models.ModuleSlot, len(slots))
 	for module, ltMap := range slots {
@@ -375,7 +367,9 @@ func Solve(w http.ResponseWriter, req models.OptimiserRequest) {
 		}
 	}
 
-	// Sort lessons by MRV heuristic (fewest slot-groups first)
+	/*
+		Sort lessons by Minimum Remaining Value (MRV) heuristic
+	*/
 	sort.Slice(lessons, func(i, j int) bool {
 		return len(lessonToSlots[lessons[i]]) < len(lessonToSlots[lessons[j]])
 	})
@@ -391,7 +385,6 @@ func Solve(w http.ResponseWriter, req models.OptimiserRequest) {
 	json.NewEncoder(w).Encode(response)
 }
 
-// min returns the smaller of a and b.
 func min(a, b int) int {
 	if a < b {
 		return a
@@ -399,7 +392,6 @@ func min(a, b int) int {
 	return b
 }
 
-// max returns the larger of a and b.
 func max(a, b int) int {
 	if a > b {
 		return a

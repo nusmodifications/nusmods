@@ -8,8 +8,9 @@ import { State } from 'types/state';
 import { ColorMapping } from 'types/reducers';
 import { getModuleTimetable } from 'utils/modules';
 import { LessonType, ModuleCode } from 'types/modules';
-import { openNotification } from 'actions/app';
 import { useDispatch } from 'react-redux';
+import useMediaQuery from 'views/hooks/useMediaQuery';
+import { breakpointDown } from 'utils/css';
 import styles from './OptimiserContent.scss'; 
 import config from 'config';
 
@@ -43,6 +44,7 @@ const OptimiserContent: React.FC = () => {
   const modules = useSelector(({ moduleBank }: State) => moduleBank.modules);
   const acadYear = useSelector((state : State) => state.timetables.academicYear);
   const dispatch = useDispatch();
+  const isMobile = useMediaQuery(breakpointDown('md'));
   const [selectedLessons, setSelectedLessons] = useState<LessonOption[]>([]);
   const [selectedFreeDays, setSelectedFreeDays] = useState<Set<string>>(new Set());
   const [earliestTime, setEarliestTime] = useState<string>('08');
@@ -53,6 +55,7 @@ const OptimiserContent: React.FC = () => {
   const [lessonDaysData, setLessonDaysData] = useState<LessonDaysData[]>([]);
   const [freeDayConflicts, setFreeDayConflicts] = useState<FreeDayConflict[]>([]);
   const [unAssignedLessons, setUnAssignedLessons] = useState<LessonOption[]>([]);
+  const [recordings, setRecordings] = useState<string[]>([]);
 
   // Generate lesson options from current timetable
   const lessonOptions = useMemo(() => {
@@ -117,13 +120,13 @@ const OptimiserContent: React.FC = () => {
 
   // Validate free days against non-recorded lessons
   useEffect(() => {
-    const selectedKeys = new Set(selectedLessons.map(lesson => lesson.uniqueKey));
+    const recordingsSet = new Set(recordings);
     const conflicts: FreeDayConflict[] = [];
     
-    // Check each non-recorded lesson
+    // Check each non-recorded lesson (physical lessons that user plans to attend)
     lessonDaysData.forEach(lessonData => {
-      // Skip if this lesson is recorded (selected)
-      if (selectedKeys.has(lessonData.uniqueKey)) return;
+      // Skip if this lesson is recorded (not attending in person)
+      if (recordingsSet.has(lessonData.displayText)) return;
       
       // Check if ALL days for this lesson are selected as free days
       const lessonDaysArray = Array.from(lessonData.days);
@@ -141,13 +144,22 @@ const OptimiserContent: React.FC = () => {
     });
     
     setFreeDayConflicts(conflicts);
-  }, [selectedFreeDays, lessonDaysData, selectedLessons]);
+  }, [selectedFreeDays, lessonDaysData, recordings]);
 
 
   useEffect(() => {
     const availableKeys = new Set(lessonOptions.map(option => option.uniqueKey));
     setSelectedLessons(prev => prev.filter(lesson => availableKeys.has(lesson.uniqueKey)));
   }, [lessonOptions]);
+
+  // Update recordings whenever selectedLessons or lessonOptions change
+  useEffect(() => {
+    const selectedKeys = new Set(selectedLessons.map(lesson => lesson.uniqueKey));
+    const newRecordings = lessonOptions
+      .filter(lesson => !selectedKeys.has(lesson.uniqueKey))
+      .map(lesson => lesson.displayText);
+    setRecordings(newRecordings);
+  }, [selectedLessons, lessonOptions]);
 
   const toggleLessonSelection = useCallback((option: LessonOption) => {
     const isSelected = selectedLessons.some(lesson => lesson.uniqueKey === option.uniqueKey);
@@ -173,19 +185,13 @@ const OptimiserContent: React.FC = () => {
 
 
   const optimiseTimetable = async () => {
-    // Check for conflicts before optimizing
-    if (freeDayConflicts.length > 0) {
-      dispatch(openNotification(`Cannot optimize: You have ${freeDayConflicts.length} free day conflict(s). Please resolve them first.`));
-      return;
-    }
 
     setIsOptimising(true);
     const modulesList = Object.keys(timetable);
     const formatTime = (time: string) => time.padStart(2, '0') + '00';
-    const recordings = selectedLessons.map(lesson => lesson.displayText);
     const acadYearFormatted = acadYear.split("/")[0] + "-" + acadYear.split("/")[1];
 
-    const response = await fetch("https://optimiser-6o61fjzco-thejus-projects-c171061d.vercel.app/api/optimiser", {
+    const response = await fetch("https://optimiser-euex6b10r-thejus-projects-c171061d.vercel.app/api/optimiser", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -204,7 +210,6 @@ const OptimiserContent: React.FC = () => {
     });
     const data = await response.json();
     if (data.shareableLink) {
-        // setUnAssignedLessons(data.unAssignedLessons);
         const assignedLessons = new Set<string>();
         data.DaySlots.forEach((day: any) => {
           day.forEach((slot: any) => {
@@ -224,29 +229,29 @@ const OptimiserContent: React.FC = () => {
 
 
   return (
-    <div style={{ marginTop: "1rem", display: "flex", flexDirection: "column"}}>
-      <div style={{display: "flex", flexDirection: "row",alignItems: "center", justifyContent: "space-between"}}>
-        <div style={{ fontFamily:"monospace", fontSize: "1.2rem", fontWeight: "bold", color:"#ff5138", display: "flex", alignItems: "center", gap: "0.5rem"}}>
-          <Cpu size={25} style={{ color: "#ff5138" }} />
+    <div style={{ marginTop: "1rem", display: "flex", flexDirection: "column", padding: isMobile ? "0 1rem" : "0"}}>
+      <div style={{display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "flex-start" : "center", justifyContent: "space-between", gap: isMobile ? "1rem" : "0"}}>
+        <div style={{ letterSpacing: "0.05rem", fontSize: isMobile ? "1.1rem" : "1.3rem", fontWeight: "bold", color:"#ff5138", display: "flex", alignItems: "center", gap: "0.5rem"}}>
+          <Cpu size={isMobile ? 22 : 25} style={{ color: "#ff5138" }} />
           Timetable Optimiser
         </div>
-        <button style={{marginRight: "1rem"}} className="btn btn-sm btn-outline-success" onClick={() => window.open(config.contact.telegram, '_blank')}>
+        <button style={{marginRight: isMobile ? "0" : "1rem", width: isMobile ? "100%" : "auto"}} className="btn btn-sm btn-outline-success" onClick={() => window.open(config.contact.telegram, '_blank')}>
           Beta - Leave Feedback
         </button>
       </div>
-        <div style={{ color:"GrayText", fontSize: "0.8rem", display: "flex", flexDirection: "column", gap: "0.1rem", marginTop: "0.5rem"}}>
+        <div style={{ fontSize: "0.8rem", display: "flex", flexDirection: "column", gap: "0.1rem", marginTop: "0.5rem"}}>
             <div>
-                Intelligently explores millions of combinations to generate an ideal timetable — tailored to your
+                Intelligently explores millions of combinations to generate your optimal timetable — prioritising
             </div>
             <div>
-                preferred <b>free days, optimal class timings, comfortable lunch breaks, and minimal travel between classes</b>.
+                <b>preferred free days, ideal class timings, lunch flexibility, and minimal travel between classes</b>.
             </div>
         </div>
         <div style={{ marginTop: "2rem", display: "flex", flexDirection: "column"}} >
             <div style={{fontSize: "1rem", display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "1rem"}}>
-                Select lessons that are recorded in your timetable
+                Select lessons you plan to attend physically (in person, online, or other format)
                 <Tooltip 
-                    content="Choose only those recorded lessons that you're comfortable watching at your convenience"
+                    content="Chosen lessons will only be allocated on your school days"
                     placement="right"
                 >
                     <Info className={`${styles.tag}`} size={15} style={{ color: "#69707a" }} />
@@ -393,93 +398,96 @@ const OptimiserContent: React.FC = () => {
                   fontStyle: "italic",
                   marginTop: "0.5rem"
                 }}>
-                  Consider marking these lessons as recorded or choosing different free days.
+                  Consider marking these lessons as non-physical or choosing different free days.
                 </div>
               </div>
             )}
 
-            <div style={{marginTop: "2rem", display: "flex", flexDirection: "row", gap: "3rem", flexWrap: "wrap"}}>
-                <div style={{display: "flex", flexDirection: "column", gap: "0.5rem", minWidth: "200px"}}>
-                    <div style={{fontSize: "1rem", display: "flex", alignItems: "center", gap: "0.5rem"}}>
-                        Earliest class time
-                        <Tooltip content="There will be no physical class before this time" placement="right">
-                            <Info className={`${styles.tag}`} size={15} style={{ color: "#69707a" }} />
-                        </Tooltip>
-                    </div>
-                    <div style={{display: "flex", flexDirection: "row", alignItems: "center", gap: "0.5rem"}}>
-                        <select
-                            className="form-select"
-                            style={{
-                                width: "5rem", 
-                                padding: "0.25rem 0.75rem",
-                                fontSize: "1.2rem",
-                                border: "1px solid var(--gray-lighter)",
-                                borderRadius: "0.25rem",
-                                backgroundColor: "transparent",
-                                color: "inherit",
-                                outline: "none",
-                                fontFamily: "monospace"
-                            }}
-                            value={earliestTime}
-                            onChange={(e) => setEarliestTime(e.target.value)}
-                        >
-                            <option value="08">08</option>
-                            <option value="09">09</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
-                            <option value="13">13</option>
-                            <option value="14">14</option>
-                            <option value="15">15</option>
-                            <option value="16">16</option>
-                            <option value="17">17</option>
-                            <option value="18">18</option>
-                        </select>
-                        <div style={{fontSize: "1.2rem", fontWeight: "500", color: "inherit", fontFamily: "monospace"}}>:00</div>
-                    </div>
-                </div>
-                <div style={{display: "flex", flexDirection: "column", gap: "0.5rem", minWidth: "200px"}}>
-                    <div style={{fontSize: "1rem", display: "flex", alignItems: "center", gap: "0.5rem"}}>
-                        Latest class time
-                        <Tooltip content="There will be no physical class after this time" placement="right">
-                            <Info className={`${styles.tag}`} size={15} style={{ color: "#69707a" }} />
-                        </Tooltip>
-                    </div>
-                    <div style={{display: "flex", flexDirection: "row", alignItems: "center", gap: "0.5rem"}}>
-                        <select
-                            className="form-select"
-                            style={{
-                                width: "5rem", 
-                                padding: "0.25rem 0.75rem",
-                                fontSize: "1.2rem",
-                                border: "1px solid var(--gray-lighter)",
-                                borderRadius: "0.25rem",
-                                backgroundColor: "transparent",
-                                color: "inherit",
-                                outline: "none",
-                                fontFamily: "monospace"
-                            }}
-                            value={latestTime}
-                            onChange={(e) => setLatestTime(e.target.value)}
-                        >
-                            <option value="08">09</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
-                            <option value="13">13</option>
-                            <option value="14">14</option>
-                            <option value="15">15</option>
-                            <option value="16">16</option>
-                            <option value="17">17</option>
-                            <option value="18">18</option>
-                            <option value="19">19</option>
-                        </select>
-                        <div style={{fontSize: "1.2rem", fontWeight: "500", color: "inherit", fontFamily: "monospace"}}>:00</div>
-                    </div>
+            <div style={{marginTop: "2rem", display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? "1.5rem" : "3rem", flexWrap: "wrap"}}>
+                <div style={{display: "flex", flexDirection: "row", alignItems: "center", gap: "0.5rem"}}>
+
+                  <div style={{display: "flex", flexDirection: "column", gap: "0.5rem", minWidth: isMobile ? "auto" : "200px", width: isMobile ? "100%" : "auto"}}>
+                      <div style={{fontSize: "1rem", display: "flex", alignItems: "center", gap: "0.5rem"}}>
+                          Earliest class time
+                          <Tooltip content="There will be no physical class before this time" placement="right">
+                              <Info className={`${styles.tag}`} size={15} style={{ color: "#69707a" }} />
+                          </Tooltip>
+                      </div>
+                      <div style={{display: "flex", flexDirection: "row", alignItems: "center", gap: "0.5rem"}}>
+                          <select
+                              className="form-select"
+                              style={{
+                                  width: "5rem", 
+                                  padding: "0.25rem 0.75rem",
+                                  fontSize: "1.2rem",
+                                  border: "1px solid var(--gray-lighter)",
+                                  borderRadius: "0.25rem",
+                                  backgroundColor: "transparent",
+                                  color: "inherit",
+                                  outline: "none",
+                                  fontFamily: "monospace"
+                              }}
+                              value={earliestTime}
+                              onChange={(e) => setEarliestTime(e.target.value)}
+                          >
+                              <option value="08">08</option>
+                              <option value="09">09</option>
+                              <option value="10">10</option>
+                              <option value="11">11</option>
+                              <option value="12">12</option>
+                              <option value="13">13</option>
+                              <option value="14">14</option>
+                              <option value="15">15</option>
+                              <option value="16">16</option>
+                              <option value="17">17</option>
+                              <option value="18">18</option>
+                          </select>
+                          <div style={{fontSize: "1.2rem", fontWeight: "500", color: "inherit", fontFamily: "monospace"}}>:00</div>
+                      </div>
+                  </div>
+                  <div style={{display: "flex", flexDirection: "column", gap: "0.5rem", minWidth: isMobile ? "auto" : "200px", width: isMobile ? "100%" : "auto"}}>
+                      <div style={{fontSize: "1rem", display: "flex", alignItems: "center", gap: "0.5rem"}}>
+                          Latest class time
+                          <Tooltip content="There will be no physical class after this time" placement="right">
+                              <Info className={`${styles.tag}`} size={15} style={{ color: "#69707a" }} />
+                          </Tooltip>
+                      </div>
+                      <div style={{display: "flex", flexDirection: "row", alignItems: "center", gap: "0.5rem"}}>
+                          <select
+                              className="form-select"
+                              style={{
+                                  width: "5rem", 
+                                  padding: "0.25rem 0.75rem",
+                                  fontSize: "1.2rem",
+                                  border: "1px solid var(--gray-lighter)",
+                                  borderRadius: "0.25rem",
+                                  backgroundColor: "transparent",
+                                  color: "inherit",
+                                  outline: "none",
+                                  fontFamily: "monospace"
+                              }}
+                              value={latestTime}
+                              onChange={(e) => setLatestTime(e.target.value)}
+                          >
+                              <option value="08">09</option>
+                              <option value="10">10</option>
+                              <option value="11">11</option>
+                              <option value="12">12</option>
+                              <option value="13">13</option>
+                              <option value="14">14</option>
+                              <option value="15">15</option>
+                              <option value="16">16</option>
+                              <option value="17">17</option>
+                              <option value="18">18</option>
+                              <option value="19">19</option>
+                          </select>
+                          <div style={{fontSize: "1.2rem", fontWeight: "500", color: "inherit", fontFamily: "monospace"}}>:00</div>
+                      </div>
+                  </div>
                 </div>
             </div>
-            <div style={{marginTop: "2rem", display: "flex", flexDirection: "row", gap: "3rem", flexWrap: "wrap"}}>
-               <div style={{display: "flex", flexDirection: "column", gap: "0.5rem", minWidth: "200px"}}>
+            <div style={{marginTop: "2rem", display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? "1.5rem" : "3rem", flexWrap: "wrap"}}>
+               <div style={{display: "flex", flexDirection: "column", gap: "0.5rem", minWidth: isMobile ? "auto" : "200px", width: isMobile ? "100%" : "auto"}}>
                     <div style={{fontSize: "1rem", display: "flex", alignItems: "center", gap: "0.5rem"}}>
                         Select range for preferred lunch break timings
                         <Tooltip content="Prioritises 1-hour lunch breaks in this range, if possible" placement="right">
@@ -526,43 +534,50 @@ const OptimiserContent: React.FC = () => {
                         "disabled": isOptimising || freeDayConflicts.length > 0
                     })}
                     style={{
-                        width: "fit-content",
-                        padding: "0.75rem 2rem",
+                        width: isMobile ? "100%" : "fit-content",
+                        padding: isMobile ? "1rem 2rem" : "0.75rem 2rem",
                         fontSize: "1rem",
-                        fontWeight: "bold",
-                        backgroundColor: freeDayConflicts.length > 0 ? "#69707a" : "#ff5138",
-                        color: "var(--body-bg)",
-                        border: "none",
+                        fontWeight: "500",
+                        backgroundColor: freeDayConflicts.length > 0 ? "#69707a" : "transparent",
+                        color: freeDayConflicts.length > 0 ? "var(--body-bg)" : "#ff5138",
+                        border: freeDayConflicts.length > 0 ? "none" : "1px solid #ff5138",
                         borderRadius: "0.5rem",
                         display: "flex",
                         alignItems: "center",
+                        justifyContent: "center",
                         gap: "0.5rem",
                         cursor: freeDayConflicts.length > 0 || isOptimising ? "not-allowed" : "pointer",
                         transition: "all 0.2s ease",
-                        boxShadow: freeDayConflicts.length > 0 || isOptimising ? "none" : "0 4px 12px rgba(255, 81, 56, 0.3)",
+                        boxShadow: freeDayConflicts.length > 0 || isOptimising ? "none" : "0 2px 8px rgba(255, 81, 56, 0.2)",
                     }}
 
                     onMouseEnter={(e) => {
                         if (freeDayConflicts.length === 0 && !isOptimising) {
-                            e.currentTarget.style.backgroundColor = "#e04832";
+                            e.currentTarget.style.backgroundColor = "#ff5138";
+                            e.currentTarget.style.color = "var(--body-bg)";
                             e.currentTarget.style.transform = "translateY(-2px)";
                             e.currentTarget.style.boxShadow = "0 6px 20px rgba(255, 81, 56, 0.4)";
                         }
                     }}
                     onMouseLeave={(e) => {
                         if (freeDayConflicts.length === 0 && !isOptimising) {
-                            e.currentTarget.style.backgroundColor = "#ff5138";
+                            e.currentTarget.style.backgroundColor = "transparent";
+                            e.currentTarget.style.color = "#ff5138";
                             e.currentTarget.style.transform = "translateY(0px)";
-                            e.currentTarget.style.boxShadow = "0 4px 12px rgba(255, 81, 56, 0.3)";
+                            e.currentTarget.style.boxShadow = "0 2px 8px rgba(255, 81, 56, 0.2)";
                         }
                     }}
                     onMouseDown={(e) => {
                         if (freeDayConflicts.length === 0 && !isOptimising) {
+                            e.currentTarget.style.backgroundColor = "#e04832";
+                            e.currentTarget.style.color = "var(--body-bg)";
                             e.currentTarget.style.transform = "translateY(0px)";
                         }
                     }}
                     onMouseUp={(e) => {
                         if (freeDayConflicts.length === 0 && !isOptimising) {
+                            e.currentTarget.style.backgroundColor = "#ff5138";
+                            e.currentTarget.style.color = "var(--body-bg)";
                             e.currentTarget.style.transform = "translateY(-2px)";
                         }
                     }}
@@ -570,7 +585,7 @@ const OptimiserContent: React.FC = () => {
                         optimiseTimetable();
                     }}
                 >
-                    {!isOptimising ? <Zap size={20} fill='var(--body-bg)'/> : <span style={{display: "flex", alignItems: "center", gap: "1rem"}}>
+                    {!isOptimising ? <Zap size={20} fill={freeDayConflicts.length > 0 ? "#69707a" : "#ff5138"} /> : <span style={{display: "flex", alignItems: "center", gap: "1rem"}}>
                         {isOptimising && (
                             <div className={styles.grower}>
                             </div>
@@ -588,7 +603,6 @@ const OptimiserContent: React.FC = () => {
             {unAssignedLessons.length > 0 && (
               <div style={{ 
                 marginTop: "2rem", 
-                marginRight: "1rem",
                 padding: "1.5rem", 
                 backgroundColor: "rgba(255, 193, 7, 0.1)", 
                 border: "1px solid rgba(255, 193, 7, 0.3)", 
@@ -606,7 +620,7 @@ const OptimiserContent: React.FC = () => {
                   gap: "0.75rem"
                 }}>
                   <AlertTriangle size={24} />
-                  Optimisation Notice
+                  Optimiser Warning : Unassigned Lessons
                 </div>
                 
                 <div style={{ 
@@ -664,9 +678,6 @@ const OptimiserContent: React.FC = () => {
                   <div style={{ marginBottom: "0.5rem" }}>
                     • <strong>Scheduling conflicts:</strong> There is no possible way to schedule these lessons with your selected preferences (free days, time ranges, etc.)
                   </div>
-                  <div>
-                    • <strong>Limited availability:</strong> Some lessons may only be offered at specific times that don't fit your constraints
-                  </div>
                 </div>
                 
                 <div style={{ 
@@ -677,7 +688,7 @@ const OptimiserContent: React.FC = () => {
                   paddingTop: "0.5rem",
                   borderTop: "1px solid rgba(255, 193, 7, 0.2)"
                 }}>
-                  You may need to manually add these lessons to your timetable or adjust your optimisation preferences.
+                  You may need to manually add these lessons to your timetable or adjust your optimisation preferences
                 </div>
               </div>
             )}

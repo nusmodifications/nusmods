@@ -98,7 +98,7 @@ func mergeAndFilterModuleSlots(timetable []models.ModuleSlot, venues map[string]
 
 	classGroups := make(map[string][]models.ModuleSlot)
 	for _, slot := range timetable {
-		// Skip venues without location data, except E-Learn_C (virtual venue)
+		// Skip venues without location data, except E-Venues (virtual venue)
 		if !E_Venues[slot.Venue] {
 			venueLocation := venues[slot.Venue].Location
 			if venueLocation.X == 0 && venueLocation.Y == 0 {
@@ -160,7 +160,7 @@ func mergeAndFilterModuleSlots(timetable []models.ModuleSlot, venues map[string]
 			lessonKey := module + " " + slot.LessonType
 			isRecorded := recordingsMap[lessonKey]
 
-			if !isRecorded && slot.Venue != "E-Learn_C" {
+			if !isRecorded && !E_Venues[slot.Venue] {
 				buildingName := extractBuildingName(slot.Venue)
 				combinationKey := slot.LessonType + "|" + slot.Day + "|" + slot.StartTime + "|" + buildingName
 
