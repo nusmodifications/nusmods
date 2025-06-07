@@ -189,7 +189,7 @@ const OptimiserContent: React.FC = () => {
     const formatTime = (time: string) => time.padStart(2, '0') + '00';
     const acadYearFormatted = acadYear.split("/")[0] + "-" + acadYear.split("/")[1];
 
-    const response = await fetch("https://optimiser-j3ory0gly-thejus-projects-c171061d.vercel.app/api/optimiser", {
+    const response = await fetch("https://optimiser.vercel.app/api/optimiser", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
