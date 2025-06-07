@@ -261,6 +261,17 @@ const OptimiserContent: React.FC = () => {
             
             {/* Lesson Selection Buttons */}
             <div className={styles.lessonButtons}>
+              {lessonOptions.length === 0 && (
+                <div className={styles.noLessonsFound}>
+                  <div className={styles.noLessonsHeader}>
+                    <AlertTriangle size={20} />
+                    No Lessons Found
+                  </div>
+                  <div className={styles.noLessonsDescription}>
+                    Add modules to your timetable to see lesson options here
+                  </div>
+                </div>
+              )}
               {lessonOptions.map((option) => {
                 const isSelected = selectedLessons.some(lesson => lesson.uniqueKey === option.uniqueKey);
                 return (
@@ -462,16 +473,16 @@ const OptimiserContent: React.FC = () => {
                     className={classnames(
                       "btn",
                       styles.optimizeButton,
-                      freeDayConflicts.length > 0 || isOptimising ? styles.disabled : styles.enabled,
+                      freeDayConflicts.length > 0 || isOptimising || lessonOptions.length === 0 ? styles.disabled : styles.enabled,
                       {
-                        "disabled": isOptimising || freeDayConflicts.length > 0
+                        "disabled": isOptimising || freeDayConflicts.length > 0 || lessonOptions.length === 0
                       }
                     )}
                     onClick={() => {
                         optimiseTimetable();
                     }}
                 >
-                    {!isOptimising ? <Zap size={20} fill={freeDayConflicts.length > 0 ? "#69707a" : "#ff5138"} /> : <span className={styles.optimizeButtonSpinner}>
+                    {!isOptimising ? <Zap size={20} fill={freeDayConflicts.length > 0 || lessonOptions.length === 0 ? "#69707a" : "#ff5138"} /> : <span className={styles.optimizeButtonSpinner}>
                         {isOptimising && (
                             <div className={styles.grower}>
                             </div>

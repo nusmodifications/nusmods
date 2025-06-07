@@ -494,6 +494,33 @@
   border-top: 1px solid rgba(255, 193, 7, 0.2);
 }
 
+.noLessonsFound {
+  margin-top: 0.5rem;
+  padding: 1.5rem;
+  background-color: rgba(255, 193, 7, 0.1);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  border-radius: 0.75rem;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.noLessonsHeader {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #ff8c00;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.noLessonsDescription {
+  font-size: 0.95rem;
+  color: rgba(255, 193, 7, 0.5);
+  line-height: 1.5;
+}
+
 // Icon styling
 .titleIcon {
   color: #ff5138;
