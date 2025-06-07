@@ -6,6 +6,7 @@ import {
   BookOpen,
   Calendar,
   Clock,
+  Cpu,
   Heart,
   Map,
   Settings,
@@ -28,6 +29,7 @@ export const NAVTAB_HEIGHT = 48;
 
 const Navtabs: FC = () => {
   const activeSemester = useSelector(({ app }: State) => app.activeSemester);
+  const beta = useSelector(({ settings }: State) => settings.beta);
 
   const tabProps = {
     className: styles.link,
@@ -44,6 +46,12 @@ const Navtabs: FC = () => {
         <Calendar />
         <span className={styles.title}>Timetable</span>
       </NavLink>
+      {beta && (
+        <NavLink {...tabProps} to="/optimiser">
+          <Cpu />
+          <span className={styles.title}>Optimiser</span>
+        </NavLink>
+      )}
       <NavLink
         {...tabProps}
         to={{ pathname: '/courses', search: '?sem[0]=1&sem[1]=2&sem[2]=3&sem[3]=4' }}
