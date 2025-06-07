@@ -38,3 +38,467 @@
 .tag {
     cursor: pointer;
 }
+
+// Main container
+.container {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+
+  @include media-breakpoint-down(md) {
+    padding: 0 1rem;
+  }
+}
+
+// Header section
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+
+  @include media-breakpoint-down(md) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
+.title {
+  letter-spacing: 0.05rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #ff5138;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  @include media-breakpoint-down(md) {
+    font-size: 1.1rem;
+  }
+}
+
+.feedbackButton {
+  margin-right: 1rem;
+
+  @include media-breakpoint-down(md) {
+    margin-right: 0;
+    width: 100%;
+  }
+}
+
+// Description section
+.description {
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  margin-top: 0.5rem;
+}
+
+// Main content section
+.mainContent {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+// Section headers
+.sectionHeader {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+// Lesson selection section
+.lessonButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.lessonButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-right: none;
+  border-top: none;
+  border-left: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &.selected {
+    opacity: 1;
+    filter: brightness(1);
+    transform: scale(1);
+  }
+
+  &.unselected {
+    opacity: 0.6;
+    filter: brightness(0.8);
+    transform: scale(0.98);
+  }
+
+  &:hover {
+    opacity: 1 !important;
+    filter: brightness(1.1) !important;
+    transform: scale(1.02) !important;
+  }
+}
+
+.lessonButtonText {
+  font-weight: bold;
+}
+
+// Free days section
+.freeDaysSection {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.freeDaysButtons {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+// Conflict warning
+.conflictWarning {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: rgba(255, 81, 56, 0.1);
+  border: 1px solid rgba(255, 81, 56, 0.3);
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.conflictHeader {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #ff5138;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.conflictDescription {
+  font-size: 0.9rem;
+  color: #69707a;
+}
+
+.conflictItem {
+  font-size: 0.9rem;
+  color: #ff5138;
+  font-weight: 500;
+  margin-left: 1rem;
+}
+
+.conflictFooter {
+  font-size: 0.8rem;
+  color: #69707a;
+  font-style: italic;
+  margin-top: 0.5rem;
+}
+
+// Time controls section
+.timeControls {
+  margin-top: 2rem;
+  display: flex;
+  gap: 3rem;
+  flex-wrap: wrap;
+
+  @include media-breakpoint-down(md) {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
+
+.timeControlWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.timeControlGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 200px;
+  width: auto;
+
+  @include media-breakpoint-down(md) {
+    min-width: auto;
+    width: 100%;
+  }
+}
+
+.timeControlHeader {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.timeControlRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.timeSelect {
+  width: 5rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 1.2rem;
+  border: 1px solid var(--gray-lighter);
+  border-radius: 0.25rem;
+  background-color: transparent;
+  color: inherit;
+  outline: none;
+  font-family: monospace;
+}
+
+.timeLabel {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: inherit;
+  font-family: monospace;
+}
+
+// Lunch controls section
+.lunchControls {
+  margin-top: 2rem;
+  display: flex;
+  gap: 3rem;
+  flex-wrap: wrap;
+
+  @include media-breakpoint-down(md) {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
+
+.lunchControlGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 200px;
+  width: auto;
+
+  @include media-breakpoint-down(md) {
+    min-width: auto;
+    width: 100%;
+  }
+}
+
+.lunchControlHeader {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.lunchControlRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.lunchSelect {
+  width: 5rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 1.2rem;
+  border: 1px solid var(--gray-lighter);
+  border-radius: 0.25rem;
+  background-color: transparent;
+  color: inherit;
+  outline: none;
+  font-family: monospace;
+}
+
+.lunchTimeLabel {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: inherit;
+  font-family: monospace;
+}
+
+.lunchTimeSeparator {
+  font-size: 1rem;
+  color: #69707a;
+  margin: 0 1.5rem;
+}
+
+// Optimize button section
+.optimizeButtonSection {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.optimizeButton {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  width: fit-content;
+
+  @include media-breakpoint-down(md) {
+    width: 100%;
+    padding: 1rem 2rem;
+  }
+
+  &.enabled {
+    background-color: transparent;
+    color: #ff5138;
+    border: 1px solid #ff5138;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(255, 81, 56, 0.2);
+
+    &:hover {
+      background-color: #ff5138;
+      color: var(--body-bg);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 81, 56, 0.4);
+    }
+
+    &:active {
+      background-color: #e04832;
+      color: var(--body-bg);
+      transform: translateY(0px);
+    }
+  }
+
+  &.disabled {
+    background-color: #69707a;
+    color: var(--body-bg);
+    border: none;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+}
+
+.optimizeButtonSpinner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.estimateTime {
+  font-size: 0.8rem;
+  color: #69707a;
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.estimateTimeValue {
+  font-weight: bold;
+}
+
+// Unassigned lessons warning
+.unassignedWarning {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: rgba(255, 193, 7, 0.1);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  border-radius: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.unassignedHeader {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #ff8c00;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.unassignedDescription {
+  font-size: 0.95rem;
+  color: #69707a;
+  line-height: 1.5;
+}
+
+.unassignedLessons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-left: 1rem;
+}
+
+.unassignedLessonTag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.25rem;
+  font-size: 0.85rem;
+  font-weight: bold;
+  border-right: none;
+  border-top: none;
+  border-left: none;
+  opacity: 1;
+  filter: brightness(0.9);
+}
+
+.unassignedExplanation {
+  font-size: 0.9rem;
+  color: #69707a;
+  line-height: 1.5;
+  background-color: rgba(255, 193, 7, 0.05);
+  padding: 1rem;
+  border-radius: 0.25rem;
+  border-left: 4px solid rgba(255, 193, 7, 0.4);
+}
+
+.unassignedExplanationHeader {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #ff8c00;
+}
+
+.unassignedExplanationItem {
+  margin-bottom: 0.5rem;
+}
+
+.unassignedFooter {
+  font-size: 0.85rem;
+  color: #69707a;
+  font-style: italic;
+  text-align: center;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 193, 7, 0.2);
+}
+
+// Icon styling
+.titleIcon {
+  color: #ff5138;
+}
+
+.infoIcon {
+  color: #69707a;
+}

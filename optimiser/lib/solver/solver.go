@@ -11,6 +11,16 @@ import (
 	"github.com/umahmood/haversine"
 )
 
+// Constants
+const (
+	MAX_WALK_DISTANCE     = 0.250 // 250 meters
+	LUNCH_BONUS           = -300.0
+	NO_LUNCH_PENALTY      = 300.0
+	GAP_PENALTY_THRESHOLD = 120 // 2 hours in minutes
+	GAP_PENALTY_RATE      = 100.0
+	LUNCH_REQUIRED_TIME   = 60 // 1 hour in minutes
+)
+
 /*
 Beam Search Algorithm
 https://www.geeksforgeeks.org/introduction-to-beam-search-algorithm/
@@ -23,12 +33,11 @@ func BeamSearch(
 	recordings map[string]bool,
 	optimiserRequest models.OptimiserRequest) models.TimetableState {
 
-	// Parse all ModuleSlot groups once and populate computed fields.
+	
 	for lessonKey, slotGroups := range lessonToSlots {
 		for _, group := range slotGroups {
 			for i := range group {
-				err := group[i].ParseModuleSlotFields(lessonKey)
-				if err != nil {
+				if err := group[i].ParseModuleSlotFields(lessonKey); err != nil {
 					// Skip invalid slots
 					group[i].DayIndex = -1
 				}
@@ -53,7 +62,6 @@ func BeamSearch(
 			for i := 0; i < limit; i++ {
 				group := slotGroups[i]
 
-
 				validGroup := make([]models.ModuleSlot, 0, len(group))
 				for _, slot := range group {
 					if slot.DayIndex >= 0 && slot.DayIndex < 5 {
@@ -66,10 +74,7 @@ func BeamSearch(
 				}
 
 				newState := copyState(state)
-
-				if len(validGroup) > 0 {
-					newState.Assignments[lessonKey] = validGroup[0].ClassNo
-				}
+				newState.Assignments[lessonKey] = validGroup[0].ClassNo
 
 				// Track days that change, so we only recalc distance on those days
 				for _, slot := range validGroup {
@@ -78,10 +83,8 @@ func BeamSearch(
 					newState.TotalDistance -= newState.DayDistance[d]
 
 					newState.DaySlots[d] = insertSlotSorted(newState.DaySlots[d], slot)
-
-					nd := calculateDayDistanceScore(newState.DaySlots[d], recordings)
-					newState.DayDistance[d] = nd
-					newState.TotalDistance += nd
+					newState.DayDistance[d] = calculateDayDistanceScore(newState.DaySlots[d], recordings)
+					newState.TotalDistance += newState.DayDistance[d]
 				}
 
 				nextBeam = append(nextBeam, newState)
@@ -131,10 +134,8 @@ func isLessonRecorded(lessonKey string, recordings map[string]bool) bool {
 	if len(parts) != 2 {
 		return false
 	}
-	requestFormat := parts[0] + " " + parts[1]
-	return recordings[requestFormat]
+	return recordings[parts[0]+" "+parts[1]]
 }
-
 
 // calculateDayDistanceScore computes walking penalty for consecutive slots using haversine distance
 func calculateDayDistanceScore(daySlots []models.ModuleSlot, recordings map[string]bool) float64 {
@@ -142,20 +143,17 @@ func calculateDayDistanceScore(daySlots []models.ModuleSlot, recordings map[stri
 		return 0
 	}
 
-	const MAX_WALK_DISTANCE = 0.250 // 250 meters
 	var totalPenalty float64
 
 	for i := 1; i < len(daySlots); i++ {
 		prev := daySlots[i-1]
 		curr := daySlots[i]
 
-		// Skip if coordinates are invalid (0,0)
-		if prev.Coordinates.X == 0 || prev.Coordinates.Y == 0 || curr.Coordinates.X == 0 || curr.Coordinates.Y == 0 {
-			continue
-		}
-
-		// Skip distance calculation if either lesson is recorded
-		if isLessonRecorded(prev.LessonKey, recordings) || isLessonRecorded(curr.LessonKey, recordings) {
+		// Skip if coordinates are invalid (0,0) or either lesson is recorded
+		if prev.Coordinates.X == 0 || prev.Coordinates.Y == 0 ||
+			curr.Coordinates.X == 0 || curr.Coordinates.Y == 0 ||
+			isLessonRecorded(prev.LessonKey, recordings) ||
+			isLessonRecorded(curr.LessonKey, recordings) {
 			continue
 		}
 
@@ -163,24 +161,19 @@ func calculateDayDistanceScore(daySlots []models.ModuleSlot, recordings map[stri
 		currCoord := haversine.Coord{Lat: float64(curr.Coordinates.Y), Lon: float64(curr.Coordinates.X)}
 		_, km := haversine.Distance(prevCoord, currCoord)
 
-		// Apply walking penalty formula - higher distances = higher penalty
+		// Apply walking penalty formula
 		// A linear penalty applied. Change if a better heuristic is found. Works as of 6/6/2025.
-		penalty := (10.0 / MAX_WALK_DISTANCE) * km
-		totalPenalty += penalty
+		totalPenalty += (10.0 / MAX_WALK_DISTANCE) * km
 	}
 	return totalPenalty
 }
 
 // hasConflict checks if any slot in newSlots overlaps with existing slots in state.
 func hasConflict(state models.TimetableState, newSlots []models.ModuleSlot) bool {
-	// slotsOverlap returns true if two ModuleSlots overlap in time.
-	slotsOverlap := func(a, b models.ModuleSlot) bool {
-		return a.StartMin < b.EndMin && b.StartMin < a.EndMin
-	}
 	for _, newSlot := range newSlots {
-		existing := state.DaySlots[newSlot.DayIndex]
-		for _, oldSlot := range existing {
-			if slotsOverlap(oldSlot, newSlot) {
+		for _, oldSlot := range state.DaySlots[newSlot.DayIndex] {
+			// Check if slots overlap in time
+			if newSlot.StartMin < oldSlot.EndMin && oldSlot.StartMin < newSlot.EndMin {
 				return true
 			}
 		}
@@ -188,45 +181,40 @@ func hasConflict(state models.TimetableState, newSlots []models.ModuleSlot) bool
 	return false
 }
 
-// copyState creates a fresh copy of src, with new allocations (no pooling).
+// copyState creates a fresh copy of src
 func copyState(src models.TimetableState) models.TimetableState {
-	new := models.TimetableState{
-		Assignments: make(map[string]string, len(src.Assignments)),
-	}
-	for i := 0; i < 5; i++ {
-		new.DaySlots[i] = make([]models.ModuleSlot, 0, len(src.DaySlots[i]))
+	newState := models.TimetableState{
+		Assignments:   make(map[string]string, len(src.Assignments)),
+		DayDistance:   src.DayDistance,
+		TotalDistance: src.TotalDistance,
 	}
 
 	// Copy assignments
 	for k, v := range src.Assignments {
-		new.Assignments[k] = v
+		newState.Assignments[k] = v
 	}
+
 	// Copy day slots
 	for i := 0; i < 5; i++ {
 		if len(src.DaySlots[i]) > 0 {
-			new.DaySlots[i] = append(new.DaySlots[i], src.DaySlots[i]...)
+			newState.DaySlots[i] = make([]models.ModuleSlot, len(src.DaySlots[i]))
+			copy(newState.DaySlots[i], src.DaySlots[i])
+		} else {
+			newState.DaySlots[i] = make([]models.ModuleSlot, 0)
 		}
-		new.DayDistance[i] = src.DayDistance[i]
 	}
-	new.TotalDistance = src.TotalDistance
-	return new
+
+	return newState
 }
 
-// getPhysicalSlotsSorted gets sorted physical slots for a day
-func getPhysicalSlotsSorted(daySlots []models.ModuleSlot, recordings map[string]bool) []models.ModuleSlot {
-	if len(daySlots) <= 1 {
+// getPhysicalSlots filters out recorded lessons from daySlots
+func getPhysicalSlots(daySlots []models.ModuleSlot, recordings map[string]bool) []models.ModuleSlot {
+	if len(daySlots) == 0 {
 		return daySlots
 	}
 
-	// Sort slots by start time
-	sorted := make([]models.ModuleSlot, len(daySlots))
-	copy(sorted, daySlots)
-	sort.Slice(sorted, func(i, j int) bool {
-		return sorted[i].StartMin < sorted[j].StartMin
-	})
-
-	physicalSlots := make([]models.ModuleSlot, 0, len(sorted))
-	for _, slot := range sorted {
+	physicalSlots := make([]models.ModuleSlot, 0, len(daySlots))
+	for _, slot := range daySlots {
 		if !isLessonRecorded(slot.LessonKey, recordings) {
 			physicalSlots = append(physicalSlots, slot)
 		}
@@ -235,20 +223,19 @@ func getPhysicalSlotsSorted(daySlots []models.ModuleSlot, recordings map[string]
 	return physicalSlots
 }
 
-// Calculate lunch gap for a day's physical slots
+// calculateLunchGap calculates the best lunch gap for a day's physical slots
 func calculateLunchGap(physicalSlots []models.ModuleSlot, optimiserRequest models.OptimiserRequest) int {
 	if len(physicalSlots) == 0 {
-		return 120 // Full lunch time available
+		return LUNCH_REQUIRED_TIME
 	}
 
-	LUNCH_START, _ := models.ParseTimeToMinutes(optimiserRequest.LunchStart) // 12:00 PM
-	LUNCH_END, _ := models.ParseTimeToMinutes(optimiserRequest.LunchEnd)     // 2:00 PM
-
+	lunchStart, _ := models.ParseTimeToMinutes(optimiserRequest.LunchStart)
+	lunchEnd, _ := models.ParseTimeToMinutes(optimiserRequest.LunchEnd)
 	bestGap := 0
 
 	// Gap before first class
-	if physicalSlots[0].StartMin > LUNCH_START {
-		gap := min(physicalSlots[0].StartMin, LUNCH_END) - LUNCH_START
+	if physicalSlots[0].StartMin > lunchStart {
+		gap := min(physicalSlots[0].StartMin, lunchEnd) - lunchStart
 		if gap > bestGap {
 			bestGap = gap
 		}
@@ -256,11 +243,8 @@ func calculateLunchGap(physicalSlots []models.ModuleSlot, optimiserRequest model
 
 	// Gaps between consecutive classes
 	for i := 1; i < len(physicalSlots); i++ {
-		prevEnd := physicalSlots[i-1].EndMin
-		currStart := physicalSlots[i].StartMin
-
-		gapStart := max(prevEnd, LUNCH_START)
-		gapEnd := min(currStart, LUNCH_END)
+		gapStart := max(physicalSlots[i-1].EndMin, lunchStart)
+		gapEnd := min(physicalSlots[i].StartMin, lunchEnd)
 
 		if gapStart < gapEnd {
 			gap := gapEnd - gapStart
@@ -272,8 +256,8 @@ func calculateLunchGap(physicalSlots []models.ModuleSlot, optimiserRequest model
 
 	// Gap after last class
 	lastSlot := physicalSlots[len(physicalSlots)-1]
-	if lastSlot.EndMin < LUNCH_END {
-		gap := LUNCH_END - max(lastSlot.EndMin, LUNCH_START)
+	if lastSlot.EndMin < lunchEnd {
+		gap := lunchEnd - max(lastSlot.EndMin, lunchStart)
 		if gap > bestGap {
 			bestGap = gap
 		}
@@ -283,58 +267,46 @@ func calculateLunchGap(physicalSlots []models.ModuleSlot, optimiserRequest model
 }
 
 /*
-	scoreTimetableState assigns a heuristic score to a complete timetable state.
-	Lower score means a better (more preferred) timetable.
+scoreTimetableState assigns a heuristic score to a complete timetable state.
+Lower score means a better (more preferred) timetable.
 */
 func scoreTimetableState(state models.TimetableState, recordings map[string]bool, optimiserRequest models.OptimiserRequest) float64 {
-	const (
-		LUNCH_BONUS      = -300.0
-		NO_LUNCH_PENALTY = 300.0
-	)
-
 	var totalScore float64
 	for d := 0; d < 5; d++ {
 		if len(state.DaySlots[d]) == 0 {
 			continue
 		}
-		// Get physical slots for this day (exclude recorded lessons)
-		physicalSlots := getPhysicalSlotsSorted(state.DaySlots[d], recordings)
-		// Calculate lunch gap for this day
-		lunchGap := calculateLunchGap(physicalSlots, optimiserRequest)
+
+		physicalSlots := getPhysicalSlots(state.DaySlots[d], recordings)
+
 		// Apply lunch penalty/bonus
-		if lunchGap >= 60 {
-			totalScore += LUNCH_BONUS // -300
+		lunchGap := calculateLunchGap(physicalSlots, optimiserRequest)
+		if lunchGap >= LUNCH_REQUIRED_TIME {
+			totalScore += LUNCH_BONUS
 		} else {
-			totalScore += NO_LUNCH_PENALTY // +300
+			totalScore += NO_LUNCH_PENALTY
 		}
 
-		// Find largest gap between physical slots
+		// Apply gap penalty for large gaps of > 2 hours between classes
 		largestGap := calculateLargestGap(physicalSlots)
-		// for every hour greater than 2 hours, ad100 to score
-		if largestGap > 120 {
-			totalScore += 100 * float64(largestGap-120) / 60
+		if largestGap > GAP_PENALTY_THRESHOLD {
+			totalScore += GAP_PENALTY_RATE * float64(largestGap-GAP_PENALTY_THRESHOLD) / 60
 		}
 	}
 
 	// Add penalty for walking distance
-	totalScore += state.TotalDistance
-
-	return totalScore
+	return totalScore + state.TotalDistance
 }
 
+// calculateLargestGap finds the largest gap between consecutive physical slots
 func calculateLargestGap(physicalSlots []models.ModuleSlot) int {
 	largestGap := 0
-
 	for i := 1; i < len(physicalSlots); i++ {
-		prevEnd := physicalSlots[i-1].EndMin
-		currStart := physicalSlots[i].StartMin
-
-		gap := currStart - prevEnd
+		gap := physicalSlots[i].StartMin - physicalSlots[i-1].EndMin
 		if gap > largestGap {
 			largestGap = gap
 		}
 	}
-
 	return largestGap
 }
 
