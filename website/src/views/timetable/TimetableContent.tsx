@@ -8,7 +8,8 @@ import { ClassNo, LessonType, Module, ModuleCode, Semester } from 'types/modules
 import {
   ColoredLesson,
   Lesson,
-  ModifiableLesson, SemTimetableConfig,
+  ModifiableLesson,
+  SemTimetableConfig,
   SemTimetableConfigWithLessons,
   TaModulesConfig,
   TimetableArrangement,
