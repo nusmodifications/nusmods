@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/nusmodifications/nusmods/website/api/optimiser/optimise/models"
-	"github.com/nusmodifications/nusmods/website/api/optimiser/optimise/solver"
+	models "github.com/nusmodifications/nusmods/website/api/optimiser/optimise/_models"
+	solver "github.com/nusmodifications/nusmods/website/api/optimiser/optimise/_solver"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {

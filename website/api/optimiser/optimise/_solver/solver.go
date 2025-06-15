@@ -6,8 +6,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/nusmodifications/nusmods/website/api/optimiser/optimise/models"
-	"github.com/nusmodifications/nusmods/website/api/optimiser/optimise/modules"
+	models "github.com/nusmodifications/nusmods/website/api/optimiser/optimise/_models"
+	modules "github.com/nusmodifications/nusmods/website/api/optimiser/optimise/_modules"
 	"github.com/umahmood/haversine"
 )
 

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/nusmodifications/nusmods/website/api/optimiser/optimise/models"
+	models "github.com/nusmodifications/nusmods/website/api/optimiser/optimise/_models"
 )
 
 var LessonTypeAbbrev = map[string]string{
