@@ -95,17 +95,17 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
 
 #### Parameters
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `modules` | `[]string` | Module codes to include in optimisation in Upper case (e.g. "CS1010S") |
-| `recordings` | `[]string` | Lessons marked as recorded/online (format: "MODULE LessonType") e.g. "CS1010S Lecture" |
-| `freeDays` | `[]string` | Weekdays to keep free of physical classes e.g. "Monday" |
-| `earliestTime` | `string` | Earliest acceptable class time (HHMM format) |
-| `latestTime` | `string` | Latest acceptable class time (HHMM format) |
-| `acadYear` | `string` | Academic year (format: "YYYY-YYYY") e.g. "2024-2025"|
-| `acadSem` | `int` | Semester number (1 or 2) |
-| `lunchStart` | `string` | Preferred lunch break start time (HHMM) |
-| `lunchEnd` | `string` | Preferred lunch break end time (HHMM) |
+| Field          | Type       | Description                                                                            |
+| -------------- | ---------- | -------------------------------------------------------------------------------------- |
+| `modules`      | `[]string` | Module codes to include in optimisation in Upper case (e.g. "CS1010S")                 |
+| `recordings`   | `[]string` | Lessons marked as recorded/online (format: "MODULE LessonType") e.g. "CS1010S Lecture" |
+| `freeDays`     | `[]string` | Weekdays to keep free of physical classes e.g. "Monday"                                |
+| `earliestTime` | `string`   | Earliest acceptable class time (HHMM format)                                           |
+| `latestTime`   | `string`   | Latest acceptable class time (HHMM format)                                             |
+| `acadYear`     | `string`   | Academic year (format: "YYYY-YYYY") e.g. "2024-2025"                                   |
+| `acadSem`      | `int`      | Semester number (1 or 2)                                                               |
+| `lunchStart`   | `string`   | Preferred lunch break start time (HHMM)                                                |
+| `lunchEnd`     | `string`   | Preferred lunch break end time (HHMM)                                                  |
 
 ## Getting Started
 
@@ -143,8 +143,8 @@ vercel --prod
 
 ## Dependencies
 
-| Package | Purpose |
-|---------|---------|
+| Package                                                                  | Purpose                                                          |
+| ------------------------------------------------------------------------ | ---------------------------------------------------------------- |
 | [`github.com/umahmood/haversine`](https://github.com/umahmood/haversine) | Calculate walking distances between venues using GPS coordinates |
 
 ## Performance

@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/nusmodifications/nusmods/optimiser/lib/models"
+	models "github.com/nusmodifications/nusmods/website/api/optimiser/optimise/_models"
 )
 
 var E_Venues = map[string]bool{

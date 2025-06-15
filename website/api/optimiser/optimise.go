@@ -1,17 +1,18 @@
-package handler 
+package handler
 
 import (
-	"net/http"
 	"encoding/json"
-	"github.com/nusmodifications/nusmods/optimiser/lib/models"
-	"github.com/nusmodifications/nusmods/optimiser/lib/solver"
+	"net/http"
+
+	models "github.com/nusmodifications/nusmods/website/api/optimiser/optimise/_models"
+	solver "github.com/nusmodifications/nusmods/website/api/optimiser/optimise/_solver"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
 	// CORS
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-    w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
-    w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	if r.Method == http.MethodOptions {
 		w.WriteHeader(http.StatusNoContent)
