@@ -17,18 +17,16 @@ The optimiser intelligently prioritises:
 ### Core Components
 
 ```
-optimiser/
-├── api/
-│   └── optimiser.go          # Main HTTP handler and entry point for vercel 
-├── lib/
-│   ├── models/
-│   │   └── models.go         # Data structures and types
-│   ├── modules/
-│   │   └── modules.go        # Module data processing for optimisation
-│   └── solver/
-│       ├── solver.go         # Main solver logic 
-│       └── nusmods_link.go   # Shareable link generation
-└── go.mod                    # Go module dependencies
+website/api/optimiser/
+├── optimise.go               # Main HTTP handler and entry point for vercel 
+├── _models/                  # Data structures and types 
+├── _modules/                 # Module data processing for optimisation
+├── _solver/                  
+│   ├── solver.go             # Main solver logic 
+│   └── nusmods_link.go       # Shareable NUSMods link generation
+├── go.mod                    # Go module dependencies
+├── go.sum                    # Go dependency checksums
+└── README.md                 # This documentation
 ```
 
 ### Algorithm
@@ -45,7 +43,7 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
 
 ## API Reference
 
-### POST `{vercel-url}/api/optimiser`
+### POST `/api/optimiser/optimise`
 
 #### Request Body
 
@@ -112,14 +110,13 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
 ### Prerequisites
 
 - [Go 1.23.4](https://golang.org/dl/) or later
-- [Vercel CLI](https://vercel.com/cli) (for deployment)
 
 ### Local Development
 
 1. **Clone the repository**
    ```bash
    git clone https://github.com/nusmodifications/nusmods.git
-   cd nusmods/optimiser
+   cd nusmods/website/api/optimiser
    ```
 
 2. **Install dependencies**
@@ -127,19 +124,8 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
    go mod tidy
    ```
 
-3. **Run locally with Vercel**
-   ```bash
-   vercel
-   ```
-4. **Test the API**
-- Use the Preview URL from Vercel (`Vercel_URL`)
-- Send a POST request following the request body format above to `{Vercel_URL}/api/optimiser`
-
-### Building for Production
-
-```bash
-vercel --prod
-```
+3. **Test the API**
+- Send a POST request following the request body format above to `http://localhost:3000/api/optimiser/optimise`
 
 ## Dependencies
 
