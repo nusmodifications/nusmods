@@ -1,4 +1,4 @@
-module github.com/nusmodifications/nusmods/optimiser
+module github.com/nusmodifications/nusmods/website/api/optimiser/optimise
 
 go 1.23.4
 

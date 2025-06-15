@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/nusmodifications/nusmods/optimiser/lib/models"
+	"github.com/nusmodifications/nusmods/website/api/optimiser/optimise/models"
 )
 
 var LessonTypeAbbrev = map[string]string{
@@ -56,7 +56,7 @@ func SerializeNUSModsConfig(config map[string]map[string]string) string {
 		for lessonType, classNo := range lessons {
 			// Get abbreviation for lesson type
 			abbrev := LessonTypeAbbrev[strings.ToUpper(lessonType)]
-			
+
 			lessonParams = append(lessonParams, fmt.Sprintf("%s:%s", abbrev, classNo))
 		}
 		if len(lessonParams) > 0 {

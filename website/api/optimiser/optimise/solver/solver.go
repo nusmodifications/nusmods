@@ -6,8 +6,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/nusmodifications/nusmods/optimiser/lib/models"
-	"github.com/nusmodifications/nusmods/optimiser/lib/modules"
+	"github.com/nusmodifications/nusmods/website/api/optimiser/optimise/models"
+	"github.com/nusmodifications/nusmods/website/api/optimiser/optimise/modules"
 	"github.com/umahmood/haversine"
 )
 
@@ -33,7 +33,6 @@ func BeamSearch(
 	recordings map[string]bool,
 	optimiserRequest models.OptimiserRequest) models.TimetableState {
 
-	
 	for lessonKey, slotGroups := range lessonToSlots {
 		for _, group := range slotGroups {
 			for i := range group {
