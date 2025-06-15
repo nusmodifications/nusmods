@@ -47,18 +47,18 @@ func (slot *ModuleSlot) ParseModuleSlotFields(lessonKey string) error {
 	endMin, err2 := ParseTimeToMinutes(slot.EndTime)
 	if err1 != nil || err2 != nil {
 		return fmt.Errorf("invalid slot times for %s: start=%s, end=%s",
-		lessonKey, slot.StartTime, slot.EndTime)
+			lessonKey, slot.StartTime, slot.EndTime)
 	}
 	dayIdx, exists := dayToIndex[strings.ToUpper(slot.Day)]
 	if !exists {
 		return fmt.Errorf("invalid day for %s: %s", lessonKey, slot.Day)
 	}
-	
+
 	slot.StartMin = startMin
 	slot.EndMin = endMin
 	slot.DayIndex = dayIdx
 	slot.LessonKey = lessonKey
-	
+
 	return nil
 }
 
@@ -79,24 +79,6 @@ var dayToIndex = map[string]int{
 	"THURSDAY":  3,
 	"FRIDAY":    4,
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Helper Functions
 
