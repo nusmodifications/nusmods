@@ -78,10 +78,10 @@ const FaqContainer: React.FC = () => (
         <li>You have refreshed NUSMods after step 2.</li>
       </ol>
       <p>
-        After you have done all the above and the error persists, please use the "Report Error"
-        button on the course page to report an issue to the course's department or faculty. If the
-        department or faculty for this course cannot be found on this list, please refer to
-        CourseReg's contact list for{' '}
+        After you have done all the above and the error persists, please use the{' '}
+        <b>"Report Error"</b> button on the course page to report an issue to the course's
+        department or faculty. If the department or faculty for this course cannot be found on this
+        list, please refer to CourseReg's contact list for{' '}
         <ExternalLink href="https://www.nus.edu.sg/coursereg/docs/UGFac_Contacts.pdf">
           undergraduate
         </ExternalLink>{' '}

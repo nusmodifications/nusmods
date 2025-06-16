@@ -33,6 +33,13 @@ const enableAnnouncements = true;
  */
 const key = announcementKey('ay202425-new-data');
 
+export const isNewCourseDataAnnoucement = () => {
+  if (key) {
+    return enableAnnouncements && key.includes('new-data');
+  }
+  return false;
+};
+
 const Announcements = memo(() => {
   const [isOpen, setIsOpen] = useState(() => {
     if (!enableAnnouncements) return false;
