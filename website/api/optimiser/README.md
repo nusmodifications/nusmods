@@ -18,7 +18,9 @@ The optimiser intelligently prioritises:
 
 ```
 website/api/optimiser/
-├── optimise.go               # Main HTTP handler and entry point for vercel 
+├── optimise.go               # Main HTTP handler and entry point for vercel serverless function
+├── _constants/               # Constants 
+├── _client/                  # HTTP client
 ├── _models/                  # Data structures and types 
 ├── _modules/                 # Module data processing for optimisation
 ├── _solver/                  
@@ -39,7 +41,7 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
 4. **Scoring Function**: Evaluates states based on:
    - Total walking distance between consecutive classes
    - Lunch break timing
-   - < 3 hour gap between classes (configurable)
+   - <= 2 hours max gap between classes (configurable)
 
 ## API Reference
 

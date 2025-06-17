@@ -6,20 +6,12 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/nusmodifications/nusmods/website/api/optimiser/_constants"
 	"github.com/nusmodifications/nusmods/website/api/optimiser/_models"
 	"github.com/nusmodifications/nusmods/website/api/optimiser/_modules"
 	"github.com/umahmood/haversine"
 )
 
-// Constants
-const (
-	MAX_WALK_DISTANCE     = 0.250 // 250 meters
-	LUNCH_BONUS           = -300.0
-	NO_LUNCH_PENALTY      = 300.0
-	GAP_PENALTY_THRESHOLD = 120 // 2 hours in minutes
-	GAP_PENALTY_RATE      = 100.0
-	LUNCH_REQUIRED_TIME   = 60 // 1 hour in minutes
-)
 
 /*
 Beam Search Algorithm
@@ -162,7 +154,7 @@ func calculateDayDistanceScore(daySlots []models.ModuleSlot, recordings map[stri
 
 		// Apply walking penalty formula
 		// A linear penalty applied. Change if a better heuristic is found. Works as of 6/6/2025.
-		totalPenalty += (10.0 / MAX_WALK_DISTANCE) * km
+		totalPenalty += (10.0 / constants.MAX_WALK_DISTANCE) * km
 	}
 	return totalPenalty
 }
@@ -225,7 +217,7 @@ func getPhysicalSlots(daySlots []models.ModuleSlot, recordings map[string]bool) 
 // calculateLunchGap calculates the best lunch gap for a day's physical slots
 func calculateLunchGap(physicalSlots []models.ModuleSlot, optimiserRequest models.OptimiserRequest) int {
 	if len(physicalSlots) == 0 {
-		return LUNCH_REQUIRED_TIME
+		return constants.LUNCH_REQUIRED_TIME
 	}
 
 	lunchStart, _ := models.ParseTimeToMinutes(optimiserRequest.LunchStart)
@@ -280,16 +272,16 @@ func scoreTimetableState(state models.TimetableState, recordings map[string]bool
 
 		// Apply lunch penalty/bonus
 		lunchGap := calculateLunchGap(physicalSlots, optimiserRequest)
-		if lunchGap >= LUNCH_REQUIRED_TIME {
-			totalScore += LUNCH_BONUS
+		if lunchGap >= constants.LUNCH_REQUIRED_TIME {
+			totalScore += constants.LUNCH_BONUS
 		} else {
-			totalScore += NO_LUNCH_PENALTY
+			totalScore += constants.NO_LUNCH_PENALTY
 		}
 
 		// Apply gap penalty for large gaps of > 2 hours between classes
 		largestGap := calculateLargestGap(physicalSlots)
-		if largestGap > GAP_PENALTY_THRESHOLD {
-			totalScore += GAP_PENALTY_RATE * float64(largestGap-GAP_PENALTY_THRESHOLD) / 60
+		if largestGap > constants.GAP_PENALTY_THRESHOLD {
+			totalScore += constants.GAP_PENALTY_RATE * float64(largestGap-constants.GAP_PENALTY_THRESHOLD) / 60
 		}
 	}
 

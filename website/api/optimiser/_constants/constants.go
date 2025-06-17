@@ -36,3 +36,11 @@ var VenuesURL = "https://github.nusmods.com/venues"
 var ModulesURL = "https://api.nusmods.com/v2/%s/modules/%s.json"
 
 var NUSModsTimetableBaseURL = "https://nusmods.com/timetable"
+
+
+var MAX_WALK_DISTANCE     = 0.250 // 250 meters
+var LUNCH_BONUS           = -300.0
+var NO_LUNCH_PENALTY      = 300.0
+var GAP_PENALTY_THRESHOLD = 120 // 2 hours in minutes
+var GAP_PENALTY_RATE      = 100.0
+var LUNCH_REQUIRED_TIME   = 60 // 1 hour in minutes
