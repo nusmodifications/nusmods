@@ -127,7 +127,7 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
    ```
 
 3. **Test the API**
-- Send a POST request following the request body format above to `http://localhost:3000/api/optimiser/optimise`
+- Send a POST request following the request body format above to `http://localhost:8080/api/optimiser/optimise`
 
 ## Dependencies
 
