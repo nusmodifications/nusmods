@@ -12,6 +12,7 @@ import useMediaQuery from 'views/hooks/useMediaQuery';
 import { breakpointDown } from 'utils/css';
 import config from 'config';
 import styles from './OptimiserContent.scss';
+import Title from 'views/components/Title';
 
 interface LessonOption {
   moduleCode: ModuleCode;
@@ -233,6 +234,7 @@ const OptimiserContent: React.FC = () => {
 
   return (
     <div className={styles.container}>
+      <Title>Optimiser</Title>
       <div className={styles.header}>
         <div className={styles.title}>
           <Cpu size={isMobile ? 22 : 25} className={styles.titleIcon} />

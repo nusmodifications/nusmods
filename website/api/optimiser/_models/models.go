@@ -12,7 +12,7 @@ type OptimiserRequest struct {
 	FreeDays     []string `json:"freeDays"`     // Format: ["Monday", "Tuesday"]
 	EarliestTime string   `json:"earliestTime"` // Format: "1504" (HHMM)
 	LatestTime   string   `json:"latestTime"`   // Format: "1504" (HHMM)
-	AcadYear     string   `json:"acadYear"`     // Format: "2024-2025" (YYYY/YYYY)
+	AcadYear     string   `json:"acadYear"`     // Format: "2024-2025" (YYYY-YYYY)
 	AcadSem      int      `json:"acadSem"`      // Format: 1 for sem 1, 2 for sem 2
 	LunchStart   string   `json:"lunchStart"`   // Format: "1504" (HHMM)
 	LunchEnd     string   `json:"lunchEnd"`     // Format: "1500" (HHMM)
@@ -41,7 +41,7 @@ type ModuleSlot struct {
 	LessonKey string // "MODULE|LessonType"
 }
 
-// ParseModuleSlotFields parses and populates the computed fields in ModuleSlot for faster computation
+// ParseModuleSlotFields parses and populates the parsed fields in ModuleSlot for faster computation
 func (slot *ModuleSlot) ParseModuleSlotFields(lessonKey string) error {
 	startMin, err1 := ParseTimeToMinutes(slot.StartTime)
 	endMin, err2 := ParseTimeToMinutes(slot.EndTime)
