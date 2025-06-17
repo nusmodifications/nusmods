@@ -529,3 +529,114 @@
 .infoIcon {
   color: #69707a;
 }
+
+// Shareable link section
+.shareableLinkSection {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(40, 167, 69, 0.3);
+  border-radius: 0.75rem;
+  background-color: rgba(40, 167, 69, 0.05);
+  gap: 1.5rem;
+}
+
+.successMessage {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.successHeader {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #28a745;
+  gap: 0.75rem;
+}
+
+.successDescription {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #69707a;
+}
+
+.shareableLinkButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  padding: 0.75rem 2rem;
+  border: 1px solid #28a745;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-size: 1rem;
+  color: #28a745;
+  background-color: transparent;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  gap: 0.5rem;
+
+  &:hover {
+    color: var(--body-bg);
+    background-color: #28a745;
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    color: var(--body-bg);
+    background-color: #218838;
+    transform: translateY(0);
+  }
+
+  @include media-breakpoint-down(md) {
+    width: 100%;
+    padding: 1rem 2rem;
+  }
+}
+
+.warningButtonContainer {
+  display: flex;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.warningShareableButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  padding: 0.75rem 2rem;
+  border: 1px solid #ffc107;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-size: 1rem;
+  color: #ff8c00;
+  background-color: transparent;
+  box-shadow: 0 2px 8px rgba(255, 193, 7, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  gap: 0.5rem;
+
+  &:hover {
+    color: var(--body-bg);
+    background-color: #ffc107;
+    box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    color: var(--body-bg);
+    background-color: #e0a800;
+    transform: translateY(0);
+  }
+
+  @include media-breakpoint-down(md) {
+    width: 100%;
+    padding: 1rem 2rem;
+  }
+}

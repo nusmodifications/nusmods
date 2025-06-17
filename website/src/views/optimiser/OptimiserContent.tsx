@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import classnames from 'classnames';
-import { Info, Cpu, X, Zap, AlertTriangle } from 'react-feather';
+import { Info, Cpu, X, Zap, AlertTriangle, ExternalLink } from 'react-feather';
 import Tooltip from 'views/components/Tooltip';
 import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
 import { State } from 'types/state';
@@ -14,7 +14,7 @@ import config from 'config';
 import styles from './OptimiserContent.scss';
 import Title from 'views/components/Title';
 
-interface LessonOption {
+export interface LessonOption {
   moduleCode: ModuleCode;
   lessonType: LessonType;
   colorIndex: number;
@@ -22,7 +22,7 @@ interface LessonOption {
   uniqueKey: string;
 }
 
-interface LessonDaysData {
+export interface LessonDaysData {
   uniqueKey: string;
   moduleCode: ModuleCode;
   lessonType: LessonType;
@@ -30,7 +30,7 @@ interface LessonDaysData {
   days: Set<string>;
 }
 
-interface FreeDayConflict {
+export interface FreeDayConflict {
   moduleCode: ModuleCode;
   lessonType: LessonType;
   displayText: string;
@@ -55,6 +55,7 @@ const OptimiserContent: React.FC = () => {
   const [freeDayConflicts, setFreeDayConflicts] = useState<FreeDayConflict[]>([]);
   const [unAssignedLessons, setUnAssignedLessons] = useState<LessonOption[]>([]);
   const [recordings, setRecordings] = useState<string[]>([]);
+  const [shareableLink, setShareableLink] = useState<string>('');
 
   // Generate lesson options from current timetable
   const lessonOptions = useMemo(() => {
@@ -189,6 +190,7 @@ const OptimiserContent: React.FC = () => {
 
   const optimiseTimetable = async () => {
     setIsOptimising(true);
+    setShareableLink(''); // Reset shareable link
     const modulesList = Object.keys(timetable);
     const formatTime = (time: string) => `${time.padStart(2, '0')}00`;
     const acadYearFormatted = `${acadYear.split('/')[0]}-${acadYear.split('/')[1]}`;
@@ -212,6 +214,7 @@ const OptimiserContent: React.FC = () => {
     });
     const data = await response.json();
     if (data.shareableLink) {
+      setShareableLink(data.shareableLink);
       const assignedLessons = new Set<string>();
       if (data.Assignments !== null) {
         data.DaySlots.forEach((day: any) => {
@@ -227,9 +230,14 @@ const OptimiserContent: React.FC = () => {
       setUnAssignedLessons(
         lessonOptions.filter((lesson) => !assignedLessons.has(lesson.displayText)),
       );
-      window.open(data.shareableLink, '_blank');
     }
     setIsOptimising(false);
+  };
+
+  const openOptimisedTimetable = () => {
+    if (shareableLink) {
+      window.open(shareableLink, '_blank');
+    }
   };
 
   return (
@@ -528,8 +536,8 @@ const OptimiserContent: React.FC = () => {
           </div>
         </div>
 
-        {/* Unassigned Lessons Disclaimer */}
-        {unAssignedLessons.length > 0 && (
+        {/* Partially optimised timetable */}
+        {shareableLink && unAssignedLessons.length > 0 && (
           <div className={styles.unassignedWarning}>
             <div className={styles.unassignedHeader}>
               <AlertTriangle size={24} />
@@ -568,10 +576,47 @@ const OptimiserContent: React.FC = () => {
               </div>
             </div>
 
+
+
+            <div className={styles.warningButtonContainer}>
+              <button
+                type="button"
+                className={classnames('btn', styles.warningShareableButton)}
+                onClick={openOptimisedTimetable}
+              >
+                <ExternalLink size={20} />
+                Open Partial Timetable
+              </button>
+            </div>
+
             <div className={styles.unassignedFooter}>
               You may need to manually add these lessons to your timetable or adjust your
               optimisation preferences
             </div>
+          </div>
+
+        )}
+
+        {/* Fully optimised timetable */}
+        {shareableLink && unAssignedLessons.length === 0 && (
+          <div className={styles.shareableLinkSection}>
+            <div className={styles.successMessage}>
+              <div className={styles.successHeader}>
+                <Zap size={24} fill="#28a745" />
+                Optimisation Complete!
+              </div>
+              <div className={styles.successDescription}>
+                Your optimised timetable is ready. Click below to view it in a new tab.
+              </div>
+            </div>
+            <button
+              type="button"
+              className={classnames('btn', styles.shareableLinkButton)}
+              onClick={openOptimisedTimetable}
+            >
+              <ExternalLink size={20} />
+              Open Optimised Timetable
+            </button>
           </div>
         )}
       </div>
