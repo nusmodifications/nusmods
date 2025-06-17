@@ -4,26 +4,12 @@ import (
 	"fmt"
 	"strings"
 
-	models "github.com/nusmodifications/nusmods/website/api/optimiser/optimise/_models"
+	constants "github.com/nusmodifications/nusmods/website/api/optimiser/_constants"
+	models "github.com/nusmodifications/nusmods/website/api/optimiser/_models"
 )
 
-var LessonTypeAbbrev = map[string]string{
-	"DESIGN LECTURE":                "DLEC",
-	"LABORATORY":                    "LAB",
-	"LECTURE":                       "LEC",
-	"PACKAGED LECTURE":              "PLEC",
-	"PACKAGED TUTORIAL":             "PTUT",
-	"RECITATION":                    "REC",
-	"SECTIONAL TEACHING":            "SEC",
-	"SEMINAR-STYLE MODULE TEACHING": "SEM",
-	"TUTORIAL":                      "TUT",
-	"TUTORIAL TYPE 2":               "TUT2",
-	"TUTORIAL TYPE 3":               "TUT3",
-	"WORKSHOP":                      "WS",
-}
-
 // Parses the assignments into a map of module codes to lesson types to class numbers
-func ConvertAssignmentsToNUSModsConfig(assignments map[string]string) map[string]map[string]string {
+func CreateConfig(assignments map[string]string) map[string]map[string]string {
 	config := make(map[string]map[string]string)
 
 	for lessonKey, classNo := range assignments {
@@ -48,14 +34,14 @@ func ConvertAssignmentsToNUSModsConfig(assignments map[string]string) map[string
 }
 
 // Constructs the URL
-func SerializeNUSModsConfig(config map[string]map[string]string) string {
+func SerializeConfig(config map[string]map[string]string) string {
 	var moduleParams []string
 
 	for moduleCode, lessons := range config {
 		var lessonParams []string
 		for lessonType, classNo := range lessons {
 			// Get abbreviation for lesson type
-			abbrev := LessonTypeAbbrev[strings.ToUpper(lessonType)]
+			abbrev := constants.LessonTypeAbbrev[strings.ToUpper(lessonType)]
 
 			lessonParams = append(lessonParams, fmt.Sprintf("%s:%s", abbrev, classNo))
 		}
@@ -67,11 +53,11 @@ func SerializeNUSModsConfig(config map[string]map[string]string) string {
 	return strings.Join(moduleParams, "&")
 }
 
-// GenerateNUSModsShareableLinkFromAssignments creates a shareable NUSMods link from the assignments
-func GenerateNUSModsShareableLinkFromAssignments(assignments map[string]string, req models.OptimiserRequest) string {
-	config := ConvertAssignmentsToNUSModsConfig(assignments)
-	serializedConfig := SerializeNUSModsConfig(config)
-	baseURL := "https://nusmods.com/timetable"
+// GenerateNUSModsShareableLink creates a shareable NUSMods link from the assignments
+func GenerateNUSModsShareableLink(assignments map[string]string, req models.OptimiserRequest) string {
+	config := CreateConfig(assignments)
+	serializedConfig := SerializeConfig(config)
+
 	semesterPath := ""
 	switch req.AcadSem {
 	case 1:
@@ -83,7 +69,7 @@ func GenerateNUSModsShareableLinkFromAssignments(assignments map[string]string, 
 	}
 
 	// Construct final URL
-	shareableURL := fmt.Sprintf("%s/%s/share?%s", baseURL, semesterPath, serializedConfig)
+	shareableURL := fmt.Sprintf("%s/%s/share?%s", constants.NUSModsTimetableBaseURL, semesterPath, serializedConfig)
 
 	return shareableURL
 }

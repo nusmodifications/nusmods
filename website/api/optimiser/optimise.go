@@ -3,14 +3,24 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
+	"strings"
 
-	models "github.com/nusmodifications/nusmods/website/api/optimiser/optimise/_models"
-	solver "github.com/nusmodifications/nusmods/website/api/optimiser/optimise/_solver"
+	"github.com/nusmodifications/nusmods/website/api/optimiser/_constants"
+	"github.com/nusmodifications/nusmods/website/api/optimiser/_models"
+	"github.com/nusmodifications/nusmods/website/api/optimiser/_solver"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	// CORS
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	// Allow CORS from allowed origins only
+	origin := r.Header.Get("Origin")
+	for _, allowedOrigin := range constants.AllowedOrigins {
+		if strings.Contains(origin, allowedOrigin) {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			break
+		}
+	}
+
 	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
@@ -18,6 +28,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNoContent)
 		return
 	}
+
 	// only allow POST requests
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)

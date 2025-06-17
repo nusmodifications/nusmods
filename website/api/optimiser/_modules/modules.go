@@ -2,56 +2,28 @@ package modules
 
 import (
 	"encoding/json"
-	"fmt"
-	"io"
-	"net/http"
 	"strings"
 
-	models "github.com/nusmodifications/nusmods/website/api/optimiser/optimise/_models"
+	"github.com/nusmodifications/nusmods/website/api/optimiser/_constants"
+	"github.com/nusmodifications/nusmods/website/api/optimiser/_models"
+	"github.com/nusmodifications/nusmods/website/api/optimiser/_client"
 )
 
-var E_Venues = map[string]bool{
-	"E-Learn_A":  true,
-	"E-Learn_B":  true,
-	"E-Learn_C":  true,
-	"E-Learn_D":  true,
-	"E-Hybrid_A": true,
-	"E-Hybrid_B": true,
-	"E-Hybrid_C": true,
-	"E-Hybrid_D": true,
-}
 
 /*
 - Get all module slots that pass conditions in optimiserRequest for all modules.
 - Reduces search space by merging slots of the same lesson type happening at the same day and time and building.
 */
 func GetAllModuleSlots(optimiserRequest models.OptimiserRequest) (map[string]map[string]map[string][]models.ModuleSlot, error) {
-	venues := make(map[string]models.Location)
-	url := "https://github.nusmods.com/venues"
-	res, err := http.Get(url)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	body, err := io.ReadAll(res.Body)
-	if err != nil {
-		return nil, err
-	}
-	err = json.Unmarshal(body, &venues)
+	venues, err := client.GetVenues()
 	if err != nil {
 		return nil, err
 	}
 
 	moduleSlots := make(map[string]map[string]map[string][]models.ModuleSlot)
 	for _, module := range optimiserRequest.Modules {
-		url = fmt.Sprintf("https://api.nusmods.com/v2/%s/modules/%s.json", optimiserRequest.AcadYear, strings.ToUpper(module))
-		res, err := http.Get(url)
-		if err != nil {
-			return nil, err
-		}
-		defer res.Body.Close()
 
-		body, err := io.ReadAll(res.Body)
+		body, err := client.GetModuleData(optimiserRequest.AcadYear, strings.ToUpper(module))
 		if err != nil {
 			return nil, err
 		}
@@ -99,7 +71,7 @@ func mergeAndFilterModuleSlots(timetable []models.ModuleSlot, venues map[string]
 	classGroups := make(map[string][]models.ModuleSlot)
 	for _, slot := range timetable {
 		// Skip venues without location data, except E-Venues (virtual venue)
-		if !E_Venues[slot.Venue] {
+		if !constants.E_Venues[slot.Venue] {
 			venueLocation := venues[slot.Venue].Location
 			if venueLocation.X == 0 && venueLocation.Y == 0 {
 				continue
@@ -160,7 +132,7 @@ func mergeAndFilterModuleSlots(timetable []models.ModuleSlot, venues map[string]
 			lessonKey := module + " " + slot.LessonType
 			isRecorded := recordingsMap[lessonKey]
 
-			if !isRecorded && !E_Venues[slot.Venue] {
+			if !isRecorded && !constants.E_Venues[slot.Venue] {
 				buildingName := extractBuildingName(slot.Venue)
 				combinationKey := slot.LessonType + "|" + slot.Day + "|" + slot.StartTime + "|" + buildingName
 

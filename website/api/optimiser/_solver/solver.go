@@ -6,8 +6,8 @@ import (
 	"sort"
 	"strings"
 
-	models "github.com/nusmodifications/nusmods/website/api/optimiser/optimise/_models"
-	modules "github.com/nusmodifications/nusmods/website/api/optimiser/optimise/_modules"
+	"github.com/nusmodifications/nusmods/website/api/optimiser/_models"
+	"github.com/nusmodifications/nusmods/website/api/optimiser/_modules"
 	"github.com/umahmood/haversine"
 )
 
@@ -346,7 +346,7 @@ func Solve(w http.ResponseWriter, req models.OptimiserRequest) {
 	})
 
 	best := BeamSearch(lessons, lessonToSlots, 2500, 100, recordings, req)
-	shareableLink := GenerateNUSModsShareableLinkFromAssignments(best.Assignments, req)
+	shareableLink := GenerateNUSModsShareableLink(best.Assignments, req)
 	response := SolveResponse{
 		TimetableState: best,
 		ShareableLink:  shareableLink,
