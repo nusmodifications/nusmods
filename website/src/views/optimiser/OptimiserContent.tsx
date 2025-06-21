@@ -5,35 +5,13 @@ import { State } from 'types/state';
 import { ColorMapping } from 'types/reducers';
 import { getModuleTimetable } from 'utils/modules';
 import { LessonType, ModuleCode } from 'types/modules';
-import styles from './OptimiserContent.scss';
 import Title from 'views/components/Title';
+import styles from './OptimiserContent.scss';
 import OptimiserHeader from './OptimiserHeader';
 import OptimiserForm from './OptimiserForm';
 import OptimiserButton from './OptimiserButton';
 import OptimiserResults from './OptimiserResults';
-
-export interface LessonOption {
-  moduleCode: ModuleCode;
-  lessonType: LessonType;
-  colorIndex: number;
-  displayText: string;
-  uniqueKey: string;
-}
-
-export interface LessonDaysData {
-  uniqueKey: string;
-  moduleCode: ModuleCode;
-  lessonType: LessonType;
-  displayText: string;
-  days: Set<string>;
-}
-
-export interface FreeDayConflict {
-  moduleCode: ModuleCode;
-  lessonType: LessonType;
-  displayText: string;
-  conflictingDays: string[];
-}
+import { LessonOption, LessonDaysData, FreeDayConflict } from './types';
 
 const OptimiserContent: React.FC = () => {
   const activeSemester = useSelector(({ app }: State) => app.activeSemester);

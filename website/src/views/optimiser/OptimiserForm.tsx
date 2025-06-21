@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import classnames from 'classnames';
 import { Info, X, AlertTriangle } from 'react-feather';
 import Tooltip from 'views/components/Tooltip';
-import { LessonOption, FreeDayConflict } from './OptimiserContent';
+import { LessonOption, FreeDayConflict } from './types';
 import styles from './OptimiserForm.scss';
 
 interface OptimiserFormProps {

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
 import { Zap } from 'react-feather';
-import { FreeDayConflict, LessonOption } from './OptimiserContent';
-import styles from './OptimiserButton.scss';
 import { sendOptimiseRequest } from 'apis/optimiser';
+import { FreeDayConflict, LessonOption } from './types';
+import styles from './OptimiserButton.scss';
 
 interface OptimiserButtonProps {
   freeDayConflicts: FreeDayConflict[];
@@ -61,7 +61,7 @@ const OptimiserButton: React.FC<OptimiserButtonProps> = ({
       if (data && data.shareableLink) {
         setShareableLink(data.shareableLink);
         const assignedLessons = new Set<string>();
-        
+
         if (data.Assignments !== null && data.DaySlots) {
           data.DaySlots.forEach((day: any) => {
             day.forEach((slot: any) => {
@@ -73,7 +73,7 @@ const OptimiserButton: React.FC<OptimiserButtonProps> = ({
             });
           });
         }
-        
+
         setUnAssignedLessons(
           lessonOptions.filter((lesson) => !assignedLessons.has(lesson.displayText)),
         );
