@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import { Zap } from 'react-feather';
 import { FreeDayConflict, LessonOption } from './OptimiserContent';
 import styles from './OptimiserButton.scss';
+import { sendOptimiseRequest } from 'apis/optimiser';
 
 interface OptimiserButtonProps {
   freeDayConflicts: FreeDayConflict[];
@@ -38,49 +39,52 @@ const OptimiserButton: React.FC<OptimiserButtonProps> = ({
   const [isOptimising, setIsOptimising] = useState(false);
 
   const optimiseTimetable = async () => {
-    setIsOptimising(true);
-    setShareableLink(''); // Reset shareable link
-    const modulesList = Object.keys(timetable);
-    const formatTime = (time: string) => `${time.padStart(2, '0')}00`;
-    const acadYearFormatted = `${acadYear.split('/')[0]}-${acadYear.split('/')[1]}`;
+    try {
+      setIsOptimising(true);
+      setShareableLink(''); // Reset shareable link
+      const modulesList = Object.keys(timetable);
+      const formatTime = (time: string) => `${time.padStart(2, '0')}00`;
+      const acadYearFormatted = `${acadYear.split('/')[0]}-${acadYear.split('/')[1]}`;
 
-    const response = await fetch('/api/optimiser/optimise', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        modules: modulesList,
-        acadYear: acadYearFormatted,
-        acadSem: activeSemester,
-        freeDays: Array.from(selectedFreeDays),
-        earliestTime: formatTime(earliestTime),
-        latestTime: formatTime(latestTime),
+      const data = await sendOptimiseRequest(
+        modulesList,
+        acadYearFormatted,
+        activeSemester,
+        Array.from(selectedFreeDays),
+        formatTime(earliestTime),
+        formatTime(latestTime),
         recordings,
-        lunchStart: formatTime(earliestLunchTime),
-        lunchEnd: formatTime(latestLunchTime),
-      }),
-    });
-    const data = await response.json();
-    if (data.shareableLink) {
-      setShareableLink(data.shareableLink);
-      const assignedLessons = new Set<string>();
-      if (data.Assignments !== null) {
-        data.DaySlots.forEach((day: any) => {
-          day.forEach((slot: any) => {
-            if (slot.LessonKey) {
-              const moduleCode = slot.LessonKey.split('|')[0];
-              const lessonType = slot.LessonKey.split('|')[1];
-              assignedLessons.add(`${moduleCode} ${lessonType}`);
-            }
-          });
-        });
-      }
-      setUnAssignedLessons(
-        lessonOptions.filter((lesson) => !assignedLessons.has(lesson.displayText)),
+        formatTime(earliestLunchTime),
+        formatTime(latestLunchTime),
       );
+
+      if (data && data.shareableLink) {
+        setShareableLink(data.shareableLink);
+        const assignedLessons = new Set<string>();
+        
+        if (data.Assignments !== null && data.DaySlots) {
+          data.DaySlots.forEach((day: any) => {
+            day.forEach((slot: any) => {
+              if (slot.LessonKey) {
+                const moduleCode = slot.LessonKey.split('|')[0];
+                const lessonType = slot.LessonKey.split('|')[1];
+                assignedLessons.add(`${moduleCode} ${lessonType}`);
+              }
+            });
+          });
+        }
+        
+        setUnAssignedLessons(
+          lessonOptions.filter((lesson) => !assignedLessons.has(lesson.displayText)),
+        );
+      } else {
+        console.error('Failed to get response from optimiser API');
+      }
+    } catch (error) {
+      console.error('Error optimising timetable:', error);
+    } finally {
+      setIsOptimising(false);
     }
-    setIsOptimising(false);
   };
 
   return (

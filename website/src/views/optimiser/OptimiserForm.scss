@@ -185,15 +185,22 @@
 }
 
 .timeSelect {
-  width: 5rem;
+  width: 4.5rem;
   padding: 0.25rem 0.75rem;
+  padding-left: 0.9rem;
   border: 1px solid var(--gray-lighter);
   border-radius: 0.25rem;
   outline: none;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-family: monospace;
   color: inherit;
   background-color: transparent;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%23666' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  background-size: 0.85rem;
+  cursor: pointer;
 }
 
 .timeLabel {
@@ -243,18 +250,6 @@
   gap: 0.5rem;
 }
 
-.lunchSelect {
-  width: 5rem;
-  padding: 0.25rem 0.75rem;
-  border: 1px solid var(--gray-lighter);
-  border-radius: 0.25rem;
-  outline: none;
-  font-size: 1.2rem;
-  font-family: monospace;
-  color: inherit;
-  background-color: transparent;
-}
-
 .lunchTimeLabel {
   font-weight: 500;
   font-size: 1.2rem;
@@ -293,6 +288,14 @@
   font-size: 0.95rem;
   line-height: 1.5;
   color: rgba(255, 193, 7, 0.5);
+  display: flex;
+}
+
+.timetableLink {
+  color: inherit;
+  &:hover {
+    text-decoration: none;
+  }
 }
 
 // Icon styling

@@ -250,7 +250,7 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
           </div>
           <div className={styles.lunchControlRow}>
             <select
-              className={classnames('form-select', styles.lunchSelect)}
+              className={classnames('form-select', styles.timeSelect)}
               value={earliestLunchTime}
               onChange={(e) => onEarliestLunchTimeChange(e.target.value)}
             >
@@ -264,7 +264,7 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
             <div className={styles.lunchTimeLabel}>:00</div>
             <div className={styles.lunchTimeSeparator}>to</div>
             <select
-              className={classnames('form-select', styles.lunchSelect)}
+              className={classnames('form-select', styles.timeSelect)}
               value={latestLunchTime}
               onChange={(e) => onLatestLunchTimeChange(e.target.value)}
             >
