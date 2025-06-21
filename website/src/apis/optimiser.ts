@@ -44,10 +44,8 @@ export const sendOptimiseRequest = async (
     lunchEnd,
   };
 
-  return axios.post<OptimiseResponse>(api, requestData)
-    .then(resp => resp.data)
-    .catch(err => {
-      console.error(err);
-      return null;
-    });
+  return axios
+    .post<OptimiseResponse>(api, requestData)
+    .then((resp) => resp.data)
+    .catch(() => null);
 };

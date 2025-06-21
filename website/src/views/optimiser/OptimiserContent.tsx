@@ -4,7 +4,6 @@ import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selecto
 import { State } from 'types/state';
 import { ColorMapping } from 'types/reducers';
 import { getModuleTimetable } from 'utils/modules';
-import { LessonType, ModuleCode } from 'types/modules';
 import Title from 'views/components/Title';
 import styles from './OptimiserContent.scss';
 import OptimiserHeader from './OptimiserHeader';

@@ -77,11 +77,7 @@ const OptimiserButton: React.FC<OptimiserButtonProps> = ({
         setUnAssignedLessons(
           lessonOptions.filter((lesson) => !assignedLessons.has(lesson.displayText)),
         );
-      } else {
-        console.error('Failed to get response from optimiser API');
       }
-    } catch (error) {
-      console.error('Error optimising timetable:', error);
     } finally {
       setIsOptimising(false);
     }
