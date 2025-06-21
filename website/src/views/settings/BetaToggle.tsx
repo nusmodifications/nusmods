@@ -4,7 +4,7 @@ import ExternalLink from 'views/components/ExternalLink';
 import config from 'config';
 import styles from './SettingsContainer.scss';
 
-export const currentTests = [];
+export const currentTests = ['Timetable Optimiser: find the perfect timetable for you'];
 
 type Props = {
   betaTester: boolean;

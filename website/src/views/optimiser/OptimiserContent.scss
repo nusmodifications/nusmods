@@ -1,0 +1,12 @@
+@import '~styles/utils/modules-entry.scss';
+
+// Main container
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+
+  @include media-breakpoint-down(md) {
+    padding: 0 1rem;
+  }
+} 
