@@ -3,24 +3,15 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
-	"strings"
 
-	"github.com/nusmodifications/nusmods/website/api/optimiser/_constants"
 	"github.com/nusmodifications/nusmods/website/api/optimiser/_models"
 	"github.com/nusmodifications/nusmods/website/api/optimiser/_solver"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
 
-	// Allow CORS from allowed origins only
-	origin := r.Header.Get("Origin")
-	for _, allowedOrigin := range constants.AllowedOrigins {
-		if strings.Contains(origin, allowedOrigin) {
-			w.Header().Set("Access-Control-Allow-Origin", "*")
-			break
-		}
-	}
-
+	// Allow CORS from all origins
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 

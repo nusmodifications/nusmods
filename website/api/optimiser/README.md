@@ -150,7 +150,10 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
 ## Potential Improvements
 
 - Once there is more concrete information on the building location for each venue, we can remove the current method of identifying building by taking the first few letters before the '-' in the venue name. This will improve the accuracy and reduce search space.
-- Tweak the scoring function to prioritise more important constraints
+- Tweak the scoring function to prioritise more important constraints found from user feedback. For instance:
+  - Previously the scoring function was just for distance but it produced less ideal timetables where students had 4-5 hour gaps between classes. This was fixed by punishing gaps that are 
+  larger than 2 hours between lessons linearly. 
+
 - Tweak the beam search parameters to improve performance (perhaps depending on the number of modules)
 - Create a more accurate heuristic for scoring distance between consecutive classes. (Currently, it just a random linear function that seems to work)
 - Add more constraints to optimisation proceess

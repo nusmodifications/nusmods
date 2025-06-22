@@ -1,10 +1,6 @@
 package constants
 
-var AllowedOrigins = []string{
-	"nusmods.com",
-	"vercel.app",
-}
-
+// Ensure in sync with all E-Venues in NUSMods
 var E_Venues = map[string]bool{
 	"E-Learn_A":  true,
 	"E-Learn_B":  true,
@@ -16,6 +12,7 @@ var E_Venues = map[string]bool{
 	"E-Hybrid_D": true,
 }
 
+// Ensure this is in sync with website/src/utils/timtetables.ts
 var LessonTypeAbbrev = map[string]string{
 	"DESIGN LECTURE":                "DLEC",
 	"LABORATORY":                    "LAB",

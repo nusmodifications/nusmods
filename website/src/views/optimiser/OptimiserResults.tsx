@@ -64,7 +64,7 @@ const OptimiserResults: React.FC<OptimiserResultsProps> = ({
           <div className={styles.warningButtonContainer}>
             <button
               type="button"
-              className={classnames('btn', styles.warningShareableButton)}
+              className={styles.warningShareableButton}
               onClick={openOptimisedTimetable}
             >
               <ExternalLink size={20} />
@@ -93,7 +93,7 @@ const OptimiserResults: React.FC<OptimiserResultsProps> = ({
           </div>
           <button
             type="button"
-            className={classnames('btn', styles.shareableLinkButton)}
+            className={styles.shareableLinkButton}
             onClick={openOptimisedTimetable}
           >
             <ExternalLink size={20} />
