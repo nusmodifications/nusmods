@@ -1,0 +1,209 @@
+@import '~styles/utils/modules-entry.scss';
+
+.lessonTag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  border-bottom: 3px solid;
+  border-radius: 0.25rem;
+  font-weight: 500;
+  font-size: 0.8rem;
+  transition: transform 0.15s ease, filter 0.15s ease;
+  gap: 0.25rem;
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+} 
+
+.tag {
+    cursor: pointer;
+}
+
+// Unassigned lessons warning
+.unassignedWarning {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  border-radius: 0.75rem;
+  background-color: rgba(255, 193, 7, 0.1);
+  gap: 1rem;
+}
+
+.unassignedHeader {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #ff8c00;
+  gap: 0.75rem;
+}
+
+.unassignedDescription {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #69707a;
+}
+
+.unassignedLessons {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 1rem;
+  gap: 0.5rem;
+}
+
+.unassignedLessonTag {
+  display: inline-flex;
+  opacity: 1;
+  align-items: center;
+  padding: 0.4rem 0.8rem;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-radius: 0.25rem;
+  font-weight: bold;
+  font-size: 0.85rem;
+  filter: brightness(0.9);
+}
+
+.unassignedExplanation {
+  padding: 1rem;
+  border-left: 4px solid rgba(255, 193, 7, 0.4);
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #69707a;
+  background-color: rgba(255, 193, 7, 0.05);
+}
+
+.unassignedExplanationHeader {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #ff8c00;
+}
+
+.unassignedExplanationItem {
+  margin-bottom: 0.5rem;
+}
+
+.unassignedFooter {
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 193, 7, 0.2);
+  font-style: italic;
+  font-size: 0.85rem;
+  text-align: center;
+  color: #69707a;
+}
+
+// Shareable link section
+.shareableLinkSection {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  border: 1px solid rgba(40, 167, 69, 0.3);
+  border-radius: 0.75rem;
+  background-color: rgba(40, 167, 69, 0.05);
+  gap: 1.5rem;
+}
+
+.successMessage {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.successHeader {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #28a745;
+  gap: 0.75rem;
+}
+
+.successDescription {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #69707a;
+}
+
+.shareableLinkButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  padding: 0.75rem 2rem;
+  border: 1px solid #28a745;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-size: 1rem;
+  color: #28a745;
+  background-color: transparent;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  gap: 0.5rem;
+
+  &:hover {
+    color: var(--body-bg);
+    background-color: #28a745;
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    color: var(--body-bg);
+    background-color: #218838;
+    transform: translateY(0);
+  }
+
+  @include media-breakpoint-down(md) {
+    width: 100%;
+    padding: 1rem 2rem;
+  }
+}
+
+.warningButtonContainer {
+  display: flex;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.warningShareableButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  padding: 0.75rem 2rem;
+  border: 1px solid #ffc107;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-size: 1rem;
+  color: #ff8c00;
+  background-color: transparent;
+  box-shadow: 0 2px 8px rgba(255, 193, 7, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  gap: 0.5rem;
+
+  &:hover {
+    color: var(--body-bg);
+    background-color: #ffc107;
+    box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    color: var(--body-bg);
+    background-color: #e0a800;
+    transform: translateY(0);
+  }
+
+  @include media-breakpoint-down(md) {
+    width: 100%;
+    padding: 1rem 2rem;
+  }
+} 
