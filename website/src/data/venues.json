@@ -738,7 +738,7 @@
     }
   },
   "AS1-0304": {
-    "roomName": "Seminar Room7",
+    "roomName": "Seminar Room 7",
     "floor": 3,
     "location": {
       "x": 103.77265159020482,
@@ -5036,7 +5036,7 @@
     }
   },
   "E-Hybrid_A": {
-    "roomName": "E-hybrid-2",
+    "roomName": "E-Hybrid-2",
     "floor": 1,
     "location": {
       "x": 103.77305746078493,
@@ -5044,7 +5044,7 @@
     }
   },
   "E4-04-05": {
-    "roomName": "e4",
+    "roomName": "E4",
     "floor": 1,
     "location": {
       "x": 103.77341151237489,
@@ -5052,7 +5052,7 @@
     }
   },
   "HSS-03-07": {
-    "roomName": "Hss03-07",
+    "roomName": "HSS03-07",
     "floor": 1,
     "location": {
       "x": 103.77378165721895,
@@ -5116,7 +5116,7 @@
     }
   },
   "MD10-01-02": {
-    "roomName": "md10",
+    "roomName": "MD10",
     "floor": 1,
     "location": {
       "x": 103.77403914928436,
@@ -5124,7 +5124,7 @@
     }
   },
   "E4A-04-03": {
-    "roomName": "e4a",
+    "roomName": "E4A",
     "floor": 1,
     "location": {
       "x": 103.77340890454003,
@@ -5132,7 +5132,7 @@
     }
   },
   "S16-0517": {
-    "roomName": "s16-0517",
+    "roomName": "S16-0517",
     "floor": 1,
     "location": {
       "x": 103.77322375774385,
@@ -5148,7 +5148,7 @@
     }
   },
   "E8-03-22": {
-    "roomName": "E8",
+    "roomName": "E8-03-22",
     "floor": 1,
     "location": {
       "x": 103.7732881307602,
