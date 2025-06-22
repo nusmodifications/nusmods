@@ -19,13 +19,15 @@ The optimiser intelligently prioritises:
 ```
 website/api/optimiser/
 ├── optimise.go               # Main HTTP handler and entry point for vercel serverless function
-├── _constants/               # Constants 
+├── _constants/               # Constants
 ├── _client/                  # HTTP client
-├── _models/                  # Data structures and types 
+├── _models/                  # Data structures and types
 ├── _modules/                 # Module data processing for optimisation
-├── _solver/                  
-│   ├── solver.go             # Main solver logic 
+├── _solver/
+│   ├── solver.go             # Main solver logic
 │   └── nusmods_link.go       # Shareable NUSMods link generation
+├── _test/
+│   └── main.go               # Test server for local development
 ├── go.mod                    # Go module dependencies
 ├── go.sum                    # Go dependency checksums
 └── README.md                 # This documentation
@@ -55,7 +57,7 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
   "recordings": ["CS1010S Lecture", "CS2030S Laboratory"],
   "freeDays": ["Monday", "Friday"],
   "earliestTime": "0900",
-  "latestTime": "1800", 
+  "latestTime": "1800",
   "acadYear": "2024-2025",
   "acadSem": 1,
   "lunchStart": "1200",
@@ -77,7 +79,7 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
   "DaySlots": [
     [ /* Monday slots */ ],
     [ /* Tuesday slots */ ],
-    [ /* Wednesday slots */ ],  
+    [ /* Wednesday slots */ ],
     [ /* Thursday slots */ ],
     [ /* Friday slots */ ]
   ],
@@ -126,8 +128,13 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
    go mod tidy
    ```
 
-3. **Test the API**
-- Send a POST request following the request body format above to `http://localhost:8080/api/optimiser/optimise`
+3. **Run test server**
+   ```bash
+   yarn start:optimiser -port 8020
+   ```
+
+4. **Test the API**
+- Send a POST request following the request body format above to `http://localhost:8080/optimise`
 
 ## Dependencies
 
@@ -151,8 +158,8 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
 
 - Once there is more concrete information on the building location for each venue, we can remove the current method of identifying building by taking the first few letters before the '-' in the venue name. This will improve the accuracy and reduce search space.
 - Tweak the scoring function to prioritise more important constraints found from user feedback. For instance:
-  - Previously the scoring function was just for distance but it produced less ideal timetables where students had 4-5 hour gaps between classes. This was fixed by punishing gaps that are 
-  larger than 2 hours between lessons linearly. 
+  - Previously the scoring function was just for distance but it produced less ideal timetables where students had 4-5 hour gaps between classes. This was fixed by punishing gaps that are
+  larger than 2 hours between lessons linearly.
 
 - Tweak the beam search parameters to improve performance (perhaps depending on the number of modules)
 - Create a more accurate heuristic for scoring distance between consecutive classes. (Currently, it just a random linear function that seems to work)
