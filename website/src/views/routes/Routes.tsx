@@ -18,6 +18,7 @@ import TodayContainer from 'views/today/TodayContainer';
 import PlannerContainer from 'views/planner/PlannerContainer';
 import TetrisContainer from 'views/tetris/TetrisContainer';
 import MpeContainer from 'views/mpe/MpeContainer';
+import OptimiserContainer from 'views/optimiser/OptimiserContent';
 import ExternalRedirect from './ExternalRedirect';
 
 // IMPORTANT: Remember to update any route changes on the sitemap
@@ -25,6 +26,7 @@ const Routes: React.FC = () => (
   <Switch>
     <Redirect exact from="/" to="/timetable" />
     <Route path="/timetable/:semester?/:action?" component={TimetableContainer} />
+    <Route path="/optimiser" component={OptimiserContainer} />
     <Route exact path="/courses" component={ModuleFinderContainer} />
     <Route path="/courses/:moduleCode/:slug?" component={ModulePageContainer} />
     {/* Legacy Routes: Consider removal in the future, but otherwise */}
