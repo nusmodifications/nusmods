@@ -7,9 +7,12 @@ import { breakpointUp } from 'utils/css';
 
 import styles from './ErrorPage.scss';
 
+const defaultPromptText = 'This could be because your device is offline or NUSMods is down :(';
+
 type Props = {
   retry?: () => void;
   dataName?: string;
+  promptText?: string;
 };
 
 export default class ApiError extends React.PureComponent<Props> {
@@ -30,7 +33,7 @@ export default class ApiError extends React.PureComponent<Props> {
   };
 
   override render() {
-    const { retry, dataName } = this.props;
+    const { retry, dataName, promptText } = this.props;
     const message = dataName ? `We can't load the ${dataName}` : "We can't connect to NUSMods";
 
     return (
@@ -46,7 +49,7 @@ export default class ApiError extends React.PureComponent<Props> {
             <span className={styles.expr}>Oh no...</span> {message}
           </h1>
 
-          <p>This could be because your device is offline or NUSMods is down :(</p>
+          <p>{promptText ?? defaultPromptText}</p>
           {/* TODO: Remove hacky message after we figure out what is wrong with Elastic Search. */}
           {dataName === 'course information' && (
             <>

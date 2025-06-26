@@ -254,7 +254,12 @@ const OptimiserContent: React.FC = () => {
         onClick={buttonOnClick}
       />
 
-      {!!error && <ApiError dataName="timetable optimiser" retry={buttonOnClick} />}
+      {!!error && (
+        <ApiError
+          dataName="timetable optimiser"
+          promptText="This feature is in Beta, so we would really appreciate your feedback! "
+        />
+      )}
 
       {/* Optimiser results */}
       <OptimiserResults
