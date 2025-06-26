@@ -20,7 +20,7 @@ type OptimiserRequest struct {
 
 type TimetableState struct {
 	Assignments   map[string]string // lessonKey -> chosen classNo
-	DaySlots      [6][]ModuleSlot   // For each weekday (Mon-Sat), a time-sorted slice of slots
+	DaySlots      [6][]ModuleSlot   // For each day, a time-sorted slice of slots
 	DayDistance   [6]float64        // Squared travel distance per day
 	TotalDistance float64           // Sum of all DayDistance
 }
