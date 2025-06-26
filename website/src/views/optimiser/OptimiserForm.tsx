@@ -63,7 +63,11 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
             content="Chosen lessons will only be allocated on your school days"
             placement="right"
           >
-            <Info className={`${styles.tag} ${styles.infoIcon}`} style={{marginLeft: '0.5rem'}} size={15} />
+            <Info
+              className={`${styles.tag} ${styles.infoIcon}`}
+              style={{ marginLeft: '0.5rem' }}
+              size={15}
+            />
           </Tooltip>
         </div>
       </div>
