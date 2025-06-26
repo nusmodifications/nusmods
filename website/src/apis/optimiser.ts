@@ -1,8 +1,8 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 const api = '/api/optimiser/optimise';
 
-interface OptimiseRequest {
+export interface OptimiseRequest {
   modules: string[];
   acadYear: string;
   acadSem: number;
@@ -14,38 +14,30 @@ interface OptimiseRequest {
   lunchEnd: string;
 }
 
-interface OptimiseResponse {
+export interface LessonSlot {
+  DayIndex: number;
+  EndMin: number;
+  LessonKey: string | undefined;
+  StartMin: number;
+  classNo: string;
+  coordinates: { x: number; y: number };
+  day: string;
+  endTime: string;
+  lessonType: string;
+  startTime: string;
+  venue: string;
+}
+
+export interface OptimiseResponse {
   shareableLink?: string;
-  Assignments?: any;
-  DaySlots?: any[][];
+  Assignments?: { [lesson: string]: string };
+  DaySlots?: LessonSlot[][];
+
+  // TODO: implement type
   [key: string]: any;
 }
 
 export const sendOptimiseRequest = async (
-  modules: string[],
-  acadYear: string,
-  acadSem: number,
-  freeDays: string[],
-  earliestTime: string,
-  latestTime: string,
-  recordings: string[],
-  lunchStart: string,
-  lunchEnd: string,
-): Promise<OptimiseResponse | null> => {
-  const requestData: OptimiseRequest = {
-    modules,
-    acadYear,
-    acadSem,
-    freeDays,
-    earliestTime,
-    latestTime,
-    recordings,
-    lunchStart,
-    lunchEnd,
-  };
-
-  return axios
-    .post<OptimiseResponse>(api, requestData)
-    .then((resp) => resp.data)
-    .catch(() => null);
-};
+  params: OptimiseRequest,
+): Promise<OptimiseResponse | AxiosError> =>
+  axios.post<OptimiseResponse>(api, params).then((resp) => resp.data);
