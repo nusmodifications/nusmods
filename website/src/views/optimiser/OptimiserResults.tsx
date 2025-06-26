@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classnames from 'classnames';
 import { AlertTriangle, Zap, ExternalLink } from 'react-feather';
 import { LessonOption } from './types';
@@ -10,17 +10,30 @@ interface OptimiserResultsProps {
   openOptimisedTimetable: () => void;
 }
 
+const scrollToBottom = () => {
+  const element = document.getElementById('optimiser-results');
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+  }
+};
+
 const OptimiserResults: React.FC<OptimiserResultsProps> = ({
   shareableLink,
   unAssignedLessons,
   openOptimisedTimetable,
 }) => {
+  useEffect(() => {
+    if (shareableLink) {
+      scrollToBottom();
+    }
+  }, [shareableLink]);
+
   if (!shareableLink) {
     return null;
   }
 
   return (
-    <>
+    <div id="optimiser-results">
       {/* Partially optimised timetable */}
       {unAssignedLessons.length > 0 && (
         <div className={styles.unassignedWarning}>
@@ -101,7 +114,7 @@ const OptimiserResults: React.FC<OptimiserResultsProps> = ({
           </button>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
