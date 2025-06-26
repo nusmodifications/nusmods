@@ -20,6 +20,7 @@ interface OptimiserFormProps {
   onLatestTimeChange: (time: string) => void;
   onEarliestLunchTimeChange: (time: string) => void;
   onLatestLunchTimeChange: (time: string) => void;
+  hasSaturday: boolean;
 }
 
 const OptimiserForm: React.FC<OptimiserFormProps> = ({
@@ -37,6 +38,7 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
   onLatestTimeChange,
   onEarliestLunchTimeChange,
   onLatestLunchTimeChange,
+  hasSaturday,
 }) => {
   const toggleLessonSelection = useCallback(
     (option: LessonOption) => {
@@ -56,7 +58,7 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
     <div className={styles.mainContent}>
       <div className={styles.sectionHeader}>
         <div>
-          Select lessons you plan to attend physically (in person, online, or other format)
+          Select lessons you plan to attend live (in person, online, or other format)
           <Tooltip
             content="Chosen lessons will only be allocated on your school days"
             placement="right"
@@ -154,6 +156,17 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
         >
           Friday
         </button>
+        {hasSaturday && (
+          <button
+            type="button"
+            className={classnames('btn btn-outline-primary btn-svg', {
+              active: selectedFreeDays.has('Saturday'),
+            })}
+            onClick={() => toggleFreeDay('Saturday')}
+          >
+            Saturday
+          </button>
+        )}
       </div>
 
       {/* Free Day Conflicts Display */}
@@ -173,7 +186,7 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
             </div>
           ))}
           <div className={styles.conflictFooter}>
-            Consider marking these lessons as non-physical or choosing different free days.
+            Consider disabling live attendance for these lessons or selecting different free days.
           </div>
         </div>
       )}
@@ -182,7 +195,7 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
         <div className={styles.timeControlWrapper}>
           <div className={styles.timeControlGroup}>
             <div className={styles.timeControlHeader}>
-              Earliest class time
+              Earliest start time
               <Tooltip content="There will be no physical class before this time" placement="right">
                 <Info className={`${styles.tag} ${styles.infoIcon}`} size={15} />
               </Tooltip>
@@ -204,13 +217,17 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
                 <option value="16">16</option>
                 <option value="17">17</option>
                 <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
               </select>
               <div className={styles.timeLabel}>:00</div>
             </div>
           </div>
           <div className={styles.timeControlGroup}>
             <div className={styles.timeControlHeader}>
-              Latest class time
+              Latest end time
               <Tooltip content="There will be no physical class after this time" placement="right">
                 <Info className={`${styles.tag} ${styles.infoIcon}`} size={15} />
               </Tooltip>
@@ -232,6 +249,10 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
                 <option value="17">17</option>
                 <option value="18">18</option>
                 <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
               </select>
               <div className={styles.timeLabel}>:00</div>
             </div>

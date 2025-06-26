@@ -81,14 +81,16 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
     [ /* Tuesday slots */ ],
     [ /* Wednesday slots */ ],
     [ /* Thursday slots */ ],
-    [ /* Friday slots */ ]
+    [ /* Friday slots */ ],
+    [ /* Saturday slots */ ]
   ],
   "DayDistance": [
     0, // Monday
     0, // Tuesday
     0.6879499381097249, // Wednesday
     34.33700778293036, // Thursday
-    7.738363670499865 // Friday
+    7.738363670499865, // Friday
+    0 // Saturday
   ],
   "TotalDistance": 42.76332139153995,
   "shareableLink": "https://nusmods.com/timetable/sem-1/share?CS1010S=LEC:1,REC:04&CS2030S=LEC:1&MA1521=LEC:1,TUT:01"
@@ -101,7 +103,7 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
 | -------------- | ---------- | -------------------------------------------------------------------------------------- |
 | `modules`      | `[]string` | Module codes to include in optimisation in Upper case (e.g. "CS1010S")                 |
 | `recordings`   | `[]string` | Lessons marked as recorded/online (format: "MODULE LessonType") e.g. "CS1010S Lecture" |
-| `freeDays`     | `[]string` | Weekdays to keep free of physical classes e.g. "Monday"                                |
+| `freeDays`     | `[]string` | Days to keep free of physical classes e.g. "Monday"                                    |
 | `earliestTime` | `string`   | Earliest acceptable class time (HHMM format)                                           |
 | `latestTime`   | `string`   | Latest acceptable class time (HHMM format)                                             |
 | `acadYear`     | `string`   | Academic year (format: "YYYY-YYYY") e.g. "2024-2025"                                   |

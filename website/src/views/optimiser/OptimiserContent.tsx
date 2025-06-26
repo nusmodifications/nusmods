@@ -28,6 +28,7 @@ const OptimiserContent: React.FC = () => {
   const [freeDayConflicts, setFreeDayConflicts] = useState<FreeDayConflict[]>([]);
   const [unAssignedLessons, setUnAssignedLessons] = useState<LessonOption[]>([]);
   const [shareableLink, setShareableLink] = useState<string>('');
+  const [hasSaturday, setHasSaturday] = useState<boolean>(false);
 
   // Generate lesson options from current timetable
   const lessonOptions = useMemo(() => {
@@ -76,7 +77,9 @@ const OptimiserContent: React.FC = () => {
       lessonsForType.forEach((lesson) => {
         days.add(lesson.day);
       });
-
+      if (days.has('Saturday')) {
+        setHasSaturday(true);
+      }
       lessonDays.push({
         uniqueKey: option.uniqueKey,
         moduleCode: option.moduleCode,
@@ -179,6 +182,7 @@ const OptimiserContent: React.FC = () => {
         earliestLunchTime={earliestLunchTime}
         latestLunchTime={latestLunchTime}
         freeDayConflicts={freeDayConflicts}
+        hasSaturday={hasSaturday}
         onToggleLessonSelection={toggleLessonSelection}
         onToggleFreeDay={toggleFreeDay}
         onEarliestTimeChange={setEarliestTime}

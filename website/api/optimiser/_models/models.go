@@ -20,8 +20,8 @@ type OptimiserRequest struct {
 
 type TimetableState struct {
 	Assignments   map[string]string // lessonKey -> chosen classNo
-	DaySlots      [5][]ModuleSlot   // For each weekday, a time-sorted slice of slots
-	DayDistance   [5]float64        // Squared travel distance per day
+	DaySlots      [6][]ModuleSlot   // For each weekday (Mon-Sat), a time-sorted slice of slots
+	DayDistance   [6]float64        // Squared travel distance per day
 	TotalDistance float64           // Sum of all DayDistance
 }
 
@@ -37,7 +37,7 @@ type ModuleSlot struct {
 	// Parsed fields
 	StartMin  int    // Minutes from 00:00 (e.g., 540 for 09:00)
 	EndMin    int    // Minutes from 00:00
-	DayIndex  int    // 0=Monday, 1=Tuesday, 2=Wednesday, 3=Thursday, 4=Friday
+	DayIndex  int    // 0=Monday, 1=Tuesday, 2=Wednesday, 3=Thursday, 4=Friday, 5=Saturday
 	LessonKey string // "MODULE|LessonType"
 }
 
@@ -71,13 +71,14 @@ type Location struct {
 	Location Coordinates `json:"location"`
 }
 
-// dayToIndex maps uppercase weekday names to indices 0..4.
+// dayToIndex maps uppercase weekday names to indices 0..5.
 var dayToIndex = map[string]int{
 	"MONDAY":    0,
 	"TUESDAY":   1,
 	"WEDNESDAY": 2,
 	"THURSDAY":  3,
 	"FRIDAY":    4,
+	"SATURDAY":  5,
 }
 
 // Helper Functions
