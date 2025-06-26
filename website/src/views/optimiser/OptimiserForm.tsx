@@ -55,13 +55,15 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
   return (
     <div className={styles.mainContent}>
       <div className={styles.sectionHeader}>
-        Select lessons you plan to attend physically (in person, online, or other format)
-        <Tooltip
-          content="Chosen lessons will only be allocated on your school days"
-          placement="right"
-        >
-          <Info className={`${styles.tag} ${styles.infoIcon}`} size={15} />
-        </Tooltip>
+        <div>
+          Select lessons you plan to attend physically (in person, online, or other format)
+          <Tooltip
+            content="Chosen lessons will only be allocated on your school days"
+            placement="right"
+          >
+            <Info className={`${styles.tag} ${styles.infoIcon}`} style={{marginLeft: '0.5rem'}} size={15} />
+          </Tooltip>
+        </div>
       </div>
 
       {/* Lesson Selection Buttons */}
