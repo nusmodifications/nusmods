@@ -13,6 +13,8 @@ import {
   setPlannerMaxYear,
   setPlannerIBLOCs,
   setIgnorePrerequisitesCheck,
+  IMPORT_JSON_PLANNER,
+  importJsonPlanner,
 } from 'actions/planner';
 import { PlannerState } from 'types/reducers';
 import reducer, { migrateV0toV1, nextId } from './planner';
@@ -200,6 +202,28 @@ describe(REMOVE_PLANNER_MODULE, () => {
 
   test('should remove the specified module', () => {
     expect(reducer(initial, removePlannerModule('0')).modules).toEqual({});
+  });
+});
+
+describe(IMPORT_JSON_PLANNER, () => {
+  const initial: PlannerState = {
+    ...defaultState,
+  };
+
+  const importedState: PlannerState = {
+    minYear: '2024/2025',
+    maxYear: '2025/2026',
+    iblocs: true,
+    ignorePrereqCheck: true,
+    modules: {
+      0: { id: '0', moduleCode: 'CS1010S', year: '2018/2019', semester: 1, index: 0 },
+    },
+    custom: {
+      CS1010A: { title: 'CS1010B', moduleCredit: 4 },
+    },
+  };
+  test('should remove the specified module', () => {
+    expect(reducer(initial, importJsonPlanner(importedState))).toEqual(importedState);
   });
 });
 
