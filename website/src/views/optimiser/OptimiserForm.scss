@@ -30,6 +30,8 @@
 // Section headers
 .sectionHeader {
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   margin-bottom: 1rem;
   font-size: 1rem;
@@ -185,7 +187,7 @@
 }
 
 .timeSelect {
-  width: 4.5rem;
+  width: 7.1rem;
   padding: 0.25rem 0.75rem;
   padding-left: 0.9rem;
   border: 1px solid var(--gray-lighter);

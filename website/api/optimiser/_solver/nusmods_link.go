@@ -64,6 +64,10 @@ func GenerateNUSModsShareableLink(assignments map[string]string, req models.Opti
 		semesterPath = "sem-1"
 	case 2:
 		semesterPath = "sem-2"
+	case 3:
+		semesterPath = "st-i"
+	case 4:
+		semesterPath = "st-ii"
 	default:
 		semesterPath = "sem-1"
 	}

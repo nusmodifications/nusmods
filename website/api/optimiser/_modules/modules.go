@@ -39,8 +39,17 @@ func GetAllModuleSlots(optimiserRequest models.OptimiserRequest) (map[string]map
 			return nil, err
 		}
 
-		// Store the module slots for the module in map
-		moduleSlots[module] = mergeAndFilterModuleSlots(moduleData.SemesterData[optimiserRequest.AcadSem-1].Timetable, venues, optimiserRequest, module)
+		// Get the module timetable for the semester
+		var moduleTimetable []models.ModuleSlot
+		for _, semester := range moduleData.SemesterData {
+			if semester.Semester == optimiserRequest.AcadSem {
+				moduleTimetable = semester.Timetable
+				break
+			}
+		}
+
+		// Store the module slots for the module 
+		moduleSlots[module] = mergeAndFilterModuleSlots(moduleTimetable, venues, optimiserRequest, module)
 
 	}
 
