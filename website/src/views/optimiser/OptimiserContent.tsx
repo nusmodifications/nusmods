@@ -201,8 +201,8 @@ const OptimiserContent: React.FC = () => {
     const daySlots = data.DaySlots ?? [];
     const assignedLessons = new Set(
       flatten(daySlots)
-        .map((slot: LessonSlot) => {
-          const lessonKey = slot.LessonKey;
+        .map((slot: LessonSlot | null) => {
+          const lessonKey = slot?.LessonKey;
           if (!lessonKey) {
             return null;
           }

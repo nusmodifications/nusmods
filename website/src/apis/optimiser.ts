@@ -31,7 +31,7 @@ export interface LessonSlot {
 export interface OptimiseResponse {
   shareableLink?: string;
   Assignments?: { [lesson: string]: string };
-  DaySlots?: LessonSlot[][];
+  DaySlots?: (LessonSlot | null)[][];
 
   // TODO: implement type
   [key: string]: any;
