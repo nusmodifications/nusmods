@@ -21,7 +21,7 @@ var LessonTypeAbbrev = map[string]string{
 	"PACKAGED TUTORIAL":             "PTUT",
 	"RECITATION":                    "REC",
 	"SECTIONAL TEACHING":            "SEC",
-	"SEMINAR-STYLE MODULE TEACHING": "SEM",
+	"SEMINAR-STYLE MODULE CLASS":	 "SEM",
 	"TUTORIAL":                      "TUT",
 	"TUTORIAL TYPE 2":               "TUT2",
 	"TUTORIAL TYPE 3":               "TUT3",

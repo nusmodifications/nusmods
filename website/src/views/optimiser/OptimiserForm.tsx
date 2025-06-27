@@ -20,6 +20,7 @@ interface OptimiserFormProps {
   onLatestTimeChange: (time: string) => void;
   onEarliestLunchTimeChange: (time: string) => void;
   onLatestLunchTimeChange: (time: string) => void;
+  hasSaturday: boolean;
 }
 
 const OptimiserForm: React.FC<OptimiserFormProps> = ({
@@ -37,6 +38,7 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
   onLatestTimeChange,
   onEarliestLunchTimeChange,
   onLatestLunchTimeChange,
+  hasSaturday,
 }) => {
   const toggleLessonSelection = useCallback(
     (option: LessonOption) => {
@@ -55,13 +57,19 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
   return (
     <div className={styles.mainContent}>
       <div className={styles.sectionHeader}>
-        Select lessons you plan to attend physically (in person, online, or other format)
-        <Tooltip
-          content="Chosen lessons will only be allocated on your school days"
-          placement="right"
-        >
-          <Info className={`${styles.tag} ${styles.infoIcon}`} size={15} />
-        </Tooltip>
+        <div>
+          Select lessons you plan to attend live (in person, online, or other format)
+          <Tooltip
+            content="Chosen lessons will only be allocated on your school days"
+            placement="right"
+          >
+            <Info
+              className={`${styles.tag} ${styles.infoIcon}`}
+              style={{ marginLeft: '0.5rem' }}
+              size={15}
+            />
+          </Tooltip>
+        </div>
       </div>
 
       {/* Lesson Selection Buttons */}
@@ -152,6 +160,17 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
         >
           Friday
         </button>
+        {hasSaturday && (
+          <button
+            type="button"
+            className={classnames('btn btn-outline-primary btn-svg', {
+              active: selectedFreeDays.has('Saturday'),
+            })}
+            onClick={() => toggleFreeDay('Saturday')}
+          >
+            Saturday
+          </button>
+        )}
       </div>
 
       {/* Free Day Conflicts Display */}
@@ -171,7 +190,7 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
             </div>
           ))}
           <div className={styles.conflictFooter}>
-            Consider marking these lessons as non-physical or choosing different free days.
+            Consider disabling live attendance for these lessons or selecting different free days.
           </div>
         </div>
       )}
@@ -180,7 +199,7 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
         <div className={styles.timeControlWrapper}>
           <div className={styles.timeControlGroup}>
             <div className={styles.timeControlHeader}>
-              Earliest class time
+              Earliest start time
               <Tooltip content="There will be no physical class before this time" placement="right">
                 <Info className={`${styles.tag} ${styles.infoIcon}`} size={15} />
               </Tooltip>
@@ -191,24 +210,40 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
                 value={earliestTime}
                 onChange={(e) => onEarliestTimeChange(e.target.value)}
               >
-                <option value="08">08</option>
-                <option value="09">09</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-                <option value="13">13</option>
-                <option value="14">14</option>
-                <option value="15">15</option>
-                <option value="16">16</option>
-                <option value="17">17</option>
-                <option value="18">18</option>
+                <option value="0800">08:00</option>
+                <option value="0830">08:30</option>
+                <option value="0900">09:00</option>
+                <option value="0930">09:30</option>
+                <option value="1000">10:00</option>
+                <option value="1030">10:30</option>
+                <option value="1100">11:00</option>
+                <option value="1130">11:30</option>
+                <option value="1200">12:00</option>
+                <option value="1230">12:30</option>
+                <option value="1300">13:00</option>
+                <option value="1330">13:30</option>
+                <option value="1400">14:00</option>
+                <option value="1430">14:30</option>
+                <option value="1500">15:00</option>
+                <option value="1530">15:30</option>
+                <option value="1600">16:00</option>
+                <option value="1630">16:30</option>
+                <option value="1700">17:00</option>
+                <option value="1800">18:00</option>
+                <option value="1830">18:30</option>
+                <option value="1900">19:00</option>
+                <option value="1930">19:30</option>
+                <option value="2000">20:00</option>
+                <option value="2030">20:30</option>
+                <option value="2100">21:00</option>
+                <option value="2130">21:30</option>
+                <option value="2200">22:00</option>
               </select>
-              <div className={styles.timeLabel}>:00</div>
             </div>
           </div>
           <div className={styles.timeControlGroup}>
             <div className={styles.timeControlHeader}>
-              Latest class time
+              Latest end time
               <Tooltip content="There will be no physical class after this time" placement="right">
                 <Info className={`${styles.tag} ${styles.infoIcon}`} size={15} />
               </Tooltip>
@@ -219,19 +254,35 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
                 value={latestTime}
                 onChange={(e) => onLatestTimeChange(e.target.value)}
               >
-                <option value="09">09</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-                <option value="13">13</option>
-                <option value="14">14</option>
-                <option value="15">15</option>
-                <option value="16">16</option>
-                <option value="17">17</option>
-                <option value="18">18</option>
-                <option value="19">19</option>
+                <option value="0900">09:00</option>
+                <option value="0930">09:30</option>
+                <option value="1000">10:00</option>
+                <option value="1030">10:30</option>
+                <option value="1100">11:00</option>
+                <option value="1130">11:30</option>
+                <option value="1200">12:00</option>
+                <option value="1230">12:30</option>
+                <option value="1300">13:00</option>
+                <option value="1330">13:30</option>
+                <option value="1400">14:00</option>
+                <option value="1430">14:30</option>
+                <option value="1500">15:00</option>
+                <option value="1530">15:30</option>
+                <option value="1600">16:00</option>
+                <option value="1630">16:30</option>
+                <option value="1700">17:00</option>
+                <option value="1800">18:00</option>
+                <option value="1830">18:30</option>
+                <option value="1900">19:00</option>
+                <option value="1930">19:30</option>
+                <option value="2000">20:00</option>
+                <option value="2030">20:30</option>
+                <option value="2100">21:00</option>
+                <option value="2130">21:30</option>
+                <option value="2200">22:00</option>
+                <option value="2230">22:30</option>
+                <option value="2300">23:00</option>
               </select>
-              <div className={styles.timeLabel}>:00</div>
             </div>
           </div>
         </div>
@@ -254,28 +305,42 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
               value={earliestLunchTime}
               onChange={(e) => onEarliestLunchTimeChange(e.target.value)}
             >
-              <option value="11">11</option>
-              <option value="12">12</option>
-              <option value="13">13</option>
-              <option value="14">14</option>
-              <option value="15">15</option>
-              <option value="16">16</option>
+              <option value="1000">10:00</option>
+              <option value="1030">10:30</option>
+              <option value="1100">11:00</option>
+              <option value="1130">11:30</option>
+              <option value="1200">12:00</option>
+              <option value="1230">12:30</option>
+              <option value="1300">13:00</option>
+              <option value="1330">13:30</option>
+              <option value="1400">14:00</option>
+              <option value="1430">14:30</option>
+              <option value="1500">15:00</option>
+              <option value="1530">15:30</option>
+              <option value="1600">16:00</option>
+              <option value="1630">16:30</option>
             </select>
-            <div className={styles.lunchTimeLabel}>:00</div>
             <div className={styles.lunchTimeSeparator}>to</div>
             <select
               className={classnames('form-select', styles.timeSelect)}
               value={latestLunchTime}
               onChange={(e) => onLatestLunchTimeChange(e.target.value)}
             >
-              <option value="12">12</option>
-              <option value="13">13</option>
-              <option value="14">14</option>
-              <option value="15">15</option>
-              <option value="16">16</option>
-              <option value="17">17</option>
+              <option value="1100">11:00</option>
+              <option value="1130">11:30</option>
+              <option value="1200">12:00</option>
+              <option value="1230">12:30</option>
+              <option value="1300">13:00</option>
+              <option value="1330">13:30</option>
+              <option value="1400">14:00</option>
+              <option value="1430">14:30</option>
+              <option value="1500">15:00</option>
+              <option value="1530">15:30</option>
+              <option value="1600">16:00</option>
+              <option value="1630">16:30</option>
+              <option value="1700">17:00</option>
+              <option value="1730">17:30</option>
             </select>
-            <div className={styles.lunchTimeLabel}>:00</div>
           </div>
         </div>
       </div>

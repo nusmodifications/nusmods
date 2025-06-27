@@ -43,7 +43,6 @@ const OptimiserButton: React.FC<OptimiserButtonProps> = ({
       setIsOptimising(true);
       setShareableLink(''); // Reset shareable link
       const modulesList = Object.keys(timetable);
-      const formatTime = (time: string) => `${time.padStart(2, '0')}00`;
       const acadYearFormatted = `${acadYear.split('/')[0]}-${acadYear.split('/')[1]}`;
 
       const data = await sendOptimiseRequest(
@@ -51,11 +50,11 @@ const OptimiserButton: React.FC<OptimiserButtonProps> = ({
         acadYearFormatted,
         activeSemester,
         Array.from(selectedFreeDays),
-        formatTime(earliestTime),
-        formatTime(latestTime),
+        earliestTime,
+        latestTime,
         recordings,
-        formatTime(earliestLunchTime),
-        formatTime(latestLunchTime),
+        earliestLunchTime,
+        latestLunchTime,
       );
 
       if (data && data.shareableLink) {

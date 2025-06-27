@@ -39,7 +39,7 @@ func BeamSearch(
 	initial := models.TimetableState{
 		Assignments: make(map[string]string),
 	}
-	for d := 0; d < 5; d++ {
+	for d := 0; d < 6; d++ {
 		initial.DaySlots[d] = make([]models.ModuleSlot, 0)
 	}
 	beam := []models.TimetableState{initial}
@@ -55,7 +55,7 @@ func BeamSearch(
 
 				validGroup := make([]models.ModuleSlot, 0, len(group))
 				for _, slot := range group {
-					if slot.DayIndex >= 0 && slot.DayIndex < 5 {
+					if slot.DayIndex >= 0 && slot.DayIndex < 6 {
 						validGroup = append(validGroup, slot)
 					}
 				}
@@ -186,7 +186,7 @@ func copyState(src models.TimetableState) models.TimetableState {
 	}
 
 	// Copy day slots
-	for i := 0; i < 5; i++ {
+	for i := 0; i < 6; i++ {
 		if len(src.DaySlots[i]) > 0 {
 			newState.DaySlots[i] = make([]models.ModuleSlot, len(src.DaySlots[i]))
 			copy(newState.DaySlots[i], src.DaySlots[i])
@@ -263,7 +263,7 @@ Lower score means a better (more preferred) timetable.
 */
 func scoreTimetableState(state models.TimetableState, recordings map[string]bool, optimiserRequest models.OptimiserRequest) float64 {
 	var totalScore float64
-	for d := 0; d < 5; d++ {
+	for d := 0; d < 6; d++ {
 		if len(state.DaySlots[d]) == 0 {
 			continue
 		}
