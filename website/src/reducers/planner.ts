@@ -16,6 +16,7 @@ import {
   SET_PLANNER_MAX_YEAR,
   SET_PLANNER_MIN_YEAR,
   SET_IGNORE_PREREQUISITES_CHECK,
+  IMPORT_JSON_PLANNER,
 } from 'actions/planner';
 import { filterModuleForSemester } from 'selectors/planner';
 import config from 'config';
@@ -148,6 +149,11 @@ export default function planner(
       return produce(state, (draft) => {
         draft.modules[action.payload.id].moduleCode = action.payload.moduleCode;
       });
+
+    case IMPORT_JSON_PLANNER:
+      return {
+        ...action.payload.importedState,
+      };
 
     default:
       return state;

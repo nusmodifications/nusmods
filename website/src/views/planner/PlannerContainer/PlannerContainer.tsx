@@ -34,6 +34,8 @@ import { State as StoreState } from 'types/state';
 import PlannerSemester from '../PlannerSemester';
 import PlannerYear from '../PlannerYear';
 import PlannerSettings from '../PlannerSettings';
+import PlannerExport from '../PlannerExport';
+import PlannerImport from '../PlannerImport';
 import CustomModuleForm from '../CustomModuleForm';
 
 import styles from './PlannerContainer.scss';
@@ -159,14 +161,19 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
             <p>{renderMCs(credits)}</p>
           </div>
 
-          <button
-            className={classnames('btn btn-svg btn-outline-primary', styles.settingsButton)}
-            type="button"
-            onClick={() => this.setState({ showSettings: true })}
-          >
-            <Settings className="svg" />
-            <p>Settings</p>
-          </button>
+          <div className={classnames(styles.buttonGroup)}>
+            <PlannerImport />
+            <PlannerExport />
+
+            <button
+              className={classnames('btn btn-svg btn-outline-primary', styles.settingsButton)}
+              type="button"
+              onClick={() => this.setState({ showSettings: true })}
+            >
+              <Settings className="svg" />
+              <p>Settings</p>
+            </button>
+          </div>
         </div>
       </header>
     );

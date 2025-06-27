@@ -9,7 +9,9 @@ import { captureException } from 'utils/error';
 import retryImport from 'utils/retryImport';
 import { getSemesterTimetableLessons } from 'selectors/timetables';
 import { TaModulesConfig } from 'types/timetables';
+import { PlannerStateSchema } from 'types/schemas/planner';
 import { SET_EXPORTED_DATA } from './constants';
+import { openNotification } from './app';
 
 function downloadUrl(blob: Blob, filename: string) {
   const link = document.createElement('a');
@@ -77,5 +79,21 @@ export function setExportedData(modules: Module[], data: ExportData) {
       modules,
       ...data,
     },
+  };
+}
+
+export function downloadPlannerAsJson() {
+  return (_dispatch: Dispatch, getState: GetState) => {
+    const { planner } = getState();
+    const parsed = PlannerStateSchema.safeParse(planner);
+    if (!parsed.success) {
+      _dispatch(openNotification('Planner data is corrupted.'));
+      return;
+    }
+
+    const exportState = parsed.data;
+    const bytes = new TextEncoder().encode(JSON.stringify(exportState));
+    const blob = new Blob([bytes], { type: 'application/json' });
+    downloadUrl(blob, 'nusmods_planner.json');
   };
 }

@@ -1,6 +1,8 @@
 @import '~styles/utils/modules-entry';
 @import '../variables';
 
+$btn-margin: 0.5rem;
+
 .pageContainer {
   composes: page-container from global;
   height: 100%;
@@ -40,14 +42,22 @@
     justify-content: flex-end;
     align-items: center;
 
-    @include media-breakpoint-down(sm) {
-      .settingsButton {
-        p {
-          @include sr-only;
-        }
+    .buttonGroup {
+      display: flex;
+      flex-direction: row;
+      gap: $btn-margin;
+    }
 
-        svg {
-          margin-right: 0;
+    @include media-breakpoint-down(sm) {
+      .buttonGroup {
+        button {
+          p {
+            @include sr-only;
+          }
+  
+          svg {
+            margin-right: 0;
+          }
         }
       }
     }
