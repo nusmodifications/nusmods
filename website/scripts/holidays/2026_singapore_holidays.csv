@@ -1,0 +1,12 @@
+Date,Name,Day,Observance,Observance Strategy
+2026-01-01,New Year's Day,Thursday,2026-01-01,actual_day
+2026-02-17,Chinese New Year Day 1,Tuesday,2026-02-17,actual_day
+2026-02-18,Chinese New Year Day 2,Wednesday,2026-02-18,actual_day
+2026-03-21,Hari Raya Puasa,Saturday,2026-03-21,actual_day
+2026-04-03,Good Friday,Friday,2026-04-03,actual_day
+2026-05-01,Labour Day,Friday,2026-05-01,actual_day
+2026-05-01,Vesak Day,Friday,2026-05-01,actual_day
+2026-05-30,Hari Raya Haji,Saturday,2026-05-30,actual_day
+2026-08-09,National Day,Sunday,2026-08-10,next_monday
+2026-10-08,Deepavali,Thursday,2026-10-08,actual_day
+2026-12-25,Christmas Day,Friday,2026-12-25,actual_day 

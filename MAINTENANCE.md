@@ -6,7 +6,7 @@ Create a new issue on GitHub with this checklist after the finals every semester
 
 - [ ] Update academic year and semester in `website/src/config/app-config.json`, and add current academic year to archive years
 - [ ] In `app-config.json`, update `examAvailability` to include only the semesters where exam information is available
-- [ ] Update with next year's holiday data from https://github.com/rjchow/singapore_public_holidays and delete old data, then run `scripts/holidays-csv-to-json.js`
+- [ ] Update `website/src/data/holidays.json` with latest holiday data from academic calendar
 - [ ] Update `website/src/data/academic-calendar.json` with data for the new academic year
 - [ ] Add announcement to website
 - [ ] Update academic year in `scrapers/nus-v2/src/config.ts`
