@@ -6,14 +6,14 @@ Create a new issue on GitHub with this checklist after the finals every semester
 
 - [ ] Update academic year and semester in `website/src/config/app-config.json`, and add current academic year to archive years
 - [ ] In `app-config.json`, update `examAvailability` to include only the semesters where exam information is available
-- [ ] Update with next year's holiday data from https://github.com/rjchow/singapore_public_holidays and delete old data, then run `scripts/holidays-csv-to-json.js`
+- [ ] Update with next year's holiday data from academic calendar to `website/src/data/holidays.json`
 - [ ] Update `website/src/data/academic-calendar.json` with data for the new academic year
-- [ ] Add announcement to website
+- [ ] Add announcement to website by updating `website/src/data/holidays.json`
 - [ ] Update academic year in `scrapers/nus-v2/src/config.ts`
 - [ ] Ensure that scraper is scraping next AY's data. You can do so by checking the locally published JSON files, or visiting `https://api.nusmods.com/v2/20XX-20XX/` (e.g. [https://api.nusmods.com/v2/2022-2023/](https://api.nusmods.com/v2/2022-2023/))
 - [ ] On Vercel or `.env`: Update academic year in export service's environment variables
 - [ ] Deploy! :tada: :tada:
-- [ ] Monitor Sentry and Messenger for issues
+- [ ] Monitor Sentry and Telegram for issues
 
 Reference PRs: [PR #3286](https://github.com/nusmodifications/nusmods/pull/3286) and [PR #3287](https://github.com/nusmodifications/nusmods/pull/3287)
 
