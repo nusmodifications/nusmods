@@ -48,7 +48,7 @@ $btn-margin: 0.5rem;
       gap: $btn-margin;
     }
 
-    @include media-breakpoint-down(sm) {
+    @include media-breakpoint-down(md) {
       .buttonGroup {
         button {
           p {
@@ -74,6 +74,11 @@ $btn-margin: 0.5rem;
   }
 
   @include scrollable;
+
+  @include media-breakpoint-down(xs) {
+    flex-wrap: wrap;
+    justify-content: end;
+  }
 }
 
 .addYearButton {

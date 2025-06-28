@@ -96,10 +96,18 @@ export function addCustomModule(moduleCode: ModuleCode, data: CustomModule) {
   };
 }
 
-export const IMPORT_JSON_PLANNER = 'IMPORT_JSON' as const;
-export function importJsonPlanner(importedState: PlannerState) {
+export const IMPORT_PLANNER = 'IMPORT_PLANNER' as const;
+export function importPlanner(importedState: PlannerState) {
   return {
-    type: IMPORT_JSON_PLANNER,
+    type: IMPORT_PLANNER,
     payload: { importedState },
+  };
+}
+
+export const CLEAR_PLANNER = 'CLEAR_PLANNER' as const;
+export function clearPlanner() {
+  return {
+    type: CLEAR_PLANNER,
+    payload: {},
   };
 }

@@ -1,19 +1,22 @@
 import { FC, useCallback, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { openNotification } from 'actions/app';
-import { importJsonPlanner } from 'actions/planner';
 import { PlannerState } from 'types/reducers';
 import { Upload } from 'react-feather';
 import { PlannerStateSchema } from 'types/schemas/planner';
 
-const PlannerImport: FC = () => {
+type Props = {
+  importPlanner: (importedState: PlannerState) => void;
+};
+
+const PlannerImportButton: FC<Props> = (props: Props) => {
   const dispatch = useDispatch();
   const upload = useCallback(
     (importedState: PlannerState) => {
-      dispatch(importJsonPlanner(importedState));
+      props.importPlanner(importedState);
       dispatch(openNotification('Imported successfully!'));
     },
-    [dispatch],
+    [dispatch, props],
   );
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -57,4 +60,4 @@ const PlannerImport: FC = () => {
   );
 };
 
-export default PlannerImport;
+export default PlannerImportButton;

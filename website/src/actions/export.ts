@@ -82,7 +82,7 @@ export function setExportedData(modules: Module[], data: ExportData) {
   };
 }
 
-export function downloadPlannerAsJson() {
+export function downloadPlanner() {
   return (_dispatch: Dispatch, getState: GetState) => {
     const { planner } = getState();
     const parsed = PlannerStateSchema.safeParse(planner);
