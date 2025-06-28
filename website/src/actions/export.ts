@@ -85,6 +85,8 @@ export function setExportedData(modules: Module[], data: ExportData) {
 export function downloadPlanner() {
   return (_dispatch: Dispatch, getState: GetState) => {
     const { planner } = getState();
+
+    // removes _persist
     const parsed = PlannerStateSchema.safeParse(planner);
     if (!parsed.success) {
       _dispatch(openNotification('Planner data is corrupted.'));

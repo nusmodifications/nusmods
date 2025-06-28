@@ -142,4 +142,33 @@ describe('PlannerStateSchema', () => {
     };
     expect(() => PlannerStateSchema.parse(data)).toThrow();
   });
+
+  it('removes _persist', () => {
+    const data = {
+      minYear: '2024',
+      maxYear: '2028',
+      iblocs: true,
+      modules: {
+        '0': {
+          id: '1',
+          year: '2024',
+          semester: 1,
+          index: 0,
+          moduleCode: 'CS1231S',
+        },
+      },
+      custom: {},
+    };
+    const dataWithPersistConfig = {
+      ...data,
+      _persist: {
+        version: 1,
+        rehydrated: true,
+      },
+    };
+
+    const parsed = PlannerStateSchema.safeParse(dataWithPersistConfig);
+    expect(parsed.success).toBe(true);
+    expect(parsed.data).toEqual(data);
+  });
 });
