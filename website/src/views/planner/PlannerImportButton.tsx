@@ -5,6 +5,9 @@ import { PlannerState } from 'types/reducers';
 import { Upload } from 'react-feather';
 import { PlannerStateSchema } from 'types/schemas/planner';
 
+const UPLOAD_ERROR_MESSAGE = `Something went wrong while uploading. Please try again.`;
+const PARSE_ERROR_MESSAGE = `The uploaded file doesn't seem valid. You can try re-downloading the plan from its source.`;
+
 type Props = {
   importPlanner: (importedState: PlannerState) => void;
 };
@@ -35,17 +38,20 @@ const PlannerImportButton: FC<Props> = (props: Props) => {
       .then(() => JSON.parse(loaded))
       .then(PlannerStateSchema.parseAsync)
       .then(upload)
-      .catch(handleError);
+      .catch(() => handleError(PARSE_ERROR_MESSAGE));
   };
 
-  const handleError = useCallback(() => {
-    dispatch(openNotification('Cannot import the uploaded file.'));
-  }, [dispatch]);
+  const handleError = useCallback(
+    (message: string) => {
+      dispatch(openNotification(message));
+    },
+    [dispatch],
+  );
 
   const handleFileUpload = (input: React.ChangeEvent<HTMLInputElement>) => {
     const fileReader = new FileReader();
     fileReader.onload = handleLoad;
-    fileReader.onerror = handleError;
+    fileReader.onerror = () => handleError(UPLOAD_ERROR_MESSAGE);
 
     const blob: Blob = input.target.files?.[0] as Blob;
     fileReader.readAsText(blob, 'UTF-8');
