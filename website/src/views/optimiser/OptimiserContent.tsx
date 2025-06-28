@@ -167,8 +167,9 @@ const OptimiserContent: React.FC = () => {
   }, []);
 
   const buttonOnClick = async () => {
-    setError(null);
     setShareableLink(''); // Reset shareable link
+    setIsOptimising(true);
+    setError(null);
 
     const modulesList = Object.keys(timetable);
     const acadYearFormatted = `${acadYear.split('/')[0]}-${acadYear.split('/')[1]}`;
