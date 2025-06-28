@@ -98,18 +98,6 @@ exports[`fetchAllModuleArchive should return multiple request actions 1`] = `
       "type": "FETCH_ARCHIVE_MODULE",
     },
   ],
-  [
-    {
-      "meta": {
-        "API_REQUEST": "FETCH_ARCHIVE_MODULE_CS1010S_2024/2025",
-        "academicYear": "2024/2025",
-      },
-      "payload": {
-        "url": "test://MOCK_MOD_DETAILS_URL/CS1010S/2024/2025",
-      },
-      "type": "FETCH_ARCHIVE_MODULE",
-    },
-  ],
 ]
 `;
 
