@@ -85,15 +85,17 @@ function matchModule(module: Module) {
   );
   if (facultyEmail) return facultyEmail;
 
-  // 2. Check module prefix next
-  facultyEmail = groupedByMatcherType.modulePrefix.find(({ match }) =>
-    module.moduleCode.startsWith(match.prefix),
-  );
-  if (facultyEmail) return facultyEmail;
-
-  // 3. Department and faculty matchers are split by graduate and undergrad classes. In NUS
+  // 2. Department and faculty matchers are split by graduate and undergrad classes. In NUS
   //    the 5-6000 level modules are graduate level modules
   const division: Division = isGraduateModule(module) ? 'grad' : 'undergrad';
+
+  // 3. Check module prefix next
+  facultyEmail = groupedByMatcherType.modulePrefix.find(
+    ({ match }) =>
+      module.moduleCode.startsWith(match.prefix) &&
+      (match.level === undefined || division === match.level),
+  );
+  if (facultyEmail) return facultyEmail;
 
   // 4. Check department
   facultyEmail = groupedByMatcherType.department.find(
