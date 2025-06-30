@@ -16,11 +16,13 @@ import {
   SET_PLANNER_MAX_YEAR,
   SET_PLANNER_MIN_YEAR,
   SET_IGNORE_PREREQUISITES_CHECK,
+  IMPORT_PLANNER,
+  CLEAR_PLANNER,
 } from 'actions/planner';
 import { filterModuleForSemester } from 'selectors/planner';
 import config from 'config';
 
-const defaultPlannerState: PlannerState = {
+export const defaultPlannerState: PlannerState = {
   minYear: config.academicYear,
   maxYear: config.academicYear,
   iblocs: false,
@@ -148,6 +150,16 @@ export default function planner(
       return produce(state, (draft) => {
         draft.modules[action.payload.id].moduleCode = action.payload.moduleCode;
       });
+
+    case IMPORT_PLANNER:
+      return {
+        ...action.payload.importedState,
+      };
+
+    case CLEAR_PLANNER:
+      return {
+        ...defaultPlannerState,
+      };
 
     default:
       return state;

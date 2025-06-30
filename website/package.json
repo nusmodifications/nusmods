@@ -5,6 +5,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack serve --config webpack/webpack.config.dev.js",
     "start:export": "cross-env NODE_ENV=development OPEN_BROWSER=0 webpack serve --config webpack/webpack.config.timetable-only.js --port 8081",
+    "start:optimiser": "cd api/optimiser/_test && go run main.go",
     "build": "cross-env NODE_ENV=production node scripts/build",
     "rsync": "rsync -avu dist/",
     "rsync:export": "rsync -avu --delete-after dist-timetable/",
@@ -168,9 +169,10 @@
     "redux-persist": "6.0.0",
     "redux-thunk": "2.4.2",
     "reselect": "4.1.8",
-    "samlify": "2.8.11",
+    "samlify": "2.7.7",
     "searchkit": "2.4.1-alpha.5",
-    "use-subscription": "1.10.0"
+    "use-subscription": "1.10.0",
+    "zod": "^3.25.67"
   },
   "browserslist": [
     "extends browserslist-config-nusmods"
