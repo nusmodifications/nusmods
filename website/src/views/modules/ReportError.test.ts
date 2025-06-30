@@ -21,7 +21,11 @@ describe('facultyEmails', () => {
 
   it('should not have duplicate email', () => {
     // Some departments genuinely do share emails for some reason
-    const expectedDuplicates = new Set(['fasbox59@nus.edu.sg']);
+    const expectedDuplicates = new Set([
+      'fasbox58@nus.edu.sg',
+      'fasbox59@nus.edu.sg',
+      'fasbox63@nus.edu.sg',
+    ]);
 
     const configByCode = _.groupBy(facultyEmails, (config) => config.email);
     _.each(configByCode, (config) => {

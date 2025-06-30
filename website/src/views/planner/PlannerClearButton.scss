@@ -1,0 +1,23 @@
+@import '~styles/utils/modules-entry.scss';
+
+.header {
+  text-align: center;
+
+  svg {
+    width: 5rem;
+    height: 5rem;
+    color: theme-color(success);
+  }
+
+  h3 {
+    margin: 0.4rem 0;
+    font-weight: $font-weight-bold;
+    font-size: 1.4rem;
+  }
+
+  @include media-breakpoint-down(sm) {
+    br {
+      display: none;
+    }
+  }
+}
