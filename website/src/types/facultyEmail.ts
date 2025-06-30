@@ -11,6 +11,7 @@ export interface ModuleCodeMatch {
 export interface ModuleCodePrefixMatch {
   type: 'modulePrefix';
   prefix: string;
+  level?: Division;
 }
 
 export interface DepartmentMatch {
