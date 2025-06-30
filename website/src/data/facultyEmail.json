@@ -146,7 +146,7 @@
     "match": {
       "type": "department",
       "department": "Japanese Studies",
-      "level": "undergrad"
+      "level": "grad"
     }
   },
   {
@@ -186,7 +186,7 @@
     "match": {
       "type": "department",
       "department": "Philosophy",
-      "level": "undergrad"
+      "level": "grad"
     }
   },
   {
@@ -204,14 +204,14 @@
     "email": "polnyjw@nus.edu.sg",
     "match": {
       "type": "department",
-      "department": "Political Science",
+      "prefix": "PS",
       "level": "undergrad"
     }
   },
   {
     "id": "polsci_gl",
     "label": "Political Science (Graduate)",
-    "email": "sypang@nus.edu.sg",
+    "email": "polbox1@nus.edu.sg",
     "match": {
       "type": "modulePrefix",
       "prefix": "PS",
@@ -255,7 +255,7 @@
     "match": {
       "type": "department",
       "department": "Social Work",
-      "level": "undergrad"
+      "level": "grad"
     }
   },
   {
@@ -295,7 +295,7 @@
     "match": {
       "type": "department",
       "department": "South Asian Studies Programme",
-      "level": "undergrad"
+      "level": "grad"
     }
   },
   {
@@ -314,8 +314,8 @@
     "email": "fasbox58@nus.edu.sg",
     "match": {
       "type": "department",
-      "department": "South Asian Studies Programme",
-      "level": "undergrad"
+      "department": "Southeast Asian Studies",
+      "level": "grad"
     }
   },
   {
@@ -429,12 +429,12 @@
     }
   },
   {
-    "id": "cve_gd",
+    "id": "ce_gd",
     "label": "Civil Engineering (Graduate)",
     "email": "ceesgo@nus.edu.sg",
     "match": {
-      "type": "department",
-      "department": "Civil and Environmental Engineering",
+      "type": "modulePrefix",
+      "prefix": "CE",
       "level": "grad"
     }
   },
@@ -443,8 +443,8 @@
     "label": "Environmental Engineering (Graduate)",
     "email": "sally.ng@nus.edu.sg",
     "match": {
-      "type": "department",
-      "department": "Civil and Environmental Engineering",
+      "type": "modulePrefix",
+      "prefix": "ESE",
       "level": "grad"
     }
   },
@@ -463,23 +463,23 @@
     "label": "Electrical Engineering (Graduate)",
     "email": "elenggp@nus.edu.sg",
     "match": {
-      "type": "department",
-      "department": "Electrical and Computer Engineering",
+      "type": "modulePrefix",
+      "prefix": "EE",
       "level": "grad"
     }
   },
   {
-    "id": "ce_gd",
+    "id": "cg_gd",
     "label": "Computer Engineering (Graduate)",
     "email": "elembam@nus.edu.sg",
     "match": {
-      "type": "department",
-      "department": "Electrical and Computer Engineering",
-      "level": "undergrad"
+      "type": "modulePrefix",
+      "prefix": "CG",
+      "level": "grad"
     }
   },
   {
-    "id": "esp_ug",
+    "id": "escholars_ug",
     "label": "Engineering Scholars Programme (Undergrad)",
     "email": "escholars@nus.edu.sg",
     "match": {
@@ -535,7 +535,7 @@
     "match": {
       "type": "department",
       "department": "Materials Science and Engineering",
-      "level": "undergrad"
+      "level": "grad"
     }
   },
   {
@@ -555,7 +555,7 @@
     "match": {
       "type": "department",
       "department": "Mechanical Engineering",
-      "level": "undergrad"
+      "level": "grad"
     }
   },
   {
@@ -709,16 +709,6 @@
     }
   },
   {
-    "id": "esp_ug",
-    "label": "Environmental Studies Programme (Undergrad)",
-    "email": "dbsbox2@nus.edu.sg",
-    "match": {
-      "type": "department",
-      "department": "Biological Science",
-      "level": "undergrad"
-    }
-  },
-  {
     "id": "lsm_ug",
     "label": "Life Sciences Programme (Undergrad)",
     "email": "dbsbox2@nus.edu.sg",
@@ -773,9 +763,8 @@
     "label": "Pharmacy (Undergrad)",
     "email": "askBPharm@nus.edu.sg",
     "match": {
-      "type": "department",
-      "department": "Pharmacy and Pharmaecutical Sciences",
-      "level": "undergrad"
+      "type": "modulePrefix",
+      "prefix": "PR"
     }
   },
   {
@@ -783,9 +772,8 @@
     "label": "Pharmaceutical Science (Undergrad)",
     "email": "askPharmSci@nus.edu.sg",
     "match": {
-      "type": "department",
-      "department": "Pharmacy and Pharmaecutical Sciences",
-      "level": "undergrad"
+      "type": "modulePrefix",
+      "prefix": "PHS"
     }
   },
   {
