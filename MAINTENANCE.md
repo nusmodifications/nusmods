@@ -29,18 +29,13 @@ Reference PRs: [PR #3286](https://github.com/nusmodifications/nusmods/pull/3286)
 - Before
   - [ ] Update `TERM` in `scrapers/cpex-scraper/src/index.ts` and `MPE_SEMESTER` in `website/src/views/mpe/constants.ts` to be the semester you're configuring CPEx for (usually the next semester)
   - [ ] Update the displayed dates in `website/src/views/mpe/MpeContainer.tsx` and any new requirements/descriptions
-  - [ ] Enable the `enabledCPEx` flag in `website/src/featureFlags.ts`
   - [ ] Update dates in the ModReg schedule in `website/src/data/modreg-schedule.json`
-    - Reference PR: [PR #3832](https://github.com/nusmodifications/nusmods/pull/3832)
-  - [ ] Once merged into `master`, visit https://latest.nusmods.com/cpex and verify that NUS authentication is working
-  - [ ] Deploy latest `master` to `production`
-  - [ ] Prepare PR to enable the `showCPExTab` flag in `website/src/featureFlags.ts`
+  - [ ] Enable the `enableCPExforProd` and `showCPExTab` flags in `website/src/featureFlags.ts`
+  - [ ] Push onto `cpex-staging` branch (Ensure synced with `master` branch first), then visit https://cpex-staging.nusmods.com/cpex and verify that NUS authentication is working
 - During
-  - [ ] Enable the `showCPExTab` flag in `website/src/featureFlags.ts`
-  - [ ] Merge into `master`
+  - [ ] Merge `cpex-staging` into `master`
   - [ ] Deploy latest `master` to `production`
-  - [ ] Prepare PR to disable the `enabledCPEx` and `showCPExTab` flags in `website/src/featureFlags.ts`
 - After
-  - [ ] Disable the `enabledCPEx` and `showCPExTab` flags in `website/src/featureFlags.ts`
+  - [ ] Disable the `enableCPExforProd` and `showCPExTab` flags in `website/src/featureFlags.ts`
   - [ ] Merge into `master`
   - [ ] Deploy latest `master` to `production`
