@@ -185,8 +185,13 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
           </div>
           {freeDayConflicts.map((conflict, index) => (
             <div key={index} className={styles.conflictItem}>
-              • <strong>{conflict.displayText}</strong> happens on:{' '}
-              {conflict.conflictingDays.join(', ')}
+              • <strong>{conflict.displayText}</strong> cannot be assigned due to your free days:{' '}
+              {conflict.conflictingDays
+                .sort((a, b) => {
+                  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                  return days.indexOf(a) - days.indexOf(b);
+                })
+                .join(', ')}
             </div>
           ))}
           <div className={styles.conflictFooter}>

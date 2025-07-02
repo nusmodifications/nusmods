@@ -31,6 +31,7 @@ const OptimiserContent: React.FC = () => {
   const [hasSaturday, setHasSaturday] = useState<boolean>(false);
 
   // Generate lesson options from current timetable
+  // find the lesson and the type in lessonOptions, and then find the days of that combination in lessonDaysData
   const lessonOptions = useMemo(() => {
     const options: LessonOption[] = [];
 
@@ -60,6 +61,36 @@ const OptimiserContent: React.FC = () => {
 
     return options;
   }, [timetable, modules, activeSemester, colors]);
+
+  // group by classNo
+  const lessonGroupsData = useMemo(() => {
+    const moduleGroupMap = new Map<string, Map<string, string[]>>();
+    // each item has moduleCode-lessonType, combination, so get all the groups with days for that group
+    lessonOptions.forEach((option) => {
+      const module = modules[option.moduleCode];
+      // get the timetable so that you can get the groups and the days for that group
+      const moduleTimetable = getModuleTimetable(module, activeSemester);
+      // now get the groups and the days for that group
+      // the DS for this is a list of maps, {groupName(string): days(list type)}
+      const groupDayMap = new Map<string, string[]>();
+
+      moduleTimetable.forEach((lesson) => {
+        if (lesson.lessonType === option.lessonType) {
+          if (groupDayMap.has(lesson.classNo)) {
+            // find the the item with that key and push the day to the days array
+            const days = groupDayMap.get(lesson.classNo) || [];
+            days.push(lesson.day);
+            groupDayMap.set(lesson.classNo, days);
+          } else {
+            groupDayMap.set(lesson.classNo, [lesson.day]);
+          }
+        }
+      });
+      moduleGroupMap.set(option.uniqueKey, groupDayMap);
+      // now you have all the groups for that module-lessonType combination
+    });
+    return moduleGroupMap;
+  }, [lessonOptions, modules, activeSemester]);
 
   const lessonDaysData = useMemo(() => {
     const lessonDays: LessonDaysData[] = [];
@@ -92,6 +123,7 @@ const OptimiserContent: React.FC = () => {
     return lessonDays;
   }, [lessonOptions, modules, activeSemester]);
 
+  // Unselected module-lessonType combinations are recorded lessons `module lessonType`
   const recordings = useMemo(() => {
     const selectedKeys = new Set(selectedLessons.map((lesson) => lesson.uniqueKey));
     return lessonOptions
@@ -123,9 +155,31 @@ const OptimiserContent: React.FC = () => {
         });
       }
     });
-
+    // check if all groups are not possible to attend, then it's a conflict, then day of conflict is the days of one of the groups
+    // go thorugh each module-lessonType combination, and within that,
+    // go through each group and within that check if any of the selected free days are in them, if so, that group is invalid
+    lessonGroupsData.forEach((groupMap, uniqueKey) => {
+      let validGroups = 0;
+      groupMap.forEach((days, groupName) => {
+        if (
+          recordings.includes(uniqueKey.split('-').join(' ')) || // if it is a recorded lesson, dont trigger a conflict
+          !days.some((day) => selectedFreeDays.has(day))
+        ) {
+          validGroups += 1;
+        }
+      });
+      if (selectedFreeDays.size > 0 && validGroups === 0) {
+        conflicts.push({
+          moduleCode: uniqueKey.split('-')[0],
+          lessonType: uniqueKey.split('-')[1],
+          displayText: uniqueKey.split('-').join(' '),
+          // the days that are common between selectedFreeDays and the days in the group
+          conflictingDays: Array.from(selectedFreeDays),
+        });
+      }
+    });
     setFreeDayConflicts(conflicts);
-  }, [selectedFreeDays, lessonDaysData, recordings]);
+  }, [selectedFreeDays, lessonDaysData, lessonGroupsData, recordings]);
 
   useEffect(() => {
     const availableKeys = new Set(lessonOptions.map((option) => option.uniqueKey));
