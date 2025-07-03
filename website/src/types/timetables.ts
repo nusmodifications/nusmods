@@ -1,4 +1,4 @@
-import { ClassNo, LessonType, ModuleCode, ModuleTitle, RawLesson } from './modules';
+import { ClassNo, CustomLesson, LessonType, ModuleCode, ModuleTitle, RawLesson } from './modules';
 
 //  ModuleLessonConfig is a mapping of lessonType to ClassNo for a module.
 export type ModuleLessonConfig = {
@@ -15,16 +15,21 @@ export type TaModulesConfig = {
   [moduleCode: ModuleCode]: [lessonType: LessonType, classNo: ClassNo][];
 };
 
-//  ModuleLessonConfigWithLessons is a mapping of lessonType to an array of Lessons for a module.
-export type Lesson = RawLesson & {
+export type LessonModuleDetails = {
   moduleCode: ModuleCode;
   title: ModuleTitle;
+  isCustom?: boolean;
 };
+
+//  ModuleLessonConfigWithLessons is a mapping of lessonType to an array of Lessons for a module.
+export type Lesson = RawLesson & LessonModuleDetails;
 
 export type ColoredLesson = Lesson & {
   colorIndex: ColorIndex;
   isTaInTimetable?: boolean;
 };
+
+export type CustomModuleLesson = CustomLesson & LessonModuleDetails;
 
 type Modifiable = {
   isModifiable?: boolean;

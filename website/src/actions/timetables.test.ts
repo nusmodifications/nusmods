@@ -1,5 +1,5 @@
 import { ModuleCode, Semester } from 'types/modules';
-import { SemTimetableConfig, Lesson } from 'types/timetables';
+import { SemTimetableConfig, Lesson, CustomModuleLesson } from 'types/timetables';
 
 import lessons from '__mocks__/lessons-array.json';
 import { CS1010S, CS3216 } from '__mocks__/modules';
@@ -126,6 +126,60 @@ describe('hide/show timetable modules', () => {
   test('should dispatch a module code for showing', () => {
     const moduleCode: ModuleCode = 'CS1020';
     expect(actions.showLessonInTimetable(semester, moduleCode)).toMatchSnapshot();
+  });
+});
+
+describe(actions.addCustomModule, () => {
+  const semester: Semester = 2;
+  const moduleCode: ModuleCode = 'CS1101S';
+  const lesson: CustomModuleLesson = {
+    classNo: '01',
+    day: 'Monday',
+    startTime: '0800',
+    endTime: '0900',
+    lessonType: 'Lecture',
+    venue: 'COM1-0330',
+    moduleCode,
+    title: 'Programming Methodology',
+    isCustom: true,
+    weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+  };
+
+  test('should add the custom module defined', () => {
+    expect(actions.addCustomModule(semester, moduleCode, lesson.title, [lesson])).toMatchSnapshot();
+  });
+});
+
+describe(actions.modifyCustomModule, () => {
+  const semester: Semester = 2;
+  const moduleCode: ModuleCode = 'CS1101S';
+  const newModuleCode: ModuleCode = 'CS2030';
+  const lesson: CustomModuleLesson = {
+    classNo: '01',
+    day: 'Monday',
+    startTime: '0800',
+    endTime: '0900',
+    lessonType: 'Lecture',
+    venue: 'COM1-0330',
+    moduleCode: newModuleCode,
+    title: 'Programming Methodology',
+    isCustom: true,
+    weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+  };
+
+  test('should modify the custom module', () => {
+    expect(
+      actions.modifyCustomModule(semester, moduleCode, newModuleCode, lesson.title, [lesson]),
+    ).toMatchSnapshot();
+  });
+});
+
+describe(actions.deleteCustomModule, () => {
+  const semester: Semester = 2;
+  const moduleCode: ModuleCode = 'CS1101S';
+
+  test('should modify the custom module', () => {
+    expect(actions.deleteCustomModule(semester, moduleCode)).toMatchSnapshot();
   });
 });
 

@@ -90,6 +90,10 @@ $item-padding-vertical: 0.6rem;
     border-width: 0 $input-btn-border-width $input-btn-border-width;
     border-radius: 0 0 $btn-border-radius $btn-border-radius;
   }
+
+  div.tip:first-of-type {
+    margin-top: 0;
+  }
 }
 
 .item,
@@ -99,6 +103,10 @@ $item-padding-vertical: 0.6rem;
   font-size: 0.9rem;
   color: var(--body-color);
   background: var(--body-bg);
+
+  &:first-of-type {
+    margin-top: $input-height;
+  }
 }
 
 .option {

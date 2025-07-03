@@ -49,12 +49,13 @@ import {
   TimetableDayFormat,
 } from 'types/timetables';
 
-import { ModuleCodeMap, ModulesMap } from 'types/reducers';
+import { CustomModuleLessonData, ModuleCodeMap, ModulesMap } from 'types/reducers';
 import { ExamClashes } from 'types/views';
 
 import { getTimeAsDate } from './timify';
 import { getModuleTimetable, getExamDate, getExamDuration } from './modules';
 import { deltas } from './array';
+import { CustomModuleSerializer } from './customModule';
 
 type lessonTypeAbbrev = { [lessonType: string]: string };
 export const LESSON_TYPE_ABBREV: lessonTypeAbbrev = {
@@ -587,6 +588,12 @@ export function deserializeTimetable(serialized: string): SemTimetableConfig {
 
 export function serializeHidden(hiddenModules: ModuleCode[]) {
   return `&hidden=${hiddenModules.join(',')}`;
+}
+
+export function deserializeCustom(serialized: string): CustomModuleLessonData {
+  const params = qs.parse(serialized);
+  if (!params.custom) return {};
+  return CustomModuleSerializer.deserializeCustomModuleList(params.custom);
 }
 
 export function deserializeHidden(serialized: string): ModuleCode[] {

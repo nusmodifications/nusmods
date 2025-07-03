@@ -1,0 +1,36 @@
+@import '~styles/utils/modules-entry.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+
+  .row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0;
+
+    span {
+      margin: 0;
+    }
+
+    input {
+      width: 1.75rem;
+      border: none;
+      outline: none;
+      font-size: inherit;
+      font-family: inherit;
+      text-align: center;
+      color: inherit;
+      background: none;
+
+      &:nth-child(5) {
+        width: 2.5rem;
+      }
+    }
+  }
+
+  .focused {
+    border-color: #ff5138;
+  }
+}

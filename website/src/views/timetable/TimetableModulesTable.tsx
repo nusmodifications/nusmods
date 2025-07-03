@@ -8,9 +8,9 @@ import { produce } from 'immer';
 import { Book, BookOpen, Eye, EyeOff, Trash } from 'react-feather';
 import { ModuleWithColor, TombstoneModule } from 'types/views';
 import { ColorIndex } from 'types/timetables';
-import { ModuleCode, Semester } from 'types/modules';
+import { CustomLesson, ModuleCode, Semester } from 'types/modules';
 import { State as StoreState } from 'types/state';
-import { ModuleTableOrder } from 'types/reducers';
+import { CustomModuleLessonData, ModuleTableOrder } from 'types/reducers';
 
 import ColorPicker from 'views/components/ColorPicker';
 import {
@@ -26,6 +26,7 @@ import {
   getExamDuration,
   renderExamDuration,
 } from 'utils/modules';
+import { removeCustomIdentifier } from 'utils/customModule';
 import { intersperse } from 'utils/array';
 import { BULLET_NBSP } from 'utils/react';
 import { modulePage } from 'views/routes/paths';
@@ -36,6 +37,7 @@ import config from 'config';
 import styles from './TimetableModulesTable.scss';
 import ModuleTombstone from './ModuleTombstone';
 import { moduleOrders } from './ModulesTableFooter';
+import CustomModuleEdit from './CustomModuleEdit';
 
 export type Props = {
   semester: Semester;
@@ -43,36 +45,69 @@ export type Props = {
   horizontalOrientation: boolean;
   moduleTableOrder: ModuleTableOrder;
   modules: ModuleWithColor[];
+  customModules: CustomModuleLessonData;
   tombstone: TombstoneModule | null; // Placeholder for a deleted module
 
   // Actions
+  addModule: (semester: Semester, moduleCode: ModuleCode) => void;
   selectModuleColor: (semester: Semester, moduleCode: ModuleCode, colorIndex: ColorIndex) => void;
   hideLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   showLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   enableTaModeInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   disableTaModeInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   onRemoveModule: (moduleCode: ModuleCode) => void;
+  onRemoveCustomModule: (moduleCode: ModuleCode) => void;
+  editCustomModule: (
+    oldModuleCode: ModuleCode,
+    newModuleCode: ModuleCode,
+    title: string,
+    lessons: CustomLesson[],
+  ) => void;
   resetTombstone: () => void;
 };
 
 export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
   const renderModuleActions = (module: ModuleWithColor) => {
-    const removeBtnLabel = `Remove ${module.moduleCode} from timetable`;
-    const hideBtnLabel = `${module.isHiddenInTimetable ? 'Show' : 'Hide'} ${module.moduleCode}`;
+    const actualModuleCode = module.isCustom
+      ? removeCustomIdentifier(module.moduleCode)
+      : module.moduleCode;
+
+    const removeBtnLabel = `Remove ${actualModuleCode} from timetable`;
+    const hideBtnLabel = `${module.isHiddenInTimetable ? 'Show' : 'Hide'} ${actualModuleCode}`;
     const taBtnLabel = `${module.isTaInTimetable ? 'Disable' : 'Enable'} TA for ${
       module.moduleCode
     }`;
     const { semester } = props;
 
+    const removeModule = (moduleCode: ModuleCode, isCustom: boolean | undefined) => {
+      if (isCustom) {
+        props.onRemoveCustomModule(moduleCode);
+      } else {
+        props.onRemoveModule(moduleCode);
+      }
+    };
+
     return (
       <div className={styles.moduleActionButtons}>
         <div className="btn-group">
-          <Tooltip content={removeBtnLabel} touch={['hold', 50]}>
+          {module.isCustom && (
+            <CustomModuleEdit
+              moduleCode={module.moduleCode}
+              moduleTitle={props.customModules[module.moduleCode].title}
+              customLessons={props.customModules[module.moduleCode].lessons || []}
+              isModuleCodeAdded={(moduleCode) => !!props.customModules[moduleCode]}
+              editCustomModule={props.editCustomModule}
+              moduleActionStyle={styles.moduleAction}
+              actionIconStyle={styles.actionIcon}
+              semester={semester}
+            />
+          )}
+          <Tooltip content={removeBtnLabel} touch="hold">
             <button
               type="button"
               className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
               aria-label={removeBtnLabel}
-              onClick={() => props.onRemoveModule(module.moduleCode)}
+              onClick={() => removeModule(module.moduleCode, module.isCustom)}
             >
               <Trash className={styles.actionIcon} />
             </button>
@@ -126,6 +161,9 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
 
   const renderModule = (module: ModuleWithColor) => {
     const { semester, readOnly, tombstone, resetTombstone } = props;
+    const actualModuleCode = module.isCustom
+      ? removeCustomIdentifier(module.moduleCode)
+      : module.moduleCode;
 
     if (tombstone && tombstone.moduleCode === module.moduleCode) {
       return <ModuleTombstone module={module} resetTombstone={resetTombstone} />;
@@ -133,7 +171,9 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
 
     // Second row of text consists of the exam date and the MCs
     const secondRowText = [renderMCs(module.moduleCredit)];
-    if (config.examAvailabilitySet.has(semester)) {
+    if (module.isCustom) {
+      secondRowText[0] = 'Custom Module';
+    } else if (config.examAvailabilitySet.has(semester)) {
       const examDuration = getExamDuration(module, semester);
       const examDate = getExamDate(module, semester);
 
@@ -150,7 +190,7 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
       <>
         <div className={styles.moduleColor}>
           <ColorPicker
-            label={`Change ${module.moduleCode} timetable color`}
+            label={`Change ${actualModuleCode} timetable color`}
             color={module.colorIndex}
             isHidden={module.isHiddenInTimetable}
             isTa={module.isTaInTimetable}
@@ -161,8 +201,8 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
         </div>
         <div className={styles.moduleInfo}>
           {!readOnly && renderModuleActions(module)}
-          <Link to={modulePage(module.moduleCode, module.title)}>
-            {module.moduleCode} {module.title}
+          <Link to={module.isCustom ? '/' : modulePage(module.moduleCode, module.title)}>
+            {actualModuleCode} {module.title}
           </Link>
           <div className={styles.moduleExam}>{intersperse(secondRowText, BULLET_NBSP)}</div>
         </div>
@@ -184,20 +224,22 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
   modules = sortBy(modules, (module) => moduleOrders[moduleTableOrder].orderBy(module, semester));
 
   return (
-    <div className={classnames(styles.modulesTable, elements.moduleTable, 'row')}>
-      {modules.map((module) => (
-        <div
-          className={classnames(
-            styles.modulesTableRow,
-            'col-sm-6',
-            horizontalOrientation ? 'col-lg-4' : 'col-md-12',
-          )}
-          key={module.moduleCode}
-        >
-          {renderModule(module)}
-        </div>
-      ))}
-    </div>
+    <>
+      <div className={classnames(styles.modulesTable, elements.moduleTable, 'row')}>
+        {modules.map((module) => (
+          <div
+            className={classnames(
+              styles.modulesTableRow,
+              'col-sm-6',
+              horizontalOrientation ? 'col-lg-4' : 'col-md-12',
+            )}
+            key={module.moduleCode}
+          >
+            {renderModule(module)}
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
 

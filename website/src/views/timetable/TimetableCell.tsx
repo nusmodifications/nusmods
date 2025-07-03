@@ -17,6 +17,7 @@ import {
 import { TRANSPARENT_COLOR_INDEX } from 'utils/colors';
 import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip/Tooltip';
+import { removeCustomIdentifier } from 'utils/customModule';
 import { Minus, Plus } from 'react-feather';
 import styles from './TimetableCell.scss';
 
@@ -90,7 +91,10 @@ function formatWeekRange(weekRange: WeekRange) {
 const TimetableCell: React.FC<Props> = (props) => {
   const { lesson, showTitle, onClick, onHover, hoverLesson, transparent } = props;
 
-  const moduleName = showTitle ? `${lesson.moduleCode} ${lesson.title}` : lesson.moduleCode;
+  const moduleCode = lesson.isCustom
+    ? removeCustomIdentifier(lesson.moduleCode)
+    : lesson.moduleCode;
+  const moduleName = showTitle ? `${moduleCode} ${lesson.title}` : moduleCode;
   const Cell = props.onClick ? 'button' : 'div';
   const isHoveredOver = isEqual(getHoverLesson(lesson), hoverLesson);
 

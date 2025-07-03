@@ -7,6 +7,8 @@ import { TimetableModulesTableComponent, Props } from './TimetableModulesTable';
 import styles from './TimetableModulesTable.scss';
 
 function make(props: Partial<Props> = {}) {
+  const addModule = jest.fn();
+  const editCustomModule = jest.fn();
   const selectModuleColor = jest.fn();
   const hideLessonInTimetable = jest.fn();
   const showLessonInTimetable = jest.fn();
@@ -14,6 +16,7 @@ function make(props: Partial<Props> = {}) {
   const disableTaModeInTimetable = jest.fn();
   const onRemoveModule = jest.fn();
   const resetTombstone = jest.fn();
+  const onRemoveCustomModule = jest.fn();
 
   const wrapper = shallow(
     <TimetableModulesTableComponent
@@ -23,13 +26,17 @@ function make(props: Partial<Props> = {}) {
       moduleTableOrder="exam"
       modules={[]}
       tombstone={null}
+      addModule={addModule}
+      editCustomModule={editCustomModule}
       selectModuleColor={selectModuleColor}
       hideLessonInTimetable={hideLessonInTimetable}
       showLessonInTimetable={showLessonInTimetable}
       enableTaModeInTimetable={enableTaModeInTimetable}
       disableTaModeInTimetable={disableTaModeInTimetable}
       onRemoveModule={onRemoveModule}
+      onRemoveCustomModule={onRemoveCustomModule}
       resetTombstone={resetTombstone}
+      customModules={{}}
       {...props}
     />,
   );
@@ -96,7 +103,7 @@ describe(TimetableModulesTableComponent, () => {
     const withoutTaButton = getButtons(make({ modules: addColors([CS1010S]) }).wrapper);
     expect(withoutTaButton.at(0).children()).toHaveLength(2);
 
-    const modulesWithTaAbleModule = addColors([CS1010S], false, false, true);
+    const modulesWithTaAbleModule = addColors([CS1010S], false, false, false, true);
     const withTaButton = getButtons(make({ modules: modulesWithTaAbleModule }).wrapper);
     expect(withTaButton.at(0).children()).toHaveLength(3);
   });

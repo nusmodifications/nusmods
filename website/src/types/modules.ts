@@ -14,7 +14,7 @@ export type Department = string;
 export type Workload = string | readonly number[];
 export type Venue = string;
 export type Weeks = NumericWeeks | WeekRange;
-export type NumericWeeks = readonly number[];
+export type NumericWeeks = number[];
 export type WeekRange = {
   // The start and end dates
   start: string;
@@ -42,6 +42,8 @@ export type Day =
   | 'Friday'
   | 'Saturday'
   | 'Sunday';
+
+export const LessonDays: readonly Day[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
 export const WorkingDays: readonly Day[] = [
   'Monday',
@@ -138,6 +140,16 @@ export type RawLesson = Readonly<{
   weeks: Weeks;
 }>;
 
+export type CustomLesson = {
+  classNo: ClassNo;
+  day: DayText;
+  startTime: StartTime;
+  endTime: EndTime;
+  lessonType: LessonType;
+  venue: Venue;
+  weeks: Weeks;
+};
+
 // Semester-specific information of a module.
 export type SemesterData = {
   semester: Semester;
@@ -217,6 +229,9 @@ export type Module = {
   // Requisites
   prereqTree?: PrereqTree;
   fulfillRequirements?: readonly ModuleCode[];
+
+  // Flag for Custom Modules
+  isCustom?: boolean;
 
   // Meta
   timestamp: number;

@@ -4,6 +4,8 @@ import { Venue } from 'types/venues';
 import { SemTimetableConfig, TaModulesConfig } from 'types/timetables';
 import { serializeHidden, serializeTa, serializeTimetable } from 'utils/timetables';
 import config from 'config';
+import { CustomModuleLessonData } from 'types/reducers';
+import { CustomModuleSerializer } from 'utils/customModule';
 
 // IMPORTANT: Remember to update any route changes on the sitemap
 
@@ -25,9 +27,17 @@ export const TIMETABLE_SHARE = 'share';
 export function timetableShare(
   semester: Semester,
   timetable: SemTimetableConfig,
+  customModules: CustomModuleLessonData,
   hiddenModules: ModuleCode[],
   taModules: TaModulesConfig,
 ): string {
+  const serializedCustom =
+    Object.keys(customModules).length === 0
+      ? ''
+      : `&custom=${encodeURIComponent(
+          CustomModuleSerializer.serializeCustomModuleList(customModules),
+        )}`;
+
   // Convert the list of hidden modules to a comma-separated string, if there are any
   const serializedHidden = hiddenModules.length === 0 ? '' : serializeHidden(hiddenModules);
   const serializedTa = isEmpty(taModules) ? '' : serializeTa(taModules);
@@ -35,6 +45,7 @@ export function timetableShare(
   return (
     `${timetablePage(semester)}/${TIMETABLE_SHARE}` +
     `?${serializeTimetable(timetable)}` +
+    `${serializedCustom}` +
     `${serializedHidden}` +
     `${serializedTa}`
   );

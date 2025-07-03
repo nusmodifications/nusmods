@@ -15,6 +15,7 @@ export function expectColor(element: ReactWrapper | ShallowWrapper, color?: Colo
 export function addColors(
   modules: Module[],
   isHiddenInTimetable = false,
+  isCustom = false,
   isTaInTimetable = false,
   canTa = false,
 ): ModuleWithColor[] {
@@ -22,6 +23,7 @@ export function addColors(
     ...module,
     colorIndex: index,
     isHiddenInTimetable,
+    isCustom,
     isTaInTimetable,
     canTa,
   }));
