@@ -169,6 +169,15 @@ const OptimiserContent: React.FC = () => {
         }
       });
       if (selectedFreeDays.size > 0 && validGroups === 0) {
+        // check if conflict with the same moduleCode and lessonType already exists, if so, remove the old one and add the new one
+        const existingConflict = conflicts.find(
+          (conflict) =>
+            conflict.moduleCode === uniqueKey.split('-')[0] &&
+            conflict.lessonType === uniqueKey.split('-')[1],
+        );
+        if (existingConflict) {
+          conflicts.splice(conflicts.indexOf(existingConflict), 1);
+        }
         conflicts.push({
           moduleCode: uniqueKey.split('-')[0],
           lessonType: uniqueKey.split('-')[1],
