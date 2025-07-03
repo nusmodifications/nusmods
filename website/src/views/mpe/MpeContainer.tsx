@@ -83,36 +83,36 @@ const MpeContainer: React.FC = () => {
       if (ugEnded) {
         return (
           <p>
-            <strong>CPEx has ended for AY{MPE_AY} Semester {MPE_SEMESTER}.</strong>
-          </p>
-        );
-      } else {
-        return (
-          <p>
-            <strong>CPEx will open on:</strong> {ugCPEx.start}
+            <strong>
+              CPEx has ended for AY{MPE_AY} Semester {MPE_SEMESTER}.
+            </strong>
           </p>
         );
       }
-    } else {
       return (
-        <div>
-          <p>
-            <strong>
-              {ugEnded
-                ? `Undergraduate CPEx has ended for AY${MPE_AY} Semester ${MPE_SEMESTER}.`
-                : `Undergraduate CPEx will open on: ${ugCPEx.start}`}
-            </strong>
-          </p>
-          <p>
-            <strong>
-              {gdEnded
-                ? `Graduate CPEx has ended for AY${MPE_AY} Semester ${MPE_SEMESTER}.`
-                : `Graduate CPEx will open on: ${gdCPEx.start}`}
-            </strong>
-          </p>
-        </div>
+        <p>
+          <strong>CPEx will open on:</strong> {ugCPEx.start}
+        </p>
       );
     }
+    return (
+      <div>
+        <p>
+          <strong>
+            {ugEnded
+              ? `Undergraduate CPEx has ended for AY${MPE_AY} Semester ${MPE_SEMESTER}.`
+              : `Undergraduate CPEx will open on: ${ugCPEx.start}`}
+          </strong>
+        </p>
+        <p>
+          <strong>
+            {gdEnded
+              ? `Graduate CPEx has ended for AY${MPE_AY} Semester ${MPE_SEMESTER}.`
+              : `Graduate CPEx will open on: ${gdCPEx.start}`}
+          </strong>
+        </p>
+      </div>
+    );
   };
 
   return (
