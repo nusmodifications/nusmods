@@ -61,16 +61,49 @@ describe(ModulesSelect, () => {
     expect(result.find('.badge').exists()).toBe(true);
   });
 
-  it('should call onChange when module is selected', () => {
+  it('should call onChange and close dropdown on regular click', () => {
     const wrapper = mount(<ModulesSelect {...commonProps} />);
     const input = wrapper.find('input');
     input.simulate('focus');
     input.simulate('change', { target: { value: 'T' } });
-    wrapper.find('li').first().simulate('click');
+
+    // Verify dropdown is open
+    expect(wrapper.find(Downshift).prop('isOpen')).toBe(true);
+
+    // Regular click (no shift key)
+    wrapper.find('li').first().simulate('click', { shiftKey: false });
+
     expect(commonProps.onChange).toHaveBeenCalledWith(modules[0].moduleCode);
-    // remain open
-    const downShift = wrapper.find(Downshift);
-    expect(downShift.prop('isOpen')).toBe(true);
+
+    // Check that dropdown is closed after regular click
+    wrapper.update();
+    expect(wrapper.find(Downshift).prop('isOpen')).toBe(false);
+
+    // Check that input is cleared
+    expect(wrapper.find('input').prop('value')).toBe('');
+  });
+
+  it('should call onChange but keep dropdown open on shift+click', () => {
+    const wrapper = mount(<ModulesSelect {...commonProps} />);
+    const input = wrapper.find('input');
+    input.simulate('focus');
+    input.simulate('change', { target: { value: 'T' } });
+
+    // Verify dropdown is open
+    expect(wrapper.find(Downshift).prop('isOpen')).toBe(true);
+
+    // Shift+click
+    wrapper.find('li').first().simulate('mousedown', { shiftKey: true });
+    wrapper.find('li').first().simulate('click', { shiftKey: true });
+
+    expect(commonProps.onChange).toHaveBeenCalledWith(modules[0].moduleCode);
+
+    // Check that dropdown remains open after shift+click
+    wrapper.update();
+    expect(wrapper.find(Downshift).prop('isOpen')).toBe(true);
+
+    // Check that input value is preserved
+    expect(wrapper.find('input').prop('value')).toBe('T');
   });
 
   describe('when it does not matchBreakpoint', () => {

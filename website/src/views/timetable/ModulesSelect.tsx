@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useState, useRef } from 'react';
 import { omit } from 'lodash';
 import Downshift, {
   ChildrenFunction,
@@ -42,6 +42,8 @@ const ModulesSelect: FC<Props> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
+  const isShiftClickRef = useRef(false);
+
   const matchBreakpoint = useMediaQuery(breakpointUp('md'));
 
   const openSelect = useCallback(() => setIsOpen(true), []);
@@ -76,8 +78,19 @@ const ModulesSelect: FC<Props> = ({
           return changes;
 
         case Downshift.stateChangeTypes.keyDownEnter:
+          closeSelectAndEmptyInput();
+          return changes;
+
         case Downshift.stateChangeTypes.clickItem:
-          setInputValue('');
+          // Shift click or Shift enter: keep dropdown open
+          if (isShiftClickRef.current) {
+            isShiftClickRef.current = false;
+            return {
+              ...changes,
+              isOpen: true,
+            };
+          }
+          closeSelectAndEmptyInput();
           return changes;
 
         case Downshift.stateChangeTypes.mouseUp:
@@ -135,6 +148,10 @@ const ModulesSelect: FC<Props> = ({
                   key: module.moduleCode,
                   item: module.moduleCode,
                   disabled: module.isAdded || module.isAdding,
+                  onMouseDown: (event) => {
+                    // Capture shift state before click event
+                    isShiftClickRef.current = event.shiftKey;
+                  },
                 })}
                 className={classnames(styles.option, {
                   [styles.optionDisabled]: module.isAdded || module.isAdding,
