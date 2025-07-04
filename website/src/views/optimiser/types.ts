@@ -16,6 +16,15 @@ export interface LessonDaysData {
   days: Set<string>;
 }
 
+export interface LessonGroupData {
+  groupName: string;
+  lessonType: LessonType;
+  moduleCode: ModuleCode;
+  displayText: string;
+  classNo: string;
+  days: Set<string>;
+}
+
 export interface FreeDayConflict {
   moduleCode: ModuleCode;
   lessonType: LessonType;

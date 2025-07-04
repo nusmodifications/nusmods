@@ -374,6 +374,7 @@ $ yarn promote-staging  # Promote ./dist to production
 │   │       ├── timetable    - Timetable builder related components
 │   │       ├── today        - Today schedule page related components
 │   │       └── venues       - Venues page related components
+│   │       └── optimiser    - Timetable optimiser related components
 │   └── styles
 │       ├── bootstrap        - Bootstrapping, uh, Bootstrap
 │       ├── components       - Legacy component styles
