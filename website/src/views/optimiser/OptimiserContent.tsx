@@ -135,7 +135,7 @@ const OptimiserContent: React.FC = () => {
     const selectedKeys = new Set(selectedLessons.map((lesson) => lesson.uniqueKey));
     return lessonOptions
       .filter((lesson) => !selectedKeys.has(lesson.uniqueKey))
-      .map((lesson) => lesson.displayText);
+      .map((lesson) => lesson.uniqueKey);
   }, [selectedLessons, lessonOptions]);
 
   // Validate free days against non-recorded lessons
@@ -169,7 +169,7 @@ const OptimiserContent: React.FC = () => {
       let validGroups = 0;
       groupMap.forEach((days, _groupName) => {
         if (
-          recordings.includes(uniqueKey.split('-').join(' ')) || // if it is a recorded lesson, dont trigger a conflict
+          recordings.includes(uniqueKey) || // if it is a recorded lesson, dont trigger a conflict
           !days.some((day) => selectedFreeDays.has(day))
         ) {
           validGroups += 1;

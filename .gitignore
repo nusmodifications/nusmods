@@ -313,3 +313,4 @@ $RECYCLE.BIN/
 
 # asdf versions
 .tool-versions
+package-lock.json
