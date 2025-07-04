@@ -78,7 +78,7 @@ const ModulesSelect: FC<Props> = ({
           return changes;
 
         case Downshift.stateChangeTypes.keyDownEnter:
-          closeSelectAndEmptyInput();
+          setInputValue('');
           return changes;
 
         case Downshift.stateChangeTypes.clickItem:
@@ -90,7 +90,7 @@ const ModulesSelect: FC<Props> = ({
               isOpen: true,
             };
           }
-          closeSelectAndEmptyInput();
+          setInputValue('');
           return changes;
 
         case Downshift.stateChangeTypes.mouseUp:

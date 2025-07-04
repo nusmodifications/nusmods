@@ -61,58 +61,45 @@ describe(ModulesSelect, () => {
     expect(result.find('.badge').exists()).toBe(true);
   });
 
-  it('should call onChange and close dropdown on regular Enter press', () => {
+  it('should call onChange and empty input on regular Enter press', () => {
     const wrapper = mount(<ModulesSelect {...commonProps} />);
     const input = wrapper.find('input');
     input.simulate('focus');
     input.simulate('change', { target: { value: 'T' } });
-
-    // Verify dropdown is open
-    expect(wrapper.find(Downshift).prop('isOpen')).toBe(true);
 
     // Simulate Enter
     input.simulate('keydown', { key: 'Enter', keyCode: 13, which: 13, shiftKey: false });
 
     expect(commonProps.onChange).toHaveBeenCalledWith(modules[0].moduleCode);
 
-    // Check that dropdown is closed after regular click
     wrapper.update();
-    expect(wrapper.find(Downshift).prop('isOpen')).toBe(false);
 
     // Check that input is cleared
     expect(wrapper.find('input').prop('value')).toBe('');
   });
 
-  it('should call onChange and close dropdown on regular click', () => {
+  it('should call onChange and empty input on regular click', () => {
     const wrapper = mount(<ModulesSelect {...commonProps} />);
     const input = wrapper.find('input');
     input.simulate('focus');
     input.simulate('change', { target: { value: 'T' } });
-
-    // Verify dropdown is open
-    expect(wrapper.find(Downshift).prop('isOpen')).toBe(true);
 
     // Regular click (no shift key)
     wrapper.find('li').first().simulate('click', { shiftKey: false });
 
     expect(commonProps.onChange).toHaveBeenCalledWith(modules[0].moduleCode);
 
-    // Check that dropdown is closed after regular click
     wrapper.update();
-    expect(wrapper.find(Downshift).prop('isOpen')).toBe(false);
 
     // Check that input is cleared
     expect(wrapper.find('input').prop('value')).toBe('');
   });
 
-  it('should call onChange but keep dropdown open on shift+click', () => {
+  it('should call onChange but keep input on shift+click', () => {
     const wrapper = mount(<ModulesSelect {...commonProps} />);
     const input = wrapper.find('input');
     input.simulate('focus');
     input.simulate('change', { target: { value: 'T' } });
-
-    // Verify dropdown is open
-    expect(wrapper.find(Downshift).prop('isOpen')).toBe(true);
 
     // Shift+click
     wrapper.find('li').first().simulate('mousedown', { shiftKey: true });
@@ -120,9 +107,7 @@ describe(ModulesSelect, () => {
 
     expect(commonProps.onChange).toHaveBeenCalledWith(modules[0].moduleCode);
 
-    // Check that dropdown remains open after shift+click
     wrapper.update();
-    expect(wrapper.find(Downshift).prop('isOpen')).toBe(true);
 
     // Check that input value is preserved
     expect(wrapper.find('input').prop('value')).toBe('T');
