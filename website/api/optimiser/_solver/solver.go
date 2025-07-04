@@ -12,7 +12,6 @@ import (
 	"github.com/umahmood/haversine"
 )
 
-
 /*
 Beam Search Algorithm
 https://www.geeksforgeeks.org/introduction-to-beam-search-algorithm/
@@ -263,7 +262,7 @@ func scoreConsecutiveHoursofStudy(physicalSlots []models.ModuleSlot, maxConsecut
 	}
 
 	score := 0
-	consecutiveMinutes := physicalSlots[0].EndMin - physicalSlots[0].StartMin 
+	consecutiveMinutes := physicalSlots[0].EndMin - physicalSlots[0].StartMin
 
 	for i := 1; i < len(physicalSlots); i++ {
 		prevSlot := physicalSlots[i-1]

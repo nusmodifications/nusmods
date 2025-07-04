@@ -4,11 +4,10 @@ import (
 	"encoding/json"
 	"strings"
 
+	"github.com/nusmodifications/nusmods/website/api/optimiser/_client"
 	"github.com/nusmodifications/nusmods/website/api/optimiser/_constants"
 	"github.com/nusmodifications/nusmods/website/api/optimiser/_models"
-	"github.com/nusmodifications/nusmods/website/api/optimiser/_client"
 )
-
 
 /*
 - Get all module slots that pass conditions in optimiserRequest for all modules.
@@ -48,7 +47,7 @@ func GetAllModuleSlots(optimiserRequest models.OptimiserRequest) (map[string]map
 			}
 		}
 
-		// Store the module slots for the module 
+		// Store the module slots for the module
 		moduleSlots[module] = mergeAndFilterModuleSlots(moduleTimetable, venues, optimiserRequest, module)
 
 	}
