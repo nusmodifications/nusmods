@@ -257,6 +257,36 @@ func calculateLunchGap(physicalSlots []models.ModuleSlot, optimiserRequest model
 	return bestGap
 }
 
+func scoreConsecutiveHoursofStudy(physicalSlots []models.ModuleSlot, maxConsecutiveHours int) int {
+	if len(physicalSlots) == 0 {
+		return 0
+	}
+
+	score := 0
+	consecutiveMinutes := physicalSlots[0].EndMin - physicalSlots[0].StartMin 
+
+	for i := 1; i < len(physicalSlots); i++ {
+		prevSlot := physicalSlots[i-1]
+		currentSlot := physicalSlots[i]
+
+		if currentSlot.StartMin == prevSlot.EndMin {
+			consecutiveMinutes += currentSlot.EndMin - currentSlot.StartMin
+		} else {
+			// Currently penalise for more than 4 hours
+			if consecutiveMinutes > maxConsecutiveHours*60 {
+				score += (consecutiveMinutes/60 - maxConsecutiveHours) * 20
+			}
+			consecutiveMinutes = currentSlot.EndMin - currentSlot.StartMin
+		}
+	}
+
+	if consecutiveMinutes > maxConsecutiveHours*60 {
+		score += (consecutiveMinutes/60 - maxConsecutiveHours) * constants.CONSECUTIVE_HOURS_PENALTY_RATE
+	}
+
+	return score
+}
+
 /*
 scoreTimetableState assigns a heuristic score to a complete timetable state.
 Lower score means a better (more preferred) timetable.
@@ -283,6 +313,9 @@ func scoreTimetableState(state models.TimetableState, recordings map[string]bool
 		if largestGap > constants.GAP_PENALTY_THRESHOLD {
 			totalScore += constants.GAP_PENALTY_RATE * float64(largestGap-constants.GAP_PENALTY_THRESHOLD) / 60
 		}
+
+		// Apply penalty for more than max consecutive hours of study
+		totalScore += float64(scoreConsecutiveHoursofStudy(physicalSlots, optimiserRequest.MaxConsecutiveHours))
 	}
 
 	// Add penalty for walking distance
