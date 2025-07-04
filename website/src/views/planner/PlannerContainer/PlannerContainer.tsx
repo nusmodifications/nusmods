@@ -19,6 +19,8 @@ import {
 } from 'utils/planner';
 import {
   addPlannerModule,
+  clearPlanner,
+  importPlanner,
   movePlannerModule,
   removePlannerModule,
   setPlaceholderModule,
@@ -31,9 +33,14 @@ import Title from 'views/components/Title';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import Modal from 'views/components/Modal';
 import { State as StoreState } from 'types/state';
+import { downloadPlanner } from 'actions/export';
+import { PlannerState } from 'types/reducers';
 import PlannerSemester from '../PlannerSemester';
 import PlannerYear from '../PlannerYear';
 import PlannerSettings from '../PlannerSettings';
+import PlannerClearButton from '../PlannerClearButton';
+import PlannerImportButton from '../PlannerImportButton';
+import PlannerExportButton from '../PlannerExportButton';
 import CustomModuleForm from '../CustomModuleForm';
 
 import styles from './PlannerContainer.scss';
@@ -54,6 +61,9 @@ export type Props = Readonly<{
   removeModule: (id: string) => void;
   setPlaceholderModule: (id: string, moduleCode: ModuleCode) => void;
   addModuleToTimetable: (semester: Semester, module: ModuleCode) => void;
+  importPlanner: (importedState: PlannerState) => void;
+  clearPlanner: () => void;
+  downloadPlanner: () => void;
 }>;
 
 type SemesterModules = { [semester: string]: PlannerModuleInfo[] };
@@ -159,14 +169,20 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
             <p>{renderMCs(credits)}</p>
           </div>
 
-          <button
-            className={classnames('btn btn-svg btn-outline-primary', styles.settingsButton)}
-            type="button"
-            onClick={() => this.setState({ showSettings: true })}
-          >
-            <Settings className="svg" />
-            <p>Settings</p>
-          </button>
+          <div className={classnames(styles.buttonGroup)}>
+            <PlannerClearButton clearPlanner={this.props.clearPlanner} />
+            <PlannerImportButton importPlanner={this.props.importPlanner} />
+            <PlannerExportButton downloadPlanner={this.props.downloadPlanner} />
+
+            <button
+              className={classnames('btn btn-svg btn-outline-primary', styles.settingsButton)}
+              type="button"
+              onClick={() => this.setState({ showSettings: true })}
+            >
+              <Settings className="svg" />
+              <p>Settings</p>
+            </button>
+          </div>
         </div>
       </header>
     );
@@ -306,6 +322,9 @@ const PlannerContainer = connect(mapStateToProps, {
   moveModule: movePlannerModule,
   removeModule: removePlannerModule,
   addModuleToTimetable,
+  importPlanner,
+  clearPlanner,
+  downloadPlanner,
 })(PlannerContainerComponent);
 
 export default PlannerContainer;

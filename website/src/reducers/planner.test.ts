@@ -13,17 +13,18 @@ import {
   setPlannerMaxYear,
   setPlannerIBLOCs,
   setIgnorePrerequisitesCheck,
+  IMPORT_PLANNER,
+  importPlanner,
+  CLEAR_PLANNER,
+  clearPlanner,
 } from 'actions/planner';
 import { PlannerState } from 'types/reducers';
-import reducer, { migrateV0toV1, nextId } from './planner';
+import reducer, { defaultPlannerState, migrateV0toV1, nextId } from './planner';
 
 const defaultState: PlannerState = {
+  ...defaultPlannerState,
   minYear: '2017/2018',
   maxYear: '2018/2019',
-  iblocs: false,
-  ignorePrereqCheck: false,
-  modules: {},
-  custom: {},
 };
 
 describe(nextId, () => {
@@ -200,6 +201,42 @@ describe(REMOVE_PLANNER_MODULE, () => {
 
   test('should remove the specified module', () => {
     expect(reducer(initial, removePlannerModule('0')).modules).toEqual({});
+  });
+});
+
+describe(IMPORT_PLANNER, () => {
+  const initial: PlannerState = {
+    ...defaultState,
+  };
+
+  const importedState: PlannerState = {
+    minYear: '2024/2025',
+    maxYear: '2025/2026',
+    iblocs: true,
+    ignorePrereqCheck: true,
+    modules: {
+      0: { id: '0', moduleCode: 'CS1010S', year: '2018/2019', semester: 1, index: 0 },
+    },
+    custom: {
+      CS1010A: { title: 'CS1010B', moduleCredit: 4 },
+    },
+  };
+  test('should import the given planner', () => {
+    expect(reducer(initial, importPlanner(importedState))).toEqual(importedState);
+  });
+});
+
+describe(CLEAR_PLANNER, () => {
+  const initial: PlannerState = {
+    ...defaultState,
+
+    modules: {
+      0: { id: '0', moduleCode: 'CS1010S', year: '2018/2019', semester: 1, index: 0 },
+    },
+  };
+
+  test('should clear the planner', () => {
+    expect(reducer(initial, clearPlanner())).toEqual(defaultPlannerState);
   });
 });
 

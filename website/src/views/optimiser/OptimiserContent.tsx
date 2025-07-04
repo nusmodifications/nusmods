@@ -4,7 +4,10 @@ import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selecto
 import { State } from 'types/state';
 import { ColorMapping } from 'types/reducers';
 import { getModuleTimetable } from 'utils/modules';
+import { LessonSlot, OptimiseRequest, OptimiseResponse, sendOptimiseRequest } from 'apis/optimiser';
 import Title from 'views/components/Title';
+import { flatten } from 'lodash';
+import ApiError from 'views/errors/ApiError';
 import styles from './OptimiserContent.scss';
 import OptimiserHeader from './OptimiserHeader';
 import OptimiserForm from './OptimiserForm';
@@ -29,6 +32,10 @@ const OptimiserContent: React.FC = () => {
   const [unAssignedLessons, setUnAssignedLessons] = useState<LessonOption[]>([]);
   const [shareableLink, setShareableLink] = useState<string>('');
   const [hasSaturday, setHasSaturday] = useState<boolean>(false);
+
+  // button
+  const [isOptimising, setIsOptimising] = useState<boolean>(false);
+  const [error, setError] = useState<Error | null>(null);
 
   // Generate lesson options from current timetable
   // find the lesson and the type in lessonOptions, and then find the days of that combination in lessonDaysData
@@ -222,6 +229,58 @@ const OptimiserContent: React.FC = () => {
     });
   }, []);
 
+  const buttonOnClick = async () => {
+    setShareableLink(''); // Reset shareable link
+    setIsOptimising(true);
+    setError(null);
+
+    const modulesList = Object.keys(timetable);
+    const acadYearFormatted = `${acadYear.split('/')[0]}-${acadYear.split('/')[1]}`;
+
+    const params: OptimiseRequest = {
+      modules: modulesList,
+      acadYear: acadYearFormatted,
+      acadSem: activeSemester,
+      freeDays: Array.from(selectedFreeDays),
+      earliestTime,
+      latestTime,
+      recordings,
+      lunchStart: earliestLunchTime,
+      lunchEnd: latestLunchTime,
+    };
+
+    sendOptimiseRequest(params)
+      .then(parseData)
+      .catch((e) => setError(e))
+      .finally(() => setIsOptimising(false));
+  };
+
+  const parseData = async (data: OptimiseResponse | null) => {
+    const link = data?.shareableLink;
+    if (!link) {
+      return;
+    }
+    setShareableLink(link);
+
+    const daySlots = data.DaySlots ?? [];
+    const assignedLessons = new Set(
+      flatten(daySlots)
+        .map((slot: LessonSlot | null) => {
+          const lessonKey = slot?.LessonKey;
+          if (!lessonKey) {
+            return null;
+          }
+          const [moduleCode, lessonType] = lessonKey.split('|');
+          return `${moduleCode} ${lessonType}`;
+        })
+        .filter((lesson) => !!lesson),
+    );
+
+    setUnAssignedLessons(
+      lessonOptions.filter((lesson) => !assignedLessons.has(lesson.displayText)),
+    );
+  };
+
   const openOptimisedTimetable = () => {
     if (shareableLink) {
       window.open(shareableLink, '_blank');
@@ -258,18 +317,16 @@ const OptimiserContent: React.FC = () => {
       <OptimiserButton
         freeDayConflicts={freeDayConflicts}
         lessonOptions={lessonOptions}
-        acadYear={acadYear}
-        activeSemester={activeSemester}
-        selectedFreeDays={selectedFreeDays}
-        earliestTime={earliestTime}
-        latestTime={latestTime}
-        recordings={recordings}
-        earliestLunchTime={earliestLunchTime}
-        latestLunchTime={latestLunchTime}
-        timetable={timetable}
-        setShareableLink={setShareableLink}
-        setUnAssignedLessons={setUnAssignedLessons}
+        isOptimising={isOptimising}
+        onClick={buttonOnClick}
       />
+
+      {!!error && (
+        <ApiError
+          dataName="timetable optimiser"
+          promptText="This feature is in Beta, so we would really appreciate your feedback! "
+        />
+      )}
 
       {/* Optimiser results */}
       <OptimiserResults
