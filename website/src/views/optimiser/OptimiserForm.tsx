@@ -293,9 +293,8 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
       </div>
 
       <div className={styles.priorityNotice}>
-        The following constraints will be{' '}
-        <strong className={styles.prioritised}>heavily prioritised</strong> but{' '}
-        <strong className={styles.notGuaranteed}>not guaranteed</strong> :
+        Following preferences will be <strong className={styles.prioritised}>prioritised</strong>{' '}
+        but <strong className={styles.notGuaranteed}>not guaranteed</strong> :
       </div>
 
       <div className={styles.maxConsecutiveHours}>
