@@ -293,7 +293,9 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
       </div>
 
       <div className={styles.priorityNotice}>
-        The following constraints will be <strong className={styles.prioritised}>heavily prioritised</strong> but <strong className={styles.notGuaranteed}>not guaranteed</strong> :
+        The following constraints will be{' '}
+        <strong className={styles.prioritised}>heavily prioritised</strong> but{' '}
+        <strong className={styles.notGuaranteed}>not guaranteed</strong> :
       </div>
 
       <div className={styles.maxConsecutiveHours}>
@@ -301,15 +303,23 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
           <div className={styles.maxConsecutiveHoursHeader}>
             <div>
               Select maximum consecutive hours of live lessons
-              <Tooltip content="Prioritises having less than this number of consecutive hours of live lessons" placement="right">
-                <Info className={`${styles.tag} ${styles.infoIcon}`} style={{ marginLeft: '0.5rem' }} size={15} />
+              <Tooltip
+                content="Prioritises having less than this number of consecutive hours of live lessons"
+                placement="right"
+              >
+                <Info
+                  className={`${styles.tag} ${styles.infoIcon}`}
+                  style={{ marginLeft: '0.5rem' }}
+                  size={15}
+                />
               </Tooltip>
             </div>
           </div>
-          <select 
+          <select
             value={maxConsecutiveHours}
-            onChange={(e) => onMaxConsecutiveHoursChange(parseInt(e.target.value))}
-            className={classnames('form-select', styles.maxConsecutiveHoursInput)}>
+            onChange={(e) => onMaxConsecutiveHoursChange(parseInt(e.target.value, 10))}
+            className={classnames('form-select', styles.maxConsecutiveHoursInput)}
+          >
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -323,10 +333,7 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
         <div className={styles.lunchControlGroup}>
           <div className={styles.lunchControlHeader}>
             Select range for preferred lunch break timings
-            <Tooltip
-              content="Prioritises 1-hour lunch breaks in this range"
-              placement="right"
-            >
+            <Tooltip content="Prioritises 1-hour lunch breaks in this range" placement="right">
               <Info className={`${styles.tag} ${styles.infoIcon}`} size={15} />
             </Tooltip>
           </div>

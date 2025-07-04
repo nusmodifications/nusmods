@@ -307,15 +307,15 @@
 
 // Priority notice section
 .priorityNotice {
+  padding-top: 1rem;
   margin-top: 2rem;
   border-top: 1px solid var(--gray-lighter);
-  padding-top: 1rem;
   font-size: 1.1rem;
 
   .prioritised {
-    color: #ff5138;
     opacity: 0.85;
     font-weight: bold;
+    color: #ff5138;
   }
 
   .notGuaranteed {
