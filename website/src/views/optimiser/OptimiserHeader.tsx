@@ -26,8 +26,8 @@ const OptimiserHeader: React.FC = () => {
       </div>
       <div className={styles.description}>
         <div className={styles.descriptionText}>
-          Intelligently explores millions of combinations to generate your optimal timetable tailored
-          to your preferences
+          Intelligently explores millions of combinations to generate your optimal timetable
+          tailored to your preferences
         </div>
       </div>
     </div>
