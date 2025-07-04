@@ -160,7 +160,7 @@ const OptimiserContent: React.FC = () => {
     // go through each group and within that check if any of the selected free days are in them, if so, that group is invalid
     lessonGroupsData.forEach((groupMap, uniqueKey) => {
       let validGroups = 0;
-      groupMap.forEach((days, groupName) => {
+      groupMap.forEach((days, _groupName) => {
         if (
           recordings.includes(uniqueKey.split('-').join(' ')) || // if it is a recorded lesson, dont trigger a conflict
           !days.some((day) => selectedFreeDays.has(day))
