@@ -61,16 +61,56 @@ describe(ModulesSelect, () => {
     expect(result.find('.badge').exists()).toBe(true);
   });
 
-  it('should call onChange when module is selected', () => {
+  it('should call onChange and empty input on regular Enter press', () => {
     const wrapper = mount(<ModulesSelect {...commonProps} />);
     const input = wrapper.find('input');
     input.simulate('focus');
     input.simulate('change', { target: { value: 'T' } });
-    wrapper.find('li').first().simulate('click');
+
+    // Simulate Enter
+    input.simulate('keydown', { key: 'Enter', keyCode: 13, which: 13, shiftKey: false });
+
     expect(commonProps.onChange).toHaveBeenCalledWith(modules[0].moduleCode);
-    // remain open
-    const downShift = wrapper.find(Downshift);
-    expect(downShift.prop('isOpen')).toBe(true);
+
+    wrapper.update();
+
+    // Check that input is cleared
+    expect(wrapper.find('input').prop('value')).toBe('');
+  });
+
+  it('should call onChange and empty input on regular click', () => {
+    const wrapper = mount(<ModulesSelect {...commonProps} />);
+    const input = wrapper.find('input');
+    input.simulate('focus');
+    input.simulate('change', { target: { value: 'T' } });
+
+    // Regular click (no shift key)
+    wrapper.find('li').first().simulate('click', { shiftKey: false });
+
+    expect(commonProps.onChange).toHaveBeenCalledWith(modules[0].moduleCode);
+
+    wrapper.update();
+
+    // Check that input is cleared
+    expect(wrapper.find('input').prop('value')).toBe('');
+  });
+
+  it('should call onChange but keep input on shift+click', () => {
+    const wrapper = mount(<ModulesSelect {...commonProps} />);
+    const input = wrapper.find('input');
+    input.simulate('focus');
+    input.simulate('change', { target: { value: 'T' } });
+
+    // Shift+click
+    wrapper.find('li').first().simulate('mousedown', { shiftKey: true });
+    wrapper.find('li').first().simulate('click', { shiftKey: true });
+
+    expect(commonProps.onChange).toHaveBeenCalledWith(modules[0].moduleCode);
+
+    wrapper.update();
+
+    // Check that input value is preserved
+    expect(wrapper.find('input').prop('value')).toBe('T');
   });
 
   describe('when it does not matchBreakpoint', () => {
