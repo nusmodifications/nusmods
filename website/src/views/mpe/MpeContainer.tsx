@@ -32,6 +32,18 @@ const MpeContainer: React.FC = () => {
   const sameTime = hasCPEx && ugCPEx.startDate.getTime() === gdCPEx.startDate.getTime();
   const { enableCPEx } = config;
 
+  // Check if Undergraduate CPEx has ended
+  const isUgCPExEnded = (): boolean => {
+    const now = new Date();
+    return !!(ugCPEx && ugCPEx.endDate && now > ugCPEx.endDate);
+  };
+
+  // Check if Graduate CPEx has ended
+  const isGdCPExEnded = (): boolean => {
+    const now = new Date();
+    return !!(gdCPEx && gdCPEx.endDate && now > gdCPEx.endDate);
+  };
+
   const onLogin = useCallback(() => {
     setIsGettingSSOLink(true);
     return getSSOLink()
@@ -60,6 +72,48 @@ const MpeContainer: React.FC = () => {
       }
       throw err;
     });
+
+  const renderCPExStatus = () => {
+    if (!hasCPEx) return null;
+
+    const ugEnded = isUgCPExEnded();
+    const gdEnded = isGdCPExEnded();
+
+    if (sameTime) {
+      if (ugEnded) {
+        return (
+          <p>
+            <strong>
+              CPEx has ended for AY{MPE_AY} Semester {MPE_SEMESTER}.
+            </strong>
+          </p>
+        );
+      }
+      return (
+        <p>
+          <strong>CPEx will open on:</strong> {ugCPEx.start}
+        </p>
+      );
+    }
+    return (
+      <div>
+        <p>
+          <strong>
+            {ugEnded
+              ? `Undergraduate CPEx has ended for AY${MPE_AY} Semester ${MPE_SEMESTER}.`
+              : `Undergraduate CPEx will open on: ${ugCPEx.start}`}
+          </strong>
+        </p>
+        <p>
+          <strong>
+            {gdEnded
+              ? `Graduate CPEx has ended for AY${MPE_AY} Semester ${MPE_SEMESTER}.`
+              : `Graduate CPEx will open on: ${gdCPEx.start}`}
+          </strong>
+        </p>
+      </div>
+    );
+  };
 
   return (
     <div className={styles.pageContainer}>
@@ -129,21 +183,7 @@ const MpeContainer: React.FC = () => {
       ) : (
         <>
           <hr />
-          {hasCPEx &&
-            (sameTime ? (
-              <p>
-                <strong>CPEx will open on:</strong> {ugCPEx.start}
-              </p>
-            ) : (
-              <div>
-                <p>
-                  <strong>Undergraduate CPEx will open on:</strong> {ugCPEx.start}
-                </p>
-                <p>
-                  <strong>Graduate CPEx will open on:</strong> {gdCPEx.start}
-                </p>
-              </div>
-            ))}
+          {renderCPExStatus()}
         </>
       )}
     </div>
