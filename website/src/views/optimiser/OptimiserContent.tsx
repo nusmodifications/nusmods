@@ -13,7 +13,7 @@ import OptimiserHeader from './OptimiserHeader';
 import OptimiserForm from './OptimiserForm';
 import OptimiserButton from './OptimiserButton';
 import OptimiserResults from './OptimiserResults';
-import { LessonOption, LessonDaysData, FreeDayConflict } from './types';
+import { LessonOption, FreeDayConflict } from './types';
 
 const OptimiserContent: React.FC = () => {
   const activeSemester = useSelector(({ app }: State) => app.activeSemester);
@@ -99,37 +99,6 @@ const OptimiserContent: React.FC = () => {
     return moduleGroupMap;
   }, [lessonOptions, modules, activeSemester]);
 
-  const lessonDaysData = useMemo(() => {
-    const lessonDays: LessonDaysData[] = [];
-
-    lessonOptions.forEach((option) => {
-      const module = modules[option.moduleCode];
-      if (!module) return;
-
-      const moduleTimetable = getModuleTimetable(module, activeSemester);
-      const lessonsForType = moduleTimetable.filter(
-        (lesson) => lesson.lessonType === option.lessonType,
-      );
-
-      const days = new Set<string>();
-      lessonsForType.forEach((lesson) => {
-        days.add(lesson.day);
-      });
-      if (days.has('Saturday')) {
-        setHasSaturday(true);
-      }
-      lessonDays.push({
-        uniqueKey: option.uniqueKey,
-        moduleCode: option.moduleCode,
-        lessonType: option.lessonType,
-        displayText: option.displayText,
-        days,
-      });
-    });
-
-    return lessonDays;
-  }, [lessonOptions, modules, activeSemester]);
-
   // Unselected module-lessonType combinations are recorded lessons `module lessonType`
   const recordings = useMemo(() => {
     const selectedKeys = new Set(selectedLessons.map((lesson) => lesson.uniqueKey));
@@ -140,33 +109,14 @@ const OptimiserContent: React.FC = () => {
 
   // Validate free days against non-recorded lessons
   useEffect(() => {
-    const recordingsSet = new Set(recordings);
     const conflicts: FreeDayConflict[] = [];
 
-    // Check each non-recorded lesson (physical lessons that user plans to attend)
-    lessonDaysData.forEach((lessonData) => {
-      // Skip if this lesson is recorded (not attending in person)
-      if (recordingsSet.has(lessonData.displayText)) return;
-
-      // Check if ALL days for this lesson are selected as free days
-      const lessonDaysArray = Array.from(lessonData.days);
-      const conflictingDays = lessonDaysArray.filter((day) => selectedFreeDays.has(day));
-
-      // If all lesson days are selected as free days, it's a conflict
-      if (conflictingDays.length === lessonDaysArray.length && conflictingDays.length > 0) {
-        conflicts.push({
-          moduleCode: lessonData.moduleCode,
-          lessonType: lessonData.lessonType,
-          displayText: lessonData.displayText,
-          conflictingDays,
-        });
-      }
-    });
     // check if all groups are not possible to attend, then it's a conflict, then day of conflict is the days of one of the groups
     // go thorugh each module-lessonType combination, and within that,
     // go through each group and within that check if any of the selected free days are in them, if so, that group is invalid
     lessonGroupsData.forEach((groupMap, uniqueKey) => {
       let validGroups = 0;
+      const groupDays = new Set<string>();
       groupMap.forEach((days, _groupName) => {
         if (
           recordings.includes(uniqueKey) || // if it is a recorded lesson, dont trigger a conflict
@@ -174,6 +124,7 @@ const OptimiserContent: React.FC = () => {
         ) {
           validGroups += 1;
         }
+        days.forEach((day) => groupDays.add(day));
       });
       if (selectedFreeDays.size > 0 && validGroups === 0) {
         // check if conflict with the same moduleCode and lessonType already exists, if so, remove the old one and add the new one
@@ -185,17 +136,19 @@ const OptimiserContent: React.FC = () => {
         if (existingConflict) {
           conflicts.splice(conflicts.indexOf(existingConflict), 1);
         }
+        if (groupDays.has('Saturday')) {
+          setHasSaturday(true);
+        }
         conflicts.push({
           moduleCode: uniqueKey.split('-')[0],
           lessonType: uniqueKey.split('-')[1],
           displayText: uniqueKey.split('-').join(' '),
-          // the days that are common between selectedFreeDays and the days in the group
-          conflictingDays: Array.from(selectedFreeDays),
+          conflictingDays: Array.from(selectedFreeDays).filter((day) => groupDays.has(day)),
         });
       }
     });
     setFreeDayConflicts(conflicts);
-  }, [selectedFreeDays, lessonDaysData, lessonGroupsData, recordings]);
+  }, [selectedFreeDays, lessonGroupsData, recordings]);
 
   useEffect(() => {
     const availableKeys = new Set(lessonOptions.map((option) => option.uniqueKey));
