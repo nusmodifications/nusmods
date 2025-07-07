@@ -23,6 +23,7 @@ import ModuleFinderApiError from 'views/errors/ModuleFinderApiError';
 import ModuleFinderPager from 'views/modules/ModuleFinderPager';
 import ModuleFinderItem from 'views/modules/ModuleFinderItem';
 import Pagination from 'views/components/searchkit/Pagination';
+import RandomPicker from 'views/components/searchkit/RandomPicker';
 import Title from 'views/components/Title';
 
 import { forceElasticsearchHost } from 'utils/debug';
@@ -66,7 +67,7 @@ const ModuleFinderContainer: React.FC = () => (
 
           <ModuleSearchBox id="q" />
 
-          <ModuleRandomButton />
+          <RandomPicker buttonComponent={ModuleRandomButton} />
 
           <div>
             <HitsStats
