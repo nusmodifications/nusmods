@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import classnames from 'classnames';
 import { Info, X, AlertTriangle } from 'react-feather';
 import Tooltip from 'views/components/Tooltip';
+import { WorkingDays, Day } from 'types/modules';
 import { LessonOption, FreeDayConflict } from './types';
 import styles from './OptimiserForm.scss';
 
@@ -189,8 +190,11 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
           </div>
           {freeDayConflicts.map((conflict, index) => (
             <div key={index} className={styles.conflictItem}>
-              • <strong>{conflict.displayText}</strong> happens on:{' '}
-              {conflict.conflictingDays.join(', ')}
+              • <strong>{conflict.displayText}</strong> cannot be assigned due to your free days:{' '}
+              {conflict.conflictingDays
+                .filter((d): d is Day => WorkingDays.includes(d as Day))
+                .sort((a, b) => WorkingDays.indexOf(a as Day) - WorkingDays.indexOf(b as Day))
+                .join(', ')}
             </div>
           ))}
           <div className={styles.conflictFooter}>

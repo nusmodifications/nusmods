@@ -367,6 +367,7 @@ $ yarn promote-staging  # Promote ./dist to production
 │   │       ├── hocs         - Higher order components
 │   │       ├── layout       - Global layout components
 │   │       ├── modules      - Module finder and module info components
+│   │       ├── optimiser    - Timetable optimiser related components
 │   │       ├── planner      - Module planner related components
 │   │       ├── routes       - Routing related components
 │   │       ├── settings     - Settings page component
