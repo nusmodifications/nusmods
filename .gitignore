@@ -140,6 +140,8 @@ Temporary Items
 .apdisk
 
 ### Node ###
+package-lock.json
+
 # Logs
 logs
 *.log
@@ -313,4 +315,3 @@ $RECYCLE.BIN/
 
 # asdf versions
 .tool-versions
-package-lock.json
