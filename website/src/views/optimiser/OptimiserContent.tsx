@@ -105,7 +105,7 @@ const OptimiserContent: React.FC = () => {
     const selectedKeys = new Set(selectedLessons.map((lesson) => lesson.uniqueKey));
     return lessonOptions
       .filter((lesson) => !selectedKeys.has(lesson.uniqueKey))
-      .map((lesson) => lesson.uniqueKey);
+      .map((lesson) => lesson.displayText);
   }, [selectedLessons, lessonOptions]);
 
   // Validate free days against non-recorded lessons
