@@ -32,6 +32,7 @@ const OptimiserContent: React.FC = () => {
   const [unAssignedLessons, setUnAssignedLessons] = useState<LessonOption[]>([]);
   const [shareableLink, setShareableLink] = useState<string>('');
   const [hasSaturday, setHasSaturday] = useState<boolean>(false);
+  const [maxConsecutiveHours, setMaxConsecutiveHours] = useState<number>(4);
 
   // button
   const [isOptimising, setIsOptimising] = useState<boolean>(false);
@@ -200,6 +201,7 @@ const OptimiserContent: React.FC = () => {
       recordings,
       lunchStart: earliestLunchTime,
       lunchEnd: latestLunchTime,
+      maxConsecutiveHours,
     };
 
     sendOptimiseRequest(params)
@@ -258,12 +260,14 @@ const OptimiserContent: React.FC = () => {
         latestLunchTime={latestLunchTime}
         freeDayConflicts={freeDayConflicts}
         hasSaturday={hasSaturday}
+        maxConsecutiveHours={maxConsecutiveHours}
         onToggleLessonSelection={toggleLessonSelection}
         onToggleFreeDay={toggleFreeDay}
         onEarliestTimeChange={setEarliestTime}
         onLatestTimeChange={setLatestTime}
         onEarliestLunchTimeChange={setEarliestLunchTime}
         onLatestLunchTimeChange={setLatestLunchTime}
+        onMaxConsecutiveHoursChange={setMaxConsecutiveHours}
       />
 
       {/* Optimiser button */}
