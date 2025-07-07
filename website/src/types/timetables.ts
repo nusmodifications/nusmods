@@ -2,12 +2,17 @@ import { ClassNo, LessonType, ModuleCode, ModuleTitle, RawLesson } from './modul
 
 //  ModuleLessonConfig is a mapping of lessonType to ClassNo for a module.
 export type ModuleLessonConfig = {
-  [lessonType: string]: ClassNo;
+  [lessonType: LessonType]: ClassNo;
 };
 
 // SemTimetableConfig is the timetable data for each semester.
 export type SemTimetableConfig = {
-  [moduleCode: string]: ModuleLessonConfig;
+  [moduleCode: ModuleCode]: ModuleLessonConfig;
+};
+
+// TaModulesConfig is a mapping of moduleCode to the TA's lesson types.
+export type TaModulesConfig = {
+  [moduleCode: ModuleCode]: [lessonType: LessonType, classNo: ClassNo][];
 };
 
 //  ModuleLessonConfigWithLessons is a mapping of lessonType to an array of Lessons for a module.
@@ -18,24 +23,27 @@ export type Lesson = RawLesson & {
 
 export type ColoredLesson = Lesson & {
   colorIndex: ColorIndex;
+  isTaInTimetable?: boolean;
 };
 
 type Modifiable = {
   isModifiable?: boolean;
   isAvailable?: boolean;
   isActive?: boolean;
+  isOptionInTimetable?: boolean;
   colorIndex: ColorIndex;
 };
 
 export type ModifiableLesson = ColoredLesson & Modifiable;
+
 //  The array of Lessons must belong to that lessonType.
 export type ModuleLessonConfigWithLessons = {
-  [lessonType: string]: Lesson[];
+  [lessonType: LessonType]: Lesson[];
 };
 
 // SemTimetableConfig is the timetable data for each semester with lessons data.
 export type SemTimetableConfigWithLessons = {
-  [moduleCode: string]: ModuleLessonConfigWithLessons;
+  [moduleCode: ModuleCode]: ModuleLessonConfigWithLessons;
 };
 
 // TimetableConfig is the timetable data for the whole academic year.

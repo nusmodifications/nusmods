@@ -3,10 +3,10 @@ import _ from 'lodash';
 import { validateExportData } from '../../src/data';
 import { makeExportHandler } from '../../src/handler';
 import * as render from '../../src/render-serverless';
-import type { PageData } from '../../src/types';
+import type { ExportData } from '../../src/types';
 
 type Data = {
-  exportData: PageData;
+  exportData: ExportData;
   options: render.ViewportOptions;
 };
 

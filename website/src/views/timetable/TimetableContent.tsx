@@ -1,30 +1,34 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import { sortBy, difference, values, flatten, mapValues, isEmpty } from 'lodash';
 
 import { ColorMapping, HORIZONTAL, ModulesMap, TimetableOrientation } from 'types/reducers';
-import { Module, ModuleCode, Semester } from 'types/modules';
+import { ClassNo, LessonType, Module, ModuleCode, Semester } from 'types/modules';
 import {
   ColoredLesson,
   Lesson,
   ModifiableLesson,
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
+  TaModulesConfig,
   TimetableArrangement,
 } from 'types/timetables';
 
 import {
   addModule,
+  addTaLessonInTimetable,
   cancelModifyLesson,
   changeLesson,
-  HIDDEN_IMPORTED_SEM,
   modifyLesson,
   removeModule,
+  removeTaLessonInTimetable,
   resetTimetable,
 } from 'actions/timetables';
 import {
+  areLessonsDuplicate,
   areLessonsSameClass,
+  canTa,
   formatExamDate,
   getExamDate,
   getModuleTimetable,
@@ -36,6 +40,7 @@ import {
   getLessonIdentifier,
   getSemesterModules,
   hydrateSemTimetableWithLessons,
+  hydrateTaModulesConfigWithLessons,
   lessonsForLessonType,
   timetableLessonsArray,
 } from 'utils/timetables';
@@ -46,7 +51,7 @@ import Title from 'views/components/Title';
 import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ModRegNotification from 'views/components/notfications/ModRegNotification';
 import { State as StoreState } from 'types/state';
-import { TombstoneModule } from 'types/views';
+import { ModuleWithColor, TombstoneModule } from 'types/views';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
@@ -66,6 +71,8 @@ type OwnProps = {
   semester: Semester;
   timetable: SemTimetableConfig;
   colors: ColorMapping;
+  hiddenImportedModules: ModuleCode[] | null;
+  taImportedModules: TaModulesConfig | null;
 };
 
 type Props = OwnProps & {
@@ -76,6 +83,7 @@ type Props = OwnProps & {
   timetableOrientation: TimetableOrientation;
   showTitle: boolean;
   hiddenInTimetable: ModuleCode[];
+  taInTimetable: TaModulesConfig;
 
   // Actions
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
@@ -84,6 +92,18 @@ type Props = OwnProps & {
   modifyLesson: (lesson: Lesson) => void;
   changeLesson: (semester: Semester, lesson: Lesson) => void;
   cancelModifyLesson: () => void;
+  addTaLessonInTimetable: (
+    semester: Semester,
+    moduleCode: ModuleCode,
+    lessonType: LessonType,
+    classNo: ClassNo,
+  ) => void;
+  removeTaLessonInTimetable: (
+    semester: Semester,
+    moduleCode: ModuleCode,
+    lessonType: LessonType,
+    classNo: ClassNo,
+  ) => void;
 };
 
 type State = {
@@ -159,14 +179,51 @@ class TimetableContent extends React.Component<Props, State> {
   isHiddenInTimetable = (moduleCode: ModuleCode) =>
     this.props.hiddenInTimetable.includes(moduleCode);
 
-  modifyCell = (lesson: ModifiableLesson, position: ClientRect) => {
-    if (lesson.isAvailable) {
-      this.props.changeLesson(this.props.semester, lesson);
+  isTaInTimetable = (moduleCode: ModuleCode) => this.props.taInTimetable[moduleCode]?.length > 0;
 
-      resetScrollPosition();
-    } else if (lesson.isActive) {
+  canTa = (moduleCode: ModuleCode) => {
+    const { semester, modules } = this.props;
+    return canTa(modules, moduleCode, semester);
+  };
+
+  // Adds current non lecture lessons as TA lessons
+  setTaLessonInTimetable = (semester: Semester, moduleCode: ModuleCode) => {
+    timetableLessonsArray(this.props.timetableWithLessons)
+      .filter((lesson) => lesson.moduleCode === moduleCode && lesson.lessonType !== 'Lecture')
+      .forEach((lesson) =>
+        this.props.addTaLessonInTimetable(semester, moduleCode, lesson.lessonType, lesson.classNo),
+      );
+  };
+
+  modifyTaCell(lesson: ModifiableLesson) {
+    const { moduleCode, lessonType, classNo } = lesson;
+    if (lesson.isOptionInTimetable) {
+      // Allow multiple lessons of the same type to be added for TA lessons
+      this.props.addTaLessonInTimetable(this.props.semester, moduleCode, lessonType, classNo);
+    } else if (this.props.taInTimetable[moduleCode].length > 1) {
+      // If a TA lesson is the last of its type, disallow removing it
+      this.props.removeTaLessonInTimetable(this.props.semester, moduleCode, lessonType, classNo);
+    } else {
       this.props.cancelModifyLesson();
+    }
+    resetScrollPosition();
+  }
 
+  modifyCell = (lesson: ModifiableLesson, position: ClientRect) => {
+    const { activeLesson } = this.props;
+    // If activeLesson exists, then the user is choosing a cell to modify
+    const isChoosing = !!activeLesson;
+    if (isChoosing) {
+      if (this.isTaInTimetable(lesson.moduleCode)) {
+        this.modifyTaCell(lesson);
+        return;
+      }
+
+      if (lesson.isAvailable) {
+        this.props.changeLesson(this.props.semester, lesson);
+      } else {
+        this.props.cancelModifyLesson();
+      }
       resetScrollPosition();
     } else {
       this.props.modifyLesson(lesson);
@@ -205,13 +262,15 @@ class TimetableContent extends React.Component<Props, State> {
   // Returns modules currently in the timetable
   addedModules(): Module[] {
     const modules = getSemesterModules(this.props.timetableWithLessons, this.props.modules);
-    return _.sortBy(modules, (module: Module) => getExamDate(module, this.props.semester));
+    return sortBy(modules, (module: Module) => getExamDate(module, this.props.semester));
   }
 
-  toModuleWithColor = (module: Module) => ({
+  toModuleWithColor = (module: Module): ModuleWithColor => ({
     ...module,
     colorIndex: this.props.colors[module.moduleCode],
-    hiddenInTimetable: this.isHiddenInTimetable(module.moduleCode),
+    isHiddenInTimetable: this.isHiddenInTimetable(module.moduleCode),
+    isTaInTimetable: this.isTaInTimetable(module.moduleCode),
+    canTa: this.canTa(module.moduleCode),
   });
 
   renderModuleTable = (
@@ -227,6 +286,7 @@ class TimetableContent extends React.Component<Props, State> {
       readOnly={this.props.readOnly}
       tombstone={tombstone}
       resetTombstone={this.resetTombstone}
+      enableTaModeInTimetable={this.setTaLessonInTimetable}
     />
   );
 
@@ -234,11 +294,16 @@ class TimetableContent extends React.Component<Props, State> {
   renderModuleSections(modules: Module[], horizontalOrientation: boolean) {
     const { tombstone } = this.state;
 
-    // Separate added modules into sections of clashing modules
-    const clashes = findExamClashes(modules, this.props.semester);
-    const nonClashingMods: Module[] = _.difference(modules, _.flatten(_.values(clashes)));
+    // Separate added modules into sections of clashing modules.
+    // Note: exclude hidden courses and TA-ed courses from exam clash detection.
+    const examinableModules = modules.filter(
+      (module) =>
+        !this.isHiddenInTimetable(module.moduleCode) && !this.isTaInTimetable(module.moduleCode),
+    );
+    const clashes = findExamClashes(examinableModules, this.props.semester);
+    const nonClashingMods: Module[] = difference(modules, flatten(values(clashes)));
 
-    if (_.isEmpty(clashes) && _.isEmpty(nonClashingMods) && !tombstone) {
+    if (isEmpty(clashes) && isEmpty(nonClashingMods) && !tombstone) {
       return (
         <div className="row">
           <div className="col-sm-12">
@@ -250,7 +315,7 @@ class TimetableContent extends React.Component<Props, State> {
 
     return (
       <>
-        {!_.isEmpty(clashes) && (
+        {!isEmpty(clashes) && (
           <>
             <div className="alert alert-danger">
               Warning! There are clashes in your exam timetable.
@@ -283,12 +348,13 @@ class TimetableContent extends React.Component<Props, State> {
       showTitle,
       readOnly,
       hiddenInTimetable,
+      taInTimetable,
     } = this.props;
 
     const { showExamCalendar } = this.state;
 
     let timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons)
-      // Do not process hidden modules
+      // Omit all lessons for hidden modules
       .filter((lesson) => !this.isHiddenInTimetable(lesson.moduleCode));
 
     if (activeLesson) {
@@ -300,20 +366,34 @@ class TimetableContent extends React.Component<Props, State> {
 
       const module = modules[moduleCode];
       const moduleTimetable = getModuleTimetable(module, semester);
-      lessonsForLessonType(moduleTimetable, activeLesson.lessonType).forEach((lesson) => {
-        const modifiableLesson: Lesson & {
-          isActive?: boolean;
-          isAvailable?: boolean;
-        } = {
+      const lessonOptions = this.isTaInTimetable(moduleCode)
+        ? moduleTimetable.filter((lesson) => lesson.lessonType !== 'Lecture')
+        : lessonsForLessonType(moduleTimetable, activeLesson.lessonType);
+      lessonOptions.forEach((lesson) => {
+        const modifiableLesson: Omit<ModifiableLesson, 'isModifiable' | 'colorIndex'> = {
           ...lesson,
           // Inject module code in
           moduleCode,
           title: module.title,
         };
 
+        // Prevent multiple versions of the same lesson
+        if (
+          timetableLessons.some((curLesson) => areLessonsDuplicate(modifiableLesson, curLesson))
+        ) {
+          return;
+        }
+
+        // All lessons added within this block are options to be added in the timetable
+        // Except for the activeLesson
+        modifiableLesson.isOptionInTimetable = true;
         if (areLessonsSameClass(modifiableLesson, activeLesson)) {
           modifiableLesson.isActive = true;
-        } else if (lesson.lessonType === activeLesson.lessonType) {
+          modifiableLesson.isOptionInTimetable = false;
+        } else if (
+          this.isTaInTimetable(moduleCode) ||
+          lesson.lessonType === activeLesson.lessonType
+        ) {
           modifiableLesson.isAvailable = true;
         }
         timetableLessons.push(modifiableLesson);
@@ -325,11 +405,12 @@ class TimetableContent extends React.Component<Props, State> {
       (lesson: Lesson): ColoredLesson => ({
         ...lesson,
         colorIndex: colors[lesson.moduleCode],
+        isTaInTimetable: this.isTaInTimetable(lesson.moduleCode),
       }),
     );
 
     const arrangedLessons = arrangeLessonsForWeek(coloredTimetableLessons);
-    const arrangedLessonsWithModifiableFlag: TimetableArrangement = _.mapValues(
+    const arrangedLessonsWithModifiableFlag: TimetableArrangement = mapValues(
       arrangedLessons,
       (dayRows) =>
         dayRows.map((row) =>
@@ -381,7 +462,9 @@ class TimetableContent extends React.Component<Props, State> {
                 modules={addedModules.map((module) => ({
                   ...module,
                   colorIndex: this.props.colors[module.moduleCode],
-                  hiddenInTimetable: this.isHiddenInTimetable(module.moduleCode),
+                  isHiddenInTimetable: this.isHiddenInTimetable(module.moduleCode),
+                  isTaInTimetable: this.isTaInTimetable(module.moduleCode),
+                  canTa: false,
                 }))}
               />
             ) : (
@@ -417,6 +500,7 @@ class TimetableContent extends React.Component<Props, State> {
                   resetTimetable={this.resetTimetable}
                   toggleExamCalendar={() => this.setState({ showExamCalendar: !showExamCalendar })}
                   hiddenModules={hiddenInTimetable}
+                  taModules={taInTimetable}
                 />
               </div>
 
@@ -439,6 +523,7 @@ class TimetableContent extends React.Component<Props, State> {
                   modules={addedModules}
                   semester={semester}
                   hiddenInTimetable={hiddenInTimetable}
+                  taInTimetable={taInTimetable}
                 />
               </div>
             </div>
@@ -450,23 +535,34 @@ class TimetableContent extends React.Component<Props, State> {
 }
 
 function mapStateToProps(state: StoreState, ownProps: OwnProps) {
-  const { semester, timetable, readOnly } = ownProps;
+  const { semester, timetable } = ownProps;
   const { modules } = state.moduleBank;
-  const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
 
-  // Determine the key to check for hidden modules based on readOnly status
-  const hiddenModulesKey = readOnly ? HIDDEN_IMPORTED_SEM : semester;
-  const hiddenInTimetable = state.timetables.hidden[hiddenModulesKey] || [];
+  const hiddenInTimetable =
+    ownProps.hiddenImportedModules ?? state.timetables.hidden[semester] ?? [];
+  const taInTimetable = ownProps.taImportedModules ?? state.timetables.ta[semester] ?? {};
+
+  const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
+  const timetableWithTaLessons = hydrateTaModulesConfigWithLessons(
+    taInTimetable,
+    modules,
+    semester,
+  );
+  const filteredTimetableWithLessons = {
+    ...timetableWithLessons,
+    ...timetableWithTaLessons,
+  };
 
   return {
     semester,
     timetable,
-    timetableWithLessons,
+    timetableWithLessons: filteredTimetableWithLessons,
     modules,
     activeLesson: state.app.activeLesson,
     timetableOrientation: state.theme.timetableOrientation,
     showTitle: state.theme.showTitle,
     hiddenInTimetable,
+    taInTimetable,
   };
 }
 
@@ -477,4 +573,6 @@ export default connect(mapStateToProps, {
   modifyLesson,
   changeLesson,
   cancelModifyLesson,
+  addTaLessonInTimetable,
+  removeTaLessonInTimetable,
 })(TimetableContent);

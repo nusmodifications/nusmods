@@ -1,6 +1,7 @@
 import { Store } from 'redux';
 
 import * as React from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -18,7 +19,7 @@ type Props = {
   persistor: Persistor;
 };
 
-const App: React.FC<Props> = ({ store, persistor }) => {
+const App: FC<PropsWithChildren<Props>> = ({ store, persistor }) => {
   const onBeforeLift = () => {
     const { theme, settings } = store.getState();
 

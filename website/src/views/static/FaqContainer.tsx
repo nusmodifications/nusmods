@@ -78,10 +78,10 @@ const FaqContainer: React.FC = () => (
         <li>You have refreshed NUSMods after step 2.</li>
       </ol>
       <p>
-        After you have done all the above and the error persists, please use the "Report Error"
-        button on the course page to report an issue to the course's department or faculty. If the
-        department or faculty for this course cannot be found on this list, please refer to
-        CourseReg's contact list for{' '}
+        After you have done all the above and the error persists, please use the{' '}
+        <b>"Report Error"</b> button on the course page to report an issue to the course's
+        department or faculty. If the department or faculty for this course cannot be found on this
+        list, please refer to CourseReg's contact list for{' '}
         <ExternalLink href="https://www.nus.edu.sg/coursereg/docs/UGFac_Contacts.pdf">
           undergraduate
         </ExternalLink>{' '}
@@ -179,9 +179,8 @@ const FaqContainer: React.FC = () => (
       <p>
         Congratulations on making it to the end! If you still want to contact us, you may reach us
         via email at mods&#123;at&#125;nusmods[dot]com or via{' '}
-        <ExternalLink href={config.contact.telegram}>Telegram</ExternalLink> or via{' '}
-        <ExternalLink href={config.contact.messenger}>Messenger</ExternalLink>. Please allow up to
-        90 working days for a reply. We are busy <Link to="/team">students</Link> as well!
+        <ExternalLink href={config.contact.telegram}>Telegram</ExternalLink>. Please allow up to 90
+        working days for a reply. We are busy <Link to="/team">students</Link> as well!
       </p>
     </div>
   </StaticPage>

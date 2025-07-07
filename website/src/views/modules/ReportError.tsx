@@ -1,10 +1,12 @@
 import { FC, FormEventHandler, memo, useCallback, useState } from 'react';
 import { castArray, groupBy } from 'lodash';
 import classnames from 'classnames';
-import produce from 'immer';
+import { produce } from 'immer';
 import axios from 'axios';
 import { AlertTriangle } from 'react-feather';
 import * as Sentry from '@sentry/browser';
+import { addWeeks, isWithinInterval } from 'date-fns';
+import modregData from 'data/modreg-schedule.json';
 
 import type {
   DepartmentMatch,
@@ -18,6 +20,7 @@ import type { Module } from 'types/modules';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import ExternalLink from 'views/components/ExternalLink';
+import { isNewCourseDataAnnoucement } from 'views/components/notfications/Announcements';
 import facultyEmails from 'data/facultyEmail';
 import appConfig from 'config';
 import useGlobalDebugValue from '../hooks/useGlobalDebugValue';
@@ -82,15 +85,17 @@ function matchModule(module: Module) {
   );
   if (facultyEmail) return facultyEmail;
 
-  // 2. Check module prefix next
-  facultyEmail = groupedByMatcherType.modulePrefix.find(({ match }) =>
-    module.moduleCode.startsWith(match.prefix),
-  );
-  if (facultyEmail) return facultyEmail;
-
-  // 3. Department and faculty matchers are split by graduate and undergrad classes. In NUS
+  // 2. Department and faculty matchers are split by graduate and undergrad classes. In NUS
   //    the 5-6000 level modules are graduate level modules
   const division: Division = isGraduateModule(module) ? 'grad' : 'undergrad';
+
+  // 3. Check module prefix next
+  facultyEmail = groupedByMatcherType.modulePrefix.find(
+    ({ match }) =>
+      module.moduleCode.startsWith(match.prefix) &&
+      (match.level === undefined || division === match.level),
+  );
+  if (facultyEmail) return facultyEmail;
 
   // 4. Check department
   facultyEmail = groupedByMatcherType.department.find(
@@ -103,6 +108,17 @@ function matchModule(module: Module) {
     ({ match }) => module.faculty === match.faculty && division === match.level,
   );
 }
+
+const roundOneStartDate = new Date(
+  modregData.Undergraduate.filter(
+    (data) => data.type === 'Select Courses' && data.name === '1',
+  )[0].start,
+);
+const enhanceReportVisibility =
+  isWithinInterval(new Date(), {
+    start: addWeeks(roundOneStartDate, -2),
+    end: addWeeks(roundOneStartDate, 2),
+  }) || isNewCourseDataAnnoucement();
 
 /**
  * Module error reporting component. Posts to a serverless script that then emails the relevant
@@ -165,12 +181,21 @@ const ReportError = memo<Props>(({ module }) => {
     <>
       <button
         type="button"
-        className={classnames('btn btn-link', styles.button)}
+        className={classnames(
+          'btn',
+          styles.button,
+          enhanceReportVisibility ? ['btn-primary btn-block', styles.enhanceButton] : 'btn-link',
+        )}
         onClick={() => setIsOpen(!isOpen)}
       >
         <AlertTriangle className={styles.icon} />
         Report errors
       </button>
+      {enhanceReportVisibility && (
+        <p className={styles.infoText}>
+          For clarifications on how we handle issues, read our <a href="/faq">FAQ</a>.
+        </p>
+      )}
 
       <Modal
         isOpen={isOpen}

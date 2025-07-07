@@ -8,9 +8,11 @@ import styles from './TimetableModulesTable.scss';
 
 function make(props: Partial<Props> = {}) {
   const selectModuleColor = jest.fn();
-  const onRemoveModule = jest.fn();
   const hideLessonInTimetable = jest.fn();
   const showLessonInTimetable = jest.fn();
+  const enableTaModeInTimetable = jest.fn();
+  const disableTaModeInTimetable = jest.fn();
+  const onRemoveModule = jest.fn();
   const resetTombstone = jest.fn();
 
   const wrapper = shallow(
@@ -24,6 +26,8 @@ function make(props: Partial<Props> = {}) {
       selectModuleColor={selectModuleColor}
       hideLessonInTimetable={hideLessonInTimetable}
       showLessonInTimetable={showLessonInTimetable}
+      enableTaModeInTimetable={enableTaModeInTimetable}
+      disableTaModeInTimetable={disableTaModeInTimetable}
       onRemoveModule={onRemoveModule}
       resetTombstone={resetTombstone}
       {...props}
@@ -42,6 +46,10 @@ function make(props: Partial<Props> = {}) {
 
 function getModules(wrapper: ShallowWrapper) {
   return wrapper.find(`.${styles.modulesTableRow}`).map((ele) => ele.key());
+}
+
+function getButtons(wrapper: ShallowWrapper) {
+  return wrapper.find(`.${styles.moduleActionButtons} > .btn-group`);
 }
 
 describe(TimetableModulesTableComponent, () => {
@@ -71,7 +79,9 @@ describe(TimetableModulesTableComponent, () => {
       ...CS4243,
       index: 1,
       colorIndex: 2,
-      hiddenInTimetable: false,
+      isHiddenInTimetable: false,
+      isTaInTimetable: false,
+      canTa: false,
     };
 
     const moduleCodes = getModules(
@@ -79,5 +89,15 @@ describe(TimetableModulesTableComponent, () => {
     );
 
     expect(moduleCodes).toEqual(originalOrder);
+  });
+
+  it('should display buttons correctly', () => {
+    // TA button is the 3rd button
+    const withoutTaButton = getButtons(make({ modules: addColors([CS1010S]) }).wrapper);
+    expect(withoutTaButton.at(0).children()).toHaveLength(2);
+
+    const modulesWithTaAbleModule = addColors([CS1010S], false, false, true);
+    const withTaButton = getButtons(make({ modules: modulesWithTaAbleModule }).wrapper);
+    expect(withTaButton.at(0).children()).toHaveLength(3);
   });
 });

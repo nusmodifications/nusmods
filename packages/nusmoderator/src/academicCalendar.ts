@@ -142,14 +142,22 @@ export function getAcadWeekInfo(date: Date): AcadWeekInfo {
   const acadYear = currentAcad.year;
   const acadYearStartDate = getAcadYearStartDate(acadYear);
 
+  // Computes week number of the academic year, assuming that each week
+  // starts on Monday and ends on Sunday.
   let acadWeekNumber = Math.ceil(
     (date.getTime() - acadYearStartDate.getTime() + 1) / oneWeekDuration,
   );
+
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const semester = getAcadSem(acadWeekNumber)!;
 
+  // Check if it is weekend
+  const dayOfWeek = date.getDay();
+  const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+
   let weekType = null;
   let weekNumber = null;
+
   switch (semester) {
     case sem2: // Semester 2 starts 22 weeks after Week 1 of semester 1
       acadWeekNumber -= 22;
@@ -164,6 +172,26 @@ export function getAcadWeekInfo(date: Date): AcadWeekInfo {
         break;
       }
       acadWeekNumber -= 1;
+
+      // Handle special cases where some week types include the week's preceding weekend
+      if (isWeekend) {
+        if (acadWeekNumber === 6) {
+          weekType = 'Recess';
+          weekNumber = null;
+          break;
+        }
+        if (acadWeekNumber === 14) {
+          weekType = 'Reading';
+          weekNumber = null;
+          break;
+        }
+        if (acadWeekNumber === 15) {
+          weekType = 'Examination';
+          weekNumber = 1;
+          break;
+        }
+      }
+
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const acadWeek = getAcadWeekName(acadWeekNumber)!;
       weekType = acadWeek.weekType;

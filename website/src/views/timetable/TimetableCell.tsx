@@ -14,8 +14,10 @@ import {
   getLessonIdentifier,
   LESSON_TYPE_ABBREV,
 } from 'utils/timetables';
+import { TRANSPARENT_COLOR_INDEX } from 'utils/colors';
 import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip/Tooltip';
+import { Minus, Plus } from 'react-feather';
 import styles from './TimetableCell.scss';
 
 type Props = {
@@ -107,7 +109,9 @@ const TimetableCell: React.FC<Props> = (props) => {
     styles.baseCell,
     getLessonIdentifier(lesson),
     elements.lessons,
-    transparent ? styles.transparentCell : [styles.coloredCell, `color-${lesson.colorIndex}`],
+    transparent || lesson.colorIndex === TRANSPARENT_COLOR_INDEX
+      ? styles.transparentCell
+      : [styles.coloredCell, `color-${lesson.colorIndex}`],
     {
       hoverable: !!onClick,
       [styles.clickable]: !!onClick,
@@ -132,7 +136,22 @@ const TimetableCell: React.FC<Props> = (props) => {
       {...conditionalProps}
     >
       <div className={styles.cellContainer}>
-        <div className={styles.moduleName}>{moduleName}</div>
+        <div className={styles.cellHeaader}>
+          <div className={styles.moduleName}>
+            {moduleName}
+            {lesson.isTaInTimetable && ' (TA)'}
+          </div>
+
+          {lesson.isTaInTimetable &&
+            onClick &&
+            isHoveredOver &&
+            hoverLesson &&
+            (lesson.isActive || !lesson.isOptionInTimetable ? (
+              <Minus className={styles.taActionIndicator} />
+            ) : (
+              <Plus className={styles.taActionIndicator} />
+            ))}
+        </div>
         <div>
           {LESSON_TYPE_ABBREV[lesson.lessonType]} [{lesson.classNo}]
         </div>

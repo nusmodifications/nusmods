@@ -10,7 +10,13 @@ function makeColorPicker(color: ColorIndex = 0) {
   return {
     onChooseColor,
     wrapper: mount(
-      <ColorPicker label="" color={color} onChooseColor={onChooseColor} isHidden={false} />,
+      <ColorPicker
+        label=""
+        color={color}
+        onChooseColor={onChooseColor}
+        isHidden={false}
+        isTa={false}
+      />,
     ),
   };
 }
@@ -72,7 +78,13 @@ test('should return the color index of the selected color', () => {
 });
 
 test('should allow a falsy color index to be selected', () => {
-  const { wrapper, onChooseColor } = makeColorPicker();
+  const { wrapper, onChooseColor } = makeColorPicker(1);
   findPopup(wrapper).find('button').first().simulate('click');
   expect(onChooseColor).toHaveBeenCalledWith(0);
+});
+
+test('should set color to transparent when clicking already selected color', () => {
+  const { wrapper, onChooseColor } = makeColorPicker(1);
+  findPopup(wrapper).find('button').at(1).simulate('click');
+  expect(onChooseColor).toHaveBeenCalledWith(-1);
 });

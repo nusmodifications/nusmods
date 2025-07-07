@@ -6,6 +6,7 @@ import {
   ModuleLessonConfig,
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
+  TaModulesConfig,
   TimetableArrangement,
   TimetableDayArrangement,
   TimetableDayFormat,
@@ -40,6 +41,7 @@ import {
   getStartTimeAsDate,
   groupLessonsByDay,
   hydrateSemTimetableWithLessons,
+  hydrateTaModulesConfigWithLessons,
   isLessonAvailable,
   isLessonOngoing,
   isSameTimetableConfig,
@@ -98,6 +100,29 @@ test('hydrateSemTimetableWithLessons should replace ClassNo with lessons', () =>
   expect(configWithLessons[moduleCode].Tutorial[0].classNo).toBe('8');
   expect(configWithLessons[moduleCode].Recitation[0].classNo).toBe('4');
   expect(configWithLessons[moduleCode].Lecture[0].classNo).toBe('1');
+});
+
+test('hydrateTaModulesConfigWithLessons should replace ClassNo with lessons', () => {
+  const sem: Semester = 1;
+  const moduleCode = 'CS1010S';
+  const modules: ModulesMap = { [moduleCode]: CS1010S };
+  const taModules: TaModulesConfig = {
+    [moduleCode]: [
+      ['Tutorial', '1'],
+      ['Tutorial', '8'],
+      ['Recitation', '4'],
+    ],
+  };
+
+  const configWithLessons: SemTimetableConfigWithLessons = hydrateTaModulesConfigWithLessons(
+    taModules,
+    modules,
+    sem,
+  );
+  expect(configWithLessons[moduleCode].Tutorial[0].classNo).toBe('1');
+  expect(configWithLessons[moduleCode].Tutorial[1].classNo).toBe('8');
+  expect(configWithLessons[moduleCode].Recitation[0].classNo).toBe('4');
+  expect(configWithLessons[moduleCode]).not.toHaveProperty('Lecture');
 });
 
 test('lessonsForLessonType should return all lessons belonging to a particular lessonType', () => {

@@ -1,4 +1,4 @@
-import { authenticate } from '../../../src/serverless/nus-auth';
+import { authenticate, isCallbackUrlValid } from '../../../src/serverless/nus-auth';
 import {
   createRouteHandler,
   defaultFallback,
@@ -8,6 +8,7 @@ import {
 
 const errors = {
   noRelayState: 'ERR_NO_RELAY_STATE',
+  invalidRelayState: 'ERR_INVALID_RELAY_STATE',
 };
 
 const handlePost: Handler = async (req, res) => {
@@ -17,6 +18,9 @@ const handlePost: Handler = async (req, res) => {
       throw new Error(errors.noRelayState);
     }
 
+    if (!isCallbackUrlValid(relayState)) {
+      throw new Error(errors.invalidRelayState);
+    }
     const userURL = new URL(relayState);
     userURL.searchParams.append('token', token);
 
@@ -26,6 +30,10 @@ const handlePost: Handler = async (req, res) => {
       res.json({
         message: 'Relay state not found in request',
       });
+    } else if (err.message === errors.invalidRelayState) {
+      res.json({
+        message: 'Invalid relay state given. URL must be from a valid domain.',
+      });
     } else {
       throw err;
     }
@@ -34,6 +42,8 @@ const handlePost: Handler = async (req, res) => {
 
 // eslint-disable-next-line no-unused-vars
 const handleError: (error: Error) => Handler = (error) => async (_req, res) => {
+  // eslint-disable-next-line no-console
+  console.error(error);
   res.status(500).json({
     message:
       'An unexpected error occurred. Please try logging in with your NUSID, in the format nusstu\\e0123456, instead of your email. You can use Incognito mode or clear your cookies to try again.',

@@ -14,7 +14,8 @@
 // limitations under the License.
 //
 
-@import "variable-overrides";
+@import 'variable-overrides';
 
-@import "~@material/fab/mdc-fab";
-@import "~@material/snackbar/mdc-snackbar";
+@import '~@material/button/mdc-button';
+@import '~@material/snackbar/mdc-snackbar';
+@import '~@material/fab/mdc-fab';

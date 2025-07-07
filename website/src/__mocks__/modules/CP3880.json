@@ -1,0 +1,67 @@
+{
+  "acadYear": "2024/2025",
+  "preclusion": "If undertaking an Undergraduate Degree THEN ( must not have completed EG3601 at a grade of at least D)",
+  "preclusionRule": "PROGRAM_TYPES IF_IN Undergraduate Degree THEN (COURSES (1) EG3601:D)",
+  "description": "This course enables students to apply the computing knowledge they have assimilated in class to industrial projects through six-month attachment to companies/organizations. Students under attachment will be jointly guided by supervisors from both the companies/organizations and the school. Their progress on projects will be monitored during attachment, and their performance will be assessed (on Satisfactory/Unsatisfactory (S/U) basis) at the end of the attachment, based on the interim and final project reports. During the attachment, students are not expected to take other courses offered by the university.",
+  "title": "Advanced Technology Attachment Programme",
+  "additionalInformation": "",
+  "department": "SoC Dean's Office",
+  "faculty": "Computing",
+  "workload": [0, 0, 0, 30, 0],
+  "gradingBasisDescription": "Completed Satisfactory/Unsatisfactory",
+  "prerequisite": "If undertaking an Undergraduate Degree THEN ( must have completed 1 of any Courses (Modules) beginning with UTW1001 at a grade of at least D, CS2101/ES1601/ES2002/ES2007D/ES2531/ES2631/IS2101/NTW2017/NTW2028/NTW2029/NTW2030/NTW2031/NTW2032/NTW2033/NTW2034/UWC2101% at a grade of at least D AND must have completed 1 of BT3103/CS2103/CS2103T/CS2113/CS2113T/IS3106 at a grade of at least D)",
+  "prerequisiteRule": "PROGRAM_TYPES IF_IN Undergraduate Degree THEN (COURSES (1) IS2101:D, CS2101:D, ES1601:D, ES2002:D, ES2007D:D, ES2531:D, ES2631:D, UTW1001%:D, UWC2101%:D, NTW2017:D, NTW2028:D, NTW2029:D, NTW2030:D, NTW2031:D, NTW2032:D, NTW2033:D, NTW2034:D AND COURSES (1) CS2103:D, CS2103T:D, CS2113:D, CS2113T:D, IS3106:D, BT3103:D)",
+  "moduleCredit": "12",
+  "moduleCode": "CP3880",
+  "semesterData": [
+    {
+      "semester": 1,
+      "timetable": [],
+      "covidZones": []
+    },
+    {
+      "semester": 2,
+      "timetable": [],
+      "covidZones": []
+    },
+    {
+      "semester": 3,
+      "timetable": [],
+      "covidZones": []
+    },
+    {
+      "semester": 4,
+      "timetable": [],
+      "covidZones": []
+    }
+  ],
+  "prereqTree": {
+    "and": [
+      {
+        "or": [
+          "IS2101:D",
+          "CS2101:D",
+          "ES1601:D",
+          "ES2002:D",
+          "ES2007D:D",
+          "ES2531:D",
+          "ES2631:D",
+          "UTW1001%:D",
+          "UWC2101%:D",
+          "NTW2017:D",
+          "NTW2028:D",
+          "NTW2029:D",
+          "NTW2030:D",
+          "NTW2031:D",
+          "NTW2032:D",
+          "NTW2033:D",
+          "NTW2034:D"
+        ]
+      },
+      {
+        "or": ["CS2103:D", "CS2103T:D", "CS2113:D", "CS2113T:D", "IS3106:D", "BT3103:D"]
+      }
+    ]
+  },
+  "fulfillRequirements": ["IFS4201"]
+}

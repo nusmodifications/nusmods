@@ -2,20 +2,20 @@ import * as React from 'react';
 import axios from 'axios';
 import classnames from 'classnames';
 import qs from 'query-string';
-import { Copy, Mail, Repeat } from 'react-feather';
-import type { QRCodeProps } from 'react-qr-svg';
+import { Copy, Mail, Maximize2, Minimize2, Repeat } from 'react-feather';
+import type { QRCodeSVG } from 'qrcode.react';
 
-import type { SemTimetableConfig } from 'types/timetables';
+import type { SemTimetableConfig, TaModulesConfig } from 'types/timetables';
 import type { ModuleCode, Semester } from 'types/modules';
 
 import config from 'config';
-import { enableShortUrl } from 'featureFlags';
 import { absolutePath, timetableShare } from 'views/routes/paths';
 import Modal from 'views/components/Modal';
 import CloseButton from 'views/components/CloseButton';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import retryImport from 'utils/retryImport';
 
+import Tooltip from 'views/components/Tooltip';
 import styles from './ShareTimetable.scss';
 
 type CopyState = 'NOT_COPIED' | 'COPY_SUCCESS' | 'COPY_FAIL';
@@ -27,28 +27,49 @@ type Props = {
   semester: Semester;
   timetable: SemTimetableConfig;
   hiddenModules: ModuleCode[];
+  taModules: TaModulesConfig;
 };
 
 type State = {
   isOpen: boolean;
   urlCopied: CopyState;
   shortUrl: string | null;
+  fullUrl: string | null;
+  isFullUrl: boolean;
+  isLoading: boolean;
 };
 
 function shareUrl(
   semester: Semester,
   timetable: SemTimetableConfig,
   hiddenModules: ModuleCode[],
+  taModules: TaModulesConfig,
 ): string {
-  return absolutePath(timetableShare(semester, timetable, hiddenModules));
+  return absolutePath(timetableShare(semester, timetable, hiddenModules, taModules));
+}
+
+function getToolTipContent(shortUrl: string | null, isFullUrl: boolean, isLoading: boolean) {
+  if (isLoading) {
+    return 'Shortening link';
+  }
+
+  if (!shortUrl) {
+    return 'Link shortener temporarily unavailable';
+  }
+
+  if (isFullUrl) {
+    return 'Shorten link';
+  }
+
+  return 'Show original link';
 }
 
 // So that I don't keep typing 'shortUrl' instead
-export const SHORT_URL_KEY = 'shorturl';
+export const SHORT_URL_KEY = 'shortUrl';
 
 export default class ShareTimetable extends React.PureComponent<Props, State> {
   // React QR component is lazy loaded for performance
-  static QRCode: React.ComponentType<QRCodeProps> | null;
+  static QRCode: typeof QRCodeSVG | null;
 
   // Save a copy of the current URL to detect when URL changes
   url: string | null = null;
@@ -59,25 +80,28 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
     isOpen: false,
     urlCopied: NOT_COPIED,
     shortUrl: null,
+    fullUrl: null,
+    isFullUrl: true,
+    isLoading: false,
   };
 
   override componentDidMount() {
     if (!ShareTimetable.QRCode) {
-      retryImport(() => import(/* webpackChunkName: "export" */ 'react-qr-svg')).then((module) => {
-        ShareTimetable.QRCode = module.QRCode;
+      retryImport(() => import(/* webpackChunkName: "export" */ 'qrcode.react')).then((module) => {
+        ShareTimetable.QRCode = module.QRCodeSVG;
         this.forceUpdate();
       });
     }
   }
 
-  loadShortUrl = () => {
-    const { semester, timetable, hiddenModules } = this.props;
-    const url = shareUrl(semester, timetable, hiddenModules);
+  loadUrl = () => {
+    const { semester, timetable, hiddenModules, taModules } = this.props;
+    const url = shareUrl(semester, timetable, hiddenModules, taModules);
 
     // Don't do anything if the long URL has not changed
     if (this.url === url) return;
 
-    const showFullUrl = () => this.setState({ shortUrl: url });
+    const showFullUrl = () => this.setState({ fullUrl: url, isFullUrl: true });
     this.url = url;
 
     // Only try to retrieve shortUrl if the user is online
@@ -86,27 +110,32 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
       return;
     }
 
-    this.setState({ shortUrl: null });
+    this.setState({ fullUrl: url, shortUrl: null, isFullUrl: true, isLoading: true });
 
-    if (enableShortUrl) {
-      axios
-        .get('/api/shorturl', { params: { url }, timeout: 8000 })
-        .then(({ data }) => {
-          if (data[SHORT_URL_KEY]) {
-            this.setState({ shortUrl: data[SHORT_URL_KEY] });
-          } else {
-            showFullUrl();
-          }
-        })
-        // Cannot get short URL - just use long URL instead
-        .catch(showFullUrl);
-    } else {
-      showFullUrl();
-    }
+    const urlURL = new URL(url);
+    axios
+      .put('https://shorten.nusmods.com', {
+        longUrl: urlURL.pathname + urlURL.search,
+      })
+      .then(({ data }) => {
+        if (data[SHORT_URL_KEY]) {
+          this.setState({
+            shortUrl: data[SHORT_URL_KEY],
+            isFullUrl: false,
+            isLoading: false,
+          });
+        } else {
+          this.setState({ isLoading: false });
+        }
+      })
+      // Cannot get short URL - just use long URL instead
+      .catch(() => {
+        this.setState({ isLoading: false });
+      });
   };
 
   openModal = () => {
-    this.loadShortUrl();
+    this.loadUrl();
     this.setState({ isOpen: true });
   };
 
@@ -132,8 +161,17 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
     }
   };
 
-  renderSharing(url: string) {
+  toggleShortenUrl = () => {
+    this.setState((prevState) => ({
+      isFullUrl: !prevState.isFullUrl,
+      urlCopied: NOT_COPIED,
+    }));
+  };
+
+  renderSharing(fullUrl: string, shortUrl: string | null, isFullUrl: boolean, isLoading: boolean) {
     const { semester } = this.props;
+    const url = isFullUrl ? fullUrl : shortUrl ?? fullUrl;
+    const toggleUrlButton = isFullUrl ? <Minimize2 /> : <Maximize2 />;
 
     return (
       <div>
@@ -144,6 +182,19 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
             ref={this.urlInput}
             readOnly
           />
+          <Tooltip content={getToolTipContent(shortUrl, isFullUrl, isLoading)} touch="hold">
+            <span className="input-group-append">
+              <button
+                className={classnames('btn btn-primary', styles.buttonContainer)}
+                type="button"
+                aria-label="Shorten URL"
+                onClick={this.toggleShortenUrl}
+                disabled={!shortUrl}
+              >
+                {isLoading ? <LoadingSpinner small white /> : toggleUrlButton}
+              </button>
+            </span>
+          </Tooltip>
           <div className="input-group-append">
             <button
               className="btn btn-primary"
@@ -151,7 +202,7 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
               aria-label="Copy URL"
               onClick={this.copyText}
             >
-              <Copy className={styles.copyIcon} />
+              <Copy />
             </button>
           </div>
 
@@ -167,7 +218,7 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
           <div className="col-sm-4">
             <h3 className={styles.shareHeading}>QR Code</h3>
             <div className={styles.qrCode}>
-              {ShareTimetable.QRCode && <ShareTimetable.QRCode value={url} />}
+              {ShareTimetable.QRCode && <ShareTimetable.QRCode size={172} value={url} />}
             </div>
           </div>
           <div className="col-sm-4">
@@ -214,7 +265,7 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
   }
 
   override render() {
-    const { isOpen, shortUrl } = this.state;
+    const { fullUrl, isLoading, isOpen, shortUrl, isFullUrl } = this.state;
 
     return (
       <>
@@ -222,8 +273,8 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
           type="button"
           className="btn btn-outline-primary btn-svg"
           onClick={this.openModal}
-          onMouseOver={this.loadShortUrl}
-          onFocus={this.loadShortUrl}
+          onMouseOver={this.loadUrl}
+          onFocus={this.loadUrl}
         >
           <Repeat className="svg svg-small" />
           Share/Sync
@@ -241,7 +292,7 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
             </p>
           </div>
 
-          {shortUrl ? this.renderSharing(shortUrl) : <LoadingSpinner />}
+          {fullUrl && this.renderSharing(fullUrl, shortUrl, isFullUrl, isLoading)}
         </Modal>
       </>
     );

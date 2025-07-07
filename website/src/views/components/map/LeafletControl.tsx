@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 
 /**
  * Classes used by Leaflet to position controls.
@@ -19,7 +19,10 @@ type MapCustomControlProps = {
  *
  * See: https://github.com/LiveBy/react-leaflet-control/issues/44#issuecomment-723469330
  */
-const LeafletControl: FC<MapCustomControlProps> = ({ position = 'topleft', children }) => (
+const LeafletControl: FC<PropsWithChildren<MapCustomControlProps>> = ({
+  position = 'topleft',
+  children,
+}) => (
   <div className={POSITION_CLASSES[position]}>
     <div className="leaflet-control leaflet-bar">{children}</div>
   </div>

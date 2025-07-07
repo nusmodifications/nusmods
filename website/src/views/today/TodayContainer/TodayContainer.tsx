@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { get, minBy, range } from 'lodash';
+import { get, minBy, range, omit } from 'lodash';
 import NUSModerator, { AcadWeekInfo } from 'nusmoderator';
 import classnames from 'classnames';
 import {
@@ -12,7 +12,7 @@ import {
   isWeekend,
   parseISO,
 } from 'date-fns';
-import produce from 'immer';
+import { produce } from 'immer';
 
 import { DaysOfWeek } from 'types/modules';
 import { Lesson, ColoredLesson, SemTimetableConfigWithLessons } from 'types/timetables';
@@ -22,13 +22,19 @@ import { EmptyGroupType, SelectedLesson } from 'types/views';
 import {
   groupLessonsByDay,
   hydrateSemTimetableWithLessons,
+  hydrateTaModulesConfigWithLessons,
   isLessonAvailable,
   isLessonOngoing,
   timetableLessonsArray,
 } from 'utils/timetables';
 import { captureException } from 'utils/error';
 import Title from 'views/components/Title';
-import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
+import {
+  getSemesterTimetableColors,
+  getSemesterTimetableHidden,
+  getSemesterTimetableLessons,
+  getSemesterTimetableTaLessons,
+} from 'selectors/timetables';
 import ExternalLink from 'views/components/ExternalLink';
 import * as weatherAPI from 'apis/weather';
 import config from 'config';
@@ -128,7 +134,7 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
 
   override componentDidMount() {
     weatherAPI
-      .twoHour()
+      .twoHour(this.props.currentTime)
       .then((weather) => {
         if (!weather) return;
         this.setState((prevState) => ({ weather: { ...prevState.weather, '0': weather } }));
@@ -136,7 +142,7 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
       .catch(captureException);
 
     weatherAPI
-      .tomorrow()
+      .tomorrow(this.props.currentTime)
       .then((weather) => {
         if (!weather) return;
         this.setState((prevState) => ({ weather: { ...prevState.weather, '1': weather } }));
@@ -144,7 +150,7 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
       .catch(captureException);
 
     weatherAPI
-      .fourDay()
+      .fourDay(this.props.currentTime)
       .then((forecasts) => {
         this.setState(
           produce((draft) => {
@@ -174,9 +180,9 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
   };
 
   groupLessons() {
-    const { colors, currentTime } = this.props;
+    const { colors, currentTime, timetableWithLessons } = this.props;
 
-    const timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons);
+    const timetableLessons: Lesson[] = timetableLessonsArray(timetableWithLessons);
 
     // Inject color into module
     const coloredTimetableLessons = timetableLessons.map(
@@ -363,11 +369,21 @@ export const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
   const semester = semesterNameMap[weekInfo.sem];
   const timetable = getSemesterTimetableLessons(state)(semester);
   const colors = getSemesterTimetableColors(state)(semester);
-  const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
+  const hidden = getSemesterTimetableHidden(state)(semester);
+  const ta = getSemesterTimetableTaLessons(state)(semester);
+  const timetableWithLessons = omit(
+    hydrateSemTimetableWithLessons(timetable, modules, semester),
+    hidden,
+  );
+  const timetableWithTaLessons = hydrateTaModulesConfigWithLessons(ta, modules, semester);
+  const filteredTimetableWithLessons = {
+    ...timetableWithLessons,
+    ...timetableWithTaLessons,
+  };
 
   return {
     colors,
-    timetableWithLessons,
+    timetableWithLessons: filteredTimetableWithLessons,
   };
 };
 

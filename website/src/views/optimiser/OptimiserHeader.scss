@@ -1,0 +1,56 @@
+@import '~styles/utils/modules-entry.scss';
+
+// Header section
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0;
+
+  @include media-breakpoint-down(md) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.3rem;
+  letter-spacing: 0.05rem;
+  color: #ff5138;
+  gap: 0.5rem;
+
+  @include media-breakpoint-down(md) {
+    font-size: 1.1rem;
+  }
+}
+
+.feedbackButton {
+  margin-right: 1rem;
+
+  @include media-breakpoint-down(md) {
+    width: 100%;
+    margin-right: 0;
+  }
+}
+
+// Description section
+.description {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  gap: 0.1rem;
+}
+
+.descriptionText {
+  max-width: 32rem;
+}
+
+// Icon styling
+.titleIcon {
+  color: #ff5138;
+} 
