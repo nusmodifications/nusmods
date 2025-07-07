@@ -118,7 +118,7 @@ const OptimiserContent: React.FC = () => {
     lessonGroupsData.forEach((groupMap, uniqueKey) => {
       let validGroups = 0;
       const groupDays = new Set<string>();
-      groupMap.forEach((days, _groupName) => {
+      groupMap.forEach((days) => {
         if (
           recordings.includes(uniqueKey) || // if it is a recorded lesson, dont trigger a conflict
           !days.some((day) => selectedFreeDays.has(day))
