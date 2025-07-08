@@ -14,7 +14,7 @@ Create a new issue on GitHub with this checklist after the finals every semester
   - [ ] Update `website/src/data/academic-calendar.json` with data for the new academic year
   - [ ] Add announcement to website by updating `website/src/data/holidays.json`
 
-### 1-2 Days before NUS IT Data Update
+### 1-2 days before NUS IT Data Update
 
 - [ ] **Merge "PR1"**
 - [ ] Push PR1 to production
