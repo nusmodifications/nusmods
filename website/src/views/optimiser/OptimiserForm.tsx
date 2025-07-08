@@ -2,8 +2,8 @@ import React, { useCallback } from 'react';
 import classnames from 'classnames';
 import { Info, X, AlertTriangle } from 'react-feather';
 import Tooltip from 'views/components/Tooltip';
-import { WorkingDays, Day } from 'types/modules';
-import { LessonOption, FreeDayConflict } from './types';
+import { FreeDayConflict, LessonOption } from 'types/optimiser';
+import { DayText } from 'types/modules';
 import styles from './OptimiserForm.scss';
 
 interface OptimiserFormProps {
@@ -18,7 +18,7 @@ interface OptimiserFormProps {
   hasSaturday: boolean;
   maxConsecutiveHours: number;
   onToggleLessonSelection: (option: LessonOption) => void;
-  onToggleFreeDay: (day: string) => void;
+  onToggleFreeDay: (day: DayText) => void;
   onEarliestTimeChange: (time: string) => void;
   onLatestTimeChange: (time: string) => void;
   onEarliestLunchTimeChange: (time: string) => void;
@@ -53,7 +53,7 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
   );
 
   const toggleFreeDay = useCallback(
-    (day: string) => {
+    (day: DayText) => {
       onToggleFreeDay(day);
     },
     [onToggleFreeDay],
@@ -191,10 +191,7 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
           {freeDayConflicts.map((conflict, index) => (
             <div key={index} className={styles.conflictItem}>
               • <strong>{conflict.displayText}</strong> cannot be assigned due to your free days:{' '}
-              {conflict.conflictingDays
-                .filter((d): d is Day => WorkingDays.includes(d as Day))
-                .sort((a, b) => WorkingDays.indexOf(a as Day) - WorkingDays.indexOf(b as Day))
-                .join(', ')}
+              {conflict.days.join(', ')}
             </div>
           ))}
           <div className={styles.conflictFooter}>

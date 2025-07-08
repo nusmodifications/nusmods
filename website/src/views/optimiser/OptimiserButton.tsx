@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { Zap } from 'react-feather';
-import { FreeDayConflict, LessonOption } from './types';
+import { FreeDayConflict, LessonOption } from 'types/optimiser';
 import styles from './OptimiserButton.scss';
 
 interface OptimiserButtonProps {

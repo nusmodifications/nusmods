@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import classnames from 'classnames';
 import { AlertTriangle, Zap, ExternalLink } from 'react-feather';
-import { LessonOption } from './types';
+import { LessonOption } from 'types/optimiser';
 import styles from './OptimiserResults.scss';
 
 interface OptimiserResultsProps {
