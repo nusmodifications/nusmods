@@ -2,6 +2,7 @@ import { CS1010S, CS3216, MA1521 } from '__mocks__/modules';
 import { LessonOption } from 'types/optimiser';
 import { Module, WorkingDays } from 'types/modules';
 import { shuffle } from 'lodash';
+import { OptimiseResponse } from 'apis/optimiser';
 import {
   getConflictingDays,
   getDaysForLessonType,
@@ -10,9 +11,10 @@ import {
   getLessonOptions,
   getLessonTypes,
   getRecordedLessonOptions,
-  getUniqueKey,
+  getLessonKey,
   isSaturdayInOptions,
   sortDays,
+  getUnassignedLessonOptions,
 } from './optimiser';
 import { getModuleTimetable } from './modules';
 
@@ -21,7 +23,7 @@ const defaultLectureOption = {
   moduleCode: 'CS1010S',
   lessonType: 'Lecture',
   colorIndex: 0,
-  uniqueKey: 'CS1010S-Lecture',
+  lessonKey: 'CS1010S|Lecture',
   displayText: 'CS1010S Lecture',
   days: ['Wednesday'],
 };
@@ -29,7 +31,7 @@ const defaultRecitationOption = {
   moduleCode: 'CS1010S',
   lessonType: 'Recitation',
   colorIndex: 0,
-  uniqueKey: 'CS1010S-Recitation',
+  lessonKey: 'CS1010S|Recitation',
   displayText: 'CS1010S Recitation',
   days: ['Thursday', 'Friday'],
 };
@@ -37,14 +39,53 @@ const defaultTutorialOption = {
   moduleCode: 'CS1010S',
   lessonType: 'Tutorial',
   colorIndex: 0,
-  uniqueKey: 'CS1010S-Tutorial',
+  lessonKey: 'CS1010S|Tutorial',
   displayText: 'CS1010S Tutorial',
   days: ['Monday', 'Tuesday'],
 };
+const defaultLectureSlot = {
+  classNo: '1',
+  day: 'Wednesday',
+  endTime: '1000',
+  lessonType: 'Lecture',
+  startTime: '0800',
+  venue: 'LT27',
+  coordinates: { x: 103.7809, y: 1.2969925 },
+  StartMin: 480,
+  EndMin: 600,
+  DayIndex: 2,
+  LessonKey: 'CS1010S|Lecture',
+};
+const defaultRecitationSlot = {
+  classNo: '17',
+  day: 'Friday',
+  endTime: '1800',
+  lessonType: 'Recitation',
+  startTime: '1700',
+  venue: 'BIZ2-0201',
+  coordinates: { x: 103.7748, y: 1.2935857 },
+  StartMin: 1020,
+  EndMin: 1080,
+  DayIndex: 4,
+  LessonKey: 'CS1010S|Recitation',
+};
+const defaultTutorialSlot = {
+  classNo: '16',
+  day: 'Monday',
+  endTime: '1600',
+  lessonType: 'Tutorial',
+  startTime: '1500',
+  venue: 'BIZ2-0226',
+  coordinates: { x: 103.7752, y: 1.2932994 },
+  StartMin: 900,
+  EndMin: 960,
+  DayIndex: 0,
+  LessonKey: 'CS1010S|Tutorial',
+};
 
-describe('getUniqueKey', () => {
+describe('getLessonKey', () => {
   it('should format unique key', () => {
-    expect(getUniqueKey('CS1010S', 'Lecture')).toEqual('CS1010S-Lecture');
+    expect(getLessonKey('CS1010S', 'Lecture')).toEqual('CS1010S|Lecture');
   });
 });
 
@@ -88,7 +129,7 @@ describe('getLessonOptions', () => {
         moduleCode: 'CS3216',
         lessonType: 'Lecture',
         colorIndex: 1,
-        uniqueKey: 'CS3216-Lecture',
+        lessonKey: 'CS3216|Lecture',
         displayText: 'CS3216 Lecture',
         days: ['Monday'],
       },
@@ -104,7 +145,7 @@ describe('getLessonOptions', () => {
 });
 
 describe('getRecordedLessonOptions', () => {
-  it('should filter out physical lessons', () => {
+  it('should filter out physical lesson options', () => {
     const lessonOptions: LessonOption[] = [
       defaultLectureOption,
       defaultRecitationOption,
@@ -156,7 +197,7 @@ describe('getFreeDayConflicts', () => {
         moduleCode: 'MA1521',
         lessonType: 'Lecture',
         colorIndex: 1,
-        uniqueKey: 'MA1521-Lecture',
+        lessonKey: 'MA1521|Lecture',
         displayText: 'MA1521 Lecture',
         days: ['Monday', 'Tuesday', 'Thursday', 'Friday'],
       },
@@ -190,7 +231,7 @@ describe('getFreeDayConflicts', () => {
         moduleCode: 'MA1521',
         lessonType: 'Lecture',
         colorIndex: 1,
-        uniqueKey: 'MA1521-Lecture',
+        lessonKey: 'MA1521|Lecture',
         displayText: 'MA1521 Lecture',
         days: ['Monday', 'Tuesday', 'Thursday', 'Friday'],
       },
@@ -198,6 +239,35 @@ describe('getFreeDayConflicts', () => {
     const selectedFreeDays = new Set(['Monday', 'Thursday']);
     const conflicts = getFreeDayConflicts(modules, 1, physicalLessonOptions, selectedFreeDays);
     expect(conflicts).toHaveLength(0);
+  });
+});
+
+describe('getUnassignedLessOptions', () => {
+  it('should return unassigned lesson options', () => {
+    const lessonOptions: LessonOption[] = [
+      defaultLectureOption,
+      defaultRecitationOption,
+      defaultTutorialOption,
+    ];
+    const optimiseResponse: OptimiseResponse = {
+      DaySlots: [[], [], [defaultLectureSlot], [], [defaultRecitationSlot]],
+    };
+    const unassignedLessonOptions = getUnassignedLessonOptions(lessonOptions, optimiseResponse);
+    expect(unassignedLessonOptions).toHaveLength(1);
+    expect(unassignedLessonOptions).toContain(defaultTutorialOption);
+  });
+
+  it('should return empty array if all lesson options are assigned', () => {
+    const lessonOptions: LessonOption[] = [
+      defaultLectureOption,
+      defaultRecitationOption,
+      defaultTutorialOption,
+    ];
+    const optimiseResponse: OptimiseResponse = {
+      DaySlots: [[defaultTutorialSlot], [], [defaultLectureSlot], [], [defaultRecitationSlot]],
+    };
+    const unassignedLessonOptions = getUnassignedLessonOptions(lessonOptions, optimiseResponse);
+    expect(unassignedLessonOptions).toHaveLength(0);
   });
 });
 
@@ -220,7 +290,7 @@ describe('isSaturdayInOptions', () => {
         moduleCode: 'UTC3103',
         lessonType: 'Seminar-Style Module Class',
         colorIndex: 1,
-        uniqueKey: 'UTC3103-Seminar-Style Module Class',
+        lessonKey: 'UTC3103|Seminar-Style Module Class',
         displayText: 'UTC3103 Seminar-Style Module Class',
         days: ['Saturday'],
       },

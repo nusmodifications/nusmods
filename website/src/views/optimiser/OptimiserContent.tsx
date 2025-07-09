@@ -3,9 +3,8 @@ import { useSelector } from 'react-redux';
 import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
 import { State } from 'types/state';
 import { ColorMapping } from 'types/reducers';
-import { LessonSlot, OptimiseRequest, OptimiseResponse, sendOptimiseRequest } from 'apis/optimiser';
+import { OptimiseRequest, OptimiseResponse, sendOptimiseRequest } from 'apis/optimiser';
 import Title from 'views/components/Title';
-import { flatten } from 'lodash';
 import ApiError from 'views/errors/ApiError';
 import { SemTimetableConfig } from 'types/timetables';
 import { getSemesterModules } from 'utils/timetables';
@@ -13,6 +12,7 @@ import {
   getFreeDayConflicts,
   getLessonOptions,
   getRecordedLessonOptions,
+  getUnassignedLessonOptions,
   isSaturdayInOptions,
 } from 'utils/optimiser';
 import { FreeDayConflict, LessonOption } from 'types/optimiser';
@@ -59,18 +59,18 @@ const OptimiserContent: React.FC = () => {
   }, [timetable, modulesMap, activeSemester, selectedLessons, selectedFreeDays]);
 
   useEffect(() => {
-    const availableKeys = new Set(lessonOptions.map((option) => option.uniqueKey));
-    setSelectedLessons((prev) => prev.filter((lesson) => availableKeys.has(lesson.uniqueKey)));
+    const availableKeys = new Set(lessonOptions.map((option) => option.lessonKey));
+    setSelectedLessons((prev) => prev.filter((lesson) => availableKeys.has(lesson.lessonKey)));
     setHasSaturday(isSaturdayInOptions(lessonOptions));
   }, [lessonOptions]);
 
   const toggleLessonSelection = useCallback(
     (option: LessonOption) => {
-      const isSelected = selectedLessons.some((lesson) => lesson.uniqueKey === option.uniqueKey);
+      const isSelected = selectedLessons.some((lesson) => lesson.lessonKey === option.lessonKey);
 
       if (isSelected) {
         setSelectedLessons((prev) =>
-          prev.filter((lesson) => lesson.uniqueKey !== option.uniqueKey),
+          prev.filter((lesson) => lesson.lessonKey !== option.lessonKey),
         );
       } else {
         setSelectedLessons((prev) => [...prev, option]);
@@ -126,23 +126,8 @@ const OptimiserContent: React.FC = () => {
     }
     setShareableLink(link);
 
-    const daySlots = data.DaySlots ?? [];
-    const assignedLessons = new Set(
-      flatten(daySlots)
-        .map((slot: LessonSlot | null) => {
-          const lessonKey = slot?.LessonKey;
-          if (!lessonKey) {
-            return null;
-          }
-          const [moduleCode, lessonType] = lessonKey.split('|');
-          return `${moduleCode} ${lessonType}`;
-        })
-        .filter((lesson) => !!lesson),
-    );
-
-    setUnAssignedLessons(
-      lessonOptions.filter((lesson) => !assignedLessons.has(lesson.displayText)),
-    );
+    const unassignedLessonOptions = getUnassignedLessonOptions(lessonOptions, data);
+    setUnAssignedLessons(unassignedLessonOptions);
   };
 
   const openOptimisedTimetable = () => {
