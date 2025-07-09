@@ -92,11 +92,11 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
         )}
         {lessonOptions.map((option) => {
           const isSelected = selectedLessons.some(
-            (lesson) => lesson.uniqueKey === option.uniqueKey,
+            (lesson) => lesson.lessonKey === option.lessonKey,
           );
           return (
             <button
-              key={option.uniqueKey}
+              key={option.lessonKey}
               type="button"
               onClick={() => toggleLessonSelection(option)}
               className={classnames(

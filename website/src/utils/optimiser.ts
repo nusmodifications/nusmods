@@ -1,4 +1,14 @@
-import { compact, differenceBy, flatten, get, groupBy, isEmpty, uniq, values } from 'lodash';
+import {
+  compact,
+  difference,
+  differenceBy,
+  flatten,
+  get,
+  groupBy,
+  isEmpty,
+  uniq,
+  values,
+} from 'lodash';
 import {
   Day,
   DayText,
@@ -9,12 +19,13 @@ import {
   Semester,
   WorkingDays,
 } from 'types/modules';
-import { DisplayText, FreeDayConflict, LessonOption, UniqueKey } from 'types/optimiser';
+import { DisplayText, FreeDayConflict, LessonOption, LessonKey } from 'types/optimiser';
 import { ColorMapping } from 'types/reducers';
+import { LessonSlot, OptimiseResponse } from 'apis/optimiser';
 import { getModuleTimetable } from './modules';
 
-export function getUniqueKey(moduleCode: ModuleCode, lessonType: LessonType): UniqueKey {
-  return `${moduleCode}-${lessonType}`;
+export function getLessonKey(moduleCode: ModuleCode, lessonType: LessonType): LessonKey {
+  return `${moduleCode}|${lessonType}`;
 }
 
 export function getDisplayText(moduleCode: ModuleCode, lessonType: LessonType): DisplayText {
@@ -49,7 +60,7 @@ export function getLessonOptions(
       moduleCode,
       lessonType,
       colorIndex,
-      uniqueKey: getUniqueKey(moduleCode, lessonType),
+      lessonKey: getLessonKey(moduleCode, lessonType),
       displayText: getDisplayText(moduleCode, lessonType),
       days: getDaysForLessonType(lessons, lessonType),
     }));
@@ -64,7 +75,7 @@ export function getRecordedLessonOptions(
   return differenceBy(
     lessonOptions,
     physicalLessonOptions,
-    (lessonOption) => lessonOption.uniqueKey,
+    (lessonOption) => lessonOption.lessonKey,
   );
 }
 
@@ -110,14 +121,28 @@ export function getFreeDayConflicts(
         return isEmpty(conflictingDays)
           ? null
           : {
-              moduleCode,
-              lessonType,
-              displayText,
-              days: conflictingDays,
-            };
+            moduleCode,
+            lessonType,
+            displayText,
+            days: conflictingDays,
+          };
       }),
     );
   });
+}
+
+export function getUnassignedLessonOptions(
+  lessonOptions: LessonOption[],
+  optimiserResponse: OptimiseResponse,
+): LessonOption[] {
+  const daySlots = optimiserResponse.DaySlots ?? [];
+  const assignedLessonKeys = uniq(
+    compact(flatten(daySlots).flatMap((slot: LessonSlot | null) => slot?.LessonKey)),
+  );
+
+  const allLessonKeys = lessonOptions.map((lessonOption) => lessonOption.lessonKey);
+  const unassignedLessonKeys = new Set(difference(allLessonKeys, assignedLessonKeys));
+  return lessonOptions.filter((lessonOption) => unassignedLessonKeys.has(lessonOption.lessonKey));
 }
 
 export function isSaturdayInOptions(lessonOptions: LessonOption[]): boolean {

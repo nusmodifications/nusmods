@@ -1,14 +1,14 @@
 import { DayText, LessonType, ModuleCode } from './modules';
 import { ColorIndex } from './timetables';
 
-export type UniqueKey = string;
+export type LessonKey = string;
 export type DisplayText = string;
 
 export type LessonOption = {
   moduleCode: ModuleCode;
   lessonType: LessonType;
   colorIndex: ColorIndex;
-  uniqueKey: UniqueKey;
+  lessonKey: LessonKey;
   displayText: DisplayText;
   days: DayText[];
 };
