@@ -29,6 +29,7 @@ import Title from 'views/components/Title';
 import { forceElasticsearchHost } from 'utils/debug';
 import { HIGHLIGHT_OPTIONS } from 'utils/elasticSearch';
 import config from 'config';
+import { Book } from 'react-feather';
 import styles from './ModuleFinderContainer.scss';
 
 const esIndex = 'modules_v2';
@@ -67,14 +68,18 @@ const ModuleFinderContainer: React.FC = () => (
 
           <ModuleSearchBox id="q" />
 
-          <RandomPicker buttonComponent={ModuleRandomButton} />
-
           <div>
-            <HitsStats
-              component={({ hitsCount }: HitsStatsDisplayProps) => (
-                <div className={styles.modulePageDivider}>{hitsCount} courses found</div>
-              )}
-            />
+            <div className={styles.modulePageDivider}>
+              <HitsStats
+                component={({ hitsCount }: HitsStatsDisplayProps) => (
+                  <span className={styles.hitsCount}>
+                    <Book className="svg svg-small" />
+                    {hitsCount} {hitsCount === 1 ? 'course' : 'courses'} found
+                  </span>
+                )}
+              />
+              <RandomPicker buttonComponent={ModuleRandomButton} />
+            </div>
 
             <LoadingComponent>
               <div className={styles.loadingOverlay} />

@@ -4,6 +4,9 @@ import { RandomPickerProps } from 'views/components/searchkit/RandomPicker';
 import Tooltip from 'views/components/Tooltip';
 import { modulePage } from 'views/routes/paths';
 
+import classNames from 'classnames';
+import styles from './ModuleRandomButton.scss';
+
 const ModuleRandomButton: React.FC<RandomPickerProps> = ({ getRandomModuleCode }) => {
   const history = useHistory();
 
@@ -12,10 +15,10 @@ const ModuleRandomButton: React.FC<RandomPickerProps> = ({ getRandomModuleCode }
   };
 
   return (
-    <Tooltip content="Feeling lucky? Roll a course with your filters!">
+    <Tooltip content="Feeling lucky? Roll a course with your filters!" placement="bottom">
       <button
         type="button"
-        className="btn btn-outline-primary btn-block btn-svg"
+        className={classNames('btn', 'btn-svg', styles.moduleRandomButton)}
         onClick={handleClick}
       >
         <Shuffle className="svg svg-small" />
