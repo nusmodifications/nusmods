@@ -6,6 +6,7 @@ import {
   get,
   groupBy,
   isEmpty,
+  range,
   uniq,
   values,
 } from 'lodash';
@@ -19,10 +20,11 @@ import {
   Semester,
   WorkingDays,
 } from 'types/modules';
-import { DisplayText, FreeDayConflict, LessonOption, LessonKey } from 'types/optimiser';
+import { DisplayText, FreeDayConflict, LessonOption, LessonKey, TimeRange } from 'types/optimiser';
 import { ColorMapping } from 'types/reducers';
 import { LessonSlot, OptimiseResponse } from 'apis/optimiser';
 import { getModuleTimetable } from './modules';
+import { convertIndexToTime, convertTimeToIndex, NUM_INTERVALS_PER_HOUR } from './timify';
 
 export function getLessonKey(moduleCode: ModuleCode, lessonType: LessonType): LessonKey {
   return `${moduleCode}|${lessonType}`;
@@ -149,4 +151,11 @@ export function isSaturdayInOptions(lessonOptions: LessonOption[]): boolean {
   return lessonOptions
     .flatMap((lessonOption) => lessonOption.days)
     .some((day) => day === 'Saturday');
+}
+
+export function getTimeValues(timeRange: TimeRange) {
+  const earliestIndex = convertTimeToIndex(timeRange.earliest);
+  const latestIndex = convertTimeToIndex(timeRange.latest) + 1;
+  const stride = NUM_INTERVALS_PER_HOUR / 2;
+  return range(earliestIndex, latestIndex, stride).map((index) => convertIndexToTime(index));
 }

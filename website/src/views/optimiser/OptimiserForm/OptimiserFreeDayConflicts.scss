@@ -1,0 +1,40 @@
+// Conflict warning
+.conflictWarning {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  margin-top: 1rem;
+  border: 1px solid rgba(255, 81, 56, 0.3);
+  border-radius: 0.5rem;
+  background-color: rgba(255, 81, 56, 0.1);
+  gap: 0.5rem;
+
+  .conflictHeader {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #ff5138;
+    gap: 0.5rem;
+  }
+  
+  .conflictDescription {
+    font-size: 0.9rem;
+    color: #69707a;
+  }
+  
+  .conflictItem {
+    margin-left: 1rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: #ff5138;
+  }
+  
+  .conflictFooter {
+    margin-top: 0.5rem;
+    font-style: italic;
+    font-size: 0.8rem;
+    color: #69707a;
+  }
+}
+

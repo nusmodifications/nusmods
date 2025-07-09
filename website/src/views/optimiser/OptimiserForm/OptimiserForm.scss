@@ -1,0 +1,73 @@
+@import '~styles/utils/modules-entry.scss';
+
+.lessonTag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  border-bottom: 3px solid;
+  border-radius: 0.25rem;
+  font-weight: 500;
+  font-size: 0.8rem;
+  transition: transform 0.15s ease, filter 0.15s ease;
+  gap: 0.25rem;
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+} 
+
+.tag {
+    cursor: pointer;
+}
+
+// Main content section
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+}
+
+// Section headers
+.sectionHeader {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  gap: 0.5rem;
+}
+
+.timetableLink {
+  color: inherit;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+// Icon styling
+.infoIcon {
+  color: #69707a;
+} 
+
+// Priority notice section
+.priorityNotice {
+  padding-top: 1rem;
+  margin-top: 2rem;
+  border-top: 1px solid var(--gray-lighter);
+  font-size: 1.1rem;
+
+  .prioritised {
+    opacity: 0.85;
+    font-weight: bold;
+    color: #ff5138;
+  }
+
+  .notGuaranteed {
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: #ff5138;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 2px;
+  }
+}

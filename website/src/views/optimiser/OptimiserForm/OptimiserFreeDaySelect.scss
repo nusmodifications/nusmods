@@ -1,0 +1,15 @@
+.freeDaysSection {
+  display: flex;
+  align-items: center;
+  margin-top: 2rem;
+  font-size: 1rem;
+  gap: 0.5rem;
+}
+
+.freeDaysButtons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  gap: 0.5rem;
+}
