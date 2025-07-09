@@ -130,12 +130,6 @@ const OptimiserContent: React.FC = () => {
     setUnAssignedLessons(unassignedLessonOptions);
   };
 
-  const openOptimisedTimetable = () => {
-    if (shareableLink) {
-      window.open(shareableLink, '_blank');
-    }
-  };
-
   return (
     <div className={styles.container}>
       <Title>Optimiser</Title>
@@ -180,11 +174,7 @@ const OptimiserContent: React.FC = () => {
       )}
 
       {/* Optimiser results */}
-      <OptimiserResults
-        shareableLink={shareableLink}
-        unAssignedLessons={unAssignedLessons}
-        openOptimisedTimetable={openOptimisedTimetable}
-      />
+      <OptimiserResults shareableLink={shareableLink} unassignedLessons={unAssignedLessons} />
     </div>
   );
 };
