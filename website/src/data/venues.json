@@ -320,7 +320,7 @@
     }
   },
   "EA-06-07": {
-    "roomName": "Seminar Room 7 (Active Learning Room",
+    "roomName": "Seminar Room 7 (Active Learning Room)",
     "floor": 6,
     "location": {
       "x": 103.7704782297597,
@@ -860,7 +860,7 @@
     }
   },
   "E5-03-19": {
-    "roomName": "Seminar Room(Active Learning Room)",
+    "roomName": "Seminar Room (Active Learning Room)",
     "floor": 3,
     "location": {
       "x": 103.77203256266569,
