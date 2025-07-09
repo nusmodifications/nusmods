@@ -1,8 +1,13 @@
-import { DayText, LessonType, ModuleCode } from './modules';
+import { DayText, LessonTime, LessonType, ModuleCode } from './modules';
 import { ColorIndex } from './timetables';
 
 export type LessonKey = string;
 export type DisplayText = string;
+
+export type TimeRange = {
+  earliest: LessonTime;
+  latest: LessonTime;
+};
 
 export type LessonOption = {
   moduleCode: ModuleCode;

@@ -1,0 +1,71 @@
+// Lesson selection section
+.lessonButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.lessonButton {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.5rem;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-radius: 0.25rem;
+  font-weight: 500;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  gap: 0.25rem;
+
+  &.selected {
+    opacity: 1;
+    filter: brightness(1);
+    transform: scale(1);
+  }
+
+  &.unselected {
+    opacity: 0.6;
+    filter: brightness(0.8);
+    transform: scale(0.98);
+  }
+
+  &:hover {
+    opacity: 1 !important;
+    filter: brightness(1.1) !important;
+    transform: scale(1.02) !important;
+  }
+}
+
+.lessonButtonText {
+  font-weight: bold;
+}
+
+.noLessonsFound {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 1.5rem;
+  margin-top: 0.5rem;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  border-radius: 0.75rem;
+  background-color: rgba(255, 193, 7, 0.1);
+  gap: 1rem;
+}
+
+.noLessonsHeader {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #ff8c00;
+  gap: 0.75rem;
+}
+
+.noLessonsDescription {
+  display: flex;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: rgba(255, 193, 7, 0.5);
+}

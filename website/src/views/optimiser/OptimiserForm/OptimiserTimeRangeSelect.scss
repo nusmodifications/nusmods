@@ -1,0 +1,124 @@
+.timeControls {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+  gap: 3rem;
+
+  @include media-breakpoint-down(md) {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
+
+.timeControlWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.timeControlGroup {
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  min-width: 200px;
+  gap: 0.5rem;
+
+  @include media-breakpoint-down(md) {
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+.timeControlHeader {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  gap: 0.5rem;
+}
+
+.timeControlRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.timeSelect {
+  width: 7.1rem;
+  padding: 0.25rem 0.75rem;
+  padding-left: 0.9rem;
+  border: 1px solid var(--gray-lighter);
+  border-radius: 0.25rem;
+  outline: none;
+  font-size: 1.3rem;
+  font-family: monospace;
+  color: inherit;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%23666' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>");
+  background-position: right 0.7rem center;
+  background-size: 0.85rem;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  appearance: none;
+  cursor: pointer;
+}
+
+.timeLabel {
+  font-weight: 500;
+  font-size: 1.2rem;
+  font-family: monospace;
+  color: inherit;
+}
+
+// Lunch controls section
+.lunchControls {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+  gap: 3rem;
+
+  @include media-breakpoint-down(md) {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
+
+.lunchControlGroup {
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  min-width: 200px;
+  gap: 0.5rem;
+
+  @include media-breakpoint-down(md) {
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+.lunchControlHeader {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  gap: 0.5rem;
+}
+
+.lunchControlRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.lunchTimeLabel {
+  font-weight: 500;
+  font-size: 1.2rem;
+  font-family: monospace;
+  color: inherit;
+}
+
+.lunchTimeSeparator {
+  margin: 0 1.5rem;
+  font-size: 1rem;
+  color: #69707a;
+}

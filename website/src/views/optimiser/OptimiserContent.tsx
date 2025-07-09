@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
 import { State } from 'types/state';
@@ -16,10 +16,10 @@ import {
   isSaturdayInOptions,
 } from 'utils/optimiser';
 import { FreeDayConflict, LessonOption } from 'types/optimiser';
-import { DayText } from 'types/modules';
+import useOptimiserForm from 'views/hooks/useOptimiserForm';
 import styles from './OptimiserContent.scss';
 import OptimiserHeader from './OptimiserHeader';
-import OptimiserForm from './OptimiserForm';
+import OptimiserForm from './OptimiserForm/OptimiserForm';
 import OptimiserButton from './OptimiserButton';
 import OptimiserResults from './OptimiserResults';
 
@@ -30,16 +30,19 @@ const OptimiserContent: React.FC = () => {
   const modulesMap = useSelector(({ moduleBank }: State) => moduleBank.modules);
   const acadYear = useSelector((state: State) => state.timetables.academicYear);
 
-  const [selectedLessons, setSelectedLessons] = useState<LessonOption[]>([]);
-  const [selectedFreeDays, setSelectedFreeDays] = useState<Set<DayText>>(new Set());
-  const [earliestTime, setEarliestTime] = useState<string>('0800');
-  const [latestTime, setLatestTime] = useState<string>('1900');
-  const [earliestLunchTime, setEarliestLunchTime] = useState<string>('1200');
-  const [latestLunchTime, setLatestLunchTime] = useState<string>('1400');
-  const [unAssignedLessons, setUnAssignedLessons] = useState<LessonOption[]>([]);
+  const optimiserFormFields = useOptimiserForm();
+  const {
+    physicalLessonOptions,
+    setPhysicalLessonOptions,
+    freeDays,
+    lessonTimeRange,
+    lunchTimeRange,
+    maxConsecutiveHours,
+  } = optimiserFormFields;
+
+  const [hasSaturday, setHasSaturday] = useState(false);
+  const [unassignedLessons, setUnassignedLessons] = useState<LessonOption[]>([]);
   const [shareableLink, setShareableLink] = useState<string>('');
-  const [hasSaturday, setHasSaturday] = useState<boolean>(false);
-  const [maxConsecutiveHours, setMaxConsecutiveHours] = useState<number>(4);
   const [isOptimising, setIsOptimising] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
@@ -48,48 +51,23 @@ const OptimiserContent: React.FC = () => {
     return getLessonOptions(modules, activeSemester, colors);
   }, [timetable, modulesMap, activeSemester, colors]);
 
-  const recordedLessonOptions: LessonOption[] = useMemo(
-    () => getRecordedLessonOptions(lessonOptions, selectedLessons),
-    [lessonOptions, selectedLessons],
-  );
-
   const freeDayConflicts: FreeDayConflict[] = useMemo(() => {
     const modules = getSemesterModules(timetable, modulesMap);
-    return getFreeDayConflicts(modules, activeSemester, selectedLessons, selectedFreeDays);
-  }, [timetable, modulesMap, activeSemester, selectedLessons, selectedFreeDays]);
+    return getFreeDayConflicts(modules, activeSemester, physicalLessonOptions, freeDays);
+  }, [timetable, modulesMap, activeSemester, physicalLessonOptions, freeDays]);
+
+  const recordedLessonOptions: LessonOption[] = useMemo(
+    () => getRecordedLessonOptions(lessonOptions, physicalLessonOptions),
+    [lessonOptions, physicalLessonOptions],
+  );
 
   useEffect(() => {
     const availableKeys = new Set(lessonOptions.map((option) => option.lessonKey));
-    setSelectedLessons((prev) => prev.filter((lesson) => availableKeys.has(lesson.lessonKey)));
+    setPhysicalLessonOptions((prev) =>
+      prev.filter((lesson) => availableKeys.has(lesson.lessonKey)),
+    );
     setHasSaturday(isSaturdayInOptions(lessonOptions));
-  }, [lessonOptions]);
-
-  const toggleLessonSelection = useCallback(
-    (option: LessonOption) => {
-      const isSelected = selectedLessons.some((lesson) => lesson.lessonKey === option.lessonKey);
-
-      if (isSelected) {
-        setSelectedLessons((prev) =>
-          prev.filter((lesson) => lesson.lessonKey !== option.lessonKey),
-        );
-      } else {
-        setSelectedLessons((prev) => [...prev, option]);
-      }
-    },
-    [selectedLessons],
-  );
-
-  const toggleFreeDay = useCallback((day: DayText) => {
-    setSelectedFreeDays((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(day)) {
-        newSet.delete(day);
-      } else {
-        newSet.add(day);
-      }
-      return newSet;
-    });
-  }, []);
+  }, [lessonOptions, setHasSaturday, setPhysicalLessonOptions]);
 
   const buttonOnClick = async () => {
     setShareableLink(''); // Reset shareable link
@@ -98,18 +76,17 @@ const OptimiserContent: React.FC = () => {
 
     const modulesList = Object.keys(timetable);
     const acadYearFormatted = `${acadYear.split('/')[0]}-${acadYear.split('/')[1]}`;
-    const recordings = recordedLessonOptions.map((lessonOption) => lessonOption.displayText);
 
     const params: OptimiseRequest = {
       modules: modulesList,
       acadYear: acadYearFormatted,
       acadSem: activeSemester,
-      freeDays: Array.from(selectedFreeDays),
-      earliestTime,
-      latestTime,
-      recordings,
-      lunchStart: earliestLunchTime,
-      lunchEnd: latestLunchTime,
+      freeDays: Array.from(freeDays),
+      earliestTime: lessonTimeRange.earliest,
+      latestTime: lessonTimeRange.latest,
+      recordings: recordedLessonOptions.map((lessonOption) => lessonOption.displayText),
+      lunchStart: lunchTimeRange.earliest,
+      lunchEnd: lunchTimeRange.latest,
       maxConsecutiveHours,
     };
 
@@ -127,42 +104,26 @@ const OptimiserContent: React.FC = () => {
     setShareableLink(link);
 
     const unassignedLessonOptions = getUnassignedLessonOptions(lessonOptions, data);
-    setUnAssignedLessons(unassignedLessonOptions);
+    setUnassignedLessons(unassignedLessonOptions);
   };
 
   return (
     <div className={styles.container}>
       <Title>Optimiser</Title>
 
-      {/* Optimiser header */}
       <OptimiserHeader />
 
-      {/*  All the form elements */}
       <OptimiserForm
         lessonOptions={lessonOptions}
-        selectedLessons={selectedLessons}
-        selectedFreeDays={selectedFreeDays}
-        earliestTime={earliestTime}
-        latestTime={latestTime}
-        earliestLunchTime={earliestLunchTime}
-        latestLunchTime={latestLunchTime}
         freeDayConflicts={freeDayConflicts}
         hasSaturday={hasSaturday}
-        maxConsecutiveHours={maxConsecutiveHours}
-        onToggleLessonSelection={toggleLessonSelection}
-        onToggleFreeDay={toggleFreeDay}
-        onEarliestTimeChange={setEarliestTime}
-        onLatestTimeChange={setLatestTime}
-        onEarliestLunchTimeChange={setEarliestLunchTime}
-        onLatestLunchTimeChange={setLatestLunchTime}
-        onMaxConsecutiveHoursChange={setMaxConsecutiveHours}
+        optimiserFormFields={optimiserFormFields}
       />
 
-      {/* Optimiser button */}
       <OptimiserButton
-        freeDayConflicts={freeDayConflicts}
-        lessonOptions={lessonOptions}
         isOptimising={isOptimising}
+        lessonOptions={lessonOptions}
+        freeDayConflicts={freeDayConflicts}
         onClick={buttonOnClick}
       />
 
@@ -173,8 +134,7 @@ const OptimiserContent: React.FC = () => {
         />
       )}
 
-      {/* Optimiser results */}
-      <OptimiserResults shareableLink={shareableLink} unassignedLessons={unAssignedLessons} />
+      <OptimiserResults shareableLink={shareableLink} unassignedLessons={unassignedLessons} />
     </div>
   );
 };
