@@ -10,27 +10,27 @@ type Props = {
 
 const OptimiserFreeDayConflicts: React.FC<Props> = ({ freeDayConflicts }) =>
   !isEmpty(freeDayConflicts) && (
-    <div className={styles.conflictWarning}>
-      <div className={styles.conflictHeader}>
-        <X size={20} />
+    <section className={styles.conflictWarning}>
+      <h3>
+        <X className="svg svg-med" />
         Free Day Conflicts
-      </div>
+      </h3>
 
-      <div className={styles.conflictDescription}>
-        The following lessons require physical attendance on your selected free days:
-      </div>
+      <h4>The following lesson(s) require physical attendance on your selected free days:</h4>
 
-      {freeDayConflicts.map((conflict, index) => (
-        <div key={index} className={styles.conflictItem}>
-          • <strong>{conflict.displayText}</strong>
-          cannot be assigned due to your free days: {conflict.days.join(', ')}
-        </div>
-      ))}
+      <ul>
+        {freeDayConflicts.map((conflict, index) => (
+          <li key={index}>
+            <strong>{conflict.displayText}</strong> cannot be assigned due to your free days:{' '}
+            {conflict.days.join(', ')}
+          </li>
+        ))}
+      </ul>
 
-      <div className={styles.conflictFooter}>
+      <h5>
         Consider disabling live attendance for these lessons or selecting different free days.
-      </div>
-    </div>
+      </h5>
+    </section>
   );
 
 export default OptimiserFreeDayConflicts;

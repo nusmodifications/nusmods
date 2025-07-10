@@ -32,8 +32,8 @@ const OptimiserContent: React.FC = () => {
 
   const optimiserFormFields = useOptimiserForm();
   const {
-    physicalLessonOptions,
-    setPhysicalLessonOptions,
+    liveLessonOptions: physicalLessonOptions,
+    setLiveLessonOptions: setPhysicalLessonOptions,
     freeDays,
     lessonTimeRange,
     lunchTimeRange,
@@ -74,11 +74,10 @@ const OptimiserContent: React.FC = () => {
     setIsOptimising(true);
     setError(null);
 
-    const modulesList = Object.keys(timetable);
     const acadYearFormatted = `${acadYear.split('/')[0]}-${acadYear.split('/')[1]}`;
 
     const params: OptimiseRequest = {
-      modules: modulesList,
+      modules: Object.keys(timetable),
       acadYear: acadYearFormatted,
       acadSem: activeSemester,
       freeDays: Array.from(freeDays),

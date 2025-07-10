@@ -1,71 +1,32 @@
-import React, { Dispatch, SetStateAction, useCallback } from 'react';
-import { TimeRange } from 'types/optimiser';
-
-import classNames from 'classnames';
-import { getLessonTimeHours, getLessonTimeMinutes } from 'utils/timify';
-import { getTimeValues } from 'utils/optimiser';
+import { useCallback } from 'react';
+import { getOptimiserTime, getTimeValues } from 'utils/optimiser';
 import { LessonTime } from 'types/modules';
 import { OptimiserFormFields } from 'views/hooks/useOptimiserForm';
-import Tooltip from 'views/components/Tooltip';
-import { Info } from 'react-feather';
 
 import styles from './OptimiserTimeRangeSelect.scss';
+import OptimiserFormTooltip from './OptimiserFormTooltip';
 
 type TimeRangeSelectProps = {
-  earliestTimeValues: LessonTime[];
-  latestTimeValues: LessonTime[];
-  timeRange: TimeRange;
-  setTimeRange: Dispatch<SetStateAction<TimeRange>>;
+  currentValue: LessonTime;
+  timeValues: LessonTime[];
+  setTime: (lessonTime: LessonTime) => void;
 };
 
 const OptimiserTimeRangeSelect: React.FC<TimeRangeSelectProps> = ({
-  earliestTimeValues,
-  latestTimeValues,
-  timeRange,
-  setTimeRange,
-}) => {
-  const setTimeRangeEarliest = useCallback(
-    (value: LessonTime) => {
-      setTimeRange((prev) => ({ ...prev, earliest: value }));
-    },
-    [setTimeRange],
-  );
-
-  const setTimeRangeLatest = useCallback(
-    (value: LessonTime) => {
-      setTimeRange((prev) => ({ ...prev, latest: value }));
-    },
-    [setTimeRange],
-  );
-
-  return (
-    <div className={styles.lunchControlRow}>
-      <select
-        className={classNames('form-select', styles.timeSelect)}
-        value={timeRange.earliest}
-        onChange={(e) => setTimeRangeEarliest(e.target.value)}
-      >
-        {earliestTimeValues.map((value) => {
-          const hh = getLessonTimeHours(value);
-          const mm = getLessonTimeMinutes(value);
-          return <option value={value}>{`${hh}:${mm}`}</option>;
-        })}
-      </select>
-      <div className={styles.lunchTimeSeparator}>to</div>
-      <select
-        className={classNames('form-select', styles.timeSelect)}
-        value={timeRange.earliest}
-        onChange={(e) => setTimeRangeLatest(e.target.value)}
-      >
-        {latestTimeValues.map((value) => {
-          const hh = getLessonTimeHours(value);
-          const mm = getLessonTimeMinutes(value);
-          return <option value={value}>{`${hh}:${mm}`}</option>;
-        })}
-      </select>
-    </div>
-  );
-};
+  currentValue,
+  timeValues,
+  setTime,
+}) => (
+  <select
+    className={styles.optimiserDropdown}
+    value={currentValue}
+    onChange={(e) => setTime(e.target.value)}
+  >
+    {timeValues.map((value) => (
+      <option value={value}>{getOptimiserTime(value)}</option>
+    ))}
+  </select>
+);
 
 type LessonTimeRangeSelectProps = {
   optimiserFormFields: OptimiserFormFields;
@@ -80,36 +41,52 @@ const OptimiserLessonTimeRangeSelect: React.FC<LessonTimeRangeSelectProps> = ({
     earliest: '0800',
     latest: '2200',
   });
+  const setEarliestTime = useCallback(
+    (lessonTime: LessonTime) => {
+      setLessonTimeRange((prev) => ({ ...prev, earliest: lessonTime }));
+    },
+    [setLessonTimeRange],
+  );
+
   const latestTimeValues = getTimeValues({
     earliest: '0900',
     latest: '2300',
   });
+  const setLatestTime = useCallback(
+    (lessonTime: LessonTime) => {
+      setLessonTimeRange((prev) => ({ ...prev, latest: lessonTime }));
+    },
+    [setLessonTimeRange],
+  );
 
   return (
-    <div className={styles.timeControls}>
-      <div className={styles.timeControlWrapper}>
-        <div className={styles.timeControlGroup}>
-          <div className={styles.timeControlHeader}>
-            Earliest start time
-            <Tooltip content="There will be no physical class before this time" placement="right">
-              <Info className={`${styles.tag} ${styles.infoIcon}`} size={15} />
-            </Tooltip>
-            <div className={styles.timeControlHeader}>
-              Latest end time
-              <Tooltip content="There will be no physical class after this time" placement="right">
-                <Info className={`${styles.tag} ${styles.infoIcon}`} size={15} />
-              </Tooltip>
-            </div>
-          </div>
-          <OptimiserTimeRangeSelect
-            earliestTimeValues={earliestTimeValues}
-            latestTimeValues={latestTimeValues}
-            timeRange={lessonTimeRange}
-            setTimeRange={setLessonTimeRange}
-          />
-        </div>
+    <section className={styles.timeControls}>
+      <div className={styles.timeColumn}>
+        <span className={styles.optimiserDescription}>
+          <h4>Earliest start time</h4>
+          <OptimiserFormTooltip content="There will be no physical class before this time" />
+        </span>
+
+        <OptimiserTimeRangeSelect
+          currentValue={lessonTimeRange.earliest}
+          timeValues={earliestTimeValues}
+          setTime={setEarliestTime}
+        />
       </div>
-    </div>
+
+      <div className={styles.timeColumn}>
+        <span className={styles.optimiserDescription}>
+          <h4>Latest end time</h4>
+          <OptimiserFormTooltip content="There will be no physical class after this time" />
+        </span>
+
+        <OptimiserTimeRangeSelect
+          currentValue={lessonTimeRange.latest}
+          timeValues={latestTimeValues}
+          setTime={setLatestTime}
+        />
+      </div>
+    </section>
   );
 };
 
@@ -120,42 +97,53 @@ type LunchTimeRangeSelectProps = {
 const OptimiserLunchTimeRangeSelect: React.FC<LunchTimeRangeSelectProps> = ({
   optimiserFormFields,
 }) => {
-  const { lessonTimeRange, setLessonTimeRange } = optimiserFormFields;
+  const { lunchTimeRange, setLunchTimeRange } = optimiserFormFields;
 
   const earliestTimeValues = getTimeValues({
     earliest: '1000',
     latest: '1630',
   });
+  const setEarliestTime = useCallback(
+    (lessonTime: LessonTime) => {
+      setLunchTimeRange((prev) => ({ ...prev, earliest: lessonTime }));
+    },
+    [setLunchTimeRange],
+  );
+
   const latestTimeValues = getTimeValues({
     earliest: '1100',
     latest: '1730',
   });
+  const setLatestTime = useCallback(
+    (lessonTime: LessonTime) => {
+      setLunchTimeRange((prev) => ({ ...prev, latest: lessonTime }));
+    },
+    [setLunchTimeRange],
+  );
 
   return (
-    <div className={styles.timeControls}>
-      <div className={styles.timeControlWrapper}>
-        <div className={styles.timeControlGroup}>
-          <div className={styles.timeControlHeader}>
-            Earliest start time
-            <Tooltip content="There will be no physical class before this time" placement="right">
-              <Info className={`${styles.tag} ${styles.infoIcon}`} size={15} />
-            </Tooltip>
-            <div className={styles.timeControlHeader}>
-              Latest end time
-              <Tooltip content="There will be no physical class after this time" placement="right">
-                <Info className={`${styles.tag} ${styles.infoIcon}`} size={15} />
-              </Tooltip>
-            </div>
-          </div>
+    <section className={styles.timeControls}>
+      <div className={styles.timeColumn}>
+        <span className={styles.optimiserDescription}>
+          <h4>Select maximum consecutive hours of live lessons</h4>
+          <OptimiserFormTooltip content="Prioritises having less than this number of consecutive hours of live lessons" />
+        </span>
+
+        <div className={styles.timeRow}>
           <OptimiserTimeRangeSelect
-            earliestTimeValues={earliestTimeValues}
-            latestTimeValues={latestTimeValues}
-            timeRange={lessonTimeRange}
-            setTimeRange={setLessonTimeRange}
+            currentValue={lunchTimeRange.earliest}
+            timeValues={earliestTimeValues}
+            setTime={setEarliestTime}
+          />
+          to
+          <OptimiserTimeRangeSelect
+            currentValue={lunchTimeRange.latest}
+            timeValues={latestTimeValues}
+            setTime={setLatestTime}
           />
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

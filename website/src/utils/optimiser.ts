@@ -6,13 +6,16 @@ import {
   get,
   groupBy,
   isEmpty,
+  padStart,
   range,
   uniq,
   values,
 } from 'lodash';
 import {
+  AcadYear,
   Day,
   DayText,
+  LessonTime,
   LessonType,
   Module,
   ModuleCode,
@@ -24,7 +27,13 @@ import { DisplayText, FreeDayConflict, LessonOption, LessonKey, TimeRange } from
 import { ColorMapping } from 'types/reducers';
 import { LessonSlot, OptimiseResponse } from 'apis/optimiser';
 import { getModuleTimetable } from './modules';
-import { convertIndexToTime, convertTimeToIndex, NUM_INTERVALS_PER_HOUR } from './timify';
+import {
+  convertIndexToTime,
+  convertTimeToIndex,
+  getLessonTimeHours,
+  getLessonTimeMinutes,
+  NUM_INTERVALS_PER_HOUR,
+} from './timify';
 
 export function getLessonKey(moduleCode: ModuleCode, lessonType: LessonType): LessonKey {
   return `${moduleCode}|${lessonType}`;
@@ -32,6 +41,17 @@ export function getLessonKey(moduleCode: ModuleCode, lessonType: LessonType): Le
 
 export function getDisplayText(moduleCode: ModuleCode, lessonType: LessonType): DisplayText {
   return `${moduleCode} ${lessonType}`;
+}
+
+export function getOptimiserAcadYear(acadYear: AcadYear): string {
+  const [from, to] = acadYear.split('/');
+  return `${from}-${to}`;
+}
+
+export function getOptimiserTime(time: LessonTime): string {
+  const hh = padStart(`${getLessonTimeHours(time)}`, 2, '0');
+  const mm = padStart(`${getLessonTimeMinutes(time)}`, 2, '0');
+  return `${hh}:${mm}`;
 }
 
 export function getLessonTypes(lessons: readonly RawLesson[]): LessonType[] {
@@ -123,11 +143,11 @@ export function getFreeDayConflicts(
         return isEmpty(conflictingDays)
           ? null
           : {
-            moduleCode,
-            lessonType,
-            displayText,
-            days: conflictingDays,
-          };
+              moduleCode,
+              lessonType,
+              displayText,
+              days: conflictingDays,
+            };
       }),
     );
   });
@@ -153,6 +173,9 @@ export function isSaturdayInOptions(lessonOptions: LessonOption[]): boolean {
     .some((day) => day === 'Saturday');
 }
 
+// TOOD: check styles
+
+// TODO: add unit tests
 export function getTimeValues(timeRange: TimeRange) {
   const earliestIndex = convertTimeToIndex(timeRange.earliest);
   const latestIndex = convertTimeToIndex(timeRange.latest) + 1;

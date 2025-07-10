@@ -6,6 +6,7 @@ import { OptimiserFormFields } from 'views/hooks/useOptimiserForm';
 import { useCallback } from 'react';
 import classNames from 'classnames';
 import styles from './OptimiserLessonOptionSelect.scss';
+import OptimiserFormTooltip from './OptimiserFormTooltip';
 
 type Props = {
   lessonOptions: LessonOption[];
@@ -13,59 +14,63 @@ type Props = {
 };
 
 const OptimiserLessonOptionSelect: React.FC<Props> = ({ lessonOptions, optimiserFormFields }) => {
-  const { physicalLessonOptions, setPhysicalLessonOptions } = optimiserFormFields;
+  const { liveLessonOptions, setLiveLessonOptions } = optimiserFormFields;
 
-  const togglePhysicalLessonOption = useCallback(
+  const toggleLiveLessonOption = useCallback(
     (target: LessonOption) => {
-      const isSelected = physicalLessonOptions.some(
+      const isSelected = liveLessonOptions.some(
         (selected) => selected.lessonKey === target.lessonKey,
       );
-      setPhysicalLessonOptions((prev) =>
+      setLiveLessonOptions((prev) =>
         isSelected
           ? prev.filter((option) => option.lessonKey !== target.lessonKey)
           : [...prev, target],
       );
     },
-    [physicalLessonOptions, setPhysicalLessonOptions],
+    [liveLessonOptions, setLiveLessonOptions],
   );
 
   return (
-    <div className={styles.lessonButtons}>
-      {isEmpty(lessonOptions) && (
-        <div className={styles.noLessonsFound}>
-          <div className={styles.noLessonsHeader}>
+    <section>
+      <span className={styles.optimiserDescription}>
+        <h4>Select lessons you plan to attend live (in person/online)</h4>
+        <OptimiserFormTooltip content="Chosen lessons will only be allocated on your school days" />
+      </span>
+
+      {isEmpty(lessonOptions) ? (
+        <div className={styles.noLessonsWarning}>
+          <h3>
             <AlertTriangle size={20} />
             No Lessons Found
-          </div>
-          <div className={styles.noLessonsDescription}>
-            Add modules to your timetable to see lesson options here
-          </div>
+          </h3>
+          <h4>Add modules to your timetable to see lesson options here</h4>
         </div>
-      )}
-
-      {lessonOptions.map((option) => {
-        const isSelected = physicalLessonOptions.some(
-          (lessonOption) => lessonOption.lessonKey === option.lessonKey,
-        );
-
-        return (
-          <button
-            key={option.lessonKey}
-            type="button"
-            onClick={() => togglePhysicalLessonOption(option)}
-            className={classNames(
+      ) : (
+        <div className={styles.lessonButtons}>
+          {lessonOptions.map((option) => {
+            const isSelected = liveLessonOptions.some(
+              (lessonOption) => lessonOption.lessonKey === option.lessonKey,
+            );
+            const className = classNames(
               `color-${option.colorIndex}`,
-              styles.lessonTag,
-              styles.tag,
               styles.lessonButton,
               isSelected ? styles.selected : styles.unselected,
-            )}
-          >
-            <div className={styles.lessonButtonText}>{option.displayText}</div>
-          </button>
-        );
-      })}
-    </div>
+            );
+
+            return (
+              <button
+                key={option.lessonKey}
+                type="button"
+                onClick={() => toggleLiveLessonOption(option)}
+                className={className}
+              >
+                {option.displayText}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </section>
   );
 };
 

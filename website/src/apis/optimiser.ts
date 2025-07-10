@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 
-const api = '/api/optimiser/optimise';
+const api = 'https://nusmods.com/api/optimiser/optimise';
 
 export interface OptimiseRequest {
   modules: string[];

@@ -3,10 +3,9 @@ import { dropRight } from 'lodash';
 import { useCallback } from 'react';
 import { DayText, WorkingDays } from 'types/modules';
 import { OptimiserFormFields } from 'views/hooks/useOptimiserForm';
-import Tooltip from 'views/components/Tooltip';
-import { Info } from 'react-feather';
 
 import styles from './OptimiserFreeDaySelect.scss';
+import OptimiserFormTooltip from './OptimiserFormTooltip';
 
 type Props = {
   hasSaturday: boolean;
@@ -28,27 +27,24 @@ const OptimiserFreeDaySelect: React.FC<Props> = ({ hasSaturday, optimiserFormFie
   );
 
   return (
-    <>
-      <div className={styles.freeDaysSection}>
-        Select days you would like to be free
-        <Tooltip content="Chosen days will have no physical classes" placement="right">
-          <Info className={`${styles.tag} ${styles.infoIcon}`} size={15} />
-        </Tooltip>
-      </div>
+    <section className={styles.freeDaysSection}>
+      <span className={styles.optimiserDescription}>
+        <h4>Select days you would like to be free</h4>
+        <OptimiserFormTooltip content="Chosen days will have no physical classes" />
+      </span>
+
       <div className={styles.freeDaysButtons}>
         {days.map((day) => (
           <button
             type="button"
-            className={classNames('btn btn-outline-primary btn-svg', {
-              active: freeDays.has(day),
-            })}
+            className={classNames(styles.freeDaysButton, { active: freeDays.has(day) })}
             onClick={() => toggleDay(day)}
           >
-            Monday
+            {day}
           </button>
         ))}
       </div>
-    </>
+    </section>
   );
 };
 

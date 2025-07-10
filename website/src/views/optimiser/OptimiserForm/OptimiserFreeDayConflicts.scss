@@ -1,40 +1,47 @@
-// Conflict warning
+@import '~styles/utils/modules-entry.scss';
+@import './OptimiserForm.scss';
+
 .conflictWarning {
   display: flex;
   flex-direction: column;
   padding: 1rem;
-  margin-top: 1rem;
+  margin-top: $form-fields-gap;
   border: 1px solid rgba(255, 81, 56, 0.3);
   border-radius: 0.5rem;
   background-color: rgba(255, 81, 56, 0.1);
   gap: 0.5rem;
 
-  .conflictHeader {
+  h3 {
     display: flex;
     align-items: center;
+    margin: 0;
     font-weight: bold;
     font-size: 1rem;
     color: #ff5138;
     gap: 0.5rem;
   }
-  
-  .conflictDescription {
+
+  h4 {
+    margin: 0;
     font-size: 0.9rem;
     color: #69707a;
   }
-  
-  .conflictItem {
-    margin-left: 1rem;
-    font-weight: 500;
-    font-size: 0.9rem;
-    color: #ff5138;
+
+  ul {
+    margin: 0;
+
+    li {
+      margin: 0;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: #ff5138;
+    }
   }
-  
-  .conflictFooter {
-    margin-top: 0.5rem;
+
+  h5 {
+    margin: 0.5rem 0;
     font-style: italic;
     font-size: 0.8rem;
     color: #69707a;
   }
 }
-
