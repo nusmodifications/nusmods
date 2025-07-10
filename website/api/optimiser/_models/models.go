@@ -34,12 +34,15 @@ type ModuleSlot struct {
 	StartTime   string      `json:"startTime"`
 	Venue       string      `json:"venue"`
 	Coordinates Coordinates `json:"coordinates"`
+	Weeks       []int       `json:"weeks"`
 
 	// Parsed fields
-	StartMin  int    // Minutes from 00:00 (e.g., 540 for 09:00)
-	EndMin    int    // Minutes from 00:00
-	DayIndex  int    // 0=Monday, 1=Tuesday, 2=Wednesday, 3=Thursday, 4=Friday, 5=Saturday
-	LessonKey string // "MODULE|LessonType"
+	StartMin    int    // Minutes from 00:00 (e.g., 540 for 09:00)
+	EndMin      int    // Minutes from 00:00
+	DayIndex    int    // 0=Monday, 1=Tuesday, 2=Wednesday, 3=Thursday, 4=Friday, 5=Saturday
+	LessonKey   string // "MODULE|LessonType"
+	WeeksSet    map[int]bool
+	WeeksString string
 }
 
 // ParseModuleSlotFields parses and populates the parsed fields in ModuleSlot for faster computation

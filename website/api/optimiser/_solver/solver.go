@@ -6,9 +6,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/nusmodifications/nusmods/website/api/optimiser/_constants"
-	"github.com/nusmodifications/nusmods/website/api/optimiser/_models"
-	"github.com/nusmodifications/nusmods/website/api/optimiser/_modules"
+	constants "github.com/nusmodifications/nusmods/website/api/optimiser/_constants"
+	models "github.com/nusmodifications/nusmods/website/api/optimiser/_models"
+	modules "github.com/nusmodifications/nusmods/website/api/optimiser/_modules"
 	"github.com/umahmood/haversine"
 )
 
@@ -53,9 +53,10 @@ func BeamSearch(
 				group := slotGroups[i]
 
 				validGroup := make([]models.ModuleSlot, 0, len(group))
-				for _, slot := range group {
+				for i := range group {
+					slot := &group[i]
 					if slot.DayIndex >= 0 && slot.DayIndex < 6 {
-						validGroup = append(validGroup, slot)
+						validGroup = append(validGroup, *slot)
 					}
 				}
 
@@ -164,7 +165,12 @@ func hasConflict(state models.TimetableState, newSlots []models.ModuleSlot) bool
 		for _, oldSlot := range state.DaySlots[newSlot.DayIndex] {
 			// Check if slots overlap in time
 			if newSlot.StartMin < oldSlot.EndMin && oldSlot.StartMin < newSlot.EndMin {
-				return true
+				// check if the weeks overlap
+				for _, week := range newSlot.Weeks {
+					if oldSlot.WeeksSet[week] {
+						return true
+					}
+				}
 			}
 		}
 	}
@@ -204,9 +210,10 @@ func getPhysicalSlots(daySlots []models.ModuleSlot, recordings map[string]bool) 
 	}
 
 	physicalSlots := make([]models.ModuleSlot, 0, len(daySlots))
-	for _, slot := range daySlots {
+	for i := range daySlots {
+		slot := &daySlots[i]
 		if !isLessonRecorded(slot.LessonKey, recordings) {
-			physicalSlots = append(physicalSlots, slot)
+			physicalSlots = append(physicalSlots, *slot)
 		}
 	}
 
