@@ -19,7 +19,10 @@ const OptimiserFreeDaySelect: React.FC<Props> = ({ hasSaturday, optimiserFormFie
   const toggleDay = useCallback(
     (day: DayText) => {
       const isSelected = freeDays.has(day);
-      setFreeDays((prev) => new Set(isSelected ? omit([...prev], day) : [...prev, day]));
+      setFreeDays(
+        (prev) =>
+          new Set(isSelected ? [...prev].filter((existing) => existing !== day) : [...prev, day]),
+      );
     },
     [freeDays, setFreeDays],
   );
