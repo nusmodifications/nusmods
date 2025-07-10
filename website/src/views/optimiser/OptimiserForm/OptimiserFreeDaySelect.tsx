@@ -36,6 +36,7 @@ const OptimiserFreeDaySelect: React.FC<Props> = ({ hasSaturday, optimiserFormFie
       <div className={styles.freeDaysButtons}>
         {days.map((day) => (
           <button
+            key={day}
             type="button"
             className={classNames(styles.freeDaysButton, { active: freeDays.has(day) })}
             onClick={() => toggleDay(day)}

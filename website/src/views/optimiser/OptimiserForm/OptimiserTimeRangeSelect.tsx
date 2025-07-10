@@ -2,9 +2,9 @@ import { useCallback } from 'react';
 import { getOptimiserTime, getTimeValues } from 'utils/optimiser';
 import { LessonTime } from 'types/modules';
 import { OptimiserFormFields } from 'views/hooks/useOptimiserForm';
+import OptimiserFormTooltip from './OptimiserFormTooltip';
 
 import styles from './OptimiserTimeRangeSelect.scss';
-import OptimiserFormTooltip from './OptimiserFormTooltip';
 
 type TimeRangeSelectProps = {
   currentValue: LessonTime;
@@ -23,7 +23,9 @@ const OptimiserTimeRangeSelect: React.FC<TimeRangeSelectProps> = ({
     onChange={(e) => setTime(e.target.value)}
   >
     {timeValues.map((value) => (
-      <option value={value}>{getOptimiserTime(value)}</option>
+      <option key={value} value={value}>
+        {getOptimiserTime(value)}
+      </option>
     ))}
   </select>
 );
@@ -147,4 +149,9 @@ const OptimiserLunchTimeRangeSelect: React.FC<LunchTimeRangeSelectProps> = ({
   );
 };
 
-export { OptimiserLessonTimeRangeSelect, OptimiserLunchTimeRangeSelect };
+export {
+  TimeRangeSelectProps,
+  OptimiserTimeRangeSelect,
+  OptimiserLessonTimeRangeSelect,
+  OptimiserLunchTimeRangeSelect,
+};
