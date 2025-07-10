@@ -1,5 +1,5 @@
 import { CS1010S, CS3216, MA1521 } from '__mocks__/modules';
-import { LessonOption } from 'types/optimiser';
+import { LessonOption, TimeRange } from 'types/optimiser';
 import { Module, WorkingDays } from 'types/modules';
 import { shuffle } from 'lodash';
 import { OptimiseResponse } from 'apis/optimiser';
@@ -23,6 +23,9 @@ import {
   isSaturdayInOptions,
   sortDays,
   getUnassignedLessonOptions,
+  getOptimiserAcadYear,
+  getTimeValues,
+  getOptimiserTime,
 } from './optimiser';
 import { getModuleTimetable } from './modules';
 
@@ -35,8 +38,22 @@ describe('getLessonKey', () => {
 });
 
 describe('getDisplayText', () => {
-  it('should format display text', () => {
+  it('getDisplayText should format display text', () => {
     expect(getDisplayText('CS1010S', 'Lecture')).toEqual('CS1010S Lecture');
+  });
+});
+
+describe('getOptimiserAcadYear', () => {
+  it('getOptimiserAcadYear should format academic year', () => {
+    expect(getOptimiserAcadYear('2024/2025')).toEqual('2024-2025');
+  });
+});
+
+describe('getOptimiserTime', () => {
+  it('getOptimiserTime should format time', () => {
+    expect(getOptimiserTime('0800')).toEqual('08:00');
+    expect(getOptimiserTime('1000')).toEqual('10:00');
+    expect(getOptimiserTime('1030')).toEqual('10:30');
   });
 });
 
@@ -241,5 +258,16 @@ describe('isSaturdayInOptions', () => {
       },
     ];
     expect(isSaturdayInOptions(lessonOptions)).toBe(true);
+  });
+});
+
+describe('getTimeValues', () => {
+  it('should return a range of times', () => {
+    const timeRange: TimeRange = {
+      earliest: '0800',
+      latest: '1030',
+    };
+    const expected = ['0800', '0830', '0900', '0930', '1000', '1030'];
+    expect(getTimeValues(timeRange)).toEqual(expected);
   });
 });

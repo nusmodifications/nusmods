@@ -173,9 +173,6 @@ export function isSaturdayInOptions(lessonOptions: LessonOption[]): boolean {
     .some((day) => day === 'Saturday');
 }
 
-// TOOD: check styles
-
-// TODO: add unit tests
 export function getTimeValues(timeRange: TimeRange) {
   const earliestIndex = convertTimeToIndex(timeRange.earliest);
   const latestIndex = convertTimeToIndex(timeRange.latest) + 1;

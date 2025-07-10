@@ -11,6 +11,7 @@ import { getSemesterModules } from 'utils/timetables';
 import {
   getFreeDayConflicts,
   getLessonOptions,
+  getOptimiserAcadYear,
   getRecordedLessonOptions,
   getUnassignedLessonOptions,
   isSaturdayInOptions,
@@ -74,11 +75,9 @@ const OptimiserContent: React.FC = () => {
     setIsOptimising(true);
     setError(null);
 
-    const acadYearFormatted = `${acadYear.split('/')[0]}-${acadYear.split('/')[1]}`;
-
     const params: OptimiseRequest = {
       modules: Object.keys(timetable),
-      acadYear: acadYearFormatted,
+      acadYear: getOptimiserAcadYear(acadYear),
       acadSem: activeSemester,
       freeDays: Array.from(freeDays),
       earliestTime: lessonTimeRange.earliest,
