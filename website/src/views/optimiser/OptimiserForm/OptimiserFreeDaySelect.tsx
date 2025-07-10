@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { dropRight } from 'lodash';
+import { dropRight, omit } from 'lodash';
 import { useCallback } from 'react';
 import { DayText, WorkingDays } from 'types/modules';
 import { OptimiserFormFields } from 'views/hooks/useOptimiserForm';
@@ -19,9 +19,7 @@ const OptimiserFreeDaySelect: React.FC<Props> = ({ hasSaturday, optimiserFormFie
   const toggleDay = useCallback(
     (day: DayText) => {
       const isSelected = freeDays.has(day);
-      setFreeDays((prev) =>
-        isSelected ? prev.difference(new Set([day])) : prev.union(new Set([day])),
-      );
+      setFreeDays((prev) => new Set(isSelected ? omit([...prev], day) : [...prev, day]));
     },
     [freeDays, setFreeDays],
   );
