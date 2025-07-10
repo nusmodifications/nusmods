@@ -1,20 +1,12 @@
 @import '~styles/utils/modules-entry.scss';
+@import './common.scss';
 
-.lessonTag {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.25rem 0.5rem;
-  border-bottom: 3px solid;
-  border-radius: 0.25rem;
-  font-weight: 500;
-  font-size: 0.8rem;
-  transition: transform 0.15s ease, filter 0.15s ease;
-  gap: 0.25rem;
-
+.timetableLink {
+  color: inherit;
   &:hover {
-    filter: brightness(0.8);
+    text-decoration: none;
   }
-} 
+}
 
 .tag {
     cursor: pointer;

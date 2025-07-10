@@ -15,8 +15,8 @@ const defaultLunchTimeRange: TimeRange = {
 const defaultMaxConsecutiveHours = 4;
 
 export type OptimiserFormFields = {
-  physicalLessonOptions: LessonOption[];
-  setPhysicalLessonOptions: Dispatch<SetStateAction<LessonOption[]>>;
+  liveLessonOptions: LessonOption[];
+  setLiveLessonOptions: Dispatch<SetStateAction<LessonOption[]>>;
   freeDays: Set<DayText>;
   setFreeDays: Dispatch<SetStateAction<Set<DayText>>>;
   lessonTimeRange: TimeRange;
@@ -28,15 +28,15 @@ export type OptimiserFormFields = {
 };
 
 export default function useOptimiserForm(): OptimiserFormFields {
-  const [physicalLessonOptions, setPhysicalLessonOptions] = useState<LessonOption[]>([]);
+  const [liveLessonOptions, setLiveLessonOptions] = useState<LessonOption[]>([]);
   const [freeDays, setFreeDays] = useState<Set<DayText>>(new Set());
   const [lessonTimeRange, setLessonTimeRange] = useState(defaultLessonTimeRange);
   const [maxConsecutiveHours, setMaxConsecutiveHours] = useState(defaultMaxConsecutiveHours);
   const [lunchTimeRange, setLunchTimeRange] = useState(defaultLunchTimeRange);
 
   return {
-    physicalLessonOptions,
-    setPhysicalLessonOptions,
+    liveLessonOptions,
+    setLiveLessonOptions,
     freeDays,
     setFreeDays,
     lessonTimeRange,

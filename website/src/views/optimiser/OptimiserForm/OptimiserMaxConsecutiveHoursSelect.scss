@@ -1,15 +1,11 @@
+@import '~styles/utils/modules-entry.scss';
+@import './OptimiserForm.scss';
+
 .maxConsecutiveHours {
   display: flex;
-  align-items: center;
-  margin-top: 2rem;
-  font-size: 1rem;
-  gap: 0.5rem;
-}
-
-.maxConsecutiveHoursGroup {
-  display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  justify-content: flex-start;
+  margin-top: $form-fields-gap;
 }
 
 .maxConsecutiveHoursHeader {
@@ -19,23 +15,4 @@
   align-items: center;
   font-size: 1rem;
   gap: 0.5rem;
-}
-
-.maxConsecutiveHoursInput {
-  width: 4.1rem;
-  padding: 0.25rem 0.75rem;
-  padding-left: 0.9rem;
-  border: 1px solid var(--gray-lighter);
-  border-radius: 0.25rem;
-  outline: none;
-  font-size: 1.3rem;
-  font-family: monospace;
-  color: inherit;
-  background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%23666' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>");
-  background-position: right 0.7rem center;
-  background-size: 0.85rem;
-  background-repeat: no-repeat;
-  background-color: transparent;
-  appearance: none;
-  cursor: pointer;
 }
