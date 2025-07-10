@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { History } from 'history';
 import { each } from 'lodash';
+import { useState, useEffect } from 'react';
 
 import { Tracker } from 'types/vendor/piwik';
 import insertScript from 'utils/insertScript';
@@ -36,7 +37,7 @@ function trackInitialPageView() {
 }
 
 // Code mostly adopted from https://github.com/AmazingDreams/vue-matomo
-export function initializeMamoto() {
+export function initializeMatomo() {
   const siteId = '1';
   const host = 'https://analytics.nusmods.com';
   const scriptSrc = `${host}/piwik.js`;
@@ -76,4 +77,14 @@ export function trackPageView(history: History) {
       }, 100);
     }
   });
+}
+
+export function useMatomo() {
+  // need to use useState here or the matomo returned will always be undefined
+  const [matomoCopy, setMatomoCopy] = useState<Tracker | undefined>(undefined);
+  useEffect(() => {
+    setMatomoCopy(matomo);
+  }, [matomo]);
+
+  return matomoCopy;
 }
