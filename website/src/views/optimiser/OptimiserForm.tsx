@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import classnames from 'classnames';
 import { Info, X, AlertTriangle } from 'react-feather';
 import Tooltip from 'views/components/Tooltip';
+import { WorkingDays, Day } from 'types/modules';
 import { LessonOption, FreeDayConflict } from './types';
 import styles from './OptimiserForm.scss';
 
@@ -14,13 +15,15 @@ interface OptimiserFormProps {
   earliestLunchTime: string;
   latestLunchTime: string;
   freeDayConflicts: FreeDayConflict[];
+  hasSaturday: boolean;
+  maxConsecutiveHours: number;
   onToggleLessonSelection: (option: LessonOption) => void;
   onToggleFreeDay: (day: string) => void;
   onEarliestTimeChange: (time: string) => void;
   onLatestTimeChange: (time: string) => void;
   onEarliestLunchTimeChange: (time: string) => void;
   onLatestLunchTimeChange: (time: string) => void;
-  hasSaturday: boolean;
+  onMaxConsecutiveHoursChange: (hours: number) => void;
 }
 
 const OptimiserForm: React.FC<OptimiserFormProps> = ({
@@ -32,13 +35,15 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
   earliestLunchTime,
   latestLunchTime,
   freeDayConflicts,
+  hasSaturday,
+  maxConsecutiveHours,
   onToggleLessonSelection,
   onToggleFreeDay,
   onEarliestTimeChange,
   onLatestTimeChange,
   onEarliestLunchTimeChange,
   onLatestLunchTimeChange,
-  hasSaturday,
+  onMaxConsecutiveHoursChange,
 }) => {
   const toggleLessonSelection = useCallback(
     (option: LessonOption) => {
@@ -185,8 +190,11 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
           </div>
           {freeDayConflicts.map((conflict, index) => (
             <div key={index} className={styles.conflictItem}>
-              • <strong>{conflict.displayText}</strong> happens on:{' '}
-              {conflict.conflictingDays.join(', ')}
+              • <strong>{conflict.displayText}</strong> cannot be assigned due to your free days:{' '}
+              {conflict.conflictingDays
+                .filter((d): d is Day => WorkingDays.includes(d as Day))
+                .sort((a, b) => WorkingDays.indexOf(a as Day) - WorkingDays.indexOf(b as Day))
+                .join(', ')}
             </div>
           ))}
           <div className={styles.conflictFooter}>
@@ -288,14 +296,47 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
         </div>
       </div>
 
+      <div className={styles.priorityNotice}>
+        Following preferences will be <strong className={styles.prioritised}>prioritised</strong>{' '}
+        but <strong className={styles.notGuaranteed}>not guaranteed</strong> :
+      </div>
+
+      <div className={styles.maxConsecutiveHours}>
+        <div className={styles.maxConsecutiveHoursGroup}>
+          <div className={styles.maxConsecutiveHoursHeader}>
+            <div>
+              Select maximum consecutive hours of live lessons
+              <Tooltip
+                content="Prioritises having less than this number of consecutive hours of live lessons"
+                placement="right"
+              >
+                <Info
+                  className={`${styles.tag} ${styles.infoIcon}`}
+                  style={{ marginLeft: '0.5rem' }}
+                  size={15}
+                />
+              </Tooltip>
+            </div>
+          </div>
+          <select
+            value={maxConsecutiveHours}
+            onChange={(e) => onMaxConsecutiveHoursChange(parseInt(e.target.value, 10))}
+            className={classnames('form-select', styles.maxConsecutiveHoursInput)}
+          >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+          </select>
+        </div>
+      </div>
       <div className={styles.lunchControls}>
         <div className={styles.lunchControlGroup}>
           <div className={styles.lunchControlHeader}>
             Select range for preferred lunch break timings
-            <Tooltip
-              content="Prioritises 1-hour lunch breaks in this range, if possible"
-              placement="right"
-            >
+            <Tooltip content="Prioritises 1-hour lunch breaks in this range" placement="right">
               <Info className={`${styles.tag} ${styles.infoIcon}`} size={15} />
             </Tooltip>
           </div>

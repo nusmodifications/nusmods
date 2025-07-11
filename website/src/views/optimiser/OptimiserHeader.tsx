@@ -25,16 +25,9 @@ const OptimiserHeader: React.FC = () => {
         </button>
       </div>
       <div className={styles.description}>
-        <div>
-          Intelligently explores millions of combinations to generate your optimal timetable —
-          prioritising
-        </div>
-        <div>
-          <b>
-            preferred free days, ideal class timings, lunch flexibility, and minimal travel between
-            classes
-          </b>
-          .
+        <div className={styles.descriptionText}>
+          Intelligently explores millions of combinations to generate your optimal timetable
+          tailored to your preferences
         </div>
       </div>
     </div>
