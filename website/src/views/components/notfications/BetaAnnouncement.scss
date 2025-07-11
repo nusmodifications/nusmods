@@ -1,0 +1,101 @@
+@import '~styles/utils/modules-entry';
+
+// Make the buttons move below the body on small screens and in vertical mode
+@mixin wrap-buttons {
+  flex-wrap: wrap;
+
+  .buttons {
+    flex: 1 0 auto;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 1rem;
+
+    :global(.btn) {
+      display: block;
+      width: 100%;
+      text-align: center;
+    }
+  }
+}
+
+.announcement {
+  z-index: 1;
+  display: flex;
+  overflow: hidden;
+  justify-content: space-between;
+  padding: 1.2rem 1rem 1.1rem 1.4rem;
+  line-height: 1.3;
+
+  h3 {
+    margin-bottom: 0.5rem;
+    font-weight: $font-weight-bold;
+    font-size: 1.2rem;
+  }
+
+  .body {
+    margin-right: 0.5rem;
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .bodyElement {
+      margin-bottom: 0.4rem;
+
+      ul {
+        padding-top: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    .bodyElement:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .actions {
+    margin-top: 0.5rem;
+  }
+
+  @include media-breakpoint-down(xs) {
+    padding: 1rem 0.75rem 0.75rem 1rem;
+  }
+}
+
+.buttons {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+
+  @include media-breakpoint-down(xs) {
+    flex: 0 0;
+  }
+}
+
+.Betabutton {
+  margin-top: 15px;
+  @extend .buttons;
+}
+
+.backgroundIcon {
+  position: absolute;
+  top: -1rem;
+  left: -1rem;
+  opacity: 0.1;
+  width: 8rem;
+  height: 8rem;
+  pointer-events: none;
+}
+
+.wrapButtons {
+  @include media-breakpoint-down(xs) {
+    @include wrap-buttons;
+  }
+}
+
+.hacktoberfest {
+  :global(.verticalMode) & {
+    @include wrap-buttons;
+  }
+}
+
