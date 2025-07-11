@@ -1,0 +1,12 @@
+@import '~styles/utils/modules-entry';
+
+.moduleRandomButton {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  font-size: $font-size-sm;
+  text-align: right;
+  color: var(--gray);
+  gap: 0.2rem;
+}
