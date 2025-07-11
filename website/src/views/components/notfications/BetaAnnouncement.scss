@@ -73,8 +73,8 @@
 }
 
 .Betabutton {
-  @extend .buttons;
   margin-top: 15px;
+  @extend .buttons;
 }
 
 .backgroundIcon {

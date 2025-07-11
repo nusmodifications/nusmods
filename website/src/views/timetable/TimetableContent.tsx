@@ -52,13 +52,13 @@ import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ModRegNotification from 'views/components/notfications/ModRegNotification';
 import { State as StoreState } from 'types/state';
 import { ModuleWithColor, TombstoneModule } from 'types/views';
+import BetaAnnouncement from 'views/components/notfications/BetaAnnouncement';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
 import ExamCalendar from './ExamCalendar';
 import ModulesTableFooter from './ModulesTableFooter';
 import styles from './TimetableContent.scss';
-import BetaAnnouncement from 'views/components/notfications/BetaAnnouncement';
 
 type ModifiedCell = {
   className: string;

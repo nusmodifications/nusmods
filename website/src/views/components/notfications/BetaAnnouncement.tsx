@@ -4,9 +4,9 @@ import { Info } from 'react-feather';
 
 import { toggleBetaTesting } from 'actions/settings';
 import CloseButton from 'views/components/CloseButton';
-import styles from './BetaAnnouncement.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { State } from 'types/state';
+import styles from './BetaAnnouncement.scss';
 
 const BetaAnnouncement = memo(() => {
   const dispatch = useDispatch();
@@ -23,12 +23,7 @@ const BetaAnnouncement = memo(() => {
   };
 
   return (
-    <div
-      className={classnames(
-        'alert alert-info no-export',
-        styles.announcement,
-      )}
-    >
+    <div className={classnames('alert alert-info no-export', styles.announcement)}>
       <Info className={styles.backgroundIcon} />
 
       <div className={classnames(styles.body, styles.wrapButtons)}>
@@ -37,12 +32,11 @@ const BetaAnnouncement = memo(() => {
           Turn on NUSMods BETA to try out the new timetable optimiser to help you find your optimal
           timetable based on your preferences.
         </p>
-        <p className={styles.bodyElement}>
-          Share your feedback to help us make it even better!
-        </p>
+        <p className={styles.bodyElement}>Share your feedback to help us make it even better!</p>
         <div className={styles.Betabutton}>
-          <button 
-            className="btn btn-info" 
+          <button
+            className="btn btn-info"
+            type="button"
             onClick={() => dispatch(toggleBetaTesting())}
           >
             Turn on BETA
