@@ -58,6 +58,7 @@ import TimetableModulesTable from './TimetableModulesTable';
 import ExamCalendar from './ExamCalendar';
 import ModulesTableFooter from './ModulesTableFooter';
 import styles from './TimetableContent.scss';
+import BetaAnnouncement from 'views/components/notfications/BetaAnnouncement';
 
 type ModifiedCell = {
   className: string;
@@ -442,6 +443,7 @@ class TimetableContent extends React.Component<Props, State> {
         <Title>Timetable</Title>
 
         <Announcements />
+        <BetaAnnouncement />
 
         <ErrorBoundary>
           <ModRegNotification />
