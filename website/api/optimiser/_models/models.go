@@ -34,7 +34,7 @@ type ModuleSlot struct {
 	StartTime   string      `json:"startTime"`
 	Venue       string      `json:"venue"`
 	Coordinates Coordinates `json:"coordinates"`
-	Weeks       []int       `json:"weeks"`
+	Weeks       any       `json:"weeks"`
 
 	// Parsed fields
 	StartMin    int    // Minutes from 00:00 (e.g., 540 for 09:00)
