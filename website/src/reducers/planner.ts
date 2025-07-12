@@ -16,6 +16,7 @@ import {
   SET_PLANNER_MAX_YEAR,
   SET_PLANNER_MIN_YEAR,
   SET_IGNORE_PREREQUISITES_CHECK,
+  SET_INCLUDE_EXEMPTED_MODULE_CREDITS,
   IMPORT_PLANNER,
   CLEAR_PLANNER,
 } from 'actions/planner';
@@ -27,6 +28,7 @@ export const defaultPlannerState: PlannerState = {
   maxYear: config.academicYear,
   iblocs: false,
   ignorePrereqCheck: false,
+  includeExemptedModuleCredits: false,
 
   modules: {},
   custom: {},
@@ -81,6 +83,9 @@ export default function planner(
 
     case SET_IGNORE_PREREQUISITES_CHECK:
       return { ...state, ignorePrereqCheck: action.payload };
+
+    case SET_INCLUDE_EXEMPTED_MODULE_CREDITS:
+      return { ...state, includeExemptedModuleCredits: action.payload };
 
     case ADD_PLANNER_MODULE: {
       const { payload } = action;

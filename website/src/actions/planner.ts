@@ -35,6 +35,14 @@ export function setIgnorePrerequisitesCheck(prereqsCheck: boolean) {
   };
 }
 
+export const SET_INCLUDE_EXEMPTED_MODULE_CREDITS = 'SET_INCLUDE_EXEMPTED_MODULE_CREDITS' as const;
+export function setIncludeExemptedModuleCredits(includeExempted: boolean) {
+  return {
+    type: SET_INCLUDE_EXEMPTED_MODULE_CREDITS,
+    payload: includeExempted,
+  };
+}
+
 export const ADD_PLANNER_MODULE = 'ADD_PLANNER_MODULE' as const;
 export function addPlannerModule(year: string, semester: Semester, module: AddModuleData) {
   return {

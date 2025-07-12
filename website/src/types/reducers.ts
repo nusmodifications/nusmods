@@ -165,6 +165,7 @@ export type PlannerState = Readonly<{
   maxYear: string;
   iblocs: boolean;
   ignorePrereqCheck?: boolean; // To turn checking of prerequisites on/off
+  includeExemptedModuleCredits?: boolean; // To include exempted modules in total MC calculation
 
   modules: { [id: string]: PlannerTime };
   custom: CustomModuleData;

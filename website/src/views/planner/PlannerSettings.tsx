@@ -10,6 +10,7 @@ import {
   setPlannerMaxYear,
   setPlannerMinYear,
   setIgnorePrerequisitesCheck,
+  setIncludeExemptedModuleCredits,
 } from 'actions/planner';
 import ExternalLink from 'views/components/ExternalLink';
 import Toggle from 'views/components/Toggle';
@@ -22,6 +23,7 @@ type Props = {
   readonly maxYear: string;
   readonly iblocs: boolean;
   readonly ignorePrereqCheck?: boolean;
+  readonly includeExemptedModuleCredits?: boolean;
 
   // Actions
   readonly onCloseButtonClicked: () => void;
@@ -29,6 +31,7 @@ type Props = {
   readonly setMaxYear: (str: string) => void;
   readonly setIBLOCs: (boolean: boolean) => void;
   readonly setPrereqsCheck: (boolean: boolean) => void;
+  readonly setIncludeExempted: (boolean: boolean) => void;
 };
 
 const MIN_YEARS = -5; // Studying year 6
@@ -151,6 +154,22 @@ export const PlannerSettingsComponent: React.FC<Props> = (props) => {
           onChange={(checked) => props.setPrereqsCheck(checked)}
         />
       </section>
+
+      <section className={styles.toggleSection}>
+        <div>
+          <h2 className={styles.label}>Include Exempted Module Credits</h2>
+
+          <p>
+            When enabled, exempted modules will be included in the total module credits calculation
+            shown in the planner header.
+          </p>
+        </div>
+
+        <Toggle
+          isOn={props.includeExemptedModuleCredits}
+          onChange={(checked) => props.setIncludeExempted(checked)}
+        />
+      </section>
     </div>
   );
 };
@@ -161,12 +180,14 @@ const PlannerSettings = connect(
     maxYear: state.planner.maxYear,
     iblocs: state.planner.iblocs,
     ignorePrereqCheck: state.planner.ignorePrereqCheck,
+    includeExemptedModuleCredits: state.planner.includeExemptedModuleCredits,
   }),
   {
     setMaxYear: setPlannerMaxYear,
     setMinYear: setPlannerMinYear,
     setIBLOCs: setPlannerIBLOCs,
     setPrereqsCheck: setIgnorePrerequisitesCheck,
+    setIncludeExempted: setIncludeExemptedModuleCredits,
   },
 )(PlannerSettingsComponent);
 

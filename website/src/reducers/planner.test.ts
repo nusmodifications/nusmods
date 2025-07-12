@@ -6,6 +6,7 @@ import {
   SET_PLANNER_MAX_YEAR,
   SET_PLANNER_IBLOCS,
   SET_IGNORE_PREREQUISITES_CHECK,
+  SET_INCLUDE_EXEMPTED_MODULE_CREDITS,
   addPlannerModule,
   movePlannerModule,
   removePlannerModule,
@@ -13,6 +14,7 @@ import {
   setPlannerMaxYear,
   setPlannerIBLOCs,
   setIgnorePrerequisitesCheck,
+  setIncludeExemptedModuleCredits,
   IMPORT_PLANNER,
   importPlanner,
   CLEAR_PLANNER,
@@ -86,6 +88,15 @@ describe(SET_IGNORE_PREREQUISITES_CHECK, () => {
     expect(reducer(defaultState, setIgnorePrerequisitesCheck(true))).toEqual({
       ...defaultState,
       ignorePrereqCheck: true,
+    });
+  });
+});
+
+describe(SET_INCLUDE_EXEMPTED_MODULE_CREDITS, () => {
+  test('should set includeExemptedModuleCredits status', () => {
+    expect(reducer(defaultState, setIncludeExemptedModuleCredits(true))).toEqual({
+      ...defaultState,
+      includeExemptedModuleCredits: true,
     });
   });
 });

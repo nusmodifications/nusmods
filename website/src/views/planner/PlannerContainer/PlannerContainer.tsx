@@ -51,6 +51,7 @@ export type Props = Readonly<{
   planToTake: PlannerModuleInfo[];
   iblocsModules: PlannerModuleInfo[];
   iblocs: boolean;
+  includeExemptedModuleCredits?: boolean;
 
   // Actions
   fetchModule: (moduleCode: ModuleCode) => Promise<Module>;
@@ -151,7 +152,11 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
   closeSettingsModal = () => this.setState({ showSettings: false });
 
   renderHeader() {
-    const modules = [...this.props.iblocsModules, ...flatten(flatMap(this.props.modules, values))];
+    const modules = [
+      ...this.props.iblocsModules,
+      ...flatten(flatMap(this.props.modules, values)),
+      ...(this.props.includeExemptedModuleCredits ? this.props.exemptions : []),
+    ];
     const credits = getTotalMC(modules);
     const count = modules.length;
 
@@ -307,6 +312,7 @@ export class PlannerContainerComponent extends PureComponent<Props, State> {
 
 const mapStateToProps = (state: StoreState) => ({
   iblocs: state.planner.iblocs,
+  includeExemptedModuleCredits: state.planner.includeExemptedModuleCredits,
 
   modules: getAcadYearModules(state),
   exemptions: getExemptions(state),
