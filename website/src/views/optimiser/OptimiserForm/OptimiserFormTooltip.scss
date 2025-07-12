@@ -3,12 +3,11 @@
 .optimiserTooltipIcon {
   composes: svg svg-small from global;
   margin: auto;
-  margin-left: 0.5rem;
+  margin-left: 1ch;
   color: #69707a;
   cursor: pointer;
 
   @include media-breakpoint-down(xs) {
     width: 0.8rem;
-    margin-top: -0.2rem;
   }
 }

@@ -29,10 +29,10 @@ const OptimiserFreeDaySelect: React.FC<Props> = ({ hasSaturday, optimiserFormFie
 
   return (
     <section className={styles.freeDaysSection}>
-      <span className={styles.optimiserDescription}>
-        <h4>Select days you would like to be free</h4>
+      <h4 className={styles.optimiserDescription}>
+        Select days you would like to be free
         <OptimiserFormTooltip content="Chosen days will have no physical classes" />
-      </span>
+      </h4>
 
       <div className={styles.freeDaysButtons}>
         {days.map((day) => (
