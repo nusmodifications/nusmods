@@ -127,8 +127,8 @@ const OptimiserLunchTimeRangeSelect: React.FC<LunchTimeRangeSelectProps> = ({
     <section className={styles.timeControls}>
       <div className={styles.timeColumn}>
         <span className={styles.optimiserDescription}>
-          <h4>Select maximum consecutive hours of live lessons</h4>
-          <OptimiserFormTooltip content="Prioritises having less than this number of consecutive hours of live lessons" />
+          <h4>Select range for preferred lunch break timings</h4>
+          <OptimiserFormTooltip content="Prioritises 1-hour lunch breaks in this range" />
         </span>
 
         <div className={styles.timeRow}>
