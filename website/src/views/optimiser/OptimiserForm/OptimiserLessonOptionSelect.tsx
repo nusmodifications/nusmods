@@ -32,10 +32,10 @@ const OptimiserLessonOptionSelect: React.FC<Props> = ({ lessonOptions, optimiser
 
   return (
     <section>
-      <span className={styles.optimiserDescription}>
-        <h4>Select lessons you plan to attend live (in person/online)</h4>
+      <h4 className={styles.optimiserDescription}>
+        Select lessons you plan to attend live (in person/online)
         <OptimiserFormTooltip content="Chosen lessons will only be allocated on your school days" />
-      </span>
+      </h4>
 
       {isEmpty(lessonOptions) ? (
         <div className={styles.noLessonsWarning}>

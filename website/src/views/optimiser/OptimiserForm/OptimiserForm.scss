@@ -29,19 +29,12 @@
 }
 
 .optimiserDescription {
-  display: flex;
-  flex-direction: row;
+  margin: 0;
   margin-bottom: 0.5rem;
-
-  h4 {
-    margin: 0;
-    font-size: medium;
-  }
+  font-size: medium;
 
   @include media-breakpoint-down(xs) {
-    h4 {
-      font-size: small;
-    }
+    font-size: small;
   }
 }
 

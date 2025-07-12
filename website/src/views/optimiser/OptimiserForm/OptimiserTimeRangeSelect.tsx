@@ -64,10 +64,10 @@ const OptimiserLessonTimeRangeSelect: React.FC<LessonTimeRangeSelectProps> = ({
   return (
     <section className={styles.timeControls}>
       <div className={styles.timeColumn}>
-        <span className={styles.optimiserDescription}>
-          <h4>Earliest start time</h4>
+        <h4 className={styles.optimiserDescription}>
+          Earliest start time
           <OptimiserFormTooltip content="There will be no physical class before this time" />
-        </span>
+        </h4>
 
         <OptimiserTimeRangeSelect
           currentValue={lessonTimeRange.earliest}
@@ -77,10 +77,10 @@ const OptimiserLessonTimeRangeSelect: React.FC<LessonTimeRangeSelectProps> = ({
       </div>
 
       <div className={styles.timeColumn}>
-        <span className={styles.optimiserDescription}>
-          <h4>Latest end time</h4>
+        <h4 className={styles.optimiserDescription}>
+          Latest end time
           <OptimiserFormTooltip content="There will be no physical class after this time" />
-        </span>
+        </h4>
 
         <OptimiserTimeRangeSelect
           currentValue={lessonTimeRange.latest}
@@ -126,10 +126,10 @@ const OptimiserLunchTimeRangeSelect: React.FC<LunchTimeRangeSelectProps> = ({
   return (
     <section className={styles.timeControls}>
       <div className={styles.timeColumn}>
-        <span className={styles.optimiserDescription}>
-          <h4>Select range for preferred lunch break timings</h4>
+        <h4 className={styles.optimiserDescription}>
+          Select range for preferred lunch break timings
           <OptimiserFormTooltip content="Prioritises 1-hour lunch breaks in this range" />
-        </span>
+        </h4>
 
         <div className={styles.timeRow}>
           <OptimiserTimeRangeSelect
