@@ -1,5 +1,5 @@
 import { Info } from 'react-feather';
-import Tooltip from 'views/components/Tooltip';
+import Tooltip from 'views/components/Tooltip/Tooltip';
 
 import styles from './OptimiserFormTooltip.scss';
 

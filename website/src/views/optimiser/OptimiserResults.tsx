@@ -55,7 +55,6 @@ const OptimiserResults: React.FC<OptimiserResultsProps> = ({
                   className={classnames(
                     `color-${lesson.colorIndex}`,
                     styles.lessonTag,
-                    styles.tag,
                     styles.unassignedLessonTag,
                   )}
                 >

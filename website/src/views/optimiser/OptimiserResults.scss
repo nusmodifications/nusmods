@@ -1,18 +1,6 @@
 @import '~styles/utils/modules-entry.scss';
 @import './common.scss';
 
-.timetableLink {
-  color: inherit;
-  &:hover {
-    text-decoration: none;
-  }
-}
-
-.tag {
-    cursor: pointer;
-}
-
-// Unassigned lessons warning
 .unassignedWarning {
   display: flex;
   flex-direction: column;
@@ -89,7 +77,6 @@
   color: #69707a;
 }
 
-// Shareable link section
 .shareableLinkSection {
   display: flex;
   flex-direction: column;
