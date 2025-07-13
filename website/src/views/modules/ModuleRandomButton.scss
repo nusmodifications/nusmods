@@ -1,12 +1,11 @@
 @import '~styles/utils/modules-entry';
 
 .moduleRandomButton {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-  font-size: $font-size-sm;
-  text-align: right;
-  color: var(--gray);
-  gap: 0.2rem;
+  composes: btn btn-primary btn-svg from global;
+  flex-grow: 1;
+  margin-bottom: 2rem;
+  
+  @include media-breakpoint-down(md) {
+    margin: 0 1rem;
+  }
 }

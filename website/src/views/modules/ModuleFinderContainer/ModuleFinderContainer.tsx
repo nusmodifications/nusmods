@@ -16,20 +16,17 @@ import { ElasticSearchResult } from 'types/vendor/elastic-search';
 import { ModuleInformation } from 'types/modules';
 
 import ModuleFinderSidebar from 'views/modules/ModuleFinderSidebar';
-import ModuleRandomButton from 'views/modules/ModuleRandomButton';
 import ModuleSearchBox from 'views/modules/ModuleSearchBox';
 import ModuleFinderNoHits from 'views/errors/ModuleFinderNoHits';
 import ModuleFinderApiError from 'views/errors/ModuleFinderApiError';
 import ModuleFinderPager from 'views/modules/ModuleFinderPager';
 import ModuleFinderItem from 'views/modules/ModuleFinderItem';
 import Pagination from 'views/components/searchkit/Pagination';
-import RandomPicker from 'views/components/searchkit/RandomPicker';
 import Title from 'views/components/Title';
 
 import { forceElasticsearchHost } from 'utils/debug';
 import { HIGHLIGHT_OPTIONS } from 'utils/elasticSearch';
 import config from 'config';
-import { Book } from 'react-feather';
 import styles from './ModuleFinderContainer.scss';
 
 const esIndex = 'modules_v2';
@@ -69,17 +66,11 @@ const ModuleFinderContainer: React.FC = () => (
           <ModuleSearchBox id="q" />
 
           <div>
-            <div className={styles.modulePageDivider}>
-              <HitsStats
-                component={({ hitsCount }: HitsStatsDisplayProps) => (
-                  <span className={styles.hitsCount}>
-                    <Book className="svg svg-small" />
-                    {hitsCount} {hitsCount === 1 ? 'course' : 'courses'} found
-                  </span>
-                )}
-              />
-              <RandomPicker buttonComponent={ModuleRandomButton} />
-            </div>
+            <HitsStats
+              component={({ hitsCount }: HitsStatsDisplayProps) => (
+                <div className={styles.modulePageDivider}>{hitsCount} courses found</div>
+              )}
+            />
 
             <LoadingComponent>
               <div className={styles.loadingOverlay} />
