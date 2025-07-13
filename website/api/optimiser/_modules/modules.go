@@ -54,7 +54,6 @@ func GetAllModuleSlots(optimiserRequest models.OptimiserRequest) (map[string]map
 			// Note: if weeks is not a []int, then skip parsing
 			// Currently we are not handling week conflict for non-[]int weeks
 			if _, ok := moduleTimetable[i].Weeks.([]any); !ok {
-				// fmt.Println("weeks is not a []int", moduleTimetable[i].Weeks)
 				continue
 			}
 
@@ -72,7 +71,6 @@ func GetAllModuleSlots(optimiserRequest models.OptimiserRequest) (map[string]map
 
 		// Store the module slots for the module
 		moduleSlots[module] = mergeAndFilterModuleSlots(moduleTimetable, venues, optimiserRequest, module)
-		// fmt.Println("moduleSlots", moduleSlots[module])
 
 	}
 
