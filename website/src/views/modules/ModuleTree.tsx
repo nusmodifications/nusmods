@@ -131,10 +131,13 @@ const Tree: React.FC<TreeDisplay> = (props) => {
   const moduleActive = props.getModuleCondensed(name);
 
   // If module is deprecated (undefined) then we grey out, remove color classname
+  // Hide the left horizontal line for the root node (layer 1) if the module is inactive
+  const isInactiveRoot = layer === 1 && !moduleActive;
 
   return (
     <div
-      className={classnames(styles.node, styles.moduleNode, {
+      className={classnames(styles.moduleNode, {
+        [styles.node]: !isInactiveRoot,
         [`hoverable color-${layer}`]: !!moduleActive,
         [styles.leftNode]: prereqTreeOnLeft,
       })}
