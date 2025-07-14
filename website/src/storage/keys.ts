@@ -26,3 +26,6 @@ export const CONTACT_INFO = 'contact-info';
 
 // Used by MPE
 export const NUS_AUTH_TOKEN = 'nus-auth-token';
+
+// Used by Beta Banner
+export const BETA_BANNER = 'beta-banner';

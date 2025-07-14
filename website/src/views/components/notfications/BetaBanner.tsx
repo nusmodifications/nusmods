@@ -1,26 +1,35 @@
-import { memo, useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 import classnames from 'classnames';
 import { Info } from 'react-feather';
+import { useHistory } from 'react-router-dom';
 
-import { toggleBetaTesting } from 'actions/settings';
 import CloseButton from 'views/components/CloseButton';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { State } from 'types/state';
-import styles from './BetaAnnouncement.scss';
+import styles from './BetaBanner.scss';
+import { BETA_BANNER } from 'storage/keys';
+import storage from 'storage';
 
-const BetaAnnouncement = memo(() => {
-  const dispatch = useDispatch();
+const key = BETA_BANNER;
+
+const BetaBanner = memo(() => {
+  const history = useHistory();
   const beta = useSelector(({ settings }: State) => settings.beta);
-  const [isVisible, setIsVisible] = useState(true);
+  const [isOpen, setIsOpen] = useState(() => {
+    if (beta) return false;
+    if (key) return !storage.getItem(key);
+    return true;
+  });
 
-  // Don't show if user is already a beta tester or manually dismissed
-  if (beta || !isVisible) {
+  
+  const dismiss = useCallback(() => {
+    if (key) storage.setItem(key, true);
+    setIsOpen(false);
+  }, []);
+  
+  if (!isOpen) {
     return null;
   }
-
-  const handleDismiss = () => {
-    setIsVisible(false);
-  };
 
   return (
     <div className={classnames('alert alert-info no-export', styles.announcement)}>
@@ -37,7 +46,7 @@ const BetaAnnouncement = memo(() => {
           <button
             className="btn btn-info"
             type="button"
-            onClick={() => dispatch(toggleBetaTesting())}
+            onClick={() => history.push('/settings#beta')}
           >
             Turn on BETA
           </button>
@@ -45,10 +54,10 @@ const BetaAnnouncement = memo(() => {
       </div>
 
       <div className={styles.buttons}>
-        <CloseButton onClick={handleDismiss} />
+        <CloseButton onClick={dismiss} />
       </div>
     </div>
   );
 });
 
-export default BetaAnnouncement;
+export default BetaBanner;
