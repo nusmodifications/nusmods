@@ -6,9 +6,9 @@ import { useHistory } from 'react-router-dom';
 import CloseButton from 'views/components/CloseButton';
 import { useSelector } from 'react-redux';
 import { State } from 'types/state';
-import styles from './BetaBanner.scss';
 import { BETA_BANNER } from 'storage/keys';
 import storage from 'storage';
+import styles from './BetaBanner.scss';
 
 const key = BETA_BANNER;
 
@@ -21,12 +21,11 @@ const BetaBanner = memo(() => {
     return true;
   });
 
-  
   const dismiss = useCallback(() => {
     if (key) storage.setItem(key, true);
     setIsOpen(false);
   }, []);
-  
+
   if (!isOpen) {
     return null;
   }
