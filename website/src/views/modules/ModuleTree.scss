@@ -58,6 +58,10 @@ $connector-size: 0.75rem;
   min-width: 4.5rem;
 }
 
+.inactiveRootNode::before {
+  display: none;
+}
+
 .prefix {
   font-size: 0.75rem;
   white-space: nowrap;
@@ -122,7 +126,7 @@ $connector-size: 0.75rem;
 
 .leftBranch {
   justify-content: flex-end;
-  
+
   &::before,
   &::after {
     right: 0;

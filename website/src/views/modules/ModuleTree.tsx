@@ -136,10 +136,10 @@ const Tree: React.FC<TreeDisplay> = (props) => {
 
   return (
     <div
-      className={classnames(styles.moduleNode, {
-        [styles.node]: !isInactiveRoot,
+      className={classnames(styles.node, styles.moduleNode, {
         [`hoverable color-${layer}`]: !!moduleActive,
         [styles.leftNode]: prereqTreeOnLeft,
+        [styles.inactiveRootNode]: isInactiveRoot,
       })}
     >
       {prefix && <span className={styles.prefix}>{prefix}</span>}
