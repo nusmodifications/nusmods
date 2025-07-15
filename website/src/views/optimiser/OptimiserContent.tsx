@@ -94,7 +94,7 @@ const OptimiserContent: React.FC = () => {
           }
         }
       });
-      moduleGroupMap.set(option.uniqueKey, groupDayMap);
+      moduleGroupMap.set(option.displayText, groupDayMap);
       // now you have all the groups for that module-lessonType combination
     });
     return moduleGroupMap;
