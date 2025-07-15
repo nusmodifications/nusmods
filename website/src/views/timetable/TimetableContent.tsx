@@ -52,6 +52,7 @@ import ErrorBoundary from 'views/errors/ErrorBoundary';
 import ModRegNotification from 'views/components/notfications/ModRegNotification';
 import { State as StoreState } from 'types/state';
 import { ModuleWithColor, TombstoneModule } from 'types/views';
+import BetaBanner from 'views/components/notfications/BetaBanner';
 import Timetable from './Timetable';
 import TimetableActions from './TimetableActions';
 import TimetableModulesTable from './TimetableModulesTable';
@@ -442,6 +443,7 @@ class TimetableContent extends React.Component<Props, State> {
         <Title>Timetable</Title>
 
         <Announcements />
+        <BetaBanner />
 
         <ErrorBoundary>
           <ModRegNotification />
