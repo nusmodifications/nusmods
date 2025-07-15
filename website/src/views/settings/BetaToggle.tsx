@@ -36,7 +36,9 @@ const BetaToggle = memo<Props>((props) => {
 
   return (
     <div>
-      <h4 id="beta">NUSMods Beta</h4>
+      <h4 id="beta" className={styles.targetable}>
+        NUSMods Beta
+      </h4>
 
       <div className={styles.toggleRow}>
         <div className={styles.toggleDescription}>
