@@ -1,6 +1,9 @@
 @import "~styles/utils/modules-entry";
 
 .moduleFilters {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   user-select: none;
 
   .filterHeader {
@@ -23,6 +26,7 @@
 
   @include media-breakpoint-up(md) {
     max-width: 16rem;
+    padding-right: 0.5rem;
   }
 
   @include media-breakpoint-down(sm) {
