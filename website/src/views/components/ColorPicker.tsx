@@ -6,6 +6,7 @@ import _ from 'lodash';
 import { ColorIndex } from 'types/timetables';
 import { NUM_DIFFERENT_COLORS, TRANSPARENT_COLOR_INDEX } from 'utils/colors';
 
+import TransparentIcon from 'img/icons/transparent.svg';
 import styles from './ColorPicker.scss';
 
 type Props = {
@@ -64,7 +65,9 @@ const ColorPicker = memo<Props>((props) => {
               className={classnames(styles.option, `color-${index}`, {
                 [styles.selected]: index === color,
               })}
-            />
+            >
+              {index === color && <TransparentIcon className={styles.transparentIcon} />}
+            </button>
           ))}
         </div>
       </div>
