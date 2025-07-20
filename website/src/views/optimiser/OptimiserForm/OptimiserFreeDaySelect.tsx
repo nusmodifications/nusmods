@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { dropRight } from 'lodash';
+import { dropRight, omit } from 'lodash';
 import { useCallback } from 'react';
 import { DayText, WorkingDays } from 'types/modules';
 import { OptimiserFormFields } from 'views/hooks/useOptimiserForm';
