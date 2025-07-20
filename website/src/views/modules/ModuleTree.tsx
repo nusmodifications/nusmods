@@ -176,7 +176,7 @@ export const ModuleTreeComponent: React.FC<Props> = (props) => {
                   layer={1}
                   node={moduleCode}
                   getModuleCondensed={props.getModuleCondensed}
-                  prereqTreeOnLeft={false}
+                  prereqTreeOnLeft={prereqTreeOnLeft}
                 />
               </ConditionalReverse>
             </li>
