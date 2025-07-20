@@ -1,7 +1,8 @@
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { defaultLectureOption, defaultTutorialOption } from 'test-utils/optimiser';
 import { LessonOption } from 'types/optimiser';
 import useOptimiserForm from 'views/hooks/useOptimiserForm';
-import { mount } from 'enzyme';
-import { defaultLectureOption, defaultTutorialOption } from 'test-utils/optimiser';
 import OptimiserLessonOptionSelect from './OptimiserLessonOptionSelect';
 
 import styles from './OptimiserLessonOptionSelect.scss';
@@ -27,35 +28,32 @@ describe('OptimiserLessonOptionSelect', () => {
   };
 
   it('should show a warning when there are no lesson options', () => {
-    const wrapper = mount(<Helper lessonOptions={[]} />);
-    expect(wrapper.text().includes('No Lessons Found')).toBe(true);
-    expect(wrapper.find(`.${styles.lessonButtons}`).exists()).toBe(false);
+    render(<Helper lessonOptions={[]} />);
+    expect(screen.getByRole('alert')).toHaveTextContent('No Lessons Found');
   });
 
   it('should show all lesson options', () => {
     const lessonOptions = [defaultLectureOption, defaultTutorialOption];
-    const wrapper = mount(<Helper lessonOptions={lessonOptions} />);
-    expect(wrapper.text().includes('No Lessons Found')).toBe(false);
-    expect(wrapper.find(`.${styles.lessonButtons}`).exists()).toBe(true);
-    expect(wrapper.find(`.${styles.lessonButton}`)).toHaveLength(2);
-    expect(wrapper.text().includes(defaultLectureOption.displayText)).toBe(true);
-    expect(wrapper.text().includes(defaultTutorialOption.displayText)).toBe(true);
+    const { container } = render(<Helper lessonOptions={lessonOptions} />);
+    expect(container).not.toHaveTextContent('No Lessons Found');
+    expect(container).toHaveTextContent(defaultLectureOption.displayText);
+    expect(container).toHaveTextContent(defaultTutorialOption.displayText);
   });
 
-  it('should toggle lesson option', () => {
+  it('should toggle lesson option', async () => {
     const lessonOptions = [defaultLectureOption];
-    const wrapper = mount(<Helper lessonOptions={lessonOptions} />);
-    const lectureButton = wrapper.find(`.${styles.lessonButton}`);
-    expect(lectureButton).toHaveLength(1);
-    expect(wrapper.find(`.${styles.selected}`).exists()).toBe(false);
-    expect(wrapper.find(`.${styles.unselected}`).exists()).toBe(true);
+    render(<Helper lessonOptions={lessonOptions} />);
 
-    lectureButton.simulate('click');
-    expect(wrapper.find(`.${styles.selected}`).exists()).toBe(true);
-    expect(wrapper.find(`.${styles.unselected}`).exists()).toBe(false);
+    const lectureButton = screen.getByRole('button');
+    expect(lectureButton).not.toHaveClass(styles.selected);
+    expect(lectureButton).toHaveClass(styles.unselected);
 
-    lectureButton.simulate('click');
-    expect(wrapper.find(`.${styles.selected}`).exists()).toBe(false);
-    expect(wrapper.find(`.${styles.unselected}`).exists()).toBe(true);
+    await userEvent.click(lectureButton);
+    expect(lectureButton).toHaveClass(styles.selected);
+    expect(lectureButton).not.toHaveClass(styles.unselected);
+
+    await userEvent.click(lectureButton);
+    expect(lectureButton).not.toHaveClass(styles.selected);
+    expect(lectureButton).toHaveClass(styles.unselected);
   });
 });

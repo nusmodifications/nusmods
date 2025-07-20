@@ -18,6 +18,7 @@ const OptimiserTimeRangeSelect: React.FC<TimeRangeSelectProps> = ({
   setTime,
 }) => (
   <select
+    data-testid="optimiserTimeRangeSelect"
     className={styles.optimiserDropdown}
     value={currentValue}
     onChange={(e) => setTime(e.target.value)}

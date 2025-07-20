@@ -267,7 +267,9 @@ If a community libdef is not available, you can try writing your own and placing
 
 ### Testing and Linting
 
-We use [Jest][jest] with [Enzyme][enzyme] to test our code and React components, [TypeScript][ts] for typechecking, [Stylelint][stylelint] and [ESLint][eslint] using [Airbnb config][eslint-airbnb] and [Prettier][prettier] for linting and formatting.
+We use [Jest][jest] with [Enzyme][enzyme] and [Testing Library][testing-library] to test our code and React components, [TypeScript][ts] for typechecking, [Stylelint][stylelint] and [ESLint][eslint] using [Airbnb config][eslint-airbnb] and [Prettier][prettier] for linting and formatting.
+
+**Note: The majority of React tests are written with Enzyme. For new unit tests, please try to use [Testing Library][testing-library] instead!**
 
 ```sh
 # Run all tests once with code coverage
@@ -404,6 +406,7 @@ Components should keep their styles and tests in the same directory with the sam
 [bootstrap]: https://getbootstrap.com/
 [jest]: https://facebook.github.io/jest/
 [enzyme]: http://airbnb.io/enzyme/
+[testing-library]: https://testing-library.com/docs/react-testing-library/intro/
 [ts]: https://www.typescriptlang.org/
 [eslint]: https://eslint.org/
 [svgr]: https://github.com/smooth-code/svgr

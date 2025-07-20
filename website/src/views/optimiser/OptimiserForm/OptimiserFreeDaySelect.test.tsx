@@ -1,8 +1,7 @@
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import useOptimiserForm from 'views/hooks/useOptimiserForm';
-import { mount } from 'enzyme';
 import OptimiserFreeDaySelect from './OptimiserFreeDaySelect';
-
-import styles from './OptimiserFreeDaySelect.scss';
 
 jest.mock('./OptimiserFormTooltip', () => ({
   __esModule: true,
@@ -22,32 +21,34 @@ describe('OptimiserLessonOptionSelect', () => {
   };
 
   it('should not show saturday', () => {
-    const wrapper = mount(<Helper hasSaturday={false} />);
-    expect(wrapper.text().includes('Monday')).toBe(true);
-    expect(wrapper.text().includes('Tuesday')).toBe(true);
-    expect(wrapper.text().includes('Wednesday')).toBe(true);
-    expect(wrapper.text().includes('Thursday')).toBe(true);
-    expect(wrapper.text().includes('Friday')).toBe(true);
-    expect(wrapper.text().includes('Saturday')).toBe(false);
+    const { container } = render(<Helper hasSaturday={false} />);
+    expect(container).toHaveTextContent('Monday');
+    expect(container).toHaveTextContent('Tuesday');
+    expect(container).toHaveTextContent('Wednesday');
+    expect(container).toHaveTextContent('Thursday');
+    expect(container).toHaveTextContent('Friday');
+    expect(container).not.toHaveTextContent('Saturday');
   });
 
   it('should show saturday', () => {
-    const wrapper = mount(<Helper hasSaturday />);
-    expect(wrapper.text().includes('Monday')).toBe(true);
-    expect(wrapper.text().includes('Tuesday')).toBe(true);
-    expect(wrapper.text().includes('Wednesday')).toBe(true);
-    expect(wrapper.text().includes('Thursday')).toBe(true);
-    expect(wrapper.text().includes('Friday')).toBe(true);
-    expect(wrapper.text().includes('Saturday')).toBe(true);
+    const { container } = render(<Helper hasSaturday />);
+    expect(container).toHaveTextContent('Monday');
+    expect(container).toHaveTextContent('Tuesday');
+    expect(container).toHaveTextContent('Wednesday');
+    expect(container).toHaveTextContent('Thursday');
+    expect(container).toHaveTextContent('Friday');
+    expect(container).toHaveTextContent('Saturday');
   });
 
-  it('should toggle the selected day', () => {
-    const wrapper = mount(<Helper hasSaturday={false} />);
-    const monday = wrapper.find(`.${styles.freeDaysButton}`).at(0);
-    expect(monday.hasClass('active')).toBe(false);
-    monday.simulate('click');
-    expect(wrapper.find(`.${styles.freeDaysButton}`).at(0).hasClass('active')).toBe(true);
-    monday.simulate('click');
-    expect(wrapper.find(`.${styles.freeDaysButton}`).at(0).hasClass('active')).toBe(false);
+  it('should toggle the selected day', async () => {
+    render(<Helper hasSaturday={false} />);
+    const monday = screen.getByText('Monday');
+    expect(monday).not.toHaveClass('active');
+
+    await userEvent.click(screen.getByText('Monday'));
+    expect(screen.getByText('Monday')).toHaveClass('active');
+
+    await userEvent.click(screen.getByText('Monday'));
+    expect(screen.getByText('Monday')).not.toHaveClass('active');
   });
 });

@@ -1,8 +1,6 @@
-import { mount } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import { defaultLectureOption } from 'test-utils/optimiser';
 import OptimiserButton, { OptimiserButtonProps } from './OptimiserButton';
-
-import styles from './OptimiserButton.scss';
 
 describe('OptimiserButton', () => {
   it('should be enabled when there are lesson options', () => {
@@ -12,10 +10,8 @@ describe('OptimiserButton', () => {
       freeDayConflicts: [],
       onClick: jest.fn(),
     };
-    const wrapper = mount(<OptimiserButton {...props} />);
-    const button = wrapper.find(`.${styles.optimizeButton}`);
-    expect(button.exists()).toBe(true);
-    expect(button.prop('disabled')).toBeFalsy();
+    render(<OptimiserButton {...props} />);
+    expect(screen.getByRole('button')).toBeEnabled();
   });
 
   it('should be disabled when there are no lesson options', () => {
@@ -25,10 +21,8 @@ describe('OptimiserButton', () => {
       freeDayConflicts: [],
       onClick: jest.fn(),
     };
-    const wrapper = mount(<OptimiserButton {...props} />);
-    const button = wrapper.find(`.${styles.optimizeButton}`);
-    expect(button.exists()).toBe(true);
-    expect(button.prop('disabled')).toBe(true);
+    render(<OptimiserButton {...props} />);
+    expect(screen.getByRole('button')).toBeDisabled();
   });
 
   it('should be disabled when optimising', () => {
@@ -38,10 +32,8 @@ describe('OptimiserButton', () => {
       freeDayConflicts: [],
       onClick: jest.fn(),
     };
-    const wrapper = mount(<OptimiserButton {...props} />);
-    const button = wrapper.find(`.${styles.optimizeButton}`);
-    expect(button.exists()).toBe(true);
-    expect(button.prop('disabled')).toBe(true);
+    render(<OptimiserButton {...props} />);
+    expect(screen.getByRole('button')).toBeDisabled();
   });
 
   it('should be disabled when there are free day conflicts', () => {
@@ -58,10 +50,8 @@ describe('OptimiserButton', () => {
       ],
       onClick: jest.fn(),
     };
-    const wrapper = mount(<OptimiserButton {...props} />);
-    const button = wrapper.find(`.${styles.optimizeButton}`);
-    expect(button.exists()).toBe(true);
-    expect(button.prop('disabled')).toBe(true);
+    render(<OptimiserButton {...props} />);
+    expect(screen.getByRole('button')).toBeDisabled();
   });
 
   it('should show "Searching and optimising..." when optimising', () => {
@@ -71,10 +61,8 @@ describe('OptimiserButton', () => {
       freeDayConflicts: [],
       onClick: jest.fn(),
     };
-    const wrapper = mount(<OptimiserButton {...props} />);
-    const button = wrapper.find(`.${styles.optimizeButton}`);
-    expect(button.exists()).toBe(true);
-    expect(button.text().includes('Searching and optimising...')).toBe(true);
+    render(<OptimiserButton {...props} />);
+    expect(screen.getByRole('button')).toHaveTextContent('Searching and optimising...');
   });
 
   it('should show "Optimise Timetable" when not optimising', () => {
@@ -84,9 +72,7 @@ describe('OptimiserButton', () => {
       freeDayConflicts: [],
       onClick: jest.fn(),
     };
-    const wrapper = mount(<OptimiserButton {...props} />);
-    const button = wrapper.find(`.${styles.optimizeButton}`);
-    expect(button.exists()).toBe(true);
-    expect(button.text().includes('Optimise Timetable')).toBe(true);
+    render(<OptimiserButton {...props} />);
+    expect(screen.getByRole('button')).toHaveTextContent('Optimise Timetable');
   });
 });

@@ -1,4 +1,5 @@
-import { mount } from 'enzyme';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import useOptimiserForm from 'views/hooks/useOptimiserForm';
 import {
   OptimiserLessonTimeRangeSelect,
@@ -13,19 +14,18 @@ jest.mock('./OptimiserFormTooltip', () => ({
 }));
 
 describe('OptimiserTimeRangeSelect', () => {
-  it('should call setTime when valuue is changed', () => {
+  it('should call setTime when valuue is changed', async () => {
     const setTime = jest.fn();
     const props: TimeRangeSelectProps = {
       currentValue: '0800',
       timeValues: ['0800', '0830', '0900'],
       setTime,
     };
-    const wrapper = mount(<OptimiserTimeRangeSelect {...props} />);
-    const dropdown = wrapper.find('select');
-    expect(dropdown.exists()).toBe(true);
-    expect(dropdown.props().value).toEqual('0800');
-    dropdown.simulate('change', { target: { value: '0830' } });
-    expect(setTime).toHaveBeenCalledTimes(1);
+    render(<OptimiserTimeRangeSelect {...props} />);
+    const select = screen.getByTestId('optimiserTimeRangeSelect');
+    expect(select).toHaveValue('0800');
+    expect(select).toHaveDisplayValue('08:00');
+    await userEvent.selectOptions(select, '08:30');
     expect(setTime).toHaveBeenCalledWith('0830');
   });
 });
@@ -36,21 +36,21 @@ describe('OptimiserLessonTimeRangeSelect', () => {
     return <OptimiserLessonTimeRangeSelect optimiserFormFields={optimiserFormFields} />;
   };
 
-  it('should update the lesson time range', () => {
-    const wrapper = mount(<Helper />);
-    const dropdowns = wrapper.find('select');
-    expect(dropdowns).toHaveLength(2);
+  it('should update the lesson time range', async () => {
+    render(<Helper />);
+    const selects = screen.getAllByTestId('optimiserTimeRangeSelect');
+    expect(selects).toHaveLength(2);
 
-    expect(dropdowns.at(0).props().value).toEqual('0800');
-    expect(dropdowns.at(1).props().value).toEqual('1900');
+    expect(selects.at(0)).toHaveValue('0800');
+    expect(selects.at(1)).toHaveValue('1900');
 
-    dropdowns.at(0).simulate('change', { target: { value: '0830' } });
-    expect(wrapper.find('select').at(0).props().value).toEqual('0830');
-    expect(wrapper.find('select').at(1).props().value).toEqual('1900');
+    await userEvent.selectOptions(selects.at(0)!, '0830');
+    expect(screen.getAllByTestId('optimiserTimeRangeSelect').at(0)).toHaveValue('0830');
+    expect(screen.getAllByTestId('optimiserTimeRangeSelect').at(1)).toHaveValue('1900');
 
-    dropdowns.at(1).simulate('change', { target: { value: '1200' } });
-    expect(wrapper.find('select').at(0).props().value).toEqual('0830');
-    expect(wrapper.find('select').at(1).props().value).toEqual('1200');
+    await userEvent.selectOptions(selects.at(1)!, '1200');
+    expect(screen.getAllByTestId('optimiserTimeRangeSelect').at(0)).toHaveValue('0830');
+    expect(screen.getAllByTestId('optimiserTimeRangeSelect').at(1)).toHaveValue('1200');
   });
 });
 
@@ -60,20 +60,20 @@ describe('OptimiserLunchTimeRangeSelect', () => {
     return <OptimiserLunchTimeRangeSelect optimiserFormFields={optimiserFormFields} />;
   };
 
-  it('should update the lunch time range', () => {
-    const wrapper = mount(<Helper />);
-    const dropdowns = wrapper.find('select');
-    expect(dropdowns).toHaveLength(2);
+  it('should update the lunch time range', async () => {
+    render(<Helper />);
+    const selects = screen.getAllByTestId('optimiserTimeRangeSelect');
+    expect(selects).toHaveLength(2);
 
-    expect(dropdowns.at(0).props().value).toEqual('1200');
-    expect(dropdowns.at(1).props().value).toEqual('1400');
+    expect(selects.at(0)).toHaveValue('1200');
+    expect(selects.at(1)).toHaveValue('1400');
 
-    dropdowns.at(0).simulate('change', { target: { value: '1100' } });
-    expect(wrapper.find('select').at(0).props().value).toEqual('1100');
-    expect(wrapper.find('select').at(1).props().value).toEqual('1400');
+    await userEvent.selectOptions(selects.at(0)!, '1100');
+    expect(screen.getAllByTestId('optimiserTimeRangeSelect').at(0)).toHaveValue('1100');
+    expect(screen.getAllByTestId('optimiserTimeRangeSelect').at(1)).toHaveValue('1400');
 
-    dropdowns.at(1).simulate('change', { target: { value: '1700' } });
-    expect(wrapper.find('select').at(0).props().value).toEqual('1100');
-    expect(wrapper.find('select').at(1).props().value).toEqual('1700');
+    await userEvent.selectOptions(selects.at(1)!, '1700');
+    expect(screen.getAllByTestId('optimiserTimeRangeSelect').at(0)).toHaveValue('1100');
+    expect(screen.getAllByTestId('optimiserTimeRangeSelect').at(1)).toHaveValue('1700');
   });
 });
