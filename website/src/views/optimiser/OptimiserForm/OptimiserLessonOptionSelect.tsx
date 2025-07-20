@@ -38,7 +38,7 @@ const OptimiserLessonOptionSelect: React.FC<Props> = ({ lessonOptions, optimiser
       </h4>
 
       {isEmpty(lessonOptions) ? (
-        <div className={styles.noLessonsWarning}>
+        <div className={styles.noLessonsWarning} role="alert">
           <h3>
             <AlertTriangle size={20} />
             No Lessons Found

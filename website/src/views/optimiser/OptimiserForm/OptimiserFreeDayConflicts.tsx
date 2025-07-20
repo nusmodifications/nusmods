@@ -10,7 +10,7 @@ type Props = {
 
 const OptimiserFreeDayConflicts: React.FC<Props> = ({ freeDayConflicts }) =>
   !isEmpty(freeDayConflicts) && (
-    <section className={styles.conflictWarning}>
+    <section className={styles.conflictWarning} role="alert">
       <h3>
         <X className="svg svg-med" />
         Free Day Conflicts

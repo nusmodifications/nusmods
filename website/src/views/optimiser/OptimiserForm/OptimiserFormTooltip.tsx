@@ -9,7 +9,7 @@ type Props = {
 
 const OptimiserFormTooltip: React.FC<Props> = ({ content }) => (
   <Tooltip content={content} placement="right">
-    <Info className={styles.optimiserTooltipIcon} />
+    <Info className={styles.optimiserTooltipIcon} tabIndex={0} />
   </Tooltip>
 );
 

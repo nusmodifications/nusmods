@@ -16,7 +16,7 @@ const OptimiserMaxConsecutiveHoursSelect: React.FC<Props> = ({ optimiserFormFiel
   return (
     <div className={styles.maxConsecutiveHours}>
       <h4 className={styles.optimiserDescription}>
-        Select maximum consecutive hours of live lessons
+        Maximum consecutive hours of live lessons
         <OptimiserFormTooltip content="Prioritises having less than this number of consecutive hours of live lessons" />
       </h4>
 
@@ -26,7 +26,9 @@ const OptimiserMaxConsecutiveHoursSelect: React.FC<Props> = ({ optimiserFormFiel
         className={styles.optimiserDropdown}
       >
         {values.map((value) => (
-          <option value={value}>{value}</option>
+          <option key={value} value={value}>
+            {value}
+          </option>
         ))}
       </select>
     </div>

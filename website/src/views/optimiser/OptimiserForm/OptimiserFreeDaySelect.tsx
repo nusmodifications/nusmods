@@ -4,6 +4,7 @@ import { useCallback } from 'react';
 import { DayText, WorkingDays } from 'types/modules';
 import { OptimiserFormFields } from 'views/hooks/useOptimiserForm';
 
+import { CheckSquare, Square } from 'react-feather';
 import styles from './OptimiserFreeDaySelect.scss';
 import OptimiserFormTooltip from './OptimiserFormTooltip';
 
@@ -18,13 +19,14 @@ const OptimiserFreeDaySelect: React.FC<Props> = ({ hasSaturday, optimiserFormFie
 
   const toggleDay = useCallback(
     (day: DayText) => {
-      const isSelected = freeDays.has(day);
-      setFreeDays(
-        (prev) =>
-          new Set(isSelected ? [...prev].filter((existing) => existing !== day) : [...prev, day]),
-      );
+      setFreeDays((prev) => {
+        const isSelected = prev.has(day);
+        return new Set(
+          isSelected ? [...prev].filter((existing) => existing !== day) : [...prev, day],
+        );
+      });
     },
-    [freeDays, setFreeDays],
+    [setFreeDays],
   );
 
   return (
@@ -35,16 +37,24 @@ const OptimiserFreeDaySelect: React.FC<Props> = ({ hasSaturday, optimiserFormFie
       </h4>
 
       <div className={styles.freeDaysButtons}>
-        {days.map((day) => (
-          <button
-            key={day}
-            type="button"
-            className={classNames(styles.freeDaysButton, { active: freeDays.has(day) })}
-            onClick={() => toggleDay(day)}
-          >
-            {day}
-          </button>
-        ))}
+        {days.map((day) => {
+          const checked = freeDays.has(day);
+
+          return (
+            <button
+              type="button"
+              role="checkbox"
+              aria-checked={checked}
+              tabIndex={0}
+              key={day}
+              className={classNames(styles.freeDaysButton, { active: checked })}
+              onClick={() => toggleDay(day)}
+            >
+              {checked ? <CheckSquare /> : <Square />}
+              {day}
+            </button>
+          );
+        })}
       </div>
     </section>
   );

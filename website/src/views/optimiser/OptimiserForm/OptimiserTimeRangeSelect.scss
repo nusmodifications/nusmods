@@ -19,6 +19,10 @@
     justify-content: flex-start;
     align-items: center;
     gap: 1rem;
+
+    .optimiserDropdown {
+      flex-grow: 1;
+    }
   }
 
   @include media-breakpoint-down(xs) {

@@ -2,13 +2,11 @@
 @import './OptimiserForm.scss';
 
 .conflictWarning {
+  composes: alert alert-warning from global;
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  padding: 1.5rem;
   margin-top: $form-fields-gap;
-  border: 1px solid rgba(255, 81, 56, 0.3);
-  border-radius: 0.5rem;
-  background-color: rgba(255, 81, 56, 0.1);
   gap: 0.5rem;
 
   h3 {
@@ -24,7 +22,6 @@
   h4 {
     margin: 0;
     font-size: 0.9rem;
-    color: #69707a;
   }
 
   ul {

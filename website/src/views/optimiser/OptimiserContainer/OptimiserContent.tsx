@@ -19,10 +19,10 @@ import {
 import { FreeDayConflict, LessonOption } from 'types/optimiser';
 import useOptimiserForm from 'views/hooks/useOptimiserForm';
 import styles from './OptimiserContent.scss';
-import OptimiserHeader from './OptimiserHeader';
-import OptimiserForm from './OptimiserForm/OptimiserForm';
-import OptimiserButton from './OptimiserButton';
-import OptimiserResults from './OptimiserResults';
+import OptimiserHeader from '../OptimiserHeader';
+import OptimiserForm from '../OptimiserForm/OptimiserForm';
+import OptimiserButton from '../OptimiserButton';
+import OptimiserResults from '../OptimiserResults';
 
 const OptimiserContent: React.FC = () => {
   const activeSemester = useSelector(({ app }: State) => app.activeSemester);

@@ -27,9 +27,11 @@ export type OptimiserFormFields = {
   setMaxConsecutiveHours: Dispatch<SetStateAction<number>>;
 };
 
+// TODO: leslieyip02 - consider using react-hook-form
+// https://github.com/nusmodifications/nusmods/pull/4094#discussion_r2209166244
 export default function useOptimiserForm(): OptimiserFormFields {
   const [liveLessonOptions, setLiveLessonOptions] = useState<LessonOption[]>([]);
-  const [freeDays, setFreeDays] = useState<Set<DayText>>(new Set());
+  const [freeDays, setFreeDays] = useState(new Set<DayText>());
   const [lessonTimeRange, setLessonTimeRange] = useState(defaultLessonTimeRange);
   const [maxConsecutiveHours, setMaxConsecutiveHours] = useState(defaultMaxConsecutiveHours);
   const [lunchTimeRange, setLunchTimeRange] = useState(defaultLunchTimeRange);

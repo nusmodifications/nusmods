@@ -18,7 +18,6 @@ const OptimiserButton: React.FC<OptimiserButtonProps> = ({
   onClick,
 }) => {
   const isDisabled = isOptimising || isEmpty(lessonOptions) || !isEmpty(freeDayConflicts);
-  const zapFill = isEmpty(lessonOptions) || !isEmpty(freeDayConflicts) ? '#69707a' : '#ff5138';
 
   return (
     <div className={styles.optimizeButtonSection}>
@@ -39,7 +38,12 @@ const OptimiserButton: React.FC<OptimiserButtonProps> = ({
           </span>
         ) : (
           <>
-            <Zap size={20} fill={zapFill} />
+            <Zap
+              size={20}
+              className={classnames(styles.zapIcon, {
+                [styles.disabled]: isDisabled,
+              })}
+            />
             Optimise Timetable
           </>
         )}

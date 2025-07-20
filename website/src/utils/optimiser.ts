@@ -49,8 +49,8 @@ export function getOptimiserAcadYear(acadYear: AcadYear): string {
 }
 
 export function getOptimiserTime(time: LessonTime): string {
-  const hh = padStart(`${getLessonTimeHours(time)}`, 2, '0');
-  const mm = padStart(`${getLessonTimeMinutes(time)}`, 2, '0');
+  const hh = padStart(String(getLessonTimeHours(time)), 2, '0');
+  const mm = padStart(String(getLessonTimeMinutes(time)), 2, '0');
   return `${hh}:${mm}`;
 }
 
