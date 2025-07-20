@@ -1,10 +1,11 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import classnames from 'classnames';
 import { Info, X, AlertTriangle } from 'react-feather';
 import Tooltip from 'views/components/Tooltip';
 import { WorkingDays, Day } from 'types/modules';
 import { LessonOption, FreeDayConflict } from './types';
 import styles from './OptimiserForm.scss';
+import { TIME_OPTIONS, filterTimeOptions, toTimeLabel } from '../../utils/timeOptions';
 
 interface OptimiserFormProps {
   lessonOptions: LessonOption[];
@@ -58,6 +59,11 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
     },
     [onToggleFreeDay],
   );
+
+  const [classStartTimes, setClassStartTimes] = useState(TIME_OPTIONS.START_CLASS);
+  const [classEndTimes, setClassEndTimes] = useState(TIME_OPTIONS.END_CLASS);
+  const [lunchStartTimes, setLunchStartTimes] = useState(TIME_OPTIONS.START_LUNCH);
+  const [lunchEndTimes, setLunchEndTimes] = useState(TIME_OPTIONS.END_LUNCH);
 
   return (
     <div className={styles.mainContent}>
@@ -216,36 +222,18 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
               <select
                 className={classnames('form-select', styles.timeSelect)}
                 value={earliestTime}
-                onChange={(e) => onEarliestTimeChange(e.target.value)}
+                onChange={(e) => {
+                  onEarliestTimeChange(e.target.value);
+                  setClassEndTimes(
+                    filterTimeOptions(TIME_OPTIONS.END_CLASS, e.target.value, 'greater'),
+                  );
+                }}
               >
-                <option value="0800">08:00</option>
-                <option value="0830">08:30</option>
-                <option value="0900">09:00</option>
-                <option value="0930">09:30</option>
-                <option value="1000">10:00</option>
-                <option value="1030">10:30</option>
-                <option value="1100">11:00</option>
-                <option value="1130">11:30</option>
-                <option value="1200">12:00</option>
-                <option value="1230">12:30</option>
-                <option value="1300">13:00</option>
-                <option value="1330">13:30</option>
-                <option value="1400">14:00</option>
-                <option value="1430">14:30</option>
-                <option value="1500">15:00</option>
-                <option value="1530">15:30</option>
-                <option value="1600">16:00</option>
-                <option value="1630">16:30</option>
-                <option value="1700">17:00</option>
-                <option value="1800">18:00</option>
-                <option value="1830">18:30</option>
-                <option value="1900">19:00</option>
-                <option value="1930">19:30</option>
-                <option value="2000">20:00</option>
-                <option value="2030">20:30</option>
-                <option value="2100">21:00</option>
-                <option value="2130">21:30</option>
-                <option value="2200">22:00</option>
+                {classStartTimes.map((time) => (
+                  <option key={time} value={time}>
+                    {toTimeLabel(time)}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
@@ -260,36 +248,18 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
               <select
                 className={classnames('form-select', styles.timeSelect)}
                 value={latestTime}
-                onChange={(e) => onLatestTimeChange(e.target.value)}
+                onChange={(e) => {
+                  onLatestTimeChange(e.target.value);
+                  setClassStartTimes(
+                    filterTimeOptions(TIME_OPTIONS.START_CLASS, e.target.value, 'lesser'),
+                  );
+                }}
               >
-                <option value="0900">09:00</option>
-                <option value="0930">09:30</option>
-                <option value="1000">10:00</option>
-                <option value="1030">10:30</option>
-                <option value="1100">11:00</option>
-                <option value="1130">11:30</option>
-                <option value="1200">12:00</option>
-                <option value="1230">12:30</option>
-                <option value="1300">13:00</option>
-                <option value="1330">13:30</option>
-                <option value="1400">14:00</option>
-                <option value="1430">14:30</option>
-                <option value="1500">15:00</option>
-                <option value="1530">15:30</option>
-                <option value="1600">16:00</option>
-                <option value="1630">16:30</option>
-                <option value="1700">17:00</option>
-                <option value="1800">18:00</option>
-                <option value="1830">18:30</option>
-                <option value="1900">19:00</option>
-                <option value="1930">19:30</option>
-                <option value="2000">20:00</option>
-                <option value="2030">20:30</option>
-                <option value="2100">21:00</option>
-                <option value="2130">21:30</option>
-                <option value="2200">22:00</option>
-                <option value="2230">22:30</option>
-                <option value="2300">23:00</option>
+                {classEndTimes.map((time) => (
+                  <option key={time} value={time}>
+                    {toTimeLabel(time)}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
@@ -344,43 +314,35 @@ const OptimiserForm: React.FC<OptimiserFormProps> = ({
             <select
               className={classnames('form-select', styles.timeSelect)}
               value={earliestLunchTime}
-              onChange={(e) => onEarliestLunchTimeChange(e.target.value)}
+              onChange={(e) => {
+                onEarliestLunchTimeChange(e.target.value);
+                setLunchEndTimes(
+                  filterTimeOptions(TIME_OPTIONS.END_LUNCH, e.target.value, 'greater'),
+                );
+              }}
             >
-              <option value="1000">10:00</option>
-              <option value="1030">10:30</option>
-              <option value="1100">11:00</option>
-              <option value="1130">11:30</option>
-              <option value="1200">12:00</option>
-              <option value="1230">12:30</option>
-              <option value="1300">13:00</option>
-              <option value="1330">13:30</option>
-              <option value="1400">14:00</option>
-              <option value="1430">14:30</option>
-              <option value="1500">15:00</option>
-              <option value="1530">15:30</option>
-              <option value="1600">16:00</option>
-              <option value="1630">16:30</option>
+              {lunchStartTimes.map((time) => (
+                <option key={time} value={time}>
+                  {toTimeLabel(time)}
+                </option>
+              ))}
             </select>
             <div className={styles.lunchTimeSeparator}>to</div>
             <select
               className={classnames('form-select', styles.timeSelect)}
               value={latestLunchTime}
-              onChange={(e) => onLatestLunchTimeChange(e.target.value)}
+              onChange={(e) => {
+                onLatestLunchTimeChange(e.target.value);
+                setLunchStartTimes(
+                  filterTimeOptions(TIME_OPTIONS.START_LUNCH, e.target.value, 'lesser'),
+                );
+              }}
             >
-              <option value="1100">11:00</option>
-              <option value="1130">11:30</option>
-              <option value="1200">12:00</option>
-              <option value="1230">12:30</option>
-              <option value="1300">13:00</option>
-              <option value="1330">13:30</option>
-              <option value="1400">14:00</option>
-              <option value="1430">14:30</option>
-              <option value="1500">15:00</option>
-              <option value="1530">15:30</option>
-              <option value="1600">16:00</option>
-              <option value="1630">16:30</option>
-              <option value="1700">17:00</option>
-              <option value="1730">17:30</option>
+              {lunchEndTimes.map((time) => (
+                <option key={time} value={time}>
+                  {toTimeLabel(time)}
+                </option>
+              ))}
             </select>
           </div>
         </div>
