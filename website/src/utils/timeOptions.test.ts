@@ -8,7 +8,7 @@ describe('timeOptions', () => {
       ['1030', '10:30'],
       ['1145', '11:45'],
       ['0333', '03:33'],
-    ])('should return the correct time label for %s', (time, expected) => {
+    ])('should label %s as %s', (time, expected) => {
       expect(toTimeLabel(time)).toBe(expected);
     });
   });
