@@ -1,7 +1,7 @@
 @import '~styles/utils/modules-entry';
 
 .moduleRandomButton {
-  composes: btn btn-primary btn-svg from global;
+  composes: btn btn-secondary btn-svg from global;
   flex-grow: 1;
   margin-bottom: 2rem;
   
