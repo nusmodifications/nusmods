@@ -66,6 +66,10 @@
   }
 }
 
+.targetable {
+  scroll-margin-top: $navbar-height + 2rem;
+}
+
 .betaToggle {
   margin-bottom: 1rem;
 }
