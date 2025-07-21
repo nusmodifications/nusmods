@@ -1,10 +1,10 @@
 @import '~styles/utils/modules-entry.scss';
 
 .header {
-  display: flex;
+  display: grid;
   clear: both;
-  justify-content: space-between;
   align-items: center;
+  grid-template-columns: 1fr 1fr 1fr;
   margin-bottom: 1rem;
 
   h1 {
@@ -16,6 +16,11 @@
 
   :global(.btn) {
     white-space: normal;
+    justify-self: start;
+  }
+
+  :global(.btn):last-child {
+    justify-self: end;
   }
 
   @include media-breakpoint-down(xs) {
