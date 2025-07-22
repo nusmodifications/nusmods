@@ -201,7 +201,7 @@ exports[`ModuleTreeComponent should grey out modules that are not in module bank
           </li>
         </ul>
         <div
-          class="node moduleNode inactiveRootNode"
+          class="node moduleNode leftNode inactiveRootNode"
         >
           <div>
             <mockedlink
@@ -351,7 +351,7 @@ exports[`ModuleTreeComponent should render prereq branch with nOf condition: PC2
           </li>
         </ul>
         <div
-          class="node moduleNode inactiveRootNode"
+          class="node moduleNode leftNode inactiveRootNode"
         >
           <div>
             <mockedlink
@@ -883,7 +883,7 @@ exports[`ModuleTreeComponent should render prereq tree of module: CS3244 1`] = `
           </li>
         </ul>
         <div
-          class="node moduleNode inactiveRootNode"
+          class="node moduleNode leftNode inactiveRootNode"
         >
           <div>
             <mockedlink
@@ -1078,7 +1078,7 @@ exports[`ModuleTreeComponent should render requirements fulfilled tree of module
         class="branch leftBranch"
       >
         <div
-          class="node moduleNode inactiveRootNode"
+          class="node moduleNode leftNode inactiveRootNode"
         >
           <div>
             <mockedlink
