@@ -12,6 +12,7 @@ export interface OptimiseRequest {
   recordings: string[];
   lunchStart: string;
   lunchEnd: string;
+  maxConsecutiveHours: number;
 }
 
 export interface LessonSlot {

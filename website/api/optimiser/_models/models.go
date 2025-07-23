@@ -7,15 +7,16 @@ import (
 )
 
 type OptimiserRequest struct {
-	Modules      []string `json:"modules"`      // Format: ["CS1010S", "CS2030S"]
-	Recordings   []string `json:"recordings"`   // Format: ["CS1010S Lecture", "CS2030S Laboratory"]
-	FreeDays     []string `json:"freeDays"`     // Format: ["Monday", "Tuesday"]
-	EarliestTime string   `json:"earliestTime"` // Format: "1504" (HHMM)
-	LatestTime   string   `json:"latestTime"`   // Format: "1504" (HHMM)
-	AcadYear     string   `json:"acadYear"`     // Format: "2024-2025" (YYYY-YYYY)
-	AcadSem      int      `json:"acadSem"`      // Format: 1 for sem 1, 2 for sem 2
-	LunchStart   string   `json:"lunchStart"`   // Format: "1504" (HHMM)
-	LunchEnd     string   `json:"lunchEnd"`     // Format: "1500" (HHMM)
+	Modules             []string `json:"modules"`             // Format: ["CS1010S", "CS2030S"]
+	Recordings          []string `json:"recordings"`          // Format: ["CS1010S Lecture", "CS2030S Laboratory"]
+	FreeDays            []string `json:"freeDays"`            // Format: ["Monday", "Tuesday"]
+	EarliestTime        string   `json:"earliestTime"`        // Format: "1504" (HHMM)
+	LatestTime          string   `json:"latestTime"`          // Format: "1504" (HHMM)
+	AcadYear            string   `json:"acadYear"`            // Format: "2024-2025" (YYYY-YYYY)
+	AcadSem             int      `json:"acadSem"`             // Format: 1 for sem 1, 2 for sem 2
+	MaxConsecutiveHours int      `json:"maxConsecutiveHours"` // Maximum consecutive hours of study
+	LunchStart          string   `json:"lunchStart"`          // Format: "1504" (HHMM)
+	LunchEnd            string   `json:"lunchEnd"`            // Format: "1500" (HHMM)
 }
 
 type TimetableState struct {
