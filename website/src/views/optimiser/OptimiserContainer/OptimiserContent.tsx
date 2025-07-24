@@ -41,9 +41,8 @@ const OptimiserContent: React.FC = () => {
     maxConsecutiveHours,
   } = optimiserFormFields;
 
-  const [hasSaturday, setHasSaturday] = useState(false);
   const [unassignedLessons, setUnassignedLessons] = useState<LessonOption[]>([]);
-  const [shareableLink, setShareableLink] = useState<string>('');
+  const [shareableLink, setShareableLink] = useState<string | null>(null);
   const [isOptimising, setIsOptimising] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
@@ -62,16 +61,17 @@ const OptimiserContent: React.FC = () => {
     [lessonOptions, physicalLessonOptions],
   );
 
+  const hasSaturday = useMemo(() => isSaturdayInOptions(lessonOptions), [lessonOptions]);
+
   useEffect(() => {
     const availableKeys = new Set(lessonOptions.map((option) => option.lessonKey));
     setPhysicalLessonOptions((prev) =>
       prev.filter((lesson) => availableKeys.has(lesson.lessonKey)),
     );
-    setHasSaturday(isSaturdayInOptions(lessonOptions));
-  }, [lessonOptions, setHasSaturday, setPhysicalLessonOptions]);
+  }, [lessonOptions, setPhysicalLessonOptions]);
 
   const buttonOnClick = async () => {
-    setShareableLink(''); // Reset shareable link
+    setShareableLink(null);
     setIsOptimising(true);
     setError(null);
 
@@ -90,14 +90,20 @@ const OptimiserContent: React.FC = () => {
 
     sendOptimiseRequest(params)
       .then(parseData)
-      .catch((e) => setError(e))
+      .catch((e) => {
+        setError(e);
+
+        // FIXME: temporarily log errors into the console for beta
+        // eslint-disable-next-line no-console
+        console.log(e);
+      })
       .finally(() => setIsOptimising(false));
   };
 
   const parseData = async (data: OptimiseResponse | null) => {
     const link = data?.shareableLink;
     if (!link) {
-      return;
+      throw new Error('expected shareable link to be created');
     }
     setShareableLink(link);
 
@@ -128,7 +134,7 @@ const OptimiserContent: React.FC = () => {
       {!!error && (
         <ApiError
           dataName="timetable optimiser"
-          promptText="This feature is in Beta, so we would really appreciate your feedback! "
+          promptText="This feature is in Beta, so we would really appreciate your feedback!"
         />
       )}
 

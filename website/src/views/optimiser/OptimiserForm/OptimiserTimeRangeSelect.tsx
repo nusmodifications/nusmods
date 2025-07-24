@@ -7,28 +7,35 @@ import OptimiserFormTooltip from './OptimiserFormTooltip';
 import styles from './OptimiserTimeRangeSelect.scss';
 
 type TimeRangeSelectProps = {
+  id: string;
   currentValue: LessonTime;
   timeValues: LessonTime[];
   setTime: (lessonTime: LessonTime) => void;
 };
 
 const OptimiserTimeRangeSelect: React.FC<TimeRangeSelectProps> = ({
+  id,
   currentValue,
   timeValues,
   setTime,
 }) => (
-  <select
-    data-testid="optimiserTimeRangeSelect"
-    className={styles.optimiserDropdown}
-    value={currentValue}
-    onChange={(e) => setTime(e.target.value)}
-  >
-    {timeValues.map((value) => (
-      <option key={value} value={value}>
-        {getOptimiserTime(value)}
-      </option>
-    ))}
-  </select>
+  <>
+    <label htmlFor={id} hidden>
+      Choose a time from the given range
+    </label>
+    <select
+      id={id}
+      className={styles.optimiserDropdown}
+      value={currentValue}
+      onChange={(e) => setTime(e.target.value)}
+    >
+      {timeValues.map((value) => (
+        <option key={value} value={value}>
+          {getOptimiserTime(value)}
+        </option>
+      ))}
+    </select>
+  </>
 );
 
 type LessonTimeRangeSelectProps = {
@@ -71,6 +78,7 @@ const OptimiserLessonTimeRangeSelect: React.FC<LessonTimeRangeSelectProps> = ({
         </h4>
 
         <OptimiserTimeRangeSelect
+          id="earliest-start-time"
           currentValue={lessonTimeRange.earliest}
           timeValues={earliestTimeValues}
           setTime={setEarliestTime}
@@ -84,6 +92,7 @@ const OptimiserLessonTimeRangeSelect: React.FC<LessonTimeRangeSelectProps> = ({
         </h4>
 
         <OptimiserTimeRangeSelect
+          id="latest-end-time"
           currentValue={lessonTimeRange.latest}
           timeValues={latestTimeValues}
           setTime={setLatestTime}
@@ -134,12 +143,14 @@ const OptimiserLunchTimeRangeSelect: React.FC<LunchTimeRangeSelectProps> = ({
 
         <div className={styles.timeRow}>
           <OptimiserTimeRangeSelect
+            id="earliest-lunch-time"
             currentValue={lunchTimeRange.earliest}
             timeValues={earliestTimeValues}
             setTime={setEarliestTime}
           />
           to
           <OptimiserTimeRangeSelect
+            id="latest-lunch-time"
             currentValue={lunchTimeRange.latest}
             timeValues={latestTimeValues}
             setTime={setLatestTime}

@@ -34,7 +34,7 @@ describe('OptimiserResults', () => {
       unassignedLessons: [],
     };
     render(<OptimiserResults {...props} />);
-    expect(screen.getByRole('button')).toHaveTextContent('Open Optimised Timetable');
+    expect(screen.getByRole('link')).toHaveTextContent('Open Optimised Timetable');
   });
 
   it('should show partial timetable when there are unassigned lessons', () => {
@@ -43,6 +43,6 @@ describe('OptimiserResults', () => {
       unassignedLessons: [defaultLectureOption],
     };
     render(<OptimiserResults {...props} />);
-    expect(screen.getByRole('button')).toHaveTextContent('Open Partial Timetable');
+    expect(screen.getByRole('link')).toHaveTextContent('Open Partial Timetable');
   });
 });

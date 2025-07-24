@@ -40,12 +40,13 @@ const OptimiserFreeDaySelect: React.FC<Props> = ({ hasSaturday, optimiserFormFie
         {days.map((day) => {
           const checked = freeDays.has(day);
 
+          // TODO: consider using checkbox instead if redesigning
+          // https://getbootstrap.com/docs/4.6/components/forms/#custom-forms
           return (
             <button
               type="button"
               role="checkbox"
               aria-checked={checked}
-              tabIndex={0}
               key={day}
               className={classNames(styles.freeDaysButton, { active: checked })}
               onClick={() => toggleDay(day)}
