@@ -4,7 +4,7 @@ import ExternalLink from 'views/components/ExternalLink';
 import config from 'config';
 import styles from './SettingsContainer.scss';
 
-export const currentTests = ['Timetable Optimiser: build a timetable that suits your needs'];
+export const currentTests = ['Timetable Optimiser: find the perfect timetable for you'];
 
 type Props = {
   betaTester: boolean;
@@ -23,7 +23,7 @@ const BetaToggle = memo<Props>((props) => {
 
   const testDescriptions = hasTests ? (
     <>
-      <h5>Current Tests</h5>
+      <h5>Current tests</h5>
       <ul>
         {currentTests.map((test) => (
           <li key={test}>{test}</li>
@@ -36,9 +36,7 @@ const BetaToggle = memo<Props>((props) => {
 
   return (
     <div>
-      <h4 id="beta" className={styles.targetable}>
-        NUSMods Beta
-      </h4>
+      <h4 id="beta">NUSMods Beta</h4>
 
       <div className={styles.toggleRow}>
         <div className={styles.toggleDescription}>
