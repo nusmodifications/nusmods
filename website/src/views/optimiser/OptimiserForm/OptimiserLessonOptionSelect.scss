@@ -1,0 +1,56 @@
+@import '~styles/utils/modules-entry.scss';
+@import './OptimiserForm.scss';
+
+.lessonButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.lessonButton {
+  composes: lessonTag from '../common.scss';
+
+  &.selected {
+    opacity: 1;
+    filter: brightness(1);
+    transform: scale(1);
+  }
+
+  &.unselected {
+    opacity: 0.6;
+    filter: brightness(0.8);
+    transform: scale(0.98);
+  }
+
+  &:hover {
+    opacity: 1 !important;
+    filter: brightness(1.1) !important;
+    transform: scale(1.02) !important;
+  }
+}
+
+.noLessonsWarning {
+  composes: alert alert-warning from global;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  margin-top: $form-fields-gap;
+  gap: 1rem;
+
+  h3 {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #ff8c00;
+    gap: 0.75rem;
+  }
+
+  h4 {
+    display: flex;
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+}
