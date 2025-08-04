@@ -62,7 +62,7 @@ describe(actions.fetchModule, () => {
       moduleBank: { modules: { CS1010S: {} } },
     } as any);
 
-    await expect(thunk(dispatch, getState)).rejects.toThrowError(error);
+    await expect(thunk(dispatch, getState)).rejects.toThrow(error);
   });
 });
 

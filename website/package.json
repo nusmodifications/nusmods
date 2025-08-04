@@ -158,7 +158,7 @@
     "react-dom": "18.3.1",
     "react-feather": "2.0.10",
     "react-helmet": "6.1.0",
-    "react-kawaii": "0.18.0",
+    "react-kawaii": "^1.6.0",
     "react-leaflet": "3.2.5",
     "react-loadable": "5.5.0",
     "react-modal": "3.16.3",

@@ -34,7 +34,7 @@ describe(HistoryDebouncer, () => {
       ['test-1', undefined],
       ['test-2', { test: 'state' }],
     ]);
-    expect(mock.replace).not.toBeCalled();
+    expect(mock.replace).not.toHaveBeenCalled();
   });
 
   test('should call history.replace() within wait', () => {
