@@ -534,11 +534,6 @@ binary-extensions@^2.0.0:
   resolved "https://registry.npmjs.org/binary-extensions/-/binary-extensions-2.0.0.tgz"
   integrity sha512-Phlt0plgpIIBOGTT/ehfFnbNlfsDEiqmzE2KRXoX1bLIlir4X/MR+zSyBEkL05ffWgnRSf/DXv+WrUAVr93/ow==
 
-bluebird@^3.1.1:
-  version "3.5.3"
-  resolved "https://registry.npmjs.org/bluebird/-/bluebird-3.5.3.tgz"
-  integrity sha512-/qKPUQlaW1OyR51WeCPBvRnAlnZFUJkCSG5HzGnuIqhgyJtF+T94lFnn33eiazjRm2LAHVy2guNnaq48X9SJuw==
-
 brace-expansion@^1.1.7:
   version "1.1.11"
   resolved "https://registry.npmjs.org/brace-expansion/-/brace-expansion-1.1.11.tgz"
@@ -702,13 +697,6 @@ config-chain@^1.1.12:
     ini "^1.3.4"
     proto-list "~1.2.1"
 
-consolidate@0.15.1:
-  version "0.15.1"
-  resolved "https://registry.npmjs.org/consolidate/-/consolidate-0.15.1.tgz"
-  integrity sha512-DW46nrsMJgy9kqAbPt5rKaCr7uFtpo4mSUvLHIUbJEjm0vo+aY5QLwBUq3FK4tRnJr/X0Psc0C4jf/h+HtXSMw==
-  dependencies:
-    bluebird "^3.1.1"
-
 constantinople@^4.0.1:
   version "4.0.1"
   resolved "https://registry.npmjs.org/constantinople/-/constantinople-4.0.1.tgz"
@@ -774,19 +762,12 @@ data-uri-to-buffer@^6.0.2:
   resolved "https://registry.npmjs.org/data-uri-to-buffer/-/data-uri-to-buffer-6.0.2.tgz"
   integrity sha512-7hvf7/GW8e86rW0ptuwS3OcBGDjIi6SZva7hCyWC0yYry2cOPmLIjXAUHI6DK2HsnwJd9ifmt57i8eV2n4YNpw==
 
-debug@4, debug@^4.1.0, debug@^4.1.1, debug@^4.3.2, debug@^4.3.4:
+debug@4, debug@^4.1.1, debug@^4.3.2, debug@^4.3.4:
   version "4.3.4"
   resolved "https://registry.npmjs.org/debug/-/debug-4.3.4.tgz"
   integrity sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==
   dependencies:
     ms "2.1.2"
-
-debug@^3.1.0:
-  version "3.2.6"
-  resolved "https://registry.npmjs.org/debug/-/debug-3.2.6.tgz"
-  integrity sha512-mel+jf7nrtEl5Pn1Qx46zARXKDpBbvzezse7p7LqINmdoIk8PYP5SySaxEmYv6TZ0JyEKA1hsCId6DIhgITtWQ==
-  dependencies:
-    ms "^2.1.1"
 
 debug@^3.2.7:
   version "3.2.7"
@@ -1465,16 +1446,6 @@ koa-router@10.1.1:
     methods "^1.1.2"
     path-to-regexp "^6.1.0"
 
-koa-send@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.npmjs.org/koa-send/-/koa-send-5.0.0.tgz"
-  integrity sha512-90ZotV7t0p3uN9sRwW2D484rAaKIsD8tAVtypw/aBU+ryfV+fR2xrcAwhI8Wl6WRkojLUs/cB9SBSCuIb+IanQ==
-  dependencies:
-    debug "^3.1.0"
-    http-errors "^1.6.3"
-    mz "^2.7.0"
-    resolve-path "^1.4.0"
-
 koa-send@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/koa-send/-/koa-send-5.0.1.tgz#39dceebfafb395d0d60beaffba3a70b4f543fe79"
@@ -1484,7 +1455,7 @@ koa-send@^5.0.1:
     http-errors "^1.7.3"
     resolve-path "^1.4.0"
 
-koa-views@*:
+koa-views@*, koa-views@8.1.0:
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/koa-views/-/koa-views-8.1.0.tgz#d06d88140863b0fc35094b81d89558bb0077ce47"
   integrity sha512-sIkZeplf7YKg1+OjYuzxU5zQvzbfdwFKzD8XNLKFHRMFZXWBTW+S/WQwQ32fzZiJp1lPxz0QlzNJkkGu0NVIdg==
@@ -1496,18 +1467,6 @@ koa-views@*:
     mz "^2.7.0"
     pretty "^2.0.0"
     resolve-path "^1.4.0"
-
-koa-views@6.3.1:
-  version "6.3.1"
-  resolved "https://registry.npmjs.org/koa-views/-/koa-views-6.3.1.tgz"
-  integrity sha512-weIaPs2cCHWT2qK8qHRmwlZ29xRCvUVy1v/z12AGavVV5j4QIU0W/Y7OVBBu1sTkcO9dDJ25ajGYHGZ/aY43IQ==
-  dependencies:
-    consolidate "0.15.1"
-    debug "^4.1.0"
-    get-paths "0.0.7"
-    koa-send "^5.0.0"
-    mz "^2.4.0"
-    pretty "^2.0.0"
 
 koa@2.15.3:
   version "2.15.3"
@@ -1670,9 +1629,9 @@ mv@~2:
     ncp "~2.0.0"
     rimraf "~2.4.0"
 
-mz@^2.4.0, mz@^2.7.0:
+mz@^2.7.0:
   version "2.7.0"
-  resolved "https://registry.npmjs.org/mz/-/mz-2.7.0.tgz"
+  resolved "https://registry.yarnpkg.com/mz/-/mz-2.7.0.tgz#95008057a56cafadc2bc63dde7f9ff6955948e32"
   integrity sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==
   dependencies:
     any-promise "^1.0.0"
