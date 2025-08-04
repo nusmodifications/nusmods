@@ -1,3 +1,3 @@
-const fs = jest.genMockFromModule('fs-extra');
+const fs = jest.createMockFromModule('fs-extra');
 
 module.exports = fs;

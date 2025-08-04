@@ -110,7 +110,7 @@ describe(NusApi, () => {
     const p4 = api.callApi('test-4', {});
 
     // Expect 2 requests to have started, with 2 more waiting to be started.
-    expect(mockedAxios.post).toBeCalledTimes(2);
+    expect(mockedAxios.post).toHaveBeenCalledTimes(2);
     expect(api.queue.getPendingLength()).toEqual(2);
     expect(api.queue.getQueueLength()).toEqual(2);
 
@@ -118,7 +118,7 @@ describe(NusApi, () => {
     await p2;
 
     // Expect remaining 2 requests to have started.
-    expect(mockedAxios.post).toBeCalledTimes(4);
+    expect(mockedAxios.post).toHaveBeenCalledTimes(4);
     expect(api.queue.getQueueLength()).toEqual(0);
 
     await p3;
