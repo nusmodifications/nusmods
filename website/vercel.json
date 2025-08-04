@@ -3,6 +3,9 @@
     "api/**/*.ts": {
       "excludeFiles": "./tsconfig.json",
       "includeFiles": "{./api/tsconfig.json,./src/serverless/*.xml}"
+    },
+    "api/**/*.go": {
+      "includeFiles": "{./src/data/venue.json}"
     }
   },
   "headers": [

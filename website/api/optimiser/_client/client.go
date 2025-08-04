@@ -7,13 +7,21 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 
 	constants "github.com/nusmodifications/nusmods/website/api/optimiser/_constants"
 	models "github.com/nusmodifications/nusmods/website/api/optimiser/_models"
 )
 
 func GetVenues() (map[string]models.Location, error) {
-	file, err := os.Open(constants.VenuesPath)
+	cwd, err := os.Getwd()
+	if err != nil {
+		log.Printf("failed to get working directory: %v", err)
+		return nil, err
+	}
+
+	path := filepath.Join(cwd, constants.VenuesPath)
+	file, err := os.Open(path)
 	if err != nil {
 		log.Printf("unable to load venues.json: %v", err)
 		return nil, err

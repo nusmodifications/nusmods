@@ -1,5 +1,7 @@
 package constants
 
+import "path/filepath"
+
 // Ensure in sync with all E-Venues in NUSMods
 var E_Venues = map[string]bool{
 	"E-Learn_A":  true,
@@ -28,7 +30,10 @@ var LessonTypeAbbrev = map[string]string{
 	"WORKSHOP":                   "WS",
 }
 
-var VenuesPath = "../../../src/data/venues.json"
+var VenuesPath = filepath.Join("src", "data", "venues.json")
+
+// Toggle for local testing
+// var VenuesPath = "../../../src/data/venues.json"
 
 var ModulesURL = "https://api.nusmods.com/v2/%s/modules/%s.json"
 

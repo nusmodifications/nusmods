@@ -130,8 +130,9 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
    go mod tidy
    ```
 
-3. **Update the API in the frontend (change back after testing)**
-- In `website/src/apis/optimiser.ts`, change the api from `/api/optimiser/optimise` to `http://localhost:8020/optimise`
+3. **Mock resources (change back after testing)**
+- In `website/src/apis/optimiser.ts`, change `api` from `/api/optimiser/optimise` to `http://localhost:8020/optimise`
+- In `api/optimiser/constants/_constants.go`, toggle `VenuePath` to the local path (i.e. `../../../src/data/venues.json`)
 
 4. **Run test server**
    ```bash
