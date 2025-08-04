@@ -90,7 +90,6 @@ $arrow-height: 1.5rem;
 
   // Add a cross mark to indicate the currently selected color
   &.selected::after {
-    content: '✕';
     position: absolute;
     top: 0;
     right: 0;
@@ -138,4 +137,12 @@ $arrow-height: 1.5rem;
       transparent 6px
     );
   }
+}
+.transparentIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1rem;
+  height: 1rem;
+  transform: translate(-50%, -50%);
 }
