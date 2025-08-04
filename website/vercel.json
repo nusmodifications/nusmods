@@ -5,7 +5,7 @@
       "includeFiles": "{./api/tsconfig.json,./src/serverless/*.xml}"
     },
     "api/**/*.go": {
-      "includeFiles": "{./src/data/venue.json}"
+      "includeFiles": "{./src/data/venues.json}"
     }
   },
   "headers": [
