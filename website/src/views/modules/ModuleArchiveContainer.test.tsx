@@ -98,13 +98,13 @@ describe(ModuleArchiveContainerComponent, () => {
 
   test('should fetch module', async () => {
     mockAxiosRequest.mockResolvedValue(cs1010sResponse);
-    expect(mockAxiosRequest).not.toBeCalled(); // Sanity check
+    expect(mockAxiosRequest).not.toHaveBeenCalled(); // Sanity check
     make();
     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
     // Expect module information to be displayed
     expect(await screen.findByText(/This course introduces/)).toBeInTheDocument();
     // Expect component to fetch
-    expect(mockAxiosRequest).toBeCalled();
+    expect(mockAxiosRequest).toHaveBeenCalled();
   });
 
   test('should show error if module fetch failed', async () => {

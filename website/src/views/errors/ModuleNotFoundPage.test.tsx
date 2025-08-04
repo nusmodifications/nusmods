@@ -16,7 +16,7 @@ test('should fetch archive pages if moduleCode looks like a module code', () => 
     />,
   );
 
-  expect(fetchModuleArchive).toBeCalled();
+  expect(fetchModuleArchive).toHaveBeenCalled();
 });
 
 test('should not fetch archive pages if tryArchive is false', () => {
@@ -31,7 +31,7 @@ test('should not fetch archive pages if tryArchive is false', () => {
     />,
   );
 
-  expect(fetchModuleArchive).not.toBeCalled();
+  expect(fetchModuleArchive).not.toHaveBeenCalled();
 });
 
 test("should not fetch archive pages if moduleCode doesn't look like module code", () => {
@@ -46,7 +46,7 @@ test("should not fetch archive pages if moduleCode doesn't look like module code
     />,
   );
 
-  expect(fetchModuleArchive).not.toBeCalled();
+  expect(fetchModuleArchive).not.toHaveBeenCalled();
 });
 
 test('should show spinner while archive pages are loading', () => {
