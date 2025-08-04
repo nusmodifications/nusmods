@@ -37,20 +37,14 @@
   }
 }
 
-// Description section
 .description {
   display: flex;
   flex-direction: column;
   margin-top: 0.5rem;
-  font-size: 0.8rem;
+  font-size: 1rem;
   gap: 0.1rem;
 }
 
-.descriptionText {
-  max-width: 32rem;
-}
-
-// Icon styling
 .titleIcon {
   color: #ff5138;
 } 

@@ -1,34 +1,12 @@
 @import '~styles/utils/modules-entry.scss';
+@import './common.scss';
 
-.lessonTag {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.25rem 0.5rem;
-  border-bottom: 3px solid;
-  border-radius: 0.25rem;
-  font-weight: 500;
-  font-size: 0.8rem;
-  transition: transform 0.15s ease, filter 0.15s ease;
-  gap: 0.25rem;
-
-  &:hover {
-    filter: brightness(0.8);
-  }
-} 
-
-.tag {
-    cursor: pointer;
-}
-
-// Unassigned lessons warning
 .unassignedWarning {
+  composes: alert alert-warning from global;
   display: flex;
   flex-direction: column;
   padding: 1.5rem;
   margin-top: 2rem;
-  border: 1px solid rgba(255, 193, 7, 0.3);
-  border-radius: 0.75rem;
-  background-color: rgba(255, 193, 7, 0.1);
   gap: 1rem;
 }
 
@@ -97,7 +75,6 @@
   color: #69707a;
 }
 
-// Shareable link section
 .shareableLinkSection {
   display: flex;
   flex-direction: column;
