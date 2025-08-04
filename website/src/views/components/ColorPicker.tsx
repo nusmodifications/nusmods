@@ -67,10 +67,7 @@ const ColorPicker = memo<Props>((props) => {
               })}
             >
               {index === color && (
-                <TransparentIcon
-                  className={classnames(styles.transparentIcon)}
-                  fill="currentColor"
-                />
+                <TransparentIcon className={styles.transparentIcon} fill="currentColor" />
               )}
             </button>
           ))}
