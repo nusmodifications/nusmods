@@ -28,7 +28,7 @@ var LessonTypeAbbrev = map[string]string{
 	"WORKSHOP":                   "WS",
 }
 
-var VenuesURL = "https://github.nusmods.com/venues"
+var VenuesPath = "../../../src/data/venues.json"
 
 var ModulesURL = "https://api.nusmods.com/v2/%s/modules/%s.json"
 

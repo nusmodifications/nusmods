@@ -4,27 +4,32 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
+	"os"
 
-	"github.com/nusmodifications/nusmods/website/api/optimiser/_constants"
-	"github.com/nusmodifications/nusmods/website/api/optimiser/_models"
+	constants "github.com/nusmodifications/nusmods/website/api/optimiser/_constants"
+	models "github.com/nusmodifications/nusmods/website/api/optimiser/_models"
 )
 
 func GetVenues() (map[string]models.Location, error) {
-	venues := make(map[string]models.Location)
-	url := constants.VenuesURL
-	res, err := http.Get(url)
+	file, err := os.Open(constants.VenuesPath)
 	if err != nil {
+		log.Printf("unable to load venues.json: %v", err)
 		return nil, err
 	}
-	defer res.Body.Close()
+	defer file.Close()
 
-	body, err := io.ReadAll(res.Body)
+	body, err := io.ReadAll(file)
 	if err != nil {
+		log.Printf("unable to read venues.json %v", err)
 		return nil, err
 	}
+
+	venues := make(map[string]models.Location)
 	err = json.Unmarshal(body, &venues)
 	if err != nil {
+		log.Printf("unable to parse venues.json %v", err)
 		return nil, err
 	}
 
