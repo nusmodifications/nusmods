@@ -20,10 +20,41 @@ func GetVenues() (map[string]models.Location, error) {
 		return nil, err
 	}
 
+	log.Printf("cwd: %s", cwd)
+
+	if _, err := os.Stat(filepath.Join(cwd, "src")); err == nil {
+		log.Println("src directory exists")
+		srcEntries, _ := os.ReadDir(filepath.Join(cwd, "src"))
+		for _, e := range srcEntries {
+			log.Printf("- src/%s", e.Name())
+		}
+	} else {
+		log.Println("src directory does not exist")
+	}
+
+	if _, err := os.Stat(filepath.Join("src")); err == nil {
+		log.Println("/src directory exists")
+		srcEntries, _ := os.ReadDir(filepath.Join("src"))
+		for _, e := range srcEntries {
+			log.Printf("- src/%s", e.Name())
+		}
+	} else {
+		log.Println("/src directory does not exist")
+	}
+
 	path := filepath.Join(cwd, constants.VenuesPath)
 	file, err := os.Open(path)
 	if err != nil {
 		log.Printf("unable to load venues.json: %v", err)
+
+		entries, err := os.ReadDir(cwd)
+		if err != nil {
+			log.Printf("unable to os.ReadDir: %v", err)
+			return nil, err
+		}
+		for _, e := range entries {
+			log.Printf("entry: %s", e.Name())
+		}
 		return nil, err
 	}
 	defer file.Close()
