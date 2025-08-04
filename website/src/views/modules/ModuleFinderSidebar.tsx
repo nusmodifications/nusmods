@@ -17,6 +17,7 @@ import SideMenu, { OPEN_MENU_LABEL } from 'views/components/SideMenu';
 import FilterContainer from 'views/components/filters/FilterContainer';
 import CheckboxItem from 'views/components/filters/CheckboxItem';
 import DropdownListFilters from 'views/components/filters/DropdownListFilters';
+import RandomPicker from 'views/components/searchkit/RandomPicker';
 
 import { getSemesterTimetableLessons } from 'selectors/timetables';
 import { getSemesterModules } from 'utils/timetables';
@@ -24,8 +25,10 @@ import { getModuleSemesterData } from 'utils/modules';
 import { notNull } from 'types/utils';
 
 import config from 'config';
-import styles from './ModuleFinderSidebar.scss';
 import ChecklistFilter, { FilterItem } from '../components/filters/ChecklistFilter';
+import ModuleRandomButton from './ModuleRandomButton';
+
+import styles from './ModuleFinderSidebar.scss';
 
 const RESET_FILTER_OPTIONS = { filter: true };
 
@@ -217,6 +220,8 @@ const ModuleFinderSidebar: React.FC = () => {
           containerComponent={FilterContainer}
           itemComponent={CheckboxItem}
         />
+
+        <RandomPicker buttonComponent={ModuleRandomButton} />
       </div>
     </SideMenu>
   );
