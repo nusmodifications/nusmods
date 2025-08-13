@@ -5,8 +5,9 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack serve --config webpack/webpack.config.dev.js",
     "start:export": "cross-env NODE_ENV=development OPEN_BROWSER=0 webpack serve --config webpack/webpack.config.timetable-only.js --port 8081",
-    "start:optimiser": "cd api/optimiser/_test && go run main.go",
-    "build": "cross-env NODE_ENV=production node scripts/build",
+    "start:optimiser": "yarn prepare:optimiser && cd api/optimiser/_test && go run main.go",
+    "prepare:optimiser": "cp src/data/venues.json api/optimiser/_constants",
+    "build": "yarn prepare:optimiser && cross-env NODE_ENV=production node scripts/build",
     "rsync": "rsync -avu dist/",
     "rsync:export": "rsync -avu --delete-after dist-timetable/",
     "promote-staging": "bash scripts/promote-staging.sh",

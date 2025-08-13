@@ -1,5 +1,9 @@
 package constants
 
+import (
+	_ "embed"
+)
+
 // Ensure in sync with all E-Venues in NUSMods
 var E_Venues = map[string]bool{
 	"E-Learn_A":  true,
@@ -28,7 +32,8 @@ var LessonTypeAbbrev = map[string]string{
 	"WORKSHOP":                   "WS",
 }
 
-var VenuesURL = "https://github.nusmods.com/venues"
+//go:embed venues.json
+var VenuesJson []byte
 
 var ModulesURL = "https://api.nusmods.com/v2/%s/modules/%s.json"
 
