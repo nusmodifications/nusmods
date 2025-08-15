@@ -24,10 +24,11 @@ const OptimiserHeader: React.FC = () => {
           Beta - Leave Feedback
         </button>
       </div>
+
       <div className={styles.description}>
         <div className={styles.descriptionText}>
-          Intelligently explores millions of combinations to generate your optimal timetable
-          tailored to your preferences
+          Explore thousands of combinations to generate a timetable that is tailored to your
+          preferences.
         </div>
       </div>
     </div>
