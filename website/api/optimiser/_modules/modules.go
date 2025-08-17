@@ -2,11 +2,12 @@ package modules
 
 import (
 	"encoding/json"
+	"strconv"
 	"strings"
 
-	"github.com/nusmodifications/nusmods/website/api/optimiser/_client"
-	"github.com/nusmodifications/nusmods/website/api/optimiser/_constants"
-	"github.com/nusmodifications/nusmods/website/api/optimiser/_models"
+	client "github.com/nusmodifications/nusmods/website/api/optimiser/_client"
+	constants "github.com/nusmodifications/nusmods/website/api/optimiser/_constants"
+	models "github.com/nusmodifications/nusmods/website/api/optimiser/_models"
 )
 
 /*
@@ -47,6 +48,27 @@ func GetAllModuleSlots(optimiserRequest models.OptimiserRequest) (map[string]map
 			}
 		}
 
+		// Parse the weeks
+		for i := range moduleTimetable {
+
+			// Note: if weeks is not a []int, then skip parsing
+			// Currently we are not handling week conflict for non-[]int weeks
+			if _, ok := moduleTimetable[i].Weeks.([]any); !ok {
+				continue
+			}
+
+			moduleTimetable[i].WeeksSet = make(map[int]bool)
+			weeks := moduleTimetable[i].Weeks.([]any)
+			weeksStrings := make([]string, len(weeks))
+
+			for j, week := range weeks {
+				weekInt := int(week.(float64))
+				moduleTimetable[i].WeeksSet[weekInt] = true
+				weeksStrings[j] = strconv.Itoa(weekInt)
+			}
+			moduleTimetable[i].WeeksString = strings.Join(weeksStrings, ",")
+		}
+
 		// Store the module slots for the module
 		moduleSlots[module] = mergeAndFilterModuleSlots(moduleTimetable, venues, optimiserRequest, module)
 
@@ -77,7 +99,8 @@ func mergeAndFilterModuleSlots(timetable []models.ModuleSlot, venues map[string]
 	*/
 
 	classGroups := make(map[string][]models.ModuleSlot)
-	for _, slot := range timetable {
+	for i := range timetable {
+		slot := &timetable[i]
 		// Skip venues without location data, except E-Venues (virtual venue)
 		if !constants.E_Venues[slot.Venue] {
 			venueLocation := venues[slot.Venue].Location
@@ -90,7 +113,7 @@ func mergeAndFilterModuleSlots(timetable []models.ModuleSlot, venues map[string]
 		slot.Coordinates = venues[slot.Venue].Location
 
 		groupKey := slot.LessonType + "|" + slot.ClassNo
-		classGroups[groupKey] = append(classGroups[groupKey], slot)
+		classGroups[groupKey] = append(classGroups[groupKey], *slot)
 	}
 
 	/*
@@ -107,14 +130,15 @@ func mergeAndFilterModuleSlots(timetable []models.ModuleSlot, venues map[string]
 
 		// Only apply filters to physical lessons
 		if !isRecorded {
-			for _, slot := range slots {
+			for i := range slots {
+				slot := &slots[i]
 				// Check free days
 				if freeDaysMap[slot.Day] {
 					allValid = false
 					break
 				}
 
-				if isSlotOutsideTimeRange(slot, earliestMin, latestMin) {
+				if isSlotOutsideTimeRange(*slot, earliestMin, latestMin) {
 					allValid = false
 					break
 				}
@@ -128,7 +152,7 @@ func mergeAndFilterModuleSlots(timetable []models.ModuleSlot, venues map[string]
 	}
 
 	/*
-		Now merge all slots of the same lessonType, slot, startTime and building
+		Now merge all slots of the same lessonType, slot, startTime, weeks and building
 		We are doing this to avoid unnecessary calculations & reduce search space
 	*/
 
@@ -137,12 +161,11 @@ func mergeAndFilterModuleSlots(timetable []models.ModuleSlot, venues map[string]
 
 	for _, slots := range validClassGroups {
 		for _, slot := range slots {
-			lessonKey := module + " " + slot.LessonType
-			isRecorded := recordingsMap[lessonKey]
 
-			if !isRecorded && !constants.E_Venues[slot.Venue] {
+			if !constants.E_Venues[slot.Venue] {
 				buildingName := extractBuildingName(slot.Venue)
-				combinationKey := slot.LessonType + "|" + slot.Day + "|" + slot.StartTime + "|" + buildingName
+
+				combinationKey := slot.LessonType + "|" + slot.Day + "|" + slot.StartTime + "|" + buildingName + "|" + slot.WeeksString
 
 				if seenCombinations[combinationKey] {
 					continue
