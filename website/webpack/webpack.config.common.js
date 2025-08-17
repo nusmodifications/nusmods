@@ -70,6 +70,13 @@ const commonConfig = {
         ],
         use: ['babel-loader'],
       },
+      {
+        test: /\.svg$/i,
+        issuer: /\.[jt]sx?$/,
+        resourceQuery: /svgr/, // exclude react component if *.svg?url
+        use: ['@svgr/webpack'],
+        // for loading SVGs as a React component
+      },
     ],
   },
 };
