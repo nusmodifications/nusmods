@@ -39,7 +39,7 @@
 }
 
 .optimiserDropdown {
-  composes: custom-select from global;
+  composes: form-control from global;
   padding: 0.5rem;
   border: 1px solid var(--gray-lighter);
   border-radius: 0.25rem;
