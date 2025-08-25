@@ -13,7 +13,7 @@ const reduxStateSyncConfig = {
       return false;
     }
 
-    // Request actions starting with `FETCH_` are excluded as well
+    // `FETCH_` request actions should not be synced to other tabs
     if (action.type.toString().startsWith('FETCH_')) {
       return false;
     }

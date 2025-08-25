@@ -63,7 +63,7 @@
     "@types/react-router-dom": "5.3.3",
     "@types/react-scrollspy": "3.3.9",
     "@types/redux-mock-store": "1.5.0",
-    "@types/redux-state-sync": "^3.1.10",
+    "@types/redux-state-sync": "3.1.4",
     "@types/use-subscription": "1.0.2",
     "@types/webpack-env": "1.18.5",
     "@typescript-eslint/eslint-plugin": "4.33.0",
@@ -169,7 +169,7 @@
     "react-scrollspy": "3.4.3",
     "redux": "4.2.1",
     "redux-persist": "6.0.0",
-    "redux-state-sync": "^3.1.4",
+    "redux-state-sync": "3.1.4",
     "redux-thunk": "2.4.2",
     "reselect": "4.1.8",
     "samlify": "2.7.7",
@@ -181,7 +181,6 @@
     "extends browserslist-config-nusmods"
   ],
   "resolutions": {
-    "broadcast-channel": "5.3.0",
     "cheerio": "1.0.0-rc.12"
   }
 }
