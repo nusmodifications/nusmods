@@ -36,17 +36,17 @@ describe('ShareTimetable', () => {
   const openModal = (wrapper: ShallowWrapper) => wrapper.find('button').first().simulate('click');
   const closeModal = (wrapper: ShallowWrapper) =>
     wrapper.find(Modal).first().props().onRequestClose!({} as any);
-
-  const openAndWait = async (wrapper: ShallowWrapper) => {
-    openModal(wrapper);
-
+  const shorten = (wrapper: ShallowWrapper) =>
+    wrapper.find('button[aria-label="Shorten URL"]').simulate('click');
+  const shortenAndWait = async (wrapper: ShallowWrapper) => {
+    shorten(wrapper);
     await waitFor(() => {
       wrapper.update();
-      return wrapper.find('input').exists();
+      return !wrapper.find(LoadingSpinner).exists();
     });
   };
 
-  test('should load short URL when the modal is opened', () => {
+  test('should load short URL when the shorten button is clicked', async () => {
     const wrapper = shallow(
       <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} taModules={{}} />,
     );
@@ -54,34 +54,43 @@ describe('ShareTimetable', () => {
 
     openModal(wrapper);
     expect(wrapper.find(Modal).exists()).toBe(true);
+    // Should not call the API until the shorten button is clicked
+    expect(mockAxios.put).toHaveBeenCalledTimes(0);
+    shorten(wrapper);
     expect(mockAxios.put).toHaveBeenCalledTimes(1);
   });
 
-  test('should cache short URL from the API', () => {
+  test('should cache short URL from the API', async () => {
     const wrapper = shallow(
       <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} taModules={{}} />,
     );
 
-    // Open, close and open the modal again
+    // Open the model, shorten and unshorten again
     openModal(wrapper);
-    closeModal(wrapper);
-    openModal(wrapper);
+    await shortenAndWait(wrapper);
+    expect(mockAxios.put).toHaveBeenCalledTimes(1);
+    await shortenAndWait(wrapper);
 
-    // The second open should not cause a second call
+    // The second shorten click should not cause a second call
+    await shortenAndWait(wrapper);
     expect(mockAxios.put).toHaveBeenCalledTimes(1);
     closeModal(wrapper);
 
-    // Changing the timetable should cause opening the modal to trigger another API call
+    // Changing the timetable should cause the shorten button to trigger another API call
     wrapper.setProps({ timetable: { CS3216: { Lecture: '1' } } });
+    // openModal(wrapper);
     expect(mockAxios.put).toHaveBeenCalledTimes(1);
     openModal(wrapper);
+    await shortenAndWait(wrapper);
     expect(mockAxios.put).toHaveBeenCalledTimes(2);
+    shorten(wrapper);
     closeModal(wrapper);
 
     // Changing the semester should also trigger another API call
     wrapper.setProps({ semester: 2 });
     expect(mockAxios.put).toHaveBeenCalledTimes(2);
     openModal(wrapper);
+    await shortenAndWait(wrapper);
     expect(mockAxios.put).toHaveBeenCalledTimes(3);
   });
 
@@ -91,6 +100,7 @@ describe('ShareTimetable', () => {
     );
 
     openModal(wrapper);
+    shorten(wrapper);
     expect(wrapper.find(LoadingSpinner).exists()).toBe(true);
   });
 
@@ -99,7 +109,8 @@ describe('ShareTimetable', () => {
       <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} taModules={{}} />,
     );
 
-    await openAndWait(wrapper);
+    openModal(wrapper);
+    await shortenAndWait(wrapper);
 
     expect(wrapper.find('input').prop('value')).toEqual(MOCK_SHORTURL);
     expect(wrapper.find(Maximize2).exists()).toBe(true);
@@ -111,7 +122,8 @@ describe('ShareTimetable', () => {
       <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} taModules={{}} />,
     );
 
-    await openAndWait(wrapper);
+    openModal(wrapper);
+    await shortenAndWait(wrapper);
 
     expect(wrapper.find('button').at(1).prop('disabled')).toBe(true);
     expect(wrapper.find('input').prop('value')).toBeTruthy();
@@ -123,7 +135,8 @@ describe('ShareTimetable', () => {
       <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} taModules={{}} />,
     );
 
-    await openAndWait(wrapper);
+    openModal(wrapper);
+    await shortenAndWait(wrapper);
 
     expect(wrapper.find('button').at(1).prop('disabled')).toBe(true);
     expect(wrapper.find('input').prop('value')).toBeTruthy();
@@ -135,7 +148,8 @@ describe('ShareTimetable', () => {
       <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} taModules={{}} />,
     );
 
-    await openAndWait(wrapper);
+    openModal(wrapper);
+    await shortenAndWait(wrapper);
 
     expect(wrapper.find('input').prop('value')).not.toContain('hidden');
   });
@@ -151,7 +165,8 @@ describe('ShareTimetable', () => {
       />,
     );
 
-    await openAndWait(wrapper);
+    openModal(wrapper);
+    await shortenAndWait(wrapper);
 
     expect(wrapper.find('input').prop('value')).toContain('hidden=CS1010S,CS1231S');
   });
@@ -177,7 +192,8 @@ describe('ShareTimetable', () => {
       />,
     );
 
-    await openAndWait(wrapper);
+    openModal(wrapper);
+    await shortenAndWait(wrapper);
 
     expect(wrapper.find('input').prop('value')).toContain(
       'ta=MA1521(TUT:1),CS1010S(TUT:1,LAB:1),CS1231S(TUT:2,TUT:3)',
@@ -189,11 +205,12 @@ describe('ShareTimetable', () => {
       <ShareTimetable semester={1} timetable={timetable} hiddenModules={[]} taModules={{}} />,
     );
 
-    await openAndWait(wrapper);
+    openModal(wrapper);
+    await shortenAndWait(wrapper);
     expect(wrapper.find('input').prop('value')).toEqual(MOCK_SHORTURL);
     expect(wrapper.find(Maximize2).exists()).toBe(true);
 
-    wrapper.find('button').at(1).simulate('click');
+    await shortenAndWait(wrapper);
     expect(wrapper.find(Maximize2).exists()).toBe(false);
     expect(wrapper.find(Minimize2).exists()).toBe(true);
     expect(wrapper.find('input').prop('value')).not.toBe(MOCK_SHORTURL);
