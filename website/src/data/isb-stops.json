@@ -1,0 +1,1014 @@
+[
+  {
+    "caption": "Oei Tiong Ham Building",
+    "name": "OTH",
+    "LongName": "Oei Tiong Ham Building",
+    "ShortName": "OTH Bldg",
+    "latitude": 1.3198573188135356,
+    "longitude": 103.81783962249756,
+    "shuttles": [
+      {
+        "name": "BTC",
+        "routeid": 90292
+      },
+      {
+        "name": "BTC",
+        "routeid": 90292
+      },
+      {
+        "name": "L",
+        "routeid": 90288
+      },
+      {
+        "name": "L",
+        "routeid": 90288
+      }
+    ],
+    "opposite": null
+  },
+  {
+    "caption": "Botanic Gardens MRT",
+    "name": "BG-MRT",
+    "LongName": "Botanic Gardens MRT",
+    "ShortName": "BG MRT",
+    "latitude": 1.3226836154536714,
+    "longitude": 103.81625175476076,
+    "shuttles": [
+      {
+        "name": "BTC",
+        "routeid": 90292
+      },
+      {
+        "name": "L",
+        "routeid": 90288
+      }
+    ],
+    "opposite": "CG"
+  },
+  {
+    "caption": "Kent Ridge MRT",
+    "name": "KR-MRT",
+    "LongName": "Kent Ridge MRT",
+    "ShortName": "KR MRT",
+    "latitude": 1.2948847442264835,
+    "longitude": 103.78442566841842,
+    "shuttles": [
+      {
+        "name": "D2",
+        "routeid": 90295
+      },
+      {
+        "name": "A1",
+        "routeid": 90287
+      },
+      {
+        "name": "K",
+        "routeid": 90297
+      },
+      {
+        "name": "BTC",
+        "routeid": 90292
+      },
+      {
+        "name": "PUB:95"
+      }
+    ],
+    "leftLabel": true,
+    "collapse": 16,
+    "collapseBehavior": "interchange",
+    "collapsePair": "KR-MRT-OPP",
+    "opposite": "KR-MRT-OPP"
+  },
+  {
+    "caption": "LT 27",
+    "name": "LT27",
+    "LongName": "LT 27",
+    "ShortName": "LT 27",
+    "latitude": 1.297437218656418,
+    "longitude": 103.78099948167802,
+    "shuttles": [
+      {
+        "name": "BTC",
+        "routeid": 90292
+      },
+      {
+        "name": "D2",
+        "routeid": 90295
+      },
+      {
+        "name": "A1",
+        "routeid": 90287
+      },
+      {
+        "name": "K",
+        "routeid": 90297
+      },
+      {
+        "name": "PUB:95"
+      }
+    ],
+
+    "collapse": 15.75,
+    "collapseBehavior": "interchange",
+    "collapsePair": "S17",
+    "opposite": "S17"
+  },
+  {
+    "caption": "University Hall",
+    "name": "UHALL",
+    "LongName": "University Hall",
+    "ShortName": "UHall",
+    "latitude": 1.2972736458482568,
+    "longitude": 103.77864047884944,
+    "shuttles": [
+      {
+        "name": "BTC",
+        "routeid": 90292
+      },
+      {
+        "name": "D2",
+        "routeid": 90295
+      },
+      {
+        "name": "A1",
+        "routeid": 90287
+      },
+      {
+        "name": "K",
+        "routeid": 90297
+      },
+      {
+        "name": "PUB:95"
+      }
+    ],
+
+    "collapse": 16,
+    "collapseBehavior": "interchange",
+    "collapsePair": "UHALL-OPP",
+    "opposite": "UHALL-OPP"
+  },
+  {
+    "caption": "Opp University Health Centre",
+    "name": "UHC-OPP",
+    "LongName": "Opp University Health Centre",
+    "ShortName": "Opp UHC",
+    "latitude": 1.2988403243179818,
+    "longitude": 103.77559281885625,
+    "shuttles": [
+      {
+        "name": "BTC",
+        "routeid": 90292
+      },
+      {
+        "name": "D2",
+        "routeid": 90295
+      },
+      {
+        "name": "A1",
+        "routeid": 90287
+      },
+      {
+        "name": "K",
+        "routeid": 90297
+      },
+      {
+        "name": "PUB:95"
+      }
+    ],
+    "leftLabel": true,
+    "collapse": 16.75,
+    "collapseBehavior": "hide",
+    "collapsePair": "UHC",
+    "opposite": "UHC"
+  },
+  {
+    "caption": "University Town",
+    "name": "UTOWN",
+    "LongName": "University Town",
+    "ShortName": "UTown",
+    "latitude": 1.3035795710495477,
+    "longitude": 103.77453703433275,
+    "shuttles": [
+      {
+        "name": "D2",
+        "routeid": 90295
+      },
+      {
+        "name": "D1",
+        "routeid": 90294
+      },
+      {
+        "name": "BTC",
+        "routeid": 90292
+      },
+      {
+        "name": "E",
+        "routeid": 90296
+      },
+      {
+        "name": "E",
+        "routeid": 90296
+      }
+    ],
+    "opposite": null
+  },
+  {
+    "caption": "Raffles Hall",
+    "name": "RAFFLES",
+    "LongName": "Raffles Hall",
+    "ShortName": "Raffles Hall",
+    "latitude": 1.301008667392403,
+    "longitude": 103.77260483801366,
+    "shuttles": [
+      {
+        "name": "BTC",
+        "routeid": 90292
+      },
+      {
+        "name": "E",
+        "routeid": 90296
+      },
+      {
+        "name": "PUB:151"
+      },
+      {
+        "name": "PUB:96"
+      }
+    ],
+    "collapseLabel": 15.75,
+    "leftLabel": true,
+    "opposite": "MUSEUM"
+  },
+  {
+    "caption": "Kent Vale",
+    "name": "KV",
+    "LongName": "Kent Vale",
+    "ShortName": "Kent Vale",
+    "latitude": 1.3019109978924954,
+    "longitude": 103.76963295042516,
+    "shuttles": [
+      {
+        "name": "K",
+        "routeid": 90297
+      },
+      {
+        "name": "BTC",
+        "routeid": 90292
+      },
+      {
+        "name": "E",
+        "routeid": 90296
+      }
+    ],
+    "leftLabel": true,
+    "opposite": null
+  },
+  {
+    "caption": "Museum",
+    "name": "MUSEUM",
+    "LongName": "Museum",
+    "ShortName": "Museum",
+    "latitude": 1.301132017197494,
+    "longitude": 103.77342123538257,
+    "shuttles": [
+      {
+        "name": "A2",
+        "routeid": 90289
+      },
+      {
+        "name": "D2",
+        "routeid": 90295
+      },
+      {
+        "name": "D1",
+        "routeid": 90294
+      },
+      {
+        "name": "K",
+        "routeid": 90297
+      },
+      {
+        "name": "BTC",
+        "routeid": 90292
+      },
+      {
+        "name": "PUB:151"
+      }
+    ],
+    "opposite": "RAFFLES"
+  },
+  {
+    "caption": "Yusof Ishak House",
+    "name": "YIH",
+    "LongName": "Yusof Ishak House",
+    "ShortName": "YIH",
+    "latitude": 1.2988865805353285,
+    "longitude": 103.77428121864796,
+    "shuttles": [
+      {
+        "name": "D1",
+        "routeid": 90294
+      },
+      {
+        "name": "A1",
+        "routeid": 90287
+      },
+      {
+        "name": "BTC",
+        "routeid": 90292
+      },
+      {
+        "name": "K",
+        "routeid": 90297
+      },
+      {
+        "name": "PUB:151"
+      },
+      {
+        "name": "PUB:95"
+      }
+    ],
+    "collapse": 16,
+    "collapseBehavior": "interchange",
+    "collapsePair": "YIH-OPP",
+    "opposite": "YIH-OPP"
+  },
+  {
+    "caption": "Central Library",
+    "name": "CLB",
+    "LongName": "Central Library",
+    "ShortName": "CLB",
+    "latitude": 1.2963491911313108,
+    "longitude": 103.77220485359432,
+    "shuttles": [
+      {
+        "name": "A1",
+        "routeid": 90287
+      },
+      {
+        "name": "D1",
+        "routeid": 90294
+      },
+      {
+        "name": "BTC",
+        "routeid": 90292
+      },
+      {
+        "name": "K",
+        "routeid": 90297
+      },
+      {
+        "name": "PUB:151"
+      },
+      {
+        "name": "PUB:95"
+      }
+    ],
+    "opposite": "IT"
+  },
+  {
+    "caption": "LT 13",
+    "name": "LT13",
+    "LongName": "LT 13",
+    "ShortName": "LT 13",
+    "latitude": 1.2947905556920793,
+    "longitude": 103.77054959535602,
+    "shuttles": [
+      {
+        "name": "D1",
+        "routeid": 90294
+      },
+      {
+        "name": "A1",
+        "routeid": 90287
+      },
+      {
+        "name": "BTC",
+        "routeid": 90292
+      }
+    ],
+    "collapse": 15,
+    "collapseBehavior": "interchange",
+    "collapsePair": "LT13-OPP",
+    "opposite": "LT13-OPP"
+  },
+  {
+    "caption": "AS 5",
+    "name": "AS5",
+    "LongName": "AS 5",
+    "ShortName": "AS 5",
+    "latitude": 1.2934739269872173,
+    "longitude": 103.77176061272623,
+    "shuttles": [
+      {
+        "name": "D1",
+        "routeid": 90294
+      },
+      {
+        "name": "A1",
+        "routeid": 90287
+      },
+      {
+        "name": "BTC",
+        "routeid": 90292
+      }
+    ],
+    "leftLabel": true,
+    "collapse": 15.75,
+    "collapseBehavior": "interchange",
+    "collapsePair": "NUSS-OPP",
+    "opposite": "NUSS-OPP"
+  },
+  {
+    "caption": "BIZ 2",
+    "name": "BIZ2",
+    "LongName": "BIZ 2",
+    "ShortName": "BIZ 2",
+    "latitude": 1.2932436509698975,
+    "longitude": 103.77514354884626,
+    "shuttles": [
+      {
+        "name": "A1",
+        "routeid": 90287
+      },
+      {
+        "name": "D1",
+        "routeid": 90294
+      },
+      {
+        "name": "BTC",
+        "routeid": 90292
+      }
+    ],
+    "leftLabel": true,
+    "opposite": "HSSML-OPP"
+  },
+  {
+    "caption": "Prince George's Park",
+    "name": "PGP",
+    "LongName": "Prince George's Park",
+    "ShortName": "PGP",
+    "latitude": 1.291766129826178,
+    "longitude": 103.78036145120859,
+    "shuttles": [
+      {
+        "name": "D2",
+        "routeid": 90295
+      },
+      {
+        "name": "A1",
+        "routeid": 90287
+      },
+      {
+        "name": "BTC",
+        "routeid": 90292
+      },
+      {
+        "name": "K",
+        "routeid": 90297
+      }
+    ],
+    "leftLabel": true,
+    "opposite": "PGPR"
+  },
+  {
+    "caption": "College Green",
+    "name": "CG",
+    "LongName": "College Green",
+    "ShortName": "College Gr",
+    "latitude": 1.3232413662131859,
+    "longitude": 103.81638050079347,
+    "shuttles": [
+      {
+        "name": "BTC",
+        "routeid": 90292
+      },
+      {
+        "name": "L",
+        "routeid": 90288
+      },
+      {
+        "name": "PUB:151"
+      },
+      {
+        "name": "PUB:153"
+      },
+      {
+        "name": "PUB:154"
+      },
+      {
+        "name": "PUB:156"
+      },
+      {
+        "name": "PUB:170"
+      },
+      {
+        "name": "PUB:186"
+      },
+      {
+        "name": "PUB:48"
+      },
+      {
+        "name": "PUB:67"
+      }
+    ],
+    "opposite": "BG-MRT"
+  },
+  {
+    "caption": "EA",
+    "name": "EA",
+    "LongName": "EA",
+    "ShortName": "EA",
+    "latitude": 1.300698281714852,
+    "longitude": 103.77012077718973,
+    "shuttles": [
+      {
+        "name": "E",
+        "routeid": 90296
+      },
+      {
+        "name": "PUB:183"
+      },
+      {
+        "name": "PUB:188"
+      },
+      {
+        "name": "PUB:33"
+      },
+      {
+        "name": "PUB:96"
+      }
+    ],
+    "collapse": 16,
+    "collapseBehavior": "interchange",
+    "collapsePair": "JP-SCH-16151",
+    "opposite": "JP-SCH-16151"
+  },
+  {
+    "caption": "SDE 3",
+    "name": "SDE3",
+    "LongName": "SDE 3",
+    "ShortName": "SDE 3",
+    "latitude": 1.2978737200173858,
+    "longitude": 103.76983042806388,
+    "shuttles": [
+      {
+        "name": "E",
+        "routeid": 90296
+      },
+      {
+        "name": "PUB:183"
+      },
+      {
+        "name": "PUB:188"
+      },
+      {
+        "name": "PUB:33"
+      },
+      {
+        "name": "PUB:96"
+      }
+    ],
+    "collapse": 16,
+    "collapseBehavior": "interchange",
+    "leftLabel": false,
+    "collapsePair": "SDE3-OPP",
+    "opposite": "SDE3-OPP"
+  },
+  {
+    "caption": "Information Technology",
+    "name": "IT",
+    "LongName": "Information Technology",
+    "ShortName": "IT",
+    "latitude": 1.2972656012836414,
+    "longitude": 103.77279158681633,
+    "shuttles": [
+      {
+        "name": "A2",
+        "routeid": 90289
+      },
+      {
+        "name": "D1",
+        "routeid": 90294
+      },
+      {
+        "name": "E",
+        "routeid": 90296
+      },
+      {
+        "name": "PUB:151"
+      },
+      {
+        "name": "PUB:95"
+      },
+      {
+        "name": "PUB:96"
+      }
+    ],
+    "leftLabel": true,
+    "opposite": "CLB"
+  },
+  {
+    "caption": "Opp Yusof Ishak House",
+    "name": "YIH-OPP",
+    "LongName": "Opp Yusof Ishak House",
+    "ShortName": "Opp YIH",
+    "latitude": 1.2988195425389106,
+    "longitude": 103.7741430848837,
+    "shuttles": [
+      {
+        "name": "D1",
+        "routeid": 90294
+      },
+      {
+        "name": "A2",
+        "routeid": 90289
+      },
+      {
+        "name": "E",
+        "routeid": 90296
+      },
+      {
+        "name": "PUB:151"
+      },
+      {
+        "name": "PUB:95"
+      },
+      {
+        "name": "PUB:96"
+      }
+    ],
+    "leftLabel": true,
+    "collapse": 16,
+    "collapseBehavior": "hide",
+    "collapsePair": "YIH",
+    "opposite": "YIH"
+  },
+  {
+    "caption": "Opp SDE 3",
+    "name": "SDE3-OPP",
+    "LongName": "Opp SDE 3",
+    "ShortName": "Opp SDE 3",
+    "latitude": 1.2978676027978284,
+    "longitude": 103.76966916024686,
+    "shuttles": [
+      {
+        "name": "K",
+        "routeid": 90297
+      },
+      {
+        "name": "PUB:183"
+      },
+      {
+        "name": "PUB:188"
+      },
+      {
+        "name": "PUB:33"
+      }
+    ],
+    "collapse": 16,
+    "collapseBehavior": "hide",
+    "leftLabel": true,
+    "collapsePair": "SDE3",
+    "opposite": "SDE3"
+  },
+  {
+    "caption": "The Japanese Primary School",
+    "name": "JP-SCH-16151",
+    "LongName": "The Japanese Primary School",
+    "ShortName": "Jpn Pr Sch",
+    "latitude": 1.30074118600086,
+    "longitude": 103.77000007778408,
+    "shuttles": [
+      {
+        "name": "K",
+        "routeid": 90297
+      },
+      {
+        "name": "PUB:183"
+      },
+      {
+        "name": "PUB:188"
+      },
+      {
+        "name": "PUB:33"
+      }
+    ],
+    "collapse": 16,
+    "collapseBehavior": "hide",
+    "leftLabel": true,
+    "collapsePair": "EA",
+    "opposite": "EA"
+  },
+  {
+    "caption": "University Health Centre",
+    "name": "UHC",
+    "LongName": "University Health Centre",
+    "ShortName": "UHC",
+    "latitude": 1.2987940680998082,
+    "longitude": 103.77637267112733,
+    "shuttles": [
+      {
+        "name": "A2",
+        "routeid": 90289
+      },
+      {
+        "name": "D2",
+        "routeid": 90295
+      },
+      {
+        "name": "K",
+        "routeid": 90297
+      },
+      {
+        "name": "PUB:95"
+      }
+    ],
+    "collapse": 16.75,
+    "collapseBehavior": "interchange",
+    "collapsePair": "UHC-OPP",
+    "opposite": "UHC-OPP"
+  },
+  {
+    "caption": "Opp University Hall",
+    "name": "UHALL-OPP",
+    "LongName": "Opp University Hall",
+    "ShortName": "Opp UHall",
+    "latitude": 1.2975297311415932,
+    "longitude": 103.77793505787851,
+    "shuttles": [
+      {
+        "name": "A2",
+        "routeid": 90289
+      },
+      {
+        "name": "D2",
+        "routeid": 90295
+      },
+      {
+        "name": "K",
+        "routeid": 90297
+      },
+      {
+        "name": "PUB:95"
+      }
+    ],
+    "leftLabel": true,
+    "collapse": 16,
+    "collapseBehavior": "hide",
+    "collapsePair": "UHALL",
+    "opposite": "UHALL"
+  },
+  {
+    "caption": "S 17",
+    "name": "S17",
+    "LongName": "S 17",
+    "ShortName": "S 17",
+    "latitude": 1.2974912680707087,
+    "longitude": 103.7806844059378,
+    "shuttles": [
+      {
+        "name": "A2",
+        "routeid": 90289
+      },
+      {
+        "name": "D2",
+        "routeid": 90295
+      },
+      {
+        "name": "K",
+        "routeid": 90297
+      },
+      {
+        "name": "PUB:95"
+      }
+    ],
+    "leftLabel": true,
+    "collapse": 15.75,
+    "collapseBehavior": "hide",
+    "collapsePair": "LT27",
+    "opposite": "LT27"
+  },
+  {
+    "caption": "Opp Kent Ridge MRT",
+    "name": "KR-MRT-OPP",
+    "LongName": "Opp Kent Ridge MRT",
+    "ShortName": "Opp KR MRT",
+    "latitude": 1.2949484304221306,
+    "longitude": 103.78454837948085,
+    "shuttles": [
+      {
+        "name": "D2",
+        "routeid": 90295
+      },
+      {
+        "name": "A2",
+        "routeid": 90289
+      },
+      {
+        "name": "K",
+        "routeid": 90297
+      },
+      {
+        "name": "PUB:95"
+      }
+    ],
+    "collapse": 16,
+    "collapseBehavior": "hide",
+    "collapsePair": "KR-MRT",
+    "opposite": "KR-MRT"
+  },
+  {
+    "caption": "Prince George's Park Foyer",
+    "name": "PGPR",
+    "LongName": "Prince George's Park Foyer",
+    "ShortName": "PGP Foyer",
+    "latitude": 1.291009603808107,
+    "longitude": 103.78104776144029,
+    "shuttles": [
+      {
+        "name": "D2",
+        "routeid": 90295
+      },
+      {
+        "name": "A2",
+        "routeid": 90289
+      },
+      {
+        "name": "K",
+        "routeid": 90297
+      }
+    ],
+    "opposite": "PGP"
+  },
+  {
+    "caption": "COM 3",
+    "name": "COM3",
+    "LongName": "COM 3",
+    "ShortName": "COM 3",
+    "latitude": 1.2947986002645568,
+    "longitude": 103.775053024292,
+    "shuttles": [
+      {
+        "name": "D1",
+        "routeid": 90294
+      },
+      {
+        "name": "D1",
+        "routeid": 90294
+      },
+      { "name": "D2", "routeid": 90295 },
+      { "name": "D2", "routeid": 90295 }
+    ],
+    "opposite": null
+  },
+  {
+    "caption": "Opp HSSML",
+    "name": "HSSML-OPP",
+    "LongName": "Opp Hon Sui Sen Memorial Library",
+    "ShortName": "Opp HSSML",
+    "latitude": 1.292876281909209,
+    "longitude": 103.77497591078283,
+    "shuttles": [
+      {
+        "name": "D1",
+        "routeid": 90294
+      },
+      {
+        "name": "A2",
+        "routeid": 90289
+      }
+    ],
+    "collapse": 14,
+    "collapseBehavior": "hide",
+    "collapseLabel": 15,
+    "opposite": "BIZ2"
+  },
+  {
+    "caption": "Opp NUSS",
+    "name": "NUSS-OPP",
+    "LongName": "Opp NUSS",
+    "ShortName": "Opp NUSS",
+    "latitude": 1.2933371691803295,
+    "longitude": 103.77247273921968,
+    "shuttles": [
+      {
+        "name": "A2",
+        "routeid": 90289
+      },
+      {
+        "name": "D1",
+        "routeid": 90294
+      }
+    ],
+    "collapse": 15.75,
+    "collapseBehavior": "hide",
+    "collapsePair": "AS5",
+    "opposite": "AS5"
+  },
+  {
+    "caption": "Ventus",
+    "name": "LT13-OPP",
+    "LongName": "Ventus",
+    "ShortName": "Ventus",
+    "latitude": 1.295346804299192,
+    "longitude": 103.77065177075566,
+    "shuttles": [
+      {
+        "name": "A2",
+        "routeid": 90289
+      },
+      {
+        "name": "D1",
+        "routeid": 90294
+      }
+    ],
+    "leftLabel": true,
+    "collapse": 15,
+    "collapseBehavior": "hide",
+    "collapsePair": "LT13",
+    "opposite": "LT13"
+  },
+  {
+    "caption": "Kent Ridge Bus Terminal",
+    "name": "KRB",
+    "LongName": "Kent Ridge Bus Terminal",
+    "ShortName": "KR Bus Ter",
+    "latitude": 1.2942287763181035,
+    "longitude": 103.76979857683183,
+    "shuttles": [
+      {
+        "name": "A1",
+        "routeid": 90287
+      },
+      {
+        "name": "A2",
+        "routeid": 90289
+      },
+      {
+        "name": "A2",
+        "routeid": 90289
+      },
+      {
+        "name": "A1",
+        "routeid": 90287
+      },
+      {
+        "name": "PUB:10"
+      },
+      {
+        "name": "PUB:151"
+      },
+      {
+        "name": "PUB:200"
+      },
+      {
+        "name": "PUB:201"
+      },
+      {
+        "name": "PUB:33"
+      },
+      {
+        "name": "PUB:95"
+      }
+    ],
+    "leftLabel": true,
+    "opposite": null
+  },
+  {
+    "caption": "TCOMS",
+    "name": "TCOMS",
+    "LongName": "TCOMS",
+    "ShortName": "TCOMS",
+    "latitude": 1.2937554871546668,
+    "longitude": 103.77687323838474,
+    "shuttles": [
+      {
+        "name": "A2",
+        "routeid": 90289
+      },
+      { "name": "D2", "routeid": 90295 }
+    ],
+    "opposite": "TCOMS-OPP"
+  },
+  {
+    "caption": "Opp TCOMS",
+    "name": "TCOMS-OPP",
+    "LongName": "Opp TCOMS",
+    "ShortName": "Opp TCOMS",
+    "latitude": 1.2937554871546668,
+    "longitude": 103.77687323838474,
+    "shuttles": [
+      {
+        "name": "A1",
+        "routeid": 90287
+      },
+      { "name": "D2", "routeid": 90295 }
+    ],
+    "collapse": 16,
+    "collapseBehavior": "hide",
+    "leftLabel": true,
+    "collapsePair": "TCOMS",
+    "opposite": "TCOMS"
+  }
+]
