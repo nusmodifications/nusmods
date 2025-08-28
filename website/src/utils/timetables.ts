@@ -625,7 +625,7 @@ export function deserializeTa(serialized: string): TaModulesConfig {
   // If user manually enters multiple TA query keys, use latest one
   const ta = Array.isArray(params.ta) ? last(params.ta) : params.ta;
   if (!ta) return deserialized;
-  ta.split(`)${LESSON_SEP}`).forEach((moduleConfig) => {
+  ta.split(LESSON_SEP).forEach((moduleConfig) => {
     const moduleCodeMatches = moduleConfig.match(/(.*)\(/);
     if (moduleCodeMatches === null) {
       return;
