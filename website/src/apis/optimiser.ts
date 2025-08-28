@@ -35,6 +35,7 @@ export interface OptimiseResponse {
   DaySlots?: (LessonSlot | null)[][];
 
   // TODO: implement type
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
 
