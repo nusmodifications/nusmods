@@ -37,6 +37,7 @@
     "@babel/preset-react": "7.26.3",
     "@babel/preset-typescript": "7.26.0",
     "@cfaester/enzyme-adapter-react-18": "0.8.0",
+    "@jest/globals": "29.7.0",
     "@packtracker/webpack-plugin": "2.3.0",
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.15",
     "@svgr/webpack": "8.1.0",
