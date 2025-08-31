@@ -2667,14 +2667,6 @@
       "y": 1.2960524927839885
     }
   },
-  "RC2-G-02": {
-    "roomName": "Classroom 9",
-    "floor": null,
-    "location": {
-      "x": 103.7719907295531,
-      "y": 1.306375323655279
-    }
-  },
   "S13-0313": {
     "roomName": "Level 3 Physics Lab",
     "floor": 3,
@@ -4943,8 +4935,8 @@
     "roomName": "LT35",
     "floor": 1,
     "location": {
-      "x": 103.77326933994733,
-      "y": 1.296587176242994
+      "x": 103.781738,
+      "y": 1.295310
     }
   },
   "ERC-SR1": {
@@ -5215,8 +5207,8 @@
     "roomName": "DDL2",
     "floor": 1,
     "location": {
-      "x": 103.77327470244661,
-      "y": 1.2963404761831323
+      "x": 103.770599,
+      "y": 1.300340
     }
   },
   "YSTCM-HALL": {
@@ -5275,14 +5267,6 @@
       "y": 1.2974667153911863
     }
   },
-  "EC-01-03A": {
-    "roomName": "EC-01-03A",
-    "floor": 1,
-    "location": {
-      "x": 103.7733042240143,
-      "y": 1.297649058834867
-    }
-  },
   "I3-LT38": {
     "roomName": "LT38",
     "floor": 1,
@@ -5297,6 +5281,238 @@
     "location": {
       "x": 103.77789123212402,
       "y": 1.295847075991287
+    }
+  },
+  "RC1-G-01": {
+    "roomName": "Saga Lecture Theatre 1",
+    "floor": 0,
+    "location": {
+      "x": 103.771788,
+      "y": 1.305859
+    }
+  },
+  "RC2-G-01": {
+    "roomName": "Elm Tan Chin Tuan Lecture Theatre",
+    "floor": 0,
+    "location": {
+      "x": 103.77229,
+      "y": 1.306275
+    }
+  },
+  "RC2-G-02": {
+    "roomName": "Elm Classroom 9",
+    "floor": 0,
+    "location": {
+      "x": 103.77229,
+      "y": 1.306275
+    }
+  },
+  "WC-01-Amphitheatre": {
+    "roomName": "Arts Centre Amphitheatre",
+    "floor": 1,
+    "location": {
+      "x": 103.772115,
+      "y": 1.307384
+    }
+  },
+  "WC-01-01": {
+    "roomName": "Arts Centre Performance Hall Foyer",
+    "floor": 1,
+    "location": {
+      "x": 103.771844,
+      "y": 1.307085
+    }
+  },
+  "WC-01-02": {
+    "roomName": "Arts Centre Performance Hall",
+    "floor": 1,
+    "location": {
+      "x": 103.771844,
+      "y": 1.307085
+    }
+  },
+  "WC-02-03": {
+    "roomName": "Arts Centre Practice Room 1",
+    "floor": 2,
+    "location": {
+      "x": 103.771844,
+      "y": 1.307085
+    }
+  },
+  "WC-02-05": {
+    "roomName": "Arts Centre Practice Room 2",
+    "floor": 2,
+    "location": {
+      "x": 103.771844,
+      "y": 1.307085
+    }
+  },
+  "WC-02-06": {
+    "roomName": "Arts Centre Practice Room 3",
+    "floor": 2,
+    "location": {
+      "x": 103.771844,
+      "y": 1.307085
+    }
+  },
+  "WC-02-07": {
+    "roomName": "Arts Centre Practice Room 4",
+    "floor": 2,
+    "location": {
+      "x": 103.771844,
+      "y": 1.307085
+    }
+  },
+  "WC-02-09": {
+    "roomName": "Arts Centre Practice Room 5",
+    "floor": 2,
+    "location": {
+      "x": 103.771844,
+      "y": 1.307085
+    }
+  },
+  "WC-02-08": {
+    "roomName": "Arts Centre Practice Room 6",
+    "floor": 2,
+    "location": {
+      "x": 103.771844,
+      "y": 1.307085
+    }
+  },
+  "EC-01-03A": {
+    "roomName": "Library Global Learning Room 1",
+    "floor": 1,
+    "location": {
+      "x": 103.772558,
+      "y": 1.307142
+    }
+  },
+  "EC-01-03B": {
+    "roomName": "Library Global Learning Room 2",
+    "floor": 1,
+    "location": {
+      "x": 103.772558,
+      "y": 1.307142
+    }
+  },
+  "EC-02-17": {
+    "roomName": "Science Blk Classroom 17",
+    "floor": 2,
+    "location": {
+      "x": 103.772676,
+      "y": 1.307812
+    }
+  },
+  "RC3-B-01": {
+    "roomName": "Cendana Dance Studio",
+    "floor": -1,
+    "location": {
+      "x": 103.772289,
+      "y": 1.307734
+    }
+  },
+  "RC3-B-02": {
+    "roomName": "Cendana Georgette Chen Arts Studio",
+    "floor": -1,
+    "location": {
+      "x": 103.772289,
+      "y": 1.307734
+    }
+  },
+  "RC1-G-04": {
+    "roomName": "Saga Classroom 1 (Saga Siong Keng Hoon Room)",
+    "floor": 0,
+    "location": {
+      "x": 103.771788,
+      "y": 1.305859
+    }
+  },
+  "RC1-01-05A": {
+    "roomName": "Saga Classroom 2",
+    "floor": 1,
+    "location": {
+      "x": 103.771788,
+      "y": 1.305859
+    }
+  },
+  "RC1-01-01": {
+    "roomName": "Saga Classroom 3",
+    "floor": 1,
+    "location": {
+      "x": 103.771788,
+      "y": 1.305859
+    }
+  },
+  "RC1-01-4K": {
+    "roomName": "Saga Classroom 5",
+    "floor": 1,
+    "location": {
+      "x": 103.771788,
+      "y": 1.305859
+    }
+  },
+  "RC1-02-01": {
+    "roomName": "Saga Classroom 6",
+    "floor": 2,
+    "location": {
+      "x": 103.771788,
+      "y": 1.305859
+    }
+  },
+  "RC1-02-05": {
+    "roomName": "Saga Classroom 8",
+    "floor": 2,
+    "location": {
+      "x": 103.771788,
+      "y": 1.305859
+    }
+  },
+  "RC2-01-02": {
+    "roomName": "Elm Classroom 10 (Kewalram Chanrai Room)",
+    "floor": 1,
+    "location": {
+      "x": 103.77229,
+      "y": 1.306275
+    }
+  },
+  "RC2-02-03": {
+    "roomName": "Elm Classroom 13",
+    "floor": 2,
+    "location": {
+      "x": 103.77229,
+      "y": 1.306275
+    }
+  },
+  "RC2-02-06": {
+    "roomName": "Elm Classroom 14",
+    "floor": 2,
+    "location": {
+      "x": 103.77229,
+      "y": 1.306275
+    }
+  },
+  "RC3-01-04": {
+    "roomName": "Cendana College - Classroom 18",
+    "floor": 1,
+    "location": {
+      "x": 103.77215597089427,
+      "y": 1.3081995151835102
+    }
+  },
+  "RC3-01-02": {
+    "roomName": "Cendana College - Classroom 20",
+    "floor": 1,
+    "location": {
+      "x": 103.77215597089427,
+      "y": 1.3081995151835102
+    }
+  },
+  "RC3-02-04F": {
+    "roomName": "Cendana College - Classroom 23",
+    "floor": 2,
+    "location": {
+      "x": 103.77215597089427,
+      "y": 1.3081995151835102
     }
   }
 }

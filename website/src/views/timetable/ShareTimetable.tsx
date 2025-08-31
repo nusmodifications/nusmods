@@ -33,7 +33,7 @@ type Props = {
 type State = {
   isOpen: boolean;
   urlCopied: CopyState;
-  shortUrl: string | null;
+  shortUrl: string | null | undefined; // undefined = not loaded yet; null = failed to load
   fullUrl: string | null;
   isFullUrl: boolean;
   isLoading: boolean;
@@ -48,12 +48,16 @@ function shareUrl(
   return absolutePath(timetableShare(semester, timetable, hiddenModules, taModules));
 }
 
-function getToolTipContent(shortUrl: string | null, isFullUrl: boolean, isLoading: boolean) {
+function getToolTipContent(
+  shortUrl: string | null | undefined,
+  isFullUrl: boolean,
+  isLoading: boolean,
+) {
   if (isLoading) {
     return 'Shortening link';
   }
 
-  if (!shortUrl) {
+  if (shortUrl === null) {
     return 'Link shortener temporarily unavailable';
   }
 
@@ -79,7 +83,7 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
   override state: State = {
     isOpen: false,
     urlCopied: NOT_COPIED,
-    shortUrl: null,
+    shortUrl: undefined,
     fullUrl: null,
     isFullUrl: true,
     isLoading: false,
@@ -94,48 +98,35 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
     }
   }
 
-  loadUrl = () => {
+  updateFullUrl = () => {
     const { semester, timetable, hiddenModules, taModules } = this.props;
     const url = shareUrl(semester, timetable, hiddenModules, taModules);
-
     // Don't do anything if the long URL has not changed
     if (this.url === url) return;
-
-    const showFullUrl = () => this.setState({ fullUrl: url, isFullUrl: true });
     this.url = url;
+    this.setState({ fullUrl: url, shortUrl: undefined, isFullUrl: true });
+  };
 
-    // Only try to retrieve shortUrl if the user is online
-    if (!navigator.onLine) {
-      showFullUrl();
+  tryLoadShortUrl = async () => {
+    // Don't load short URL if we're currently trying or if we already tried.
+    if (!this.url || !navigator.onLine || this.state.isLoading || this.state.shortUrl !== undefined)
       return;
-    }
 
-    this.setState({ fullUrl: url, shortUrl: null, isFullUrl: true, isLoading: true });
-
-    const urlURL = new URL(url);
-    axios
-      .put('https://shorten.nusmods.com', {
+    this.setState({ isLoading: true });
+    const urlURL = new URL(this.url);
+    try {
+      const { data } = await axios.put('https://shorten.nusmods.com', {
         longUrl: urlURL.pathname + urlURL.search,
-      })
-      .then(({ data }) => {
-        if (data[SHORT_URL_KEY]) {
-          this.setState({
-            shortUrl: data[SHORT_URL_KEY],
-            isFullUrl: false,
-            isLoading: false,
-          });
-        } else {
-          this.setState({ isLoading: false });
-        }
-      })
-      // Cannot get short URL - just use long URL instead
-      .catch(() => {
-        this.setState({ isLoading: false });
       });
+      this.setState({ shortUrl: data[SHORT_URL_KEY] ?? null, isLoading: false });
+    } catch {
+      // Cannot get short URL - just use long URL instead
+      this.setState({ shortUrl: null, isLoading: false });
+    }
   };
 
   openModal = () => {
-    this.loadUrl();
+    this.updateFullUrl();
     this.setState({ isOpen: true });
   };
 
@@ -161,14 +152,20 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
     }
   };
 
-  toggleShortenUrl = () => {
+  toggleShortenUrl = async () => {
+    await this.tryLoadShortUrl();
     this.setState((prevState) => ({
-      isFullUrl: !prevState.isFullUrl,
+      isFullUrl: !(prevState.isFullUrl && prevState.shortUrl !== null),
       urlCopied: NOT_COPIED,
     }));
   };
 
-  renderSharing(fullUrl: string, shortUrl: string | null, isFullUrl: boolean, isLoading: boolean) {
+  renderSharing(
+    fullUrl: string,
+    shortUrl: string | null | undefined,
+    isFullUrl: boolean,
+    isLoading: boolean,
+  ) {
     const { semester } = this.props;
     const url = isFullUrl ? fullUrl : shortUrl ?? fullUrl;
     const toggleUrlButton = isFullUrl ? <Minimize2 /> : <Maximize2 />;
@@ -189,7 +186,7 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
                 type="button"
                 aria-label="Shorten URL"
                 onClick={this.toggleShortenUrl}
-                disabled={!shortUrl}
+                disabled={shortUrl === null || isLoading}
               >
                 {isLoading ? <LoadingSpinner small white /> : toggleUrlButton}
               </button>
@@ -273,8 +270,8 @@ export default class ShareTimetable extends React.PureComponent<Props, State> {
           type="button"
           className="btn btn-outline-primary btn-svg"
           onClick={this.openModal}
-          onMouseOver={this.loadUrl}
-          onFocus={this.loadUrl}
+          onMouseOver={this.updateFullUrl}
+          onFocus={this.updateFullUrl}
         >
           <Repeat className="svg svg-small" />
           Share/Sync
