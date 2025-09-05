@@ -1,10 +1,10 @@
 import { shallow } from 'enzyme';
 
-import { ColoredLesson, HoverLesson } from 'types/timetables';
+import { HoverLesson, InteractableLesson } from 'types/timetables';
 import { EVERY_WEEK } from 'test-utils/timetable';
 import TimetableCell from './TimetableCell';
 
-const DEFAULT_LESSON: ColoredLesson = {
+const DEFAULT_LESSON: InteractableLesson = {
   moduleCode: 'CS1010',
   title: 'Intro',
   classNo: '1',
@@ -15,6 +15,7 @@ const DEFAULT_LESSON: ColoredLesson = {
   endTime: '1200',
   venue: 'LT26',
   colorIndex: 1,
+  lessonIndex: 1,
 };
 
 type Props = {
@@ -67,6 +68,7 @@ describe(TimetableCell, () => {
         moduleCode: 'CS1010',
         classNo: '1',
         lessonType: 'Lecture',
+        lessonIndex: 1,
       },
     });
 
@@ -82,6 +84,7 @@ describe(TimetableCell, () => {
         moduleCode: 'CS1010',
         classNo: '1',
         lessonType: 'Tutorial',
+        lessonIndex: 2,
       },
     })
       .wrapper.find('button')
@@ -94,6 +97,7 @@ describe(TimetableCell, () => {
         moduleCode: 'CS1010',
         classNo: '2',
         lessonType: 'Lecture',
+        lessonIndex: 3,
       },
     })
       .wrapper.find('button')
@@ -106,6 +110,7 @@ describe(TimetableCell, () => {
         moduleCode: 'CS1101S',
         classNo: '1',
         lessonType: 'Lecture',
+        lessonIndex: 0,
       },
     })
       .wrapper.find('button')

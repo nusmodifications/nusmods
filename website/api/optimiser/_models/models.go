@@ -6,6 +6,11 @@ import (
 	"strings"
 )
 
+type LessonType = string
+type ClassNo = string
+type LessonIndex = int
+type LessonsByLessonTypeByClassNo = map[LessonType]map[ClassNo][]LessonIndex
+
 type OptimiserRequest struct {
 	Modules             []string `json:"modules"`             // Format: ["CS1010S", "CS2030S"]
 	Recordings          []string `json:"recordings"`          // Format: ["CS1010S Lecture", "CS2030S Laboratory"]
@@ -27,14 +32,14 @@ type TimetableState struct {
 }
 
 type ModuleSlot struct {
-	ClassNo     string      `json:"classNo"`
+	ClassNo     ClassNo     `json:"classNo"`
 	Day         string      `json:"day"`
 	EndTime     string      `json:"endTime"`
 	LessonType  string      `json:"lessonType"`
 	StartTime   string      `json:"startTime"`
 	Venue       string      `json:"venue"`
 	Coordinates Coordinates `json:"coordinates"`
-	Weeks       any       `json:"weeks"`
+	Weeks       any         `json:"weeks"`
 
 	// Parsed fields
 	StartMin    int    // Minutes from 00:00 (e.g., 540 for 09:00)
@@ -43,6 +48,7 @@ type ModuleSlot struct {
 	LessonKey   string // "MODULE|LessonType"
 	WeeksSet    map[int]bool
 	WeeksString string
+	LessonIndex LessonIndex
 }
 
 // ParseModuleSlotFields parses and populates the parsed fields in ModuleSlot for faster computation

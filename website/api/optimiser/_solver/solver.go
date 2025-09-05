@@ -54,7 +54,7 @@ func BeamSearch(
 			// iterate over all slot groups for the current lesson
 			for i := 0; i < limit; i++ {
 				group := slotGroups[i]
-				
+
 				// Filters out invalid slots by checking if
 				// DayIndex is not -1 which marks invalid slots when parsing in ParseModuleSlotFields func
 				validGroup := make([]models.ModuleSlot, 0, len(group))
@@ -87,7 +87,7 @@ func BeamSearch(
 			}
 		}
 
-		// if no valid partial timetables found then skip to next lesson 
+		// if no valid partial timetables found then skip to next lesson
 		// by keeping the beam to create partial timetables
 		if len(nextBeam) == 0 {
 			continue
@@ -394,7 +394,7 @@ func Solve(w http.ResponseWriter, req models.OptimiserRequest) {
 	})
 
 	best := BeamSearch(lessons, lessonToSlots, 2500, 100, recordings, req)
-	shareableLink := GenerateNUSModsShareableLink(best.Assignments, req)
+	shareableLink := GenerateNUSModsShareableLink(best.Assignments, lessonToSlots, req)
 	response := SolveResponse{
 		TimetableState: best,
 		ShareableLink:  shareableLink,

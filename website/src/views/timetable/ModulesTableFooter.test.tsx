@@ -13,15 +13,12 @@ describe(countShownMCs, () => {
   it('should not count hidden modules', () => {
     const modules = [BFS1001, CS1010S, CS3216];
     const hiddenInTimetable = [CS3216.moduleCode];
-    expect(countShownMCs(modules, hiddenInTimetable, {})).toEqual(4);
+    expect(countShownMCs(modules, hiddenInTimetable, [])).toEqual(4);
   });
 
   it('should not count TA modules', () => {
     const modules = [BFS1001, CS1010S, CS3216];
-    const taInTimetable: TaModulesConfig = {
-      [CS1010S.moduleCode]: [],
-      [CS3216.moduleCode]: [['Tutorial', '1']],
-    };
+    const taInTimetable: TaModulesConfig = [CS3216.moduleCode];
     expect(countShownMCs(modules, [], taInTimetable)).toEqual(4);
   });
 });

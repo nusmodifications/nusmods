@@ -1,16 +1,18 @@
-import { get, isEqual, omit, values } from 'lodash';
+import { get, omit, uniq, values } from 'lodash';
 import { produce } from 'immer';
 import { createMigrate } from 'redux-persist';
 
 import { PersistConfig } from 'storage/persistReducer';
-import { ClassNo, LessonType, ModuleCode } from 'types/modules';
-import { ModuleLessonConfig, SemTimetableConfig, TaModulesConfig } from 'types/timetables';
+import { LessonIndex, ModuleCode } from 'types/modules';
+import { TaModulesConfig, ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import { ColorMapping, TimetablesState } from 'types/reducers';
 
 import config from 'config';
 import {
   ADD_MODULE,
   CHANGE_LESSON,
+  ADD_LESSON,
+  REMOVE_LESSON,
   HIDE_LESSON_IN_TIMETABLE,
   REMOVE_MODULE,
   RESET_TIMETABLE,
@@ -18,11 +20,11 @@ import {
   SET_HIDDEN_IMPORTED,
   SET_LESSON_CONFIG,
   SET_TA_IMPORTED,
-  ADD_TA_LESSON_IN_TIMETABLE,
+  ADD_TA_MODULE,
   SET_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
-  REMOVE_TA_LESSON_IN_TIMETABLE,
-  DISABLE_TA_MODE_IN_TIMETABLE,
+  REMOVE_TA_MODULE,
+  SET_TIMETABLES,
 } from 'actions/timetables';
 import { getNewColor } from 'utils/colors';
 import { SET_EXPORTED_DATA } from 'actions/constants';
@@ -93,13 +95,34 @@ function moduleLessonConfig(
 
   switch (action.type) {
     case CHANGE_LESSON: {
-      const { classNo, lessonType } = action.payload;
-      if (!(classNo && lessonType)) return state;
+      const { lessonIndices, lessonType } = action.payload;
+      if (!(lessonIndices && lessonType)) return state;
       return {
         ...state,
-        [lessonType]: classNo,
+        [lessonType]: lessonIndices,
       };
     }
+    case ADD_LESSON: {
+      const { lessonIndices, lessonType } = action.payload;
+      if (!(lessonIndices && lessonType)) return state;
+      return {
+        ...state,
+        [lessonType]: uniq([...lessonIndices, ...state[lessonType]]),
+      };
+    }
+    case REMOVE_LESSON: {
+      const { lessonIndices: lessonIndicesToExclude, lessonType } = action.payload;
+      if (!(lessonIndicesToExclude && lessonType)) return state;
+      return {
+        ...state,
+        [lessonType]: [
+          ...state[lessonType].filter(
+            (lessonIndex: LessonIndex) => !lessonIndicesToExclude.includes(lessonIndex),
+          ),
+        ],
+      };
+    }
+    case REMOVE_TA_MODULE:
     case SET_LESSON_CONFIG:
       return action.payload.lessonConfig;
 
@@ -126,6 +149,9 @@ function semTimetable(
     case REMOVE_MODULE:
       return omit(state, [moduleCode]);
     case CHANGE_LESSON:
+    case ADD_LESSON:
+    case REMOVE_LESSON:
+    case REMOVE_TA_MODULE:
     case SET_LESSON_CONFIG:
       return {
         ...state,
@@ -182,40 +208,23 @@ function semHiddenModules(state = DEFAULT_HIDDEN_STATE, action: Actions) {
 }
 
 // Map of semester to list of TA modules
-const DEFAULT_TA_STATE: TaModulesConfig = {};
+const DEFAULT_TA_STATE: TaModulesConfig = [];
 function semTaModules(state = DEFAULT_TA_STATE, action: Actions): TaModulesConfig {
   if (!action.payload) {
     return state;
   }
 
   switch (action.type) {
-    case ADD_TA_LESSON_IN_TIMETABLE: {
-      const { moduleCode, lessonType, classNo } = action.payload;
-      if (!(moduleCode && lessonType && classNo)) return state;
-      const newLesson: [LessonType, ClassNo] = [lessonType, classNo];
-      const curLessons = state[moduleCode] ?? [];
-      // Prevent duplicate lessons
-      if (curLessons.some((lesson) => isEqual(lesson, newLesson))) return state;
-      return {
-        ...state,
-        [moduleCode]: [...curLessons, newLesson],
-      };
-    }
-    case REMOVE_TA_LESSON_IN_TIMETABLE: {
-      const { moduleCode, lessonType, classNo } = action.payload;
-      if (!(moduleCode && lessonType && classNo)) return state;
-      return {
-        ...state,
-        [moduleCode]: state[moduleCode]?.filter(
-          (lesson) => !isEqual(lesson, [lessonType, classNo]),
-        ),
-      };
-    }
-    case DISABLE_TA_MODE_IN_TIMETABLE:
-    case REMOVE_MODULE: {
+    case ADD_TA_MODULE: {
       const { moduleCode } = action.payload;
       if (!moduleCode) return state;
-      return omit(state, moduleCode);
+      return uniq([...state, moduleCode]);
+    }
+    case REMOVE_TA_MODULE:
+    case REMOVE_MODULE: {
+      const { moduleCode: modulesToExclude } = action.payload;
+      if (!modulesToExclude) return state;
+      return state.filter((moduleCode: ModuleCode) => !modulesToExclude.includes(moduleCode));
     }
     default:
       return state;
@@ -241,6 +250,15 @@ function timetables(
   }
 
   switch (action.type) {
+    case SET_TIMETABLES: {
+      const { lessons, taModules } = action.payload;
+      return {
+        ...state,
+        lessons,
+        ta: taModules,
+      };
+    }
+
     case SET_TIMETABLE: {
       const { semester, timetable, colors, hiddenModules, taModules } = action.payload;
 
@@ -248,7 +266,7 @@ function timetables(
         draft.lessons[semester] = timetable ?? DEFAULT_SEM_TIMETABLE_CONFIG;
         draft.colors[semester] = colors ?? {};
         draft.hidden[semester] = hiddenModules ?? [];
-        draft.ta[semester] = taModules ?? {};
+        draft.ta[semester] = taModules ?? [];
       });
     }
 
@@ -267,19 +285,22 @@ function timetables(
     case REMOVE_MODULE:
     case SELECT_MODULE_COLOR:
     case CHANGE_LESSON:
+    case ADD_LESSON:
+    case REMOVE_LESSON:
     case SET_LESSON_CONFIG:
     case HIDE_LESSON_IN_TIMETABLE:
     case SHOW_LESSON_IN_TIMETABLE:
-    case ADD_TA_LESSON_IN_TIMETABLE:
-    case REMOVE_TA_LESSON_IN_TIMETABLE:
-    case DISABLE_TA_MODE_IN_TIMETABLE: {
+    case ADD_TA_MODULE:
+    case REMOVE_TA_MODULE: {
       const { semester } = action.payload;
 
       return produce(state, (draft) => {
         draft.lessons[semester] = semTimetable(draft.lessons[semester], action);
         draft.colors[semester] = semColors(state.colors[semester], action);
         draft.hidden[semester] = semHiddenModules(state.hidden[semester], action);
-        draft.ta[semester] = semTaModules(state.ta[semester], action);
+        const taModules = state.ta[semester];
+        const taModulesList = taModules;
+        draft.ta[semester] = semTaModules(taModulesList, action);
       });
     }
 

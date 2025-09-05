@@ -17,7 +17,8 @@
           "day": "Monday",
           "startTime": "1400",
           "endTime": "1700",
-          "venue": "BIZ1-0303"
+          "venue": "BIZ1-0303",
+          "lessonIndex": 0
         },
         {
           "classNo": "A2",
@@ -26,7 +27,8 @@
           "day": "Wednesday",
           "startTime": "1100",
           "endTime": "1400",
-          "venue": "BIZ1-0203"
+          "venue": "BIZ1-0203",
+          "lessonIndex": 1
         },
         {
           "classNo": "A3",
@@ -35,7 +37,8 @@
           "day": "Thursday",
           "startTime": "1100",
           "endTime": "1400",
-          "venue": "BIZ1-0203"
+          "venue": "BIZ1-0203",
+          "lessonIndex": 2
         },
         {
           "classNo": "A4",
@@ -44,7 +47,8 @@
           "day": "Monday",
           "startTime": "1400",
           "endTime": "1700",
-          "venue": "BIZ1-0303"
+          "venue": "BIZ1-0303",
+          "lessonIndex": 3
         },
         {
           "classNo": "A5",
@@ -53,7 +57,8 @@
           "day": "Wednesday",
           "startTime": "1100",
           "endTime": "1400",
-          "venue": "BIZ1-0203"
+          "venue": "BIZ1-0203",
+          "lessonIndex": 4
         },
         {
           "classNo": "A6",
@@ -62,7 +67,8 @@
           "day": "Thursday",
           "startTime": "1100",
           "endTime": "1400",
-          "venue": "BIZ1-0203"
+          "venue": "BIZ1-0203",
+          "lessonIndex": 5
         }
       ],
       "LecturePeriods": ["Monday Afternoon", "Wednesday Morning", "Thursday Morning"]
@@ -77,7 +83,8 @@
           "day": "Tuesday",
           "startTime": "1100",
           "endTime": "1400",
-          "venue": "BIZ1-0203"
+          "venue": "BIZ1-0203",
+          "lessonIndex": 0
         },
         {
           "classNo": "A2",
@@ -86,7 +93,8 @@
           "day": "Wednesday",
           "startTime": "0900",
           "endTime": "1200",
-          "venue": "BIZ1-0203"
+          "venue": "BIZ1-0203",
+          "lessonIndex": 1
         },
         {
           "classNo": "A3",
@@ -95,7 +103,8 @@
           "day": "Wednesday",
           "startTime": "1200",
           "endTime": "1500",
-          "venue": "BIZ1-0203"
+          "venue": "BIZ1-0203",
+          "lessonIndex": 2
         },
         {
           "classNo": "A4",
@@ -104,7 +113,8 @@
           "day": "Tuesday",
           "startTime": "1100",
           "endTime": "1400",
-          "venue": "BIZ1-0203"
+          "venue": "BIZ1-0203",
+          "lessonIndex": 3
         },
         {
           "classNo": "A5",
@@ -113,7 +123,8 @@
           "day": "Wednesday",
           "startTime": "0900",
           "endTime": "1200",
-          "venue": "BIZ1-0203"
+          "venue": "BIZ1-0203",
+          "lessonIndex": 4
         },
         {
           "classNo": "A6",
@@ -122,7 +133,8 @@
           "day": "Wednesday",
           "startTime": "1200",
           "endTime": "1500",
-          "venue": "BIZ1-0203"
+          "venue": "BIZ1-0203",
+          "lessonIndex": 5
         }
       ]
     }
