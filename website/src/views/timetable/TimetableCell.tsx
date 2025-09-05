@@ -54,9 +54,9 @@ function checkHover(
   if (lesson.moduleCode !== hoverLesson.moduleCode || lesson.lessonType !== hoverLesson.lessonType)
     return false;
 
-  if (lesson.isTaInTimetable && lesson.lessonIndex === hoverLesson.lessonIndex) return true;
+  if (!lesson.isTaInTimetable && lesson.classNo === hoverLesson.classNo) return true;
 
-  if (lesson.classNo === hoverLesson.classNo) return true;
+  if (lesson.isTaInTimetable && lesson.lessonIndex === hoverLesson.lessonIndex) return true;
 
   return false;
 }
