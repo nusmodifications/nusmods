@@ -6,6 +6,7 @@ import { setAutoFreeze } from 'immer';
 import rootReducer from 'reducers';
 import requestsMiddleware from 'middlewares/requests-middleware';
 import ravenMiddleware from 'middlewares/raven-middleware';
+import stateSyncMiddleware from 'middlewares/state-sync-middleware';
 import getLocalStorage from 'storage/localStorage';
 
 import type { GetState } from 'types/redux';
@@ -25,7 +26,7 @@ export default function configureStore(defaultState?: State) {
   // to reduce the amount of data NUSMods is using
   getLocalStorage().removeItem('reduxState');
 
-  const middlewares = [ravenMiddleware, thunk, requestsMiddleware];
+  const middlewares = [ravenMiddleware, thunk, requestsMiddleware, stateSyncMiddleware];
 
   if (NUSMODS_ENV === 'development') {
     // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require, import/no-extraneous-dependencies
