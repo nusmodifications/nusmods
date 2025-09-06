@@ -1,12 +1,13 @@
 @import '~styles/utils/modules-entry.scss';
 
 @keyframes grow {
-  0%, 100% {
-    opacity: 0.5; 
+  0%,
+  100% {
+    opacity: 0.5;
     transform: scale(0.8);
   }
   50% {
-    opacity: 1; 
+    opacity: 1;
     transform: scale(1.2);
   }
 }
@@ -19,7 +20,6 @@
   animation: grow 1s ease-in-out infinite;
 }
 
-// Optimize button section
 .optimizeButtonSection {
   display: flex;
   flex-direction: column;
@@ -90,4 +90,12 @@
 
 .estimateTimeValue {
   font-weight: bold;
-} 
+}
+
+.zapIcon {
+  fill: #ff5138;
+
+  &.disabled {
+    fill: #69707a;
+  }
+}
