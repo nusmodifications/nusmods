@@ -207,6 +207,9 @@ export const TimetableContainerComponent: FC = () => {
   useEffect(() => {
     if (!(semester && params.action)) {
       setLoading(false);
+      setImportedTimetable(null);
+      setImportedHidden(null);
+      setImportedTa(null);
       return;
     }
 
