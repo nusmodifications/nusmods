@@ -4,7 +4,6 @@ import classnames from 'classnames';
 import { isEqual } from 'lodash';
 
 import { ColorSchemePreference, ThemeId } from 'types/settings';
-import { Tracker } from 'types/vendor/piwik';
 import { ModRegNotificationSettings } from 'types/reducers';
 import { State as StoreState } from 'types/state';
 import { RegPeriod, SCHEDULE_TYPES, ScheduleType } from 'config';
@@ -27,7 +26,7 @@ import Title from 'views/components/Title';
 import deferComponentRender from 'views/hocs/deferComponentRender';
 import Online from 'views/components/Online';
 import { supportsCSSVariables } from 'utils/css';
-import { withTracker } from 'bootstrapping/matomo';
+import { useMatomo } from 'bootstrapping/matomo';
 import ExternalLink from 'views/components/ExternalLink';
 import Toggle from 'views/components/Toggle';
 import ModRegNotification from 'views/components/notfications/ModRegNotification';
@@ -73,22 +72,26 @@ const SettingsContainer: React.FC<Props> = ({
   ...props
 }) => {
   const [allowTracking, setAllowTracking] = useState(true);
+  const matomo = useMatomo();
 
-  const onToggleTracking = useCallback((isTrackingAllowed: boolean) => {
-    withTracker((tracker: Tracker) => {
-      if (isTrackingAllowed) {
-        tracker.forgetUserOptOut();
-      } else {
-        tracker.optUserOut();
+  const onToggleTracking = useCallback(
+    (isTrackingAllowed: boolean) => {
+      if (matomo !== undefined) {
+        if (isTrackingAllowed) {
+          matomo.forgetUserOptOut();
+        } else {
+          matomo.optUserOut();
+        }
+        setAllowTracking(!matomo.isUserOptedOut());
       }
-
-      setAllowTracking(!tracker.isUserOptedOut());
-    });
-  }, []);
+    },
+  [matomo]);
 
   useEffect(() => {
-    withTracker((tracker: Tracker) => setAllowTracking(!tracker.isUserOptedOut()));
-  }, [onToggleTracking]);
+    if (matomo !== undefined) {
+      setAllowTracking(!matomo.isUserOptedOut());
+    }
+  }, [onToggleTracking, matomo]);
 
   const rounds = getRounds(modRegNotification);
 
@@ -288,8 +291,9 @@ const SettingsContainer: React.FC<Props> = ({
             <div className="text-right">
               <Toggle
                 labels={['Allow', 'Opt out']}
-                isOn={allowTracking}
+                isOn={matomo !== undefined ? allowTracking : false}
                 onChange={onToggleTracking}
+                className={matomo === undefined ? 'disabled' : ''}
               />
             </div>
           )}
