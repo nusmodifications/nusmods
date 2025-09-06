@@ -26,7 +26,7 @@ import { CacheExpiredError } from '../../utils/errors';
 const defaultExpiry = 24 * 60; // 1 day
 
 // Use 2 spaces for easier debugging in development
-const writeOptions: fs.WriteOptions = {
+const writeOptions: fs.JsonOutputOptions = {
   spaces: process.env.NODE_ENV === 'production' ? 0 : 2,
 };
 
