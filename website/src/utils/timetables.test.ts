@@ -691,5 +691,15 @@ describe(deserializeTa, () => {
       CS3210: [['Tutorial', '02']],
       CS3219: [['Tutorial', '15']],
     });
+    expect(
+      deserializeTa('?CS1010S=REC:1,TUT:8&ta=CS3210(TUT:02),CS3219(TUT:15),CS3211(LAB:B05,TUT:13)'),
+    ).toEqual({
+      CS3210: [['Tutorial', '02']],
+      CS3219: [['Tutorial', '15']],
+      CS3211: [
+        ['Laboratory', 'B05'],
+        ['Tutorial', '13'],
+      ],
+    });
   });
 });
