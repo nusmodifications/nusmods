@@ -3,7 +3,6 @@ import { Semester, SemesterData } from 'types/modules';
 
 import {
   addAcadYear,
-  areLessonsSameClass,
   formatExamDate,
   getExamDate,
   getFirstAvailableSemester,
@@ -16,16 +15,14 @@ import {
   isGraduateModule,
   renderExamDuration,
   getExamDuration,
-  canTa,
-  areLessonsDuplicate,
 } from 'utils/modules';
 import { noBreak } from 'utils/react';
 
 import { EVERY_WEEK } from 'test-utils/timetable';
-import { CP3880, CS1010S, CS3216 } from '__mocks__/modules';
-import { Lesson } from 'types/timetables';
+import { CS1010S, CS3216 } from '__mocks__/modules';
+import { LessonWithIndex } from 'types/timetables';
 
-const mockLesson = _.cloneDeep(CS1010S.semesterData[0].timetable[0]) as Lesson;
+const mockLesson = _.cloneDeep(CS1010S.semesterData[0].timetable[0]) as LessonWithIndex;
 mockLesson.moduleCode = 'CS1010S';
 mockLesson.title = 'Programming Methodology';
 
@@ -43,6 +40,7 @@ test('getModuleSemesterData should return semester data if semester is present',
         startTime: '1830',
         endTime: '2030',
         venue: 'VCRm',
+        lessonIndex: 0,
       },
     ],
   };
@@ -54,63 +52,6 @@ test('getModuleSemesterData should return undefined if semester is absent', () =
   const actual = getModuleSemesterData(CS3216, sem);
   expect(actual).toBe(undefined);
 });
-
-function lessonWithDifferentProperty(
-  lesson: Lesson,
-  property: keyof Lesson,
-  newValue: any = 'TEST',
-): Lesson {
-  const anotherLesson: Lesson = _.cloneDeep(lesson);
-  return { ...anotherLesson, [property]: newValue };
-}
-
-test('areLessonsSameClass should identify identity lessons as same class', () => {
-  const deepClonedLesson: Lesson = _.cloneDeep(mockLesson);
-  expect(areLessonsSameClass(mockLesson, deepClonedLesson)).toBe(true);
-});
-
-test(
-  'areLessonsSameClass should identify lessons from the same ClassNo but ' +
-    'with different timings as same class',
-  () => {
-    const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'startTime', '0000');
-    const otherLesson2: Lesson = lessonWithDifferentProperty(otherLesson, 'endTime', '2300');
-    expect(areLessonsSameClass(mockLesson, otherLesson2)).toBe(true);
-  },
-);
-
-test('areLessonsSameClass should identify lessons with different ModuleCode as different class', () => {
-  const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'moduleCode');
-  expect(areLessonsSameClass(mockLesson, otherLesson)).toBe(false);
-});
-
-test('areLessonsSameClass should identify lessons with different ClassNo as different class', () => {
-  const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'classNo');
-  expect(areLessonsSameClass(mockLesson, otherLesson)).toBe(false);
-});
-
-test('areLessonsSameClass should identify lessons with different lessonType as different class', () => {
-  const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'lessonType');
-  expect(areLessonsSameClass(mockLesson, otherLesson)).toBe(false);
-});
-
-test(
-  'areLessonsDuplicate should identify lessons from the same ClassNo but ' +
-    'with different timings as non duplicates',
-  () => {
-    const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'startTime', '0000');
-    expect(areLessonsDuplicate(mockLesson, otherLesson)).toBe(false);
-  },
-);
-
-test(
-  'areLessonsDuplicate should identify lessons from the same ClassNo but ' +
-    'with different day as non duplicates',
-  () => {
-    const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'day', 'Monday');
-    expect(areLessonsDuplicate(mockLesson, otherLesson)).toBe(false);
-  },
-);
 
 test('formatExamDate should format an exam date string correctly', () => {
   expect(formatExamDate('2016-11-23T01:00:00.000Z')).toBe('23-Nov-2016 9:00\u00a0AM');
@@ -262,25 +203,5 @@ describe(isGraduateModule, () => {
     expect(isGraduateModule({ moduleCode: 'CS3567' })).toEqual(false);
     expect(isGraduateModule({ moduleCode: 'CS1567D' })).toEqual(false);
     expect(isGraduateModule({ moduleCode: 'ACC4999X' })).toEqual(false);
-  });
-});
-
-describe(canTa, () => {
-  const modules = { CP3880, CS1010S, CS3216 };
-
-  it('should return true for modules with non-lecture lessons', () => {
-    expect(canTa(modules, 'CS1010S', 1)).toEqual(true);
-  });
-
-  it('should return false for modules with only lecture lessons', () => {
-    expect(canTa(modules, 'CS3216', 1)).toEqual(false);
-  });
-
-  it('should return false for modules without lessons', () => {
-    expect(canTa(modules, 'CP3880', 1)).toEqual(false);
-  });
-
-  it('should return false for unknown modules', () => {
-    expect(canTa(modules, 'ZZ9999', 1)).toEqual(false);
   });
 });

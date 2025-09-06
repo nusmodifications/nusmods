@@ -35,6 +35,7 @@ const CS3216_LESSONS = {
       startTime: '1830',
       endTime: '2030',
       venue: 'VCRm',
+      lessonIndex: 0,
     },
   ],
 };
@@ -51,6 +52,7 @@ const CS1010S_LESSONS = {
       startTime: '1100',
       endTime: '1200',
       venue: 'i3-0344',
+      lessonIndex: 0,
     },
   ],
 };
@@ -67,6 +69,7 @@ const PC1222_LESSONS = {
       startTime: '1400',
       endTime: '1700',
       venue: 'S12-0402',
+      lessonIndex: 0,
     },
   ],
   Tutorial: [
@@ -80,6 +83,7 @@ const PC1222_LESSONS = {
       startTime: '0900',
       endTime: '1000',
       venue: 'CQT/SR0315',
+      lessonIndex: 0,
     },
   ],
   Lecture: [
@@ -93,6 +97,7 @@ const PC1222_LESSONS = {
       startTime: '1200',
       endTime: '1400',
       venue: 'LT25',
+      lessonIndex: 0,
     },
     {
       moduleCode: 'PC1222',
@@ -104,6 +109,7 @@ const PC1222_LESSONS = {
       startTime: '1200',
       endTime: '1400',
       venue: 'LT25',
+      lessonIndex: 0,
     },
   ],
 };
@@ -348,18 +354,18 @@ describe(mapStateToProps, () => {
       timetables: {
         lessons: {
           [1]: {},
-          [2]: {},
+          [2]: {
+            CS1010S: {
+              Tutorial: [0],
+            },
+          },
         },
         colors: {
           [1]: COLORS,
           [2]: COLORS,
         },
         hidden: [],
-        ta: {
-          [2]: {
-            CS1010S: [['Tutorial', 1]],
-          },
-        },
+        ta: ['CS1010S'],
       },
     } as any as State;
 

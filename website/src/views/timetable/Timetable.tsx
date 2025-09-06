@@ -2,7 +2,12 @@ import * as React from 'react';
 import { flattenDeep, noop, values } from 'lodash';
 import classnames from 'classnames';
 
-import { ColoredLesson, HoverLesson, TimetableArrangement } from 'types/timetables';
+import {
+  ColoredLesson,
+  HoverLesson,
+  InteractableLesson,
+  TimetableArrangement,
+} from 'types/timetables';
 import { OnModifyCell } from 'types/views';
 
 import {
@@ -23,7 +28,7 @@ import TimetableTimings from './TimetableTimings';
 import TimetableDay from './TimetableDay';
 
 type Props = TimerData & {
-  lessons: TimetableArrangement;
+  lessons: TimetableArrangement<ColoredLesson | InteractableLesson>;
   // These should be non-optional, but because HOCs currently strip defaultProps
   // for the sake of our sanity we type these as optional to reduce errors at call sites
   isVerticalOrientation?: boolean;

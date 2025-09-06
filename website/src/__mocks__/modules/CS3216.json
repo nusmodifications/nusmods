@@ -19,7 +19,8 @@
           "day": "Monday",
           "startTime": "1830",
           "endTime": "2030",
-          "venue": "VCRm"
+          "venue": "VCRm",
+          "lessonIndex": 0
         }
       ]
     }

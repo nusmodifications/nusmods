@@ -22,7 +22,6 @@ import { EmptyGroupType, SelectedLesson } from 'types/views';
 import {
   groupLessonsByDay,
   hydrateSemTimetableWithLessons,
-  hydrateTaModulesConfigWithLessons,
   isLessonAvailable,
   isLessonOngoing,
   timetableLessonsArray,
@@ -33,7 +32,6 @@ import {
   getSemesterTimetableColors,
   getSemesterTimetableHidden,
   getSemesterTimetableLessons,
-  getSemesterTimetableTaLessons,
 } from 'selectors/timetables';
 import ExternalLink from 'views/components/ExternalLink';
 import * as weatherAPI from 'apis/weather';
@@ -370,20 +368,14 @@ export const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
   const timetable = getSemesterTimetableLessons(state)(semester);
   const colors = getSemesterTimetableColors(state)(semester);
   const hidden = getSemesterTimetableHidden(state)(semester);
-  const ta = getSemesterTimetableTaLessons(state)(semester);
   const timetableWithLessons = omit(
     hydrateSemTimetableWithLessons(timetable, modules, semester),
     hidden,
   );
-  const timetableWithTaLessons = hydrateTaModulesConfigWithLessons(ta, modules, semester);
-  const filteredTimetableWithLessons = {
-    ...timetableWithLessons,
-    ...timetableWithTaLessons,
-  };
 
   return {
     colors,
-    timetableWithLessons: filteredTimetableWithLessons,
+    timetableWithLessons,
   };
 };
 

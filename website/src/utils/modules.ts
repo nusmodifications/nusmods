@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import type {
   Module,
   ModuleCode,
-  RawLesson,
+  RawLessonWithIndex,
   Semester,
   SemesterData,
   SemesterDataCondensed,
@@ -11,8 +11,6 @@ import type {
 
 import config from 'config';
 import { NBSP, noBreak } from 'utils/react';
-import { Lesson } from 'types/timetables';
-import { ModulesMap } from 'types/reducers';
 import { toSingaporeTime } from './timify';
 
 // Look for strings that look like module codes - eg.
@@ -31,28 +29,11 @@ export function getModuleSemesterData(
 }
 
 // Returns a flat array of lessons of a module for the corresponding semester.
-export function getModuleTimetable(module: Module, semester: Semester): readonly RawLesson[] {
+export function getModuleTimetable(
+  module: Module,
+  semester: Semester,
+): readonly RawLessonWithIndex[] {
   return _.get(getModuleSemesterData(module, semester), 'timetable', []);
-}
-
-// Do these two lessons belong to the same class?
-export function areLessonsSameClass(lesson1: Lesson, lesson2: Lesson): boolean {
-  return (
-    lesson1.moduleCode === lesson2.moduleCode &&
-    lesson1.classNo === lesson2.classNo &&
-    lesson1.lessonType === lesson2.lessonType
-  );
-}
-
-// Are the two lessons exact duplicates of one another
-export function areLessonsDuplicate(lesson1: Lesson, lesson2: Lesson): boolean {
-  return (
-    lesson1.moduleCode === lesson2.moduleCode &&
-    lesson1.classNo === lesson2.classNo &&
-    lesson1.lessonType === lesson2.lessonType &&
-    lesson1.day === lesson2.day &&
-    lesson1.startTime === lesson2.startTime
-  );
 }
 
 /**
@@ -156,12 +137,4 @@ export function getYearsBetween(minYear: string, maxYear: string): string[] {
 
 export function isGraduateModule(module: { moduleCode: ModuleCode }): boolean {
   return Boolean(/[A-Z]+(5|6)\d{3}/i.test(module.moduleCode));
-}
-
-// A module is TA-able if it has at least 1 non-lecture lesson
-export function canTa(modules: ModulesMap, moduleCode: ModuleCode, semester: Semester): boolean {
-  const module = modules[moduleCode];
-  if (!module) return false;
-  const moduleTimetable = getModuleTimetable(module, semester);
-  return moduleTimetable.some((lesson) => lesson.lessonType !== 'Lecture');
 }

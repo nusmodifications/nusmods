@@ -2,7 +2,13 @@ import { AxiosError } from 'axios';
 import { RegPeriodType, ScheduleType } from 'config';
 
 import { ColorSchemePreference } from './settings';
-import { ColorIndex, Lesson, TaModulesConfig, TimetableConfig } from './timetables';
+import {
+  ClassNoTaModulesConfig,
+  ColorIndex,
+  LessonWithIndex,
+  TaModulesConfig,
+  TimetableConfig,
+} from './timetables';
 import {
   Faculty,
   Module,
@@ -50,7 +56,7 @@ export type NotificationData = { readonly message: string } & NotificationOption
 
 export type AppState = {
   readonly activeSemester: Semester;
-  readonly activeLesson: Lesson | null;
+  readonly activeLesson: LessonWithIndex | null;
   readonly isOnline: boolean;
   readonly isFeedbackModalOpen: boolean;
   readonly notifications: NotificationData[];
@@ -110,10 +116,11 @@ export type SettingsState = {
 /* timetables.js */
 
 // Mapping of module to color index [0, NUM_DIFFERENT_COLORS)
-export type ColorMapping = { [moduleCode: string]: ColorIndex };
-export type SemesterColorMap = { [semester: string]: ColorMapping };
-export type HiddenModulesMap = { [semester: string]: ModuleCode[] };
-export type TaModulesMap = { [semester: string]: TaModulesConfig };
+export type ColorMapping = { [moduleCode: ModuleCode]: ColorIndex };
+export type SemesterColorMap = { [semester: Semester]: ColorMapping };
+export type HiddenModulesMap = { [semester: Semester]: ModuleCode[] };
+export type TaModulesMap = { [semester: Semester]: TaModulesConfig };
+export type ClassNoTaModulesMap = { [semester: Semester]: ClassNoTaModulesConfig };
 
 export type TimetablesState = {
   readonly lessons: TimetableConfig;

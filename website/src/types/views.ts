@@ -1,7 +1,7 @@
 import type { QueryObject } from 'json2mq';
 import { Module, ModuleCondensed } from './modules';
 import { ModuleList } from './reducers';
-import { ColorIndex, HoverLesson, Lesson, ModifiableLesson } from './timetables';
+import { ColorIndex, HoverLesson, Lesson, InteractableLesson } from './timetables';
 import { Venue, VenueList } from './venues';
 import { RegPeriod } from '../config';
 
@@ -42,7 +42,7 @@ export type SelectedLesson = { date: Date; lesson: Lesson };
 export type ExamClashes = { [key: string]: Module[] };
 
 // Timetable event handlers
-export type OnModifyCell = (lesson: ModifiableLesson, position: ClientRect) => void;
+export type OnModifyCell = (lesson: InteractableLesson, position: ClientRect) => void;
 export type OnHoverCell = (hoverLesson: HoverLesson | null) => void;
 
 // Incomplete typing of Mamoto's API. If you need something not here, feel free
@@ -55,7 +55,6 @@ export type ModuleWithColor = Module & {
   colorIndex: ColorIndex;
   isHiddenInTimetable: boolean;
   isTaInTimetable: boolean;
-  canTa: boolean;
 };
 
 export type TombstoneModule = ModuleWithColor & {

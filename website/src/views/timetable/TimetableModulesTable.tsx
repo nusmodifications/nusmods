@@ -17,7 +17,8 @@ import {
   selectModuleColor,
   hideLessonInTimetable,
   showLessonInTimetable,
-  disableTaModeInTimetable,
+  addTaModule,
+  disableTaModule,
 } from 'actions/timetables';
 import {
   getExamDate,
@@ -49,8 +50,8 @@ export type Props = {
   selectModuleColor: (semester: Semester, moduleCode: ModuleCode, colorIndex: ColorIndex) => void;
   hideLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   showLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
-  enableTaModeInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
-  disableTaModeInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
+  enableTaModule: (semester: Semester, moduleCode: ModuleCode) => void;
+  disableTaModule: (semester: Semester, moduleCode: ModuleCode) => void;
   onRemoveModule: (moduleCode: ModuleCode) => void;
   resetTombstone: () => void;
 };
@@ -97,28 +98,26 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
               )}
             </button>
           </Tooltip>
-          {module.canTa && (
-            <Tooltip content={taBtnLabel} touch={['hold', 50]}>
-              <button
-                type="button"
-                className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
-                aria-label={taBtnLabel}
-                onClick={() => {
-                  if (module.isTaInTimetable) {
-                    props.disableTaModeInTimetable(semester, module.moduleCode);
-                  } else {
-                    props.enableTaModeInTimetable(semester, module.moduleCode);
-                  }
-                }}
-              >
-                {module.isTaInTimetable ? (
-                  <BookOpen className={styles.actionIcon} />
-                ) : (
-                  <Book className={styles.actionIcon} />
-                )}
-              </button>
-            </Tooltip>
-          )}
+          <Tooltip content={taBtnLabel} touch={['hold', 50]}>
+            <button
+              type="button"
+              className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
+              aria-label={taBtnLabel}
+              onClick={() => {
+                if (module.isTaInTimetable) {
+                  props.disableTaModule(semester, module.moduleCode);
+                } else {
+                  props.enableTaModule(semester, module.moduleCode);
+                }
+              }}
+            >
+              {module.isTaInTimetable ? (
+                <BookOpen className={styles.actionIcon} />
+              ) : (
+                <Book className={styles.actionIcon} />
+              )}
+            </button>
+          </Tooltip>
         </div>
       </div>
     );
@@ -207,6 +206,7 @@ export default connect(
     selectModuleColor,
     hideLessonInTimetable,
     showLessonInTimetable,
-    disableTaModeInTimetable,
+    enableTaModule: addTaModule,
+    disableTaModule,
   },
 )(React.memo(TimetableModulesTableComponent));

@@ -1,22 +1,29 @@
 import NUSModerator from 'nusmoderator';
-import _ from 'lodash';
+import _, { get } from 'lodash';
 import { parseISO } from 'date-fns';
 import {
+  ClassNoTaModulesConfig,
   ColoredLesson,
   ModuleLessonConfig,
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
-  TaModulesConfig,
   TimetableArrangement,
   TimetableDayArrangement,
   TimetableDayFormat,
 } from 'types/timetables';
-import { LessonType, RawLesson, Semester, Weeks } from 'types/modules';
+import {
+  LessonType,
+  ModuleCode,
+  RawLesson,
+  RawLessonWithIndex,
+  Semester,
+  Weeks,
+} from 'types/modules';
 import { ModulesMap } from 'types/reducers';
 
 import { getModuleSemesterData, getModuleTimetable } from 'utils/modules';
 
-import { CS1010S, CS3216, CS4243, PC1222, CS1010A } from '__mocks__/modules';
+import { CS1010S, CS3216, CS4243, PC1222, CS1010A, GER1000 } from '__mocks__/modules';
 import moduleCodeMapJSON from '__mocks__/module-code-map.json';
 import timetable from '__mocks__/sem-timetable.json';
 import lessonsArray from '__mocks__/lessons-array.json';
@@ -33,21 +40,22 @@ import {
   areOtherClassesAvailable,
   arrangeLessonsForWeek,
   arrangeLessonsWithinDay,
-  deserializeTa,
   deserializeTimetable,
   doLessonsOverlap,
   findExamClashes,
   formatNumericWeeks,
+  getClosestLessonConfig,
   getEndTimeAsDate,
   getStartTimeAsDate,
   groupLessonsByDay,
   hydrateSemTimetableWithLessons,
-  hydrateTaModulesConfigWithLessons,
   isLessonAvailable,
   isLessonOngoing,
   isSameTimetableConfig,
   isValidSemester,
   lessonsForLessonType,
+  migrateModuleLessonConfig,
+  parseTaModuleCodes,
   randomModuleLessonConfig,
   serializeTimetable,
   timetableLessonsArray,
@@ -81,49 +89,27 @@ test('randomModuleLessonConfig should return a random lesson config', () => {
   });
 });
 
+// TODO: how to test TA config...
 test('hydrateSemTimetableWithLessons should replace ClassNo with lessons', () => {
   const sem: Semester = 1;
   const moduleCode = 'CS1010S';
-  const modules: ModulesMap = { [moduleCode]: CS1010S };
+  const modulesMap: ModulesMap = { [moduleCode]: CS1010S };
   const config: SemTimetableConfig = {
     [moduleCode]: {
-      Tutorial: '8',
-      Recitation: '4',
-      Lecture: '1',
+      Tutorial: [42],
+      Recitation: [5],
+      Lecture: [0],
     },
   };
 
   const configWithLessons: SemTimetableConfigWithLessons = hydrateSemTimetableWithLessons(
     config,
-    modules,
+    modulesMap,
     sem,
   );
   expect(configWithLessons[moduleCode].Tutorial[0].classNo).toBe('8');
   expect(configWithLessons[moduleCode].Recitation[0].classNo).toBe('4');
   expect(configWithLessons[moduleCode].Lecture[0].classNo).toBe('1');
-});
-
-test('hydrateTaModulesConfigWithLessons should replace ClassNo with lessons', () => {
-  const sem: Semester = 1;
-  const moduleCode = 'CS1010S';
-  const modules: ModulesMap = { [moduleCode]: CS1010S };
-  const taModules: TaModulesConfig = {
-    [moduleCode]: [
-      ['Tutorial', '1'],
-      ['Tutorial', '8'],
-      ['Recitation', '4'],
-    ],
-  };
-
-  const configWithLessons: SemTimetableConfigWithLessons = hydrateTaModulesConfigWithLessons(
-    taModules,
-    modules,
-    sem,
-  );
-  expect(configWithLessons[moduleCode].Tutorial[0].classNo).toBe('1');
-  expect(configWithLessons[moduleCode].Tutorial[1].classNo).toBe('8');
-  expect(configWithLessons[moduleCode].Recitation[0].classNo).toBe('4');
-  expect(configWithLessons[moduleCode]).not.toHaveProperty('Lecture');
 });
 
 test('lessonsForLessonType should return all lessons belonging to a particular lessonType', () => {
@@ -152,13 +138,14 @@ test('timetableLessonsArray should return a flat array of lessons', () => {
 
 test('groupLessonsByDay should group lessons by DayText', () => {
   const lessons: ColoredLesson[] = lessonsArray;
-  const lessonsGroupedByDay: TimetableDayFormat = groupLessonsByDay(lessons);
+  const lessonsGroupedByDay: TimetableDayFormat<ColoredLesson> = groupLessonsByDay(lessons);
   expect(lessonsGroupedByDay.Monday.length).toBe(2);
   expect(lessonsGroupedByDay.Tuesday.length).toBe(1);
   expect(lessonsGroupedByDay.Wednesday.length).toBe(1);
   expect(lessonsGroupedByDay.Thursday.length).toBe(2);
 });
 
+// TODO: write one for array lesson overlap
 test('doLessonsOverlap should correctly determine if two lessons overlap', () => {
   // Same day same time.
   expect(
@@ -256,11 +243,11 @@ test('doLessonsOverlap should correctly determine if two lessons overlap', () =>
 
 test('arrangeLessonsWithinDay', () => {
   // Empty array.
-  const arrangement0: TimetableDayArrangement = arrangeLessonsWithinDay([]);
+  const arrangement0: TimetableDayArrangement<RawLesson> = arrangeLessonsWithinDay([]);
   expect(arrangement0.length).toBe(1);
 
   // Can fit within one row.
-  const arrangement1: TimetableDayArrangement = arrangeLessonsWithinDay(
+  const arrangement1: TimetableDayArrangement<ColoredLesson> = arrangeLessonsWithinDay(
     _.shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Monday', '1600', '1800'),
@@ -270,7 +257,7 @@ test('arrangeLessonsWithinDay', () => {
   expect(arrangement1.length).toBe(1);
 
   // Two rows.
-  const arrangement2: TimetableDayArrangement = arrangeLessonsWithinDay(
+  const arrangement2: TimetableDayArrangement<ColoredLesson> = arrangeLessonsWithinDay(
     _.shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Monday', '1600', '1800'),
@@ -280,7 +267,7 @@ test('arrangeLessonsWithinDay', () => {
   expect(arrangement2.length).toBe(2);
 
   // Three rows.
-  const arrangement3: TimetableDayArrangement = arrangeLessonsWithinDay(
+  const arrangement3: TimetableDayArrangement<ColoredLesson> = arrangeLessonsWithinDay(
     _.shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Monday', '1100', '1300'),
@@ -291,7 +278,7 @@ test('arrangeLessonsWithinDay', () => {
 });
 
 test('arrangeLessonsForWeek', () => {
-  const arrangement0: TimetableArrangement = arrangeLessonsForWeek(
+  const arrangement0: TimetableArrangement<ColoredLesson> = arrangeLessonsForWeek(
     _.shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Monday', '1600', '1800'),
@@ -300,7 +287,7 @@ test('arrangeLessonsForWeek', () => {
   );
   expect(arrangement0.Monday.length).toBe(1);
 
-  const arrangement1: TimetableArrangement = arrangeLessonsForWeek(
+  const arrangement1: TimetableArrangement<ColoredLesson> = arrangeLessonsForWeek(
     _.shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Monday', '1600', '1800'),
@@ -312,7 +299,7 @@ test('arrangeLessonsForWeek', () => {
   expect(arrangement1.Monday.length).toBe(1);
   expect(arrangement1.Tuesday.length).toBe(2);
 
-  const arrangement2: TimetableArrangement = arrangeLessonsForWeek(
+  const arrangement2: TimetableArrangement<ColoredLesson> = arrangeLessonsForWeek(
     _.shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Monday', '1600', '1800'),
@@ -324,7 +311,7 @@ test('arrangeLessonsForWeek', () => {
   expect(arrangement2.Monday.length).toBe(1);
   expect(arrangement2.Tuesday.length).toBe(1);
 
-  const arrangement3: TimetableArrangement = arrangeLessonsForWeek(
+  const arrangement3: TimetableArrangement<ColoredLesson> = arrangeLessonsForWeek(
     _.shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Tuesday', '1100', '1300'),
@@ -335,7 +322,7 @@ test('arrangeLessonsForWeek', () => {
   expect(arrangement3.Tuesday.length).toBe(1);
   expect(arrangement3.Wednesday.length).toBe(1);
 
-  const arrangement4: TimetableArrangement = arrangeLessonsForWeek(
+  const arrangement4: TimetableArrangement<ColoredLesson> = arrangeLessonsForWeek(
     _.shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Monday', '1600', '1800'),
@@ -347,7 +334,7 @@ test('arrangeLessonsForWeek', () => {
   expect(arrangement4.Tuesday.length).toBe(1);
   expect(arrangement4.Wednesday.length).toBe(1);
 
-  const arrangement5: TimetableArrangement = arrangeLessonsForWeek(
+  const arrangement5: TimetableArrangement<ColoredLesson> = arrangeLessonsForWeek(
     _.shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Monday', '1600', '1800'),
@@ -413,44 +400,232 @@ test('findExamClashes should return non-empty object if exams starting at differ
   expect(examClashes).toEqual({ [examDate]: [CS1010S, CS1010A] });
 });
 
-test('timetable serialization/deserialization', () => {
-  const configs: SemTimetableConfig[] = [
-    {},
-    { CS1010S: {} },
-    {
-      GER1000: { Tutorial: 'B01' },
-    },
-    {
-      CS2104: { Lecture: '1', Tutorial: '2' },
-      CS2105: { Lecture: '1', Tutorial: '1' },
-      CS2107: { Lecture: '1', Tutorial: '8' },
-      CS4212: { Lecture: '1', Tutorial: '1' },
-      CS4243: { Laboratory: '2', Lecture: '1' },
-      GER1000: { Tutorial: 'B01' },
-    },
-  ];
+describe('timetable serialization/deserialization', () => {
+  const mockSemesterTimetable: { [moduleCode: ModuleCode]: readonly RawLessonWithIndex[] } = {
+    CS1010S: getModuleTimetable(CS1010S, 1),
+    CS3216: getModuleTimetable(CS3216, 1),
+    GER1000: getModuleTimetable(GER1000, 1),
+    CS4243: getModuleTimetable(CS4243, 1),
+  };
+  const mockGetModuleSemesterTimetable = (moduleCode: ModuleCode): readonly RawLessonWithIndex[] =>
+    get(mockSemesterTimetable, moduleCode);
 
-  configs.forEach((config) => {
-    expect(deserializeTimetable(serializeTimetable(config))).toEqual(config);
+  test('timetable serialization/deserialization', () => {
+    const configs: SemTimetableConfig[] = [
+      {},
+      { CS1010S: {} },
+      {
+        GER1000: { Tutorial: [13] },
+      },
+      {
+        CS4243: { Laboratory: [2], Lecture: [5] },
+        GER1000: { Tutorial: [13] },
+      },
+    ];
+
+    configs.forEach((config) => {
+      expect(
+        deserializeTimetable(serializeTimetable(config), mockGetModuleSemesterTimetable)
+          .semTimetableConfig,
+      ).toEqual(config);
+    });
   });
-});
 
-test('deserializing edge cases', () => {
-  // Duplicate module code
-  expect(deserializeTimetable('CS1010S=LEC:01&CS1010S=REC:11')).toEqual({
-    CS1010S: {
-      Lecture: '01',
-      Recitation: '11',
-    },
+  test('deserializing ta modules', () => {
+    expect(
+      deserializeTimetable('CS1010S=LEC:(0)&ta=CS1010S', mockGetModuleSemesterTimetable),
+    ).toEqual({
+      semTimetableConfig: {
+        CS1010S: {
+          Lecture: [0],
+        },
+      },
+      ta: ['CS1010S'],
+      hidden: [],
+    });
   });
 
-  // No lessons
-  expect(deserializeTimetable('CS1010S&CS3217&CS2105=LEC:1')).toEqual({
-    CS1010S: {},
-    CS3217: {},
-    CS2105: {
-      Lecture: '1',
-    },
+  describe('deserializing edge cases', () => {
+    test('duplicate module code', () => {
+      expect(
+        deserializeTimetable('CS1010S=LEC:(0)&CS1010S=REC:(1)', mockGetModuleSemesterTimetable)
+          .semTimetableConfig,
+      ).toEqual({
+        CS1010S: {
+          Lecture: [0],
+          Recitation: [1],
+        },
+      });
+    });
+
+    test('no lessons', () => {
+      expect(
+        deserializeTimetable(
+          'CS2105&CS3217&CS1010S=LEC:(0)&ta=&hidden=',
+          mockGetModuleSemesterTimetable,
+        ).semTimetableConfig,
+      ).toEqual({
+        CS2105: {},
+        CS3217: {},
+        CS1010S: {
+          Lecture: [0],
+        },
+      });
+    });
+
+    test('should ignore invalid lesson indices', () => {
+      expect(
+        deserializeTimetable('CS1010S=LEC:(20)', mockGetModuleSemesterTimetable).semTimetableConfig,
+      ).toEqual({
+        CS1010S: {
+          Lecture: [],
+        },
+      });
+    });
+  });
+
+  test('should return empty array if v2 serialized', () => {
+    expect(parseTaModuleCodes('(CS1010S,CS3216)')).toEqual([]);
+  });
+
+  describe('deserialize v1 config', () => {
+    test('deserialize v1', () => {
+      expect(
+        deserializeTimetable(
+          'CS1010S=LEC:1,TUT:8&CS3216=LEC:1&ta=CS3216(LEC:1),CS1010S(LEC:1,TUT:2)&hidden=CS3216',
+          mockGetModuleSemesterTimetable,
+        ),
+      ).toEqual({
+        semTimetableConfig: {
+          CS1010S: {
+            Lecture: [0],
+            Tutorial: [21],
+          },
+          CS3216: {
+            Lecture: [0],
+          },
+        },
+        ta: ['CS3216', 'CS1010S'],
+        hidden: ['CS3216'],
+      });
+    });
+
+    test('should ignore invalid lesson type', () => {
+      expect(
+        deserializeTimetable(
+          'CS1010S=LEC:1&ta=CS1010S(TUT:2,INVALIDLESSONTYPE:1)',
+          mockGetModuleSemesterTimetable,
+        ),
+      ).toEqual({
+        semTimetableConfig: {
+          CS1010S: {
+            Tutorial: [21],
+          },
+        },
+        ta: ['CS1010S'],
+        hidden: [],
+      });
+    });
+
+    test('should ignore invalid classNo', () => {
+      expect(
+        deserializeTimetable('CS1010S=LEC:INVALIDCLASSNO', mockGetModuleSemesterTimetable),
+      ).toEqual({
+        semTimetableConfig: {
+          CS1010S: {
+            Lecture: [],
+          },
+        },
+        ta: [],
+        hidden: [],
+      });
+    });
+
+    test('use only last ta param', () => {
+      expect(
+        deserializeTimetable(
+          'CS1010S=LEC:1&ta=CS3216(LEC:1)&ta=CS1010S(TUT:2)',
+          mockGetModuleSemesterTimetable,
+        ),
+      ).toEqual({
+        semTimetableConfig: {
+          CS1010S: {
+            Tutorial: [21],
+          },
+        },
+        ta: ['CS1010S'],
+        hidden: [],
+      });
+    });
+
+    test('should ignore invalid ta lessons', () => {
+      expect(
+        deserializeTimetable('CS1010S=LEC:1&ta=CS1010S(LEC:2)', mockGetModuleSemesterTimetable),
+      ).toEqual({
+        semTimetableConfig: {
+          CS1010S: {
+            Lecture: [],
+          },
+        },
+        ta: ['CS1010S'],
+        hidden: [],
+      });
+    });
+
+    test('ta module config without lessons', () => {
+      expect(
+        deserializeTimetable('CS1010S=LEC:1,TUT:3&ta=CS1010S()', mockGetModuleSemesterTimetable),
+      ).toEqual({
+        semTimetableConfig: {
+          CS1010S: {},
+        },
+        ta: ['CS1010S'],
+        hidden: [],
+      });
+    });
+
+    test('ignore modules without semester data', () => {
+      expect(
+        deserializeTimetable(
+          'CS1010S=LEC:1,REC:1,TUT:3&ta=CS3217(LEC:1)',
+          mockGetModuleSemesterTimetable,
+        ),
+      ).toEqual({
+        semTimetableConfig: {
+          CS1010S: {
+            Lecture: [0],
+            Recitation: [1],
+            Tutorial: [30],
+          },
+        },
+        ta: [],
+        hidden: [],
+      });
+    });
+
+    test('should ignore invalid ta module config', () => {
+      expect(
+        deserializeTimetable(
+          'CS1010S=LEC:1,REC:1,TUT:3&ta=INVALID),CS1010S(LEC:1)',
+          mockGetModuleSemesterTimetable,
+        ),
+      ).toEqual({
+        semTimetableConfig: {
+          CS1010S: {
+            Lecture: [0],
+          },
+        },
+        ta: ['CS1010S'],
+        hidden: [],
+      });
+    });
+
+    test('should return array of module codes', () => {
+      expect(parseTaModuleCodes('CS1010S(LEC:1,TUT:1),CS3216(LEC:1)')).toEqual([
+        'CS1010S',
+        'CS3216',
+      ]);
+    });
   });
 });
 
@@ -461,8 +636,8 @@ test('isSameTimetableConfig', () => {
   // Change lessonType order
   expect(
     isSameTimetableConfig(
-      { CS2104: { Tutorial: '1', Lecture: '2' } },
-      { CS2104: { Lecture: '2', Tutorial: '1' } },
+      { CS2104: { Tutorial: [1], Lecture: [2] } },
+      { CS2104: { Lecture: [2], Tutorial: [1] } },
     ),
   ).toBe(true);
 
@@ -470,12 +645,12 @@ test('isSameTimetableConfig', () => {
   expect(
     isSameTimetableConfig(
       {
-        CS2104: { Lecture: '1', Tutorial: '2' },
-        CS2105: { Lecture: '1', Tutorial: '1' },
+        CS2104: { Lecture: [1], Tutorial: [2] },
+        CS2105: { Lecture: [1], Tutorial: [1] },
       },
       {
-        CS2105: { Lecture: '1', Tutorial: '1' },
-        CS2104: { Lecture: '1', Tutorial: '2' },
+        CS2105: { Lecture: [1], Tutorial: [1] },
+        CS2104: { Lecture: [1], Tutorial: [2] },
       },
     ),
   ).toBe(true);
@@ -483,8 +658,8 @@ test('isSameTimetableConfig', () => {
   // Different values
   expect(
     isSameTimetableConfig(
-      { CS2104: { Lecture: '1', Tutorial: '2' } },
-      { CS2104: { Lecture: '2', Tutorial: '1' } },
+      { CS2104: { Lecture: [1], Tutorial: [2] } },
+      { CS2104: { Lecture: [2], Tutorial: [1] } },
     ),
   ).toBe(false);
 
@@ -492,11 +667,11 @@ test('isSameTimetableConfig', () => {
   expect(
     isSameTimetableConfig(
       {
-        CS2104: { Tutorial: '1', Lecture: '2' },
+        CS2104: { Tutorial: [1], Lecture: [2] },
       },
       {
-        CS2104: { Tutorial: '1', Lecture: '2' },
-        CS2105: { Lecture: '1', Tutorial: '1' },
+        CS2104: { Tutorial: [1], Lecture: [2] },
+        CS2105: { Lecture: [1], Tutorial: [1] },
       },
     ),
   ).toBe(false);
@@ -529,16 +704,26 @@ describe(validateTimetableModules, () => {
   });
 });
 
-describe('validateModuleLessons', () => {
+// TODO: validate module lessons
+// - either normal non-TA or TA module
+//   - remove lesson group if there are lessons of other lesson types
+// - if module is a normal non TA module:
+//   - remove lesson group if any lesson is missing
+//   - remove lesson group if there are extra lessons
+//
+describe(validateModuleLessons, () => {
   const semester: Semester = 1;
   const lessons: ModuleLessonConfig = {
-    Lecture: '1',
-    Recitation: '10',
-    Tutorial: '11',
+    Lecture: [0],
+    Recitation: [2],
+    Tutorial: [13],
   };
 
   test('should leave valid lessons untouched', () => {
-    expect(validateModuleLessons(semester, lessons, CS1010S)).toEqual([lessons, []]);
+    expect(validateModuleLessons(semester, lessons, CS1010S, false)).toEqual({
+      validatedLessonConfig: lessons,
+      valid: true,
+    });
   });
 
   test('should remove lesson types which do not exist', () => {
@@ -547,24 +732,26 @@ describe('validateModuleLessons', () => {
         semester,
         {
           ...lessons,
-          Laboratory: '2', // CS1010S has no lab
+          Laboratory: [0], // CS1010S has no lab
         },
         CS1010S,
+        false,
       ),
-    ).toEqual([lessons, ['Laboratory']]);
+    ).toEqual({ validatedLessonConfig: lessons, valid: false });
   });
 
-  test('should replace lessons with invalid class no', () => {
+  test('should replace lessons that have invalid class no', () => {
     expect(
       validateModuleLessons(
         semester,
         {
           ...lessons,
-          Lecture: '2', // CS1010S has no Lecture 2
+          Lecture: [2], // CS1010S lesson index 2 is not a lecture
         },
         CS1010S,
+        false,
       ),
-    ).toEqual([lessons, ['Lecture']]);
+    ).toEqual({ validatedLessonConfig: lessons, valid: false });
   });
 
   test('should add lessons for when they are missing', () => {
@@ -572,18 +759,19 @@ describe('validateModuleLessons', () => {
       validateModuleLessons(
         semester,
         {
-          Tutorial: '10',
+          Tutorial: [13],
         },
         CS1010S,
+        false,
       ),
-    ).toEqual([
-      {
-        Lecture: '1',
-        Recitation: '1',
-        Tutorial: '10',
+    ).toEqual({
+      validatedLessonConfig: {
+        Lecture: [0],
+        Recitation: [1],
+        Tutorial: [13],
       },
-      ['Lecture', 'Recitation'],
-    ]);
+      valid: false,
+    });
   });
 });
 
@@ -680,16 +868,67 @@ describe(getEndTimeAsDate, () => {
   });
 });
 
-describe(deserializeTa, () => {
-  test('should deserialize TA modules string into object', () => {
-    expect(deserializeTa('?')).toEqual({});
-    expect(deserializeTa('?CS1010S=REC:1,TUT:8')).toEqual({});
-    expect(deserializeTa('?CS1010S=REC:1,TUT:8&ta=CS3210(TUT:02)')).toEqual({
-      CS3210: [['Tutorial', '02']],
+describe('v1 config migration', () => {
+  const moduleLessonConfig = {
+    Lecture: '1',
+  };
+  const moduleTimetable = getModuleTimetable(CS1010S, 1);
+  test('should do nothing if already migrated', () => {
+    const migrationResult = migrateModuleLessonConfig(
+      {
+        Lecture: [0],
+      },
+      [],
+      'CS1010S',
+      moduleTimetable,
+    );
+    expect(migrationResult).toEqual({
+      migratedModuleLessonConfig: {
+        Lecture: [0],
+      },
+      alreadyMigrated: true,
     });
-    expect(deserializeTa('?CS1010S=REC:1,TUT:8&ta=CS3210(TUT:02),CS3219(TUT:15)')).toEqual({
-      CS3210: [['Tutorial', '02']],
-      CS3219: [['Tutorial', '15']],
+  });
+
+  test('should not error if ta module config is mismatched', () => {
+    const migrationResult = migrateModuleLessonConfig(
+      moduleLessonConfig,
+      [],
+      'CS1010S',
+      moduleTimetable,
+    );
+    expect(migrationResult).toEqual({
+      migratedModuleLessonConfig: {
+        Lecture: [0],
+      },
+      alreadyMigrated: false,
     });
+  });
+
+  test('should ignore invalid classNo', () => {
+    const invalidTaModuleConfig = {
+      CS1010S: [
+        ['Lecture', '1'],
+        ['Lecture', '2'],
+      ],
+    } as ClassNoTaModulesConfig;
+    const migrationResult = migrateModuleLessonConfig(
+      moduleLessonConfig,
+      invalidTaModuleConfig,
+      'CS1010S',
+      moduleTimetable,
+    );
+    expect(migrationResult).toEqual({
+      migratedModuleLessonConfig: {
+        Lecture: [0],
+      },
+      alreadyMigrated: false,
+    });
+  });
+});
+
+describe(getClosestLessonConfig, () => {
+  test('ignore if lesson type has no classNo', () => {
+    expect(getClosestLessonConfig({ Lecture: {} }, { Lecture: [0] })).toEqual({});
   });
 });

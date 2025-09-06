@@ -10,7 +10,9 @@ exports[`cancelModifyLesson should not have payload 1`] = `
 exports[`changeLesson should return updated information to change lesson 1`] = `
 {
   "payload": {
-    "classNo": "1",
+    "lessonIndices": [
+      1,
+    ],
     "lessonType": "Recitation",
     "moduleCode": "CS1010S",
     "semester": 1,
@@ -55,6 +57,7 @@ exports[`modifyLesson should return lesson payload 1`] = `
       "colorIndex": 0,
       "day": "Wednesday",
       "endTime": "1200",
+      "lessonIndex": 0,
       "lessonType": "Lecture",
       "moduleCode": "CS1010S",
       "startTime": "1000",
