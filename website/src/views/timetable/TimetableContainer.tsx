@@ -252,10 +252,8 @@ export const TimetableContainerComponent: FC = () => {
     } = deserializeTimetable(location.search, getModuleSemesterTimetable);
 
     setImportedTimetable(semTimetableConfig);
-
-    if (hiddenModules.length) setImportedHidden(hiddenModules);
-
-    if (taModules.length) setImportedTa(taModules);
+    setImportedHidden(hiddenModules);
+    setImportedTa(taModules);
   }, [semester, params.action, isLoading, location.search, getModuleSemesterTimetable]);
 
   const displayedTimetable = importedTimetable || timetable;
