@@ -11,6 +11,8 @@ import {
   groupBy,
   map,
   filter,
+  isArray,
+  keys,
 } from 'lodash';
 
 import { ColorMapping, HORIZONTAL, ModulesMap, TimetableOrientation } from 'types/reducers';
@@ -21,6 +23,7 @@ import {
   SemTimetableConfigWithLessons,
   InteractableLesson,
   LessonWithIndex,
+  ClassNoTaModulesConfig,
 } from 'types/timetables';
 
 import {
@@ -71,7 +74,7 @@ type OwnProps = {
   timetable: SemTimetableConfig;
   colors: ColorMapping;
   hiddenImportedModules: ModuleCode[] | null;
-  taImportedModules: TaModulesConfig | null;
+  taImportedModules: TaModulesConfig | ClassNoTaModulesConfig | null;
 };
 
 type Props = OwnProps & {
@@ -249,10 +252,8 @@ class TimetableContent extends React.Component<Props, State> {
   isHiddenInTimetable = (moduleCode: ModuleCode): boolean =>
     this.props.hiddenInTimetable.includes(moduleCode);
 
-  isTaInTimetable = (moduleCode: ModuleCode): boolean => {
-    const taTimetable = this.props.taInTimetable ?? [];
-    return taTimetable.includes(moduleCode);
-  };
+  isTaInTimetable = (moduleCode: ModuleCode): boolean =>
+    this.props.taInTimetable.includes(moduleCode);
 
   addModule = (semester: Semester, moduleCode: ModuleCode) => {
     this.props.addModule(semester, moduleCode);
@@ -586,6 +587,9 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
   const hiddenInTimetable =
     ownProps.hiddenImportedModules ?? state.timetables.hidden[semester] ?? [];
   const taInTimetable = ownProps.taImportedModules ?? state.timetables.ta[semester] ?? [];
+  const taModuleCodes: TaModulesConfig = isArray(taInTimetable)
+    ? taInTimetable
+    : keys(taInTimetable);
 
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
 
@@ -598,7 +602,7 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
     timetableOrientation: state.theme.timetableOrientation,
     showTitle: state.theme.showTitle,
     hiddenInTimetable,
-    taInTimetable,
+    taInTimetable: taModuleCodes,
   };
 }
 
