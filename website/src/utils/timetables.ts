@@ -625,13 +625,15 @@ export function deserializeTa(serialized: string): TaModulesConfig {
   // If user manually enters multiple TA query keys, use latest one
   const ta = Array.isArray(params.ta) ? last(params.ta) : params.ta;
   if (!ta) return deserialized;
-  ta.split(LESSON_SEP).forEach((moduleConfig) => {
+  ta.split(')').forEach((_moduleConfig) => {
+    // Second and subsequent matches have a leading comma
+    const moduleConfig = _moduleConfig.replace(/^,/, '');
     const moduleCodeMatches = moduleConfig.match(/(.*)\(/);
     if (moduleCodeMatches === null) {
       return;
     }
 
-    const lessonsMatches = moduleConfig.match(/\((.*)\)/);
+    const lessonsMatches = moduleConfig.match(/\((.*)/);
     if (lessonsMatches === null) {
       return;
     }
