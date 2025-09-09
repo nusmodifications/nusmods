@@ -20,7 +20,7 @@ export default class TimetableOnly extends Component<Props, State> {
     timetable: {},
     colors: {},
     hidden: [],
-    ta: {},
+    ta: [],
   };
 
   override render() {

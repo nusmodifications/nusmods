@@ -25,6 +25,7 @@ export type WeekRange = {
   // Week intervals for modules with uneven spacing between lessons
   weeks?: number[];
 };
+export type LessonIndex = number;
 
 // Recursive tree of module codes and boolean operators for the prereq tree
 export type PrereqTree =
@@ -138,10 +139,18 @@ export type RawLesson = Readonly<{
   weeks: Weeks;
 }>;
 
+export type RawLessonWithIndex = RawLesson & { readonly lessonIndex: LessonIndex };
+
+export type LessonsByLessonTypeByClassNo = {
+  [lessonType: LessonType]: {
+    [classNo: ClassNo]: LessonIndex[];
+  };
+};
+
 // Semester-specific information of a module.
 export type SemesterData = {
   semester: Semester;
-  timetable: readonly RawLesson[];
+  timetable: readonly RawLessonWithIndex[];
 
   // Exam
   examDate?: string;

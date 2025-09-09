@@ -1,9 +1,10 @@
 import * as React from 'react';
 
-import { HoverLesson, ModifiableLesson } from 'types/timetables';
+import { HoverLesson, ColoredLesson, InteractableLesson } from 'types/timetables';
 import { OnHoverCell, OnModifyCell } from 'types/views';
 
 import { convertTimeToIndex } from 'utils/timify';
+import { isInteractable } from 'utils/timetables';
 import styles from './TimetableRow.scss';
 import TimetableCell from './TimetableCell';
 
@@ -12,7 +13,7 @@ type Props = {
   showTitle: boolean;
   startingIndex: number;
   endingIndex: number;
-  lessons: ModifiableLesson[];
+  lessons: ColoredLesson[] | InteractableLesson[];
   hoverLesson?: HoverLesson | null;
   onCellHover: OnHoverCell;
   onModifyCell?: OnModifyCell;
@@ -55,7 +56,7 @@ const TimetableRow: React.FC<Props> = (props) => {
         lastStartIndex = endIndex;
 
         const conditionalProps =
-          lesson.isModifiable && onModifyCell
+          isInteractable(lesson) && lesson.canBeSelectedAsActiveLesson && onModifyCell
             ? {
                 onClick: (position: ClientRect) => onModifyCell(lesson, position),
               }

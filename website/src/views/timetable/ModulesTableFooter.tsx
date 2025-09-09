@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { isEmpty, map, sumBy } from 'lodash';
+import { map, sumBy } from 'lodash';
 import { connect } from 'react-redux';
 
 import { ModuleTableOrder } from 'types/reducers';
@@ -37,11 +37,10 @@ export function countShownMCs(
   taInTimetable: TaModulesConfig,
 ): number {
   return sumBy(
-    modules.filter(
-      (module) =>
-        !hiddenInTimetable.includes(module.moduleCode) &&
-        isEmpty(taInTimetable[module.moduleCode] ?? []),
-    ),
+    modules.filter((module) => {
+      const { moduleCode } = module;
+      return !hiddenInTimetable.includes(moduleCode) && !taInTimetable.includes(moduleCode);
+    }),
     (module) => parseFloat(module.moduleCredit),
   );
 }

@@ -3,7 +3,13 @@ import { Actions } from 'types/actions';
 import config from 'config';
 
 import { forceRefreshPrompt } from 'utils/debug';
-import { MODIFY_LESSON, CHANGE_LESSON, CANCEL_MODIFY_LESSON } from 'actions/timetables';
+import {
+  MODIFY_LESSON,
+  CHANGE_LESSON,
+  CANCEL_MODIFY_LESSON,
+  ADD_LESSON,
+  REMOVE_LESSON,
+} from 'actions/timetables';
 import { SELECT_SEMESTER } from 'actions/settings';
 import {
   OPEN_NOTIFICATION,
@@ -39,6 +45,8 @@ function app(state: AppState = defaultAppState(), action: Actions): AppState {
       };
     case CANCEL_MODIFY_LESSON:
     case CHANGE_LESSON:
+    case ADD_LESSON:
+    case REMOVE_LESSON:
       return {
         ...state,
         activeLesson: null,
