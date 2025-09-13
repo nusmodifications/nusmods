@@ -153,7 +153,7 @@ describe(getAcadYearModules, () => {
     expect(getAcadYearModules(state)).toHaveProperty('2018/2019.2.0', {
       id: '0',
       moduleCode: 'CS3216',
-      conflict: { type: 'semester', semestersOffered: [1] },
+      conflicts: [{ type: 'semester', semestersOffered: [1] }],
     });
   });
 
@@ -177,10 +177,12 @@ describe(getAcadYearModules, () => {
       id: '0',
       moduleCode: 'CS3216',
       moduleInfo: CS3216,
-      conflict: {
-        type: 'prereq',
-        unfulfilledPrereqs: ['CS2103'],
-      },
+      conflicts: [
+        {
+          type: 'prereq',
+          unfulfilledPrereqs: ['CS2103'],
+        },
+      ],
     });
   });
 
@@ -211,24 +213,28 @@ describe(getAcadYearModules, () => {
         id: '0',
         moduleCode: 'CS1010X',
         moduleInfo: CS1010X,
-        conflict: {
-          type: 'exam',
-          conflictModules: ['CS1010X', 'CS1010S'],
-        },
+        conflicts: [
+          {
+            type: 'exam',
+            conflictModules: ['CS1010X', 'CS1010S'],
+          },
+        ],
       },
       {
         id: '1',
         moduleCode: 'CS1010S',
         moduleInfo: CS1010S,
-        conflict: {
-          type: 'exam',
-          conflictModules: ['CS1010X', 'CS1010S'],
-        },
+        conflicts: [
+          {
+            type: 'exam',
+            conflictModules: ['CS1010X', 'CS1010S'],
+          },
+        ],
       },
     ]);
   });
 
-  test('should return duplicate conflicts', () => {
+  test('should return duplicate and prereq conflicts', () => {
     const planner: PlannerState = {
       ...defaultState,
       modules: {
@@ -256,13 +262,29 @@ describe(getAcadYearModules, () => {
         id: '0',
         moduleCode: 'CS3216',
         moduleInfo: CS3216,
-        conflict: { type: 'duplicate' },
+        conflicts: [
+          {
+            type: 'duplicate',
+          },
+          {
+            type: 'prereq',
+            unfulfilledPrereqs: ['CS2103'],
+          },
+        ],
       },
       {
         id: '1',
         moduleCode: 'CS3216',
         moduleInfo: CS3216_DUPLICATE,
-        conflict: { type: 'duplicate' },
+        conflicts: [
+          {
+            type: 'duplicate',
+          },
+          {
+            type: 'prereq',
+            unfulfilledPrereqs: ['CS2103'],
+          },
+        ],
       },
     ]);
 
@@ -271,13 +293,13 @@ describe(getAcadYearModules, () => {
         id: '2',
         moduleCode: 'CS1010S',
         moduleInfo: CS1010S,
-        conflict: { type: 'duplicate' },
+        conflicts: [{ type: 'duplicate' }],
       },
       {
         id: '3',
         moduleCode: 'CS1010S',
         moduleInfo: CS1010S_DUPLICATE,
-        conflict: { type: 'duplicate' },
+        conflicts: [{ type: 'duplicate' }],
       },
     ]);
   });
@@ -306,7 +328,7 @@ describe(getAcadYearModules, () => {
         id: '0',
         moduleCode: 'CS1010S',
         moduleInfo: CS1010S,
-        conflict: null,
+        conflicts: null,
       },
     ]);
 
@@ -315,7 +337,7 @@ describe(getAcadYearModules, () => {
         id: '1',
         moduleCode: 'CS1010S',
         moduleInfo: CS1010S_DUPLICATE,
-        conflict: null,
+        conflicts: null,
       },
     ]);
   });
@@ -347,13 +369,13 @@ describe(getAcadYearModules, () => {
         id: '0',
         moduleCode: 'CS1010X',
         moduleInfo: CS1010X,
-        conflict: null,
+        conflicts: null,
       },
       {
         id: '1',
         moduleCode: 'CS1010S',
         moduleInfo: CS1010S,
-        conflict: null,
+        conflicts: null,
       },
     ]);
   });
@@ -390,7 +412,7 @@ describe(getAcadYearModules, () => {
       id: '1',
       moduleCode: 'CS3216',
       moduleInfo: CS3216,
-      conflict: null,
+      conflicts: null,
     });
   });
 
@@ -434,7 +456,7 @@ describe(getAcadYearModules, () => {
         title: 'Algorithms and Data Structure Accelerated',
         moduleCredit: 6,
       },
-      conflict: null,
+      conflicts: null,
     });
 
     expect(cs3216).toMatchObject({
@@ -452,9 +474,11 @@ describe(getAcadYearModules, () => {
       },
     });
 
-    expect(getAcadYearModules(state)).toHaveProperty('2018/2019.1.0.conflict', {
-      type: 'noInfo',
-    });
+    expect(getAcadYearModules(state)).toHaveProperty('2018/2019.1.0.conflicts', [
+      {
+        type: 'noInfo',
+      },
+    ]);
   });
 
   test('should not show no data conflicts for modules with custom info', () => {
@@ -471,6 +495,6 @@ describe(getAcadYearModules, () => {
       },
     });
 
-    expect(getAcadYearModules(state)).toHaveProperty('2018/2019.1.0.conflict', null);
+    expect(getAcadYearModules(state)).toHaveProperty('2018/2019.1.0.conflicts', null);
   });
 });
