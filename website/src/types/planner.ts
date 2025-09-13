@@ -55,7 +55,7 @@ export type PlannerModuleInfo = {
   // Custom info added by the student to override our data or to fill in the blanks
   // This is a separate field for easier typing
   customInfo?: CustomModule | null;
-  conflict?: Conflict | null;
+  conflicts?: Conflict[] | null;
   moduleCode?: ModuleCode;
   placeholder?: PlannerPlaceholder;
 };
