@@ -125,7 +125,7 @@ function mapModuleToInfo(
   const moduleInfo: PlannerModuleInfo = {
     id,
     moduleCode,
-    conflict: null,
+    conflicts: null,
   };
 
   if (placeholderId) {
