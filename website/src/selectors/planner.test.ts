@@ -186,6 +186,39 @@ describe(getAcadYearModules, () => {
     });
   });
 
+  test('should return both module prereq conflicts and semester conflict', () => {
+    const planner: PlannerState = {
+      ...defaultState,
+      modules: {
+        // CS3216 requires CS2103 and is only offered in sem1
+        0: { id: '0', moduleCode: 'CS3216', year: '2018/2019', semester: 2, index: 0 },
+      },
+    };
+
+    const moduleBank = {
+      modules: { CS3216 },
+      moduleCodes: { CS3216: { semesters: [1] } },
+    };
+
+    const state: any = { planner, moduleBank };
+
+    expect(getAcadYearModules(state)).toHaveProperty('2018/2019.2.0', {
+      id: '0',
+      moduleCode: 'CS3216',
+      moduleInfo: CS3216,
+      conflicts: [
+        {
+          type: 'semester',
+          semestersOffered: [1],
+        },
+        {
+          type: 'prereq',
+          unfulfilledPrereqs: ['CS2103'],
+        },
+      ],
+    });
+  });
+
   test('should return semester exam conflicts', () => {
     const planner: PlannerState = {
       ...defaultState,
