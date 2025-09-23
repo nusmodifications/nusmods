@@ -9489,7 +9489,7 @@ nightwatch-axe-verbose@^2.3.0:
   dependencies:
     axe-core "^4.10.3"
 
-nightwatch@^3.12.2:
+nightwatch@3.12.2:
   version "3.12.2"
   resolved "https://registry.yarnpkg.com/nightwatch/-/nightwatch-3.12.2.tgz#95ef5322003473b4e1f4cca1e40259b64f9ffe75"
   integrity sha512-B4MGUvO+RjX8gYg84oJ3DKdgzfXIFRKbs19nLBlUt+aJlzBdv6VdN00wlOmzCakHXZlU10MGm1KiW0dsTlgFRA==
