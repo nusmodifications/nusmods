@@ -44,6 +44,15 @@ Reference PRs: [PR #3286](https://github.com/nusmodifications/nusmods/pull/3286)
   - [ ] Update dates in the ModReg schedule in `website/src/data/modreg-schedule.json`
   - [ ] Enable the `enableCPExforProd` and `showCPExTab` flags in `website/src/featureFlags.ts`
   - [ ] Push onto `cpex-staging` branch (Ensure synced with `master` branch first), then visit https://cpex-staging.nusmods.com/cpex and verify that NUS authentication is working
+
+```bash
+git checkout master
+git pull
+git switch cpex-staging
+git reset --hard master
+git push
+```
+
 - During
   - [ ] Merge `cpex-staging` into `master`
   - [ ] Deploy latest `master` to `production`
