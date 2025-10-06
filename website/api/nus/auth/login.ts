@@ -26,11 +26,11 @@ const handlePost: Handler = async (req, res) => {
 
     res.redirect(301, userURL.toString());
   } catch (err) {
-    if (err.message === errors.noRelayState) {
+    if ((err as unknown as Error).message === errors.noRelayState) {
       res.json({
         message: 'Relay state not found in request',
       });
-    } else if (err.message === errors.invalidRelayState) {
+    } else if ((err as unknown as Error).message === errors.invalidRelayState) {
       res.json({
         message: 'Invalid relay state given. URL must be from a valid domain.',
       });

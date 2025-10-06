@@ -24,7 +24,7 @@ const handleGet: Handler = async (req, res) => {
     }));
     res.json(existingSubmission);
   } catch (err) {
-    if (err.response.status === 404) {
+    if ((err as any).response.status === 404) {
       res.json(<MpeSubmission>{
         intendedMCs: 0,
         preferences: [],

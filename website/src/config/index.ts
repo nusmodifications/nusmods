@@ -101,7 +101,7 @@ const augmentedConfig: Config = {
   getSemesterKey: (): string =>
     `${augmentedConfig.academicYear} ${augmentedConfig.semesterNames[augmentedConfig.semester]}`,
 
-  enableCPEx: enableCPExforProd || NUSMODS_ENV !== 'production',
+  enableCPEx: enableCPExforProd || (NUSMODS_ENV ?? '') !== 'production',
 };
 
 export default augmentedConfig;
