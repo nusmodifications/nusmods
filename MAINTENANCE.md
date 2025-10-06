@@ -40,7 +40,7 @@ Reference PRs: [PR #3286](https://github.com/nusmodifications/nusmods/pull/3286)
 
 - Before
   - [ ] Update `TERM` in `scrapers/cpex-scraper/src/index.ts` and `MPE_SEMESTER` in `website/src/views/mpe/constants.ts` to be the semester you're configuring CPEx for (usually the next semester)
-  - [ ] Update the displayed dates in `website/src/views/mpe/MpeContainer.tsx` and any new requirements/descriptions
+  - [ ] ~~Update the displayed dates in `website/src/views/mpe/MpeContainer.tsx` and any new requirements/descriptions~~ Auto-updated using dates in modreg-schedule.json
   - [ ] Update dates in the ModReg schedule in `website/src/data/modreg-schedule.json`
   - [ ] Enable the `enableCPExforProd` and `showCPExTab` flags in `website/src/featureFlags.ts`
   - [ ] Push onto `cpex-staging` branch (Ensure synced with `master` branch first), then visit https://cpex-staging.nusmods.com/cpex and verify that NUS authentication is working
