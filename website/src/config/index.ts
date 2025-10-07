@@ -3,8 +3,8 @@ import { format } from 'date-fns';
 
 import { AcadYear, Semester } from 'types/modules';
 
-import holidays from 'data/holidays.json';
-import modRegData from 'data/modreg-schedule.json';
+import holidays from '../data/holidays.json';
+import modRegData from '../data/modreg-schedule.json';
 import appConfig from './app-config.json';
 import { enableCPExforProd } from '../featureFlags';
 
