@@ -5,6 +5,7 @@ import Modal from 'views/components/Modal';
 import type { MpeSubmission } from 'types/mpe';
 import ExternalLink from 'views/components/ExternalLink';
 import config from 'config';
+import { format } from 'date-fns';
 import {
   getLoginState,
   getSSOLink,
@@ -146,13 +147,16 @@ const MpeContainer: React.FC = () => {
           </p>
           {!isUgCPExEnded() && (
             <p>
-              For undergraduates, the CPEx for this round will be from {ugCPEx?.start}
-              to {ugCPEx?.end}.
+              For undergraduates, the CPEx for this round will be from
+              {format(ugCPEx?.startDate ?? 0, 'dd MMM')} to&nbsp;
+              {format(ugCPEx?.endDate ?? 0, 'dd MMM yyyy')}.
             </p>
           )}
           {!isGdCPExEnded() && (
             <p>
-              For graduates, the CPEx for this round will be from {gdCPEx?.start} to {gdCPEx?.end}.
+              For graduates, the CPEx for this round will be from
+              {format(gdCPEx?.startDate ?? 0, 'dd MMM')} to&nbsp;
+              {format(gdCPEx?.endDate ?? 0, 'dd MMM yyyy')}.
             </p>
           )}
           <p>
