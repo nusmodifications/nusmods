@@ -2,7 +2,7 @@
   "functions": {
     "api/**/*.ts": {
       "excludeFiles": "./tsconfig.json",
-      "includeFiles": "{./api/tsconfig.json,./src/serverless/*.xml}"
+      "includeFiles": "{./api/tsconfig.json,./src/serverless/*.xml,./data/*.json}"
     },
     "api/**/*.go": {
       "includeFiles": "./api/optimiser/_constants/venues.json"
