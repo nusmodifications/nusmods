@@ -147,14 +147,14 @@ const MpeContainer: React.FC = () => {
           </p>
           {!isUgCPExEnded() && (
             <p>
-              For undergraduates, the CPEx for this round will be from
+              For undergraduates, the CPEx for this round will be from&nbsp;
               {format(ugCPEx?.startDate ?? 0, 'dd MMM')} to&nbsp;
               {format(ugCPEx?.endDate ?? 0, 'dd MMM yyyy')}.
             </p>
           )}
           {!isGdCPExEnded() && (
             <p>
-              For graduates, the CPEx for this round will be from
+              For graduates, the CPEx for this round will be from&nbsp;
               {format(gdCPEx?.startDate ?? 0, 'dd MMM')} to&nbsp;
               {format(gdCPEx?.endDate ?? 0, 'dd MMM yyyy')}.
             </p>
