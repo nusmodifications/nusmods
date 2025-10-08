@@ -295,7 +295,7 @@ $ yarn typecheck
 
 We currently have some simple E2E tests set up courtesy of Browserstack using Nightwatch. The purpose of this is mainly to catch major regression in browsers at the older end of our browser support matrix (iOS 11, Safari 11, Edge, Firefox ESR) which can be difficult to test manually.
 
-By default the tests are ran against http://staging.nusmods.com, although they can be configured to run against any host, including localhost if you use [Browserstack's local testing feature](https://www.browserstack.com/local-testing#command-line).
+By default the tests are ran against http://latest.nusmods.com, although they can be configured to run against any host, including localhost if you use [Browserstack's local testing feature](https://www.browserstack.com/docs/automate/javascript-testing/local-testing).
 
 ```sh
 # All commands must include BROWSERSTACK_USER and BROWSERSTACK_ACCESS_KEY env variables
@@ -305,7 +305,7 @@ By default the tests are ran against http://staging.nusmods.com, although they c
 yarn e2e
 
 # Run against deploy preview
-LAUNCH_URL="https://deploy-preview-1024--nusmods.netlify.com" yarn e2e
+LAUNCH_URL="https://nusmods-website-example-modsbots-projects.vercel.app" yarn e2e
 
 # Run against local development server
 yarn start              # Start a local development server
