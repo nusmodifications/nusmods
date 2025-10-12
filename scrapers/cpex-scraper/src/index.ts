@@ -4,7 +4,7 @@ import path from 'path';
 
 import env from '../env.json';
 
-const TERM = '2510';
+const TERM = '2520';
 
 // Sanity check to see if there are at least this many modules before overwriting cpexModules.json
 // The last time I ran this fully there were 3418 modules
@@ -86,8 +86,7 @@ async function scraper() {
     const department = departmentsData[i];
 
     console.log(
-      `[${i + 1}/${departmentsData.length}] Fetching modules for ${
-        department.Description
+      `[${i + 1}/${departmentsData.length}] Fetching modules for ${department.Description
       } with acadorg: ${department.AcademicOrganisation}...`,
     );
 

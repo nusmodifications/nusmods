@@ -3,8 +3,8 @@ import { format } from 'date-fns';
 
 import { AcadYear, Semester } from 'types/modules';
 
-import holidays from 'data/holidays.json';
-import modRegData from 'data/modreg-schedule.json';
+import holidays from '../data/holidays.json';
+import modRegData from '../data/modreg-schedule.json';
 import appConfig from './app-config.json';
 import { enableCPExforProd } from '../featureFlags';
 
@@ -76,7 +76,7 @@ export type Config = {
 };
 
 export function convertModRegDates(roundData: (typeof modRegData)[ScheduleType]): RegPeriod[] {
-  return roundData.map((data) => ({
+  return roundData.map((data: (typeof modRegData)[ScheduleType][number]) => ({
     ...data,
     type: data.type as RegPeriodType,
     start: format(new Date(data.start), 'EEEE do LLLL, h:mm aaaa'),
@@ -89,7 +89,7 @@ export function convertModRegDates(roundData: (typeof modRegData)[ScheduleType])
 const augmentedConfig: Config = {
   ...appConfig,
 
-  holidays: holidays.map((date) => new Date(date)),
+  holidays: holidays.map((date: string) => new Date(date)),
 
   modRegSchedule: mapValues(modRegData, convertModRegDates),
 

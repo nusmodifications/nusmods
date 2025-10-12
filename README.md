@@ -69,10 +69,10 @@ All projects and packages in this repository are [MIT licensed](LICENSE).
 
 [<img src="misc/1password-logo.png" width="200" />](1password)
 
-[Netlify](netlify) automatically deploys our branches so we can easily test incoming Pull Requests.
+[Vercel](vercel) hosts our website, and automatically deploys our branches so we can easily test incoming Pull Requests.
 
-[<img src="misc/netlify-logo.png" width="190" />](netlify)
+[<img src="misc/vercel-logo.png" width="200" />](vercel)
 
 [browserstack]: https://www.browserstack.com/
 [1password]: https://1password.com/
-[netlify]: https://www.netlify.com
+[vercel]: https://vercel.com/
