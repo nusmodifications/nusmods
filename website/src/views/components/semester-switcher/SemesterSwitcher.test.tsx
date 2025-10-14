@@ -8,9 +8,9 @@ describe('<SemesterSwitcher />', () => {
     const wrapper = shallow(<SemesterSwitcher semester={2} onSelectSemester={onButtonClick} />);
     const buttons = wrapper.find('button');
     buttons.at(0).simulate('click');
-    expect(onButtonClick).toBeCalledWith(1);
+    expect(onButtonClick).toHaveBeenCalledWith(1);
     buttons.at(1).simulate('click');
-    expect(onButtonClick).toBeCalledWith(3);
+    expect(onButtonClick).toHaveBeenCalledWith(3);
   });
 
   describe('semester switching buttons are disabled appropriately', () => {
@@ -19,9 +19,9 @@ describe('<SemesterSwitcher />', () => {
       const wrapper = shallow(<SemesterSwitcher semester={1} onSelectSemester={onButtonClick} />);
       const buttons = wrapper.find('button');
       buttons.at(0).simulate('click');
-      expect(onButtonClick).not.toBeCalled();
+      expect(onButtonClick).not.toHaveBeenCalled();
       buttons.at(1).simulate('click');
-      expect(onButtonClick).toBeCalledWith(2);
+      expect(onButtonClick).toHaveBeenCalledWith(2);
     });
 
     test('right button', () => {
@@ -29,9 +29,9 @@ describe('<SemesterSwitcher />', () => {
       const wrapper = shallow(<SemesterSwitcher semester={4} onSelectSemester={onButtonClick} />);
       const buttons = wrapper.find('button');
       buttons.at(1).simulate('click');
-      expect(onButtonClick).not.toBeCalled();
+      expect(onButtonClick).not.toHaveBeenCalled();
       buttons.at(0).simulate('click');
-      expect(onButtonClick).toBeCalledWith(3);
+      expect(onButtonClick).toHaveBeenCalledWith(3);
     });
   });
 });
