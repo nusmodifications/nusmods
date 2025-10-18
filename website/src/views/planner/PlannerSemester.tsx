@@ -4,7 +4,7 @@ import AddCalendarIcon from 'img/icons/add-calendar.svg';
 import classnames from 'classnames';
 
 import { Semester, ModuleCode } from 'types/modules';
-import { AddModuleData, PlannerModuleInfo } from 'types/planner';
+import { AddModuleData, PlannerModuleInfo, Conflict } from 'types/planner';
 import { Dispatch } from 'types/redux';
 import config from 'config';
 import { getExamDate, renderMCs } from 'utils/modules';
@@ -78,16 +78,22 @@ const PlannerSemester: React.FC<Props> = ({
   const dispatch = useDispatch<Dispatch>();
 
   const renderModule = (plannerModule: PlannerModuleInfo, index: number) => {
-    const { id, moduleCode, moduleInfo, conflict, placeholder } = plannerModule;
+    const { id, moduleCode, moduleInfo, conflicts, placeholder } = plannerModule;
 
     const showExamDate = showModuleMeta && config.academicYear === year;
 
     const isModuleInTimetable = moduleCode !== undefined && moduleCode in timetable;
 
-    const displayedConflict =
-      year === config.academicYear || (conflict && ['prereq', 'duplicate'].includes(conflict.type))
-        ? conflict
-        : null;
+    let displayedConflict: Conflict | null = null;
+
+    if (conflicts?.length) {
+      displayedConflict =
+        year === config.academicYear
+          ? conflicts[0] // Topmost conflict if correc year
+          : conflicts.find((c) => c.type === 'prereq') ||
+            conflicts.find((c) => c.type === 'duplicate') ||
+            null; // either prereq or duplicate or none if not same year
+    }
 
     return (
       <PlannerModule
