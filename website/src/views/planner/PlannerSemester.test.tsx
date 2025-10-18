@@ -45,16 +45,18 @@ function makePlannerSemester(year: string, semester: number, modules: PlannerMod
 }
 
 test('should show conflicts for current year', () => {
-  const conflict: Conflict = {
-    type: 'semester',
-    semestersOffered: [],
-  };
+  const conflicts: Conflict[] = [
+    {
+      type: 'semester',
+      semestersOffered: [],
+    },
+  ];
 
   const modules: PlannerModuleInfo[] = [
     {
       id: '0',
       moduleCode: 'UTC1702G',
-      conflict,
+      conflicts,
     },
   ];
 
@@ -63,16 +65,18 @@ test('should show conflicts for current year', () => {
 });
 
 test('should not show conflicts for non-current years', () => {
-  const conflict: Conflict = {
-    type: 'semester',
-    semestersOffered: [],
-  };
+  const conflicts: Conflict[] = [
+    {
+      type: 'semester',
+      semestersOffered: [],
+    },
+  ];
 
   const modules: PlannerModuleInfo[] = [
     {
       id: '0',
       moduleCode: 'UTC1702G',
-      conflict,
+      conflicts,
     },
   ];
 
