@@ -8,7 +8,8 @@
   "venue": "LT26",
   "moduleCode": "CS1010S",
   "title": "Programming Methodology",
-  "colorIndex": 0
+  "colorIndex": 0,
+  "lessonIndex": 0
 }, {
   "classNo": "1",
   "lessonType": "Recitation",
@@ -19,7 +20,8 @@
   "venue": "VCRm",
   "moduleCode": "CS1010S",
   "title": "Programming Methodology",
-  "colorIndex": 0
+  "colorIndex": 0,
+  "lessonIndex": 1
 }, {
   "classNo": "1",
   "lessonType": "Recitation",
@@ -30,7 +32,8 @@
   "venue": "VCRm",
   "moduleCode": "CS1010S",
   "title": "Programming Methodology",
-  "colorIndex": 0
+  "colorIndex": 0,
+  "lessonIndex": 2
 }, {
   "classNo": "2",
   "lessonType": "Tutorial",
@@ -41,7 +44,8 @@
   "venue": "COM1-0203",
   "moduleCode": "CS1010S",
   "title": "Programming Methodology",
-  "colorIndex": 0
+  "colorIndex": 0,
+  "lessonIndex": 3
 }, {
   "classNo": "2",
   "lessonType": "Tutorial",
@@ -52,7 +56,8 @@
   "venue": "COM1-0216",
   "moduleCode": "CS1010S",
   "title": "Programming Methodology",
-  "colorIndex": 0
+  "colorIndex": 0,
+  "lessonIndex": 4
 }, {
   "classNo": "1",
   "lessonType": "Lecture",
@@ -63,5 +68,6 @@
   "venue": "VCRm",
   "moduleCode": "CS3216",
   "title": "Application Development on Evolving Platforms",
-  "colorIndex": 1
+  "colorIndex": 1,
+  "lessonIndex": 5
 }]

@@ -1,8 +1,8 @@
-import { TimetableArrangement } from 'types/timetables';
+import { ColoredLesson, TimetableArrangement } from 'types/timetables';
 
 // A sample timetable used to preview themes on the settings page
 const EVERY_WEEK = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-const previewArrangement: TimetableArrangement = {
+const previewArrangement: TimetableArrangement<ColoredLesson> = {
   Tuesday: [
     [
       {

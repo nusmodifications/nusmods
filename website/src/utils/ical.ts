@@ -188,7 +188,7 @@ export default function iCalForTimetable(
   _.each(timetable, (lessonConfig, moduleCode) => {
     if (hiddenModules.includes(moduleCode)) return;
 
-    const isTa = moduleCode in taModules;
+    const isTa = taModules.includes(moduleCode);
 
     _.each(lessonConfig, (lessons) => {
       lessons.forEach((lesson) => {

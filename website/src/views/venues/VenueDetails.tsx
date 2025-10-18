@@ -37,7 +37,7 @@ const VenueDetailsComponent: FC<Props> = ({
     const lessons: Lesson[] = flatMap(availability, (day) => day.classes).map((venueLesson) => ({
       ...venueLesson,
       title: '',
-      isModifiable: true,
+      canBeSelectedAsActiveLesson: true,
       venue: '',
     }));
     const coloredLessons = colorLessonsByKey(lessons, 'moduleCode');

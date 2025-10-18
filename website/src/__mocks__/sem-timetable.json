@@ -9,7 +9,8 @@
       "endTime": "1200",
       "venue": "LT26",
       "moduleCode": "CS1010S",
-      "title": "Programming Methodology"
+      "title": "Programming Methodology",
+      "lessonIndex": 0
     }],
     "Recitation": [{
       "classNo": "1",
@@ -20,7 +21,8 @@
       "endTime": "1100",
       "venue": "VCRm",
       "moduleCode": "CS1010S",
-      "title": "Programming Methodology"
+      "title": "Programming Methodology",
+      "lessonIndex": 1
     }, {
       "classNo": "1",
       "lessonType": "Recitation",
@@ -30,7 +32,8 @@
       "endTime": "1300",
       "venue": "VCRm",
       "moduleCode": "CS1010S",
-      "title": "Programming Methodology"
+      "title": "Programming Methodology",
+      "lessonIndex": 2
     }],
     "Tutorial": [{
       "classNo": "2",
@@ -41,7 +44,8 @@
       "endTime": "1000",
       "venue": "COM1-0203",
       "moduleCode": "CS1010S",
-      "title": "Programming Methodology"
+      "title": "Programming Methodology",
+      "lessonIndex": 3
     }, {
       "classNo": "2",
       "lessonType": "Tutorial",
@@ -51,7 +55,8 @@
       "endTime": "1000",
       "venue": "COM1-0216",
       "moduleCode": "CS1010S",
-      "title": "Programming Methodology"
+      "title": "Programming Methodology",
+      "lessonIndex": 4
     }]
   },
   "CS3216": {
@@ -64,7 +69,8 @@
       "endTime": "2030",
       "venue": "VCRm",
       "moduleCode": "CS3216",
-      "title": "Application Development on Evolving Platforms"
+      "title": "Application Development on Evolving Platforms",
+      "lessonIndex": 0
     }]
   }
 }

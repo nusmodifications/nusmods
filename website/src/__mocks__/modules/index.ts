@@ -9,6 +9,7 @@ import CS3216_JSON from './CS3216.json';
 import CS4243_JSON from './CS4243.json';
 import GES1021_JSON from './GES1021.json';
 import PC1222_JSON from './PC1222.json';
+import GER1000_JSON from './GER1000.json';
 import MA151_JSON from './MA1521.json';
 
 // Have to cast these as Module explicitly, otherwise TS will try to
@@ -24,6 +25,7 @@ export const CS4243: Module = { ...CS4243_JSON, timestamp: 1572843950000 };
 export const GES1021: Module = { ...GES1021_JSON, timestamp: 1572843950000 };
 export const MA1521: Module = { ...MA151_JSON, timestamp: 1572843950000 };
 export const PC1222: Module = { ...PC1222_JSON, timestamp: 1572843950000 };
+export const GER1000: Module = { ...GER1000_JSON, timestamp: 1572843950000 };
 
 const modules: Module[] = [ACC2002, BFS1001, CS1010S, CS3216, GES1021, PC1222, CS1010A];
 export default modules;

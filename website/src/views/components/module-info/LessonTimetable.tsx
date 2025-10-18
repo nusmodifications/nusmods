@@ -2,7 +2,7 @@ import { FC, memo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import type { SemesterData } from 'types/modules';
-import type { Lesson } from 'types/timetables';
+import type { ColoredLesson, InteractableLesson, TimetableArrangement } from 'types/timetables';
 
 import Timetable from 'views/timetable/Timetable';
 import SemesterPicker from 'views/components/module-info/SemesterPicker';
@@ -23,15 +23,16 @@ const SemesterLessonTimetable: FC<{ semesterData?: SemesterData }> = ({ semester
     ...lesson,
     moduleCode: '',
     title: '',
-    isModifiable: !!lesson.venue,
+    canBeSelectedAsActiveLesson: !!lesson.venue,
   }));
-  const coloredLessons = colorLessonsByKey(lessons, 'lessonType');
-  const arrangedLessons = arrangeLessonsForWeek(coloredLessons);
+  const coloredLessons: ColoredLesson[] = colorLessonsByKey(lessons, 'lessonType');
+  const arrangedLessons: TimetableArrangement<ColoredLesson> =
+    arrangeLessonsForWeek(coloredLessons);
 
   return (
     <Timetable
       lessons={arrangedLessons}
-      onModifyCell={(lesson: Lesson) => history.push(venuePage(lesson.venue))}
+      onModifyCell={(lesson: InteractableLesson) => history.push(venuePage(lesson.venue))}
     />
   );
 };

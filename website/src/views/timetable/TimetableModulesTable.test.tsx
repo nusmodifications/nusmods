@@ -10,8 +10,8 @@ function make(props: Partial<Props> = {}) {
   const selectModuleColor = jest.fn();
   const hideLessonInTimetable = jest.fn();
   const showLessonInTimetable = jest.fn();
-  const enableTaModeInTimetable = jest.fn();
-  const disableTaModeInTimetable = jest.fn();
+  const enableTaModule = jest.fn();
+  const disableTaModule = jest.fn();
   const onRemoveModule = jest.fn();
   const resetTombstone = jest.fn();
 
@@ -26,8 +26,8 @@ function make(props: Partial<Props> = {}) {
       selectModuleColor={selectModuleColor}
       hideLessonInTimetable={hideLessonInTimetable}
       showLessonInTimetable={showLessonInTimetable}
-      enableTaModeInTimetable={enableTaModeInTimetable}
-      disableTaModeInTimetable={disableTaModeInTimetable}
+      enableTaModule={enableTaModule}
+      disableTaModule={disableTaModule}
       onRemoveModule={onRemoveModule}
       resetTombstone={resetTombstone}
       {...props}
@@ -81,7 +81,6 @@ describe(TimetableModulesTableComponent, () => {
       colorIndex: 2,
       isHiddenInTimetable: false,
       isTaInTimetable: false,
-      canTa: false,
     };
 
     const moduleCodes = getModules(
@@ -92,11 +91,7 @@ describe(TimetableModulesTableComponent, () => {
   });
 
   it('should display buttons correctly', () => {
-    // TA button is the 3rd button
-    const withoutTaButton = getButtons(make({ modules: addColors([CS1010S]) }).wrapper);
-    expect(withoutTaButton.at(0).children()).toHaveLength(2);
-
-    const modulesWithTaAbleModule = addColors([CS1010S], false, false, true);
+    const modulesWithTaAbleModule = addColors([CS1010S], false, false);
     const withTaButton = getButtons(make({ modules: modulesWithTaAbleModule }).wrapper);
     expect(withTaButton.at(0).children()).toHaveLength(3);
   });
