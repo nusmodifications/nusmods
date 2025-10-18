@@ -1,0 +1,51 @@
+@import '~styles/utils/modules-entry.scss';
+@import '../common.scss';
+
+.optimiserForm {
+  display: flex;
+  flex-direction: column;
+  margin-top: $form-fields-gap;
+}
+
+.priorityNotice {
+  padding-top: 1rem;
+  margin-top: 2rem;
+  border-top: 1px solid var(--gray-lighter);
+  font-size: 1.1rem;
+
+  .prioritised {
+    opacity: 0.85;
+    font-weight: bold;
+    color: #ff5138;
+  }
+
+  .notGuaranteed {
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: #ff5138;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 2px;
+  }
+}
+
+.optimiserDescription {
+  margin: 0;
+  margin-bottom: 0.5rem;
+  font-size: medium;
+
+  @include media-breakpoint-down(xs) {
+    font-size: small;
+  }
+}
+
+.optimiserDropdown {
+  composes: form-control from global;
+  padding: 0.5rem;
+  border: 1px solid var(--gray-lighter);
+  border-radius: 0.25rem;
+  color: inherit;
+
+  @include night-mode {
+    background-color: var(--gray-lightest);
+  }
+}
