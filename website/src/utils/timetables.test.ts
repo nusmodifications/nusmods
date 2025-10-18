@@ -33,6 +33,7 @@ import {
   areOtherClassesAvailable,
   arrangeLessonsForWeek,
   arrangeLessonsWithinDay,
+  deserializeTa,
   deserializeTimetable,
   doLessonsOverlap,
   findExamClashes,
@@ -676,5 +677,29 @@ describe(getEndTimeAsDate, () => {
     const date = new Date(2018, 5, 10);
     const lesson = createGenericLesson('Monday', '0830', '1045');
     expect(getEndTimeAsDate(lesson, date)).toEqual(new Date(2018, 5, 10, 10, 45));
+  });
+});
+
+describe(deserializeTa, () => {
+  test('should deserialize TA modules string into object', () => {
+    expect(deserializeTa('?')).toEqual({});
+    expect(deserializeTa('?CS1010S=REC:1,TUT:8')).toEqual({});
+    expect(deserializeTa('?CS1010S=REC:1,TUT:8&ta=CS3210(TUT:02)')).toEqual({
+      CS3210: [['Tutorial', '02']],
+    });
+    expect(deserializeTa('?CS1010S=REC:1,TUT:8&ta=CS3210(TUT:02),CS3219(TUT:15)')).toEqual({
+      CS3210: [['Tutorial', '02']],
+      CS3219: [['Tutorial', '15']],
+    });
+    expect(
+      deserializeTa('?CS1010S=REC:1,TUT:8&ta=CS3210(TUT:02),CS3219(TUT:15),CS3211(LAB:B05,TUT:13)'),
+    ).toEqual({
+      CS3210: [['Tutorial', '02']],
+      CS3219: [['Tutorial', '15']],
+      CS3211: [
+        ['Laboratory', 'B05'],
+        ['Tutorial', '13'],
+      ],
+    });
   });
 });
