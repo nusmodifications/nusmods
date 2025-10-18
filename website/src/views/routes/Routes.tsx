@@ -18,7 +18,7 @@ import TodayContainer from 'views/today/TodayContainer';
 import PlannerContainer from 'views/planner/PlannerContainer';
 import TetrisContainer from 'views/tetris/TetrisContainer';
 import MpeContainer from 'views/mpe/MpeContainer';
-import OptimiserContainer from 'views/optimiser/OptimiserContent';
+import OptimiserContainer from 'views/optimiser/OptimiserContainer';
 import ExternalRedirect from './ExternalRedirect';
 
 // IMPORTANT: Remember to update any route changes on the sitemap

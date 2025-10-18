@@ -31,11 +31,11 @@ const handleGet: Handler = async (req, res) => {
 
     res.send(createLoginURL(callback));
   } catch (err) {
-    if (err.message === errors.noCallbackUrl) {
+    if ((err as unknown as Error).message === errors.noCallbackUrl) {
       res.json({
         message: 'Request needs a referer',
       });
-    } else if (err.message === errors.invalidCallbackUrl) {
+    } else if ((err as unknown as Error).message === errors.invalidCallbackUrl) {
       res.json({
         message: 'Invalid referer given. URL must be from a valid domain.',
       });

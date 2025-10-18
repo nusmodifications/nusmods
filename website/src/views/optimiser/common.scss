@@ -1,0 +1,19 @@
+$form-fields-gap: 2rem;
+
+.lessonTag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.5rem;
+  border-width: 0 0 0.2rem;
+  border-style: solid;
+  border-radius: 0.25rem;
+  font-weight: bold;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  gap: 0.25rem;
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+}
