@@ -18,7 +18,7 @@ export type ModuleLessonConfig = {
  * It is a mapping of lessonType to classNo\
  * It is only used for type annotations in the migration logic
  */
-export type ClassNoModuleLessonConfig = {
+export type ModuleLessonConfigV1 = {
   [lessonType: LessonType]: ClassNo;
 };
 
@@ -27,22 +27,22 @@ export type SemTimetableConfig = {
 };
 
 /**
- * ClassNoSemTimetableConfig is the v1 representation of semester timetables\
- * It is a mapping of module code to the module config\
+ * SemTimetableConfigV1 is the v1 representation of semester timetables\
+ * It is a mapping of {@link ModuleCode|module code} to the {@link ModuleLessonConfigV1|module config}\
  * It is only used for type annotations in the migration logic
  */
-export type ClassNoSemTimetableConfig = {
-  [moduleCode: ModuleCode]: ClassNoModuleLessonConfig;
+export type SemTimetableConfigV1 = {
+  [moduleCode: ModuleCode]: ModuleLessonConfigV1;
 };
 
 export type TaModulesConfig = ModuleCode[];
 
 /**
- * ClassNoTaModulesConfig is the v1 representation of TA modules\
- * It is a mapping of moduleCode to the TA's lesson types\
+ * TaModulesConfigV1 is the v1 representation of TA modules\
+ * It is a mapping of {@link ModuleCode|module code} to the {@link LessonType|lesson type} and {@link ClassNo|classNo}\
  * It is only used for type annotations in the migration logic
  */
-export type ClassNoTaModulesConfig = {
+export type TaModulesConfigV1 = {
   [moduleCode: ModuleCode]: [lessonType: LessonType, classNo: ClassNo][];
 };
 
@@ -83,12 +83,12 @@ export type SemTimetableConfigWithLessons = {
 };
 
 /**
- * ClassNoTimetableConfig is the v1 representation of the timetable data for the whole academic year\
- * It is a mapping of semesters to semester timetables\
+ * TimetableConfigV1 is the v1 representation of the timetable data for the whole academic year\
+ * It is a mapping of {@link Semester|semesters} to {@link SemTimetableConfigV1|semester timetables (v1 representation)}\
  * It is only used for type annotations in the migration logic
  */
-export type ClassNoTimetableConfig = {
-  [semester: Semester]: ClassNoSemTimetableConfig;
+export type TimetableConfigV1 = {
+  [semester: Semester]: SemTimetableConfigV1;
 };
 
 // TimetableConfig is the timetable data for the whole academic year.

@@ -23,7 +23,7 @@ import {
   SemTimetableConfigWithLessons,
   InteractableLesson,
   LessonWithIndex,
-  ClassNoTaModulesConfig,
+  TaModulesConfigV1,
 } from 'types/timetables';
 
 import {
@@ -74,7 +74,7 @@ type OwnProps = {
   timetable: SemTimetableConfig;
   colors: ColorMapping;
   hiddenImportedModules: ModuleCode[] | null;
-  taImportedModules: TaModulesConfig | ClassNoTaModulesConfig | null;
+  taImportedModules: TaModulesConfig | TaModulesConfigV1 | null;
 };
 
 type Props = OwnProps & {

@@ -3,13 +3,13 @@ import {
   SemTimetableConfig,
   LessonWithIndex,
   TaModulesConfig,
-  ClassNoTimetableConfig,
+  TimetableConfigV1,
 } from 'types/timetables';
 
 import lessons from '__mocks__/lessons-array.json';
 import { CS1010A, CS1010S, CS3216 } from '__mocks__/modules';
 
-import { ClassNoTaModulesMap, ModuleBank, TimetablesState } from 'types/reducers';
+import { TaModulesMapV1, ModuleBank, TimetablesState } from 'types/reducers';
 import { defaultTimetableState } from 'reducers/timetables';
 import * as actions from './timetables';
 
@@ -210,7 +210,7 @@ describe('fillTimetableBlanks', () => {
           CS3216: {
             Lecture: '1',
           },
-        } as ClassNoTimetableConfig,
+        } as TimetableConfigV1,
       },
       ta: {
         [semester]: {
@@ -220,7 +220,7 @@ describe('fillTimetableBlanks', () => {
             ['Recitation', '2'],
           ],
         },
-      } as ClassNoTaModulesMap,
+      } as TaModulesMapV1,
     };
 
     const state: any = { timetables, moduleBank };

@@ -2,7 +2,7 @@ import NUSModerator from 'nusmoderator';
 import _, { get } from 'lodash';
 import { parseISO } from 'date-fns';
 import {
-  ClassNoTaModulesConfig,
+  TaModulesConfigV1,
   ColoredLesson,
   ModuleLessonConfig,
   SemTimetableConfig,
@@ -911,7 +911,7 @@ describe('v1 config migration', () => {
         ['Lecture', '1'],
         ['Lecture', '2'],
       ],
-    } as ClassNoTaModulesConfig;
+    } as TaModulesConfigV1;
     const migrationResult = migrateModuleLessonConfig(
       moduleLessonConfig,
       invalidTaModuleConfig,

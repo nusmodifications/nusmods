@@ -7,10 +7,10 @@ import type {
   SemTimetableConfig,
   TimetableConfig,
   LessonWithIndex,
-  ClassNoTimetableConfig,
+  TimetableConfigV1,
 } from 'types/timetables';
 import type { Dispatch, GetState } from 'types/redux';
-import type { ClassNoTaModulesMap, ColorMapping, TaModulesMap } from 'types/reducers';
+import type { TaModulesMapV1, ColorMapping, TaModulesMap } from 'types/reducers';
 import type { LessonIndex, LessonType, Module, ModuleCode, Semester } from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
@@ -243,8 +243,8 @@ export function validateTimetable(semester: Semester) {
     const { timetables, moduleBank } = getState();
 
     const { lessons, ta, alreadyMigrated } = migrateTimetableConfigs(
-      timetables.lessons as TimetableConfig | ClassNoTimetableConfig,
-      timetables.ta as TaModulesMap | ClassNoTaModulesMap,
+      timetables.lessons as TimetableConfig | TimetableConfigV1,
+      timetables.ta as TaModulesMap | TaModulesMapV1,
       moduleBank.modules,
     );
 

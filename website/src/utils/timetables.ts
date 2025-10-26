@@ -42,10 +42,10 @@ import {
 } from 'types/modules';
 
 import {
-  ClassNoModuleLessonConfig,
-  ClassNoSemTimetableConfig,
-  ClassNoTaModulesConfig,
-  ClassNoTimetableConfig,
+  ModuleLessonConfigV1,
+  SemTimetableConfigV1,
+  TaModulesConfigV1,
+  TimetableConfigV1,
   ColoredLesson,
   HoverLesson,
   InteractableLesson,
@@ -61,7 +61,7 @@ import {
   TimetableDayFormat,
 } from 'types/timetables';
 
-import { ClassNoTaModulesMap, ModuleCodeMap, ModulesMap, TaModulesMap } from 'types/reducers';
+import { TaModulesMapV1, ModuleCodeMap, ModulesMap, TaModulesMap } from 'types/reducers';
 import { ExamClashes } from 'types/views';
 
 import { getTimeAsDate } from './timify';
@@ -725,7 +725,7 @@ export function parseTaModuleCodes(taSerialized?: string | null): ModuleCode[] {
  * @param getModuleSemesterTimetable
  * @returns migrated semester timetable config
  */
-export function deserializeClassNoFormattedTaModulesConfig(
+export function deserializeTaModulesConfigV1(
   taSerialized: string,
   getModuleSemesterTimetable: (moduleCode: ModuleCode) => readonly RawLessonWithIndex[],
 ): SemTimetableConfig {
@@ -780,7 +780,7 @@ export function deserializeClassNoFormattedTaModulesConfig(
  * @param timetable Array of valid lessons
  * @returns Combined moduleLessonConfig
  */
-export function deserializeLessonGroupFormattedModuleLessonConfig(
+export function deserializeModuleLessonConfig(
   moduleLessonConfig: ModuleLessonConfig,
   serializedModuleLessonConfig: string,
   timetable: readonly RawLessonWithIndex[],
@@ -823,7 +823,7 @@ export function deserializeLessonGroupFormattedModuleLessonConfig(
  * @param timetable Array of valid lessons
  * @returns Combined moduleLessonConfig
  */
-export function deserializeClassNoFormattedModuleLessonConfig(
+export function deserializeModuleLessonConfigV1(
   moduleLessonConfig: ModuleLessonConfig,
   serializedModuleLessonConfig: string,
   timetable: readonly RawLessonWithIndex[],
@@ -879,7 +879,7 @@ export function deserializeTimetable(
   // because TA module lesson config overrides the non-TA module lesson config
   const taModulesConfig =
     taParams && last(taParams) === ')'
-      ? deserializeClassNoFormattedTaModulesConfig(taParams, getModuleSemesterTimetable)
+      ? deserializeTaModulesConfigV1(taParams, getModuleSemesterTimetable)
       : {};
 
   return reduce(
@@ -929,7 +929,7 @@ export function deserializeTimetable(
                 serializedModuleLessonConfig &&
                 serializedModuleLessonConfig[serializedModuleLessonConfig.length - 1] === ')'
               )
-                return deserializeLessonGroupFormattedModuleLessonConfig(
+                return deserializeModuleLessonConfig(
                   accumulatedModuleLessonConfig,
                   serializedModuleLessonConfig,
                   timetable,
@@ -941,7 +941,7 @@ export function deserializeTimetable(
               // If using the classNo format serialization (v1)
               // paramsKey = CS2103T
               // paramsValue = LEC:0,TUT:3
-              return deserializeClassNoFormattedModuleLessonConfig(
+              return deserializeModuleLessonConfigV1(
                 accumulatedModuleLessonConfig,
                 serializedModuleLessonConfig,
                 timetable,
@@ -1038,8 +1038,8 @@ export function getLessonIdentifier(lesson: Lesson): string {
  * - whether it was previously migrated, to signal to skip dispatch
  */
 export function migrateModuleLessonConfig(
-  moduleLessonConfig: ModuleLessonConfig | ClassNoModuleLessonConfig,
-  taModulesConfig: TaModulesConfig | ClassNoTaModulesConfig,
+  moduleLessonConfig: ModuleLessonConfig | ModuleLessonConfigV1,
+  taModulesConfig: TaModulesConfig | TaModulesConfigV1,
   moduleCode: ModuleCode,
   timetable: readonly RawLessonWithIndex[],
 ): {
@@ -1112,8 +1112,8 @@ export function migrateModuleLessonConfig(
  * - whether it was previously migrated, to signal to skip dispatch
  */
 export function migrateSemTimetableConfig(
-  semTimetableConfig: SemTimetableConfig | ClassNoSemTimetableConfig,
-  taModulesConfig: TaModulesConfig | ClassNoTaModulesConfig,
+  semTimetableConfig: SemTimetableConfig | SemTimetableConfigV1,
+  taModulesConfig: TaModulesConfig | TaModulesConfigV1,
   getModuleSemesterTimetable: (moduleCode: ModuleCode) => readonly RawLessonWithIndex[],
 ): {
   migratedSemTimetableConfig: SemTimetableConfig;
@@ -1170,8 +1170,8 @@ export function migrateSemTimetableConfig(
  * - whether it was previously migrated, to signal to skip dispatch
  */
 export function migrateTimetableConfigs(
-  lessons: TimetableConfig | ClassNoTimetableConfig,
-  ta: TaModulesMap | ClassNoTaModulesMap,
+  lessons: TimetableConfig | TimetableConfigV1,
+  ta: TaModulesMap | TaModulesMapV1,
   modules: ModulesMap,
 ): {
   lessons: TimetableConfig;

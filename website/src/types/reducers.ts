@@ -3,7 +3,7 @@ import { RegPeriodType, ScheduleType } from 'config';
 
 import { ColorSchemePreference } from './settings';
 import {
-  ClassNoTaModulesConfig,
+  TaModulesConfigV1,
   ColorIndex,
   LessonWithIndex,
   TaModulesConfig,
@@ -120,7 +120,7 @@ export type ColorMapping = { [moduleCode: ModuleCode]: ColorIndex };
 export type SemesterColorMap = { [semester: Semester]: ColorMapping };
 export type HiddenModulesMap = { [semester: Semester]: ModuleCode[] };
 export type TaModulesMap = { [semester: Semester]: TaModulesConfig };
-export type ClassNoTaModulesMap = { [semester: Semester]: ClassNoTaModulesConfig };
+export type TaModulesMapV1 = { [semester: Semester]: TaModulesConfigV1 };
 
 export type TimetablesState = {
   readonly lessons: TimetableConfig;
