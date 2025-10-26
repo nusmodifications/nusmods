@@ -529,7 +529,6 @@ export function validateNonTaModuleLesson(
       const configLessonIndices = lessonConfig[lessonType];
 
       if (!lessonTypeInLessonConfig || !configLessonIndices.length) {
-        // TODO: Open an issue to make recovery use random lessons instead
         const validLessonIndices = getRecoveryLessonIndices(lessonsWithLessonType);
         return {
           config: {

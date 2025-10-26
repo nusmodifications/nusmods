@@ -90,7 +90,6 @@ test('randomModuleLessonConfig should return a random lesson config', () => {
   });
 });
 
-// TODO: how to test TA config...
 test('hydrateSemTimetableWithLessons should replace ClassNo with lessons', () => {
   const sem: Semester = 1;
   const moduleCode = 'CS1010S';
