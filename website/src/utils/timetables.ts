@@ -1206,10 +1206,18 @@ export function migrateTimetableConfigs(
           ...accumulated.ta,
           [semester]: migrated.migratedTaModulesConfig,
         },
-        alreadyMigrated: migrated.alreadyMigrated || accumulated.alreadyMigrated,
+        alreadyMigrated: migrated.alreadyMigrated && accumulated.alreadyMigrated,
       };
     },
-    {} as { config: TimetableConfig; ta: TaModulesMap; alreadyMigrated: boolean },
+    {
+      config: {},
+      ta: {},
+      alreadyMigrated: true,
+    } as {
+      config: TimetableConfig;
+      ta: TaModulesMap;
+      alreadyMigrated: boolean;
+    },
   );
 
   return {
