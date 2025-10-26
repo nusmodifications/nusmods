@@ -729,12 +729,10 @@ export function serializeModuleList(modules: ModuleCode[]): string {
 }
 
 /**
- * Parses a classNo format serialized TA module lesson config string for module codes\
- * Prevents a crash if the TA module config includes a module code not inside the non-TA module config\
- * Given input `CS2100(TUT:2,TUT:3,LAB:1),CS2107(TUT:8)`\
- * Will output `["CS2100","CS2107"]`
- * @param taSerialized a TA module lesson config string
- * @returns TA module codes if the module lesson config is classNo format serialized\
+ * Parses a serialized v1 format TA config for module codes\
+ * Does not error if the TA module config includes a module code not inside the non-TA module config\
+ * @param taSerialized e.g. `CS2100(TUT:2,TUT:3,LAB:1),CS2107(TUT:8)`
+ * @returns TA module codes if the module lesson config is v1 format serialized (e.g. `["CS2100","CS2107"]`)\
  * Otherwise, returns an empty array
  */
 export function parseTaModuleCodes(taSerialized?: string | null): ModuleCode[] {
@@ -757,10 +755,9 @@ export function parseTaModuleCodes(taSerialized?: string | null): ModuleCode[] {
 }
 
 /**
- * Deserializes a classNo format serialized TA module lesson config string to a module lesson config\
- * Sample input: `CS2100(TUT:2,TUT:3,LAB:1),CS2107(TUT:8)`
- * @param taSerialized
- * @param getModuleSemesterTimetable
+ * Deserializes a serialized v1 format TA config to a module lesson config
+ * @param taSerialized e.g. `CS2100(TUT:2,TUT:3,LAB:1),CS2107(TUT:8)`
+ * @param getModuleSemesterTimetable getter to obtain the lesson indices of the module's lessons
  * @returns migrated semester timetable config
  */
 export function deserializeTaModulesConfigV1(
@@ -812,11 +809,10 @@ export function deserializeTaModulesConfigV1(
 }
 
 /**
- * Deserializes a lessonGroup format serialized string to a module lesson config\
- * Accepts moduleLessonConfig from previously parsed params, if any\
- * Sample input: `LEC:(0,1);TUT:(3)`
- * @param moduleLessonConfig
- * @param serializedModuleLessonConfig
+ * Deserializes a serialized v2 format lesson config string to a module lesson config
+
+ * @param moduleLessonConfig moduleLessonConfig from previously parsed params to combine with, if any
+ * @param serializedModuleLessonConfig e.g. `LEC:(0,1);TUT:(3)`
  * @param timetable Array of valid lessons
  * @returns Combined moduleLessonConfig
  */
@@ -860,10 +856,9 @@ export function deserializeModuleLessonConfig(
 }
 
 /**
- * Deserializes a classNo format serialized string to a module lesson config
- * Accepts moduleLessonConfig from previously parsed params, if any
- * @param moduleLessonConfig
- * @param serializedModuleLessonConfig
+ * Deserializes a serialized v1 format lesson config to a module lesson config
+ * @param moduleLessonConfig from previously parsed params, if any
+ * @param serializedModuleLessonConfig e.g. `LEC:1,TUT:1,REC:1`
  * @param timetable Array of valid lessons
  * @returns Combined moduleLessonConfig
  */
@@ -895,15 +890,19 @@ export function deserializeModuleLessonConfigV1(
 }
 
 /**
- * Deserializes hidden modules config and lesson group format TA modules config
+ * Deserializes hidden modules and TA modules config
+ * @param serialized e.g. `CS3216,CS1010`
+ * @returns `["CS3216", "CS1010"]`
  */
 export function deserializeModuleCodes(serialized: string): ModuleCode[] {
   return serialized.split(LESSON_SEP);
 }
 
 /**
- * Entry point to deserialize a serialized timetable string
- * Checks serialization version and parses accordingly
+ * Entry point to deserialize a serialized timetable string\
+ * Checks serialization format and parses accordingly
+ * - V1 format: `?CS1010S=LEC:1,TUT:1,REC:1&ta=CS1010S(LEC:1,TUT:1,TUT:2,REC:1)&hidden=CS1010S`
+ * - V2 format: `?CS1010S=LEC:(0);TUT:(11,22);REC:(1)&ta=CS1010S&hidden=CS1010S`
  * @param serialized
  * @param getModuleSemesterTimetable
  * @returns
@@ -918,7 +917,7 @@ export function deserializeTimetable(
 } {
   const params = qs.parse(serialized);
   const taParams = isArray(params.ta) ? last(params.ta) : params.ta;
-  // If TA modules were serialized using the old format
+  // If TA modules were serialized using the v1 format
   // we deserialize it first so we can skip deserializing the module code down the line
   // because TA module lesson config overrides the non-TA module lesson config
   const taModulesConfig =
@@ -938,7 +937,7 @@ export function deserializeTimetable(
           const moduleCodes = reduce(
             castArray(paramsValue),
             (accumulatedModules, paramValue) => {
-              // Skip if the ta param is a serialized with the older classNo format
+              // Skip if the ta param is a serialized with the v1 format
               if (paramsKey === 'ta' && last(paramValue) === ')') return accumulatedModules;
 
               return [...accumulatedModules, ...deserializeModuleCodes(paramValue)];
@@ -982,7 +981,7 @@ export function deserializeTimetable(
               // TA module lesson config overrides the non-TA module lesson config
               if (moduleCode in taModulesConfig) return taModulesConfig[moduleCode];
 
-              // If using the classNo format serialization (v1)
+              // If using the v1 format serialization
               // paramsKey = CS2103T
               // paramsValue = LEC:0,TUT:3
               return deserializeModuleLessonConfigV1(
