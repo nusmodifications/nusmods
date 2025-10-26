@@ -59,6 +59,7 @@ import {
   TimetableConfig,
   TimetableDayArrangement,
   TimetableDayFormat,
+  TimetableArrangement,
 } from 'types/timetables';
 
 import { TaModulesMapV1, ModuleCodeMap, ModulesMap, TaModulesMap } from 'types/reducers';
@@ -252,7 +253,7 @@ export function arrangeLessonsWithinDay<T extends RawLesson>(
 //    ],
 //    ...
 //  }
-export function arrangeLessonsForWeek<T extends RawLesson>(lessons: T[]): { [x: string]: T[][] } {
+export function arrangeLessonsForWeek<T extends RawLesson>(lessons: T[]): TimetableArrangement<T> {
   const dayLessons = groupLessonsByDay(lessons);
   return mapValues(dayLessons, (dayLesson: T[]) => arrangeLessonsWithinDay(dayLesson));
 }
