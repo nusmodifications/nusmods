@@ -464,7 +464,7 @@ class TimetableContent extends React.Component<Props, State> {
       this.props.timetableWithLessons,
     ).filter((lesson) => !this.isHiddenInTimetable(lesson.moduleCode));
 
-    const coloredTimetableLessons: InteractableLesson[] = this.getInteractableLessons(
+    const interactableLesson: InteractableLesson[] = this.getInteractableLessons(
       timetableLessons,
       modules,
       semester,
@@ -472,7 +472,7 @@ class TimetableContent extends React.Component<Props, State> {
       readOnly,
       activeLesson,
     );
-    const arrangedLessons = arrangeLessonsForWeek(coloredTimetableLessons);
+    const arrangedLessons = arrangeLessonsForWeek(interactableLesson);
 
     const isVerticalOrientation = timetableOrientation !== HORIZONTAL;
     const isShowingTitle = !isVerticalOrientation && showTitle;
@@ -524,7 +524,7 @@ class TimetableContent extends React.Component<Props, State> {
                   isVerticalOrientation={isVerticalOrientation}
                   isScrolledHorizontally={this.state.isScrolledHorizontally}
                   showTitle={isShowingTitle}
-                  onModifyCell={this.modifyCell(coloredTimetableLessons, activeLesson)}
+                  onModifyCell={this.modifyCell(interactableLesson, activeLesson)}
                 />
               </div>
             )}
