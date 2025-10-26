@@ -124,7 +124,7 @@ export function modifyLesson(activeLesson: LessonWithIndex) {
 }
 
 export const CHANGE_LESSON = 'CHANGE_LESSON' as const;
-export function setLesson(
+export function changeLesson(
   semester: Semester,
   moduleCode: ModuleCode,
   lessonType: LessonType,
@@ -175,15 +175,6 @@ export function removeLesson(
       lessonIndices,
     },
   };
-}
-
-export function changeLesson(
-  semester: Semester,
-  moduleCode: ModuleCode,
-  lessonType: LessonType,
-  lessonIndices: LessonIndex[],
-) {
-  return setLesson(semester, moduleCode, lessonType, lessonIndices);
 }
 
 export const SET_LESSON_CONFIG = 'SET_LESSON_CONFIG' as const;
