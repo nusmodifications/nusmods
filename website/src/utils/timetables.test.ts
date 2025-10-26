@@ -432,17 +432,23 @@ describe('timetable serialization/deserialization', () => {
     });
   });
 
-  test('deserializing ta modules', () => {
+  test('deserializing timetable with ta and hidden modules', () => {
     expect(
-      deserializeTimetable('CS1010S=LEC:(0)&ta=CS1010S', mockGetModuleSemesterTimetable),
+      deserializeTimetable(
+        'CS1010S=LEC:(0)&CS3216=LEC:(0)&ta=CS1010S&hidden=CS3216',
+        mockGetModuleSemesterTimetable,
+      ),
     ).toEqual({
       semTimetableConfig: {
         CS1010S: {
           Lecture: [0],
         },
+        CS3216: {
+          Lecture: [0],
+        },
       },
       ta: ['CS1010S'],
-      hidden: [],
+      hidden: ['CS3216'],
     });
   });
 
