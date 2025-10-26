@@ -60,7 +60,7 @@ test('select module color should dispatch a select of module color', () => {
   expect(actions.selectModuleColor(semester, 'CS3216', 1)).toMatchSnapshot();
 });
 
-describe('disableTaMode', () => {
+describe('disabling ta module', () => {
   const semester = 1;
   const timetablesState = (ta: TaModulesConfig): TimetablesState => ({
     ...initialState,
@@ -76,7 +76,7 @@ describe('disableTaMode', () => {
     ta: { [semester]: ta },
   });
 
-  test('TA module is removed correctly', () => {
+  test('should dispatch action to remove the module', () => {
     const ta = ['CS1010S'];
 
     const state: any = {
@@ -85,13 +85,25 @@ describe('disableTaMode', () => {
     };
     const dispatch = jest.fn();
     const action = actions.disableTaModule(semester, 'CS1010S');
-
     action(dispatch, () => state);
+    const [[firstAction]] = dispatch.mock.calls;
 
-    expect(dispatch).toHaveBeenCalled();
+    expect(dispatch).toHaveBeenCalledTimes(1);
+    expect(firstAction).toEqual({
+      payload: {
+        lessonConfig: {
+          Lecture: [0],
+          Recitation: [1],
+          Tutorial: [11],
+        },
+        moduleCode: 'CS1010S',
+        semester: 1,
+      },
+      type: 'REMOVE_TA_MODULE',
+    });
   });
 
-  test('TA module is removed even if semesterData cannot be found to create normal mode lessonConfig', () => {
+  test('should dispatch action even if semesterData cannot be found to create normal mode lessonConfig', () => {
     const ta = ['CS1010S'];
 
     const state: any = {
@@ -100,10 +112,22 @@ describe('disableTaMode', () => {
     };
     const dispatch = jest.fn();
     const action = actions.disableTaModule(semester, 'CS1010S');
-
     action(dispatch, () => state);
+    const [[firstAction]] = dispatch.mock.calls;
 
     expect(dispatch).toHaveBeenCalled();
+    expect(firstAction).toEqual({
+      payload: {
+        lessonConfig: {
+          Lecture: [0],
+          Recitation: [1],
+          Tutorial: [11],
+        },
+        moduleCode: 'CS1010S',
+        semester: 1,
+      },
+      type: 'REMOVE_TA_MODULE',
+    });
   });
 });
 
