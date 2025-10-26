@@ -42,6 +42,13 @@ func CreateConfig(assignments map[string]string, lessonToSlots map[string][][]mo
 	return config
 }
 
+// Serializes an array of lesson indices into the format used in timetable share links
+//
+// Returns "1, 2, 3" with input [1, 2, 3]
+func SerializeLessonIndices(lessonIndex []models.LessonIndex) string {
+	return strings.Trim(strings.Join(strings.Fields(fmt.Sprint(lessonIndex)), ","), "[]")
+}
+
 // Constructs the URL
 func SerializeConfig(config map[string]map[string][]models.LessonIndex) string {
 	var moduleParams []string
@@ -52,10 +59,10 @@ func SerializeConfig(config map[string]map[string][]models.LessonIndex) string {
 			// Get abbreviation for lesson type
 			abbrev := constants.LessonTypeAbbrev[strings.ToUpper(lessonType)]
 
-			lessonParams = append(lessonParams, fmt.Sprintf("%s:%s", abbrev, "("+strings.Trim(strings.Join(strings.Fields(fmt.Sprint(lessonIndex)), ","), "[]"))+")")
+			lessonParams = append(lessonParams, fmt.Sprintf("%s:%s", abbrev, "("+SerializeLessonIndices(lessonIndex)+")"))
 		}
 		if len(lessonParams) > 0 {
-			moduleParams = append(moduleParams, fmt.Sprintf("%s=%s", moduleCode, strings.Join(lessonParams, ";")))
+			moduleParams = append(moduleParams, fmt.Sprintf("%s=%s", moduleCode, strings.Join(lessonParams, constants.MODULE_CODE_SEPARATOR)))
 		}
 	}
 
