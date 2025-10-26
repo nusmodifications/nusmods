@@ -46,6 +46,7 @@ import {
   formatNumericWeeks,
   getClosestLessonConfig,
   getEndTimeAsDate,
+  getRecoveryLessonIndices,
   getStartTimeAsDate,
   groupLessonsByDay,
   hydrateSemTimetableWithLessons,
@@ -982,5 +983,11 @@ describe('v1 config migration', () => {
 describe(getClosestLessonConfig, () => {
   test('ignore if lesson type has no classNo', () => {
     expect(getClosestLessonConfig({ Lecture: {} }, { Lecture: [0] })).toEqual({});
+  });
+});
+
+describe(getRecoveryLessonIndices, () => {
+  test('guard against empty lessons input', () => {
+    expect(getRecoveryLessonIndices([])).toEqual([]);
   });
 });

@@ -3,6 +3,7 @@ import {
   castArray,
   entries,
   filter,
+  first,
   flatMapDeep,
   get,
   groupBy,
@@ -492,7 +493,11 @@ export function validateTaModuleLessons(
 export function getRecoveryLessonIndices(
   lessonsWithLessonType: RawLessonWithIndex[],
 ): LessonIndex[] {
-  const { classNo } = lessonsWithLessonType[0];
+  const firstClass = first(lessonsWithLessonType);
+  if (!firstClass) {
+    return [];
+  }
+  const { classNo } = firstClass;
   const validLessonIndices = map(
     filter(lessonsWithLessonType, (lesson) => lesson.classNo === classNo),
     'lessonIndex',
