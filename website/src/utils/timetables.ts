@@ -431,11 +431,13 @@ export function validateTimetableModules(
 }
 
 /**
+ * Validates TA module's {@link ModuleLessonConfig|lesson configs} based on a list of lessons to provide the lesson type info of each lesson
+ *
  * Valid TA modules configs must have lesson indices that belong to the correct lesson type
- * @param lessonConfig lesson configs to validate
- * @param validLessons lessons to validate against
+ * @param lessonConfig {@link ModuleLessonConfig|lesson configs} to validate
+ * @param validLessons {@link RawLessonWithIndex|lesson}s to validate against
  * @returns
- * - validated TA lesson config
+ * - validated TA modules' {@link ModuleLessonConfig|lesson config}
  * - whether the input is valid, to signal to skip dispatch
  */
 export function validateTaModuleLessons(
@@ -450,6 +452,12 @@ export function validateTaModuleLessons(
     lessonConfig,
     (accumulatedValidationResult, configLessonIndices, lessonType) => {
       const validLessonIndices = map(lessonsByType[lessonType], 'lessonIndex');
+      if (!validLessonIndices.length) {
+        return {
+          config: accumulatedValidationResult.config,
+          valid: false,
+        };
+      }
       const hasInvalidLesson = some(
         configLessonIndices,
         (lessonIndex) => !validLessonIndices.includes(lessonIndex),
@@ -457,6 +465,9 @@ export function validateTaModuleLessons(
       return {
         config: {
           ...accumulatedValidationResult.config,
+          [lessonType]: hasInvalidLesson
+            ? getRecoveryLessonIndices(lessonsByType[lessonType])
+            : configLessonIndices,
         },
         valid: accumulatedValidationResult.valid && !hasInvalidLesson,
       };

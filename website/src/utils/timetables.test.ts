@@ -726,58 +726,103 @@ describe(validateModuleLessons, () => {
     Tutorial: [13],
   };
 
-  test('should leave valid lessons untouched', () => {
-    expect(validateModuleLessons(semester, lessons, CS1010S, false)).toEqual({
-      validatedLessonConfig: lessons,
-      valid: true,
+  describe('validate non ta module lessons', () => {
+    test('should leave valid lessons untouched', () => {
+      expect(validateModuleLessons(semester, lessons, CS1010S, false)).toEqual({
+        validatedLessonConfig: lessons,
+        valid: true,
+      });
+    });
+
+    test('should remove lesson types which do not exist', () => {
+      expect(
+        validateModuleLessons(
+          semester,
+          {
+            ...lessons,
+            Laboratory: [0], // CS1010S has no lab
+          },
+          CS1010S,
+          false,
+        ),
+      ).toEqual({ validatedLessonConfig: lessons, valid: false });
+    });
+
+    test('should replace lessons that have invalid class no', () => {
+      expect(
+        validateModuleLessons(
+          semester,
+          {
+            ...lessons,
+            Lecture: [2], // CS1010S lesson index 2 is not a lecture
+          },
+          CS1010S,
+          false,
+        ),
+      ).toEqual({ validatedLessonConfig: lessons, valid: false });
+    });
+
+    test('should add lessons for when they are missing', () => {
+      expect(
+        validateModuleLessons(
+          semester,
+          {
+            Tutorial: [13],
+          },
+          CS1010S,
+          false,
+        ),
+      ).toEqual({
+        validatedLessonConfig: {
+          Lecture: [0],
+          Recitation: [1],
+          Tutorial: [13],
+        },
+        valid: false,
+      });
     });
   });
 
-  test('should remove lesson types which do not exist', () => {
-    expect(
-      validateModuleLessons(
-        semester,
-        {
-          ...lessons,
-          Laboratory: [0], // CS1010S has no lab
-        },
-        CS1010S,
-        false,
-      ),
-    ).toEqual({ validatedLessonConfig: lessons, valid: false });
-  });
+  describe('validate ta module lessons', () => {
+    test('should leave valid config untouched', () => {
+      expect(validateModuleLessons(semester, lessons, CS1010S, true)).toEqual({
+        validatedLessonConfig: lessons,
+        valid: true,
+      });
+    });
 
-  test('should replace lessons that have invalid class no', () => {
-    expect(
-      validateModuleLessons(
-        semester,
-        {
-          ...lessons,
-          Lecture: [2], // CS1010S lesson index 2 is not a lecture
-        },
-        CS1010S,
-        false,
-      ),
-    ).toEqual({ validatedLessonConfig: lessons, valid: false });
-  });
+    test('should remove lesson types which do not exist in module', () => {
+      expect(
+        validateModuleLessons(
+          semester,
+          {
+            ...lessons,
+            Laboratory: [0],
+          },
+          CS1010S,
+          true,
+        ),
+      ).toEqual({
+        validatedLessonConfig: lessons,
+        valid: false,
+      });
+    });
 
-  test('should add lessons for when they are missing', () => {
-    expect(
-      validateModuleLessons(
-        semester,
-        {
-          Tutorial: [13],
-        },
-        CS1010S,
-        false,
-      ),
-    ).toEqual({
-      validatedLessonConfig: {
-        Lecture: [0],
-        Recitation: [1],
-        Tutorial: [13],
-      },
-      valid: false,
+    test('should replace lessons that have invalid class no', () => {
+      expect(
+        validateModuleLessons(
+          semester,
+          {
+            ...lessons,
+            Lecture: [1],
+          },
+          CS1010S,
+          true,
+        ),
+      ).toEqual({
+        validatedLessonConfig: lessons,
+        valid: false,
+      });
     });
   });
 });
