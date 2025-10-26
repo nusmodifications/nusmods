@@ -499,14 +499,14 @@ describe('timetable serialization/deserialization', () => {
     test('deserialize v1', () => {
       expect(
         deserializeTimetable(
-          'CS1010S=LEC:1,TUT:8&CS3216=LEC:1&ta=CS3216(LEC:1),CS1010S(LEC:1,TUT:2)&hidden=CS3216',
+          'CS1010S=LEC:1,TUT:8&CS3216=LEC:1&ta=CS3216(LEC:1),CS1010S(LEC:1,TUT:2,TUT:3)&hidden=CS3216',
           mockGetModuleSemesterTimetable,
         ),
       ).toEqual({
         semTimetableConfig: {
           CS1010S: {
             Lecture: [0],
-            Tutorial: [21],
+            Tutorial: [21, 30],
           },
           CS3216: {
             Lecture: [0],
