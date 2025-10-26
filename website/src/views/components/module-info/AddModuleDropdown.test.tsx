@@ -61,7 +61,7 @@ describe(AddModuleDropdownComponent, () => {
 
   test('should show "loading" when the module is added timetable', () => {
     // eslint-disable-next-line no-useless-computed-key
-    const timetables = { [1]: { CS3216: { Lecture: '1' } } };
+    const timetables = { [1]: { CS3216: { Lecture: [0] } } };
     const container = make(CS3216);
     const button = container.wrapper.find('button');
 
