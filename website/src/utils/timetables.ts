@@ -739,12 +739,18 @@ export function serializeModuleList(modules: ModuleCode[]): string {
  */
 export function parseTaModuleCodes(taSerialized?: string | null): ModuleCode[] {
   if (!taSerialized || taSerialized[0] === '(') return [];
-  const trimmedSerializedTaModulesConfig = taSerialized.slice(0, -1);
+  // CS2100(TUT:2,TUT:3,LAB:1),CS2107(TUT:8)
+  const serializedTaModulesConfigs = taSerialized.split(/(?<=\)),/);
+  // CS2100(TUT:2,TUT:3,LAB:1)
+  // CS2107(TUT:8)
   return reduce(
-    trimmedSerializedTaModulesConfig.split(`)${LESSON_SEP}`),
-    (accumulatedTaModuleCodes, moduleConfig) => {
-      const [moduleCode] = moduleConfig.split('(', 1);
-      return [...accumulatedTaModuleCodes, moduleCode];
+    serializedTaModulesConfigs,
+    (accumulatedTaModuleCodes, serializedTaModulesConfig) => {
+      const moduleCode = serializedTaModulesConfig.match(/(.*)(?=\()/);
+      if (!moduleCode || moduleCode.length !== 2) {
+        return accumulatedTaModuleCodes;
+      }
+      return [...accumulatedTaModuleCodes, moduleCode[0]];
     },
     [] as ModuleCode[],
   );
@@ -762,16 +768,18 @@ export function deserializeTaModulesConfigV1(
   getModuleSemesterTimetable: (moduleCode: ModuleCode) => readonly RawLessonWithIndex[],
 ): SemTimetableConfig {
   // CS2100(TUT:2,TUT:3,LAB:1),CS2107(TUT:8)
-  const trimmedSerializedTaModulesConfig = taSerialized.slice(0, -1);
-  // CS2100(TUT:2,TUT:3,LAB:1),CS2107(TUT:8
+  const serializedTaModulesConfigs = taSerialized.split(/(?<=\)),/);
+  // ["CS2100(TUT:2,TUT:3,LAB:1)", "CS2107(TUT:8)"]
   return reduce(
-    trimmedSerializedTaModulesConfig.split(`)${LESSON_SEP}`),
-    (accumulatedTaTimetableConfig, moduleConfig) => {
-      // CS2100(TUT:2,TUT:3,LAB:1
-      // CS2107(TUT:8
-      const [moduleCode, lessons] = moduleConfig.split('(');
+    serializedTaModulesConfigs,
+    (accumulatedTaTimetableConfig, serializedTaModulesConfig) => {
+      // CS2100(TUT:2,TUT:3,LAB:1)
+      const moduleConfig = serializedTaModulesConfig.match(/(.*)\((.*)\)/);
+      if (!moduleConfig || moduleConfig.length !== 3) {
+        return accumulatedTaTimetableConfig;
+      }
+      const [, moduleCode, lessons] = moduleConfig;
       // ["CS2100", "TUT:2,TUT:3,LAB:1"]
-      // ["CS2107", "TUT:8"]
       const timetable = getModuleSemesterTimetable(moduleCode);
       if (!timetable) return accumulatedTaTimetableConfig;
       const lessonIndicesMap = makeLessonIndicesMap(timetable);
@@ -826,8 +834,12 @@ export function deserializeModuleLessonConfig(
       const [lessonTypeAbbr, lessonIndicesSerialized] =
         lessonTypeSerialized.split(LESSON_TYPE_KEY_VALUE_SEP);
       // ["LEC", "0,1"]
+      const unwrappedLessonIndicesSerialized = lessonIndicesSerialized.match(/(?<=\()(.*)(?=\))/);
+      if (!unwrappedLessonIndicesSerialized) {
+        return accumulatedModuleLessonConfig;
+      }
       const lessonIndices = map(
-        lessonIndicesSerialized.slice(1, -1).split(LESSON_SEP),
+        unwrappedLessonIndicesSerialized[0].split(LESSON_SEP),
         (lessonIndex) => parseInt(lessonIndex, 10),
       ); // [0, 1]
       const lessonType = LESSON_ABBREV_TYPE[lessonTypeAbbr];
