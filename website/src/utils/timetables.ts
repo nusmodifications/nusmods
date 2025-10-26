@@ -470,7 +470,14 @@ export function validateTaModuleLessons(
   };
 }
 
-export function getFirstClassNoLessonIndices(
+/**
+ * Used to recover from the config of a lesson type that contains invalid lesson indices
+ * @param lessonsWithLessonType lessons with the same lesson type to generate a valid lesson config from
+ * @returns lesson indices of the generated valid lesson config
+ *
+ * Note: the current implementation generates a config containing lessons belonging to the first classNo in the provided lessons
+ */
+export function getRecoveryLessonIndices(
   lessonsWithLessonType: RawLessonWithIndex[],
 ): LessonIndex[] {
   const { classNo } = lessonsWithLessonType[0];
@@ -506,7 +513,7 @@ export function validateNonTaModuleLesson(
 
       if (!lessonTypeInLessonConfig || !configLessonIndices.length) {
         // TODO: Open an issue to make recovery use random lessons instead
-        const validLessonIndices = getFirstClassNoLessonIndices(lessonsWithLessonType);
+        const validLessonIndices = getRecoveryLessonIndices(lessonsWithLessonType);
         return {
           config: {
             ...accumulatedValidationResult.config,
@@ -527,7 +534,7 @@ export function validateNonTaModuleLesson(
       );
       const validLessonIndices = configLessonIndicesValid
         ? classNoLessonIndices
-        : getFirstClassNoLessonIndices(lessonsWithLessonType);
+        : getRecoveryLessonIndices(lessonsWithLessonType);
 
       return {
         config: {
