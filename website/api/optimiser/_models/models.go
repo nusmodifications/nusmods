@@ -9,7 +9,6 @@ import (
 type LessonType = string
 type ClassNo = string
 type LessonIndex = int
-type LessonsByLessonTypeByClassNo = map[LessonType]map[ClassNo][]LessonIndex
 
 type OptimiserRequest struct {
 	Modules             []string `json:"modules"`             // Format: ["CS1010S", "CS2030S"]
