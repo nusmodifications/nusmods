@@ -96,7 +96,7 @@ test('hydrateSemTimetableWithLessons should replace ClassNo with lessons', () =>
   const modulesMap: ModulesMap = { [moduleCode]: CS1010S };
   const config: SemTimetableConfig = {
     [moduleCode]: {
-      Tutorial: [42],
+      Tutorial: [42, 43],
       Recitation: [5],
       Lecture: [0],
     },
@@ -108,6 +108,7 @@ test('hydrateSemTimetableWithLessons should replace ClassNo with lessons', () =>
     sem,
   );
   expect(configWithLessons[moduleCode].Tutorial[0].classNo).toBe('8');
+  expect(configWithLessons[moduleCode].Tutorial[1].classNo).toBe('9');
   expect(configWithLessons[moduleCode].Recitation[0].classNo).toBe('4');
   expect(configWithLessons[moduleCode].Lecture[0].classNo).toBe('1');
 });
