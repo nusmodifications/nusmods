@@ -734,7 +734,7 @@ describe(validateModuleLessons, () => {
       });
     });
 
-    test('should remove lesson types which do not exist', () => {
+    test('should remove lesson types which do not exist in module', () => {
       expect(
         validateModuleLessons(
           semester,
