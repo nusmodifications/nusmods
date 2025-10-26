@@ -298,9 +298,7 @@ function timetables(
         draft.lessons[semester] = semTimetable(draft.lessons[semester], action);
         draft.colors[semester] = semColors(state.colors[semester], action);
         draft.hidden[semester] = semHiddenModules(state.hidden[semester], action);
-        const taModules = state.ta[semester];
-        const taModulesList = taModules;
-        draft.ta[semester] = semTaModules(taModulesList, action);
+        draft.ta[semester] = semTaModules(state.ta[semester], action);
       });
     }
 
