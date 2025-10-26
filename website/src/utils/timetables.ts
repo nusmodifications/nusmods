@@ -96,6 +96,8 @@ export const LESSON_TYPE_SEP = ';';
 export const LESSON_TYPE_KEY_VALUE_SEP = ':';
 export const LESSON_SEP = ',';
 
+export const MODULE_SEP = ',';
+
 const EMPTY_OBJECT = {};
 
 export function isValidSemester(semester: Semester): boolean {
@@ -717,18 +719,13 @@ export function serializeTimetable(timetable: SemTimetableConfig): string {
   return qs.stringify(mapValues(timetable, serializeModuleConfig), { encode: false });
 }
 
-// TODO merge logic for TA modules and hidden modules
 /**
  * Serializes TA modules for sharing\
  * Given input `["CS1010S", "CS3216"]`\
  * Will output `&ta=CS1010S,CS3216`
  */
-export function serializeTa(taModules: TaModulesConfig): string {
-  return `&ta=${taModules.join(LESSON_SEP)}`;
-}
-
-export function serializeHidden(hiddenModules: ModuleCode[]): string {
-  return `&hidden=${hiddenModules.join(',')}`;
+export function serializeModuleList(modules: ModuleCode[]): string {
+  return isEmpty(modules) ? '' : modules.join(MODULE_SEP);
 }
 
 /**
