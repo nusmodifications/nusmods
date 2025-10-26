@@ -18,7 +18,7 @@ import { openNotification } from 'actions/app';
 import { getModuleCondensed } from 'selectors/moduleBank';
 import {
   getClosestLessonConfig,
-  groupLessonsByLessonTypeByClassNo,
+  makeLessonIndicesMap,
   migrateTimetableConfigs,
   randomModuleLessonConfig,
   validateModuleLessons,
@@ -390,8 +390,8 @@ export function disableTaModule(semester: Semester, moduleCode: ModuleCode) {
       dispatch(removeTaModule(semester, moduleCode, timetableLessonIndices));
       return;
     }
-    const groupedLessons = groupLessonsByLessonTypeByClassNo(semesterData.timetable);
-    const lessonConfig = getClosestLessonConfig(groupedLessons, timetableLessonIndices);
+    const lessonIndicesMap = makeLessonIndicesMap(semesterData.timetable);
+    const lessonConfig = getClosestLessonConfig(lessonIndicesMap, timetableLessonIndices);
 
     dispatch(removeTaModule(semester, moduleCode, lessonConfig));
   };

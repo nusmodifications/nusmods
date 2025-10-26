@@ -30,7 +30,6 @@ import qs from 'query-string';
 
 import {
   consumeWeeks,
-  LessonsByLessonTypeByClassNo,
   LessonIndex,
   LessonType,
   RawLessonWithIndex,
@@ -40,6 +39,7 @@ import {
   RawLesson,
   Semester,
   ClassNo,
+  LessonIndicesMap,
 } from 'types/modules';
 
 import {
@@ -602,9 +602,9 @@ export function validateModuleLessons(
  * @param lessonsWithIndex lessons to group
  * @returns lesson indices, not lessons
  */
-export const groupLessonsByLessonTypeByClassNo = (
+export const makeLessonIndicesMap = (
   lessonsWithIndex: readonly RawLessonWithIndex[],
-): LessonsByLessonTypeByClassNo => {
+): LessonIndicesMap => {
   const lessonsByLessonType = groupBy(lessonsWithIndex, 'lessonType');
   return mapValues(lessonsByLessonType, (lessonsWithLessonType) => {
     const lessonsByClassNo = groupBy(lessonsWithLessonType, 'classNo');
@@ -613,6 +613,18 @@ export const groupLessonsByLessonTypeByClassNo = (
     );
   });
 };
+
+/**
+ * Helper function to return the indices of lessons belonging to the {@link LessonType|lesson type} and {@link ClassNo|classNo} in the {@link LessonIndicesMap|lesson index mapping}
+ * @param lessonIndicesMap
+ * @param lessonType
+ * @param classNo
+ */
+const getLessonIndices = (
+  lessonIndicesMap: LessonIndicesMap,
+  lessonType: LessonType,
+  classNo: ClassNo,
+): LessonIndex[] => get(get(lessonIndicesMap, lessonType), classNo);
 
 // Get information for all modules present in a semester timetable config
 export function getSemesterModules(
@@ -765,6 +777,7 @@ export function deserializeTaModulesConfigV1(
       // ["CS2107", "TUT:8"]
       const timetable = getModuleSemesterTimetable(moduleCode);
       if (!timetable) return accumulatedTaTimetableConfig;
+      const lessonIndicesMap = makeLessonIndicesMap(timetable);
 
       const moduleLessonConfig = lessons
         .split(LESSON_SEP)
@@ -774,8 +787,7 @@ export function deserializeTaModulesConfigV1(
           // ["TUT", "2"]
           const lessonType = LESSON_ABBREV_TYPE[lessonTypeAbbr];
           if (!lessonType) return accumulatedModuleLessonConfig;
-          const lessonsByLessonTypeByClassNo = groupLessonsByLessonTypeByClassNo(timetable);
-          const lessonIndices = get(get(lessonsByLessonTypeByClassNo, lessonType), classNo);
+          const lessonIndices = getLessonIndices(lessonIndicesMap, lessonType, classNo);
           return {
             ...accumulatedModuleLessonConfig,
             [lessonType]: [
@@ -852,6 +864,7 @@ export function deserializeModuleLessonConfigV1(
   timetable: readonly RawLessonWithIndex[],
 ): ModuleLessonConfig {
   // LEC:1,TUT:1,REC:1
+  const lessonIndicesMap = makeLessonIndicesMap(timetable);
   return reduce(
     serializedModuleLessonConfig.split(LESSON_SEP),
     (accumulatedModuleLessonConfig, lessonTypeSerialized) => {
@@ -859,8 +872,7 @@ export function deserializeModuleLessonConfigV1(
       const [lessonTypeAbbr, classNo] = lessonTypeSerialized.split(LESSON_TYPE_KEY_VALUE_SEP);
       // ["LEC", "1"]
       const lessonType = LESSON_ABBREV_TYPE[lessonTypeAbbr];
-      const lessonsByLessonTypeByClassNo = groupLessonsByLessonTypeByClassNo(timetable);
-      const lessonIndices = get(get(lessonsByLessonTypeByClassNo, lessonType), classNo);
+      const lessonIndices = getLessonIndices(lessonIndicesMap, lessonType, classNo);
       return {
         ...accumulatedModuleLessonConfig,
         [lessonType]: [
@@ -1069,6 +1081,7 @@ export function migrateModuleLessonConfig(
   migratedModuleLessonConfig: ModuleLessonConfig;
   alreadyMigrated: boolean;
 } {
+  const lessonIndicesMap = makeLessonIndicesMap(timetable);
   return reduce(
     moduleLessonConfig,
     (accumulatedModuleLessonConfig, lessonsIdentifier, lessonType) => {
@@ -1089,15 +1102,11 @@ export function migrateModuleLessonConfig(
             (lessonTypeConfig) => lessonTypeConfig[0] === lessonType,
           );
       const classNos = taClassNos.length ? map(taClassNos, '1') : [lessonsIdentifier];
-      const lessonsByLessonTypeByClassNo = groupLessonsByLessonTypeByClassNo(timetable);
 
       const lessonIndices = reduce(
         classNos,
         (accumulatedLessonIndices, classNo) => {
-          const lessonIndicesWithClassNo = get(
-            get(lessonsByLessonTypeByClassNo, lessonType),
-            classNo,
-          );
+          const lessonIndicesWithClassNo = getLessonIndices(lessonIndicesMap, lessonType, classNo);
           if (!lessonIndicesWithClassNo) return accumulatedLessonIndices;
           return [...accumulatedLessonIndices, ...lessonIndicesWithClassNo];
         },
@@ -1252,16 +1261,16 @@ export function migrateTimetableConfigs(
 
 /**
  * Based on what lessons are currently in the lesson config, find the classNo that most of the lessons belong to
- * @param lessonsByLessonTypeByClassNo lessons indices grouped by lesson type, then classNo
+ * @param lessonIndicesMap {@link LessonIndicesMap|Lesson indices mapping} of the module
  * @param timetableLessonIndices lessons currently in lesson config
  * @returns a lesson config consisting of lesson indices that best matches the TA lesson config
  */
 export function getClosestLessonConfig(
-  lessonsByLessonTypeByClassNo: LessonsByLessonTypeByClassNo,
+  lessonIndicesMap: LessonIndicesMap,
   timetableLessonIndices: ModuleLessonConfig,
 ): ModuleLessonConfig {
   return reduce(
-    lessonsByLessonTypeByClassNo,
+    lessonIndicesMap,
     (accumulatedModuleLessonConfig, lessonsWithLessonType, lessonType) => {
       const timetableLessonsWithLessonType = timetableLessonIndices[lessonType];
       const lessonGroupOccurrences = entries(
@@ -1278,7 +1287,11 @@ export function getClosestLessonConfig(
       const closestLessonGroups = maxBy(lessonGroupOccurrences, ([, occurrences]) => occurrences);
       if (!closestLessonGroups) return accumulatedModuleLessonConfig;
       const [closestLessonGroupKey] = closestLessonGroups;
-      const closestLessonGroup = lessonsByLessonTypeByClassNo[lessonType][closestLessonGroupKey];
+      const closestLessonGroup = getLessonIndices(
+        lessonIndicesMap,
+        lessonType,
+        closestLessonGroupKey,
+      );
 
       return {
         ...accumulatedModuleLessonConfig,

@@ -141,7 +141,7 @@ export type RawLesson = Readonly<{
 
 export type RawLessonWithIndex = RawLesson & { readonly lessonIndex: LessonIndex };
 
-export type LessonsByLessonTypeByClassNo = {
+export type LessonIndicesMap = {
   [lessonType: LessonType]: {
     [classNo: ClassNo]: LessonIndex[];
   };
