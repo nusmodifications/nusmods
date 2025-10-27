@@ -1,10 +1,5 @@
 import { ModuleCode, Semester } from 'types/modules';
-import {
-  SemTimetableConfig,
-  LessonWithIndex,
-  TaModulesConfig,
-  TimetableConfigV1,
-} from 'types/timetables';
+import { SemTimetableConfig, LessonWithIndex, TimetableConfigV1 } from 'types/timetables';
 
 import lessons from '__mocks__/lessons-array.json';
 import { CS1010A, CS1010S, CS3216 } from '__mocks__/modules';
@@ -62,7 +57,7 @@ test('select module color should dispatch a select of module color', () => {
 
 describe('disabling ta module', () => {
   const semester = 1;
-  const timetablesState = (ta: TaModulesConfig): TimetablesState => ({
+  const timetablesState = (ta: ModuleCode[]): TimetablesState => ({
     ...initialState,
     lessons: {
       [semester]: {

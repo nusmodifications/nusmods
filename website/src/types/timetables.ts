@@ -35,8 +35,6 @@ export type SemTimetableConfigV1 = {
   [moduleCode: ModuleCode]: ModuleLessonConfigV1;
 };
 
-export type TaModulesConfig = ModuleCode[];
-
 /**
  * TaModulesConfigV1 is the v1 representation of TA modules\
  * It is a mapping of {@link ModuleCode|module code} to the {@link LessonType|lesson type} and {@link ClassNo|classNo}\

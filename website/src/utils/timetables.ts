@@ -56,7 +56,6 @@ import {
   ModuleLessonConfigWithLessons,
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
-  TaModulesConfig,
   TimetableConfig,
   TimetableDayArrangement,
   TimetableDayFormat,
@@ -1082,7 +1081,7 @@ export function getLessonIdentifier(lesson: Lesson): string {
  */
 export function migrateModuleLessonConfig(
   moduleLessonConfig: ModuleLessonConfig | ModuleLessonConfigV1,
-  taModulesConfig: TaModulesConfig | TaModulesConfigV1,
+  taModulesConfig: ModuleCode[] | TaModulesConfigV1,
   moduleCode: ModuleCode,
   timetable: readonly RawLessonWithIndex[],
 ): {
@@ -1153,11 +1152,11 @@ export function migrateModuleLessonConfig(
  */
 export function migrateSemTimetableConfig(
   semTimetableConfig: SemTimetableConfig | SemTimetableConfigV1,
-  taModulesConfig: TaModulesConfig | TaModulesConfigV1,
+  taModulesConfig: ModuleCode[] | TaModulesConfigV1,
   getModuleSemesterTimetable: (moduleCode: ModuleCode) => readonly RawLessonWithIndex[],
 ): {
   migratedSemTimetableConfig: SemTimetableConfig;
-  migratedTaModulesConfig: TaModulesConfig;
+  migratedTaModulesConfig: ModuleCode[];
   alreadyMigrated: boolean;
 } {
   return reduce(
@@ -1192,7 +1191,7 @@ export function migrateSemTimetableConfig(
       alreadyMigrated: true,
     } as {
       migratedSemTimetableConfig: SemTimetableConfig;
-      migratedTaModulesConfig: TaModulesConfig;
+      migratedTaModulesConfig: ModuleCode[];
       alreadyMigrated: boolean;
     },
   );

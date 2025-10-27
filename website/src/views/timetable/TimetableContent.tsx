@@ -19,7 +19,6 @@ import { ColorMapping, HORIZONTAL, ModulesMap, TimetableOrientation } from 'type
 import { LessonIndex, LessonType, Module, ModuleCode, Semester } from 'types/modules';
 import {
   SemTimetableConfig,
-  TaModulesConfig,
   SemTimetableConfigWithLessons,
   InteractableLesson,
   LessonWithIndex,
@@ -74,7 +73,7 @@ type OwnProps = {
   timetable: SemTimetableConfig;
   colors: ColorMapping;
   hiddenImportedModules: ModuleCode[] | null;
-  taImportedModules: TaModulesConfig | TaModulesConfigV1 | null;
+  taImportedModules: ModuleCode[] | TaModulesConfigV1 | null;
 };
 
 type Props = OwnProps & {
@@ -85,7 +84,7 @@ type Props = OwnProps & {
   timetableOrientation: TimetableOrientation;
   showTitle: boolean;
   hiddenInTimetable: ModuleCode[];
-  taInTimetable: TaModulesConfig;
+  taInTimetable: ModuleCode[];
 
   // Actions
   addModule: (semester: Semester, moduleCode: ModuleCode) => void;
@@ -587,9 +586,7 @@ function mapStateToProps(state: StoreState, ownProps: OwnProps) {
   const hiddenInTimetable =
     ownProps.hiddenImportedModules ?? state.timetables.hidden[semester] ?? [];
   const taInTimetable = ownProps.taImportedModules ?? state.timetables.ta[semester] ?? [];
-  const taModuleCodes: TaModulesConfig = isArray(taInTimetable)
-    ? taInTimetable
-    : keys(taInTimetable);
+  const taModuleCodes: ModuleCode[] = isArray(taInTimetable) ? taInTimetable : keys(taInTimetable);
 
   const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
 

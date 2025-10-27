@@ -4,7 +4,7 @@ import { createMigrate } from 'redux-persist';
 
 import { PersistConfig } from 'storage/persistReducer';
 import { LessonIndex, ModuleCode } from 'types/modules';
-import { TaModulesConfig, ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
+import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
 import { ColorMapping, TimetablesState } from 'types/reducers';
 
 import config from 'config';
@@ -208,8 +208,8 @@ function semHiddenModules(state = DEFAULT_HIDDEN_STATE, action: Actions) {
 }
 
 // Map of semester to list of TA modules
-const DEFAULT_TA_STATE: TaModulesConfig = [];
-function semTaModules(state = DEFAULT_TA_STATE, action: Actions): TaModulesConfig {
+const DEFAULT_TA_STATE: ModuleCode[] = [];
+function semTaModules(state = DEFAULT_TA_STATE, action: Actions): ModuleCode[] {
   if (!action.payload) {
     return state;
   }

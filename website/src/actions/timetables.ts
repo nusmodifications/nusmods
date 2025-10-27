@@ -2,7 +2,6 @@ import { each, flatMap } from 'lodash';
 
 import type {
   ColorIndex,
-  TaModulesConfig,
   ModuleLessonConfig,
   SemTimetableConfig,
   TimetableConfig,
@@ -45,7 +44,7 @@ export const Internal = {
     timetable: SemTimetableConfig | undefined,
     colors?: ColorMapping,
     hiddenModules?: ModuleCode[],
-    taModules?: TaModulesConfig,
+    taModules?: ModuleCode[],
   ) {
     return {
       type: SET_TIMETABLE,
@@ -294,11 +293,11 @@ export function setHiddenImported(semester: Semester, hiddenModules: ModuleCode[
   };
 }
 
-export function setTaModulesFromImport(semester: Semester, taModules: TaModulesConfig) {
+export function setTaModulesFromImport(semester: Semester, taModules: ModuleCode[]) {
   return (dispatch: Dispatch) => dispatch(setTaImported(semester, taModules));
 }
 
-export function setTaImported(semester: Semester, taModules: TaModulesConfig) {
+export function setTaImported(semester: Semester, taModules: ModuleCode[]) {
   return {
     type: SET_TA_IMPORTED,
     payload: { semester, taModules },
