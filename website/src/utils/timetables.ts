@@ -737,13 +737,13 @@ export function serializeModuleList(modules: ModuleCode[]): string {
 export function parseTaModuleCodes(taSerialized?: string | null): ModuleCode[] {
   if (!taSerialized || taSerialized[0] === '(') return [];
   // CS2100(TUT:2,TUT:3,LAB:1),CS2107(TUT:8)
-  const serializedTaModulesConfigs = taSerialized.split(/(?<=\)),/);
+  const serializedTaModuleLessonConfigs = taSerialized.split(/(?<=\)),/);
   // CS2100(TUT:2,TUT:3,LAB:1)
   // CS2107(TUT:8)
   return reduce(
-    serializedTaModulesConfigs,
-    (accumulatedTaModuleCodes, serializedTaModulesConfig) => {
-      const moduleCode = serializedTaModulesConfig.match(/(.*)(?=\()/);
+    serializedTaModuleLessonConfigs,
+    (accumulatedTaModuleCodes, serializedTaModuleLessonConfig) => {
+      const moduleCode = serializedTaModuleLessonConfig.match(/(.*)(?=\()/);
       if (!moduleCode || moduleCode.length !== 2) {
         return accumulatedTaModuleCodes;
       }
@@ -764,13 +764,13 @@ export function deserializeTaModulesConfigV1(
   getModuleSemesterTimetable: (moduleCode: ModuleCode) => readonly RawLessonWithIndex[],
 ): SemTimetableConfig {
   // CS2100(TUT:2,TUT:3,LAB:1),CS2107(TUT:8)
-  const serializedTaModulesConfigs = taSerialized.split(/(?<=\)),/);
+  const serializedTaModuleLessonConfigs = taSerialized.split(/(?<=\)),/);
   // ["CS2100(TUT:2,TUT:3,LAB:1)", "CS2107(TUT:8)"]
   return reduce(
-    serializedTaModulesConfigs,
-    (accumulatedTaTimetableConfig, serializedTaModulesConfig) => {
+    serializedTaModuleLessonConfigs,
+    (accumulatedTaTimetableConfig, serializedTaModuleLessonConfig) => {
       // CS2100(TUT:2,TUT:3,LAB:1)
-      const moduleConfig = serializedTaModulesConfig.match(/(.*)\((.*)\)/);
+      const moduleConfig = serializedTaModuleLessonConfig.match(/(.*)\((.*)\)/);
       if (!moduleConfig || moduleConfig.length !== 3) {
         return accumulatedTaTimetableConfig;
       }
@@ -919,7 +919,7 @@ export function deserializeTimetable(
   // If TA modules were serialized using the v1 format
   // we deserialize it first so we can skip deserializing the module code down the line
   // because TA module lesson config overrides the non-TA module lesson config
-  const taModulesConfig =
+  const taModuleLessonConfigs =
     taParams && last(taParams) === ')'
       ? deserializeTaModulesConfigV1(taParams, getModuleSemesterTimetable)
       : {};
@@ -978,7 +978,7 @@ export function deserializeTimetable(
                 );
 
               // TA module lesson config overrides the non-TA module lesson config
-              if (moduleCode in taModulesConfig) return taModulesConfig[moduleCode];
+              if (moduleCode in taModuleLessonConfigs) return taModuleLessonConfigs[moduleCode];
 
               // If using the v1 format serialization
               // paramsKey = CS2103T
@@ -1003,7 +1003,7 @@ export function deserializeTimetable(
     },
     {
       semTimetableConfig: {},
-      ta: keys(taModulesConfig),
+      ta: keys(taModuleLessonConfigs),
       hidden: [],
     },
   );
