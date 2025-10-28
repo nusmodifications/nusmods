@@ -760,9 +760,13 @@ export function parseTaModuleCodes(taSerialized?: string | null): ModuleCode[] {
  * @returns migrated semester timetable config
  */
 export function deserializeTaModulesConfigV1(
-  taSerialized: string,
+  taSerialized: string | null | undefined,
   getModuleSemesterTimetable: (moduleCode: ModuleCode) => readonly RawLessonWithIndex[],
 ): SemTimetableConfig {
+  if (!taSerialized || last(taSerialized) !== ')') {
+    return {};
+  }
+
   // CS2100(TUT:2,TUT:3,LAB:1),CS2107(TUT:8)
   const serializedTaModuleLessonConfigs = taSerialized.split(/(?<=\)),/);
   // ["CS2100(TUT:2,TUT:3,LAB:1)", "CS2107(TUT:8)"]
@@ -897,6 +901,99 @@ export function deserializeModuleCodes(serialized: string): ModuleCode[] {
   return serialized.split(LESSON_SEP);
 }
 
+function deserializeHiddenOrTaConfig(paramsKey: string, paramsValue: string | string[]) {
+  const moduleCodes = reduce(
+    castArray(paramsValue),
+    (accumulatedModules, paramValue) => {
+      // Skip if the ta param is a serialized with the v1 format
+      if (paramsKey === 'ta' && last(paramValue) === ')') return accumulatedModules;
+
+      return [...accumulatedModules, ...deserializeModuleCodes(paramValue)];
+    },
+    [] as ModuleCode[],
+  );
+  return moduleCodes;
+}
+
+interface DeserializationResult {
+  semTimetableConfig: SemTimetableConfig;
+  ta: ModuleCode[];
+  hidden: ModuleCode[];
+}
+
+function parseModuleListParams(
+  accumulatedDeserializationResult: DeserializationResult,
+  paramsKey: 'hidden' | 'ta',
+  paramsValue: string | string[] | null,
+): DeserializationResult {
+  if (!paramsValue) {
+    return accumulatedDeserializationResult;
+  }
+  const moduleCodes = deserializeHiddenOrTaConfig(paramsKey, paramsValue);
+  return {
+    ...accumulatedDeserializationResult,
+    [paramsKey]: [...accumulatedDeserializationResult[paramsKey], ...moduleCodes],
+  };
+}
+
+function parseLessonConfigParams(
+  accumulatedDeserializationResult: DeserializationResult,
+  paramsKey: string,
+  paramsValue: string | string[] | null,
+  getModuleSemesterTimetable: (moduleCode: ModuleCode) => readonly RawLessonWithIndex[],
+  getTaModuleLessonConfig: (moduleCode: ModuleCode) => ModuleLessonConfig,
+): DeserializationResult {
+  const moduleCode = paramsKey;
+  if (!paramsValue) {
+    return {
+      ...accumulatedDeserializationResult,
+      semTimetableConfig: {
+        ...accumulatedDeserializationResult.semTimetableConfig,
+        [moduleCode]: {},
+      },
+    };
+  }
+  const timetable = getModuleSemesterTimetable(moduleCode);
+  const moduleLessonConfig = reduce(
+    castArray(paramsValue),
+    (accumulatedModuleLessonConfig, serializedModuleLessonConfig) => {
+      // If using the lesson group serialization (v2)
+      // paramsKey = CS2103T
+      // paramsValue = LEC:(0,1);TUT:(3)
+      if (
+        serializedModuleLessonConfig &&
+        serializedModuleLessonConfig[serializedModuleLessonConfig.length - 1] === ')'
+      )
+        return deserializeModuleLessonConfig(
+          accumulatedModuleLessonConfig,
+          serializedModuleLessonConfig,
+          timetable,
+        );
+
+      // TA module lesson config overrides the non-TA module lesson config
+      const taModuleLessonConfig = getTaModuleLessonConfig(moduleCode);
+      if (taModuleLessonConfig) return taModuleLessonConfig;
+
+      // If using the v1 format serialization
+      // paramsKey = CS2103T
+      // paramsValue = LEC:0,TUT:3
+      return deserializeModuleLessonConfigV1(
+        accumulatedModuleLessonConfig,
+        serializedModuleLessonConfig,
+        timetable,
+      );
+    },
+    {} as ModuleLessonConfig,
+  );
+  return {
+    ...accumulatedDeserializationResult,
+    semTimetableConfig: {
+      ...accumulatedDeserializationResult.semTimetableConfig,
+      [moduleCode]: moduleLessonConfig,
+    },
+  };
+}
+
 /**
  * Entry point to deserialize a serialized timetable string\
  * Checks serialization format and parses accordingly
@@ -919,85 +1016,27 @@ export function deserializeTimetable(
   // If TA modules were serialized using the v1 format
   // we deserialize it first so we can skip deserializing the module code down the line
   // because TA module lesson config overrides the non-TA module lesson config
-  const taModuleLessonConfigs =
-    taParams && last(taParams) === ')'
-      ? deserializeTaModulesConfigV1(taParams, getModuleSemesterTimetable)
-      : {};
+  const taModuleLessonConfigs = deserializeTaModulesConfigV1(taParams, getModuleSemesterTimetable);
+  const getTaModuleLessonConfig = (moduleCode: ModuleCode): ModuleLessonConfig =>
+    get(taModuleLessonConfigs, moduleCode);
 
   return reduce(
     params,
-    (accumulatedDeserializedResult, paramsValue, paramsKey) => {
+    (accumulatedDeserializationResult, paramsValue, paramsKey) => {
       switch (paramsKey) {
         case 'hidden':
         case 'ta': {
-          if (!paramsValue) {
-            return accumulatedDeserializedResult;
-          }
-          const moduleCodes = reduce(
-            castArray(paramsValue),
-            (accumulatedModules, paramValue) => {
-              // Skip if the ta param is a serialized with the v1 format
-              if (paramsKey === 'ta' && last(paramValue) === ')') return accumulatedModules;
-
-              return [...accumulatedModules, ...deserializeModuleCodes(paramValue)];
-            },
-            [] as ModuleCode[],
-          );
-          return {
-            ...accumulatedDeserializedResult,
-            [paramsKey]: [...accumulatedDeserializedResult[paramsKey], ...moduleCodes],
-          };
+          return parseModuleListParams(accumulatedDeserializationResult, paramsKey, paramsValue);
         }
 
         default: {
-          const moduleCode = paramsKey;
-          if (!paramsValue) {
-            return {
-              ...accumulatedDeserializedResult,
-              semTimetableConfig: {
-                ...accumulatedDeserializedResult.semTimetableConfig,
-                [moduleCode]: {},
-              },
-            };
-          }
-          const timetable = getModuleSemesterTimetable(moduleCode);
-          const moduleLessonConfig = reduce(
-            castArray(paramsValue),
-            (accumulatedModuleLessonConfig, serializedModuleLessonConfig) => {
-              // If using the lesson group serialization (v2)
-              // paramsKey = CS2103T
-              // paramsValue = LEC:(0,1);TUT:(3)
-              if (
-                serializedModuleLessonConfig &&
-                serializedModuleLessonConfig[serializedModuleLessonConfig.length - 1] === ')'
-              )
-                return deserializeModuleLessonConfig(
-                  accumulatedModuleLessonConfig,
-                  serializedModuleLessonConfig,
-                  timetable,
-                );
-
-              // TA module lesson config overrides the non-TA module lesson config
-              if (moduleCode in taModuleLessonConfigs) return taModuleLessonConfigs[moduleCode];
-
-              // If using the v1 format serialization
-              // paramsKey = CS2103T
-              // paramsValue = LEC:0,TUT:3
-              return deserializeModuleLessonConfigV1(
-                accumulatedModuleLessonConfig,
-                serializedModuleLessonConfig,
-                timetable,
-              );
-            },
-            {} as ModuleLessonConfig,
+          return parseLessonConfigParams(
+            accumulatedDeserializationResult,
+            paramsKey,
+            paramsValue,
+            getModuleSemesterTimetable,
+            getTaModuleLessonConfig,
           );
-          return {
-            ...accumulatedDeserializedResult,
-            semTimetableConfig: {
-              ...accumulatedDeserializedResult.semTimetableConfig,
-              [moduleCode]: moduleLessonConfig,
-            },
-          };
         }
       }
     },
@@ -1005,7 +1044,7 @@ export function deserializeTimetable(
       semTimetableConfig: {},
       ta: keys(taModuleLessonConfigs),
       hidden: [],
-    },
+    } as DeserializationResult,
   );
 }
 
