@@ -151,49 +151,21 @@ func mergeAndFilterModuleSlots(timetable []models.ModuleSlot, venues map[string]
 		}
 	}
 
-	/*
-		Now merge all slots of the same lessonType, slot, startTime, weeks and building
-		We are doing this to avoid unnecessary calculations & reduce search space
-	*/
-
-	mergedTimetable := make(map[string]map[string][]models.ModuleSlot) // Lesson Type -> Class No -> []ModuleSlot
-	seenCombinations := make(map[string]bool)
-
+	lessonsMap := make(map[string]map[string][]models.ModuleSlot) // Lesson Type -> Class No -> []ModuleSlot
 	for _, slots := range validClassGroups {
 		for _, slot := range slots {
-
-			if !constants.E_Venues[slot.Venue] {
-				buildingName := extractBuildingName(slot.Venue)
-
-				combinationKey := slot.LessonType + "|" + slot.Day + "|" + slot.StartTime + "|" + buildingName + "|" + slot.WeeksString
-
-				if seenCombinations[combinationKey] {
-					continue
-				}
-				seenCombinations[combinationKey] = true
+			if lessonsMap[slot.LessonType] == nil {
+				lessonsMap[slot.LessonType] = make(map[string][]models.ModuleSlot)
 			}
 
-			if mergedTimetable[slot.LessonType] == nil {
-				mergedTimetable[slot.LessonType] = make(map[string][]models.ModuleSlot)
-			}
-
-			mergedTimetable[slot.LessonType][slot.ClassNo] = append(mergedTimetable[slot.LessonType][slot.ClassNo], slot)
+			lessonsMap[slot.LessonType][slot.ClassNo] = append(lessonsMap[slot.LessonType][slot.ClassNo], slot)
 		}
 	}
 
-	return mergedTimetable
+	return lessonsMap
 }
 
 // Helper functions
-
-/*
-Extract the building name from the venue name.
-Returns the part before '-' or the whole key if '-' is absent
-*/
-func extractBuildingName(key string) string {
-	parts := strings.SplitN(key, "-", 2)
-	return parts[0]
-}
 
 /*
 Check if the slot's timing falls outside the specified earliest and latest times
