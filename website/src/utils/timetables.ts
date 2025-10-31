@@ -706,11 +706,13 @@ function serializeModuleConfig(config: ModuleLessonConfig): string {
 
 /**
  * Converts a timetable config to query string\
- * Given input `
+ * Given input
+ * ```
  * {
  *   CS2104: { Lecture: [0], Tutorial: [1] },
  *   CS2107: { Lecture: [0], Tutorial: [1] },
- * }`\
+ * }
+ * ```
  * Will output `CS2104=LEC:(0),TUT:(1)&CS2107=LEC:(0),TUT:(1)`
  */
 export function serializeTimetable(timetable: SemTimetableConfig): string {
