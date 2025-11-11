@@ -24,17 +24,6 @@ func BeamSearch(
 	recordings map[string]bool,
 	optimiserRequest models.OptimiserRequest) models.TimetableState {
 
-	for lessonKey, slotGroups := range lessonToSlots {
-		for _, group := range slotGroups {
-			for i := range group {
-				if err := group[i].ParseModuleSlotFields(lessonKey); err != nil {
-					// Skip invalid slots
-					group[i].DayIndex = -1
-				}
-			}
-		}
-	}
-
 	initial := models.TimetableState{
 		Assignments: make(map[string]string),
 	}

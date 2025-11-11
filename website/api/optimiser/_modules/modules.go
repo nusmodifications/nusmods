@@ -2,6 +2,7 @@ package modules
 
 import (
 	"encoding/json"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -162,26 +163,53 @@ func mergeAndFilterModuleSlots(timetable []models.ModuleSlot, venues map[string]
 	mergedTimetable := make(map[string]map[string][]models.ModuleSlot) // Lesson Type -> Class No -> []ModuleSlot
 	seenCombinations := make(map[string]bool)
 
-	for _, slots := range validClassGroups {
-		for _, slot := range slots {
+	// iterate over lessonType|classNo
+	for groupKey, slots := range validClassGroups {
+		lessonType := strings.Split(groupKey, "|")[0]
+		classNo := strings.Split(groupKey, "|")[1]
+		lessonKey := module + "|" + lessonType
 
-			if !constants.E_Venues[slot.Venue] {
-				buildingName := extractBuildingName(slot.Venue)
-
-				combinationKey := slot.LessonType + "|" + slot.Day + "|" + slot.StartTime + "|" + buildingName + "|" + slot.WeeksString
-
-				if seenCombinations[combinationKey] {
-					continue
-				}
-				seenCombinations[combinationKey] = true
+		// Parse fields for each slot before sorting
+		for i := range slots {
+			if err := slots[i].ParseModuleSlotFields(lessonKey); err != nil {
+				// Skip invalid slots by marking with -1
+				slots[i].DayIndex = -1
 			}
-
-			if mergedTimetable[slot.LessonType] == nil {
-				mergedTimetable[slot.LessonType] = make(map[string][]models.ModuleSlot)
-			}
-
-			mergedTimetable[slot.LessonType][slot.ClassNo] = append(mergedTimetable[slot.LessonType][slot.ClassNo], slot)
 		}
+
+		// Sort slots by Day and StartTime to ensure consistent combinationKey
+		sort.Slice(slots, func(i, j int) bool {
+			if slots[i].DayIndex != slots[j].DayIndex {
+				return slots[i].DayIndex < slots[j].DayIndex
+			}
+			return slots[i].StartMin < slots[j].StartMin
+		})
+
+		// Build a combinationKey for the entire set of slots
+		var combinationParts []string
+		allEVenues := true
+		for _, slot := range slots {
+			if !constants.E_Venues[slot.Venue] {
+				allEVenues = false
+				buildingName := extractBuildingName(slot.Venue)
+				part := slot.Day + "|" + slot.StartTime + "|" + buildingName + "|" + slot.WeeksString
+				combinationParts = append(combinationParts, part)
+			}
+		}
+
+		// If not all venues are E-Venues, check for duplicates
+		if !allEVenues {
+			combinationKey := lessonType + "|" + strings.Join(combinationParts, "|")
+			if seenCombinations[combinationKey] {
+				continue
+			}
+			seenCombinations[combinationKey] = true
+		}
+
+		if mergedTimetable[lessonType] == nil {
+			mergedTimetable[lessonType] = make(map[string][]models.ModuleSlot)
+		}
+		mergedTimetable[lessonType][classNo] = slots
 	}
 
 	return mergedTimetable
