@@ -87,6 +87,9 @@ export interface INusApi {
 type ApiParams = {
   [key: string]: string;
 };
+type ApiHeaders = {
+  [key: string]: string;
+};
 
 // Error codes specified by the API. Note that these, like many other things
 // in the API, are not to be relied upon completely
@@ -95,11 +98,21 @@ const OKAY: STATUS_CODE = '00000';
 const AUTH_ERROR: STATUS_CODE = '10000';
 const RECORD_NOT_FOUND: STATUS_CODE = '10001';
 
-// Authentication via tokens sent through headers
-const headers = {
-  'X-APP-API': config.appKey,
-  'X-STUDENT-API': config.studentKey,
+// Shared headers for all API requests
+const commonHeaders: ApiHeaders = {
   'Content-Type': 'application/json',
+};
+
+// Authentication via tokens sent through headers
+const ttHeaders: ApiHeaders = {
+  'X-API-KEY': config.ttApiKey,
+};
+const courseHeaders: ApiHeaders = {
+  'X-API-KEY': config.courseApiKey,
+};
+const acadHeaders: ApiHeaders = {
+  'X-API-KEY': config.acadApiKey,
+  'X-APP-KEY': config.acadAppKey,
 };
 
 /**
@@ -129,21 +142,32 @@ function mapErrorCode(code: string, msg: string) {
  * configuration such as authentication which all API calls should have,
  * as well as error handling.
  */
-async function callApi<Data>(endpoint: string, params: ApiParams): Promise<Data> {
+async function callApi<Data>(
+  endpoint: string,
+  params: ApiParams,
+  headers: ApiHeaders,
+): Promise<Data> {
   // 1. Construct request URL
   const url = new URL(endpoint, config.baseUrl);
+
+  // 2. Encode params in the query string for GET requests
+  Object.entries(params).forEach(([key, value]) => {
+    url.searchParams.append(key, value);
+  });
+
   let response;
 
   try {
-    // 2. All API requests use POST HTTP method with params encoded in JSON
-    //    in the body
-    response = await axios.post(url.href, params, {
-      transformRequest: [(data) => JSON.stringify(data)],
-      // 3. Apply authentication using header
-      headers,
+    // 3. All API requests use GET HTTP method with params encoded in the query string.
+    response = await axios.get(url.href, {
+      // 4. Apply authentication using headers
+      headers: {
+        ...commonHeaders,
+        ...headers,
+      },
     });
   } catch (e) {
-    // 4. Handle network / request level errors, eg. server returning non-200
+    // 5. Handle network / request level errors, eg. server returning non-200
     //    status code
     let message;
     if (e.response) {
@@ -188,8 +212,8 @@ class NusApi implements INusApi {
   /**
    * Wrapper around base callApi method that pushes the call into a queue
    */
-  callApi = async <T>(endpoint: string, params: ApiParams) =>
-    this.queue.add(() => callApi<T>(endpoint, params));
+  callApi = async <T>(endpoint: string, params: ApiParams, headers: ApiHeaders) =>
+    this.queue.add(() => callApi<T>(endpoint, params, headers));
 
   /**
    * Calls the modules endpoint
@@ -198,10 +222,14 @@ class NusApi implements INusApi {
     try {
       // DO NOT remove this await - the promise must settle so the catch
       // can handle the NotFoundError from the API
-      return await this.callApi<ModuleInfo[]>('module', {
-        term,
-        ...params,
-      });
+      return await this.callApi<ModuleInfo[]>(
+        'CourseNUSMods',
+        {
+          term,
+          ...params,
+        },
+        courseHeaders,
+      );
     } catch (e) {
       // The modules endpoint will return NotFound even for valid inputs
       // that just happen to have no records, so we ignore this error
@@ -215,18 +243,22 @@ class NusApi implements INusApi {
   };
 
   getFaculty = async (): Promise<AcademicGrp[]> =>
-    this.callApi('config/get-acadgroup', {
-      eff_status: 'A',
-      // % is a wildcard so this function returns everything
-      acad_group: '%',
-    });
+    this.callApi(
+      'edurec/config/v1/get-acadgroup',
+      {
+        eff_status: 'A',
+      },
+      acadHeaders,
+    );
 
   getDepartment = async (): Promise<AcademicOrg[]> =>
-    this.callApi('config/get-acadorg', {
-      eff_status: 'A',
-      // % is a wildcard so this function returns everything
-      acad_org: '%',
-    });
+    this.callApi(
+      'edurec/config/v1/get-acadorg',
+      {
+        eff_status: 'A',
+      },
+      acadHeaders,
+    );
 
   getModuleInfo = async (term: string, moduleCode: ModuleCode): Promise<ModuleInfo> => {
     // Module info API takes in subject and catalog number separately, so we need
@@ -239,11 +271,15 @@ class NusApi implements INusApi {
 
     // catalognbr = Catalog number
     const [subject, catalognbr] = parts;
-    const modules = await this.callApi<ModuleInfo[]>('module', {
-      term,
-      subject,
-      catalognbr,
-    });
+    const modules = await this.callApi<ModuleInfo[]>(
+      'CourseNUSMods',
+      {
+        term,
+        subject,
+        catalognbr,
+      },
+      courseHeaders,
+    );
 
     if (modules.length === 0) throw new NotFoundError(`Module ${moduleCode} cannot be found`);
     return modules[0];
@@ -256,34 +292,44 @@ class NusApi implements INusApi {
     this.callModulesEndpoint(term, { acadorg: departmentCode });
 
   getModuleTimetable = async (term: string, module: ModuleCode): Promise<TimetableLesson[]> =>
-    this.callApi('classtt/withdate/published', {
-      term,
-      module,
-    });
+    this.callApi(
+      'timetable/v1/published/class/withdate',
+      {
+        term,
+        module,
+      },
+      ttHeaders,
+    );
 
   getDepartmentTimetables = async (
     term: string,
     departmentCode: string,
   ): Promise<TimetableLesson[]> =>
-    this.callApi('classtt/withdate/published', {
-      term,
-      deptfac: departmentCode,
-    });
+    this.callApi(
+      'timetable/v1/published/class/withdate',
+      {
+        term,
+        deptfac: departmentCode,
+      },
+      ttHeaders,
+    );
 
   getSemesterTimetables = async (
     term: string,
     lessonConsumer: (lesson: TimetableLesson) => void,
   ): Promise<void> =>
     new Promise((resolve, reject) => {
-      const endpoint = 'classtt/withdate/published';
+      const endpoint = 'timetable/v1/published/class/withdate';
       const url = new URL(endpoint, config.baseUrl);
-      const body = JSON.stringify({ term });
+      url.searchParams.append('term', term);
 
       oboe({
         url: url.href,
-        headers,
-        body,
-        method: 'POST',
+        headers: {
+          ...commonHeaders,
+          ...ttHeaders,
+        },
+        method: 'GET',
       })
         .node('data[*]', (lesson: TimetableLesson) => {
           // Consume and discard each lesson
@@ -298,7 +344,7 @@ class NusApi implements INusApi {
             resolve();
           } else {
             const error = mapErrorCode(code, msg);
-            error.requestConfig = { url: url.href, data: body };
+            error.requestConfig = { url: url.href };
             reject(error);
           }
         })
@@ -314,10 +360,14 @@ class NusApi implements INusApi {
     });
 
   getModuleExam = async (term: string, module: ModuleCode): Promise<ModuleExam> => {
-    const exams = await this.callApi<ModuleExam[]>('examtt/published', {
-      term,
-      module,
-    });
+    const exams = await this.callApi<ModuleExam[]>(
+      'timetable/v1/published/exam',
+      {
+        term,
+        module,
+      },
+      ttHeaders,
+    );
 
     if (exams.length === 0)
       throw new NotFoundError(`Exams for ${module} cannot be found, or the module has no exams`);
@@ -325,7 +375,7 @@ class NusApi implements INusApi {
   };
 
   getTermExams = async (term: string): Promise<ModuleExam[]> =>
-    this.callApi('examtt/published', { term });
+    this.callApi('timetable/v1/published/exam', { term }, ttHeaders);
 }
 
 // Export as default a singleton instance to be used globally
