@@ -361,7 +361,7 @@ describe(getAcadYearModules, () => {
         id: '0',
         moduleCode: 'CS1010S',
         moduleInfo: CS1010S,
-        conflicts: null,
+        conflicts: [],
       },
     ]);
 
@@ -370,7 +370,7 @@ describe(getAcadYearModules, () => {
         id: '1',
         moduleCode: 'CS1010S',
         moduleInfo: CS1010S_DUPLICATE,
-        conflicts: null,
+        conflicts: [],
       },
     ]);
   });
@@ -402,13 +402,13 @@ describe(getAcadYearModules, () => {
         id: '0',
         moduleCode: 'CS1010X',
         moduleInfo: CS1010X,
-        conflicts: null,
+        conflicts: [],
       },
       {
         id: '1',
         moduleCode: 'CS1010S',
         moduleInfo: CS1010S,
-        conflicts: null,
+        conflicts: [],
       },
     ]);
   });
@@ -445,7 +445,7 @@ describe(getAcadYearModules, () => {
       id: '1',
       moduleCode: 'CS3216',
       moduleInfo: CS3216,
-      conflicts: null,
+      conflicts: [],
     });
   });
 
@@ -489,7 +489,7 @@ describe(getAcadYearModules, () => {
         title: 'Algorithms and Data Structure Accelerated',
         moduleCredit: 6,
       },
-      conflicts: null,
+      conflicts: [],
     });
 
     expect(cs3216).toMatchObject({
@@ -528,6 +528,6 @@ describe(getAcadYearModules, () => {
       },
     });
 
-    expect(getAcadYearModules(state)).toHaveProperty('2018/2019.1.0.conflicts', null);
+    expect(getAcadYearModules(state)).toHaveProperty('2018/2019.1.0.conflicts', []);
   });
 });
