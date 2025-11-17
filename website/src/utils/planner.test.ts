@@ -1,4 +1,5 @@
 import { Semester } from 'types/modules';
+import { Conflict, DuplicateConflict, PrereqConflict } from 'types/planner';
 import { CS1010S } from '__mocks__/modules';
 
 import {
@@ -6,6 +7,7 @@ import {
   checkPrerequisite,
   conflictToText,
   fromDroppableId,
+  getConflictToDisplay,
   getDroppableId,
   getTotalMC,
 } from 'utils/planner';
@@ -170,5 +172,57 @@ describe(getTotalMC, () => {
 
   test('should merge module credit from module info and custom info', () => {
     expect(getTotalMC([{ customInfo: { moduleCredit: 6 } }, { moduleInfo: CS1010S }])).toEqual(10);
+  });
+});
+
+describe('getConflictToDisplay', () => {
+  test('returns null when no conflicts', () => {
+    expect(getConflictToDisplay([], true)).toBeNull();
+    expect(getConflictToDisplay([], false)).toBeNull();
+  });
+
+  test('shows the first conflict for current year', () => {
+    const conflicts: Conflict[] = [
+      {
+        type: 'semester',
+        semestersOffered: [],
+      },
+    ];
+
+    const result = getConflictToDisplay(conflicts, true);
+    expect(result).toEqual(conflicts[0]);
+  });
+
+  test('returns prereq conflict for non-current year if present', () => {
+    const prereqConflict: PrereqConflict = {
+      type: 'prereq',
+      unfulfilledPrereqs: [],
+    };
+
+    const conflicts: Conflict[] = [{ type: 'semester', semestersOffered: [] }, prereqConflict];
+
+    const result = getConflictToDisplay(conflicts, false);
+    expect(result).toEqual(prereqConflict);
+  });
+
+  test('returns duplicate conflict for non-current year if no prereq exists', () => {
+    const duplicateConflict: DuplicateConflict = {
+      type: 'duplicate',
+    };
+
+    const conflicts: Conflict[] = [{ type: 'semester', semestersOffered: [] }, duplicateConflict];
+
+    const result = getConflictToDisplay(conflicts, false);
+    expect(result).toEqual(duplicateConflict);
+  });
+
+  test('returns null for non-current year if no prereq or duplicate conflicts exist', () => {
+    const conflicts: Conflict[] = [
+      { type: 'semester', semestersOffered: [] },
+      { type: 'exam', conflictModules: [] },
+    ];
+
+    const result = getConflictToDisplay(conflicts, false);
+    expect(result).toBeNull();
   });
 });

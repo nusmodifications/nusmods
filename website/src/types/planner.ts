@@ -34,6 +34,11 @@ export type DuplicateConflict = {
   type: 'duplicate';
 };
 
+export type PrereqConflict = {
+  type: 'prereq';
+  unfulfilledPrereqs: PrereqTree[];
+};
+
 export type Conflict =
   | PrereqConflict
   | ExamConflict
@@ -58,9 +63,4 @@ export type PlannerModuleInfo = {
   conflicts: Conflict[]; // empty array === no conflicts
   moduleCode?: ModuleCode;
   placeholder?: PlannerPlaceholder;
-};
-
-export type PrereqConflict = {
-  type: 'prereq';
-  unfulfilledPrereqs: PrereqTree[];
 };
