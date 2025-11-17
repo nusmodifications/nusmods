@@ -14,6 +14,7 @@ import {
   getModuleTitle,
   getSemesterName,
   getTotalMC,
+  getConflictToDisplay,
 } from 'utils/planner';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSemesterTimetableLessons } from 'selectors/timetables';
@@ -84,16 +85,10 @@ const PlannerSemester: React.FC<Props> = ({
 
     const isModuleInTimetable = moduleCode !== undefined && moduleCode in timetable;
 
-    let displayedConflict: Conflict | null = null;
-
-    if (conflicts?.length) {
-      displayedConflict =
-        year === config.academicYear
-          ? conflicts[0] // Topmost conflict if correc year
-          : conflicts.find((c) => c.type === 'prereq') ||
-            conflicts.find((c) => c.type === 'duplicate') ||
-            null; // either prereq or duplicate or none if not same year
-    }
+    const displayedConflict: Conflict | null = getConflictToDisplay(
+      conflicts,
+      year === config.academicYear,
+    );
 
     return (
       <PlannerModule
