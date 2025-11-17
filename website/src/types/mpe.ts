@@ -14,6 +14,11 @@ export type MpeSubmission = {
   preferences: Array<MpePreference>;
 };
 
+export type MpeModuleExport = {
+  lastUpdated: Date;
+  modules: MpeModule[];
+};
+
 export type MpeModule = {
   title: ModuleTitle;
   moduleCode: ModuleCode;

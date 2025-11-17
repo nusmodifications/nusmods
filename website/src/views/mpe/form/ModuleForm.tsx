@@ -2,7 +2,7 @@ import { useMemo, useRef, useState } from 'react';
 import { Draggable, DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import classnames from 'classnames';
 
-import type { MpeSubmission, MpePreference, MpeModule } from 'types/mpe';
+import type { MpeSubmission, MpePreference, MpeModuleExport } from 'types/mpe';
 import type { ModuleCode } from 'types/modules';
 
 import { MAX_MODULES, MPE_SEMESTER } from '../constants';
@@ -23,7 +23,7 @@ function reorder<T>(items: T[], startIndex: number, endIndex: number) {
 
 type Props = {
   initialSubmission: MpeSubmission;
-  mpeModuleList: MpeModule[];
+  mpeModuleList: MpeModuleExport;
   updateSubmission: (submission: MpeSubmission) => Promise<void>;
 };
 
@@ -46,7 +46,7 @@ const ModuleForm: React.FC<Props> = ({
   const moduleSelectList = useMemo(() => {
     const selectedModules = new Set(preferences.map((preference) => preference.moduleCode));
     const semesterProperty = MPE_SEMESTER === 1 ? 'inS1CPEx' : 'inS2CPEx';
-    return mpeModuleList
+    return mpeModuleList.modules
       .filter((module) => module[semesterProperty])
       .map((module) => ({
         ...module,
@@ -84,7 +84,7 @@ const ModuleForm: React.FC<Props> = ({
       return;
     }
 
-    const selectedModule = mpeModuleList.find((module) => module.moduleCode === moduleCode);
+    const selectedModule = mpeModuleList.modules.find((module) => module.moduleCode === moduleCode);
     if (selectedModule == null) {
       return;
     }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { fetchMpeModuleList } from 'apis/mpe';
-import type { MpeSubmission, MpeModule } from 'types/mpe';
+import type { MpeSubmission, MpeModuleExport } from 'types/mpe';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 
 import ModuleForm from './ModuleForm';
@@ -16,7 +16,10 @@ const MpeFormContainer: React.FC<Props> = ({ getSubmission, updateSubmission }) 
     intendedMCs: 0,
     preferences: [],
   });
-  const [mpeModuleList, setMpeModuleList] = useState<MpeModule[]>([]);
+  const [mpeModuleList, setMpeModuleList] = useState<MpeModuleExport>({
+    lastUpdated: new Date(0),
+    modules:[],
+  });
 
   // fetch mpe modules and preferences
   useEffect(() => {
@@ -26,7 +29,7 @@ const MpeFormContainer: React.FC<Props> = ({ getSubmission, updateSubmission }) 
       .then(([fetchedMpeModuleList, fetchedSubmission]) => {
         setMpeModuleList(fetchedMpeModuleList);
         const moduleLookup = new Map(
-          fetchedMpeModuleList.map((module) => [module.moduleCode, module]),
+          fetchedMpeModuleList.modules.map((module) => [module.moduleCode, module]),
         );
         setSubmission({
           ...fetchedSubmission,

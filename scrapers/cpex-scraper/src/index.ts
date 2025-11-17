@@ -7,8 +7,8 @@ import env from '../env.json';
 const TERM = '2520';
 
 // Sanity check to see if there are at least this many modules before overwriting cpexModules.json
-// The last time I ran this fully there were 3418 modules
-const threshold = 1500;
+// The last time I ran this fully there were 4038 modules
+const threshold = 3000;
 
 const baseUrl = env['baseUrl'].endsWith('/') ? env['baseUrl'].slice(0, -1) : env['baseUrl'];
 
@@ -18,23 +18,6 @@ axios.defaults.headers.common = {
   'X-STUDENT-API': env['studentKey'],
   'X-APP-API': env['appKey'],
 };
-
-function getTimestampForFilename(): string {
-  function pad2(n: number): string {
-    return n < 10 ? '0' + n : String(n);
-  }
-
-  const date = new Date();
-
-  return (
-    date.getFullYear().toString() +
-    pad2(date.getMonth() + 1) +
-    pad2(date.getDate()) +
-    pad2(date.getHours()) +
-    pad2(date.getMinutes()) +
-    pad2(date.getSeconds())
-  );
-}
 
 type ApiResponse<T> = {
   msg: string;
@@ -60,6 +43,33 @@ type Module = {
     CourseAttributeValue: string;
   }[];
 };
+
+class CPExModuleExport {
+  public lastUpdated: string;
+  public modules: CPExModule[];
+
+  constructor(modules: CPExModule[]) {
+    this.modules = modules;
+    this.lastUpdated = CPExModuleExport.getCurrentTimestamp();
+  }
+
+  private static pad2(n: number): string {
+    return n < 10 ? '0' + n : String(n);
+  }
+
+  private static getCurrentTimestamp(): string {
+    const date = new Date();
+
+    return (
+      date.getFullYear().toString() +
+      CPExModuleExport.pad2(date.getMonth() + 1) +
+      CPExModuleExport.pad2(date.getDate()) +
+      CPExModuleExport.pad2(date.getHours()) +
+      CPExModuleExport.pad2(date.getMinutes()) +
+      CPExModuleExport.pad2(date.getSeconds())
+    );
+  }
+}
 
 export type CPExModule = {
   title: string;
@@ -165,8 +175,8 @@ async function scraper() {
     }
   }
 
-  const collatedCPExModules = Array.from(collatedCPExModulesMap.values());
-  console.log(`Collated ${collatedCPExModules.length} modules.`);
+  const collatedCPExModules = new CPExModuleExport(Array.from(collatedCPExModulesMap.values()));
+  console.log(`Collated ${collatedCPExModules.modules.length} modules.`);
 
   const DATA_DIR = path.join(__dirname, '../../data');
   if (!fs.existsSync(DATA_DIR)) {
@@ -177,18 +187,18 @@ async function scraper() {
     fs.mkdirSync(OLD_DATA_DIR);
   }
 
-  if (collatedCPExModules.length >= threshold) {
+  if (collatedCPExModules.modules.length >= threshold) {
     fs.writeFileSync(path.join(DATA_DIR, 'cpexModules.json'), JSON.stringify(collatedCPExModules));
-    console.log(`Wrote ${collatedCPExModules.length} modules to cpexModules.json.`);
+    console.log(`Wrote ${collatedCPExModules.modules.length} modules to cpexModules.json.`);
   } else {
     console.log(
-      `Not writing to cpexModules.json because the number of modules ${collatedCPExModules.length} is less than the threshold of ${threshold}.`,
+      `Not writing to cpexModules.json because the number of modules ${collatedCPExModules.modules.length} is less than the threshold of ${threshold}.`,
     );
   }
 
-  const archiveFilename = `cpexModules-${getTimestampForFilename()}.json`;
+  const archiveFilename = `cpexModules-${collatedCPExModules.lastUpdated}.json`;
   fs.writeFileSync(path.join(OLD_DATA_DIR, archiveFilename), JSON.stringify(collatedCPExModules));
-  console.log(`Wrote ${collatedCPExModules.length} modules to archive ${archiveFilename}.`);
+  console.log(`Wrote ${collatedCPExModules.modules.length} modules to archive ${archiveFilename}.`);
   console.log('Done!');
 }
 

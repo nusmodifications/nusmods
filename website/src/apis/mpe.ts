@@ -4,7 +4,7 @@ import { Location, History } from 'history';
 import { produce } from 'immer';
 import getLocalStorage from 'storage/localStorage';
 import NUSModsApi from './nusmods';
-import { MpeSubmission, MpeModule } from '../types/mpe';
+import { MpeSubmission, MpeModuleExport } from '../types/mpe';
 import { NUS_AUTH_TOKEN } from '../storage/keys';
 
 export class MpeSessionExpiredError extends Error {}
@@ -55,9 +55,9 @@ export const getLoginState = (location: Location, history: History): boolean => 
   return getToken() !== null;
 };
 
-export const fetchMpeModuleList = (): Promise<MpeModule[]> =>
+export const fetchMpeModuleList = (): Promise<MpeModuleExport> =>
   // Using MPE_AY instead to fetch from the respective AY's scraper
-  axios.get<MpeModule[]>(NUSModsApi.mpeModuleListUrl()).then((resp) => resp.data);
+  axios.get<MpeModuleExport>(NUSModsApi.mpeModuleListUrl()).then((resp) => resp.data);
 
 export const getSSOLink = (): Promise<string> =>
   mpe
