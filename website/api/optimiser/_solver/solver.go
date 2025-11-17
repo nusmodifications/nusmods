@@ -24,17 +24,6 @@ func BeamSearch(
 	recordings map[string]bool,
 	optimiserRequest models.OptimiserRequest) models.TimetableState {
 
-	for lessonKey, slotGroups := range lessonToSlots {
-		for _, group := range slotGroups {
-			for i := range group {
-				if err := group[i].ParseModuleSlotFields(lessonKey); err != nil {
-					// Skip invalid slots
-					group[i].DayIndex = -1
-				}
-			}
-		}
-	}
-
 	initial := models.TimetableState{
 		Assignments: make(map[string]string),
 	}
@@ -54,7 +43,7 @@ func BeamSearch(
 			// iterate over all slot groups for the current lesson
 			for i := 0; i < limit; i++ {
 				group := slotGroups[i]
-				
+
 				// Filters out invalid slots by checking if
 				// DayIndex is not -1 which marks invalid slots when parsing in ParseModuleSlotFields func
 				validGroup := make([]models.ModuleSlot, 0, len(group))
@@ -87,7 +76,7 @@ func BeamSearch(
 			}
 		}
 
-		// if no valid partial timetables found then skip to next lesson 
+		// if no valid partial timetables found then skip to next lesson
 		// by keeping the beam to create partial timetables
 		if len(nextBeam) == 0 {
 			continue
