@@ -18,7 +18,7 @@ const MpeFormContainer: React.FC<Props> = ({ getSubmission, updateSubmission }) 
   });
   const [mpeModuleList, setMpeModuleList] = useState<MpeModuleExport>({
     lastUpdated: new Date(0),
-    modules:[],
+    modules: [],
   });
 
   // fetch mpe modules and preferences
