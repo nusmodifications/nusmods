@@ -1,0 +1,13 @@
+@import '~styles/utils/modules-entry.scss';
+
+.optimiserTooltipIcon {
+  composes: svg svg-small from global;
+  margin: auto;
+  margin-left: 1ch;
+  color: #69707a;
+  cursor: pointer;
+
+  @include media-breakpoint-down(xs) {
+    width: 0.8rem;
+  }
+}

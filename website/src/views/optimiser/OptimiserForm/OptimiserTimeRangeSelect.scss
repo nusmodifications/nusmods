@@ -1,0 +1,31 @@
+@import '~styles/utils/modules-entry.scss';
+@import './OptimiserForm.scss';
+
+.timeControls {
+  display: flex;
+  flex-direction: row;
+  margin-top: $form-fields-gap;
+  gap: 3rem;
+
+  .timeColumn {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .timeRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+
+    .optimiserDropdown {
+      flex-grow: 1;
+    }
+  }
+
+  @include media-breakpoint-down(xs) {
+    gap: 2rem;
+  }
+}
