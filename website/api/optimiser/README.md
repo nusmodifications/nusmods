@@ -130,12 +130,14 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
    go mod tidy
    ```
 
-3. **Update the API in the frontend (change back after testing)**
-- In `website/src/apis/optimiser.ts`, change the api from `/api/optimiser/optimise` to `http://localhost:8020/optimise`
-
-4. **Run test server**
+3. **Run test server**
    ```bash
-   yarn start:optimiser -port 8020
+   yarn start:optimiser
+   ```
+
+4. **Run frontend**(if needed)
+   ```bash
+   yarn start:local
    ```
 
 5. **Test the API**
