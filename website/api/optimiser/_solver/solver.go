@@ -352,7 +352,7 @@ type SolveResponse struct {
 }
 
 func Solve(w http.ResponseWriter, req models.OptimiserRequest) {
-	slots, err := modules.GetAllModuleSlots(req)
+	slots, defaultSlots, err := modules.GetAllModuleSlots(req)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -383,7 +383,7 @@ func Solve(w http.ResponseWriter, req models.OptimiserRequest) {
 	})
 
 	best := BeamSearch(lessons, lessonToSlots, 2500, 100, recordings, req)
-	shareableLink := GenerateNUSModsShareableLink(best.Assignments, req)
+	shareableLink := GenerateNUSModsShareableLink(best.Assignments, defaultSlots, req)
 	response := SolveResponse{
 		TimetableState: best,
 		ShareableLink:  shareableLink,

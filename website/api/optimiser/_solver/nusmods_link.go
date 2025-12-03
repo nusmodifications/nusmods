@@ -54,7 +54,21 @@ func SerializeConfig(config map[string]map[string]string) string {
 }
 
 // GenerateNUSModsShareableLink creates a shareable NUSMods link from the assignments
-func GenerateNUSModsShareableLink(assignments map[string]string, req models.OptimiserRequest) string {
+func GenerateNUSModsShareableLink(assignments map[string]string, defaultSlots map[string]map[string][]models.ModuleSlot, req models.OptimiserRequest) string {
+	/*
+		- Initialize assignments for skipped slots with default slots
+	*/
+	for moduleCode, slots := range defaultSlots {
+		for lessonType, slots := range slots {
+			lessonKey := strings.ToUpper(moduleCode) + "|" + lessonType
+			if assignments[lessonKey] == "" {
+				classNo := slots[0].ClassNo
+				assignments[lessonKey] = classNo
+			}
+		}
+
+	}
+
 	config := CreateConfig(assignments)
 	serializedConfig := SerializeConfig(config)
 
