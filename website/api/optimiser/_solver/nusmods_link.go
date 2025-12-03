@@ -58,8 +58,8 @@ func GenerateNUSModsShareableLink(assignments map[string]string, defaultSlots ma
 	/*
 		- Initialize assignments for skipped slots with default slots
 	*/
-	for moduleCode, slots := range defaultSlots {
-		for lessonType, slots := range slots {
+	for moduleCode, lessonTypeMap := range defaultSlots {
+		for lessonType, slots := range lessonTypeMap {
 			lessonKey := strings.ToUpper(moduleCode) + "|" + lessonType
 			if assignments[lessonKey] == "" {
 				classNo := slots[0].ClassNo
