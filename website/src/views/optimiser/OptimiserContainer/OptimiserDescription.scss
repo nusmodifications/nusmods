@@ -31,11 +31,11 @@
   align-items: center;
   width: 100%;
   padding: 0.95rem 1rem;
-  border: 1px solid rgba(255, 81, 56, 0.3);
+  border: 1px solid var(--gray-lighter);
   font-weight: 600;
   font-size: 1.02rem;
   letter-spacing: 0.01rem;
-  color: var(--optimiser-accent);
+  color: var(--body-color);
   text-decoration: none !important;
   transition: all 0.2s ease;
   text-decoration: none !important;
@@ -54,8 +54,12 @@
   }
 }
 
-.collapsed {
+.toggleButton:not(.collapsed) {
   color: var(--optimiser-accent);
+  border: 1px solid rgba(255, 81, 56, 0.3);
+}
+
+.collapsed {
   background: var(--body-bg);
   box-shadow: none;
 }
