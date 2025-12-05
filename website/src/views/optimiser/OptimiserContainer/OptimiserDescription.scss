@@ -64,6 +64,12 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  color: var(--body-color);
+  transition: color 0.2s ease;
+}
+
+.toggleButton:not(.collapsed) .titleText {
+  color: var(--optimiser-accent);
 }
 
 .toggleIcon {

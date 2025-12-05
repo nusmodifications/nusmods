@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
+import { ChevronDown, ChevronUp } from 'react-feather';
 import styles from './OptimiserDescription.scss';
 
 const OptimiserDescription: React.FC = () => {
@@ -23,7 +24,7 @@ const OptimiserDescription: React.FC = () => {
               onClick={() => setIsOpen((prev) => !prev)}
             >
               <span className={styles.titleText}>What does the optimiser do?</span>
-              <span className={styles.toggleIcon}>{isOpen ? '−' : '+'}</span>
+              <span className={styles.toggleIcon}>{isOpen ? <ChevronUp /> : <ChevronDown />}</span>
             </button>
           </div>
           <div
