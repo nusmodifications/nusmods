@@ -140,7 +140,7 @@ const OptimiserContent: React.FC = () => {
       )}
 
       <OptimiserResults shareableLink={shareableLink} unassignedLessons={unassignedLessons} />
-
+      <div className={styles.faqTitle}>FAQ</div>
       <OptimiserDescription />
     </div>
   );
