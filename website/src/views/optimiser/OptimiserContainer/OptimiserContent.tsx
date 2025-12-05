@@ -19,6 +19,7 @@ import {
 import { FreeDayConflict, LessonOption } from 'types/optimiser';
 import useOptimiserForm from 'views/hooks/useOptimiserForm';
 import styles from './OptimiserContent.scss';
+import OptimiserDescription from './OptimiserDescription';
 import OptimiserHeader from '../OptimiserHeader';
 import OptimiserForm from '../OptimiserForm/OptimiserForm';
 import OptimiserButton from '../OptimiserButton';
@@ -139,6 +140,8 @@ const OptimiserContent: React.FC = () => {
       )}
 
       <OptimiserResults shareableLink={shareableLink} unassignedLessons={unassignedLessons} />
+
+      <OptimiserDescription />
     </div>
   );
 };

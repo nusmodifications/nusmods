@@ -1,0 +1,142 @@
+@import '~styles/utils/modules-entry.scss';
+
+.descriptionSection {
+  margin-top: 2.5rem;
+  padding: 0.5rem 0;
+}
+
+.accordion {
+  --optimiser-accent: #ff5138;
+}
+
+.card {
+  border: none;
+  background: transparent;
+  color: var(--optimiser-accent);
+
+  & + .card {
+    margin-top: 0.5rem;
+  }
+}
+
+.cardHeader {
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+.toggleButton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0.95rem 1rem;
+  border: 1px solid rgba(255, 81, 56, 0.3);
+  font-weight: 600;
+  font-size: 1.02rem;
+  letter-spacing: 0.01rem;
+  color: var(--optimiser-accent);
+  text-decoration: none !important;
+  transition: all 0.2s ease;
+  text-decoration: none !important;
+
+  &:active {
+    color: var(--body-bg);
+    transform: translateY(0);
+    border-bottom: none !important;
+    text-decoration: none !important;
+  }
+
+  &:focus {
+    text-decoration: none !important;
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+.collapsed {
+  color: var(--optimiser-accent);
+  background: var(--body-bg);
+  box-shadow: none;
+}
+
+.titleText {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toggleIcon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  color: var(--optimiser-accent);
+  background-color: rgba(255, 81, 56, 0.12);
+}
+
+.collapse {
+  border-radius: 0 0 0.65rem 0.65rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.45s ease, opacity 0.35s ease;
+  opacity: 0;
+}
+
+.open {
+  max-height: 600px;
+  opacity: 1;
+}
+
+.cardBody {
+  padding: 1.2rem 1.15rem 1.25rem;
+  border: 1px solid rgba(255, 81, 56, 0.14);
+  border-top: none;
+  border-bottom-left-radius: 0.65rem;
+  border-bottom-right-radius: 0.65rem;
+  background: rgba(255, 81, 56, 0.08);
+}
+
+.bodyContent {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.lede {
+  margin: 0;
+  font-weight: 650;
+  font-size: 0.98rem;
+  color: var(--body-color);
+  line-height: 1.6;
+}
+
+.bodyText {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--body-color);
+  line-height: 1.7;
+}
+
+.boldConstraint {
+  font-weight: 600;
+  color: var(--body-color);
+  display: block;
+  margin-top: 0.5rem;
+  text-decoration: underline;
+  text-decoration-color: var(--optimiser-accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+}
+
+@include media-breakpoint-down(md) {
+  .descriptionSection {
+    padding: 1.25rem 0.75rem 1.5rem;
+  }
+
+  .toggleButton {
+    text-align: left;
+  }
+}
