@@ -8,12 +8,12 @@ const OptimiserDescription: React.FC = () => {
 
   return (
     <div className={styles.descriptionSection}>
-      <div
-        className={classnames('accordion', styles.accordion)}
-        id="optimiserDescriptionAccordion"
-      >
+      <div className={classnames('accordion', styles.accordion)} id="optimiserDescriptionAccordion">
         <div className="card">
-          <div className={classnames('card-header', styles.cardHeader)} id="optimiserAccordionHeading">
+          <div
+            className={classnames('card-header', styles.cardHeader)}
+            id="optimiserAccordionHeading"
+          >
             <button
               className={classnames('btn btn-link', styles.toggleButton, {
                 [styles.collapsed]: !isOpen,
@@ -39,7 +39,8 @@ const OptimiserDescription: React.FC = () => {
             <div className={classnames('card-body', styles.cardBody)}>
               <div className={styles.bodyContent}>
                 <p className={styles.lede}>
-                  The optimiser will explore thousands of timetable combination amongst your selected modules that meet your preferences and return an optimal one.
+                  The optimiser will explore thousands of timetable combination amongst your
+                  selected modules that meet your preferences and return an optimal one.
                 </p>
                 <p className={styles.bodyText}>
                   The returned timetable will be optimised for the following preferences:
@@ -47,13 +48,14 @@ const OptimiserDescription: React.FC = () => {
                     <b className={styles.boldConstraint}>Hard constraints</b>
                     <li>No live lessons on your chosen free days</li>
                     <li>No live lessons outside your preferred time range</li>
-                    
+
                     <b className={styles.boldConstraint}>Soft constraints</b>
                     <li>Minimise travel distance between class venues</li>
                     <li>Prioritise lunch break within your preferred time range</li>
-                    <li>Prioritise having less than your chosen number of consecutive hours of study</li>
+                    <li>
+                      Prioritise having less than your chosen number of consecutive hours of study
+                    </li>
                   </ul>
-                   
                 </p>
               </div>
             </div>

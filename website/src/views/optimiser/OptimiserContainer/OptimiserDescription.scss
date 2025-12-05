@@ -1,8 +1,8 @@
 @import '~styles/utils/modules-entry.scss';
 
 .descriptionSection {
-  margin-top: 1rem;
   padding: 0.5rem 0;
+  margin-top: 1rem;
 }
 
 .accordion {
@@ -11,8 +11,8 @@
 
 .card {
   border: none;
-  background: transparent;
   color: var(--optimiser-accent);
+  background: transparent;
 
   & + .card {
     margin-top: 0.5rem;
@@ -21,8 +21,8 @@
 
 .cardHeader {
   padding: 0;
-  background: transparent;
   border: none;
+  background: transparent;
 }
 
 .toggleButton {
@@ -34,29 +34,29 @@
   border: 1px solid var(--gray-lighter);
   font-weight: 600;
   font-size: 1.02rem;
+  text-decoration: none !important;
+  text-decoration: none !important;
   letter-spacing: 0.01rem;
   color: var(--body-color);
-  text-decoration: none !important;
   transition: all 0.2s ease;
-  text-decoration: none !important;
 
   &:active {
-    color: var(--body-bg);
-    transform: translateY(0);
     border-bottom: none !important;
     text-decoration: none !important;
+    color: var(--body-bg);
+    transform: translateY(0);
   }
 
   &:focus {
-    text-decoration: none !important;
     outline: none;
+    text-decoration: none !important;
     box-shadow: none;
   }
 }
 
 .toggleButton:not(.collapsed) {
-  color: var(--optimiser-accent);
   border: 1px solid rgba(255, 81, 56, 0.3);
+  color: var(--optimiser-accent);
 }
 
 .collapsed {
@@ -67,9 +67,9 @@
 .titleText {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
   color: var(--body-color);
   transition: color 0.2s ease;
+  gap: 0.5rem;
 }
 
 .toggleButton:not(.collapsed) .titleText {
@@ -89,16 +89,16 @@
 }
 
 .collapse {
-  border-radius: 0 0 0.65rem 0.65rem;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.45s ease, opacity 0.35s ease;
   opacity: 0;
+  overflow: hidden;
+  max-height: 0;
+  border-radius: 0 0 0.65rem 0.65rem;
+  transition: max-height 0.45s ease, opacity 0.35s ease;
 }
 
 .open {
-  max-height: 600px;
   opacity: 1;
+  max-height: 600px;
 }
 
 .cardBody {
@@ -119,24 +119,24 @@
   margin: 0;
   font-weight: 650;
   font-size: 0.98rem;
-  color: var(--body-color);
   line-height: 1.6;
+  color: var(--body-color);
 }
 
 .bodyText {
   margin: 0;
   font-size: 0.95rem;
-  color: var(--body-color);
   line-height: 1.7;
+  color: var(--body-color);
 }
 
 .boldConstraint {
-  font-weight: 600;
-  color: var(--body-color);
   display: block;
   margin-top: 0.5rem;
+  font-weight: 600;
   text-decoration: underline;
   text-decoration-color: var(--optimiser-accent);
+  color: var(--body-color);
   text-decoration-thickness: 2px;
   text-underline-offset: 2px;
 }
