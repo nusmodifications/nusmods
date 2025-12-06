@@ -201,8 +201,6 @@ async function callApi<ResponseData>(
     throw error;
   }
 
-  console.log(`[API] RESPONSE: ${endpoint}`, response.data);
-
   return { data: response.data, response };
 }
 
