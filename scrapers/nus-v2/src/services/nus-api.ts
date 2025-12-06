@@ -248,9 +248,17 @@ class NusApi implements INusApi {
   }
 
   /**
-   * Wrapper around base callV1Api method that pushes the call into a queue
+   * Wrapper around base callApi method that pushes the call into a queue
+   * Returns raw response data without application-level error checking
    */
   callApi = async <T>(endpoint: string, params: ApiParams, headers: ApiHeaders) =>
+    this.queue.add(() => callApi<T>(endpoint, params, headers));
+
+  /**
+   * Wrapper around base callV1Api method that pushes the call into a queue
+   * Performs application-level error checking (expects { msg, data, code })
+   */
+  callV1Api = async <T>(endpoint: string, params: ApiParams, headers: ApiHeaders) =>
     this.queue.add(() => callV1Api<T>(endpoint, params, headers));
 
   /**
@@ -258,9 +266,7 @@ class NusApi implements INusApi {
    */
   callModulesEndpoint = async (term: string, params: ApiParams): Promise<ModuleInfo[]> => {
     try {
-      // DO NOT remove this await - the promise must settle so the catch
-      // can handle the NotFoundError from the API
-      return await this.callApi<ModuleInfo[]>(
+      const { data: modules } = await this.callApi<ModuleInfo[]>(
         'CourseNUSMods',
         {
           term,
@@ -268,6 +274,7 @@ class NusApi implements INusApi {
         },
         courseHeaders,
       );
+      return modules;
     } catch (e) {
       // The modules endpoint will return NotFound even for valid inputs
       // that just happen to have no records, so we ignore this error
@@ -281,7 +288,7 @@ class NusApi implements INusApi {
   };
 
   getFaculty = async (): Promise<AcademicGrp[]> =>
-    this.callApi(
+    this.callV1Api(
       'edurec/config/v1/get-acadgroup',
       {
         eff_status: 'A',
@@ -290,7 +297,7 @@ class NusApi implements INusApi {
     );
 
   getDepartment = async (): Promise<AcademicOrg[]> =>
-    this.callApi(
+    this.callV1Api(
       'edurec/config/v1/get-acadorg',
       {
         eff_status: 'A',
@@ -309,7 +316,7 @@ class NusApi implements INusApi {
 
     // catalognbr = Catalog number
     const [subject, catalognbr] = parts;
-    const modules = await this.callApi<ModuleInfo[]>(
+    const { data: modules } = await this.callApi<ModuleInfo[]>(
       'CourseNUSMods',
       {
         term,
@@ -330,7 +337,7 @@ class NusApi implements INusApi {
     this.callModulesEndpoint(term, { acadorg: departmentCode });
 
   getModuleTimetable = async (term: string, module: ModuleCode): Promise<TimetableLesson[]> =>
-    this.callApi(
+    this.callV1Api(
       'timetable/v1/published/class/withdate',
       {
         term,
@@ -343,7 +350,7 @@ class NusApi implements INusApi {
     term: string,
     departmentCode: string,
   ): Promise<TimetableLesson[]> =>
-    this.callApi(
+    this.callV1Api(
       'timetable/v1/published/class/withdate',
       {
         term,
@@ -407,7 +414,7 @@ class NusApi implements INusApi {
     });
 
   getModuleExam = async (term: string, module: ModuleCode): Promise<ModuleExam> => {
-    const exams = await this.callApi<ModuleExam[]>(
+    const exams = await this.callV1Api<ModuleExam[]>(
       'timetable/v1/published/exam',
       {
         term,
@@ -422,7 +429,7 @@ class NusApi implements INusApi {
   };
 
   getTermExams = async (term: string): Promise<ModuleExam[]> =>
-    this.callApi('timetable/v1/published/exam', { term }, ttHeaders);
+    this.callV1Api('timetable/v1/published/exam', { term }, ttHeaders);
 }
 
 // Export as default a singleton instance to be used globally
