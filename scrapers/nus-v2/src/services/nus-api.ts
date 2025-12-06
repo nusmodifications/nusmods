@@ -93,10 +93,17 @@ type ApiHeaders = {
 
 // Error codes specified by the API. Note that these, like many other things
 // in the API, are not to be relied upon completely
-type STATUS_CODE = string;
-const OKAY: STATUS_CODE = '00000';
-const AUTH_ERROR: STATUS_CODE = '10000';
-const RECORD_NOT_FOUND: STATUS_CODE = '10001';
+type StatusCode = '00000' | '10000' | '10001';
+const OKAY: StatusCode = '00000';
+const AUTH_ERROR: StatusCode = '10000';
+const RECORD_NOT_FOUND: StatusCode = '10001';
+
+// V1 API response format
+type V1ApiResponse<Data> = {
+  msg: string;
+  data: Data;
+  code: StatusCode;
+};
 
 // Shared headers for all API requests
 const commonHeaders: ApiHeaders = {
@@ -140,13 +147,13 @@ function mapErrorCode(code: string, msg: string) {
 /**
  * Base API call function. This function wraps around axios to provide basic
  * configuration such as authentication which all API calls should have,
- * as well as error handling.
+ * as well as error handling. Returns the raw response data.
  */
-async function callApi<Data>(
+async function callApi<ResponseData>(
   endpoint: string,
   params: ApiParams,
   headers: ApiHeaders,
-): Promise<Data> {
+): Promise<{ data: ResponseData; response: any }> {
   // 1. Construct request URL
   const url = new URL(endpoint, config.baseUrl);
 
@@ -194,9 +201,30 @@ async function callApi<Data>(
     throw error;
   }
 
-  const { msg, data, code } = response.data;
+  console.log(`[API] RESPONSE: ${endpoint}`, response.data);
 
-  // 5. Handle application level errors
+  return { data: response.data, response };
+}
+
+/**
+ * Calls the API nested under v1 and performs application-level error checking.
+ * Expects response format: { msg, data, code }
+ */
+async function callV1Api<Data>(
+  endpoint: string,
+  params: ApiParams,
+  headers: ApiHeaders,
+): Promise<Data> {
+  const startTime = Date.now();
+  const { data: responseData, response } = await callApi<V1ApiResponse<Data>>(
+    endpoint,
+    params,
+    headers,
+  );
+
+  const { msg, data, code } = responseData;
+
+  // Handle application level errors
   if (code !== OKAY) {
     const duration = Date.now() - startTime;
     console.error(`[API] APP_ERROR: ${endpoint} (${duration}ms)`, params, code, msg);
@@ -207,7 +235,7 @@ async function callApi<Data>(
     throw error;
   }
 
-  // 6. No error - return the data
+  // No error - return the data
   return data;
 }
 
@@ -220,10 +248,10 @@ class NusApi implements INusApi {
   }
 
   /**
-   * Wrapper around base callApi method that pushes the call into a queue
+   * Wrapper around base callV1Api method that pushes the call into a queue
    */
   callApi = async <T>(endpoint: string, params: ApiParams, headers: ApiHeaders) =>
-    this.queue.add(() => callApi<T>(endpoint, params, headers));
+    this.queue.add(() => callV1Api<T>(endpoint, params, headers));
 
   /**
    * Calls the modules endpoint
@@ -402,4 +430,4 @@ const singletonInstance: INusApi = new NusApi(config.apiConcurrency);
 export default singletonInstance;
 
 // Exported for testing
-export { callApi, NusApi };
+export { callApi, callV1Api, NusApi };
