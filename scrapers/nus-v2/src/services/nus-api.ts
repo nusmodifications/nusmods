@@ -155,6 +155,9 @@ async function callApi<Data>(
     url.searchParams.append(key, value);
   });
 
+  const startTime = Date.now();
+  console.log(`[API] START: ${endpoint}`, params);
+
   let response;
 
   try {
@@ -166,7 +169,12 @@ async function callApi<Data>(
         ...headers,
       },
     });
+
+    const duration = Date.now() - startTime;
+    console.log(`[API] DONE: ${endpoint} (${duration}ms)`, params);
   } catch (e) {
+    const duration = Date.now() - startTime;
+    console.error(`[API] ERROR: ${endpoint} (${duration}ms)`, params, e.message);
     // 5. Handle network / request level errors, eg. server returning non-200
     //    status code
     let message;
@@ -190,6 +198,8 @@ async function callApi<Data>(
 
   // 5. Handle application level errors
   if (code !== OKAY) {
+    const duration = Date.now() - startTime;
+    console.error(`[API] APP_ERROR: ${endpoint} (${duration}ms)`, params, code, msg);
     const error = mapErrorCode(code, msg);
 
     error.response = response;
@@ -323,6 +333,9 @@ class NusApi implements INusApi {
       const url = new URL(endpoint, config.baseUrl);
       url.searchParams.append('term', term);
 
+      const startTime = Date.now();
+      console.log(`[API] START STREAM: ${endpoint}`, { term });
+
       oboe({
         url: url.href,
         headers: {
@@ -337,18 +350,24 @@ class NusApi implements INusApi {
           return oboe.drop;
         })
         .done((data) => {
+          const duration = Date.now() - startTime;
           // Handle application level errors
           const { code, msg } = data;
 
           if (code === OKAY) {
+            console.log(`[API] DONE STREAM: ${endpoint} (${duration}ms)`, { term });
             resolve();
           } else {
+            console.error(`[API] ERROR STREAM: ${endpoint} (${duration}ms)`, { term }, code, msg);
             const error = mapErrorCode(code, msg);
             error.requestConfig = { url: url.href };
             reject(error);
           }
         })
         .fail((error) => {
+          const duration = Date.now() - startTime;
+          const errorMsg = error.thrown?.message || (error as any).message || String(error);
+          console.error(`[API] ERROR STREAM: ${endpoint} (${duration}ms)`, { term }, errorMsg);
           if (error.thrown) {
             reject(error.thrown);
           } else {
