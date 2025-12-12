@@ -125,7 +125,7 @@ function mapModuleToInfo(
   const moduleInfo: PlannerModuleInfo = {
     id,
     moduleCode,
-    conflict: null,
+    conflicts: [],
   };
 
   if (placeholderId) {
@@ -136,12 +136,9 @@ function mapModuleToInfo(
   }
 
   if (moduleCode) {
-    // Only continue checking until the first conflict is found
-    let index = 0;
-    while (!moduleInfo.conflict && index < conflictChecks.length) {
-      moduleInfo.conflict = conflictChecks[index](moduleCode);
-      index += 1;
-    }
+    // Check every conflict
+    const conflicts = conflictChecks.flatMap((check) => check(moduleCode) ?? []);
+    moduleInfo.conflicts = conflicts;
 
     // Insert customInfo and moduleInfo
     moduleInfo.moduleInfo = modulesMap[moduleCode];

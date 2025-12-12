@@ -4,7 +4,7 @@ import AddCalendarIcon from 'img/icons/add-calendar.svg';
 import classnames from 'classnames';
 
 import { Semester, ModuleCode } from 'types/modules';
-import { AddModuleData, PlannerModuleInfo } from 'types/planner';
+import { AddModuleData, PlannerModuleInfo, Conflict } from 'types/planner';
 import { Dispatch } from 'types/redux';
 import config from 'config';
 import { getExamDate, renderMCs } from 'utils/modules';
@@ -14,6 +14,7 @@ import {
   getModuleTitle,
   getSemesterName,
   getTotalMC,
+  getConflictToDisplay,
 } from 'utils/planner';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSemesterTimetableLessons } from 'selectors/timetables';
@@ -78,16 +79,16 @@ const PlannerSemester: React.FC<Props> = ({
   const dispatch = useDispatch<Dispatch>();
 
   const renderModule = (plannerModule: PlannerModuleInfo, index: number) => {
-    const { id, moduleCode, moduleInfo, conflict, placeholder } = plannerModule;
+    const { id, moduleCode, moduleInfo, conflicts, placeholder } = plannerModule;
 
     const showExamDate = showModuleMeta && config.academicYear === year;
 
     const isModuleInTimetable = moduleCode !== undefined && moduleCode in timetable;
 
-    const displayedConflict =
-      year === config.academicYear || (conflict && ['prereq', 'duplicate'].includes(conflict.type))
-        ? conflict
-        : null;
+    const displayedConflict: Conflict | null = getConflictToDisplay(
+      conflicts,
+      year === config.academicYear,
+    );
 
     return (
       <PlannerModule

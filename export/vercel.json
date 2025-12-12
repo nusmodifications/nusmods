@@ -6,5 +6,13 @@
       "status": 404,
       "dest": "/404.html"
     }
-  ]
+  ],
+  "functions": {
+    "api/export/image.ts": {
+      "maxDuration": 15
+    },
+    "api/export/pdf.ts": {
+      "maxDuration": 15
+    }
+  }
 }
