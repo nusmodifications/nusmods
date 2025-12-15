@@ -1,5 +1,5 @@
 import { produce, Draft } from 'immer';
-import { keyBy, omit, size, zipObject } from 'lodash';
+import { keyBy, map, omit, size, zipObject } from 'lodash';
 
 import { createMigrate, REHYDRATE } from 'redux-persist';
 import type { Actions } from 'types/actions';
@@ -49,7 +49,17 @@ function moduleBank(state: ModuleBank = defaultModuleBankState, action: Actions)
         ...state,
         modules: {
           ...state.modules,
-          [action.payload.moduleCode]: { ...action.payload, timestamp: Date.now() },
+          [action.payload.moduleCode]: {
+            ...action.payload,
+            timestamp: Date.now(),
+            semesterData: map(action.payload.semesterData, (semesterData) => ({
+              ...semesterData,
+              timetable: map(semesterData.timetable, (lesson, lessonIndex) => ({
+                ...lesson,
+                lessonIndex,
+              })),
+            })),
+          },
         },
       };
 
