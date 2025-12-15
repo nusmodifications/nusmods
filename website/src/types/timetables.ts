@@ -1,17 +1,46 @@
-import { ClassNo, LessonType, ModuleCode, ModuleTitle, RawLesson } from './modules';
+import {
+  ClassNo,
+  LessonIndex,
+  LessonType,
+  ModuleCode,
+  ModuleTitle,
+  RawLesson,
+  Semester,
+} from './modules';
 
-//  ModuleLessonConfig is a mapping of lessonType to ClassNo for a module.
 export type ModuleLessonConfig = {
+  [lessonType: LessonType]: LessonIndex[];
+};
+
+//
+/**
+ * ModuleLessonConfig is the v1 representation of module configs\
+ * It is a mapping of lessonType to classNo\
+ * It is only used for type annotations in the migration logic
+ */
+export type ModuleLessonConfigV1 = {
   [lessonType: LessonType]: ClassNo;
 };
 
-// SemTimetableConfig is the timetable data for each semester.
 export type SemTimetableConfig = {
   [moduleCode: ModuleCode]: ModuleLessonConfig;
 };
 
-// TaModulesConfig is a mapping of moduleCode to the TA's lesson types.
-export type TaModulesConfig = {
+/**
+ * SemTimetableConfigV1 is the v1 representation of semester timetables\
+ * It is a mapping of {@link ModuleCode|module code} to the {@link ModuleLessonConfigV1|module config}\
+ * It is only used for type annotations in the migration logic
+ */
+export type SemTimetableConfigV1 = {
+  [moduleCode: ModuleCode]: ModuleLessonConfigV1;
+};
+
+/**
+ * TaModulesConfigV1 is the v1 representation of TA modules\
+ * It is a mapping of {@link ModuleCode|module code} to the {@link LessonType|lesson type} and {@link ClassNo|classNo}\
+ * It is only used for type annotations in the migration logic
+ */
+export type TaModulesConfigV1 = {
   [moduleCode: ModuleCode]: [lessonType: LessonType, classNo: ClassNo][];
 };
 
@@ -21,24 +50,29 @@ export type Lesson = RawLesson & {
   title: ModuleTitle;
 };
 
-export type ColoredLesson = Lesson & {
-  colorIndex: ColorIndex;
+export type LessonWithIndex = Lesson & { readonly lessonIndex: LessonIndex };
+
+export type ColoredLesson = Lesson & { colorIndex: ColorIndex };
+
+/**
+ * Interactable lessons are lessons that appear on the Timetable page
+ *
+ * It provides the properties required to determine whether the user:
+ * - is currently modifying the lesson
+ * - is able to replace the currently selected lesson
+ * - is currently in the lesson config
+ */
+export type InteractableLesson = ColoredLesson & {
+  readonly lessonIndex: LessonIndex;
   isTaInTimetable?: boolean;
-};
-
-type Modifiable = {
-  isModifiable?: boolean;
-  isAvailable?: boolean;
+  canBeSelectedAsActiveLesson?: boolean;
+  canBeAddedToLessonConfig?: boolean;
   isActive?: boolean;
-  isOptionInTimetable?: boolean;
-  colorIndex: ColorIndex;
 };
-
-export type ModifiableLesson = ColoredLesson & Modifiable;
 
 //  The array of Lessons must belong to that lessonType.
 export type ModuleLessonConfigWithLessons = {
-  [lessonType: LessonType]: Lesson[];
+  [lessonType: LessonType]: LessonWithIndex[];
 };
 
 // SemTimetableConfig is the timetable data for each semester with lessons data.
@@ -46,22 +80,31 @@ export type SemTimetableConfigWithLessons = {
   [moduleCode: ModuleCode]: ModuleLessonConfigWithLessons;
 };
 
+/**
+ * TimetableConfigV1 is the v1 representation of the timetable data for the whole academic year\
+ * It is a mapping of {@link Semester|semesters} to {@link SemTimetableConfigV1|semester timetables (v1 representation)}\
+ * It is only used for type annotations in the migration logic
+ */
+export type TimetableConfigV1 = {
+  [semester: Semester]: SemTimetableConfigV1;
+};
+
 // TimetableConfig is the timetable data for the whole academic year.
 export type TimetableConfig = {
-  [semester: string]: SemTimetableConfig;
+  [semester: Semester]: SemTimetableConfig;
 };
 
 // TimetableDayFormat is timetable data grouped by DayText.
-export type TimetableDayFormat = {
-  [dayText: string]: ColoredLesson[];
+export type TimetableDayFormat<T extends RawLesson> = {
+  [dayText: string]: T[];
 };
 
 // TimetableDayArrangement is the arrangement of lessons on the timetable within a day.
-export type TimetableDayArrangement = ModifiableLesson[][];
+export type TimetableDayArrangement<T extends RawLesson> = T[][];
 
 // TimetableArrangement is the arrangement of lessons on the timetable for a week.
-export type TimetableArrangement = {
-  [dayText: string]: TimetableDayArrangement;
+export type TimetableArrangement<T extends RawLesson> = {
+  [dayText: string]: TimetableDayArrangement<T>;
 };
 
 // Represents the lesson which the user is currently hovering over.
@@ -70,6 +113,7 @@ export type HoverLesson = {
   readonly classNo: ClassNo;
   readonly moduleCode: ModuleCode;
   readonly lessonType: LessonType;
+  readonly lessonIndex: LessonIndex;
 };
 
 export type ColorIndex = number;
