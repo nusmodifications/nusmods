@@ -46,7 +46,6 @@ import {
   ModuleLessonConfigV1,
   SemTimetableConfigV1,
   TaModulesConfigV1,
-  TimetableConfigV1,
   ColoredLesson,
   HoverLesson,
   InteractableLesson,
@@ -56,13 +55,12 @@ import {
   ModuleLessonConfigWithLessons,
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
-  TimetableConfig,
   TimetableDayArrangement,
   TimetableDayFormat,
   TimetableArrangement,
 } from 'types/timetables';
 
-import { TaModulesMapV1, ModuleCodeMap, ModulesMap, TaModulesMap } from 'types/reducers';
+import { ModuleCodeMap, ModulesMap } from 'types/reducers';
 import { ExamClashes } from 'types/views';
 
 import { getTimeAsDate } from './timify';
@@ -1236,75 +1234,6 @@ export function migrateSemTimetableConfig(
       alreadyMigrated: boolean;
     },
   );
-}
-
-/**
- * Checks the current timetable config and migrate it to v2 format if it is not\
- * Migrates all semesters' timetable config in this academic year
- * @param lessons the academic year's timetables
- * @param ta the academic year's TA modules config
- * @param modules modules in the moduleBank state to use for migration
- * @returns
- * - the migrated timetable config
- * - the migrated TA modules config
- * - whether it was previously migrated, to signal to skip dispatch
- */
-export function migrateTimetableConfigs(
-  lessons: TimetableConfig | TimetableConfigV1,
-  ta: TaModulesMap | TaModulesMapV1,
-  modules: ModulesMap,
-): {
-  lessons: TimetableConfig;
-  ta: TaModulesMap;
-  alreadyMigrated: boolean;
-} {
-  const {
-    config: migratedLessons,
-    ta: migratedTa,
-    alreadyMigrated,
-  } = reduce(
-    lessons,
-    (accumulated, semTimetableConfig, semesterString) => {
-      const semester = parseInt(semesterString, 10);
-      const taModulesConfig = get(ta, semester, {});
-
-      const getModuleSemesterTimetable = (moduleCode: ModuleCode) =>
-        modules[moduleCode] ? getModuleTimetable(modules[moduleCode], semester) : [];
-
-      const migrated = migrateSemTimetableConfig(
-        semTimetableConfig,
-        taModulesConfig,
-        getModuleSemesterTimetable,
-      );
-
-      return {
-        config: {
-          ...accumulated.config,
-          [semester]: migrated.migratedSemTimetableConfig,
-        },
-        ta: {
-          ...accumulated.ta,
-          [semester]: migrated.migratedTaModulesConfig,
-        },
-        alreadyMigrated: migrated.alreadyMigrated && accumulated.alreadyMigrated,
-      };
-    },
-    {
-      config: {},
-      ta: {},
-      alreadyMigrated: true,
-    } as {
-      config: TimetableConfig;
-      ta: TaModulesMap;
-      alreadyMigrated: boolean;
-    },
-  );
-
-  return {
-    lessons: migratedLessons,
-    ta: migratedTa,
-    alreadyMigrated,
-  };
 }
 
 /**

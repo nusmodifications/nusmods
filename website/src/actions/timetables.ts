@@ -1,4 +1,4 @@
-import { each, flatMap } from 'lodash';
+import { each, flatMap, get } from 'lodash';
 
 import type {
   ColorIndex,
@@ -18,7 +18,7 @@ import { getModuleCondensed } from 'selectors/moduleBank';
 import {
   getClosestLessonConfig,
   makeLessonIndicesMap,
-  migrateTimetableConfigs,
+  migrateSemTimetableConfig,
   randomModuleLessonConfig,
   validateModuleLessons,
   validateTimetableModules,
@@ -26,19 +26,11 @@ import {
 import { getModuleSemesterData, getModuleTimetable } from 'utils/modules';
 
 // Actions that should not be used directly outside of thunks
-export const SET_TIMETABLES = 'SET_TIMETABLES' as const;
 export const SET_TIMETABLE = 'SET_TIMETABLE' as const;
 export const ADD_MODULE = 'ADD_MODULE' as const;
 export const SET_HIDDEN_IMPORTED = 'SET_HIDDEN_IMPORTED' as const;
 export const SET_TA_IMPORTED = 'SET_TA_IMPORTED' as const;
 export const Internal = {
-  setTimetables(lessons: TimetableConfig, taModules: TaModulesMap) {
-    return {
-      type: SET_TIMETABLES,
-      payload: { lessons, taModules },
-    };
-  },
-
   setTimetable(
     semester: Semester,
     timetable: SemTimetableConfig | undefined,
@@ -232,18 +224,33 @@ export function validateTimetable(semester: Semester) {
   return (dispatch: Dispatch, getState: GetState) => {
     const { timetables, moduleBank } = getState();
 
-    const { lessons, ta, alreadyMigrated } = migrateTimetableConfigs(
-      timetables.lessons as TimetableConfig | TimetableConfigV1,
-      timetables.ta as TaModulesMap | TaModulesMapV1,
-      moduleBank.modules,
-    );
+    const timetableConfig = timetables.lessons as TimetableConfig | TimetableConfigV1;
+    const semTimetableConfig = timetableConfig[semester];
 
-    if (!alreadyMigrated) dispatch(Internal.setTimetables(lessons, ta));
+    const taTimetableConfig = timetables.ta as TaModulesMap | TaModulesMapV1;
+    const taModulesConfig = get(taTimetableConfig, semester, {});
 
-    // Extract the timetable and the modules for the semester
-    const timetable = lessons[semester];
-    if (!timetable) return;
-    const taModules = ta[semester];
+    const getModuleSemesterTimetable = (moduleCode: ModuleCode) =>
+      moduleBank.modules[moduleCode]
+        ? getModuleTimetable(moduleBank.modules[moduleCode], semester)
+        : [];
+
+    const {
+      migratedSemTimetableConfig: timetable,
+      migratedTaModulesConfig: ta,
+      alreadyMigrated,
+    } = migrateSemTimetableConfig(semTimetableConfig, taModulesConfig, getModuleSemesterTimetable);
+
+    if (!alreadyMigrated)
+      dispatch(
+        Internal.setTimetable(
+          semester,
+          timetable,
+          timetables.colors[semester],
+          timetables.hidden[semester],
+          ta,
+        ),
+      );
 
     // Check that all lessons for each module are valid. If they are not, we update it
     // such that they are
@@ -251,7 +258,7 @@ export function validateTimetable(semester: Semester) {
       const module = moduleBank.modules[moduleCode];
       if (!module) return;
 
-      const isTa = taModules?.includes(moduleCode);
+      const isTa = ta?.includes(moduleCode);
 
       const { validatedLessonConfig, valid } = validateModuleLessons(
         semester,

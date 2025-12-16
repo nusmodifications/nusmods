@@ -4,7 +4,14 @@ import { SemTimetableConfig, LessonWithIndex, TimetableConfigV1 } from 'types/ti
 import lessons from '__mocks__/lessons-array.json';
 import { CS1010A, CS1010S, CS3216 } from '__mocks__/modules';
 
-import { TaModulesMapV1, ModuleBank, TimetablesState } from 'types/reducers';
+import {
+  TaModulesMapV1,
+  ModuleBank,
+  TimetablesState,
+  SemesterColorMap,
+  HiddenModulesMap,
+  ColorMapping,
+} from 'types/reducers';
 import { defaultTimetableState } from 'reducers/timetables';
 import * as actions from './timetables';
 
@@ -193,8 +200,12 @@ describe('fillTimetableBlanks', () => {
   });
 
   test('migrate v1 config', () => {
+    const colors: ColorMapping = {
+      CS1010S: 0,
+      CS3216: 1,
+    };
+    const hiddenModules: ModuleCode[] = [];
     const timetables = {
-      ...initialState,
       lessons: {
         [semester]: {
           CS1010S: {
@@ -207,6 +218,12 @@ describe('fillTimetableBlanks', () => {
           },
         } as TimetableConfigV1,
       },
+      colors: {
+        [semester]: colors,
+      } as SemesterColorMap,
+      hidden: {
+        [semester]: hiddenModules,
+      } as HiddenModulesMap,
       ta: {
         [semester]: {
           CS1010S: [
@@ -223,21 +240,27 @@ describe('fillTimetableBlanks', () => {
     action(dispatch, () => state);
     expect(dispatch).toHaveBeenCalledTimes(1);
     const [[firstAction]] = dispatch.mock.calls;
-    expect(firstAction).toMatchObject({
-      type: 'SET_TIMETABLES',
+
+    const migratedTimetable: SemTimetableConfig = {
+      CS1010S: {
+        Lecture: [0],
+        Recitation: [3],
+        Tutorial: [21],
+      },
+      CS3216: {
+        Lecture: [0],
+      },
+    };
+    const migratedTaModules: ModuleCode[] = ['CS1010S'];
+
+    expect(firstAction).toEqual({
+      type: 'SET_TIMETABLE',
       payload: {
-        lessons: {
-          [semester]: {
-            CS1010S: {
-              Lecture: [0],
-              Tutorial: [21],
-              Recitation: [3],
-            },
-          },
-        },
-        taModules: {
-          [semester]: ['CS1010S'],
-        },
+        semester,
+        timetable: migratedTimetable,
+        colors,
+        hiddenModules,
+        taModules: migratedTaModules,
       },
     });
   });
