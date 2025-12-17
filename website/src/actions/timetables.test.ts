@@ -142,7 +142,7 @@ describe('fillTimetableBlanks', () => {
   });
   const action = actions.validateTimetable(semester);
 
-  test('do nothing if timetable is already full', () => {
+  test('do nothing if timetable is already full', async () => {
     const timetable = {
       CS1010S: {
         Lecture: [0],
@@ -153,12 +153,11 @@ describe('fillTimetableBlanks', () => {
 
     const state: any = { timetables: timetablesState(timetable), moduleBank };
     const dispatch = jest.fn();
-    action(dispatch, () => state);
-
+    await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
     expect(dispatch).not.toHaveBeenCalled();
   });
 
-  test('fill missing lessons with randomly generated modules', () => {
+  test('fill missing lessons with randomly generated modules', async () => {
     const timetable = {
       CS1010S: {
         Lecture: [0],
@@ -168,13 +167,11 @@ describe('fillTimetableBlanks', () => {
     };
     const state: any = { timetables: timetablesState(timetable), moduleBank };
     const dispatch = jest.fn();
-
-    action(dispatch, () => state);
-
+    await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
     expect(dispatch).toHaveBeenCalledTimes(2);
 
     const [[firstAction], [secondAction]] = dispatch.mock.calls;
-    expect(firstAction).toMatchObject({
+    expect(firstAction).toEqual({
       type: actions.SET_LESSON_CONFIG,
       payload: {
         semester,
@@ -187,7 +184,7 @@ describe('fillTimetableBlanks', () => {
       },
     });
 
-    expect(secondAction).toMatchObject({
+    expect(secondAction).toEqual({
       type: actions.SET_LESSON_CONFIG,
       payload: {
         semester,
@@ -199,7 +196,7 @@ describe('fillTimetableBlanks', () => {
     });
   });
 
-  test('migrate v1 config', () => {
+  test('migrate v1 config', async () => {
     const colors: ColorMapping = {
       CS1010S: 0,
       CS3216: 1,
@@ -237,7 +234,7 @@ describe('fillTimetableBlanks', () => {
 
     const state: any = { timetables, moduleBank };
     const dispatch = jest.fn();
-    action(dispatch, () => state);
+    await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
     expect(dispatch).toHaveBeenCalledTimes(1);
     const [[firstAction]] = dispatch.mock.calls;
 
@@ -265,7 +262,7 @@ describe('fillTimetableBlanks', () => {
     });
   });
 
-  test('should not error when module cannot be found', () => {
+  test('should not error when module cannot be found', async () => {
     const timetable = {
       CS1010S: {
         Lecture: [0],
@@ -283,8 +280,25 @@ describe('fillTimetableBlanks', () => {
       moduleBank: moduleBankWithoutModule,
     };
     const dispatch = jest.fn();
-    action(dispatch, () => state);
+    await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
+    expect(dispatch).not.toThrow(TypeError);
+  });
 
+  test('should not error when timetable configs are malformed', async () => {
+    const timetable = {
+      CS1010S: {
+        Lecture: [undefined],
+        Tutorial: ['1'],
+        Recitation: [null],
+      },
+    };
+    const timetables = {
+      ...initialState,
+      lessons: { [semester]: timetable },
+    };
+    const state: any = { timetables, moduleBank };
+    const dispatch = jest.fn();
+    await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
     expect(dispatch).not.toThrow(TypeError);
   });
 });

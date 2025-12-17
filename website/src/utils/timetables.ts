@@ -12,6 +12,7 @@ import {
   isArray,
   isEmpty,
   isEqual,
+  isNumber,
   keys,
   last,
   map,
@@ -526,8 +527,16 @@ export function validateNonTaModuleLesson(
     (accumulatedValidationResult, lessonsWithLessonType, lessonType) => {
       const lessonTypeInLessonConfig = lessonTypesInLessonConfig.includes(lessonType);
       const configLessonIndices = lessonConfig[lessonType];
+      const firstLessonIndex = first(configLessonIndices);
 
-      if (!lessonTypeInLessonConfig || !configLessonIndices.length) {
+      if (
+        !(
+          lessonTypeInLessonConfig &&
+          configLessonIndices.length &&
+          isNumber(firstLessonIndex) &&
+          firstLessonIndex < validLessons.length
+        )
+      ) {
         const validLessonIndices = getRecoveryLessonIndices(lessonsWithLessonType);
         return {
           config: {
@@ -538,18 +547,8 @@ export function validateNonTaModuleLesson(
         };
       }
 
-      const firstLesson = first(configLessonIndices);
-      if (firstLesson === undefined) {
-        const validLessonIndices = getRecoveryLessonIndices(lessonsWithLessonType);
-        return {
-          config: {
-            ...accumulatedValidationResult.config,
-            [lessonType]: validLessonIndices,
-          },
-          valid: false,
-        };
-      }
-      const { classNo } = validLessons[firstLesson];
+      const firstLesson = get(validLessons, firstLessonIndex);
+      const { classNo } = firstLesson;
       const classNoLessonIndices = map(
         filter(lessonsWithLessonType, (lesson) => lesson.classNo === classNo),
         'lessonIndex',
