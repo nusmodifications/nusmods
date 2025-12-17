@@ -1152,9 +1152,15 @@ export function migrateModuleLessonConfig(
       const lessonIndices = reduce(
         classNos,
         (accumulatedLessonIndices, classNo) => {
-          const lessonIndicesWithClassNo = getLessonIndices(lessonIndicesMap, lessonType, classNo);
-          if (!lessonIndicesWithClassNo) return accumulatedLessonIndices;
-          return [...accumulatedLessonIndices, ...lessonIndicesWithClassNo];
+          const lessonIndicesWithClassNo = getLessonIndices(
+            lessonIndicesMap,
+            lessonType,
+            classNo,
+          ) as (LessonIndex | undefined)[];
+          if (!lessonIndicesWithClassNo || lessonIndicesWithClassNo.includes(undefined)) {
+            throw new Error('Lesson indices missing');
+          }
+          return [...accumulatedLessonIndices, ...(lessonIndicesWithClassNo as LessonIndex[])];
         },
         [] as LessonIndex[],
       );
