@@ -221,7 +221,7 @@ export function setTimetable(
  * @param semester Semester of the timetable config to validate
  */
 export function validateTimetable(semester: Semester) {
-  return (dispatch: Dispatch, getState: GetState) => {
+  return async (dispatch: Dispatch, getState: GetState) => {
     const { timetables, moduleBank } = getState();
 
     const timetableConfig = timetables.lessons as TimetableConfig | TimetableConfigV1;
@@ -239,9 +239,11 @@ export function validateTimetable(semester: Semester) {
       migratedSemTimetableConfig: timetable,
       migratedTaModulesConfig: ta,
       alreadyMigrated,
-    } = migrateSemTimetableConfig(semTimetableConfig, taModulesConfig, getModuleSemesterTimetable);
+    } = await Promise.resolve(
+      migrateSemTimetableConfig(semTimetableConfig, taModulesConfig, getModuleSemesterTimetable),
+    );
 
-    if (!alreadyMigrated)
+    if (!alreadyMigrated) {
       dispatch(
         Internal.setTimetable(
           semester,
@@ -251,6 +253,7 @@ export function validateTimetable(semester: Semester) {
           ta,
         ),
       );
+    }
 
     // Check that all lessons for each module are valid. If they are not, we update it
     // such that they are
