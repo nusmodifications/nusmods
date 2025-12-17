@@ -1194,7 +1194,6 @@ export function migrateModuleLessonConfig(
 }
 
 /**
- * A helper function for migrateTimetableConfigs\
  * Migrates a semester's timetable config
  * @param semTimetableConfig the semester timetable config to migrate
  * @param taModulesConfig the TA lesson configs overrides the semester timetable config
