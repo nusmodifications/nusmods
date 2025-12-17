@@ -10,6 +10,7 @@ import {
   TimetableArrangement,
   TimetableDayArrangement,
   TimetableDayFormat,
+  ModuleLessonConfigV1,
 } from 'types/timetables';
 import {
   LessonType,
@@ -942,7 +943,7 @@ describe('v1 config migration', () => {
     });
   });
 
-  test('should not error if ta module config is mismatched', () => {
+  test('should not error if ta module config was migrated but module lesson config was not', () => {
     const migrationResult = migrateModuleLessonConfig(
       moduleLessonConfig,
       [],
@@ -957,25 +958,41 @@ describe('v1 config migration', () => {
     });
   });
 
-  test('should ignore invalid classNo', () => {
-    const invalidTaModuleConfig = {
+  test('should error if migration is missing data to migrate from the old config', () => {
+    const taModuleConfig = {
+      CS1010S: [['Lecture', '1']],
+    } as TaModulesConfigV1;
+    expect(() =>
+      migrateModuleLessonConfig(moduleLessonConfig, taModuleConfig, 'CS1010S', []),
+    ).toThrow(Error('Lesson indices missing'));
+  });
+
+  test('should error if migration cannot find the lesson indices for non-ta module classNo', () => {
+    const invalidModuleLessonConfig = {
+      Lecture: '2',
+    } as ModuleLessonConfigV1;
+    expect(() =>
+      migrateModuleLessonConfig(
+        invalidModuleLessonConfig,
+        {
+          CS1010S: [],
+        },
+        'CS1010S',
+        moduleTimetable,
+      ),
+    ).toThrow(Error('Lesson indices missing'));
+  });
+
+  test('should error if migration cannot find the lesson indices for ta module classNo', () => {
+    const taModuleConfig = {
       CS1010S: [
         ['Lecture', '1'],
         ['Lecture', '2'],
       ],
     } as TaModulesConfigV1;
-    const migrationResult = migrateModuleLessonConfig(
-      moduleLessonConfig,
-      invalidTaModuleConfig,
-      'CS1010S',
-      moduleTimetable,
-    );
-    expect(migrationResult).toEqual({
-      migratedModuleLessonConfig: {
-        Lecture: [0],
-      },
-      alreadyMigrated: false,
-    });
+    expect(() =>
+      migrateModuleLessonConfig(moduleLessonConfig, taModuleConfig, 'CS1010S', moduleTimetable),
+    ).toThrow(Error('Lesson indices missing'));
   });
 });
 
