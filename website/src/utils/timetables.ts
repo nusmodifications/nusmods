@@ -538,7 +538,18 @@ export function validateNonTaModuleLesson(
         };
       }
 
-      const { classNo } = validLessons[configLessonIndices[0]];
+      const firstLesson = first(configLessonIndices);
+      if (firstLesson === undefined) {
+        const validLessonIndices = getRecoveryLessonIndices(lessonsWithLessonType);
+        return {
+          config: {
+            ...accumulatedValidationResult.config,
+            [lessonType]: validLessonIndices,
+          },
+          valid: false,
+        };
+      }
+      const { classNo } = validLessons[firstLesson];
       const classNoLessonIndices = map(
         filter(lessonsWithLessonType, (lesson) => lesson.classNo === classNo),
         'lessonIndex',
