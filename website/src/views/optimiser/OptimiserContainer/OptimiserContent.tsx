@@ -19,11 +19,11 @@ import {
 import { FreeDayConflict, LessonOption } from 'types/optimiser';
 import useOptimiserForm from 'views/hooks/useOptimiserForm';
 import styles from './OptimiserContent.scss';
-import OptimiserDescription from './OptimiserDescription';
 import OptimiserHeader from '../OptimiserHeader';
 import OptimiserForm from '../OptimiserForm/OptimiserForm';
 import OptimiserButton from '../OptimiserButton';
 import OptimiserResults from '../OptimiserResults';
+import OptimiserFAQContainer from '../OptimiserFAQ/OptimiserFAQContainer';
 
 const OptimiserContent: React.FC = () => {
   const activeSemester = useSelector(({ app }: State) => app.activeSemester);
@@ -140,8 +140,8 @@ const OptimiserContent: React.FC = () => {
       )}
 
       <OptimiserResults shareableLink={shareableLink} unassignedLessons={unassignedLessons} />
-      <div className={styles.faqTitle}>FAQ</div>
-      <OptimiserDescription />
+
+      <OptimiserFAQContainer />
     </div>
   );
 };

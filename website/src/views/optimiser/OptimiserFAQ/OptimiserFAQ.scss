@@ -2,7 +2,6 @@
 
 .descriptionSection {
   padding: 0.5rem 0;
-  margin-top: 1rem;
 }
 
 .accordion {
@@ -133,18 +132,15 @@
   display: block;
   margin-top: 0.5rem;
   font-weight: 600;
+  font-size: medium;
   text-decoration-color: var(--optimiser-accent);
   color: var(--body-color);
   text-decoration-thickness: 2px;
   text-underline-offset: 2px;
 }
 
-@include media-breakpoint-down(md) {
-  .descriptionSection {
-    padding: 1.25rem 0.75rem 1.5rem;
-  }
-
-  .toggleButton {
-    text-align: left;
-  }
+.faqTitle {
+  margin-top: 4rem;
+  font-weight: bold;
+  font-size: x-large;
 }
