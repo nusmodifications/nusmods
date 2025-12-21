@@ -15,7 +15,9 @@ import (
 - Get all module slots that pass conditions in optimiserRequest for all modules.
 - Reduces search space by merging slots of the same lesson type happening at the same day and time and building.
 */
-func GetAllModuleSlots(optimiserRequest models.OptimiserRequest) (map[string]map[string]map[string][]models.ModuleSlot, error) {
+func GetAllModuleSlots(
+	optimiserRequest models.OptimiserRequest,
+) (map[string]map[string]map[string][]models.ModuleSlot, error) {
 	venues, err := client.GetVenues()
 	if err != nil {
 		return nil, err
@@ -78,7 +80,12 @@ func GetAllModuleSlots(optimiserRequest models.OptimiserRequest) (map[string]map
 	return moduleSlots, nil
 }
 
-func mergeAndFilterModuleSlots(timetable []models.ModuleSlot, venues map[string]models.Location, optimiserRequest models.OptimiserRequest, module string) map[string]map[string][]models.ModuleSlot {
+func mergeAndFilterModuleSlots(
+	timetable []models.ModuleSlot,
+	venues map[string]models.Location,
+	optimiserRequest models.OptimiserRequest,
+	module string,
+) map[string]map[string][]models.ModuleSlot {
 
 	recordingsMap := make(map[string]bool, len(optimiserRequest.Recordings))
 	for _, recording := range optimiserRequest.Recordings {

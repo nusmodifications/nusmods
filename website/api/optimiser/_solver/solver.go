@@ -6,10 +6,11 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/umahmood/haversine"
+
 	constants "github.com/nusmodifications/nusmods/website/api/optimiser/_constants"
 	models "github.com/nusmodifications/nusmods/website/api/optimiser/_models"
 	modules "github.com/nusmodifications/nusmods/website/api/optimiser/_modules"
-	"github.com/umahmood/haversine"
 )
 
 // BeamSearch explores the space of possible timetables to find the optimal assignment.
@@ -99,7 +100,15 @@ func BeamSearch(
 		}
 
 		sort.Slice(nextBeam, func(i, j int) bool {
-			return scoreTimetableState(nextBeam[i], recordings, optimiserRequest) < scoreTimetableState(nextBeam[j], recordings, optimiserRequest)
+			return scoreTimetableState(
+				nextBeam[i],
+				recordings,
+				optimiserRequest,
+			) < scoreTimetableState(
+				nextBeam[j],
+				recordings,
+				optimiserRequest,
+			)
 		})
 
 		// Prune to beamWidth
@@ -383,7 +392,11 @@ func penaliseConsecutiveHoursofStudy(consecutiveMinutes int, maxConsecutiveHours
 //   - Large gaps between classes: Penalizes gaps > 2 hours to avoid excessive downtime
 //   - Consecutive hours: Penalizes too many back-to-back classes without breaks
 //   - Walking distance: Accumulated distance penalties between physical lesson venues from all days
-func scoreTimetableState(state models.TimetableState, recordings map[string]bool, optimiserRequest models.OptimiserRequest) float64 {
+func scoreTimetableState(
+	state models.TimetableState,
+	recordings map[string]bool,
+	optimiserRequest models.OptimiserRequest,
+) float64 {
 	var totalScore float64
 	for d := 0; d < 6; d++ {
 		if len(state.DaySlots[d]) == 0 {

@@ -25,10 +25,9 @@ The handler:
   - Delegates to the solver to compute the optimal timetable
 
 Expected request body: JSON with modules, preferences, constraints
-Response: JSON with optimal timetable assignments, schedule, and shareable link
+Response: JSON with optimal timetable assignments, schedule, and shareable link.
 */
 func Handler(w http.ResponseWriter, r *http.Request) {
-
 	// Allow CORS from all origins
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
@@ -54,5 +53,4 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	solver.Solve(w, optimiserRequest)
-
 }
