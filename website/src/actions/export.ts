@@ -1,14 +1,10 @@
 import type { Module, ModuleCode, Semester } from 'types/modules';
 import type { ExportData } from 'types/export';
 import type { Dispatch, GetState } from 'types/redux';
-import {
-  hydrateSemTimetableWithLessons,
-  hydrateTaModulesConfigWithLessons,
-} from 'utils/timetables';
+import { hydrateSemTimetableWithLessons } from 'utils/timetables';
 import { captureException } from 'utils/error';
 import retryImport from 'utils/retryImport';
 import { getSemesterTimetableLessons } from 'selectors/timetables';
-import { TaModulesConfig } from 'types/timetables';
 import { PlannerStateSchema } from 'types/schemas/planner';
 import { SET_EXPORTED_DATA } from './constants';
 import { openNotification } from './app';
@@ -38,23 +34,14 @@ export function downloadAsIcal(semester: Semester) {
         const state = getState();
         const { modules } = state.moduleBank;
         const hiddenModules: ModuleCode[] = state.timetables.hidden[semester] ?? [];
-        const taModules: TaModulesConfig = state.timetables.ta[semester] ?? {};
+        const taModules: ModuleCode[] = state.timetables.ta[semester] ?? [];
 
         const timetable = getSemesterTimetableLessons(state)(semester);
         const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
-        const timetableWithTaLessons = hydrateTaModulesConfigWithLessons(
-          taModules,
-          modules,
-          semester,
-        );
-        const filteredTimetableWithLessons = {
-          ...timetableWithLessons,
-          ...timetableWithTaLessons,
-        };
 
         const events = icalUtils.default(
           semester,
-          filteredTimetableWithLessons,
+          timetableWithLessons,
           modules,
           hiddenModules,
           taModules,

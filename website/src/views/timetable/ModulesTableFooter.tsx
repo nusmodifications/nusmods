@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { isEmpty, map, sumBy } from 'lodash';
+import { map, sumBy } from 'lodash';
 import { connect } from 'react-redux';
 
 import { ModuleTableOrder } from 'types/reducers';
@@ -10,7 +10,6 @@ import { State } from 'types/state';
 import { setModuleTableOrder } from 'actions/settings';
 import { getExamDate, renderMCs } from 'utils/modules';
 import config from 'config';
-import { TaModulesConfig } from 'types/timetables';
 import styles from './TimetableModulesTable.scss';
 
 type ModuleOrder = {
@@ -34,14 +33,13 @@ export function countTotalMCs(modules: Module[]): number {
 export function countShownMCs(
   modules: Module[],
   hiddenInTimetable: ModuleCode[],
-  taInTimetable: TaModulesConfig,
+  taInTimetable: ModuleCode[],
 ): number {
   return sumBy(
-    modules.filter(
-      (module) =>
-        !hiddenInTimetable.includes(module.moduleCode) &&
-        isEmpty(taInTimetable[module.moduleCode] ?? []),
-    ),
+    modules.filter((module) => {
+      const { moduleCode } = module;
+      return !hiddenInTimetable.includes(moduleCode) && !taInTimetable.includes(moduleCode);
+    }),
     (module) => parseFloat(module.moduleCredit),
   );
 }
@@ -51,7 +49,7 @@ type Props = {
   moduleTableOrder: ModuleTableOrder;
   modules: Module[];
   hiddenInTimetable: ModuleCode[];
-  taInTimetable: TaModulesConfig;
+  taInTimetable: ModuleCode[];
 
   setModuleTableOrder: (moduleTableOrder: ModuleTableOrder) => void;
 };
