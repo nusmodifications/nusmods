@@ -62,7 +62,8 @@ const OptimiserResultPartialTimetable: React.FC<OptimiserResultsPartialProps> = 
     </div>
 
     <div className={styles.unassignedDescription}>
-      We successfully optimised most of your timetable, but these lessons couldn't be scheduled based on your preferences:
+      We successfully optimised most of your timetable, but these lessons couldn't be scheduled
+      based on your preferences:
     </div>
 
     <div className={styles.unassignedLessons}>
@@ -83,11 +84,10 @@ const OptimiserResultPartialTimetable: React.FC<OptimiserResultsPartialProps> = 
     <div className={styles.unassignedExplanation}>
       <div className={styles.unassignedExplanationHeader}>Why couldn't these be scheduled?</div>
       <ul>
+        <li className={styles.unassignedExplanationItem}>Missing venue information, or</li>
         <li className={styles.unassignedExplanationItem}>
-          Missing venue information, or
-        </li>
-        <li className={styles.unassignedExplanationItem}>
-          No possible way to schedule these lessons with your selected preferences (e.g., free days, preferred hours)
+          No possible way to schedule these lessons with your selected preferences (e.g., free days,
+          preferred hours)
         </li>
       </ul>
     </div>
@@ -96,11 +96,14 @@ const OptimiserResultPartialTimetable: React.FC<OptimiserResultsPartialProps> = 
       <div className={styles.unassignedExplanationHeader}>Choose how to view your timetable:</div>
       <ul>
         <li className={styles.unassignedExplanationItem}>
-          <strong>Optimised lessons only:</strong> View just the lessons we successfully scheduled. You'll manually add the others later.
+          <strong>Optimised lessons only:</strong> View just the lessons we successfully scheduled.
+          You'll manually re-add the others later.
         </li>
         {defaultShareableLink && (
           <li className={styles.unassignedExplanationItem}>
-            <strong>All lessons:</strong> View the optimised schedule plus the missing lessons added at a random slot (may conflict with your preferences).
+            <strong>All lessons:</strong> View the optimised schedule plus{' '}
+            <i>the missing lessons added in random timeslots</i> (may conflict with your
+            preferences), making it easier to adjust them without re-adding.
           </li>
         )}
       </ul>

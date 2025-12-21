@@ -102,16 +102,14 @@ const OptimiserContent: React.FC = () => {
   };
 
   const parseData = async (data: OptimiseResponse | null) => {
-    const shareableLink = data?.shareableLink;
-    const defaultShareableLink = data?.defaultShareableLink;
-    if (!shareableLink) {
+    if (!data?.shareableLink) {
       throw new Error('expected shareable link to be created');
     }
-    if (!defaultShareableLink) {
+    if (!data?.defaultShareableLink) {
       throw new Error('expected default shareable link to be created');
     }
-    setShareableLink(shareableLink);
-    setDefaultShareableLink(defaultShareableLink);
+    setShareableLink(data.shareableLink);
+    setDefaultShareableLink(data.defaultShareableLink);
     const unassignedLessonOptions = getUnassignedLessonOptions(lessonOptions, data);
     setUnassignedLessons(unassignedLessonOptions);
   };
