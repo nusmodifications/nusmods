@@ -122,7 +122,7 @@ jobs:
           at: ~/nusmods
       - run:
           name: Prepare venues data
-          command: cd ../.. && yarn prepare:optimiser
+          command: cp ../../src/data/venues.json _constants/venues.json
       - run:
           name: Install golangci-lint
           command: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v2.7.2 
