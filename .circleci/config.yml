@@ -46,6 +46,7 @@ jobs:
       - run: yarn lint
       - run: yarn test --runInBand
       - run: yarn build
+      - run: yarn prepare:optimiser
       - store_artifacts:
           path: dist
       - run: yarn docs
