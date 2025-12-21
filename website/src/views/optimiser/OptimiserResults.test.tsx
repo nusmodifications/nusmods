@@ -48,6 +48,7 @@ describe('OptimiserResults', () => {
       unassignedLessons: [defaultLectureOption],
     };
     render(<OptimiserResults {...props} />);
-    expect(screen.getByRole('link')).toHaveTextContent('Open Partial Timetable');
+    expect(screen.getByText('View Optimised Lessons Only')).toBeInTheDocument();
+    expect(screen.getByText('View All Lessons')).toBeInTheDocument();
   });
 });
