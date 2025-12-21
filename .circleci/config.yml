@@ -46,7 +46,6 @@ jobs:
       - run: yarn lint
       - run: yarn test --runInBand
       - run: yarn build
-      - run: yarn prepare:optimiser
       - store_artifacts:
           path: dist
       - run: yarn docs
@@ -66,6 +65,57 @@ jobs:
           environment:
             NODE_ENV: production
           command: yarn build
+
+  website:
+    executor: node-executor
+    working_directory: ~/nusmods/website
+    environment:
+      NODE_ENV: production
+      TZ: Asia/Singapore
+    steps:
+      - attach_workspace:
+          at: ~/nusmods
+      - run:
+          name: Install dependencies
+          command: yarn --frozen-lockfile --non-interactive --production=false
+      - run:
+          name: Lint code
+          command: yarn lint:code --cache --cache-location 'node_modules/.eslintcache/'
+            --format junit -o reports/junit/js-lint-results.xml
+      - run:
+          name: Lint styles
+          command: yarn lint:styles
+      - run:
+          name: Typecheck Code
+          command: yarn typecheck
+      - run:
+          name: Prepare Optimiser
+          command: yarn prepare:optimiser
+      - run:
+          name: Test code
+          environment:
+            NODE_ENV: test
+            JEST_JUNIT_OUTPUT: reports/junit/js-test-results.xml
+          command: |
+            set -e
+            yarn test --runInBand --reporters=default --reporters=jest-junit
+            if [ "${CIRCLE_BRANCH}" != "master" ] && [ "${CIRCLE_BRANCH}" != "production" ]; then
+              yarn codecov --disable=gcov -f ./coverage/coverage-final.json
+            fi
+      - run:
+          name: Integration tests
+          environment:
+            NODE_ENV: test
+          command: |
+            set -e
+            yarn test:integration --runInBand
+      - run:
+          name: Build
+          command: yarn build
+      - store_test_results:
+          path: reports/junit
+      - store_artifacts:
+          path: dist
 
   optimiser:
     executor: go-executor
@@ -94,54 +144,6 @@ jobs:
             sleep 5
             go test ./_test/. -v
             kill $SERVER_PID 
-
-  website:
-    executor: node-executor
-    working_directory: ~/nusmods/website
-    environment:
-      NODE_ENV: production
-      TZ: Asia/Singapore
-    steps:
-      - attach_workspace:
-          at: ~/nusmods
-      - run:
-          name: Install dependencies
-          command: yarn --frozen-lockfile --non-interactive --production=false
-      - run:
-          name: Lint code
-          command: yarn lint:code --cache --cache-location 'node_modules/.eslintcache/'
-            --format junit -o reports/junit/js-lint-results.xml
-      - run:
-          name: Lint styles
-          command: yarn lint:styles
-      - run:
-          name: Typecheck Code
-          command: yarn typecheck
-      - run:
-          name: Test code
-          environment:
-            NODE_ENV: test
-            JEST_JUNIT_OUTPUT: reports/junit/js-test-results.xml
-          command: |
-            set -e
-            yarn test --runInBand --reporters=default --reporters=jest-junit
-            if [ "${CIRCLE_BRANCH}" != "master" ] && [ "${CIRCLE_BRANCH}" != "production" ]; then
-              yarn codecov --disable=gcov -f ./coverage/coverage-final.json
-            fi
-      - run:
-          name: Integration tests
-          environment:
-            NODE_ENV: test
-          command: |
-            set -e
-            yarn test:integration --runInBand
-      - run:
-          name: Build
-          command: yarn build
-      - store_test_results:
-          path: reports/junit
-      - store_artifacts:
-          path: dist
 
 workflows:
   build_and_test:
