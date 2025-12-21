@@ -85,6 +85,14 @@ jobs:
               echo "Formatting issues found. Run 'golangci-lint fmt' locally to fix."
               exit 1
             fi
+      - run:
+          name: Run tests
+          command: |
+            go run ./_test/server/main.go -port 8020 &
+            SERVER_PID=$!
+            sleep 5
+            go test ./_test/. -v
+            kill $SERVER_PID 
 
   website:
     executor: node-executor
