@@ -5,6 +5,10 @@ executors:
     docker:
       - image: cimg/node:18.20.5
 
+  go-executor:
+    docker:
+      - image: cimg/go:1.23
+
 jobs:
   checkout:
     executor: node-executor
@@ -61,6 +65,26 @@ jobs:
           environment:
             NODE_ENV: production
           command: yarn build
+
+  optimiser:
+    executor: go-executor
+    working_directory: ~/nusmods/website/api/optimiser
+    steps:
+      - attach_workspace:
+          at: ~/nusmods
+      - run:
+          name: Install golangci-lint
+          command: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v2.7.2 
+      - run:
+          name: Check linting
+          command: $(go env GOPATH)/bin/golangci-lint run --timeout=5m
+      - run:
+          name: Check formatting
+          command: |
+            if [ -n "$($(go env GOPATH)/bin/golangci-lint fmt --diff)" ]; then
+              echo "Formatting issues found. Run 'golangci-lint fmt' locally to fix."
+              exit 1
+            fi
 
   website:
     executor: node-executor
@@ -121,6 +145,9 @@ workflows:
           requires:
             - checkout
       - export:
+          requires:
+            - checkout
+      - optimiser:
           requires:
             - checkout
       - website:
