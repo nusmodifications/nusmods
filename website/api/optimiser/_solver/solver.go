@@ -152,7 +152,9 @@ func isLessonRecorded(lessonKey string, recordings map[string]bool) bool {
 // are skipped since they don't require physical travel.
 //
 // The penalty increases linearly with distance using the formula:
-//   penalty = (10.0 / MAX_WALK_DISTANCE) * distance_in_km
+//
+//	penalty = (10.0 / MAX_WALK_DISTANCE) * distance_in_km
+//
 // This encourages timetables with classes in nearby venues.
 func calculateDayDistanceScore(daySlots []models.ModuleSlot, recordings map[string]bool) float64 {
 	if len(daySlots) <= 1 {
@@ -336,7 +338,7 @@ func scoreConsecutiveHoursofStudy(physicalSlots []models.ModuleSlot, maxConsecut
 		currentSlot := physicalSlots[i]
 		currentSlotStartMin := currentSlot.StartMin
 		currentSlotEndMin := currentSlot.EndMin
-		
+
 		var prevSlotEndMin int
 		if i == 0 {
 			prevSlotEndMin = currentSlot.StartMin
@@ -354,7 +356,7 @@ func scoreConsecutiveHoursofStudy(physicalSlots []models.ModuleSlot, maxConsecut
 		}
 
 		// If it's the last slot, score the consecutive hours
-		if i == len(physicalSlots) - 1 {
+		if i == len(physicalSlots)-1 {
 			score += penaliseConsecutiveHoursofStudy(consecutiveMinutes, maxConsecutiveHours)
 		}
 	}
@@ -377,10 +379,10 @@ func penaliseConsecutiveHoursofStudy(consecutiveMinutes int, maxConsecutiveHours
 // Lower scores indicate better (more preferred) timetables.
 //
 // The scoring function combines multiple factors:
-//  - Lunch break availability: Bonus if >= 60min gap in lunch window, penalty otherwise
-//  - Large gaps between classes: Penalizes gaps > 2 hours to avoid excessive downtime
-//  - Consecutive hours: Penalizes too many back-to-back classes without breaks
-//  - Walking distance: Accumulated distance penalties between physical lesson venues from all days
+//   - Lunch break availability: Bonus if >= 60min gap in lunch window, penalty otherwise
+//   - Large gaps between classes: Penalizes gaps > 2 hours to avoid excessive downtime
+//   - Consecutive hours: Penalizes too many back-to-back classes without breaks
+//   - Walking distance: Accumulated distance penalties between physical lesson venues from all days
 func scoreTimetableState(state models.TimetableState, recordings map[string]bool, optimiserRequest models.OptimiserRequest) float64 {
 	var totalScore float64
 	for d := 0; d < 6; d++ {

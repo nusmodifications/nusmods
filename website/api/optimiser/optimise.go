@@ -1,13 +1,32 @@
+/*
+Package handler provides the HTTP handler for the NUSMods timetable optimiser API.
+This package serves as the serverless function entry point for Vercel deployments
+and handles incoming optimization requests from the NUSMods web application.
+*/
 package handler
 
 import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/nusmodifications/nusmods/website/api/optimiser/_models"
-	"github.com/nusmodifications/nusmods/website/api/optimiser/_solver"
+	models "github.com/nusmodifications/nusmods/website/api/optimiser/_models"
+	solver "github.com/nusmodifications/nusmods/website/api/optimiser/_solver"
 )
 
+/*
+Handler is the main entry point for the timetable optimiser API endpoint.
+It accepts POST requests with module selection and preferences, runs the optimization
+algorithm, and returns the best timetable as JSON.
+
+The handler:
+  - Enables CORS to allow requests from the NUSMods frontend
+  - Validates that only POST requests are accepted (OPTIONS for CORS preflight)
+  - Parses the JSON request body into an OptimiserRequest
+  - Delegates to the solver to compute the optimal timetable
+
+Expected request body: JSON with modules, preferences, constraints
+Response: JSON with optimal timetable assignments, schedule, and shareable link
+*/
 func Handler(w http.ResponseWriter, r *http.Request) {
 
 	// Allow CORS from all origins
