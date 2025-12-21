@@ -41,8 +41,9 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
 2. **Beam Width**: Maintains top N (=100) most promising states at each step (=2500) (configurable)
 3. **Branching Factor**: Limits the number of options considered per lesson type (=100) (configurable)
 4. **Scoring Function**: Evaluates states based on:
-   - Total walking distance between consecutive classes
-   - Lunch break timing
+   - Total walking distance between consecutive classes using haversine formula
+   - Having a one-hour break within provided lunch time window
+   - <= Maximum hours of consecutive live lessons
    - <= 2 hours max gap between classes (configurable)
 
 ## API Reference
@@ -56,6 +57,7 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
   "modules": ["CS1010S", "CS2030S", "MA1521"],
   "recordings": ["CS1010S Lecture", "CS2030S Laboratory"],
   "freeDays": ["Monday", "Friday"],
+  "maxConsecutiveHours": 4,
   "earliestTime": "0900",
   "latestTime": "1800",
   "acadYear": "2024-2025",
@@ -77,7 +79,51 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
     "MA1521|Tutorial": "01"
   },
   "DaySlots": [
-    [ /* Monday slots */ ],
+    [ /* Monday slots */ 
+      {
+                "classNo": "05",
+                "day": "Monday",
+                "endTime": "1600",
+                "lessonType": "Laboratory",
+                "startTime": "1400",
+                "venue": "COM1-B108",
+                "coordinates": {
+                    "x": 103.773994,
+                    "y": 1.2948803
+                },
+                "weeks": [
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13
+                ],
+                "StartMin": 840,
+                "EndMin": 960,
+                "DayIndex": 0,
+                "LessonKey": "CS2040S|Laboratory",
+                "WeeksSet": {
+                    "10": true,
+                    "11": true,
+                    "12": true,
+                    "13": true,
+                    "3": true,
+                    "4": true,
+                    "5": true,
+                    "6": true,
+                    "7": true,
+                    "8": true,
+                    "9": true
+                },
+                "WeeksString": "3,4,5,6,7,8,9,10,11,12,13"
+      },
+    ],
     [ /* Tuesday slots */ ],
     [ /* Wednesday slots */ ],
     [ /* Thursday slots */ ],
@@ -99,17 +145,18 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
 
 #### Parameters
 
-| Field          | Type       | Description                                                                            |
-| -------------- | ---------- | -------------------------------------------------------------------------------------- |
-| `modules`      | `[]string` | Module codes to include in optimisation in Upper case (e.g. "CS1010S")                 |
-| `recordings`   | `[]string` | Lessons marked as recorded/online (format: "MODULE LessonType") e.g. "CS1010S Lecture" |
-| `freeDays`     | `[]string` | Days to keep free of physical classes e.g. "Monday"                                    |
-| `earliestTime` | `string`   | Earliest acceptable class time (HHMM format)                                           |
-| `latestTime`   | `string`   | Latest acceptable class time (HHMM format)                                             |
-| `acadYear`     | `string`   | Academic year (format: "YYYY-YYYY") e.g. "2024-2025"                                   |
-| `acadSem`      | `int`      | Semester number (1 or 2)                                                               |
-| `lunchStart`   | `string`   | Preferred lunch break start time (HHMM)                                                |
-| `lunchEnd`     | `string`   | Preferred lunch break end time (HHMM)                                                  |
+| Field                 | Type       | Description                                                                            |
+| --------------------- | ---------- | -------------------------------------------------------------------------------------- |
+| `modules`             | `[]string` | Module codes to include in optimisation in Upper case (e.g. "CS1010S")                 |
+| `recordings`          | `[]string` | Lessons marked as recorded/online (format: "MODULE LessonType") e.g. "CS1010S Lecture" |
+| `freeDays`            | `[]string` | Days to keep free of physical classes e.g. "Monday"                                    |
+| `earliestTime`        | `string`   | Earliest acceptable class time (HHMM format)                                           |
+| `latestTime`          | `string`   | Latest acceptable class time (HHMM format)                                             |
+| `acadYear`            | `string`   | Academic year (format: "YYYY-YYYY") e.g. "2024-2025"                                   |
+| `acadSem`             | `int`      | Semester number (1 or 2)                                                               |
+| `lunchStart`          | `string`   | Preferred lunch break start time (HHMM)                                                |
+| `lunchEnd`            | `string`   | Preferred lunch break end time (HHMM)                                                  |
+| `maxConsecutiveHours` | `int`      | Maximum consecutive live lesson hours allowed                                          |
 
 ## Getting Started
 
