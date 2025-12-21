@@ -190,6 +190,20 @@ The optimiser uses a **Beam Search algorithm** to efficiently explore the vast s
 5. **Test the API**
 - Send a POST request following the request body format above to `http://localhost:8020/optimise`
 
+## Linting and Formatting
+- Lint the code using:
+  ```bash
+  golangci-lint run
+  ```
+  **Auto fix issues where possible:**
+  ```bash
+  golangci-lint run --fix
+  ```
+- Format the code using: 
+  ```bash
+  golangci-lint fmt
+  ```
+- The golangci-lint configuration is defined in `.golangci.yaml`
 
 ## Dependencies
 
