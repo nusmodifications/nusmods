@@ -363,15 +363,3 @@ describe('import timetable', () => {
     });
   });
 });
-
-describe('migrate v1 config', () => {
-  test('should migrate config to new format', () => {
-    expect(
-      reducer(initialState, Internal.setTimetables({ [1]: { CS1010S: {} } }, { [1]: ['CS1010S'] })),
-    ).toStrictEqual({
-      ...initialState,
-      lessons: { [1]: { CS1010S: {} } },
-      ta: { [1]: ['CS1010S'] },
-    });
-  });
-});

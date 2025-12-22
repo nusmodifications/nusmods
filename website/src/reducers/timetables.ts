@@ -24,7 +24,6 @@ import {
   SET_TIMETABLE,
   SHOW_LESSON_IN_TIMETABLE,
   REMOVE_TA_MODULE,
-  SET_TIMETABLES,
 } from 'actions/timetables';
 import { getNewColor } from 'utils/colors';
 import { SET_EXPORTED_DATA } from 'actions/constants';
@@ -250,15 +249,6 @@ function timetables(
   }
 
   switch (action.type) {
-    case SET_TIMETABLES: {
-      const { lessons, taModules } = action.payload;
-      return {
-        ...state,
-        lessons,
-        ta: taModules,
-      };
-    }
-
     case SET_TIMETABLE: {
       const { semester, timetable, colors, hiddenModules, taModules } = action.payload;
 
