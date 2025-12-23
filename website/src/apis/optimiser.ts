@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 
-const api = '/api/optimiser/optimise';
+const api = OPTIMISER_API_URL;
 
 export interface OptimiseRequest {
   modules: string[];
