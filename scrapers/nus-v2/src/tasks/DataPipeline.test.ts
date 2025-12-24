@@ -27,86 +27,82 @@ const mockApi: jest.Mocked<NusApi> = api as any;
 const moduleInfoData: { [semester: string]: ModuleInfo[] } = {
   '1': [
     {
-      Term: '1810',
-      AcademicOrganisation: {
-        Code: '00301ACAD1',
-        Description: '',
-      },
-      WorkLoadHours: '3-1-1-3-2',
+      SubjectArea: 'CS',
+      CatalogNumber: '2100',
+      Title: 'Computer Organisation',
+      OrganisationCode: '00301ACAD1',
+      OrganisationName: '',
+      AcademicGroup: '003',
+      AcademicGroupDesc: '',
+      WorkloadHoursNUSMods: '3-1-1-3-2',
       GradingBasisDesc: 'Graded',
       EffectiveDate: '2009-08-03',
-      CourseId: '000479',
+      EduRecCourseID: '000479',
       CourseOfferNumber: '1',
-      Preclusion: 'CS1104 or Students from Department of ECE',
+      PreclusionSummary: 'CS1104 or Students from Department of ECE',
       PreclusionRule:
         'PROGRAM_TYPES IF_IN Undergraduate Degree\nTHEN\nPROGRAMS MUST_NOT_BE_IN (1) 0604CPEHON,0604ELEHON,2001CEGHON',
-      AcademicGroup: {
-        Code: '003',
-        Description: '',
-      },
-      CourseTitle: 'Computer Organisation',
       AdditionalInformation: 'Some additional information',
-      PrintCatalog: 'Y',
       YearLong: 'N',
-      CoRequisite: '',
-      CoRequisiteRule: '',
-      CatalogNumber: '2100',
-      Description:
+      CorequisiteSummary: '',
+      CorequisiteRule: '',
+      CourseDesc:
         'The objective of this module is to familiarise students with the fundamentals of computing devices. Through this module students will understand the basics of data representation, and how the various parts of a computer work, separately and with each other. This allows students to understand the issues in computing devices, and how these issues affect the implementation of solutions. Topics covered include data representation systems, combinational and sequential circuit design techniques, assembly language, processor execution cycles, pipelining, memory hierarchy and input/output systems.',
-      ModuleAttributes: [
+      CourseAttributes: [
         {
-          CourseAttributeValue: 'YES',
-          CourseAttribute: 'PRQN',
+          Value: 'YES',
+          Code: 'PRQN',
         },
       ],
-      ModularCredit: '4',
-      PreRequisite: 'CS1010 or its equivalent',
-      PreRequisiteRule:
+      UnitsMin: 4,
+      UnitsMax: 4,
+      PrerequisiteSummary: 'CS1010 or its equivalent',
+      PrerequisiteRule:
         'PROGRAM_TYPES IF_IN Undergraduate Degree\nTHEN\n(\n\tCOURSES (1) YSC1212:D,CS1010:D,CS1010J:D,CS1010E:D,CS1010S:D,CS1010FC:D,CS1010X:D,CS1101:D,CS1101S:D\n)',
       PreRequisiteAdvisory: '',
-      Subject: 'CS',
+      Code: 'CS2100',
+      ApplicableFromYear: '2018',
+      ApplicableFromSem: '1',
     },
   ],
   '2': [
     {
-      Term: '1820',
-      AcademicOrganisation: {
-        Code: '00301ACAD1',
-        Description: '',
-      },
-      WorkLoadHours: '3-1-1-3-2',
+      SubjectArea: 'CS',
+      CatalogNumber: '2100',
+      Title: 'Computer Organisation',
+      OrganisationCode: '00301ACAD1',
+      OrganisationName: '',
+      AcademicGroup: '003',
+      AcademicGroupDesc: '',
+      WorkloadHoursNUSMods: '3-1-1-3-2',
       GradingBasisDesc: 'Graded',
       EffectiveDate: '2009-08-03',
-      CourseId: '000479',
+      EduRecCourseID: '000479',
       CourseOfferNumber: '1',
-      Preclusion: 'CS1104 or Students from Department of ECE',
+      PreclusionSummary: 'CS1104 or Students from Department of ECE',
       PreclusionRule:
         'PROGRAM_TYPES IF_IN Undergraduate Degree\nTHEN\nPROGRAMS MUST_NOT_BE_IN (1) 0604CPEHON,0604ELEHON,2001CEGHON',
-      AcademicGroup: {
-        Code: '003',
-        Description: '',
-      },
-      CourseTitle: 'Computer Organisation',
       AdditionalInformation: 'Some additional information',
-      PrintCatalog: 'Y',
       YearLong: 'N',
-      CoRequisite: '',
-      CoRequisiteRule: '',
-      CatalogNumber: '2100',
-      Description:
+      CorequisiteSummary: '',
+      CorequisiteRule: '',
+      CourseDesc:
         'The objective of this module is to familiarise students with the fundamentals of computing devices. Through this module students will understand the basics of data representation, and how the various parts of a computer work, separately and with each other. This allows students to understand the issues in computing devices, and how these issues affect the implementation of solutions. Topics covered include data representation systems, combinational and sequential circuit design techniques, assembly language, processor execution cycles, pipelining, memory hierarchy and input/output systems.',
-      ModuleAttributes: [
+      CourseAttributes: [
         {
-          CourseAttributeValue: 'YES',
-          CourseAttribute: 'PRQN',
+          Value: 'YES',
+          Code: 'PRQN',
         },
       ],
-      ModularCredit: '4',
-      PreRequisite: 'CS1010 or its equivalent',
-      PreRequisiteRule:
+      UnitsMin: 4,
+      UnitsMax: 4,
+      PrerequisiteSummary: 'CS1010 or its equivalent',
+      PrerequisiteRule:
         'PROGRAM_TYPES IF_IN Undergraduate Degree\nTHEN\n(\n\tCOURSES (1) YSC1212:D,CS1010:D,CS1010J:D,CS1010E:D,CS1010S:D,CS1010FC:D,CS1010X:D,CS1101:D,CS1101S:D\n)',
       PreRequisiteAdvisory: '',
-      Subject: 'CS',
+      Code: 'CS2100',
+      ApplicableFromYear: '2018',
+      ApplicableFromSem: '2',
     },
   ],
 };
@@ -146,9 +142,9 @@ describe(DataPipeline, () => {
     // Setup code to mock all used API endpoints
     mockApi.getFaculty.mockResolvedValue(faculties);
     mockApi.getDepartment.mockResolvedValue(departments);
-    mockApi.getDepartmentModules.mockImplementation(async (term: string, code: string) => {
-      // 00301ACAD1 is Computer Science
-      if (code !== '00301ACAD1') return [];
+    mockApi.getFacultyModules.mockImplementation(async (term: string, code: string) => {
+      // 003 is Computing
+      if (code !== '003') return [];
       const [, semester] = fromTermCode(term);
       return moduleInfoData[semester] || [];
     });
