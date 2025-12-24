@@ -54,38 +54,49 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
 
     const term = getTermCode(this.semester, this.academicYear);
 
-    // We make a new request for each department because the API will timeout if
+    let downloadedCount = 0;
+    const totalFaculties = input.faculties.length;
+
+    // We make a new request for each faculty because the API will timeout if
     // we try to request for all of them in one shot
-    const requests = input.departments.map(async (department) => {
+    const requests = input.faculties.map(async (faculty, index) => {
       try {
-        const getModules = () =>
-          this.api.getDepartmentModules(term, department.AcademicOrganisation);
+        const getModules = () => this.api.getFacultyModules(term, faculty.AcademicGroup);
         const modules = await retry(getModules, 3, (error) => error instanceof UnknownApiError);
 
         // Only return modules which are visible in the system
         const [printed, hidden] = partition(
           modules,
-          (module: ModuleInfo) => module.PrintCatalog === 'Y',
+          (module: ModuleInfo) => module.PrintCatalog !== 'N',
         );
 
-        this.logger.debug('Downloaded %i modules from %s', printed.length, department.Description);
+        downloadedCount += printed.length;
+        this.logger.info(
+          '[%d/%d] Downloaded %i modules from %s (Total: %d)',
+          index + 1,
+          totalFaculties,
+          printed.length,
+          faculty.Description,
+          downloadedCount,
+        );
+
         if (hidden.length > 0) {
           this.logger.debug('Filtered out %i non-print modules', hidden.length);
         }
 
         printed.forEach(
           (module) =>
-            !!containsNbsps(module.Description) &&
+            !!containsNbsps(module.CourseDesc) &&
             this.logger.error(
-              { moduleCode: `${module.Subject}${module.CatalogNumber}` },
-              `${module.Subject}${module.CatalogNumber}: Module description contains non-breaking spaces`,
+              { moduleCode: `${module.SubjectArea}${module.CatalogNumber}` },
+              `${module.SubjectArea}${module.CatalogNumber}: Module description contains non-breaking spaces`,
             ),
         );
 
         return printed;
       } catch (e) {
-        this.logger.error(e, `Cannot get modules from ${department.Description}`);
-        throw new TaskError(`Cannot get modules from ${department.Description}`, this, e);
+        this.logger.error(e, `Cannot get modules from ${faculty.Description}`);
+        throw new TaskError(`Cannot get modules from ${faculty.Description}`, this, e);
       }
     });
 

@@ -20,6 +20,7 @@ import type {
 import type { ModuleCode } from '../types/modules';
 
 import { AuthError, NotFoundError, UnknownApiError } from '../utils/errors';
+import { fromTermCode } from '../utils/api';
 import config from '../config';
 
 // Interface extracted for easier mocking
@@ -140,6 +141,40 @@ function mapErrorCode(code: string, msg: string) {
   }
 
   return error;
+}
+
+/**
+ * Maps the 4-digit term code to the parameters expected by the CourseNUSMods API.
+ */
+function mapTermToApiParams(term: string) {
+  const [acadYear, semester] = fromTermCode(term);
+
+  // 2024/2025 -> 2024/25
+  const yearParts = acadYear.split('/');
+  const shortYear = `${yearParts[0]}/${yearParts[1].slice(2)}`;
+
+  let applicableInSem = '';
+  switch (semester) {
+    case 1:
+      applicableInSem = 'Semester 1';
+      break;
+    case 2:
+      applicableInSem = 'Semester 2';
+      break;
+    case 3:
+      applicableInSem = 'Special Semester (Part 1)';
+      break;
+    case 4:
+      applicableInSem = 'Special Semester (Part 2)';
+      break;
+    default:
+      applicableInSem = `Semester ${semester}`;
+  }
+
+  return {
+    applicableInYear: shortYear,
+    applicableInSem,
+  };
 }
 
 /* eslint-disable camelcase */
@@ -263,16 +298,59 @@ class NusApi implements INusApi {
    * Calls the modules endpoint
    */
   callModulesEndpoint = async (term: string, params: ApiParams): Promise<ModuleInfo[]> => {
+    const termParams = mapTermToApiParams(term);
+    const maxItems = 1000;
+    const baseParams = {
+      ...termParams,
+      ...params,
+      latestVersionOnly: 'True',
+      publishedOnly: 'True',
+      maxItems: String(maxItems),
+    };
+
     try {
-      const { data: modules } = await this.callApi<ModuleInfo[]>(
+      // 1. Fetch the first page to get the total itemCount
+      const firstResponse = await this.callApi<{ data: ModuleInfo[]; itemCount: number }>(
         'CourseNUSMods',
         {
-          term,
-          ...params,
+          ...baseParams,
+          offset: '0',
         },
         courseHeaders,
       );
-      return modules;
+
+      const allModules = [...firstResponse.data.data];
+      const { itemCount } = firstResponse.data;
+
+      // 2. If there are more items, fetch the remaining pages in parallel.
+      // Since this.callApi uses a queue, concurrency will still be limited.
+      const remainingPages = [];
+      for (let offset = allModules.length; offset < itemCount; offset += maxItems) {
+        remainingPages.push(
+          this.callApi<{ data: ModuleInfo[]; itemCount: number }>(
+            'CourseNUSMods',
+            {
+              ...baseParams,
+              offset: String(offset),
+            },
+            courseHeaders,
+          ),
+        );
+      }
+
+      if (remainingPages.length > 0) {
+        const responses = await Promise.all(remainingPages);
+        responses.forEach((response) => {
+          allModules.push(...response.data.data);
+        });
+      }
+
+      console.log(
+        `[API] CourseNUSMods fetched ${allModules.length}/${itemCount} results`,
+        baseParams,
+      );
+
+      return allModules;
     } catch (e) {
       // The modules endpoint will return NotFound even for valid inputs
       // that just happen to have no records, so we ignore this error
@@ -313,26 +391,35 @@ class NusApi implements INusApi {
     }
 
     // catalognbr = Catalog number
-    const [subject, catalognbr] = parts;
-    const { data: modules } = await this.callApi<ModuleInfo[]>(
+    const [, subject, catalognbr] = parts;
+    const termParams = mapTermToApiParams(term);
+    const { data: response } = await this.callApi<{ data: ModuleInfo[]; itemCount: number }>(
       'CourseNUSMods',
       {
-        term,
-        subject,
-        catalognbr,
+        ...termParams,
+        subjectArea: subject,
+        catalogNbr: catalognbr,
+        latestVersionOnly: 'True',
+        publishedOnly: 'True',
       },
       courseHeaders,
     );
+    const modules = response.data;
 
+    console.log(`[API] CourseNUSMods returned ${response.itemCount} result(s) for ${moduleCode}`);
     if (modules.length === 0) throw new NotFoundError(`Module ${moduleCode} cannot be found`);
     return modules[0];
   };
 
   getFacultyModules = async (term: string, facultyCode: string) =>
-    this.callModulesEndpoint(term, { acadgroup: facultyCode });
+    this.callModulesEndpoint(term, { acadGroupCode: facultyCode.slice(0, 3) });
 
-  getDepartmentModules = async (term: string, departmentCode: string): Promise<ModuleInfo[]> =>
-    this.callModulesEndpoint(term, { acadorg: departmentCode });
+  getDepartmentModules = async (term: string, departmentCode: string): Promise<ModuleInfo[]> => {
+    const modules = await this.callModulesEndpoint(term, {
+      acadGroupCode: departmentCode.slice(0, 3),
+    });
+    return modules.filter((module) => module.OrganisationCode === departmentCode);
+  };
 
   getModuleTimetable = async (term: string, module: ModuleCode): Promise<TimetableLesson[]> =>
     this.callV1Api(
