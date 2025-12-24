@@ -20,8 +20,7 @@ import type {
 import type { ModuleCode } from '../types/modules';
 
 import { AuthError, NotFoundError, UnknownApiError } from '../utils/errors';
-import { fromTermCode } from '../utils/api';
-import { cleanString, decodeHTMLEntities } from '../utils/data';
+import { mapTermToApiParams, sanitizeModuleInfo } from '../utils/api';
 import config from '../config';
 
 // Interface extracted for easier mocking
@@ -142,67 +141,6 @@ function mapErrorCode(code: string, msg: string) {
   }
 
   return error;
-}
-
-/**
- * Maps the 4-digit term code to the parameters expected by the CourseNUSMods API.
- */
-function mapTermToApiParams(term: string) {
-  const [acadYear, semester] = fromTermCode(term);
-
-  // 2024/2025 -> 2024/25
-  const yearParts = acadYear.split('/');
-  const shortYear = `${yearParts[0]}/${yearParts[1].slice(2)}`;
-
-  let applicableInSem = '';
-  switch (semester) {
-    case 1:
-      applicableInSem = 'Semester 1';
-      break;
-    case 2:
-      applicableInSem = 'Semester 2';
-      break;
-    case 3:
-      applicableInSem = 'Special Semester (Part 1)';
-      break;
-    case 4:
-      applicableInSem = 'Special Semester (Part 2)';
-      break;
-    default:
-      applicableInSem = `Semester ${semester}`;
-  }
-
-  return {
-    applicableInYear: shortYear,
-    applicableInSem,
-  };
-}
-
-/**
- * Clean ModuleInfo by removing HTML tags from fields that should be plain text
- * and decoding HTML entities in others.
- */
-function cleanModuleInfo(module: ModuleInfo): ModuleInfo {
-  const cleanOrNull = (s: string | null | undefined) => (s == null ? null : cleanString(s));
-
-  return {
-    ...module,
-    Code: cleanString(module.Code),
-    Title: cleanString(module.Title),
-    SubjectArea: cleanString(module.SubjectArea),
-    CatalogNumber: cleanString(module.CatalogNumber),
-    WorkloadHoursNUSMods: cleanOrNull(module.WorkloadHoursNUSMods),
-    CourseDesc: decodeHTMLEntities(module.CourseDesc || ''),
-    PreRequisiteAdvisory: cleanOrNull(module.PreRequisiteAdvisory),
-    AdditionalInformation: cleanOrNull(module.AdditionalInformation),
-    GradingBasisDesc: cleanOrNull(module.GradingBasisDesc),
-    PrerequisiteRule: cleanOrNull(module.PrerequisiteRule),
-    PrerequisiteSummary: cleanOrNull(module.PrerequisiteSummary),
-    CorequisiteRule: cleanOrNull(module.CorequisiteRule),
-    CorequisiteSummary: cleanOrNull(module.CorequisiteSummary),
-    PreclusionRule: cleanOrNull(module.PreclusionRule),
-    PreclusionSummary: cleanOrNull(module.PreclusionSummary),
-  };
 }
 
 /* eslint-disable camelcase */
@@ -336,7 +274,7 @@ class NusApi implements INusApi {
         courseHeaders,
       );
 
-      const allModules = firstResponse.data.data.map(cleanModuleInfo);
+      const allModules = firstResponse.data.data.map(sanitizeModuleInfo);
       const { itemCount } = firstResponse.data;
 
       // 2. If there are more items, fetch the remaining pages in parallel.
@@ -363,7 +301,7 @@ class NusApi implements INusApi {
       if (remainingPages.length > 0) {
         const responses = await Promise.all(remainingPages.map((page) => page.promise));
         responses.forEach((response) => {
-          allModules.push(...response.data.data.map(cleanModuleInfo));
+          allModules.push(...response.data.data.map(sanitizeModuleInfo));
         });
       }
 
@@ -425,7 +363,7 @@ class NusApi implements INusApi {
     const modules = response.data;
 
     if (modules.length === 0) throw new NotFoundError(`Module ${moduleCode} cannot be found`);
-    return cleanModuleInfo(modules[0]);
+    return sanitizeModuleInfo(modules[0]);
   };
 
   getFacultyModules = async (term: string, facultyCode: string) =>
