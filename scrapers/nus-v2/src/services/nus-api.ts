@@ -9,8 +9,6 @@ import { URL } from 'url';
 import axios from 'axios';
 import oboe from 'oboe';
 import Queue from 'promise-queue';
-import * as fs from 'fs-extra';
-import path from 'path';
 
 import type {
   AcademicGrp,
@@ -181,27 +179,6 @@ function mapTermToApiParams(term: string) {
 }
 
 /**
- * Log CourseNUSMods API call to JSON Lines file
- */
-const logDir = path.join(__dirname, '../../logs');
-const logFile = path.join(logDir, 'coursenusmods.log');
-
-async function logCourseNUSModsCall(requestParams: ApiParams, response: any): Promise<void> {
-  try {
-    await fs.ensureDir(logDir);
-    const logEntry = {
-      timestamp: new Date().toISOString(),
-      params: requestParams,
-      response: response.data,
-    };
-    const logLine = `${JSON.stringify(logEntry)}\n`;
-    await fs.appendFile(logFile, logLine);
-  } catch (error) {
-    // Silently fail logging to avoid breaking the main flow
-  }
-}
-
-/**
  * Clean ModuleInfo by removing HTML tags from fields that should be plain text
  * and decoding HTML entities in others.
  */
@@ -359,9 +336,6 @@ class NusApi implements INusApi {
         courseHeaders,
       );
 
-      // Log the API call
-      await logCourseNUSModsCall({ ...baseParams, offset: '0' }, firstResponse.response);
-
       const allModules = firstResponse.data.data.map(cleanModuleInfo);
       const { itemCount } = firstResponse.data;
 
@@ -388,12 +362,8 @@ class NusApi implements INusApi {
 
       if (remainingPages.length > 0) {
         const responses = await Promise.all(remainingPages.map((page) => page.promise));
-        responses.forEach((response, index) => {
+        responses.forEach((response) => {
           allModules.push(...response.data.data.map(cleanModuleInfo));
-          // Log each remaining page API call
-          logCourseNUSModsCall(remainingPages[index].requestParams, response.response).catch(() => {
-            // Ignore logging errors
-          });
         });
       }
 
@@ -447,13 +417,10 @@ class NusApi implements INusApi {
       latestVersionOnly: 'True',
       publishedOnly: 'True',
     };
-    const { data: response, response: axiosResponse } = await this.callApi<{
+    const { data: response } = await this.callApi<{
       data: ModuleInfo[];
       itemCount: number;
     }>('CourseNUSMods', requestParams, courseHeaders);
-
-    // Log the API call
-    await logCourseNUSModsCall(requestParams, axiosResponse);
 
     const modules = response.data;
 
