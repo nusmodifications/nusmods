@@ -9,6 +9,8 @@ import { URL } from 'url';
 import axios from 'axios';
 import oboe from 'oboe';
 import Queue from 'promise-queue';
+import * as fs from 'fs-extra';
+import path from 'path';
 
 import type {
   AcademicGrp,
@@ -21,6 +23,7 @@ import type { ModuleCode } from '../types/modules';
 
 import { AuthError, NotFoundError, UnknownApiError } from '../utils/errors';
 import { fromTermCode } from '../utils/api';
+import { cleanString, decodeHTMLEntities } from '../utils/data';
 import config from '../config';
 
 // Interface extracted for easier mocking
@@ -177,6 +180,54 @@ function mapTermToApiParams(term: string) {
   };
 }
 
+/**
+ * Log CourseNUSMods API call to JSON Lines file
+ */
+const logDir = path.join(__dirname, '../../logs');
+const logFile = path.join(logDir, 'coursenusmods.log');
+
+async function logCourseNUSModsCall(requestParams: ApiParams, response: any): Promise<void> {
+  try {
+    await fs.ensureDir(logDir);
+    const logEntry = {
+      timestamp: new Date().toISOString(),
+      params: requestParams,
+      response: response.data,
+    };
+    const logLine = `${JSON.stringify(logEntry)}\n`;
+    await fs.appendFile(logFile, logLine);
+  } catch (error) {
+    // Silently fail logging to avoid breaking the main flow
+  }
+}
+
+/**
+ * Clean ModuleInfo by removing HTML tags from fields that should be plain text
+ * and decoding HTML entities in others.
+ */
+function cleanModuleInfo(module: ModuleInfo): ModuleInfo {
+  const cleanOrNull = (s: string | null | undefined) => (s == null ? null : cleanString(s));
+
+  return {
+    ...module,
+    Code: cleanString(module.Code),
+    Title: cleanString(module.Title),
+    SubjectArea: cleanString(module.SubjectArea),
+    CatalogNumber: cleanString(module.CatalogNumber),
+    WorkloadHoursNUSMods: cleanOrNull(module.WorkloadHoursNUSMods),
+    CourseDesc: decodeHTMLEntities(module.CourseDesc || ''),
+    PreRequisiteAdvisory: cleanOrNull(module.PreRequisiteAdvisory),
+    AdditionalInformation: cleanOrNull(module.AdditionalInformation),
+    GradingBasisDesc: cleanOrNull(module.GradingBasisDesc),
+    PrerequisiteRule: cleanOrNull(module.PrerequisiteRule),
+    PrerequisiteSummary: cleanOrNull(module.PrerequisiteSummary),
+    CorequisiteRule: cleanOrNull(module.CorequisiteRule),
+    CorequisiteSummary: cleanOrNull(module.CorequisiteSummary),
+    PreclusionRule: cleanOrNull(module.PreclusionRule),
+    PreclusionSummary: cleanOrNull(module.PreclusionSummary),
+  };
+}
+
 /* eslint-disable camelcase */
 
 /**
@@ -197,9 +248,6 @@ async function callApi<ResponseData>(
     url.searchParams.append(key, value);
   });
 
-  const startTime = Date.now();
-  console.log(`[API] START: ${endpoint}`, params);
-
   let response;
 
   try {
@@ -211,12 +259,7 @@ async function callApi<ResponseData>(
         ...headers,
       },
     });
-
-    const duration = Date.now() - startTime;
-    console.log(`[API] DONE: ${endpoint} (${duration}ms)`, params);
   } catch (e) {
-    const duration = Date.now() - startTime;
-    console.error(`[API] ERROR: ${endpoint} (${duration}ms)`, params, e.message);
     // 5. Handle network / request level errors, eg. server returning non-200
     //    status code
     let message;
@@ -248,7 +291,6 @@ async function callV1Api<Data>(
   params: ApiParams,
   headers: ApiHeaders,
 ): Promise<Data> {
-  const startTime = Date.now();
   const { data: responseData, response } = await callApi<V1ApiResponse<Data>>(
     endpoint,
     params,
@@ -259,8 +301,6 @@ async function callV1Api<Data>(
 
   // Handle application level errors
   if (code !== OKAY) {
-    const duration = Date.now() - startTime;
-    console.error(`[API] APP_ERROR: ${endpoint} (${duration}ms)`, params, code, msg);
     const error = mapErrorCode(code, msg);
 
     error.response = response;
@@ -319,36 +359,43 @@ class NusApi implements INusApi {
         courseHeaders,
       );
 
-      const allModules = [...firstResponse.data.data];
+      // Log the API call
+      await logCourseNUSModsCall({ ...baseParams, offset: '0' }, firstResponse.response);
+
+      const allModules = firstResponse.data.data.map(cleanModuleInfo);
       const { itemCount } = firstResponse.data;
 
       // 2. If there are more items, fetch the remaining pages in parallel.
       // Since this.callApi uses a queue, concurrency will still be limited.
-      const remainingPages = [];
+      const remainingPages: Array<{
+        promise: Promise<{ data: { data: ModuleInfo[]; itemCount: number }; response: any }>;
+        requestParams: ApiParams;
+      }> = [];
       for (let offset = allModules.length; offset < itemCount; offset += maxItems) {
-        remainingPages.push(
-          this.callApi<{ data: ModuleInfo[]; itemCount: number }>(
+        const requestParams = {
+          ...baseParams,
+          offset: String(offset),
+        };
+        remainingPages.push({
+          promise: this.callApi<{ data: ModuleInfo[]; itemCount: number }>(
             'CourseNUSMods',
-            {
-              ...baseParams,
-              offset: String(offset),
-            },
+            requestParams,
             courseHeaders,
           ),
-        );
-      }
-
-      if (remainingPages.length > 0) {
-        const responses = await Promise.all(remainingPages);
-        responses.forEach((response) => {
-          allModules.push(...response.data.data);
+          requestParams,
         });
       }
 
-      console.log(
-        `[API] CourseNUSMods fetched ${allModules.length}/${itemCount} results`,
-        baseParams,
-      );
+      if (remainingPages.length > 0) {
+        const responses = await Promise.all(remainingPages.map((page) => page.promise));
+        responses.forEach((response, index) => {
+          allModules.push(...response.data.data.map(cleanModuleInfo));
+          // Log each remaining page API call
+          logCourseNUSModsCall(remainingPages[index].requestParams, response.response).catch(() => {
+            // Ignore logging errors
+          });
+        });
+      }
 
       return allModules;
     } catch (e) {
@@ -393,22 +440,25 @@ class NusApi implements INusApi {
     // catalognbr = Catalog number
     const [, subject, catalognbr] = parts;
     const termParams = mapTermToApiParams(term);
-    const { data: response } = await this.callApi<{ data: ModuleInfo[]; itemCount: number }>(
-      'CourseNUSMods',
-      {
-        ...termParams,
-        subjectArea: subject,
-        catalogNbr: catalognbr,
-        latestVersionOnly: 'True',
-        publishedOnly: 'True',
-      },
-      courseHeaders,
-    );
+    const requestParams = {
+      ...termParams,
+      subjectArea: subject,
+      catalogNbr: catalognbr,
+      latestVersionOnly: 'True',
+      publishedOnly: 'True',
+    };
+    const { data: response, response: axiosResponse } = await this.callApi<{
+      data: ModuleInfo[];
+      itemCount: number;
+    }>('CourseNUSMods', requestParams, courseHeaders);
+
+    // Log the API call
+    await logCourseNUSModsCall(requestParams, axiosResponse);
+
     const modules = response.data;
 
-    console.log(`[API] CourseNUSMods returned ${response.itemCount} result(s) for ${moduleCode}`);
     if (modules.length === 0) throw new NotFoundError(`Module ${moduleCode} cannot be found`);
-    return modules[0];
+    return cleanModuleInfo(modules[0]);
   };
 
   getFacultyModules = async (term: string, facultyCode: string) =>
@@ -453,9 +503,6 @@ class NusApi implements INusApi {
       const url = new URL(endpoint, config.baseUrl);
       url.searchParams.append('term', term);
 
-      const startTime = Date.now();
-      console.log(`[API] START STREAM: ${endpoint}`, { term });
-
       oboe({
         url: url.href,
         headers: {
@@ -470,24 +517,18 @@ class NusApi implements INusApi {
           return oboe.drop;
         })
         .done((data) => {
-          const duration = Date.now() - startTime;
           // Handle application level errors
           const { code, msg } = data;
 
           if (code === OKAY) {
-            console.log(`[API] DONE STREAM: ${endpoint} (${duration}ms)`, { term });
             resolve();
           } else {
-            console.error(`[API] ERROR STREAM: ${endpoint} (${duration}ms)`, { term }, code, msg);
             const error = mapErrorCode(code, msg);
             error.requestConfig = { url: url.href };
             reject(error);
           }
         })
         .fail((error) => {
-          const duration = Date.now() - startTime;
-          const errorMsg = error.thrown?.message || (error as any).message || String(error);
-          console.error(`[API] ERROR STREAM: ${endpoint} (${duration}ms)`, { term }, errorMsg);
           if (error.thrown) {
             reject(error.thrown);
           } else {
