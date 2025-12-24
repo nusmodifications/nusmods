@@ -13,7 +13,6 @@ import { TaskError, UnknownApiError } from '../utils/errors';
 import { validateSemester } from '../services/validation';
 
 interface Input {
-  departments: AcademicOrg[];
   faculties: AcademicGrp[];
 }
 
