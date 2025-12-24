@@ -109,7 +109,7 @@ export function mapAttributes(
  * - Decode HTML entities in description such as '&224;' to 'à'
  */
 export function cleanModuleInfo(module: SemesterModule) {
-  let cleanedModule = module;
+  let cleanedModule = { ...module };
 
   // Title case module title if it is all uppercase
   if (cleanedModule.title === cleanedModule.title.toUpperCase()) {
@@ -199,27 +199,31 @@ const mapModuleInfo = (
     SubjectArea,
     CatalogNumber,
     CourseAttributes = [],
+    AdditionalInformation,
+    EduRecCourseID,
+    GradingBasisDesc,
   } = moduleInfo;
 
   // We map department from our department list because
   // AcademicOrganisation.Description is empty for some reason
   return {
     acadYear,
-    preclusion: PreclusionSummary,
-    preclusionRule: PreclusionRule,
-    description: CourseDesc,
+    preclusion: PreclusionSummary ?? undefined,
+    preclusionRule: PreclusionRule ?? undefined,
+    description: CourseDesc ?? undefined,
     title: Title,
-    additionalInformation: '', // Missing in new API?
+    additionalInformation: AdditionalInformation || '',
+    eduRecCourseID: EduRecCourseID || '',
     department: departmentMap[OrganisationCode],
     faculty: facultyMap[AcademicGroup],
-    workload: parseWorkload(WorkloadHoursNUSMods),
-    gradingBasisDescription: '', // Missing in new API?
-    prerequisite: PrerequisiteSummary,
-    prerequisiteRule: PrerequisiteRule,
-    prerequisiteAdvisory: PreRequisiteAdvisory,
-    corequisite: CorequisiteSummary,
-    corequisiteRule: CorequisiteRule,
-    moduleCredit: String(UnitsMin),
+    workload: parseWorkload(WorkloadHoursNUSMods) ?? undefined,
+    gradingBasisDescription: GradingBasisDesc || '',
+    prerequisite: PrerequisiteSummary ?? undefined,
+    prerequisiteRule: PrerequisiteRule ?? undefined,
+    prerequisiteAdvisory: PreRequisiteAdvisory ?? undefined,
+    corequisite: CorequisiteSummary ?? undefined,
+    corequisiteRule: CorequisiteRule ?? undefined,
+    moduleCredit: UnitsMin === null ? '0' : String(UnitsMin),
     moduleCode: SubjectArea + CatalogNumber,
     attributes: mapAttributes(
       CourseAttributes.map((attr) => ({

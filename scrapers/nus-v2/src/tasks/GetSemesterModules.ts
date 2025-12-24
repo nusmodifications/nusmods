@@ -67,7 +67,9 @@ export default class GetSemesterModules extends BaseTask implements Task<Input, 
         // Only return modules which are visible in the system
         const [printed, hidden] = partition(
           modules,
-          (module: ModuleInfo) => module.PrintCatalog !== 'N',
+          // TODO: Investigate why PrintCatalog was removed from the API response
+          // (module: ModuleInfo) => module.PrintCatalog !== 'N',
+          () => true,
         );
 
         downloadedCount += printed.length;

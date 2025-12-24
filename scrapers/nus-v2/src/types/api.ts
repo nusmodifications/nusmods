@@ -60,26 +60,30 @@ export type ModuleInfo = Readonly<{
   OrganisationName: string;
   AcademicGroup: string;
   AcademicGroupDesc: string;
-  UnitsMin: number;
-  UnitsMax: number;
+  UnitsMin: number | null;
+  UnitsMax: number | null;
   CourseDesc: string;
-  PreRequisiteAdvisory: string;
-  PrerequisiteSummary: string;
-  PrerequisiteRule: string;
-  CorequisiteSummary: string;
-  CorequisiteRule: string;
-  PreclusionSummary: string;
-  PreclusionRule: string;
+  PreRequisiteAdvisory: string | null;
+  PrerequisiteSummary: string | null;
+  PrerequisiteRule: string | null;
+  CorequisiteSummary: string | null;
+  CorequisiteRule: string | null;
+  PreclusionSummary: string | null;
+  PreclusionRule: string | null;
   CourseAttributes: { Code: string; Value: string }[];
   YearLong: 'Y' | 'N';
-  EffectiveDate: string;
+  EffectiveDate: string | null;
   SubjectArea: string;
   CatalogNumber: string;
   WorkloadHoursNUSMods: string | null;
   CourseOfferNumber: string;
   ApplicableFromYear: string;
   ApplicableFromSem: string;
-  PrintCatalog: 'Y' | 'N'; // Not in doc but likely there
+  AdditionalInformation: string | null;
+  EduRecCourseID: string | null;
+  GradingBasisDesc: string | null;
+  // TODO: Investigate why PrintCatalog was removed from the API response
+  // PrintCatalog: 'Y' | 'N';
 }>;
 
 export type TimetableLesson = Readonly<{

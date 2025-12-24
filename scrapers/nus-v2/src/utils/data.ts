@@ -52,6 +52,22 @@ export function decodeHTMLEntities(string: string) {
 }
 
 /**
+ * Remove HTML tags from a string and replace them with a space to avoid joining words.
+ * Also decodes HTML entities and normalizes whitespace (including NBSPs).
+ */
+export function stripTags(string: string) {
+  return string.replace(/<[^>]*>?/gm, ' ').replace(/\s+/g, ' ').trim();
+}
+
+/**
+ * Clean a string by removing HTML tags, decoding entities, and trimming whitespace.
+ */
+export function cleanString(string: string | null | undefined): string {
+  if (!string) return '';
+  return stripTags(decode(string));
+}
+
+/**
  * Remove keys with empty values, null or strings like 'nil', 'none'
  * Mutates the input object
  */
