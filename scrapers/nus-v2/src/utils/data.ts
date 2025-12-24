@@ -56,7 +56,10 @@ export function decodeHTMLEntities(string: string) {
  * Also decodes HTML entities and normalizes whitespace (including NBSPs).
  */
 export function stripTags(string: string) {
-  return string.replace(/<[^>]*>?/gm, ' ').replace(/\s+/g, ' ').trim();
+  return string
+    .replace(/<[^>]*>?/gm, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 /**
