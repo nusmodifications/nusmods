@@ -283,7 +283,7 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
     // Get exams and module info in parallel
     const [exams, modules] = await Promise.all([
       new GetSemesterExams(semester, academicYear).run(),
-      new GetSemesterModules(semester, academicYear).run(input),
+      new GetSemesterModules(semester, academicYear).run({ faculties: input.faculties }),
     ]);
 
     // Map department and faculty codes to their names for use during module
