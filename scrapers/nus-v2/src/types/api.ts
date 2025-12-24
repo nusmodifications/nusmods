@@ -54,33 +54,32 @@ export type ModuleAttributeEntry = Readonly<{
 }>;
 
 export type ModuleInfo = Readonly<{
-  Term: string;
-  AcademicOrganisation: ModuleAcademicOrganisation;
-  AcademicGroup: ModuleAcademicGroup;
-  WorkLoadHours: string;
-  EffectiveDate: string;
-  CourseId: string; // Internal ID used to connect dual-coded modules
-  CourseOfferNumber: string; // Usually 1, can be 2 or more for dual-coded modules
-  Preclusion: string;
-  PreclusionRule: string;
-
-  PrintCatalog: 'Y' | 'N';
-  YearLong: 'Y' | 'N';
-  GradingBasisDesc: string;
-
-  CourseTitle: string;
-  AdditionalInformation: string;
-  CoRequisite: string;
-  CoRequisiteRule: string;
-  Description: string;
-  ModularCredit: string;
-  PreRequisite: string;
-  PreRequisiteRule: string;
+  Code: string;
+  Title: string;
+  OrganisationCode: string;
+  OrganisationName: string;
+  AcademicGroup: string;
+  AcademicGroupDesc: string;
+  UnitsMin: number;
+  UnitsMax: number;
+  CourseDesc: string;
   PreRequisiteAdvisory: string;
-  Subject: string; // The letter prefix part of the module code
-  CatalogNumber: string; // The number and suffix part of the module code
-
-  ModuleAttributes?: ModuleAttributeEntry[];
+  PrerequisiteSummary: string;
+  PrerequisiteRule: string;
+  CorequisiteSummary: string;
+  CorequisiteRule: string;
+  PreclusionSummary: string;
+  PreclusionRule: string;
+  CourseAttributes: { Code: string; Value: string }[];
+  YearLong: 'Y' | 'N';
+  EffectiveDate: string;
+  SubjectArea: string;
+  CatalogNumber: string;
+  WorkloadHoursNUSMods: string | null;
+  CourseOfferNumber: string;
+  ApplicableFromYear: string;
+  ApplicableFromSem: string;
+  PrintCatalog: 'Y' | 'N'; // Not in doc but likely there
 }>;
 
 export type TimetableLesson = Readonly<{

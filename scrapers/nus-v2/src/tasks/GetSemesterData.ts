@@ -144,7 +144,9 @@ export function cleanModuleInfo(module: SemesterModule) {
  * Parse the workload string into a mapping of individual components to their hours.
  * If the string is unparsable, it is returned without any modification.
  */
-export function parseWorkload(workloadString: string): Workload {
+export function parseWorkload(workloadString: string | null | undefined): Workload {
+  if (!workloadString) return '';
+
   const cleanedWorkloadString = workloadString
     .replace(/\(.*?\)/g, '') // Remove stuff in parenthesis
     .replace(/NA/gi, '0') // Replace 'NA' with 0
@@ -178,52 +180,54 @@ const mapModuleInfo = (
   departmentMap: DepartmentCodeMap,
   facultyMap: FacultyCodeMap,
   logger: Logger,
+  acadYear: string,
 ): SemesterModule => {
   const {
-    Term,
-    AcademicOrganisation,
+    OrganisationCode,
     AcademicGroup,
-    CourseTitle,
-    AdditionalInformation,
-    WorkLoadHours,
-    GradingBasisDesc,
-    Preclusion,
+    Title,
+    WorkloadHoursNUSMods,
+    PreclusionSummary,
     PreclusionRule,
-    PreRequisite,
-    PreRequisiteRule,
     PreRequisiteAdvisory,
-    CoRequisite,
-    CoRequisiteRule,
-    ModularCredit,
-    Description,
-    Subject,
+    PrerequisiteRule,
+    PrerequisiteSummary,
+    CorequisiteRule,
+    CorequisiteSummary,
+    UnitsMin,
+    CourseDesc,
+    SubjectArea,
     CatalogNumber,
-    ModuleAttributes = [],
+    CourseAttributes = [],
   } = moduleInfo;
-
-  const [AcadYear] = fromTermCode(Term);
 
   // We map department from our department list because
   // AcademicOrganisation.Description is empty for some reason
   return {
-    acadYear: AcadYear,
-    preclusion: Preclusion,
+    acadYear,
+    preclusion: PreclusionSummary,
     preclusionRule: PreclusionRule,
-    description: Description,
-    title: CourseTitle,
-    additionalInformation: AdditionalInformation,
-    department: departmentMap[AcademicOrganisation.Code],
-    faculty: facultyMap[AcademicGroup.Code],
-    workload: parseWorkload(WorkLoadHours),
-    gradingBasisDescription: GradingBasisDesc,
-    prerequisite: PreRequisite,
-    prerequisiteRule: PreRequisiteRule,
+    description: CourseDesc,
+    title: Title,
+    additionalInformation: '', // Missing in new API?
+    department: departmentMap[OrganisationCode],
+    faculty: facultyMap[AcademicGroup],
+    workload: parseWorkload(WorkloadHoursNUSMods),
+    gradingBasisDescription: '', // Missing in new API?
+    prerequisite: PrerequisiteSummary,
+    prerequisiteRule: PrerequisiteRule,
     prerequisiteAdvisory: PreRequisiteAdvisory,
-    corequisite: CoRequisite,
-    corequisiteRule: CoRequisiteRule,
-    moduleCredit: ModularCredit,
-    moduleCode: Subject + CatalogNumber,
-    attributes: mapAttributes(ModuleAttributes, logger),
+    corequisite: CorequisiteSummary,
+    corequisiteRule: CorequisiteRule,
+    moduleCredit: String(UnitsMin),
+    moduleCode: SubjectArea + CatalogNumber,
+    attributes: mapAttributes(
+      CourseAttributes.map((attr) => ({
+        CourseAttribute: attr.Code,
+        CourseAttributeValue: attr.Value,
+      })),
+      logger,
+    ),
   };
 };
 
@@ -284,10 +288,7 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
     const facultyMap = getFacultyCodeMap(input.faculties);
 
     // Key modules by their module code for easier mapping
-    const modulesMap = keyBy(
-      modules,
-      (moduleInfo) => moduleInfo.Subject + moduleInfo.CatalogNumber,
-    );
+    const modulesMap = keyBy(modules, (moduleInfo) => moduleInfo.SubjectArea + moduleInfo.CatalogNumber);
 
     // Combine all three source of data into one set of semester module info.
     //
@@ -300,7 +301,7 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
 
       // Map module info to the shape expected by our frontend and clean up
       // the data by removing nil fields and fixing data issues
-      const rawModule = mapModuleInfo(moduleInfo, departmentMap, facultyMap, logger);
+      const rawModule = mapModuleInfo(moduleInfo, departmentMap, facultyMap, logger, academicYear);
       const module = cleanModuleInfo(rawModule);
 
       const timetable = timetables[moduleCode];
