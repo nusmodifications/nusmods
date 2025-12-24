@@ -39,7 +39,7 @@ export default class DataPipeline extends BaseTask implements Task<void, Module[
 
     // Get each semester's data in series. Running it in parallel provides
     // little benefit since the bottleneck is in module retrieval, which has to
-    // run for each department and takes up most of the time
+    // run for each faculty and takes up most of the time
 
     /* eslint-disable no-await-in-loop */
     const semesterData = [];
