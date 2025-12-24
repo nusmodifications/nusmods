@@ -17,7 +17,7 @@ import type {
   ModuleInfo,
   TimetableLesson,
 } from '../types/api';
-import type { ModuleCode } from '../types/modules';
+import type { FacultyCode, ModuleCode } from '../types/modules';
 
 import { AuthError, NotFoundError, UnknownApiError } from '../utils/errors';
 import { mapTermToApiParams, sanitizeModuleInfo } from '../utils/api';
@@ -36,21 +36,9 @@ export interface INusApi {
   getDepartment: () => Promise<AcademicOrg[]>;
 
   /**
-   * Get info for a specific module in a specific term.
-   *
-   * @throws {NotFoundError} If module cannot be found.
-   */
-  getModuleInfo: (term: string, moduleCode: ModuleCode) => Promise<ModuleInfo>;
-
-  /**
    * Get all modules corresponding to a specific faculty during a specific term
    */
-  getFacultyModules: (term: string, facultyCode: string) => Promise<ModuleInfo[]>;
-
-  /**
-   * Get all modules corresponding to a specific department during a specific term
-   */
-  getDepartmentModules: (term: string, departmentCode: string) => Promise<ModuleInfo[]>;
+  getFacultyModules: (term: string, facultyCode: FacultyCode) => Promise<ModuleInfo[]>;
 
   /**
    * Returns every lesson associated with a module in a specific term in one massive
@@ -253,56 +241,41 @@ class NusApi implements INusApi {
    * Calls the modules endpoint
    */
   callModulesEndpoint = async (term: string, params: ApiParams): Promise<ModuleInfo[]> => {
-    const termParams = mapTermToApiParams(term);
     const maxItems = 1000;
+
+    const termParams = mapTermToApiParams(term);
     const baseParams = {
       ...termParams,
       ...params,
-      latestVersionOnly: 'True',
+      latestVersionOnly: 'False',
       publishedOnly: 'True',
       maxItems: String(maxItems),
     };
 
+    const allModules: ModuleInfo[] = [];
+    let offset = 0;
+    let hasMore = true;
+
     try {
-      // 1. Fetch the first page to get the total itemCount
-      const firstResponse = await this.callApi<{ data: ModuleInfo[]; itemCount: number }>(
-        'CourseNUSMods',
-        {
-          ...baseParams,
-          offset: '0',
-        },
-        courseHeaders,
-      );
+      while (hasMore) {
+        // eslint-disable-next-line no-await-in-loop
+        const response = await this.callApi<{ data: ModuleInfo[]; itemCount: number }>(
+          'CourseNUSMods',
+          {
+            ...baseParams,
+            offset: String(offset),
+          },
+          courseHeaders,
+        );
 
-      const allModules = firstResponse.data.data.map(sanitizeModuleInfo);
-      const { itemCount } = firstResponse.data;
+        const modules = response.data.data.map(sanitizeModuleInfo);
+        allModules.push(...modules);
 
-      // 2. If there are more items, fetch the remaining pages in parallel.
-      // Since this.callApi uses a queue, concurrency will still be limited.
-      const remainingPages: Array<{
-        promise: Promise<{ data: { data: ModuleInfo[]; itemCount: number }; response: any }>;
-        requestParams: ApiParams;
-      }> = [];
-      for (let offset = allModules.length; offset < itemCount; offset += maxItems) {
-        const requestParams = {
-          ...baseParams,
-          offset: String(offset),
-        };
-        remainingPages.push({
-          promise: this.callApi<{ data: ModuleInfo[]; itemCount: number }>(
-            'CourseNUSMods',
-            requestParams,
-            courseHeaders,
-          ),
-          requestParams,
-        });
-      }
-
-      if (remainingPages.length > 0) {
-        const responses = await Promise.all(remainingPages.map((page) => page.promise));
-        responses.forEach((response) => {
-          allModules.push(...response.data.data.map(sanitizeModuleInfo));
-        });
+        if (modules.length < maxItems) {
+          hasMore = false;
+        } else {
+          offset += maxItems;
+        }
       }
 
       return allModules;
@@ -336,45 +309,8 @@ class NusApi implements INusApi {
       acadHeaders,
     );
 
-  getModuleInfo = async (term: string, moduleCode: ModuleCode): Promise<ModuleInfo> => {
-    // Module info API takes in subject and catalog number separately, so we need
-    // to split the module code prefix out from the rest of it
-    const parts = /^([a-z]+)(.+)$/i.exec(moduleCode);
-
-    if (!parts || parts.length < 2) {
-      throw new RangeError(`moduleCode ${moduleCode} does not look like a module code`);
-    }
-
-    // catalognbr = Catalog number
-    const [, subject, catalognbr] = parts;
-    const termParams = mapTermToApiParams(term);
-    const requestParams = {
-      ...termParams,
-      subjectArea: subject,
-      catalogNbr: catalognbr,
-      latestVersionOnly: 'True',
-      publishedOnly: 'True',
-    };
-    const { data: response } = await this.callApi<{
-      data: ModuleInfo[];
-      itemCount: number;
-    }>('CourseNUSMods', requestParams, courseHeaders);
-
-    const modules = response.data;
-
-    if (modules.length === 0) throw new NotFoundError(`Module ${moduleCode} cannot be found`);
-    return sanitizeModuleInfo(modules[0]);
-  };
-
-  getFacultyModules = async (term: string, facultyCode: string) =>
+  getFacultyModules = async (term: string, facultyCode: FacultyCode): Promise<ModuleInfo[]> =>
     this.callModulesEndpoint(term, { acadGroupCode: facultyCode.slice(0, 3) });
-
-  getDepartmentModules = async (term: string, departmentCode: string): Promise<ModuleInfo[]> => {
-    const modules = await this.callModulesEndpoint(term, {
-      acadGroupCode: departmentCode.slice(0, 3),
-    });
-    return modules.filter((module) => module.OrganisationCode === departmentCode);
-  };
 
   getModuleTimetable = async (term: string, module: ModuleCode): Promise<TimetableLesson[]> =>
     this.callV1Api(
