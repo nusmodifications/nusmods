@@ -227,8 +227,8 @@ const mapModuleInfo = (
     moduleCode: SubjectArea + CatalogNumber,
     attributes: mapAttributes(
       CourseAttributes.map((attr) => ({
-        CourseAttribute: attr.Code,
-        CourseAttributeValue: attr.Value,
+        CourseAttribute: attr.Code.trim(),
+        CourseAttributeValue: attr.Value.trim(),
       })),
       logger,
     ),
@@ -292,7 +292,10 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
     const facultyMap = getFacultyCodeMap(input.faculties);
 
     // Key modules by their module code for easier mapping
-    const modulesMap = keyBy(modules, (moduleInfo) => moduleInfo.SubjectArea + moduleInfo.CatalogNumber);
+    const modulesMap = keyBy(
+      modules,
+      (moduleInfo) => moduleInfo.SubjectArea + moduleInfo.CatalogNumber,
+    );
 
     // Combine all three source of data into one set of semester module info.
     //

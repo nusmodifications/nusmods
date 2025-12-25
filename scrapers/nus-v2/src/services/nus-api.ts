@@ -94,6 +94,15 @@ type V1ApiResponse<Data> = {
   code: StatusCode;
 };
 
+/* eslint-disable camelcase */
+
+type PagedV1ApiResponse<Data> = V1ApiResponse<Data> & {
+  page: number;
+  records_per_page: number;
+  total_records: number;
+  ts: string;
+};
+
 // Shared headers for all API requests
 const commonHeaders: ApiHeaders = {
   'Content-Type': 'application/json',
@@ -130,8 +139,6 @@ function mapErrorCode(code: string, msg: string) {
 
   return error;
 }
-
-/* eslint-disable camelcase */
 
 /**
  * Base API call function. This function wraps around axios to provide basic
@@ -338,47 +345,63 @@ class NusApi implements INusApi {
   getSemesterTimetables = async (
     term: string,
     lessonConsumer: (lesson: TimetableLesson) => void,
-  ): Promise<void> =>
-    new Promise((resolve, reject) => {
-      const endpoint = 'timetable/v1/published/class/withdate';
-      const url = new URL(endpoint, config.baseUrl);
-      url.searchParams.append('term', term);
+  ): Promise<void> => {
+    const recordsPerPage = 10000;
+    let page = 1;
 
-      oboe({
-        url: url.href,
-        headers: {
-          ...commonHeaders,
-          ...ttHeaders,
-        },
-        method: 'GET',
-      })
-        .node('data[*]', (lesson: TimetableLesson) => {
-          // Consume and discard each lesson
-          lessonConsumer(lesson);
-          return oboe.drop;
-        })
-        .done((data) => {
-          // Handle application level errors
-          const { code, msg } = data;
+    const fetchPage = async (pageToFetch: number): Promise<boolean> =>
+      new Promise((resolve, reject) => {
+        const endpoint = 'timetable/v1/published/class/withdate';
+        const url = new URL(endpoint, config.baseUrl);
+        url.searchParams.append('term', term);
+        url.searchParams.append('page', String(pageToFetch));
+        url.searchParams.append('records_per_page', String(recordsPerPage));
 
-          if (code === OKAY) {
-            resolve();
-          } else {
-            const error = mapErrorCode(code, msg);
-            error.requestConfig = { url: url.href };
-            reject(error);
-          }
+        oboe({
+          url: url.href,
+          headers: {
+            ...commonHeaders,
+            ...ttHeaders,
+          },
+          method: 'GET',
         })
-        .fail((error) => {
-          if (error.thrown) {
-            reject(error.thrown);
-          } else {
-            const apiError = new UnknownApiError(`Unable to get semester timetable`);
-            apiError.originalError = apiError;
-            reject(apiError);
-          }
-        });
-    });
+          .node('data[*]', (lesson: TimetableLesson) => {
+            // Consume and discard each lesson
+            lessonConsumer(lesson);
+            return oboe.drop;
+          })
+          .done((data: PagedV1ApiResponse<unknown>) => {
+            // Handle application level errors
+            const { code, msg, page: responsePage, total_records, records_per_page } = data;
+
+            if (code !== OKAY) {
+              const error = mapErrorCode(code, msg);
+              error.requestConfig = { url: url.href };
+              reject(error);
+              return;
+            }
+
+            const hasMore = responsePage * records_per_page < total_records;
+            resolve(hasMore);
+          })
+          .fail((error) => {
+            if (error.thrown) {
+              reject(error.thrown);
+            } else {
+              const apiError = new UnknownApiError(`Unable to get semester timetable`);
+              apiError.originalError = apiError;
+              reject(apiError);
+            }
+          });
+      });
+
+    let hasMorePages = true;
+    while (hasMorePages) {
+      // eslint-disable-next-line no-await-in-loop
+      hasMorePages = await fetchPage(page);
+      page += 1;
+    }
+  };
 
   getModuleExam = async (term: string, module: ModuleCode): Promise<ModuleExam> => {
     const exams = await this.callV1Api<ModuleExam[]>(
