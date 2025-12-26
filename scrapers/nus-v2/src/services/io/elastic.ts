@@ -148,6 +148,10 @@ export default class ElasticPersist implements Persist {
       }
     }
 
+    if (bulkBody.length === 0) {
+      return;
+    }
+
     const client = await this.client;
     const res = await client.bulk({
       index: INDEX_NAME,
