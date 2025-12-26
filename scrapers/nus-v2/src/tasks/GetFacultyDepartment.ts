@@ -133,6 +133,17 @@ export default class GetFacultyDepartment extends BaseTask implements Task<void,
     // Download department and faculties in parallel
     let [departments, faculties] = await Promise.all([this.getDepartments(), this.getFaculties()]);
 
+    // TODO: Remove this once we figure out if excluding this from the /get-acadgroup endpoint was
+    //       intentional, or if this is an error somewhere else. Until then, we need this for
+    //       modules like CS2101.
+    faculties.push({
+      AcademicGroup: '099',
+      DescriptionShort: 'Non-Faculty-based Departments',
+      Description: 'Non-Faculty-based Departments',
+      EffectiveStatus: 'A',
+      EffectiveDate: '1905-01-01',
+    });
+
     departments = departments.map(cleanFacultyDepartment);
     faculties = faculties.map(cleanFacultyDepartment);
 

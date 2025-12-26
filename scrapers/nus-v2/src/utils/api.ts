@@ -6,7 +6,7 @@ import { Semester } from '../types/modules';
 import { Cache } from '../types/persist';
 import { ModuleInfo } from '../types/api';
 import rootLogger, { Logger } from '../services/logger';
-import { cleanString, decodeHTMLEntities } from './data';
+import { cleanString } from './data';
 
 /**
  * Construct the 4 number term code from the academic year and semester
@@ -75,7 +75,7 @@ export function sanitizeModuleInfo(module: ModuleInfo): ModuleInfo {
     SubjectArea: cleanString(module.SubjectArea),
     CatalogNumber: cleanString(module.CatalogNumber),
     WorkloadHoursNUSMods: cleanOrNull(module.WorkloadHoursNUSMods),
-    CourseDesc: decodeHTMLEntities(module.CourseDesc || ''),
+    CourseDesc: cleanString(module.CourseDesc),
     PreRequisiteAdvisory: cleanOrNull(module.PreRequisiteAdvisory),
     AdditionalInformation: cleanOrNull(module.AdditionalInformation),
     GradingBasisDesc: cleanOrNull(module.GradingBasisDesc),
