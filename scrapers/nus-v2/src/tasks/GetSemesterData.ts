@@ -21,7 +21,7 @@ import GetSemesterTimetable from './GetSemesterTimetable';
 import GetSemesterModules from './GetSemesterModules';
 import { fromTermCode } from '../utils/api';
 import { validateSemester } from '../services/validation';
-import { removeEmptyValues, titleize, trimValues, decodeHTMLEntities } from '../utils/data';
+import { removeEmptyValues, titleize, trimValues, cleanString } from '../utils/data';
 import { difference } from '../utils/set';
 import { Logger } from '../services/logger';
 
@@ -117,7 +117,7 @@ export function cleanModuleInfo(module: SemesterModule) {
   }
 
   if (cleanedModule.description != null) {
-    cleanedModule.description = decodeHTMLEntities(cleanedModule.description);
+    cleanedModule.description = cleanString(cleanedModule.description);
   }
 
   // Remove empty values like 'nil' and empty strings for keys that allow them

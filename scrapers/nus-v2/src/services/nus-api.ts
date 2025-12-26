@@ -254,7 +254,7 @@ class NusApi implements INusApi {
     const baseParams = {
       ...termParams,
       ...params,
-      latestVersionOnly: 'False',
+      latestVersionOnly: 'True',
       publishedOnly: 'True',
       maxItems: String(maxItems),
     };
@@ -299,22 +299,10 @@ class NusApi implements INusApi {
   };
 
   getFaculty = async (): Promise<AcademicGrp[]> =>
-    this.callV1Api(
-      'edurec/config/v1/get-acadgroup',
-      {
-        eff_status: 'A',
-      },
-      acadHeaders,
-    );
+    this.callV1Api('edurec/config/v1/get-acadgroup', {}, acadHeaders);
 
   getDepartment = async (): Promise<AcademicOrg[]> =>
-    this.callV1Api(
-      'edurec/config/v1/get-acadorg',
-      {
-        eff_status: 'A',
-      },
-      acadHeaders,
-    );
+    this.callV1Api('edurec/config/v1/get-acadorg', {}, acadHeaders);
 
   getFacultyModules = async (term: string, facultyCode: FacultyCode): Promise<ModuleInfo[]> =>
     this.callModulesEndpoint(term, { acadGroupCode: facultyCode.slice(0, 3) });
