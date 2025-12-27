@@ -68,6 +68,26 @@ export default function OptimiserFAQContainer() {
             </>
           }
         />
+
+        <FAQComponent
+          question="What if I am a TA for a course?"
+          body={
+            <>
+              <p className={styles.lede}>
+                If you are a TA for a course, please remove that course from the list of modules to
+                be optimised.
+              </p>
+              <p className={styles.bodyText}>
+                This is because the optimiser does not take into account TA duties, and will
+                schedule all lessons for that course as per normal.
+              </p>
+              <p className={styles.bodyText}>
+                It is advised to manually add in your TA slots after optimisation to avoid any
+                issues.
+              </p>
+            </>
+          }
+        />
       </div>
     </>
   );
