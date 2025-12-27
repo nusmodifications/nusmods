@@ -70,8 +70,8 @@ func SerializeConfig(config map[string]map[string][]models.LessonIndex) string {
 }
 
 // GenerateNUSModsShareableLink creates a shareable NUSMods link from the assignments
-func GenerateNUSModsShareableLink(assignments map[string]string, defaultSlots map[string]map[string][]models.ModuleSlot, req models.OptimiserRequest) (string, string) {
-	config := CreateConfig(assignments)
+func GenerateNUSModsShareableLink(assignments map[string]string, defaultSlots map[string]map[string][]models.ModuleSlot, lessonToSlots map[string][][]models.ModuleSlot, req models.OptimiserRequest) (string, string) {
+	config := CreateConfig(assignments, lessonToSlots)
 	serializedConfig := SerializeConfig(config)
 
 	/*
@@ -88,7 +88,7 @@ func GenerateNUSModsShareableLink(assignments map[string]string, defaultSlots ma
 
 	}
 
-	default_config := CreateConfig(assignments)
+	default_config := CreateConfig(assignments, lessonToSlots)
 	default_serializedConfig := SerializeConfig(default_config)
 
 	semesterPath := ""
