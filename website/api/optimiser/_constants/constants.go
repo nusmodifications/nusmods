@@ -46,3 +46,6 @@ var GAP_PENALTY_THRESHOLD = 120 // 2 hours in minutes
 var GAP_PENALTY_RATE = 100.0
 var LUNCH_REQUIRED_TIME = 60 // 1 hour in minutes
 var CONSECUTIVE_HOURS_PENALTY_RATE = 100
+
+// This is used by [nusmods_link.SerializeLessonIndices] to serialize the result of optimiser into a timetable share link to return to the client
+var MODULE_CODE_SEPARATOR = ";"
