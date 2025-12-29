@@ -82,7 +82,6 @@ export function expectModulesEqual(actual: Module, expected: Module) {
   const omittedKeys = [
     'semesterData',
     'fulfillRequirements',
-    'eduRecCourseID',
     'aliases',
     'attributes',
   ];

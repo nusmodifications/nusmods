@@ -124,7 +124,6 @@ export type Module = {
   attributes?: NUSModuleAttributes;
   gradingBasisDescription?: string;
   additionalInformation?: string;
-  eduRecCourseID?: string;
 
   // Requsites
   prerequisite?: string;
