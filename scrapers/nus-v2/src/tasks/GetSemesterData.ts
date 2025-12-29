@@ -200,7 +200,6 @@ const mapModuleInfo = (
     CatalogNumber,
     CourseAttributes = [],
     AdditionalInformation,
-    EduRecCourseID,
     GradingBasisDesc,
   } = moduleInfo;
 
@@ -213,7 +212,6 @@ const mapModuleInfo = (
     description: CourseDesc ?? undefined,
     title: Title,
     additionalInformation: AdditionalInformation || '',
-    eduRecCourseID: EduRecCourseID || '',
     department: departmentMap[OrganisationCode],
     faculty: facultyMap[AcademicGroup],
     workload: parseWorkload(WorkloadHoursNUSMods) ?? undefined,
