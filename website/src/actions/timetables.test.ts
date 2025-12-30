@@ -4,7 +4,14 @@ import { SemTimetableConfig, LessonWithIndex, TimetableConfigV1 } from 'types/ti
 import lessons from '__mocks__/lessons-array.json';
 import { CS1010A, CS1010S, CS3216 } from '__mocks__/modules';
 
-import { TaModulesMapV1, ModuleBank, TimetablesState } from 'types/reducers';
+import {
+  TaModulesMapV1,
+  ModuleBank,
+  TimetablesState,
+  SemesterColorMap,
+  HiddenModulesMap,
+  ColorMapping,
+} from 'types/reducers';
 import { defaultTimetableState } from 'reducers/timetables';
 import * as actions from './timetables';
 
@@ -135,7 +142,7 @@ describe('fillTimetableBlanks', () => {
   });
   const action = actions.validateTimetable(semester);
 
-  test('do nothing if timetable is already full', () => {
+  test('do nothing if timetable is already full', async () => {
     const timetable = {
       CS1010S: {
         Lecture: [0],
@@ -146,12 +153,11 @@ describe('fillTimetableBlanks', () => {
 
     const state: any = { timetables: timetablesState(timetable), moduleBank };
     const dispatch = jest.fn();
-    action(dispatch, () => state);
-
+    await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
     expect(dispatch).not.toHaveBeenCalled();
   });
 
-  test('fill missing lessons with randomly generated modules', () => {
+  test('fill missing lessons with randomly generated modules', async () => {
     const timetable = {
       CS1010S: {
         Lecture: [0],
@@ -161,13 +167,11 @@ describe('fillTimetableBlanks', () => {
     };
     const state: any = { timetables: timetablesState(timetable), moduleBank };
     const dispatch = jest.fn();
-
-    action(dispatch, () => state);
-
+    await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
     expect(dispatch).toHaveBeenCalledTimes(2);
 
     const [[firstAction], [secondAction]] = dispatch.mock.calls;
-    expect(firstAction).toMatchObject({
+    expect(firstAction).toEqual({
       type: actions.SET_LESSON_CONFIG,
       payload: {
         semester,
@@ -180,7 +184,7 @@ describe('fillTimetableBlanks', () => {
       },
     });
 
-    expect(secondAction).toMatchObject({
+    expect(secondAction).toEqual({
       type: actions.SET_LESSON_CONFIG,
       payload: {
         semester,
@@ -192,9 +196,13 @@ describe('fillTimetableBlanks', () => {
     });
   });
 
-  test('migrate v1 config', () => {
+  test('migrate v1 config', async () => {
+    const colors: ColorMapping = {
+      CS1010S: 0,
+      CS3216: 1,
+    };
+    const hiddenModules: ModuleCode[] = [];
     const timetables = {
-      ...initialState,
       lessons: {
         [semester]: {
           CS1010S: {
@@ -207,6 +215,12 @@ describe('fillTimetableBlanks', () => {
           },
         } as TimetableConfigV1,
       },
+      colors: {
+        [semester]: colors,
+      } as SemesterColorMap,
+      hidden: {
+        [semester]: hiddenModules,
+      } as HiddenModulesMap,
       ta: {
         [semester]: {
           CS1010S: [
@@ -220,29 +234,35 @@ describe('fillTimetableBlanks', () => {
 
     const state: any = { timetables, moduleBank };
     const dispatch = jest.fn();
-    action(dispatch, () => state);
+    await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
     expect(dispatch).toHaveBeenCalledTimes(1);
     const [[firstAction]] = dispatch.mock.calls;
-    expect(firstAction).toMatchObject({
-      type: 'SET_TIMETABLES',
+
+    const migratedTimetable: SemTimetableConfig = {
+      CS1010S: {
+        Lecture: [0],
+        Recitation: [3],
+        Tutorial: [21],
+      },
+      CS3216: {
+        Lecture: [0],
+      },
+    };
+    const migratedTaModules: ModuleCode[] = ['CS1010S'];
+
+    expect(firstAction).toEqual({
+      type: 'SET_TIMETABLE',
       payload: {
-        lessons: {
-          [semester]: {
-            CS1010S: {
-              Lecture: [0],
-              Tutorial: [21],
-              Recitation: [3],
-            },
-          },
-        },
-        taModules: {
-          [semester]: ['CS1010S'],
-        },
+        semester,
+        timetable: migratedTimetable,
+        colors,
+        hiddenModules,
+        taModules: migratedTaModules,
       },
     });
   });
 
-  test('should not error when module cannot be found', () => {
+  test('should not error when module cannot be found', async () => {
     const timetable = {
       CS1010S: {
         Lecture: [0],
@@ -260,8 +280,25 @@ describe('fillTimetableBlanks', () => {
       moduleBank: moduleBankWithoutModule,
     };
     const dispatch = jest.fn();
-    action(dispatch, () => state);
+    await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
+    expect(dispatch).not.toThrow(TypeError);
+  });
 
+  test('should not error when timetable configs are malformed', async () => {
+    const timetable = {
+      CS1010S: {
+        Lecture: [undefined],
+        Tutorial: ['1'],
+        Recitation: [null],
+      },
+    };
+    const timetables = {
+      ...initialState,
+      lessons: { [semester]: timetable },
+    };
+    const state: any = { timetables, moduleBank };
+    const dispatch = jest.fn();
+    await expect(action(dispatch, () => state)).resolves.not.toThrow(Error);
     expect(dispatch).not.toThrow(TypeError);
   });
 });
