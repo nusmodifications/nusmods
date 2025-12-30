@@ -72,7 +72,11 @@ export function mapFacultyDepartments(
   // Then add each department to their faculty
   departments.forEach((department) => {
     // The department code's first three characters is its faculty code
-    const faculty = facultyCodes[department.AcademicOrganisation.slice(0, 3)];
+    const facultyCode =
+      department.AcademicOrganisation.length >= 3
+        ? department.AcademicOrganisation.slice(0, 3)
+        : department.AcademicOrganisation;
+    const faculty = facultyCodes[facultyCode];
 
     if (mappings[faculty] && !mappings[faculty].includes(department.Description)) {
       mappings[faculty].push(department.Description);
@@ -141,6 +145,7 @@ export default class GetFacultyDepartment extends BaseTask implements Task<void,
       DescriptionShort: 'Non-Faculty-based Departments',
       Description: 'Non-Faculty-based Departments',
       EffectiveStatus: 'A',
+      // 1905-01-01 is the default date used in the API
       EffectiveDate: '1905-01-01',
     });
 

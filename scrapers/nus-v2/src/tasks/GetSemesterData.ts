@@ -144,8 +144,8 @@ export function cleanModuleInfo(module: SemesterModule) {
  * Parse the workload string into a mapping of individual components to their hours.
  * If the string is unparsable, it is returned without any modification.
  */
-export function parseWorkload(workloadString: string | null | undefined): Workload {
-  if (!workloadString) return '';
+export function parseWorkload(workloadString: string | null | undefined): Workload | undefined {
+  if (!workloadString) return undefined;
 
   const cleanedWorkloadString = workloadString
     .replace(/\(.*?\)/g, '') // Remove stuff in parenthesis
@@ -214,7 +214,7 @@ const mapModuleInfo = (
     additionalInformation: AdditionalInformation || '',
     department: departmentMap[OrganisationCode],
     faculty: facultyMap[AcademicGroup],
-    workload: parseWorkload(WorkloadHoursNUSMods) ?? undefined,
+    workload: parseWorkload(WorkloadHoursNUSMods),
     gradingBasisDescription: GradingBasisDesc || '',
     prerequisite: PrerequisiteSummary ?? undefined,
     prerequisiteRule: PrerequisiteRule ?? undefined,

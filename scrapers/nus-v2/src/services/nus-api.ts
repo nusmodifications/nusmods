@@ -82,7 +82,7 @@ type ApiHeaders = {
 
 // Error codes specified by the API. Note that these, like many other things
 // in the API, are not to be relied upon completely
-type StatusCode = '00000' | '10000' | '10001';
+type StatusCode = string;
 const OKAY: StatusCode = '00000';
 const AUTH_ERROR: StatusCode = '10000';
 const RECORD_NOT_FOUND: StatusCode = '10001';
@@ -304,8 +304,10 @@ class NusApi implements INusApi {
   getDepartment = async (): Promise<AcademicOrg[]> =>
     this.callV1Api('edurec/config/v1/get-acadorg', {}, acadHeaders);
 
-  getFacultyModules = async (term: string, facultyCode: FacultyCode): Promise<ModuleInfo[]> =>
-    this.callModulesEndpoint(term, { acadGroupCode: facultyCode.slice(0, 3) });
+  getFacultyModules = async (term: string, facultyCode: FacultyCode): Promise<ModuleInfo[]> => {
+    const acadGroupCode = facultyCode.length >= 3 ? facultyCode.slice(0, 3) : facultyCode;
+    return this.callModulesEndpoint(term, { acadGroupCode });
+  };
 
   getModuleTimetable = async (term: string, module: ModuleCode): Promise<TimetableLesson[]> =>
     this.callV1Api(
