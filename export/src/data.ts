@@ -63,7 +63,7 @@ export function validateExportData(data: ExportData) {
 
   const timetableSchema = Joi.object().pattern(
     Joi.string(),
-    Joi.object().pattern(Joi.string(), Joi.array().ordered(Joi.number().positive())),
+    Joi.object().pattern(Joi.string(), Joi.array().ordered(Joi.number().min(0))),
   );
   const taModulesConfigSchema = Joi.array().ordered(Joi.string());
   const themeSchema = Joi.object({
