@@ -61,10 +61,26 @@ export const parseExportData: Middleware<State> = (ctx, next) => {
 export function validateExportData(data: ExportData) {
   if (!_.isObject(data)) throw new Error('data should be an object');
 
+  /**
+   * type ModuleLessonConfig = {
+   *   [lessonType: LessonType]: LessonIndex[];
+   * };
+   */
+  const moduleLessonConfigSchema = Joi.object().pattern(
+    Joi.string(),
+    Joi.array().items(Joi.number().integer().min(0)),
+  );
+
+  /**
+   * type SemTimetableConfig = {
+   *   [moduleCode: ModuleCode]: ModuleLessonConfig;
+   * };
+   */
   const timetableSchema = Joi.object().pattern(
     Joi.string(),
-    Joi.object().pattern(Joi.string(), Joi.array().ordered(Joi.number().min(0))),
+    moduleLessonConfigSchema,
   );
+
   const taModulesConfigSchema = Joi.array().ordered(Joi.string());
   const themeSchema = Joi.object({
     id: Joi.string(),
