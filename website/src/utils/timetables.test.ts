@@ -1,5 +1,5 @@
 import NUSModerator from 'nusmoderator';
-import _, { get } from 'lodash';
+import _, { filter, get } from 'lodash';
 import { parseISO } from 'date-fns';
 import {
   TaModulesConfigV1,
@@ -11,6 +11,7 @@ import {
   TimetableDayArrangement,
   TimetableDayFormat,
   ModuleLessonConfigV1,
+  LessonWithIndex,
 } from 'types/timetables';
 import {
   LessonType,
@@ -47,6 +48,7 @@ import {
   formatNumericWeeks,
   getClosestLessonConfig,
   getEndTimeAsDate,
+  getInteractableLessons,
   getRecoveryLessonIndices,
   getStartTimeAsDate,
   groupLessonsByDay,
@@ -378,6 +380,194 @@ test('areOtherClassesAvailable', () => {
   ]);
   expect(areOtherClassesAvailable(lessons3, 'Lecture')).toBe(false);
   expect(areOtherClassesAvailable(lessons3, 'Tutorial')).toBe(true);
+});
+
+describe(getInteractableLessons, () => {
+  const modules = {
+    PC1222,
+    CS4243,
+  };
+  const semester = 1;
+  const colors = {
+    PC1222: 0,
+    CS4243: 1,
+  };
+  const getIsTaInTimetable = (taModulesConfig: ModuleCode[]) => (moduleCode: ModuleCode) =>
+    taModulesConfig.includes(moduleCode);
+
+  const lessonsInPC1222: LessonWithIndex[] = getModuleTimetable(PC1222, semester).map((lesson) => ({
+    ...lesson,
+    moduleCode: PC1222.moduleCode,
+    title: PC1222.title,
+  }));
+  const lessonsInCS4243: LessonWithIndex[] = getModuleTimetable(CS4243, semester).map((lesson) => ({
+    ...lesson,
+    moduleCode: CS4243.moduleCode,
+    title: CS4243.title,
+  }));
+
+  const timetableLessons: LessonWithIndex[] = [
+    lessonsInPC1222[0],
+    lessonsInPC1222[4],
+    lessonsInPC1222[6],
+    lessonsInCS4243[0],
+    lessonsInCS4243[5],
+  ];
+
+  describe('hydrating modules when there is no active lesson', () => {
+    const isTaInTimetable = getIsTaInTimetable([PC1222.moduleCode]);
+    const readOnly = false;
+    const activeLesson = null;
+
+    const hydratedLessons = getInteractableLessons(
+      timetableLessons,
+      modules,
+      semester,
+      colors,
+      readOnly,
+      activeLesson,
+      isTaInTimetable,
+    );
+
+    test('hydration of lessons belonging to ta module', () => {
+      expect(hydratedLessons).toContainEqual({
+        ...lessonsInPC1222[0],
+        canBeAddedToLessonConfig: false,
+        canBeSelectedAsActiveLesson: true,
+        colorIndex: 0,
+        isActive: false,
+        isTaInTimetable: true, // lesson belongs to a ta module
+      });
+      expect(hydratedLessons).toContainEqual({
+        ...lessonsInPC1222[4],
+        canBeAddedToLessonConfig: false,
+        canBeSelectedAsActiveLesson: true,
+        colorIndex: 0,
+        isActive: false,
+        isTaInTimetable: true,
+      });
+      expect(hydratedLessons).toContainEqual({
+        ...lessonsInPC1222[6],
+        canBeAddedToLessonConfig: false,
+        canBeSelectedAsActiveLesson: true,
+        colorIndex: 0,
+        isActive: false,
+        isTaInTimetable: true,
+      });
+    });
+
+    test('hydration of lessons belonging to non-ta module', () => {
+      expect(hydratedLessons).toContainEqual({
+        ...lessonsInCS4243[0],
+        canBeAddedToLessonConfig: false,
+        canBeSelectedAsActiveLesson: true,
+        colorIndex: 1,
+        isActive: false,
+        isTaInTimetable: false, // lesson does not belong to a ta module
+      });
+    });
+
+    test('hydration of lessons with no alternative lessons', () => {
+      expect(hydratedLessons).toContainEqual({
+        ...lessonsInCS4243[5],
+        canBeAddedToLessonConfig: false,
+        canBeSelectedAsActiveLesson: false, // in non-ta modules, lessons that are the only one of their lesson type cannot be selected or removed
+        colorIndex: 1,
+        isActive: false,
+        isTaInTimetable: false,
+      });
+    });
+
+    test('only lessons in timetable should be visible', () => {
+      expect(hydratedLessons).toHaveLength(5);
+    });
+  });
+
+  describe('hydrating modules when there is an active lesson', () => {
+    const isTaInTimetable = getIsTaInTimetable([CS4243.moduleCode]);
+    const readOnly = false;
+    const activeLesson = lessonsInCS4243[0];
+
+    const hydratedLessons = getInteractableLessons(
+      timetableLessons,
+      modules,
+      semester,
+      colors,
+      readOnly,
+      activeLesson,
+      isTaInTimetable,
+    );
+
+    test('hydration of lessons of other modules', () => {
+      expect(hydratedLessons).toContainEqual({
+        ...lessonsInPC1222[0],
+        canBeAddedToLessonConfig: false,
+        canBeSelectedAsActiveLesson: true,
+        colorIndex: 0,
+        isActive: false,
+        isTaInTimetable: false,
+      });
+      expect(hydratedLessons).toContainEqual({
+        ...lessonsInPC1222[4],
+        canBeAddedToLessonConfig: false,
+        canBeSelectedAsActiveLesson: true,
+        colorIndex: 0,
+        isActive: false,
+        isTaInTimetable: false,
+      });
+      expect(hydratedLessons).toContainEqual({
+        ...lessonsInPC1222[6],
+        canBeAddedToLessonConfig: false,
+        canBeSelectedAsActiveLesson: true,
+        colorIndex: 0,
+        isActive: false,
+        isTaInTimetable: false,
+      });
+      expect(
+        filter(hydratedLessons, (lesson) => lesson.moduleCode === PC1222.moduleCode),
+      ).toHaveLength(3);
+    });
+
+    test('hydration of active lesson', () => {
+      expect(hydratedLessons).toContainEqual({
+        ...lessonsInCS4243[0],
+        canBeAddedToLessonConfig: false,
+        canBeSelectedAsActiveLesson: true,
+        colorIndex: 1,
+        isActive: true,
+        isTaInTimetable: true,
+      });
+    });
+
+    test('hydration of lessons not currently in timetable', () => {
+      // when there is an active lesson, other lessons in the module should show up
+      expect(hydratedLessons).toContainEqual({
+        ...lessonsInCS4243[1],
+        canBeAddedToLessonConfig: true,
+        canBeSelectedAsActiveLesson: true,
+        colorIndex: 1,
+        isActive: false,
+        isTaInTimetable: true,
+      });
+    });
+
+    test('all lessons of a ta module are interactable', () => {
+      expect(hydratedLessons).toContainEqual({
+        ...lessonsInCS4243[5],
+        canBeAddedToLessonConfig: false,
+        canBeSelectedAsActiveLesson: true, // in ta modules, lessons that are the only one of their lesson type can be selected or removed
+        colorIndex: 1,
+        isActive: false,
+        isTaInTimetable: true,
+      });
+    });
+
+    test("all lessons from the active lesson's module should be visible, currently selected lessons and active lesson should not appear twice", () => {
+      expect(
+        filter(hydratedLessons, (lesson) => lesson.moduleCode === CS4243.moduleCode),
+      ).toHaveLength(6);
+    });
+  });
 });
 
 test('findExamClashes should return non-empty object if exams clash', () => {
