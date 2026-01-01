@@ -76,10 +76,7 @@ export function validateExportData(data: ExportData) {
    *   [moduleCode: ModuleCode]: ModuleLessonConfig;
    * };
    */
-  const timetableSchema = Joi.object().pattern(
-    Joi.string(),
-    moduleLessonConfigSchema,
-  );
+  const timetableSchema = Joi.object().pattern(Joi.string(), moduleLessonConfigSchema);
 
   const taModulesConfigSchema = Joi.array().ordered(Joi.string());
   const themeSchema = Joi.object({
