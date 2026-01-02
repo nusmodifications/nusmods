@@ -406,15 +406,18 @@ describe(getInteractableLessons, () => {
     title: CS4243.title,
   }));
 
-  const timetableLessons: LessonWithIndex[] = [
-    lessonsInPC1222[0],
-    lessonsInPC1222[4],
-    lessonsInPC1222[6],
-    lessonsInCS4243[0],
-    lessonsInCS4243[5],
-  ];
-
   describe('hydrating modules when there is no active lesson', () => {
+    const timetableLessons: LessonWithIndex[] = [
+      lessonsInPC1222[0],
+      lessonsInPC1222[1],
+      lessonsInPC1222[4],
+      lessonsInPC1222[5],
+      lessonsInPC1222[6],
+      lessonsInPC1222[7],
+      lessonsInCS4243[0],
+      lessonsInCS4243[5],
+    ];
+
     const isTaInTimetable = getIsTaInTimetable([PC1222.moduleCode]);
     const readOnly = false;
     const activeLesson = null;
@@ -439,6 +442,14 @@ describe(getInteractableLessons, () => {
         isTaInTimetable: true, // lesson belongs to a ta module
       });
       expect(hydratedLessons).toContainEqual({
+        ...lessonsInPC1222[1],
+        canBeAddedToLessonConfig: false,
+        canBeSelectedAsActiveLesson: true,
+        colorIndex: 0,
+        isActive: false,
+        isTaInTimetable: true, // lesson belongs to a ta module
+      });
+      expect(hydratedLessons).toContainEqual({
         ...lessonsInPC1222[4],
         canBeAddedToLessonConfig: false,
         canBeSelectedAsActiveLesson: true,
@@ -447,7 +458,23 @@ describe(getInteractableLessons, () => {
         isTaInTimetable: true,
       });
       expect(hydratedLessons).toContainEqual({
+        ...lessonsInPC1222[5],
+        canBeAddedToLessonConfig: false,
+        canBeSelectedAsActiveLesson: true,
+        colorIndex: 0,
+        isActive: false,
+        isTaInTimetable: true,
+      });
+      expect(hydratedLessons).toContainEqual({
         ...lessonsInPC1222[6],
+        canBeAddedToLessonConfig: false,
+        canBeSelectedAsActiveLesson: true,
+        colorIndex: 0,
+        isActive: false,
+        isTaInTimetable: true,
+      });
+      expect(hydratedLessons).toContainEqual({
+        ...lessonsInPC1222[7],
         canBeAddedToLessonConfig: false,
         canBeSelectedAsActiveLesson: true,
         colorIndex: 0,
@@ -479,11 +506,19 @@ describe(getInteractableLessons, () => {
     });
 
     test('only lessons in timetable should be visible', () => {
-      expect(hydratedLessons).toHaveLength(5);
+      expect(hydratedLessons).toHaveLength(8);
     });
   });
 
   describe('hydrating modules when there is an active lesson', () => {
+    const timetableLessons: LessonWithIndex[] = [
+      lessonsInPC1222[0],
+      lessonsInPC1222[4],
+      lessonsInPC1222[6],
+      lessonsInCS4243[0],
+      lessonsInCS4243[5],
+    ];
+
     const isTaInTimetable = getIsTaInTimetable([CS4243.moduleCode]);
     const readOnly = false;
     const activeLesson = lessonsInCS4243[0];
