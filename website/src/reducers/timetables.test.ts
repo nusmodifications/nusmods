@@ -14,7 +14,7 @@ import {
   removeLesson,
   changeLesson,
 } from 'actions/timetables';
-import { TimetablesState } from 'types/reducers';
+import { TaModulesMapV1, TimetablesState } from 'types/reducers';
 import config from 'config';
 
 const initialState = defaultTimetableState;
@@ -144,6 +144,43 @@ describe('TA module reducer', () => {
       ),
     ).toMatchObject({
       ta: { [1]: [], [2]: ['CS1010S'] },
+    });
+  });
+
+  test('should allow overwriting ta config even when migration fails', () => {
+    expect(
+      reducer(
+        {
+          ...initialState,
+          ta: {
+            [1]: {
+              CS1010S: [
+                ['Sectional Teaching', '1'],
+                ['Tutorial', '01'],
+              ],
+            },
+            [2]: {
+              CS1010S: [
+                ['Sectional Teaching', '1'],
+                ['Tutorial', '01'],
+              ],
+            },
+          } as TaModulesMapV1,
+        } as any,
+        removeModule(1, 'CS1010S'),
+      ),
+    ).toMatchObject({
+      ta: {
+        // should use best effort to recover to a usable state
+        [1]: [],
+        // should not touch data that the user is not requesting to delete
+        [2]: {
+          CS1010S: [
+            ['Sectional Teaching', '1'],
+            ['Tutorial', '01'],
+          ],
+        },
+      },
     });
   });
 });
