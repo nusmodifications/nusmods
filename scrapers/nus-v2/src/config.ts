@@ -5,6 +5,10 @@ import { ClientOptions } from '@elastic/elasticsearch';
 export type Config = Readonly<{
   appKey: string;
   studentKey: string;
+  ttApiKey: string;
+  courseApiKey: string;
+  acadApiKey: string;
+  acadAppKey: string;
 
   // Base URL for all API requests
   baseUrl: string;
@@ -39,6 +43,10 @@ const config: Config = {
   // From env
   appKey: env.appKey,
   studentKey: env.studentKey,
+  ttApiKey: env.ttApiKey,
+  courseApiKey: env.courseApiKey,
+  acadApiKey: env.acadApiKey,
+  acadAppKey: env.acadAppKey,
   elasticConfig: env.elasticConfig,
   baseUrl: addTrailingSlash(env.baseUrl),
   apiConcurrency: env.apiConcurrency || 5,
