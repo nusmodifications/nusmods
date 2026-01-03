@@ -414,7 +414,7 @@ export function getEndTimeAsDate(lesson: Lesson, date: Date = new Date()): Date 
 
 /**
  * Hydrate timetable lessons with interactability info\
- * See type defintion of `InteractableLesson` for properties added
+ * See type defintion of {@link InteractableLesson} for properties added
  */
 export function getInteractableLessons(
   timetableLessons: LessonWithIndex[],
