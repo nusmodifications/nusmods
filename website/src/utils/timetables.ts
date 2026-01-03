@@ -422,8 +422,8 @@ export function getInteractableLessons(
   semester: Semester,
   colors: ColorMapping,
   readOnly: boolean,
-  activeLesson: LessonWithIndex | null,
   isTaInTimetable: (moduleCode: ModuleCode) => boolean,
+  activeLesson: LessonWithIndex | null,
 ): InteractableLesson[] {
   if (!activeLesson)
     return hydrateInteractability(

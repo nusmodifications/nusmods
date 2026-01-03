@@ -372,8 +372,8 @@ class TimetableContent extends React.Component<Props, State> {
       semester,
       colors,
       readOnly,
-      activeLesson,
       this.isTaInTimetable,
+      activeLesson,
     );
     const arrangedLessons = arrangeLessonsForWeek(interactableLesson);
 
