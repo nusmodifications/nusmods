@@ -78,7 +78,7 @@ export function validateExportData(data: ExportData) {
    */
   const timetableSchema = Joi.object().pattern(Joi.string(), moduleLessonConfigSchema);
 
-  const taModulesConfigSchema = Joi.array().ordered(Joi.string());
+  const taModulesConfigSchema = Joi.array().items(Joi.string());
   const themeSchema = Joi.object({
     id: Joi.string(),
     timetableOrientation: Joi.string().valid('HORIZONTAL', 'VERTICAL'),
