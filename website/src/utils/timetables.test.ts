@@ -1,5 +1,5 @@
 import NUSModerator from 'nusmoderator';
-import _, { filter, get, map, mapValues } from 'lodash';
+import _, { filter, find, get, map, mapValues, some } from 'lodash';
 import { parseISO } from 'date-fns';
 import {
   TaModulesConfigV1,
@@ -12,8 +12,10 @@ import {
   TimetableDayFormat,
   ModuleLessonConfigV1,
   LessonWithIndex,
+  InteractableLesson,
 } from 'types/timetables';
 import {
+  LessonIndex,
   LessonType,
   ModuleCode,
   RawLesson,
@@ -397,7 +399,7 @@ describe('getInteractableLessons', () => {
   const getIsTaInTimetable = (taModulesConfig: ModuleCode[]) => (moduleCode: ModuleCode) =>
     taModulesConfig.includes(moduleCode);
 
-  const lessonWithIndex: Record<ModuleCode, LessonWithIndex[]> = mapValues(modules, (module) =>
+  const lessonsMap: Record<ModuleCode, LessonWithIndex[]> = mapValues(modules, (module) =>
     map(getModuleTimetable(module, semester), (lesson) => ({
       ...lesson,
       moduleCode: module.moduleCode,
@@ -405,26 +407,36 @@ describe('getInteractableLessons', () => {
     })),
   );
 
-  const getLessonsWithIndex = (moduleCode: ModuleCode): LessonWithIndex[] =>
-    lessonWithIndex[moduleCode];
+  const getLesson = (moduleCode: ModuleCode, lessonIndex: LessonIndex): LessonWithIndex => {
+    const lessonWithIndex = find(
+      lessonsMap[moduleCode],
+      (lesson) => lesson.lessonIndex === lessonIndex,
+    );
+    if (!lessonWithIndex) throw new Error('No lesson found with this lesson index');
+    return lessonWithIndex;
+  };
+
+  const getLessons = (moduleCode: ModuleCode, lessonIndices: LessonIndex[]): LessonWithIndex[] =>
+    filter(lessonsMap[moduleCode], (lesson) => lessonIndices.includes(lesson.lessonIndex));
+
+  const getHydratedLesson = (hydratedLessons: InteractableLesson[], lesson: LessonWithIndex) =>
+    find(
+      hydratedLessons,
+      (hydratedLesson) =>
+        hydratedLesson.moduleCode === lesson.moduleCode &&
+        hydratedLesson.lessonIndex === lesson.lessonIndex,
+    );
 
   describe('hydrating modules when there is no active lesson', () => {
-    const taModuleLessons = [
-      getLessonsWithIndex(PC1222.moduleCode)[0],
-      getLessonsWithIndex(PC1222.moduleCode)[1],
-      getLessonsWithIndex(PC1222.moduleCode)[10],
-      getLessonsWithIndex(PC1222.moduleCode)[11],
-      getLessonsWithIndex(PC1222.moduleCode)[12],
-      getLessonsWithIndex(PC1222.moduleCode)[13],
-    ];
+    const taModuleLessons = getLessons(PC1222.moduleCode, [0, 1, 10, 11, 12, 13]);
 
-    const nonTaModuleLessons = getLessonsWithIndex(CS4243.moduleCode)[0];
-    const nonTaModuleLessonsWithNoAlternatives = getLessonsWithIndex(CS4243.moduleCode)[5];
+    const lessonWithAlternative = getLesson(CS4243.moduleCode, 0);
+    const lessonWithNoAlternative = getLesson(CS4243.moduleCode, 5);
 
     const timetableLessons: LessonWithIndex[] = [
       ...taModuleLessons,
-      nonTaModuleLessons,
-      nonTaModuleLessonsWithNoAlternatives,
+      lessonWithAlternative,
+      lessonWithNoAlternative,
     ];
 
     const isTaInTimetable = getIsTaInTimetable([PC1222.moduleCode]);
@@ -441,58 +453,51 @@ describe('getInteractableLessons', () => {
       activeLesson,
     );
 
-    test('hydration of lessons belonging to ta module', () => {
-      const setOfExpectedHydratedLessons = new Set(
-        map(taModuleLessons, (lesson) => ({
-          ...lesson,
-          canBeAddedToLessonConfig: false, // lessons are already in timetable
-          canBeSelectedAsActiveLesson: true, // all lessons from ta modules can be selected as the active lesson
-          colorIndex: 0,
-          isActive: false, // no lessons are active
-          isTaInTimetable: true, // lesson belongs to a ta module
-        })),
-      );
-      const setOfHydratedLessons = new Set(
-        filter(hydratedLessons, (lesson) => lesson.moduleCode === PC1222.moduleCode),
-      );
-
-      expect(setOfHydratedLessons).toEqual(setOfExpectedHydratedLessons);
+    test('all lessons are marked as non active because there is no active lesson', () => {
+      expect(some(hydratedLessons, (lesson) => lesson.isActive)).toBe(false);
     });
 
-    test('hydration of lessons belonging to non-ta module', () => {
-      expect(hydratedLessons).toContainEqual({
-        ...getLessonsWithIndex(CS4243.moduleCode)[0],
-        canBeAddedToLessonConfig: false,
-        canBeSelectedAsActiveLesson: true,
-        colorIndex: 1,
-        isActive: false,
-        isTaInTimetable: false,
-      });
+    test('when there are no active lessons, only lessons that are in timetable are present, they cannot be added to lesson config', () => {
+      expect(some(hydratedLessons, (lesson) => lesson.canBeAddedToLessonConfig)).toBe(false);
+    });
+
+    test('lessons from ta module are marked as ta in timetable', () => {
+      const lessonsFromTaModule = filter(
+        hydratedLessons,
+        (lesson) => lesson.moduleCode === PC1222.moduleCode,
+      );
+      expect(some(lessonsFromTaModule, (lesson) => !lesson.isTaInTimetable)).toBe(false);
+    });
+
+    test('lessons from non-ta module are marked as not ta in timetable', () => {
+      const lessonsFromNonTaModule = filter(
+        hydratedLessons,
+        (lesson) => lesson.moduleCode === CS4243.moduleCode,
+      );
+      expect(some(lessonsFromNonTaModule, (lesson) => lesson.isTaInTimetable)).toBe(false);
+    });
+
+    test('hydration of lessons with alternative lessons', () => {
+      expect(
+        getHydratedLesson(hydratedLessons, lessonWithAlternative)?.canBeSelectedAsActiveLesson,
+      ).toBe(true);
     });
 
     test('hydration of lessons with no alternative lessons', () => {
-      expect(hydratedLessons).toContainEqual({
-        ...getLessonsWithIndex(CS4243.moduleCode)[5],
-        canBeAddedToLessonConfig: false,
-        canBeSelectedAsActiveLesson: false,
-        colorIndex: 1,
-        isActive: false,
-        isTaInTimetable: false,
-      });
+      expect(
+        getHydratedLesson(hydratedLessons, lessonWithNoAlternative)?.canBeSelectedAsActiveLesson,
+      ).toBe(false);
     });
 
-    test('only lessons in timetable should be visible', () => {
-      expect(hydratedLessons).toHaveLength(8);
+    test('should only show lessons in timetable when no lesson is active', () => {
+      expect(hydratedLessons).toHaveLength(timetableLessons.length);
     });
   });
 
   describe('hydrating modules when there is an active lesson from a non-ta module', () => {
-    const activeLesson = getLessonsWithIndex(PC1222.moduleCode)[0];
+    const activeLesson = getLesson(PC1222.moduleCode, 0);
 
-    const otherLessons = [
-      getLessonsWithIndex(PC1222.moduleCode)[10],
-      getLessonsWithIndex(PC1222.moduleCode)[12],
-    ];
+    const otherLessons = getLessons(PC1222.moduleCode, [10, 12]);
 
     const timetableLessons = [activeLesson, ...otherLessons];
 
@@ -509,62 +514,48 @@ describe('getInteractableLessons', () => {
       activeLesson,
     );
 
-    test('hydration of active lesson', () => {
-      expect(hydratedLessons).toContainEqual({
-        ...activeLesson,
-        canBeAddedToLessonConfig: false, // Active lessons are already in the lesson config
-        canBeSelectedAsActiveLesson: true,
-        colorIndex: 0,
-        isActive: true,
-        isTaInTimetable: false,
-      });
+    const hydratedActiveLesson = getHydratedLesson(hydratedLessons, activeLesson);
+
+    test('active lesson should be marked as active', () => {
+      expect(hydratedActiveLesson?.isActive).toBe(true);
     });
 
-    test('hydration of other lessons from lesson type', () => {
-      const setOfExpectedHydratedLessons = new Set(
-        map(
-          filter(
-            getLessonsWithIndex(PC1222.moduleCode),
-            (lesson) =>
-              lesson.lessonType === activeLesson.lessonType &&
-              lesson.classNo !== activeLesson.classNo,
-          ),
-          (lesson) => ({
-            ...lesson,
-            canBeAddedToLessonConfig: true,
-            canBeSelectedAsActiveLesson: true,
-            colorIndex: 0,
-            isActive: false,
-            isTaInTimetable: false,
-          }),
-        ),
+    test('active lesson is already in lesson config', () => {
+      expect(hydratedActiveLesson?.canBeAddedToLessonConfig).toBe(false);
+    });
+
+    const hydratedAlternativeLessons = filter(
+      hydratedLessons,
+      (lesson) =>
+        lesson.lessonType === activeLesson.lessonType && lesson.classNo !== activeLesson.classNo,
+    );
+
+    test('alternative lessons can be added to the lesson config', () => {
+      expect(some(hydratedAlternativeLessons, (lesson) => !lesson.canBeAddedToLessonConfig)).toBe(
+        false,
       );
-      const setOfHydratedLessons = new Set(
-        filter(
-          hydratedLessons,
-          (lesson) =>
-            lesson.lessonType === activeLesson.lessonType &&
-            lesson.classNo !== activeLesson.classNo,
-        ),
+    });
+
+    test('all alternative lessons are displayed', () => {
+      const alternativeLessons = filter(
+        lessonsMap[PC1222.moduleCode],
+        (lesson) =>
+          lesson.lessonType === activeLesson.lessonType && lesson.classNo !== activeLesson.classNo,
+      );
+      const indicesOfAlternativeLessons = new Set(map(alternativeLessons, 'lessonIndex'));
+      const indicesOfHydratedAlternativeLessons = new Set(
+        map(hydratedAlternativeLessons, 'lessonIndex'),
       );
 
-      expect(setOfHydratedLessons).toEqual(setOfExpectedHydratedLessons);
+      expect(indicesOfAlternativeLessons).toEqual(indicesOfHydratedAlternativeLessons);
     });
   });
 
   describe('hydrating modules when there is an active lesson from a ta module', () => {
-    const lessonsFromOtherModule = [
-      getLessonsWithIndex(PC1222.moduleCode)[0],
-      getLessonsWithIndex(PC1222.moduleCode)[10],
-      getLessonsWithIndex(PC1222.moduleCode)[12],
-    ];
+    const lessonsFromOtherModule = getLessons(PC1222.moduleCode, [0, 10, 12]);
 
-    const activeLesson = getLessonsWithIndex(CS4243.moduleCode)[0];
-    const lessonsFromActiveModule = [
-      activeLesson,
-      getLessonsWithIndex(CS4243.moduleCode)[1],
-      getLessonsWithIndex(CS4243.moduleCode)[5],
-    ];
+    const activeLesson = getLesson(CS4243.moduleCode, 0);
+    const lessonsFromActiveModule = getLessons(CS4243.moduleCode, [1, 2, 5]);
 
     const timetableLessons: LessonWithIndex[] = [
       activeLesson,
@@ -585,97 +576,99 @@ describe('getInteractableLessons', () => {
       activeLesson,
     );
 
-    test('hydration of lessons of other modules', () => {
-      const setOfExpectedHydratedLessons = new Set([
-        {
-          ...getLessonsWithIndex(PC1222.moduleCode)[0],
-          canBeAddedToLessonConfig: false,
-          canBeSelectedAsActiveLesson: true,
-          colorIndex: 0,
-          isActive: false,
-          isTaInTimetable: false,
-        },
-        {
-          ...getLessonsWithIndex(PC1222.moduleCode)[10],
-          canBeAddedToLessonConfig: false,
-          canBeSelectedAsActiveLesson: false,
-          colorIndex: 0,
-          isActive: false,
-          isTaInTimetable: false,
-        },
-        {
-          ...getLessonsWithIndex(PC1222.moduleCode)[12],
-          canBeAddedToLessonConfig: false,
-          canBeSelectedAsActiveLesson: true,
-          colorIndex: 0,
-          isActive: false,
-          isTaInTimetable: false,
-        },
-      ]);
+    const hydratedOtherModuleLessons = filter(
+      hydratedLessons,
+      (lesson) => lesson.moduleCode !== activeLesson.moduleCode,
+    );
 
-      const setOfHydratedLessons = new Set(
-        filter(hydratedLessons, (lesson) => lesson.moduleCode === PC1222.moduleCode),
+    test('lessons that are not from the same module as the active lesson cannot be added', () => {
+      expect(some(hydratedOtherModuleLessons, (lesson) => lesson.canBeAddedToLessonConfig)).toBe(
+        false,
+      );
+    });
+
+    test('timetable lessons from other modules are visible', () => {
+      const otherModuleLessons = filter(
+        timetableLessons,
+        (lesson) => lesson.moduleCode !== activeLesson.moduleCode,
+      );
+      const indicesOfOtherModuleLessons = new Set(map(otherModuleLessons, 'lessonIndex'));
+      const indicesOfHydratedOtherModuleLessons = new Set(
+        map(hydratedOtherModuleLessons, 'lessonIndex'),
       );
 
-      expect(setOfHydratedLessons).toEqual(setOfExpectedHydratedLessons);
+      expect(indicesOfHydratedOtherModuleLessons).toEqual(indicesOfOtherModuleLessons);
     });
 
-    test('hydration of active lesson', () => {
-      expect(hydratedLessons).toContainEqual({
-        ...activeLesson,
-        canBeAddedToLessonConfig: false,
-        canBeSelectedAsActiveLesson: true,
-        colorIndex: 1,
-        isActive: true,
-        isTaInTimetable: true,
-      });
+    const hydratedActiveLesson = getHydratedLesson(hydratedLessons, activeLesson);
+
+    test('active lesson should be marked as active', () => {
+      expect(hydratedActiveLesson?.isActive).toBe(true);
     });
 
-    test('hydration of other lessons in timetable', () => {
-      expect(hydratedLessons).toContainEqual({
-        ...getLessonsWithIndex(CS4243.moduleCode)[1],
-        canBeAddedToLessonConfig: false,
-        canBeSelectedAsActiveLesson: true,
-        colorIndex: 1,
-        isActive: false,
-        isTaInTimetable: true,
-      });
+    test('active lesson is already in lesson config', () => {
+      expect(hydratedActiveLesson?.canBeAddedToLessonConfig).toBe(false);
     });
 
-    test('hydration of lessons not currently in timetable', () => {
-      expect(hydratedLessons).toContainEqual({
-        ...getLessonsWithIndex(CS4243.moduleCode)[2],
-        canBeAddedToLessonConfig: true,
-        canBeSelectedAsActiveLesson: true,
-        colorIndex: 1,
-        isActive: false,
-        isTaInTimetable: true,
-      });
-    });
+    const hydratedActiveModuleLessons = filter(
+      hydratedLessons,
+      (lesson) => lesson.moduleCode === activeLesson.moduleCode,
+    );
 
     test('all lessons of a ta module are interactable', () => {
-      expect(hydratedLessons).toContainEqual({
-        ...getLessonsWithIndex(CS4243.moduleCode)[5],
-        canBeAddedToLessonConfig: false,
-        canBeSelectedAsActiveLesson: true, // in ta modules, lessons that are the only one of their lesson type can be selected or removed
-        colorIndex: 1,
-        isActive: false,
-        isTaInTimetable: true,
-      });
+      expect(
+        some(hydratedActiveModuleLessons, (lesson) => !lesson.canBeSelectedAsActiveLesson),
+      ).toBe(false);
     });
 
     test("all lessons from the active lesson's module should be visible, currently selected lessons and active lesson should not appear twice", () => {
+      expect(hydratedActiveModuleLessons).toHaveLength(6);
+    });
+
+    const hydratedAlternativeLessons = filter(
+      hydratedActiveModuleLessons,
+      (lesson) =>
+        lesson.lessonType === activeLesson.lessonType && lesson.classNo !== activeLesson.classNo,
+    );
+
+    test('alternative lessons in timetable are already added to the lesson config', () => {
+      const alternativeLessonsInTimetable = filter(hydratedAlternativeLessons, (lesson) =>
+        [0, 1, 2].includes(lesson.lessonIndex),
+      );
+
+      expect(some(alternativeLessonsInTimetable, (lesson) => lesson.canBeAddedToLessonConfig)).toBe(
+        false,
+      );
+    });
+
+    test('alternative lessons not in timetable can be added to the lesson config', () => {
+      const alternativeLessonsNotInTimetable = filter(
+        hydratedAlternativeLessons,
+        (lesson) => ![0, 1, 2].includes(lesson.lessonIndex),
+      );
+
       expect(
-        filter(hydratedLessons, (lesson) => lesson.moduleCode === CS4243.moduleCode),
-      ).toHaveLength(6);
+        some(alternativeLessonsNotInTimetable, (lesson) => !lesson.canBeAddedToLessonConfig),
+      ).toBe(false);
+    });
+
+    test('all alternative lessons are displayed', () => {
+      const alternativeLessons = filter(
+        lessonsMap[CS4243.moduleCode],
+        (lesson) =>
+          lesson.lessonType === activeLesson.lessonType && lesson.classNo !== activeLesson.classNo,
+      );
+      const indicesOfAlternativeLessons = new Set(map(alternativeLessons, 'lessonIndex'));
+      const indicesOfHydratedAlternativeLessons = new Set(
+        map(hydratedAlternativeLessons, 'lessonIndex'),
+      );
+
+      expect(indicesOfAlternativeLessons).toEqual(indicesOfHydratedAlternativeLessons);
     });
   });
 
-  test('hydrating non-ta module containing multiple lessons with the same classNo', () => {
-    const timetableLessons = [
-      getLessonsWithIndex(GES1021.moduleCode)[0],
-      getLessonsWithIndex(GES1021.moduleCode)[1],
-    ];
+  describe('hydrating non-ta module containing multiple lessons with the same classNo', () => {
+    const timetableLessons = getLessons(GES1021.moduleCode, [0, 1]);
 
     const isTaInTimetable = getIsTaInTimetable([]);
     const readOnly = false;
@@ -691,25 +684,22 @@ describe('getInteractableLessons', () => {
       activeLesson,
     );
 
-    expect(hydratedLessons).toStrictEqual(
-      map(timetableLessons, (lesson) => ({
-        ...lesson,
-        canBeAddedToLessonConfig: false,
-        canBeSelectedAsActiveLesson: false,
-        colorIndex: 2,
-        isActive: false,
-        isTaInTimetable: false,
-      })),
-    );
+    test('lessons in timetable are already added to lesson config', () => {
+      expect(some(hydratedLessons, (lesson) => lesson.canBeAddedToLessonConfig)).toBe(false);
+    });
+
+    test('should only show lessons in timetable when no lesson is active', () => {
+      expect(hydratedLessons).toHaveLength(timetableLessons.length);
+    });
   });
 
   describe('hydrating ta module containing multiple lessons with the same classNo', () => {
-    const timetableLessons = [getLessonsWithIndex(GES1021.moduleCode)[0]];
+    const timetableLessons = getLessons(GES1021.moduleCode, [0]);
 
     const isTaInTimetable = getIsTaInTimetable([GES1021.moduleCode]);
     const readOnly = false;
 
-    test('when no lessons are active', () => {
+    describe('when no lessons are active', () => {
       const activeLesson = null;
 
       const hydratedLessons = getInteractableLessons(
@@ -722,20 +712,17 @@ describe('getInteractableLessons', () => {
         activeLesson,
       );
 
-      expect(hydratedLessons).toStrictEqual([
-        {
-          ...getLessonsWithIndex(GES1021.moduleCode)[0],
-          canBeAddedToLessonConfig: false,
-          canBeSelectedAsActiveLesson: true,
-          colorIndex: 2,
-          isActive: false,
-          isTaInTimetable: true,
-        },
-      ]);
+      test('only the lesson in the timetable are visible', () => {
+        expect(hydratedLessons).toHaveLength(1);
+      });
+
+      test('lesson is already in timetable', () => {
+        expect(some(hydratedLessons, (lesson) => lesson.canBeAddedToLessonConfig)).toBe(false);
+      });
     });
 
-    test('when a lesson is active', () => {
-      const activeLesson = getLessonsWithIndex(GES1021.moduleCode)[0];
+    describe('when a lesson is active', () => {
+      const activeLesson = getLesson(GES1021.moduleCode, 0);
 
       const hydratedLessons = getInteractableLessons(
         timetableLessons,
@@ -747,44 +734,43 @@ describe('getInteractableLessons', () => {
         activeLesson,
       );
 
-      expect(hydratedLessons).toStrictEqual([
-        {
-          ...getLessonsWithIndex(GES1021.moduleCode)[0],
-          canBeAddedToLessonConfig: false,
-          canBeSelectedAsActiveLesson: true,
-          colorIndex: 2,
-          isActive: true,
-          isTaInTimetable: true,
-        },
-        {
-          ...getLessonsWithIndex(GES1021.moduleCode)[1],
-          canBeAddedToLessonConfig: true,
-          canBeSelectedAsActiveLesson: true,
-          colorIndex: 2,
-          isActive: false,
-          isTaInTimetable: true,
-        },
-      ]);
+      test('all lessons from the module are visible', () => {
+        expect(hydratedLessons).toHaveLength(2);
+      });
+
+      test('lesson already in timetable are already in the lesson config', () => {
+        const hydratedLessonInTimetable = filter(hydratedLessons, (lesson) =>
+          [0].includes(lesson.lessonIndex),
+        );
+
+        expect(some(hydratedLessonInTimetable, (lesson) => lesson.canBeAddedToLessonConfig)).toBe(
+          false,
+        );
+      });
+
+      test('lesson not in timetable can be added to the lesson config', () => {
+        const hydratedLessonInTimetable = filter(
+          hydratedLessons,
+          (lesson) => ![0].includes(lesson.lessonIndex),
+        );
+
+        expect(some(hydratedLessonInTimetable, (lesson) => !lesson.canBeAddedToLessonConfig)).toBe(
+          false,
+        );
+      });
     });
   });
 
-  describe('hydrating modules in a read-only timetable', () => {
-    const taModuleLessons = [
-      getLessonsWithIndex(PC1222.moduleCode)[0],
-      getLessonsWithIndex(PC1222.moduleCode)[10],
-      getLessonsWithIndex(PC1222.moduleCode)[12],
-    ];
+  describe('hydrating modules in a readonly timetable', () => {
+    const taModuleLessons = getLessons(PC1222.moduleCode, [0, 10, 12]);
 
-    const nonTaModuleLessons = [
-      getLessonsWithIndex(CS4243.moduleCode)[0],
-      getLessonsWithIndex(CS4243.moduleCode)[5],
-    ];
+    const nonTaModuleLessons = getLessons(CS4243.moduleCode, [0, 5]);
 
     const timetableLessons = [...taModuleLessons, ...nonTaModuleLessons];
 
     const isTaInTimetable = getIsTaInTimetable([PC1222.moduleCode]);
     const readOnly = true;
-    const activeLesson = null;
+    const activeLesson = null; // lessons cannot be selected as active in a readonly timetable
 
     const hydratedLessons = getInteractableLessons(
       timetableLessons,
@@ -796,26 +782,30 @@ describe('getInteractableLessons', () => {
       activeLesson,
     );
 
-    test('hydration of lessons from ta modules', () => {
-      expect(hydratedLessons).toContainEqual({
-        ...getLessonsWithIndex(PC1222.moduleCode)[0],
-        canBeAddedToLessonConfig: false,
-        canBeSelectedAsActiveLesson: false,
-        colorIndex: 0,
-        isActive: false,
-        isTaInTimetable: true,
-      });
+    test('lessons in readonly timetable cannot be select as active lesson', () => {
+      expect(some(hydratedLessons, (lesson) => lesson.canBeSelectedAsActiveLesson)).toBe(false);
     });
 
-    test('hydration of lessons from non-ta modules', () => {
-      expect(hydratedLessons).toContainEqual({
-        ...getLessonsWithIndex(CS4243.moduleCode)[0],
-        canBeAddedToLessonConfig: false,
-        canBeSelectedAsActiveLesson: false,
-        colorIndex: 1,
-        isActive: false,
-        isTaInTimetable: false,
-      });
+    test('lessons from ta modules are marked as ta in timetable', () => {
+      const hydratedTaModuleLessons = filter(
+        hydratedLessons,
+        (lesson) => lesson.moduleCode === PC1222.moduleCode,
+      );
+
+      expect(some(hydratedTaModuleLessons, (lesson) => !lesson.isTaInTimetable)).toBe(false);
+    });
+
+    test('lessons from non-ta modules are marked as not ta in timetable', () => {
+      const hydratedTaModuleLessons = filter(
+        hydratedLessons,
+        (lesson) => lesson.moduleCode === CS4243.moduleCode,
+      );
+
+      expect(some(hydratedTaModuleLessons, (lesson) => lesson.isTaInTimetable)).toBe(false);
+    });
+
+    test('readonly timetables should only show the lessons in the timetable', () => {
+      expect(hydratedLessons).toHaveLength(timetableLessons.length);
     });
   });
 });
