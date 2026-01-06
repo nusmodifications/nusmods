@@ -43,7 +43,7 @@ describe(requestMiddleware, () => {
 
     await store.dispatch(requestAction);
 
-    expect(mockAxios.request).toBeCalledTimes(1);
+    expect(mockAxios.request).toHaveBeenCalledTimes(1);
 
     expect(store.getActions()).toMatchObject([
       {
@@ -74,7 +74,7 @@ describe(requestMiddleware, () => {
     const p = store.dispatch(requestAction);
     await expect(p).rejects.toEqual(error);
 
-    expect(mockAxios.request).toBeCalledTimes(1);
+    expect(mockAxios.request).toHaveBeenCalledTimes(1);
 
     expect(store.getActions()).toMatchObject([
       {
