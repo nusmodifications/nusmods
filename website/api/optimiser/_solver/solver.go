@@ -349,10 +349,11 @@ func calculateLargestGap(physicalSlots []models.ModuleSlot) int {
 type SolveResponse struct {
 	models.TimetableState
 	ShareableLink string `json:"shareableLink"`
+	DefaultShareableLink string `json:"defaultShareableLink"`
 }
 
 func Solve(w http.ResponseWriter, req models.OptimiserRequest) {
-	slots, err := modules.GetAllModuleSlots(req)
+	slots, defaultSlots, err := modules.GetAllModuleSlots(req)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -383,10 +384,11 @@ func Solve(w http.ResponseWriter, req models.OptimiserRequest) {
 	})
 
 	best := BeamSearch(lessons, lessonToSlots, 2500, 100, recordings, req)
-	shareableLink := GenerateNUSModsShareableLink(best.Assignments, lessonToSlots, req)
+	shareableLink, defaultShareableLink := GenerateNUSModsShareableLink(best.Assignments, defaultSlots, lessonToSlots, req)
 	response := SolveResponse{
 		TimetableState: best,
 		ShareableLink:  shareableLink,
+		DefaultShareableLink: defaultShareableLink,
 	}
 
 	w.Header().Set("Content-Type", "application/json")

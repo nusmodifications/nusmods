@@ -22,7 +22,6 @@
 .unassignedDescription {
   font-size: 0.95rem;
   line-height: 1.5;
-  color: #69707a;
 }
 
 .unassignedLessons {
@@ -52,7 +51,6 @@
   border-radius: 0.25rem;
   font-size: 0.9rem;
   line-height: 1.5;
-  color: #69707a;
   background-color: rgba(255, 193, 7, 0.05);
 }
 
@@ -145,8 +143,10 @@
 
 .warningButtonContainer {
   display: flex;
+  flex-wrap: wrap;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+  gap: 1rem;
 }
 
 .warningShareableButton {
