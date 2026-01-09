@@ -23,6 +23,7 @@ import OptimiserHeader from '../OptimiserHeader';
 import OptimiserForm from '../OptimiserForm/OptimiserForm';
 import OptimiserButton from '../OptimiserButton';
 import OptimiserResults from '../OptimiserResults';
+import OptimiserFAQContainer from '../OptimiserFAQ/OptimiserFAQContainer';
 
 const OptimiserContent: React.FC = () => {
   const activeSemester = useSelector(({ app }: State) => app.activeSemester);
@@ -139,6 +140,8 @@ const OptimiserContent: React.FC = () => {
       )}
 
       <OptimiserResults shareableLink={shareableLink} unassignedLessons={unassignedLessons} />
+
+      <OptimiserFAQContainer />
     </div>
   );
 };
