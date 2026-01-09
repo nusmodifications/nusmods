@@ -1,10 +1,10 @@
-import { get, omit, uniq, values } from 'lodash';
+import { get, isArray, keys, omit, uniq, values } from 'lodash';
 import { produce } from 'immer';
 import { createMigrate } from 'redux-persist';
 
 import { PersistConfig } from 'storage/persistReducer';
 import { LessonIndex, ModuleCode } from 'types/modules';
-import { ModuleLessonConfig, SemTimetableConfig } from 'types/timetables';
+import { ModuleLessonConfig, SemTimetableConfig, TaModulesConfigV1 } from 'types/timetables';
 import { ColorMapping, TimetablesState } from 'types/reducers';
 
 import config from 'config';
@@ -208,7 +208,16 @@ function semHiddenModules(state = DEFAULT_HIDDEN_STATE, action: Actions) {
 
 // Map of semester to list of TA modules
 const DEFAULT_TA_STATE: ModuleCode[] = [];
-function semTaModules(state = DEFAULT_TA_STATE, action: Actions): ModuleCode[] {
+function semTaModules(
+  state: ModuleCode[] | TaModulesConfigV1 = DEFAULT_TA_STATE,
+  action: Actions,
+): ModuleCode[] {
+  // Should TA module migration fail, attempt to recover to a usable state
+  if (!isArray(state)) {
+    const recoveryAttemptState = keys(state);
+    return semTaModules(recoveryAttemptState, action);
+  }
+
   if (!action.payload) {
     return state;
   }
