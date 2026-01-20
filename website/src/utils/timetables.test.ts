@@ -63,6 +63,7 @@ import {
   migrateModuleLessonConfig,
   parseTaModuleCodes,
   randomModuleLessonConfig,
+  rebaseLessonIndices,
   serializeTimetable,
   timetableLessonsArray,
   validateModuleLessons,
@@ -1364,6 +1365,7 @@ describe('v1 config migration', () => {
       [],
       'CS1010S',
       moduleTimetable,
+      moduleTimetable,
     );
     expect(migrationResult).toEqual({
       migratedModuleLessonConfig: {
@@ -1379,6 +1381,7 @@ describe('v1 config migration', () => {
       [],
       'CS1010S',
       moduleTimetable,
+      moduleTimetable,
     );
     expect(migrationResult).toEqual({
       migratedModuleLessonConfig: {
@@ -1393,7 +1396,7 @@ describe('v1 config migration', () => {
       CS1010S: [['Lecture', '1']],
     } as TaModulesConfigV1;
     expect(() =>
-      migrateModuleLessonConfig(moduleLessonConfig, taModuleConfig, 'CS1010S', []),
+      migrateModuleLessonConfig(moduleLessonConfig, taModuleConfig, 'CS1010S', [], []),
     ).toThrow(Error('Lesson indices missing'));
   });
 
@@ -1409,6 +1412,7 @@ describe('v1 config migration', () => {
         },
         'CS1010S',
         moduleTimetable,
+        moduleTimetable,
       ),
     ).toThrow(Error('Lesson indices missing'));
   });
@@ -1421,7 +1425,13 @@ describe('v1 config migration', () => {
       ],
     } as TaModulesConfigV1;
     expect(() =>
-      migrateModuleLessonConfig(moduleLessonConfig, taModuleConfig, 'CS1010S', moduleTimetable),
+      migrateModuleLessonConfig(
+        moduleLessonConfig,
+        taModuleConfig,
+        'CS1010S',
+        moduleTimetable,
+        moduleTimetable,
+      ),
     ).toThrow(Error('Lesson indices missing'));
   });
 });
@@ -1435,5 +1445,98 @@ describe(getClosestLessonConfig, () => {
 describe(getRecoveryLessonIndices, () => {
   test('guard against empty lessons input', () => {
     expect(getRecoveryLessonIndices([])).toEqual([]);
+  });
+});
+
+describe('rebaseLessonIndices', () => {
+  const rawLessons = getModuleTimetable(CS1010S, 1);
+
+  test('reorder same set of lessons', () => {
+    const storedTimetable = [
+      { ...rawLessons[0], lessonIndex: 0 },
+      { ...rawLessons[1], lessonIndex: 1 },
+    ];
+    const currentTimetable = [
+      { ...rawLessons[1], lessonIndex: 0 },
+      { ...rawLessons[0], lessonIndex: 1 },
+    ];
+
+    const { indices, changed } = rebaseLessonIndices(currentTimetable, storedTimetable, [0]);
+    expect(indices).toEqual([1]);
+    expect(changed).toBe(true);
+  });
+
+  test('reorder same set of lessons of the same lesson type', () => {
+    const storedTimetable = [
+      { ...rawLessons[1], lessonIndex: 0 },
+      { ...rawLessons[2], lessonIndex: 1 },
+      { ...rawLessons[3], lessonIndex: 2 },
+    ];
+    const currentTimetable = [
+      { ...rawLessons[3], lessonIndex: 0 },
+      { ...rawLessons[1], lessonIndex: 1 },
+      { ...rawLessons[2], lessonIndex: 2 },
+    ];
+
+    const { indices, changed } = rebaseLessonIndices(currentTimetable, storedTimetable, [0, 2]);
+    expect(indices).toEqual([1, 0]);
+    expect(changed).toBe(true);
+  });
+
+  test('insert before selected lesson', () => {
+    const storedTimetable = [{ ...rawLessons[1], lessonIndex: 0 }];
+    const currentTimetable = [
+      { ...rawLessons[0], lessonIndex: 0 },
+      { ...rawLessons[1], lessonIndex: 1 },
+    ];
+
+    const { indices, changed } = rebaseLessonIndices(currentTimetable, storedTimetable, [0]);
+    expect(indices).toEqual([1]);
+    expect(changed).toBe(true);
+  });
+
+  test('remove stored lesson', () => {
+    const storedTimetable = [
+      { ...rawLessons[0], lessonIndex: 0 },
+      { ...rawLessons[1], lessonIndex: 1 },
+    ];
+    const currentTimetable = [{ ...rawLessons[1], lessonIndex: 0 }];
+
+    const { indices, changed } = rebaseLessonIndices(currentTimetable, storedTimetable, [0]);
+    expect(indices).toEqual([]);
+    expect(changed).toBe(true);
+  });
+
+  test('remove unrelated lesson does not affect selection', () => {
+    const storedTimetable = [
+      { ...rawLessons[0], lessonIndex: 0 },
+      { ...rawLessons[1], lessonIndex: 1 },
+    ];
+    const currentTimetable = [{ ...rawLessons[0], lessonIndex: 0 }];
+
+    const { indices, changed } = rebaseLessonIndices(currentTimetable, storedTimetable, [0]);
+    expect(indices).toEqual([0]);
+    expect(changed).toBe(false);
+  });
+
+  test('remove selected lesson deselects the lesson', () => {
+    const storedTimetable = [{ ...rawLessons[0], lessonIndex: 0 }];
+    const currentTimetable: RawLessonWithIndex[] = [];
+
+    const { indices, changed } = rebaseLessonIndices(currentTimetable, storedTimetable, [0]);
+    expect(indices).toEqual([]);
+    expect(changed).toBe(true);
+  });
+
+  test('partial recovery when multiple selections exist', () => {
+    const storedTimetable = [
+      { ...rawLessons[0], lessonIndex: 0 },
+      { ...rawLessons[1], lessonIndex: 1 },
+    ];
+    const currentTimetable = [{ ...rawLessons[0], lessonIndex: 0 }];
+
+    const { indices, changed } = rebaseLessonIndices(currentTimetable, storedTimetable, [0, 1]);
+    expect(indices).toEqual([0]);
+    expect(changed).toBe(true);
   });
 });
