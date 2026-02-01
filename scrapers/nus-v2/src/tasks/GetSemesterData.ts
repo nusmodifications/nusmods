@@ -19,9 +19,8 @@ import BaseTask from './BaseTask';
 import GetSemesterExams from './GetSemesterExams';
 import GetSemesterTimetable from './GetSemesterTimetable';
 import GetSemesterModules from './GetSemesterModules';
-import { fromTermCode } from '../utils/api';
 import { validateSemester } from '../services/validation';
-import { removeEmptyValues, titleize, trimValues, cleanString } from '../utils/data';
+import { removeEmptyValues, titleize, trimValues } from '../utils/data';
 import { difference } from '../utils/set';
 import { Logger } from '../services/logger';
 
@@ -114,10 +113,6 @@ export function cleanModuleInfo(module: SemesterModule) {
   // Title case module title if it is all uppercase
   if (cleanedModule.title === cleanedModule.title.toUpperCase()) {
     cleanedModule.title = titleize(cleanedModule.title);
-  }
-
-  if (cleanedModule.description != null) {
-    cleanedModule.description = cleanString(cleanedModule.description);
   }
 
   // Remove empty values like 'nil' and empty strings for keys that allow them
