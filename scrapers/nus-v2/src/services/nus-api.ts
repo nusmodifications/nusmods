@@ -255,7 +255,6 @@ class NusApi implements INusApi {
       ...termParams,
       ...params,
       latestVersionOnly: 'True',
-      publishedOnly: 'True',
       maxItems: String(maxItems),
     };
 
