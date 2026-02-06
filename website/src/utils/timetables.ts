@@ -1250,6 +1250,7 @@ export function migrateModuleLessonConfig(
   taModulesConfig: ModuleCode[] | TaModulesConfigV1,
   moduleCode: ModuleCode,
   timetable: readonly RawLessonWithIndex[],
+  storedTimetable: readonly RawLessonWithIndex[],
 ): {
   migratedModuleLessonConfig: ModuleLessonConfig;
   alreadyMigrated: boolean;
@@ -1259,11 +1260,17 @@ export function migrateModuleLessonConfig(
     moduleLessonConfig,
     (accumulatedModuleLessonConfig, lessonsIdentifier, lessonType) => {
       if (isArray(lessonsIdentifier)) {
+        const { indices: lessonIndices } = rebaseLessonIndices(
+          timetable,
+          storedTimetable,
+          lessonsIdentifier,
+        );
+
         return {
           ...accumulatedModuleLessonConfig,
           migratedModuleLessonConfig: {
             ...accumulatedModuleLessonConfig.migratedModuleLessonConfig,
-            [lessonType]: lessonsIdentifier,
+            [lessonType]: lessonIndices,
           },
         };
       }
@@ -1325,6 +1332,7 @@ export function migrateSemTimetableConfig(
   semTimetableConfig: SemTimetableConfig | SemTimetableConfigV1,
   taModulesConfig: ModuleCode[] | TaModulesConfigV1,
   getModuleSemesterTimetable: (moduleCode: ModuleCode) => readonly RawLessonWithIndex[],
+  getStoredModuleSemesterTimetable: (moduleCode: ModuleCode) => readonly RawLessonWithIndex[],
 ): {
   migratedSemTimetableConfig: SemTimetableConfig;
   migratedTaModulesConfig: ModuleCode[];
@@ -1338,11 +1346,13 @@ export function migrateSemTimetableConfig(
         : moduleCode in taModulesConfig;
 
       const timetable = getModuleSemesterTimetable(moduleCode);
+      const storedTimetable = getStoredModuleSemesterTimetable(moduleCode);
       const { migratedModuleLessonConfig, alreadyMigrated } = migrateModuleLessonConfig(
         moduleLessonConfig,
         taModulesConfig,
         moduleCode,
         timetable,
+        storedTimetable,
       );
 
       return {
@@ -1409,4 +1419,69 @@ export function getClosestLessonConfig(
     },
     {} as ModuleLessonConfig,
   );
+}
+
+/**
+ * Create a signature to identify each lesson
+ * @param lesson lesson with minimum identifying info
+ * @returns a unique signature
+ */
+function lessonSignature(lesson: RawLesson): string {
+  const weekString = consumeWeeks<string>(
+    lesson.weeks,
+    (numericWeeks) => numericWeeks.join(','),
+    (weekRange) =>
+      [weekRange.start, weekRange.end, weekRange.weekInterval, weekRange.weeks?.join(',')]
+        .filter((component) => component)
+        .join(','),
+  );
+
+  return [
+    lesson.classNo,
+    lesson.day,
+    lesson.startTime,
+    lesson.endTime,
+    lesson.lessonType,
+    lesson.venue,
+    weekString,
+  ].join('|');
+}
+
+/**
+ * Updates the stored lesson indices
+ * @param storedTimetable current lessons
+ * @param timetable newly fetched lessons
+ * @param storedIndices lesson indices stored locally
+ * @returns updated leson indices
+ */
+export function rebaseLessonIndices(
+  timetable: readonly RawLessonWithIndex[],
+  storedTimetable: readonly RawLessonWithIndex[],
+  storedIndices: readonly number[],
+): {
+  indices: number[];
+  changed: boolean;
+} {
+  const newLessonIndexMap = Object.fromEntries(
+    timetable.map((lesson) => [lessonSignature(lesson), lesson.lessonIndex]),
+  );
+
+  let changed = false;
+  const rebasedIndices = storedIndices.map((storedIndex) => {
+    const oldLesson = storedTimetable.find((lesson) => lesson.lessonIndex === storedIndex);
+    if (!oldLesson) {
+      return storedIndex;
+    }
+
+    const oldSignature = lessonSignature(oldLesson);
+    const newIndex = newLessonIndexMap[oldSignature];
+    if (newIndex !== storedIndex) {
+      changed = true;
+    }
+    return newIndex;
+  });
+  return {
+    indices: rebasedIndices,
+    changed: changed || rebasedIndices.length !== storedIndices.length,
+  };
 }
