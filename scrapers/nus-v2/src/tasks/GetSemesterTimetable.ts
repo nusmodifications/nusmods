@@ -145,9 +145,9 @@ interface Output {
 }
 
 /**
- * Download the timetable for a specific semester. Since the format provided by the
- * school is so inefficient, we make a separate request for each department and
- * reduce its size before moving onto the next one to reduce memory usage.
+ * Download the timetable for a specific semester. Since the JSON returned by the
+ * school is very large, we stream the entire timetable in one request and
+ * reduce its size before saving it to disk to reduce memory usage.
  *
  * Output:
  *  - <semester>/<module code>/timetable.json

@@ -8,6 +8,7 @@ export type Department = string;
 export type StartTime = string; // E.g. "1400"
 export type EndTime = string; // E.g. "1500"
 export type Faculty = string;
+export type FacultyCode = string; // E.g. "001", "002"
 export type LessonType = string; // E.g. "Lecture", "Tutorial"
 export type LessonTime = StartTime | EndTime;
 export type ModuleCode = string; // E.g. "CS3216"
