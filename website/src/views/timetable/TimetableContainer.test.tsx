@@ -125,12 +125,26 @@ describe(TimetableContainerComponent, () => {
     await expectRedirectToHomepageFrom('/timetable/2017-2018/v1');
   });
 
+  test('should display blank timetable if share string to import is empty', async () => {
+    make('/timetable/sem-1/share?');
+
+    // Expect no spinner when share string is empty
+    expect(screen.queryByText(/Loading/)).not.toBeInTheDocument();
+
+    // Expect import header to be present
+    expect(await screen.findByRole('button', { name: 'Import' })).toBeInTheDocument();
+
+    // Expect page to load
+    expect(screen.getByText(/Semester 1/)).toBeInTheDocument();
+    expect(screen.getByText(/No courses added./)).toBeInTheDocument();
+  });
+
   test('should eventually display imported timetable if there is one', async () => {
     const semester = 1;
     const importedTimetable = {
-      [moduleCodeThatCanBeLoaded]: { 'Sectional Teaching': 'A1' }, // BFS1001 doesn't have Lecture, only SectionalTeaching
+      [moduleCodeThatCanBeLoaded]: { 'Sectional Teaching': [0] }, // BFS1001 doesn't have Lecture, only SectionalTeaching
     };
-    const location = timetableShare(semester, importedTimetable, [], {});
+    const location = timetableShare(semester, importedTimetable, [], []);
     make(location);
 
     // Expect spinner when loading modules
@@ -151,8 +165,8 @@ describe(TimetableContainerComponent, () => {
 
   test('should eventually display imported timetable without any modules loaded', async () => {
     const semester = 1;
-    const importedTimetable = { [moduleCodeThatCanBeLoaded]: { 'Sectional Teaching': 'A1' } };
-    const location = timetableShare(semester, importedTimetable, [moduleCodeThatCanBeLoaded], {});
+    const importedTimetable = { [moduleCodeThatCanBeLoaded]: { 'Sectional Teaching': [0] } };
+    const location = timetableShare(semester, importedTimetable, [moduleCodeThatCanBeLoaded], []);
     make(location);
 
     // Expect spinner when loading modules
@@ -173,8 +187,8 @@ describe(TimetableContainerComponent, () => {
 
   test('should ignore invalid modules in imported timetable', () => {
     const semester = 1;
-    const importedTimetable = { TRUMP2020: { Lecture: '1' } };
-    const location = timetableShare(semester, importedTimetable, [], {});
+    const importedTimetable = { TRUMP2020: { Lecture: [1] } };
+    const location = timetableShare(semester, importedTimetable, [], []);
     make(location);
 
     // Expect nothing to be fetched and the invalid module to be ignored
@@ -199,7 +213,7 @@ describe(TimetableContainerComponent, () => {
 
     // Populate mock timetable
     await act(async () => {
-      const timetable = { CS1010S: { Lecture: '1' }, CS3216: { Lecture: '1' } };
+      const timetable = { CS1010S: { Lecture: [0] }, CS3216: { Lecture: [0] } };
       (store.dispatch as Dispatch)(setTimetable(semester, timetable));
     });
 

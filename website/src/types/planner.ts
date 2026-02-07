@@ -34,6 +34,11 @@ export type DuplicateConflict = {
   type: 'duplicate';
 };
 
+export type PrereqConflict = {
+  type: 'prereq';
+  unfulfilledPrereqs: PrereqTree[];
+};
+
 export type Conflict =
   | PrereqConflict
   | ExamConflict
@@ -55,12 +60,7 @@ export type PlannerModuleInfo = {
   // Custom info added by the student to override our data or to fill in the blanks
   // This is a separate field for easier typing
   customInfo?: CustomModule | null;
-  conflict?: Conflict | null;
+  conflicts: Conflict[]; // empty array === no conflicts
   moduleCode?: ModuleCode;
   placeholder?: PlannerPlaceholder;
-};
-
-export type PrereqConflict = {
-  type: 'prereq';
-  unfulfilledPrereqs: PrereqTree[];
 };

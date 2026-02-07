@@ -9,8 +9,10 @@ import {
   showLessonInTimetable,
   setHiddenImported,
   Internal,
-  addTaLessonInTimetable,
-  removeTaLessonInTimetable,
+  addTaModule,
+  addLesson,
+  removeLesson,
+  changeLesson,
 } from 'actions/timetables';
 import { TimetablesState } from 'types/reducers';
 import config from 'config';
@@ -74,7 +76,7 @@ describe('color reducers', () => {
           timetable: { CS1010S: {} },
           colors: { CS1010S: 0 },
           hiddenModules: [],
-          taModules: {},
+          taModules: [],
         },
       }).colors[1],
     ).toEqual({
@@ -127,32 +129,8 @@ describe('hidden module reducer', () => {
 });
 
 describe('TA module reducer', () => {
-  const withTaModules: TimetablesState = {
-    ...initialState,
-    ta: { [1]: { CS1010S: [['Tutorial', '1']] }, [2]: { CS1010S: [['Tutorial', '1']] } },
-  };
-
   test('should update TA modules', () => {
-    expect(
-      reducer(initialState, addTaLessonInTimetable(1, 'CS3216', 'Tutorial', '1')),
-    ).toHaveProperty('ta.1', { CS3216: [['Tutorial', '1']] });
-
-    expect(
-      reducer(initialState, removeTaLessonInTimetable(1, 'CS1010S', 'Tutorial', '1')),
-    ).toMatchObject({
-      ta: {
-        [1]: {},
-      },
-    });
-
-    expect(
-      reducer(withTaModules, removeTaLessonInTimetable(1, 'CS1010S', 'Tutorial', '1')),
-    ).toMatchObject({
-      ta: {
-        [1]: {},
-        [2]: { CS1010S: [['Tutorial', '1']] },
-      },
-    });
+    expect(reducer(initialState, addTaModule(1, 'CS3216'))).toHaveProperty('ta.1', ['CS3216']);
   });
 
   test('should remove modules from list when modules are removed', () => {
@@ -160,26 +138,12 @@ describe('TA module reducer', () => {
       reducer(
         {
           ...initialState,
-          ta: { [1]: { CS1010S: [['Tutorial', '1']] }, [2]: { CS1010S: [['Tutorial', '1']] } },
+          ta: { [1]: ['CS1010S'], [2]: ['CS1010S'] },
         },
         removeModule(1, 'CS1010S'),
       ),
     ).toMatchObject({
-      ta: {
-        [1]: {},
-        [2]: { CS1010S: [['Tutorial', '1']] },
-      },
-    });
-  });
-
-  test('should not add duplicate TA lessons', () => {
-    expect(
-      reducer(withTaModules, addTaLessonInTimetable(1, 'CS1010S', 'Tutorial', '1')),
-    ).toMatchObject({
-      ta: {
-        [1]: { CS1010S: [['Tutorial', '1']] },
-        [2]: { CS1010S: [['Tutorial', '1']] },
-      },
+      ta: { [1]: [], [2]: ['CS1010S'] },
     });
   });
 });
@@ -193,45 +157,99 @@ describe('lesson reducer', () => {
           lessons: {
             [1]: {
               CS1010S: {
-                Lecture: '1',
-                Recitation: '2',
+                Lecture: [0],
+                Recitation: [3],
               },
               CS3216: {
-                Lecture: '1',
+                Lecture: [0],
               },
             },
             [2]: {
               CS3217: {
-                Lecture: '1',
+                Lecture: [0],
               },
             },
           },
         },
         setLessonConfig(1, 'CS1010S', {
-          Lecture: '2',
-          Recitation: '3',
-          Tutorial: '4',
+          Lecture: [1],
+          Recitation: [4],
+          Tutorial: [11],
         }),
       ),
     ).toMatchObject({
       lessons: {
         [1]: {
           CS1010S: {
-            Lecture: '2',
-            Recitation: '3',
-            Tutorial: '4',
+            Lecture: [1],
+            Recitation: [4],
+            Tutorial: [11],
           },
           CS3216: {
-            Lecture: '1',
+            Lecture: [0],
           },
         },
         [2]: {
           CS3217: {
-            Lecture: '1',
+            Lecture: [0],
           },
         },
       },
     });
+  });
+
+  test('should remove lessons in payload', () => {
+    const timetableState: TimetablesState = {
+      ...initialState,
+      lessons: {
+        1: {
+          CS1010S: {
+            Tutorial: [11, 12, 13],
+          },
+        },
+      },
+    };
+
+    expect(
+      reducer(timetableState, removeLesson(1, 'CS1010S', 'Tutorial', [12, 13])),
+    ).toHaveProperty('lessons.1.CS1010S.Tutorial', [11]);
+  });
+
+  test('should replace lessons with those in payload', () => {
+    const timetableState: TimetablesState = {
+      ...initialState,
+      lessons: {
+        1: {
+          CS1010S: {
+            Tutorial: [11, 12, 13],
+          },
+        },
+      },
+    };
+
+    expect(
+      reducer(timetableState, changeLesson(1, 'CS1010S', 'Tutorial', [14, 15])),
+    ).toHaveProperty('lessons.1.CS1010S.Tutorial', [14, 15]);
+  });
+
+  test('should not add duplicate TA lessons', () => {
+    const withTaModules: TimetablesState = {
+      ...initialState,
+      lessons: {
+        1: {
+          CS1010S: {
+            Tutorial: [11],
+          },
+        },
+      },
+      ta: {
+        [1]: ['CS1010S'],
+      },
+    };
+
+    expect(reducer(withTaModules, addLesson(1, 'CS1010S', 'Tutorial', [11]))).toMatchObject(
+      withTaModules,
+    );
   });
 });
 
@@ -240,7 +258,7 @@ describe('stateReconciler', () => {
     '2015/2016': {
       [1]: {
         GET1006: {
-          Lecture: '1',
+          Lecture: [0],
         },
       },
     },
@@ -249,13 +267,13 @@ describe('stateReconciler', () => {
   const oldLessons = {
     [1]: {
       CS1010S: {
-        Lecture: '1',
-        Recitation: '2',
+        Lecture: [0],
+        Recitation: [3],
       },
     },
     [2]: {
       CS3217: {
-        Lecture: '1',
+        Lecture: [0],
       },
     },
   };

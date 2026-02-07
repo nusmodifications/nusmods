@@ -206,8 +206,9 @@ const ReportError = memo<Props>(({ module }) => {
         <CloseButton onClick={() => setIsOpen(false)} />
         <h2 className={styles.heading}>Reporting an issue with {module.moduleCode}</h2>
         <p>
-          NUSMods updates its information from the Registrar's Office every few hours. Please wait
-          up to 24 hours for information to be updated before reporting any issues.
+          NUSMods updates its information from the Office of the University Registrar every few
+          hours. Please wait up to 24 hours for information to be updated before reporting any
+          issues.
         </p>
         <p>
           This form will send an email about this course to the faculty. If you think the issue is a

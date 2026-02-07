@@ -11,16 +11,16 @@ const exportData: ExportData = {
   semester: 1,
   timetable: {
     CS3216: {
-      Lecture: '1',
+      Lecture: [0],
     },
     CS1010S: {
-      Lecture: '1',
-      Tutorial: '3',
-      Recitation: '2',
+      Lecture: [0],
+      Tutorial: [11],
+      Recitation: [1],
     },
     PC1222: {
-      Lecture: '1',
-      Tutorial: '3',
+      Lecture: [4],
+      Tutorial: [6],
     },
   },
   colors: {
@@ -29,9 +29,7 @@ const exportData: ExportData = {
     PC1222: 2,
   },
   hidden: ['PC1222'],
-  ta: {
-    CS1010S: [['Tutorial', '1']],
-  },
+  ta: ['CS1010S'],
   theme: {
     id: 'google',
     timetableOrientation: VERTICAL,
@@ -56,16 +54,16 @@ test('reducers should set export data state', () => {
     lessons: {
       [1]: {
         CS3216: {
-          Lecture: '1',
+          Lecture: [0],
         },
         CS1010S: {
-          Lecture: '1',
-          Tutorial: '3',
-          Recitation: '2',
+          Lecture: [0],
+          Tutorial: [11],
+          Recitation: [1],
         },
         PC1222: {
-          Lecture: '1',
-          Tutorial: '3',
+          Lecture: [4],
+          Tutorial: [6],
         },
       },
     },
@@ -77,11 +75,7 @@ test('reducers should set export data state', () => {
       },
     },
     hidden: { [1]: ['PC1222'] },
-    ta: {
-      [1]: {
-        CS1010S: [['Tutorial', '1']],
-      },
-    },
+    ta: { [1]: ['CS1010S'] },
     academicYear: expect.any(String),
     archive: {},
   });

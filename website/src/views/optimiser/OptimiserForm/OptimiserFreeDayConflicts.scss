@@ -1,0 +1,44 @@
+@import '~styles/utils/modules-entry.scss';
+@import './OptimiserForm.scss';
+
+.conflictWarning {
+  composes: alert alert-warning from global;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  margin-top: $form-fields-gap;
+  gap: 0.5rem;
+
+  h3 {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #ff5138;
+    gap: 0.5rem;
+  }
+
+  h4 {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+
+  ul {
+    margin: 0;
+
+    li {
+      margin: 0;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: #ff5138;
+    }
+  }
+
+  h5 {
+    margin: 0.5rem 0;
+    font-style: italic;
+    font-size: 0.8rem;
+    color: #69707a;
+  }
+}

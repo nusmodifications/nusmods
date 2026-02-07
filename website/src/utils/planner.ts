@@ -1,6 +1,6 @@
 import { sum } from 'lodash';
 import { ModuleCode, PrereqTree, Semester } from 'types/modules';
-import { PlannerModuleInfo } from 'types/planner';
+import { PlannerModuleInfo, Conflict } from 'types/planner';
 import config from 'config';
 import { assertNever } from 'types/utils';
 import { count, isEmpty } from './array';
@@ -172,4 +172,27 @@ export function getTotalMC(
 ): number {
   // Remove nulls using .filter(Boolean)
   return sum(modules.map(getModuleCredit).filter(Boolean));
+}
+
+/**
+ * Get a conflict to display among an array of possible conflicts
+ */
+export function getConflictToDisplay(
+  conflicts: Conflict[],
+  isCurrentYear: boolean,
+): Conflict | null {
+  if (isEmpty(conflicts)) {
+    return null;
+  }
+
+  if (isCurrentYear) {
+    return conflicts[0];
+  }
+
+  // either prereq or duplicate or none if not same year
+  return (
+    conflicts.find((c) => c.type === 'prereq') ||
+    conflicts.find((c) => c.type === 'duplicate') ||
+    null
+  );
 }
