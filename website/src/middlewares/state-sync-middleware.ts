@@ -1,6 +1,6 @@
 import type { AnyAction } from 'redux';
 import { PERSIST, PURGE, REHYDRATE } from 'redux-persist';
-import { createStateSyncMiddleware } from 'redux-state-sync';
+import { createStateSyncMiddleware, type Config } from 'redux-state-sync';
 
 const reduxStateSyncConfig = {
   // Reference: https://github.com/aohua/redux-state-sync/issues/121#issuecomment-1770588046
@@ -17,14 +17,9 @@ const reduxStateSyncConfig = {
       return false;
     }
 
-    // `FETCH_` request actions should not be synced to other tabs
-    if (action.type.toString().startsWith('FETCH_')) {
-      return false;
-    }
-
     return !blacklist.includes(action.type);
   },
-};
+} satisfies Config;
 
 const stateSyncMiddleware = createStateSyncMiddleware(reduxStateSyncConfig);
 
