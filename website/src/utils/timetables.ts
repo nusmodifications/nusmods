@@ -12,6 +12,7 @@ import {
   isArray,
   isEmpty,
   isEqual,
+  isNumber,
   keys,
   last,
   map,
@@ -46,7 +47,6 @@ import {
   ModuleLessonConfigV1,
   SemTimetableConfigV1,
   TaModulesConfigV1,
-  TimetableConfigV1,
   ColoredLesson,
   HoverLesson,
   InteractableLesson,
@@ -56,13 +56,12 @@ import {
   ModuleLessonConfigWithLessons,
   SemTimetableConfig,
   SemTimetableConfigWithLessons,
-  TimetableConfig,
   TimetableDayArrangement,
   TimetableDayFormat,
   TimetableArrangement,
 } from 'types/timetables';
 
-import { TaModulesMapV1, ModuleCodeMap, ModulesMap, TaModulesMap } from 'types/reducers';
+import { ColorMapping, ModuleCodeMap, ModulesMap } from 'types/reducers';
 import { ExamClashes } from 'types/views';
 
 import { getTimeAsDate } from './timify';
@@ -414,6 +413,123 @@ export function getEndTimeAsDate(lesson: Lesson, date: Date = new Date()): Date 
 }
 
 /**
+ * Hydrate timetable lessons with interactability info\
+ * See type defintion of {@link InteractableLesson} for properties added
+ */
+export function getInteractableLessons(
+  timetableLessons: LessonWithIndex[],
+  modules: ModulesMap,
+  semester: Semester,
+  colors: ColorMapping,
+  readOnly: boolean,
+  isTaInTimetable: (moduleCode: ModuleCode) => boolean,
+  activeLesson: LessonWithIndex | null,
+): InteractableLesson[] {
+  if (!activeLesson)
+    return hydrateInteractability(
+      timetableLessons,
+      modules,
+      semester,
+      colors,
+      readOnly,
+      isTaInTimetable,
+    );
+
+  const activeModuleCode: ModuleCode = activeLesson.moduleCode;
+  const activeModule = modules[activeModuleCode];
+  const activeModuleLessons = getModuleTimetable(activeModule, semester);
+  const selectableLessons = isTaInTimetable(activeModuleCode)
+    ? activeModuleLessons
+    : filter(activeModuleLessons, (lesson) => lesson.lessonType === activeLesson.lessonType);
+  const selectableLessonsWithModuleCodeAndTitle = map(selectableLessons, (lesson) => ({
+    ...lesson,
+    moduleCode: activeModuleCode,
+    title: activeModule.title,
+  }));
+
+  const [timetableLessonsInSelectableLessons, timetableLessonsNotInSelectableLessons] =
+    isTaInTimetable(activeModuleCode)
+      ? partition(timetableLessons, (lesson) => lesson.moduleCode === activeModuleCode)
+      : partition(
+          timetableLessons,
+          (lesson) =>
+            lesson.moduleCode === activeModuleCode && lesson.lessonType === activeLesson.lessonType,
+        );
+  const selectedLessonIndices = map(timetableLessonsInSelectableLessons, 'lessonIndex');
+
+  return [
+    ...hydrateInteractability(
+      selectableLessonsWithModuleCodeAndTitle,
+      modules,
+      semester,
+      colors,
+      readOnly,
+      isTaInTimetable,
+      activeLesson,
+      selectedLessonIndices,
+    ),
+    ...hydrateInteractability(
+      timetableLessonsNotInSelectableLessons,
+      modules,
+      semester,
+      colors,
+      readOnly,
+      isTaInTimetable,
+    ),
+  ];
+}
+
+/**
+ * Hydrates a list of lessons to add interactability info\
+ * See type defintion of {@link InteractableLesson} for properties added
+ */
+export function hydrateInteractability(
+  timetableLessons: LessonWithIndex[],
+  modules: ModulesMap,
+  semester: Semester,
+  colors: ColorMapping,
+  readOnly: boolean,
+  isTaInTimetable: (moduleCode: ModuleCode) => boolean,
+  activeLesson?: LessonWithIndex,
+  alreadySelectedLessonIndices?: LessonIndex[],
+): InteractableLesson[] {
+  const moduleTimetables = mapValues(modules, (module) => getModuleTimetable(module, semester));
+
+  return map(timetableLessons, (lesson) => {
+    const { moduleCode, lessonType, classNo, lessonIndex } = lesson;
+    const isSameModule = moduleCode === activeLesson?.moduleCode;
+    const isSameLessonType = lessonType === activeLesson?.lessonType;
+
+    const isActive = isSameModule && isSameLessonType && lessonIndex === activeLesson?.lessonIndex;
+    const moduleIsTaInTimetable = isTaInTimetable(moduleCode);
+    const canBeSelectedAsActiveLesson =
+      !readOnly &&
+      (moduleIsTaInTimetable
+        ? true
+        : areOtherClassesAvailable(moduleTimetables[moduleCode], lessonType));
+
+    const alreadyAddedToLessonConfig = alreadySelectedLessonIndices?.includes(lesson.lessonIndex);
+    const isSameLessonGroupAsActiveLesson = moduleIsTaInTimetable
+      ? lessonIndex === activeLesson?.lessonIndex
+      : classNo === activeLesson?.classNo;
+    const canBeAddedToLessonConfig =
+      isSameModule &&
+      (moduleIsTaInTimetable ? true : isSameLessonType) &&
+      !alreadyAddedToLessonConfig &&
+      !isSameLessonGroupAsActiveLesson;
+
+    return {
+      ...lesson,
+      isActive,
+      isTaInTimetable: moduleIsTaInTimetable,
+      canBeAddedToLessonConfig,
+      canBeSelectedAsActiveLesson,
+      colorIndex: colors[moduleCode],
+    };
+  });
+}
+
+/**
  * Validates the modules in a timetable. It removes all modules which do not exist in
  * the provided module code map from the timetable and returns that as the first item
  * in the tuple, and the module code of all removed modules as the second item.
@@ -528,8 +644,16 @@ export function validateNonTaModuleLesson(
     (accumulatedValidationResult, lessonsWithLessonType, lessonType) => {
       const lessonTypeInLessonConfig = lessonTypesInLessonConfig.includes(lessonType);
       const configLessonIndices = lessonConfig[lessonType];
+      const firstLessonIndex = first(configLessonIndices);
 
-      if (!lessonTypeInLessonConfig || !configLessonIndices.length) {
+      if (
+        !(
+          lessonTypeInLessonConfig &&
+          configLessonIndices.length &&
+          isNumber(firstLessonIndex) &&
+          firstLessonIndex < validLessons.length
+        )
+      ) {
         const validLessonIndices = getRecoveryLessonIndices(lessonsWithLessonType);
         return {
           config: {
@@ -540,7 +664,8 @@ export function validateNonTaModuleLesson(
         };
       }
 
-      const { classNo } = validLessons[configLessonIndices[0]];
+      const firstLesson = get(validLessons, firstLessonIndex);
+      const { classNo } = firstLesson;
       const classNoLessonIndices = map(
         filter(lessonsWithLessonType, (lesson) => lesson.classNo === classNo),
         'lessonIndex',
@@ -1154,9 +1279,15 @@ export function migrateModuleLessonConfig(
       const lessonIndices = reduce(
         classNos,
         (accumulatedLessonIndices, classNo) => {
-          const lessonIndicesWithClassNo = getLessonIndices(lessonIndicesMap, lessonType, classNo);
-          if (!lessonIndicesWithClassNo) return accumulatedLessonIndices;
-          return [...accumulatedLessonIndices, ...lessonIndicesWithClassNo];
+          const lessonIndicesWithClassNo = getLessonIndices(
+            lessonIndicesMap,
+            lessonType,
+            classNo,
+          ) as (LessonIndex | undefined)[];
+          if (!lessonIndicesWithClassNo || lessonIndicesWithClassNo.includes(undefined)) {
+            throw new Error('Lesson indices missing');
+          }
+          return [...accumulatedLessonIndices, ...(lessonIndicesWithClassNo as LessonIndex[])];
         },
         [] as LessonIndex[],
       );
@@ -1180,7 +1311,6 @@ export function migrateModuleLessonConfig(
 }
 
 /**
- * A helper function for migrateTimetableConfigs\
  * Migrates a semester's timetable config
  * @param semTimetableConfig the semester timetable config to migrate
  * @param taModulesConfig the TA lesson configs overrides the semester timetable config
@@ -1236,75 +1366,6 @@ export function migrateSemTimetableConfig(
       alreadyMigrated: boolean;
     },
   );
-}
-
-/**
- * Checks the current timetable config and migrate it to v2 format if it is not\
- * Migrates all semesters' timetable config in this academic year
- * @param lessons the academic year's timetables
- * @param ta the academic year's TA modules config
- * @param modules modules in the moduleBank state to use for migration
- * @returns
- * - the migrated timetable config
- * - the migrated TA modules config
- * - whether it was previously migrated, to signal to skip dispatch
- */
-export function migrateTimetableConfigs(
-  lessons: TimetableConfig | TimetableConfigV1,
-  ta: TaModulesMap | TaModulesMapV1,
-  modules: ModulesMap,
-): {
-  lessons: TimetableConfig;
-  ta: TaModulesMap;
-  alreadyMigrated: boolean;
-} {
-  const {
-    config: migratedLessons,
-    ta: migratedTa,
-    alreadyMigrated,
-  } = reduce(
-    lessons,
-    (accumulated, semTimetableConfig, semesterString) => {
-      const semester = parseInt(semesterString, 10);
-      const taModulesConfig = get(ta, semester, {});
-
-      const getModuleSemesterTimetable = (moduleCode: ModuleCode) =>
-        modules[moduleCode] ? getModuleTimetable(modules[moduleCode], semester) : [];
-
-      const migrated = migrateSemTimetableConfig(
-        semTimetableConfig,
-        taModulesConfig,
-        getModuleSemesterTimetable,
-      );
-
-      return {
-        config: {
-          ...accumulated.config,
-          [semester]: migrated.migratedSemTimetableConfig,
-        },
-        ta: {
-          ...accumulated.ta,
-          [semester]: migrated.migratedTaModulesConfig,
-        },
-        alreadyMigrated: migrated.alreadyMigrated && accumulated.alreadyMigrated,
-      };
-    },
-    {
-      config: {},
-      ta: {},
-      alreadyMigrated: true,
-    } as {
-      config: TimetableConfig;
-      ta: TaModulesMap;
-      alreadyMigrated: boolean;
-    },
-  );
-
-  return {
-    lessons: migratedLessons,
-    ta: migratedTa,
-    alreadyMigrated,
-  };
 }
 
 /**

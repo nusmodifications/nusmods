@@ -221,7 +221,9 @@ export const TimetableContainerComponent: FC = () => {
 
     const importedModuleCodes = [...keys(omit(parsedQuery, ['ta', 'hidden'])), ...taModuleCodes];
 
-    if (!importedModuleCodes.length) return;
+    if (!importedModuleCodes.length) {
+      setLoading(false);
+    }
 
     const moduleCodes = keys(modules);
 
@@ -234,7 +236,6 @@ export const TimetableContainerComponent: FC = () => {
       setLoading(false);
       return;
     }
-    setLoading(true);
     dispatch(fetchModules(new Set(modulesToFetch)));
   }, [semester, params.action, location.search, modules, isValidModule, dispatch]);
 

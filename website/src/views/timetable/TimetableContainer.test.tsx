@@ -125,6 +125,20 @@ describe(TimetableContainerComponent, () => {
     await expectRedirectToHomepageFrom('/timetable/2017-2018/v1');
   });
 
+  test('should display blank timetable if share string to import is empty', async () => {
+    make('/timetable/sem-1/share?');
+
+    // Expect no spinner when share string is empty
+    expect(screen.queryByText(/Loading/)).not.toBeInTheDocument();
+
+    // Expect import header to be present
+    expect(await screen.findByRole('button', { name: 'Import' })).toBeInTheDocument();
+
+    // Expect page to load
+    expect(screen.getByText(/Semester 1/)).toBeInTheDocument();
+    expect(screen.getByText(/No courses added./)).toBeInTheDocument();
+  });
+
   test('should eventually display imported timetable if there is one', async () => {
     const semester = 1;
     const importedTimetable = {
