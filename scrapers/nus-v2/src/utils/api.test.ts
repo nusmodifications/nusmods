@@ -25,8 +25,8 @@ describe(cacheDownload, () => {
 
     const result = await cacheDownload('data', download, cache);
     expect(result).toEqual('My data');
-    expect(cache.write).toBeCalledWith('My data');
-    expect(cache.read).not.toBeCalled();
+    expect(cache.write).toHaveBeenCalledWith('My data');
+    expect(cache.read).not.toHaveBeenCalled();
   });
 
   test('should not throw if cache save is unsuccessful', async () => {
@@ -36,7 +36,7 @@ describe(cacheDownload, () => {
 
     const result = await cacheDownload('data', download, cache);
     expect(result).toEqual('My data');
-    expect(cache.read).not.toBeCalled();
+    expect(cache.read).not.toHaveBeenCalled();
   });
 
   test('should try to read from cache if download is not successful', async () => {
@@ -45,7 +45,7 @@ describe(cacheDownload, () => {
 
     const result = await cacheDownload('data', download, cache);
     expect(result).toEqual('File content');
-    expect(cache.write).not.toBeCalled();
+    expect(cache.write).not.toHaveBeenCalled();
   });
 
   test('should throw download error if reading from cache was also unsuccessful', async () => {
@@ -62,7 +62,7 @@ describe(retry, () => {
   test('it should return the resolved value', async () => {
     const fn = jest.fn().mockResolvedValue('Hello world');
     await expect(retry(fn, 3)).resolves.toEqual('Hello world');
-    expect(fn).toBeCalledTimes(1);
+    expect(fn).toHaveBeenCalledTimes(1);
   });
 
   test('it should retry the function until it succeeds', async () => {
@@ -73,7 +73,7 @@ describe(retry, () => {
 
     const result = await retry(fn, 3);
     expect(result).toEqual('Hello world');
-    expect(fn).toBeCalledTimes(2);
+    expect(fn).toHaveBeenCalledTimes(2);
   });
 
   test('it should retry the function until it runs out of tries', async () => {
@@ -87,7 +87,7 @@ describe(retry, () => {
       expect(e).toEqual(error);
     }
 
-    expect(fn).toBeCalledTimes(3);
+    expect(fn).toHaveBeenCalledTimes(3);
   });
 
   test('it should not retry if condition returns false', async () => {
@@ -101,7 +101,7 @@ describe(retry, () => {
       expect(e).toEqual(error);
     }
 
-    expect(fn).toBeCalledTimes(1);
+    expect(fn).toHaveBeenCalledTimes(1);
   });
 });
 

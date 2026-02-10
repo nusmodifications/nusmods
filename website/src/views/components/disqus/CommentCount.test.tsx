@@ -19,11 +19,11 @@ describe(CommentCountComponent, () => {
   test('should be disabled (render null) if user has enabled loadDisqusManually', () => {
     const wrapper = mount(<CommentCountComponent {...disqusConfig} loadDisqusManually />);
     expect(wrapper.isEmptyRender()).toBe(true);
-    expect(insertScript).not.toBeCalled();
+    expect(insertScript).not.toHaveBeenCalled();
   });
 
   test('should insert Disqus script if loadDisqusManually is false', () => {
     mount(<CommentCountComponent {...disqusConfig} loadDisqusManually={false} />);
-    expect(insertScript).toBeCalled();
+    expect(insertScript).toHaveBeenCalled();
   });
 });

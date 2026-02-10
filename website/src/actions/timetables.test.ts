@@ -346,7 +346,7 @@ describe(actions.fetchTimetableModules, () => {
 
     await thunk(dispatch, getState);
 
-    expect(dispatch).toBeCalled();
+    expect(dispatch).toHaveBeenCalled();
     expect(dispatch.mock.calls).toMatchSnapshot();
   });
 
@@ -357,6 +357,6 @@ describe(actions.fetchTimetableModules, () => {
 
     const thunk = actions.fetchTimetableModules([timetable]);
     await thunk(dispatch, getState);
-    expect(dispatch).not.toBeCalled();
+    expect(dispatch).not.toHaveBeenCalled();
   });
 });

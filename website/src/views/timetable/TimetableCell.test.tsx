@@ -55,7 +55,7 @@ describe(TimetableCell, () => {
       preventDefault: jest.fn(),
       currentTarget: document.createElement('button'),
     });
-    expect(onClick).toBeCalled();
+    expect(onClick).toHaveBeenCalled();
   });
 
   it('has clickable class styling', () => {
