@@ -240,6 +240,66 @@ export const modulesToAvoidMerging = new Set<string>([
   'Graduate Research Seminar',
 ]);
 
+/**
+ * Normalize a string for safe comparison by lowercasing, collapsing whitespace, and trimming.
+ */
+export function normalizeForComparison(str: string | null | undefined): string {
+  if (!str) return '';
+  return str.toLowerCase().replace(/\s+/g, ' ').trim();
+}
+
+/**
+ * Find modules without timetable data that match modules with timetable data based on
+ * title, credits, and description. Returns a Map of target module code (without timetable)
+ * to source module code (with timetable).
+ *
+ * This is used to propagate timetable data to "shadow" dual-coded modules that the new
+ * NUS API doesn't return timetable data for.
+ */
+export function findEquivalentModules<T extends { Code: string; Title: string; UnitsMin: number | null; CourseDesc: string }>(
+  modulesWithoutTimetable: T[],
+  modulesWithTimetable: T[],
+): Map<string, string> {
+  const equivalents = new Map<string, string>();
+
+  // Build a lookup map: normalized title -> list of modules with that title (that have timetable)
+  const titleIndex = new Map<string, T[]>();
+  for (const module of modulesWithTimetable) {
+    const normalizedTitle = normalizeForComparison(module.Title);
+    if (!titleIndex.has(normalizedTitle)) {
+      titleIndex.set(normalizedTitle, []);
+    }
+    titleIndex.get(normalizedTitle)!.push(module);
+  }
+
+  // For each module without timetable, find a matching module with timetable
+  for (const target of modulesWithoutTimetable) {
+    const normalizedTitle = normalizeForComparison(target.Title);
+    const candidates = titleIndex.get(normalizedTitle);
+
+    if (!candidates) continue;
+
+    // Find a candidate that matches on credits and description
+    const match = candidates.find((source) => {
+      // Match on credits (UnitsMin)
+      if (target.UnitsMin !== source.UnitsMin) return false;
+
+      // Match on description (CourseDesc)
+      const targetDesc = normalizeForComparison(target.CourseDesc);
+      const sourceDesc = normalizeForComparison(source.CourseDesc);
+      if (targetDesc !== sourceDesc) return false;
+
+      return true;
+    });
+
+    if (match) {
+      equivalents.set(target.Code, match.Code);
+    }
+  }
+
+  return equivalents;
+}
+
 export function isModuleOffered(module: {
   semesterData: (SemesterData | SemesterDataCondensed)[];
 }): boolean {

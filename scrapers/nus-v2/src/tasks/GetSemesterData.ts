@@ -19,7 +19,7 @@ import BaseTask from './BaseTask';
 import GetSemesterExams from './GetSemesterExams';
 import GetSemesterTimetable from './GetSemesterTimetable';
 import { validateSemester } from '../services/validation';
-import { removeEmptyValues, titleize, trimValues } from '../utils/data';
+import { removeEmptyValues, titleize, trimValues, findEquivalentModules } from '../utils/data';
 import { difference } from '../utils/set';
 import { Logger } from '../services/logger';
 
@@ -319,6 +319,52 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
 
       semesterModuleData.push(semesterModuleDatum);
     });
+
+    // Post-processing: Propagate timetable data to dual-coded modules
+    // The new NUS API only returns timetable data for one code of dual-coded modules.
+    // This step matches modules without timetable to those with timetable based on
+    // title, credits, and description, then copies the timetable data.
+    const modulesWithTimetable = semesterModuleData
+      .filter((m) => m.semesterData !== undefined)
+      .map((m) => modulesMap[m.moduleCode]);
+    const modulesWithoutTimetable = semesterModuleData
+      .filter((m) => m.semesterData === undefined)
+      .map((m) => modulesMap[m.moduleCode]);
+
+    const equivalentModules = findEquivalentModules(modulesWithoutTimetable, modulesWithTimetable);
+
+    if (equivalentModules.size > 0) {
+      this.logger.info(
+        {
+          equivalents: Array.from(equivalentModules.entries()).map(([target, source]) => ({
+            target,
+            source,
+          })),
+        },
+        `Found ${equivalentModules.size} equivalent module(s) - propagating timetable data`,
+      );
+
+      // Copy timetable data from source modules to target modules
+      for (const [targetCode, sourceCode] of equivalentModules.entries()) {
+        const targetDatum = semesterModuleData.find(
+          (m) => m.moduleCode === targetCode,
+        ) as WritableSemesterModuleData | undefined;
+        const sourceDatum = semesterModuleData.find((m) => m.moduleCode === sourceCode);
+
+        if (targetDatum && sourceDatum?.semesterData) {
+          // Get exam info for the target module (if any)
+          const targetExamInfo = exams[targetCode] || {};
+
+          // Copy timetable and covidZones from source, but use target's own exam info
+          targetDatum.semesterData = {
+            semester,
+            timetable: sourceDatum.semesterData.timetable,
+            covidZones: sourceDatum.semesterData.covidZones,
+            ...targetExamInfo,
+          };
+        }
+      }
+    }
 
     // Log modules that have timetables but no module info
     const noInfoModulesWithTimetables = Array.from(
