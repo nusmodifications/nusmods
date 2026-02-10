@@ -299,7 +299,7 @@ class NusApi implements INusApi {
       // The modules endpoint will return NotFound even for valid inputs
       // that just happen to have no records, so we ignore this error
       // and just return an empty array
-      if (e instanceof NotFoundError) {
+      if (e instanceof UnknownApiError && e.response?.status === 404) {
         return [];
       }
 
