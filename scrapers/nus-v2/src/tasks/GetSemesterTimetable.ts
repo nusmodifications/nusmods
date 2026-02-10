@@ -16,7 +16,14 @@ import BaseTask from './BaseTask';
 import config from '../config';
 import { getTermCode, retry } from '../utils/api';
 import { validateLesson, validateSemester } from '../services/validation';
-import { activityLessonType, dayTextMap, unrecognizedLessonTypes } from '../utils/data';
+import {
+  activityLessonType,
+  dayTextMap,
+  sortTimetableByLegacyOrder,
+  unrecognizedLessonTypes,
+} from '../utils/data';
+// TODO: TEMPORARY - Remove this import once the frontend no longer depends on timetable array ordering.
+import legacyTimetableOrder from '../legacy-timetable-order.json';
 import { allEqual, deltas } from '../utils/arrays';
 import { ISO8601_DATE_FORMAT } from '../utils/time';
 
@@ -230,17 +237,25 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
 
     this.logger.info({ valid, invalid }, 'Processed and removed invalid lessons');
 
-    return mapValues(timetables, (timetableObject, moduleCode) =>
+    // TODO: TEMPORARY - Only apply legacy ordering for the academic year the mapping was generated from.
+    const semesterOrder = this.academicYear === '2025/2026'
+      ? legacyTimetableOrder[String(this.semester) as keyof typeof legacyTimetableOrder]
+      : undefined;
+
+    return mapValues(timetables, (timetableObject, moduleCode) => {
       // 5. Remove the lesson key inserted in (2) and remap the weeks to their correct shape
-      values(timetableObject).map((lesson) => ({
+      const lessons = values(timetableObject).map((lesson) => ({
         ...lesson,
         weeks: mapLessonWeeks(
           lesson.weeks,
           this.semester,
           this.logger.child({ moduleCode, lesson }),
         ),
-      })),
-    );
+      }));
+
+      // TODO: TEMPORARY - Re-sort to match old API ordering so existing user timetables don't break.
+      return sortTimetableByLegacyOrder(lessons, semesterOrder?.[moduleCode as keyof typeof semesterOrder]);
+    });
   };
 
   async run() {

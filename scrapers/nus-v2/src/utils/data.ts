@@ -9,6 +9,7 @@ import {
   DayText,
   LessonType,
   ModuleCode,
+  RawLesson,
   SemesterData,
   SemesterDataCondensed,
 } from '../types/modules';
@@ -298,6 +299,33 @@ export function findEquivalentModules<T extends { Code: string; Title: string; U
   }
 
   return equivalents;
+}
+
+/**
+ * TODO: TEMPORARY - Remove this once the frontend no longer depends on timetable array ordering.
+ *
+ * Re-sorts timetable lessons to match the ordering from the old API, so that
+ * existing user timetables don't break during the API migration. Classes not
+ * found in the legacy ordering are appended at the end in their original order.
+ */
+export function sortTimetableByLegacyOrder<T extends Pick<RawLesson, 'lessonType' | 'classNo'>>(
+  lessons: T[],
+  legacyOrder: string[] | undefined,
+): T[] {
+  if (!legacyOrder) return lessons;
+
+  const orderMap = new Map<string, number>();
+  for (let i = 0; i < legacyOrder.length; i++) {
+    orderMap.set(legacyOrder[i], i);
+  }
+
+  return [...lessons].sort((a, b) => {
+    const keyA = `${a.lessonType}|${a.classNo}`;
+    const keyB = `${b.lessonType}|${b.classNo}`;
+    const indexA = orderMap.get(keyA) ?? Infinity;
+    const indexB = orderMap.get(keyB) ?? Infinity;
+    return indexA - indexB;
+  });
 }
 
 export function isModuleOffered(module: {
