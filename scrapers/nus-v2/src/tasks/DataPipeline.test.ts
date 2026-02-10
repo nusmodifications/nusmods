@@ -142,6 +142,14 @@ describe(DataPipeline, () => {
     // Setup code to mock all used API endpoints
     mockApi.getFaculty.mockResolvedValue(faculties);
     mockApi.getDepartment.mockResolvedValue(departments);
+    // GetAllModules first tries the year-only endpoint; return the union
+    // of all semesters' module data (deduplicated by GetAllModules)
+    mockApi.getFacultyModulesForYear.mockImplementation(async (_year: string, code: string) => {
+      if (code !== '003') return [];
+      // Return modules from all semesters - GetAllModules will deduplicate
+      return [...(moduleInfoData['1'] || []), ...(moduleInfoData['2'] || [])];
+    });
+    // Keep per-semester mock for the fallback path
     mockApi.getFacultyModules.mockImplementation(async (term: string, code: string) => {
       // 003 is Computing
       if (code !== '003') return [];

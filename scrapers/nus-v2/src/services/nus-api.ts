@@ -71,6 +71,15 @@ export interface INusApi {
    * Get exam info on all modules in a semester
    */
   getTermExams: (term: string) => Promise<ModuleExam[]>;
+
+  /**
+   * Get all modules for a faculty across the entire academic year (no semester filter).
+   * Falls back to empty array if the API does not support year-only queries.
+   */
+  getFacultyModulesForYear: (
+    academicYear: string,
+    facultyCode: FacultyCode,
+  ) => Promise<ModuleInfo[]>;
 }
 
 type ApiParams = {
@@ -245,12 +254,13 @@ class NusApi implements INusApi {
     this.queue.add(() => callV1Api<T>(endpoint, params, headers));
 
   /**
-   * Calls the modules endpoint
+   * Calls the modules endpoint. If params already contains applicableInYear,
+   * term-based params are skipped (supports year-only queries without semester filter).
    */
   callModulesEndpoint = async (term: string, params: ApiParams): Promise<ModuleInfo[]> => {
     const maxItems = 1000;
 
-    const termParams = mapTermToApiParams(term);
+    const termParams = params.applicableInYear ? {} : mapTermToApiParams(term);
     const baseParams = {
       ...termParams,
       ...params,
@@ -306,6 +316,16 @@ class NusApi implements INusApi {
   getFacultyModules = async (term: string, facultyCode: FacultyCode): Promise<ModuleInfo[]> => {
     const acadGroupCode = facultyCode.length >= 3 ? facultyCode.slice(0, 3) : facultyCode;
     return this.callModulesEndpoint(term, { acadGroupCode });
+  };
+
+  getFacultyModulesForYear = async (
+    academicYear: string,
+    facultyCode: FacultyCode,
+  ): Promise<ModuleInfo[]> => {
+    const yearParts = academicYear.split('/');
+    const applicableInYear = `${yearParts[0]}/${yearParts[1].slice(2)}`;
+    const acadGroupCode = facultyCode.length >= 3 ? facultyCode.slice(0, 3) : facultyCode;
+    return this.callModulesEndpoint('', { applicableInYear, acadGroupCode });
   };
 
   getModuleTimetable = async (term: string, module: ModuleCode): Promise<TimetableLesson[]> =>

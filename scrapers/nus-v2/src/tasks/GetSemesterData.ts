@@ -18,7 +18,6 @@ import config from '../config';
 import BaseTask from './BaseTask';
 import GetSemesterExams from './GetSemesterExams';
 import GetSemesterTimetable from './GetSemesterTimetable';
-import GetSemesterModules from './GetSemesterModules';
 import { validateSemester } from '../services/validation';
 import { removeEmptyValues, titleize, trimValues } from '../utils/data';
 import { difference } from '../utils/set';
@@ -27,6 +26,7 @@ import { Logger } from '../services/logger';
 interface Input {
   departments: AcademicOrg[];
   faculties: AcademicGrp[];
+  modules: ModuleInfo[];
 }
 
 type Output = SemesterModuleData[];
@@ -228,11 +228,9 @@ const mapModuleInfo = (
 };
 
 /**
- * Download, clean and combine module info, timetable, and exam info. This task
- * uses the subtasks
- * - GetSemesterExams
- * - GetSemesterModules
- * - GetSemesterTimetable
+ * Clean, combine and save module info, timetable, and exam info for a single
+ * semester. Module info is provided as input (fetched once externally by
+ * GetAllModules). Timetable and exam data are fetched per-semester.
  *
  * Output:
  * - <semester>/<module code>/semesterData.json
@@ -267,16 +265,13 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
 
     this.logger.info(`Getting semester data for ${academicYear} semester ${semester}`);
 
-    // Do this before the other tasks so that it won't timeout because the API
-    // server can't handle the load created by trying to fetch all modules in
-    // parallel
-    const timetables = await new GetSemesterTimetable(semester, academicYear).run();
-
-    // Get exams and module info in parallel
-    const [exams, modules] = await Promise.all([
+    // Fetch timetable and exams in parallel (module info is pre-fetched externally)
+    const [timetables, exams] = await Promise.all([
+      new GetSemesterTimetable(semester, academicYear).run(),
       new GetSemesterExams(semester, academicYear).run(),
-      new GetSemesterModules(semester, academicYear).run({ faculties: input.faculties }),
     ]);
+
+    const modules = input.modules;
 
     // Map department and faculty codes to their names for use during module
     // data sanitization

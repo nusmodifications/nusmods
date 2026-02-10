@@ -7,6 +7,7 @@ import config from '../config';
 
 import BaseTask from './BaseTask';
 import GetFacultyDepartment from './GetFacultyDepartment';
+import GetAllModules from './GetAllModules';
 import GetSemesterData from './GetSemesterData';
 import CollateVenues from './CollateVenues';
 import CollateModules from './CollateModules';
@@ -37,27 +38,33 @@ export default class DataPipeline extends BaseTask implements Task<void, Module[
 
     const organizations = await new GetFacultyDepartment(this.academicYear).run();
 
-    // Get each semester's data in series. Running it in parallel provides
-    // little benefit since the bottleneck is in module retrieval, which has to
-    // run for each faculty and takes up most of the time
+    // Fetch module info once for the entire year rather than per-semester,
+    // since module metadata (title, description, prerequisites, etc.) does
+    // not change between semesters
+    const allModules = await new GetAllModules(this.academicYear).run({
+      faculties: organizations.faculties,
+    });
 
-    /* eslint-disable no-await-in-loop */
-    const semesterData = [];
-    const allAliases = [];
-    for (const semester of Semesters) {
-      this.logger.info(`Getting data for semester ${semester}`);
+    // With module info fetched upfront, per-semester timetable and exam
+    // fetches can run in parallel across semesters
+    const semesterResults = await Promise.all(
+      Semesters.map(async (semester) => {
+        this.logger.info(`Getting data for semester ${semester}`);
 
-      // Contains module and semester specific data
-      const getSemesterData = new GetSemesterData(semester, this.academicYear);
-      const modules = await getSemesterData.run(organizations);
+        const getSemesterData = new GetSemesterData(semester, this.academicYear);
+        const modules = await getSemesterData.run({
+          ...organizations,
+          modules: allModules,
+        });
 
-      // Collect venue data for this semester
-      const { aliases } = await new CollateVenues(semester, this.academicYear).run(modules);
+        const { aliases } = await new CollateVenues(semester, this.academicYear).run(modules);
 
-      allAliases.push(aliases);
-      semesterData.push(modules);
-    }
-    /* eslint-enable */
+        return { modules, aliases };
+      }),
+    );
+
+    const semesterData = semesterResults.map((r) => r.modules);
+    const allAliases = semesterResults.map((r) => r.aliases);
 
     const collateModules = new CollateModules(this.academicYear);
     const modules = await collateModules.run({ semesterData, aliases: allAliases });

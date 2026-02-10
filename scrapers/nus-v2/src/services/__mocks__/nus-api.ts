@@ -3,6 +3,7 @@ import type { INusApi } from '../nus-api';
 
 const mockApi: INusApi = {
   getFacultyModules: jest.fn(),
+  getFacultyModulesForYear: jest.fn(),
   getModuleExam: jest.fn(),
 
   getFaculty: jest.fn(),
