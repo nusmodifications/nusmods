@@ -271,7 +271,7 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
       new GetSemesterExams(semester, academicYear).run(),
     ]);
 
-    const modules = input.modules;
+    const { modules } = input;
 
     // Map department and faculty codes to their names for use during module
     // data sanitization
