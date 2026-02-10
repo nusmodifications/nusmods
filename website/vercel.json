@@ -1,4 +1,5 @@
 {
+  "installCommand": "yarn install && yarn prepare:optimiser",
   "functions": {
     "api/**/*.ts": {
       "excludeFiles": "./tsconfig.json",
