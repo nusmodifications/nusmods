@@ -53,7 +53,7 @@ export function decodeHTMLEntities(string: string) {
 
 /**
  * Remove HTML tags from a string and replace them with a space to avoid joining words.
- * Also decodes HTML entities and normalizes whitespace (including NBSPs).
+ * Normalizes whitespace (including NBSPs).
  */
 export function stripTags(string: string) {
   return string

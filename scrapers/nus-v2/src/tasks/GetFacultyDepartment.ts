@@ -140,14 +140,16 @@ export default class GetFacultyDepartment extends BaseTask implements Task<void,
     // TODO: Remove this once we figure out if excluding this from the /get-acadgroup endpoint was
     //       intentional, or if this is an error somewhere else. Until then, we need this for
     //       modules like CS2101.
-    faculties.push({
-      AcademicGroup: '099',
-      DescriptionShort: 'Non-Faculty-based Departments',
-      Description: 'Non-Faculty-based Departments',
-      EffectiveStatus: 'A',
-      // 1905-01-01 is the default date used in the API
-      EffectiveDate: '1905-01-01',
-    });
+    if (!faculties.some((faculty) => faculty.AcademicGroup === '099')) {
+      faculties.push({
+        AcademicGroup: '099',
+        DescriptionShort: 'Non-Faculty-based Departments',
+        Description: 'Non-Faculty-based Departments',
+        EffectiveStatus: 'A',
+        // 1905-01-01 is the default date used in the API
+        EffectiveDate: '1905-01-01',
+      });
+    }
 
     departments = departments.map(cleanFacultyDepartment);
     faculties = faculties.map(cleanFacultyDepartment);

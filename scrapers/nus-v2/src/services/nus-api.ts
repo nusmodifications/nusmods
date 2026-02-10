@@ -377,8 +377,9 @@ class NusApi implements INusApi {
             if (error.thrown) {
               reject(error.thrown);
             } else {
-              const apiError = new UnknownApiError(`Unable to get semester timetable`);
-              apiError.originalError = apiError;
+              const apiError = new UnknownApiError(
+                `Unable to get semester timetable (status ${error.statusCode})`,
+              );
               reject(apiError);
             }
           });

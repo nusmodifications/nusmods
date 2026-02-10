@@ -29,9 +29,9 @@ export type Config = Readonly<{
 
 const env = fs.readJSONSync(path.join(__dirname, '../env.json'));
 
-if (!env.appKey || !env.studentKey || !env.baseUrl) {
+if (!env.baseUrl || !env.ttApiKey || !env.courseApiKey || !env.acadApiKey || !env.acadAppKey) {
   throw new Error(
-    'env.json is not configured correctly. Please check that appKey, studentKey and baseUrl are provided',
+    'env.json is not configured correctly. Please check that baseUrl, ttApiKey, courseApiKey, acadApiKey and acadAppKey are provided',
   );
 }
 

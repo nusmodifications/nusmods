@@ -105,7 +105,6 @@ export function mapAttributes(
  * - Remove empty fields and fields with text like 'nil'
  * - Trim whitespace from module title, description and other text fields
  * - Properly capitalize ALL CAPS title
- * - Decode HTML entities in description such as '&224;' to 'à'
  */
 export function cleanModuleInfo(module: SemesterModule) {
   let cleanedModule = { ...module };
@@ -206,7 +205,7 @@ const mapModuleInfo = (
     preclusionRule: PreclusionRule ?? undefined,
     description: CourseDesc ?? undefined,
     title: Title,
-    additionalInformation: AdditionalInformation || '',
+    additionalInformation: AdditionalInformation ?? undefined,
     department: departmentMap[OrganisationCode],
     faculty: facultyMap[AcademicGroup],
     workload: parseWorkload(WorkloadHoursNUSMods),
