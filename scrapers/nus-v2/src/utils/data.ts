@@ -307,25 +307,63 @@ export function findEquivalentModules<T extends { Code: string; Title: string; U
  * Re-sorts timetable lessons to match the ordering from the old API, so that
  * existing user timetables don't break during the API migration. Classes not
  * found in the legacy ordering are appended at the end in their original order.
+ *
+ * Legacy order entries use the format "lessonType|classNo|day|startTime|endTime|venue".
+ * We first try an exact match on the full key. If a lesson's details changed between
+ * APIs, we fall back to matching by "lessonType|classNo" using the earliest unmatched
+ * position for that short key.
  */
-export function sortTimetableByLegacyOrder<T extends Pick<RawLesson, 'lessonType' | 'classNo'>>(
-  lessons: T[],
-  legacyOrder: string[] | undefined,
-): T[] {
+export function sortTimetableByLegacyOrder<
+  T extends Pick<RawLesson, 'lessonType' | 'classNo' | 'day' | 'startTime' | 'endTime' | 'venue'>,
+>(lessons: T[], legacyOrder: string[] | undefined): T[] {
   if (!legacyOrder) return lessons;
 
-  const orderMap = new Map<string, number>();
+  // Full key -> index (exact match)
+  const fullKeyIndex = new Map<string, number>();
+  // Short key -> list of indices (fallback for changed lessons)
+  const shortKeyIndices = new Map<string, number[]>();
   for (let i = 0; i < legacyOrder.length; i++) {
-    orderMap.set(legacyOrder[i], i);
+    fullKeyIndex.set(legacyOrder[i], i);
+
+    const parts = legacyOrder[i].split('|');
+    const shortKey = `${parts[0]}|${parts[1]}`;
+    if (!shortKeyIndices.has(shortKey)) {
+      shortKeyIndices.set(shortKey, []);
+    }
+    shortKeyIndices.get(shortKey)!.push(i);
   }
 
-  return [...lessons].sort((a, b) => {
-    const keyA = `${a.lessonType}|${a.classNo}`;
-    const keyB = `${b.lessonType}|${b.classNo}`;
-    const indexA = orderMap.get(keyA) ?? Infinity;
-    const indexB = orderMap.get(keyB) ?? Infinity;
-    return indexA - indexB;
+  // Assign each lesson a legacy position
+  const usedIndices = new Set<number>();
+  const lessonPositions = lessons.map((lesson) => {
+    const fullKey = `${lesson.lessonType}|${lesson.classNo}|${lesson.day}|${lesson.startTime}|${lesson.endTime}|${lesson.venue}`;
+    const exactIdx = fullKeyIndex.get(fullKey);
+    if (exactIdx !== undefined && !usedIndices.has(exactIdx)) {
+      usedIndices.add(exactIdx);
+      return exactIdx;
+    }
+    return undefined; // resolve in fallback pass
   });
+
+  // Fallback pass: assign unmatched lessons by short key
+  for (let i = 0; i < lessons.length; i++) {
+    if (lessonPositions[i] !== undefined) continue;
+
+    const shortKey = `${lessons[i].lessonType}|${lessons[i].classNo}`;
+    const candidates = shortKeyIndices.get(shortKey);
+    if (candidates) {
+      const idx = candidates.find((c) => !usedIndices.has(c));
+      if (idx !== undefined) {
+        usedIndices.add(idx);
+        lessonPositions[i] = idx;
+      }
+    }
+  }
+
+  // Sort by assigned position, unmatched go to the end
+  const indexed = lessons.map((lesson, i) => ({ lesson, pos: lessonPositions[i] ?? Infinity }));
+  indexed.sort((a, b) => a.pos - b.pos);
+  return indexed.map((entry) => entry.lesson);
 }
 
 export function isModuleOffered(module: {
