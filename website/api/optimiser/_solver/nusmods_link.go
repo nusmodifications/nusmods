@@ -83,9 +83,9 @@ func GenerateNUSModsShareableLink(assignments map[string]string, defaultSlots ma
 			if assignments[lessonKey] == "" {
 				classNo := slots[0].ClassNo
 				assignments[lessonKey] = classNo
+				lessonToSlots[lessonKey] = append(lessonToSlots[lessonKey], slots)
 			}
 		}
-
 	}
 
 	default_config := CreateConfig(assignments, lessonToSlots)
