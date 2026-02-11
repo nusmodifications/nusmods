@@ -20,6 +20,7 @@ import type {
 import type { FacultyCode, ModuleCode } from '../types/modules';
 
 import { AuthError, NotFoundError, UnknownApiError } from '../utils/errors';
+import rootLogger from './logger';
 import { mapTermToApiParams, sanitizeModuleInfo } from '../utils/api';
 import config from '../config';
 
@@ -300,6 +301,10 @@ class NusApi implements INusApi {
       // that just happen to have no records, so we ignore this error
       // and just return an empty array
       if (e instanceof UnknownApiError && e.response?.status === 404) {
+        rootLogger.warn(
+          { params, url: e.requestConfig?.url },
+          'Modules endpoint returned 404 - treating as empty result',
+        );
         return [];
       }
 

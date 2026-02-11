@@ -238,7 +238,7 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
     this.logger.info({ valid, invalid }, 'Processed and removed invalid lessons');
 
     // TODO: TEMPORARY - Only apply legacy ordering for the academic year the mapping was generated from.
-    const semesterOrder = this.academicYear === '2025/2026'
+    const semesterOrder = this.academicYear === config.academicYear
       ? legacyTimetableOrder[String(this.semester) as keyof typeof legacyTimetableOrder]
       : undefined;
 
