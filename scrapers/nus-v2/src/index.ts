@@ -9,6 +9,7 @@ import { Aliases, Semesters } from './types/modules';
 
 import TestApi from './tasks/TestApi';
 import GetFacultyDepartment from './tasks/GetFacultyDepartment';
+import GetAllModules from './tasks/GetAllModules';
 import GetSemesterData from './tasks/GetSemesterData';
 import CollateVenues from './tasks/CollateVenues';
 import CollateModules from './tasks/CollateModules';
@@ -74,7 +75,13 @@ yargs
     },
     handler: run(async ({ sem, year }) => {
       const organizations = await new GetFacultyDepartment(year).run();
-      const modules = await new GetSemesterData(sem).run(organizations);
+      const allModules = await new GetAllModules(year).run({
+        faculties: organizations.faculties,
+      });
+      const modules = await new GetSemesterData(sem).run({
+        ...organizations,
+        modules: allModules,
+      });
       logger.info(`Collected data for ${modules.length} modules`);
     }),
   })

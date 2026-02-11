@@ -9,8 +9,11 @@ import {
   DayText,
   LessonType,
   ModuleCode,
+  RawLesson,
   SemesterData,
   SemesterDataCondensed,
+  WeekRange,
+  Weeks,
 } from '../types/modules';
 import { ModuleAliases } from '../types/mapper';
 
@@ -49,6 +52,25 @@ export function titleize(string: string) {
 
 export function decodeHTMLEntities(string: string) {
   return decode(string);
+}
+
+/**
+ * Remove HTML tags from a string and replace them with a space to avoid joining words.
+ * Normalizes whitespace (including NBSPs).
+ */
+export function stripTags(string: string) {
+  return string
+    .replace(/<[^>]*>?/gm, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/**
+ * Clean a string by removing HTML tags, decoding entities, and trimming whitespace.
+ */
+export function cleanString(string: string | null | undefined): string {
+  if (!string) return '';
+  return stripTags(decode(string));
 }
 
 /**
@@ -220,6 +242,129 @@ export const modulesToAvoidMerging = new Set<string>([
   'Data Structures and Algorithms',
   'Graduate Research Seminar',
 ]);
+
+/**
+ * Normalize a string for safe comparison by lowercasing, collapsing whitespace, and trimming.
+ */
+export function normalizeForComparison(str: string | null | undefined): string {
+  if (!str) return '';
+  return str.toLowerCase().replace(/\s+/g, ' ').trim();
+}
+
+/**
+ * Find modules without timetable data that match modules with timetable data based on
+ * title, credits, and description. Returns a Map of target module code (without timetable)
+ * to source module code (with timetable).
+ *
+ * This is used to propagate timetable data to "shadow" dual-coded modules that the new
+ * NUS API doesn't return timetable data for.
+ */
+export function findEquivalentModules<T extends { Code: string; Title: string; UnitsMin: number | null; CourseDesc: string }>(
+  modulesWithoutTimetable: T[],
+  modulesWithTimetable: T[],
+): Map<string, string> {
+  const equivalents = new Map<string, string>();
+
+  // Build a lookup map: normalized title -> list of modules with that title (that have timetable)
+  const titleIndex = new Map<string, T[]>();
+  for (const module of modulesWithTimetable) {
+    const normalizedTitle = normalizeForComparison(module.Title);
+    if (!titleIndex.has(normalizedTitle)) {
+      titleIndex.set(normalizedTitle, []);
+    }
+    titleIndex.get(normalizedTitle)!.push(module);
+  }
+
+  // For each module without timetable, find a matching module with timetable
+  for (const target of modulesWithoutTimetable) {
+    const normalizedTitle = normalizeForComparison(target.Title);
+    const candidates = titleIndex.get(normalizedTitle);
+
+    if (!candidates) continue;
+
+    // Find a candidate that matches on credits and description
+    const match = candidates.find((source) => {
+      // Match on credits (UnitsMin)
+      if (target.UnitsMin !== source.UnitsMin) return false;
+
+      // Match on description (CourseDesc)
+      const targetDesc = normalizeForComparison(target.CourseDesc);
+      const sourceDesc = normalizeForComparison(source.CourseDesc);
+      if (targetDesc !== sourceDesc) return false;
+
+      return true;
+    });
+
+    if (match) {
+      equivalents.set(target.Code, match.Code);
+    }
+  }
+
+  return equivalents;
+}
+
+/**
+ * TODO: TEMPORARY - Remove this once the frontend no longer depends on timetable array ordering.
+ *
+ * Convert a Weeks value (number[] or WeekRange) to a number array for use as
+ * a stable matching key that doesn't depend on absolute dates.
+ */
+function weeksToNumbers(weeks: Weeks): number[] {
+  if (Array.isArray(weeks)) return weeks;
+  if (weeks.weeks) return weeks.weeks;
+  const start = new Date(weeks.start).getTime();
+  const end = new Date(weeks.end).getTime();
+  const totalWeeks = Math.round((end - start) / (7 * 24 * 60 * 60 * 1000)) + 1;
+  const interval = weeks.weekInterval ?? 1;
+  const result: number[] = [];
+  for (let i = 1; i <= totalWeeks; i += interval) {
+    result.push(i);
+  }
+  return result;
+}
+
+/**
+ * TODO: TEMPORARY - Remove this once the frontend no longer depends on timetable array ordering.
+ *
+ * Re-sorts timetable lessons to match the ordering from the old API, so that
+ * existing user timetables don't break during the API migration. Classes not
+ * found in the legacy ordering are appended at the end in their original order.
+ *
+ * Legacy order entries use the format "lessonType|classNo|day|startTime|endTime|venue|weeksJSON".
+ * Weeks are always stored as number arrays (WeekRange objects are converted).
+ * Matching is done on the full key (all fields).
+ */
+export function sortTimetableByLegacyOrder<
+  T extends Pick<RawLesson, 'lessonType' | 'classNo' | 'day' | 'startTime' | 'endTime' | 'venue' | 'weeks'>,
+>(
+  lessons: T[],
+  legacyOrder: string[] | undefined,
+): T[] {
+  if (!legacyOrder) return lessons;
+
+  const keyIndex = new Map<string, number>();
+  for (let i = 0; i < legacyOrder.length; i++) {
+    keyIndex.set(legacyOrder[i], i);
+  }
+
+  // Assign each lesson a legacy position via exact match
+  const usedIndices = new Set<number>();
+  const lessonPositions = lessons.map((lesson) => {
+    const weekNumbers = weeksToNumbers(lesson.weeks);
+    const key = `${lesson.lessonType}|${lesson.classNo}|${lesson.day}|${lesson.startTime}|${lesson.endTime}|${lesson.venue}|${JSON.stringify(weekNumbers)}`;
+    const idx = keyIndex.get(key);
+    if (idx !== undefined && !usedIndices.has(idx)) {
+      usedIndices.add(idx);
+      return idx;
+    }
+    return undefined;
+  });
+
+  // Sort by assigned position, unmatched go to the end
+  const indexed = lessons.map((lesson, i) => ({ lesson, pos: lessonPositions[i] ?? Infinity }));
+  indexed.sort((a, b) => a.pos - b.pos);
+  return indexed.map((entry) => entry.lesson);
+}
 
 export function isModuleOffered(module: {
   semesterData: (SemesterData | SemesterDataCondensed)[];
