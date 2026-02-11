@@ -4,6 +4,10 @@ const config: Config = {
   // From env
   appKey: '',
   studentKey: '',
+  ttApiKey: '',
+  courseApiKey: '',
+  acadApiKey: '',
+  acadAppKey: '',
   baseUrl: 'https://example.com/api',
 
   // Other config
