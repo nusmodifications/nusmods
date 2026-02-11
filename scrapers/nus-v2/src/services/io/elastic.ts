@@ -124,10 +124,17 @@ export default class ElasticPersist implements Persist {
 
   deleteModule = async (moduleCode: ModuleCode) => {
     const client = await this.client;
-    await client.delete({
-      id: moduleCode,
-      index: INDEX_NAME,
-    });
+    try {
+      await client.delete({
+        id: moduleCode,
+        index: INDEX_NAME,
+      });
+    } catch (e) {
+      // Ignore not_found errors - the module is already gone from the index
+      if (e.name !== 'ResponseError' || e.meta.body.result !== 'not_found') {
+        throw e;
+      }
+    }
   };
 
   moduleInfo = async (moduleInfo: ModuleInformation[]) => {
