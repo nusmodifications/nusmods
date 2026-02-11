@@ -15,17 +15,17 @@ import (
 - Get all module slots that pass conditions in optimiserRequest for all modules.
 - Reduces search space by merging slots of the same lesson type happening at the same day and time and building.
 */
-func GetAllModuleSlots(optimiserRequest models.OptimiserRequest) (map[string]map[string]map[string][]models.ModuleSlot, map[string]map[string][]models.ModuleSlot, error) {
+func GetAllModuleSlots(optimiserRequest models.OptimiserRequest) (models.ModuleTimetableMap, models.ModuleDefaultSlotsMap, error) {
 	venues, err := client.GetVenues()
 	if err != nil {
 		return nil, nil, err
 	}
 
-	moduleSlots := make(map[string]map[string]map[string][]models.ModuleSlot)
+	moduleSlots := make(models.ModuleTimetableMap)
 	/*
 		- These are default or backup slots for the partial timetable so that we can display some random slot for unallocated lessons
 	*/
-	defaultSlots := make(map[string]map[string][]models.ModuleSlot)
+	defaultSlots := make(models.ModuleDefaultSlotsMap)
 	for _, module := range optimiserRequest.Modules {
 
 		body, err := client.GetModuleData(optimiserRequest.AcadYear, strings.ToUpper(module))
@@ -85,7 +85,7 @@ func GetAllModuleSlots(optimiserRequest models.OptimiserRequest) (map[string]map
 	return moduleSlots, defaultSlots, nil
 }
 
-func mergeAndFilterModuleSlots(timetable []models.ModuleSlot, venues map[string]models.Location, optimiserRequest models.OptimiserRequest, module string) (map[string]map[string][]models.ModuleSlot, map[string][]models.ModuleSlot) {
+func mergeAndFilterModuleSlots(timetable []models.ModuleSlot, venues map[string]models.Location, optimiserRequest models.OptimiserRequest, module string) (map[models.LessonType]map[models.ClassNo][]models.ModuleSlot, map[models.LessonType][]models.ModuleSlot) {
 
 	recordingsMap := make(map[string]bool, len(optimiserRequest.Recordings))
 	for _, recording := range optimiserRequest.Recordings {
@@ -106,7 +106,7 @@ func mergeAndFilterModuleSlots(timetable []models.ModuleSlot, venues map[string]
 		 Key: "lessonType|classNo", Value: []ModuleSlot
 	*/
 
-	defaultSlots := make(map[string][]models.ModuleSlot) // Lesson Type -> []Module Slot
+	defaultSlots := make(map[models.LessonType][]models.ModuleSlot) // Lesson Type -> []Module Slot
 	classGroups := make(map[string][]models.ModuleSlot)
 	for i := range timetable {
 		slot := &timetable[i]
@@ -168,7 +168,7 @@ func mergeAndFilterModuleSlots(timetable []models.ModuleSlot, venues map[string]
 		We are doing this to avoid unnecessary calculations & reduce search space
 	*/
 
-	mergedTimetable := make(map[string]map[string][]models.ModuleSlot) // Lesson Type -> Class No -> []ModuleSlot
+	mergedTimetable := make(map[models.LessonType]map[models.ClassNo][]models.ModuleSlot) // Lesson Type -> Class No -> []ModuleSlot
 	seenCombinations := make(map[string]bool)
 
 	// iterate over lessonType|classNo
@@ -215,7 +215,7 @@ func mergeAndFilterModuleSlots(timetable []models.ModuleSlot, venues map[string]
 		}
 
 		if mergedTimetable[lessonType] == nil {
-			mergedTimetable[lessonType] = make(map[string][]models.ModuleSlot)
+			mergedTimetable[lessonType] = make(map[models.ClassNo][]models.ModuleSlot)
 		}
 		mergedTimetable[lessonType][classNo] = slots
 	}
