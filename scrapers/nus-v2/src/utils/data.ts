@@ -12,6 +12,8 @@ import {
   RawLesson,
   SemesterData,
   SemesterDataCondensed,
+  WeekRange,
+  Weeks,
 } from '../types/modules';
 import { ModuleAliases } from '../types/mapper';
 
@@ -304,63 +306,55 @@ export function findEquivalentModules<T extends { Code: string; Title: string; U
 /**
  * TODO: TEMPORARY - Remove this once the frontend no longer depends on timetable array ordering.
  *
+ * Convert a Weeks value (number[] or WeekRange) to a number array for use as
+ * a stable matching key that doesn't depend on absolute dates.
+ */
+function weeksToNumbers(weeks: Weeks): number[] {
+  if (Array.isArray(weeks)) return weeks;
+  if (weeks.weeks) return weeks.weeks;
+  const start = new Date(weeks.start).getTime();
+  const end = new Date(weeks.end).getTime();
+  const totalWeeks = Math.round((end - start) / (7 * 24 * 60 * 60 * 1000)) + 1;
+  const interval = weeks.weekInterval ?? 1;
+  const result: number[] = [];
+  for (let i = 1; i <= totalWeeks; i += interval) {
+    result.push(i);
+  }
+  return result;
+}
+
+/**
+ * TODO: TEMPORARY - Remove this once the frontend no longer depends on timetable array ordering.
+ *
  * Re-sorts timetable lessons to match the ordering from the old API, so that
  * existing user timetables don't break during the API migration. Classes not
  * found in the legacy ordering are appended at the end in their original order.
  *
- * Legacy order entries use the format "lessonType|classNo|day|startTime|endTime|venue".
- * Matching is done on "lessonType|classNo|day|startTime" only. If a lesson matches
- * on those fields but has a different endTime or venue, a warning is logged.
+ * Legacy order entries use the format "lessonType|classNo|day|startTime|endTime|venue|weeksJSON".
+ * Weeks are always stored as number arrays (WeekRange objects are converted).
+ * Matching is done on the full key (all fields).
  */
 export function sortTimetableByLegacyOrder<
-  T extends Pick<RawLesson, 'lessonType' | 'classNo' | 'day' | 'startTime' | 'endTime' | 'venue'>,
+  T extends Pick<RawLesson, 'lessonType' | 'classNo' | 'day' | 'startTime' | 'endTime' | 'venue' | 'weeks'>,
 >(
   lessons: T[],
   legacyOrder: string[] | undefined,
-  logger?: { warn: (obj: Record<string, unknown>, msg: string) => void },
 ): T[] {
   if (!legacyOrder) return lessons;
 
-  // Match key (lessonType|classNo|day|startTime) -> index
   const keyIndex = new Map<string, number>();
-  // Match key -> legacy endTime and venue for warning comparison
-  const legacyDetails = new Map<string, { endTime: string; venue: string }[]>();
   for (let i = 0; i < legacyOrder.length; i++) {
-    const parts = legacyOrder[i].split('|');
-    const matchKey = `${parts[0]}|${parts[1]}|${parts[2]}|${parts[3]}`;
-    keyIndex.set(matchKey, i);
-
-    if (!legacyDetails.has(matchKey)) {
-      legacyDetails.set(matchKey, []);
-    }
-    legacyDetails.get(matchKey)!.push({ endTime: parts[4], venue: parts[5] });
+    keyIndex.set(legacyOrder[i], i);
   }
 
-  // Assign each lesson a legacy position
+  // Assign each lesson a legacy position via exact match
   const usedIndices = new Set<number>();
   const lessonPositions = lessons.map((lesson) => {
-    const matchKey = `${lesson.lessonType}|${lesson.classNo}|${lesson.day}|${lesson.startTime}`;
-    const idx = keyIndex.get(matchKey);
+    const weekNumbers = weeksToNumbers(lesson.weeks);
+    const key = `${lesson.lessonType}|${lesson.classNo}|${lesson.day}|${lesson.startTime}|${lesson.endTime}|${lesson.venue}|${JSON.stringify(weekNumbers)}`;
+    const idx = keyIndex.get(key);
     if (idx !== undefined && !usedIndices.has(idx)) {
       usedIndices.add(idx);
-
-      // Warn if endTime or venue changed from legacy data
-      if (logger) {
-        const details = legacyDetails.get(matchKey);
-        if (details && !details.some((d) => d.endTime === lesson.endTime && d.venue === lesson.venue)) {
-          logger.warn(
-            {
-              matchKey,
-              newEndTime: lesson.endTime,
-              newVenue: lesson.venue,
-              legacyEndTime: details[0].endTime,
-              legacyVenue: details[0].venue,
-            },
-            'Lesson endTime/venue changed from legacy data',
-          );
-        }
-      }
-
       return idx;
     }
     return undefined;

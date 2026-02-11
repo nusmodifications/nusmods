@@ -257,7 +257,6 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
       return sortTimetableByLegacyOrder(
         lessons,
         semesterOrder?.[moduleCode as keyof typeof semesterOrder],
-        this.logger.child({ moduleCode }),
       );
     });
   };
