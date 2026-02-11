@@ -254,7 +254,11 @@ export default class GetSemesterTimetable extends BaseTask implements Task<Input
       }));
 
       // TODO: TEMPORARY - Re-sort to match old API ordering so existing user timetables don't break.
-      return sortTimetableByLegacyOrder(lessons, semesterOrder?.[moduleCode as keyof typeof semesterOrder]);
+      return sortTimetableByLegacyOrder(
+        lessons,
+        semesterOrder?.[moduleCode as keyof typeof semesterOrder],
+        this.logger.child({ moduleCode }),
+      );
     });
   };
 
