@@ -1,7 +1,8 @@
-import { screen, waitFor } from '@testing-library/react';
+import { act, screen, waitFor } from '@testing-library/react';
+import type { RenderOptions } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import axios, { AxiosHeaders, AxiosResponse } from 'axios';
-import produce from 'immer';
+import { produce } from 'immer';
 
 import type { Semester } from 'types/modules';
 import type { Dispatch } from 'types/redux';
@@ -48,11 +49,17 @@ const relevantStoreContents = {
 
 const initialState = reducers(undefined, initAction());
 
-function make(location: string, storeOverrides: Partial<typeof relevantStoreContents> = {}) {
+function make(
+  location: string,
+  options: {
+    storeOverrides?: Partial<typeof relevantStoreContents>;
+    renderOptions?: Omit<RenderOptions, 'queries'> | undefined;
+  } = {},
+) {
   const { store } = configureStore(
     produce(initialState, (draft) => {
       draft.app.activeSemester =
-        storeOverrides.app?.activeSemester ?? relevantStoreContents.app.activeSemester;
+        options.storeOverrides?.app?.activeSemester ?? relevantStoreContents.app.activeSemester;
     }),
   );
 
@@ -69,6 +76,7 @@ function make(location: string, storeOverrides: Partial<typeof relevantStoreCont
         path: '/timetable/:semester?/:action?',
         location,
       },
+      options.renderOptions,
     ),
   };
 }
@@ -94,7 +102,9 @@ describe(TimetableContainerComponent, () => {
     // Use for-of loop as we `waitFor` must be executed sequentially.
     // eslint-disable-next-line no-restricted-syntax
     for (const semester of semesters) {
-      const { history } = make('/timetable', { app: { activeSemester: semester } });
+      const { history } = make('/timetable', {
+        storeOverrides: { app: { activeSemester: semester } },
+      });
       // eslint-disable-next-line no-await-in-loop
       await waitFor(() => expect(history.location.pathname).toBe(timetablePage(semester)));
     }
@@ -115,12 +125,26 @@ describe(TimetableContainerComponent, () => {
     await expectRedirectToHomepageFrom('/timetable/2017-2018/v1');
   });
 
+  test('should display blank timetable if share string to import is empty', async () => {
+    make('/timetable/sem-1/share?');
+
+    // Expect no spinner when share string is empty
+    expect(screen.queryByText(/Loading/)).not.toBeInTheDocument();
+
+    // Expect import header to be present
+    expect(await screen.findByRole('button', { name: 'Import' })).toBeInTheDocument();
+
+    // Expect page to load
+    expect(screen.getByText(/Semester 1/)).toBeInTheDocument();
+    expect(screen.getByText(/No courses added./)).toBeInTheDocument();
+  });
+
   test('should eventually display imported timetable if there is one', async () => {
     const semester = 1;
     const importedTimetable = {
-      [moduleCodeThatCanBeLoaded]: { 'Sectional Teaching': 'A1' }, // BFS1001 doesn't have Lecture, only SectionalTeaching
+      [moduleCodeThatCanBeLoaded]: { 'Sectional Teaching': [0] }, // BFS1001 doesn't have Lecture, only SectionalTeaching
     };
-    const location = timetableShare(semester, importedTimetable, []);
+    const location = timetableShare(semester, importedTimetable, [], []);
     make(location);
 
     // Expect spinner when loading modules
@@ -141,8 +165,8 @@ describe(TimetableContainerComponent, () => {
 
   test('should eventually display imported timetable without any modules loaded', async () => {
     const semester = 1;
-    const importedTimetable = { [moduleCodeThatCanBeLoaded]: { 'Sectional Teaching': 'A1' } };
-    const location = timetableShare(semester, importedTimetable, [moduleCodeThatCanBeLoaded]);
+    const importedTimetable = { [moduleCodeThatCanBeLoaded]: { 'Sectional Teaching': [0] } };
+    const location = timetableShare(semester, importedTimetable, [moduleCodeThatCanBeLoaded], []);
     make(location);
 
     // Expect spinner when loading modules
@@ -163,8 +187,8 @@ describe(TimetableContainerComponent, () => {
 
   test('should ignore invalid modules in imported timetable', () => {
     const semester = 1;
-    const importedTimetable = { TRUMP2020: { Lecture: '1' } };
-    const location = timetableShare(semester, importedTimetable, []);
+    const importedTimetable = { TRUMP2020: { Lecture: [1] } };
+    const location = timetableShare(semester, importedTimetable, [], []);
     make(location);
 
     // Expect nothing to be fetched and the invalid module to be ignored
@@ -176,18 +200,22 @@ describe(TimetableContainerComponent, () => {
     expect(screen.getByRole('button', { name: 'Import' })).toBeInTheDocument();
   });
 
-  test('should display saved timetable when there is no imported timetable', () => {
+  test('should display saved timetable when there is no imported timetable', async () => {
     const semester = 1;
     const location = timetablePage(semester);
     const { store } = make(location);
 
     // Populate moduleBank using "succeeded" requests-middleware requests
-    store.dispatch({ type: SUCCESS_KEY(FETCH_MODULE), payload: CS1010S });
-    store.dispatch({ type: SUCCESS_KEY(FETCH_MODULE), payload: CS3216 });
+    await act(async () => {
+      store.dispatch({ type: SUCCESS_KEY(FETCH_MODULE), payload: CS1010S });
+      store.dispatch({ type: SUCCESS_KEY(FETCH_MODULE), payload: CS3216 });
+    });
 
     // Populate mock timetable
-    const timetable = { CS1010S: { Lecture: '1' }, CS3216: { Lecture: '1' } };
-    (store.dispatch as Dispatch)(setTimetable(semester, timetable));
+    await act(async () => {
+      const timetable = { CS1010S: { Lecture: [0] }, CS3216: { Lecture: [0] } };
+      (store.dispatch as Dispatch)(setTimetable(semester, timetable));
+    });
 
     // Expect nothing to be fetched as timetable exists in `moduleBank`.
     expect(screen.queryByText(/Loading/)).not.toBeInTheDocument();

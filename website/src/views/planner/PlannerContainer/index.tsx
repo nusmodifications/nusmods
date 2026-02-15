@@ -3,7 +3,7 @@ import Loadable, { LoadingComponentProps } from 'react-loadable';
 import LoadingSpinner from 'views/components/LoadingSpinner';
 import ApiError from 'views/errors/ApiError';
 
-const AsyncTodayContainer = Loadable({
+const AsyncPlannerContainer = Loadable({
   loader: () => import(/* webpackChunkName: "planner" */ './PlannerContainer'),
   loading: (props: LoadingComponentProps) => {
     if (props.error) {
@@ -17,4 +17,4 @@ const AsyncTodayContainer = Loadable({
   },
 });
 
-export default AsyncTodayContainer;
+export default AsyncPlannerContainer;

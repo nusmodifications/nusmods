@@ -1,7 +1,8 @@
 import NUSModerator from 'nusmoderator';
-import _ from 'lodash';
+import _, { filter, find, get, map, mapValues, some } from 'lodash';
 import { parseISO } from 'date-fns';
 import {
+  TaModulesConfigV1,
   ColoredLesson,
   ModuleLessonConfig,
   SemTimetableConfig,
@@ -9,13 +10,24 @@ import {
   TimetableArrangement,
   TimetableDayArrangement,
   TimetableDayFormat,
+  ModuleLessonConfigV1,
+  LessonWithIndex,
+  InteractableLesson,
 } from 'types/timetables';
-import { LessonType, RawLesson, Semester, Weeks } from 'types/modules';
+import {
+  LessonIndex,
+  LessonType,
+  ModuleCode,
+  RawLesson,
+  RawLessonWithIndex,
+  Semester,
+  Weeks,
+} from 'types/modules';
 import { ModulesMap } from 'types/reducers';
 
 import { getModuleSemesterData, getModuleTimetable } from 'utils/modules';
 
-import { CS1010S, CS3216, CS4243, PC1222, CS1010A } from '__mocks__/modules';
+import { CS1010S, CS3216, CS4243, PC1222, CS1010A, GER1000, GES1021 } from '__mocks__/modules';
 import moduleCodeMapJSON from '__mocks__/module-code-map.json';
 import timetable from '__mocks__/sem-timetable.json';
 import lessonsArray from '__mocks__/lessons-array.json';
@@ -36,7 +48,10 @@ import {
   doLessonsOverlap,
   findExamClashes,
   formatNumericWeeks,
+  getClosestLessonConfig,
   getEndTimeAsDate,
+  getInteractableLessons,
+  getRecoveryLessonIndices,
   getStartTimeAsDate,
   groupLessonsByDay,
   hydrateSemTimetableWithLessons,
@@ -45,6 +60,8 @@ import {
   isSameTimetableConfig,
   isValidSemester,
   lessonsForLessonType,
+  migrateModuleLessonConfig,
+  parseTaModuleCodes,
   randomModuleLessonConfig,
   serializeTimetable,
   timetableLessonsArray,
@@ -81,21 +98,22 @@ test('randomModuleLessonConfig should return a random lesson config', () => {
 test('hydrateSemTimetableWithLessons should replace ClassNo with lessons', () => {
   const sem: Semester = 1;
   const moduleCode = 'CS1010S';
-  const modules: ModulesMap = { [moduleCode]: CS1010S };
+  const modulesMap: ModulesMap = { [moduleCode]: CS1010S };
   const config: SemTimetableConfig = {
     [moduleCode]: {
-      Tutorial: '8',
-      Recitation: '4',
-      Lecture: '1',
+      Tutorial: [42, 43],
+      Recitation: [5],
+      Lecture: [0],
     },
   };
 
   const configWithLessons: SemTimetableConfigWithLessons = hydrateSemTimetableWithLessons(
     config,
-    modules,
+    modulesMap,
     sem,
   );
   expect(configWithLessons[moduleCode].Tutorial[0].classNo).toBe('8');
+  expect(configWithLessons[moduleCode].Tutorial[1].classNo).toBe('9');
   expect(configWithLessons[moduleCode].Recitation[0].classNo).toBe('4');
   expect(configWithLessons[moduleCode].Lecture[0].classNo).toBe('1');
 });
@@ -126,13 +144,14 @@ test('timetableLessonsArray should return a flat array of lessons', () => {
 
 test('groupLessonsByDay should group lessons by DayText', () => {
   const lessons: ColoredLesson[] = lessonsArray;
-  const lessonsGroupedByDay: TimetableDayFormat = groupLessonsByDay(lessons);
+  const lessonsGroupedByDay: TimetableDayFormat<ColoredLesson> = groupLessonsByDay(lessons);
   expect(lessonsGroupedByDay.Monday.length).toBe(2);
   expect(lessonsGroupedByDay.Tuesday.length).toBe(1);
   expect(lessonsGroupedByDay.Wednesday.length).toBe(1);
   expect(lessonsGroupedByDay.Thursday.length).toBe(2);
 });
 
+// TODO: write one for array lesson overlap
 test('doLessonsOverlap should correctly determine if two lessons overlap', () => {
   // Same day same time.
   expect(
@@ -230,11 +249,11 @@ test('doLessonsOverlap should correctly determine if two lessons overlap', () =>
 
 test('arrangeLessonsWithinDay', () => {
   // Empty array.
-  const arrangement0: TimetableDayArrangement = arrangeLessonsWithinDay([]);
+  const arrangement0: TimetableDayArrangement<RawLesson> = arrangeLessonsWithinDay([]);
   expect(arrangement0.length).toBe(1);
 
   // Can fit within one row.
-  const arrangement1: TimetableDayArrangement = arrangeLessonsWithinDay(
+  const arrangement1: TimetableDayArrangement<ColoredLesson> = arrangeLessonsWithinDay(
     _.shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Monday', '1600', '1800'),
@@ -244,7 +263,7 @@ test('arrangeLessonsWithinDay', () => {
   expect(arrangement1.length).toBe(1);
 
   // Two rows.
-  const arrangement2: TimetableDayArrangement = arrangeLessonsWithinDay(
+  const arrangement2: TimetableDayArrangement<ColoredLesson> = arrangeLessonsWithinDay(
     _.shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Monday', '1600', '1800'),
@@ -254,7 +273,7 @@ test('arrangeLessonsWithinDay', () => {
   expect(arrangement2.length).toBe(2);
 
   // Three rows.
-  const arrangement3: TimetableDayArrangement = arrangeLessonsWithinDay(
+  const arrangement3: TimetableDayArrangement<ColoredLesson> = arrangeLessonsWithinDay(
     _.shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Monday', '1100', '1300'),
@@ -265,7 +284,7 @@ test('arrangeLessonsWithinDay', () => {
 });
 
 test('arrangeLessonsForWeek', () => {
-  const arrangement0: TimetableArrangement = arrangeLessonsForWeek(
+  const arrangement0: TimetableArrangement<ColoredLesson> = arrangeLessonsForWeek(
     _.shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Monday', '1600', '1800'),
@@ -274,7 +293,7 @@ test('arrangeLessonsForWeek', () => {
   );
   expect(arrangement0.Monday.length).toBe(1);
 
-  const arrangement1: TimetableArrangement = arrangeLessonsForWeek(
+  const arrangement1: TimetableArrangement<ColoredLesson> = arrangeLessonsForWeek(
     _.shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Monday', '1600', '1800'),
@@ -286,7 +305,7 @@ test('arrangeLessonsForWeek', () => {
   expect(arrangement1.Monday.length).toBe(1);
   expect(arrangement1.Tuesday.length).toBe(2);
 
-  const arrangement2: TimetableArrangement = arrangeLessonsForWeek(
+  const arrangement2: TimetableArrangement<ColoredLesson> = arrangeLessonsForWeek(
     _.shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Monday', '1600', '1800'),
@@ -298,7 +317,7 @@ test('arrangeLessonsForWeek', () => {
   expect(arrangement2.Monday.length).toBe(1);
   expect(arrangement2.Tuesday.length).toBe(1);
 
-  const arrangement3: TimetableArrangement = arrangeLessonsForWeek(
+  const arrangement3: TimetableArrangement<ColoredLesson> = arrangeLessonsForWeek(
     _.shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Tuesday', '1100', '1300'),
@@ -309,7 +328,7 @@ test('arrangeLessonsForWeek', () => {
   expect(arrangement3.Tuesday.length).toBe(1);
   expect(arrangement3.Wednesday.length).toBe(1);
 
-  const arrangement4: TimetableArrangement = arrangeLessonsForWeek(
+  const arrangement4: TimetableArrangement<ColoredLesson> = arrangeLessonsForWeek(
     _.shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Monday', '1600', '1800'),
@@ -321,7 +340,7 @@ test('arrangeLessonsForWeek', () => {
   expect(arrangement4.Tuesday.length).toBe(1);
   expect(arrangement4.Wednesday.length).toBe(1);
 
-  const arrangement5: TimetableArrangement = arrangeLessonsForWeek(
+  const arrangement5: TimetableArrangement<ColoredLesson> = arrangeLessonsForWeek(
     _.shuffle([
       createGenericColoredLesson('Monday', '1000', '1200'),
       createGenericColoredLesson('Monday', '1600', '1800'),
@@ -365,6 +384,432 @@ test('areOtherClassesAvailable', () => {
   expect(areOtherClassesAvailable(lessons3, 'Tutorial')).toBe(true);
 });
 
+describe('getInteractableLessons', () => {
+  const modules = {
+    PC1222,
+    CS4243,
+    GES1021,
+  };
+  const semester = 1;
+  const colors = {
+    PC1222: 0,
+    CS4243: 1,
+    GES1021: 2,
+  };
+  const getIsTaInTimetable = (taModulesConfig: ModuleCode[]) => (moduleCode: ModuleCode) =>
+    taModulesConfig.includes(moduleCode);
+
+  const lessonsMap: Record<ModuleCode, LessonWithIndex[]> = mapValues(modules, (module) =>
+    map(getModuleTimetable(module, semester), (lesson) => ({
+      ...lesson,
+      moduleCode: module.moduleCode,
+      title: module.title,
+    })),
+  );
+
+  const getLesson = (moduleCode: ModuleCode, lessonIndex: LessonIndex): LessonWithIndex => {
+    const lessonWithIndex = find(
+      lessonsMap[moduleCode],
+      (lesson) => lesson.lessonIndex === lessonIndex,
+    );
+    if (!lessonWithIndex) throw new Error('No lesson found with this lesson index');
+    return lessonWithIndex;
+  };
+
+  const getLessons = (moduleCode: ModuleCode, lessonIndices: LessonIndex[]): LessonWithIndex[] =>
+    filter(lessonsMap[moduleCode], (lesson) => lessonIndices.includes(lesson.lessonIndex));
+
+  const getHydratedLesson = (hydratedLessons: InteractableLesson[], lesson: LessonWithIndex) =>
+    find(
+      hydratedLessons,
+      (hydratedLesson) =>
+        hydratedLesson.moduleCode === lesson.moduleCode &&
+        hydratedLesson.lessonIndex === lesson.lessonIndex,
+    );
+
+  describe('hydrating modules when there is no active lesson', () => {
+    const taModuleLessons = getLessons(PC1222.moduleCode, [0, 1, 10, 11, 12, 13]);
+
+    const lessonWithAlternative = getLesson(CS4243.moduleCode, 0);
+    const lessonWithNoAlternative = getLesson(CS4243.moduleCode, 5);
+
+    const timetableLessons: LessonWithIndex[] = [
+      ...taModuleLessons,
+      lessonWithAlternative,
+      lessonWithNoAlternative,
+    ];
+
+    const isTaInTimetable = getIsTaInTimetable([PC1222.moduleCode]);
+    const readOnly = false;
+    const activeLesson = null;
+
+    const hydratedLessons = getInteractableLessons(
+      timetableLessons,
+      modules,
+      semester,
+      colors,
+      readOnly,
+      isTaInTimetable,
+      activeLesson,
+    );
+
+    test('all lessons are marked as non active because there is no active lesson', () => {
+      expect(some(hydratedLessons, (lesson) => lesson.isActive)).toBe(false);
+    });
+
+    test('when there are no active lessons, only lessons that are in timetable are present, they cannot be added to lesson config', () => {
+      expect(some(hydratedLessons, (lesson) => lesson.canBeAddedToLessonConfig)).toBe(false);
+    });
+
+    test('lessons from ta module are marked as ta in timetable', () => {
+      const lessonsFromTaModule = filter(
+        hydratedLessons,
+        (lesson) => lesson.moduleCode === PC1222.moduleCode,
+      );
+      expect(some(lessonsFromTaModule, (lesson) => !lesson.isTaInTimetable)).toBe(false);
+    });
+
+    test('lessons from non-ta module are marked as not ta in timetable', () => {
+      const lessonsFromNonTaModule = filter(
+        hydratedLessons,
+        (lesson) => lesson.moduleCode === CS4243.moduleCode,
+      );
+      expect(some(lessonsFromNonTaModule, (lesson) => lesson.isTaInTimetable)).toBe(false);
+    });
+
+    test('hydration of lessons with alternative lessons', () => {
+      expect(
+        getHydratedLesson(hydratedLessons, lessonWithAlternative)?.canBeSelectedAsActiveLesson,
+      ).toBe(true);
+    });
+
+    test('hydration of lessons with no alternative lessons', () => {
+      expect(
+        getHydratedLesson(hydratedLessons, lessonWithNoAlternative)?.canBeSelectedAsActiveLesson,
+      ).toBe(false);
+    });
+
+    test('should only show lessons in timetable when no lesson is active', () => {
+      expect(hydratedLessons).toHaveLength(timetableLessons.length);
+    });
+  });
+
+  describe('hydrating modules when there is an active lesson from a non-ta module', () => {
+    const activeLesson = getLesson(PC1222.moduleCode, 0);
+
+    const otherLessons = getLessons(PC1222.moduleCode, [10, 12]);
+
+    const timetableLessons = [activeLesson, ...otherLessons];
+
+    const isTaInTimetable = getIsTaInTimetable([CS4243.moduleCode]);
+    const readOnly = false;
+
+    const hydratedLessons = getInteractableLessons(
+      timetableLessons,
+      modules,
+      semester,
+      colors,
+      readOnly,
+      isTaInTimetable,
+      activeLesson,
+    );
+
+    const hydratedActiveLesson = getHydratedLesson(hydratedLessons, activeLesson);
+
+    test('active lesson should be marked as active', () => {
+      expect(hydratedActiveLesson?.isActive).toBe(true);
+    });
+
+    test('active lesson is already in lesson config', () => {
+      expect(hydratedActiveLesson?.canBeAddedToLessonConfig).toBe(false);
+    });
+
+    const hydratedAlternativeLessons = filter(
+      hydratedLessons,
+      (lesson) =>
+        lesson.lessonType === activeLesson.lessonType && lesson.classNo !== activeLesson.classNo,
+    );
+
+    test('alternative lessons can be added to the lesson config', () => {
+      expect(some(hydratedAlternativeLessons, (lesson) => !lesson.canBeAddedToLessonConfig)).toBe(
+        false,
+      );
+    });
+
+    test('all alternative lessons are displayed', () => {
+      const alternativeLessons = filter(
+        lessonsMap[PC1222.moduleCode],
+        (lesson) =>
+          lesson.lessonType === activeLesson.lessonType && lesson.classNo !== activeLesson.classNo,
+      );
+      const indicesOfAlternativeLessons = new Set(map(alternativeLessons, 'lessonIndex'));
+      const indicesOfHydratedAlternativeLessons = new Set(
+        map(hydratedAlternativeLessons, 'lessonIndex'),
+      );
+
+      expect(indicesOfAlternativeLessons).toEqual(indicesOfHydratedAlternativeLessons);
+    });
+  });
+
+  describe('hydrating modules when there is an active lesson from a ta module', () => {
+    const lessonsFromOtherModule = getLessons(PC1222.moduleCode, [0, 10, 12]);
+
+    const activeLesson = getLesson(CS4243.moduleCode, 0);
+    const lessonsFromActiveModule = getLessons(CS4243.moduleCode, [1, 2, 5]);
+
+    const timetableLessons: LessonWithIndex[] = [
+      activeLesson,
+      ...lessonsFromOtherModule,
+      ...lessonsFromActiveModule,
+    ];
+
+    const isTaInTimetable = getIsTaInTimetable([CS4243.moduleCode]);
+    const readOnly = false;
+
+    const hydratedLessons = getInteractableLessons(
+      timetableLessons,
+      modules,
+      semester,
+      colors,
+      readOnly,
+      isTaInTimetable,
+      activeLesson,
+    );
+
+    const hydratedOtherModuleLessons = filter(
+      hydratedLessons,
+      (lesson) => lesson.moduleCode !== activeLesson.moduleCode,
+    );
+
+    test('lessons that are not from the same module as the active lesson cannot be added', () => {
+      expect(some(hydratedOtherModuleLessons, (lesson) => lesson.canBeAddedToLessonConfig)).toBe(
+        false,
+      );
+    });
+
+    test('timetable lessons from other modules are visible', () => {
+      const otherModuleLessons = filter(
+        timetableLessons,
+        (lesson) => lesson.moduleCode !== activeLesson.moduleCode,
+      );
+      const indicesOfOtherModuleLessons = new Set(map(otherModuleLessons, 'lessonIndex'));
+      const indicesOfHydratedOtherModuleLessons = new Set(
+        map(hydratedOtherModuleLessons, 'lessonIndex'),
+      );
+
+      expect(indicesOfHydratedOtherModuleLessons).toEqual(indicesOfOtherModuleLessons);
+    });
+
+    const hydratedActiveLesson = getHydratedLesson(hydratedLessons, activeLesson);
+
+    test('active lesson should be marked as active', () => {
+      expect(hydratedActiveLesson?.isActive).toBe(true);
+    });
+
+    test('active lesson is already in lesson config', () => {
+      expect(hydratedActiveLesson?.canBeAddedToLessonConfig).toBe(false);
+    });
+
+    const hydratedActiveModuleLessons = filter(
+      hydratedLessons,
+      (lesson) => lesson.moduleCode === activeLesson.moduleCode,
+    );
+
+    test('all lessons of a ta module are interactable', () => {
+      expect(
+        some(hydratedActiveModuleLessons, (lesson) => !lesson.canBeSelectedAsActiveLesson),
+      ).toBe(false);
+    });
+
+    test("all lessons from the active lesson's module should be visible, currently selected lessons and active lesson should not appear twice", () => {
+      expect(hydratedActiveModuleLessons).toHaveLength(6);
+    });
+
+    const hydratedAlternativeLessons = filter(
+      hydratedActiveModuleLessons,
+      (lesson) =>
+        lesson.lessonType === activeLesson.lessonType && lesson.classNo !== activeLesson.classNo,
+    );
+
+    test('alternative lessons in timetable are already added to the lesson config', () => {
+      const alternativeLessonsInTimetable = filter(hydratedAlternativeLessons, (lesson) =>
+        [0, 1, 2].includes(lesson.lessonIndex),
+      );
+
+      expect(some(alternativeLessonsInTimetable, (lesson) => lesson.canBeAddedToLessonConfig)).toBe(
+        false,
+      );
+    });
+
+    test('alternative lessons not in timetable can be added to the lesson config', () => {
+      const alternativeLessonsNotInTimetable = filter(
+        hydratedAlternativeLessons,
+        (lesson) => ![0, 1, 2].includes(lesson.lessonIndex),
+      );
+
+      expect(
+        some(alternativeLessonsNotInTimetable, (lesson) => !lesson.canBeAddedToLessonConfig),
+      ).toBe(false);
+    });
+
+    test('all alternative lessons are displayed', () => {
+      const alternativeLessons = filter(
+        lessonsMap[CS4243.moduleCode],
+        (lesson) =>
+          lesson.lessonType === activeLesson.lessonType && lesson.classNo !== activeLesson.classNo,
+      );
+      const indicesOfAlternativeLessons = new Set(map(alternativeLessons, 'lessonIndex'));
+      const indicesOfHydratedAlternativeLessons = new Set(
+        map(hydratedAlternativeLessons, 'lessonIndex'),
+      );
+
+      expect(indicesOfAlternativeLessons).toEqual(indicesOfHydratedAlternativeLessons);
+    });
+  });
+
+  describe('hydrating non-ta module containing multiple lessons with the same classNo', () => {
+    const timetableLessons = getLessons(GES1021.moduleCode, [0, 1]);
+
+    const isTaInTimetable = getIsTaInTimetable([]);
+    const readOnly = false;
+    const activeLesson = null;
+
+    const hydratedLessons = getInteractableLessons(
+      timetableLessons,
+      modules,
+      semester,
+      colors,
+      readOnly,
+      isTaInTimetable,
+      activeLesson,
+    );
+
+    test('lessons in timetable are already added to lesson config', () => {
+      expect(some(hydratedLessons, (lesson) => lesson.canBeAddedToLessonConfig)).toBe(false);
+    });
+
+    test('should only show lessons in timetable when no lesson is active', () => {
+      expect(hydratedLessons).toHaveLength(timetableLessons.length);
+    });
+  });
+
+  describe('hydrating ta module containing multiple lessons with the same classNo', () => {
+    const timetableLessons = getLessons(GES1021.moduleCode, [0]);
+
+    const isTaInTimetable = getIsTaInTimetable([GES1021.moduleCode]);
+    const readOnly = false;
+
+    describe('when no lessons are active', () => {
+      const activeLesson = null;
+
+      const hydratedLessons = getInteractableLessons(
+        timetableLessons,
+        modules,
+        semester,
+        colors,
+        readOnly,
+        isTaInTimetable,
+        activeLesson,
+      );
+
+      test('only the lesson in the timetable are visible', () => {
+        expect(hydratedLessons).toHaveLength(1);
+      });
+
+      test('lesson is already in timetable', () => {
+        expect(some(hydratedLessons, (lesson) => lesson.canBeAddedToLessonConfig)).toBe(false);
+      });
+    });
+
+    describe('when a lesson is active', () => {
+      const activeLesson = getLesson(GES1021.moduleCode, 0);
+
+      const hydratedLessons = getInteractableLessons(
+        timetableLessons,
+        modules,
+        semester,
+        colors,
+        readOnly,
+        isTaInTimetable,
+        activeLesson,
+      );
+
+      test('all lessons from the module are visible', () => {
+        expect(hydratedLessons).toHaveLength(2);
+      });
+
+      test('lesson already in timetable are already in the lesson config', () => {
+        const hydratedLessonInTimetable = filter(hydratedLessons, (lesson) =>
+          [0].includes(lesson.lessonIndex),
+        );
+
+        expect(some(hydratedLessonInTimetable, (lesson) => lesson.canBeAddedToLessonConfig)).toBe(
+          false,
+        );
+      });
+
+      test('lesson not in timetable can be added to the lesson config', () => {
+        const hydratedLessonInTimetable = filter(
+          hydratedLessons,
+          (lesson) => ![0].includes(lesson.lessonIndex),
+        );
+
+        expect(some(hydratedLessonInTimetable, (lesson) => !lesson.canBeAddedToLessonConfig)).toBe(
+          false,
+        );
+      });
+    });
+  });
+
+  describe('hydrating modules in a readonly timetable', () => {
+    const taModuleLessons = getLessons(PC1222.moduleCode, [0, 10, 12]);
+
+    const nonTaModuleLessons = getLessons(CS4243.moduleCode, [0, 5]);
+
+    const timetableLessons = [...taModuleLessons, ...nonTaModuleLessons];
+
+    const isTaInTimetable = getIsTaInTimetable([PC1222.moduleCode]);
+    const readOnly = true;
+    const activeLesson = null; // lessons cannot be selected as active in a readonly timetable
+
+    const hydratedLessons = getInteractableLessons(
+      timetableLessons,
+      modules,
+      semester,
+      colors,
+      readOnly,
+      isTaInTimetable,
+      activeLesson,
+    );
+
+    test('lessons in readonly timetable cannot be select as active lesson', () => {
+      expect(some(hydratedLessons, (lesson) => lesson.canBeSelectedAsActiveLesson)).toBe(false);
+    });
+
+    test('lessons from ta modules are marked as ta in timetable', () => {
+      const hydratedTaModuleLessons = filter(
+        hydratedLessons,
+        (lesson) => lesson.moduleCode === PC1222.moduleCode,
+      );
+
+      expect(some(hydratedTaModuleLessons, (lesson) => !lesson.isTaInTimetable)).toBe(false);
+    });
+
+    test('lessons from non-ta modules are marked as not ta in timetable', () => {
+      const hydratedTaModuleLessons = filter(
+        hydratedLessons,
+        (lesson) => lesson.moduleCode === CS4243.moduleCode,
+      );
+
+      expect(some(hydratedTaModuleLessons, (lesson) => lesson.isTaInTimetable)).toBe(false);
+    });
+
+    test('readonly timetables should only show the lessons in the timetable', () => {
+      expect(hydratedLessons).toHaveLength(timetableLessons.length);
+    });
+  });
+});
+
 test('findExamClashes should return non-empty object if exams clash', () => {
   const sem: Semester = 1;
   const examClashes = findExamClashes([CS1010S, CS4243 as any, CS3216], sem);
@@ -387,44 +832,238 @@ test('findExamClashes should return non-empty object if exams starting at differ
   expect(examClashes).toEqual({ [examDate]: [CS1010S, CS1010A] });
 });
 
-test('timetable serialization/deserialization', () => {
-  const configs: SemTimetableConfig[] = [
-    {},
-    { CS1010S: {} },
-    {
-      GER1000: { Tutorial: 'B01' },
-    },
-    {
-      CS2104: { Lecture: '1', Tutorial: '2' },
-      CS2105: { Lecture: '1', Tutorial: '1' },
-      CS2107: { Lecture: '1', Tutorial: '8' },
-      CS4212: { Lecture: '1', Tutorial: '1' },
-      CS4243: { Laboratory: '2', Lecture: '1' },
-      GER1000: { Tutorial: 'B01' },
-    },
-  ];
+describe('timetable serialization/deserialization', () => {
+  const mockSemesterTimetable: { [moduleCode: ModuleCode]: readonly RawLessonWithIndex[] } = {
+    CS1010S: getModuleTimetable(CS1010S, 1),
+    CS3216: getModuleTimetable(CS3216, 1),
+    GER1000: getModuleTimetable(GER1000, 1),
+    CS4243: getModuleTimetable(CS4243, 1),
+  };
+  const mockGetModuleSemesterTimetable = (moduleCode: ModuleCode): readonly RawLessonWithIndex[] =>
+    get(mockSemesterTimetable, moduleCode);
 
-  configs.forEach((config) => {
-    expect(deserializeTimetable(serializeTimetable(config))).toEqual(config);
+  test('timetable serialization/deserialization', () => {
+    const configs: SemTimetableConfig[] = [
+      {},
+      { CS1010S: {} },
+      {
+        GER1000: { Tutorial: [13] },
+      },
+      {
+        CS4243: { Laboratory: [2], Lecture: [5] },
+        GER1000: { Tutorial: [13] },
+      },
+    ];
+
+    configs.forEach((config) => {
+      expect(
+        deserializeTimetable(serializeTimetable(config), mockGetModuleSemesterTimetable)
+          .semTimetableConfig,
+      ).toEqual(config);
+    });
   });
-});
 
-test('deserializing edge cases', () => {
-  // Duplicate module code
-  expect(deserializeTimetable('CS1010S=LEC:01&CS1010S=REC:11')).toEqual({
-    CS1010S: {
-      Lecture: '01',
-      Recitation: '11',
-    },
+  test('deserializing timetable with ta and hidden modules', () => {
+    expect(
+      deserializeTimetable(
+        'CS1010S=LEC:(0)&CS3216=LEC:(0)&ta=CS1010S&hidden=CS3216',
+        mockGetModuleSemesterTimetable,
+      ),
+    ).toEqual({
+      semTimetableConfig: {
+        CS1010S: {
+          Lecture: [0],
+        },
+        CS3216: {
+          Lecture: [0],
+        },
+      },
+      ta: ['CS1010S'],
+      hidden: ['CS3216'],
+    });
   });
 
-  // No lessons
-  expect(deserializeTimetable('CS1010S&CS3217&CS2105=LEC:1')).toEqual({
-    CS1010S: {},
-    CS3217: {},
-    CS2105: {
-      Lecture: '1',
-    },
+  describe('deserializing edge cases', () => {
+    test('duplicate module code', () => {
+      expect(
+        deserializeTimetable('CS1010S=LEC:(0)&CS1010S=REC:(1)', mockGetModuleSemesterTimetable)
+          .semTimetableConfig,
+      ).toEqual({
+        CS1010S: {
+          Lecture: [0],
+          Recitation: [1],
+        },
+      });
+    });
+
+    test('no lessons', () => {
+      expect(
+        deserializeTimetable(
+          'CS2105&CS3217&CS1010S=LEC:(0)&ta=&hidden=',
+          mockGetModuleSemesterTimetable,
+        ).semTimetableConfig,
+      ).toEqual({
+        CS2105: {},
+        CS3217: {},
+        CS1010S: {
+          Lecture: [0],
+        },
+      });
+    });
+
+    test('should ignore invalid lesson indices', () => {
+      expect(
+        deserializeTimetable('CS1010S=LEC:(20)', mockGetModuleSemesterTimetable).semTimetableConfig,
+      ).toEqual({
+        CS1010S: {
+          Lecture: [],
+        },
+      });
+    });
+  });
+
+  test('should return empty array if v2 serialized', () => {
+    expect(parseTaModuleCodes('(CS1010S,CS3216)')).toEqual([]);
+  });
+
+  describe('deserialize v1 config', () => {
+    test('deserialize v1', () => {
+      expect(
+        deserializeTimetable(
+          'CS1010S=LEC:1,TUT:8&CS3216=LEC:1&ta=CS3216(LEC:1),CS1010S(LEC:1,TUT:2,TUT:3)&hidden=CS3216',
+          mockGetModuleSemesterTimetable,
+        ),
+      ).toEqual({
+        semTimetableConfig: {
+          CS1010S: {
+            Lecture: [0],
+            Tutorial: [21, 30],
+          },
+          CS3216: {
+            Lecture: [0],
+          },
+        },
+        ta: ['CS3216', 'CS1010S'],
+        hidden: ['CS3216'],
+      });
+    });
+
+    test('should ignore invalid lesson type', () => {
+      expect(
+        deserializeTimetable(
+          'CS1010S=LEC:1&ta=CS1010S(TUT:2,INVALIDLESSONTYPE:1)',
+          mockGetModuleSemesterTimetable,
+        ),
+      ).toEqual({
+        semTimetableConfig: {
+          CS1010S: {
+            Tutorial: [21],
+          },
+        },
+        ta: ['CS1010S'],
+        hidden: [],
+      });
+    });
+
+    test('should ignore invalid classNo', () => {
+      expect(
+        deserializeTimetable('CS1010S=LEC:INVALIDCLASSNO', mockGetModuleSemesterTimetable),
+      ).toEqual({
+        semTimetableConfig: {
+          CS1010S: {
+            Lecture: [],
+          },
+        },
+        ta: [],
+        hidden: [],
+      });
+    });
+
+    test('use only last ta param', () => {
+      expect(
+        deserializeTimetable(
+          'CS1010S=LEC:1&ta=CS3216(LEC:1)&ta=CS1010S(TUT:2)',
+          mockGetModuleSemesterTimetable,
+        ),
+      ).toEqual({
+        semTimetableConfig: {
+          CS1010S: {
+            Tutorial: [21],
+          },
+        },
+        ta: ['CS1010S'],
+        hidden: [],
+      });
+    });
+
+    test('should ignore invalid ta lessons', () => {
+      expect(
+        deserializeTimetable('CS1010S=LEC:1&ta=CS1010S(LEC:2)', mockGetModuleSemesterTimetable),
+      ).toEqual({
+        semTimetableConfig: {
+          CS1010S: {
+            Lecture: [],
+          },
+        },
+        ta: ['CS1010S'],
+        hidden: [],
+      });
+    });
+
+    test('ta module config without lessons', () => {
+      expect(
+        deserializeTimetable('CS1010S=LEC:1,TUT:3&ta=CS1010S()', mockGetModuleSemesterTimetable),
+      ).toEqual({
+        semTimetableConfig: {
+          CS1010S: {},
+        },
+        ta: ['CS1010S'],
+        hidden: [],
+      });
+    });
+
+    test('ignore modules without semester data', () => {
+      expect(
+        deserializeTimetable(
+          'CS1010S=LEC:1,REC:1,TUT:3&ta=CS3217(LEC:1)',
+          mockGetModuleSemesterTimetable,
+        ),
+      ).toEqual({
+        semTimetableConfig: {
+          CS1010S: {
+            Lecture: [0],
+            Recitation: [1],
+            Tutorial: [30],
+          },
+        },
+        ta: [],
+        hidden: [],
+      });
+    });
+
+    test('should ignore invalid ta module config', () => {
+      expect(
+        deserializeTimetable(
+          'CS1010S=LEC:1,REC:1,TUT:3&ta=INVALID),CS1010S(LEC:1)',
+          mockGetModuleSemesterTimetable,
+        ),
+      ).toEqual({
+        semTimetableConfig: {
+          CS1010S: {
+            Lecture: [0],
+          },
+        },
+        ta: ['CS1010S'],
+        hidden: [],
+      });
+    });
+
+    test('should return array of module codes', () => {
+      expect(parseTaModuleCodes('CS1010S(LEC:1,TUT:1),CS3216(LEC:1)')).toEqual([
+        'CS1010S',
+        'CS3216',
+      ]);
+    });
   });
 });
 
@@ -435,8 +1074,8 @@ test('isSameTimetableConfig', () => {
   // Change lessonType order
   expect(
     isSameTimetableConfig(
-      { CS2104: { Tutorial: '1', Lecture: '2' } },
-      { CS2104: { Lecture: '2', Tutorial: '1' } },
+      { CS2104: { Tutorial: [1], Lecture: [2] } },
+      { CS2104: { Lecture: [2], Tutorial: [1] } },
     ),
   ).toBe(true);
 
@@ -444,12 +1083,12 @@ test('isSameTimetableConfig', () => {
   expect(
     isSameTimetableConfig(
       {
-        CS2104: { Lecture: '1', Tutorial: '2' },
-        CS2105: { Lecture: '1', Tutorial: '1' },
+        CS2104: { Lecture: [1], Tutorial: [2] },
+        CS2105: { Lecture: [1], Tutorial: [1] },
       },
       {
-        CS2105: { Lecture: '1', Tutorial: '1' },
-        CS2104: { Lecture: '1', Tutorial: '2' },
+        CS2105: { Lecture: [1], Tutorial: [1] },
+        CS2104: { Lecture: [1], Tutorial: [2] },
       },
     ),
   ).toBe(true);
@@ -457,8 +1096,8 @@ test('isSameTimetableConfig', () => {
   // Different values
   expect(
     isSameTimetableConfig(
-      { CS2104: { Lecture: '1', Tutorial: '2' } },
-      { CS2104: { Lecture: '2', Tutorial: '1' } },
+      { CS2104: { Lecture: [1], Tutorial: [2] } },
+      { CS2104: { Lecture: [2], Tutorial: [1] } },
     ),
   ).toBe(false);
 
@@ -466,11 +1105,11 @@ test('isSameTimetableConfig', () => {
   expect(
     isSameTimetableConfig(
       {
-        CS2104: { Tutorial: '1', Lecture: '2' },
+        CS2104: { Tutorial: [1], Lecture: [2] },
       },
       {
-        CS2104: { Tutorial: '1', Lecture: '2' },
-        CS2105: { Lecture: '1', Tutorial: '1' },
+        CS2104: { Tutorial: [1], Lecture: [2] },
+        CS2105: { Lecture: [1], Tutorial: [1] },
       },
     ),
   ).toBe(false);
@@ -503,61 +1142,119 @@ describe(validateTimetableModules, () => {
   });
 });
 
-describe('validateModuleLessons', () => {
+// TODO: validate module lessons
+// - either normal non-TA or TA module
+//   - remove lesson group if there are lessons of other lesson types
+// - if module is a normal non TA module:
+//   - remove lesson group if any lesson is missing
+//   - remove lesson group if there are extra lessons
+//
+describe(validateModuleLessons, () => {
   const semester: Semester = 1;
   const lessons: ModuleLessonConfig = {
-    Lecture: '1',
-    Recitation: '10',
-    Tutorial: '11',
+    Lecture: [0],
+    Recitation: [2],
+    Tutorial: [13],
   };
 
-  test('should leave valid lessons untouched', () => {
-    expect(validateModuleLessons(semester, lessons, CS1010S)).toEqual([lessons, []]);
+  describe('validate non ta module lessons', () => {
+    test('should leave valid lessons untouched', () => {
+      expect(validateModuleLessons(semester, lessons, CS1010S, false)).toEqual({
+        validatedLessonConfig: lessons,
+        valid: true,
+      });
+    });
+
+    test('should remove lesson types which do not exist in module', () => {
+      expect(
+        validateModuleLessons(
+          semester,
+          {
+            ...lessons,
+            Laboratory: [0], // CS1010S has no lab
+          },
+          CS1010S,
+          false,
+        ),
+      ).toEqual({ validatedLessonConfig: lessons, valid: false });
+    });
+
+    test('should replace lessons that have invalid class no', () => {
+      expect(
+        validateModuleLessons(
+          semester,
+          {
+            ...lessons,
+            Lecture: [2], // CS1010S lesson index 2 is not a lecture
+          },
+          CS1010S,
+          false,
+        ),
+      ).toEqual({ validatedLessonConfig: lessons, valid: false });
+    });
+
+    test('should add lessons for when they are missing', () => {
+      expect(
+        validateModuleLessons(
+          semester,
+          {
+            Tutorial: [13],
+          },
+          CS1010S,
+          false,
+        ),
+      ).toEqual({
+        validatedLessonConfig: {
+          Lecture: [0],
+          Recitation: [1],
+          Tutorial: [13],
+        },
+        valid: false,
+      });
+    });
   });
 
-  test('should remove lesson types which do not exist', () => {
-    expect(
-      validateModuleLessons(
-        semester,
-        {
-          ...lessons,
-          Laboratory: '2', // CS1010S has no lab
-        },
-        CS1010S,
-      ),
-    ).toEqual([lessons, ['Laboratory']]);
-  });
+  describe('validate ta module lessons', () => {
+    test('should leave valid config untouched', () => {
+      expect(validateModuleLessons(semester, lessons, CS1010S, true)).toEqual({
+        validatedLessonConfig: lessons,
+        valid: true,
+      });
+    });
 
-  test('should replace lessons with invalid class no', () => {
-    expect(
-      validateModuleLessons(
-        semester,
-        {
-          ...lessons,
-          Lecture: '2', // CS1010S has no Lecture 2
-        },
-        CS1010S,
-      ),
-    ).toEqual([lessons, ['Lecture']]);
-  });
+    test('should remove lesson types which do not exist in module', () => {
+      expect(
+        validateModuleLessons(
+          semester,
+          {
+            ...lessons,
+            Laboratory: [0],
+          },
+          CS1010S,
+          true,
+        ),
+      ).toEqual({
+        validatedLessonConfig: lessons,
+        valid: false,
+      });
+    });
 
-  test('should add lessons for when they are missing', () => {
-    expect(
-      validateModuleLessons(
-        semester,
-        {
-          Tutorial: '10',
-        },
-        CS1010S,
-      ),
-    ).toEqual([
-      {
-        Lecture: '1',
-        Recitation: '1',
-        Tutorial: '10',
-      },
-      ['Lecture', 'Recitation'],
-    ]);
+    test('should replace lessons that have invalid class no', () => {
+      expect(
+        validateModuleLessons(
+          semester,
+          {
+            ...lessons,
+            Lecture: [1],
+          },
+          CS1010S,
+          true,
+        ),
+      ).toEqual({
+        validatedLessonConfig: lessons,
+        valid: false,
+      });
+    });
   });
 });
 
@@ -651,5 +1348,92 @@ describe(getEndTimeAsDate, () => {
     const date = new Date(2018, 5, 10);
     const lesson = createGenericLesson('Monday', '0830', '1045');
     expect(getEndTimeAsDate(lesson, date)).toEqual(new Date(2018, 5, 10, 10, 45));
+  });
+});
+
+describe('v1 config migration', () => {
+  const moduleLessonConfig = {
+    Lecture: '1',
+  };
+  const moduleTimetable = getModuleTimetable(CS1010S, 1);
+  test('should do nothing if already migrated', () => {
+    const migrationResult = migrateModuleLessonConfig(
+      {
+        Lecture: [0],
+      },
+      [],
+      'CS1010S',
+      moduleTimetable,
+    );
+    expect(migrationResult).toEqual({
+      migratedModuleLessonConfig: {
+        Lecture: [0],
+      },
+      alreadyMigrated: true,
+    });
+  });
+
+  test('should not error if ta module config was migrated but module lesson config was not', () => {
+    const migrationResult = migrateModuleLessonConfig(
+      moduleLessonConfig,
+      [],
+      'CS1010S',
+      moduleTimetable,
+    );
+    expect(migrationResult).toEqual({
+      migratedModuleLessonConfig: {
+        Lecture: [0],
+      },
+      alreadyMigrated: false,
+    });
+  });
+
+  test('should error if migration is missing data to migrate from the old config', () => {
+    const taModuleConfig = {
+      CS1010S: [['Lecture', '1']],
+    } as TaModulesConfigV1;
+    expect(() =>
+      migrateModuleLessonConfig(moduleLessonConfig, taModuleConfig, 'CS1010S', []),
+    ).toThrow(Error('Lesson indices missing'));
+  });
+
+  test('should error if migration cannot find the lesson indices for non-ta module classNo', () => {
+    const invalidModuleLessonConfig = {
+      Lecture: '2',
+    } as ModuleLessonConfigV1;
+    expect(() =>
+      migrateModuleLessonConfig(
+        invalidModuleLessonConfig,
+        {
+          CS1010S: [],
+        },
+        'CS1010S',
+        moduleTimetable,
+      ),
+    ).toThrow(Error('Lesson indices missing'));
+  });
+
+  test('should error if migration cannot find the lesson indices for ta module classNo', () => {
+    const taModuleConfig = {
+      CS1010S: [
+        ['Lecture', '1'],
+        ['Lecture', '2'],
+      ],
+    } as TaModulesConfigV1;
+    expect(() =>
+      migrateModuleLessonConfig(moduleLessonConfig, taModuleConfig, 'CS1010S', moduleTimetable),
+    ).toThrow(Error('Lesson indices missing'));
+  });
+});
+
+describe(getClosestLessonConfig, () => {
+  test('ignore if lesson type has no classNo', () => {
+    expect(getClosestLessonConfig({ Lecture: {} }, { Lecture: [0] })).toEqual({});
+  });
+});
+
+describe(getRecoveryLessonIndices, () => {
+  test('guard against empty lessons input', () => {
+    expect(getRecoveryLessonIndices([])).toEqual([]);
   });
 });

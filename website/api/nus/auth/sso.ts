@@ -1,4 +1,4 @@
-import { createLoginURL } from '../../../src/serverless/nus-auth';
+import { createLoginURL, isCallbackUrlValid } from '../../../src/serverless/nus-auth';
 import {
   createRouteHandler,
   defaultFallback,
@@ -9,6 +9,7 @@ import {
 
 const errors = {
   noCallbackUrl: 'ERR_NO_REFERER',
+  invalidCallbackUrl: 'ERR_INVALID_REFERER',
 };
 
 function getCallbackUrl(callback: string | string[] | undefined) {
@@ -24,11 +25,19 @@ const handleGet: Handler = async (req, res) => {
       throw new Error(errors.noCallbackUrl);
     }
 
+    if (!isCallbackUrlValid(callback)) {
+      throw new Error(errors.invalidCallbackUrl);
+    }
+
     res.send(createLoginURL(callback));
   } catch (err) {
-    if (err.message === errors.noCallbackUrl) {
+    if ((err as unknown as Error).message === errors.noCallbackUrl) {
       res.json({
         message: 'Request needs a referer',
+      });
+    } else if ((err as unknown as Error).message === errors.invalidCallbackUrl) {
+      res.json({
+        message: 'Invalid referer given. URL must be from a valid domain.',
       });
     } else {
       throw err;

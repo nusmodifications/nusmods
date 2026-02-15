@@ -1,13 +1,13 @@
 {
   "brandName": "NUSMods",
   "defaultDescription": "NUSMods is a timetable builder and knowledge platform, providing students with a better way to plan their school timetable and useful module-related information that are community-driven.",
-  "academicYear": "2024/2025",
+  "academicYear": "2025/2026",
   "apiBaseUrl": "https://api.nusmods.com",
   "elasticsearchBaseUrl": "https://nusmods-search.es.ap-southeast-1.aws.found.io:9243",
-  "semester": 1,
+  "semester": 2,
   "disqusShortname": "nusmods-prod",
-  "venueFeedbackApi": "https://dev--nusmods-venue-github-hook--zwliew.autocode.dev/",
-  "moduleErrorApi": "https://0-0-7--nusmods-module-error-reporting.mediumdeviation.autocode.gg/",
+  "venueFeedbackApi": "https://nusmods-venue-github-hook.mods.workers.dev",
+  "moduleErrorApi": "https://nusmods-module-error-reporting.mods.workers.dev",
   "archiveYears": [
     "2016/2017",
     "2017/2018",
@@ -16,7 +16,8 @@
     "2020/2021",
     "2021/2022",
     "2022/2023",
-    "2023/2024"
+    "2023/2024",
+    "2024/2025"
   ],
   "examAvailability": [
     1,
@@ -45,7 +46,6 @@
     "facebook": "https://facebook.com/nusmods",
     "githubOrg": "https://github.com/nusmodifications",
     "githubRepo": "https://github.com/nusmodifications/nusmods",
-    "messenger": "https://m.me/nusmods",
     "twitter": "https://twitter.com/nusmods",
     "telegram": "https://t.me/NUSMods"
   }

@@ -3,7 +3,7 @@ import puppeteer, { Page } from 'puppeteer-core';
 
 import { getModules } from './data';
 import config from './config';
-import type { PageData } from './types';
+import type { ExportData } from './types';
 
 // Arbitrarily high number - just make sure it doesn't clip the timetable
 const VIEWPORT_HEIGHT = 2000;
@@ -42,7 +42,7 @@ export async function open(url: string) {
   return page;
 }
 
-async function injectData(page: Page, data: PageData) {
+async function injectData(page: Page, data: ExportData) {
   const moduleCodes = Object.keys(data.timetable);
   const modules = await getModules(moduleCodes);
 
@@ -59,7 +59,7 @@ async function injectData(page: Page, data: PageData) {
   return (await appEle.boundingBox()) || undefined;
 }
 
-export async function image(page: Page, data: PageData, options: ViewportOptions = {}) {
+export async function image(page: Page, data: ExportData, options: ViewportOptions = {}) {
   if (options.pixelRatio || (options.height && options.width)) {
     await setViewport(page, options);
   }
@@ -70,7 +70,7 @@ export async function image(page: Page, data: PageData, options: ViewportOptions
   });
 }
 
-export async function pdf(page: Page, data: PageData) {
+export async function pdf(page: Page, data: ExportData) {
   await injectData(page, data);
   await page.emulateMediaType('screen');
 

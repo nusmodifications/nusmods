@@ -3,7 +3,6 @@ import { Semester, SemesterData } from 'types/modules';
 
 import {
   addAcadYear,
-  areLessonsSameClass,
   formatExamDate,
   getExamDate,
   getFirstAvailableSemester,
@@ -21,9 +20,9 @@ import { noBreak } from 'utils/react';
 
 import { EVERY_WEEK } from 'test-utils/timetable';
 import { CS1010S, CS3216 } from '__mocks__/modules';
-import { Lesson } from 'types/timetables';
+import { LessonWithIndex } from 'types/timetables';
 
-const mockLesson = _.cloneDeep(CS1010S.semesterData[0].timetable[0]) as Lesson;
+const mockLesson = _.cloneDeep(CS1010S.semesterData[0].timetable[0]) as LessonWithIndex;
 mockLesson.moduleCode = 'CS1010S';
 mockLesson.title = 'Programming Methodology';
 
@@ -41,6 +40,7 @@ test('getModuleSemesterData should return semester data if semester is present',
         startTime: '1830',
         endTime: '2030',
         venue: 'VCRm',
+        lessonIndex: 0,
       },
     ],
   };
@@ -53,53 +53,14 @@ test('getModuleSemesterData should return undefined if semester is absent', () =
   expect(actual).toBe(undefined);
 });
 
-function lessonWithDifferentProperty(
-  lesson: Lesson,
-  property: keyof Lesson,
-  newValue: any = 'TEST',
-): Lesson {
-  const anotherLesson: Lesson = _.cloneDeep(lesson);
-  return { ...anotherLesson, [property]: newValue };
-}
-
-test('areLessonsSameClass should identify identity lessons as same class', () => {
-  const deepClonedLesson: Lesson = _.cloneDeep(mockLesson);
-  expect(areLessonsSameClass(mockLesson, deepClonedLesson)).toBe(true);
-});
-
-test(
-  'areLessonsSameClass should identify lessons from the same ClassNo but ' +
-    'with different timings as same class',
-  () => {
-    const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'startTime', '0000');
-    const otherLesson2: Lesson = lessonWithDifferentProperty(otherLesson, 'endTime', '2300');
-    expect(areLessonsSameClass(mockLesson, otherLesson2)).toBe(true);
-  },
-);
-
-test('areLessonsSameClass should identify lessons with different ModuleCode as different class', () => {
-  const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'moduleCode');
-  expect(areLessonsSameClass(mockLesson, otherLesson)).toBe(false);
-});
-
-test('areLessonsSameClass should identify lessons with different ClassNo as different class', () => {
-  const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'classNo');
-  expect(areLessonsSameClass(mockLesson, otherLesson)).toBe(false);
-});
-
-test('areLessonsSameClass should identify lessons with different lessonType as different class', () => {
-  const otherLesson: Lesson = lessonWithDifferentProperty(mockLesson, 'lessonType');
-  expect(areLessonsSameClass(mockLesson, otherLesson)).toBe(false);
-});
-
 test('formatExamDate should format an exam date string correctly', () => {
-  expect(formatExamDate('2016-11-23T01:00:00.000Z')).toBe('23-Nov-2016 9:00 AM');
-  expect(formatExamDate('2016-01-23T01:00:00.000Z')).toBe('23-Jan-2016 9:00 AM');
-  expect(formatExamDate('2016-11-03T01:00:00.000Z')).toBe('03-Nov-2016 9:00 AM');
-  expect(formatExamDate('2016-11-03T11:00:00.000Z')).toBe('03-Nov-2016 7:00 PM');
-  expect(formatExamDate('2016-11-03T11:30:00.000Z')).toBe('03-Nov-2016 7:30 PM');
-  expect(formatExamDate('2016-11-03T00:30:00.000Z')).toBe('03-Nov-2016 8:30 AM');
-  expect(formatExamDate('2016-01-03T00:01:00.000Z')).toBe('03-Jan-2016 8:01 AM');
+  expect(formatExamDate('2016-11-23T01:00:00.000Z')).toBe('23-Nov-2016 9:00\u00a0AM');
+  expect(formatExamDate('2016-01-23T01:00:00.000Z')).toBe('23-Jan-2016 9:00\u00a0AM');
+  expect(formatExamDate('2016-11-03T01:00:00.000Z')).toBe('03-Nov-2016 9:00\u00a0AM');
+  expect(formatExamDate('2016-11-03T11:00:00.000Z')).toBe('03-Nov-2016 7:00\u00a0PM');
+  expect(formatExamDate('2016-11-03T11:30:00.000Z')).toBe('03-Nov-2016 7:30\u00a0PM');
+  expect(formatExamDate('2016-11-03T00:30:00.000Z')).toBe('03-Nov-2016 8:30\u00a0AM');
+  expect(formatExamDate('2016-01-03T00:01:00.000Z')).toBe('03-Jan-2016 8:01\u00a0AM');
 });
 
 test('getExamDate should return the correct exam date if it exists', () => {
@@ -115,7 +76,7 @@ test('getExamDuration should return the correct exam duration if it exists', () 
 test('getFormattedModuleExamDate should return the correctly formatted exam timing if it exists', () => {
   const sem: Semester = 1;
   const examTime: string = getFormattedExamDate(CS1010S, sem);
-  expect(examTime).toBe('29-Nov-2017 5:00 PM');
+  expect(examTime).toBe('29-Nov-2017 5:00\u00a0PM');
 });
 
 test('getModuleSemExamDate should return "No Exam" if it does not exist', () => {

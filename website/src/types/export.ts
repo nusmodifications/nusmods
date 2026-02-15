@@ -8,6 +8,7 @@ export type ExportData = {
   readonly timetable: SemTimetableConfig;
   readonly colors: ColorMapping;
   readonly hidden: ModuleCode[];
+  readonly ta: ModuleCode[];
   readonly theme: ThemeState;
   readonly settings: {
     colorScheme: ColorScheme;

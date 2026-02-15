@@ -10,6 +10,7 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "useUnknownInCatchVariables": false,
+    "skipLibCheck": true,
   },
   "include": ["src"]
 }

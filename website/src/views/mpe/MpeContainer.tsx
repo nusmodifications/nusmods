@@ -1,11 +1,11 @@
 import { useCallback, useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import classnames from 'classnames';
-import { enableCPEx } from 'featureFlags';
 import Modal from 'views/components/Modal';
 import type { MpeSubmission } from 'types/mpe';
 import ExternalLink from 'views/components/ExternalLink';
 import config from 'config';
+import { format } from 'date-fns';
 import {
   getLoginState,
   getSSOLink,
@@ -31,6 +31,19 @@ const MpeContainer: React.FC = () => {
   );
   const hasCPEx = ugCPEx && gdCPEx;
   const sameTime = hasCPEx && ugCPEx.startDate.getTime() === gdCPEx.startDate.getTime();
+  const { enableCPEx } = config;
+
+  // Check if Undergraduate CPEx has ended
+  const isUgCPExEnded = (): boolean => {
+    const now = new Date();
+    return !!(ugCPEx && ugCPEx.endDate && now > ugCPEx.endDate);
+  };
+
+  // Check if Graduate CPEx has ended
+  const isGdCPExEnded = (): boolean => {
+    const now = new Date();
+    return !!(gdCPEx && gdCPEx.endDate && now > gdCPEx.endDate);
+  };
 
   const onLogin = useCallback(() => {
     setIsGettingSSOLink(true);
@@ -61,6 +74,48 @@ const MpeContainer: React.FC = () => {
       throw err;
     });
 
+  const renderCPExStatus = () => {
+    if (!hasCPEx) return null;
+
+    const ugEnded = isUgCPExEnded();
+    const gdEnded = isGdCPExEnded();
+
+    if (sameTime) {
+      if (ugEnded) {
+        return (
+          <p>
+            <strong>
+              CPEx has ended for AY{MPE_AY} Semester {MPE_SEMESTER}.
+            </strong>
+          </p>
+        );
+      }
+      return (
+        <p>
+          <strong>CPEx will open on:</strong> {ugCPEx.start}
+        </p>
+      );
+    }
+    return (
+      <div>
+        <p>
+          <strong>
+            {ugEnded
+              ? `Undergraduate CPEx has ended for AY${MPE_AY} Semester ${MPE_SEMESTER}.`
+              : `Undergraduate CPEx will open on: ${ugCPEx.start}`}
+          </strong>
+        </p>
+        <p>
+          <strong>
+            {gdEnded
+              ? `Graduate CPEx has ended for AY${MPE_AY} Semester ${MPE_SEMESTER}.`
+              : `Graduate CPEx will open on: ${gdCPEx.start}`}
+          </strong>
+        </p>
+      </div>
+    );
+  };
+
   return (
     <div className={styles.pageContainer}>
       <header className={styles.header}>
@@ -90,18 +145,31 @@ const MpeContainer: React.FC = () => {
             <strong>solely for planning purposes </strong> and there is no guarantee that you will
             be allocated the selected courses during the CourseReg Exercise.
           </p>
-          <p>The CPEx for this round will be from 11 Mar to 15 Mar 2024.</p>
+          {!isUgCPExEnded() && (
+            <p>
+              For undergraduates, the CPEx for this round will be from&nbsp;
+              {format(ugCPEx?.startDate ?? 0, 'dd MMM')} to&nbsp;
+              {format(ugCPEx?.endDate ?? 0, 'dd MMM yyyy')}.
+            </p>
+          )}
+          {!isGdCPExEnded() && (
+            <p>
+              For graduates, the CPEx for this round will be from&nbsp;
+              {format(gdCPEx?.startDate ?? 0, 'dd MMM')} to&nbsp;
+              {format(gdCPEx?.endDate ?? 0, 'dd MMM yyyy')}.
+            </p>
+          )}
           <p>
             Participation in the CPEx will be used as <strong>one of the tie-breakers</strong>{' '}
             during the CourseReg Exercise, in cases where the demand exceeds the available quota and
-            students have the same Priority Score for a particular module.
+            students have the same Priority Score for a particular course.
           </p>
           <p>
             For further questions, please refer to this{' '}
             <ExternalLink href="https://www.nus.edu.sg/registrar/docs/info/cpex/cpex-faqs.pdf">
               FAQ
             </ExternalLink>{' '}
-            provided by NUS Registrar's Office.
+            provided by NUS Office of the University Registrar.
           </p>
           <div>
             {isLoggedIn ? (
@@ -129,21 +197,7 @@ const MpeContainer: React.FC = () => {
       ) : (
         <>
           <hr />
-          {hasCPEx &&
-            (sameTime ? (
-              <p>
-                <strong>CPEx will open on:</strong> {ugCPEx.start}
-              </p>
-            ) : (
-              <div>
-                <p>
-                  <strong>Undergraduate CPEx will open on:</strong> {ugCPEx.start}
-                </p>
-                <p>
-                  <strong>Graduate CPEx will open on:</strong> {gdCPEx.start}
-                </p>
-              </div>
-            ))}
+          {renderCPExStatus()}
         </>
       )}
     </div>

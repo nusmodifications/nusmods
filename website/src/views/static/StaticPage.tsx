@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import classnames from 'classnames';
 
 import Title from 'views/components/Title';
@@ -9,7 +9,7 @@ type Props = {
   className?: string;
 };
 
-const StaticPage: FC<Props> = ({ title, className, children }) => {
+const StaticPage: FC<PropsWithChildren<Props>> = ({ title, className, children }) => {
   useScrollToTop();
   return (
     <div className={classnames('page-container', className)}>

@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import type {
   Module,
   ModuleCode,
-  RawLesson,
+  RawLessonWithIndex,
   Semester,
   SemesterData,
   SemesterDataCondensed,
@@ -11,7 +11,6 @@ import type {
 
 import config from 'config';
 import { NBSP, noBreak } from 'utils/react';
-import { Lesson } from 'types/timetables';
 import { toSingaporeTime } from './timify';
 
 // Look for strings that look like module codes - eg.
@@ -30,17 +29,11 @@ export function getModuleSemesterData(
 }
 
 // Returns a flat array of lessons of a module for the corresponding semester.
-export function getModuleTimetable(module: Module, semester: Semester): readonly RawLesson[] {
+export function getModuleTimetable(
+  module: Module,
+  semester: Semester,
+): readonly RawLessonWithIndex[] {
   return _.get(getModuleSemesterData(module, semester), 'timetable', []);
-}
-
-// Do these two lessons belong to the same class?
-export function areLessonsSameClass(lesson1: Lesson, lesson2: Lesson): boolean {
-  return (
-    lesson1.moduleCode === lesson2.moduleCode &&
-    lesson1.classNo === lesson2.classNo &&
-    lesson1.lessonType === lesson2.lessonType
-  );
 }
 
 /**
@@ -50,7 +43,10 @@ export function formatExamDate(examDate: string | null | undefined): string {
   if (!examDate) return 'No Exam';
 
   const localDate = toSingaporeTime(examDate);
-  return format(localDate, 'dd-MMM-yyyy p');
+  const localDateString = format(localDate, 'dd-MMM-yyyy');
+  // Use non-breaking space to prevent AM/PM from clipping to the next line
+  const localTimeString = format(localDate, 'p').replace(' ', '\u00a0');
+  return `${localDateString} ${localTimeString}`;
 }
 
 export function getExamDate(module: Module, semester: Semester): string | null {

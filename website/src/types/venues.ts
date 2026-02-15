@@ -9,8 +9,8 @@ export const OCCUPIED: VenueOccupiedState = 'occupied';
 
 export type Availability = { [lessonTime: string]: VenueOccupiedState | undefined }; // E.g. { "1000": "vacant", "1030": "occupied", ... }
 
-// Raw lessons obtained from venue info API includes ModuleCode and without venue
-export type VenueLesson = Omit<RawLesson, 'venue'> & {
+// Raw lessons obtained from venue info API includes ModuleCode and without venue and without lessonIndex
+export type VenueLesson = Omit<RawLesson, 'venue' | 'lessonIndex'> & {
   moduleCode: ModuleCode;
 };
 
@@ -44,17 +44,26 @@ export type VenueLocation = {
 
 export type LatLngTuple = [number, number];
 
+export type Shuttle = {
+  name: string;
+  routeId: number;
+};
+
 export type BusStop = {
-  location: LatLngTuple;
+  readonly latitude: number;
+  readonly longitude: number;
   // Human readable name for the stop
-  readonly name: string;
+  readonly caption: string;
   // Used for accessing the next bus API. This is called 'name' in the API.
-  readonly code: string;
+  readonly name: string;
+  readonly longName: string;
+  readonly shortName: string;
   // Bus routes that stops at the bus stop
-  readonly routes: string[];
+  readonly shuttles: Shuttle[];
+  readonly opposite: string | null;
   // Whether to show the routes on the left instead of right
   // to avoid overlapping some other bus stop
-  readonly displayRoutesLeft?: boolean;
+  readonly leftLabel?: boolean;
 };
 
 export type NextBusTime = number | '-' | 'Arr';

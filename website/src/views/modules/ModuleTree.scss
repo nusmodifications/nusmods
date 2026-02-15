@@ -29,6 +29,7 @@ $connector-size: 0.75rem;
 .tree,
 .prereqTree {
   position: relative;
+  flex-shrink: 0;
   list-style: none;
   padding: 0;
   margin: 0.125rem 0;
@@ -57,14 +58,17 @@ $connector-size: 0.75rem;
   min-width: 4.5rem;
 }
 
+.inactiveRootNode::before {
+  display: none;
+}
+
 .prefix {
   font-size: 0.75rem;
   white-space: nowrap;
 }
 
 .link {
-  display: block;
-  width: 100%;
+  display: inline-block;
   color: currentColor;
 
   &:hover {
@@ -120,7 +124,9 @@ $connector-size: 0.75rem;
   }
 }
 
-.prereqBranch {
+.leftBranch {
+  justify-content: flex-end;
+  
   &::before,
   &::after {
     right: 0;
@@ -128,7 +134,7 @@ $connector-size: 0.75rem;
   }
 }
 
-.prereqNode {
+.leftNode {
   margin: 0 $connector-size 1px 0;
 
   &::before {

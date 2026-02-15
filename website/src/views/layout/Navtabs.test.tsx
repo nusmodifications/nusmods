@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import produce from 'immer';
+import { produce } from 'immer';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
@@ -74,6 +74,7 @@ describe(Navtabs, () => {
         [
           "Today",
           "Timetable",
+          "Optimiser",
           "Courses",
           "CPEx",
           "Venues",
@@ -88,6 +89,7 @@ describe(Navtabs, () => {
         [
           "Today",
           "Timetable",
+          "Optimiser",
           "Courses",
           "Venues",
           "Planner",

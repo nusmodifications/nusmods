@@ -4,14 +4,16 @@ import Downshift, { ChildrenFunction } from 'downshift';
 import _ from 'lodash';
 
 import { ColorIndex } from 'types/timetables';
+import { NUM_DIFFERENT_COLORS, TRANSPARENT_COLOR_INDEX } from 'utils/colors';
 
-import { NUM_DIFFERENT_COLORS } from 'utils/colors';
+import TransparentIcon from 'img/icons/transparent.svg';
 import styles from './ColorPicker.scss';
 
 type Props = {
   label: string;
   color: ColorIndex;
   isHidden: boolean;
+  isTa: boolean;
   onChooseColor: (colorIndex: ColorIndex) => void;
 };
 
@@ -27,18 +29,29 @@ const ColorPicker = memo<Props>((props) => {
     getMenuProps,
     isOpen,
   }) => {
-    const { label, color, isHidden } = props;
+    const { label, color, isHidden, isTa } = props;
 
     return (
-      <div className={styles.container}>
+      <div
+        className={classnames(styles.container, {
+          [styles.hidden]: isHidden,
+          [styles.ta]: isTa,
+        })}
+      >
         <button
           type="button"
           {...getToggleButtonProps({
             title: label,
           })}
-          className={classnames('btn btn-block hoverable', `color-${color}`, styles.moduleColor, {
-            [styles.hidden]: isHidden,
-          })}
+          className={classnames(
+            'btn btn-block hoverable',
+            color === TRANSPARENT_COLOR_INDEX ? styles.transparentColor : `color-${color}`,
+            styles.moduleColor,
+            {
+              [styles.hidden]: isHidden,
+              [styles.ta]: isTa,
+            },
+          )}
         />
         <div
           className={classnames(styles.palette, { [styles.isClosed]: !isOpen })}
@@ -47,12 +60,16 @@ const ColorPicker = memo<Props>((props) => {
           {_.range(NUM_DIFFERENT_COLORS).map((index: ColorIndex) => (
             <button
               type="button"
-              {...getItemProps({ item: index })}
+              {...getItemProps({ item: index === color ? TRANSPARENT_COLOR_INDEX : index })}
               key={index}
               className={classnames(styles.option, `color-${index}`, {
                 [styles.selected]: index === color,
               })}
-            />
+            >
+              {index === color && (
+                <TransparentIcon className={styles.transparentIcon} fill="currentColor" />
+              )}
+            </button>
           ))}
         </div>
       </div>

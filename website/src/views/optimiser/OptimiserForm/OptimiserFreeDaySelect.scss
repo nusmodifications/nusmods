@@ -1,0 +1,22 @@
+@import '~styles/utils/modules-entry.scss';
+@import './OptimiserForm.scss';
+
+.freeDaysSection {
+  display: flex;
+  flex-direction: column;
+  margin-top: $form-fields-gap;
+}
+
+.freeDaysButtons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.freeDaysButton {
+  composes: btn btn-link btn-svg from global;
+  display: flex;
+  flex-direction: row;
+  gap: 0.3rem;
+}

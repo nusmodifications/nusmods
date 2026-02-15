@@ -15,6 +15,9 @@ const errors = {
   noTokenSupplied: 'ERR_NO_TOKEN_SUPPLIED',
 };
 
+// Domains allowed as callback URLs
+const allowedDomains = ['nusmods.com', 'nuscourses.com', 'modsn.us', 'localhost'];
+
 export type User = {
   accountName: string;
   upn: string;
@@ -28,13 +31,23 @@ const samlRespAttributes: { [key in keyof User]: string } = {
 
 samlify.setSchemaValidator(validator);
 
+let SP_FILE_PATH;
+let FEDERATION_METADATA_FILE_PATH;
+if (process.env.VERCEL_ENV === 'production') {
+  SP_FILE_PATH = './sp.xml';
+  FEDERATION_METADATA_FILE_PATH = './FederationMetadata.xml';
+} else {
+  SP_FILE_PATH = './sp-cpex-staging.xml';
+  FEDERATION_METADATA_FILE_PATH = './FederationMetadata-cpex-staging.xml';
+}
+
 const idp = samlify.IdentityProvider({
-  metadata: fs.readFileSync(path.join(__dirname, './FederationMetadata.xml')),
+  metadata: fs.readFileSync(path.join(__dirname, FEDERATION_METADATA_FILE_PATH)),
   isAssertionEncrypted: true,
 });
 
 const sp = samlify.ServiceProvider({
-  metadata: fs.readFileSync(path.join(__dirname, './sp.xml')),
+  metadata: fs.readFileSync(path.join(__dirname, SP_FILE_PATH)),
   encPrivateKey: process.env.NUS_EXCHANGE_SP_PRIVATE_KEY?.replace(/\\n/g, '\n'),
 });
 
@@ -43,6 +56,28 @@ export const createLoginURL = (relayState = '') => {
   const ssoLoginURL = new URL(context);
   ssoLoginURL.searchParams.append('RelayState', relayState);
   return ssoLoginURL.toString();
+};
+
+export const isCallbackUrlValid = (callbackUrl: string): boolean => {
+  try {
+    const url = new URL(callbackUrl);
+
+    const validMatch = allowedDomains.some(
+      (allowedDomain) =>
+        url.hostname.endsWith(`.${allowedDomain}`) || url.hostname === allowedDomain,
+    );
+
+    if (!validMatch) {
+      // eslint-disable-next-line no-console
+      console.error('Invalid callback URL given by user:', callbackUrl);
+    }
+
+    return validMatch;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Invalid callback URL:', error);
+    return false;
+  }
 };
 
 export const authenticate = async (req: Request) => {
@@ -101,7 +136,7 @@ export const verifyLogin =
         errResp.message = 'Token has expired, please login again';
       } else if (err === samlifyErrors.invalidAssertion) {
         errResp.message = 'Invalid token supplied';
-      } else if (err.message === errors.noTokenSupplied) {
+      } else if ((err as unknown as Error).message === errors.noTokenSupplied) {
         errResp.message = 'No token is supplied';
       } else {
         errResp.message = 'Invalid authentication, please login again';

@@ -7,6 +7,7 @@ import {
   EndTime,
   LessonTime,
   Module,
+  ModuleCode,
   NumericWeeks,
   RawLesson,
   Semester,
@@ -155,6 +156,7 @@ export function iCalEventForLesson(
   module: Module,
   semester: Semester,
   firstDayOfSchool: Date,
+  isTa: boolean,
 ): EventOption {
   const event = consumeWeeks(
     lesson.weeks,
@@ -164,7 +166,7 @@ export function iCalEventForLesson(
 
   return {
     ...event,
-    summary: `${module.moduleCode} ${lesson.lessonType}`,
+    summary: `${module.moduleCode} ${lesson.lessonType}${isTa ? ' (TA)' : ''}`,
     description: `${module.title}\n${lesson.lessonType} Group ${lesson.classNo}`,
     location: lesson.venue,
   };
@@ -174,7 +176,8 @@ export default function iCalForTimetable(
   semester: Semester,
   timetable: SemTimetableConfigWithLessons,
   moduleData: { [moduleCode: string]: Module },
-  hiddenModules: string[],
+  hiddenModules: ModuleCode[],
+  taModules: ModuleCode[],
   academicYear: string = config.academicYear,
 ): EventOption[] {
   const [year, month, day] = academicCalendar[academicYear][semester].start;
@@ -185,11 +188,17 @@ export default function iCalForTimetable(
   _.each(timetable, (lessonConfig, moduleCode) => {
     if (hiddenModules.includes(moduleCode)) return;
 
+    const isTa = taModules.includes(moduleCode);
+
     _.each(lessonConfig, (lessons) => {
       lessons.forEach((lesson) => {
-        events.push(iCalEventForLesson(lesson, moduleData[moduleCode], semester, firstDayOfSchool));
+        events.push(
+          iCalEventForLesson(lesson, moduleData[moduleCode], semester, firstDayOfSchool, isTa),
+        );
       });
     });
+
+    if (isTa) return;
 
     const examEvent = iCalEventForExam(moduleData[moduleCode], semester);
     if (examEvent) events.push(examEvent);

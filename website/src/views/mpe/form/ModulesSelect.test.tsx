@@ -1,6 +1,7 @@
 import { mount, shallow } from 'enzyme';
 import Downshift from 'downshift';
 import Modal from 'views/components/Modal';
+import { waitForComponentToPaint } from 'test-utils/wait';
 import { ModulesSelectComponent } from './ModulesSelect';
 
 const modules = [
@@ -32,9 +33,10 @@ const commonProps = {
 };
 
 describe(ModulesSelectComponent, () => {
-  it('should show results on input value change', () => {
+  it('should show results on input value change', async () => {
     const wrapper = mount(<ModulesSelectComponent {...commonProps} matchBreakpoint />);
     wrapper.setState({ isOpen: true });
+    await waitForComponentToPaint(wrapper);
     const input = wrapper.find('input');
     expect(wrapper.find('li')).toHaveLength(0);
     input.simulate('change', { target: { value: 'T' } });
@@ -43,17 +45,19 @@ describe(ModulesSelectComponent, () => {
     expect(wrapper.find('li')).toHaveLength(0);
   });
 
-  it('should indicate module is added', () => {
+  it('should indicate module is added', async () => {
     const wrapper = mount(<ModulesSelectComponent {...commonProps} matchBreakpoint />);
     wrapper.setState({ isOpen: true, inputValue: 'T' });
+    await waitForComponentToPaint(wrapper);
     const result = wrapper.find('li').at(1);
     expect(result.prop('disabled')).toBe(true);
     expect(result.find('.badge').exists()).toBe(true);
   });
 
-  it('should call onChange when module is selected', () => {
+  it('should call onChange when module is selected', async () => {
     const wrapper = mount(<ModulesSelectComponent {...commonProps} matchBreakpoint />);
     wrapper.setState({ isOpen: true, inputValue: 'T' });
+    await waitForComponentToPaint(wrapper);
     wrapper.find('li').first().simulate('click');
     expect(commonProps.onChange).toHaveBeenCalledWith(modules[0].moduleCode);
     // remain open

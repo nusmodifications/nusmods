@@ -10,6 +10,18 @@ $arrow-height: 1.5rem;
 
 .container {
   position: relative;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+
+  &.ta {
+    border-style: solid;
+    border-color: var(--gray-light);
+  }
+
+  &.hidden {
+    border-style: dashed;
+    border-color: var(--gray-light);
+  }
 }
 
 :global(.btn).moduleColor {
@@ -21,8 +33,11 @@ $arrow-height: 1.5rem;
   border: 0;
 
   &.hidden {
-    border: 1px dashed var(--gray-light);
     background: none;
+  }
+
+  &.ta {
+    clip-path: polygon(0% 0%, 100% 0%, 0% 100%);
   }
 }
 
@@ -75,7 +90,6 @@ $arrow-height: 1.5rem;
 
   // Add a cross mark to indicate the currently selected color
   &.selected::after {
-    content: '✕';
     position: absolute;
     top: 0;
     right: 0;
@@ -90,4 +104,45 @@ $arrow-height: 1.5rem;
 :global(.btn).option {
   border: 0;
   border-radius: 0;
+}
+
+
+.transparentColor {
+  position: relative;
+  border: 2px solid #ccc;
+  background: white;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    bottom: 1px;
+    left: 1px;
+    background: repeating-linear-gradient(
+      45deg,
+      #ccc,
+      #ccc 2px,
+      transparent 2px,
+      transparent 6px
+    );
+  }
+
+  &:hover::before {
+    background: repeating-linear-gradient(
+      45deg,
+      darken(#ccc, 15%),
+      darken(#ccc, 15%) 2px,
+      transparent 2px,
+      transparent 6px
+    );
+  }
+}
+.transparentIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1rem;
+  height: 1rem;
+  transform: translate(-50%, -50%);
 }

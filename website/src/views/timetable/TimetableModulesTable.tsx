@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import { sortBy } from 'lodash';
-import produce from 'immer';
+import { produce } from 'immer';
 
-import { Eye, EyeOff, Trash } from 'react-feather';
+import { Book, BookOpen, Eye, EyeOff, Trash } from 'react-feather';
 import { ModuleWithColor, TombstoneModule } from 'types/views';
 import { ColorIndex } from 'types/timetables';
 import { ModuleCode, Semester } from 'types/modules';
@@ -14,11 +14,19 @@ import { ModuleTableOrder } from 'types/reducers';
 
 import ColorPicker from 'views/components/ColorPicker';
 import {
-  hideLessonInTimetable,
   selectModuleColor,
+  hideLessonInTimetable,
   showLessonInTimetable,
+  addTaModule,
+  disableTaModule,
 } from 'actions/timetables';
-import { getExamDate, getFormattedExamDate, renderMCs } from 'utils/modules';
+import {
+  getExamDate,
+  getFormattedExamDate,
+  renderMCs,
+  getExamDuration,
+  renderExamDuration,
+} from 'utils/modules';
 import { intersperse } from 'utils/array';
 import { BULLET_NBSP } from 'utils/react';
 import { modulePage } from 'views/routes/paths';
@@ -42,14 +50,19 @@ export type Props = {
   selectModuleColor: (semester: Semester, moduleCode: ModuleCode, colorIndex: ColorIndex) => void;
   hideLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
   showLessonInTimetable: (semester: Semester, moduleCode: ModuleCode) => void;
+  enableTaModule: (semester: Semester, moduleCode: ModuleCode) => void;
+  disableTaModule: (semester: Semester, moduleCode: ModuleCode) => void;
   onRemoveModule: (moduleCode: ModuleCode) => void;
   resetTombstone: () => void;
 };
 
 export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
   const renderModuleActions = (module: ModuleWithColor) => {
-    const hideBtnLabel = `${module.hiddenInTimetable ? 'Show' : 'Hide'} ${module.moduleCode}`;
     const removeBtnLabel = `Remove ${module.moduleCode} from timetable`;
+    const hideBtnLabel = `${module.isHiddenInTimetable ? 'Show' : 'Hide'} ${module.moduleCode}`;
+    const taBtnLabel = `${module.isTaInTimetable ? 'Disable' : 'Enable'} TA for ${
+      module.moduleCode
+    }`;
     const { semester } = props;
 
     return (
@@ -71,17 +84,37 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
               className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
               aria-label={hideBtnLabel}
               onClick={() => {
-                if (module.hiddenInTimetable) {
+                if (module.isHiddenInTimetable) {
                   props.showLessonInTimetable(semester, module.moduleCode);
                 } else {
                   props.hideLessonInTimetable(semester, module.moduleCode);
                 }
               }}
             >
-              {module.hiddenInTimetable ? (
+              {module.isHiddenInTimetable ? (
                 <Eye className={styles.actionIcon} />
               ) : (
                 <EyeOff className={styles.actionIcon} />
+              )}
+            </button>
+          </Tooltip>
+          <Tooltip content={taBtnLabel} touch={['hold', 50]}>
+            <button
+              type="button"
+              className={classnames('btn btn-outline-secondary btn-svg', styles.moduleAction)}
+              aria-label={taBtnLabel}
+              onClick={() => {
+                if (module.isTaInTimetable) {
+                  props.disableTaModule(semester, module.moduleCode);
+                } else {
+                  props.enableTaModule(semester, module.moduleCode);
+                }
+              }}
+            >
+              {module.isTaInTimetable ? (
+                <BookOpen className={styles.actionIcon} />
+              ) : (
+                <Book className={styles.actionIcon} />
               )}
             </button>
           </Tooltip>
@@ -100,10 +133,15 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
     // Second row of text consists of the exam date and the MCs
     const secondRowText = [renderMCs(module.moduleCredit)];
     if (config.examAvailabilitySet.has(semester)) {
+      const examDuration = getExamDuration(module, semester);
+      const examDate = getExamDate(module, semester);
+
+      if (examDuration) {
+        secondRowText.unshift(renderExamDuration(examDuration));
+      }
+
       secondRowText.unshift(
-        getExamDate(module, semester)
-          ? `Exam: ${getFormattedExamDate(module, semester)}`
-          : 'No Exam',
+        examDate ? `Exam: ${getFormattedExamDate(module, semester)}` : 'No Exam',
       );
     }
 
@@ -113,7 +151,8 @@ export const TimetableModulesTableComponent: React.FC<Props> = (props) => {
           <ColorPicker
             label={`Change ${module.moduleCode} timetable color`}
             color={module.colorIndex}
-            isHidden={module.hiddenInTimetable}
+            isHidden={module.isHiddenInTimetable}
+            isTa={module.isTaInTimetable}
             onChooseColor={(colorIndex: ColorIndex) => {
               props.selectModuleColor(semester, module.moduleCode, colorIndex);
             }}
@@ -167,5 +206,7 @@ export default connect(
     selectModuleColor,
     hideLessonInTimetable,
     showLessonInTimetable,
+    enableTaModule: addTaModule,
+    disableTaModule,
   },
 )(React.memo(TimetableModulesTableComponent));

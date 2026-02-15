@@ -59,8 +59,8 @@ const ModuleFinderContainer: React.FC = () => (
   <div className={classnames(styles.modulesPageContainer, 'page-container')}>
     {pageHead}
     <SearchkitProvider searchkit={searchkit}>
-      <div className="row">
-        <div className="col">
+      <div className={styles.moduleFinderLayout}>
+        <div className={styles.searchResultsColumn}>
           <h1 className="sr-only">Course Finder</h1>
 
           <ModuleSearchBox id="q" />
@@ -97,7 +97,7 @@ const ModuleFinderContainer: React.FC = () => (
           <Pagination pagerComponent={ModuleFinderPager} />
         </div>
 
-        <div className="col-md-4 col-lg-3">
+        <div className={styles.sidebarColumn}>
           <ModuleFinderSidebar />
         </div>
       </div>

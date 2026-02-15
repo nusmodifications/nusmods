@@ -19,6 +19,7 @@ import {
   setModRegScheduleType,
   toggleBetaTesting,
   toggleModRegNotificationGlobally,
+  setPrereqTreeOnLeft,
 } from 'actions/settings';
 import Timetable from 'views/timetable/Timetable';
 import Title from 'views/components/Title';
@@ -45,6 +46,7 @@ type Props = {
   betaTester: boolean;
   loadDisqusManually: boolean;
   modRegNotification: ModRegNotificationSettings;
+  prereqTreeOnLeft: boolean;
 
   selectTheme: (theme: ThemeId) => void;
   selectColorScheme: (colorScheme: ColorSchemePreference) => void;
@@ -56,6 +58,8 @@ type Props = {
   toggleModRegNotificationGlobally: (enabled: boolean) => void;
   enableModRegNotification: (round: RegPeriod) => void;
   dismissModregNotification: (round: RegPeriod) => void;
+
+  togglePreReqTreeDirection: (status: boolean) => void;
 };
 
 const SettingsContainer: React.FC<Props> = ({
@@ -64,6 +68,7 @@ const SettingsContainer: React.FC<Props> = ({
   betaTester,
   loadDisqusManually,
   modRegNotification,
+  prereqTreeOnLeft,
   ...props
 }) => {
   const [allowTracking, setAllowTracking] = useState(true);
@@ -145,6 +150,26 @@ const SettingsContainer: React.FC<Props> = ({
             onSelectTheme={props.selectTheme}
           />
         ))}
+      </div>
+
+      <hr />
+
+      <h4 id="prereqTreeDirection">Prerequisite Tree Direction</h4>
+
+      <div className={styles.toggleRow}>
+        <div className={styles.toggleDescription}>
+          <p>
+            Course prerequsites appear to the {prereqTreeOnLeft ? 'left' : 'right'} of the course in
+            its prerequisite tree.
+          </p>
+        </div>
+        <div className={styles.toggle}>
+          <Toggle
+            labels={['Left', 'Right']}
+            isOn={prereqTreeOnLeft}
+            onChange={props.togglePreReqTreeDirection}
+          />
+        </div>
       </div>
 
       <hr />
@@ -303,6 +328,7 @@ const mapStateToProps = (state: StoreState) => ({
   betaTester: state.settings.beta || false,
   loadDisqusManually: state.settings.loadDisqusManually,
   modRegNotification: state.settings.modRegNotification,
+  prereqTreeOnLeft: state.settings.prereqTreeOnLeft,
 });
 
 const connectedSettings = connect(mapStateToProps, {
@@ -315,6 +341,7 @@ const connectedSettings = connect(mapStateToProps, {
   dismissModregNotification,
   enableModRegNotification,
   setModRegScheduleType,
+  togglePreReqTreeDirection: setPrereqTreeOnLeft,
 })(SettingsContainer);
 
 export default deferComponentRender(connectedSettings);

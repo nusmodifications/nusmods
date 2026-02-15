@@ -4,7 +4,9 @@
 
 import { Semester } from '../types/modules';
 import { Cache } from '../types/persist';
+import { ModuleInfo } from '../types/api';
 import rootLogger, { Logger } from '../services/logger';
+import { cleanString } from './data';
 
 /**
  * Construct the 4 number term code from the academic year and semester
@@ -23,6 +25,67 @@ export function fromTermCode(term: string): [string, Semester] {
   const semester = parseInt(term.charAt(2), 10);
 
   return [`20${year}/20${year + 1}`, semester];
+}
+
+/**
+ * Maps the 4-digit term code to the parameters expected by the CourseNUSMods API.
+ */
+export function mapTermToApiParams(term: string) {
+  const [acadYear, semester] = fromTermCode(term);
+
+  // 2024/2025 -> 2024/25
+  const yearParts = acadYear.split('/');
+  const shortYear = `${yearParts[0]}/${yearParts[1].slice(2)}`;
+
+  let applicableInSem = '';
+  switch (semester) {
+    case 1:
+      applicableInSem = 'Semester 1';
+      break;
+    case 2:
+      applicableInSem = 'Semester 2';
+      break;
+    case 3:
+      applicableInSem = 'Special Semester (Part 1)';
+      break;
+    case 4:
+      applicableInSem = 'Special Semester (Part 2)';
+      break;
+    default:
+      applicableInSem = `Semester ${semester}`;
+  }
+
+  return {
+    applicableInYear: shortYear,
+    applicableInSem,
+  };
+}
+
+/**
+ * Clean ModuleInfo by removing HTML tags from fields that should be plain text
+ * and decoding HTML entities in others.
+ */
+export function sanitizeModuleInfo(module: ModuleInfo): ModuleInfo {
+  const cleanOrNull = (s: string | null | undefined) => (s == null ? null : cleanString(s));
+
+  return {
+    ...module,
+    Code: cleanString(module.Code),
+    Title: cleanString(module.Title),
+    SubjectArea: cleanString(module.SubjectArea),
+    CatalogNumber: cleanString(module.CatalogNumber),
+    WorkloadHoursNUSMods: cleanOrNull(module.WorkloadHoursNUSMods),
+    CourseDesc: cleanString(module.CourseDesc),
+    PreRequisiteAdvisory: cleanOrNull(module.PreRequisiteAdvisory),
+    AdditionalInformation: cleanOrNull(module.AdditionalInformation),
+    GradingBasisDesc: cleanOrNull(module.GradingBasisDesc),
+    PrerequisiteRule: cleanOrNull(module.PrerequisiteRule),
+    PrerequisiteSummary: cleanOrNull(module.PrerequisiteSummary),
+    CorequisiteRule: cleanOrNull(module.CorequisiteRule),
+    CorequisiteSummary: cleanOrNull(module.CorequisiteSummary),
+    PreclusionRule: cleanOrNull(module.PreclusionRule),
+    PreclusionSummary: cleanOrNull(module.PreclusionSummary),
+  };
 }
 
 /**

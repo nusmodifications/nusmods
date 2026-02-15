@@ -17,6 +17,7 @@ const enableAnnouncements = true;
  * dismissible, set the key to null. Otherwise, set it to a string.
  *
  * Previous keys:
+ * - 'ay202526-new-data' - AY2025/26 data is available
  * - 'ay202425-new-data' - AY2024/25 data is available
  * - 'ay202324-new-data' - AY2023/24 data is available
  * - 'ay202223-new-data' - AY2022/23 data is available
@@ -31,7 +32,14 @@ const enableAnnouncements = true;
  * - 'ay201819-new-data' - AY2018/19 data is available
  * - 'ay201819-s2-new-data' - S2 data available
  */
-const key = announcementKey('ay202425-new-data');
+const key = announcementKey('ay202526-new-data');
+
+export const isNewCourseDataAnnoucement = () => {
+  if (key) {
+    return enableAnnouncements && key.includes('new-data');
+  }
+  return false;
+};
 
 const Announcements = memo(() => {
   const [isOpen, setIsOpen] = useState(() => {
@@ -60,9 +68,9 @@ const Announcements = memo(() => {
       <Heart className={styles.backgroundIcon} />
 
       <div className={styles.body}>
-        <h3>AY2024/25 courses now available!</h3>
+        <h3>AY2025/26 courses now available!</h3>
         <p className={styles.bodyElement}>
-          NUSMods now has AY2024/25 course information available. The data is accurate but subject
+          NUSMods now has AY2025/26 course information available. The data is accurate but subject
           to changes.
         </p>
         <p className={styles.bodyElement}>

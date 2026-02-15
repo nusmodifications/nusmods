@@ -34,6 +34,7 @@ $cell-opacity: 0.5;
 
 .transparentCell {
   border-width: 0 0 0 0;
+  color: inherit;
   background-color: rgba(0, 0, 0, 0);
 }
 
@@ -69,6 +70,13 @@ $cell-opacity: 0.5;
   :global {
     animation-name: pulse;
   }
+}
+
+.cellHeaader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
 }
 
 .moduleName {
@@ -107,4 +115,9 @@ $cell-opacity: 0.5;
   .weekInfo {
     opacity: 0.6;
   }
+}
+
+.taActionIndicator {
+  height: 0.8rem;
+  margin-right: -0.3rem;
 }

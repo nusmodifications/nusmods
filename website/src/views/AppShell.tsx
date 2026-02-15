@@ -1,4 +1,5 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import type { SemTimetableConfig } from 'types/timetables';
 import type { Semester } from 'types/modules';
 import { DARK_COLOR_SCHEME } from 'types/settings';
@@ -103,7 +104,7 @@ function useFetchModuleListAndTimetableModules(): {
   };
 }
 
-const AppShell: FC = ({ children }) => {
+const AppShell: FC<PropsWithChildren> = ({ children }) => {
   const { moduleListError, refetchModuleListAndTimetableModules } =
     useFetchModuleListAndTimetableModules();
 

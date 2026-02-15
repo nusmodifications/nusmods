@@ -1,26 +1,29 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { isEqual } from 'lodash';
+import { noop } from 'lodash';
 import { addWeeks, format, parseISO } from 'date-fns';
 import NUSModerator, { AcadWeekInfo } from 'nusmoderator';
 
 import { consumeWeeks, WeekRange } from 'types/modules';
-import { HoverLesson, ModifiableLesson } from 'types/timetables';
+import { ColoredLesson, HoverLesson, InteractableLesson } from 'types/timetables';
 import { OnHoverCell } from 'types/views';
 
 import {
   formatNumericWeeks,
   getHoverLesson,
   getLessonIdentifier,
+  isInteractable,
   LESSON_TYPE_ABBREV,
 } from 'utils/timetables';
+import { TRANSPARENT_COLOR_INDEX } from 'utils/colors';
 import elements from 'views/elements';
 import Tooltip from 'views/components/Tooltip/Tooltip';
+import { Minus, Plus } from 'react-feather';
 import styles from './TimetableCell.scss';
 
 type Props = {
   showTitle: boolean;
-  lesson: ModifiableLesson;
+  lesson: ColoredLesson;
   onHover: OnHoverCell;
   style?: React.CSSProperties;
   onClick?: (position: ClientRect) => void;
@@ -33,6 +36,29 @@ const lessonDateFormat = 'MMM dd';
 function formatWeekInfo(weekInfo: AcadWeekInfo) {
   if (weekInfo.type === 'Instructional') return `Week ${weekInfo.num}`;
   return weekInfo.type;
+}
+
+/**
+ * Determines if the lesson should be highlighted as part of the same lesson group as the lesson currently being hovered over
+ * @param lesson This cell's lesson
+ * @param hoverLesson The lesson being hovered over
+ */
+function checkHover(
+  lesson: InteractableLesson | ColoredLesson,
+  hoverLesson: HoverLesson | null | undefined,
+): boolean {
+  if (!hoverLesson) return false;
+
+  if (!isInteractable(lesson)) return false;
+
+  if (lesson.moduleCode !== hoverLesson.moduleCode || lesson.lessonType !== hoverLesson.lessonType)
+    return false;
+
+  if (!lesson.isTaInTimetable && lesson.classNo === hoverLesson.classNo) return true;
+
+  if (lesson.isTaInTimetable && lesson.lessonIndex === hoverLesson.lessonIndex) return true;
+
+  return false;
 }
 
 function formatWeekRange(weekRange: WeekRange) {
@@ -90,7 +116,7 @@ const TimetableCell: React.FC<Props> = (props) => {
 
   const moduleName = showTitle ? `${lesson.moduleCode} ${lesson.title}` : lesson.moduleCode;
   const Cell = props.onClick ? 'button' : 'div';
-  const isHoveredOver = isEqual(getHoverLesson(lesson), hoverLesson);
+  const isHoveredOver = checkHover(lesson, hoverLesson);
 
   const conditionalProps = onClick
     ? {
@@ -107,12 +133,14 @@ const TimetableCell: React.FC<Props> = (props) => {
     styles.baseCell,
     getLessonIdentifier(lesson),
     elements.lessons,
-    transparent ? styles.transparentCell : [styles.coloredCell, `color-${lesson.colorIndex}`],
+    transparent || lesson.colorIndex === TRANSPARENT_COLOR_INDEX
+      ? styles.transparentCell
+      : [styles.coloredCell, `color-${lesson.colorIndex}`],
     {
       hoverable: !!onClick,
       [styles.clickable]: !!onClick,
-      [styles.available]: lesson.isAvailable,
-      [styles.active]: lesson.isActive,
+      [styles.available]: isInteractable(lesson) && lesson.canBeAddedToLessonConfig,
+      [styles.active]: isInteractable(lesson) && lesson.isActive,
       // Local hover style for the timetable planner timetable,
       [styles.hover]: isHoveredOver,
       // Global hover style for module page timetable
@@ -124,15 +152,31 @@ const TimetableCell: React.FC<Props> = (props) => {
     <Cell
       className={className}
       style={props.style}
-      onMouseEnter={() => onHover(getHoverLesson(lesson))}
-      onTouchStart={() => onHover(getHoverLesson(lesson))}
+      onMouseEnter={isInteractable(lesson) ? () => onHover(getHoverLesson(lesson)) : noop}
+      onTouchStart={isInteractable(lesson) ? () => onHover(getHoverLesson(lesson)) : noop}
       onMouseLeave={() => onHover(null)}
       onTouchEnd={() => onHover(null)}
-      autoFocus={lesson.isActive}
+      autoFocus={isInteractable(lesson) && lesson.isActive}
       {...conditionalProps}
     >
       <div className={styles.cellContainer}>
-        <div className={styles.moduleName}>{moduleName}</div>
+        <div className={styles.cellHeaader}>
+          <div className={styles.moduleName}>
+            {moduleName}
+            {isInteractable(lesson) && lesson.isTaInTimetable && ' (TA)'}
+          </div>
+
+          {isInteractable(lesson) &&
+            lesson.isTaInTimetable &&
+            onClick &&
+            isHoveredOver &&
+            hoverLesson &&
+            (lesson.isActive || !lesson.canBeAddedToLessonConfig ? (
+              <Minus className={styles.taActionIndicator} />
+            ) : (
+              <Plus className={styles.taActionIndicator} />
+            ))}
+        </div>
         <div>
           {LESSON_TYPE_ABBREV[lesson.lessonType]} [{lesson.classNo}]
         </div>

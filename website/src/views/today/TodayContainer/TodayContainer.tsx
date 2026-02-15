@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { get, minBy, range } from 'lodash';
+import { get, minBy, range, omit } from 'lodash';
 import NUSModerator, { AcadWeekInfo } from 'nusmoderator';
 import classnames from 'classnames';
 import {
@@ -12,7 +12,7 @@ import {
   isWeekend,
   parseISO,
 } from 'date-fns';
-import produce from 'immer';
+import { produce } from 'immer';
 
 import { DaysOfWeek } from 'types/modules';
 import { Lesson, ColoredLesson, SemTimetableConfigWithLessons } from 'types/timetables';
@@ -28,7 +28,11 @@ import {
 } from 'utils/timetables';
 import { captureException } from 'utils/error';
 import Title from 'views/components/Title';
-import { getSemesterTimetableColors, getSemesterTimetableLessons } from 'selectors/timetables';
+import {
+  getSemesterTimetableColors,
+  getSemesterTimetableHidden,
+  getSemesterTimetableLessons,
+} from 'selectors/timetables';
 import ExternalLink from 'views/components/ExternalLink';
 import * as weatherAPI from 'apis/weather';
 import config from 'config';
@@ -53,8 +57,8 @@ const EMPTY_LESSONS: ColoredLesson[] = [];
 const semesterNameMap: Record<string, number> = {
   'Semester 1': 1,
   'Semester 2': 2,
-  'Special Sem 1': 3,
-  'Special Sem 2': 4,
+  'Special Term I': 3,
+  'Special Term II': 4,
 };
 
 export type OwnProps = TimerData;
@@ -128,7 +132,7 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
 
   override componentDidMount() {
     weatherAPI
-      .twoHour()
+      .twoHour(this.props.currentTime)
       .then((weather) => {
         if (!weather) return;
         this.setState((prevState) => ({ weather: { ...prevState.weather, '0': weather } }));
@@ -136,7 +140,7 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
       .catch(captureException);
 
     weatherAPI
-      .tomorrow()
+      .tomorrow(this.props.currentTime)
       .then((weather) => {
         if (!weather) return;
         this.setState((prevState) => ({ weather: { ...prevState.weather, '1': weather } }));
@@ -144,7 +148,7 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
       .catch(captureException);
 
     weatherAPI
-      .fourDay()
+      .fourDay(this.props.currentTime)
       .then((forecasts) => {
         this.setState(
           produce((draft) => {
@@ -174,9 +178,9 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
   };
 
   groupLessons() {
-    const { colors, currentTime } = this.props;
+    const { colors, currentTime, timetableWithLessons } = this.props;
 
-    const timetableLessons: Lesson[] = timetableLessonsArray(this.props.timetableWithLessons);
+    const timetableLessons: Lesson[] = timetableLessonsArray(timetableWithLessons);
 
     // Inject color into module
     const coloredTimetableLessons = timetableLessons.map(
@@ -347,12 +351,27 @@ export class TodayContainerComponent extends React.PureComponent<Props, State> {
 
 export const mapStateToProps = (state: StoreState, ownProps: OwnProps) => {
   const { modules } = state.moduleBank;
-  const lastDay = addDays(ownProps.currentTime, DAYS);
-  const weekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(lastDay);
+
+  const lastDay = addDays(ownProps.currentTime, DAYS); // current date plus 7 days
+  const todayWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(ownProps.currentTime);
+  const nextWeekInfo = NUSModerator.academicCalendar.getAcadWeekInfo(lastDay);
+
+  const todaySemester = semesterNameMap[todayWeekInfo.sem];
+  const nextWeekSemester = semesterNameMap[nextWeekInfo.sem];
+
+  // On week -1 of semester 2, the semester should be 2, not 1
+  const weekBeforeSem2 = todaySemester === 1 && nextWeekSemester === 2;
+  // If it's the week before semester 2, use sem2's week info, otherwise use current date's week info
+  const weekInfo = weekBeforeSem2 ? nextWeekInfo : todayWeekInfo;
+
   const semester = semesterNameMap[weekInfo.sem];
   const timetable = getSemesterTimetableLessons(state)(semester);
   const colors = getSemesterTimetableColors(state)(semester);
-  const timetableWithLessons = hydrateSemTimetableWithLessons(timetable, modules, semester);
+  const hidden = getSemesterTimetableHidden(state)(semester);
+  const timetableWithLessons = omit(
+    hydrateSemTimetableWithLessons(timetable, modules, semester),
+    hidden,
+  );
 
   return {
     colors,

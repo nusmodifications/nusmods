@@ -1,0 +1,101 @@
+@import '~styles/utils/modules-entry.scss';
+
+@keyframes grow {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.grower {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  background-color: var(--body-bg);
+  animation: grow 1s ease-in-out infinite;
+}
+
+.optimizeButtonSection {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+}
+
+.optimizeButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  padding: 0.75rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  gap: 0.5rem;
+
+  &.enabled {
+    border: 1px solid #ff5138;
+    color: #ff5138;
+    background-color: transparent;
+    box-shadow: 0 2px 8px rgba(255, 81, 56, 0.2);
+    cursor: pointer;
+
+    &:hover {
+      color: var(--body-bg);
+      background-color: #ff5138;
+      box-shadow: 0 6px 20px rgba(255, 81, 56, 0.4);
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      color: var(--body-bg);
+      background-color: #e04832;
+      transform: translateY(0);
+    }
+  }
+
+  &.disabled {
+    border: none;
+    color: var(--body-bg);
+    background-color: #69707a;
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+
+  @include media-breakpoint-down(md) {
+    width: 100%;
+    padding: 1rem 2rem;
+  }
+}
+
+.optimizeButtonSpinner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.estimateTime {
+  display: flex;
+  flex-direction: row;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #69707a;
+  gap: 0.5rem;
+}
+
+.estimateTimeValue {
+  font-weight: bold;
+}
+
+.zapIcon {
+  fill: #ff5138;
+
+  &.disabled {
+    fill: #69707a;
+  }
+}

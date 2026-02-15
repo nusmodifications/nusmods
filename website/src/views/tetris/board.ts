@@ -1,10 +1,10 @@
 import { findLastIndex, min, range, zip } from 'lodash';
-import produce from 'immer';
+import { produce } from 'immer';
 
 import { DaysOfWeek } from 'types/modules';
 import {
-  ColoredLesson,
   ColorIndex,
+  ColoredLesson,
   TimetableArrangement,
   TimetableDayArrangement,
 } from 'types/timetables';
@@ -305,14 +305,14 @@ function createLessonSquare(color: ColorIndex, row: number): ColoredLesson {
 }
 
 const BORDER_COLOR = 10;
-export function boardToTimetableArrangement(board: Board): TimetableArrangement {
+export function boardToTimetableArrangement(board: Board): TimetableArrangement<ColoredLesson> {
   // Assume column count is divisible by 3
   const days = DaysOfWeek.slice(0, 5);
-  const timetable: TimetableArrangement = {};
+  const timetable: TimetableArrangement<ColoredLesson> = {};
 
   days.forEach((day) => {
     if (day === DaysOfWeek[0] || day === DaysOfWeek[4]) {
-      // Monday and Friday are filled with a single column of mock lessons acting as a border
+      // Monday and Friday are filled with a single column of mock ColoredLessons acting as a border
       timetable[day] = [range(ROWS + 2).map((i) => createLessonSquare(BORDER_COLOR, i))];
     } else {
       timetable[day] = range(3).map(() => [
@@ -331,7 +331,9 @@ export function boardToTimetableArrangement(board: Board): TimetableArrangement 
   return timetable;
 }
 
-export function pieceToTimetableDayArrangement(board: Board): TimetableDayArrangement {
+export function pieceToTimetableDayArrangement(
+  board: Board,
+): TimetableDayArrangement<ColoredLesson> {
   return board.map((column) =>
     column
       .map((tile, index) => (!tile ? null : createLessonSquare(tile.color, index)))

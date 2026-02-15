@@ -2,7 +2,7 @@
   "functions": {
     "api/**/*.ts": {
       "excludeFiles": "./tsconfig.json",
-      "includeFiles": "./api/tsconfig.json"
+      "includeFiles": "{./api/tsconfig.json,./src/serverless/*.xml,./src/data/*.json}"
     }
   },
   "headers": [
