@@ -56,11 +56,40 @@ const attributeMap: { [attribute: string]: keyof NUSModuleAttributes } = {
   // MPE handled separately as it maps to multiple attributes
 };
 
-const mpeValueMap: { [attribute: string]: (keyof NUSModuleAttributes)[] } = {
-  S1: ['mpes1'],
-  S2: ['mpes2'],
-  'S1&S2': ['mpes1', 'mpes2'],
+// Known truthy values for course attributes
+const truthyValues = new Set(['Yes', 'HT - Honours Thesis/Rsh Project']);
+
+// Known falsy values for course attributes
+const falsyValues = new Set(['No']);
+
+// MPE value → attribute keys mapping
+const mpeValueMap: { [value: string]: (keyof NUSModuleAttributes)[] } = {
+  'S1 - Sem 1': ['mpes1'],
+  'S2 - Sem 2': ['mpes2'],
+  'S1&S2 - Sem 1 & 2': ['mpes1', 'mpes2'],
 };
+
+// Known SFS subcategory values that indicate the module is in SkillsFuture
+// Series. The API changed from returning "YES"/"NO" to returning specific
+// subcategory codes.
+const sfsTruthyValues = new Set([
+  'DA',
+  'DA - Data Analytics',
+  'AM',
+  'AM - Advanced Manufacturing',
+  'US',
+  'US - Urban Solutions',
+  'FIN',
+  'FIN - Finance',
+  'CS',
+  'CS - Cybersecurity',
+  'ENT',
+  'ENT - Entrepreneurship',
+  'TES',
+  'TES - Tech-Enabled Services',
+  'DM',
+  'DM - Digital Media',
+]);
 
 export function mapAttributes(
   attributes: ModuleAttributeEntry[],
@@ -86,9 +115,22 @@ export function mapAttributes(
 
     if (!attributeMap[entry.CourseAttribute]) continue;
 
-    if (entry.CourseAttributeValue === 'YES' || entry.CourseAttributeValue === 'HT') {
+    // SFS uses specific subcategory values instead of YES/NO
+    if (entry.CourseAttribute === 'SFS') {
+      if (sfsTruthyValues.has(entry.CourseAttributeValue)) {
+        nusAttributes[attributeMap[entry.CourseAttribute]] = true;
+      } else if (!falsyValues.has(entry.CourseAttributeValue)) {
+        logger.warn(
+          { value: entry.CourseAttributeValue, key: entry.CourseAttribute },
+          'Non-standard course attribute value',
+        );
+      }
+      continue;
+    }
+
+    if (truthyValues.has(entry.CourseAttributeValue)) {
       nusAttributes[attributeMap[entry.CourseAttribute]] = true;
-    } else if (entry.CourseAttributeValue !== 'NO') {
+    } else if (!falsyValues.has(entry.CourseAttributeValue)) {
       logger.warn(
         { value: entry.CourseAttributeValue, key: entry.CourseAttribute },
         'Non-standard course attribute value',
