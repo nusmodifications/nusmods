@@ -1,0 +1,5 @@
+allow-unwrap-in-tests = true
+
+# Use ahash::HashMap and ahash::HashSet instead because they are much faster than
+# the default hashing algo used by Rust
+disallowed-types = ["std::collections::HashMap", "std::collections::HashSet"]
