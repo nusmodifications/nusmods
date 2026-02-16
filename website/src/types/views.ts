@@ -45,7 +45,7 @@ export type ExamClashes = { [key: string]: Module[] };
 export type OnModifyCell = (lesson: InteractableLesson, position: ClientRect) => void;
 export type OnHoverCell = (hoverLesson: HoverLesson | null) => void;
 
-// Incomplete typing of Mamoto's API. If you need something not here, feel free
+// Incomplete typing of Matomo's API. If you need something not here, feel free
 // to declare the typing here.
 
 export type TimeSegment = 'Morning' | 'Afternoon' | 'Evening';
