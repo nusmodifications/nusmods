@@ -64,6 +64,12 @@ const requestMiddleware: Middleware<RequestsDispatchExt, State, Dispatch> =
       return next(action);
     }
 
+    if (action.meta.requestStatus) {
+      // No need to propagate ongoing requests
+      // Also helps to prevent ping-pong state-sync between tabs
+      return next(action);
+    }
+
     // type     is the base action type that will trigger
     // payload  is the request body to be processed
     const { type, payload, meta } = action;

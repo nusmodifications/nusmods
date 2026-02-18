@@ -18,16 +18,15 @@ import config from '../config';
 import BaseTask from './BaseTask';
 import GetSemesterExams from './GetSemesterExams';
 import GetSemesterTimetable from './GetSemesterTimetable';
-import GetSemesterModules from './GetSemesterModules';
-import { fromTermCode } from '../utils/api';
 import { validateSemester } from '../services/validation';
-import { removeEmptyValues, titleize, trimValues, decodeHTMLEntities } from '../utils/data';
+import { removeEmptyValues, titleize, trimValues, findEquivalentModules } from '../utils/data';
 import { difference } from '../utils/set';
 import { Logger } from '../services/logger';
 
 interface Input {
   departments: AcademicOrg[];
   faculties: AcademicGrp[];
+  modules: ModuleInfo[];
 }
 
 type Output = SemesterModuleData[];
@@ -57,11 +56,40 @@ const attributeMap: { [attribute: string]: keyof NUSModuleAttributes } = {
   // MPE handled separately as it maps to multiple attributes
 };
 
-const mpeValueMap: { [attribute: string]: (keyof NUSModuleAttributes)[] } = {
-  S1: ['mpes1'],
-  S2: ['mpes2'],
-  'S1&S2': ['mpes1', 'mpes2'],
+// Known truthy values for course attributes
+const truthyValues = new Set(['Yes', 'HT - Honours Thesis/Rsh Project']);
+
+// Known falsy values for course attributes
+const falsyValues = new Set(['No']);
+
+// MPE value → attribute keys mapping
+const mpeValueMap: { [value: string]: (keyof NUSModuleAttributes)[] } = {
+  'S1 - Sem 1': ['mpes1'],
+  'S2 - Sem 2': ['mpes2'],
+  'S1&S2 - Sem 1 & 2': ['mpes1', 'mpes2'],
 };
+
+// Known SFS subcategory values that indicate the module is in SkillsFuture
+// Series. The API changed from returning "YES"/"NO" to returning specific
+// subcategory codes.
+const sfsTruthyValues = new Set([
+  'DA',
+  'DA - Data Analytics',
+  'AM',
+  'AM - Advanced Manufacturing',
+  'US',
+  'US - Urban Solutions',
+  'FIN',
+  'FIN - Finance',
+  'CS',
+  'CS - Cybersecurity',
+  'ENT',
+  'ENT - Entrepreneurship',
+  'TES',
+  'TES - Tech-Enabled Services',
+  'DM',
+  'DM - Digital Media',
+]);
 
 export function mapAttributes(
   attributes: ModuleAttributeEntry[],
@@ -87,9 +115,22 @@ export function mapAttributes(
 
     if (!attributeMap[entry.CourseAttribute]) continue;
 
-    if (entry.CourseAttributeValue === 'YES' || entry.CourseAttributeValue === 'HT') {
+    // SFS uses specific subcategory values instead of YES/NO
+    if (entry.CourseAttribute === 'SFS') {
+      if (sfsTruthyValues.has(entry.CourseAttributeValue)) {
+        nusAttributes[attributeMap[entry.CourseAttribute]] = true;
+      } else if (!falsyValues.has(entry.CourseAttributeValue)) {
+        logger.warn(
+          { value: entry.CourseAttributeValue, key: entry.CourseAttribute },
+          'Non-standard course attribute value',
+        );
+      }
+      continue;
+    }
+
+    if (truthyValues.has(entry.CourseAttributeValue)) {
       nusAttributes[attributeMap[entry.CourseAttribute]] = true;
-    } else if (entry.CourseAttributeValue !== 'NO') {
+    } else if (!falsyValues.has(entry.CourseAttributeValue)) {
       logger.warn(
         { value: entry.CourseAttributeValue, key: entry.CourseAttribute },
         'Non-standard course attribute value',
@@ -106,18 +147,13 @@ export function mapAttributes(
  * - Remove empty fields and fields with text like 'nil'
  * - Trim whitespace from module title, description and other text fields
  * - Properly capitalize ALL CAPS title
- * - Decode HTML entities in description such as '&224;' to 'à'
  */
 export function cleanModuleInfo(module: SemesterModule) {
-  let cleanedModule = module;
+  let cleanedModule = { ...module };
 
   // Title case module title if it is all uppercase
   if (cleanedModule.title === cleanedModule.title.toUpperCase()) {
     cleanedModule.title = titleize(cleanedModule.title);
-  }
-
-  if (cleanedModule.description != null) {
-    cleanedModule.description = decodeHTMLEntities(cleanedModule.description);
   }
 
   // Remove empty values like 'nil' and empty strings for keys that allow them
@@ -144,7 +180,9 @@ export function cleanModuleInfo(module: SemesterModule) {
  * Parse the workload string into a mapping of individual components to their hours.
  * If the string is unparsable, it is returned without any modification.
  */
-export function parseWorkload(workloadString: string): Workload {
+export function parseWorkload(workloadString: string | null | undefined): Workload | undefined {
+  if (!workloadString) return undefined;
+
   const cleanedWorkloadString = workloadString
     .replace(/\(.*?\)/g, '') // Remove stuff in parenthesis
     .replace(/NA/gi, '0') // Replace 'NA' with 0
@@ -178,61 +216,63 @@ const mapModuleInfo = (
   departmentMap: DepartmentCodeMap,
   facultyMap: FacultyCodeMap,
   logger: Logger,
+  acadYear: string,
 ): SemesterModule => {
   const {
-    Term,
-    AcademicOrganisation,
+    OrganisationCode,
     AcademicGroup,
-    CourseTitle,
-    AdditionalInformation,
-    WorkLoadHours,
-    GradingBasisDesc,
-    Preclusion,
+    Title,
+    WorkloadHoursNUSMods,
+    PreclusionSummary,
     PreclusionRule,
-    PreRequisite,
-    PreRequisiteRule,
     PreRequisiteAdvisory,
-    CoRequisite,
-    CoRequisiteRule,
-    ModularCredit,
-    Description,
-    Subject,
+    PrerequisiteRule,
+    PrerequisiteSummary,
+    CorequisiteRule,
+    CorequisiteSummary,
+    UnitsMin,
+    CourseDesc,
+    SubjectArea,
     CatalogNumber,
-    ModuleAttributes = [],
+    CourseAttributes = [],
+    AdditionalInformation,
+    GradingBasisDesc,
   } = moduleInfo;
-
-  const [AcadYear] = fromTermCode(Term);
 
   // We map department from our department list because
   // AcademicOrganisation.Description is empty for some reason
   return {
-    acadYear: AcadYear,
-    preclusion: Preclusion,
-    preclusionRule: PreclusionRule,
-    description: Description,
-    title: CourseTitle,
-    additionalInformation: AdditionalInformation,
-    department: departmentMap[AcademicOrganisation.Code],
-    faculty: facultyMap[AcademicGroup.Code],
-    workload: parseWorkload(WorkLoadHours),
-    gradingBasisDescription: GradingBasisDesc,
-    prerequisite: PreRequisite,
-    prerequisiteRule: PreRequisiteRule,
-    prerequisiteAdvisory: PreRequisiteAdvisory,
-    corequisite: CoRequisite,
-    corequisiteRule: CoRequisiteRule,
-    moduleCredit: ModularCredit,
-    moduleCode: Subject + CatalogNumber,
-    attributes: mapAttributes(ModuleAttributes, logger),
+    acadYear,
+    preclusion: PreclusionSummary ?? undefined,
+    preclusionRule: PreclusionRule ?? undefined,
+    description: CourseDesc ?? undefined,
+    title: Title,
+    additionalInformation: AdditionalInformation ?? undefined,
+    department: departmentMap[OrganisationCode],
+    faculty: facultyMap[AcademicGroup],
+    workload: parseWorkload(WorkloadHoursNUSMods),
+    gradingBasisDescription: GradingBasisDesc || '',
+    prerequisite: PrerequisiteSummary ?? undefined,
+    prerequisiteRule: PrerequisiteRule ?? undefined,
+    prerequisiteAdvisory: PreRequisiteAdvisory ?? undefined,
+    corequisite: CorequisiteSummary ?? undefined,
+    corequisiteRule: CorequisiteRule ?? undefined,
+    moduleCredit: UnitsMin === null ? '0' : String(UnitsMin),
+    moduleCode: SubjectArea + CatalogNumber,
+    attributes: mapAttributes(
+      CourseAttributes.map((attr) => ({
+        CourseAttribute: attr.Code.trim(),
+        CourseAttributeValue: attr.Value.trim(),
+      })),
+      logger,
+    ),
   };
 };
 
 /**
- * Download, clean and combine module info, timetable, and exam info. This task
- * uses the subtasks
- * - GetSemesterExams
- * - GetSemesterModules
- * - GetSemesterTimetable
+ * Clean, combine and save module info, timetable, and exam info for a single
+ * semester. Module info is provided as input (fetched once externally by
+ * GetAllModules). Timetable and exam data are fetched per-semester.
  *
  * Output:
  * - <semester>/<module code>/semesterData.json
@@ -267,16 +307,13 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
 
     this.logger.info(`Getting semester data for ${academicYear} semester ${semester}`);
 
-    // Do this before the other tasks so that it won't timeout because the API
-    // server can't handle the load created by trying to fetch all modules in
-    // parallel
-    const timetables = await new GetSemesterTimetable(semester, academicYear).run();
-
-    // Get exams and module info in parallel
-    const [exams, modules] = await Promise.all([
+    // Fetch timetable and exams in parallel (module info is pre-fetched externally)
+    const [timetables, exams] = await Promise.all([
+      new GetSemesterTimetable(semester, academicYear).run(),
       new GetSemesterExams(semester, academicYear).run(),
-      new GetSemesterModules(semester, academicYear).run(input),
     ]);
+
+    const { modules } = input;
 
     // Map department and faculty codes to their names for use during module
     // data sanitization
@@ -286,7 +323,7 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
     // Key modules by their module code for easier mapping
     const modulesMap = keyBy(
       modules,
-      (moduleInfo) => moduleInfo.Subject + moduleInfo.CatalogNumber,
+      (moduleInfo) => moduleInfo.SubjectArea + moduleInfo.CatalogNumber,
     );
 
     // Combine all three source of data into one set of semester module info.
@@ -300,7 +337,7 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
 
       // Map module info to the shape expected by our frontend and clean up
       // the data by removing nil fields and fixing data issues
-      const rawModule = mapModuleInfo(moduleInfo, departmentMap, facultyMap, logger);
+      const rawModule = mapModuleInfo(moduleInfo, departmentMap, facultyMap, logger, academicYear);
       const module = cleanModuleInfo(rawModule);
 
       const timetable = timetables[moduleCode];
@@ -324,6 +361,52 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
 
       semesterModuleData.push(semesterModuleDatum);
     });
+
+    // Post-processing: Propagate timetable data to dual-coded modules
+    // The new NUS API only returns timetable data for one code of dual-coded modules.
+    // This step matches modules without timetable to those with timetable based on
+    // title, credits, and description, then copies the timetable data.
+    const modulesWithTimetable = semesterModuleData
+      .filter((m) => m.semesterData !== undefined)
+      .map((m) => modulesMap[m.moduleCode]);
+    const modulesWithoutTimetable = semesterModuleData
+      .filter((m) => m.semesterData === undefined)
+      .map((m) => modulesMap[m.moduleCode]);
+
+    const equivalentModules = findEquivalentModules(modulesWithoutTimetable, modulesWithTimetable);
+
+    if (equivalentModules.size > 0) {
+      this.logger.info(
+        {
+          equivalents: Array.from(equivalentModules.entries()).map(([target, source]) => ({
+            target,
+            source,
+          })),
+        },
+        `Found ${equivalentModules.size} equivalent module(s) - propagating timetable data`,
+      );
+
+      // Copy timetable data from source modules to target modules
+      for (const [targetCode, sourceCode] of equivalentModules.entries()) {
+        const targetDatum = semesterModuleData.find(
+          (m) => m.moduleCode === targetCode,
+        ) as WritableSemesterModuleData | undefined;
+        const sourceDatum = semesterModuleData.find((m) => m.moduleCode === sourceCode);
+
+        if (targetDatum && sourceDatum?.semesterData) {
+          // Get exam info for the target module (if any)
+          const targetExamInfo = exams[targetCode] || {};
+
+          // Copy timetable and covidZones from source, but use target's own exam info
+          targetDatum.semesterData = {
+            semester,
+            timetable: sourceDatum.semesterData.timetable,
+            covidZones: sourceDatum.semesterData.covidZones,
+            ...targetExamInfo,
+          };
+        }
+      }
+    }
 
     // Log modules that have timetables but no module info
     const noInfoModulesWithTimetables = Array.from(

@@ -152,11 +152,11 @@ describe(cleanModuleInfo, () => {
     });
   });
 
-  test('should decode HTML entities in description', () => {
+  test('should preserve already-decoded descriptions', () => {
     expect(
       cleanModuleInfo({
         acadYear: '2020/2021',
-        description: 'These concepts pertain to the structure of &quot;ultimate reality&quot;...',
+        description: 'These concepts pertain to the structure of "ultimate reality"...',
         title: 'Metaphysics',
         department: 'Philosophy',
         faculty: 'Arts and Social Science',
@@ -200,9 +200,14 @@ describe(parseWorkload, () => {
     expect(parseWorkload('2‐1‐0‐2‐5')).toEqual([2, 1, 0, 2, 5]);
   });
 
+  test('parseWorkload should return undefined for empty/null/undefined input', () => {
+    expect(parseWorkload('')).toBeUndefined();
+    expect(parseWorkload(null)).toBeUndefined();
+    expect(parseWorkload(undefined)).toBeUndefined();
+  });
+
   test('parseWorkload should return input string as is if it cannot be parsed', () => {
     const invalidInputs = [
-      '',
       '\n',
       '2-2-2-2-3-4', // CE1101 (six components)
       '2-4-5-4', // CE1102 (four components)
