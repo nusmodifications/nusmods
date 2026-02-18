@@ -484,7 +484,7 @@ func Solve(w http.ResponseWriter, req models.OptimiserRequest) {
 	})
 
 	best := BeamSearch(lessons, lessonToSlots, 2500, 100, recordings, req)
-	shareableLink := GenerateNUSModsShareableLink(best.Assignments, req)
+	shareableLink := GenerateNUSModsShareableLink(best.Assignments, lessonToSlots, req)
 	response := SolveResponse{
 		TimetableState: best,
 		ShareableLink:  shareableLink,

@@ -46,6 +46,9 @@ func GetAllModuleSlots(
 		var moduleTimetable []models.ModuleSlot
 		for _, semester := range moduleData.SemesterData {
 			if semester.Semester == optimiserRequest.AcadSem {
+				for lessonIndex := range semester.Timetable {
+					semester.Timetable[lessonIndex].LessonIndex = lessonIndex
+				}
 				moduleTimetable = semester.Timetable
 				break
 			}

@@ -61,14 +61,24 @@ export const parseExportData: Middleware<State> = (ctx, next) => {
 export function validateExportData(data: ExportData) {
   if (!_.isObject(data)) throw new Error('data should be an object');
 
-  const timetableSchema = Joi.object().pattern(
+  /**
+   * type ModuleLessonConfig = {
+   *   [lessonType: LessonType]: LessonIndex[];
+   * };
+   */
+  const moduleLessonConfigSchema = Joi.object().pattern(
     Joi.string(),
-    Joi.object().pattern(Joi.string(), Joi.string()),
+    Joi.array().items(Joi.number().integer().min(0)),
   );
-  const taModulesConfigSchema = Joi.object().pattern(
-    Joi.string(),
-    Joi.array().items(Joi.array().length(2).ordered(Joi.string(), Joi.string())),
-  );
+
+  /**
+   * type SemTimetableConfig = {
+   *   [moduleCode: ModuleCode]: ModuleLessonConfig;
+   * };
+   */
+  const timetableSchema = Joi.object().pattern(Joi.string(), moduleLessonConfigSchema);
+
+  const taModulesConfigSchema = Joi.array().items(Joi.string());
   const themeSchema = Joi.object({
     id: Joi.string(),
     timetableOrientation: Joi.string().valid('HORIZONTAL', 'VERTICAL'),

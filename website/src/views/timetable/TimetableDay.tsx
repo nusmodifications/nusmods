@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 
-import { HoverLesson, TimetableDayArrangement } from 'types/timetables';
+import { ColoredLesson, HoverLesson, TimetableDayArrangement } from 'types/timetables';
 import { OnHoverCell, OnModifyCell } from 'types/views';
 import { convertTimeToIndex, NUM_INTERVALS_PER_HOUR } from 'utils/timify';
 
@@ -13,7 +13,7 @@ import TimetableHighlight from './TimetableHighlight';
 
 type Props = {
   day: string;
-  dayLessonRows: TimetableDayArrangement;
+  dayLessonRows: TimetableDayArrangement<ColoredLesson>;
   verticalMode: boolean;
   showTitle: boolean;
   isScrolledHorizontally: boolean;
