@@ -14,13 +14,13 @@ export default function OptimiserFAQContainer() {
                 Having trouble planning your timetable? The optimiser explores thousands of possible
                 timetable configurations to help you find one that best fits your preferences.
               </p>
-              <p className={styles.bodyText}>
+              <div className={styles.bodyText}>
                 You can indicate your preferences in the form above, and hit{' '}
                 <i>Optimise Timetable</i> to generate an optimised timetable. When you click the{' '}
                 <i>Open Optimised Timetable</i> button, it will bring you to a new page with the
                 optimised timetable. If the timetable looks good to you, click <i>Import</i> to
                 update your timetable.
-              </p>
+              </div>
             </>
           }
         />
@@ -33,7 +33,7 @@ export default function OptimiserFAQContainer() {
                 as closely as possible, there are certain preferences that may be harder to meet
                 (due to course schedules and conflicts).
               </p>
-              <p className={styles.bodyText}>
+              <div className={styles.bodyText}>
                 When you submit your preferences, there will be 2 types of constraints:
                 <b className={styles.boldConstraint}>Hard constraints</b>
                 <ul>
@@ -48,7 +48,7 @@ export default function OptimiserFAQContainer() {
                     Prioritise having less than your chosen number of consecutive hours of study
                   </li>
                 </ul>
-              </p>
+              </div>
             </>
           }
         />
@@ -61,10 +61,10 @@ export default function OptimiserFAQContainer() {
                 If there happens to be conflicts in your selected modules or your preferences, the
                 optimiser will still try to generate a timetable for you.
               </p>
-              <p className={styles.bodyText}>
+              <div className={styles.bodyText}>
                 However, it will only generate a <i>partial</i> timetable. You may have to edit the
                 timetable manually in this case.
-              </p>
+              </div>
             </>
           }
         />
@@ -77,14 +77,14 @@ export default function OptimiserFAQContainer() {
                 If you are a TA for a course, please remove that course from the list of modules to
                 be optimised.
               </p>
-              <p className={styles.bodyText}>
+              <div className={styles.bodyText}>
                 This is because the optimiser does not take into account TA duties, and will
                 schedule all lessons for that course as per normal.
-              </p>
-              <p className={styles.bodyText}>
+              </div>
+              <div className={styles.bodyText}>
                 It is advised to manually add in your TA slots after optimisation to avoid any
                 issues.
-              </p>
+              </div>
             </>
           }
         />
