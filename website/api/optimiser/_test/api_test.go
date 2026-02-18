@@ -15,6 +15,8 @@ import (
 
 const baseURL = "http://localhost:8020/optimise"
 
+var client = &http.Client{Timeout: 60 * time.Second}
+
 func TestOptimiser_SingleModule(t *testing.T) {
 	req := models.OptimiserRequest{
 		Modules:             []string{"CS2040S"},
@@ -219,14 +221,13 @@ func makeRequest(t *testing.T, req models.OptimiserRequest) (*http.Response, []b
 		t.Fatalf("Failed to marshal request: %v", err)
 	}
 
-	client := &http.Client{Timeout: 60 * time.Second}
 	resp, err := client.Post(baseURL, "application/json", bytes.NewReader(body))
 	if err != nil {
 		t.Fatalf("Failed to send request: %v", err)
 	}
+	defer resp.Body.Close()
 
 	respBody, err := io.ReadAll(resp.Body)
-	resp.Body.Close()
 	if err != nil {
 		t.Fatalf("Failed to read response: %v", err)
 	}

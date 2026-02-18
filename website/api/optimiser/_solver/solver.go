@@ -332,7 +332,7 @@ func calculateLunchGap(physicalSlots []models.ModuleSlot, optimiserRequest model
 // Algorithm:
 //  1. Accumulate duration of consecutive classes (no gap between them)
 //  2. When a gap is detected, check if accumulated time exceeds limit and penalize if so
-//  3. After the loop, check the final consecutive block
+//  3. In the last iteration of the loop, check the final consecutive block
 //
 // This encourages timetables with breaks between classes to avoid student burnout.
 func scoreConsecutiveHoursofStudy(physicalSlots []models.ModuleSlot, maxConsecutiveHours int) int {

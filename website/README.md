@@ -31,7 +31,7 @@ This will install all of the dependencies you need.
 To run the development build, simply run:
 
 ```sh
-$ yarn start
+$ yarn start:local
 ```
 
 This will start Webpack dev server, which will automatically rebuild and reload any code and components that you have changed.
