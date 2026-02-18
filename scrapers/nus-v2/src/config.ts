@@ -5,6 +5,10 @@ import { ClientOptions } from '@elastic/elasticsearch';
 export type Config = Readonly<{
   appKey: string;
   studentKey: string;
+  ttApiKey: string;
+  courseApiKey: string;
+  acadApiKey: string;
+  acadAppKey: string;
 
   // Base URL for all API requests
   baseUrl: string;
@@ -25,9 +29,9 @@ export type Config = Readonly<{
 
 const env = fs.readJSONSync(path.join(__dirname, '../env.json'));
 
-if (!env.appKey || !env.studentKey || !env.baseUrl) {
+if (!env.baseUrl || !env.ttApiKey || !env.courseApiKey || !env.acadApiKey || !env.acadAppKey) {
   throw new Error(
-    'env.json is not configured correctly. Please check that appKey, studentKey and baseUrl are provided',
+    'env.json is not configured correctly. Please check that baseUrl, ttApiKey, courseApiKey, acadApiKey and acadAppKey are provided',
   );
 }
 
@@ -39,6 +43,10 @@ const config: Config = {
   // From env
   appKey: env.appKey,
   studentKey: env.studentKey,
+  ttApiKey: env.ttApiKey,
+  courseApiKey: env.courseApiKey,
+  acadApiKey: env.acadApiKey,
+  acadAppKey: env.acadAppKey,
   elasticConfig: env.elasticConfig,
   baseUrl: addTrailingSlash(env.baseUrl),
   apiConcurrency: env.apiConcurrency || 5,

@@ -10,6 +10,12 @@ type LessonType = string
 type ClassNo = string
 type LessonIndex = int
 
+// ModuleTimetableMap organises module slots by Module -> LessonType -> ClassNo -> []ModuleSlot
+type ModuleTimetableMap = map[string]map[LessonType]map[ClassNo][]ModuleSlot
+
+// ModuleDefaultSlotsMap organises default/backup slots by Module -> LessonType -> []ModuleSlot
+type ModuleDefaultSlotsMap = map[string]map[LessonType][]ModuleSlot
+
 type OptimiserRequest struct {
 	Modules             []string `json:"modules"`             // Format: ["CS1010S", "CS2030S"]
 	Recordings          []string `json:"recordings"`          // Format: ["CS1010S Lecture", "CS2030S Laboratory"]

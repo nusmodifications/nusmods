@@ -31,6 +31,7 @@ export interface LessonSlot {
 
 export interface OptimiseResponse {
   shareableLink?: string;
+  defaultShareableLink?: string;
   Assignments?: { [lesson: string]: string };
   DaySlots?: (LessonSlot | null)[][];
 
