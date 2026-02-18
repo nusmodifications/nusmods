@@ -23,6 +23,7 @@ import OptimiserHeader from '../OptimiserHeader';
 import OptimiserForm from '../OptimiserForm/OptimiserForm';
 import OptimiserButton from '../OptimiserButton';
 import OptimiserResults from '../OptimiserResults';
+import OptimiserFAQContainer from '../OptimiserFAQ/OptimiserFAQContainer';
 
 const OptimiserContent: React.FC = () => {
   const activeSemester = useSelector(({ app }: State) => app.activeSemester);
@@ -140,6 +141,8 @@ const OptimiserContent: React.FC = () => {
           promptText="This feature is in Beta, so we would really appreciate your feedback!"
         />
       )}
+
+      <OptimiserFAQContainer />
 
       <OptimiserResults
         shareableLink={shareableLink}
