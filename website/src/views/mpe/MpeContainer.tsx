@@ -162,14 +162,14 @@ const MpeContainer: React.FC = () => {
           <p>
             Participation in the CPEx will be used as <strong>one of the tie-breakers</strong>{' '}
             during the CourseReg Exercise, in cases where the demand exceeds the available quota and
-            students have the same Priority Score for a particular module.
+            students have the same Priority Score for a particular course.
           </p>
           <p>
             For further questions, please refer to this{' '}
             <ExternalLink href="https://www.nus.edu.sg/registrar/docs/info/cpex/cpex-faqs.pdf">
               FAQ
             </ExternalLink>{' '}
-            provided by NUS Registrar's Office.
+            provided by NUS Office of the University Registrar.
           </p>
           <div>
             {isLoggedIn ? (

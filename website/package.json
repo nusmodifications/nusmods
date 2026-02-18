@@ -19,7 +19,8 @@
     "test:integration": "jest --config jest.integration.config.js",
     "test:watch": "jest --watch",
     "e2e": "nightwatch -e default,safariMobile,safariDesktop,edge",
-    "ci": "cross-env NODE_ENV=production yarn lint && yarn typecheck && yarn test && yarn test:integration && yarn build"
+    "ci": "cross-env NODE_ENV=production yarn lint && yarn typecheck && yarn test && yarn test:integration && yarn build",
+    "prepare": "cd .. && husky website/.husky"
   },
   "author": "NUSModifications",
   "license": "MIT",
@@ -38,6 +39,7 @@
     "@babel/preset-react": "7.26.3",
     "@babel/preset-typescript": "7.26.0",
     "@cfaester/enzyme-adapter-react-18": "0.8.0",
+    "@jest/globals": "29.7.0",
     "@packtracker/webpack-plugin": "2.3.0",
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.15",
     "@svgr/webpack": "8.1.0",
@@ -64,6 +66,7 @@
     "@types/react-router-dom": "5.3.3",
     "@types/react-scrollspy": "3.3.9",
     "@types/redux-mock-store": "1.5.0",
+    "@types/redux-state-sync": "3.1.4",
     "@types/use-subscription": "1.0.2",
     "@types/webpack-env": "1.18.5",
     "@typescript-eslint/eslint-plugin": "4.33.0",
@@ -125,6 +128,7 @@
     "webpack": "5.97.1",
     "webpack-cli": "5.1.4",
     "webpack-dev-server": "5.2.1",
+    "husky": "9.1.7",
     "webpack-merge": "6.0.1"
   },
   "dependencies": {
@@ -135,7 +139,7 @@
     "@sentry/node": "6.19.7",
     "@sentry/tracing": "6.19.7",
     "@tippy.js/react": "3.1.1",
-    "axios": "1.8.2",
+    "axios": "1.12.0",
     "body-scroll-lock": "3.1.5",
     "bootstrap": "4.6.2",
     "bowser": "2.11.0",
@@ -169,6 +173,7 @@
     "react-scrollspy": "3.4.3",
     "redux": "4.2.1",
     "redux-persist": "6.0.0",
+    "redux-state-sync": "3.1.4",
     "redux-thunk": "2.4.2",
     "reselect": "4.1.8",
     "samlify": "2.7.7",
