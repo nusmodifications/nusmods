@@ -1,0 +1,78 @@
+@import '~styles/utils/modules-entry';
+
+.pageContainer {
+  // composes: page-container from global;
+  // max-width: 40rem;
+  // display: block;
+  position: relative;
+  z-index: 1;
+  min-height: calc(100vh - 6rem);
+  margin-top: -1rem;
+  background: var(--body-bg);
+
+  .map {
+    overflow: hidden;
+    flex: 1;
+    min-width: min(100vw, 24rem);
+
+    @media (max-width: 768px) {
+      height: 40vh;
+      min-height: 20rem;
+      max-height: 32rem;
+    }
+
+    @media (min-width: 768px) {
+      position: sticky;
+      top: 3rem;
+      height: calc(100vh - 3rem);
+    }
+  }
+
+  .container {
+    overflow-y: scroll;
+    flex: 1;
+    min-width: 16rem;
+    max-height: 100%;
+    padding: 1rem 1.5rem;
+
+    @media (min-width: 768px) {
+      max-width: 20rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    width: calc((100vw - 4rem));
+    height: calc(100vh - 3rem);
+    min-height: calc(100vh - 3rem);
+    padding-left: 15px;
+  }
+
+  @media (min-width: 1200px) {
+    width: calc(100vw - 10rem);
+  }
+}
+
+.backButton {
+  padding: 0;
+  margin-left: -0.4rem;
+}
+
+.switchCampusButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 99999999;
+}
+
+@media (min-width: 768px) {
+  :root {
+    footer {
+      display: none;
+    }
+  }
+}

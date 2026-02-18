@@ -9,6 +9,7 @@ import {
   Cpu,
   Heart,
   Map,
+  Navigation,
   Settings,
   Star,
   Target,
@@ -68,6 +69,10 @@ const Navtabs: FC = () => {
       <NavLink {...tabProps} to="/venues" onMouseOver={preloadVenues} onFocus={preloadVenues}>
         <Map />
         <span className={styles.title}>Venues</span>
+      </NavLink>
+      <NavLink {...tabProps} to="/mobility">
+        <Navigation />
+        <span className={styles.title}>Mobility</span>
       </NavLink>
       <NavLink {...tabProps} className={classnames(tabProps.className)} to="/planner">
         <Trello />
