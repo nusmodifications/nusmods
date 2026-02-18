@@ -74,7 +74,7 @@ const OptimiserLessonTimeRangeSelect: React.FC<LessonTimeRangeSelectProps> = ({
       <div className={styles.timeColumn}>
         <h4 className={styles.optimiserDescription}>
           Earliest start time
-          <OptimiserFormTooltip content="There will be no physical class before this time" />
+          <OptimiserFormTooltip content="There will be no live lessons before this time" />
         </h4>
 
         <OptimiserTimeRangeSelect
@@ -88,7 +88,7 @@ const OptimiserLessonTimeRangeSelect: React.FC<LessonTimeRangeSelectProps> = ({
       <div className={styles.timeColumn}>
         <h4 className={styles.optimiserDescription}>
           Latest end time
-          <OptimiserFormTooltip content="There will be no physical class after this time" />
+          <OptimiserFormTooltip content="There will be no live lessons after this time" />
         </h4>
 
         <OptimiserTimeRangeSelect
