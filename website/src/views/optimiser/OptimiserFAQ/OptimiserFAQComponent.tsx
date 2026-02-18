@@ -14,10 +14,10 @@ export default function FAQComponent({
   const uniqueId = React.useId();
   return (
     <div className={styles.descriptionSection}>
-      <div className={classnames('accordion', styles.accordion)} id={`${uniqueId}-body`}>
-        <div className="card">
+      <div className={styles.accordion} id={`${uniqueId}-body`}>
+        <div>
           <div
-            className={classnames('card-header', styles.cardHeader)}
+            className={styles.cardHeader}
             id={`${uniqueId}-heading`}
           >
             <button
@@ -35,12 +35,12 @@ export default function FAQComponent({
           </div>
           <div
             id={`${uniqueId}-body`}
-            className={classnames('collapse', styles.collapse, {
+            className={classnames(styles.collapse, {
               [styles.open]: isOpen,
             })}
             aria-labelledby={`${uniqueId}-heading`}
           >
-            <div className={classnames('card-body', styles.cardBody)}>
+            <div className={styles.cardBody}>
               <div className={styles.bodyContent}>{body}</div>
             </div>
           </div>
