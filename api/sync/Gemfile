@@ -1,0 +1,53 @@
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+
+gem 'rails', '~> 5.2.3'
+gem 'pg'
+
+# Use Puma as the app server
+gem 'puma', '~> 3.11'
+# Use SCSS for stylesheets
+gem 'sass-rails', '~> 5.0'
+# Use Uglifier as compressor for JavaScript assets
+gem 'uglifier', '>= 1.3.0'
+
+# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+gem 'jbuilder', '~> 2.5'
+# Use Redis adapter to run Action Cable in production
+gem 'redis', '~> 4.0'
+
+# Reduces boot times through caching; required in config/boot.rb
+gem 'bootsnap', '>= 1.1.0', require: false
+
+gem 'devise'
+gem 'devise_token_auth'
+
+gem 'batch-loader'
+gem 'graphql'
+gem 'graphql-guard'
+gem 'graphql_playground-rails'
+gem 'rack-cors'
+
+gem 'rails_admin'
+
+group :development, :test do
+  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'byebug', platforms: %i[mri mingw x64_mingw]
+
+  gem 'faker'
+  gem 'rubocop'
+end
+
+group :development do
+  gem 'letter_opener_web'
+  gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'pry-rails'
+
+  # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
+  gem 'web-console', '>= 3.3.0'
+end
+
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
