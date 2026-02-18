@@ -16,10 +16,7 @@ export default function FAQComponent({
     <div className={styles.descriptionSection}>
       <div className={styles.accordion} id={`${uniqueId}-body`}>
         <div>
-          <div
-            className={styles.cardHeader}
-            id={`${uniqueId}-heading`}
-          >
+          <div className={styles.cardHeader} id={`${uniqueId}-heading`}>
             <button
               className={classnames('btn btn-link', styles.toggleButton, {
                 [styles.collapsed]: !isOpen,

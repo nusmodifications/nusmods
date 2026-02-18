@@ -52,8 +52,8 @@
 
 .toggleButton:not(.collapsed) {
   border-color: rgba(255, 81, 56, 0.4);
-  border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
   box-shadow: 0 2px 8px rgba(255, 81, 56, 0.08);
 }
 
