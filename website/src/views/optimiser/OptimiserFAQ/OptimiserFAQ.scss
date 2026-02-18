@@ -1,21 +1,11 @@
 @import '~styles/utils/modules-entry.scss';
 
 .descriptionSection {
-  padding: 0.5rem 0;
+  padding: 0.25rem 0;
 }
 
 .accordion {
   --optimiser-accent: #ff5138;
-}
-
-.card {
-  border: none;
-  color: var(--optimiser-accent);
-  background: transparent;
-
-  & + .card {
-    margin-top: 0.5rem;
-  }
 }
 
 .cardHeader {
@@ -29,36 +19,45 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 0.95rem 1rem;
+  padding: 0.85rem 1.1rem;
   border: 1px solid var(--gray-lighter);
+  border-radius: 0.5rem;
   font-weight: 600;
-  font-size: 1.02rem;
+  font-size: 0.95rem;
+  text-align: left;
   text-decoration: none !important;
-  letter-spacing: 0.01rem;
+  letter-spacing: 0.01em;
   color: var(--body-color);
-  transition: all 0.2s ease;
+  background: var(--body-bg);
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    border-color: rgba(255, 81, 56, 0.35);
+    box-shadow: 0 2px 8px rgba(255, 81, 56, 0.1);
+    transform: translateY(-1px);
+  }
 
   &:active {
-    border-bottom: none !important;
     text-decoration: none !important;
-    color: var(--body-bg);
     transform: translateY(0);
   }
 
   &:focus {
     outline: none;
     text-decoration: none !important;
-    box-shadow: none;
+    box-shadow: 0 0 0 2px rgba(255, 81, 56, 0.2);
   }
 }
 
 .toggleButton:not(.collapsed) {
-  border: 1px solid rgba(255, 81, 56, 0.3);
-  color: var(--optimiser-accent);
+  border-color: rgba(255, 81, 56, 0.4);
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  box-shadow: 0 2px 8px rgba(255, 81, 56, 0.08);
 }
 
 .collapsed {
-  background: var(--body-bg);
   box-shadow: none;
 }
 
@@ -76,22 +75,27 @@
 
 .toggleIcon {
   display: inline-flex;
+  flex-shrink: 0;
   justify-content: center;
   align-items: center;
-  width: 1.8rem;
-  height: 1.8rem;
+  width: 1.6rem;
+  height: 1.6rem;
   border-radius: 50%;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--optimiser-accent);
-  background-color: rgba(255, 81, 56, 0.12);
+  background-color: rgba(255, 81, 56, 0.1);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.toggleButton:hover .toggleIcon {
+  background-color: rgba(255, 81, 56, 0.18);
 }
 
 .collapse {
   opacity: 0;
   overflow: hidden;
   max-height: 0;
-  border-radius: 0 0 0.65rem 0.65rem;
-  transition: max-height 0.45s ease, opacity 0.35s ease;
+  transition: max-height 0.4s ease, opacity 0.3s ease;
 }
 
 .open {
@@ -100,32 +104,31 @@
 }
 
 .cardBody {
-  padding: 1.2rem 1.15rem 1.25rem;
-  border: 1px solid rgba(255, 81, 56, 0.14);
+  padding: 1rem 1.1rem 1.1rem;
+  border: 1px solid rgba(255, 81, 56, 0.2);
   border-top: none;
-  border-bottom-left-radius: 0.65rem;
-  border-bottom-right-radius: 0.65rem;
-  background: rgba(255, 81, 56, 0.08);
+  border-radius: 0 0 0.5rem 0.5rem;
+  background: rgba(255, 81, 56, 0.04);
 }
 
 .bodyContent {
   display: grid;
-  gap: 0.65rem;
+  gap: 0.6rem;
 }
 
 .lede {
   margin: 0;
   font-weight: 650;
-  font-size: 0.98rem;
+  font-size: 0.95rem;
   line-height: 1.6;
   color: var(--body-color);
 }
 
 .bodyText {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   line-height: 1.7;
-  color: var(--body-color);
+  color: var(--gray);
 }
 
 .boldConstraint {
