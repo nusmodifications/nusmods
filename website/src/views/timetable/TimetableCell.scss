@@ -81,11 +81,10 @@ $cell-opacity: 0.5;
 }
 
 .moduleName {
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
   min-width: 0;
   font-weight: 600;
   font-size: $font-size-xs;
-  word-break: break-word;
 }
 
 .weeksSpecial {
