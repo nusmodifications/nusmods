@@ -10,7 +10,14 @@ import type {
 } from 'types/timetables';
 import type { Dispatch, GetState } from 'types/redux';
 import type { TaModulesMapV1, ColorMapping, TaModulesMap } from 'types/reducers';
-import type { LessonIndex, LessonType, Module, ModuleCode, Semester } from 'types/modules';
+import type {
+  LessonIndex,
+  LessonType,
+  Module,
+  ModuleCode,
+  RawLessonWithIndex,
+  Semester,
+} from 'types/modules';
 
 import { fetchModule } from 'actions/moduleBank';
 import { openNotification } from 'actions/app';
@@ -220,7 +227,10 @@ export function setTimetable(
  * Valid TA modules configs must have lesson indices that belong to the correct lesson type
  * @param semester Semester of the timetable config to validate
  */
-export function validateTimetable(semester: Semester) {
+export function validateTimetable(
+  semester: Semester,
+  getStoredModuleSemesterTimetable: (moduleCode: ModuleCode) => readonly RawLessonWithIndex[],
+) {
   return async (dispatch: Dispatch, getState: GetState) => {
     const { timetables, moduleBank } = getState();
 
@@ -240,7 +250,12 @@ export function validateTimetable(semester: Semester) {
       migratedTaModulesConfig: ta,
       alreadyMigrated,
     } = await Promise.resolve(
-      migrateSemTimetableConfig(semTimetableConfig, taModulesConfig, getModuleSemesterTimetable),
+      migrateSemTimetableConfig(
+        semTimetableConfig,
+        taModulesConfig,
+        getModuleSemesterTimetable,
+        getStoredModuleSemesterTimetable,
+      ),
     );
 
     if (!alreadyMigrated) {
