@@ -34,7 +34,7 @@ To run the development build, simply run:
 $ yarn start
 ```
 
-This will start Webpack dev server, which will automatically rebuild and reload any code and components that you have changed.
+This will start Webpack dev server, which will automatically rebuild and reload any code and components that you have changed. If you need to use the optimiser, please refer to [the optimiser's README](./api/optimiser/README.md).
 
 We recommend the following development tools to help speed up your work
 

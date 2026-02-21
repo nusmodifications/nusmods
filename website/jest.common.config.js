@@ -19,6 +19,7 @@ module.exports = {
   globals: {
     NUSMODS_ENV: 'test',
     DATA_API_BASE_URL: '',
+    OPTIMISER_API_URL: '',
     VERSION_STR: '',
     DISPLAY_COMMIT_HASH: '',
     DEBUG_SERVICE_WORKER: false,
