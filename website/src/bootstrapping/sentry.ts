@@ -1,6 +1,5 @@
 import { get } from 'lodash';
 import * as Sentry from '@sentry/browser';
-import { Integrations } from '@sentry/tracing';
 
 import { isBrowserSupported } from './browser';
 
@@ -18,7 +17,7 @@ if (NUSMODS_ENV === 'production') {
 
     release: VERSION_STR || 'UNKNOWN_RELEASE',
 
-    integrations: [new Integrations.BrowserTracing()],
+    integrations: [Sentry.browserTracingIntegration()],
     tracesSampleRate: NUSMODS_ENV === 'production' ? 0.2 : 1.0,
 
     environment: sentryEnv(),
