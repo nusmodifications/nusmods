@@ -16,13 +16,6 @@ const OptimiserHeader: React.FC = () => {
           <Cpu size={isMobile ? 22 : 25} className={styles.titleIcon} />
           Timetable Optimiser
         </div>
-        <button
-          type="button"
-          className={classnames('btn btn-sm btn-outline-success', styles.feedbackButton)}
-          onClick={() => window.open(config.contact.telegram, '_blank')}
-        >
-          Beta - Leave Feedback
-        </button>
       </div>
 
       <div className={styles.description}>
