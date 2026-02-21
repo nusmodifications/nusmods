@@ -29,7 +29,6 @@ export const NAVTAB_HEIGHT = 48;
 
 const Navtabs: FC = () => {
   const activeSemester = useSelector(({ app }: State) => app.activeSemester);
-  const beta = useSelector(({ settings }: State) => settings.beta);
 
   const tabProps = {
     className: styles.link,

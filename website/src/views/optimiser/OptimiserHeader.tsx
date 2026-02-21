@@ -1,9 +1,7 @@
 import React from 'react';
-import classnames from 'classnames';
 import { Cpu } from 'react-feather';
 import useMediaQuery from 'views/hooks/useMediaQuery';
 import { breakpointDown } from 'utils/css';
-import config from 'config';
 import styles from './OptimiserHeader.scss';
 
 const OptimiserHeader: React.FC = () => {
