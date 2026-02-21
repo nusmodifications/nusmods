@@ -27,21 +27,20 @@ $ yarn
 This will install all of the dependencies you need.
 
 ### Development
-- To run the development build with optimiser, refer to the [optimiser README](./api/optimiser/README.md).
 
-- To run the development build without optimiser, simply run:
+To run the development build, simply run:
 
-  ```sh
-  $ yarn start
-  ```
+```sh
+$ yarn start
+```
 
-  This will start Webpack dev server, which will automatically rebuild and reload any code and components that you have changed.
+This will start Webpack dev server, which will automatically rebuild and reload any code and components that you have changed. If you need to use the optimiser, please refer to [the optimiser's README](./api/optimiser/README.md).
 
-  We recommend the following development tools to help speed up your work
+We recommend the following development tools to help speed up your work
 
-  - React Developer Tools ([Chrome](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi), [Firefox](https://addons.mozilla.org/firefox/addon/react-devtools/))
-  - [Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd)
-  - [Firefox Developer Edition](https://www.mozilla.org/en-US/firefox/developer/)
+- React Developer Tools ([Chrome](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi), [Firefox](https://addons.mozilla.org/firefox/addon/react-devtools/))
+- [Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd)
+- [Firefox Developer Edition](https://www.mozilla.org/en-US/firefox/developer/)
 
 ### Writing styles
 
