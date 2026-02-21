@@ -7,11 +7,13 @@ import styles from './OptimiserResults.scss';
 
 export interface OptimiserResultsProps {
   shareableLink: string | null;
+  defaultShareableLink: string | null;
   unassignedLessons: LessonOption[];
 }
 
 const OptimiserResults: React.FC<OptimiserResultsProps> = ({
   shareableLink,
+  defaultShareableLink,
   unassignedLessons,
 }) => {
   const optimiserResultsRef = useRef<HTMLDivElement>(null);
@@ -34,6 +36,7 @@ const OptimiserResults: React.FC<OptimiserResultsProps> = ({
       ) : (
         <OptimiserResultPartialTimetable
           shareableLink={shareableLink}
+          defaultShareableLink={defaultShareableLink}
           unassignedLessons={unassignedLessons}
         />
       )}
@@ -43,21 +46,24 @@ const OptimiserResults: React.FC<OptimiserResultsProps> = ({
 
 interface OptimiserResultsPartialProps {
   shareableLink: string;
+  defaultShareableLink: string | null;
   unassignedLessons: LessonOption[];
 }
 
 const OptimiserResultPartialTimetable: React.FC<OptimiserResultsPartialProps> = ({
   shareableLink,
+  defaultShareableLink,
   unassignedLessons,
 }) => (
   <div className={styles.unassignedWarning}>
     <div className={styles.unassignedHeader}>
       <AlertTriangle size={24} />
-      Optimiser Warning : Unassigned Lessons
+      Partial Timetable Generated
     </div>
 
     <div className={styles.unassignedDescription}>
-      The following lessons couldn't be assigned to your optimised timetable:
+      We successfully optimised most of your timetable, but these lessons couldn't be scheduled
+      based on your preferences:
     </div>
 
     <div className={styles.unassignedLessons}>
@@ -76,29 +82,44 @@ const OptimiserResultPartialTimetable: React.FC<OptimiserResultsPartialProps> = 
     </div>
 
     <div className={styles.unassignedExplanation}>
-      <div className={styles.unassignedExplanationHeader}>Why did this happen?</div>
+      <div className={styles.unassignedExplanationHeader}>Why couldn't these be scheduled?</div>
+      <ul>
+        <li className={styles.unassignedExplanationItem}>Missing venue information, or</li>
+        <li className={styles.unassignedExplanationItem}>
+          No possible way to schedule these lessons with your selected preferences (e.g., free days,
+          preferred hours)
+        </li>
+      </ul>
+    </div>
+
+    <div className={styles.unassignedExplanation}>
+      <div className={styles.unassignedExplanationHeader}>Choose how to view your timetable:</div>
       <ul>
         <li className={styles.unassignedExplanationItem}>
-          <strong>Venue constraints:</strong> NUSMods may not have complete or accurate venue data
-          for these lessons
+          <strong>Optimised lessons only:</strong> View just the lessons we successfully scheduled.
+          You'll manually re-add the others later.
         </li>
-        <li className={styles.unassignedExplanationItem}>
-          <strong>Scheduling conflicts:</strong> There is no possible way to schedule these lessons
-          with your selected preferences (free days, time ranges, etc.)
-        </li>
+        {defaultShareableLink && (
+          <li className={styles.unassignedExplanationItem}>
+            <strong>All lessons:</strong> View the optimised schedule plus{' '}
+            <i>the missing lessons added in random timeslots</i> (may conflict with your
+            preferences), making it easier to adjust them without re-adding.
+          </li>
+        )}
       </ul>
     </div>
 
     <div className={styles.warningButtonContainer}>
       <a className={styles.warningShareableButton} href={shareableLink} target="blank">
         <ExternalLink size={20} />
-        Open Partial Timetable
+        View Optimised Lessons Only
       </a>
-    </div>
-
-    <div className={styles.unassignedFooter}>
-      You may need to manually add these lessons to your timetable or adjust your optimisation
-      preferences
+      {defaultShareableLink && (
+        <a className={styles.warningShareableButton} href={defaultShareableLink} target="blank">
+          <ExternalLink size={20} />
+          View All Lessons
+        </a>
+      )}
     </div>
   </div>
 );

@@ -19,4 +19,8 @@
   display: flex;
   flex-direction: row;
   gap: 0.3rem;
+
+  &:focus {
+    box-shadow: none;
+  }
 }

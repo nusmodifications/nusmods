@@ -23,6 +23,7 @@ import OptimiserHeader from '../OptimiserHeader';
 import OptimiserForm from '../OptimiserForm/OptimiserForm';
 import OptimiserButton from '../OptimiserButton';
 import OptimiserResults from '../OptimiserResults';
+import OptimiserFAQContainer from '../OptimiserFAQ/OptimiserFAQContainer';
 
 const OptimiserContent: React.FC = () => {
   const activeSemester = useSelector(({ app }: State) => app.activeSemester);
@@ -43,6 +44,7 @@ const OptimiserContent: React.FC = () => {
 
   const [unassignedLessons, setUnassignedLessons] = useState<LessonOption[]>([]);
   const [shareableLink, setShareableLink] = useState<string | null>(null);
+  const [defaultShareableLink, setDefaultShareableLink] = useState<string | null>(null);
   const [isOptimising, setIsOptimising] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
@@ -101,12 +103,14 @@ const OptimiserContent: React.FC = () => {
   };
 
   const parseData = async (data: OptimiseResponse | null) => {
-    const link = data?.shareableLink;
-    if (!link) {
+    if (!data?.shareableLink) {
       throw new Error('expected shareable link to be created');
     }
-    setShareableLink(link);
-
+    if (!data?.defaultShareableLink) {
+      throw new Error('expected default shareable link to be created');
+    }
+    setShareableLink(data.shareableLink);
+    setDefaultShareableLink(data.defaultShareableLink);
     const unassignedLessonOptions = getUnassignedLessonOptions(lessonOptions, data);
     setUnassignedLessons(unassignedLessonOptions);
   };
@@ -138,7 +142,13 @@ const OptimiserContent: React.FC = () => {
         />
       )}
 
-      <OptimiserResults shareableLink={shareableLink} unassignedLessons={unassignedLessons} />
+      <OptimiserFAQContainer />
+
+      <OptimiserResults
+        shareableLink={shareableLink}
+        defaultShareableLink={defaultShareableLink}
+        unassignedLessons={unassignedLessons}
+      />
     </div>
   );
 };

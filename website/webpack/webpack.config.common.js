@@ -49,6 +49,7 @@ const commonConfig = {
       VERSION_STR: JSON.stringify(parts.appVersion().versionStr),
       DEBUG_SERVICE_WORKER: !!process.env.DEBUG_SERVICE_WORKER,
       DATA_API_BASE_URL: JSON.stringify(process.env.DATA_API_BASE_URL),
+      OPTIMISER_API_URL: JSON.stringify(process.env.OPTIMISER_API_URL || '/api/optimiser/optimise'),
     }),
   ],
 
