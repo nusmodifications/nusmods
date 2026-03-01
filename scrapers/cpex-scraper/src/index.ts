@@ -105,6 +105,13 @@ async function scraper() {
 
   for (let i = 0; i < facultiesData.length; i++) {
     const faculty = facultiesData[i];
+
+    // Skip inactive faculties (mirrors old eff_status: 'A' filter)
+    if (faculty.EffectiveStatus !== 'A') {
+      continue;
+    }
+
+    // CourseNUSMods API expects the first 3 characters of the AcademicGroup code
     const acadGroupCode =
       faculty.AcademicGroup.length >= 3
         ? faculty.AcademicGroup.slice(0, 3)
@@ -120,6 +127,7 @@ async function scraper() {
 
     while (hasMore) {
       let modules: Module[];
+      let itemCount: number;
       try {
         const getModulesResponse = await axios.get<{ data: Module[]; itemCount: number }>(
           `${baseUrl}CourseNUSMods`,
@@ -136,6 +144,7 @@ async function scraper() {
         );
 
         modules = getModulesResponse.data.data;
+        itemCount = getModulesResponse.data.itemCount;
       } catch (e: unknown) {
         const err = e as { response?: { status?: number }; message?: string };
         // The modules endpoint may return 404 for faculties with no modules
@@ -195,11 +204,8 @@ async function scraper() {
         collatedCPExModulesMap.set(moduleCode, cpexModuleToAdd);
       }
 
-      if (modules.length < MAX_ITEMS) {
-        hasMore = false;
-      } else {
-        offset += MAX_ITEMS;
-      }
+      offset += modules.length;
+      hasMore = offset < itemCount;
     }
   }
 
