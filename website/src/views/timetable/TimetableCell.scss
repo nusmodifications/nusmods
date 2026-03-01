@@ -77,9 +77,12 @@ $cell-opacity: 0.5;
   flex-direction: row;
   justify-content: space-between;
   align-content: center;
+  min-width: 0;
 }
 
 .moduleName {
+  overflow-wrap: break-word;
+  min-width: 0;
   font-weight: 600;
   font-size: $font-size-xs;
 }

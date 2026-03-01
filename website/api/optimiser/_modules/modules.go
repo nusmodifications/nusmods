@@ -15,7 +15,9 @@ import (
 - Get all module slots that pass conditions in optimiserRequest for all modules.
 - Reduces search space by merging slots of the same lesson type happening at the same day and time and building.
 */
-func GetAllModuleSlots(optimiserRequest models.OptimiserRequest) (models.ModuleTimetableMap, models.ModuleDefaultSlotsMap, error) {
+func GetAllModuleSlots(
+	optimiserRequest models.OptimiserRequest,
+) (models.ModuleTimetableMap, models.ModuleDefaultSlotsMap, error) {
 	venues, err := client.GetVenues()
 	if err != nil {
 		return nil, nil, err
@@ -78,14 +80,24 @@ func GetAllModuleSlots(optimiserRequest models.OptimiserRequest) (models.ModuleT
 		}
 
 		// Store the module slots for the module
-		moduleSlots[module], defaultSlots[module] = mergeAndFilterModuleSlots(moduleTimetable, venues, optimiserRequest, module)
+		moduleSlots[module], defaultSlots[module] = mergeAndFilterModuleSlots(
+			moduleTimetable,
+			venues,
+			optimiserRequest,
+			module,
+		)
 
 	}
 
 	return moduleSlots, defaultSlots, nil
 }
 
-func mergeAndFilterModuleSlots(timetable []models.ModuleSlot, venues map[string]models.Location, optimiserRequest models.OptimiserRequest, module string) (map[models.LessonType]map[models.ClassNo][]models.ModuleSlot, map[models.LessonType][]models.ModuleSlot) {
+func mergeAndFilterModuleSlots(
+	timetable []models.ModuleSlot,
+	venues map[string]models.Location,
+	optimiserRequest models.OptimiserRequest,
+	module string,
+) (map[models.LessonType]map[models.ClassNo][]models.ModuleSlot, map[models.LessonType][]models.ModuleSlot) {
 
 	recordingsMap := make(map[string]bool, len(optimiserRequest.Recordings))
 	for _, recording := range optimiserRequest.Recordings {
@@ -168,7 +180,9 @@ func mergeAndFilterModuleSlots(timetable []models.ModuleSlot, venues map[string]
 		We are doing this to avoid unnecessary calculations & reduce search space
 	*/
 
-	mergedTimetable := make(map[models.LessonType]map[models.ClassNo][]models.ModuleSlot) // Lesson Type -> Class No -> []ModuleSlot
+	mergedTimetable := make(
+		map[models.LessonType]map[models.ClassNo][]models.ModuleSlot,
+	) // Lesson Type -> Class No -> []ModuleSlot
 	seenCombinations := make(map[string]bool)
 
 	// iterate over lessonType|classNo

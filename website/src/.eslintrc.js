@@ -110,5 +110,6 @@ module.exports = {
     VERSION_STR: 'readonly',
     DISPLAY_COMMIT_HASH: 'readonly',
     DEBUG_SERVICE_WORKER: 'readonly',
+    OPTIMISER_API_URL: 'readonly',
   },
 };
