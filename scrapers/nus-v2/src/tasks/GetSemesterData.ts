@@ -408,6 +408,7 @@ export default class GetSemesterData extends BaseTask implements Task<Input, Out
             covidZones: sourceDatum.semesterData.covidZones,
             ...targetExamInfo,
           };
+          targetDatum.timetablePropagated = true;
         }
       }
     }

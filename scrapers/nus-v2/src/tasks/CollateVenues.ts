@@ -94,7 +94,7 @@ export default class CollateVenues extends BaseTask implements Task<Input, Outpu
     // Insert module code and flatten lessons
     const venueLessons: LessonWithModuleCode[] = compact(
       flatMap<SemesterModuleData, LessonWithModuleCode | undefined>(input, (module) => {
-        if (!module.semesterData) return undefined;
+        if (!module.semesterData || module.timetablePropagated) return undefined;
         return module.semesterData.timetable.map((lesson: RawLesson) => ({
           ...lesson,
           moduleCode: module.moduleCode,
